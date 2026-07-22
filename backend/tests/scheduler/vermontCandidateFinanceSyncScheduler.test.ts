@@ -64,6 +64,8 @@ describe("vermontCandidateFinanceSyncScheduler", () => {
       failedCandidateCount: 0,
       autoLinkAttemptedCount: 0,
       autoLinkLinkedCount: 0,
+      autoLinkFailedCount: 0,
+      autoLinkResults: [],
       results: [],
     });
     expect(Pool).not.toHaveBeenCalled();
@@ -117,6 +119,8 @@ describe("vermontCandidateFinanceSyncScheduler", () => {
       failedCandidateCount: 0,
       autoLinkAttemptedCount: 0,
       autoLinkLinkedCount: 0,
+      autoLinkFailedCount: 0,
+      autoLinkResults: [],
       results: [],
     });
 

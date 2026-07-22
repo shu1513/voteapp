@@ -59,6 +59,11 @@ export type VermontCandidateFinanceBatchSyncResult = {
   failedCandidateCount: number;
   autoLinkAttemptedCount: number;
   autoLinkLinkedCount: number;
+  autoLinkFailedCount: number;
+  // Auto-link outcomes are reported separately so the due-sync counters
+  // (selectedCandidateCount / syncedCandidateCount / failedCandidateCount)
+  // stay internally consistent with `results`.
+  autoLinkResults: VermontCandidateFinanceBatchSyncItemResult[];
   results: VermontCandidateFinanceBatchSyncItemResult[];
 };
 
@@ -236,10 +241,20 @@ type VermontMissingFinanceLinkQueryRow = {
   district: string | null;
 };
 
+// Auto-link is restricted to STATEWIDE offices: Vermont's transaction rows
+// carry no district field and its office ids are flat per office type
+// (State Senator = 6 for every district), so two same-name legislative
+// candidates in different districts cannot be told apart — auto-linking them
+// risks attaching another candidate's money. Legislative links need a
+// district-aware source (or manual links) before they can be automated.
+const VERMONT_AUTO_LINK_OFFICE_KEYS = VERMONT_FINANCE_ELIGIBLE_OFFICE_KEYS.filter((key) =>
+  key.startsWith("statewide::")
+);
+
 // Deliberately uncapped: unmatched candidates never get a link, so a stable
 // ORDER BY + LIMIT would retry the same unmatched prefix every run and starve
-// the tail (the Pennsylvania PR #377 lesson). The window/office/state filters
-// bound the result; maxCandidates still caps the due sync.
+// the tail (the Pennsylvania PR #377 lesson). The statewide-office/window
+// filters bound the result; maxCandidates still caps the due sync.
 export async function listVermontCandidateElectionsMissingFinanceLinks(
   db: Queryable,
   input: {
@@ -294,7 +309,7 @@ export async function listVermontCandidateElectionsMissingFinanceLinks(
       input.now.toISOString(),
       input.electionLookbackDays,
       input.electionLookaheadDays,
-      [...VERMONT_FINANCE_ELIGIBLE_OFFICE_KEYS],
+      [...VERMONT_AUTO_LINK_OFFICE_KEYS],
     ]
   );
 
@@ -329,7 +344,7 @@ export async function syncDueVermontCandidateFinance(
   );
   const dryRun = input.dryRun === true;
   const syncFn = input.syncVermontCandidateFinanceFn ?? syncVermontCandidateFinance;
-  const results: VermontCandidateFinanceBatchSyncItemResult[] = [];
+  const autoLinkResults: VermontCandidateFinanceBatchSyncItemResult[] = [];
 
   // Auto-link: the per-candidate sync self-resolves against the live Vermont
   // API when called WITHOUT a trustedCommittee and writes the link plus the
@@ -338,6 +353,7 @@ export async function syncDueVermontCandidateFinance(
   // due query below by their new last_synced_at.
   let autoLinkAttemptedCount = 0;
   let autoLinkLinkedCount = 0;
+  let autoLinkFailedCount = 0;
   if (!dryRun && input.autoLinkMissingLinks !== false) {
     try {
       const missingLinkCandidates = await listVermontCandidateElectionsMissingFinanceLinks(input.db, {
@@ -363,7 +379,7 @@ export async function syncDueVermontCandidateFinance(
           });
           if (result.resolution.status === "matched") {
             autoLinkLinkedCount += 1;
-            results.push({
+            autoLinkResults.push({
               candidateId: candidate.candidateId,
               electionId: candidate.electionId,
               electionYear: candidate.electionYear,
@@ -379,6 +395,15 @@ export async function syncDueVermontCandidateFinance(
             });
           }
         } catch (error) {
+          autoLinkFailedCount += 1;
+          autoLinkResults.push({
+            candidateId: candidate.candidateId,
+            electionId: candidate.electionId,
+            electionYear: candidate.electionYear,
+            filerRegistrationGuid: "",
+            ok: false,
+            error: error instanceof Error ? error.message : String(error),
+          });
           console.warn("Vermont finance auto-link failed for candidate election; continuing:", {
             candidateId: candidate.candidateId,
             electionId: candidate.electionId,
@@ -403,6 +428,7 @@ export async function syncDueVermontCandidateFinance(
     electionLookaheadDays,
   });
 
+  const results: VermontCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
     try {
       const result = await syncFn({
@@ -457,6 +483,8 @@ export async function syncDueVermontCandidateFinance(
     failedCandidateCount: results.length - syncedCandidateCount,
     autoLinkAttemptedCount,
     autoLinkLinkedCount,
+    autoLinkFailedCount,
+    autoLinkResults,
     results,
   };
 }
