@@ -330,9 +330,16 @@ export async function getOregonOrestarCommitteeTransactionDetails(input: {
   // ORESTAR search results paginate by re-POSTing the form with an
   // incremented cneSearchPageIdx (the "Next" control is a form submit, not a
   // link, so result pages have no followable next-page URL).
+  //
+  // The contract is complete-or-throw: a summary persisted from a partial
+  // crawl silently understates a candidate's money, so any sign of an
+  // incomplete result set (committee larger than maxDetails, a repeated or
+  // degraded page, a row the parser could not link to its detail page) fails
+  // the sync and leaves the candidate due instead.
   const details: OregonOrestarTransactionDetail[] = [];
   const seenTransactionIds = new Set<string>();
-  for (let pageIdx = 0; pageIdx < maxPages && details.length < maxDetails; pageIdx += 1) {
+  let expectedResultCount: number | null = null;
+  for (let pageIdx = 0; pageIdx < maxPages; pageIdx += 1) {
     const results = await postOregonTransactionSearchPage({
       form,
       formData: buildOregonTransactionSearchFormData({
@@ -343,6 +350,14 @@ export async function getOregonOrestarCommitteeTransactionDetails(input: {
       }),
       options: input.options,
     });
+    if (pageIdx === 0) {
+      expectedResultCount = results.resultCount;
+      if (expectedResultCount !== null && expectedResultCount > maxDetails) {
+        throw new Error(
+          `ORESTAR committee ${committeeId} has ${expectedResultCount} transactions, more than maxDetails=${maxDetails}; refusing to persist a truncated total`
+        );
+      }
+    }
     if (results.rows.length === 0) {
       // A linked committee was matched through its own transactions, so a
       // rowless FIRST page with no "Results : N records found" marker is a
@@ -357,22 +372,31 @@ export async function getOregonOrestarCommitteeTransactionDetails(input: {
     }
     let newRowCount = 0;
     for (const row of results.rows) {
-      if (details.length >= maxDetails) {
-        break;
-      }
-      if (!row.detailUrl || seenTransactionIds.has(row.transactionId)) {
+      if (seenTransactionIds.has(row.transactionId)) {
         continue;
       }
       seenTransactionIds.add(row.transactionId);
       newRowCount += 1;
+      if (!row.detailUrl) {
+        // Still counts as a new row so pagination keeps advancing; the
+        // completeness check below fails the crawl over the missing detail.
+        continue;
+      }
       details.push(await getOregonOrestarTransactionDetail({ url: row.detailUrl, options: input.options }));
     }
     if (newRowCount === 0) {
+      // The portal served a page of already-seen rows; stop rather than loop,
+      // and let the completeness check decide whether the crawl is whole.
       break;
     }
-    if (results.resultCount !== null && seenTransactionIds.size >= results.resultCount) {
+    if (expectedResultCount !== null && seenTransactionIds.size >= expectedResultCount) {
       break;
     }
+  }
+  if (expectedResultCount !== null && details.length < expectedResultCount) {
+    throw new Error(
+      `ORESTAR returned ${details.length} of ${expectedResultCount} transactions for committee ${committeeId}; refusing to persist a truncated total`
+    );
   }
   return details;
 }

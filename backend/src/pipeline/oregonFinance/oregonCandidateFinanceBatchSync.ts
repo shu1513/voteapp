@@ -150,6 +150,14 @@ async function defaultLoadTransactionDetails(
   // no transactions — scraping it always produced zero rows and $0 summaries.
   // Query the ORESTAR transaction search by committee ID instead; the stored
   // source URL is only a fallback for legacy links without a committee ID.
+  //
+  // KNOWN LIMITATION: this search filters on the candidate committee as the
+  // FILER, so it only sees the committee's own transactions. Independent
+  // expenditures are filed by outside committees (the candidate appears only
+  // as the association target), so Oregon outside support/oppose stays 0
+  // until a separate target-candidate IE search is built. That has always
+  // been true of this batch path — the old source-URL scrape returned zero
+  // rows of any kind.
   const committeeId = row.committeeId?.trim();
   if (committeeId && /^\d+$/.test(committeeId)) {
     return getOregonOrestarCommitteeTransactionDetails({

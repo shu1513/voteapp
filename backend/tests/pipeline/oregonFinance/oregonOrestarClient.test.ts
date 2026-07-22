@@ -359,7 +359,7 @@ describe("oregonOrestarClient", () => {
     ).rejects.toThrow("ORESTAR returned an empty search page for committee 4792");
   });
 
-  it("stops committee paging at the detail cap and rejects non-numeric committee ids", async () => {
+  it("refuses committees larger than maxDetails and rejects non-numeric committee ids", async () => {
     await expect(
       getOregonOrestarCommitteeTransactionDetails({
         committeeId: "not-a-committee",
@@ -383,6 +383,46 @@ describe("oregonOrestarClient", () => {
           <table>${header}${searchRow("5500001")}${searchRow("5500002")}${searchRow("5500003")}</table>
         `);
       }
+      return htmlResponse(`
+        <form name="cneSearchForm" action="/orestar/gotoPublicTransactionSearchResults.do;JSESSIONID_ORESTAR=abc123">
+          <input type="hidden" name="OWASP_CSRFTOKEN" value="csrf-token-1">
+        </form>
+      `);
+    });
+
+    // A committee whose result count exceeds maxDetails must throw up front —
+    // persisting the first N transactions would silently understate totals.
+    await expect(
+      getOregonOrestarCommitteeTransactionDetails({
+        committeeId: "4792",
+        electionYear: 2026,
+        maxDetails: 2,
+        options: { fetchFn },
+      })
+    ).rejects.toThrow("has 9 transactions, more than maxDetails=2");
+    // 1 form fetch + 1 search page; no detail fetches are wasted.
+    expect(fetchFn).toHaveBeenCalledTimes(2);
+  });
+
+  it("throws instead of returning a partial crawl when pagination stalls short of the result count", async () => {
+    const searchRow = (transactionId: string) => `
+      <tr>
+        <td><a href="/orestar/gotoPublicTransactionDetail.do?tranRsn=${transactionId}">${transactionId}</a></td>
+        <td>10/12/2025</td><td>Original</td>
+        <td><a href="/orestar/sooDetail.do?cneCommitteeId=4792">Friends of Tina Kotek</a></td>
+        <td>Jane Donor</td><td>Cash Contribution</td><td>$100.00</td>
+      </tr>
+    `;
+    const header = `<tr><th>Tran ID</th><th>Date</th><th>Status</th><th>Filer/Committee</th><th>Contributor/Payee</th><th>Sub Type</th><th>Amount</th></tr>`;
+    const fetchFn = vi.fn(async (url: string) => {
+      if (url.includes("gotoPublicTransactionSearchResults.do")) {
+        // Every page repeats the same two rows even though four exist — the
+        // portal degrading mid-crawl must not truncate silently.
+        return htmlResponse(`
+          <div>Results : 4 records found</div>
+          <table>${header}${searchRow("5500001")}${searchRow("5500002")}</table>
+        `);
+      }
       if (url.includes("gotoPublicTransactionDetail.do")) {
         const transactionId = new URL(url).searchParams.get("tranRsn") ?? "unknown";
         return htmlResponse(`
@@ -403,11 +443,8 @@ describe("oregonOrestarClient", () => {
       getOregonOrestarCommitteeTransactionDetails({
         committeeId: "4792",
         electionYear: 2026,
-        maxDetails: 2,
         options: { fetchFn },
       })
-    ).resolves.toHaveLength(2);
-    // 1 form fetch + 1 search page + 2 detail fetches (cap hit mid-page).
-    expect(fetchFn).toHaveBeenCalledTimes(4);
+    ).rejects.toThrow("ORESTAR returned 2 of 4 transactions for committee 4792");
   });
 });
