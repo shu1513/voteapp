@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  getOregonOrestarCandidateCommitteeDirectory,
   getOregonOrestarCandidateSearchRows,
   getOregonOrestarCommitteeContributionDetailsFromExport,
   getOregonOrestarCommitteeTransactionDetails,
@@ -8,7 +9,10 @@ import {
   getOregonOrestarTransactionDetail,
   getOregonOrestarTransactionDetailsFromSourceUrl,
 } from "../../../src/pipeline/oregonFinance/oregonOrestarClient.js";
-import { buildOregonOrestarExportWorkbook } from "./orestarExportFixture.js";
+import {
+  buildOregonOrestarCommitteeExportWorkbook,
+  buildOregonOrestarExportWorkbook,
+} from "./orestarExportFixture.js";
 
 function htmlResponse(html: string, overrides: Partial<{ ok: boolean; status: number; statusText: string }> = {}) {
   return {
@@ -569,5 +573,106 @@ describe("oregonOrestarClient", () => {
         options: { fetchFn },
       })
     ).rejects.toThrow("ORESTAR returned a search page without a result count for committee 4792");
+  });
+
+  it("loads the active candidate-committee directory once with a CANDALL search", async () => {
+    const workbook = buildOregonOrestarCommitteeExportWorkbook([
+      {
+        "Committee Id": 21727,
+        "Committee Name": "Education First PAC",
+        "Committee Type": "CC",
+        "Candidate Office": "State Representative District 32",
+        "Candidate First Name": "Courtney",
+        "Candidate Last Name": "Bangs",
+        "Active Election": "2026 General Election",
+      },
+      {
+        "Committee Id": 4792,
+        "Committee Name": "Friends of Tina Kotek",
+        "Committee Type": "CC",
+        "Candidate Office": "Governor",
+        "Candidate First Name": "Tina",
+        "Candidate Last Name": "Kotek",
+        "Active Election": "2026 General Election",
+      },
+    ]);
+    const searchBodies: string[] = [];
+    const fetchFn = vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.endsWith("/orestar/JavaScriptServlet")) {
+        return htmlResponse("OWASP_CSRFTOKEN:committee-csrf-token");
+      }
+      if (url.includes("CommitteeSearchSecondPage.do")) {
+        searchBodies.push(String(init?.body));
+        expect(init?.headers).toMatchObject({ cookie: "JSESSIONID_ORESTAR=directory-session" });
+        return htmlResponse(`
+          <div>Results : 2 records found</div>
+          <a href="XcelSooSearch">Export To Excel Format</a>
+        `);
+      }
+      if (url.includes("XcelSooSearch")) {
+        expect(init?.headers).toMatchObject({ cookie: "JSESSIONID_ORESTAR=directory-session" });
+        return {
+          ...htmlResponse(""),
+          arrayBuffer: async () => workbook.buffer.slice(workbook.byteOffset, workbook.byteOffset + workbook.byteLength),
+        };
+      }
+      return {
+        ...htmlResponse(`
+          <form name="CommitteeSearchDynaFormSecond" action="/orestar/CommitteeSearchSecondPage.do;JSESSIONID_ORESTAR=directory-session">
+            <input type="hidden" name="buttonName" value="electionSearch">
+          </form>
+        `),
+        headers: {
+          get: (name: string) => name.toLowerCase() === "set-cookie"
+            ? "JSESSIONID_ORESTAR=directory-session; Path=/orestar"
+            : null,
+        },
+      };
+    });
+
+    await expect(
+      getOregonOrestarCandidateCommitteeDirectory({ options: { fetchFn } })
+    ).resolves.toMatchObject([
+      { filerCommitteeId: "21727", candidateFirstName: "Courtney", candidateLastName: "Bangs" },
+      { filerCommitteeId: "4792", candidateFirstName: "Tina", candidateLastName: "Kotek" },
+    ]);
+    expect(fetchFn).toHaveBeenCalledTimes(4);
+    expect(searchBodies).toHaveLength(1);
+    const params = new URLSearchParams(searchBodies[0]);
+    expect(params.get("filerType")).toBe("CANDALL");
+    expect(params.get("yearActive")).toBe("");
+    expect(params.get("election")).toBe("");
+    expect(params.get("approvedSOO")).toBe("on");
+    expect(params.get("OWASP_CSRFTOKEN")).toBe("committee-csrf-token");
+  });
+
+  it("rejects a committee export whose row count differs from the results page", async () => {
+    const workbook = buildOregonOrestarCommitteeExportWorkbook([
+      {
+        "Committee Id": 4792,
+        "Committee Name": "Friends of Tina Kotek",
+        "Committee Type": "CC",
+      },
+    ]);
+    const fetchFn = vi.fn(async (url: string) => {
+      if (url.includes("CommitteeSearchSecondPage.do")) {
+        return htmlResponse('<div>Results : 2 records found</div><a href="XcelSooSearch">Export</a>');
+      }
+      if (url.includes("XcelSooSearch")) {
+        return {
+          ...htmlResponse(""),
+          arrayBuffer: async () => workbook.buffer.slice(workbook.byteOffset, workbook.byteOffset + workbook.byteLength),
+        };
+      }
+      return htmlResponse(`
+        <form name="CommitteeSearchDynaFormSecond" action="/orestar/CommitteeSearchSecondPage.do">
+          <input type="hidden" name="OWASP_CSRFTOKEN" value="token">
+        </form>
+      `);
+    });
+
+    await expect(
+      getOregonOrestarCandidateCommitteeDirectory({ options: { fetchFn } })
+    ).rejects.toThrow("committee export returned 1 of 2 rows");
   });
 });
