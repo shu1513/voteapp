@@ -170,16 +170,16 @@ export async function enqueueManualDistrictResearchRequestsForStaleDistricts(
 }
 
 /**
- * Claim the highest-priority queued request whose district is still stale and
- * is not blocked by an active future manual-research deferral.
+ * Normal claims require the district to be stale and not blocked by an active
+ * future manual-research deferral; `manual_seed` bypasses both gates.
  *
- * Freshness is re-checked at claim time so an agent never picks up a district
- * the AI pipeline or another agent already researched. Both steps use the same
- * SQL staleness predicate the enqueue uses: first every queued request whose
- * district is now fresh is retired as 'skipped' in one bulk UPDATE, then a
- * single atomic UPDATE (FOR UPDATE SKIP LOCKED, so concurrent agents never
- * grab the same row) claims the hottest remaining request. Returns null when
- * nothing claimable remains.
+ * Freshness is re-checked at claim time for normal requests so an agent never
+ * picks up a district the AI pipeline or another agent already researched.
+ * Both steps use the same SQL staleness predicate the enqueue uses: first every
+ * queued request whose district is now fresh is retired as 'skipped' in one
+ * bulk UPDATE, then a single atomic UPDATE (FOR UPDATE SKIP LOCKED, so
+ * concurrent agents never grab the same row) claims the hottest remaining
+ * request. Returns null when nothing claimable remains.
  */
 export async function claimNextManualDistrictResearchRequest(
   db: Queryable,
