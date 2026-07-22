@@ -414,6 +414,72 @@ describeIntegration("claimNextManualDistrictResearchRequest PostgreSQL integrati
   });
 });
 
+describeIntegration("markManualDistrictResearchRequestSucceeded PostgreSQL integration", () => {
+  it("rejects an old deferral and accepts a future elections deferral refreshed after the claim", async () => {
+    const client = new Client({ connectionString: integrationDatabaseUrl });
+    const districtId = randomUUID();
+    const requestId = randomUUID();
+    const deferralId = randomUUID();
+    await client.connect();
+
+    try {
+      await client.query("BEGIN");
+      await client.query(
+        `
+          INSERT INTO public.districts
+            (id, geoid_compact, name, state, state_fips, district_type, population)
+          VALUES ($1, $2, 'Completion evidence integration', 'TS', '00', 'county', 1)
+        `,
+        [districtId, `test-${districtId}`]
+      );
+      await client.query(
+        `
+          INSERT INTO public.manual_district_research_requests
+            (id, district_id, district_name_snapshot, district_type_snapshot,
+             state_snapshot, trigger_source, status, claimed_at)
+          VALUES ($1, $2, 'Completion evidence integration', 'county',
+                  'TS', 'address_resolve', 'running', now())
+        `,
+        [requestId, districtId]
+      );
+      await client.query(
+        `
+          INSERT INTO public.manual_research_deferrals
+            (id, district_id, stage, reason, blocked_until,
+             district_name_snapshot, status, updated_at)
+          VALUES ($1, $2, 'elections', 'old deferral', CURRENT_DATE + 30,
+                  'Completion evidence integration', 'deferred', now() - interval '1 hour')
+        `,
+        [deferralId, districtId]
+      );
+
+      const rejected = await markManualDistrictResearchRequestSucceeded(client, {
+        requestId,
+        manifestPath: "/tmp/completion-evidence-integration.md",
+      });
+      expect(rejected).toBe(false);
+
+      await client.query(
+        `
+          UPDATE public.manual_research_deferrals
+          SET reason = 'refreshed by current claim', updated_at = clock_timestamp()
+          WHERE id = $1
+        `,
+        [deferralId]
+      );
+
+      const accepted = await markManualDistrictResearchRequestSucceeded(client, {
+        requestId,
+        manifestPath: "/tmp/completion-evidence-integration.md",
+      });
+      expect(accepted).toBe(true);
+    } finally {
+      await client.query("ROLLBACK");
+      await client.end();
+    }
+  });
+});
+
 describe("status transitions", () => {
   it("markRunning requires claimed status and does not count the attempt (the claim did)", async () => {
     const query = vi.fn().mockResolvedValueOnce({ rowCount: 1 });
@@ -441,7 +507,7 @@ describe("status transitions", () => {
     expect(claimSql).toContain("attempt_count = r.attempt_count + 1");
   });
 
-  it("markSucceeded requires a stamp from THIS claim, not any old stamp", async () => {
+  it("markSucceeded requires a same-claim write stamp or district-level future elections deferral", async () => {
     const query = vi.fn().mockResolvedValueOnce({ rowCount: 0 });
 
     const ok = await markManualDistrictResearchRequestSucceeded(
@@ -456,7 +522,13 @@ describe("status transitions", () => {
     // Queued districts almost always carry an old stamp (that staleness is why
     // they were enqueued); success must require a stamp produced during this
     // claim or a claim-and-instant-complete would pass with no work done.
-    expect(sql).toContain("last_elections_searched_at >= manual_district_research_requests.claimed_at");
+    expect(sql).toContain("last_elections_searched_at >= r.claimed_at");
+    expect(sql).toContain("FROM public.manual_research_deferrals md");
+    expect(sql).toContain("md.election_id IS NULL");
+    expect(sql).toContain("md.stage = 'elections'");
+    expect(sql).toContain("md.status = 'deferred'");
+    expect(sql).toContain("md.blocked_until > CURRENT_DATE");
+    expect(sql).toContain("md.updated_at >= r.claimed_at");
   });
 
   it("markFailed truncates the error and targets open statuses", async () => {

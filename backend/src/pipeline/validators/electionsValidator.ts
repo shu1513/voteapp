@@ -102,6 +102,7 @@ const STATE_UPPER_STRICT_MARKERS = [
   /\bmember of the senate\b/,
   /\bmember of the state senate\b/,
   /\bsenator in the general assembly\b/,
+  /\bsenator in (?:the )?general court\b/,
   /\bupper chamber\b/,
 ];
 

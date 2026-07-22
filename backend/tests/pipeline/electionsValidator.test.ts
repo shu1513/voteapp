@@ -80,6 +80,51 @@ describe("runElectionsValidator", () => {
     ]);
   });
 
+  it("accepts Massachusetts' official 'Senator in General Court' state-upper title", async () => {
+    const payload = {
+      district_id: "d-ma-hampden",
+      district_name: "Hampden District (2024); Massachusetts",
+      district_type: "state_upper",
+      state: "MA",
+      entries: [
+        {
+          official_ballot_title: "Senator in General Court",
+          election_date: "2099-09-01",
+          race_type: "office",
+          election_stage: "primary",
+          sources: ["https://www.sec.state.ma.us/example"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:ma-hampden",
+            payload,
+            status: "pending",
+            run_id: "run_ma_hampden",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").includes("soft_fail")
+    );
+    expect(softFailCall).toBeUndefined();
+  });
+
   it("accepts 'United States Representative' as a clear us_house title without a review pass", async () => {
     const payload = {
       district_id: "d-ak",
