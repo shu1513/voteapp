@@ -10,6 +10,7 @@ import {
   type OregonOrestarTransactionSearchResultRow,
   type OregonOrestarTransactionSearchResults,
 } from "./oregonOrestarParser.js";
+import { parseOregonOrestarTransactionExport } from "./oregonOrestarTransactionExport.js";
 
 export type OregonOrestarFetchResponse = {
   ok: boolean;
@@ -19,6 +20,7 @@ export type OregonOrestarFetchResponse = {
     getSetCookie?: () => string[];
   };
   text: () => Promise<string>;
+  arrayBuffer?: () => Promise<ArrayBuffer>;
 };
 
 export type OregonOrestarFetch = (
@@ -91,6 +93,16 @@ function cookieHeader(cookies: readonly string[]): string | null {
   return pairs.length > 0 ? pairs.join("; ") : null;
 }
 
+async function awaitOrestarRequestDelay(options: OregonOrestarClientOptions): Promise<void> {
+  const requestDelayMs = options.requestDelayMs ?? 0;
+  if (!Number.isInteger(requestDelayMs) || requestDelayMs < 0) {
+    throw new Error(`Invalid Oregon ORESTAR requestDelayMs: ${options.requestDelayMs}`);
+  }
+  if (requestDelayMs > 0) {
+    await new Promise((resolve) => setTimeout(resolve, requestDelayMs));
+  }
+}
+
 async function fetchOrestarHtmlPage(
   url: string,
   options: OregonOrestarClientOptions = {},
@@ -101,13 +113,7 @@ async function fetchOrestarHtmlPage(
   if (!Number.isInteger(timeoutMs) || timeoutMs <= 0) {
     throw new Error(`Invalid Oregon ORESTAR timeoutMs: ${options.timeoutMs}`);
   }
-  const requestDelayMs = options.requestDelayMs ?? 0;
-  if (!Number.isInteger(requestDelayMs) || requestDelayMs < 0) {
-    throw new Error(`Invalid Oregon ORESTAR requestDelayMs: ${options.requestDelayMs}`);
-  }
-  if (requestDelayMs > 0) {
-    await new Promise((resolve) => setTimeout(resolve, requestDelayMs));
-  }
+  await awaitOrestarRequestDelay(options);
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -191,6 +197,8 @@ function buildOregonTransactionSearchFormData(input: {
   committeeText?: string;
   committeeId?: string;
   pageIdx?: number;
+  /** ORESTAR cneSearchTranType code, e.g. "C" = Contribution, "E" = Expenditure. */
+  transactionTypeCode?: string;
 }): URLSearchParams {
   assertOregonSearchElectionYear(input.electionYear);
   const pageIdx = input.pageIdx ?? 0;
@@ -213,7 +221,7 @@ function buildOregonTransactionSearchFormData(input: {
   params.set("cneSearchTranFiledStartDate", "");
   params.set("cneSearchTranFiledEndDate", "");
   params.set("transactionId", "");
-  params.set("cneSearchTranType", "");
+  params.set("cneSearchTranType", input.transactionTypeCode ?? "");
   params.set("cneSearchTranAmountFrom", "");
   params.set("cneSearchTranAmountTo", "");
   params.set("cneSearchContributorTxt", "");
@@ -396,6 +404,113 @@ export async function getOregonOrestarCommitteeTransactionDetails(input: {
   if (expectedResultCount !== null && details.length < expectedResultCount) {
     throw new Error(
       `ORESTAR returned ${details.length} of ${expectedResultCount} transactions for committee ${committeeId}; refusing to persist a truncated total`
+    );
+  }
+  return details;
+}
+
+async function fetchOrestarBytes(
+  url: string,
+  options: OregonOrestarClientOptions = {},
+  init: RequestInit = {}
+): Promise<Uint8Array> {
+  const requestUrl = normalizeAllowedOrestarUrl(url);
+  const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  if (!Number.isInteger(timeoutMs) || timeoutMs <= 0) {
+    throw new Error(`Invalid Oregon ORESTAR timeoutMs: ${options.timeoutMs}`);
+  }
+  await awaitOrestarRequestDelay(options);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await getFetch(options.fetchFn)(requestUrl, {
+      ...init,
+      headers: requestHeaders(options.userAgent, init.headers),
+      signal: controller.signal,
+    });
+    if (!response.ok) {
+      throw new Error(`ORESTAR request failed ${response.status} ${response.statusText ?? ""}`.trim());
+    }
+    if (typeof response.arrayBuffer !== "function") {
+      throw new Error("ORESTAR fetch response does not support arrayBuffer()");
+    }
+    return new Uint8Array(await response.arrayBuffer());
+  } catch (error) {
+    if (controller.signal.aborted) {
+      throw new Error(`ORESTAR request timed out after ${timeoutMs}ms for ${requestUrl}`);
+    }
+    throw error;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+/**
+ * Loads a committee's contribution transactions through the XcelCNESearch
+ * export: one search POST (filtered to cneSearchTranType=C over the two-year
+ * cycle window) plus one workbook download, instead of one detail-page fetch
+ * per transaction. Three requests total regardless of committee size — the
+ * per-detail crawl tripped the portal's WAF on large filers (a 4,214-row
+ * committee would need ~4,300 requests).
+ *
+ * Same complete-or-throw contract as the crawl: the parsed workbook must
+ * account for every record the search page reported, or the sync fails and
+ * the candidate stays due.
+ */
+export async function getOregonOrestarCommitteeContributionDetailsFromExport(input: {
+  committeeId: string;
+  electionYear: number;
+  options?: OregonOrestarClientOptions;
+}): Promise<OregonOrestarTransactionDetail[]> {
+  const committeeId = input.committeeId.trim();
+  if (!/^\d+$/.test(committeeId)) {
+    throw new Error(`Oregon ORESTAR committee transaction export requires a numeric committeeId: ${input.committeeId}`);
+  }
+  const form = await getOregonOrestarSearchForm(input.options);
+  if (!form.csrfToken) {
+    throw new Error("ORESTAR transaction search CSRF token not found");
+  }
+  const results = await postOregonTransactionSearchPage({
+    form,
+    formData: buildOregonTransactionSearchFormData({
+      electionYear: input.electionYear,
+      csrfToken: form.csrfToken,
+      committeeId,
+      transactionTypeCode: "C",
+    }),
+    options: input.options,
+  });
+  if (results.resultCount === null) {
+    // A results page always states "Results : N records found"; its absence
+    // means a soft-blocked/degraded response. Fail closed rather than writing
+    // a silent $0 summary (same guard as the crawl path).
+    throw new Error(
+      `ORESTAR returned a search page without a result count for committee ${committeeId}; treating as blocked rather than $0`
+    );
+  }
+  if (results.resultCount === 0) {
+    return [];
+  }
+  if (!results.exportUrl) {
+    throw new Error(`ORESTAR search results for committee ${committeeId} did not include an export link`);
+  }
+  const bytes = await fetchOrestarBytes(results.exportUrl, input.options, {
+    headers: {
+      accept: "application/vnd.ms-excel,*/*",
+      referer: form.actionUrl,
+      ...(form.cookieHeader ? { cookie: form.cookieHeader } : {}),
+    },
+  });
+  const details = parseOregonOrestarTransactionExport({
+    data: bytes,
+    // The search was filtered to cneSearchTranType=C, so every exported row is
+    // a Contribution by the portal's own taxonomy.
+    transactionType: "Contribution",
+    sourceUrl: OREGON_ORESTAR_TRANSACTION_SEARCH_URL,
+  });
+  if (details.length !== results.resultCount) {
+    throw new Error(
+      `ORESTAR export returned ${details.length} of ${results.resultCount} transactions for committee ${committeeId}; refusing to persist a truncated total`
     );
   }
   return details;

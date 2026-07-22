@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
+import { buildOregonOrestarExportWorkbook } from "./orestarExportFixture.js";
+
 import {
   listDueOregonCandidateFinanceSyncRows,
   syncDueOregonCandidateFinance,
@@ -371,37 +373,37 @@ describe("oregonCandidateFinanceBatchSync", () => {
     expect(fetchFn).toHaveBeenCalledTimes(3);
   });
 
-  it("loads committee transactions with the default ORESTAR loader when no override is configured", async () => {
+  it("loads committee contributions from the ORESTAR export with the default loader when no override is configured", async () => {
     const db = {
       query: vi.fn(async () => ({ rows: [dueRow()], rowCount: 1 })),
       connect: vi.fn(),
     };
     const syncOregonCandidateFinanceFn = vi.fn(async () => ({ ok: true }));
     const searchBodies: string[] = [];
+    const workbook = buildOregonOrestarExportWorkbook([
+      {
+        "Tran Id": "5500001",
+        "Tran Date": "05/05/2025",
+        Filer: "Friends of Tina Kotek",
+        "Contributor/Payee": "Jane Donor",
+        "Sub Type": "Cash Contribution",
+        Amount: 100,
+        "Filer Id": "4792",
+      },
+    ]);
     const fetchFn = vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.includes("XcelCNESearch")) {
+        return {
+          ...htmlResponse(""),
+          arrayBuffer: async () => workbook.buffer.slice(workbook.byteOffset, workbook.byteOffset + workbook.byteLength),
+        };
+      }
       if (url.includes("gotoPublicTransactionSearchResults.do")) {
         searchBodies.push(String(init?.body));
         return htmlResponse(`
           <div>Results : 1 record found</div>
-          <table>
-            <tr><th>Tran ID</th><th>Date</th><th>Status</th><th>Filer/Committee</th><th>Contributor/Payee</th><th>Sub Type</th><th>Amount</th></tr>
-            <tr>
-              <td><a href="/orestar/gotoPublicTransactionDetail.do?tranRsn=5500001">5500001</a></td>
-              <td>05/05/2025</td><td>Original</td>
-              <td><a href="/orestar/sooDetail.do?cneCommitteeId=4792">Friends of Tina Kotek</a></td>
-              <td>Jane Donor</td><td>Cash Contribution</td><td>$100.00</td>
-            </tr>
-          </table>
-        `);
-      }
-      if (url.includes("gotoPublicTransactionDetail.do")) {
-        return htmlResponse(`
-          <table>
-            <tr><td>Transaction ID</td><td>:</td><td>5500001</td></tr>
-            <tr><td>Transaction Date</td><td>:</td><td>05/05/2025</td></tr>
-            <tr><td>Transaction Type</td><td>:</td><td>Contribution</td></tr>
-            <tr><td>Amount</td><td>:</td><td>$100.00</td></tr>
-          </table>
+          <a href="XcelCNESearch">Export To Excel Format</a>
+          <table></table>
         `);
       }
       return htmlResponse(`
@@ -420,14 +422,17 @@ describe("oregonCandidateFinanceBatchSync", () => {
     });
 
     expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
-    // The default loader queries the transaction search by committee ID over
-    // the full cycle window instead of scraping the (transaction-free)
-    // sooDetail.do source URL.
+    // The default loader runs a committee-ID contribution search over the full
+    // cycle window and downloads its export instead of scraping the
+    // (transaction-free) sooDetail.do source URL.
     expect(searchBodies[0]).toContain("cneSearchFilerCommitteeId=4792");
+    expect(searchBodies[0]).toContain("cneSearchTranType=C");
     expect(searchBodies[0]).toContain("cneSearchTranStartDate=01%2F01%2F2025");
     expect(searchBodies[0]).toContain("cneSearchTranEndDate=12%2F31%2F2026");
     expect(syncOregonCandidateFinanceFn.mock.calls[0]?.[0]).toMatchObject({
-      transactionDetails: [expect.objectContaining({ transactionId: "5500001" })],
+      transactionDetails: [
+        expect.objectContaining({ transactionId: "5500001", transactionType: "Contribution", amount: 100 }),
+      ],
     });
   });
 
