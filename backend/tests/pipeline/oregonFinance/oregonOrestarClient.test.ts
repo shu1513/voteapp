@@ -336,6 +336,29 @@ describe("oregonOrestarClient", () => {
     expect(fetchFn).toHaveBeenCalledTimes(6);
   });
 
+  it("fails closed when the committee search returns an empty page without a result count", async () => {
+    const fetchFn = vi.fn(async (url: string) => {
+      if (url.includes("gotoPublicTransactionSearchResults.do")) {
+        // Soft-blocked portal responses render the page but omit both the
+        // result rows and the "Results : N records found" marker.
+        return htmlResponse("<html><body>Transaction search</body></html>");
+      }
+      return htmlResponse(`
+        <form name="cneSearchForm" action="/orestar/gotoPublicTransactionSearchResults.do;JSESSIONID_ORESTAR=abc123">
+          <input type="hidden" name="OWASP_CSRFTOKEN" value="csrf-token-1">
+        </form>
+      `);
+    });
+
+    await expect(
+      getOregonOrestarCommitteeTransactionDetails({
+        committeeId: "4792",
+        electionYear: 2026,
+        options: { fetchFn },
+      })
+    ).rejects.toThrow("ORESTAR returned an empty search page for committee 4792");
+  });
+
   it("stops committee paging at the detail cap and rejects non-numeric committee ids", async () => {
     await expect(
       getOregonOrestarCommitteeTransactionDetails({

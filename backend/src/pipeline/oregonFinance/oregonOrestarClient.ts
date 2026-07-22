@@ -344,6 +344,15 @@ export async function getOregonOrestarCommitteeTransactionDetails(input: {
       options: input.options,
     });
     if (results.rows.length === 0) {
+      // A linked committee was matched through its own transactions, so a
+      // rowless FIRST page with no "Results : N records found" marker is a
+      // soft-blocked/degraded portal response, not an empty committee. Fail
+      // closed instead of writing a silent $0 summary.
+      if (pageIdx === 0 && results.resultCount === null) {
+        throw new Error(
+          `ORESTAR returned an empty search page for committee ${committeeId}; treating as blocked rather than $0`
+        );
+      }
       break;
     }
     let newRowCount = 0;
