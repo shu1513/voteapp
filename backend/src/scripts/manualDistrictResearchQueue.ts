@@ -27,8 +27,8 @@ function usage(): string {
     "  claim     Claim the highest-priority queued request whose district is still stale",
     "            (each claim counts one attempt). --agent <name> [--agent-kind claude|codex|human|other]",
     "  start     Mark a claimed request running. --request-id <id>",
-    "  complete  Mark a claimed/running request succeeded; refuses unless the district",
-    "            was stamped by the elections write stage.",
+    "  complete  Mark a claimed/running request succeeded; requires this claim to",
+    "            produce an elections-write stamp or future district-level elections deferral.",
     "            --request-id <id> --manifest-path <path> [--summary <text>]",
     "  fail      Mark a claimed/running request failed. --request-id <id> --error <text>",
     "  release   Return a claimed/running request to the queue. --request-id <id> [--note <text>]",
@@ -116,36 +116,52 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
       const summary = flags.get("summary") ?? null;
 
       // Friendly pre-check only — the domain layer enforces the same invariant.
-      // The stamp must be from THIS claim: queued districts almost always carry
-      // an old stamp (that staleness is why they were enqueued), so a merely
-      // non-null stamp proves nothing about this run.
-      const stampCheck = await pool.query(
+      // Evidence must come from THIS claim: an old stamp/deferral proves nothing
+      // about the current run.
+      const completionCheck = await pool.query(
         `
-          SELECT d.last_elections_searched_at, r.claimed_at
+          SELECT
+            d.last_elections_searched_at,
+            r.claimed_at,
+            EXISTS (
+              SELECT 1
+              FROM public.manual_research_deferrals md
+              WHERE md.district_id = r.district_id
+                AND md.election_id IS NULL
+                AND md.stage = 'elections'
+                AND md.status = 'deferred'
+                AND md.blocked_until > CURRENT_DATE
+                AND md.updated_at >= r.claimed_at
+            ) AS has_current_elections_deferral
           FROM public.manual_district_research_requests r
           JOIN public.districts d ON d.id = r.district_id
           WHERE r.id = $1
         `,
         [requestId]
       );
-      if (stampCheck.rows.length === 0) {
+      if (completionCheck.rows.length === 0) {
         throw new Error(`Request ${requestId} not found.`);
       }
-      const { last_elections_searched_at: stamp, claimed_at: claimedAt } = stampCheck.rows[0] as {
+      const {
+        last_elections_searched_at: stamp,
+        claimed_at: claimedAt,
+        has_current_elections_deferral: hasCurrentElectionsDeferral,
+      } = completionCheck.rows[0] as {
         last_elections_searched_at: Date | null;
         claimed_at: Date | null;
+        has_current_elections_deferral: boolean;
       };
-      if (stamp === null) {
+      if (stamp === null && !hasCurrentElectionsDeferral) {
         throw new Error(
-          `Refusing to complete request ${requestId}: districts.last_elections_searched_at is not set. ` +
-            "Run the elections write stage (it stamps the district, including empty ones) before completing."
+          `Refusing to complete request ${requestId}: this claim produced neither an elections-write stamp ` +
+            "nor a future district-level elections deferral. Write/no-results the election payload, or record the deferral, before completing."
         );
       }
-      if (claimedAt !== null && stamp < claimedAt) {
+      if (stamp !== null && claimedAt !== null && stamp < claimedAt && !hasCurrentElectionsDeferral) {
         throw new Error(
           `Refusing to complete request ${requestId}: the district's stamp (${stamp.toISOString()}) predates ` +
             `this claim (${claimedAt.toISOString()}) — it is leftover from earlier research. ` +
-            "Run the elections write stage for this run before completing."
+            "Write/no-results the election payload, or record a new future district-level elections deferral, before completing."
         );
       }
 

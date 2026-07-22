@@ -312,13 +312,12 @@ export async function markManualDistrictResearchRequestSucceeded(
   db: Queryable,
   input: { requestId: string; manifestPath: string; summary?: string | null }
 ): Promise<boolean> {
-  // The stamp predicate enforces the completion invariant at the domain layer
-  // for every caller, not just the CLI: a request can only succeed once the
-  // elections write stage stamped the district DURING THIS CLAIM (it stamps
-  // empty districts too). Comparing against claimed_at, not merely NOT NULL,
-  // matters because queued districts almost always carry an old stamp — that
-  // staleness is why they were enqueued — and an old stamp must not allow a
-  // claim-and-complete without the flow actually running.
+  // Completion needs evidence produced during this claim: either the elections
+  // writer stamped the district (including verified no-results), or research
+  // recorded a district-level future elections deferral. Comparing evidence
+  // timestamps against claimed_at prevents an old stamp/deferral from allowing
+  // claim-and-instant-complete. Roster deferrals do not prove election discovery
+  // finished and therefore do not satisfy this guard.
   const updated = await db.query(
     `
       UPDATE public.manual_district_research_requests
@@ -330,12 +329,24 @@ export async function markManualDistrictResearchRequestSucceeded(
           updated_at = now()
       WHERE id = $1
         AND status IN ('claimed', 'running')
-        AND EXISTS (
-          SELECT 1
-          FROM public.districts d
-          WHERE d.id = manual_district_research_requests.district_id
-            AND d.last_elections_searched_at IS NOT NULL
-            AND d.last_elections_searched_at >= manual_district_research_requests.claimed_at
+        AND (
+          EXISTS (
+            SELECT 1
+            FROM public.districts d
+            WHERE d.id = manual_district_research_requests.district_id
+              AND d.last_elections_searched_at IS NOT NULL
+              AND d.last_elections_searched_at >= manual_district_research_requests.claimed_at
+          )
+          OR EXISTS (
+            SELECT 1
+            FROM public.manual_research_deferrals md
+            WHERE md.district_id = manual_district_research_requests.district_id
+              AND md.election_id IS NULL
+              AND md.stage = 'elections'
+              AND md.status = 'deferred'
+              AND md.blocked_until > CURRENT_DATE
+              AND md.updated_at >= manual_district_research_requests.claimed_at
+          )
         )
     `,
     [input.requestId, input.manifestPath, input.summary ?? null]
