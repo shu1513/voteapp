@@ -170,7 +170,8 @@ export async function enqueueManualDistrictResearchRequestsForStaleDistricts(
 }
 
 /**
- * Claim the highest-priority queued request whose district is still stale.
+ * Claim the highest-priority queued request whose district is still stale and
+ * is not blocked by an active future manual-research deferral.
  *
  * Freshness is re-checked at claim time so an agent never picks up a district
  * the AI pipeline or another agent already researched. Both steps use the same
@@ -191,8 +192,7 @@ export async function claimNextManualDistrictResearchRequest(
   const { claimedBy, agentKind, cooldownDays } = input;
 
   // manual_seed requests are an operator override ("re-check this district
-  // early") and bypass both freshness gates: they are never retired as fresh
-  // and are claimable regardless of the cooldown.
+  // early") and bypass the automatic freshness and deferral gates.
   await db.query(
     `
       UPDATE public.manual_district_research_requests AS r
@@ -228,6 +228,16 @@ export async function claimNextManualDistrictResearchRequest(
             r2.trigger_source = 'manual_seed'
             OR d.last_elections_searched_at IS NULL
             OR d.last_elections_searched_at < now() - make_interval(days => $3::int)
+          )
+          AND (
+            r2.trigger_source = 'manual_seed'
+            OR NOT EXISTS (
+              SELECT 1
+              FROM public.manual_research_deferrals AS md
+              WHERE md.district_id = r2.district_id
+                AND md.status = 'deferred'
+                AND md.blocked_until > CURRENT_DATE
+            )
           )
         ORDER BY r2.request_count DESC, r2.requested_at ASC
         FOR UPDATE OF r2 SKIP LOCKED

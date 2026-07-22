@@ -239,6 +239,27 @@ describe("claimNextManualDistrictResearchRequest", () => {
     const claimSql = query.mock.calls[1]?.[0] as string;
     expect(claimSql).toContain("ORDER BY r2.request_count DESC, r2.requested_at ASC");
   });
+
+  it("does not claim a district with an active future deferral unless manually seeded", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    await claimNextManualDistrictResearchRequest(
+      { query },
+      { claimedBy: "codex-session", agentKind: "codex", cooldownDays: 180 }
+    );
+
+    const claimSql = query.mock.calls[1]?.[0] as string;
+    expect(claimSql).toContain("FROM public.manual_research_deferrals AS md");
+    expect(claimSql).toContain("md.district_id = r2.district_id");
+    expect(claimSql).toContain("md.status = 'deferred'");
+    expect(claimSql).toContain("md.blocked_until > CURRENT_DATE");
+    expect(claimSql).toMatch(
+      /r2\.trigger_source = 'manual_seed'\s+OR NOT EXISTS \(\s+SELECT 1\s+FROM public\.manual_research_deferrals/s
+    );
+  });
 });
 
 describe("status transitions", () => {
