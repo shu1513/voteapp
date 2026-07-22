@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+import { Client } from "pg";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { AddressResolvedDistrict } from "../../../src/pipeline/address/addressDistrictLookup.js";
@@ -15,6 +17,9 @@ import {
 const DISTRICT_ID = "11111111-1111-4111-8111-111111111111";
 const OTHER_DISTRICT_ID = "22222222-2222-4222-8222-222222222222";
 const REQUEST_ID = "33333333-3333-4333-8333-333333333333";
+const integrationEnabled = process.env.MANUAL_DISTRICT_QUEUE_INTEGRATION === "true";
+const integrationDatabaseUrl = process.env.MANUAL_DISTRICT_QUEUE_INTEGRATION_DATABASE_URL;
+const describeIntegration = integrationEnabled && integrationDatabaseUrl ? describe : describe.skip;
 
 function makeDistrict(overrides: Partial<AddressResolvedDistrict> = {}): AddressResolvedDistrict {
   return {
@@ -238,6 +243,174 @@ describe("claimNextManualDistrictResearchRequest", () => {
 
     const claimSql = query.mock.calls[1]?.[0] as string;
     expect(claimSql).toContain("ORDER BY r2.request_count DESC, r2.requested_at ASC");
+  });
+
+  it("includes the active-future-deferral gate and manual-seed override in the claim SQL", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    await claimNextManualDistrictResearchRequest(
+      { query },
+      { claimedBy: "codex-session", agentKind: "codex", cooldownDays: 180 }
+    );
+
+    const claimSql = query.mock.calls[1]?.[0] as string;
+    expect(claimSql).toContain("FROM public.manual_research_deferrals AS md");
+    expect(claimSql).toContain("md.district_id = r2.district_id");
+    expect(claimSql).toContain("md.status = 'deferred'");
+    expect(claimSql).toContain("md.blocked_until > CURRENT_DATE");
+    expect(claimSql).toMatch(
+      /r2\.trigger_source = 'manual_seed'\s+OR NOT EXISTS \(\s+SELECT 1\s+FROM public\.manual_research_deferrals/s
+    );
+  });
+});
+
+describeIntegration("claimNextManualDistrictResearchRequest PostgreSQL integration", () => {
+  it("enforces future, due, closed, and manual-seed deferral behavior", async () => {
+    const client = new Client({ connectionString: integrationDatabaseUrl });
+    await client.connect();
+
+    const scenarios = [
+      {
+        key: "future-deferred",
+        requestCount: 100,
+        triggerSource: "address_resolve",
+        deferralStatus: "deferred",
+        blockedDays: 30,
+        fresh: false,
+      },
+      {
+        key: "due",
+        requestCount: 90,
+        triggerSource: "address_resolve",
+        deferralStatus: "deferred",
+        blockedDays: 0,
+        fresh: false,
+      },
+      {
+        key: "resolved",
+        requestCount: 80,
+        triggerSource: "address_resolve",
+        deferralStatus: "resolved",
+        blockedDays: 30,
+        fresh: false,
+      },
+      {
+        key: "cancelled",
+        requestCount: 70,
+        triggerSource: "address_resolve",
+        deferralStatus: "cancelled",
+        blockedDays: 30,
+        fresh: false,
+      },
+      {
+        key: "manual-seed",
+        requestCount: 60,
+        triggerSource: "manual_seed",
+        deferralStatus: "deferred",
+        blockedDays: 30,
+        fresh: true,
+      },
+    ].map((scenario) => ({
+      ...scenario,
+      districtId: randomUUID(),
+      requestId: randomUUID(),
+      deferralId: randomUUID(),
+    }));
+
+    try {
+      await client.query("BEGIN");
+
+      for (const scenario of scenarios) {
+        await client.query(
+          `
+            INSERT INTO public.districts
+              (id, geoid_compact, name, state, state_fips, district_type, population,
+               last_elections_searched_at)
+            VALUES ($1, $2, $3, 'TS', '00', 'county', 1, $4)
+          `,
+          [
+            scenario.districtId,
+            `test-${scenario.districtId}`,
+            `Queue integration ${scenario.key}`,
+            scenario.fresh ? new Date() : null,
+          ]
+        );
+        await client.query(
+          `
+            INSERT INTO public.manual_district_research_requests
+              (id, district_id, district_name_snapshot, district_type_snapshot,
+               state_snapshot, trigger_source, status, request_count)
+            VALUES ($1, $2, $3, 'county', 'TS', $4, 'queued', $5)
+          `,
+          [
+            scenario.requestId,
+            scenario.districtId,
+            `Queue integration ${scenario.key}`,
+            scenario.triggerSource,
+            scenario.requestCount,
+          ]
+        );
+        await client.query(
+          `
+            INSERT INTO public.manual_research_deferrals
+              (id, district_id, stage, reason, blocked_until,
+               district_name_snapshot, status, resolved_at)
+            VALUES
+              ($1, $2, 'elections', 'integration test', CURRENT_DATE + $3::int,
+               $4, $5, CASE WHEN $5 = 'deferred' THEN NULL ELSE now() END)
+          `,
+          [
+            scenario.deferralId,
+            scenario.districtId,
+            scenario.blockedDays,
+            `Queue integration ${scenario.key}`,
+            scenario.deferralStatus,
+          ]
+        );
+      }
+
+      const claimedRequestIds: string[] = [];
+      for (let index = 0; index < 4; index += 1) {
+        const claimed = await claimNextManualDistrictResearchRequest(
+          client,
+          { claimedBy: "integration-test", agentKind: "other", cooldownDays: 180 }
+        );
+        expect(claimed).not.toBeNull();
+        claimedRequestIds.push(claimed!.request_id);
+      }
+
+      expect(claimedRequestIds).toEqual([
+        scenarios[1]!.requestId,
+        scenarios[2]!.requestId,
+        scenarios[3]!.requestId,
+        scenarios[4]!.requestId,
+      ]);
+
+      // The future-deferred fixture has the highest request_count. Remaining
+      // queued while every lower-priority eligible fixture was claimed proves
+      // the gate works without assuming the database has no unrelated rows.
+      const statuses = await client.query<{ id: string; status: string }>(
+        `
+          SELECT id::text, status
+          FROM public.manual_district_research_requests
+          WHERE id = ANY($1::uuid[])
+        `,
+        [scenarios.map((scenario) => scenario.requestId)]
+      );
+      expect(Object.fromEntries(statuses.rows.map((row) => [row.id, row.status]))).toMatchObject({
+        [scenarios[0]!.requestId]: "queued",
+        [scenarios[1]!.requestId]: "claimed",
+        [scenarios[2]!.requestId]: "claimed",
+        [scenarios[3]!.requestId]: "claimed",
+        [scenarios[4]!.requestId]: "claimed",
+      });
+    } finally {
+      await client.query("ROLLBACK");
+      await client.end();
+    }
   });
 });
 

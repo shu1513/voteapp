@@ -92,3 +92,9 @@ jobs:
         run: npx vitest run tests/pipeline/finance/normalizeFinanceLabelParity.test.ts
         env:
           DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
+
+      - name: Manual district queue claim integration
+        run: npx vitest run tests/pipeline/address/manualDistrictResearchRequests.test.ts
+        env:
+          MANUAL_DISTRICT_QUEUE_INTEGRATION: "true"
+          MANUAL_DISTRICT_QUEUE_INTEGRATION_DATABASE_URL: postgresql://voteapp:voteapp@localhost:5432/voteapp
