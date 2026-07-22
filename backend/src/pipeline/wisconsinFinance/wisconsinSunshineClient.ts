@@ -5,9 +5,15 @@ export const WISCONSIN_SUNSHINE_DEFAULT_TIMEOUT_MS = 30_000;
 export const WISCONSIN_SUNSHINE_DEFAULT_PAGE_LIMIT = 100;
 export const WISCONSIN_SUNSHINE_MAX_PAGE_LIMIT = 1_000;
 export const WISCONSIN_SUNSHINE_DEFAULT_MAX_PAGES = 50;
+export const WISCONSIN_SUNSHINE_DEFAULT_MAX_DATE_SPLIT_DEPTH = 10;
 export const WISCONSIN_SUNSHINE_INDEPENDENT_EXPENDITURE_CATEGORY_IDS = [33, 35] as const;
 
-export type WisconsinSunshineClientErrorCode = "invalid_request" | "network_error" | "http_error" | "bad_response";
+export type WisconsinSunshineClientErrorCode =
+  | "invalid_request"
+  | "network_error"
+  | "http_error"
+  | "bad_response"
+  | "page_overflow";
 
 export class WisconsinSunshineClientError extends Error {
   constructor(
@@ -25,6 +31,8 @@ export type WisconsinSunshineClientOptions = {
   timeoutMs?: number;
   pageLimit?: number;
   maxPages?: number;
+  /** How many times an over-full date window may be bisected before giving up. 0 disables splitting. */
+  maxDateSplitDepth?: number;
 };
 
 export type WisconsinSunshineCommitteeSearchInput = {
@@ -544,9 +552,95 @@ async function fetchWisconsinSunshinePagedRows(
   }
 
   throw new WisconsinSunshineClientError(
-    "bad_response",
+    "page_overflow",
     `Wisconsin Sunshine paged read exceeded maxPages=${maxPages}; narrow the query before retrying`
   );
+}
+
+function normalizeMaxDateSplitDepth(value: number | undefined): number {
+  const normalized = value ?? WISCONSIN_SUNSHINE_DEFAULT_MAX_DATE_SPLIT_DEPTH;
+  if (!Number.isInteger(normalized) || normalized < 0) {
+    throw new WisconsinSunshineClientError(
+      "invalid_request",
+      "Wisconsin Sunshine maxDateSplitDepth must be a non-negative integer"
+    );
+  }
+  return normalized;
+}
+
+function parseWindowDate(value: unknown): Date | null {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return null;
+  }
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function formatWindowDate(value: Date): string {
+  return value.toISOString().slice(0, 10);
+}
+
+function addDays(value: Date, days: number): Date {
+  return new Date(value.getTime() + days * 86_400_000);
+}
+
+function dedupeRowsById(rows: readonly Record<string, unknown>[]): Record<string, unknown>[] {
+  const seenIds = new Set<string>();
+  const deduped: Record<string, unknown>[] = [];
+  for (const row of rows) {
+    const id = getString(row, "id");
+    if (id) {
+      if (seenIds.has(id)) {
+        continue;
+      }
+      seenIds.add(id);
+    }
+    deduped.push(row);
+  }
+  return deduped;
+}
+
+/**
+ * Paged read that survives filers whose transactions exceed maxPages: on
+ * overflow the [dateFrom, dateTo] window is bisected and both halves are
+ * fetched independently, recursively, then merged (deduped by row id). A
+ * single-day window that still overflows — or exhausted split depth — rethrows.
+ */
+async function fetchWisconsinSunshinePagedRowsWithDateSplit(
+  procedure: string,
+  baseInput: Record<string, unknown>,
+  options: WisconsinSunshineClientOptions = {},
+  depth = 0
+): Promise<Record<string, unknown>[]> {
+  const maxDateSplitDepth = normalizeMaxDateSplitDepth(options.maxDateSplitDepth);
+  try {
+    return await fetchWisconsinSunshinePagedRows(procedure, baseInput, options);
+  } catch (error) {
+    if (!(error instanceof WisconsinSunshineClientError) || error.code !== "page_overflow") {
+      throw error;
+    }
+    const dateFrom = parseWindowDate(baseInput.dateFrom);
+    const dateTo = parseWindowDate(baseInput.dateTo);
+    if (depth >= maxDateSplitDepth || !dateFrom || !dateTo || dateFrom.getTime() >= dateTo.getTime()) {
+      throw error;
+    }
+    const midpoint = new Date(
+      dateFrom.getTime() + Math.floor((dateTo.getTime() - dateFrom.getTime()) / (2 * 86_400_000)) * 86_400_000
+    );
+    const firstHalf = await fetchWisconsinSunshinePagedRowsWithDateSplit(
+      procedure,
+      { ...baseInput, dateFrom: formatWindowDate(dateFrom), dateTo: formatWindowDate(midpoint) },
+      options,
+      depth + 1
+    );
+    const secondHalf = await fetchWisconsinSunshinePagedRowsWithDateSplit(
+      procedure,
+      { ...baseInput, dateFrom: formatWindowDate(addDays(midpoint, 1)), dateTo: formatWindowDate(dateTo) },
+      options,
+      depth + 1
+    );
+    return dedupeRowsById([...firstHalf, ...secondHalf]);
+  }
 }
 
 export async function searchWisconsinSunshineCommittees(
@@ -566,7 +660,7 @@ async function fetchContributionRows(
   input: WisconsinSunshineCommitteeTransactionInput,
   options: WisconsinSunshineClientOptions = {}
 ): Promise<Record<string, unknown>[]> {
-  return await fetchWisconsinSunshinePagedRows(
+  return await fetchWisconsinSunshinePagedRowsWithDateSplit(
     "publicFrontendApi.getTransactions",
     buildWisconsinSunshineContributionTransactionInput(input, { take: normalizePageLimit(options.pageLimit), skip: 0 }),
     options
@@ -624,7 +718,7 @@ export async function getWisconsinSunshineIndependentExpenditureGroups(
   const candidateName = normalizeNonEmptyString(input.candidateCommitteeName, "candidateCommitteeName");
   const office = optionalString(input.office);
   const district = optionalString(input.district);
-  const rows = await fetchWisconsinSunshinePagedRows(
+  const rows = await fetchWisconsinSunshinePagedRowsWithDateSplit(
     "publicFrontendApi.getTransactions",
     buildWisconsinSunshineIndependentExpenditureTransactionInput(input, {
       take: normalizePageLimit(options.pageLimit),

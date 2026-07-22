@@ -13,6 +13,7 @@ import {
 import { OREGON_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./oregonFinanceEligibleOffices.js";
 import {
   getOregonOrestarCandidateSearchRows,
+  getOregonOrestarCommitteeTransactionDetails,
   getOregonOrestarTransactionDetailsFromSourceUrl,
   type OregonOrestarClientOptions,
 } from "./oregonOrestarClient.js";
@@ -138,8 +139,23 @@ function mapDueRow(row: OregonCandidateFinanceDueQueryRow): OregonCandidateFinan
   };
 }
 
-async function defaultLoadTransactionDetails(row: OregonCandidateFinanceDueRow): Promise<readonly OregonOrestarTransactionDetail[]> {
-  return getOregonOrestarTransactionDetailsFromSourceUrl({ sourceUrl: row.sourceUrl });
+async function defaultLoadTransactionDetails(
+  row: OregonCandidateFinanceDueRow,
+  options?: OregonOrestarClientOptions
+): Promise<readonly OregonOrestarTransactionDetail[]> {
+  // Link source URLs point at the committee's sooDetail.do page, which lists
+  // no transactions — scraping it always produced zero rows and $0 summaries.
+  // Query the ORESTAR transaction search by committee ID instead; the stored
+  // source URL is only a fallback for legacy links without a committee ID.
+  const committeeId = row.committeeId?.trim();
+  if (committeeId && /^\d+$/.test(committeeId)) {
+    return getOregonOrestarCommitteeTransactionDetails({
+      committeeId,
+      electionYear: row.electionYear,
+      options,
+    });
+  }
+  return getOregonOrestarTransactionDetailsFromSourceUrl({ sourceUrl: row.sourceUrl, options });
 }
 
 async function defaultLoadCandidateSearchRows(
@@ -268,7 +284,8 @@ export async function syncDueOregonCandidateFinance(
   );
   const dryRun = input.dryRun === true;
   const syncFn = input.syncOregonCandidateFinanceFn ?? syncOregonCandidateFinance;
-  const loadTransactionDetails = input.loadTransactionDetails ?? defaultLoadTransactionDetails;
+  const loadTransactionDetails =
+    input.loadTransactionDetails ?? ((row) => defaultLoadTransactionDetails(row, input.orestarClientOptions));
   const loadCandidateSearchRows =
     input.loadCandidateSearchRows ??
     ((candidateElection) => defaultLoadCandidateSearchRows(candidateElection, input.orestarClientOptions));
