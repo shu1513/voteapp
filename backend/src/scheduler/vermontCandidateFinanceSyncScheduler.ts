@@ -261,6 +261,8 @@ export async function runVermontCandidateFinanceSyncJob(
       failedCandidateCount: 0,
       autoLinkAttemptedCount: 0,
       autoLinkLinkedCount: 0,
+      autoLinkFailedCount: 0,
+      autoLinkResults: [],
       results: [],
     };
   }

@@ -196,6 +196,7 @@ describe("vermontCandidateFinanceBatchSync", () => {
       maxCandidates: 2,
       staleAfterDays: 3,
       electionLookbackDays: 30,
+      autoLinkMissingLinks: false,
       syncVermontCandidateFinanceFn: syncVermontCandidateFinanceFn as never,
     });
 
@@ -232,6 +233,122 @@ describe("vermontCandidateFinanceBatchSync", () => {
     );
   });
 
+  it("auto-links unlinked candidates by running the self-resolving sync for them", async () => {
+    const db = {
+      query: vi
+        .fn()
+        // 1: missing-links enumeration
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Phil Scott",
+              election_year: 2024,
+              office_scope: "statewide",
+              office_name: "Governor",
+              district: null,
+            },
+          ],
+        })
+        // 2: due query (freshly-synced candidate is no longer due)
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
+      connect: vi.fn(),
+    };
+    const syncVermontCandidateFinanceFn = vi.fn().mockResolvedValueOnce(successfulSync());
+
+    const result = await syncDueVermontCandidateFinance({
+      db,
+      now: NOW,
+      syncVermontCandidateFinanceFn: syncVermontCandidateFinanceFn as never,
+    });
+
+    expect(result).toMatchObject({
+      autoLinkAttemptedCount: 1,
+      autoLinkLinkedCount: 1,
+      autoLinkFailedCount: 0,
+      dueCandidateCount: 0,
+      // Due-sync counters stay internally consistent with `results`; the
+      // auto-link sync is reported via autoLinkResults instead.
+      selectedCandidateCount: 0,
+      syncedCandidateCount: 0,
+      failedCandidateCount: 0,
+    });
+    expect(result.results).toHaveLength(0);
+    expect(result.autoLinkResults[0]).toMatchObject({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      filerRegistrationGuid: "candidate-guid",
+      ok: true,
+    });
+    // The sync must run WITHOUT a trustedCommittee so it live-resolves and
+    // writes the link itself.
+    const syncArgs = syncVermontCandidateFinanceFn.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect(syncArgs.trustedCommittee).toBeUndefined();
+    expect(syncArgs).toMatchObject({
+      candidateId: CANDIDATE_ID,
+      candidateName: "Phil Scott",
+      officeScope: "statewide",
+      officeName: "Governor",
+    });
+    // Enumeration is uncapped (no maxCandidates parameter).
+    const enumerationParams = db.query.mock.calls[0]?.[1] as unknown[];
+    expect(enumerationParams).toHaveLength(4);
+    const enumerationSql = String(db.query.mock.calls[0]?.[0]);
+    expect(enumerationSql).toContain("NOT EXISTS");
+    expect(enumerationSql).toContain("district.state = 'VT'");
+    expect(enumerationSql).not.toContain("LIMIT");
+    // Auto-link is restricted to statewide offices: Vermont transactions have
+    // no district data, so same-name legislative candidates in different
+    // districts cannot be disambiguated.
+    const officeKeys = enumerationParams[3] as string[];
+    expect(officeKeys.length).toBeGreaterThan(0);
+    expect(officeKeys.every((key) => key.startsWith("statewide::"))).toBe(true);
+  });
+
+  it("counts auto-link exceptions in autoLinkFailedCount without touching due-sync counters", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Phil Scott",
+              election_year: 2024,
+              office_scope: "statewide",
+              office_name: "Governor",
+              district: null,
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
+      connect: vi.fn(),
+    };
+    const syncVermontCandidateFinanceFn = vi.fn().mockRejectedValueOnce(new Error("Vermont API unavailable"));
+
+    const result = await syncDueVermontCandidateFinance({
+      db,
+      now: NOW,
+      syncVermontCandidateFinanceFn: syncVermontCandidateFinanceFn as never,
+    });
+
+    expect(result).toMatchObject({
+      autoLinkAttemptedCount: 1,
+      autoLinkLinkedCount: 0,
+      autoLinkFailedCount: 1,
+      selectedCandidateCount: 0,
+      syncedCandidateCount: 0,
+      failedCandidateCount: 0,
+    });
+    expect(result.autoLinkResults[0]).toMatchObject({
+      candidateId: CANDIDATE_ID,
+      ok: false,
+      error: "Vermont API unavailable",
+    });
+  });
+
   it("uses one post-election grace day by default", async () => {
     const db = { query: vi.fn(async () => ({ rows: [], rowCount: 0 })), connect: vi.fn() };
     const syncVermontCandidateFinanceFn = vi.fn();
@@ -239,6 +356,7 @@ describe("vermontCandidateFinanceBatchSync", () => {
     await syncDueVermontCandidateFinance({
       db,
       now: NOW,
+      autoLinkMissingLinks: false,
       syncVermontCandidateFinanceFn: syncVermontCandidateFinanceFn as never,
     });
 
