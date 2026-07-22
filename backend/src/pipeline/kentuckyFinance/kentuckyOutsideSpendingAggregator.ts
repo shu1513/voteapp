@@ -185,7 +185,10 @@ function recordMatchesTarget(input: {
 }): boolean {
   return (
     candidateNamesMatch({ expectedKeys: input.candidateNameKeys, actualName: input.record.candidateName }) &&
-    parseDateKey(input.record.electionDate) === input.electionDateKey &&
+    // Cycle-year match, not exact-date: KREF tags rows to the specific
+    // election (primary vs general), so an exact-date rule drops all
+    // primary-tagged spending for a general-election candidate mid-cycle.
+    parseDateKey(input.record.electionDate)?.slice(0, 4) === input.electionDateKey.slice(0, 4) &&
     [...officeNameKeys(input.record.officeOrBallotMeasure)].some((key) => input.officeOrBallotMeasureKeys.has(key))
   );
 }

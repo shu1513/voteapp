@@ -10,6 +10,7 @@ import {
   syncKentuckyCandidateFinance,
   type KentuckyCandidateFinanceSyncResult,
 } from "./kentuckyCandidateFinanceSync.js";
+import { createKentuckyKrefCandidateFinanceLinkResolver } from "./kentuckyCandidateFinanceLinkResolver.js";
 import { KENTUCKY_FINANCE_ELIGIBLE_OFFICE_KEYS, normalizeKentuckyKrefLocation } from "./kentuckyFinanceEligibleOffices.js";
 import type { KentuckyKrefClientOptions } from "./kentuckyKrefClient.js";
 
@@ -251,25 +252,41 @@ export async function syncDueKentuckyCandidateFinance(
   let autoLinkAttemptedCount = 0;
   let autoLinkLinkedCount = 0;
 
-  if (!dryRun && input.autoLinkMissingLinks === true) {
-    const missingLinkCandidates: KentuckyFinanceAutoLinkCandidateElection[] =
-      await listKentuckyCandidateElectionsMissingFinanceLinks(input.db, {
+  if (!dryRun && input.autoLinkMissingLinks !== false) {
+    try {
+      // No maxCandidates here: unmatched candidates would otherwise occupy a
+      // capped, stably-ordered prefix forever and starve the tail (PR #377
+      // lesson). The cap still applies to the per-candidate sync below.
+      const missingLinkCandidates: KentuckyFinanceAutoLinkCandidateElection[] =
+        await listKentuckyCandidateElectionsMissingFinanceLinks(input.db, {
+          now,
+          electionLookbackDays,
+          electionLookaheadDays,
+        });
+      autoLinkAttemptedCount = missingLinkCandidates.length;
+      const autoLinkResults = await autoLinkMissingKentuckyCandidateFinanceLinks({
+        db: input.db,
         now,
         maxCandidates,
         electionLookbackDays,
         electionLookaheadDays,
+        candidateElections: missingLinkCandidates,
+        resolveCandidateFinanceLink:
+          input.resolveCandidateFinanceLink ??
+          createKentuckyKrefCandidateFinanceLinkResolver({ krefClientOptions: input.krefClientOptions }),
       });
-    autoLinkAttemptedCount = missingLinkCandidates.length;
-    const autoLinkResults = await autoLinkMissingKentuckyCandidateFinanceLinks({
-      db: input.db,
-      now,
-      maxCandidates,
-      electionLookbackDays,
-      electionLookaheadDays,
-      candidateElections: missingLinkCandidates,
-      resolveCandidateFinanceLink: input.resolveCandidateFinanceLink,
-    });
-    autoLinkLinkedCount = autoLinkResults.filter((result) => result.status === "linked").length;
+      autoLinkLinkedCount = autoLinkResults.filter((result) => result.status === "linked").length;
+      for (const result of autoLinkResults) {
+        if (result.status !== "linked") {
+          console.warn("Kentucky finance auto-link did not link candidate election:", result);
+        }
+      }
+    } catch (error) {
+      console.warn(
+        "Kentucky finance auto-link skipped; continuing with already-linked candidate sync:",
+        error instanceof Error ? error.message : error
+      );
+    }
   }
 
   const due = await listDueKentuckyCandidateFinanceSyncRows(input.db, {

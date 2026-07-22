@@ -186,7 +186,12 @@ function recordMatchesTarget(input: {
   if (!candidateNamesMatch(input.candidateNameKeys, input.record.candidateName)) {
     return false;
   }
-  if (parseDateKey(input.record.electionDate) !== input.electionDateKey) {
+  // Cycle-year match, not exact-date: KREF tags contributions to the specific
+  // election (a Nov general candidate's money is mostly filed against the May
+  // PRIMARY of the same year), so an exact-date rule zeroes out every
+  // candidate mid-cycle. Kentucky primaries and generals share a calendar
+  // year, matching the whole-cycle convention the other state sources use.
+  if (parseDateKey(input.record.electionDate)?.slice(0, 4) !== input.electionDateKey.slice(0, 4)) {
     return false;
   }
   if (![...officeNameKeys(input.record.office)].some((key) => input.officeKeys.has(key))) {
@@ -199,6 +204,41 @@ function recordMatchesTarget(input: {
     return false;
   }
   return true;
+}
+
+// Cycle-scoped record filter for LINK RESOLUTION (not aggregation): matches a
+// candidate's name/office/location using the same normalization the
+// aggregation above uses, but accepts any election DATE within the election
+// YEAR. KREF tags contributions to the specific election (a 2026 general
+// candidate's money is mostly filed against the 5/19/2026 PRIMARY), so the
+// aggregation's exact-date rule would see zero rows for a general-election
+// candidate mid-cycle — fine for totals, wrong for identifying the candidate.
+export function filterKentuckyContributionRecordsForCandidateCycle(input: {
+  contributionRecords: readonly KentuckyKrefContributionRecord[];
+  candidateName: string;
+  electionYear: number;
+  officeName: string;
+  location?: string | null;
+}): KentuckyKrefContributionRecord[] {
+  const keys = candidateNameKeys(requireNonEmpty(input.candidateName, "Kentucky candidate name"));
+  const officeKeys = officeNameKeys(requireNonEmpty(input.officeName, "Kentucky office name"));
+  const targetLocationKeys = input.location?.trim() ? locationKeys(input.location) : null;
+  return input.contributionRecords.filter((record) => {
+    if (!candidateNamesMatch(keys, record.candidateName)) {
+      return false;
+    }
+    const dateKey = parseDateKey(record.electionDate);
+    if (!dateKey || Number.parseInt(dateKey.slice(0, 4), 10) !== input.electionYear) {
+      return false;
+    }
+    if (![...officeNameKeys(record.office)].some((key) => officeKeys.has(key))) {
+      return false;
+    }
+    if (targetLocationKeys !== null && ![...locationKeys(record.location)].some((key) => targetLocationKeys.has(key))) {
+      return false;
+    }
+    return true;
+  });
 }
 
 function isIndividualDirectContribution(record: KentuckyKrefContributionRecord): boolean {

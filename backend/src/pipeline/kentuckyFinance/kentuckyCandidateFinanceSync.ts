@@ -137,7 +137,7 @@ function normalizeTimestamp(value: Date | undefined): Date {
 
 function normalizeCandidateNameForStorage(value: string): string {
   if (value.includes(",")) {
-    const parts = splitCandidateName(value);
+    const parts = splitKentuckyCandidateName(value);
     return `${parts.firstName} ${parts.lastName}`.replace(/\s+/g, " ").toUpperCase();
   }
   return [...normalizeKentuckyCandidateNameKeys(value)][0] ?? requireNonEmpty(value, "candidate name").replace(/\s+/g, " ").toUpperCase();
@@ -147,7 +147,7 @@ function mergeKrefClient(client: Partial<KentuckyKrefDataClient> | undefined): K
   return { ...DEFAULT_KREF_CLIENT, ...(client ?? {}) };
 }
 
-function splitCandidateName(value: string): { firstName: string; lastName: string } {
+export function splitKentuckyCandidateName(value: string): { firstName: string; lastName: string } {
   const trimmed = requireNonEmpty(value, "candidate name").replace(/\s+/g, " ");
   const commaParts = trimmed.split(",").map((part) => part.trim()).filter(Boolean);
   if (commaParts.length >= 2) {
@@ -279,7 +279,7 @@ export async function syncKentuckyCandidateFinance(
   requireNonEmpty(input.trustedLink.committeeName, "trusted Kentucky committee name");
 
   const krefClient = mergeKrefClient(input.krefClient);
-  const nameParts = splitCandidateName(candidateName);
+  const nameParts = splitKentuckyCandidateName(candidateName);
   const candidateContributionExportInput = {
     candidateFirstName: nameParts.firstName,
     candidateLastName: nameParts.lastName,

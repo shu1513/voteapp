@@ -86,16 +86,21 @@ describe("kentuckyDirectContributionAggregator", () => {
       location: "Statewide",
       contributionRecords: [
         contribution({ candidateName: "Other Candidate", amount: 100 }),
-        contribution({ electionDate: "5/16/2023", amount: 200 }),
+        // Same-year primary rows belong to the cycle and are INCLUDED — KREF
+        // tags contributions to the specific election, so exact-date matching
+        // would zero out every general-election candidate mid-cycle.
+        contribution({ electionDate: "5/16/2023", electionType: "PRIMARY", amount: 200 }),
+        // Prior-cycle rows are excluded by year.
+        contribution({ electionDate: "11/5/2022", amount: 250 }),
         contribution({ office: "Attorney General", amount: 300 }),
         contribution({ location: "Jefferson", amount: 400 }),
         contribution({ amount: 500 }),
       ],
     });
 
-    expect(result.summary.totalReceipts).toBe(500);
-    expect(result.matchedContributionRowCount).toBe(1);
-    expect(result.includedContributionRowCount).toBe(1);
+    expect(result.summary.totalReceipts).toBe(700);
+    expect(result.matchedContributionRowCount).toBe(2);
+    expect(result.includedContributionRowCount).toBe(2);
   });
 
   it("matches comma-form candidate input against KREF first-last names", () => {

@@ -125,7 +125,10 @@ describe("kentuckyOutsideSpendingAggregator", () => {
       officeOrBallotMeasure: "Governor",
       expenditureRecords: [
         expenditure({ candidateName: "Other Candidate", amount: 100 }),
+        // Same-year primary rows belong to the cycle and are INCLUDED.
         expenditure({ electionDate: "5/16/2023", amount: 200 }),
+        // Prior-cycle rows are excluded by year.
+        expenditure({ electionDate: "11/8/2022", amount: 250 }),
         expenditure({ officeOrBallotMeasure: "Attorney General", amount: 300 }),
         expenditure({ amount: 400 }),
       ],
@@ -133,11 +136,11 @@ describe("kentuckyOutsideSpendingAggregator", () => {
 
     expect(result).toMatchObject({
       summary: {
-        supportTotal: 400,
+        supportTotal: 600,
         opposeTotal: 0,
       },
-      matchedExpenditureRowCount: 1,
-      includedExpenditureRowCount: 1,
+      matchedExpenditureRowCount: 2,
+      includedExpenditureRowCount: 2,
       skippedExpenditureRowCount: 0,
     });
   });
