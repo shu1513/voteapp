@@ -1,3 +1,4 @@
+import { kentuckyElectionDateMatchesCycle } from "./kentuckyDirectContributionAggregator.js";
 import type { KentuckyKrefIndependentExpenditureRecord } from "./kentuckyKrefClient.js";
 
 export type KentuckySupportOppose = "support" | "oppose";
@@ -185,10 +186,15 @@ function recordMatchesTarget(input: {
 }): boolean {
   return (
     candidateNamesMatch({ expectedKeys: input.candidateNameKeys, actualName: input.record.candidateName }) &&
-    // Cycle-year match, not exact-date: KREF tags rows to the specific
-    // election (primary vs general), so an exact-date rule drops all
-    // primary-tagged spending for a general-election candidate mid-cycle.
-    parseDateKey(input.record.electionDate)?.slice(0, 4) === input.electionDateKey.slice(0, 4) &&
+    // Shared cycle rule (see kentuckyElectionDateMatchesCycle): IE records
+    // carry no electionType, so same-year specials cannot be screened here —
+    // acceptable because legislative IEs are skipped entirely upstream and
+    // statewide special elections are vanishingly rare.
+    kentuckyElectionDateMatchesCycle({
+      recordElectionDate: input.record.electionDate,
+      recordElectionType: undefined,
+      targetElectionDateKey: input.electionDateKey,
+    }) &&
     [...officeNameKeys(input.record.officeOrBallotMeasure)].some((key) => input.officeOrBallotMeasureKeys.has(key))
   );
 }

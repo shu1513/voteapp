@@ -103,6 +103,36 @@ describe("kentuckyDirectContributionAggregator", () => {
     expect(result.includedContributionRowCount).toBe(2);
   });
 
+  it("keeps same-year special elections out of a regular candidate's cycle", () => {
+    const result = aggregateKentuckyDirectContributions({
+      candidateName: "Andy Beshear",
+      electionDate: "11/7/2023",
+      officeName: "Governor",
+      location: "Statewide",
+      contributionRecords: [
+        contribution({ amount: 500 }),
+        // A same-year SPECIAL election is a separate campaign for the office.
+        contribution({ electionDate: "2/21/2023", electionType: "SPECIAL", amount: 200 }),
+      ],
+    });
+
+    expect(result.summary.totalReceipts).toBe(500);
+    expect(result.matchedContributionRowCount).toBe(1);
+  });
+
+  it("counts special-election rows when the target election IS that special", () => {
+    const result = aggregateKentuckyDirectContributions({
+      candidateName: "Andy Beshear",
+      electionDate: "2/21/2023",
+      officeName: "Governor",
+      location: "Statewide",
+      contributionRecords: [contribution({ electionDate: "2/21/2023", electionType: "SPECIAL", amount: 300 })],
+    });
+
+    expect(result.summary.totalReceipts).toBe(300);
+    expect(result.matchedContributionRowCount).toBe(1);
+  });
+
   it("matches comma-form candidate input against KREF first-last names", () => {
     const result = aggregateKentuckyDirectContributions({
       candidateName: "Beshear, Andy",

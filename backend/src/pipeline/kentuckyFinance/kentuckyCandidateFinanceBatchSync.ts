@@ -69,6 +69,7 @@ export type KentuckyCandidateFinanceBatchSyncResult = {
   failedCandidateCount: number;
   autoLinkAttemptedCount: number;
   autoLinkLinkedCount: number;
+  autoLinkFailedCount: number;
   results: KentuckyCandidateFinanceBatchSyncItemResult[];
 };
 
@@ -251,6 +252,7 @@ export async function syncDueKentuckyCandidateFinance(
   const syncFn = input.syncKentuckyCandidateFinanceFn ?? syncKentuckyCandidateFinance;
   let autoLinkAttemptedCount = 0;
   let autoLinkLinkedCount = 0;
+  let autoLinkFailedCount = 0;
 
   if (!dryRun && input.autoLinkMissingLinks !== false) {
     try {
@@ -276,6 +278,7 @@ export async function syncDueKentuckyCandidateFinance(
           createKentuckyKrefCandidateFinanceLinkResolver({ krefClientOptions: input.krefClientOptions }),
       });
       autoLinkLinkedCount = autoLinkResults.filter((result) => result.status === "linked").length;
+      autoLinkFailedCount = autoLinkResults.filter((result) => result.status === "error").length;
       for (const result of autoLinkResults) {
         if (result.status !== "linked") {
           console.warn("Kentucky finance auto-link did not link candidate election:", result);
@@ -355,6 +358,7 @@ export async function syncDueKentuckyCandidateFinance(
     failedCandidateCount: results.length - syncedCandidateCount,
     autoLinkAttemptedCount,
     autoLinkLinkedCount,
+    autoLinkFailedCount,
     results,
   };
 }

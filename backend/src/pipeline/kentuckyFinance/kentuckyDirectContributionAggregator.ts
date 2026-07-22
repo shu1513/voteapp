@@ -176,6 +176,34 @@ function centsToDollars(cents: number): number {
   return cents / 100;
 }
 
+// Shared cycle rule for KY election-tagged rows (used by both aggregators and
+// the link-resolution filter — keep it in ONE place so the copies can't
+// drift): KREF tags rows to the specific election, and a Nov general
+// candidate's money is mostly filed against the May PRIMARY of the same year,
+// so exact-date matching zeroes out every candidate mid-cycle. Kentucky
+// primaries and generals share a calendar year, so same-year rows count as
+// one cycle — EXCEPT special elections, which are separate campaigns for the
+// same office and only count when the target election IS that special (exact
+// date match). IE records carry no electionType, so pass undefined there —
+// special screening is impossible for them.
+export function kentuckyElectionDateMatchesCycle(input: {
+  recordElectionDate: string | undefined;
+  recordElectionType: string | undefined;
+  targetElectionDateKey: string;
+}): boolean {
+  const dateKey = parseDateKey(input.recordElectionDate);
+  if (!dateKey) {
+    return false;
+  }
+  if (dateKey === input.targetElectionDateKey) {
+    return true;
+  }
+  if (dateKey.slice(0, 4) !== input.targetElectionDateKey.slice(0, 4)) {
+    return false;
+  }
+  return !/SPECIAL/i.test(input.recordElectionType ?? "");
+}
+
 function recordMatchesTarget(input: {
   record: KentuckyKrefContributionRecord;
   candidateNameKeys: ReadonlySet<string>;
@@ -186,12 +214,13 @@ function recordMatchesTarget(input: {
   if (!candidateNamesMatch(input.candidateNameKeys, input.record.candidateName)) {
     return false;
   }
-  // Cycle-year match, not exact-date: KREF tags contributions to the specific
-  // election (a Nov general candidate's money is mostly filed against the May
-  // PRIMARY of the same year), so an exact-date rule zeroes out every
-  // candidate mid-cycle. Kentucky primaries and generals share a calendar
-  // year, matching the whole-cycle convention the other state sources use.
-  if (parseDateKey(input.record.electionDate)?.slice(0, 4) !== input.electionDateKey.slice(0, 4)) {
+  if (
+    !kentuckyElectionDateMatchesCycle({
+      recordElectionDate: input.record.electionDate,
+      recordElectionType: input.record.electionType,
+      targetElectionDateKey: input.electionDateKey,
+    })
+  ) {
     return false;
   }
   if (![...officeNameKeys(input.record.office)].some((key) => input.officeKeys.has(key))) {
@@ -216,19 +245,28 @@ function recordMatchesTarget(input: {
 export function filterKentuckyContributionRecordsForCandidateCycle(input: {
   contributionRecords: readonly KentuckyKrefContributionRecord[];
   candidateName: string;
-  electionYear: number;
+  electionDate: string;
   officeName: string;
   location?: string | null;
 }): KentuckyKrefContributionRecord[] {
   const keys = candidateNameKeys(requireNonEmpty(input.candidateName, "Kentucky candidate name"));
   const officeKeys = officeNameKeys(requireNonEmpty(input.officeName, "Kentucky office name"));
   const targetLocationKeys = input.location?.trim() ? locationKeys(input.location) : null;
+  const targetElectionDateKey = parseDateKey(requireNonEmpty(input.electionDate, "Kentucky election date"));
+  if (!targetElectionDateKey) {
+    throw new Error("Kentucky election date must use MM/DD/YYYY or YYYY-MM-DD format");
+  }
   return input.contributionRecords.filter((record) => {
     if (!candidateNamesMatch(keys, record.candidateName)) {
       return false;
     }
-    const dateKey = parseDateKey(record.electionDate);
-    if (!dateKey || Number.parseInt(dateKey.slice(0, 4), 10) !== input.electionYear) {
+    if (
+      !kentuckyElectionDateMatchesCycle({
+        recordElectionDate: record.electionDate,
+        recordElectionType: record.electionType,
+        targetElectionDateKey,
+      })
+    ) {
       return false;
     }
     if (![...officeNameKeys(record.office)].some((key) => officeKeys.has(key))) {

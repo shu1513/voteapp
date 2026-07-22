@@ -68,7 +68,7 @@ export function createKentuckyKrefCandidateFinanceLinkResolver(
     const matched = filterKentuckyContributionRecordsForCandidateCycle({
       contributionRecords: records,
       candidateName: candidateElection.candidateName,
-      electionYear: candidateElection.electionYear,
+      electionDate: candidateElection.electionDate,
       officeName: candidateElection.officeName,
       location: candidateElection.location,
     });

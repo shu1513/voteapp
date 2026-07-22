@@ -218,6 +218,32 @@ describe("kentuckyCandidateFinanceSync", () => {
     ).toHaveLength(2);
   });
 
+  it("skips independent expenditures for legislative candidates (KREF IE rows carry no district)", async () => {
+    const db = createMockDb();
+    const krefClient = createKrefClient();
+
+    const result = await syncKentuckyCandidateFinance({
+      db,
+      ...baseInput(),
+      officeName: "State Lower Chamber Legislator",
+      location: "45",
+      trustedLink: {
+        candidateKey: "andy beshear|state lower chamber legislator|state lower|2023-11-07",
+        committeeKey: "beshear campaign committee",
+        committeeName: "Beshear Campaign Committee",
+      },
+      krefClient,
+    });
+
+    // Two same-name legislative candidates in different districts cannot be
+    // told apart in the IE export, so no outside spending is fetched at all.
+    expect(krefClient.downloadIndependentExpenditures).not.toHaveBeenCalled();
+    expect(result.outsideSupportTotal).toBe(0);
+    expect(result.outsideGroupsWritten).toBe(0);
+    // Direct contributions ARE district-scoped and still sync.
+    expect(krefClient.downloadCandidateContributions).toHaveBeenCalled();
+  });
+
   it("uses district as the direct contribution location when location is omitted", async () => {
     const db = createMockDb();
     const krefClient = createKrefClient();
