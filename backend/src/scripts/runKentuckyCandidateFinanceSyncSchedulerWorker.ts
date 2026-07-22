@@ -26,7 +26,8 @@ async function main(): Promise<void> {
     console.log(
       "Kentucky campaign finance sync scheduler worker completed " +
         `jobId=${job.id} selected=${result.selectedCandidateCount} synced=${result.syncedCandidateCount} ` +
-        `failed=${result.failedCandidateCount} dryRun=${result.dryRun}`
+        `failed=${result.failedCandidateCount} autoLinkAttempted=${result.autoLinkAttemptedCount} ` +
+        `autoLinkLinked=${result.autoLinkLinkedCount} autoLinkFailed=${result.autoLinkFailedCount} dryRun=${result.dryRun}`
     );
   });
 

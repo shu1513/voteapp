@@ -245,6 +245,53 @@ describe("kentuckyCandidateFinanceBatchSync", () => {
     expect(syncKentuckyCandidateFinanceFn).not.toHaveBeenCalled();
   });
 
+  it("counts resolver failures in autoLinkFailedCount without touching due-sync counters", async () => {
+    const db = {
+      query: vi.fn(async (sql: string) => {
+        const text = String(sql);
+        if (text.includes("FROM public.candidate_elections AS candidate_election") && !text.includes("WITH due AS")) {
+          return {
+            rows: [
+              {
+                candidate_id: CANDIDATE_ID,
+                election_id: ELECTION_ID,
+                candidate_name: "Andy Beshear",
+                election_year: 2023,
+                election_date: "2023-11-07",
+                office_scope: "statewide",
+                office_name: "Governor",
+                location: "Statewide",
+              },
+            ],
+            rowCount: 1,
+          };
+        }
+        return { rows: [], rowCount: 0 };
+      }),
+      connect: vi.fn(),
+    };
+    const resolveCandidateFinanceLink = vi.fn(async () => {
+      throw new Error("KREF unavailable");
+    });
+
+    const result = await syncDueKentuckyCandidateFinance({
+      db,
+      now: NOW,
+      maxCandidates: 5,
+      autoLinkMissingLinks: true,
+      resolveCandidateFinanceLink,
+      syncKentuckyCandidateFinanceFn: vi.fn() as never,
+    });
+
+    expect(result).toMatchObject({
+      autoLinkAttemptedCount: 1,
+      autoLinkLinkedCount: 0,
+      autoLinkFailedCount: 1,
+      syncedCandidateCount: 0,
+      failedCandidateCount: 0,
+    });
+  });
+
   it("auto-links missing candidates only through an injected resolver", async () => {
     const db = {
       query: vi.fn(async (sql: string) => {

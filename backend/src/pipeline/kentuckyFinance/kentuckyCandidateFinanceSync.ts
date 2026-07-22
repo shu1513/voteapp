@@ -137,7 +137,7 @@ function normalizeTimestamp(value: Date | undefined): Date {
 
 function normalizeCandidateNameForStorage(value: string): string {
   if (value.includes(",")) {
-    const parts = splitCandidateName(value);
+    const parts = splitKentuckyCandidateName(value);
     return `${parts.firstName} ${parts.lastName}`.replace(/\s+/g, " ").toUpperCase();
   }
   return [...normalizeKentuckyCandidateNameKeys(value)][0] ?? requireNonEmpty(value, "candidate name").replace(/\s+/g, " ").toUpperCase();
@@ -147,7 +147,7 @@ function mergeKrefClient(client: Partial<KentuckyKrefDataClient> | undefined): K
   return { ...DEFAULT_KREF_CLIENT, ...(client ?? {}) };
 }
 
-function splitCandidateName(value: string): { firstName: string; lastName: string } {
+export function splitKentuckyCandidateName(value: string): { firstName: string; lastName: string } {
   const trimmed = requireNonEmpty(value, "candidate name").replace(/\s+/g, " ");
   const commaParts = trimmed.split(",").map((part) => part.trim()).filter(Boolean);
   if (commaParts.length >= 2) {
@@ -279,7 +279,7 @@ export async function syncKentuckyCandidateFinance(
   requireNonEmpty(input.trustedLink.committeeName, "trusted Kentucky committee name");
 
   const krefClient = mergeKrefClient(input.krefClient);
-  const nameParts = splitCandidateName(candidateName);
+  const nameParts = splitKentuckyCandidateName(candidateName);
   const candidateContributionExportInput = {
     candidateFirstName: nameParts.firstName,
     candidateLastName: nameParts.lastName,
@@ -298,9 +298,19 @@ export async function syncKentuckyCandidateFinance(
     organizationType: KENTUCKY_KREF_IE_ONLY_ORGANIZATION_TYPE,
   });
 
+  // KREF's independent-expenditure export carries NO district/location field,
+  // so IE rows for two same-name legislative candidates in different
+  // districts cannot be told apart (direct contributions CAN — they carry a
+  // location column). Rather than risk attaching another candidate's outside
+  // spending, skip IE aggregation for non-statewide candidates entirely;
+  // statewide races have no district ambiguity.
+  const location = (input.location ?? input.district ?? "").trim();
+  const includeOutsideSpending = /statewide/i.test(location);
   const [candidateContributionRecords, independentExpenditureRecords] = await Promise.all([
     krefClient.downloadCandidateContributions(candidateContributionExportInput, input.krefClientOptions),
-    krefClient.downloadIndependentExpenditures(independentExpenditureExportInput, input.krefClientOptions),
+    includeOutsideSpending
+      ? krefClient.downloadIndependentExpenditures(independentExpenditureExportInput, input.krefClientOptions)
+      : Promise.resolve([]),
   ]);
 
   const directFinance = aggregateKentuckyDirectContributions({

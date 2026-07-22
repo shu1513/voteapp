@@ -1,3 +1,4 @@
+import { kentuckyElectionDateMatchesCycle } from "./kentuckyDirectContributionAggregator.js";
 import type { KentuckyKrefIndependentExpenditureRecord } from "./kentuckyKrefClient.js";
 
 export type KentuckySupportOppose = "support" | "oppose";
@@ -185,7 +186,15 @@ function recordMatchesTarget(input: {
 }): boolean {
   return (
     candidateNamesMatch({ expectedKeys: input.candidateNameKeys, actualName: input.record.candidateName }) &&
-    parseDateKey(input.record.electionDate) === input.electionDateKey &&
+    // Shared cycle rule (see kentuckyElectionDateMatchesCycle): IE records
+    // carry no electionType, so same-year specials cannot be screened here —
+    // acceptable because legislative IEs are skipped entirely upstream and
+    // statewide special elections are vanishingly rare.
+    kentuckyElectionDateMatchesCycle({
+      recordElectionDate: input.record.electionDate,
+      recordElectionType: undefined,
+      targetElectionDateKey: input.electionDateKey,
+    }) &&
     [...officeNameKeys(input.record.officeOrBallotMeasure)].some((key) => input.officeOrBallotMeasureKeys.has(key))
   );
 }

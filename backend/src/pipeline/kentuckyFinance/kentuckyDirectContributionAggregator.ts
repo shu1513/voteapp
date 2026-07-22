@@ -176,6 +176,34 @@ function centsToDollars(cents: number): number {
   return cents / 100;
 }
 
+// Shared cycle rule for KY election-tagged rows (used by both aggregators and
+// the link-resolution filter — keep it in ONE place so the copies can't
+// drift): KREF tags rows to the specific election, and a Nov general
+// candidate's money is mostly filed against the May PRIMARY of the same year,
+// so exact-date matching zeroes out every candidate mid-cycle. Kentucky
+// primaries and generals share a calendar year, so same-year rows count as
+// one cycle — EXCEPT special elections, which are separate campaigns for the
+// same office and only count when the target election IS that special (exact
+// date match). IE records carry no electionType, so pass undefined there —
+// special screening is impossible for them.
+export function kentuckyElectionDateMatchesCycle(input: {
+  recordElectionDate: string | undefined;
+  recordElectionType: string | undefined;
+  targetElectionDateKey: string;
+}): boolean {
+  const dateKey = parseDateKey(input.recordElectionDate);
+  if (!dateKey) {
+    return false;
+  }
+  if (dateKey === input.targetElectionDateKey) {
+    return true;
+  }
+  if (dateKey.slice(0, 4) !== input.targetElectionDateKey.slice(0, 4)) {
+    return false;
+  }
+  return !/SPECIAL/i.test(input.recordElectionType ?? "");
+}
+
 function recordMatchesTarget(input: {
   record: KentuckyKrefContributionRecord;
   candidateNameKeys: ReadonlySet<string>;
@@ -186,7 +214,13 @@ function recordMatchesTarget(input: {
   if (!candidateNamesMatch(input.candidateNameKeys, input.record.candidateName)) {
     return false;
   }
-  if (parseDateKey(input.record.electionDate) !== input.electionDateKey) {
+  if (
+    !kentuckyElectionDateMatchesCycle({
+      recordElectionDate: input.record.electionDate,
+      recordElectionType: input.record.electionType,
+      targetElectionDateKey: input.electionDateKey,
+    })
+  ) {
     return false;
   }
   if (![...officeNameKeys(input.record.office)].some((key) => input.officeKeys.has(key))) {
@@ -199,6 +233,50 @@ function recordMatchesTarget(input: {
     return false;
   }
   return true;
+}
+
+// Cycle-scoped record filter for LINK RESOLUTION (not aggregation): matches a
+// candidate's name/office/location using the same normalization the
+// aggregation above uses, but accepts any election DATE within the election
+// YEAR. KREF tags contributions to the specific election (a 2026 general
+// candidate's money is mostly filed against the 5/19/2026 PRIMARY), so the
+// aggregation's exact-date rule would see zero rows for a general-election
+// candidate mid-cycle — fine for totals, wrong for identifying the candidate.
+export function filterKentuckyContributionRecordsForCandidateCycle(input: {
+  contributionRecords: readonly KentuckyKrefContributionRecord[];
+  candidateName: string;
+  electionDate: string;
+  officeName: string;
+  location?: string | null;
+}): KentuckyKrefContributionRecord[] {
+  const keys = candidateNameKeys(requireNonEmpty(input.candidateName, "Kentucky candidate name"));
+  const officeKeys = officeNameKeys(requireNonEmpty(input.officeName, "Kentucky office name"));
+  const targetLocationKeys = input.location?.trim() ? locationKeys(input.location) : null;
+  const targetElectionDateKey = parseDateKey(requireNonEmpty(input.electionDate, "Kentucky election date"));
+  if (!targetElectionDateKey) {
+    throw new Error("Kentucky election date must use MM/DD/YYYY or YYYY-MM-DD format");
+  }
+  return input.contributionRecords.filter((record) => {
+    if (!candidateNamesMatch(keys, record.candidateName)) {
+      return false;
+    }
+    if (
+      !kentuckyElectionDateMatchesCycle({
+        recordElectionDate: record.electionDate,
+        recordElectionType: record.electionType,
+        targetElectionDateKey,
+      })
+    ) {
+      return false;
+    }
+    if (![...officeNameKeys(record.office)].some((key) => officeKeys.has(key))) {
+      return false;
+    }
+    if (targetLocationKeys !== null && ![...locationKeys(record.location)].some((key) => targetLocationKeys.has(key))) {
+      return false;
+    }
+    return true;
+  });
 }
 
 function isIndividualDirectContribution(record: KentuckyKrefContributionRecord): boolean {

@@ -131,7 +131,6 @@ async function main(): Promise<void> {
       staleAfterDays: options.staleAfterDays,
       electionLookbackDays: options.electionLookbackDays,
       electionLookaheadDays: options.electionLookaheadDays,
-      autoLinkMissingLinks: false,
     });
 
     console.log(JSON.stringify(toSyncDueKentuckyCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));
