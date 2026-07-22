@@ -13,7 +13,7 @@ import {
 import { OREGON_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./oregonFinanceEligibleOffices.js";
 import {
   getOregonOrestarCandidateSearchRows,
-  getOregonOrestarCommitteeTransactionDetails,
+  getOregonOrestarCommitteeContributionDetailsFromExport,
   getOregonOrestarTransactionDetailsFromSourceUrl,
   type OregonOrestarClientOptions,
 } from "./oregonOrestarClient.js";
@@ -148,8 +148,11 @@ async function defaultLoadTransactionDetails(
 ): Promise<readonly OregonOrestarTransactionDetail[]> {
   // Link source URLs point at the committee's sooDetail.do page, which lists
   // no transactions — scraping it always produced zero rows and $0 summaries.
-  // Query the ORESTAR transaction search by committee ID instead; the stored
-  // source URL is only a fallback for legacy links without a committee ID.
+  // Load the committee's contributions through the ORESTAR XcelCNESearch
+  // export instead (3 requests per candidate regardless of committee size;
+  // the per-detail crawl tripped the portal's WAF on large filers). The
+  // stored source URL is only a fallback for legacy links without a
+  // committee ID.
   //
   // KNOWN LIMITATION: this search filters on the candidate committee as the
   // FILER, so it only sees the committee's own transactions. Independent
@@ -160,7 +163,7 @@ async function defaultLoadTransactionDetails(
   // rows of any kind.
   const committeeId = row.committeeId?.trim();
   if (committeeId && /^\d+$/.test(committeeId)) {
-    return getOregonOrestarCommitteeTransactionDetails({
+    return getOregonOrestarCommitteeContributionDetailsFromExport({
       committeeId,
       electionYear: row.electionYear,
       options,

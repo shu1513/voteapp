@@ -2,11 +2,13 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   getOregonOrestarCandidateSearchRows,
+  getOregonOrestarCommitteeContributionDetailsFromExport,
   getOregonOrestarCommitteeTransactionDetails,
   getOregonOrestarSearchForm,
   getOregonOrestarTransactionDetail,
   getOregonOrestarTransactionDetailsFromSourceUrl,
 } from "../../../src/pipeline/oregonFinance/oregonOrestarClient.js";
+import { buildOregonOrestarExportWorkbook } from "./orestarExportFixture.js";
 
 function htmlResponse(html: string, overrides: Partial<{ ok: boolean; status: number; statusText: string }> = {}) {
   return {
@@ -446,5 +448,126 @@ describe("oregonOrestarClient", () => {
         options: { fetchFn },
       })
     ).rejects.toThrow("ORESTAR returned 2 of 4 transactions for committee 4792");
+  });
+
+  function exportFlowFetch(input: {
+    resultCount: number | null;
+    workbook?: Uint8Array;
+    searchBodies?: string[];
+  }) {
+    return vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.includes("XcelCNESearch")) {
+        const bytes = input.workbook ?? new Uint8Array();
+        return {
+          ...htmlResponse(""),
+          arrayBuffer: async () => bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength),
+        };
+      }
+      if (url.includes("gotoPublicTransactionSearchResults.do")) {
+        input.searchBodies?.push(String(init?.body));
+        return htmlResponse(`
+          ${input.resultCount === null ? "" : `<div>Results : ${input.resultCount} records found</div>`}
+          <a href="XcelCNESearch">Export To Excel Format</a>
+          <table></table>
+        `);
+      }
+      return htmlResponse(`
+        <form name="cneSearchForm" action="/orestar/gotoPublicTransactionSearchResults.do;JSESSIONID_ORESTAR=abc123">
+          <input type="hidden" name="OWASP_CSRFTOKEN" value="csrf-token-1">
+        </form>
+      `);
+    });
+  }
+
+  it("loads committee contributions from the XcelCNESearch export in three requests", async () => {
+    const searchBodies: string[] = [];
+    const workbook = buildOregonOrestarExportWorkbook([
+      {
+        "Tran Id": "5500001",
+        "Tran Date": "10/12/2025",
+        Filer: "Friends of Tina Kotek",
+        "Contributor/Payee": "Jane Donor",
+        "Sub Type": "Cash Contribution",
+        Amount: 100,
+        "Filer Id": "4792",
+      },
+      {
+        "Tran Id": "5500002",
+        "Tran Date": "02/03/2026",
+        Filer: "Friends of Tina Kotek",
+        "Contributor/Payee": "Sam Giver",
+        "Sub Type": "Cash Contribution",
+        Amount: 250,
+        "Filer Id": "4792",
+      },
+    ]);
+    const fetchFn = exportFlowFetch({ resultCount: 2, workbook, searchBodies });
+
+    const details = await getOregonOrestarCommitteeContributionDetailsFromExport({
+      committeeId: "4792",
+      electionYear: 2026,
+      options: { fetchFn },
+    });
+
+    expect(details).toMatchObject([
+      { transactionId: "5500001", transactionType: "Contribution", amount: 100, filerCommitteeId: "4792" },
+      { transactionId: "5500002", transactionType: "Contribution", amount: 250, filerCommitteeId: "4792" },
+    ]);
+    // form fetch + search POST + export download — three requests, any size.
+    expect(fetchFn).toHaveBeenCalledTimes(3);
+    expect(searchBodies).toHaveLength(1);
+    expect(searchBodies[0]).toContain("cneSearchFilerCommitteeId=4792");
+    expect(searchBodies[0]).toContain("cneSearchTranType=C");
+    expect(searchBodies[0]).toContain("cneSearchTranStartDate=01%2F01%2F2025");
+    expect(searchBodies[0]).toContain("cneSearchTranEndDate=12%2F31%2F2026");
+  });
+
+  it("throws when the export workbook does not match the reported result count", async () => {
+    const workbook = buildOregonOrestarExportWorkbook([
+      {
+        "Tran Id": "5500001",
+        "Tran Date": "10/12/2025",
+        Filer: "Friends of Tina Kotek",
+        "Contributor/Payee": "Jane Donor",
+        "Sub Type": "Cash Contribution",
+        Amount: 100,
+        "Filer Id": "4792",
+      },
+    ]);
+    const fetchFn = exportFlowFetch({ resultCount: 3, workbook });
+
+    await expect(
+      getOregonOrestarCommitteeContributionDetailsFromExport({
+        committeeId: "4792",
+        electionYear: 2026,
+        options: { fetchFn },
+      })
+    ).rejects.toThrow("ORESTAR export returned 1 of 3 transactions for committee 4792");
+  });
+
+  it("returns no details without downloading when the search reports zero contributions", async () => {
+    const fetchFn = exportFlowFetch({ resultCount: 0 });
+
+    await expect(
+      getOregonOrestarCommitteeContributionDetailsFromExport({
+        committeeId: "4792",
+        electionYear: 2026,
+        options: { fetchFn },
+      })
+    ).resolves.toEqual([]);
+    // form fetch + search POST only; the export is never requested.
+    expect(fetchFn).toHaveBeenCalledTimes(2);
+  });
+
+  it("fails closed when the search page omits the result count entirely", async () => {
+    const fetchFn = exportFlowFetch({ resultCount: null });
+
+    await expect(
+      getOregonOrestarCommitteeContributionDetailsFromExport({
+        committeeId: "4792",
+        electionYear: 2026,
+        options: { fetchFn },
+      })
+    ).rejects.toThrow("ORESTAR returned a search page without a result count for committee 4792");
   });
 });
