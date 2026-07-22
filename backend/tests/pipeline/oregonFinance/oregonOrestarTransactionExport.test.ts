@@ -107,6 +107,12 @@ describe("oregonOrestarTransactionExport", () => {
       },
       { overrides: { "Tran Date": "" }, expected: 'row 3 is unusable (unparseable Tran Date null)' },
       { overrides: { Amount: "n/a" }, expected: "row 3 is unusable (unparseable Amount null)" },
+      // Number("") / Number("   ") / Number("$") are all 0, so these would
+      // otherwise masquerade as a genuine $0 row and pass the guard.
+      { overrides: { Amount: "" }, expected: "row 3 is unusable (unparseable Amount null)" },
+      { overrides: { Amount: "   " }, expected: "row 3 is unusable (unparseable Amount null)" },
+      { overrides: { Amount: "$" }, expected: "row 3 is unusable (unparseable Amount null)" },
+      { overrides: { Amount: "," }, expected: "row 3 is unusable (unparseable Amount null)" },
     ];
 
     for (const { overrides, expected } of cases) {
@@ -162,6 +168,26 @@ describe("oregonOrestarTransactionExport", () => {
     expect(parseOregonOrestarTransactionExport({ data, expectedCommitteeId: "4792" })).toMatchObject([
       { transactionId: "5500001", amount: -50, transactionSubType: "Refunds and Rebates" },
       { transactionId: "5500002", amount: 0 },
+    ]);
+  });
+
+  it("keeps a zero written as text, which is a known amount rather than a blank cell", () => {
+    // The guard must separate "genuinely zero" from "we could not read it";
+    // both reach the aggregator as 0, so only the parser can tell them apart.
+    const data = buildOregonOrestarExportWorkbook([
+      {
+        "Tran Id": "5500003",
+        "Tran Date": "10/14/2025",
+        Filer: "Friends of Tina Kotek",
+        "Contributor/Payee": "Pat Payer",
+        "Sub Type": "Cash Contribution",
+        Amount: "$0.00",
+        "Filer Id": "4792",
+      },
+    ]);
+
+    expect(parseOregonOrestarTransactionExport({ data, expectedCommitteeId: "4792" })).toMatchObject([
+      { transactionId: "5500003", amount: 0 },
     ]);
   });
 

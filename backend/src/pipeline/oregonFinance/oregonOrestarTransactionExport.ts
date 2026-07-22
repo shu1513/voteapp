@@ -47,7 +47,15 @@ function toAmount(value: unknown): number | null {
     return value;
   }
   if (typeof value === "string") {
-    const parsed = Number(value.replace(/[$,]/g, "").trim());
+    // Number("") and Number("   ") are both 0, so a blank or currency-symbol-only
+    // cell would masquerade as a genuine $0 and slip past the row guard — which
+    // then lets the aggregator drop it and understate the total. An unknown
+    // amount must read as null; only a real "0" may read as zero.
+    const normalized = value.replace(/[$,]/g, "").trim();
+    if (normalized.length === 0) {
+      return null;
+    }
+    const parsed = Number(normalized);
     return Number.isFinite(parsed) ? parsed : null;
   }
   return null;
