@@ -103,6 +103,9 @@ const DEFAULT_MAX_CANDIDATES = 25;
 const DEFAULT_STALE_AFTER_DAYS = 7;
 const DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS = 1;
 const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 730;
+// A batch crawls hundreds of sequential ORESTAR pages; without a pause the
+// portal starts answering 403 partway through (seen live 2026-07-21).
+const DEFAULT_ORESTAR_REQUEST_DELAY_MS = 250;
 
 function assertValidDate(date: Date, label: string): void {
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
@@ -284,11 +287,15 @@ export async function syncDueOregonCandidateFinance(
   );
   const dryRun = input.dryRun === true;
   const syncFn = input.syncOregonCandidateFinanceFn ?? syncOregonCandidateFinance;
+  const orestarClientOptions: OregonOrestarClientOptions = {
+    requestDelayMs: DEFAULT_ORESTAR_REQUEST_DELAY_MS,
+    ...input.orestarClientOptions,
+  };
   const loadTransactionDetails =
-    input.loadTransactionDetails ?? ((row) => defaultLoadTransactionDetails(row, input.orestarClientOptions));
+    input.loadTransactionDetails ?? ((row) => defaultLoadTransactionDetails(row, orestarClientOptions));
   const loadCandidateSearchRows =
     input.loadCandidateSearchRows ??
-    ((candidateElection) => defaultLoadCandidateSearchRows(candidateElection, input.orestarClientOptions));
+    ((candidateElection) => defaultLoadCandidateSearchRows(candidateElection, orestarClientOptions));
   let autoLinkAttemptedCount = 0;
   let autoLinkLinkedCount = 0;
 

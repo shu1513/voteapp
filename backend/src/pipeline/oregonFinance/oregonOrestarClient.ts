@@ -30,6 +30,8 @@ export type OregonOrestarClientOptions = {
   fetchFn?: OregonOrestarFetch;
   userAgent?: string;
   timeoutMs?: number;
+  /** Pause before each ORESTAR request; keeps long detail crawls under the portal's rate limit. */
+  requestDelayMs?: number;
 };
 
 const DEFAULT_TIMEOUT_MS = 60_000;
@@ -98,6 +100,13 @@ async function fetchOrestarHtmlPage(
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   if (!Number.isInteger(timeoutMs) || timeoutMs <= 0) {
     throw new Error(`Invalid Oregon ORESTAR timeoutMs: ${options.timeoutMs}`);
+  }
+  const requestDelayMs = options.requestDelayMs ?? 0;
+  if (!Number.isInteger(requestDelayMs) || requestDelayMs < 0) {
+    throw new Error(`Invalid Oregon ORESTAR requestDelayMs: ${options.requestDelayMs}`);
+  }
+  if (requestDelayMs > 0) {
+    await new Promise((resolve) => setTimeout(resolve, requestDelayMs));
   }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);

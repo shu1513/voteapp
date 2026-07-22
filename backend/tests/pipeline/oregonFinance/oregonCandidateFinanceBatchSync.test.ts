@@ -358,7 +358,7 @@ describe("oregonCandidateFinanceBatchSync", () => {
     const result = await syncDueOregonCandidateFinance({
       db,
       now: NOW,
-      orestarClientOptions: { fetchFn },
+      orestarClientOptions: { fetchFn, requestDelayMs: 0 },
       loadTransactionDetails: vi.fn(async () => []),
       syncOregonCandidateFinanceFn: vi.fn(),
     });
@@ -415,7 +415,7 @@ describe("oregonCandidateFinanceBatchSync", () => {
       db,
       now: NOW,
       autoLinkMissingLinks: false,
-      orestarClientOptions: { fetchFn },
+      orestarClientOptions: { fetchFn, requestDelayMs: 0 },
       syncOregonCandidateFinanceFn: syncOregonCandidateFinanceFn as never,
     });
 
