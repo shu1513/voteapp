@@ -220,8 +220,12 @@ function parseOregonDateYear(raw: string | null | undefined): number | null {
   return null;
 }
 
-function isElectionYearDetail(input: { detail: OregonOrestarTransactionDetail; electionYear: number }): boolean {
-  return parseOregonDateYear(input.detail.transactionDate) === input.electionYear;
+function isElectionCycleDetail(input: { detail: OregonOrestarTransactionDetail; electionYear: number }): boolean {
+  // Oregon money flows across the full two-year cycle, so accept the election
+  // year and the year before it (an exact-year match silently zeroed every
+  // prior-year transaction; same class of bug as Kentucky PR #379).
+  const year = parseOregonDateYear(input.detail.transactionDate);
+  return year !== null && (year === input.electionYear || year === input.electionYear - 1);
 }
 
 function isCommitteeDetail(input: { detail: OregonOrestarTransactionDetail; committeeId: string }): boolean {
@@ -236,19 +240,19 @@ function transactionSubTypeKey(detail: OregonOrestarTransactionDetail): string {
   return normalizeTextKey(detail.transactionSubType);
 }
 
-function isPositiveElectionYearDetail(input: {
+function isPositiveElectionCycleDetail(input: {
   detail: OregonOrestarTransactionDetail;
   electionYear: number;
 }): boolean {
   const amountCents = amountToCents(input.detail.amount);
-  return amountCents !== null && amountCents > 0 && isElectionYearDetail(input);
+  return amountCents !== null && amountCents > 0 && isElectionCycleDetail(input);
 }
 
 function isContributionDetail(input: { detail: OregonOrestarTransactionDetail; electionYear: number }): boolean {
   const type = transactionTypeKey(input.detail);
   const subType = transactionSubTypeKey(input.detail);
   return (
-    isPositiveElectionYearDetail(input) &&
+    isPositiveElectionCycleDetail(input) &&
     /\bCONTRIBUTION\b/.test(type) &&
     !/\b(REFUND|LOAN|REVERSAL|RETURNED)\b/.test(type) &&
     !/\b(REFUND|LOAN|REVERSAL|RETURNED)\b/.test(subType)
@@ -259,7 +263,7 @@ function isExpenditureDetail(input: { detail: OregonOrestarTransactionDetail; el
   const type = transactionTypeKey(input.detail);
   const subType = transactionSubTypeKey(input.detail);
   return (
-    isPositiveElectionYearDetail(input) &&
+    isPositiveElectionCycleDetail(input) &&
     /\bEXPENDITURE\b/.test(type) &&
     !/\b(REFUND|REVERSAL|RETURNED)\b/.test(type) &&
     !/\b(REFUND|REVERSAL|RETURNED)\b/.test(subType)

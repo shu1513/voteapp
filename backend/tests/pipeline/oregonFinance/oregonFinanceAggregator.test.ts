@@ -42,25 +42,30 @@ describe("oregonFinanceAggregator", () => {
         detail({ transactionId: "3", amount: 300, occupation: "Teacher", contributorPayeeName: "Alex Reed" }),
         detail({ transactionId: "4", amount: 99.99, occupation: "Retired", contributorPayeeName: "Sam Dale" }),
         detail({ transactionId: "5", amount: 1_000, filerCommitteeId: "99999" }),
+        // Prior cycle year: Oregon money is raised across [electionYear - 1,
+        // electionYear], so this row must count toward the totals.
         detail({ transactionId: "6", amount: 1_000, transactionDate: "01/01/2021" }),
         detail({ transactionId: "7", amount: -25 }),
         detail({ transactionId: "8", transactionSubType: "Refund", amount: 25 }),
+        // Outside the two-year cycle: stays excluded.
+        detail({ transactionId: "9", amount: 5_000, transactionDate: "12/31/2020" }),
       ],
       sourceUrl: "https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearch.do",
     });
 
     expect(result.summary).toEqual({
-      directContributionTotal: 10_549.99,
+      directContributionTotal: 11_549.99,
       sourceUrl: "https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearch.do",
     });
-    expect(result.matchedContributionRowCount).toBe(7);
-    expect(result.includedContributionRowCount).toBe(4);
+    expect(result.matchedContributionRowCount).toBe(8);
+    expect(result.includedContributionRowCount).toBe(5);
     expect(result.skippedContributionRowCount).toBe(3);
     expect(result.directBreakdowns).toEqual([
-      expect.objectContaining({ categoryType: "occupation", categoryName: "Partner", amount: 10_000, contributorCount: 1 }),
+      expect.objectContaining({ categoryType: "occupation", categoryName: "Partner", amount: 11_000, contributorCount: 1 }),
       expect.objectContaining({ categoryType: "occupation", categoryName: "Teacher", amount: 450, contributorCount: 2 }),
       expect.objectContaining({ categoryType: "occupation", categoryName: "Retired", amount: 99.99, contributorCount: 1 }),
       expect.objectContaining({ categoryType: "contribution_size", categoryName: "$5,000+", amount: 10_000, contributorCount: 1 }),
+      expect.objectContaining({ categoryType: "contribution_size", categoryName: "$1,000-$4,999", amount: 1_000, contributorCount: 1 }),
       expect.objectContaining({ categoryType: "contribution_size", categoryName: "$250-$499", amount: 300, contributorCount: 1 }),
       expect.objectContaining({ categoryType: "contribution_size", categoryName: "$100-$249", amount: 150, contributorCount: 1 }),
       expect.objectContaining({ categoryType: "contribution_size", categoryName: "$1-$99", amount: 99.99, contributorCount: 1 }),

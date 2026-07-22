@@ -326,7 +326,8 @@ describe("oregonCandidateFinanceBatchSync", () => {
       if (url.includes("gotoPublicTransactionSearchResults.do")) {
         expect(init?.method).toBe("POST");
         expect(String(init?.body)).toContain("cneSearchFilerCommitteeTxt=Tina+Kotek");
-        expect(String(init?.body)).toContain("cneSearchTranStartDate=01%2F01%2F2026");
+        expect(String(init?.body)).toContain("cneSearchTranStartDate=01%2F01%2F2025");
+        expect(String(init?.body)).toContain("cneSearchTranEndDate=12%2F31%2F2026");
         expect(String(init?.body)).toContain("OWASP_CSRFTOKEN=csrf-token-from-script");
         expect(init?.headers).toMatchObject({ cookie: "JSESSIONID_ORESTAR=abc123" });
         return htmlResponse(`
@@ -357,7 +358,7 @@ describe("oregonCandidateFinanceBatchSync", () => {
     const result = await syncDueOregonCandidateFinance({
       db,
       now: NOW,
-      orestarClientOptions: { fetchFn },
+      orestarClientOptions: { fetchFn, requestDelayMs: 0 },
       loadTransactionDetails: vi.fn(async () => []),
       syncOregonCandidateFinanceFn: vi.fn(),
     });
@@ -370,9 +371,69 @@ describe("oregonCandidateFinanceBatchSync", () => {
     expect(fetchFn).toHaveBeenCalledTimes(3);
   });
 
-  it("reports row failures without writing snapshots when no transaction detail loader is configured", async () => {
+  it("loads committee transactions with the default ORESTAR loader when no override is configured", async () => {
     const db = {
       query: vi.fn(async () => ({ rows: [dueRow()], rowCount: 1 })),
+      connect: vi.fn(),
+    };
+    const syncOregonCandidateFinanceFn = vi.fn(async () => ({ ok: true }));
+    const searchBodies: string[] = [];
+    const fetchFn = vi.fn(async (url: string, init?: RequestInit) => {
+      if (url.includes("gotoPublicTransactionSearchResults.do")) {
+        searchBodies.push(String(init?.body));
+        return htmlResponse(`
+          <div>Results : 1 record found</div>
+          <table>
+            <tr><th>Tran ID</th><th>Date</th><th>Status</th><th>Filer/Committee</th><th>Contributor/Payee</th><th>Sub Type</th><th>Amount</th></tr>
+            <tr>
+              <td><a href="/orestar/gotoPublicTransactionDetail.do?tranRsn=5500001">5500001</a></td>
+              <td>05/05/2025</td><td>Original</td>
+              <td><a href="/orestar/sooDetail.do?cneCommitteeId=4792">Friends of Tina Kotek</a></td>
+              <td>Jane Donor</td><td>Cash Contribution</td><td>$100.00</td>
+            </tr>
+          </table>
+        `);
+      }
+      if (url.includes("gotoPublicTransactionDetail.do")) {
+        return htmlResponse(`
+          <table>
+            <tr><td>Transaction ID</td><td>:</td><td>5500001</td></tr>
+            <tr><td>Transaction Date</td><td>:</td><td>05/05/2025</td></tr>
+            <tr><td>Transaction Type</td><td>:</td><td>Contribution</td></tr>
+            <tr><td>Amount</td><td>:</td><td>$100.00</td></tr>
+          </table>
+        `);
+      }
+      return htmlResponse(`
+        <form name="cneSearchForm" action="/orestar/gotoPublicTransactionSearchResults.do;JSESSIONID_ORESTAR=abc123">
+          <input type="hidden" name="OWASP_CSRFTOKEN" value="csrf-token-1">
+        </form>
+      `);
+    });
+
+    const result = await syncDueOregonCandidateFinance({
+      db,
+      now: NOW,
+      autoLinkMissingLinks: false,
+      orestarClientOptions: { fetchFn, requestDelayMs: 0 },
+      syncOregonCandidateFinanceFn: syncOregonCandidateFinanceFn as never,
+    });
+
+    expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
+    // The default loader queries the transaction search by committee ID over
+    // the full cycle window instead of scraping the (transaction-free)
+    // sooDetail.do source URL.
+    expect(searchBodies[0]).toContain("cneSearchFilerCommitteeId=4792");
+    expect(searchBodies[0]).toContain("cneSearchTranStartDate=01%2F01%2F2025");
+    expect(searchBodies[0]).toContain("cneSearchTranEndDate=12%2F31%2F2026");
+    expect(syncOregonCandidateFinanceFn.mock.calls[0]?.[0]).toMatchObject({
+      transactionDetails: [expect.objectContaining({ transactionId: "5500001" })],
+    });
+  });
+
+  it("reports row failures without writing snapshots when no transaction detail loader is configured", async () => {
+    const db = {
+      query: vi.fn(async () => ({ rows: [dueRow({ committee_id: null })], rowCount: 1 })),
       connect: vi.fn(),
     };
     const syncOregonCandidateFinanceFn = vi.fn();

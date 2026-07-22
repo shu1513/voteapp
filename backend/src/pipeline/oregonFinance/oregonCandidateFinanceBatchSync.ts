@@ -13,6 +13,7 @@ import {
 import { OREGON_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./oregonFinanceEligibleOffices.js";
 import {
   getOregonOrestarCandidateSearchRows,
+  getOregonOrestarCommitteeTransactionDetails,
   getOregonOrestarTransactionDetailsFromSourceUrl,
   type OregonOrestarClientOptions,
 } from "./oregonOrestarClient.js";
@@ -102,6 +103,9 @@ const DEFAULT_MAX_CANDIDATES = 25;
 const DEFAULT_STALE_AFTER_DAYS = 7;
 const DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS = 1;
 const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 730;
+// A batch crawls hundreds of sequential ORESTAR pages; without a pause the
+// portal starts answering 403 partway through (seen live 2026-07-21).
+const DEFAULT_ORESTAR_REQUEST_DELAY_MS = 250;
 
 function assertValidDate(date: Date, label: string): void {
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
@@ -138,8 +142,31 @@ function mapDueRow(row: OregonCandidateFinanceDueQueryRow): OregonCandidateFinan
   };
 }
 
-async function defaultLoadTransactionDetails(row: OregonCandidateFinanceDueRow): Promise<readonly OregonOrestarTransactionDetail[]> {
-  return getOregonOrestarTransactionDetailsFromSourceUrl({ sourceUrl: row.sourceUrl });
+async function defaultLoadTransactionDetails(
+  row: OregonCandidateFinanceDueRow,
+  options?: OregonOrestarClientOptions
+): Promise<readonly OregonOrestarTransactionDetail[]> {
+  // Link source URLs point at the committee's sooDetail.do page, which lists
+  // no transactions — scraping it always produced zero rows and $0 summaries.
+  // Query the ORESTAR transaction search by committee ID instead; the stored
+  // source URL is only a fallback for legacy links without a committee ID.
+  //
+  // KNOWN LIMITATION: this search filters on the candidate committee as the
+  // FILER, so it only sees the committee's own transactions. Independent
+  // expenditures are filed by outside committees (the candidate appears only
+  // as the association target), so Oregon outside support/oppose stays 0
+  // until a separate target-candidate IE search is built. That has always
+  // been true of this batch path — the old source-URL scrape returned zero
+  // rows of any kind.
+  const committeeId = row.committeeId?.trim();
+  if (committeeId && /^\d+$/.test(committeeId)) {
+    return getOregonOrestarCommitteeTransactionDetails({
+      committeeId,
+      electionYear: row.electionYear,
+      options,
+    });
+  }
+  return getOregonOrestarTransactionDetailsFromSourceUrl({ sourceUrl: row.sourceUrl, options });
 }
 
 async function defaultLoadCandidateSearchRows(
@@ -268,10 +295,15 @@ export async function syncDueOregonCandidateFinance(
   );
   const dryRun = input.dryRun === true;
   const syncFn = input.syncOregonCandidateFinanceFn ?? syncOregonCandidateFinance;
-  const loadTransactionDetails = input.loadTransactionDetails ?? defaultLoadTransactionDetails;
+  const orestarClientOptions: OregonOrestarClientOptions = {
+    requestDelayMs: DEFAULT_ORESTAR_REQUEST_DELAY_MS,
+    ...input.orestarClientOptions,
+  };
+  const loadTransactionDetails =
+    input.loadTransactionDetails ?? ((row) => defaultLoadTransactionDetails(row, orestarClientOptions));
   const loadCandidateSearchRows =
     input.loadCandidateSearchRows ??
-    ((candidateElection) => defaultLoadCandidateSearchRows(candidateElection, input.orestarClientOptions));
+    ((candidateElection) => defaultLoadCandidateSearchRows(candidateElection, orestarClientOptions));
   let autoLinkAttemptedCount = 0;
   let autoLinkLinkedCount = 0;
 

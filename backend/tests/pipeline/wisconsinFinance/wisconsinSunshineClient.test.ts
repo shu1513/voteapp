@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
+  WISCONSIN_SUNSHINE_TRANSACTIONS_URL,
   WisconsinSunshineClientError,
   buildWisconsinSunshineCommitteeSearchInput,
   buildWisconsinSunshineContributionTransactionInput,
@@ -365,8 +366,8 @@ describe("wisconsinSunshineClient", () => {
     ]);
   });
 
-  it("caps paged reads defensively", async () => {
-    const fetchImpl = vi.fn().mockResolvedValue(
+  it("caps paged reads defensively when date splitting is disabled", async () => {
+    const fetchImpl = vi.fn().mockImplementation(async () =>
       trpcResponse({
         results: [{ amount: 25, from_entity: { entityType: { name: "Individual" } } }],
       })
@@ -375,11 +376,105 @@ describe("wisconsinSunshineClient", () => {
     await expect(
       getWisconsinSunshineContributionSizeAggregates(
         { entityId: 16621, electionYear: 2026, limit: 5 },
-        { fetchImpl, timeoutMs: 1000, pageLimit: 1, maxPages: 2 }
+        { fetchImpl, timeoutMs: 1000, pageLimit: 1, maxPages: 2, maxDateSplitDepth: 0 }
       )
-    ).rejects.toMatchObject({ code: "bad_response" });
+    ).rejects.toMatchObject({ code: "page_overflow" });
 
     expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
+  it("splits an over-full date window and merges the halves", async () => {
+    const windowOf = (url: string): { dateFrom: string; dateTo: string; skip: number } => {
+      const input = JSON.parse(new URL(url).searchParams.get("input") ?? "{}") as {
+        "0": { json: { dateFrom: string; dateTo: string; skip: number } };
+      };
+      const { dateFrom, dateTo, skip } = input["0"].json;
+      return { dateFrom, dateTo, skip };
+    };
+    const row = (id: string, amount: number) => ({
+      id,
+      amount,
+      from_entity: { entityType: { name: "Individual" } },
+    });
+    const fetchImpl = vi.fn(async (url: string) => {
+      const { dateFrom, dateTo } = windowOf(url);
+      // The full cycle window [2025-01-01, 2026-12-31] keeps returning full
+      // pages (overflow); each single-year half fits on one partial page.
+      if (dateFrom === "2025-01-01" && dateTo === "2026-12-31") {
+        return trpcResponse({ results: [row("overflow-a", 1), row("overflow-b", 1)] });
+      }
+      if (dateFrom === "2025-01-01") {
+        return trpcResponse({ results: [row("a", 150)] });
+      }
+      return trpcResponse({ results: [row("b", 2_000)] });
+    }) as unknown as typeof fetch;
+
+    await expect(
+      getWisconsinSunshineContributionSizeAggregates(
+        { entityId: 16621, electionYear: 2026, limit: 5 },
+        { fetchImpl, timeoutMs: 1000, pageLimit: 2, maxPages: 1 }
+      )
+    ).resolves.toEqual([
+      { categoryName: "1000_4999", amount: 2_000, count: 1, sourceUrl: WISCONSIN_SUNSHINE_TRANSACTIONS_URL },
+      { categoryName: "100_249", amount: 150, count: 1, sourceUrl: WISCONSIN_SUNSHINE_TRANSACTIONS_URL },
+    ]);
+
+    const windows = fetchImpl.mock.calls.map((call) => windowOf(String(call[0])));
+    expect(windows).toEqual([
+      { dateFrom: "2025-01-01", dateTo: "2026-12-31", skip: 0 },
+      { dateFrom: "2025-01-01", dateTo: "2025-12-31", skip: 0 },
+      { dateFrom: "2026-01-01", dateTo: "2026-12-31", skip: 0 },
+    ]);
+  });
+
+  it("dedupes rows that appear in both halves of a split window", async () => {
+    const windowOf = (url: string): { dateFrom: string; dateTo: string } =>
+      (JSON.parse(new URL(url).searchParams.get("input") ?? "{}") as {
+        "0": { json: { dateFrom: string; dateTo: string } };
+      })["0"].json;
+    const row = (id: string) => ({
+      id,
+      amount: 100,
+      fromOccupationTitle: "Teacher",
+      from_entity: { entityType: { name: "Individual" } },
+    });
+    const fetchImpl = vi.fn(async (url: string) => {
+      const { dateFrom, dateTo } = windowOf(url);
+      if (dateFrom === "2025-01-01" && dateTo === "2026-12-31") {
+        return trpcResponse({ results: [row("full-1"), row("full-2"), row("full-3")] });
+      }
+      if (dateFrom === "2025-01-01") {
+        return trpcResponse({ results: [row("a"), row("b")] });
+      }
+      // Boundary row "b" shows up in both halves; it must only count once.
+      return trpcResponse({ results: [row("b"), row("c")] });
+    }) as unknown as typeof fetch;
+
+    await expect(
+      getWisconsinSunshineDirectOccupationAggregates(
+        { entityId: 16621, electionYear: 2026, limit: 5 },
+        { fetchImpl, timeoutMs: 1000, pageLimit: 3, maxPages: 1 }
+      )
+    ).resolves.toEqual([
+      { categoryName: "TEACHER", amount: 300, count: 3, sourceUrl: WISCONSIN_SUNSHINE_TRANSACTIONS_URL },
+    ]);
+  });
+
+  it("rethrows page overflow once a window can no longer be split", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue(
+      trpcResponse({
+        results: [{ id: "x", amount: 25, from_entity: { entityType: { name: "Individual" } } }],
+      })
+    ) as unknown as typeof fetch;
+
+    await expect(
+      getWisconsinSunshineContributionSizeAggregates(
+        { entityId: 16621, electionYear: 2026, dateFrom: "2026-01-01", dateTo: "2026-01-01", limit: 5 },
+        { fetchImpl, timeoutMs: 1000, pageLimit: 1, maxPages: 1 }
+      )
+    ).rejects.toMatchObject({ code: "page_overflow" });
+
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
   });
 
   it("throws structured errors for HTTP and malformed tRPC responses", async () => {

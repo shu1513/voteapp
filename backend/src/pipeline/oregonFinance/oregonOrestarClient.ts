@@ -30,6 +30,8 @@ export type OregonOrestarClientOptions = {
   fetchFn?: OregonOrestarFetch;
   userAgent?: string;
   timeoutMs?: number;
+  /** Pause before each ORESTAR request; keeps long detail crawls under the portal's rate limit. */
+  requestDelayMs?: number;
 };
 
 const DEFAULT_TIMEOUT_MS = 60_000;
@@ -98,6 +100,13 @@ async function fetchOrestarHtmlPage(
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   if (!Number.isInteger(timeoutMs) || timeoutMs <= 0) {
     throw new Error(`Invalid Oregon ORESTAR timeoutMs: ${options.timeoutMs}`);
+  }
+  const requestDelayMs = options.requestDelayMs ?? 0;
+  if (!Number.isInteger(requestDelayMs) || requestDelayMs < 0) {
+    throw new Error(`Invalid Oregon ORESTAR requestDelayMs: ${options.requestDelayMs}`);
+  }
+  if (requestDelayMs > 0) {
+    await new Promise((resolve) => setTimeout(resolve, requestDelayMs));
   }
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -176,27 +185,30 @@ function assertOregonSearchElectionYear(electionYear: number): void {
   }
 }
 
-function buildOregonCandidateSearchFormData(input: {
-  candidateName: string;
+function buildOregonTransactionSearchFormData(input: {
   electionYear: number;
   csrfToken: string;
+  committeeText?: string;
+  committeeId?: string;
+  pageIdx?: number;
 }): URLSearchParams {
-  const candidateName = input.candidateName.trim();
-  if (!candidateName) {
-    throw new Error("Oregon ORESTAR candidate search requires candidateName");
-  }
   assertOregonSearchElectionYear(input.electionYear);
+  const pageIdx = input.pageIdx ?? 0;
   const params = new URLSearchParams();
-  params.set("cneSearchButtonName", "search");
-  params.set("cneSearchPageIdx", "0");
+  params.set("cneSearchButtonName", pageIdx > 0 ? "next" : "search");
+  params.set("cneSearchPageIdx", String(pageIdx));
   params.set("cneSearchContributorTypeName", "");
   params.set("cneSearchTranTypeName", "");
   params.set("cneSearchTranSubTypeName", "");
   params.set("cneSearchTranPurposeName", "");
-  params.set("cneSearchFilerCommitteeId", "");
-  params.set("cneSearchFilerCommitteeTxt", candidateName);
+  params.set("cneSearchFilerCommitteeId", input.committeeId ?? "");
+  params.set("cneSearchFilerCommitteeTxt", input.committeeText ?? "");
   params.set("cneSearchFilerCommitteeTxtSearchType", "C");
-  params.set("cneSearchTranStartDate", formatOregonDate(input.electionYear, 1, 1));
+  // Oregon candidates raise money across the full two-year cycle, so the
+  // window must span [electionYear - 1 .. electionYear] (an election-year-only
+  // window returns ~nothing mid-cycle; same class of bug as Maine PR #375 and
+  // Kentucky PR #379).
+  params.set("cneSearchTranStartDate", formatOregonDate(input.electionYear - 1, 1, 1));
   params.set("cneSearchTranEndDate", formatOregonDate(input.electionYear, 12, 31));
   params.set("cneSearchTranFiledStartDate", "");
   params.set("cneSearchTranFiledEndDate", "");
@@ -243,17 +255,13 @@ export async function getOregonOrestarSearchForm(
   };
 }
 
-export async function getOregonOrestarCandidateSearchRows(input: {
-  candidateName: string;
-  electionYear: number;
+async function postOregonTransactionSearchPage(input: {
+  form: OregonOrestarSearchForm;
+  formData: URLSearchParams;
   options?: OregonOrestarClientOptions;
-}): Promise<OregonOrestarTransactionSearchResultRow[]> {
-  const form = await getOregonOrestarSearchForm(input.options);
-  if (!form.csrfToken) {
-    throw new Error("ORESTAR transaction search CSRF token not found");
-  }
+}): Promise<OregonOrestarTransactionSearchResults> {
   const { html } = await fetchOrestarHtmlPage(
-    form.actionUrl,
+    input.form.actionUrl,
     input.options,
     {
       method: "POST",
@@ -261,16 +269,136 @@ export async function getOregonOrestarCandidateSearchRows(input: {
         accept: "text/html,application/xhtml+xml",
         "content-type": "application/x-www-form-urlencoded",
         referer: OREGON_ORESTAR_TRANSACTION_SEARCH_URL,
-        ...(form.cookieHeader ? { cookie: form.cookieHeader } : {}),
+        ...(input.form.cookieHeader ? { cookie: input.form.cookieHeader } : {}),
       },
-      body: buildOregonCandidateSearchFormData({
-        candidateName: input.candidateName,
-        electionYear: input.electionYear,
-        csrfToken: form.csrfToken,
-      }).toString(),
+      body: input.formData.toString(),
     }
   );
-  return parseOregonOrestarTransactionSearchResults(html, form.actionUrl).rows;
+  return parseOregonOrestarTransactionSearchResults(html, input.form.actionUrl);
+}
+
+export async function getOregonOrestarCandidateSearchRows(input: {
+  candidateName: string;
+  electionYear: number;
+  options?: OregonOrestarClientOptions;
+}): Promise<OregonOrestarTransactionSearchResultRow[]> {
+  const candidateName = input.candidateName.trim();
+  if (!candidateName) {
+    throw new Error("Oregon ORESTAR candidate search requires candidateName");
+  }
+  const form = await getOregonOrestarSearchForm(input.options);
+  if (!form.csrfToken) {
+    throw new Error("ORESTAR transaction search CSRF token not found");
+  }
+  const results = await postOregonTransactionSearchPage({
+    form,
+    formData: buildOregonTransactionSearchFormData({
+      electionYear: input.electionYear,
+      csrfToken: form.csrfToken,
+      committeeText: candidateName,
+    }),
+    options: input.options,
+  });
+  return results.rows;
+}
+
+export async function getOregonOrestarCommitteeTransactionDetails(input: {
+  committeeId: string;
+  electionYear: number;
+  maxDetails?: number;
+  maxPages?: number;
+  options?: OregonOrestarClientOptions;
+}): Promise<OregonOrestarTransactionDetail[]> {
+  const committeeId = input.committeeId.trim();
+  if (!/^\d+$/.test(committeeId)) {
+    throw new Error(`Oregon ORESTAR committee transaction search requires a numeric committeeId: ${input.committeeId}`);
+  }
+  const maxDetails = input.maxDetails ?? 500;
+  if (!Number.isInteger(maxDetails) || maxDetails <= 0) {
+    throw new Error(`Invalid Oregon ORESTAR maxDetails: ${input.maxDetails}`);
+  }
+  const maxPages = input.maxPages ?? 40;
+  if (!Number.isInteger(maxPages) || maxPages <= 0) {
+    throw new Error(`Invalid Oregon ORESTAR maxPages: ${input.maxPages}`);
+  }
+
+  const form = await getOregonOrestarSearchForm(input.options);
+  if (!form.csrfToken) {
+    throw new Error("ORESTAR transaction search CSRF token not found");
+  }
+
+  // ORESTAR search results paginate by re-POSTing the form with an
+  // incremented cneSearchPageIdx (the "Next" control is a form submit, not a
+  // link, so result pages have no followable next-page URL).
+  //
+  // The contract is complete-or-throw: a summary persisted from a partial
+  // crawl silently understates a candidate's money, so any sign of an
+  // incomplete result set (committee larger than maxDetails, a repeated or
+  // degraded page, a row the parser could not link to its detail page) fails
+  // the sync and leaves the candidate due instead.
+  const details: OregonOrestarTransactionDetail[] = [];
+  const seenTransactionIds = new Set<string>();
+  let expectedResultCount: number | null = null;
+  for (let pageIdx = 0; pageIdx < maxPages; pageIdx += 1) {
+    const results = await postOregonTransactionSearchPage({
+      form,
+      formData: buildOregonTransactionSearchFormData({
+        electionYear: input.electionYear,
+        csrfToken: form.csrfToken,
+        committeeId,
+        pageIdx,
+      }),
+      options: input.options,
+    });
+    if (pageIdx === 0) {
+      expectedResultCount = results.resultCount;
+      if (expectedResultCount !== null && expectedResultCount > maxDetails) {
+        throw new Error(
+          `ORESTAR committee ${committeeId} has ${expectedResultCount} transactions, more than maxDetails=${maxDetails}; refusing to persist a truncated total`
+        );
+      }
+    }
+    if (results.rows.length === 0) {
+      // A linked committee was matched through its own transactions, so a
+      // rowless FIRST page with no "Results : N records found" marker is a
+      // soft-blocked/degraded portal response, not an empty committee. Fail
+      // closed instead of writing a silent $0 summary.
+      if (pageIdx === 0 && results.resultCount === null) {
+        throw new Error(
+          `ORESTAR returned an empty search page for committee ${committeeId}; treating as blocked rather than $0`
+        );
+      }
+      break;
+    }
+    let newRowCount = 0;
+    for (const row of results.rows) {
+      if (seenTransactionIds.has(row.transactionId)) {
+        continue;
+      }
+      seenTransactionIds.add(row.transactionId);
+      newRowCount += 1;
+      if (!row.detailUrl) {
+        // Still counts as a new row so pagination keeps advancing; the
+        // completeness check below fails the crawl over the missing detail.
+        continue;
+      }
+      details.push(await getOregonOrestarTransactionDetail({ url: row.detailUrl, options: input.options }));
+    }
+    if (newRowCount === 0) {
+      // The portal served a page of already-seen rows; stop rather than loop,
+      // and let the completeness check decide whether the crawl is whole.
+      break;
+    }
+    if (expectedResultCount !== null && seenTransactionIds.size >= expectedResultCount) {
+      break;
+    }
+  }
+  if (expectedResultCount !== null && details.length < expectedResultCount) {
+    throw new Error(
+      `ORESTAR returned ${details.length} of ${expectedResultCount} transactions for committee ${committeeId}; refusing to persist a truncated total`
+    );
+  }
+  return details;
 }
 
 export async function getOregonOrestarTransactionSearchResults(input: {
