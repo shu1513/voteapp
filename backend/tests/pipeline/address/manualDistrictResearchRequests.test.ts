@@ -522,13 +522,13 @@ describe("status transitions", () => {
     // Queued districts almost always carry an old stamp (that staleness is why
     // they were enqueued); success must require a stamp produced during this
     // claim or a claim-and-instant-complete would pass with no work done.
-    expect(sql).toContain("last_elections_searched_at >= manual_district_research_requests.claimed_at");
+    expect(sql).toContain("last_elections_searched_at >= r.claimed_at");
     expect(sql).toContain("FROM public.manual_research_deferrals md");
     expect(sql).toContain("md.election_id IS NULL");
     expect(sql).toContain("md.stage = 'elections'");
     expect(sql).toContain("md.status = 'deferred'");
     expect(sql).toContain("md.blocked_until > CURRENT_DATE");
-    expect(sql).toContain("md.updated_at >= manual_district_research_requests.claimed_at");
+    expect(sql).toContain("md.updated_at >= r.claimed_at");
   });
 
   it("markFailed truncates the error and targets open statuses", async () => {

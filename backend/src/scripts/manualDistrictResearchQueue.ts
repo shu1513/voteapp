@@ -10,6 +10,7 @@ import {
   markManualDistrictResearchRequestSucceeded,
   releaseManualDistrictResearchRequest,
   releaseStaleManualDistrictResearchClaims,
+  MANUAL_DISTRICT_RESEARCH_CURRENT_ELECTIONS_DEFERRAL_SQL,
   MANUAL_RESEARCH_AGENT_KINDS,
   type ManualResearchAgentKind,
 } from "../pipeline/address/manualDistrictResearchRequests.js";
@@ -123,16 +124,7 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
           SELECT
             d.last_elections_searched_at,
             r.claimed_at,
-            EXISTS (
-              SELECT 1
-              FROM public.manual_research_deferrals md
-              WHERE md.district_id = r.district_id
-                AND md.election_id IS NULL
-                AND md.stage = 'elections'
-                AND md.status = 'deferred'
-                AND md.blocked_until > CURRENT_DATE
-                AND md.updated_at >= r.claimed_at
-            ) AS has_current_elections_deferral
+            ${MANUAL_DISTRICT_RESEARCH_CURRENT_ELECTIONS_DEFERRAL_SQL} AS has_current_elections_deferral
           FROM public.manual_district_research_requests r
           JOIN public.districts d ON d.id = r.district_id
           WHERE r.id = $1
