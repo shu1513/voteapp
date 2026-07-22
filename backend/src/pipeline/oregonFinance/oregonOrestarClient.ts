@@ -10,6 +10,10 @@ import {
   type OregonOrestarTransactionSearchResultRow,
   type OregonOrestarTransactionSearchResults,
 } from "./oregonOrestarParser.js";
+import {
+  parseOregonOrestarCommitteeExport,
+  type OregonOrestarCommitteeDirectoryRow,
+} from "./oregonOrestarCommitteeExport.js";
 import { parseOregonOrestarTransactionExport } from "./oregonOrestarTransactionExport.js";
 
 export type OregonOrestarFetchResponse = {
@@ -40,6 +44,7 @@ const DEFAULT_TIMEOUT_MS = 60_000;
 const DEFAULT_USER_AGENT = "voteApp Oregon campaign finance sync";
 const GENERIC_SEARCH_URL = new URL(OREGON_ORESTAR_TRANSACTION_SEARCH_URL).toString();
 const OREGON_ORESTAR_CSRF_GUARD_SCRIPT_URL = `${OREGON_ORESTAR_BASE_URL}/orestar/JavaScriptServlet`;
+const OREGON_ORESTAR_COMMITTEE_SEARCH_URL = `${OREGON_ORESTAR_BASE_URL}/orestar/GotoSearchByElection.do`;
 
 function parseAllowedOrestarUrl(url: string): URL | null {
   let parsed: URL;
@@ -57,6 +62,65 @@ function normalizeAllowedOrestarUrl(url: string): string {
     throw new Error(`Oregon ORESTAR URL must use ${OREGON_ORESTAR_BASE_URL}`);
   }
   return parsed.toString();
+}
+
+function htmlAttribute(tag: string, name: string): string | null {
+  const match = new RegExp(`\\b${name}\\s*=\\s*["']([^"']*)["']`, "i").exec(tag);
+  return match?.[1]?.replace(/&amp;/gi, "&") ?? null;
+}
+
+function hiddenInputValue(html: string, name: string): string | null {
+  const inputTags = html.match(/<input\b[^>]*>/gi) ?? [];
+  for (const tag of inputTags) {
+    if (htmlAttribute(tag, "name") === name) {
+      return htmlAttribute(tag, "value")?.trim() || null;
+    }
+  }
+  return null;
+}
+
+function parseOregonCommitteeSearchForm(
+  html: string,
+  sourceUrl: string
+): OregonOrestarSearchForm {
+  const formTags = html.match(/<form\b[^>]*>/gi) ?? [];
+  const formTag = formTags.find(
+    (tag) => htmlAttribute(tag, "name") === "CommitteeSearchDynaFormSecond"
+  );
+  if (!formTag) {
+    throw new Error("ORESTAR committee search form not found");
+  }
+  const action = htmlAttribute(formTag, "action");
+  if (!action) {
+    throw new Error("ORESTAR committee search form action not found");
+  }
+  const actionUrl = normalizeAllowedOrestarUrl(new URL(action, sourceUrl).toString());
+  return {
+    actionUrl,
+    csrfToken: hiddenInputValue(html, "OWASP_CSRFTOKEN"),
+    cookieHeader: null,
+    sessionId: actionUrl.match(/;JSESSIONID_ORESTAR=([^/?#]+)/i)?.[1] ?? null,
+  };
+}
+
+function parseOregonCommitteeSearchResults(html: string, sourceUrl: string): {
+  resultCount: number | null;
+  exportUrl: string | null;
+} {
+  const text = html.replace(/<[^>]+>/g, " ").replace(/&nbsp;/gi, " ").replace(/\s+/g, " ");
+  const countMatch = /Results\s*:\s*([0-9,]+)\s+records?\s+found/i.exec(text);
+  const links = html.match(/<a\b[^>]*>/gi) ?? [];
+  const exportHref = links
+    .map((tag) => htmlAttribute(tag, "href"))
+    .find((href): href is string => Boolean(href && /(?:^|\/)XcelSooSearch(?:[?;#]|$)/i.test(href)));
+  return {
+    resultCount: countMatch?.[1]
+      ? Number.parseInt(countMatch[1].replace(/,/g, ""), 10)
+      : null,
+    exportUrl: exportHref
+      ? normalizeAllowedOrestarUrl(new URL(exportHref, sourceUrl).toString())
+      : null,
+  };
 }
 
 function getFetch(fetchFn: OregonOrestarFetch | undefined): OregonOrestarFetch {
@@ -258,6 +322,26 @@ export async function getOregonOrestarSearchForm(
     csrfToken: await fetchOrestarCsrfToken({
       cookies: page.cookies,
       referer: OREGON_ORESTAR_TRANSACTION_SEARCH_URL,
+      options,
+    }),
+  };
+}
+
+async function getOregonOrestarCommitteeSearchForm(
+  options: OregonOrestarClientOptions = {}
+): Promise<OregonOrestarSearchForm> {
+  const page = await fetchOrestarHtmlPage(OREGON_ORESTAR_COMMITTEE_SEARCH_URL, options);
+  const form = parseOregonCommitteeSearchForm(page.html, OREGON_ORESTAR_COMMITTEE_SEARCH_URL);
+  const pageCookieHeader = cookieHeader(page.cookies);
+  if (form.csrfToken) {
+    return { ...form, cookieHeader: pageCookieHeader };
+  }
+  return {
+    ...form,
+    cookieHeader: pageCookieHeader,
+    csrfToken: await fetchOrestarCsrfToken({
+      cookies: page.cookies,
+      referer: OREGON_ORESTAR_COMMITTEE_SEARCH_URL,
       options,
     }),
   };
@@ -515,6 +599,77 @@ export async function getOregonOrestarCommitteeContributionDetailsFromExport(inp
     );
   }
   return details;
+}
+
+/**
+ * Loads every active candidate committee from the Statement of Organization
+ * directory. Committee type is an independent by-election search criterion,
+ * so CANDALL covers every election year without the AJAX-populated election
+ * selector: one form GET, optional CSRF POST, one search POST, one export GET.
+ */
+export async function getOregonOrestarCandidateCommitteeDirectory(input: {
+  options?: OregonOrestarClientOptions;
+} = {}): Promise<OregonOrestarCommitteeDirectoryRow[]> {
+  const form = await getOregonOrestarCommitteeSearchForm(input.options);
+  if (!form.csrfToken) {
+    throw new Error("ORESTAR committee search CSRF token not found");
+  }
+
+  const formData = new URLSearchParams();
+  formData.set("yearActive", "");
+  formData.set("election", "");
+  formData.set("filerType", "CANDALL");
+  formData.set("committeeOffice", "");
+  formData.set("locationLevel", "");
+  formData.set("partyAffiliation", "");
+  formData.set("controlledCommCanLastName", "");
+  formData.set("discontinuedSOO", "false");
+  formData.set("approvedSOO", "on");
+  formData.set("pendingApprovalSOO", "on");
+  formData.set("insufficientSOO", "on");
+  formData.set("resolvedSOO", "on");
+  formData.set("rejectedSOO", "false");
+  formData.set("buttonName", "electionSearch");
+  formData.set("search", "Submit");
+  formData.set("OWASP_CSRFTOKEN", form.csrfToken);
+
+  const { html } = await fetchOrestarHtmlPage(form.actionUrl, input.options, {
+    method: "POST",
+    headers: {
+      accept: "text/html,application/xhtml+xml",
+      "content-type": "application/x-www-form-urlencoded",
+      referer: OREGON_ORESTAR_COMMITTEE_SEARCH_URL,
+      ...(form.cookieHeader ? { cookie: form.cookieHeader } : {}),
+    },
+    body: formData.toString(),
+  });
+  const results = parseOregonCommitteeSearchResults(html, form.actionUrl);
+  if (results.resultCount === null) {
+    throw new Error(
+      "ORESTAR committee search page omitted its result count; treating as blocked rather than using a partial directory"
+    );
+  }
+  if (results.resultCount === 0) {
+    return [];
+  }
+  if (!results.exportUrl) {
+    throw new Error("ORESTAR committee search results did not include an export link");
+  }
+
+  const bytes = await fetchOrestarBytes(results.exportUrl, input.options, {
+    headers: {
+      accept: "application/vnd.ms-excel,*/*",
+      referer: form.actionUrl,
+      ...(form.cookieHeader ? { cookie: form.cookieHeader } : {}),
+    },
+  });
+  const rows = parseOregonOrestarCommitteeExport(bytes);
+  if (rows.length !== results.resultCount) {
+    throw new Error(
+      `ORESTAR committee export returned ${rows.length} of ${results.resultCount} rows; refusing to use a truncated directory`
+    );
+  }
+  return rows;
 }
 
 export async function getOregonOrestarTransactionSearchResults(input: {

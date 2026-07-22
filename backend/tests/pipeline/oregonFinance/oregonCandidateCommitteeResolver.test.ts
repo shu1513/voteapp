@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { resolveOregonCandidateCommitteeFromSearchRows } from "../../../src/pipeline/oregonFinance/oregonCandidateCommitteeResolver.js";
+import {
+  resolveOregonCandidateCommitteeFromSearchRows,
+  type OregonCandidateCommitteeSearchRow,
+} from "../../../src/pipeline/oregonFinance/oregonCandidateCommitteeResolver.js";
 import type { OregonOrestarTransactionSearchResultRow } from "../../../src/pipeline/oregonFinance/oregonOrestarParser.js";
 
 function row(overrides: Partial<OregonOrestarTransactionSearchResultRow> = {}): OregonOrestarTransactionSearchResultRow {
@@ -17,6 +20,19 @@ function row(overrides: Partial<OregonOrestarTransactionSearchResultRow> = {}): 
     isInKindExpenditure: false,
     detailUrl: "https://secure.sos.state.or.us/orestar/gotoPublicTransactionDetail.do?tranRsn=4458653",
     committeeUrl: "https://secure.sos.state.or.us/orestar/sooDetail.do?cneCommitteeId=4792",
+    ...overrides,
+  };
+}
+
+function directoryRow(overrides: Partial<OregonCandidateCommitteeSearchRow> = {}): OregonCandidateCommitteeSearchRow {
+  return {
+    filerCommitteeName: "Education First PAC",
+    filerCommitteeId: "21727",
+    committeeUrl: "https://secure.sos.state.or.us/orestar/sooDetail.do?cneCommitteeId=21727",
+    candidateFirstName: "Courtney",
+    candidateLastName: "Bangs",
+    candidateOffice: "State Representative District 32",
+    activeElection: "2026 General Election",
     ...overrides,
   };
 }
@@ -66,6 +82,80 @@ describe("oregonCandidateCommitteeResolver", () => {
       matches: expect.arrayContaining([
         expect.objectContaining({ committeeId: "4792" }),
         expect.objectContaining({ committeeId: "9999" }),
+      ]),
+    });
+  });
+
+  it("matches structured candidate identity when the committee name omits the candidate", () => {
+    expect(
+      resolveOregonCandidateCommitteeFromSearchRows({
+        candidateName: "Courtney Bangs",
+        electionYear: 2026,
+        officeName: "State Lower Chamber Legislator",
+        district: "32",
+        searchRows: [directoryRow()],
+      })
+    ).toEqual({
+      status: "matched",
+      committeeId: "21727",
+      committeeName: "Education First PAC",
+      confidence: "candidate_identity",
+      source: "orestar_public",
+      sourceUrl: "https://secure.sos.state.or.us/orestar/sooDetail.do?cneCommitteeId=21727",
+      matchedCommitteeRowCount: 1,
+    });
+  });
+
+  it("uses election, office, and district context to disambiguate structured same-name rows", () => {
+    expect(
+      resolveOregonCandidateCommitteeFromSearchRows({
+        candidateName: "Alex Lee",
+        electionYear: 2026,
+        officeName: "State Lower Chamber Legislator",
+        district: "32",
+        searchRows: [
+          directoryRow({
+            filerCommitteeId: "100",
+            filerCommitteeName: "Alex Lee Senate Committee",
+            candidateFirstName: "Alex",
+            candidateLastName: "Lee",
+            candidateOffice: "State Senator District 4",
+            activeElection: "2024 General Election",
+          }),
+          directoryRow({
+            filerCommitteeId: "200",
+            filerCommitteeName: "Future Oregon PAC",
+            candidateFirstName: "Alex",
+            candidateLastName: "Lee",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      committeeId: "200",
+      confidence: "candidate_identity_and_context",
+      matchedCommitteeRowCount: 1,
+    });
+  });
+
+  it("keeps structured same-name matches ambiguous when context cannot separate them", () => {
+    expect(
+      resolveOregonCandidateCommitteeFromSearchRows({
+        candidateName: "Alex Lee",
+        electionYear: 2026,
+        officeName: "State Lower Chamber Legislator",
+        district: "32",
+        searchRows: [
+          directoryRow({ filerCommitteeId: "100", candidateFirstName: "Alex", candidateLastName: "Lee" }),
+          directoryRow({ filerCommitteeId: "200", candidateFirstName: "Alex", candidateLastName: "Lee" }),
+        ],
+      })
+    ).toMatchObject({
+      status: "ambiguous",
+      matchedCommitteeRowCount: 2,
+      matches: expect.arrayContaining([
+        expect.objectContaining({ committeeId: "100" }),
+        expect.objectContaining({ committeeId: "200" }),
       ]),
     });
   });

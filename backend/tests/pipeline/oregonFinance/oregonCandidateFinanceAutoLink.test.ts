@@ -127,6 +127,10 @@ describe("oregonCandidateFinanceAutoLink", () => {
     expect(resolveCandidateCommittee).toHaveBeenCalledWith({
       candidateName: "Tina Kotek",
       searchRows,
+      electionYear: 2026,
+      officeName: "Governor",
+      officeScope: "statewide",
+      district: null,
     });
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       CANDIDATE_ID,

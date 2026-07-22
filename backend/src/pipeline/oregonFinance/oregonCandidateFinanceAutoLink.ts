@@ -3,11 +3,11 @@ import type { Pool, PoolClient } from "pg";
 import {
   normalizeOregonCandidateNameForStorage,
   resolveOregonCandidateCommitteeFromSearchRows,
+  type OregonCandidateCommitteeSearchRow,
   type OregonCandidateCommitteeResolver,
 } from "./oregonCandidateCommitteeResolver.js";
 import { OREGON_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./oregonFinanceEligibleOffices.js";
 import { upsertOregonFinanceLink } from "./oregonFinanceWriter.js";
-import type { OregonOrestarTransactionSearchResultRow } from "./oregonOrestarParser.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -23,7 +23,7 @@ export type OregonFinanceAutoLinkCandidateElection = {
 
 export type OregonCandidateSearchRowsLoader = (
   candidateElection: OregonFinanceAutoLinkCandidateElection
-) => Promise<readonly OregonOrestarTransactionSearchResultRow[]> | readonly OregonOrestarTransactionSearchResultRow[];
+) => Promise<readonly OregonCandidateCommitteeSearchRow[]> | readonly OregonCandidateCommitteeSearchRow[];
 
 export type OregonFinanceAutoLinkResult =
   | {
@@ -146,6 +146,10 @@ export async function autoLinkMissingOregonCandidateFinanceLinks(input: {
     const resolution = await resolveCandidateCommittee({
       candidateName: candidateElection.candidateName,
       searchRows,
+      electionYear: candidateElection.electionYear,
+      officeName: candidateElection.officeName,
+      officeScope: candidateElection.officeScope,
+      district: candidateElection.district,
     });
     if (resolution.status !== "matched") {
       results.push({

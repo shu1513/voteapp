@@ -12,7 +12,7 @@ import {
 } from "./oregonCandidateFinanceSync.js";
 import { OREGON_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./oregonFinanceEligibleOffices.js";
 import {
-  getOregonOrestarCandidateSearchRows,
+  getOregonOrestarCandidateCommitteeDirectory,
   getOregonOrestarCommitteeContributionDetailsFromExport,
   getOregonOrestarTransactionDetailsFromSourceUrl,
   type OregonOrestarClientOptions,
@@ -173,14 +173,10 @@ async function defaultLoadTransactionDetails(
 }
 
 async function defaultLoadCandidateSearchRows(
-  candidateElection: Parameters<OregonCandidateSearchRowsLoader>[0],
+  _candidateElection: Parameters<OregonCandidateSearchRowsLoader>[0],
   options?: OregonOrestarClientOptions
 ) {
-  return getOregonOrestarCandidateSearchRows({
-    candidateName: candidateElection.candidateName,
-    electionYear: candidateElection.electionYear,
-    options,
-  });
+  return getOregonOrestarCandidateCommitteeDirectory({ options });
 }
 
 export async function listDueOregonCandidateFinanceSyncRows(
@@ -319,11 +315,14 @@ export async function syncDueOregonCandidateFinance(
         electionLookaheadDays,
       });
       autoLinkAttemptedCount = missingLinkCandidates.length;
+      const candidateDirectoryRows = missingLinkCandidates[0]
+        ? await loadCandidateSearchRows(missingLinkCandidates[0])
+        : [];
       const autoLinkResults = await autoLinkMissingOregonCandidateFinanceLinks({
         db: input.db,
         now,
         candidateElections: missingLinkCandidates,
-        loadCandidateSearchRows,
+        loadCandidateSearchRows: () => candidateDirectoryRows,
         resolveCandidateCommittee: input.resolveCandidateCommittee,
       });
       autoLinkLinkedCount = autoLinkResults.filter((result) => result.status === "linked").length;

@@ -1,6 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { buildOregonOrestarExportWorkbook } from "./orestarExportFixture.js";
+import {
+  buildOregonOrestarCommitteeExportWorkbook,
+  buildOregonOrestarExportWorkbook,
+} from "./orestarExportFixture.js";
 
 import {
   listDueOregonCandidateFinanceSyncRows,
@@ -300,6 +303,68 @@ describe("oregonCandidateFinanceBatchSync", () => {
     expect(String(db.query.mock.calls[2]?.[0])).toContain("FROM public.or_candidate_finance_links AS link");
   });
 
+  it("loads one injected committee directory and reuses it for every candidate in the batch", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: "55555555-5555-4555-8555-555555555555",
+              election_id: "66666666-6666-4666-8666-666666666666",
+              candidate_name: "Tina Kotek",
+              election_year: 2026,
+              office_scope: "statewide",
+              office_name: "Governor",
+              district: "Oregon",
+            },
+            {
+              candidate_id: "88888888-8888-4888-8888-888888888888",
+              election_id: "99999999-9999-4999-8999-999999999999",
+              candidate_name: "Jane Doe",
+              election_year: 2026,
+              office_scope: "state_lower",
+              office_name: "State Lower Chamber Legislator",
+              district: "9",
+            },
+          ],
+        })
+        .mockResolvedValueOnce({ rows: [{ id: "11111111-2222-4333-8444-555555555555" }], rowCount: 1 })
+        .mockResolvedValueOnce({ rows: [{ id: "22222222-3333-4444-8555-666666666666" }], rowCount: 1 })
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
+      connect: vi.fn(),
+    };
+    const loadCandidateSearchRows = vi.fn(async () => [
+      {
+        filerCommitteeId: "4792",
+        filerCommitteeName: "Friends of Tina Kotek",
+        committeeUrl: "https://secure.sos.state.or.us/orestar/sooDetail.do?cneCommitteeId=4792",
+      },
+      {
+        filerCommitteeId: "999",
+        filerCommitteeName: "Jane Doe for Oregon",
+        committeeUrl: "https://secure.sos.state.or.us/orestar/sooDetail.do?cneCommitteeId=999",
+      },
+    ]);
+
+    const result = await syncDueOregonCandidateFinance({
+      db,
+      now: NOW,
+      maxCandidates: 2,
+      loadCandidateSearchRows,
+      loadTransactionDetails: vi.fn(async () => []),
+      syncOregonCandidateFinanceFn: vi.fn(),
+    });
+
+    expect(result).toMatchObject({
+      autoLinkAttemptedCount: 2,
+      autoLinkLinkedCount: 2,
+      selectedCandidateCount: 0,
+    });
+    expect(loadCandidateSearchRows).toHaveBeenCalledTimes(1);
+    expect(loadCandidateSearchRows).toHaveBeenCalledWith(expect.objectContaining({ candidateName: "Tina Kotek" }));
+  });
+
   it("uses the default ORESTAR candidate search loader when auto-linking missing finance links", async () => {
     const db = {
       query: vi
@@ -321,34 +386,42 @@ describe("oregonCandidateFinanceBatchSync", () => {
         .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
       connect: vi.fn(),
     };
+    const workbook = buildOregonOrestarCommitteeExportWorkbook([
+      {
+        "Committee Id": 4792,
+        "Committee Name": "Friends of Tina Kotek",
+        "Committee Type": "CC",
+        "Candidate Office": "Governor",
+        "Candidate First Name": "Tina",
+        "Candidate Last Name": "Kotek",
+        "Active Election": "2026 General Election",
+      },
+    ]);
     const fetchFn = vi.fn(async (url: string, init?: RequestInit) => {
       if (url.endsWith("/orestar/JavaScriptServlet")) {
         return htmlResponse("OWASP_CSRFTOKEN:csrf-token-from-script");
       }
-      if (url.includes("gotoPublicTransactionSearchResults.do")) {
+      if (url.includes("CommitteeSearchSecondPage.do")) {
         expect(init?.method).toBe("POST");
-        expect(String(init?.body)).toContain("cneSearchFilerCommitteeTxt=Tina+Kotek");
-        expect(String(init?.body)).toContain("cneSearchTranStartDate=01%2F01%2F2025");
-        expect(String(init?.body)).toContain("cneSearchTranEndDate=12%2F31%2F2026");
+        expect(String(init?.body)).toContain("filerType=CANDALL");
+        expect(String(init?.body)).toContain("yearActive=&election=");
         expect(String(init?.body)).toContain("OWASP_CSRFTOKEN=csrf-token-from-script");
         expect(init?.headers).toMatchObject({ cookie: "JSESSIONID_ORESTAR=abc123" });
         return htmlResponse(`
           <div>Results : 1 record found</div>
-          <table>
-            <tr><th>Tran ID</th><th>Date</th><th>Status</th><th>Filer/Committee</th><th>Contributor/Payee</th><th>Sub Type</th><th>Amount</th></tr>
-            <tr>
-              <td><a href="/orestar/gotoPublicTransactionDetail.do?tranRsn=4458653">4458653</a></td>
-              <td>10/12/2026</td><td>Original</td>
-              <td><a href="/orestar/sooDetail.do?cneCommitteeId=4792">Friends of Tina Kotek</a></td>
-              <td>Jane Donor</td><td>Cash Contribution</td><td>$100.00</td>
-            </tr>
-          </table>
+          <a href="XcelSooSearch">Export To Excel Format</a>
         `);
+      }
+      if (url.includes("XcelSooSearch")) {
+        return {
+          ...htmlResponse(""),
+          arrayBuffer: async () => workbook.buffer.slice(workbook.byteOffset, workbook.byteOffset + workbook.byteLength),
+        };
       }
       return {
         ...htmlResponse(`
-          <form name="cneSearchForm" action="/orestar/gotoPublicTransactionSearchResults.do;JSESSIONID_ORESTAR=abc123">
-            <input type="hidden" name="cneSearchButtonName" value="">
+          <form name="CommitteeSearchDynaFormSecond" action="/orestar/CommitteeSearchSecondPage.do;JSESSIONID_ORESTAR=abc123">
+            <input type="hidden" name="buttonName" value="electionSearch">
           </form>
         `),
         headers: {
@@ -370,7 +443,7 @@ describe("oregonCandidateFinanceBatchSync", () => {
       autoLinkLinkedCount: 1,
       selectedCandidateCount: 0,
     });
-    expect(fetchFn).toHaveBeenCalledTimes(3);
+    expect(fetchFn).toHaveBeenCalledTimes(4);
   });
 
   it("loads committee contributions from the ORESTAR export with the default loader when no override is configured", async () => {
