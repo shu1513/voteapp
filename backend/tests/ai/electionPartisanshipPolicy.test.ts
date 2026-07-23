@@ -213,4 +213,43 @@ describe("electionPartisanshipPolicy", () => {
     });
     expect(includeParty).toBe(false);
   });
+
+  it("forces Washington state-legislative contests to partisan", () => {
+    for (const districtType of ["state_upper", "state_lower"] as const) {
+      expect(
+        shouldAskIsPartisanInPrompt({
+          draft: {
+            district_id: "d-wa",
+            district_name: "Washington legislative district",
+            district_type: districtType,
+            state: "WA",
+          },
+          contestFamily: "all",
+        })
+      ).toBe(false);
+
+      expect(
+        resolveElectionIsPartisan({
+          draft: {
+            district_id: "d-wa",
+            district_name: "Washington legislative district",
+            district_type: districtType,
+            state: "WA",
+          },
+          contestFamily: "all",
+          raceType: "office",
+          officialBallotTitle: "State Representative Position 1",
+          aiValue: false,
+        })
+      ).toBe(true);
+
+      expect(
+        shouldIncludeCandidatePartyByPolicy({
+          districtType,
+          state: "WA",
+          officialBallotTitle: "State Representative Position 1",
+        })
+      ).toBe(true);
+    }
+  });
 });

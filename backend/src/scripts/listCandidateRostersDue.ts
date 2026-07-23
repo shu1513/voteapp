@@ -7,9 +7,13 @@ import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { usLatestLocalDateIso } from "../utils/usLocalDate.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 
-// Read-only work-queue query for the manual candidate-roster refresh loop:
-// lists upcoming office elections whose roster staging item needs another
-// research pass. A roster is due when it is
+// Read-only work-queue queries for manual candidate-roster research. The
+// command reports two intentionally separate queues:
+//   - initialPending: upcoming office elections whose generated roster row
+//     has never received a research pass, and
+//   - due: completed/no-result rosters that need a refresh pass.
+//
+// A roster is refresh-due when it is
 //   - 'no_results' (an earlier pass found no candidates — common early,
 //     before anyone has announced), or
 //   - 'written' with zero staged candidates in the payload (data debt from
@@ -23,12 +27,26 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 // would target the wrong pipeline stage. Those rosters are reported in the
 // separate fanout-debt list instead.
 //
-// Rosters in pending/failed states belong to the initial research flow, not
-// this refresh loop, so they are excluded. Refreshing far-future elections is
-// wasted work — rosters change close to filing deadlines — so both lists are
-// capped to elections within the lookahead window.
+// Failed rows are repair work, not untouched research. Pending rows with a
+// reason already received an attempted pass, and ledger-backed rows already
+// received a pass that established a timing blocker. Those rows are excluded
+// from initialPending. Refreshing far-future elections is wasted work —
+// rosters change close to filing deadlines — so all lists are capped to
+// elections within the lookahead window.
 
 type Queryable = Pick<Pool, "query">;
+
+export type CandidateRosterInitialPendingRow = {
+  election_id: string;
+  district_name: string | null;
+  district_type: string | null;
+  state: string | null;
+  official_ballot_title: string | null;
+  election_date: string;
+  election_stage: string | null;
+  roster_status: "pending";
+  roster_updated_at: string;
+};
 
 export type CandidateRosterDueRow = {
   election_id: string;
@@ -61,6 +79,54 @@ export type CandidateRosterFanoutDebtRow = {
   roster_written_at: string | null;
   staged_candidate_count: number;
 };
+
+export async function listCandidateRostersInitialPending(
+  db: Queryable,
+  input: { asOfDate: string; withinDays: number }
+): Promise<CandidateRosterInitialPendingRow[]> {
+  const result = await db.query<CandidateRosterInitialPendingRow>(
+    `
+      SELECT
+        e.id::text AS election_id,
+        d.name AS district_name,
+        d.district_type,
+        d.state,
+        e.official_ballot_title,
+        e.election_date::text AS election_date,
+        e.election_stage::text AS election_stage,
+        s.status AS roster_status,
+        s.updated_at::text AS roster_updated_at
+      FROM public.elections AS e
+      JOIN public.districts AS d
+        ON d.id = e.district_id
+      JOIN public.staging_items AS s
+        ON s.ingest_key = 'candidate_roster:' || e.id::text
+       AND s.item_type = $3
+      WHERE e.race_type = 'office'
+        AND e.election_date >= $1::date
+        AND (e.election_date - $1::date)::int <= $2::int
+        AND s.status = 'pending'
+        -- A non-empty reason means a pass was attempted and needs repair;
+        -- it is not an untouched roster.
+        AND COALESCE(btrim(s.reason), '') = ''
+        -- A timing deferral proves research already established why the
+        -- roster cannot be completed yet. manual:deferral:due owns it.
+        AND NOT EXISTS (
+          SELECT 1
+          FROM public.manual_research_deferrals AS mrd
+          WHERE mrd.status = 'deferred'
+            AND mrd.stage = 'candidate_roster'
+            AND (
+              mrd.election_id = e.id
+              OR (mrd.election_id IS NULL AND mrd.district_id = e.district_id)
+            )
+        )
+      ORDER BY e.election_date ASC, s.updated_at ASC, e.id ASC
+    `,
+    [input.asOfDate, input.withinDays, STAGING_ITEM_TYPE_CANDIDATE_ROSTER]
+  );
+  return result.rows;
+}
 
 export async function listCandidateRostersDue(
   db: Queryable,
@@ -177,11 +243,13 @@ async function main(): Promise<void> {
   assertKnownCliFlags("manual:candidate-roster:due", process.argv.slice(2), [
     { name: "--cooldown-days", value: "both" },
     { name: "--within-days", value: "both" },
+    { name: "--include-initial", value: "none" },
   ]);
   loadProjectEnv();
 
   const cooldownDays = readPositiveIntegerFlag(process.argv.slice(2), "--cooldown-days", 30);
   const withinDays = readPositiveIntegerFlag(process.argv.slice(2), "--within-days", 90);
+  const includeInitial = process.argv.includes("--include-initial");
   // US-local boundary, not UTC: after UTC midnight a UTC date would drop
   // elections still happening "today" in western states.
   const asOfDate = usLatestLocalDateIso();
@@ -192,6 +260,7 @@ async function main(): Promise<void> {
   }
   const pool = new Pool({ connectionString: databaseUrl });
   try {
+    const initialPending = await listCandidateRostersInitialPending(pool, { asOfDate, withinDays });
     const due = await listCandidateRostersDue(pool, { asOfDate, cooldownDays, withinDays });
     const fanoutDebt = await listCandidateRosterFanoutDebt(pool, { asOfDate, withinDays });
 
@@ -201,6 +270,13 @@ async function main(): Promise<void> {
           asOfDate,
           cooldownDays,
           withinDays,
+          queueSemantics: {
+            initialPending: "never researched; use --include-initial to print rows",
+            due: "previously researched roster refreshes only",
+            fanoutDebt: "roster exists; candidate profile/link fanout remains",
+          },
+          initialPendingCount: initialPending.length,
+          ...(includeInitial ? { initialPending } : {}),
           dueCount: due.length,
           due,
           fanoutDebtCount: fanoutDebt.length,

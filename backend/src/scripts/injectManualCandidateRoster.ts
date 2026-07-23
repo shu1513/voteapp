@@ -11,6 +11,10 @@ import {
 } from "../config/electionsPipeline.js";
 import { resolveCandidateResearchMode } from "../ai/candidateResearchMode.js";
 import {
+  assertCandidatePartyWillNotBeDiscarded,
+  resolveIncludePartyForCandidateContest,
+} from "../ai/candidatePartisanship.js";
+import {
   parseCandidateRosterPayload,
   type CandidateRosterEntry,
 } from "../contracts/candidateRosterPayloadContract.js";
@@ -20,6 +24,8 @@ type ElectionPreflightRow = {
   id: string;
   official_ballot_title: string;
   district_type: string;
+  state: string;
+  is_partisan: boolean | null;
   race_type: string;
 };
 
@@ -87,6 +93,8 @@ async function loadElectionPreflight(pool: Pool, electionId: string): Promise<El
       SELECT e.id::text AS id,
              e.official_ballot_title,
              d.district_type,
+             d.state,
+             e.is_partisan,
              e.race_type
       FROM public.elections AS e
       JOIN public.districts AS d
@@ -207,6 +215,16 @@ async function main(): Promise<void> {
     if (!parsed.ok) {
       throw new Error(`Candidate roster payload failed validation: ${parsed.reason}`);
     }
+    const includeParty = resolveIncludePartyForCandidateContest({
+      districtType: election.district_type,
+      state: election.state,
+      officialBallotTitle: election.official_ballot_title,
+      electionIsPartisan: election.is_partisan,
+    });
+    assertCandidatePartyWillNotBeDiscarded({
+      includeParty,
+      partyLabels: parsed.payload.candidates.map((candidate) => candidate.party),
+    });
 
     const ingestKey = `candidate_roster:${electionId}`;
     const runId = readFlag("--run-id") ?? `manual_candidate_roster_${new Date().toISOString()}`;
@@ -226,6 +244,8 @@ async function main(): Promise<void> {
             runId,
             electionId,
             researchMode,
+            electionIsPartisan: election.is_partisan,
+            includeParty,
             requiresFecIds: includeFecIds,
             candidateCount: parsed.payload.candidates.length,
             skippedCandidatesWithoutFecIds: parsed.skippedCandidatesWithoutFecIds,

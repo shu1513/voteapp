@@ -29,6 +29,14 @@ const PARTISAN_JUDICIAL_STATES = new Set([
   "TX",
 ]);
 
+function isWashingtonStateLegislativeContest(input: {
+  districtType: string;
+  state: string;
+}): boolean {
+  return normalizeState(input.state) === "WA" &&
+    (input.districtType === "state_upper" || input.districtType === "state_lower");
+}
+
 function normalizeState(value: string): string {
   return value.trim().toUpperCase();
 }
@@ -86,6 +94,15 @@ function getPartisanshipModeForContest(args: {
     return "force_true";
   }
 
+  // Washington's Top Two primary does not make legislative offices
+  // nonpartisan: candidates state a party preference on the ballot.
+  if (isWashingtonStateLegislativeContest({
+    districtType: args.draft.district_type,
+    state: args.draft.state,
+  })) {
+    return "force_true";
+  }
+
   if (isSchoolDistrictType(args.draft.district_type)) {
     const schoolMode = getSchoolPartisanshipMode(args.draft.state);
     if (schoolMode === "partisan") {
@@ -114,6 +131,10 @@ function getPartisanshipModeForOfficeScope(input: {
   state: string;
   officialBallotTitle: string;
 }): PartisanshipMode {
+  if (isWashingtonStateLegislativeContest(input)) {
+    return "force_true";
+  }
+
   if (isSchoolDistrictType(input.districtType)) {
     const schoolMode = getSchoolPartisanshipMode(input.state);
     if (schoolMode === "partisan") {
@@ -133,6 +154,21 @@ function getPartisanshipModeForOfficeScope(input: {
   }
 
   return "ask_ai";
+}
+
+export function resolveCandidateContestPartisanshipByPolicy(input: {
+  districtType: string;
+  state: string;
+  officialBallotTitle: string;
+}): boolean | undefined {
+  const mode = getPartisanshipModeForOfficeScope(input);
+  if (mode === "force_true") {
+    return true;
+  }
+  if (mode === "force_false") {
+    return false;
+  }
+  return undefined;
 }
 
 export function shouldIncludeCandidatePartyByPolicy(input: {
