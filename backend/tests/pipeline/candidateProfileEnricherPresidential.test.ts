@@ -179,7 +179,6 @@ vi.mock("../../src/scheduler/minnesotaCandidateFinanceSyncScheduler.js", () => (
 }));
 
 import { runCandidateProfileEnricher } from "../../src/pipeline/enrichers/candidateProfileEnricher.js";
-import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
 
 describe("runCandidateProfileEnricher presidential cycle routing", () => {
   beforeEach(() => {
@@ -384,7 +383,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
         seedUrls: ["https://www.fec.gov/data/candidate/P80000001", "https://example.gov/primary"],
       }),
       { timeoutMs: 1000 },
-      PRESIDENTIAL_PROFILE_AI_CANDIDATES
     );
 
     const executedSql = clientQueryMock.mock.calls.map((call) => String(call[0]));
@@ -519,7 +517,6 @@ describe("runCandidateProfileEnricher presidential cycle routing", () => {
         allowMissingFederalFecIds: true,
       }),
       { timeoutMs: 1000 },
-      PRESIDENTIAL_PROFILE_AI_CANDIDATES
     );
 
     const executedSql = clientQueryMock.mock.calls.map((call) => String(call[0]));

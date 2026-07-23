@@ -1,4 +1,4 @@
-import { CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
+import { FRONTIER_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   callResearchProvider,
@@ -119,7 +119,7 @@ export function buildCandidateRecordSourcesRepairConfigFromEnv(): EnrichCandidat
 export async function enrichCandidateRecordSourcesRepair(
   input: EnrichCandidateRecordSourcesRepairInput,
   config: EnrichCandidateRecordSourcesRepairConfig,
-  candidates: readonly AiCandidate[] = CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<EnrichCandidateRecordSourcesRepairResult> {
   if (input.badRecords.length === 0) {
     return {

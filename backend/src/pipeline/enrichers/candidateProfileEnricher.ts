@@ -5,7 +5,6 @@ import {
   buildCandidateProfileConfigFromEnv,
   enrichCandidateProfile,
 } from "../../ai/enrichCandidateProfile.js";
-import { PRESIDENTIAL_PROFILE_AI_CANDIDATES } from "../../ai/aiCandidates.js";
 import { resolveIncludePartyForCandidateContest } from "../../ai/candidatePartisanship.js";
 import { getPipelineEnv } from "../../config/env.js";
 import { isFloridaCampaignFinanceSyncEnabled, isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
@@ -1774,10 +1773,7 @@ export async function runCandidateProfileEnricher(options: EnricherOptions = {})
             allowMissingFederalFecIds:
               draftContext.type === "presidential_cycle" && presidentialRole === "vice_president",
           };
-          const aiResult =
-            draftContext.type === "presidential_cycle"
-              ? await enrichCandidateProfile(profileInput, aiConfig, PRESIDENTIAL_PROFILE_AI_CANDIDATES)
-              : await enrichCandidateProfile(profileInput, aiConfig);
+          const aiResult = await enrichCandidateProfile(profileInput, aiConfig);
 
           if (!aiResult.ok) {
             console.warn(

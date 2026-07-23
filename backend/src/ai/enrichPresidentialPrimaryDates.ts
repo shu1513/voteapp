@@ -1,5 +1,5 @@
 import {
-  PRESIDENTIAL_PRIMARY_DATE_AI_CANDIDATES,
+  FRONTIER_AI_CANDIDATES,
   type AiCandidate,
 } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
@@ -122,7 +122,7 @@ export function buildPresidentialPrimaryDateAiConfigFromEnv(): PresidentialPrima
 export async function enrichPresidentialPrimaryDates(
   input: PresidentialPrimaryDateAiInput,
   config: PresidentialPrimaryDateAiConfig,
-  candidates: readonly AiCandidate[] = PRESIDENTIAL_PRIMARY_DATE_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<PresidentialPrimaryDateAiResult> {
   const failures: ProviderFailureAttempt[] = [];
   const cumulativeFeedback = new Set<string>();

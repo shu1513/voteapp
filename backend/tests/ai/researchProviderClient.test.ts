@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { callResearchProvider, hasProviderApiKey } from "../../src/ai/researchProviderClient.ts";
-import type { AiCandidate } from "../../src/ai/aiCandidates.ts";
+import { FRONTIER_AI_CANDIDATES, type AiCandidate } from "../../src/ai/aiCandidates.ts";
 
 const originalFetch = globalThis.fetch;
 
@@ -16,6 +16,14 @@ function jsonResponse(body: unknown, init?: ResponseInit): Response {
     headers: { "content-type": "application/json" },
     ...(init ?? {}),
   });
+}
+
+function frontierCandidate(provider: AiCandidate["provider"]): AiCandidate {
+  const candidate = FRONTIER_AI_CANDIDATES.find((entry) => entry.provider === provider);
+  if (!candidate) {
+    throw new Error(`Missing frontier AI candidate for ${provider}`);
+  }
+  return candidate;
 }
 
 describe("researchProviderClient", () => {
@@ -41,7 +49,7 @@ describe("researchProviderClient", () => {
       });
     }) as unknown as typeof fetch;
 
-    const candidate: AiCandidate = { provider: "openai", model: "gpt-5.5" };
+    const candidate = frontierCandidate("openai");
     const result = await callResearchProvider(candidate, "test prompt", {
       timeoutMs: 1_000,
       openAiApiKey: "test-openai-key",
@@ -85,7 +93,7 @@ describe("researchProviderClient", () => {
       });
     }) as unknown as typeof fetch;
 
-    const candidate: AiCandidate = { provider: "claude", model: "claude-sonnet-4-6" };
+    const candidate = frontierCandidate("claude");
     const result = await callResearchProvider(candidate, "claude prompt", {
       timeoutMs: 1_000,
       anthropicApiKey: "test-anthropic-key",
@@ -108,6 +116,29 @@ describe("researchProviderClient", () => {
       },
     ]);
     expect(requestHeaders?.get("anthropic-beta")).toBe("web-search-2025-03-05");
+    expect(body).not.toHaveProperty("temperature");
+  });
+
+  it("keeps deterministic temperature for compatible legacy Claude overrides", async () => {
+    let requestBodyText = "";
+    globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
+      requestBodyText = typeof init?.body === "string" ? init.body : "";
+      return jsonResponse({ content: [{ type: "text", text: "{\"ok\":true}" }] });
+    }) as unknown as typeof fetch;
+
+    const result = await callResearchProvider(
+      { provider: "claude", model: "claude-sonnet-4-6" },
+      "claude prompt",
+      {
+        timeoutMs: 1_000,
+        anthropicApiKey: "test-anthropic-key",
+        claudeInterCallDelayMs: 0,
+      }
+    );
+
+    expect(result.ok).toBe(true);
+    const body = JSON.parse(requestBodyText) as Record<string, unknown>;
+    expect(body).toHaveProperty("temperature", 0);
   });
 
   it("builds Gemini request shape with v1beta + json mime when configured", async () => {
@@ -121,7 +152,7 @@ describe("researchProviderClient", () => {
       });
     }) as unknown as typeof fetch;
 
-    const candidate: AiCandidate = { provider: "gemini", model: "gemini-2.5-pro" };
+    const candidate = frontierCandidate("gemini");
     const result = await callResearchProvider(candidate, "gemini prompt", {
       timeoutMs: 1_000,
       geminiApiKey: "test-gemini-key",
@@ -133,17 +164,16 @@ describe("researchProviderClient", () => {
     if (result.ok) {
       expect(result.parsed).toEqual({ ok: true });
     }
-    expect(requestUrl).toContain("/v1beta/models/gemini-2.5-pro:generateContent?key=");
+    expect(requestUrl).toContain(`/v1beta/models/${candidate.model}:generateContent?key=`);
     const body = JSON.parse(requestBodyText) as Record<string, unknown>;
     expect(body.contents).toEqual([{ role: "user", parts: [{ text: "gemini prompt" }] }]);
     expect(body.generationConfig).toEqual({
-      temperature: 0,
       responseMimeType: "application/json",
     });
   });
 
   it("returns CONFIGURATION_ERROR when provider API key is missing", async () => {
-    const candidate: AiCandidate = { provider: "openai", model: "gpt-5.4-mini" };
+    const candidate = frontierCandidate("openai");
     const result = await callResearchProvider(candidate, "prompt", {
       timeoutMs: 1_000,
     });
@@ -162,7 +192,7 @@ describe("researchProviderClient", () => {
       throw abortError;
     }) as unknown as typeof fetch;
 
-    const candidate: AiCandidate = { provider: "openai", model: "gpt-5.4-mini" };
+    const candidate = frontierCandidate("openai");
     const result = await callResearchProvider(candidate, "prompt", {
       timeoutMs: 1_000,
       openAiApiKey: "test-openai-key",

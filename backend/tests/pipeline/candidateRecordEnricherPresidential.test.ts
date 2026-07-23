@@ -79,10 +79,6 @@ vi.mock("../../src/pipeline/users/candidateFollowNotificationEvents.js", () => (
   createCandidateRecordUpdateNotificationEvents: createCandidateRecordUpdateNotificationEventsMock,
 }));
 
-import {
-  PRESIDENTIAL_CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES,
-  PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES,
-} from "../../src/ai/aiCandidates.js";
 import { runCandidateRecordEnricher } from "../../src/pipeline/enrichers/candidateRecordEnricher.js";
 
 describe("runCandidateRecordEnricher presidential-cycle routing", () => {
@@ -226,7 +222,6 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
         electionStage: "primary",
       }),
       { timeoutMs: 1000 },
-      PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES
     );
     expect(enrichCandidateRecordsMock.mock.calls[0]?.[0]).not.toHaveProperty("existingRecordsToAvoid");
     expect(redisSetMock).toHaveBeenCalledWith("staging:candidate_record_run_processed:run-president", "completed", {
@@ -255,7 +250,7 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
     expect(enrichCandidateRecordsMock.mock.calls[0]?.[0]).not.toHaveProperty("existingRecordsToAvoid");
   });
 
-  it("uses presidential AI candidates for presidential record discovery and area labeling", async () => {
+  it("uses the shared default AI policy for presidential record discovery and area labeling", async () => {
     enrichCandidateRecordsMock.mockResolvedValue({
       ok: true,
       records: [
@@ -310,7 +305,6 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
         officialBallotTitle: "President of the United States, 2028 Democratic primary",
       }),
       { timeoutMs: 1000 },
-      PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES
     );
     expect(enrichCandidateRecordAreasMock).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -325,7 +319,6 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
         ],
       }),
       { timeoutMs: 1000 },
-      PRESIDENTIAL_CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES
     );
   });
 
@@ -514,7 +507,6 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
         electionStage: "general",
       }),
       { timeoutMs: 1000 },
-      PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES
     );
     expect(enrichCandidateRecordsMock.mock.calls[0]?.[0]).not.toHaveProperty("existingRecordsToAvoid");
     expect(redisXAckMock).toHaveBeenCalledWith(
@@ -577,7 +569,6 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
         discoveryContestFamily: "non_judicial_office",
       }),
       { timeoutMs: 1000 },
-      undefined
     );
     expect(enrichCandidateRecordsMock.mock.calls[0]?.[0]).not.toHaveProperty("existingRecordsToAvoid");
     expect(redisXAckMock).toHaveBeenCalledWith(

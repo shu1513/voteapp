@@ -1,4 +1,4 @@
-import { PRESIDENTIAL_NOMINEE_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
+import { FRONTIER_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   parsePresidentialNomineePayload,
@@ -114,7 +114,7 @@ export function buildPresidentialNomineeAiConfigFromEnv(): PresidentialNomineeAi
 export async function enrichPresidentialNominee(
   input: PresidentialNomineeAiInput,
   config: PresidentialNomineeAiConfig,
-  candidates: readonly AiCandidate[] = PRESIDENTIAL_NOMINEE_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<PresidentialNomineeAiResult> {
   const failures: ProviderFailureAttempt[] = [];
 

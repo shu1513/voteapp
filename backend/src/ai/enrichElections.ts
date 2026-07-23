@@ -1,4 +1,4 @@
-import { ELECTIONS_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
+import { FRONTIER_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import { buildElectionsPrompt } from "./providers/electionsPrompt.js";
 import {
@@ -823,7 +823,7 @@ async function runPromptWithCandidates(
 export async function enrichElections(
   input: EnrichElectionsInput,
   config: EnrichElectionsConfig,
-  candidates: readonly AiCandidate[] = ELECTIONS_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<EnrichElectionsResult> {
   const familyPlan: ElectionContestScope[] =
     input.draft.district_type === "statewide"

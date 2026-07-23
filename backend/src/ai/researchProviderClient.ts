@@ -7,6 +7,10 @@ import {
   updateProviderModelCooldownFromHeaders,
   waitForProviderModelCooldown,
 } from "./providerRateLimitGate.js";
+import {
+  shouldSetExplicitClaudeTemperature,
+  shouldSetExplicitOpenAiTemperature,
+} from "./modelRequestCapabilities.js";
 
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 const ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages";
@@ -116,10 +120,6 @@ export function extractJsonCandidate(text: string): string {
     return fenced[1].trim();
   }
   return trimmed;
-}
-
-function shouldSetExplicitTemperature(model: string): boolean {
-  return !model.toLowerCase().startsWith("gpt-5");
 }
 
 function extractResponsesOutputText(responsePayload: unknown): string | null {
@@ -299,7 +299,7 @@ async function callOpenAi(
       tool_choice: "auto",
       include: ["web_search_call.action.sources"],
     };
-    if (shouldSetExplicitTemperature(model)) {
+    if (shouldSetExplicitOpenAiTemperature(model)) {
       requestBody.temperature = 0;
     }
 
@@ -428,7 +428,6 @@ async function callClaude(
       const requestBody: Record<string, unknown> = {
         model,
         max_tokens: 4000,
-        temperature: 0,
         system: "Return strict JSON only.",
         messages: [{ role: "user", content: prompt }],
         tools: [
@@ -439,6 +438,9 @@ async function callClaude(
           },
         ],
       };
+      if (shouldSetExplicitClaudeTemperature(model)) {
+        requestBody.temperature = 0;
+      }
 
       const response = await fetch(ANTHROPIC_MESSAGES_URL, {
         method: "POST",
@@ -573,7 +575,7 @@ async function callGemini(
     const controller = new AbortController();
     timeout = setTimeout(() => controller.abort(), config.timeoutMs);
 
-    const generationConfig: Record<string, unknown> = { temperature: 0 };
+    const generationConfig: Record<string, unknown> = {};
     if (config.geminiResponseMimeTypeJson) {
       generationConfig.responseMimeType = "application/json";
     }
@@ -585,7 +587,7 @@ async function callGemini(
       },
       body: JSON.stringify({
         contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig,
+        ...(Object.keys(generationConfig).length > 0 ? { generationConfig } : {}),
       }),
       signal: controller.signal,
     });

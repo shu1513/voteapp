@@ -1,4 +1,4 @@
-import { BALLOT_MEASURES_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
+import { FRONTIER_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   callResearchProvider,
@@ -411,7 +411,7 @@ export function buildBallotMeasureAiConfigFromEnv(): BallotMeasureAiConfig {
 export async function enrichBallotMeasure(
   input: BallotMeasureAiInput,
   config: BallotMeasureAiConfig,
-  candidates: readonly AiCandidate[] = BALLOT_MEASURES_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<BallotMeasureAiResult> {
   const failures: ProviderFailureAttempt[] = [];
   const cumulativeBlockedUrlFeedback = new Set<string>();

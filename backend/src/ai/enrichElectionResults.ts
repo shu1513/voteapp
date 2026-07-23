@@ -1,5 +1,5 @@
 import {
-  ELECTION_RESULTS_AI_CANDIDATES,
+  FRONTIER_AI_CANDIDATES,
   type AiCandidate,
 } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
@@ -111,7 +111,7 @@ export function buildElectionResultAiConfigFromEnv(): ElectionResultAiConfig {
 export async function enrichElectionResults(
   input: ElectionResultAiInput,
   config: ElectionResultAiConfig,
-  candidates: readonly AiCandidate[] = ELECTION_RESULTS_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<ElectionResultAiResult> {
   const failures: ProviderFailureAttempt[] = [];
   const cumulativeFeedback = new Set<string>();

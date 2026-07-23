@@ -1,5 +1,5 @@
 import {
-  FINANCE_INDUSTRY_CLASSIFICATION_AI_CANDIDATES,
+  FRONTIER_AI_CANDIDATES,
   type AiCandidate,
 } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
@@ -162,8 +162,8 @@ export async function classifyFinanceIndustriesWithAi(input: {
   if (labels.length === 0) {
     return {
       ok: true,
-      provider: FINANCE_INDUSTRY_CLASSIFICATION_AI_CANDIDATES[0].provider,
-      model: FINANCE_INDUSTRY_CLASSIFICATION_AI_CANDIDATES[0].model,
+      provider: FRONTIER_AI_CANDIDATES[0].provider,
+      model: FRONTIER_AI_CANDIDATES[0].model,
       classifications: [],
       aiRawDebug: null,
     };
@@ -178,7 +178,7 @@ export async function classifyFinanceIndustriesWithAi(input: {
     anthropicApiKey: env?.ANTHROPIC_API_KEY,
     geminiApiKey: env?.GEMINI_API_KEY,
   };
-  const candidates = input.aiCandidates ?? FINANCE_INDUSTRY_CLASSIFICATION_AI_CANDIDATES;
+  const candidates = input.aiCandidates ?? FRONTIER_AI_CANDIDATES;
   const prompt = buildFinanceIndustryClassificationPrompt({ labels });
 
   let lastFailure: Exclude<FinanceIndustryClassificationAiResult, { ok: true }> | null = null;
