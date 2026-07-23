@@ -23,8 +23,11 @@ import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
+import { mergeElectionSource } from "./electionSourceUtils.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
+
+export { appendElectionSource, mergeElectionSource } from "./electionSourceUtils.js";
 
 type QueryResultLike<T> = { rows: T[] };
 
@@ -114,22 +117,6 @@ export function assertIsoDate(name: string, value: string): void {
   }
 }
 
-// elections.sources is a jsonb array of URL strings everywhere the pipeline
-// writes it; anything else in an existing row is dropped rather than
-// round-tripped so a malformed row cannot smuggle non-string entries forward.
-// Entries are trimmed before the Set so a whitespace variant of an existing
-// URL dedupes instead of surviving as a second entry (defensive only — the
-// election payload contract trims on parse and no live row carries
-// untrimmed sources).
-export function appendElectionSource(sources: unknown, sourceUrl: string): string[] {
-  const existing = Array.isArray(sources)
-    ? sources
-        .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
-        .map((value) => value.trim())
-    : [];
-  return [...new Set([...existing, sourceUrl.trim()])];
-}
-
 export async function runElectionDateCorrection(
   client: ElectionDateCorrectionClient,
   options: ElectionDateCorrectionOptions
@@ -174,16 +161,13 @@ export async function runElectionDateCorrection(
       // already corrected without the official source (out-of-band repair)
       // gets the source appended so re-running the exact command always ends
       // in the same final state.
-      // Same trim-normalized comparison appendElectionSource uses, so the
+      // Same trim-normalized comparison mergeElectionSource uses, so the
       // sourceAppended flag never reports an append that the merge would
       // dedupe away (or vice versa).
-      const merged = appendElectionSource(row.sources, sourceUrl);
-      const trimmedSourceUrl = sourceUrl.trim();
-      const sourceMissing =
-        !Array.isArray(row.sources) ||
-        !row.sources.some(
-          (value) => typeof value === "string" && value.trim() === trimmedSourceUrl
-        );
+      const { sources: merged, appended: sourceMissing } = mergeElectionSource(
+        row.sources,
+        sourceUrl
+      );
       if (sourceMissing && !dryRun) {
         await client.query(
           `
@@ -251,7 +235,7 @@ export async function runElectionDateCorrection(
       );
     }
 
-    const sources = appendElectionSource(row.sources, sourceUrl);
+    const { sources } = mergeElectionSource(row.sources, sourceUrl);
     if (dryRun) {
       await client.query("ROLLBACK");
     } else {

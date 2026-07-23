@@ -1570,6 +1570,14 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     aliasText: "County Register of Deeds",
   },
   {
+    // New Jersey's elected county land-records officer; Hudson's official
+    // title is simply "County Register" / "Register" rather than Register of
+    // Deeds, but the office performs the recorder function.
+    scope: "county",
+    officeCanonicalName: "County Recorder",
+    aliasText: "County Register",
+  },
+  {
     // Maryland probate registrar.
     scope: "county",
     officeCanonicalName: "Clerk of Court",

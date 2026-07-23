@@ -51,11 +51,17 @@ const SCHOOL_BOARD_CANONICAL_NAME = "School Board Member";
 const STATE_LEVEL_JUDGE_CANONICAL_NAME = "State Level Judge";
 const COUNTY_LEVEL_JUDGE_CANONICAL_NAME = "County Level Judge";
 const PLACE_LEVEL_JUDGE_CANONICAL_NAME = "Place Level Judge";
+const CLERK_OF_COURT_CANONICAL_NAME = "Clerk of Court";
 const JUDGE_CANONICAL_NAMES = new Set([
   STATE_LEVEL_JUDGE_CANONICAL_NAME,
   COUNTY_LEVEL_JUDGE_CANONICAL_NAME,
   PLACE_LEVEL_JUDGE_CANONICAL_NAME,
 ]);
+
+export function isJudicialOfficeCanonicalName(canonicalName: string): boolean {
+  return JUDGE_CANONICAL_NAMES.has(canonicalName);
+}
+
 const SCHOOL_DISTRICT_SCOPES = new Set<ElectionDistrictType>([
   "school_elementary",
   "school_secondary",
@@ -449,6 +455,11 @@ function judgeCanonicalNameForScope(scope: ElectionDistrictType): string | null 
   return null;
 }
 
+function isWashingtonState(state: string): boolean {
+  const normalized = state.trim().toLowerCase();
+  return normalized === "wa" || normalized === "washington";
+}
+
 function hasPhrase(text: string, phrase: string): boolean {
   if (!text || !phrase) {
     return false;
@@ -634,7 +645,7 @@ export class OfficeMatcher {
       // the county executive, once mis-scored into County Level Judge). The entry's
       // own contest family is authoritative: ignore judge-office aliases here.
       const aliasTarget = (await this.loadOffices(input.scope)).find((office) => office.id === exactOfficeId);
-      if (aliasTarget && JUDGE_CANONICAL_NAMES.has(aliasTarget.canonicalName)) {
+      if (aliasTarget && isJudicialOfficeCanonicalName(aliasTarget.canonicalName)) {
         exactOfficeId = undefined;
       }
     }
@@ -720,6 +731,28 @@ export class OfficeMatcher {
       }
     }
 
+    // Washington's constitution makes each county's elected "Clerk" the
+    // clerk of superior court. The bare word is otherwise genuinely
+    // ambiguous with County Clerk, so keep this exact and state-scoped and do
+    // not persist a global county alias that would affect other states.
+    if (
+      input.scope === "county" &&
+      isWashingtonState(input.state) &&
+      titleMatcherKey === "clerk"
+    ) {
+      const office = findSingleScopeOffice(offices, CLERK_OF_COURT_CANONICAL_NAME);
+      if (office) {
+        return {
+          officeId: office.id,
+          method: "deterministic_fallback",
+          confidence: 1,
+          normalizedAlias,
+          aliasMemoryKey: titleMatcherKey,
+          shouldPersistAlias: false,
+        };
+      }
+    }
+
     if (
       input.discoveryContestFamily === "judicial_office" &&
       isJudicialCompatibleTitle(titleMatcherKey)
@@ -742,7 +775,7 @@ export class OfficeMatcher {
     // Judge") into a judge office; the entry's non-judicial contest family wins.
     const scoreableOffices =
       input.discoveryContestFamily === "non_judicial_office"
-        ? offices.filter((office) => !JUDGE_CANONICAL_NAMES.has(office.canonicalName))
+        ? offices.filter((office) => !isJudicialOfficeCanonicalName(office.canonicalName))
         : offices;
     const scored = scoreableOffices
       .map((office) => ({

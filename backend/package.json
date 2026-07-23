@@ -70,6 +70,7 @@
     "manual:records:reset-confirmations": "tsx src/scripts/resetCandidateRecordSweepConfirmations.ts",
     "manual:ballot-measure:write": "tsx src/scripts/writeManualBallotMeasure.ts",
     "manual:election-date:correct": "tsx src/scripts/correctManualElectionDate.ts",
+    "manual:election-contest-family:correct": "tsx src/scripts/correctManualElectionContestFamily.ts",
     "manual:candidate-elections:move": "tsx src/scripts/moveManualCandidateElectionLink.ts",
     "manual:candidate-elections:withdraw": "tsx src/scripts/withdrawManualCandidateElection.ts",
     "manual:candidate-elections:unlink": "tsx src/scripts/unlinkManualCandidateElection.ts",

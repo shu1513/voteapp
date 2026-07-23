@@ -23,6 +23,90 @@ function createMatcherDataClient(input: {
 }
 
 describe("OfficeMatcher", () => {
+  it("maps Washington's exact bare county Clerk title to Clerk of Court without learning a global alias", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-clerk-of-court", canonical_name: "Clerk of Court" },
+          { id: "office-county-clerk", canonical_name: "County Clerk" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Spokane County, Washington",
+      state: "WA",
+      officialBallotTitle: "Clerk",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result).toMatchObject({
+      officeId: "office-clerk-of-court",
+      method: "deterministic_fallback",
+      confidence: 1,
+      aliasMemoryKey: "clerk",
+      shouldPersistAlias: false,
+    });
+  });
+
+  it("keeps a bare county Clerk title ambiguous outside Washington", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-clerk-of-court", canonical_name: "Clerk of Court" },
+          { id: "office-county-clerk", canonical_name: "County Clerk" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Example County, Oregon",
+      state: "OR",
+      officialBallotTitle: "Clerk",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("ambiguous");
+    expect(result.shouldPersistAlias).toBe(false);
+  });
+
+  it("resolves County Register through the seeded County Recorder alias", async () => {
+    expect(normalizeElectionTitleKey("County Register")).toBe("county register");
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          {
+            office_id: "office-county-recorder",
+            normalized_alias: normalizeElectionTitleKey("County Register"),
+          },
+        ],
+      },
+      officesByScope: {
+        county: [{ id: "office-county-recorder", canonical_name: "County Recorder" }],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Hudson County, New Jersey",
+      state: "NJ",
+      officialBallotTitle: "Hudson County Register",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-recorder");
+    expect(result.method).toBe("alias_exact");
+    expect(result.shouldPersistAlias).toBe(false);
+  });
+
   it("resolves 'Council Member for District N' through the seeded place alias (Fort Worth)", async () => {
     // The official title omits "City"; before the 'for district N' seat strip
     // the matcher key kept a dangling "for" ("council member for"), missed
