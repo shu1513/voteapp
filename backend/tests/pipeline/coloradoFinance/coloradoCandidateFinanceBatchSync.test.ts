@@ -1,14 +1,43 @@
-import { describe, expect, it, vi } from "vitest";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+import { strToU8, zipSync } from "fflate";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   listDueColoradoCandidateFinanceSyncRows,
   syncDueColoradoCandidateFinance,
   type ColoradoContributionDataForYear,
 } from "../../../src/pipeline/coloradoFinance/coloradoCandidateFinanceBatchSync.js";
-import type { ColoradoTracerContributionRow } from "../../../src/pipeline/coloradoFinance/coloradoTracerContributionReader.js";
+import { getColoradoTracerContributionArtifactCachePaths } from "../../../src/pipeline/coloradoFinance/coloradoTracerContributionArtifactCache.js";
+import {
+  COLORADO_TRACER_CONTRIBUTION_COLUMNS,
+  coloradoTracerContributionCsvFileName,
+  type ColoradoTracerContributionRow,
+} from "../../../src/pipeline/coloradoFinance/coloradoTracerContributionReader.js";
 
 const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
 const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
+const tempDirs: string[] = [];
+
+afterEach(async () => {
+  await Promise.all(tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })));
+});
+
+function contributionCsv(rows: readonly ColoradoTracerContributionRow[]): string {
+  const escape = (value: string): string => (/[",\n\r]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value);
+  return [
+    COLORADO_TRACER_CONTRIBUTION_COLUMNS.join(","),
+    ...rows.map((row) => COLORADO_TRACER_CONTRIBUTION_COLUMNS.map((column) => escape(row[column])).join(",")),
+  ].join("\n");
+}
+
+async function writeContributionArtifact(cacheDir: string, year: number, rows: readonly ColoradoTracerContributionRow[]) {
+  const paths = getColoradoTracerContributionArtifactCachePaths({ cacheDir, year });
+  const memberName = coloradoTracerContributionCsvFileName(year);
+  await writeFile(paths.zipPath, Buffer.from(zipSync({ [memberName]: strToU8(contributionCsv(rows)) })));
+}
 
 function createMockDb(rows: unknown[] = []) {
   return {
@@ -369,12 +398,71 @@ describe("coloradoCandidateFinanceBatchSync", () => {
       );
       expect(warnSpy).toHaveBeenCalledWith(
         "Colorado finance auto-link skipped; continuing with already-linked candidate sync:",
-        expect.stringContaining("Colorado TRACER contribution ZIP not found for 2025")
+        expect.stringContaining("Colorado TRACER contribution ZIP not found for 2024")
       );
       expect(db.query).toHaveBeenCalledTimes(2);
     } finally {
       warnSpy.mockRestore();
     }
+  });
+
+  it("auto-links and syncs money found only in the prior cycle-year artifact", async () => {
+    const rawDataCacheDir = await mkdtemp(join(tmpdir(), "voteapp-co-cycle-"));
+    tempDirs.push(rawDataCacheDir);
+    const priorYearRow = contribution({
+      RecordID: "PRIOR-YEAR",
+      ContributionDate: "10/15/2025",
+      ContributionAmount: "250.00",
+    });
+    await writeContributionArtifact(rawDataCacheDir, 2025, [priorYearRow]);
+    await writeContributionArtifact(rawDataCacheDir, 2026, []);
+
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [{
+            candidate_id: CANDIDATE_ID,
+            election_id: ELECTION_ID,
+            candidate_name: "Jane Doe",
+            election_year: 2026,
+            office_name: "Governor",
+          }],
+          rowCount: 1,
+        })
+        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+        .mockResolvedValueOnce({
+          rows: [{
+            candidate_id: CANDIDATE_ID,
+            election_id: ELECTION_ID,
+            candidate_name: "Jane Doe",
+            election_year: 2026,
+            office_name: "Governor",
+            committee_id: "202650001",
+            committee_name: "Jane Doe for Colorado Governor",
+            tracer_candidate_id: null,
+            source_url: "https://tracer.sos.colorado.gov/",
+            last_synced_at: null,
+            total_due_rows: "1",
+          }],
+          rowCount: 1,
+        }),
+    };
+    const syncFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      totalReceipts: 250,
+    });
+    const result = await syncDueColoradoCandidateFinance({
+      db,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      rawDataCacheDir,
+      syncColoradoCandidateFinanceFn: syncFn,
+    });
+    expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.co_candidate_finance_links");
+    expect(syncFn).toHaveBeenCalledWith(expect.objectContaining({ contributionRows: [priorYearRow] }));
   });
 
   it("rejects invalid batch options before querying", async () => {

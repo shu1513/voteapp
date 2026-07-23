@@ -427,6 +427,41 @@ describe("wisconsinSunshineClient", () => {
     ]);
   });
 
+  it("completes a filer whose cycle query exceeds 50 pages", async () => {
+    const inputOf = (url: string): { dateFrom: string; dateTo: string; skip: number } =>
+      (JSON.parse(new URL(url).searchParams.get("input") ?? "{}") as {
+        "0": { json: { dateFrom: string; dateTo: string; skip: number } };
+      })["0"].json;
+    const row = (id: string, amount: number) => ({
+      id,
+      amount,
+      from_entity: { entityType: { name: "Individual" } },
+    });
+    const fetchImpl = vi.fn(async (url: string) => {
+      const { dateFrom, dateTo, skip } = inputOf(url);
+      if (dateFrom === "2025-01-01" && dateTo === "2026-12-31") {
+        return trpcResponse({ results: [row(`overflow-${skip}`, 1)] });
+      }
+      if (skip > 0) {
+        return trpcResponse({ results: [] });
+      }
+      return trpcResponse({
+        results: [dateFrom === "2025-01-01" ? row("prior", 150) : row("current", 2_000)],
+      });
+    }) as unknown as typeof fetch;
+
+    await expect(
+      getWisconsinSunshineContributionSizeAggregates(
+        { entityId: 16621, electionYear: 2026, limit: 5 },
+        { fetchImpl, timeoutMs: 1000, pageLimit: 1, maxPages: 50 }
+      )
+    ).resolves.toEqual([
+      { categoryName: "1000_4999", amount: 2_000, count: 1, sourceUrl: WISCONSIN_SUNSHINE_TRANSACTIONS_URL },
+      { categoryName: "100_249", amount: 150, count: 1, sourceUrl: WISCONSIN_SUNSHINE_TRANSACTIONS_URL },
+    ]);
+    expect(fetchImpl).toHaveBeenCalledTimes(54);
+  });
+
   it("dedupes rows that appear in both halves of a split window", async () => {
     const windowOf = (url: string): { dateFrom: string; dateTo: string } =>
       (JSON.parse(new URL(url).searchParams.get("input") ?? "{}") as {

@@ -1,14 +1,45 @@
-import { describe, expect, it, vi } from "vitest";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+import { strToU8, zipSync } from "fflate";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   listDueIndianaCandidateFinanceSyncRows,
   syncDueIndianaCandidateFinance,
   type IndianaContributionDataForYear,
 } from "../../../src/pipeline/indianaFinance/indianaCandidateFinanceBatchSync.js";
-import type { IndianaCampaignFinanceContributionRow } from "../../../src/pipeline/indianaFinance/indianaCampaignFinanceReader.js";
+import { getIndianaCampaignFinanceArtifactCachePaths } from "../../../src/pipeline/indianaFinance/indianaCampaignFinanceArtifactCache.js";
+import {
+  INDIANA_CAMPAIGN_FINANCE_CONTRIBUTION_COLUMNS,
+  indianaCampaignFinanceCsvFileName,
+  type IndianaCampaignFinanceContributionRow,
+} from "../../../src/pipeline/indianaFinance/indianaCampaignFinanceReader.js";
 
 const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
 const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
+const tempDirs: string[] = [];
+
+afterEach(async () => {
+  await Promise.all(tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })));
+});
+
+function contributionCsv(rows: readonly IndianaCampaignFinanceContributionRow[]): string {
+  const escape = (value: string): string => (/[",\n\r]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value);
+  return [
+    INDIANA_CAMPAIGN_FINANCE_CONTRIBUTION_COLUMNS.join(","),
+    ...rows.map((row) =>
+      INDIANA_CAMPAIGN_FINANCE_CONTRIBUTION_COLUMNS.map((column) => escape(row[column])).join(",")
+    ),
+  ].join("\n");
+}
+
+async function writeContributionArtifact(cacheDir: string, year: number, rows: readonly IndianaCampaignFinanceContributionRow[]) {
+  const paths = getIndianaCampaignFinanceArtifactCachePaths({ cacheDir, year, artifactKind: "contribution" });
+  const memberName = indianaCampaignFinanceCsvFileName({ year, artifactKind: "contribution" });
+  await writeFile(paths.zipPath, Buffer.from(zipSync({ [memberName]: strToU8(contributionCsv(rows)) })));
+}
 
 function createMockDb(rows: unknown[] = []) {
   return {
@@ -323,7 +354,7 @@ describe("indianaCandidateFinanceBatchSync", () => {
       electionYear: 2025,
       committeeId: "422",
     });
-    expect(result.results[0]?.error).toContain("Indiana campaign finance contribution ZIP not found for 2025");
+    expect(result.results[0]?.error).toContain("Indiana campaign finance contribution ZIP not found for 2024");
     expect(result.results[1]).toMatchObject({
       ok: true,
       candidateId: successfulCandidateId,
@@ -428,5 +459,68 @@ describe("indianaCandidateFinanceBatchSync", () => {
         contributionRows: [row],
       })
     );
+  });
+
+  it("auto-links and syncs money found only in the prior cycle-year artifact", async () => {
+    const rawDataCacheDir = await mkdtemp(join(tmpdir(), "voteapp-in-cycle-"));
+    tempDirs.push(rawDataCacheDir);
+    const priorYearRow = contribution({
+      Amount: "250.0000",
+      ContributionDate: "2025-10-15 00:00:00",
+      Description: "Prior-year receipt",
+    });
+    await writeContributionArtifact(rawDataCacheDir, 2025, [priorYearRow]);
+    await writeContributionArtifact(rawDataCacheDir, 2026, []);
+
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [{
+            candidate_id: CANDIDATE_ID,
+            election_id: ELECTION_ID,
+            candidate_name: "Cesar Diego Morales",
+            election_year: 2026,
+            office_scope: "state_upper",
+            office_name: "State Senator",
+            district: "30",
+          }],
+          rowCount: 1,
+        })
+        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+        .mockResolvedValueOnce({
+          rows: [{
+            candidate_id: CANDIDATE_ID,
+            election_id: ELECTION_ID,
+            candidate_name: "Cesar Diego Morales",
+            election_year: 2026,
+            office_scope: "state_upper",
+            office_name: "State Senator",
+            district: "30",
+            committee_id: "422",
+            committee_name: "Diego for Indiana",
+            source_url: "https://campaignfinance.in.gov/PublicSite/Reporting/DataDownload.aspx",
+            last_synced_at: null,
+            total_due_rows: "1",
+          }],
+          rowCount: 1,
+        }),
+    };
+    const syncFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      totalReceipts: 250,
+      directContributionTotal: 250,
+    });
+    const result = await syncDueIndianaCandidateFinance({
+      db,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      rawDataCacheDir,
+      syncIndianaCandidateFinanceFn: syncFn,
+    });
+    expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.in_candidate_finance_links");
+    expect(syncFn).toHaveBeenCalledWith(expect.objectContaining({ contributionRows: [priorYearRow] }));
   });
 });

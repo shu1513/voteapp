@@ -9,7 +9,7 @@ export const NEW_MEXICO_CFIS_DOWNLOAD_BASE_URL =
   "https://login.cfis.sos.state.nm.us/api/DataDownload/GetCSVDownloadReport";
 export const NEW_MEXICO_CFIS_DATA_CATALOG_URL =
   "https://login.cfis.sos.state.nm.us/api/DataDownload/GetCheckDatadownload";
-export const NEW_MEXICO_CFIS_FETCH_TIMEOUT_MS = 30_000;
+export const NEW_MEXICO_CFIS_FETCH_TIMEOUT_MS = 900_000;
 export const DEFAULT_NEW_MEXICO_CFIS_CACHE_DIR = "scratch/new-mexico-campaign-finance/cfis";
 
 export type NewMexicoCfisArtifactKind = "contributions" | "expenditures";

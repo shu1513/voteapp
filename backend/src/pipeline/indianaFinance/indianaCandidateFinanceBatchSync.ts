@@ -193,37 +193,67 @@ function groupContributionRowsByCommittee(
   return byCommittee;
 }
 
+function indianaCycleFilingYears(electionYear: number, rawDataZipPath?: string): number[] {
+  return rawDataZipPath ? [electionYear] : [electionYear - 1, electionYear];
+}
+
+async function readCycleContributionRows(input: {
+  electionYear: number;
+  rawDataZipPath?: string;
+  rawDataCacheDir?: string;
+  predicate?: (row: IndianaCampaignFinanceContributionRow) => boolean;
+}): Promise<{ rows: IndianaCampaignFinanceContributionRow[]; zipPath: string; sourceUrl: string }> {
+  const cacheDir =
+    input.rawDataCacheDir ??
+    process.env.INDIANA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() ??
+    DEFAULT_INDIANA_CAMPAIGN_FINANCE_CACHE_DIR;
+  const rows: IndianaCampaignFinanceContributionRow[] = [];
+  let zipPath = "";
+  let sourceUrl = "";
+  for (const filingYear of indianaCycleFilingYears(input.electionYear, input.rawDataZipPath)) {
+    const paths = getIndianaCampaignFinanceArtifactCachePaths({
+      cacheDir,
+      year: filingYear,
+      artifactKind: "contribution",
+    });
+    zipPath = input.rawDataZipPath ?? paths.zipPath;
+    if (!(await fileExists(zipPath))) {
+      throw new Error(`Indiana campaign finance contribution ZIP not found for ${filingYear}: ${zipPath}`);
+    }
+    const metadata = input.rawDataZipPath
+      ? null
+      : await readIndianaCampaignFinanceArtifactCacheMetadata(paths.metadataPath);
+    rows.push(
+      ...(await readIndianaCampaignFinanceContributionRows({
+        zipPath,
+        year: filingYear,
+        predicate: input.predicate,
+      }))
+    );
+    sourceUrl =
+      metadata?.remote.url ??
+      buildIndianaCampaignFinanceArtifactUrl({ year: filingYear, artifactKind: "contribution" });
+  }
+  return { rows, zipPath, sourceUrl };
+}
+
 async function loadContributionDataForYear(input: {
   year: number;
   rawDataZipPath?: string;
   rawDataCacheDir?: string;
 }): Promise<IndianaContributionDataForYear> {
-  const paths = getIndianaCampaignFinanceArtifactCachePaths({
-    cacheDir:
-      input.rawDataCacheDir ??
-      process.env.INDIANA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() ??
-      DEFAULT_INDIANA_CAMPAIGN_FINANCE_CACHE_DIR,
-    year: input.year,
-    artifactKind: "contribution",
+  const data = await readCycleContributionRows({
+    electionYear: input.year,
+    rawDataZipPath: input.rawDataZipPath,
+    rawDataCacheDir: input.rawDataCacheDir,
   });
-  const zipPath = input.rawDataZipPath ?? paths.zipPath;
-  if (!(await fileExists(zipPath))) {
-    throw new Error(`Indiana campaign finance contribution ZIP not found for ${input.year}: ${zipPath}`);
-  }
-
-  const metadata = input.rawDataZipPath
-    ? null
-    : await readIndianaCampaignFinanceArtifactCacheMetadata(paths.metadataPath);
-  const rows = await readIndianaCampaignFinanceContributionRows({ zipPath, year: input.year });
 
   return {
     year: input.year,
-    zipPath,
-    sourceUrl:
-      metadata?.remote.url ??
-      buildIndianaCampaignFinanceArtifactUrl({ year: input.year, artifactKind: "contribution" }),
-    rows,
-    rowsByCommitteeId: groupContributionRowsByCommittee(rows),
+    zipPath: data.zipPath,
+    sourceUrl: data.sourceUrl,
+    rows: data.rows,
+    rowsByCommitteeId: groupContributionRowsByCommittee(data.rows),
   };
 }
 
@@ -242,32 +272,13 @@ async function loadAutoLinkContributionRowsForYear(input: {
     };
   }
 
-  const paths = getIndianaCampaignFinanceArtifactCachePaths({
-    cacheDir:
-      input.rawDataCacheDir ??
-      process.env.INDIANA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() ??
-      DEFAULT_INDIANA_CAMPAIGN_FINANCE_CACHE_DIR,
-    year: input.year,
-    artifactKind: "contribution",
+  const data = await readCycleContributionRows({
+    electionYear: input.year,
+    rawDataZipPath: input.rawDataZipPath,
+    rawDataCacheDir: input.rawDataCacheDir,
+    predicate: buildIndianaCandidateNamePredicate(input.candidates),
   });
-  const zipPath = input.rawDataZipPath ?? paths.zipPath;
-  if (!(await fileExists(zipPath))) {
-    throw new Error(`Indiana campaign finance contribution ZIP not found for ${input.year}: ${zipPath}`);
-  }
-
-  const metadata = input.rawDataZipPath
-    ? null
-    : await readIndianaCampaignFinanceArtifactCacheMetadata(paths.metadataPath);
-  return {
-    rows: await readIndianaCampaignFinanceContributionRows({
-      zipPath,
-      year: input.year,
-      predicate: buildIndianaCandidateNamePredicate(input.candidates),
-    }),
-    sourceUrl:
-      metadata?.remote.url ??
-      buildIndianaCampaignFinanceArtifactUrl({ year: input.year, artifactKind: "contribution" }),
-  };
+  return { rows: data.rows, sourceUrl: data.sourceUrl };
 }
 
 export async function listDueIndianaCandidateFinanceSyncRows(

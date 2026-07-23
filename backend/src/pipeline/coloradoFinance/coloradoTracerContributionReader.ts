@@ -256,8 +256,10 @@ function parseCsvRows(csv: string): string[][] {
       if (char === '"' && next === '"') {
         field += '"';
         index += 1;
-      } else if (char === '"') {
+      } else if (char === '"' && (next === "," || next === "\n" || next === "\r" || next === undefined)) {
         inQuotes = false;
+      } else if (char === '"') {
+        field += '"';
       } else {
         field += char;
       }
@@ -432,8 +434,10 @@ async function streamColoradoTracerContributionRows(input: {
         if (text[0] === '"') {
           field += '"';
           index = 1;
-        } else {
+        } else if (text[0] === "," || text[0] === "\n" || text[0] === "\r" || (isFinal && text.length === 0)) {
           inQuotes = false;
+        } else {
+          field += '"';
         }
       }
 
@@ -447,8 +451,10 @@ async function streamColoradoTracerContributionRows(input: {
             index += 1;
           } else if (char === '"' && next === undefined && !isFinal) {
             pendingQuoteInQuotedField = true;
-          } else if (char === '"') {
+          } else if (char === '"' && (next === "," || next === "\n" || next === "\r" || next === undefined)) {
             inQuotes = false;
+          } else if (char === '"') {
+            field += '"';
           } else {
             field += char;
           }

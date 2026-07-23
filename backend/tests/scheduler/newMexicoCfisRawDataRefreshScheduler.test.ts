@@ -57,7 +57,12 @@ describe("newMexicoCfisRawDataRefreshScheduler", () => {
       { pattern: "15 8 * * *", tz: "America/Denver" },
       expect.objectContaining({
         name: "new_mexico_cfis_raw_data_refresh",
-        data: expect.objectContaining({ artifactKind: "contributions", year: 2026, cacheDir: "/tmp/cfis" }),
+        data: expect.objectContaining({
+          artifactKind: "contributions",
+          year: 2026,
+          cacheDir: "/tmp/cfis",
+          timeoutMs: 900_000,
+        }),
       })
     );
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
@@ -65,7 +70,12 @@ describe("newMexicoCfisRawDataRefreshScheduler", () => {
       { pattern: "15 8 * * *", tz: "America/Denver" },
       expect.objectContaining({
         name: "new_mexico_cfis_raw_data_refresh",
-        data: expect.objectContaining({ artifactKind: "expenditures", year: 2026, cacheDir: "/tmp/cfis" }),
+        data: expect.objectContaining({
+          artifactKind: "expenditures",
+          year: 2026,
+          cacheDir: "/tmp/cfis",
+          timeoutMs: 900_000,
+        }),
       })
     );
     expect(queueInstance.close).toHaveBeenCalledTimes(1);
