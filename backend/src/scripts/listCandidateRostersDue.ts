@@ -28,11 +28,11 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 // separate fanout-debt list instead.
 //
 // Failed rows are repair work, not untouched research. Pending rows with a
-// reason already received an attempted pass, and ledger-backed rows already
-// received a pass that established a timing blocker. Those rows are excluded
-// from initialPending. Refreshing far-future elections is wasted work —
-// rosters change close to filing deadlines — so all lists are capped to
-// elections within the lookahead window.
+// reason, a non-empty staged roster, or any canonical candidate link already
+// received work and are excluded from initialPending. Ledger-backed rows also
+// received a pass that established a timing blocker. Refreshing far-future
+// elections is wasted work — rosters change close to filing deadlines — so
+// all lists are capped to elections within the lookahead window.
 
 type Queryable = Pick<Pool, "query">;
 
@@ -109,6 +109,14 @@ export async function listCandidateRostersInitialPending(
         -- A non-empty reason means a pass was attempted and needs repair;
         -- it is not an untouched roster.
         AND COALESCE(btrim(s.reason), '') = ''
+        -- A staged candidate or canonical election link proves candidate
+        -- work already exists even when the staging row is still pending.
+        AND COALESCE(jsonb_array_length(s.payload->'candidates'), 0) = 0
+        AND NOT EXISTS (
+          SELECT 1
+          FROM public.candidate_elections AS ce
+          WHERE ce.election_id = e.id
+        )
         -- A timing deferral proves research already established why the
         -- roster cannot be completed yet. manual:deferral:due owns it.
         AND NOT EXISTS (

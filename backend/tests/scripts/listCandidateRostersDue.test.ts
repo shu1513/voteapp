@@ -13,7 +13,7 @@ function createMockQueryable(rows: unknown[] = []) {
 }
 
 describe("listCandidateRostersInitialPending", () => {
-  it("lists untouched pending roster rows while excluding attempted and deferred work", async () => {
+  it("lists untouched pending roster rows while excluding existing candidate work and deferrals", async () => {
     const row = {
       election_id: "e-initial",
       district_name: "Legislative District 35, Washington",
@@ -37,6 +37,9 @@ describe("listCandidateRostersInitialPending", () => {
     expect(params).toEqual(["2026-07-16", 90, "candidate_roster"]);
     expect(sql).toContain("s.status = 'pending'");
     expect(sql).toContain("COALESCE(btrim(s.reason), '') = ''");
+    expect(sql).toContain("jsonb_array_length(s.payload->'candidates'), 0) = 0");
+    expect(sql).toContain("FROM public.candidate_elections AS ce");
+    expect(sql).toContain("ce.election_id = e.id");
     expect(sql).toContain("NOT EXISTS");
     expect(sql).toContain("mrd.status = 'deferred'");
     expect(sql).toContain("mrd.stage = 'candidate_roster'");
