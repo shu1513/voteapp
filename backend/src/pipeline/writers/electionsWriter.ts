@@ -49,6 +49,25 @@ type WriteResult = {
   officeElectionIds: string[];
 };
 
+class UnresolvedOfficeMatchError extends Error {
+  constructor(input: {
+    districtId: string;
+    scope: string;
+    method: "none" | "ambiguous";
+    confidence: number;
+    officialBallotTitle: string;
+    normalizedAlias: string;
+  }) {
+    super(
+      `writer office match failed: district_id=${input.districtId} scope=${input.scope} ` +
+        `method=${input.method} confidence=${input.confidence.toFixed(3)} ` +
+        `title=${JSON.stringify(input.officialBallotTitle)} ` +
+        `normalized_alias=${JSON.stringify(input.normalizedAlias)}`
+    );
+    this.name = "UnresolvedOfficeMatchError";
+  }
+}
+
 // Writing elections + downstream publish can take time; only reclaim clearly stale pending entries.
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
@@ -327,12 +346,6 @@ async function writeElectionsForDistrict(
       none: 0,
       ambiguous: 0,
     };
-    const unresolvedOfficeMatches: Array<{
-      method: "none" | "ambiguous";
-      confidence: number;
-      officialBallotTitle: string;
-      normalizedAlias: string;
-    }> = [];
     const aliasRowsToInsert: Array<{
       office_id: string;
       scope: string;
@@ -346,45 +359,60 @@ async function writeElectionsForDistrict(
       term_end_year: string | null;
     }> = [];
     const insertedElectionIds: string[] = [];
-    for (const entry of payload.entries) {
-      let matchedOfficeId: string | null = null;
-      if (entry.race_type === "office") {
-        const officeMatch = await officeMatcher.resolve({
-          scope: payload.district_type,
-          districtName: payload.district_name,
-          state: payload.state,
-          officialBallotTitle: entry.official_ballot_title,
-          discoveryContestFamily: entry.discovery_contest_family,
-        });
-        officeMatchCounts[officeMatch.method] += 1;
-        matchedOfficeId = officeMatch.officeId;
-        if (officeMatch.method === "none" || officeMatch.method === "ambiguous") {
-          unresolvedOfficeMatches.push({
-            method: officeMatch.method,
-            confidence: officeMatch.confidence,
-            officialBallotTitle: entry.official_ballot_title,
-            normalizedAlias: officeMatch.normalizedAlias,
-          });
-        }
+    const matchedOfficeIds: Array<string | null> = [];
 
-        if (
-          officeMatch.officeId &&
-          officeMatch.shouldPersistAlias &&
-          officeMatch.aliasMemoryKey.length > 0
-        ) {
-          const aliasKey = `${payload.district_type}::${officeMatch.aliasMemoryKey}`;
-          if (!seenAliasKeys.has(aliasKey)) {
-            seenAliasKeys.add(aliasKey);
-            aliasRowsToInsert.push({
-              office_id: officeMatch.officeId,
-              scope: payload.district_type,
-              alias_text: entry.official_ballot_title,
-              normalized_alias: officeMatch.aliasMemoryKey,
-            });
-          }
-        }
+    // Resolve every office before inserting any election. One unresolved
+    // office makes the district payload incomplete, so fail the whole write
+    // instead of committing a shell that downstream candidate-record stages
+    // cannot use.
+    for (const entry of payload.entries) {
+      if (entry.race_type !== "office") {
+        matchedOfficeIds.push(null);
+        continue;
       }
 
+      const officeMatch = await officeMatcher.resolve({
+        scope: payload.district_type,
+        districtName: payload.district_name,
+        state: payload.state,
+        officialBallotTitle: entry.official_ballot_title,
+        discoveryContestFamily: entry.discovery_contest_family,
+      });
+      officeMatchCounts[officeMatch.method] += 1;
+      if (officeMatch.method === "none" || officeMatch.method === "ambiguous") {
+        throw new UnresolvedOfficeMatchError({
+          districtId: payload.district_id,
+          scope: payload.district_type,
+          method: officeMatch.method,
+          confidence: officeMatch.confidence,
+          officialBallotTitle: entry.official_ballot_title,
+          normalizedAlias: officeMatch.normalizedAlias,
+        });
+      }
+      if (!officeMatch.officeId) {
+        throw new Error(
+          `office matcher returned ${officeMatch.method} without office_id: ` +
+            `district_id=${payload.district_id} title=${JSON.stringify(entry.official_ballot_title)}`
+        );
+      }
+      matchedOfficeIds.push(officeMatch.officeId);
+
+      if (officeMatch.shouldPersistAlias && officeMatch.aliasMemoryKey.length > 0) {
+        const aliasKey = `${payload.district_type}::${officeMatch.aliasMemoryKey}`;
+        if (!seenAliasKeys.has(aliasKey)) {
+          seenAliasKeys.add(aliasKey);
+          aliasRowsToInsert.push({
+            office_id: officeMatch.officeId,
+            scope: payload.district_type,
+            alias_text: entry.official_ballot_title,
+            normalized_alias: officeMatch.aliasMemoryKey,
+          });
+        }
+      }
+    }
+
+    for (const [entryIndex, entry] of payload.entries.entries()) {
+      const matchedOfficeId = matchedOfficeIds[entryIndex] ?? null;
       const upsertResult = await client.query<{ id: string; race_type: string; inserted: boolean }>(
         `
           INSERT INTO public.elections (
@@ -486,14 +514,6 @@ async function writeElectionsForDistrict(
         `office-matcher summary ingest_key=${ingestKey} district_id=${payload.district_id} scope=${payload.district_type} ` +
           `alias_exact=${officeMatchCounts.alias_exact} fallback=${officeMatchCounts.deterministic_fallback} ` +
           `none=${officeMatchCounts.none} ambiguous=${officeMatchCounts.ambiguous}`
-      );
-    }
-
-    for (const unresolved of unresolvedOfficeMatches) {
-      console.log(
-        `office-matcher unresolved ingest_key=${ingestKey} district_id=${payload.district_id} scope=${payload.district_type} ` +
-          `method=${unresolved.method} confidence=${unresolved.confidence.toFixed(3)} ` +
-          `title=${JSON.stringify(unresolved.officialBallotTitle)} normalized_alias=${JSON.stringify(unresolved.normalizedAlias)}`
       );
     }
 
@@ -756,6 +776,23 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
           await ack(entry.id);
         } catch (error) {
           const reason = toReason(error);
+          if (error instanceof UnresolvedOfficeMatchError && ingestKey) {
+            await pool.query(
+              `
+                UPDATE staging_items
+                SET status = 'failed',
+                    reason = $2,
+                    updated_at = now()
+                WHERE ingest_key = $1
+                  AND item_type = $3
+                  AND status = 'validated'
+              `,
+              [ingestKey, reason, STAGING_ITEM_TYPE_ELECTION]
+            );
+            console.error(`elections writer failed ingest_key=${ingestKey}: ${reason}`);
+            await ack(entry.id);
+            continue;
+          }
           if (ingestKey) {
             console.warn(`elections writer retrying ingest_key=${ingestKey}: ${reason}`);
           } else {
