@@ -22,7 +22,7 @@ import {
   evaluateOfficeCandidateEligibilityByElectionIds,
   summarizeOfficeCandidateEligibilityReasons,
 } from "../candidates/officeCandidateEligibility.js";
-import { OfficeMatcher } from "../elections/officeMatcher.js";
+import { OfficeMatcher, type OfficeMatchResult } from "../elections/officeMatcher.js";
 import { createDistrictNewElectionNotificationEvents } from "../users/districtNotificationEvents.js";
 
 type WriterOptions = {
@@ -53,7 +53,7 @@ class UnresolvedOfficeMatchError extends Error {
   constructor(input: {
     districtId: string;
     scope: string;
-    method: "none" | "ambiguous";
+    method: OfficeMatchResult["method"];
     confidence: number;
     officialBallotTitle: string;
     normalizedAlias: string;
@@ -340,11 +340,9 @@ async function writeElectionsForDistrict(
     const ballotMeasureElectionIds: string[] = [];
     const officeElectionIds: string[] = [];
     const officeMatcher = new OfficeMatcher(client);
-    const officeMatchCounts: Record<"alias_exact" | "deterministic_fallback" | "none" | "ambiguous", number> = {
+    const officeMatchCounts: Record<"alias_exact" | "deterministic_fallback", number> = {
       alias_exact: 0,
       deterministic_fallback: 0,
-      none: 0,
-      ambiguous: 0,
     };
     const aliasRowsToInsert: Array<{
       office_id: string;
@@ -378,7 +376,6 @@ async function writeElectionsForDistrict(
         officialBallotTitle: entry.official_ballot_title,
         discoveryContestFamily: entry.discovery_contest_family,
       });
-      officeMatchCounts[officeMatch.method] += 1;
       if (officeMatch.method === "none" || officeMatch.method === "ambiguous") {
         throw new UnresolvedOfficeMatchError({
           districtId: payload.district_id,
@@ -390,11 +387,16 @@ async function writeElectionsForDistrict(
         });
       }
       if (!officeMatch.officeId) {
-        throw new Error(
-          `office matcher returned ${officeMatch.method} without office_id: ` +
-            `district_id=${payload.district_id} title=${JSON.stringify(entry.official_ballot_title)}`
-        );
+        throw new UnresolvedOfficeMatchError({
+          districtId: payload.district_id,
+          scope: payload.district_type,
+          method: officeMatch.method,
+          confidence: officeMatch.confidence,
+          officialBallotTitle: entry.official_ballot_title,
+          normalizedAlias: officeMatch.normalizedAlias,
+        });
       }
+      officeMatchCounts[officeMatch.method] += 1;
       matchedOfficeIds.push(officeMatch.officeId);
 
       if (officeMatch.shouldPersistAlias && officeMatch.aliasMemoryKey.length > 0) {
@@ -503,17 +505,10 @@ async function writeElectionsForDistrict(
       }
     }
 
-    if (
-      officeMatchCounts.alias_exact +
-        officeMatchCounts.deterministic_fallback +
-        officeMatchCounts.none +
-        officeMatchCounts.ambiguous >
-      0
-    ) {
+    if (officeMatchCounts.alias_exact + officeMatchCounts.deterministic_fallback > 0) {
       console.log(
         `office-matcher summary ingest_key=${ingestKey} district_id=${payload.district_id} scope=${payload.district_type} ` +
-          `alias_exact=${officeMatchCounts.alias_exact} fallback=${officeMatchCounts.deterministic_fallback} ` +
-          `none=${officeMatchCounts.none} ambiguous=${officeMatchCounts.ambiguous}`
+          `alias_exact=${officeMatchCounts.alias_exact} fallback=${officeMatchCounts.deterministic_fallback}`
       );
     }
 
@@ -776,7 +771,7 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
           await ack(entry.id);
         } catch (error) {
           const reason = toReason(error);
-          if (error instanceof UnresolvedOfficeMatchError && ingestKey) {
+          if (error instanceof UnresolvedOfficeMatchError) {
             await pool.query(
               `
                 UPDATE staging_items

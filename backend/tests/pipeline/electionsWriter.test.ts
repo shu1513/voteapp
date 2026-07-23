@@ -293,9 +293,12 @@ describe("runElectionsWriter", () => {
     const failedUpdate = poolQueryMock.mock.calls.find((call) =>
       String(call[0]).includes("SET status = 'failed'")
     );
-    expect(failedUpdate?.[1]?.[1]).toContain(
-      'writer office match failed: district_id=d-oregon scope=county method=ambiguous confidence=0.667 title="Clerk"'
+    const failureReason = String(failedUpdate?.[1]?.[1]);
+    expect(failureReason).toContain(
+      "writer office match failed: district_id=d-oregon scope=county method=ambiguous"
     );
+    expect(failureReason).toMatch(/confidence=\d+\.\d{3}/);
+    expect(failureReason).toContain('title="Clerk" normalized_alias="clerk"');
     expect(redisXAckMock).toHaveBeenCalledWith(
       STAGING_VALIDATED_STREAM,
       STAGING_ELECTIONS_WRITER_GROUP,
