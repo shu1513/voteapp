@@ -494,7 +494,10 @@ async function mergeCandidateIdentifiersForExistingCandidate(
           END,
           party = CASE
             WHEN $26::boolean AND length(trim($25::text)) > 0 THEN $25::text
-            WHEN party IS NULL OR length(trim(party)) = 0 THEN $25::text
+            -- party has been NOT NULL since migration 001. Repair blank
+            -- values, but never turn schema-drift NULLs into "Unknown"
+            -- without the explicit overwrite branch above.
+            WHEN party IS NOT NULL AND length(trim(party)) = 0 THEN $25::text
             ELSE party
           END,
           profile_sources = $4::jsonb,

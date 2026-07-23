@@ -44,9 +44,26 @@ export function resolveIncludePartyForCandidateContest(input: {
   });
 }
 
+const NONPARTISAN_OR_NO_AFFILIATION_LABELS = new Set([
+  "nonpartisan",
+  "non partisan",
+  "unknown",
+  "none",
+  "no party preference",
+  "states no party preference",
+  "npp",
+  "no party affiliation",
+  "no political party",
+  "unaffiliated",
+  "unenrolled",
+  "undeclared",
+  "decline to state",
+  "declined to state",
+]);
+
 function isNonpartisanPlaceholder(value: string): boolean {
   const normalized = value.trim().toLowerCase().replace(/[-_]+/g, " ").replace(/\s+/g, " ");
-  return normalized === "nonpartisan" || normalized === "non partisan" || normalized === "unknown";
+  return NONPARTISAN_OR_NO_AFFILIATION_LABELS.has(normalized);
 }
 
 export function assertCandidatePartyWillNotBeDiscarded(input: {

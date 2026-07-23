@@ -37,12 +37,34 @@ describe("candidatePartisanship", () => {
     ).toThrow(/would discard candidate party/i);
   });
 
-  it("allows absent and explicitly nonpartisan labels in nonpartisan contests", () => {
+  it("allows absent, nonpartisan, and explicit no-affiliation labels in nonpartisan contests", () => {
     expect(() =>
       assertCandidatePartyWillNotBeDiscarded({
         includeParty: false,
-        partyLabels: [undefined, "Nonpartisan", "unknown"],
+        partyLabels: [
+          undefined,
+          "Nonpartisan",
+          "unknown",
+          "No Party Preference",
+          "NPP",
+          "No Party Affiliation",
+          "No Political Party",
+          "Unaffiliated",
+          "Unenrolled",
+          "Undeclared",
+          "Decline to State",
+          "None",
+        ],
       })
     ).not.toThrow();
+  });
+
+  it("keeps Independent meaningful instead of treating it as no affiliation", () => {
+    expect(() =>
+      assertCandidatePartyWillNotBeDiscarded({
+        includeParty: false,
+        partyLabels: ["Independent"],
+      })
+    ).toThrow(/Independent/);
   });
 });

@@ -479,6 +479,8 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     const updateSql = String(query.mock.calls[3]?.[0]);
     const params = query.mock.calls[3]?.[1] as unknown[];
     expect(updateSql).toContain("party = CASE");
+    expect(updateSql).toContain("WHEN party IS NOT NULL AND length(trim(party)) = 0 THEN $25::text");
+    expect(updateSql).not.toContain("WHEN party IS NULL OR");
     expect(params.slice(-2)).toEqual(["Republican", true]);
   });
 
