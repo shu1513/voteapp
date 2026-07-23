@@ -23,8 +23,11 @@ import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
+import { appendElectionSource } from "./electionSourceUtils.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
+
+export { appendElectionSource } from "./electionSourceUtils.js";
 
 type QueryResultLike<T> = { rows: T[] };
 
@@ -112,22 +115,6 @@ export function assertIsoDate(name: string, value: string): void {
   ) {
     throw new Error(`${name} must be a valid YYYY-MM-DD date; received ${value}`);
   }
-}
-
-// elections.sources is a jsonb array of URL strings everywhere the pipeline
-// writes it; anything else in an existing row is dropped rather than
-// round-tripped so a malformed row cannot smuggle non-string entries forward.
-// Entries are trimmed before the Set so a whitespace variant of an existing
-// URL dedupes instead of surviving as a second entry (defensive only — the
-// election payload contract trims on parse and no live row carries
-// untrimmed sources).
-export function appendElectionSource(sources: unknown, sourceUrl: string): string[] {
-  const existing = Array.isArray(sources)
-    ? sources
-        .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
-        .map((value) => value.trim())
-    : [];
-  return [...new Set([...existing, sourceUrl.trim()])];
 }
 
 export async function runElectionDateCorrection(

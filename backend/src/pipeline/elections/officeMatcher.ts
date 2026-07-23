@@ -51,6 +51,7 @@ const SCHOOL_BOARD_CANONICAL_NAME = "School Board Member";
 const STATE_LEVEL_JUDGE_CANONICAL_NAME = "State Level Judge";
 const COUNTY_LEVEL_JUDGE_CANONICAL_NAME = "County Level Judge";
 const PLACE_LEVEL_JUDGE_CANONICAL_NAME = "Place Level Judge";
+const CLERK_OF_COURT_CANONICAL_NAME = "Clerk of Court";
 const JUDGE_CANONICAL_NAMES = new Set([
   STATE_LEVEL_JUDGE_CANONICAL_NAME,
   COUNTY_LEVEL_JUDGE_CANONICAL_NAME,
@@ -449,6 +450,11 @@ function judgeCanonicalNameForScope(scope: ElectionDistrictType): string | null 
   return null;
 }
 
+function isWashingtonState(state: string): boolean {
+  const normalized = state.trim().toLowerCase();
+  return normalized === "wa" || normalized === "washington";
+}
+
 function hasPhrase(text: string, phrase: string): boolean {
   if (!text || !phrase) {
     return false;
@@ -717,6 +723,28 @@ export class OfficeMatcher {
       );
       if (match) {
         return match;
+      }
+    }
+
+    // Washington's constitution makes each county's elected "Clerk" the
+    // clerk of superior court. The bare word is otherwise genuinely
+    // ambiguous with County Clerk, so keep this exact and state-scoped and do
+    // not persist a global county alias that would affect other states.
+    if (
+      input.scope === "county" &&
+      isWashingtonState(input.state) &&
+      titleMatcherKey === "clerk"
+    ) {
+      const office = findSingleScopeOffice(offices, CLERK_OF_COURT_CANONICAL_NAME);
+      if (office) {
+        return {
+          officeId: office.id,
+          method: "deterministic_fallback",
+          confidence: 1,
+          normalizedAlias,
+          aliasMemoryKey: titleMatcherKey,
+          shouldPersistAlias: false,
+        };
       }
     }
 
