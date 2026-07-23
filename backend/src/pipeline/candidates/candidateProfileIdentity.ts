@@ -1,6 +1,7 @@
 import type { PoolClient } from "pg";
 
 import type { CandidateProfilePayload } from "../../contracts/candidateProfilePayloadContract.js";
+import { assertCandidatePartyWillNotBeDiscarded } from "../../ai/candidatePartisanship.js";
 import {
   hasNormalizedIntersection,
   normalizeCandidateName,
@@ -62,6 +63,7 @@ export type FindOrCreateCandidateFromProfileInput = {
 };
 
 export const OVERWRITABLE_PROFILE_FIELDS = [
+  "party",
   "date_of_birth",
   "twitter_handle",
   "linkedin_url",
@@ -151,6 +153,16 @@ export function hasAtLeastOneHardIdentifier(profile: CandidateProfilePayload): b
       hasFec ||
       hasStateFiling
   );
+}
+
+export function resolveStoredCandidateParty(input: {
+  includeParty: boolean;
+  rosterParty: string | undefined;
+  profileParty: string | undefined;
+}): string {
+  return input.includeParty
+    ? input.rosterParty ?? input.profileParty ?? "Unknown"
+    : "Nonpartisan";
 }
 
 export function matchesByHardIdentifier(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
@@ -265,11 +277,8 @@ async function insertCandidate(
   client: PoolClient,
   profile: CandidateProfilePayload,
   state: string,
-  rosterParty: string | undefined,
-  includeParty: boolean
+  storedParty: string
 ): Promise<string> {
-  const storedParty = includeParty ? rosterParty ?? profile.party ?? "Unknown" : "Nonpartisan";
-
   const insertResult = await client.query<{ id: string }>(
     `
       INSERT INTO public.candidates (
@@ -379,6 +388,7 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   client: PoolClient,
   candidateId: string,
   profile: CandidateProfilePayload,
+  storedParty: string,
   overwriteFields?: ReadonlySet<OverwritableProfileField>,
   clearFields?: ReadonlySet<OverwritableProfileField>
 ): Promise<void> {
@@ -387,9 +397,10 @@ async function mergeCandidateIdentifiersForExistingCandidate(
     state_filing_ids: unknown;
     current_office: string | null;
     has_held_public_office: boolean | null;
+    party: string | null;
   }>(
     `
-      SELECT fec_ids, state_filing_ids, current_office, has_held_public_office
+      SELECT fec_ids, state_filing_ids, current_office, has_held_public_office, party
       FROM public.candidates
       WHERE id = $1
         AND deleted_at IS NULL
@@ -481,6 +492,11 @@ async function mergeCandidateIdentifiersForExistingCandidate(
             WHEN has_held_public_office IS NULL THEN $23::boolean
             ELSE has_held_public_office
           END,
+          party = CASE
+            WHEN $26::boolean AND length(trim($25::text)) > 0 THEN $25::text
+            WHEN party IS NULL OR length(trim(party)) = 0 THEN $25::text
+            ELSE party
+          END,
           profile_sources = $4::jsonb,
           last_researched = now(),
           updated_at = now()
@@ -514,6 +530,8 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       // would immediately conflict with the payload (writers refuse the flag).
       profile.has_held_public_office ?? null,
       overwriteFields?.has("has_held_public_office") ?? false,
+      storedParty,
+      overwriteFields?.has("party") ?? false,
     ]
   );
 }
@@ -546,6 +564,15 @@ async function findCandidateLinkedToElectionByDisplayName(
 export async function findOrCreateCandidateFromProfile(
   input: FindOrCreateCandidateFromProfileInput
 ): Promise<FindOrCreateCandidateFromProfileResult> {
+  assertCandidatePartyWillNotBeDiscarded({
+    includeParty: input.includeParty,
+    partyLabels: [input.rosterParty, input.profile.party],
+  });
+  const storedParty = resolveStoredCandidateParty({
+    includeParty: input.includeParty,
+    rosterParty: input.rosterParty,
+    profileParty: input.profile.party,
+  });
   // Serialize identity resolution per person: the read below and the insert
   // at the bottom are otherwise an unlocked read-then-insert, and the
   // candidates table has no uniqueness constraint — two workers processing
@@ -571,6 +598,7 @@ export async function findOrCreateCandidateFromProfile(
         input.client,
         matchedCandidate.id,
         input.profile,
+        storedParty,
         input.overwriteProfileFields,
         input.clearProfileFields
       );
@@ -597,6 +625,7 @@ export async function findOrCreateCandidateFromProfile(
         input.client,
         linkedCandidateId,
         input.profile,
+        storedParty,
         input.overwriteProfileFields,
         input.clearProfileFields
       );
@@ -608,8 +637,7 @@ export async function findOrCreateCandidateFromProfile(
     input.client,
     input.profile,
     input.state,
-    input.rosterParty,
-    input.includeParty
+    storedParty
   );
   return { candidateId, matchedExisting: false };
 }

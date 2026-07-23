@@ -5,7 +5,10 @@ import {
   buildCandidateProfileConfigFromEnv,
   enrichCandidateProfile,
 } from "../../ai/enrichCandidateProfile.js";
-import { resolveIncludePartyForCandidateContest } from "../../ai/candidatePartisanship.js";
+import {
+  assertCandidatePartyWillNotBeDiscarded,
+  resolveIncludePartyForCandidateContest,
+} from "../../ai/candidatePartisanship.js";
 import { getPipelineEnv } from "../../config/env.js";
 import { isFloridaCampaignFinanceSyncEnabled, isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
 import {
@@ -1477,6 +1480,10 @@ async function resolveElectionDraftContext(input: {
     state: election.state,
     officialBallotTitle: election.official_ballot_title,
     electionIsPartisan: election.is_partisan,
+  });
+  assertCandidatePartyWillNotBeDiscarded({
+    includeParty,
+    partyLabels: [input.rosterParty],
   });
   const rosterParty = includeParty ? input.rosterParty : undefined;
 

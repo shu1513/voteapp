@@ -3,7 +3,10 @@ import { pathToFileURL } from "node:url";
 import { Pool, type PoolClient } from "pg";
 import { createClient } from "redis";
 
-import { resolveIncludePartyForCandidateContest } from "../ai/candidatePartisanship.js";
+import {
+  assertCandidatePartyWillNotBeDiscarded,
+  resolveIncludePartyForCandidateContest,
+} from "../ai/candidatePartisanship.js";
 import { resolveCandidateResearchMode } from "../ai/candidateResearchMode.js";
 import { validateCandidateProfileAiPayload } from "../ai/enrichCandidateProfile.js";
 import { loadProjectEnv } from "../config/env.js";
@@ -21,6 +24,7 @@ import {
   findOrCreateCandidateFromProfile,
   hasAtLeastOneHardIdentifier,
   OVERWRITABLE_PROFILE_FIELDS,
+  resolveStoredCandidateParty,
   type OverwritableProfileField,
 } from "../pipeline/candidates/candidateProfileIdentity.js";
 import {
@@ -554,11 +558,11 @@ async function main(): Promise<void> {
       `--clear-profile-fields and --replace-profile-fields cannot share fields (${clearReplaceOverlap.join(", ")}): clearing sets NULL, replacing needs a payload value — pick one intent per field`
     );
   }
-  if (clearProfileFields.has("has_held_public_office")) {
+  if (clearProfileFields.has("has_held_public_office") || clearProfileFields.has("party")) {
     // The contract requires an answer on every payload, so a clear would
     // always conflict with the supplied value; the correction path is replace.
     throw new Error(
-      "--clear-profile-fields has_held_public_office is not supported: the profile contract requires an answer on every payload — use --replace-profile-fields has_held_public_office to correct a stale stored value"
+      "--clear-profile-fields does not support party or has_held_public_office; use --replace-profile-fields to correct either stored value"
     );
   }
   if (!file || !electionId) {
@@ -695,7 +699,22 @@ async function main(): Promise<void> {
       );
     }
 
-    const rosterParty = includeParty ? rosterHints?.party ?? validatedProfile.profile.party : undefined;
+    const sourcedParty = rosterHints?.party ?? validatedProfile.profile.party;
+    assertCandidatePartyWillNotBeDiscarded({
+      includeParty,
+      partyLabels: [rosterHints?.party, validatedProfile.profile.party],
+    });
+    const rosterParty = includeParty ? sourcedParty : undefined;
+    if (overwriteProfileFields.has("party") && includeParty && !rosterParty) {
+      throw new Error(
+        "--replace-profile-fields party requires a source-backed party in the staged roster or profile payload"
+      );
+    }
+    const effectiveStoredParty = resolveStoredCandidateParty({
+      includeParty,
+      rosterParty,
+      profileParty: validatedProfile.profile.party,
+    });
     const effectiveInputIncumbency = isIncumbent ?? rosterHints?.isIncumbent;
     const qualityGaps = applyConfirmedGaps(
       buildCandidateProfileQualityGaps({
@@ -737,6 +756,9 @@ async function main(): Promise<void> {
             raceType: election.race_type,
             districtType: election.district_type,
             officialBallotTitle: election.official_ballot_title,
+            electionIsPartisan: election.is_partisan,
+            includeParty,
+            effectiveStoredParty,
             researchMode,
             rosterIdentity: {
               matched: Boolean(rosterHints),

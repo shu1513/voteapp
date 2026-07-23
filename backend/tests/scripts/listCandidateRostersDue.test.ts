@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   listCandidateRosterFanoutDebt,
+  listCandidateRostersInitialPending,
   listCandidateRostersDue,
 } from "../../src/scripts/listCandidateRostersDue.js";
 
@@ -10,6 +11,40 @@ function createMockQueryable(rows: unknown[] = []) {
     query: vi.fn().mockResolvedValue({ rows }),
   };
 }
+
+describe("listCandidateRostersInitialPending", () => {
+  it("lists untouched pending roster rows while excluding attempted and deferred work", async () => {
+    const row = {
+      election_id: "e-initial",
+      district_name: "Legislative District 35, Washington",
+      district_type: "state_lower",
+      state: "WA",
+      official_ballot_title: "State Representative Pos. 1",
+      election_date: "2026-08-04",
+      election_stage: "primary",
+      roster_status: "pending",
+      roster_updated_at: "2026-07-20 12:00:00+00",
+    };
+    const db = createMockQueryable([row]);
+
+    const result = await listCandidateRostersInitialPending(db, {
+      asOfDate: "2026-07-16",
+      withinDays: 90,
+    });
+
+    expect(result).toEqual([row]);
+    const [sql, params] = db.query.mock.calls[0]!;
+    expect(params).toEqual(["2026-07-16", 90, "candidate_roster"]);
+    expect(sql).toContain("s.status = 'pending'");
+    expect(sql).toContain("COALESCE(btrim(s.reason), '') = ''");
+    expect(sql).toContain("NOT EXISTS");
+    expect(sql).toContain("mrd.status = 'deferred'");
+    expect(sql).toContain("mrd.stage = 'candidate_roster'");
+    expect(sql).toContain("e.election_date >= $1::date");
+    expect(sql).toContain("<= $2::int");
+    expect(sql).toContain("ORDER BY e.election_date ASC, s.updated_at ASC, e.id ASC");
+  });
+});
 
 describe("listCandidateRostersDue", () => {
   it("passes the as-of date, cooldown, window, and item type as parameters and returns the rows", async () => {

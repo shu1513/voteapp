@@ -12,6 +12,7 @@ import {
   ELECTION_STAGES,
 } from "./electionEnrichmentContract.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
+import { resolveCandidateContestPartisanshipByPolicy } from "../ai/electionPartisanshipPolicy.js";
 
 type ParseResult =
   | { ok: true; payload: ElectionEnrichedPayload }
@@ -356,6 +357,21 @@ export function parseCanonicalElectionPayload(payload: unknown): ParseResult {
         ok: false,
         reason: `payload.entries[${index}] must omit discovery_contest_family; ${input.district_type} districts research one combined pass with no per-entry family`,
       };
+    }
+    if (parsed.race_type === "office" && parsed.is_partisan !== undefined) {
+      const fixedPolicyValue = resolveCandidateContestPartisanshipByPolicy({
+        districtType: input.district_type,
+        state: input.state,
+        officialBallotTitle: parsed.official_ballot_title,
+      });
+      if (fixedPolicyValue !== undefined && parsed.is_partisan !== fixedPolicyValue) {
+        return {
+          ok: false,
+          reason:
+            `payload.entries[${index}].is_partisan=${parsed.is_partisan} contradicts fixed partisanship policy ` +
+            `for ${input.state.trim()} ${input.district_type} (expected ${fixedPolicyValue})`,
+        };
+      }
     }
     entries.push(parsed);
   }

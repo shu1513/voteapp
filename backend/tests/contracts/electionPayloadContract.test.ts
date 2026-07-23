@@ -356,6 +356,29 @@ describe("parseAiElectionEntriesPayload", () => {
     }
   });
 
+  it("rejects explicit partisanship that contradicts fixed Washington legislative policy", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "district-wa",
+      district_name: "Legislative District 35, Washington",
+      district_type: "state_lower",
+      state: "WA",
+      entries: [
+        {
+          official_ballot_title: "State Representative Position 1",
+          election_date: "2026-11-03",
+          race_type: "office",
+          is_partisan: false,
+          sources: ["https://www.sos.wa.gov/elections"],
+        },
+      ],
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      reason: expect.stringMatching(/contradicts fixed partisanship policy/i),
+    });
+  });
+
   it("parses optional seats_to_fill for office entries", () => {
     const result = parseAiElectionEntriesPayload({
       entries: [

@@ -5,6 +5,7 @@ import {
   assertMergedOfficeRoutingConsistent,
   findOrCreateCandidateFromProfile,
   mergeIdentifierLists,
+  resolveStoredCandidateParty,
 } from "../../src/pipeline/candidates/candidateProfileIdentity.js";
 import type { CandidateProfilePayload } from "../../src/contracts/candidateProfilePayloadContract.js";
 
@@ -51,7 +52,41 @@ describe("mergeIdentifierLists", () => {
   });
 });
 
+describe("resolveStoredCandidateParty", () => {
+  it("uses the roster party for a partisan contest and Nonpartisan otherwise", () => {
+    expect(
+      resolveStoredCandidateParty({
+        includeParty: true,
+        rosterParty: "Republican",
+        profileParty: "Democratic",
+      })
+    ).toBe("Republican");
+    expect(
+      resolveStoredCandidateParty({
+        includeParty: false,
+        rosterParty: undefined,
+        profileParty: undefined,
+      })
+    ).toBe("Nonpartisan");
+  });
+});
+
 describe("findOrCreateCandidateFromProfile", () => {
+  it("refuses to discard a supplied party in a nonpartisan contest", async () => {
+    const query = identityQueryMock();
+
+    await expect(
+      findOrCreateCandidateFromProfile({
+        client: { query } as never,
+        profile: profile({ party: "Republican" }),
+        state: "WA",
+        rosterParty: undefined,
+        includeParty: false,
+      })
+    ).rejects.toThrow(/would discard candidate party/i);
+    expect(query).not.toHaveBeenCalled();
+  });
+
   it("inserts a new candidate when no same-name hard-identifier match exists", async () => {
     const query = identityQueryMock()
       .mockResolvedValueOnce({ rows: [] })
@@ -191,6 +226,9 @@ describe("findOrCreateCandidateFromProfile", () => {
       // has_held_public_office value + overwrite flag
       true,
       false,
+      // effective party + overwrite flag
+      "Democratic",
+      false,
     ]);
   });
 
@@ -255,6 +293,9 @@ describe("findOrCreateCandidateFromProfile", () => {
       false,
       // has_held_public_office value + overwrite flag
       true,
+      false,
+      // effective party + overwrite flag
+      "Democratic",
       false,
     ]);
   });
@@ -412,6 +453,35 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     expect(params[websiteIndex + 1]).toBe(false);
   });
 
+  it("replaces a stored party only when party is explicitly listed", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({ rows: [{ ...existingRow, party: "Nonpartisan" }] })
+      .mockResolvedValueOnce({
+        rows: [{
+          fec_ids: null,
+          state_filing_ids: null,
+          current_office: null,
+          has_held_public_office: false,
+          party: "Nonpartisan",
+        }],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({ official_website_url: "https://old-site.example" }),
+      state: "OH",
+      rosterParty: "Republican",
+      includeParty: true,
+      overwriteProfileFields: new Set(["party"]),
+    });
+
+    const updateSql = String(query.mock.calls[3]?.[0]);
+    const params = query.mock.calls[3]?.[1] as unknown[];
+    expect(updateSql).toContain("party = CASE");
+    expect(params.slice(-2)).toEqual(["Republican", true]);
+  });
+
   it("never overwrites a stored value with a blank string, even for overwrite-listed fields", async () => {
     const query = identityQueryMock()
       .mockResolvedValueOnce({ rows: [{ ...existingRow, official_website_url: "https://old-site.example" }] })
@@ -459,7 +529,7 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     const params = query.mock.calls[3]?.[1] as unknown[];
     // The six per-field clear flags (declaration order, only current_office
     // set) are followed by the has_held_public_office value + overwrite flag.
-    expect(params.slice(-8)).toEqual([false, false, false, false, false, true, false, false]);
+    expect(params.slice(16, 24)).toEqual([false, false, false, false, false, true, false, false]);
   });
 
   it("passes clear flags as false for every field when clearing is not requested", async () => {
@@ -477,7 +547,7 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     });
 
     const params = query.mock.calls[3]?.[1] as unknown[];
-    expect(params.slice(-8)).toEqual([false, false, false, false, false, false, false, false]);
+    expect(params.slice(16, 24)).toEqual([false, false, false, false, false, false, false, false]);
   });
 
   it("throws when two same-name candidates are linked to the election", async () => {
