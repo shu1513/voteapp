@@ -3,10 +3,6 @@ import type { PoolClient } from "pg";
 import { createClient } from "redis";
 
 import {
-  PRESIDENTIAL_CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES,
-  PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES,
-} from "../../ai/aiCandidates.js";
-import {
   buildCandidateRecordsConfigFromEnv,
   enrichCandidateRecords,
 } from "../../ai/enrichCandidateRecords.js";
@@ -482,10 +478,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                   discoveryContestFamily: context.discoveryContestFamily,
                   sinceDate: window.sinceDate,
                 },
-                recordsConfig,
-                contextType === "presidential_cycle"
-                  ? PRESIDENTIAL_CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES
-                  : undefined
+                recordsConfig
               );
 
               if (!discovered.ok) {
@@ -742,10 +735,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     eventDate: record.event_date,
                   })),
                 },
-                areasConfig,
-                contextType === "presidential_cycle"
-                  ? PRESIDENTIAL_CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES
-                  : undefined
+                areasConfig
               );
 
               if (!areaLabels.ok) {

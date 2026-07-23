@@ -1,4 +1,4 @@
-import { CANDIDATES_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
+import { FRONTIER_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   callResearchProvider,
@@ -348,7 +348,7 @@ export function buildCandidateProfileConfigFromEnv(): EnrichCandidateProfileConf
 export async function enrichCandidateProfile(
   input: EnrichCandidateProfileInput,
   config: EnrichCandidateProfileConfig,
-  candidates: readonly AiCandidate[] = CANDIDATES_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<EnrichCandidateProfileResult> {
   const researchMode = resolveCandidateResearchMode({
     districtType: input.districtType,

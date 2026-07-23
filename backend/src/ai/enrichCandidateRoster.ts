@@ -1,4 +1,4 @@
-import { CANDIDATES_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
+import { FRONTIER_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   callResearchProvider,
@@ -544,7 +544,7 @@ async function verifyCandidateDisambiguationSources(
 export async function disambiguateCandidateDuplicateGroup(
   input: CandidateDuplicateDisambiguationInput,
   config: EnrichCandidateRosterConfig,
-  candidates: readonly AiCandidate[] = CANDIDATES_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<CandidateDuplicateDisambiguationResult> {
   const optionIndexes = input.options.map((option) => option.roster_index);
   const expectedOptionIndexes = new Set(optionIndexes);
@@ -757,7 +757,7 @@ export function buildCandidateRosterConfigFromEnv(): EnrichCandidateRosterConfig
 export async function enrichCandidateRoster(
   input: EnrichCandidateRosterInput,
   config: EnrichCandidateRosterConfig,
-  candidates: readonly AiCandidate[] = CANDIDATES_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<EnrichCandidateRosterResult> {
   const includeParty = shouldIncludePartyInRosterOutput(input);
   const researchMode = resolveCandidateResearchMode({

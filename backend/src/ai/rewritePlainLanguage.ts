@@ -1,6 +1,5 @@
 import {
-  PLAIN_LANGUAGE_REWRITE_AI_CANDIDATES,
-  PLAIN_LANGUAGE_REWRITE_VERIFY_AI_CANDIDATES,
+  FRONTIER_AI_CANDIDATES,
   type AiCandidate,
 } from "./aiCandidates.js";
 import { callResearchProvider, trimDebugText } from "./researchProviderClient.js";
@@ -91,7 +90,7 @@ async function callFirstWorkingProvider<T>(
 export async function rewriteToPlainLanguage(
   input: PlainLanguageRewritePromptInput,
   config: PlainLanguageAiConfig,
-  candidates: readonly AiCandidate[] = PLAIN_LANGUAGE_REWRITE_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<PlainLanguageRewriteResult> {
   const result = await callFirstWorkingProvider(
     candidates,
@@ -108,13 +107,11 @@ export async function verifyPlainLanguageRewrite(
   input: PlainLanguageRewriteVerifyPromptInput,
   config: PlainLanguageAiConfig,
   rewriterProvider: AiProvider,
-  candidates: readonly AiCandidate[] = PLAIN_LANGUAGE_REWRITE_VERIFY_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<PlainLanguageVerifyResult> {
-  // The verifier chain leading with a different provider is only a
-  // preference; fallback could otherwise land the judgment on the exact model
-  // that wrote the rewrite. Enforce independence: never verify with the
-  // rewriter's provider, and fail closed (abort, retry on resume) when no
-  // other provider is configured.
+  // Rewriter and verifier share the global frontier chain. Enforce
+  // independence here: never verify with the rewriter's provider, and fail
+  // closed (abort, retry on resume) when no other provider is configured.
   const independentCandidates = candidates.filter((candidate) => candidate.provider !== rewriterProvider);
   if (independentCandidates.length === 0) {
     return {

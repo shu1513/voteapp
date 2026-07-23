@@ -75,9 +75,6 @@ export async function geminiProvider(
         "content-type": "application/json",
       },
       body: JSON.stringify({
-        generationConfig: {
-          temperature: 0,
-        },
         contents: [
           {
             role: "user",

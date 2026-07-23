@@ -6,7 +6,7 @@ import {
   enrichStateResourcesGroup,
   type EnrichStateResourceGroupResult,
 } from "../../ai/enrichStateResources.js";
-import { STATE_RESOURCES_AI_CANDIDATES } from "../../ai/aiCandidates.js";
+import { FRONTIER_AI_CANDIDATES } from "../../ai/aiCandidates.js";
 import { normalizeRetryFeedback } from "../../ai/retryFeedback.js";
 import type {
   AiProvider,
@@ -593,28 +593,8 @@ function mergeEvidenceSnippets(
   return merged;
 }
 
-function candidateKey(candidate: EnrichmentCandidate): string {
-  return `${candidate.provider}:${candidate.model}`;
-}
-
-function buildCandidateChain(config: EnrichStateResourcesConfig): EnrichmentCandidate[] {
-  const seen = new Set<string>();
-  const chain: EnrichmentCandidate[] = [];
-
-  const addCandidate = (candidate: EnrichmentCandidate): void => {
-    const key = candidateKey(candidate);
-    if (seen.has(key)) {
-      return;
-    }
-    seen.add(key);
-    chain.push(candidate);
-  };
-
-  for (const candidate of STATE_RESOURCES_AI_CANDIDATES) {
-    addCandidate(candidate);
-  }
-
-  return chain;
+function buildCandidateChain(): EnrichmentCandidate[] {
+  return FRONTIER_AI_CANDIDATES.map((candidate) => ({ ...candidate }));
 }
 
 function isCitationUrlFailure(result: {
@@ -789,7 +769,7 @@ async function enrichGroupWithCandidates(
   input: EnrichStateResourcesInput & { fieldGroup: StateResourceFieldGroup },
   config: EnrichStateResourcesConfig
 ): Promise<{ result: EnrichStateResourceGroupResult; attempts: EnrichmentAttemptFailure[] }> {
-  const chain = buildCandidateChain(config);
+  const chain = buildCandidateChain();
   const promptVariants: PromptVariant[] = ["default", "citation_repair"];
   const attempts: EnrichmentAttemptFailure[] = [];
   let lastFailure: Exclude<EnrichStateResourceGroupResult, { ok: true }> | null = null;

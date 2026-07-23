@@ -428,7 +428,6 @@ async function callClaude(
       const requestBody: Record<string, unknown> = {
         model,
         max_tokens: 4000,
-        temperature: 0,
         system: "Return strict JSON only.",
         messages: [{ role: "user", content: prompt }],
         tools: [
@@ -573,7 +572,7 @@ async function callGemini(
     const controller = new AbortController();
     timeout = setTimeout(() => controller.abort(), config.timeoutMs);
 
-    const generationConfig: Record<string, unknown> = { temperature: 0 };
+    const generationConfig: Record<string, unknown> = {};
     if (config.geminiResponseMimeTypeJson) {
       generationConfig.responseMimeType = "application/json";
     }
@@ -585,7 +584,7 @@ async function callGemini(
       },
       body: JSON.stringify({
         contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig,
+        ...(Object.keys(generationConfig).length > 0 ? { generationConfig } : {}),
       }),
       signal: controller.signal,
     });

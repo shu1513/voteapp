@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { PRESIDENTIAL_NOMINEE_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
+import { FRONTIER_AI_CANDIDATES } from "../../src/ai/aiCandidates.js";
 
 const callResearchProviderMock = vi.hoisted(() => vi.fn());
 
@@ -130,7 +130,7 @@ describe("enrichPresidentialNominee", () => {
 
     expect(result.ok).toBe(true);
     expect(callResearchProviderMock).toHaveBeenCalledWith(
-      PRESIDENTIAL_NOMINEE_AI_CANDIDATES[0],
+      FRONTIER_AI_CANDIDATES[0],
       expect.any(String),
       expect.objectContaining({ timeoutMs: 30_000 })
     );

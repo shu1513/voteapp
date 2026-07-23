@@ -78,7 +78,6 @@ export async function claudeProvider(
     const requestBody: Record<string, unknown> = {
       model: config.model,
       max_tokens: 2000,
-      temperature: 0,
       system: "You are a strict JSON generator for civic data. Use evidence-based factual summaries only.",
       messages: [
         {

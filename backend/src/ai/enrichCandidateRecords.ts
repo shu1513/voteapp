@@ -1,4 +1,4 @@
-import { CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
+import { FRONTIER_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   callResearchProvider,
@@ -324,7 +324,7 @@ export function buildCandidateRecordsConfigFromEnv(): EnrichCandidateRecordsConf
 export async function enrichCandidateRecords(
   input: EnrichCandidateRecordsInput,
   config: EnrichCandidateRecordsConfig,
-  candidates: readonly AiCandidate[] = CANDIDATE_RECORD_DISCOVERY_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<EnrichCandidateRecordsResult> {
   const failures: ProviderFailureAttempt[] = [];
   const reviewFeedbackLines = new Set<string>();

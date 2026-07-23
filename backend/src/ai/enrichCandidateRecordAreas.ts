@@ -1,4 +1,4 @@
-import { CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
+import { FRONTIER_AI_CANDIDATES, type AiCandidate } from "./aiCandidates.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
   callResearchProvider,
@@ -116,7 +116,7 @@ export function buildCandidateRecordAreasConfigFromEnv(): EnrichCandidateRecordA
 export async function enrichCandidateRecordAreas(
   input: EnrichCandidateRecordAreasInput,
   config: EnrichCandidateRecordAreasConfig,
-  candidates: readonly AiCandidate[] = CANDIDATE_RECORD_AREA_LABEL_AI_CANDIDATES
+  candidates: readonly AiCandidate[] = FRONTIER_AI_CANDIDATES
 ): Promise<EnrichCandidateRecordAreasResult> {
   const failures: ProviderFailureAttempt[] = [];
   const reviewFeedbackLines = new Set<string>();
