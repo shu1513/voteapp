@@ -7,7 +7,7 @@ import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 
 export const COLORADO_TRACER_BULK_DATA_BASE_URL =
   "https://tracer.sos.colorado.gov/PublicSite/Docs/BulkDataDownloads";
-export const COLORADO_TRACER_CONTRIBUTION_FETCH_TIMEOUT_MS = 30_000;
+export const COLORADO_TRACER_CONTRIBUTION_FETCH_TIMEOUT_MS = 900_000;
 export const DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR =
   "scratch/colorado-campaign-finance/contributions";
 

@@ -160,6 +160,7 @@ describe("coloradoTracerRawDataRefreshScheduler", () => {
           year: 2026,
           cacheDir: "/cache",
           force: false,
+          timeoutMs: 900_000,
           triggeredBy: "daily",
         }),
       })

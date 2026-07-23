@@ -171,6 +171,24 @@ describe("Colorado TRACER contribution reader", () => {
     ]);
   });
 
+  it("preserves unescaped interior quotes emitted by the official export", () => {
+    const csv = contributionCsv([
+      {
+        CO_ID: "20225044099",
+        CandidateName: 'GERALD "JERRY" DITULLIO',
+        ContributionAmount: "25",
+        ContributionDate: "2025-01-02 00:00:00",
+      },
+    ]).replace('GERALD ""JERRY"" DITULLIO', 'GERALD "JERRY" DITULLIO');
+
+    expect(parseColoradoTracerContributionCsv(csv)).toEqual([
+      expect.objectContaining({
+        CO_ID: "20225044099",
+        CandidateName: 'GERALD "JERRY" DITULLIO',
+      }),
+    ]);
+  });
+
   it("reads deflated contribution rows from the expected yearly CSV entry", async () => {
     const zipPath = await writeFixtureZip([
       {
@@ -211,6 +229,22 @@ describe("Colorado TRACER contribution reader", () => {
         CandidateName: "Alex Example",
         Employer: "Acme",
         Occupation: "Attorney",
+      }),
+    ]);
+  });
+
+  it("streams unescaped interior quotes from the official export", async () => {
+    const fixture = escapedQuoteBoundaryFixture();
+    const content = fixture.csv.replace('""quoted"\n', '"quoted"\n');
+    const zipPath = await writeFixtureZip([
+      { fileName: "2024_ContributionData.csv", compressionMethod: 0, content },
+    ]);
+
+    await expect(readColoradoTracerContributionRows({ zipPath, year: 2024 })).resolves.toEqual([
+      expect.objectContaining({
+        CO_ID: "202450001",
+        CandidateName: "Alex Example",
+        OccupationComments: fixture.expectedOccupationComments,
       }),
     ]);
   });

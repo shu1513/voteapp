@@ -27,6 +27,7 @@ describe("refreshNewMexicoCfisRawData script", () => {
     expect(parseArgs(["--year=2026"])).toMatchObject({
       year: 2026,
       artifactKind: "contributions",
+      timeoutMs: 900_000,
       url: "https://login.cfis.sos.state.nm.us/api/DataDownload/GetCSVDownloadReport?year=2026&transactionType=CON&reportFormat=csv&fileName=CON_2026.csv",
     });
   });

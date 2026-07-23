@@ -21,6 +21,13 @@ describe("refreshColoradoTracerRawData script", () => {
     });
   });
 
+  it("uses a bulk-download-safe default timeout", () => {
+    expect(parseRefreshColoradoTracerRawDataScriptArgs(["--year=2026"])).toMatchObject({
+      year: 2026,
+      timeoutMs: 900_000,
+    });
+  });
+
   it("rejects malformed values", () => {
     expect(() => parseRefreshColoradoTracerRawDataScriptArgs(["--year=2026x"])).toThrow(
       "Invalid --year value: 2026x"

@@ -1,4 +1,8 @@
-import { describe, expect, it, vi } from "vitest";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   listDueNewMexicoCandidateFinanceSyncRows,
@@ -6,15 +10,35 @@ import {
   type NewMexicoContributionDataForYear,
   type NewMexicoExpenditureDataForYear,
 } from "../../../src/pipeline/newMexicoFinance/newMexicoCandidateFinanceBatchSync.js";
-import type {
-  NewMexicoCfisContributionRow,
-  NewMexicoCfisExpenditureRow,
+import {
+  NEW_MEXICO_CFIS_CONTRIBUTION_COLUMNS,
+  type NewMexicoCfisContributionRow,
+  type NewMexicoCfisExpenditureRow,
 } from "../../../src/pipeline/newMexicoFinance/newMexicoCfisArtifactReader.js";
+import { getNewMexicoCfisArtifactCachePaths } from "../../../src/pipeline/newMexicoFinance/newMexicoCfisArtifactCache.js";
 
 const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
 const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
 const OTHER_CANDIDATE_ID = "33333333-3333-4333-8333-333333333333";
 const OTHER_ELECTION_ID = "44444444-4444-4444-8444-444444444444";
+const tempDirs: string[] = [];
+
+afterEach(async () => {
+  await Promise.all(tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })));
+});
+
+function contributionCsv(rows: readonly NewMexicoCfisContributionRow[]): string {
+  const escape = (value: string): string => (/[",\n\r]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value);
+  return [
+    NEW_MEXICO_CFIS_CONTRIBUTION_COLUMNS.join(","),
+    ...rows.map((row) => NEW_MEXICO_CFIS_CONTRIBUTION_COLUMNS.map((column) => escape(row[column])).join(",")),
+  ].join("\n");
+}
+
+async function writeContributionArtifact(cacheDir: string, year: number, rows: readonly NewMexicoCfisContributionRow[]) {
+  const paths = getNewMexicoCfisArtifactCachePaths({ cacheDir, year, artifactKind: "contributions" });
+  await writeFile(paths.filePath, contributionCsv(rows), "utf8");
+}
 
 function createMockDb(rows: unknown[] = []) {
   return {
@@ -370,7 +394,7 @@ describe("newMexicoCandidateFinanceBatchSync", () => {
       electionYear: 2025,
       committeeId: "1001",
     });
-    expect(result.results[0]?.error).toContain("New Mexico CFIS contribution artifact not found for 2025");
+    expect(result.results[0]?.error).toContain("New Mexico CFIS contribution artifact not found for 2024");
   });
 
   it("auto-links missing candidates before listing due rows", async () => {
@@ -483,6 +507,84 @@ describe("newMexicoCandidateFinanceBatchSync", () => {
     );
   });
 
+  it("auto-links and syncs money found only in the prior cycle-year artifact", async () => {
+    const rawDataCacheDir = await mkdtemp(join(tmpdir(), "voteapp-nm-cycle-"));
+    tempDirs.push(rawDataCacheDir);
+    const priorYearRow = contribution({
+      OrgID: "1001",
+      "Transaction ID": "PRIOR-YEAR",
+      "Transaction Date": "10/15/2025",
+      "Transaction Amount": "250.00",
+    });
+    await writeContributionArtifact(rawDataCacheDir, 2025, [priorYearRow]);
+    await writeContributionArtifact(rawDataCacheDir, 2026, []);
+
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Deb Haaland",
+              election_year: 2026,
+              office_scope: "statewide",
+              office_name: "Governor",
+              district: null,
+            },
+          ],
+          rowCount: 1,
+        })
+        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Deb Haaland",
+              election_year: 2026,
+              office_scope: "statewide",
+              office_name: "Governor",
+              district: null,
+              committee_id: "1001",
+              committee_name: "Haaland for New Mexico",
+              source_url: "https://login.cfis.sos.state.nm.us/",
+              last_synced_at: null,
+              total_due_rows: "1",
+            },
+          ],
+          rowCount: 1,
+        }),
+    };
+    const syncFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      totalReceipts: 250,
+      directContributionTotal: 250,
+    });
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    try {
+      const result = await syncDueNewMexicoCandidateFinance({
+        db,
+        now: new Date("2026-06-01T00:00:00.000Z"),
+        rawDataCacheDir,
+        syncNewMexicoCandidateFinanceFn: syncFn,
+      });
+      expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
+    } finally {
+      warnSpy.mockRestore();
+    }
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.nm_candidate_finance_links");
+    expect(syncFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        contributionRows: [priorYearRow],
+        contributionSourceUrl: expect.stringContaining("year=2025"),
+      })
+    );
+  });
+
   it("continues auto-linking available years when another year's contribution artifact is missing", async () => {
     const contributionRow = contribution({ OrgID: "1001", "Transaction Amount": "100.00" });
     const db = {
@@ -542,7 +644,7 @@ describe("newMexicoCandidateFinanceBatchSync", () => {
       });
       expect(warnSpy).toHaveBeenCalledWith(
         "New Mexico finance auto-link skipped year 2025:",
-        expect.stringContaining("New Mexico CFIS contribution artifact not found for 2025")
+        expect.stringContaining("New Mexico CFIS contribution artifact not found for 2024")
       );
     } finally {
       warnSpy.mockRestore();

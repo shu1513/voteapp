@@ -189,6 +189,48 @@ function groupContributionRowsByCommittee(
   return byCommittee;
 }
 
+function coloradoCycleFilingYears(electionYear: number, rawDataZipPath?: string): number[] {
+  return rawDataZipPath ? [electionYear] : [electionYear - 1, electionYear];
+}
+
+async function readCycleContributionRows(input: {
+  electionYear: number;
+  rawDataZipPath?: string;
+  rawDataCacheDir?: string;
+  predicate: (row: ColoradoTracerContributionRow) => boolean;
+}): Promise<{ rows: ColoradoTracerContributionRow[]; zipPath: string; sourceUrl: string }> {
+  const cacheDir =
+    input.rawDataCacheDir ??
+    process.env.COLORADO_TRACER_CONTRIBUTION_CACHE_DIR?.trim() ??
+    DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR;
+  const rows: ColoradoTracerContributionRow[] = [];
+  let zipPath = "";
+  let sourceUrl = "";
+  let foundMatchingRows = false;
+  for (const filingYear of coloradoCycleFilingYears(input.electionYear, input.rawDataZipPath)) {
+    const paths = getColoradoTracerContributionArtifactCachePaths({ cacheDir, year: filingYear });
+    const artifactZipPath = input.rawDataZipPath ?? paths.zipPath;
+    if (!(await fileExists(artifactZipPath))) {
+      throw new Error(`Colorado TRACER contribution ZIP not found for ${filingYear}: ${artifactZipPath}`);
+    }
+    const metadata = input.rawDataZipPath
+      ? null
+      : await readColoradoTracerContributionArtifactCacheMetadata(paths.metadataPath);
+    const artifactRows = await readColoradoTracerContributionRows({
+      zipPath: artifactZipPath,
+      year: filingYear,
+      predicate: input.predicate,
+    });
+    rows.push(...artifactRows);
+    if (!foundMatchingRows) {
+      zipPath = artifactZipPath;
+      sourceUrl = metadata?.remote.url ?? buildColoradoTracerContributionZipUrl({ year: filingYear });
+      foundMatchingRows = artifactRows.length > 0;
+    }
+  }
+  return { rows, zipPath, sourceUrl };
+}
+
 async function loadContributionDataForYear(input: {
   year: number;
   committeeIds: readonly string[];
@@ -196,40 +238,18 @@ async function loadContributionDataForYear(input: {
   rawDataCacheDir?: string;
 }): Promise<ColoradoContributionDataForYear> {
   const normalizedCommitteeIds = new Set(input.committeeIds.map(normalizeCommitteeId).filter(Boolean));
-  const zipPath = input.rawDataZipPath
-    ? input.rawDataZipPath
-    : getColoradoTracerContributionArtifactCachePaths({
-        cacheDir:
-          input.rawDataCacheDir ??
-          process.env.COLORADO_TRACER_CONTRIBUTION_CACHE_DIR?.trim() ??
-          DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR,
-        year: input.year,
-      }).zipPath;
-  if (!(await fileExists(zipPath))) {
-    throw new Error(`Colorado TRACER contribution ZIP not found for ${input.year}: ${zipPath}`);
-  }
-
-  const metadataPath = getColoradoTracerContributionArtifactCachePaths({
-    cacheDir:
-      input.rawDataCacheDir ??
-      process.env.COLORADO_TRACER_CONTRIBUTION_CACHE_DIR?.trim() ??
-      DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR,
-    year: input.year,
-  }).metadataPath;
-  const metadata = input.rawDataZipPath
-    ? null
-    : await readColoradoTracerContributionArtifactCacheMetadata(metadataPath);
-  const rows = await readColoradoTracerContributionRows({
-    zipPath,
-    year: input.year,
+  const data = await readCycleContributionRows({
+    electionYear: input.year,
+    rawDataZipPath: input.rawDataZipPath,
+    rawDataCacheDir: input.rawDataCacheDir,
     predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row.CO_ID)),
   });
 
   return {
     year: input.year,
-    zipPath,
-    sourceUrl: metadata?.remote.url ?? buildColoradoTracerContributionZipUrl({ year: input.year }),
-    rowsByCommitteeId: groupContributionRowsByCommittee(rows),
+    zipPath: data.zipPath,
+    sourceUrl: data.sourceUrl,
+    rowsByCommitteeId: groupContributionRowsByCommittee(data.rows),
   };
 }
 
@@ -239,38 +259,13 @@ async function loadAutoLinkContributionRowsForYear(input: {
   rawDataZipPath?: string;
   rawDataCacheDir?: string;
 }): Promise<{ rows: ColoradoTracerContributionRow[]; sourceUrl: string }> {
-  const zipPath = input.rawDataZipPath
-    ? input.rawDataZipPath
-    : getColoradoTracerContributionArtifactCachePaths({
-        cacheDir:
-          input.rawDataCacheDir ??
-          process.env.COLORADO_TRACER_CONTRIBUTION_CACHE_DIR?.trim() ??
-          DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR,
-        year: input.year,
-      }).zipPath;
-  if (!(await fileExists(zipPath))) {
-    throw new Error(`Colorado TRACER contribution ZIP not found for ${input.year}: ${zipPath}`);
-  }
-
-  const metadataPath = getColoradoTracerContributionArtifactCachePaths({
-    cacheDir:
-      input.rawDataCacheDir ??
-      process.env.COLORADO_TRACER_CONTRIBUTION_CACHE_DIR?.trim() ??
-      DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR,
-    year: input.year,
-  }).metadataPath;
-  const metadata = input.rawDataZipPath
-    ? null
-    : await readColoradoTracerContributionArtifactCacheMetadata(metadataPath);
-
-  return {
-    rows: await readColoradoTracerContributionRows({
-      zipPath,
-      year: input.year,
-      predicate: buildColoradoCandidateNamePredicate(input.candidates),
-    }),
-    sourceUrl: metadata?.remote.url ?? buildColoradoTracerContributionZipUrl({ year: input.year }),
-  };
+  const data = await readCycleContributionRows({
+    electionYear: input.year,
+    rawDataZipPath: input.rawDataZipPath,
+    rawDataCacheDir: input.rawDataCacheDir,
+    predicate: buildColoradoCandidateNamePredicate(input.candidates),
+  });
+  return { rows: data.rows, sourceUrl: data.sourceUrl };
 }
 
 export async function listDueColoradoCandidateFinanceSyncRows(

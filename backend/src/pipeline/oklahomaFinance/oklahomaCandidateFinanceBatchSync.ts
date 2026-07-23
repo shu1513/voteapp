@@ -193,6 +193,48 @@ function groupContributionRowsByCommittee(
   return byCommittee;
 }
 
+function oklahomaCycleFilingYears(electionYear: number, rawDataZipPath?: string): number[] {
+  return rawDataZipPath ? [electionYear] : [electionYear - 1, electionYear];
+}
+
+async function readCycleContributionRows(input: {
+  electionYear: number;
+  rawDataZipPath?: string;
+  rawDataCacheDir?: string;
+  predicate: (row: OklahomaGuardianContributionRow) => boolean;
+}): Promise<{ rows: OklahomaGuardianContributionRow[]; zipPath: string; sourceUrl: string }> {
+  const cacheDir =
+    input.rawDataCacheDir ??
+    process.env.OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR?.trim() ??
+    DEFAULT_OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR;
+  const rows: OklahomaGuardianContributionRow[] = [];
+  let zipPath = "";
+  let sourceUrl = "";
+  let foundMatchingRows = false;
+  for (const filingYear of oklahomaCycleFilingYears(input.electionYear, input.rawDataZipPath)) {
+    const paths = getOklahomaGuardianContributionArtifactCachePaths({ cacheDir, year: filingYear });
+    const artifactZipPath = input.rawDataZipPath ?? paths.zipPath;
+    if (!(await fileExists(artifactZipPath))) {
+      throw new Error(`Oklahoma Guardian contribution ZIP not found for ${filingYear}: ${artifactZipPath}`);
+    }
+    const metadata = input.rawDataZipPath
+      ? null
+      : await readOklahomaGuardianContributionArtifactCacheMetadata(paths.metadataPath);
+    const artifactRows = await readOklahomaGuardianContributionRows({
+      zipPath: artifactZipPath,
+      year: filingYear,
+      predicate: input.predicate,
+    });
+    rows.push(...artifactRows);
+    if (!foundMatchingRows) {
+      zipPath = artifactZipPath;
+      sourceUrl = metadata?.remote.url ?? buildOklahomaGuardianContributionZipUrl({ year: filingYear });
+      foundMatchingRows = artifactRows.length > 0;
+    }
+  }
+  return { rows, zipPath, sourceUrl };
+}
+
 async function loadContributionDataForYear(input: {
   year: number;
   committeeIds: readonly string[];
@@ -200,33 +242,18 @@ async function loadContributionDataForYear(input: {
   rawDataCacheDir?: string;
 }): Promise<OklahomaContributionDataForYear> {
   const normalizedCommitteeIds = new Set(input.committeeIds.map(normalizeCommitteeId).filter(Boolean));
-  const cacheDir =
-    input.rawDataCacheDir ??
-    process.env.OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR?.trim() ??
-    DEFAULT_OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR;
-  const paths = getOklahomaGuardianContributionArtifactCachePaths({
-    cacheDir,
-    year: input.year,
-  });
-  const zipPath = input.rawDataZipPath ?? paths.zipPath;
-  if (!(await fileExists(zipPath))) {
-    throw new Error(`Oklahoma Guardian contribution ZIP not found for ${input.year}: ${zipPath}`);
-  }
-
-  const metadata = input.rawDataZipPath
-    ? null
-    : await readOklahomaGuardianContributionArtifactCacheMetadata(paths.metadataPath);
-  const rows = await readOklahomaGuardianContributionRows({
-    zipPath,
-    year: input.year,
+  const data = await readCycleContributionRows({
+    electionYear: input.year,
+    rawDataZipPath: input.rawDataZipPath,
+    rawDataCacheDir: input.rawDataCacheDir,
     predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row["Org ID"])),
   });
 
   return {
     year: input.year,
-    zipPath,
-    sourceUrl: metadata?.remote.url ?? buildOklahomaGuardianContributionZipUrl({ year: input.year }),
-    rowsByCommitteeId: groupContributionRowsByCommittee(rows),
+    zipPath: data.zipPath,
+    sourceUrl: data.sourceUrl,
+    rowsByCommitteeId: groupContributionRowsByCommittee(data.rows),
   };
 }
 
@@ -245,30 +272,13 @@ async function loadAutoLinkContributionRowsForYear(input: {
     };
   }
 
-  const cacheDir =
-    input.rawDataCacheDir ??
-    process.env.OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR?.trim() ??
-    DEFAULT_OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR;
-  const paths = getOklahomaGuardianContributionArtifactCachePaths({
-    cacheDir,
-    year: input.year,
+  const data = await readCycleContributionRows({
+    electionYear: input.year,
+    rawDataZipPath: input.rawDataZipPath,
+    rawDataCacheDir: input.rawDataCacheDir,
+    predicate: buildOklahomaCandidateNamePredicate(input.candidates),
   });
-  const zipPath = input.rawDataZipPath ?? paths.zipPath;
-  if (!(await fileExists(zipPath))) {
-    throw new Error(`Oklahoma Guardian contribution ZIP not found for ${input.year}: ${zipPath}`);
-  }
-
-  const metadata = input.rawDataZipPath
-    ? null
-    : await readOklahomaGuardianContributionArtifactCacheMetadata(paths.metadataPath);
-  return {
-    rows: await readOklahomaGuardianContributionRows({
-      zipPath,
-      year: input.year,
-      predicate: buildOklahomaCandidateNamePredicate(input.candidates),
-    }),
-    sourceUrl: metadata?.remote.url ?? buildOklahomaGuardianContributionZipUrl({ year: input.year }),
-  };
+  return { rows: data.rows, sourceUrl: data.sourceUrl };
 }
 
 export async function listDueOklahomaCandidateFinanceSyncRows(

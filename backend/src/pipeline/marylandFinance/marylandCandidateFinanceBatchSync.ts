@@ -276,29 +276,58 @@ function sourceUrlFromMetadata(input: {
   return input.metadataUrl ?? MARYLAND_CFS_PUBLIC_EXPORT_API_URL;
 }
 
+function marylandCycleFilingYears(electionYear: number): number[] {
+  return [electionYear - 1, electionYear];
+}
+
+async function readCycleArtifactData<Row>(input: {
+  electionYear: number;
+  artifactKind: "committees" | "contributions" | "expenditures";
+  rawDataCacheDir?: string;
+  readRows: (filePath: string) => Promise<Row[]>;
+}): Promise<{ rows: Row[]; filePath: string; sourceUrl: string }> {
+  const kindLabel = input.artifactKind === "committees" ? "committee" : input.artifactKind.slice(0, -1);
+  const rows: Row[] = [];
+  let filePath = "";
+  let sourceUrl = MARYLAND_CFS_PUBLIC_EXPORT_API_URL;
+  let foundMatchingRows = false;
+  for (const filingYear of marylandCycleFilingYears(input.electionYear)) {
+    const paths = getMarylandCfsArtifactCachePaths({
+      cacheDir: rawDataCacheDir(input.rawDataCacheDir),
+      filingYear,
+      artifactKind: input.artifactKind,
+    });
+    if (!(await fileExists(paths.filePath))) {
+      throw new Error(`Maryland CFS ${kindLabel} artifact not found for ${filingYear}: ${paths.filePath}`);
+    }
+    const metadata = await readMarylandCfsArtifactCacheMetadata(paths.metadataPath);
+    const artifactRows = await input.readRows(paths.filePath);
+    rows.push(...artifactRows);
+    if (!foundMatchingRows) {
+      filePath = paths.filePath;
+      sourceUrl = sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url });
+      foundMatchingRows = artifactRows.length > 0;
+    }
+  }
+  return { rows, filePath, sourceUrl };
+}
+
 async function loadCommitteeDataForYear(input: {
   year: number;
   rawDataCacheDir?: string;
   predicate?: (row: MarylandCfsCommitteeRow) => boolean;
 }): Promise<MarylandCommitteeDataForYear> {
-  const paths = getMarylandCfsArtifactCachePaths({
-    cacheDir: rawDataCacheDir(input.rawDataCacheDir),
-    filingYear: input.year,
+  const data = await readCycleArtifactData({
+    electionYear: input.year,
     artifactKind: "committees",
+    rawDataCacheDir: input.rawDataCacheDir,
+    readRows: (filePath) => readMarylandCfsCommitteeRows({ filePath, predicate: input.predicate }),
   });
-  if (!(await fileExists(paths.filePath))) {
-    throw new Error(`Maryland CFS committee artifact not found for ${input.year}: ${paths.filePath}`);
-  }
-
-  const metadata = await readMarylandCfsArtifactCacheMetadata(paths.metadataPath);
   return {
     year: input.year,
-    filePath: paths.filePath,
-    sourceUrl: sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url }),
-    rows: await readMarylandCfsCommitteeRows({
-      filePath: paths.filePath,
-      predicate: input.predicate,
-    }),
+    filePath: data.filePath,
+    sourceUrl: data.sourceUrl,
+    rows: data.rows,
   };
 }
 
@@ -330,26 +359,22 @@ async function loadContributionDataForYear(input: {
   rawDataCacheDir?: string;
 }): Promise<MarylandContributionDataForYear> {
   const normalizedCommitteeIds = new Set(input.committeeIds.map(normalizeCommitteeId).filter(Boolean));
-  const paths = getMarylandCfsArtifactCachePaths({
-    cacheDir: rawDataCacheDir(input.rawDataCacheDir),
-    filingYear: input.year,
+  const data = await readCycleArtifactData({
+    electionYear: input.year,
     artifactKind: "contributions",
-  });
-  if (!(await fileExists(paths.filePath))) {
-    throw new Error(`Maryland CFS contribution artifact not found for ${input.year}: ${paths.filePath}`);
-  }
-
-  const metadata = await readMarylandCfsArtifactCacheMetadata(paths.metadataPath);
-  const rows = await readMarylandCfsContributionRows({
-    filePath: paths.filePath,
-    predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row["Filing Entity Id"])),
+    rawDataCacheDir: input.rawDataCacheDir,
+    readRows: (filePath) =>
+      readMarylandCfsContributionRows({
+        filePath,
+        predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row["Filing Entity Id"])),
+      }),
   });
 
   return {
     year: input.year,
-    filePath: paths.filePath,
-    sourceUrl: sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url }),
-    rowsByCommitteeId: groupContributionRowsByCommittee(rows),
+    filePath: data.filePath,
+    sourceUrl: data.sourceUrl,
+    rowsByCommitteeId: groupContributionRowsByCommittee(data.rows),
   };
 }
 
@@ -358,24 +383,21 @@ async function loadExpenditureDataForYear(input: {
   dueRows: readonly MarylandCandidateFinanceDueRow[];
   rawDataCacheDir?: string;
 }): Promise<MarylandExpenditureDataForYear> {
-  const paths = getMarylandCfsArtifactCachePaths({
-    cacheDir: rawDataCacheDir(input.rawDataCacheDir),
-    filingYear: input.year,
+  const data = await readCycleArtifactData({
+    electionYear: input.year,
     artifactKind: "expenditures",
+    rawDataCacheDir: input.rawDataCacheDir,
+    readRows: (filePath) =>
+      readMarylandCfsExpenditureRows({
+        filePath,
+        predicate: buildMarylandExpenditureCandidatePredicate(input.dueRows),
+      }),
   });
-  if (!(await fileExists(paths.filePath))) {
-    throw new Error(`Maryland CFS expenditure artifact not found for ${input.year}: ${paths.filePath}`);
-  }
-
-  const metadata = await readMarylandCfsArtifactCacheMetadata(paths.metadataPath);
   return {
     year: input.year,
-    filePath: paths.filePath,
-    sourceUrl: sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url }),
-    rows: await readMarylandCfsExpenditureRows({
-      filePath: paths.filePath,
-      predicate: buildMarylandExpenditureCandidatePredicate(input.dueRows),
-    }),
+    filePath: data.filePath,
+    sourceUrl: data.sourceUrl,
+    rows: data.rows,
   };
 }
 

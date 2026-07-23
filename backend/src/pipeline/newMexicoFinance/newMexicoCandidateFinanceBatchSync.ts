@@ -252,35 +252,68 @@ function flattenContributionDataRows(
   return contributionData ? [...contributionData.rowsByCommitteeId.values()].flat() : [];
 }
 
+function newMexicoCycleFilingYears(electionYear: number): number[] {
+  return [electionYear - 1, electionYear];
+}
+
+async function readCycleArtifactData<Row>(input: {
+  electionYear: number;
+  artifactKind: "contributions" | "expenditures";
+  rawDataCacheDir?: string;
+  readRows: (filePath: string) => Promise<Row[]>;
+}): Promise<{ rows: Row[]; filePath: string; sourceUrl: string }> {
+  const kindLabel = input.artifactKind === "contributions" ? "contribution" : "expenditure";
+  const rows: Row[] = [];
+  let filePath = "";
+  let sourceUrl = "";
+  let foundMatchingRows = false;
+  for (const filingYear of newMexicoCycleFilingYears(input.electionYear)) {
+    const paths = getNewMexicoCfisArtifactCachePaths({
+      cacheDir:
+        input.rawDataCacheDir ??
+        process.env.NEW_MEXICO_CFIS_CACHE_DIR?.trim() ??
+        DEFAULT_NEW_MEXICO_CFIS_CACHE_DIR,
+      year: filingYear,
+      artifactKind: input.artifactKind,
+    });
+    if (!(await fileExists(paths.filePath))) {
+      throw new Error(`New Mexico CFIS ${kindLabel} artifact not found for ${filingYear}: ${paths.filePath}`);
+    }
+    const metadata = await readNewMexicoCfisArtifactCacheMetadata(paths.metadataPath);
+    const artifactRows = await input.readRows(paths.filePath);
+    rows.push(...artifactRows);
+    if (!foundMatchingRows) {
+      filePath = paths.filePath;
+      sourceUrl =
+        metadata?.remote.url ?? buildNewMexicoCfisArtifactUrl({ year: filingYear, artifactKind: input.artifactKind });
+      foundMatchingRows = artifactRows.length > 0;
+    }
+  }
+  return { rows, filePath, sourceUrl };
+}
+
 async function loadContributionDataForYear(input: {
   year: number;
   committeeIds: readonly string[];
   rawDataCacheDir?: string;
 }): Promise<NewMexicoContributionDataForYear> {
   const normalizedCommitteeIds = new Set(input.committeeIds.map(normalizeCommitteeId).filter(Boolean));
-  const paths = getNewMexicoCfisArtifactCachePaths({
-    cacheDir:
-      input.rawDataCacheDir ??
-      process.env.NEW_MEXICO_CFIS_CACHE_DIR?.trim() ??
-      DEFAULT_NEW_MEXICO_CFIS_CACHE_DIR,
-    year: input.year,
+  const data = await readCycleArtifactData({
+    electionYear: input.year,
     artifactKind: "contributions",
-  });
-  if (!(await fileExists(paths.filePath))) {
-    throw new Error(`New Mexico CFIS contribution artifact not found for ${input.year}: ${paths.filePath}`);
-  }
-
-  const metadata = await readNewMexicoCfisArtifactCacheMetadata(paths.metadataPath);
-  const rows = await readNewMexicoCfisContributionRows({
-    filePath: paths.filePath,
-    predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row.OrgID)),
+    rawDataCacheDir: input.rawDataCacheDir,
+    readRows: (filePath) =>
+      readNewMexicoCfisContributionRows({
+        filePath,
+        predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row.OrgID)),
+      }),
   });
 
   return {
     year: input.year,
-    filePath: paths.filePath,
-    sourceUrl: metadata?.remote.url ?? buildNewMexicoCfisArtifactUrl({ year: input.year, artifactKind: "contributions" }),
-    rowsByCommitteeId: groupContributionRowsByCommittee(rows),
+    filePath: data.filePath,
+    sourceUrl: data.sourceUrl,
+    rowsByCommitteeId: groupContributionRowsByCommittee(data.rows),
   };
 }
 
@@ -298,26 +331,17 @@ async function loadAutoLinkContributionRowsForYear(input: {
     };
   }
 
-  const paths = getNewMexicoCfisArtifactCachePaths({
-    cacheDir:
-      input.rawDataCacheDir ??
-      process.env.NEW_MEXICO_CFIS_CACHE_DIR?.trim() ??
-      DEFAULT_NEW_MEXICO_CFIS_CACHE_DIR,
-    year: input.year,
+  const data = await readCycleArtifactData({
+    electionYear: input.year,
     artifactKind: "contributions",
+    rawDataCacheDir: input.rawDataCacheDir,
+    readRows: (filePath) =>
+      readNewMexicoCfisContributionRows({
+        filePath,
+        predicate: buildNewMexicoCandidateNamePredicate(input.candidates),
+      }),
   });
-  if (!(await fileExists(paths.filePath))) {
-    throw new Error(`New Mexico CFIS contribution artifact not found for ${input.year}: ${paths.filePath}`);
-  }
-
-  const metadata = await readNewMexicoCfisArtifactCacheMetadata(paths.metadataPath);
-  return {
-    rows: await readNewMexicoCfisContributionRows({
-      filePath: paths.filePath,
-      predicate: buildNewMexicoCandidateNamePredicate(input.candidates),
-    }),
-    sourceUrl: metadata?.remote.url ?? buildNewMexicoCfisArtifactUrl({ year: input.year, artifactKind: "contributions" }),
-  };
+  return { rows: data.rows, sourceUrl: data.sourceUrl };
 }
 
 async function loadExpenditureDataForYear(input: {
@@ -325,27 +349,21 @@ async function loadExpenditureDataForYear(input: {
   dueRows: readonly NewMexicoCandidateFinanceDueRow[];
   rawDataCacheDir?: string;
 }): Promise<NewMexicoExpenditureDataForYear> {
-  const paths = getNewMexicoCfisArtifactCachePaths({
-    cacheDir:
-      input.rawDataCacheDir ??
-      process.env.NEW_MEXICO_CFIS_CACHE_DIR?.trim() ??
-      DEFAULT_NEW_MEXICO_CFIS_CACHE_DIR,
-    year: input.year,
+  const data = await readCycleArtifactData({
+    electionYear: input.year,
     artifactKind: "expenditures",
+    rawDataCacheDir: input.rawDataCacheDir,
+    readRows: (filePath) =>
+      readNewMexicoCfisExpenditureRows({
+        filePath,
+        predicate: buildNewMexicoExpenditureCandidatePredicate(input.dueRows),
+      }),
   });
-  if (!(await fileExists(paths.filePath))) {
-    throw new Error(`New Mexico CFIS expenditure artifact not found for ${input.year}: ${paths.filePath}`);
-  }
-
-  const metadata = await readNewMexicoCfisArtifactCacheMetadata(paths.metadataPath);
   return {
     year: input.year,
-    filePath: paths.filePath,
-    sourceUrl: metadata?.remote.url ?? buildNewMexicoCfisArtifactUrl({ year: input.year, artifactKind: "expenditures" }),
-    rows: await readNewMexicoCfisExpenditureRows({
-      filePath: paths.filePath,
-      predicate: buildNewMexicoExpenditureCandidatePredicate(input.dueRows),
-    }),
+    filePath: data.filePath,
+    sourceUrl: data.sourceUrl,
+    rows: data.rows,
   };
 }
 
