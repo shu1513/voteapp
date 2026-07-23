@@ -118,14 +118,14 @@ describe("runElectionsWriter candidate roster eligibility gate", () => {
       state: "CA",
       entries: [
         {
-          official_ballot_title: "Governor",
+          official_ballot_title: "County Treasurer",
           election_date: "2026-06-02",
           race_type: "office",
           discovery_contest_family: "non_judicial_office",
           sources: ["https://example.org/1"],
         },
         {
-          official_ballot_title: "Governor",
+          official_ballot_title: "County Treasurer",
           election_date: "2026-11-03",
           race_type: "office",
           discovery_contest_family: "non_judicial_office",
@@ -148,6 +148,20 @@ describe("runElectionsWriter candidate roster eligibility gate", () => {
 
     let upsertCounter = 0;
     clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 0, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 1,
+          rows: [
+            {
+              id: "00000000-0000-0000-0000-000000000100",
+              canonical_name: "County Treasurer",
+            },
+          ],
+        };
+      }
       if (sql.includes("UPDATE staging_items") && sql.includes("status = $3")) {
         return { rowCount: 1, rows: [] };
       }
@@ -268,14 +282,14 @@ describe("runElectionsWriter candidate roster eligibility gate", () => {
       state: "CA",
       entries: [
         {
-          official_ballot_title: "Governor",
+          official_ballot_title: "County Treasurer",
           election_date: "2026-06-02",
           race_type: "office",
           discovery_contest_family: "non_judicial_office",
           sources: ["https://example.org/1"],
         },
         {
-          official_ballot_title: "Governor",
+          official_ballot_title: "County Treasurer",
           election_date: "2026-11-03",
           race_type: "office",
           discovery_contest_family: "non_judicial_office",
@@ -298,6 +312,20 @@ describe("runElectionsWriter candidate roster eligibility gate", () => {
 
     let upsertCounter = 0;
     clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 0, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 1,
+          rows: [
+            {
+              id: "00000000-0000-0000-0000-000000000100",
+              canonical_name: "County Treasurer",
+            },
+          ],
+        };
+      }
       if (sql.includes("UPDATE staging_items") && sql.includes("status = $3")) {
         return { rowCount: 1, rows: [] };
       }

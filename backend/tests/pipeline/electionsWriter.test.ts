@@ -181,7 +181,24 @@ describe("runElectionsWriter", () => {
       })
       .mockResolvedValue({ rowCount: 1, rows: [] });
 
-    clientQueryMock.mockResolvedValue({ rowCount: 1 });
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 0, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000010", canonical_name: "Governor" }],
+        };
+      }
+      if (sql.includes("INSERT INTO public.elections")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000011", race_type: "office", inserted: false }],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
 
     await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
 
@@ -218,6 +235,81 @@ describe("runElectionsWriter", () => {
     );
     expect(districtTimestampUpdateCall).toBeTruthy();
     expect(districtTimestampUpdateCall?.[1]?.[0]).toBe("d-1");
+  });
+
+  it("fails the whole write before inserts when an office match is ambiguous", async () => {
+    const payload = {
+      district_id: "d-oregon",
+      district_name: "Example County, Oregon",
+      district_type: "county",
+      state: "OR",
+      entries: [
+        {
+          official_ballot_title: "Clerk",
+          election_date: "2099-11-03",
+          race_type: "office",
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:writer",
+            payload,
+            status: "validated",
+            run_id: "run_1",
+          },
+        ],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 0, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 2,
+          rows: [
+            { id: "00000000-0000-0000-0000-000000000021", canonical_name: "Clerk of Court" },
+            { id: "00000000-0000-0000-0000-000000000022", canonical_name: "County Clerk" },
+          ],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    expect(clientQueryMock).toHaveBeenCalledWith("ROLLBACK");
+    expect(
+      clientQueryMock.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.elections"))
+    ).toBe(false);
+
+    const failedUpdate = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'failed'")
+    );
+    const failureReason = String(failedUpdate?.[1]?.[1]);
+    expect(failureReason).toContain(
+      "writer office match failed: district_id=d-oregon scope=county method=ambiguous"
+    );
+    expect(failureReason).toMatch(/confidence=\d+\.\d{3}/);
+    expect(failureReason).toContain('title="Clerk" normalized_alias="clerk"');
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      STAGING_VALIDATED_STREAM,
+      STAGING_ELECTIONS_WRITER_GROUP,
+      "1-0"
+    );
+    expect(redisXAddMock).not.toHaveBeenCalledWith(
+      STAGING_WRITTEN_STREAM,
+      "*",
+      expect.anything()
+    );
+    expect(redisSendCommandMock).not.toHaveBeenCalled();
   });
 
   it("enqueues ballot-measure and candidate-roster drafts via Lua sendCommand", async () => {
@@ -258,6 +350,15 @@ describe("runElectionsWriter", () => {
       .mockResolvedValue({ rowCount: 1, rows: [] });
 
     clientQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 0, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 1,
+          rows: [{ id: "00000000-0000-0000-0000-000000000303", canonical_name: "Governor" }],
+        };
+      }
       if (sql.includes("INSERT INTO public.elections")) {
         const raceType = String(params?.[4] ?? "");
         if (raceType === "office") {
@@ -721,6 +822,20 @@ describe("runElectionsWriter", () => {
       .mockResolvedValue({ rowCount: 1, rows: [] });
 
     clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("FROM public.office_title_aliases")) {
+        return { rowCount: 0, rows: [] };
+      }
+      if (sql.includes("FROM public.offices")) {
+        return {
+          rowCount: 1,
+          rows: [
+            {
+              id: "00000000-0000-0000-0000-00000000DCBA",
+              canonical_name: "United States Senator",
+            },
+          ],
+        };
+      }
       if (sql.includes("INSERT INTO public.elections")) {
         return {
           rowCount: 1,
