@@ -69,13 +69,40 @@ async function writeArtifact<Row extends Record<string, string>>(input: {
   artifactKind: "committees" | "contributions";
   columns: readonly string[];
   rows: readonly Row[];
+  sourceUrl?: string;
 }) {
   const paths = getMarylandCfsArtifactCachePaths({
     cacheDir: input.cacheDir,
     filingYear: input.year,
     artifactKind: input.artifactKind,
   });
-  await writeFile(paths.filePath, csvForRows(input.columns, input.rows), "utf8");
+  const content = csvForRows(input.columns, input.rows);
+  await writeFile(paths.filePath, content, "utf8");
+  if (input.sourceUrl) {
+    const transactionTypeCode = input.artifactKind === "committees" ? "TCMD" : "TCON";
+    await writeFile(
+      paths.metadataPath,
+      JSON.stringify({
+        version: 1,
+        artifact: { filingYear: input.year, artifactKind: input.artifactKind },
+        filePath: paths.filePath,
+        metadataPath: paths.metadataPath,
+        downloadedAt: "2026-06-01T00:00:00.000Z",
+        remote: {
+          filingYear: input.year,
+          artifactKind: input.artifactKind,
+          url: input.sourceUrl,
+          requestBody: { Type: "CSV", TransactionTypeCode: transactionTypeCode, FilingYear: input.year },
+          contentLength: Buffer.byteLength(content),
+          contentType: "text/csv",
+          etag: null,
+          lastModified: null,
+        },
+        bytesWritten: Buffer.byteLength(content),
+      }),
+      "utf8"
+    );
+  }
 }
 
 function createMockDb(rows: MarylandCandidateFinanceDueRow[]) {
@@ -301,6 +328,7 @@ describe("marylandCandidateFinanceBatchSync", () => {
       artifactKind: "committees",
       columns: MARYLAND_CFS_COMMITTEE_COLUMNS,
       rows: [priorCommittee],
+      sourceUrl: "https://api-campaignfinance.maryland.gov/exports/committees/2025",
     });
     await writeArtifact({
       cacheDir: rawDataCacheDir,
@@ -308,6 +336,7 @@ describe("marylandCandidateFinanceBatchSync", () => {
       artifactKind: "committees",
       columns: MARYLAND_CFS_COMMITTEE_COLUMNS,
       rows: [],
+      sourceUrl: "https://api-campaignfinance.maryland.gov/exports/committees/2026",
     });
     await writeArtifact({
       cacheDir: rawDataCacheDir,
@@ -315,6 +344,7 @@ describe("marylandCandidateFinanceBatchSync", () => {
       artifactKind: "contributions",
       columns: MARYLAND_CFS_CONTRIBUTION_COLUMNS,
       rows: [priorContribution],
+      sourceUrl: "https://api-campaignfinance.maryland.gov/exports/contributions/2025",
     });
     await writeArtifact({
       cacheDir: rawDataCacheDir,
@@ -322,6 +352,7 @@ describe("marylandCandidateFinanceBatchSync", () => {
       artifactKind: "contributions",
       columns: MARYLAND_CFS_CONTRIBUTION_COLUMNS,
       rows: [],
+      sourceUrl: "https://api-campaignfinance.maryland.gov/exports/contributions/2026",
     });
 
     const candidateId = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
@@ -381,6 +412,11 @@ describe("marylandCandidateFinanceBatchSync", () => {
       warnSpy.mockRestore();
     }
     expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.md_candidate_finance_links");
-    expect(syncFn).toHaveBeenCalledWith(expect.objectContaining({ contributionRows: [priorContribution] }));
+    expect(syncFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        contributionRows: [priorContribution],
+        contributionSourceUrl: "https://api-campaignfinance.maryland.gov/exports/contributions/2025",
+      })
+    );
   });
 });

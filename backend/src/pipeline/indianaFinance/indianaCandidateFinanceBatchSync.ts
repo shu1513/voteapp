@@ -210,29 +210,33 @@ async function readCycleContributionRows(input: {
   const rows: IndianaCampaignFinanceContributionRow[] = [];
   let zipPath = "";
   let sourceUrl = "";
+  let foundMatchingRows = false;
   for (const filingYear of indianaCycleFilingYears(input.electionYear, input.rawDataZipPath)) {
     const paths = getIndianaCampaignFinanceArtifactCachePaths({
       cacheDir,
       year: filingYear,
       artifactKind: "contribution",
     });
-    zipPath = input.rawDataZipPath ?? paths.zipPath;
-    if (!(await fileExists(zipPath))) {
-      throw new Error(`Indiana campaign finance contribution ZIP not found for ${filingYear}: ${zipPath}`);
+    const artifactZipPath = input.rawDataZipPath ?? paths.zipPath;
+    if (!(await fileExists(artifactZipPath))) {
+      throw new Error(`Indiana campaign finance contribution ZIP not found for ${filingYear}: ${artifactZipPath}`);
     }
     const metadata = input.rawDataZipPath
       ? null
       : await readIndianaCampaignFinanceArtifactCacheMetadata(paths.metadataPath);
-    rows.push(
-      ...(await readIndianaCampaignFinanceContributionRows({
-        zipPath,
-        year: filingYear,
-        predicate: input.predicate,
-      }))
-    );
-    sourceUrl =
-      metadata?.remote.url ??
-      buildIndianaCampaignFinanceArtifactUrl({ year: filingYear, artifactKind: "contribution" });
+    const artifactRows = await readIndianaCampaignFinanceContributionRows({
+      zipPath: artifactZipPath,
+      year: filingYear,
+      predicate: input.predicate,
+    });
+    rows.push(...artifactRows);
+    if (!foundMatchingRows) {
+      zipPath = artifactZipPath;
+      sourceUrl =
+        metadata?.remote.url ??
+        buildIndianaCampaignFinanceArtifactUrl({ year: filingYear, artifactKind: "contribution" });
+      foundMatchingRows = artifactRows.length > 0;
+    }
   }
   return { rows, zipPath, sourceUrl };
 }

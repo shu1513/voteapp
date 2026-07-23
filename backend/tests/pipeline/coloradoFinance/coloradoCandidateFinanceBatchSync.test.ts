@@ -462,7 +462,12 @@ describe("coloradoCandidateFinanceBatchSync", () => {
     });
     expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
     expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.co_candidate_finance_links");
-    expect(syncFn).toHaveBeenCalledWith(expect.objectContaining({ contributionRows: [priorYearRow] }));
+    expect(syncFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        contributionRows: [priorYearRow],
+        contributionSourceUrl: expect.stringContaining("/2025_ContributionData.csv.zip"),
+      })
+    );
   });
 
   it("rejects invalid batch options before querying", async () => {

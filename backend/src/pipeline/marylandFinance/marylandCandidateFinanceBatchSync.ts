@@ -290,6 +290,7 @@ async function readCycleArtifactData<Row>(input: {
   const rows: Row[] = [];
   let filePath = "";
   let sourceUrl = MARYLAND_CFS_PUBLIC_EXPORT_API_URL;
+  let foundMatchingRows = false;
   for (const filingYear of marylandCycleFilingYears(input.electionYear)) {
     const paths = getMarylandCfsArtifactCachePaths({
       cacheDir: rawDataCacheDir(input.rawDataCacheDir),
@@ -300,9 +301,13 @@ async function readCycleArtifactData<Row>(input: {
       throw new Error(`Maryland CFS ${kindLabel} artifact not found for ${filingYear}: ${paths.filePath}`);
     }
     const metadata = await readMarylandCfsArtifactCacheMetadata(paths.metadataPath);
-    rows.push(...(await input.readRows(paths.filePath)));
-    filePath = paths.filePath;
-    sourceUrl = sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url });
+    const artifactRows = await input.readRows(paths.filePath);
+    rows.push(...artifactRows);
+    if (!foundMatchingRows) {
+      filePath = paths.filePath;
+      sourceUrl = sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url });
+      foundMatchingRows = artifactRows.length > 0;
+    }
   }
   return { rows, filePath, sourceUrl };
 }

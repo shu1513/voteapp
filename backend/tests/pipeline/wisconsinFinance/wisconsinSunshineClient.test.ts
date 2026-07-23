@@ -428,17 +428,22 @@ describe("wisconsinSunshineClient", () => {
   });
 
   it("completes a filer whose cycle query exceeds 50 pages", async () => {
-    const inputOf = (url: string): { dateFrom: string; dateTo: string; skip: number } =>
-      (JSON.parse(new URL(url).searchParams.get("input") ?? "{}") as {
-        "0": { json: { dateFrom: string; dateTo: string; skip: number } };
+    const inputOf = (url: string): { dateFrom: string; dateTo: string; skip: number; take: number } => {
+      const { dateFrom, dateTo, skip, take } = (JSON.parse(new URL(url).searchParams.get("input") ?? "{}") as {
+        "0": { json: { dateFrom: string; dateTo: string; skip: number; take: number } };
       })["0"].json;
+      return { dateFrom, dateTo, skip, take };
+    };
     const row = (id: string, amount: number) => ({
       id,
       amount,
       from_entity: { entityType: { name: "Individual" } },
     });
+    const requests: ReturnType<typeof inputOf>[] = [];
     const fetchImpl = vi.fn(async (url: string) => {
-      const { dateFrom, dateTo, skip } = inputOf(url);
+      const request = inputOf(url);
+      requests.push(request);
+      const { dateFrom, dateTo, skip } = request;
       if (dateFrom === "2025-01-01" && dateTo === "2026-12-31") {
         return trpcResponse({ results: [row(`overflow-${skip}`, 1)] });
       }
@@ -460,6 +465,14 @@ describe("wisconsinSunshineClient", () => {
       { categoryName: "100_249", amount: 150, count: 1, sourceUrl: WISCONSIN_SUNSHINE_TRANSACTIONS_URL },
     ]);
     expect(fetchImpl).toHaveBeenCalledTimes(54);
+    expect(requests.slice(0, 50)).toEqual(
+      Array.from({ length: 50 }, (_, skip) => ({
+        dateFrom: "2025-01-01",
+        dateTo: "2026-12-31",
+        skip,
+        take: 1,
+      }))
+    );
   });
 
   it("dedupes rows that appear in both halves of a split window", async () => {

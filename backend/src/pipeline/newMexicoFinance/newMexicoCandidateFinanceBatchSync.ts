@@ -266,6 +266,7 @@ async function readCycleArtifactData<Row>(input: {
   const rows: Row[] = [];
   let filePath = "";
   let sourceUrl = "";
+  let foundMatchingRows = false;
   for (const filingYear of newMexicoCycleFilingYears(input.electionYear)) {
     const paths = getNewMexicoCfisArtifactCachePaths({
       cacheDir:
@@ -279,10 +280,14 @@ async function readCycleArtifactData<Row>(input: {
       throw new Error(`New Mexico CFIS ${kindLabel} artifact not found for ${filingYear}: ${paths.filePath}`);
     }
     const metadata = await readNewMexicoCfisArtifactCacheMetadata(paths.metadataPath);
-    rows.push(...(await input.readRows(paths.filePath)));
-    filePath = paths.filePath;
-    sourceUrl =
-      metadata?.remote.url ?? buildNewMexicoCfisArtifactUrl({ year: filingYear, artifactKind: input.artifactKind });
+    const artifactRows = await input.readRows(paths.filePath);
+    rows.push(...artifactRows);
+    if (!foundMatchingRows) {
+      filePath = paths.filePath;
+      sourceUrl =
+        metadata?.remote.url ?? buildNewMexicoCfisArtifactUrl({ year: filingYear, artifactKind: input.artifactKind });
+      foundMatchingRows = artifactRows.length > 0;
+    }
   }
   return { rows, filePath, sourceUrl };
 }

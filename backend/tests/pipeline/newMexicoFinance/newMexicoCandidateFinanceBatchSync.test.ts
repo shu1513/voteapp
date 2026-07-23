@@ -577,7 +577,12 @@ describe("newMexicoCandidateFinanceBatchSync", () => {
       warnSpy.mockRestore();
     }
     expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.nm_candidate_finance_links");
-    expect(syncFn).toHaveBeenCalledWith(expect.objectContaining({ contributionRows: [priorYearRow] }));
+    expect(syncFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        contributionRows: [priorYearRow],
+        contributionSourceUrl: expect.stringContaining("year=2025"),
+      })
+    );
   });
 
   it("continues auto-linking available years when another year's contribution artifact is missing", async () => {

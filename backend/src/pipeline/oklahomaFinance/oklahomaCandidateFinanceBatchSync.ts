@@ -210,23 +210,27 @@ async function readCycleContributionRows(input: {
   const rows: OklahomaGuardianContributionRow[] = [];
   let zipPath = "";
   let sourceUrl = "";
+  let foundMatchingRows = false;
   for (const filingYear of oklahomaCycleFilingYears(input.electionYear, input.rawDataZipPath)) {
     const paths = getOklahomaGuardianContributionArtifactCachePaths({ cacheDir, year: filingYear });
-    zipPath = input.rawDataZipPath ?? paths.zipPath;
-    if (!(await fileExists(zipPath))) {
-      throw new Error(`Oklahoma Guardian contribution ZIP not found for ${filingYear}: ${zipPath}`);
+    const artifactZipPath = input.rawDataZipPath ?? paths.zipPath;
+    if (!(await fileExists(artifactZipPath))) {
+      throw new Error(`Oklahoma Guardian contribution ZIP not found for ${filingYear}: ${artifactZipPath}`);
     }
     const metadata = input.rawDataZipPath
       ? null
       : await readOklahomaGuardianContributionArtifactCacheMetadata(paths.metadataPath);
-    rows.push(
-      ...(await readOklahomaGuardianContributionRows({
-        zipPath,
-        year: filingYear,
-        predicate: input.predicate,
-      }))
-    );
-    sourceUrl = metadata?.remote.url ?? buildOklahomaGuardianContributionZipUrl({ year: filingYear });
+    const artifactRows = await readOklahomaGuardianContributionRows({
+      zipPath: artifactZipPath,
+      year: filingYear,
+      predicate: input.predicate,
+    });
+    rows.push(...artifactRows);
+    if (!foundMatchingRows) {
+      zipPath = artifactZipPath;
+      sourceUrl = metadata?.remote.url ?? buildOklahomaGuardianContributionZipUrl({ year: filingYear });
+      foundMatchingRows = artifactRows.length > 0;
+    }
   }
   return { rows, zipPath, sourceUrl };
 }
