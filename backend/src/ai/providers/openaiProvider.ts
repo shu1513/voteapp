@@ -6,6 +6,7 @@ import type {
 import { AI_CALLS_BLOCKED_REASON, isAiApiCallAllowed } from "../aiCallGuard.js";
 import { buildRetryFeedbackPromptLines } from "../retryFeedback.js";
 import { buildStateResourcesPrompt } from "./stateResourcesPrompt.js";
+import { shouldSetExplicitOpenAiTemperature } from "../modelRequestCapabilities.js";
 
 const OPENAI_RESPONSES_URL = "https://api.openai.com/v1/responses";
 
@@ -72,11 +73,6 @@ function extractLeadingJsonObject(
   }
 
   return null;
-}
-
-function shouldSetExplicitTemperature(model: string): boolean {
-  // GPT-5-family should use default temperature behavior.
-  return !model.toLowerCase().startsWith("gpt-5");
 }
 
 function extractResponsesOutputText(responsePayload: unknown): string | null {
@@ -221,7 +217,7 @@ export async function openAiProvider(
       include: ["web_search_call.action.sources"],
     };
 
-    if (shouldSetExplicitTemperature(config.model)) {
+    if (shouldSetExplicitOpenAiTemperature(config.model)) {
       requestBody.temperature = 0;
     }
 

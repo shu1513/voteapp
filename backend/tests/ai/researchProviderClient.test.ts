@@ -119,6 +119,28 @@ describe("researchProviderClient", () => {
     expect(body).not.toHaveProperty("temperature");
   });
 
+  it("keeps deterministic temperature for compatible legacy Claude overrides", async () => {
+    let requestBodyText = "";
+    globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
+      requestBodyText = typeof init?.body === "string" ? init.body : "";
+      return jsonResponse({ content: [{ type: "text", text: "{\"ok\":true}" }] });
+    }) as unknown as typeof fetch;
+
+    const result = await callResearchProvider(
+      { provider: "claude", model: "claude-sonnet-4-6" },
+      "claude prompt",
+      {
+        timeoutMs: 1_000,
+        anthropicApiKey: "test-anthropic-key",
+        claudeInterCallDelayMs: 0,
+      }
+    );
+
+    expect(result.ok).toBe(true);
+    const body = JSON.parse(requestBodyText) as Record<string, unknown>;
+    expect(body).toHaveProperty("temperature", 0);
+  });
+
   it("builds Gemini request shape with v1beta + json mime when configured", async () => {
     let requestUrl = "";
     let requestBodyText = "";

@@ -19,4 +19,8 @@ export const FRONTIER_AI_CANDIDATES = [
   { provider: "gemini", model: "gemini-pro-latest" },
 ] as const satisfies readonly AiCandidate[];
 
+/**
+ * Quality-first environment default. Cost-sensitive deployments should set
+ * both AI_PROVIDER and AI_MODEL explicitly.
+ */
 export const DEFAULT_AI_CANDIDATE: AiCandidate = FRONTIER_AI_CANDIDATES[0];

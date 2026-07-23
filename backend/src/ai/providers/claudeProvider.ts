@@ -11,6 +11,7 @@ import {
   updateProviderModelCooldownFromHeaders,
   waitForProviderModelCooldown,
 } from "../providerRateLimitGate.js";
+import { shouldSetExplicitClaudeTemperature } from "../modelRequestCapabilities.js";
 
 const ANTHROPIC_MESSAGES_URL = "https://api.anthropic.com/v1/messages";
 
@@ -86,6 +87,9 @@ export async function claudeProvider(
         },
       ],
     };
+    if (shouldSetExplicitClaudeTemperature(config.model)) {
+      requestBody.temperature = 0;
+    }
     const headers: Record<string, string> = {
       "x-api-key": config.anthropicApiKey,
       "anthropic-version": "2023-06-01",

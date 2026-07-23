@@ -53,6 +53,28 @@ describe("frontier provider request compatibility", () => {
     expect(body).not.toHaveProperty("top_k");
   });
 
+  it("keeps deterministic temperature for compatible legacy Claude overrides", async () => {
+    let requestBodyText = "";
+    globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
+      requestBodyText = typeof init?.body === "string" ? init.body : "";
+      return new Response(
+        JSON.stringify({ content: [{ type: "text", text: "{}" }] }),
+        { status: 200, headers: { "content-type": "application/json" } }
+      );
+    }) as unknown as typeof fetch;
+
+    const result = await claudeProvider(input, {
+      provider: "claude",
+      model: "claude-sonnet-4-6",
+      timeoutMs: 1_000,
+      anthropicApiKey: "test-key",
+    });
+
+    expect(result.ok).toBe(true);
+    const body = JSON.parse(requestBodyText) as Record<string, unknown>;
+    expect(body).toHaveProperty("temperature", 0);
+  });
+
   it("omits sampling parameters that moving Gemini aliases may reject", async () => {
     let requestBodyText = "";
     globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
