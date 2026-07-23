@@ -38,12 +38,34 @@ function electionRow(overrides: Partial<FakeElectionRow> = {}): FakeElectionRow 
   };
 }
 
-function fakeClient(row?: FakeElectionRow) {
+function fakeClient(
+  row?: FakeElectionRow,
+  input: { aliasOfficeId?: string } = {}
+) {
   const statements: { text: string; values?: unknown[] }[] = [];
   const query = vi.fn(async (text: string, values?: unknown[]) => {
     statements.push({ text, values });
     if (text.includes("FOR UPDATE OF e")) return { rows: row ? [row] : [] };
-    if (text.includes("FROM public.office_title_aliases")) return { rows: [] };
+    if (text.includes("FROM public.office_title_aliases")) {
+      return {
+        rows: input.aliasOfficeId
+          ? [
+              {
+                office_id: input.aliasOfficeId,
+                normalized_alias: "bernalillo county probate judge",
+              },
+            ]
+          : [],
+      };
+    }
+    if (text.includes("WHERE id = $1::uuid") && text.includes("FROM public.offices")) {
+      const officeId = values?.[0];
+      const offices = [
+        { id: JUDGE_OFFICE_ID, canonical_name: "County Level Judge" },
+        { id: OTHER_OFFICE_ID, canonical_name: "County Recorder" },
+      ];
+      return { rows: offices.filter((office) => office.id === officeId) };
+    }
     if (text.includes("FROM public.offices")) {
       return {
         rows: [
@@ -180,6 +202,18 @@ describe("runElectionContestFamilyCorrection", () => {
 
     await expect(runElectionContestFamilyCorrection(client, options())).rejects.toThrow(
       /already references office .* but corrected family resolves/
+    );
+    expect(updateStatement(statements)).toBeUndefined();
+    expect(statements.at(-1)?.text).toBe("ROLLBACK");
+  });
+
+  it("refuses a non-judge office resolved under the judicial family", async () => {
+    const { client, statements } = fakeClient(electionRow(), {
+      aliasOfficeId: OTHER_OFFICE_ID,
+    });
+
+    await expect(runElectionContestFamilyCorrection(client, options())).rejects.toThrow(
+      /judicial_office resolved incompatible office County Recorder/
     );
     expect(updateStatement(statements)).toBeUndefined();
     expect(statements.at(-1)?.text).toBe("ROLLBACK");

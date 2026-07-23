@@ -10,9 +10,12 @@ import { pathToFileURL } from "node:url";
 import { Pool, type PoolClient } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
-import { OfficeMatcher } from "../pipeline/elections/officeMatcher.js";
+import {
+  isJudicialOfficeCanonicalName,
+  OfficeMatcher,
+} from "../pipeline/elections/officeMatcher.js";
 import type { ElectionContestFamily, ElectionDistrictType } from "../types/election.js";
-import { appendElectionSource } from "./electionSourceUtils.js";
+import { mergeElectionSource } from "./electionSourceUtils.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 
@@ -45,6 +48,10 @@ type ElectionRow = {
   district_name: string;
   state: string;
   district_type: ElectionDistrictType;
+};
+
+type ResolvedOfficeRow = {
+  canonical_name: string;
 };
 
 export type ElectionContestFamilyCorrectionResult = {
@@ -170,19 +177,43 @@ export async function runElectionContestFamilyCorrection(
           `(method=${match.method}, confidence=${match.confidence.toFixed(3)}); refusing correction`
       );
     }
+
+    // The matcher uses the family to improve resolution, but an exact alias
+    // under judicial_office can still point to a non-judge office. This repair
+    // changes authoritative classification data, so independently verify the
+    // resolved canonical office before accepting it.
+    const resolvedOffice = await client.query<ResolvedOfficeRow>(
+      `
+        SELECT canonical_name
+        FROM public.offices
+        WHERE id = $1::uuid
+      `,
+      [match.officeId]
+    );
+    const resolvedCanonicalName = resolvedOffice.rows[0]?.canonical_name;
+    if (!resolvedCanonicalName) {
+      throw new Error(
+        `Corrected family ${correctedFamily} resolved missing office ${match.officeId}; refusing correction`
+      );
+    }
+    const resolvedIsJudicial = isJudicialOfficeCanonicalName(resolvedCanonicalName);
+    const familyIsJudicial = correctedFamily === "judicial_office";
+    if (resolvedIsJudicial !== familyIsJudicial) {
+      throw new Error(
+        `Corrected family ${correctedFamily} resolved incompatible office ${resolvedCanonicalName} ` +
+          `(${match.officeId}); refusing correction`
+      );
+    }
     if (row.office_id && row.office_id !== match.officeId) {
       throw new Error(
         `Election ${electionId} already references office ${row.office_id}, but corrected family resolves ${match.officeId}; refusing correction`
       );
     }
 
-    const sources = appendElectionSource(row.sources, sourceUrl);
-    const trimmedSourceUrl = sourceUrl.trim();
-    const sourceAppended =
-      !Array.isArray(row.sources) ||
-      !row.sources.some(
-        (value) => typeof value === "string" && value.trim() === trimmedSourceUrl
-      );
+    const { sources, appended: sourceAppended } = mergeElectionSource(
+      row.sources,
+      sourceUrl
+    );
     const officeBackfilled = row.office_id === null;
     const needsUpdate = !alreadyCorrected || officeBackfilled || sourceAppended;
 

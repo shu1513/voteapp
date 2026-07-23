@@ -23,11 +23,11 @@ import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
-import { appendElectionSource } from "./electionSourceUtils.js";
+import { mergeElectionSource } from "./electionSourceUtils.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 
-export { appendElectionSource } from "./electionSourceUtils.js";
+export { appendElectionSource, mergeElectionSource } from "./electionSourceUtils.js";
 
 type QueryResultLike<T> = { rows: T[] };
 
@@ -161,16 +161,13 @@ export async function runElectionDateCorrection(
       // already corrected without the official source (out-of-band repair)
       // gets the source appended so re-running the exact command always ends
       // in the same final state.
-      // Same trim-normalized comparison appendElectionSource uses, so the
+      // Same trim-normalized comparison mergeElectionSource uses, so the
       // sourceAppended flag never reports an append that the merge would
       // dedupe away (or vice versa).
-      const merged = appendElectionSource(row.sources, sourceUrl);
-      const trimmedSourceUrl = sourceUrl.trim();
-      const sourceMissing =
-        !Array.isArray(row.sources) ||
-        !row.sources.some(
-          (value) => typeof value === "string" && value.trim() === trimmedSourceUrl
-        );
+      const { sources: merged, appended: sourceMissing } = mergeElectionSource(
+        row.sources,
+        sourceUrl
+      );
       if (sourceMissing && !dryRun) {
         await client.query(
           `
@@ -238,7 +235,7 @@ export async function runElectionDateCorrection(
       );
     }
 
-    const sources = appendElectionSource(row.sources, sourceUrl);
+    const { sources } = mergeElectionSource(row.sources, sourceUrl);
     if (dryRun) {
       await client.query("ROLLBACK");
     } else {

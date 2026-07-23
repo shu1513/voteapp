@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   appendElectionSource,
   assertIsoDate,
+  mergeElectionSource,
   runElectionDateCorrection,
   type ElectionDateCorrectionClient,
 } from "../../src/scripts/correctManualElectionDate.js";
@@ -308,6 +309,17 @@ describe("appendElectionSource", () => {
       "https://a.example",
       "https://b.example",
     ]);
+  });
+
+  it("reports whether the normalized source was newly appended", () => {
+    expect(mergeElectionSource([" https://b.example "], "https://b.example")).toEqual({
+      sources: ["https://b.example"],
+      appended: false,
+    });
+    expect(mergeElectionSource(["https://a.example"], " https://b.example ")).toEqual({
+      sources: ["https://a.example", "https://b.example"],
+      appended: true,
+    });
   });
 });
 

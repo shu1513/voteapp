@@ -57,6 +57,11 @@ const JUDGE_CANONICAL_NAMES = new Set([
   COUNTY_LEVEL_JUDGE_CANONICAL_NAME,
   PLACE_LEVEL_JUDGE_CANONICAL_NAME,
 ]);
+
+export function isJudicialOfficeCanonicalName(canonicalName: string): boolean {
+  return JUDGE_CANONICAL_NAMES.has(canonicalName);
+}
+
 const SCHOOL_DISTRICT_SCOPES = new Set<ElectionDistrictType>([
   "school_elementary",
   "school_secondary",
@@ -640,7 +645,7 @@ export class OfficeMatcher {
       // the county executive, once mis-scored into County Level Judge). The entry's
       // own contest family is authoritative: ignore judge-office aliases here.
       const aliasTarget = (await this.loadOffices(input.scope)).find((office) => office.id === exactOfficeId);
-      if (aliasTarget && JUDGE_CANONICAL_NAMES.has(aliasTarget.canonicalName)) {
+      if (aliasTarget && isJudicialOfficeCanonicalName(aliasTarget.canonicalName)) {
         exactOfficeId = undefined;
       }
     }
@@ -770,7 +775,7 @@ export class OfficeMatcher {
     // Judge") into a judge office; the entry's non-judicial contest family wins.
     const scoreableOffices =
       input.discoveryContestFamily === "non_judicial_office"
-        ? offices.filter((office) => !JUDGE_CANONICAL_NAMES.has(office.canonicalName))
+        ? offices.filter((office) => !isJudicialOfficeCanonicalName(office.canonicalName))
         : offices;
     const scored = scoreableOffices
       .map((office) => ({

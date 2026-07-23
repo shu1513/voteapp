@@ -13,6 +13,12 @@ reviews:
     # mobile has an ESLint config, and mobile CI already runs npm run lint.
     eslint:
       enabled: false
+    # CodeRabbit's hosted Checkov 3.3.8 launcher currently fails before
+    # scanning (`ModuleNotFoundError: checkov`). This repository has no
+    # Terraform, Docker, Kubernetes, or other IaC for Checkov to cover, so do
+    # not run the broken hosted tool against package manifests.
+    checkov:
+      enabled: false
 
 chat:
   auto_reply: true
