@@ -1,6 +1,7 @@
 import { stat } from "node:fs/promises";
 import type { Pool, PoolClient } from "pg";
 
+import { mergeCycleArtifactRows } from "../finance/cycleArtifactRows.js";
 import {
   autoLinkMissingIndianaCandidateFinanceLinks,
   buildIndianaCandidateNamePredicate,
@@ -19,6 +20,7 @@ import {
   readIndianaCampaignFinanceArtifactCacheMetadata,
 } from "./indianaCampaignFinanceArtifactCache.js";
 import {
+  INDIANA_CAMPAIGN_FINANCE_CONTRIBUTION_COLUMNS,
   readIndianaCampaignFinanceContributionRows,
   type IndianaCampaignFinanceContributionRow,
 } from "./indianaCampaignFinanceReader.js";
@@ -197,6 +199,12 @@ function indianaCycleFilingYears(electionYear: number, rawDataZipPath?: string):
   return rawDataZipPath ? [electionYear] : [electionYear - 1, electionYear];
 }
 
+function indianaContributionRowIdentity(row: IndianaCampaignFinanceContributionRow): string {
+  // Indiana exposes no transaction id. Exact official row content is the
+  // narrowest identity that avoids conflating distinct same-day receipts.
+  return JSON.stringify(INDIANA_CAMPAIGN_FINANCE_CONTRIBUTION_COLUMNS.map((column) => row[column]));
+}
+
 async function readCycleContributionRows(input: {
   electionYear: number;
   rawDataZipPath?: string;
@@ -207,7 +215,7 @@ async function readCycleContributionRows(input: {
     input.rawDataCacheDir ??
     process.env.INDIANA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() ??
     DEFAULT_INDIANA_CAMPAIGN_FINANCE_CACHE_DIR;
-  const rows: IndianaCampaignFinanceContributionRow[] = [];
+  const artifactRowsByYear: IndianaCampaignFinanceContributionRow[][] = [];
   let zipPath = "";
   let sourceUrl = "";
   let foundMatchingRows = false;
@@ -229,7 +237,7 @@ async function readCycleContributionRows(input: {
       year: filingYear,
       predicate: input.predicate,
     });
-    rows.push(...artifactRows);
+    artifactRowsByYear.push(artifactRows);
     if (!foundMatchingRows) {
       zipPath = artifactZipPath;
       sourceUrl =
@@ -238,7 +246,14 @@ async function readCycleContributionRows(input: {
       foundMatchingRows = artifactRows.length > 0;
     }
   }
-  return { rows, zipPath, sourceUrl };
+  return {
+    rows: mergeCycleArtifactRows({
+      artifacts: artifactRowsByYear,
+      rowIdentity: indianaContributionRowIdentity,
+    }),
+    zipPath,
+    sourceUrl,
+  };
 }
 
 async function loadContributionDataForYear(input: {

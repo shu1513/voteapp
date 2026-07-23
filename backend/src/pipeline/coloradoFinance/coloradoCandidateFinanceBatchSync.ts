@@ -1,6 +1,7 @@
 import { stat } from "node:fs/promises";
 import type { Pool, PoolClient } from "pg";
 
+import { mergeCycleArtifactRows } from "../finance/cycleArtifactRows.js";
 import {
   DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR,
   buildColoradoTracerContributionZipUrl,
@@ -193,6 +194,11 @@ function coloradoCycleFilingYears(electionYear: number, rawDataZipPath?: string)
   return rawDataZipPath ? [electionYear] : [electionYear - 1, electionYear];
 }
 
+function coloradoContributionRowIdentity(row: ColoradoTracerContributionRow): string {
+  const recordId = row.RecordID.trim().toUpperCase();
+  return recordId ? `${normalizeCommitteeId(row.CO_ID)}\u0000${recordId}` : "";
+}
+
 async function readCycleContributionRows(input: {
   electionYear: number;
   rawDataZipPath?: string;
@@ -203,7 +209,7 @@ async function readCycleContributionRows(input: {
     input.rawDataCacheDir ??
     process.env.COLORADO_TRACER_CONTRIBUTION_CACHE_DIR?.trim() ??
     DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR;
-  const rows: ColoradoTracerContributionRow[] = [];
+  const artifactRowsByYear: ColoradoTracerContributionRow[][] = [];
   let zipPath = "";
   let sourceUrl = "";
   let foundMatchingRows = false;
@@ -221,14 +227,21 @@ async function readCycleContributionRows(input: {
       year: filingYear,
       predicate: input.predicate,
     });
-    rows.push(...artifactRows);
+    artifactRowsByYear.push(artifactRows);
     if (!foundMatchingRows) {
       zipPath = artifactZipPath;
       sourceUrl = metadata?.remote.url ?? buildColoradoTracerContributionZipUrl({ year: filingYear });
       foundMatchingRows = artifactRows.length > 0;
     }
   }
-  return { rows, zipPath, sourceUrl };
+  return {
+    rows: mergeCycleArtifactRows({
+      artifacts: artifactRowsByYear,
+      rowIdentity: coloradoContributionRowIdentity,
+    }),
+    zipPath,
+    sourceUrl,
+  };
 }
 
 async function loadContributionDataForYear(input: {

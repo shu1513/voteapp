@@ -67,7 +67,9 @@ async function loadContributionRecords(input: {
   for (const path of input.paths) {
     // The current Illinois parser materializes each CSV, so keep reads sequential to cap peak memory.
     const csv = await readFile(path, "utf8");
-    records.push(...parseIllinoisSbeContributionRecordsCsv(csv, input.sourceUrl));
+    for (const record of parseIllinoisSbeContributionRecordsCsv(csv, input.sourceUrl)) {
+      records.push(record);
+    }
   }
   return records;
 }
@@ -80,7 +82,9 @@ async function loadExpenditureRecords(input: {
   for (const path of input.paths) {
     // The current Illinois parser materializes each CSV, so keep reads sequential to cap peak memory.
     const csv = await readFile(path, "utf8");
-    records.push(...parseIllinoisSbeExpenditureRecordsCsv(csv, input.sourceUrl));
+    for (const record of parseIllinoisSbeExpenditureRecordsCsv(csv, input.sourceUrl)) {
+      records.push(record);
+    }
   }
   return records;
 }

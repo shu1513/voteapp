@@ -1,6 +1,7 @@
 import { stat } from "node:fs/promises";
 import type { Pool, PoolClient } from "pg";
 
+import { mergeCycleArtifactRows } from "../finance/cycleArtifactRows.js";
 import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
 import {
   autoLinkMissingMarylandCandidateFinanceLinks,
@@ -22,6 +23,9 @@ import {
   MARYLAND_CFS_PUBLIC_EXPORT_API_URL,
 } from "./marylandCfsClient.js";
 import {
+  MARYLAND_CFS_COMMITTEE_COLUMNS,
+  MARYLAND_CFS_CONTRIBUTION_COLUMNS,
+  MARYLAND_CFS_EXPENDITURE_COLUMNS,
   readMarylandCfsCommitteeRows,
   readMarylandCfsContributionRows,
   readMarylandCfsExpenditureRows,
@@ -280,14 +284,22 @@ function marylandCycleFilingYears(electionYear: number): number[] {
   return [electionYear - 1, electionYear];
 }
 
+function marylandRowIdentity<Row extends Record<string, string>>(
+  row: Row,
+  columns: readonly string[]
+): string {
+  return JSON.stringify(columns.map((column) => row[column] ?? ""));
+}
+
 async function readCycleArtifactData<Row>(input: {
   electionYear: number;
   artifactKind: "committees" | "contributions" | "expenditures";
   rawDataCacheDir?: string;
   readRows: (filePath: string) => Promise<Row[]>;
+  rowIdentity: (row: Row) => string;
 }): Promise<{ rows: Row[]; filePath: string; sourceUrl: string }> {
   const kindLabel = input.artifactKind === "committees" ? "committee" : input.artifactKind.slice(0, -1);
-  const rows: Row[] = [];
+  const artifactRowsByYear: Row[][] = [];
   let filePath = "";
   let sourceUrl = MARYLAND_CFS_PUBLIC_EXPORT_API_URL;
   let foundMatchingRows = false;
@@ -302,14 +314,18 @@ async function readCycleArtifactData<Row>(input: {
     }
     const metadata = await readMarylandCfsArtifactCacheMetadata(paths.metadataPath);
     const artifactRows = await input.readRows(paths.filePath);
-    rows.push(...artifactRows);
+    artifactRowsByYear.push(artifactRows);
     if (!foundMatchingRows) {
       filePath = paths.filePath;
       sourceUrl = sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url });
       foundMatchingRows = artifactRows.length > 0;
     }
   }
-  return { rows, filePath, sourceUrl };
+  return {
+    rows: mergeCycleArtifactRows({ artifacts: artifactRowsByYear, rowIdentity: input.rowIdentity }),
+    filePath,
+    sourceUrl,
+  };
 }
 
 async function loadCommitteeDataForYear(input: {
@@ -317,10 +333,11 @@ async function loadCommitteeDataForYear(input: {
   rawDataCacheDir?: string;
   predicate?: (row: MarylandCfsCommitteeRow) => boolean;
 }): Promise<MarylandCommitteeDataForYear> {
-  const data = await readCycleArtifactData({
+  const data = await readCycleArtifactData<MarylandCfsCommitteeRow>({
     electionYear: input.year,
     artifactKind: "committees",
     rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: (row) => marylandRowIdentity(row, MARYLAND_CFS_COMMITTEE_COLUMNS),
     readRows: (filePath) => readMarylandCfsCommitteeRows({ filePath, predicate: input.predicate }),
   });
   return {
@@ -359,10 +376,11 @@ async function loadContributionDataForYear(input: {
   rawDataCacheDir?: string;
 }): Promise<MarylandContributionDataForYear> {
   const normalizedCommitteeIds = new Set(input.committeeIds.map(normalizeCommitteeId).filter(Boolean));
-  const data = await readCycleArtifactData({
+  const data = await readCycleArtifactData<MarylandCfsContributionRow>({
     electionYear: input.year,
     artifactKind: "contributions",
     rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: (row) => marylandRowIdentity(row, MARYLAND_CFS_CONTRIBUTION_COLUMNS),
     readRows: (filePath) =>
       readMarylandCfsContributionRows({
         filePath,
@@ -383,10 +401,11 @@ async function loadExpenditureDataForYear(input: {
   dueRows: readonly MarylandCandidateFinanceDueRow[];
   rawDataCacheDir?: string;
 }): Promise<MarylandExpenditureDataForYear> {
-  const data = await readCycleArtifactData({
+  const data = await readCycleArtifactData<MarylandCfsExpenditureRow>({
     electionYear: input.year,
     artifactKind: "expenditures",
     rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: (row) => marylandRowIdentity(row, MARYLAND_CFS_EXPENDITURE_COLUMNS),
     readRows: (filePath) =>
       readMarylandCfsExpenditureRows({
         filePath,

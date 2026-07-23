@@ -75,19 +75,25 @@ export async function loadHoustonTexasTecData(input: {
   const expenditureIds = new Set(candidateRows.map((row) => `${id(row.filerIdent)}\u0000${id(row.expendInfoId)}`));
   const expenditureRows: TexasTecExpenditureRow[] = [];
   for (const fileName of await listTexasTecExpenditureCsvFileNames(zipPath)) {
-    expenditureRows.push(...await readTexasTecExpenditureRows({
+    const rows = await readTexasTecExpenditureRows({
       zipPath,
       fileName,
       predicate: (row) => expenditureIds.has(`${id(row.filerIdent)}\u0000${id(row.expendInfoId)}`),
-    }));
+    });
+    for (const row of rows) {
+      expenditureRows.push(row);
+    }
   }
   const contributionRows: TexasTecContributionRow[] = [];
   for (const fileName of await listTexasTecContributionCsvFileNames(zipPath)) {
-    contributionRows.push(...await readTexasTecContributionRows({
+    const rows = await readTexasTecContributionRows({
       zipPath,
       fileName,
       predicate: (row) => committeeIds.has(id(row.filerIdent)) && years.has(year(row.contributionDt) ?? -1),
-    }));
+    });
+    for (const row of rows) {
+      contributionRows.push(row);
+    }
   }
   return { sourceUrl: TEXAS_TEC_CSV_DATABASE_URL, purposeRows, candidateRows, expenditureRows, contributionRows, politicalCommitteeNames };
 }

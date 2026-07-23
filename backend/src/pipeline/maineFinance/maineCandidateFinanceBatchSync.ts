@@ -305,7 +305,9 @@ async function readCycleArtifactData<Row>(input: {
       throw new Error(`Maine CFIS ${kindLabel} artifact not found for ${filingYear}: ${paths.filePath}`);
     }
     const metadata = await readValidCacheMetadata({ year: filingYear, artifactKind: input.artifactKind, ...paths });
-    rows.push(...(await input.readRows(paths.filePath)));
+    for (const row of await input.readRows(paths.filePath)) {
+      rows.push(row);
+    }
     filePath = paths.filePath;
     sourceUrl = sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url });
   }

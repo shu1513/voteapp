@@ -114,6 +114,23 @@ describe("New Mexico CFIS artifact reader", () => {
     ]);
   });
 
+  it("preserves unescaped interior quotes emitted by the official export", () => {
+    const csv = expenditureCsv([
+      {
+        OrgID: "9001",
+        "Expenditure Amount": "100.00",
+        Description: 'Printing for "Neighbors" mailer',
+      },
+    ]).replace('Printing for ""Neighbors"" mailer', 'Printing for "Neighbors" mailer');
+
+    expect(parseNewMexicoCfisExpenditureCsvRows(csv)).toEqual([
+      expect.objectContaining({
+        OrgID: "9001",
+        Description: 'Printing for "Neighbors" mailer',
+      }),
+    ]);
+  });
+
   it("streams contribution rows from disk with predicate and maxRows", async () => {
     const dir = await makeTempDir();
     const filePath = join(dir, "CON_2026.csv");
@@ -204,6 +221,26 @@ describe("New Mexico CFIS artifact reader", () => {
         Description: "line one\nline two",
         Reason: "Haaland, Deb",
         Stance: "Support",
+      }),
+    ]);
+  });
+
+  it("streams unescaped interior quotes emitted by the official export", async () => {
+    const dir = await makeTempDir();
+    const filePath = join(dir, "EXP_2026.csv");
+    const csv = expenditureCsv([
+      {
+        OrgID: "9001",
+        "Expenditure Amount": "100.00",
+        Description: 'Printing for "Neighbors" mailer',
+      },
+    ]).replace('Printing for ""Neighbors"" mailer', 'Printing for "Neighbors" mailer');
+    await writeFile(filePath, csv, "utf8");
+
+    await expect(readNewMexicoCfisExpenditureRows({ filePath })).resolves.toEqual([
+      expect.objectContaining({
+        OrgID: "9001",
+        Description: 'Printing for "Neighbors" mailer',
       }),
     ]);
   });
