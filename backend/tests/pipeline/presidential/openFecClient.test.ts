@@ -18,6 +18,12 @@ function jsonResponse(payload: unknown, init: ResponseInit = {}): Response {
   });
 }
 
+function timeoutOnAbort(_input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  return new Promise((_resolve, reject) => {
+    init?.signal?.addEventListener("abort", () => reject(new DOMException("aborted", "AbortError")), { once: true });
+  });
+}
+
 function sampleCandidate(overrides: Record<string, unknown> = {}): Record<string, unknown> {
   return {
     candidate_id: "P80000001",
@@ -179,22 +185,58 @@ describe("openFecClient", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(1);
   });
 
-  it("maps AbortError to timeout", async () => {
-    const abortError = new DOMException("aborted", "AbortError");
-    const fetchImpl = vi.fn().mockRejectedValue(abortError) as unknown as typeof fetch;
+  it("retries a transient timeout once on the same key", async () => {
+    vi.useFakeTimers();
+    const fetchImpl = vi
+      .fn()
+      .mockImplementationOnce(timeoutOnAbort)
+      .mockResolvedValueOnce(jsonResponse({ ok: true })) as unknown as typeof fetch;
 
-    await expect(
-      fetchOpenFecJsonWithKeyRotation("https://api.open.fec.gov/v1/candidates/search/?office=P", {
+    try {
+      const request = fetchOpenFecJsonWithKeyRotation(
+        "https://api.open.fec.gov/v1/candidates/search/?office=P",
+        {
+          apiKeys: ["k1", "k2"],
+          fetchImpl,
+          timeoutMs: 123,
+        }
+      );
+
+      await vi.runAllTimersAsync();
+      await expect(request).resolves.toEqual({ ok: true });
+
+      expect(fetchImpl).toHaveBeenCalledTimes(2);
+      expect(new URL(String(vi.mocked(fetchImpl).mock.calls[0]?.[0])).searchParams.get("api_key")).toBe("k1");
+      expect(new URL(String(vi.mocked(fetchImpl).mock.calls[1]?.[0])).searchParams.get("api_key")).toBe("k1");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("maps an exhausted timeout retry to a timeout error without rotating keys", async () => {
+    vi.useFakeTimers();
+    const fetchImpl = vi.fn().mockImplementation(timeoutOnAbort) as unknown as typeof fetch;
+
+    try {
+      const request = fetchOpenFecJsonWithKeyRotation("https://api.open.fec.gov/v1/candidates/search/?office=P", {
         apiKeys: ["k1", "k2"],
         fetchImpl,
         timeoutMs: 123,
-      })
-    ).rejects.toMatchObject({
-      code: "timeout",
-      message: "OpenFEC request timed out after 123ms",
-    });
+      });
 
-    expect(fetchImpl).toHaveBeenCalledTimes(1);
+      const rejection = expect(request).rejects.toMatchObject({
+        code: "timeout",
+        message: "OpenFEC request timed out after 123ms",
+      });
+      await vi.runAllTimersAsync();
+      await rejection;
+
+      expect(fetchImpl).toHaveBeenCalledTimes(2);
+      expect(new URL(String(vi.mocked(fetchImpl).mock.calls[0]?.[0])).searchParams.get("api_key")).toBe("k1");
+      expect(new URL(String(vi.mocked(fetchImpl).mock.calls[1]?.[0])).searchParams.get("api_key")).toBe("k1");
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("rejects invalid inputs before fetch", async () => {
