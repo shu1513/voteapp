@@ -317,6 +317,7 @@ function isSoftScopeAmbiguous(
       // while the district payload itself supplies the county scope.
       /\bclerk of (?:the )?circuit court\b/,
       /\bcircuit court clerk\b/,
+      /\bcircuit judge\b/,
       /\brecorder\b/,
       /\bcoroner\b/,
       /\bregister of deeds\b/,

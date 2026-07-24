@@ -1003,6 +1003,15 @@ describe("runElectionsValidator", () => {
           discovery_contest_family: "non_judicial_office",
           sources: ["https://example.org/election"],
         },
+        {
+          official_ballot_title: "Circuit Judge, 19th Judicial Circuit, Group 4",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "judicial_office",
+          sources: ["https://example.org/election"],
+        },
       ],
     };
 
