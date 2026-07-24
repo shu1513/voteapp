@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  normalizeOklahomaCandidateDistrict,
   normalizeOklahomaCandidateNameKeys,
   resolveOklahomaCandidateCommittee,
 } from "../../../src/pipeline/oklahomaFinance/oklahomaCandidateCommitteeResolver.js";
@@ -36,6 +37,17 @@ function contribution(overrides: Partial<OklahomaGuardianContributionRow> = {}):
 }
 
 describe("oklahomaCandidateCommitteeResolver", () => {
+  it.each([
+    ["DISTRICT 5", "5"],
+    [" district 005 ", "5"],
+    ["DISTRICT AT LARGE", "AT LARGE"],
+    ["At-Large", "AT LARGE"],
+    ["", ""],
+    [null, ""],
+  ])("normalizes Guardian district value %j to %j", (input, expected) => {
+    expect(normalizeOklahomaCandidateDistrict(input)).toBe(expected);
+  });
+
   it("normalizes direct, comma-form, and initial-first candidate names without fuzzy matching", () => {
     expect([...normalizeOklahomaCandidateNameKeys("DISHMAN, C. Brent")]).toEqual([
       "DISHMAN C BRENT",

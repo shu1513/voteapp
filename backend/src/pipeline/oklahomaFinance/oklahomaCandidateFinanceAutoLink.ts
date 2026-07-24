@@ -127,12 +127,13 @@ async function disambiguateOklahomaCandidateCommittee(input: {
     return input.resolution;
   }
 
-  const matchingIds = new Set(
-    details
-      .filter((detail) => guardianDetailMatchesCandidateElection({ detail, candidateElection: input.candidateElection }))
-      .map((detail) => detail.organizationId)
-  );
-  const matches = input.resolution.matches.filter((match) => matchingIds.has(match.committeeId));
+  const matches = input.resolution.matches.filter((match, index) => {
+    const detail = details[index];
+    return (
+      detail?.organizationId === match.committeeId &&
+      guardianDetailMatchesCandidateElection({ detail, candidateElection: input.candidateElection })
+    );
+  });
   if (matches.length !== 1) {
     return input.resolution;
   }
@@ -312,6 +313,17 @@ export async function autoLinkMissingOklahomaCandidateFinanceLinks(input: {
       electionLookbackDays: input.electionLookbackDays,
       electionLookaheadDays: input.electionLookaheadDays,
     }));
+  const fetchCandidateDetail = input.fetchCandidateDetail ?? fetchOklahomaGuardianCandidateDetail;
+  const candidateDetailByOrganizationId = new Map<string, Promise<OklahomaGuardianCandidateDetail>>();
+  const fetchCandidateDetailOnce: OklahomaGuardianCandidateDetailFetcher = ({ organizationId }) => {
+    const existing = candidateDetailByOrganizationId.get(organizationId);
+    if (existing) {
+      return existing;
+    }
+    const pending = fetchCandidateDetail({ organizationId });
+    candidateDetailByOrganizationId.set(organizationId, pending);
+    return pending;
+  };
 
   const results: OklahomaFinanceAutoLinkResult[] = [];
   for (const candidateElection of candidates) {
@@ -323,7 +335,7 @@ export async function autoLinkMissingOklahomaCandidateFinanceLinks(input: {
           contributionRows: input.contributionRowsByYear.get(candidateElection.electionYear) ?? [],
           sourceUrl: input.sourceUrlByYear?.get(candidateElection.electionYear) ?? null,
           now: input.now,
-          fetchCandidateDetail: input.fetchCandidateDetail,
+          fetchCandidateDetail: fetchCandidateDetailOnce,
         })
       );
     } catch (error) {

@@ -63,7 +63,7 @@ function readSpanText(html: string, id: string): string {
 function readElectionYears(html: string): number[] {
   const years = new Set<number>();
   const electionSpanPattern =
-    /<span\b[^>]*\bid=["'][^"']*dgdCampaigns_[^"']*_lblElection(?:Cycle)?["'][^>]*>([\s\S]*?)<\/span>/gi;
+    /<span\b[^>]*\bid=["'][^"']*dgdCampaigns_[^"']*_lblElection["'][^>]*>([\s\S]*?)<\/span>/gi;
   for (const match of html.matchAll(electionSpanPattern)) {
     for (const yearMatch of htmlText(match[1] ?? "").matchAll(/\b(20\d{2})\b/g)) {
       const year = Number(yearMatch[1]);

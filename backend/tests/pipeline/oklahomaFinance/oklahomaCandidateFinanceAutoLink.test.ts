@@ -292,6 +292,34 @@ describe("oklahomaCandidateFinanceAutoLink", () => {
     expect(db.query).not.toHaveBeenCalled();
   });
 
+  it("keeps each fetched detail paired with the committee that requested it", async () => {
+    const db = createMockDb();
+
+    await expect(
+      autoLinkOklahomaCandidateFinanceForCandidateElection({
+        db,
+        now: NOW,
+        sourceUrl: "https://guardian.ok.gov/PublicSite/DataDownload.aspx",
+        contributionRows: [contribution(), contribution({ "Org ID": "99999" })],
+        candidateElection: {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          candidateName: "Brent Dishman",
+          electionYear: 2026,
+          officeScope: "state_upper",
+          officeName: "State Senator",
+          district: "47",
+        },
+        fetchCandidateDetail: async ({ organizationId }) =>
+          organizationId === "11954"
+            ? candidateDetail("99999")
+            : candidateDetail("11954", { electionYears: [2024] }),
+      })
+    ).resolves.toMatchObject({ status: "ambiguous", reason: "multiple_matching_committees" });
+
+    expect(db.query).not.toHaveBeenCalled();
+  });
+
   it("uses provided candidate elections without querying when auto-linking a batch", async () => {
     const db = createMockDb([{ id: "link-1" }]);
 
@@ -327,6 +355,54 @@ describe("oklahomaCandidateFinanceAutoLink", () => {
 
     expect(db.query).toHaveBeenCalledTimes(1);
     expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.ok_candidate_finance_links");
+  });
+
+  it("fetches each ambiguous committee detail once per batch", async () => {
+    const db = createMockDb([{ id: "link-1" }]);
+    const fetchCandidateDetail = vi.fn(async ({ organizationId }: { organizationId: string }) =>
+      candidateDetail(organizationId, organizationId === "99999" ? { electionYears: [2024] } : {})
+    );
+    const candidateElections = [
+      {
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        candidateName: "Brent Dishman",
+        electionYear: 2026,
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "47",
+      },
+      {
+        candidateId: "33333333-3333-4333-8333-333333333333",
+        electionId: "44444444-4444-4444-8444-444444444444",
+        candidateName: "Brent Dishman",
+        electionYear: 2026,
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "47",
+      },
+    ];
+
+    await expect(
+      autoLinkMissingOklahomaCandidateFinanceLinks({
+        db,
+        now: NOW,
+        maxCandidates: 25,
+        electionLookbackDays: 1,
+        electionLookaheadDays: 730,
+        candidateElections,
+        contributionRowsByYear: new Map([
+          [2026, [contribution(), contribution({ "Org ID": "99999" })]],
+        ]),
+        fetchCandidateDetail,
+      })
+    ).resolves.toEqual([
+      expect.objectContaining({ candidateId: CANDIDATE_ID, status: "linked", committeeId: "11954" }),
+      expect.objectContaining({ candidateId: candidateElections[1]!.candidateId, status: "linked", committeeId: "11954" }),
+    ]);
+
+    expect(fetchCandidateDetail).toHaveBeenCalledTimes(2);
+    expect(db.query).toHaveBeenCalledTimes(2);
   });
 
   it("continues auto-linking later candidates when one candidate write fails", async () => {
