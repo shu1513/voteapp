@@ -49,6 +49,9 @@ describe("syncDueCandidateFinance script", () => {
     expect(() => parseSyncDueCandidateFinanceScriptArgs(["--request-interval-ms=1.5"])).toThrow(
       "Invalid --request-interval-ms value"
     );
+    expect(() => parseSyncDueCandidateFinanceScriptArgs(["--max-candidates=9007199254740992"])).toThrow(
+      "Invalid --max-candidates value"
+    );
   });
 
   it("allows explicitly disabling request pacing", () => {

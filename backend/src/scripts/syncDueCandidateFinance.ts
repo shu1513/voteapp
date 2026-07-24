@@ -45,18 +45,7 @@ function parseFlagValue(args: readonly string[], name: string): string | null {
   return null;
 }
 
-function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
-  const value = parseFlagValue(args, name)?.trim();
-  if (!value) {
-    return undefined;
-  }
-  if (!/^[1-9]\d*$/.test(value)) {
-    throw new Error(`Invalid ${name} value: ${value}`);
-  }
-  return Number(value);
-}
-
-function parseNonnegativeIntegerFlag(args: readonly string[], name: string): number | undefined {
+function parseIntegerFlag(args: readonly string[], name: string, minimum: number): number | undefined {
   const value = parseFlagValue(args, name)?.trim();
   if (!value) {
     return undefined;
@@ -65,7 +54,7 @@ function parseNonnegativeIntegerFlag(args: readonly string[], name: string): num
     throw new Error(`Invalid ${name} value: ${value}`);
   }
   const parsed = Number(value);
-  if (!Number.isSafeInteger(parsed)) {
+  if (!Number.isSafeInteger(parsed) || parsed < minimum) {
     throw new Error(`Invalid ${name} value: ${value}`);
   }
   return parsed;
@@ -77,14 +66,14 @@ export function parseSyncDueCandidateFinanceScriptArgs(
   return {
     dryRun: args.includes("--dry-run"),
     includeOutside: args.includes("--include-outside"),
-    maxCandidates: parsePositiveIntegerFlag(args, "--max-candidates"),
-    staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
-    electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
-    electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    perPage: parsePositiveIntegerFlag(args, "--per-page"),
-    outsideGroupLimit: parsePositiveIntegerFlag(args, "--top-groups"),
-    timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
-    requestIntervalMs: parseNonnegativeIntegerFlag(args, "--request-interval-ms"),
+    maxCandidates: parseIntegerFlag(args, "--max-candidates", 1),
+    staleAfterDays: parseIntegerFlag(args, "--stale-after-days", 1),
+    electionLookbackDays: parseIntegerFlag(args, "--lookback-days", 1),
+    electionLookaheadDays: parseIntegerFlag(args, "--lookahead-days", 1),
+    perPage: parseIntegerFlag(args, "--per-page", 1),
+    outsideGroupLimit: parseIntegerFlag(args, "--top-groups", 1),
+    timeoutMs: parseIntegerFlag(args, "--timeout-ms", 1),
+    requestIntervalMs: parseIntegerFlag(args, "--request-interval-ms", 0),
   };
 }
 

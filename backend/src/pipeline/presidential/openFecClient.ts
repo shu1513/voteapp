@@ -460,16 +460,16 @@ async function fetchOpenFecJsonWithKeyRotationOnce(
               }
             : { status: response.status }
         );
+        if (shouldRotateForStatus(response.status) && index < apiKeys.length - 1) {
+          lastError = error;
+          continue;
+        }
         if (
           isRateLimited &&
           error.retryAfterMs !== undefined &&
           error.retryAfterMs <= normalizeMaxRateLimitWaitMs(options.maxRateLimitWaitMs)
         ) {
           options.rateLimiter?.deferFor(error.retryAfterMs);
-        }
-        if (shouldRotateForStatus(response.status) && index < apiKeys.length - 1) {
-          lastError = error;
-          continue;
         }
         throw error;
       }
