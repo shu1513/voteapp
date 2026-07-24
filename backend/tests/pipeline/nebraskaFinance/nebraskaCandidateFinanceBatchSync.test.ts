@@ -1,14 +1,47 @@
-import { describe, expect, it, vi } from "vitest";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+import { strToU8, zipSync } from "fflate";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   listDueNebraskaCandidateFinanceSyncRows,
   syncDueNebraskaCandidateFinance,
   type NebraskaContributionDataForYear,
 } from "../../../src/pipeline/nebraskaFinance/nebraskaCandidateFinanceBatchSync.js";
-import type { NebraskaNadcContributionRow } from "../../../src/pipeline/nebraskaFinance/nebraskaNadcArtifactReader.js";
+import { getNebraskaNadcArtifactCachePaths } from "../../../src/pipeline/nebraskaFinance/nebraskaNadcArtifactCache.js";
+import {
+  NEBRASKA_NADC_CONTRIBUTION_COLUMNS,
+  nebraskaNadcCsvFileName,
+  type NebraskaNadcContributionRow,
+} from "../../../src/pipeline/nebraskaFinance/nebraskaNadcArtifactReader.js";
 
 const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
 const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
+const tempDirs: string[] = [];
+
+afterEach(async () => {
+  await Promise.all(tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })));
+});
+
+function contributionCsv(rows: readonly NebraskaNadcContributionRow[]): string {
+  const escape = (value: string): string => (/[",\n\r]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value);
+  return [
+    NEBRASKA_NADC_CONTRIBUTION_COLUMNS.join(","),
+    ...rows.map((row) => NEBRASKA_NADC_CONTRIBUTION_COLUMNS.map((column) => escape(row[column])).join(",")),
+  ].join("\n");
+}
+
+async function writeContributionArtifact(
+  cacheDir: string,
+  year: number,
+  rows: readonly NebraskaNadcContributionRow[]
+): Promise<void> {
+  const paths = getNebraskaNadcArtifactCachePaths({ cacheDir, year, artifactKind: "contribution_loan" });
+  const memberName = nebraskaNadcCsvFileName({ year, artifactKind: "contribution_loan" });
+  await writeFile(paths.zipPath, Buffer.from(zipSync({ [memberName]: strToU8(contributionCsv(rows)) })));
+}
 
 function createMockDb(rows: unknown[] = []) {
   return {
@@ -370,7 +403,9 @@ describe("nebraskaCandidateFinanceBatchSync", () => {
       electionYear: 2025,
       committeeId: "7569",
     });
-    expect(result.results[0]?.error).toContain("Nebraska NADC contribution ZIP not found for 2025");
+    // The 2025 cycle reads filing years [2024, 2025], so the prior year is the
+    // first missing artifact reported.
+    expect(result.results[0]?.error).toContain("Nebraska NADC contribution ZIP not found for 2024");
     expect(result.results[1]).toMatchObject({
       ok: true,
       candidateId: successfulCandidateId,
@@ -378,6 +413,86 @@ describe("nebraskaCandidateFinanceBatchSync", () => {
       committeeId: "9001",
     });
     expect(syncNebraskaCandidateFinanceFn).toHaveBeenCalledTimes(1);
+  });
+
+  it("auto-links and syncs money found only in the prior cycle-year artifact", async () => {
+    const rawDataCacheDir = await mkdtemp(join(tmpdir(), "voteapp-ne-cycle-"));
+    tempDirs.push(rawDataCacheDir);
+    const priorYearRow = contribution({
+      "Receipt ID": "PRIOR-YEAR",
+      "Receipt Date": "10/15/2025",
+      "Receipt Amount": "250.00",
+    });
+    const duplicateAcrossYears = contribution({
+      "Receipt ID": "BOTH-YEARS",
+      "Receipt Date": "11/15/2025",
+      "Receipt Amount": "50.00",
+    });
+    await writeContributionArtifact(rawDataCacheDir, 2025, [priorYearRow, duplicateAcrossYears]);
+    await writeContributionArtifact(rawDataCacheDir, 2026, [duplicateAcrossYears]);
+
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Rick Vest",
+              election_year: 2026,
+              office_scope: "state_upper",
+              office_name: "State Senator",
+              district: "30",
+            },
+          ],
+          rowCount: 1,
+        })
+        .mockResolvedValueOnce({ rows: [{ id: "link-1" }], rowCount: 1 })
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              candidate_name: "Rick Vest",
+              election_year: 2026,
+              office_scope: "state_upper",
+              office_name: "State Senator",
+              district: "30",
+              committee_id: "7569",
+              committee_name: "VOTE VEST",
+              source_url: null,
+              last_synced_at: null,
+              total_due_rows: "1",
+            },
+          ],
+          rowCount: 1,
+        }),
+    };
+    const syncNebraskaCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      totalReceipts: 300,
+    });
+
+    const result = await syncDueNebraskaCandidateFinance({
+      db,
+      syncNebraskaCandidateFinanceFn,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      rawDataCacheDir,
+    });
+
+    expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
+    expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.ne_candidate_finance_links");
+    // The prior filing year contributes a receipt the election-year artifact
+    // never carries, and the receipt filed in both years is not double counted.
+    expect(syncNebraskaCandidateFinanceFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        contributionRows: [priorYearRow, duplicateAcrossYears],
+        contributionSourceUrl: expect.stringContaining("/2025_ContributionLoanExtract.csv.zip"),
+      })
+    );
   });
 
   it("auto-links missing candidates before listing due rows", async () => {
