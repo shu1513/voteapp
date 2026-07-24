@@ -4,6 +4,7 @@ import {
   OpenFecClientError,
   buildOpenFecPresidentialCandidateByIdUrl,
   buildOpenFecPresidentialCandidateSearchUrl,
+  createOpenFecRateLimiter,
   fetchOpenFecJsonWithKeyRotation,
   getPresidentialCandidateByFecId,
   readOpenFecApiKeysFromEnv,
@@ -169,6 +170,149 @@ describe("openFecClient", () => {
     expect(new URL(String(vi.mocked(fetchImpl).mock.calls[1]?.[0])).searchParams.get("api_key")).toBe("k2");
   });
 
+  it("honors Retry-After seconds once after all keys are rate limited", async () => {
+    const waits: number[] = [];
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response("rate limited", {
+          status: 429,
+          statusText: "Too Many Requests",
+          headers: {
+            "Retry-After": "2",
+            "X-RateLimit-Limit": "60",
+            "X-RateLimit-Remaining": "0",
+          },
+        })
+      )
+      .mockResolvedValueOnce(jsonResponse({ ok: true })) as unknown as typeof fetch;
+
+    await expect(
+      fetchOpenFecJsonWithKeyRotation("https://api.open.fec.gov/v1/candidates/search/?office=P", {
+        apiKeys: ["k1"],
+        fetchImpl,
+        timeoutMs: 1000,
+        sleep: async (ms) => {
+          waits.push(ms);
+        },
+      })
+    ).resolves.toEqual({ ok: true });
+
+    expect(waits).toEqual([2000]);
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
+  it("parses an HTTP-date Retry-After value", async () => {
+    const nowMs = Date.parse("2026-07-23T12:00:00.000Z");
+    const waits: number[] = [];
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response("rate limited", {
+          status: 429,
+          statusText: "Too Many Requests",
+          headers: { "Retry-After": new Date(nowMs + 2000).toUTCString() },
+        })
+      )
+      .mockResolvedValueOnce(jsonResponse({ ok: true })) as unknown as typeof fetch;
+
+    await expect(
+      fetchOpenFecJsonWithKeyRotation("https://api.open.fec.gov/v1/candidates/search/?office=P", {
+        apiKeys: ["k1"],
+        fetchImpl,
+        timeoutMs: 1000,
+        now: () => nowMs,
+        sleep: async (ms) => {
+          waits.push(ms);
+        },
+      })
+    ).resolves.toEqual({ ok: true });
+
+    expect(waits).toEqual([2000]);
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
+  it("surfaces 429 metadata without retrying when Retry-After is absent", async () => {
+    const sleep = vi.fn(async () => undefined);
+    const fetchImpl = vi.fn().mockResolvedValue(
+      new Response("rate limited", {
+        status: 429,
+        statusText: "Too Many Requests",
+        headers: {
+          "X-RateLimit-Limit": "60",
+          "X-RateLimit-Remaining": "0",
+        },
+      })
+    ) as unknown as typeof fetch;
+
+    await expect(
+      fetchOpenFecJsonWithKeyRotation("https://api.open.fec.gov/v1/candidates/search/?office=P", {
+        apiKeys: ["k1"],
+        fetchImpl,
+        timeoutMs: 1000,
+        sleep,
+      })
+    ).rejects.toMatchObject({
+      code: "rate_limited",
+      status: 429,
+      retryAfterMs: undefined,
+      rateLimit: 60,
+      rateLimitRemaining: 0,
+    });
+
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    expect(sleep).not.toHaveBeenCalled();
+  });
+
+  it("does not retry before a Retry-After value longer than the configured maximum", async () => {
+    const sleep = vi.fn(async () => undefined);
+    const fetchImpl = vi.fn().mockResolvedValue(
+      new Response("rate limited", {
+        status: 429,
+        statusText: "Too Many Requests",
+        headers: { "Retry-After": "61" },
+      })
+    ) as unknown as typeof fetch;
+
+    await expect(
+      fetchOpenFecJsonWithKeyRotation("https://api.open.fec.gov/v1/candidates/search/?office=P", {
+        apiKeys: ["k1"],
+        fetchImpl,
+        timeoutMs: 1000,
+        maxRateLimitWaitMs: 60_000,
+        sleep,
+      })
+    ).rejects.toMatchObject({ code: "rate_limited", retryAfterMs: 61_000 });
+
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    expect(sleep).not.toHaveBeenCalled();
+  });
+
+  it("surfaces a persistent 429 after one bounded retry", async () => {
+    const waits: number[] = [];
+    const fetchImpl = vi.fn().mockImplementation(async () =>
+      new Response("rate limited", {
+        status: 429,
+        statusText: "Too Many Requests",
+        headers: { "Retry-After": "1" },
+      })
+    ) as unknown as typeof fetch;
+
+    await expect(
+      fetchOpenFecJsonWithKeyRotation("https://api.open.fec.gov/v1/candidates/search/?office=P", {
+        apiKeys: ["k1"],
+        fetchImpl,
+        timeoutMs: 1000,
+        sleep: async (ms) => {
+          waits.push(ms);
+        },
+      })
+    ).rejects.toMatchObject({ code: "rate_limited", retryAfterMs: 1000 });
+
+    expect(waits).toEqual([1000]);
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
   it("does not rotate API keys on non-retryable request errors", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(
       new Response("bad request", { status: 400, statusText: "Bad Request" })
@@ -183,6 +327,67 @@ describe("openFecClient", () => {
     ).rejects.toMatchObject({ code: "http_error" });
 
     expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it("preserves malformed-JSON key rotation without adding retries", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(new Response("not json", { status: 200 }))
+      .mockResolvedValueOnce(jsonResponse({ ok: true })) as unknown as typeof fetch;
+
+    await expect(
+      fetchOpenFecJsonWithKeyRotation("https://api.open.fec.gov/v1/candidates/search/?office=P", {
+        apiKeys: ["k1", "k2"],
+        fetchImpl,
+        timeoutMs: 1000,
+      })
+    ).resolves.toEqual({ ok: true });
+
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
+  it("serializes concurrent calls through the configured rate limiter", async () => {
+    let nowMs = 1000;
+    const waits: number[] = [];
+    const starts: number[] = [];
+    const limiter = createOpenFecRateLimiter({
+      minIntervalMs: 100,
+      now: () => nowMs,
+      sleep: async (ms) => {
+        waits.push(ms);
+        nowMs += ms;
+      },
+    });
+
+    await Promise.all([
+      limiter().then(() => starts.push(nowMs)),
+      limiter().then(() => starts.push(nowMs)),
+      limiter().then(() => starts.push(nowMs)),
+    ]);
+
+    expect(waits).toEqual([100, 100]);
+    expect(starts).toEqual([1000, 1100, 1200]);
+  });
+
+  it("defers queued rate-limited calls until Retry-After elapses", async () => {
+    let nowMs = 1000;
+    const waits: number[] = [];
+    const limiter = createOpenFecRateLimiter({
+      minIntervalMs: 100,
+      now: () => nowMs,
+      sleep: async (ms) => {
+        waits.push(ms);
+        nowMs += ms;
+      },
+    });
+
+    await limiter();
+    const queued = limiter();
+    limiter.deferFor(500);
+    await queued;
+
+    expect(waits).toEqual([500]);
+    expect(nowMs).toBe(1500);
   });
 
   it("retries a transient timeout once on the same key", async () => {

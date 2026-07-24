@@ -4,23 +4,51 @@ export const DEFAULT_OPEN_FEC_PER_PAGE = 20;
 export const MAX_OPEN_FEC_PER_PAGE = 100;
 
 const OPEN_FEC_TIMEOUT_RETRY_DELAY_MS = 500;
+const DEFAULT_OPEN_FEC_MAX_RATE_LIMIT_WAIT_MS = 60_000;
 
 export type OpenFecClientErrorCode =
   | "configuration_error"
   | "invalid_request"
   | "http_error"
+  | "rate_limited"
   | "bad_response"
   | "timeout";
 
+export type OpenFecClientErrorDetails = {
+  status?: number;
+  retryAfterMs?: number;
+  rateLimit?: number;
+  rateLimitRemaining?: number;
+};
+
 export class OpenFecClientError extends Error {
   readonly code: OpenFecClientErrorCode;
+  readonly status?: number;
+  readonly retryAfterMs?: number;
+  readonly rateLimit?: number;
+  readonly rateLimitRemaining?: number;
 
-  constructor(code: OpenFecClientErrorCode, message: string) {
+  constructor(code: OpenFecClientErrorCode, message: string, details: OpenFecClientErrorDetails = {}) {
     super(message);
     this.name = "OpenFecClientError";
     this.code = code;
+    this.status = details.status;
+    this.retryAfterMs = details.retryAfterMs;
+    this.rateLimit = details.rateLimit;
+    this.rateLimitRemaining = details.rateLimitRemaining;
   }
 }
+
+export type OpenFecRateLimiter = {
+  (): Promise<void>;
+  deferFor(delayMs: number): void;
+};
+
+export type OpenFecRateLimiterOptions = {
+  minIntervalMs: number;
+  now?: () => number;
+  sleep?: (ms: number) => Promise<void>;
+};
 
 export type OpenFecPrincipalCommittee = {
   committeeId: string;
@@ -48,6 +76,10 @@ export type OpenFecClientOptions = {
   apiKeys: readonly string[];
   timeoutMs?: number;
   fetchImpl?: typeof fetch;
+  rateLimiter?: OpenFecRateLimiter;
+  maxRateLimitWaitMs?: number;
+  now?: () => number;
+  sleep?: (ms: number) => Promise<void>;
 };
 
 export type OpenFecCandidateSearchInput = {
@@ -78,10 +110,60 @@ function isAbortError(error: unknown): boolean {
   );
 }
 
-function sleep(ms: number): Promise<void> {
+function defaultSleep(ms: number): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
+}
+
+export function createOpenFecRateLimiter(options: OpenFecRateLimiterOptions): OpenFecRateLimiter {
+  if (!Number.isInteger(options.minIntervalMs) || options.minIntervalMs < 0) {
+    throw new OpenFecClientError("invalid_request", "OpenFEC minIntervalMs must be a nonnegative integer");
+  }
+
+  const now = options.now ?? Date.now;
+  const wait = options.sleep ?? defaultSleep;
+  let nextAllowedAtMs = 0;
+  let tail = Promise.resolve();
+
+  const limiter = (() => {
+    const scheduled = tail.then(async () => {
+      while (true) {
+        const currentTimeMs = now();
+        if (!Number.isFinite(currentTimeMs)) {
+          throw new OpenFecClientError("invalid_request", "OpenFEC rate limiter clock returned an invalid time");
+        }
+
+        const waitMs = Math.max(0, nextAllowedAtMs - currentTimeMs);
+        if (waitMs === 0) {
+          break;
+        }
+        await wait(waitMs);
+      }
+
+      const startedAtMs = now();
+      if (!Number.isFinite(startedAtMs)) {
+        throw new OpenFecClientError("invalid_request", "OpenFEC rate limiter clock returned an invalid time");
+      }
+      nextAllowedAtMs = Math.max(nextAllowedAtMs, startedAtMs) + options.minIntervalMs;
+    });
+
+    tail = scheduled.catch(() => undefined);
+    return scheduled;
+  }) as OpenFecRateLimiter;
+
+  limiter.deferFor = (delayMs: number) => {
+    if (!Number.isInteger(delayMs) || delayMs < 0) {
+      throw new OpenFecClientError("invalid_request", "OpenFEC rate limiter delay must be a nonnegative integer");
+    }
+    const currentTimeMs = now();
+    if (!Number.isFinite(currentTimeMs)) {
+      throw new OpenFecClientError("invalid_request", "OpenFEC rate limiter clock returned an invalid time");
+    }
+    nextAllowedAtMs = Math.max(nextAllowedAtMs, currentTimeMs + delayMs);
+  };
+
+  return limiter;
 }
 
 function assertPresidentialElectionYear(electionYear: number): void {
@@ -134,6 +216,41 @@ function normalizeTimeoutMs(value: number | undefined): number {
     throw new OpenFecClientError("invalid_request", `OpenFEC timeoutMs must be a positive integer`);
   }
   return normalized;
+}
+
+function normalizeMaxRateLimitWaitMs(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_OPEN_FEC_MAX_RATE_LIMIT_WAIT_MS;
+  if (!Number.isInteger(normalized) || normalized < 0) {
+    throw new OpenFecClientError("invalid_request", "OpenFEC maxRateLimitWaitMs must be a nonnegative integer");
+  }
+  return normalized;
+}
+
+function parseNonnegativeIntegerHeader(value: string | null): number | undefined {
+  const normalized = value?.trim();
+  if (!normalized || !/^\d+$/.test(normalized)) {
+    return undefined;
+  }
+  const parsed = Number(normalized);
+  return Number.isSafeInteger(parsed) ? parsed : undefined;
+}
+
+function parseRetryAfterMs(value: string | null, nowMs: number): number | undefined {
+  const seconds = parseNonnegativeIntegerHeader(value);
+  if (seconds !== undefined) {
+    const milliseconds = seconds * 1000;
+    return Number.isSafeInteger(milliseconds) ? milliseconds : undefined;
+  }
+
+  const normalized = value?.trim();
+  if (!normalized) {
+    return undefined;
+  }
+  const retryAtMs = Date.parse(normalized);
+  if (!Number.isFinite(retryAtMs) || !Number.isFinite(nowMs)) {
+    return undefined;
+  }
+  return Math.max(0, retryAtMs - nowMs);
 }
 
 function normalizeApiKeys(apiKeys: readonly string[]): string[] {
@@ -317,6 +434,7 @@ async function fetchOpenFecJsonWithKeyRotationOnce(
   for (let index = 0; index < apiKeys.length; index += 1) {
     const apiKey = apiKeys[index]!;
     const attemptLabel = `key_${index + 1}`;
+    await options.rateLimiter?.();
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -329,10 +447,26 @@ async function fetchOpenFecJsonWithKeyRotationOnce(
       const bodyText = await response.text();
 
       if (!response.ok) {
+        const isRateLimited = response.status === 429;
         const error = new OpenFecClientError(
-          "http_error",
-          `OpenFEC request failed via ${attemptLabel}: status=${response.status} ${response.statusText}; body=${truncate(bodyText)}`
+          isRateLimited ? "rate_limited" : "http_error",
+          `OpenFEC request failed via ${attemptLabel}: status=${response.status} ${response.statusText}; body=${truncate(bodyText)}`,
+          isRateLimited
+            ? {
+                status: response.status,
+                retryAfterMs: parseRetryAfterMs(response.headers.get("retry-after"), (options.now ?? Date.now)()),
+                rateLimit: parseNonnegativeIntegerHeader(response.headers.get("x-ratelimit-limit")),
+                rateLimitRemaining: parseNonnegativeIntegerHeader(response.headers.get("x-ratelimit-remaining")),
+              }
+            : { status: response.status }
         );
+        if (
+          isRateLimited &&
+          error.retryAfterMs !== undefined &&
+          error.retryAfterMs <= normalizeMaxRateLimitWaitMs(options.maxRateLimitWaitMs)
+        ) {
+          options.rateLimiter?.deferFor(error.retryAfterMs);
+        }
         if (shouldRotateForStatus(response.status) && index < apiKeys.length - 1) {
           lastError = error;
           continue;
@@ -378,17 +512,37 @@ export async function fetchOpenFecJsonWithKeyRotation(
   baseUrl: string,
   options: OpenFecClientOptions
 ): Promise<unknown> {
-  try {
-    return await fetchOpenFecJsonWithKeyRotationOnce(baseUrl, options);
-  } catch (error) {
-    if (!(error instanceof OpenFecClientError) || error.code !== "timeout") {
+  const wait = options.sleep ?? defaultSleep;
+  const maxRateLimitWaitMs = normalizeMaxRateLimitWaitMs(options.maxRateLimitWaitMs);
+  let retriedTimeout = false;
+  let retriedRateLimit = false;
+
+  while (true) {
+    try {
+      return await fetchOpenFecJsonWithKeyRotationOnce(baseUrl, options);
+    } catch (error) {
+      if (error instanceof OpenFecClientError && error.code === "timeout" && !retriedTimeout) {
+        retriedTimeout = true;
+        // A timeout is not key-specific, so retry once without consuming the next key's quota.
+        await wait(OPEN_FEC_TIMEOUT_RETRY_DELAY_MS);
+        continue;
+      }
+
+      if (
+        error instanceof OpenFecClientError &&
+        error.code === "rate_limited" &&
+        !retriedRateLimit &&
+        error.retryAfterMs !== undefined &&
+        error.retryAfterMs <= maxRateLimitWaitMs
+      ) {
+        retriedRateLimit = true;
+        await wait(error.retryAfterMs);
+        continue;
+      }
+
       throw error;
     }
   }
-
-  // A timeout is not key-specific, so retry once without consuming the next key's quota.
-  await sleep(OPEN_FEC_TIMEOUT_RETRY_DELAY_MS);
-  return fetchOpenFecJsonWithKeyRotationOnce(baseUrl, options);
 }
 
 export async function searchPresidentialCandidatesByName(
