@@ -82,7 +82,7 @@ function normalizeTextKey(value: string | null | undefined): string {
 
 function normalizePersonName(value: string | null | undefined): string {
   return normalizeTextKey(value)
-    .replace(/\b(J\s*R|S\s*R|II|III|IV|V)\b/g, " ")
+    .replace(/\b(J\s*R|S\s*R|II|III|IV|V)\s*$/, " ")
     .replace(/\s+/g, " ")
     .trim();
 }

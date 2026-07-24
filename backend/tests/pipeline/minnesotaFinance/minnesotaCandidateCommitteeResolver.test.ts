@@ -72,6 +72,7 @@ describe("Minnesota candidate committee resolver", () => {
       "JANE DOE",
     ]);
     expect(normalizeMinnesotaCandidateNameKeys("Bill E Gates J.R.")).toContain("BILL E GATES");
+    expect(normalizeMinnesotaCandidateNameKeys("Mary J.R. Jones")).toContain("MARY J R JONES");
   });
 
   it("matches exactly one candidate committee by candidate name and office", () => {

@@ -73,10 +73,15 @@ function parsePositiveInteger(value: string | undefined, fallback: number, name:
   if (value === undefined) {
     return fallback;
   }
-  if (!/^[1-9]\d*$/.test(value)) {
+  const parsed = Number(value);
+  if (
+    !/^[1-9]\d*$/.test(value) ||
+    !Number.isSafeInteger(parsed) ||
+    parsed > MINNESOTA_CAMPAIGN_FINANCE_FETCH_TIMEOUT_MS
+  ) {
     throw new Error(`Invalid ${name} value: ${value}`);
   }
-  return Number(value);
+  return parsed;
 }
 
 export function parseRefreshMinnesotaCampaignFinanceRawDataScriptArgs(

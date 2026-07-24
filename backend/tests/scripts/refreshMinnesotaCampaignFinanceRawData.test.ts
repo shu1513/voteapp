@@ -1,7 +1,7 @@
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   parseRefreshMinnesotaCampaignFinanceRawDataScriptArgs as parseArgs,
@@ -17,6 +17,7 @@ async function makeTempDir(): Promise<string> {
 }
 
 afterEach(async () => {
+  vi.unstubAllEnvs();
   await Promise.all(tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })));
 });
 
@@ -30,15 +31,22 @@ describe("refreshMinnesotaCampaignFinanceRawData script", () => {
   });
 
   it("defaults to the shared Minnesota cache", () => {
-    expect(parseArgs([])).toMatchObject({
+    vi.stubEnv("MINNESOTA_CAMPAIGN_FINANCE_CACHE_DIR", "");
+    const options = parseArgs([]);
+
+    expect(options).toMatchObject({
       force: false,
       timeoutMs: 900_000,
     });
-    expect(parseArgs([]).cacheDir).toContain("scratch/minnesota-campaign-finance");
+    expect(options.cacheDir).toContain("scratch/minnesota-campaign-finance");
   });
 
   it("rejects malformed and unknown arguments", () => {
     expect(() => parseArgs(["--timeout-ms=5x"])).toThrow("Invalid --timeout-ms value: 5x");
+    expect(() => parseArgs(["--timeout-ms=900001"])).toThrow("Invalid --timeout-ms value: 900001");
+    expect(() => parseArgs([`--timeout-ms=${Number.MAX_SAFE_INTEGER}0`])).toThrow(
+      `Invalid --timeout-ms value: ${Number.MAX_SAFE_INTEGER}0`
+    );
     expect(() => parseArgs(["--cache-dir"])).toThrow("Missing value for --cache-dir");
     expect(() => parseArgs(["--cache-dir=/a", "--cache-dir=/b"])).toThrow("Provide --cache-dir at most once");
     expect(() => parseArgs(["--bogus"])).toThrow("Unknown Minnesota campaign finance raw data refresh flag");
