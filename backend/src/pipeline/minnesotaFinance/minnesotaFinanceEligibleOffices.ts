@@ -5,6 +5,7 @@ export type MinnesotaFinanceEligibleOfficeName =
   | "Lieutenant Governor"
   | "Secretary of State"
   | "Attorney General"
+  | "State Auditor"
   | "State Senator"
   | "State Lower Chamber Legislator";
 
@@ -19,9 +20,20 @@ export const MINNESOTA_FINANCE_ELIGIBLE_OFFICE_KEYS = [
   "statewide::Lieutenant Governor",
   "statewide::Secretary of State",
   "statewide::Attorney General",
+  "statewide::State Auditor",
   "state_upper::State Senator",
   "state_lower::State Lower Chamber Legislator",
   "state_lower::State Representative",
+] as const;
+
+// Bulk contribution rows identify legislative chambers but not districts.
+// Keep automatic linking to offices that the source can identify completely;
+// manually verified legislative links remain eligible for recurring syncs.
+export const MINNESOTA_FINANCE_AUTO_LINK_OFFICE_KEYS = [
+  "statewide::Governor",
+  "statewide::Secretary of State",
+  "statewide::Attorney General",
+  "statewide::State Auditor",
 ] as const;
 
 export type MinnesotaFinanceOfficeInput = {
@@ -76,10 +88,12 @@ export function normalizeMinnesotaFinanceOfficeName(value: string | null | undef
       return "Governor";
     case "LIEUTENANT GOVERNOR":
       return "Lieutenant Governor";
-    case "SECRETARY OF STATE":
+    case "SECRETARY STATE":
       return "Secretary of State";
     case "ATTORNEY GENERAL":
       return "Attorney General";
+    case "STATE AUDITOR":
+      return "State Auditor";
     case "STATE SENATOR":
       return "State Senator";
     case "STATE REPRESENTATIVE":
@@ -101,7 +115,7 @@ function matchMinnesotaFinanceEligibleOffice(
 
   if (
     (officeScope === "statewide" &&
-      !["Governor", "Lieutenant Governor", "Secretary of State", "Attorney General"].includes(officeName)) ||
+      !["Governor", "Lieutenant Governor", "Secretary of State", "Attorney General", "State Auditor"].includes(officeName)) ||
     (officeScope === "state_upper" && officeName !== "State Senator") ||
     (officeScope === "state_lower" && officeName !== "State Lower Chamber Legislator")
   ) {

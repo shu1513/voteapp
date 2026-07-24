@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   autoLinkMissingMinnesotaCandidateFinanceLinks,
   autoLinkMinnesotaCandidateFinanceForCandidateElection,
+  buildMinnesotaCandidateNamePredicate,
   listMinnesotaCandidateElectionsMissingFinanceLinks,
 } from "../../../src/pipeline/minnesotaFinance/minnesotaCandidateFinanceAutoLink.js";
 import type { MinnesotaCampaignFinanceCsvRow } from "../../../src/pipeline/minnesotaFinance/minnesotaCampaignFinanceArtifactReader.js";
@@ -31,6 +32,33 @@ function contribution(overrides: Partial<MinnesotaCampaignFinanceCsvRow> = {}): 
 }
 
 describe("minnesotaCandidateFinanceAutoLink", () => {
+  it("prefilters live PCC recipient rows by parsed candidate identity", () => {
+    const predicate = buildMinnesotaCandidateNamePredicate([
+      {
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        candidateName: "Lisa Demuth",
+        electionYear: 2026,
+        officeScope: "statewide",
+        officeName: "Governor",
+        district: null,
+      },
+    ]);
+
+    expect(
+      predicate({
+        Recipient: "Demuth, Lisa Gov Committee",
+        "Recipient type": "PCC",
+      })
+    ).toBe(true);
+    expect(
+      predicate({
+        Recipient: "Demuth, Lisa Gov Committee",
+        "Recipient type": "PCF",
+      })
+    ).toBe(false);
+  });
+
   it("lists eligible Minnesota candidate elections missing active finance links", async () => {
     const db = createMockDb([
       {
@@ -77,13 +105,14 @@ describe("minnesotaCandidateFinanceAutoLink", () => {
       730,
       expect.arrayContaining([
         "statewide::Governor",
-        "statewide::Lieutenant Governor",
         "statewide::Secretary of State",
         "statewide::Attorney General",
-        "state_upper::State Senator",
-        "state_lower::State Lower Chamber Legislator",
+        "statewide::State Auditor",
       ]),
     ]);
+    expect(db.query.mock.calls[0]?.[1]?.[4]).not.toEqual(
+      expect.arrayContaining(["state_upper::State Senator", "state_lower::State Lower Chamber Legislator"])
+    );
   });
 
   it("links a matched candidate election to the resolved committee", async () => {
@@ -93,6 +122,7 @@ describe("minnesotaCandidateFinanceAutoLink", () => {
       autoLinkMinnesotaCandidateFinanceForCandidateElection({
         db,
         now: NOW,
+        sourceUrl: "https://register.cfb.mn.gov/example.csv",
         candidateElection: {
           candidateId: CANDIDATE_ID,
           electionId: ELECTION_ID,
@@ -124,7 +154,7 @@ describe("minnesotaCandidateFinanceAutoLink", () => {
       "FRIENDS OF JANE DOE",
       "active",
       "mn_board",
-      null,
+      "https://register.cfb.mn.gov/example.csv",
       "2026-06-01T00:00:00.000Z",
     ]);
   });

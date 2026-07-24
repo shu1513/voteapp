@@ -436,6 +436,7 @@ export async function syncDueMinnesotaCandidateFinance(
         electionLookaheadDays,
         candidateElections: missingLinkCandidates,
         contributionRows: contributionRowsForAutoLink ?? [],
+        sourceUrl: contributionSourceUrl,
       });
       autoLinkLinkedCount = autoLinkResults.filter((result) => result.status === "linked").length;
       for (const result of autoLinkResults) {

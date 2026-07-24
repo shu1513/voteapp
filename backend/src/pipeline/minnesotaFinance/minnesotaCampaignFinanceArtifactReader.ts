@@ -48,6 +48,30 @@ function rowObjectFromCells(headers: readonly string[], row: readonly string[]):
   );
 }
 
+function consumeBackslashEscapedQuote(field: string, nextCharacter: string | undefined): string | null {
+  if (
+    nextCharacter === undefined ||
+    nextCharacter === "," ||
+    nextCharacter === "\n" ||
+    nextCharacter === "\r"
+  ) {
+    return null;
+  }
+
+  let backslashCount = 0;
+  for (let index = field.length - 1; index >= 0 && field[index] === "\\"; index -= 1) {
+    backslashCount += 1;
+  }
+  if (backslashCount % 2 === 0) {
+    return null;
+  }
+
+  // The live CFB export occasionally emits \" inside a quoted field instead
+  // of RFC 4180's doubled quote. Remove the escaping slash and keep the quote
+  // as field content so one malformed description cannot discard the dataset.
+  return `${field.slice(0, -1)}"`;
+}
+
 function parseCsvRows(csv: string): string[][] {
   const rows: string[][] = [];
   let row: string[] = [];
@@ -68,7 +92,10 @@ function parseCsvRows(csv: string): string[][] {
     let index = 0;
     if (pendingQuoteInQuotedField) {
       pendingQuoteInQuotedField = false;
-      if (text[0] === '"') {
+      const escapedField = consumeBackslashEscapedQuote(field, text[0]);
+      if (escapedField !== null) {
+        field = escapedField;
+      } else if (text[0] === '"') {
         field += '"';
         index = 1;
       } else {
@@ -81,7 +108,10 @@ function parseCsvRows(csv: string): string[][] {
       const next = text[index + 1];
 
       if (inQuotes) {
-        if (char === '"' && next === '"') {
+        const escapedField = char === '"' ? consumeBackslashEscapedQuote(field, next) : null;
+        if (escapedField !== null) {
+          field = escapedField;
+        } else if (char === '"' && next === '"') {
           field += '"';
           index += 1;
         } else if (char === '"' && next === undefined && !isFinal) {
@@ -204,7 +234,10 @@ async function readMinnesotaCampaignFinanceCsvRowsFromFile(input: {
       let index = 0;
       if (pendingQuoteInQuotedField) {
         pendingQuoteInQuotedField = false;
-        if (text[0] === '"') {
+        const escapedField = consumeBackslashEscapedQuote(field, text[0]);
+        if (escapedField !== null) {
+          field = escapedField;
+        } else if (text[0] === '"') {
           field += '"';
           index = 1;
         } else {
@@ -217,7 +250,10 @@ async function readMinnesotaCampaignFinanceCsvRowsFromFile(input: {
         const next = text[index + 1];
 
         if (inQuotes) {
-          if (char === '"' && next === '"') {
+          const escapedField = char === '"' ? consumeBackslashEscapedQuote(field, next) : null;
+          if (escapedField !== null) {
+            field = escapedField;
+          } else if (char === '"' && next === '"') {
             field += '"';
             index += 1;
           } else if (char === '"' && next === undefined && !isFinal) {

@@ -110,6 +110,60 @@ describe("Minnesota campaign finance artifact reader", () => {
     ]);
   });
 
+  it("tolerates the CFB export's backslash-escaped quotes in quoted fields", async () => {
+    const csv = String.raw`Recipient reg num,Recipient,Recipient type,Recipient subtype,Amount,Year,Contributor,Contrib type
+18894,"Hinnenkamp, Mary House Committee",PCC,,125.0000,2022,"Ehrhardt, George \\\"Mac\\\"",Individual`;
+
+    expect(parseMinnesotaCampaignFinanceContributionCsvRows(csv)).toEqual([
+      expect.objectContaining({
+        Recipient: "Hinnenkamp, Mary House Committee",
+        Contributor: 'Ehrhardt, George \\\\"Mac\\\\"',
+        "Contrib type": "Individual",
+      }),
+    ]);
+
+    const dir = await makeTempDir();
+    const filePath = join(dir, MINNESOTA_CAMPAIGN_FINANCE_CONTRIBUTIONS_CSV_FILE_NAME);
+    await writeFile(filePath, csv, "utf8");
+    await expect(readMinnesotaCampaignFinanceContributionRows({ filePath })).resolves.toEqual([
+      expect.objectContaining({
+        Recipient: "Hinnenkamp, Mary House Committee",
+        "Contrib type": "Individual",
+      }),
+    ]);
+  });
+
+  it("keeps a trailing backslash before a quoted-field terminator", () => {
+    const csv = String.raw`Recipient reg num,Recipient,Recipient type,Amount,Year,Contributor,Contrib type
+18894,"Hinnenkamp, Mary House Committee",PCC,125.0000,2022,"Example\",Individual`;
+
+    expect(parseMinnesotaCampaignFinanceContributionCsvRows(csv)).toEqual([
+      expect.objectContaining({
+        Contributor: "Example\\",
+        "Contrib type": "Individual",
+      }),
+    ]);
+  });
+
+  it("handles a backslash-escaped quote split across stream chunks", async () => {
+    const header =
+      "Recipient reg num,Recipient,Recipient type,Amount,Year,Contributor,Contrib type";
+    const rowPrefix = '18894,"Hinnenkamp, Mary House Committee",PCC,125.0000,2022,"';
+    const bytesBeforeValue = Buffer.byteLength(`${header}\n${rowPrefix}`);
+    const filler = "x".repeat(64 * 1024 - bytesBeforeValue - 2);
+    const csv = `${header}\n${rowPrefix}${filler}\\\"\",Individual`;
+    const dir = await makeTempDir();
+    const filePath = join(dir, MINNESOTA_CAMPAIGN_FINANCE_CONTRIBUTIONS_CSV_FILE_NAME);
+    await writeFile(filePath, csv, "utf8");
+
+    await expect(readMinnesotaCampaignFinanceContributionRows({ filePath })).resolves.toEqual([
+      expect.objectContaining({
+        Contributor: `${filler}\"`,
+        "Contrib type": "Individual",
+      }),
+    ]);
+  });
+
   it("parses independent expenditure rows", () => {
     const csv = [
       [
