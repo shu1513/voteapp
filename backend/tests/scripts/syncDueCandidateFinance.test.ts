@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { DEFAULT_CANDIDATE_FINANCE_BATCH_SIZE } from "../../src/pipeline/finance/candidateFinanceBatchSync.js";
 import {
   DEFAULT_OPEN_FEC_LARGE_DRAIN_REQUEST_INTERVAL_MS,
   createOpenFecPacingPlan,
@@ -91,6 +92,24 @@ describe("syncDueCandidateFinance script", () => {
     ).toEqual({ requestIntervalMs: 0 });
   });
 
+  it("applies automatic pacing strictly above the normal batch-size boundary", () => {
+    expect(
+      createOpenFecPacingPlan({
+        dryRun: false,
+        includeOutside: false,
+        maxCandidates: DEFAULT_CANDIDATE_FINANCE_BATCH_SIZE,
+      })
+    ).toEqual({ requestIntervalMs: 0 });
+
+    const pacing = createOpenFecPacingPlan({
+      dryRun: false,
+      includeOutside: false,
+      maxCandidates: DEFAULT_CANDIDATE_FINANCE_BATCH_SIZE + 1,
+    });
+    expect(pacing.requestIntervalMs).toBe(DEFAULT_OPEN_FEC_LARGE_DRAIN_REQUEST_INTERVAL_MS);
+    expect(pacing.rateLimiter).toEqual(expect.any(Function));
+  });
+
   it("preserves explicit pacing disable and positive overrides for large drains", () => {
     expect(
       createOpenFecPacingPlan({
@@ -119,6 +138,7 @@ describe("syncDueCandidateFinance script", () => {
         includeOutside: true,
         maxCandidates: 2,
       },
+      requestIntervalMs: 250,
       result: {
         dryRun: true,
         includeOutside: true,
@@ -138,6 +158,7 @@ describe("syncDueCandidateFinance script", () => {
       started_at: "2026-01-02T03:04:05.000Z",
       dry_run: true,
       include_outside: true,
+      request_interval_ms: 250,
       result: {
         dueCandidateCount: 3,
         selectedCandidateCount: 2,

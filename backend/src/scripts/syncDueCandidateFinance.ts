@@ -115,6 +115,7 @@ function getDatabaseUrl(): string {
 export function toSyncDueCandidateFinanceScriptOutput(input: {
   startedAt: Date;
   options: SyncDueCandidateFinanceScriptOptions;
+  requestIntervalMs: number;
   result: CandidateFinanceBatchSyncResult;
 }) {
   return {
@@ -123,6 +124,7 @@ export function toSyncDueCandidateFinanceScriptOutput(input: {
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
     include_outside: input.options.includeOutside,
+    request_interval_ms: input.requestIntervalMs,
     result: input.result,
   };
 }
@@ -161,7 +163,18 @@ async function main(): Promise<void> {
       outsideGroupLimit: options.outsideGroupLimit,
     });
 
-    console.log(JSON.stringify(toSyncDueCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));
+    console.log(
+      JSON.stringify(
+        toSyncDueCandidateFinanceScriptOutput({
+          startedAt,
+          options,
+          requestIntervalMs: pacing.requestIntervalMs,
+          result,
+        }),
+        null,
+        2
+      )
+    );
   } finally {
     await pool.end();
   }
