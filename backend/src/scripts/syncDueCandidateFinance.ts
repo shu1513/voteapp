@@ -8,7 +8,11 @@ import {
   syncDueCandidateFinance,
   type CandidateFinanceBatchSyncResult,
 } from "../pipeline/finance/candidateFinanceBatchSync.js";
-import { DEFAULT_OPEN_FEC_TIMEOUT_MS, readOpenFecApiKeysFromEnv } from "../pipeline/presidential/openFecClient.js";
+import {
+  DEFAULT_OPEN_FEC_TIMEOUT_MS,
+  createOpenFecRateLimiter,
+  readOpenFecApiKeysFromEnv,
+} from "../pipeline/presidential/openFecClient.js";
 
 export type SyncDueCandidateFinanceScriptOptions = {
   dryRun: boolean;
@@ -20,6 +24,7 @@ export type SyncDueCandidateFinanceScriptOptions = {
   perPage?: number;
   outsideGroupLimit?: number;
   timeoutMs?: number;
+  requestIntervalMs?: number;
 };
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
@@ -40,15 +45,19 @@ function parseFlagValue(args: readonly string[], name: string): string | null {
   return null;
 }
 
-function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
+function parseIntegerFlag(args: readonly string[], name: string, minimum: number): number | undefined {
   const value = parseFlagValue(args, name)?.trim();
   if (!value) {
     return undefined;
   }
-  if (!/^[1-9]\d*$/.test(value)) {
+  if (!/^\d+$/.test(value)) {
     throw new Error(`Invalid ${name} value: ${value}`);
   }
-  return Number(value);
+  const parsed = Number(value);
+  if (!Number.isSafeInteger(parsed) || parsed < minimum) {
+    throw new Error(`Invalid ${name} value: ${value}`);
+  }
+  return parsed;
 }
 
 export function parseSyncDueCandidateFinanceScriptArgs(
@@ -57,13 +66,14 @@ export function parseSyncDueCandidateFinanceScriptArgs(
   return {
     dryRun: args.includes("--dry-run"),
     includeOutside: args.includes("--include-outside"),
-    maxCandidates: parsePositiveIntegerFlag(args, "--max-candidates"),
-    staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
-    electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
-    electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    perPage: parsePositiveIntegerFlag(args, "--per-page"),
-    outsideGroupLimit: parsePositiveIntegerFlag(args, "--top-groups"),
-    timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
+    maxCandidates: parseIntegerFlag(args, "--max-candidates", 1),
+    staleAfterDays: parseIntegerFlag(args, "--stale-after-days", 1),
+    electionLookbackDays: parseIntegerFlag(args, "--lookback-days", 1),
+    electionLookaheadDays: parseIntegerFlag(args, "--lookahead-days", 1),
+    perPage: parseIntegerFlag(args, "--per-page", 1),
+    outsideGroupLimit: parseIntegerFlag(args, "--top-groups", 1),
+    timeoutMs: parseIntegerFlag(args, "--timeout-ms", 1),
+    requestIntervalMs: parseIntegerFlag(args, "--request-interval-ms", 0),
   };
 }
 
@@ -97,6 +107,10 @@ async function main(): Promise<void> {
 
   const apiKeys = readOpenFecApiKeysFromEnv();
   const timeoutMs = options.timeoutMs ?? DEFAULT_OPEN_FEC_TIMEOUT_MS;
+  const rateLimiter =
+    options.requestIntervalMs === undefined || options.requestIntervalMs === 0
+      ? undefined
+      : createOpenFecRateLimiter({ minIntervalMs: options.requestIntervalMs });
 
   if (apiKeys.length === 0) {
     throw new Error("No OpenFEC API keys configured. Set FEC_API_KEY_1 or FEC_API_KEY.");
@@ -107,7 +121,7 @@ async function main(): Promise<void> {
   try {
     const result = await syncDueCandidateFinance({
       db: pool,
-      openFecOptions: { apiKeys, timeoutMs },
+      openFecOptions: { apiKeys, timeoutMs, ...(rateLimiter ? { rateLimiter } : {}) },
       now: startedAt,
       dryRun: options.dryRun,
       includeOutside: options.includeOutside,

@@ -20,6 +20,7 @@ describe("syncDueCandidateFinance script", () => {
         "--top-groups",
         "8",
         "--timeout-ms=5000",
+        "--request-interval-ms=3700",
       ])
     ).toEqual({
       dryRun: true,
@@ -31,6 +32,7 @@ describe("syncDueCandidateFinance script", () => {
       perPage: 25,
       outsideGroupLimit: 8,
       timeoutMs: 5000,
+      requestIntervalMs: 3700,
     });
   });
 
@@ -41,6 +43,21 @@ describe("syncDueCandidateFinance script", () => {
     expect(() => parseSyncDueCandidateFinanceScriptArgs(["--stale-after-days=0"])).toThrow(
       "Invalid --stale-after-days value"
     );
+    expect(() => parseSyncDueCandidateFinanceScriptArgs(["--request-interval-ms=-1"])).toThrow(
+      "Invalid --request-interval-ms value"
+    );
+    expect(() => parseSyncDueCandidateFinanceScriptArgs(["--request-interval-ms=1.5"])).toThrow(
+      "Invalid --request-interval-ms value"
+    );
+    expect(() => parseSyncDueCandidateFinanceScriptArgs(["--max-candidates=9007199254740992"])).toThrow(
+      "Invalid --max-candidates value"
+    );
+  });
+
+  it("allows explicitly disabling request pacing", () => {
+    expect(parseSyncDueCandidateFinanceScriptArgs(["--request-interval-ms=0"])).toMatchObject({
+      requestIntervalMs: 0,
+    });
   });
 
   it("formats script output", () => {
