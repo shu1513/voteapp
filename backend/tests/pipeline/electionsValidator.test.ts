@@ -985,6 +985,24 @@ describe("runElectionsValidator", () => {
           discovery_contest_family: "non_judicial_office",
           sources: ["https://example.org/election"],
         },
+        {
+          official_ballot_title: "Circuit Court Clerk",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Register of Deeds",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
       ],
     };
 
