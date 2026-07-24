@@ -114,6 +114,23 @@ describe("New Mexico CFIS artifact reader", () => {
     ]);
   });
 
+  it("preserves unescaped interior quotes emitted by the official export", () => {
+    const csv = expenditureCsv([
+      {
+        OrgID: "9001",
+        "Expenditure Amount": "100.00",
+        Description: 'Printing for "Neighbors" mailer',
+      },
+    ]).replace('Printing for ""Neighbors"" mailer', 'Printing for "Neighbors" mailer');
+
+    expect(parseNewMexicoCfisExpenditureCsvRows(csv)).toEqual([
+      expect.objectContaining({
+        OrgID: "9001",
+        Description: 'Printing for "Neighbors" mailer',
+      }),
+    ]);
+  });
+
   it("streams contribution rows from disk with predicate and maxRows", async () => {
     const dir = await makeTempDir();
     const filePath = join(dir, "CON_2026.csv");
@@ -204,6 +221,38 @@ describe("New Mexico CFIS artifact reader", () => {
         Description: "line one\nline two",
         Reason: "Haaland, Deb",
         Stance: "Support",
+      }),
+    ]);
+  });
+
+  it("streams an unescaped interior quote split across chunks", async () => {
+    const dir = await makeTempDir();
+    const filePath = join(dir, "EXP_2026.csv");
+    const descriptionSuffix = '"Neighbors" mailer';
+    const unpaddedCsv = expenditureCsv([
+      {
+        OrgID: "9001",
+        "Expenditure Amount": "100.00",
+        Description: descriptionSuffix,
+      },
+    ]).replace('""Neighbors"" mailer', descriptionSuffix);
+    const firstInteriorQuoteIndex = unpaddedCsv.indexOf(descriptionSuffix);
+    const streamChunkSize = 64 * 1024;
+    const descriptionPrefix = "x".repeat(streamChunkSize - 1 - firstInteriorQuoteIndex);
+    const csv = expenditureCsv([
+      {
+        OrgID: "9001",
+        "Expenditure Amount": "100.00",
+        Description: `${descriptionPrefix}${descriptionSuffix}`,
+      },
+    ]).replace(`${descriptionPrefix}""Neighbors"" mailer`, `${descriptionPrefix}${descriptionSuffix}`);
+    expect(csv.indexOf(descriptionSuffix)).toBe(streamChunkSize - 1);
+    await writeFile(filePath, csv, "utf8");
+
+    await expect(readNewMexicoCfisExpenditureRows({ filePath })).resolves.toEqual([
+      expect.objectContaining({
+        OrgID: "9001",
+        Description: `${descriptionPrefix}${descriptionSuffix}`,
       }),
     ]);
   });

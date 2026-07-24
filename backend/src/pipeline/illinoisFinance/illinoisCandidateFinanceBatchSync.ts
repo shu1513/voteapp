@@ -302,7 +302,9 @@ export async function loadIllinoisFinanceDataForDueRow(
       row,
       records,
     });
-    outsideGroupContributionRecords.push(...records);
+    for (const record of records) {
+      outsideGroupContributionRecords.push(record);
+    }
   }
 
   return {

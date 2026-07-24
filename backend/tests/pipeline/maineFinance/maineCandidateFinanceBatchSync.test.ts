@@ -335,15 +335,23 @@ describe("maineCandidateFinanceBatchSync", () => {
     // Maine CFIS keys bulk files by receipt year: money for a 2024 election is
     // split across CON_2023 and CON_2024. Both must reach the sync.
     const rawDataCacheDir = await makeTempDir();
+    const duplicateAcrossYears = contribution({
+      "Receipt ID": "R-BOTH",
+      "Receipt Date": "12/20/2023",
+      "Receipt Amount": "50.0000",
+    });
     await writeContributionArtifact({
       cacheDir: rawDataCacheDir,
       filingYear: 2023,
-      rows: [contribution({ "Receipt ID": "R-2023", "Receipt Date": "12/15/2023" })],
+      rows: [contribution({ "Receipt ID": "R-2023", "Receipt Date": "12/15/2023" }), duplicateAcrossYears],
     });
     await writeContributionArtifact({
       cacheDir: rawDataCacheDir,
       filingYear: 2024,
-      rows: [contribution({ "Receipt ID": "R-2024", "Receipt Date": "03/11/2024" })],
+      rows: [
+        contribution({ "Receipt ID": "R-2024", "Receipt Date": "03/11/2024" }),
+        { ...duplicateAcrossYears, "Filed Date": "03/20/2024" },
+      ],
     });
     vi.spyOn(console, "warn").mockImplementation(() => {});
     const db = {
@@ -372,7 +380,12 @@ describe("maineCandidateFinanceBatchSync", () => {
     const receiptIds = (syncFn.mock.calls[0]?.[0]?.contributionRows as MaineCfisContributionRow[]).map(
       (row) => row["Receipt ID"]
     );
-    expect(receiptIds.sort()).toEqual(["R-2023", "R-2024"]);
+    expect(receiptIds.sort()).toEqual(["R-2023", "R-2024", "R-BOTH"]);
+    expect(
+      (syncFn.mock.calls[0]?.[0]?.contributionRows as MaineCfisContributionRow[]).find(
+        (row) => row["Receipt ID"] === "R-BOTH"
+      )?.["Filed Date"]
+    ).toBe("03/20/2024");
   });
 
   it("reads artifacts written by the real cache refresher (scheduler/script path)", async () => {

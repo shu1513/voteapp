@@ -1,6 +1,7 @@
 import { stat } from "node:fs/promises";
 import type { Pool, PoolClient } from "pg";
 
+import { mergeCycleArtifactRows } from "../finance/cycleArtifactRows.js";
 import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
 import {
   autoLinkMissingMaineCandidateFinanceLinks,
@@ -285,14 +286,25 @@ function maineCycleFilingYears(electionYear: number): number[] {
   return [electionYear - 1, electionYear];
 }
 
+function maineContributionRowIdentity(row: MaineCfisContributionRow): string {
+  const receiptId = row["Receipt ID"].trim().toUpperCase();
+  return receiptId ? `${normalizeCommitteeId(row.OrgID)}\u0000${receiptId}` : "";
+}
+
+function maineExpenditureRowIdentity(row: MaineCfisExpenditureRow): string {
+  const expenditureId = row["Expenditure ID"].trim().toUpperCase();
+  return expenditureId ? `${normalizeCommitteeId(row.OrgID)}\u0000${expenditureId}` : "";
+}
+
 async function readCycleArtifactData<Row>(input: {
   electionYear: number;
   artifactKind: "contributions" | "expenditures";
   rawDataCacheDir?: string;
   readRows: (filePath: string) => Promise<Row[]>;
+  rowIdentity: (row: Row) => string;
 }): Promise<{ rows: Row[]; filePath: string; sourceUrl: string }> {
   const kindLabel = input.artifactKind === "contributions" ? "contribution" : "expenditure";
-  const rows: Row[] = [];
+  const artifactRowsByYear: Row[][] = [];
   let filePath = "";
   let sourceUrl = MAINE_CFIS_CSV_DOWNLOAD_API_URL;
   for (const filingYear of maineCycleFilingYears(input.electionYear)) {
@@ -305,11 +317,15 @@ async function readCycleArtifactData<Row>(input: {
       throw new Error(`Maine CFIS ${kindLabel} artifact not found for ${filingYear}: ${paths.filePath}`);
     }
     const metadata = await readValidCacheMetadata({ year: filingYear, artifactKind: input.artifactKind, ...paths });
-    rows.push(...(await input.readRows(paths.filePath)));
+    artifactRowsByYear.push(await input.readRows(paths.filePath));
     filePath = paths.filePath;
     sourceUrl = sourceUrlFromMetadata({ metadataUrl: metadata?.remote.url });
   }
-  return { rows, filePath, sourceUrl };
+  return {
+    rows: mergeCycleArtifactRows({ artifacts: artifactRowsByYear, rowIdentity: input.rowIdentity }),
+    filePath,
+    sourceUrl,
+  };
 }
 
 async function loadContributionDataForYear(input: {
@@ -322,6 +338,7 @@ async function loadContributionDataForYear(input: {
     electionYear: input.year,
     artifactKind: "contributions",
     rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: maineContributionRowIdentity,
     readRows: (filePath) =>
       readMaineCfisContributionRows({
         filePath,
@@ -355,6 +372,7 @@ async function loadAutoLinkContributionRowsForYear(input: {
     electionYear: input.year,
     artifactKind: "contributions",
     rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: maineContributionRowIdentity,
     readRows: (filePath) =>
       readMaineCfisContributionRows({
         filePath,
@@ -373,6 +391,7 @@ async function loadExpenditureDataForYear(input: {
     electionYear: input.year,
     artifactKind: "expenditures",
     rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: maineExpenditureRowIdentity,
     readRows: (filePath) =>
       readMaineCfisExpenditureRows({
         filePath,

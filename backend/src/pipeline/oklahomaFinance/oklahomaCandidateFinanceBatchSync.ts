@@ -1,6 +1,7 @@
 import { stat } from "node:fs/promises";
 import type { Pool, PoolClient } from "pg";
 
+import { mergeCycleArtifactRows } from "../finance/cycleArtifactRows.js";
 import {
   autoLinkMissingOklahomaCandidateFinanceLinks,
   buildOklahomaCandidateNamePredicate,
@@ -197,6 +198,11 @@ function oklahomaCycleFilingYears(electionYear: number, rawDataZipPath?: string)
   return rawDataZipPath ? [electionYear] : [electionYear - 1, electionYear];
 }
 
+function oklahomaContributionRowIdentity(row: OklahomaGuardianContributionRow): string {
+  const receiptId = row["Receipt ID"].trim().toUpperCase();
+  return receiptId ? `${normalizeCommitteeId(row["Org ID"])}\u0000${receiptId}` : "";
+}
+
 async function readCycleContributionRows(input: {
   electionYear: number;
   rawDataZipPath?: string;
@@ -207,7 +213,7 @@ async function readCycleContributionRows(input: {
     input.rawDataCacheDir ??
     process.env.OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR?.trim() ??
     DEFAULT_OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR;
-  const rows: OklahomaGuardianContributionRow[] = [];
+  const artifactRowsByYear: OklahomaGuardianContributionRow[][] = [];
   let zipPath = "";
   let sourceUrl = "";
   let foundMatchingRows = false;
@@ -225,14 +231,21 @@ async function readCycleContributionRows(input: {
       year: filingYear,
       predicate: input.predicate,
     });
-    rows.push(...artifactRows);
+    artifactRowsByYear.push(artifactRows);
     if (!foundMatchingRows) {
       zipPath = artifactZipPath;
       sourceUrl = metadata?.remote.url ?? buildOklahomaGuardianContributionZipUrl({ year: filingYear });
       foundMatchingRows = artifactRows.length > 0;
     }
   }
-  return { rows, zipPath, sourceUrl };
+  return {
+    rows: mergeCycleArtifactRows({
+      artifacts: artifactRowsByYear,
+      rowIdentity: oklahomaContributionRowIdentity,
+    }),
+    zipPath,
+    sourceUrl,
+  };
 }
 
 async function loadContributionDataForYear(input: {
@@ -417,7 +430,7 @@ export async function syncDueOklahomaCandidateFinance(
         contributionRowsByYear.set(year, data.rows);
         sourceUrlByYear.set(year, data.sourceUrl);
       }
-      await autoLinkMissingOklahomaCandidateFinanceLinks({
+      const autoLinkResults = await autoLinkMissingOklahomaCandidateFinanceLinks({
         db: input.db,
         now,
         maxCandidates,
@@ -427,6 +440,11 @@ export async function syncDueOklahomaCandidateFinance(
         sourceUrlByYear,
         candidateElections: missingLinkCandidates,
       });
+      for (const result of autoLinkResults) {
+        if (result.status === "unmatched" || result.status === "ambiguous") {
+          console.warn("Oklahoma finance auto-link did not link candidate election:", result);
+        }
+      }
     } catch (error) {
       console.warn(
         "Oklahoma finance auto-link skipped; continuing with already-linked candidate sync:",

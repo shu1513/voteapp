@@ -322,6 +322,11 @@ describe("marylandCandidateFinanceBatchSync", () => {
     tempDirs.push(rawDataCacheDir);
     const priorCommittee = committeeRow();
     const priorContribution = contributionRow();
+    const duplicateAcrossYears = contributionRow({
+      "Transaction Date": "11/15/2025",
+      "Transaction Amount": "50.00",
+      Description: "Same official row in both exports",
+    });
     await writeArtifact({
       cacheDir: rawDataCacheDir,
       year: 2025,
@@ -343,7 +348,7 @@ describe("marylandCandidateFinanceBatchSync", () => {
       year: 2025,
       artifactKind: "contributions",
       columns: MARYLAND_CFS_CONTRIBUTION_COLUMNS,
-      rows: [priorContribution],
+      rows: [priorContribution, duplicateAcrossYears],
       sourceUrl: "https://api-campaignfinance.maryland.gov/exports/contributions/2025",
     });
     await writeArtifact({
@@ -351,7 +356,7 @@ describe("marylandCandidateFinanceBatchSync", () => {
       year: 2026,
       artifactKind: "contributions",
       columns: MARYLAND_CFS_CONTRIBUTION_COLUMNS,
-      rows: [],
+      rows: [duplicateAcrossYears],
       sourceUrl: "https://api-campaignfinance.maryland.gov/exports/contributions/2026",
     });
 
@@ -414,7 +419,7 @@ describe("marylandCandidateFinanceBatchSync", () => {
     expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.md_candidate_finance_links");
     expect(syncFn).toHaveBeenCalledWith(
       expect.objectContaining({
-        contributionRows: [priorContribution],
+        contributionRows: [priorContribution, duplicateAcrossYears],
         contributionSourceUrl: "https://api-campaignfinance.maryland.gov/exports/contributions/2025",
       })
     );

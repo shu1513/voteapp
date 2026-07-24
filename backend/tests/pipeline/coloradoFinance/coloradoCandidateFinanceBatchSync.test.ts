@@ -414,8 +414,13 @@ describe("coloradoCandidateFinanceBatchSync", () => {
       ContributionDate: "10/15/2025",
       ContributionAmount: "250.00",
     });
-    await writeContributionArtifact(rawDataCacheDir, 2025, [priorYearRow]);
-    await writeContributionArtifact(rawDataCacheDir, 2026, []);
+    const duplicateAcrossYears = contribution({
+      RecordID: "BOTH-YEARS",
+      ContributionDate: "11/15/2025",
+      ContributionAmount: "50.00",
+    });
+    await writeContributionArtifact(rawDataCacheDir, 2025, [priorYearRow, duplicateAcrossYears]);
+    await writeContributionArtifact(rawDataCacheDir, 2026, [duplicateAcrossYears]);
 
     const db = {
       query: vi
@@ -464,7 +469,7 @@ describe("coloradoCandidateFinanceBatchSync", () => {
     expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.co_candidate_finance_links");
     expect(syncFn).toHaveBeenCalledWith(
       expect.objectContaining({
-        contributionRows: [priorYearRow],
+        contributionRows: [priorYearRow, duplicateAcrossYears],
         contributionSourceUrl: expect.stringContaining("/2025_ContributionData.csv.zip"),
       })
     );

@@ -2,6 +2,7 @@ import { stat } from "node:fs/promises";
 import type { Pool, PoolClient } from "pg";
 
 import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
+import { mergeCycleArtifactRows } from "../finance/cycleArtifactRows.js";
 import {
   autoLinkMissingNewMexicoCandidateFinanceLinks,
   buildNewMexicoCandidateNamePredicate,
@@ -256,14 +257,25 @@ function newMexicoCycleFilingYears(electionYear: number): number[] {
   return [electionYear - 1, electionYear];
 }
 
+function newMexicoContributionRowIdentity(row: NewMexicoCfisContributionRow): string {
+  const transactionId = row["Transaction ID"].trim().toUpperCase();
+  return transactionId ? `${normalizeCommitteeId(row.OrgID)}\u0000${transactionId}` : "";
+}
+
+function newMexicoExpenditureRowIdentity(row: NewMexicoCfisExpenditureRow): string {
+  const expenditureId = row["Expenditure ID"].trim().toUpperCase();
+  return expenditureId ? `${normalizeCommitteeId(row.OrgID)}\u0000${expenditureId}` : "";
+}
+
 async function readCycleArtifactData<Row>(input: {
   electionYear: number;
   artifactKind: "contributions" | "expenditures";
   rawDataCacheDir?: string;
   readRows: (filePath: string) => Promise<Row[]>;
+  rowIdentity: (row: Row) => string;
 }): Promise<{ rows: Row[]; filePath: string; sourceUrl: string }> {
   const kindLabel = input.artifactKind === "contributions" ? "contribution" : "expenditure";
-  const rows: Row[] = [];
+  const artifactRowsByYear: Row[][] = [];
   let filePath = "";
   let sourceUrl = "";
   let foundMatchingRows = false;
@@ -281,7 +293,7 @@ async function readCycleArtifactData<Row>(input: {
     }
     const metadata = await readNewMexicoCfisArtifactCacheMetadata(paths.metadataPath);
     const artifactRows = await input.readRows(paths.filePath);
-    rows.push(...artifactRows);
+    artifactRowsByYear.push(artifactRows);
     if (!foundMatchingRows) {
       filePath = paths.filePath;
       sourceUrl =
@@ -289,7 +301,11 @@ async function readCycleArtifactData<Row>(input: {
       foundMatchingRows = artifactRows.length > 0;
     }
   }
-  return { rows, filePath, sourceUrl };
+  return {
+    rows: mergeCycleArtifactRows({ artifacts: artifactRowsByYear, rowIdentity: input.rowIdentity }),
+    filePath,
+    sourceUrl,
+  };
 }
 
 async function loadContributionDataForYear(input: {
@@ -302,6 +318,7 @@ async function loadContributionDataForYear(input: {
     electionYear: input.year,
     artifactKind: "contributions",
     rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: newMexicoContributionRowIdentity,
     readRows: (filePath) =>
       readNewMexicoCfisContributionRows({
         filePath,
@@ -335,6 +352,7 @@ async function loadAutoLinkContributionRowsForYear(input: {
     electionYear: input.year,
     artifactKind: "contributions",
     rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: newMexicoContributionRowIdentity,
     readRows: (filePath) =>
       readNewMexicoCfisContributionRows({
         filePath,
@@ -353,6 +371,7 @@ async function loadExpenditureDataForYear(input: {
     electionYear: input.year,
     artifactKind: "expenditures",
     rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: newMexicoExpenditureRowIdentity,
     readRows: (filePath) =>
       readNewMexicoCfisExpenditureRows({
         filePath,

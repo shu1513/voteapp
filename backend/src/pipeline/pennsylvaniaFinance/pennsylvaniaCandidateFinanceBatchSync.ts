@@ -367,7 +367,9 @@ async function loadAutoLinkFilerRowsForElectionYear(input: {
     if (!(await directoryExists(extractedDir))) {
       throw new Error(`Pennsylvania campaign finance extracted CSV directory not found for ${year}: ${extractedDir}`);
     }
-    rows.push(...(await readPennsylvaniaCampaignFinanceFilerRows({ extractedDir, year })));
+    for (const row of await readPennsylvaniaCampaignFinanceFilerRows({ extractedDir, year })) {
+      rows.push(row);
+    }
   }
   return {
     rows,

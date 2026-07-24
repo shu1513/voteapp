@@ -328,8 +328,13 @@ describe("oklahomaCandidateFinanceBatchSync", () => {
       "Receipt Date": "10/15/2025",
       "Receipt Amount": "250.00",
     });
-    await writeContributionArtifact(rawDataCacheDir, 2025, [priorYearRow]);
-    await writeContributionArtifact(rawDataCacheDir, 2026, []);
+    const duplicateAcrossYears = contribution({
+      "Receipt ID": "BOTH-YEARS",
+      "Receipt Date": "11/15/2025",
+      "Receipt Amount": "50.00",
+    });
+    await writeContributionArtifact(rawDataCacheDir, 2025, [priorYearRow, duplicateAcrossYears]);
+    await writeContributionArtifact(rawDataCacheDir, 2026, [duplicateAcrossYears]);
 
     const db = {
       query: vi
@@ -382,10 +387,67 @@ describe("oklahomaCandidateFinanceBatchSync", () => {
     expect(String(db.query.mock.calls[1]?.[0])).toContain("INSERT INTO public.ok_candidate_finance_links");
     expect(syncFn).toHaveBeenCalledWith(
       expect.objectContaining({
-        contributionRows: [priorYearRow],
+        contributionRows: [priorYearRow, duplicateAcrossYears],
         contributionSourceUrl: expect.stringContaining("/2025_ContributionLoanExtract.csv.zip"),
       })
     );
+  });
+
+  it("logs the candidate and reason when auto-linking is ambiguous", async () => {
+    const firstCommitteeRow = contribution({ "Org ID": "11954" });
+    const secondCommitteeRow = contribution({
+      "Org ID": "11955",
+      "Committee Name": "Dishman Candidate Committee",
+    });
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [{
+            candidate_id: CANDIDATE_ID,
+            election_id: ELECTION_ID,
+            candidate_name: "Brent Dishman",
+            election_year: 2026,
+            office_scope: "state_upper",
+            office_name: "State Senator",
+            district: "47",
+          }],
+          rowCount: 1,
+        })
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
+    };
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    try {
+      const result = await syncDueOklahomaCandidateFinance({
+        db,
+        now: new Date("2026-06-01T00:00:00.000Z"),
+        contributionDataByYear: new Map([
+          [
+            2026,
+            contributionDataForYear({
+              year: 2026,
+              rowsByCommitteeId: new Map([
+                ["11954", [firstCommitteeRow]],
+                ["11955", [secondCommitteeRow]],
+              ]),
+            }),
+          ],
+        ]),
+      });
+
+      expect(result).toMatchObject({ selectedCandidateCount: 0, syncedCandidateCount: 0 });
+      expect(warnSpy).toHaveBeenCalledWith(
+        "Oklahoma finance auto-link did not link candidate election:",
+        {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          status: "ambiguous",
+          reason: "multiple_matching_committees",
+        }
+      );
+    } finally {
+      warnSpy.mockRestore();
+    }
   });
 
   it("rejects invalid batch options before querying", async () => {

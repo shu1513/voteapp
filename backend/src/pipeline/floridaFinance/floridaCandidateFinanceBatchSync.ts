@@ -540,7 +540,9 @@ function appendRowsByYear(input: {
   rows: readonly FloridaContributionRow[];
 }): void {
   const rows = input.rowsByYear.get(input.year) ?? [];
-  rows.push(...input.rows);
+  for (const row of input.rows) {
+    rows.push(row);
+  }
   input.rowsByYear.set(input.year, rows);
 }
 
