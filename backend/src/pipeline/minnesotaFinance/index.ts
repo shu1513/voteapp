@@ -4,6 +4,7 @@ export * from "./minnesotaFinanceEligibleOffices.js";
 export * from "./minnesotaCandidateCommitteeResolver.js";
 export * from "./minnesotaCandidateFinanceAutoLink.js";
 export * from "./minnesotaCandidateFinanceBatchSync.js";
+export * from "./minnesotaCandidateFinancialSummaryClient.js";
 export { aggregateMinnesotaOutsideGroupContributions } from "./minnesotaOutsideGroupContributionAggregator.js";
 export * from "./minnesotaFinanceWriter.js";
 export * from "./minnesotaCandidateFinanceSync.js";

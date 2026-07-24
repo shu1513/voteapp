@@ -47,7 +47,7 @@ function outsideContributionRow(overrides: Partial<MinnesotaCampaignFinanceCsvRo
 }
 
 describe("Minnesota candidate finance sync", () => {
-  it("writes outside groups and backtrace rows while leaving direct totals blank", async () => {
+  it("writes authoritative direct totals with outside groups and backtrace rows", async () => {
     const queries: Array<{ text: string; values: readonly unknown[] }> = [];
     const db = {
       async query(text: string, values: readonly unknown[] = []) {
@@ -70,6 +70,15 @@ describe("Minnesota candidate finance sync", () => {
       contributionRows: [candidateRow()],
       expenditureRows: [outsideExpenditureRow()],
       outsideContributionRows: [outsideContributionRow()],
+      financialSummary: {
+        committeeId: "1001",
+        electionYear: 2026,
+        totalReceipts: 710214.46,
+        directContributionTotal: 710176.98,
+        totalDisbursements: 166272.24,
+        sourceUrl:
+          "https://register.cfb.mn.gov/reports-and-data/viewers/campaign-finance/candidates/1001/2026/",
+      },
       now: new Date("2026-10-01T00:00:00Z"),
     });
 
@@ -80,8 +89,9 @@ describe("Minnesota candidate finance sync", () => {
     });
     expect(result.linkWritten).toBe(true);
     expect(result.summaryWritten).toBe(true);
-    expect(result.totalReceipts).toBeNull();
-    expect(result.directContributionTotal).toBeNull();
+    expect(result.totalReceipts).toBe(710214.46);
+    expect(result.directContributionTotal).toBe(710176.98);
+    expect(result.totalDisbursements).toBe(166272.24);
     expect(result.outsideSupportTotal).toBe(70000);
     expect(result.outsideOpposeTotal).toBe(0);
     expect(result.outsideGroupsWritten).toBe(1);
@@ -97,5 +107,89 @@ describe("Minnesota candidate finance sync", () => {
     expect(queries.some(({ text }) => text.includes("mn_candidate_finance_summaries"))).toBe(true);
     expect(queries.some(({ text }) => text.includes("mn_candidate_finance_outside_groups"))).toBe(true);
     expect(queries.some(({ text }) => text.includes("mn_candidate_finance_outside_group_breakdowns"))).toBe(true);
+
+    const summaryQuery = queries.find(({ text }) => text.includes("INSERT INTO public.mn_candidate_finance_summaries"));
+    expect(summaryQuery?.values.slice(2, 6)).toEqual([710214.46, 710176.98, 166272.24, null]);
+  });
+
+  it("does not apply a financial summary when no committee resolves", async () => {
+    const result = await syncMinnesotaCandidateFinance({
+      db: { query: async () => ({ rows: [] }) },
+      candidateId: "11111111-1111-1111-1111-111111111111",
+      electionId: "22222222-2222-2222-2222-222222222222",
+      candidateName: "Jane Doe",
+      electionYear: 2026,
+      officeScope: "statewide",
+      officeName: "Governor",
+      contributionRows: [candidateRow({ Candidate: "Different Person" })],
+      financialSummary: {
+        committeeId: "1001",
+        electionYear: 2026,
+        totalReceipts: 100,
+        directContributionTotal: 90,
+        totalDisbursements: 50,
+        sourceUrl: "https://example.invalid/summary",
+      },
+    });
+
+    expect(result.resolution.status).not.toBe("matched");
+    expect(result.summaryWritten).toBe(false);
+    expect(result.totalReceipts).toBeNull();
+    expect(result.directContributionTotal).toBeNull();
+    expect(result.totalDisbursements).toBeNull();
+  });
+
+  it("rejects a financial summary for a different committee", async () => {
+    await expect(
+      syncMinnesotaCandidateFinance({
+        db: { query: async () => ({ rows: [] }) },
+        candidateId: "11111111-1111-1111-1111-111111111111",
+        electionId: "22222222-2222-2222-2222-222222222222",
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeScope: "statewide",
+        officeName: "Governor",
+        contributionRows: [],
+        trustedCommittee: {
+          committeeId: "1001",
+          committeeName: "FRIENDS OF JANE DOE",
+        },
+        financialSummary: {
+          committeeId: "9999",
+          electionYear: 2026,
+          totalReceipts: 100,
+          directContributionTotal: 90,
+          totalDisbursements: 50,
+          sourceUrl: "https://example.invalid/summary",
+        },
+      })
+    ).rejects.toThrow("Minnesota financial summary identity mismatch");
+  });
+
+  it("rejects a financial summary for a different election year", async () => {
+    await expect(
+      syncMinnesotaCandidateFinance({
+        db: { query: async () => ({ rows: [] }) },
+        candidateId: "11111111-1111-1111-1111-111111111111",
+        electionId: "22222222-2222-2222-2222-222222222222",
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeScope: "statewide",
+        officeName: "Governor",
+        contributionRows: [],
+        trustedCommittee: {
+          committeeId: "1001",
+          committeeName: "FRIENDS OF JANE DOE",
+        },
+        financialSummary: {
+          committeeId: "1001",
+          electionYear: 2024,
+          totalReceipts: 100,
+          directContributionTotal: 90,
+          totalDisbursements: 50,
+          sourceUrl: "https://example.invalid/summary",
+        },
+      })
+    ).rejects.toThrow("Minnesota financial summary identity mismatch");
   });
 });

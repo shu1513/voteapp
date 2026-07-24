@@ -10,6 +10,7 @@ import {
   type MinnesotaFinanceLinkInput,
   type MinnesotaFinanceSummaryInput,
 } from "./minnesotaFinanceWriter.js";
+import type { MinnesotaCandidateFinancialSummary } from "./minnesotaCandidateFinancialSummaryClient.js";
 import type { MinnesotaCampaignFinanceCsvRow } from "./minnesotaCampaignFinanceArtifactReader.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -30,6 +31,7 @@ export type MinnesotaCandidateFinanceSyncInput = {
   contributionSourceUrl?: string | null;
   expenditureSourceUrl?: string | null;
   outsideSourceUrl?: string | null;
+  financialSummary?: MinnesotaCandidateFinancialSummary;
   now?: Date;
   dryRun?: boolean;
   outsideMaxGroups?: number;
@@ -64,6 +66,7 @@ export type MinnesotaCandidateFinanceSyncResult = {
   outsideGroupBreakdownsWritten: number;
   totalReceipts: number | null;
   directContributionTotal: number | null;
+  totalDisbursements: number | null;
   outsideSupportTotal: number | null;
   outsideOpposeTotal: number | null;
   matchedContributionRowCount: number;
@@ -337,6 +340,7 @@ export async function syncMinnesotaCandidateFinance(
       outsideGroupBreakdownsWritten: 0,
       totalReceipts: null,
       directContributionTotal: null,
+      totalDisbursements: null,
       outsideSupportTotal: null,
       outsideOpposeTotal: null,
       matchedContributionRowCount: 0,
@@ -349,6 +353,16 @@ export async function syncMinnesotaCandidateFinance(
       includedOutsideContributionRowCount: 0,
       skippedOutsideContributionRowCount: 0,
     };
+  }
+
+  if (
+    input.financialSummary &&
+    (input.financialSummary.committeeId.trim().toUpperCase() !== resolution.committeeId.trim().toUpperCase() ||
+      input.financialSummary.electionYear !== electionYear)
+  ) {
+    throw new Error(
+      `Minnesota financial summary identity mismatch for committee ${resolution.committeeId} and election ${electionYear}`
+    );
   }
 
   const outsideGroupCandidateData =
@@ -405,11 +419,17 @@ export async function syncMinnesotaCandidateFinance(
           .reduce((sum, group) => sum + group.amount, 0)
       : null;
   const summary: MinnesotaFinanceSummaryInput = {
-    totalReceipts: null,
-    directContributionTotal: null,
+    totalReceipts: input.financialSummary?.totalReceipts ?? null,
+    directContributionTotal: input.financialSummary?.directContributionTotal ?? null,
+    totalDisbursements: input.financialSummary?.totalDisbursements ?? null,
     outsideSupportTotal,
     outsideOpposeTotal,
-    sourceUrl: input.expenditureSourceUrl ?? input.sourceUrl ?? resolution.sourceUrl ?? null,
+    sourceUrl:
+      input.financialSummary?.sourceUrl ??
+      input.expenditureSourceUrl ??
+      input.sourceUrl ??
+      resolution.sourceUrl ??
+      null,
   };
 
   if (!input.dryRun) {
@@ -445,8 +465,9 @@ export async function syncMinnesotaCandidateFinance(
     directBreakdownsWritten: 0,
     outsideGroupsWritten: input.dryRun ? 0 : outsideGroups?.length ?? 0,
     outsideGroupBreakdownsWritten: input.dryRun ? 0 : outsideGroupBreakdowns?.length ?? 0,
-    totalReceipts: null,
-    directContributionTotal: null,
+    totalReceipts: summary.totalReceipts ?? null,
+    directContributionTotal: summary.directContributionTotal ?? null,
+    totalDisbursements: summary.totalDisbursements ?? null,
     outsideSupportTotal,
     outsideOpposeTotal,
     matchedContributionRowCount: 0,
