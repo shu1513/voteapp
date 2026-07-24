@@ -942,6 +942,141 @@ describe("runElectionsValidator", () => {
     expect(updateValidatedCall).toBeTruthy();
   });
 
+  it("accepts source-exact Indiana county office labels without added jurisdiction text", async () => {
+    const payload = {
+      district_id: "d-hamilton-in",
+      district_name: "Hamilton County, Indiana",
+      district_type: "county",
+      state: "IN",
+      entries: [
+        {
+          official_ballot_title: "Clerk of the Circuit Court",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Recorder",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Coroner",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Commissioner - District 1",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Circuit Court Clerk",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Register of Deeds",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:hamilton-in",
+            payload,
+            status: "pending",
+            run_id: "run_hamilton_in",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
+  it("accepts a Florida circuit-judge title in county discovery even when the circuit spans counties", async () => {
+    const payload = {
+      district_id: "d-st-lucie-fl",
+      district_name: "St. Lucie County, Florida",
+      district_type: "county",
+      state: "FL",
+      entries: [
+        {
+          official_ballot_title: "Circuit Judge, 19th Judicial Circuit, Group 4",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: false,
+          discovery_contest_family: "judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:st-lucie-fl",
+            payload,
+            status: "pending",
+            run_id: "run_st_lucie_fl",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
   it("still hard-rejects a bare 'Mayor' title in county scope as a city-like race", async () => {
     const payload = {
       district_id: "d-county-mayor-bare",

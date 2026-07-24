@@ -337,6 +337,15 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
+    canonicalName: "County Clerk and Recorder",
+    summary: [
+      "Keeping county records, including recorded property documents",
+      "Running county elections and maintaining voter records",
+      "Handling licenses, permits, and other filings that county law assigns",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
     canonicalName: "County Assessor",
     summary: [
       "Estimating what each property in the county is worth, which sets how much property tax each owner pays",
@@ -450,6 +459,15 @@ const SEED_OFFICES: SeedOffice[] = [
       "Keeping official maps and survey records of land boundaries",
       "Reviewing new subdivision maps and boundary surveys",
       "Helping settle property-line questions",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
+    canonicalName: "County Engineer",
+    summary: [
+      "Planning, building, and maintaining county roads, bridges, and other public works",
+      "Reviewing construction projects, permits, and engineering plans for county infrastructure",
+      "Managing engineering staff, contracts, and technical records for county projects",
     ].join("\n"),
   },
   {
@@ -1159,6 +1177,11 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   },
   {
     scope: "county",
+    officeCanonicalName: "County Clerk and Recorder",
+    aliasText: "Clerk and Recorder",
+  },
+  {
+    scope: "county",
     officeCanonicalName: "Public Defender",
     aliasText: "Public Defender",
   },
@@ -1206,6 +1229,11 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Auditor",
     aliasText: "County Comptroller",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Engineer",
+    aliasText: "County Engineer",
   },
   {
     scope: "county",
@@ -1513,6 +1541,13 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Supervisor",
     aliasText: "County Council",
+  },
+  {
+    // South Carolina county councils elect a chair of the legislative body;
+    // this is board leadership, not the county administrator/executive.
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "County Council Chair",
   },
   {
     // "For Member of County Council (District 1)" (Howard County MD) after

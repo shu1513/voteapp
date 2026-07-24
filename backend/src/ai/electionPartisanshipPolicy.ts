@@ -25,6 +25,7 @@ const PARTISAN_JUDICIAL_STATES = new Set([
   "NC",
   "OH",
   "PA",
+  "SC",
   "TN",
   "TX",
 ]);

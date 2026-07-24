@@ -306,7 +306,27 @@ function isSoftScopeAmbiguous(
   }
 
   if (districtType === "county") {
-    const countyMarkers = [/\bcounty\b/, /\bsheriff\b/, /\bcounty commissioner\b/, /\bcounty clerk\b/, /\bdistrict attorney\b/];
+    const countyMarkers = [
+      /\bcounty\b/,
+      /\bsheriff\b/,
+      /\bcounty commissioner\b/,
+      /\bcounty clerk\b/,
+      /\bdistrict attorney\b/,
+      // Official Indiana county ballots omit the jurisdiction from these
+      // countywide offices (for example, "Clerk of the Circuit Court"),
+      // while the district payload itself supplies the county scope.
+      /\bclerk of (?:the )?circuit court\b/,
+      /\bcircuit court clerk\b/,
+      // Judicial circuits may span several counties, but the election model
+      // intentionally consolidates judges by geographic discovery scope and
+      // has no judicial-circuit district type. A circuit-judge contest found
+      // on a county ballot therefore belongs to that county discovery pass.
+      /\bcircuit judge\b/,
+      /\brecorder\b/,
+      /\bcoroner\b/,
+      /\bregister of deeds\b/,
+      /\bcommissioner\s*-\s*district\b/,
+    ];
     // "Assessor" is a county office, but town/village/township assessors are municipal
     // contests that the city-oriented hard markers do not catch.
     if (!/\b(town|village|township|borough|municipal)\b/.test(text)) {
