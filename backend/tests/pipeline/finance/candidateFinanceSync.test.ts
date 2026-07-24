@@ -199,7 +199,7 @@ describe("candidateFinanceSync", () => {
     expect(client.release).toHaveBeenCalledTimes(1);
   });
 
-  it("preserves signed FEC receipts and cash on hand when writing summaries", async () => {
+  it("preserves signed FEC receipts, cash on hand, and debt when writing summaries", async () => {
     const db = createMockDb();
     const fecClient = createFecClient({
       getCandidateTotals: vi.fn().mockResolvedValue({
@@ -208,7 +208,7 @@ describe("candidateFinanceSync", () => {
         totalReceipts: -1_103_506.85,
         totalDisbursements: 1_118_067.55,
         cashOnHand: -25.5,
-        debtsOwed: 12_270_000,
+        debtsOwed: -2_741.54,
         sourceUrl: "https://www.fec.gov/data/candidate/H2MI13204/?cycle=2026",
       }),
       listCandidateCommittees: vi.fn().mockResolvedValue([]),
@@ -232,7 +232,7 @@ describe("candidateFinanceSync", () => {
       -1_103_506.85,
       1_118_067.55,
       -25.5,
-      12_270_000,
+      -2_741.54,
     ]);
   });
 
