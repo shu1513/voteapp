@@ -119,7 +119,7 @@ function normalizeOfficeScope(value: string): "statewide" | "state_upper" | "sta
     : null;
 }
 
-function canonicalOfficeNameForInput(officeName: string): string | null {
+export function canonicalOklahomaCandidateOfficeName(officeName: string): string | null {
   switch (normalizeTextKey(officeName)) {
     case "GOVERNOR":
       return "Governor";
@@ -168,16 +168,17 @@ function isExpectedLegislativeOffice(officeScope: string | null, officeCanonical
   );
 }
 
-function normalizeDistrict(value: string | null | undefined): string {
+export function normalizeOklahomaCandidateDistrict(value: string | null | undefined): string {
   const trimmed = value?.trim() ?? "";
   if (!trimmed) {
     return "";
   }
-  const numeric = Number(trimmed);
+  const withoutLabel = trimmed.replace(/^DISTRICT\s+/i, "");
+  const numeric = Number(withoutLabel);
   if (Number.isInteger(numeric) && numeric >= 0) {
     return String(numeric);
   }
-  return normalizeTextKey(trimmed);
+  return normalizeTextKey(withoutLabel);
 }
 
 function parseOklahomaGuardianDateYear(raw: string): number | null {
@@ -240,11 +241,11 @@ export function resolveOklahomaCandidateCommittee(
 ): OklahomaCandidateCommitteeResolution {
   const electionYear = normalizeElectionYear(input.electionYear);
   const officeScope = normalizeOfficeScope(input.officeScope);
-  const officeCanonicalName = canonicalOfficeNameForInput(input.officeName);
+  const officeCanonicalName = canonicalOklahomaCandidateOfficeName(input.officeName);
   const officeNameNormalized = officeCanonicalName ?? normalizeTextKey(input.officeName);
   const candidateNameKeys = normalizeOklahomaCandidateNameKeys(input.candidateName);
   const candidateNameNormalized = [...candidateNameKeys][0] ?? normalizePersonName(input.candidateName);
-  const expectedDistrict = normalizeDistrict(input.district);
+  const expectedDistrict = normalizeOklahomaCandidateDistrict(input.district);
 
   if (candidateNameKeys.size === 0) {
     return {

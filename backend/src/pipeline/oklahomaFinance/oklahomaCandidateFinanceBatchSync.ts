@@ -7,6 +7,7 @@ import {
   buildOklahomaCandidateNamePredicate,
   listOklahomaCandidateElectionsMissingFinanceLinks,
   type OklahomaFinanceAutoLinkCandidateElection,
+  type OklahomaGuardianCandidateDetailFetcher,
 } from "./oklahomaCandidateFinanceAutoLink.js";
 import {
   syncOklahomaCandidateFinance,
@@ -60,6 +61,7 @@ export type OklahomaCandidateFinanceBatchSyncInput = {
   autoLinkMissingLinks?: boolean;
   contributionDataByYear?: ReadonlyMap<number, OklahomaContributionDataForYear>;
   syncOklahomaCandidateFinanceFn?: typeof syncOklahomaCandidateFinance;
+  fetchOklahomaGuardianCandidateDetailFn?: OklahomaGuardianCandidateDetailFetcher;
 };
 
 export type OklahomaCandidateFinanceBatchSyncItemResult = {
@@ -439,6 +441,7 @@ export async function syncDueOklahomaCandidateFinance(
         contributionRowsByYear,
         sourceUrlByYear,
         candidateElections: missingLinkCandidates,
+        fetchCandidateDetail: input.fetchOklahomaGuardianCandidateDetailFn,
       });
       for (const result of autoLinkResults) {
         if (result.status === "unmatched" || result.status === "ambiguous") {

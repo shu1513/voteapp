@@ -421,6 +421,14 @@ describe("oklahomaCandidateFinanceBatchSync", () => {
       const result = await syncDueOklahomaCandidateFinance({
         db,
         now: new Date("2026-06-01T00:00:00.000Z"),
+        fetchOklahomaGuardianCandidateDetailFn: async ({ organizationId }) => ({
+          organizationId,
+          candidateName: "C. Brent Dishman",
+          officeName: "STATE SENATOR",
+          district: "DISTRICT 47",
+          electionYears: [2026],
+          sourceUrl: `https://guardian.ok.gov/detail/${organizationId}`,
+        }),
         contributionDataByYear: new Map([
           [
             2026,
