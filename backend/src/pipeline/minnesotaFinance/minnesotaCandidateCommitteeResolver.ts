@@ -50,6 +50,17 @@ type CandidateCommitteeAccumulator = {
   rows: MinnesotaCampaignFinanceCsvRow[];
 };
 
+export type MinnesotaPccRecipientIdentity = {
+  candidateName: string;
+  officeName:
+    | "Governor"
+    | "Secretary of State"
+    | "Attorney General"
+    | "State Auditor"
+    | "State Senator"
+    | "State Lower Chamber Legislator";
+};
+
 function normalizeElectionYear(value: number): number {
   if (!Number.isInteger(value) || value < 2000 || value > 2100) {
     throw new Error(`Invalid Minnesota candidate committee election year: ${value}`);
@@ -71,7 +82,7 @@ function normalizeTextKey(value: string | null | undefined): string {
 
 function normalizePersonName(value: string | null | undefined): string {
   return normalizeTextKey(value)
-    .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+    .replace(/\b(J\s*R|S\s*R|II|III|IV|V)\s*$/, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -84,6 +95,61 @@ function firstNonEmpty(row: MinnesotaCampaignFinanceCsvRow, keys: readonly strin
     }
   }
   return "";
+}
+
+const MINNESOTA_PCC_RECIPIENT_PATTERN =
+  /^(.*?)\s+(Sec\s+of\s+State|Atty\s+Gen|State\s+Aud|House|Senate|Gov)\s+Committee\s*$/i;
+
+export function parseMinnesotaPccRecipient(
+  record: MinnesotaCampaignFinanceCsvRow
+): MinnesotaPccRecipientIdentity | null {
+  const recipientType = normalizeTextKey(
+    firstNonEmpty(record, ["Recipient type", "Recipient Type", "recipient_type"])
+  );
+  if (recipientType !== "PCC") {
+    return null;
+  }
+
+  const recipient = firstNonEmpty(record, ["Recipient"]);
+  const match = MINNESOTA_PCC_RECIPIENT_PATTERN.exec(recipient);
+  const name = match?.[1]?.trim() ?? "";
+  const officeSuffix = normalizeTextKey(match?.[2] ?? "");
+  const commaIndex = name.indexOf(",");
+  if (commaIndex <= 0 || commaIndex === name.length - 1) {
+    return null;
+  }
+
+  const lastName = name.slice(0, commaIndex).trim();
+  const firstNames = name.slice(commaIndex + 1).trim();
+  if (!lastName || !firstNames) {
+    return null;
+  }
+
+  const officeName = (() => {
+    switch (officeSuffix) {
+      case "GOV":
+        return "Governor";
+      case "SEC STATE":
+        return "Secretary of State";
+      case "ATTY GEN":
+        return "Attorney General";
+      case "STATE AUD":
+        return "State Auditor";
+      case "SENATE":
+        return "State Senator";
+      case "HOUSE":
+        return "State Lower Chamber Legislator";
+      default:
+        return null;
+    }
+  })();
+
+  return officeName
+    ? {
+        candidateName: `${firstNames} ${lastName}`,
+        officeName,
+      }
+    : null;
 }
 
 export function normalizeMinnesotaCandidateNameKeys(value: string): Set<string> {
@@ -163,10 +229,13 @@ function recordElectionYear(record: MinnesotaCampaignFinanceCsvRow): number | nu
 
 function recordOfficeMatch(input: {
   record: MinnesotaCampaignFinanceCsvRow;
+  parsedRecipient: MinnesotaPccRecipientIdentity | null;
   expectedOfficeName: string;
   expectedDistrict: string;
 }): boolean {
-  const office = normalizeMinnesotaFinanceOfficeName(input.record["Office"] || input.record["Office Sought"] || "");
+  const office =
+    input.parsedRecipient?.officeName ??
+    normalizeMinnesotaFinanceOfficeName(input.record["Office"] || input.record["Office Sought"] || "");
   if (!office || office !== input.expectedOfficeName) {
     return false;
   }
@@ -258,18 +327,25 @@ export function resolveMinnesotaCandidateCommittee(
     if (!isUsableCandidateRecord(record)) {
       continue;
     }
-    const rowElectionYear = recordElectionYear(record);
-    if (rowElectionYear !== null && rowElectionYear !== electionYear) {
+    const rawRecipient = firstNonEmpty(record, ["Recipient"]);
+    const parsedRecipient = rawRecipient ? parseMinnesotaPccRecipient(record) : null;
+    if (rawRecipient && !parsedRecipient) {
       continue;
     }
-    const rowCandidateKeys = recordCandidateNameKeys(record);
+    const rowElectionYear = recordElectionYear(record);
+    if (rowElectionYear !== null && (rowElectionYear < electionYear - 1 || rowElectionYear > electionYear)) {
+      continue;
+    }
+    const rowCandidateKeys = parsedRecipient
+      ? normalizeMinnesotaCandidateNameKeys(parsedRecipient.candidateName)
+      : recordCandidateNameKeys(record);
     if (!rowCandidateKeys.size) {
       continue;
     }
     if (![...rowCandidateKeys].some((key) => candidateNameKeys.has(key))) {
       continue;
     }
-    if (!recordOfficeMatch({ record, expectedOfficeName, expectedDistrict })) {
+    if (!recordOfficeMatch({ record, parsedRecipient, expectedOfficeName, expectedDistrict })) {
       continue;
     }
 

@@ -2,10 +2,11 @@ import type { Pool, PoolClient } from "pg";
 
 import {
   normalizeMinnesotaCandidateNameKeys,
+  parseMinnesotaPccRecipient,
   resolveMinnesotaCandidateCommittee,
   type MinnesotaCandidateCommitteeResolution,
 } from "./minnesotaCandidateCommitteeResolver.js";
-import { MINNESOTA_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./minnesotaFinanceEligibleOffices.js";
+import { MINNESOTA_FINANCE_AUTO_LINK_OFFICE_KEYS } from "./minnesotaFinanceEligibleOffices.js";
 import { upsertMinnesotaFinanceLink } from "./minnesotaFinanceWriter.js";
 import type { MinnesotaCampaignFinanceCsvRow } from "./minnesotaCampaignFinanceArtifactReader.js";
 
@@ -73,12 +74,14 @@ function mapCandidateElectionRow(row: CandidateElectionQueryRow): MinnesotaFinan
 }
 
 function candidateNameFromContributionRow(row: MinnesotaCampaignFinanceCsvRow): string {
+  if (row["Recipient"]?.trim()) {
+    return parseMinnesotaPccRecipient(row)?.candidateName ?? "";
+  }
   const candidates = [
     row["Candidate"],
     row["Candidate Name"],
     row["candidate"],
     row["candidate_name"],
-    row["Recipient"],
   ];
   for (const value of candidates) {
     const trimmed = value?.trim() ?? "";
@@ -178,7 +181,7 @@ export async function listMinnesotaCandidateElectionsMissingFinanceLinks(
       input.maxCandidates,
       input.electionLookbackDays,
       input.electionLookaheadDays,
-      [...MINNESOTA_FINANCE_ELIGIBLE_OFFICE_KEYS],
+      [...MINNESOTA_FINANCE_AUTO_LINK_OFFICE_KEYS],
     ]
   );
 
@@ -189,6 +192,7 @@ export async function autoLinkMinnesotaCandidateFinanceForCandidateElection(inpu
   db: Queryable;
   candidateElection: MinnesotaFinanceAutoLinkCandidateElection;
   contributionRows: readonly MinnesotaCampaignFinanceCsvRow[];
+  sourceUrl?: string | null;
   now: Date;
 }): Promise<MinnesotaFinanceAutoLinkResult> {
   const resolution = resolveMinnesotaCandidateCommittee({
@@ -198,7 +202,7 @@ export async function autoLinkMinnesotaCandidateFinanceForCandidateElection(inpu
     electionYear: input.candidateElection.electionYear,
     district: input.candidateElection.district,
     candidateRows: input.contributionRows,
-    sourceUrl: null,
+    sourceUrl: input.sourceUrl,
   });
 
   if (resolution.status !== "matched") {
@@ -244,6 +248,7 @@ export async function autoLinkMissingMinnesotaCandidateFinanceLinks(input: {
   electionLookaheadDays: number;
   candidateElections?: readonly MinnesotaFinanceAutoLinkCandidateElection[];
   contributionRows: readonly MinnesotaCampaignFinanceCsvRow[];
+  sourceUrl?: string | null;
 }): Promise<MinnesotaFinanceAutoLinkResult[]> {
   const candidates =
     input.candidateElections ??
@@ -262,6 +267,7 @@ export async function autoLinkMissingMinnesotaCandidateFinanceLinks(input: {
           db: input.db,
           candidateElection,
           contributionRows: input.contributionRows,
+          sourceUrl: input.sourceUrl,
           now: input.now,
         })
       );

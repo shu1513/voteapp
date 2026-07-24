@@ -226,6 +226,7 @@
     "new-york-city-candidates:finance:scheduler:worker": "tsx src/scripts/runNewYorkCityCandidateFinanceSyncSchedulerWorker.ts",
     "new-york-city-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerNewYorkCityCandidateFinanceSync.ts",
     "minnesota-candidates:finance:sync-due": "tsx src/scripts/syncDueMinnesotaCandidateFinance.ts",
+    "minnesota-candidates:finance:raw:refresh": "tsx src/scripts/refreshMinnesotaCampaignFinanceRawData.ts",
     "minnesota-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertMinnesotaCandidateFinanceSyncScheduler.ts",
     "minnesota-candidates:finance:scheduler:worker": "tsx src/scripts/runMinnesotaCandidateFinanceSyncSchedulerWorker.ts",
     "minnesota-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerMinnesotaCandidateFinanceSync.ts",
