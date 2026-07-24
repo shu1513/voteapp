@@ -227,11 +227,11 @@ function parseCandidateTotalsRow(row: unknown, fecCandidateId: string, electionY
     ...(getNumber(row, "disbursements", "total_disbursements") !== undefined
       ? { totalDisbursements: getNumber(row, "disbursements", "total_disbursements") }
       : {}),
-    ...(getNumber(row, "cash_on_hand_end_period", "cash_on_hand") !== undefined
-      ? { cashOnHand: getNumber(row, "cash_on_hand_end_period", "cash_on_hand") }
+    ...(getNumber(row, "last_cash_on_hand_end_period", "cash_on_hand_end_period", "cash_on_hand") !== undefined
+      ? { cashOnHand: getNumber(row, "last_cash_on_hand_end_period", "cash_on_hand_end_period", "cash_on_hand") }
       : {}),
-    ...(getNumber(row, "debts_owed_by_committee", "debts_owed") !== undefined
-      ? { debtsOwed: getNumber(row, "debts_owed_by_committee", "debts_owed") }
+    ...(getNumber(row, "last_debts_owed_by_committee", "debts_owed_by_committee", "debts_owed") !== undefined
+      ? { debtsOwed: getNumber(row, "last_debts_owed_by_committee", "debts_owed_by_committee", "debts_owed") }
       : {}),
     ...(getNumber(row, "individual_itemized_contributions", "individual_itemized") !== undefined
       ? { individualItemizedTotal: getNumber(row, "individual_itemized_contributions", "individual_itemized") }
@@ -248,10 +248,16 @@ function parseCandidateTotalsRow(row: unknown, fecCandidateId: string, electionY
           ),
         }
       : {}),
-    ...(getNumber(row, "transfers_from_affiliated_committee", "transfers_from_affiliated_committees") !== undefined
+    ...(getNumber(
+      row,
+      "transfers_from_other_authorized_committee",
+      "transfers_from_affiliated_committee",
+      "transfers_from_affiliated_committees"
+    ) !== undefined
       ? {
           transfersFromAffiliatedCommittees: getNumber(
             row,
+            "transfers_from_other_authorized_committee",
             "transfers_from_affiliated_committee",
             "transfers_from_affiliated_committees"
           ),

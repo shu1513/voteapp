@@ -89,33 +89,33 @@ describe("openFecFinanceClient", () => {
       jsonResponse({
         results: [
           {
-            receipts: "1175189365.41",
-            disbursements: 1175284546.82,
-            cash_on_hand_end_period: 1000,
-            debts_owed_by_committee: 2000,
-            individual_itemized_contributions: 401731729,
-            individual_unitemized_contributions: 211825627,
-            other_political_committee_contributions: 12345,
-            transfers_from_affiliated_committee: 533714769.74,
+            receipts: "-1103506.85",
+            disbursements: 1118067.55,
+            last_cash_on_hand_end_period: -1926.85,
+            last_debts_owed_by_committee: -2741.54,
+            individual_itemized_contributions: 457010,
+            individual_unitemized_contributions: 18400.23,
+            other_political_committee_contributions: 85500,
+            transfers_from_other_authorized_committee: 1250,
           },
         ],
       })
     ) as unknown as typeof fetch;
 
     await expect(
-      getCandidateTotals("P00009423", 2024, { apiKeys: ["k1"], fetchImpl, timeoutMs: 1000 })
+      getCandidateTotals("H2MI13204", 2026, { apiKeys: ["k1"], fetchImpl, timeoutMs: 1000 })
     ).resolves.toEqual({
-      fecCandidateId: "P00009423",
-      electionYear: 2024,
-      totalReceipts: 1175189365.41,
-      totalDisbursements: 1175284546.82,
-      cashOnHand: 1000,
-      debtsOwed: 2000,
-      individualItemizedTotal: 401731729,
-      individualUnitemizedTotal: 211825627,
-      otherCommitteeContributions: 12345,
-      transfersFromAffiliatedCommittees: 533714769.74,
-      sourceUrl: "https://www.fec.gov/data/candidate/P00009423/?cycle=2024",
+      fecCandidateId: "H2MI13204",
+      electionYear: 2026,
+      totalReceipts: -1103506.85,
+      totalDisbursements: 1118067.55,
+      cashOnHand: -1926.85,
+      debtsOwed: -2741.54,
+      individualItemizedTotal: 457010,
+      individualUnitemizedTotal: 18400.23,
+      otherCommitteeContributions: 85500,
+      transfersFromAffiliatedCommittees: 1250,
+      sourceUrl: "https://www.fec.gov/data/candidate/H2MI13204/?cycle=2026",
     });
 
     const requestUrl = new URL(String(vi.mocked(fetchImpl).mock.calls[0]?.[0]));
