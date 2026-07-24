@@ -165,4 +165,31 @@ describe("Minnesota candidate finance sync", () => {
       })
     ).rejects.toThrow("Minnesota financial summary identity mismatch");
   });
+
+  it("rejects a financial summary for a different election year", async () => {
+    await expect(
+      syncMinnesotaCandidateFinance({
+        db: { query: async () => ({ rows: [] }) },
+        candidateId: "11111111-1111-1111-1111-111111111111",
+        electionId: "22222222-2222-2222-2222-222222222222",
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeScope: "statewide",
+        officeName: "Governor",
+        contributionRows: [],
+        trustedCommittee: {
+          committeeId: "1001",
+          committeeName: "FRIENDS OF JANE DOE",
+        },
+        financialSummary: {
+          committeeId: "1001",
+          electionYear: 2024,
+          totalReceipts: 100,
+          directContributionTotal: 90,
+          totalDisbursements: 50,
+          sourceUrl: "https://example.invalid/summary",
+        },
+      })
+    ).rejects.toThrow("Minnesota financial summary identity mismatch");
+  });
 });

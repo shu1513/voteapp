@@ -15,6 +15,24 @@ function createMockDb(rows: unknown[] = []) {
   };
 }
 
+function dueQueryRow(overrides: Record<string, unknown> = {}) {
+  return {
+    candidate_id: CANDIDATE_ID,
+    election_id: ELECTION_ID,
+    candidate_name: "Jane Doe",
+    election_year: 2026,
+    office_scope: "statewide",
+    office_name: "Governor",
+    district: null,
+    committee_id: "1001",
+    committee_name: "FRIENDS OF JANE DOE",
+    source_url: "https://example.invalid/source",
+    last_synced_at: null,
+    total_due_rows: "1",
+    ...overrides,
+  };
+}
+
 describe("minnesotaCandidateFinanceBatchSync", () => {
   it("lists active Minnesota finance links that are due for sync", async () => {
     const db = createMockDb([
@@ -259,5 +277,70 @@ describe("minnesotaCandidateFinanceBatchSync", () => {
     } finally {
       warn.mockRestore();
     }
+  });
+
+  it("preserves existing direct totals without warning when CFB explicitly reports no data", async () => {
+    const db = createMockDb([dueQueryRow()]);
+    const fetchMinnesotaCandidateFinancialSummaryFn = vi.fn().mockResolvedValue(null);
+    const syncMinnesotaCandidateFinanceFn = vi.fn().mockResolvedValue({ candidateId: CANDIDATE_ID });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    try {
+      const result = await syncDueMinnesotaCandidateFinance({
+        db,
+        now: NOW,
+        autoLinkMissingLinks: false,
+        contributionRows: [],
+        expenditureRows: [],
+        outsideContributionRows: [],
+        syncMinnesotaCandidateFinanceFn: syncMinnesotaCandidateFinanceFn as never,
+        fetchMinnesotaCandidateFinancialSummaryFn,
+      });
+
+      expect(result.syncedCandidateCount).toBe(1);
+      expect(result.failedCandidateCount).toBe(0);
+      expect(syncMinnesotaCandidateFinanceFn).toHaveBeenCalledWith(
+        expect.objectContaining({ financialSummary: undefined })
+      );
+      expect(warn).not.toHaveBeenCalled();
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
+  it("reuses a financial-summary request for candidates sharing a committee and election", async () => {
+    const db = createMockDb([
+      dueQueryRow({ total_due_rows: "2" }),
+      dueQueryRow({
+        candidate_id: "33333333-3333-4333-8333-333333333333",
+        election_id: "44444444-4444-4444-8444-444444444444",
+        candidate_name: "John Doe",
+        total_due_rows: "2",
+      }),
+    ]);
+    const fetchMinnesotaCandidateFinancialSummaryFn = vi.fn().mockResolvedValue({
+      committeeId: "1001",
+      electionYear: 2026,
+      totalReceipts: 1000,
+      directContributionTotal: 900,
+      totalDisbursements: 400,
+      sourceUrl: "https://example.invalid/financial-summary",
+    });
+    const syncMinnesotaCandidateFinanceFn = vi.fn().mockResolvedValue({ candidateId: CANDIDATE_ID });
+
+    const result = await syncDueMinnesotaCandidateFinance({
+      db,
+      now: NOW,
+      autoLinkMissingLinks: false,
+      contributionRows: [],
+      expenditureRows: [],
+      outsideContributionRows: [],
+      syncMinnesotaCandidateFinanceFn: syncMinnesotaCandidateFinanceFn as never,
+      fetchMinnesotaCandidateFinancialSummaryFn,
+    });
+
+    expect(result.syncedCandidateCount).toBe(2);
+    expect(fetchMinnesotaCandidateFinancialSummaryFn).toHaveBeenCalledTimes(1);
+    expect(syncMinnesotaCandidateFinanceFn).toHaveBeenCalledTimes(2);
   });
 });

@@ -121,6 +121,14 @@ export function parseMinnesotaCandidateFinancialSummaryHtml(input: {
   const sourceUrl = input.sourceUrl ?? buildMinnesotaCandidateFinancialSummaryUrl({ committeeId, electionYear });
   const allowedYears = new Set([electionYear - 1, electionYear]);
   const seenYears = new Set<number>();
+  const unavailableYears = new Set(
+    [...input.html.matchAll(/Data\s+not\s+available\s+for\s+(\d{4})/gi)].map((match) => Number(match[1]))
+  );
+  for (const year of unavailableYears) {
+    if (!allowedYears.has(year)) {
+      throw new Error(`Minnesota CFB financial summary returned unexpected unavailable year ${year}`);
+    }
+  }
   let totalReceiptsCents = 0;
   let directContributionTotalCents = 0;
   let totalDisbursementsCents = 0;
@@ -140,6 +148,9 @@ export function parseMinnesotaCandidateFinancialSummaryHtml(input: {
     if (seenYears.has(year)) {
       throw new Error(`Minnesota CFB financial summary returned duplicate election year ${year}`);
     }
+    if (unavailableYears.has(year)) {
+      throw new Error(`Minnesota CFB financial summary returned conflicting data for election year ${year}`);
+    }
     seenYears.add(year);
 
     const rows = tableRowsByLabel(tableHtml);
@@ -150,14 +161,13 @@ export function parseMinnesotaCandidateFinancialSummaryHtml(input: {
     }
   }
 
-  if (seenYears.size === 0) {
-    const unavailableYears = [...input.html.matchAll(/Data\s+not\s+available\s+for\s+(\d{4})/gi)].map(
-      (match) => Number(match[1])
-    );
-    if (unavailableYears.length > 0 && unavailableYears.every((year) => allowedYears.has(year))) {
-      return null;
+  for (const year of allowedYears) {
+    if (!seenYears.has(year) && !unavailableYears.has(year)) {
+      throw new Error(`Minnesota CFB financial summary is missing election year ${year}`);
     }
-    throw new Error("Minnesota CFB financial summary contains no election-year tables");
+  }
+  if (seenYears.size === 0) {
+    return null;
   }
   if (
     !Number.isSafeInteger(totalReceiptsCents) ||
@@ -177,9 +187,51 @@ export function parseMinnesotaCandidateFinancialSummaryHtml(input: {
   };
 }
 
+function isSetCookieDelimiter(value: string, start: number): boolean {
+  let index = start;
+  while (index < value.length && /\s/.test(value[index] ?? "")) {
+    index += 1;
+  }
+  const nameStart = index;
+  while (index < value.length && !/[;,=\s]/.test(value[index] ?? "")) {
+    index += 1;
+  }
+  while (index < value.length && /\s/.test(value[index] ?? "")) {
+    index += 1;
+  }
+  return index > nameStart && value[index] === "=";
+}
+
+function splitSetCookieHeader(value: string): string[] {
+  const cookies: string[] = [];
+  let start = 0;
+  let inQuotedValue = false;
+
+  for (let index = 0; index < value.length; index += 1) {
+    const char = value[index];
+    if (char === '"' && value[index - 1] !== "\\") {
+      inQuotedValue = !inQuotedValue;
+    } else if (char === "," && !inQuotedValue && isSetCookieDelimiter(value, index + 1)) {
+      const cookie = value.slice(start, index).trim();
+      if (cookie) {
+        cookies.push(cookie);
+      }
+      start = index + 1;
+    }
+  }
+
+  const lastCookie = value.slice(start).trim();
+  if (lastCookie) {
+    cookies.push(lastCookie);
+  }
+  return cookies;
+}
+
 function responseCookies(response: Response): string {
   const headers = response.headers as Headers & { getSetCookie?: () => string[] };
-  const setCookies = headers.getSetCookie?.() ?? [];
+  const direct = headers.getSetCookie?.() ?? [];
+  const combined = headers.get("set-cookie");
+  const setCookies = direct.length > 0 ? direct : combined ? splitSetCookieHeader(combined) : [];
   return setCookies
     .map((setCookie) => setCookie.split(";", 1)[0]?.trim() ?? "")
     .filter(Boolean)
@@ -190,11 +242,11 @@ function isAbortError(error: unknown): boolean {
   return error instanceof Error && error.name === "AbortError";
 }
 
-async function fetchWithTimeout(
+async function fetchTextWithTimeout(
   url: string,
   init: RequestInit,
   options: MinnesotaCandidateFinancialSummaryClientOptions
-): Promise<Response> {
+): Promise<{ response: Response; text: string }> {
   const timeoutMs = options.timeoutMs ?? MINNESOTA_CFB_FINANCIAL_SUMMARY_TIMEOUT_MS;
   if (!Number.isInteger(timeoutMs) || timeoutMs <= 0) {
     throw new Error(`Invalid Minnesota CFB financial summary timeout: ${timeoutMs}`);
@@ -202,7 +254,8 @@ async function fetchWithTimeout(
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    return await (options.fetchImpl ?? fetch)(url, { ...init, signal: controller.signal });
+    const response = await (options.fetchImpl ?? fetch)(url, { ...init, signal: controller.signal });
+    return { response, text: await response.text() };
   } catch (error) {
     if (isAbortError(error)) {
       throw new Error(`Minnesota CFB financial summary request timed out after ${timeoutMs}ms for ${url}`);
@@ -227,7 +280,7 @@ export async function fetchMinnesotaCandidateFinancialSummary(
   const committeeId = normalizeCommitteeId(input.committeeId);
   const electionYear = normalizeElectionYear(input.electionYear);
   const sourceUrl = buildMinnesotaCandidateFinancialSummaryUrl({ committeeId, electionYear });
-  const pageResponse = await fetchWithTimeout(
+  const { response: pageResponse } = await fetchTextWithTimeout(
     sourceUrl,
     {
       headers: {
@@ -244,8 +297,6 @@ export async function fetchMinnesotaCandidateFinancialSummary(
   if (!cookie) {
     throw new Error("Minnesota CFB candidate page did not establish a session");
   }
-  await pageResponse.arrayBuffer();
-
   const body = new URLSearchParams({
     id: committeeId,
     year: String(electionYear),
@@ -253,7 +304,7 @@ export async function fetchMinnesotaCandidateFinancialSummary(
     "year_data[ElectionSegmentStartDate]": String(electionYear - 1),
     tabname: "financial",
   });
-  const summaryResponse = await fetchWithTimeout(
+  const { response: summaryResponse, text: summaryText } = await fetchTextWithTimeout(
     MINNESOTA_CFB_FINANCIAL_SUMMARY_API_URL,
     {
       method: "POST",
@@ -277,7 +328,7 @@ export async function fetchMinnesotaCandidateFinancialSummary(
 
   let payload: unknown;
   try {
-    payload = JSON.parse(await summaryResponse.text());
+    payload = JSON.parse(summaryText);
   } catch {
     throw new Error("Minnesota CFB financial summary response is not valid JSON");
   }

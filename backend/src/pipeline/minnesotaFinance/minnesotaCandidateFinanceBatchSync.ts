@@ -515,14 +515,22 @@ export async function syncDueMinnesotaCandidateFinance(
   }
 
   const results: MinnesotaCandidateFinanceBatchSyncItemResult[] = [];
+  const financialSummaryRequests = new Map<string, Promise<MinnesotaCandidateFinancialSummary | null>>();
   for (const row of due.rows) {
     let financialSummary: MinnesotaCandidateFinancialSummary | undefined;
     try {
-      financialSummary =
-        (await fetchFinancialSummaryFn({
+      const requestKey = `${normalizeCommitteeId(row.committeeId)}:${row.electionYear}`;
+      let financialSummaryRequest = financialSummaryRequests.get(requestKey);
+      if (!financialSummaryRequest) {
+        financialSummaryRequest = fetchFinancialSummaryFn({
           committeeId: row.committeeId,
           electionYear: row.electionYear,
-        })) ?? undefined;
+        });
+        financialSummaryRequests.set(requestKey, financialSummaryRequest);
+      }
+      // Explicit CFB "no data" is not deletion evidence. Passing undefined lets the
+      // writer preserve previously synced totals while still refreshing other data.
+      financialSummary = (await financialSummaryRequest) ?? undefined;
     } catch (error) {
       console.warn(
         `Minnesota CFB financial summary unavailable for committee ${row.committeeId}; preserving existing direct totals:`,
