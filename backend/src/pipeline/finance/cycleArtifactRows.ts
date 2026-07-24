@@ -16,22 +16,27 @@ export function mergeCycleArtifactRows<Row>(input: {
   // one filing-year export. Keep repeated rows inside that winning artifact:
   // some sources do not expose a transaction id, so exact duplicate-looking
   // transactions within one official export cannot safely be collapsed.
-  const latestArtifactIndexByIdentity = new Map<string, number>();
-  for (let artifactIndex = 0; artifactIndex < input.artifacts.length; artifactIndex += 1) {
+  const rowsByArtifact: Row[][] = Array.from({ length: input.artifacts.length }, () => []);
+  const identitiesInNewerArtifacts = new Set<string>();
+  for (let artifactIndex = input.artifacts.length - 1; artifactIndex >= 0; artifactIndex -= 1) {
+    const identitiesInArtifact = new Set<string>();
     for (const row of input.artifacts[artifactIndex] ?? []) {
       const identity = input.rowIdentity(row).trim();
-      if (identity) {
-        latestArtifactIndexByIdentity.set(identity, artifactIndex);
+      if (!identity || !identitiesInNewerArtifacts.has(identity)) {
+        rowsByArtifact[artifactIndex]?.push(row);
       }
+      if (identity) {
+        identitiesInArtifact.add(identity);
+      }
+    }
+    for (const identity of identitiesInArtifact) {
+      identitiesInNewerArtifacts.add(identity);
     }
   }
 
-  for (let artifactIndex = 0; artifactIndex < input.artifacts.length; artifactIndex += 1) {
-    for (const row of input.artifacts[artifactIndex] ?? []) {
-      const identity = input.rowIdentity(row).trim();
-      if (!identity || latestArtifactIndexByIdentity.get(identity) === artifactIndex) {
-        rows.push(row);
-      }
+  for (const artifactRows of rowsByArtifact) {
+    for (const row of artifactRows) {
+      rows.push(row);
     }
   }
   return rows;

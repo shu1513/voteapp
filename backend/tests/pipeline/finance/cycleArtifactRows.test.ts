@@ -39,4 +39,20 @@ describe("mergeCycleArtifactRows", () => {
 
     expect(rows).toEqual([duplicateOne, duplicateTwo]);
   });
+
+  it("computes each row identity once", () => {
+    const artifacts = [[{ id: "prior" }, { id: "same" }], [{ id: "same" }]];
+    let identityCallCount = 0;
+
+    const rows = mergeCycleArtifactRows({
+      artifacts,
+      rowIdentity: (row) => {
+        identityCallCount += 1;
+        return row.id;
+      },
+    });
+
+    expect(rows).toEqual([{ id: "prior" }, { id: "same" }]);
+    expect(identityCallCount).toBe(3);
+  });
 });
