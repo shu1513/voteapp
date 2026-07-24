@@ -199,6 +199,43 @@ describe("candidateFinanceSync", () => {
     expect(client.release).toHaveBeenCalledTimes(1);
   });
 
+  it("preserves signed FEC receipts and cash on hand when writing summaries", async () => {
+    const db = createMockDb();
+    const fecClient = createFecClient({
+      getCandidateTotals: vi.fn().mockResolvedValue({
+        fecCandidateId: "H2MI13204",
+        electionYear: 2026,
+        totalReceipts: -1_103_506.85,
+        totalDisbursements: 1_118_067.55,
+        cashOnHand: -25.5,
+        debtsOwed: 12_270_000,
+        sourceUrl: "https://www.fec.gov/data/candidate/H2MI13204/?cycle=2026",
+      }),
+      listCandidateCommittees: vi.fn().mockResolvedValue([]),
+    });
+
+    await syncCandidateFinance({
+      db,
+      fecCandidateId: "H2MI13204",
+      electionYear: 2026,
+      openFecOptions: { apiKeys: ["k1"] },
+      fecClient,
+      now: new Date("2026-07-23T20:00:00.000Z"),
+    });
+
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]?.slice(0, 6)).toEqual([
+      "H2MI13204",
+      2026,
+      -1_103_506.85,
+      1_118_067.55,
+      -25.5,
+      12_270_000,
+    ]);
+  });
+
   it("syncs outside spending groups and funder breakdowns when requested", async () => {
     const db = createMockDb();
     const fecClient = createFecClient({
