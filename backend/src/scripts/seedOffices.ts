@@ -337,6 +337,15 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
+    canonicalName: "County Clerk and Recorder",
+    summary: [
+      "Keeping county records, including recorded property documents",
+      "Running county elections and maintaining voter records",
+      "Handling licenses, permits, and other filings that county law assigns",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
     canonicalName: "County Assessor",
     summary: [
       "Estimating what each property in the county is worth, which sets how much property tax each owner pays",
@@ -1156,6 +1165,11 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Assessor-Recorder",
     aliasText: "County Assessor-Recorder",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Clerk and Recorder",
+    aliasText: "Clerk and Recorder",
   },
   {
     scope: "county",

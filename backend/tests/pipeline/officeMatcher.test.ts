@@ -597,6 +597,31 @@ describe("OfficeMatcher", () => {
     }
   });
 
+  it("resolves Weld County's source-exact Clerk and Recorder title via the combined office alias", async () => {
+    const officeId = "office-county-clerk-and-recorder";
+    expect(normalizeElectionTitleKey("Clerk and Recorder")).toBe("clerk and recorder");
+
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [{ office_id: officeId, normalized_alias: "clerk and recorder" }],
+      },
+      officesByScope: {
+        county: [{ id: officeId, canonical_name: "County Clerk and Recorder" }],
+      },
+    });
+
+    const result = await new OfficeMatcher(client as never).resolve({
+      scope: "county",
+      districtName: "Weld County, Colorado",
+      state: "CO",
+      officialBallotTitle: "Clerk and Recorder",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe(officeId);
+    expect(result.method).toBe("alias_exact");
+  });
+
   it("resolves the migration 169 alias gaps: City Representative, County Mayor, NY judicial districts", async () => {
     // Guards the normalizer-parity invariant for migration 169's aliases,
     // same as the 164/165 tests above: pin the migration's hand-written
