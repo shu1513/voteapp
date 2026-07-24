@@ -124,6 +124,7 @@ describe("minnesotaCandidateFinanceBatchSync", () => {
       outsideGroupBreakdownsWritten: 0,
       totalReceipts: null,
       directContributionTotal: null,
+      totalDisbursements: null,
       outsideSupportTotal: null,
       outsideOpposeTotal: null,
       matchedContributionRowCount: 0,
@@ -135,6 +136,15 @@ describe("minnesotaCandidateFinanceBatchSync", () => {
       matchedOutsideContributionRowCount: 0,
       includedOutsideContributionRowCount: 0,
       skippedOutsideContributionRowCount: 0,
+    });
+
+    const fetchMinnesotaCandidateFinancialSummaryFn = vi.fn().mockResolvedValue({
+      committeeId: "1001",
+      electionYear: 2026,
+      totalReceipts: 1000,
+      directContributionTotal: 900,
+      totalDisbursements: 400,
+      sourceUrl: "https://example.invalid/financial-summary",
     });
 
     const result = await syncDueMinnesotaCandidateFinance({
@@ -149,6 +159,7 @@ describe("minnesotaCandidateFinanceBatchSync", () => {
       expenditureRows: [],
       outsideContributionRows: [],
       syncMinnesotaCandidateFinanceFn: syncMinnesotaCandidateFinanceFn as never,
+      fetchMinnesotaCandidateFinancialSummaryFn,
     });
 
     expect(result).toMatchObject({
@@ -164,6 +175,10 @@ describe("minnesotaCandidateFinanceBatchSync", () => {
       autoLinkLinkedCount: 0,
     });
     expect(result.results).toHaveLength(1);
+    expect(fetchMinnesotaCandidateFinancialSummaryFn).toHaveBeenCalledWith({
+      committeeId: "1001",
+      electionYear: 2026,
+    });
     expect(syncMinnesotaCandidateFinanceFn).toHaveBeenCalledTimes(1);
     expect(syncMinnesotaCandidateFinanceFn).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -180,6 +195,14 @@ describe("minnesotaCandidateFinanceBatchSync", () => {
         expenditureRows: [],
         outsideContributionRows: [],
         outsideSourceUrl: null,
+        financialSummary: {
+          committeeId: "1001",
+          electionYear: 2026,
+          totalReceipts: 1000,
+          directContributionTotal: 900,
+          totalDisbursements: 400,
+          sourceUrl: "https://example.invalid/financial-summary",
+        },
         trustedCommittee: {
           committeeId: "1001",
           committeeName: "FRIENDS OF JANE DOE",
@@ -189,5 +212,52 @@ describe("minnesotaCandidateFinanceBatchSync", () => {
         now: NOW,
       })
     );
+  });
+
+  it("continues the candidate sync without new direct totals when CFB is unavailable", async () => {
+    const db = createMockDb([
+      {
+        candidate_id: CANDIDATE_ID,
+        election_id: ELECTION_ID,
+        candidate_name: "Jane Doe",
+        election_year: 2026,
+        office_scope: "statewide",
+        office_name: "Governor",
+        district: null,
+        committee_id: "1001",
+        committee_name: "FRIENDS OF JANE DOE",
+        source_url: "https://example.invalid/source",
+        last_synced_at: null,
+        total_due_rows: "1",
+      },
+    ]);
+    const fetchMinnesotaCandidateFinancialSummaryFn = vi.fn().mockRejectedValue(new Error("temporary outage"));
+    const syncMinnesotaCandidateFinanceFn = vi.fn().mockResolvedValue({ candidateId: CANDIDATE_ID });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    try {
+      const result = await syncDueMinnesotaCandidateFinance({
+        db,
+        now: NOW,
+        autoLinkMissingLinks: false,
+        contributionRows: [],
+        expenditureRows: [],
+        outsideContributionRows: [],
+        syncMinnesotaCandidateFinanceFn: syncMinnesotaCandidateFinanceFn as never,
+        fetchMinnesotaCandidateFinancialSummaryFn,
+      });
+
+      expect(result.syncedCandidateCount).toBe(1);
+      expect(result.failedCandidateCount).toBe(0);
+      expect(syncMinnesotaCandidateFinanceFn).toHaveBeenCalledWith(
+        expect.objectContaining({ financialSummary: undefined })
+      );
+      expect(warn).toHaveBeenCalledWith(
+        "Minnesota CFB financial summary unavailable for committee 1001; preserving existing direct totals:",
+        "temporary outage"
+      );
+    } finally {
+      warn.mockRestore();
+    }
   });
 });

@@ -23,6 +23,10 @@ import {
   syncMinnesotaCandidateFinance,
   type MinnesotaCandidateFinanceSyncResult,
 } from "./minnesotaCandidateFinanceSync.js";
+import {
+  fetchMinnesotaCandidateFinancialSummary,
+  type MinnesotaCandidateFinancialSummary,
+} from "./minnesotaCandidateFinancialSummaryClient.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & Pick<Pool, "connect">;
@@ -58,6 +62,7 @@ export type MinnesotaCandidateFinanceBatchSyncInput = {
   expenditureSourceUrl?: string | null;
   outsideSourceUrl?: string | null;
   syncMinnesotaCandidateFinanceFn?: typeof syncMinnesotaCandidateFinance;
+  fetchMinnesotaCandidateFinancialSummaryFn?: typeof fetchMinnesotaCandidateFinancialSummary;
 };
 
 export type MinnesotaCandidateFinanceBatchSyncItemResult = {
@@ -402,6 +407,8 @@ export async function syncDueMinnesotaCandidateFinance(
   );
   const dryRun = input.dryRun === true;
   const syncFn = input.syncMinnesotaCandidateFinanceFn ?? syncMinnesotaCandidateFinance;
+  const fetchFinancialSummaryFn =
+    input.fetchMinnesotaCandidateFinancialSummaryFn ?? fetchMinnesotaCandidateFinancialSummary;
   let autoLinkAttemptedCount = 0;
   let autoLinkLinkedCount = 0;
 
@@ -509,6 +516,20 @@ export async function syncDueMinnesotaCandidateFinance(
 
   const results: MinnesotaCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
+    let financialSummary: MinnesotaCandidateFinancialSummary | undefined;
+    try {
+      financialSummary =
+        (await fetchFinancialSummaryFn({
+          committeeId: row.committeeId,
+          electionYear: row.electionYear,
+        })) ?? undefined;
+    } catch (error) {
+      console.warn(
+        `Minnesota CFB financial summary unavailable for committee ${row.committeeId}; preserving existing direct totals:`,
+        error instanceof Error ? error.message : error
+      );
+    }
+
     try {
       const result = await syncFn({
         db: input.db,
@@ -526,6 +547,7 @@ export async function syncDueMinnesotaCandidateFinance(
         expenditureSourceUrl,
         outsideContributionRows: outsideContributionRowsForBatch,
         outsideSourceUrl: outsideContributionSourceUrl,
+        financialSummary,
         trustedCommittee: {
           committeeId: row.committeeId,
           committeeName: row.committeeName,
