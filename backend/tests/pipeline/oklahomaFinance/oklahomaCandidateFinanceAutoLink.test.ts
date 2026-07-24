@@ -6,6 +6,7 @@ import {
   buildOklahomaCandidateNamePredicate,
   listOklahomaCandidateElectionsMissingFinanceLinks,
 } from "../../../src/pipeline/oklahomaFinance/oklahomaCandidateFinanceAutoLink.js";
+import type { OklahomaGuardianCandidateDetail } from "../../../src/pipeline/oklahomaFinance/oklahomaGuardianCandidateDetail.js";
 import type { OklahomaGuardianContributionRow } from "../../../src/pipeline/oklahomaFinance/oklahomaGuardianContributionReader.js";
 
 const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
@@ -43,6 +44,21 @@ function contribution(overrides: Partial<OklahomaGuardianContributionRow> = {}):
     Amended: "",
     Employer: "Acme Inc",
     Occupation: "Attorney",
+    ...overrides,
+  };
+}
+
+function candidateDetail(
+  organizationId: string,
+  overrides: Partial<OklahomaGuardianCandidateDetail> = {}
+): OklahomaGuardianCandidateDetail {
+  return {
+    organizationId,
+    candidateName: "C. Brent Dishman",
+    officeName: "STATE SENATOR",
+    district: "DISTRICT 47",
+    electionYears: [2026],
+    sourceUrl: `https://guardian.ok.gov/detail/${organizationId}`,
     ...overrides,
   };
 }
@@ -148,6 +164,9 @@ describe("oklahomaCandidateFinanceAutoLink", () => {
 
   it("does not write a link when committee resolution is ambiguous", async () => {
     const db = createMockDb();
+    const fetchCandidateDetail = vi.fn(async ({ organizationId }: { organizationId: string }) =>
+      candidateDetail(organizationId)
+    );
 
     await expect(
       autoLinkOklahomaCandidateFinanceForCandidateElection({
@@ -170,6 +189,7 @@ describe("oklahomaCandidateFinanceAutoLink", () => {
           officeName: "State Senator",
           district: "47",
         },
+        fetchCandidateDetail,
       })
     ).resolves.toEqual({
       candidateId: CANDIDATE_ID,
@@ -177,6 +197,97 @@ describe("oklahomaCandidateFinanceAutoLink", () => {
       status: "ambiguous",
       reason: "multiple_matching_committees",
     });
+
+    expect(db.query).not.toHaveBeenCalled();
+    expect(fetchCandidateDetail).toHaveBeenCalledTimes(2);
+  });
+
+  it("uses official office and election-cycle metadata to select one current committee", async () => {
+    const db = createMockDb([{ id: "link-1" }]);
+    const fetchCandidateDetail = vi.fn(async ({ organizationId }: { organizationId: string }) => {
+      if (organizationId === "11409") {
+        return candidateDetail(organizationId, {
+          candidateName: "JOHN PFEIFFER",
+          officeName: "STATE REPRESENTATIVE",
+          district: "DISTRICT 38",
+          electionYears: [2024],
+        });
+      }
+      return candidateDetail(organizationId, {
+        candidateName: "JOHN CHRISTOPHER PFEIFFER",
+        officeName: "COMMISSIONER OF LABOR",
+        district: null,
+        electionYears: [2026],
+      });
+    });
+
+    await expect(
+      autoLinkOklahomaCandidateFinanceForCandidateElection({
+        db,
+        now: NOW,
+        sourceUrl: "https://guardian.ok.gov/PublicSite/DataDownload.aspx",
+        contributionRows: [
+          contribution({ "Org ID": "11409", "Candidate Name": "John Pfeiffer", "Committee Name": "" }),
+          contribution({ "Org ID": "11813", "Candidate Name": "John Pfeiffer", "Committee Name": "" }),
+        ],
+        candidateElection: {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          candidateName: "John Pfeiffer",
+          electionYear: 2026,
+          officeScope: "statewide",
+          officeName: "Labor Commissioner",
+          district: null,
+        },
+        fetchCandidateDetail,
+      })
+    ).resolves.toEqual({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      status: "linked",
+      committeeId: "11813",
+    });
+
+    expect(fetchCandidateDetail).toHaveBeenCalledTimes(2);
+    expect(db.query.mock.calls[0]?.[1]).toEqual(expect.arrayContaining(["11813"]));
+  });
+
+  it("preserves ambiguity when candidate-detail lookup fails", async () => {
+    const db = createMockDb();
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    try {
+      await expect(
+        autoLinkOklahomaCandidateFinanceForCandidateElection({
+          db,
+          now: NOW,
+          sourceUrl: "https://guardian.ok.gov/PublicSite/DataDownload.aspx",
+          contributionRows: [contribution(), contribution({ "Org ID": "99999" })],
+          candidateElection: {
+            candidateId: CANDIDATE_ID,
+            electionId: ELECTION_ID,
+            candidateName: "Brent Dishman",
+            electionYear: 2026,
+            officeScope: "state_upper",
+            officeName: "State Senator",
+            district: "47",
+          },
+          fetchCandidateDetail: vi.fn().mockRejectedValue(new Error("Guardian unavailable")),
+        })
+      ).resolves.toEqual({
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        status: "ambiguous",
+        reason: "multiple_matching_committees",
+      });
+
+      expect(warnSpy).toHaveBeenCalledWith(
+        "Oklahoma Guardian candidate-detail lookup failed; preserving ambiguous committee resolution:",
+        expect.objectContaining({ error: "Guardian unavailable" })
+      );
+    } finally {
+      warnSpy.mockRestore();
+    }
 
     expect(db.query).not.toHaveBeenCalled();
   });
