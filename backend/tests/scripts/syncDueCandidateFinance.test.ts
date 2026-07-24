@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  DEFAULT_OPEN_FEC_LARGE_DRAIN_REQUEST_INTERVAL_MS,
+  createOpenFecPacingPlan,
   parseSyncDueCandidateFinanceScriptArgs,
   toSyncDueCandidateFinanceScriptOutput,
 } from "../../src/scripts/syncDueCandidateFinance.js";
@@ -58,6 +60,55 @@ describe("syncDueCandidateFinance script", () => {
     expect(parseSyncDueCandidateFinanceScriptArgs(["--request-interval-ms=0"])).toMatchObject({
       requestIntervalMs: 0,
     });
+  });
+
+  it("enables quota-safe pacing by default for a large drain", () => {
+    const pacing = createOpenFecPacingPlan({
+      dryRun: false,
+      includeOutside: false,
+      maxCandidates: 283,
+    });
+
+    expect(DEFAULT_OPEN_FEC_LARGE_DRAIN_REQUEST_INTERVAL_MS).toBe(4000);
+    expect(pacing.requestIntervalMs).toBe(4000);
+    expect(pacing.rateLimiter).toEqual(expect.any(Function));
+  });
+
+  it("keeps a normal small batch fast when the interval flag is omitted", () => {
+    expect(
+      createOpenFecPacingPlan({
+        dryRun: false,
+        includeOutside: false,
+      })
+    ).toEqual({ requestIntervalMs: 0 });
+
+    expect(
+      createOpenFecPacingPlan({
+        dryRun: false,
+        includeOutside: false,
+        maxCandidates: 5,
+      })
+    ).toEqual({ requestIntervalMs: 0 });
+  });
+
+  it("preserves explicit pacing disable and positive overrides for large drains", () => {
+    expect(
+      createOpenFecPacingPlan({
+        dryRun: false,
+        includeOutside: false,
+        maxCandidates: 283,
+        requestIntervalMs: 0,
+      })
+    ).toEqual({ requestIntervalMs: 0 });
+
+    const pacing = createOpenFecPacingPlan({
+      dryRun: false,
+      includeOutside: false,
+      maxCandidates: 283,
+      requestIntervalMs: 250,
+    });
+    expect(pacing.requestIntervalMs).toBe(250);
+    expect(pacing.rateLimiter).toEqual(expect.any(Function));
   });
 
   it("formats script output", () => {

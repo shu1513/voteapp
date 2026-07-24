@@ -68,7 +68,7 @@ type CandidateFinanceDueQueryRow = {
   total_due_rows: string | number;
 };
 
-const DEFAULT_MAX_CANDIDATES = 25;
+export const DEFAULT_CANDIDATE_FINANCE_BATCH_SIZE = 25;
 const DEFAULT_STALE_AFTER_DAYS = 7;
 // Keep one extra calendar day so UTC scheduler timing cannot skip election-night finance syncs.
 const DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS = 1;
@@ -229,7 +229,11 @@ export async function syncDueCandidateFinance(
   const now = input.now ?? new Date();
   assertValidDate(now, "now");
 
-  const maxCandidates = normalizePositiveInteger(input.maxCandidates, DEFAULT_MAX_CANDIDATES, "maxCandidates");
+  const maxCandidates = normalizePositiveInteger(
+    input.maxCandidates,
+    DEFAULT_CANDIDATE_FINANCE_BATCH_SIZE,
+    "maxCandidates"
+  );
   const staleAfterDays = normalizePositiveInteger(input.staleAfterDays, DEFAULT_STALE_AFTER_DAYS, "staleAfterDays");
   const electionLookbackDays = normalizePositiveInteger(
     input.electionLookbackDays,
