@@ -1529,6 +1529,13 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     aliasText: "County Council",
   },
   {
+    // South Carolina county councils elect a chair of the legislative body;
+    // this is board leadership, not the county administrator/executive.
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "County Council Chair",
+  },
+  {
     // "For Member of County Council (District 1)" (Howard County MD) after
     // the leading-"For" and seat strips.
     scope: "county",

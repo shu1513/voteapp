@@ -1723,6 +1723,7 @@ describe("OfficeMatcher", () => {
       aliasesByScope: {
         county: [
           aliasRow("office-county-supervisor", "County Council"),
+          aliasRow("office-county-supervisor", "County Council Chair"),
           aliasRow("office-county-supervisor", "Member of County Council"),
           aliasRow("office-county-supervisor", "Council Member"),
           aliasRow("office-district-attorney", "State's Attorney"),
@@ -1798,6 +1799,13 @@ describe("OfficeMatcher", () => {
         districtName: "Howard County, Maryland",
         state: "MD",
         title: "For Member of County Council (District 5)",
+        expected: "office-county-supervisor",
+      },
+      {
+        scope: "county",
+        districtName: "Spartanburg County, South Carolina",
+        state: "SC",
+        title: "County Council Chair",
         expected: "office-county-supervisor",
       },
       {

@@ -205,6 +205,22 @@ describe("electionPartisanshipPolicy", () => {
     expect(resolved).toBe(true);
   });
 
+  it("keeps South Carolina probate judges partisan", () => {
+    const resolved = resolveElectionIsPartisan({
+      draft: {
+        district_id: "d-sc",
+        district_name: "Spartanburg County, South Carolina",
+        district_type: "county",
+        state: "SC",
+      },
+      contestFamily: "judicial_office",
+      raceType: "office",
+      officialBallotTitle: "Probate Judge",
+      aiValue: false,
+    });
+    expect(resolved).toBe(true);
+  });
+
   it("candidate policy helper excludes party for retention judicial contests", () => {
     const includeParty = shouldIncludeCandidatePartyByPolicy({
       districtType: "statewide",
