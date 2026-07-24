@@ -5,6 +5,7 @@ import { Pool } from "pg";
 import { loadProjectEnv } from "../config/env.js";
 import { isCandidateFinanceEnabled } from "../config/featureFlags.js";
 import {
+  DEFAULT_CANDIDATE_FINANCE_BATCH_SIZE,
   syncDueCandidateFinance,
   type CandidateFinanceBatchSyncResult,
 } from "../pipeline/finance/candidateFinanceBatchSync.js";
@@ -13,6 +14,17 @@ import {
   createOpenFecRateLimiter,
   readOpenFecApiKeysFromEnv,
 } from "../pipeline/presidential/openFecClient.js";
+
+const MILLISECONDS_PER_HOUR = 60 * 60 * 1000;
+const OPEN_FEC_PERSONAL_KEY_REQUESTS_PER_HOUR = 1000;
+const OPEN_FEC_DEFAULT_QUOTA_UTILIZATION_PERCENT = 90;
+
+// Requests always start with key 1; extra keys are failover, not round-robin capacity.
+// Use 90% of one personal key's documented 1,000-request hourly quota.
+export const DEFAULT_OPEN_FEC_LARGE_DRAIN_REQUEST_INTERVAL_MS = Math.ceil(
+  (MILLISECONDS_PER_HOUR * 100) /
+    (OPEN_FEC_PERSONAL_KEY_REQUESTS_PER_HOUR * OPEN_FEC_DEFAULT_QUOTA_UTILIZATION_PERCENT)
+);
 
 export type SyncDueCandidateFinanceScriptOptions = {
   dryRun: boolean;
@@ -77,6 +89,25 @@ export function parseSyncDueCandidateFinanceScriptArgs(
   };
 }
 
+export function createOpenFecPacingPlan(options: SyncDueCandidateFinanceScriptOptions): {
+  requestIntervalMs: number;
+  rateLimiter?: ReturnType<typeof createOpenFecRateLimiter>;
+} {
+  const maxCandidates = options.maxCandidates ?? DEFAULT_CANDIDATE_FINANCE_BATCH_SIZE;
+  const requestIntervalMs =
+    options.requestIntervalMs ??
+    (maxCandidates > DEFAULT_CANDIDATE_FINANCE_BATCH_SIZE
+      ? DEFAULT_OPEN_FEC_LARGE_DRAIN_REQUEST_INTERVAL_MS
+      : 0);
+
+  return {
+    requestIntervalMs,
+    ...(requestIntervalMs > 0
+      ? { rateLimiter: createOpenFecRateLimiter({ minIntervalMs: requestIntervalMs }) }
+      : {}),
+  };
+}
+
 function getDatabaseUrl(): string {
   return process.env.DATABASE_URL?.trim() || "postgresql://localhost:5432/voteapp";
 }
@@ -84,6 +115,7 @@ function getDatabaseUrl(): string {
 export function toSyncDueCandidateFinanceScriptOutput(input: {
   startedAt: Date;
   options: SyncDueCandidateFinanceScriptOptions;
+  requestIntervalMs: number;
   result: CandidateFinanceBatchSyncResult;
 }) {
   return {
@@ -92,6 +124,7 @@ export function toSyncDueCandidateFinanceScriptOutput(input: {
     started_at: input.startedAt.toISOString(),
     dry_run: input.options.dryRun,
     include_outside: input.options.includeOutside,
+    request_interval_ms: input.requestIntervalMs,
     result: input.result,
   };
 }
@@ -107,10 +140,7 @@ async function main(): Promise<void> {
 
   const apiKeys = readOpenFecApiKeysFromEnv();
   const timeoutMs = options.timeoutMs ?? DEFAULT_OPEN_FEC_TIMEOUT_MS;
-  const rateLimiter =
-    options.requestIntervalMs === undefined || options.requestIntervalMs === 0
-      ? undefined
-      : createOpenFecRateLimiter({ minIntervalMs: options.requestIntervalMs });
+  const pacing = createOpenFecPacingPlan(options);
 
   if (apiKeys.length === 0) {
     throw new Error("No OpenFEC API keys configured. Set FEC_API_KEY_1 or FEC_API_KEY.");
@@ -121,7 +151,7 @@ async function main(): Promise<void> {
   try {
     const result = await syncDueCandidateFinance({
       db: pool,
-      openFecOptions: { apiKeys, timeoutMs, ...(rateLimiter ? { rateLimiter } : {}) },
+      openFecOptions: { apiKeys, timeoutMs, ...(pacing.rateLimiter ? { rateLimiter: pacing.rateLimiter } : {}) },
       now: startedAt,
       dryRun: options.dryRun,
       includeOutside: options.includeOutside,
@@ -133,7 +163,18 @@ async function main(): Promise<void> {
       outsideGroupLimit: options.outsideGroupLimit,
     });
 
-    console.log(JSON.stringify(toSyncDueCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));
+    console.log(
+      JSON.stringify(
+        toSyncDueCandidateFinanceScriptOutput({
+          startedAt,
+          options,
+          requestIntervalMs: pacing.requestIntervalMs,
+          result,
+        }),
+        null,
+        2
+      )
+    );
   } finally {
     await pool.end();
   }
