@@ -463,6 +463,15 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
+    canonicalName: "County Engineer",
+    summary: [
+      "Planning, building, and maintaining county roads, bridges, and other public works",
+      "Reviewing construction projects, permits, and engineering plans for county infrastructure",
+      "Managing engineering staff, contracts, and technical records for county projects",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
     canonicalName: "Soil and Water Conservation District Supervisor",
     summary: [
       "Guiding local programs that protect soil, farmland, and water",
@@ -1220,6 +1229,11 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Auditor",
     aliasText: "County Comptroller",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Engineer",
+    aliasText: "County Engineer",
   },
   {
     scope: "county",
