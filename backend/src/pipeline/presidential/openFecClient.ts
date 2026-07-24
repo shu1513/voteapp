@@ -3,6 +3,8 @@ export const DEFAULT_OPEN_FEC_TIMEOUT_MS = 30_000;
 export const DEFAULT_OPEN_FEC_PER_PAGE = 20;
 export const MAX_OPEN_FEC_PER_PAGE = 100;
 
+const OPEN_FEC_TIMEOUT_RETRY_DELAY_MS = 500;
+
 export type OpenFecClientErrorCode =
   | "configuration_error"
   | "invalid_request"
@@ -74,6 +76,12 @@ function isAbortError(error: unknown): boolean {
     (error instanceof DOMException && error.name === "AbortError") ||
     (error instanceof Error && error.name === "AbortError")
   );
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
 
 function assertPresidentialElectionYear(electionYear: number): void {
@@ -297,7 +305,7 @@ export function buildOpenFecPresidentialCandidateByIdUrl(fecCandidateId: string)
   return url.toString();
 }
 
-export async function fetchOpenFecJsonWithKeyRotation(
+async function fetchOpenFecJsonWithKeyRotationOnce(
   baseUrl: string,
   options: OpenFecClientOptions
 ): Promise<unknown> {
@@ -364,6 +372,23 @@ export async function fetchOpenFecJsonWithKeyRotation(
   }
 
   throw lastError ?? new OpenFecClientError("http_error", "OpenFEC request failed across all configured keys.");
+}
+
+export async function fetchOpenFecJsonWithKeyRotation(
+  baseUrl: string,
+  options: OpenFecClientOptions
+): Promise<unknown> {
+  try {
+    return await fetchOpenFecJsonWithKeyRotationOnce(baseUrl, options);
+  } catch (error) {
+    if (!(error instanceof OpenFecClientError) || error.code !== "timeout") {
+      throw error;
+    }
+  }
+
+  // A timeout is not key-specific, so retry once without consuming the next key's quota.
+  await sleep(OPEN_FEC_TIMEOUT_RETRY_DELAY_MS);
+  return fetchOpenFecJsonWithKeyRotationOnce(baseUrl, options);
 }
 
 export async function searchPresidentialCandidatesByName(
