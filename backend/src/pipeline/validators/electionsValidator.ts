@@ -317,6 +317,10 @@ function isSoftScopeAmbiguous(
       // while the district payload itself supplies the county scope.
       /\bclerk of (?:the )?circuit court\b/,
       /\bcircuit court clerk\b/,
+      // Judicial circuits may span several counties, but the election model
+      // intentionally consolidates judges by geographic discovery scope and
+      // has no judicial-circuit district type. A circuit-judge contest found
+      // on a county ballot therefore belongs to that county discovery pass.
       /\bcircuit judge\b/,
       /\brecorder\b/,
       /\bcoroner\b/,
