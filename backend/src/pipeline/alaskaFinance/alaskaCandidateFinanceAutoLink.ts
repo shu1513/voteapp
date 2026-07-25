@@ -142,6 +142,7 @@ export async function autoLinkAlaskaCandidateFinanceForCandidateElection(input: 
     candidateName: input.candidateElection.candidateName,
     electionYear: input.candidateElection.electionYear,
     incomeRows: input.incomeRows,
+    officeName: input.candidateElection.officeName,
     sourceUrl: input.sourceUrl,
   });
 

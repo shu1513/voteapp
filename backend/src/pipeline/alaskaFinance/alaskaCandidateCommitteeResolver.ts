@@ -185,6 +185,51 @@ function isCandidateFilerType(value: string): boolean {
   return normalizeTextKey(value).includes("CANDIDATE");
 }
 
+// Office compatibility classes. APOC income rows carry an Office column on
+// ~87% of candidate rows; when both the row's office and the VoteApp office
+// map to a known class, they must agree. Governor and Lieutenant Governor
+// share a class because Alaska tickets file jointly. Unknown or blank office
+// text never blocks a match - the constraint only uses evidence it can read.
+type AlaskaOfficeClass = "governor_ticket" | "state_upper" | "state_lower" | "municipal";
+
+function officeClassOfApocOffice(value: string): AlaskaOfficeClass | null {
+  switch (normalizeTextKey(value)) {
+    case "GOVERNOR":
+    case "LT GOVERNOR":
+    case "LIEUTENANT GOVERNOR":
+      return "governor_ticket";
+    case "SENATE":
+    case "STATE SENATE":
+      return "state_upper";
+    case "HOUSE":
+    case "STATE HOUSE":
+      return "state_lower";
+    case "ASSEMBLY":
+    case "SCHOOL BOARD":
+    case "MAYOR":
+    case "CITY COUNCIL":
+    case "BOROUGH ASSEMBLY":
+      return "municipal";
+    default:
+      return null;
+  }
+}
+
+function officeClassOfCandidateOffice(value: string | null | undefined): AlaskaOfficeClass | null {
+  switch (normalizeTextKey(value ?? "")) {
+    case "GOVERNOR":
+    case "LIEUTENANT GOVERNOR":
+      return "governor_ticket";
+    case "STATE SENATOR":
+      return "state_upper";
+    case "STATE LOWER CHAMBER LEGISLATOR":
+    case "STATE REPRESENTATIVE":
+      return "state_lower";
+    default:
+      return null;
+  }
+}
+
 // Alaska governor candidates file twice: a standalone filer ("Tom Begich")
 // and a joint ticket filer once a running mate is named ("Tom Begich/Julia
 // Hnilicka"). Both are the same campaign, so two matched filers are not real
@@ -219,11 +264,13 @@ export function resolveAlaskaCandidateCommittee(input: {
   candidateName: string;
   electionYear: number;
   incomeRows: readonly AlaskaApocCampaignIncomeRow[];
+  officeName?: string | null;
   sourceUrl?: string | null;
 }): AlaskaCandidateCommitteeResolution {
   const candidateNameNormalized = normalizeAlaskaCandidateNameForStorage(input.candidateName);
   // VoteApp side expands nicknames; APOC filer names always key literally.
   const candidateNameKeys = normalizeAlaskaCandidateNameKeys(input.candidateName, { expandNicknames: true });
+  const candidateOfficeClass = officeClassOfCandidateOffice(input.officeName);
   const filers = new Map<string, FilerAggregate>();
 
   for (const row of input.incomeRows) {
@@ -233,6 +280,12 @@ export function resolveAlaskaCandidateCommittee(input: {
       !rowMatchesCandidate({ row, candidateNameKeys })
     ) {
       continue;
+    }
+    if (candidateOfficeClass) {
+      const rowOfficeClass = officeClassOfApocOffice(row.office);
+      if (rowOfficeClass && rowOfficeClass !== candidateOfficeClass) {
+        continue;
+      }
     }
     const candidateFilerId = filerId(row);
     const candidateFilerName = row.filerName.trim() || row.name.trim();

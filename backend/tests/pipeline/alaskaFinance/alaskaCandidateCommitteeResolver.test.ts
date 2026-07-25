@@ -13,6 +13,7 @@ function income(overrides: Partial<AlaskaApocCampaignIncomeRow> = {}): AlaskaApo
     filerId: "1001",
     filerName: "Doe, Jane",
     filerType: "Candidate",
+    office: "",
     name: "Doe, Jane",
     date: "10/01/2026",
     type: "Income",
@@ -187,6 +188,61 @@ describe("alaskaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
   });
 
+  it("filters rows by office class when both sides carry one", () => {
+    // A same-name filer in a different race must not link.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeName: "State Lower Chamber Legislator",
+        incomeRows: [income({ office: "Senate" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+
+    // Municipal filings never satisfy a state-office candidate.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeName: "State Lower Chamber Legislator",
+        incomeRows: [income({ office: "Assembly" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+
+    // Blank or unrecognized row office text never blocks a match.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeName: "State Lower Chamber Legislator",
+        incomeRows: [income({ office: "" }), income({ office: "Statewide Ballot" })],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "1001" });
+
+    // Governor and Lieutenant Governor rows are one ticket class.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeName: "Governor",
+        incomeRows: [income({ office: "Lt. Governor" })],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "1001" });
+
+    // The right-office filer wins when a wrong-office namesake also filed.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeName: "State Senator",
+        incomeRows: [
+          income({ filerId: "4001", office: "Senate" }),
+          income({ filerId: "4002", filerName: "Jane Doe for Anchorage", name: "Jane Doe for Anchorage", office: "Assembly" }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "4001" });
+  });
+
   it("ignores out-of-cycle rows", () => {
     expect(
       resolveAlaskaCandidateCommittee({
@@ -211,6 +267,7 @@ describe("alaskaCandidateCommitteeResolver", () => {
             filerId: "8001",
             filerName: "Jane Doe Support PAC",
             filerType: "Group",
+            office: "",
             name: "Jane Doe",
           }),
         ],
