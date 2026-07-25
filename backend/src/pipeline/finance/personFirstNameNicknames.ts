@@ -1,11 +1,15 @@
 // Conservative equivalence groups for common American first-name nicknames.
 // State finance sources file candidates under formal names ("Michael W
 // Frerichs") while VoteApp often stores the campaign name ("Mike Frerichs"),
-// so exact-key matching silently strands well-known incumbents. Resolvers use
-// firstNameVariants to add alternate first+last keys; a variant match can
-// never link the wrong person on its own because every resolver still
-// requires the same surname plus office/district/year agreement, and
-// multi-candidate matches surface as ambiguous rather than linking.
+// so exact-key matching silently strands well-known incumbents.
+//
+// Resolvers must expand variants on the VoteApp side ONLY, keying
+// source-side names literally. Expanding both sides would let two distinct
+// formal names meet at a shared nickname key ("Patrick Smith" and "Patricia
+// Smith" both produce "PAT SMITH") and attach the wrong person's data when
+// only one of them exists in the source. With one-sided expansion a variant
+// match still requires the same surname plus office/district/year agreement,
+// and multi-candidate hits surface as ambiguous rather than linking.
 //
 // Keep this list to unambiguous, widely used American pairs. A nickname may
 // appear in several groups ("PAT" → Patrick and Patricia); lookups return the

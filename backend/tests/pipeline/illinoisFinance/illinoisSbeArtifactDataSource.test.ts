@@ -221,6 +221,44 @@ describe("illinoisSbeArtifactDataSource", () => {
     ]);
   });
 
+  it("matches outside expenditures across nicknames without bridging distinct formal names", () => {
+    const makeExpenditure = (candidateName: string) => ({
+      payeeName: "Mailer",
+      payeeAddress: null,
+      amount: 100,
+      expendedDate: "10/1/2022",
+      reportReceivedDate: null,
+      expenditureType: "Independent Expenditures",
+      expendingCommitteeName: `PAC for ${candidateName}`,
+      purpose: "Mail",
+      candidateName,
+      officeDistrict: "Governor",
+      supportOppose: "support" as const,
+      sourceUrl: EXPENDITURES_URL,
+    });
+    const artifacts = {
+      contributionRecords: [],
+      contributionSourceUrl: CONTRIBUTIONS_URL,
+      expenditureRecords: [makeExpenditure("Michael Smith"), makeExpenditure("Patricia Smith")],
+      expenditureSourceUrl: EXPENDITURES_URL,
+    };
+
+    // The VoteApp side expands nicknames: Mike finds the formal Michael record.
+    const mikeData = loadIllinoisFinanceDataForDueRowFromArtifacts({
+      row: dueRow({ candidateName: "Mike Smith" }),
+      artifacts,
+    });
+    expect(mikeData.outsideExpenditureRecords?.map((record) => record.candidateName)).toEqual(["Michael Smith"]);
+
+    // But two distinct formal names must not connect through a shared nickname:
+    // Patrick and Patricia both shorten to Pat, and Patricia's record stays hers.
+    const patrickData = loadIllinoisFinanceDataForDueRowFromArtifacts({
+      row: dueRow({ candidateName: "Patrick Smith" }),
+      artifacts,
+    });
+    expect(patrickData.outsideExpenditureRecords).toEqual([]);
+  });
+
   it("matches local outside expenditures to the exact municipality", () => {
     const makeExpenditure = (officeDistrict: string) => ({
       payeeName: "Mailer",

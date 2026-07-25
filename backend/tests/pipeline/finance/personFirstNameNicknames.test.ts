@@ -13,6 +13,10 @@ describe("firstNameVariants", () => {
   it("returns the union of groups for shared nicknames", () => {
     expect(firstNameVariants("PAT")).toEqual(expect.arrayContaining(["PATRICK", "PATRICIA"]));
     expect(firstNameVariants("STEVE")).toEqual(expect.arrayContaining(["STEPHEN", "STEVEN"]));
+    expect(firstNameVariants("HARRY")).toEqual(expect.arrayContaining(["HAROLD", "HENRY", "HANK"]));
+    expect(firstNameVariants("TED")).toEqual(
+      expect.arrayContaining(["EDWARD", "ED", "EDDIE", "THEODORE", "TEDDY"])
+    );
   });
 
   it("does not relate distinct formal names through a shared nickname", () => {

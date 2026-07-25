@@ -142,7 +142,10 @@ function candidateNameMatches(input: {
   if (!recordName) {
     return false;
   }
-  const rowKeys = normalizeIllinoisCandidateNameKeys(input.row.candidateName);
+  // One-sided nickname expansion: the VoteApp row may expand, the SBE record
+  // keys stay literal so distinct formal names cannot meet at a shared
+  // nickname key.
+  const rowKeys = normalizeIllinoisCandidateNameKeys(input.row.candidateName, { expandNicknames: true });
   const recordKeys = normalizeIllinoisCandidateNameKeys(recordName);
   for (const key of recordKeys) {
     if (rowKeys.has(key)) {
