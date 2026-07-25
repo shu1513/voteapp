@@ -5,6 +5,7 @@ import {
   toIllinoisFinanceOfficeKey,
   toIllinoisSbeOfficeSearchInput,
 } from "./illinoisFinanceEligibleOffices.js";
+import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
 import { normalizeIllinoisCommitteeKey } from "./illinoisFinanceAggregators.js";
 import {
   fetchIllinoisSbeCandidateContributionRecords,
@@ -106,23 +107,36 @@ export function normalizeIllinoisCandidateNameKeys(value: string): Set<string> {
   const trimmed = value.trim();
   const keys = new Set<string>();
 
+  function addFirstLastKeys(parts: readonly string[]): void {
+    const firstName = parts[0]!;
+    const lastName = parts[parts.length - 1]!;
+    keys.add(`${firstName} ${lastName}`);
+    for (const variant of firstNameVariants(firstName)) {
+      keys.add(`${variant} ${lastName}`);
+    }
+  }
+
   function addName(raw: string): void {
-    const hasComma = raw.includes(",");
     const normalized = normalizePersonName(raw);
     if (normalized) {
       keys.add(normalized);
-    }
-
-    const parts = normalized.split(" ").filter(Boolean);
-    if (!hasComma && parts.length >= 2) {
-      keys.add(`${parts[0]} ${parts[parts.length - 1]}`);
     }
 
     const commaParts = raw
       .split(",")
       .map((part) => normalizePersonName(part))
       .filter(Boolean);
-    if (commaParts.length >= 2) {
+    // A comma only signals a "Last, First" flip when text survives on both
+    // sides after normalization; a bare suffix comma ("Tarver, II") reads as
+    // a plain first-to-last name.
+    const isLastFirstName = commaParts.length >= 2;
+
+    const parts = normalized.split(" ").filter(Boolean);
+    if (!isLastFirstName && parts.length >= 2) {
+      addFirstLastKeys(parts);
+    }
+
+    if (isLastFirstName) {
       const lastName = commaParts[0] ?? "";
       const firstNames = commaParts.slice(1).join(" ").trim();
       const flipped = normalizePersonName(`${firstNames} ${lastName}`);
@@ -130,7 +144,7 @@ export function normalizeIllinoisCandidateNameKeys(value: string): Set<string> {
         keys.add(flipped);
         const flippedParts = flipped.split(" ").filter(Boolean);
         if (flippedParts.length >= 2) {
-          keys.add(`${flippedParts[0]} ${flippedParts[flippedParts.length - 1]}`);
+          addFirstLastKeys(flippedParts);
         }
       }
     }

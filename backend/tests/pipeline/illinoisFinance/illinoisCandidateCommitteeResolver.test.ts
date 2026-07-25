@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   normalizeIllinoisCandidateNameForStorage,
+  normalizeIllinoisCandidateNameKeys,
   resolveIllinoisCandidateCommittee,
   resolveIllinoisCandidateCommitteesFromRelations,
 } from "../../../src/pipeline/illinoisFinance/illinoisCandidateCommitteeResolver.js";
@@ -145,6 +146,51 @@ describe("illinoisCandidateCommitteeResolver", () => {
         { committeeKey: "SBE:201", sbeCandidateId: "101", confidence: "official_relation" },
         { committeeKey: "SBE:202", sbeCandidateId: "101", confidence: "official_relation" },
       ],
+    });
+  });
+
+  it("keys a name whose comma introduces only a suffix like a plain name", () => {
+    // "Curtis J Tarver, II" must still yield the middle-initial-free
+    // "CURTIS TARVER" key; the suffix comma is not a Last, First flip.
+    expect(normalizeIllinoisCandidateNameKeys("Curtis J Tarver, II")).toContain("CURTIS TARVER");
+    // A genuine Last, First name still flips.
+    expect(normalizeIllinoisCandidateNameKeys("Tarver, Curtis J")).toContain("CURTIS TARVER");
+  });
+
+  it("keys common nicknames against their formal first names", () => {
+    expect(normalizeIllinoisCandidateNameKeys("Mike Frerichs")).toContain("MICHAEL FRERICHS");
+    expect(normalizeIllinoisCandidateNameKeys("Michael W Frerichs")).toContain("MIKE FRERICHS");
+    expect(normalizeIllinoisCandidateNameKeys("Frances Ann Hurley")).toContain("FRAN HURLEY");
+    // Unrelated first names must not gain variants.
+    expect(normalizeIllinoisCandidateNameKeys("Zelda Frerichs")).not.toContain("MICHAEL FRERICHS");
+  });
+
+  it("resolves a nickname candidate against the formal SBE relation name", () => {
+    const resolution = resolveIllinoisCandidateCommitteesFromRelations({
+      candidateName: "Mike Frerichs",
+      officeScope: "statewide",
+      officeName: "State Treasurer",
+      electionYear: 2026,
+      relations: [
+        {
+          candidateId: "28183",
+          candidateName: "Michael W Frerichs",
+          electionYear: 2026,
+          districtType: "statewide",
+          district: "Illinois",
+          office: "Treasurer",
+          isAtLarge: false,
+          committeeId: "23131",
+          committeeName: "Friends of Frerichs",
+          committeeStatus: "active",
+          sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/DownloadCDDataFiles.aspx",
+        },
+      ],
+    });
+
+    expect(resolution).toMatchObject({
+      status: "matched",
+      matches: [{ committeeKey: "SBE:23131", sbeCandidateId: "28183" }],
     });
   });
 
