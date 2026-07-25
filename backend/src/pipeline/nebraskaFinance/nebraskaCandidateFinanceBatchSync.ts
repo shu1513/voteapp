@@ -1,12 +1,14 @@
 import { stat } from "node:fs/promises";
 import type { Pool, PoolClient } from "pg";
 
+import { mergeCycleArtifactRows } from "../finance/cycleArtifactRows.js";
 import {
   autoLinkMissingNebraskaCandidateFinanceLinks,
   buildNebraskaCandidateNamePredicate,
   listNebraskaCandidateElectionsMissingFinanceLinks,
   type NebraskaFinanceAutoLinkCandidateElection,
 } from "./nebraskaCandidateFinanceAutoLink.js";
+import { nebraskaElectionCycleStartYear } from "./nebraskaDirectContributionAggregator.js";
 import {
   syncNebraskaCandidateFinance,
   type NebraskaCandidateFinanceSyncResult,
@@ -193,6 +195,66 @@ function groupContributionRowsByCommittee(
   return byCommittee;
 }
 
+// Nebraska NADC bulk extracts are keyed by FILING year, but a Nebraska election
+// cycle spans [electionYear - 1, electionYear] (the window the aggregator's
+// isCycleYear already applies), so every cache load must read both filing years
+// or in-cycle receipts filed in the earlier year are silently dropped. An
+// explicit --raw-zip override can only satisfy the single year baked into its
+// inner CSV name, so it stays single-year.
+function nebraskaCycleFilingYears(electionYear: number, rawDataZipPath?: string): number[] {
+  return rawDataZipPath ? [electionYear] : [nebraskaElectionCycleStartYear(electionYear), electionYear];
+}
+
+function nebraskaContributionRowIdentity(row: NebraskaNadcContributionRow): string {
+  const receiptId = row["Receipt ID"].trim().toUpperCase();
+  return receiptId ? `${normalizeCommitteeId(row["Org ID"])}\u0000${receiptId}` : "";
+}
+
+async function readCycleContributionRows(input: {
+  electionYear: number;
+  rawDataZipPath?: string;
+  rawDataCacheDir?: string;
+  predicate: (row: NebraskaNadcContributionRow) => boolean;
+}): Promise<{ rows: NebraskaNadcContributionRow[]; zipPath: string; sourceUrl: string }> {
+  // `||` (not `??`): a whitespace-only NEBRASKA_NADC_CACHE_DIR trims to "" and
+  // would otherwise resolve to the process CWD.
+  const cacheDir =
+    input.rawDataCacheDir ?? (process.env.NEBRASKA_NADC_CACHE_DIR?.trim() || DEFAULT_NEBRASKA_NADC_CACHE_DIR);
+  const artifactRowsByYear: NebraskaNadcContributionRow[][] = [];
+  let zipPath = "";
+  let sourceUrl = "";
+  let foundMatchingRows = false;
+  for (const filingYear of nebraskaCycleFilingYears(input.electionYear, input.rawDataZipPath)) {
+    const paths = getNebraskaNadcArtifactCachePaths({
+      cacheDir,
+      year: filingYear,
+      artifactKind: "contribution_loan",
+    });
+    const artifactZipPath = input.rawDataZipPath ?? paths.zipPath;
+    if (!(await fileExists(artifactZipPath))) {
+      throw new Error(`Nebraska NADC contribution ZIP not found for ${filingYear}: ${artifactZipPath}`);
+    }
+    const metadata = input.rawDataZipPath ? null : await readNebraskaNadcArtifactCacheMetadata(paths.metadataPath);
+    const artifactRows = await readNebraskaNadcContributionRows({
+      zipPath: artifactZipPath,
+      year: filingYear,
+      predicate: input.predicate,
+    });
+    artifactRowsByYear.push(artifactRows);
+    if (!foundMatchingRows) {
+      zipPath = artifactZipPath;
+      sourceUrl =
+        metadata?.remote.url ?? buildNebraskaNadcArtifactUrl({ year: filingYear, artifactKind: "contribution_loan" });
+      foundMatchingRows = artifactRows.length > 0;
+    }
+  }
+  return {
+    rows: mergeCycleArtifactRows({ artifacts: artifactRowsByYear, rowIdentity: nebraskaContributionRowIdentity }),
+    zipPath,
+    sourceUrl,
+  };
+}
+
 async function loadContributionDataForYear(input: {
   year: number;
   committeeIds: readonly string[];
@@ -200,43 +262,18 @@ async function loadContributionDataForYear(input: {
   rawDataCacheDir?: string;
 }): Promise<NebraskaContributionDataForYear> {
   const normalizedCommitteeIds = new Set(input.committeeIds.map(normalizeCommitteeId).filter(Boolean));
-  const zipPath = input.rawDataZipPath
-    ? input.rawDataZipPath
-    : getNebraskaNadcArtifactCachePaths({
-        cacheDir:
-          input.rawDataCacheDir ??
-          process.env.NEBRASKA_NADC_CACHE_DIR?.trim() ??
-          DEFAULT_NEBRASKA_NADC_CACHE_DIR,
-        year: input.year,
-        artifactKind: "contribution_loan",
-      }).zipPath;
-  if (!(await fileExists(zipPath))) {
-    throw new Error(`Nebraska NADC contribution ZIP not found for ${input.year}: ${zipPath}`);
-  }
-
-  const metadataPath = getNebraskaNadcArtifactCachePaths({
-    cacheDir:
-      input.rawDataCacheDir ??
-      process.env.NEBRASKA_NADC_CACHE_DIR?.trim() ??
-      DEFAULT_NEBRASKA_NADC_CACHE_DIR,
-    year: input.year,
-    artifactKind: "contribution_loan",
-  }).metadataPath;
-  const metadata = input.rawDataZipPath
-    ? null
-    : await readNebraskaNadcArtifactCacheMetadata(metadataPath);
-  const rows = await readNebraskaNadcContributionRows({
-    zipPath,
-    year: input.year,
+  const data = await readCycleContributionRows({
+    electionYear: input.year,
+    rawDataZipPath: input.rawDataZipPath,
+    rawDataCacheDir: input.rawDataCacheDir,
     predicate: (row) => normalizedCommitteeIds.has(normalizeCommitteeId(row["Org ID"])),
   });
 
   return {
     year: input.year,
-    zipPath,
-    sourceUrl:
-      metadata?.remote.url ?? buildNebraskaNadcArtifactUrl({ year: input.year, artifactKind: "contribution_loan" }),
-    rowsByCommitteeId: groupContributionRowsByCommittee(rows),
+    zipPath: data.zipPath,
+    sourceUrl: data.sourceUrl,
+    rowsByCommitteeId: groupContributionRowsByCommittee(data.rows),
   };
 }
 
@@ -255,29 +292,13 @@ async function loadAutoLinkContributionRowsForYear(input: {
     };
   }
 
-  const paths = getNebraskaNadcArtifactCachePaths({
-    cacheDir:
-      input.rawDataCacheDir ??
-      process.env.NEBRASKA_NADC_CACHE_DIR?.trim() ??
-      DEFAULT_NEBRASKA_NADC_CACHE_DIR,
-    year: input.year,
-    artifactKind: "contribution_loan",
+  const data = await readCycleContributionRows({
+    electionYear: input.year,
+    rawDataZipPath: input.rawDataZipPath,
+    rawDataCacheDir: input.rawDataCacheDir,
+    predicate: buildNebraskaCandidateNamePredicate(input.candidates),
   });
-  const zipPath = input.rawDataZipPath ?? paths.zipPath;
-  if (!(await fileExists(zipPath))) {
-    throw new Error(`Nebraska NADC contribution ZIP not found for ${input.year}: ${zipPath}`);
-  }
-
-  const metadata = input.rawDataZipPath ? null : await readNebraskaNadcArtifactCacheMetadata(paths.metadataPath);
-  return {
-    rows: await readNebraskaNadcContributionRows({
-      zipPath,
-      year: input.year,
-      predicate: buildNebraskaCandidateNamePredicate(input.candidates),
-    }),
-    sourceUrl:
-      metadata?.remote.url ?? buildNebraskaNadcArtifactUrl({ year: input.year, artifactKind: "contribution_loan" }),
-  };
+  return { rows: data.rows, sourceUrl: data.sourceUrl };
 }
 
 export async function listDueNebraskaCandidateFinanceSyncRows(
