@@ -207,17 +207,27 @@ download per record — exactly the extra fetch this plan forbids — and an
 unpopulated column is schema noise. Dropped; a future content re-verification
 job can add the column alongside its own fetcher if ever built.
 
-## PR 3 — Audit detectors (advisory, rides `manual:records:audit`)
+## PR 3 — Audit detectors (implemented; advisory, rides `manual:records:audit`)
 
-- Same source domain across ≥N candidates within a time window.
-- Negative-pattern (damaging-regex) record burst for one candidate < 30 days before
-  its election (replaces the rejected human-review gate — alerts, blocks nothing).
-- Newly-seen domain concentration: domains first appearing in a window and feeding
-  multiple records.
-- Unlisted-source sweep: list records whose domain classifies `unlisted`, grouped by
-  domain, count-sorted — the operator's periodic review feed and the allowlist's
-  growth mechanism. Tier is a pure function of the stored URL, so this needs no
-  schema change and retro-covers all existing rows.
+Pure detector functions in `candidateRecordSourceAudit.ts`, fed by two queries in
+the audit script, reported under `sourceDomainDetectors`:
+
+- Cross-candidate domain burst: one UNLISTED domain cited by ≥3 distinct candidates
+  in the last 30 days (listed domains legitimately feed hundreds and are exempt).
+- Pre-election damaging burst: ≥2 damaging-pattern records IMPORTED within 30 days
+  before one of the candidate's elections (replaces the rejected human-review gate —
+  alerts, blocks nothing; created_at is import time, so historical research about
+  old elections never matches).
+- Newly-seen domain concentration: non-listed domain whose first record ever is
+  inside the window and already feeds ≥3 records. Cold-start caveat: while the
+  whole corpus is younger than the window this lists every unlisted domain — it
+  ages out naturally.
+- Source-tier sweep: unlisted records grouped per domain (count-sorted, damaging
+  counts, samples) — the allowlist growth feed — plus blockedDomainRecords: stored
+  rows citing UGC/social domains the import policy now rejects (first live run
+  found 31 pre-policy leftovers: reddit, medium, blogspot, wordpress).
+
+Domains group with "www." stripped so apex/www splits cannot dilute thresholds.
 
 ## PR 4 — Notification ordering
 
