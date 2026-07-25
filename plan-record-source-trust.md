@@ -184,15 +184,28 @@ exists", not lost data.
 - Skill doc `~/.claude/skills/voteapp-manual-research/references/records.md`: source
   policy paragraph (outside repo; after merge).
 
-## PR 2 — Provenance columns
+## PR 2 — Provenance columns (implemented)
 
-Migration: `candidate_records` gains `origin` (e.g. `ai_enricher` | `manual` |
-`repair`), `origin_run_id` (nullable text: enricher run/stream id or manual session
-key), `source_content_sha256` (nullable). Writers stamp them on insert/update. Hash
-computed from the already-fetched verification body when available — no extra fetch,
-no snapshots. Purpose: any poisoned cohort becomes identifiable and deletable by run,
-and later re-verification can detect swapped content on expired/purchased domains,
-not just dead links.
+Migration `197_add_candidate_records_provenance.sql`: `candidate_records` gains
+`origin` (`ai_enricher` | `repair` | `manual`, CHECK-constrained, NULL = written
+before provenance existed) and `origin_run_id` (nullable text: enricher
+staging-stream `run_id`, or the manual writer's manual key). All writers stamp
+them — the fields are REQUIRED on `CandidateRecordUpsertInput`, so the compiler
+forces any future writer to declare provenance. Semantics: origin is the writer
+that INTRODUCED the record's normalized content — identical re-imports preserve
+the original attribution (identity-key comparison in the similar-record UPDATE;
+the ON CONFLICT clause never touches the columns), so periodic reruns cannot
+rotate a poisoned cohort out of its `WHERE origin_run_id = ...` cleanup query.
+Manual writers suffix their manual key with a per-import timestamp so one bad
+import is isolable. Partial index on `origin_run_id` serves the cleanup lookup.
+
+`source_content_sha256` was planned on the premise that the verification body
+was already fetched. Verified false: `verifyHttpUrlReachability` is HEAD-first
+and cancels every response body without reading it, so no body exists anywhere
+in the record pipeline. Populating the hash would mean a new GET + full
+download per record — exactly the extra fetch this plan forbids — and an
+unpopulated column is schema noise. Dropped; a future content re-verification
+job can add the column alongside its own fetcher if ever built.
 
 ## PR 3 — Audit detectors (advisory, rides `manual:records:audit`)
 

@@ -29,6 +29,7 @@ import {
 } from "../../config/electionsPipeline.js";
 import {
   buildCandidateRecordIdentityKey,
+  type CandidateRecordOrigin,
   type CandidateRecordUpsertResult,
   deleteCandidateRecordsForReplacementRefresh,
   type CandidateRecordUpsertInput,
@@ -113,13 +114,17 @@ function toReason(error: unknown): string {
 
 function toCandidateRecordUpsertInput(
   candidateId: string,
-  records: readonly RecordForTagging[]
+  records: readonly RecordForTagging[],
+  origin: CandidateRecordOrigin,
+  originRunId: string | null
 ): CandidateRecordUpsertInput[] {
   return records.map((record) => ({
     candidateId,
     description: record.description,
     sourceUrl: record.source_url,
     eventDate: record.event_date,
+    origin,
+    originRunId,
   }));
 }
 
@@ -186,6 +191,9 @@ async function replacePresidentialCandidateRecordsAtomically(input: {
   pool: Pool;
   candidateId: string;
   recordsForTagging: readonly RecordForTagging[];
+  // Same records as recordsForTagging, in the same order, already carrying
+  // per-record provenance (discovery rows vs repair rows differ in origin).
+  upsertInputs: readonly CandidateRecordUpsertInput[];
   labels: readonly AreaLabelForWrite[];
   allowedSlugs: readonly string[];
   allowedAreas: readonly AllowedResearchArea[];
@@ -200,10 +208,7 @@ async function replacePresidentialCandidateRecordsAtomically(input: {
   try {
     await client.query("BEGIN");
     const deleted = await deleteCandidateRecordsForReplacementRefresh(client, input.candidateId);
-    const upsert = await upsertCandidateRecords(
-      client,
-      toCandidateRecordUpsertInput(input.candidateId, input.recordsForTagging)
-    );
+    const upsert = await upsertCandidateRecords(client, input.upsertInputs);
     const labelsForValidation = buildLabelsForValidation({
       labels: input.labels,
       recordsForTagging: input.recordsForTagging,
@@ -388,6 +393,9 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
         const presidentialRole = parsePresidentialRole(entry.message.presidential_role);
         const itemType = entry.message.item_type;
         const runId = (entry.message.run_id ?? "").trim();
+        // Provenance run id: old staging messages can carry an empty run_id;
+        // store NULL rather than an empty string.
+        const originRunId = runId.length > 0 ? runId : null;
         const contextLabel =
           contextType === "presidential_cycle"
             ? `presidential_cycle_id=${presidentialCycleId || "unknown"} role=${presidentialRole ?? "unknown"}`
@@ -529,7 +537,12 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
               if (discovered.records.length > 0 && contextType !== "presidential_cycle") {
                 const firstPassUpsert = await upsertCandidateRecordsWithNotificationEvents({
                   pool,
-                  records: toCandidateRecordUpsertInput(claimedCandidateId, discovered.records),
+                  records: toCandidateRecordUpsertInput(
+                    claimedCandidateId,
+                    discovered.records,
+                    "ai_enricher",
+                    originRunId
+                  ),
                 });
                 insertedCount += firstPassUpsert.inserted;
                 dedupedCount += firstPassUpsert.updated;
@@ -691,7 +704,14 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     if (contextType !== "presidential_cycle") {
                       const secondPassUpsert = await upsertCandidateRecordsWithNotificationEvents({
                         pool,
-                        records: toCandidateRecordUpsertInput(claimedCandidateId, repairedVerifiedRecords),
+                        // "repair": the source URL came from the AI repair
+                        // pass, not the original discovery citation.
+                        records: toCandidateRecordUpsertInput(
+                          claimedCandidateId,
+                          repairedVerifiedRecords,
+                          "repair",
+                          originRunId
+                        ),
                       });
                       insertedCount += secondPassUpsert.inserted;
                       dedupedCount += secondPassUpsert.updated;
@@ -797,6 +817,23 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     pool,
                     candidateId: claimedCandidateId,
                     recordsForTagging,
+                    // recordsForTagging is [...discovered.records] with
+                    // repaired rows pushed after, so provenance splits by
+                    // position: the discovery prefix vs the repair suffix.
+                    upsertInputs: [
+                      ...toCandidateRecordUpsertInput(
+                        claimedCandidateId,
+                        recordsForTagging.slice(0, discovered.records.length),
+                        "ai_enricher",
+                        originRunId
+                      ),
+                      ...toCandidateRecordUpsertInput(
+                        claimedCandidateId,
+                        recordsForTagging.slice(discovered.records.length),
+                        "repair",
+                        originRunId
+                      ),
+                    ],
                     labels: areaLabels.labels,
                     allowedSlugs,
                     allowedAreas,

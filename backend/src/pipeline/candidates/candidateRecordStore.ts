@@ -2,11 +2,27 @@ import { createHash } from "node:crypto";
 
 import type { PoolClient } from "pg";
 
+// Which writer INTRODUCED the record's current (normalized) content. NULL in
+// the database means "written before provenance existed"; new writes always
+// carry a value — the fields below are required so the compiler forces every
+// writer (present and future) to stamp them.
+//
+// Re-imports of identical content deliberately KEEP the original provenance:
+// periodic reruns rediscover the same records, and letting each rerun
+// re-stamp them would rotate a poisoned cohort out of its
+// `WHERE origin_run_id = ...` cleanup query. Provenance changes only when
+// the stored content actually changes.
+export type CandidateRecordOrigin = "ai_enricher" | "repair" | "manual";
+
 export type CandidateRecordUpsertInput = {
   candidateId: string;
   description: string;
   sourceUrl: string;
   eventDate: string | Date;
+  origin: CandidateRecordOrigin;
+  // Enricher staging-stream run_id or the manual writer's manual key; null
+  // when the enricher message carried no run_id.
+  originRunId: string | null;
 };
 
 export type CandidateRecordUpsertResult = {
@@ -257,6 +273,12 @@ export async function upsertCandidateRecords(
     });
 
     if (similar) {
+      // Identical normalized content (identity key unchanged) is a no-op
+      // re-import: keep the provenance of the writer that introduced the
+      // content, so cleanup-by-run queries still find the introducing run
+      // after later reruns rediscover the same record. Only a real content
+      // change re-attributes the row to the current writer.
+      const contentUnchanged = similar.recordIdentityKey === identityKey;
       await client.query(
         `
           UPDATE public.candidate_records
@@ -264,10 +286,21 @@ export async function upsertCandidateRecords(
               source_url = $3,
               event_date = $4::date,
               record_identity_key = $5,
+              origin = CASE WHEN $8 THEN origin ELSE $6 END,
+              origin_run_id = CASE WHEN $8 THEN origin_run_id ELSE $7 END,
               updated_at = now()
           WHERE id = $1
         `,
-        [similar.id, record.description, record.sourceUrl, eventDate, identityKey]
+        [
+          similar.id,
+          record.description,
+          record.sourceUrl,
+          eventDate,
+          identityKey,
+          record.origin,
+          record.originRunId,
+          contentUnchanged,
+        ]
       );
       recordIdsByIdentityKey.set(identityKey, similar.id);
       updated += 1;
@@ -281,11 +314,16 @@ export async function upsertCandidateRecords(
           description,
           source_url,
           event_date,
-          record_identity_key
+          record_identity_key,
+          origin,
+          origin_run_id
         )
-        VALUES ($1, $2, $3, $4::date, $5)
+        VALUES ($1, $2, $3, $4::date, $5, $6, $7)
         ON CONFLICT (candidate_id, record_identity_key)
         DO UPDATE SET
+          -- A conflict on the identity key means the normalized content is
+          -- identical; origin/origin_run_id deliberately stay untouched so
+          -- the introducing run keeps attribution (see CandidateRecordOrigin).
           description = EXCLUDED.description,
           source_url = EXCLUDED.source_url,
           event_date = EXCLUDED.event_date,
@@ -298,6 +336,8 @@ export async function upsertCandidateRecords(
         record.sourceUrl,
         eventDate,
         identityKey,
+        record.origin,
+        record.originRunId,
       ]
     );
 

@@ -77,12 +77,16 @@ describe("upsertCandidateRecords", () => {
         description: "Desc A",
         sourceUrl: "https://example.com/a",
         eventDate: "2026-04-01",
+        origin: "ai_enricher",
+        originRunId: "run-42",
       },
       {
         candidateId: "cand-1",
         description: "Desc B",
         sourceUrl: "https://example.com/b",
         eventDate: "2026-04-02",
+        origin: "repair",
+        originRunId: null,
       },
     ]);
 
@@ -93,6 +97,13 @@ describe("upsertCandidateRecords", () => {
     expect(result.insertedRecordIds).toEqual(["record-1"]);
     expect(query).toHaveBeenCalledTimes(4);
     expect(query.mock.calls[1]?.[0]).toContain("ON CONFLICT (candidate_id, record_identity_key)");
+    // Provenance is stamped on insert, but a conflict on the identity key is
+    // an identical re-import: origin must NOT rotate to the latest writer,
+    // or cleanup-by-run queries lose the introducing run's cohort.
+    expect(query.mock.calls[1]?.[0]).not.toContain("origin = EXCLUDED.origin");
+    expect(query.mock.calls[1]?.[0]).not.toContain("origin_run_id = EXCLUDED.origin_run_id");
+    expect(query.mock.calls[1]?.[1]?.slice(-2)).toEqual(["ai_enricher", "run-42"]);
+    expect(query.mock.calls[3]?.[1]?.slice(-2)).toEqual(["repair", null]);
   });
 
   it("updates a highly similar existing record for the same candidate, source, and date", async () => {
@@ -116,6 +127,8 @@ describe("upsertCandidateRecords", () => {
         description: "Candidate sponsored transit funding bill",
         sourceUrl: "https://example.com/a",
         eventDate: "2026-04-01",
+        origin: "manual",
+        originRunId: "manual:candidate-records:election-1:cand-1",
       },
     ]);
 
@@ -125,6 +138,53 @@ describe("upsertCandidateRecords", () => {
     expect(result.insertedRecordIds).toEqual([]);
     expect(query).toHaveBeenCalledTimes(2);
     expect(query.mock.calls[1]?.[0]).toContain("UPDATE public.candidate_records");
+    // The description actually changed (identity key differs from v3_old), so
+    // the similar-record UPDATE re-attributes the row to the current writer:
+    // contentUnchanged=false lets the CASE take the new origin params.
+    expect(query.mock.calls[1]?.[1]?.slice(-3)).toEqual([
+      "manual",
+      "manual:candidate-records:election-1:cand-1",
+      false,
+    ]);
+  });
+
+  it("preserves existing provenance when a re-import carries identical normalized content", async () => {
+    const identityKey = buildCandidateRecordIdentityKey({
+      description: "Candidate sponsored a transit funding bill.",
+      sourceUrl: "https://example.com/a",
+      eventDate: "2026-04-01",
+    });
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: "existing-record",
+            description: "Candidate sponsored a transit funding bill.",
+            record_identity_key: identityKey,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+    const client = { query };
+
+    await upsertCandidateRecords(client, [
+      {
+        candidateId: "cand-1",
+        description: "Candidate sponsored a transit funding bill.",
+        sourceUrl: "https://example.com/a",
+        eventDate: "2026-04-01",
+        origin: "ai_enricher",
+        originRunId: "rerun-later",
+      },
+    ]);
+
+    // Identity key unchanged → contentUnchanged=true → the CASE keeps the
+    // stored origin/origin_run_id, so a later rerun rediscovering the same
+    // record cannot rotate it out of the introducing run's cohort.
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(query.mock.calls[1]?.[0]).toContain("CASE WHEN $8 THEN origin");
+    expect(query.mock.calls[1]?.[1]?.slice(-3)).toEqual(["ai_enricher", "rerun-later", true]);
   });
 });
 
