@@ -15,6 +15,11 @@ export const MICHIGAN_MITN_LEGACY_ARCHIVE_INDEX_URL =
 export const MICHIGAN_MITN_LEGACY_ARCHIVE_FETCH_TIMEOUT_MS = 900_000;
 export const DEFAULT_MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR =
   "scratch/michigan-campaign-finance/mitn";
+// The legacy CFR bulk export was frozen when Michigan launched the new MiTN
+// system in April 2025: the 2025 archive is the final one, and no archive for
+// any later filing year will ever exist upstream.
+export const MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR = 2025;
+export const MICHIGAN_MITN_LEGACY_FIRST_ARCHIVE_YEAR = 2020;
 
 export type MichiganMitnLegacyArchiveRemoteMetadata = {
   year: number;
@@ -148,6 +153,11 @@ async function fetchWithTimeout(url: string, init: RequestInit, options: FetchOp
   const headers = new Headers(init.headers);
   if (!headers.has("accept")) {
     headers.set("accept", "application/x-7z-compressed,application/octet-stream;q=0.9,*/*;q=0.1");
+  }
+  // michigan.gov's CDN returns 403 for the default Node fetch user agent; the
+  // Maryland and Maine finance clients use the same minimal identification.
+  if (!headers.has("user-agent")) {
+    headers.set("user-agent", "Mozilla/5.0");
   }
 
   try {

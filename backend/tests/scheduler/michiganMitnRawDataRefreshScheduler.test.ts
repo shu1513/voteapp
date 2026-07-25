@@ -58,7 +58,6 @@ describe("michiganMitnRawDataRefreshScheduler", () => {
         name: "michigan_mitn_raw_data_refresh",
         data: expect.objectContaining({
           year: 2022,
-          url: "https://www.michigan.gov/sos/-/media/Project/Websites/sos/Elections/Disclosure/MiTN/Legacy-Data/2022_mi_cfr.7z",
           cacheDir: "/tmp/mi-mitn",
           timeoutMs: 5000,
           triggeredBy: "daily",
@@ -66,6 +65,75 @@ describe("michiganMitnRawDataRefreshScheduler", () => {
       })
     );
     expect(queueInstance.close).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not bake a year into unpinned recurring jobs", async () => {
+    process.env.MICHIGAN_CAMPAIGN_FINANCE_ENABLED = "true";
+    mockEnv();
+
+    const queueInstance = {
+      upsertJobScheduler: vi.fn().mockResolvedValue(undefined),
+      removeJobScheduler: vi.fn().mockResolvedValue(true),
+      close: vi.fn().mockResolvedValue(undefined),
+    };
+    const Queue = vi.fn(() => queueInstance);
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+
+    const { upsertRecurringMichiganMitnRawDataRefreshJobs } = await import(
+      "../../src/scheduler/michiganMitnRawDataRefreshScheduler.js"
+    );
+
+    await upsertRecurringMichiganMitnRawDataRefreshJobs({ cacheDir: "/tmp/mi-mitn" });
+
+    const jobData = queueInstance.upsertJobScheduler.mock.calls[0]?.[2]?.data;
+    expect(jobData).not.toHaveProperty("year");
+    expect(jobData).not.toHaveProperty("url");
+  });
+
+  it("rejects a url override without an explicit year", async () => {
+    mockEnv();
+    const Queue = vi.fn();
+    vi.doMock("bullmq", () => ({ Queue, Worker: vi.fn() }));
+
+    const { runMichiganMitnRawDataRefreshJob } = await import(
+      "../../src/scheduler/michiganMitnRawDataRefreshScheduler.js"
+    );
+
+    await expect(
+      runMichiganMitnRawDataRefreshJob({ triggeredBy: "manual", url: "https://example.test/2022_mi_cfr.7z" })
+    ).rejects.toThrow("Michigan MiTN raw data refresh url requires an explicit year");
+  });
+
+  it("resolves clamped cycle years at run time for unpinned jobs", async () => {
+    process.env.MICHIGAN_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.MICHIGAN_MITN_RAW_DATA_REFRESH_ENABLED = "true";
+    const refreshMichiganMitnLegacyArchiveCache = vi.fn().mockResolvedValue({
+      status: "unchanged",
+      remote: {},
+      previous: null,
+      current: {},
+    });
+    vi.doMock("../../src/pipeline/michiganFinance/michiganMitnLegacyArtifactCache.js", async (importOriginal) => ({
+      ...(await importOriginal<object>()),
+      refreshMichiganMitnLegacyArchiveCache,
+    }));
+
+    const { runMichiganMitnRawDataRefreshJob } = await import(
+      "../../src/scheduler/michiganMitnRawDataRefreshScheduler.js"
+    );
+
+    const result = await runMichiganMitnRawDataRefreshJob({ triggeredBy: "daily" });
+
+    // The legacy export is frozen at 2025, so every resolved year must fall
+    // inside the archive range that actually exists upstream — even when the
+    // current calendar year is later.
+    expect(result.years.length).toBeGreaterThanOrEqual(1);
+    for (const year of result.years) {
+      expect(year).toBeGreaterThanOrEqual(2020);
+      expect(year).toBeLessThanOrEqual(2025);
+    }
+    expect(refreshMichiganMitnLegacyArchiveCache).toHaveBeenCalledTimes(result.years.length);
+    expect(result.refreshes.map((outcome) => outcome.year)).toEqual(result.years);
   });
 
   it("removes the recurring job when disabled", async () => {
@@ -148,7 +216,7 @@ describe("michiganMitnRawDataRefreshScheduler", () => {
         enabled: false,
         triggeredBy: "daily",
         status: "disabled",
-        refresh: null,
+        refreshes: [],
       })
     );
     expect(refreshMichiganMitnLegacyArchiveCache).not.toHaveBeenCalled();

@@ -40,8 +40,10 @@ describe("refreshMichiganMitnRawData script", () => {
     });
   });
 
-  it("defaults to the current-year MiTN legacy archive", () => {
-    const year = new Date().getUTCFullYear();
+  it("defaults to the newest MiTN legacy archive that exists upstream", () => {
+    // The legacy export is frozen at 2025, so the default clamps to it once
+    // the calendar year moves past the final archive.
+    const year = Math.min(new Date().getUTCFullYear(), 2025);
     expect(parseArgs([])).toMatchObject({
       year,
       url: `https://www.michigan.gov/sos/-/media/Project/Websites/sos/Elections/Disclosure/MiTN/Legacy-Data/${year}_mi_cfr.7z`,

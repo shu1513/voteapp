@@ -3,11 +3,13 @@ import { resolve } from "node:path";
 import type { Pool, PoolClient } from "pg";
 
 import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
+import { mergeCycleArtifactRows } from "../finance/cycleArtifactRows.js";
 import {
   autoLinkMissingMichiganCandidateFinanceLinks,
   listMichiganCandidateElectionsMissingFinanceLinks,
   type MichiganFinanceAutoLinkCandidateElection,
 } from "./michiganCandidateFinanceAutoLink.js";
+import { michiganElectionCycleStartYear } from "./michiganDirectContributionAggregator.js";
 import {
   syncMichiganCandidateFinance,
   type MichiganCandidateFinanceSyncResult,
@@ -19,6 +21,8 @@ import {
 import { MICHIGAN_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./michiganFinanceEligibleOffices.js";
 import {
   DEFAULT_MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR,
+  MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR,
+  MICHIGAN_MITN_LEGACY_FIRST_ARCHIVE_YEAR,
   buildMichiganMitnLegacyArchiveUrl,
   getMichiganMitnLegacyArchiveCachePaths,
   readMichiganMitnLegacyArchiveCacheMetadata,
@@ -50,6 +54,9 @@ export type MichiganMitnLegacyDataForYear = {
   year: number;
   extractedDir: string;
   sourceUrl: string;
+  // Provenance for the outside-spending rows, which may come from a different
+  // cycle filing-year archive than the contributions. Falls back to sourceUrl.
+  outsideSourceUrl?: string;
   contributionRows: MichiganMitnLegacyContributionRow[];
   expenditureRows: MichiganMitnLegacyExpenditureRow[];
 };
@@ -234,15 +241,106 @@ function defaultExtractedDir(input: { cacheDir: string; year: number }): string 
   return resolve(input.cacheDir, `${input.year}_mi_cfr`);
 }
 
+// `||` (not `??`) for the env fallback: a whitespace-only value trims to "" and
+// would otherwise resolve to the process CWD.
+function resolveMitnCacheDir(rawDataCacheDir?: string): string {
+  return (
+    rawDataCacheDir ??
+    (process.env.MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR?.trim() || DEFAULT_MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR)
+  );
+}
+
 async function sourceUrlForYear(input: { year: number; rawDataCacheDir?: string }): Promise<string> {
-  const cacheDir =
-    input.rawDataCacheDir ??
-    process.env.MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR?.trim() ??
-    DEFAULT_MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR;
+  const cacheDir = resolveMitnCacheDir(input.rawDataCacheDir);
   const metadata = await readMichiganMitnLegacyArchiveCacheMetadata(
     getMichiganMitnLegacyArchiveCachePaths({ cacheDir, year: input.year }).metadataPath
   );
   return metadata?.remote.url ?? buildMichiganMitnLegacyArchiveUrl({ year: input.year });
+}
+
+// Michigan MiTN legacy archives are keyed by FILING (statement) year, but a
+// Michigan election cycle spans [electionYear - 1, electionYear] — the window
+// the aggregators and the predicates below already apply. Annual statements
+// filed in January carry mostly prior-calendar-year received dates, so a
+// cycle's receipts are split across filing-year archives by WHEN they were
+// reported: prior-year receipts reported during the prior year live in the
+// prior-year archive, and election-year receipts reported on the following
+// January's annual statement live in the NEXT filing year's archive. Every
+// load therefore reads [electionYear - 1, electionYear], plus the following
+// filing year when that archive can exist (the legacy export is frozen at
+// MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR, so an active 2026 cycle still
+// requires — and loudly fails on — its own nonexistent archive rather than
+// silently succeeding on partial prior-year data). There is no single-year
+// override exception: an explicit --raw-extracted-dir points at a directory,
+// the readers filter files by their `{year}_` name prefix, and one directory
+// can therefore hold every cycle filing year's CSV files.
+function michiganCycleFilingYears(electionYear: number): number[] {
+  // Clamp the start to the first archive that exists (2020): a 2020 election's
+  // 2019-filed statements were never exported anywhere, so skipping them is a
+  // dataset boundary, not a silent undercount. The election year itself stays
+  // unclamped — an active cycle past the frozen final archive must fail loudly
+  // rather than succeed on partial prior-year data. The Set collapses the
+  // duplicate when the clamped start equals the election year.
+  const years = new Set<number>();
+  years.add(Math.max(michiganElectionCycleStartYear(electionYear), MICHIGAN_MITN_LEGACY_FIRST_ARCHIVE_YEAR));
+  years.add(electionYear);
+  if (electionYear + 1 <= MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR) {
+    years.add(electionYear + 1);
+  }
+  return [...years];
+}
+
+function michiganContributionRowIdentity(row: MichiganMitnLegacyContributionRow): string {
+  const documentSequenceNumber = row.doc_seq_no.trim();
+  const contributionId = row.contribution_id.trim();
+  return documentSequenceNumber && contributionId
+    ? `${documentSequenceNumber}\u0000${contributionId}\u0000${row.cont_detail_id.trim()}`
+    : "";
+}
+
+// expense_id / detail_id exist in the official export but are not part of the
+// required typed columns; rows missing them fall back to the merge's unkeyed
+// path, which keeps them (archives are disjoint filing-year partitions).
+function michiganExpenditureRowIdentity(row: MichiganMitnLegacyExpenditureRow): string {
+  const record = row as Record<string, string | undefined>;
+  const documentSequenceNumber = row.doc_seq_no.trim();
+  const expenseId = record["expense_id"]?.trim() ?? "";
+  const detailId = record["detail_id"]?.trim() ?? "";
+  return documentSequenceNumber && expenseId
+    ? `${documentSequenceNumber}\u0000${expenseId}\u0000${detailId}`
+    : "";
+}
+
+async function readCycleRows<Row>(input: {
+  electionYear: number;
+  rawDataExtractedDir?: string;
+  rawDataCacheDir?: string;
+  rowIdentity: (row: Row) => string;
+  readRowsForFilingYear: (filingYear: number, extractedDir: string) => Promise<Row[]>;
+}): Promise<{ rows: Row[]; extractedDir: string; sourceUrl: string }> {
+  const cacheDir = resolveMitnCacheDir(input.rawDataCacheDir);
+  const artifactRowsByYear: Row[][] = [];
+  let selectedExtractedDir = "";
+  let selectedSourceUrl = "";
+  let foundMatchingRows = false;
+  for (const filingYear of michiganCycleFilingYears(input.electionYear)) {
+    const extractedDir = resolve(input.rawDataExtractedDir ?? defaultExtractedDir({ cacheDir, year: filingYear }));
+    if (!(await directoryExists(extractedDir))) {
+      throw new Error(`Michigan MiTN legacy extracted CSV directory not found for ${filingYear}: ${extractedDir}`);
+    }
+    const artifactRows = await input.readRowsForFilingYear(filingYear, extractedDir);
+    artifactRowsByYear.push(artifactRows);
+    if (!foundMatchingRows) {
+      selectedExtractedDir = extractedDir;
+      selectedSourceUrl = await sourceUrlForYear({ year: filingYear, rawDataCacheDir: input.rawDataCacheDir });
+      foundMatchingRows = artifactRows.length > 0;
+    }
+  }
+  return {
+    rows: mergeCycleArtifactRows({ artifacts: artifactRowsByYear, rowIdentity: input.rowIdentity }),
+    extractedDir: selectedExtractedDir,
+    sourceUrl: selectedSourceUrl,
+  };
 }
 
 function candidateNameKeysFromContributionRow(row: MichiganMitnLegacyContributionRow): Set<string> {
@@ -318,19 +416,27 @@ function collectCommitteeIdsForContributionLoad(input: {
 }
 
 async function loadContributionRows(input: {
-  extractedDir: string;
-  year: number;
+  electionYear: number;
   committeeIds: readonly string[];
   dueRows: readonly MichiganCandidateFinanceDueRow[];
-}): Promise<MichiganMitnLegacyContributionRow[]> {
+  rawDataExtractedDir?: string;
+  rawDataCacheDir?: string;
+}): Promise<{ rows: MichiganMitnLegacyContributionRow[]; extractedDir: string; sourceUrl: string }> {
   const committeeIds = new Set(input.committeeIds.map(normalizeId).filter(Boolean));
   const electionCycleYears = buildElectionCycleYearSet(input.dueRows);
-  return await readMichiganMitnLegacyContributionRows({
-    extractedDir: input.extractedDir,
-    year: input.year,
-    predicate: (row) =>
-      committeeIds.has(normalizeId(row.cfr_com_id)) &&
-      isDateInAnyElectionCycle(row.received_date, electionCycleYears),
+  return await readCycleRows({
+    electionYear: input.electionYear,
+    rawDataExtractedDir: input.rawDataExtractedDir,
+    rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: michiganContributionRowIdentity,
+    readRowsForFilingYear: (filingYear, extractedDir) =>
+      readMichiganMitnLegacyContributionRows({
+        extractedDir,
+        year: filingYear,
+        predicate: (row) =>
+          committeeIds.has(normalizeId(row.cfr_com_id)) &&
+          isDateInAnyElectionCycle(row.received_date, electionCycleYears),
+      }),
   });
 }
 
@@ -340,34 +446,36 @@ async function loadMichiganMitnDataForYear(input: {
   rawDataExtractedDir?: string;
   rawDataCacheDir?: string;
 }): Promise<MichiganMitnLegacyDataForYear> {
-  const cacheDir =
-    input.rawDataCacheDir ??
-    process.env.MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR?.trim() ??
-    DEFAULT_MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR;
-  const extractedDir = resolve(input.rawDataExtractedDir ?? defaultExtractedDir({ cacheDir, year: input.year }));
-  if (!(await directoryExists(extractedDir))) {
-    throw new Error(`Michigan MiTN legacy extracted CSV directory not found for ${input.year}: ${extractedDir}`);
-  }
-
-  const sourceUrl = await sourceUrlForYear({ year: input.year, rawDataCacheDir: input.rawDataCacheDir });
-  const expenditureRows = await readMichiganMitnLegacyExpenditureRows({
-    extractedDir,
-    year: input.year,
-    predicate: buildMichiganOutsideExpenditurePredicate(input.dueRows),
+  const expenditureData = await readCycleRows({
+    electionYear: input.year,
+    rawDataExtractedDir: input.rawDataExtractedDir,
+    rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: michiganExpenditureRowIdentity,
+    readRowsForFilingYear: (filingYear, extractedDir) =>
+      readMichiganMitnLegacyExpenditureRows({
+        extractedDir,
+        year: filingYear,
+        predicate: buildMichiganOutsideExpenditurePredicate(input.dueRows),
+      }),
   });
-  const contributionRows = await loadContributionRows({
-    extractedDir,
-    year: input.year,
-    committeeIds: collectCommitteeIdsForContributionLoad({ dueRows: input.dueRows, expenditureRows }),
+  const contributionData = await loadContributionRows({
+    electionYear: input.year,
+    committeeIds: collectCommitteeIdsForContributionLoad({
+      dueRows: input.dueRows,
+      expenditureRows: expenditureData.rows,
+    }),
     dueRows: input.dueRows,
+    rawDataExtractedDir: input.rawDataExtractedDir,
+    rawDataCacheDir: input.rawDataCacheDir,
   });
 
   return {
     year: input.year,
-    extractedDir,
-    sourceUrl,
-    contributionRows,
-    expenditureRows,
+    extractedDir: contributionData.extractedDir,
+    sourceUrl: contributionData.sourceUrl,
+    outsideSourceUrl: expenditureData.sourceUrl,
+    contributionRows: contributionData.rows,
+    expenditureRows: expenditureData.rows,
   };
 }
 
@@ -377,23 +485,19 @@ async function loadAutoLinkContributionRowsForYear(input: {
   rawDataExtractedDir?: string;
   rawDataCacheDir?: string;
 }): Promise<{ rows: MichiganMitnLegacyContributionRow[]; sourceUrl: string }> {
-  const cacheDir =
-    input.rawDataCacheDir ??
-    process.env.MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR?.trim() ??
-    DEFAULT_MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR;
-  const extractedDir = resolve(input.rawDataExtractedDir ?? defaultExtractedDir({ cacheDir, year: input.year }));
-  if (!(await directoryExists(extractedDir))) {
-    throw new Error(`Michigan MiTN legacy extracted CSV directory not found for ${input.year}: ${extractedDir}`);
-  }
-
-  return {
-    rows: await readMichiganMitnLegacyContributionRows({
-      extractedDir,
-      year: input.year,
-      predicate: buildMichiganCandidateContributionPredicate(input.candidates),
-    }),
-    sourceUrl: await sourceUrlForYear({ year: input.year, rawDataCacheDir: input.rawDataCacheDir }),
-  };
+  const data = await readCycleRows({
+    electionYear: input.year,
+    rawDataExtractedDir: input.rawDataExtractedDir,
+    rawDataCacheDir: input.rawDataCacheDir,
+    rowIdentity: michiganContributionRowIdentity,
+    readRowsForFilingYear: (filingYear, extractedDir) =>
+      readMichiganMitnLegacyContributionRows({
+        extractedDir,
+        year: filingYear,
+        predicate: buildMichiganCandidateContributionPredicate(input.candidates),
+      }),
+  });
+  return { rows: data.rows, sourceUrl: data.sourceUrl };
 }
 
 export async function listDueMichiganCandidateFinanceSyncRows(
@@ -611,7 +715,7 @@ export async function syncDueMichiganCandidateFinance(
         district: row.district,
         sourceUrl: row.sourceUrl ?? mitnData?.sourceUrl ?? null,
         contributionSourceUrl: mitnData?.sourceUrl,
-        outsideSourceUrl: mitnData?.sourceUrl,
+        outsideSourceUrl: mitnData?.outsideSourceUrl ?? mitnData?.sourceUrl,
         contributionRows: mitnData?.contributionRows ?? [],
         expenditureRows: mitnData?.expenditureRows ?? [],
         trustedCommittee: {
