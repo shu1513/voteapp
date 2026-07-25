@@ -213,8 +213,8 @@ async function readCycleContributionRows(input: {
 }): Promise<{ rows: OklahomaGuardianContributionRow[]; zipPath: string; sourceUrl: string }> {
   const cacheDir =
     input.rawDataCacheDir ??
-    process.env.OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR?.trim() ??
-    DEFAULT_OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR;
+    (process.env.OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR?.trim() ||
+      DEFAULT_OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR);
   const artifactRowsByYear: OklahomaGuardianContributionRow[][] = [];
   let zipPath = "";
   let sourceUrl = "";

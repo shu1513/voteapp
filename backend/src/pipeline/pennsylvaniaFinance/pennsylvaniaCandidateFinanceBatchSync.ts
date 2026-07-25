@@ -266,8 +266,8 @@ function defaultExtractedDir(input: { cacheDir: string; year: number }): string 
 async function sourceUrlForYear(input: { year: number; rawDataCacheDir?: string }): Promise<string> {
   const cacheDir =
     input.rawDataCacheDir ??
-    process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR?.trim() ??
-    DEFAULT_PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR;
+    (process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR?.trim() ||
+      DEFAULT_PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR);
   const metadata = await readPennsylvaniaCampaignFinanceExportCacheMetadata(
     getPennsylvaniaCampaignFinanceExportCachePaths({ cacheDir, year: input.year }).metadataPath
   );
@@ -283,8 +283,8 @@ async function loadPennsylvaniaCampaignFinanceDataForYear(input: {
 }): Promise<PennsylvaniaCampaignFinanceDataForYear> {
   const cacheDir =
     input.rawDataCacheDir ??
-    process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR?.trim() ??
-    DEFAULT_PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR;
+    (process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR?.trim() ||
+      DEFAULT_PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR);
   const extractedDir = resolve(input.rawDataExtractedDir ?? defaultExtractedDir({ cacheDir, year: input.year }));
   if (!(await directoryExists(extractedDir))) {
     throw new Error(`Pennsylvania campaign finance extracted CSV directory not found for ${input.year}: ${extractedDir}`);
@@ -356,8 +356,8 @@ async function loadAutoLinkFilerRowsForElectionYear(input: {
 }): Promise<{ rows: PennsylvaniaCampaignFinanceFilerRow[]; sourceUrl: string }> {
   const cacheDir =
     input.rawDataCacheDir ??
-    process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR?.trim() ??
-    DEFAULT_PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR;
+    (process.env.PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR?.trim() ||
+      DEFAULT_PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR);
   // The reader selects filer_<year>.txt inside the directory, so both cycle
   // years must be read even under a single extracted-dir override — each year
   // resolves to a different file, never a duplicate read.

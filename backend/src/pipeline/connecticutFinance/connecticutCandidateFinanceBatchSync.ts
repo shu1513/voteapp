@@ -199,8 +199,7 @@ async function loadReceiptDataForYear(input: {
   const paths = getConnecticutEcrisArtifactCachePaths({
     cacheDir:
       input.rawDataCacheDir ??
-      process.env.CONNECTICUT_ECRIS_CACHE_DIR?.trim() ??
-      DEFAULT_CONNECTICUT_ECRIS_CACHE_DIR,
+      (process.env.CONNECTICUT_ECRIS_CACHE_DIR?.trim() || DEFAULT_CONNECTICUT_ECRIS_CACHE_DIR),
     year: input.year,
     transactionType: "receipts",
     committeeType: "candidate_exploratory",
@@ -251,8 +250,7 @@ async function loadAutoLinkReceiptRowsForYear(input: {
   const paths = getConnecticutEcrisArtifactCachePaths({
     cacheDir:
       input.rawDataCacheDir ??
-      process.env.CONNECTICUT_ECRIS_CACHE_DIR?.trim() ??
-      DEFAULT_CONNECTICUT_ECRIS_CACHE_DIR,
+      (process.env.CONNECTICUT_ECRIS_CACHE_DIR?.trim() || DEFAULT_CONNECTICUT_ECRIS_CACHE_DIR),
     year: input.year,
     transactionType: "receipts",
     committeeType: "candidate_exploratory",

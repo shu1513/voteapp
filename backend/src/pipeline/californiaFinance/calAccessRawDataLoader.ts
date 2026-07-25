@@ -79,7 +79,7 @@ async function resolveCachedZip(input?: {
   }
 
   const paths = getCalAccessRawDataArtifactCachePaths(
-    input?.cacheDir ?? process.env.CAL_ACCESS_RAW_DATA_CACHE_DIR?.trim() ?? DEFAULT_CAL_ACCESS_RAW_DATA_CACHE_DIR
+    input?.cacheDir ?? (process.env.CAL_ACCESS_RAW_DATA_CACHE_DIR?.trim() || DEFAULT_CAL_ACCESS_RAW_DATA_CACHE_DIR)
   );
   if (!(await fileExists(paths.zipPath))) {
     return null;

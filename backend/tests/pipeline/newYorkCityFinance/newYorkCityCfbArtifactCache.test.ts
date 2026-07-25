@@ -1,16 +1,23 @@
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   buildNewYorkCityCfbArtifactUrl,
+  DEFAULT_NEW_YORK_CITY_CFB_CACHE_DIR,
+  getNewYorkCityCfbArtifactCachePaths,
   refreshNewYorkCityCfbArtifact,
 } from "../../../src/pipeline/newYorkCityFinance/newYorkCityCfbArtifactCache.js";
 
 const tempDirs: string[] = [];
+const tempFiles: string[] = [];
 afterEach(async () => {
-  await Promise.all(tempDirs.splice(0).map((path) => rm(path, { recursive: true, force: true })));
+  vi.unstubAllEnvs();
+  await Promise.all([
+    ...tempDirs.splice(0).map((path) => rm(path, { recursive: true, force: true })),
+    ...tempFiles.splice(0).map((path) => rm(path, { force: true })),
+  ]);
 });
 
 describe("newYorkCityCfbArtifactCache", () => {
@@ -37,6 +44,31 @@ describe("newYorkCityCfbArtifactCache", () => {
     const second = await refreshNewYorkCityCfbArtifact({ cacheDir, electionYear: 2025, kind: "contributions", fetchImpl });
     expect(second.status).toBe("unchanged");
     expect(new Headers(fetchImpl.mock.calls[1]?.[1]?.headers).get("if-none-match")).toBe('"v1"');
+  });
+
+  it("falls back to the default cache dir when the env override is whitespace", async () => {
+    vi.stubEnv("NEW_YORK_CITY_CFB_CACHE_DIR", "   ");
+    // 2099 keeps this write away from any real cached artifact year.
+    const paths = getNewYorkCityCfbArtifactCachePaths({
+      cacheDir: DEFAULT_NEW_YORK_CITY_CFB_CACHE_DIR,
+      electionYear: 2099,
+      kind: "contributions",
+    });
+    tempFiles.push(paths.filePath, paths.metadataPath);
+
+    const csv = "ELECTION,OFFICECD,RECIPID\n2099,1,123\n";
+    const result = await refreshNewYorkCityCfbArtifact({
+      electionYear: 2099,
+      kind: "contributions",
+      fetchImpl: vi.fn<typeof fetch>().mockResolvedValue(
+        new Response(csv, { status: 200, headers: { "content-type": "text/csv" } })
+      ),
+    });
+
+    expect(result.status).toBe("downloaded");
+    if (result.status !== "downloaded") throw new Error("expected download");
+    expect(result.current.filePath).toBe(paths.filePath);
+    expect(result.current.filePath.startsWith(resolve(DEFAULT_NEW_YORK_CITY_CFB_CACHE_DIR))).toBe(true);
   });
 
   it("reports unpublished future artifacts without throwing", async () => {

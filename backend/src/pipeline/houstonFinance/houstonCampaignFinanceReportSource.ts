@@ -55,7 +55,7 @@ export async function loadHoustonCandidateFinanceReports(input: {
   efileOptions?: HoustonEthicsEfileClientOptions;
   legacyOptions?: HoustonLegacyClientOptions;
 }): Promise<HoustonFinanceParsedReport[]> {
-  const cacheDir = input.cacheDir ?? process.env.HOUSTON_CAMPAIGN_FINANCE_PDF_CACHE_DIR?.trim() ?? DEFAULT_HOUSTON_FINANCE_PDF_CACHE_DIR;
+  const cacheDir = input.cacheDir ?? (process.env.HOUSTON_CAMPAIGN_FINANCE_PDF_CACHE_DIR?.trim() || DEFAULT_HOUSTON_FINANCE_PDF_CACHE_DIR);
   const officeTarget = input.officeTarget ?? { officeName: "Mayor", seat: "Houston" };
   const allEfileReports = input.efileReports ?? await listHoustonEthicsEfileReports(input.efileOptions);
   const efileReports = allEfileReports.filter((report) =>

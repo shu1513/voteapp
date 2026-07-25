@@ -213,8 +213,8 @@ async function readCycleContributionRows(input: {
 }): Promise<{ rows: IndianaCampaignFinanceContributionRow[]; zipPath: string; sourceUrl: string }> {
   const cacheDir =
     input.rawDataCacheDir ??
-    process.env.INDIANA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() ??
-    DEFAULT_INDIANA_CAMPAIGN_FINANCE_CACHE_DIR;
+    (process.env.INDIANA_CAMPAIGN_FINANCE_CACHE_DIR?.trim() ||
+      DEFAULT_INDIANA_CAMPAIGN_FINANCE_CACHE_DIR);
   const artifactRowsByYear: IndianaCampaignFinanceContributionRow[][] = [];
   let zipPath = "";
   let sourceUrl = "";

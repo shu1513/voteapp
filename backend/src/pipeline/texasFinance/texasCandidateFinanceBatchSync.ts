@@ -355,8 +355,8 @@ async function loadTexasTecDataForDueRows(input: {
 }): Promise<TexasTecDataForBatchSync> {
   const cacheDir =
     input.rawDataCacheDir ??
-    process.env.TEXAS_TEC_CSV_DATABASE_CACHE_DIR?.trim() ??
-    DEFAULT_TEXAS_TEC_CSV_DATABASE_CACHE_DIR;
+    (process.env.TEXAS_TEC_CSV_DATABASE_CACHE_DIR?.trim() ||
+      DEFAULT_TEXAS_TEC_CSV_DATABASE_CACHE_DIR);
   const paths = getTexasTecCsvDatabaseArtifactCachePaths(cacheDir);
   const zipPath = input.rawDataZipPath ?? paths.zipPath;
   if (!(await fileExists(zipPath))) {
@@ -434,8 +434,8 @@ async function loadTexasTecFilerData(input: {
 
   const cacheDir =
     input.rawDataCacheDir ??
-    process.env.TEXAS_TEC_CSV_DATABASE_CACHE_DIR?.trim() ??
-    DEFAULT_TEXAS_TEC_CSV_DATABASE_CACHE_DIR;
+    (process.env.TEXAS_TEC_CSV_DATABASE_CACHE_DIR?.trim() ||
+      DEFAULT_TEXAS_TEC_CSV_DATABASE_CACHE_DIR);
   const paths = getTexasTecCsvDatabaseArtifactCachePaths(cacheDir);
   const zipPath = input.rawDataZipPath ?? paths.zipPath;
   if (!(await fileExists(zipPath))) {

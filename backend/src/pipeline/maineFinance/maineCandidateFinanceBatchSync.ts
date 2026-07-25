@@ -247,7 +247,7 @@ function flattenContributionDataRows(contributionData: MaineContributionDataForY
 }
 
 function rawDataCacheDir(inputCacheDir?: string): string {
-  return inputCacheDir ?? process.env.MAINE_CFIS_RAW_DATA_CACHE_DIR?.trim() ?? DEFAULT_MAINE_CFIS_CACHE_DIR;
+  return inputCacheDir ?? (process.env.MAINE_CFIS_RAW_DATA_CACHE_DIR?.trim() || DEFAULT_MAINE_CFIS_CACHE_DIR);
 }
 
 function sourceUrlFromMetadata(input: { metadataUrl?: string | null }): string {
