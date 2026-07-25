@@ -9,6 +9,7 @@ import {
   ALASKA_APOC_IE_EXPENDITURES_URL,
 } from "../../../src/pipeline/alaskaFinance/alaskaApocClient.js";
 import { loadAlaskaApocFinanceData } from "../../../src/pipeline/alaskaFinance/alaskaApocDataSource.js";
+import { createApocExportChainFetch } from "./alaskaApocClient.test.js";
 
 describe("alaskaApocDataSource", () => {
   it("loads APOC CSV exports from explicit file paths with provenance", async () => {
@@ -49,18 +50,13 @@ describe("alaskaApocDataSource", () => {
   });
 
   it("loads live APOC CSV exports through the client fetch path", async () => {
-    const fetchFn = vi
-      .fn()
-      .mockResolvedValueOnce(
-        new Response(
-          [
-            "Filer,Filer Type,Name,Date,Type,Contributor/Vendor,Amount,Status",
-            "Jane Doe,Candidate,Jane Doe,10/01/2026,Income,Pat Smith,$100.00,Complete",
-          ].join("\n"),
-          { status: 200 }
-        )
-      )
-      .mockResolvedValueOnce(new Response("Filer Name,Filer,Amount\n", { status: 200 }));
+    const fetchFn = createApocExportChainFetch({
+      [ALASKA_APOC_CAMPAIGN_INCOME_URL]: [
+        "Filer,Filer Type,Name,Date,Type,Contributor/Vendor,Amount,Status",
+        "Jane Doe,Candidate,Jane Doe,10/01/2026,Income,Pat Smith,$100.00,Complete",
+      ].join("\n"),
+      [ALASKA_APOC_IE_EXPENDITURES_URL]: "Filer Name,Filer,Amount\n",
+    });
 
     const loaded = await loadAlaskaApocFinanceData(
       {
@@ -79,6 +75,7 @@ describe("alaskaApocDataSource", () => {
       request_spacing_ms: 0,
     });
     expect(loaded.apocData.incomeRows).toHaveLength(1);
-    expect(fetchFn).toHaveBeenCalledTimes(2);
+    // Two report pages, each fetched through its four-step export chain.
+    expect(fetchFn).toHaveBeenCalledTimes(8);
   });
 });

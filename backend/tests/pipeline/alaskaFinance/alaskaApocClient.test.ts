@@ -5,6 +5,7 @@ import {
   ALASKA_APOC_IE_CONTRIBUTIONS_URL,
   ALASKA_APOC_IE_EXPENDITURES_URL,
   fetchAlaskaApocCsv,
+  fetchAlaskaApocExportCsv,
   fetchAlaskaApocFinanceCsvBundle,
   parseAlaskaApocAmount,
   parseAlaskaApocCampaignIncomeCsv,
@@ -12,6 +13,57 @@ import {
   parseAlaskaApocIndependentContributionCsv,
   parseAlaskaApocIndependentExpenditureCsv,
 } from "../../../src/pipeline/alaskaFinance/alaskaApocClient.js";
+
+// Minimal stand-in for an APOC WebForms report page: the export CSV is only
+// served after the search and export postbacks have run in the same session.
+export function createApocExportChainFetch(csvByPageUrl: Record<string, string>) {
+  const prefix = "M$C$csfFilter$";
+  const formPage = (extra = ""): string =>
+    [
+      '<form name="aspnetForm" method="post">',
+      '<input type="hidden" name="__VIEWSTATE" value="vs-token" />',
+      '<input type="hidden" name="__VIEWSTATEGENERATOR" value="gen" />',
+      `<select name="${prefix}ddlReportYear"><option value="2025">2025</option><option selected="selected" value="2026">2026</option></select>`,
+      `<input name="${prefix}txtName" type="text" value="" />`,
+      `<input type="submit" name="${prefix}btnSearch" value="Search" />`,
+      `<input type="submit" name="${prefix}btnExport" value="Export" />`,
+      extra,
+      "</form>",
+    ].join("");
+
+  const searched = new Set<string>();
+  return vi.fn(async (url: string, init?: RequestInit) => {
+    const body = typeof init?.body === "string" ? init.body : "";
+    const pageUrl = url.split("?")[0] ?? url;
+
+    const decoded = decodeURIComponent(body.replace(/\+/g, " "));
+    if (decoded.includes(`${prefix}btnSearch=Search`)) {
+      searched.add(pageUrl);
+      return new Response(formPage(), { status: 200, headers: { "content-type": "text/html" } });
+    }
+    if (decoded.includes(`${prefix}btnExport=Export`)) {
+      if (!searched.has(pageUrl)) {
+        return new Response(formPage(), { status: 200, headers: { "content-type": "text/html" } });
+      }
+      const href = `${new URL(pageUrl).pathname}?exportAll=True&amp;exportFormat=CSV&amp;isExport=True`;
+      return new Response(
+        formPage(`<a id="M_C_csfFilter_ExportDialog_hlAllCSV" href="${href}">.CSV</a>`),
+        { status: 200, headers: { "content-type": "text/html" } }
+      );
+    }
+    if (url.includes("isExport=True")) {
+      const csv = csvByPageUrl[pageUrl];
+      if (csv === undefined) {
+        return new Response("missing fixture", { status: 404 });
+      }
+      return new Response(csv, {
+        status: 200,
+        headers: { "content-type": "text/comma-separated-values; charset=utf-8" },
+      });
+    }
+    return new Response(formPage(), { status: 200, headers: { "content-type": "text/html" } });
+  });
+}
 
 describe("alaskaApocClient", () => {
   it("parses APOC campaign income CSV exports", () => {
@@ -212,10 +264,10 @@ describe("alaskaApocClient", () => {
   });
 
   it("fetches an APOC CSV bundle with source URL provenance", async () => {
-    const fetchFn = vi
-      .fn()
-      .mockResolvedValueOnce(new Response("Name,Amount\nJane,$1.00\n", { status: 200 }))
-      .mockResolvedValueOnce(new Response("Name,Amount\nPAC,$2.00\n", { status: 200 }));
+    const fetchFn = createApocExportChainFetch({
+      [ALASKA_APOC_CAMPAIGN_INCOME_URL]: "Name,Amount\nJane,$1.00\n",
+      [ALASKA_APOC_IE_EXPENDITURES_URL]: "Name,Amount\nPAC,$2.00\n",
+    });
 
     const bundle = await fetchAlaskaApocFinanceCsvBundle({
       fetchFn,
@@ -225,15 +277,73 @@ describe("alaskaApocClient", () => {
     });
 
     expect(bundle).toMatchObject({
+      incomeCsv: "Name,Amount\nJane,$1.00\n",
+      independentExpenditureCsv: "Name,Amount\nPAC,$2.00\n",
       incomeSourceUrl: ALASKA_APOC_CAMPAIGN_INCOME_URL,
       independentExpenditureSourceUrl: ALASKA_APOC_IE_EXPENDITURES_URL,
       independentContributionSourceUrl: null,
     });
-    expect(fetchFn).toHaveBeenCalledTimes(2);
+    // Four requests per report page: load, search, export dialog, CSV.
+    expect(fetchFn).toHaveBeenCalledTimes(8);
+  });
+
+  it("runs the search and export postbacks before downloading the CSV", async () => {
+    const fetchFn = createApocExportChainFetch({
+      [ALASKA_APOC_CAMPAIGN_INCOME_URL]: "Name,Amount\nJane,$1.00\n",
+    });
+
+    await expect(
+      fetchAlaskaApocExportCsv(ALASKA_APOC_CAMPAIGN_INCOME_URL, {
+        reportYear: 2026,
+        fetchFn,
+        retryDelayMs: 0,
+      })
+    ).resolves.toBe("Name,Amount\nJane,$1.00\n");
+
+    const bodies = fetchFn.mock.calls.map(([, init]) =>
+      typeof init?.body === "string" ? decodeURIComponent(init.body.replace(/\+/g, " ")) : ""
+    );
+    expect(bodies[0]).toBe("");
+    expect(bodies[1]).toContain("btnSearch=Search");
+    // The selected report year and the page's own form state are posted back.
+    expect(bodies[1]).toContain("ddlReportYear=2026");
+    expect(bodies[1]).toContain("__VIEWSTATE=vs-token");
+    expect(bodies[2]).toContain("btnExport=Export");
+    expect(fetchFn.mock.calls[3]?.[0]).toContain("isExport=True");
+    // A browser user agent is required; the WAF rejects requests without one.
+    const headers = fetchFn.mock.calls[3]?.[1]?.headers as Record<string, string>;
+    expect(headers["user-agent"]).toContain("Chrome/");
+    expect(headers.referer).toBe(ALASKA_APOC_CAMPAIGN_INCOME_URL);
+  });
+
+  it("fails loudly when the export dialog offers no CSV download", async () => {
+    const fetchFn = vi.fn(
+      async () => new Response("<form><input name=\"M$C$csfFilter$btnSearch\" /></form>", { status: 200 })
+    );
+
+    await expect(
+      fetchAlaskaApocExportCsv(ALASKA_APOC_CAMPAIGN_INCOME_URL, {
+        reportYear: 2026,
+        fetchFn,
+        retryCount: 0,
+        retryDelayMs: 0,
+      })
+    ).rejects.toThrow("Alaska APOC export dialog did not offer a CSV download");
+  });
+
+  it("rejects an invalid APOC report year before making any request", async () => {
+    const fetchFn = vi.fn();
+
+    await expect(
+      fetchAlaskaApocExportCsv(ALASKA_APOC_CAMPAIGN_INCOME_URL, { reportYear: 1999, fetchFn })
+    ).rejects.toThrow("Invalid Alaska APOC report year: 1999");
+    expect(fetchFn).not.toHaveBeenCalled();
   });
 
   it("does not validate disabled independent expenditure or contribution URLs", async () => {
-    const fetchFn = vi.fn().mockResolvedValue(new Response("Name,Amount\nJane,$1.00\n", { status: 200 }));
+    const fetchFn = createApocExportChainFetch({
+      [ALASKA_APOC_CAMPAIGN_INCOME_URL]: "Name,Amount\nJane,$1.00\n",
+    });
 
     const bundle = await fetchAlaskaApocFinanceCsvBundle({
       fetchFn,
@@ -249,6 +359,7 @@ describe("alaskaApocClient", () => {
       independentExpenditureSourceUrl: null,
       independentContributionSourceUrl: null,
     });
-    expect(fetchFn).toHaveBeenCalledTimes(1);
+    // Only the income page is fetched, via its four-step export chain.
+    expect(fetchFn).toHaveBeenCalledTimes(4);
   });
 });
