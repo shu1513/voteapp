@@ -1,5 +1,6 @@
 import type { AlaskaApocIndependentExpenditureRow } from "./alaskaApocClient.js";
 import { parseAlaskaApocDateYear } from "./alaskaApocClient.js";
+import { normalizeAlaskaCandidateNameKeys } from "./alaskaCandidateCommitteeResolver.js";
 
 export type AlaskaSupportOppose = "support" | "oppose";
 
@@ -103,13 +104,29 @@ function isFiledStatus(status: string): boolean {
   return !/\b(REJECTED|VOID|VOIDED|DELETED|WITHDRAWN)\b/.test(key);
 }
 
-function rowMentionsCandidate(input: { row: AlaskaApocIndependentExpenditureRow; candidateName: string }): boolean {
-  const candidateKey = normalizeTextKey(input.candidateName);
-  if (!candidateKey) {
-    return false;
+// IE rows mention candidates in free text, so keys must appear contiguously
+// (an ordered-token subsequence would false-match across unrelated words in a
+// long description). Fields are matched separately so a key cannot match
+// across a field seam. Keys come from the resolver's expansion - first+last
+// around middles, quoted call names, one-sided nicknames - so an IE mention
+// of "Louise Stutes" still matches the VoteApp name "Louise B. Stutes".
+function rowMentionsCandidate(input: {
+  row: AlaskaApocIndependentExpenditureRow;
+  candidateNameKeys: ReadonlySet<string>;
+}): boolean {
+  const fields = [input.row.candidateProposition, input.row.recipient, input.row.description].map(
+    (field) => ` ${normalizeTextKey(field)} `
+  );
+  for (const key of input.candidateNameKeys) {
+    if (key.length === 0) {
+      continue;
+    }
+    const padded = ` ${key} `;
+    if (fields.some((field) => field.includes(padded))) {
+      return true;
+    }
   }
-  const haystack = normalizeTextKey([input.row.candidateProposition, input.row.recipient, input.row.description].join(" "));
-  return haystack.includes(candidateKey);
+  return false;
 }
 
 export function supportOpposeFromAlaskaApocPosition(position: string): AlaskaSupportOppose | null {
@@ -193,6 +210,8 @@ export function aggregateAlaskaOutsideSpending(
   input: AlaskaOutsideSpendingAggregationInput
 ): AlaskaOutsideSpendingAggregationResult {
   const candidateName = requireNonEmpty(input.candidateName, "Alaska candidate name");
+  // VoteApp side expands nicknames; IE row text always matches literally.
+  const candidateNameKeys = normalizeAlaskaCandidateNameKeys(candidateName, { expandNicknames: true });
   const electionYear = normalizeElectionYear(input.electionYear);
   const maxGroups = normalizePositiveInteger(input.maxGroups, DEFAULT_MAX_GROUPS, "maxGroups");
   const fallbackSourceUrl = input.sourceUrl ?? null;
@@ -204,7 +223,7 @@ export function aggregateAlaskaOutsideSpending(
   let opposeTotalCents = 0;
 
   for (const row of input.expenditureRows) {
-    if (!rowMentionsCandidate({ row, candidateName })) {
+    if (!rowMentionsCandidate({ row, candidateNameKeys })) {
       continue;
     }
     matchedExpenditureRowCount += 1;

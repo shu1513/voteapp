@@ -91,6 +91,47 @@ describe("alaskaOutsideSpendingAggregator", () => {
     });
   });
 
+  it("matches IE mentions through middle names and nicknames but not across fields", () => {
+    // The VoteApp middle initial is absent from the IE mention text.
+    expect(
+      aggregateAlaskaOutsideSpending({
+        candidateName: "Jane M. Doe",
+        electionYear: 2026,
+        expenditureRows: [expenditure()],
+      })
+    ).toMatchObject({ matchedExpenditureRowCount: 1 });
+
+    // One-sided nickname: VoteApp campaign name, formal name in IE text.
+    expect(
+      aggregateAlaskaOutsideSpending({
+        candidateName: "Becky Schwanke",
+        electionYear: 2026,
+        expenditureRows: [
+          expenditure({
+            candidateProposition: "Rebecca Schwanke",
+            description: "Mailers supporting Rebecca Schwanke",
+          }),
+        ],
+      })
+    ).toMatchObject({ matchedExpenditureRowCount: 1 });
+
+    // A key must not match across the field seam: recipient ends with the
+    // surname, description starts with the first name.
+    expect(
+      aggregateAlaskaOutsideSpending({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        expenditureRows: [
+          expenditure({
+            candidateProposition: "Ballot Measure 1",
+            recipient: "Committee to Elect Doe",
+            description: "Jane Smith consulting",
+          }),
+        ],
+      })
+    ).toMatchObject({ matchedExpenditureRowCount: 0 });
+  });
+
   it("skips invalid matching expenditure rows", () => {
     const result = aggregateAlaskaOutsideSpending({
       candidateName: "Jane Doe",
