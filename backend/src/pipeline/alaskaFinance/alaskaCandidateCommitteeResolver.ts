@@ -85,12 +85,39 @@ function filerId(row: AlaskaApocCampaignIncomeRow): string {
   return explicit || normalizeTextKey(row.filerName);
 }
 
+// APOC filer names often carry middle names the VoteApp side lacks
+// ("Nicholas James Capozzi" vs "Nick Capozzi"), so a key matches a field when
+// its tokens appear in order among the field's tokens. Fields are matched
+// separately: joining them first would let a key match across the seam
+// ("...MCDONALD JIEUN..." from filerName + name both holding the same value).
+function isOrderedTokenSubsequence(keyTokens: readonly string[], fieldTokens: readonly string[]): boolean {
+  let index = 0;
+  for (const token of fieldTokens) {
+    if (token === keyTokens[index]) {
+      index += 1;
+      if (index === keyTokens.length) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 function rowMatchesCandidate(input: {
   row: AlaskaApocCampaignIncomeRow;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
-  const haystack = normalizeTextKey([input.row.filerName, input.row.name].join(" "));
-  return [...input.candidateNameKeys].some((key) => key.length > 0 && haystack.includes(key));
+  const fields = [input.row.filerName, input.row.name].map((field) => normalizeTextKey(field).split(" ").filter(Boolean));
+  for (const key of input.candidateNameKeys) {
+    if (key.length === 0) {
+      continue;
+    }
+    const keyTokens = key.split(" ");
+    if (fields.some((fieldTokens) => isOrderedTokenSubsequence(keyTokens, fieldTokens))) {
+      return true;
+    }
+  }
+  return false;
 }
 
 function isCandidateFilerType(value: string): boolean {

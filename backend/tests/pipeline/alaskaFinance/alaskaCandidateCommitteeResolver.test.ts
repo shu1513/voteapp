@@ -84,6 +84,38 @@ describe("alaskaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("matches a filer whose name carries middle tokens the VoteApp side lacks", () => {
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Jane Marie Doe", name: "Jane Marie Doe" })],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerName: "Jane Marie Doe" });
+  });
+
+  it("does not match a key across the filerName/name field seam", () => {
+    // filerName ends with the surname and name starts with the first name;
+    // joining the fields would fabricate "DOE JANE" across the seam.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Doe, Jane",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Friends of Doe", name: "Jane Smith" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+  });
+
+  it("requires key tokens in order within one field", () => {
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Doerr, Janet", name: "Doerr, Janet" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+  });
+
   it("ignores out-of-cycle rows", () => {
     expect(
       resolveAlaskaCandidateCommittee({
