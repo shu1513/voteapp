@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import {
   normalizeIllinoisCandidateNameForStorage,
+  normalizeIllinoisCandidateNameKeys,
   resolveIllinoisCandidateCommittee,
   resolveIllinoisCandidateCommitteesFromRelations,
+  splitIllinoisCandidateNameForSearch,
 } from "../../../src/pipeline/illinoisFinance/illinoisCandidateCommitteeResolver.js";
 import type { IllinoisSbeContributionRecord } from "../../../src/pipeline/illinoisFinance/illinoisSbeClient.js";
 
@@ -145,6 +147,117 @@ describe("illinoisCandidateCommitteeResolver", () => {
         { committeeKey: "SBE:201", sbeCandidateId: "101", confidence: "official_relation" },
         { committeeKey: "SBE:202", sbeCandidateId: "101", confidence: "official_relation" },
       ],
+    });
+  });
+
+  it("never bridges two distinct formal names through a shared nickname", () => {
+    // Patrick and Patricia both shorten to Pat; the VoteApp side may expand,
+    // but the SBE side stays literal, so PAT SMITH must not connect them.
+    const patriciaRelation = {
+      candidateId: "501",
+      candidateName: "Patricia Smith",
+      electionYear: 2026,
+      districtType: "statewide",
+      district: "Illinois",
+      office: "Governor",
+      isAtLarge: false,
+      committeeId: "601",
+      committeeName: "Citizens for Patricia Smith",
+      committeeStatus: "active" as const,
+      sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/DownloadCDDataFiles.aspx",
+    };
+    expect(
+      resolveIllinoisCandidateCommitteesFromRelations({
+        candidateName: "Patrick Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        relations: [patriciaRelation],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_official_candidate_relation" });
+
+    // A genuinely ambiguous nickname input still refuses to pick a side.
+    expect(
+      resolveIllinoisCandidateCommitteesFromRelations({
+        candidateName: "Pat Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        relations: [
+          patriciaRelation,
+          {
+            ...patriciaRelation,
+            candidateId: "502",
+            candidateName: "Patrick Smith",
+            committeeId: "602",
+            committeeName: "Friends of Patrick Smith",
+          },
+        ],
+      })
+    ).toMatchObject({ status: "ambiguous", reason: "multiple_official_candidates" });
+  });
+
+  it("splits search names around suffix-only comma segments", () => {
+    expect(splitIllinoisCandidateNameForSearch("Curtis J Tarver, II")).toEqual({
+      firstName: "Curtis J",
+      lastName: "Tarver",
+    });
+    expect(splitIllinoisCandidateNameForSearch("Lawrence Walsh, Jr.")).toEqual({
+      firstName: "Lawrence",
+      lastName: "Walsh",
+    });
+    expect(splitIllinoisCandidateNameForSearch("Tarver, Curtis J")).toEqual({
+      firstName: "Curtis J",
+      lastName: "Tarver",
+    });
+    expect(splitIllinoisCandidateNameForSearch("II")).toBeNull();
+  });
+
+  it("keys a name whose comma introduces only a suffix like a plain name", () => {
+    // "Curtis J Tarver, II" must still yield the middle-initial-free
+    // "CURTIS TARVER" key; the suffix comma is not a Last, First flip.
+    expect(normalizeIllinoisCandidateNameKeys("Curtis J Tarver, II")).toContain("CURTIS TARVER");
+    // A genuine Last, First name still flips.
+    expect(normalizeIllinoisCandidateNameKeys("Tarver, Curtis J")).toContain("CURTIS TARVER");
+  });
+
+  it("keys common nicknames against their formal first names only when asked", () => {
+    const expand = { expandNicknames: true };
+    expect(normalizeIllinoisCandidateNameKeys("Mike Frerichs", expand)).toContain("MICHAEL FRERICHS");
+    expect(normalizeIllinoisCandidateNameKeys("Michael W Frerichs", expand)).toContain("MIKE FRERICHS");
+    expect(normalizeIllinoisCandidateNameKeys("Frances Ann Hurley", expand)).toContain("FRAN HURLEY");
+    // Unrelated first names must not gain variants.
+    expect(normalizeIllinoisCandidateNameKeys("Zelda Frerichs", expand)).not.toContain("MICHAEL FRERICHS");
+    // The default stays literal: source-side names never gain variant keys.
+    expect(normalizeIllinoisCandidateNameKeys("Mike Frerichs")).not.toContain("MICHAEL FRERICHS");
+  });
+
+  it("resolves a nickname candidate against the formal SBE relation name", () => {
+    const resolution = resolveIllinoisCandidateCommitteesFromRelations({
+      candidateName: "Mike Frerichs",
+      officeScope: "statewide",
+      officeName: "State Treasurer",
+      electionYear: 2026,
+      relations: [
+        {
+          candidateId: "28183",
+          candidateName: "Michael W Frerichs",
+          electionYear: 2026,
+          districtType: "statewide",
+          district: "Illinois",
+          office: "Treasurer",
+          isAtLarge: false,
+          committeeId: "23131",
+          committeeName: "Friends of Frerichs",
+          committeeStatus: "active",
+          sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/DownloadCDDataFiles.aspx",
+        },
+      ],
+    });
+
+    expect(resolution).toMatchObject({
+      status: "matched",
+      matches: [{ committeeKey: "SBE:23131", sbeCandidateId: "28183" }],
     });
   });
 

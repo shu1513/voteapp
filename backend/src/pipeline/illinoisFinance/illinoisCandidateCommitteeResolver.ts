@@ -5,6 +5,7 @@ import {
   toIllinoisFinanceOfficeKey,
   toIllinoisSbeOfficeSearchInput,
 } from "./illinoisFinanceEligibleOffices.js";
+import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
 import { normalizeIllinoisCommitteeKey } from "./illinoisFinanceAggregators.js";
 import {
   fetchIllinoisSbeCandidateContributionRecords,
@@ -102,27 +103,58 @@ function normalizePersonName(value: string | null | undefined): string {
     .trim();
 }
 
-export function normalizeIllinoisCandidateNameKeys(value: string): Set<string> {
+/**
+ * Nickname expansion is one-sided by design: only the VoteApp candidate name
+ * may opt in via `expandNicknames`, while SBE-sourced names always key
+ * literally. Expanding both sides would let two distinct formal names meet at
+ * a shared nickname key ("Patrick Smith" and "Patricia Smith" both produce
+ * "PAT SMITH") and attach another person's committee when only the wrong
+ * relation exists in the source data.
+ */
+export function normalizeIllinoisCandidateNameKeys(
+  value: string,
+  options?: { expandNicknames?: boolean }
+): Set<string> {
+  const expandNicknames = options?.expandNicknames === true;
   const trimmed = value.trim();
   const keys = new Set<string>();
 
+  function addFirstLastKeys(parts: readonly string[]): void {
+    if (parts.length < 2) {
+      return;
+    }
+    const firstName = parts[0]!;
+    const lastName = parts[parts.length - 1]!;
+    keys.add(`${firstName} ${lastName}`);
+    if (!expandNicknames) {
+      return;
+    }
+    for (const variant of firstNameVariants(firstName)) {
+      keys.add(`${variant} ${lastName}`);
+    }
+  }
+
   function addName(raw: string): void {
-    const hasComma = raw.includes(",");
     const normalized = normalizePersonName(raw);
     if (normalized) {
       keys.add(normalized);
-    }
-
-    const parts = normalized.split(" ").filter(Boolean);
-    if (!hasComma && parts.length >= 2) {
-      keys.add(`${parts[0]} ${parts[parts.length - 1]}`);
     }
 
     const commaParts = raw
       .split(",")
       .map((part) => normalizePersonName(part))
       .filter(Boolean);
-    if (commaParts.length >= 2) {
+    // A comma only signals a "Last, First" flip when text survives on both
+    // sides after normalization; a bare suffix comma ("Tarver, II") reads as
+    // a plain first-to-last name.
+    const isLastFirstName = commaParts.length >= 2;
+
+    const parts = normalized.split(" ").filter(Boolean);
+    if (!isLastFirstName && parts.length >= 2) {
+      addFirstLastKeys(parts);
+    }
+
+    if (isLastFirstName) {
       const lastName = commaParts[0] ?? "";
       const firstNames = commaParts.slice(1).join(" ").trim();
       const flipped = normalizePersonName(`${firstNames} ${lastName}`);
@@ -130,7 +162,7 @@ export function normalizeIllinoisCandidateNameKeys(value: string): Set<string> {
         keys.add(flipped);
         const flippedParts = flipped.split(" ").filter(Boolean);
         if (flippedParts.length >= 2) {
-          keys.add(`${flippedParts[0]} ${flippedParts[flippedParts.length - 1]}`);
+          addFirstLastKeys(flippedParts);
         }
       }
     }
@@ -222,7 +254,11 @@ function isLegislativeInput(input: { officeScope: string; officeName: string }):
   );
 }
 
-function splitCandidateNameForSearch(value: string): { firstName: string | null; lastName: string } | null {
+const SEARCH_NAME_SUFFIX_PATTERN = /^(?:JR|SR|II|III|IV|V)\.?$/i;
+
+export function splitIllinoisCandidateNameForSearch(
+  value: string
+): { firstName: string | null; lastName: string } | null {
   const normalized = value
     .replace(/\([^()]+\)/g, " ")
     .trim()
@@ -231,20 +267,25 @@ function splitCandidateNameForSearch(value: string): { firstName: string | null;
     return null;
   }
 
-  const commaParts = normalized
+  // A comma segment that is only a generational suffix ("Tarver, II") does
+  // not make the name Last, First — drop it before deciding the shape.
+  const nameSegments = normalized
     .split(",")
     .map((part) => part.trim())
-    .filter(Boolean);
-  if (commaParts.length >= 2) {
+    .filter((part) => part.length > 0 && !SEARCH_NAME_SUFFIX_PATTERN.test(part));
+  if (nameSegments.length >= 2) {
     return {
-      lastName: commaParts[0]!,
-      firstName: commaParts.slice(1).join(" "),
+      lastName: nameSegments[0]!,
+      firstName: nameSegments.slice(1).join(" "),
     };
   }
 
-  const parts = normalized.split(" ").filter(Boolean);
-  while (parts.length > 1 && /^(?:JR|SR|II|III|IV|V)\.?$/i.test(parts[parts.length - 1]!)) {
+  const parts = (nameSegments[0] ?? "").split(" ").filter(Boolean);
+  while (parts.length > 1 && SEARCH_NAME_SUFFIX_PATTERN.test(parts[parts.length - 1]!)) {
     parts.pop();
+  }
+  if (parts.length === 0) {
+    return null;
   }
   if (parts.length === 1) {
     return { firstName: null, lastName: parts[0]! };
@@ -294,7 +335,7 @@ export function resolveIllinoisCandidateCommitteesFromRelations(
   input: IllinoisCandidateCommitteeRelationResolverInput
 ): IllinoisCandidateCommitteeResolution {
   const electionYear = normalizeElectionYear(input.electionYear);
-  const candidateNameKeys = normalizeIllinoisCandidateNameKeys(input.candidateName);
+  const candidateNameKeys = normalizeIllinoisCandidateNameKeys(input.candidateName, { expandNicknames: true });
   const candidateNameKey = candidateNameNormalized(input.candidateName);
   const expectedOfficeKey = toIllinoisFinanceOfficeKey({
     officeScope: input.officeScope,
@@ -412,7 +453,7 @@ export function resolveIllinoisCandidateCommittee(
   input: IllinoisCandidateCommitteeResolverInput
 ): IllinoisCandidateCommitteeResolution {
   const electionYear = normalizeElectionYear(input.electionYear);
-  const candidateNameKeys = normalizeIllinoisCandidateNameKeys(input.candidateName);
+  const candidateNameKeys = normalizeIllinoisCandidateNameKeys(input.candidateName, { expandNicknames: true });
   const candidateNameKey = candidateNameNormalized(input.candidateName);
   const officeSearchInput = toIllinoisSbeOfficeSearchInput({
     officeScope: input.officeScope,
@@ -490,7 +531,7 @@ export async function searchAndResolveIllinoisCandidateCommittee(
   options?: IllinoisSbeClientOptions
 ): Promise<IllinoisCandidateCommitteeResolution> {
   const electionYear = normalizeElectionYear(input.electionYear);
-  const searchName = splitCandidateNameForSearch(input.candidateName);
+  const searchName = splitIllinoisCandidateNameForSearch(input.candidateName);
   if (!searchName) {
     return resolveIllinoisCandidateCommittee({
       ...input,
