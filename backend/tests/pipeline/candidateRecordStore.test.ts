@@ -77,12 +77,16 @@ describe("upsertCandidateRecords", () => {
         description: "Desc A",
         sourceUrl: "https://example.com/a",
         eventDate: "2026-04-01",
+        origin: "ai_enricher",
+        originRunId: "run-42",
       },
       {
         candidateId: "cand-1",
         description: "Desc B",
         sourceUrl: "https://example.com/b",
         eventDate: "2026-04-02",
+        origin: "repair",
+        originRunId: null,
       },
     ]);
 
@@ -93,6 +97,11 @@ describe("upsertCandidateRecords", () => {
     expect(result.insertedRecordIds).toEqual(["record-1"]);
     expect(query).toHaveBeenCalledTimes(4);
     expect(query.mock.calls[1]?.[0]).toContain("ON CONFLICT (candidate_id, record_identity_key)");
+    // Provenance is stamped on insert AND on conflict-update: the row's
+    // content reflects the latest writer, so origin must track it.
+    expect(query.mock.calls[1]?.[0]).toContain("origin = EXCLUDED.origin");
+    expect(query.mock.calls[1]?.[1]?.slice(-2)).toEqual(["ai_enricher", "run-42"]);
+    expect(query.mock.calls[3]?.[1]?.slice(-2)).toEqual(["repair", null]);
   });
 
   it("updates a highly similar existing record for the same candidate, source, and date", async () => {
@@ -116,6 +125,8 @@ describe("upsertCandidateRecords", () => {
         description: "Candidate sponsored transit funding bill",
         sourceUrl: "https://example.com/a",
         eventDate: "2026-04-01",
+        origin: "manual",
+        originRunId: "manual:candidate-records:election-1:cand-1",
       },
     ]);
 
@@ -125,6 +136,12 @@ describe("upsertCandidateRecords", () => {
     expect(result.insertedRecordIds).toEqual([]);
     expect(query).toHaveBeenCalledTimes(2);
     expect(query.mock.calls[1]?.[0]).toContain("UPDATE public.candidate_records");
+    // The similar-record UPDATE path must stamp provenance too.
+    expect(query.mock.calls[1]?.[0]).toContain("origin = $6");
+    expect(query.mock.calls[1]?.[1]?.slice(-2)).toEqual([
+      "manual",
+      "manual:candidate-records:election-1:cand-1",
+    ]);
   });
 });
 

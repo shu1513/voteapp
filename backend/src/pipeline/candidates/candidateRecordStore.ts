@@ -2,11 +2,21 @@ import { createHash } from "node:crypto";
 
 import type { PoolClient } from "pg";
 
+// Which writer produced the record content. NULL in the database means
+// "written before provenance existed"; new writes always carry a value —
+// the fields below are required so the compiler forces every writer
+// (present and future) to stamp them.
+export type CandidateRecordOrigin = "ai_enricher" | "repair" | "manual";
+
 export type CandidateRecordUpsertInput = {
   candidateId: string;
   description: string;
   sourceUrl: string;
   eventDate: string | Date;
+  origin: CandidateRecordOrigin;
+  // Enricher staging-stream run_id or the manual writer's manual key; null
+  // when the enricher message carried no run_id.
+  originRunId: string | null;
 };
 
 export type CandidateRecordUpsertResult = {
@@ -264,10 +274,20 @@ export async function upsertCandidateRecords(
               source_url = $3,
               event_date = $4::date,
               record_identity_key = $5,
+              origin = $6,
+              origin_run_id = $7,
               updated_at = now()
           WHERE id = $1
         `,
-        [similar.id, record.description, record.sourceUrl, eventDate, identityKey]
+        [
+          similar.id,
+          record.description,
+          record.sourceUrl,
+          eventDate,
+          identityKey,
+          record.origin,
+          record.originRunId,
+        ]
       );
       recordIdsByIdentityKey.set(identityKey, similar.id);
       updated += 1;
@@ -281,14 +301,18 @@ export async function upsertCandidateRecords(
           description,
           source_url,
           event_date,
-          record_identity_key
+          record_identity_key,
+          origin,
+          origin_run_id
         )
-        VALUES ($1, $2, $3, $4::date, $5)
+        VALUES ($1, $2, $3, $4::date, $5, $6, $7)
         ON CONFLICT (candidate_id, record_identity_key)
         DO UPDATE SET
           description = EXCLUDED.description,
           source_url = EXCLUDED.source_url,
           event_date = EXCLUDED.event_date,
+          origin = EXCLUDED.origin,
+          origin_run_id = EXCLUDED.origin_run_id,
           updated_at = now()
         RETURNING id, (xmax = 0) AS inserted
       `,
@@ -298,6 +322,8 @@ export async function upsertCandidateRecords(
         record.sourceUrl,
         eventDate,
         identityKey,
+        record.origin,
+        record.originRunId,
       ]
     );
 
