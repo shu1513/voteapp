@@ -520,6 +520,60 @@ describe("michiganCandidateFinanceBatchSync", () => {
     expect(syncArgs.outsideSourceUrl).toContain("/2022_mi_cfr.7z");
   });
 
+  it("clamps a 2020 election's cycle start to the first archive that exists", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "voteapp-mi-first-year-"));
+    tempDirs.push(cacheDir);
+    // A January-2020 annual statement carries a 2019 received date — the only
+    // place a 2020 election's prior-year receipts can exist, because there is
+    // no 2019 archive to clamp toward.
+    const priorYearReceiptOnAnnualStatement = contribution({
+      doc_seq_no: "1",
+      contribution_id: "10",
+      cont_detail_id: "0",
+      doc_stmnt_year: "2020",
+      received_date: "12/15/2019",
+    });
+    const electionYearRow = contribution({
+      doc_seq_no: "3",
+      contribution_id: "30",
+      cont_detail_id: "0",
+      doc_stmnt_year: "2020",
+      received_date: "10/01/2020",
+    });
+    await writeExtractedYearDir({
+      cacheDir,
+      year: 2020,
+      contributionRows: [priorYearReceiptOnAnnualStatement, electionYearRow],
+      expenditureRows: [],
+    });
+    await writeExtractedYearDir({ cacheDir, year: 2021, contributionRows: [], expenditureRows: [] });
+
+    const db = createMockDb([dueRow({ election_year: 2020, source_url: null })]);
+    const syncMichiganCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2020,
+      totalReceipts: 200,
+    });
+
+    const result = await syncDueMichiganCandidateFinance({
+      db,
+      syncMichiganCandidateFinanceFn,
+      now: new Date("2020-06-01T00:00:00.000Z"),
+      rawDataCacheDir: cacheDir,
+      autoLinkMissingLinks: false,
+    });
+
+    // No demand for a nonexistent 2019 archive, and the clamped duplicate of
+    // the election year does not read the 2020 archive twice.
+    expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
+    const syncArgs = syncMichiganCandidateFinanceFn.mock.calls[0]?.[0];
+    expect(syncArgs.contributionRows.map((row: MichiganMitnLegacyContributionRow) => row.contribution_id)).toEqual([
+      "10",
+      "30",
+    ]);
+  });
+
   it("reads every cycle filing year from a single shared extracted directory override", async () => {
     const sharedDir = await mkdtemp(join(tmpdir(), "voteapp-mi-shared-"));
     tempDirs.push(sharedDir);

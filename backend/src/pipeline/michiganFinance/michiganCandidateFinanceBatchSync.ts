@@ -22,6 +22,7 @@ import { MICHIGAN_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./michiganFinanceEligible
 import {
   DEFAULT_MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR,
   MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR,
+  MICHIGAN_MITN_LEGACY_FIRST_ARCHIVE_YEAR,
   buildMichiganMitnLegacyArchiveUrl,
   getMichiganMitnLegacyArchiveCachePaths,
   readMichiganMitnLegacyArchiveCacheMetadata,
@@ -274,11 +275,19 @@ async function sourceUrlForYear(input: { year: number; rawDataCacheDir?: string 
 // the readers filter files by their `{year}_` name prefix, and one directory
 // can therefore hold every cycle filing year's CSV files.
 function michiganCycleFilingYears(electionYear: number): number[] {
-  const years = [michiganElectionCycleStartYear(electionYear), electionYear];
+  // Clamp the start to the first archive that exists (2020): a 2020 election's
+  // 2019-filed statements were never exported anywhere, so skipping them is a
+  // dataset boundary, not a silent undercount. The election year itself stays
+  // unclamped — an active cycle past the frozen final archive must fail loudly
+  // rather than succeed on partial prior-year data. The Set collapses the
+  // duplicate when the clamped start equals the election year.
+  const years = new Set<number>();
+  years.add(Math.max(michiganElectionCycleStartYear(electionYear), MICHIGAN_MITN_LEGACY_FIRST_ARCHIVE_YEAR));
+  years.add(electionYear);
   if (electionYear + 1 <= MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR) {
-    years.push(electionYear + 1);
+    years.add(electionYear + 1);
   }
-  return years;
+  return [...years];
 }
 
 function michiganContributionRowIdentity(row: MichiganMitnLegacyContributionRow): string {
