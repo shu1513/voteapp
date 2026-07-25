@@ -164,6 +164,7 @@ describe("texasOutsideSpendingAggregator", () => {
         ],
         sourceUrl,
       },
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount: 4,
       includedCandidateExpenditureRowCount: 3,
       skippedCandidateExpenditureRowCount: 1,
@@ -254,6 +255,7 @@ describe("texasOutsideSpendingAggregator", () => {
 
     expect(result).toEqual({
       summary: null,
+      firstNameConflict: true,
       matchedCandidateExpenditureRowCount: 2,
       includedCandidateExpenditureRowCount: 0,
       skippedCandidateExpenditureRowCount: 2,
@@ -364,6 +366,7 @@ describe("texasOutsideSpendingAggregator", () => {
         ],
         sourceUrl: "https://www.ethics.state.tx.us/search/cf/",
       },
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount: 1,
       includedCandidateExpenditureRowCount: 1,
       skippedCandidateExpenditureRowCount: 0,
@@ -462,6 +465,7 @@ describe("texasOutsideSpendingAggregator", () => {
 
     expect(result).toEqual({
       summary: null,
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount: 6,
       includedCandidateExpenditureRowCount: 0,
       skippedCandidateExpenditureRowCount: 6,
@@ -489,6 +493,7 @@ describe("texasOutsideSpendingAggregator", () => {
       })
     ).toEqual({
       summary: null,
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount: 0,
       includedCandidateExpenditureRowCount: 0,
       skippedCandidateExpenditureRowCount: 0,

@@ -87,6 +87,11 @@ export type TexasCandidateFinanceSyncResult = {
   electionYear: number;
   dryRun: boolean;
   resolution: TexasCandidateCommitteeResolution;
+  // True when outside-spending aggregation saw includable purpose rows for
+  // two conflicting formal first names behind the candidate's nickname. The
+  // sync refuses to write anything so the previously stored snapshot is
+  // preserved; the candidate needs a human identity check.
+  outsideIdentityConflict: boolean;
   linkWritten: boolean;
   summaryWritten: boolean;
   directBreakdownsWritten: number;
@@ -412,6 +417,7 @@ function toSummary(input: {
 function emptyOutsideResult(): TexasOutsideSpendingAggregationResult {
   return {
     summary: null,
+    firstNameConflict: false,
     matchedCandidateExpenditureRowCount: 0,
     includedCandidateExpenditureRowCount: 0,
     skippedCandidateExpenditureRowCount: 0,
@@ -488,6 +494,7 @@ export async function syncTexasCandidateFinance(
       electionYear,
       dryRun: input.dryRun === true,
       resolution,
+      outsideIdentityConflict: false,
       linkWritten: false,
       summaryWritten: false,
       directBreakdownsWritten: 0,
@@ -533,6 +540,40 @@ export async function syncTexasCandidateFinance(
       })
     : emptyOutsideResult();
   const outsideDataAvailable = hasOutsideRows(input);
+
+  // Includable purpose rows named two conflicting formal first names behind
+  // this candidate's nickname: the stored committee link's identity is now in
+  // doubt, so write nothing and keep the previously stored snapshot intact
+  // rather than persisting zeroed outside totals and an empty group set.
+  if (outsideFinance.firstNameConflict) {
+    return {
+      candidateId,
+      electionId,
+      electionYear,
+      dryRun: input.dryRun === true,
+      resolution,
+      outsideIdentityConflict: true,
+      linkWritten: false,
+      summaryWritten: false,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      totalReceipts: null,
+      directContributionTotal: null,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+      matchedContributionRowCount: directFinance.matchedContributionRowCount,
+      includedContributionRowCount: directFinance.includedContributionRowCount,
+      skippedContributionRowCount: directFinance.skippedContributionRowCount,
+      matchedCandidateExpenditureRowCount: outsideFinance.matchedCandidateExpenditureRowCount,
+      includedCandidateExpenditureRowCount: outsideFinance.includedCandidateExpenditureRowCount,
+      skippedCandidateExpenditureRowCount: outsideFinance.skippedCandidateExpenditureRowCount,
+      matchedOutsideContributionRowCount: 0,
+      includedOutsideContributionRowCount: 0,
+      skippedOutsideContributionRowCount: 0,
+    };
+  }
+
   const outsideGroups = hasOutsideRows(input) ? toOutsideGroups(outsideFinance) ?? [] : undefined;
   const outsideGroupBreakdowns = toOutsideGroupBreakdowns({
     outsideGroups: outsideFinance.summary?.groups,
@@ -587,6 +628,7 @@ export async function syncTexasCandidateFinance(
     electionYear,
     dryRun: input.dryRun === true,
     resolution,
+    outsideIdentityConflict: false,
     linkWritten: !input.dryRun,
     summaryWritten: !input.dryRun,
     directBreakdownsWritten: input.dryRun ? 0 : directFinance.directBreakdowns.length,

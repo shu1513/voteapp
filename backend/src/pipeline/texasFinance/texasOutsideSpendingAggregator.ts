@@ -44,6 +44,10 @@ export type TexasOutsideSpendingAggregationInput = {
 
 export type TexasOutsideSpendingAggregationResult = {
   summary: TexasOutsideSpendingSummary | null;
+  // True when includable rows spanned conflicting formal first names and the
+  // aggregation refused to attribute any of them. Callers must not persist a
+  // zeroed snapshot over previously stored data in this case.
+  firstNameConflict: boolean;
   matchedCandidateExpenditureRowCount: number;
   includedCandidateExpenditureRowCount: number;
   skippedCandidateExpenditureRowCount: number;
@@ -422,6 +426,7 @@ export function aggregateTexasOutsideSpending(
   if (candidateNameKeys.size === 0) {
     return {
       summary: null,
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount: 0,
       includedCandidateExpenditureRowCount: 0,
       skippedCandidateExpenditureRowCount: 0,
@@ -493,6 +498,7 @@ export function aggregateTexasOutsideSpending(
   if (matchedRowsSpanConflictingFirstNames(includableRows.map((entry) => entry.row))) {
     return {
       summary: null,
+      firstNameConflict: true,
       matchedCandidateExpenditureRowCount,
       includedCandidateExpenditureRowCount: 0,
       skippedCandidateExpenditureRowCount: matchedCandidateExpenditureRowCount,
@@ -534,6 +540,7 @@ export function aggregateTexasOutsideSpending(
   if (grouped.length === 0) {
     return {
       summary: null,
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount,
       includedCandidateExpenditureRowCount,
       skippedCandidateExpenditureRowCount,
@@ -547,6 +554,7 @@ export function aggregateTexasOutsideSpending(
       groups: grouped,
       sourceUrl: input.sourceUrl ?? null,
     },
+    firstNameConflict: false,
     matchedCandidateExpenditureRowCount,
     includedCandidateExpenditureRowCount,
     skippedCandidateExpenditureRowCount,

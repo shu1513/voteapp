@@ -673,6 +673,12 @@ export async function syncDueTexasCandidateFinance(
         dryRun,
         now,
       });
+      if (result.outsideIdentityConflict) {
+        console.warn(
+          "Texas finance sync refused candidate election after conflicting first-name identities in outside-spending rows; previous snapshot preserved:",
+          { candidateId: row.candidateId, electionId: row.electionId, committeeId: row.committeeId }
+        );
+      }
       results.push({
         candidateId: row.candidateId,
         electionId: row.electionId,
