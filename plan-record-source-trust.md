@@ -191,10 +191,13 @@ Migration `197_add_candidate_records_provenance.sql`: `candidate_records` gains
 before provenance existed) and `origin_run_id` (nullable text: enricher
 staging-stream `run_id`, or the manual writer's manual key). All writers stamp
 them — the fields are REQUIRED on `CandidateRecordUpsertInput`, so the compiler
-forces any future writer to declare provenance. All three upsert SQL paths
-(insert, conflict-update, similar-record update) write the columns; a row's
-origin tracks the latest writer because its content does. Purpose: a poisoned
-cohort becomes a `WHERE origin_run_id = ...` clause instead of forensics.
+forces any future writer to declare provenance. Semantics: origin is the writer
+that INTRODUCED the record's normalized content — identical re-imports preserve
+the original attribution (identity-key comparison in the similar-record UPDATE;
+the ON CONFLICT clause never touches the columns), so periodic reruns cannot
+rotate a poisoned cohort out of its `WHERE origin_run_id = ...` cleanup query.
+Manual writers suffix their manual key with a per-import timestamp so one bad
+import is isolable. Partial index on `origin_run_id` serves the cleanup lookup.
 
 `source_content_sha256` was planned on the premise that the verification body
 was already fetched. Verified false: `verifyHttpUrlReachability` is HEAD-first
