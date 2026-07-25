@@ -345,4 +345,158 @@ describe("enrichCandidateRecords", () => {
     expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(1);
     expect(verifyHttpUrlReachabilityMock.mock.calls[0]?.[0]).toBe("https://city.example/service");
   });
+
+  it("validator drops blocked UGC/social source domains before any fetch", async () => {
+    verifyHttpUrlReachabilityMock.mockResolvedValue({
+      ok: true,
+      normalizedUrl: "https://city.example/service",
+      finalUrl: "https://city.example/service",
+      status: 200,
+    });
+
+    const result = await validateCandidateRecordDiscoveryPayload(
+      {
+        records: [
+          {
+            description: "Jane Doe voted against the 2025 zoning overhaul.",
+            source_url: "https://www.reddit.com/r/localpolitics/comments/abc",
+            event_date: "2025-03-01",
+          },
+          {
+            description: "Jane Doe served as chair of the city budget committee.",
+            source_url: "https://city.example/service",
+            event_date: "2024-01-15",
+          },
+        ],
+      },
+      90000
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+
+    expect(result.records).toHaveLength(1);
+    expect(result.records[0]?.source_url).toBe("https://city.example/service");
+    expect(result.droppedRecords).toEqual([
+      expect.objectContaining({
+        failureKind: "source_url",
+        failureType: "permanent",
+        reason: expect.stringContaining("user-generated/social platform"),
+        record: expect.objectContaining({
+          source_url: "https://www.reddit.com/r/localpolitics/comments/abc",
+        }),
+      }),
+    ]);
+    expect(result.validationDebug).toEqual(
+      expect.objectContaining({
+        dropped_records_source_policy_count: 1,
+        verified_records_count: 1,
+      })
+    );
+    // Blocked domains are rejected by the pure policy check and never fetched.
+    expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(1);
+    expect(verifyHttpUrlReachabilityMock.mock.calls[0]?.[0]).toBe("https://city.example/service");
+  });
+
+  it("validator drops damaging claims sourced only to unlisted domains but keeps them from listed sources", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) => ({
+      ok: true,
+      normalizedUrl: url,
+      finalUrl: url,
+      status: 200,
+    }));
+
+    const result = await validateCandidateRecordDiscoveryPayload(
+      {
+        records: [
+          {
+            description: "Jane Doe was indicted on bribery charges in March 2026.",
+            source_url: "https://patriot-eagle-news-watch.com/exclusive",
+            event_date: "2026-03-02",
+          },
+          {
+            description: "Jane Doe was indicted on bribery charges in March 2026.",
+            source_url: "https://www.justice.gov/usao/pr/indictment",
+            event_date: "2026-03-03",
+          },
+          {
+            description: "Jane Doe served as chair of the city budget committee.",
+            source_url: "https://smalltownweekly.com/news/budget",
+            event_date: "2024-01-15",
+          },
+        ],
+      },
+      90000
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+
+    // Unlisted + damaging dropped; listed + damaging and unlisted + neutral kept.
+    expect(result.records.map((record) => record.source_url)).toEqual([
+      "https://www.justice.gov/usao/pr/indictment",
+      "https://smalltownweekly.com/news/budget",
+    ]);
+    expect(result.droppedRecords).toEqual([
+      expect.objectContaining({
+        failureKind: "source_url",
+        failureType: "permanent",
+        reason: expect.stringContaining("damaging claim requires an official"),
+        record: expect.objectContaining({
+          source_url: "https://patriot-eagle-news-watch.com/exclusive",
+        }),
+      }),
+    ]);
+  });
+
+  it("validator drops records whose citation redirects to a blocked domain", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) => ({
+      ok: true,
+      normalizedUrl: url,
+      finalUrl: url.includes("shortlink.example")
+        ? "https://www.reddit.com/r/localpolitics/comments/abc"
+        : url,
+      status: 200,
+    }));
+
+    const result = await validateCandidateRecordDiscoveryPayload(
+      {
+        records: [
+          {
+            description: "Jane Doe voted against the 2025 zoning overhaul.",
+            source_url: "https://shortlink.example/x1",
+            event_date: "2025-03-01",
+          },
+          {
+            description: "Jane Doe served as chair of the city budget committee.",
+            source_url: "https://city.example/service",
+            event_date: "2024-01-15",
+          },
+        ],
+      },
+      90000
+    );
+
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      return;
+    }
+
+    expect(result.records).toHaveLength(1);
+    expect(result.records[0]?.source_url).toBe("https://city.example/service");
+    expect(result.droppedRecords).toEqual([
+      expect.objectContaining({
+        failureKind: "source_url",
+        failureType: "permanent",
+        reason: expect.stringContaining("resolved citation URL"),
+        record: expect.objectContaining({
+          source_url: "https://shortlink.example/x1",
+        }),
+      }),
+    ]);
+  });
 });

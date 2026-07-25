@@ -86,6 +86,7 @@ export function buildCandidateRecordSourceRepairPrompt(
     "- You may return fewer than all bad_index values; unresolved items can be omitted or returned with no_replacement=true.",
     "- Never reuse any URL listed in blocked URLs.",
     "- source_url must be a valid public http(s) URL.",
+    "- source_url must not be a social/UGC platform (Reddit, X/Twitter, Facebook, YouTube, Medium, Substack, personal blogs); for damaging claims cite an official/legal source or reputable news outlet.",
     "- event_date must be YYYY-MM-DD.",
     "- Do not invent sources; if no reliable source exists, return no_replacement=true.",
     ...PLAIN_LANGUAGE_STYLE_RULES,

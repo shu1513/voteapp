@@ -15,6 +15,7 @@ import {
   enrichCandidateRecordAreas,
 } from "../../ai/enrichCandidateRecordAreas.js";
 import { classifyCitationVerificationFailure, verifyHttpUrlReachability } from "../../ai/urlReachability.js";
+import { evaluateCandidateRecordSourcePolicy } from "../candidates/candidateRecordSourcePolicy.js";
 import { getPipelineEnv } from "../../config/env.js";
 import { isPresidentialElectionsEnabled } from "../../config/featureFlags.js";
 import {
@@ -608,6 +609,22 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                       continue;
                     }
 
+                    // Repair suggestions bypass validateCandidateRecordDiscoveryPayload,
+                    // so the source-domain policy must run here too — otherwise a
+                    // "repair" could swap a rejected citation for another blocked
+                    // (UGC/social) or unlisted-damaging one.
+                    const repairPolicy = evaluateCandidateRecordSourcePolicy({
+                      description: suggestion.description,
+                      sourceUrl: normalizedRepairUrl,
+                    });
+                    if (!repairPolicy.ok) {
+                      unresolvedDetails.push({
+                        message: `bad_index=${suggestion.bad_index}: source policy rejected replacement URL: ${repairPolicy.reason}`,
+                        failureType: "permanent",
+                      });
+                      continue;
+                    }
+
                     const verification = await verifyHttpUrlReachability(normalizedRepairUrl, {
                       timeoutMs: Math.min(recordsConfig.timeoutMs, 8_000),
                       allowStatusCodes: [403],
@@ -617,6 +634,21 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                       unresolvedDetails.push({
                         message: `bad_index=${suggestion.bad_index}: ${verification.reason} (${failureType})`,
                         failureType,
+                      });
+                      continue;
+                    }
+
+                    // Same policy on the post-redirect finalUrl — the stored
+                    // citation, which a shortener/open redirect could otherwise
+                    // land on a blocked platform.
+                    const repairFinalUrlPolicy = evaluateCandidateRecordSourcePolicy({
+                      description: suggestion.description,
+                      sourceUrl: verification.finalUrl,
+                    });
+                    if (!repairFinalUrlPolicy.ok) {
+                      unresolvedDetails.push({
+                        message: `bad_index=${suggestion.bad_index}: source policy rejected resolved replacement URL ${verification.finalUrl}: ${repairFinalUrlPolicy.reason}`,
+                        failureType: "permanent",
                       });
                       continue;
                     }

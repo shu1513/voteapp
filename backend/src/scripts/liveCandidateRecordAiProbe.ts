@@ -14,6 +14,7 @@ import {
 } from "../ai/enrichCandidateRecordAreas.js";
 import { parseCandidateRecordDiscoveryPayloadPartial } from "../contracts/candidateRecordDiscoveryPayloadContract.js";
 import { verifyHttpUrlReachability } from "../ai/urlReachability.js";
+import { evaluateCandidateRecordSourcePolicy } from "../pipeline/candidates/candidateRecordSourcePolicy.js";
 import { getPipelineEnv } from "../config/env.js";
 import { loadCandidateElectionOfficeContext } from "../pipeline/candidates/candidateRecordOfficeContext.js";
 import {
@@ -201,11 +202,30 @@ async function main(): Promise<void> {
     let repairedDroppedCount = 0;
     const repairedForAreas: typeof repairedRecordCandidates = [];
     for (const row of repairedRecordCandidates) {
+      // Mirror the production repair path: source policy before reachability
+      // and again on the post-redirect finalUrl, so the probe reports what the
+      // enricher would actually accept.
+      const policy = evaluateCandidateRecordSourcePolicy({
+        description: row.description,
+        sourceUrl: row.source_url,
+      });
+      if (!policy.ok) {
+        repairedDroppedCount += 1;
+        continue;
+      }
       const verification = await verifyHttpUrlReachability(row.source_url, {
         timeoutMs: 8_000,
         allowStatusCodes: [403],
       });
       if (!verification.ok) {
+        repairedDroppedCount += 1;
+        continue;
+      }
+      const finalUrlPolicy = evaluateCandidateRecordSourcePolicy({
+        description: row.description,
+        sourceUrl: verification.finalUrl,
+      });
+      if (!finalUrlPolicy.ok) {
         repairedDroppedCount += 1;
         continue;
       }
