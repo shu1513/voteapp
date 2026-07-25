@@ -536,6 +536,9 @@ function findAlaskaApocExportCsvHref(html: string): string | null {
   return match?.[1] ? decodeHtmlAttribute(match[1]) : null;
 }
 
+// Reads the body inside the timeout window: the ~20 MB export download is the
+// part most likely to stall, so the ceiling must cover body consumption, not
+// just the response headers.
 async function requestAlaskaApoc(input: {
   url: string;
   fetchFn: AlaskaApocCsvFetchFn;
@@ -543,7 +546,7 @@ async function requestAlaskaApoc(input: {
   timeoutMs: number;
   referer?: string;
   body?: URLSearchParams;
-}): Promise<Response> {
+}): Promise<{ body: string; contentType: string | null }> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), input.timeoutMs);
   timeout.unref?.();
@@ -562,7 +565,7 @@ async function requestAlaskaApoc(input: {
     if (!response.ok) {
       throw new Error(`Alaska APOC request failed with HTTP ${response.status} for ${input.url}`);
     }
-    return response;
+    return { body: await response.text(), contentType: response.headers.get("content-type") };
   } catch (error) {
     if (isAbortError(error)) {
       throw new Error(`Alaska APOC request timed out after ${input.timeoutMs}ms for ${input.url}`);
@@ -592,61 +595,55 @@ async function fetchAlaskaApocExportCsvOnce(input: {
   exportTimeoutMs: number;
 }): Promise<string> {
   const jar: AlaskaApocCookieJar = new Map();
-  const pageResponse = await requestAlaskaApoc({
+  const page = await requestAlaskaApoc({
     url: input.pageUrl,
     fetchFn: input.fetchFn,
     jar,
     timeoutMs: input.timeoutMs,
   });
-  const pageHtml = await pageResponse.text();
-  const prefix = findAlaskaApocFilterPrefix(pageHtml);
+  const prefix = findAlaskaApocFilterPrefix(page.body);
   const reportYearField = `${prefix}ddlReportYear`;
 
-  const searchResponse = await requestAlaskaApoc({
+  const search = await requestAlaskaApoc({
     url: input.pageUrl,
     fetchFn: input.fetchFn,
     jar,
     timeoutMs: input.timeoutMs,
     referer: input.pageUrl,
-    body: alaskaApocFormBody(collectAlaskaApocFormFields(pageHtml), {
+    body: alaskaApocFormBody(collectAlaskaApocFormFields(page.body), {
       [reportYearField]: String(input.reportYear),
       [`${prefix}btnSearch`]: "Search",
     }),
   });
-  const searchHtml = await searchResponse.text();
 
-  const exportResponse = await requestAlaskaApoc({
+  const exportDialog = await requestAlaskaApoc({
     url: input.pageUrl,
     fetchFn: input.fetchFn,
     jar,
     timeoutMs: input.timeoutMs,
     referer: input.pageUrl,
-    body: alaskaApocFormBody(collectAlaskaApocFormFields(searchHtml), {
+    body: alaskaApocFormBody(collectAlaskaApocFormFields(search.body), {
       [reportYearField]: String(input.reportYear),
       [`${prefix}btnExport`]: "Export",
     }),
   });
-  const href = findAlaskaApocExportCsvHref(await exportResponse.text());
+  const href = findAlaskaApocExportCsvHref(exportDialog.body);
   if (!href) {
     throw new Error(
       `Alaska APOC export dialog did not offer a CSV download for ${input.pageUrl} (report year ${input.reportYear})`
     );
   }
 
-  const csvResponse = await requestAlaskaApoc({
-    url: new URL(href, input.pageUrl).toString(),
+  const csvUrl = new URL(href, input.pageUrl).toString();
+  const csv = await requestAlaskaApoc({
+    url: csvUrl,
     fetchFn: input.fetchFn,
     jar,
     timeoutMs: input.exportTimeoutMs,
     referer: input.pageUrl,
   });
-  const body = await csvResponse.text();
-  assertCsvResponse({
-    url: input.pageUrl,
-    body,
-    contentType: csvResponse.headers.get("content-type"),
-  });
-  return body;
+  assertCsvResponse({ url: csvUrl, body: csv.body, contentType: csv.contentType });
+  return csv.body;
 }
 
 export async function fetchAlaskaApocExportCsv(
@@ -748,6 +745,15 @@ export async function fetchAlaskaApocFinanceCsvBundle(
   };
 }
 
+// The official export splits individual contributors into "Last/Business Name"
+// and "First Name"; rejoin them in the legacy "Last, First" shape so contributor
+// identity stays stable for grouping.
+function incomeContributor(record: CsvRecord): string {
+  const lastOrBusiness = getString(record, "Contributor/Vendor", "Contributor", "Vendor", "Last/Business Name");
+  const firstName = getString(record, "First Name");
+  return lastOrBusiness && firstName ? `${lastOrBusiness}, ${firstName}` : lastOrBusiness;
+}
+
 export function parseAlaskaApocCampaignIncomeCsv(
   csv: string,
   options: { sourceUrl?: string | null } = {}
@@ -769,7 +775,7 @@ export function parseAlaskaApocCampaignIncomeCsv(
       name: getString(record, "Name", "Candidate Name", "Group Name"),
       date,
       type: getString(record, "Type", "Transaction Type"),
-      contributor: getString(record, "Contributor/Vendor", "Contributor", "Vendor", "Last/Business Name"),
+      contributor: incomeContributor(record),
       address: getString(record, "Address"),
       city: getString(record, "City"),
       state: getString(record, "State"),

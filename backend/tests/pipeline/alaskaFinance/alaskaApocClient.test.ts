@@ -98,6 +98,7 @@ describe("alaskaApocClient", () => {
       [
         "Result,Date,Transaction Type,Payment Type,Payment Detail,Amount,Last/Business Name,First Name,Address,City,State,Zip,Country,Occupation,Employer,Purpose of Expenditure,--------,Report Type,Election Name,Election Type,Municipality,Office,Filer Type,Name,Report Year,Submitted",
         "1,12/24/2024,Income,Check,2408,\"$1,000.00\",\"Public Employees Local 71\",,\"2510 Arctic Blvd\",Anchorage,Alaska,99503,USA,PAC,PAC,,,\"Previous Year Start Report\",\"2026 - Anchorage Municipal Election\",\"Anchorage Municipal\",\"Anchorage, City and Borough\",Assembly,Candidate,\"Dave Donley\",2026,2/9/2025",
+        "2,1/15/2026,Income,Check,101,$50.00,Smith,Pat,\"1 Main St\",Juneau,Alaska,99801,USA,Attorney,\"Law Firm\",,,\"Year Start Report\",\"2026 - State General\",State,,Governor,Candidate,\"Dave Donley\",2026,2/1/2026",
       ].join("\n")
     );
 
@@ -114,6 +115,12 @@ describe("alaskaApocClient", () => {
         occupation: "PAC",
         amount: 1000,
         reportYear: 2026,
+      }),
+      expect.objectContaining({
+        // Split individual-contributor columns rejoin as "Last, First".
+        contributor: "Smith, Pat",
+        occupation: "Attorney",
+        amount: 50,
       }),
     ]);
   });
