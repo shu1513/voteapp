@@ -43,6 +43,20 @@ describe("alaskaCandidateCommitteeResolver", () => {
     );
   });
 
+  it("keys first and last names around middles, suffixes, and quoted call names", () => {
+    expect(normalizeAlaskaCandidateNameKeys("Louise B. Stutes")).toContain("LOUISE STUTES");
+    expect(normalizeAlaskaCandidateNameKeys("Ruffridge, Justin M.")).toContain("JUSTIN RUFFRIDGE");
+    expect(normalizeAlaskaCandidateNameKeys("Bauer, Paul A. Jr.")).toContain("PAUL BAUER");
+    expect(normalizeAlaskaCandidateNameKeys('Glenn M. “Mike” Prax')).toContain("MIKE PRAX");
+    expect(normalizeAlaskaCandidateNameKeys('Kennedy, Kathleen M. "Kit"')).toContain("KIT KENNEDY");
+    // No lone-surname key and no nickname keys without opting in.
+    expect(normalizeAlaskaCandidateNameKeys("Louise B. Stutes")).not.toContain("STUTES");
+    expect(normalizeAlaskaCandidateNameKeys("Simpler, Kathy C.")).not.toContain("KATHERINE SIMPLER");
+    expect(normalizeAlaskaCandidateNameKeys("Simpler, Kathy C.", { expandNicknames: true })).toContain(
+      "KATHERINE SIMPLER"
+    );
+  });
+
   it("resolves one clear APOC candidate filer from income rows", () => {
     expect(
       resolveAlaskaCandidateCommittee({
@@ -92,6 +106,37 @@ describe("alaskaCandidateCommitteeResolver", () => {
         incomeRows: [income({ filerName: "Jane Marie Doe", name: "Jane Marie Doe" })],
       })
     ).toMatchObject({ status: "matched", candidateFilerName: "Jane Marie Doe" });
+  });
+
+  it("matches a campaign nickname against the formal APOC filing name one-sidedly", () => {
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Becky Schwanke",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Rebecca A Schwanke", name: "Rebecca A Schwanke" })],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerName: "Rebecca A Schwanke" });
+
+    // Two distinct formal names must not meet at a shared nickname key.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Patrick Smith",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Patricia Smith", name: "Patricia Smith" })],
+      })
+    ).toMatchObject({ status: "unmatched" });
+
+    // A shared nickname with both formal families filed stays ambiguous.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Pat Smith",
+        electionYear: 2026,
+        incomeRows: [
+          income({ filerId: "3001", filerName: "Patricia Smith", name: "Patricia Smith" }),
+          income({ filerId: "3002", filerName: "Patrick Smith", name: "Patrick Smith" }),
+        ],
+      })
+    ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
   });
 
   it("does not match a key across the filerName/name field seam", () => {

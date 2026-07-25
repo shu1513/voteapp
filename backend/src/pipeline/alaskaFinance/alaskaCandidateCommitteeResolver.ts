@@ -1,3 +1,4 @@
+import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
 import type { AlaskaApocCampaignIncomeRow } from "./alaskaApocClient.js";
 import { parseAlaskaApocDateYear } from "./alaskaApocClient.js";
 
@@ -48,7 +49,38 @@ export function normalizeAlaskaCandidateNameForStorage(value: string): string {
   return normalized;
 }
 
-export function normalizeAlaskaCandidateNameKeys(value: string): Set<string> {
+export type AlaskaCandidateNameKeyOptions = {
+  // Adds keys for common first-name nicknames ("Nick Capozzi" also keys
+  // NICHOLAS CAPOZZI). Expansion is one-sided: only the VoteApp candidate
+  // name is expanded, APOC filer names always match literally, so two
+  // distinct formal names cannot meet at a shared nickname key.
+  expandNicknames?: boolean;
+};
+
+const NAME_SUFFIX_PATTERN = /^(?:JR|SR|II|III|IV|V)$/;
+
+// VoteApp stores "Last, First M." and "First M. Last"; order the tokens
+// first-name-first and drop generational suffixes so the first and last
+// tokens are the given name and surname.
+function orderedNameTokens(value: string): string[] {
+  const commaMatch = /^\s*([^,]+),\s*(.+?)\s*$/.exec(value);
+  const ordered = commaMatch?.[1] && commaMatch[2] ? `${commaMatch[2]} ${commaMatch[1]}` : value;
+  return normalizeTextKey(ordered)
+    .split(" ")
+    .filter((token) => token.length > 0 && !NAME_SUFFIX_PATTERN.test(token));
+}
+
+// Quoted call name in the roster spelling: Glenn M. "Mike" Prax -> MIKE.
+function quotedCallName(value: string): string | null {
+  const match = /["“”']([^"“”']{2,}?)["“”']/.exec(value);
+  const token = match ? normalizeTextKey(match[1]).split(" ")[0] : undefined;
+  return token && token.length >= 2 ? token : null;
+}
+
+export function normalizeAlaskaCandidateNameKeys(
+  value: string,
+  options: AlaskaCandidateNameKeyOptions = {}
+): Set<string> {
   const keys = new Set<string>();
   const normalized = normalizeTextKey(value);
   if (normalized) {
@@ -66,6 +98,30 @@ export function normalizeAlaskaCandidateNameKeys(value: string): Set<string> {
   const parts = normalized.split(" ").filter(Boolean);
   if (parts.length >= 2) {
     keys.add(`${parts.at(-1)} ${parts.slice(0, -1).join(" ")}`);
+  }
+
+  const ordered = orderedNameTokens(value);
+  if (ordered.length >= 2) {
+    const surname = ordered.at(-1) as string;
+    const givenNames = new Set<string>([ordered[0]]);
+    const callName = quotedCallName(value);
+    if (callName && callName !== surname) {
+      givenNames.add(callName);
+    }
+    if (options.expandNicknames === true) {
+      for (const givenName of [...givenNames]) {
+        for (const variant of firstNameVariants(givenName)) {
+          givenNames.add(variant);
+        }
+      }
+    }
+    for (const givenName of givenNames) {
+      if (givenName === surname) {
+        continue;
+      }
+      keys.add(`${givenName} ${surname}`);
+      keys.add(`${surname} ${givenName}`);
+    }
   }
 
   return keys;
@@ -131,7 +187,8 @@ export function resolveAlaskaCandidateCommittee(input: {
   sourceUrl?: string | null;
 }): AlaskaCandidateCommitteeResolution {
   const candidateNameNormalized = normalizeAlaskaCandidateNameForStorage(input.candidateName);
-  const candidateNameKeys = normalizeAlaskaCandidateNameKeys(input.candidateName);
+  // VoteApp side expands nicknames; APOC filer names always key literally.
+  const candidateNameKeys = normalizeAlaskaCandidateNameKeys(input.candidateName, { expandNicknames: true });
   const filers = new Map<string, FilerAggregate>();
 
   for (const row of input.incomeRows) {
