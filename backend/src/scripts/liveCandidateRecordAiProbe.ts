@@ -14,7 +14,10 @@ import {
 } from "../ai/enrichCandidateRecordAreas.js";
 import { parseCandidateRecordDiscoveryPayloadPartial } from "../contracts/candidateRecordDiscoveryPayloadContract.js";
 import { verifyHttpUrlReachability } from "../ai/urlReachability.js";
-import { evaluateCandidateRecordSourcePolicy } from "../pipeline/candidates/candidateRecordSourcePolicy.js";
+import {
+  evaluateCandidateRecordSourcePolicy,
+  matchesDamagingClaimPattern,
+} from "../pipeline/candidates/candidateRecordSourcePolicy.js";
 import { getPipelineEnv } from "../config/env.js";
 import { loadCandidateElectionOfficeContext } from "../pipeline/candidates/candidateRecordOfficeContext.js";
 import {
@@ -201,15 +204,24 @@ async function main(): Promise<void> {
     let repairedVerifiedCount = 0;
     let repairedDroppedCount = 0;
     const repairedForAreas: typeof repairedRecordCandidates = [];
-    for (const row of repairedRecordCandidates) {
+    for (const [rowIndex, row] of repairedRecordCandidates.entries()) {
       // Mirror the production repair path: source policy before reachability
       // and again on the post-redirect finalUrl, so the probe reports what the
-      // enricher would actually accept.
+      // enricher would actually accept. Like the enricher, the damaging check
+      // uses the ORIGINAL description when it matched — the repair model may
+      // rewrite a damaging claim into softer wording while keeping the same
+      // untrusted domain.
+      const originalBad = combinedBad[repair.repairs[rowIndex]?.bad_index ?? -1];
+      const descriptionForPolicy =
+        originalBad && matchesDamagingClaimPattern(originalBad.record.description)
+          ? originalBad.record.description
+          : row.description;
       const policy = evaluateCandidateRecordSourcePolicy({
-        description: row.description,
+        description: descriptionForPolicy,
         sourceUrl: row.source_url,
       });
       if (!policy.ok) {
+        console.warn(`repair source policy drop ${row.source_url}: ${policy.reason}`);
         repairedDroppedCount += 1;
         continue;
       }
@@ -222,10 +234,13 @@ async function main(): Promise<void> {
         continue;
       }
       const finalUrlPolicy = evaluateCandidateRecordSourcePolicy({
-        description: row.description,
+        description: descriptionForPolicy,
         sourceUrl: verification.finalUrl,
       });
       if (!finalUrlPolicy.ok) {
+        console.warn(
+          `repair source policy drop (resolved URL) ${verification.finalUrl}: ${finalUrlPolicy.reason}`
+        );
         repairedDroppedCount += 1;
         continue;
       }

@@ -26,6 +26,18 @@ describe("classifyCandidateRecordSourceDomain", () => {
     expect(classifyCandidateRecordSourceDomain("https://notx.company/a").tier).toBe("unlisted");
   });
 
+  it("blocks additional fixed-domain UGC platforms", () => {
+    for (const url of [
+      "https://bsky.app/profile/someone",
+      "https://nextdoor.com/p/abc",
+      "https://www.twitch.tv/somestream",
+      "https://www.youtube-nocookie.com/embed/abc",
+      "https://www.snapchat.com/add/someone",
+    ]) {
+      expect(classifyCandidateRecordSourceDomain(url).tier, url).toBe("blocked");
+    }
+  });
+
   it("lists any .gov or .mil hostname", () => {
     expect(classifyCandidateRecordSourceDomain("https://sos.ca.gov/elections").tier).toBe("listed");
     expect(classifyCandidateRecordSourceDomain("https://www.congress.gov/bill/x").tier).toBe(
@@ -99,6 +111,42 @@ describe("matchesDamagingClaimPattern", () => {
       "Was sued over unpaid campaign vendor invoices.",
       "Falsified timesheets while serving as county clerk.",
       "Settled a sexual harassment complaint filed by a former aide.",
+      "Diverted public funds for personal use while serving as treasurer.",
+      "Accepted bribes from contractors seeking city permits.",
+      "An ethics commission found that she committed campaign-finance fraud.",
+      "Is under investigation for corruption in the licensing office.",
+      "Now faces three counts of felony fraud.",
+      "Remains under indictment on federal charges.",
+      "Was named in an indictment for wire fraud.",
+      "A jury found him liable for defamation.",
+    ];
+    for (const description of damaging) {
+      expect(matchesDamagingClaimPattern(description), description).toBe(true);
+    }
+  });
+
+  it("does not match candidate-as-official records about third-party misconduct (live-corpus false positives)", () => {
+    const actorRecords = [
+      "Judge Christopher M. Blount sentenced JuJuan Parks to 46 to 60 years in prison after Parks pleaded guilty to second-degree murder.",
+      "Holliday co-prosecuted a caregiver who was convicted of exploiting an 81-year-old woman.",
+      "Sponsored HB 5551, barring people convicted of specified election crimes from serving on canvassing boards.",
+      "Introduced 2023 House Bill 4121, permanently revoking the license of a health professional convicted of sexual conduct.",
+      "Voted for an expanded interim policy covering nondiscrimination, harassment, and sexual harassment.",
+      "Zeigler filed ethics complaints in 2016 against Governor Robert Bentley.",
+      "Alongside Representative Gina Mitten, publicly released an ethics complaint alleging campaign-finance violations.",
+      "Imposed the maximum 10-year sentence on a man convicted of second-degree assault.",
+      "Has served as a Senior Deputy Prosecutor handling domestic violence, child abuse, and sexual assault cases.",
+    ];
+    for (const description of actorRecords) {
+      expect(matchesDamagingClaimPattern(description), description).toBe(false);
+    }
+  });
+
+  it("still matches accusations against the candidate even in official contexts", () => {
+    const damaging = [
+      "While a sitting judge, was censured by the judicial conduct commission.",
+      "Was convicted of felony forgery in 2018 while a sitting councilmember.",
+      "The former prosecutor pleaded guilty to falsifying case records.",
     ];
     for (const description of damaging) {
       expect(matchesDamagingClaimPattern(description), description).toBe(true);
@@ -117,6 +165,9 @@ describe("matchesDamagingClaimPattern", () => {
       "Chaired the House ethics committee for two terms.",
       "Investigated consumer complaints as head of the agency.",
       "Fined polluters a record $2 million as attorney general.",
+      "Sponsored a bill barring officials who diverted public funds from future office.",
+      "Voted to strengthen penalties for officials who accepted bribes.",
+      "Faces a well-funded challenger in the primary.",
     ];
     for (const description of benign) {
       expect(matchesDamagingClaimPattern(description), description).toBe(false);

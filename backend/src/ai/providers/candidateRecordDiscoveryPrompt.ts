@@ -109,7 +109,7 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
     "- If neither action/event date nor publication date is available, omit that record.",
     "- Use one row per concrete record; do not duplicate the same source/event.",
     "- Keep descriptions neutral and factual.",
-    "- source_url must not be a social/UGC platform (Reddit, X/Twitter, Facebook, YouTube, Medium, Substack, personal blogs) — the importer rejects those citations.",
+    "- source_url must not be a social/UGC platform or a personal blog/self-published page (Reddit, X/Twitter, Facebook, YouTube, Medium, Substack, and similar); the importer rejects known platform domains.",
     "- For damaging claims, require official/legal sources or reputable news (the importer rejects damaging claims cited to other domains) and do not state allegations as proven facts.",
     ...PLAIN_LANGUAGE_STYLE_RULES,
     "- return JSON only (no prose, no markdown).",
