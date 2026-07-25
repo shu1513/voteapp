@@ -184,15 +184,25 @@ exists", not lost data.
 - Skill doc `~/.claude/skills/voteapp-manual-research/references/records.md`: source
   policy paragraph (outside repo; after merge).
 
-## PR 2 — Provenance columns
+## PR 2 — Provenance columns (implemented)
 
-Migration: `candidate_records` gains `origin` (e.g. `ai_enricher` | `manual` |
-`repair`), `origin_run_id` (nullable text: enricher run/stream id or manual session
-key), `source_content_sha256` (nullable). Writers stamp them on insert/update. Hash
-computed from the already-fetched verification body when available — no extra fetch,
-no snapshots. Purpose: any poisoned cohort becomes identifiable and deletable by run,
-and later re-verification can detect swapped content on expired/purchased domains,
-not just dead links.
+Migration `197_add_candidate_records_provenance.sql`: `candidate_records` gains
+`origin` (`ai_enricher` | `repair` | `manual`, CHECK-constrained, NULL = written
+before provenance existed) and `origin_run_id` (nullable text: enricher
+staging-stream `run_id`, or the manual writer's manual key). All writers stamp
+them — the fields are REQUIRED on `CandidateRecordUpsertInput`, so the compiler
+forces any future writer to declare provenance. All three upsert SQL paths
+(insert, conflict-update, similar-record update) write the columns; a row's
+origin tracks the latest writer because its content does. Purpose: a poisoned
+cohort becomes a `WHERE origin_run_id = ...` clause instead of forensics.
+
+`source_content_sha256` was planned on the premise that the verification body
+was already fetched. Verified false: `verifyHttpUrlReachability` is HEAD-first
+and cancels every response body without reading it, so no body exists anywhere
+in the record pipeline. Populating the hash would mean a new GET + full
+download per record — exactly the extra fetch this plan forbids — and an
+unpopulated column is schema noise. Dropped; a future content re-verification
+job can add the column alongside its own fetcher if ever built.
 
 ## PR 3 — Audit detectors (advisory, rides `manual:records:audit`)
 
