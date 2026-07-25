@@ -180,6 +180,36 @@ function isCandidateFilerType(value: string): boolean {
   return normalizeTextKey(value).includes("CANDIDATE");
 }
 
+// Alaska governor candidates file twice: a standalone filer ("Tom Begich")
+// and a joint ticket filer once a running mate is named ("Tom Begich/Julia
+// Hnilicka"). Both are the same campaign, so two matched filers are not real
+// ambiguity when every extra filer's name is the standalone filer's name
+// extended by another person's name (two or more tokens - a one-token
+// extension such as "JR" could be a different person and stays ambiguous).
+// Returns the standalone filer, or null when the shape does not hold.
+function collapseTicketFilers(filers: readonly FilerAggregate[]): FilerAggregate | null {
+  for (const base of filers) {
+    const baseName = normalizeTextKey(base.candidateFilerName);
+    if (!baseName) {
+      continue;
+    }
+    const othersAreTickets = filers.every((filer) => {
+      if (filer === base) {
+        return true;
+      }
+      const name = normalizeTextKey(filer.candidateFilerName);
+      if (!name.startsWith(`${baseName} `)) {
+        return false;
+      }
+      return name.slice(baseName.length).trim().split(" ").filter(Boolean).length >= 2;
+    });
+    if (othersAreTickets) {
+      return base;
+    }
+  }
+  return null;
+}
+
 export function resolveAlaskaCandidateCommittee(input: {
   candidateName: string;
   electionYear: number;
@@ -225,14 +255,19 @@ export function resolveAlaskaCandidateCommittee(input: {
     };
   }
   if (filers.size > 1) {
-    return {
-      status: "ambiguous",
-      reason: "multiple_matching_filers",
-      candidateNameNormalized,
-      candidateFilerIds: [...filers.values()]
-        .map((filer) => filer.candidateFilerId)
-        .sort((left, right) => left.localeCompare(right)),
-    };
+    const standalone = collapseTicketFilers([...filers.values()]);
+    if (!standalone) {
+      return {
+        status: "ambiguous",
+        reason: "multiple_matching_filers",
+        candidateNameNormalized,
+        candidateFilerIds: [...filers.values()]
+          .map((filer) => filer.candidateFilerId)
+          .sort((left, right) => left.localeCompare(right)),
+      };
+    }
+    filers.clear();
+    filers.set(standalone.candidateFilerId, standalone);
   }
 
   const match = [...filers.values()][0];

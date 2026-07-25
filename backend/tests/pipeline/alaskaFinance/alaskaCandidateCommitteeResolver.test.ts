@@ -161,6 +161,32 @@ describe("alaskaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
   });
 
+  it("collapses a standalone filer plus its governor-ticket filer to the standalone", () => {
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Begich, Tom",
+        electionYear: 2026,
+        incomeRows: [
+          income({ filerId: "2001", filerName: "Tom Begich", name: "Tom Begich" }),
+          income({ filerId: "2002", filerName: "Tom Begich/Julia Hnilicka", name: "Tom Begich/Julia Hnilicka" }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "2001", candidateFilerName: "Tom Begich" });
+  });
+
+  it("does not collapse a one-token extension that could be another person", () => {
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Mark Smith",
+        electionYear: 2026,
+        incomeRows: [
+          income({ filerId: "2001", filerName: "Mark Smith", name: "Mark Smith" }),
+          income({ filerId: "2002", filerName: "Mark Smith Jr", name: "Mark Smith Jr" }),
+        ],
+      })
+    ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
+  });
+
   it("ignores out-of-cycle rows", () => {
     expect(
       resolveAlaskaCandidateCommittee({
