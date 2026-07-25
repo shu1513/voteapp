@@ -26,7 +26,7 @@ export const ILLINOIS_FINANCE_ELIGIBLE_OFFICE_KEYS = [
   "statewide::Lieutenant Governor",
   "statewide::Secretary of State",
   "statewide::Attorney General",
-  "statewide::Treasurer",
+  "statewide::State Treasurer",
   "statewide::Comptroller",
   "state_upper::State Senator",
   "state_lower::State Lower Chamber Legislator",
@@ -74,7 +74,9 @@ const ILLINOIS_SBE_STATE_OFFICE_DEFINITIONS = new Map<string, IllinoisSbeStateOf
     "ATTORNEY GENERAL",
     { officeScope: "statewide", officeCanonicalName: "Attorney General", sbeOffice: "Attorney General", requiresDistrict: false, maxDistrict: null },
   ],
-  ["TREASURER", { officeScope: "statewide", officeCanonicalName: "Treasurer", sbeOffice: "Treasurer", requiresDistrict: false, maxDistrict: null }],
+  // The app's canonical statewide office name is "State Treasurer"; the SBE
+  // labels the same office plain "Treasurer".
+  ["TREASURER", { officeScope: "statewide", officeCanonicalName: "State Treasurer", sbeOffice: "Treasurer", requiresDistrict: false, maxDistrict: null }],
   ["COMPTROLLER", { officeScope: "statewide", officeCanonicalName: "Comptroller", sbeOffice: "Comptroller", requiresDistrict: false, maxDistrict: null }],
   [
     "STATE SENATE",

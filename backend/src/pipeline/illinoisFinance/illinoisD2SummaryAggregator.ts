@@ -58,7 +58,28 @@ export function aggregateIllinoisD2Summaries(input: {
     }
   }
 
-  const reports = [...latestByPeriod.values()].sort(
+  // Committees refile the same span under different period bounds (a quarter
+  // trimmed to the committee's creation date, or the pre-2011 schedule's
+  // pre-election report nested inside the semiannual one), so two reports
+  // whose periods truly overlap describe the same money twice. The later
+  // filing is the current one — its cash-on-hand chains into the next
+  // period's math while the superseded report's does not — so keep the
+  // newest filing and drop whatever it overlaps. Consecutive reports that
+  // only share a single boundary day are distinct periods and both stay.
+  const byNewestFiling = [...latestByPeriod.values()].sort(
+    (left, right) => right.filedAt.localeCompare(left.filedAt) || right.reportId.localeCompare(left.reportId)
+  );
+  const accepted: IllinoisSbeD2ReportSummary[] = [];
+  for (const report of byNewestFiling) {
+    const supersededByAccepted = accepted.some(
+      (existing) => report.periodStart < existing.periodEnd && existing.periodStart < report.periodEnd
+    );
+    if (!supersededByAccepted) {
+      accepted.push(report);
+    }
+  }
+
+  const reports = accepted.sort(
     (left, right) =>
       left.periodEnd.localeCompare(right.periodEnd) ||
       left.filedAt.localeCompare(right.filedAt) ||

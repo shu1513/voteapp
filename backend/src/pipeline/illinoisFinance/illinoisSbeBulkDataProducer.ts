@@ -49,6 +49,8 @@ export type IllinoisSbeBulkProducerStats = {
   candidateCommitteeRelations: number;
   d2ReportSummaries: number;
   d2RowsWithoutUsableDocument: number;
+  d2RowsWithInvertedReportPeriod: number;
+  d2RowsWithNegativeTotals: number;
 };
 
 type Candidate = {
@@ -286,6 +288,7 @@ export async function produceIllinoisSbeNormalizedArtifact(input: {
   }
 
   const filedDocuments = new Map<string, FiledDocument>();
+  const invertedPeriodDocumentIds = new Set<string>();
   await readTsv(input.paths.filedDocuments, "FiledDocs.txt", HEADERS.filedDocuments, (row) => {
     const id = clean(row[0]!);
     const committeeId = clean(row[1]!);
@@ -293,6 +296,13 @@ export async function produceIllinoisSbeNormalizedArtifact(input: {
     const periodStart = parseSbeDate(row[9]!);
     const periodEnd = parseSbeDate(row[10]!);
     const filedAt = parseSbeTimestamp(row[12]!);
+    if (id && periodStart && periodEnd && periodStart > periodEnd) {
+      // The SBE bulk export carries a small number of documents whose report
+      // period bounds are swapped or fat-fingered; drop them rather than
+      // guess at the intended window.
+      invertedPeriodDocumentIds.add(id);
+      return;
+    }
     if (id && periodStart && periodEnd && filedAt) {
       filedDocuments.set(id, { committeeId, periodStart, periodEnd, filedAt });
     }
@@ -300,24 +310,45 @@ export async function produceIllinoisSbeNormalizedArtifact(input: {
 
   const d2ReportSummaries: IllinoisSbeD2ReportSummary[] = [];
   let d2RowsWithoutUsableDocument = 0;
+  let d2RowsWithInvertedReportPeriod = 0;
+  let d2RowsWithNegativeTotals = 0;
   await readTsv(input.paths.d2Totals, "D2Totals.txt", HEADERS.d2Totals, (row) => {
     const committeeId = clean(row[1]!);
     if (!referencedCommitteeIds.has(committeeId)) return;
-    const filedDocument = filedDocuments.get(clean(row[2]!));
+    const documentId = clean(row[2]!);
+    const filedDocument = filedDocuments.get(documentId);
     if (!filedDocument || filedDocument.committeeId !== committeeId) {
-      d2RowsWithoutUsableDocument += 1;
+      if (invertedPeriodDocumentIds.has(documentId)) {
+        d2RowsWithInvertedReportPeriod += 1;
+      } else {
+        d2RowsWithoutUsableDocument += 1;
+      }
+      return;
+    }
+    const totalReceipts = parseAmount(row[12]!, "TotalReceipts");
+    const totalDisbursements = parseAmount(row[24]!, "TotalExpend");
+    const debtsOwed = parseAmount(row[27]!, "TotalDebts");
+    // A handful of official rows carry negative running totals (bad amendment
+    // math upstream); drop them rather than guess. Negative EndFundsAvail is a
+    // legitimate overdrawn balance and stays.
+    if (
+      (totalReceipts !== null && totalReceipts < 0) ||
+      (totalDisbursements !== null && totalDisbursements < 0) ||
+      (debtsOwed !== null && debtsOwed < 0)
+    ) {
+      d2RowsWithNegativeTotals += 1;
       return;
     }
     d2ReportSummaries.push({
-      reportId: clean(row[2]!),
+      reportId: documentId,
       committeeId,
       periodStart: filedDocument.periodStart,
       periodEnd: filedDocument.periodEnd,
       filedAt: filedDocument.filedAt,
-      totalReceipts: parseAmount(row[12]!, "TotalReceipts"),
-      totalDisbursements: parseAmount(row[24]!, "TotalExpend"),
+      totalReceipts,
+      totalDisbursements,
       cashOnHand: parseAmount(row[29]!, "EndFundsAvail"),
-      debtsOwed: parseAmount(row[27]!, "TotalDebts"),
+      debtsOwed,
       sourceUrl,
     });
   });
@@ -377,6 +408,8 @@ export async function produceIllinoisSbeNormalizedArtifact(input: {
       candidateCommitteeRelations: candidateCommitteeRelations.length,
       d2ReportSummaries: d2ReportSummaries.length,
       d2RowsWithoutUsableDocument,
+      d2RowsWithInvertedReportPeriod,
+      d2RowsWithNegativeTotals,
     },
   };
 }

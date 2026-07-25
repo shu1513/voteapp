@@ -30,6 +30,12 @@ describe("illinoisFinanceEligibleOffices", () => {
     ).toEqual({ sbeOffice: "State Senate", district: "7" });
     expect(
       toIllinoisSbeOfficeSearchInput({
+        officeScope: "statewide",
+        officeCanonicalName: "State Treasurer",
+      })
+    ).toEqual({ sbeOffice: "Treasurer", district: null });
+    expect(
+      toIllinoisSbeOfficeSearchInput({
         officeScope: "state_lower",
         officeCanonicalName: "State Lower Chamber Legislator",
         district: "119",
@@ -72,7 +78,8 @@ describe("illinoisFinanceEligibleOffices", () => {
   it("maps only jurisdiction-safe local offices", () => {
     expect(mapIllinoisSbeOffice({ office: "Treasurer" })).toMatchObject({
       officeScope: "statewide",
-      officeCanonicalName: "Treasurer",
+      officeCanonicalName: "State Treasurer",
+      officeKey: "statewide::State Treasurer",
     });
     expect(
       mapIllinoisSbeOffice({ office: "Treasurer", districtType: "City", district: "Aurora" })
