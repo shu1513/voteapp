@@ -119,6 +119,14 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["ZACHARY", "ZACH"],
 ];
 
+// Formal spellings of the same name. These never bridge through expansion
+// (one-sided rule above), but they must not be treated as evidence of two
+// distinct people when a source spells one person both ways.
+const SPELLING_EQUIVALENT_PAIRS: readonly (readonly [string, string])[] = [
+  ["STEPHEN", "STEVEN"],
+  ["JEFFREY", "JEFFERY"],
+];
+
 const VARIANTS_BY_NAME = new Map<string, Set<string>>();
 for (const group of FIRST_NAME_NICKNAME_GROUPS) {
   for (const name of group) {
@@ -140,4 +148,25 @@ for (const group of FIRST_NAME_NICKNAME_GROUPS) {
 export function firstNameVariants(normalizedFirstName: string): readonly string[] {
   const variants = VARIANTS_BY_NAME.get(normalizedFirstName);
   return variants ? [...variants] : [];
+}
+
+/**
+ * Returns true when two already-normalized (uppercase) first-name tokens are
+ * positive evidence of two distinct people: neither equals the other, neither
+ * is a nickname variant of the other, and they are not formal spellings of
+ * the same name (STEPHEN/STEVEN, JEFFREY/JEFFERY). Nickname-expanded matching
+ * that observes conflicting tokens for one candidate should refuse rather
+ * than pick a side, mirroring the resolver's both-families-filed rule.
+ */
+export function firstNamesConflict(normalizedA: string, normalizedB: string): boolean {
+  if (normalizedA === normalizedB) {
+    return false;
+  }
+  if (VARIANTS_BY_NAME.get(normalizedA)?.has(normalizedB) || VARIANTS_BY_NAME.get(normalizedB)?.has(normalizedA)) {
+    return false;
+  }
+  return !SPELLING_EQUIVALENT_PAIRS.some(
+    ([left, right]) =>
+      (left === normalizedA && right === normalizedB) || (left === normalizedB && right === normalizedA)
+  );
 }

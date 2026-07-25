@@ -1,3 +1,4 @@
+import { firstNamesConflict } from "../finance/personFirstNameNicknames.js";
 import { normalizeTexasCandidateNameKeys } from "./texasCandidateCommitteeResolver.js";
 import {
   isTexasFinanceEligibleOffice,
@@ -243,6 +244,31 @@ function isInfoOnly(row: TexasTecExpenditureRow): boolean {
   return normalized === "Y" || normalized === "YES" || normalized === "TRUE" || normalized === "1";
 }
 
+function candidateRowFirstNameToken(row: TexasTecCandidateRow): string | null {
+  const token = normalizeTextKey(row.candidateNameFirst).split(" ")[0] ?? "";
+  return token.length > 0 ? token : null;
+}
+
+// Matched purpose rows naming two conflicting first names (PATRICK and
+// PATRICIA) are positive evidence that the nickname-expanded key set caught
+// two distinct people; refuse the whole aggregation rather than pick a side,
+// mirroring the committee resolver's both-families-filed rule. Formal
+// spellings of one name (STEPHEN/STEVEN) do not conflict.
+function matchedRowsSpanConflictingFirstNames(rows: readonly TexasTecCandidateRow[]): boolean {
+  const seen: string[] = [];
+  for (const row of rows) {
+    const token = candidateRowFirstNameToken(row);
+    if (!token || seen.includes(token)) {
+      continue;
+    }
+    if (seen.some((existing) => firstNamesConflict(existing, token))) {
+      return true;
+    }
+    seen.push(token);
+  }
+  return false;
+}
+
 function candidateRowNameKeys(row: TexasTecCandidateRow): Set<string> {
   const keys = new Set<string>();
   const structuredName = [row.candidateNameFirst, row.candidateNameLast].filter(Boolean).join(" ");
@@ -377,14 +403,12 @@ export function aggregateTexasOutsideSpending(
 ): TexasOutsideSpendingAggregationResult {
   const candidateCommitteeId = normalizeId(requireNonEmpty(input.candidateCommitteeId, "Texas candidate committee id"));
   // VoteApp side expands nicknames; TEC purpose-row names stay literal.
-  // A purpose-row name match alone never contributes an amount: inclusion
-  // also requires the spending committee to hold a declared SPAC position on
-  // THIS candidate's own committee id (see buildSpacRelationships), so a
-  // shared-nickname purpose row for a different same-surname person is
-  // counted only if that person shares the office, district, and cycle,
-  // never filed their own committee (a filed committee makes the upstream
-  // resolver refuse the link before aggregation runs), and the spender also
-  // declared a position on the linked committee.
+  // Two layers keep shared-nickname expansion from combining two people's
+  // money: a name match alone never contributes an amount (inclusion also
+  // requires the spender to hold a declared SPAC position on THIS candidate's
+  // own committee id, see buildSpacRelationships), and matched rows spanning
+  // conflicting formal first names abort the whole aggregation (see
+  // matchedRowsSpanConflictingFirstNames).
   const candidateNameKeys = normalizeTexasCandidateNameKeys(input.candidateName, { expandNicknames: true });
   const electionYear = normalizeElectionYear(input.electionYear);
   const maxGroups = normalizePositiveInteger(input.maxGroups, DEFAULT_MAX_GROUPS, "maxGroups");
@@ -421,6 +445,24 @@ export function aggregateTexasOutsideSpending(
     }
   }
 
+  const matchedRows = input.candidateRows.filter((row) =>
+    candidateRowMatchesTarget({
+      row,
+      candidateNameKeys,
+      officeScope,
+      officeCanonicalName,
+      expectedDistrict,
+    })
+  );
+  if (matchedRowsSpanConflictingFirstNames(matchedRows)) {
+    return {
+      summary: null,
+      matchedCandidateExpenditureRowCount: matchedRows.length,
+      includedCandidateExpenditureRowCount: 0,
+      skippedCandidateExpenditureRowCount: matchedRows.length,
+    };
+  }
+
   const groups = new Map<string, GroupAccumulator>();
   let supportTotalCents = 0;
   let opposeTotalCents = 0;
@@ -428,18 +470,7 @@ export function aggregateTexasOutsideSpending(
   let includedCandidateExpenditureRowCount = 0;
   let skippedCandidateExpenditureRowCount = 0;
 
-  for (const row of input.candidateRows) {
-    if (
-      !candidateRowMatchesTarget({
-        row,
-        candidateNameKeys,
-        officeScope,
-        officeCanonicalName,
-        expectedDistrict,
-      })
-    ) {
-      continue;
-    }
+  for (const row of matchedRows) {
     matchedCandidateExpenditureRowCount += 1;
 
     const committeeId = normalizeId(row.filerIdent);
