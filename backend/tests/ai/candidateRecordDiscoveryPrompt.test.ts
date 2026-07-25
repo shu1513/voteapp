@@ -122,7 +122,10 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
       'If the only reliable sources prove the person is running but do not show an actual action, public service, leadership role, vote, official decision, litigation/enforcement record, endorsement, or other accountability record, return {"records": []}.'
     );
     expect(prompt).toContain(
-      "For damaging claims, require official/legal sources or reputable news and do not state allegations as proven facts."
+      "source_url must not be a social/UGC platform"
+    );
+    expect(prompt).toContain(
+      "For damaging claims, require official/legal sources or reputable news (the importer rejects damaging claims cited to other domains) and do not state allegations as proven facts."
     );
     expect(prompt).toContain("There is no target number of records.");
     expect(prompt).toContain("Include both favorable and unfavorable records when they exist");

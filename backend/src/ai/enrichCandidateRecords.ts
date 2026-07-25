@@ -14,6 +14,7 @@ import type { AiProvider } from "./types.js";
 import { classifyCitationVerificationFailure, verifyHttpUrlReachability } from "./urlReachability.js";
 import type { ElectionContestFamily } from "../types/election.js";
 import { classifyCandidateRecordQuality } from "../pipeline/candidates/candidateRecordQuality.js";
+import { evaluateCandidateRecordSourcePolicy } from "../pipeline/candidates/candidateRecordSourcePolicy.js";
 
 type CandidateRecordDiscoveryErrorCode = ResearchErrorCode | "SCHEMA_MISMATCH";
 
@@ -180,6 +181,23 @@ async function verifyCandidateRecordSources(
       continue;
     }
 
+    // The stored citation is the post-redirect finalUrl, so the source policy
+    // must hold for it too — otherwise a shortener or open redirect that
+    // passes the pre-fetch policy check could land on a blocked platform.
+    const finalUrlPolicy = evaluateCandidateRecordSourcePolicy({
+      description: record.description,
+      sourceUrl: verification.finalUrl,
+    });
+    if (!finalUrlPolicy.ok) {
+      droppedRecords.push({
+        record,
+        reason: `candidate record source policy rejected resolved citation URL ${verification.finalUrl}: ${finalUrlPolicy.reason}`,
+        failureType: "permanent",
+        failureKind: "source_url",
+      });
+      continue;
+    }
+
     verifiedRecords.push({
       ...record,
       source_url: verification.finalUrl,
@@ -240,7 +258,32 @@ export async function validateCandidateRecordDiscoveryPayload(
     qualityAcceptedRecords.push(record);
   }
 
-  const sourceVerification = await verifyCandidateRecordSources(qualityAcceptedRecords, timeoutMs);
+  // Source-domain policy runs before reachability: it is a pure string check
+  // (no network), and blocked domains should never even be fetched. Policy
+  // drops reuse failureKind "source_url" so the existing repair machinery
+  // treats them like any other bad citation — the AI repair pass is asked for
+  // a replacement URL with the policy reason attached, and the manual writers
+  // surface them in the repair report.
+  const policyDroppedRecords: CandidateRecordDroppedRecord[] = [];
+  const policyAcceptedRecords: CandidateDiscoveredRecord[] = [];
+  for (const record of qualityAcceptedRecords) {
+    const policy = evaluateCandidateRecordSourcePolicy({
+      description: record.description,
+      sourceUrl: record.source_url,
+    });
+    if (!policy.ok) {
+      policyDroppedRecords.push({
+        record,
+        reason: `candidate record source policy rejected row: ${policy.reason}`,
+        failureType: "permanent",
+        failureKind: "source_url",
+      });
+      continue;
+    }
+    policyAcceptedRecords.push(record);
+  }
+
+  const sourceVerification = await verifyCandidateRecordSources(policyAcceptedRecords, timeoutMs);
   const schemaDroppedRecords: CandidateRecordDroppedRecord[] = parsed.invalid_rows.map((row) => ({
     record: {
       description: row.raw_record.description,
@@ -255,6 +298,7 @@ export async function validateCandidateRecordDiscoveryPayload(
     ...sourceVerification.droppedRecords,
     ...schemaDroppedRecords,
     ...qualityDroppedRecords,
+    ...policyDroppedRecords,
   ];
 
   return {
@@ -266,6 +310,7 @@ export async function validateCandidateRecordDiscoveryPayload(
       dropped_records_source_url_count: sourceVerification.droppedRecords.length,
       dropped_records_schema_count: schemaDroppedRecords.length,
       dropped_records_quality_count: qualityDroppedRecords.length,
+      dropped_records_source_policy_count: policyDroppedRecords.length,
       ...(sinceDate
         ? { records_filtered_before_since_date_count: recordsBeforeSinceDate.length }
         : {}),
