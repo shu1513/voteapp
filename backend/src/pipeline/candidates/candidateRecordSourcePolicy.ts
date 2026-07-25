@@ -232,7 +232,13 @@ const DAMAGING_CLAIM_ACTOR_EXEMPT_PATTERNS: readonly RegExp[] = [
   /\b(?:sponsored|co-sponsored|introduced|authored)\b/i,
   /\bvoted\s+(?:for|against|to)\b/i,
   /\b(?:co-)?prosecuted\b/i,
-  /\bsentenced\b/i,
+  // Judge-as-actor only: "sentenced" must take a direct object ("sentenced a
+  // man", "sentenced JuJuan Parks", "sentenced 50 offenders"). A bare
+  // \bsentenced\b would also exempt the passive "was sentenced to probation"
+  // — the candidate being sentenced — and cancel the damaging check for any
+  // description containing the word.
+  /\bsentenced\s+(?:a|an|the)\b/i,
+  /\bsentenced\s+(?:\d|[A-Z])/,
   // Third-party subject directly attached to the accusation verb: "a man
   // convicted of...", "an officer who pleaded guilty", "people accused of".
   /\b(?:a|an|the|people|those)\s+(?:[\w-]+\s+){0,3}?(?:man|woman|men|women|people|caregiver|officers?|deput(?:y|ies)|defendants?|suspects?|residents?|retailers|operatives?)\b[^.;]{0,80}\b(?:pleaded|pled|convicted|accused|charged|arrested|indicted)\b/i,
@@ -257,7 +263,7 @@ const DAMAGING_CLAIM_ACTOR_EXEMPT_PATTERNS: readonly RegExp[] = [
 // asks for a listed source — which real scandals always have — so the cost
 // is one repair cycle, never lost data.
 const DAMAGING_CLAIM_PATTERNS: readonly RegExp[] = [
-  /\b(?:was|were|been)\s+(?:indicted|arrested|convicted|fined|sanctioned|censured|disbarred|impeached|recalled|sued)\b/i,
+  /\b(?:was|were|been)\s+(?:indicted|arrested|convicted|sentenced|fined|sanctioned|censured|disbarred|impeached|recalled|sued)\b/i,
   /\bindicted\s+(?:on|for|by)\b/i,
   /\barrested\s+(?:on|for|amid)\b/i,
   /\bconvicted\s+of\b/i,

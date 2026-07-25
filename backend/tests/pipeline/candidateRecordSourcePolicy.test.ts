@@ -147,6 +147,10 @@ describe("matchesDamagingClaimPattern", () => {
       "While a sitting judge, was censured by the judicial conduct commission.",
       "Was convicted of felony forgery in 2018 while a sitting councilmember.",
       "The former prosecutor pleaded guilty to falsifying case records.",
+      // Passive "was sentenced" is about the candidate; the judge-as-actor
+      // exemption must not cancel it (bare \bsentenced\b bypass).
+      "Was sentenced to 18 months in prison for tax fraud.",
+      "Pleaded guilty to campaign-finance violations and was sentenced to probation.",
     ];
     for (const description of damaging) {
       expect(matchesDamagingClaimPattern(description), description).toBe(true);
