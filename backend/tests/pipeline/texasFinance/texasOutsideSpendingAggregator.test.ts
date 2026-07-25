@@ -170,6 +170,57 @@ describe("texasOutsideSpendingAggregator", () => {
     });
   });
 
+  it("matches nickname purpose rows but only counts spenders related to the linked committee", () => {
+    // "Pat Smith" expands to PATRICK SMITH and PATRICIA SMITH on the VoteApp
+    // side. The PATRICIA purpose row still name-matches, but its spender holds
+    // no SPAC position on the linked committee, so it is skipped rather than
+    // combined into the linked candidate's totals.
+    const result = aggregateTexasOutsideSpending({
+      candidateName: "Pat Smith",
+      candidateCommitteeId: "00012345",
+      officeScope: "statewide",
+      officeName: "Governor",
+      electionYear: 2026,
+      spacRows: [spac({ candidateFilerName: "SMITH, PATRICK" })],
+      expenditureRows: [
+        expenditure({ expendAmount: "70000.00" }),
+        expenditure({
+          filerIdent: "9000",
+          filerName: "Unrelated PAC",
+          expendInfoId: "E6",
+          expendAmount: "40000.00",
+        }),
+      ],
+      candidateRows: [
+        candidate({
+          candidateNameLast: "SMITH",
+          candidateNameFirst: "PATRICK",
+          expendAmount: "70000.00",
+        }),
+        candidate({
+          filerIdent: "9000",
+          filerName: "Unrelated PAC",
+          expendInfoId: "E6",
+          candidateNameLast: "SMITH",
+          candidateNameFirst: "PATRICIA",
+          expendAmount: "40000.00",
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      summary: {
+        supportTotal: 70000,
+        opposeTotal: 0,
+      },
+      matchedCandidateExpenditureRowCount: 2,
+      includedCandidateExpenditureRowCount: 1,
+      skippedCandidateExpenditureRowCount: 1,
+    });
+    expect(result.summary?.groups).toHaveLength(1);
+    expect(result.summary?.groups[0]).toMatchObject({ committeeId: "7001", supportOppose: "support" });
+  });
+
   it("uses the joined expenditure row as the amount and date source", () => {
     const result = aggregateTexasOutsideSpending({
       candidateName: "Greg Abbott",

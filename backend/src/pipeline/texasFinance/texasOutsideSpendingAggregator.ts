@@ -377,6 +377,14 @@ export function aggregateTexasOutsideSpending(
 ): TexasOutsideSpendingAggregationResult {
   const candidateCommitteeId = normalizeId(requireNonEmpty(input.candidateCommitteeId, "Texas candidate committee id"));
   // VoteApp side expands nicknames; TEC purpose-row names stay literal.
+  // A purpose-row name match alone never contributes an amount: inclusion
+  // also requires the spending committee to hold a declared SPAC position on
+  // THIS candidate's own committee id (see buildSpacRelationships), so a
+  // shared-nickname purpose row for a different same-surname person is
+  // counted only if that person shares the office, district, and cycle,
+  // never filed their own committee (a filed committee makes the upstream
+  // resolver refuse the link before aggregation runs), and the spender also
+  // declared a position on the linked committee.
   const candidateNameKeys = normalizeTexasCandidateNameKeys(input.candidateName, { expandNicknames: true });
   const electionYear = normalizeElectionYear(input.electionYear);
   const maxGroups = normalizePositiveInteger(input.maxGroups, DEFAULT_MAX_GROUPS, "maxGroups");
