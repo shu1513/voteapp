@@ -368,7 +368,7 @@ export async function syncDueCaliforniaCandidateFinance(
       : input.rawDataResolutionData;
 
   if (input.autoLinkMissingLinks !== false && resolutionData) {
-    await autoLinkMissingCaliforniaCandidateFinanceLinks({
+    const autoLinkResults = await autoLinkMissingCaliforniaCandidateFinanceLinks({
       db: input.db,
       now,
       maxCandidates,
@@ -376,6 +376,11 @@ export async function syncDueCaliforniaCandidateFinance(
       electionLookaheadDays,
       resolutionData,
     });
+    for (const result of autoLinkResults) {
+      if (result.status !== "linked") {
+        console.warn("California finance auto-link did not link candidate election:", result);
+      }
+    }
   }
 
   const due = await listDueCaliforniaCandidateFinanceSyncRows(input.db, {

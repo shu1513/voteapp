@@ -410,7 +410,7 @@ export async function syncDueColoradoCandidateFinance(
         contributionRowsByYear.set(year, data.rows);
         sourceUrlByYear.set(year, data.sourceUrl);
       }
-      await autoLinkMissingColoradoCandidateFinanceLinks({
+      const autoLinkResults = await autoLinkMissingColoradoCandidateFinanceLinks({
         db: input.db,
         now,
         maxCandidates,
@@ -420,6 +420,11 @@ export async function syncDueColoradoCandidateFinance(
         sourceUrlByYear,
         candidateElections: missingLinkCandidates,
       });
+      for (const result of autoLinkResults) {
+        if (result.status !== "linked") {
+          console.warn("Colorado finance auto-link did not link candidate election:", result);
+        }
+      }
     } catch (error) {
       console.warn(
         "Colorado finance auto-link skipped; continuing with already-linked candidate sync:",

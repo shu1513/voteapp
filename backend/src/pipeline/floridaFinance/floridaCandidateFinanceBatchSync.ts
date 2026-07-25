@@ -818,7 +818,7 @@ export async function syncDueFloridaCandidateFinance(
         rateLimiter: exportRateLimiter,
         force: input.exportForce === true,
       });
-      await autoLinkMissingFloridaCandidateFinanceLinks({
+      const autoLinkResults = await autoLinkMissingFloridaCandidateFinanceLinks({
         db: input.db,
         now,
         maxCandidates,
@@ -828,6 +828,11 @@ export async function syncDueFloridaCandidateFinance(
         sourceUrlByYear: autoLinkExportData.sourceUrlByYear,
         candidateElections: autoLinkExportData.candidateElections,
       });
+      for (const result of autoLinkResults) {
+        if (result.status !== "linked") {
+          console.warn("Florida finance auto-link did not link candidate election:", result);
+        }
+      }
     } catch (error) {
       console.warn(
         "Florida finance auto-link skipped; continuing with already-linked candidate sync:",

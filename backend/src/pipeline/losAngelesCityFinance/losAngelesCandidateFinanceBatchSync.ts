@@ -99,8 +99,8 @@ export async function syncDueLosAngelesCandidateFinance(input: {
       });
       linked = linkResults.filter((row) => row.status === "linked").length;
       for (const row of linkResults)
-        if (row.status === "error")
-          console.warn("Los Angeles finance auto-link failed; continuing", row);
+        if (row.status !== "linked")
+          console.warn("Los Angeles finance auto-link did not link candidate election:", row);
     } catch (error) {
       console.warn(
         "Los Angeles finance auto-link skipped; continuing existing links",

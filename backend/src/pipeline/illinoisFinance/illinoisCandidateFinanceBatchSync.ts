@@ -464,7 +464,7 @@ export async function syncDueIllinoisCandidateFinance(
       });
       autoLinkLinkedCount = autoLinkResults.filter((result) => result.status === "linked").length;
       for (const result of autoLinkResults) {
-        if (result.status === "error") {
+        if (result.status !== "linked") {
           console.warn("Illinois finance auto-link did not link candidate election:", result);
         }
       }

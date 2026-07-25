@@ -436,7 +436,7 @@ export async function syncDueIndianaCandidateFinance(
         contributionRowsByYear.set(year, data.rows);
         sourceUrlByYear.set(year, data.sourceUrl);
       }
-      await autoLinkMissingIndianaCandidateFinanceLinks({
+      const autoLinkResults = await autoLinkMissingIndianaCandidateFinanceLinks({
         db: input.db,
         now,
         maxCandidates,
@@ -446,6 +446,11 @@ export async function syncDueIndianaCandidateFinance(
         sourceUrlByYear,
         candidateElections: missingLinkCandidates,
       });
+      for (const result of autoLinkResults) {
+        if (result.status !== "linked") {
+          console.warn("Indiana finance auto-link did not link candidate election:", result);
+        }
+      }
     } catch (error) {
       console.warn(
         "Indiana finance auto-link skipped; continuing with already-linked candidate sync:",
