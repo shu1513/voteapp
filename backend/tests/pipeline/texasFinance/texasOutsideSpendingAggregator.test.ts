@@ -171,10 +171,11 @@ describe("texasOutsideSpendingAggregator", () => {
   });
 
   it("matches nickname purpose rows but only counts spenders related to the linked committee", () => {
-    // "Pat Smith" expands to PATRICK SMITH on the VoteApp side. The PAT
-    // purpose row still name-matches, but its spender holds no SPAC position
-    // on the linked committee, so it is skipped rather than combined into the
-    // linked candidate's totals.
+    // "Pat Smith" expands to PATRICK SMITH and PATRICIA SMITH on the VoteApp
+    // side. The unrelated spender's PATRICIA row name-matches but cannot
+    // contribute money (no SPAC position on the linked committee), so it is
+    // skipped — and it must not trip the conflicting-first-name abort either,
+    // which only consults rows from related spenders.
     const result = aggregateTexasOutsideSpending({
       candidateName: "Pat Smith",
       candidateCommitteeId: "00012345",
@@ -202,7 +203,7 @@ describe("texasOutsideSpendingAggregator", () => {
           filerName: "Unrelated PAC",
           expendInfoId: "E6",
           candidateNameLast: "SMITH",
-          candidateNameFirst: "PAT",
+          candidateNameFirst: "PATRICIA",
           expendAmount: "40000.00",
         }),
       ],

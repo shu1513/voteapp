@@ -249,11 +249,14 @@ function candidateRowFirstNameToken(row: TexasTecCandidateRow): string | null {
   return token.length > 0 ? token : null;
 }
 
-// Matched purpose rows naming two conflicting first names (PATRICK and
-// PATRICIA) are positive evidence that the nickname-expanded key set caught
-// two distinct people; refuse the whole aggregation rather than pick a side,
-// mirroring the committee resolver's both-families-filed rule. Formal
-// spellings of one name (STEPHEN/STEVEN) do not conflict.
+// Purpose rows naming two conflicting first names (PATRICK and PATRICIA)
+// are positive evidence that the nickname-expanded key set caught two
+// distinct people; refuse the whole aggregation rather than pick a side,
+// mirroring the committee resolver's both-families-filed rule. Only rows
+// from spenders holding a usable SPAC position on the linked committee are
+// consulted: no other row can contribute money, so an unrelated spender's
+// stray row must not zero out valid totals. Formal spellings of one name
+// (STEPHEN/STEVEN) do not conflict.
 function matchedRowsSpanConflictingFirstNames(rows: readonly TexasTecCandidateRow[]): boolean {
   const seen: string[] = [];
   for (const row of rows) {
@@ -406,9 +409,9 @@ export function aggregateTexasOutsideSpending(
   // Two layers keep shared-nickname expansion from combining two people's
   // money: a name match alone never contributes an amount (inclusion also
   // requires the spender to hold a declared SPAC position on THIS candidate's
-  // own committee id, see buildSpacRelationships), and matched rows spanning
-  // conflicting formal first names abort the whole aggregation (see
-  // matchedRowsSpanConflictingFirstNames).
+  // own committee id, see buildSpacRelationships), and related spenders'
+  // matched rows spanning conflicting formal first names abort the whole
+  // aggregation (see matchedRowsSpanConflictingFirstNames).
   const candidateNameKeys = normalizeTexasCandidateNameKeys(input.candidateName, { expandNicknames: true });
   const electionYear = normalizeElectionYear(input.electionYear);
   const maxGroups = normalizePositiveInteger(input.maxGroups, DEFAULT_MAX_GROUPS, "maxGroups");
@@ -454,7 +457,11 @@ export function aggregateTexasOutsideSpending(
       expectedDistrict,
     })
   );
-  if (matchedRowsSpanConflictingFirstNames(matchedRows)) {
+  const relatedMatchedRows = matchedRows.filter((row) => {
+    const relationship = relationships.get(normalizeId(row.filerIdent));
+    return relationship !== undefined && relationship !== null;
+  });
+  if (matchedRowsSpanConflictingFirstNames(relatedMatchedRows)) {
     return {
       summary: null,
       matchedCandidateExpenditureRowCount: matchedRows.length,
