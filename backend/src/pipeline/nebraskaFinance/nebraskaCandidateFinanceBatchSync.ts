@@ -216,8 +216,10 @@ async function readCycleContributionRows(input: {
   rawDataCacheDir?: string;
   predicate: (row: NebraskaNadcContributionRow) => boolean;
 }): Promise<{ rows: NebraskaNadcContributionRow[]; zipPath: string; sourceUrl: string }> {
+  // `||` (not `??`): a whitespace-only NEBRASKA_NADC_CACHE_DIR trims to "" and
+  // would otherwise resolve to the process CWD.
   const cacheDir =
-    input.rawDataCacheDir ?? process.env.NEBRASKA_NADC_CACHE_DIR?.trim() ?? DEFAULT_NEBRASKA_NADC_CACHE_DIR;
+    input.rawDataCacheDir ?? (process.env.NEBRASKA_NADC_CACHE_DIR?.trim() || DEFAULT_NEBRASKA_NADC_CACHE_DIR);
   const artifactRowsByYear: NebraskaNadcContributionRow[][] = [];
   let zipPath = "";
   let sourceUrl = "";
