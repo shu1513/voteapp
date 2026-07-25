@@ -229,13 +229,19 @@ the audit script, reported under `sourceDomainDetectors`:
 
 Domains group with "www." stripped so apex/www splits cannot dilute thresholds.
 
-## PR 4 — Notification ordering
+## PR 4 — Notification ordering (implemented)
 
-Move notification-event emission after label validation succeeds in
-`candidateRecordEnricher.ts` (records may still persist first; the notification
-events are the follower-facing blast radius). Same-transaction if cheap; ordering
-alone is the win. Presidential path skips notifications already
-(`contextType !== "presidential_cycle"` guard) — district path only.
+Went one step past "records may still persist first": the district path now
+mirrors the presidential one — records, area tags, and follower notification
+events commit in ONE transaction after the area-label AI call
+(`persistDistrictCandidateRecordsAtomically`), with notification events created
+only after label validation succeeds. Deferring only the events was rejected:
+notifications ride inserted record ids, so a validation failure on attempt 1
+followed by success on retry would dedupe the records and silently never notify
+followers. Atomic persistence has no such hole (validation failure rolls the
+inserts back; the retry re-inserts) and gives the stronger invariant that no
+district record persists without validated labels. Presidential still emits no
+notification events.
 
 ## Explicitly rejected (do not resurrect without new evidence)
 
