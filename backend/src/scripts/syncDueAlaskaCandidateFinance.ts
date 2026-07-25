@@ -30,9 +30,11 @@ export type SyncDueAlaskaCandidateFinanceScriptOptions = {
   independentExpendituresUrl?: string;
   independentContributionsUrl?: string;
   timeoutMs?: number;
+  exportTimeoutMs?: number;
   retryCount?: number;
   retryDelayMs?: number;
   requestSpacingMs?: number;
+  reportYear?: number;
 };
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
@@ -146,9 +148,11 @@ export function parseSyncDueAlaskaCandidateFinanceScriptArgs(
     independentExpendituresUrl: parseFlagValue(args, "--ie-expenditures-url") || undefined,
     independentContributionsUrl: parseFlagValue(args, "--ie-contributions-url") || undefined,
     timeoutMs: parsePositiveIntegerFlag(args, "--timeout-ms"),
+    exportTimeoutMs: parsePositiveIntegerFlag(args, "--export-timeout-ms"),
     retryCount: parseNonNegativeIntegerFlag(args, "--retry-count"),
     retryDelayMs: parseNonNegativeIntegerFlag(args, "--retry-delay-ms"),
     requestSpacingMs: parseNonNegativeIntegerFlag(args, "--request-spacing-ms"),
+    reportYear: parsePositiveIntegerFlag(args, "--report-year"),
   };
 }
 
@@ -197,9 +201,11 @@ async function main(): Promise<void> {
       independentExpendituresUrl: options.independentExpendituresUrl,
       independentContributionsUrl: options.independentContributionsUrl,
       timeoutMs: options.timeoutMs,
+      exportTimeoutMs: options.exportTimeoutMs,
       retryCount: options.retryCount,
       retryDelayMs: options.retryDelayMs,
       requestSpacingMs: options.requestSpacingMs,
+      reportYear: options.reportYear,
     },
     { logger: console }
   );

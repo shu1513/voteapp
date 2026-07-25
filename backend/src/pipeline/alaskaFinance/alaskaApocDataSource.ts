@@ -8,6 +8,7 @@ import {
   ALASKA_APOC_DEFAULT_TIMEOUT_MS,
   ALASKA_APOC_IE_CONTRIBUTIONS_URL,
   ALASKA_APOC_IE_EXPENDITURES_URL,
+  defaultAlaskaApocReportYear,
   fetchAlaskaApocFinanceCsvBundle,
   parseAlaskaApocCampaignIncomeCsv,
   parseAlaskaApocIndependentContributionCsv,
@@ -32,6 +33,8 @@ export type AlaskaApocDataSourceConfig = {
   retryCount?: number;
   retryDelayMs?: number;
   requestSpacingMs?: number;
+  reportYear?: number;
+  exportTimeoutMs?: number;
 };
 
 export type AlaskaApocDataSourceMetadata = {
@@ -46,6 +49,7 @@ export type AlaskaApocDataSourceMetadata = {
   retry_count: number | null;
   retry_delay_ms: number | null;
   request_spacing_ms: number | null;
+  report_year: number | null;
 };
 
 export type LoadedAlaskaApocFinanceData = {
@@ -151,10 +155,12 @@ export async function loadAlaskaApocFinanceData(
         retry_count: null,
         retry_delay_ms: null,
         request_spacing_ms: null,
+        report_year: null,
       },
     };
   }
 
+  const reportYear = config.reportYear ?? defaultAlaskaApocReportYear();
   const bundle = await fetchAlaskaApocFinanceCsvBundle({
     incomeUrl: config.incomeUrl,
     independentExpenditureUrl: config.independentExpendituresUrl,
@@ -162,9 +168,11 @@ export async function loadAlaskaApocFinanceData(
     includeIndependentExpenditures: config.includeIndependentExpenditures,
     includeIndependentContributions: config.includeIndependentContributions,
     timeoutMs: config.timeoutMs,
+    exportTimeoutMs: config.exportTimeoutMs,
     retryCount: config.retryCount,
     retryDelayMs: config.retryDelayMs,
     requestSpacingMs: config.requestSpacingMs,
+    reportYear,
     fetchFn: options.fetchFn,
     logger: options.logger,
   });
@@ -190,6 +198,7 @@ export async function loadAlaskaApocFinanceData(
       retry_count: config.retryCount ?? ALASKA_APOC_DEFAULT_RETRY_COUNT,
       retry_delay_ms: config.retryDelayMs ?? ALASKA_APOC_DEFAULT_RETRY_DELAY_MS,
       request_spacing_ms: config.requestSpacingMs ?? ALASKA_APOC_DEFAULT_REQUEST_SPACING_MS,
+      report_year: reportYear,
     },
   };
 }
