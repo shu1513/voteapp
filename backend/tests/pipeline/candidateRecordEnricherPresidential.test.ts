@@ -783,11 +783,27 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
       }),
       "record-1"
     );
-    // Provenance: the district first-pass upsert stamps the writer + run id.
-    const recordInsertCall = poolQueryMock.mock.calls.find((call) =>
+    // Provenance: the district discovery upsert stamps the writer + run id.
+    const recordInsertIndex = poolQueryMock.mock.calls.findIndex((call) =>
       String(call[0]).includes("INSERT INTO public.candidate_records")
     );
-    expect(recordInsertCall?.[1]?.slice(-2)).toEqual(["ai_enricher", "run-election-with-record"]);
+    expect(poolQueryMock.mock.calls[recordInsertIndex]?.[1]?.slice(-2)).toEqual([
+      "ai_enricher",
+      "run-election-with-record",
+    ]);
+    // Ordering (PR 4): notification events are created only AFTER the area
+    // tags are written — i.e. after label validation succeeded — inside the
+    // same transaction.
+    const tagInsertIndex = poolQueryMock.mock.calls.findIndex((call) =>
+      String(call[0]).includes("INSERT INTO public.candidate_record_area_tags")
+    );
+    expect(tagInsertIndex).toBeGreaterThan(recordInsertIndex);
+    const tagInsertOrder = poolQueryMock.mock.invocationCallOrder[tagInsertIndex]!;
+    const notificationOrder =
+      createCandidateRecordUpdateNotificationEventsMock.mock.invocationCallOrder[0]!;
+    expect(notificationOrder).toBeGreaterThan(tagInsertOrder);
+    const commitIndex = poolQueryMock.mock.calls.findIndex((call) => call[0] === "COMMIT");
+    expect(poolQueryMock.mock.invocationCallOrder[commitIndex]!).toBeGreaterThan(notificationOrder);
     expect(poolQueryMock).toHaveBeenCalledWith("BEGIN");
     expect(poolQueryMock).toHaveBeenCalledWith("COMMIT");
     expect(redisXAckMock).toHaveBeenCalledWith(
@@ -882,6 +898,239 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
       "candidate_record_enricher",
       "1-4"
     );
+  });
+
+  it("persists district repair-suffix records with repair provenance and notifies after the atomic write", async () => {
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:record:draft",
+        messages: [
+          {
+            id: "1-7",
+            message: {
+              candidate_id: "candidate-election",
+              election_id: "election-1",
+              item_type: "candidate_record",
+              run_id: "run-election-repair",
+            },
+          },
+        ],
+      },
+    ]);
+    loadElectionContextMock.mockResolvedValue({
+      candidateId: "candidate-election",
+      candidateDisplayName: "Jane Candidate",
+      electionId: "election-1",
+      districtName: "California",
+      districtType: "statewide",
+      state: "CA",
+      electionDate: "2028-11-07",
+      officialBallotTitle: "Governor",
+      electionStage: "general",
+      senateClass: null,
+      termEndYear: null,
+      officeId: "office-governor",
+      discoveryContestFamily: "non_judicial_office",
+      electionSources: [],
+    });
+    enrichCandidateRecordsMock.mockResolvedValue({
+      ok: true,
+      records: [
+        {
+          description: "Jane Candidate sponsored a transportation bill.",
+          source_url: "https://example.gov/transportation",
+          event_date: "2026-04-01",
+        },
+      ],
+      droppedRecords: [
+        {
+          record: {
+            description: "Jane Candidate chaired the budget committee.",
+            source_url: "https://dead.example.gov/budget",
+            event_date: "2026-03-01",
+          },
+          reason: "citation fetch returned status 404",
+          failureType: "permanent",
+          failureKind: "source_url",
+        },
+      ],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    enrichCandidateRecordSourcesRepairMock.mockResolvedValue({
+      ok: true,
+      repairs: [
+        {
+          bad_index: 0,
+          description: "Jane Candidate chaired the budget committee.",
+          source_url: "https://apnews.com/article/budget-committee",
+          event_date: "2026-03-01",
+        },
+      ],
+      noReplacementIndexes: [],
+      provider: "openai",
+      model: "test-model",
+    });
+    enrichCandidateRecordAreasMock.mockResolvedValue({
+      ok: true,
+      labels: [
+        { record_index: 0, research_area_slug: "general" },
+        { record_index: 1, research_area_slug: "general" },
+      ],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    let insertedRecordCount = 0;
+    poolQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("SELECT id, description, record_identity_key")) {
+        return { rows: [] };
+      }
+      if (sql.includes("INSERT INTO public.candidate_records")) {
+        insertedRecordCount += 1;
+        return { rows: [{ id: `record-${insertedRecordCount}`, inserted: true }], rowCount: 1 };
+      }
+      if (sql.includes("WITH office_bound")) {
+        return { rows: [{ id: "area-general", slug: "general" }] };
+      }
+      if (sql.includes("INSERT INTO public.candidate_record_area_tags")) {
+        return { rows: [], rowCount: 1 };
+      }
+      return { rows: [], rowCount: 0 };
+    });
+
+    await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    // Discovery prefix stamps ai_enricher, repair suffix stamps repair — the
+    // district equivalent of the presidential position-split test.
+    const recordInsertCalls = poolQueryMock.mock.calls.filter((call) =>
+      String(call[0]).includes("INSERT INTO public.candidate_records")
+    );
+    expect(recordInsertCalls).toHaveLength(2);
+    expect(recordInsertCalls[0]?.[1]?.[1]).toBe(
+      "Jane Candidate sponsored a transportation bill."
+    );
+    expect(recordInsertCalls[0]?.[1]?.slice(-2)).toEqual(["ai_enricher", "run-election-repair"]);
+    expect(recordInsertCalls[1]?.[1]?.[1]).toBe("Jane Candidate chaired the budget committee.");
+    expect(recordInsertCalls[1]?.[1]?.slice(-2)).toEqual(["repair", "run-election-repair"]);
+    // Both inserted records notify followers, inside the committed
+    // transaction (district is the only path that emits events).
+    expect(createCandidateRecordUpdateNotificationEventsMock).toHaveBeenCalledTimes(2);
+    expect(createCandidateRecordUpdateNotificationEventsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ query: poolQueryMock }),
+      "record-1"
+    );
+    expect(createCandidateRecordUpdateNotificationEventsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ query: poolQueryMock }),
+      "record-2"
+    );
+    expect(poolQueryMock).toHaveBeenCalledWith("COMMIT");
+    expect(redisXAckMock).toHaveBeenCalledWith(
+      "staging:candidates:record:draft",
+      "candidate_record_enricher",
+      "1-7"
+    );
+  });
+
+  it("rolls back district records and emits no notification events when label validation fails", async () => {
+    redisXReadGroupMock.mockResolvedValue([
+      {
+        name: "staging:candidates:record:draft",
+        messages: [
+          {
+            id: "1-6",
+            message: {
+              candidate_id: "candidate-election",
+              election_id: "election-1",
+              item_type: "candidate_record",
+              run_id: "run-election-label-reject",
+            },
+          },
+        ],
+      },
+    ]);
+    loadElectionContextMock.mockResolvedValue({
+      candidateId: "candidate-election",
+      candidateDisplayName: "Jane Candidate",
+      electionId: "election-1",
+      districtName: "California",
+      districtType: "statewide",
+      state: "CA",
+      electionDate: "2028-11-07",
+      officialBallotTitle: "Governor",
+      electionStage: "general",
+      senateClass: null,
+      termEndYear: null,
+      officeId: "office-governor",
+      discoveryContestFamily: "non_judicial_office",
+      electionSources: [],
+    });
+    enrichCandidateRecordsMock.mockResolvedValue({
+      ok: true,
+      records: [
+        {
+          description: "Jane Candidate sponsored a transportation bill.",
+          source_url: "https://example.gov/transportation",
+          event_date: "2026-04-01",
+        },
+      ],
+      droppedRecords: [],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    enrichCandidateRecordAreasMock.mockResolvedValue({
+      ok: true,
+      labels: [
+        {
+          record_index: 0,
+          research_area_slug: "unknown_area",
+        },
+      ],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    poolQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("SELECT id, description, record_identity_key")) {
+        return { rows: [] };
+      }
+      if (sql.includes("INSERT INTO public.candidate_records")) {
+        return { rows: [{ id: "record-1", inserted: true }], rowCount: 1 };
+      }
+      if (sql.includes("WITH office_bound")) {
+        return { rows: [{ id: "area-general", slug: "general" }] };
+      }
+      return { rows: [], rowCount: 0 };
+    });
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => undefined);
+
+    await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    try {
+      // The record insert happened inside the transaction, but validation
+      // failed — everything rolls back and followers never hear about it.
+      expect(
+        poolQueryMock.mock.calls.some((call) =>
+          String(call[0]).includes("INSERT INTO public.candidate_records")
+        )
+      ).toBe(true);
+      expect(poolQueryMock).toHaveBeenCalledWith("BEGIN");
+      expect(poolQueryMock).toHaveBeenCalledWith("ROLLBACK");
+      expect(poolQueryMock.mock.calls.some((call) => call[0] === "COMMIT")).toBe(false);
+      expect(createCandidateRecordUpdateNotificationEventsMock).not.toHaveBeenCalled();
+      expect(consoleLogSpy).toHaveBeenCalledWith(
+        expect.stringContaining("label_validation_rejected=1")
+      );
+      expect(redisXAckMock).not.toHaveBeenCalledWith(
+        "staging:candidates:record:draft",
+        "candidate_record_enricher",
+        "1-6"
+      );
+    } finally {
+      consoleLogSpy.mockRestore();
+    }
   });
 
   it("rolls back normal election candidate record enrichment when notification event creation fails", async () => {
