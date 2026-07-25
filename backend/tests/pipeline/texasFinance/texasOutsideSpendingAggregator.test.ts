@@ -164,9 +164,177 @@ describe("texasOutsideSpendingAggregator", () => {
         ],
         sourceUrl,
       },
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount: 4,
       includedCandidateExpenditureRowCount: 3,
       skippedCandidateExpenditureRowCount: 1,
+    });
+  });
+
+  it("matches nickname purpose rows but only counts spenders related to the linked committee", () => {
+    // "Pat Smith" expands to PATRICK SMITH and PATRICIA SMITH on the VoteApp
+    // side. The unrelated spender's PATRICIA row name-matches but cannot
+    // contribute money (no SPAC position on the linked committee), so it is
+    // skipped — and it must not trip the conflicting-first-name abort either,
+    // which only consults rows from related spenders.
+    const result = aggregateTexasOutsideSpending({
+      candidateName: "Pat Smith",
+      candidateCommitteeId: "00012345",
+      officeScope: "statewide",
+      officeName: "Governor",
+      electionYear: 2026,
+      spacRows: [spac({ candidateFilerName: "SMITH, PATRICK" })],
+      expenditureRows: [
+        expenditure({ expendAmount: "70000.00" }),
+        expenditure({
+          filerIdent: "9000",
+          filerName: "Unrelated PAC",
+          expendInfoId: "E6",
+          expendAmount: "40000.00",
+        }),
+      ],
+      candidateRows: [
+        candidate({
+          candidateNameLast: "SMITH",
+          candidateNameFirst: "PATRICK",
+          expendAmount: "70000.00",
+        }),
+        candidate({
+          filerIdent: "9000",
+          filerName: "Unrelated PAC",
+          expendInfoId: "E6",
+          candidateNameLast: "SMITH",
+          candidateNameFirst: "PATRICIA",
+          expendAmount: "40000.00",
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      summary: {
+        supportTotal: 70000,
+        opposeTotal: 0,
+      },
+      matchedCandidateExpenditureRowCount: 2,
+      includedCandidateExpenditureRowCount: 1,
+      skippedCandidateExpenditureRowCount: 1,
+    });
+    expect(result.summary?.groups).toHaveLength(1);
+    expect(result.summary?.groups[0]).toMatchObject({ committeeId: "7001", supportOppose: "support" });
+  });
+
+  it("refuses to aggregate when matched rows span conflicting formal first names", () => {
+    // A spender related to the linked committee filed purpose rows for both
+    // PATRICK and PATRICIA: positive evidence the expanded key set caught two
+    // people. The whole aggregation aborts rather than combining their money.
+    const result = aggregateTexasOutsideSpending({
+      candidateName: "Pat Smith",
+      candidateCommitteeId: "00012345",
+      officeScope: "statewide",
+      officeName: "Governor",
+      electionYear: 2026,
+      spacRows: [spac({ candidateFilerName: "SMITH, PATRICK" })],
+      expenditureRows: [
+        expenditure({ expendAmount: "70000.00" }),
+        expenditure({ expendInfoId: "E6", expendAmount: "40000.00" }),
+      ],
+      candidateRows: [
+        candidate({
+          candidateNameLast: "SMITH",
+          candidateNameFirst: "PATRICK",
+          expendAmount: "70000.00",
+        }),
+        candidate({
+          expendInfoId: "E6",
+          candidateNameLast: "SMITH",
+          candidateNameFirst: "PATRICIA",
+          expendAmount: "40000.00",
+        }),
+      ],
+    });
+
+    expect(result).toEqual({
+      summary: null,
+      firstNameConflict: true,
+      matchedCandidateExpenditureRowCount: 2,
+      includedCandidateExpenditureRowCount: 0,
+      skippedCandidateExpenditureRowCount: 2,
+    });
+  });
+
+  it("ignores conflicting-name rows that cannot contribute money", () => {
+    // The related spender's PATRICIA row is out of cycle, so it can never be
+    // included; a row that cannot contribute must not abort Patrick's valid
+    // current-cycle totals. Purpose rows span all years, so stale rows naming
+    // a prior-cycle namesake are the common case, not the edge case.
+    const result = aggregateTexasOutsideSpending({
+      candidateName: "Pat Smith",
+      candidateCommitteeId: "00012345",
+      officeScope: "statewide",
+      officeName: "Governor",
+      electionYear: 2026,
+      spacRows: [spac({ candidateFilerName: "SMITH, PATRICK" })],
+      expenditureRows: [
+        expenditure({ expendAmount: "70000.00" }),
+        expenditure({ expendInfoId: "E6", expendDt: "20220301", expendAmount: "40000.00" }),
+      ],
+      candidateRows: [
+        candidate({
+          candidateNameLast: "SMITH",
+          candidateNameFirst: "PATRICK",
+          expendAmount: "70000.00",
+        }),
+        candidate({
+          expendInfoId: "E6",
+          expendDt: "20220301",
+          candidateNameLast: "SMITH",
+          candidateNameFirst: "PATRICIA",
+          expendAmount: "40000.00",
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      summary: { supportTotal: 70000, opposeTotal: 0 },
+      matchedCandidateExpenditureRowCount: 2,
+      includedCandidateExpenditureRowCount: 1,
+      skippedCandidateExpenditureRowCount: 1,
+    });
+  });
+
+  it("still aggregates when matched rows only differ by formal spelling of one name", () => {
+    // STEPHEN and STEVEN are spellings of the same name, not two people.
+    const result = aggregateTexasOutsideSpending({
+      candidateName: "Steve Weir",
+      candidateCommitteeId: "00012345",
+      officeScope: "statewide",
+      officeName: "Governor",
+      electionYear: 2026,
+      spacRows: [spac({ candidateFilerName: "WEIR, STEPHEN" })],
+      expenditureRows: [
+        expenditure({ expendAmount: "70000.00" }),
+        expenditure({ expendInfoId: "E6", expendAmount: "40000.00" }),
+      ],
+      candidateRows: [
+        candidate({
+          candidateNameLast: "WEIR",
+          candidateNameFirst: "STEPHEN",
+          expendAmount: "70000.00",
+        }),
+        candidate({
+          expendInfoId: "E6",
+          candidateNameLast: "WEIR",
+          candidateNameFirst: "STEVEN",
+          expendAmount: "40000.00",
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      summary: { supportTotal: 110000, opposeTotal: 0 },
+      matchedCandidateExpenditureRowCount: 2,
+      includedCandidateExpenditureRowCount: 2,
+      skippedCandidateExpenditureRowCount: 0,
     });
   });
 
@@ -198,6 +366,7 @@ describe("texasOutsideSpendingAggregator", () => {
         ],
         sourceUrl: "https://www.ethics.state.tx.us/search/cf/",
       },
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount: 1,
       includedCandidateExpenditureRowCount: 1,
       skippedCandidateExpenditureRowCount: 0,
@@ -296,6 +465,7 @@ describe("texasOutsideSpendingAggregator", () => {
 
     expect(result).toEqual({
       summary: null,
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount: 6,
       includedCandidateExpenditureRowCount: 0,
       skippedCandidateExpenditureRowCount: 6,
@@ -323,6 +493,7 @@ describe("texasOutsideSpendingAggregator", () => {
       })
     ).toEqual({
       summary: null,
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount: 0,
       includedCandidateExpenditureRowCount: 0,
       skippedCandidateExpenditureRowCount: 0,

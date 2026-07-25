@@ -1,3 +1,4 @@
+import { firstNamesConflict } from "../finance/personFirstNameNicknames.js";
 import { normalizeTexasCandidateNameKeys } from "./texasCandidateCommitteeResolver.js";
 import {
   isTexasFinanceEligibleOffice,
@@ -43,6 +44,10 @@ export type TexasOutsideSpendingAggregationInput = {
 
 export type TexasOutsideSpendingAggregationResult = {
   summary: TexasOutsideSpendingSummary | null;
+  // True when includable rows spanned conflicting formal first names and the
+  // aggregation refused to attribute any of them. Callers must not persist a
+  // zeroed snapshot over previously stored data in this case.
+  firstNameConflict: boolean;
   matchedCandidateExpenditureRowCount: number;
   includedCandidateExpenditureRowCount: number;
   skippedCandidateExpenditureRowCount: number;
@@ -243,6 +248,35 @@ function isInfoOnly(row: TexasTecExpenditureRow): boolean {
   return normalized === "Y" || normalized === "YES" || normalized === "TRUE" || normalized === "1";
 }
 
+function candidateRowFirstNameToken(row: TexasTecCandidateRow): string | null {
+  const token = normalizeTextKey(row.candidateNameFirst).split(" ")[0] ?? "";
+  return token.length > 0 ? token : null;
+}
+
+// Purpose rows naming two conflicting first names (PATRICK and PATRICIA)
+// are positive evidence that the nickname-expanded key set caught two
+// distinct people; refuse the whole aggregation rather than pick a side,
+// mirroring the committee resolver's both-families-filed rule. Only rows
+// whose amounts would actually be included are consulted — a row that
+// cannot contribute money (unrelated spender, missing or info-only
+// expenditure, bad amount, wrong cycle) cannot mis-attribute it either, and
+// must not zero out valid totals. Formal spellings of one name
+// (STEPHEN/STEVEN) do not conflict.
+function matchedRowsSpanConflictingFirstNames(rows: readonly TexasTecCandidateRow[]): boolean {
+  const seen: string[] = [];
+  for (const row of rows) {
+    const token = candidateRowFirstNameToken(row);
+    if (!token || seen.includes(token)) {
+      continue;
+    }
+    if (seen.some((existing) => firstNamesConflict(existing, token))) {
+      return true;
+    }
+    seen.push(token);
+  }
+  return false;
+}
+
 function candidateRowNameKeys(row: TexasTecCandidateRow): Set<string> {
   const keys = new Set<string>();
   const structuredName = [row.candidateNameFirst, row.candidateNameLast].filter(Boolean).join(" ");
@@ -376,7 +410,14 @@ export function aggregateTexasOutsideSpending(
   input: TexasOutsideSpendingAggregationInput
 ): TexasOutsideSpendingAggregationResult {
   const candidateCommitteeId = normalizeId(requireNonEmpty(input.candidateCommitteeId, "Texas candidate committee id"));
-  const candidateNameKeys = normalizeTexasCandidateNameKeys(input.candidateName);
+  // VoteApp side expands nicknames; TEC purpose-row names stay literal.
+  // Two layers keep shared-nickname expansion from combining two people's
+  // money: a name match alone never contributes an amount (inclusion also
+  // requires the spender to hold a declared SPAC position on THIS candidate's
+  // own committee id, see buildSpacRelationships), and an includable row set
+  // spanning conflicting formal first names aborts the whole aggregation
+  // (see matchedRowsSpanConflictingFirstNames).
+  const candidateNameKeys = normalizeTexasCandidateNameKeys(input.candidateName, { expandNicknames: true });
   const electionYear = normalizeElectionYear(input.electionYear);
   const maxGroups = normalizePositiveInteger(input.maxGroups, DEFAULT_MAX_GROUPS, "maxGroups");
   const officeScope = normalizeOfficeScope(input.officeScope);
@@ -385,6 +426,7 @@ export function aggregateTexasOutsideSpending(
   if (candidateNameKeys.size === 0) {
     return {
       summary: null,
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount: 0,
       includedCandidateExpenditureRowCount: 0,
       skippedCandidateExpenditureRowCount: 0,
@@ -412,27 +454,20 @@ export function aggregateTexasOutsideSpending(
     }
   }
 
-  const groups = new Map<string, GroupAccumulator>();
-  let supportTotalCents = 0;
-  let opposeTotalCents = 0;
-  let matchedCandidateExpenditureRowCount = 0;
-  let includedCandidateExpenditureRowCount = 0;
+  const matchedRows = input.candidateRows.filter((row) =>
+    candidateRowMatchesTarget({
+      row,
+      candidateNameKeys,
+      officeScope,
+      officeCanonicalName,
+      expectedDistrict,
+    })
+  );
+  const matchedCandidateExpenditureRowCount = matchedRows.length;
+  const includableRows: { row: TexasTecCandidateRow; relationship: SpacRelationship; amountCents: number }[] = [];
   let skippedCandidateExpenditureRowCount = 0;
 
-  for (const row of input.candidateRows) {
-    if (
-      !candidateRowMatchesTarget({
-        row,
-        candidateNameKeys,
-        officeScope,
-        officeCanonicalName,
-        expectedDistrict,
-      })
-    ) {
-      continue;
-    }
-    matchedCandidateExpenditureRowCount += 1;
-
+  for (const row of matchedRows) {
     const committeeId = normalizeId(row.filerIdent);
     const relationship = relationships.get(committeeId);
     const expenditure = expendituresByKey.get(expenditureKey({ filerIdent: row.filerIdent, expendInfoId: row.expendInfoId }));
@@ -457,6 +492,25 @@ export function aggregateTexasOutsideSpending(
       continue;
     }
 
+    includableRows.push({ row, relationship, amountCents });
+  }
+
+  if (matchedRowsSpanConflictingFirstNames(includableRows.map((entry) => entry.row))) {
+    return {
+      summary: null,
+      firstNameConflict: true,
+      matchedCandidateExpenditureRowCount,
+      includedCandidateExpenditureRowCount: 0,
+      skippedCandidateExpenditureRowCount: matchedCandidateExpenditureRowCount,
+    };
+  }
+
+  const groups = new Map<string, GroupAccumulator>();
+  let supportTotalCents = 0;
+  let opposeTotalCents = 0;
+  let includedCandidateExpenditureRowCount = 0;
+
+  for (const { relationship, amountCents } of includableRows) {
     includedCandidateExpenditureRowCount += 1;
     if (relationship.supportOppose === "support") {
       supportTotalCents += amountCents;
@@ -486,6 +540,7 @@ export function aggregateTexasOutsideSpending(
   if (grouped.length === 0) {
     return {
       summary: null,
+      firstNameConflict: false,
       matchedCandidateExpenditureRowCount,
       includedCandidateExpenditureRowCount,
       skippedCandidateExpenditureRowCount,
@@ -499,6 +554,7 @@ export function aggregateTexasOutsideSpending(
       groups: grouped,
       sourceUrl: input.sourceUrl ?? null,
     },
+    firstNameConflict: false,
     matchedCandidateExpenditureRowCount,
     includedCandidateExpenditureRowCount,
     skippedCandidateExpenditureRowCount,

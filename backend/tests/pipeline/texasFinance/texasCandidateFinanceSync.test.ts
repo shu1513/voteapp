@@ -471,6 +471,53 @@ describe("texasCandidateFinanceSync", () => {
     expect(db.query).not.toHaveBeenCalled();
   });
 
+  it("refuses to write anything when outside rows reveal a first-name identity conflict", async () => {
+    // "Pat Smith" is stored-linked to Patrick's committee, but a related
+    // spender's includable purpose rows name both PATRICK and PATRICIA. The
+    // sync must not persist zeroed outside totals and an empty group set over
+    // a previously stored snapshot; it writes nothing and flags the conflict.
+    const db = createMockDb();
+
+    const result = await syncTexasCandidateFinance({
+      db,
+      ...baseInput(),
+      candidateName: "Pat Smith",
+      filerRows: [],
+      contributionRows: [contribution({ contributionAmount: "250.00" })],
+      candidateRows: [
+        candidate({ candidateNameLast: "SMITH", candidateNameFirst: "PATRICK", expendAmount: "500.00" }),
+        candidate({
+          expendInfoId: "E2",
+          candidateNameLast: "SMITH",
+          candidateNameFirst: "PATRICIA",
+          expendAmount: "400.00",
+        }),
+      ],
+      expenditureRows: [
+        expenditure({ expendAmount: "500.00" }),
+        expenditure({ expendInfoId: "E2", expendAmount: "400.00" }),
+      ],
+      spacRows: [spac({ candidateFilerName: "SMITH, PATRICK" })],
+      trustedCommittee: {
+        committeeId: "00012345",
+        committeeName: "Pat Smith Campaign",
+      },
+    });
+
+    expect(result).toMatchObject({
+      outsideIdentityConflict: true,
+      linkWritten: false,
+      summaryWritten: false,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+      matchedCandidateExpenditureRowCount: 2,
+      includedCandidateExpenditureRowCount: 0,
+    });
+    expect(db.query).not.toHaveBeenCalled();
+  });
+
   it("uses a trusted linked committee without re-resolving by candidate name", async () => {
     const db = createMockDb();
 

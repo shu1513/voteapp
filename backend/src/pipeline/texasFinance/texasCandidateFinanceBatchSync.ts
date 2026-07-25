@@ -224,7 +224,8 @@ function buildTexasCandidateRowPredicate(rows: readonly TexasCandidateFinanceDue
   const dueCandidateNameKeys = new Set<string>();
   const electionCycleYears = buildElectionCycleYearSet(rows);
   for (const candidate of rows) {
-    for (const key of normalizeTexasCandidateNameKeys(candidate.candidateName)) {
+    // VoteApp side of the prefilter expands nicknames; TEC row names stay literal.
+    for (const key of normalizeTexasCandidateNameKeys(candidate.candidateName, { expandNicknames: true })) {
       dueCandidateNameKeys.add(key);
     }
   }
@@ -672,6 +673,12 @@ export async function syncDueTexasCandidateFinance(
         dryRun,
         now,
       });
+      if (result.outsideIdentityConflict) {
+        console.warn(
+          "Texas finance sync refused candidate election after conflicting first-name identities in outside-spending rows; previous snapshot preserved:",
+          { candidateId: row.candidateId, electionId: row.electionId, committeeId: row.committeeId }
+        );
+      }
       results.push({
         candidateId: row.candidateId,
         electionId: row.electionId,

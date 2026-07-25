@@ -65,6 +65,82 @@ describe("connecticutCandidateCommitteeResolver", () => {
     });
   });
 
+  it("matches a campaign nickname against the formal eCRIS filing name", () => {
+    // VoteApp stores campaign names ("Joe Lauretti *") while eCRIS files
+    // formal names; the VoteApp side expands nicknames, the row side stays
+    // literal.
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Joe Lauretti *",
+        officeName: "State Lower Chamber Legislator",
+        district: "08",
+        electionYear: 2026,
+        sourceUrl: null,
+        receiptRows: [
+          receiptRow({
+            Committee: "Lauretti for CT",
+            "Candidate First Name": "Joseph",
+            "Candidate Middle Intial": "",
+            "Candidate Last Name": "Lauretti",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeName: "Lauretti for CT" });
+
+    // Two distinct formal names must not meet at a shared nickname key.
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Patrick Smith",
+        officeName: "State Lower Chamber Legislator",
+        district: "08",
+        electionYear: 2026,
+        sourceUrl: null,
+        receiptRows: [
+          receiptRow({
+            Committee: "Smith for CT",
+            "Candidate First Name": "Patricia",
+            "Candidate Middle Intial": "",
+            "Candidate Last Name": "Smith",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched" });
+  });
+
+  it("refuses a shared-nickname input when both formal families filed", () => {
+    // "Pat" expands to both Patrick and Patricia. With both filed for the
+    // same office and district the resolver must not pick a side. When only
+    // one family filed, linking it is deliberate: the same surname, office,
+    // district, and election year already agree, and refusing would strand
+    // real candidates (live-verified: Pat Callahan -> PATRICK, Sam Nestor ->
+    // SAMANTHA).
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Pat Smith",
+        officeName: "State Lower Chamber Legislator",
+        district: "08",
+        electionYear: 2026,
+        sourceUrl: null,
+        receiptRows: [
+          receiptRow({
+            Committee: "Patricia for CT",
+            "Committee ID": "501",
+            "Candidate First Name": "Patricia",
+            "Candidate Middle Intial": "",
+            "Candidate Last Name": "Smith",
+          }),
+          receiptRow({
+            Committee: "Patrick for CT",
+            "Committee ID": "502",
+            "Candidate First Name": "Patrick",
+            "Candidate Middle Intial": "",
+            "Candidate Last Name": "Smith",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_committees" });
+  });
+
   it("matches a statewide office using Connecticut eCRIS source labels", () => {
     expect(
       resolveConnecticutCandidateCommittee({

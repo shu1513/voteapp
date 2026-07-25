@@ -14,12 +14,24 @@
 // Keep this list to unambiguous, widely used American pairs. A nickname may
 // appear in several groups ("PAT" → Patrick and Patricia); lookups return the
 // union of its groups.
+//
+// Shared-nickname inputs are a deliberate tradeoff: a VoteApp "Pat Smith"
+// expands to both PATRICK SMITH and PATRICIA SMITH, so if exactly one of
+// those filed for the same office/district/year the resolver links it. That
+// is intended — same surname, office, district, and election year already
+// agree, both-families-present still resolves as ambiguous, and refusing all
+// shared nicknames would strand live-verified correct links (Pat Curry,
+// Sam Nestor → SAMANTHA, Steve Weir → STEPHEN) over a coincidence with no
+// observed instances. Note also that some "families" sharing a nickname are
+// spelling variants of one name (STEPHEN/STEVEN, JEFFREY/JEFFERY), where
+// refusal would be pure loss.
 const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["ABRAHAM", "ABE"],
   ["ALBERT", "AL"],
   ["ALEXANDER", "ALEX"],
   ["ALEXANDRA", "ALEX"],
   ["ALFRED", "AL"],
+  ["AMANDA", "MANDY"],
   ["ANDREW", "ANDY", "DREW"],
   ["ANGELA", "ANGIE"],
   ["ANGELICA", "ANGIE"],
@@ -27,6 +39,7 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["BARBARA", "BARB"],
   ["BENJAMIN", "BEN"],
   ["BERNARD", "BERNIE"],
+  ["BRADLEY", "BRAD"],
   ["CALVIN", "CAL"],
   ["CHARLES", "CHARLIE", "CHUCK"],
   ["CHRISTINA", "CHRIS"],
@@ -48,6 +61,7 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["FREDERICK", "FRED"],
   ["GABRIELLA", "GABBY"],
   ["GABRIELLE", "GABBY"],
+  ["GEOFFREY", "GEOFF"],
   ["GERALD", "JERRY"],
   ["GREGORY", "GREG"],
   ["HAROLD", "HARRY"],
@@ -67,6 +81,7 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["KATHERINE", "KATE", "KATHY", "KATIE"],
   ["KATHLEEN", "KATE", "KATHY"],
   ["KENNETH", "KEN", "KENNY"],
+  ["KIMBERLY", "KIM"],
   ["LAWRENCE", "LARRY"],
   ["LEONARD", "LEN", "LENNY"],
   ["LOUIS", "LOU"],
@@ -76,6 +91,7 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["MELVIN", "MEL"],
   ["MICHAEL", "MIKE"],
   ["NICHOLAS", "NICK"],
+  ["NORMAN", "NORM"],
   ["PAMELA", "PAM"],
   ["PATRICIA", "PAT", "PATTY", "TRICIA"],
   ["PATRICK", "PAT"],
@@ -103,6 +119,14 @@ const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["ZACHARY", "ZACH"],
 ];
 
+// Formal spellings of the same name. These never bridge through expansion
+// (one-sided rule above), but they must not be treated as evidence of two
+// distinct people when a source spells one person both ways.
+const SPELLING_EQUIVALENT_PAIRS: readonly (readonly [string, string])[] = [
+  ["STEPHEN", "STEVEN"],
+  ["JEFFREY", "JEFFERY"],
+];
+
 const VARIANTS_BY_NAME = new Map<string, Set<string>>();
 for (const group of FIRST_NAME_NICKNAME_GROUPS) {
   for (const name of group) {
@@ -124,4 +148,25 @@ for (const group of FIRST_NAME_NICKNAME_GROUPS) {
 export function firstNameVariants(normalizedFirstName: string): readonly string[] {
   const variants = VARIANTS_BY_NAME.get(normalizedFirstName);
   return variants ? [...variants] : [];
+}
+
+/**
+ * Returns true when two already-normalized (uppercase) first-name tokens are
+ * positive evidence of two distinct people: neither equals the other, neither
+ * is a nickname variant of the other, and they are not formal spellings of
+ * the same name (STEPHEN/STEVEN, JEFFREY/JEFFERY). Nickname-expanded matching
+ * that observes conflicting tokens for one candidate should refuse rather
+ * than pick a side, mirroring the resolver's both-families-filed rule.
+ */
+export function firstNamesConflict(normalizedA: string, normalizedB: string): boolean {
+  if (normalizedA === normalizedB) {
+    return false;
+  }
+  if (VARIANTS_BY_NAME.get(normalizedA)?.has(normalizedB) || VARIANTS_BY_NAME.get(normalizedB)?.has(normalizedA)) {
+    return false;
+  }
+  return !SPELLING_EQUIVALENT_PAIRS.some(
+    ([left, right]) =>
+      (left === normalizedA && right === normalizedB) || (left === normalizedB && right === normalizedA)
+  );
 }
