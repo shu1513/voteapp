@@ -39,6 +39,57 @@ describe("alaskaApocClient", () => {
     ]);
   });
 
+  // Header rows below are copied from real APOC "Export All Pages / .CSV"
+  // downloads, which use different column names than the legacy fixtures above.
+  it("parses the official APOC campaign income export column names", () => {
+    const rows = parseAlaskaApocCampaignIncomeCsv(
+      [
+        "Result,Date,Transaction Type,Payment Type,Payment Detail,Amount,Last/Business Name,First Name,Address,City,State,Zip,Country,Occupation,Employer,Purpose of Expenditure,--------,Report Type,Election Name,Election Type,Municipality,Office,Filer Type,Name,Report Year,Submitted",
+        "1,12/24/2024,Income,Check,2408,\"$1,000.00\",\"Public Employees Local 71\",,\"2510 Arctic Blvd\",Anchorage,Alaska,99503,USA,PAC,PAC,,,\"Previous Year Start Report\",\"2026 - Anchorage Municipal Election\",\"Anchorage Municipal\",\"Anchorage, City and Borough\",Assembly,Candidate,\"Dave Donley\",2026,2/9/2025",
+      ].join("\n")
+    );
+
+    expect(rows).toEqual([
+      expect.objectContaining({
+        // The export has no Filer ID or Filer Name column; "Name" carries the
+        // filing candidate and the resolver keys off it.
+        filerId: "",
+        filerName: "Dave Donley",
+        name: "Dave Donley",
+        filerType: "Candidate",
+        type: "Income",
+        contributor: "Public Employees Local 71",
+        occupation: "PAC",
+        amount: 1000,
+        reportYear: 2026,
+      }),
+    ]);
+  });
+
+  it("parses the official APOC independent expenditure export column names", () => {
+    const rows = parseAlaskaApocIndependentExpenditureCsv(
+      [
+        "Result,Date,Payment Type,Payment Detail,Amount,Recipient,Recipient Address,Recipient City,Recipient State,Recipient Zip,Recipient Country,Election Year,Election Name,Candidate/Proposition,Position,--------,Report Year,Filer Type,Filer Name,Submitted,Status",
+        "1,5/28/2026,\"Debit Card\",,\"$3,150.00\",\"A.T. Publishing\",\"1720 Abbott Rd\",Anchorage,Alaska,99507,USA,2026,\"State General\",\"2 - Repeal\",Supports,,2026,\"Registered Group\",\"2026 - Repeal Now\",6/1/2026,Complete",
+      ].join("\n")
+    );
+
+    expect(rows).toEqual([
+      expect.objectContaining({
+        filerName: "2026 - Repeal Now",
+        recipient: "A.T. Publishing",
+        city: "Anchorage",
+        state: "Alaska",
+        zip: "99507",
+        election: "State General",
+        candidateProposition: "2 - Repeal",
+        position: "Supports",
+        amount: 3150,
+        reportYear: 2026,
+      }),
+    ]);
+  });
+
   it("parses APOC independent expenditure CSV exports", () => {
     const rows = parseAlaskaApocIndependentExpenditureCsv(
       [
