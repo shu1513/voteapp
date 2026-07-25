@@ -30,7 +30,6 @@ import {
 import {
   buildCandidateRecordIdentityKey,
   type CandidateRecordOrigin,
-  type CandidateRecordUpsertResult,
   deleteCandidateRecordsForReplacementRefresh,
   type CandidateRecordUpsertInput,
   upsertCandidateRecords,
@@ -166,19 +165,71 @@ async function rollbackQuietly(client: PoolClient): Promise<void> {
   }
 }
 
-async function upsertCandidateRecordsWithNotificationEvents(input: {
+/**
+ * District-path persistence, PR 4 of the source-trust plan: records, area
+ * tags, and follower notification events commit in ONE transaction, with
+ * notification events created only AFTER label validation succeeds.
+ * Previously records were upserted (and notification events emitted)
+ * mid-flow, before the area-label AI call and its validation — a poisoned
+ * record could reach followers before checks finished, and a validation
+ * failure left validated-later records permanently un-notified (the retry
+ * dedupes them, and notifications ride inserted ids only). Mirrors
+ * replacePresidentialCandidateRecordsAtomically minus the replacement
+ * delete; the presidential path deliberately emits no notification events.
+ */
+async function persistDistrictCandidateRecordsAtomically(input: {
   pool: Pool;
-  records: readonly CandidateRecordUpsertInput[];
-}): Promise<CandidateRecordUpsertResult> {
+  candidateId: string;
+  recordsForTagging: readonly RecordForTagging[];
+  // Same records as recordsForTagging, in the same order, already carrying
+  // per-record provenance (discovery rows vs repair rows differ in origin).
+  upsertInputs: readonly CandidateRecordUpsertInput[];
+  labels: readonly AreaLabelForWrite[];
+  allowedSlugs: readonly string[];
+  allowedAreas: readonly AllowedResearchArea[];
+}): Promise<{
+  insertedCount: number;
+  dedupedCount: number;
+  taggedSpecificCount: number;
+  taggedGeneralCount: number;
+}> {
   const client = await input.pool.connect();
   try {
     await client.query("BEGIN");
-    const upsert = await upsertCandidateRecords(client, input.records);
+    const upsert = await upsertCandidateRecords(client, input.upsertInputs);
+    const labelsForValidation = buildLabelsForValidation({
+      labels: input.labels,
+      recordsForTagging: input.recordsForTagging,
+      persistedByIdentity: upsert.recordIdsByIdentityKey,
+      candidateId: input.candidateId,
+    });
+    const validation = validateCandidateRecordAreaLabels(
+      labelsForValidation,
+      new Set(input.allowedSlugs)
+    );
+    if (!validation.ok) {
+      const reason = validation.failures.map((failure) => failure.reason).join("; ");
+      throw new CandidateRecordLabelValidationError(reason, validation.failures.length);
+    }
+
+    const researchAreaIdBySlug = new Map(input.allowedAreas.map((area) => [area.slug, area.id]));
+    await upsertCandidateRecordAreaTags(client, validation.normalized, researchAreaIdBySlug);
+    // Only now — labels validated, tags written — do inserted records become
+    // follower-visible notification events, in the same transaction.
     for (const candidateRecordId of upsert.insertedRecordIds) {
       await createCandidateRecordUpdateNotificationEvents(client, candidateRecordId);
     }
     await client.query("COMMIT");
-    return upsert;
+
+    const taggedGeneralCount = validation.normalized.filter(
+      (label) => label.researchAreaSlug === "general"
+    ).length;
+    return {
+      insertedCount: upsert.inserted,
+      dedupedCount: upsert.updated,
+      taggedGeneralCount,
+      taggedSpecificCount: validation.normalized.length - taggedGeneralCount,
+    };
   } catch (error) {
     await rollbackQuietly(client);
     throw error;
@@ -529,27 +580,13 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                 );
               }
 
+              // No records are persisted here: BOTH context types now defer
+              // persistence to a single atomic write after the area-label AI
+              // call, so label validation gates records, tags, and follower
+              // notification events alike (PR 4 of the source-trust plan).
               let insertedCount = 0;
               let dedupedCount = 0;
               const recordsForTagging = [...discovered.records];
-              const persistedByIdentity = new Map<string, string>();
-
-              if (discovered.records.length > 0 && contextType !== "presidential_cycle") {
-                const firstPassUpsert = await upsertCandidateRecordsWithNotificationEvents({
-                  pool,
-                  records: toCandidateRecordUpsertInput(
-                    claimedCandidateId,
-                    discovered.records,
-                    "ai_enricher",
-                    originRunId
-                  ),
-                });
-                insertedCount += firstPassUpsert.inserted;
-                dedupedCount += firstPassUpsert.updated;
-                for (const [key, id] of firstPassUpsert.recordIdsByIdentityKey) {
-                  persistedByIdentity.set(key, id);
-                }
-              }
 
               if (discovered.droppedRecords.length > 0) {
                 const blockedUrls = [
@@ -701,24 +738,6 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                   }
 
                   if (repairedVerifiedRecords.length > 0) {
-                    if (contextType !== "presidential_cycle") {
-                      const secondPassUpsert = await upsertCandidateRecordsWithNotificationEvents({
-                        pool,
-                        // "repair": the source URL came from the AI repair
-                        // pass, not the original discovery citation.
-                        records: toCandidateRecordUpsertInput(
-                          claimedCandidateId,
-                          repairedVerifiedRecords,
-                          "repair",
-                          originRunId
-                        ),
-                      });
-                      insertedCount += secondPassUpsert.inserted;
-                      dedupedCount += secondPassUpsert.updated;
-                      for (const [key, id] of secondPassUpsert.recordIdsByIdentityKey) {
-                        persistedByIdentity.set(key, id);
-                      }
-                    }
                     recordsForTagging.push(...repairedVerifiedRecords);
                     stats.repaired_verified_count += repairedVerifiedRecords.length;
                   }
@@ -809,31 +828,33 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                 );
               }
 
+              // recordsForTagging is [...discovered.records] with repaired
+              // rows pushed after, so provenance splits by position: the
+              // discovery prefix vs the repair suffix.
+              const upsertInputs = [
+                ...toCandidateRecordUpsertInput(
+                  claimedCandidateId,
+                  recordsForTagging.slice(0, discovered.records.length),
+                  "ai_enricher",
+                  originRunId
+                ),
+                ...toCandidateRecordUpsertInput(
+                  claimedCandidateId,
+                  recordsForTagging.slice(discovered.records.length),
+                  "repair",
+                  originRunId
+                ),
+              ];
+
               let taggedGeneralCount = 0;
               let taggedSpecificCount = 0;
-              if (contextType === "presidential_cycle") {
-                try {
+              try {
+                if (contextType === "presidential_cycle") {
                   const replacement = await replacePresidentialCandidateRecordsAtomically({
                     pool,
                     candidateId: claimedCandidateId,
                     recordsForTagging,
-                    // recordsForTagging is [...discovered.records] with
-                    // repaired rows pushed after, so provenance splits by
-                    // position: the discovery prefix vs the repair suffix.
-                    upsertInputs: [
-                      ...toCandidateRecordUpsertInput(
-                        claimedCandidateId,
-                        recordsForTagging.slice(0, discovered.records.length),
-                        "ai_enricher",
-                        originRunId
-                      ),
-                      ...toCandidateRecordUpsertInput(
-                        claimedCandidateId,
-                        recordsForTagging.slice(discovered.records.length),
-                        "repair",
-                        originRunId
-                      ),
-                    ],
+                    upsertInputs,
                     labels: areaLabels.labels,
                     allowedSlugs,
                     allowedAreas,
@@ -847,36 +868,26 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                       `candidate-record enricher atomically replaced presidential records candidate_id=${claimedCandidateId} deleted=${replacement.deletedCount} inserted=${replacement.insertedCount} deduped=${replacement.dedupedCount}`
                     );
                   }
-                } catch (error) {
-                  if (error instanceof CandidateRecordLabelValidationError) {
-                    stats.label_validation_rejected_count += error.failureCount;
-                  }
-                  throw error;
+                } else {
+                  const persisted = await persistDistrictCandidateRecordsAtomically({
+                    pool,
+                    candidateId: claimedCandidateId,
+                    recordsForTagging,
+                    upsertInputs,
+                    labels: areaLabels.labels,
+                    allowedSlugs,
+                    allowedAreas,
+                  });
+                  insertedCount += persisted.insertedCount;
+                  dedupedCount += persisted.dedupedCount;
+                  taggedGeneralCount = persisted.taggedGeneralCount;
+                  taggedSpecificCount = persisted.taggedSpecificCount;
                 }
-              } else {
-                const labelsForValidation = buildLabelsForValidation({
-                  labels: areaLabels.labels,
-                  recordsForTagging,
-                  persistedByIdentity,
-                  candidateId: claimedCandidateId,
-                });
-                const validation = validateCandidateRecordAreaLabels(
-                  labelsForValidation,
-                  new Set(allowedSlugs)
-                );
-                if (!validation.ok) {
-                  stats.label_validation_rejected_count += validation.failures.length;
-                  const reason = validation.failures.map((failure) => failure.reason).join("; ");
-                  throw new Error(`candidate record label validation failed: ${reason}`);
+              } catch (error) {
+                if (error instanceof CandidateRecordLabelValidationError) {
+                  stats.label_validation_rejected_count += error.failureCount;
                 }
-
-                const researchAreaIdBySlug = new Map(allowedAreas.map((area) => [area.slug, area.id]));
-                await upsertCandidateRecordAreaTags(pool, validation.normalized, researchAreaIdBySlug);
-
-                taggedGeneralCount = validation.normalized.filter(
-                  (label) => label.researchAreaSlug === "general"
-                ).length;
-                taggedSpecificCount = validation.normalized.length - taggedGeneralCount;
+                throw error;
               }
 
               return {
