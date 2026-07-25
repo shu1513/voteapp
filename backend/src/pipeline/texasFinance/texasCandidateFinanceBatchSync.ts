@@ -580,7 +580,7 @@ export async function syncDueTexasCandidateFinance(
           rawDataCacheDir: input.rawDataCacheDir,
           tecData: input.tecData,
         });
-        await autoLinkMissingTexasCandidateFinanceLinks({
+        const autoLinkResults = await autoLinkMissingTexasCandidateFinanceLinks({
           db: input.db,
           now,
           maxCandidates,
@@ -590,6 +590,11 @@ export async function syncDueTexasCandidateFinance(
           sourceUrl: filerData.sourceUrl,
           candidateElections: missingLinkCandidates,
         });
+        for (const result of autoLinkResults) {
+          if (result.status !== "linked") {
+            console.warn("Texas finance auto-link did not link candidate election:", result);
+          }
+        }
       }
     } catch (error) {
       console.warn(

@@ -641,7 +641,7 @@ export async function syncDueMichiganCandidateFinance(
         contributionRowsByYear.set(year, data.rows);
         sourceUrlByYear.set(year, data.sourceUrl);
       }
-      await autoLinkMissingMichiganCandidateFinanceLinks({
+      const autoLinkResults = await autoLinkMissingMichiganCandidateFinanceLinks({
         db: input.db,
         now,
         maxCandidates,
@@ -651,6 +651,11 @@ export async function syncDueMichiganCandidateFinance(
         sourceUrlByYear,
         candidateElections: missingLinkCandidates,
       });
+      for (const result of autoLinkResults) {
+        if (result.status !== "linked") {
+          console.warn("Michigan finance auto-link did not link candidate election:", result);
+        }
+      }
     } catch (error) {
       console.warn(
         "Michigan finance auto-link skipped; continuing with already-linked candidate sync:",

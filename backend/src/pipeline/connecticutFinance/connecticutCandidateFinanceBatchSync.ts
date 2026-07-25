@@ -409,7 +409,7 @@ export async function syncDueConnecticutCandidateFinance(
         receiptRowsByYear.set(year, data.rows);
         sourceUrlByYear.set(year, data.sourceUrl);
       }
-      await autoLinkMissingConnecticutCandidateFinanceLinks({
+      const autoLinkResults = await autoLinkMissingConnecticutCandidateFinanceLinks({
         db: input.db,
         now,
         maxCandidates,
@@ -419,6 +419,11 @@ export async function syncDueConnecticutCandidateFinance(
         sourceUrlByYear,
         candidateElections: missingLinkCandidates,
       });
+      for (const result of autoLinkResults) {
+        if (result.status !== "linked") {
+          console.warn("Connecticut finance auto-link did not link candidate election:", result);
+        }
+      }
     } catch (error) {
       console.warn(
         "Connecticut finance auto-link skipped; continuing with already-linked candidate sync:",

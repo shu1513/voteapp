@@ -437,7 +437,7 @@ export async function syncDueNebraskaCandidateFinance(
         contributionRowsByYear.set(year, data.rows);
         sourceUrlByYear.set(year, data.sourceUrl);
       }
-      await autoLinkMissingNebraskaCandidateFinanceLinks({
+      const autoLinkResults = await autoLinkMissingNebraskaCandidateFinanceLinks({
         db: input.db,
         now,
         maxCandidates,
@@ -447,6 +447,11 @@ export async function syncDueNebraskaCandidateFinance(
         sourceUrlByYear,
         candidateElections: missingLinkCandidates,
       });
+      for (const result of autoLinkResults) {
+        if (result.status !== "linked") {
+          console.warn("Nebraska finance auto-link did not link candidate election:", result);
+        }
+      }
     } catch (error) {
       console.warn(
         "Nebraska finance auto-link skipped; continuing with already-linked candidate sync:",

@@ -215,6 +215,76 @@ describe("coloradoCandidateFinanceAutoLink", () => {
     expect(String(db.query.mock.calls[0]?.[0])).toContain("INSERT INTO public.co_candidate_finance_links");
   });
 
+  it("reports a per-candidate error and keeps linking later candidates when one write fails", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const db = {
+        query: vi
+          .fn()
+          .mockRejectedValueOnce(new Error("insert failed"))
+          .mockResolvedValueOnce({ rows: [{ id: "link-2" }], rowCount: 1 }),
+      };
+
+      const results = await autoLinkMissingColoradoCandidateFinanceLinks({
+        db,
+        now: NOW,
+        maxCandidates: 25,
+        electionLookbackDays: 1,
+        electionLookaheadDays: 730,
+        candidateElections: [
+          {
+            candidateId: CANDIDATE_ID,
+            electionId: ELECTION_ID,
+            candidateName: "Jane Doe",
+            electionYear: 2026,
+            officeName: "Governor",
+          },
+          {
+            candidateId: "33333333-3333-4333-8333-333333333333",
+            electionId: "44444444-4444-4444-8444-444444444444",
+            candidateName: "John Roe",
+            electionYear: 2026,
+            officeName: "Governor",
+          },
+        ],
+        contributionRowsByYear: new Map([
+          [
+            2026,
+            [
+              contribution(),
+              contribution({
+                CO_ID: "202650002",
+                CommitteeName: "John Roe for Colorado Governor",
+                CandidateName: "John Roe",
+                LastName: "Roe",
+                FirstName: "John",
+              }),
+            ],
+          ],
+        ]),
+        sourceUrlByYear: new Map([[2026, "https://tracer.sos.colorado.gov/"]]),
+      });
+
+      expect(results).toEqual([
+        {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          status: "error",
+          reason: "auto_link_failed",
+          error: "insert failed",
+        },
+        {
+          candidateId: "33333333-3333-4333-8333-333333333333",
+          electionId: "44444444-4444-4444-8444-444444444444",
+          status: "linked",
+          committeeId: "202650002",
+        },
+      ]);
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
   it("builds a candidate-name predicate for filtered TRACER reads", () => {
     const predicate = buildColoradoCandidateNamePredicate([
       {
