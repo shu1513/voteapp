@@ -107,6 +107,40 @@ describe("connecticutCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched" });
   });
 
+  it("refuses a shared-nickname input when both formal families filed", () => {
+    // "Pat" expands to both Patrick and Patricia. With both filed for the
+    // same office and district the resolver must not pick a side. When only
+    // one family filed, linking it is deliberate: the same surname, office,
+    // district, and election year already agree, and refusing would strand
+    // real candidates (live-verified: Pat Callahan -> PATRICK, Sam Nestor ->
+    // SAMANTHA).
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Pat Smith",
+        officeName: "State Lower Chamber Legislator",
+        district: "08",
+        electionYear: 2026,
+        sourceUrl: null,
+        receiptRows: [
+          receiptRow({
+            Committee: "Patricia for CT",
+            "Committee ID": "501",
+            "Candidate First Name": "Patricia",
+            "Candidate Middle Intial": "",
+            "Candidate Last Name": "Smith",
+          }),
+          receiptRow({
+            Committee: "Patrick for CT",
+            "Committee ID": "502",
+            "Candidate First Name": "Patrick",
+            "Candidate Middle Intial": "",
+            "Candidate Last Name": "Smith",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_committees" });
+  });
+
   it("matches a statewide office using Connecticut eCRIS source labels", () => {
     expect(
       resolveConnecticutCandidateCommittee({

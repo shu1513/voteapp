@@ -14,6 +14,17 @@
 // Keep this list to unambiguous, widely used American pairs. A nickname may
 // appear in several groups ("PAT" → Patrick and Patricia); lookups return the
 // union of its groups.
+//
+// Shared-nickname inputs are a deliberate tradeoff: a VoteApp "Pat Smith"
+// expands to both PATRICK SMITH and PATRICIA SMITH, so if exactly one of
+// those filed for the same office/district/year the resolver links it. That
+// is intended — same surname, office, district, and election year already
+// agree, both-families-present still resolves as ambiguous, and refusing all
+// shared nicknames would strand live-verified correct links (Pat Curry,
+// Sam Nestor → SAMANTHA, Steve Weir → STEPHEN) over a coincidence with no
+// observed instances. Note also that some "families" sharing a nickname are
+// spelling variants of one name (STEPHEN/STEVEN, JEFFREY/JEFFERY), where
+// refusal would be pure loss.
 const FIRST_NAME_NICKNAME_GROUPS: readonly (readonly string[])[] = [
   ["ABRAHAM", "ABE"],
   ["ALBERT", "AL"],

@@ -104,6 +104,27 @@ describe("texasCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched" });
   });
 
+  it("refuses a shared-nickname input when both formal families filed", () => {
+    // "Pat" expands to both Patrick and Patricia. With both filed for the
+    // same office the resolver must not pick a side. When only one family
+    // filed, linking it is deliberate: the same surname, office, district,
+    // and election year already agree, and refusing would strand real
+    // candidates (live-verified: Pat Curry -> "Curry, Patrick J." $690k).
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Pat Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        sourceUrl: null,
+        filerRows: [
+          filer({ filerIdent: "501", filerName: "SMITH, PATRICIA", filerNameFirst: "PATRICIA", filerNameLast: "SMITH" }),
+          filer({ filerIdent: "502", filerName: "SMITH, PATRICK", filerNameFirst: "PATRICK", filerNameLast: "SMITH" }),
+        ],
+      })
+    ).toMatchObject({ status: "ambiguous" });
+  });
+
   it("includes safe campaign-named receipt committees without including opposition committees", () => {
     const result = resolveTexasCandidateCommittee({
       candidateName: "Greg Abbott",
