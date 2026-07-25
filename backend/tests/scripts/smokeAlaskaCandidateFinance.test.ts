@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { runAlaskaCandidateFinanceLiveSmoke } from "../../src/scripts/smokeAlaskaCandidateFinance.js";
+import { createApocExportChainFetch } from "../pipeline/alaskaFinance/alaskaApocClient.test.js";
 
 afterEach(() => {
   vi.unstubAllEnvs();
@@ -23,36 +24,21 @@ describe("smokeAlaskaCandidateFinance", () => {
     });
   });
 
-  it("runs the live smoke checks against mocked APOC CSV responses", async () => {
-    const fetchFn = vi
-      .fn()
-      .mockResolvedValueOnce(
-        new Response(
-          [
-            "Filer,Filer Type,Name,Date,Type,Contributor/Vendor,Occupation,Employer,Amount,Status",
-            "DUNLEAVY FOR GOVERNOR,Candidate,Mike Dunleavy,10/01/2022,Income,Pat Smith,Engineer,North Co,100.00,Complete",
-          ].join("\n"),
-          { status: 200 }
-        )
-      )
-      .mockResolvedValueOnce(
-        new Response(
-          [
-            "Filer Name,Filer,Filer Type,Report Year,Type,Date,Position,Candidate/Proposition,Amount,Status",
-            "Alaska Future PAC,8001,Group,2022,Expenditure,09/15/2022,Support,Mike Dunleavy,25000.00,Complete",
-          ].join("\n"),
-          { status: 200 }
-        )
-      )
-      .mockResolvedValueOnce(
-        new Response(
-          [
-            "Filer Name,Filer,Filer Type,Report Year,Type,Date,Contributor,Employer,Occupation,Amount,Status",
-            "Alaska Future PAC,8001,Group,2022,Contribution,09/01/2022,Northern Energy LLC,,,30000.00,Complete",
-          ].join("\n"),
-          { status: 200 }
-        )
-      );
+  it("runs the live smoke checks against mocked APOC export chains", async () => {
+    const fetchFn = createApocExportChainFetch({
+      "https://example.test/income.csv": [
+        "Filer,Filer Type,Name,Date,Type,Contributor/Vendor,Occupation,Employer,Amount,Status",
+        "DUNLEAVY FOR GOVERNOR,Candidate,Mike Dunleavy,10/01/2022,Income,Pat Smith,Engineer,North Co,100.00,Complete",
+      ].join("\n"),
+      "https://example.test/ie-exp.csv": [
+        "Filer Name,Filer,Filer Type,Report Year,Type,Date,Position,Candidate/Proposition,Amount,Status",
+        "Alaska Future PAC,8001,Group,2022,Expenditure,09/15/2022,Support,Mike Dunleavy,25000.00,Complete",
+      ].join("\n"),
+      "https://example.test/ie-con.csv": [
+        "Filer Name,Filer,Filer Type,Report Year,Type,Date,Contributor,Employer,Occupation,Amount,Status",
+        "Alaska Future PAC,8001,Group,2022,Contribution,09/01/2022,Northern Energy LLC,,,30000.00,Complete",
+      ].join("\n"),
+    });
 
     const output = await runAlaskaCandidateFinanceLiveSmoke({
       args: [
@@ -78,12 +64,17 @@ describe("smokeAlaskaCandidateFinance", () => {
       mode: "live",
     });
     expect(output.probe?.direct_campaign.matched_row_count).toBe(1);
-    expect(fetchFn).toHaveBeenCalledTimes(3);
-    expect(fetchFn.mock.calls.map((call) => call[0])).toEqual([
-      "https://example.test/income.csv",
-      "https://example.test/ie-exp.csv",
-      "https://example.test/ie-con.csv",
-    ]);
+    // Three report pages, each through the four-step export chain.
+    expect(fetchFn).toHaveBeenCalledTimes(12);
+    // The smoked election's report year is what the search posts back, so a
+    // 2022 smoke does not silently download the current year's export.
+    const searchBodies = fetchFn.mock.calls
+      .map(([, init]) => (typeof init?.body === "string" ? decodeURIComponent(init.body.replace(/\+/g, " ")) : ""))
+      .filter((body) => body.includes("btnSearch=Search"));
+    expect(searchBodies).toHaveLength(3);
+    for (const body of searchBodies) {
+      expect(body).toContain("ddlReportYear=2022");
+    }
     expect(fetchFn.mock.calls[0]?.[1]).toEqual(expect.objectContaining({ signal: expect.any(AbortSignal) }));
   });
 });

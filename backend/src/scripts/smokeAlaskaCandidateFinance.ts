@@ -73,6 +73,9 @@ export async function runAlaskaCandidateFinanceLiveSmoke(input: {
       retryCount: args.retryCount,
       retryDelayMs: args.retryDelayMs,
       requestSpacingMs: args.requestSpacingMs,
+      // Live exports are per report year; a historical smoke must download the
+      // smoked election's year, not the current one.
+      reportYear: args.electionYear,
     },
     { fetchFn: input.fetchFn, logger: console }
   );

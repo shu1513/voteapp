@@ -279,6 +279,9 @@ async function loadDatasets(args: AlaskaFinanceProbeArgs): Promise<AlaskaFinance
       retryCount: args.retryCount,
       retryDelayMs: args.retryDelayMs,
       requestSpacingMs: args.requestSpacingMs,
+      // Live exports are per report year; a historical probe must download the
+      // probed election's year, not the current one.
+      reportYear: args.electionYear,
     },
     { logger: console }
   );
