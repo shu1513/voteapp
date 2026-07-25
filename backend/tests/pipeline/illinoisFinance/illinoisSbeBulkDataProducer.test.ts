@@ -70,13 +70,15 @@ describe("Illinois SBE bulk data producer", () => {
       "2001-01-31T17:51:38.000Z",
     ]);
 
+    // The semiannual report (7/1–12/31, filed 2001-01-31) covers the amended
+    // pre-election report's 7/1–10/8 span, so only the semiannual counts.
     expect(
       aggregateIllinoisD2Summaries({
         electionYear: 2000,
         committeeId: "1078",
         reports: artifact.d2ReportSummaries,
       })
-    ).toMatchObject({ totalReceipts: 54724, includedReportCount: 2 });
+    ).toMatchObject({ totalReceipts: 29907, includedReportCount: 1 });
   });
 
   it("drops filed documents whose report period is inverted and counts their D2 rows", async () => {

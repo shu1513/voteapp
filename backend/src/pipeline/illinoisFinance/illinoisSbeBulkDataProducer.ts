@@ -296,14 +296,14 @@ export async function produceIllinoisSbeNormalizedArtifact(input: {
     const periodStart = parseSbeDate(row[9]!);
     const periodEnd = parseSbeDate(row[10]!);
     const filedAt = parseSbeTimestamp(row[12]!);
+    if (id && periodStart && periodEnd && periodStart > periodEnd) {
+      // The SBE bulk export carries a small number of documents whose report
+      // period bounds are swapped or fat-fingered; drop them rather than
+      // guess at the intended window.
+      invertedPeriodDocumentIds.add(id);
+      return;
+    }
     if (id && periodStart && periodEnd && filedAt) {
-      if (periodStart > periodEnd) {
-        // The SBE bulk export carries a small number of documents whose report
-        // period bounds are swapped or fat-fingered; drop them rather than
-        // guess at the intended window.
-        invertedPeriodDocumentIds.add(id);
-        return;
-      }
       filedDocuments.set(id, { committeeId, periodStart, periodEnd, filedAt });
     }
   });

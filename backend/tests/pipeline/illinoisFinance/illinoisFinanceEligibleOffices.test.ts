@@ -30,6 +30,12 @@ describe("illinoisFinanceEligibleOffices", () => {
     ).toEqual({ sbeOffice: "State Senate", district: "7" });
     expect(
       toIllinoisSbeOfficeSearchInput({
+        officeScope: "statewide",
+        officeCanonicalName: "State Treasurer",
+      })
+    ).toEqual({ sbeOffice: "Treasurer", district: null });
+    expect(
+      toIllinoisSbeOfficeSearchInput({
         officeScope: "state_lower",
         officeCanonicalName: "State Lower Chamber Legislator",
         district: "119",

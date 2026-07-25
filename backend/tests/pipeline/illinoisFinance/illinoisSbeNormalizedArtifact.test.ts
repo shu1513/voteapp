@@ -253,4 +253,79 @@ describe("Illinois D-2 summary aggregation", () => {
       })
     ).toMatchObject({ cashOnHand: 900, debtsOwed: null });
   });
+
+  it("drops a superseded report whose period truly overlaps a later filing", () => {
+    // Real SBE pattern: a quarterly report is refiled later with corrected
+    // period bounds (e.g. trimmed to the committee's creation date). Summing
+    // both would double-count the quarter's money.
+    const result = aggregateIllinoisD2Summaries({
+      electionYear: 2025,
+      committeeId: "456",
+      reports: [
+        report({
+          reportId: "q4-wide",
+          periodStart: "2024-10-01",
+          periodEnd: "2024-12-31",
+          filedAt: "2025-02-24T12:00:00.000Z",
+          totalReceipts: 7500,
+          totalDisbursements: 0,
+          cashOnHand: 7500,
+          debtsOwed: 0,
+        }),
+        report({
+          reportId: "q4-corrected",
+          periodStart: "2024-12-19",
+          periodEnd: "2024-12-31",
+          filedAt: "2025-04-08T12:00:00.000Z",
+          totalReceipts: 7500.01,
+          totalDisbursements: 63.94,
+          cashOnHand: 7436.07,
+          debtsOwed: 0,
+        }),
+      ],
+    });
+
+    expect(result).toEqual({
+      totalReceipts: 7500.01,
+      totalDisbursements: 63.94,
+      cashOnHand: 7436.07,
+      debtsOwed: 0,
+      sourceUrl: SOURCE_URL,
+      includedReportCount: 1,
+    });
+  });
+
+  it("keeps consecutive reports that only share a single boundary day", () => {
+    const result = aggregateIllinoisD2Summaries({
+      electionYear: 2025,
+      committeeId: "456",
+      reports: [
+        report({
+          reportId: "q1",
+          periodStart: "2025-01-01",
+          periodEnd: "2025-03-31",
+          filedAt: "2025-10-15T12:00:00.000Z",
+          totalReceipts: 100,
+          totalDisbursements: 0,
+          cashOnHand: 100,
+          debtsOwed: 0,
+        }),
+        report({
+          reportId: "q2-shifted",
+          periodStart: "2025-03-31",
+          periodEnd: "2025-06-30",
+          filedAt: "2025-09-30T12:00:00.000Z",
+          totalReceipts: 40,
+          totalDisbursements: 0,
+          cashOnHand: 140,
+          debtsOwed: 0,
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      totalReceipts: 140,
+      includedReportCount: 2,
+    });
+  });
 });
