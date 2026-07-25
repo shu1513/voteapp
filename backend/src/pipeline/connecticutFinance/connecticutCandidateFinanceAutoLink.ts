@@ -80,7 +80,9 @@ export function buildConnecticutCandidateNamePredicate(
   const candidateNameKeysByYear = new Map<number, Set<string>>();
   for (const candidate of candidates) {
     const keys = candidateNameKeysByYear.get(candidate.electionYear) ?? new Set<string>();
-    for (const key of normalizeConnecticutCandidateNameKeys(candidate.candidateName)) {
+    // VoteApp side of the prefilter expands nicknames so the resolver still
+    // sees the rows it would match; the row side below stays literal.
+    for (const key of normalizeConnecticutCandidateNameKeys(candidate.candidateName, { expandNicknames: true })) {
       keys.add(key);
     }
     candidateNameKeysByYear.set(candidate.electionYear, keys);

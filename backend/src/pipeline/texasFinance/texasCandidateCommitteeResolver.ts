@@ -1,3 +1,4 @@
+import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
 import type { TexasTecFilerRow } from "./texasTecCsvDatabaseReader.js";
 import {
   isTexasFinanceEligibleOffice,
@@ -96,12 +97,38 @@ function normalizePersonName(value: string): string {
     .trim();
 }
 
-export function normalizeTexasCandidateNameKeys(value: string): Set<string> {
+/**
+ * Nickname expansion is one-sided by design: only the VoteApp candidate name
+ * may opt in via `expandNicknames`, while TEC-sourced names always key
+ * literally. Expanding both sides would let two distinct formal names meet at
+ * a shared nickname key ("Patrick Smith" and "Patricia Smith" both produce
+ * "PAT SMITH").
+ */
+export function normalizeTexasCandidateNameKeys(
+  value: string,
+  options?: { expandNicknames?: boolean }
+): Set<string> {
+  const expandNicknames = options?.expandNicknames === true;
   const trimmed = value.trim();
   const normalized = normalizePersonName(trimmed);
   const keys = new Set<string>();
   if (normalized) {
     keys.add(normalized);
+  }
+
+  function addFirstLastKeys(parts: readonly string[]): void {
+    if (parts.length < 2) {
+      return;
+    }
+    const firstName = parts[0]!;
+    const lastName = parts[parts.length - 1]!;
+    keys.add(`${firstName} ${lastName}`);
+    if (!expandNicknames) {
+      return;
+    }
+    for (const variant of firstNameVariants(firstName)) {
+      keys.add(`${variant} ${lastName}`);
+    }
   }
 
   const commaParts = trimmed
@@ -114,18 +141,12 @@ export function normalizeTexasCandidateNameKeys(value: string): Set<string> {
     const flipped = normalizePersonName(`${firstNames} ${lastName}`);
     if (flipped) {
       keys.add(flipped);
-      const flippedParts = flipped.split(" ").filter(Boolean);
-      if (flippedParts.length >= 2) {
-        keys.add(`${flippedParts[0]} ${flippedParts[flippedParts.length - 1]}`);
-      }
+      addFirstLastKeys(flipped.split(" ").filter(Boolean));
     }
     return keys;
   }
 
-  const parts = normalized.split(" ").filter(Boolean);
-  if (parts.length >= 2) {
-    keys.add(`${parts[0]} ${parts[parts.length - 1]}`);
-  }
+  addFirstLastKeys(normalized.split(" ").filter(Boolean));
 
   return keys;
 }
@@ -370,7 +391,7 @@ export function resolveTexasCandidateCommittee(
   const officeScope = normalizeOfficeScope(input.officeScope);
   const officeCanonicalName = canonicalOfficeNameForInput(input.officeName);
   const officeNameNormalized = officeCanonicalName ?? normalizeTextKey(input.officeName);
-  const candidateNameKeys = normalizeTexasCandidateNameKeys(input.candidateName);
+  const candidateNameKeys = normalizeTexasCandidateNameKeys(input.candidateName, { expandNicknames: true });
   const candidateNameNormalized = [...candidateNameKeys][0] ?? normalizePersonName(input.candidateName);
   const expectedDistrict = normalizeDistrict(input.district);
 

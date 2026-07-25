@@ -65,6 +65,48 @@ describe("connecticutCandidateCommitteeResolver", () => {
     });
   });
 
+  it("matches a campaign nickname against the formal eCRIS filing name", () => {
+    // VoteApp stores campaign names ("Joe Lauretti *") while eCRIS files
+    // formal names; the VoteApp side expands nicknames, the row side stays
+    // literal.
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Joe Lauretti *",
+        officeName: "State Lower Chamber Legislator",
+        district: "08",
+        electionYear: 2026,
+        sourceUrl: null,
+        receiptRows: [
+          receiptRow({
+            Committee: "Lauretti for CT",
+            "Candidate First Name": "Joseph",
+            "Candidate Middle Intial": "",
+            "Candidate Last Name": "Lauretti",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeName: "Lauretti for CT" });
+
+    // Two distinct formal names must not meet at a shared nickname key.
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Patrick Smith",
+        officeName: "State Lower Chamber Legislator",
+        district: "08",
+        electionYear: 2026,
+        sourceUrl: null,
+        receiptRows: [
+          receiptRow({
+            Committee: "Smith for CT",
+            "Candidate First Name": "Patricia",
+            "Candidate Middle Intial": "",
+            "Candidate Last Name": "Smith",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched" });
+  });
+
   it("matches a statewide office using Connecticut eCRIS source labels", () => {
     expect(
       resolveConnecticutCandidateCommittee({

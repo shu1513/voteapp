@@ -73,6 +73,37 @@ describe("texasCandidateCommitteeResolver", () => {
     });
   });
 
+  it("matches a campaign nickname against the formal TEC filer name", () => {
+    // "Gene Wu" (VoteApp) must find the TEC filer "WU, EUGENE"; expansion is
+    // one-sided, so the filer-side names stay literal.
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Gene Wu",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        sourceUrl: null,
+        filerRows: [
+          filer({ filerName: "WU, EUGENE", filerNameFirst: "EUGENE", filerNameLast: "WU" }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeName: "WU, EUGENE" });
+
+    // Two distinct formal names must not meet at a shared nickname key.
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Patrick Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        sourceUrl: null,
+        filerRows: [
+          filer({ filerName: "SMITH, PATRICIA", filerNameFirst: "PATRICIA", filerNameLast: "SMITH" }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched" });
+  });
+
   it("includes safe campaign-named receipt committees without including opposition committees", () => {
     const result = resolveTexasCandidateCommittee({
       candidateName: "Greg Abbott",

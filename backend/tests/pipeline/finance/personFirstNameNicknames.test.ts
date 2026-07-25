@@ -8,6 +8,12 @@ describe("firstNameVariants", () => {
     expect(firstNameVariants("MIKE")).toContain("MICHAEL");
     expect(firstNameVariants("FRANCES")).toContain("FRAN");
     expect(firstNameVariants("WILLIAM")).toEqual(expect.arrayContaining(["BILL", "BILLY", "WILL"]));
+    // Pairs added from the CT/TX unlinked harvests (2026-07-25).
+    expect(firstNameVariants("NORM")).toContain("NORMAN");
+    expect(firstNameVariants("GEOFF")).toContain("GEOFFREY");
+    expect(firstNameVariants("KIM")).toContain("KIMBERLY");
+    expect(firstNameVariants("MANDY")).toContain("AMANDA");
+    expect(firstNameVariants("BRAD")).toContain("BRADLEY");
   });
 
   it("returns the union of groups for shared nicknames", () => {

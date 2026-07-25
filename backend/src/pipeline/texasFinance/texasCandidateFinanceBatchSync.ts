@@ -224,7 +224,8 @@ function buildTexasCandidateRowPredicate(rows: readonly TexasCandidateFinanceDue
   const dueCandidateNameKeys = new Set<string>();
   const electionCycleYears = buildElectionCycleYearSet(rows);
   for (const candidate of rows) {
-    for (const key of normalizeTexasCandidateNameKeys(candidate.candidateName)) {
+    // VoteApp side of the prefilter expands nicknames; TEC row names stay literal.
+    for (const key of normalizeTexasCandidateNameKeys(candidate.candidateName, { expandNicknames: true })) {
       dueCandidateNameKeys.add(key);
     }
   }

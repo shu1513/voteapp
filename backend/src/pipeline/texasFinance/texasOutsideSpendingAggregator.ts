@@ -376,7 +376,8 @@ export function aggregateTexasOutsideSpending(
   input: TexasOutsideSpendingAggregationInput
 ): TexasOutsideSpendingAggregationResult {
   const candidateCommitteeId = normalizeId(requireNonEmpty(input.candidateCommitteeId, "Texas candidate committee id"));
-  const candidateNameKeys = normalizeTexasCandidateNameKeys(input.candidateName);
+  // VoteApp side expands nicknames; TEC purpose-row names stay literal.
+  const candidateNameKeys = normalizeTexasCandidateNameKeys(input.candidateName, { expandNicknames: true });
   const electionYear = normalizeElectionYear(input.electionYear);
   const maxGroups = normalizePositiveInteger(input.maxGroups, DEFAULT_MAX_GROUPS, "maxGroups");
   const officeScope = normalizeOfficeScope(input.officeScope);
