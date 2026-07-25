@@ -181,6 +181,9 @@ export type PreElectionDamagingBurst = {
   records: SourceAuditSampleRecord[];
 };
 
+/** Internal shape carrying the full record-id set for the dedupe key. */
+type PreElectionDamagingBurstInternal = PreElectionDamagingBurst & { recordIds: string[] };
+
 /**
  * Candidates who gained >= PRE_ELECTION_DAMAGING_MIN_RECORDS damaging-
  * pattern records CREATED inside the PRE_ELECTION_WINDOW_DAYS before one of
@@ -188,6 +191,12 @@ export type PreElectionDamagingBurst = {
  * after an old election never match its window — this naturally targets
  * live pre-election drops without an explicit "upcoming election" filter.
  * Replaces the rejected human review gate: it alerts, blocks nothing.
+ *
+ * When two of a candidate's elections have overlapping windows and capture
+ * the IDENTICAL record set, only the earliest election's entry is kept —
+ * duplicate entries would read as two separate threats. Partially
+ * overlapping or disjoint record sets still emit one entry per election:
+ * those are genuinely distinct bursts.
  */
 export function listPreElectionDamagingBursts(
   records: readonly SourceAuditRecordRow[],
@@ -206,7 +215,7 @@ export function listPreElectionDamagingBursts(
     }
   }
 
-  const bursts: PreElectionDamagingBurst[] = [];
+  const bursts: PreElectionDamagingBurstInternal[] = [];
   for (const election of candidateElections) {
     const damaging = damagingByCandidate.get(election.candidate_id);
     if (!damaging) {
@@ -234,9 +243,23 @@ export function listPreElectionDamagingBursts(
       officialBallotTitle: election.official_ballot_title,
       damagingRecordCount: inWindow.length,
       records: inWindow.slice(0, 10).map(toSampleRecord),
+      recordIds: inWindow.map((row) => row.record_id),
     });
   }
-  return bursts.sort((left, right) => right.damagingRecordCount - left.damagingRecordCount);
+
+  // Identical-record-set dedupe across a candidate's overlapping election
+  // windows: keep the earliest election's entry.
+  const byRecordSet = new Map<string, PreElectionDamagingBurstInternal>();
+  for (const burst of bursts) {
+    const key = `${burst.candidateId}|${[...burst.recordIds].sort().join(",")}`;
+    const existing = byRecordSet.get(key);
+    if (!existing || burst.electionDate < existing.electionDate) {
+      byRecordSet.set(key, burst);
+    }
+  }
+  return [...byRecordSet.values()]
+    .sort((left, right) => right.damagingRecordCount - left.damagingRecordCount)
+    .map(({ recordIds: _recordIds, ...burst }) => burst);
 }
 
 export type NewlySeenDomainConcentration = {
@@ -248,15 +271,51 @@ export type NewlySeenDomainConcentration = {
   sampleRecords: SourceAuditSampleRecord[];
 };
 
+export type CorpusFirstSeenRow = {
+  source_url: string;
+  /** ISO timestamp (candidate_records.created_at). */
+  created_at: string;
+};
+
+/**
+ * Domain -> earliest created_at over the FULL corpus (no audit filters).
+ * "First seen" must mean first ever: a filtered audit run only sees the
+ * scoped slice, and a domain used elsewhere for years would look brand new
+ * inside it.
+ */
+export function buildDomainFirstSeenMap(
+  corpusRecords: readonly CorpusFirstSeenRow[]
+): Map<string, number> {
+  const firstSeenMs = new Map<string, number>();
+  for (const row of corpusRecords) {
+    const domainKey = toDomainKey(classifyCandidateRecordSourceDomain(row.source_url).hostname);
+    if (domainKey === null) {
+      continue;
+    }
+    const createdMs = Date.parse(row.created_at);
+    if (Number.isNaN(createdMs)) {
+      continue;
+    }
+    const existing = firstSeenMs.get(domainKey);
+    if (existing === undefined || createdMs < existing) {
+      firstSeenMs.set(domainKey, createdMs);
+    }
+  }
+  return firstSeenMs;
+}
+
 /**
  * Non-listed domains whose first-ever record is inside the recent window
- * and that already feed >= NEWLY_SEEN_DOMAIN_MIN_RECORDS records. A newly
- * registered "local news" site arriving with volume is the fake-outlet
- * signature; a legit new outlet trickles in. Needs the FULL record set
- * (not a windowed slice) so "first seen" means first ever.
+ * and that already feed >= NEWLY_SEEN_DOMAIN_MIN_RECORDS records (counts
+ * and samples come from the scoped rows). A newly registered "local news"
+ * site arriving with volume is the fake-outlet signature; a legit new
+ * outlet trickles in. corpusFirstSeen must be built from ALL records
+ * (buildDomainFirstSeenMap), not the scoped slice, so "first seen" means
+ * first ever even in a filtered audit run.
  */
 export function listNewlySeenDomainConcentrations(
   records: readonly SourceAuditRecordRow[],
+  corpusFirstSeen: ReadonlyMap<string, number>,
   now: Date
 ): NewlySeenDomainConcentration[] {
   const windowStartMs = now.getTime() - SOURCE_AUDIT_RECENT_WINDOW_DAYS * DAY_MS;
@@ -264,8 +323,6 @@ export function listNewlySeenDomainConcentrations(
     string,
     {
       tier: "blocked" | "unlisted";
-      firstSeenMs: number;
-      firstSeenAt: string;
       candidateIds: Set<string>;
       records: ClassifiedRecord[];
     }
@@ -278,30 +335,30 @@ export function listNewlySeenDomainConcentrations(
     if (!group) {
       group = {
         tier: record.tier,
-        firstSeenMs: record.createdAtMs,
-        firstSeenAt: record.row.created_at,
         candidateIds: new Set(),
         records: [],
       };
       groups.set(record.domainKey, group);
     }
-    if (record.createdAtMs < group.firstSeenMs) {
-      group.firstSeenMs = record.createdAtMs;
-      group.firstSeenAt = record.row.created_at;
-    }
     group.candidateIds.add(record.row.candidate_id);
     group.records.push(record);
   }
   return [...groups.entries()]
-    .filter(
-      ([, group]) =>
-        group.firstSeenMs >= windowStartMs && group.records.length >= NEWLY_SEEN_DOMAIN_MIN_RECORDS
-    )
+    .filter(([domain, group]) => {
+      // First-seen comes from the corpus map, never the scoped slice; a
+      // domain absent from the map cannot be judged and is skipped.
+      const firstSeenMs = corpusFirstSeen.get(domain);
+      return (
+        firstSeenMs !== undefined &&
+        firstSeenMs >= windowStartMs &&
+        group.records.length >= NEWLY_SEEN_DOMAIN_MIN_RECORDS
+      );
+    })
     .sort((left, right) => right[1].records.length - left[1].records.length)
     .map(([domain, group]) => ({
       domain,
       tier: group.tier,
-      firstSeenAt: group.firstSeenAt,
+      firstSeenAt: new Date(corpusFirstSeen.get(domain)!).toISOString(),
       recordCount: group.records.length,
       candidateCount: group.candidateIds.size,
       sampleRecords: group.records.slice(0, 5).map((record) => toSampleRecord(record.row)),

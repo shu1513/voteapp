@@ -9,7 +9,9 @@ import {
   type SweepRoute,
 } from "./candidateRecordSweepEvidence.js";
 import {
+  buildDomainFirstSeenMap,
   buildSourceTierSweep,
+  type CorpusFirstSeenRow,
   CROSS_CANDIDATE_DOMAIN_MIN_CANDIDATES,
   listCrossCandidateDomainBursts,
   listNewlySeenDomainConcentrations,
@@ -450,6 +452,15 @@ ${targetSql}
       `,
       target.values
     );
+    // Unfiltered on purpose (and without the candidates join): "first seen"
+    // must mean first ever across the whole corpus, or a filtered audit run
+    // would misreport a long-used domain as brand new inside its slice.
+    const corpusFirstSeenResult = await pool.query<CorpusFirstSeenRow>(
+      `
+        SELECT r.source_url, r.created_at::text AS created_at
+        FROM public.candidate_records r
+      `
+    );
     const auditNow = new Date();
     const crossCandidateDomainBursts = listCrossCandidateDomainBursts(
       recordsResult.rows,
@@ -461,6 +472,7 @@ ${targetSql}
     );
     const newlySeenDomainConcentrations = listNewlySeenDomainConcentrations(
       recordsResult.rows,
+      buildDomainFirstSeenMap(corpusFirstSeenResult.rows),
       auditNow
     );
     const sourceTierSweep = buildSourceTierSweep(recordsResult.rows);

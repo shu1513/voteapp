@@ -1,6 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import {
+  buildDomainFirstSeenMap,
   buildSourceTierSweep,
   CROSS_CANDIDATE_DOMAIN_MIN_CANDIDATES,
   listCrossCandidateDomainBursts,
@@ -14,6 +15,10 @@ import {
 const NOW = new Date("2026-07-24T12:00:00.000Z");
 
 let recordCounter = 0;
+
+beforeEach(() => {
+  recordCounter = 0;
+});
 
 function makeRecord(overrides: Partial<SourceAuditRecordRow>): SourceAuditRecordRow {
   recordCounter += 1;
@@ -143,6 +148,63 @@ describe("listPreElectionDamagingBursts", () => {
     ];
     expect(listPreElectionDamagingBursts(records, [election])).toEqual([]);
   });
+
+  it("keeps only the earliest election when overlapping windows capture the identical record set", () => {
+    const records = [
+      makeRecord({
+        description: "Was indicted on federal bribery charges.",
+        created_at: "2026-07-20T00:00:00.000Z",
+      }),
+      makeRecord({
+        description: "Accused of misusing campaign funds.",
+        created_at: "2026-07-22T00:00:00.000Z",
+      }),
+    ];
+    // Aug 4 window: Jul 5 - Aug 4. Aug 18 window: Jul 19 - Aug 18. Both
+    // capture exactly the same two records.
+    const laterElection = {
+      candidate_id: "cand-1",
+      election_id: "election-2",
+      election_date: "2026-08-18",
+      official_ballot_title: "Governor runoff",
+    };
+    const bursts = listPreElectionDamagingBursts(records, [laterElection, election]);
+    expect(bursts).toHaveLength(1);
+    expect(bursts[0]).toMatchObject({ electionId: "election-1", electionDate: "2026-08-04" });
+  });
+
+  it("emits separate bursts when overlapping windows capture different record sets", () => {
+    const records = [
+      // Only inside the Aug 4 window (Jul 5 - Aug 4).
+      makeRecord({
+        description: "Was indicted on federal bribery charges.",
+        created_at: "2026-07-10T00:00:00.000Z",
+      }),
+      makeRecord({
+        description: "Accused of misusing campaign funds.",
+        created_at: "2026-07-12T00:00:00.000Z",
+      }),
+      // Inside both windows.
+      makeRecord({
+        description: "Was censured by the state senate over misuse of funds.",
+        created_at: "2026-07-25T00:00:00.000Z",
+      }),
+      // Only inside the Aug 18 window (Jul 19 - Aug 18).
+      makeRecord({
+        description: "Pleaded guilty to campaign-finance violations.",
+        created_at: "2026-08-10T00:00:00.000Z",
+      }),
+    ];
+    const laterElection = {
+      candidate_id: "cand-1",
+      election_id: "election-2",
+      election_date: "2026-08-18",
+      official_ballot_title: "Governor runoff",
+    };
+    const bursts = listPreElectionDamagingBursts(records, [election, laterElection]);
+    expect(bursts).toHaveLength(2);
+    expect(bursts.map((burst) => burst.electionId).sort()).toEqual(["election-1", "election-2"]);
+  });
 });
 
 describe("listNewlySeenDomainConcentrations", () => {
@@ -160,7 +222,11 @@ describe("listNewlySeenDomainConcentrations", () => {
         created_at: "2026-07-20T00:00:00.000Z",
       }),
     ];
-    const concentrations = listNewlySeenDomainConcentrations(records, NOW);
+    const concentrations = listNewlySeenDomainConcentrations(
+      records,
+      buildDomainFirstSeenMap(records),
+      NOW
+    );
     expect(concentrations).toHaveLength(1);
     expect(concentrations[0]).toMatchObject({
       domain: "fresh-local-news.com",
@@ -177,7 +243,32 @@ describe("listNewlySeenDomainConcentrations", () => {
       makeRecord({ source_url: "https://old-outlet.com/b", created_at: "2026-07-19T00:00:00.000Z" }),
       makeRecord({ source_url: "https://old-outlet.com/c", created_at: "2026-07-20T00:00:00.000Z" }),
     ];
-    expect(listNewlySeenDomainConcentrations(records, NOW)).toEqual([]);
+    expect(
+      listNewlySeenDomainConcentrations(records, buildDomainFirstSeenMap(records), NOW)
+    ).toEqual([]);
+  });
+
+  it("uses corpus-wide first-seen, not the scoped slice, in filtered audit runs", () => {
+    // The scoped slice (e.g. --district-id) only contains recent records for
+    // the domain, but the corpus has an older record from another district:
+    // the domain is NOT newly seen and must not flag.
+    const scopedRecords = [
+      makeRecord({ source_url: "https://old-outlet.com/a", created_at: "2026-07-18T00:00:00.000Z" }),
+      makeRecord({ source_url: "https://old-outlet.com/b", created_at: "2026-07-19T00:00:00.000Z" }),
+      makeRecord({ source_url: "https://old-outlet.com/c", created_at: "2026-07-20T00:00:00.000Z" }),
+    ];
+    const corpus = [
+      ...scopedRecords,
+      { source_url: "https://www.old-outlet.com/elsewhere", created_at: "2024-03-01T00:00:00.000Z" },
+    ];
+    expect(
+      listNewlySeenDomainConcentrations(scopedRecords, buildDomainFirstSeenMap(corpus), NOW)
+    ).toEqual([]);
+    // Sanity: the same scoped slice DOES flag when the corpus confirms the
+    // domain is genuinely new.
+    expect(
+      listNewlySeenDomainConcentrations(scopedRecords, buildDomainFirstSeenMap(scopedRecords), NOW)
+    ).toHaveLength(1);
   });
 
   it("exempts listed domains (a newly allowlisted outlet is not suspicious)", () => {
@@ -186,7 +277,9 @@ describe("listNewlySeenDomainConcentrations", () => {
       makeRecord({ source_url: "https://apnews.com/b", created_at: "2026-07-19T00:00:00.000Z" }),
       makeRecord({ source_url: "https://apnews.com/c", created_at: "2026-07-20T00:00:00.000Z" }),
     ];
-    expect(listNewlySeenDomainConcentrations(records, NOW)).toEqual([]);
+    expect(
+      listNewlySeenDomainConcentrations(records, buildDomainFirstSeenMap(records), NOW)
+    ).toEqual([]);
   });
 });
 
