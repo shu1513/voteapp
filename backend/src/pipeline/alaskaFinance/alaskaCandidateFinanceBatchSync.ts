@@ -320,6 +320,12 @@ export async function syncDueAlaskaCandidateFinance(
         dryRun,
         now,
       });
+      if (result.outsideIdentityConflict) {
+        console.warn(
+          "Alaska finance sync refused candidate election after conflicting first-name identities in IE rows; previous snapshot preserved:",
+          { candidateId: row.candidateId, electionId: row.electionId, candidateFilerId: row.candidateFilerId }
+        );
+      }
       results.push({
         candidateId: row.candidateId,
         electionId: row.electionId,

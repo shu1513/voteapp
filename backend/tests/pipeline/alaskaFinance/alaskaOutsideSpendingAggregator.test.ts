@@ -64,6 +64,7 @@ describe("alaskaOutsideSpendingAggregator", () => {
     });
 
     expect(result).toEqual({
+      firstNameConflict: false,
       summary: {
         supportTotal: 35000,
         opposeTotal: 5000,
@@ -132,6 +133,92 @@ describe("alaskaOutsideSpendingAggregator", () => {
     ).toMatchObject({ matchedExpenditureRowCount: 0 });
   });
 
+  it("refuses to aggregate when includable rows span conflicting formal families", () => {
+    // "Pat Smith" expands to PATRICK SMITH and PATRICIA SMITH; rows for both
+    // formal names are positive evidence of two people, so the aggregation
+    // aborts rather than combining their money.
+    const result = aggregateAlaskaOutsideSpending({
+      candidateName: "Pat Smith",
+      electionYear: 2026,
+      expenditureRows: [
+        expenditure({
+          candidateProposition: "Patrick Smith",
+          description: "Mailers supporting Patrick Smith",
+          amount: 10_000,
+        }),
+        expenditure({
+          filerId: "8002",
+          filerName: "Accountability PAC",
+          candidateProposition: "Patricia Smith",
+          description: "Mailers supporting Patricia Smith",
+          amount: 5_000,
+        }),
+      ],
+    });
+    expect(result).toEqual({
+      firstNameConflict: true,
+      summary: null,
+      matchedExpenditureRowCount: 2,
+      includedExpenditureRowCount: 0,
+      skippedExpenditureRowCount: 2,
+    });
+
+    // A single formal family is the deliberate one-sided nickname link.
+    expect(
+      aggregateAlaskaOutsideSpending({
+        candidateName: "Pat Smith",
+        electionYear: 2026,
+        expenditureRows: [
+          expenditure({
+            candidateProposition: "Patrick Smith",
+            description: "Mailers supporting Patrick Smith",
+          }),
+        ],
+      })
+    ).toMatchObject({ firstNameConflict: false, matchedExpenditureRowCount: 1, includedExpenditureRowCount: 1 });
+
+    // Formal spellings of one name are not two people.
+    expect(
+      aggregateAlaskaOutsideSpending({
+        candidateName: "Steve Weir",
+        electionYear: 2026,
+        expenditureRows: [
+          expenditure({ candidateProposition: "Stephen Weir", description: "supporting Stephen Weir" }),
+          expenditure({
+            filerId: "8002",
+            filerName: "Accountability PAC",
+            candidateProposition: "Steven Weir",
+            description: "supporting Steven Weir",
+          }),
+        ],
+      })
+    ).toMatchObject({ firstNameConflict: false, includedExpenditureRowCount: 2 });
+
+    // A conflicting-name row that cannot contribute money (out of cycle)
+    // must not zero out valid totals.
+    expect(
+      aggregateAlaskaOutsideSpending({
+        candidateName: "Pat Smith",
+        electionYear: 2026,
+        expenditureRows: [
+          expenditure({
+            candidateProposition: "Patrick Smith",
+            description: "Mailers supporting Patrick Smith",
+            amount: 10_000,
+          }),
+          expenditure({
+            filerId: "8002",
+            filerName: "Accountability PAC",
+            candidateProposition: "Patricia Smith",
+            description: "Mailers supporting Patricia Smith",
+            reportYear: 2023,
+            date: "09/15/2023",
+          }),
+        ],
+      })
+    ).toMatchObject({ firstNameConflict: false, includedExpenditureRowCount: 1 });
+  });
+
   it("skips invalid matching expenditure rows", () => {
     const result = aggregateAlaskaOutsideSpending({
       candidateName: "Jane Doe",
@@ -145,6 +232,7 @@ describe("alaskaOutsideSpendingAggregator", () => {
     });
 
     expect(result).toEqual({
+      firstNameConflict: false,
       summary: null,
       matchedExpenditureRowCount: 4,
       includedExpenditureRowCount: 0,

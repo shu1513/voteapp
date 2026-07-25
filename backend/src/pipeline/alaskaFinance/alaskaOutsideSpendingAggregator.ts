@@ -1,6 +1,10 @@
+import { firstNamesConflict } from "../finance/personFirstNameNicknames.js";
 import type { AlaskaApocIndependentExpenditureRow } from "./alaskaApocClient.js";
 import { parseAlaskaApocDateYear } from "./alaskaApocClient.js";
-import { normalizeAlaskaCandidateNameKeys } from "./alaskaCandidateCommitteeResolver.js";
+import {
+  alaskaCandidateNicknameKeyFamilies,
+  normalizeAlaskaCandidateNameKeys,
+} from "./alaskaCandidateCommitteeResolver.js";
 
 export type AlaskaSupportOppose = "support" | "oppose";
 
@@ -29,6 +33,11 @@ export type AlaskaOutsideSpendingAggregationInput = {
 
 export type AlaskaOutsideSpendingAggregationResult = {
   summary: AlaskaOutsideSpendingSummary | null;
+  // True when includable IE rows matched only through two conflicting formal
+  // first-name families behind one shared nickname and the aggregation
+  // refused to attribute any of them. Callers must not persist a zeroed
+  // snapshot over previously stored data in this case.
+  firstNameConflict: boolean;
   matchedExpenditureRowCount: number;
   includedExpenditureRowCount: number;
   skippedExpenditureRowCount: number;
@@ -110,20 +119,52 @@ function isFiledStatus(status: string): boolean {
 // across a field seam. Keys come from the resolver's expansion - first+last
 // around middles, quoted call names, one-sided nicknames - so an IE mention
 // of "Louise Stutes" still matches the VoteApp name "Louise B. Stutes".
-function rowMentionsCandidate(input: {
+function rowMatchedKeys(input: {
   row: AlaskaApocIndependentExpenditureRow;
   candidateNameKeys: ReadonlySet<string>;
-}): boolean {
+}): string[] {
   const fields = [input.row.candidateProposition, input.row.recipient, input.row.description].map(
     (field) => ` ${normalizeTextKey(field)} `
   );
+  const matched: string[] = [];
   for (const key of input.candidateNameKeys) {
     if (key.length === 0) {
       continue;
     }
     const padded = ` ${key} `;
     if (fields.some((field) => field.includes(padded))) {
-      return true;
+      matched.push(key);
+    }
+  }
+  return matched;
+}
+
+// A row that matched any base key (the stored name or its call name) carries
+// no family evidence; a row that matched only nickname-expansion keys is
+// evidence for those formal families. Included rows spanning two conflicting
+// families ("Patrick Smith" rows and "Patricia Smith" rows behind a stored
+// "Pat Smith") abort the whole aggregation rather than pick a side,
+// mirroring the committee resolver's both-families-filed rule. Formal
+// spellings of one name (STEPHEN/STEVEN) do not conflict, and a single
+// family is the deliberate one-sided-nickname link, not a conflict.
+function includedRowsSpanConflictingFamilies(
+  matchedKeysPerRow: readonly (readonly string[])[],
+  nicknameFamilies: ReadonlyMap<string, string>
+): boolean {
+  const familyGivens: string[] = [];
+  for (const matchedKeys of matchedKeysPerRow) {
+    if (matchedKeys.some((key) => !nicknameFamilies.has(key))) {
+      continue;
+    }
+    for (const key of matchedKeys) {
+      const givenName = nicknameFamilies.get(key);
+      if (!givenName || familyGivens.includes(givenName)) {
+        continue;
+      }
+      if (familyGivens.some((existing) => firstNamesConflict(existing, givenName))) {
+        return true;
+      }
+      familyGivens.push(givenName);
     }
   }
   return false;
@@ -212,18 +253,26 @@ export function aggregateAlaskaOutsideSpending(
   const candidateName = requireNonEmpty(input.candidateName, "Alaska candidate name");
   // VoteApp side expands nicknames; IE row text always matches literally.
   const candidateNameKeys = normalizeAlaskaCandidateNameKeys(candidateName, { expandNicknames: true });
+  const nicknameFamilies = alaskaCandidateNicknameKeyFamilies(candidateName);
   const electionYear = normalizeElectionYear(input.electionYear);
   const maxGroups = normalizePositiveInteger(input.maxGroups, DEFAULT_MAX_GROUPS, "maxGroups");
   const fallbackSourceUrl = input.sourceUrl ?? null;
-  const groups = new Map<string, GroupAccumulator>();
+
+  type IncludableRow = {
+    supportOppose: AlaskaSupportOppose;
+    amountCents: number;
+    committeeId: string;
+    committeeName: string;
+    sourceUrl: string | null;
+    matchedKeys: readonly string[];
+  };
+  const includableRows: IncludableRow[] = [];
   let matchedExpenditureRowCount = 0;
-  let includedExpenditureRowCount = 0;
   let skippedExpenditureRowCount = 0;
-  let supportTotalCents = 0;
-  let opposeTotalCents = 0;
 
   for (const row of input.expenditureRows) {
-    if (!rowMentionsCandidate({ row, candidateNameKeys })) {
+    const matchedKeys = rowMatchedKeys({ row, candidateNameKeys });
+    if (matchedKeys.length === 0) {
       continue;
     }
     matchedExpenditureRowCount += 1;
@@ -245,24 +294,56 @@ export function aggregateAlaskaOutsideSpending(
       continue;
     }
 
-    includedExpenditureRowCount += 1;
-    if (supportOppose === "support") {
-      supportTotalCents += amountCents;
-    } else {
-      opposeTotalCents += amountCents;
-    }
-    addGroup(groups, {
-      committeeId,
-      committeeName,
+    includableRows.push({
       supportOppose,
       amountCents,
+      committeeId,
+      committeeName,
       sourceUrl: row.sourceUrl ?? fallbackSourceUrl,
+      matchedKeys,
+    });
+  }
+
+  if (
+    includedRowsSpanConflictingFamilies(
+      includableRows.map((row) => row.matchedKeys),
+      nicknameFamilies
+    )
+  ) {
+    return {
+      summary: null,
+      firstNameConflict: true,
+      matchedExpenditureRowCount,
+      includedExpenditureRowCount: 0,
+      skippedExpenditureRowCount: matchedExpenditureRowCount,
+    };
+  }
+
+  const groups = new Map<string, GroupAccumulator>();
+  let includedExpenditureRowCount = 0;
+  let supportTotalCents = 0;
+  let opposeTotalCents = 0;
+
+  for (const row of includableRows) {
+    includedExpenditureRowCount += 1;
+    if (row.supportOppose === "support") {
+      supportTotalCents += row.amountCents;
+    } else {
+      opposeTotalCents += row.amountCents;
+    }
+    addGroup(groups, {
+      committeeId: row.committeeId,
+      committeeName: row.committeeName,
+      supportOppose: row.supportOppose,
+      amountCents: row.amountCents,
+      sourceUrl: row.sourceUrl,
     });
   }
 
   if (groups.size === 0) {
     return {
       summary: null,
+      firstNameConflict: false,
       matchedExpenditureRowCount,
       includedExpenditureRowCount,
       skippedExpenditureRowCount,
@@ -276,6 +357,7 @@ export function aggregateAlaskaOutsideSpending(
       groups: toGroups({ groups: groups.values(), maxGroups }),
       sourceUrl: fallbackSourceUrl,
     },
+    firstNameConflict: false,
     matchedExpenditureRowCount,
     includedExpenditureRowCount,
     skippedExpenditureRowCount,

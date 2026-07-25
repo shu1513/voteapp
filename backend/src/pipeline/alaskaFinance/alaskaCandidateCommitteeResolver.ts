@@ -132,6 +132,42 @@ export function normalizeAlaskaCandidateNameKeys(
   return keys;
 }
 
+/**
+ * Keys that exist only because of nickname expansion, mapped to the formal
+ * given name that seeds them ("PATRICIA SMITH" -> "PATRICIA" for a stored
+ * "Pat Smith"). Base keys - the stored first token and any quoted call name -
+ * are deliberately absent: they carry no family evidence. Callers use this to
+ * detect when nickname-expanded matches span two conflicting formal families
+ * and must refuse rather than pick a side.
+ */
+export function alaskaCandidateNicknameKeyFamilies(value: string): Map<string, string> {
+  const families = new Map<string, string>();
+  const ordered = orderedNameTokens(value);
+  if (ordered.length < 2) {
+    return families;
+  }
+  const surname = ordered.at(-1) as string;
+  const baseGivens = new Set<string>([ordered[0]]);
+  const callName = quotedCallName(value);
+  if (callName && callName !== surname) {
+    baseGivens.add(callName);
+  }
+  const baseKeys = normalizeAlaskaCandidateNameKeys(value);
+  for (const givenName of baseGivens) {
+    for (const variant of firstNameVariants(givenName)) {
+      if (variant === surname || baseGivens.has(variant)) {
+        continue;
+      }
+      for (const key of [`${variant} ${surname}`, `${surname} ${variant}`]) {
+        if (!baseKeys.has(key)) {
+          families.set(key, variant);
+        }
+      }
+    }
+  }
+  return families;
+}
+
 function rowYear(row: AlaskaApocCampaignIncomeRow): number | null {
   return row.reportYear ?? parseAlaskaApocDateYear(row.date);
 }
