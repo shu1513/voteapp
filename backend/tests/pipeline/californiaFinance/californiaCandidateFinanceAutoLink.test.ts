@@ -133,6 +133,87 @@ describe("californiaCandidateFinanceAutoLink", () => {
     ]);
   });
 
+  it("reports a per-candidate error and keeps linking later candidates when one write fails", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const enumerationRows = [
+        {
+          candidate_id: CANDIDATE_ID,
+          election_id: ELECTION_ID,
+          candidate_name: "Gavin Newsom",
+          election_year: 2026,
+          office_name: "Governor",
+        },
+        {
+          candidate_id: "33333333-3333-4333-8333-333333333333",
+          election_id: "44444444-4444-4444-8444-444444444444",
+          candidate_name: "Jane Doe",
+          election_year: 2026,
+          office_name: "Attorney General",
+        },
+      ];
+      const db = {
+        query: vi
+          .fn()
+          .mockResolvedValueOnce({ rows: enumerationRows, rowCount: 2 })
+          .mockRejectedValueOnce(new Error("insert failed"))
+          .mockResolvedValueOnce({ rows: [{ id: "link-2" }], rowCount: 1 }),
+      };
+
+      const results = await autoLinkMissingCaliforniaCandidateFinanceLinks({
+        db,
+        now: NOW,
+        maxCandidates: 25,
+        electionLookbackDays: 1,
+        electionLookaheadDays: 730,
+        resolutionData: resolutionData({
+          campaignCoverRows: [
+            {
+              FILING_ID: "F1",
+              FILER_ID: "1456045",
+              FILER_NAML: "Newsom for California Governor 2026",
+              ELECT_DATE: "11/3/2026 12:00:00 AM",
+              CAND_NAML: "NEWSOM",
+              CAND_NAMF: "GAVIN",
+              CAND_NAMT: "",
+              OFFICE_CD: "GOV",
+              OFFIC_DSCR: "Governor",
+            },
+            {
+              FILING_ID: "F2",
+              FILER_ID: "2000001",
+              FILER_NAML: "Jane Doe for Attorney General 2026",
+              ELECT_DATE: "11/3/2026 12:00:00 AM",
+              CAND_NAML: "DOE",
+              CAND_NAMF: "JANE",
+              CAND_NAMT: "",
+              OFFICE_CD: "ATT",
+              OFFIC_DSCR: "Attorney General",
+            },
+          ],
+        }),
+      });
+
+      expect(results).toEqual([
+        {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          status: "error",
+          reason: "auto_link_failed",
+          error: "insert failed",
+        },
+        {
+          candidateId: "33333333-3333-4333-8333-333333333333",
+          electionId: "44444444-4444-4444-8444-444444444444",
+          status: "linked",
+          controlledCommitteeId: "2000001",
+        },
+      ]);
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
   it("does not write a link when committee resolution is ambiguous", async () => {
     const db = createMockDb();
 

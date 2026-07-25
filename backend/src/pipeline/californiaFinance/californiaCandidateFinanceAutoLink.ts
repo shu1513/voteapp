@@ -21,13 +21,21 @@ export type CaliforniaFinanceAutoLinkCandidateElection = {
   officeName: string;
 };
 
-export type CaliforniaFinanceAutoLinkResult = {
-  candidateId: string;
-  electionId: string;
-  status: CaliforniaCandidateCommitteeResolution["status"] | "linked";
-  controlledCommitteeId?: string;
-  reason?: string;
-};
+export type CaliforniaFinanceAutoLinkResult =
+  | {
+      candidateId: string;
+      electionId: string;
+      status: CaliforniaCandidateCommitteeResolution["status"] | "linked";
+      controlledCommitteeId?: string;
+      reason?: string;
+    }
+  | {
+      candidateId: string;
+      electionId: string;
+      status: "error";
+      reason: "auto_link_failed";
+      error: string;
+    };
 
 type CandidateElectionQueryRow = {
   candidate_id: string;
@@ -188,14 +196,31 @@ export async function autoLinkMissingCaliforniaCandidateFinanceLinks(input: {
 
   const results: CaliforniaFinanceAutoLinkResult[] = [];
   for (const candidateElection of candidates) {
-    results.push(
-      await autoLinkCaliforniaCandidateFinanceForCandidateElection({
-        db: input.db,
-        candidateElection,
-        resolutionData,
-        now: input.now,
-      })
-    );
+    try {
+      results.push(
+        await autoLinkCaliforniaCandidateFinanceForCandidateElection({
+          db: input.db,
+          candidateElection,
+          resolutionData,
+          now: input.now,
+        })
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn("California finance auto-link failed for candidate election; continuing:", {
+        candidateId: candidateElection.candidateId,
+        electionId: candidateElection.electionId,
+        electionYear: candidateElection.electionYear,
+        error: message,
+      });
+      results.push({
+        candidateId: candidateElection.candidateId,
+        electionId: candidateElection.electionId,
+        status: "error",
+        reason: "auto_link_failed",
+        error: message,
+      });
+    }
   }
   return results;
 }

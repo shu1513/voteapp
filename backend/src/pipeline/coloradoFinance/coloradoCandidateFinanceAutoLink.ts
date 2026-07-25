@@ -19,13 +19,21 @@ export type ColoradoFinanceAutoLinkCandidateElection = {
   officeName: string;
 };
 
-export type ColoradoFinanceAutoLinkResult = {
-  candidateId: string;
-  electionId: string;
-  status: ColoradoCandidateCommitteeResolution["status"] | "linked";
-  committeeId?: string;
-  reason?: string;
-};
+export type ColoradoFinanceAutoLinkResult =
+  | {
+      candidateId: string;
+      electionId: string;
+      status: ColoradoCandidateCommitteeResolution["status"] | "linked";
+      committeeId?: string;
+      reason?: string;
+    }
+  | {
+      candidateId: string;
+      electionId: string;
+      status: "error";
+      reason: "auto_link_failed";
+      error: string;
+    };
 
 type CandidateElectionQueryRow = {
   candidate_id: string;
@@ -201,15 +209,32 @@ export async function autoLinkMissingColoradoCandidateFinanceLinks(input: {
 
   const results: ColoradoFinanceAutoLinkResult[] = [];
   for (const candidateElection of candidates) {
-    results.push(
-      await autoLinkColoradoCandidateFinanceForCandidateElection({
-        db: input.db,
-        candidateElection,
-        contributionRows: input.contributionRowsByYear.get(candidateElection.electionYear) ?? [],
-        sourceUrl: input.sourceUrlByYear?.get(candidateElection.electionYear) ?? null,
-        now: input.now,
-      })
-    );
+    try {
+      results.push(
+        await autoLinkColoradoCandidateFinanceForCandidateElection({
+          db: input.db,
+          candidateElection,
+          contributionRows: input.contributionRowsByYear.get(candidateElection.electionYear) ?? [],
+          sourceUrl: input.sourceUrlByYear?.get(candidateElection.electionYear) ?? null,
+          now: input.now,
+        })
+      );
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn("Colorado finance auto-link failed for candidate election; continuing:", {
+        candidateId: candidateElection.candidateId,
+        electionId: candidateElection.electionId,
+        electionYear: candidateElection.electionYear,
+        error: message,
+      });
+      results.push({
+        candidateId: candidateElection.candidateId,
+        electionId: candidateElection.electionId,
+        status: "error",
+        reason: "auto_link_failed",
+        error: message,
+      });
+    }
   }
   return results;
 }
