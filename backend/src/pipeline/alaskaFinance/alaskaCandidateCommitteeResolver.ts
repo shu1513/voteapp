@@ -58,14 +58,19 @@ export type AlaskaCandidateNameKeyOptions = {
 };
 
 const NAME_SUFFIX_PATTERN = /^(?:JR|SR|II|III|IV|V)$/;
+const LAST_COMMA_FIRST_PATTERN = /^\s*([^,]+),\s*(.+?)\s*$/;
+
+// "Last, First M." -> "First M. Last"; non-comma names pass through.
+function toFirstNameFirst(value: string): string {
+  const match = LAST_COMMA_FIRST_PATTERN.exec(value);
+  return match?.[1] && match[2] ? `${match[2]} ${match[1]}` : value;
+}
 
 // VoteApp stores "Last, First M." and "First M. Last"; order the tokens
 // first-name-first and drop generational suffixes so the first and last
 // tokens are the given name and surname.
 function orderedNameTokens(value: string): string[] {
-  const commaMatch = /^\s*([^,]+),\s*(.+?)\s*$/.exec(value);
-  const ordered = commaMatch?.[1] && commaMatch[2] ? `${commaMatch[2]} ${commaMatch[1]}` : value;
-  return normalizeTextKey(ordered)
+  return normalizeTextKey(toFirstNameFirst(value))
     .split(" ")
     .filter((token) => token.length > 0 && !NAME_SUFFIX_PATTERN.test(token));
 }
@@ -87,9 +92,9 @@ export function normalizeAlaskaCandidateNameKeys(
     keys.add(normalized);
   }
 
-  const commaMatch = /^\s*([^,]+),\s*(.+?)\s*$/.exec(value);
-  if (commaMatch?.[1] && commaMatch[2]) {
-    const reversed = normalizeTextKey(`${commaMatch[2]} ${commaMatch[1]}`);
+  const firstNameFirst = toFirstNameFirst(value);
+  if (firstNameFirst !== value) {
+    const reversed = normalizeTextKey(firstNameFirst);
     if (reversed) {
       keys.add(reversed);
     }
