@@ -151,6 +151,11 @@ describe("matchesDamagingClaimPattern", () => {
       // exemption must not cancel it (bare \bsentenced\b bypass).
       "Was sentenced to 18 months in prison for tax fraud.",
       "Pleaded guilty to campaign-finance violations and was sentenced to probation.",
+      // Mixed descriptions: a legislative action in one sentence must not
+      // cancel a personal accusation in another (or a ";"-joined clause).
+      "Sponsored a highway funding bill in 2019. Was indicted on bribery charges in 2024.",
+      "Voted for the state budget; was accused of diverting campaign donations.",
+      "Introduced a parks bill in 2021. Faces two counts of felony fraud.",
     ];
     for (const description of damaging) {
       expect(matchesDamagingClaimPattern(description), description).toBe(true);

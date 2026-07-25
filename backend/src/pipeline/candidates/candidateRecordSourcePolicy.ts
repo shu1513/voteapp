@@ -229,8 +229,13 @@ const LISTED_SOURCE_DOMAINS: readonly string[] = [
 // anyway: the smear needs its own source, and audit detectors (plan PR 3)
 // see cross-candidate bursts.
 const DAMAGING_CLAIM_ACTOR_EXEMPT_PATTERNS: readonly RegExp[] = [
-  /\b(?:sponsored|co-sponsored|introduced|authored)\b/i,
-  /\bvoted\s+(?:for|against|to)\b/i,
+  // Legislative verbs are clause-anchored to their crime-term object
+  // ("sponsored a bill barring people CONVICTED", "voted to strengthen
+  // penalties for ACCEPTED BRIBES"): the accusation vocabulary must appear
+  // in the same clause as the verb, so a bare "Sponsored HB 1" cannot cancel
+  // an accusation elsewhere in the description, and the [^.;] gap keeps the
+  // anchor from reaching across "; was accused of ..." tack-ons.
+  /\b(?:sponsored|co-sponsored|introduced|authored|voted\s+(?:for|against|to))\b[^.;]{0,160}?\b(?:convicted|accused|charged|arrested|indicted|crimes?|felon\w*|misdemeanors?|fraud|bribe\w*|embezzlement|theft|corruption|harassment|misconduct|abuse|assault|violations?|perjury|funds?|money)\b/i,
   /\b(?:co-)?prosecuted\b/i,
   // Judge-as-actor only: "sentenced" must take a direct object ("sentenced a
   // man", "sentenced JuJuan Parks", "sentenced 50 offenders"). A bare
@@ -340,11 +345,23 @@ export function classifyCandidateRecordSourceDomain(
   return { tier: "unlisted", hostname };
 }
 
+// Sentence boundaries only (not ";"): an exemption earned in one sentence
+// must not cancel an accusation made in another ("Sponsored a highway bill
+// in 2019. Was indicted on bribery charges in 2024."). Semicolon-joined
+// clauses stay in one segment so a legitimate compound like "filed ethics
+// complaints against X; the commission found probable cause against X"
+// keeps its exemption — the clause-anchored legislative patterns above
+// already refuse to reach across ";". The uppercase lookahead keeps
+// abbreviations ("Blanton Jr. and ...") from splitting a sentence away from
+// its exemption.
+const DAMAGING_CLAIM_SEGMENT_SPLIT = /(?<=[.!?])\s+(?=["'A-Z])/;
+
 export function matchesDamagingClaimPattern(description: string): boolean {
-  if (!DAMAGING_CLAIM_PATTERNS.some((pattern) => pattern.test(description))) {
-    return false;
-  }
-  return !DAMAGING_CLAIM_ACTOR_EXEMPT_PATTERNS.some((pattern) => pattern.test(description));
+  return description.split(DAMAGING_CLAIM_SEGMENT_SPLIT).some(
+    (segment) =>
+      DAMAGING_CLAIM_PATTERNS.some((pattern) => pattern.test(segment)) &&
+      !DAMAGING_CLAIM_ACTOR_EXEMPT_PATTERNS.some((pattern) => pattern.test(segment))
+  );
 }
 
 export function evaluateCandidateRecordSourcePolicy(input: {
