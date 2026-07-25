@@ -8,6 +8,19 @@ import {
   listMissingSweepRouteQuestionIds,
   type SweepRoute,
 } from "./candidateRecordSweepEvidence.js";
+import {
+  buildSourceTierSweep,
+  CROSS_CANDIDATE_DOMAIN_MIN_CANDIDATES,
+  listCrossCandidateDomainBursts,
+  listNewlySeenDomainConcentrations,
+  listPreElectionDamagingBursts,
+  NEWLY_SEEN_DOMAIN_MIN_RECORDS,
+  PRE_ELECTION_DAMAGING_MIN_RECORDS,
+  PRE_ELECTION_WINDOW_DAYS,
+  SOURCE_AUDIT_RECENT_WINDOW_DAYS,
+  type SourceAuditCandidateElectionRow,
+  type SourceAuditRecordRow,
+} from "./candidateRecordSourceAudit.js";
 /**
  * Red-flag audit for false records-sweep completeness.
  *
@@ -396,6 +409,64 @@ ${targetSql}
     const ROUTE_COVERAGE_GAP_LIST_LIMIT = 100;
     const SHARED_FINDING_LIST_LIMIT = 50;
 
+    // Source-domain detector feed (PR 3 of the source-trust plan): every
+    // stored record in scope plus each candidate's election dates. Tier is
+    // a pure function of the stored URL, so this retro-covers all rows.
+    const recordsResult = await pool.query<SourceAuditRecordRow>(
+      `
+        SELECT
+          r.id::text AS record_id,
+          r.candidate_id::text AS candidate_id,
+          c.display_name,
+          r.description,
+          r.source_url,
+          r.created_at::text AS created_at,
+          r.origin,
+          r.origin_run_id
+        FROM public.candidate_records r
+        JOIN public.candidates c ON c.id = r.candidate_id
+        WHERE c.deleted_at IS NULL
+          AND c.merged_into_candidate_id IS NULL
+${targetSql}
+        ORDER BY r.created_at ASC
+      `,
+      target.values
+    );
+    const candidateElectionsResult = await pool.query<SourceAuditCandidateElectionRow>(
+      `
+        SELECT DISTINCT
+          c.id::text AS candidate_id,
+          e.id::text AS election_id,
+          e.election_date::text AS election_date,
+          e.official_ballot_title
+        FROM public.candidates c
+        JOIN public.candidate_elections ce
+          ON ce.candidate_id = c.id OR ce.running_mate_candidate_id = c.id
+        JOIN public.elections e ON e.id = ce.election_id
+        WHERE c.deleted_at IS NULL
+          AND c.merged_into_candidate_id IS NULL
+          AND e.race_type = 'office'
+${targetSql}
+      `,
+      target.values
+    );
+    const auditNow = new Date();
+    const crossCandidateDomainBursts = listCrossCandidateDomainBursts(
+      recordsResult.rows,
+      auditNow
+    );
+    const preElectionDamagingBursts = listPreElectionDamagingBursts(
+      recordsResult.rows,
+      candidateElectionsResult.rows
+    );
+    const newlySeenDomainConcentrations = listNewlySeenDomainConcentrations(
+      recordsResult.rows,
+      auditNow
+    );
+    const sourceTierSweep = buildSourceTierSweep(recordsResult.rows);
+    const UNLISTED_DOMAIN_LIST_LIMIT = 100;
+    const BLOCKED_RECORD_LIST_LIMIT = 100;
+
     const appliedFilters = Object.fromEntries(
       Object.entries(filters).filter(([, value]) => value !== null)
     );
@@ -457,6 +528,33 @@ ${targetSql}
             ...(routeCoverageGaps.length > ROUTE_COVERAGE_GAP_LIST_LIMIT
               ? { routeCoverageGapsTruncatedTo: ROUTE_COVERAGE_GAP_LIST_LIMIT }
               : {}),
+          },
+          sourceDomainDetectors: {
+            recordCount: recordsResult.rows.length,
+            explanation:
+              `Advisory source-domain detectors over stored candidate_records (nothing here blocks a write; the import-time source policy already rejects blocked domains and unlisted-damaging records). crossCandidateDomainBursts: one unlisted domain cited by >= ${CROSS_CANDIDATE_DOMAIN_MIN_CANDIDATES} distinct candidates in the last ${SOURCE_AUDIT_RECENT_WINDOW_DAYS} days — the one-outlet-feeding-many-candidates signature of a coordinated placement campaign. preElectionDamagingBursts: a candidate gaining >= ${PRE_ELECTION_DAMAGING_MIN_RECORDS} damaging-pattern records IMPORTED within ${PRE_ELECTION_WINDOW_DAYS} days before one of their elections. newlySeenDomainConcentrations: a non-listed domain whose first record ever is inside the window and already feeds >= ${NEWLY_SEEN_DOMAIN_MIN_RECORDS} records (fresh domains should not arrive with volume). sourceTierSweep: the periodic unlisted-source review feed, count-sorted per domain — legit domains graduate to the allowlist via a trivial PR; blockedDomainRecords are stored rows citing UGC/social domains the policy now rejects (pre-policy leftovers to clean up).`,
+            crossCandidateDomainBurstCount: crossCandidateDomainBursts.length,
+            crossCandidateDomainBursts,
+            preElectionDamagingBurstCount: preElectionDamagingBursts.length,
+            preElectionDamagingBursts,
+            newlySeenDomainConcentrationCount: newlySeenDomainConcentrations.length,
+            newlySeenDomainConcentrations,
+            sourceTierSweep: {
+              tierCounts: sourceTierSweep.tierCounts,
+              unlistedDomainCount: sourceTierSweep.unlistedDomains.length,
+              unlistedDomains: sourceTierSweep.unlistedDomains.slice(0, UNLISTED_DOMAIN_LIST_LIMIT),
+              ...(sourceTierSweep.unlistedDomains.length > UNLISTED_DOMAIN_LIST_LIMIT
+                ? { unlistedDomainsTruncatedTo: UNLISTED_DOMAIN_LIST_LIMIT }
+                : {}),
+              blockedDomainRecordCount: sourceTierSweep.blockedDomainRecords.length,
+              blockedDomainRecords: sourceTierSweep.blockedDomainRecords.slice(
+                0,
+                BLOCKED_RECORD_LIST_LIMIT
+              ),
+              ...(sourceTierSweep.blockedDomainRecords.length > BLOCKED_RECORD_LIST_LIMIT
+                ? { blockedDomainRecordsTruncatedTo: BLOCKED_RECORD_LIST_LIMIT }
+                : {}),
+            },
           },
         },
         null,
