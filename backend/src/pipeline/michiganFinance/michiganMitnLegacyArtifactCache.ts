@@ -149,6 +149,11 @@ async function fetchWithTimeout(url: string, init: RequestInit, options: FetchOp
   if (!headers.has("accept")) {
     headers.set("accept", "application/x-7z-compressed,application/octet-stream;q=0.9,*/*;q=0.1");
   }
+  // michigan.gov's CDN returns 403 for the default Node fetch user agent; the
+  // Maryland and Maine finance clients use the same minimal identification.
+  if (!headers.has("user-agent")) {
+    headers.set("user-agent", "Mozilla/5.0");
+  }
 
   try {
     return await (options.fetchImpl ?? fetch)(url, {
