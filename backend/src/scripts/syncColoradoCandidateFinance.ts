@@ -155,7 +155,7 @@ async function resolveContributionZip(input: SyncColoradoCandidateFinanceScriptO
   }
 
   const paths = getColoradoTracerContributionArtifactCachePaths({
-    cacheDir: input.rawCacheDir ?? process.env.COLORADO_TRACER_CONTRIBUTION_CACHE_DIR?.trim() ?? DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR,
+    cacheDir: input.rawCacheDir ?? (process.env.COLORADO_TRACER_CONTRIBUTION_CACHE_DIR?.trim() || DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR),
     year: input.electionYear,
   });
   await ensureFileExists(paths.zipPath);

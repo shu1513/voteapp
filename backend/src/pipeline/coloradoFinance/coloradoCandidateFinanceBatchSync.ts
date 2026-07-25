@@ -207,8 +207,8 @@ async function readCycleContributionRows(input: {
 }): Promise<{ rows: ColoradoTracerContributionRow[]; zipPath: string; sourceUrl: string }> {
   const cacheDir =
     input.rawDataCacheDir ??
-    process.env.COLORADO_TRACER_CONTRIBUTION_CACHE_DIR?.trim() ??
-    DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR;
+    (process.env.COLORADO_TRACER_CONTRIBUTION_CACHE_DIR?.trim() ||
+      DEFAULT_COLORADO_TRACER_CONTRIBUTION_CACHE_DIR);
   const artifactRowsByYear: ColoradoTracerContributionRow[][] = [];
   let zipPath = "";
   let sourceUrl = "";

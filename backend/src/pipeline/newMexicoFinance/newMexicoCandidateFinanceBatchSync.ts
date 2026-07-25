@@ -283,8 +283,7 @@ async function readCycleArtifactData<Row>(input: {
     const paths = getNewMexicoCfisArtifactCachePaths({
       cacheDir:
         input.rawDataCacheDir ??
-        process.env.NEW_MEXICO_CFIS_CACHE_DIR?.trim() ??
-        DEFAULT_NEW_MEXICO_CFIS_CACHE_DIR,
+        (process.env.NEW_MEXICO_CFIS_CACHE_DIR?.trim() || DEFAULT_NEW_MEXICO_CFIS_CACHE_DIR),
       year: filingYear,
       artifactKind: input.artifactKind,
     });

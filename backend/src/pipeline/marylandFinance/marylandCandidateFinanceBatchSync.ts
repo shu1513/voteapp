@@ -271,7 +271,7 @@ function flattenContributionDataRows(
 }
 
 function rawDataCacheDir(inputCacheDir?: string): string {
-  return inputCacheDir ?? process.env.MARYLAND_CFS_RAW_DATA_CACHE_DIR?.trim() ?? DEFAULT_MARYLAND_CFS_CACHE_DIR;
+  return inputCacheDir ?? (process.env.MARYLAND_CFS_RAW_DATA_CACHE_DIR?.trim() || DEFAULT_MARYLAND_CFS_CACHE_DIR);
 }
 
 function sourceUrlFromMetadata(input: {

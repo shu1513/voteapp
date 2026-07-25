@@ -48,7 +48,7 @@ export async function loadHoustonTexasTecData(input: {
   zipPath?: string;
   cacheDir?: string;
 }): Promise<HoustonTexasTecData> {
-  const cacheDir = input.cacheDir ?? process.env.TEXAS_TEC_CSV_DATABASE_CACHE_DIR?.trim() ?? DEFAULT_TEXAS_TEC_CSV_DATABASE_CACHE_DIR;
+  const cacheDir = input.cacheDir ?? (process.env.TEXAS_TEC_CSV_DATABASE_CACHE_DIR?.trim() || DEFAULT_TEXAS_TEC_CSV_DATABASE_CACHE_DIR);
   const zipPath = input.zipPath ?? getTexasTecCsvDatabaseArtifactCachePaths(cacheDir).zipPath;
   try {
     if (!(await stat(zipPath)).isFile()) throw new Error("not a file");
