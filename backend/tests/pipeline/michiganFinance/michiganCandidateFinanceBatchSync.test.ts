@@ -36,26 +36,34 @@ function csv(headers: readonly string[], rows: readonly Record<string, string>[]
   ].join("\n");
 }
 
-async function writeExtractedYearDir(input: {
-  cacheDir: string;
+async function writeYearFilesInto(input: {
+  dir: string;
   year: number;
   contributionRows: readonly Record<string, string>[];
   expenditureRows: readonly Record<string, string>[];
 }): Promise<void> {
-  const dir = join(input.cacheDir, `${input.year}_mi_cfr`);
-  await mkdir(dir, { recursive: true });
+  await mkdir(input.dir, { recursive: true });
   await writeFile(
-    join(dir, `${input.year}_mi_cfr_contributions.csv`),
+    join(input.dir, `${input.year}_mi_cfr_contributions.csv`),
     `${csv(MICHIGAN_MITN_LEGACY_CONTRIBUTION_COLUMNS, input.contributionRows)}\n`,
     "utf8"
   );
   // The official export carries expense_id / detail_id beyond the required
   // typed columns; include them so the cross-year merge identity is exercised.
   await writeFile(
-    join(dir, `${input.year}_mi_cfr_expenditures.csv`),
+    join(input.dir, `${input.year}_mi_cfr_expenditures.csv`),
     `${csv([...MICHIGAN_MITN_LEGACY_EXPENDITURE_COLUMNS, "expense_id", "detail_id"], input.expenditureRows)}\n`,
     "utf8"
   );
+}
+
+async function writeExtractedYearDir(input: {
+  cacheDir: string;
+  year: number;
+  contributionRows: readonly Record<string, string>[];
+  expenditureRows: readonly Record<string, string>[];
+}): Promise<void> {
+  await writeYearFilesInto({ ...input, dir: join(input.cacheDir, `${input.year}_mi_cfr`) });
 }
 
 function createMockDb(rows: unknown[] = []) {
@@ -438,27 +446,38 @@ describe("michiganCandidateFinanceBatchSync", () => {
       received_date: "10/01/2022",
       amount: "100.00",
     });
-    const priorYearExpenditure = {
-      ...expenditure({ doc_seq_no: "800", doc_stmnt_year: "2021" }),
-      expense_id: "500",
-      detail_id: "0",
-    };
-    const electionYearExpenditure = {
+    // The election-year receipt reported on the FOLLOWING January's annual
+    // statement lives in the next filing year's archive.
+    const nextYearFiledRow = contribution({
+      doc_seq_no: "4",
+      contribution_id: "40",
+      cont_detail_id: "0",
+      doc_stmnt_year: "2023",
+      received_date: "12/15/2022",
+      amount: "75.00",
+    });
+    const outsideExpenditure = {
       ...expenditure({ doc_seq_no: "900", doc_stmnt_year: "2022" }),
-      expense_id: "600",
+      expense_id: "500",
       detail_id: "0",
     };
     await writeExtractedYearDir({
       cacheDir,
       year: 2021,
       contributionRows: [priorYearOnly, duplicateAcrossYears],
-      expenditureRows: [priorYearExpenditure],
+      expenditureRows: [],
     });
     await writeExtractedYearDir({
       cacheDir,
       year: 2022,
       contributionRows: [{ ...duplicateAcrossYears, doc_stmnt_year: "2022" }, electionYearRow],
-      expenditureRows: [electionYearExpenditure],
+      expenditureRows: [outsideExpenditure],
+    });
+    await writeExtractedYearDir({
+      cacheDir,
+      year: 2023,
+      contributionRows: [nextYearFiledRow],
+      expenditureRows: [],
     });
 
     const db = createMockDb([dueRow({ source_url: null })]);
@@ -466,7 +485,7 @@ describe("michiganCandidateFinanceBatchSync", () => {
       candidateId: CANDIDATE_ID,
       electionId: ELECTION_ID,
       electionYear: 2022,
-      totalReceipts: 400,
+      totalReceipts: 475,
     });
 
     const result = await syncDueMichiganCandidateFinance({
@@ -480,23 +499,72 @@ describe("michiganCandidateFinanceBatchSync", () => {
     expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
     const syncArgs = syncMichiganCandidateFinanceFn.mock.calls[0]?.[0];
     // The prior filing year contributes rows the election-year archive never
-    // carries, and the receipt filed in both years is not double counted (the
-    // newer artifact's copy wins).
+    // carries, the receipt filed in both years is not double counted (the
+    // newer artifact's copy wins), and the next filing year contributes the
+    // election-year receipt reported the following January.
     expect(syncArgs.contributionRows.map((row: MichiganMitnLegacyContributionRow) => row.contribution_id)).toEqual([
       "10",
       "20",
       "30",
+      "40",
     ]);
     expect(
       syncArgs.contributionRows.find((row: MichiganMitnLegacyContributionRow) => row.contribution_id === "20")
         ?.doc_stmnt_year
     ).toBe("2022");
     expect(
-      syncArgs.expenditureRows
-        .map((row: MichiganMitnLegacyExpenditureRow & { expense_id?: string }) => row.expense_id)
-        .sort()
-    ).toEqual(["500", "600"]);
+      syncArgs.expenditureRows.map((row: MichiganMitnLegacyExpenditureRow & { expense_id?: string }) => row.expense_id)
+    ).toEqual(["500"]);
+    // Provenance follows each row set's own first contributing archive.
     expect(syncArgs.contributionSourceUrl).toContain("/2021_mi_cfr.7z");
+    expect(syncArgs.outsideSourceUrl).toContain("/2022_mi_cfr.7z");
+  });
+
+  it("reads every cycle filing year from a single shared extracted directory override", async () => {
+    const sharedDir = await mkdtemp(join(tmpdir(), "voteapp-mi-shared-"));
+    tempDirs.push(sharedDir);
+    const priorYearOnly = contribution({
+      doc_seq_no: "1",
+      contribution_id: "10",
+      cont_detail_id: "0",
+      doc_stmnt_year: "2021",
+      received_date: "11/15/2021",
+    });
+    const electionYearRow = contribution({
+      doc_seq_no: "3",
+      contribution_id: "30",
+      cont_detail_id: "0",
+      doc_stmnt_year: "2022",
+      received_date: "10/01/2022",
+    });
+    await writeYearFilesInto({ dir: sharedDir, year: 2021, contributionRows: [priorYearOnly], expenditureRows: [] });
+    await writeYearFilesInto({ dir: sharedDir, year: 2022, contributionRows: [electionYearRow], expenditureRows: [] });
+    await writeYearFilesInto({ dir: sharedDir, year: 2023, contributionRows: [], expenditureRows: [] });
+
+    const db = createMockDb([dueRow({ source_url: null })]);
+    const syncMichiganCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2022,
+      totalReceipts: 350,
+    });
+
+    const result = await syncDueMichiganCandidateFinance({
+      db,
+      syncMichiganCandidateFinanceFn,
+      now: new Date("2022-06-01T00:00:00.000Z"),
+      rawDataExtractedDir: sharedDir,
+      autoLinkMissingLinks: false,
+    });
+
+    expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
+    const syncArgs = syncMichiganCandidateFinanceFn.mock.calls[0]?.[0];
+    // The readers partition one directory by the `{year}_` file-name prefix,
+    // so each filing year's rows load exactly once.
+    expect(syncArgs.contributionRows.map((row: MichiganMitnLegacyContributionRow) => row.contribution_id)).toEqual([
+      "10",
+      "30",
+    ]);
   });
 
   it("marks only rows from a failed MiTN data year as failed", async () => {

@@ -21,6 +21,7 @@ import {
 import { MICHIGAN_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./michiganFinanceEligibleOffices.js";
 import {
   DEFAULT_MICHIGAN_MITN_LEGACY_ARCHIVE_CACHE_DIR,
+  MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR,
   buildMichiganMitnLegacyArchiveUrl,
   getMichiganMitnLegacyArchiveCachePaths,
   readMichiganMitnLegacyArchiveCacheMetadata,
@@ -52,6 +53,9 @@ export type MichiganMitnLegacyDataForYear = {
   year: number;
   extractedDir: string;
   sourceUrl: string;
+  // Provenance for the outside-spending rows, which may come from a different
+  // cycle filing-year archive than the contributions. Falls back to sourceUrl.
+  outsideSourceUrl?: string;
   contributionRows: MichiganMitnLegacyContributionRow[];
   expenditureRows: MichiganMitnLegacyExpenditureRow[];
 };
@@ -256,15 +260,25 @@ async function sourceUrlForYear(input: { year: number; rawDataCacheDir?: string 
 // Michigan MiTN legacy archives are keyed by FILING (statement) year, but a
 // Michigan election cycle spans [electionYear - 1, electionYear] — the window
 // the aggregators and the predicates below already apply. Annual statements
-// filed in January of the election year carry mostly prior-year received
-// dates, while receipts reported during the prior year live only in the
-// prior-year archive, so every load must read both filing years or the
-// prior-year-filed portion of the cycle is silently dropped. There is no
-// single-year override exception: an explicit --raw-extracted-dir points at a
-// directory, the readers filter files by their `{year}_` name prefix, and one
-// directory can therefore hold both filing years' CSV files.
+// filed in January carry mostly prior-calendar-year received dates, so a
+// cycle's receipts are split across filing-year archives by WHEN they were
+// reported: prior-year receipts reported during the prior year live in the
+// prior-year archive, and election-year receipts reported on the following
+// January's annual statement live in the NEXT filing year's archive. Every
+// load therefore reads [electionYear - 1, electionYear], plus the following
+// filing year when that archive can exist (the legacy export is frozen at
+// MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR, so an active 2026 cycle still
+// requires — and loudly fails on — its own nonexistent archive rather than
+// silently succeeding on partial prior-year data). There is no single-year
+// override exception: an explicit --raw-extracted-dir points at a directory,
+// the readers filter files by their `{year}_` name prefix, and one directory
+// can therefore hold every cycle filing year's CSV files.
 function michiganCycleFilingYears(electionYear: number): number[] {
-  return [michiganElectionCycleStartYear(electionYear), electionYear];
+  const years = [michiganElectionCycleStartYear(electionYear), electionYear];
+  if (electionYear + 1 <= MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR) {
+    years.push(electionYear + 1);
+  }
+  return years;
 }
 
 function michiganContributionRowIdentity(row: MichiganMitnLegacyContributionRow): string {
@@ -450,6 +464,7 @@ async function loadMichiganMitnDataForYear(input: {
     year: input.year,
     extractedDir: contributionData.extractedDir,
     sourceUrl: contributionData.sourceUrl,
+    outsideSourceUrl: expenditureData.sourceUrl,
     contributionRows: contributionData.rows,
     expenditureRows: expenditureData.rows,
   };
@@ -691,7 +706,7 @@ export async function syncDueMichiganCandidateFinance(
         district: row.district,
         sourceUrl: row.sourceUrl ?? mitnData?.sourceUrl ?? null,
         contributionSourceUrl: mitnData?.sourceUrl,
-        outsideSourceUrl: mitnData?.sourceUrl,
+        outsideSourceUrl: mitnData?.outsideSourceUrl ?? mitnData?.sourceUrl,
         contributionRows: mitnData?.contributionRows ?? [],
         expenditureRows: mitnData?.expenditureRows ?? [],
         trustedCommittee: {
