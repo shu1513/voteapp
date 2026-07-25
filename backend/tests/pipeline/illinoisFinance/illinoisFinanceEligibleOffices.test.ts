@@ -72,7 +72,8 @@ describe("illinoisFinanceEligibleOffices", () => {
   it("maps only jurisdiction-safe local offices", () => {
     expect(mapIllinoisSbeOffice({ office: "Treasurer" })).toMatchObject({
       officeScope: "statewide",
-      officeCanonicalName: "Treasurer",
+      officeCanonicalName: "State Treasurer",
+      officeKey: "statewide::State Treasurer",
     });
     expect(
       mapIllinoisSbeOffice({ office: "Treasurer", districtType: "City", district: "Aurora" })

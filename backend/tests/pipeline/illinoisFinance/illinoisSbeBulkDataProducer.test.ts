@@ -44,6 +44,8 @@ describe("Illinois SBE bulk data producer", () => {
       candidateCommitteeRelations: 17,
       d2ReportSummaries: 3,
       d2RowsWithoutUsableDocument: 0,
+      d2RowsWithInvertedReportPeriod: 0,
+      d2RowsWithNegativeTotals: 0,
     });
     expect(artifact.candidateCommitteeRelations).toEqual(
       expect.arrayContaining([
@@ -75,6 +77,52 @@ describe("Illinois SBE bulk data producer", () => {
         reports: artifact.d2ReportSummaries,
       })
     ).toMatchObject({ totalReceipts: 54724, includedReportCount: 2 });
+  });
+
+  it("drops filed documents whose report period is inverted and counts their D2 rows", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "illinois-sbe-producer-"));
+    temporaryDirectories.push(directory);
+    const inverted = join(directory, "FiledDocs.txt");
+    const filedDocuments = await readFile(fixturePaths().filedDocuments, "utf8");
+    // Swap document 197072's period bounds so RptPdBegDate lands after RptPdEndDate.
+    await writeFile(
+      inverted,
+      filedDocuments.replace("2000-07-01 00:00:00\t2000-10-08 00:00:00\tC", "2000-10-08 00:00:00\t2000-07-01 00:00:00\tC"),
+      "utf8"
+    );
+
+    const { artifact, stats } = await produceIllinoisSbeNormalizedArtifact({
+      paths: { ...fixturePaths(), filedDocuments: inverted },
+      acquiredAt: ACQUIRED_AT,
+    });
+
+    expect(stats).toMatchObject({
+      d2ReportSummaries: 2,
+      d2RowsWithoutUsableDocument: 0,
+      d2RowsWithInvertedReportPeriod: 1,
+    });
+    expect(artifact.d2ReportSummaries.map((report) => report.reportId)).toEqual(["199515", "203941"]);
+  });
+
+  it("drops D2 rows whose strict totals are negative and counts them", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "illinois-sbe-producer-"));
+    temporaryDirectories.push(directory);
+    const negative = join(directory, "D2Totals.txt");
+    const d2Totals = await readFile(fixturePaths().d2Totals, "utf8");
+    // Row 111247 (document 197072) reports TotalReceipts 25117; flip it negative.
+    await writeFile(negative, d2Totals.replace("\t25117\t", "\t-25117\t"), "utf8");
+
+    const { artifact, stats } = await produceIllinoisSbeNormalizedArtifact({
+      paths: { ...fixturePaths(), d2Totals: negative },
+      acquiredAt: ACQUIRED_AT,
+    });
+
+    expect(stats).toMatchObject({
+      d2ReportSummaries: 2,
+      d2RowsWithoutUsableDocument: 0,
+      d2RowsWithNegativeTotals: 1,
+    });
+    expect(artifact.d2ReportSummaries.map((report) => report.reportId)).toEqual(["199515", "203941"]);
   });
 
   it("fails closed when a bulk file is truncated", async () => {
