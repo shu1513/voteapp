@@ -13,6 +13,8 @@ const poolQueryMock = vi.hoisted(() => vi.fn());
 const poolConnectMock = vi.hoisted(() => vi.fn());
 const poolClientReleaseMock = vi.hoisted(() => vi.fn());
 const enrichCandidateRecordsMock = vi.hoisted(() => vi.fn());
+const enrichCandidateRecordSourcesRepairMock = vi.hoisted(() => vi.fn());
+const verifyHttpUrlReachabilityMock = vi.hoisted(() => vi.fn());
 const enrichCandidateRecordAreasMock = vi.hoisted(() => vi.fn());
 const runLifecycleMock = vi.hoisted(() => vi.fn());
 const summarizeLifecycleMock = vi.hoisted(() => vi.fn());
@@ -57,7 +59,12 @@ vi.mock("../../src/ai/enrichCandidateRecords.js", () => ({
 
 vi.mock("../../src/ai/enrichCandidateRecordSourcesRepair.js", () => ({
   buildCandidateRecordSourcesRepairConfigFromEnv: vi.fn(() => ({ timeoutMs: 1000 })),
-  enrichCandidateRecordSourcesRepair: vi.fn(),
+  enrichCandidateRecordSourcesRepair: enrichCandidateRecordSourcesRepairMock,
+}));
+
+vi.mock("../../src/ai/urlReachability.js", () => ({
+  verifyHttpUrlReachability: verifyHttpUrlReachabilityMock,
+  classifyCitationVerificationFailure: vi.fn(() => "permanent"),
 }));
 
 vi.mock("../../src/ai/enrichCandidateRecordAreas.js", () => ({
@@ -144,6 +151,19 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
       provider: "openai",
       model: "test-model",
     });
+    enrichCandidateRecordSourcesRepairMock.mockResolvedValue({
+      ok: true,
+      repairs: [],
+      noReplacementIndexes: [],
+      provider: "openai",
+      model: "test-model",
+    });
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) => ({
+      ok: true,
+      normalizedUrl: url,
+      finalUrl: url,
+      status: 200,
+    }));
     enrichCandidateRecordAreasMock.mockResolvedValue({
       ok: true,
       labels: [],
@@ -325,6 +345,103 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
       }),
       { timeoutMs: 1000 },
     );
+  });
+
+  it("stamps ai_enricher on the discovery prefix and repair on the repair suffix in presidential replacement", async () => {
+    enrichCandidateRecordsMock.mockResolvedValue({
+      ok: true,
+      records: [
+        {
+          description: "Jane President signed a national defense authorization bill.",
+          source_url: "https://example.gov/defense",
+          event_date: "2025-05-01",
+        },
+      ],
+      droppedRecords: [
+        {
+          record: {
+            description: "Jane President chaired a veterans policy commission.",
+            source_url: "https://dead.example.gov/veterans",
+            event_date: "2025-03-01",
+          },
+          reason: "citation fetch returned status 404",
+          failureType: "permanent",
+          failureKind: "source_url",
+        },
+      ],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    enrichCandidateRecordSourcesRepairMock.mockResolvedValue({
+      ok: true,
+      repairs: [
+        {
+          bad_index: 0,
+          description: "Jane President chaired a veterans policy commission.",
+          source_url: "https://apnews.com/article/veterans-commission",
+          event_date: "2025-03-01",
+        },
+      ],
+      noReplacementIndexes: [],
+      provider: "openai",
+      model: "test-model",
+    });
+    enrichCandidateRecordAreasMock.mockResolvedValue({
+      ok: true,
+      labels: [
+        { record_index: 0, research_area_slug: "general" },
+        { record_index: 1, research_area_slug: "general" },
+      ],
+      aiRawDebug: null,
+      provider: "claude",
+      model: "test-model",
+    });
+    let insertedRecordCount = 0;
+    poolQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("DELETE FROM public.candidate_records")) {
+        return { rows: [], rowCount: 2 };
+      }
+      if (sql.includes("SELECT id, description, record_identity_key")) {
+        return { rows: [] };
+      }
+      if (sql.includes("INSERT INTO public.candidate_records")) {
+        insertedRecordCount += 1;
+        return { rows: [{ id: `record-${insertedRecordCount}`, inserted: true }], rowCount: 1 };
+      }
+      if (sql.includes("WITH office_bound")) {
+        return { rows: [{ id: "area-general", slug: "general" }] };
+      }
+      if (sql.includes("INSERT INTO public.candidate_record_area_tags")) {
+        return { rows: [], rowCount: 1 };
+      }
+      return { rows: [], rowCount: 0 };
+    });
+
+    await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
+
+    // The repaired citation was re-verified before persisting.
+    expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledWith(
+      "https://apnews.com/article/veterans-commission",
+      expect.anything()
+    );
+    // recordsForTagging is [discovered..., repaired...]; the position split
+    // must attribute the prefix to discovery and the suffix to the repair
+    // pass — a suffix stamped ai_enricher would hide which rows had their
+    // sources swapped by the repair model.
+    const recordInsertCalls = poolQueryMock.mock.calls.filter((call) =>
+      String(call[0]).includes("INSERT INTO public.candidate_records")
+    );
+    expect(recordInsertCalls).toHaveLength(2);
+    expect(recordInsertCalls[0]?.[1]?.[1]).toBe(
+      "Jane President signed a national defense authorization bill."
+    );
+    expect(recordInsertCalls[0]?.[1]?.slice(-2)).toEqual(["ai_enricher", "run-president"]);
+    expect(recordInsertCalls[1]?.[1]?.[1]).toBe(
+      "Jane President chaired a veterans policy commission."
+    );
+    expect(recordInsertCalls[1]?.[1]?.slice(-2)).toEqual(["repair", "run-president"]);
+    expect(poolQueryMock).toHaveBeenCalledWith("COMMIT");
   });
 
   it("rolls back presidential replacement when the replacement insert fails", async () => {

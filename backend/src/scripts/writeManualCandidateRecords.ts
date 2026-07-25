@@ -835,6 +835,11 @@ async function main(): Promise<void> {
     const client = await pool.connect();
     try {
       await client.query("BEGIN");
+      // Per-import run id: manualKey alone is stable forever for this
+      // candidate/election, so every import would share one id and a single
+      // bad import could not be isolated. The timestamp suffix makes each
+      // invocation its own cohort; prefix search still groups the candidate.
+      const originRunId = `${manualKey}:${new Date().toISOString()}`;
       const upsert = await upsertCandidateRecords(
         client,
         validatedRecords.records.map((record) => ({
@@ -843,7 +848,7 @@ async function main(): Promise<void> {
           sourceUrl: record.source_url,
           eventDate: record.event_date,
           origin: "manual" as const,
-          originRunId: manualKey,
+          originRunId,
         }))
       );
 
