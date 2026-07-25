@@ -253,9 +253,10 @@ function candidateRowFirstNameToken(row: TexasTecCandidateRow): string | null {
 // are positive evidence that the nickname-expanded key set caught two
 // distinct people; refuse the whole aggregation rather than pick a side,
 // mirroring the committee resolver's both-families-filed rule. Only rows
-// from spenders holding a usable SPAC position on the linked committee are
-// consulted: no other row can contribute money, so an unrelated spender's
-// stray row must not zero out valid totals. Formal spellings of one name
+// whose amounts would actually be included are consulted — a row that
+// cannot contribute money (unrelated spender, missing or info-only
+// expenditure, bad amount, wrong cycle) cannot mis-attribute it either, and
+// must not zero out valid totals. Formal spellings of one name
 // (STEPHEN/STEVEN) do not conflict.
 function matchedRowsSpanConflictingFirstNames(rows: readonly TexasTecCandidateRow[]): boolean {
   const seen: string[] = [];
@@ -409,9 +410,9 @@ export function aggregateTexasOutsideSpending(
   // Two layers keep shared-nickname expansion from combining two people's
   // money: a name match alone never contributes an amount (inclusion also
   // requires the spender to hold a declared SPAC position on THIS candidate's
-  // own committee id, see buildSpacRelationships), and related spenders'
-  // matched rows spanning conflicting formal first names abort the whole
-  // aggregation (see matchedRowsSpanConflictingFirstNames).
+  // own committee id, see buildSpacRelationships), and an includable row set
+  // spanning conflicting formal first names aborts the whole aggregation
+  // (see matchedRowsSpanConflictingFirstNames).
   const candidateNameKeys = normalizeTexasCandidateNameKeys(input.candidateName, { expandNicknames: true });
   const electionYear = normalizeElectionYear(input.electionYear);
   const maxGroups = normalizePositiveInteger(input.maxGroups, DEFAULT_MAX_GROUPS, "maxGroups");
@@ -457,29 +458,11 @@ export function aggregateTexasOutsideSpending(
       expectedDistrict,
     })
   );
-  const relatedMatchedRows = matchedRows.filter((row) => {
-    const relationship = relationships.get(normalizeId(row.filerIdent));
-    return relationship !== undefined && relationship !== null;
-  });
-  if (matchedRowsSpanConflictingFirstNames(relatedMatchedRows)) {
-    return {
-      summary: null,
-      matchedCandidateExpenditureRowCount: matchedRows.length,
-      includedCandidateExpenditureRowCount: 0,
-      skippedCandidateExpenditureRowCount: matchedRows.length,
-    };
-  }
-
-  const groups = new Map<string, GroupAccumulator>();
-  let supportTotalCents = 0;
-  let opposeTotalCents = 0;
-  let matchedCandidateExpenditureRowCount = 0;
-  let includedCandidateExpenditureRowCount = 0;
+  const matchedCandidateExpenditureRowCount = matchedRows.length;
+  const includableRows: { row: TexasTecCandidateRow; relationship: SpacRelationship; amountCents: number }[] = [];
   let skippedCandidateExpenditureRowCount = 0;
 
   for (const row of matchedRows) {
-    matchedCandidateExpenditureRowCount += 1;
-
     const committeeId = normalizeId(row.filerIdent);
     const relationship = relationships.get(committeeId);
     const expenditure = expendituresByKey.get(expenditureKey({ filerIdent: row.filerIdent, expendInfoId: row.expendInfoId }));
@@ -504,6 +487,24 @@ export function aggregateTexasOutsideSpending(
       continue;
     }
 
+    includableRows.push({ row, relationship, amountCents });
+  }
+
+  if (matchedRowsSpanConflictingFirstNames(includableRows.map((entry) => entry.row))) {
+    return {
+      summary: null,
+      matchedCandidateExpenditureRowCount,
+      includedCandidateExpenditureRowCount: 0,
+      skippedCandidateExpenditureRowCount: matchedCandidateExpenditureRowCount,
+    };
+  }
+
+  const groups = new Map<string, GroupAccumulator>();
+  let supportTotalCents = 0;
+  let opposeTotalCents = 0;
+  let includedCandidateExpenditureRowCount = 0;
+
+  for (const { relationship, amountCents } of includableRows) {
     includedCandidateExpenditureRowCount += 1;
     if (relationship.supportOppose === "support") {
       supportTotalCents += amountCents;

@@ -260,6 +260,46 @@ describe("texasOutsideSpendingAggregator", () => {
     });
   });
 
+  it("ignores conflicting-name rows that cannot contribute money", () => {
+    // The related spender's PATRICIA row is out of cycle, so it can never be
+    // included; a row that cannot contribute must not abort Patrick's valid
+    // current-cycle totals. Purpose rows span all years, so stale rows naming
+    // a prior-cycle namesake are the common case, not the edge case.
+    const result = aggregateTexasOutsideSpending({
+      candidateName: "Pat Smith",
+      candidateCommitteeId: "00012345",
+      officeScope: "statewide",
+      officeName: "Governor",
+      electionYear: 2026,
+      spacRows: [spac({ candidateFilerName: "SMITH, PATRICK" })],
+      expenditureRows: [
+        expenditure({ expendAmount: "70000.00" }),
+        expenditure({ expendInfoId: "E6", expendDt: "20220301", expendAmount: "40000.00" }),
+      ],
+      candidateRows: [
+        candidate({
+          candidateNameLast: "SMITH",
+          candidateNameFirst: "PATRICK",
+          expendAmount: "70000.00",
+        }),
+        candidate({
+          expendInfoId: "E6",
+          expendDt: "20220301",
+          candidateNameLast: "SMITH",
+          candidateNameFirst: "PATRICIA",
+          expendAmount: "40000.00",
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      summary: { supportTotal: 70000, opposeTotal: 0 },
+      matchedCandidateExpenditureRowCount: 2,
+      includedCandidateExpenditureRowCount: 1,
+      skippedCandidateExpenditureRowCount: 1,
+    });
+  });
+
   it("still aggregates when matched rows only differ by formal spelling of one name", () => {
     // STEPHEN and STEVEN are spellings of the same name, not two people.
     const result = aggregateTexasOutsideSpending({
