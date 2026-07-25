@@ -136,7 +136,9 @@ export async function refreshNewYorkCityCfbArtifact(input: {
   timeoutMs?: number;
 }): Promise<NewYorkCityCfbArtifactRefreshResult> {
   const electionYear = normalizeElectionYear(input.electionYear);
-  const cacheDir = resolve(input.cacheDir ?? process.env.NEW_YORK_CITY_CFB_CACHE_DIR ?? DEFAULT_NEW_YORK_CITY_CFB_CACHE_DIR);
+  const cacheDir = resolve(
+    input.cacheDir ?? (process.env.NEW_YORK_CITY_CFB_CACHE_DIR?.trim() || DEFAULT_NEW_YORK_CITY_CFB_CACHE_DIR)
+  );
   const paths = getNewYorkCityCfbArtifactCachePaths({ cacheDir, electionYear, kind: input.kind });
   const url = input.url ?? buildNewYorkCityCfbArtifactUrl({ electionYear, kind: input.kind });
   const previous = await readMetadata(paths.metadataPath);
