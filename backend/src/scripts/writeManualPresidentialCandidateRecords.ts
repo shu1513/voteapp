@@ -608,6 +608,8 @@ async function main(): Promise<void> {
           description: record.description,
           sourceUrl: record.source_url,
           eventDate: record.event_date,
+          origin: "manual" as const,
+          originRunId: key,
         }))
       );
 

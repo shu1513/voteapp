@@ -299,6 +299,11 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
     await runCandidateRecordEnricher({ once: true, blockMs: 1, batchSize: 1 });
 
     expect(createCandidateRecordUpdateNotificationEventsMock).not.toHaveBeenCalled();
+    // Provenance: discovery-pass rows carry the writer + stream run id.
+    const recordInsertCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.candidate_records")
+    );
+    expect(recordInsertCall?.[1]?.slice(-2)).toEqual(["ai_enricher", "run-president"]);
     expect(enrichCandidateRecordsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         candidateDisplayName: "Jane President",
@@ -661,6 +666,11 @@ describe("runCandidateRecordEnricher presidential-cycle routing", () => {
       }),
       "record-1"
     );
+    // Provenance: the district first-pass upsert stamps the writer + run id.
+    const recordInsertCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.candidate_records")
+    );
+    expect(recordInsertCall?.[1]?.slice(-2)).toEqual(["ai_enricher", "run-election-with-record"]);
     expect(poolQueryMock).toHaveBeenCalledWith("BEGIN");
     expect(poolQueryMock).toHaveBeenCalledWith("COMMIT");
     expect(redisXAckMock).toHaveBeenCalledWith(
