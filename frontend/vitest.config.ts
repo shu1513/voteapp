@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import { defineConfig } from "vitest/config";
 
 // Kept separate from vite.config.ts: vite 8 (rolldown) plugin types conflict
@@ -5,6 +7,15 @@ import { defineConfig } from "vitest/config";
 // fast-refresh or tailwind plugins; esbuild handles TSX via tsconfig's
 // jsx: react-jsx.
 export default defineConfig({
+  // Pin the workspace package to THIS checkout's source. Without the alias,
+  // node resolution walks up to the repo root's node_modules symlink, which
+  // points at the main checkout's packages/ — in a git worktree that can be
+  // a different branch, so tests would import stale api-client code.
+  resolve: {
+    alias: {
+      "@voteapp/api-client": path.resolve(__dirname, "../packages/api-client/src/index.ts"),
+    },
+  },
   test: {
     environment: "jsdom",
     setupFiles: ["./src/test/setup.ts"],
