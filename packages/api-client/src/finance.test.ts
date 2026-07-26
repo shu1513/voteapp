@@ -5,6 +5,7 @@ import {
   hasFinanceContent,
   hasMemberCommunications,
   hasOutsideFinanceContent,
+  spendingExceedsCycleFunds,
 } from "./finance";
 import type { FinanceSummary } from "./types";
 
@@ -75,5 +76,30 @@ describe("member communications (LA)", () => {
     const summary = emptySummary();
     summary.outside_spending.membership_oppose_total = 1200;
     expect(hasMemberCommunications(summary)).toBe(true);
+  });
+});
+
+describe("spendingExceedsCycleFunds", () => {
+  it("is false when raised or spent is unreported", () => {
+    const summary = emptySummary();
+    summary.direct_campaign.total_spent = 100;
+    expect(spendingExceedsCycleFunds(summary)).toBe(false);
+  });
+
+  it("is true only when spending tops raised plus public funds", () => {
+    const summary = emptySummary();
+    summary.direct_campaign.total_raised = 100;
+    summary.direct_campaign.total_spent = 250;
+    expect(spendingExceedsCycleFunds(summary)).toBe(true);
+    // Public matching money explains the gap, so no note.
+    summary.direct_campaign.public_funds_received = 200;
+    expect(spendingExceedsCycleFunds(summary)).toBe(false);
+  });
+
+  it("is false when spending fits within money raised this cycle", () => {
+    const summary = emptySummary();
+    summary.direct_campaign.total_raised = 100;
+    summary.direct_campaign.total_spent = 100;
+    expect(spendingExceedsCycleFunds(summary)).toBe(false);
   });
 });

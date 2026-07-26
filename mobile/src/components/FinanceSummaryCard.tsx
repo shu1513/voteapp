@@ -14,6 +14,7 @@ import {
   formatSourceHost,
   hasOutsideFinanceContent,
   sortContributionSizeBuckets,
+  spendingExceedsCycleFunds,
 } from "@voteapp/api-client";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
@@ -271,6 +272,12 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
           <MoneyStat label="Debts" amount={direct.debts_owed} />
           <MoneyStat label="Public funds" amount={direct.public_funds_received ?? null} />
         </View>
+      ) : null}
+      {spendingExceedsCycleFunds(summary) ? (
+        <Text className="mt-1 text-xs text-ink-soft">
+          Spent can be higher than Raised because this campaign is also using money raised in
+          earlier years.
+        </Text>
       ) : null}
 
       <BreakdownList
