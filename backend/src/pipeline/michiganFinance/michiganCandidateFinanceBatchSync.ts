@@ -33,6 +33,20 @@ import {
   type MichiganMitnLegacyContributionRow,
   type MichiganMitnLegacyExpenditureRow,
 } from "./michiganMitnLegacyArchiveReader.js";
+import {
+  MICHIGAN_MITN_PUBLIC_SEARCH_BASE_URL,
+  MICHIGAN_MITN_STATEMENT_YEAR_IDS,
+  dedupeMichiganMitnExportRows,
+  fetchMichiganMitnContributionExportXlsx,
+  michiganMitnExportRowsToLegacyContributionRows,
+  parseMichiganMitnExportXlsxRows,
+  resolveMichiganMitnCommitteeViaSearch,
+  type MichiganMitnFetchFn,
+} from "./michiganMitnPublicSearchClient.js";
+import { toMichiganMitnOfficeSearchInput } from "./michiganFinanceEligibleOffices.js";
+import { normalizeMichiganCandidateNameForStorage } from "./michiganCandidateCommitteeResolver.js";
+import { upsertMichiganFinanceLink } from "./michiganFinanceWriter.js";
+import { isMichiganMitnRawDataRefreshEnabled } from "../../config/featureFlags.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -73,6 +87,7 @@ export type MichiganCandidateFinanceBatchSyncInput = {
   rawDataCacheDir?: string;
   mitnDataByYear?: ReadonlyMap<number, MichiganMitnLegacyDataForYear>;
   autoLinkMissingLinks?: boolean;
+  mitnPublicSearchFetchFn?: MichiganMitnFetchFn;
   financeIndustryClassifier?: FinanceIndustryClassifier;
   aiClassificationMinAmount?: number;
   syncMichiganCandidateFinanceFn?: typeof syncMichiganCandidateFinance;
@@ -594,6 +609,149 @@ export async function listDueMichiganCandidateFinanceSyncRows(
   };
 }
 
+
+const MICHIGAN_MITN_COMMITTEE_SEARCH_SOURCE_URL = `${MICHIGAN_MITN_PUBLIC_SEARCH_BASE_URL}?page=page.miboeCommitteePublicSearch`;
+const MICHIGAN_MITN_CONTRIBUTION_SEARCH_SOURCE_URL = `${MICHIGAN_MITN_PUBLIC_SEARCH_BASE_URL}?page=page.miboeContributionPublicSearch`;
+
+function isMitnPublicSearchYear(electionYear: number): boolean {
+  return electionYear > MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR;
+}
+
+const MITN_PUBLIC_SEARCH_FETCH_TIMEOUT_MS = 120_000;
+
+function defaultMitnPublicSearchFetchFn(): MichiganMitnFetchFn {
+  // One hung MiTN response must not stall the whole batch — the due loop
+  // awaits each committee's exports sequentially.
+  return (url, init) => fetch(url, { ...init, signal: AbortSignal.timeout(MITN_PUBLIC_SEARCH_FETCH_TIMEOUT_MS) });
+}
+
+/**
+ * Auto-links candidates whose election year has no legacy archive by asking
+ * the MiTN public committee search (candidate name + office as server-side
+ * filters; exactly one ACTIVE candidate committee links, anything else is
+ * refused). Network access is gated by the raw-data-refresh flag.
+ */
+async function autoLinkMichiganCandidatesViaMitnPublicSearch(input: {
+  db: Queryable;
+  now: Date;
+  candidates: readonly MichiganFinanceAutoLinkCandidateElection[];
+  fetchFn: MichiganMitnFetchFn;
+}): Promise<void> {
+  for (const candidate of input.candidates) {
+    try {
+      const officeSearchInput = toMichiganMitnOfficeSearchInput({
+        officeScope: candidate.officeScope,
+        officeCanonicalName: candidate.officeName,
+        district: candidate.district,
+      });
+      if (!officeSearchInput) {
+        console.warn("Michigan MiTN public-search auto-link skipped candidate with unsupported office:", {
+          candidateId: candidate.candidateId,
+          officeName: candidate.officeName,
+        });
+        continue;
+      }
+      const resolution = await resolveMichiganMitnCommitteeViaSearch({
+        candidateName: candidate.candidateName,
+        mitnOffice: officeSearchInput.mitnOffice,
+        fetchFn: input.fetchFn,
+      });
+      if (resolution.status !== "matched") {
+        console.warn("Michigan MiTN public-search auto-link did not link candidate election:", {
+          candidateId: candidate.candidateId,
+          candidateName: candidate.candidateName,
+          status: resolution.status,
+          ...(resolution.status === "ambiguous"
+            ? { matches: resolution.matches.map((match) => `${match.committeeId} ${match.committeeName}`) }
+            : { reason: resolution.reason }),
+        });
+        continue;
+      }
+      await upsertMichiganFinanceLink({
+        db: input.db,
+        link: {
+          candidateId: candidate.candidateId,
+          electionId: candidate.electionId,
+          electionYear: candidate.electionYear,
+          candidateNameNormalized: normalizeMichiganCandidateNameForStorage(candidate.candidateName),
+          officeName: candidate.officeName,
+          district: candidate.district,
+          committeeId: resolution.committeeId,
+          committeeName: resolution.committeeName,
+          linkStatus: "active",
+          linkSource: "mitn_public_search",
+          sourceUrl: MICHIGAN_MITN_COMMITTEE_SEARCH_SOURCE_URL,
+          lastVerifiedAt: input.now,
+        },
+      });
+    } catch (error) {
+      console.warn("Michigan MiTN public-search auto-link failed for candidate election; continuing:", {
+        candidateId: candidate.candidateId,
+        electionId: candidate.electionId,
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
+}
+
+/**
+ * Loads a committee's contribution rows from the MiTN public-search exports
+ * for the cycle's statement years, deduped ACROSS years (amendments repeat
+ * receipts, and can restate a prior year's statement), then mapped onto the
+ * legacy row shape. Raw exports are memoized per committee within one run.
+ *
+ * The cycle's own statement years (election year - 1 and the election year)
+ * are REQUIRED — a missing year-id mapping throws rather than silently
+ * writing a partial or zero snapshot. The following filing year (January
+ * annual statements reporting election-year receipts, mirroring the legacy
+ * loader) is included when its id is known.
+ */
+async function loadMitnPublicSearchContributionRows(input: {
+  committeeId: string;
+  electionYear: number;
+  fetchFn: MichiganMitnFetchFn;
+  cache: Map<string, string[][]>;
+}): Promise<MichiganMitnLegacyContributionRow[]> {
+  const requiredStatementYears = [input.electionYear - 1, input.electionYear];
+  for (const year of requiredStatementYears) {
+    if (!MICHIGAN_MITN_STATEMENT_YEAR_IDS.has(year)) {
+      throw new Error(
+        `No Michigan MiTN statement-year id for ${year}; add it to MICHIGAN_MITN_STATEMENT_YEAR_IDS before syncing ${input.electionYear} elections`
+      );
+    }
+  }
+  const statementYears = [...requiredStatementYears, input.electionYear + 1].filter((year) =>
+    MICHIGAN_MITN_STATEMENT_YEAR_IDS.has(year)
+  );
+
+  const combinedRows: string[][] = [];
+  for (const statementYear of statementYears) {
+    const cacheKey = `${input.committeeId}:${statementYear}`;
+    let rawRows = input.cache.get(cacheKey);
+    if (!rawRows) {
+      const xlsx = await fetchMichiganMitnContributionExportXlsx({
+        committeeId: input.committeeId,
+        statementYear,
+        fetchFn: input.fetchFn,
+      });
+      rawRows = parseMichiganMitnExportXlsxRows(xlsx);
+      input.cache.set(cacheKey, rawRows);
+    }
+    if (rawRows.length === 0) {
+      continue;
+    }
+    if (combinedRows.length === 0) {
+      combinedRows.push(...rawRows.map((row) => [...row]));
+    } else {
+      combinedRows.push(...rawRows.slice(1).map((row) => [...row]));
+    }
+  }
+  if (combinedRows.length === 0) {
+    return [];
+  }
+  return michiganMitnExportRowsToLegacyContributionRows(dedupeMichiganMitnExportRows(combinedRows));
+}
+
 export async function syncDueMichiganCandidateFinance(
   input: MichiganCandidateFinanceBatchSyncInput
 ): Promise<MichiganCandidateFinanceBatchSyncResult> {
@@ -617,12 +775,33 @@ export async function syncDueMichiganCandidateFinance(
 
   if (!dryRun && input.autoLinkMissingLinks !== false) {
     try {
-      const missingLinkCandidates = await listMichiganCandidateElectionsMissingFinanceLinks(input.db, {
+      const allMissingLinkCandidates = await listMichiganCandidateElectionsMissingFinanceLinks(input.db, {
         now,
         maxCandidates,
         electionLookbackDays,
         electionLookaheadDays,
       });
+      const missingLinkCandidates = allMissingLinkCandidates.filter(
+        (candidate) => !isMitnPublicSearchYear(candidate.electionYear)
+      );
+      const publicSearchCandidates = allMissingLinkCandidates.filter((candidate) =>
+        isMitnPublicSearchYear(candidate.electionYear)
+      );
+      if (publicSearchCandidates.length > 0) {
+        if (isMichiganMitnRawDataRefreshEnabled()) {
+          await autoLinkMichiganCandidatesViaMitnPublicSearch({
+            db: input.db,
+            now,
+            candidates: publicSearchCandidates,
+            fetchFn: input.mitnPublicSearchFetchFn ?? defaultMitnPublicSearchFetchFn(),
+          });
+        } else {
+          console.warn(
+            "Michigan MiTN public-search auto-link skipped: MICHIGAN_MITN_RAW_DATA_REFRESH_ENABLED is off",
+            { skippedCandidateCount: publicSearchCandidates.length }
+          );
+        }
+      }
       const contributionRowsByYear = new Map<number, MichiganMitnLegacyContributionRow[]>();
       const sourceUrlByYear = new Map<number, string>();
       for (const [year, candidates] of groupAutoLinkCandidatesByYear(missingLinkCandidates).entries()) {
@@ -676,6 +855,9 @@ export async function syncDueMichiganCandidateFinance(
   );
   const mitnLoadErrorsByYear = new Map<number, string>();
   for (const [year, rows] of groupDueRowsByYear(due.rows).entries()) {
+    if (isMitnPublicSearchYear(year)) {
+      continue;
+    }
     if (!mitnDataByYear.has(year)) {
       try {
         mitnDataByYear.set(
@@ -694,7 +876,77 @@ export async function syncDueMichiganCandidateFinance(
   }
 
   const results: MichiganCandidateFinanceBatchSyncItemResult[] = [];
+  const publicSearchExportCache = new Map<string, string[][]>();
+  const publicSearchFetchFn = input.mitnPublicSearchFetchFn ?? defaultMitnPublicSearchFetchFn();
   for (const row of due.rows) {
+    if (isMitnPublicSearchYear(row.electionYear)) {
+      if (!isMichiganMitnRawDataRefreshEnabled()) {
+        results.push({
+          candidateId: row.candidateId,
+          electionId: row.electionId,
+          electionYear: row.electionYear,
+          committeeId: row.committeeId,
+          ok: false,
+          error:
+            "Michigan MiTN public-search fetch disabled (MICHIGAN_MITN_RAW_DATA_REFRESH_ENABLED is off); cannot sync a post-legacy election year",
+        });
+        continue;
+      }
+      try {
+        const contributionRows = await loadMitnPublicSearchContributionRows({
+          committeeId: row.committeeId,
+          electionYear: row.electionYear,
+          fetchFn: publicSearchFetchFn,
+          cache: publicSearchExportCache,
+        });
+        const result = await syncFn({
+          db: input.db,
+          candidateId: row.candidateId,
+          electionId: row.electionId,
+          candidateName: row.candidateName,
+          electionYear: row.electionYear,
+          officeScope: row.officeScope,
+          officeName: row.officeName,
+          district: row.district,
+          sourceUrl: row.sourceUrl ?? MICHIGAN_MITN_CONTRIBUTION_SEARCH_SOURCE_URL,
+          contributionSourceUrl: MICHIGAN_MITN_CONTRIBUTION_SEARCH_SOURCE_URL,
+          outsideSourceUrl: MICHIGAN_MITN_CONTRIBUTION_SEARCH_SOURCE_URL,
+          contributionRows,
+          // Outside spending is not ingested from MiTN yet — the expenditure
+          // search is a separate integration. expenditureRows stays OMITTED:
+          // a defined array (even empty) marks outside data as available and
+          // would persist $0 totals and delete prior outside-group rows.
+          linkSource: "mitn_public_search",
+          trustedCommittee: {
+            committeeId: row.committeeId,
+            committeeName: row.committeeName,
+            sourceUrl: row.sourceUrl ?? MICHIGAN_MITN_CONTRIBUTION_SEARCH_SOURCE_URL,
+          },
+          financeIndustryClassifier: input.financeIndustryClassifier,
+          aiClassificationMinAmount: input.aiClassificationMinAmount,
+          dryRun,
+          now,
+        });
+        results.push({
+          candidateId: row.candidateId,
+          electionId: row.electionId,
+          electionYear: row.electionYear,
+          committeeId: row.committeeId,
+          ok: true,
+          result,
+        });
+      } catch (error) {
+        results.push({
+          candidateId: row.candidateId,
+          electionId: row.electionId,
+          electionYear: row.electionYear,
+          committeeId: row.committeeId,
+          ok: false,
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+      continue;
+    }
     const mitnLoadError = mitnLoadErrorsByYear.get(row.electionYear);
     if (mitnLoadError) {
       results.push({

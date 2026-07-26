@@ -33,6 +33,7 @@ import {
   deactivateMichiganFinanceLinksForCandidateElection,
   replaceMichiganCandidateFinanceSnapshot,
   type MichiganFinanceLinkInput,
+  type MichiganFinanceLinkSource,
   type MichiganFinanceOutsideGroupBreakdownInput,
   type MichiganFinanceOutsideGroupInput,
   type MichiganFinanceSummaryInput,
@@ -58,6 +59,8 @@ export type MichiganCandidateFinanceSyncInput = {
   currentOffice?: string | null;
   contributionRows: readonly MichiganMitnLegacyContributionRow[];
   expenditureRows?: readonly MichiganMitnLegacyExpenditureRow[];
+  /** Provenance for the written link; defaults to the legacy archives. */
+  linkSource?: MichiganFinanceLinkSource;
   sourceUrl?: string | null;
   contributionSourceUrl?: string | null;
   outsideSourceUrl?: string | null;
@@ -142,6 +145,7 @@ function toFinanceLink(input: {
   district?: string | null;
   committeeId: string;
   committeeName: string;
+  linkSource: MichiganFinanceLinkSource;
   sourceUrl?: string | null;
   verifiedAt: Date;
 }): MichiganFinanceLinkInput {
@@ -155,7 +159,7 @@ function toFinanceLink(input: {
     committeeId: requireNonEmpty(input.committeeId, "Michigan committee id"),
     committeeName: requireNonEmpty(input.committeeName, "Michigan committee name"),
     linkStatus: "active",
-    linkSource: "mitn_legacy",
+    linkSource: input.linkSource,
     sourceUrl: input.sourceUrl ?? null,
     lastVerifiedAt: input.verifiedAt,
   };
@@ -523,6 +527,7 @@ export async function syncMichiganCandidateFinance(
     district: input.district,
     committeeId: resolution.committeeId,
     committeeName: resolution.committeeName,
+    linkSource: input.linkSource ?? "mitn_legacy",
     sourceUrl: resolution.sourceUrl ?? input.sourceUrl ?? input.contributionSourceUrl ?? null,
     verifiedAt: syncedAt,
   });
