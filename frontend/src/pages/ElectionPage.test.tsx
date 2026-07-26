@@ -61,10 +61,10 @@ describe("ElectionPage", () => {
     renderElection(() => electionDetail({ vote_power: VOTE_POWER_WITH_EXPLANATION }));
 
     await screen.findByRole("heading", { name: "Governor" });
-    expect(screen.getByText("How do we calculate vote power?")).toBeInTheDocument();
+    expect(screen.getByText("How do we calculate vote impact?")).toBeInTheDocument();
     // Native <details> keeps content in the DOM while collapsed; the backend
     // copy must arrive verbatim.
-    expect(screen.getByText("Vote power = representation + decisiveness.")).toBeInTheDocument();
+    expect(screen.getByText("Vote impact = representation + decisiveness.")).toBeInTheDocument();
     // Each part renders formula-style: title, grade, stat, then the detail.
     expect(screen.getByText("Representation:")).toBeInTheDocument();
     expect(screen.getByText("· 50 out of 100")).toBeInTheDocument();
@@ -72,7 +72,7 @@ describe("ElectionPage", () => {
     expect(
       screen.getByText("Past results here were very close — a small number of votes could decide the winner.")
     ).toBeInTheDocument();
-    expect(screen.getByText("Average representation + high decisiveness → High vote power.")).toBeInTheDocument();
+    expect(screen.getByText("Average representation + high decisiveness → High vote impact.")).toBeInTheDocument();
     expect(screen.getByText("Some data is missing.")).toBeInTheDocument();
     // The exact formula renders when the backend provides one; the null
     // formula on the other part must not render an empty line.
@@ -84,7 +84,7 @@ describe("ElectionPage", () => {
     renderElection(() => electionDetail());
 
     await screen.findByRole("heading", { name: "Governor" });
-    expect(screen.queryByText("How do we calculate vote power?")).not.toBeInTheDocument();
+    expect(screen.queryByText("How do we calculate vote impact?")).not.toBeInTheDocument();
   });
 
   it("hides the vote power explanation entirely for an unknown label", async () => {
@@ -96,8 +96,8 @@ describe("ElectionPage", () => {
     );
 
     await screen.findByRole("heading", { name: "Governor" });
-    expect(screen.queryByText(/Vote power:/)).not.toBeInTheDocument();
-    expect(screen.queryByText("How do we calculate vote power?")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Vote impact:/)).not.toBeInTheDocument();
+    expect(screen.queryByText("How do we calculate vote impact?")).not.toBeInTheDocument();
   });
 
   it("shows the seat count for multi-seat contests and hides it otherwise", async () => {
@@ -276,9 +276,9 @@ describe("ElectionPage", () => {
     // The measure works FOR housing (green), AGAINST civil rights (red);
     // a stanceless tag stays muted. The direction is visible text, not just
     // color, so color-blind readers can tell the chips apart too.
-    const forChip = await screen.findByText("Housing Affordability · for");
+    const forChip = await screen.findByText("Housing Affordability (for)");
     expect(forChip.className).toContain("text-green-900");
-    const againstChip = screen.getByText("Civil Rights · against");
+    const againstChip = screen.getByText("Civil Rights (against)");
     expect(againstChip.className).toContain("text-red-900");
     const neutralChip = screen.getByText("Gun Control");
     expect(neutralChip.className).toContain("text-ink-soft");
@@ -332,7 +332,7 @@ describe("ElectionPage", () => {
     // fetch, after the loader-fed chips render — so wait on the cue itself.
     const savedCues = await screen.findAllByText("(saved)");
     expect(savedCues).toHaveLength(2);
-    const measureChip = screen.getByText("Housing Affordability · for");
+    const measureChip = screen.getByText("Housing Affordability (for)");
     expect(measureChip).toHaveTextContent("(saved)");
     const candidateChip = screen.getByText("Housing Affordability").closest("span")!;
     expect(candidateChip).toHaveTextContent("1 for");
