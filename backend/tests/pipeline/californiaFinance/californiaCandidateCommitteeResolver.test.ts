@@ -167,6 +167,131 @@ describe("californiaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("prefers the controlled election committee over the candidate's ballot-measure committee", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [
+          coverRow(),
+          coverRow({
+            FILER_ID: "1999999",
+            FILER_NAML: "Investing in California - Newsom Ballot Measure Committee",
+            CONTROL_YN: "N",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      controlledCommitteeId: "1456045",
+    });
+  });
+
+  it("ignores cover rows whose committee type is not a candidate committee", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [
+          coverRow(),
+          coverRow({
+            FILER_ID: "1999999",
+            FILER_NAML: "Newsom Ballot Measure Committee",
+            CMTTE_TYPE: "G",
+            CONTROL_YN: "N",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      controlledCommitteeId: "1456045",
+    });
+  });
+
+  it("never treats independent-expenditure reports as candidate-committee evidence", () => {
+    const independentExpenditureRow = coverRow({
+      FILER_ID: "1888888",
+      FILER_NAML: "Third Party Action Votes",
+      FORM_TYPE: "F496",
+      CMTTE_TYPE: "",
+      CONTROL_YN: "",
+      SUP_OPP_CD: "S",
+    });
+
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow(), independentExpenditureRow],
+      })
+    ).toMatchObject({
+      status: "matched",
+      controlledCommitteeId: "1456045",
+    });
+
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [independentExpenditureRow],
+      })
+    ).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_office_year_match",
+    });
+  });
+
+  it("breaks a controlled-committee tie by the sole committee named for the election year", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [
+          coverRow({
+            FILER_ID: "1456044",
+            FILER_NAML: "Newsom for Governor 2022",
+            ELECT_DATE: "11/3/2026 12:00:00 AM",
+          }),
+          coverRow({ FILER_ID: "1456045", FILER_NAML: "Newsom for California Governor 2026" }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      controlledCommitteeId: "1456045",
+      controlledCommitteeName: "Newsom for California Governor 2026",
+    });
+  });
+
+  it("breaks an uncontrolled tie by the sole committee named for the election year", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "Gavin Newsom",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [
+          coverRow({
+            FILER_ID: "1459441",
+            FILER_NAML: "CALIFORNIA ALLIANCE",
+            CONTROL_YN: "N",
+          }),
+          coverRow({
+            FILER_ID: "1489604",
+            FILER_NAML: "NEWSOM FOR GOVERNOR 2026",
+            CONTROL_YN: "N",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      controlledCommitteeId: "1489604",
+    });
+  });
+
   it("returns unmatched when candidate, office, or election year do not line up", () => {
     expect(
       resolveCaliforniaCandidateCommittee({

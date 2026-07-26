@@ -164,6 +164,77 @@ describe("pennsylvaniaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("resolves the sole committee filer over the candidate's own registration filer", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Abigail Salisbury",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "34",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0465",
+            FILERNAME: "SALISBURY, ABIGAIL MARIE",
+            FILERTYPE: "1",
+            OFFICE: "STH",
+            DISTRICT: "34",
+          }),
+          filerRow({
+            FILERID: "20220025",
+            FILERNAME: "PEOPLE FOR ABIGAIL SALISBURY",
+            FILERTYPE: "2",
+            OFFICE: "STH",
+            DISTRICT: "34",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "20220025",
+      filerName: "PEOPLE FOR ABIGAIL SALISBURY",
+      filerType: "2",
+    });
+  });
+
+  it("resolves the sole committee filer even against two candidate registration filers", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({ FILERID: "2026C0001", FILERNAME: "DOE, JANE", FILERTYPE: "1" }),
+          filerRow({ FILERID: "2026C0900", FILERNAME: "DOE, JANE E", FILERTYPE: "1" }),
+          filerRow({ FILERID: "20240100", FILERNAME: "FRIENDS OF JANE DOE", FILERTYPE: "2" }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "20240100",
+      filerType: "2",
+    });
+  });
+
+  it("stays ambiguous when two committee filers match", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({ FILERID: "20240100", FILERNAME: "FRIENDS OF JANE DOE", FILERTYPE: "2" }),
+          filerRow({ FILERID: "20260200", FILERNAME: "JANE DOE FOR PA", FILERTYPE: "2" }),
+        ],
+      })
+    ).toMatchObject({
+      status: "ambiguous",
+      reason: "multiple_matching_filers",
+    });
+  });
+
   it("does not guess when multiple candidate filers match", () => {
     expect(
       resolvePennsylvaniaCandidateCommittee({
