@@ -221,6 +221,60 @@ function OutsideSection({
   );
 }
 
+/**
+ * Member communications: an organization spending to reach its own members
+ * about a candidate (a union mailing its membership, for example). Legally
+ * distinct from independent expenditures — it may even be coordinated with
+ * the campaign — so it gets its own section instead of joining the outside
+ * totals. One direction line per side, same green/red tint as the outside
+ * boxes so direction reads consistently. A $0 side renders nothing (the LA
+ * sync writes 0 for every linked candidate).
+ */
+function MemberCommunicationsSection({
+  supportTotal,
+  opposeTotal,
+}: {
+  supportTotal: number | null | undefined;
+  opposeTotal: number | null | undefined;
+}) {
+  const rows = [
+    {
+      direction: "supporting",
+      amount: supportTotal,
+      boxClass: "border-green-200 bg-green-50",
+      textClass: "text-green-900",
+    },
+    {
+      direction: "opposing",
+      amount: opposeTotal,
+      boxClass: "border-red-200 bg-red-50",
+      textClass: "text-red-900",
+    },
+  ].filter((row) => (row.amount ?? 0) > 0);
+  if (rows.length === 0) {
+    return null;
+  }
+  return (
+    <div className="mt-3">
+      <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
+        Member communications
+      </h4>
+      <p className="mt-1 text-xs text-ink-soft">
+        Money organizations — such as unions or trade associations — reported spending to talk to
+        their own members about this candidate. Disclosed separately from outside spending, and it
+        does not go to the candidate.
+      </p>
+      {rows.map((row) => (
+        <div key={row.direction} className={`mt-2 rounded border p-2 ${row.boxClass}`}>
+          <p className={`text-sm font-medium ${row.textClass}`}>
+            Spent {row.direction} this candidate: {formatMoney(row.amount ?? 0)}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
   const direct = summary.direct_campaign;
   const outside = summary.outside_spending;
@@ -302,6 +356,11 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
           ) : null}
         </div>
       ) : null}
+
+      <MemberCommunicationsSection
+        supportTotal={outside.membership_support_total}
+        opposeTotal={outside.membership_oppose_total}
+      />
 
       <p className="mt-3 text-xs text-ink-soft">
         Source: {financeSourceLabel(summary.source)} · {summary.cycle} cycle

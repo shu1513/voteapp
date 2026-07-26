@@ -209,6 +209,12 @@ export type FinanceSummary = {
   outside_spending: {
     support_total: number | null;
     oppose_total: number | null;
+    /** "Member communications" (LA): spending by organizations to their own
+     * members about this candidate — legally distinct from independent
+     * expenditures, never folded into support_total/oppose_total. Only set
+     * by sources that disclose it. */
+    membership_support_total?: number | null;
+    membership_oppose_total?: number | null;
     top_supporting_groups: FinanceOutsideGroup[];
     top_opposing_groups: FinanceOutsideGroup[];
     top_supporting_industries: FinanceBreakdown[];

@@ -34,6 +34,8 @@ type SummaryRow = {
   matching_funds: string | number | null;
   outside_support_total: string | number | null;
   outside_oppose_total: string | number | null;
+  membership_support_total: string | number | null;
+  membership_oppose_total: string | number | null;
   source_url: string | null;
   last_synced_at: string;
 };
@@ -72,6 +74,8 @@ export async function loadLosAngelesCandidateFinanceSummariesByCandidateElection
         summary.matching_funds,
         summary.outside_support_total,
         summary.outside_oppose_total,
+        summary.membership_support_total,
+        summary.membership_oppose_total,
         summary.source_url,
         summary.last_synced_at::text
       FROM requested
@@ -219,6 +223,8 @@ export async function loadLosAngelesCandidateFinanceSummariesByCandidateElection
           outside_spending: {
             support_total: parseFinanceAmount(row.outside_support_total),
             oppose_total: parseFinanceAmount(row.outside_oppose_total),
+            membership_support_total: parseFinanceAmount(row.membership_support_total),
+            membership_oppose_total: parseFinanceAmount(row.membership_oppose_total),
             top_supporting_groups: groups.get(`${key}\u0000support`) ?? [],
             top_opposing_groups: groups.get(`${key}\u0000oppose`) ?? [],
             top_supporting_industries: [],
