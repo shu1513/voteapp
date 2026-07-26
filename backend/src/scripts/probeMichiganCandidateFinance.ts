@@ -19,6 +19,7 @@ export type ProbeMichiganCandidateFinanceOptions = {
   officeScope: string;
   officeName: string;
   district?: string | null;
+  currentOffice?: string | null;
   rawExtractedDir: string;
   sourceUrl?: string | null;
   maxRows?: number;
@@ -148,6 +149,7 @@ async function loadProbeRows(input: {
     officeName: input.options.officeName,
     electionYear: input.options.electionYear,
     district: input.options.district,
+    currentOffice: input.options.currentOffice,
     contributionRows: candidateContributionRows,
     sourceUrl: input.options.sourceUrl,
   });
@@ -205,6 +207,7 @@ export function parseProbeMichiganCandidateFinanceArgs(args: readonly string[]):
     officeScope: parseFlagValue(args, "--office-scope") ?? "statewide",
     officeName: parseRequiredFlag(args, "--office"),
     district: parseFlagValue(args, "--district"),
+    currentOffice: parseFlagValue(args, "--current-office"),
     rawExtractedDir: parseRequiredFlag(args, "--raw-extracted-dir"),
     sourceUrl: parseFlagValue(args, "--source-url") ?? buildMichiganMitnLegacyArchiveUrl({ year: electionYear }),
     maxRows: parsePositiveIntegerFlag(args, "--max-rows"),
@@ -292,6 +295,7 @@ export async function runProbeMichiganCandidateFinance(input: {
       officeName: options.officeName,
       electionYear: options.electionYear,
       district: options.district,
+      currentOffice: options.currentOffice,
       contributionRows,
       sourceUrl: options.sourceUrl,
     });

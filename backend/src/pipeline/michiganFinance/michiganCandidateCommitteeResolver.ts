@@ -12,6 +12,14 @@ export type MichiganCandidateCommitteeResolverInput = {
   officeName: string;
   electionYear: number;
   district?: string | null;
+  /**
+   * The candidate's current office from the VoteApp profile, when known.
+   * Michigan is a one-candidate-one-committee state (MCL 169.221), so an
+   * office-mover's committee keeps a name mentioning their PREVIOUS office —
+   * a committee name matching the candidate's current office is the same
+   * person's committee, not a conflicting one.
+   */
+  currentOffice?: string | null;
   contributionRows: readonly MichiganMitnLegacyContributionRow[];
   sourceUrl?: string | null;
 };
@@ -145,6 +153,14 @@ function committeeNameFromRow(row: MichiganMitnLegacyContributionRow): string {
   return row.com_legal_name.trim() || row.common_name.trim();
 }
 
+/**
+ * The state's own committee-type designation: CAN = candidate committee,
+ * GUB = gubernatorial candidate committee. Everything else (IND, POL, COU,
+ * STA, BAL, DIS) is not a candidate's own committee even when it prints a
+ * candidate name on a row.
+ */
+const MICHIGAN_CANDIDATE_COMMITTEE_TYPES = new Set(["CAN", "GUB"]);
+
 function isLikelyCandidateCommitteeRow(row: MichiganMitnLegacyContributionRow): boolean {
   if (!row.cfr_com_id.trim() || !committeeNameFromRow(row)) {
     return false;
@@ -152,65 +168,103 @@ function isLikelyCandidateCommitteeRow(row: MichiganMitnLegacyContributionRow): 
   if (!row.can_first_name.trim() || !row.can_last_name.trim()) {
     return false;
   }
-  const committeeType = normalizeTextKey(row.com_type);
-  if (/\b(?:BALLOT|PAC|INDEPENDENT|POLITICAL|PARTY|CAUCUS|SUPERPAC|SUPER PAC)\b/.test(committeeType)) {
+  return MICHIGAN_CANDIDATE_COMMITTEE_TYPES.has(row.com_type.trim().toUpperCase());
+}
+
+type MichiganOfficeClass =
+  | "governor"
+  | "lieutenant_governor"
+  | "secretary_of_state"
+  | "attorney_general"
+  | "senate"
+  | "house";
+
+// Patterns run against normalizeTextKey output, which strips OF/FOR/THE —
+// "SECRETARY OF STATE" arrives as "SECRETARY STATE". Multi-word classes are
+// tested first and consumed so "LIEUTENANT GOVERNOR" does not also claim
+// "GOVERNOR".
+const MICHIGAN_OFFICE_CLASS_PATTERNS: readonly (readonly [MichiganOfficeClass, RegExp])[] = [
+  ["lieutenant_governor", /\b(?:LIEUTENANT|LT) GOVERNOR\b/],
+  ["secretary_of_state", /\bSECRETARY STATE\b/],
+  ["attorney_general", /\bATTORNEY GENERAL\b/],
+  ["governor", /\bGOVERNOR\b/],
+  ["senate", /\bSEN(?:ATE|ATOR)\b/],
+  ["house", /\bSTATE HOUSE\b|\bSTATE REP(?:RESENTATIVE)?\b|\bREPRESENTATIVE\b|\bHOUSE\b/],
+];
+
+function officeClassesFromText(normalizedText: string): Set<MichiganOfficeClass> {
+  const classes = new Set<MichiganOfficeClass>();
+  let remaining = normalizedText;
+  for (const [officeClass, pattern] of MICHIGAN_OFFICE_CLASS_PATTERNS) {
+    if (pattern.test(remaining)) {
+      classes.add(officeClass);
+      remaining = remaining.replace(new RegExp(pattern.source, "g"), " ");
+    }
+  }
+  return classes;
+}
+
+function districtClaimsFromText(normalizedText: string): Set<string> {
+  const districts = new Set<string>();
+  for (const match of normalizedText.matchAll(/\b(?:DISTRICT|DIST|HD|SD)\s*0*([1-9][0-9]{0,2})\b/g)) {
+    if (match[1]) {
+      districts.add(match[1]);
+    }
+  }
+  for (const match of normalizedText.matchAll(/\b0*([1-9][0-9]{0,2})(?:ST|ND|RD|TH)?\s+(?:SENATE|HOUSE)?\s*DIST(?:RICT)?\b/g)) {
+    if (match[1]) {
+      districts.add(match[1]);
+    }
+  }
+  return districts;
+}
+
+function officeClassForMitnOffice(mitnOffice: string): MichiganOfficeClass | null {
+  switch (mitnOffice) {
+    case "Governor":
+      return "governor";
+    case "Lieutenant Governor":
+      return "lieutenant_governor";
+    case "Secretary of State":
+      return "secretary_of_state";
+    case "Attorney General":
+      return "attorney_general";
+    case "State Senate":
+      return "senate";
+    case "State House":
+      return "house";
+    default:
+      return null;
+  }
+}
+
+/**
+ * Michigan committee names rarely carry an office and never a district
+ * ("ANGELA JONES COMMITTEE TO ELECT"), so office text works as a VETO, not a
+ * requirement: identity rests on the state's own CAN/GUB designation plus the
+ * structured candidate-name attribution. A committee whose text claims a
+ * different office (or district) than the race is refused — unless the claim
+ * matches the candidate's CURRENT office, which marks an office-mover's
+ * committee (one committee per candidate under MCL 169.221), not a stranger's.
+ */
+function rowOfficeContextAllows(input: {
+  row: MichiganMitnLegacyContributionRow;
+  officeSearchInput: MichiganMitnOfficeSearchInput;
+  allowedOfficeClasses: ReadonlySet<MichiganOfficeClass>;
+  allowedDistricts: ReadonlySet<string>;
+}): boolean {
+  const text = normalizeTextKey(
+    [committeeNameFromRow(input.row), input.row.common_name, input.row.extra_desc].join(" ")
+  );
+  const claimedClasses = officeClassesFromText(text);
+  if (claimedClasses.size > 0 && [...claimedClasses].every((claimed) => !input.allowedOfficeClasses.has(claimed))) {
+    return false;
+  }
+  const claimedDistricts = districtClaimsFromText(text);
+  if (claimedDistricts.size > 0 && [...claimedDistricts].every((claimed) => !input.allowedDistricts.has(claimed))) {
     return false;
   }
   return true;
-}
-
-function officeAliasesForSearchInput(officeSearchInput: MichiganMitnOfficeSearchInput): string[] {
-  switch (officeSearchInput.mitnOffice) {
-    case "State Senate":
-      return ["STATE SENATE", "SENATE", "SENATOR"];
-    case "State House":
-      return ["STATE HOUSE", "HOUSE", "REPRESENTATIVE"];
-    default:
-      return [officeSearchInput.mitnOffice.toUpperCase()];
-  }
-}
-
-function districtAliasesForSearchInput(officeSearchInput: MichiganMitnOfficeSearchInput): string[] {
-  if (!officeSearchInput.district) {
-    return [];
-  }
-  const district = officeSearchInput.district.replace(/^0+/, "");
-  if (officeSearchInput.mitnOffice === "State Senate") {
-    return [
-      `STATE SENATE ${district}`,
-      `SENATE DISTRICT ${district}`,
-      `SENATE DIST ${district}`,
-      `SENATE ${district}`,
-      `SD ${district}`,
-      `DISTRICT ${district}`,
-      `DIST ${district}`,
-    ];
-  }
-  return [
-    `STATE HOUSE ${district}`,
-    `HOUSE DISTRICT ${district}`,
-    `HOUSE DIST ${district}`,
-    `HOUSE ${district}`,
-    `HD ${district}`,
-    `DISTRICT ${district}`,
-    `DIST ${district}`,
-  ];
-}
-
-function rowOfficeCompatibilityText(row: MichiganMitnLegacyContributionRow): string {
-  return normalizeTextKey([committeeNameFromRow(row), row.common_name, row.com_type, row.extra_desc].join(" "));
-}
-
-function rowMatchesOfficeContext(input: {
-  row: MichiganMitnLegacyContributionRow;
-  officeSearchInput: MichiganMitnOfficeSearchInput;
-}): boolean {
-  const text = rowOfficeCompatibilityText(input.row);
-  if (!officeAliasesForSearchInput(input.officeSearchInput).some((alias) => text.includes(normalizeTextKey(alias)))) {
-    return false;
-  }
-  const districtAliases = districtAliasesForSearchInput(input.officeSearchInput);
-  return districtAliases.length === 0 || districtAliases.some((alias) => text.includes(normalizeTextKey(alias)));
 }
 
 function isLegislativeInput(input: { officeScope: string; officeName: string }): boolean {
@@ -278,6 +332,25 @@ export function resolveMichiganCandidateCommittee(
     };
   }
 
+  const allowedOfficeClasses = new Set<MichiganOfficeClass>();
+  const targetOfficeClass = officeClassForMitnOffice(officeSearchInput.mitnOffice);
+  if (targetOfficeClass) {
+    allowedOfficeClasses.add(targetOfficeClass);
+  }
+  const allowedDistricts = new Set<string>();
+  if (officeSearchInput.district) {
+    allowedDistricts.add(officeSearchInput.district.replace(/^0+/, ""));
+  }
+  const currentOfficeText = normalizeTextKey(input.currentOffice ?? "");
+  if (currentOfficeText) {
+    for (const officeClass of officeClassesFromText(currentOfficeText)) {
+      allowedOfficeClasses.add(officeClass);
+    }
+    for (const district of districtClaimsFromText(currentOfficeText)) {
+      allowedDistricts.add(district);
+    }
+  }
+
   const rowsByCommittee = new Map<string, CandidateCommitteeAccumulator>();
   for (const row of input.contributionRows) {
     const committeeId = row.cfr_com_id.trim().toUpperCase();
@@ -291,7 +364,7 @@ export function resolveMichiganCandidateCommittee(
     if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
       continue;
     }
-    if (!rowMatchesOfficeContext({ row, officeSearchInput })) {
+    if (!rowOfficeContextAllows({ row, officeSearchInput, allowedOfficeClasses, allowedDistricts })) {
       continue;
     }
 

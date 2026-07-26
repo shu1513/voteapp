@@ -19,7 +19,7 @@ function contributionRow(
     com_legal_name: "WHITMER FOR GOVERNOR",
     common_name: "Whitmer for Governor",
     cfr_com_id: "514456",
-    com_type: "Candidate Committee",
+    com_type: "CAN",
     can_first_name: "GRETCHEN",
     can_last_name: "WHITMER",
     contribtype: "IND",
@@ -72,7 +72,7 @@ describe("michiganCandidateCommitteeResolver", () => {
             cfr_com_id: "520012",
             com_legal_name: "GET MICHIGAN WORKING AGAIN (SUPERPAC)",
             common_name: "Get Michigan Working Again",
-            com_type: "PAC",
+            com_type: "IND",
           }),
         ],
       })
@@ -85,6 +85,146 @@ describe("michiganCandidateCommitteeResolver", () => {
       source: "mitn_legacy",
       sourceUrl: "https://www.michigan.gov/sos/example/2022_mi_cfr.7z",
       matchedContributionRowCount: 1,
+    });
+  });
+
+  it("links a committee whose name carries no office text at all", () => {
+    expect(
+      resolveMichiganCandidateCommittee({
+        candidateName: "Angela M. Jones",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "37",
+        electionYear: 2026,
+        contributionRows: [
+          contributionRow({
+            cfr_com_id: "521649",
+            com_legal_name: "ANGELA JONES COMMITTEE TO ELECT",
+            common_name: "",
+            can_first_name: "ANGELA",
+            can_last_name: "JONES",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      committeeId: "521649",
+    });
+  });
+
+  it("vetoes a same-name committee whose name claims a different office", () => {
+    expect(
+      resolveMichiganCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "40",
+        electionYear: 2026,
+        contributionRows: [
+          contributionRow({
+            cfr_com_id: "3001",
+            com_legal_name: "JANE DOE FOR STATE SENATE",
+            can_first_name: "JANE",
+            can_last_name: "DOE",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+  });
+
+  it("allows an office-mover's committee named for the candidate's current office", () => {
+    expect(
+      resolveMichiganCandidateCommittee({
+        candidateName: "Jocelyn Benson",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        currentOffice: "Michigan Secretary of State",
+        contributionRows: [
+          contributionRow({
+            cfr_com_id: "514336",
+            com_legal_name: "JOCELYN BENSON FOR SECRETARY OF STATE",
+            can_first_name: "JOCELYN",
+            can_last_name: "BENSON",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      committeeId: "514336",
+    });
+  });
+
+  it("vetoes a committee claiming a conflicting legislative district", () => {
+    expect(
+      resolveMichiganCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "7",
+        electionYear: 2026,
+        contributionRows: [
+          contributionRow({
+            cfr_com_id: "3001",
+            com_legal_name: "JANE DOE FOR SENATE DISTRICT 12",
+            can_first_name: "JANE",
+            can_last_name: "DOE",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+  });
+
+  it("accepts a district claim matching the race even when zero-padded", () => {
+    expect(
+      resolveMichiganCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "7",
+        electionYear: 2026,
+        contributionRows: [
+          contributionRow({
+            cfr_com_id: "3001",
+            com_legal_name: "JANE DOE FOR SENATE DISTRICT 07",
+            can_first_name: "JANE",
+            can_last_name: "DOE",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      committeeId: "3001",
+    });
+  });
+
+  it("accepts gubernatorial GUB committees and refuses IND rows carrying a candidate name", () => {
+    expect(
+      resolveMichiganCandidateCommittee({
+        candidateName: "Gretchen Whitmer",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2022,
+        contributionRows: [
+          contributionRow({ com_type: "GUB" }),
+          contributionRow({
+            cfr_com_id: "888888",
+            com_legal_name: "SOME INDEPENDENT SPENDER",
+            com_type: "IND",
+            can_first_name: "GRETCHEN",
+            can_last_name: "WHITMER",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      committeeId: "514456",
     });
   });
 

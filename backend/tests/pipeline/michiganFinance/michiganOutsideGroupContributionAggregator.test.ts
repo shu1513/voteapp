@@ -17,7 +17,7 @@ function contribution(
     com_legal_name: "GET MICHIGAN WORKING AGAIN (SUPERPAC)",
     common_name: "Get Michigan Working Again",
     cfr_com_id: "520012",
-    com_type: "Independent Expenditure Committee",
+    com_type: "IND",
     can_first_name: "",
     can_last_name: "",
     contribtype: "Organization",

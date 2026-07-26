@@ -30,7 +30,7 @@ function contribution(
     com_legal_name: "WHITMER FOR GOVERNOR",
     common_name: "Whitmer for Governor",
     cfr_com_id: "514456",
-    com_type: "Candidate Committee",
+    com_type: "CAN",
     can_first_name: "GRETCHEN",
     can_last_name: "WHITMER",
     contribtype: "Individual",
@@ -58,7 +58,7 @@ function expenditure(overrides: Partial<MichiganMitnLegacyExpenditureRow> = {}):
     com_legal_name: "GET MICHIGAN WORKING AGAIN (SUPERPAC)",
     common_name: "Get Michigan Working Again",
     cfr_com_id: "520012",
-    com_type: "Independent Expenditure Committee",
+    com_type: "IND",
     schedule_desc: "Independent Expenditure",
     supp_opp: "2",
     can_or_ballot: "GRETCHEN WHITMER",
@@ -103,7 +103,7 @@ describe("michiganCandidateFinanceSync", () => {
           cfr_com_id: "520012",
           com_legal_name: "GET MICHIGAN WORKING AGAIN (SUPERPAC)",
           common_name: "Get Michigan Working Again",
-          com_type: "Independent Expenditure Committee",
+          com_type: "IND",
           can_first_name: "",
           can_last_name: "",
           contribtype: "Organization",
@@ -151,6 +151,27 @@ describe("michiganCandidateFinanceSync", () => {
     expect(sql.some((statement) => statement.includes("INSERT INTO public.mi_candidate_finance_links"))).toBe(true);
     expect(sql.some((statement) => statement.includes("INSERT INTO public.mi_candidate_finance_outside_groups"))).toBe(true);
     expect(sql.some((statement) => statement.includes("INSERT INTO public.finance_label_classifications"))).toBe(true);
+  });
+
+  it("passes currentOffice through so a direct sync cannot unlink an office-mover", async () => {
+    const db = createMockDb();
+
+    const result = await syncMichiganCandidateFinance({
+      db,
+      ...baseInput(),
+      officeScope: "statewide",
+      officeName: "Governor",
+      currentOffice: "Michigan Secretary of State",
+      dryRun: true,
+      contributionRows: [
+        contribution({
+          com_legal_name: "GRETCHEN WHITMER FOR SECRETARY OF STATE",
+          common_name: "",
+        }),
+      ],
+    });
+
+    expect(result.resolution.status).toBe("matched");
   });
 
   it("can use a trusted committee and skip resolver name drift", async () => {
@@ -268,7 +289,7 @@ describe("michiganCandidateFinanceSync", () => {
           cfr_com_id: "520012",
           com_legal_name: "GET MICHIGAN WORKING AGAIN (SUPERPAC)",
           common_name: "Get Michigan Working Again",
-          com_type: "Independent Expenditure Committee",
+          com_type: "IND",
           can_first_name: "",
           can_last_name: "",
           contribtype: "Organization",

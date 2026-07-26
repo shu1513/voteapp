@@ -55,6 +55,7 @@ export type MichiganCandidateFinanceSyncInput = {
   officeScope: string;
   officeName: string;
   district?: string | null;
+  currentOffice?: string | null;
   contributionRows: readonly MichiganMitnLegacyContributionRow[];
   expenditureRows?: readonly MichiganMitnLegacyExpenditureRow[];
   sourceUrl?: string | null;
@@ -434,6 +435,7 @@ export async function syncMichiganCandidateFinance(
         officeName,
         electionYear,
         district: input.district,
+        currentOffice: input.currentOffice,
         contributionRows: input.contributionRows,
         sourceUrl: input.sourceUrl ?? input.contributionSourceUrl ?? null,
       });
