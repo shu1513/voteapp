@@ -167,6 +167,7 @@ describe("alaskaCandidateCommitteeResolver", () => {
       resolveAlaskaCandidateCommittee({
         candidateName: "Begich, Tom",
         electionYear: 2026,
+        officeName: "Governor",
         incomeRows: [
           income({ filerId: "2001", filerName: "Tom Begich", name: "Tom Begich" }),
           income({ filerId: "2002", filerName: "Tom Begich/Julia Hnilicka", name: "Tom Begich/Julia Hnilicka" }),
@@ -175,14 +176,56 @@ describe("alaskaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", candidateFilerId: "2001", candidateFilerName: "Tom Begich" });
   });
 
+  it("only collapses tickets for the governor race and only with the joint delimiter", () => {
+    // Committee-style extension in a House race: two filers stay ambiguous.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeName: "State Lower Chamber Legislator",
+        incomeRows: [
+          income({ filerId: "2001", filerName: "Jane Doe", name: "Jane Doe" }),
+          income({ filerId: "2002", filerName: "Jane Doe for State House", name: "Jane Doe for State House" }),
+        ],
+      })
+    ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
+
+    // Even in a governor race, an extension without APOC's "/" or "\" joint
+    // delimiter is not a ticket filer.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeName: "Governor",
+        incomeRows: [
+          income({ filerId: "2001", filerName: "Jane Doe", name: "Jane Doe" }),
+          income({ filerId: "2002", filerName: "Jane Doe for Alaska", name: "Jane Doe for Alaska" }),
+        ],
+      })
+    ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
+
+    // No office context means no collapse.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Begich, Tom",
+        electionYear: 2026,
+        incomeRows: [
+          income({ filerId: "2001", filerName: "Tom Begich", name: "Tom Begich" }),
+          income({ filerId: "2002", filerName: "Tom Begich/Julia Hnilicka", name: "Tom Begich/Julia Hnilicka" }),
+        ],
+      })
+    ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });
+  });
+
   it("does not collapse a one-token extension that could be another person", () => {
     expect(
       resolveAlaskaCandidateCommittee({
         candidateName: "Mark Smith",
         electionYear: 2026,
+        officeName: "Governor",
         incomeRows: [
           income({ filerId: "2001", filerName: "Mark Smith", name: "Mark Smith" }),
-          income({ filerId: "2002", filerName: "Mark Smith Jr", name: "Mark Smith Jr" }),
+          income({ filerId: "2002", filerName: "Mark Smith / Jr", name: "Mark Smith / Jr" }),
         ],
       })
     ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });

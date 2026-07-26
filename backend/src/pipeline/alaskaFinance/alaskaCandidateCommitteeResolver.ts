@@ -271,8 +271,14 @@ function officeClassOfCandidateOffice(value: string | null | undefined): AlaskaO
 // Hnilicka"). Both are the same campaign, so two matched filers are not real
 // ambiguity when every extra filer's name is the standalone filer's name
 // extended by another person's name (two or more tokens - a one-token
-// extension such as "JR" could be a different person and stays ambiguous).
+// extension such as "JR" could be a different person and stays ambiguous)
+// AND the extra filer's raw name carries the joint-ticket "/" or "\"
+// delimiter APOC uses. Callers only invoke this for governor-ticket races;
+// a committee-style extension in another office ("Jane Doe" plus "Jane Doe
+// for State House") must stay ambiguous rather than silently pick a side.
 // Returns the standalone filer, or null when the shape does not hold.
+const TICKET_DELIMITER_PATTERN = /[/\\]/;
+
 function collapseTicketFilers(filers: readonly FilerAggregate[]): FilerAggregate | null {
   for (const base of filers) {
     const baseName = normalizeTextKey(base.candidateFilerName);
@@ -282,6 +288,9 @@ function collapseTicketFilers(filers: readonly FilerAggregate[]): FilerAggregate
     const othersAreTickets = filers.every((filer) => {
       if (filer === base) {
         return true;
+      }
+      if (!TICKET_DELIMITER_PATTERN.test(filer.candidateFilerName)) {
+        return false;
       }
       const name = normalizeTextKey(filer.candidateFilerName);
       if (!name.startsWith(`${baseName} `)) {
@@ -349,7 +358,10 @@ export function resolveAlaskaCandidateCommittee(input: {
     };
   }
   if (filers.size > 1) {
-    const standalone = collapseTicketFilers([...filers.values()]);
+    // Joint tickets exist only for the governor race; other offices with
+    // multiple matching filers stay ambiguous.
+    const standalone =
+      candidateOfficeClass === "governor_ticket" ? collapseTicketFilers([...filers.values()]) : null;
     if (!standalone) {
       return {
         status: "ambiguous",

@@ -80,6 +80,10 @@ export type AlaskaCandidateFinanceBatchSyncResult = {
   selectedCandidateCount: number;
   syncedCandidateCount: number;
   failedCandidateCount: number;
+  // Syncs that refused to write because IE rows revealed a first-name
+  // identity conflict. Not successes: nothing was written and the candidate
+  // stays due until a human resolves the identity.
+  identityConflictCandidateCount: number;
   autoLinkAttemptedCount: number;
   autoLinkLinkedCount: number;
   autoLinkResults: AlaskaFinanceAutoLinkResult[];
@@ -346,7 +350,11 @@ export async function syncDueAlaskaCandidateFinance(
     }
   }
 
-  const syncedCandidateCount = results.filter((result) => result.ok).length;
+  const identityConflictCandidateCount = results.filter(
+    (result) => result.ok && result.result?.outsideIdentityConflict === true
+  ).length;
+  const syncedCandidateCount =
+    results.filter((result) => result.ok).length - identityConflictCandidateCount;
   return {
     dryRun,
     now: now.toISOString(),
@@ -355,7 +363,8 @@ export async function syncDueAlaskaCandidateFinance(
     dueCandidateCount: due.totalDueRows,
     selectedCandidateCount: due.rows.length,
     syncedCandidateCount,
-    failedCandidateCount: results.length - syncedCandidateCount,
+    failedCandidateCount: results.length - syncedCandidateCount - identityConflictCandidateCount,
+    identityConflictCandidateCount,
     autoLinkAttemptedCount: autoLinkResults.length,
     autoLinkLinkedCount: autoLinkResults.filter((result) => result.status === "linked").length,
     autoLinkResults,

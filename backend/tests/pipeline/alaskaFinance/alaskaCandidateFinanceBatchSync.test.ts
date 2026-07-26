@@ -277,6 +277,53 @@ describe("alaskaCandidateFinanceBatchSync", () => {
     );
   });
 
+  it("counts an identity-conflict refusal separately from successes and failures", async () => {
+    const db = createMockDb([dueRow()]);
+    const syncAlaskaCandidateFinanceFn = vi.fn().mockResolvedValue({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      electionYear: 2026,
+      dryRun: false,
+      resolution: { status: "matched", candidateFilerId: "1001" },
+      outsideIdentityConflict: true,
+      linkWritten: false,
+      summaryWritten: false,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      totalReceipts: null,
+      directContributionTotal: null,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+      matchedContributionRowCount: 1,
+      includedContributionRowCount: 1,
+      skippedContributionRowCount: 0,
+      matchedExpenditureRowCount: 2,
+      includedExpenditureRowCount: 0,
+      skippedExpenditureRowCount: 2,
+      matchedOutsideContributionRowCount: 0,
+      includedOutsideContributionRowCount: 0,
+      skippedOutsideContributionRowCount: 0,
+    });
+
+    const result = await syncDueAlaskaCandidateFinance({
+      db,
+      syncAlaskaCandidateFinanceFn,
+      now: new Date("2026-06-25T12:00:00.000Z"),
+      maxCandidates: 2,
+      staleAfterDays: 3,
+      electionLookbackDays: 30,
+      apocData: apocData(),
+      autoLinkMissingLinks: false,
+    });
+
+    expect(result).toMatchObject({
+      syncedCandidateCount: 0,
+      failedCandidateCount: 0,
+      identityConflictCandidateCount: 1,
+    });
+  });
+
   it("preserves manual link source when syncing due links", async () => {
     const db = createMockDb([dueRow({ link_source: "manual" })]);
     const syncAlaskaCandidateFinanceFn = vi.fn().mockResolvedValue({

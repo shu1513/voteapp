@@ -62,6 +62,7 @@ describe("alaskaCandidateFinanceSyncScheduler", () => {
       dueCandidateCount: 0,
       selectedCandidateCount: 0,
       syncedCandidateCount: 0,
+      identityConflictCandidateCount: 0,
       failedCandidateCount: 0,
       autoLinkAttemptedCount: 0,
       autoLinkLinkedCount: 0,

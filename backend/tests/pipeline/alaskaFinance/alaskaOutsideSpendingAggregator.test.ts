@@ -163,6 +163,29 @@ describe("alaskaOutsideSpendingAggregator", () => {
       skippedExpenditureRowCount: 2,
     });
 
+    // The nickname appearing alongside the formal names must not launder the
+    // family evidence away.
+    expect(
+      aggregateAlaskaOutsideSpending({
+        candidateName: "Pat Smith",
+        electionYear: 2026,
+        expenditureRows: [
+          expenditure({
+            candidateProposition: "Patrick Smith",
+            description: "Pat Smith mailers supporting Patrick Smith",
+            amount: 10_000,
+          }),
+          expenditure({
+            filerId: "8002",
+            filerName: "Accountability PAC",
+            candidateProposition: "Patricia Smith",
+            description: "Pat Smith mailers supporting Patricia Smith",
+            amount: 5_000,
+          }),
+        ],
+      })
+    ).toMatchObject({ firstNameConflict: true, includedExpenditureRowCount: 0 });
+
     // A single formal family is the deliberate one-sided nickname link.
     expect(
       aggregateAlaskaOutsideSpending({

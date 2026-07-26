@@ -139,23 +139,21 @@ function rowMatchedKeys(input: {
   return matched;
 }
 
-// A row that matched any base key (the stored name or its call name) carries
-// no family evidence; a row that matched only nickname-expansion keys is
-// evidence for those formal families. Included rows spanning two conflicting
-// families ("Patrick Smith" rows and "Patricia Smith" rows behind a stored
-// "Pat Smith") abort the whole aggregation rather than pick a side,
-// mirroring the committee resolver's both-families-filed rule. Formal
-// spellings of one name (STEPHEN/STEVEN) do not conflict, and a single
-// family is the deliberate one-sided-nickname link, not a conflict.
+// A matched nickname-expansion key is evidence for its formal family even
+// when the row's text also contains the stored nickname - the formal name in
+// the text is what identifies the person. Included rows spanning two
+// conflicting families ("Patrick Smith" rows and "Patricia Smith" rows
+// behind a stored "Pat Smith") abort the whole aggregation rather than pick
+// a side, mirroring the committee resolver's both-families-filed rule.
+// Base-key-only matches contribute no family evidence, formal spellings of
+// one name (STEPHEN/STEVEN) do not conflict, and a single family is the
+// deliberate one-sided-nickname link, not a conflict.
 function includedRowsSpanConflictingFamilies(
   matchedKeysPerRow: readonly (readonly string[])[],
   nicknameFamilies: ReadonlyMap<string, string>
 ): boolean {
   const familyGivens: string[] = [];
   for (const matchedKeys of matchedKeysPerRow) {
-    if (matchedKeys.some((key) => !nicknameFamilies.has(key))) {
-      continue;
-    }
     for (const key of matchedKeys) {
       const givenName = nicknameFamilies.get(key);
       if (!givenName || familyGivens.includes(givenName)) {
