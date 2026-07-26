@@ -1,4 +1,4 @@
-import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
+import { firstNamesConflict, firstNameVariants } from "../finance/personFirstNameNicknames.js";
 import type { AlaskaApocCampaignIncomeRow } from "./alaskaApocClient.js";
 import { parseAlaskaApocDateYear } from "./alaskaApocClient.js";
 
@@ -28,6 +28,12 @@ type FilerAggregate = {
   candidateFilerId: string;
   candidateFilerName: string;
   matchedRowCount: number;
+  // At least one matched row hit a base key (the stored name or its quoted
+  // call name), as opposed to only nickname-expansion keys.
+  hasBaseKeyMatch: boolean;
+  // At least one matched row carried a recognized office matching the
+  // candidate's office class.
+  hasOfficeEvidence: boolean;
 };
 
 function normalizeTextKey(value: string | null | undefined): string {
@@ -168,6 +174,44 @@ export function alaskaCandidateNicknameKeyFamilies(value: string): Map<string, s
   return families;
 }
 
+/**
+ * True when the linked filer's own given name identifies which formal family
+ * the candidate belongs to and it conflicts with the given family. A stored
+ * "Pat Smith" linked to filer "Patrick Smith" makes the PATRICIA family
+ * wrong by evidence, so nickname-expanded matching can drop it. The
+ * constraint only engages when the filer's leading token is recognizable as
+ * one of the candidate's given names or their nickname variants - a
+ * committee-style filer name ("Smith for Alaska") carries no given-name
+ * signal and never constrains.
+ */
+export function alaskaNicknameFamilyConflictsWithFiler(input: {
+  candidateName: string;
+  candidateFilerName: string;
+  familyGivenName: string;
+}): boolean {
+  const filerTokens = orderedNameTokens(input.candidateFilerName);
+  const ordered = orderedNameTokens(input.candidateName);
+  if (filerTokens.length < 2 || ordered.length < 2) {
+    return false;
+  }
+  const filerGiven = filerTokens[0];
+  const surname = ordered.at(-1) as string;
+  const knownGivens = new Set<string>([ordered[0]]);
+  const callName = quotedCallName(input.candidateName);
+  if (callName && callName !== surname) {
+    knownGivens.add(callName);
+  }
+  for (const givenName of [...knownGivens]) {
+    for (const variant of firstNameVariants(givenName)) {
+      knownGivens.add(variant);
+    }
+  }
+  if (!knownGivens.has(filerGiven)) {
+    return false;
+  }
+  return firstNamesConflict(filerGiven, input.familyGivenName);
+}
+
 function rowYear(row: AlaskaApocCampaignIncomeRow): number | null {
   return row.reportYear ?? parseAlaskaApocDateYear(row.date);
 }
@@ -200,21 +244,22 @@ function isOrderedTokenSubsequence(keyTokens: readonly string[], fieldTokens: re
   return false;
 }
 
-function rowMatchesCandidate(input: {
+function rowMatchedCandidateKeys(input: {
   row: AlaskaApocCampaignIncomeRow;
   candidateNameKeys: ReadonlySet<string>;
-}): boolean {
+}): string[] {
   const fields = [input.row.filerName, input.row.name].map((field) => normalizeTextKey(field).split(" ").filter(Boolean));
+  const matched: string[] = [];
   for (const key of input.candidateNameKeys) {
     if (key.length === 0) {
       continue;
     }
     const keyTokens = key.split(" ");
     if (fields.some((fieldTokens) => isOrderedTokenSubsequence(keyTokens, fieldTokens))) {
-      return true;
+      matched.push(key);
     }
   }
-  return false;
+  return matched;
 }
 
 function isCandidateFilerType(value: string): boolean {
@@ -315,39 +360,54 @@ export function resolveAlaskaCandidateCommittee(input: {
   const candidateNameNormalized = normalizeAlaskaCandidateNameForStorage(input.candidateName);
   // VoteApp side expands nicknames; APOC filer names always key literally.
   const candidateNameKeys = normalizeAlaskaCandidateNameKeys(input.candidateName, { expandNicknames: true });
+  const nicknameFamilies = alaskaCandidateNicknameKeyFamilies(input.candidateName);
   const candidateOfficeClass = officeClassOfCandidateOffice(input.officeName);
   const filers = new Map<string, FilerAggregate>();
 
   for (const row of input.incomeRows) {
-    if (
-      !isCandidateFilerType(row.filerType) ||
-      !isCycleYear({ row, electionYear: input.electionYear }) ||
-      !rowMatchesCandidate({ row, candidateNameKeys })
-    ) {
+    if (!isCandidateFilerType(row.filerType) || !isCycleYear({ row, electionYear: input.electionYear })) {
       continue;
     }
-    if (candidateOfficeClass) {
-      const rowOfficeClass = officeClassOfApocOffice(row.office);
-      if (rowOfficeClass && rowOfficeClass !== candidateOfficeClass) {
-        continue;
-      }
+    const matchedKeys = rowMatchedCandidateKeys({ row, candidateNameKeys });
+    if (matchedKeys.length === 0) {
+      continue;
+    }
+    const rowOfficeClass = officeClassOfApocOffice(row.office);
+    if (candidateOfficeClass && rowOfficeClass && rowOfficeClass !== candidateOfficeClass) {
+      continue;
     }
     const candidateFilerId = filerId(row);
     const candidateFilerName = row.filerName.trim() || row.name.trim();
     if (!candidateFilerId || !candidateFilerName) {
       continue;
     }
+    const hasBaseKeyMatch = matchedKeys.some((matchedKey) => !nicknameFamilies.has(matchedKey));
+    const hasOfficeEvidence = candidateOfficeClass !== null && rowOfficeClass === candidateOfficeClass;
     const key = normalizeTextKey(candidateFilerId);
     const existing = filers.get(key);
     if (existing) {
       existing.matchedRowCount += 1;
+      existing.hasBaseKeyMatch ||= hasBaseKeyMatch;
+      existing.hasOfficeEvidence ||= hasOfficeEvidence;
       continue;
     }
     filers.set(key, {
       candidateFilerId,
       candidateFilerName,
       matchedRowCount: 1,
+      hasBaseKeyMatch,
+      hasOfficeEvidence,
     });
+  }
+
+  // A nickname-expansion match is the weakest name evidence, so it must be
+  // corroborated: a filer matched only through nickname keys needs at least
+  // one row whose recognized office matches the candidate's office class.
+  // Base-key matches (the stored name or its quoted call name) stand alone.
+  for (const [key, filer] of [...filers]) {
+    if (!filer.hasBaseKeyMatch && !filer.hasOfficeEvidence) {
+      filers.delete(key);
+    }
   }
 
   if (filers.size === 0) {

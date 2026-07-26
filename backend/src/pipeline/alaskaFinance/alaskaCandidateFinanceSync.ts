@@ -241,6 +241,7 @@ export async function syncAlaskaCandidateFinance(
     candidateName,
     electionYear,
     expenditureRows: input.independentExpenditureRows ?? [],
+    candidateFilerName: resolution.candidateFilerName,
     sourceUrl: ALASKA_APOC_IE_EXPENDITURES_URL,
     maxGroups: input.outsideMaxGroups ?? DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
   });

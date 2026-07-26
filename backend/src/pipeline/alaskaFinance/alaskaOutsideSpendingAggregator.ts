@@ -3,6 +3,7 @@ import type { AlaskaApocIndependentExpenditureRow } from "./alaskaApocClient.js"
 import { parseAlaskaApocDateYear } from "./alaskaApocClient.js";
 import {
   alaskaCandidateNicknameKeyFamilies,
+  alaskaNicknameFamilyConflictsWithFiler,
   normalizeAlaskaCandidateNameKeys,
 } from "./alaskaCandidateCommitteeResolver.js";
 
@@ -27,6 +28,10 @@ export type AlaskaOutsideSpendingAggregationInput = {
   candidateName: string;
   electionYear: number;
   expenditureRows: readonly AlaskaApocIndependentExpenditureRow[];
+  // The linked committee's filer name. When its given name identifies the
+  // candidate's formal family, nickname-expansion keys for conflicting
+  // families are dropped before matching.
+  candidateFilerName?: string | null;
   sourceUrl?: string | null;
   maxGroups?: number;
 };
@@ -252,6 +257,25 @@ export function aggregateAlaskaOutsideSpending(
   // VoteApp side expands nicknames; IE row text always matches literally.
   const candidateNameKeys = normalizeAlaskaCandidateNameKeys(candidateName, { expandNicknames: true });
   const nicknameFamilies = alaskaCandidateNicknameKeyFamilies(candidateName);
+  // The linked filer's own given name can settle which formal family this
+  // candidate is: drop expansion keys for families it conflicts with, so a
+  // "Pat Smith" linked to "Patrick Smith" never matches rows naming only
+  // Patricia Smith. Committee-style filer names carry no signal and leave
+  // the key set (and the both-families abort) unchanged.
+  if (input.candidateFilerName?.trim()) {
+    for (const [key, familyGivenName] of [...nicknameFamilies]) {
+      if (
+        alaskaNicknameFamilyConflictsWithFiler({
+          candidateName,
+          candidateFilerName: input.candidateFilerName,
+          familyGivenName,
+        })
+      ) {
+        nicknameFamilies.delete(key);
+        candidateNameKeys.delete(key);
+      }
+    }
+  }
   const electionYear = normalizeElectionYear(input.electionYear);
   const maxGroups = normalizePositiveInteger(input.maxGroups, DEFAULT_MAX_GROUPS, "maxGroups");
   const fallbackSourceUrl = input.sourceUrl ?? null;

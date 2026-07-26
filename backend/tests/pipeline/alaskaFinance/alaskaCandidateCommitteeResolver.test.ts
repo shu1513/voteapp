@@ -110,20 +110,45 @@ describe("alaskaCandidateCommitteeResolver", () => {
   });
 
   it("matches a campaign nickname against the formal APOC filing name one-sidedly", () => {
+    // A nickname-only match is the weakest name evidence and needs
+    // corroborating office evidence on at least one row.
     expect(
       resolveAlaskaCandidateCommittee({
         candidateName: "Becky Schwanke",
         electionYear: 2026,
-        incomeRows: [income({ filerName: "Rebecca A Schwanke", name: "Rebecca A Schwanke" })],
+        officeName: "State Lower Chamber Legislator",
+        incomeRows: [income({ filerName: "Rebecca A Schwanke", name: "Rebecca A Schwanke", office: "House" })],
       })
     ).toMatchObject({ status: "matched", candidateFilerName: "Rebecca A Schwanke" });
+
+    // Without recognized office evidence the nickname-only match is refused.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Becky Schwanke",
+        electionYear: 2026,
+        officeName: "State Lower Chamber Legislator",
+        incomeRows: [income({ filerName: "Rebecca A Schwanke", name: "Rebecca A Schwanke", office: "" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+
+    // Base-key matches stand alone: the stored name itself needs no office
+    // corroboration.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        officeName: "State Lower Chamber Legislator",
+        incomeRows: [income({ office: "" })],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "1001" });
 
     // Two distinct formal names must not meet at a shared nickname key.
     expect(
       resolveAlaskaCandidateCommittee({
         candidateName: "Patrick Smith",
         electionYear: 2026,
-        incomeRows: [income({ filerName: "Patricia Smith", name: "Patricia Smith" })],
+        officeName: "State Lower Chamber Legislator",
+        incomeRows: [income({ filerName: "Patricia Smith", name: "Patricia Smith", office: "House" })],
       })
     ).toMatchObject({ status: "unmatched" });
 
@@ -132,9 +157,10 @@ describe("alaskaCandidateCommitteeResolver", () => {
       resolveAlaskaCandidateCommittee({
         candidateName: "Pat Smith",
         electionYear: 2026,
+        officeName: "State Lower Chamber Legislator",
         incomeRows: [
-          income({ filerId: "3001", filerName: "Patricia Smith", name: "Patricia Smith" }),
-          income({ filerId: "3002", filerName: "Patrick Smith", name: "Patrick Smith" }),
+          income({ filerId: "3001", filerName: "Patricia Smith", name: "Patricia Smith", office: "House" }),
+          income({ filerId: "3002", filerName: "Patrick Smith", name: "Patrick Smith", office: "House" }),
         ],
       })
     ).toMatchObject({ status: "ambiguous", reason: "multiple_matching_filers" });

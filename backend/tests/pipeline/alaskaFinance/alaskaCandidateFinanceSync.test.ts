@@ -56,7 +56,6 @@ function expenditure(overrides: Partial<AlaskaApocIndependentExpenditureRow> = {
     filerId: "8001",
     filerName: "Alaska Future PAC",
     filerType: "Group",
-    office: "",
     businessPhone: "907-555-0100",
     businessType: "Super PAC",
     type: "Expenditure",
@@ -88,7 +87,6 @@ function contribution(overrides: Partial<AlaskaApocIndependentContributionRow> =
     filerId: "8001",
     filerName: "Alaska Future PAC",
     filerType: "Group",
-    office: "",
     businessPhone: "907-555-0100",
     businessType: "Super PAC",
     type: "Contribution",
@@ -285,10 +283,10 @@ describe("alaskaCandidateFinanceSync", () => {
     ]);
   });
 
-  it("refuses to write anything when IE rows reveal a first-name identity conflict", async () => {
-    // "Pat Smith" is linked, but IE rows name both PATRICK and PATRICIA. The
-    // sync must not persist zeroed outside totals and an empty group set over
-    // a previously stored snapshot; it writes nothing and flags the conflict.
+  it("uses the trusted filer name to settle which nickname family is this candidate", async () => {
+    // "Pat Smith" is linked to filer "Patrick Smith": the filer's given name
+    // identifies the family, so Patricia-only IE rows never match and the
+    // sync writes Patrick's money without freezing.
     const db = createMockDb();
 
     const result = await syncAlaskaCandidateFinance({
@@ -300,6 +298,47 @@ describe("alaskaCandidateFinanceSync", () => {
         candidateFilerName: "Patrick Smith",
       },
       incomeRows: [income({ filerName: "Patrick Smith", name: "Patrick Smith" })],
+      independentExpenditureRows: [
+        expenditure({
+          candidateProposition: "Patrick Smith",
+          description: "Mailers supporting Patrick Smith",
+        }),
+        expenditure({
+          filerId: "8002",
+          filerName: "Accountability PAC",
+          candidateProposition: "Patricia Smith",
+          description: "Mailers supporting Patricia Smith",
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      outsideIdentityConflict: false,
+      linkWritten: true,
+      summaryWritten: true,
+      outsideSupportTotal: 35000,
+      matchedExpenditureRowCount: 1,
+      includedExpenditureRowCount: 1,
+    });
+  });
+
+  it("refuses to write anything when IE rows reveal a first-name identity conflict", async () => {
+    // The linked filer name is committee-style ("Smith for Alaska") and
+    // carries no given-name signal, so IE rows naming both PATRICK and
+    // PATRICIA stay conflicting. The sync must not persist zeroed outside
+    // totals and an empty group set over a previously stored snapshot; it
+    // writes nothing and flags the conflict.
+    const db = createMockDb();
+
+    const result = await syncAlaskaCandidateFinance({
+      db,
+      ...baseInput(),
+      candidateName: "Pat Smith",
+      trustedCommittee: {
+        candidateFilerId: "1001",
+        candidateFilerName: "Smith for Alaska",
+      },
+      incomeRows: [income({ filerName: "Smith for Alaska", name: "Smith for Alaska" })],
       independentExpenditureRows: [
         expenditure({
           candidateProposition: "Patrick Smith",
