@@ -30,7 +30,7 @@ function contribution(
     com_legal_name: "WHITMER FOR GOVERNOR",
     common_name: "Whitmer for Governor",
     cfr_com_id: "514456",
-    com_type: "Candidate Committee",
+    com_type: "CAN",
     can_first_name: "GRETCHEN",
     can_last_name: "WHITMER",
     contribtype: "Individual",

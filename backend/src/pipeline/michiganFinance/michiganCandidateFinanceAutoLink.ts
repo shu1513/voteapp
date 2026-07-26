@@ -19,6 +19,7 @@ export type MichiganFinanceAutoLinkCandidateElection = {
   officeScope: string;
   officeName: string;
   district: string | null;
+  currentOffice: string | null;
 };
 
 export type MichiganFinanceAutoLinkResult =
@@ -45,6 +46,7 @@ type CandidateElectionQueryRow = {
   office_scope: string;
   office_name: string;
   district: string | null;
+  current_office: string | null;
 };
 
 function mapCandidateElectionRow(row: CandidateElectionQueryRow): MichiganFinanceAutoLinkCandidateElection {
@@ -56,6 +58,7 @@ function mapCandidateElectionRow(row: CandidateElectionQueryRow): MichiganFinanc
     officeScope: row.office_scope,
     officeName: row.office_name,
     district: row.district,
+    currentOffice: row.current_office,
   };
 }
 
@@ -91,7 +94,8 @@ export async function listMichiganCandidateElectionsMissingFinanceLinks(
               ''
             )
           ELSE NULL
-        END AS district
+        END AS district,
+        NULLIF(trim(candidate.current_office), '') AS current_office
       FROM public.candidate_elections AS candidate_election
       JOIN public.candidates AS candidate
         ON candidate.id = candidate_election.candidate_id
@@ -144,6 +148,7 @@ export async function autoLinkMichiganCandidateFinanceForCandidateElection(input
     officeName: input.candidateElection.officeName,
     electionYear: input.candidateElection.electionYear,
     district: input.candidateElection.district,
+    currentOffice: input.candidateElection.currentOffice,
     contributionRows: input.contributionRows,
     sourceUrl: input.sourceUrl,
   });

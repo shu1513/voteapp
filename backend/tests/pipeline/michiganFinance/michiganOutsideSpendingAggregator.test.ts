@@ -15,7 +15,7 @@ function expenditure(overrides: Partial<MichiganMitnLegacyExpenditureRow> = {}):
     com_legal_name: "GET MICHIGAN WORKING AGAIN (SUPERPAC)",
     common_name: "Get Michigan Working Again",
     cfr_com_id: "520012",
-    com_type: "Independent Expenditure Committee",
+    com_type: "IND",
     schedule_desc: "Independent Expenditure",
     supp_opp: "2",
     can_or_ballot: "GRETCHEN WHITMER",
