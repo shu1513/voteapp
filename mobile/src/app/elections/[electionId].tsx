@@ -111,7 +111,7 @@ export default function ElectionScreen() {
       <View className="mt-2 flex-row flex-wrap gap-2">
         {data.vote_power.label !== "unknown" ? (
           <Text className="rounded bg-rausch/10 px-2 py-0.5 text-xs text-rausch-dark">
-            Vote power: {formatVotePowerLabel(data.vote_power.label)}
+            Vote impact: {formatVotePowerLabel(data.vote_power.label)}
           </Text>
         ) : null}
         {data.historical_competitiveness ? (

@@ -53,7 +53,7 @@ describe("ElectionCard", () => {
     renderCard(electionSummary());
 
     const row = screen.getByRole("heading", { name: "Governor" }).parentElement;
-    expect(row).toHaveTextContent("Vote power: High");
+    expect(row).toHaveTextContent("Vote impact: High");
     expect(row).toHaveTextContent("2 candidates");
     // Every card names its district — generic titles ("Mayor", "Governor")
     // don't say where the race is.
@@ -63,27 +63,27 @@ describe("ElectionCard", () => {
   it("color-codes the vote-power badge by level", () => {
     // Fixture default is "high" → orange; hotter and cooler levels shift hue.
     renderCard(electionSummary());
-    expect(screen.getByText("Vote power: High").className).toContain("text-orange-700");
+    expect(screen.getByText("Vote impact: High").className).toContain("text-orange-700");
 
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "very_high" } }));
-    expect(screen.getByText("Vote power: Very high").className).toContain("text-red-700");
+    expect(screen.getByText("Vote impact: Very high").className).toContain("text-red-700");
 
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "medium" } }));
-    expect(screen.getByText("Vote power: Average").className).toContain("text-amber-800");
+    expect(screen.getByText("Vote impact: Average").className).toContain("text-amber-800");
 
     // "low" displays as "Below average" — the label map and color map key on
     // the same wire value, so both must hold at once.
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "low" } }));
-    expect(screen.getByText("Vote power: Below average").className).toContain("text-purple-700");
+    expect(screen.getByText("Vote impact: Below average").className).toContain("text-purple-700");
 
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "very_low" } }));
-    expect(screen.getByText("Vote power: Very low").className).toContain("text-gray-500");
+    expect(screen.getByText("Vote impact: Very low").className).toContain("text-gray-500");
   });
 
-  it("omits the vote-power chip when the score is unknown", () => {
+  it("omits the vote-impact text when the score is unknown", () => {
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "unknown" } }));
 
-    expect(screen.queryByText(/Vote power:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Vote impact:/)).not.toBeInTheDocument();
     expect(screen.getByText("2 candidates")).toBeInTheDocument();
   });
 

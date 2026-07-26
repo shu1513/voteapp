@@ -178,8 +178,11 @@ function OutsideSection({
         </div>
       ) : null}
       {groups.length > 0 ? (
-        <details className="mt-2">
-          <summary className="cursor-pointer select-none text-xs text-ink-soft underline hover:text-ink">
+        // Open by default: the group list is the substance of this section,
+        // not secondary detail — but it stays a <details> so readers can
+        // collapse a long list out of the way.
+        <details className="mt-2" open>
+          <summary className="cursor-pointer select-none text-sm font-medium text-ink hover:underline">
             Groups that spent money {directionLabel} this candidate ({groups.length})
           </summary>
           <ul className="mt-1 space-y-1">

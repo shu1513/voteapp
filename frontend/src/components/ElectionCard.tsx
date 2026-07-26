@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Link } from "react-router";
 import type { ElectionSummary, ResearchAreaWeight } from "@voteapp/api-client";
 import {
@@ -17,11 +18,13 @@ import { votePowerBadgeClass } from "../lib/votePowerBadge";
 // page carries the full set.
 const MAX_UNSAVED_AREA_CHIPS = 3;
 
-// Saved and unsaved chips deliberately share one style: the row reads as one
-// list, and position alone marks the saved matches (they lead). Exported so
-// the election detail page's affected-areas row matches the card's.
-export const AREA_CHIP_CLASS =
-  "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900";
+// Research areas render as plain colored text, comma-separated — NOT boxed
+// chips. Boxed/pill styling is reserved for interactive elements; a bordered
+// area "chip" read as a button and invited dead clicks. Saved and unsaved
+// areas deliberately share one style: the row reads as one list, and
+// position alone marks the saved matches (they lead). Exported so the
+// election detail page's affected-areas row matches the card's.
+export const AREA_TEXT_CLASS = "font-medium text-green-900";
 
 /**
  * Date-grouped card list shared by both ballot pages. Elections cluster on
@@ -105,7 +108,9 @@ function ElectionCard({
   return (
     <Link
       to={`/elections/${election.id}`}
-      className="block rounded-xl border border-line bg-white p-4 shadow-sm transition hover:shadow-md"
+      // Faint tint + hover: the card is the click target, and an all-white
+      // card on the white page gave no "this is clickable" cue at rest.
+      className="block rounded-xl border border-line bg-surface/50 p-4 shadow-sm transition hover:bg-surface hover:shadow-md"
     >
       {/* No per-card date: ElectionList's group heading carries it. The title
           row keeps vote power and the candidate count flush right, so every
@@ -117,10 +122,11 @@ function ElectionCard({
             nowrap sits on each label so neither breaks mid-phrase. */}
         <span className="flex flex-wrap items-baseline justify-end gap-x-2 gap-y-1">
           {election.vote_power.label !== "unknown" ? (
+            // Colored text, not a pill: the tinted badge read as a button.
             <span
-              className={`whitespace-nowrap rounded px-2 py-0.5 text-xs ${votePowerBadgeClass(election.vote_power.label)}`}
+              className={`whitespace-nowrap text-xs font-medium ${votePowerBadgeClass(election.vote_power.label)}`}
             >
-              Vote power: {formatVotePowerLabel(election.vote_power.label)}
+              Vote impact: {formatVotePowerLabel(election.vote_power.label)}
             </span>
           ) : null}
           {election.race_type === "ballot_measure" ? (
@@ -161,33 +167,32 @@ function ElectionCard({
         </div>
       ) : null}
       {election.research_areas.length > 0 ? (
-        // Visually one list: saved matches lead (all of them, in the user's
-        // rank order), unsaved follow under the cap. Position is the only
-        // sighted cue, so saved chips carry a screen-reader-only "(saved)"
-        // to keep the distinction audible.
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-          {/* Quiet label: the chips carry the color; a boxed/tinted label
-              competed with them for attention. */}
-          <span className="font-medium text-ink-soft">Affected Areas:</span>
-          {savedAreas.map((area) => (
-            <span key={area.id} className={AREA_CHIP_CLASS}>
-              {area.name}
-              <span className="sr-only"> (saved)</span>
-            </span>
-          ))}
-          {visibleOtherAreas.map((area) => (
-            <span key={area.id} className={AREA_CHIP_CLASS}>
-              {area.name}
-            </span>
+        // Visually one comma-separated list: saved matches lead (all of
+        // them, in the user's rank order), unsaved follow under the cap.
+        // Position is the only sighted cue, so saved areas carry a
+        // screen-reader-only "(saved)" to keep the distinction audible.
+        <p className="mt-3 text-xs">
+          <span className="font-medium text-ink-soft">Affected Areas:</span>{" "}
+          {/* Comma separators live OUTSIDE the area spans as plain text
+              nodes, so each span's text stays exactly the area name. */}
+          {[...savedAreas, ...visibleOtherAreas].map((area, index, all) => (
+            <Fragment key={area.id}>
+              <span className={AREA_TEXT_CLASS}>
+                {area.name}
+                {savedAreas.includes(area) ? <span className="sr-only"> (saved)</span> : null}
+              </span>
+              {index < all.length - 1 || hiddenAreaCount > 0 ? ", " : null}
+            </Fragment>
           ))}
           {hiddenAreaCount > 0 ? (
-            // "areas", matching the row's own label — not "issues". Same green
-            // as the area chips: the overflow count is part of the same list.
-            <span className={AREA_CHIP_CLASS}>
+            // "areas", matching the row's own label — not "issues". Same
+            // green as the area names: the overflow count is part of the
+            // same list.
+            <span className={AREA_TEXT_CLASS}>
               +{hiddenAreaCount} more area{hiddenAreaCount === 1 ? "" : "s"}
             </span>
           ) : null}
-        </div>
+        </p>
       ) : null}
     </Link>
   );

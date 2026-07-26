@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { ElectionDetail } from "@voteapp/api-client";
@@ -16,7 +16,7 @@ import {
   formatVotePowerLabel,
 } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
-import { AREA_CHIP_CLASS } from "../components/ElectionCard";
+import { AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { splitResearchAreasBySaved } from "../lib/researchAreaPriority";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 import { useMe } from "@voteapp/api-client";
@@ -121,8 +121,8 @@ export function ElectionPage() {
       </p>
       <div className="mt-2 flex flex-wrap gap-2 text-xs">
         {data.vote_power.label !== "unknown" ? (
-          <span className={`rounded px-2 py-0.5 ${votePowerBadgeClass(data.vote_power.label)}`}>
-            Vote power: {formatVotePowerLabel(data.vote_power.label)}
+          <span className={`font-medium ${votePowerBadgeClass(data.vote_power.label)}`}>
+            Vote impact: {formatVotePowerLabel(data.vote_power.label)}
           </span>
         ) : null}
         {data.historical_competitiveness ? (
@@ -134,7 +134,7 @@ export function ElectionPage() {
       {data.vote_power.label !== "unknown" && data.vote_power.explanation ? (
         <details className="mt-2 text-sm">
           <summary className="cursor-pointer text-xs font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
-            How do we calculate vote power?
+            How do we calculate vote impact?
           </summary>
           <div className="mt-2 rounded-xl border border-line bg-white p-4">
             <p className="text-ink">{data.vote_power.explanation.how}</p>
@@ -186,23 +186,23 @@ export function ElectionPage() {
             </ul>
           ) : null}
           {researchAreas.length > 0 ? (
-            // Same one-list presentation as the ballot cards: saved matches
-            // lead with a screen-reader-only "(saved)" cue, position is the
-            // only sighted distinction.
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-              <span className="font-medium text-ink-soft">Affected Areas:</span>
-              {orderedAreas.saved.map((area) => (
-                <span key={area.id} className={AREA_CHIP_CLASS}>
-                  {area.name}
-                  <span className="sr-only"> (saved)</span>
-                </span>
+            // Same one-list, comma-separated presentation as the ballot
+            // cards: saved matches lead with a screen-reader-only "(saved)"
+            // cue, position is the only sighted distinction.
+            <p className="mt-3 text-xs">
+              <span className="font-medium text-ink-soft">Affected Areas:</span>{" "}
+              {/* Comma separators live outside the spans as plain text
+                  nodes, so each span's text stays exactly the area name. */}
+              {[...orderedAreas.saved, ...orderedAreas.others].map((area, index, all) => (
+                <Fragment key={area.id}>
+                  <span className={AREA_TEXT_CLASS}>
+                    {area.name}
+                    {orderedAreas.saved.includes(area) ? <span className="sr-only"> (saved)</span> : null}
+                  </span>
+                  {index < all.length - 1 ? ", " : null}
+                </Fragment>
               ))}
-              {orderedAreas.others.map((area) => (
-                <span key={area.id} className={AREA_CHIP_CLASS}>
-                  {area.name}
-                </span>
-              ))}
-            </div>
+            </p>
           ) : null}
         </section>
       ) : null}
@@ -211,32 +211,35 @@ export function ElectionPage() {
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
           <h2 className="text-lg font-semibold text-dem-blue">Ballot Measure</h2>
           {measure.research_area_tags.length > 0 ? (
-            // Stance colors the chip: green = the measure works for that
-            // area, red = against it. Stance wins over the saved-area green
-            // (same hue anyway for "for"); stanceless tags keep the
-            // saved/muted styling. The direction renders as visible text —
-            // color alone would be invisible to color-blind readers — and
-            // saved areas keep the sr-only cue the area chips use elsewhere.
-            <div className="mt-2 flex flex-wrap gap-2 text-xs">
-              {measure.research_area_tags.map((tag) => (
-                <span
-                  key={tag.research_area_id}
-                  className={
-                    tag.stance === "for"
-                      ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
-                      : tag.stance === "against"
-                        ? "rounded border border-red-600/40 bg-red-600/10 px-2 py-0.5 font-medium text-red-900"
-                        : savedAreaIds.has(tag.research_area_id)
-                          ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
-                          : "rounded bg-surface px-2 py-0.5 text-ink-soft"
-                  }
-                >
-                  {tag.name}
-                  {tag.stance === "for" || tag.stance === "against" ? ` · ${tag.stance}` : null}
-                  {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
-                </span>
+            // Comma-separated colored text, not boxed chips (boxes read as
+            // buttons). Stance colors the name: green = the measure works
+            // for that area, red = against it. Stance wins over the
+            // saved-area green (same hue anyway for "for"); stanceless tags
+            // keep the saved/muted styling. The direction renders as visible
+            // text — color alone would be invisible to color-blind readers —
+            // and saved areas keep the sr-only cue used elsewhere.
+            <p className="mt-2 text-xs">
+              {measure.research_area_tags.map((tag, index, all) => (
+                <Fragment key={tag.research_area_id}>
+                  <span
+                    className={
+                      tag.stance === "for"
+                        ? "font-medium text-green-900"
+                        : tag.stance === "against"
+                          ? "font-medium text-red-900"
+                          : savedAreaIds.has(tag.research_area_id)
+                            ? "font-medium text-green-900"
+                            : "text-ink-soft"
+                    }
+                  >
+                    {tag.name}
+                    {tag.stance === "for" || tag.stance === "against" ? ` (${tag.stance})` : null}
+                    {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
+                  </span>
+                  {index < all.length - 1 ? ", " : null}
+                </Fragment>
               ))}
-            </div>
+            </p>
           ) : null}
           {measure.summary ? <p className="mt-2 text-sm text-ink">{measure.summary}</p> : null}
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -334,7 +337,9 @@ export function ElectionPage() {
               // profile page only. Following also happens there.
               <div
                 key={candidate.candidate_id}
-                className="relative rounded-xl border border-line bg-white shadow-sm transition hover:shadow-md"
+                // Faint tint + hover, matching the ballot cards: the card is
+                // the click target and needs a visible at-rest cue.
+                className="relative rounded-xl border border-line bg-surface/50 shadow-sm transition hover:bg-surface hover:shadow-md"
               >
                 <div className="p-4">
                   <h3 className="font-semibold">
@@ -354,27 +359,29 @@ export function ElectionPage() {
                     <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>
                   ) : null}
                   {stances.length > 0 ? (
-                    // Stance direction colors the chip: all-for green, all-
-                    // against red, mixed amber — replacing the saved-area
-                    // green, which said nothing about the candidate (saved
-                    // areas keep their sr-only cue). Counts compress to
-                    // +N/-N; screen readers get the spelled-out counts
-                    // instead, since "-2" can be read as just "2". Every
-                    // stance has for_count + against_count >= 1 —
-                    // aggregateRecordAreaStances drops neutral/untagged
-                    // records — so "against == 0" can only mean all-for.
-                    <div className="mt-2 flex flex-wrap gap-2 text-xs">
-                      {stances.map((stance) => (
-                        <span
-                          key={stance.research_area_id}
-                          className={
-                            stance.against_count === 0
-                              ? "rounded border border-green-600/40 bg-green-600/10 px-2 py-0.5 font-medium text-green-900"
-                              : stance.for_count === 0
-                                ? "rounded border border-red-600/40 bg-red-600/10 px-2 py-0.5 font-medium text-red-900"
-                                : "rounded border border-amber-500/40 bg-amber-400/10 px-2 py-0.5 font-medium text-amber-900"
-                          }
-                        >
+                    // Comma-separated colored text, not boxed chips (boxes
+                    // read as buttons). Stance direction colors the name:
+                    // all-for green, all-against red, mixed amber —
+                    // replacing the saved-area green, which said nothing
+                    // about the candidate (saved areas keep their sr-only
+                    // cue). Counts compress to +N/-N; screen readers get the
+                    // spelled-out counts instead, since "-2" can be read as
+                    // just "2". Every stance has for_count + against_count
+                    // >= 1 — aggregateRecordAreaStances drops
+                    // neutral/untagged records — so "against == 0" can only
+                    // mean all-for.
+                    <p className="mt-2 text-xs">
+                      {stances.map((stance, index, all) => (
+                        <Fragment key={stance.research_area_id}>
+                          <span
+                            className={
+                              stance.against_count === 0
+                                ? "font-medium text-green-900"
+                                : stance.for_count === 0
+                                  ? "font-medium text-red-900"
+                                  : "font-medium text-amber-900"
+                            }
+                          >
                           {stance.name}{" "}
                           <span aria-hidden="true">
                             {[
@@ -392,12 +399,14 @@ export function ElectionPage() {
                               .filter(Boolean)
                               .join(", ")}
                           </span>
-                          {savedAreaIds.has(stance.research_area_id) ? (
-                            <span className="sr-only"> (saved)</span>
-                          ) : null}
-                        </span>
+                            {savedAreaIds.has(stance.research_area_id) ? (
+                              <span className="sr-only"> (saved)</span>
+                            ) : null}
+                          </span>
+                          {index < all.length - 1 ? ", " : null}
+                        </Fragment>
                       ))}
-                    </div>
+                    </p>
                   ) : null}
                 </div>
               </div>

@@ -54,6 +54,7 @@ export function buildBallotMeasuresPrompt(input: BallotMeasurePromptInput): stri
     "- official_measure_url must point to the source where a reader can view the full official measure text in its entirety (for example, the election authority's official measure page or official PDF text).",
     "- summary must be a neutral, concise plain-language summary of the measure’s real-world policy impact if enacted — open with one short sentence stating the main change in everyday words, then give the specifics (amounts, rates, durations, who is affected), not just the topic.",
     "- what_yes_means and what_no_means must be concrete and neutral: state what actually changes in the real world (who pays or gets what, which rule takes effect), never a restatement like 'adopts the measure' or 'the changes described'.",
+    "- If the measure has a cost, include the money in the summary: what it costs the government to do (for example, total bond amount or project cost) and what it costs taxpayers (for example, tax rate change or estimated cost per household per year). Use the official fiscal estimate when one exists, and include only figures your sources state — never derive or estimate a missing figure yourself.",
     "- research_area_tags describes the likely policy effect if YES wins / the measure passes.",
     '- For research_area_tags, "for" means the YES outcome advances that research area’s goal.',
     '- For research_area_tags, "against" means the YES outcome cuts against that research area’s goal.',

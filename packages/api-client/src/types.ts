@@ -287,7 +287,7 @@ export type ElectionResult = {
 // chose a sort, so this list must always be able to represent it.
 export const BALLOT_SORTS = [
   { value: "my_areas", label: "My issues" },
-  { value: "vote_power", label: "Vote power" },
+  { value: "vote_power", label: "Vote impact" },
   { value: "soonest", label: "Soonest first" },
   { value: "district_size", label: "Biggest districts" },
   { value: "district_size_smallest", label: "Smallest districts" },
