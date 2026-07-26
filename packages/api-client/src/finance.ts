@@ -28,6 +28,24 @@ export function hasFinanceContent(summary: FinanceSummary | null | undefined): s
 }
 
 /**
+ * Whether spending is higher than every funding source the card can show
+ * (money raised this cycle plus any public funds). True means the campaign
+ * may also be using money the Raised stat doesn't count — prior-cycle
+ * carryover, loans, transfers, or other receipts ("Raised" is direct
+ * contributions only for most state sources) — which reads as impossible
+ * ("spent more than raised") without an explanation. The cards show a
+ * one-line note when this is true; the note must stay non-causal because
+ * this check cannot tell which of those sources filled the gap.
+ */
+export function spendingExceedsCycleFunds(summary: FinanceSummary): boolean {
+  const direct = summary.direct_campaign;
+  if (direct.total_raised === null || direct.total_spent === null) {
+    return false;
+  }
+  return direct.total_spent > direct.total_raised + (direct.public_funds_received ?? 0);
+}
+
+/**
  * First source URL across every breakdown row, for the card's footer link.
  * Rows share one disclosure portal per source, so any row's URL serves.
  */

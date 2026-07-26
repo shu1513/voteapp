@@ -98,6 +98,32 @@ describe("FinanceSummaryCard", () => {
     );
   });
 
+  it("explains prior-cycle money only when spending tops raised plus public funds", () => {
+    const summary = financeSummary();
+    summary.direct_campaign.total_raised = 40000;
+    summary.direct_campaign.total_spent = 90000;
+    const { rerender } = render(<FinanceSummaryCard summary={summary} />);
+    expect(
+      screen.getByText(/money not counted in Raised/)
+    ).toBeInTheDocument();
+
+    // Public matching money accounts for the gap — no note.
+    const funded = financeSummary();
+    funded.direct_campaign.total_raised = 40000;
+    funded.direct_campaign.total_spent = 90000;
+    funded.direct_campaign.public_funds_received = 60000;
+    rerender(<FinanceSummaryCard summary={funded} />);
+    expect(
+      screen.queryByText(/money not counted in Raised/)
+    ).not.toBeInTheDocument();
+
+    // Normal case (fixture raises more than it spends) — no note.
+    rerender(<FinanceSummaryCard summary={financeSummary()} />);
+    expect(
+      screen.queryByText(/money not counted in Raised/)
+    ).not.toBeInTheDocument();
+  });
+
   it("color-codes outside support green and opposition red", () => {
     const summary = financeSummary();
     const { container } = render(<FinanceSummaryCard summary={summary} />);

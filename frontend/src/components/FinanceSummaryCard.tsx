@@ -15,6 +15,7 @@ import {
   hasFinanceContent,
   hasOutsideFinanceContent,
   sortContributionSizeBuckets,
+  spendingExceedsCycleFunds,
 } from "@voteapp/api-client";
 
 // Campaign finance disclosure panel, rendered on the candidate profile page
@@ -308,6 +309,12 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
           <MoneyStat label="Debts" amount={direct.debts_owed} />
           {hasPublicFunds ? <MoneyStat label="Public funds" amount={publicFundsReceived} /> : null}
         </dl>
+      ) : null}
+      {spendingExceedsCycleFunds(summary) ? (
+        <p className="mt-1 text-xs text-ink-soft">
+          Spent can be higher than Raised because campaigns can also use money not counted in
+          Raised, like funds from earlier years or loans.
+        </p>
       ) : null}
 
       <BreakdownList
