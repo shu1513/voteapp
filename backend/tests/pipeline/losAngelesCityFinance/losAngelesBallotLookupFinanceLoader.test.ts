@@ -16,6 +16,7 @@ describe("Los Angeles ballot finance loader", () => {
             total_receipts: "10",
             total_disbursements: "8",
             cash_on_hand: "2",
+            matching_funds: "6",
             outside_support_total: "3",
             outside_oppose_total: "1",
             source_url: "https://ethics.lacity.gov",
@@ -42,7 +43,7 @@ describe("Los Angeles ballot finance loader", () => {
       );
     expect(result.get("c\u0000e")).toMatchObject({
       source: "LOS_ANGELES_CITY_ETHICS",
-      direct_campaign: { total_raised: 10 },
+      direct_campaign: { total_raised: 10, public_funds_received: 6 },
       outside_spending: { support_total: 3 },
     });
   });
