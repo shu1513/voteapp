@@ -43,7 +43,10 @@ the platform-agnostic reference; this file is the click-by-click order.
    `*.onrender.com` hosts, add routes `impactperdollar.com/*` and
    `www.impactperdollar.com/*` (both DNS records proxied/orange-cloud; the
    record target can be a placeholder like `192.0.2.1` — the Worker
-   intercepts before origin).
+   intercepts before origin). Code updates after that first creation:
+   `cd infra/cloudflare && npm ci && npm run deploy` (Node 22+, one-time
+   `npx wrangler login`; wrangler is pinned in package.json and
+   wrangler.toml's `keep_vars` protects the dashboard vars).
 4. **contact@ mailbox**: Cloudflare Email Routing →
    `contact@impactperdollar.com` → forward to the operator inbox.
    Launch-blocking: the legal docs promise this address.

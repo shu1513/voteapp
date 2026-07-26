@@ -1,7 +1,8 @@
 # CLI deploys for the edge router (docs/deploy-render.md "Cloudflare
 # Worker"). The Worker was originally created by pasting router-worker.js
-# into the dashboard; this config lets `npx wrangler deploy` update it
-# instead.
+# into the dashboard; this config lets `npm ci && npm run deploy` (Node
+# 22+; wrangler is pinned in package.json so deploys don't silently adopt
+# a newer CLI) update it instead.
 #
 # keep_vars is REQUIRED: API_ORIGIN / SSR_ORIGIN are plain vars set in the
 # dashboard, and without keep_vars a wrangler deploy deletes any var not
