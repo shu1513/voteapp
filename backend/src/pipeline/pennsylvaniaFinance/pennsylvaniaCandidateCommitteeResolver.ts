@@ -354,6 +354,58 @@ export function resolvePennsylvaniaCandidateCommittee(
       registrationRows.map((row) => phoneDigits(row.PHONE)).filter((phone) => phone.length >= 7)
     );
 
+    // The FILER, not the row, is what gets recalled — so every populated
+    // OFFICE/DISTRICT across a filer's current-cycle rows must agree with
+    // the race: a populated office must denote THIS office, a populated
+    // district must normalize to THIS district (statewide races admit none),
+    // and junk district values veto too. One conflicting sibling row vetoes
+    // the whole filer even when the row under consideration is blank (live:
+    // 90 committees carry both blank and populated DISTRICT rows). Rows from
+    // other election years do not veto — committees legitimately carried
+    // other districts in past cycles.
+    const committeeRowsByFilerId = new Map<string, PennsylvaniaCampaignFinanceFilerRow[]>();
+    for (const row of input.filerRows) {
+      if (row.FILERTYPE.trim() !== "2") {
+        continue;
+      }
+      const filerId = row.FILERID.trim().toUpperCase();
+      if (!filerId) {
+        continue;
+      }
+      const rows = committeeRowsByFilerId.get(filerId) ?? [];
+      rows.push(row);
+      committeeRowsByFilerId.set(filerId, rows);
+    }
+    const filerContextVerdicts = new Map<string, boolean>();
+    const filerContextAgreesWithRace = (filerId: string): boolean => {
+      const cached = filerContextVerdicts.get(filerId);
+      if (cached !== undefined) {
+        return cached;
+      }
+      let agrees = true;
+      for (const sibling of committeeRowsByFilerId.get(filerId) ?? []) {
+        if (!rowMatchesElectionYear(sibling, electionYear)) {
+          continue;
+        }
+        const siblingOffice = sibling.OFFICE.trim();
+        if (siblingOffice && mapPennsylvaniaFinanceOfficeCode(siblingOffice) !== officeSearchInput.paOfficeCode) {
+          agrees = false;
+          break;
+        }
+        const siblingDistrict = sibling.DISTRICT.trim();
+        if (
+          siblingDistrict &&
+          (officeSearchInput.district === null ||
+            normalizePennsylvaniaFinanceLegislativeDistrict(siblingDistrict, 203) !== officeSearchInput.district)
+        ) {
+          agrees = false;
+          break;
+        }
+      }
+      filerContextVerdicts.set(filerId, agrees);
+      return agrees;
+    };
+
     for (const row of input.filerRows) {
       const filerId = row.FILERID.trim().toUpperCase();
       const filerName = row.FILERNAME.trim();
@@ -363,28 +415,8 @@ export function resolvePennsylvaniaCandidateCommittee(
       if (row.FILERTYPE.trim() !== "2") {
         continue;
       }
-      // Two recallable shapes, both requiring the corroboration below. A
-      // populated field is always an explicit signal the row must not
-      // contradict:
-      // - OFFICE named: it must denote the SAME office, and the row must
-      //   carry no district of its own (a present district was either
-      //   office-matched by the first pass or is a conflict).
-      // - OFFICE blank: a populated DISTRICT must normalize to the requested
-      //   legislative district, and statewide races admit no district-bearing
-      //   row at all.
-      const rowOffice = row.OFFICE.trim();
-      const rowDistrict = row.DISTRICT.trim();
-      if (rowOffice) {
-        if (rowDistrict || mapPennsylvaniaFinanceOfficeCode(rowOffice) !== officeSearchInput.paOfficeCode) {
-          continue;
-        }
-      } else if (rowDistrict) {
-        if (
-          officeSearchInput.district === null ||
-          normalizePennsylvaniaFinanceLegislativeDistrict(rowDistrict, 203) !== officeSearchInput.district
-        ) {
-          continue;
-        }
+      if (!filerContextAgreesWithRace(filerId)) {
+        continue;
       }
       if (!rowMatchesElectionYear(row, electionYear)) {
         continue;

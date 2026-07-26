@@ -391,6 +391,133 @@ describe("pennsylvaniaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("vetoes recall when a sibling row of the same filer carries a conflicting district", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Rosemary Brown",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "40",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0183",
+            FILERNAME: "ROSEMARY BROWN",
+            FILERTYPE: "1",
+            OFFICE: "STS",
+            DISTRICT: "40",
+            ZIPCODE: "18372",
+          }),
+          filerRow({
+            FILERID: "2010237",
+            FILERNAME: "FRIENDS OF ROSEMARY BROWN",
+            FILERTYPE: "2",
+            OFFICE: "STS",
+            DISTRICT: "",
+            ZIPCODE: "18372",
+          }),
+          filerRow({
+            FILERID: "2010237",
+            FILERNAME: "FRIENDS OF ROSEMARY BROWN",
+            FILERTYPE: "2",
+            OFFICE: "STS",
+            DISTRICT: "12",
+            ZIPCODE: "18372",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "2026C0183",
+      filerType: "1",
+    });
+  });
+
+  it("does not let a corroborating sibling district veto the recall", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Aaron Bernstine",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0279",
+            FILERNAME: "AARON BERNSTINE",
+            FILERTYPE: "1",
+            OFFICE: "STH",
+            DISTRICT: "8",
+            ZIPCODE: "16141",
+          }),
+          filerRow({
+            FILERID: "20150221",
+            FILERNAME: "FRIENDS OF AARON BERNSTINE",
+            FILERTYPE: "2",
+            OFFICE: "",
+            DISTRICT: "",
+            ZIPCODE: "16141",
+          }),
+          filerRow({
+            FILERID: "20150221",
+            FILERNAME: "FRIENDS OF AARON BERNSTINE",
+            FILERTYPE: "2",
+            OFFICE: "STH",
+            DISTRICT: "08",
+            ZIPCODE: "16141",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "20150221",
+      filerType: "2",
+    });
+  });
+
+  it("ignores a conflicting sibling district from another election year", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Rosemary Brown",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "40",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0183",
+            FILERNAME: "ROSEMARY BROWN",
+            FILERTYPE: "1",
+            OFFICE: "STS",
+            DISTRICT: "40",
+            ZIPCODE: "18372",
+          }),
+          filerRow({
+            FILERID: "2010237",
+            FILERNAME: "FRIENDS OF ROSEMARY BROWN",
+            FILERTYPE: "2",
+            OFFICE: "STS",
+            DISTRICT: "",
+            ZIPCODE: "18372",
+          }),
+          filerRow({
+            FILERID: "2010237",
+            FILERNAME: "FRIENDS OF ROSEMARY BROWN",
+            FILERTYPE: "2",
+            EYEAR: "2022",
+            OFFICE: "STH",
+            DISTRICT: "189",
+            ZIPCODE: "18372",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "2010237",
+      filerType: "2",
+    });
+  });
+
   it("keeps the registration when a same-office blank-district committee lacks corroboration", () => {
     expect(
       resolvePennsylvaniaCandidateCommittee({
