@@ -1,4 +1,3 @@
-import { deflateRawSync } from "node:zlib";
 import { describe, expect, it, vi } from "vitest";
 
 import {
@@ -7,116 +6,13 @@ import {
   michiganMitnExportRowsToLegacyContributionRows,
   parseMichiganMitnCommitteeSearchHtml,
   parseMichiganMitnExportXlsxRows,
+  resolveMichiganMitnCommitteeViaSearch,
+  splitMichiganCandidateNameForSearch,
 } from "../../../src/pipeline/michiganFinance/michiganMitnPublicSearchClient.js";
 
-// --- helpers ---------------------------------------------------------------
+import { MITN_EXPORT_HEADER, buildZip, sheetXml } from "./mitnXlsxTestFixture.js";
 
-function crc32(buffer: Buffer): number {
-  let crc = 0xffffffff;
-  for (const byte of buffer) {
-    crc ^= byte;
-    for (let bit = 0; bit < 8; bit += 1) {
-      crc = (crc >>> 1) ^ (0xedb88320 & -(crc & 1));
-    }
-  }
-  return (crc ^ 0xffffffff) >>> 0;
-}
-
-/** Builds a minimal real zip (deflate) holding the given files. */
-function buildZip(files: { name: string; content: string }[]): Buffer {
-  const localParts: Buffer[] = [];
-  const centralParts: Buffer[] = [];
-  let offset = 0;
-
-  for (const file of files) {
-    const nameBuffer = Buffer.from(file.name, "utf8");
-    const raw = Buffer.from(file.content, "utf8");
-    const compressed = deflateRawSync(raw);
-    const checksum = crc32(raw);
-
-    const local = Buffer.alloc(30);
-    local.writeUInt32LE(0x04034b50, 0);
-    local.writeUInt16LE(20, 4);
-    local.writeUInt16LE(0, 6);
-    local.writeUInt16LE(8, 8); // deflate
-    local.writeUInt32LE(0, 10);
-    local.writeUInt32LE(checksum, 14);
-    local.writeUInt32LE(compressed.length, 18);
-    local.writeUInt32LE(raw.length, 22);
-    local.writeUInt16LE(nameBuffer.length, 26);
-    local.writeUInt16LE(0, 28);
-    localParts.push(local, nameBuffer, compressed);
-
-    const central = Buffer.alloc(46);
-    central.writeUInt32LE(0x02014b50, 0);
-    central.writeUInt16LE(20, 4);
-    central.writeUInt16LE(20, 6);
-    central.writeUInt16LE(0, 8);
-    central.writeUInt16LE(8, 10);
-    central.writeUInt32LE(0, 12);
-    central.writeUInt32LE(checksum, 16);
-    central.writeUInt32LE(compressed.length, 20);
-    central.writeUInt32LE(raw.length, 24);
-    central.writeUInt16LE(nameBuffer.length, 28);
-    central.writeUInt16LE(0, 30);
-    central.writeUInt16LE(0, 32);
-    central.writeUInt32LE(offset, 42);
-    centralParts.push(central, nameBuffer);
-
-    offset += local.length + nameBuffer.length + compressed.length;
-  }
-
-  const centralSize = centralParts.reduce((sum, part) => sum + part.length, 0);
-  const eocd = Buffer.alloc(22);
-  eocd.writeUInt32LE(0x06054b50, 0);
-  eocd.writeUInt16LE(files.length, 8);
-  eocd.writeUInt16LE(files.length, 10);
-  eocd.writeUInt32LE(centralSize, 12);
-  eocd.writeUInt32LE(offset, 16);
-
-  return Buffer.concat([...localParts, ...centralParts, eocd]);
-}
-
-function sheetXml(rows: string[][]): string {
-  const body = rows
-    .map(
-      (cells, rowIndex) =>
-        `<row r="${rowIndex + 1}">` +
-        cells
-          .map((value, columnIndex) => {
-            const ref = `${String.fromCharCode(65 + columnIndex)}${rowIndex + 1}`;
-            return value === ""
-              ? `<c r="${ref}" t="inlineStr"/>`
-              : `<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${value}</t></is></c>`;
-          })
-          .join("") +
-        `</row>`
-    )
-    .join("");
-  return `<?xml version="1.0"?><worksheet><sheetData>${body}</sheetData></worksheet>`;
-}
-
-const EXPORT_HEADER = [
-  "Record Type (1=Parent, 2=Child)",
-  "Receipt ID",
-  "Filing Status (C=Complete,I=Incomplete)",
-  "Document Type",
-  "Document Statement Year",
-  "Document Statement Type",
-  "Receiving Committee Name",
-  "Receiving Committee ID#",
-  "Receiving Committee Type",
-  "Receiving Candidate First Name",
-  "Receiving Candidate Last Name",
-  "Type of Contribution",
-  "Contributor First Name",
-  "Organization Name/Contributor Last Name",
-  "Contributor Occupation",
-  "Contributor Employer",
-  "Date of Contribution",
-  "Amount of Contribution",
-  "Cumulative from this person/org",
-];
+const EXPORT_HEADER = MITN_EXPORT_HEADER;
 
 const COMMITTEE_RESULT_HTML = `
 <table>
@@ -286,6 +182,72 @@ describe("michiganMitnPublicSearchClient", () => {
       amount: "1000.00",
       aggregate: "1000.00",
     });
+  });
+
+  it("splits display names into search tokens", () => {
+    expect(splitMichiganCandidateNameForSearch("Angela M. Jones")).toEqual({ firstName: "Angela", lastName: "Jones" });
+    expect(splitMichiganCandidateNameForSearch("Joseph Bellino Jr.")).toEqual({
+      firstName: "Joseph",
+      lastName: "Bellino",
+    });
+    expect(splitMichiganCandidateNameForSearch("Chris Gilmer-Hill")).toEqual({
+      firstName: "Chris",
+      lastName: "Gilmer-Hill",
+    });
+    expect(splitMichiganCandidateNameForSearch('Glenn "Mike" Prax (Mike)')).toEqual({
+      firstName: "Glenn",
+      lastName: "Prax",
+    });
+    expect(splitMichiganCandidateNameForSearch("Cher")).toEqual({ firstName: "Cher", lastName: "" });
+  });
+
+  it("resolves exactly one active candidate committee via the public search", async () => {
+    const fetchFn = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      text: async () => `
+        <table>
+          <tr><td>521877</td><td>Candidate</td><td>ARIC NESBITT FOR GOVERNOR</td><td>Active</td></tr>
+          <tr><td>514761</td><td>Candidate</td><td>ARIC NESBITT FOR STATE REPRESENTATIVE</td><td>Dissolved</td></tr>
+        </table>`,
+      arrayBuffer: async () => new ArrayBuffer(0),
+    });
+
+    expect(
+      await resolveMichiganMitnCommitteeViaSearch({ candidateName: "Aric Nesbitt", mitnOffice: "Governor", fetchFn })
+    ).toEqual({ status: "matched", committeeId: "521877", committeeName: "ARIC NESBITT FOR GOVERNOR" });
+  });
+
+  it("refuses zero or multiple active committees and unsupported offices", async () => {
+    const twoActive = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      text: async () => `
+        <table>
+          <tr><td>1</td><td>Candidate</td><td>JANE DOE FOR MICHIGAN</td><td>Active</td></tr>
+          <tr><td>2</td><td>Candidate</td><td>COMMITTEE TO ELECT JANE DOE</td><td>Active</td></tr>
+        </table>`,
+      arrayBuffer: async () => new ArrayBuffer(0),
+    });
+    expect(
+      (await resolveMichiganMitnCommitteeViaSearch({ candidateName: "Jane Doe", mitnOffice: "State House", fetchFn: twoActive }))
+        .status
+    ).toBe("ambiguous");
+
+    const noneActive = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      text: async () => `<table><tr><td>1</td><td>Candidate</td><td>JANE DOE FOR MICHIGAN</td><td>Dissolved</td></tr></table>`,
+      arrayBuffer: async () => new ArrayBuffer(0),
+    });
+    expect(
+      await resolveMichiganMitnCommitteeViaSearch({ candidateName: "Jane Doe", mitnOffice: "State House", fetchFn: noneActive })
+    ).toEqual({ status: "unmatched", reason: "no_active_candidate_committee" });
+
+    expect(
+      await resolveMichiganMitnCommitteeViaSearch({ candidateName: "Jane Doe", mitnOffice: "County Drain Commissioner", fetchFn: noneActive })
+    ).toEqual({ status: "unmatched", reason: "unsupported_office" });
+    expect(noneActive).toHaveBeenCalledTimes(1);
   });
 
   it("skips blank export rows and requires recognized headers", () => {

@@ -226,6 +226,76 @@ export async function fetchMichiganMitnContributionExportXlsx(
   return buffer;
 }
 
+// --- Committee resolution via the public search ----------------------------
+
+export type MichiganMitnSearchResolution =
+  | { status: "matched"; committeeId: string; committeeName: string }
+  | { status: "unmatched"; reason: "unsupported_office" | "no_active_candidate_committee" }
+  | { status: "ambiguous"; matches: MichiganMitnCommitteeSearchRow[] };
+
+const NAME_SUFFIX_PATTERN = /^(?:JR|SR|II|III|IV|V)\.?$/i;
+
+/**
+ * First/last tokens for the search filters: parenthetical nicknames dropped,
+ * generational suffixes stripped, hyphenated last names kept whole.
+ */
+export function splitMichiganCandidateNameForSearch(displayName: string): {
+  firstName: string;
+  lastName: string;
+} {
+  const tokens = displayName
+    .replace(/\([^()]*\)/g, " ")
+    .replace(/["“”]/g, " ")
+    .split(/\s+/)
+    .map((token) => token.trim())
+    .filter(Boolean);
+  while (tokens.length > 1 && NAME_SUFFIX_PATTERN.test(tokens[tokens.length - 1]!)) {
+    tokens.pop();
+  }
+  return {
+    firstName: tokens[0] ?? "",
+    lastName: tokens.length > 1 ? tokens[tokens.length - 1]! : "",
+  };
+}
+
+/**
+ * Resolves a candidate's committee from the MiTN public committee search:
+ * candidate first + last name and the race's office as SERVER-side filters,
+ * then require exactly one ACTIVE candidate committee. Zero or several stay
+ * unresolved — no guessing between committees.
+ */
+export async function resolveMichiganMitnCommitteeViaSearch(input: {
+  candidateName: string;
+  /** Canonical MiTN office label (a MICHIGAN_MITN_OFFICE_SOUGHT_IDS key). */
+  mitnOffice: string;
+  fetchFn: MichiganMitnFetchFn;
+}): Promise<MichiganMitnSearchResolution> {
+  if (!MICHIGAN_MITN_OFFICE_SOUGHT_IDS.has(input.mitnOffice)) {
+    return { status: "unmatched", reason: "unsupported_office" };
+  }
+  const { firstName, lastName } = splitMichiganCandidateNameForSearch(input.candidateName);
+  if (!firstName || !lastName) {
+    return { status: "unmatched", reason: "no_active_candidate_committee" };
+  }
+  const rows = await fetchMichiganMitnCommitteeSearch({
+    candidateLastName: lastName,
+    candidateFirstName: firstName,
+    officeSought: input.mitnOffice,
+    fetchFn: input.fetchFn,
+  });
+  const activeCandidateCommittees = rows.filter(
+    (row) => row.status.trim().toUpperCase() === "ACTIVE" && row.committeeType.trim().toUpperCase() === "CANDIDATE"
+  );
+  if (activeCandidateCommittees.length === 1) {
+    const match = activeCandidateCommittees[0]!;
+    return { status: "matched", committeeId: match.committeeId, committeeName: match.committeeName };
+  }
+  if (activeCandidateCommittees.length === 0) {
+    return { status: "unmatched", reason: "no_active_candidate_committee" };
+  }
+  return { status: "ambiguous", matches: activeCandidateCommittees };
+}
+
 // --- Minimal xlsx reading -------------------------------------------------
 //
 // The MiTN export writes every cell as an inline string, so the worksheet is
