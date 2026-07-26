@@ -248,7 +248,12 @@ export async function syncAlaskaCandidateFinance(
   // Includable IE rows named two conflicting formal first names behind this
   // candidate's nickname: the identity behind the link is in doubt, so write
   // nothing and keep the previously stored snapshot intact rather than
-  // persisting zeroed outside totals and an empty group set.
+  // persisting zeroed outside totals and an empty group set. Direct
+  // contributions are deliberately frozen too - they flow through the same
+  // possibly-misidentified link, and the summary row is atomic (direct and
+  // outside totals live in one row), so a direct-only update would mix sync
+  // generations. The batch sync warns; staleness lasts until a human
+  // resolves the identity. Texas applies the same rule.
   if (outsideFinance.firstNameConflict) {
     return {
       candidateId,
