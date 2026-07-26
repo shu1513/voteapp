@@ -68,6 +68,7 @@ describe("probeMichiganCandidateFinance script", () => {
         "--year=2022",
         "--office=Governor",
         "--office-scope=statewide",
+        "--current-office=Michigan Secretary of State",
         "--raw-extracted-dir=/tmp/2022_mi_cfr",
         "--limit=3",
         "--min-industry-amount=25000",
@@ -78,6 +79,7 @@ describe("probeMichiganCandidateFinance script", () => {
       officeScope: "statewide",
       officeName: "Governor",
       district: null,
+      currentOffice: "Michigan Secretary of State",
       rawExtractedDir: "/tmp/2022_mi_cfr",
       sourceUrl:
         "https://www.michigan.gov/sos/-/media/Project/Websites/sos/Elections/Disclosure/MiTN/Legacy-Data/2022_mi_cfr.7z",

@@ -153,6 +153,27 @@ describe("michiganCandidateFinanceSync", () => {
     expect(sql.some((statement) => statement.includes("INSERT INTO public.finance_label_classifications"))).toBe(true);
   });
 
+  it("passes currentOffice through so a direct sync cannot unlink an office-mover", async () => {
+    const db = createMockDb();
+
+    const result = await syncMichiganCandidateFinance({
+      db,
+      ...baseInput(),
+      officeScope: "statewide",
+      officeName: "Governor",
+      currentOffice: "Michigan Secretary of State",
+      dryRun: true,
+      contributionRows: [
+        contribution({
+          com_legal_name: "GRETCHEN WHITMER FOR SECRETARY OF STATE",
+          common_name: "",
+        }),
+      ],
+    });
+
+    expect(result.resolution.status).toBe("matched");
+  });
+
   it("can use a trusted committee and skip resolver name drift", async () => {
     const db = createMockDb();
 
