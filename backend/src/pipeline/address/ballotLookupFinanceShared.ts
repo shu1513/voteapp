@@ -110,6 +110,15 @@ export type BallotLookupFinanceSummary = {
   outside_spending: {
     support_total: number | null;
     oppose_total: number | null;
+    /**
+     * "Member communications" (LA Ethics): spending by organizations to
+     * their own members supporting/opposing this candidate. Legally
+     * distinct from independent expenditures, so it is never folded into
+     * support_total/oppose_total. Only loaders whose source discloses it
+     * set these.
+     */
+    membership_support_total?: number | null;
+    membership_oppose_total?: number | null;
     top_supporting_groups: BallotLookupFinanceOutsideGroup[];
     top_opposing_groups: BallotLookupFinanceOutsideGroup[];
     top_supporting_industries: BallotLookupFinanceBreakdown[];

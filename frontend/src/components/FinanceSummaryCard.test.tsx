@@ -241,6 +241,30 @@ describe("FinanceSummaryCard", () => {
     expect(screen.queryByText(/Money from/)).not.toBeInTheDocument();
   });
 
+  it("renders member communications as its own section, hiding the $0 side", () => {
+    const summary = emptyFinanceSummary();
+    summary.outside_spending.membership_support_total = 203457;
+    summary.outside_spending.membership_oppose_total = 0;
+    render(<FinanceSummaryCard summary={summary} />);
+
+    expect(screen.getByText("Member communications")).toBeInTheDocument();
+    expect(
+      screen.getByText(/spending to talk to their own members about this candidate/)
+    ).toBeInTheDocument();
+    expect(screen.getByText("Spent supporting this candidate: $203,457")).toBeInTheDocument();
+    // The $0 oppose side hides (the LA sync writes 0 for every candidate),
+    // and member money must not appear under the outside-groups section —
+    // it is legally distinct from independent expenditures.
+    expect(screen.queryByText(/Spent opposing this candidate/)).not.toBeInTheDocument();
+    expect(screen.queryByText("Spending by outside groups")).not.toBeInTheDocument();
+  });
+
+  it("renders no member-communications section when nothing was reported", () => {
+    const summary = financeSummary();
+    render(<FinanceSummaryCard summary={summary} />);
+    expect(screen.queryByText("Member communications")).not.toBeInTheDocument();
+  });
+
   it("renders an explicit $0 raised instead of hiding it", () => {
     const summary = emptyFinanceSummary();
     summary.direct_campaign.total_raised = 0;

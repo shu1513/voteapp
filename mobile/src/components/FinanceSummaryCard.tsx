@@ -197,6 +197,49 @@ function OutsideSection({
   );
 }
 
+/**
+ * Member communications: an organization spending to reach its own members
+ * about a candidate (a union mailing its membership, for example). Legally
+ * distinct from independent expenditures — it may even be coordinated with
+ * the campaign — so it gets its own section instead of joining the outside
+ * totals. Neutral styling like this card's outside boxes. A $0 side renders
+ * nothing (the LA sync writes 0 for every linked candidate).
+ */
+function MemberCommunicationsSection({
+  supportTotal,
+  opposeTotal,
+}: {
+  supportTotal: number | null | undefined;
+  opposeTotal: number | null | undefined;
+}) {
+  const rows = [
+    { direction: "supporting", amount: supportTotal },
+    { direction: "opposing", amount: opposeTotal },
+  ].filter((row) => (row.amount ?? 0) > 0);
+  if (rows.length === 0) {
+    return null;
+  }
+  return (
+    <View className="mt-3">
+      <Text className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
+        Member communications
+      </Text>
+      <Text className="mt-1 text-xs text-ink-soft">
+        Money organizations — such as unions or trade associations — reported spending to talk to
+        their own members about this candidate. Disclosed separately from outside spending, and it
+        does not go to the candidate.
+      </Text>
+      {rows.map((row) => (
+        <View key={row.direction} className="mt-2 rounded border border-line p-2">
+          <Text className="text-sm font-medium text-ink">
+            Spent {row.direction} this candidate: {formatMoney(row.amount ?? 0)}
+          </Text>
+        </View>
+      ))}
+    </View>
+  );
+}
+
 export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
   const direct = summary.direct_campaign;
   const outside = summary.outside_spending;
@@ -268,6 +311,11 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
           ) : null}
         </View>
       ) : null}
+
+      <MemberCommunicationsSection
+        supportTotal={outside.membership_support_total}
+        opposeTotal={outside.membership_oppose_total}
+      />
 
       <Text className="mt-3 text-xs text-ink-soft">
         Source: {financeSourceLabel(summary.source)} · {summary.cycle} cycle

@@ -19,6 +19,8 @@ describe("Los Angeles ballot finance loader", () => {
             matching_funds: "6",
             outside_support_total: "3",
             outside_oppose_total: "1",
+            membership_support_total: "203457",
+            membership_oppose_total: "0",
             source_url: "https://ethics.lacity.gov",
             last_synced_at: "2026-07-11",
           },
@@ -44,8 +46,20 @@ describe("Los Angeles ballot finance loader", () => {
     expect(result.get("c\u0000e")).toMatchObject({
       source: "LOS_ANGELES_CITY_ETHICS",
       direct_campaign: { total_raised: 10, public_funds_received: 6 },
-      outside_spending: { support_total: 3 },
+      // Member communications ride along as their own totals — they are
+      // legally distinct from independent expenditures and must never be
+      // folded into support_total/oppose_total.
+      outside_spending: {
+        support_total: 3,
+        oppose_total: 1,
+        membership_support_total: 203457,
+        membership_oppose_total: 0,
+      },
     });
+    // The summary SQL must actually select the membership columns — they
+    // were silently dropped from the read path once before.
+    expect(String(query.mock.calls[0]?.[0])).toContain("summary.membership_support_total");
+    expect(String(query.mock.calls[0]?.[0])).toContain("summary.membership_oppose_total");
   });
   it("does no DB work for another California city", async () => {
     vi.stubEnv("LOS_ANGELES_CITY_CAMPAIGN_FINANCE_ENABLED", "true");

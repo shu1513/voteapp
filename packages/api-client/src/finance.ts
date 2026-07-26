@@ -22,7 +22,8 @@ export function hasFinanceContent(summary: FinanceSummary | null | undefined): s
     direct.public_funds_received != null ||
     direct.top_occupations.length > 0 ||
     (direct.contribution_size_buckets?.length ?? 0) > 0 ||
-    hasOutsideFinanceContent(summary)
+    hasOutsideFinanceContent(summary) ||
+    hasMemberCommunications(summary)
   );
 }
 
@@ -59,4 +60,17 @@ export function hasOutsideFinanceContent(summary: FinanceSummary): boolean {
     outside.top_supporting_industries.length > 0 ||
     outside.top_opposing_industries.length > 0
   );
+}
+
+/**
+ * Whether the cards should render a member-communications block: spending
+ * by organizations to their own members about this candidate (disclosed
+ * separately from independent expenditures — today only by LA Ethics).
+ * Unlike the other money fields, a disclosed $0 hides: the sync writes 0
+ * for every linked candidate, so 0 means "none reported", not a disclosure
+ * worth a row.
+ */
+export function hasMemberCommunications(summary: FinanceSummary): boolean {
+  const outside = summary.outside_spending;
+  return (outside.membership_support_total ?? 0) > 0 || (outside.membership_oppose_total ?? 0) > 0;
 }
