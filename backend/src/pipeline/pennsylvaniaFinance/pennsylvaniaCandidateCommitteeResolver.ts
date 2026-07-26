@@ -214,6 +214,14 @@ function rowMatchesElectionYear(row: PennsylvaniaCampaignFinanceFilerRow, electi
   return rowYear === null || rowYear === electionYear;
 }
 
+function zip5(value: string): string {
+  return value.replace(/[^0-9]/g, "").slice(0, 5);
+}
+
+function phoneDigits(value: string): string {
+  return value.replace(/[^0-9]/g, "");
+}
+
 function rowMatchesOfficeContext(input: {
   row: PennsylvaniaCampaignFinanceFilerRow;
   officeSearchInput: PennsylvaniaFinanceOfficeSearchInput;
@@ -322,6 +330,76 @@ export function resolvePennsylvaniaCandidateCommittee(
     };
     accumulator.rows.push(row);
     rowsByFiler.set(filerId, accumulator);
+  }
+
+  // Most PA committee rows leave OFFICE blank (3,428 of 4,060 in the 2026
+  // export), so the office filter above cannot see the funded committee and
+  // the candidate resolves to their moneyless FILERTYPE 1 registration row.
+  // Admit a blank-OFFICE committee ONLY with corroboration: the candidacy is
+  // proven by an office-matched registration row from the first pass, the
+  // committee name matches the candidate, the row is active this cycle, and
+  // the committee shares a ZIP or phone number with that registration row —
+  // a same-name stranger's committee shares neither. Name-only committees
+  // stay out.
+  const registrationRows = [...rowsByFiler.values()]
+    .filter((accumulator) => accumulator.filerType === "1")
+    .flatMap((accumulator) => accumulator.rows);
+  if (registrationRows.length > 0) {
+    const registrationZips = new Set(
+      registrationRows.map((row) => zip5(row.ZIPCODE)).filter((zip) => zip.length === 5)
+    );
+    const registrationPhones = new Set(
+      registrationRows.map((row) => phoneDigits(row.PHONE)).filter((phone) => phone.length >= 7)
+    );
+
+    for (const row of input.filerRows) {
+      const filerId = row.FILERID.trim().toUpperCase();
+      const filerName = row.FILERNAME.trim();
+      if (!filerId || !filerName || rowsByFiler.has(filerId)) {
+        continue;
+      }
+      if (row.FILERTYPE.trim() !== "2" || row.OFFICE.trim()) {
+        continue;
+      }
+      // A blank OFFICE says nothing, but a populated DISTRICT is an explicit
+      // signal: it must normalize to the requested legislative district, and
+      // statewide races admit no district-bearing row at all.
+      const rowDistrict = row.DISTRICT.trim();
+      if (rowDistrict) {
+        if (
+          officeSearchInput.district === null ||
+          normalizePennsylvaniaFinanceLegislativeDistrict(rowDistrict, 203) !== officeSearchInput.district
+        ) {
+          continue;
+        }
+      }
+      if (!rowMatchesElectionYear(row, electionYear)) {
+        continue;
+      }
+      if (!isLikelyCandidateFiler(row)) {
+        continue;
+      }
+      if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+        continue;
+      }
+      const rowZip = zip5(row.ZIPCODE);
+      const rowPhone = phoneDigits(row.PHONE);
+      const corroborated =
+        (rowZip.length === 5 && registrationZips.has(rowZip)) ||
+        (rowPhone.length >= 7 && registrationPhones.has(rowPhone));
+      if (!corroborated) {
+        continue;
+      }
+
+      const accumulator = rowsByFiler.get(filerId) ?? {
+        filerId,
+        filerName,
+        filerType: "2",
+        rows: [],
+      };
+      accumulator.rows.push(row);
+      rowsByFiler.set(filerId, accumulator);
+    }
   }
 
   if (rowsByFiler.size === 0) {

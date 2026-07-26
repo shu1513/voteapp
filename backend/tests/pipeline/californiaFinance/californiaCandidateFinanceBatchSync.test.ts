@@ -329,6 +329,46 @@ describe("californiaCandidateFinanceBatchSync", () => {
     );
   });
 
+  it("never auto-links (no link writes) in dry-run mode", async () => {
+    const db = createMockDb([]);
+    const syncCaliforniaCandidateFinanceFn = vi.fn();
+
+    await syncDueCaliforniaCandidateFinance({
+      db,
+      syncCaliforniaCandidateFinanceFn,
+      now: new Date("2026-06-01T00:00:00.000Z"),
+      dryRun: true,
+      rawDataResolutionData: {
+        zipPath: "/tmp/dbwebexport.zip",
+        sourceUrl: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+        campaignCoverRows: [
+          {
+            FILING_ID: "F1",
+            FILER_ID: "1456045",
+            FILER_NAML: "Newsom for California Governor 2026",
+            ELECT_DATE: "11/3/2026 12:00:00 AM",
+            CAND_NAML: "NEWSOM",
+            CAND_NAMF: "GAVIN",
+            OFFICE_CD: "GOV",
+            OFFIC_DSCR: "Governor",
+          },
+        ],
+        filerNameRows: [],
+      },
+      rawDataReceiptData: {
+        zipPath: "/tmp/dbwebexport.zip",
+        sourceUrl: "https://campaignfinance.cdn.sos.ca.gov/dbwebexport.zip",
+        receiptRowsByCommitteeId: new Map(),
+        controlledCommitteeFilingIdsByCommitteeId: new Map(),
+      },
+    });
+
+    for (const call of db.query.mock.calls) {
+      expect(String(call[0])).not.toContain("FROM public.candidate_elections AS candidate_election");
+      expect(String(call[0])).not.toContain("INSERT INTO public.ca_candidate_finance_links");
+    }
+  });
+
   it("caches CAL-ACCESS receipt loads across overlapping outside committee requests", async () => {
     const rowA = { CMTE_ID: "A1", FILING_ID: "FA", AMOUNT: "100.00" };
     const rowB = { CMTE_ID: "B2", FILING_ID: "FB", AMOUNT: "200.00" };

@@ -367,7 +367,10 @@ export async function syncDueCaliforniaCandidateFinance(
         })
       : input.rawDataResolutionData;
 
-  if (input.autoLinkMissingLinks !== false && resolutionData) {
+  // Auto-link writes candidate->committee links, so it must respect dryRun —
+  // Pennsylvania's batch sync applies the same guard (a live CA "--dry-run"
+  // used to commit link rows while skipping only the money sync).
+  if (!dryRun && input.autoLinkMissingLinks !== false && resolutionData) {
     try {
       const autoLinkResults = await autoLinkMissingCaliforniaCandidateFinanceLinks({
         db: input.db,
