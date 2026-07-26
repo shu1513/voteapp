@@ -203,6 +203,32 @@ function electionYearMatches(row: CalAccessCampaignCoverRow, electionYear: numbe
   return parseCalAccessDateYear(value(row, "ELECT_DATE")) === electionYear;
 }
 
+/**
+ * Independent-expenditure reports (F496 late IE, F465 supplemental IE) name
+ * the candidate a committee spent FOR or AGAINST — they are never evidence
+ * that the filer is the candidate's own committee. Same for cover rows whose
+ * declared committee type is present but not "C" (G = general purpose,
+ * B = ballot measure): those committees name the controlling candidate on
+ * their filings without being the candidate-election committee.
+ */
+const INDEPENDENT_EXPENDITURE_FORM_TYPES = new Set(["F496", "F465"]);
+
+function isCandidateCommitteeEvidenceRow(row: CalAccessCampaignCoverRow): boolean {
+  const formType = value(row, "FORM_TYPE").toUpperCase();
+  if (INDEPENDENT_EXPENDITURE_FORM_TYPES.has(formType)) {
+    return false;
+  }
+  const committeeType = value(row, "CMTTE_TYPE").toUpperCase();
+  if (committeeType.length > 0 && committeeType !== "C") {
+    return false;
+  }
+  return true;
+}
+
+function hasControlledFiling(rows: readonly CalAccessCampaignCoverRow[]): boolean {
+  return rows.some((row) => value(row, "CONTROL_YN").toUpperCase() === "Y");
+}
+
 function committeeIdFromCoverRow(row: CalAccessCampaignCoverRow): string {
   return value(row, "FILER_ID") || value(row, "CMTTE_ID");
 }
@@ -278,6 +304,9 @@ export function resolveCaliforniaCandidateCommittee(
     if (!electionYearMatches(row, electionYear)) {
       continue;
     }
+    if (!isCandidateCommitteeEvidenceRow(row)) {
+      continue;
+    }
 
     const committeeId = committeeIdFromCoverRow(row);
     if (!committeeId) {
@@ -298,7 +327,32 @@ export function resolveCaliforniaCandidateCommittee(
   }
 
   const filerNames = buildFilerNameLookup(input.filerNameRows ?? []);
-  const matches = [...rowsByCommittee.entries()]
+
+  // Disambiguate a candidate's OWN committees. A candidate's controlled
+  // ballot-measure committee files F460s with CONTROL_YN "N" (or committee
+  // type G/B) while the candidate-election committee declares CONTROL_YN "Y",
+  // so prefer committees with a controlled filing. When several controlled
+  // committees remain (an old cycle's committee still filing against the new
+  // election date), FPPC committee names carry the election year — pick the
+  // sole committee named for the target year, and stay ambiguous otherwise.
+  let survivingEntries = [...rowsByCommittee.entries()];
+  if (survivingEntries.length > 1) {
+    const controlledEntries = survivingEntries.filter(([, rows]) => hasControlledFiling(rows));
+    if (controlledEntries.length > 0) {
+      survivingEntries = controlledEntries;
+    }
+    if (survivingEntries.length > 1) {
+      const yearPattern = new RegExp(`\\b${electionYear}\\b`);
+      const namedForYearEntries = survivingEntries.filter(([committeeId, rows]) =>
+        yearPattern.test(committeeNameForMatch({ committeeId, rows, filerNames }))
+      );
+      if (namedForYearEntries.length === 1) {
+        survivingEntries = namedForYearEntries;
+      }
+    }
+  }
+
+  const matches = survivingEntries
     .map(([committeeId, rows]) =>
       toCommitteeMatch({
         committeeId,
