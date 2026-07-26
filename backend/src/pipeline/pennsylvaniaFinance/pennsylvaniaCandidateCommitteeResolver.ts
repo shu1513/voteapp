@@ -2,6 +2,7 @@ import { normalizePennsylvaniaCampaignFinanceExportYear } from "./pennsylvaniaCa
 import type { PennsylvaniaCampaignFinanceFilerRow } from "./pennsylvaniaCampaignFinanceReader.js";
 import {
   mapPennsylvaniaFinanceOffice,
+  mapPennsylvaniaFinanceOfficeCode,
   normalizePennsylvaniaFinanceLegislativeDistrict,
   toPennsylvaniaFinanceOfficeSearchInput,
   type PennsylvaniaFinanceOfficeSearchInput,
@@ -332,15 +333,16 @@ export function resolvePennsylvaniaCandidateCommittee(
     rowsByFiler.set(filerId, accumulator);
   }
 
-  // Most PA committee rows leave OFFICE blank (3,428 of 4,060 in the 2026
-  // export), so the office filter above cannot see the funded committee and
+  // Most PA committee rows carry no usable office context (3,428 of 4,060
+  // in the 2026 export leave OFFICE blank; another 278 name an office but no
+  // district), so the office filter above cannot see the funded committee and
   // the candidate resolves to their moneyless FILERTYPE 1 registration row.
-  // Admit a blank-OFFICE committee ONLY with corroboration: the candidacy is
-  // proven by an office-matched registration row from the first pass, the
-  // committee name matches the candidate, the row is active this cycle, and
-  // the committee shares a ZIP or phone number with that registration row —
-  // a same-name stranger's committee shares neither. Name-only committees
-  // stay out.
+  // Recall such a committee ONLY with corroboration: the candidacy is proven
+  // by an office-matched registration row from the first pass, the committee
+  // name matches the candidate, the row is active this cycle, and the
+  // committee shares a ZIP or phone number with that registration row — a
+  // same-name stranger's committee shares neither. Name-only committees stay
+  // out.
   const registrationRows = [...rowsByFiler.values()]
     .filter((accumulator) => accumulator.filerType === "1")
     .flatMap((accumulator) => accumulator.rows);
@@ -358,14 +360,25 @@ export function resolvePennsylvaniaCandidateCommittee(
       if (!filerId || !filerName || rowsByFiler.has(filerId)) {
         continue;
       }
-      if (row.FILERTYPE.trim() !== "2" || row.OFFICE.trim()) {
+      if (row.FILERTYPE.trim() !== "2") {
         continue;
       }
-      // A blank OFFICE says nothing, but a populated DISTRICT is an explicit
-      // signal: it must normalize to the requested legislative district, and
-      // statewide races admit no district-bearing row at all.
+      // Two recallable shapes, both requiring the corroboration below. A
+      // populated field is always an explicit signal the row must not
+      // contradict:
+      // - OFFICE named: it must denote the SAME office, and the row must
+      //   carry no district of its own (a present district was either
+      //   office-matched by the first pass or is a conflict).
+      // - OFFICE blank: a populated DISTRICT must normalize to the requested
+      //   legislative district, and statewide races admit no district-bearing
+      //   row at all.
+      const rowOffice = row.OFFICE.trim();
       const rowDistrict = row.DISTRICT.trim();
-      if (rowDistrict) {
+      if (rowOffice) {
+        if (rowDistrict || mapPennsylvaniaFinanceOfficeCode(rowOffice) !== officeSearchInput.paOfficeCode) {
+          continue;
+        }
+      } else if (rowDistrict) {
         if (
           officeSearchInput.district === null ||
           normalizePennsylvaniaFinanceLegislativeDistrict(rowDistrict, 203) !== officeSearchInput.district

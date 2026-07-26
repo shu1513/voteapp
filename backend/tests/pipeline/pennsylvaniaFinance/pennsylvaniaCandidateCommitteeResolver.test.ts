@@ -289,6 +289,144 @@ describe("pennsylvaniaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("recalls a same-office committee with a blank DISTRICT when the ZIP corroborates", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Rosemary Brown",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "40",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0183",
+            FILERNAME: "ROSEMARY BROWN",
+            FILERTYPE: "1",
+            OFFICE: "STS",
+            DISTRICT: "40",
+            ZIPCODE: "18372",
+          }),
+          filerRow({
+            FILERID: "2010237",
+            FILERNAME: "FRIENDS OF ROSEMARY BROWN",
+            FILERTYPE: "2",
+            OFFICE: "STS",
+            DISTRICT: "",
+            ZIPCODE: "18372-0000",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "2010237",
+      filerType: "2",
+    });
+  });
+
+  it("never recalls a committee naming a different office, even with a shared ZIP", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Rosemary Brown",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "40",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0183",
+            FILERNAME: "ROSEMARY BROWN",
+            FILERTYPE: "1",
+            OFFICE: "STS",
+            DISTRICT: "40",
+            ZIPCODE: "18372",
+          }),
+          filerRow({
+            FILERID: "2010237",
+            FILERNAME: "FRIENDS OF ROSEMARY BROWN",
+            FILERTYPE: "2",
+            OFFICE: "STH",
+            DISTRICT: "",
+            ZIPCODE: "18372",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "2026C0183",
+      filerType: "1",
+    });
+  });
+
+  it("never recalls a same-office committee that carries its own district", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Rosemary Brown",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "40",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0183",
+            FILERNAME: "ROSEMARY BROWN",
+            FILERTYPE: "1",
+            OFFICE: "STS",
+            DISTRICT: "40",
+            ZIPCODE: "18372",
+          }),
+          filerRow({
+            FILERID: "2010237",
+            FILERNAME: "FRIENDS OF ROSEMARY BROWN",
+            FILERTYPE: "2",
+            OFFICE: "STS",
+            DISTRICT: "12",
+            ZIPCODE: "18372",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "2026C0183",
+      filerType: "1",
+    });
+  });
+
+  it("keeps the registration when a same-office blank-district committee lacks corroboration", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Rosemary Brown",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "40",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0183",
+            FILERNAME: "ROSEMARY BROWN",
+            FILERTYPE: "1",
+            OFFICE: "STS",
+            DISTRICT: "40",
+            ZIPCODE: "18372",
+            PHONE: "5705551234",
+          }),
+          filerRow({
+            FILERID: "2010237",
+            FILERNAME: "FRIENDS OF ROSEMARY BROWN",
+            FILERTYPE: "2",
+            OFFICE: "STS",
+            DISTRICT: "",
+            ZIPCODE: "17108",
+            PHONE: "7175559999",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "2026C0183",
+      filerType: "1",
+    });
+  });
+
   it("rejects a recalled committee whose DISTRICT conflicts with the registration", () => {
     expect(
       resolvePennsylvaniaCandidateCommittee({
