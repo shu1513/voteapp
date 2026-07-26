@@ -50,16 +50,32 @@ export const CLIENT_IP_HEADER = "X-Voteapp-Client-IP";
 // Baseline security headers, stamped on every response the Worker returns
 // (proxied, redirect, or error) — neither origin sets them itself. The edge
 // is authoritative: values here overwrite any upstream copy so the policy
-// has one home. CSP is deliberately absent — it needs an inventory of
-// inline scripts and third-party endpoints first (see docs/deploy-render.md).
-// HSTS is safe because Cloudflare terminates TLS for every proxied record
-// on the zone; skip `preload` so the commitment stays revocable.
+// has one home. HSTS is safe because Cloudflare terminates TLS for every
+// proxied record on the zone; skip `preload` so the commitment stays
+// revocable.
+//
+// CSP ships Report-Only first: violations surface in the browser console
+// without ever blocking a resource. Promote to Content-Security-Policy once
+// real traffic shows no unexpected reports. Inventory behind the policy
+// (2026-07): every loaded resource is same-origin (no fonts/analytics/CDN;
+// external URLs in the app are plain hyperlinks). 'unsafe-inline' is
+// required in script-src because React Router SSR hydrates via inline
+// scripts (dropping it needs nonce plumbing between this Worker and the SSR
+// origin), and in style-src for React inline style attributes. Browsers
+// ignore frame-ancestors in Report-Only mode; it's staged here for the
+// enforced policy, and X-Frame-Options DENY covers framing today.
+const CSP_POLICY =
+  "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; " +
+  "img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; " +
+  "base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
+
 const SECURITY_HEADERS = {
   "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
   "X-Content-Type-Options": "nosniff",
   "X-Frame-Options": "DENY",
   "Referrer-Policy": "strict-origin-when-cross-origin",
   "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+  "Content-Security-Policy-Report-Only": CSP_POLICY,
 };
 
 // Pages whose URLs carry single-use auth tokens in the query string

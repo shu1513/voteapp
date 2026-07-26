@@ -145,6 +145,9 @@ plans. Consequences, in order of urgency:
 - **Scaling past one API instance**: auth rate limits are in-memory per
   process (address rate limit + sessions are Redis-backed already); more
   than one instance weakens only the auth limiter.
+- **Least-privilege DB role**: the API still connects as the DB owner.
+  docs/postgres-api-role.md has the one-time `voteapp_api` role setup +
+  `DATABASE_URL` swap (workers/migrations stay on the owner role).
 - Sentry stays dark until DSNs exist and the staging scrub test passes
   (plan-error-monitoring.md); set `SENTRY_DSN` on api + workers and the
   `VITE_SENTRY_DSN`/`DEPLOY_RELEASE` build vars on SSR when ready.

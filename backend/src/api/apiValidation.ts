@@ -106,6 +106,14 @@ const AUTOCOMPLETE_TOKEN_PATTERN = /^[A-Za-z0-9_-]+$/;
 
 export type AuthenticatedAddressPayload = AddressResolvePayload;
 
+// Practical per-field ceilings so oversized junk is refused at the door
+// instead of leaning on the 16 KB body limit: 320 is the RFC 5321 mailbox
+// maximum (64 local + "@" + 255 domain), and the name/address caps are far
+// above any real value while keeping stored rows and outbound emails sane.
+export const MAX_AUTH_EMAIL_LENGTH = 320;
+export const MAX_FIRST_NAME_LENGTH = 100;
+export const MAX_ADDRESS_INPUT_LENGTH = 500;
+
 export type AuthRegisterPayload = {
   email: string;
   password: string;
@@ -197,6 +205,14 @@ function parseStringField(parsed: unknown, fieldName: string): string {
   return value.trim();
 }
 
+function parseEmailField(parsed: unknown, fieldName: string): string {
+  const email = parseStringField(parsed, fieldName);
+  if (email.length > MAX_AUTH_EMAIL_LENGTH) {
+    throw new TypeError(`${fieldName} must be at most ${MAX_AUTH_EMAIL_LENGTH} characters`);
+  }
+  return email;
+}
+
 function parseAutocompleteSessionToken(parsed: unknown): string {
   const sessionToken = parseStringField(parsed, "session_token");
   if (
@@ -250,9 +266,13 @@ export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {
   if (typeof address !== "string" || address.trim().length === 0) {
     throw new TypeError("Request body must include non-empty string field: address");
   }
+  const trimmed = address.trim();
+  if (trimmed.length > MAX_ADDRESS_INPUT_LENGTH) {
+    throw new TypeError(`address must be at most ${MAX_ADDRESS_INPUT_LENGTH} characters`);
+  }
 
   return {
-    address: address.trim(),
+    address: trimmed,
   };
 }
 
@@ -366,13 +386,16 @@ export function parseAuthRegisterBodyValue(parsed: unknown): AuthRegisterPayload
     throw new TypeError("Request body must be a JSON object");
   }
 
-  const email = parseStringField(parsed, "email");
+  const email = parseEmailField(parsed, "email");
   const password = parseStringField(parsed, "password");
   // Clickwrap: registration must record which terms version was accepted.
   const acceptedTermsVersion = parseStringField(parsed, "accepted_terms_version");
   const firstName = (parsed as { first_name?: unknown }).first_name;
   if (firstName !== undefined && (typeof firstName !== "string" || firstName.trim().length === 0)) {
     throw new TypeError("first_name must be a non-empty string when provided");
+  }
+  if (typeof firstName === "string" && firstName.trim().length > MAX_FIRST_NAME_LENGTH) {
+    throw new TypeError(`first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`);
   }
 
   return {
@@ -385,14 +408,14 @@ export function parseAuthRegisterBodyValue(parsed: unknown): AuthRegisterPayload
 
 export function parseAuthLoginBodyValue(parsed: unknown): AuthLoginPayload {
   return {
-    email: parseStringField(parsed, "email"),
+    email: parseEmailField(parsed, "email"),
     password: parseStringField(parsed, "password"),
   };
 }
 
 export function parseAuthForgotPasswordBodyValue(parsed: unknown): AuthForgotPasswordPayload {
   return {
-    email: parseStringField(parsed, "email"),
+    email: parseEmailField(parsed, "email"),
   };
 }
 
@@ -432,7 +455,7 @@ export function parseMePasswordBodyValue(parsed: unknown): MePasswordPayload {
 
 export function parseMeEmailBodyValue(parsed: unknown): MeEmailPayload {
   return {
-    new_email: parseStringField(parsed, "new_email"),
+    new_email: parseEmailField(parsed, "new_email"),
     password: parseStringField(parsed, "password"),
   };
 }
@@ -444,8 +467,12 @@ export function parseMeDeleteBodyValue(parsed: unknown): MeDeletePayload {
 }
 
 export function parseMeUpdateBodyValue(parsed: unknown): MeUpdatePayload {
+  const firstName = parseStringField(parsed, "first_name");
+  if (firstName.length > MAX_FIRST_NAME_LENGTH) {
+    throw new TypeError(`first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`);
+  }
   return {
-    first_name: parseStringField(parsed, "first_name"),
+    first_name: firstName,
   };
 }
 
