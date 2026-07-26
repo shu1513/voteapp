@@ -1,0 +1,18 @@
+# CLI deploys for the edge router (docs/deploy-render.md "Cloudflare
+# Worker"). The Worker was originally created by pasting router-worker.js
+# into the dashboard; this config lets `npx wrangler deploy` update it
+# instead.
+#
+# keep_vars is REQUIRED: API_ORIGIN / SSR_ORIGIN are plain vars set in the
+# dashboard, and without keep_vars a wrangler deploy deletes any var not
+# declared in this file. (EDGE_SHARED_SECRET is a secret; secrets always
+# survive deploys.) Routes are likewise managed in the dashboard and are
+# left untouched because none are declared here.
+name = "voteapp-router"
+main = "router-worker.js"
+compatibility_date = "2026-07-01"
+keep_vars = true
+
+# No workers.dev copy: the site is only ever served through the zone routes,
+# and a *.workers.dev twin would be an unmonitored second front door.
+workers_dev = false
