@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  dedupeMichiganMitnExportRows,
   fetchMichiganMitnCommitteeSearch,
   fetchMichiganMitnContributionExportXlsx,
   michiganMitnExportRowsToLegacyContributionRows,
@@ -110,7 +111,10 @@ describe("michiganMitnPublicSearchClient", () => {
       ok: true,
       status: 200,
       text: async () => "",
-      arrayBuffer: async () => Buffer.from("<html>error</html>").buffer,
+      arrayBuffer: async () => {
+        const html = Buffer.from("<html>error</html>");
+        return html.buffer.slice(html.byteOffset, html.byteOffset + html.byteLength);
+      },
     });
     await expect(
       fetchMichiganMitnContributionExportXlsx({ committeeId: "521877", statementYear: 2026, fetchFn })
@@ -127,7 +131,7 @@ describe("michiganMitnPublicSearchClient", () => {
         content: sheetXml([
           ["Receipt ID", "Amount of Contribution", "Contributor Employer"],
           ["26-1", "500.00", ""],
-          ["26-2", "", "KELLOGG &amp; CO"],
+          ["26-2", "", "KELLOGG & CO"],
         ]),
       },
     ]);
@@ -182,6 +186,33 @@ describe("michiganMitnPublicSearchClient", () => {
       amount: "1000.00",
       aggregate: "1000.00",
     });
+  });
+
+  it("dedupes repeated receipts, preferring the amended filing", () => {
+    const header = ["Record Type (1=Parent, 2=Child)", "Receipt ID", "Document Type", "Amount of Contribution"];
+    const deduped = dedupeMichiganMitnExportRows([
+      header,
+      ["1", "25-1", "Campaign Statements", "1041.02"],
+      ["1", "25-1", "Amended Campaign Statements", "900.00"],
+      ["1", "25-2", "Campaign Statements", "50.00"],
+      // child rows are itemizations of a parent receipt — never summed
+      ["2", "25-3", "Campaign Statements", "25.00"],
+    ]);
+    expect(deduped).toEqual([
+      header,
+      ["1", "25-1", "Amended Campaign Statements", "900.00"],
+      ["1", "25-2", "Campaign Statements", "50.00"],
+    ]);
+  });
+
+  it("never lets an original filing replace an amendment, regardless of order", () => {
+    const header = ["Receipt ID", "Document Type", "Amount of Contribution"];
+    const deduped = dedupeMichiganMitnExportRows([
+      header,
+      ["25-1", "Amended Campaign Statements", "900.00"],
+      ["25-1", "Campaign Statements", "1041.02"],
+    ]);
+    expect(deduped).toEqual([header, ["25-1", "Amended Campaign Statements", "900.00"]]);
   });
 
   it("splits display names into search tokens", () => {

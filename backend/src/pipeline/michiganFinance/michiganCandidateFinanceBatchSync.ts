@@ -36,6 +36,7 @@ import {
 import {
   MICHIGAN_MITN_PUBLIC_SEARCH_BASE_URL,
   MICHIGAN_MITN_STATEMENT_YEAR_IDS,
+  dedupeMichiganMitnExportRows,
   fetchMichiganMitnContributionExportXlsx,
   michiganMitnExportRowsToLegacyContributionRows,
   parseMichiganMitnExportXlsxRows,
@@ -616,8 +617,12 @@ function isMitnPublicSearchYear(electionYear: number): boolean {
   return electionYear > MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR;
 }
 
+const MITN_PUBLIC_SEARCH_FETCH_TIMEOUT_MS = 120_000;
+
 function defaultMitnPublicSearchFetchFn(): MichiganMitnFetchFn {
-  return (url, init) => fetch(url, init);
+  // One hung MiTN response must not stall the whole batch — the due loop
+  // awaits each committee's exports sequentially.
+  return (url, init) => fetch(url, { ...init, signal: AbortSignal.timeout(MITN_PUBLIC_SEARCH_FETCH_TIMEOUT_MS) });
 }
 
 /**
@@ -690,35 +695,61 @@ async function autoLinkMichiganCandidatesViaMitnPublicSearch(input: {
 }
 
 /**
- * Loads a committee's contribution rows from the MiTN public-search export
- * for every cycle statement year that exists in MiTN, mapped onto the legacy
- * row shape. Results are memoized per committee within one batch run.
+ * Loads a committee's contribution rows from the MiTN public-search exports
+ * for the cycle's statement years, deduped ACROSS years (amendments repeat
+ * receipts, and can restate a prior year's statement), then mapped onto the
+ * legacy row shape. Raw exports are memoized per committee within one run.
+ *
+ * The cycle's own statement years (election year - 1 and the election year)
+ * are REQUIRED — a missing year-id mapping throws rather than silently
+ * writing a partial or zero snapshot. The following filing year (January
+ * annual statements reporting election-year receipts, mirroring the legacy
+ * loader) is included when its id is known.
  */
 async function loadMitnPublicSearchContributionRows(input: {
   committeeId: string;
   electionYear: number;
   fetchFn: MichiganMitnFetchFn;
-  cache: Map<string, MichiganMitnLegacyContributionRow[]>;
+  cache: Map<string, string[][]>;
 }): Promise<MichiganMitnLegacyContributionRow[]> {
-  const statementYears = [input.electionYear - 1, input.electionYear].filter((year) =>
+  const requiredStatementYears = [input.electionYear - 1, input.electionYear];
+  for (const year of requiredStatementYears) {
+    if (!MICHIGAN_MITN_STATEMENT_YEAR_IDS.has(year)) {
+      throw new Error(
+        `No Michigan MiTN statement-year id for ${year}; add it to MICHIGAN_MITN_STATEMENT_YEAR_IDS before syncing ${input.electionYear} elections`
+      );
+    }
+  }
+  const statementYears = [...requiredStatementYears, input.electionYear + 1].filter((year) =>
     MICHIGAN_MITN_STATEMENT_YEAR_IDS.has(year)
   );
-  const rows: MichiganMitnLegacyContributionRow[] = [];
+
+  const combinedRows: string[][] = [];
   for (const statementYear of statementYears) {
     const cacheKey = `${input.committeeId}:${statementYear}`;
-    let yearRows = input.cache.get(cacheKey);
-    if (!yearRows) {
+    let rawRows = input.cache.get(cacheKey);
+    if (!rawRows) {
       const xlsx = await fetchMichiganMitnContributionExportXlsx({
         committeeId: input.committeeId,
         statementYear,
         fetchFn: input.fetchFn,
       });
-      yearRows = michiganMitnExportRowsToLegacyContributionRows(parseMichiganMitnExportXlsxRows(xlsx));
-      input.cache.set(cacheKey, yearRows);
+      rawRows = parseMichiganMitnExportXlsxRows(xlsx);
+      input.cache.set(cacheKey, rawRows);
     }
-    rows.push(...yearRows);
+    if (rawRows.length === 0) {
+      continue;
+    }
+    if (combinedRows.length === 0) {
+      combinedRows.push(...rawRows.map((row) => [...row]));
+    } else {
+      combinedRows.push(...rawRows.slice(1).map((row) => [...row]));
+    }
   }
-  return rows;
+  if (combinedRows.length === 0) {
+    return [];
+  }
+  return michiganMitnExportRowsToLegacyContributionRows(dedupeMichiganMitnExportRows(combinedRows));
 }
 
 export async function syncDueMichiganCandidateFinance(
@@ -845,7 +876,7 @@ export async function syncDueMichiganCandidateFinance(
   }
 
   const results: MichiganCandidateFinanceBatchSyncItemResult[] = [];
-  const publicSearchExportCache = new Map<string, MichiganMitnLegacyContributionRow[]>();
+  const publicSearchExportCache = new Map<string, string[][]>();
   const publicSearchFetchFn = input.mitnPublicSearchFetchFn ?? defaultMitnPublicSearchFetchFn();
   for (const row of due.rows) {
     if (isMitnPublicSearchYear(row.electionYear)) {
@@ -882,8 +913,10 @@ export async function syncDueMichiganCandidateFinance(
           outsideSourceUrl: MICHIGAN_MITN_CONTRIBUTION_SEARCH_SOURCE_URL,
           contributionRows,
           // Outside spending is not ingested from MiTN yet — the expenditure
-          // search is a separate integration; totals stay null rather than 0.
-          expenditureRows: [],
+          // search is a separate integration. expenditureRows stays OMITTED:
+          // a defined array (even empty) marks outside data as available and
+          // would persist $0 totals and delete prior outside-group rows.
+          linkSource: "mitn_public_search",
           trustedCommittee: {
             committeeId: row.committeeId,
             committeeName: row.committeeName,

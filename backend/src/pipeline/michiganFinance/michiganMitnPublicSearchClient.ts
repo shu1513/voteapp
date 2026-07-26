@@ -388,6 +388,64 @@ export function parseMichiganMitnExportXlsxRows(buffer: Buffer): string[][] {
   return rows;
 }
 
+// --- Deduplication ---------------------------------------------------------
+
+/**
+ * Live exports repeat every receipt of an amended statement — once from the
+ * original filing and once from the amendment (verified live: a 2025 export
+ * carried 5,003 rows over 2,505 unique receipt ids, doubling the total).
+ * Dedupe raw export rows by Receipt ID, preferring the AMENDED document (it
+ * is the corrected filing — 7 of Nesbitt's amended receipts changed amounts),
+ * and drop child rows outright (Record Type 2 = itemizations of a parent
+ * receipt; summing them double-counts). Amendments can also span statement
+ * years, so callers must dedupe across the whole cycle, not per export.
+ */
+export function dedupeMichiganMitnExportRows(rows: readonly (readonly string[])[]): string[][] {
+  if (rows.length === 0) {
+    return [];
+  }
+  const header = rows[0] ?? [];
+  const receiptIdColumn = header.findIndex((label) => label.trim() === "Receipt ID");
+  const documentTypeColumn = header.findIndex((label) => label.trim() === "Document Type");
+  const recordTypeColumn = header.findIndex((label) => label.trim().startsWith("Record Type"));
+  if (receiptIdColumn < 0) {
+    throw new Error("Michigan MiTN export: missing Receipt ID column");
+  }
+
+  const isAmended = (row: readonly string[]): boolean =>
+    documentTypeColumn >= 0 && /AMENDED/i.test(row[documentTypeColumn] ?? "");
+
+  const bestByReceiptId = new Map<string, readonly string[]>();
+  const order: string[] = [];
+  for (const row of rows.slice(1)) {
+    if (recordTypeColumn >= 0) {
+      const recordType = (row[recordTypeColumn] ?? "").trim();
+      if (recordType && recordType !== "1") {
+        continue;
+      }
+    }
+    const receiptId = (row[receiptIdColumn] ?? "").trim();
+    if (!receiptId) {
+      continue;
+    }
+    const previous = bestByReceiptId.get(receiptId);
+    if (!previous) {
+      bestByReceiptId.set(receiptId, row);
+      order.push(receiptId);
+      continue;
+    }
+    if (isAmended(row) || !isAmended(previous)) {
+      // A newer row wins unless it would replace an amendment with an
+      // original: amended > original, later > earlier within the same class.
+      bestByReceiptId.set(receiptId, row);
+    }
+  }
+  return [
+    [...header],
+    ...order.map((receiptId) => [...(bestByReceiptId.get(receiptId) ?? [])]),
+  ];
+}
+
 // --- Mapping to the legacy row shape --------------------------------------
 
 const EXPORT_HEADER_TO_FIELD: ReadonlyMap<string, keyof MichiganMitnLegacyContributionRow> = new Map([

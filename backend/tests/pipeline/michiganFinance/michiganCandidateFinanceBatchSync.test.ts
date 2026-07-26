@@ -486,7 +486,7 @@ describe("michiganCandidateFinanceBatchSync", () => {
         expect.objectContaining({
           electionYear: 2026,
           trustedCommittee: expect.objectContaining({ committeeId: "521877" }),
-          expenditureRows: [],
+          linkSource: "mitn_public_search",
           // one export per cycle statement year (2025 + 2026), mapped rows
           contributionRows: expect.arrayContaining([
             expect.objectContaining({
@@ -498,11 +498,50 @@ describe("michiganCandidateFinanceBatchSync", () => {
           ]),
         })
       );
+      // expenditureRows must be OMITTED — a defined array (even empty) marks
+      // outside data available and would persist $0 totals
+      expect("expenditureRows" in syncMichiganCandidateFinanceFn.mock.calls[0]![0]).toBe(false);
       const exportYears = fetchFn.mock.calls
         .filter(([url]) => String(url).includes("action=export"))
         .map(([, init]) => new URLSearchParams((init as { body: string }).body).get("form.campaignStatementYear"));
       expect(exportYears.sort()).toEqual(["69", "76"]);
       expect(result.syncedCandidateCount).toBe(1);
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it("fails loudly when a cycle statement-year id is unknown instead of writing zeros", async () => {
+    vi.stubEnv("MICHIGAN_CAMPAIGN_FINANCE_ENABLED", "true");
+    vi.stubEnv("MICHIGAN_MITN_RAW_DATA_REFRESH_ENABLED", "true");
+    try {
+      const db = {
+        query: vi.fn(async (sql: string) => {
+          const text = String(sql);
+          if (text.includes("FROM public.candidate_elections AS candidate_election")) {
+            return { rows: [], rowCount: 0 };
+          }
+          if (text.includes("FROM public.mi_candidate_finance_links AS link")) {
+            return {
+              rows: [dueRow({ election_year: 2028, committee_id: "521877", source_url: null })],
+              rowCount: 1,
+            };
+          }
+          throw new Error(`Unexpected query: ${text}`);
+        }),
+      };
+      const syncMichiganCandidateFinanceFn = vi.fn();
+
+      const result = await syncDueMichiganCandidateFinance({
+        db,
+        syncMichiganCandidateFinanceFn,
+        mitnPublicSearchFetchFn: vi.fn(),
+        now: new Date("2028-06-01T00:00:00.000Z"),
+      });
+
+      expect(syncMichiganCandidateFinanceFn).not.toHaveBeenCalled();
+      expect(result.failedCandidateCount).toBe(1);
+      expect(result.results[0]?.error).toContain("No Michigan MiTN statement-year id for 2027");
     } finally {
       vi.unstubAllEnvs();
     }

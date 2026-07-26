@@ -66,6 +66,14 @@ export function buildZip(files: { name: string; content: string }[]): Buffer {
   return Buffer.concat([...localParts, ...centralParts, eocd]);
 }
 
+function escapeXml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 export function sheetXml(rows: string[][]): string {
   const body = rows
     .map(
@@ -76,7 +84,7 @@ export function sheetXml(rows: string[][]): string {
             const ref = `${String.fromCharCode(65 + columnIndex)}${rowIndex + 1}`;
             return value === ""
               ? `<c r="${ref}" t="inlineStr"/>`
-              : `<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${value}</t></is></c>`;
+              : `<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${escapeXml(value)}</t></is></c>`;
           })
           .join("") +
         `</row>`
