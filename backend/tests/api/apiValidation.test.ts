@@ -11,6 +11,9 @@ import {
   CANDIDATE_DETAIL_PATH_PREFIX,
   ME_CANDIDATE_FOLLOWS_PATH,
   MAX_USER_RESEARCH_AREA_PREFERENCES,
+  MAX_ADDRESS_INPUT_LENGTH,
+  MAX_AUTH_EMAIL_LENGTH,
+  MAX_FIRST_NAME_LENGTH,
   ME_ADDRESS_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
   parseAuthForgotPasswordBodyValue,
@@ -22,6 +25,8 @@ import {
   parseAuthenticatedAddressBodyValue,
   parseCandidateFollowBodyValue,
   parseCandidateId,
+  parseMeEmailBodyValue,
+  parseMeUpdateBodyValue,
   parseResearchAreaPreferencesBodyValue,
   RESEARCH_AREAS_PATH,
 } from "../../src/api/apiValidation.js";
@@ -62,8 +67,17 @@ describe("authenticated address API contract constants", () => {
     [{}, "Request body must include non-empty string field: address"],
     [{ address: "   " }, "Request body must include non-empty string field: address"],
     [{ address: 123 }, "Request body must include non-empty string field: address"],
+    [
+      { address: "a".repeat(MAX_ADDRESS_INPUT_LENGTH + 1) },
+      `address must be at most ${MAX_ADDRESS_INPUT_LENGTH} characters`,
+    ],
   ])("rejects invalid authenticated address payload %#", (payload, message) => {
     expect(() => parseAuthenticatedAddressBodyValue(payload)).toThrow(message);
+  });
+
+  it("accepts an address at exactly the length cap", () => {
+    const address = "a".repeat(MAX_ADDRESS_INPUT_LENGTH);
+    expect(parseAuthenticatedAddressBodyValue({ address })).toEqual({ address });
   });
 });
 
@@ -177,6 +191,37 @@ describe("public auth API contract constants", () => {
     expect(parseAuthResetPasswordBodyValue({ token: " abc ", password: " password123 " })).toEqual({
       token: "abc",
       password: "password123",
+    });
+  });
+
+  it("caps auth email, first name, and change-email fields at practical lengths", () => {
+    // 320 is the RFC 5321 mailbox ceiling; longer values are junk, not mail.
+    const longEmail = `${"a".repeat(MAX_AUTH_EMAIL_LENGTH)}@example.com`;
+    const emailCapMessage = `must be at most ${MAX_AUTH_EMAIL_LENGTH} characters`;
+    expect(() =>
+      parseAuthRegisterBodyValue({
+        email: longEmail,
+        password: "correct horse battery staple",
+        accepted_terms_version: "1.0",
+      })
+    ).toThrow(emailCapMessage);
+    expect(() => parseAuthLoginBodyValue({ email: longEmail, password: "secret123" })).toThrow(emailCapMessage);
+    expect(() => parseAuthForgotPasswordBodyValue({ email: longEmail })).toThrow(emailCapMessage);
+    expect(() => parseMeEmailBodyValue({ new_email: longEmail, password: "secret123" })).toThrow(emailCapMessage);
+
+    const longFirstName = "b".repeat(MAX_FIRST_NAME_LENGTH + 1);
+    const firstNameCapMessage = `first_name must be at most ${MAX_FIRST_NAME_LENGTH} characters`;
+    expect(() =>
+      parseAuthRegisterBodyValue({
+        email: "user@example.com",
+        password: "correct horse battery staple",
+        accepted_terms_version: "1.0",
+        first_name: longFirstName,
+      })
+    ).toThrow(firstNameCapMessage);
+    expect(() => parseMeUpdateBodyValue({ first_name: longFirstName })).toThrow(firstNameCapMessage);
+    expect(parseMeUpdateBodyValue({ first_name: "c".repeat(MAX_FIRST_NAME_LENGTH) })).toEqual({
+      first_name: "c".repeat(MAX_FIRST_NAME_LENGTH),
     });
   });
 });

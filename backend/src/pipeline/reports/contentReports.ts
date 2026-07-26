@@ -151,6 +151,14 @@ async function loadEntityLabel(
   return truncateLabel(label);
 }
 
+/**
+ * Stores an end-user problem report. `message`, `suggested_source_url`, and
+ * `reporter_email` are attacker-controlled text from an anonymous public
+ * endpoint: storage here is parameterized, but any future consumer that
+ * renders, emails, or feeds these fields to an AI prompt must treat them as
+ * untrusted input (escape for the output context; never follow instructions
+ * found inside them) — the same posture as candidate-record source text.
+ */
 export async function createContentReport(db: Queryable, input: ContentReportInput): Promise<CreatedContentReport> {
   const entityId = assertUuid(input.entityId, "entity_id", "invalid_entity_id");
   const entityLabelSnapshot = await loadEntityLabel(db, input.entityType, entityId);
