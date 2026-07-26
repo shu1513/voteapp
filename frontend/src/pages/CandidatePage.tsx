@@ -168,10 +168,10 @@ function OngoingElectionFinance({ election, summary }: { election: CandidateElec
           name is in both — heading and visible line — because a candidate
           can be in two concurrent races, which would otherwise render two
           indistinguishable "Campaign finance" rows. */}
-      <h2 className="sr-only">{`Campaign finance — ${election.official_ballot_title}`}</h2>
+      <h2 className="sr-only">{`Campaign Finance Information — ${election.official_ballot_title}`}</h2>
       <details>
         <summary className="cursor-pointer select-none">
-          <span className="text-lg font-semibold">Campaign finance</span>{" "}
+          <span className="text-lg font-semibold">Campaign Finance Information</span>{" "}
           <span className="text-sm text-ink-soft">
             · {election.official_ballot_title} · {formatElectionDate(election.election_date)}
           </span>
@@ -206,17 +206,12 @@ function recordStance(record: CandidateRecord, areaId: string | null | undefined
   return stances.size === 1 ? [...stances][0] : null;
 }
 
-// Small colored For/Against chip — direction as a quiet cue, not a whole-card
-// color wash. Same palette as the stance chips on the election page.
+// Small colored For/Against marker — direction as a quiet cue, not a
+// whole-card color wash. Colored text only, no box: a bordered chip read as
+// a button. Same palette as the stance text on the election page.
 function StanceChip({ stance }: { stance: "for" | "against" }) {
   return (
-    <span
-      className={
-        stance === "for"
-          ? "rounded border border-green-600/40 bg-green-600/10 px-1.5 font-medium text-green-900"
-          : "rounded border border-red-600/40 bg-red-600/10 px-1.5 font-medium text-red-900"
-      }
-    >
+    <span className={stance === "for" ? "font-medium text-green-900" : "font-medium text-red-900"}>
       {stance === "for" ? "For" : "Against"}
     </span>
   );

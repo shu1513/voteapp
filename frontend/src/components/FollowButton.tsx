@@ -29,7 +29,7 @@ export function FollowButton({ candidateId, isFollowing, size = "md" }: FollowBu
           : `${base} bg-rausch text-white hover:bg-rausch-dark`
       }
     >
-      {setFollow.isPending ? "…" : isFollowing ? "Following" : "Follow"}
+      {setFollow.isPending ? "…" : isFollowing ? "Unfollow" : "Follow"}
     </button>
   );
 }

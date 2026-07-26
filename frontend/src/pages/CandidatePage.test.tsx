@@ -179,7 +179,7 @@ describe("CandidatePage", () => {
       ongoing_finance: { "ce-1": financeSummary() },
     }));
 
-    const heading = await screen.findByRole("heading", { name: "Campaign finance — Governor" });
+    const heading = await screen.findByRole("heading", { name: "Campaign Finance Information — Governor" });
     // The heading sits OUTSIDE the disclosure (a heading inside <summary>
     // can drop out of screen-reader heading navigation); the details is its
     // sibling within the section.
@@ -303,7 +303,7 @@ describe("CandidatePage", () => {
     expect(screen.queryByText(/No verified public records/)).not.toBeInTheDocument();
   });
 
-  it("shows the follow button as Following once the follows list confirms it", async () => {
+  it("shows the follow button as Unfollow once the follows list confirms it", async () => {
     // The anonymous loader payload always carries is_following=false; the
     // button must reflect the client-fetched follows list, not the payload.
     stubApiRoutes({
@@ -312,7 +312,7 @@ describe("CandidatePage", () => {
     });
     renderCandidate(() => candidateDetail());
 
-    expect(await screen.findByRole("button", { name: "Following" })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Unfollow" })).toBeInTheDocument();
   });
 
   it("shows loader-fetched finance for an ongoing election", async () => {
@@ -326,7 +326,7 @@ describe("CandidatePage", () => {
 
     // The accessible name carries the election for screen-reader heading
     // navigation (a candidate can be in two concurrent races).
-    expect(await screen.findByRole("heading", { name: "Campaign finance — Governor" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Campaign Finance Information — Governor" })).toBeInTheDocument();
     expect(screen.getByText("$120,000")).toBeInTheDocument();
     expect(screen.getByText("Top disclosed occupations of direct donors")).toBeInTheDocument();
   });
@@ -339,7 +339,7 @@ describe("CandidatePage", () => {
     }));
 
     expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: /Campaign finance/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /Campaign Finance/i })).not.toBeInTheDocument();
   });
 
   it("loader fetches ongoing-election finance, skips past elections, and survives a finance failure", async () => {
@@ -390,7 +390,7 @@ describe("CandidatePage", () => {
     expect(await screen.findByRole("heading", { name: "Elections" })).toBeInTheDocument();
     // Campaign finance shows only for elections the candidate is currently
     // in; past rows carry no disclosure and trigger no fetch.
-    expect(screen.queryByText("Campaign finance")).not.toBeInTheDocument();
+    expect(screen.queryByText("Campaign Finance Information")).not.toBeInTheDocument();
     const financeCalls = fetchMock.mock.calls.filter((call) =>
       String(call[0]).includes("/api/elections/")
     ).length;
