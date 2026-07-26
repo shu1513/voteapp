@@ -146,8 +146,10 @@ plans. Consequences, in order of urgency:
   process (address rate limit + sessions are Redis-backed already); more
   than one instance weakens only the auth limiter.
 - **Least-privilege DB role**: the API still connects as the DB owner.
-  docs/postgres-api-role.md has the one-time `voteapp_api` role setup +
-  `DATABASE_URL` swap (workers/migrations stay on the owner role).
+  docs/postgres-api-role.md has the one-time `voteapp_api` role setup; the
+  restricted URL goes in a dashboard-only `API_DATABASE_URL` var (NOT an
+  edit to the Blueprint-managed `DATABASE_URL`, which a sync would revert;
+  workers/migrations stay on the owner role).
 - Sentry stays dark until DSNs exist and the staging scrub test passes
   (plan-error-monitoring.md); set `SENTRY_DSN` on api + workers and the
   `VITE_SENTRY_DSN`/`DEPLOY_RELEASE` build vars on SSR when ready.

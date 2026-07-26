@@ -39,6 +39,12 @@ services:
     # DB-backed read: proves Postgres connectivity, not just an open port.
     healthCheckPath: /api/research-areas
     envVars:
+      # DATABASE_URL is the OWNER connection string (Blueprint-managed, used
+      # by migrations/workers). To run the API as the least-privilege
+      # voteapp_api role instead, add API_DATABASE_URL directly in the Render
+      # dashboard (docs/postgres-api-role.md) — deliberately NOT declared
+      # here: dashboard-only vars survive Blueprint syncs untouched, while a
+      # declared-but-unsynced var would re-prompt on every sync.
       - key: DATABASE_URL
         fromDatabase:
           name: voteapp-db

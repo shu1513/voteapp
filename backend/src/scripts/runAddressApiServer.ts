@@ -192,7 +192,16 @@ async function main(): Promise<void> {
   if (initSentryFromEnv("api")) {
     console.log("error monitoring enabled (sentry)");
   }
-  const pool = new Pool({ connectionString: readEnv("DATABASE_URL", "postgresql://localhost:5432/voteapp") });
+  // API_DATABASE_URL (optional) carries the least-privilege voteapp_api
+  // credentials (docs/postgres-api-role.md). It's a separate, Blueprint-
+  // unmanaged variable because render.yaml pins DATABASE_URL to the owner
+  // connection string via fromDatabase — a manual edit there would be
+  // silently reverted by the next Blueprint sync. Workers and migrations
+  // keep using DATABASE_URL (the owner role).
+  const pool = new Pool({
+    connectionString:
+      readOptionalEnv("API_DATABASE_URL") ?? readEnv("DATABASE_URL", "postgresql://localhost:5432/voteapp"),
+  });
   const host = process.env.ADDRESS_API_HOST?.trim() || "127.0.0.1";
   const port = readPort();
   const allowedOrigins = readAllowedOrigins();

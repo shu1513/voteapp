@@ -1,7 +1,8 @@
 # Least-privilege Postgres role for the API server
 
-The API currently connects with the database owner (`DATABASE_URL` in
-`runAddressApiServer.ts`). Queries are parameterized, but defense in depth
+The API connects with the database owner by default (`DATABASE_URL` in
+`runAddressApiServer.ts`; it prefers `API_DATABASE_URL` when that is set —
+see "Switch the API over"). Queries are parameterized, but defense in depth
 says a future SQL mistake — or a compromised dependency — running as the
 owner could `DROP TABLE`; running as a restricted role it cannot touch
 schema, and cannot write pipeline tables the API never writes.
@@ -13,14 +14,19 @@ API actually writes. Migrations keep running as the owner role (the
 ## Apply (one time, as the owner role, e.g. via Render's psql shell)
 
 ```sql
--- 1. Role. Generate a long random password; it lives only in the API
---    service's DATABASE_URL env var.
+-- 1. Role. Generate a long random password from URL-safe characters only
+--    (letters + digits — it gets embedded in a connection URI, where @ : /
+--    # ? % would need percent-encoding). It lives only in the API service's
+--    API_DATABASE_URL env var.
 CREATE ROLE voteapp_api LOGIN PASSWORD '<generate-a-long-random-password>';
 
 -- 2. Read everything (candidates, elections, finance, districts, ...).
+--    Sequence USAGE covers nextval on any serial/identity columns; the
+--    schema is UUID-keyed so this is precautionary, and USAGE on a sequence
+--    exposes no row data.
 GRANT USAGE ON SCHEMA public TO voteapp_api;
 GRANT SELECT ON ALL TABLES IN SCHEMA public TO voteapp_api;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO voteapp_api;
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO voteapp_api;
 
 -- 3. Write only what the API writes today.
 --    Enumerated from the modules wired into runAddressApiServer.ts
@@ -45,7 +51,7 @@ TO voteapp_api;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
   GRANT SELECT ON TABLES TO voteapp_api;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
-  GRANT USAGE, SELECT ON SEQUENCES TO voteapp_api;
+  GRANT USAGE ON SEQUENCES TO voteapp_api;
 ```
 
 If any listed table does not exist in your schema revision, drop that line
@@ -53,12 +59,27 @@ and re-run.
 
 ## Switch the API over
 
-1. On Render, edit the **API service's** `DATABASE_URL` to the same URL with
-   `voteapp_api:<password>` as the credentials. Leave the workers' and
-   migration `DATABASE_URL` on the owner role.
+Do NOT edit `DATABASE_URL` — render.yaml pins it to the owner connection
+string via `fromDatabase`, so a manual edit would be silently reverted by
+the next Blueprint sync. The API instead prefers `API_DATABASE_URL` when
+set (`runAddressApiServer.ts`), and that variable is deliberately absent
+from render.yaml: dashboard-only vars survive Blueprint syncs untouched.
+
+1. On Render, add **`API_DATABASE_URL`** to the **API service** in the
+   dashboard: the same URL as `DATABASE_URL` but with
+   `voteapp_api:<password>` as the credentials. Leave `DATABASE_URL` itself
+   alone everywhere (owner role — used by migrations and workers).
 2. Deploy/restart the API service.
-3. Smoke test: register + login, load a ballot, follow a candidate, submit a
-   content report, delete a test account.
+3. Verify the API is on the restricted role, then smoke test: register +
+   login, load a ballot, follow a candidate, submit a content report,
+   delete a test account.
+
+   ```sql
+   -- as owner, while the API is serving traffic
+   SELECT usename, count(*) FROM pg_stat_activity
+   WHERE datname = current_database() GROUP BY usename;
+   -- expect the API's connections under voteapp_api
+   ```
 
 ## If something 500s
 
@@ -69,7 +90,8 @@ A missed grant fails loudly and specifically:
 GRANT INSERT, UPDATE, DELETE ON public.<name> TO voteapp_api;
 ```
 
-Rollback is instant: point `DATABASE_URL` back at the owner credentials.
+Rollback is instant: delete `API_DATABASE_URL` from the dashboard and the
+API falls back to `DATABASE_URL` (owner) on the next restart.
 
 ## Ongoing rule
 

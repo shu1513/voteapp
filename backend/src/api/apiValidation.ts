@@ -14,6 +14,7 @@ import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferen
 import type { UserEmailPreferences } from "../pipeline/users/userEmailPreferences.js";
 import type { RegisterUserPushTokenInput } from "../pipeline/users/userPushTokens.js";
 import { CONTENT_REPORT_ENTITY_TYPES, type ContentReportEntityType } from "../pipeline/reports/contentReports.js";
+import { MAX_FIRST_NAME_LENGTH } from "../pipeline/users/userIdentity.js";
 import { UUID_PATTERN, isUuid } from "../utils/uuid.js";
 
 export { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
@@ -107,12 +108,15 @@ const AUTOCOMPLETE_TOKEN_PATTERN = /^[A-Za-z0-9_-]+$/;
 export type AuthenticatedAddressPayload = AddressResolvePayload;
 
 // Practical per-field ceilings so oversized junk is refused at the door
-// instead of leaning on the 16 KB body limit: 320 is the RFC 5321 mailbox
-// maximum (64 local + "@" + 255 domain), and the name/address caps are far
-// above any real value while keeping stored rows and outbound emails sane.
-export const MAX_AUTH_EMAIL_LENGTH = 320;
-export const MAX_FIRST_NAME_LENGTH = 100;
+// instead of leaning on the 16 KB body limit: 254 is the longest address
+// SMTP can actually deliver to (RFC 5321's 256-octet path limit minus the
+// angle brackets — not the 320 the per-component limits naively sum to),
+// and the address cap is far above any real street address. The first-name
+// cap is not defined here: userIdentity.ts owns it (registration derives
+// names under the same cap), and re-exporting keeps it one definition.
+export const MAX_AUTH_EMAIL_LENGTH = 254;
 export const MAX_ADDRESS_INPUT_LENGTH = 500;
+export { MAX_FIRST_NAME_LENGTH };
 
 export type AuthRegisterPayload = {
   email: string;

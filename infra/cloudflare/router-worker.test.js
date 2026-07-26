@@ -215,8 +215,8 @@ describe("security headers", () => {
     "permissions-policy": "camera=(), microphone=(), geolocation=()",
     "content-security-policy-report-only":
       "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; " +
-      "img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; " +
-      "base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+      "img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.sentry.io; " +
+      "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
   };
 
   function assertSecurityHeaders(response) {
