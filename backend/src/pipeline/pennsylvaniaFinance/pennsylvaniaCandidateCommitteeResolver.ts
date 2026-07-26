@@ -361,6 +361,18 @@ export function resolvePennsylvaniaCandidateCommittee(
       if (row.FILERTYPE.trim() !== "2" || row.OFFICE.trim()) {
         continue;
       }
+      // A blank OFFICE says nothing, but a populated DISTRICT is an explicit
+      // signal: it must normalize to the requested legislative district, and
+      // statewide races admit no district-bearing row at all.
+      const rowDistrict = row.DISTRICT.trim();
+      if (rowDistrict) {
+        if (
+          officeSearchInput.district === null ||
+          normalizePennsylvaniaFinanceLegislativeDistrict(rowDistrict, 203) !== officeSearchInput.district
+        ) {
+          continue;
+        }
+      }
       if (!rowMatchesElectionYear(row, electionYear)) {
         continue;
       }

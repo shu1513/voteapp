@@ -289,6 +289,106 @@ describe("pennsylvaniaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a recalled committee whose DISTRICT conflicts with the registration", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Aaron Bernstine",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0279",
+            FILERNAME: "AARON BERNSTINE",
+            FILERTYPE: "1",
+            OFFICE: "STH",
+            DISTRICT: "8",
+            ZIPCODE: "16141",
+          }),
+          filerRow({
+            FILERID: "20150221",
+            FILERNAME: "FRIENDS OF AARON BERNSTINE",
+            FILERTYPE: "2",
+            OFFICE: "",
+            DISTRICT: "9",
+            ZIPCODE: "16141",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "2026C0279",
+      filerType: "1",
+    });
+  });
+
+  it("admits a recalled committee whose padded DISTRICT normalizes to the registration's", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Aaron Bernstine",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0279",
+            FILERNAME: "AARON BERNSTINE",
+            FILERTYPE: "1",
+            OFFICE: "STH",
+            DISTRICT: "8",
+            ZIPCODE: "16141",
+          }),
+          filerRow({
+            FILERID: "20150221",
+            FILERNAME: "FRIENDS OF AARON BERNSTINE",
+            FILERTYPE: "2",
+            OFFICE: "",
+            DISTRICT: "08",
+            ZIPCODE: "16141",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "20150221",
+      filerType: "2",
+    });
+  });
+
+  it("rejects a district-bearing recalled committee for a statewide race", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0001",
+            FILERNAME: "DOE, JANE",
+            FILERTYPE: "1",
+            OFFICE: "GOV",
+            ZIPCODE: "15001",
+          }),
+          filerRow({
+            FILERID: "20240500",
+            FILERNAME: "FRIENDS OF JANE DOE",
+            FILERTYPE: "2",
+            OFFICE: "",
+            DISTRICT: "12",
+            ZIPCODE: "15001",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "2026C0001",
+      filerType: "1",
+    });
+  });
+
   it("keeps the registration filer when a blank-OFFICE committee matches by name only", () => {
     expect(
       resolvePennsylvaniaCandidateCommittee({
