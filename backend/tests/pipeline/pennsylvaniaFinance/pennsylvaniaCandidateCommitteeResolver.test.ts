@@ -217,6 +217,167 @@ describe("pennsylvaniaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("recalls a blank-OFFICE committee corroborated by the registration row's ZIP", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Aaron Bernstine",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0279",
+            FILERNAME: "AARON BERNSTINE",
+            FILERTYPE: "1",
+            OFFICE: "STH",
+            DISTRICT: "8",
+            ZIPCODE: "16141",
+            PHONE: "4129773127",
+          }),
+          filerRow({
+            FILERID: "20150221",
+            FILERNAME: "FRIENDS OF AARON BERNSTINE",
+            FILERTYPE: "2",
+            OFFICE: "",
+            DISTRICT: "",
+            ZIPCODE: "16141",
+            PHONE: "",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "20150221",
+      filerType: "2",
+    });
+  });
+
+  it("recalls a blank-OFFICE committee corroborated by the registration row's phone", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Marla Brown",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "9",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0832",
+            FILERNAME: "MARLA BROWN",
+            FILERTYPE: "1",
+            OFFICE: "STH",
+            DISTRICT: "9",
+            ZIPCODE: "16102",
+            PHONE: "7247300256",
+          }),
+          filerRow({
+            FILERID: "20220071",
+            FILERNAME: "MARLA BROWN FOR PA",
+            FILERTYPE: "2",
+            OFFICE: "",
+            DISTRICT: "",
+            ZIPCODE: "99999",
+            PHONE: "724-730-0256",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "20220071",
+      filerType: "2",
+    });
+  });
+
+  it("keeps the registration filer when a blank-OFFICE committee matches by name only", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0001",
+            FILERNAME: "DOE, JANE",
+            FILERTYPE: "1",
+            OFFICE: "GOV",
+            ZIPCODE: "15001",
+            PHONE: "4125550001",
+          }),
+          filerRow({
+            FILERID: "20240500",
+            FILERNAME: "FRIENDS OF JANE DOE",
+            FILERTYPE: "2",
+            OFFICE: "",
+            ZIPCODE: "19999",
+            PHONE: "2155559999",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "2026C0001",
+      filerType: "1",
+    });
+  });
+
+  it("never admits a committee whose OFFICE names a different race, even with a shared ZIP", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "2026C0001",
+            FILERNAME: "DOE, JANE",
+            FILERTYPE: "1",
+            OFFICE: "GOV",
+            ZIPCODE: "15001",
+          }),
+          filerRow({
+            FILERID: "20240500",
+            FILERNAME: "FRIENDS OF JANE DOE",
+            FILERTYPE: "2",
+            OFFICE: "STH",
+            DISTRICT: "5",
+            ZIPCODE: "15001",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filerId: "2026C0001",
+      filerType: "1",
+    });
+  });
+
+  it("does not recall committees without an office-matched registration row", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [
+          filerRow({
+            FILERID: "20240500",
+            FILERNAME: "FRIENDS OF JANE DOE",
+            FILERTYPE: "2",
+            OFFICE: "",
+            ZIPCODE: "15001",
+            PHONE: "4125550001",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_filer_match",
+    });
+  });
+
   it("stays ambiguous when two committee filers match", () => {
     expect(
       resolvePennsylvaniaCandidateCommittee({
