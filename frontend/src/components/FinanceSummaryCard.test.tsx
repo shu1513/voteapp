@@ -104,7 +104,7 @@ describe("FinanceSummaryCard", () => {
     summary.direct_campaign.total_spent = 90000;
     const { rerender } = render(<FinanceSummaryCard summary={summary} />);
     expect(
-      screen.getByText(/also using money raised in earlier years/)
+      screen.getByText(/money not counted in Raised/)
     ).toBeInTheDocument();
 
     // Public matching money accounts for the gap — no note.
@@ -114,13 +114,13 @@ describe("FinanceSummaryCard", () => {
     funded.direct_campaign.public_funds_received = 60000;
     rerender(<FinanceSummaryCard summary={funded} />);
     expect(
-      screen.queryByText(/also using money raised in earlier years/)
+      screen.queryByText(/money not counted in Raised/)
     ).not.toBeInTheDocument();
 
     // Normal case (fixture raises more than it spends) — no note.
     rerender(<FinanceSummaryCard summary={financeSummary()} />);
     expect(
-      screen.queryByText(/also using money raised in earlier years/)
+      screen.queryByText(/money not counted in Raised/)
     ).not.toBeInTheDocument();
   });
 

@@ -275,8 +275,8 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
       ) : null}
       {spendingExceedsCycleFunds(summary) ? (
         <Text className="mt-1 text-xs text-ink-soft">
-          Spent can be higher than Raised because this campaign is also using money raised in
-          earlier years.
+          Spent can be higher than Raised because campaigns can also use money not counted in
+          Raised, like funds from earlier years or loans.
         </Text>
       ) : null}
 
