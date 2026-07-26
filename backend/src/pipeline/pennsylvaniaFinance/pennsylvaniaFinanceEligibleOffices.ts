@@ -229,6 +229,19 @@ const PENNSYLVANIA_APP_OFFICE_TO_SOURCE = new Map<string, PennsylvaniaFinanceOff
   ])
 );
 
+/**
+ * Office-code-only mapping, ignoring district: what PA office code does this
+ * source OFFICE label denote, if any? Used where a row names an office but
+ * carries no district of its own.
+ */
+export function mapPennsylvaniaFinanceOfficeCode(office: string | null | undefined): string | null {
+  const normalizedOffice = normalizePennsylvaniaFinanceOfficeLabel(office);
+  if (!normalizedOffice) {
+    return null;
+  }
+  return PENNSYLVANIA_OFFICE_DEFINITIONS.get(normalizedOffice)?.paOfficeCode ?? null;
+}
+
 export function toPennsylvaniaFinanceOfficeKey(input: {
   officeScope: string | null | undefined;
   officeCanonicalName: string | null | undefined;
