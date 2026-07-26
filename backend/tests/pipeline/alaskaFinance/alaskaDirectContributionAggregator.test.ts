@@ -9,6 +9,7 @@ function income(overrides: Partial<AlaskaApocCampaignIncomeRow> = {}): AlaskaApo
     filerId: "1001",
     filerName: "Jane Doe",
     filerType: "Candidate",
+    office: "",
     name: "Jane Doe",
     date: "10/01/2026",
     type: "Income",

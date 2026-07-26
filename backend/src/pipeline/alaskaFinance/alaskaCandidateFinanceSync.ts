@@ -64,6 +64,11 @@ export type AlaskaCandidateFinanceSyncResult = {
   electionYear: number;
   dryRun: boolean;
   resolution: AlaskaCandidateFinanceResolution;
+  // True when IE aggregation saw includable rows for two conflicting formal
+  // first names behind the candidate's nickname. The sync refuses to write
+  // anything so the previously stored snapshot is preserved; the candidate
+  // needs a human identity check.
+  outsideIdentityConflict: boolean;
   linkWritten: boolean;
   summaryWritten: boolean;
   directBreakdownsWritten: number;
@@ -236,9 +241,49 @@ export async function syncAlaskaCandidateFinance(
     candidateName,
     electionYear,
     expenditureRows: input.independentExpenditureRows ?? [],
+    candidateFilerName: resolution.candidateFilerName,
     sourceUrl: ALASKA_APOC_IE_EXPENDITURES_URL,
     maxGroups: input.outsideMaxGroups ?? DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
   });
+
+  // Includable IE rows named two conflicting formal first names behind this
+  // candidate's nickname: the identity behind the link is in doubt, so write
+  // nothing and keep the previously stored snapshot intact rather than
+  // persisting zeroed outside totals and an empty group set. Direct
+  // contributions are deliberately frozen too - they flow through the same
+  // possibly-misidentified link, and the summary row is atomic (direct and
+  // outside totals live in one row), so a direct-only update would mix sync
+  // generations. The batch sync warns; staleness lasts until a human
+  // resolves the identity. Texas applies the same rule.
+  if (outsideFinance.firstNameConflict) {
+    return {
+      candidateId,
+      electionId,
+      electionYear,
+      dryRun,
+      resolution,
+      outsideIdentityConflict: true,
+      linkWritten: false,
+      summaryWritten: false,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      totalReceipts: null,
+      directContributionTotal: null,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+      matchedContributionRowCount: directFinance.matchedContributionRowCount,
+      includedContributionRowCount: directFinance.includedContributionRowCount,
+      skippedContributionRowCount: directFinance.skippedContributionRowCount,
+      matchedExpenditureRowCount: outsideFinance.matchedExpenditureRowCount,
+      includedExpenditureRowCount: outsideFinance.includedExpenditureRowCount,
+      skippedExpenditureRowCount: outsideFinance.skippedExpenditureRowCount,
+      matchedOutsideContributionRowCount: 0,
+      includedOutsideContributionRowCount: 0,
+      skippedOutsideContributionRowCount: 0,
+    };
+  }
+
   const outsideGroupBreakdownFinance = aggregateAlaskaOutsideGroupContributions({
     electionYear,
     outsideGroups: outsideFinance.summary?.groups ?? [],
@@ -286,6 +331,7 @@ export async function syncAlaskaCandidateFinance(
     electionYear,
     dryRun,
     resolution,
+    outsideIdentityConflict: false,
     linkWritten: !dryRun,
     summaryWritten: !dryRun,
     directBreakdownsWritten: dryRun ? 0 : directBreakdowns.length,

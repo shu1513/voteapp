@@ -24,6 +24,7 @@ export type AlaskaApocCampaignIncomeRow = {
   filerName: string;
   filerType: string;
   name: string;
+  office: string;
   date: string;
   type: string;
   contributor: string;
@@ -773,6 +774,7 @@ export function parseAlaskaApocCampaignIncomeCsv(
       filerName: getString(record, "Filer Name", "Filer", "Name"),
       filerType: getString(record, "Filer Type"),
       name: getString(record, "Name", "Candidate Name", "Group Name"),
+      office: getString(record, "Office"),
       date,
       type: getString(record, "Type", "Transaction Type"),
       contributor: incomeContributor(record),

@@ -27,6 +27,7 @@ function income(overrides: Partial<AlaskaApocCampaignIncomeRow> = {}): AlaskaApo
     filerId: "1001",
     filerName: "Jane Doe",
     filerType: "Candidate",
+    office: "",
     name: "Jane Doe",
     date: "10/01/2026",
     type: "Income",
@@ -280,6 +281,91 @@ describe("alaskaCandidateFinanceSync", () => {
       "https://example.test/manual-link",
       "2026-06-25T12:00:00.000Z",
     ]);
+  });
+
+  it("uses the trusted filer name to settle which nickname family is this candidate", async () => {
+    // "Pat Smith" is linked to filer "Patrick Smith": the filer's given name
+    // identifies the family, so Patricia-only IE rows never match and the
+    // sync writes Patrick's money without freezing.
+    const db = createMockDb();
+
+    const result = await syncAlaskaCandidateFinance({
+      db,
+      ...baseInput(),
+      candidateName: "Pat Smith",
+      trustedCommittee: {
+        candidateFilerId: "1001",
+        candidateFilerName: "Patrick Smith",
+      },
+      incomeRows: [income({ filerName: "Patrick Smith", name: "Patrick Smith" })],
+      independentExpenditureRows: [
+        expenditure({
+          candidateProposition: "Patrick Smith",
+          description: "Mailers supporting Patrick Smith",
+        }),
+        expenditure({
+          filerId: "8002",
+          filerName: "Accountability PAC",
+          candidateProposition: "Patricia Smith",
+          description: "Mailers supporting Patricia Smith",
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      outsideIdentityConflict: false,
+      linkWritten: true,
+      summaryWritten: true,
+      outsideSupportTotal: 35000,
+      matchedExpenditureRowCount: 1,
+      includedExpenditureRowCount: 1,
+    });
+  });
+
+  it("refuses to write anything when IE rows reveal a first-name identity conflict", async () => {
+    // The linked filer name is committee-style ("Smith for Alaska") and
+    // carries no given-name signal, so IE rows naming both PATRICK and
+    // PATRICIA stay conflicting. The sync must not persist zeroed outside
+    // totals and an empty group set over a previously stored snapshot; it
+    // writes nothing and flags the conflict.
+    const db = createMockDb();
+
+    const result = await syncAlaskaCandidateFinance({
+      db,
+      ...baseInput(),
+      candidateName: "Pat Smith",
+      trustedCommittee: {
+        candidateFilerId: "1001",
+        candidateFilerName: "Smith for Alaska",
+      },
+      incomeRows: [income({ filerName: "Smith for Alaska", name: "Smith for Alaska" })],
+      independentExpenditureRows: [
+        expenditure({
+          candidateProposition: "Patrick Smith",
+          description: "Mailers supporting Patrick Smith",
+        }),
+        expenditure({
+          filerId: "8002",
+          filerName: "Accountability PAC",
+          candidateProposition: "Patricia Smith",
+          description: "Mailers supporting Patricia Smith",
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      outsideIdentityConflict: true,
+      linkWritten: false,
+      summaryWritten: false,
+      directBreakdownsWritten: 0,
+      outsideGroupsWritten: 0,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+      matchedExpenditureRowCount: 2,
+      includedExpenditureRowCount: 0,
+    });
+    expect(db.query).not.toHaveBeenCalled();
+    expect(db.connect).not.toHaveBeenCalled();
   });
 
   it("requires trusted APOC candidate filer metadata", async () => {
