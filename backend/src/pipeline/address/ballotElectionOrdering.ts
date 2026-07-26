@@ -207,6 +207,11 @@ function sortBallotElections(
 
 const NO_AREA_MATCH: ResearchAreaMatchScore = { score: 0, bestRank: Number.POSITIVE_INFINITY };
 
+// Numeric-aware title compare so "Proposition 4" sorts before "Proposition 33"
+// (plain string compare puts 33 first). Fixed "en" locale keeps the order
+// deterministic across server environments.
+const BALLOT_TITLE_COLLATOR = new Intl.Collator("en", { numeric: true });
+
 function compareBySort(
   a: OrderedBallotElectionSummary,
   b: OrderedBallotElectionSummary,
@@ -253,7 +258,10 @@ function compareBySort(
     return a.race_type < b.race_type ? -1 : 1;
   }
   if (a.official_ballot_title !== b.official_ballot_title) {
-    return a.official_ballot_title < b.official_ballot_title ? -1 : 1;
+    const byTitle = BALLOT_TITLE_COLLATOR.compare(a.official_ballot_title, b.official_ballot_title);
+    if (byTitle !== 0) {
+      return byTitle;
+    }
   }
   return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
 }

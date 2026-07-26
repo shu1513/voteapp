@@ -14,6 +14,7 @@ const electionC = "cccccccc-3333-4333-8333-cccccccccccc";
 type FakeElection = {
   id: string;
   election_date?: string;
+  official_ballot_title?: string;
   vote_power_score?: number | null;
   population?: number | null;
   research_area_ids?: string[];
@@ -38,7 +39,7 @@ function makeSummary(elections: FakeElection[]): BallotSummaryResult {
           population: e.population ?? null,
         },
         race_type: "office",
-        official_ballot_title: "Office",
+        official_ballot_title: e.official_ballot_title ?? "Office",
         election_date: e.election_date ?? "2026-11-03",
         election_stage: "general",
         is_partisan: false,
@@ -116,6 +117,23 @@ describe("applyBallotElectionOrdering", () => {
     );
 
     expect(result.elections.map((e) => e.id)).toEqual([electionA, electionB]);
+  });
+
+  it("breaks title ties numerically so Proposition 4 sorts before Proposition 33", async () => {
+    const result = await applyBallotElectionOrdering(
+      { query: makeFollowsQuery([]) },
+      makeSummary([
+        { id: electionA, official_ballot_title: "Proposition 33", vote_power_score: 50 },
+        { id: electionB, official_ballot_title: "Proposition 4", vote_power_score: 50 },
+        { id: electionC, official_ballot_title: "Proposition 12", vote_power_score: 50 },
+      ])
+    );
+
+    expect(result.elections.map((e) => e.official_ballot_title)).toEqual([
+      "Proposition 4",
+      "Proposition 12",
+      "Proposition 33",
+    ]);
   });
 
   it("orders by district population descending when sort=district_size, unknown populations last", async () => {
