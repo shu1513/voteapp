@@ -345,6 +345,22 @@ export function resolvePennsylvaniaCandidateCommittee(
     };
   }
 
+  // PA registers the same candidacy twice: a candidate filer (FILERTYPE 1,
+  // the person's own registration) and their political committee (FILERTYPE
+  // 2). Contribution reports are filed under the committee's filer id, so
+  // when the match set is exactly one committee plus candidate registrations
+  // for the same office/district/year, the committee is the funded vehicle.
+  // Two committees (or two candidate registrations with no committee) stay
+  // ambiguous — there is no evidence which vehicle carries the money.
+  const committeeMatches = matches.filter((match) => match.filerType === "2");
+  const candidateMatches = matches.filter((match) => match.filerType === "1");
+  if (committeeMatches.length === 1 && candidateMatches.length === matches.length - 1) {
+    return {
+      status: "matched",
+      ...committeeMatches[0],
+    };
+  }
+
   return {
     status: "ambiguous",
     reason: "multiple_matching_filers",
