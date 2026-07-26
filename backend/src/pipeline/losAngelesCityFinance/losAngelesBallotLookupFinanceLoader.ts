@@ -31,6 +31,7 @@ type SummaryRow = {
   total_receipts: string | number | null;
   total_disbursements: string | number | null;
   cash_on_hand: string | number | null;
+  matching_funds: string | number | null;
   outside_support_total: string | number | null;
   outside_oppose_total: string | number | null;
   source_url: string | null;
@@ -68,6 +69,7 @@ export async function loadLosAngelesCandidateFinanceSummariesByCandidateElection
         summary.total_receipts,
         summary.total_disbursements,
         summary.cash_on_hand,
+        summary.matching_funds,
         summary.outside_support_total,
         summary.outside_oppose_total,
         summary.source_url,
@@ -208,6 +210,7 @@ export async function loadLosAngelesCandidateFinanceSummariesByCandidateElection
             total_spent: parseFinanceAmount(row.total_disbursements),
             cash_on_hand: parseFinanceAmount(row.cash_on_hand),
             debts_owed: null,
+            public_funds_received: parseFinanceAmount(row.matching_funds),
             top_occupations: occupations,
             top_employers: byType.get("employer") ?? [],
             top_industries: byType.get("industry") ?? [],
