@@ -150,6 +150,12 @@ export function parseIllinoisSbeTsv(
   expectedHeader: readonly string[],
   visit: IllinoisSbeTsvRowVisitor
 ): void {
+  // With the whole string in hand the truncation check can run first, exactly
+  // as the pre-streaming parser did — so a file that is both truncated and
+  // damaged mid-stream reports the truncation, not the first damaged row.
+  if (!text.replace(/^﻿/, "").endsWith("\n")) {
+    throw new Error(`Illinois SBE ${label} file is incomplete: final newline is missing`);
+  }
   const parser = new IllinoisSbeTsvParser({ label, expectedHeader, visit });
   parser.push(text);
   parser.end();

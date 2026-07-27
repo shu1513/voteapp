@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   aggregateIllinoisDirectContributions,
+  illinoisMinReceiptYearForLookback,
   createIllinoisSbeArtifactCandidateCommitteeResolver,
   ILLINOIS_SBE_BULK_DOWNLOAD_URL,
   loadIllinoisFinanceDataForDueRowFromArtifacts,
@@ -12,6 +13,7 @@ import {
 const CONTRIBUTIONS_CSV = "tests/fixtures/illinoisFinance/contributions.csv";
 const EXPENDITURES_CSV = "tests/fixtures/illinoisFinance/expenditures.csv";
 const NORMALIZED_ARTIFACT = "tests/fixtures/illinoisFinance/normalized-artifact.json";
+const EMPTY_CONTRIBUTIONS_CSV = "tests/fixtures/illinoisFinance/contributions-empty.csv";
 const CONTRIBUTIONS_URL = "https://example.test/illinois-contributions.csv";
 const EXPENDITURES_URL = "https://example.test/illinois-expenditures.csv";
 
@@ -441,6 +443,26 @@ describe("illinoisSbeArtifactDataSource bulk receipts", () => {
     const data = loadIllinoisFinanceDataForDueRowFromArtifacts({ row: receiptsDueRow(), artifacts });
     expect(data.directContributionRecords).toBeUndefined();
     expect(data.d2ReportSummaries).toBeDefined();
+  });
+
+  it("treats a configured-but-empty contribution CSV as a real source that clears", async () => {
+    // Header-only CSV: zero records, but the source WAS loaded, so name-keyed
+    // links must get [] (replace stored breakdowns), not undefined (preserve).
+    const artifacts = await loadIllinoisSbeArtifactDataSet({
+      contributionCsvPaths: [EMPTY_CONTRIBUTIONS_CSV],
+      normalizedArtifactPath: NORMALIZED_ARTIFACT,
+    });
+
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({ row: dueRow(), artifacts });
+    expect(data.directContributionRecords).toEqual([]);
+  });
+
+  it("derives the receipts year floor from the lookback window", () => {
+    const now = new Date("2026-07-15T00:00:00.000Z");
+    // Default one-day lookback keeps the generous two-year floor.
+    expect(illinoisMinReceiptYearForLookback({ now, electionLookbackDays: 1 })).toBe(2024);
+    // A lookback deep enough to select a 2024 election needs 2023 receipts.
+    expect(illinoisMinReceiptYearForLookback({ now, electionLookbackDays: 1000 })).toBe(2022);
   });
 
   it("requires the normalized artifact before loading receipts", async () => {

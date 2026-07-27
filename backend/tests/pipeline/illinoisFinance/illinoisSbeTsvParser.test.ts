@@ -99,6 +99,14 @@ describe("illinoisSbeTsvParser", () => {
     );
   });
 
+  it("reports truncation before mid-file damage when parsing a whole string", () => {
+    // A file that is both truncated and has a bad-width row must report the
+    // truncation, matching the pre-streaming parser's front check.
+    expect(() => parseWholeString("ID\tName\tNotes\n1\tonly-two\nx")).toThrow(
+      "Illinois SBE Sample.txt file is incomplete: final newline is missing"
+    );
+  });
+
   describe("malformed-row reporting", () => {
     function parseTolerantly(text: string): {
       rows: string[][];

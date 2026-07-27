@@ -365,6 +365,7 @@ describe("illinoisCandidateFinanceBatchSync", () => {
     });
     const artifacts = {
       contributionRecords: [artifactContribution],
+      contributionCsvsLoaded: true,
       contributionSourceUrl: SOURCE_URL,
     };
     const txQuery = vi

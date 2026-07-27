@@ -11,6 +11,7 @@ import {
 import {
   createIllinoisSbeArtifactCandidateCommitteeResolver,
   loadIllinoisFinanceDataForDueRowFromArtifacts,
+  illinoisMinReceiptYearForLookback,
   loadIllinoisSbeArtifactDataSet,
 } from "../pipeline/illinoisFinance/illinoisSbeArtifactDataSource.js";
 import { parseFlagValue, parseFlagValues } from "./illinoisCandidateFinanceScriptArgs.js";
@@ -160,8 +161,11 @@ async function main(): Promise<void> {
       (process.env.ILLINOIS_SBE_NORMALIZED_ARTIFACT_PATH?.trim() || undefined);
     const receiptsTsvPath =
       options.receiptsTsvPath ?? (process.env.ILLINOIS_SBE_RECEIPTS_TSV_PATH?.trim() || undefined);
+    // receiptsTsvPath forces artifact mode too: an env-configured receipts
+    // path must either load or fail loudly (the data set requires the
+    // normalized artifact alongside it), never fall through to live loading.
     const artifacts =
-      options.contributionCsvPaths.length > 0 || normalizedArtifactPath
+      options.contributionCsvPaths.length > 0 || normalizedArtifactPath || receiptsTsvPath
         ? await loadIllinoisSbeArtifactDataSet({
             contributionCsvPaths: options.contributionCsvPaths,
             expenditureCsvPaths: options.expenditureCsvPaths,
@@ -169,6 +173,10 @@ async function main(): Promise<void> {
             expenditureSourceUrl: options.expenditureSourceUrl,
             normalizedArtifactPath,
             receiptsTsvPath,
+            minReceiptYear: illinoisMinReceiptYearForLookback({
+              now: startedAt,
+              electionLookbackDays: options.electionLookbackDays ?? 1,
+            }),
           })
         : null;
     const artifactCandidateCommitteeResolver = artifacts

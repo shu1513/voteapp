@@ -43,6 +43,11 @@ import {
 
 export type IllinoisSbeArtifactDataSet = {
   contributionRecords: IllinoisSbeContributionRecord[];
+  // Whether contribution CSVs were configured at all. A configured CSV that
+  // parsed to zero records is a loaded-but-empty source (replace breakdowns);
+  // no CSVs configured is no source (preserve them). Record count alone
+  // cannot tell those apart.
+  contributionCsvsLoaded: boolean;
   expenditureRecords?: IllinoisSbeExpenditureRecord[];
   contributionSourceUrl: string;
   expenditureSourceUrl?: string | null;
@@ -61,6 +66,22 @@ export type IllinoisSbeArtifactDataSourceConfig = {
   receiptsSourceUrl?: string | null;
   minReceiptYear?: number;
 };
+
+/**
+ * The oldest receipt year a run can need: the earliest selectable election
+ * (now minus the lookback window) starts its cycle the year before its
+ * election year. Never later than two years back, so the short default
+ * lookback keeps the generous floor it has always had.
+ */
+export function illinoisMinReceiptYearForLookback(input: {
+  now: Date;
+  electionLookbackDays: number;
+}): number {
+  const earliestElectionYear = new Date(
+    input.now.getTime() - input.electionLookbackDays * 24 * 60 * 60 * 1000
+  ).getUTCFullYear();
+  return Math.min(input.now.getUTCFullYear() - 2, earliestElectionYear - 1);
+}
 
 function normalizePathList(paths: readonly string[] | undefined, label: string, required: boolean): string[] {
   const normalized = (paths ?? []).map((path) => path.trim()).filter(Boolean);
@@ -104,6 +125,11 @@ export async function loadIllinoisSbeArtifactDataSet(
   config: IllinoisSbeArtifactDataSourceConfig
 ): Promise<IllinoisSbeArtifactDataSet> {
   const normalizedArtifactPath = config.normalizedArtifactPath?.trim() || null;
+  if (config.receiptsTsvPath?.trim() && !normalizedArtifactPath) {
+    // Checked before the CSV requirement so a receipts-only configuration
+    // gets the error naming its actual missing piece.
+    throw new Error("Illinois SBE receipts require the normalized artifact for the committee allow-list");
+  }
   const contributionCsvPaths = normalizePathList(
     config.contributionCsvPaths,
     "contribution",
@@ -117,6 +143,7 @@ export async function loadIllinoisSbeArtifactDataSet(
       paths: contributionCsvPaths,
       sourceUrl: contributionSourceUrl,
     }),
+    contributionCsvsLoaded: contributionCsvPaths.length > 0,
     contributionSourceUrl,
   };
 
@@ -288,7 +315,7 @@ export function loadIllinoisFinanceDataForDueRowFromArtifacts(input: {
       })
     );
     data.directContributionSourceUrl = sourceUrl;
-  } else if (input.artifacts.contributionRecords.length > 0) {
+  } else if (input.artifacts.contributionCsvsLoaded) {
     data.directContributionRecords = input.artifacts.contributionRecords.filter((record) =>
       directContributionMatchesDueRow({ record, row: input.row })
     );
