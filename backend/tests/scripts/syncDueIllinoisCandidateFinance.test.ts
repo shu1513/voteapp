@@ -89,9 +89,12 @@ describe("syncDueIllinoisCandidateFinance script", () => {
     expect(() =>
       parseSyncDueIllinoisCandidateFinanceScriptArgs(["--contributions-url=https://example.test/contributions.csv"])
     ).toThrow("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
-    expect(() => parseSyncDueIllinoisCandidateFinanceScriptArgs(["--receipts-tsv=exports/Receipts.txt"])).toThrow(
-      "Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags"
-    );
+    // --receipts-tsv alone must parse: its required normalized artifact can
+    // arrive via ILLINOIS_SBE_NORMALIZED_ARTIFACT_PATH, which parsing cannot
+    // see. The data-set loader raises the receipts-specific error instead.
+    expect(
+      parseSyncDueIllinoisCandidateFinanceScriptArgs(["--receipts-tsv=exports/Receipts.txt"]).receiptsTsvPath
+    ).toBe("exports/Receipts.txt");
     expect(
       parseSyncDueIllinoisCandidateFinanceScriptArgs([
         "--normalized-artifact=exports/illinois-normalized.json",

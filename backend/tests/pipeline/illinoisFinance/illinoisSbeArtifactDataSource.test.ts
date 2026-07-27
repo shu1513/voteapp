@@ -431,6 +431,42 @@ describe("illinoisSbeArtifactDataSource bulk receipts", () => {
     expect(data.directContributionSourceUrl).toBe(CONTRIBUTIONS_URL);
   });
 
+  it("preserves breakdowns for an id-keyed link outside the receipts allow-list", async () => {
+    // Committee 999 is not in the artifact's relations, so its receipts were
+    // never scanned. It must not receive the authoritative empty that would
+    // wipe its stored breakdowns.
+    const artifacts = await loadIllinoisSbeArtifactDataSet({
+      contributionCsvPaths: [],
+      normalizedArtifactPath: NORMALIZED_ARTIFACT,
+      receiptsTsvPath: RECEIPTS_TSV,
+      minReceiptYear: 2024,
+    });
+
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({
+      row: receiptsDueRow({ committeeKey: "SBE:999", committeeName: "Other Committee" }),
+      artifacts,
+    });
+    expect(data.directContributionRecords).toBeUndefined();
+  });
+
+  it("lets an id-keyed link outside the allow-list fall back to loaded CSVs", async () => {
+    const artifacts = await loadIllinoisSbeArtifactDataSet({
+      contributionCsvPaths: [CONTRIBUTIONS_CSV],
+      contributionSourceUrl: CONTRIBUTIONS_URL,
+      normalizedArtifactPath: NORMALIZED_ARTIFACT,
+      receiptsTsvPath: RECEIPTS_TSV,
+      minReceiptYear: 2024,
+    });
+
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({
+      // The CSV fixture's rows are addressed to "Friends of Jane Doe".
+      row: receiptsDueRow({ committeeKey: "SBE:999", committeeName: "Friends of Jane Doe" }),
+      artifacts,
+    });
+    expect(data.directContributionRecords?.length).toBeGreaterThan(0);
+    expect(data.directContributionSourceUrl).toBe(CONTRIBUTIONS_URL);
+  });
+
   it("leaves records undefined for a summaries-only artifact so breakdowns survive", async () => {
     // The documented artifact invocation passes no contribution CSVs and no
     // receipts. Returning [] here would tell the writer to delete every stored

@@ -80,10 +80,14 @@ export function parseSyncDueIllinoisCandidateFinanceScriptArgs(
   const expenditureSourceUrl = parseFlagValue(args, "--expenditures-url") || undefined;
   const normalizedArtifactPath = parseFlagValue(args, "--normalized-artifact") || undefined;
   const receiptsTsvPath = parseFlagValue(args, "--receipts-tsv") || undefined;
+  // --receipts-tsv is deliberately absent from this guard: the normalized
+  // artifact it requires may arrive via ILLINOIS_SBE_NORMALIZED_ARTIFACT_PATH,
+  // which argument parsing cannot see. The data-set loader raises the
+  // receipts-specific error with full knowledge of the environment.
   if (
     contributionCsvPaths.length === 0 &&
     !normalizedArtifactPath &&
-    (expenditureCsvPaths.length > 0 || contributionSourceUrl || expenditureSourceUrl || receiptsTsvPath)
+    (expenditureCsvPaths.length > 0 || contributionSourceUrl || expenditureSourceUrl)
   ) {
     throw new Error("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
   }

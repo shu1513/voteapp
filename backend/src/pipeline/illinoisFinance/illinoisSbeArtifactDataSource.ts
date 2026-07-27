@@ -53,6 +53,10 @@ export type IllinoisSbeArtifactDataSet = {
   expenditureSourceUrl?: string | null;
   normalizedArtifact?: IllinoisSbeNormalizedArtifact;
   receiptsByCommitteeId?: Map<string, IllinoisSbeReceiptRecord[]>;
+  // The committee ids the receipts load actually scanned for. Absence from
+  // this set means the committee's receipts were never read (preserve stored
+  // breakdowns); presence with no map entry means a real zero (clear them).
+  receiptsCommitteeIds?: ReadonlySet<string>;
   receiptsSourceUrl?: string;
 };
 
@@ -163,20 +167,29 @@ export async function loadIllinoisSbeArtifactDataSet(
     );
     // The due window looks ahead, never far back: a cycle needs receipts from
     // the year before its election year at the earliest.
-    const minReceiptYear = config.minReceiptYear ?? new Date().getUTCFullYear() - 2;
+    const minReceiptYear =
+      config.minReceiptYear ??
+      illinoisMinReceiptYearForLookback({ now: new Date(), electionLookbackDays: 1 });
     const { receiptsByCommitteeId, visitedRowCount, keptRowCount, malformedRowCount } =
       await loadIllinoisSbeReceiptsByCommitteeId({
         path: receiptsTsvPath,
         committeeIds,
         minReceiptYear,
       });
+    // Always leave a trace of what the multi-million-row scan kept — the first
+    // question when breakdowns come back empty.
+    const scannedRowCount = visitedRowCount + malformedRowCount;
+    const receiptsStats =
+      `Illinois SBE Receipts.txt kept ${keptRowCount} of ${scannedRowCount} rows ` +
+      `for ${committeeIds.size} allow-listed committees since ${minReceiptYear}` +
+      (malformedRowCount > 0 ? `; skipped ${malformedRowCount} malformed rows` : "");
     if (malformedRowCount > 0) {
-      console.warn(
-        `Illinois SBE Receipts.txt skipped ${malformedRowCount} malformed rows of ${visitedRowCount} ` +
-          `(kept ${keptRowCount} for ${committeeIds.size} allow-listed committees since ${minReceiptYear})`
-      );
+      console.warn(receiptsStats);
+    } else {
+      console.log(receiptsStats);
     }
     dataSet.receiptsByCommitteeId = receiptsByCommitteeId;
+    dataSet.receiptsCommitteeIds = committeeIds;
     dataSet.receiptsSourceUrl = config.receiptsSourceUrl?.trim() || ILLINOIS_SBE_BULK_DOWNLOAD_URL;
   }
 
@@ -303,9 +316,16 @@ export function loadIllinoisFinanceDataForDueRowFromArtifacts(input: {
   const data: IllinoisCandidateFinanceData = {
     directContributionSourceUrl: input.artifacts.contributionSourceUrl,
   };
-  if (input.artifacts.receiptsByCommitteeId !== undefined && committeeId !== null) {
-    // Bulk receipts are keyed by the SBE committee id, so an id-keyed link
-    // takes the exact path; an empty list is an honest "no itemized receipts".
+  if (
+    input.artifacts.receiptsByCommitteeId !== undefined &&
+    committeeId !== null &&
+    input.artifacts.receiptsCommitteeIds?.has(committeeId)
+  ) {
+    // Bulk receipts are keyed by the SBE committee id, so an allow-listed
+    // id-keyed link takes the exact path; an empty list is an honest "no
+    // itemized receipts". A committee OUTSIDE the allow-list was never
+    // scanned, so it must not receive this authoritative empty — it falls
+    // through to the CSV path or, with no CSVs, preserves stored breakdowns.
     const sourceUrl = input.artifacts.receiptsSourceUrl ?? ILLINOIS_SBE_BULK_DOWNLOAD_URL;
     data.directContributionRecords = (receipts ?? []).map((receipt) =>
       toIllinoisSbeContributionRecordFromReceipt({
