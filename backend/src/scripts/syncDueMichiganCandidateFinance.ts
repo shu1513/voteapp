@@ -16,8 +16,6 @@ export type SyncDueMichiganCandidateFinanceScriptOptions = {
   staleAfterDays?: number;
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
-  rawCacheDir?: string;
-  rawExtractedDir?: string;
 };
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
@@ -71,8 +69,6 @@ export function parseSyncDueMichiganCandidateFinanceScriptArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    rawCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
-    rawExtractedDir: parseFlagValue(args, "--raw-extracted-dir") || undefined,
   };
 }
 
@@ -119,8 +115,6 @@ async function main(): Promise<void> {
       staleAfterDays: options.staleAfterDays,
       electionLookbackDays: options.electionLookbackDays,
       electionLookaheadDays: options.electionLookaheadDays,
-      rawDataCacheDir: options.rawCacheDir,
-      rawDataExtractedDir: options.rawExtractedDir,
     });
 
     console.log(JSON.stringify(toSyncDueMichiganCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));

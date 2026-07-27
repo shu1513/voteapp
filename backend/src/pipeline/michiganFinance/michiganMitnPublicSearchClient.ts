@@ -1,6 +1,6 @@
 import { inflateRawSync } from "node:zlib";
 
-import type { MichiganMitnLegacyContributionRow } from "./michiganMitnLegacyArchiveReader.js";
+import type { MichiganMitnLegacyContributionRow } from "./michiganMitnLegacyRowTypes.js";
 
 /**
  * Client for the Michigan Transparency Network public search

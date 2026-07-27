@@ -6,7 +6,7 @@ import {
   isMichiganTotalReceipt,
   michiganElectionCycleStartYear,
 } from "../../../src/pipeline/michiganFinance/michiganDirectContributionAggregator.js";
-import type { MichiganMitnLegacyContributionRow } from "../../../src/pipeline/michiganFinance/michiganMitnLegacyArchiveReader.js";
+import type { MichiganMitnLegacyContributionRow } from "../../../src/pipeline/michiganFinance/michiganMitnLegacyRowTypes.js";
 
 function contribution(
   overrides: Partial<MichiganMitnLegacyContributionRow> = {}

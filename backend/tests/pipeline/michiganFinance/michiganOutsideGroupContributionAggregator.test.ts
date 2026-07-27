@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { aggregateMichiganOutsideGroupContributions } from "../../../src/pipeline/michiganFinance/michiganOutsideGroupContributionAggregator.js";
-import type { MichiganMitnLegacyContributionRow } from "../../../src/pipeline/michiganFinance/michiganMitnLegacyArchiveReader.js";
+import type { MichiganMitnLegacyContributionRow } from "../../../src/pipeline/michiganFinance/michiganMitnLegacyRowTypes.js";
 import type { MichiganOutsideSpendingGroup } from "../../../src/pipeline/michiganFinance/michiganOutsideSpendingAggregator.js";
 
 function contribution(

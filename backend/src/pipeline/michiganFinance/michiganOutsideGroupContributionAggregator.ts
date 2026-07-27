@@ -2,8 +2,8 @@ import {
   classifyFinanceLabel,
   normalizeFinanceLabel,
 } from "../finance/financeLabelClassifier.js";
-import { normalizeMichiganMitnLegacyArchiveYear } from "./michiganMitnLegacyArtifactCache.js";
-import type { MichiganMitnLegacyContributionRow } from "./michiganMitnLegacyArchiveReader.js";
+import { normalizeMichiganMitnLegacyArchiveYear } from "./michiganMitnLegacyRowTypes.js";
+import type { MichiganMitnLegacyContributionRow } from "./michiganMitnLegacyRowTypes.js";
 import type { MichiganOutsideSpendingGroup, MichiganSupportOppose } from "./michiganOutsideSpendingAggregator.js";
 
 export type MichiganFinanceOutsideGroupBreakdown = {

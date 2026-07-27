@@ -3,8 +3,8 @@ import {
   normalizeMichiganMitnLegislativeDistrict,
   toMichiganMitnOfficeSearchInput,
 } from "./michiganFinanceEligibleOffices.js";
-import { normalizeMichiganMitnLegacyArchiveYear } from "./michiganMitnLegacyArtifactCache.js";
-import type { MichiganMitnLegacyContributionRow } from "./michiganMitnLegacyArchiveReader.js";
+import { normalizeMichiganMitnLegacyArchiveYear } from "./michiganMitnLegacyRowTypes.js";
+import type { MichiganMitnLegacyContributionRow } from "./michiganMitnLegacyRowTypes.js";
 
 export type MichiganCandidateCommitteeResolverInput = {
   candidateName: string;
@@ -29,7 +29,7 @@ export type MichiganCandidateCommitteeMatch = {
   committeeName: string;
   commonName: string | null;
   confidence: "exact";
-  source: "mitn_legacy";
+  source: "mitn";
   sourceUrl: string | null;
   matchedContributionRowCount: number;
 };
@@ -293,7 +293,7 @@ function toCommitteeMatch(input: {
     committeeName: input.accumulator.committeeName,
     commonName: input.accumulator.commonName,
     confidence: "exact",
-    source: "mitn_legacy",
+    source: "mitn",
     sourceUrl: input.sourceUrl,
     matchedContributionRowCount: input.accumulator.rows.length,
   };

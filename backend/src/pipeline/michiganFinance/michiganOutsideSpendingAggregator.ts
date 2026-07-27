@@ -1,7 +1,7 @@
 import { normalizeMichiganCandidateNameKeys } from "./michiganCandidateCommitteeResolver.js";
 import { type MichiganMitnOfficeSearchInput, toMichiganMitnOfficeSearchInput } from "./michiganFinanceEligibleOffices.js";
-import { normalizeMichiganMitnLegacyArchiveYear } from "./michiganMitnLegacyArtifactCache.js";
-import type { MichiganMitnLegacyExpenditureRow } from "./michiganMitnLegacyArchiveReader.js";
+import { normalizeMichiganMitnLegacyArchiveYear } from "./michiganMitnLegacyRowTypes.js";
+import type { MichiganMitnLegacyExpenditureRow } from "./michiganMitnLegacyRowTypes.js";
 
 export type MichiganSupportOppose = "support" | "oppose";
 

@@ -4,7 +4,7 @@ import {
   normalizeMichiganCandidateNameKeys,
   resolveMichiganCandidateCommittee,
 } from "../../../src/pipeline/michiganFinance/michiganCandidateCommitteeResolver.js";
-import type { MichiganMitnLegacyContributionRow } from "../../../src/pipeline/michiganFinance/michiganMitnLegacyArchiveReader.js";
+import type { MichiganMitnLegacyContributionRow } from "../../../src/pipeline/michiganFinance/michiganMitnLegacyRowTypes.js";
 
 function contributionRow(
   overrides: Partial<MichiganMitnLegacyContributionRow> = {}
@@ -82,7 +82,7 @@ describe("michiganCandidateCommitteeResolver", () => {
       committeeName: "WHITMER FOR GOVERNOR",
       commonName: "Whitmer for Governor",
       confidence: "exact",
-      source: "mitn_legacy",
+      source: "mitn",
       sourceUrl: "https://www.michigan.gov/sos/example/2022_mi_cfr.7z",
       matchedContributionRowCount: 1,
     });
@@ -370,7 +370,7 @@ describe("michiganCandidateCommitteeResolver", () => {
           committeeName: "WHITMER FOR GOVERNOR",
           commonName: "Whitmer for Governor",
           confidence: "exact",
-          source: "mitn_legacy",
+          source: "mitn",
           sourceUrl: null,
           matchedContributionRowCount: 1,
         },
@@ -379,7 +379,7 @@ describe("michiganCandidateCommitteeResolver", () => {
           committeeName: "GRETCHEN WHITMER FOR GOVERNOR TRANSITION",
           commonName: "Whitmer Transition",
           confidence: "exact",
-          source: "mitn_legacy",
+          source: "mitn",
           sourceUrl: null,
           matchedContributionRowCount: 1,
         },

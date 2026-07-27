@@ -13,8 +13,6 @@ describe("triggerMichiganCandidateFinanceSync script", () => {
         "3",
         "--lookback-days=2",
         "--lookahead-days=365",
-        "--raw-extracted-dir=/tmp/2022_mi_cfr",
-        "--raw-cache-dir=/tmp/michigan-cache",
       ])
     ).toEqual({
       dryRun: true,
@@ -23,8 +21,6 @@ describe("triggerMichiganCandidateFinanceSync script", () => {
       staleAfterDays: 3,
       electionLookbackDays: 2,
       electionLookaheadDays: 365,
-      rawDataExtractedDir: "/tmp/2022_mi_cfr",
-      rawDataCacheDir: "/tmp/michigan-cache",
     });
   });
 
@@ -34,12 +30,6 @@ describe("triggerMichiganCandidateFinanceSync script", () => {
     );
     expect(() => parseMichiganCandidateFinanceSyncTriggerArgs(["--stale-after-days"])).toThrow(
       "Missing --stale-after-days value"
-    );
-    expect(() => parseMichiganCandidateFinanceSyncTriggerArgs(["--raw-extracted-dir="])).toThrow(
-      "Missing --raw-extracted-dir value"
-    );
-    expect(() => parseMichiganCandidateFinanceSyncTriggerArgs(["--raw-cache-dir", "   "])).toThrow(
-      "Missing --raw-cache-dir value"
     );
   });
 

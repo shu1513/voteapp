@@ -26,7 +26,7 @@ function baseLink() {
     officeName: "Governor",
     committeeId: "514456",
     committeeName: "WHITMER FOR GOVERNOR",
-    linkSource: "mitn_legacy" as const,
+    linkSource: "mitn_public_search" as const,
     sourceUrl: SOURCE_URL,
     lastVerifiedAt: new Date("2022-01-01T00:00:00.000Z"),
   };
@@ -52,7 +52,7 @@ describe("michiganFinanceWriter", () => {
       "514456",
       "WHITMER FOR GOVERNOR",
       "active",
-      "mitn_legacy",
+      "mitn_public_search",
       SOURCE_URL,
       "2022-01-01T00:00:00.000Z",
     ]);

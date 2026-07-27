@@ -24,8 +24,6 @@ export type MichiganCandidateFinanceSyncJobData = {
   staleAfterDays?: number;
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
-  rawDataExtractedDir?: string;
-  rawDataCacheDir?: string;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -151,8 +149,6 @@ export async function upsertRecurringMichiganCandidateFinanceSyncJobs(
           staleAfterDays: jobData.staleAfterDays,
           electionLookbackDays: jobData.electionLookbackDays,
           electionLookaheadDays: jobData.electionLookaheadDays,
-          rawDataExtractedDir: jobData.rawDataExtractedDir,
-          rawDataCacheDir: jobData.rawDataCacheDir,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -184,8 +180,6 @@ export async function enqueueManualMichiganCandidateFinanceSyncJob(
         staleAfterDays: jobData.staleAfterDays,
         electionLookbackDays: jobData.electionLookbackDays,
         electionLookaheadDays: jobData.electionLookaheadDays,
-        rawDataExtractedDir: jobData.rawDataExtractedDir,
-        rawDataCacheDir: jobData.rawDataCacheDir,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -239,8 +233,6 @@ export async function runMichiganCandidateFinanceSyncJob(
       staleAfterDays: data.staleAfterDays,
       electionLookbackDays: data.electionLookbackDays,
       electionLookaheadDays: data.electionLookaheadDays,
-      rawDataExtractedDir: data.rawDataExtractedDir,
-      rawDataCacheDir: data.rawDataCacheDir,
     });
 
     return {
