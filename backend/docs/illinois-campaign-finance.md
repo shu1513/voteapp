@@ -34,7 +34,9 @@ Then run with the script's existing live/force flags only after reviewing the dr
 
 The bulk download page also publishes `Receipts.txt`, the itemized receipts for every committee. Passing it with `--receipts-tsv` (or `ILLINOIS_SBE_RECEIPTS_TSV_PATH`) supplies the occupation and contribution-size breakdowns for links keyed by an SBE committee ID; without it those breakdown sections stay empty on the artifact path. It requires the normalized artifact: the artifact's candidate-committee relations are the committee allow-list that keeps the multi-decade file from being held in memory, and rows older than two years before the run are dropped for the same reason (the due window only looks ahead). Rows marked `Archived` are superseded by amendments and are skipped. The `D2Part` leading digit classifies each receipt; only part 1 (individual contributions) feeds the breakdowns, matching the search-export semantics.
 
-When receipts are loaded, an ID-keyed link with no matching rows gets an honest empty breakdown set rather than falling back to name-matched contribution CSVs; name-keyed links keep the CSV path.
+When receipts are loaded, an ID-keyed link with no matching rows gets an honest empty breakdown set rather than falling back to name-matched contribution CSVs; name-keyed links keep the CSV path. A committee funded entirely by transfers from other committees therefore shows totals with no occupation or size sections, which is the correct reading of its filings rather than missing data.
+
+A few published receipt rows contain an unescaped tab or newline, which splits or widens the row so its field positions cannot be trusted. Those rows are skipped and counted, and the loader logs the count; the run as of 2026-07-26 skipped 31 of 6,515,401 rows. The header check stays strict, so genuine schema drift still fails the run. The small bulk files keep the strict row-width check as well, because there a wrong width can only mean drift.
 
 ## Summary semantics
 

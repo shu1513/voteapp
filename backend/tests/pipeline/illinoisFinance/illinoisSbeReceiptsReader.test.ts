@@ -19,6 +19,9 @@ describe("loadIllinoisSbeReceiptsByCommitteeId", () => {
     expect(result.visitedRowCount).toBe(7);
     expect(result.archivedRowCount).toBe(1);
     expect(result.keptRowCount).toBe(4);
+    // The published export carries a few rows with unescaped tabs; their field
+    // positions cannot be trusted, so they are skipped rather than misread.
+    expect(result.malformedRowCount).toBe(1);
     expect([...result.receiptsByCommitteeId.keys()]).toEqual(["201"]);
 
     const records = result.receiptsByCommitteeId.get("201")!;

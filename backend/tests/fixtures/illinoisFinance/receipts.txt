@@ -6,3 +6,4 @@ ID	CommitteeID	FiledDocID	ETransID	LastOnlyName	FirstName	RcvDate	Amount	Aggrega
 5	999	9004		Other	Committee	2025-01-01 00:00:00	400	0	0								1A									False		False
 6	201	9005		Old	Donor	2019-05-01 00:00:00	300	0	0								1A									False		False
 7	201	9006		Doe	Dana	2024-12-31 00:00:00	150	0	0								1B									False		False
+8	201	9007		Wide	Row	2025-05-01 00:00:00	100	0	0								1A	unescaped	tab	here								False		False

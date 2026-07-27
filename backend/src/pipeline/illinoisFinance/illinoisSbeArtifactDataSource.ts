@@ -137,11 +137,18 @@ export async function loadIllinoisSbeArtifactDataSet(
     // The due window looks ahead, never far back: a cycle needs receipts from
     // the year before its election year at the earliest.
     const minReceiptYear = config.minReceiptYear ?? new Date().getUTCFullYear() - 2;
-    const { receiptsByCommitteeId } = await loadIllinoisSbeReceiptsByCommitteeId({
-      path: receiptsTsvPath,
-      committeeIds,
-      minReceiptYear,
-    });
+    const { receiptsByCommitteeId, visitedRowCount, keptRowCount, malformedRowCount } =
+      await loadIllinoisSbeReceiptsByCommitteeId({
+        path: receiptsTsvPath,
+        committeeIds,
+        minReceiptYear,
+      });
+    if (malformedRowCount > 0) {
+      console.warn(
+        `Illinois SBE Receipts.txt skipped ${malformedRowCount} malformed rows of ${visitedRowCount} ` +
+          `(kept ${keptRowCount} for ${committeeIds.size} allow-listed committees since ${minReceiptYear})`
+      );
+    }
     dataSet.receiptsByCommitteeId = receiptsByCommitteeId;
     dataSet.receiptsSourceUrl = config.receiptsSourceUrl?.trim() || ILLINOIS_SBE_BULK_DOWNLOAD_URL;
   }

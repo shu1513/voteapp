@@ -5,10 +5,17 @@
 
 export type IllinoisSbeTsvRowVisitor = (row: string[]) => void;
 
+export type IllinoisSbeTsvMalformedRowReporter = (input: {
+  line: number;
+  columnCount: number;
+  row: readonly string[];
+}) => void;
+
 export class IllinoisSbeTsvParser {
   private readonly label: string;
   private readonly expectedHeader: readonly string[];
   private readonly visit: IllinoisSbeTsvRowVisitor;
+  private readonly onMalformedRow: IllinoisSbeTsvMalformedRowReporter | undefined;
   private row: string[] = [];
   private field = "";
   private quoted = false;
@@ -25,10 +32,18 @@ export class IllinoisSbeTsvParser {
     label: string;
     expectedHeader: readonly string[];
     visit: IllinoisSbeTsvRowVisitor;
+    // Without a reporter a wrong column count throws, which is what the small
+    // bulk files want: there, it can only mean schema drift. The multi-million
+    // row receipts export carries a handful of rows with unescaped tabs or
+    // newlines, so its reader passes a reporter to skip and count them instead
+    // of failing the whole sync. The header check stays strict either way, so
+    // real schema drift is still caught.
+    onMalformedRow?: IllinoisSbeTsvMalformedRowReporter;
   }) {
     this.label = input.label;
     this.expectedHeader = input.expectedHeader;
     this.visit = input.visit;
+    this.onMalformedRow = input.onMalformedRow;
   }
 
   push(chunk: string): void {
@@ -112,9 +127,15 @@ export class IllinoisSbeTsvParser {
       this.headerSeen = true;
     } else if (this.row.some((value) => value.length > 0)) {
       if (this.row.length !== this.expectedHeader.length) {
-        throw new Error(
-          `Illinois SBE ${this.label} row ${this.line} has ${this.row.length} columns; expected ${this.expectedHeader.length}`
-        );
+        if (!this.onMalformedRow) {
+          throw new Error(
+            `Illinois SBE ${this.label} row ${this.line} has ${this.row.length} columns; expected ${this.expectedHeader.length}`
+          );
+        }
+        this.onMalformedRow({ line: this.line, columnCount: this.row.length, row: this.row });
+        this.row = [];
+        this.line += 1;
+        return;
       }
       this.visit(this.row);
     }

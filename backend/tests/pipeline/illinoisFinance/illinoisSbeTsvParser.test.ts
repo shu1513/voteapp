@@ -98,4 +98,51 @@ describe("illinoisSbeTsvParser", () => {
       "Illinois SBE Sample.txt row 2 has 2 columns; expected 3"
     );
   });
+
+  describe("malformed-row reporting", () => {
+    function parseTolerantly(text: string): {
+      rows: string[][];
+      malformed: { line: number; columnCount: number; row: readonly string[] }[];
+    } {
+      const rows: string[][] = [];
+      const malformed: { line: number; columnCount: number; row: readonly string[] }[] = [];
+      const parser = new IllinoisSbeTsvParser({
+        label: "Sample.txt",
+        expectedHeader: HEADER,
+        visit: (row) => rows.push([...row]),
+        onMalformedRow: (input) => malformed.push({ ...input, row: [...input.row] }),
+      });
+      parser.push(text);
+      parser.end();
+      return { rows, malformed };
+    }
+
+    it("skips and reports wrong-width rows while keeping the good ones", () => {
+      const { rows, malformed } = parseTolerantly(
+        "ID\tName\tNotes\n1\tgood\tfine\n2\ttoo\tmany\tcolumns\n3\ttoo-few\n4\tgood\tagain\n"
+      );
+
+      // The good rows on either side of the damage still parse.
+      expect(rows).toEqual([
+        ["1", "good", "fine"],
+        ["4", "good", "again"],
+      ]);
+      expect(malformed).toEqual([
+        { line: 3, columnCount: 4, row: ["2", "too", "many", "columns"] },
+        { line: 4, columnCount: 2, row: ["3", "too-few"] },
+      ]);
+    });
+
+    it("still rejects a bad header, so schema drift is not swallowed", () => {
+      expect(() => parseTolerantly("ID\tSurname\tNotes\n")).toThrow(
+        "Illinois SBE Sample.txt header does not match the published schema"
+      );
+    });
+
+    it("still rejects a truncated final row", () => {
+      expect(() => parseTolerantly("ID\tName\tNotes\n1\tgood\tfine")).toThrow(
+        "Illinois SBE Sample.txt file is incomplete: final newline is missing"
+      );
+    });
+  });
 });

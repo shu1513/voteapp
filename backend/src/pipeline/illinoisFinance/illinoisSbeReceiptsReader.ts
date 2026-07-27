@@ -57,6 +57,7 @@ export type IllinoisSbeReceiptsLoadResult = {
   visitedRowCount: number;
   keptRowCount: number;
   archivedRowCount: number;
+  malformedRowCount: number;
 };
 
 // D-2 form parts per the SBE data dictionary; D2Part values carry a schedule
@@ -103,10 +104,17 @@ export async function loadIllinoisSbeReceiptsByCommitteeId(input: {
   let visitedRowCount = 0;
   let keptRowCount = 0;
   let archivedRowCount = 0;
+  let malformedRowCount = 0;
 
   const parser = new IllinoisSbeTsvParser({
     label: "Receipts.txt",
     expectedHeader: ILLINOIS_SBE_RECEIPTS_HEADER,
+    // A few thousandths of a percent of published rows carry an unescaped tab
+    // or newline that splits or widens the row. Their field positions cannot be
+    // trusted, so they are skipped and counted rather than guessed at.
+    onMalformedRow: () => {
+      malformedRowCount += 1;
+    },
     visit: (row) => {
       visitedRowCount += 1;
       const committeeId = clean(row[1]);
@@ -160,7 +168,7 @@ export async function loadIllinoisSbeReceiptsByCommitteeId(input: {
   }
   parser.end();
 
-  return { receiptsByCommitteeId, visitedRowCount, keptRowCount, archivedRowCount };
+  return { receiptsByCommitteeId, visitedRowCount, keptRowCount, archivedRowCount, malformedRowCount };
 }
 
 export function contributionTypeFromIllinoisSbeD2Part(d2Part: string | null): string | null {
