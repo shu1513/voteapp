@@ -28,6 +28,7 @@ export type SyncDueIllinoisCandidateFinanceScriptOptions = {
   contributionSourceUrl?: string;
   expenditureSourceUrl?: string;
   normalizedArtifactPath?: string;
+  receiptsTsvPath?: string;
 };
 
 function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
@@ -70,16 +71,18 @@ export function parseSyncDueIllinoisCandidateFinanceScriptArgs(
     "--contributions-url",
     "--expenditures-url",
     "--normalized-artifact",
+    "--receipts-tsv",
   ]);
   const contributionCsvPaths = parseFlagValues(args, "--contributions-csv");
   const expenditureCsvPaths = parseFlagValues(args, "--expenditures-csv");
   const contributionSourceUrl = parseFlagValue(args, "--contributions-url") || undefined;
   const expenditureSourceUrl = parseFlagValue(args, "--expenditures-url") || undefined;
   const normalizedArtifactPath = parseFlagValue(args, "--normalized-artifact") || undefined;
+  const receiptsTsvPath = parseFlagValue(args, "--receipts-tsv") || undefined;
   if (
     contributionCsvPaths.length === 0 &&
     !normalizedArtifactPath &&
-    (expenditureCsvPaths.length > 0 || contributionSourceUrl || expenditureSourceUrl)
+    (expenditureCsvPaths.length > 0 || contributionSourceUrl || expenditureSourceUrl || receiptsTsvPath)
   ) {
     throw new Error("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
   }
@@ -96,6 +99,7 @@ export function parseSyncDueIllinoisCandidateFinanceScriptArgs(
     contributionSourceUrl,
     expenditureSourceUrl,
     normalizedArtifactPath,
+    receiptsTsvPath,
   };
 }
 
@@ -111,10 +115,12 @@ export function toSyncDueIllinoisCandidateFinanceScriptOutput(input: {
   startedAt: Date;
   options: SyncDueIllinoisCandidateFinanceScriptOptions;
   normalizedArtifactPath?: string;
+  receiptsTsvPath?: string;
   result: IllinoisCandidateFinanceBatchSyncResult;
 }) {
   const successfulResults = input.result.results.flatMap((item) => (item.ok && item.result ? [item.result] : []));
   const normalizedArtifactPath = input.normalizedArtifactPath ?? input.options.normalizedArtifactPath;
+  const receiptsTsvPath = input.receiptsTsvPath ?? input.options.receiptsTsvPath;
   return {
     type: "illinois_candidate_finance_due_sync",
     ts: new Date().toISOString(),
@@ -125,6 +131,7 @@ export function toSyncDueIllinoisCandidateFinanceScriptOutput(input: {
     artifact_contribution_csv_count: input.options.contributionCsvPaths.length,
     artifact_expenditure_csv_count: input.options.expenditureCsvPaths.length,
     normalized_artifact: Boolean(normalizedArtifactPath),
+    receipts_tsv: Boolean(receiptsTsvPath),
     outside_expenditure_data_available_count: successfulResults.filter(
       (result) => result.outsideExpenditureDataAvailable
     ).length,
@@ -151,6 +158,8 @@ async function main(): Promise<void> {
     const normalizedArtifactPath =
       options.normalizedArtifactPath ??
       (process.env.ILLINOIS_SBE_NORMALIZED_ARTIFACT_PATH?.trim() || undefined);
+    const receiptsTsvPath =
+      options.receiptsTsvPath ?? (process.env.ILLINOIS_SBE_RECEIPTS_TSV_PATH?.trim() || undefined);
     const artifacts =
       options.contributionCsvPaths.length > 0 || normalizedArtifactPath
         ? await loadIllinoisSbeArtifactDataSet({
@@ -159,6 +168,7 @@ async function main(): Promise<void> {
             contributionSourceUrl: options.contributionSourceUrl,
             expenditureSourceUrl: options.expenditureSourceUrl,
             normalizedArtifactPath,
+            receiptsTsvPath,
           })
         : null;
     const artifactCandidateCommitteeResolver = artifacts
@@ -181,7 +191,7 @@ async function main(): Promise<void> {
 
     console.log(
       JSON.stringify(
-        toSyncDueIllinoisCandidateFinanceScriptOutput({ startedAt, options, normalizedArtifactPath, result }),
+        toSyncDueIllinoisCandidateFinanceScriptOutput({ startedAt, options, normalizedArtifactPath, receiptsTsvPath, result }),
         null,
         2
       )

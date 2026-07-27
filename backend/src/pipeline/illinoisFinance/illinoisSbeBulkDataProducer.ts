@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 
 import { mapIllinoisSbeOffice, normalizeIllinoisSbeLocalDistrictType } from "./illinoisFinanceEligibleOffices.js";
+import { parseIllinoisSbeTsv } from "./illinoisSbeTsvParser.js";
 import {
   ILLINOIS_SBE_NORMALIZED_ARTIFACT_SCHEMA_VERSION,
   parseIllinoisSbeNormalizedArtifact,
@@ -79,74 +80,13 @@ function clean(value: string): string {
   return value.replace(/\0/g, "").trim().replace(/\s+/g, " ");
 }
 
-function parseTsv(text: string, label: string, expectedHeader: readonly string[], visit: (row: string[]) => void): void {
-  const source = text.replace(/^\uFEFF/, "");
-  if (!source.endsWith("\n")) {
-    throw new Error(`Illinois SBE ${label} file is incomplete: final newline is missing`);
-  }
-
-  let row: string[] = [];
-  let field = "";
-  let quoted = false;
-  let line = 1;
-  let headerSeen = false;
-
-  const finishRow = () => {
-    row.push(field);
-    field = "";
-    if (!headerSeen) {
-      if (row.length !== expectedHeader.length || row.some((value, index) => value !== expectedHeader[index])) {
-        throw new Error(`Illinois SBE ${label} header does not match the published schema`);
-      }
-      headerSeen = true;
-    } else if (row.some((value) => value.length > 0)) {
-      if (row.length !== expectedHeader.length) {
-        throw new Error(
-          `Illinois SBE ${label} row ${line} has ${row.length} columns; expected ${expectedHeader.length}`
-        );
-      }
-      visit(row);
-    }
-    row = [];
-    line += 1;
-  };
-
-  for (let index = 0; index < source.length; index += 1) {
-    const character = source[index]!;
-    if (quoted) {
-      if (character === '"') {
-        if (source[index + 1] === '"') {
-          field += '"';
-          index += 1;
-        } else {
-          quoted = false;
-        }
-      } else {
-        field += character;
-      }
-    } else if (character === '"' && field.length === 0) {
-      quoted = true;
-    } else if (character === "\t") {
-      row.push(field);
-      field = "";
-    } else if (character === "\n") {
-      if (field.endsWith("\r")) field = field.slice(0, -1);
-      finishRow();
-    } else {
-      field += character;
-    }
-  }
-  if (quoted) throw new Error(`Illinois SBE ${label} file is incomplete: unterminated quoted field`);
-  if (!headerSeen) throw new Error(`Illinois SBE ${label} file has no header`);
-}
-
 async function readTsv(
   path: string,
   label: string,
   expectedHeader: readonly string[],
   visit: (row: string[]) => void
 ): Promise<void> {
-  parseTsv(await readFile(path, "utf8"), label, expectedHeader, visit);
+  parseIllinoisSbeTsv(await readFile(path, "utf8"), label, expectedHeader, visit);
 }
 
 function parseElectionYear(value: string): number | null {

@@ -9,4 +9,6 @@ export * from "./illinoisSbeClient.js";
 export * from "./illinoisSbeArtifactDataSource.js";
 export * from "./illinoisSbeBulkDataProducer.js";
 export * from "./illinoisSbeNormalizedArtifact.js";
+export * from "./illinoisSbeReceiptsReader.js";
+export * from "./illinoisSbeTsvParser.js";
 export * from "./syncIllinoisCandidateFinance.js";

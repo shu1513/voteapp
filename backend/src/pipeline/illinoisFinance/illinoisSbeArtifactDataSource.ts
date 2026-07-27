@@ -34,6 +34,12 @@ import {
   loadIllinoisSbeNormalizedArtifact,
   type IllinoisSbeNormalizedArtifact,
 } from "./illinoisSbeNormalizedArtifact.js";
+import { ILLINOIS_SBE_BULK_DOWNLOAD_URL } from "./illinoisSbeBulkDataProducer.js";
+import {
+  loadIllinoisSbeReceiptsByCommitteeId,
+  toIllinoisSbeContributionRecordFromReceipt,
+  type IllinoisSbeReceiptRecord,
+} from "./illinoisSbeReceiptsReader.js";
 
 export type IllinoisSbeArtifactDataSet = {
   contributionRecords: IllinoisSbeContributionRecord[];
@@ -41,6 +47,8 @@ export type IllinoisSbeArtifactDataSet = {
   contributionSourceUrl: string;
   expenditureSourceUrl?: string | null;
   normalizedArtifact?: IllinoisSbeNormalizedArtifact;
+  receiptsByCommitteeId?: Map<string, IllinoisSbeReceiptRecord[]>;
+  receiptsSourceUrl?: string;
 };
 
 export type IllinoisSbeArtifactDataSourceConfig = {
@@ -49,6 +57,9 @@ export type IllinoisSbeArtifactDataSourceConfig = {
   contributionSourceUrl?: string | null;
   expenditureSourceUrl?: string | null;
   normalizedArtifactPath?: string | null;
+  receiptsTsvPath?: string | null;
+  receiptsSourceUrl?: string | null;
+  minReceiptYear?: number;
 };
 
 function normalizePathList(paths: readonly string[] | undefined, label: string, required: boolean): string[] {
@@ -111,6 +122,28 @@ export async function loadIllinoisSbeArtifactDataSet(
 
   if (normalizedArtifactPath) {
     dataSet.normalizedArtifact = await loadIllinoisSbeNormalizedArtifact(normalizedArtifactPath);
+  }
+
+  const receiptsTsvPath = config.receiptsTsvPath?.trim() || null;
+  if (receiptsTsvPath) {
+    if (!dataSet.normalizedArtifact) {
+      // The committee allow-list comes from the artifact's relations; without
+      // it the whole multi-decade file would have to be kept in memory.
+      throw new Error("Illinois SBE receipts require the normalized artifact for the committee allow-list");
+    }
+    const committeeIds = new Set(
+      dataSet.normalizedArtifact.candidateCommitteeRelations.map((relation) => relation.committeeId)
+    );
+    // The due window looks ahead, never far back: a cycle needs receipts from
+    // the year before its election year at the earliest.
+    const minReceiptYear = config.minReceiptYear ?? new Date().getUTCFullYear() - 2;
+    const { receiptsByCommitteeId } = await loadIllinoisSbeReceiptsByCommitteeId({
+      path: receiptsTsvPath,
+      committeeIds,
+      minReceiptYear,
+    });
+    dataSet.receiptsByCommitteeId = receiptsByCommitteeId;
+    dataSet.receiptsSourceUrl = config.receiptsSourceUrl?.trim() || ILLINOIS_SBE_BULK_DOWNLOAD_URL;
   }
 
   if (expenditureCsvPaths.length > 0) {
@@ -230,21 +263,35 @@ export function loadIllinoisFinanceDataForDueRowFromArtifacts(input: {
   row: IllinoisCandidateFinanceDueRow;
   artifacts: IllinoisSbeArtifactDataSet;
 }): IllinoisCandidateFinanceData {
-  const directContributionRecords = input.artifacts.contributionRecords.filter((record) =>
-    directContributionMatchesDueRow({ record, row: input.row })
-  );
+  const committeeId = extractIllinoisSbeCommitteeId(input.row.committeeKey);
+  const receipts =
+    committeeId !== null ? input.artifacts.receiptsByCommitteeId?.get(committeeId) : undefined;
   const data: IllinoisCandidateFinanceData = {
-    directContributionRecords,
+    directContributionRecords: [],
     directContributionSourceUrl: input.artifacts.contributionSourceUrl,
   };
+  if (input.artifacts.receiptsByCommitteeId !== undefined && committeeId !== null) {
+    // Bulk receipts are keyed by the SBE committee id, so an id-keyed link
+    // takes the exact path; an empty list is an honest "no itemized receipts".
+    const sourceUrl = input.artifacts.receiptsSourceUrl ?? ILLINOIS_SBE_BULK_DOWNLOAD_URL;
+    data.directContributionRecords = (receipts ?? []).map((receipt) =>
+      toIllinoisSbeContributionRecordFromReceipt({
+        receipt,
+        recipientCommitteeName: input.row.committeeName,
+        sourceUrl,
+      })
+    );
+    data.directContributionSourceUrl = sourceUrl;
+  } else {
+    data.directContributionRecords = input.artifacts.contributionRecords.filter((record) =>
+      directContributionMatchesDueRow({ record, row: input.row })
+    );
+  }
 
-  if (input.artifacts.normalizedArtifact) {
-    const committeeId = extractIllinoisSbeCommitteeId(input.row.committeeKey);
-    if (committeeId) {
-      data.d2ReportSummaries = input.artifacts.normalizedArtifact.d2ReportSummaries.filter(
-        (report) => report.committeeId === committeeId
-      );
-    }
+  if (input.artifacts.normalizedArtifact && committeeId) {
+    data.d2ReportSummaries = input.artifacts.normalizedArtifact.d2ReportSummaries.filter(
+      (report) => report.committeeId === committeeId
+    );
   }
 
   if (input.artifacts.expenditureRecords !== undefined) {
