@@ -301,6 +301,12 @@ function CandidateCard({
                 Raised {formatMoney(candidate.finance_summary.direct_campaign.total_raised)}
               </Text>
             ) : null}
+            {candidate.finance_summary?.direct_campaign.loans_received != null &&
+            candidate.finance_summary.direct_campaign.loans_received > 0 ? (
+              <Text className="text-sm text-ink-soft">
+                Loans {formatMoney(candidate.finance_summary.direct_campaign.loans_received)}
+              </Text>
+            ) : null}
             {/* Nested pressable: the follow tap wins over the card's
                 navigation, mirroring the web's stopPropagation wrapper. */}
             {followButton}

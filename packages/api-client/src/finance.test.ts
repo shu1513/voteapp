@@ -114,4 +114,17 @@ describe("spendingExceedsCycleFunds", () => {
     summary.direct_campaign.total_spent = 100;
     expect(spendingExceedsCycleFunds(summary)).toBe(false);
   });
+
+  it("counts reported loans as visible funding for the gap note", () => {
+    // The self-funder shape: tiny donations, huge spending, huge loans. The
+    // Loans stat on the card already explains the gap, so no note.
+    const summary = emptySummary();
+    summary.direct_campaign.total_raised = 28_700;
+    summary.direct_campaign.total_spent = 20_000_000;
+    summary.direct_campaign.loans_received = 30_752_614;
+    expect(spendingExceedsCycleFunds(summary)).toBe(false);
+    // Spending beyond even the visible loans is unexplained again.
+    summary.direct_campaign.total_spent = 31_000_000;
+    expect(spendingExceedsCycleFunds(summary)).toBe(true);
+  });
 });
