@@ -297,8 +297,8 @@ export async function listDueCaliforniaCandidateFinanceSyncRows(
           AND candidate.deleted_at IS NULL
           AND district.state = 'CA'
           AND election.race_type = 'office'
-          AND election.election_date >= ($1::date - make_interval(days => $4::int))
-          AND election.election_date <= ($1::date + make_interval(days => $5::int))
+          AND election.election_date >= (($1::timestamptz)::date - make_interval(days => $4::int))
+          AND election.election_date <= (($1::timestamptz)::date + make_interval(days => $5::int))
           AND candidate_election.status NOT IN ('withdrawn', 'lost')
           AND (
             summary.last_synced_at IS NULL

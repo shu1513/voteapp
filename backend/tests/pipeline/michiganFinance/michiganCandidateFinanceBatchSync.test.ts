@@ -95,7 +95,7 @@ describe("michiganCandidateFinanceBatchSync", () => {
     });
 
     expect(String(db.query.mock.calls[0]?.[0])).toContain(
-      "election.election_date >= ($1::date - make_interval(days => $4::int))"
+      "election.election_date >= (($1::timestamptz)::date - make_interval(days => $4::int))"
     );
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       "2026-07-26T00:00:00.000Z",

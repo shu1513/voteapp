@@ -206,7 +206,7 @@ describe("newMexicoCandidateFinanceBatchSync", () => {
     expect(sql).toContain("link.link_status = 'active'");
     expect(sql).toContain("district.state = 'NM'");
     expect(sql).toContain("election.race_type = 'office'");
-    expect(sql).toContain("election.election_date >= ($1::date - make_interval(days => $4::int))");
+    expect(sql).toContain("election.election_date >= (($1::timestamptz)::date - make_interval(days => $4::int))");
     expect(sql).toContain("candidate_election.status NOT IN ('withdrawn', 'lost')");
     expect(sql).toContain("(office.scope || '::' || office.canonical_name) = ANY($6::text[])");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
@@ -230,7 +230,7 @@ describe("newMexicoCandidateFinanceBatchSync", () => {
     });
 
     expect(String(db.query.mock.calls[0]?.[0])).toContain(
-      "election.election_date >= ($1::date - make_interval(days => $4::int))"
+      "election.election_date >= (($1::timestamptz)::date - make_interval(days => $4::int))"
     );
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       "2026-06-01T00:00:00.000Z",
