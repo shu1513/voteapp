@@ -371,6 +371,12 @@ export function ElectionPage() {
                     // neutral/untagged records — so "against == 0" can only
                     // mean all-for.
                     <p className="mt-2 text-xs">
+                      {/* Without a label the row was a bare "Housing
+                          Affordability +1" — an issue name and a number with
+                          nothing saying what was counted. "Records:" names
+                          the source, matching the "Affected Areas:" row on
+                          the election cards. */}
+                      <span className="font-medium text-ink-soft">Records:</span>{" "}
                       {stances.map((stance, index, all) => (
                         <Fragment key={stance.research_area_id}>
                           <span

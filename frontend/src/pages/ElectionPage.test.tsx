@@ -246,6 +246,9 @@ describe("ElectionPage", () => {
     expect(mixedChip.className).toContain("text-amber-900");
     // Screen readers hear spelled-out counts — "-2" alone can be read as "2".
     expect(mixedChip.textContent).toContain("1 for, 2 against");
+    // The row is labelled: an issue name and a bare number say nothing about
+    // what was counted.
+    expect(forChip.closest("p")).toHaveTextContent("Records:");
   });
 
   it("colors measure research-area chips by stance", async () => {

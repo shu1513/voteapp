@@ -26,10 +26,11 @@ import { UNRANKED_RESEARCH_AREA_RANK } from "@voteapp/api-client";
 type RecordView = "by_issue" | "my_issues" | "newest";
 
 // A researched incumbent can carry 50+ records; rendering everything open
-// made the profile a 10,000px wall. Grouped views open the first few issue
-// groups and collapse the rest behind per-group counts; the flat newest
-// view cuts off with an explicit "show all".
-const INITIAL_OPEN_GROUPS = 3;
+// made the profile a 10,000px wall. Grouped views start with EVERY issue
+// group collapsed behind its per-group count, so the profile opens as a
+// readable index of which issues the candidate has a record on and the
+// reader picks what to expand; the flat newest view cuts off with an
+// explicit "show all".
 const INITIAL_NEWEST_RECORDS = 20;
 
 type RecordGroup = {
@@ -405,12 +406,11 @@ export function CandidatePage() {
               ) : null}
             </>
           ) : (
-            recordGroups.map((group, groupIndex) => (
-              // The first few groups start open, the rest collapsed. `open`
-              // only re-applies when a group's position changes (a view
-              // switch reordering the groups), which just resets that
-              // group's disclosure — user toggles otherwise stick.
-              <details key={group.areaId ?? "other"} open={groupIndex < INITIAL_OPEN_GROUPS} className="mt-4">
+            recordGroups.map((group) => (
+              // Every group starts collapsed; with no `open` prop React
+              // never re-applies a default, so a reader's toggles survive a
+              // view switch that reorders the groups.
+              <details key={group.areaId ?? "other"} className="mt-4">
                 <summary className="cursor-pointer select-none">
                   <h3 className="inline text-sm font-semibold uppercase tracking-wide text-ink-soft">
                     {group.areaName}

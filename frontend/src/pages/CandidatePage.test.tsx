@@ -57,7 +57,7 @@ describe("CandidatePage", () => {
     expect(screen.getByRole("button", { name: "Report an issue with candidate record" })).toBeInTheDocument();
   });
 
-  it("opens the first issue groups and collapses the rest", async () => {
+  it("starts every issue group collapsed, each stating its record count", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const record = (id: string, areaId: string, areaName: string) => ({
       id,
@@ -83,11 +83,12 @@ describe("CandidatePage", () => {
     expect(await screen.findByText("Civil Rights")).toBeInTheDocument();
     // Test slugs (a-1…a-4) sit outside the salience ranking, so the groups
     // fall back to alphabetical: Civil Rights, Gun Control, Housing, Privacy.
-    expect(groupState("Civil Rights")).toBe(true);
-    expect(groupState("Gun Control")).toBe(true);
-    expect(groupState("Housing")).toBe(true);
+    expect(groupState("Civil Rights")).toBe(false);
+    expect(groupState("Gun Control")).toBe(false);
+    expect(groupState("Housing")).toBe(false);
     expect(groupState("Privacy")).toBe(false);
-    // Collapsed groups still state their size.
+    // Collapsed groups still state their size, so the closed profile reads
+    // as an index of which issues carry a record.
     expect(screen.getAllByText("· 1 record")).toHaveLength(4);
   });
 
@@ -170,6 +171,55 @@ describe("CandidatePage", () => {
       .getAllByRole("heading", { level: 3 })
       .map((heading) => heading.textContent);
     expect(headings).toEqual(["Gun Control", "Environment and Public Health"]);
+  });
+
+  it("keeps a group the reader opened open across a view switch that reorders groups", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-gun", slug: "gun_control", name: "Gun Control", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    const record = (id: string, areaId: string, slug: string, name: string) => ({
+      id,
+      description: `Did a thing (${id}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: [{ research_area_id: areaId, slug, name, stance: "for" as const }],
+    });
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          record("r-1", "a-env", "environment_and_public_health", "Environment and Public Health"),
+          record("r-2", "a-gun", "gun_control", "Gun Control"),
+        ],
+      })
+    );
+
+    // "My issues first" is the default once saved areas load; Environment
+    // sits second there but first under "By issue" (public salience), so
+    // switching views reorders the groups.
+    const select = await screen.findByRole("combobox");
+    await screen.findByRole("option", { name: "My issues first" });
+    const groupDetails = (name: string) =>
+      screen.getByText(name).closest("details") as HTMLDetailsElement;
+    expect(groupDetails("Environment and Public Health").open).toBe(false);
+
+    const user = userEvent.setup();
+    await user.click(screen.getByText("Environment and Public Health"));
+    expect(groupDetails("Environment and Public Health").open).toBe(true);
+
+    // No `open` prop means React re-applies no default on reorder — the
+    // reader's toggle must survive the switch.
+    await user.selectOptions(select, "by_issue");
+    expect(groupDetails("Environment and Public Health").open).toBe(true);
+    expect(groupDetails("Gun Control").open).toBe(false);
   });
 
   it("collapses campaign finance by default while keeping it in the DOM", async () => {
