@@ -12,7 +12,7 @@ type ClientLikeQueryable = Queryable & {
 };
 
 export type MichiganFinanceLinkStatus = "active" | "inactive";
-export type MichiganFinanceLinkSource = "manual" | "mitn_legacy" | "mitn_public_search";
+export type MichiganFinanceLinkSource = "manual" | "mitn_public_search";
 export type MichiganFinanceDirectCategoryType = "occupation" | "contribution_size";
 export type MichiganFinanceOutsideCategoryType = "donor" | "industry";
 export type MichiganFinanceSupportOppose = "support" | "oppose";

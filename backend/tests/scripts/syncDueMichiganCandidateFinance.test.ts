@@ -16,8 +16,6 @@ describe("syncDueMichiganCandidateFinance script", () => {
         "3",
         "--lookback-days=10",
         "--lookahead-days=365",
-        "--raw-cache-dir=/tmp/michigan-mitn",
-        "--raw-extracted-dir=/tmp/michigan-mitn/2022_mi_cfr",
       ])
     ).toEqual({
       dryRun: true,
@@ -26,8 +24,6 @@ describe("syncDueMichiganCandidateFinance script", () => {
       staleAfterDays: 3,
       electionLookbackDays: 10,
       electionLookaheadDays: 365,
-      rawCacheDir: "/tmp/michigan-mitn",
-      rawExtractedDir: "/tmp/michigan-mitn/2022_mi_cfr",
     });
   });
 
@@ -57,12 +53,6 @@ describe("syncDueMichiganCandidateFinance script", () => {
     expect(() => parseSyncDueMichiganCandidateFinanceScriptArgs(["--lookback-days", "--force"])).toThrow(
       "Missing --lookback-days value"
     );
-    expect(() => parseSyncDueMichiganCandidateFinanceScriptArgs(["--raw-cache-dir", "   "])).toThrow(
-      "Missing --raw-cache-dir value"
-    );
-    expect(() =>
-      parseSyncDueMichiganCandidateFinanceScriptArgs(["--raw-extracted-dir=/tmp/a", "--raw-extracted-dir=/tmp/b"])
-    ).toThrow("Provide --raw-extracted-dir at most once");
   });
 
   it("formats script output", () => {

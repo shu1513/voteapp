@@ -1,13 +1,7 @@
 import type { Pool, PoolClient } from "pg";
 
-import {
-  normalizeMichiganCandidateNameForStorage,
-  resolveMichiganCandidateCommittee,
-  type MichiganCandidateCommitteeResolution,
-} from "./michiganCandidateCommitteeResolver.js";
 import { MICHIGAN_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./michiganFinanceEligibleOffices.js";
-import { upsertMichiganFinanceLink } from "./michiganFinanceWriter.js";
-import type { MichiganMitnLegacyContributionRow } from "./michiganMitnLegacyArchiveReader.js";
+import { MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR } from "./michiganMitnLegacyRowTypes.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -21,22 +15,6 @@ export type MichiganFinanceAutoLinkCandidateElection = {
   district: string | null;
   currentOffice: string | null;
 };
-
-export type MichiganFinanceAutoLinkResult =
-  | {
-      candidateId: string;
-      electionId: string;
-      status: MichiganCandidateCommitteeResolution["status"] | "linked";
-      committeeId?: string;
-      reason?: string;
-    }
-  | {
-      candidateId: string;
-      electionId: string;
-      status: "error";
-      reason: "auto_link_failed";
-      error: string;
-    };
 
 type CandidateElectionQueryRow = {
   candidate_id: string;
@@ -112,6 +90,9 @@ export async function listMichiganCandidateElectionsMissingFinanceLinks(
         AND election.election_date <= ($1::date + make_interval(days => $4::int))
         AND candidate_election.status NOT IN ('withdrawn', 'lost')
         AND (office.scope || '::' || office.canonical_name) = ANY($5::text[])
+        -- Pre-MiTN election years can never link (the legacy-archive path
+        -- was removed), so they must not occupy limited auto-link slots.
+        AND extract(year from election.election_date)::int > $6::int
         AND COALESCE(NULLIF(trim(candidate.display_name), ''), NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')) IS NOT NULL
         AND NOT EXISTS (
           SELECT 1
@@ -129,112 +110,9 @@ export async function listMichiganCandidateElectionsMissingFinanceLinks(
       input.electionLookbackDays,
       input.electionLookaheadDays,
       [...MICHIGAN_FINANCE_ELIGIBLE_OFFICE_KEYS],
+      MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR,
     ]
   );
 
   return result.rows.map(mapCandidateElectionRow);
-}
-
-export async function autoLinkMichiganCandidateFinanceForCandidateElection(input: {
-  db: Queryable;
-  candidateElection: MichiganFinanceAutoLinkCandidateElection;
-  contributionRows: readonly MichiganMitnLegacyContributionRow[];
-  sourceUrl: string | null;
-  now: Date;
-}): Promise<MichiganFinanceAutoLinkResult> {
-  const resolution = resolveMichiganCandidateCommittee({
-    candidateName: input.candidateElection.candidateName,
-    officeScope: input.candidateElection.officeScope,
-    officeName: input.candidateElection.officeName,
-    electionYear: input.candidateElection.electionYear,
-    district: input.candidateElection.district,
-    currentOffice: input.candidateElection.currentOffice,
-    contributionRows: input.contributionRows,
-    sourceUrl: input.sourceUrl,
-  });
-
-  if (resolution.status !== "matched") {
-    return {
-      candidateId: input.candidateElection.candidateId,
-      electionId: input.candidateElection.electionId,
-      status: resolution.status,
-      reason: resolution.reason,
-    };
-  }
-
-  await upsertMichiganFinanceLink({
-    db: input.db,
-    link: {
-      candidateId: input.candidateElection.candidateId,
-      electionId: input.candidateElection.electionId,
-      electionYear: input.candidateElection.electionYear,
-      candidateNameNormalized: normalizeMichiganCandidateNameForStorage(input.candidateElection.candidateName),
-      officeName: input.candidateElection.officeName,
-      district: input.candidateElection.district,
-      committeeId: resolution.committeeId,
-      committeeName: resolution.committeeName,
-      linkStatus: "active",
-      linkSource: "mitn_legacy",
-      sourceUrl: resolution.sourceUrl,
-      lastVerifiedAt: input.now,
-    },
-  });
-
-  return {
-    candidateId: input.candidateElection.candidateId,
-    electionId: input.candidateElection.electionId,
-    status: "linked",
-    committeeId: resolution.committeeId,
-  };
-}
-
-export async function autoLinkMissingMichiganCandidateFinanceLinks(input: {
-  db: Queryable;
-  now: Date;
-  maxCandidates: number;
-  electionLookbackDays: number;
-  electionLookaheadDays: number;
-  contributionRowsByYear: ReadonlyMap<number, readonly MichiganMitnLegacyContributionRow[]>;
-  sourceUrlByYear: ReadonlyMap<number, string>;
-  candidateElections?: readonly MichiganFinanceAutoLinkCandidateElection[];
-}): Promise<MichiganFinanceAutoLinkResult[]> {
-  const candidates =
-    input.candidateElections ??
-    (await listMichiganCandidateElectionsMissingFinanceLinks(input.db, {
-      now: input.now,
-      maxCandidates: input.maxCandidates,
-      electionLookbackDays: input.electionLookbackDays,
-      electionLookaheadDays: input.electionLookaheadDays,
-    }));
-
-  const results: MichiganFinanceAutoLinkResult[] = [];
-  for (const candidateElection of candidates) {
-    try {
-      results.push(
-        await autoLinkMichiganCandidateFinanceForCandidateElection({
-          db: input.db,
-          candidateElection,
-          contributionRows: input.contributionRowsByYear.get(candidateElection.electionYear) ?? [],
-          sourceUrl: input.sourceUrlByYear.get(candidateElection.electionYear) ?? null,
-          now: input.now,
-        })
-      );
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      console.warn("Michigan finance auto-link failed for candidate election; continuing:", {
-        candidateId: candidateElection.candidateId,
-        electionId: candidateElection.electionId,
-        electionYear: candidateElection.electionYear,
-        error: message,
-      });
-      results.push({
-        candidateId: candidateElection.candidateId,
-        electionId: candidateElection.electionId,
-        status: "error",
-        reason: "auto_link_failed",
-        error: message,
-      });
-    }
-  }
-  return results;
 }

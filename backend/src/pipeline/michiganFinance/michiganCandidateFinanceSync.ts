@@ -41,7 +41,7 @@ import {
 import type {
   MichiganMitnLegacyContributionRow,
   MichiganMitnLegacyExpenditureRow,
-} from "./michiganMitnLegacyArchiveReader.js";
+} from "./michiganMitnLegacyRowTypes.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -59,7 +59,7 @@ export type MichiganCandidateFinanceSyncInput = {
   currentOffice?: string | null;
   contributionRows: readonly MichiganMitnLegacyContributionRow[];
   expenditureRows?: readonly MichiganMitnLegacyExpenditureRow[];
-  /** Provenance for the written link; defaults to the legacy archives. */
+  /** Provenance for the written link; defaults to the MiTN public search. */
   linkSource?: MichiganFinanceLinkSource;
   sourceUrl?: string | null;
   contributionSourceUrl?: string | null;
@@ -414,7 +414,7 @@ function resolveTrustedCommittee(input: {
     committeeName,
     commonName: null,
     confidence: "exact",
-    source: "mitn_legacy",
+    source: "mitn",
     sourceUrl: input.sourceUrl ?? null,
     matchedContributionRowCount: 0,
   };
@@ -527,7 +527,7 @@ export async function syncMichiganCandidateFinance(
     district: input.district,
     committeeId: resolution.committeeId,
     committeeName: resolution.committeeName,
-    linkSource: input.linkSource ?? "mitn_legacy",
+    linkSource: input.linkSource ?? "mitn_public_search",
     sourceUrl: resolution.sourceUrl ?? input.sourceUrl ?? input.contributionSourceUrl ?? null,
     verifiedAt: syncedAt,
   });

@@ -5,7 +5,7 @@ import {
   isMichiganIndependentExpenditureSchedule,
   supportOpposeFromMichiganSuppOpp,
 } from "../../../src/pipeline/michiganFinance/michiganOutsideSpendingAggregator.js";
-import type { MichiganMitnLegacyExpenditureRow } from "../../../src/pipeline/michiganFinance/michiganMitnLegacyArchiveReader.js";
+import type { MichiganMitnLegacyExpenditureRow } from "../../../src/pipeline/michiganFinance/michiganMitnLegacyRowTypes.js";
 
 function expenditure(overrides: Partial<MichiganMitnLegacyExpenditureRow> = {}): MichiganMitnLegacyExpenditureRow {
   return {

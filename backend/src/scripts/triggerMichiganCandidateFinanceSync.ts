@@ -54,8 +54,6 @@ export function parseMichiganCandidateFinanceSyncTriggerArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
-    rawDataExtractedDir: parseFlagValue(args, "--raw-extracted-dir") || undefined,
-    rawDataCacheDir: parseFlagValue(args, "--raw-cache-dir") || undefined,
   };
 }
 

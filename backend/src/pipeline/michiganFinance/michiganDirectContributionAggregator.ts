@@ -1,5 +1,5 @@
-import { normalizeMichiganMitnLegacyArchiveYear } from "./michiganMitnLegacyArtifactCache.js";
-import type { MichiganMitnLegacyContributionRow } from "./michiganMitnLegacyArchiveReader.js";
+import { normalizeMichiganMitnLegacyArchiveYear } from "./michiganMitnLegacyRowTypes.js";
+import type { MichiganMitnLegacyContributionRow } from "./michiganMitnLegacyRowTypes.js";
 
 export type MichiganDirectContributionAggregationInput = {
   committeeId: string;

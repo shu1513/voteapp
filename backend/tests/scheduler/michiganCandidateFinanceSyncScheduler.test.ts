@@ -131,7 +131,6 @@ describe("michiganCandidateFinanceSyncScheduler", () => {
       maxCandidates: 2,
       staleAfterDays: 3,
       electionLookbackDays: 14,
-      rawDataExtractedDir: "/tmp/2022_mi_cfr",
       triggeredBy: "manual",
     });
 
@@ -149,7 +148,6 @@ describe("michiganCandidateFinanceSyncScheduler", () => {
         maxCandidates: 2,
         staleAfterDays: 3,
         electionLookbackDays: 14,
-        rawDataExtractedDir: "/tmp/2022_mi_cfr",
       })
     );
     expect(end).toHaveBeenCalledTimes(1);
@@ -174,7 +172,6 @@ describe("michiganCandidateFinanceSyncScheduler", () => {
 
     await upsertRecurringMichiganCandidateFinanceSyncJobs({
       maxCandidates: 5,
-      rawDataExtractedDir: "/tmp/2022_mi_cfr",
     });
 
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
@@ -187,7 +184,6 @@ describe("michiganCandidateFinanceSyncScheduler", () => {
         name: "michigan_candidate_finance_sync_due",
         data: expect.objectContaining({
           maxCandidates: 5,
-          rawDataExtractedDir: "/tmp/2022_mi_cfr",
           triggeredBy: "daily",
         }),
       })
@@ -240,8 +236,6 @@ describe("michiganCandidateFinanceSyncScheduler", () => {
         force: true,
         maxCandidates: 3,
         electionLookbackDays: 21,
-        rawDataExtractedDir: "/tmp/2022_mi_cfr",
-        rawDataCacheDir: "/tmp/michigan-cache",
       })
     ).resolves.toBe("michigan-finance-job-1");
 
@@ -252,8 +246,6 @@ describe("michiganCandidateFinanceSyncScheduler", () => {
         force: true,
         maxCandidates: 3,
         electionLookbackDays: 21,
-        rawDataExtractedDir: "/tmp/2022_mi_cfr",
-        rawDataCacheDir: "/tmp/michigan-cache",
         triggeredBy: "manual",
       }),
       expect.any(Object)
