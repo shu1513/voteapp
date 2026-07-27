@@ -57,7 +57,7 @@ describe("CandidatePage", () => {
     expect(screen.getByRole("button", { name: "Report an issue with candidate record" })).toBeInTheDocument();
   });
 
-  it("opens the first issue groups and collapses the rest", async () => {
+  it("starts every issue group collapsed, each stating its record count", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const record = (id: string, areaId: string, areaName: string) => ({
       id,
@@ -83,11 +83,12 @@ describe("CandidatePage", () => {
     expect(await screen.findByText("Civil Rights")).toBeInTheDocument();
     // Test slugs (a-1…a-4) sit outside the salience ranking, so the groups
     // fall back to alphabetical: Civil Rights, Gun Control, Housing, Privacy.
-    expect(groupState("Civil Rights")).toBe(true);
-    expect(groupState("Gun Control")).toBe(true);
-    expect(groupState("Housing")).toBe(true);
+    expect(groupState("Civil Rights")).toBe(false);
+    expect(groupState("Gun Control")).toBe(false);
+    expect(groupState("Housing")).toBe(false);
     expect(groupState("Privacy")).toBe(false);
-    // Collapsed groups still state their size.
+    // Collapsed groups still state their size, so the closed profile reads
+    // as an index of which issues carry a record.
     expect(screen.getAllByText("· 1 record")).toHaveLength(4);
   });
 
