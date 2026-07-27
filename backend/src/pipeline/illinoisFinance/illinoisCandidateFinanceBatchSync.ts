@@ -52,7 +52,9 @@ export type IllinoisCandidateFinanceDueRow = {
 };
 
 export type IllinoisCandidateFinanceData = {
-  directContributionRecords: readonly IllinoisSbeContributionRecord[];
+  // Undefined when no itemized contribution source was loaded, which keeps
+  // stored breakdowns instead of replacing them with nothing.
+  directContributionRecords?: readonly IllinoisSbeContributionRecord[];
   outsideExpenditureRecords?: readonly IllinoisSbeExpenditureRecord[];
   outsideGroupContributionRecords?: readonly IllinoisSbeContributionRecord[];
   d2ReportSummaries?: readonly IllinoisSbeD2ReportSummary[];

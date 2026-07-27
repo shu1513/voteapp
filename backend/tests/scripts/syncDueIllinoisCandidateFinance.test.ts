@@ -24,6 +24,7 @@ describe("syncDueIllinoisCandidateFinance script", () => {
         "--contributions-url=https://example.test/contributions.csv",
         "--expenditures-url=https://example.test/expenditures.csv",
         "--normalized-artifact=exports/illinois-normalized.json",
+        "--receipts-tsv=exports/Receipts.txt",
       ])
     ).toEqual({
       dryRun: true,
@@ -38,6 +39,7 @@ describe("syncDueIllinoisCandidateFinance script", () => {
       contributionSourceUrl: "https://example.test/contributions.csv",
       expenditureSourceUrl: "https://example.test/expenditures.csv",
       normalizedArtifactPath: "exports/illinois-normalized.json",
+      receiptsTsvPath: "exports/Receipts.txt",
     });
   });
 
@@ -87,6 +89,12 @@ describe("syncDueIllinoisCandidateFinance script", () => {
     expect(() =>
       parseSyncDueIllinoisCandidateFinanceScriptArgs(["--contributions-url=https://example.test/contributions.csv"])
     ).toThrow("Provide --contributions-csv or --normalized-artifact when using Illinois SBE artifact flags");
+    // --receipts-tsv alone must parse: its required normalized artifact can
+    // arrive via ILLINOIS_SBE_NORMALIZED_ARTIFACT_PATH, which parsing cannot
+    // see. The data-set loader raises the receipts-specific error instead.
+    expect(
+      parseSyncDueIllinoisCandidateFinanceScriptArgs(["--receipts-tsv=exports/Receipts.txt"]).receiptsTsvPath
+    ).toBe("exports/Receipts.txt");
     expect(
       parseSyncDueIllinoisCandidateFinanceScriptArgs([
         "--normalized-artifact=exports/illinois-normalized.json",
@@ -111,6 +119,7 @@ describe("syncDueIllinoisCandidateFinance script", () => {
         normalizedArtifactPath: undefined,
       },
       normalizedArtifactPath: "exports/from-env-normalized.json",
+      receiptsTsvPath: "exports/from-env-Receipts.txt",
       result: {
         dryRun: true,
         now: "2026-01-02T03:04:05.000Z",
@@ -168,6 +177,7 @@ describe("syncDueIllinoisCandidateFinance script", () => {
       artifact_contribution_csv_count: 0,
       artifact_expenditure_csv_count: 0,
       normalized_artifact: true,
+      receipts_tsv: true,
       outside_expenditure_data_available_count: 0,
       outside_group_contribution_data_available_count: 0,
       result: {

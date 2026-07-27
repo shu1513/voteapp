@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  aggregateIllinoisDirectContributions,
+  illinoisMinReceiptYearForLookback,
   createIllinoisSbeArtifactCandidateCommitteeResolver,
+  ILLINOIS_SBE_BULK_DOWNLOAD_URL,
   loadIllinoisFinanceDataForDueRowFromArtifacts,
   loadIllinoisSbeArtifactDataSet,
   type IllinoisCandidateFinanceDueRow,
@@ -10,6 +13,7 @@ import {
 const CONTRIBUTIONS_CSV = "tests/fixtures/illinoisFinance/contributions.csv";
 const EXPENDITURES_CSV = "tests/fixtures/illinoisFinance/expenditures.csv";
 const NORMALIZED_ARTIFACT = "tests/fixtures/illinoisFinance/normalized-artifact.json";
+const EMPTY_CONTRIBUTIONS_CSV = "tests/fixtures/illinoisFinance/contributions-empty.csv";
 const CONTRIBUTIONS_URL = "https://example.test/illinois-contributions.csv";
 const EXPENDITURES_URL = "https://example.test/illinois-expenditures.csv";
 
@@ -329,5 +333,180 @@ describe("illinoisSbeArtifactDataSource", () => {
     await expect(loadIllinoisSbeArtifactDataSet({ contributionCsvPaths: [" "] })).rejects.toThrow(
       "Illinois SBE contribution artifact requires at least one CSV path"
     );
+  });
+});
+
+describe("illinoisSbeArtifactDataSource bulk receipts", () => {
+  const RECEIPTS_TSV = "tests/fixtures/illinoisFinance/receipts.txt";
+
+  function receiptsDueRow(overrides: Partial<IllinoisCandidateFinanceDueRow> = {}): IllinoisCandidateFinanceDueRow {
+    return dueRow({
+      electionYear: 2025,
+      officeScope: "place",
+      officeName: "Mayor",
+      district: "Aurora",
+      sbeDistrictType: "City",
+      sbeOffice: "Mayor",
+      isAtLarge: false,
+      committeeKey: "SBE:201",
+      committeeName: "Aurora Forward",
+      ...overrides,
+    });
+  }
+
+  it("supplies id-keyed links with itemized receipts that aggregate into breakdowns", async () => {
+    const artifacts = await loadIllinoisSbeArtifactDataSet({
+      contributionCsvPaths: [],
+      normalizedArtifactPath: NORMALIZED_ARTIFACT,
+      receiptsTsvPath: RECEIPTS_TSV,
+      minReceiptYear: 2024,
+    });
+
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({ row: receiptsDueRow(), artifacts });
+
+    expect(data.directContributionRecords).toHaveLength(4);
+    expect(data.directContributionRecords.every((record) => record.recipientCommitteeName === "Aurora Forward")).toBe(
+      true
+    );
+    expect(data.directContributionSourceUrl).toBe(ILLINOIS_SBE_BULK_DOWNLOAD_URL);
+    expect(data.directContributionRecords.map((record) => record.contributionType)).toEqual([
+      "Individual Contribution",
+      "Individual Contribution",
+      "Transfer In",
+      "Individual Contribution",
+    ]);
+
+    const aggregated = aggregateIllinoisDirectContributions({
+      electionYear: 2025,
+      contributionRecords: data.directContributionRecords,
+      committeeKey: "Aurora Forward",
+      sourceUrl: data.directContributionSourceUrl,
+    });
+    expect(aggregated.summary.totalReceipts).toBe(1900);
+    expect(aggregated.summary.directContributionTotal).toBe(900);
+    expect(
+      aggregated.directBreakdowns.map(({ categoryType, categoryName, amount, contributorCount }) => ({
+        categoryType,
+        categoryName,
+        amount,
+        contributorCount,
+      }))
+    ).toEqual([
+      { categoryType: "occupation", categoryName: "Attorney", amount: 750, contributorCount: 1 },
+      { categoryType: "contribution_size", categoryName: "$500-$999", amount: 500, contributorCount: 1 },
+      { categoryType: "contribution_size", categoryName: "$250-$499", amount: 250, contributorCount: 1 },
+      { categoryType: "contribution_size", categoryName: "$100-$249", amount: 150, contributorCount: 1 },
+    ]);
+  });
+
+  it("gives an id-keyed link without receipts an honest empty list, not the CSV fallback", async () => {
+    const artifacts = await loadIllinoisSbeArtifactDataSet({
+      contributionCsvPaths: [CONTRIBUTIONS_CSV],
+      normalizedArtifactPath: NORMALIZED_ARTIFACT,
+      receiptsTsvPath: RECEIPTS_TSV,
+      minReceiptYear: 2024,
+    });
+
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({
+      row: receiptsDueRow({ committeeKey: "SBE:202", committeeName: "Citizens for Aurora" }),
+      artifacts,
+    });
+    expect(data.directContributionRecords).toEqual([]);
+  });
+
+  it("keeps the CSV path for name-keyed links even when receipts are loaded", async () => {
+    const artifacts = await loadIllinoisSbeArtifactDataSet({
+      contributionCsvPaths: [CONTRIBUTIONS_CSV],
+      contributionSourceUrl: CONTRIBUTIONS_URL,
+      normalizedArtifactPath: NORMALIZED_ARTIFACT,
+      receiptsTsvPath: RECEIPTS_TSV,
+      minReceiptYear: 2024,
+    });
+
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({ row: dueRow(), artifacts });
+    expect(data.directContributionRecords.map((record) => record.contributorName)).toEqual([
+      "Alpha Attorney",
+      "Old Donor",
+    ]);
+    expect(data.directContributionSourceUrl).toBe(CONTRIBUTIONS_URL);
+  });
+
+  it("preserves breakdowns for an id-keyed link outside the receipts allow-list", async () => {
+    // Committee 999 is not in the artifact's relations, so its receipts were
+    // never scanned. It must not receive the authoritative empty that would
+    // wipe its stored breakdowns.
+    const artifacts = await loadIllinoisSbeArtifactDataSet({
+      contributionCsvPaths: [],
+      normalizedArtifactPath: NORMALIZED_ARTIFACT,
+      receiptsTsvPath: RECEIPTS_TSV,
+      minReceiptYear: 2024,
+    });
+
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({
+      row: receiptsDueRow({ committeeKey: "SBE:999", committeeName: "Other Committee" }),
+      artifacts,
+    });
+    expect(data.directContributionRecords).toBeUndefined();
+  });
+
+  it("lets an id-keyed link outside the allow-list fall back to loaded CSVs", async () => {
+    const artifacts = await loadIllinoisSbeArtifactDataSet({
+      contributionCsvPaths: [CONTRIBUTIONS_CSV],
+      contributionSourceUrl: CONTRIBUTIONS_URL,
+      normalizedArtifactPath: NORMALIZED_ARTIFACT,
+      receiptsTsvPath: RECEIPTS_TSV,
+      minReceiptYear: 2024,
+    });
+
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({
+      // The CSV fixture's rows are addressed to "Friends of Jane Doe".
+      row: receiptsDueRow({ committeeKey: "SBE:999", committeeName: "Friends of Jane Doe" }),
+      artifacts,
+    });
+    expect(data.directContributionRecords?.length).toBeGreaterThan(0);
+    expect(data.directContributionSourceUrl).toBe(CONTRIBUTIONS_URL);
+  });
+
+  it("leaves records undefined for a summaries-only artifact so breakdowns survive", async () => {
+    // The documented artifact invocation passes no contribution CSVs and no
+    // receipts. Returning [] here would tell the writer to delete every stored
+    // occupation and size row on the next refresh.
+    const artifacts = await loadIllinoisSbeArtifactDataSet({
+      contributionCsvPaths: [],
+      normalizedArtifactPath: NORMALIZED_ARTIFACT,
+    });
+
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({ row: receiptsDueRow(), artifacts });
+    expect(data.directContributionRecords).toBeUndefined();
+    expect(data.d2ReportSummaries).toBeDefined();
+  });
+
+  it("treats a configured-but-empty contribution CSV as a real source that clears", async () => {
+    // Header-only CSV: zero records, but the source WAS loaded, so name-keyed
+    // links must get [] (replace stored breakdowns), not undefined (preserve).
+    const artifacts = await loadIllinoisSbeArtifactDataSet({
+      contributionCsvPaths: [EMPTY_CONTRIBUTIONS_CSV],
+      normalizedArtifactPath: NORMALIZED_ARTIFACT,
+    });
+
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({ row: dueRow(), artifacts });
+    expect(data.directContributionRecords).toEqual([]);
+  });
+
+  it("derives the receipts year floor from the lookback window", () => {
+    const now = new Date("2026-07-15T00:00:00.000Z");
+    // Default one-day lookback keeps the generous two-year floor.
+    expect(illinoisMinReceiptYearForLookback({ now, electionLookbackDays: 1 })).toBe(2024);
+    // A lookback deep enough to select a 2024 election needs 2023 receipts.
+    expect(illinoisMinReceiptYearForLookback({ now, electionLookbackDays: 1000 })).toBe(2022);
+  });
+
+  it("requires the normalized artifact before loading receipts", async () => {
+    await expect(
+      loadIllinoisSbeArtifactDataSet({
+        contributionCsvPaths: [CONTRIBUTIONS_CSV],
+        receiptsTsvPath: RECEIPTS_TSV,
+      })
+    ).rejects.toThrow("Illinois SBE receipts require the normalized artifact");
   });
 });

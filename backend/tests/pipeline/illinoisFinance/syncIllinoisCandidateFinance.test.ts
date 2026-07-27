@@ -444,3 +444,42 @@ describe("syncIllinoisCandidateFinance", () => {
     expect(params.some((paramList) => paramList.includes("real_estate"))).toBe(true);
   });
 });
+
+describe("syncIllinoisCandidateFinance without an itemized contribution source", () => {
+  it("preserves existing direct breakdowns instead of deleting them", async () => {
+    const db = createMockDb();
+
+    // The documented artifact invocation supplies D-2 summaries only. Passing
+    // an empty breakdown list would make the writer delete every stored
+    // occupation and size row, so a summaries-only refresh must send undefined.
+    const result = await syncIllinoisCandidateFinance({
+      db,
+      ...baseInput(),
+      d2ReportSummaries: [],
+    });
+
+    expect(result.directBreakdownsWritten).toBe(0);
+    const deletedBreakdowns = db.client.query.mock.calls.some((call) =>
+      String(call[0]).includes("DELETE FROM public.il_candidate_finance_direct_breakdowns")
+    );
+    expect(deletedBreakdowns).toBe(false);
+  });
+
+  it("still replaces breakdowns when an itemized source is present but empty", async () => {
+    const db = createMockDb();
+
+    // Receipts were loaded and this committee genuinely had none: that is a
+    // real zero, so the stale rows must go.
+    await syncIllinoisCandidateFinance({
+      db,
+      ...baseInput(),
+      directContributionRecords: [],
+      d2ReportSummaries: [],
+    });
+
+    const deletedBreakdowns = db.client.query.mock.calls.some((call) =>
+      String(call[0]).includes("DELETE FROM public.il_candidate_finance_direct_breakdowns")
+    );
+    expect(deletedBreakdowns).toBe(true);
+  });
+});

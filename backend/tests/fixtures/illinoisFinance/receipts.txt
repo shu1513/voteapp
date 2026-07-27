@@ -1,0 +1,9 @@
+ID	CommitteeID	FiledDocID	ETransID	LastOnlyName	FirstName	RcvDate	Amount	AggregateAmount	LoanAmount	Occupation	Employer	Address1	Address2	City	State	Zip	D2Part	Description	VendorLastOnlyName	VendorFirstName	VendorAddress1	VendorAddress2	VendorCity	VendorState	VendorZip	Archived	Country	RedactionRequested
+1	201	9001		Smith	Alice	2025-03-01 00:00:00	500	0	0	Attorney	"Big ""Q"" Firm"	1 Main St		Aurora	IL	60505     	1A									False		False
+2	201	9001		Smith	Alice	2025-04-01 00:00:00	250	0	0	Attorney	Big Q Firm	1 Main St		Aurora	IL	60505	1A									False		False
+3	201	9002		Acme Pac		2025-02-01 00:00:00	1000	0	0			2 Oak Ave		Chicago	IL	60601	2A									False		False
+4	201	9003		Jones	Bob	2025-01-15 00:00:00	200	0	0								1A									True		False
+5	999	9004		Other	Committee	2025-01-01 00:00:00	400	0	0								1A									False		False
+6	201	9005		Old	Donor	2019-05-01 00:00:00	300	0	0								1A									False		False
+7	201	9006		Doe	Dana	2024-12-31 00:00:00	150	0	0								1B									False		False
+8	201	9007		Wide	Row	2025-05-01 00:00:00	100	0	0								1A	unescaped	tab	here								False		False

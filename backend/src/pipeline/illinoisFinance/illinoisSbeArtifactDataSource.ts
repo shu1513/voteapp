@@ -34,13 +34,30 @@ import {
   loadIllinoisSbeNormalizedArtifact,
   type IllinoisSbeNormalizedArtifact,
 } from "./illinoisSbeNormalizedArtifact.js";
+import { ILLINOIS_SBE_BULK_DOWNLOAD_URL } from "./illinoisSbeBulkDataProducer.js";
+import {
+  loadIllinoisSbeReceiptsByCommitteeId,
+  toIllinoisSbeContributionRecordFromReceipt,
+  type IllinoisSbeReceiptRecord,
+} from "./illinoisSbeReceiptsReader.js";
 
 export type IllinoisSbeArtifactDataSet = {
   contributionRecords: IllinoisSbeContributionRecord[];
+  // Whether contribution CSVs were configured at all. A configured CSV that
+  // parsed to zero records is a loaded-but-empty source (replace breakdowns);
+  // no CSVs configured is no source (preserve them). Record count alone
+  // cannot tell those apart.
+  contributionCsvsLoaded: boolean;
   expenditureRecords?: IllinoisSbeExpenditureRecord[];
   contributionSourceUrl: string;
   expenditureSourceUrl?: string | null;
   normalizedArtifact?: IllinoisSbeNormalizedArtifact;
+  receiptsByCommitteeId?: Map<string, IllinoisSbeReceiptRecord[]>;
+  // The committee ids the receipts load actually scanned for. Absence from
+  // this set means the committee's receipts were never read (preserve stored
+  // breakdowns); presence with no map entry means a real zero (clear them).
+  receiptsCommitteeIds?: ReadonlySet<string>;
+  receiptsSourceUrl?: string;
 };
 
 export type IllinoisSbeArtifactDataSourceConfig = {
@@ -49,7 +66,26 @@ export type IllinoisSbeArtifactDataSourceConfig = {
   contributionSourceUrl?: string | null;
   expenditureSourceUrl?: string | null;
   normalizedArtifactPath?: string | null;
+  receiptsTsvPath?: string | null;
+  receiptsSourceUrl?: string | null;
+  minReceiptYear?: number;
 };
+
+/**
+ * The oldest receipt year a run can need: the earliest selectable election
+ * (now minus the lookback window) starts its cycle the year before its
+ * election year. Never later than two years back, so the short default
+ * lookback keeps the generous floor it has always had.
+ */
+export function illinoisMinReceiptYearForLookback(input: {
+  now: Date;
+  electionLookbackDays: number;
+}): number {
+  const earliestElectionYear = new Date(
+    input.now.getTime() - input.electionLookbackDays * 24 * 60 * 60 * 1000
+  ).getUTCFullYear();
+  return Math.min(input.now.getUTCFullYear() - 2, earliestElectionYear - 1);
+}
 
 function normalizePathList(paths: readonly string[] | undefined, label: string, required: boolean): string[] {
   const normalized = (paths ?? []).map((path) => path.trim()).filter(Boolean);
@@ -93,6 +129,11 @@ export async function loadIllinoisSbeArtifactDataSet(
   config: IllinoisSbeArtifactDataSourceConfig
 ): Promise<IllinoisSbeArtifactDataSet> {
   const normalizedArtifactPath = config.normalizedArtifactPath?.trim() || null;
+  if (config.receiptsTsvPath?.trim() && !normalizedArtifactPath) {
+    // Checked before the CSV requirement so a receipts-only configuration
+    // gets the error naming its actual missing piece.
+    throw new Error("Illinois SBE receipts require the normalized artifact for the committee allow-list");
+  }
   const contributionCsvPaths = normalizePathList(
     config.contributionCsvPaths,
     "contribution",
@@ -106,11 +147,50 @@ export async function loadIllinoisSbeArtifactDataSet(
       paths: contributionCsvPaths,
       sourceUrl: contributionSourceUrl,
     }),
+    contributionCsvsLoaded: contributionCsvPaths.length > 0,
     contributionSourceUrl,
   };
 
   if (normalizedArtifactPath) {
     dataSet.normalizedArtifact = await loadIllinoisSbeNormalizedArtifact(normalizedArtifactPath);
+  }
+
+  const receiptsTsvPath = config.receiptsTsvPath?.trim() || null;
+  if (receiptsTsvPath) {
+    if (!dataSet.normalizedArtifact) {
+      // The committee allow-list comes from the artifact's relations; without
+      // it the whole multi-decade file would have to be kept in memory.
+      throw new Error("Illinois SBE receipts require the normalized artifact for the committee allow-list");
+    }
+    const committeeIds = new Set(
+      dataSet.normalizedArtifact.candidateCommitteeRelations.map((relation) => relation.committeeId)
+    );
+    // The due window looks ahead, never far back: a cycle needs receipts from
+    // the year before its election year at the earliest.
+    const minReceiptYear =
+      config.minReceiptYear ??
+      illinoisMinReceiptYearForLookback({ now: new Date(), electionLookbackDays: 1 });
+    const { receiptsByCommitteeId, visitedRowCount, keptRowCount, malformedRowCount } =
+      await loadIllinoisSbeReceiptsByCommitteeId({
+        path: receiptsTsvPath,
+        committeeIds,
+        minReceiptYear,
+      });
+    // Always leave a trace of what the multi-million-row scan kept — the first
+    // question when breakdowns come back empty.
+    const scannedRowCount = visitedRowCount + malformedRowCount;
+    const receiptsStats =
+      `Illinois SBE Receipts.txt kept ${keptRowCount} of ${scannedRowCount} rows ` +
+      `for ${committeeIds.size} allow-listed committees since ${minReceiptYear}` +
+      (malformedRowCount > 0 ? `; skipped ${malformedRowCount} malformed rows` : "");
+    if (malformedRowCount > 0) {
+      console.warn(receiptsStats);
+    } else {
+      console.log(receiptsStats);
+    }
+    dataSet.receiptsByCommitteeId = receiptsByCommitteeId;
+    dataSet.receiptsCommitteeIds = committeeIds;
+    dataSet.receiptsSourceUrl = config.receiptsSourceUrl?.trim() || ILLINOIS_SBE_BULK_DOWNLOAD_URL;
   }
 
   if (expenditureCsvPaths.length > 0) {
@@ -230,21 +310,43 @@ export function loadIllinoisFinanceDataForDueRowFromArtifacts(input: {
   row: IllinoisCandidateFinanceDueRow;
   artifacts: IllinoisSbeArtifactDataSet;
 }): IllinoisCandidateFinanceData {
-  const directContributionRecords = input.artifacts.contributionRecords.filter((record) =>
-    directContributionMatchesDueRow({ record, row: input.row })
-  );
+  const committeeId = extractIllinoisSbeCommitteeId(input.row.committeeKey);
+  const receipts =
+    committeeId !== null ? input.artifacts.receiptsByCommitteeId?.get(committeeId) : undefined;
   const data: IllinoisCandidateFinanceData = {
-    directContributionRecords,
     directContributionSourceUrl: input.artifacts.contributionSourceUrl,
   };
+  if (
+    input.artifacts.receiptsByCommitteeId !== undefined &&
+    committeeId !== null &&
+    input.artifacts.receiptsCommitteeIds?.has(committeeId)
+  ) {
+    // Bulk receipts are keyed by the SBE committee id, so an allow-listed
+    // id-keyed link takes the exact path; an empty list is an honest "no
+    // itemized receipts". A committee OUTSIDE the allow-list was never
+    // scanned, so it must not receive this authoritative empty — it falls
+    // through to the CSV path or, with no CSVs, preserves stored breakdowns.
+    const sourceUrl = input.artifacts.receiptsSourceUrl ?? ILLINOIS_SBE_BULK_DOWNLOAD_URL;
+    data.directContributionRecords = (receipts ?? []).map((receipt) =>
+      toIllinoisSbeContributionRecordFromReceipt({
+        receipt,
+        recipientCommitteeName: input.row.committeeName,
+        sourceUrl,
+      })
+    );
+    data.directContributionSourceUrl = sourceUrl;
+  } else if (input.artifacts.contributionCsvsLoaded) {
+    data.directContributionRecords = input.artifacts.contributionRecords.filter((record) =>
+      directContributionMatchesDueRow({ record, row: input.row })
+    );
+  }
+  // Otherwise no itemized source was loaded at all — a D-2 summaries-only
+  // refresh — so the field stays undefined and stored breakdowns survive.
 
-  if (input.artifacts.normalizedArtifact) {
-    const committeeId = extractIllinoisSbeCommitteeId(input.row.committeeKey);
-    if (committeeId) {
-      data.d2ReportSummaries = input.artifacts.normalizedArtifact.d2ReportSummaries.filter(
-        (report) => report.committeeId === committeeId
-      );
-    }
+  if (input.artifacts.normalizedArtifact && committeeId) {
+    data.d2ReportSummaries = input.artifacts.normalizedArtifact.d2ReportSummaries.filter(
+      (report) => report.committeeId === committeeId
+    );
   }
 
   if (input.artifacts.expenditureRecords !== undefined) {
