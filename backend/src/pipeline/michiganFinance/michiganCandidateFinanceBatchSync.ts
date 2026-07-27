@@ -191,6 +191,9 @@ export async function listDueMichiganCandidateFinanceSyncRows(
           AND election.election_date <= ($1::date + make_interval(days => $5::int))
           AND candidate_election.status NOT IN ('withdrawn', 'lost')
           AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
+          -- Pre-MiTN election years can never sync (the legacy-archive path
+          -- was removed), so they must not occupy limited due slots.
+          AND link.election_year > $7::int
           AND (
             summary.last_synced_at IS NULL
             OR summary.last_synced_at < ($1::timestamptz - make_interval(days => $2::int))
@@ -223,6 +226,7 @@ export async function listDueMichiganCandidateFinanceSyncRows(
       input.electionLookbackDays,
       input.electionLookaheadDays,
       [...MICHIGAN_FINANCE_ELIGIBLE_OFFICE_KEYS],
+      MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR,
     ]
   );
 

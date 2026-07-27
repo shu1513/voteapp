@@ -9,7 +9,8 @@ import {
 const CANDIDATE_ID = "11111111-1111-1111-1111-111111111111";
 const ELECTION_ID = "22222222-2222-2222-2222-222222222222";
 const LINK_ID = "33333333-3333-3333-3333-333333333333";
-const SOURCE_URL = "https://www.michigan.gov/sos/example/2022_mi_cfr.7z";
+const SOURCE_URL =
+  "https://mi-boe.entellitrak.com/etk-mi-boe-prod/page.request.do?page=page.miboeContributionPublicSearch";
 
 function createMockDb() {
   return {

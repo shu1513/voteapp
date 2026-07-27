@@ -58,6 +58,7 @@ describe("michiganCandidateFinanceAutoLink", () => {
       1,
       730,
       expect.arrayContaining(["statewide::Governor", "state_upper::State Senator"]),
+      2025,
     ]);
   });
 });

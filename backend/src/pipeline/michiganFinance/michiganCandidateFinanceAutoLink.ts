@@ -1,6 +1,7 @@
 import type { Pool, PoolClient } from "pg";
 
 import { MICHIGAN_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./michiganFinanceEligibleOffices.js";
+import { MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR } from "./michiganMitnLegacyRowTypes.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
@@ -89,6 +90,9 @@ export async function listMichiganCandidateElectionsMissingFinanceLinks(
         AND election.election_date <= ($1::date + make_interval(days => $4::int))
         AND candidate_election.status NOT IN ('withdrawn', 'lost')
         AND (office.scope || '::' || office.canonical_name) = ANY($5::text[])
+        -- Pre-MiTN election years can never link (the legacy-archive path
+        -- was removed), so they must not occupy limited auto-link slots.
+        AND extract(year from election.election_date)::int > $6::int
         AND COALESCE(NULLIF(trim(candidate.display_name), ''), NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')) IS NOT NULL
         AND NOT EXISTS (
           SELECT 1
@@ -106,6 +110,7 @@ export async function listMichiganCandidateElectionsMissingFinanceLinks(
       input.electionLookbackDays,
       input.electionLookaheadDays,
       [...MICHIGAN_FINANCE_ELIGIBLE_OFFICE_KEYS],
+      MICHIGAN_MITN_LEGACY_FINAL_ARCHIVE_YEAR,
     ]
   );
 
