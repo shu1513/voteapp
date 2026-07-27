@@ -131,8 +131,8 @@ export async function listDueCandidateFinanceSyncRows(
         CROSS JOIN LATERAL jsonb_array_elements_text(c.fec_ids) AS fec_id(value)
         WHERE c.deleted_at IS NULL
           AND e.race_type = 'office'
-          AND e.election_date >= ($1::date - make_interval(days => $4::int))
-          AND e.election_date <= ($1::date + make_interval(days => $5::int))
+          AND e.election_date >= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $4::int))
+          AND e.election_date <= (($1::timestamptz AT TIME ZONE 'UTC')::date + make_interval(days => $5::int))
           AND ce.status NOT IN ('withdrawn', 'lost')
           AND (
             (office.scope = 'statewide' AND office.canonical_name = 'United States Senator' AND upper(trim(fec_id.value)) ~ '^S[0-9A-Z]{8}$')
@@ -158,7 +158,7 @@ export async function listDueCandidateFinanceSyncRows(
         WHERE c.deleted_at IS NULL
           AND cycle.status = 'active'
           AND cycle_candidate.status = 'active'
-          AND cycle.election_year BETWEEN extract(year from $1::date)::int - 1 AND extract(year from $1::date)::int + 4
+          AND cycle.election_year BETWEEN extract(year from ($1::timestamptz AT TIME ZONE 'UTC')::date)::int - 1 AND extract(year from ($1::timestamptz AT TIME ZONE 'UTC')::date)::int + 4
           AND COALESCE(
             general_cycle.election_date,
             (
@@ -166,7 +166,7 @@ export async function listDueCandidateFinanceSyncRows(
               + (((1 - extract(dow from make_date(cycle.election_year, 11, 1))::int + 7) % 7) + 1)
                 * interval '1 day'
             )::date
-          ) >= ($1::date - make_interval(days => $4::int))
+          ) >= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $4::int))
           AND upper(trim(fec_id.value)) ~ '^P[0-9A-Z]{8}$'
       ),
       candidate_fecs AS (

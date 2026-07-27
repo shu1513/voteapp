@@ -63,7 +63,7 @@ describe("candidateFinanceBatchSync", () => {
     expect(String(db.query.mock.calls[0]?.[0])).toContain("office.canonical_name = 'United States Representative'");
     expect(String(db.query.mock.calls[0]?.[0])).toContain("FROM public.presidential_cycle_candidates");
     expect(String(db.query.mock.calls[0]?.[0])).toContain("general_cycle.election_date");
-    expect(String(db.query.mock.calls[0]?.[0])).toContain(">= ($1::date - make_interval(days => $4::int))");
+    expect(String(db.query.mock.calls[0]?.[0])).toContain(">= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $4::int))");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       "2026-06-01T00:00:00.000Z",
       7,
@@ -84,7 +84,7 @@ describe("candidateFinanceBatchSync", () => {
     });
 
     expect(String(db.query.mock.calls[0]?.[0])).toContain(
-      "e.election_date >= ($1::date - make_interval(days => $4::int))"
+      "e.election_date >= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $4::int))"
     );
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       "2026-06-01T00:00:00.000Z",
