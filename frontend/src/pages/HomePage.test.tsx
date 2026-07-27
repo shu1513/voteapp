@@ -1,10 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HomePage } from "./HomePage";
-import { PRE_SEARCH_ACCEPTANCE_STORAGE_KEY } from "@voteapp/api-client";
 
 function renderHome() {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
@@ -53,21 +52,20 @@ describe("HomePage legal gate (clickwrap)", () => {
     expect(screen.getByRole("button", { name: "Search" })).toBeDisabled();
   });
 
-  it("persists acceptance per terms version in localStorage", async () => {
+  it("never pre-checks the box, and stores nothing that could pre-check it later", async () => {
     const user = userEvent.setup();
     renderHome();
 
+    // Accepting is an affirmative act every visit: nothing a previous visit
+    // did may hand this visitor a ticked box, so acceptance is not persisted
+    // at all. Storage staying empty is what keeps a later mount unchecked.
     await user.click(screen.getByRole("checkbox"));
-    expect(localStorage.getItem(PRE_SEARCH_ACCEPTANCE_STORAGE_KEY)).toBe("true");
-
-    await user.click(screen.getByRole("checkbox"));
-    expect(localStorage.getItem(PRE_SEARCH_ACCEPTANCE_STORAGE_KEY)).toBeNull();
-  });
-
-  it("pre-checks the box for a visitor who already accepted this version", () => {
-    localStorage.setItem(PRE_SEARCH_ACCEPTANCE_STORAGE_KEY, "true");
-    renderHome();
     expect(screen.getByRole("checkbox")).toBeChecked();
+    expect(localStorage.length).toBe(0);
+
+    cleanup();
+    renderHome();
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
   });
 
   it("links all three named agreements next to the checkbox", () => {

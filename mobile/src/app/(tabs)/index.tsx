@@ -1,15 +1,13 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { AddressResolution } from "@voteapp/api-client";
 import {
   apiRequest,
-  PRE_SEARCH_ACCEPTANCE_STORAGE_KEY,
   PRE_SEARCH_CHECKBOX_LABEL,
   PRIVACY_NOTICE,
   useMe,
 } from "@voteapp/api-client";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from "react-native";
 import { AddressAutocomplete } from "../../components/AddressAutocomplete";
 import { LegalGate } from "../../components/LegalGate";
@@ -84,20 +82,10 @@ export default function HomeScreen() {
   const router = useRouter();
   const { me } = useMe();
   const [address, setAddress] = useState("");
+  // Always starts false and is never restored from storage — same rule as
+  // the web: agreeing has to be an affirmative act on this visit, so the box
+  // is never handed to the user pre-ticked.
   const [accepted, setAccepted] = useState(false);
-
-  // Same acceptance persistence as the web (localStorage there), keyed by
-  // terms version so a bump re-prompts. Load failures leave the box
-  // unchecked — the conservative default.
-  useEffect(() => {
-    AsyncStorage.getItem(PRE_SEARCH_ACCEPTANCE_STORAGE_KEY)
-      .then((stored) => {
-        if (stored === "true") {
-          setAccepted(true);
-        }
-      })
-      .catch(() => {});
-  }, []);
 
   const resolve = useMutation({
     mutationFn: (input: string) =>
@@ -124,16 +112,6 @@ export default function HomeScreen() {
 
   const canSearch = accepted && address.trim().length > 0 && !resolve.isPending;
 
-  function onAcceptChange(checked: boolean) {
-    setAccepted(checked);
-    const write = checked
-      ? AsyncStorage.setItem(PRE_SEARCH_ACCEPTANCE_STORAGE_KEY, "true")
-      : AsyncStorage.removeItem(PRE_SEARCH_ACCEPTANCE_STORAGE_KEY);
-    write.catch(() => {
-      // Storage failures must not block searching.
-    });
-  }
-
   return (
     <KeyboardAvoidingView className="flex-1 bg-white" behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <ScrollView keyboardShouldPersistTaps="handled" contentContainerClassName="px-4 py-10">
@@ -154,7 +132,7 @@ export default function HomeScreen() {
             <Text className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</Text>
           </View>
 
-          <LegalGate label={PRE_SEARCH_CHECKBOX_LABEL} checked={accepted} onChange={onAcceptChange} />
+          <LegalGate label={PRE_SEARCH_CHECKBOX_LABEL} checked={accepted} onChange={setAccepted} />
 
           <Pressable
             disabled={!canSearch}

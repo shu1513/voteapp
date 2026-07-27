@@ -8,20 +8,8 @@ import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
 import { savePendingDistrictIds } from "../lib/pendingDistricts";
 import { useMe } from "@voteapp/api-client";
-import {
-  PRE_SEARCH_ACCEPTANCE_STORAGE_KEY,
-  PRE_SEARCH_CHECKBOX_LABEL,
-  PRIVACY_NOTICE,
-} from "@voteapp/api-client";
+import { PRE_SEARCH_CHECKBOX_LABEL, PRIVACY_NOTICE } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
-
-function readStoredAcceptance(): boolean {
-  try {
-    return localStorage.getItem(PRE_SEARCH_ACCEPTANCE_STORAGE_KEY) === "true";
-  } catch {
-    return false;
-  }
-}
 
 export function HomePage() {
   useDocumentTitle("Find what's on your ballot");
@@ -29,7 +17,11 @@ export function HomePage() {
   const [searchParams] = useSearchParams();
   const { me } = useMe();
   const [address, setAddress] = useState("");
-  const [accepted, setAccepted] = useState(readStoredAcceptance);
+  // Always starts false, never restored from storage: agreeing to the terms
+  // has to be an affirmative act on this visit. Carrying a previous visit's
+  // acceptance forward would hand the visitor a pre-ticked box, which is the
+  // one thing a clickwrap gate must never do.
+  const [accepted, setAccepted] = useState(false);
 
   // Returning verified users land on their saved ballot; ?new=1 is the
   // escape hatch for a one-off anonymous search.
@@ -65,19 +57,6 @@ export function HomePage() {
   });
 
   const canSearch = accepted && address.trim().length > 0 && !resolve.isPending;
-
-  function onAcceptChange(checked: boolean) {
-    setAccepted(checked);
-    try {
-      if (checked) {
-        localStorage.setItem(PRE_SEARCH_ACCEPTANCE_STORAGE_KEY, "true");
-      } else {
-        localStorage.removeItem(PRE_SEARCH_ACCEPTANCE_STORAGE_KEY);
-      }
-    } catch {
-      // Private-mode storage failures must not block searching.
-    }
-  }
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -116,7 +95,7 @@ export function HomePage() {
             inputId="pre-search-terms"
             label={PRE_SEARCH_CHECKBOX_LABEL}
             checked={accepted}
-            onChange={onAcceptChange}
+            onChange={setAccepted}
           />
 
           <button
