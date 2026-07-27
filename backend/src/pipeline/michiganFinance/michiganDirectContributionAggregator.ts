@@ -12,6 +12,10 @@ export type MichiganDirectContributionAggregationInput = {
 export type MichiganDirectFinanceSummary = {
   totalReceipts: number;
   directContributionTotal: number;
+  // Loan receipts only (a strict subset of totalReceipts, disjoint from
+  // directContributionTotal): the number that makes self-funded campaigns
+  // visible on a card whose "Raised" deliberately excludes loans.
+  candidateLoanTotal: number;
   sourceUrl: string | null;
 };
 
@@ -146,6 +150,17 @@ export function isMichiganDirectDonorSupportReceipt(input: {
   return isMichiganTotalReceipt(input) && !isExcludedContributionType(input.row.contribtype);
 }
 
+// LOAN must match the same word-boundary term the exclusion regex uses, so a
+// loan row can never be counted in both directContributionTotal and
+// candidateLoanTotal ("Direct Contributions - Loan", "In-Kind Contributions -
+// Loan" in the MiTN export).
+export function isMichiganLoanReceipt(input: {
+  row: MichiganMitnLegacyContributionRow;
+  electionYear: number;
+}): boolean {
+  return isMichiganTotalReceipt(input) && /\bLOAN\b/.test(normalizeTextKey(input.row.contribtype));
+}
+
 function contributorIdentityKey(row: MichiganMitnLegacyContributionRow): string {
   const parts = [
     row.contribtype,
@@ -258,6 +273,7 @@ export function aggregateMichiganDirectContributions(
   let skippedContributionRowCount = 0;
   let totalReceiptsCents = 0;
   let directContributionTotalCents = 0;
+  let candidateLoanTotalCents = 0;
 
   for (const row of input.contributionRows) {
     if (normalizeId(row.cfr_com_id) !== committeeId) {
@@ -272,6 +288,9 @@ export function aggregateMichiganDirectContributions(
     }
 
     totalReceiptsCents += amountCents;
+    if (isMichiganLoanReceipt({ row, electionYear })) {
+      candidateLoanTotalCents += amountCents;
+    }
     if (!isMichiganDirectDonorSupportReceipt({ row, electionYear })) {
       skippedContributionRowCount += 1;
       continue;
@@ -298,6 +317,7 @@ export function aggregateMichiganDirectContributions(
     summary: {
       totalReceipts: centsToDollars(totalReceiptsCents),
       directContributionTotal: centsToDollars(directContributionTotalCents),
+      candidateLoanTotal: centsToDollars(candidateLoanTotalCents),
       sourceUrl,
     },
     directBreakdowns: toDirectBreakdowns({

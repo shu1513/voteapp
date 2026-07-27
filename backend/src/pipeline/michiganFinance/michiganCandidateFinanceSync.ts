@@ -382,6 +382,7 @@ function toSummary(input: {
   return {
     totalReceipts: input.directFinance.summary.totalReceipts,
     directContributionTotal: input.directFinance.summary.directContributionTotal,
+    candidateLoanTotal: input.directFinance.summary.candidateLoanTotal,
     outsideSupportTotal: input.outsideDataAvailable ? input.outsideFinance.summary?.supportTotal ?? 0 : null,
     outsideOpposeTotal: input.outsideDataAvailable ? input.outsideFinance.summary?.opposeTotal ?? 0 : null,
     sourceUrl:

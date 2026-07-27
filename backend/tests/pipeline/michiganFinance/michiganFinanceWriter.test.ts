@@ -99,6 +99,7 @@ describe("michiganFinanceWriter", () => {
       summary: {
         totalReceipts: 5350,
         directContributionTotal: 5350,
+        candidateLoanTotal: 1000,
         outsideSupportTotal: 0,
         outsideOpposeTotal: 863076.75,
         sourceUrl: SOURCE_URL,
@@ -206,8 +207,11 @@ describe("michiganFinanceWriter", () => {
     expect(String(summaryCall?.[0])).toContain(
       "outside_oppose_total = COALESCE(\n          EXCLUDED.outside_oppose_total,\n          mi_candidate_finance_summaries.outside_oppose_total\n        )"
     );
-    expect(summaryCall?.[1]?.[6]).toBeNull();
+    expect(String(summaryCall?.[0])).toContain("candidate_loan_total = EXCLUDED.candidate_loan_total");
+    // candidate_loan_total omitted -> null param at index 4; outside totals at 7/8.
+    expect(summaryCall?.[1]?.[4]).toBeNull();
     expect(summaryCall?.[1]?.[7]).toBeNull();
+    expect(summaryCall?.[1]?.[8]).toBeNull();
   });
 
   it("wraps a supplied queryable in a transaction", async () => {

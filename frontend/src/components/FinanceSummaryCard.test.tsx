@@ -301,6 +301,33 @@ describe("FinanceSummaryCard", () => {
     expect(screen.queryByText("Spent")).not.toBeInTheDocument();
   });
 
+  it("renders a Loans stat with its explainer only when loans are positive", () => {
+    // Self-funder: tiny donations, huge loans (the Perry Johnson shape).
+    const summary = emptyFinanceSummary();
+    summary.source = "MICHIGAN_MITN";
+    summary.direct_campaign.total_raised = 28_699.83;
+    summary.direct_campaign.loans_received = 30_752_614;
+    render(<FinanceSummaryCard summary={summary} />);
+    const loansLabel = screen.getByText("Loans");
+    expect(loansLabel).toBeInTheDocument();
+    expect(loansLabel.closest("dl")).toHaveClass("sm:grid-cols-5");
+    expect(screen.getByText("$30,752,614")).toBeInTheDocument();
+    expect(screen.getByText(/borrowed money the campaign reported receiving/)).toBeInTheDocument();
+  });
+
+  it("hides the Loans stat for zero and for sources that do not report loans", () => {
+    // Known zero (source covers loans, candidate has none): hidden, no $0 noise.
+    const zeroLoans = financeSummary();
+    zeroLoans.direct_campaign.loans_received = 0;
+    const { rerender } = render(<FinanceSummaryCard summary={zeroLoans} />);
+    expect(screen.queryByText("Loans")).not.toBeInTheDocument();
+    expect(screen.queryByText(/borrowed money/)).not.toBeInTheDocument();
+
+    // Field absent (source does not report loans): hidden.
+    rerender(<FinanceSummaryCard summary={financeSummary()} />);
+    expect(screen.queryByText("Loans")).not.toBeInTheDocument();
+  });
+
   it("renders NYC public funds and size buckets", () => {
     const summary = emptyFinanceSummary();
     summary.source = "NEW_YORK_CITY_CFB";

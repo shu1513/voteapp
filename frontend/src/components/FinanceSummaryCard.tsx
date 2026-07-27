@@ -284,12 +284,20 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
   const outside = summary.outside_spending;
   const publicFundsReceived = direct.public_funds_received;
   const hasPublicFunds = publicFundsReceived != null;
+  // Loans render only when positive: a "Loans $0" stat tells voters nothing,
+  // and sources that don't report loans leave the field absent entirely.
+  const loansReceived = direct.loans_received ?? null;
+  const hasLoans = loansReceived !== null && loansReceived > 0;
   const hasMoneyRow =
     direct.total_raised !== null ||
     direct.total_spent !== null ||
     direct.cash_on_hand !== null ||
     direct.debts_owed !== null ||
+    hasLoans ||
     direct.public_funds_received != null;
+  const moneyStatCount = 4 + (hasLoans ? 1 : 0) + (hasPublicFunds ? 1 : 0);
+  const moneyGridClass =
+    moneyStatCount === 6 ? "sm:grid-cols-6" : moneyStatCount === 5 ? "sm:grid-cols-5" : "sm:grid-cols-4";
   const sourceUrl = firstFinanceSourceUrl(summary);
   // Supporting industries prefer the backing-summary rows, which carry the
   // organizations behind each industry; fall back to the plain breakdown.
@@ -305,13 +313,20 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
       </p>
 
       {hasMoneyRow ? (
-        <dl className={`mt-3 grid grid-cols-2 gap-3 ${hasPublicFunds ? "sm:grid-cols-5" : "sm:grid-cols-4"}`}>
+        <dl className={`mt-3 grid grid-cols-2 gap-3 ${moneyGridClass}`}>
           <MoneyStat label="Raised" amount={direct.total_raised} />
+          {hasLoans ? <MoneyStat label="Loans" amount={loansReceived} /> : null}
           <MoneyStat label="Spent" amount={direct.total_spent} />
           <MoneyStat label="Cash on hand" amount={direct.cash_on_hand} />
           <MoneyStat label="Debts" amount={direct.debts_owed} />
           {hasPublicFunds ? <MoneyStat label="Public funds" amount={publicFundsReceived} /> : null}
         </dl>
+      ) : null}
+      {hasLoans ? (
+        <p className="mt-1 text-xs text-ink-soft">
+          Loans are borrowed money the campaign reported receiving — often from the candidate
+          themselves — and are not counted in Raised.
+        </p>
       ) : null}
       {spendingExceedsCycleFunds(summary) ? (
         <p className="mt-1 text-xs text-ink-soft">
