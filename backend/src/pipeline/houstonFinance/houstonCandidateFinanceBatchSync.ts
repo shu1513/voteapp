@@ -37,8 +37,8 @@ export async function listDueHoustonCandidateFinanceRows(input: {
     JOIN public.elections election ON election.id = link.election_id
     LEFT JOIN public.hou_candidate_finance_summaries summary ON summary.link_id = link.id AND summary.election_year = link.election_year
     WHERE link.link_status = 'active' AND candidate.deleted_at IS NULL AND candidate.merged_into_candidate_id IS NULL
-      AND election.election_date BETWEEN (($1::timestamptz)::date - make_interval(days => $4)) AND (($1::timestamptz)::date + make_interval(days => $5))
-      AND ($6::boolean OR election.election_date >= ($1::timestamptz)::date - 1)
+      AND election.election_date BETWEEN (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $4)) AND (($1::timestamptz AT TIME ZONE 'UTC')::date + make_interval(days => $5))
+      AND ($6::boolean OR election.election_date >= ($1::timestamptz AT TIME ZONE 'UTC')::date - 1)
       AND ($6::boolean OR summary.last_synced_at IS NULL OR summary.last_synced_at <= $1::timestamptz - make_interval(days => $3))
     ORDER BY election.election_date, candidate_name LIMIT $2
   `, [input.now.toISOString(), input.maxCandidates, input.staleAfterDays, input.lookbackDays, input.lookaheadDays, input.force === true]);

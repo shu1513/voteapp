@@ -187,8 +187,8 @@ export async function listDueMichiganCandidateFinanceSyncRows(
           AND candidate.deleted_at IS NULL
           AND district.state = 'MI'
           AND election.race_type = 'office'
-          AND election.election_date >= (($1::timestamptz)::date - make_interval(days => $4::int))
-          AND election.election_date <= (($1::timestamptz)::date + make_interval(days => $5::int))
+          AND election.election_date >= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $4::int))
+          AND election.election_date <= (($1::timestamptz AT TIME ZONE 'UTC')::date + make_interval(days => $5::int))
           AND candidate_election.status NOT IN ('withdrawn', 'lost')
           AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
           -- Pre-MiTN election years can never sync (the legacy-archive path

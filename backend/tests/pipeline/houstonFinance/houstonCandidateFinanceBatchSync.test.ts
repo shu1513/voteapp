@@ -7,7 +7,7 @@ describe("Houston candidate finance batch selection", () => {
     const query = vi.fn().mockResolvedValue({ rows: [] });
     await listDueHoustonCandidateFinanceRows({ db: { query }, now: new Date("2026-01-01T00:00:00Z"), maxCandidates: 10, staleAfterDays: 1, lookbackDays: 1, lookaheadDays: 730, force: true });
     expect(query.mock.calls[0]?.[0]).toContain("merged_into_candidate_id");
-    expect(query.mock.calls[0]?.[0]).toContain("election.election_date >= ($1::timestamptz)::date - 1");
+    expect(query.mock.calls[0]?.[0]).toContain("election.election_date >= ($1::timestamptz AT TIME ZONE 'UTC')::date - 1");
     expect(query.mock.calls[0]?.[1]).toEqual(expect.arrayContaining([true]));
   });
 

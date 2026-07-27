@@ -128,8 +128,8 @@ export async function listDueNewYorkCityCandidateFinanceRows(input: {
         WHERE candidate.deleted_at IS NULL
           AND district.state = 'NY'
           AND election.race_type = 'office'
-          AND election.election_date >= (($1::timestamptz)::date - make_interval(days => $5::int))
-          AND election.election_date <= (($1::timestamptz)::date + make_interval(days => $4::int))
+          AND election.election_date >= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $5::int))
+          AND election.election_date <= (($1::timestamptz AT TIME ZONE 'UTC')::date + make_interval(days => $4::int))
           AND candidate_election.status <> 'withdrawn'
           AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
           AND (
