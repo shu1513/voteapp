@@ -171,7 +171,7 @@ function ElectionCard({
         // them, in the user's rank order), unsaved follow under the cap.
         // Position is the only sighted cue, so saved areas carry a
         // screen-reader-only "(saved)" to keep the distinction audible.
-        <p className="mt-3 text-xs">
+        <p className="mt-3 text-sm">
           <span className="font-medium text-ink-soft">Affected Areas:</span>{" "}
           {/* Comma separators live OUTSIDE the area spans as plain text
               nodes, so each span's text stays exactly the area name. */}
