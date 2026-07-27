@@ -59,7 +59,7 @@ export type MichiganCandidateFinanceSyncInput = {
   currentOffice?: string | null;
   contributionRows: readonly MichiganMitnLegacyContributionRow[];
   expenditureRows?: readonly MichiganMitnLegacyExpenditureRow[];
-  /** Provenance for the written link; defaults to the legacy archives. */
+  /** Provenance for the written link; defaults to the MiTN public search. */
   linkSource?: MichiganFinanceLinkSource;
   sourceUrl?: string | null;
   contributionSourceUrl?: string | null;
