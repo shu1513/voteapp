@@ -1,10 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git --no-pager diff *)",
-      "Bash(git --no-pager show *)",
-      "Bash(git --no-pager log *)",
-      "Bash(npm run typecheck)"
+      "Bash(npm run typecheck)",
+      "Bash(npm test *)",
+      "Bash(npx tsc *)",
+      "Bash(npx vitest *)",
+      "Bash(cut *)",
+      "Bash(tr *)",
+      "Bash(uniq *)",
+      "Bash(jq *)"
     ]
   }
 }
