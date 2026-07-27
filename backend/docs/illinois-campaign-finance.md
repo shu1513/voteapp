@@ -36,6 +36,8 @@ The bulk download page also publishes `Receipts.txt`, the itemized receipts for 
 
 When receipts are loaded, an ID-keyed link with no matching rows gets an honest empty breakdown set rather than falling back to name-matched contribution CSVs; name-keyed links keep the CSV path. A committee funded entirely by transfers from other committees therefore shows totals with no occupation or size sections, which is the correct reading of its filings rather than missing data.
 
+A refresh that loads no itemized source at all — the D-2 summaries-only invocation above — leaves stored breakdowns untouched rather than replacing them with nothing, so running without `--receipts-tsv` does not erase them. An itemized source that reports nothing for a committee still clears that committee's rows, because that is a real zero.
+
 A few published receipt rows contain an unescaped tab or newline, which splits or widens the row so its field positions cannot be trusted. Those rows are skipped and counted, and the loader logs the count; the run as of 2026-07-26 skipped 31 of 6,515,401 rows. The header check stays strict, so genuine schema drift still fails the run. The small bulk files keep the strict row-width check as well, because there a wrong width can only mean drift.
 
 ## Summary semantics

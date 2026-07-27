@@ -429,6 +429,20 @@ describe("illinoisSbeArtifactDataSource bulk receipts", () => {
     expect(data.directContributionSourceUrl).toBe(CONTRIBUTIONS_URL);
   });
 
+  it("leaves records undefined for a summaries-only artifact so breakdowns survive", async () => {
+    // The documented artifact invocation passes no contribution CSVs and no
+    // receipts. Returning [] here would tell the writer to delete every stored
+    // occupation and size row on the next refresh.
+    const artifacts = await loadIllinoisSbeArtifactDataSet({
+      contributionCsvPaths: [],
+      normalizedArtifactPath: NORMALIZED_ARTIFACT,
+    });
+
+    const data = loadIllinoisFinanceDataForDueRowFromArtifacts({ row: receiptsDueRow(), artifacts });
+    expect(data.directContributionRecords).toBeUndefined();
+    expect(data.d2ReportSummaries).toBeDefined();
+  });
+
   it("requires the normalized artifact before loading receipts", async () => {
     await expect(
       loadIllinoisSbeArtifactDataSet({

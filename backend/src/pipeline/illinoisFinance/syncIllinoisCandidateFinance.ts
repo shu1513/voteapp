@@ -61,7 +61,10 @@ export type IllinoisCandidateFinanceSyncInput = {
   sbeCommitteeId?: string | null;
   committeeKey: string;
   committeeName: string;
-  directContributionRecords: readonly IllinoisSbeContributionRecord[];
+  // Undefined means no itemized contribution source was loaded at all, which
+  // is not the same as a source that reported nothing: the first must leave
+  // stored breakdowns alone, the second must replace them.
+  directContributionRecords?: readonly IllinoisSbeContributionRecord[];
   outsideExpenditureRecords?: readonly IllinoisSbeExpenditureRecord[];
   outsideGroupContributionRecords?: readonly IllinoisSbeContributionRecord[];
   d2ReportSummaries?: readonly IllinoisSbeD2ReportSummary[];
@@ -436,9 +439,10 @@ export async function syncIllinoisCandidateFinance(
     input.outsideGroupContributionSourceUrl ?? ILLINOIS_SBE_CONTRIBUTION_COMMITTEE_SEARCH_URL;
   const sbeCommitteeId = input.sbeCommitteeId?.trim() || extractIllinoisSbeCommitteeId(input.committeeKey);
 
+  const directContributionDataAvailable = input.directContributionRecords !== undefined;
   const directFinance = aggregateIllinoisDirectContributions({
     electionYear,
-    contributionRecords: input.directContributionRecords,
+    contributionRecords: input.directContributionRecords ?? [],
     // SBE transaction exports identify the recipient by committee name even
     // when our stable link key is SBE:<committee-id>.
     committeeKey: input.committeeName,
@@ -514,7 +518,12 @@ export async function syncIllinoisCandidateFinance(
       link,
       syncedAt,
       summary: summaryAvailable ? summary : undefined,
-      directBreakdowns: directFinance.directBreakdowns.map(toDirectBreakdown),
+      // Omitted, not emptied, when nothing itemized was loaded: the writer
+      // deletes stored breakdowns for any list it is given, so a
+      // summaries-only refresh would otherwise erase them.
+      directBreakdowns: directContributionDataAvailable
+        ? directFinance.directBreakdowns.map(toDirectBreakdown)
+        : undefined,
       outsideGroups,
       outsideGroupBreakdowns: outsideIndustryFinance.outsideGroupBreakdowns,
       classifications: outsideIndustryFinance.classifications,
@@ -528,7 +537,8 @@ export async function syncIllinoisCandidateFinance(
     dryRun: input.dryRun === true,
     linkWritten: !input.dryRun,
     summaryWritten: !input.dryRun && summaryAvailable,
-    directBreakdownsWritten: input.dryRun ? 0 : directFinance.directBreakdowns.length,
+    directBreakdownsWritten:
+      input.dryRun || !directContributionDataAvailable ? 0 : directFinance.directBreakdowns.length,
     outsideGroupsWritten: input.dryRun ? 0 : outsideGroups?.length ?? 0,
     outsideGroupBreakdownsWritten: input.dryRun ? 0 : outsideIndustryFinance.outsideGroupBreakdowns?.length ?? 0,
     totalReceipts: summary.totalReceipts ?? null,

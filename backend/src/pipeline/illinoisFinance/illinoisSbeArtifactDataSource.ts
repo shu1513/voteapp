@@ -274,7 +274,6 @@ export function loadIllinoisFinanceDataForDueRowFromArtifacts(input: {
   const receipts =
     committeeId !== null ? input.artifacts.receiptsByCommitteeId?.get(committeeId) : undefined;
   const data: IllinoisCandidateFinanceData = {
-    directContributionRecords: [],
     directContributionSourceUrl: input.artifacts.contributionSourceUrl,
   };
   if (input.artifacts.receiptsByCommitteeId !== undefined && committeeId !== null) {
@@ -289,11 +288,13 @@ export function loadIllinoisFinanceDataForDueRowFromArtifacts(input: {
       })
     );
     data.directContributionSourceUrl = sourceUrl;
-  } else {
+  } else if (input.artifacts.contributionRecords.length > 0) {
     data.directContributionRecords = input.artifacts.contributionRecords.filter((record) =>
       directContributionMatchesDueRow({ record, row: input.row })
     );
   }
+  // Otherwise no itemized source was loaded at all — a D-2 summaries-only
+  // refresh — so the field stays undefined and stored breakdowns survive.
 
   if (input.artifacts.normalizedArtifact && committeeId) {
     data.d2ReportSummaries = input.artifacts.normalizedArtifact.d2ReportSummaries.filter(
