@@ -20,6 +20,7 @@ export function hasFinanceContent(summary: FinanceSummary | null | undefined): s
     direct.cash_on_hand !== null ||
     direct.debts_owed !== null ||
     direct.public_funds_received != null ||
+    (direct.loans_received ?? 0) > 0 ||
     direct.top_occupations.length > 0 ||
     (direct.contribution_size_buckets?.length ?? 0) > 0 ||
     hasOutsideFinanceContent(summary) ||

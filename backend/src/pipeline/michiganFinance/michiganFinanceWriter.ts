@@ -479,7 +479,7 @@ async function upsertOutsideGroupBreakdown(input: {
         source_url,
         last_synced_at
       )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::timestamptz)
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
       ON CONFLICT (link_id, election_year, committee_id, support_oppose, category_type, category_name)
       DO UPDATE SET
         amount = EXCLUDED.amount,

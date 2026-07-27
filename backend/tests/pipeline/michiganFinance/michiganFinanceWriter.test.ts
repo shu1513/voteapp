@@ -164,6 +164,19 @@ describe("michiganFinanceWriter", () => {
     expect(client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
     expect(client.release).toHaveBeenCalledTimes(1);
 
+    // Every statement's highest $N placeholder must match its param count —
+    // catches a placeholder edited in one INSERT leaking into an identical
+    // VALUES line elsewhere (mocks never validate SQL arity, Postgres does).
+    for (const call of client.query.mock.calls) {
+      const statement = String(call[0]);
+      const placeholders = [...statement.matchAll(/\$(\d+)/g)].map((match) => Number(match[1]));
+      const maxPlaceholder = placeholders.length > 0 ? Math.max(...placeholders) : 0;
+      expect({ statement, maxPlaceholder }).toEqual({
+        statement,
+        maxPlaceholder: (call[1] as unknown[] | undefined)?.length ?? 0,
+      });
+    }
+
     const sql = client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.some((statement) => statement.includes("INSERT INTO public.mi_candidate_finance_summaries"))).toBe(true);
     expect(sql.some((statement) => statement.includes("total_receipts = EXCLUDED.total_receipts"))).toBe(true);

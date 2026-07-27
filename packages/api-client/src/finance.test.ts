@@ -40,6 +40,18 @@ describe("NYC finance shared fields", () => {
     expect(hasFinanceContent(summary)).toBe(true);
   });
 
+  it("treats positive loans as content, but not zero or absent loans", () => {
+    const loansOnly = emptySummary();
+    loansOnly.direct_campaign.loans_received = 30_752_614;
+    expect(hasFinanceContent(loansOnly)).toBe(true);
+
+    const zeroLoans = emptySummary();
+    zeroLoans.direct_campaign.loans_received = 0;
+    expect(hasFinanceContent(zeroLoans)).toBe(false);
+
+    expect(hasFinanceContent(emptySummary())).toBe(false);
+  });
+
   it("finds source URLs in employer breakdowns even though they no longer count as content", () => {
     const summary = emptySummary();
     summary.direct_campaign.top_employers = [
