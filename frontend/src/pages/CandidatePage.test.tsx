@@ -173,6 +173,55 @@ describe("CandidatePage", () => {
     expect(headings).toEqual(["Gun Control", "Environment and Public Health"]);
   });
 
+  it("keeps a group the reader opened open across a view switch that reorders groups", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-gun", slug: "gun_control", name: "Gun Control", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    const record = (id: string, areaId: string, slug: string, name: string) => ({
+      id,
+      description: `Did a thing (${id}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: [{ research_area_id: areaId, slug, name, stance: "for" as const }],
+    });
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          record("r-1", "a-env", "environment_and_public_health", "Environment and Public Health"),
+          record("r-2", "a-gun", "gun_control", "Gun Control"),
+        ],
+      })
+    );
+
+    // "My issues first" is the default once saved areas load; Environment
+    // sits second there but first under "By issue" (public salience), so
+    // switching views reorders the groups.
+    const select = await screen.findByRole("combobox");
+    await screen.findByRole("option", { name: "My issues first" });
+    const groupDetails = (name: string) =>
+      screen.getByText(name).closest("details") as HTMLDetailsElement;
+    expect(groupDetails("Environment and Public Health").open).toBe(false);
+
+    const user = userEvent.setup();
+    await user.click(screen.getByText("Environment and Public Health"));
+    expect(groupDetails("Environment and Public Health").open).toBe(true);
+
+    // No `open` prop means React re-applies no default on reorder — the
+    // reader's toggle must survive the switch.
+    await user.selectOptions(select, "by_issue");
+    expect(groupDetails("Environment and Public Health").open).toBe(true);
+    expect(groupDetails("Gun Control").open).toBe(false);
+  });
+
   it("collapses campaign finance by default while keeping it in the DOM", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => ({

@@ -4,8 +4,9 @@ import { useAdoptPreHydrationChecked } from "../lib/preHydrationInput";
 // Clickwrap checkbox (Meyer v. Uber / Nguyen / Berman requirements):
 // unchecked by default, sits directly above the action it gates, visible
 // links adjacent to the checkbox, and the caller disables its action button
-// until `checked` is true. This component is controlled so pages decide how
-// acceptance persists (localStorage for anonymous search, register payload
+// until `checked` is true. This component is controlled so pages decide
+// what acceptance feeds (per-visit state for anonymous search — never
+// persisted, so no future visit starts pre-ticked; the register payload
 // for signup).
 
 type LegalGateProps = {

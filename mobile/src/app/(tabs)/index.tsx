@@ -84,7 +84,11 @@ export default function HomeScreen() {
   const [address, setAddress] = useState("");
   // Always starts false and is never restored from storage — same rule as
   // the web: agreeing has to be an affirmative act on this visit, so the box
-  // is never handed to the user pre-ticked.
+  // is never handed to the user pre-ticked. Expo retains this tab while a
+  // ballot is pushed on top, so returning from a search shows the box still
+  // ticked — that is deliberate: it reflects the tick the user made moments
+  // ago in this same session, not a restored one. A fresh app launch starts
+  // unchecked again.
   const [accepted, setAccepted] = useState(false);
 
   const resolve = useMutation({
