@@ -45,10 +45,10 @@ function AccountNav() {
       <span className="hidden items-center gap-4 sm:flex">
         <span className="text-ink">Hi {me.first_name}</span>
         <Link to="/me/ballot" className="text-ink-soft hover:text-ink">
-          My ballot
+          My Elections
         </Link>
         <Link to="/me/follows" className="text-ink-soft hover:text-ink">
-          Following
+          My Candidates
         </Link>
         <Link to="/me/settings" className="text-ink-soft hover:text-ink">
           Settings
@@ -65,12 +65,12 @@ function AccountNav() {
         <MenuItems className="absolute right-0 z-20 mt-2 w-44 rounded-xl border border-line bg-white py-1 shadow-lg focus:outline-none">
           <MenuItem>
             <Link to="/me/ballot" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
-              My ballot
+              My Elections
             </Link>
           </MenuItem>
           <MenuItem>
             <Link to="/me/follows" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
-              Following
+              My Candidates
             </Link>
           </MenuItem>
           <MenuItem>

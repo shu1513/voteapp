@@ -36,8 +36,8 @@ describe("App account nav", () => {
     renderApp();
 
     // Inline (sm+) links.
-    expect(await screen.findByRole("link", { name: "My ballot" })).toHaveAttribute("href", "/me/ballot");
-    expect(screen.getByRole("link", { name: "Following" })).toHaveAttribute("href", "/me/follows");
+    expect(await screen.findByRole("link", { name: "My Elections" })).toHaveAttribute("href", "/me/ballot");
+    expect(screen.getByRole("link", { name: "My Candidates" })).toHaveAttribute("href", "/me/follows");
     expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/me/settings");
 
     // The mobile menu opens and repeats the destinations plus log out
@@ -46,11 +46,11 @@ describe("App account nav", () => {
     await user.click(screen.getByRole("button", { name: /Hi Sam/ }));
     const items = screen.getAllByRole("menuitem");
     expect(items.map((item) => item.textContent)).toEqual([
-      "My ballot",
-      "Following",
+      "My Elections",
+      "My Candidates",
       "Settings",
       "Log out",
     ]);
-    expect(screen.getByRole("menuitem", { name: "My ballot" })).toHaveAttribute("href", "/me/ballot");
+    expect(screen.getByRole("menuitem", { name: "My Elections" })).toHaveAttribute("href", "/me/ballot");
   });
 });
