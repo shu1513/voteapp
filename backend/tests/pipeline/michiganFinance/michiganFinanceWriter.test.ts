@@ -99,6 +99,7 @@ describe("michiganFinanceWriter", () => {
       summary: {
         totalReceipts: 5350,
         directContributionTotal: 5350,
+        candidateLoanTotal: 1000,
         outsideSupportTotal: 0,
         outsideOpposeTotal: 863076.75,
         sourceUrl: SOURCE_URL,
@@ -163,6 +164,19 @@ describe("michiganFinanceWriter", () => {
     expect(client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
     expect(client.release).toHaveBeenCalledTimes(1);
 
+    // Every statement's highest $N placeholder must match its param count —
+    // catches a placeholder edited in one INSERT leaking into an identical
+    // VALUES line elsewhere (mocks never validate SQL arity, Postgres does).
+    for (const call of client.query.mock.calls) {
+      const statement = String(call[0]);
+      const placeholders = [...statement.matchAll(/\$(\d+)/g)].map((match) => Number(match[1]));
+      const maxPlaceholder = placeholders.length > 0 ? Math.max(...placeholders) : 0;
+      expect({ statement, maxPlaceholder }).toEqual({
+        statement,
+        maxPlaceholder: (call[1] as unknown[] | undefined)?.length ?? 0,
+      });
+    }
+
     const sql = client.query.mock.calls.map((call) => String(call[0]));
     expect(sql.some((statement) => statement.includes("INSERT INTO public.mi_candidate_finance_summaries"))).toBe(true);
     expect(sql.some((statement) => statement.includes("total_receipts = EXCLUDED.total_receipts"))).toBe(true);
@@ -206,8 +220,11 @@ describe("michiganFinanceWriter", () => {
     expect(String(summaryCall?.[0])).toContain(
       "outside_oppose_total = COALESCE(\n          EXCLUDED.outside_oppose_total,\n          mi_candidate_finance_summaries.outside_oppose_total\n        )"
     );
-    expect(summaryCall?.[1]?.[6]).toBeNull();
+    expect(String(summaryCall?.[0])).toContain("candidate_loan_total = EXCLUDED.candidate_loan_total");
+    // candidate_loan_total omitted -> null param at index 4; outside totals at 7/8.
+    expect(summaryCall?.[1]?.[4]).toBeNull();
     expect(summaryCall?.[1]?.[7]).toBeNull();
+    expect(summaryCall?.[1]?.[8]).toBeNull();
   });
 
   it("wraps a supplied queryable in a transaction", async () => {

@@ -40,6 +40,18 @@ describe("NYC finance shared fields", () => {
     expect(hasFinanceContent(summary)).toBe(true);
   });
 
+  it("treats positive loans as content, but not zero or absent loans", () => {
+    const loansOnly = emptySummary();
+    loansOnly.direct_campaign.loans_received = 30_752_614;
+    expect(hasFinanceContent(loansOnly)).toBe(true);
+
+    const zeroLoans = emptySummary();
+    zeroLoans.direct_campaign.loans_received = 0;
+    expect(hasFinanceContent(zeroLoans)).toBe(false);
+
+    expect(hasFinanceContent(emptySummary())).toBe(false);
+  });
+
   it("finds source URLs in employer breakdowns even though they no longer count as content", () => {
     const summary = emptySummary();
     summary.direct_campaign.top_employers = [
@@ -101,5 +113,18 @@ describe("spendingExceedsCycleFunds", () => {
     summary.direct_campaign.total_raised = 100;
     summary.direct_campaign.total_spent = 100;
     expect(spendingExceedsCycleFunds(summary)).toBe(false);
+  });
+
+  it("counts reported loans as visible funding for the gap note", () => {
+    // The self-funder shape: tiny donations, huge spending, huge loans. The
+    // Loans stat on the card already explains the gap, so no note.
+    const summary = emptySummary();
+    summary.direct_campaign.total_raised = 28_700;
+    summary.direct_campaign.total_spent = 20_000_000;
+    summary.direct_campaign.loans_received = 30_752_614;
+    expect(spendingExceedsCycleFunds(summary)).toBe(false);
+    // Spending beyond even the visible loans is unexplained again.
+    summary.direct_campaign.total_spent = 31_000_000;
+    expect(spendingExceedsCycleFunds(summary)).toBe(true);
   });
 });

@@ -6692,6 +6692,7 @@ describe("lookupElectionDetailById", () => {
             election_year: 2026,
             total_receipts: "250000.00",
             direct_contribution_total: "200000.00",
+            candidate_loan_total: "45000.00",
             total_disbursements: "90000.00",
             cash_on_hand: "110000.00",
             outside_support_total: "80000.00",
@@ -6798,6 +6799,7 @@ describe("lookupElectionDetailById", () => {
       last_synced_at: "2026-06-21 04:05:00+00",
       direct_campaign: {
         total_raised: 200000,
+        loans_received: 45000,
         total_spent: 90000,
         cash_on_hand: 110000,
         debts_owed: null,

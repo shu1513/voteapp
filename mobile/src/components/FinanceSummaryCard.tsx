@@ -244,11 +244,16 @@ function MemberCommunicationsSection({
 export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
   const direct = summary.direct_campaign;
   const outside = summary.outside_spending;
+  // Loans render only when positive: a "Loans $0" stat tells voters nothing,
+  // and sources that don't report loans leave the field absent entirely.
+  const loansReceived = direct.loans_received ?? null;
+  const hasLoans = loansReceived !== null && loansReceived > 0;
   const hasMoneyRow =
     direct.total_raised !== null ||
     direct.total_spent !== null ||
     direct.cash_on_hand !== null ||
     direct.debts_owed !== null ||
+    hasLoans ||
     direct.public_funds_received != null;
   const sourceUrl = firstFinanceSourceUrl(summary);
   // Supporting industries prefer the backing-summary rows, which carry the
@@ -267,11 +272,18 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
       {hasMoneyRow ? (
         <View className="mt-3 flex-row flex-wrap">
           <MoneyStat label="Raised" amount={direct.total_raised} />
+          {hasLoans ? <MoneyStat label="Loans" amount={loansReceived} /> : null}
           <MoneyStat label="Spent" amount={direct.total_spent} />
           <MoneyStat label="Cash on hand" amount={direct.cash_on_hand} />
           <MoneyStat label="Debts" amount={direct.debts_owed} />
           <MoneyStat label="Public funds" amount={direct.public_funds_received ?? null} />
         </View>
+      ) : null}
+      {hasLoans ? (
+        <Text className="mt-1 text-xs text-ink-soft">
+          Loans are borrowed money the campaign reported receiving — often from the candidate
+          themselves — and are not counted in Raised.
+        </Text>
       ) : null}
       {spendingExceedsCycleFunds(summary) ? (
         <Text className="mt-1 text-xs text-ink-soft">

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   aggregateMichiganDirectContributions,
   isMichiganDirectDonorSupportReceipt,
+  isMichiganLoanReceipt,
   isMichiganTotalReceipt,
   michiganElectionCycleStartYear,
 } from "../../../src/pipeline/michiganFinance/michiganDirectContributionAggregator.js";
@@ -69,6 +70,7 @@ describe("michiganDirectContributionAggregator", () => {
       summary: {
         totalReceipts: 5350,
         directContributionTotal: 5350,
+        candidateLoanTotal: 0,
         sourceUrl,
       },
       directBreakdowns: [
@@ -226,7 +228,12 @@ describe("michiganDirectContributionAggregator", () => {
       ],
     });
 
-    expect(result.summary).toEqual({ totalReceipts: 1750, directContributionTotal: 500, sourceUrl: null });
+    expect(result.summary).toEqual({
+      totalReceipts: 1750,
+      directContributionTotal: 500,
+      candidateLoanTotal: 1000,
+      sourceUrl: null,
+    });
     expect(result.matchedContributionRowCount).toBe(3);
     expect(result.includedContributionRowCount).toBe(1);
     expect(result.skippedContributionRowCount).toBe(2);
@@ -236,6 +243,38 @@ describe("michiganDirectContributionAggregator", () => {
       ])
     );
     expect(result.directBreakdowns.some((row) => row.categoryName === "Business Owner")).toBe(false);
+  });
+
+  it("sums loan receipts separately using the real MiTN type strings", () => {
+    const result = aggregateMichiganDirectContributions({
+      committeeId: "514456",
+      electionYear: 2022,
+      contributionRows: [
+        contribution({ amount: "500", contribtype: "Direct Contributions", occupation: "Attorney" }),
+        contribution({ cont_detail_id: "l1", amount: "30000", contribtype: "Direct Contributions - Loan" }),
+        contribution({ cont_detail_id: "l2", amount: "200", contribtype: "In-Kind Contributions - Loan" }),
+        // Excluded from direct but NOT a loan: must never inflate the loan total.
+        contribution({ cont_detail_id: "r1", amount: "250", contribtype: "Refund" }),
+      ],
+    });
+
+    expect(result.summary.totalReceipts).toBe(30950);
+    expect(result.summary.directContributionTotal).toBe(500);
+    expect(result.summary.candidateLoanTotal).toBe(30200);
+
+    expect(
+      isMichiganLoanReceipt({
+        row: contribution({ contribtype: "Direct Contributions - Loan" }),
+        electionYear: 2022,
+      })
+    ).toBe(true);
+    expect(
+      isMichiganLoanReceipt({ row: contribution({ contribtype: "Refund" }), electionYear: 2022 })
+    ).toBe(false);
+    // A word-boundary match, not substring: LOAN inside another word must not count.
+    expect(
+      isMichiganLoanReceipt({ row: contribution({ contribtype: "Sloane Foundation" }), electionYear: 2022 })
+    ).toBe(false);
   });
 
   it("classifies only positive same-cycle committee rows as total and direct receipts", () => {

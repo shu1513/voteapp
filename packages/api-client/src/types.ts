@@ -201,6 +201,7 @@ export type FinanceSummary = {
     cash_on_hand: number | null;
     debts_owed: number | null;
     public_funds_received?: number | null;
+    loans_received?: number | null;
     top_occupations: FinanceBreakdown[];
     top_employers?: FinanceBreakdown[];
     top_industries: FinanceBreakdown[];

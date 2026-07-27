@@ -35,6 +35,7 @@ export type MichiganFinanceLinkInput = {
 export type MichiganFinanceSummaryInput = {
   totalReceipts?: number | null;
   directContributionTotal?: number | null;
+  candidateLoanTotal?: number | null;
   totalDisbursements?: number | null;
   cashOnHand?: number | null;
   outsideSupportTotal?: number | null;
@@ -334,6 +335,7 @@ async function upsertSummary(input: {
         election_year,
         total_receipts,
         direct_contribution_total,
+        candidate_loan_total,
         total_disbursements,
         cash_on_hand,
         outside_support_total,
@@ -341,11 +343,12 @@ async function upsertSummary(input: {
         source_url,
         last_synced_at
       )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
+      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11::timestamptz)
       ON CONFLICT (link_id, election_year)
       DO UPDATE SET
         total_receipts = EXCLUDED.total_receipts,
         direct_contribution_total = EXCLUDED.direct_contribution_total,
+        candidate_loan_total = EXCLUDED.candidate_loan_total,
         total_disbursements = EXCLUDED.total_disbursements,
         cash_on_hand = EXCLUDED.cash_on_hand,
         outside_support_total = COALESCE(
@@ -364,6 +367,7 @@ async function upsertSummary(input: {
       normalizeElectionYear(input.electionYear),
       normalizeNullableAmount(input.summary.totalReceipts, "total receipts"),
       normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
+      normalizeNullableAmount(input.summary.candidateLoanTotal, "candidate loan total"),
       normalizeNullableAmount(input.summary.totalDisbursements, "total disbursements"),
       normalizeNullableAmount(input.summary.cashOnHand, "cash on hand"),
       normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),

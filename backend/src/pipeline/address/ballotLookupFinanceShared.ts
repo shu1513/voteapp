@@ -102,6 +102,10 @@ export type BallotLookupFinanceSummary = {
     cash_on_hand: number | null;
     debts_owed: number | null;
     public_funds_received?: number | null;
+    // Loan receipts (candidate self-funding and other borrowing), reported by
+    // sources that expose loans; absent/null everywhere else. Deliberately NOT
+    // part of total_raised, which stays donor money only.
+    loans_received?: number | null;
     top_occupations: BallotLookupFinanceBreakdown[];
     top_employers?: BallotLookupFinanceBreakdown[];
     top_industries: BallotLookupFinanceBreakdown[];
@@ -419,6 +423,7 @@ export type StateFinanceSummaryRow = {
   total_disbursements: string | number | null;
   cash_on_hand: string | number | null;
   debts_owed?: string | number | null;
+  candidate_loan_total?: string | number | null;
   outside_support_total: string | number | null;
   outside_oppose_total: string | number | null;
   source_url: string | null;

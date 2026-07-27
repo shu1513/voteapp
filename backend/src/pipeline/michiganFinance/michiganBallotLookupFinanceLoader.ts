@@ -82,6 +82,10 @@ export async function loadMichiganCandidateFinanceSummariesByCandidateElection(
           WHEN count(summary.direct_contribution_total) = 0 THEN NULL
           ELSE sum(summary.direct_contribution_total)
         END AS direct_contribution_total,
+        CASE
+          WHEN count(summary.candidate_loan_total) = 0 THEN NULL
+          ELSE sum(summary.candidate_loan_total)
+        END AS candidate_loan_total,
         CASE WHEN count(summary.total_disbursements) = 0 THEN NULL ELSE sum(summary.total_disbursements) END AS total_disbursements,
         CASE WHEN count(summary.cash_on_hand) = 0 THEN NULL ELSE sum(summary.cash_on_hand) END AS cash_on_hand,
         -- Outside totals are already candidate/election snapshot totals; max avoids double-counting multi-link joins.
@@ -485,6 +489,7 @@ export async function loadMichiganCandidateFinanceSummariesByCandidateElection(
           last_synced_at: row.last_synced_at,
           direct_campaign: {
             total_raised: parseFinanceAmount(row.direct_contribution_total) ?? parseFinanceAmount(row.total_receipts),
+            loans_received: parseFinanceAmount(row.candidate_loan_total),
             total_spent: parseFinanceAmount(row.total_disbursements),
             cash_on_hand: parseFinanceAmount(row.cash_on_hand),
             debts_owed: null,
