@@ -15,6 +15,7 @@ import {
   isLocalHost,
   parseEndpoint,
   planRows,
+  sameRecord,
   sameScalar,
   sameStringArray,
   TAG_PROJECTION_SQL,
@@ -316,6 +317,7 @@ describe("upsert statements", () => {
     // see a false diff and then write each other's dates back with day and
     // month swapped.
     expect(RECORD_PROJECTION_SQL).toMatch(/to_char\(event_date, 'YYYY-MM-DD'\)/);
+    expect(RECORD_PROJECTION_SQL).toMatch(/to_char\(created_at AT TIME ZONE 'UTC'/);
     expect(RECORD_PROJECTION_SQL).not.toMatch(/event_date::text/);
     expect(LABEL_PROJECTION_SQL).toMatch(/to_char\(researched_at AT TIME ZONE 'UTC'/);
     expect(LABEL_PROJECTION_SQL).not.toMatch(/researched_at AT TIME ZONE 'UTC'\)::text/);
@@ -356,12 +358,12 @@ describe("assertConfirmedTarget", () => {
   const target = parseEndpoint("target", REMOTE);
 
   it("accepts the matching host/database, case-insensitively", () => {
-    expect(() => assertConfirmedTarget(target, "DB.example.render.com/voteapp_prod")).not.toThrow();
+    expect(() => assertConfirmedTarget(target, "DB.example.render.com:5432/voteapp_prod")).not.toThrow();
   });
 
   it("names the required flag value when confirmation is missing", () => {
     expect(() => assertConfirmedTarget(target, "")).toThrow(
-      /--confirm-target db\.example\.render\.com\/voteapp_prod/
+      /--confirm-target db\.example\.render\.com:5432\/voteapp_prod/
     );
   });
 
@@ -372,9 +374,36 @@ describe("assertConfirmedTarget", () => {
   });
 
   it("rejects the right host with the wrong database", () => {
-    expect(() => assertConfirmedTarget(target, "db.example.render.com/voteapp_staging")).toThrow(
+    expect(() => assertConfirmedTarget(target, "db.example.render.com:5432/voteapp_staging")).toThrow(
       /does not match/
     );
+  });
+});
+
+describe("sameRecord", () => {
+  const base = {
+    candidate_id: "c",
+    record_identity_key: "k",
+    description: "d",
+    source_url: "u",
+    event_date: "2026-01-01",
+    created_at_utc: "2026-01-01 00:00:00.000000",
+    origin: "manual",
+    origin_run_id: "r1",
+  };
+
+  it("ignores provenance, so promotion does not rewrite target history", () => {
+    expect(sameRecord(base, { ...base, origin: "ai_enricher", origin_run_id: "r2" })).toBe(true);
+  });
+
+  it("ignores created_at — the upsert never updates it, so comparing it would fire a no-op UPDATE forever", () => {
+    expect(sameRecord(base, { ...base, created_at_utc: "2020-05-05 12:00:00.000000" })).toBe(true);
+  });
+
+  it("reports a real content change", () => {
+    expect(sameRecord(base, { ...base, description: "different" })).toBe(false);
+    expect(sameRecord(base, { ...base, source_url: "other" })).toBe(false);
+    expect(sameRecord(base, { ...base, event_date: "2025-12-31" })).toBe(false);
   });
 });
 
@@ -419,6 +448,7 @@ describe("findIdentityKeyMismatches", () => {
     description: "desc",
     source_url: "https://x",
     event_date: "2026-01-01",
+    created_at_utc: "2026-01-01 00:00:00.000000",
     origin: null,
     origin_run_id: null,
   };

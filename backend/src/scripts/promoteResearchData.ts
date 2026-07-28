@@ -241,6 +241,14 @@ export type RecordRow = {
   description: string;
   source_url: string;
   event_date: string;
+  /**
+   * Carried because it is reader-visible, not just bookkeeping: the candidate
+   * page renders it as "researched {date}" (SourceLine), the detail reader
+   * sorts on it, and candidateRecordSourceAudit uses it for newly-seen-domain
+   * timing. Letting the target default it to now() would restamp every
+   * promoted record with the promotion date and falsify all three.
+   */
+  created_at_utc: string;
   origin: string | null;
   origin_run_id: string | null;
 };
@@ -293,6 +301,7 @@ export const RECORD_PROJECTION_SQL = `
     description,
     source_url,
     to_char(event_date, 'YYYY-MM-DD') AS event_date,
+    to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD HH24:MI:SS.US') AS created_at_utc,
     origin,
     origin_run_id
   FROM public.candidate_records
@@ -347,6 +356,10 @@ export function labelKey(row: Pick<LabelRow, "source" | "committee_id" | "cycle"
  * alone must not trigger one, or promoting rows whose local pipeline metadata
  * differs would rewrite target history for no reader-visible gain.
  *
+ * created_at is likewise excluded, and must stay excluded: the upsert never
+ * updates it, so comparing it would mark a row changed on every single run and
+ * fire a no-op UPDATE forever — destroying idempotency without changing data.
+ *
  * Note this update path is narrow by construction — record_identity_key is
  * derived from the normalised description, URL and date, so an update only
  * fires when the raw text differs while normalising to the same key.
@@ -391,15 +404,24 @@ export async function loadProjection<T>(client: PromotionClient, sql: string): P
 // be false.
 // ---------------------------------------------------------------------------
 
+// created_at is carried on INSERT so a promoted record keeps the date it was
+// actually researched — it is displayed to readers as "researched {date}" and
+// drives source audits. It is deliberately absent from the DO UPDATE list: an
+// existing target row keeps its own created_at, which is why a differing
+// created_at alone must never count as a content change (see sameRecord).
 export const UPSERT_RECORDS_SQL = `
   INSERT INTO public.candidate_records
-    (candidate_id, record_identity_key, description, source_url, event_date, origin, origin_run_id)
+    (candidate_id, record_identity_key, description, source_url, event_date,
+     created_at, origin, origin_run_id)
   SELECT
     s.candidate_id, s.record_identity_key, s.description, s.source_url,
-    s.event_date::date, s.origin, s.origin_run_id
+    s.event_date::date,
+    (s.created_at_utc)::timestamp AT TIME ZONE 'UTC',
+    s.origin, s.origin_run_id
   FROM jsonb_to_recordset($1::jsonb) AS s(
     candidate_id uuid, record_identity_key text, description text,
-    source_url text, event_date text, origin text, origin_run_id text)
+    source_url text, event_date text, created_at_utc text,
+    origin text, origin_run_id text)
   ON CONFLICT (candidate_id, record_identity_key) DO UPDATE SET
     description = EXCLUDED.description,
     source_url = EXCLUDED.source_url,
@@ -698,7 +720,10 @@ export function diffMigrationSets(input: {
  * effective host, not the raw URL text.
  */
 export function confirmationTokenFor(target: EndpointFingerprint): string {
-  return `${target.host}/${target.database}`;
+  // host:port/database — the port matters because two servers can share a host
+  // (a direct connection and a pooler, or staging and production on one box),
+  // and confirming the host alone would let a promotion land in the wrong one.
+  return `${target.host}:${target.port}/${target.database}`;
 }
 
 export function assertConfirmedTarget(target: EndpointFingerprint, confirmTarget: string): void {
@@ -709,7 +734,7 @@ export function assertConfirmedTarget(target: EndpointFingerprint, confirmTarget
   const supplied = confirmTarget.trim().toLowerCase();
   if (supplied.length === 0) {
     throw new Error(
-      `--apply requires --confirm-target <host>/<database>. Target is ${describeEndpoint(target)}; ` +
+      `--apply requires --confirm-target <host>:<port>/<database>. Target is ${describeEndpoint(target)}; ` +
         `re-run with --confirm-target ${expected}`
     );
   }
@@ -786,7 +811,14 @@ async function main(): Promise<void> {
   console.log(`mode:   ${apply ? "APPLY (writes)" : "dry run (writes nothing)"}`);
 
   const sourcePool = new Pool({ connectionString: process.env.DATABASE_URL });
-  const targetPool = new Pool({ connectionString: process.env.PROMOTION_TARGET_DATABASE_URL });
+  // Bounded timeouts on the target: the apply path holds one transaction across
+  // three batched upserts, so a hung remote would otherwise block indefinitely
+  // while holding row locks on candidate_records. Fail predictably instead.
+  const targetPool = new Pool({
+    connectionString: process.env.PROMOTION_TARGET_DATABASE_URL,
+    connectionTimeoutMillis: 30_000,
+    statement_timeout: 300_000,
+  });
   const source: PromotionClient = { query: (text, values) => sourcePool.query(text, values as unknown[]) };
   const target: PromotionClient = { query: (text, values) => targetPool.query(text, values as unknown[]) };
 

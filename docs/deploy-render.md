@@ -53,7 +53,29 @@ links to preserve.)
    - **The full dump above is LAUNCH-ONLY.** It drops and recreates every
      table, so once the database holds any user data (accounts, sessions,
      follows, saved addresses) it destroys it. To move newly researched data
-     into a populated database, use the additive promotion below instead.
+     into a populated database, use the additive promotion described in
+     "Promoting researched data into a populated database" below.
+3. **Cloudflare Worker**: `cd infra/cloudflare && npm ci && npm run deploy`
+   (Node 22+, one-time `npx wrangler login` against the account that owns
+   the zone). The deploy creates/updates `voteapp-router` AND its routes —
+   routes are declared in wrangler.toml, not the dashboard. Then set vars
+   `API_ORIGIN` / `SSR_ORIGIN` to the two `*.onrender.com` hosts (dashboard
+   → Worker → Settings; wrangler.toml's `keep_vars` protects them on later
+   deploys) and add both DNS records proxied/orange-cloud (the record
+   target can be a placeholder like `192.0.2.1` — the Worker intercepts
+   before origin).
+4. **contact@ mailbox**: Cloudflare Email Routing →
+   `contact@electionssimplified.com` → forward to the operator inbox.
+   Launch-blocking: the legal docs promise this address.
+5. **SES production access**: AWS console (us-east-2) → SES → request
+   production access. Until approved, only verified recipients get mail —
+   registration works but verification emails only reach test addresses.
+6. **Smoke** (deploy-checklist.md "Pre-launch smoke" section), plus:
+   - `curl -s https://electionssimplified.com/api/research-areas` (API through
+     the Worker),
+   - `curl -sA GPTBot https://electionssimplified.com/elections/<real-id>` has
+     candidate names in raw HTML,
+   - register with a personal (SES-verified) address end-to-end.
 
 ### Promoting researched data into a populated database
 
@@ -79,7 +101,7 @@ that should be a pure copy is worth understanding rather than waving through.
 cd backend
 export PROMOTION_TARGET_DATABASE_URL='postgres://…'   # env only, never a flag
 npm run research:promote                               # dry run: reports, writes nothing
-npm run research:promote:apply -- --confirm-target <target-host>
+npm run research:promote:apply -- --confirm-target <host>:<port>/<database>
 ```
 
 Covers `candidate_records`, `candidate_record_area_tags` and
@@ -90,8 +112,9 @@ half-populated graph can never be reported as success.
 
 Notes:
 - The source must be local and the target must not be the same database.
-- `--confirm-target` takes `<host>/<database>`, not the host alone — two
-  databases commonly share a host.
+- `--confirm-target` takes `<host>:<port>/<database>`, not the host alone — one
+  host can serve several databases, and a pooler and a direct connection differ
+  only by port. The error message prints the exact value to pass.
 - Refuses to run if `ALLOW_REMOTE_DB_WRITES` is set — that variable relaxes the
   manual-writer localhost guard and must not silently loosen this command.
 - Both databases must have applied the same migration files (rows for renamed
@@ -106,27 +129,7 @@ Notes:
   write each other's dates back swapped.
 - Never deleting means the target may be a superset; target-only rows are
   reported, not removed.
-3. **Cloudflare Worker**: `cd infra/cloudflare && npm ci && npm run deploy`
-   (Node 22+, one-time `npx wrangler login` against the account that owns
-   the zone). The deploy creates/updates `voteapp-router` AND its routes —
-   routes are declared in wrangler.toml, not the dashboard. Then set vars
-   `API_ORIGIN` / `SSR_ORIGIN` to the two `*.onrender.com` hosts (dashboard
-   → Worker → Settings; wrangler.toml's `keep_vars` protects them on later
-   deploys) and add both DNS records proxied/orange-cloud (the record
-   target can be a placeholder like `192.0.2.1` — the Worker intercepts
-   before origin).
-4. **contact@ mailbox**: Cloudflare Email Routing →
-   `contact@electionssimplified.com` → forward to the operator inbox.
-   Launch-blocking: the legal docs promise this address.
-5. **SES production access**: AWS console (us-east-2) → SES → request
-   production access. Until approved, only verified recipients get mail —
-   registration works but verification emails only reach test addresses.
-6. **Smoke** (deploy-checklist.md "Pre-launch smoke" section), plus:
-   - `curl -s https://electionssimplified.com/api/research-areas` (API through
-     the Worker),
-   - `curl -sA GPTBot https://electionssimplified.com/elections/<real-id>` has
-     candidate names in raw HTML,
-   - register with a personal (SES-verified) address end-to-end.
+
 
 ## Free-tier launch state (2026-07-10)
 
