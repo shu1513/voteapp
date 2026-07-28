@@ -1597,6 +1597,17 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     aliasText: "County Council Chairman",
   },
   {
+    // Arlington County VA titles the seats on its governing legislature
+    // "Member County Board" (live) — the county's legislative body, the same
+    // role as the county-council aliases above, NOT the property-tax appeal
+    // board. Seeded because the matcher otherwise learns this title from
+    // whichever office it happens to score into first, and in the local
+    // database it learned County Board of Review Member, which is wrong.
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Member County Board",
+  },
+  {
     // "For Member of County Council (District 1)" (Howard County MD) after
     // the leading-"For" and seat strips.
     scope: "county",
@@ -1834,12 +1845,6 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Board of Review Member",
     aliasText: "County Board of Review",
-  },
-  {
-    // "Member County Board of Review" after the seat strip (IL live).
-    scope: "county",
-    officeCanonicalName: "County Board of Review Member",
-    aliasText: "Member County Board",
   },
 ];
 
