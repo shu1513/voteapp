@@ -31,7 +31,12 @@ export type EndpointFingerprint = {
 };
 
 export function describeEndpoint(fingerprint: EndpointFingerprint): string {
-  return `${fingerprint.user}@${fingerprint.host}:${fingerprint.port}/${fingerprint.database}`;
+  // A URL may omit the user, in which case libpq authenticates as PGUSER or the
+  // OS user. Printing a bare "@host" would imply we know the user when we do
+  // not, so say so instead. (The confirmation token deliberately does not
+  // include the user — see confirmationTokenFor.)
+  const user = fingerprint.user.length > 0 ? fingerprint.user : "<environment default>";
+  return `${user}@${fingerprint.host}:${fingerprint.port}/${fingerprint.database}`;
 }
 
 /**
@@ -756,7 +761,7 @@ function usage(): string {
   return [
     "Usage:",
     "  npm run research:promote                       # dry run, writes nothing",
-    "  npm run research:promote:apply -- --confirm-target <host>",
+    "  npm run research:promote:apply -- --confirm-target <host>:<port>/<database>",
     "",
     "Endpoints:",
     "  source  DATABASE_URL                     (must be local; read-only)",
@@ -966,8 +971,16 @@ async function main(): Promise<void> {
       } catch (error) {
         // Best-effort rollback: if the connection is already gone, ROLLBACK
         // throws too, and letting that propagate would replace the error that
-        // actually explains the failure.
-        await client.query("ROLLBACK").catch(() => undefined);
+        // actually explains the failure. Report it rather than swallowing it —
+        // a rollback that did not run leaves the transaction's fate unknown,
+        // which is exactly what an operator needs to hear.
+        await client.query("ROLLBACK").catch((rollbackError: unknown) => {
+          console.error(
+            `ROLLBACK failed after the error below; the transaction's state on the target is unknown: ${
+              rollbackError instanceof Error ? rollbackError.message : String(rollbackError)
+            }`
+          );
+        });
         throw error;
       } finally {
         client.release();
@@ -980,7 +993,12 @@ async function main(): Promise<void> {
     }
     console.log(JSON.stringify(report, null, 2));
     if (!apply) {
-      console.log("\nDry run only — nothing was written. Re-run with --apply --confirm-target <host> to commit.");
+      // Print the exact token rather than a placeholder: the operator can copy
+      // it, and it cannot drift out of step with assertConfirmedTarget.
+      console.log(
+        "\nDry run only — nothing was written. Re-run with:\n" +
+          `  npm run research:promote:apply -- --confirm-target ${confirmationTokenFor(endpoints.target)}`
+      );
     }
   } finally {
     // allSettled: a failure closing one pool must not leave the other open.

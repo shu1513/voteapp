@@ -66,6 +66,14 @@ describe("describeEndpoint", () => {
     expect(described).toBe("voteapp_api@db.example.render.com:5432/voteapp_prod");
     expect(described).not.toContain("secret");
   });
+
+  it("says so when the URL omits the user rather than printing a bare @", () => {
+    // libpq falls back to PGUSER or the OS user, so we do not actually know
+    // who will authenticate; claiming to would be worse than admitting it.
+    expect(describeEndpoint(parseEndpoint("source", LOCAL))).toBe(
+      "<environment default>@localhost:5432/voteapp"
+    );
+  });
 });
 
 describe("isLocalHost", () => {
@@ -496,17 +504,39 @@ describe("assertTransportableArrays", () => {
 });
 
 describe("countUnresolvedTags", () => {
-  it("sums unresolved tags across batches so none can be silently dropped", async () => {
-    const client = {
-      query: async () => ({ rows: [{ unresolved: 1 }], rowCount: 1 }),
+  function fakeClient() {
+    const calls: unknown[][] = [];
+    return {
+      calls,
+      client: {
+        query: async (_text: string, values?: readonly unknown[]) => {
+          calls.push(values as unknown[]);
+          return { rows: [{ unresolved: 1 }], rowCount: 1 };
+        },
+      },
     };
-    const tags = Array.from({ length: 3 }, (_, index) => ({
-      candidate_id: `c${index}`,
-      record_identity_key: "k",
-      research_area_slug: "s",
-      stance: null,
-    }));
-    // One batch (default size 500) reporting 1 unresolved row.
-    expect(await countUnresolvedTags(client, tags)).toBe(1);
+  }
+
+  const tag = (index: number) => ({
+    candidate_id: `c${index}`,
+    record_identity_key: "k",
+    research_area_slug: "s",
+    stance: null,
+  });
+
+  it("sums unresolved tags across batches so none can be silently dropped", async () => {
+    // 501 rows crosses the 500-row batch boundary, so this actually exercises
+    // the accumulation. At 3 rows it was one query and the sum was untested.
+    const { calls, client } = fakeClient();
+    expect(await countUnresolvedTags(client, Array.from({ length: 501 }, (_, i) => tag(i)))).toBe(2);
+    expect(calls).toHaveLength(2);
+    expect(JSON.parse(calls[0]![0] as string)).toHaveLength(500);
+    expect(JSON.parse(calls[1]![0] as string)).toHaveLength(1);
+  });
+
+  it("issues no query when there are no tags to check", async () => {
+    const { calls, client } = fakeClient();
+    expect(await countUnresolvedTags(client, [])).toBe(0);
+    expect(calls).toHaveLength(0);
   });
 });

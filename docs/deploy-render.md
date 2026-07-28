@@ -50,11 +50,14 @@ links to preserve.)
      (`elections:offices:seed`, `db:seed:research-areas`,
      `db:seed:office-research-areas`), `loadAllDistricts`,
      `competitiveness:import:verified` — see DB_DEPLOYMENT.md.
-   - **The full dump above is LAUNCH-ONLY.** It drops and recreates every
-     table, so once the database holds any user data (accounts, sessions,
-     follows, saved addresses) it destroys it. To move newly researched data
-     into a populated database, use the additive promotion described in
-     "Promoting researched data into a populated database" below.
+   - **The full dump above targets an EMPTY database only.** It carries no
+     `--clean`, so it does not drop anything: run against a populated database
+     it errors on every existing object and duplicate key and can leave a
+     half-loaded mess. Adding `--clean` would "work" but drops and recreates
+     every table, destroying any user data (accounts, sessions, follows, saved
+     addresses). Either way it is the wrong tool once the database is not
+     empty — use the additive promotion in "Promoting researched data into a
+     populated database" below.
 3. **Cloudflare Worker**: `cd infra/cloudflare && npm ci && npm run deploy`
    (Node 22+, one-time `npx wrangler login` against the account that owns
    the zone). The deploy creates/updates `voteapp-router` AND its routes —
