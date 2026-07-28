@@ -1,3 +1,4 @@
+import { APP_NAME } from "../../constants/brand.js";
 import { createHash } from "node:crypto";
 
 import { isFloridaCampaignFinanceBrowserExportEnabled } from "../../config/featureFlags.js";
@@ -174,7 +175,7 @@ export function createFloridaContributionExportFetchTransport(
     throw new Error("Florida contribution export fetch transport requires global fetch or fetchFn");
   }
   const timeoutMs = normalizeTimeoutMs(options.timeoutMs);
-  const userAgent = options.userAgent?.trim() || "VoteApp Florida campaign finance export";
+  const userAgent = options.userAgent?.trim() || `${APP_NAME} Florida campaign finance export`;
 
   return async (request) => {
     const controller = new AbortController();

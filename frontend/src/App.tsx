@@ -3,7 +3,7 @@ import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { RouteError } from "./components/RouteError";
 import { TermsRenewalGate } from "./components/TermsRenewalGate";
-import { useLogout, useMe } from "@voteapp/api-client";
+import { APP_NAME, useLogout, useMe } from "@voteapp/api-client";
 
 function AccountNav() {
   const { me } = useMe();
@@ -122,7 +122,7 @@ export function App() {
       <header className="border-b border-line bg-white">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
           <Link to="/" className="text-xl font-extrabold tracking-tight text-rausch">
-            VoteApp
+            {APP_NAME}
           </Link>
           <nav className="flex items-center gap-4 text-sm">
             <AccountNav />

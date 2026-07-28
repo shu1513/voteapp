@@ -239,7 +239,7 @@ function EmailSection({ me }: { me: Me }) {
 
 function HomeAddressSection() {
   return (
-    <Section title="Home address">
+    <Section title="Voting address">
       <p className="mt-1 text-sm text-ink-soft">
         Saving a new address replaces the districts on your{" "}
         <Link to="/me/ballot" className="underline hover:text-ink">

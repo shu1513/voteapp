@@ -1,6 +1,7 @@
 import { useEffect } from "react";
+import { APP_NAME } from "@voteapp/api-client";
 
-const BASE_TITLE = "VoteApp";
+const BASE_TITLE = APP_NAME;
 
 // The launch description in root.tsx's meta export is the single source;
 // captured on the first hook run (before any page has overwritten it) so
@@ -8,7 +9,7 @@ const BASE_TITLE = "VoteApp";
 let baseDescription: string | null = null;
 
 /**
- * Sets the tab title to "{title} · VoteApp" and the meta-description for the
+ * Sets the tab title to "{title} · {APP_NAME}" and the meta-description for the
  * route. Pass undefined while a page is still loading its subject (election
  * title, candidate name) to show the bare brand / base description until the
  * data arrives. Both reset on unmount so shells without the hook (e.g. the

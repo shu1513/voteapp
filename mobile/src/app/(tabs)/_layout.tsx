@@ -1,4 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { APP_NAME } from "@voteapp/api-client";
 import { Tabs } from "expo-router";
 
 /**
@@ -17,7 +18,7 @@ export default function TabsLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "VoteApp",
+          title: APP_NAME,
           tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => <Ionicons name="search" color={color} size={size} />,
         }}

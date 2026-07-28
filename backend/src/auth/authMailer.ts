@@ -1,4 +1,5 @@
 import { SendEmailCommand, type SESv2Client } from "@aws-sdk/client-sesv2";
+import { APP_NAME } from "../constants/brand.js";
 
 export type AuthMailer = {
   sendVerificationEmail(input: AuthMailerEmailInput): Promise<void>;
@@ -59,7 +60,7 @@ function escapeHtml(value: string): string {
 
 function resolveMailerBrandName(appName: string | undefined): string {
   const normalized = appName?.trim();
-  return normalized && normalized.length > 0 ? normalized : "VoteApp";
+  return normalized && normalized.length > 0 ? normalized : APP_NAME;
 }
 
 function buildSubject(kind: EmailMessageKind, appName: string): string {

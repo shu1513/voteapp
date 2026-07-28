@@ -6,6 +6,7 @@
 // crypto.randomUUID (useAddressSuggestions; expo-crypto provides it).
 
 export * from "./types";
+export * from "./brand";
 export * from "./client";
 export * from "./finance";
 export * from "./format";

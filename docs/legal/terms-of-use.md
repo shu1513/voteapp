@@ -8,14 +8,14 @@ deadline) added 2026-07-18; Section 12.1/12.8 assume California is the
 operator's principal place of business — update if that changes.
 -->
 
-# VoteApp Terms of Use
+# Elections Simplified Terms of Use
 
 **Last updated:** July 18, 2026
 **Version:** 1.1
 
 ## 1. Acceptance of these Terms
 
-These Terms of Use ("Terms") are an agreement between you and impactperdollar, the operator of the VoteApp service ("VoteApp," "we," "us," or "our") governing your use of the VoteApp website and services (the "Service"). By checking an agreement box, creating an account, submitting an address or search, or otherwise using the Service, you accept these Terms, the [Privacy Policy](/privacy), and the [AI Research and Election Information Disclaimer](/disclaimer) (the "Disclaimer"), which is incorporated into these Terms by reference. You consent to entering this agreement electronically.
+These Terms of Use ("Terms") are an agreement between you and impactperdollar, the operator of the Elections Simplified service ("Elections Simplified," "we," "us," or "our") governing your use of the Elections Simplified website and services (the "Service"). By checking an agreement box, creating an account, submitting an address or search, or otherwise using the Service, you accept these Terms, the [Privacy Policy](/privacy), and the [AI Research and Election Information Disclaimer](/disclaimer) (the "Disclaimer"), which is incorporated into these Terms by reference. You consent to entering this agreement electronically.
 
 **Electronic communications and notices.** You consent to receive communications from us electronically — by email to your account address or by posting in the Service — and you agree that all agreements, notices, disclosures, and other communications we provide electronically satisfy any legal requirement that they be in writing. Notices to you are effective when posted in the Service or sent to your account email; notices to us must be sent to contact@impactperdollar.com.
 
@@ -27,7 +27,7 @@ You must be at least 18 years old to use the Service. By using it, you represent
 
 ## 3. The Service
 
-VoteApp provides AI-assisted, nonpartisan informational research about elections, candidates, ballot measures, campaign finance, and voting districts. The nature, limitations, and proper use of that information — including that it is not official election information, not professional advice, and must be verified with official sources — are described in the Disclaimer, which controls on those subjects.
+Elections Simplified provides AI-assisted, nonpartisan informational research about elections, candidates, ballot measures, campaign finance, and voting districts. The nature, limitations, and proper use of that information — including that it is not official election information, not professional advice, and must be verified with official sources — are described in the Disclaimer, which controls on those subjects.
 
 The Service is operated from the United States and is intended for users located in the United States. We make no representation that the Service or its content is appropriate or available for use in any other location, and we may restrict access from outside the United States.
 
@@ -42,12 +42,12 @@ You agree not to:
 - use the Service or its content for any purpose prohibited by Section 13 ("Prohibited misuse") of the Disclaimer, including voter suppression, voter deception, intimidation, harassment, impersonation of election officials, or unlawful discrimination;
 - use campaign finance information obtained through the Service for prohibited solicitation or commercial use of contributor information;
 - probe, disrupt, overload, or interfere with the Service, its security features, or its rate limits, or access it through automated means at volumes a person could not produce;
-- scrape, harvest, resell, or republish the Service's content at scale, or misrepresent VoteApp content as official election information;
+- scrape, harvest, resell, or republish the Service's content at scale, or misrepresent Elections Simplified content as official election information;
 - attempt to access another person's account or data.
 
 ## 6. Intellectual property
 
-The Service, including its software, design, compiled content, and derived metrics, is owned by VoteApp's operator or its licensors and is protected by law. We grant you a limited, revocable, non-exclusive, non-transferable license to use the Service for personal, non-commercial civic purposes. Public records and third-party sources referenced by the Service remain subject to their own terms.
+The Service, including its software, design, compiled content, and derived metrics, is owned by Elections Simplified's operator or its licensors and is protected by law. We grant you a limited, revocable, non-exclusive, non-transferable license to use the Service for personal, non-commercial civic purposes. Public records and third-party sources referenced by the Service remain subject to their own terms.
 
 ## 7. Third-party services and links
 
@@ -59,7 +59,7 @@ The warranty disclaimers, limitation of liability, and acknowledgment and assump
 
 ## 9. Indemnification
 
-To the maximum extent permitted by law, you agree to indemnify and hold harmless VoteApp's operator and its officers, employees, and contractors from losses, liabilities, and reasonable expenses (including attorneys' fees) arising from your violation of these Terms, your unlawful use of the Service, or your use of or reliance on the Service or its content in a manner the Disclaimer warns against.
+To the maximum extent permitted by law, you agree to indemnify and hold harmless Elections Simplified's operator and its officers, employees, and contractors from losses, liabilities, and reasonable expenses (including attorneys' fees) arising from your violation of these Terms, your unlawful use of the Service, or your use of or reliance on the Service or its content in a manner the Disclaimer warns against.
 
 ## 10. Termination
 
@@ -85,7 +85,7 @@ We may modify or discontinue the Service at any time. We may update these Terms;
 
 **12.6 Coordinated filings.** If 25 or more arbitration demands raising substantially similar claims are filed within a 180-day period by the same counsel or coordinated counsel, the demands will proceed in stages: each side may select up to 10 demands to proceed first as bellwethers; the remaining demands may not be filed, and no arbitration fees are due on them, until the bellwether arbitrations conclude; the parties must then mediate the remaining demands in good faith before they proceed. Limitations periods are tolled for demands held in abeyance under this subsection.
 
-**12.7 Arbitration opt-out.** You may reject the arbitration provisions (Sections 12.3, 12.6, and the arbitration portion of 12.5) by emailing contact@impactperdollar.com with the subject "ARBITRATION OPT-OUT" and your name within 30 days of first accepting these Terms. If you have a VoteApp account, include your account email; if you do not, send the opt-out from the email address you want the opt-out associated with, and your opt-out applies to your use of the Service from then on. Opting out does not affect any other provision of these Terms.
+**12.7 Arbitration opt-out.** You may reject the arbitration provisions (Sections 12.3, 12.6, and the arbitration portion of 12.5) by emailing contact@impactperdollar.com with the subject "ARBITRATION OPT-OUT" and your name within 30 days of first accepting these Terms. If you have an Elections Simplified account, include your account email; if you do not, send the opt-out from the email address you want the opt-out associated with, and your opt-out applies to your use of the Service from then on. Opting out does not affect any other provision of these Terms.
 
 **12.8 Venue.** Any dispute that is not subject to arbitration will be brought exclusively in the state or federal courts located in California, and both parties consent to personal jurisdiction and venue there.
 

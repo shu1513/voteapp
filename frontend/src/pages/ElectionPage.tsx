@@ -19,6 +19,7 @@ import { loadFromApi } from "../lib/loadFromApi";
 import { AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { splitResearchAreasBySaved } from "../lib/researchAreaPriority";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
+import { APP_NAME } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { aggregateRecordAreaStances, scoreStanceRelevance } from "@voteapp/api-client";
@@ -56,10 +57,10 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
     // "Not found" only for real 404s; a 429/502/504 render must not tell
     // crawlers the page doesn't exist.
     const isNotFound = isRouteErrorResponse(error) && error.status === 404;
-    return [{ title: isNotFound ? "Not found · VoteApp" : "Something went wrong · VoteApp" }];
+    return [{ title: isNotFound ? `Not found · ${APP_NAME}` : `Something went wrong · ${APP_NAME}` }];
   }
   return [
-    { title: `${data.official_ballot_title} · VoteApp` },
+    { title: `${data.official_ballot_title} · ${APP_NAME}` },
     {
       name: "description",
       // No "campaign finance" here: this page stopped rendering finance

@@ -252,7 +252,7 @@ describe("sendNewElectionAlerts", () => {
     expect(sentChunk).toEqual([
       {
         to: "ExponentPushToken[aaa]",
-        title: "VoteApp",
+        title: "Elections Simplified",
         body: "1 new election in your districts",
         data: { url: "/my-ballot" },
         sound: "default",

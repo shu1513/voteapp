@@ -120,14 +120,17 @@ export default function HomeScreen() {
     <KeyboardAvoidingView className="flex-1 bg-white" behavior={Platform.OS === "ios" ? "padding" : undefined}>
       <ScrollView keyboardShouldPersistTaps="handled" contentContainerClassName="px-4 py-10">
         <AuthStrip />
-        <Text className="text-3xl font-bold text-ink">Find what&apos;s on your ballot</Text>
-        <Text className="mt-2 text-ink-soft">
-          Enter your home address to see the elections coming up on your ballot.
+        {/* One sentence, no sub-line — same headline as the web home. Two
+            steps below the old 3xl: at phone width a full sentence set that
+            large ran six lines and pushed the address field off the fold. */}
+        <Text className="text-xl font-bold text-ink">
+          Find out exactly what elections you can vote on, and who these candidates really are by
+          their records instead of their slogans.
         </Text>
 
         <View className="mt-6 gap-4">
           <View>
-            <Text className="text-sm font-medium text-ink">Home address</Text>
+            <Text className="text-sm font-medium text-ink">Voting address</Text>
             <AddressAutocomplete
               value={address}
               onChange={setAddress}

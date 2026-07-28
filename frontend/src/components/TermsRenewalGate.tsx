@@ -38,7 +38,7 @@ export function TermsRenewalGate() {
           Our terms have been updated
         </h2>
         <p className="mt-2 text-sm text-ink-soft">
-          To keep using VoteApp, please review and accept the updated Terms of Use, Privacy Policy, and
+          To keep using Elections Simplified, please review and accept the updated Terms of Use, Privacy Policy, and
           Disclaimer.
         </p>
         <div className="mt-4">

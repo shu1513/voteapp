@@ -19,6 +19,7 @@ import { formatDistrictName, formatElectionDate } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
 import { compareByResearchAreaPriority } from "../lib/researchAreaPriority";
 import { useFollows } from "@voteapp/api-client";
+import { APP_NAME } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { UNRANKED_RESEARCH_AREA_RANK } from "@voteapp/api-client";
@@ -271,11 +272,11 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
     // "Not found" only for real 404s; a 429/502/504 render must not tell
     // crawlers the page doesn't exist.
     const isNotFound = isRouteErrorResponse(error) && error.status === 404;
-    return [{ title: isNotFound ? "Not found · VoteApp" : "Something went wrong · VoteApp" }];
+    return [{ title: isNotFound ? `Not found · ${APP_NAME}` : `Something went wrong · ${APP_NAME}` }];
   }
   const candidate = data.candidate;
   return [
-    { title: `${candidate.display_name} · VoteApp` },
+    { title: `${candidate.display_name} · ${APP_NAME}` },
     {
       name: "description",
       content: `${candidate.display_name} (${candidate.party}, ${candidate.state}) — issue-tagged records with sources, election history, and campaign finance.`,

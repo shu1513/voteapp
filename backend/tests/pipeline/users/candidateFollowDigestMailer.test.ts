@@ -35,7 +35,7 @@ const baseInput: CandidateFollowDigestEmailInput = {
 
 describe("digest message builders", () => {
   it("builds a subject with singular/plural counts", () => {
-    expect(buildDigestSubject(undefined, 1)).toBe("[VoteApp] 1 update on candidates you follow");
+    expect(buildDigestSubject(undefined, 1)).toBe("[Elections Simplified] 1 update on candidates you follow");
     expect(buildDigestSubject("MyApp", 3)).toBe("[MyApp] 3 updates on candidates you follow");
   });
 
@@ -95,7 +95,7 @@ describe("createSesCandidateFollowDigestMailer", () => {
   it("sends a composed digest through SES", async () => {
     const sesClient = { send: vi.fn().mockResolvedValue({}) };
     const mailer = createSesCandidateFollowDigestMailer({
-      appName: "VoteApp",
+      appName: "Elections Simplified",
       fromEmailAddress: "noreply@example.com",
       replyToEmailAddress: "support@example.com",
       sesClient,
@@ -112,7 +112,7 @@ describe("createSesCandidateFollowDigestMailer", () => {
       ReplyToAddresses: ["support@example.com"],
     });
     expect(command.input.Content?.Simple?.Subject?.Data).toBe(
-      "[VoteApp] 3 updates on candidates you follow"
+      "[Elections Simplified] 3 updates on candidates you follow"
     );
     expect(command.input.Content?.Simple?.Body?.Text?.Data).toContain("Roland Gutierrez");
     expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain("<h3>Roland Gutierrez</h3>");
@@ -146,7 +146,7 @@ describe("createConsoleCandidateFollowDigestMailer", () => {
     expect(log).toHaveBeenCalledTimes(1);
     const message = log.mock.calls[0][0] as string;
     expect(message).toContain("to=voter@example.com");
-    expect(message).toContain("[VoteApp] 3 updates on candidates you follow");
+    expect(message).toContain("[Elections Simplified] 3 updates on candidates you follow");
     expect(message).toContain("Marcus Cardenas");
   });
 });

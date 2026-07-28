@@ -1,4 +1,5 @@
 import { SendEmailCommand, type SESv2Client } from "@aws-sdk/client-sesv2";
+import { APP_NAME } from "../../constants/brand.js";
 
 export type CandidateFollowDigestItem = {
   candidateDisplayName: string;
@@ -41,7 +42,7 @@ const MAX_RECORD_DESCRIPTION_LENGTH = 240;
 
 function resolveBrandName(appName: string | undefined): string {
   const normalized = appName?.trim();
-  return normalized && normalized.length > 0 ? normalized : "VoteApp";
+  return normalized && normalized.length > 0 ? normalized : APP_NAME;
 }
 
 function normalizeEmailAddress(email: string): string {

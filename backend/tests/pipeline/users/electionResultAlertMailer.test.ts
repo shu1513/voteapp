@@ -41,7 +41,7 @@ const baseInput: ElectionResultAlertEmailInput = {
 describe("result alert message builders", () => {
   it("builds a subject with singular/plural counts", () => {
     expect(buildResultAlertSubject(undefined, 1)).toBe(
-      "[VoteApp] Results are in for 1 election in your districts"
+      "[Elections Simplified] Results are in for 1 election in your districts"
     );
     expect(buildResultAlertSubject("MyApp", 3)).toBe(
       "[MyApp] Results are in for 3 elections in your districts"
@@ -93,7 +93,7 @@ describe("createSesElectionResultAlertMailer", () => {
     expect(command).toBeInstanceOf(SendEmailCommand);
     expect(command.input.Destination?.ToAddresses).toEqual(["voter@example.com"]);
     expect(command.input.Content?.Simple?.Subject?.Data).toBe(
-      "[VoteApp] Results are in for 3 elections in your districts"
+      "[Elections Simplified] Results are in for 3 elections in your districts"
     );
     expect(command.input.Content?.Simple?.Headers).toEqual([
       {

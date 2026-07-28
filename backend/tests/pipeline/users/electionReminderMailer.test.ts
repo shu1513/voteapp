@@ -44,14 +44,14 @@ describe("formatElectionDateLabel", () => {
 
 describe("reminder message builders", () => {
   it("builds a subject with singular/plural counts", () => {
-    expect(buildReminderSubject(undefined, 1)).toBe("[VoteApp] Reminder: 1 election tomorrow");
+    expect(buildReminderSubject(undefined, 1)).toBe("[Elections Simplified] Reminder: 1 election tomorrow");
     expect(buildReminderSubject("MyApp", 3)).toBe("[MyApp] Reminder: 3 elections tomorrow");
   });
 
   it("names the date, groups lines by district, and matches verb to count", () => {
     const body = buildReminderTextBody(undefined, baseInput);
     expect(body).toContain("Hi Sam,");
-    expect(body).toContain("Tomorrow (Tuesday, November 3, 2026) there are 3 elections in your districts on VoteApp:");
+    expect(body).toContain("Tomorrow (Tuesday, November 3, 2026) there are 3 elections in your districts on Elections Simplified:");
     expect(body).toContain("Los Angeles County\n- County Assessor\n- District Attorney");
     expect(body).toContain("Texas Senate District 19\n- State Senator, District 19");
     expect(body).not.toContain("more election");
@@ -105,7 +105,7 @@ describe("createSesElectionReminderMailer", () => {
       },
       { Name: "List-Unsubscribe-Post", Value: "List-Unsubscribe=One-Click" },
     ]);
-    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[VoteApp] Reminder: 3 elections tomorrow");
+    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[Elections Simplified] Reminder: 3 elections tomorrow");
     expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain("<li>County Assessor</li>");
   });
 
@@ -171,7 +171,7 @@ describe("createConsoleElectionReminderMailer", () => {
 
     expect(lines).toHaveLength(1);
     expect(lines[0]).toContain("to=voter@example.com");
-    expect(lines[0]).toContain("subject=[VoteApp] Reminder: 3 elections tomorrow");
+    expect(lines[0]).toContain("subject=[Elections Simplified] Reminder: 3 elections tomorrow");
     expect(lines[0]).toContain("County Assessor");
   });
 });

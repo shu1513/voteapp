@@ -8,12 +8,12 @@ adoption; once a specific analytics provider is chosen, name it in Section 3
 and confirm the "no advertising use" configuration claims hold for it.
 -->
 
-# VoteApp Privacy Policy
+# Elections Simplified Privacy Policy
 
 **Last updated:** July 16, 2026
 **Version:** 1.0
 
-This Privacy Policy describes how impactperdollar, the operator of the VoteApp service ("VoteApp," "we," "us"), collects, uses, and shares information when you use the VoteApp website and services (the "Service").
+This Privacy Policy describes how impactperdollar, the operator of the Elections Simplified service ("Elections Simplified," "we," "us"), collects, uses, and shares information when you use the Elections Simplified website and services (the "Service").
 
 ## 1. Information we collect
 
@@ -70,4 +70,4 @@ We may update this Privacy Policy; the version and date above identify the curre
 
 ## 9. Contact
 
-VoteApp (operated by impactperdollar) — contact@impactperdollar.com
+Elections Simplified (operated by impactperdollar) — contact@impactperdollar.com

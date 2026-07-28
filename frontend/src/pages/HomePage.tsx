@@ -70,17 +70,26 @@ export function HomePage() {
     <>
       <div className="border-b border-line bg-surface">
         <div className="mx-auto max-w-2xl px-4 py-10">
-          <h1 className="text-3xl font-bold">Find what's on your ballot</h1>
-          <p className="mt-2 text-ink-soft">
-            Enter your home address to see the elections coming up on your ballot.
-          </p>
+          {/* One sentence, no sub-line: the promise is the whole pitch, and a
+              second paragraph under it only pushed the address field down. Set
+              full 3xl only from sm up: this headline is a whole sentence, and
+              at 3xl on a phone it ran six lines and pushed the address field
+              off the fold. */}
+          <h1 className="text-xl font-bold sm:text-3xl">
+            Find out exactly what elections you can vote on, and who these candidates really are
+            by their records instead of their slogans.
+          </h1>
         </div>
       </div>
       <div className="mx-auto max-w-2xl px-4 py-8">
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
+            {/* "Home address" reads as a demand for where you sleep and put
+                people off; "Voting address" names what the field is actually
+                for — the address that decides which ballot you get. Same
+                field, same data, less alarming label. */}
             <label htmlFor="address" className="block text-sm font-medium text-ink">
-              Home address
+              Voting address
             </label>
             <AddressAutocomplete
               inputId="address"

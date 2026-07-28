@@ -34,7 +34,7 @@ const baseInput: NewElectionAlertEmailInput = {
 
 describe("alert message builders", () => {
   it("builds a subject with singular/plural counts", () => {
-    expect(buildAlertSubject(undefined, 1)).toBe("[VoteApp] 1 new election in your districts");
+    expect(buildAlertSubject(undefined, 1)).toBe("[Elections Simplified] 1 new election in your districts");
     expect(buildAlertSubject("MyApp", 3)).toBe("[MyApp] 3 new elections in your districts");
   });
 
@@ -78,7 +78,7 @@ describe("createSesNewElectionAlertMailer", () => {
     const command = send.mock.calls[0][0];
     expect(command).toBeInstanceOf(SendEmailCommand);
     expect(command.input.Destination?.ToAddresses).toEqual(["voter@example.com"]);
-    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[VoteApp] 3 new elections in your districts");
+    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[Elections Simplified] 3 new elections in your districts");
     expect(command.input.Content?.Simple?.Headers).toEqual([
       {
         Name: "List-Unsubscribe",

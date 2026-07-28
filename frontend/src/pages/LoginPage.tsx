@@ -2,13 +2,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import type { MetaFunction } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@voteapp/api-client";
+import { APP_NAME, apiRequest } from "@voteapp/api-client";
 import { ErrorNotice } from "../components/Status";
 import { purgeAccountScopedQueries } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
-export const meta: MetaFunction = () => [{ title: "Log in · VoteApp" }];
+export const meta: MetaFunction = () => [{ title: `Log in · ${APP_NAME}` }];
 
 export function LoginPage() {
   useDocumentTitle("Log in");
