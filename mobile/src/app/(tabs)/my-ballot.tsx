@@ -210,7 +210,7 @@ function SavedBallotBody({ email }: { email: string }) {
       <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-10" keyboardShouldPersistTaps="handled">
         <Text className="text-2xl font-bold text-ink">Set your address</Text>
         <Text className="mt-2 text-sm text-ink-soft">
-          Save your voting address once and your ballot will be waiting every time you come back.
+          Enter your voting address once and your ballot will be waiting every time you come back.
         </Text>
         <View className="mt-4">
           <SavedAddressForm label="Voting address" />

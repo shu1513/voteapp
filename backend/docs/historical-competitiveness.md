@@ -162,9 +162,9 @@ The verified importer handles this by requesting a signed Dataverse download URL
 Configure these optional values for the submitted guestbook response:
 
 ```bash
-DATAVERSE_GUESTBOOK_NAME="VoteApp Historical Contest Importer"
+DATAVERSE_GUESTBOOK_NAME="Elections Simplified Historical Contest Importer"
 DATAVERSE_GUESTBOOK_EMAIL=data-import@example.invalid
-DATAVERSE_GUESTBOOK_INSTITUTION=VoteApp
+DATAVERSE_GUESTBOOK_INSTITUTION="Elections Simplified"
 DATAVERSE_GUESTBOOK_POSITION="Data importer"
 ```
 
