@@ -94,7 +94,7 @@ export function TermsRenewalGate() {
   // the same build can never succeed, so say what actually helps.
   const staleBuild = acceptTerms.error instanceof ApiError && acceptTerms.error.status === 422;
   const errorText = staleBuild
-    ? "This version of the app can't accept the newest terms. Please update VoteApp, or accept the updated terms on the VoteApp website."
+    ? "This version of the app can't accept the newest terms. Please update Elections Simplified, or accept the updated terms on the Elections Simplified website."
     : "Something went wrong recording your acceptance. Please try again.";
 
   // accessibilityLiveRegion below is Android-only; VoiceOver needs an
@@ -129,7 +129,7 @@ export function TermsRenewalGate() {
             Our terms have been updated
           </Text>
           <Text className="mt-2 text-sm text-ink-soft">
-            To keep using VoteApp, please review and accept the updated Terms of Use, Privacy
+            To keep using Elections Simplified, please review and accept the updated Terms of Use, Privacy
             Policy, and Disclaimer.
           </Text>
           <View className="mt-4">

@@ -37,7 +37,7 @@ describe("HomePage legal gate (clickwrap)", () => {
     const search = screen.getByRole("button", { name: "Search" });
     expect(checkbox).not.toBeChecked();
 
-    await user.type(screen.getByLabelText("Home address"), "123 Main St, Austin, TX");
+    await user.type(screen.getByLabelText("Voting address"), "123 Main St, Austin, TX");
     expect(search).toBeDisabled();
 
     await user.click(checkbox);

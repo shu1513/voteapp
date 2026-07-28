@@ -268,10 +268,10 @@ export function SavedBallotPage() {
         ) : null}
         <h1 className="text-2xl font-bold">Set your address</h1>
         <p className="mt-2 text-sm text-ink-soft">
-          Save your home address once and your ballot will be waiting every time you come back.
+          Save your voting address once and your ballot will be waiting every time you come back.
         </p>
         <div className="mt-3">
-          <SavedAddressForm inputId="saved-address" label="Home address" />
+          <SavedAddressForm inputId="saved-address" label="Voting address" />
         </div>
       </div>
     );

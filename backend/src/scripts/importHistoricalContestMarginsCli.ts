@@ -1,3 +1,4 @@
+import { APP_NAME } from "../constants/brand.js";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
@@ -91,7 +92,7 @@ export function buildDataverseGuestbookResponse(input?: DataverseGuestbookRespon
       input,
       "name",
       "DATAVERSE_GUESTBOOK_NAME",
-      "VoteApp Historical Contest Importer"
+      `${APP_NAME} Historical Contest Importer`
     ),
     email: readGuestbookResponseValue(
       input,
@@ -99,7 +100,7 @@ export function buildDataverseGuestbookResponse(input?: DataverseGuestbookRespon
       "DATAVERSE_GUESTBOOK_EMAIL",
       "data-import@example.invalid"
     ),
-    institution: readGuestbookResponseValue(input, "institution", "DATAVERSE_GUESTBOOK_INSTITUTION", "VoteApp"),
+    institution: readGuestbookResponseValue(input, "institution", "DATAVERSE_GUESTBOOK_INSTITUTION", APP_NAME),
     position: readGuestbookResponseValue(input, "position", "DATAVERSE_GUESTBOOK_POSITION", "Data importer"),
     answers: [],
   };

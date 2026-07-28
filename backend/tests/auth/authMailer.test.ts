@@ -19,7 +19,7 @@ describe("authMailer", () => {
   it("sends verification emails through SES with a composed message", async () => {
     const sesClient = createSesClientMock();
     const mailer = createSesAuthMailer({
-      appName: "VoteApp",
+      appName: "Elections Simplified",
       fromEmailAddress,
       replyToEmailAddress,
       sesClient,
@@ -40,7 +40,7 @@ describe("authMailer", () => {
       },
       ReplyToAddresses: [replyToEmailAddress],
     });
-    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[VoteApp] Verify your email");
+    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[Elections Simplified] Verify your email");
     expect(command.input.Content?.Simple?.Body?.Text?.Data).toContain(verificationLinkUrl);
     expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain(verificationLinkUrl);
   });
@@ -66,7 +66,7 @@ describe("authMailer", () => {
         ToAddresses: [recipientEmail],
       },
     });
-    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[VoteApp] Reset your password");
+    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[Elections Simplified] Reset your password");
     expect(command.input.Content?.Simple?.Body?.Text?.Data).toContain(resetLinkUrl);
     expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain(resetLinkUrl);
   });
@@ -86,7 +86,7 @@ describe("authMailer", () => {
 
     expect(sesClient.send).toHaveBeenCalledTimes(1);
     const command = sesClient.send.mock.calls[0][0];
-    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[VoteApp] Confirm your new email address");
+    expect(command.input.Content?.Simple?.Subject?.Data).toBe("[Elections Simplified] Confirm your new email address");
     expect(command.input.Content?.Simple?.Body?.Text?.Data).toContain(changeLinkUrl);
     expect(command.input.Content?.Simple?.Body?.Html?.Data).toContain(changeLinkUrl);
   });

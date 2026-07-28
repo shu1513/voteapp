@@ -303,7 +303,7 @@ describe("sendCandidateFollowDigests", () => {
     expect(sentChunk).toEqual([
       {
         to: "ExponentPushToken[aaa]",
-        title: "VoteApp",
+        title: "Elections Simplified",
         body: "2 updates on candidates you follow",
         data: { url: "/follows" },
         sound: "default",

@@ -2,6 +2,7 @@ import { pathToFileURL } from "node:url";
 import { SESv2Client } from "@aws-sdk/client-sesv2";
 import { Pool } from "pg";
 
+import { APP_NAME } from "../constants/brand.js";
 import { loadProjectEnv } from "../config/env.js";
 import { readPositiveIntegerFlag } from "../utils/cliFlags.js";
 import { createEmailUnsubscribeToken } from "../pipeline/users/emailUnsubscribeToken.js";
@@ -322,7 +323,7 @@ export async function sendCandidateFollowDigests(
     if (options.pushClient) {
       try {
         const pushed = await sendUserPushNotification(db, options.pushClient, user.id, {
-          title: "VoteApp",
+          title: APP_NAME,
           body: buildDigestSubjectLine(pendingEvents.length),
           url: "/follows",
         });

@@ -23,7 +23,7 @@ describe("broadcast message builders", () => {
     expect(body).toContain("Hi Sam,");
     expect(body).toContain("Green Futures does great work.\n\nLearn more at their site.");
     expect(body).toContain(
-      "because you saved Environment and Public Health as issues you care about on VoteApp"
+      "because you saved Environment and Public Health as issues you care about on Elections Simplified"
     );
   });
 

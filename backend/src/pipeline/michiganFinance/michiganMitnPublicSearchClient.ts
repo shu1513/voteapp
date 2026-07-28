@@ -1,3 +1,4 @@
+import { APP_NAME } from "../../constants/brand.js";
 import { inflateRawSync } from "node:zlib";
 
 import type { MichiganMitnLegacyContributionRow } from "./michiganMitnLegacyRowTypes.js";
@@ -65,7 +66,7 @@ export type MichiganMitnFetchFn = (
 function requestHeaders(page: string): Record<string, string> {
   const pageUrl = `${MICHIGAN_MITN_PUBLIC_SEARCH_BASE_URL}?page=${page}`;
   return {
-    "user-agent": "Mozilla/5.0 (VoteApp campaign finance sync)",
+    "user-agent": `Mozilla/5.0 (${APP_NAME} campaign finance sync)`,
     "content-type": "application/x-www-form-urlencoded",
     "hx-request": "true",
     origin: new URL(MICHIGAN_MITN_PUBLIC_SEARCH_BASE_URL).origin,

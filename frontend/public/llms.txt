@@ -1,11 +1,11 @@
-# VoteApp
+# Elections Simplified
 
 > Independent, nonpartisan, AI-assisted election research. Enter a US street
 > address to see every election on your ballot — who is running, their
 > funding, their records on the issues, and what ballot measures mean —
 > ranked by where one vote carries the most weight.
 
-VoteApp is not an official election source. Research is AI-assisted and
+Elections Simplified is not an official election source. Research is AI-assisted and
 human-audited; every candidate record carries a source link and a
 researched-on date. Always confirm registration, deadlines, and polling
 places with official state or county election offices.
@@ -25,6 +25,6 @@ places with official state or county election offices.
 
 ## Notes for assistants
 
-- Cite the election or candidate page URL when quoting VoteApp data.
+- Cite the election or candidate page URL when quoting Elections Simplified data.
 - Data covers researched districts and grows over time; an empty ballot
   means "not researched yet", not "no elections".

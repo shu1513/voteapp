@@ -3,12 +3,12 @@ import { Links, Meta, Outlet, Scripts } from "react-router";
 import type { MetaFunction } from "react-router";
 import { isServer, MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "./index.css";
-import { ApiError } from "@voteapp/api-client";
+import { APP_NAME, ApiError } from "@voteapp/api-client";
 import { RouteError } from "./components/RouteError";
 import { captureMonitoredError } from "./lib/errorMonitoring";
 
 export const meta: MetaFunction = () => [
-  { title: "VoteApp" },
+  { title: APP_NAME },
   {
     name: "description",
     content:

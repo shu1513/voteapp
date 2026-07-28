@@ -10,7 +10,7 @@ import {
 const USER_ID = "11111111-1111-4111-8111-111111111111";
 const TOKEN_A = "ExponentPushToken[aaa]";
 const TOKEN_B = "ExponentPushToken[bbb]";
-const MESSAGE = { title: "VoteApp", body: "2 updates", url: "/follows" };
+const MESSAGE = { title: "Elections Simplified", body: "2 updates", url: "/follows" };
 
 // Routes the module's statements by their distinguishing SQL fragments.
 function createDbMock(fixtures: {
@@ -78,8 +78,8 @@ describe("sendUserPushNotification", () => {
     expect(result).toEqual({ sentCount: 2, revokedTokenCount: 0 });
     const sentChunk = (client.sendPushNotificationsAsync as ReturnType<typeof vi.fn>).mock.calls[0][0];
     expect(sentChunk).toEqual([
-      { to: TOKEN_A, title: "VoteApp", body: "2 updates", data: { url: "/follows" }, sound: "default" },
-      { to: TOKEN_B, title: "VoteApp", body: "2 updates", data: { url: "/follows" }, sound: "default" },
+      { to: TOKEN_A, title: "Elections Simplified", body: "2 updates", data: { url: "/follows" }, sound: "default" },
+      { to: TOKEN_B, title: "Elections Simplified", body: "2 updates", data: { url: "/follows" }, sound: "default" },
     ]);
     expect(db.insertedReceipts).toEqual([{ ids: ["receipt-0", "receipt-1"], tokens: [TOKEN_A, TOKEN_B] }]);
   });

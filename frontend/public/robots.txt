@@ -1,4 +1,4 @@
-# VoteApp — independent, nonpartisan, AI-assisted election research.
+# Elections Simplified — independent, nonpartisan, AI-assisted election research.
 # All crawlers welcome, including AI assistants; content carries its own
 # sourcing and disclaimer lines.
 

@@ -22,7 +22,7 @@ Freedom Financial Network):
 
 > [ ] I have read and agree to the [Terms of Use], [Privacy Policy], and
 > [AI Research and Election Information Disclaimer]. I understand that
-> VoteApp provides AI-assisted informational research only; it is not an
+> Elections Simplified provides AI-assisted informational research only; it is not an
 > official election source; results may be inaccurate, incomplete, outdated,
 > or misleading; and I must verify voting, registration, ballot, district,
 > polling-place, deadline, and election-result information with official
@@ -36,7 +36,7 @@ Freedom Financial Network):
 > [ ] I am at least 18 years old, and I have read and agree to the
 > [Terms of Use], [Privacy Policy], and [AI Research and Election Information
 > Disclaimer]. I consent to enter this agreement electronically. I understand
-> that VoteApp is not an official election source, does not register voters
+> that Elections Simplified is not an official election source, does not register voters
 > or cast ballots, and may display AI-assisted content that must be
 > independently verified with official election authorities. I agree that
 > disputes are resolved by binding individual arbitration with a class-action

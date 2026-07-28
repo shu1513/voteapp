@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Link } from "react-router";
 import type { MetaFunction } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@voteapp/api-client";
+import { APP_NAME, apiRequest } from "@voteapp/api-client";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
 import { SIGNUP_CHECKBOX_LABEL, TERMS_VERSION } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
-export const meta: MetaFunction = () => [{ title: "Create your account · VoteApp" }];
+export const meta: MetaFunction = () => [{ title: `Create your account · ${APP_NAME}` }];
 
 export function RegisterPage() {
   useDocumentTitle("Create your account");
