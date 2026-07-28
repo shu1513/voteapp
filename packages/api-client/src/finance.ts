@@ -72,15 +72,33 @@ export function firstFinanceSourceUrl(summary: FinanceSummary): string | null {
   return null;
 }
 
+/**
+ * Whether one outside-spending direction (support or opposition) has
+ * anything worth a box. A disclosed $0 total with no groups and no
+ * industries hides: several syncs write totals for every linked candidate,
+ * so "$0 opposing this candidate" reads as noise, not information.
+ */
+export function hasOutsideDirectionContent(
+  total: number | null | undefined,
+  groups: readonly unknown[],
+  industries: readonly unknown[]
+): boolean {
+  return (total ?? 0) > 0 || groups.length > 0 || industries.length > 0;
+}
+
 export function hasOutsideFinanceContent(summary: FinanceSummary): boolean {
   const outside = summary.outside_spending;
   return (
-    outside.support_total !== null ||
-    outside.oppose_total !== null ||
-    outside.top_supporting_groups.length > 0 ||
-    outside.top_opposing_groups.length > 0 ||
-    outside.top_supporting_industries.length > 0 ||
-    outside.top_opposing_industries.length > 0
+    hasOutsideDirectionContent(
+      outside.support_total,
+      outside.top_supporting_groups,
+      outside.top_supporting_industries
+    ) ||
+    hasOutsideDirectionContent(
+      outside.oppose_total,
+      outside.top_opposing_groups,
+      outside.top_opposing_industries
+    )
   );
 }
 

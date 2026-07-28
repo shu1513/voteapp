@@ -63,7 +63,7 @@ function SettingsBody({ me }: { me: Me }) {
           <>
             <SettingsRow
               icon="home-outline"
-              label="Voting address"
+              label="Your address"
               detail="The address that builds your saved ballot"
               onPress={push("/settings/address")}
             />

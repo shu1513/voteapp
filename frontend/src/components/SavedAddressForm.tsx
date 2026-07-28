@@ -23,7 +23,7 @@ export type AddressSavedNoticeData = {
 export type AddressSavedLocationState = { addressSaved: AddressSavedNoticeData };
 
 // Saves the account's home address and replaces the saved districts. Used by
-// the settings "Voting address" section and the saved-ballot empty state. A
+// the settings "Your address" section and the saved-ballot empty state. A
 // successful save navigates to the saved ballot so the user lands on the
 // election list for their new districts; the confirmation (including the
 // ambiguous-match warning) travels along as router state.

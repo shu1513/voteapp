@@ -340,7 +340,7 @@ describe("CandidatePage", () => {
         "No verified public records for this candidate — record history researched through July 10, 2026."
       )
     ).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Record" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Track record" })).not.toBeInTheDocument();
   });
 
   it("says records are not researched yet when there is no research checkpoint", async () => {

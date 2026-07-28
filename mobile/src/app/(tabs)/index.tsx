@@ -130,11 +130,16 @@ export default function HomeScreen() {
 
         <View className="mt-6 gap-4">
           <View>
-            <Text className="text-sm font-medium text-ink">Voting address</Text>
+            {/* Instructional label for first-time visitors — same copy as
+                the web home. Signed-in surfaces keep "Your address". */}
+            <Text className="text-sm font-medium text-ink">
+              Enter your address to see the elections you can vote in
+            </Text>
             <AddressAutocomplete
               value={address}
               onChange={setAddress}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
+              accessibilityLabel="Enter your address to see the elections you can vote in"
             />
             <Text className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</Text>
           </View>

@@ -12,6 +12,7 @@ import {
   formatMoney,
   formatOutsideEvidenceLines,
   formatSourceHost,
+  hasOutsideDirectionContent,
   hasOutsideFinanceContent,
   sortContributionSizeBuckets,
   spendingExceedsCycleFunds,
@@ -145,11 +146,14 @@ function OutsideSection({
   industries: (FinanceBreakdown | FinanceOutsideIndustrySupport)[];
 }) {
   const [groupsExpanded, setGroupsExpanded] = useState(false);
-  // An all-empty direction renders nothing rather than a bare header — a
-  // race often has disclosed support with no disclosed opposition.
-  if (total === null && groups.length === 0 && industries.length === 0) {
+  // An empty direction renders nothing rather than a bare header — a race
+  // often has disclosed support with no disclosed opposition. A disclosed
+  // $0 total counts as empty (the shared helper's rule): "$0 opposing this
+  // candidate" is noise, not information.
+  if (!hasOutsideDirectionContent(total, groups, industries)) {
     return null;
   }
+  const shownTotal = total !== null && total > 0 ? total : null;
   // Deliberately neutral styling (no green/red fill): the ballot-measure
   // "A YES/NO vote means" boxes own that palette, and this section must not
   // read as a voting recommendation.
@@ -157,7 +161,7 @@ function OutsideSection({
     <View className="mt-2 rounded border border-line p-2">
       <Text className="text-sm font-medium text-ink">
         Reported {direction}
-        {total !== null ? `: ${formatMoney(total)}` : ""}
+        {shownTotal !== null ? `: ${formatMoney(shownTotal)}` : ""}
       </Text>
       {industries.length > 0 ? (
         <View className="mt-2">

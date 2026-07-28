@@ -64,6 +64,36 @@ describe("NYC finance shared fields", () => {
   });
 });
 
+describe("outside spending direction gating", () => {
+  it("a disclosed $0 total with nothing behind it is not content", () => {
+    const summary = emptySummary();
+    summary.outside_spending.support_total = 0;
+    summary.outside_spending.oppose_total = 0;
+    expect(hasOutsideFinanceContent(summary)).toBe(false);
+    expect(hasFinanceContent(summary)).toBe(false);
+  });
+
+  it("a positive total, a group, or an industry each count", () => {
+    const withTotal = emptySummary();
+    withTotal.outside_spending.oppose_total = 1;
+    expect(hasOutsideFinanceContent(withTotal)).toBe(true);
+
+    const withGroup = emptySummary();
+    withGroup.outside_spending.support_total = 0;
+    withGroup.outside_spending.top_supporting_groups = [
+      { committee_id: "C1", committee_name: "Growth PAC", support_oppose: "support", amount: 5, source_url: null },
+    ];
+    expect(hasOutsideFinanceContent(withGroup)).toBe(true);
+
+    const withIndustry = emptySummary();
+    withIndustry.outside_spending.oppose_total = 0;
+    withIndustry.outside_spending.top_opposing_industries = [
+      { category_name: "technology", amount: 5, contributor_count: null, source_url: null },
+    ];
+    expect(hasOutsideFinanceContent(withIndustry)).toBe(true);
+  });
+});
+
 describe("member communications (LA)", () => {
   it("counts as card content on its own, but not as outside-groups content", () => {
     const summary = emptySummary();

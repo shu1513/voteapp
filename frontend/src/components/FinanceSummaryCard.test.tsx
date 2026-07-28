@@ -191,6 +191,31 @@ describe("FinanceSummaryCard", () => {
     expect(screen.queryByText(/Outside money spent opposing/)).not.toBeInTheDocument();
   });
 
+  it("hides a direction whose disclosed total is $0 with nothing behind it", () => {
+    const summary = financeSummary();
+    summary.outside_spending.oppose_total = 0;
+    summary.outside_spending.top_opposing_groups = [];
+    summary.outside_spending.top_opposing_industries = [];
+    render(<FinanceSummaryCard summary={summary} />);
+
+    // "$0 opposing this candidate" is noise, not information — the box hides.
+    expect(screen.getByText(/Outside money spent supporting/)).toBeInTheDocument();
+    expect(screen.queryByText(/Outside money spent opposing/)).not.toBeInTheDocument();
+  });
+
+  it("keeps a $0-total direction visible when it has groups, but drops the $0 from the heading", () => {
+    const summary = financeSummary();
+    summary.outside_spending.oppose_total = 0;
+    render(<FinanceSummaryCard summary={summary} />);
+
+    // The fixture's opposing group still discloses spending, so the box stays;
+    // a "$0" amount on the heading would contradict the rows beneath it.
+    const heading = screen.getByText(/Outside money spent opposing this candidate/);
+    expect(heading).toBeInTheDocument();
+    expect(heading.textContent).not.toContain("$0");
+    expect(screen.getByText("Stop Them PAC")).toBeInTheDocument();
+  });
+
   it("shows a researched committee label with its source links, and nothing when unlabeled", () => {
     const summary = financeSummary();
     summary.outside_spending.top_supporting_groups = [

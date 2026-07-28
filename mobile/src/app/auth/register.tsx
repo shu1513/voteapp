@@ -13,6 +13,10 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  // One toggle reveals both fields: the point of "Show" is checking what you
+  // typed, and revealing only one of a pair defeats the comparison.
+  const [showPassword, setShowPassword] = useState(false);
   const [accepted, setAccepted] = useState(false);
 
   const register = useMutation({
@@ -38,7 +42,19 @@ export default function RegisterScreen() {
       }),
   });
 
-  const canSubmit = accepted && email.trim().length > 0 && password.length > 0 && !register.isPending;
+  // The mismatch message waits until both fields have input — flagging a
+  // half-typed confirmation as wrong would nag on every keystroke.
+  const passwordsMismatch =
+    password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;
+  // Length gate lives here because mobile has no browser constraint layer —
+  // without it a short password round-trips to the backend (min 12) just to
+  // be rejected. The hint under the field explains the disabled button.
+  const canSubmit =
+    accepted &&
+    email.trim().length > 0 &&
+    password.length >= 12 &&
+    password === confirmPassword &&
+    !register.isPending;
 
   if (register.isSuccess) {
     return (
@@ -96,14 +112,35 @@ export default function RegisterScreen() {
             onChangeText={setFirstName}
             autoComplete="given-name"
           />
-          <LabeledInput
-            label="Password"
-            hint="At least 12 characters."
-            value={password}
-            onChangeText={setPassword}
-            autoComplete="new-password"
-            secureTextEntry
-          />
+          <View className="gap-4">
+            <LabeledInput
+              label="Password"
+              hint="At least 12 characters."
+              value={password}
+              onChangeText={setPassword}
+              autoComplete="new-password"
+              secureTextEntry={!showPassword}
+            />
+            <LabeledInput
+              label="Confirm password"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              autoComplete="new-password"
+              secureTextEntry={!showPassword}
+            />
+            {passwordsMismatch ? (
+              <Text className="text-xs text-red-700">Passwords don&apos;t match.</Text>
+            ) : null}
+            <Pressable
+              onPress={() => setShowPassword((value) => !value)}
+              accessibilityRole="button"
+              accessibilityState={{ expanded: showPassword }}
+            >
+              <Text className="text-xs text-ink-soft underline">
+                {showPassword ? "Hide password" : "Show password"}
+              </Text>
+            </Pressable>
+          </View>
 
           <LegalGate label={SIGNUP_CHECKBOX_LABEL} checked={accepted} onChange={setAccepted} />
 

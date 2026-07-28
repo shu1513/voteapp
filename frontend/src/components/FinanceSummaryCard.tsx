@@ -13,6 +13,7 @@ import {
   formatOutsideEvidenceLines,
   formatSourceHost,
   hasFinanceContent,
+  hasOutsideDirectionContent,
   hasOutsideFinanceContent,
   sortContributionSizeBuckets,
   spendingExceedsCycleFunds,
@@ -141,11 +142,14 @@ function OutsideSection({
   groups: FinanceOutsideGroup[];
   industries: (FinanceBreakdown | FinanceOutsideIndustrySupport)[];
 }) {
-  // An all-empty direction renders nothing rather than a bare header — a
-  // race often has disclosed support with no disclosed opposition.
-  if (total === null && groups.length === 0 && industries.length === 0) {
+  // An empty direction renders nothing rather than a bare header — a race
+  // often has disclosed support with no disclosed opposition. A disclosed
+  // $0 total counts as empty (the shared helper's rule): "$0 opposing this
+  // candidate" is noise, not information.
+  if (!hasOutsideDirectionContent(total, groups, industries)) {
     return null;
   }
+  const shownTotal = total !== null && total > 0 ? total : null;
   // Support/opposition are color-coded (green/red tint, same palette as the
   // ballot-measure YES/NO boxes) so the two directions read apart at a
   // glance. Labels say what the money did ("spent supporting/opposing this
@@ -160,7 +164,7 @@ function OutsideSection({
     >
       <p className={`text-sm font-medium ${isSupport ? "text-green-900" : "text-red-900"}`}>
         Outside money spent {directionLabel} this candidate
-        {total !== null ? `: ${formatMoney(total)}` : ""}
+        {shownTotal !== null ? `: ${formatMoney(shownTotal)}` : ""}
       </p>
       {industries.length > 0 ? (
         <div className="mt-2">

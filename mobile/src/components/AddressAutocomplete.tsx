@@ -12,9 +12,18 @@ type AddressAutocompleteProps = {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  /** Screen-reader label. React Native does not associate a sibling <Text>
+   * with the input, so callers whose visible label differs from the default
+   * must pass it here or screen readers announce the wrong thing. */
+  accessibilityLabel?: string;
 };
 
-export function AddressAutocomplete({ value, onChange, placeholder }: AddressAutocompleteProps) {
+export function AddressAutocomplete({
+  value,
+  onChange,
+  placeholder,
+  accessibilityLabel = "Your address",
+}: AddressAutocompleteProps) {
   const { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions } = useAddressSuggestions();
 
   async function onSelect(suggestion: AddressSuggestion) {
@@ -35,7 +44,7 @@ export function AddressAutocomplete({ value, onChange, placeholder }: AddressAut
         placeholder={placeholder}
         placeholderTextColor="#717171"
         autoComplete="street-address"
-        accessibilityLabel="Voting address"
+        accessibilityLabel={accessibilityLabel}
         value={value}
         onChangeText={(text) => {
           onChange(text);
