@@ -50,6 +50,41 @@ links to preserve.)
      (`elections:offices:seed`, `db:seed:research-areas`,
      `db:seed:office-research-areas`), `loadAllDistricts`,
      `competitiveness:import:verified` — see DB_DEPLOYMENT.md.
+   - **The full dump above is LAUNCH-ONLY.** It drops and recreates every
+     table, so once the database holds any user data (accounts, sessions,
+     follows, saved addresses) it destroys it. To move newly researched data
+     into a populated database, use the additive promotion below instead.
+
+### Promoting researched data into a populated database
+
+`npm run research:promote` copies manually researched rows from the local
+database to another database, inserting what is missing and updating what
+changed. It never deletes, never touches user/account tables, and is safe to
+re-run — a second consecutive run writes nothing.
+
+```bash
+cd backend
+export PROMOTION_TARGET_DATABASE_URL='postgres://…'   # env only, never a flag
+npm run research:promote                               # dry run: reports, writes nothing
+npm run research:promote:apply -- --confirm-target <target-host>
+```
+
+Covers `candidate_records`, `candidate_record_area_tags` and
+`finance_committee_labels`. `candidates` and `research_areas` are read-only
+dependencies: a record whose candidate is missing on the target, or a tag whose
+research-area slug is missing, aborts the run rather than being skipped, so a
+half-populated graph can never be reported as success.
+
+Notes:
+- The source must be local and the target must not be the same database.
+- Refuses to run if `ALLOW_REMOTE_DB_WRITES` is set — that variable relaxes the
+  manual-writer localhost guard and must not silently loosen this command.
+- Both databases must have applied the same migration files (rows for renamed
+  migrations that no longer exist on disk are ignored).
+- Tags are transported by natural key, never by `candidate_record_id`, so they
+  attach correctly even when the same record holds a different id on the target.
+- Never deleting means the target may be a superset; target-only rows are
+  reported, not removed.
 3. **Cloudflare Worker**: `cd infra/cloudflare && npm ci && npm run deploy`
    (Node 22+, one-time `npx wrangler login` against the account that owns
    the zone). The deploy creates/updates `voteapp-router` AND its routes —
