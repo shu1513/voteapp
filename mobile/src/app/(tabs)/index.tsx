@@ -139,6 +139,7 @@ export default function HomeScreen() {
               value={address}
               onChange={setAddress}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
+              accessibilityLabel="Enter your address to see the elections you can vote in"
             />
             <Text className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</Text>
           </View>

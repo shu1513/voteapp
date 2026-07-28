@@ -84,6 +84,13 @@ describe("outside spending direction gating", () => {
       { committee_id: "C1", committee_name: "Growth PAC", support_oppose: "support", amount: 5, source_url: null },
     ];
     expect(hasOutsideFinanceContent(withGroup)).toBe(true);
+
+    const withIndustry = emptySummary();
+    withIndustry.outside_spending.oppose_total = 0;
+    withIndustry.outside_spending.top_opposing_industries = [
+      { category_name: "technology", amount: 5, contributor_count: null, source_url: null },
+    ];
+    expect(hasOutsideFinanceContent(withIndustry)).toBe(true);
   });
 });
 

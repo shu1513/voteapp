@@ -46,10 +46,13 @@ export default function RegisterScreen() {
   // half-typed confirmation as wrong would nag on every keystroke.
   const passwordsMismatch =
     password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;
+  // Length gate lives here because mobile has no browser constraint layer —
+  // without it a short password round-trips to the backend (min 12) just to
+  // be rejected. The hint under the field explains the disabled button.
   const canSubmit =
     accepted &&
     email.trim().length > 0 &&
-    password.length > 0 &&
+    password.length >= 12 &&
     password === confirmPassword &&
     !register.isPending;
 
