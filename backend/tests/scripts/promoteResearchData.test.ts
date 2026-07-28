@@ -3,7 +3,13 @@ import { describe, expect, it } from "vitest";
 import {
   assertConfirmedTarget,
   assertPromotionEndpoints,
+  assertTransportableArrays,
   chunk,
+  countUnresolvedTags,
+  diffCandidateFingerprints,
+  findIdentityKeyMismatches,
+  LABEL_PROJECTION_SQL,
+  RECORD_PROJECTION_SQL,
   describeEndpoint,
   diffMigrationSets,
   isLocalHost,
@@ -302,6 +308,18 @@ describe("upsert statements", () => {
     expect(UPSERT_LABELS_SQL).toMatch(/researched_at_utc/);
     expect(UPSERT_LABELS_SQL).not.toMatch(/now\(\)/i);
   });
+
+  it("renders dates and timestamps style-independently, never via ::text", () => {
+    // ::text honours the session DateStyle: the same row projects as
+    // "08/06/2022" under DateStyle='SQL, DMY' and "2022-06-08" under ISO
+    // (verified against the live database). Two servers set differently would
+    // see a false diff and then write each other's dates back with day and
+    // month swapped.
+    expect(RECORD_PROJECTION_SQL).toMatch(/to_char\(event_date, 'YYYY-MM-DD'\)/);
+    expect(RECORD_PROJECTION_SQL).not.toMatch(/event_date::text/);
+    expect(LABEL_PROJECTION_SQL).toMatch(/to_char\(researched_at AT TIME ZONE 'UTC'/);
+    expect(LABEL_PROJECTION_SQL).not.toMatch(/researched_at AT TIME ZONE 'UTC'\)::text/);
+  });
 });
 
 describe("upsertBatched", () => {
@@ -337,15 +355,128 @@ describe("upsertBatched", () => {
 describe("assertConfirmedTarget", () => {
   const target = parseEndpoint("target", REMOTE);
 
-  it("accepts the matching host, case-insensitively", () => {
-    expect(() => assertConfirmedTarget(target, "DB.example.render.com")).not.toThrow();
+  it("accepts the matching host/database, case-insensitively", () => {
+    expect(() => assertConfirmedTarget(target, "DB.example.render.com/voteapp_prod")).not.toThrow();
   });
 
   it("names the required flag value when confirmation is missing", () => {
-    expect(() => assertConfirmedTarget(target, "")).toThrow(/--confirm-target db\.example\.render\.com/);
+    expect(() => assertConfirmedTarget(target, "")).toThrow(
+      /--confirm-target db\.example\.render\.com\/voteapp_prod/
+    );
   });
 
-  it("rejects a mismatched confirmation", () => {
-    expect(() => assertConfirmedTarget(target, "localhost")).toThrow(/does not match/);
+  it("rejects the host alone — two databases commonly share one host", () => {
+    // Confirming only the host would let a promotion land in the wrong
+    // database while the operator believed they had named it.
+    expect(() => assertConfirmedTarget(target, "db.example.render.com")).toThrow(/does not match/);
+  });
+
+  it("rejects the right host with the wrong database", () => {
+    expect(() => assertConfirmedTarget(target, "db.example.render.com/voteapp_staging")).toThrow(
+      /does not match/
+    );
+  });
+});
+
+describe("candidate identity fingerprints", () => {
+  const local = { candidate_id: "c1", display_name: "jane doe", state: "CA" };
+
+  it("passes when the target's uuid names the same person", () => {
+    expect(diffCandidateFingerprints([local], [{ ...local }])).toEqual([]);
+  });
+
+  it("flags a uuid that names a different person on the target", () => {
+    // FK and uniqueness checks cannot catch this: the uuid exists, so records
+    // would be filed under the wrong candidate and the tag remap would
+    // faithfully follow them there.
+    const conflicts = diffCandidateFingerprints(
+      [local],
+      [{ candidate_id: "c1", display_name: "john smith", state: "CA" }]
+    );
+    expect(conflicts).toHaveLength(1);
+    expect(conflicts[0]!.source).toBe("jane doe (CA)");
+    expect(conflicts[0]!.target).toBe("john smith (CA)");
+  });
+
+  it("flags a same-name candidate in a different state", () => {
+    expect(
+      diffCandidateFingerprints([local], [{ ...local, state: "TX" }])
+    ).toHaveLength(1);
+  });
+
+  it("leaves absent candidates to the missing-parent check", () => {
+    expect(diffCandidateFingerprints([local], [])).toEqual([]);
+  });
+});
+
+describe("findIdentityKeyMismatches", () => {
+  const buildKey = (input: { description: string; sourceUrl: string; eventDate: string }) =>
+    `key:${input.description}|${input.sourceUrl}|${input.eventDate}`;
+
+  const row = {
+    candidate_id: "c1",
+    record_identity_key: "key:desc|https://x|2026-01-01",
+    description: "desc",
+    source_url: "https://x",
+    event_date: "2026-01-01",
+    origin: null,
+    origin_run_id: null,
+  };
+
+  it("accepts a row whose stored key matches its own content", () => {
+    expect(findIdentityKeyMismatches([row], buildKey)).toEqual([]);
+  });
+
+  it("flags a row edited without recomputing its key", () => {
+    const edited = { ...row, description: "edited after the fact" };
+    const mismatches = findIdentityKeyMismatches([edited], buildKey);
+    expect(mismatches).toHaveLength(1);
+    expect(mismatches[0]!.stored).not.toBe(mismatches[0]!.computed);
+  });
+});
+
+describe("assertTransportableArrays", () => {
+  const label = {
+    source: "CALIFORNIA_SOS",
+    committee_id: "1",
+    cycle: 2026,
+    committee_name: "n",
+    label: "l",
+    source_urls: ["https://a"],
+    researched_at_utc: "2026-01-01 00:00:00.000000",
+    source_urls_ndims: 1,
+    source_urls_lower: 1,
+  };
+
+  it("accepts a one-dimensional, one-based array", () => {
+    expect(() => assertTransportableArrays([label])).not.toThrow();
+  });
+
+  it("refuses a multidimensional array rather than silently flattening it", () => {
+    expect(() => assertTransportableArrays([{ ...label, source_urls_ndims: 2 }])).toThrow(
+      /one-dimensional/
+    );
+  });
+
+  it("refuses a non-one-based array", () => {
+    expect(() => assertTransportableArrays([{ ...label, source_urls_lower: 0 }])).toThrow(
+      /one-based/
+    );
+  });
+});
+
+describe("countUnresolvedTags", () => {
+  it("sums unresolved tags across batches so none can be silently dropped", async () => {
+    const client = {
+      query: async () => ({ rows: [{ unresolved: 1 }], rowCount: 1 }),
+    };
+    const tags = Array.from({ length: 3 }, (_, index) => ({
+      candidate_id: `c${index}`,
+      record_identity_key: "k",
+      research_area_slug: "s",
+      stance: null,
+    }));
+    // One batch (default size 500) reporting 1 unresolved row.
+    expect(await countUnresolvedTags(client, tags)).toBe(1);
   });
 });

@@ -57,10 +57,23 @@ links to preserve.)
 
 ### Promoting researched data into a populated database
 
-`npm run research:promote` copies manually researched rows from the local
-database to another database, inserting what is missing and updating what
-changed. It never deletes, never touches user/account tables, and is safe to
-re-run — a second consecutive run writes nothing.
+`npm run research:promote` copies researched rows from the local database to
+another database, inserting what is missing and updating what changed. It never
+deletes, never touches user/account tables, and is safe to re-run — a second
+consecutive run writes nothing.
+
+**Scope and ownership — read this before the first run.** It compares *every*
+row of the three tables below, not only manually researched ones, and for any
+row present on both sides the local version wins. There is no provenance filter
+because one is not available: 19,269 of 19,302 local records carry a null
+`origin`, and timestamps do not identify the promotion boundary either. The
+practical consequence is that **local is authoritative for these three tables**.
+If production ever independently corrects a row that also exists locally, the
+next promotion restores the local version. Today nothing in production writes
+them — `render.yaml` runs only the read API and SSR, with the notification
+workers and cron commented out — which is what makes this safe. Review the dry
+run's `updates` counts before applying; a non-zero count against a production
+that should be a pure copy is worth understanding rather than waving through.
 
 ```bash
 cd backend
@@ -77,12 +90,20 @@ half-populated graph can never be reported as success.
 
 Notes:
 - The source must be local and the target must not be the same database.
+- `--confirm-target` takes `<host>/<database>`, not the host alone — two
+  databases commonly share a host.
 - Refuses to run if `ALLOW_REMOTE_DB_WRITES` is set — that variable relaxes the
   manual-writer localhost guard and must not silently loosen this command.
 - Both databases must have applied the same migration files (rows for renamed
-  migrations that no longer exist on disk are ignored).
+  migrations that no longer exist on disk are ignored). It never runs
+  migrations; run `db:migrate` on the lagging database first.
 - Tags are transported by natural key, never by `candidate_record_id`, so they
   attach correctly even when the same record holds a different id on the target.
+- A candidate uuid that names a *different person* on the target aborts the run:
+  uuid existence is not identity, and the fingerprint (name + state) is checked.
+- Dates and timestamps are rendered with explicit formats, so two servers with
+  different `DateStyle` or `TimeZone` settings cannot produce a false diff or
+  write each other's dates back swapped.
 - Never deleting means the target may be a superset; target-only rows are
   reported, not removed.
 3. **Cloudflare Worker**: `cd infra/cloudflare && npm ci && npm run deploy`

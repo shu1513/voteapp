@@ -6,6 +6,7 @@ import { parse as parsePostgresConnectionString } from "pg-connection-string";
 import { Pool, type PoolClient } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
+import { buildCandidateRecordIdentityKey } from "../pipeline/candidates/candidateRecordStore.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 
 // Promotes manually researched rows from the local database to another
@@ -65,10 +66,19 @@ export function parseEndpoint(label: string, databaseUrl: string): EndpointFinge
     throw new Error(`${label} does not name a database`);
   }
 
+  // pg parses the port with parseInt, so "5432.5" would connect on 5432 while
+  // fingerprinting as 5432.5 — the fingerprint must describe the connection
+  // that will actually be made, so reject anything that is not an integer.
+  // An omitted port comes back as "" from pg-connection-string, not null.
+  const suppliedPort = String(parsed.port ?? "").trim();
+  const rawPort = suppliedPort.length === 0 ? "5432" : suppliedPort;
+  if (!/^\d+$/.test(rawPort)) {
+    throw new Error(`${label} has a non-integer port "${rawPort}"`);
+  }
+
   return {
     host,
-    // libpq's default; pg uses the same when the URL omits a port.
-    port: Number(parsed.port ?? 5432) || 5432,
+    port: Number(rawPort),
     database,
     user: String(parsed.user ?? "").trim(),
   };
@@ -121,11 +131,13 @@ export function assertPromotionEndpoints(input: {
     );
   }
 
-  if (
-    source.host === target.host &&
-    source.port === target.port &&
-    source.database === target.database
-  ) {
+  // localhost and 127.0.0.1 name the same server, so compare on a normalised
+  // host: without this, promoting localhost/voteapp into 127.0.0.1/voteapp
+  // would read and write the same database and could write stale rows back.
+  const sameServer = (a: EndpointFingerprint, b: EndpointFingerprint): boolean =>
+    (isLocalHost(a.host) && isLocalHost(b.host) ? true : a.host === b.host) && a.port === b.port;
+
+  if (sameServer(source, target) && source.database === target.database) {
     throw new Error(
       `Refusing to promote a database into itself (${describeEndpoint(source)}).`
     );
@@ -207,12 +219,16 @@ export function sameStringArray(a: readonly string[] | null, b: readonly string[
 // Projections
 //
 // The same query runs against both databases, so source and target rows are
-// directly comparable. Two normalisations matter:
-//   - event_date is cast to text, so the driver's Date handling cannot make an
-//     identical date look changed.
-//   - researched_at is rendered AT TIME ZONE 'UTC', so two servers in
-//     different session timezones do not report a false diff. (Verified: the
-//     same row renders identically under PGTZ=Asia/Tokyo.)
+// directly comparable. Every date and timestamp is rendered with an explicit
+// to_char format rather than ::text, because ::text honours the session's
+// DateStyle: under DateStyle='SQL, DMY' the same row projects as "08/06/2022"
+// instead of "2022-06-08" (verified). Two servers with different DateStyle
+// settings would then see a false diff AND write each other's dates back with
+// the day and month swapped. to_char is style-independent.
+//
+// researched_at is additionally rendered AT TIME ZONE 'UTC' so differing
+// session timezones cannot produce a false diff either; microsecond precision
+// is preserved by the .US format.
 // ---------------------------------------------------------------------------
 
 export type PromotionClient = {
@@ -244,7 +260,31 @@ export type LabelRow = {
   label: string;
   source_urls: string[];
   researched_at_utc: string;
+  /** Shape guards — see assertTransportableArrays. */
+  source_urls_ndims: number | null;
+  source_urls_lower: number | null;
 };
+
+/**
+ * source_urls is transported as JSON, which can only faithfully carry a
+ * one-dimensional, one-based array. Postgres permits multidimensional and
+ * non-one-based arrays, and JSON round-tripping one would silently flatten it
+ * into a single text element that looks like JSON. No such row exists today
+ * (verified: 0 of 92), so this is a guard against a future writer rather than
+ * a live defect — but it aborts instead of corrupting.
+ */
+export function assertTransportableArrays(rows: readonly LabelRow[]): void {
+  const bad = rows.filter(
+    (row) => (row.source_urls_ndims ?? 1) !== 1 || (row.source_urls_lower ?? 1) !== 1
+  );
+  if (bad.length > 0) {
+    const shown = bad.slice(0, 5).map((row) => labelKey(row)).join(", ");
+    throw new Error(
+      `Refusing to promote ${bad.length} finance_committee_labels row(s) whose source_urls is not a ` +
+        `one-dimensional, one-based array; JSON transport would silently flatten it. Keys: ${shown}`
+    );
+  }
+}
 
 export const RECORD_PROJECTION_SQL = `
   SELECT
@@ -252,7 +292,7 @@ export const RECORD_PROJECTION_SQL = `
     record_identity_key,
     description,
     source_url,
-    event_date::text AS event_date,
+    to_char(event_date, 'YYYY-MM-DD') AS event_date,
     origin,
     origin_run_id
   FROM public.candidate_records
@@ -281,7 +321,9 @@ export const LABEL_PROJECTION_SQL = `
     committee_name,
     label,
     source_urls,
-    (researched_at AT TIME ZONE 'UTC')::text AS researched_at_utc
+    to_char(researched_at AT TIME ZONE 'UTC', 'YYYY-MM-DD HH24:MI:SS.US') AS researched_at_utc,
+    array_ndims(source_urls) AS source_urls_ndims,
+    array_lower(source_urls, 1) AS source_urls_lower
   FROM public.finance_committee_labels
 `;
 
@@ -424,6 +466,67 @@ export function chunk<T>(rows: readonly T[], size = UPSERT_BATCH_SIZE): T[][] {
   return chunks;
 }
 
+/**
+ * Counts transported tags whose parents do not resolve on the target.
+ *
+ * UPSERT_TAGS_SQL resolves parents with inner joins, so an unresolved tag is
+ * silently dropped rather than erroring — the run would commit and report
+ * success having written fewer tags than it carried. Preflight cannot rule
+ * this out on its own either, because a slug can be renamed between preflight
+ * and apply. Running this INSIDE the apply transaction closes that window.
+ */
+export const UNRESOLVED_TAGS_SQL = `
+  SELECT count(*)::int AS unresolved
+  FROM jsonb_to_recordset($1::jsonb) AS s(
+    candidate_id uuid, record_identity_key text, research_area_slug text, stance text)
+  LEFT JOIN public.candidate_records AS r
+    ON r.candidate_id = s.candidate_id
+   AND r.record_identity_key = s.record_identity_key
+  LEFT JOIN public.research_areas AS a ON a.slug = s.research_area_slug
+  WHERE r.id IS NULL OR a.id IS NULL
+`;
+
+export async function countUnresolvedTags(
+  client: PromotionClient,
+  rows: readonly TagRow[]
+): Promise<number> {
+  let unresolved = 0;
+  for (const batch of chunk(rows)) {
+    const result = await client.query(UNRESOLVED_TAGS_SQL, [JSON.stringify(batch)]);
+    unresolved += (result.rows as { unresolved: number }[])[0]?.unresolved ?? 0;
+  }
+  return unresolved;
+}
+
+/**
+ * record_identity_key is derived from the normalised description, URL and
+ * date. A row whose stored key does not match its own content means the source
+ * was edited without going through the writer; promoting it would carry a
+ * stale key, and a later sanctioned write would then insert a second record
+ * for the same fact that never-delete semantics would keep forever.
+ */
+export function findIdentityKeyMismatches(
+  rows: readonly RecordRow[],
+  buildKey: (input: { description: string; sourceUrl: string; eventDate: string }) => string
+): { candidateId: string; stored: string; computed: string }[] {
+  const mismatches: { candidateId: string; stored: string; computed: string }[] = [];
+  for (const row of rows) {
+    const computed = buildKey({
+      description: row.description,
+      sourceUrl: row.source_url,
+      eventDate: row.event_date,
+    });
+    if (computed !== row.record_identity_key) {
+      mismatches.push({
+        candidateId: row.candidate_id,
+        stored: row.record_identity_key,
+        computed,
+      });
+    }
+  }
+  return mismatches;
+}
+
 /** Runs one upsert statement over the rows in batches. Returns rows written. */
 export async function upsertBatched(
   client: PromotionClient,
@@ -468,6 +571,52 @@ export async function findUnresolvableCandidates(
     [candidateIds]
   );
   return (result.rows as { candidate_id: string }[]).map((row) => row.candidate_id);
+}
+
+export const CANDIDATE_FINGERPRINT_SQL = `
+  SELECT
+    id::text AS candidate_id,
+    lower(btrim(coalesce(display_name, ''))) AS display_name,
+    upper(btrim(coalesce(state, ''))) AS state
+  FROM public.candidates
+  WHERE id = ANY($1::uuid[])
+`;
+
+export type CandidateFingerprint = { candidate_id: string; display_name: string; state: string };
+
+/**
+ * A shared UUID is not proof of shared identity. Both databases descend from
+ * one snapshot today, but a UUID that exists on the target while naming a
+ * different person would pass every FK and uniqueness check and quietly file
+ * this candidate's records — and, through the tag remap, their tags — under
+ * someone else. Nothing downstream could detect that.
+ *
+ * So compare a cheap identity fingerprint (normalised display name + state)
+ * and refuse on disagreement rather than trusting the id.
+ */
+export function diffCandidateFingerprints(
+  sourceRows: readonly CandidateFingerprint[],
+  targetRows: readonly CandidateFingerprint[]
+): { candidateId: string; source: string; target: string }[] {
+  const targetById = new Map(targetRows.map((row) => [row.candidate_id, row]));
+  const conflicts: { candidateId: string; source: string; target: string }[] = [];
+  for (const sourceRow of sourceRows) {
+    const targetRow = targetById.get(sourceRow.candidate_id);
+    if (targetRow === undefined) {
+      continue; // absence is findUnresolvableCandidates' job, not this one
+    }
+    if (
+      sourceRow.display_name !== targetRow.display_name ||
+      sourceRow.state !== targetRow.state
+    ) {
+      conflicts.push({
+        candidateId: sourceRow.candidate_id,
+        source: `${sourceRow.display_name} (${sourceRow.state})`,
+        target: `${targetRow.display_name} (${targetRow.state})`,
+      });
+    }
+  }
+  return conflicts;
 }
 
 export async function findUnresolvableAreaSlugs(
@@ -548,17 +697,25 @@ export function diffMigrationSets(input: {
  * can never commit to a database nobody looked at. Compared against the parsed
  * effective host, not the raw URL text.
  */
+export function confirmationTokenFor(target: EndpointFingerprint): string {
+  return `${target.host}/${target.database}`;
+}
+
 export function assertConfirmedTarget(target: EndpointFingerprint, confirmTarget: string): void {
+  // host/database, not host alone: two databases commonly share a host, and
+  // confirming only the host would let a promotion land in the wrong one while
+  // the operator believed they had named it.
+  const expected = confirmationTokenFor(target);
   const supplied = confirmTarget.trim().toLowerCase();
   if (supplied.length === 0) {
     throw new Error(
-      `--apply requires --confirm-target <host>. Target is ${describeEndpoint(target)}; ` +
-        `re-run with --confirm-target ${target.host}`
+      `--apply requires --confirm-target <host>/<database>. Target is ${describeEndpoint(target)}; ` +
+        `re-run with --confirm-target ${expected}`
     );
   }
-  if (supplied !== target.host) {
+  if (supplied !== expected) {
     throw new Error(
-      `--confirm-target "${supplied}" does not match the target host "${target.host}". ` +
+      `--confirm-target "${supplied}" does not match the target "${expected}". ` +
         "Refusing to write to a database the operator did not name."
     );
   }
@@ -671,10 +828,24 @@ async function main(): Promise<void> {
     // are the target's business.
     const pendingRecords = [...recordPlan.inserts, ...recordPlan.updates];
     const pendingTags = [...tagPlan.inserts, ...tagPlan.updates];
-    const missingCandidates = await findUnresolvableCandidates(
-      target,
-      [...new Set(pendingRecords.map((row) => row.candidate_id))]
+    // A stored key that disagrees with its own content means the source row
+    // was edited outside the writer; promoting it would carry a stale key.
+    const keyMismatches = findIdentityKeyMismatches(pendingRecords, (input) =>
+      buildCandidateRecordIdentityKey(input)
     );
+    if (keyMismatches.length > 0) {
+      throw new Error(
+        `Refusing to promote ${keyMismatches.length} record(s) whose stored record_identity_key does ` +
+          "not match their own description/url/date. Re-run the sanctioned writer for those rows first. " +
+          `First: candidate ${keyMismatches[0]!.candidateId}, stored ${keyMismatches[0]!.stored}, ` +
+          `computed ${keyMismatches[0]!.computed}`
+      );
+    }
+
+    assertTransportableArrays([...labelPlan.inserts, ...labelPlan.updates]);
+
+    const pendingCandidateIds = [...new Set(pendingRecords.map((row) => row.candidate_id))];
+    const missingCandidates = await findUnresolvableCandidates(target, pendingCandidateIds);
     const missingSlugs = await findUnresolvableAreaSlugs(
       target,
       [...new Set(pendingTags.map((row) => row.research_area_slug))]
@@ -685,6 +856,24 @@ async function main(): Promise<void> {
           `Unresolvable candidates: ${missingCandidates.slice(0, 10).join(", ") || "none"}. ` +
           `Unresolvable research areas: ${missingSlugs.slice(0, 10).join(", ") || "none"}. ` +
           "Promote or repair those first; this tool never invents a parent."
+      );
+    }
+
+    // A shared UUID is not shared identity — see diffCandidateFingerprints.
+    const [sourceFingerprints, targetFingerprints] = await Promise.all([
+      source.query(CANDIDATE_FINGERPRINT_SQL, [pendingCandidateIds]),
+      target.query(CANDIDATE_FINGERPRINT_SQL, [pendingCandidateIds]),
+    ]);
+    const identityConflicts = diffCandidateFingerprints(
+      sourceFingerprints.rows as CandidateFingerprint[],
+      targetFingerprints.rows as CandidateFingerprint[]
+    );
+    if (identityConflicts.length > 0) {
+      const first = identityConflicts[0]!;
+      throw new Error(
+        `Refusing to promote: ${identityConflicts.length} candidate id(s) name a different person on ` +
+          `the target. Promoting would file records under the wrong candidate. First: ${first.candidateId} ` +
+          `is "${first.source}" locally but "${first.target}" on the target.`
       );
     }
 
@@ -722,6 +911,19 @@ async function main(): Promise<void> {
         // Records before tags: a tag resolves its parent by natural key, so
         // the record must already exist on the target.
         report.tables.candidate_records!.written = await upsertBatched(wrapped, UPSERT_RECORDS_SQL, pendingRecords);
+
+        // Inside the transaction, after the records exist: the tag upsert uses
+        // inner joins, so an unresolved tag would be dropped and the run would
+        // still commit and report success. Preflight alone cannot rule this
+        // out because a slug can be renamed in between.
+        const unresolvedTags = await countUnresolvedTags(wrapped, pendingTags);
+        if (unresolvedTags > 0) {
+          throw new Error(
+            `Refusing to commit: ${unresolvedTags} tag(s) do not resolve to a target record and ` +
+              "research area, and would be silently dropped by the insert."
+          );
+        }
+
         report.tables.candidate_record_area_tags!.written = await upsertBatched(wrapped, UPSERT_TAGS_SQL, pendingTags);
         report.tables.finance_committee_labels!.written = await upsertBatched(
           wrapped,
@@ -730,7 +932,10 @@ async function main(): Promise<void> {
         );
         await client.query("COMMIT");
       } catch (error) {
-        await client.query("ROLLBACK");
+        // Best-effort rollback: if the connection is already gone, ROLLBACK
+        // throws too, and letting that propagate would replace the error that
+        // actually explains the failure.
+        await client.query("ROLLBACK").catch(() => undefined);
         throw error;
       } finally {
         client.release();
@@ -746,8 +951,8 @@ async function main(): Promise<void> {
       console.log("\nDry run only — nothing was written. Re-run with --apply --confirm-target <host> to commit.");
     }
   } finally {
-    await sourcePool.end();
-    await targetPool.end();
+    // allSettled: a failure closing one pool must not leave the other open.
+    await Promise.allSettled([sourcePool.end(), targetPool.end()]);
   }
 }
 
