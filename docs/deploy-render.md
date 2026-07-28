@@ -19,6 +19,18 @@ the platform-agnostic reference; this file is the click-by-click order.
 
 ## Order
 
+This is the FROM-SCRATCH order (first deploy on a fresh Render account).
+For a DOMAIN CUTOVER on an existing deploy, invert it: get the edge and
+email ready on the new domain first — DNS records, Worker routes, SES
+identity + DKIM verified, contact@ mailbox — and only then apply the
+Render env changes (Blueprint sync). Syncing Render first repoints CORS,
+auth links, sender addresses, and the sitemap at a domain that doesn't
+serve yet: browser writes start failing CORS on the old origin and email
+links lead nowhere. (2026-07 cutover note: impactperdollar.com was
+dropped without a redirect by explicit operator decision — the API had
+never worked in production there, so there were no real users or live
+links to preserve.)
+
 1. **Render blueprint**: New → Blueprint → select the GitHub repo → Render
    reads render.yaml. Enter the four `sync: false` secrets: the send-only
    SES IAM key pair, `EDGE_SHARED_SECRET` (required in production —
@@ -38,15 +50,15 @@ the platform-agnostic reference; this file is the click-by-click order.
      (`elections:offices:seed`, `db:seed:research-areas`,
      `db:seed:office-research-areas`), `loadAllDistricts`,
      `competitiveness:import:verified` — see DB_DEPLOYMENT.md.
-3. **Cloudflare Worker**: create worker `voteapp-router` with
-   router-worker.js, set vars `API_ORIGIN` / `SSR_ORIGIN` to the two
-   `*.onrender.com` hosts, add routes `electionssimplified.com/*` and
-   `www.electionssimplified.com/*` (both DNS records proxied/orange-cloud; the
-   record target can be a placeholder like `192.0.2.1` — the Worker
-   intercepts before origin). Code updates after that first creation:
-   `cd infra/cloudflare && npm ci && npm run deploy` (Node 22+, one-time
-   `npx wrangler login`; wrangler is pinned in package.json and
-   wrangler.toml's `keep_vars` protects the dashboard vars).
+3. **Cloudflare Worker**: `cd infra/cloudflare && npm ci && npm run deploy`
+   (Node 22+, one-time `npx wrangler login` against the account that owns
+   the zone). The deploy creates/updates `voteapp-router` AND its routes —
+   routes are declared in wrangler.toml, not the dashboard. Then set vars
+   `API_ORIGIN` / `SSR_ORIGIN` to the two `*.onrender.com` hosts (dashboard
+   → Worker → Settings; wrangler.toml's `keep_vars` protects them on later
+   deploys) and add both DNS records proxied/orange-cloud (the record
+   target can be a placeholder like `192.0.2.1` — the Worker intercepts
+   before origin).
 4. **contact@ mailbox**: Cloudflare Email Routing →
    `contact@electionssimplified.com` → forward to the operator inbox.
    Launch-blocking: the legal docs promise this address.

@@ -7,8 +7,8 @@
 # keep_vars is REQUIRED: API_ORIGIN / SSR_ORIGIN are plain vars set in the
 # dashboard, and without keep_vars a wrangler deploy deletes any var not
 # declared in this file. (EDGE_SHARED_SECRET is a secret; secrets always
-# survive deploys.) Routes are likewise managed in the dashboard and are
-# left untouched because none are declared here.
+# survive deploys.) Routes ARE declared here (see `routes` below) and are
+# managed by deploys as of the electionssimplified.com cutover.
 name = "voteapp-router"
 main = "router-worker.js"
 compatibility_date = "2026-07-01"
