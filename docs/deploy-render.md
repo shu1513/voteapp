@@ -50,6 +50,14 @@ links to preserve.)
      (`elections:offices:seed`, `db:seed:research-areas`,
      `db:seed:office-research-areas`), `loadAllDistricts`,
      `competitiveness:import:verified` — see DB_DEPLOYMENT.md.
+   - **The full dump above targets an EMPTY database only.** It carries no
+     `--clean`, so it does not drop anything: run against a populated database
+     it errors on every existing object and duplicate key and can leave a
+     half-loaded mess. Adding `--clean` would "work" but drops and recreates
+     every table, destroying any user data (accounts, sessions, follows, saved
+     addresses). Either way it is the wrong tool once the database is not
+     empty — use the additive promotion in "Promoting researched data into a
+     populated database" below.
 3. **Cloudflare Worker**: `cd infra/cloudflare && npm ci && npm run deploy`
    (Node 22+, one-time `npx wrangler login` against the account that owns
    the zone). The deploy creates/updates `voteapp-router` AND its routes —
@@ -71,6 +79,60 @@ links to preserve.)
    - `curl -sA GPTBot https://electionssimplified.com/elections/<real-id>` has
      candidate names in raw HTML,
    - register with a personal (SES-verified) address end-to-end.
+
+### Promoting researched data into a populated database
+
+`npm run research:promote` copies researched rows from the local database to
+another database, inserting what is missing and updating what changed. It never
+deletes, never touches user/account tables, and is safe to re-run — a second
+consecutive run writes nothing.
+
+**Scope and ownership — read this before the first run.** It compares *every*
+row of the three tables below, not only manually researched ones, and for any
+row present on both sides the local version wins. There is no provenance filter
+because one is not available: 19,269 of 19,302 local records carry a null
+`origin`, and timestamps do not identify the promotion boundary either. The
+practical consequence is that **local is authoritative for these three tables**.
+If production ever independently corrects a row that also exists locally, the
+next promotion restores the local version. Today nothing in production writes
+them — `render.yaml` runs only the read API and SSR, with the notification
+workers and cron commented out — which is what makes this safe. Review the dry
+run's `updates` counts before applying; a non-zero count against a production
+that should be a pure copy is worth understanding rather than waving through.
+
+```bash
+cd backend
+export PROMOTION_TARGET_DATABASE_URL='postgres://…'   # env only, never a flag
+npm run research:promote                               # dry run: reports, writes nothing
+npm run research:promote:apply -- --confirm-target <host>:<port>/<database>
+```
+
+Covers `candidate_records`, `candidate_record_area_tags` and
+`finance_committee_labels`. `candidates` and `research_areas` are read-only
+dependencies: a record whose candidate is missing on the target, or a tag whose
+research-area slug is missing, aborts the run rather than being skipped, so a
+half-populated graph can never be reported as success.
+
+Notes:
+- The source must be local and the target must not be the same database.
+- `--confirm-target` takes `<host>:<port>/<database>`, not the host alone — one
+  host can serve several databases, and a pooler and a direct connection differ
+  only by port. The error message prints the exact value to pass.
+- Refuses to run if `ALLOW_REMOTE_DB_WRITES` is set — that variable relaxes the
+  manual-writer localhost guard and must not silently loosen this command.
+- Both databases must have applied the same migration files (rows for renamed
+  migrations that no longer exist on disk are ignored). It never runs
+  migrations; run `db:migrate` on the lagging database first.
+- Tags are transported by natural key, never by `candidate_record_id`, so they
+  attach correctly even when the same record holds a different id on the target.
+- A candidate uuid that names a *different person* on the target aborts the run:
+  uuid existence is not identity, and the fingerprint (name + state) is checked.
+- Dates and timestamps are rendered with explicit formats, so two servers with
+  different `DateStyle` or `TimeZone` settings cannot produce a false diff or
+  write each other's dates back swapped.
+- Never deleting means the target may be a superset; target-only rows are
+  reported, not removed.
+
 
 ## Free-tier launch state (2026-07-10)
 
