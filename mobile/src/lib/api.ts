@@ -12,7 +12,7 @@ const DEFAULT_TIMEOUT_MS = 75_000;
  *
  * EXPO_PUBLIC_API_URL examples:
  *   dev simulator: http://127.0.0.1:3001
- *   production:    https://impactperdollar.com
+ *   production:    https://electionssimplified.com
  */
 export function initApi(): void {
   const baseUrl = process.env.EXPO_PUBLIC_API_URL ?? "";

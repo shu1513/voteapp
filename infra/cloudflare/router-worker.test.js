@@ -80,21 +80,21 @@ describe("isApiPath", () => {
 
 describe("fetch handler", () => {
   it("301s www to the apex even with no origin config", async () => {
-    const response = await worker.fetch(new Request("https://www.impactperdollar.com/ballot?d=1"), {});
+    const response = await worker.fetch(new Request("https://www.electionssimplified.com/ballot?d=1"), {});
     assert.equal(response.status, 301);
-    assert.equal(response.headers.get("location"), "https://impactperdollar.com/ballot?d=1");
+    assert.equal(response.headers.get("location"), "https://electionssimplified.com/ballot?d=1");
   });
 
   it("503s when either origin var is missing", async () => {
     for (const env of [{}, { API_ORIGIN: ENV.API_ORIGIN }, { SSR_ORIGIN: ENV.SSR_ORIGIN }]) {
-      const response = await worker.fetch(new Request("https://impactperdollar.com/"), env);
+      const response = await worker.fetch(new Request("https://electionssimplified.com/"), env);
       assert.equal(response.status, 503);
     }
   });
 
   it("503s on malformed origins instead of proxying", async () => {
     for (const bad of ["   ", "https://api.example.com", "foo..bar", "-bad.example"]) {
-      const response = await worker.fetch(new Request("https://impactperdollar.com/"), {
+      const response = await worker.fetch(new Request("https://electionssimplified.com/"), {
         ...ENV,
         SSR_ORIGIN: bad,
       });
@@ -106,8 +106,8 @@ describe("fetch handler", () => {
   });
 
   it("503s when an origin points back at the apex, www, or dotted self", async () => {
-    for (const self of ["impactperdollar.com", "www.impactperdollar.com", "impactperdollar.com."]) {
-      const response = await worker.fetch(new Request("https://impactperdollar.com/"), {
+    for (const self of ["electionssimplified.com", "www.electionssimplified.com", "electionssimplified.com."]) {
+      const response = await worker.fetch(new Request("https://electionssimplified.com/"), {
         ...ENV,
         SSR_ORIGIN: self,
       });
@@ -122,9 +122,9 @@ describe("fetch handler", () => {
   it("proxies API paths to the API origin and the rest to SSR", async () => {
     const calls = stubFetch();
 
-    await worker.fetch(new Request("https://impactperdollar.com/api/elections/x?y=1"), ENV);
-    await worker.fetch(new Request("https://impactperdollar.com/sitemap.xml"), ENV);
-    await worker.fetch(new Request("https://impactperdollar.com/elections/x"), ENV);
+    await worker.fetch(new Request("https://electionssimplified.com/api/elections/x?y=1"), ENV);
+    await worker.fetch(new Request("https://electionssimplified.com/sitemap.xml"), ENV);
+    await worker.fetch(new Request("https://electionssimplified.com/elections/x"), ENV);
 
     assert.deepEqual(
       calls.map((request) => new URL(request.url).hostname),
@@ -137,7 +137,7 @@ describe("fetch handler", () => {
     const calls = stubFetch();
 
     await worker.fetch(
-      new Request("https://impactperdollar.com/api/auth/login", {
+      new Request("https://electionssimplified.com/api/auth/login", {
         method: "POST",
         headers: { "x-edge-secret": "attacker-guess" },
         body: "{}",
@@ -145,7 +145,7 @@ describe("fetch handler", () => {
       { ...ENV, EDGE_SHARED_SECRET: "real-secret-value" }
     );
     await worker.fetch(
-      new Request("https://impactperdollar.com/api/elections", {
+      new Request("https://electionssimplified.com/api/elections", {
         headers: { "x-edge-secret": "attacker-guess" },
       }),
       ENV
@@ -163,21 +163,21 @@ describe("fetch handler", () => {
     // Real edge request: Cloudflare stamped cf-connecting-ip, the client
     // tried to smuggle its own copy of the custom header.
     await worker.fetch(
-      new Request("https://impactperdollar.com/api/elections", {
+      new Request("https://electionssimplified.com/api/elections", {
         headers: { "cf-connecting-ip": "203.0.113.9", [CLIENT_IP_HEADER]: "198.51.100.99" },
       }),
       ENV
     );
     // SSR-bound request: stamped there too so loaders can relay it.
     await worker.fetch(
-      new Request("https://impactperdollar.com/elections/x", {
+      new Request("https://electionssimplified.com/elections/x", {
         headers: { "cf-connecting-ip": "203.0.113.9" },
       }),
       ENV
     );
     // No CF-Connecting-IP (e.g. tests): the spoofed copy must still die.
     await worker.fetch(
-      new Request("https://impactperdollar.com/api/elections", {
+      new Request("https://electionssimplified.com/api/elections", {
         headers: { [CLIENT_IP_HEADER]: "198.51.100.99" },
       }),
       ENV
@@ -192,7 +192,7 @@ describe("fetch handler", () => {
     const calls = stubFetch();
 
     await worker.fetch(
-      new Request("https://impactperdollar.com/api/auth/login", {
+      new Request("https://electionssimplified.com/api/auth/login", {
         method: "POST",
         headers: { "content-type": "application/json", "cf-connecting-ip": "203.0.113.9" },
         body: "{}",
@@ -229,7 +229,7 @@ describe("security headers", () => {
     globalThis.fetch = async () =>
       new Response("upstream body", { status: 201, headers: { "x-upstream": "kept" } });
 
-    const response = await worker.fetch(new Request("https://impactperdollar.com/api/elections"), ENV);
+    const response = await worker.fetch(new Request("https://electionssimplified.com/api/elections"), ENV);
 
     assertSecurityHeaders(response);
     assert.equal(response.status, 201);
@@ -241,18 +241,18 @@ describe("security headers", () => {
     globalThis.fetch = async () =>
       new Response("ok", { headers: { "x-frame-options": "ALLOWALL" } });
 
-    const response = await worker.fetch(new Request("https://impactperdollar.com/"), ENV);
+    const response = await worker.fetch(new Request("https://electionssimplified.com/"), ENV);
 
     assert.equal(response.headers.get("x-frame-options"), "DENY");
   });
 
   it("stamps the www redirect and misconfiguration responses", async () => {
-    const redirect = await worker.fetch(new Request("https://www.impactperdollar.com/ballot"), {});
+    const redirect = await worker.fetch(new Request("https://www.electionssimplified.com/ballot"), {});
     assertSecurityHeaders(redirect);
     assert.equal(redirect.status, 301);
-    assert.equal(redirect.headers.get("location"), "https://impactperdollar.com/ballot");
+    assert.equal(redirect.headers.get("location"), "https://electionssimplified.com/ballot");
 
-    const misconfigured = await worker.fetch(new Request("https://impactperdollar.com/"), {});
+    const misconfigured = await worker.fetch(new Request("https://electionssimplified.com/"), {});
     assertSecurityHeaders(misconfigured);
     assert.equal(misconfigured.status, 503);
   });
@@ -271,7 +271,7 @@ describe("security headers", () => {
       "/reset-password///",
     ]) {
       const response = await worker.fetch(
-        new Request(`https://impactperdollar.com${path}?token=secret`),
+        new Request(`https://electionssimplified.com${path}?token=secret`),
         ENV
       );
       assert.equal(response.headers.get("referrer-policy"), "no-referrer", path);
@@ -281,17 +281,17 @@ describe("security headers", () => {
     // would make its HTML form POST send "Origin: null", which the API's
     // CORS allowlist rejects.
     for (const path of ["/", "/api/email/unsubscribe", "/login"]) {
-      const response = await worker.fetch(new Request(`https://impactperdollar.com${path}`), ENV);
+      const response = await worker.fetch(new Request(`https://electionssimplified.com${path}`), ENV);
       assert.equal(response.headers.get("referrer-policy"), "strict-origin-when-cross-origin", path);
     }
   });
 
   it("withSecurityHeaders copies immutable-header responses instead of mutating", () => {
-    const original = Response.redirect("https://impactperdollar.com/", 301);
+    const original = Response.redirect("https://electionssimplified.com/", 301);
     const stamped = withSecurityHeaders(original);
 
     assert.equal(stamped.headers.get("x-content-type-options"), "nosniff");
-    assert.equal(stamped.headers.get("location"), "https://impactperdollar.com/");
+    assert.equal(stamped.headers.get("location"), "https://electionssimplified.com/");
     assert.equal(original.headers.get("x-content-type-options"), null);
   });
 });

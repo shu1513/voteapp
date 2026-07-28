@@ -31,13 +31,13 @@ function createDbMock() {
 
 describe("site sitemap", () => {
   it("normalizes an absolute site origin", () => {
-    expect(normalizeSiteOrigin("https://impactperdollar.com/")).toBe("https://impactperdollar.com");
+    expect(normalizeSiteOrigin("https://electionssimplified.com/")).toBe("https://electionssimplified.com");
     expect(normalizeSiteOrigin("http://localhost:5173")).toBe("http://localhost:5173");
   });
 
   it("rejects origins with paths or unsupported protocols", () => {
-    expect(() => normalizeSiteOrigin("https://impactperdollar.com/app")).toThrow(/must not include/);
-    expect(() => normalizeSiteOrigin("ftp://impactperdollar.com")).toThrow(/http or https/);
+    expect(() => normalizeSiteOrigin("https://electionssimplified.com/app")).toThrow(/must not include/);
+    expect(() => normalizeSiteOrigin("ftp://electionssimplified.com")).toThrow(/http or https/);
     expect(() => normalizeSiteOrigin("not a url")).toThrow(/absolute http\(s\) URL/);
   });
 

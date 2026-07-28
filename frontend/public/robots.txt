@@ -17,5 +17,5 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-# Update the host if the app ships on a subdomain (e.g. app.impactperdollar.com).
-Sitemap: https://impactperdollar.com/sitemap.xml
+# Update the host if the app ships on a subdomain (e.g. app.electionssimplified.com).
+Sitemap: https://electionssimplified.com/sitemap.xml

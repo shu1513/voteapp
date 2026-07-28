@@ -2,7 +2,7 @@
 Written to match the ACTUAL data practices
 in this codebase as of July 2026 — if practices change (analytics,
 advertising, new processors, address retention), this document must change
-with them. The contact mailbox (contact@impactperdollar.com) must exist and
+with them. The contact mailbox (contact@electionssimplified.com) must exist and
 be monitored before launch. Analytics disclosure added 2026-07-05 ahead of
 adoption; once a specific analytics provider is chosen, name it in Section 3
 and confirm the "no advertising use" configuration claims hold for it.
@@ -54,7 +54,7 @@ Account data is kept while your account is active. If you delete your account, y
 
 ## 5. Your choices
 
-You can view and update your name, email address, password, districts, follows, and email preferences in account settings; every notification email includes a working unsubscribe link; and you can delete your account entirely in settings. Where analytics uses optional cookies or identifiers, you can limit it through your browser's cookie controls, and we honor opt-out mechanisms where required by applicable law. For access or deletion requests you cannot complete in the app, or questions about this policy, contact contact@impactperdollar.com. Depending on where you live, you may have additional privacy rights (such as access, correction, deletion, or portability); we honor valid requests as required by applicable law.
+You can view and update your name, email address, password, districts, follows, and email preferences in account settings; every notification email includes a working unsubscribe link; and you can delete your account entirely in settings. Where analytics uses optional cookies or identifiers, you can limit it through your browser's cookie controls, and we honor opt-out mechanisms where required by applicable law. For access or deletion requests you cannot complete in the app, or questions about this policy, contact contact@electionssimplified.com. Depending on where you live, you may have additional privacy rights (such as access, correction, deletion, or portability); we honor valid requests as required by applicable law.
 
 ## 6. Security
 
@@ -62,7 +62,7 @@ Passwords are stored using a modern memory-hard hashing algorithm; sessions use 
 
 ## 7. Children
 
-The Service is not directed to children and requires users to be at least 18. We do not knowingly collect personal information from children under 13; if you believe a child has provided us personal information, contact contact@impactperdollar.com and we will delete it.
+The Service is not directed to children and requires users to be at least 18. We do not knowingly collect personal information from children under 13; if you believe a child has provided us personal information, contact contact@electionssimplified.com and we will delete it.
 
 ## 8. Changes
 
@@ -70,4 +70,4 @@ We may update this Privacy Policy; the version and date above identify the curre
 
 ## 9. Contact
 
-Elections Simplified (operated by impactperdollar) — contact@impactperdollar.com
+Elections Simplified (operated by impactperdollar) — contact@electionssimplified.com

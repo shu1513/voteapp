@@ -274,7 +274,7 @@ describe("createApiApp", () => {
   it("serves configured dynamic sitemap XML", async () => {
     const resolveAddress = vi.fn();
     const getSitemapXml = vi.fn().mockResolvedValue(
-      '<?xml version="1.0" encoding="UTF-8"?><urlset><url><loc>https://impactperdollar.com/</loc></url></urlset>'
+      '<?xml version="1.0" encoding="UTF-8"?><urlset><url><loc>https://electionssimplified.com/</loc></url></urlset>'
     );
 
     const response = await invokeExpressApp(createApiApp({ resolveAddress, getSitemapXml }), {
@@ -286,7 +286,7 @@ describe("createApiApp", () => {
     expect(response.headers["content-type"]).toContain("application/xml");
     expect(response.headers["cache-control"]).toBe("public, max-age=3600");
     expect(response.rawBody).toContain("<urlset>");
-    expect(response.rawBody).toContain("https://impactperdollar.com/");
+    expect(response.rawBody).toContain("https://electionssimplified.com/");
     expect(response.body).toBe(response.rawBody);
     expect(getSitemapXml).toHaveBeenCalledOnce();
     expect(resolveAddress).not.toHaveBeenCalled();
