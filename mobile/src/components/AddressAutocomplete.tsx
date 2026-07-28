@@ -35,7 +35,7 @@ export function AddressAutocomplete({ value, onChange, placeholder }: AddressAut
         placeholder={placeholder}
         placeholderTextColor="#717171"
         autoComplete="street-address"
-        accessibilityLabel="Voting address"
+        accessibilityLabel="Your address"
         value={value}
         onChangeText={(text) => {
           onChange(text);

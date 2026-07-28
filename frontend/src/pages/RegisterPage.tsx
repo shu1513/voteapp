@@ -16,12 +16,17 @@ export function RegisterPage() {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  // One toggle reveals both fields: the point of "Show" is checking what you
+  // typed, and revealing only one of a pair defeats the comparison.
+  const [showPassword, setShowPassword] = useState(false);
   const [accepted, setAccepted] = useState(false);
   // The page is prerendered: text entered (or autofilled) before hydration
   // exists only in the DOM. Fold it into state or the submit drops it.
   useAdoptPreHydrationValue("register-email", setEmail);
   useAdoptPreHydrationValue("register-first-name", setFirstName);
   useAdoptPreHydrationValue("register-password", setPassword);
+  useAdoptPreHydrationValue("register-confirm-password", setConfirmPassword);
 
   const register = useMutation({
     mutationFn: () =>
@@ -46,7 +51,16 @@ export function RegisterPage() {
       }),
   });
 
-  const canSubmit = accepted && email.trim().length > 0 && password.length > 0 && !register.isPending;
+  // The mismatch message waits until both fields have input — flagging a
+  // half-typed confirmation as wrong would nag on every keystroke.
+  const passwordsMismatch =
+    password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;
+  const canSubmit =
+    accepted &&
+    email.trim().length > 0 &&
+    password.length > 0 &&
+    password === confirmPassword &&
+    !register.isPending;
 
   if (register.isSuccess) {
     return (
@@ -122,12 +136,21 @@ export function RegisterPage() {
           />
         </div>
         <div>
-          <label htmlFor="register-password" className="block text-sm font-medium text-ink">
-            Password
-          </label>
+          <div className="flex items-baseline justify-between">
+            <label htmlFor="register-password" className="block text-sm font-medium text-ink">
+              Password
+            </label>
+            <button
+              type="button"
+              onClick={() => setShowPassword((value) => !value)}
+              className="text-xs text-ink-soft underline hover:text-ink"
+            >
+              {showPassword ? "Hide password" : "Show password"}
+            </button>
+          </div>
           <input
             id="register-password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             required
             minLength={12}
             value={password}
@@ -136,6 +159,23 @@ export function RegisterPage() {
             className="mt-1 w-full rounded-md border border-line px-3 py-3 shadow-sm focus:border-ink focus:outline-none"
           />
           <p className="mt-1 text-xs text-ink-soft">At least 12 characters.</p>
+        </div>
+        <div>
+          <label htmlFor="register-confirm-password" className="block text-sm font-medium text-ink">
+            Confirm password
+          </label>
+          <input
+            id="register-confirm-password"
+            type={showPassword ? "text" : "password"}
+            required
+            value={confirmPassword}
+            onChange={(event) => setConfirmPassword(event.target.value)}
+            autoComplete="new-password"
+            className="mt-1 w-full rounded-md border border-line px-3 py-3 shadow-sm focus:border-ink focus:outline-none"
+          />
+          {passwordsMismatch ? (
+            <p className="mt-1 text-xs text-red-700">Passwords don't match.</p>
+          ) : null}
         </div>
 
         <LegalGate

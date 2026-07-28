@@ -10,7 +10,7 @@ import { ErrorNotice } from "./Status";
 type SavedBallot = BallotSummary & { matched_address?: string; address_match_count?: number };
 
 // Saves the account's home address and replaces the saved districts. Used by
-// the settings "Voting address" screen and the my-ballot empty state. The PUT
+// the settings "Your address" screen and the my-ballot empty state. The PUT
 // succeeds silently server-side, so the confirmation line here is the user's
 // only feedback — without it a save looks like nothing happened.
 

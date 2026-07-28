@@ -33,10 +33,40 @@ describe("RegisterPage clickwrap", () => {
 
     await user.type(screen.getByLabelText("Email"), "voter@example.com");
     await user.type(screen.getByLabelText("Password"), "correct horse battery staple");
+    await user.type(screen.getByLabelText("Confirm password"), "correct horse battery staple");
     expect(screen.getByRole("button", { name: "Create account" })).toBeDisabled();
 
     await user.click(screen.getByRole("checkbox"));
     expect(screen.getByRole("button", { name: "Create account" })).toBeEnabled();
+  });
+
+  it("requires the confirmation to match before Create account enables", async () => {
+    const user = userEvent.setup();
+    renderRegister();
+
+    await user.type(screen.getByLabelText("Email"), "voter@example.com");
+    await user.type(screen.getByLabelText("Password"), "correct horse battery staple");
+    await user.type(screen.getByLabelText("Confirm password"), "correct horse battery stapl");
+    await user.click(screen.getByRole("checkbox"));
+
+    expect(screen.getByText("Passwords don't match.")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Create account" })).toBeDisabled();
+
+    await user.type(screen.getByLabelText("Confirm password"), "e");
+    expect(screen.queryByText("Passwords don't match.")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Create account" })).toBeEnabled();
+  });
+
+  it("reveals both password fields with the Show password toggle", async () => {
+    const user = userEvent.setup();
+    renderRegister();
+
+    expect(screen.getByLabelText("Password")).toHaveAttribute("type", "password");
+    await user.click(screen.getByRole("button", { name: "Show password" }));
+    expect(screen.getByLabelText("Password")).toHaveAttribute("type", "text");
+    expect(screen.getByLabelText("Confirm password")).toHaveAttribute("type", "text");
+    await user.click(screen.getByRole("button", { name: "Hide password" }));
+    expect(screen.getByLabelText("Password")).toHaveAttribute("type", "password");
   });
 
   it("sends accepted_terms_version with the register payload and shows the check-email state", async () => {
@@ -53,6 +83,7 @@ describe("RegisterPage clickwrap", () => {
     await user.type(screen.getByLabelText("Email"), "voter@example.com");
     await user.type(screen.getByLabelText(/First Name/), "Val");
     await user.type(screen.getByLabelText("Password"), "correct horse battery staple");
+    await user.type(screen.getByLabelText("Confirm password"), "correct horse battery staple");
     await user.click(screen.getByRole("checkbox"));
     await user.click(screen.getByRole("button", { name: "Create account" }));
 

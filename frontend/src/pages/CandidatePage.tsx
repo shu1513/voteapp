@@ -372,7 +372,11 @@ export function CandidatePage() {
       {recordGroups.length > 0 ? (
         <section className="mt-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-lg font-semibold">Record</h2>
+            {/* "Track record", not "Record"/"Records": bare "Record" read as
+                a typo next to a list of many items, and "Records" reads as
+                documents. This is the home-page promise ("who these
+                candidates really are by their records") paid off. */}
+            <h2 className="text-lg font-semibold">Track record</h2>
             <label className="flex items-center gap-2 text-sm text-ink-soft">
               View
               <select

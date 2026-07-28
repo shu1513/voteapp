@@ -84,12 +84,13 @@ export function HomePage() {
       <div className="mx-auto max-w-2xl px-4 py-8">
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            {/* "Home address" reads as a demand for where you sleep and put
-                people off; "Voting address" names what the field is actually
-                for — the address that decides which ballot you get. Same
-                field, same data, less alarming label. */}
+            {/* "Home address" read as a demand for where you sleep, and
+                "Voting address" read as the place you go to vote. "Your
+                address" claims nothing beyond whose address it is; the
+                headline above and the privacy note below already say what
+                the field is for. */}
             <label htmlFor="address" className="block text-sm font-medium text-ink">
-              Voting address
+              Your address
             </label>
             <AddressAutocomplete
               inputId="address"

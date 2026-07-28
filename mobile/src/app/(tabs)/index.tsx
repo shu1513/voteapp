@@ -130,7 +130,7 @@ export default function HomeScreen() {
 
         <View className="mt-6 gap-4">
           <View>
-            <Text className="text-sm font-medium text-ink">Voting address</Text>
+            <Text className="text-sm font-medium text-ink">Your address</Text>
             <AddressAutocomplete
               value={address}
               onChange={setAddress}

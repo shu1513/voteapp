@@ -191,6 +191,18 @@ describe("FinanceSummaryCard", () => {
     expect(screen.queryByText(/Outside money spent opposing/)).not.toBeInTheDocument();
   });
 
+  it("hides a direction whose disclosed total is $0 with nothing behind it", () => {
+    const summary = financeSummary();
+    summary.outside_spending.oppose_total = 0;
+    summary.outside_spending.top_opposing_groups = [];
+    summary.outside_spending.top_opposing_industries = [];
+    render(<FinanceSummaryCard summary={summary} />);
+
+    // "$0 opposing this candidate" is noise, not information — the box hides.
+    expect(screen.getByText(/Outside money spent supporting/)).toBeInTheDocument();
+    expect(screen.queryByText(/Outside money spent opposing/)).not.toBeInTheDocument();
+  });
+
   it("shows a researched committee label with its source links, and nothing when unlabeled", () => {
     const summary = financeSummary();
     summary.outside_spending.top_supporting_groups = [

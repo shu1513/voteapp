@@ -277,7 +277,9 @@ export default function CandidateScreen() {
 
       {recordGroups.length > 0 ? (
         <View className="mt-6">
-          <Text className="text-lg font-semibold text-ink">Record</Text>
+          {/* "Track record", not "Record"/"Records" — same reasoning as the
+              web CandidatePage heading. */}
+          <Text className="text-lg font-semibold text-ink">Track record</Text>
           <View className="mt-2">
             <SortChips options={viewOptions} value={recordView} onChange={setRecordView} />
           </View>
