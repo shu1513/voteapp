@@ -2,7 +2,7 @@
 Version history is tracked by git; the version string below must match
 CURRENT_TERMS_VERSION in backend/src/constants/legal.ts. Bump both together
 and require renewed acceptance for material changes.
-The contact mailbox (contact@impactperdollar.com) must exist and be
+The contact mailbox (contact@electionssimplified.com) must exist and be
 monitored before launch.
 -->
 
@@ -131,13 +131,13 @@ Address and search information may reveal sensitive information about a person, 
 
 ## 15. Error reports and corrections
 
-If you believe any Elections Simplified content is inaccurate, outdated, misleading, or harmful, please report it to contact@impactperdollar.com.
+If you believe any Elections Simplified content is inaccurate, outdated, misleading, or harmful, please report it to contact@electionssimplified.com.
 
 We may review reports, update content, remove content, add warnings, or decline to make changes in our discretion. We do not guarantee correction, response, or update on any particular timeline.
 
 For urgent voting issues, contact your state or local election office directly. Do not wait for Elections Simplified to respond.
 
-**Subjects of content.** If you are a candidate, public official, or other person described in Elections Simplified content — or their authorized representative — and you believe content about you is false or misleading, email contact@impactperdollar.com with "CORRECTION" in the subject line, identifying the specific content at issue and providing the correct information with supporting sources. We prioritize review of these reports and will correct, remove, annotate, or contextualize content that we determine to be materially false, subject to the discretion described above.
+**Subjects of content.** If you are a candidate, public official, or other person described in Elections Simplified content — or their authorized representative — and you believe content about you is false or misleading, email contact@electionssimplified.com with "CORRECTION" in the subject line, identifying the specific content at issue and providing the correct information with supporting sources. We prioritize review of these reports and will correct, remove, annotate, or contextualize content that we determine to be materially false, subject to the discretion described above.
 
 ## 16. No warranty
 

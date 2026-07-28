@@ -1,5 +1,5 @@
 /**
- * Cloudflare Worker: path router for impactperdollar.com.
+ * Cloudflare Worker: path router for electionssimplified.com.
  *
  * Implements the reverse-proxy split from docs/deploy-checklist.md on
  * Cloudflare instead of a self-managed proxy: /api/* and /sitemap.xml go to
@@ -28,7 +28,7 @@
  * unvalidated "https://host" or "  " would leave the public hostname in
  * place and make the Worker fetch its own URL instead of failing.
  *
- * Route: impactperdollar.com/* and www.impactperdollar.com/* (www 301s to
+ * Route: electionssimplified.com/* and www.electionssimplified.com/* (www 301s to
  * the apex so the canonical origin matches SITE_ORIGIN and robots.txt).
  *
  * Every response — proxied, redirect, or error — is stamped with the

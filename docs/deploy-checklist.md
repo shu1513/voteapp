@@ -20,7 +20,7 @@ deploy needs beyond `git pull`. Database migrations are covered separately in
   reach the SSR server and crawlers get nothing.
 - **Same-site requirement**: the session cookie is SameSite=Lax. Serve the
   frontend and API same-origin via the reverse proxy above, or on same-site
-  subdomains (`app.impactperdollar.com` + `api.impactperdollar.com`).
+  subdomains (`app.electionssimplified.com` + `api.electionssimplified.com`).
 
 ## SSR server environment
 
@@ -40,11 +40,11 @@ deploy needs beyond `git pull`. Database migrations are covered separately in
 | `ADDRESS_API_HOST` / `ADDRESS_API_PORT` | bind address |
 | `ADDRESS_API_ALLOWED_ORIGINS` | the frontend origin(s), including the site's own origin — browsers send `Origin` on every non-GET request even same-origin, so an empty allowlist 403s all browser writes; unset falls back to the origins of `SITE_ORIGIN`/`AUTH_PUBLIC_BASE_URL` |
 | `AUTH_SESSION_COOKIE_SECURE` | `true` in production (HTTPS) |
-| `AUTH_SESSION_COOKIE_DOMAIN` | only for the subdomain split (e.g. `.impactperdollar.com`) |
+| `AUTH_SESSION_COOKIE_DOMAIN` | only for the subdomain split (e.g. `.electionssimplified.com`) |
 | `AUTH_PUBLIC_BASE_URL` | the FRONTEND origin — email links land on `/verify-email`, `/reset-password`, `/verify-email-change` |
-| `SITE_ORIGIN` | the canonical PUBLIC frontend origin used in `/sitemap.xml` URLs, e.g. `https://impactperdollar.com`; must match `frontend/public/robots.txt` |
+| `SITE_ORIGIN` | the canonical PUBLIC frontend origin used in `/sitemap.xml` URLs, e.g. `https://electionssimplified.com`; must match `frontend/public/robots.txt` |
 | `AUTH_MAILER` | unset (defaults to `ses`); `console` is dev-only |
-| `AUTH_FROM_EMAIL` / `AUTH_SES_REGION` | verified SES identity + region (today: impactperdollar.com in us-east-2) |
+| `AUTH_FROM_EMAIL` / `AUTH_SES_REGION` | verified SES identity + region (today: electionssimplified.com in us-east-2) |
 | `GOOGLE_PLACES_API_KEY` | address autocomplete + resolve |
 | `NOTIFICATIONS_UNSUBSCRIBE_SECRET` | ≥32 chars; shared by the API server and every mailer job below |
 | `SENTRY_DSN` | error monitoring (API server + workers); unset = disabled. Prod DSN flips on only after the staging scrub test (plan-error-monitoring.md) |
@@ -56,7 +56,7 @@ deploy needs beyond `git pull`. Database migrations are covered separately in
 - **SES is still sandboxed** — production sending requires the AWS
   production-access request (unsandbox) first. Until then only verified
   addresses receive mail.
-- **Provision contact@impactperdollar.com (receiving)** — the rendered
+- **Provision contact@electionssimplified.com (receiving)** — the rendered
   legal documents direct privacy requests, account-compromise reports, and
   content-error reports there. SES here is send-only; receiving needs a
   mailbox or a forward (e.g. Cloudflare Email Routing or SES inbound →

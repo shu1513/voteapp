@@ -1,7 +1,7 @@
 # Render Blueprint for the first public deploy (docs/deploy-render.md is the
 # runbook; docs/deploy-checklist.md stays the platform-agnostic reference).
 #
-# Topology: Cloudflare (impactperdollar.com) fronts everything with a Worker
+# Topology: Cloudflare (electionssimplified.com) fronts everything with a Worker
 # that routes /api/* and /sitemap.xml to voteapp-api and everything else to
 # voteapp-ssr (infra/cloudflare/router-worker.js). Cookies stay same-origin.
 # Client IP: the Worker copies Cloudflare's CF-Connecting-IP into the custom
@@ -70,25 +70,25 @@ services:
       - key: EDGE_SHARED_SECRET
         sync: false
       - key: AUTH_PUBLIC_BASE_URL
-        value: https://impactperdollar.com
+        value: https://electionssimplified.com
       - key: SITE_ORIGIN
-        value: https://impactperdollar.com
+        value: https://electionssimplified.com
       # Browsers send an Origin header on every non-GET request even
       # same-origin, so the site's own origin must be allowlisted or all
       # browser POST/PUT/DELETE calls 403. The server also derives this from
       # SITE_ORIGIN; the explicit value guards against config drift.
       - key: ADDRESS_API_ALLOWED_ORIGINS
-        value: https://impactperdollar.com
+        value: https://electionssimplified.com
       - key: AUTH_SESSION_COOKIE_SECURE
         value: "true"
       - key: AUTH_FROM_EMAIL
-        value: noreply@impactperdollar.com
+        value: noreply@electionssimplified.com
       - key: AUTH_REPLY_TO_EMAIL
-        value: contact@impactperdollar.com
+        value: contact@electionssimplified.com
       - key: AUTH_SES_REGION
         value: us-east-2
       - key: NOTIFICATIONS_UNSUBSCRIBE_URL
-        value: https://impactperdollar.com/api/email/unsubscribe
+        value: https://electionssimplified.com/api/email/unsubscribe
       - key: DEPLOY_ENV
         value: production
       # Google Places key for /api/address/autocomplete (+retrieve). Without
@@ -268,15 +268,15 @@ services:
   #         type: keyvalue
   #         property: connectionString
   #     - key: AUTH_FROM_EMAIL
-  #       value: noreply@impactperdollar.com
+  #       value: noreply@electionssimplified.com
   #     - key: AUTH_REPLY_TO_EMAIL
-  #       value: contact@impactperdollar.com
+  #       value: contact@electionssimplified.com
   #     - key: AUTH_SES_REGION
   #       value: us-east-2
   #     - key: AUTH_PUBLIC_BASE_URL
-  #       value: https://impactperdollar.com
+  #       value: https://electionssimplified.com
   #     - key: NOTIFICATIONS_UNSUBSCRIBE_URL
-  #       value: https://impactperdollar.com/api/email/unsubscribe
+  #       value: https://electionssimplified.com/api/email/unsubscribe
   #     - key: DEPLOY_ENV
   #       value: production
   #     - fromGroup: voteapp-shared

@@ -10,7 +10,7 @@
     "ios": {
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "com.impactperdollar.voteapp",
-      "associatedDomains": ["applinks:impactperdollar.com"]
+      "associatedDomains": ["applinks:electionssimplified.com"]
     },
     "android": {
       "package": "com.impactperdollar.voteapp",
@@ -20,11 +20,11 @@
           "autoVerify": true,
           "category": ["BROWSABLE", "DEFAULT"],
           "data": [
-            { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/verify-email" },
-            { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/reset-password" },
-            { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/ballot" },
-            { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/elections/" },
-            { "scheme": "https", "host": "impactperdollar.com", "pathPrefix": "/candidates/" }
+            { "scheme": "https", "host": "electionssimplified.com", "pathPrefix": "/verify-email" },
+            { "scheme": "https", "host": "electionssimplified.com", "pathPrefix": "/reset-password" },
+            { "scheme": "https", "host": "electionssimplified.com", "pathPrefix": "/ballot" },
+            { "scheme": "https", "host": "electionssimplified.com", "pathPrefix": "/elections/" },
+            { "scheme": "https", "host": "electionssimplified.com", "pathPrefix": "/candidates/" }
           ]
         }
       ],

@@ -15,7 +15,7 @@ the platform-agnostic reference; this file is the click-by-click order.
 | Dedupe pruning | Render cron `voteapp-notifications-prune`, daily 06:00 UTC | render.yaml |
 | Postgres | Render `voteapp-db` (basic-256mb) | render.yaml |
 | Redis | Render Key Value `voteapp-redis` (free, `noeviction` for BullMQ) | render.yaml |
-| Path routing + TLS + www redirect | Cloudflare Worker on `impactperdollar.com/*` | [infra/cloudflare/router-worker.js](../infra/cloudflare/router-worker.js) |
+| Path routing + TLS + www redirect | Cloudflare Worker on `electionssimplified.com/*` | [infra/cloudflare/router-worker.js](../infra/cloudflare/router-worker.js) |
 
 ## Order
 
@@ -40,23 +40,23 @@ the platform-agnostic reference; this file is the click-by-click order.
      `competitiveness:import:verified` — see DB_DEPLOYMENT.md.
 3. **Cloudflare Worker**: create worker `voteapp-router` with
    router-worker.js, set vars `API_ORIGIN` / `SSR_ORIGIN` to the two
-   `*.onrender.com` hosts, add routes `impactperdollar.com/*` and
-   `www.impactperdollar.com/*` (both DNS records proxied/orange-cloud; the
+   `*.onrender.com` hosts, add routes `electionssimplified.com/*` and
+   `www.electionssimplified.com/*` (both DNS records proxied/orange-cloud; the
    record target can be a placeholder like `192.0.2.1` — the Worker
    intercepts before origin). Code updates after that first creation:
    `cd infra/cloudflare && npm ci && npm run deploy` (Node 22+, one-time
    `npx wrangler login`; wrangler is pinned in package.json and
    wrangler.toml's `keep_vars` protects the dashboard vars).
 4. **contact@ mailbox**: Cloudflare Email Routing →
-   `contact@impactperdollar.com` → forward to the operator inbox.
+   `contact@electionssimplified.com` → forward to the operator inbox.
    Launch-blocking: the legal docs promise this address.
 5. **SES production access**: AWS console (us-east-2) → SES → request
    production access. Until approved, only verified recipients get mail —
    registration works but verification emails only reach test addresses.
 6. **Smoke** (deploy-checklist.md "Pre-launch smoke" section), plus:
-   - `curl -s https://impactperdollar.com/api/research-areas` (API through
+   - `curl -s https://electionssimplified.com/api/research-areas` (API through
      the Worker),
-   - `curl -sA GPTBot https://impactperdollar.com/elections/<real-id>` has
+   - `curl -sA GPTBot https://electionssimplified.com/elections/<real-id>` has
      candidate names in raw HTML,
    - register with a personal (SES-verified) address end-to-end.
 

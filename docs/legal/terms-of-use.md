@@ -1,7 +1,7 @@
 <!--
 Version must stay in lockstep with disclaimer.md and the backend's
 CURRENT_TERMS_VERSION; the three documents are accepted together by one
-checkbox. The contact mailbox (contact@impactperdollar.com) must exist and
+checkbox. The contact mailbox (contact@electionssimplified.com) must exist and
 be monitored before launch. Section 12 (governing law CA, individual
 arbitration with opt-out, class waiver, mass-filing staging, 1-year claims
 deadline) added 2026-07-18; Section 12.1/12.8 assume California is the
@@ -17,7 +17,7 @@ operator's principal place of business — update if that changes.
 
 These Terms of Use ("Terms") are an agreement between you and impactperdollar, the operator of the Elections Simplified service ("Elections Simplified," "we," "us," or "our") governing your use of the Elections Simplified website and services (the "Service"). By checking an agreement box, creating an account, submitting an address or search, or otherwise using the Service, you accept these Terms, the [Privacy Policy](/privacy), and the [AI Research and Election Information Disclaimer](/disclaimer) (the "Disclaimer"), which is incorporated into these Terms by reference. You consent to entering this agreement electronically.
 
-**Electronic communications and notices.** You consent to receive communications from us electronically — by email to your account address or by posting in the Service — and you agree that all agreements, notices, disclosures, and other communications we provide electronically satisfy any legal requirement that they be in writing. Notices to you are effective when posted in the Service or sent to your account email; notices to us must be sent to contact@impactperdollar.com.
+**Electronic communications and notices.** You consent to receive communications from us electronically — by email to your account address or by posting in the Service — and you agree that all agreements, notices, disclosures, and other communications we provide electronically satisfy any legal requirement that they be in writing. Notices to you are effective when posted in the Service or sent to your account email; notices to us must be sent to contact@electionssimplified.com.
 
 If you do not agree, do not use the Service.
 
@@ -33,7 +33,7 @@ The Service is operated from the United States and is intended for users located
 
 ## 4. Accounts
 
-You agree to provide accurate account information and to keep your password confidential. You are responsible for activity under your account. Notify us promptly at contact@impactperdollar.com if you believe your account has been compromised. You may delete your account at any time in account settings; we may suspend or terminate accounts that violate these Terms.
+You agree to provide accurate account information and to keep your password confidential. You are responsible for activity under your account. Notify us promptly at contact@electionssimplified.com if you believe your account has been compromised. You may delete your account at any time in account settings; we may suspend or terminate accounts that violate these Terms.
 
 ## 5. Acceptable use
 
@@ -75,7 +75,7 @@ We may modify or discontinue the Service at any time. We may update these Terms;
 
 **12.1 Governing law.** These Terms and any dispute arising from them or the Service are governed by the laws of the State of California, without regard to conflict-of-law rules, except that the Federal Arbitration Act governs the interpretation and enforcement of the arbitration provisions below.
 
-**12.2 Informal resolution first.** Before starting arbitration or filing suit, the party raising a dispute must send the other a written notice describing the dispute and the relief sought (to us: contact@impactperdollar.com with subject "DISPUTE NOTICE"; to you: the email address on your account). The notice must be individualized to the dispute and personally signed by the party raising it (in addition to any counsel). Both parties must then attempt in good faith to resolve the dispute for 60 days, which includes, if either party requests one, a telephone or video settlement conference in which you and we each personally participate (each party's counsel may also attend). Completion of this process is a condition precedent to starting arbitration or suit. Applicable limitations periods are tolled during this period.
+**12.2 Informal resolution first.** Before starting arbitration or filing suit, the party raising a dispute must send the other a written notice describing the dispute and the relief sought (to us: contact@electionssimplified.com with subject "DISPUTE NOTICE"; to you: the email address on your account). The notice must be individualized to the dispute and personally signed by the party raising it (in addition to any counsel). Both parties must then attempt in good faith to resolve the dispute for 60 days, which includes, if either party requests one, a telephone or video settlement conference in which you and we each personally participate (each party's counsel may also attend). Completion of this process is a condition precedent to starting arbitration or suit. Applicable limitations periods are tolled during this period.
 
 **12.3 Binding individual arbitration.** Any dispute arising from or relating to these Terms or the Service that is not resolved informally will be resolved by final and binding arbitration before a single arbitrator, administered by the American Arbitration Association under its Consumer Arbitration Rules, rather than in court. The arbitration will be conducted by videoconference unless the arbitrator determines an in-person hearing is necessary, in which case it will take place in the county where you reside. Fees are allocated as provided in the AAA Consumer Arbitration Rules. The arbitrator decides all issues except those reserved to courts in this Section.
 
@@ -85,7 +85,7 @@ We may modify or discontinue the Service at any time. We may update these Terms;
 
 **12.6 Coordinated filings.** If 25 or more arbitration demands raising substantially similar claims are filed within a 180-day period by the same counsel or coordinated counsel, the demands will proceed in stages: each side may select up to 10 demands to proceed first as bellwethers; the remaining demands may not be filed, and no arbitration fees are due on them, until the bellwether arbitrations conclude; the parties must then mediate the remaining demands in good faith before they proceed. Limitations periods are tolled for demands held in abeyance under this subsection.
 
-**12.7 Arbitration opt-out.** You may reject the arbitration provisions (Sections 12.3, 12.6, and the arbitration portion of 12.5) by emailing contact@impactperdollar.com with the subject "ARBITRATION OPT-OUT" and your name within 30 days of first accepting these Terms. If you have an Elections Simplified account, include your account email; if you do not, send the opt-out from the email address you want the opt-out associated with, and your opt-out applies to your use of the Service from then on. Opting out does not affect any other provision of these Terms.
+**12.7 Arbitration opt-out.** You may reject the arbitration provisions (Sections 12.3, 12.6, and the arbitration portion of 12.5) by emailing contact@electionssimplified.com with the subject "ARBITRATION OPT-OUT" and your name within 30 days of first accepting these Terms. If you have an Elections Simplified account, include your account email; if you do not, send the opt-out from the email address you want the opt-out associated with, and your opt-out applies to your use of the Service from then on. Opting out does not affect any other provision of these Terms.
 
 **12.8 Venue.** Any dispute that is not subject to arbitration will be brought exclusively in the state or federal courts located in California, and both parties consent to personal jurisdiction and venue there.
 
@@ -99,8 +99,8 @@ If any provision of these Terms is held unenforceable, the remainder stays in ef
 
 **No third-party beneficiaries.** These Terms are for the benefit of you and us only; they do not create rights in any other person.
 
-**Copyright complaints.** If you believe content on the Service infringes your copyright, send a notice containing the information required by 17 U.S.C. § 512(c)(3) to contact@impactperdollar.com with the subject "COPYRIGHT NOTICE." We may remove or disable access to the identified material and may terminate accounts of repeat infringers.
+**Copyright complaints.** If you believe content on the Service infringes your copyright, send a notice containing the information required by 17 U.S.C. § 512(c)(3) to contact@electionssimplified.com with the subject "COPYRIGHT NOTICE." We may remove or disable access to the identified material and may terminate accounts of repeat infringers.
 
 ## 14. Contact
 
-Questions about these Terms: contact@impactperdollar.com.
+Questions about these Terms: contact@electionssimplified.com.

@@ -17,3 +17,12 @@ keep_vars = true
 # No workers.dev copy: the site is only ever served through the zone routes,
 # and a *.workers.dev twin would be an unmonitored second front door.
 workers_dev = false
+
+# Zone routes are managed here (IaC) as of the electionssimplified.com
+# cutover; the old impactperdollar.com routes were dashboard-managed and
+# removed at cutover. Both hostnames' DNS records must be proxied
+# (orange-cloud) for these to receive traffic.
+routes = [
+  { pattern = "electionssimplified.com/*", zone_name = "electionssimplified.com" },
+  { pattern = "www.electionssimplified.com/*", zone_name = "electionssimplified.com" },
+]
