@@ -84,13 +84,14 @@ export function HomePage() {
       <div className="mx-auto max-w-2xl px-4 py-8">
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            {/* "Home address" read as a demand for where you sleep, and
-                "Voting address" read as the place you go to vote. "Your
-                address" claims nothing beyond whose address it is; the
-                headline above and the privacy note below already say what
-                the field is for. */}
+            {/* The anonymous label is an instruction, not a field name: it
+                tells a first-time visitor what typing here gets them. Signed
+                -in surfaces (settings, saved ballot) keep the plain "Your
+                address" — those users already know. "Home address" was
+                rejected as a demand for where you sleep, "Voting address"
+                read as the place you go to vote. */}
             <label htmlFor="address" className="block text-sm font-medium text-ink">
-              Your address
+              Enter your address to see the elections you can vote in
             </label>
             <AddressAutocomplete
               inputId="address"
