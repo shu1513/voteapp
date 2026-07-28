@@ -311,6 +311,13 @@ function isSoftScopeAmbiguous(
       /\bsheriff\b/,
       /\bcounty commissioner\b/,
       /\bcounty clerk\b/,
+      // The independent City of St. Louis elects county-equivalent offices
+      // titled simply "Collector of Revenue" and "License Collector".
+      // Their county discovery scope supplies the jurisdiction, while the
+      // official ballot titles themselves contain neither "county" nor
+      // another generic county-office marker.
+      /\bcollector of revenue\b/,
+      /\blicense collector\b/,
       /\bdistrict attorney\b/,
       // Official Indiana county ballots omit the jurisdiction from these
       // countywide offices (for example, "Clerk of the Circuit Court"),

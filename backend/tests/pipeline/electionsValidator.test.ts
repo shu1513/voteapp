@@ -401,6 +401,60 @@ describe("runElectionsValidator", () => {
     expect(softFailCall).toBeUndefined();
   });
 
+  it("accepts St. Louis City county-equivalent collector titles without added jurisdiction text", async () => {
+    const payload = {
+      district_id: "d-st-louis-city-mo",
+      district_name: "St. Louis city, Missouri",
+      district_type: "county",
+      state: "MO",
+      entries: [
+        {
+          official_ballot_title: "Collector of Revenue",
+          election_date: "2099-08-04",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "License Collector",
+          election_date: "2099-08-04",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:st-louis-city-mo",
+            payload,
+            status: "pending",
+            run_id: "run_st_louis_city_mo",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
   it("accepts verified historical dates only when manual import is explicitly approved", async () => {
     const payload = {
       district_id: "d-lausd",

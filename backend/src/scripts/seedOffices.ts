@@ -479,6 +479,45 @@ const SEED_OFFICES: SeedOffice[] = [
       "Directing conservation funding and priorities in the district",
     ].join("\n"),
   },
+  // The four offices below reached long-lived databases through a version of
+  // this seed that was edited afterwards, so no current file reproduced them.
+  // Definitions recovered verbatim from the local catalog.
+  {
+    scope: "county",
+    canonicalName: "Collector of Revenue",
+    summary: [
+      "Collecting property, earnings, and other local taxes the county assigns",
+      "Billing and receiving payment for public services and local charges",
+      "Keeping records of amounts owed and paid to county government",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
+    canonicalName: "License Collector",
+    summary: [
+      "Issuing business licenses and collecting the related local fees",
+      "Keeping records of businesses authorized to operate in the county",
+      "Helping businesses follow local licensing rules",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
+    canonicalName: "Recorder of Deeds",
+    summary: [
+      "Recording deeds, mortgages, liens, and other official land documents",
+      "Keeping property and ownership records safe and available to the public",
+      "Providing certified copies of recorded documents when requested",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
+    canonicalName: "County Board of Review Member",
+    summary: [
+      "Hearing property-tax assessment appeals under the county's review process",
+      "Reviewing whether property assessments follow state and local rules",
+      "Issuing decisions that can change a property's assessed value",
+    ].join("\n"),
+  },
   {
     scope: "place",
     canonicalName: "Mayor",
@@ -1550,6 +1589,25 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     aliasText: "County Council Chair",
   },
   {
+    // Horry County SC ballots spell the same board leadership role out in
+    // full. Restored from a migration that was renamed off disk before it
+    // merged, so only long-lived databases carried it.
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "County Council Chairman",
+  },
+  {
+    // Arlington County VA titles the seats on its governing legislature
+    // "Member County Board" (live) — the county's legislative body, the same
+    // role as the county-council aliases above, NOT the property-tax appeal
+    // board. Seeded because the matcher otherwise learns this title from
+    // whichever office it happens to score into first, and in the local
+    // database it learned County Board of Review Member, which is wrong.
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Member County Board",
+  },
+  {
     // "For Member of County Council (District 1)" (Howard County MD) after
     // the leading-"For" and seat strips.
     scope: "county",
@@ -1756,6 +1814,37 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "Soil and Water Conservation District Supervisor",
     aliasText: "County Soil and Water Conservation District Supervisor",
+  },
+  {
+    // Horry County SC ballots use this short form; the ampersand drops out in
+    // normalization ("soil water commission"). Restored from a migration that
+    // was renamed off disk before it merged, so only long-lived databases
+    // carried it.
+    scope: "county",
+    officeCanonicalName: "Soil and Water Conservation District Supervisor",
+    aliasText: "Soil & Water Commission",
+  },
+  // Aliases for the four offices recovered above, likewise taken from the
+  // local catalog rather than reconstructed.
+  {
+    scope: "county",
+    officeCanonicalName: "Collector of Revenue",
+    aliasText: "Collector of Revenue",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "License Collector",
+    aliasText: "License Collector",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Recorder of Deeds",
+    aliasText: "Recorder of Deeds",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Board of Review Member",
+    aliasText: "County Board of Review",
   },
 ];
 
