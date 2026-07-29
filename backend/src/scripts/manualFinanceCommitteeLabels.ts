@@ -293,26 +293,43 @@ const MAX_LABEL_LENGTH = 130;
 const MIN_CYCLE = 1990;
 const MAX_CYCLE = 2100;
 
-// Hosts that answer 200 with a content-free page, so the reachability check
-// downstream cannot catch them: it verifies a URL ANSWERS, not that it says
+// Endpoints that answer 200 with a content-free page, so the reachability
+// check cannot catch them: it verifies a URL ANSWERS, not that it says
 // anything. A citation like this passes validation, ships to voters as a
 // clickable "evidence" link, and shows them an error — silently, forever.
-// Keyed by hostname with the replacement named in the message, because an
-// operator hitting this needs the working source, not just a refusal.
-const CONTENT_FREE_SOURCE_HOSTS: ReadonlyMap<string, string> = new Map([
-  [
-    "cfis.state.nm.us",
-    "New Mexico's CFIS serves contribution data only inside a search session — every " +
-      "PACExpenditures.aspx / PACReport.aspx deep link answers 200 with " +
-      '"There has been an unexpected error" and "No results found", for every id. ' +
-      "Cite moneytrailnm.com instead (New Mexico In Depth's republication of the same " +
-      "Secretary of State data, with stable per-committee URLs).",
-  ],
-]);
+//
+// Scoped to the exact endpoints observed to be broken, never a whole host:
+// cfis.state.nm.us also serves CFIS_Data_Download.aspx, which works and is a
+// legitimate citation. Refusing a host wholesale trades a silent bad
+// citation for a fail-closed block on good ones, which is not a trade worth
+// making. The message names the replacement, because an operator who hits
+// this needs the source that works rather than a refusal.
+const CONTENT_FREE_SOURCE_ENDPOINTS: readonly {
+  host: string;
+  pathEndsWith: readonly string[];
+  reason: string;
+}[] = [
+  {
+    host: "cfis.state.nm.us",
+    pathEndsWith: ["/pacexpenditures.aspx", "/pacreport.aspx"],
+    reason:
+      "New Mexico's CFIS serves contribution data only inside a search session — these " +
+      'deep links answer 200 with "There has been an unexpected error" and "No results ' +
+      'found", for every id. Cite moneytrailnm.com instead (New Mexico In Depth\'s ' +
+      "republication of the same Secretary of State data, with stable per-committee " +
+      "URLs). CFIS_Data_Download.aspx on the same host works and stays citable.",
+  },
+];
 
-function contentFreeSourceHostReason(url: URL): string | null {
+export function contentFreeSourceUrlReason(url: URL): string | null {
   const host = url.hostname.toLowerCase().replace(/^www\./, "");
-  return CONTENT_FREE_SOURCE_HOSTS.get(host) ?? null;
+  const path = url.pathname.toLowerCase();
+  for (const entry of CONTENT_FREE_SOURCE_ENDPOINTS) {
+    if (entry.host === host && entry.pathEndsWith.some((suffix) => path.endsWith(suffix))) {
+      return entry.reason;
+    }
+  }
+  return null;
 }
 
 /**
@@ -385,11 +402,6 @@ export function parseCommitteeLabelPayload(raw: unknown): CommitteeLabelPayloadR
         }
         if (!parsed || (parsed.protocol !== "https:" && parsed.protocol !== "http:")) {
           errors.push(`${at}: source_urls entry is not a valid http(s) URL: ${url}`);
-          continue;
-        }
-        const contentFreeReason = contentFreeSourceHostReason(parsed);
-        if (contentFreeReason !== null) {
-          errors.push(`${at}: source_urls entry cites a content-free host: ${url} — ${contentFreeReason}`);
         }
       }
     }
@@ -480,14 +492,36 @@ export function checkRowsAgainstLiveCommittees(
  * the other manual writers run before writing. 403 is allowed (official
  * hosts routinely reject HEAD/bot requests they would serve to a browser),
  * and transient failures get one plain retry — slow official hosts routinely
- * pass on it, while permanent failures (404, DNS, TLS) never do.
+ * pass on it, while permanent failures (404, DNS, TLS) never do. Endpoints
+ * known to answer with a content-free page fail here too: they would sail
+ * through a reachability check, so they are settled without a request.
  */
 export async function checkLabelSourceUrls(
   rows: readonly CommitteeLabelPayloadRow[],
   verify: typeof verifyHttpUrlReachability = verifyHttpUrlReachability
 ): Promise<CommitteeLabelValidationIssue[]> {
+  // Endpoints known to answer with nothing are settled before any request:
+  // they would pass the reachability check (they DO answer), and asking is
+  // wasted work. Seeding the result map as a permanent failure routes them
+  // through the same reporting path as a 404, so `--repair-report-file`
+  // carries them — the report is what a later session resumes from, and a
+  // dead citation is exactly the evidence gap it exists to describe.
   const uniqueUrls = [...new Set(rows.flatMap((row) => row.source_urls))];
   const resultByUrl = new Map<string, UrlReachabilityResult>();
+  const contentFreeUrls = new Set<string>();
+  for (const url of uniqueUrls) {
+    let parsed: URL | null = null;
+    try {
+      parsed = new URL(url);
+    } catch {
+      parsed = null;
+    }
+    const reason = parsed === null ? null : contentFreeSourceUrlReason(parsed);
+    if (reason !== null) {
+      contentFreeUrls.add(url);
+      resultByUrl.set(url, { ok: false, reason: `citation URL answers with no content — ${reason}` });
+    }
+  }
 
   const verifyBatch = async (batch: readonly string[]): Promise<void> => {
     const workerCount = Math.min(4, batch.length);
@@ -510,7 +544,7 @@ export async function checkLabelSourceUrls(
     );
   };
 
-  await verifyBatch(uniqueUrls);
+  await verifyBatch(uniqueUrls.filter((url) => !contentFreeUrls.has(url)));
   const transientUrls = uniqueUrls.filter((url) => {
     const result = resultByUrl.get(url);
     return (
