@@ -283,7 +283,12 @@ export type CommitteeLabelPayloadRow = {
   source_urls: string[];
 };
 
-const MAX_LABEL_LENGTH = 200;
+// A label renders as prose under the committee's name in a narrow column, so
+// length is a readability limit, not a storage one: at 200 the first pass
+// averaged 142 characters and wrapped to three lines of disclosure jargon.
+// 130 forces one plain sentence — the whole point of the label is that a
+// voter reads it without effort.
+const MAX_LABEL_LENGTH = 130;
 // Sanity bounds only — cycles come from the due list verbatim.
 const MIN_CYCLE = 1990;
 const MAX_CYCLE = 2100;

@@ -6,6 +6,10 @@
   --color-rausch: #ff385c;
   --color-rausch-dark: #e31c5f;
   --color-ink: #222222;
+  /* Between ink and ink-soft: secondary text that still has to be READ in
+     full (a committee's description), not skimmed like a caption. ink-soft
+     is too faint for a wrapping sentence. */
+  --color-ink-mid: #484848;
   --color-ink-soft: #717171;
   --color-line: #dddddd;
   --color-surface: #f7f7f7;

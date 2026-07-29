@@ -60,9 +60,10 @@ describe("parseCommitteeLabelPayload", () => {
   });
 
   it("rejects labels over the length cap", () => {
+    expect(parseCommitteeLabelPayload({ labels: [{ ...validRow(), label: "x".repeat(130) }] })).toHaveLength(1);
     expect(() =>
-      parseCommitteeLabelPayload({ labels: [{ ...validRow(), label: "x".repeat(201) }] })
-    ).toThrow(/exceeds 200 characters/);
+      parseCommitteeLabelPayload({ labels: [{ ...validRow(), label: "x".repeat(131) }] })
+    ).toThrow(/exceeds 130 characters/);
   });
 
   it("rejects non-string source_urls entries instead of silently dropping them", () => {
