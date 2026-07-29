@@ -293,6 +293,28 @@ const MAX_LABEL_LENGTH = 130;
 const MIN_CYCLE = 1990;
 const MAX_CYCLE = 2100;
 
+// Hosts that answer 200 with a content-free page, so the reachability check
+// downstream cannot catch them: it verifies a URL ANSWERS, not that it says
+// anything. A citation like this passes validation, ships to voters as a
+// clickable "evidence" link, and shows them an error — silently, forever.
+// Keyed by hostname with the replacement named in the message, because an
+// operator hitting this needs the working source, not just a refusal.
+const CONTENT_FREE_SOURCE_HOSTS: ReadonlyMap<string, string> = new Map([
+  [
+    "cfis.state.nm.us",
+    "New Mexico's CFIS serves contribution data only inside a search session — every " +
+      "PACExpenditures.aspx / PACReport.aspx deep link answers 200 with " +
+      '"There has been an unexpected error" and "No results found", for every id. ' +
+      "Cite moneytrailnm.com instead (New Mexico In Depth's republication of the same " +
+      "Secretary of State data, with stable per-committee URLs).",
+  ],
+]);
+
+function contentFreeSourceHostReason(url: URL): string | null {
+  const host = url.hostname.toLowerCase().replace(/^www\./, "");
+  return CONTENT_FREE_SOURCE_HOSTS.get(host) ?? null;
+}
+
 /**
  * Validates the write payload. Throws with every problem listed at once so a
  * multi-row payload is fixed in one pass, mirroring the other manual writers.
@@ -363,6 +385,11 @@ export function parseCommitteeLabelPayload(raw: unknown): CommitteeLabelPayloadR
         }
         if (!parsed || (parsed.protocol !== "https:" && parsed.protocol !== "http:")) {
           errors.push(`${at}: source_urls entry is not a valid http(s) URL: ${url}`);
+          continue;
+        }
+        const contentFreeReason = contentFreeSourceHostReason(parsed);
+        if (contentFreeReason !== null) {
+          errors.push(`${at}: source_urls entry cites a content-free host: ${url} — ${contentFreeReason}`);
         }
       }
     }

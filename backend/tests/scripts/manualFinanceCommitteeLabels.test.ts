@@ -66,6 +66,31 @@ describe("parseCommitteeLabelPayload", () => {
     ).toThrow(/exceeds 130 characters/);
   });
 
+  // The reachability check downstream only proves a URL ANSWERS. New Mexico's
+  // CFIS answers 200 with an error page for every id, so two labels shipped
+  // citing pages that showed a voter nothing; the host is refused up front.
+  it("rejects source URLs on hosts that answer with content-free pages", () => {
+    for (const url of [
+      "https://www.cfis.state.nm.us/media/PACExpenditures.aspx?p=497819",
+      "https://cfis.state.nm.us/media/PACReport.aspx?se=0&p=1896",
+    ]) {
+      expect(() =>
+        parseCommitteeLabelPayload({ labels: [{ ...validRow(), source_urls: [url] }] })
+      ).toThrow(/content-free host.*moneytrailnm\.com/s);
+    }
+    // The replacement itself, and unrelated hosts, stay writable.
+    expect(
+      parseCommitteeLabelPayload({
+        labels: [
+          {
+            ...validRow(),
+            source_urls: ["https://moneytrailnm.com/committees/energize-nm-YJHoS/"],
+          },
+        ],
+      })
+    ).toHaveLength(1);
+  });
+
   it("rejects non-string source_urls entries instead of silently dropping them", () => {
     expect(() =>
       parseCommitteeLabelPayload({
