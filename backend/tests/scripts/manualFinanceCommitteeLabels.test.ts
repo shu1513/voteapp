@@ -135,6 +135,7 @@ describe("checkLabelSourceUrls", () => {
     expect(issues).toHaveLength(1);
     expect(issues[0].reason).toMatch(/source URL unreachable \(status 404\)/);
     expect(issues[0].kind).toBe("source_url");
+    expect(issues[0].contentFree).toBeUndefined();
     expect(issues[0].sourceUrl).toBe(row.source_urls[0]);
     expect(issues[0].failureType).toBe("permanent");
     expect(verify).toHaveBeenCalledTimes(1);
@@ -160,7 +161,11 @@ describe("checkLabelSourceUrls", () => {
     for (const issue of issues) {
       expect(issue.kind).toBe("source_url");
       expect(issue.failureType).toBe("permanent");
-      expect(issue.reason).toMatch(/answers with no content/);
+      expect(issue.contentFree).toBe(true);
+      // Never "unreachable": these answer. Saying otherwise sends the next
+      // session after a connectivity fault instead of a new citation.
+      expect(issue.reason).toMatch(/answered with no usable content/);
+      expect(issue.reason).not.toMatch(/unreachable/);
       expect(issue.reason).toMatch(/moneytrailnm\.com/);
     }
     expect(issues.map((issue) => issue.sourceUrl)).toEqual(row.source_urls);

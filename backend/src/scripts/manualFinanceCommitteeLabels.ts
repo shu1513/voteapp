@@ -444,6 +444,12 @@ export type CommitteeLabelValidationIssue = {
   reason: string;
   sourceUrl?: string;
   failureType?: "transient" | "permanent";
+  // A source_url issue where the URL ANSWERED but served nothing usable.
+  // Kept apart from an ordinary unreachable URL because the repair differs:
+  // not "the host is down, try again", but "this endpoint never carries the
+  // data — cite a different one". The report is read by a later session, so
+  // calling this unreachable sends it hunting for a connectivity fault.
+  contentFree?: true;
 };
 
 /**
@@ -519,7 +525,7 @@ export async function checkLabelSourceUrls(
     const reason = parsed === null ? null : contentFreeSourceUrlReason(parsed);
     if (reason !== null) {
       contentFreeUrls.add(url);
-      resultByUrl.set(url, { ok: false, reason: `citation URL answers with no content — ${reason}` });
+      resultByUrl.set(url, { ok: false, reason });
     }
   }
 
@@ -562,12 +568,19 @@ export async function checkLabelSourceUrls(
     for (const url of row.source_urls) {
       const result = resultByUrl.get(url);
       if (result !== undefined && !result.ok) {
+        const contentFree = contentFreeUrls.has(url);
         issues.push({
           index,
           kind: "source_url",
-          reason: `source URL unreachable (${result.reason}): ${url}`,
+          reason: `${
+            contentFree ? "source URL answered with no usable content" : "source URL unreachable"
+          } (${result.reason}): ${url}`,
           sourceUrl: url,
-          failureType: classifyCitationVerificationFailure(result.reason),
+          // Stated outright rather than inferred from the reason text: a
+          // known-dead endpoint is permanent by construction, and must not
+          // depend on that prose happening to miss the transient markers.
+          failureType: contentFree ? "permanent" : classifyCitationVerificationFailure(result.reason),
+          ...(contentFree ? { contentFree: true as const } : {}),
         });
       }
     }
@@ -583,9 +596,11 @@ function committeeLabelIssueToRepairGap(
 ): ManualResearchRepairGap {
   const triple = row ? `${row.source}.${row.committee_id}.${row.cycle}` : `labels_${issue.index}`;
   const focusedResearchPass =
-    issue.kind === "source_url"
-      ? "Re-research this committee's label evidence: replace the unreachable source URL with a reachable source that still supports the label, or drop the row and report the committee as an unresolved gap, then rerun the committee-label writer."
-      : "Regenerate this row from a fresh manual:finance-committee-labels:due run — copy source, committee_id, cycle, and committee_name verbatim — then rerun the committee-label writer.";
+    issue.kind !== "source_url"
+      ? "Regenerate this row from a fresh manual:finance-committee-labels:due run — copy source, committee_id, cycle, and committee_name verbatim — then rerun the committee-label writer."
+      : issue.contentFree
+        ? "Replace this source URL: the endpoint answers, so retrying or waiting will not help — it simply never carries the committee's data. Cite a source that actually shows the evidence (the reason names the working replacement), or drop the row and report the committee as an unresolved gap, then rerun the committee-label writer."
+        : "Re-research this committee's label evidence: replace the unreachable source URL with a reachable source that still supports the label, or drop the row and report the committee as an unresolved gap, then rerun the committee-label writer.";
   return {
     id: `finance_committee_label.${triple}.${issue.kind}`,
     stage: "finance_committee_labels",
