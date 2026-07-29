@@ -60,9 +60,10 @@ describe("parseCommitteeLabelPayload", () => {
   });
 
   it("rejects labels over the length cap", () => {
+    expect(parseCommitteeLabelPayload({ labels: [{ ...validRow(), label: "x".repeat(130) }] })).toHaveLength(1);
     expect(() =>
-      parseCommitteeLabelPayload({ labels: [{ ...validRow(), label: "x".repeat(201) }] })
-    ).toThrow(/exceeds 200 characters/);
+      parseCommitteeLabelPayload({ labels: [{ ...validRow(), label: "x".repeat(131) }] })
+    ).toThrow(/exceeds 130 characters/);
   });
 
   it("rejects non-string source_urls entries instead of silently dropping them", () => {
@@ -134,9 +135,57 @@ describe("checkLabelSourceUrls", () => {
     expect(issues).toHaveLength(1);
     expect(issues[0].reason).toMatch(/source URL unreachable \(status 404\)/);
     expect(issues[0].kind).toBe("source_url");
+    expect(issues[0].contentFree).toBeUndefined();
     expect(issues[0].sourceUrl).toBe(row.source_urls[0]);
     expect(issues[0].failureType).toBe("permanent");
     expect(verify).toHaveBeenCalledTimes(1);
+  });
+
+  // A reachability check can only prove a URL ANSWERS. New Mexico's CFIS
+  // answers 200 with an error page for every id, so two labels shipped
+  // citing pages that showed a voter nothing. These fail as permanent
+  // source_url issues — the kind runWrite turns into repair-report gaps —
+  // rather than throwing out of the payload parse, where the repair report
+  // does not exist yet and this evidence gap would go unrecorded.
+  it("fails endpoints that answer with content-free pages, without requesting them", async () => {
+    const verify = vi.fn().mockResolvedValue({ ok: true });
+    const row = {
+      ...validRow(),
+      source_urls: [
+        "https://www.cfis.state.nm.us/media/PACExpenditures.aspx?p=497819",
+        "https://cfis.state.nm.us/media/PACReport.aspx?se=0&p=1896",
+      ],
+    };
+    const issues = await checkLabelSourceUrls([row], verify);
+    expect(issues).toHaveLength(2);
+    for (const issue of issues) {
+      expect(issue.kind).toBe("source_url");
+      expect(issue.failureType).toBe("permanent");
+      expect(issue.contentFree).toBe(true);
+      // Never "unreachable": these answer. Saying otherwise sends the next
+      // session after a connectivity fault instead of a new citation.
+      expect(issue.reason).toMatch(/answered with no usable content/);
+      expect(issue.reason).not.toMatch(/unreachable/);
+      expect(issue.reason).toMatch(/moneytrailnm\.com/);
+    }
+    expect(issues.map((issue) => issue.sourceUrl)).toEqual(row.source_urls);
+    // Settled from the URL alone: a request would have said "ok".
+    expect(verify).not.toHaveBeenCalled();
+  });
+
+  // Scoped to the broken endpoints, never the host: refusing all of
+  // cfis.state.nm.us would fail-closed on its working data-download page.
+  it("allows other paths on a host with content-free endpoints", async () => {
+    const verify = vi.fn().mockResolvedValue({ ok: true });
+    const row = {
+      ...validRow(),
+      source_urls: [
+        "https://www.cfis.state.nm.us/media/CFIS_Data_Download.aspx",
+        "https://moneytrailnm.com/committees/energize-nm-YJHoS/",
+      ],
+    };
+    expect(await checkLabelSourceUrls([row], verify)).toEqual([]);
+    expect(verify).toHaveBeenCalledTimes(2);
   });
 
   it("retries a transient failure once and passes when the retry succeeds", async () => {

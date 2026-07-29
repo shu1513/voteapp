@@ -189,21 +189,23 @@ function OutsideSection({
           <summary className="cursor-pointer select-none text-sm font-medium text-ink hover:underline">
             Groups that spent money {directionLabel} this candidate ({groups.length})
           </summary>
-          <ul className="mt-1 space-y-1">
+          <ul className="mt-1 space-y-2">
             {groups.map((row) => (
               <li key={row.committee_id} className="text-sm">
                 <div className="flex justify-between gap-3">
-                  <span className="text-ink">{row.committee_name}</span>
+                  <span className="font-medium text-ink">{row.committee_name}</span>
                   <span className="shrink-0 text-ink-soft">{formatMoney(row.amount)}</span>
                 </div>
                 {/* Researched one-line description of who is behind the
                     committee — the name alone ("Streets for All Los Angeles
                     PAC") tells a voter nothing. Absent until researched.
-                    Body size and full ink: this is the substance of the row,
-                    not a footnote. The label is a factual claim, so the
-                    evidence behind it rides along as quiet host links. */}
+                    Body size and mid ink, so it still reads as substance
+                    rather than a footnote; the name carries the weight, or a
+                    wrapping two-line label competes with the name it belongs
+                    to. The label is a factual claim, so the evidence behind
+                    it rides along as quiet host links. */}
                 {row.label ? (
-                  <p className="mt-0.5 text-sm text-ink">
+                  <p className="mt-0.5 text-sm text-ink-mid">
                     {row.label}
                     {(row.label_source_urls ?? []).map((url) => (
                       <span key={url} className="text-xs text-ink-soft">

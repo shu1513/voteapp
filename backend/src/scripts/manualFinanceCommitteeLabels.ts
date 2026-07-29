@@ -283,10 +283,54 @@ export type CommitteeLabelPayloadRow = {
   source_urls: string[];
 };
 
-const MAX_LABEL_LENGTH = 200;
+// A label renders as prose under the committee's name in a narrow column, so
+// length is a readability limit, not a storage one: at 200 the first pass
+// averaged 142 characters and wrapped to three lines of disclosure jargon.
+// 130 forces one plain sentence — the whole point of the label is that a
+// voter reads it without effort.
+const MAX_LABEL_LENGTH = 130;
 // Sanity bounds only — cycles come from the due list verbatim.
 const MIN_CYCLE = 1990;
 const MAX_CYCLE = 2100;
+
+// Endpoints that answer 200 with a content-free page, so the reachability
+// check cannot catch them: it verifies a URL ANSWERS, not that it says
+// anything. A citation like this passes validation, ships to voters as a
+// clickable "evidence" link, and shows them an error — silently, forever.
+//
+// Scoped to the exact endpoints observed to be broken, never a whole host:
+// cfis.state.nm.us also serves CFIS_Data_Download.aspx, which works and is a
+// legitimate citation. Refusing a host wholesale trades a silent bad
+// citation for a fail-closed block on good ones, which is not a trade worth
+// making. The message names the replacement, because an operator who hits
+// this needs the source that works rather than a refusal.
+const CONTENT_FREE_SOURCE_ENDPOINTS: readonly {
+  host: string;
+  pathEndsWith: readonly string[];
+  reason: string;
+}[] = [
+  {
+    host: "cfis.state.nm.us",
+    pathEndsWith: ["/pacexpenditures.aspx", "/pacreport.aspx"],
+    reason:
+      "New Mexico's CFIS serves contribution data only inside a search session — these " +
+      'deep links answer 200 with "There has been an unexpected error" and "No results ' +
+      'found", for every id. Cite moneytrailnm.com instead (New Mexico In Depth\'s ' +
+      "republication of the same Secretary of State data, with stable per-committee " +
+      "URLs). CFIS_Data_Download.aspx on the same host works and stays citable.",
+  },
+];
+
+export function contentFreeSourceUrlReason(url: URL): string | null {
+  const host = url.hostname.toLowerCase().replace(/^www\./, "");
+  const path = url.pathname.toLowerCase();
+  for (const entry of CONTENT_FREE_SOURCE_ENDPOINTS) {
+    if (entry.host === host && entry.pathEndsWith.some((suffix) => path.endsWith(suffix))) {
+      return entry.reason;
+    }
+  }
+  return null;
+}
 
 /**
  * Validates the write payload. Throws with every problem listed at once so a
@@ -400,6 +444,12 @@ export type CommitteeLabelValidationIssue = {
   reason: string;
   sourceUrl?: string;
   failureType?: "transient" | "permanent";
+  // A source_url issue where the URL ANSWERED but served nothing usable.
+  // Kept apart from an ordinary unreachable URL because the repair differs:
+  // not "the host is down, try again", but "this endpoint never carries the
+  // data — cite a different one". The report is read by a later session, so
+  // calling this unreachable sends it hunting for a connectivity fault.
+  contentFree?: true;
 };
 
 /**
@@ -448,14 +498,36 @@ export function checkRowsAgainstLiveCommittees(
  * the other manual writers run before writing. 403 is allowed (official
  * hosts routinely reject HEAD/bot requests they would serve to a browser),
  * and transient failures get one plain retry — slow official hosts routinely
- * pass on it, while permanent failures (404, DNS, TLS) never do.
+ * pass on it, while permanent failures (404, DNS, TLS) never do. Endpoints
+ * known to answer with a content-free page fail here too: they would sail
+ * through a reachability check, so they are settled without a request.
  */
 export async function checkLabelSourceUrls(
   rows: readonly CommitteeLabelPayloadRow[],
   verify: typeof verifyHttpUrlReachability = verifyHttpUrlReachability
 ): Promise<CommitteeLabelValidationIssue[]> {
+  // Endpoints known to answer with nothing are settled before any request:
+  // they would pass the reachability check (they DO answer), and asking is
+  // wasted work. Seeding the result map as a permanent failure routes them
+  // through the same reporting path as a 404, so `--repair-report-file`
+  // carries them — the report is what a later session resumes from, and a
+  // dead citation is exactly the evidence gap it exists to describe.
   const uniqueUrls = [...new Set(rows.flatMap((row) => row.source_urls))];
   const resultByUrl = new Map<string, UrlReachabilityResult>();
+  const contentFreeUrls = new Set<string>();
+  for (const url of uniqueUrls) {
+    let parsed: URL | null = null;
+    try {
+      parsed = new URL(url);
+    } catch {
+      parsed = null;
+    }
+    const reason = parsed === null ? null : contentFreeSourceUrlReason(parsed);
+    if (reason !== null) {
+      contentFreeUrls.add(url);
+      resultByUrl.set(url, { ok: false, reason });
+    }
+  }
 
   const verifyBatch = async (batch: readonly string[]): Promise<void> => {
     const workerCount = Math.min(4, batch.length);
@@ -478,7 +550,7 @@ export async function checkLabelSourceUrls(
     );
   };
 
-  await verifyBatch(uniqueUrls);
+  await verifyBatch(uniqueUrls.filter((url) => !contentFreeUrls.has(url)));
   const transientUrls = uniqueUrls.filter((url) => {
     const result = resultByUrl.get(url);
     return (
@@ -496,12 +568,19 @@ export async function checkLabelSourceUrls(
     for (const url of row.source_urls) {
       const result = resultByUrl.get(url);
       if (result !== undefined && !result.ok) {
+        const contentFree = contentFreeUrls.has(url);
         issues.push({
           index,
           kind: "source_url",
-          reason: `source URL unreachable (${result.reason}): ${url}`,
+          reason: `${
+            contentFree ? "source URL answered with no usable content" : "source URL unreachable"
+          } (${result.reason}): ${url}`,
           sourceUrl: url,
-          failureType: classifyCitationVerificationFailure(result.reason),
+          // Stated outright rather than inferred from the reason text: a
+          // known-dead endpoint is permanent by construction, and must not
+          // depend on that prose happening to miss the transient markers.
+          failureType: contentFree ? "permanent" : classifyCitationVerificationFailure(result.reason),
+          ...(contentFree ? { contentFree: true as const } : {}),
         });
       }
     }
@@ -517,9 +596,11 @@ function committeeLabelIssueToRepairGap(
 ): ManualResearchRepairGap {
   const triple = row ? `${row.source}.${row.committee_id}.${row.cycle}` : `labels_${issue.index}`;
   const focusedResearchPass =
-    issue.kind === "source_url"
-      ? "Re-research this committee's label evidence: replace the unreachable source URL with a reachable source that still supports the label, or drop the row and report the committee as an unresolved gap, then rerun the committee-label writer."
-      : "Regenerate this row from a fresh manual:finance-committee-labels:due run — copy source, committee_id, cycle, and committee_name verbatim — then rerun the committee-label writer.";
+    issue.kind !== "source_url"
+      ? "Regenerate this row from a fresh manual:finance-committee-labels:due run — copy source, committee_id, cycle, and committee_name verbatim — then rerun the committee-label writer."
+      : issue.contentFree
+        ? "Replace this source URL: the endpoint answers, so retrying or waiting will not help — it simply never carries the committee's data. Cite a source that actually shows the evidence (the reason names the working replacement), or drop the row and report the committee as an unresolved gap, then rerun the committee-label writer."
+        : "Re-research this committee's label evidence: replace the unreachable source URL with a reachable source that still supports the label, or drop the row and report the committee as an unresolved gap, then rerun the committee-label writer.";
   return {
     id: `finance_committee_label.${triple}.${issue.kind}`,
     stage: "finance_committee_labels",
