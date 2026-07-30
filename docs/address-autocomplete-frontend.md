@@ -100,8 +100,11 @@ large cost saver at our volume.
   ignore out-of-order responses.
 - Selecting a suggestion: call retrieve, put the returned `address` string
   into the input, then run the **existing** flow unchanged:
-  - anonymous: `POST /api/address/resolve` with `{ "address": ... }`
-  - logged-in: `PUT /api/me/address` with `{ "address": ... }`
+  - anonymous: `POST /api/address/resolve` with
+    `{ "address": ..., "accepted_terms_version": TERMS_VERSION }` — the
+    clickwrap is enforced server-side, so the version is required
+  - logged-in: `PUT /api/me/address` with `{ "address": ... }` (no clickwrap
+    field: the account already carries its acceptance)
 - Autocomplete failing must never block the form — the input stays a plain
   text field that submits to the same endpoints.
 - Use an ARIA combobox pattern (`role="combobox"`, `aria-expanded`,

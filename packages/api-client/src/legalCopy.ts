@@ -5,14 +5,29 @@
 
 export const TERMS_VERSION = "1.1";
 
+// The pre-search clickwrap is split in two: a one-sentence label that names
+// every document and the arbitration clause, plus a dialog holding the detail
+// that used to sit inline. Three paragraphs of small print above the Search
+// button was skimmed past, which is the failure mode a clickwrap cannot
+// afford; a summary the visitor actually reads, with the full text one click
+// away and re-shown at the moment of agreement, is the pattern the clickwrap
+// cases reward (Meyer v. Uber; Berman v. Freedom Financial; Sellers v.
+// JustAnswer). Nothing was dropped — every sentence removed from the label
+// appears in PRE_SEARCH_AGREEMENT_PARAGRAPHS below.
 export const PRE_SEARCH_CHECKBOX_LABEL =
   "I have read and agree to the Terms of Use, Privacy Policy, and AI Research and Election Information " +
-  "Disclaimer. I understand that Elections Simplified provides AI-assisted informational research only; it is not an " +
-  "official election source; results may be inaccurate, incomplete, outdated, or misleading; and I must " +
-  "verify voting, registration, ballot, district, polling-place, deadline, and election-result information " +
-  "with official election authorities before relying on it. I agree that disputes are resolved by binding " +
-  "individual arbitration with a class-action waiver as described in Section 12 of the Terms of Use, " +
-  "unless I opt out as described there.";
+  "Disclaimer — including binding individual arbitration with a class-action waiver (Terms of Use " +
+  "Section 12), unless I opt out as described there.";
+
+/** Body of the "full agreement" dialog behind the pre-search checkbox. */
+export const PRE_SEARCH_AGREEMENT_PARAGRAPHS = [
+  "Elections Simplified provides AI-assisted informational research only. It is not an official election " +
+    "source, and results may be inaccurate, incomplete, outdated, or misleading.",
+  "You must verify voting, registration, ballot, district, polling-place, deadline, and election-result " +
+    "information with official election authorities before relying on it.",
+  "Disputes are resolved by binding individual arbitration with a class-action waiver, as described in " +
+    "Section 12 of the Terms of Use, unless you opt out as described there.",
+] as const;
 
 export const SIGNUP_CHECKBOX_LABEL =
   "I am at least 18 years old, and I have read and agree to the Terms of Use, Privacy Policy, and AI " +

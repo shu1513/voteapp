@@ -4,14 +4,20 @@ This API supports an anonymous address lookup first, an initialize-only saved-di
 
 ## Anonymous Address Lookup
 
-The address lookup endpoint is read-only:
+The address lookup endpoint is read-only, but it is clickwrap-gated: the body
+must carry the terms version the caller accepted, and it must equal
+`CURRENT_TERMS_VERSION` (`backend/src/constants/legal.ts`). A missing or
+superseded version is refused with `400 invalid_request` before the address is
+resolved, so the pre-search checkbox cannot be bypassed by calling the API
+directly. Nothing about the acceptance is stored.
 
 ```http
 POST /api/address/resolve
 content-type: application/json
 
 {
-  "address": "3921 Harlan Ave Baldwin Park CA 91706"
+  "address": "3921 Harlan Ave Baldwin Park CA 91706",
+  "accepted_terms_version": "1.1"
 }
 ```
 

@@ -1,8 +1,10 @@
 import type { AddressResolution } from "@voteapp/api-client";
 import {
   apiRequest,
+  PRE_SEARCH_AGREEMENT_PARAGRAPHS,
   PRE_SEARCH_CHECKBOX_LABEL,
   PRIVACY_NOTICE,
+  TERMS_VERSION,
   useMe,
 } from "@voteapp/api-client";
 import { useMutation } from "@tanstack/react-query";
@@ -93,7 +95,13 @@ export default function HomeScreen() {
 
   const resolve = useMutation({
     mutationFn: (input: string) =>
-      apiRequest<AddressResolution>("/api/address/resolve", { method: "POST", body: { address: input } }),
+      // The accepted version rides along because the endpoint enforces the
+      // clickwrap too, refusing a search without one. Nothing is stored
+      // server-side — same rule as the web.
+      apiRequest<AddressResolution>("/api/address/resolve", {
+        method: "POST",
+        body: { address: input, accepted_terms_version: TERMS_VERSION },
+      }),
     onSuccess: (resolution) => {
       // Stash for the anonymous-to-account handoff: if this visitor signs
       // up, these districts become their saved ballot once they verify.
@@ -144,7 +152,15 @@ export default function HomeScreen() {
             <Text className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</Text>
           </View>
 
-          <LegalGate label={PRE_SEARCH_CHECKBOX_LABEL} checked={accepted} onChange={setAccepted} />
+          <LegalGate
+            label={PRE_SEARCH_CHECKBOX_LABEL}
+            checked={accepted}
+            onChange={setAccepted}
+            fullAgreement={{
+              paragraphs: PRE_SEARCH_AGREEMENT_PARAGRAPHS,
+              privacyNotice: PRIVACY_NOTICE,
+            }}
+          />
 
           <Pressable
             disabled={!canSearch}

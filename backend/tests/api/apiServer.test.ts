@@ -121,7 +121,7 @@ describe("createApiApp", () => {
     const response = await invokeExpressApp(createApiApp({ resolveAddress, logDiagnostics }), {
       method: "POST",
       path: "/api/address/resolve",
-      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
       headers: { "content-type": "application/json" },
     });
 
@@ -142,13 +142,50 @@ describe("createApiApp", () => {
     });
   });
 
+  it("refuses to resolve an address without an accepted terms version", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body).toEqual({
+      error: {
+        code: "invalid_request",
+        message: "Request body must include non-empty string field: accepted_terms_version",
+      },
+    });
+    // The clickwrap is the gate: a caller who accepted nothing gets no search,
+    // however they reached the endpoint.
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("refuses to resolve an address against a superseded terms version", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: "0.9" }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error.code).toBe("invalid_request");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
   it("defaults every response to cache-control no-store", async () => {
     const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
 
     const resolved = await invokeExpressApp(createApiApp({ resolveAddress }), {
       method: "POST",
       path: "/api/address/resolve",
-      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
       headers: { "content-type": "application/json" },
     });
     // Error paths must not be cached either.
@@ -172,7 +209,7 @@ describe("createApiApp", () => {
       {
         method: "POST",
         path: "/api/address/resolve",
-        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
         headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
       }
     );
@@ -191,7 +228,7 @@ describe("createApiApp", () => {
     const response = await invokeExpressApp(createApiApp({ resolveAddress, logDiagnostics }), {
       method: "POST",
       path: "/api/address/resolve",
-      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
       headers: { "content-type": "application/json" },
     });
 
@@ -239,7 +276,7 @@ describe("createApiApp", () => {
       {
         method: "POST",
         path: "/api/address/resolve",
-        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
         headers: { origin: "https://evil.example", "content-type": "application/json" },
       }
     );
@@ -262,7 +299,7 @@ describe("createApiApp", () => {
     const response = await invokeExpressApp(createApiApp({ resolveAddress, allowedOrigins: ["http://localhost:3000"] }), {
       method: "POST",
       path: "/api/address/resolve",
-      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
       headers: { "content-type": "application/json" },
     });
 
@@ -337,7 +374,7 @@ describe("createApiApp", () => {
     const response = await invokeExpressApp(createApiApp({ resolveAddress, allowedOrigins: ["*"] }), {
       method: "POST",
       path: "/api/address/resolve",
-      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
       headers: { origin: "https://frontend.example", "content-type": "application/json" },
     });
 
@@ -388,7 +425,7 @@ describe("createApiApp", () => {
       {
         method: "POST",
         path: "/api/other",
-        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
         headers: { origin: "https://evil.example", "content-type": "application/json" },
       }
     );
@@ -480,7 +517,7 @@ describe("createApiApp", () => {
     const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
       method: "POST",
       path: "/api/address/resolve",
-      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
       headers: { "content-type": "text/plain" },
     });
 
@@ -500,7 +537,7 @@ describe("createApiApp", () => {
     const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
       method: "POST",
       path: "/api/address/resolve",
-      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
       headers: { "content-type": "text/plain+json" },
     });
 
@@ -605,7 +642,7 @@ describe("createApiApp", () => {
     const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
       method: "POST",
       path: "/api/address/resolve",
-      body: JSON.stringify({ address: "missing address" }),
+      body: JSON.stringify({ address: "missing address", accepted_terms_version: CURRENT_TERMS_VERSION }),
       headers: { "content-type": "application/json" },
     });
 
@@ -629,7 +666,7 @@ describe("createApiApp", () => {
       const response = await invokeExpressApp(createApiApp({ resolveAddress, captureUnexpectedError }), {
         method: "POST",
         path: "/api/address/resolve",
-        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
         headers: { "content-type": "application/json" },
       });
 
@@ -673,7 +710,7 @@ describe("createApiApp", () => {
       const response = await invokeExpressApp(createApiApp({ resolveAddress, captureUnexpectedError }), {
         method: "POST",
         path: "/api/address/resolve",
-        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+        body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
         headers: { "content-type": "application/json" },
       });
 
@@ -856,7 +893,7 @@ describe("createApiApp", () => {
     const response = await invokeExpressApp(createApiApp({ resolveAddress, resolveClientIp, rateLimit }), {
       method: "POST",
       path: "/api/address/resolve",
-      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
       headers: { "content-type": "application/json", "x-forwarded-for": "198.51.100.44" },
       remoteAddress: "10.0.0.5",
     });
@@ -2688,7 +2725,7 @@ describe("createApiApp", () => {
     const resolveResponse = await invokeExpressApp(app, {
       method: "POST",
       path: "/api/address/resolve",
-      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706" }),
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: CURRENT_TERMS_VERSION }),
       headers: { "content-type": "application/json" },
     });
     expect(resolveResponse.statusCode).toBe(200);
