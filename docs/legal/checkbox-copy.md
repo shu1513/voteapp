@@ -46,11 +46,11 @@ Heading: **What you are agreeing to**. Body repeats the checkbox label, then:
 > Elections Simplified provides AI-assisted informational research only. It is
 > not an official election source, and results may be inaccurate, incomplete,
 > outdated, or misleading.
-
+>
 > You must verify voting, registration, ballot, district, polling-place,
 > deadline, and election-result information with official election authorities
 > before relying on it.
-
+>
 > Disputes are resolved by binding individual arbitration with a class-action
 > waiver, as described in Section 12 of the Terms of Use, unless you opt out as
 > described there.
