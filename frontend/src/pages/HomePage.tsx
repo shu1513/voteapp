@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
 import type { AddressResolution } from "@voteapp/api-client";
@@ -151,9 +151,18 @@ export function HomePage() {
                 starts while the visitor types and long before Search. */}
             <p className="mt-1 text-xs text-ink-soft">
               {ADDRESS_FIELD_PRIVACY_NOTE}{" "}
-              <Link to="/privacy" className="underline hover:text-rausch">
+              {/* New tab, like the dialog's links: the address lives in this
+                  page's state, so navigating away to read the policy and
+                  coming back would hand the visitor an empty field. Reading
+                  what you are told to read must not cost you your work. */}
+              <a
+                href="/privacy"
+                target="_blank"
+                rel="noreferrer"
+                className="underline hover:text-rausch"
+              >
                 Privacy notice
-              </Link>
+              </a>
             </p>
           </div>
 

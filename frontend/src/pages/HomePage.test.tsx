@@ -75,6 +75,11 @@ describe("HomePage pre-search clickwrap", () => {
     expect(
       screen.getByText(/We use the address you enter to find your districts and do not sell it/)
     ).toBeInTheDocument();
+    // New tab: the address lives in page state, so reading the policy in this
+    // tab would return the visitor to an empty field.
+    const notice = screen.getByRole("link", { name: "Privacy notice" });
+    expect(notice).toHaveAttribute("href", "/privacy");
+    expect(notice).toHaveAttribute("target", "_blank");
   });
 
   it("does not open the dialog without an address", async () => {

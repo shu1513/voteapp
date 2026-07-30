@@ -1,8 +1,8 @@
 import type { AddressResolution } from "@voteapp/api-client";
 import { apiRequest, ADDRESS_FIELD_PRIVACY_NOTE, TERMS_VERSION, useMe } from "@voteapp/api-client";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useState } from "react";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from "react-native";
 import { AddressAutocomplete } from "../../components/AddressAutocomplete";
 import { PreSearchTermsSheet } from "../../components/PreSearchTermsSheet";
@@ -79,6 +79,9 @@ export default function HomeScreen() {
   const { me } = useMe();
   const [address, setAddress] = useState("");
   const [termsVisible, setTermsVisible] = useState(false);
+  // Set only while the visitor is off reading a linked document, so the sheet
+  // can be restored on return instead of treated as cancelled.
+  const [termsSuspended, setTermsSuspended] = useState(false);
   // The sheet's checkbox. Reset to false every time the sheet opens, never
   // seeded from storage: remembering decides whether the sheet opens and
   // nothing more. A box that arrives pre-ticked shows assent nobody gave.
@@ -118,18 +121,33 @@ export default function HomeScreen() {
     },
   });
 
-  const canSearch = address.trim().length > 0 && !resolve.isPending;
+  // Reading acceptance is async here (AsyncStorage), and resolve.isPending
+  // only flips once the request is actually issued. Without a flag covering
+  // that gap the button stays live, so a double-tap re-enters, both reads
+  // report acceptance, and two searches fire — two ballot screens pushed and
+  // two handoff saves. The web has no equivalent gap: localStorage is
+  // synchronous.
+  const [checkingAcceptance, setCheckingAcceptance] = useState(false);
+  const canSearch = address.trim().length > 0 && !resolve.isPending && !checkingAcceptance;
 
   async function onSearchPress() {
     if (!canSearch) {
       return;
     }
-    if (await hasCurrentTermsAcceptance()) {
-      resolve.mutate(address.trim());
-      return;
+    // Captured before the await: the field stays editable while the read is
+    // in flight, and the search must use what was on screen when it started.
+    const searchAddress = address.trim();
+    setCheckingAcceptance(true);
+    try {
+      if (await hasCurrentTermsAcceptance()) {
+        resolve.mutate(searchAddress);
+        return;
+      }
+      setAccepted(false);
+      setTermsVisible(true);
+    } finally {
+      setCheckingAcceptance(false);
     }
-    setAccepted(false);
-    setTermsVisible(true);
   }
 
   function agreeAndSearch() {
@@ -149,8 +167,28 @@ export default function HomeScreen() {
     }
     setTermsVisible(false);
     setAccepted(false);
+    setTermsSuspended(false);
     // The typed address is deliberately left alone.
   }
+
+  // Reading one of the linked documents means leaving this screen, which a
+  // native Modal cannot survive. Closing the sheet for that is not the same
+  // as cancelling: the tick is kept and the sheet comes back when this screen
+  // is focused again, so reviewing what you are agreeing to does not send you
+  // back to pressing Search and ticking the box a second time.
+  function suspendTermsForDocument() {
+    setTermsVisible(false);
+    setTermsSuspended(true);
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      if (termsSuspended) {
+        setTermsSuspended(false);
+        setTermsVisible(true);
+      }
+    }, [termsSuspended])
+  );
 
   return (
     <KeyboardAvoidingView className="flex-1 bg-white" behavior={Platform.OS === "ios" ? "padding" : undefined}>
@@ -224,6 +262,7 @@ export default function HomeScreen() {
         onCheckedChange={setAccepted}
         onAgree={agreeAndSearch}
         onCancel={cancelTerms}
+        onSuspendForDocument={suspendTermsForDocument}
         pending={resolve.isPending}
       />
     </KeyboardAvoidingView>

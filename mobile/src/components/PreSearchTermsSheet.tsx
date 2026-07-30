@@ -26,6 +26,8 @@ type PreSearchTermsSheetProps = {
   onCheckedChange: (checked: boolean) => void;
   onAgree: () => void;
   onCancel: () => void;
+  /** Hides the sheet to show a document, keeping the tick to restore after. */
+  onSuspendForDocument: () => void;
   pending: boolean;
 };
 
@@ -35,6 +37,7 @@ export function PreSearchTermsSheet({
   onCheckedChange,
   onAgree,
   onCancel,
+  onSuspendForDocument,
   pending,
 }: PreSearchTermsSheetProps) {
   const router = useRouter();
@@ -47,7 +50,18 @@ export function PreSearchTermsSheet({
       // already in flight.
       onRequestClose={pending ? () => undefined : onCancel}
     >
-      <View className="flex-1 justify-end bg-ink/40">
+      <View className="flex-1 justify-end">
+        {/* A sibling rather than a wrapper, so a tap on the sheet cannot
+            reach it. A darkened backdrop that ignores taps is worse than no
+            backdrop: dismissing a bottom sheet by tapping outside it is what
+            people expect, and the web dialog already behaves that way. */}
+        <Pressable
+          className="absolute inset-0 bg-ink/40"
+          accessibilityRole="button"
+          accessibilityLabel="Close"
+          disabled={pending}
+          onPress={pending ? undefined : onCancel}
+        />
         <View className="max-h-[88%] rounded-t-2xl bg-white">
           <View className="border-b border-line px-5 py-4">
             <Text accessibilityRole="header" className="text-lg font-bold text-ink">
@@ -89,10 +103,13 @@ export function PreSearchTermsSheet({
                     className="text-sm font-medium text-ink underline"
                     accessibilityRole="link"
                     onPress={() => {
-                      // Dismiss first: a screen pushed under a visible Modal
-                      // is unreachable. The typed address is untouched, so
-                      // returning and pressing Search resumes the flow.
-                      onCancel();
+                      // The sheet has to close — a screen pushed under a
+                      // visible Modal is unreachable — but closing must not
+                      // count as cancelling. Suspending keeps the tick and
+                      // reopens the sheet when this screen regains focus, so
+                      // reading a document does not cost the visitor their
+                      // place in the agreement.
+                      onSuspendForDocument();
                       router.push(document.path);
                     }}
                   >
