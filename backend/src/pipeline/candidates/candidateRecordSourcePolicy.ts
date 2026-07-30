@@ -62,6 +62,48 @@ const BLOCKED_SOURCE_DOMAINS: readonly string[] = [
   "youtube.com",
 ];
 
+// Auto-generated candidate directories: sites that machine-generate a page for
+// every filed candidate, invite the candidate to claim it, and fill the gaps
+// with generated prose. They cite nothing, so no individual claim on them is
+// auditable, and they publish confident biographical detail that no human ever
+// checked. Distinct from the UGC list above — the failure mode is fabrication
+// by generation, not astroturfing by posting.
+//
+// civoren.com, verified 2026-07-30: its Matthew Smith page states "First
+// Elected: 2018", describes "his legislative career", and places him in Battle
+// Creek / Calhoun County. Michigan HD 62 is a Macomb County seat (Fraser,
+// Harrison Twp, Chesterfield, Clinton Twp, Roseville, St. Clair Shores) held by
+// Alicia St. Germaine since 2023; Smith is a challenger who has never held
+// office. The page invented a county, a year, and an entire incumbency.
+//
+// Blocking is citation-only by design. These sites are still worth READING for
+// leads: an audit of the 13 stored records that cited civoren found all 13
+// claims true once chased to primaries, and one (an insurance career confirmed
+// at FL DFS licensee D029506) appeared on no other site. Chase the lead, cite
+// the primary.
+//
+// Second-order reason this class needs a hard block rather than a doc note:
+// civoren's robots.txt explicitly Allows GPTBot, ClaudeBot, PerplexityBot,
+// CCBot and Google-Extended. Its pages are built to be ingested by AI systems,
+// and a 2026-07-30 web search restated its invented incumbency as fact with no
+// attribution — so a researcher can absorb the fabrication without ever
+// visiting the domain, and two "independent" summaries can share one poisoned
+// well.
+const GENERATED_CANDIDATE_DIRECTORY_DOMAINS: readonly string[] = ["civoren.com"];
+
+// Bot-check interstitials are not publishers at all. A researcher who copies
+// the URL out of the address bar while a WAF challenge is showing captures the
+// challenge, not the article: the real page survives only inside a query
+// parameter, and the interstitial URL is session-bound, opaque, and expires.
+// Live: 11 stored records cite validate.perfdrive.com (Radware Bot Manager)
+// while their actual source is a Minnesota Secretary of State press release
+// carried in the 'ssc=' parameter. Blocking also closes a laundering hole —
+// an interstitial URL classifies on the interstitial's hostname, so it can
+// carry a blocked or unlisted origin past a tier check.
+const BOT_CHECK_INTERSTITIAL_DOMAINS: readonly string[] = [
+  "validate.perfdrive.com",
+];
+
 // Single accept tier (user decision: no A/B split): sources with official or
 // editorial accountability. This is a STARTER list, not a gate — unlisted
 // domains are still accepted (see evaluateCandidateRecordSourcePolicy); the
@@ -305,6 +347,26 @@ function hostnameMatchesDomain(hostname: string, domain: string): boolean {
   return hostname === domain || hostname.endsWith(`.${domain}`);
 }
 
+function matchesAnyDomain(hostname: string, domains: readonly string[]): boolean {
+  return domains.some((domain) => hostnameMatchesDomain(hostname, domain));
+}
+
+// The blocked tier now covers three distinct failure modes, and the operator
+// (or the enricher's repair model) needs to know WHICH one to act on: a UGC
+// post needs secondary coverage, a generated directory needs the primary it
+// points at, and an interstitial needs the URL hiding in its own query string.
+function blockedSourceReason(hostname: string): string {
+  if (matchesAnyDomain(hostname, BOT_CHECK_INTERSTITIAL_DOMAINS)) {
+    return `source domain '${hostname}' is a bot-check interstitial, not a publisher; the real page URL is carried inside the interstitial's query string (Radware uses 'ssc='), so cite that page directly`;
+  }
+
+  if (matchesAnyDomain(hostname, GENERATED_CANDIDATE_DIRECTORY_DOMAINS)) {
+    return `source domain '${hostname}' is an auto-generated candidate directory that cites no sources and has been observed inventing officeholding history; use it as a lead only and cite the primary source it leads you to`;
+  }
+
+  return `source domain '${hostname}' is a user-generated/social platform; cite an official (.gov/court), news, or research-grade source instead`;
+}
+
 // Legacy state-government hostnames predating .gov migration, e.g.
 // courts.state.mn.us, sos.state.tx.us.
 const STATE_US_HOSTNAME_PATTERN = /(?:^|\.)state\.[a-z]{2}\.us$/;
@@ -322,10 +384,12 @@ export function classifyCandidateRecordSourceDomain(
     return { tier: "unlisted", hostname: "" };
   }
 
-  for (const domain of BLOCKED_SOURCE_DOMAINS) {
-    if (hostnameMatchesDomain(hostname, domain)) {
-      return { tier: "blocked", hostname };
-    }
+  if (
+    matchesAnyDomain(hostname, BLOCKED_SOURCE_DOMAINS) ||
+    matchesAnyDomain(hostname, GENERATED_CANDIDATE_DIRECTORY_DOMAINS) ||
+    matchesAnyDomain(hostname, BOT_CHECK_INTERSTITIAL_DOMAINS)
+  ) {
+    return { tier: "blocked", hostname };
   }
 
   if (
@@ -371,10 +435,7 @@ export function evaluateCandidateRecordSourcePolicy(input: {
   const { tier, hostname } = classifyCandidateRecordSourceDomain(input.sourceUrl);
 
   if (tier === "blocked") {
-    return {
-      ok: false,
-      reason: `source domain '${hostname}' is a user-generated/social platform; cite an official (.gov/court), news, or research-grade source instead`,
-    };
+    return { ok: false, reason: blockedSourceReason(hostname) };
   }
 
   if (tier === "unlisted" && matchesDamagingClaimPattern(input.description)) {

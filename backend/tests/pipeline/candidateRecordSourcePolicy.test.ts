@@ -38,6 +38,28 @@ describe("classifyCandidateRecordSourceDomain", () => {
     }
   });
 
+  it("blocks auto-generated candidate directories including subdomains", () => {
+    expect(classifyCandidateRecordSourceDomain("https://www.civoren.com/candidate/x").tier).toBe(
+      "blocked"
+    );
+    expect(classifyCandidateRecordSourceDomain("https://civoren.com/candidate/x").tier).toBe(
+      "blocked"
+    );
+  });
+
+  it("blocks bot-check interstitials", () => {
+    expect(
+      classifyCandidateRecordSourceDomain(
+        "https://validate.perfdrive.com/?ssa=abc&ssc=https%3A%2F%2Fwww.sos.mn.gov%2Fnews%2Fx"
+      ).tier
+    ).toBe("blocked");
+  });
+
+  it("does not block lookalike directory or interstitial domains by substring", () => {
+    expect(classifyCandidateRecordSourceDomain("https://notcivoren.com/a").tier).toBe("unlisted");
+    expect(classifyCandidateRecordSourceDomain("https://perfdrive.com/a").tier).toBe("unlisted");
+  });
+
   it("lists any .gov or .mil hostname", () => {
     expect(classifyCandidateRecordSourceDomain("https://sos.ca.gov/elections").tier).toBe("listed");
     expect(classifyCandidateRecordSourceDomain("https://www.congress.gov/bill/x").tier).toBe(
@@ -194,6 +216,30 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
     if (!result.ok) {
       expect(result.reason).toContain("user-generated/social platform");
       expect(result.reason).toContain("www.reddit.com");
+    }
+  });
+
+  it("tells the caller which blocked class it hit so the fix is actionable", () => {
+    const directory = evaluateCandidateRecordSourcePolicy({
+      description: "Served as a city council member from 2018 to 2022.",
+      sourceUrl: "https://www.civoren.com/candidate/some-person",
+    });
+    expect(directory.ok).toBe(false);
+    if (!directory.ok) {
+      expect(directory.reason).toContain("auto-generated candidate directory");
+      expect(directory.reason).toContain("lead only");
+      expect(directory.reason).not.toContain("user-generated/social platform");
+    }
+
+    const interstitial = evaluateCandidateRecordSourcePolicy({
+      description: "Appointed a new elections director in 2025.",
+      sourceUrl:
+        "https://validate.perfdrive.com/?ssa=abc&ssc=https%3A%2F%2Fwww.sos.mn.gov%2Fnews%2Fx",
+    });
+    expect(interstitial.ok).toBe(false);
+    if (!interstitial.ok) {
+      expect(interstitial.reason).toContain("bot-check interstitial");
+      expect(interstitial.reason).toContain("ssc=");
     }
   });
 
