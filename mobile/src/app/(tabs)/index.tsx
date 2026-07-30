@@ -109,6 +109,14 @@ export default function HomeScreen() {
       // asked for. The matched address goes through the in-memory holder,
       // never navigation params — see lib/matchedAddress.ts.
       setMatchedAddress(resolution.matched_address, resolution.address_match_count);
+      // Dismiss the sheet before navigating. A native Modal is a window-level
+      // overlay that the navigator does not clip, and pushing a screen leaves
+      // this one mounted, so a sheet left open would sit on top of the ballot
+      // it just opened — and would still be there, ticked, on the way back.
+      // The web needs no equivalent: navigating unmounts the page and takes
+      // the dialog and its state with it.
+      setTermsVisible(false);
+      setAccepted(false);
       router.push({
         pathname: "/ballot",
         params: { d: resolution.districts.map((district) => district.id).join(",") },
