@@ -38,6 +38,22 @@ describe("classifyCandidateRecordSourceDomain", () => {
     }
   });
 
+  it("reports WHY a domain is blocked, not just that it is", () => {
+    const ugc = classifyCandidateRecordSourceDomain("https://www.reddit.com/r/x");
+    const directory = classifyCandidateRecordSourceDomain("https://www.civoren.com/candidate/x");
+    const interstitial = classifyCandidateRecordSourceDomain(
+      "https://validate.perfdrive.com/?ssc=https%3A%2F%2Fwww.sos.mn.gov%2Fnews%2Fx"
+    );
+
+    expect(ugc.tier === "blocked" && ugc.blockedKind).toBe("ugc_social");
+    expect(directory.tier === "blocked" && directory.blockedKind).toBe(
+      "generated_candidate_directory"
+    );
+    expect(interstitial.tier === "blocked" && interstitial.blockedKind).toBe(
+      "bot_check_interstitial"
+    );
+  });
+
   it("blocks auto-generated candidate directories including subdomains", () => {
     expect(classifyCandidateRecordSourceDomain("https://www.civoren.com/candidate/x").tier).toBe(
       "blocked"

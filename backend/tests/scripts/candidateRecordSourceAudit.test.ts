@@ -309,6 +309,34 @@ describe("buildSourceTierSweep", () => {
     expect(sweep.blockedDomainRecords[0]?.sourceUrl).toBe("https://www.reddit.com/r/politics/x");
   });
 
+  it("separates blocked rows by class and carries the matching repair", () => {
+    const records = [
+      makeRecord({ source_url: "https://www.reddit.com/r/politics/x" }),
+      makeRecord({ source_url: "https://www.civoren.com/candidate/some-person" }),
+      makeRecord({
+        source_url:
+          "https://validate.perfdrive.com/?ssa=abc&ssc=https%3A%2F%2Fwww.sos.mn.gov%2Fnews%2Fx",
+      }),
+    ];
+    const sweep = buildSourceTierSweep(records);
+
+    expect(sweep.tierCounts.blocked).toBe(3);
+    expect(sweep.blockedKindCounts).toEqual({
+      ugc_social: 1,
+      generated_candidate_directory: 1,
+      bot_check_interstitial: 1,
+    });
+
+    const byKind = new Map(sweep.blockedDomainRecords.map((record) => [record.blockedKind, record]));
+    // The interstitial repair must point at the embedded URL, NOT tell the
+    // operator the source is untrustworthy — the underlying page is a .gov
+    // press release and discarding it would lose a good citation.
+    expect(byKind.get("bot_check_interstitial")?.repair).toContain("ssc=");
+    expect(byKind.get("generated_candidate_directory")?.repair).toContain("lead only");
+    expect(byKind.get("ugc_social")?.repair).toContain("secondary coverage");
+    expect(byKind.get("bot_check_interstitial")?.repair).not.toContain("secondary coverage");
+  });
+
   it("sorts unlisted domains by record count descending", () => {
     const records = [
       makeRecord({ source_url: "https://one-record.com/a" }),

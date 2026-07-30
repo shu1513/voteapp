@@ -1,6 +1,8 @@
 import {
+  BLOCKED_SOURCE_KIND_REPAIR,
   classifyCandidateRecordSourceDomain,
   matchesDamagingClaimPattern,
+  type BlockedSourceKind,
 } from "../pipeline/candidates/candidateRecordSourcePolicy.js";
 
 /**
@@ -86,6 +88,7 @@ function toDomainKey(hostname: string): string | null {
 type ClassifiedRecord = {
   row: SourceAuditRecordRow;
   tier: "blocked" | "listed" | "unlisted";
+  blockedKind: BlockedSourceKind | null;
   domainKey: string | null;
   createdAtMs: number;
 };
@@ -96,6 +99,7 @@ function classifyRows(records: readonly SourceAuditRecordRow[]): ClassifiedRecor
     return {
       row,
       tier: classification.tier,
+      blockedKind: classification.tier === "blocked" ? classification.blockedKind : null,
       domainKey: toDomainKey(classification.hostname),
       createdAtMs: Date.parse(row.created_at),
     };
@@ -121,6 +125,28 @@ function toSampleRecord(row: SourceAuditRecordRow): SourceAuditSampleRecord {
     createdAt: row.created_at,
     origin: row.origin,
     originRunId: row.origin_run_id,
+  };
+}
+
+/**
+ * A stored row citing a blocked domain, carrying WHY it is blocked and what
+ * the repair is. The write-time policy explains itself in its rejection
+ * message, but these rows never take that path again — they are discovered
+ * here, so the instruction has to travel with them.
+ */
+export type BlockedSourceAuditRecord = SourceAuditSampleRecord & {
+  blockedKind: BlockedSourceKind;
+  repair: string;
+};
+
+function toBlockedRecord(
+  row: SourceAuditRecordRow,
+  blockedKind: BlockedSourceKind
+): BlockedSourceAuditRecord {
+  return {
+    ...toSampleRecord(row),
+    blockedKind,
+    repair: BLOCKED_SOURCE_KIND_REPAIR[blockedKind],
   };
 }
 
@@ -377,11 +403,19 @@ export type SourceTierSweep = {
   tierCounts: { listed: number; unlisted: number; blocked: number };
   unlistedDomains: UnlistedDomainSummary[];
   /**
-   * Stored records citing BLOCKED (UGC/social) domains. The import policy
-   * rejects these now, so any hit predates PR 1 (or arrived through a path
-   * the policy missed) and is a direct cleanup candidate.
+   * Stored records citing a BLOCKED domain of any class — UGC/social,
+   * auto-generated candidate directory, or bot-check interstitial. The import
+   * policy rejects these now, so any hit predates the policy (or arrived
+   * through a path it missed) and is a direct cleanup candidate. Each row
+   * carries its `blockedKind` and `repair` because the three classes need
+   * three different fixes: secondary coverage for UGC, the underlying primary
+   * for a directory, and the URL embedded in the query string for an
+   * interstitial. Treating an interstitial as untrustworthy CONTENT would
+   * discard a perfectly good .gov citation.
    */
-  blockedDomainRecords: SourceAuditSampleRecord[];
+  blockedDomainRecords: BlockedSourceAuditRecord[];
+  /** Blocked-row counts per class, so the headline is not one opaque total. */
+  blockedKindCounts: Record<BlockedSourceKind, number>;
 };
 
 /**
@@ -397,11 +431,17 @@ export function buildSourceTierSweep(records: readonly SourceAuditRecordRow[]): 
     string,
     { candidateIds: Set<string>; damagingCount: number; records: ClassifiedRecord[] }
   >();
-  const blockedRecords: ClassifiedRecord[] = [];
+  const blockedRecords: BlockedSourceAuditRecord[] = [];
+  const blockedKindCounts: Record<BlockedSourceKind, number> = {
+    ugc_social: 0,
+    generated_candidate_directory: 0,
+    bot_check_interstitial: 0,
+  };
   for (const record of classifyRows(records)) {
     tierCounts[record.tier] += 1;
-    if (record.tier === "blocked") {
-      blockedRecords.push(record);
+    if (record.tier === "blocked" && record.blockedKind) {
+      blockedRecords.push(toBlockedRecord(record.row, record.blockedKind));
+      blockedKindCounts[record.blockedKind] += 1;
       continue;
     }
     if (record.tier !== "unlisted") {
@@ -430,6 +470,7 @@ export function buildSourceTierSweep(records: readonly SourceAuditRecordRow[]): 
         damagingRecordCount: group.damagingCount,
         sampleRecords: group.records.slice(0, 3).map((record) => toSampleRecord(record.row)),
       })),
-    blockedDomainRecords: blockedRecords.map((record) => toSampleRecord(record.row)),
+    blockedDomainRecords: blockedRecords,
+    blockedKindCounts,
   };
 }

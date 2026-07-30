@@ -1,8 +1,39 @@
 export type CandidateRecordSourceTier = "blocked" | "listed" | "unlisted";
 
-export type CandidateRecordSourceDomainClassification = {
-  tier: CandidateRecordSourceTier;
-  hostname: string;
+// Why a domain is blocked, not just that it is. The three classes need three
+// DIFFERENT repairs, and the audit path over already-stored rows has no other
+// way to tell them apart — it classifies a bare URL and never sees the
+// rejection message the write path produces.
+export type BlockedSourceKind =
+  | "ugc_social"
+  | "generated_candidate_directory"
+  | "bot_check_interstitial";
+
+// Discriminated on tier so `blockedKind` is REQUIRED whenever tier is
+// "blocked" and absent otherwise. An optional field would invite
+// `blockedKind ?? "ugc_social"` at call sites, which is precisely the
+// mislabeling this type exists to prevent.
+export type CandidateRecordSourceDomainClassification =
+  | { tier: "listed" | "unlisted"; hostname: string }
+  | { tier: "blocked"; hostname: string; blockedKind: BlockedSourceKind };
+
+// One sentence per class, shared by the write-time rejection message and the
+// stored-row audit. Both readers need the same instruction, and an operator
+// handed only the enum token still has to know what it means.
+export const BLOCKED_SOURCE_KIND_REPAIR: Record<BlockedSourceKind, string> = {
+  ugc_social:
+    "cite an official (.gov/court), news, or research-grade source instead; a UGC post is citable only through secondary coverage by an accountable publisher",
+  generated_candidate_directory:
+    "use it as a lead only and cite the primary source it leads you to; its claims may well be true, but they are machine-generated and unaudited",
+  bot_check_interstitial:
+    "the real page URL is carried inside the interstitial's query string (Radware uses 'ssc='), so URL-decode it and cite that page directly",
+};
+
+const BLOCKED_SOURCE_KIND_LABEL: Record<BlockedSourceKind, string> = {
+  ugc_social: "a user-generated/social platform",
+  generated_candidate_directory:
+    "an auto-generated candidate directory that cites no sources and has been observed inventing officeholding history",
+  bot_check_interstitial: "a bot-check interstitial, not a publisher",
 };
 
 export type CandidateRecordSourcePolicyResult =
@@ -351,20 +382,23 @@ function matchesAnyDomain(hostname: string, domains: readonly string[]): boolean
   return domains.some((domain) => hostnameMatchesDomain(hostname, domain));
 }
 
-// The blocked tier now covers three distinct failure modes, and the operator
-// (or the enricher's repair model) needs to know WHICH one to act on: a UGC
-// post needs secondary coverage, a generated directory needs the primary it
-// points at, and an interstitial needs the URL hiding in its own query string.
-function blockedSourceReason(hostname: string): string {
+// Resolution order is significant only in that each domain belongs to exactly
+// one list; a hostname on none of them is not blocked.
+function resolveBlockedSourceKind(hostname: string): BlockedSourceKind | null {
   if (matchesAnyDomain(hostname, BOT_CHECK_INTERSTITIAL_DOMAINS)) {
-    return `source domain '${hostname}' is a bot-check interstitial, not a publisher; the real page URL is carried inside the interstitial's query string (Radware uses 'ssc='), so cite that page directly`;
+    return "bot_check_interstitial";
   }
-
   if (matchesAnyDomain(hostname, GENERATED_CANDIDATE_DIRECTORY_DOMAINS)) {
-    return `source domain '${hostname}' is an auto-generated candidate directory that cites no sources and has been observed inventing officeholding history; use it as a lead only and cite the primary source it leads you to`;
+    return "generated_candidate_directory";
   }
+  if (matchesAnyDomain(hostname, BLOCKED_SOURCE_DOMAINS)) {
+    return "ugc_social";
+  }
+  return null;
+}
 
-  return `source domain '${hostname}' is a user-generated/social platform; cite an official (.gov/court), news, or research-grade source instead`;
+export function describeBlockedSource(hostname: string, kind: BlockedSourceKind): string {
+  return `source domain '${hostname}' is ${BLOCKED_SOURCE_KIND_LABEL[kind]}; ${BLOCKED_SOURCE_KIND_REPAIR[kind]}`;
 }
 
 // Legacy state-government hostnames predating .gov migration, e.g.
@@ -384,12 +418,9 @@ export function classifyCandidateRecordSourceDomain(
     return { tier: "unlisted", hostname: "" };
   }
 
-  if (
-    matchesAnyDomain(hostname, BLOCKED_SOURCE_DOMAINS) ||
-    matchesAnyDomain(hostname, GENERATED_CANDIDATE_DIRECTORY_DOMAINS) ||
-    matchesAnyDomain(hostname, BOT_CHECK_INTERSTITIAL_DOMAINS)
-  ) {
-    return { tier: "blocked", hostname };
+  const blockedKind = resolveBlockedSourceKind(hostname);
+  if (blockedKind) {
+    return { tier: "blocked", hostname, blockedKind };
   }
 
   if (
@@ -432,10 +463,14 @@ export function evaluateCandidateRecordSourcePolicy(input: {
   description: string;
   sourceUrl: string;
 }): CandidateRecordSourcePolicyResult {
-  const { tier, hostname } = classifyCandidateRecordSourceDomain(input.sourceUrl);
+  const classification = classifyCandidateRecordSourceDomain(input.sourceUrl);
+  const { tier, hostname } = classification;
 
-  if (tier === "blocked") {
-    return { ok: false, reason: blockedSourceReason(hostname) };
+  if (classification.tier === "blocked") {
+    return {
+      ok: false,
+      reason: describeBlockedSource(hostname, classification.blockedKind),
+    };
   }
 
   if (tier === "unlisted" && matchesDamagingClaimPattern(input.description)) {
