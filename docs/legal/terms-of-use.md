@@ -10,14 +10,16 @@ operator's principal place of business — update if that changes.
 
 # Elections Simplified Terms of Use
 
-**Last updated:** July 18, 2026
-**Version:** 1.1
+**Last updated:** July 29, 2026
+**Version:** 1.2
 
 ## 1. Acceptance of these Terms
 
 These Terms of Use ("Terms") are an agreement between you and impactperdollar, the operator of the Elections Simplified service ("Elections Simplified," "we," "us," or "our") governing your use of the Elections Simplified website and services (the "Service"). By checking an agreement box, creating an account, submitting an address or search, or otherwise using the Service, you accept these Terms, the [Privacy Policy](/privacy), and the [AI Research and Election Information Disclaimer](/disclaimer) (the "Disclaimer"), which is incorporated into these Terms by reference. You consent to entering this agreement electronically.
 
 **Electronic communications and notices.** You consent to receive communications from us electronically — by email to your account address or by posting in the Service — and you agree that all agreements, notices, disclosures, and other communications we provide electronically satisfy any legal requirement that they be in writing. Notices to you are effective when posted in the Service or sent to your account email; notices to us must be sent to contact@electionssimplified.com.
+
+**Acceptance records.** We maintain electronic records showing when and how you accepted a legal-document bundle, the versions and cryptographic hashes of the documents in that bundle, the exact acceptance statement and action presented, and related account or request evidence. These records are used to administer this agreement and to establish, exercise, or defend legal claims, as described in the Privacy Policy.
 
 If you do not agree, do not use the Service.
 

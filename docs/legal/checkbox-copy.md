@@ -12,11 +12,15 @@ Freedom Financial Network):
 - Signup acceptance is recorded server-side: POST /api/auth/register requires
   accepted_terms_version matching CURRENT_TERMS_VERSION
   (backend/src/constants/legal.ts); stored on the user row with a timestamp.
-- Anonymous search acceptance is frontend-only (nothing to bind server-side);
-  localStorage may remember it per version.
+- Every acceptance is appended server-side to `legal_acceptance_events`,
+  including anonymous search acceptance. The record identifies the exact
+  document bundle and presentation, the affirmative action, server time,
+  request metadata, and the account or pseudonymous browser subject.
+- Acceptance history is append-only. A new acceptance never overwrites an
+  earlier event. UI state is never restored as a pre-checked box.
 -->
 
-# Checkbox and notice copy — Version 1.1
+# Checkbox and notice copy — Version 1.2
 
 ## Pre-search checkbox (anonymous address search)
 

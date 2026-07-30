@@ -31,6 +31,13 @@ import {
   RESEARCH_AREAS_PATH,
 } from "../../src/api/apiValidation.js";
 
+const LEGAL_FIELDS = {
+  accepted_terms_version: "1.0",
+  legal_presentation_version: "1.0",
+  legal_acceptance_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  legal_subject_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+};
+
 describe("candidate detail API contract constants", () => {
   it("defines and parses the public candidate detail path", () => {
     expect(CANDIDATE_DETAIL_PATH_PREFIX).toBe("/api/candidates/");
@@ -165,6 +172,7 @@ describe("public auth API contract constants", () => {
         email: "  user@example.com ",
         password: "correct horse battery staple",
         first_name: "  Alice  ",
+        ...LEGAL_FIELDS,
         accepted_terms_version: " 1.0 ",
       })
     ).toEqual({
@@ -172,6 +180,9 @@ describe("public auth API contract constants", () => {
       password: "correct horse battery staple",
       first_name: "Alice",
       accepted_terms_version: "1.0",
+      legal_presentation_version: "1.0",
+      legal_acceptance_id: LEGAL_FIELDS.legal_acceptance_id,
+      legal_subject_id: LEGAL_FIELDS.legal_subject_id,
     });
     // Clickwrap: registration without terms acceptance must not parse.
     expect(() =>

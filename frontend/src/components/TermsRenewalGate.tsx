@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useLocation } from "react-router";
-import { RENEWAL_CHECKBOX_LABEL, TERMS_VERSION, useAcceptTerms, useMe } from "@voteapp/api-client";
+import {
+  LEGAL_PRESENTATION_VERSION,
+  RENEWAL_CHECKBOX_LABEL,
+  TERMS_VERSION,
+  useAcceptTerms,
+  useMe,
+} from "@voteapp/api-client";
 import { LegalGate } from "./LegalGate";
+import { createLegalAcceptanceId, getOrCreateLegalSubjectId } from "../lib/legalAcceptance";
 
 // Routes the modal must not cover: the checkbox links to these documents,
 // and a user has to be able to read what they are agreeing to.
@@ -18,6 +25,7 @@ export function TermsRenewalGate() {
   const location = useLocation();
   const acceptTerms = useAcceptTerms();
   const [checked, setChecked] = useState(false);
+  const acceptanceId = useRef<string | null>(null);
 
   if (!me || me.accepted_terms_version === TERMS_VERSION) {
     return null;
@@ -57,7 +65,14 @@ export function TermsRenewalGate() {
         <button
           type="button"
           disabled={!checked || acceptTerms.isPending}
-          onClick={() => acceptTerms.mutate(TERMS_VERSION)}
+          onClick={() =>
+            acceptTerms.mutate({
+              acceptedTermsVersion: TERMS_VERSION,
+              presentationVersion: LEGAL_PRESENTATION_VERSION,
+              acceptanceId: (acceptanceId.current ??= createLegalAcceptanceId()),
+              subjectId: getOrCreateLegalSubjectId(),
+            })
+          }
           className="mt-4 w-full rounded-lg bg-rausch px-4 py-2.5 font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:opacity-50"
         >
           {acceptTerms.isPending ? "Saving…" : "Agree and continue"}

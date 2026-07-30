@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@voteapp/api-client";
+import { apiRequest, LEGAL_PRESENTATION_VERSION, TERMS_VERSION } from "@voteapp/api-client";
 import type { AddressResolution } from "@voteapp/api-client";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
-import { LegalGate } from "../components/LegalGate";
+import { PreSearchLegalGate } from "../components/PreSearchLegalGate";
 import { ErrorNotice } from "../components/Status";
 import { savePendingDistrictIds } from "../lib/pendingDistricts";
 import { useMe } from "@voteapp/api-client";
-import { PRE_SEARCH_CHECKBOX_LABEL, PRIVACY_NOTICE } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { createLegalAcceptanceId, getOrCreateLegalSubjectId } from "../lib/legalAcceptance";
 
 export function HomePage() {
   useDocumentTitle("Find what's on your ballot");
@@ -21,7 +21,9 @@ export function HomePage() {
   // has to be an affirmative act on this visit. Carrying a previous visit's
   // acceptance forward would hand the visitor a pre-ticked box, which is the
   // one thing a clickwrap gate must never do.
+  const [legalOpen, setLegalOpen] = useState(false);
   const [accepted, setAccepted] = useState(false);
+  const acceptanceId = useRef<string | null>(null);
 
   // Returning verified users land on their saved ballot; ?new=1 is the
   // escape hatch for a one-off anonymous search.
@@ -33,8 +35,17 @@ export function HomePage() {
   }, [me, oneOffSearch, navigate]);
 
   const resolve = useMutation({
-    mutationFn: (input: string) =>
-      apiRequest<AddressResolution>("/api/address/resolve", { method: "POST", body: { address: input } }),
+    mutationFn: (input: { address: string; acceptanceId: string }) =>
+      apiRequest<AddressResolution>("/api/address/resolve", {
+        method: "POST",
+        body: {
+          address: input.address,
+          accepted_terms_version: TERMS_VERSION,
+          legal_presentation_version: LEGAL_PRESENTATION_VERSION,
+          legal_acceptance_id: input.acceptanceId,
+          legal_subject_id: getOrCreateLegalSubjectId(),
+        },
+      }),
     onSuccess: (resolution) => {
       // Stash for the anonymous-to-account handoff: if this visitor signs up,
       // these districts become their saved ballot once they verify. Save only
@@ -56,14 +67,30 @@ export function HomePage() {
     },
   });
 
-  const canSearch = accepted && address.trim().length > 0 && !resolve.isPending;
+  const canSearch = address.trim().length > 0 && !resolve.isPending;
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (!canSearch) {
       return;
     }
-    resolve.mutate(address.trim());
+    setAccepted(false);
+    acceptanceId.current = null;
+    setLegalOpen(true);
+  }
+
+  function agreeAndSearch() {
+    if (!accepted || resolve.isPending) return;
+    acceptanceId.current ??= createLegalAcceptanceId();
+    resolve.mutate({ address: address.trim(), acceptanceId: acceptanceId.current });
+  }
+
+  function cancelLegalGate() {
+    if (resolve.isPending) return;
+    setLegalOpen(false);
+    setAccepted(false);
+    acceptanceId.current = null;
+    resolve.reset();
   }
 
   return (
@@ -79,6 +106,9 @@ export function HomePage() {
             Find out exactly what elections you can vote on, and who these candidates really are
             by their records instead of their slogans.
           </h1>
+          <p className="mt-4 text-base font-medium text-ink-soft">
+            Independent, nonpartisan, AI-assisted election research with sources linked.
+          </p>
         </div>
       </div>
       <div className="mx-auto max-w-2xl px-4 py-8">
@@ -91,7 +121,7 @@ export function HomePage() {
                 rejected as a demand for where you sleep, "Voting address"
                 read as the place you go to vote. */}
             <label htmlFor="address" className="block text-sm font-medium text-ink">
-              Enter your address to see the elections you can vote in
+              Enter your address to see the elections you can vote in:
             </label>
             <AddressAutocomplete
               inputId="address"
@@ -99,15 +129,7 @@ export function HomePage() {
               onChange={setAddress}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
             />
-            <p className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</p>
           </div>
-
-          <LegalGate
-            inputId="pre-search-terms"
-            label={PRE_SEARCH_CHECKBOX_LABEL}
-            checked={accepted}
-            onChange={setAccepted}
-          />
 
           <button
             type="submit"
@@ -126,6 +148,15 @@ export function HomePage() {
           </div>
         ) : null}
       </div>
+      <PreSearchLegalGate
+        open={legalOpen}
+        checked={accepted}
+        onChange={setAccepted}
+        onCancel={cancelLegalGate}
+        onAgree={agreeAndSearch}
+        pending={resolve.isPending}
+        error={resolve.isError}
+      />
     </>
   );
 }

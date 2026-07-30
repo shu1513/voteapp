@@ -5,6 +5,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vites
 import { createTrustedUserIdResolver } from "../../src/api/addressApiAuth.js";
 import { createApiApp } from "../../src/api/apiServer.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
+import { CURRENT_LEGAL_PRESENTATION_VERSION, CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
 
 const e2eEnabled = process.env.ADDRESS_API_PROXY_E2E === "true";
 const describeE2e = e2eEnabled ? describe : describe.skip;
@@ -208,6 +209,7 @@ describeE2e("address API auth proxy E2E", () => {
   beforeAll(async () => {
     const app = createApiApp({
       resolveAddress,
+      recordLegalAcceptance: vi.fn().mockResolvedValue(undefined),
       resolveAuthenticatedUserId: createTrustedUserIdResolver("X-User-Id"),
       initializeUserDistricts,
       lookupAuthenticatedBallotSummaries,
@@ -286,6 +288,10 @@ describeE2e("address API auth proxy E2E", () => {
   it("resolves an address through a real proxy and keeps the address route read-only", async () => {
     const response = await postJson(proxyBaseUrl, "/api/address/resolve", {
       address: "3921 Harlan Ave Baldwin Park CA 91706",
+      accepted_terms_version: CURRENT_TERMS_VERSION,
+      legal_presentation_version: CURRENT_LEGAL_PRESENTATION_VERSION,
+      legal_acceptance_id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+      legal_subject_id: "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
     });
 
     expect(response.status).toBe(200);

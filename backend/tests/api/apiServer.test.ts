@@ -3,9 +3,9 @@ import { Readable, Writable } from "node:stream";
 import express, { type Express } from "express";
 import { describe, expect, it, vi } from "vitest";
 
-import { createApiApp } from "../../src/api/apiServer.js";
+import { createApiApp as createApiAppBase } from "../../src/api/apiServer.js";
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../../src/api/apiValidation.js";
-import { CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
+import { CURRENT_LEGAL_PRESENTATION_VERSION, CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
 import type { CandidateElectionFinanceResult } from "../../src/pipeline/address/ballotLookup.js";
 import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAddressGeocoder.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
@@ -48,6 +48,13 @@ const resolvedAddress: AddressResolutionResult = {
 
 const districtId = "11111111-1111-4111-8111-111111111111";
 const electionId = "33333333-3333-4333-8333-333333333333";
+const legalAddressPayload = {
+  address: "3921 Harlan Ave Baldwin Park CA 91706",
+  accepted_terms_version: CURRENT_TERMS_VERSION,
+  legal_presentation_version: CURRENT_LEGAL_PRESENTATION_VERSION,
+  legal_acceptance_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  legal_subject_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+};
 
 function makeDistrictId(index: number): string {
   return `11111111-1111-4111-8111-${index.toString().padStart(12, "0")}`;
@@ -63,7 +70,17 @@ async function invokeExpressApp(
     remoteAddress?: string;
   }
 ): Promise<{ statusCode: number; headers: Record<string, string>; body: unknown; rawBody: string }> {
-  const requestBody = input.body ?? "";
+  let requestBody = input.body ?? "";
+  if (input.method === "POST" && input.path === "/api/address/resolve" && requestBody) {
+    try {
+      const parsed = JSON.parse(requestBody) as Record<string, unknown>;
+      if (typeof parsed.address === "string" && !("accepted_terms_version" in parsed)) {
+        requestBody = JSON.stringify({ ...legalAddressPayload, ...parsed });
+      }
+    } catch {
+      // Preserve malformed JSON tests exactly.
+    }
+  }
   const headers = {
     ...(input.headers ?? {}),
     ...(requestBody.length > 0 && !input.headers?.["content-length"]
@@ -113,7 +130,59 @@ async function invokeExpressApp(
   });
 }
 
+function createApiApp(options: Record<string, unknown> = {}): Express {
+  return createApiAppBase({
+    recordLegalAcceptance: vi.fn().mockResolvedValue(undefined),
+    ...options,
+  } as never);
+}
+
 describe("createApiApp", () => {
+  it("records legal acceptance before resolving an anonymous address", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+    const recordLegalAcceptance = vi.fn().mockResolvedValue(undefined);
+
+    const response = await invokeExpressApp(createApiApp({
+      resolveAddress,
+      recordLegalAcceptance,
+      allowedOrigins: ["https://electionssimplified.com"],
+    }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify(legalAddressPayload),
+      headers: {
+        "content-type": "application/json",
+        "user-agent": "Evidence Browser",
+        origin: "https://electionssimplified.com",
+      },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(recordLegalAcceptance).toHaveBeenCalledWith({
+      eventId: legalAddressPayload.legal_acceptance_id,
+      anonymousSubjectId: legalAddressPayload.legal_subject_id,
+      termsVersion: CURRENT_TERMS_VERSION,
+      presentationVersion: CURRENT_LEGAL_PRESENTATION_VERSION,
+      clientIp: "127.0.0.1",
+      userAgent: "Evidence Browser",
+      origin: "https://electionssimplified.com",
+      context: "anonymous_search",
+    });
+    expect(recordLegalAcceptance.mock.invocationCallOrder[0]).toBeLessThan(resolveAddress.mock.invocationCallOrder[0]);
+  });
+
+  it("fails closed when anonymous legal evidence storage is unavailable", async () => {
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+    const response = await invokeExpressApp(createApiAppBase({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify(legalAddressPayload),
+      headers: { "content-type": "application/json" },
+    });
+    expect(response.statusCode).toBe(500);
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
   it("serves POST /api/address/resolve without leaking coordinates or ballot data", async () => {
     const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
     const logDiagnostics = vi.fn();
@@ -3375,13 +3444,26 @@ describe("POST /api/me/terms-acceptance", () => {
         method: "POST",
         path: "/api/me/terms-acceptance",
         headers: { "x-user-id": userId, "content-type": "application/json" },
-        body: JSON.stringify({ accepted_terms_version: CURRENT_TERMS_VERSION }),
+        body: JSON.stringify({
+          accepted_terms_version: CURRENT_TERMS_VERSION,
+          legal_presentation_version: CURRENT_LEGAL_PRESENTATION_VERSION,
+          legal_acceptance_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          legal_subject_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        }),
       }
     );
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({ user: identity });
-    expect(acceptAuthenticatedUserTerms).toHaveBeenCalledWith(userId, CURRENT_TERMS_VERSION);
+    expect(acceptAuthenticatedUserTerms).toHaveBeenCalledWith(
+      userId,
+      CURRENT_TERMS_VERSION,
+      expect.objectContaining({
+        eventId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        anonymousSubjectId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        presentationVersion: CURRENT_LEGAL_PRESENTATION_VERSION,
+      })
+    );
   });
 
   it("rejects any version other than the current one", async () => {
@@ -3394,7 +3476,12 @@ describe("POST /api/me/terms-acceptance", () => {
         method: "POST",
         path: "/api/me/terms-acceptance",
         headers: { "x-user-id": userId, "content-type": "application/json" },
-        body: JSON.stringify({ accepted_terms_version: "0.9" }),
+        body: JSON.stringify({
+          accepted_terms_version: "0.9",
+          legal_presentation_version: CURRENT_LEGAL_PRESENTATION_VERSION,
+          legal_acceptance_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          legal_subject_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        }),
       }
     );
 
@@ -3411,7 +3498,12 @@ describe("POST /api/me/terms-acceptance", () => {
         method: "POST",
         path: "/api/me/terms-acceptance",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ accepted_terms_version: CURRENT_TERMS_VERSION }),
+        body: JSON.stringify({
+          accepted_terms_version: CURRENT_TERMS_VERSION,
+          legal_presentation_version: CURRENT_LEGAL_PRESENTATION_VERSION,
+          legal_acceptance_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          legal_subject_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        }),
       }
     );
 

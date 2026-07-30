@@ -45,6 +45,10 @@ GRANT INSERT, UPDATE, DELETE ON
   public.staging_items                     -- autoDistrictResearch upsert
 TO voteapp_api;
 
+-- Consent evidence is intentionally append-only. SELECT supports idempotent
+-- retry verification; UPDATE/DELETE are denied and DB triggers reject them.
+GRANT SELECT, INSERT ON public.legal_acceptance_events TO voteapp_api;
+
 -- 4. Future tables created by migrations (which run as the owner) are
 --    readable automatically; new write tables need an explicit GRANT in
 --    their migration.
@@ -96,5 +100,7 @@ API falls back to `DATABASE_URL` (owner) on the next restart.
 ## Ongoing rule
 
 When a migration adds a table the **API** must write (not just read), the
-migration must include the `GRANT INSERT, UPDATE, DELETE ... TO voteapp_api`
-itself. Read-only tables need nothing — the default privileges cover SELECT.
+migration must grant only required verbs. Most mutable API tables need
+`INSERT, UPDATE, DELETE`; append-only evidence tables need `INSERT` only
+(plus `SELECT` when idempotent retries must verify an existing row).
+Read-only tables need nothing — default privileges cover `SELECT`.

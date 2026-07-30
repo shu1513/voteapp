@@ -10,8 +10,8 @@ and confirm the "no advertising use" configuration claims hold for it.
 
 # Elections Simplified Privacy Policy
 
-**Last updated:** July 16, 2026
-**Version:** 1.0
+**Last updated:** July 29, 2026
+**Version:** 1.2
 
 This Privacy Policy describes how impactperdollar, the operator of the Elections Simplified service ("Elections Simplified," "we," "us"), collects, uses, and shares information when you use the Elections Simplified website and services (the "Service").
 
@@ -19,7 +19,9 @@ This Privacy Policy describes how impactperdollar, the operator of the Elections
 
 **Address and search input.** When you enter an address, we process it to determine your voting districts. The address is sent to geocoding services (see Section 3) and may be held in a server-side cache for up to 14 days to speed up repeat lookups; this cache is not linked to your account. What we store on your account is the resulting **list of districts** — not your street address. We do not maintain a saved-address book.
 
-**Account information.** If you create an account: your email address, first name, and a cryptographic hash of your password (we never store the password itself). We also record which version of our terms you accepted and when.
+**Account information.** If you create an account: your email address, first name, and a cryptographic hash of your password (we never store the password itself).
+
+**Legal acceptance records.** When you agree to our legal documents, we keep an append-only record of the acceptance event. It includes the server date and time; the versions and cryptographic hashes of the Terms of Use, Privacy Policy, and AI Research and Election Information Disclaimer; the exact acceptance statement, presentation version, and button or action used; whether acceptance occurred during an anonymous search, registration, or a later terms update; a pseudonymous browser identifier; and technical request information such as IP address, browser user agent, and origin. For account registration and later account acceptances, the record also includes the account identifier and a one-way hash of the account email address. It does not include the street address entered for a search.
 
 **Preferences and activity.** Settings you choose: candidates you follow, research-area interests, ballot ordering preferences, and email notification opt-ins. Because the Service is about elections, these choices may reflect your civic or political interests; we treat them as your private account data and never sell them or disclose them to third parties for advertising. We use them to provide the features you chose and to select relevant civic updates, information, and recommendations (occasionally including clearly labeled sponsored or promotional content) for the notification emails you control in settings; every such email includes a working unsubscribe link, and the underlying data never leaves us.
 
@@ -31,7 +33,7 @@ This Privacy Policy describes how impactperdollar, the operator of the Elections
 
 ## 2. How we use information
 
-To provide the Service (find your districts, show your ballot, send notification emails you opted into); to secure the Service (authentication, rate limiting, abuse prevention); to understand and improve how the Service is used (analytics); to communicate with you about your account (verification, password reset, email-change confirmation); and to comply with law. We do **not** sell personal information, share it for cross-context behavioral advertising, or use it to build advertising profiles.
+To provide the Service (find your districts, show your ballot, send notification emails you opted into); to document and administer your agreement to our legal terms; to secure the Service (authentication, rate limiting, abuse prevention); to understand and improve how the Service is used (analytics); to communicate with you about your account (verification, password reset, email-change confirmation); to establish, exercise, or defend legal claims; and to comply with law. We do **not** sell personal information, share it for cross-context behavioral advertising, or use it to build advertising profiles.
 
 ## 3. Service providers
 
@@ -50,7 +52,7 @@ We may also disclose information if we believe in good faith that disclosure is 
 
 ## 4. Retention and deletion
 
-Account data is kept while your account is active. If you delete your account, your account record and its associated data — email address, name, saved districts, follows, preferences, and notification history — are deleted immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration. Content reports you submitted while signed in are kept for moderation purposes with your account identifier and contact email removed. Residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics data is kept only as long as needed for the improvement purposes described above.
+Account data is kept while your account is active. If you delete your account, your account record and its associated data — email address, name, saved districts, follows, preferences, and notification history — are deleted immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration. Content reports you submitted while signed in are kept for moderation purposes with your account identifier and contact email removed. Legal acceptance records are retained separately for as long as reasonably necessary to document the agreement and establish, exercise, or defend legal claims; they retain the acceptance evidence described in Section 1 but not your street address or plain-text email address. Residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics data is kept only as long as needed for the improvement purposes described above.
 
 ## 5. Your choices
 

@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { createApiApp } from "../../src/api/apiServer.js";
 import { AUTH_SESSION_COOKIE_NAME } from "../../src/auth/authCookies.js";
-import { CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
+import { CURRENT_LEGAL_PRESENTATION_VERSION, CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
 import type { AuthService } from "../../src/auth/authService.js";
 
 async function invokeExpressApp(
@@ -87,6 +87,14 @@ function createAuthServiceMock(overrides: Partial<AuthService> = {}): AuthServic
 }
 
 const SESSION_USER_ID = "99999999-9999-4999-8999-999999999999";
+const LEGAL_ACCEPTANCE_ID = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+const LEGAL_SUBJECT_ID = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+const LEGAL_FIELDS = {
+  accepted_terms_version: CURRENT_TERMS_VERSION,
+  legal_presentation_version: CURRENT_LEGAL_PRESENTATION_VERSION,
+  legal_acceptance_id: LEGAL_ACCEPTANCE_ID,
+  legal_subject_id: LEGAL_SUBJECT_ID,
+};
 
 describe("public auth API endpoints", () => {
   it("registers users through the auth service", async () => {
@@ -100,7 +108,7 @@ describe("public auth API endpoints", () => {
         email: "user@example.com",
         password: "correct horse battery staple",
         first_name: "Alice",
-        accepted_terms_version: CURRENT_TERMS_VERSION,
+        ...LEGAL_FIELDS,
       }),
       headers: { "content-type": "application/json" },
     });
@@ -112,6 +120,15 @@ describe("public auth API endpoints", () => {
       password: "correct horse battery staple",
       firstName: "Alice",
       acceptedTermsVersion: CURRENT_TERMS_VERSION,
+      acceptanceEvidence: {
+        eventId: LEGAL_ACCEPTANCE_ID,
+        anonymousSubjectId: LEGAL_SUBJECT_ID,
+        termsVersion: CURRENT_TERMS_VERSION,
+        presentationVersion: CURRENT_LEGAL_PRESENTATION_VERSION,
+        clientIp: "127.0.0.1",
+        userAgent: null,
+        origin: null,
+      },
     });
   });
 
@@ -134,6 +151,7 @@ describe("public auth API endpoints", () => {
       body: JSON.stringify({
         email: "user@example.com",
         password: "correct horse battery staple",
+        ...LEGAL_FIELDS,
         accepted_terms_version: "0.9",
       }),
       headers: { "content-type": "application/json" },
@@ -453,7 +471,7 @@ describe("public auth API endpoints", () => {
       body: JSON.stringify({
         email: "user@example.com",
         password: "correct horse battery staple",
-        accepted_terms_version: CURRENT_TERMS_VERSION,
+        ...LEGAL_FIELDS,
       }),
       headers: { "content-type": "application/json" },
     });

@@ -1,11 +1,17 @@
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { createAuthService } from "../../src/auth/authService.js";
-import { CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
+import { CURRENT_LEGAL_PRESENTATION_VERSION, CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
 import { hashPassword } from "../../src/auth/authPrimitives.js";
 
 const USER_ID = "11111111-1111-4111-8111-111111111111";
 const CURRENT_PASSWORD = "correct-password-123";
+const ACCEPTANCE_EVIDENCE = {
+  eventId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  anonymousSubjectId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+  termsVersion: CURRENT_TERMS_VERSION,
+  presentationVersion: CURRENT_LEGAL_PRESENTATION_VERSION,
+};
 let currentPasswordHash: string;
 
 beforeAll(async () => {
@@ -132,6 +138,7 @@ describe("createAuthService register terms acceptance", () => {
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [] }) // user lookup: none
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // INSERT user
+      .mockResolvedValueOnce({ rows: [{ id: ACCEPTANCE_EVIDENCE.eventId, accepted_at: new Date() }] }) // legal evidence
       .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
       .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // INSERT token
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
@@ -147,6 +154,7 @@ describe("createAuthService register terms acceptance", () => {
       email: "new@example.com",
       password: "correct horse battery staple",
       acceptedTermsVersion: CURRENT_TERMS_VERSION,
+      acceptanceEvidence: ACCEPTANCE_EVIDENCE,
     });
 
     const insertCall = client.query.mock.calls.find((call) => String(call[0]).includes("INSERT INTO public.users"));
@@ -161,6 +169,7 @@ describe("createAuthService register terms acceptance", () => {
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // existing unverified user
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // UPDATE refresh
+      .mockResolvedValueOnce({ rows: [{ id: ACCEPTANCE_EVIDENCE.eventId, accepted_at: new Date() }] }) // legal evidence
       .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
       .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // INSERT token
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
@@ -176,6 +185,7 @@ describe("createAuthService register terms acceptance", () => {
       email: "user@example.com",
       password: "correct horse battery staple",
       acceptedTermsVersion: CURRENT_TERMS_VERSION,
+      acceptanceEvidence: ACCEPTANCE_EVIDENCE,
     });
 
     const updateCall = client.query.mock.calls.find((call) => String(call[0]).includes("UPDATE public.users"));
@@ -200,6 +210,7 @@ describe("createAuthService register terms acceptance", () => {
         email: "new@example.com",
         password: "correct horse battery staple",
         acceptedTermsVersion: "   ",
+        acceptanceEvidence: ACCEPTANCE_EVIDENCE,
       })
     ).rejects.toThrow("current terms version");
     // Defense-in-depth: even a direct caller bypassing the API layer cannot
@@ -209,6 +220,7 @@ describe("createAuthService register terms acceptance", () => {
         email: "new@example.com",
         password: "correct horse battery staple",
         acceptedTermsVersion: "0.9",
+        acceptanceEvidence: ACCEPTANCE_EVIDENCE,
       })
     ).rejects.toThrow("current terms version");
     expect(db.connect).not.toHaveBeenCalled();
@@ -715,6 +727,7 @@ describe("createAuthService session epoch revocation", () => {
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // existing unverified FOR UPDATE
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false, session_epoch: 2 })] }) // refresh UPDATE
+      .mockResolvedValueOnce({ rows: [{ id: ACCEPTANCE_EVIDENCE.eventId, accepted_at: new Date() }] }) // legal evidence
       .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
       .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // issue verification token
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
@@ -730,6 +743,7 @@ describe("createAuthService session epoch revocation", () => {
       email: "user@example.com",
       password: "brand-new-password-456",
       acceptedTermsVersion: CURRENT_TERMS_VERSION,
+      acceptanceEvidence: ACCEPTANCE_EVIDENCE,
     });
 
     const refreshCall = client.query.mock.calls.find((call) => String(call[0]).includes("password_hash = $3"));

@@ -91,12 +91,35 @@ import {
   type ApiErrorBody,
   type ApiResponse,
 } from "./apiResponses.js";
-import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
+import { CURRENT_LEGAL_PRESENTATION_VERSION, CURRENT_TERMS_VERSION } from "../constants/legal.js";
+import type { LegalAcceptancePayload } from "./apiValidation.js";
+import type { LegalAcceptanceRequestEvidence } from "../legal/legalAcceptance.js";
 
 type ApiResponseLocals = {
   clientIp?: string;
   corsHeaders?: Record<string, string>;
 };
+
+function toLegalAcceptanceEvidence(
+  payload: LegalAcceptancePayload,
+  request: Request,
+  response: Response<unknown, ApiResponseLocals>
+): LegalAcceptanceRequestEvidence {
+  return {
+    eventId: payload.legal_acceptance_id,
+    anonymousSubjectId: payload.legal_subject_id,
+    termsVersion: payload.accepted_terms_version,
+    presentationVersion: payload.legal_presentation_version,
+    clientIp: response.locals.clientIp ?? null,
+    userAgent: request.get("user-agent") ?? null,
+    origin: request.get("origin") ?? null,
+  };
+}
+
+function isCurrentLegalAcceptance(payload: LegalAcceptancePayload): boolean {
+  return payload.accepted_terms_version === CURRENT_TERMS_VERSION &&
+    payload.legal_presentation_version === CURRENT_LEGAL_PRESENTATION_VERSION;
+}
 
 type ExpressBodyParserError = Error & {
   type?: string;
@@ -544,13 +567,13 @@ async function dispatchApiRequest(
     const payload = parseAuthRegisterBodyValue(request.body);
     // Reject stale terms versions outright: acceptance of superseded terms
     // must never be recorded (a stale frontend re-fetches and re-prompts).
-    if (payload.accepted_terms_version !== CURRENT_TERMS_VERSION) {
+    if (!isCurrentLegalAcceptance(payload)) {
       sendApiResponse(
         response,
         toErrorResponse(
           400,
           "invalid_request",
-          `accepted_terms_version must be the current terms version (${CURRENT_TERMS_VERSION})`,
+          `Legal acceptance must use the current terms and presentation versions (${CURRENT_TERMS_VERSION}/${CURRENT_LEGAL_PRESENTATION_VERSION})`,
           corsHeaders
         )
       );
@@ -564,6 +587,7 @@ async function dispatchApiRequest(
       password: payload.password,
       firstName: payload.first_name,
       acceptedTermsVersion: payload.accepted_terms_version,
+      acceptanceEvidence: toLegalAcceptanceEvidence(payload, request, response),
     });
     sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
     return;
@@ -1015,20 +1039,24 @@ async function dispatchApiRequest(
     // Same clickwrap rule as registration: only the current version can be
     // accepted, so a stale frontend cannot record acceptance of superseded
     // terms.
-    if (payload.accepted_terms_version !== CURRENT_TERMS_VERSION) {
+    if (!isCurrentLegalAcceptance(payload)) {
       sendApiResponse(
         response,
         toErrorResponse(
           422,
           "invalid_request",
-          `accepted_terms_version must be the current terms version (${CURRENT_TERMS_VERSION})`,
+          `Legal acceptance must use the current terms and presentation versions (${CURRENT_TERMS_VERSION}/${CURRENT_LEGAL_PRESENTATION_VERSION})`,
           corsHeaders
         )
       );
       return;
     }
 
-    const user = await options.acceptAuthenticatedUserTerms(userId, payload.accepted_terms_version);
+    const user = await options.acceptAuthenticatedUserTerms(
+      userId,
+      payload.accepted_terms_version,
+      toLegalAcceptanceEvidence(payload, request, response)
+    );
     sendApiResponse(response, toJsonResponse(200, { user }, corsHeaders));
     return;
   }
@@ -1734,6 +1762,26 @@ async function dispatchApiRequest(
   }
 
   const payload = parseAddressBodyValue(request.body);
+  if (!isCurrentLegalAcceptance(payload)) {
+    sendApiResponse(
+      response,
+      toErrorResponse(
+        422,
+        "invalid_request",
+        `Legal acceptance must use the current terms and presentation versions (${CURRENT_TERMS_VERSION}/${CURRENT_LEGAL_PRESENTATION_VERSION})`,
+        corsHeaders
+      )
+    );
+    return;
+  }
+  if (!options.recordLegalAcceptance) {
+    sendApiResponse(response, toErrorResponse(500, "internal_error", "Legal acceptance storage is not configured", corsHeaders));
+    return;
+  }
+  await options.recordLegalAcceptance({
+    ...toLegalAcceptanceEvidence(payload, request, response),
+    context: "anonymous_search",
+  });
   const result = await options.resolveAddress(payload.address);
   if (options.logDiagnostics) {
     try {

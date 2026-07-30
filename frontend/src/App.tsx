@@ -135,13 +135,11 @@ export function App() {
       <TermsRenewalGate />
       <ScrollRestoration />
       <footer className="mt-16 border-t border-line py-8 text-center text-xs text-ink-soft">
-        <p>
-          Independent, nonpartisan, AI-assisted election research. Not an official election source —{" "}
-          <Link to="/disclaimer" className="underline hover:text-ink">
-            read the Disclaimer
-          </Link>
-          .
-        </p>
+        <nav aria-label="Legal" className="flex justify-center gap-5">
+          <Link to="/terms" className="underline hover:text-ink">Terms of Use</Link>
+          <Link to="/privacy" className="underline hover:text-ink">Privacy Policy</Link>
+          <Link to="/disclaimer" className="underline hover:text-ink">Disclaimer</Link>
+        </nav>
       </footer>
     </div>
   );

@@ -3,7 +3,13 @@
 // must track docs/legal/disclaimer.md and the backend's
 // CURRENT_TERMS_VERSION in lockstep.
 
-export const TERMS_VERSION = "1.1";
+export const TERMS_VERSION = "1.2";
+
+// Identifies the exact consent screen/copy/action arrangement, independently
+// of the legal-document bundle. Stored with every acceptance event so later
+// evidence can reconstruct both what the user agreed to and how assent was
+// obtained.
+export const LEGAL_PRESENTATION_VERSION = "1.2";
 
 export const PRE_SEARCH_CHECKBOX_LABEL =
   "I have read and agree to the Terms of Use, Privacy Policy, and AI Research and Election Information " +
@@ -32,8 +38,5 @@ export const PRIVACY_NOTICE =
   "usage information, to generate results, operate and secure the Service, and comply with law — as " +
   "described in our Privacy Policy. Your address is used to find your districts and is not sold.";
 
-// There is deliberately no storage key for the anonymous pre-search
-// acceptance. It used to be persisted per terms version and read back on
-// mount, which returned every repeat visitor a pre-ticked box — the one
-// thing a clickwrap gate must not do. Acceptance is now per-visit state
-// only; do not reintroduce a "remember my agreement" key here.
+// The browser may persist a pseudonymous evidence subject ID, but never an
+// accepted/checked flag. Every consent screen starts unchecked.

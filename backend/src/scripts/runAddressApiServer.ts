@@ -98,6 +98,7 @@ import { registerUserPushToken, revokeUserPushToken } from "../pipeline/users/us
 import { verifyEmailUnsubscribeToken } from "../pipeline/users/emailUnsubscribeToken.js";
 import { acceptUserTerms, getUserIdentity, setUserFirstName } from "../pipeline/users/userIdentity.js";
 import { createCachedSiteSitemap } from "../pipeline/sitemap/siteSitemap.js";
+import { recordLegalAcceptance } from "../legal/legalAcceptance.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -570,7 +571,9 @@ async function main(): Promise<void> {
     getAuthenticatedBallotPreferences: (userId) => getUserBallotPreferences(pool, userId),
     setAuthenticatedBallotPreferences: (userId, preferences) => setUserBallotPreferences(pool, userId, preferences),
     getAuthenticatedUser: (userId) => getUserIdentity(pool, userId),
-    acceptAuthenticatedUserTerms: (userId, termsVersion) => acceptUserTerms(pool, userId, termsVersion),
+    recordLegalAcceptance: (input) => recordLegalAcceptance(pool, input),
+    acceptAuthenticatedUserTerms: (userId, termsVersion, evidence) =>
+      acceptUserTerms(pool, userId, termsVersion, evidence),
     updateAuthenticatedUserFirstName: (userId, firstName) => setUserFirstName(pool, userId, firstName),
     getAuthenticatedEmailPreferences: (userId) => getUserEmailPreferences(pool, userId),
     setAuthenticatedEmailPreferences: (userId, preferences) => setUserEmailPreferences(pool, userId, preferences),

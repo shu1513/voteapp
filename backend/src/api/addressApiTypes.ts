@@ -30,6 +30,7 @@ import type {
 import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
 import type { EmailUnsubscribePreference } from "./apiValidation.js";
 import type { AddressResolutionDiagnostics } from "./addressApiResponses.js";
+import type { LegalAcceptanceRequestEvidence, RecordLegalAcceptanceInput } from "../legal/legalAcceptance.js";
 
 export type { ResearchAreaCatalogItem, ResearchAreaCatalogResult } from "../pipeline/users/userResearchAreaPreferences.js";
 
@@ -67,6 +68,8 @@ export type AuthApiRateLimitResult = {
 export type AddressApiServerOptions = {
   authService?: AuthService;
   resolveAddress: (address: string) => Promise<AddressResolutionResult>;
+  /** Append-only evidence write. Anonymous address resolution fails closed without it. */
+  recordLegalAcceptance?: (input: RecordLegalAcceptanceInput) => Promise<unknown>;
   suggestAddresses?: (input: { input: string; sessionToken: string }) => Promise<AddressSuggestion[]>;
   retrieveSuggestedAddress?: (input: { placeId: string; sessionToken: string }) => Promise<RetrievedSuggestedAddress>;
   // [ballot-personalized-ordering]: options + ordered result; on feature
@@ -110,7 +113,11 @@ export type AddressApiServerOptions = {
 
   /** Records the session holder's acceptance of the current terms version
    * after a version bump; apiServer validates the version before calling. */
-  acceptAuthenticatedUserTerms?: (userId: string, termsVersion: string) => Promise<UserIdentity>;
+  acceptAuthenticatedUserTerms?: (
+    userId: string,
+    termsVersion: string,
+    evidence: LegalAcceptanceRequestEvidence
+  ) => Promise<UserIdentity>;
   /** PUT /api/me: profile name edit; returns the updated identity. */
   updateAuthenticatedUserFirstName?: (userId: string, firstName: string) => Promise<UserIdentity>;
   getAuthenticatedEmailPreferences?: (userId: string) => Promise<UserEmailPreferences>;

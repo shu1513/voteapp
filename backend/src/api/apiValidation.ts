@@ -82,7 +82,14 @@ export const SITE_SITEMAP_PATH = "/sitemap.xml";
 export const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
 export const MAX_BALLOT_DISTRICT_IDS = 50;
 
-export type AddressResolvePayload = {
+export type LegalAcceptancePayload = {
+  accepted_terms_version: string;
+  legal_presentation_version: string;
+  legal_acceptance_id: string;
+  legal_subject_id: string;
+};
+
+export type AddressResolvePayload = LegalAcceptancePayload & {
   address: string;
 };
 
@@ -105,7 +112,9 @@ const MAX_AUTOCOMPLETE_SESSION_TOKEN_LENGTH = 128;
 const MAX_AUTOCOMPLETE_PLACE_ID_LENGTH = 512;
 const AUTOCOMPLETE_TOKEN_PATTERN = /^[A-Za-z0-9_-]+$/;
 
-export type AuthenticatedAddressPayload = AddressResolvePayload;
+export type AuthenticatedAddressPayload = {
+  address: string;
+};
 
 // Practical per-field ceilings so oversized junk is refused at the door
 // instead of leaning on the 16 KB body limit: 254 is the longest address
@@ -121,7 +130,10 @@ export { MAX_FIRST_NAME_LENGTH };
 export type AuthRegisterPayload = {
   email: string;
   password: string;
-  accepted_terms_version: string;
+  accepted_terms_version: LegalAcceptancePayload["accepted_terms_version"];
+  legal_presentation_version: LegalAcceptancePayload["legal_presentation_version"];
+  legal_acceptance_id: LegalAcceptancePayload["legal_acceptance_id"];
+  legal_subject_id: LegalAcceptancePayload["legal_subject_id"];
   first_name?: string;
 };
 
@@ -167,9 +179,7 @@ export type MeUpdatePayload = {
   first_name: string;
 };
 
-export type MeTermsAcceptancePayload = {
-  accepted_terms_version: string;
-};
+export type MeTermsAcceptancePayload = LegalAcceptancePayload;
 
 export type InitializeUserDistrictsPayload = {
   district_ids: string[];
@@ -261,7 +271,7 @@ export function parseAutocompleteRetrieveBodyValue(parsed: unknown): AddressAuto
   };
 }
 
-export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {
+function parseAddressOnly(parsed: unknown): { address: string } {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
     throw new TypeError("Request body must be a JSON object");
   }
@@ -280,6 +290,32 @@ export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {
   };
 }
 
+function parseLegalAcceptanceFields(parsed: unknown): LegalAcceptancePayload {
+  const acceptedTermsVersion = parseStringField(parsed, "accepted_terms_version");
+  const presentationVersion = parseStringField(parsed, "legal_presentation_version");
+  const legalAcceptanceId = parseStringField(parsed, "legal_acceptance_id");
+  const legalSubjectId = parseStringField(parsed, "legal_subject_id");
+  if (!isUuid(legalAcceptanceId)) {
+    throw new TypeError("legal_acceptance_id must be a valid UUID");
+  }
+  if (!isUuid(legalSubjectId)) {
+    throw new TypeError("legal_subject_id must be a valid UUID");
+  }
+  return {
+    accepted_terms_version: acceptedTermsVersion,
+    legal_presentation_version: presentationVersion,
+    legal_acceptance_id: legalAcceptanceId,
+    legal_subject_id: legalSubjectId,
+  };
+}
+
+export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {
+  return {
+    ...parseAddressOnly(parsed),
+    ...parseLegalAcceptanceFields(parsed),
+  };
+}
+
 export function parseAddressPayload(rawBody: string): AddressResolvePayload {
   let parsed: unknown;
   try {
@@ -292,7 +328,7 @@ export function parseAddressPayload(rawBody: string): AddressResolvePayload {
 }
 
 export function parseAuthenticatedAddressBodyValue(parsed: unknown): AuthenticatedAddressPayload {
-  return parseAddressBodyValue(parsed);
+  return parseAddressOnly(parsed);
 }
 
 function assertNoUnknownFields(record: Record<string, unknown>, allowedFields: readonly string[]): void {
@@ -393,7 +429,6 @@ export function parseAuthRegisterBodyValue(parsed: unknown): AuthRegisterPayload
   const email = parseEmailField(parsed, "email");
   const password = parseStringField(parsed, "password");
   // Clickwrap: registration must record which terms version was accepted.
-  const acceptedTermsVersion = parseStringField(parsed, "accepted_terms_version");
   const firstName = (parsed as { first_name?: unknown }).first_name;
   if (firstName !== undefined && (typeof firstName !== "string" || firstName.trim().length === 0)) {
     throw new TypeError("first_name must be a non-empty string when provided");
@@ -405,7 +440,7 @@ export function parseAuthRegisterBodyValue(parsed: unknown): AuthRegisterPayload
   return {
     email,
     password,
-    accepted_terms_version: acceptedTermsVersion,
+    ...parseLegalAcceptanceFields(parsed),
     ...(firstName === undefined ? {} : { first_name: firstName.trim() }),
   };
 }
@@ -481,9 +516,7 @@ export function parseMeUpdateBodyValue(parsed: unknown): MeUpdatePayload {
 }
 
 export function parseMeTermsAcceptanceBodyValue(parsed: unknown): MeTermsAcceptancePayload {
-  return {
-    accepted_terms_version: parseStringField(parsed, "accepted_terms_version"),
-  };
+  return parseLegalAcceptanceFields(parsed);
 }
 
 export function parseInitializeUserDistrictsBodyValue(parsed: unknown): InitializeUserDistrictsPayload {

@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router";
 import type { MetaFunction } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { APP_NAME, apiRequest } from "@voteapp/api-client";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
-import { SIGNUP_CHECKBOX_LABEL, TERMS_VERSION } from "@voteapp/api-client";
+import { LEGAL_PRESENTATION_VERSION, SIGNUP_CHECKBOX_LABEL, TERMS_VERSION } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { createLegalAcceptanceId, getOrCreateLegalSubjectId } from "../lib/legalAcceptance";
 
 export const meta: MetaFunction = () => [{ title: `Create your account · ${APP_NAME}` }];
 
@@ -21,6 +22,7 @@ export function RegisterPage() {
   // typed, and revealing only one of a pair defeats the comparison.
   const [showPassword, setShowPassword] = useState(false);
   const [accepted, setAccepted] = useState(false);
+  const acceptanceId = useRef<string | null>(null);
   // The page is prerendered: text entered (or autofilled) before hydration
   // exists only in the DOM. Fold it into state or the submit drops it.
   useAdoptPreHydrationValue("register-email", setEmail);
@@ -38,6 +40,9 @@ export function RegisterPage() {
           // Clickwrap record: the backend rejects registration without the
           // current terms version and stores it with a timestamp.
           accepted_terms_version: TERMS_VERSION,
+          legal_presentation_version: LEGAL_PRESENTATION_VERSION,
+          legal_acceptance_id: (acceptanceId.current ??= createLegalAcceptanceId()),
+          legal_subject_id: getOrCreateLegalSubjectId(),
           ...(firstName.trim() ? { first_name: firstName.trim() } : {}),
         },
       }),

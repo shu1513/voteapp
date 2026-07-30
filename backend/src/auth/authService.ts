@@ -6,6 +6,7 @@ import { issueUserAuthToken, consumeUserAuthToken } from "./authTokenStore.js";
 import type { AuthMailer } from "./authMailer.js";
 import { isUuid } from "../utils/uuid.js";
 import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
+import { recordLegalAcceptance, type LegalAcceptanceRequestEvidence } from "../legal/legalAcceptance.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type TransactionalDb = Pick<Pool, "connect" | "query">;
@@ -33,6 +34,7 @@ export type AuthRegisterInput = {
   firstName?: string;
   /** Terms/disclaimer version the user accepted at signup (clickwrap record). */
   acceptedTermsVersion: string;
+  acceptanceEvidence: LegalAcceptanceRequestEvidence;
 };
 
 export type AuthLoginInput = {
@@ -391,6 +393,13 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
           firstName,
           passwordHash,
           acceptedTermsVersion,
+        });
+
+        await recordLegalAcceptance(client, {
+          ...input.acceptanceEvidence,
+          context: "registration",
+          accountUserId: user.id,
+          accountEmail: email,
         });
 
         if (user.email_verified) {

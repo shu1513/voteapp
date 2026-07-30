@@ -1,8 +1,10 @@
 import type { Pool, PoolClient } from "pg";
 
 import { isUuid } from "../../utils/uuid.js";
+import { recordLegalAcceptance, type LegalAcceptanceRequestEvidence } from "../../legal/legalAcceptance.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
+type TransactionalQueryable = Queryable & Partial<Pick<Pool, "connect">>;
 
 // Session-holder identity for GET /api/me. Deliberately minimal: only what
 // the frontend needs to render header state and the unverified-email and
@@ -75,14 +77,25 @@ export async function setUserFirstName(db: Queryable, userId: string, firstName:
 /** Records the session holder's acceptance of the given terms version.
  * The caller (apiServer) is responsible for only passing the current
  * version; this just stamps what was accepted and when. */
-export async function acceptUserTerms(db: Queryable, userId: string, termsVersion: string): Promise<UserIdentity> {
+export async function acceptUserTerms(
+  db: TransactionalQueryable,
+  userId: string,
+  termsVersion: string,
+  evidence: LegalAcceptanceRequestEvidence
+): Promise<UserIdentity> {
   const normalizedUserId = normalizeUserId(userId);
   const normalizedVersion = typeof termsVersion === "string" ? termsVersion.trim() : "";
   if (normalizedVersion.length === 0) {
     throw new TypeError("termsVersion must be a non-empty string");
   }
 
-  const result = await db.query<UserIdentity>(
+  const client = db.connect ? await db.connect() : null;
+  const queryable: Queryable = client ?? db;
+  try {
+    if (client) {
+      await client.query("BEGIN");
+    }
+    const result = await queryable.query<UserIdentity>(
     `
       UPDATE public.users
       SET accepted_terms_version = $2,
@@ -95,16 +108,37 @@ export async function acceptUserTerms(db: Queryable, userId: string, termsVersio
     [normalizedUserId, normalizedVersion]
   );
 
-  const row = result.rows[0];
-  if (!row) {
-    throw new UserIdentityError("user_not_found", "User not found");
+    const row = result.rows[0];
+    if (!row) {
+      throw new UserIdentityError("user_not_found", "User not found");
+    }
+    await recordLegalAcceptance(queryable, {
+      ...evidence,
+      context: "terms_renewal",
+      accountUserId: normalizedUserId,
+      accountEmail: row.email,
+    });
+    if (client) {
+      await client.query("COMMIT");
+    }
+    return {
+      email: row.email,
+      first_name: row.first_name,
+      email_verified: row.email_verified,
+      accepted_terms_version: row.accepted_terms_version,
+    };
+  } catch (error) {
+    if (client) {
+      try {
+        await client.query("ROLLBACK");
+      } catch {
+        // Preserve original failure.
+      }
+    }
+    throw error;
+  } finally {
+    client?.release();
   }
-  return {
-    email: row.email,
-    first_name: row.first_name,
-    email_verified: row.email_verified,
-    accepted_terms_version: row.accepted_terms_version,
-  };
 }
 
 export async function getUserIdentity(db: Queryable, userId: string): Promise<UserIdentity> {

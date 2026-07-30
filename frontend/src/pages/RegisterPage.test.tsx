@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RegisterPage } from "./RegisterPage";
-import { TERMS_VERSION } from "@voteapp/api-client";
+import { LEGAL_PRESENTATION_VERSION, TERMS_VERSION } from "@voteapp/api-client";
 
 function renderRegister() {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
@@ -96,6 +96,9 @@ describe("RegisterPage clickwrap", () => {
       email: "voter@example.com",
       password: "correct horse battery staple",
       accepted_terms_version: TERMS_VERSION,
+      legal_presentation_version: LEGAL_PRESENTATION_VERSION,
+      legal_acceptance_id: expect.any(String),
+      legal_subject_id: expect.any(String),
       first_name: "Val",
     });
   });

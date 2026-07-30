@@ -55,10 +55,20 @@ export function useMe() {
 export function useAcceptTerms() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (acceptedTermsVersion: string) =>
+    mutationFn: (input: {
+      acceptedTermsVersion: string;
+      presentationVersion: string;
+      acceptanceId: string;
+      subjectId: string;
+    }) =>
       apiRequest<{ user: Me }>("/api/me/terms-acceptance", {
         method: "POST",
-        body: { accepted_terms_version: acceptedTermsVersion },
+        body: {
+          accepted_terms_version: input.acceptedTermsVersion,
+          legal_presentation_version: input.presentationVersion,
+          legal_acceptance_id: input.acceptanceId,
+          legal_subject_id: input.subjectId,
+        },
       }),
     onSuccess: (response) => {
       queryClient.setQueryData(["me"], response.user);

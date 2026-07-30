@@ -8,8 +8,8 @@ monitored before launch.
 
 # Elections Simplified AI Research and Election Information Disclaimer
 
-**Last updated:** July 18, 2026
-**Version:** 1.1
+**Last updated:** July 29, 2026
+**Version:** 1.2
 
 ## 1. Informational purposes only
 
