@@ -86,6 +86,18 @@ export type AddressResolvePayload = {
   address: string;
 };
 
+/**
+ * The anonymous search body. Unlike the saved-address payload it carries the
+ * clickwrap assertion: the pre-search checkbox used to gate only the frontend
+ * button, so the endpoint it guarded accepted callers who had accepted
+ * nothing. apiServer checks the version against CURRENT_TERMS_VERSION and
+ * refuses the search otherwise. Nothing about the acceptance is stored — the
+ * visitor is anonymous, and no row naming their IP address is written.
+ */
+export type PublicAddressResolvePayload = AddressResolvePayload & {
+  accepted_terms_version: string;
+};
+
 export type AddressAutocompleteSuggestPayload = {
   input: string;
   session_token: string;
@@ -277,6 +289,19 @@ export function parseAddressBodyValue(parsed: unknown): AddressResolvePayload {
 
   return {
     address: trimmed,
+  };
+}
+
+export function parsePublicAddressResolveBodyValue(parsed: unknown): PublicAddressResolvePayload {
+  const { address } = parseAddressBodyValue(parsed);
+  const acceptedTermsVersion = (parsed as { accepted_terms_version?: unknown }).accepted_terms_version;
+  if (typeof acceptedTermsVersion !== "string" || acceptedTermsVersion.trim().length === 0) {
+    throw new TypeError("Request body must include non-empty string field: accepted_terms_version");
+  }
+
+  return {
+    address,
+    accepted_terms_version: acceptedTermsVersion.trim(),
   };
 }
 

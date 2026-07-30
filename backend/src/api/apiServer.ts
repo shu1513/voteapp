@@ -52,7 +52,7 @@ import {
   ME_RESEARCH_AREA_PREFERENCES_PATH,
   ME_TERMS_ACCEPTANCE_PATH,
   parseAuthenticatedAddressBodyValue,
-  parseAddressBodyValue,
+  parsePublicAddressResolveBodyValue,
   parseAutocompleteRetrieveBodyValue,
   parseAutocompleteSuggestBodyValue,
   parseCandidateFollowBodyValue,
@@ -1733,7 +1733,27 @@ async function dispatchApiRequest(
     return;
   }
 
-  const payload = parseAddressBodyValue(request.body);
+  const payload = parsePublicAddressResolveBodyValue(request.body);
+  // The clickwrap is enforced here, not only in the browser: a search is the
+  // act the terms gate, so the endpoint refuses to perform one without a
+  // current-version acceptance. Nothing about the acceptance is stored — the
+  // visitor is anonymous, and the evidence that matters (what the gate said,
+  // and that it could not be bypassed) lives in this code and in
+  // docs/legal/, not in a row naming their IP address.
+  // A stale version is refused outright, the same rule registration follows.
+  if (payload.accepted_terms_version !== CURRENT_TERMS_VERSION) {
+    sendApiResponse(
+      response,
+      toErrorResponse(
+        400,
+        "invalid_request",
+        `accepted_terms_version must be the current terms version (${CURRENT_TERMS_VERSION})`,
+        corsHeaders
+      )
+    );
+    return;
+  }
+
   const result = await options.resolveAddress(payload.address);
   if (options.logDiagnostics) {
     try {

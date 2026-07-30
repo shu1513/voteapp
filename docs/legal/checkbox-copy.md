@@ -12,8 +12,20 @@ Freedom Financial Network):
 - Signup acceptance is recorded server-side: POST /api/auth/register requires
   accepted_terms_version matching CURRENT_TERMS_VERSION
   (backend/src/constants/legal.ts); stored on the user row with a timestamp.
-- Anonymous search acceptance is frontend-only (nothing to bind server-side);
-  localStorage may remember it per version.
+- Anonymous search acceptance is ENFORCED server-side but never stored: POST
+  /api/address/resolve requires accepted_terms_version matching
+  CURRENT_TERMS_VERSION and refuses the search otherwise, so the checkbox is a
+  real gate rather than a disabled button a direct API call walks around.
+  Nothing about the acceptance is persisted — an anonymous visitor's IP and
+  user agent are deliberately NOT collected, so the evidence is this file plus
+  the deployed gate, not a row per search. Acceptance is also never remembered
+  between visits — no localStorage key, no pre-ticked box.
+- The pre-search checkbox label is a SUMMARY. The sentences it no longer
+  carries live in the full-agreement dialog behind it, reachable from a "Read
+  the full agreement" control beside the document links. Label, dialog
+  paragraphs, and privacy notice all live in
+  packages/api-client/src/legalCopy.ts, and legalCopy.test.ts asserts every one
+  of them still appears in this file.
 -->
 
 # Checkbox and notice copy — Version 1.1
@@ -21,15 +33,29 @@ Freedom Financial Network):
 ## Pre-search checkbox (anonymous address search)
 
 > [ ] I have read and agree to the [Terms of Use], [Privacy Policy], and
-> [AI Research and Election Information Disclaimer]. I understand that
-> Elections Simplified provides AI-assisted informational research only; it is not an
-> official election source; results may be inaccurate, incomplete, outdated,
-> or misleading; and I must verify voting, registration, ballot, district,
-> polling-place, deadline, and election-result information with official
-> election authorities before relying on it. I agree that disputes are
-> resolved by binding individual arbitration with a class-action waiver as
-> described in Section 12 of the Terms of Use, unless I opt out as described
-> there.
+> [AI Research and Election Information Disclaimer] — including binding
+> individual arbitration with a class-action waiver (Terms of Use Section 12),
+> unless I opt out as described there.
+
+### Full-agreement dialog ("Read the full agreement", next to the checkbox)
+
+Heading: **What you are agreeing to**. Body repeats the checkbox label, then:
+
+> Elections Simplified provides AI-assisted informational research only. It is
+> not an official election source, and results may be inaccurate, incomplete,
+> outdated, or misleading.
+
+> You must verify voting, registration, ballot, district, polling-place,
+> deadline, and election-result information with official election authorities
+> before relying on it.
+
+> Disputes are resolved by binding individual arbitration with a class-action
+> waiver, as described in Section 12 of the Terms of Use, unless you opt out as
+> described there.
+
+…followed by the privacy notice below, the three document links, and an
+**I agree** button that ticks the checkbox. **Close** dismisses without
+agreeing.
 
 ## Signup checkbox (account registration)
 

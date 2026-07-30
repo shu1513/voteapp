@@ -410,3 +410,35 @@ describe("content report API contract constants", () => {
     expect(() => parseContentReportBodyValue(payload)).toThrow(message);
   });
 });
+
+describe("parsePublicAddressResolveBodyValue", () => {
+  it("requires the accepted terms version", async () => {
+    const { parsePublicAddressResolveBodyValue } = await import("../../src/api/apiValidation.js");
+    expect(() => parsePublicAddressResolveBodyValue({ address: "1 Main St" })).toThrow(
+      /accepted_terms_version/
+    );
+  });
+
+  it("rejects a blank version", async () => {
+    const { parsePublicAddressResolveBodyValue } = await import("../../src/api/apiValidation.js");
+    expect(() =>
+      parsePublicAddressResolveBodyValue({ address: "1 Main St", accepted_terms_version: "   " })
+    ).toThrow(/accepted_terms_version/);
+  });
+
+  it("returns the trimmed address and version", async () => {
+    const { parsePublicAddressResolveBodyValue } = await import("../../src/api/apiValidation.js");
+    const { CURRENT_TERMS_VERSION } = await import("../../src/constants/legal.js");
+    expect(
+      parsePublicAddressResolveBodyValue({
+        address: "  1 Main St  ",
+        accepted_terms_version: ` ${CURRENT_TERMS_VERSION} `,
+      })
+    ).toEqual({ address: "1 Main St", accepted_terms_version: CURRENT_TERMS_VERSION });
+  });
+
+  it("leaves the saved-address payload alone — it has no clickwrap to carry", async () => {
+    const { parseAuthenticatedAddressBodyValue } = await import("../../src/api/apiValidation.js");
+    expect(parseAuthenticatedAddressBodyValue({ address: "1 Main St" })).toEqual({ address: "1 Main St" });
+  });
+});

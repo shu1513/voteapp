@@ -4,6 +4,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vites
 
 import { createTrustedUserIdResolver } from "../../src/api/addressApiAuth.js";
 import { createApiApp } from "../../src/api/apiServer.js";
+import { CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
 
 const e2eEnabled = process.env.ADDRESS_API_PROXY_E2E === "true";
@@ -286,6 +287,7 @@ describeE2e("address API auth proxy E2E", () => {
   it("resolves an address through a real proxy and keeps the address route read-only", async () => {
     const response = await postJson(proxyBaseUrl, "/api/address/resolve", {
       address: "3921 Harlan Ave Baldwin Park CA 91706",
+      accepted_terms_version: CURRENT_TERMS_VERSION,
     });
 
     expect(response.status).toBe(200);

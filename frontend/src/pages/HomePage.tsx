@@ -8,7 +8,12 @@ import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
 import { savePendingDistrictIds } from "../lib/pendingDistricts";
 import { useMe } from "@voteapp/api-client";
-import { PRE_SEARCH_CHECKBOX_LABEL, PRIVACY_NOTICE } from "@voteapp/api-client";
+import {
+  PRE_SEARCH_AGREEMENT_PARAGRAPHS,
+  PRE_SEARCH_CHECKBOX_LABEL,
+  PRIVACY_NOTICE,
+  TERMS_VERSION,
+} from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export function HomePage() {
@@ -34,7 +39,14 @@ export function HomePage() {
 
   const resolve = useMutation({
     mutationFn: (input: string) =>
-      apiRequest<AddressResolution>("/api/address/resolve", { method: "POST", body: { address: input } }),
+      // The accepted version rides along because the endpoint enforces the
+      // clickwrap too, refusing a search that carries no current acceptance.
+      // Nothing is stored server-side; the disabled button is a courtesy, and
+      // the endpoint is the actual gate.
+      apiRequest<AddressResolution>("/api/address/resolve", {
+        method: "POST",
+        body: { address: input, accepted_terms_version: TERMS_VERSION },
+      }),
     onSuccess: (resolution) => {
       // Stash for the anonymous-to-account handoff: if this visitor signs up,
       // these districts become their saved ballot once they verify. Save only
@@ -107,6 +119,10 @@ export function HomePage() {
             label={PRE_SEARCH_CHECKBOX_LABEL}
             checked={accepted}
             onChange={setAccepted}
+            fullAgreement={{
+              paragraphs: PRE_SEARCH_AGREEMENT_PARAGRAPHS,
+              privacyNotice: PRIVACY_NOTICE,
+            }}
           />
 
           <button
