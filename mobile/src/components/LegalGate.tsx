@@ -70,7 +70,7 @@ export function LegalGate({ label, checked, onChange, fullAgreement }: LegalGate
             accessibilityRole="button"
             onPress={() => setSheetOpen(true)}
           >
-            Read the full agreement
+            Read what you are agreeing to
           </Text>
         ) : null}
       </View>

@@ -21,11 +21,13 @@ Freedom Financial Network):
   the deployed gate, not a row per search. Acceptance is also never remembered
   between visits — no localStorage key, no pre-ticked box.
 - The pre-search checkbox label is a SUMMARY. The sentences it no longer
-  carries live in the full-agreement dialog behind it, reachable from a "Read
-  the full agreement" control beside the document links. Label, dialog
-  paragraphs, and privacy notice all live in
-  packages/api-client/src/legalCopy.ts, and legalCopy.test.ts asserts every one
-  of them still appears in this file.
+  carries live in the terms dialog behind it, reachable from a "Read what you
+  are agreeing to" control beside the document links. That control must not
+  promise more than the dialog delivers: the dialog holds the key terms and
+  links to the three documents, it does NOT reproduce them, so do not label it
+  "the full agreement". Label, dialog paragraphs, and privacy notice all live
+  in packages/api-client/src/legalCopy.ts, and legalCopy.test.ts asserts every
+  one of them still appears in this file.
 -->
 
 # Checkbox and notice copy — Version 1.1
@@ -37,7 +39,7 @@ Freedom Financial Network):
 > individual arbitration with a class-action waiver (Terms of Use Section 12),
 > unless I opt out as described there.
 
-### Full-agreement dialog ("Read the full agreement", next to the checkbox)
+### Terms dialog ("Read what you are agreeing to", next to the checkbox)
 
 Heading: **What you are agreeing to**. Body repeats the checkbox label, then:
 

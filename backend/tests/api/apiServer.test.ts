@@ -564,9 +564,7 @@ describe("createApiApp", () => {
     expect(response.body).toEqual({
       error: {
         code: "invalid_request",
-        // An absent body parses to {}, so the first missing field is what the
-        // caller hears about.
-        message: "Request body must include non-empty string field: address",
+        message: "Request body must be a JSON object",
       },
     });
     expect(resolveAddress).not.toHaveBeenCalled();

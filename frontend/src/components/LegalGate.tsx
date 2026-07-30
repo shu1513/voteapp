@@ -62,7 +62,7 @@ export function LegalGate({ label, checked, onChange, inputId, fullAgreement }: 
             onClick={() => setDialogOpen(true)}
             className="text-ink underline hover:text-rausch"
           >
-            Read the full agreement
+            Read what you are agreeing to
           </button>
         ) : null}
       </p>

@@ -91,7 +91,7 @@ describe("HomePage legal gate (clickwrap)", () => {
       expect(screen.queryByText(paragraph)).not.toBeInTheDocument();
     }
 
-    await user.click(screen.getByRole("button", { name: "Read the full agreement" }));
+    await user.click(screen.getByRole("button", { name: "Read what you are agreeing to" }));
 
     const dialog = screen.getByRole("dialog");
     for (const paragraph of PRE_SEARCH_AGREEMENT_PARAGRAPHS) {
@@ -99,22 +99,22 @@ describe("HomePage legal gate (clickwrap)", () => {
     }
   });
 
-  it("lets the visitor agree from inside the full agreement", async () => {
+  it("lets the visitor agree from inside the terms dialog", async () => {
     const user = userEvent.setup();
     renderHome();
 
-    await user.click(screen.getByRole("button", { name: "Read the full agreement" }));
+    await user.click(screen.getByRole("button", { name: "Read what you are agreeing to" }));
     await user.click(screen.getByRole("button", { name: "I agree" }));
 
     expect(screen.getByRole("checkbox")).toBeChecked();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("leaves the box untouched when the full agreement is dismissed", async () => {
+  it("leaves the box untouched when the terms dialog is dismissed", async () => {
     const user = userEvent.setup();
     renderHome();
 
-    await user.click(screen.getByRole("button", { name: "Read the full agreement" }));
+    await user.click(screen.getByRole("button", { name: "Read what you are agreeing to" }));
     await user.click(screen.getByRole("button", { name: "Close" }));
 
     // Opening and closing a dialog is not agreeing to anything.
