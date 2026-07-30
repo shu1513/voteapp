@@ -6,6 +6,7 @@ import {
   formatDistrictType,
   PUBLIC_BALLOT_SORTS,
   useMyResearchAreas,
+  VERIFY_WITH_OFFICIALS_NOTE,
 } from "@voteapp/api-client";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
@@ -93,6 +94,17 @@ export default function BallotScreen() {
       <View className="mt-3">
         <SortChips options={PUBLIC_BALLOT_SORTS} value={sort} onChange={setSort} />
       </View>
+
+      {/* Reaches everyone who sees results, including people the clickwrap
+          never reached — a shared device, a link from a text message. For a
+          reliance claim this carries more weight than the agreement, because
+          it does not depend on the reader having accepted anything. */}
+      <Text className="mt-4 text-xs text-ink-soft">
+        {VERIFY_WITH_OFFICIALS_NOTE}{" "}
+        <Text className="underline" accessibilityRole="link" onPress={() => router.push("/legal/disclaimer")}>
+          Disclaimer
+        </Text>
+      </Text>
 
       {ballot.isPending ? <LoadingNotice text="Loading your elections…" /> : null}
       {ballot.isError ? (

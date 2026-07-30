@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
 import type { AddressResolution } from "@voteapp/api-client";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
-import { LegalGate } from "../components/LegalGate";
+import { PreSearchTermsDialog } from "../components/PreSearchTermsDialog";
 import { ErrorNotice } from "../components/Status";
 import { savePendingDistrictIds } from "../lib/pendingDistricts";
 import { useMe } from "@voteapp/api-client";
-import {
-  PRE_SEARCH_AGREEMENT_PARAGRAPHS,
-  PRE_SEARCH_CHECKBOX_LABEL,
-  PRIVACY_NOTICE,
-  TERMS_VERSION,
-} from "@voteapp/api-client";
+import { ADDRESS_FIELD_PRIVACY_NOTE, TERMS_VERSION } from "@voteapp/api-client";
+import { hasCurrentTermsAcceptance, rememberTermsAcceptance } from "../lib/termsAcceptance";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export function HomePage() {
@@ -22,10 +18,10 @@ export function HomePage() {
   const [searchParams] = useSearchParams();
   const { me } = useMe();
   const [address, setAddress] = useState("");
-  // Always starts false, never restored from storage: agreeing to the terms
-  // has to be an affirmative act on this visit. Carrying a previous visit's
-  // acceptance forward would hand the visitor a pre-ticked box, which is the
-  // one thing a clickwrap gate must never do.
+  const [termsOpen, setTermsOpen] = useState(false);
+  // The dialog's checkbox. Reset to false every time the dialog opens, never
+  // seeded from storage: remembering may decide whether the dialog opens, and
+  // nothing more. A box that arrives pre-ticked shows assent nobody gave.
   const [accepted, setAccepted] = useState(false);
 
   // Returning verified users land on their saved ballot; ?new=1 is the
@@ -66,16 +62,49 @@ export function HomePage() {
         },
       });
     },
+    onError: () => {
+      // Surface the failure on the page rather than inside the dialog. The
+      // acceptance is already recorded, so the retry goes straight through
+      // instead of asking the visitor to agree a second time.
+      setTermsOpen(false);
+    },
   });
 
-  const canSearch = accepted && address.trim().length > 0 && !resolve.isPending;
+  const canSearch = address.trim().length > 0 && !resolve.isPending;
 
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (!canSearch) {
       return;
     }
+    // Storage is read here, in the handler, and never during render: reading
+    // it while rendering would diverge from the server-rendered HTML.
+    if (hasCurrentTermsAcceptance()) {
+      resolve.mutate(address.trim());
+      return;
+    }
+    setAccepted(false);
+    setTermsOpen(true);
+  }
+
+  function agreeAndSearch() {
+    if (!accepted || resolve.isPending) {
+      return;
+    }
+    // Recorded before the request, so a failed search does not re-ask for an
+    // agreement the visitor already gave.
+    rememberTermsAcceptance();
     resolve.mutate(address.trim());
+  }
+
+  function cancelTerms() {
+    if (resolve.isPending) {
+      return;
+    }
+    setTermsOpen(false);
+    setAccepted(false);
+    // The typed address is deliberately left alone — cancelling the terms is
+    // not a request to retype an address.
   }
 
   return (
@@ -91,6 +120,12 @@ export function HomePage() {
             Find out exactly what elections you can vote on, and who these candidates really are
             by their records instead of their slogans.
           </h1>
+          {/* What the service is, where a first-time visitor actually looks.
+              It used to sit in the footer, under the fold, where it repeated
+              the disclaimer link beside it and told nobody anything. */}
+          <p className="mt-3 text-sm font-medium text-ink-soft sm:text-base">
+            Independent, nonpartisan, AI-assisted election research with linked sources.
+          </p>
         </div>
       </div>
       <div className="mx-auto max-w-2xl px-4 py-8">
@@ -111,19 +146,16 @@ export function HomePage() {
               onChange={setAddress}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
             />
-            <p className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</p>
+            {/* Notice belongs here, not only in the dialog: the autocomplete
+                forwards what is typed after three characters, so collection
+                starts while the visitor types and long before Search. */}
+            <p className="mt-1 text-xs text-ink-soft">
+              {ADDRESS_FIELD_PRIVACY_NOTE}{" "}
+              <Link to="/privacy" className="underline hover:text-rausch">
+                Privacy notice
+              </Link>
+            </p>
           </div>
-
-          <LegalGate
-            inputId="pre-search-terms"
-            label={PRE_SEARCH_CHECKBOX_LABEL}
-            checked={accepted}
-            onChange={setAccepted}
-            fullAgreement={{
-              paragraphs: PRE_SEARCH_AGREEMENT_PARAGRAPHS,
-              privacyNotice: PRIVACY_NOTICE,
-            }}
-          />
 
           <button
             type="submit"
@@ -142,6 +174,15 @@ export function HomePage() {
           </div>
         ) : null}
       </div>
+
+      <PreSearchTermsDialog
+        open={termsOpen}
+        checked={accepted}
+        onCheckedChange={setAccepted}
+        onAgree={agreeAndSearch}
+        onCancel={cancelTerms}
+        pending={resolve.isPending}
+      />
     </>
   );
 }

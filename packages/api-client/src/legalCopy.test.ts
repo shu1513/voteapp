@@ -3,12 +3,14 @@ import { dirname, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import {
+  ADDRESS_FIELD_PRIVACY_NOTE,
   PRE_SEARCH_AGREEMENT_PARAGRAPHS,
   PRE_SEARCH_CHECKBOX_LABEL,
   PRIVACY_NOTICE,
   RENEWAL_CHECKBOX_LABEL,
   SIGNUP_CHECKBOX_LABEL,
   TERMS_VERSION,
+  VERIFY_WITH_OFFICIALS_NOTE,
 } from "./legalCopy";
 
 // docs/legal/checkbox-copy.md says the frontend must copy these strings
@@ -53,6 +55,8 @@ describe("legal copy matches docs/legal/checkbox-copy.md", () => {
     ["signup label", SIGNUP_CHECKBOX_LABEL],
     ["renewal label", RENEWAL_CHECKBOX_LABEL],
     ["privacy notice", PRIVACY_NOTICE],
+    ["short privacy note", ADDRESS_FIELD_PRIVACY_NOTE],
+    ["results verification line", VERIFY_WITH_OFFICIALS_NOTE],
     ...PRE_SEARCH_AGREEMENT_PARAGRAPHS.map(
       (paragraph, index) => [`full-agreement paragraph ${index + 1}`, paragraph] as const
     ),

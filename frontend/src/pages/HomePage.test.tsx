@@ -6,6 +6,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PRE_SEARCH_AGREEMENT_PARAGRAPHS, TERMS_VERSION } from "@voteapp/api-client";
 import { HomePage } from "./HomePage";
 
+const ADDRESS_LABEL = "Enter your address to see the elections you can vote in";
+const STORAGE_KEY = "voteapp_terms_acceptance";
+const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
+
 function renderHome() {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   const router = createMemoryRouter([
@@ -22,6 +26,24 @@ function renderHome() {
   );
 }
 
+function stubResolveFetch() {
+  const fetchMock = vi.fn().mockImplementation(async (path: string) => ({
+    ok: true,
+    status: 200,
+    headers: new Headers(),
+    json: async () =>
+      path === "/api/address/resolve"
+        ? { matched_address: "123 Main St", address_match_count: 1, districts: [] }
+        : { user: null },
+  }));
+  vi.stubGlobal("fetch", fetchMock);
+  return fetchMock;
+}
+
+async function typeAddress(user: ReturnType<typeof userEvent.setup>) {
+  await user.type(screen.getByLabelText(ADDRESS_LABEL), "123 Main St, Austin, TX");
+}
+
 beforeEach(() => {
   localStorage.clear();
 });
@@ -30,118 +52,113 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("HomePage legal gate (clickwrap)", () => {
-  it("starts unchecked and keeps Search disabled until the box is checked", async () => {
+describe("HomePage pre-search clickwrap", () => {
+  it("keeps the landing page free of the gate until Search is pressed", async () => {
     const user = userEvent.setup();
     renderHome();
 
-    const checkbox = screen.getByRole("checkbox");
-    const search = screen.getByRole("button", { name: "Search" });
-    expect(checkbox).not.toBeChecked();
-
-    await user.type(
-      screen.getByLabelText("Enter your address to see the elections you can vote in"),
-      "123 Main St, Austin, TX"
-    );
-    expect(search).toBeDisabled();
-
-    await user.click(checkbox);
-    expect(search).toBeEnabled();
-  });
-
-  it("requires an address too — checkbox alone does not enable Search", async () => {
-    const user = userEvent.setup();
-    renderHome();
-
-    await user.click(screen.getByRole("checkbox"));
-    expect(screen.getByRole("button", { name: "Search" })).toBeDisabled();
-  });
-
-  it("never pre-checks the box, and stores nothing that could pre-check it later", async () => {
-    const user = userEvent.setup();
-    renderHome();
-
-    // Accepting is an affirmative act every visit: nothing a previous visit
-    // did may hand this visitor a ticked box, so acceptance is not persisted
-    // at all. Storage staying empty is what keeps a later mount unchecked.
-    await user.click(screen.getByRole("checkbox"));
-    expect(screen.getByRole("checkbox")).toBeChecked();
-    expect(localStorage.length).toBe(0);
-
-    cleanup();
-    renderHome();
-    expect(screen.getByRole("checkbox")).not.toBeChecked();
-  });
-
-  it("links all three named agreements next to the checkbox", () => {
-    renderHome();
-    // Clickwrap adjacency: every document named in the checkbox copy must be
-    // reviewable right next to it.
-    expect(screen.getByRole("link", { name: "Terms of Use" })).toHaveAttribute("href", "/terms");
-    expect(screen.getByRole("link", { name: "Privacy Policy" })).toHaveAttribute("href", "/privacy");
-    expect(screen.getByRole("link", { name: "Disclaimer" })).toHaveAttribute("href", "/disclaimer");
-  });
-
-  it("keeps the summarized label's full wording one click away", async () => {
-    const user = userEvent.setup();
-    renderHome();
-
-    // The label is a summary, so nothing it dropped may be unreachable.
-    for (const paragraph of PRE_SEARCH_AGREEMENT_PARAGRAPHS) {
-      expect(screen.queryByText(paragraph)).not.toBeInTheDocument();
-    }
-
-    await user.click(screen.getByRole("button", { name: "Read what you are agreeing to" }));
-
-    const dialog = screen.getByRole("dialog");
-    for (const paragraph of PRE_SEARCH_AGREEMENT_PARAGRAPHS) {
-      expect(dialog).toHaveTextContent(paragraph);
-    }
-  });
-
-  it("lets the visitor agree from inside the terms dialog", async () => {
-    const user = userEvent.setup();
-    renderHome();
-
-    await user.click(screen.getByRole("button", { name: "Read what you are agreeing to" }));
-    await user.click(screen.getByRole("button", { name: "I agree" }));
-
-    expect(screen.getByRole("checkbox")).toBeChecked();
+    // The wall of legal text is what moved off the page; a first-time visitor
+    // sees an address field, not an agreement.
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-  });
 
-  it("leaves the box untouched when the terms dialog is dismissed", async () => {
-    const user = userEvent.setup();
-    renderHome();
-
-    await user.click(screen.getByRole("button", { name: "Read what you are agreeing to" }));
-    await user.click(screen.getByRole("button", { name: "Close" }));
-
-    // Opening and closing a dialog is not agreeing to anything.
-    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
-    expect(screen.getByRole("checkbox")).not.toBeChecked();
-  });
-
-  it("sends the accepted terms version with the search, because the endpoint enforces it too", async () => {
-    const fetchMock = vi.fn().mockImplementation(async (path: string) => ({
-      ok: true,
-      status: 200,
-      headers: new Headers(),
-      json: async () =>
-        path === "/api/address/resolve"
-          ? { matched_address: "123 Main St", address_match_count: 1, districts: [] }
-          : { user: null },
-    }));
-    vi.stubGlobal("fetch", fetchMock);
-    const user = userEvent.setup();
-    renderHome();
-
-    await user.type(
-      screen.getByLabelText("Enter your address to see the elections you can vote in"),
-      "123 Main St, Austin, TX"
-    );
-    await user.click(screen.getByRole("checkbox"));
+    await typeAddress(user);
     await user.click(screen.getByRole("button", { name: "Search" }));
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("keeps the privacy note beside the address field, where collection starts", () => {
+    renderHome();
+    // The autocomplete forwards what is typed before Search is ever pressed,
+    // so this notice may never move into the dialog.
+    expect(
+      screen.getByText(/We use the address you enter to find your districts and do not sell it/)
+    ).toBeInTheDocument();
+  });
+
+  it("does not open the dialog without an address", async () => {
+    const user = userEvent.setup();
+    renderHome();
+
+    await user.click(screen.getByRole("button", { name: "Search" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("opens with an empty box, the action disabled, and every document named", async () => {
+    const user = userEvent.setup();
+    renderHome();
+
+    await typeAddress(user);
+    await user.click(screen.getByRole("button", { name: "Search" }));
+
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
+    expect(screen.getByRole("button", { name: "Agree and search" })).toBeDisabled();
+    for (const paragraph of PRE_SEARCH_AGREEMENT_PARAGRAPHS) {
+      expect(screen.getByRole("dialog")).toHaveTextContent(paragraph);
+    }
+    // Clickwrap adjacency, and opening one must not discard the dialog.
+    for (const [name, href] of [
+      ["Terms of Use", "/terms"],
+      ["Privacy Policy", "/privacy"],
+      ["Disclaimer", "/disclaimer"],
+    ] as const) {
+      const link = screen.getByRole("link", { name });
+      expect(link).toHaveAttribute("href", href);
+      expect(link).toHaveAttribute("target", "_blank");
+    }
+  });
+
+  it("enables the action only once the box is ticked", async () => {
+    const user = userEvent.setup();
+    renderHome();
+
+    await typeAddress(user);
+    await user.click(screen.getByRole("button", { name: "Search" }));
+    await user.click(screen.getByRole("checkbox"));
+
+    expect(screen.getByRole("button", { name: "Agree and search" })).toBeEnabled();
+  });
+
+  it("cancels without searching, without storing, and without losing the address", async () => {
+    const fetchMock = stubResolveFetch();
+    const user = userEvent.setup();
+    renderHome();
+
+    await typeAddress(user);
+    await user.click(screen.getByRole("button", { name: "Search" }));
+    await user.click(screen.getByRole("checkbox"));
+    await user.click(screen.getByRole("button", { name: "Cancel" }));
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(fetchMock.mock.calls.filter(([path]) => path === "/api/address/resolve")).toHaveLength(0);
+    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
+    // Cancelling the terms is not a request to retype an address.
+    expect(screen.getByLabelText(ADDRESS_LABEL)).toHaveValue("123 Main St, Austin, TX");
+  });
+
+  it("re-opens with an empty box after a cancel", async () => {
+    const user = userEvent.setup();
+    renderHome();
+
+    await typeAddress(user);
+    await user.click(screen.getByRole("button", { name: "Search" }));
+    await user.click(screen.getByRole("checkbox"));
+    await user.click(screen.getByRole("button", { name: "Cancel" }));
+    await user.click(screen.getByRole("button", { name: "Search" }));
+
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
+  });
+
+  it("searches on agreement and sends the accepted version", async () => {
+    const fetchMock = stubResolveFetch();
+    const user = userEvent.setup();
+    renderHome();
+
+    await typeAddress(user);
+    await user.click(screen.getByRole("button", { name: "Search" }));
+    await user.click(screen.getByRole("checkbox"));
+    await user.click(screen.getByRole("button", { name: "Agree and search" }));
 
     await waitFor(() => {
       const resolveCall = fetchMock.mock.calls.find(([path]) => path === "/api/address/resolve");
@@ -151,5 +168,69 @@ describe("HomePage legal gate (clickwrap)", () => {
         accepted_terms_version: TERMS_VERSION,
       });
     });
+  });
+
+  it("remembers the acceptance so the next search goes straight through", async () => {
+    stubResolveFetch();
+    const user = userEvent.setup();
+    renderHome();
+
+    await typeAddress(user);
+    await user.click(screen.getByRole("button", { name: "Search" }));
+    await user.click(screen.getByRole("checkbox"));
+    await user.click(screen.getByRole("button", { name: "Agree and search" }));
+
+    await waitFor(() => {
+      expect(localStorage.getItem(STORAGE_KEY)).not.toBeNull();
+    });
+
+    cleanup();
+    renderHome();
+    await typeAddress(user);
+    await user.click(screen.getByRole("button", { name: "Search" }));
+
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("asks again once the stored acceptance expires", async () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ version: TERMS_VERSION, acceptedAt: Date.now() - NINETY_DAYS_MS - 1000 })
+    );
+    const user = userEvent.setup();
+    renderHome();
+
+    await typeAddress(user);
+    await user.click(screen.getByRole("button", { name: "Search" }));
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
+  });
+
+  it("asks again when the stored acceptance is for superseded terms", async () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ version: "0.9", acceptedAt: Date.now() })
+    );
+    const user = userEvent.setup();
+    renderHome();
+
+    await typeAddress(user);
+    await user.click(screen.getByRole("button", { name: "Search" }));
+
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("asks again when the stored acceptance is unreadable", async () => {
+    localStorage.setItem(STORAGE_KEY, "{not json");
+    const user = userEvent.setup();
+    renderHome();
+
+    await typeAddress(user);
+    await user.click(screen.getByRole("button", { name: "Search" }));
+
+    // Fails closed: showing the terms once more costs a click, skipping them
+    // wrongly costs the agreement.
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 });

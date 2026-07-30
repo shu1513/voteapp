@@ -47,8 +47,30 @@ export const PRIVACY_NOTICE =
   "usage information, to generate results, operate and secure the Service, and comply with law — as " +
   "described in our Privacy Policy. Your address is used to find your districts and is not sold.";
 
-// There is deliberately no storage key for the anonymous pre-search
-// acceptance. It used to be persisted per terms version and read back on
-// mount, which returned every repeat visitor a pre-ticked box — the one
-// thing a clickwrap gate must not do. Acceptance is now per-visit state
-// only; do not reintroduce a "remember my agreement" key here.
+/**
+ * Sits beside the address field, where collection actually begins: the
+ * autocomplete forwards what is typed after three characters, long before
+ * anyone presses Search, and notice has to arrive at or before collection.
+ * The full PRIVACY_NOTICE is too long to live there without becoming the wall
+ * of text the gate was moved off the page to avoid, so the short line carries
+ * the point that matters and the dialog carries the rest.
+ */
+export const ADDRESS_FIELD_PRIVACY_NOTE =
+  "We use the address you enter to find your districts and do not sell it.";
+
+/**
+ * Shown on results, where it reaches people who never passed the gate at all
+ * — a shared computer, someone else's phone, a link from a text message. For
+ * a reliance claim this line does more work than the agreement does, because
+ * it does not depend on the reader having accepted anything.
+ */
+export const VERIFY_WITH_OFFICIALS_NOTE =
+  "AI-assisted research. Verify voting information with official election authorities.";
+
+// Acceptance IS remembered, per terms version, with an expiry — see
+// frontend/src/lib/termsAcceptance.ts. What must never come back is the older
+// behaviour that stored acceptance and then returned repeat visitors a
+// PRE-TICKED box. Those are different things: a pre-ticked box shows assent
+// that was never given, while skipping a gate somebody already passed is what
+// every large site does. Remembering may therefore only ever decide whether
+// the dialog OPENS. If a dialog opens, its checkbox starts empty.
