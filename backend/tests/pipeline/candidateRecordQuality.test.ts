@@ -149,6 +149,77 @@ describe("candidate record quality", () => {
     ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
   });
 
+  it("rejects promises whose object is a bare or quantified noun phrase", () => {
+    // The first version of the noun-object rule was determiner-anchored and
+    // only caught "pledges A/THE/HIS ...", so every bare noun phrase walked
+    // straight through into the writable bucket.
+    for (const description of [
+      "The candidate profile promises transparency and accountable government.",
+      "She pledges lower taxes.",
+      "He vows reform.",
+      "She pledges $1 million for schools.",
+      "Little pledges fiscal responsibility and conservative economic principles for Florida families.",
+    ]) {
+      expect(classifyCandidateRecordQuality({ description }), description).toEqual({
+        classification: "disallowed_thin",
+        reason: "future_promise",
+      });
+    }
+  });
+
+  it("does not let a verb inside a promised THING count as a completed action", () => {
+    // The contractors were convicted; the candidate only promised a ban. The
+    // commission has not been led by anyone — it does not exist yet. Both read
+    // as substantive purely because a completed-action verb sat inside the
+    // promised object, which the infinitive mask never covered.
+    for (const description of [
+      "The candidate profile pledges a ban on contractors convicted of fraud.",
+      "The candidate profile promises a commission led by an independent chair.",
+    ]) {
+      expect(classifyCandidateRecordQuality({ description }), description).toEqual({
+        classification: "disallowed_thin",
+        reason: "future_promise",
+      });
+    }
+  });
+
+  it("keeps promise OUTCOMES, which are completed actions", () => {
+    // Breaking a pledge is an integrity record and among the more
+    // voter-relevant things we store. The promissory noun makes these look
+    // like promises to a naive pattern; they are the opposite.
+    for (const description of [
+      "She kept a promise a year after taking office.",
+      "She broke a pledge a month later.",
+      "He fulfilled promises his campaign made.",
+      "The governor abandoned his promises a year later.",
+      "He reneged on a campaign pledge on housing.",
+    ]) {
+      expect(classifyCandidateRecordQuality({ description }), description).toEqual({
+        classification: "substantive",
+        reason: "actual_record_action",
+      });
+    }
+  });
+
+  it("leaves the NOUN sense alone when it follows a verb or a modifier", () => {
+    // Live corpus rows: "should not MAKE pledges about cases" and "opposition
+    // to ... UNFUNDED promises" are noun uses with no promise being made by
+    // the candidate. A determiner-only lookbehind missed both.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Diaz said judges should not make pledges about cases and must set aside personal views.",
+      }).reason
+    ).not.toBe("future_promise");
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Drew advocates fiscal discipline through opposition to unchecked spending, unfunded promises, and accounting gimmicks.",
+      }).reason
+    ).not.toBe("future_promise");
+  });
+
   it("still keeps completed actions that carry the NOUN 'pledge'", () => {
     // Why the new pattern is determiner-anchored rather than a bare
     // /\bpledges?\b/: signing a pledge IS a completed action, and these must

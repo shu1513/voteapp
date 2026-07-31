@@ -50,6 +50,17 @@ const PURE_CANDIDACY_PATTERNS = [
   /\bqualified\s+as\s+an?\s+(?:[\w-]+\s+){0,3}?candidate\b/i,
 ] as const;
 
+// Words that mark the FOLLOWING "promises/pledges/vows" as the noun rather
+// than the verb, shared by the promise pattern and the masking pattern below
+// so the two cannot drift apart. Determiners and possessives cover "his
+// promises"; the verb and adjective entries cover the live corpus hits
+// "should not MAKE pledges about cases" and "opposition to ... UNFUNDED
+// promises", where the noun follows a verb or a modifier instead.
+const PROMISSORY_NOUN_CONTEXT =
+  "a|an|the|his|her|its|their|our|any|no|every|that|this|these|those|campaign|election|make|makes|made|making|break|breaks|broke|broken|keep|keeps|kept|unfunded|empty|vague|broken|written|verbal|public|such|more|fewer|other|similar|specific";
+
+const PROMISSORY_VERB_LOOKBEHIND = `(?<!\\b(?:${PROMISSORY_NOUN_CONTEXT})\\s)`;
+
 const FUTURE_PROMISE_PATTERNS = [
   /\b(?:campaign|platform|website)\b.*\b(?:promises?|pledges?|vows?|plans?|proposes?)\b/i,
   /\b(?:promises?|pledges?|vows?)\s+to\b/i,
@@ -61,12 +72,20 @@ const FUTURE_PROMISE_PATTERNS = [
   // and the past-tense rule below does not match "pledges". It then matched
   // "profile" in FALLBACK_CONTEXT_PATTERNS and landed in the writable
   // neutral_context bucket (live: Heather-Marie Wilson).
-  // Anchored on a determiner rather than the bare verb: SUBSTANTIVE_ACTION
-  // patterns are checked first, so a completed action carrying the NOUN
-  // "pledge" — "signed the U.S. Term Limits convention pledge" — is already
-  // rescued, but a bare /\bpledges?\b/ would still swallow phrasings like
-  // "the pledge card was filed" that no substantive verb rescues.
-  /\b(?:promises?|pledges?|vows?)\s+(?:a|an|the|his|her|its|their|no|full|complete)\b/i,
+  //
+  // The object is left unconstrained ("pledges lower taxes", "vows reform",
+  // "promises $1 million for schools") — an earlier determiner-anchored
+  // version covered only "pledges A/THE/HIS ..." and let every bare noun
+  // phrase through. Two guards replace that anchor:
+  //   - Only the -s forms, which are the third-person VERB forms records use.
+  //     Singular "a promise"/"the pledge" is the noun sense and is skipped.
+  //   - A lookbehind for determiners, possessives and "campaign"/"election",
+  //     so plural NOUN uses ("his promises", "campaign pledges") do not match.
+  //     "The campaign promises transparency" is still caught by the
+  //     campaign/platform rule above.
+  // Completed outcomes ("kept a promise", "broke a pledge") are rescued ahead
+  // of this by PROMISE_OUTCOME_PATTERNS.
+  new RegExp(`${PROMISSORY_VERB_LOOKBEHIND}\\b(?:promises|pledges|vows)\\b`, "i"),
   // Past-tense promissory verbs are still promises, in any position:
   // "Promised as a judicial candidate to uphold ..." slipped past the
   // adjacent present-tense pattern above and became a canonical record.
@@ -75,6 +94,19 @@ const FUTURE_PROMISE_PATTERNS = [
   /\b(?:promised|pledged|vowed)\b/i,
   /\b(?:says|said)\s+(?:he|she|they)\s+(?:will|would)\b/i,
   /\b(?:will|would)\s+(?:fight|work|cut|raise|support|oppose|create|expand|reduce|protect)\b/i,
+] as const;
+
+// Keeping, breaking or abandoning a promise is a COMPLETED action and one of
+// the more voter-relevant records there is — "broke a pledge a month later" is
+// an integrity record, not a campaign promise. These are matched against the
+// RAW description before any promissory masking, because the masking below
+// deliberately blanks noun-object promise clauses and would otherwise eat the
+// very object that identifies this as an outcome.
+// Object-anchored on purpose: bare "kept"/"broke" are far too common
+// ("broke ground", "kept the seat") to treat as promise outcomes.
+const PROMISE_OUTCOME_PATTERNS = [
+  /\b(?:kept|broke|fulfilled|honored|honoured|violated|abandoned|reversed)\s+(?:(?:a|an|the|his|her|its|their|our|multiple|several|\d+)\s+)?(?:campaign\s+|signed\s+)?(?:promises?|pledges?|vows?|commitments?)\b/i,
+  /\breneged\s+on\s+(?:(?:a|an|the|his|her|its|their|our)\s+)?(?:campaign\s+)?(?:promises?|pledges?|vows?|commitments?)\b/i,
 ] as const;
 
 const SUBSTANTIVE_ACTION_PATTERNS = [
@@ -126,8 +158,24 @@ function matchesAny(value: string, patterns: readonly RegExp[]): boolean {
 const PROMISSORY_INFINITIVE_PATTERN =
   /\b(?:promis(?:es?|ed|ing)|pledg(?:es?|ed|ing)|vow(?:s|ed|ing)?)\s+(?:\w+\s+){0,3}?to\s+[^.;,]*/gi;
 
+// The same reasoning applies to a promise with a NOUN object: in "pledges a
+// ban on contractors convicted of fraud" the contractors were convicted, not
+// the candidate, and in "promises a commission led by an independent chair"
+// nobody has led anything yet. Both classified as substantive purely because a
+// completed-action verb appeared inside the promised thing.
+//
+// Only the -s verb forms and unambiguous -ed/-ing forms are masked, behind the
+// same determiner lookbehind the promise patterns use, so the NOUN sense is
+// left alone: "signed the taxpayer protection pledge" must keep its "signed".
+const PROMISSORY_NOUN_OBJECT_PATTERN = new RegExp(
+  `${PROMISSORY_VERB_LOOKBEHIND}\\b(?:promis(?:es|ed|ing)|pledg(?:es|ed|ing)|vow(?:s|ed|ing))\\s+(?!to\\b)[^.;,]*`,
+  "gi"
+);
+
 function withoutPromissoryComplements(value: string): string {
-  return value.replace(PROMISSORY_INFINITIVE_PATTERN, " ");
+  return value
+    .replace(PROMISSORY_INFINITIVE_PATTERN, " ")
+    .replace(PROMISSORY_NOUN_OBJECT_PATTERN, " ");
 }
 
 export function classifyCandidateRecordQuality(
@@ -136,6 +184,13 @@ export function classifyCandidateRecordQuality(
   const description = normalizeDescription(input.description);
   if (description.length === 0) {
     return { classification: "disallowed_thin", reason: "unclassified_context" };
+  }
+
+  // Checked against the RAW description, and ahead of the masking below: the
+  // noun-object mask blanks the promise clause, which would swallow the very
+  // "promise"/"pledge" object that makes this an outcome rather than a promise.
+  if (matchesAny(description, PROMISE_OUTCOME_PATTERNS)) {
+    return { classification: "substantive", reason: "actual_record_action" };
   }
 
   if (matchesAny(withoutPromissoryComplements(description), SUBSTANTIVE_ACTION_PATTERNS)) {
