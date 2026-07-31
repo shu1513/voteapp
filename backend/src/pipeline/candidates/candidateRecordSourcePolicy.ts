@@ -152,19 +152,26 @@ const GENERATED_CANDIDATE_DIRECTORY_DOMAINS: readonly string[] = ["civoren.com"]
 //     site. Its thurstonecc.org domain exists but 404s on the award page, so
 //     there is no better citation to move to.
 //
-// EXACT hostname match, not the suffix matching used elsewhere: the exemption
-// must cover one organisation's space and must not extend to look-alikes.
+// Exemptions are per-PAGE, not per-host. A host-wide exemption would unblock
+// every page on the site — future posts, archives, tag pages, any author —
+// none of which this review looked at. That is not a theoretical gap: the
+// damaging-claim detector is deliberately incomplete, so a host-wide
+// exemption accepted "Called the candidate a corrupt liar who stole taxpayer
+// money" on an exempt host while the identical text was correctly rejected on
+// any other Substack. The platform block had been the only thing catching it.
 //
-// The exemption only lifts the PLATFORM block; it does not make these listed.
-// They stay `unlisted`, so they can carry an ordinary factual claim but a
-// damaging claim about a candidate still requires an official or listed news
-// source. These are self-reporting advocacy and professional bodies, not
-// newsrooms, and that distinction is the point.
-const PLATFORM_BLOCK_EXEMPT_HOSTS: readonly string[] = [
-  "azatty.wordpress.com",
-  "equalityarizona.substack.com",
-  "thurstonecc.wordpress.com",
+// Keys are `hostname + pathname`, lowercased with any trailing slash removed;
+// query and fragment are ignored so tracking parameters do not defeat a match.
+// Adding a page here means someone reviewed THAT page.
+const PLATFORM_BLOCK_EXEMPT_PAGES: readonly string[] = [
+  "azatty.wordpress.com/2014/10/07/ariz-court-reporting-changes-will-affect-attorneys",
+  "equalityarizona.substack.com/p/equality-arizona-2026-primary-election",
+  "thurstonecc.wordpress.com/angel-award",
 ];
+
+function toExemptionKey(url: URL): string {
+  return `${url.hostname.toLowerCase()}${url.pathname.replace(/\/+$/, "").toLowerCase()}`;
+}
 
 // Bot-check interstitials are not publishers at all. A researcher who copies
 // the URL out of the address bar while a WAF challenge is showing captures the
@@ -439,16 +446,19 @@ export const BLOCKED_SOURCE_DOMAIN_REGISTRY: Record<BlockedSourceKind, readonly 
   ugc_social: BLOCKED_SOURCE_DOMAINS,
 };
 
-function resolveBlockedSourceKind(hostname: string): BlockedSourceKind | null {
-  // Checked before the registries so an exempt host is never blocked. It only
-  // skips the block — the host still falls through to the ordinary listed /
-  // unlisted classification below, and lands on unlisted.
-  if (PLATFORM_BLOCK_EXEMPT_HOSTS.includes(hostname)) {
-    return null;
-  }
-
+function resolveBlockedSourceKind(
+  hostname: string,
+  exemptionKey: string
+): BlockedSourceKind | null {
   for (const [kind, domains] of Object.entries(BLOCKED_SOURCE_DOMAIN_REGISTRY)) {
     if (matchesAnyDomain(hostname, domains)) {
+      // The exemption is resolved INSIDE the matching kind, and only for
+      // ugc_social. Checking it before the registries would let an exempt
+      // page bypass bot_check_interstitial, generated_candidate_directory, or
+      // any kind added later — none of which this exemption is meant to touch.
+      if (kind === "ugc_social" && PLATFORM_BLOCK_EXEMPT_PAGES.includes(exemptionKey)) {
+        return null;
+      }
       return kind as BlockedSourceKind;
     }
   }
@@ -467,8 +477,11 @@ export function classifyCandidateRecordSourceDomain(
   sourceUrl: string
 ): CandidateRecordSourceDomainClassification {
   let hostname: string;
+  let exemptionKey: string;
   try {
-    hostname = new URL(sourceUrl).hostname.toLowerCase().replace(/\.$/, "");
+    const parsed = new URL(sourceUrl);
+    hostname = parsed.hostname.toLowerCase().replace(/\.$/, "");
+    exemptionKey = toExemptionKey(parsed);
   } catch {
     // Callers validate URL shape before policy runs (normalizeHttpUrl in the
     // payload contract); an unparseable value here is classified unlisted and
@@ -476,7 +489,7 @@ export function classifyCandidateRecordSourceDomain(
     return { tier: "unlisted", hostname: "" };
   }
 
-  const blockedKind = resolveBlockedSourceKind(hostname);
+  const blockedKind = resolveBlockedSourceKind(hostname, exemptionKey);
   if (blockedKind) {
     return { tier: "blocked", hostname, blockedKind };
   }
