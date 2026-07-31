@@ -122,6 +122,57 @@ const BLOCKED_SOURCE_DOMAINS: readonly string[] = [
 // well.
 const GENERATED_CANDIDATE_DIRECTORY_DOMAINS: readonly string[] = ["civoren.com"];
 
+// Real organisations that rent a UGC platform instead of running their own
+// site. The UGC block exists because anyone can post on those platforms
+// without editorial accountability — but an organisation's OWN subdomain is
+// not an anonymous post, and for these rows it is the publisher of record.
+// Blocking them does not improve the data, it forces a citation away from the
+// body that performed the act and onto some second-hand mention.
+//
+// Admission requires ALL of:
+//   1. a NAMED organisation behind the site, verifiable off-platform;
+//   2. independence from the candidate — never a campaign's own outlet;
+//   3. no fabrication risk, and the record is the organisation reporting its
+//      OWN act (its endorsement, its award, its publication).
+// An anonymous or one-person outlet fails (1) even when it looks official:
+// hoosierpoliticsnow.wordpress.com calls itself "an independent news
+// organization" but has no masthead, no staff and covers a single candidate;
+// checkmyvote.substack.com and kansashelen.substack.com are likewise not
+// admissible. Those stay blocked.
+//
+// Exempted here (each verified 2026-07-31):
+//   equalityarizona.substack.com — Equality Arizona's own dated endorsement
+//     release. references/records.md calls the endorser's own dated release
+//     the best source for an endorsement, which the platform block otherwise
+//     rejects outright.
+//   azatty.wordpress.com — per its own About page, "a blog written by lawyer
+//     Tim Eigo, the editor of Arizona Attorney Magazine, which is the monthly
+//     publication of the State Bar of Arizona".
+//   thurstonecc.wordpress.com — the Thurston Early Childhood Coalition's own
+//     site. Its thurstonecc.org domain exists but 404s on the award page, so
+//     there is no better citation to move to.
+//
+// Exemptions are per-PAGE, not per-host. A host-wide exemption would unblock
+// every page on the site — future posts, archives, tag pages, any author —
+// none of which this review looked at. That is not a theoretical gap: the
+// damaging-claim detector is deliberately incomplete, so a host-wide
+// exemption accepted "Called the candidate a corrupt liar who stole taxpayer
+// money" on an exempt host while the identical text was correctly rejected on
+// any other Substack. The platform block had been the only thing catching it.
+//
+// Keys are `hostname + pathname`, lowercased with any trailing slash removed;
+// query and fragment are ignored so tracking parameters do not defeat a match.
+// Adding a page here means someone reviewed THAT page.
+const PLATFORM_BLOCK_EXEMPT_PAGES: readonly string[] = [
+  "azatty.wordpress.com/2014/10/07/ariz-court-reporting-changes-will-affect-attorneys",
+  "equalityarizona.substack.com/p/equality-arizona-2026-primary-election",
+  "thurstonecc.wordpress.com/angel-award",
+];
+
+function toExemptionKey(url: URL): string {
+  return `${url.hostname.toLowerCase()}${url.pathname.replace(/\/+$/, "").toLowerCase()}`;
+}
+
 // Bot-check interstitials are not publishers at all. A researcher who copies
 // the URL out of the address bar while a WAF challenge is showing captures the
 // challenge, not the article: the real page survives only inside a query
@@ -322,6 +373,14 @@ const DAMAGING_CLAIM_ACTOR_EXEMPT_PATTERNS: readonly RegExp[] = [
   /\b(?:a|an|the|people|those)\s+(?:[\w-]+\s+){0,3}?(?:man|woman|men|women|people|caregiver|officers?|deput(?:y|ies)|defendants?|suspects?|residents?|retailers|operatives?)\b[^.;]{0,80}\b(?:pleaded|pled|convicted|accused|charged|arrested|indicted)\b/i,
   /\bfiled\s+(?:[\w-]+\s+){0,3}?ethics\s+complaints?\s+(?:in\s+\d{4}\s+)?against\b/i,
   /\breleased\s+an?\s+ethics\s+complaint\b/i,
+  // The candidate ACCUSING a named third party of dishonesty is a record of
+  // their own public action, not an accusation against them. Live corpus:
+  // "accused national news organizations of lying to Americans about Crimea"
+  // — a column the candidate published, which the dishonesty patterns below
+  // otherwise flagged as a smear against him.
+  // At least one word must sit between the verb and "of", so the direct
+  // "accused of lying" — the candidate as target — is NOT exempted.
+  /\baccus\w+\s+(?:[\w'’-]+\s+){1,6}?of\s+(?:lying|lies|plagiaris\w+|steal\w+|corruption)\b/i,
   // Prosecutor/attorney career bios: "handling felony and misdemeanor
   // matters including domestic violence, sexual assault" is a caseload
   // description, not an accusation.
@@ -372,6 +431,20 @@ const DAMAGING_CLAIM_PATTERNS: readonly RegExp[] = [
   // Pronoun-only gap ("found him liable" = the candidate); a named third
   // party ("found the caregiver guilty") deliberately does not match.
   /\bfound\s+(?:(?:him|her|them)\s+)?(?:guilty|liable)\b|\bfound\s+probable\s+cause\b/i,
+  // Dishonesty, theft and epithet accusations that carry NO enforcement verb,
+  // so every pattern above misses them. Surfaced by review probing an exempted
+  // page, but the gap was never specific to that page: "lied about her résumé
+  // and plagiarized her policy plan" and "a corrupt liar who stole taxpayer
+  // money" were accepted on ANY unlisted domain, and on listed news too. These
+  // are accusations aimed at the candidate and belong behind the same
+  // listed-source requirement as an indictment.
+  // "stole"/"siphoned" are object-anchored to money the same way the
+  // misappropriation pattern above is, so "stole the show" and legislation
+  // about theft do not match.
+  /\b(?:lied|lying)\s+(?:about|to|under\s+oath)\b/i,
+  /\bplagiari[sz]ed\b/i,
+  /\b(?:stole|siphoned)\b[^.;]{0,40}?\b(?:funds?|money|taxpayers?|donations?|contributions?)\b/i,
+  /\b(?:corrupt|crooked)\s+(?:liar|politician|official|judge|cop|prosecutor)\b/i,
 ];
 
 function hostnameMatchesDomain(hostname: string, domain: string): boolean {
@@ -395,9 +468,19 @@ export const BLOCKED_SOURCE_DOMAIN_REGISTRY: Record<BlockedSourceKind, readonly 
   ugc_social: BLOCKED_SOURCE_DOMAINS,
 };
 
-function resolveBlockedSourceKind(hostname: string): BlockedSourceKind | null {
+function resolveBlockedSourceKind(
+  hostname: string,
+  exemptionKey: string
+): BlockedSourceKind | null {
   for (const [kind, domains] of Object.entries(BLOCKED_SOURCE_DOMAIN_REGISTRY)) {
     if (matchesAnyDomain(hostname, domains)) {
+      // The exemption is resolved INSIDE the matching kind, and only for
+      // ugc_social. Checking it before the registries would let an exempt
+      // page bypass bot_check_interstitial, generated_candidate_directory, or
+      // any kind added later — none of which this exemption is meant to touch.
+      if (kind === "ugc_social" && PLATFORM_BLOCK_EXEMPT_PAGES.includes(exemptionKey)) {
+        return null;
+      }
       return kind as BlockedSourceKind;
     }
   }
@@ -416,8 +499,11 @@ export function classifyCandidateRecordSourceDomain(
   sourceUrl: string
 ): CandidateRecordSourceDomainClassification {
   let hostname: string;
+  let exemptionKey: string;
   try {
-    hostname = new URL(sourceUrl).hostname.toLowerCase().replace(/\.$/, "");
+    const parsed = new URL(sourceUrl);
+    hostname = parsed.hostname.toLowerCase().replace(/\.$/, "");
+    exemptionKey = toExemptionKey(parsed);
   } catch {
     // Callers validate URL shape before policy runs (normalizeHttpUrl in the
     // payload contract); an unparseable value here is classified unlisted and
@@ -425,7 +511,7 @@ export function classifyCandidateRecordSourceDomain(
     return { tier: "unlisted", hostname: "" };
   }
 
-  const blockedKind = resolveBlockedSourceKind(hostname);
+  const blockedKind = resolveBlockedSourceKind(hostname, exemptionKey);
   if (blockedKind) {
     return { tier: "blocked", hostname, blockedKind };
   }
