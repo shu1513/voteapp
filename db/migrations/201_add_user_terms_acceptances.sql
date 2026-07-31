@@ -57,6 +57,20 @@ CREATE INDEX idx_user_terms_acceptances_version
 -- users row is history that exists exactly once; once that row is overwritten
 -- by a version bump it cannot be reconstructed from anywhere.
 --
+-- The backfill stays in THIS migration on purpose, and the reason is not
+-- laziness. Creating the table takes SHARE ROW EXCLUSIVE on public.users,
+-- which blocks writes to it until this transaction commits, so scanning users
+-- here does extend that block by the length of the scan. Splitting the
+-- backfill into its own migration would release the lock sooner — the runner
+-- commits each migration separately — but it would open a worse hole: once
+-- this migration commits, the table is live and the application can append a
+-- 'renewal' row for a user whose users columns have not yet been backfilled,
+-- and the later backfill would then add a second row for that same
+-- acceptance. Held together, the table does not exist until the backfill is
+-- already in it, so that race cannot happen. The trade is a brief write-block
+-- on a small table against duplicated history; if users ever grows to where
+-- the scan is slow, split it AND add a NOT EXISTS guard to the backfill.
+--
 -- Only rows carrying a real accepted_terms_at are copied. Falling back to
 -- updated_at or created_at would be worse than skipping: updated_at moves on
 -- any profile edit and created_at predates the clickwrap, so either would turn
