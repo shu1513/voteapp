@@ -120,23 +120,28 @@ forced scrolling through the documents.
 > class-action waiver (Terms of Use Section 12), unless I opt out as
 > described there.
 
-## Privacy notice (full — shown inside the pre-search dialog and under the saved-address field)
+## Privacy notice (shown inside the pre-search dialog and under the saved-address field)
 
-> Privacy notice: we collect the address you enter, account information if
-> you sign up, and device and usage information, to generate results, operate
-> and secure the Service, and comply with law — as described in our
-> [Privacy Policy]. Your address is used to find your districts and is not
-> sold.
+> Your address is used only to find your voting districts. We don’t save it to
+> your account or sell it; lookup data may be temporarily cached for up to 14
+> days.
 
 ## Short privacy note (beside the anonymous address input)
 
-The full notice above is too long to sit beside the field without recreating
-the wall of text the gate was moved off the page to avoid. This carries the
-point that matters at the moment of collection; the full notice appears in the
-dialog, and [Privacy notice] links to the policy.
+This carries the point that matters at the moment of collection, and [Privacy
+notice] links to the policy.
 
-> We use the address you enter to find your districts and do not sell it.
+> Your address is used only to find your voting districts. We don’t save it to
+> your account or sell it; lookup data may be temporarily cached for up to 14
+> days.
 > [Privacy notice]
+
+Beside that notice, **Why do we need the full address?** opens an
+informational dialog. It explains that ZIP codes are mail-delivery areas, can
+contain multiple voting districts, and cannot identify every election that
+applies to a voter. The dialog repeats the address-handling summary, links to
+the Privacy Policy, and closes with **Got it**. It has no checkbox or agreement
+button because it explains the field rather than requesting consent.
 
 ## Results verification line (ballot and results screens)
 

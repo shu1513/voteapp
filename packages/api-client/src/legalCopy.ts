@@ -43,20 +43,19 @@ export const RENEWAL_CHECKBOX_LABEL =
   "with a class-action waiver (Terms of Use Section 12), unless I opt out as described there.";
 
 export const PRIVACY_NOTICE =
-  "Privacy notice: we collect the address you enter, account information if you sign up, and device and " +
-  "usage information, to generate results, operate and secure the Service, and comply with law — as " +
-  "described in our Privacy Policy. Your address is used to find your districts and is not sold.";
+  "Your address is used only to find your voting districts. We don’t save it to your account or sell it; " +
+  "lookup data may be temporarily cached for up to 14 days.";
 
 /**
  * Sits beside the address field, where collection actually begins: the
  * autocomplete forwards what is typed after three characters, long before
  * anyone presses Search, and notice has to arrive at or before collection.
- * The full PRIVACY_NOTICE is too long to live there without becoming the wall
- * of text the gate was moved off the page to avoid, so the short line carries
- * the point that matters and the dialog carries the rest.
+ * Keep this wording aligned with the dialog notice so both surfaces describe
+ * address use, temporary retention, account storage, and sale consistently.
  */
 export const ADDRESS_FIELD_PRIVACY_NOTE =
-  "We use the address you enter to find your districts and do not sell it.";
+  "Your address is used only to find your voting districts. We don’t save it to your account or sell it; " +
+  "lookup data may be temporarily cached for up to 14 days.";
 
 /**
  * Shown on results, where it reaches people who never passed the gate at all

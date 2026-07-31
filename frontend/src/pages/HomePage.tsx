@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
 import type { AddressResolution } from "@voteapp/api-client";
 import { AddressAutocomplete } from "../components/AddressAutocomplete";
+import { FullAddressExplanation } from "../components/FullAddressExplanation";
 import { PreSearchTermsDialog } from "../components/PreSearchTermsDialog";
 import { ErrorNotice } from "../components/Status";
 import { savePendingDistrictIds } from "../lib/pendingDistricts";
@@ -163,6 +164,8 @@ export function HomePage() {
               >
                 Privacy notice
               </a>
+              {" · "}
+              <FullAddressExplanation />
             </p>
           </div>
 
