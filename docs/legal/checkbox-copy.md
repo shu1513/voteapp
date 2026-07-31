@@ -12,36 +12,60 @@ Freedom Financial Network):
 - Signup acceptance is recorded server-side: POST /api/auth/register requires
   accepted_terms_version matching CURRENT_TERMS_VERSION
   (backend/src/constants/legal.ts); stored on the user row with a timestamp.
+  Registration always asks for its own acceptance: an anonymous acceptance on
+  the same browser proves nothing about who owns the account.
+- Registration and the re-acceptance interstitial keep their checkbox INLINE
+  on the page: both gate an explicit account action the visitor came to take.
+- The anonymous pre-search gate is DEFERRED instead: the home page carries no
+  checkbox and no legal box, and pressing Search opens the terms dialog. Assent
+  is asked for at the moment it gates something, which is where the clickwrap
+  cases put it (Meyer v. Uber). Notice sitting apart from the action is the
+  weak pattern — Nicosia v. Amazon turned on exactly that.
 - Anonymous search acceptance is ENFORCED server-side but never stored: POST
   /api/address/resolve requires accepted_terms_version matching
-  CURRENT_TERMS_VERSION and refuses the search otherwise, so the checkbox is a
-  real gate rather than a disabled button a direct API call walks around.
-  Nothing about the acceptance is persisted — an anonymous visitor's IP and
-  user agent are deliberately NOT collected, so the evidence is this file plus
-  the deployed gate, not a row per search. Acceptance is also never remembered
-  between visits — no localStorage key, no pre-ticked box.
-- The pre-search checkbox label is a SUMMARY. The sentences it no longer
-  carries live in the terms dialog behind it, reachable from a "Read what you
-  are agreeing to" control beside the document links. That control must not
-  promise more than the dialog delivers: the dialog holds the key terms and
-  links to the three documents, it does NOT reproduce them, so do not label it
-  "the full agreement". Label, dialog paragraphs, and privacy notice all live
-  in packages/api-client/src/legalCopy.ts, and legalCopy.test.ts asserts every
-  one of them still appears in this file.
+  CURRENT_TERMS_VERSION and refuses the search otherwise, so the gate is real
+  rather than a disabled button a direct API call walks around. Nothing about
+  the acceptance is persisted — an anonymous visitor's IP and user agent are
+  deliberately NOT collected, so the evidence is this file plus the deployed
+  gate, not a row per search.
+- Acceptance IS remembered on the device for 90 days, keyed to the terms
+  version (frontend/src/lib/termsAcceptance.ts and the mobile port). Re-asking
+  a returning visitor on every search teaches click-through, which weakens
+  assent; the trigger that requires fresh consent is a version change, which
+  the version check enforces. Remembering may ONLY decide whether the dialog
+  opens. When a dialog opens its checkbox starts empty — a pre-ticked box shows
+  assent nobody gave, and that is the thing that must never come back.
+- The privacy notice must stay beside the address field, not only inside the
+  dialog: the autocomplete forwards typed fragments after three characters, so
+  collection begins before Search is ever pressed and notice has to arrive at
+  or before collection.
+- The pre-search checkbox label is a SUMMARY; the sentences it does not carry
+  appear above it in the dialog. All of this copy lives in
+  packages/api-client/src/legalCopy.ts, and legalCopy.test.ts asserts every
+  string still appears in this file.
 -->
 
 # Checkbox and notice copy — Version 1.1
 
-## Pre-search checkbox (anonymous address search)
+## Pre-search terms dialog (anonymous address search)
+
+Opened by pressing **Search**. Heading: **Before we search**. Body, in order:
+the paragraphs below, the full privacy notice, then the checkbox and its three
+document links, then **Cancel** and **Agree and search**.
 
 > [ ] I have read and agree to the [Terms of Use], [Privacy Policy], and
 > [AI Research and Election Information Disclaimer] — including binding
 > individual arbitration with a class-action waiver (Terms of Use Section 12),
 > unless I opt out as described there.
 
-### Terms dialog ("Read what you are agreeing to", next to the checkbox)
+Rules for the dialog: the box is empty every time it opens; **Agree and search**
+stays disabled until it is ticked and names what it does rather than saying
+"Continue"; the document links open in a new tab so reading one does not
+discard the dialog or the address already typed; Cancel, Escape, and the
+backdrop close it without agreeing and leave the typed address alone; no
+forced scrolling through the documents.
 
-Heading: **What you are agreeing to**. Body repeats the checkbox label, then:
+### Dialog paragraphs
 
 > Elections Simplified provides AI-assisted informational research only. It is
 > not an official election source, and results may be inaccurate, incomplete,
@@ -54,10 +78,6 @@ Heading: **What you are agreeing to**. Body repeats the checkbox label, then:
 > Disputes are resolved by binding individual arbitration with a class-action
 > waiver, as described in Section 12 of the Terms of Use, unless you opt out as
 > described there.
-
-…followed by the privacy notice below, the three document links, and an
-**I agree** button that ticks the checkbox. **Close** dismisses without
-agreeing.
 
 ## Signup checkbox (account registration)
 
@@ -79,13 +99,32 @@ agreeing.
 > class-action waiver (Terms of Use Section 12), unless I opt out as
 > described there.
 
-## Privacy notice (under the address input)
+## Privacy notice (full — shown inside the pre-search dialog and under the saved-address field)
 
 > Privacy notice: we collect the address you enter, account information if
 > you sign up, and device and usage information, to generate results, operate
 > and secure the Service, and comply with law — as described in our
 > [Privacy Policy]. Your address is used to find your districts and is not
 > sold.
+
+## Short privacy note (beside the anonymous address input)
+
+The full notice above is too long to sit beside the field without recreating
+the wall of text the gate was moved off the page to avoid. This carries the
+point that matters at the moment of collection; the full notice appears in the
+dialog, and [Privacy notice] links to the policy.
+
+> We use the address you enter to find your districts and do not sell it.
+> [Privacy notice]
+
+## Results verification line (ballot and results screens)
+
+Non-blocking, and deliberately not gated on acceptance: it has to reach the
+people the clickwrap never did — a shared computer, someone else's phone, a
+link from a text message.
+
+> AI-assisted research. Verify voting information with official election
+> authorities. [Disclaimer]
 
 ## Per-record source line (candidate records, measures, results)
 

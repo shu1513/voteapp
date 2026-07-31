@@ -1,7 +1,12 @@
 import { Link, useLocation, useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
-import { PUBLIC_BALLOT_SORTS, type BallotSort, type BallotSummary } from "@voteapp/api-client";
+import {
+  PUBLIC_BALLOT_SORTS,
+  VERIFY_WITH_OFFICIALS_NOTE,
+  type BallotSort,
+  type BallotSummary,
+} from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
@@ -123,6 +128,18 @@ export function BallotPage() {
           <ErrorNotice error={ballot.error} />
         </div>
       ) : null}
+
+      {/* Reaches everyone who sees results, including the people the clickwrap
+          never reached — a shared computer, someone else's phone, a link from
+          a text message. For a reliance claim this line carries more weight
+          than the agreement does, because it does not depend on the reader
+          having accepted anything. Non-blocking by design. */}
+      <p className="mt-4 text-xs text-ink-soft">
+        {VERIFY_WITH_OFFICIALS_NOTE}{" "}
+        <Link to="/disclaimer" className="underline hover:text-ink">
+          Disclaimer
+        </Link>
+      </p>
 
       {ballot.isSuccess ? (
         <>

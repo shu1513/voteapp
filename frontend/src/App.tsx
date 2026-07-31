@@ -134,14 +134,23 @@ export function App() {
       </main>
       <TermsRenewalGate />
       <ScrollRestoration />
+      {/* The old footer repeated the home page's pitch line and buried the
+          Disclaimer inside it. The pitch now sits in the hero where it is
+          read, and the footer does the job a footer is for: reaching every
+          document from every page, which is also what keeps the clickwrap's
+          named documents permanently available rather than only at the gate. */}
       <footer className="mt-16 border-t border-line py-8 text-center text-xs text-ink-soft">
-        <p>
-          Independent, nonpartisan, AI-assisted election research. Not an official election source —{" "}
-          <Link to="/disclaimer" className="underline hover:text-ink">
-            read the Disclaimer
+        <nav aria-label="Legal" className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+          <Link to="/terms" className="underline hover:text-ink">
+            Terms of Use
           </Link>
-          .
-        </p>
+          <Link to="/privacy" className="underline hover:text-ink">
+            Privacy Policy
+          </Link>
+          <Link to="/disclaimer" className="underline hover:text-ink">
+            Disclaimer
+          </Link>
+        </nav>
       </footer>
     </div>
   );
