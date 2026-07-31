@@ -5,6 +5,7 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from "react-native";
 import { AddressAutocomplete } from "../../components/AddressAutocomplete";
+import { FullAddressExplanation } from "../../components/FullAddressExplanation";
 import { PreSearchTermsSheet } from "../../components/PreSearchTermsSheet";
 import { ErrorNotice } from "../../components/Status";
 import { useLogout } from "../../lib/auth";
@@ -78,6 +79,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const { me } = useMe();
   const [address, setAddress] = useState("");
+  const [addressExplanationVisible, setAddressExplanationVisible] = useState(false);
   const [termsVisible, setTermsVisible] = useState(false);
   // Set only while the visitor is off reading a linked document, so the sheet
   // can be restored on return instead of treated as cancelled.
@@ -241,6 +243,13 @@ export default function HomeScreen() {
                 Privacy notice
               </Text>
             </Text>
+            <Pressable
+              accessibilityRole="button"
+              onPress={() => setAddressExplanationVisible(true)}
+              className="mt-1 self-start"
+            >
+              <Text className="text-xs text-ink-soft underline">Why do we need the full address?</Text>
+            </Pressable>
           </View>
 
           <Pressable
@@ -272,6 +281,10 @@ export default function HomeScreen() {
         onCancel={cancelTerms}
         onSuspendForDocument={suspendTermsForDocument}
         pending={resolve.isPending}
+      />
+      <FullAddressExplanation
+        visible={addressExplanationVisible}
+        onClose={() => setAddressExplanationVisible(false)}
       />
     </KeyboardAvoidingView>
   );

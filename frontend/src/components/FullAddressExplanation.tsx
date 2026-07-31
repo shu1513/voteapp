@@ -1,4 +1,5 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
+import { ADDRESS_FIELD_PRIVACY_NOTE } from "@voteapp/api-client";
 import { useState } from "react";
 
 /**
@@ -37,10 +38,7 @@ export function FullAddressExplanation() {
                   address lets us find the congressional, state, county, city, school, and other voting
                   districts that apply to you.
                 </p>
-                <p>
-                  We use your address only for this district lookup. We don’t save it to your account or sell
-                  it; lookup data may be temporarily cached for up to 14 days.
-                </p>
+                <p>{ADDRESS_FIELD_PRIVACY_NOTE}</p>
                 <p>
                   <a
                     href="/privacy"

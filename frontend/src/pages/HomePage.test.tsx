@@ -74,7 +74,7 @@ describe("HomePage pre-search clickwrap", () => {
     // so this notice may never move into the dialog.
     expect(
       screen.getByText(
-        /Your address is used only to find your voting districts\. We don’t save it to your account or sell it; lookup data may be temporarily cached for up to 14 days\./
+        /We use your address to find your voting districts\. We don’t save it to your account or sell it; lookup data may be temporarily cached for up to 14 days\./
       )
     ).toBeInTheDocument();
     // New tab: the address lives in page state, so reading the policy in this

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useIsMutating, useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest, PRIVACY_NOTICE } from "@voteapp/api-client";
+import { ADDRESS_FIELD_PRIVACY_NOTE, apiRequest } from "@voteapp/api-client";
 import type { BallotSummary } from "@voteapp/api-client";
 import { AddressAutocomplete } from "./AddressAutocomplete";
 import { ErrorNotice } from "./Status";
@@ -91,7 +91,7 @@ export function SavedAddressForm({ inputId, label }: { inputId: string; label: s
           onChange={onAddressChange}
           placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
         />
-        <p className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</p>
+        <p className="mt-1 text-xs text-ink-soft">{ADDRESS_FIELD_PRIVACY_NOTE}</p>
       </div>
       <button
         type="submit"

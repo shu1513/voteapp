@@ -120,28 +120,32 @@ forced scrolling through the documents.
 > class-action waiver (Terms of Use Section 12), unless I opt out as
 > described there.
 
-## Privacy notice (shown inside the pre-search dialog and under the saved-address field)
+## Privacy notice (full — shown inside the pre-search dialog)
 
-> Your address is used only to find your voting districts. We don’t save it to
-> your account or sell it; lookup data may be temporarily cached for up to 14
-> days.
+> Privacy notice: we collect the address you enter, account information if
+> you sign up, and device and usage information, to generate results, operate
+> and secure the Service, and comply with law — as described in our
+> [Privacy Policy]. Your address is used to find your districts and is not
+> sold.
 
-## Short privacy note (beside the anonymous address input)
+## Short privacy note (beside every address input)
 
-This carries the point that matters at the moment of collection, and [Privacy
-notice] links to the policy.
+This carries the address-specific points that matter at collection without
+repeating the full consent-dialog disclosure beside the field. On anonymous
+search surfaces, [Privacy notice] links to the policy.
 
-> Your address is used only to find your voting districts. We don’t save it to
-> your account or sell it; lookup data may be temporarily cached for up to 14
+> We use your address to find your voting districts. We don’t save it to your
+> account or sell it; lookup data may be temporarily cached for up to 14
 > days.
 > [Privacy notice]
 
-Beside that notice, **Why do we need the full address?** opens an
-informational dialog. It explains that ZIP codes are mail-delivery areas, can
-contain multiple voting districts, and cannot identify every election that
-applies to a voter. The dialog repeats the address-handling summary, links to
-the Privacy Policy, and closes with **Got it**. It has no checkbox or agreement
-button because it explains the field rather than requesting consent.
+Beside the anonymous-search note, **Why do we need the full address?** opens
+an informational dialog on web and mobile. It explains that ZIP codes are
+mail-delivery areas, can contain multiple voting districts, and cannot identify
+every election that applies to a voter. The dialog repeats the address-handling
+summary, links to the Privacy Policy, and closes with **Got it**. It has no
+checkbox or agreement button because it explains the field rather than
+requesting consent.
 
 ## Results verification line (ballot and results screens)
 

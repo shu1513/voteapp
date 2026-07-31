@@ -72,6 +72,13 @@ describe("legal copy matches docs/legal/checkbox-copy.md", () => {
   it("carries the version the doc is headed with", () => {
     expect(normalizedDoc).toContain(`Checkbox and notice copy — Version ${TERMS_VERSION}`);
   });
+
+  it("keeps the full privacy disclosure separate from the short address-field note", () => {
+    expect(PRIVACY_NOTICE).not.toBe(ADDRESS_FIELD_PRIVACY_NOTE);
+    expect(PRIVACY_NOTICE).toContain("account information");
+    expect(PRIVACY_NOTICE).toContain("device and usage information");
+    expect(PRIVACY_NOTICE).toContain("Privacy Policy");
+  });
 });
 
 // The acceptance ledger records a version string, and the enforcement paths
