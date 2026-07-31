@@ -80,6 +80,21 @@ describe("userIdentity", () => {
     expect(query.mock.calls[0][1]).toEqual([USER_ID, "1.1"]);
   });
 
+  it("acceptUserTerms appends the history row in the same statement as the overwrite", async () => {
+    const query = vi.fn().mockResolvedValue({ rows: [IDENTITY], rowCount: 1 });
+
+    await acceptUserTerms({ query } as never, USER_ID, "1.1");
+
+    // One statement, so no failure can overwrite the users row while losing
+    // the record of what it used to say. The history row takes its timestamp
+    // from the UPDATE's own RETURNING rather than a second now().
+    expect(query).toHaveBeenCalledTimes(1);
+    const sql = String(query.mock.calls[0][0]);
+    expect(sql).toContain("INSERT INTO public.user_terms_acceptances");
+    expect(sql).toContain("'renewal'");
+    expect(sql).toContain("FROM accepted");
+  });
+
   it("acceptUserTerms rejects an empty version without querying", async () => {
     const query = vi.fn();
 

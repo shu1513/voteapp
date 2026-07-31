@@ -6,6 +6,7 @@ import { issueUserAuthToken, consumeUserAuthToken } from "./authTokenStore.js";
 import type { AuthMailer } from "./authMailer.js";
 import { isUuid } from "../utils/uuid.js";
 import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
+import { recordTermsAcceptance } from "../pipeline/users/userTermsAcceptances.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type TransactionalDb = Pick<Pool, "connect" | "query">;
@@ -276,6 +277,11 @@ async function createOrRefreshAuthUser(
 ): Promise<AuthUserRow> {
   const existing = await findActiveUserByEmailForUpdate(client, input.email);
   if (existing && existing.email_verified) {
+    // Registering an address that already belongs to a verified account is a
+    // silent no-op (it must not reveal that the address is taken). Nothing is
+    // written, and no acceptance is recorded either: whoever submitted this
+    // form has not been shown to control the account, so attributing an
+    // acceptance to it would put someone else's assent in their history.
     return existing;
   }
 
@@ -311,6 +317,13 @@ async function createOrRefreshAuthUser(
     if (!row) {
       throw new Error("Failed to update auth user");
     }
+    // Same transaction as the users write above, so the account cannot end up
+    // claiming a version with no history behind it.
+    await recordTermsAcceptance(client, {
+      userId: row.id,
+      termsVersion: input.acceptedTermsVersion,
+      context: "registration",
+    });
     return row;
   }
 
@@ -339,6 +352,11 @@ async function createOrRefreshAuthUser(
   if (!row) {
     throw new Error("Failed to create auth user");
   }
+  await recordTermsAcceptance(client, {
+    userId: row.id,
+    termsVersion: input.acceptedTermsVersion,
+    context: "registration",
+  });
   return row;
 }
 

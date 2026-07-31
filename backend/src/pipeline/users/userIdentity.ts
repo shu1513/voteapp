@@ -74,7 +74,16 @@ export async function setUserFirstName(db: Queryable, userId: string, firstName:
 
 /** Records the session holder's acceptance of the given terms version.
  * The caller (apiServer) is responsible for only passing the current
- * version; this just stamps what was accepted and when. */
+ * version; this just stamps what was accepted and when.
+ *
+ * The users columns are overwritten — they answer "which version is this
+ * account on now" — while user_terms_acceptances gains a row, so the version
+ * being replaced here stays provable afterwards.
+ *
+ * Both happen in ONE statement on purpose. A data-modifying CTE is atomic
+ * without any transaction handling, so this still works when handed a plain
+ * Pool, and there is no arrangement of failures that can overwrite the users
+ * row while losing the history of what it used to say. */
 export async function acceptUserTerms(db: Queryable, userId: string, termsVersion: string): Promise<UserIdentity> {
   const normalizedUserId = normalizeUserId(userId);
   const normalizedVersion = typeof termsVersion === "string" ? termsVersion.trim() : "";
@@ -84,13 +93,21 @@ export async function acceptUserTerms(db: Queryable, userId: string, termsVersio
 
   const result = await db.query<UserIdentity>(
     `
-      UPDATE public.users
-      SET accepted_terms_version = $2,
-          accepted_terms_at = now(),
-          updated_at = now()
-      WHERE id = $1::uuid
-        AND deleted_at IS NULL
-      RETURNING email, first_name, email_verified, accepted_terms_version
+      WITH accepted AS (
+        UPDATE public.users
+        SET accepted_terms_version = $2,
+            accepted_terms_at = now(),
+            updated_at = now()
+        WHERE id = $1::uuid
+          AND deleted_at IS NULL
+        RETURNING id, email, first_name, email_verified, accepted_terms_version, accepted_terms_at
+      ), logged AS (
+        INSERT INTO public.user_terms_acceptances (user_id, terms_version, context, accepted_at)
+        SELECT id, accepted_terms_version, 'renewal', accepted_terms_at
+        FROM accepted
+      )
+      SELECT email, first_name, email_verified, accepted_terms_version
+      FROM accepted
     `,
     [normalizedUserId, normalizedVersion]
   );
