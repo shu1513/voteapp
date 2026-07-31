@@ -120,7 +120,7 @@ forced scrolling through the documents.
 > class-action waiver (Terms of Use Section 12), unless I opt out as
 > described there.
 
-## Privacy notice (full — shown inside the pre-search dialog and under the saved-address field)
+## Privacy notice (full — shown inside the pre-search dialog)
 
 > Privacy notice: we collect the address you enter, account information if
 > you sign up, and device and usage information, to generate results, operate
@@ -128,15 +128,24 @@ forced scrolling through the documents.
 > [Privacy Policy]. Your address is used to find your districts and is not
 > sold.
 
-## Short privacy note (beside the anonymous address input)
+## Short privacy note (beside every address input)
 
-The full notice above is too long to sit beside the field without recreating
-the wall of text the gate was moved off the page to avoid. This carries the
-point that matters at the moment of collection; the full notice appears in the
-dialog, and [Privacy notice] links to the policy.
+This carries the address-specific points that matter at collection without
+repeating the full consent-dialog disclosure beside the field. On anonymous
+search surfaces, [Privacy notice] links to the policy.
 
-> We use the address you enter to find your districts and do not sell it.
+> We use your address to find your voting districts. We don’t save it to your
+> account or sell it; lookup data may be temporarily cached for up to 14
+> days.
 > [Privacy notice]
+
+Beside the anonymous-search note, **Why do we need the full address?** opens
+an informational dialog on web and mobile. It explains that ZIP codes are
+mail-delivery areas, can contain multiple voting districts, and cannot identify
+every election that applies to a voter. The dialog repeats the address-handling
+summary, links to the Privacy Policy, and closes with **Got it**. It has no
+checkbox or agreement button because it explains the field rather than
+requesting consent.
 
 ## Results verification line (ballot and results screens)
 

@@ -73,13 +73,39 @@ describe("HomePage pre-search clickwrap", () => {
     // The autocomplete forwards what is typed before Search is ever pressed,
     // so this notice may never move into the dialog.
     expect(
-      screen.getByText(/We use the address you enter to find your districts and do not sell it/)
+      screen.getByText(
+        /We use your address to find your voting districts\. We don’t save it to your account or sell it; lookup data may be temporarily cached for up to 14 days\./
+      )
     ).toBeInTheDocument();
     // New tab: the address lives in page state, so reading the policy in this
     // tab would return the visitor to an empty field.
     const notice = screen.getByRole("link", { name: "Privacy notice" });
     expect(notice).toHaveAttribute("href", "/privacy");
     expect(notice).toHaveAttribute("target", "_blank");
+  });
+
+  it("explains why a full address is needed without treating the explanation as consent", async () => {
+    const user = userEvent.setup();
+    renderHome();
+
+    const trigger = screen.getByRole("button", { name: "Why do we need the full address?" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+    await user.click(trigger);
+
+    const dialog = screen.getByRole("dialog", { name: "Why do we need the full address?" });
+    expect(dialog).toHaveTextContent("ZIP codes are designed for mail delivery, not elections.");
+    expect(dialog).toHaveTextContent("A single ZIP code can contain multiple voting districts");
+    expect(dialog).toHaveTextContent("homes on the same street");
+    expect(dialog).toHaveTextContent("We don’t save it to your account or sell it");
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+
+    const privacyPolicy = screen.getByRole("link", { name: "Read our Privacy Policy" });
+    expect(privacyPolicy).toHaveAttribute("href", "/privacy");
+    expect(privacyPolicy).toHaveAttribute("target", "_blank");
+
+    await user.click(screen.getByRole("button", { name: "Got it" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
   it("does not open the dialog without an address", async () => {

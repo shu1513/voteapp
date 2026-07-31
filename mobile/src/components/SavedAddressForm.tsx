@@ -1,5 +1,5 @@
 import type { BallotSummary } from "@voteapp/api-client";
-import { apiRequest, PRIVACY_NOTICE } from "@voteapp/api-client";
+import { ADDRESS_FIELD_PRIVACY_NOTE, apiRequest } from "@voteapp/api-client";
 import { useIsMutating, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
@@ -63,7 +63,7 @@ export function SavedAddressForm({ label }: { label: string }) {
           onChange={onAddressChange}
           placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
         />
-        <Text className="mt-1 text-xs text-ink-soft">{PRIVACY_NOTICE}</Text>
+        <Text className="mt-1 text-xs text-ink-soft">{ADDRESS_FIELD_PRIVACY_NOTE}</Text>
       </View>
       <Pressable
         disabled={!canSave}

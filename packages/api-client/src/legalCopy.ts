@@ -51,12 +51,12 @@ export const PRIVACY_NOTICE =
  * Sits beside the address field, where collection actually begins: the
  * autocomplete forwards what is typed after three characters, long before
  * anyone presses Search, and notice has to arrive at or before collection.
- * The full PRIVACY_NOTICE is too long to live there without becoming the wall
- * of text the gate was moved off the page to avoid, so the short line carries
- * the point that matters and the dialog carries the rest.
+ * Keep this short and address-specific; the full PRIVACY_NOTICE belongs in
+ * the consent dialog, while this line belongs beside every address field.
  */
 export const ADDRESS_FIELD_PRIVACY_NOTE =
-  "We use the address you enter to find your districts and do not sell it.";
+  "We use your address to find your voting districts. We don’t save it to your account or sell it; " +
+  "lookup data may be temporarily cached for up to 14 days.";
 
 /**
  * Shown on results, where it reaches people who never passed the gate at all
