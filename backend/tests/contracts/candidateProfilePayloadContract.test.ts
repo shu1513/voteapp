@@ -31,6 +31,103 @@ describe("parseCandidateProfilePayload", () => {
     expect(parsed.payload.has_held_public_office).toBe(true);
   });
 
+  it("strips trailing roster footnote markers from names", () => {
+    // State rosters mark incumbency with a trailing asterisk. Scraped
+    // verbatim it reached display_name and was served to voters as part of
+    // the person's name — 366 stored candidates across CT and MN carry one.
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jill Oberlander *",
+      first_name: "Jill",
+      last_name: "Oberlander *",
+      has_held_public_office: true,
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (parsed.ok) {
+      expect(parsed.payload.display_name).toBe("Jill Oberlander");
+      expect(parsed.payload.last_name).toBe("Oberlander");
+    }
+  });
+
+  it("leaves legitimate name punctuation and suffixes alone", () => {
+    // The stripper must not become a general name cleaner: apostrophes,
+    // hyphens, accents, lowercase particles and generational suffixes are all
+    // part of real stored names.
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Paul Cicarella, Jr.",
+      first_name: "Paul",
+      last_name: "Cicarella, Jr.",
+      has_held_public_office: true,
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (parsed.ok) {
+      expect(parsed.payload.display_name).toBe("Paul Cicarella, Jr.");
+      expect(parsed.payload.last_name).toBe("Cicarella, Jr.");
+    }
+
+    for (const name of ["Tom O'Dea", "Cara Pavalock-D'Amato", "Aundr\u00e9 Bumgardner", "Joe de la Cruz"]) {
+      const kept = parseCandidateProfilePayload({
+        display_name: name,
+        first_name: "X",
+        last_name: name,
+        has_held_public_office: false,
+        sources: ["https://example.org/profile"],
+      });
+      expect(kept.ok, name).toBe(true);
+      if (kept.ok) {
+        expect(kept.payload.display_name, name).toBe(name);
+      }
+    }
+  });
+
+  it("rejects a name that is only footnote markers", () => {
+    const parsed = parseCandidateProfilePayload({
+      display_name: "*",
+      first_name: "*",
+      last_name: "*",
+      has_held_public_office: false,
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("not only footnote markers");
+    }
+  });
+
+  it("rejects a first_name that is the wreckage of a bad name split", () => {
+    // Live rows: first_name "Franks," with last_name "Jr." (the given name is
+    // absent from the source), and first_name "(Butch)" where a nickname
+    // displaced it. Rejected rather than normalised — the right value cannot
+    // be derived from what is present.
+    const trailingComma = parseCandidateProfilePayload({
+      display_name: "Franks, Jr.",
+      first_name: "Franks,",
+      last_name: "Jr.",
+      has_held_public_office: false,
+      sources: ["https://example.org/profile"],
+    });
+    expect(trailingComma.ok).toBe(false);
+    if (!trailingComma.ok) {
+      expect(trailingComma.reason).toContain("split wrongly");
+    }
+
+    const nickname = parseCandidateProfilePayload({
+      display_name: "(Butch) Lawter, Jr.",
+      first_name: "(Butch)",
+      last_name: "Lawter, Jr.",
+      has_held_public_office: false,
+      sources: ["https://example.org/profile"],
+    });
+    expect(nickname.ok).toBe(false);
+    if (!nickname.ok) {
+      expect(nickname.reason).toContain("parenthetical nickname");
+    }
+  });
+
   it("requires has_held_public_office as a boolean", () => {
     const base = {
       display_name: "Jane Doe",
