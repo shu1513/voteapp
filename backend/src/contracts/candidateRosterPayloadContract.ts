@@ -1,3 +1,4 @@
+import { stripNameFootnoteMarkers } from "../utils/candidateIdentity.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 export type CandidateRosterRunningMate = {
@@ -87,6 +88,11 @@ function parseEntry(
   if (!isNonEmptyString(input.display_name)) {
     return { ok: false, reason: "row.display_name must be a non-empty string" };
   }
+  // Re-checked after footnote stripping: a value of "*" alone passes the
+  // non-empty check above and would otherwise normalize to an empty name.
+  if (stripNameFootnoteMarkers(input.display_name).length === 0) {
+    return { ok: false, reason: "row.display_name must contain a name, not only footnote markers" };
+  }
 
   const sources = normalizeSources(input.sources);
   if (!sources) {
@@ -145,11 +151,16 @@ function parseEntry(
       }
       mateParty = mate.party.trim();
     }
-    if (mate.display_name.trim().toLowerCase() === input.display_name.trim().toLowerCase()) {
+    // Compared AFTER stripping, so "Jane Doe *" and "Jane Doe" are recognised
+    // as the same person rather than passing as a distinct running mate.
+    if (
+      stripNameFootnoteMarkers(mate.display_name).toLowerCase() ===
+      stripNameFootnoteMarkers(input.display_name).toLowerCase()
+    ) {
       return { ok: false, reason: "row.running_mate.display_name must differ from the ticket lead's display_name" };
     }
     runningMate = {
-      display_name: mate.display_name.trim(),
+      display_name: stripNameFootnoteMarkers(mate.display_name),
       ...(mateParty ? { party: mateParty } : {}),
       sources: mateSources,
     };
@@ -158,7 +169,7 @@ function parseEntry(
   return {
     ok: true,
     entry: {
-      display_name: input.display_name.trim(),
+      display_name: stripNameFootnoteMarkers(input.display_name),
       ...(party ? { party } : {}),
       ...(isIncumbent !== undefined ? { is_incumbent: isIncumbent } : {}),
       ...(normalizedFecIds !== undefined ? { fec_ids: normalizedFecIds } : {}),

@@ -1,5 +1,5 @@
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
-import { normalizeTwitterHandle } from "../utils/candidateIdentity.js";
+import { normalizeTwitterHandle, stripNameFootnoteMarkers } from "../utils/candidateIdentity.js";
 
 export type CandidateProfilePayload = {
   display_name: string;
@@ -111,6 +111,38 @@ export function parseCandidateProfilePayload(
   }
   if (!isNonEmptyString(input.last_name)) {
     return { ok: false, reason: "payload.last_name must be non-empty string" };
+  }
+
+  const displayName = stripNameFootnoteMarkers(input.display_name);
+  const firstName = stripNameFootnoteMarkers(input.first_name);
+  const lastName = stripNameFootnoteMarkers(input.last_name);
+  // Re-checked after stripping: a value of "*" alone clears the non-empty
+  // checks above and would otherwise be stored as an empty name.
+  if (displayName.length === 0 || firstName.length === 0 || lastName.length === 0) {
+    return {
+      ok: false,
+      reason: "payload display_name/first_name/last_name must contain a name, not only footnote markers",
+    };
+  }
+
+  // A given name that ends in a comma or is wholly parenthetical is not a
+  // given name — it is the wreckage of a bad split, and it persists silently
+  // because the columns only ever get trimmed. Live examples: first_name
+  // "Franks," with last_name "Jr." (the given name is absent from the source
+  // entirely), and first_name "(Butch)" where a nickname displaced it.
+  // Rejected rather than normalised: the correct value cannot be derived from
+  // what is here, so the payload needs a human, not a cleanup rule.
+  if (firstName.endsWith(",")) {
+    return {
+      ok: false,
+      reason: `payload.first_name "${firstName}" ends with a comma, which means the name was split wrongly (the surname was probably placed in first_name); supply the given name`,
+    };
+  }
+  if (/^\(.*\)$/u.test(firstName)) {
+    return {
+      ok: false,
+      reason: `payload.first_name "${firstName}" is only a parenthetical nickname; supply the given name and keep the nickname in display_name`,
+    };
   }
 
   const sources = normalizeSources(input.sources);
@@ -231,9 +263,9 @@ export function parseCandidateProfilePayload(
   return {
     ok: true,
     payload: {
-      display_name: input.display_name.trim(),
-      first_name: input.first_name.trim(),
-      last_name: input.last_name.trim(),
+      display_name: displayName,
+      first_name: firstName,
+      last_name: lastName,
       ...(party ? { party } : {}),
       ...(dateOfBirth ? { date_of_birth: dateOfBirth } : {}),
       ...(twitterHandle ? { twitter_handle: twitterHandle } : {}),
