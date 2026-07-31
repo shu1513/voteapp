@@ -373,6 +373,14 @@ const DAMAGING_CLAIM_ACTOR_EXEMPT_PATTERNS: readonly RegExp[] = [
   /\b(?:a|an|the|people|those)\s+(?:[\w-]+\s+){0,3}?(?:man|woman|men|women|people|caregiver|officers?|deput(?:y|ies)|defendants?|suspects?|residents?|retailers|operatives?)\b[^.;]{0,80}\b(?:pleaded|pled|convicted|accused|charged|arrested|indicted)\b/i,
   /\bfiled\s+(?:[\w-]+\s+){0,3}?ethics\s+complaints?\s+(?:in\s+\d{4}\s+)?against\b/i,
   /\breleased\s+an?\s+ethics\s+complaint\b/i,
+  // The candidate ACCUSING a named third party of dishonesty is a record of
+  // their own public action, not an accusation against them. Live corpus:
+  // "accused national news organizations of lying to Americans about Crimea"
+  // — a column the candidate published, which the dishonesty patterns below
+  // otherwise flagged as a smear against him.
+  // At least one word must sit between the verb and "of", so the direct
+  // "accused of lying" — the candidate as target — is NOT exempted.
+  /\baccus\w+\s+(?:[\w'’-]+\s+){1,6}?of\s+(?:lying|lies|plagiaris\w+|steal\w+|corruption)\b/i,
   // Prosecutor/attorney career bios: "handling felony and misdemeanor
   // matters including domestic violence, sexual assault" is a caseload
   // description, not an accusation.
@@ -423,6 +431,20 @@ const DAMAGING_CLAIM_PATTERNS: readonly RegExp[] = [
   // Pronoun-only gap ("found him liable" = the candidate); a named third
   // party ("found the caregiver guilty") deliberately does not match.
   /\bfound\s+(?:(?:him|her|them)\s+)?(?:guilty|liable)\b|\bfound\s+probable\s+cause\b/i,
+  // Dishonesty, theft and epithet accusations that carry NO enforcement verb,
+  // so every pattern above misses them. Surfaced by review probing an exempted
+  // page, but the gap was never specific to that page: "lied about her résumé
+  // and plagiarized her policy plan" and "a corrupt liar who stole taxpayer
+  // money" were accepted on ANY unlisted domain, and on listed news too. These
+  // are accusations aimed at the candidate and belong behind the same
+  // listed-source requirement as an indictment.
+  // "stole"/"siphoned" are object-anchored to money the same way the
+  // misappropriation pattern above is, so "stole the show" and legislation
+  // about theft do not match.
+  /\b(?:lied|lying)\s+(?:about|to|under\s+oath)\b/i,
+  /\bplagiari[sz]ed\b/i,
+  /\b(?:stole|siphoned)\b[^.;]{0,40}?\b(?:funds?|money|taxpayers?|donations?|contributions?)\b/i,
+  /\b(?:corrupt|crooked)\s+(?:liar|politician|official|judge|cop|prosecutor)\b/i,
 ];
 
 function hostnameMatchesDomain(hostname: string, domain: string): boolean {

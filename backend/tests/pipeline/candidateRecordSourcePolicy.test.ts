@@ -165,6 +165,39 @@ describe("classifyCandidateRecordSourceDomain", () => {
     );
   });
 
+  it("treats dishonesty and theft accusations as damaging, anywhere", () => {
+    // These carry no enforcement verb, so every earlier pattern missed them
+    // and they were accepted on ANY unlisted domain — the exempted pages were
+    // never special. An accusation aimed at a candidate belongs behind the
+    // same listed-source requirement as an indictment.
+    for (const description of [
+      "She lied about her résumé and plagiarized her policy plan.",
+      "Called the candidate a corrupt liar who stole taxpayer money.",
+      "Was accused of lying about his military service.",
+      "Siphoned campaign contributions into a personal account.",
+    ]) {
+      expect(matchesDamagingClaimPattern(description), description).toBe(true);
+      expect(
+        evaluateCandidateRecordSourcePolicy({
+          description,
+          sourceUrl: "https://smalltownweekly.com/news/1",
+        }).ok,
+        description
+      ).toBe(false);
+    }
+  });
+
+  it("does not flag the candidate accusing someone ELSE of dishonesty", () => {
+    // Live corpus row: a column the candidate published. The accusation runs
+    // outward, so it is his own public action, not a smear against him.
+    for (const description of [
+      "Published a signed political commentary column that accused national news organizations of lying to Americans about Crimea.",
+      "Accused his opponent of lying about the budget during a debate.",
+    ]) {
+      expect(matchesDamagingClaimPattern(description), description).toBe(false);
+    }
+  });
+
   it("does not let an exempt page carry a claim the platform block used to stop", () => {
     // The damaging-claim detector is deliberately incomplete, so it cannot be
     // the only guard on an exempt page. Scoping the exemption to reviewed
