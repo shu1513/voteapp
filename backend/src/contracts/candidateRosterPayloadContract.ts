@@ -88,9 +88,15 @@ function parseEntry(
   if (!isNonEmptyString(input.display_name)) {
     return { ok: false, reason: "row.display_name must be a non-empty string" };
   }
-  // Re-checked after footnote stripping: a value of "*" alone passes the
-  // non-empty check above and would otherwise normalize to an empty name.
-  if (stripNameFootnoteMarkers(input.display_name).length === 0) {
+  // Stripped ONCE, here, and reused for the duplicate check and for storage.
+  // An earlier version stripped at each use site and missed one — the running
+  // mate below — which let a marker-only name through as "". Deriving each
+  // name a single time is what stops that from recurring.
+  //
+  // Re-checked after stripping: a value of "*" alone passes the non-empty
+  // check above and would otherwise be stored as an empty name.
+  const displayName = stripNameFootnoteMarkers(input.display_name);
+  if (displayName.length === 0) {
     return { ok: false, reason: "row.display_name must contain a name, not only footnote markers" };
   }
 
@@ -140,6 +146,13 @@ function parseEntry(
     if (!isNonEmptyString(mate.display_name)) {
       return { ok: false, reason: "row.running_mate.display_name must be a non-empty string" };
     }
+    const mateDisplayName = stripNameFootnoteMarkers(mate.display_name);
+    if (mateDisplayName.length === 0) {
+      return {
+        ok: false,
+        reason: "row.running_mate.display_name must contain a name, not only footnote markers",
+      };
+    }
     const mateSources = normalizeSources(mate.sources);
     if (!mateSources) {
       return { ok: false, reason: "row.running_mate.sources must contain at least one valid URL" };
@@ -153,14 +166,11 @@ function parseEntry(
     }
     // Compared AFTER stripping, so "Jane Doe *" and "Jane Doe" are recognised
     // as the same person rather than passing as a distinct running mate.
-    if (
-      stripNameFootnoteMarkers(mate.display_name).toLowerCase() ===
-      stripNameFootnoteMarkers(input.display_name).toLowerCase()
-    ) {
+    if (mateDisplayName.toLowerCase() === displayName.toLowerCase()) {
       return { ok: false, reason: "row.running_mate.display_name must differ from the ticket lead's display_name" };
     }
     runningMate = {
-      display_name: stripNameFootnoteMarkers(mate.display_name),
+      display_name: mateDisplayName,
       ...(mateParty ? { party: mateParty } : {}),
       sources: mateSources,
     };
@@ -169,7 +179,7 @@ function parseEntry(
   return {
     ok: true,
     entry: {
-      display_name: stripNameFootnoteMarkers(input.display_name),
+      display_name: displayName,
       ...(party ? { party } : {}),
       ...(isIncumbent !== undefined ? { is_incumbent: isIncumbent } : {}),
       ...(normalizedFecIds !== undefined ? { fec_ids: normalizedFecIds } : {}),

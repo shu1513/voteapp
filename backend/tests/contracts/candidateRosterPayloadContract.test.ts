@@ -68,6 +68,45 @@ describe("parseCandidateRosterPayload", () => {
     }
   });
 
+  it("rejects a running-mate name that is only footnote markers", () => {
+    // The ticket lead was re-checked after stripping but the running mate was
+    // not, so " * " cleared the non-empty check, stripped to "", and was
+    // stored as an empty name — the downstream profile draft is then silently
+    // skipped and the running mate disappears.
+    const parsed = parseCandidateRosterPayload({
+      candidates: [
+        {
+          display_name: "Jane Doe",
+          sources: ["https://example.org/a"],
+          running_mate: { display_name: " * ", sources: ["https://example.org/b"] },
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("row.running_mate.display_name");
+      expect(parsed.reason).toContain("not only footnote markers");
+    }
+  });
+
+  it("still strips markers from a valid running-mate name", () => {
+    const parsed = parseCandidateRosterPayload({
+      candidates: [
+        {
+          display_name: "Jane Doe",
+          sources: ["https://example.org/a"],
+          running_mate: { display_name: "John Smith *", sources: ["https://example.org/b"] },
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (parsed.ok) {
+      expect(parsed.payload.candidates[0]?.running_mate?.display_name).toBe("John Smith");
+    }
+  });
+
   it("sees a running mate as the ticket lead once footnote markers are stripped", () => {
     // Without stripping, "Jane Doe *" and "Jane Doe" read as two people and
     // the same person would be stored twice on one ticket.
