@@ -14,6 +14,15 @@ Freedom Financial Network):
   (backend/src/constants/legal.ts); stored on the user row with a timestamp.
   Registration always asks for its own acceptance: an anonymous acceptance on
   the same browser proves nothing about who owns the account.
+- The users columns hold only the CURRENT version, and re-acceptance
+  overwrites them, so every acceptance is also appended to
+  user_terms_acceptances (migration 201). That table is the answer to "what
+  has this account ever accepted"; the users columns answer "what is it on
+  now", which is what the re-acceptance interstitial reads. Registration and
+  renewal write their history row in the same statement or transaction as the
+  users write, so an account can never claim a version with no history behind
+  it. Rows are append-only (UPDATE is rejected by a trigger) and are deleted
+  with the account.
 - Registration and the re-acceptance interstitial keep their checkbox INLINE
   on the page: both gate an explicit account action the visitor came to take.
 - The anonymous pre-search gate is DEFERRED instead: the home page carries no

@@ -132,6 +132,7 @@ describe("createAuthService register terms acceptance", () => {
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [] }) // user lookup: none
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // INSERT user
+      .mockResolvedValueOnce({ rows: [] }) // INSERT terms acceptance
       .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
       .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // INSERT token
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
@@ -153,6 +154,13 @@ describe("createAuthService register terms acceptance", () => {
     expect(String(insertCall?.[0])).toContain("accepted_terms_version");
     expect(String(insertCall?.[0])).toContain("accepted_terms_at");
     expect(insertCall?.[1]?.[3]).toBe(CURRENT_TERMS_VERSION);
+
+    // The history row goes down in the same transaction as the users row, so
+    // the account can never claim a version with nothing behind it.
+    const ledgerCall = client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.user_terms_acceptances")
+    );
+    expect(ledgerCall?.[1]).toEqual([USER_ID, CURRENT_TERMS_VERSION, "registration"]);
   });
 
   it("stamps acceptance on the unverified-refresh update path too", async () => {
@@ -161,6 +169,7 @@ describe("createAuthService register terms acceptance", () => {
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // existing unverified user
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // UPDATE refresh
+      .mockResolvedValueOnce({ rows: [] }) // INSERT terms acceptance
       .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
       .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // INSERT token
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
@@ -182,6 +191,41 @@ describe("createAuthService register terms acceptance", () => {
     expect(String(updateCall?.[0])).toContain("accepted_terms_version = $4");
     expect(String(updateCall?.[0])).toContain("accepted_terms_at = now()");
     expect(updateCall?.[1]?.[3]).toBe(CURRENT_TERMS_VERSION);
+
+    const ledgerCall = client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.user_terms_acceptances")
+    );
+    expect(ledgerCall?.[1]).toEqual([USER_ID, CURRENT_TERMS_VERSION, "registration"]);
+  });
+
+  it("records nothing when the address already belongs to a verified account", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [userRow({ email_verified: true })] }) // existing VERIFIED user
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: {} as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.register({
+      email: "user@example.com",
+      password: "correct horse battery staple",
+      acceptedTermsVersion: CURRENT_TERMS_VERSION,
+    });
+
+    // Re-registering a verified address is a silent no-op that must not reveal
+    // the address is taken. Whoever submitted the form has not been shown to
+    // control the account, so recording an acceptance against it would file a
+    // stranger's assent in the account holder's history.
+    const ledgerCall = client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.user_terms_acceptances")
+    );
+    expect(ledgerCall).toBeUndefined();
   });
 
   it("rejects blank or stale terms versions before touching the database", async () => {
