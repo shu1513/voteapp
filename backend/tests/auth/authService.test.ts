@@ -759,6 +759,7 @@ describe("createAuthService session epoch revocation", () => {
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // existing unverified FOR UPDATE
       .mockResolvedValueOnce({ rows: [userRow({ email_verified: false, session_epoch: 2 })] }) // refresh UPDATE
+      .mockResolvedValueOnce({ rows: [] }) // INSERT terms acceptance
       .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
       .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // issue verification token
       .mockResolvedValueOnce({ rows: [] }); // COMMIT
