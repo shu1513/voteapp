@@ -94,6 +94,137 @@ describe("classifyCandidateRecordSourceDomain", () => {
     );
   });
 
+  it("exempts the reviewed PAGES on institutional publishers", () => {
+    // Each is one reviewed page on which the organisation reports its own act:
+    // Equality Arizona's endorsement release, the State Bar of Arizona
+    // magazine's article permalink, the Thurston coalition's award page.
+    for (const url of [
+      "https://equalityarizona.substack.com/p/equality-arizona-2026-primary-election",
+      "https://azatty.wordpress.com/2014/10/07/ariz-court-reporting-changes-will-affect-attorneys/",
+      "https://thurstonecc.wordpress.com/angel-award/",
+    ]) {
+      expect(classifyCandidateRecordSourceDomain(url).tier, url).toBe("unlisted");
+    }
+  });
+
+  it("does NOT exempt other pages on the same exempt hosts", () => {
+    // The whole point of a per-page exemption. A host-wide one would unblock
+    // future posts, archives, tag pages and unrelated authors that nobody
+    // reviewed — including the tag page this record used to cite.
+    for (const url of [
+      "https://equalityarizona.substack.com/p/unrelated-candidate-rumor",
+      "https://azatty.wordpress.com/tag/politics/",
+      "https://azatty.wordpress.com/tag/trial/",
+      "https://thurstonecc.wordpress.com/new-post-by-unknown-author/",
+      "https://thurstonecc.wordpress.com/",
+    ]) {
+      expect(classifyCandidateRecordSourceDomain(url).tier, url).toBe("blocked");
+    }
+  });
+
+  it("matches an exempt page regardless of trailing slash, case or query", () => {
+    // Stored citations arrive post-redirect and often carry tracking
+    // parameters; the exemption must survive that without becoming loose.
+    for (const url of [
+      "https://thurstonecc.wordpress.com/angel-award",
+      "https://thurstonecc.wordpress.com/angel-award/",
+      "https://thurstonecc.wordpress.com/Angel-Award/?utm_source=newsletter",
+      "https://thurstonecc.wordpress.com/angel-award/#winners",
+    ]) {
+      expect(classifyCandidateRecordSourceDomain(url).tier, url).toBe("unlisted");
+    }
+  });
+
+  it("keeps the exemption off the platform, look-alikes and subdomains", () => {
+    for (const url of [
+      "https://someone.substack.com/p/post",
+      "https://randomblog.wordpress.com/2020/01/01/post",
+      "https://notequalityarizona.substack.com/p/equality-arizona-2026-primary-election",
+      "https://evil.equalityarizona.substack.com/p/equality-arizona-2026-primary-election",
+    ]) {
+      expect(classifyCandidateRecordSourceDomain(url).tier, url).toBe("blocked");
+    }
+  });
+
+  it("lifts only the ugc_social block, never another blocked kind", () => {
+    // The exemption is resolved inside the matching kind. Were it checked
+    // first, an exempt page would also bypass bot_check_interstitial and
+    // generated_candidate_directory — kinds this exemption must not touch.
+    const interstitial = classifyCandidateRecordSourceDomain(
+      "https://validate.perfdrive.com/?ssc=https%3A%2F%2Fthurstonecc.wordpress.com%2Fangel-award"
+    );
+    expect(interstitial.tier).toBe("blocked");
+    expect(interstitial.tier === "blocked" && interstitial.blockedKind).toBe(
+      "bot_check_interstitial"
+    );
+
+    const directory = classifyCandidateRecordSourceDomain("https://www.civoren.com/candidate/x");
+    expect(directory.tier).toBe("blocked");
+    expect(directory.tier === "blocked" && directory.blockedKind).toBe(
+      "generated_candidate_directory"
+    );
+  });
+
+  it("treats dishonesty and theft accusations as damaging, anywhere", () => {
+    // These carry no enforcement verb, so every earlier pattern missed them
+    // and they were accepted on ANY unlisted domain — the exempted pages were
+    // never special. An accusation aimed at a candidate belongs behind the
+    // same listed-source requirement as an indictment.
+    for (const description of [
+      "She lied about her résumé and plagiarized her policy plan.",
+      "Called the candidate a corrupt liar who stole taxpayer money.",
+      "Was accused of lying about his military service.",
+      "Siphoned campaign contributions into a personal account.",
+    ]) {
+      expect(matchesDamagingClaimPattern(description), description).toBe(true);
+      expect(
+        evaluateCandidateRecordSourcePolicy({
+          description,
+          sourceUrl: "https://smalltownweekly.com/news/1",
+        }).ok,
+        description
+      ).toBe(false);
+    }
+  });
+
+  it("does not flag the candidate accusing someone ELSE of dishonesty", () => {
+    // Live corpus row: a column the candidate published. The accusation runs
+    // outward, so it is his own public action, not a smear against him.
+    for (const description of [
+      "Published a signed political commentary column that accused national news organizations of lying to Americans about Crimea.",
+      "Accused his opponent of lying about the budget during a debate.",
+    ]) {
+      expect(matchesDamagingClaimPattern(description), description).toBe(false);
+    }
+  });
+
+  it("does not let an exempt page carry a claim the platform block used to stop", () => {
+    // The damaging-claim detector is deliberately incomplete, so it cannot be
+    // the only guard on an exempt page. Scoping the exemption to reviewed
+    // pages is what keeps this text out.
+    const smear = evaluateCandidateRecordSourcePolicy({
+      description: "Called the candidate a corrupt liar who stole taxpayer money.",
+      sourceUrl: "https://equalityarizona.substack.com/p/unrelated-candidate-rumor",
+    });
+    expect(smear.ok).toBe(false);
+  });
+
+  it("does not promote exempt hosts to listed, so damaging claims still fail", () => {
+    // These are self-reporting advocacy and professional bodies, not
+    // newsrooms. An ordinary factual claim is fine; an accusation is not.
+    const ordinary = evaluateCandidateRecordSourcePolicy({
+      description: "Equality Arizona endorsed her for State Senate in Legislative District 1.",
+      sourceUrl: "https://equalityarizona.substack.com/p/equality-arizona-2026-primary-election",
+    });
+    expect(ordinary.ok).toBe(true);
+
+    const damaging = evaluateCandidateRecordSourcePolicy({
+      description: "Was indicted on bribery charges in March 2026.",
+      sourceUrl: "https://equalityarizona.substack.com/p/equality-arizona-2026-primary-election",
+    });
+    expect(damaging.ok).toBe(false);
+  });
+
   it("blocks bot-check interstitials", () => {
     expect(
       classifyCandidateRecordSourceDomain(

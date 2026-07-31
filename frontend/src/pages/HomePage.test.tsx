@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PRE_SEARCH_AGREEMENT_PARAGRAPHS, TERMS_VERSION } from "@voteapp/api-client";
 import { HomePage } from "./HomePage";
 
-const ADDRESS_LABEL = "Enter your address to see the elections you can vote in";
+const ADDRESS_LABEL = "Enter your address to see which elections you can vote in:";
 const STORAGE_KEY = "voteapp_terms_acceptance";
 const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
 
