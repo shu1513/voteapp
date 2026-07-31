@@ -117,8 +117,8 @@ export function HomePage() {
               at 3xl on a phone it ran six lines and pushed the address field
               off the fold. */}
           <h1 className="text-xl font-bold sm:text-3xl">
-            Find out exactly what elections you can vote on, and who these candidates really are
-            by their records instead of their slogans.
+            Find out exactly which elections you can vote on and who the candidates really are by
+            their track records instead of their slogans.
           </h1>
           {/* What the service is, where a first-time visitor actually looks.
               It used to sit in the footer, under the fold, where it repeated
@@ -138,7 +138,7 @@ export function HomePage() {
                 rejected as a demand for where you sleep, "Voting address"
                 read as the place you go to vote. */}
             <label htmlFor="address" className="block text-sm font-medium text-ink">
-              Enter your address to see the elections you can vote in
+              Enter your address to see which elections you can vote in:
             </label>
             <AddressAutocomplete
               inputId="address"

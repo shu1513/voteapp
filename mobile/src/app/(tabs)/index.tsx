@@ -206,8 +206,8 @@ export default function HomeScreen() {
             steps below the old 3xl: at phone width a full sentence set that
             large ran six lines and pushed the address field off the fold. */}
         <Text className="text-xl font-bold text-ink">
-          Find out exactly what elections you can vote on, and who these candidates really are by
-          their records instead of their slogans.
+          Find out exactly which elections you can vote on and who the candidates really are by
+          their track records instead of their slogans.
         </Text>
         {/* What the service is, where a first-time visitor looks — same line
             the web hero carries. */}
@@ -220,13 +220,13 @@ export default function HomeScreen() {
             {/* Instructional label for first-time visitors — same copy as
                 the web home. Signed-in surfaces keep "Your address". */}
             <Text className="text-sm font-medium text-ink">
-              Enter your address to see the elections you can vote in
+              Enter your address to see which elections you can vote in:
             </Text>
             <AddressAutocomplete
               value={address}
               onChange={setAddress}
               placeholder="1600 Pennsylvania Avenue NW, Washington, DC 20500"
-              accessibilityLabel="Enter your address to see the elections you can vote in"
+              accessibilityLabel="Enter your address to see which elections you can vote in:"
             />
             {/* Notice belongs at the field: the autocomplete forwards what is
                 typed after three characters, so collection starts while the
