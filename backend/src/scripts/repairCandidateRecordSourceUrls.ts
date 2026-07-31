@@ -44,6 +44,16 @@ type RepairOutcome =
   | { recordId: string; status: "would_repair"; from: string; to: string }
   | { recordId: string; status: "skipped"; reason: string };
 
+/**
+ * `event_date` is read as `::text`, never as a pg `Date`. node-postgres parses
+ * a DATE into a JS Date at LOCAL midnight, and the identity key derives its
+ * date through `toISOString()` — which is UTC. On any host east of UTC that
+ * round trip moves the date back a day (verified: TZ=Europe/Berlin turns
+ * 2025-10-21 into 2025-10-20 and changes the key). This script writes the key
+ * but NOT event_date, so a shifted key would encode a date the row does not
+ * have — the exact content/key divergence the script exists to prevent. Taking
+ * the calendar date as text keeps the key pinned to what is actually stored.
+ */
 type RecordRow = {
   id: string;
   candidate_id: string;
@@ -101,8 +111,153 @@ export function parseRepairsFile(raw: string): RepairInput[] {
   });
 }
 
-function toEventDateString(value: string | Date): string {
-  return value instanceof Date ? value.toISOString().slice(0, 10) : String(value).slice(0, 10);
+/**
+ * Everything the repair decision needs, injected so the safety logic is
+ * testable without a database or a network. The gates here are the entire
+ * point of the script, and the pg-Date timezone defect proved they can be
+ * silently wrong — they earn direct coverage.
+ */
+export type RepairDeps = {
+  loadRecord: (recordId: string) => Promise<RecordRow | null>;
+  checkReachable: (sourceUrl: string) => Promise<{ ok: boolean; reason?: string }>;
+  findIdentityCollision: (input: {
+    candidateId: string;
+    identityKey: string;
+    excludeRecordId: string;
+  }) => Promise<string | null>;
+  applyRepair: (input: {
+    recordId: string;
+    sourceUrl: string;
+    identityKey: string;
+  }) => Promise<void>;
+};
+
+export async function repairOneSourceUrl(
+  repair: RepairInput,
+  deps: RepairDeps,
+  options: { apply: boolean }
+): Promise<RepairOutcome> {
+  const row = await deps.loadRecord(repair.recordId);
+  if (!row) {
+    return { recordId: repair.recordId, status: "skipped", reason: "record not found" };
+  }
+  if (row.source_url === repair.sourceUrl) {
+    return {
+      recordId: repair.recordId,
+      status: "skipped",
+      reason: "source_url already matches (already repaired)",
+    };
+  }
+
+  // The replacement has to clear the same gate a fresh write would. Without
+  // this, a repair pass could swap one blocked domain for another.
+  const policy = evaluateCandidateRecordSourcePolicy({
+    description: row.description,
+    sourceUrl: repair.sourceUrl,
+  });
+  if (!policy.ok) {
+    return {
+      recordId: repair.recordId,
+      status: "skipped",
+      reason: `replacement rejected by source policy: ${policy.reason}`,
+    };
+  }
+
+  const reachability = await deps.checkReachable(repair.sourceUrl);
+  if (!reachability.ok) {
+    return {
+      recordId: repair.recordId,
+      status: "skipped",
+      reason: `replacement not reachable: ${reachability.reason ?? "unknown reason"}`,
+    };
+  }
+
+  const identityKey = buildCandidateRecordIdentityKey({
+    description: row.description,
+    sourceUrl: repair.sourceUrl,
+    eventDate: row.event_date,
+  });
+
+  // If the repaired identity already exists for this candidate, the fix would
+  // collide with the UNIQUE constraint: the corrected citation is already
+  // stored on another row, making this one a duplicate. Deleting a canonical
+  // row is an operator decision, never this script's.
+  const collidingRecordId = await deps.findIdentityCollision({
+    candidateId: row.candidate_id,
+    identityKey,
+    excludeRecordId: row.id,
+  });
+  if (collidingRecordId) {
+    return {
+      recordId: repair.recordId,
+      status: "skipped",
+      reason: `repaired identity already exists on record ${collidingRecordId} — this row is a duplicate; needs an operator decision, not a rewrite`,
+    };
+  }
+
+  if (!options.apply) {
+    return {
+      recordId: repair.recordId,
+      status: "would_repair",
+      from: row.source_url,
+      to: repair.sourceUrl,
+    };
+  }
+
+  await deps.applyRepair({ recordId: row.id, sourceUrl: repair.sourceUrl, identityKey });
+  return {
+    recordId: repair.recordId,
+    status: "repaired",
+    from: row.source_url,
+    to: repair.sourceUrl,
+  };
+}
+
+function buildPoolDeps(pool: Pool): RepairDeps {
+  return {
+    loadRecord: async (recordId) => {
+      const result = await pool.query<RecordRow>(
+        `SELECT id, candidate_id, description, source_url, event_date::text AS event_date
+           FROM public.candidate_records
+          WHERE id = $1`,
+        [recordId]
+      );
+      const row = result.rows[0];
+      if (!row) {
+        return null;
+      }
+      // TypeScript believes event_date is a string, but that is only true
+      // because of the ::text cast above. Drop the cast and pg hands back a
+      // Date, the type stays a lie, and every repaired key silently encodes a
+      // timezone-shifted date. Fail loudly instead.
+      if (typeof row.event_date !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(row.event_date)) {
+        throw new Error(
+          `record ${recordId}: event_date must be selected as text (got ${typeof row.event_date}: ${String(row.event_date)})`
+        );
+      }
+      return row;
+    },
+    checkReachable: (sourceUrl) => verifyHttpUrlReachability(sourceUrl),
+    findIdentityCollision: async ({ candidateId, identityKey, excludeRecordId }) => {
+      const result = await pool.query<{ id: string }>(
+        `SELECT id
+           FROM public.candidate_records
+          WHERE candidate_id = $1 AND record_identity_key = $2 AND id <> $3`,
+        [candidateId, identityKey, excludeRecordId]
+      );
+      return result.rows[0]?.id ?? null;
+    },
+    applyRepair: async ({ recordId, sourceUrl, identityKey }) => {
+      await pool.query(
+        `UPDATE public.candidate_records
+            SET source_url = $2,
+                record_identity_key = $3,
+                updated_at = now()
+          WHERE id = $1`,
+        [recordId, sourceUrl, identityKey]
+      );
+    },
+  };
 }
 
 async function main(): Promise<void> {
@@ -113,112 +268,32 @@ async function main(): Promise<void> {
     throw new Error("DATABASE_URL is required for candidate record source repair");
   }
   const pool = new Pool({ connectionString: databaseUrl });
+  const deps = buildPoolDeps(pool);
   const outcomes: RepairOutcome[] = [];
 
-  for (const repair of repairs) {
-    const existing = await pool.query<RecordRow>(
-      `SELECT id, candidate_id, description, source_url, event_date
-         FROM public.candidate_records
-        WHERE id = $1`,
-      [repair.recordId]
-    );
-    const row = existing.rows[0];
-    if (!row) {
-      outcomes.push({ recordId: repair.recordId, status: "skipped", reason: "record not found" });
-      continue;
+  try {
+    for (const repair of repairs) {
+      try {
+        outcomes.push(await repairOneSourceUrl(repair, deps, { apply }));
+      } catch (error) {
+        // One bad row must not abandon the batch. In --apply mode some rows
+        // are already written by this point, and losing the report would
+        // leave nobody knowing which.
+        outcomes.push({
+          recordId: repair.recordId,
+          status: "skipped",
+          reason: `repair failed: ${error instanceof Error ? error.message : String(error)}`,
+        });
+      }
     }
-    if (row.source_url === repair.sourceUrl) {
-      outcomes.push({
-        recordId: repair.recordId,
-        status: "skipped",
-        reason: "source_url already matches (already repaired)",
-      });
-      continue;
-    }
-
-    // The replacement has to clear the same gate a fresh write would. Without
-    // this, a repair pass could swap one blocked domain for another.
-    const policy = evaluateCandidateRecordSourcePolicy({
-      description: row.description,
-      sourceUrl: repair.sourceUrl,
-    });
-    if (!policy.ok) {
-      outcomes.push({
-        recordId: repair.recordId,
-        status: "skipped",
-        reason: `replacement rejected by source policy: ${policy.reason}`,
-      });
-      continue;
-    }
-
-    const reachability = await verifyHttpUrlReachability(repair.sourceUrl);
-    if (!reachability.ok) {
-      outcomes.push({
-        recordId: repair.recordId,
-        status: "skipped",
-        reason: `replacement not reachable: ${reachability.reason}`,
-      });
-      continue;
-    }
-
-    const eventDate = toEventDateString(row.event_date);
-    const identityKey = buildCandidateRecordIdentityKey({
-      description: row.description,
-      sourceUrl: repair.sourceUrl,
-      eventDate,
-    });
-
-    // If the repaired identity already exists for this candidate, the fix
-    // would collide with the UNIQUE constraint: the corrected citation is
-    // already stored on another row, making this one a duplicate. Deleting a
-    // canonical row is an operator decision, never this script's.
-    const collision = await pool.query<{ id: string }>(
-      `SELECT id
-         FROM public.candidate_records
-        WHERE candidate_id = $1 AND record_identity_key = $2 AND id <> $3`,
-      [row.candidate_id, identityKey, row.id]
-    );
-    if (collision.rows.length > 0) {
-      outcomes.push({
-        recordId: repair.recordId,
-        status: "skipped",
-        reason: `repaired identity already exists on record ${collision.rows[0]?.id} — this row is a duplicate; needs an operator decision, not a rewrite`,
-      });
-      continue;
-    }
-
-    if (!apply) {
-      outcomes.push({
-        recordId: repair.recordId,
-        status: "would_repair",
-        from: row.source_url,
-        to: repair.sourceUrl,
-      });
-      continue;
-    }
-
-    await pool.query(
-      `UPDATE public.candidate_records
-          SET source_url = $2,
-              record_identity_key = $3,
-              updated_at = now()
-        WHERE id = $1`,
-      [row.id, repair.sourceUrl, identityKey]
-    );
-    outcomes.push({
-      recordId: repair.recordId,
-      status: "repaired",
-      from: row.source_url,
-      to: repair.sourceUrl,
-    });
+  } finally {
+    await pool.end();
   }
 
   const counts = outcomes.reduce<Record<string, number>>((acc, outcome) => {
     acc[outcome.status] = (acc[outcome.status] ?? 0) + 1;
     return acc;
   }, {});
-
-  await pool.end();
 
   console.log(JSON.stringify({ mode: apply ? "apply" : "dry-run", counts, outcomes }, null, 2));
 

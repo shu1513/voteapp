@@ -1,10 +1,41 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  BLOCKED_SOURCE_DOMAIN_REGISTRY,
   classifyCandidateRecordSourceDomain,
   evaluateCandidateRecordSourcePolicy,
   matchesDamagingClaimPattern,
 } from "../../src/pipeline/candidates/candidateRecordSourcePolicy.js";
+
+describe("BLOCKED_SOURCE_DOMAIN_REGISTRY", () => {
+  it("keeps the blocked registries mutually exclusive under SUFFIX matching", () => {
+    // Distinct strings are not enough: matching is suffix-based, so
+    // "civoren.com" in one registry and "www.civoren.com" in another would
+    // both match the same host and make resolution order-dependent — silently
+    // attaching the wrong repair instruction. Assert no domain in one registry
+    // is equal to, or a subdomain of, a domain in any other.
+    const entries = Object.entries(BLOCKED_SOURCE_DOMAIN_REGISTRY);
+    for (const [kind, domains] of entries) {
+      for (const [otherKind, otherDomains] of entries) {
+        if (kind === otherKind) {
+          continue;
+        }
+        for (const domain of domains) {
+          for (const other of otherDomains) {
+            const overlaps = domain === other || domain.endsWith(`.${other}`);
+            expect(overlaps, `${kind}:${domain} overlaps ${otherKind}:${other}`).toBe(false);
+          }
+        }
+      }
+    }
+  });
+
+  it("has no duplicate domains inside a single registry", () => {
+    for (const [kind, domains] of Object.entries(BLOCKED_SOURCE_DOMAIN_REGISTRY)) {
+      expect(new Set(domains).size, `${kind} contains a duplicate`).toBe(domains.length);
+    }
+  });
+});
 
 describe("classifyCandidateRecordSourceDomain", () => {
   it("blocks social/UGC platforms including subdomains", () => {

@@ -382,17 +382,24 @@ function matchesAnyDomain(hostname: string, domains: readonly string[]): boolean
   return domains.some((domain) => hostnameMatchesDomain(hostname, domain));
 }
 
-// Resolution order is significant only in that each domain belongs to exactly
-// one list; a hostname on none of them is not blocked.
+// One registry rather than a hand-maintained if-chain, so the lists and the
+// resolver cannot drift apart and the mutual-exclusion invariant below is
+// testable. Resolution is order-independent PROVIDED no hostname can match two
+// registries — and because matching is suffix-based, that requires more than
+// distinct strings: "civoren.com" in one registry and "www.civoren.com" in
+// another are different strings that match the same host. The policy test
+// asserts the stronger suffix-overlap property.
+export const BLOCKED_SOURCE_DOMAIN_REGISTRY: Record<BlockedSourceKind, readonly string[]> = {
+  bot_check_interstitial: BOT_CHECK_INTERSTITIAL_DOMAINS,
+  generated_candidate_directory: GENERATED_CANDIDATE_DIRECTORY_DOMAINS,
+  ugc_social: BLOCKED_SOURCE_DOMAINS,
+};
+
 function resolveBlockedSourceKind(hostname: string): BlockedSourceKind | null {
-  if (matchesAnyDomain(hostname, BOT_CHECK_INTERSTITIAL_DOMAINS)) {
-    return "bot_check_interstitial";
-  }
-  if (matchesAnyDomain(hostname, GENERATED_CANDIDATE_DIRECTORY_DOMAINS)) {
-    return "generated_candidate_directory";
-  }
-  if (matchesAnyDomain(hostname, BLOCKED_SOURCE_DOMAINS)) {
-    return "ugc_social";
+  for (const [kind, domains] of Object.entries(BLOCKED_SOURCE_DOMAIN_REGISTRY)) {
+    if (matchesAnyDomain(hostname, domains)) {
+      return kind as BlockedSourceKind;
+    }
   }
   return null;
 }
