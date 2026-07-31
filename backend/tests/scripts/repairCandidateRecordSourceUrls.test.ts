@@ -103,6 +103,47 @@ describe("repairOneSourceUrl", () => {
     );
   });
 
+  it("skips when the replacement resolves back to the stored URL", async () => {
+    // An operator supplies a URL that merely canonicalizes to what is already
+    // stored (non-www to www, a tracking param stripped). Without this branch
+    // the compare-and-swap would match, rewrite the row to identical values,
+    // and report "repaired" — a change that never happened.
+    const applyRepair = vi.fn(async () => 1);
+    const stored = "https://www.sos.mn.gov/news/canonical";
+    const outcome = await repairOneSourceUrl(
+      { recordId: "rec-1", sourceUrl: "https://sos.mn.gov/news/canonical" },
+      makeDeps({
+        applyRepair,
+        loadRecord: async () => ({ ...ROW, source_url: stored }),
+        checkReachable: async () => ({ ok: true, finalUrl: stored }),
+      }),
+      { apply: true }
+    );
+
+    expect(outcome.status === "skipped" && outcome.reason).toContain("nothing to repair");
+    expect(applyRepair).not.toHaveBeenCalled();
+  });
+
+  it("lets the source policy win when a redirect lands on a stored BLOCKED url", async () => {
+    // Same shape as the case above, but the stored URL is itself blocked (the
+    // perfdrive interstitial). Order matters here: the resolved-URL policy
+    // check runs BEFORE the resolves-to-stored check, so the operator is told
+    // the replacement lands on a blocked host rather than the far less useful
+    // "nothing to repair". Pinning this down because the two branches are
+    // easy to reorder and the weaker message would silently win.
+    const applyRepair = vi.fn(async () => 1);
+    const outcome = await repairOneSourceUrl(
+      { recordId: "rec-1", sourceUrl: "https://sos.mn.gov/news/x" },
+      makeDeps({ applyRepair, checkReachable: async () => ({ ok: true, finalUrl: ROW.source_url }) }),
+      { apply: true }
+    );
+
+    expect(outcome.status === "skipped" && outcome.reason).toContain("redirects to");
+    expect(outcome.status === "skipped" && outcome.reason).toContain("bot-check interstitial");
+    expect(outcome.status === "skipped" && outcome.reason).not.toContain("nothing to repair");
+    expect(applyRepair).not.toHaveBeenCalled();
+  });
+
   it("reports a no-op instead of a repair when the update matched no row", async () => {
     // The compare-and-swap guard failing means another writer changed the
     // record between the read and the update. Nothing was modified, and
