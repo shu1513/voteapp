@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -21,19 +22,23 @@ import {
 // Walked up from the cwd rather than resolved from import.meta.url: the jsdom
 // environment hands this module a non-file URL, and the suite runs from either
 // the package or the repo root.
-function findCheckboxCopyDoc(): string {
+function findLegalDoc(filename: string): string {
   let directory = process.cwd();
   for (;;) {
-    const candidate = resolve(directory, "docs/legal/checkbox-copy.md");
+    const candidate = resolve(directory, "docs/legal", filename);
     if (existsSync(candidate)) {
       return candidate;
     }
     const parent = dirname(directory);
     if (parent === directory) {
-      throw new Error("Could not locate docs/legal/checkbox-copy.md above the working directory");
+      throw new Error(`Could not locate docs/legal/${filename} above the working directory`);
     }
     directory = parent;
   }
+}
+
+function findCheckboxCopyDoc(): string {
+  return findLegalDoc("checkbox-copy.md");
 }
 
 // Only the published copy counts. The file opens with an HTML comment of
@@ -66,5 +71,48 @@ describe("legal copy matches docs/legal/checkbox-copy.md", () => {
 
   it("carries the version the doc is headed with", () => {
     expect(normalizedDoc).toContain(`Checkbox and notice copy — Version ${TERMS_VERSION}`);
+  });
+});
+
+// The acceptance ledger records a version string, and the enforcement paths
+// compare against one. Neither notices if the TEXT behind a version changes:
+// an edit to any of these files ships silently, and every acceptance already
+// recorded against that version now points at wording nobody agreed to.
+//
+// Pinning the bytes makes that impossible to do by accident. A deliberate
+// change fails here, and clearing the failure means deciding, on purpose,
+// whether the edit is a clarification that keeps the version or a change of
+// substance that needs a version bump and re-acceptance.
+//
+// This deliberately does not pin checkbox-copy.md: the assertions above
+// already tie every string it publishes to the shipped constants, and that
+// file also carries implementation notes that change for non-legal reasons.
+const PINNED_DOCUMENTS = [
+  {
+    filename: "terms-of-use.md",
+    version: "1.1",
+    sha256: "7068b1f66de681e0a5fb09b22652bfa1fdd1463993c30987bf6ecb3659e329a3",
+  },
+  {
+    filename: "privacy-policy.md",
+    version: "1.0",
+    sha256: "50e7ac79b9b5ee9f17280aa960566cd06bf1142d648832b051a9dd5227ce31b9",
+  },
+  {
+    filename: "disclaimer.md",
+    version: "1.1",
+    sha256: "7a4ad2f12d23c537712b743e86f6c2caa74a311e7aba86c99d6f4028ff51a542",
+  },
+] as const;
+
+describe("legal documents are pinned to their versions", () => {
+  it.each(PINNED_DOCUMENTS)("$filename still declares version $version", ({ filename, version }) => {
+    const text = readFileSync(findLegalDoc(filename), "utf8");
+    expect(text).toContain(`**Version:** ${version}`);
+  });
+
+  it.each(PINNED_DOCUMENTS)("$filename content is unchanged", ({ filename, sha256 }) => {
+    const text = readFileSync(findLegalDoc(filename), "utf8");
+    expect(createHash("sha256").update(text, "utf8").digest("hex")).toBe(sha256);
   });
 });

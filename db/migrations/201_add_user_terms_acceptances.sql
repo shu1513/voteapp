@@ -16,6 +16,18 @@ BEGIN;
 -- Anonymous searches are deliberately absent. Nothing about them is stored
 -- anywhere, so that people with no account are not tracked — see
 -- docs/legal/checkbox-copy.md.
+--
+-- KNOWN GAP, stated plainly because the table must not be described as more
+-- than it is: this preserves history from here on, it does not reconstruct
+-- history that is already gone. CURRENT_TERMS_VERSION was '1.0' from
+-- 2026-07-03 and became '1.1' on 2026-07-18, the same day the re-acceptance
+-- interstitial shipped. Any account that accepted 1.0 and then re-accepted
+-- 1.1 had its 1.0 acceptance overwritten in place, and the backfill below can
+-- only see what survived — the current version. For those accounts this table
+-- answers "what has this account accepted since 2026-07-31", not "ever". If a
+-- production backup from before the bump is still within retention, the 1.0
+-- acceptances can be recovered from it and inserted separately; nothing here
+-- should invent them.
 
 CREATE TABLE public.user_terms_acceptances (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -44,34 +56,74 @@ CREATE INDEX idx_user_terms_acceptances_version
 -- Backfill before anything can overwrite it. Every acceptance currently on a
 -- users row is history that exists exactly once; once that row is overwritten
 -- by a version bump it cannot be reconstructed from anywhere.
+--
+-- Only rows carrying a real accepted_terms_at are copied. Falling back to
+-- updated_at or created_at would be worse than skipping: updated_at moves on
+-- any profile edit and created_at predates the clickwrap, so either would turn
+-- an unknown consent time into an exact-looking one on a row whose whole
+-- purpose is to be relied on. An acceptance whose time we do not know is
+-- reported below and left out.
+DO $$
+DECLARE
+    undated bigint;
+BEGIN
+    SELECT count(*) INTO undated
+    FROM public.users
+    WHERE accepted_terms_version IS NOT NULL
+      AND btrim(accepted_terms_version) <> ''
+      AND accepted_terms_at IS NULL;
+
+    IF undated > 0 THEN
+        RAISE NOTICE
+            'user_terms_acceptances: skipped % account(s) recording a terms version with no acceptance timestamp. Their acceptance time is unknown and was not invented; recover it from a backup if the history is needed.',
+            undated;
+    END IF;
+END;
+$$;
+
 INSERT INTO public.user_terms_acceptances (user_id, terms_version, context, accepted_at)
 SELECT
     id,
     accepted_terms_version,
     'backfill',
-    -- accepted_terms_at has been written alongside the version since migration
-    -- 149, but the column is nullable for rows that predate it; fall back to
-    -- the account's own timestamps rather than stamping now() on old consent.
-    COALESCE(accepted_terms_at, updated_at, created_at)
+    accepted_terms_at
 FROM public.users
 WHERE accepted_terms_version IS NOT NULL
-  AND btrim(accepted_terms_version) <> '';
+  AND btrim(accepted_terms_version) <> ''
+  AND accepted_terms_at IS NOT NULL;
 
--- Append-only, with one deliberate exception. UPDATE is rejected outright:
--- evidence that can be silently rewritten is not evidence. DELETE is allowed
--- because account deletion cascades through here, and blocking it would break
--- the deletion the privacy policy promises. Corrections are new rows.
-CREATE FUNCTION public.reject_terms_acceptance_update()
+-- Append-only. UPDATE is rejected outright: evidence that can be silently
+-- rewritten is not evidence, and corrections belong in new rows.
+--
+-- DELETE has to stay possible for exactly one case — account deletion hard-
+-- deletes the users row and cascades through here — but a blanket allowance
+-- would leave the evidence removable by any stray statement. The parent check
+-- separates the two: on a cascade the users row is already gone by the time
+-- this fires, while a direct DELETE against this table still sees it. So the
+-- cascade passes and everything else raises.
+--
+-- This is a guardrail against accident and casual tampering, not tamper-proof
+-- storage. Anyone able to drop the trigger can still delete rows; the point is
+-- that doing so has to be deliberate rather than a stray WHERE clause.
+CREATE FUNCTION public.reject_terms_acceptance_rewrite()
 RETURNS trigger
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    RAISE EXCEPTION 'user_terms_acceptances is append-only';
+    IF TG_OP = 'UPDATE' THEN
+        RAISE EXCEPTION 'user_terms_acceptances is append-only';
+    END IF;
+
+    IF EXISTS (SELECT 1 FROM public.users WHERE id = OLD.user_id) THEN
+        RAISE EXCEPTION 'user_terms_acceptances rows are removed only by deleting the account';
+    END IF;
+
+    RETURN OLD;
 END;
 $$;
 
-CREATE TRIGGER trg_user_terms_acceptances_immutable
-BEFORE UPDATE ON public.user_terms_acceptances
-FOR EACH ROW EXECUTE FUNCTION public.reject_terms_acceptance_update();
+CREATE TRIGGER trg_user_terms_acceptances_append_only
+BEFORE UPDATE OR DELETE ON public.user_terms_acceptances
+FOR EACH ROW EXECUTE FUNCTION public.reject_terms_acceptance_rewrite();
 
 COMMIT;

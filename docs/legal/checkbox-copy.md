@@ -21,8 +21,20 @@ Freedom Financial Network):
   now", which is what the re-acceptance interstitial reads. Registration and
   renewal write their history row in the same statement or transaction as the
   users write, so an account can never claim a version with no history behind
-  it. Rows are append-only (UPDATE is rejected by a trigger) and are deleted
-  with the account.
+  it. Rows are append-only: UPDATE is rejected, and DELETE is rejected unless
+  the account itself is being deleted.
+- Two limits on that table, stated here so nobody describes it as more than it
+  is. It does not reach back before migration 201: accounts that accepted 1.0
+  and later re-accepted 1.1 had the 1.0 acceptance overwritten in place on
+  2026-07-18, and only a pre-bump backup can recover it. And acceptance rows
+  are deleted with the account, so a closed account leaves no acceptance
+  evidence at all — deliberate, because keeping it would be a retention
+  practice the privacy policy does not describe.
+- The wording behind a version is pinned by hash in
+  packages/api-client/src/legalCopy.test.ts. A version string is only worth
+  what the text behind it is, so editing terms-of-use.md, privacy-policy.md,
+  or disclaimer.md fails CI until someone decides whether the edit keeps the
+  version or needs a bump and re-acceptance.
 - Registration and the re-acceptance interstitial keep their checkbox INLINE
   on the page: both gate an explicit account action the visitor came to take.
 - The anonymous pre-search gate is DEFERRED instead: the home page carries no
