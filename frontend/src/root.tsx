@@ -6,15 +6,12 @@ import "./index.css";
 import { APP_NAME, ApiError } from "@voteapp/api-client";
 import { RouteError } from "./components/RouteError";
 import { captureMonitoredError } from "./lib/errorMonitoring";
+import { pageMeta } from "./lib/pageMeta";
 
-export const meta: MetaFunction = () => [
-  { title: APP_NAME },
-  {
-    name: "description",
-    content:
-      "Enter your address to see the elections on your ballot, who is running, and independent AI-assisted research on every candidate.",
-  },
-];
+// The default for every page that does not export its own meta — which is most
+// of them, since the rest set their title client-side with useDocumentTitle.
+// Link scrapers do not run JavaScript, so this is what they see.
+export const meta: MetaFunction = () => pageMeta({ title: APP_NAME });
 
 // 5xx only: 4xx are expected product states (bad address, unverified email,
 // rate limits), and non-ApiError failures are usually the user's network.
