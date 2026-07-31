@@ -94,6 +94,50 @@ describe("classifyCandidateRecordSourceDomain", () => {
     );
   });
 
+  it("exempts named institutional publishers that rent a UGC platform", () => {
+    // Each is the organisation reporting its own act, and is the publisher of
+    // record for it: Equality Arizona's own endorsement release, the State Bar
+    // of Arizona magazine editor's blog, the Thurston Early Childhood
+    // Coalition's own award page.
+    for (const url of [
+      "https://equalityarizona.substack.com/p/equality-arizona-2026-primary-election",
+      "https://azatty.wordpress.com/2014/10/07/ariz-court-reporting-changes-will-affect-attorneys/",
+      "https://thurstonecc.wordpress.com/angel-award/",
+    ]) {
+      expect(classifyCandidateRecordSourceDomain(url).tier, url).toBe("unlisted");
+    }
+  });
+
+  it("keeps the exemption to exact hosts, not the platform or look-alikes", () => {
+    // The exemption must cover one organisation's space only. Suffix matching
+    // here would hand the whole platform an exemption, and a look-alike or a
+    // subdomain of an exempt host must not inherit it either.
+    for (const url of [
+      "https://someone.substack.com/p/post",
+      "https://randomblog.wordpress.com/2020/01/01/post",
+      "https://notequalityarizona.substack.com/p/x",
+      "https://evil.equalityarizona.substack.com/p/x",
+    ]) {
+      expect(classifyCandidateRecordSourceDomain(url).tier, url).toBe("blocked");
+    }
+  });
+
+  it("does not promote exempt hosts to listed, so damaging claims still fail", () => {
+    // These are self-reporting advocacy and professional bodies, not
+    // newsrooms. An ordinary factual claim is fine; an accusation is not.
+    const ordinary = evaluateCandidateRecordSourcePolicy({
+      description: "Equality Arizona endorsed her for State Senate in Legislative District 1.",
+      sourceUrl: "https://equalityarizona.substack.com/p/equality-arizona-2026-primary-election",
+    });
+    expect(ordinary.ok).toBe(true);
+
+    const damaging = evaluateCandidateRecordSourcePolicy({
+      description: "Was indicted on bribery charges in March 2026.",
+      sourceUrl: "https://equalityarizona.substack.com/p/equality-arizona-2026-primary-election",
+    });
+    expect(damaging.ok).toBe(false);
+  });
+
   it("blocks bot-check interstitials", () => {
     expect(
       classifyCandidateRecordSourceDomain(

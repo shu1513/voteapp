@@ -122,6 +122,50 @@ const BLOCKED_SOURCE_DOMAINS: readonly string[] = [
 // well.
 const GENERATED_CANDIDATE_DIRECTORY_DOMAINS: readonly string[] = ["civoren.com"];
 
+// Real organisations that rent a UGC platform instead of running their own
+// site. The UGC block exists because anyone can post on those platforms
+// without editorial accountability — but an organisation's OWN subdomain is
+// not an anonymous post, and for these rows it is the publisher of record.
+// Blocking them does not improve the data, it forces a citation away from the
+// body that performed the act and onto some second-hand mention.
+//
+// Admission requires ALL of:
+//   1. a NAMED organisation behind the site, verifiable off-platform;
+//   2. independence from the candidate — never a campaign's own outlet;
+//   3. no fabrication risk, and the record is the organisation reporting its
+//      OWN act (its endorsement, its award, its publication).
+// An anonymous or one-person outlet fails (1) even when it looks official:
+// hoosierpoliticsnow.wordpress.com calls itself "an independent news
+// organization" but has no masthead, no staff and covers a single candidate;
+// checkmyvote.substack.com and kansashelen.substack.com are likewise not
+// admissible. Those stay blocked.
+//
+// Exempted here (each verified 2026-07-31):
+//   equalityarizona.substack.com — Equality Arizona's own dated endorsement
+//     release. references/records.md calls the endorser's own dated release
+//     the best source for an endorsement, which the platform block otherwise
+//     rejects outright.
+//   azatty.wordpress.com — per its own About page, "a blog written by lawyer
+//     Tim Eigo, the editor of Arizona Attorney Magazine, which is the monthly
+//     publication of the State Bar of Arizona".
+//   thurstonecc.wordpress.com — the Thurston Early Childhood Coalition's own
+//     site. Its thurstonecc.org domain exists but 404s on the award page, so
+//     there is no better citation to move to.
+//
+// EXACT hostname match, not the suffix matching used elsewhere: the exemption
+// must cover one organisation's space and must not extend to look-alikes.
+//
+// The exemption only lifts the PLATFORM block; it does not make these listed.
+// They stay `unlisted`, so they can carry an ordinary factual claim but a
+// damaging claim about a candidate still requires an official or listed news
+// source. These are self-reporting advocacy and professional bodies, not
+// newsrooms, and that distinction is the point.
+const PLATFORM_BLOCK_EXEMPT_HOSTS: readonly string[] = [
+  "azatty.wordpress.com",
+  "equalityarizona.substack.com",
+  "thurstonecc.wordpress.com",
+];
+
 // Bot-check interstitials are not publishers at all. A researcher who copies
 // the URL out of the address bar while a WAF challenge is showing captures the
 // challenge, not the article: the real page survives only inside a query
@@ -396,6 +440,13 @@ export const BLOCKED_SOURCE_DOMAIN_REGISTRY: Record<BlockedSourceKind, readonly 
 };
 
 function resolveBlockedSourceKind(hostname: string): BlockedSourceKind | null {
+  // Checked before the registries so an exempt host is never blocked. It only
+  // skips the block — the host still falls through to the ordinary listed /
+  // unlisted classification below, and lands on unlisted.
+  if (PLATFORM_BLOCK_EXEMPT_HOSTS.includes(hostname)) {
+    return null;
+  }
+
   for (const [kind, domains] of Object.entries(BLOCKED_SOURCE_DOMAIN_REGISTRY)) {
     if (matchesAnyDomain(hostname, domains)) {
       return kind as BlockedSourceKind;
