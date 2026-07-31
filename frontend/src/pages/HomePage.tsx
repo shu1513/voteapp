@@ -124,7 +124,11 @@ export function HomePage() {
           {/* What the service is, where a first-time visitor actually looks.
               It used to sit in the footer, under the fold, where it repeated
               the disclaimer link beside it and told nobody anything. */}
-          <p className="mt-3 text-sm font-medium text-ink-soft sm:text-base">
+          {/* Centred while the headline stays left: the headline is a long
+              sentence that would be hard to read ragged on both sides, and the
+              contrast makes this read as a standalone claim about the service
+              rather than a third line of the headline. */}
+          <p className="mt-3 text-center text-sm font-medium text-ink-soft sm:text-base">
             Independent, nonpartisan, AI-assisted election research with linked sources.
           </p>
         </div>
