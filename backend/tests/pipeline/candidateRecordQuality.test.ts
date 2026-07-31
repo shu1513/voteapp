@@ -129,6 +129,43 @@ describe("candidate record quality", () => {
     ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
   });
 
+  it("rejects a promise that takes a noun object instead of an infinitive", () => {
+    // Live leak: this is 100% prospective, yet it escaped every promise
+    // pattern. "pledges TO" needs the infinitive; the campaign/platform rule
+    // needs that word BEFORE the verb (here "campaign" trails it); and the
+    // past-tense rule does not match "pledges". It then matched "profile" in
+    // FALLBACK_CONTEXT_PATTERNS and became a writable neutral_context row.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Heather-Marie Wilson's 2026 independent-candidate profile pledges a people-powered campaign, rejection of special-interest and big-money influence, transparent policy agendas, and reporting of attempts to unduly influence her.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Promises a full audit of the county budget.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+  });
+
+  it("still keeps completed actions that carry the NOUN 'pledge'", () => {
+    // Why the new pattern is determiner-anchored rather than a bare
+    // /\bpledges?\b/: signing a pledge IS a completed action, and these must
+    // survive. Substantive verbs are matched first, which is what rescues them.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Cloud signed the U.S. Term Limits convention pledge.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Voted for the state budget after signing the taxpayer protection pledge.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+  });
+
   it("keeps records where a finance filing is the source, not the event", () => {
     // Live canonical integrity record: the finding is a sitting judge's
     // contribution; the filing is only where it surfaced. The filing pattern

@@ -53,6 +53,20 @@ const PURE_CANDIDACY_PATTERNS = [
 const FUTURE_PROMISE_PATTERNS = [
   /\b(?:campaign|platform|website)\b.*\b(?:promises?|pledges?|vows?|plans?|proposes?)\b/i,
   /\b(?:promises?|pledges?|vows?)\s+to\b/i,
+  // A promise can take a NOUN OBJECT instead of an infinitive: "pledges a
+  // people-powered campaign, rejection of special-interest influence, and
+  // transparent policy agendas" is entirely prospective, yet it escaped every
+  // pattern here — the adjacent rule needs "pledges TO", the rule above needs
+  // campaign/platform/website to appear BEFORE the verb (here it trails it),
+  // and the past-tense rule below does not match "pledges". It then matched
+  // "profile" in FALLBACK_CONTEXT_PATTERNS and landed in the writable
+  // neutral_context bucket (live: Heather-Marie Wilson).
+  // Anchored on a determiner rather than the bare verb: SUBSTANTIVE_ACTION
+  // patterns are checked first, so a completed action carrying the NOUN
+  // "pledge" — "signed the U.S. Term Limits convention pledge" — is already
+  // rescued, but a bare /\bpledges?\b/ would still swallow phrasings like
+  // "the pledge card was filed" that no substantive verb rescues.
+  /\b(?:promises?|pledges?|vows?)\s+(?:a|an|the|his|her|its|their|no|full|complete)\b/i,
   // Past-tense promissory verbs are still promises, in any position:
   // "Promised as a judicial candidate to uphold ..." slipped past the
   // adjacent present-tense pattern above and became a canonical record.
