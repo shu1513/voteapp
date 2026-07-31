@@ -18,9 +18,9 @@ const ROW = {
 function makeDeps(overrides: Partial<RepairDeps> = {}): RepairDeps {
   return {
     loadRecord: async () => ({ ...ROW }),
-    checkReachable: async () => ({ ok: true }),
+    checkReachable: async (sourceUrl) => ({ ok: true, finalUrl: sourceUrl }),
     findIdentityCollision: async () => null,
-    applyRepair: async () => {},
+    applyRepair: async () => 1,
     ...overrides,
   };
 }
@@ -29,7 +29,7 @@ const GOOD_URL = "https://www.sos.mn.gov/news/x";
 
 describe("repairOneSourceUrl", () => {
   it("rewrites the citation and recomputes the identity key", async () => {
-    const applyRepair = vi.fn(async () => {});
+    const applyRepair = vi.fn(async () => 1);
     const outcome = await repairOneSourceUrl(
       { recordId: "rec-1", sourceUrl: GOOD_URL },
       makeDeps({ applyRepair }),
@@ -45,7 +45,85 @@ describe("repairOneSourceUrl", () => {
         sourceUrl: GOOD_URL,
         eventDate: ROW.event_date,
       }),
+      // Compare-and-swap guard: the update must be conditional on exactly the
+      // columns the identity key was derived from.
+      expected: {
+        description: ROW.description,
+        eventDate: ROW.event_date,
+        sourceUrl: ROW.source_url,
+      },
     });
+  });
+
+  it("refuses a replacement that REDIRECTS to a blocked domain", async () => {
+    // A shortener or open redirect passes the pre-fetch policy check on its
+    // own hostname and then lands wherever it likes. Without judging the
+    // post-redirect URL, the repair tool becomes a laundering route for the
+    // very sources it exists to remove.
+    const applyRepair = vi.fn(async () => 1);
+    const outcome = await repairOneSourceUrl(
+      { recordId: "rec-1", sourceUrl: "https://short.example/article" },
+      makeDeps({
+        applyRepair,
+        checkReachable: async () => ({
+          ok: true,
+          finalUrl: "https://www.civoren.com/candidate/some-person",
+        }),
+      }),
+      { apply: true }
+    );
+
+    expect(outcome).toMatchObject({ status: "skipped" });
+    expect(outcome.status === "skipped" && outcome.reason).toContain("redirects to");
+    expect(outcome.status === "skipped" && outcome.reason).toContain(
+      "auto-generated candidate directory"
+    );
+    expect(applyRepair).not.toHaveBeenCalled();
+  });
+
+  it("stores the post-redirect URL, not the submitted one", async () => {
+    const applyRepair = vi.fn(async () => 1);
+    const resolved = "https://www.sos.mn.gov/news/canonical-path";
+    const outcome = await repairOneSourceUrl(
+      { recordId: "rec-1", sourceUrl: "https://sos.mn.gov/news/x?utm_source=email" },
+      makeDeps({ applyRepair, checkReachable: async () => ({ ok: true, finalUrl: resolved }) }),
+      { apply: true }
+    );
+
+    expect(outcome).toMatchObject({ status: "repaired", to: resolved });
+    expect(applyRepair).toHaveBeenCalledWith(
+      expect.objectContaining({
+        sourceUrl: resolved,
+        identityKey: buildCandidateRecordIdentityKey({
+          description: ROW.description,
+          sourceUrl: resolved,
+          eventDate: ROW.event_date,
+        }),
+      })
+    );
+  });
+
+  it("reports a no-op instead of a repair when the update matched no row", async () => {
+    // The compare-and-swap guard failing means another writer changed the
+    // record between the read and the update. Nothing was modified, and
+    // claiming "repaired" would be a false report.
+    const outcome = await repairOneSourceUrl(
+      { recordId: "rec-1", sourceUrl: GOOD_URL },
+      makeDeps({ applyRepair: async () => 0 }),
+      { apply: true }
+    );
+
+    expect(outcome).toMatchObject({ status: "skipped" });
+    expect(outcome.status === "skipped" && outcome.reason).toContain("concurrent write");
+  });
+
+  it("carries the operator's note into the outcome", async () => {
+    const outcome = await repairOneSourceUrl(
+      { recordId: "rec-1", sourceUrl: GOOD_URL, note: "decoded from ssc=" },
+      makeDeps(),
+      { apply: true }
+    );
+    expect(outcome).toMatchObject({ status: "repaired", note: "decoded from ssc=" });
   });
 
   it("keys off the stored calendar date, not a timezone-shifted Date", async () => {
@@ -69,7 +147,7 @@ describe("repairOneSourceUrl", () => {
     });
     expect(keyFromShiftedDate).not.toBe(keyFromStoredDate); // and it changes the key
 
-    const applyRepair = vi.fn(async () => {});
+    const applyRepair = vi.fn(async () => 1);
     await repairOneSourceUrl({ recordId: "rec-1", sourceUrl: GOOD_URL }, makeDeps({ applyRepair }), {
       apply: true,
     });
@@ -79,7 +157,7 @@ describe("repairOneSourceUrl", () => {
   });
 
   it("does not write in dry-run mode", async () => {
-    const applyRepair = vi.fn(async () => {});
+    const applyRepair = vi.fn(async () => 1);
     const outcome = await repairOneSourceUrl(
       { recordId: "rec-1", sourceUrl: GOOD_URL },
       makeDeps({ applyRepair }),
@@ -91,7 +169,7 @@ describe("repairOneSourceUrl", () => {
   });
 
   it("refuses a replacement that is itself a blocked domain", async () => {
-    const applyRepair = vi.fn(async () => {});
+    const applyRepair = vi.fn(async () => 1);
     const outcome = await repairOneSourceUrl(
       { recordId: "rec-1", sourceUrl: "https://www.civoren.com/candidate/x" },
       makeDeps({ applyRepair }),
@@ -104,7 +182,7 @@ describe("repairOneSourceUrl", () => {
   });
 
   it("refuses an unreachable replacement", async () => {
-    const applyRepair = vi.fn(async () => {});
+    const applyRepair = vi.fn(async () => 1);
     const outcome = await repairOneSourceUrl(
       { recordId: "rec-1", sourceUrl: GOOD_URL },
       makeDeps({
@@ -119,7 +197,7 @@ describe("repairOneSourceUrl", () => {
   });
 
   it("refuses rather than colliding when the repaired identity already exists", async () => {
-    const applyRepair = vi.fn(async () => {});
+    const applyRepair = vi.fn(async () => 1);
     const outcome = await repairOneSourceUrl(
       { recordId: "rec-1", sourceUrl: GOOD_URL },
       makeDeps({ applyRepair, findIdentityCollision: async () => "rec-duplicate" }),

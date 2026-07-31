@@ -40,8 +40,8 @@ type RepairInput = {
 };
 
 type RepairOutcome =
-  | { recordId: string; status: "repaired"; from: string; to: string }
-  | { recordId: string; status: "would_repair"; from: string; to: string }
+  | { recordId: string; status: "repaired"; from: string; to: string; note?: string }
+  | { recordId: string; status: "would_repair"; from: string; to: string; note?: string }
   | { recordId: string; status: "skipped"; reason: string };
 
 /**
@@ -119,17 +119,25 @@ export function parseRepairsFile(raw: string): RepairInput[] {
  */
 export type RepairDeps = {
   loadRecord: (recordId: string) => Promise<RecordRow | null>;
-  checkReachable: (sourceUrl: string) => Promise<{ ok: boolean; reason?: string }>;
+  checkReachable: (
+    sourceUrl: string
+  ) => Promise<{ ok: boolean; reason?: string; finalUrl?: string }>;
   findIdentityCollision: (input: {
     candidateId: string;
     identityKey: string;
     excludeRecordId: string;
   }) => Promise<string | null>;
+  /**
+   * Compare-and-swap: updates only if description, event_date and source_url
+   * still hold the values the identity key was computed from. Returns the
+   * number of rows changed. See the concurrency note on applyRepair below.
+   */
   applyRepair: (input: {
     recordId: string;
     sourceUrl: string;
     identityKey: string;
-  }) => Promise<void>;
+    expected: { description: string; eventDate: string; sourceUrl: string };
+  }) => Promise<number>;
 };
 
 export async function repairOneSourceUrl(
@@ -172,9 +180,44 @@ export async function repairOneSourceUrl(
     };
   }
 
+  // Store and judge the POST-REDIRECT url, exactly as ingestion does
+  // (enrichCandidateRecords.ts): a shortener, tracking link, or open redirect
+  // clears the pre-fetch policy check on its own hostname and then lands
+  // wherever it likes. Checking only the submitted URL would let this script
+  // launder a blocked source back into the corpus through the very repair
+  // meant to remove one.
+  //
+  // A WAF-fronted source can also resolve to a bot-check interstitial, in
+  // which case a legitimate page is skipped rather than stored. That is the
+  // safe direction to fail: a skipped repair is reported and retryable, while
+  // storing the interstitial would recreate the defect being repaired.
+  // (Observed: sos.mn.gov redirects a browser user-agent into perfdrive, but
+  // not the backend's HEAD-first fetcher, so these resolve to themselves.)
+  const resolvedUrl = reachability.finalUrl ?? repair.sourceUrl;
+  if (resolvedUrl !== repair.sourceUrl) {
+    const resolvedPolicy = evaluateCandidateRecordSourcePolicy({
+      description: row.description,
+      sourceUrl: resolvedUrl,
+    });
+    if (!resolvedPolicy.ok) {
+      return {
+        recordId: repair.recordId,
+        status: "skipped",
+        reason: `replacement redirects to ${resolvedUrl}, rejected by source policy: ${resolvedPolicy.reason}`,
+      };
+    }
+  }
+  if (resolvedUrl === row.source_url) {
+    return {
+      recordId: repair.recordId,
+      status: "skipped",
+      reason: `replacement resolves to the stored URL (${resolvedUrl}); nothing to repair`,
+    };
+  }
+
   const identityKey = buildCandidateRecordIdentityKey({
     description: row.description,
-    sourceUrl: repair.sourceUrl,
+    sourceUrl: resolvedUrl,
     eventDate: row.event_date,
   });
 
@@ -200,16 +243,41 @@ export async function repairOneSourceUrl(
       recordId: repair.recordId,
       status: "would_repair",
       from: row.source_url,
-      to: repair.sourceUrl,
+      to: resolvedUrl,
+      ...(repair.note ? { note: repair.note } : {}),
     };
   }
 
-  await deps.applyRepair({ recordId: row.id, sourceUrl: repair.sourceUrl, identityKey });
+  // Compare-and-swap on exactly the columns the identity key was computed
+  // from. Read, collision check and update are separate statements, so a
+  // concurrent writer could change the description between them and leave the
+  // key describing content the row no longer has. Guarding the UPDATE means
+  // that race changes nothing instead of corrupting the row.
+  const updated = await deps.applyRepair({
+    recordId: row.id,
+    sourceUrl: resolvedUrl,
+    identityKey,
+    expected: {
+      description: row.description,
+      eventDate: row.event_date,
+      sourceUrl: row.source_url,
+    },
+  });
+  if (updated !== 1) {
+    return {
+      recordId: repair.recordId,
+      status: "skipped",
+      reason:
+        "record changed after it was read (concurrent write); nothing was modified — re-run to pick up the current content",
+    };
+  }
+
   return {
     recordId: repair.recordId,
     status: "repaired",
     from: row.source_url,
-    to: repair.sourceUrl,
+    to: resolvedUrl,
+    ...(repair.note ? { note: repair.note } : {}),
   };
 }
 
@@ -247,15 +315,45 @@ function buildPoolDeps(pool: Pool): RepairDeps {
       );
       return result.rows[0]?.id ?? null;
     },
-    applyRepair: async ({ recordId, sourceUrl, identityKey }) => {
-      await pool.query(
+    // Compare-and-swap rather than a transaction with SELECT ... FOR UPDATE.
+    // Both close the race, but a lock would have to be taken before the
+    // reachability check and held across an HTTP fetch that can run for
+    // seconds — a row lock on a canonical table for the duration of a network
+    // call. Guarding the UPDATE on the three columns the identity key is
+    // derived from gives the same guarantee with no lock: either the content
+    // is unchanged and the key is correct, or zero rows match and the caller
+    // reports it.
+    //
+    // origin / origin_run_id are deliberately NOT re-stamped. Migration 197
+    // and candidateRecordStore both state the purpose plainly: provenance
+    // identifies the run that INTRODUCED the content so a poisoned cohort is
+    // one `WHERE origin_run_id = ...` away, and re-imports keep their
+    // attribution precisely "so later reruns cannot rotate a poisoned cohort
+    // out of that query". This script never alters a claim — only where that
+    // claim is cited from. Re-attributing here would rotate a repaired row out
+    // of its poisoned cohort while the claim it carries still came from that
+    // run, which is the exact failure the columns exist to prevent. The repair
+    // stays traceable through updated_at and the run report.
+    applyRepair: async ({ recordId, sourceUrl, identityKey, expected }) => {
+      const result = await pool.query(
         `UPDATE public.candidate_records
             SET source_url = $2,
                 record_identity_key = $3,
                 updated_at = now()
-          WHERE id = $1`,
-        [recordId, sourceUrl, identityKey]
+          WHERE id = $1
+            AND description = $4
+            AND event_date = $5::date
+            AND source_url = $6`,
+        [
+          recordId,
+          sourceUrl,
+          identityKey,
+          expected.description,
+          expected.eventDate,
+          expected.sourceUrl,
+        ]
       );
+      return result.rowCount ?? 0;
     },
   };
 }
