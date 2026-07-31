@@ -55,8 +55,7 @@ export const PRIVACY_NOTICE =
  * the consent dialog, while this line belongs beside every address field.
  */
 export const ADDRESS_FIELD_PRIVACY_NOTE =
-  "We use your address to find your voting districts. We don’t save it to your account or sell it; " +
-  "lookup data may be temporarily cached for up to 14 days.";
+  "Your address is only used to find your voting districts. We don’t save it to your account or sell it.";
 
 /**
  * Shown on results, where it reaches people who never passed the gate at all

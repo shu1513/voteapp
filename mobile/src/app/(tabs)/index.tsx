@@ -233,16 +233,9 @@ export default function HomeScreen() {
             {/* Notice belongs at the field: the autocomplete forwards what is
                 typed after three characters, so collection starts while the
                 visitor types and long before Search. */}
-            <Text className="mt-1 text-xs text-ink-soft">
-              {ADDRESS_FIELD_PRIVACY_NOTE}{" "}
-              <Text
-                className="underline"
-                accessibilityRole="link"
-                onPress={() => router.push("/legal/privacy")}
-              >
-                Privacy notice
-              </Text>
-            </Text>
+            {/* One link, not two — same as the web. The Privacy Policy is
+                still linked directly from the explainer below. */}
+            <Text className="mt-1 text-xs text-ink-soft">{ADDRESS_FIELD_PRIVACY_NOTE}</Text>
             <Pressable
               accessibilityRole="button"
               onPress={() => setAddressExplanationVisible(true)}
