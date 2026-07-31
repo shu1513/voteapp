@@ -201,6 +201,49 @@ describe("candidate record quality", () => {
     }
   });
 
+  it("does not let an outcome inside a PROMISE vouch for the record", () => {
+    // The governor broke the pledge; the candidate only promised to look into
+    // it. An outcome check that ran against the raw text scored these as
+    // completed actions on someone else's conduct.
+    for (const description of [
+      "She promised to investigate whether the governor broke his campaign pledge.",
+      "She pledges an audit of whether the mayor violated a commitment.",
+    ]) {
+      expect(classifyCandidateRecordQuality({ description }), description).toEqual({
+        classification: "disallowed_thin",
+        reason: "future_promise",
+      });
+    }
+  });
+
+  it("masks a whole promised LIST, not just its first item", () => {
+    // Campaign copy lists promised programs. Stopping at the first comma left
+    // "a commission led by independent experts" exposed, and "led" scored the
+    // entire prospective sentence as substantive.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "The candidate profile promises a ban on convicted contractors, a commission led by independent experts.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+  });
+
+  it("treats the noun sense as a noun however it is introduced", () => {
+    // Each of these was REJECTED as a future promise while saying the
+    // opposite: Diaz opposes such pledges, and the other two describe someone
+    // else's promises after the fact. A blacklist of preceding words missed
+    // all three, which is why the rule now requires a plausible subject.
+    for (const description of [
+      "Diaz said judges should not make pledges to decide pending cases.",
+      "The profile criticized Wilson's promises from the 2022 campaign.",
+      "The report reviewed a series of pledges made during the race.",
+    ]) {
+      expect(classifyCandidateRecordQuality({ description }).reason, description).not.toBe(
+        "future_promise"
+      );
+    }
+  });
+
   it("leaves the NOUN sense alone when it follows a verb or a modifier", () => {
     // Live corpus rows: "should not MAKE pledges about cases" and "opposition
     // to ... UNFUNDED promises" are noun uses with no promise being made by
