@@ -206,7 +206,7 @@ export default function HomeScreen() {
             steps below the old 3xl: at phone width a full sentence set that
             large ran six lines and pushed the address field off the fold. */}
         <Text className="text-xl font-bold text-ink">
-          Find out exactly which elections you can vote on and who the candidates really are by
+          Find out exactly which elections you can vote in and who the candidates really are by
           their track records instead of their slogans.
         </Text>
         {/* What the service is, where a first-time visitor looks — same line
