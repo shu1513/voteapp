@@ -289,6 +289,15 @@ function RecordItem({
   );
 }
 
+// "Name (Party, State)" built from the non-empty parts: party is typed
+// string but the detail reader coalesces a missing value to ""
+// (candidateDetailReader.ts), and "Jane Doe (, CA)" must not reach a share
+// card or a share sheet. Mirrored on the mobile candidate screen.
+function candidateShareText(candidate: { display_name: string; party: string; state: string }): string {
+  const context = [candidate.party, candidate.state].filter(Boolean).join(", ");
+  return context ? `${candidate.display_name} (${context})` : candidate.display_name;
+}
+
 // Replaces useDocumentTitle here: a leaf meta export fully overrides the
 // root's, so it must carry the full pageMeta set — title alone would drop
 // the og:*/twitter:* share-card tags on exactly the page people share.
@@ -302,7 +311,7 @@ export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => 
   const candidate = data.candidate;
   return pageMeta({
     title: `${candidate.display_name} · ${APP_NAME}`,
-    description: `${candidate.display_name} (${candidate.party}, ${candidate.state}) — issue-tagged records with sources, election history, and campaign finance.`,
+    description: `${candidateShareText(candidate)} — issue-tagged records with sources, election history, and campaign finance.`,
     path: location.pathname,
   });
 };
@@ -377,7 +386,7 @@ export function CandidatePage() {
         <div className="flex items-center gap-2">
           <ShareButton
             path={`/candidates/${candidate.candidate_id}`}
-            shareText={`${candidate.display_name} (${candidate.party}, ${candidate.state})`}
+            shareText={candidateShareText(candidate)}
           />
           {canFollow && follows ? (
             <FollowButton candidateId={candidate.candidate_id} isFollowing={isFollowing} />

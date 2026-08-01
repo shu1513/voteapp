@@ -29,7 +29,7 @@ type ShareButtonProps = {
   shareText: string;
 };
 
-// Transient "Link copied" confirmation lifetime.
+// Transient copy-outcome message lifetime.
 const COPIED_MS = 2000;
 
 const BUTTON_CLASS =
@@ -39,7 +39,7 @@ const ITEM_CLASS = "block px-4 py-2 text-sm text-ink data-[focus]:bg-surface";
 export function ShareButton({ path, shareText }: ShareButtonProps) {
   const url = `${SITE_ORIGIN}${path}`;
   const [canNativeShare, setCanNativeShare] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<"copied" | "failed" | null>(null);
   const copiedTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
@@ -57,16 +57,19 @@ export function ShareButton({ path, shareText }: ShareButtonProps) {
   }
 
   async function copyLink() {
+    let status: "copied" | "failed";
     try {
       await navigator.clipboard.writeText(url);
+      status = "copied";
     } catch {
-      // Clipboard can be denied (permissions policy, insecure context in
-      // dev). Don't claim success.
-      return;
+      // Clipboard can be denied (permissions policy, browser settings) or
+      // absent (insecure context in dev). A click must not do visibly
+      // nothing, so failure gets the same transient message slot.
+      status = "failed";
     }
-    setCopied(true);
+    setCopyStatus(status);
     clearTimeout(copiedTimer.current);
-    copiedTimer.current = setTimeout(() => setCopied(false), COPIED_MS);
+    copiedTimer.current = setTimeout(() => setCopyStatus(null), COPIED_MS);
   }
 
   if (canNativeShare) {
@@ -82,11 +85,11 @@ export function ShareButton({ path, shareText }: ShareButtonProps) {
   return (
     <Menu as="div" className="relative inline-block">
       <MenuButton className={BUTTON_CLASS}>Share</MenuButton>
-      {/* role="status": announce the copy confirmation to screen readers
-          without moving focus. Rendered outside MenuItems because the menu
-          closes on selection — inside it the message would never be seen. */}
-      <span role="status" className={copied ? "absolute right-0 top-full z-20 mt-1 whitespace-nowrap rounded-lg border border-line bg-white px-3 py-1.5 text-xs text-ink shadow-lg" : "sr-only"}>
-        {copied ? "Link copied" : null}
+      {/* role="status": announce the copy outcome to screen readers without
+          moving focus. Rendered outside MenuItems because the menu closes on
+          selection — inside it the message would never be seen. */}
+      <span role="status" className={copyStatus ? "absolute right-0 top-full z-20 mt-1 whitespace-nowrap rounded-lg border border-line bg-white px-3 py-1.5 text-xs text-ink shadow-lg" : "sr-only"}>
+        {copyStatus === "copied" ? "Link copied" : copyStatus === "failed" ? "Couldn't copy link" : null}
       </span>
       <MenuItems className="absolute right-0 z-20 mt-2 w-48 rounded-xl border border-line bg-white py-1 shadow-lg focus:outline-none">
         <MenuItem>

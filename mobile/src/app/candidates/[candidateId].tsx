@@ -77,6 +77,15 @@ function orderGroupsByPreference(
     .map(({ group }) => group);
 }
 
+// "Name (Party, State)" built from the non-empty parts: party is typed
+// string but the backend detail reader coalesces a missing value to "", and
+// "Jane Doe (, CA)" must not reach the share sheet. Same logic as the web
+// CandidatePage.
+function candidateShareText(candidate: { display_name: string; party: string; state: string }): string {
+  const context = [candidate.party, candidate.state].filter(Boolean).join(", ");
+  return context ? `${candidate.display_name} (${context})` : candidate.display_name;
+}
+
 // Election dates are YYYY-MM-DD calendar strings; "today" is the last US
 // clock still on a given date — Pacific/Honolulu, UTC-10, no DST — mirroring
 // the backend's US_LATEST_LOCAL_DATE_SQL: an election counts as past only
@@ -249,7 +258,7 @@ export default function CandidateScreen() {
         <Text className="flex-1 text-2xl font-bold text-ink">{candidate.display_name}</Text>
         <ShareButton
           path={`/candidates/${candidate.candidate_id}`}
-          shareText={`${candidate.display_name} (${candidate.party}, ${candidate.state})`}
+          shareText={candidateShareText(candidate)}
         />
         {canFollow && follows ? (
           <FollowButton

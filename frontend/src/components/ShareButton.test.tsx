@@ -92,7 +92,7 @@ describe("ShareButton", () => {
     });
   });
 
-  it("stays quiet when the clipboard is denied", async () => {
+  it("reports a denied clipboard instead of failing silently", async () => {
     render(<ShareButton {...PROPS} />);
     const user = userEvent.setup();
     // After setup, same as above.
@@ -102,6 +102,7 @@ describe("ShareButton", () => {
     await user.click(screen.getByRole("menuitem", { name: "Copy link" }));
 
     expect(writeText).toHaveBeenCalledTimes(1);
+    expect(await screen.findByText("Couldn't copy link")).toBeInTheDocument();
     expect(screen.queryByText("Link copied")).not.toBeInTheDocument();
   });
 });
