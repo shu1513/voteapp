@@ -402,9 +402,9 @@ describe("CandidatePage", () => {
     const followButton = await screen.findByRole("button", { name: "Follow" });
     await userEvent.click(followButton);
 
-    expect(await screen.findByText("Register for free to get updates about this candidate.")).toBeInTheDocument();
+    expect(await screen.findByText("Get updates on Jordan Voter whenever there's news. Signing up is free.")).toBeInTheDocument();
     // Both links carry the candidate page as the post-auth return path.
-    expect(screen.getByRole("link", { name: "Register for free" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Sign up" })).toHaveAttribute(
       "href",
       "/register?next=%2Fcandidates%2Fc-1"
     );
