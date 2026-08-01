@@ -342,6 +342,28 @@ describe("matchesDamagingClaimPattern", () => {
     }
   });
 
+  it("does not match the Sexual Assault Nurse Examiner credential", () => {
+    // Live wave-19 false positive: SANE is a nursing certification, not an
+    // accusation. The lookahead skips only the credential phrase — any other
+    // "sexual assault"/"sexual misconduct" wording in the same sentence still
+    // matches, which a whole-sentence exemption pattern could not guarantee.
+    const credential = [
+      "Became certified as a Sexual Assault Nurse Examiner at Providence Alaska Medical Center.",
+      "Trained sexual assault nurse examiners across rural clinics.",
+    ];
+    for (const description of credential) {
+      expect(matchesDamagingClaimPattern(description), description).toBe(false);
+    }
+
+    const stillDamaging = [
+      "Was accused of sexual assault by a former staffer.",
+      "While working as a sexual assault nurse examiner, faced sexual misconduct allegations.",
+    ];
+    for (const description of stillDamaging) {
+      expect(matchesDamagingClaimPattern(description), description).toBe(true);
+    }
+  });
+
   it("still matches accusations against the candidate even in official contexts", () => {
     const damaging = [
       "While a sitting judge, was censured by the judicial conduct commission.",

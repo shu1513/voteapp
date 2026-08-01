@@ -416,7 +416,12 @@ const DAMAGING_CLAIM_PATTERNS: readonly RegExp[] = [
   /\ballegedly\b|\ballegations?\s+(?:of|that|against)\b/i,
   /\bethics\s+(?:violation|complaint|charge|probe|inquiry)s?\b/i,
   /\bresigned\s+(?:amid|following|after|in\s+disgrace)\b/i,
-  /\bsexual\s+(?:harassment|assault|abuse|misconduct)\b/i,
+  // "Sexual Assault Nurse Examiner" is a nursing credential (SANE), not an
+  // accusation — the lookahead skips only that occurrence, so any other
+  // "sexual assault" phrase in the same sentence still matches. A per-segment
+  // exemption pattern would instead clear the whole sentence, which could
+  // hide a real accusation sharing it with the credential.
+  /\bsexual\s+(?:harassment|abuse|misconduct)\b|\bsexual\s+assault\b(?!\s+nurse\s+examiners?\b)/i,
   /\bfalsified\b/i,
   /\bconcealed\s+(?:contributions?|donations?|payments?|income|assets|funds)\b/i,
   // Corruption/misuse phrasings that skip enforcement verbs entirely:

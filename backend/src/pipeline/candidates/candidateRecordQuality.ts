@@ -97,7 +97,14 @@ const FUTURE_PROMISE_PATTERNS = [
   // present-tense handling and became a canonical record. Substantive
   // completed-action verbs are matched first, so a description that pairs a
   // real action with its promise is still kept.
-  /\b(?:promised|pledged|vowed)\b/i,
+  //
+  // The determiner lookbehind excludes the ATTRIBUTIVE participle — "the
+  // promised service", "his promised reforms" — where the promise belongs to
+  // someone else entirely: a timeshare-fraud suit described as "without
+  // delivering the promised service" was rejected as the candidate's own
+  // future promise. A verb use never directly follows a determiner, so the
+  // exclusion cannot hide one.
+  /(?<!\b(?:a|an|the|his|her|its|their|our)\s)\b(?:promised|pledged|vowed)\b/i,
   /\b(?:says|said)\s+(?:he|she|they)\s+(?:will|would)\b/i,
   /\b(?:will|would)\s+(?:fight|work|cut|raise|support|oppose|create|expand|reduce|protect)\b/i,
 ] as const;
