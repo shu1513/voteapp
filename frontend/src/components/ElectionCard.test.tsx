@@ -157,7 +157,7 @@ describe("ElectionCard", () => {
 
     // These slugs are unranked, so they fall back to alphabetical order and
     // the cap keeps the first three names.
-    expect(screen.getByText("Affected Areas:")).toBeInTheDocument();
+    expect(screen.getByText("Key issues:")).toBeInTheDocument();
     expect(screen.getByText("Civil Rights")).toBeInTheDocument();
     expect(screen.getByText("Data Privacy")).toBeInTheDocument();
     expect(screen.getByText("Gun Control")).toBeInTheDocument();
@@ -165,7 +165,7 @@ describe("ElectionCard", () => {
     expect(screen.queryByText("Public Infrastructure")).not.toBeInTheDocument();
     // The overflow count wears the same green as the area chips — it is part
     // of the same list, not a muted footnote.
-    expect(screen.getByText("+2 more areas").className).toBe(screen.getByText("Civil Rights").className);
+    expect(screen.getByText("+2 more issues").className).toBe(screen.getByText("Civil Rights").className);
   });
 
   it("orders chips by public-salience priority, not the payload order", () => {
@@ -180,10 +180,10 @@ describe("ElectionCard", () => {
       })
     );
 
-    const label = screen.getByText("Affected Areas:");
+    const label = screen.getByText("Key issues:");
     const chipTexts = Array.from(label.parentElement?.children ?? [])
       .map((chip) => chip.textContent)
-      .filter((text) => text !== "Affected Areas:");
+      .filter((text) => text !== "Key issues:");
     expect(chipTexts).toEqual(["Environment and Public Health", "Gun Control", "Civil Rights"]);
   });
 
@@ -219,10 +219,10 @@ describe("ElectionCard", () => {
       { "a-env": 2, "a-civ": 1, "a-gun": null }
     );
 
-    const label = screen.getByText("Affected Areas:");
+    const label = screen.getByText("Key issues:");
     const chipTexts = Array.from(label.parentElement?.children ?? [])
       .map((chip) => chip.textContent)
-      .filter((text) => text !== "Affected Areas:");
+      .filter((text) => text !== "Key issues:");
     expect(chipTexts).toEqual([
       "Civil Rights (saved)",
       "Environment and Public Health (saved)",
@@ -231,9 +231,15 @@ describe("ElectionCard", () => {
     ]);
   });
 
-  it("omits the affected-areas row when a race has no research areas", () => {
+  it("omits the key-issues row when a race has no research areas", () => {
     renderCard(electionSummary({ research_areas: [] }));
-    expect(screen.queryByText("Affected Areas:")).not.toBeInTheDocument();
+    expect(screen.queryByText("Key issues:")).not.toBeInTheDocument();
+  });
+
+  it("uses the singular label when a race touches one issue", () => {
+    renderCard(electionSummary({ research_areas: [area("a-1", "Gun Control")] }));
+    expect(screen.getByText("Key issue:")).toBeInTheDocument();
+    expect(screen.queryByText("Key issues:")).not.toBeInTheDocument();
   });
 
   it("orders saved-area chips ahead of unsaved ones", () => {
@@ -250,10 +256,10 @@ describe("ElectionCard", () => {
 
     // Filter the label out by text (not position) so this assertion covers
     // chip order only and survives DOM reshuffles around the label.
-    const label = screen.getByText("Affected Areas:");
+    const label = screen.getByText("Key issues:");
     const chipTexts = Array.from(label.parentElement?.children ?? [])
       .map((chip) => chip.textContent)
-      .filter((text) => text !== "Affected Areas:");
+      .filter((text) => text !== "Key issues:");
     // Saved match leads even though it is last in the payload.
     expect(chipTexts).toEqual(["Housing Affordability (saved)", "Civil Rights", "Gun Control"]);
   });

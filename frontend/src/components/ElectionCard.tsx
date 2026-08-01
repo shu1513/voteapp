@@ -23,7 +23,7 @@ const MAX_UNSAVED_AREA_CHIPS = 3;
 // area "chip" read as a button and invited dead clicks. Saved and unsaved
 // areas deliberately share one style: the row reads as one list, and
 // position alone marks the saved matches (they lead). Exported so the
-// election detail page's affected-areas row matches the card's.
+// election detail page's key-issues row matches the card's.
 export const AREA_TEXT_CLASS = "font-medium text-green-900";
 
 /**
@@ -177,7 +177,11 @@ function ElectionCard({
         // Position is the only sighted cue, so saved areas carry a
         // screen-reader-only "(saved)" to keep the distinction audible.
         <p className="mt-3 text-sm">
-          <span className="font-medium text-ink-soft">Affected Areas:</span>{" "}
+          {/* Sentence case, matching "Vote impact:" above. Singular when the
+              race touches one issue — "Key issues: Housing" reads as a typo. */}
+          <span className="font-medium text-ink-soft">
+            {election.research_areas.length === 1 ? "Key issue:" : "Key issues:"}
+          </span>{" "}
           {/* Comma separators live OUTSIDE the area spans as plain text
               nodes, so each span's text stays exactly the area name. */}
           {[...savedAreas, ...visibleOtherAreas].map((area, index, all) => (
@@ -190,11 +194,10 @@ function ElectionCard({
             </Fragment>
           ))}
           {hiddenAreaCount > 0 ? (
-            // "areas", matching the row's own label — not "issues". Same
-            // green as the area names: the overflow count is part of the
-            // same list.
+            // "issues", matching the row's own label. Same green as the
+            // issue names: the overflow count is part of the same list.
             <span className={AREA_TEXT_CLASS}>
-              +{hiddenAreaCount} more area{hiddenAreaCount === 1 ? "" : "s"}
+              +{hiddenAreaCount} more issue{hiddenAreaCount === 1 ? "" : "s"}
             </span>
           ) : null}
         </p>
