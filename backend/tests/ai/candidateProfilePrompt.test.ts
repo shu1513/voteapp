@@ -67,11 +67,12 @@ describe("buildCandidateProfilePrompt", () => {
   it("requires the has_held_public_office routing answer", () => {
     const prompt = buildCandidateProfilePrompt(baseInput);
 
-    // Both values shown: a true-only example would weakly bias models toward
-    // officeholder framing, the exact defaulting failure this field prevents.
-    expect(prompt).toContain('"has_held_public_office": true|false,');
+    // All three values shown: a true-only example would weakly bias models
+    // toward officeholder framing, and hiding null re-creates the manufactured
+    // false — a source with no office-history field cannot support false.
+    expect(prompt).toContain('"has_held_public_office": true|false|null,');
     expect(prompt).toContain(
-      "has_held_public_office is required: true if this person has EVER held elected or appointed public office (current or former, including judicial office), false if never."
+      "has_held_public_office is required: true if this person has EVER held elected or appointed public office (current or former, including judicial office), false if a source covering their office history shows none, null if no source you cite carries office history"
     );
   });
 

@@ -560,6 +560,42 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     expect(params[3]).toBe(JSON.stringify(["https://example.com/profile"]));
   });
 
+  it("retracts a stored false routing answer via replace with an explicit payload null", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({ rows: [existingRow] })
+      .mockResolvedValueOnce({
+        rows: [{
+          fec_ids: null,
+          state_filing_ids: null,
+          current_office: null,
+          has_held_public_office: false,
+          party: "Democratic",
+        }],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      // The stored false was manufactured from office-history-silent sources;
+      // the repair payload answers null ("sources don't cover it"), not a
+      // freshly guessed boolean.
+      profile: profile({ official_website_url: "https://old-site.example", has_held_public_office: null }),
+      state: "OH",
+      rosterParty: "Democratic",
+      includeParty: true,
+      overwriteProfileFields: new Set(["has_held_public_office"]),
+    });
+
+    const updateSql = String(query.mock.calls[3]?.[0]);
+    // The overwrite branch must take the payload value even when NULL — an
+    // IS NOT NULL guard here would turn the manufactured-false repair into a
+    // silent no-op.
+    expect(updateSql).toContain("WHEN $24::boolean THEN $23::boolean");
+    const params = query.mock.calls[3]?.[1] as unknown[];
+    // has_held_public_office value + overwrite flag
+    expect(params.slice(22, 24)).toEqual([null, true]);
+  });
+
   it("replaces a stored party only when party is explicitly listed", async () => {
     const query = identityQueryMock()
       .mockResolvedValueOnce({ rows: [{ ...existingRow, party: "Nonpartisan" }] })
@@ -716,6 +752,59 @@ describe("assertMergedOfficeRoutingConsistent", () => {
         storedCurrentOffice: null,
         storedHasHeldPublicOffice: false,
         overwriteFields: new Set(["has_held_public_office"]),
+      })
+    ).not.toThrow();
+  });
+
+  it("accepts a replace-with-null retraction of a manufactured false", () => {
+    // The repair pass for a false asserted from office-history-silent
+    // sources: payload answers null under --replace-profile-fields, and the
+    // effective row becomes office-less + unanswered, which is consistent.
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile({ has_held_public_office: null }),
+        storedCurrentOffice: null,
+        storedHasHeldPublicOffice: false,
+        overwriteFields: new Set(["has_held_public_office"]),
+      })
+    ).not.toThrow();
+  });
+
+  it("refuses a null-retraction while a stored current office would survive", () => {
+    // The office itself proves the answer is true — retracting beside it
+    // either erases a provable fact or leaves a stale office standing.
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile({ has_held_public_office: null }),
+        storedCurrentOffice: "Mayor",
+        storedHasHeldPublicOffice: true,
+        overwriteFields: new Set(["has_held_public_office"]),
+      })
+    ).toThrow(/refuses to retract has_held_public_office to null while current_office/);
+  });
+
+  it("accepts a null-retraction when the stale office is cleared in the same write", () => {
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile({ has_held_public_office: null }),
+        storedCurrentOffice: "Attorney, Noble Law",
+        storedHasHeldPublicOffice: true,
+        overwriteFields: new Set(["has_held_public_office"]),
+        clearFields: new Set(["current_office"]),
+      })
+    ).not.toThrow();
+  });
+
+  it("accepts a plain null answer that merely fails to repair a legacy office+NULL row", () => {
+    // Legacy rows hold current_office with a NULL routing answer wholesale.
+    // A pass answering null from office-history-silent sources (no overwrite)
+    // leaves both columns untouched and must still be able to fill the row's
+    // other empty fields — only an active retraction is refused.
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile({ has_held_public_office: null }),
+        storedCurrentOffice: "Mayor",
+        storedHasHeldPublicOffice: null,
       })
     ).not.toThrow();
   });

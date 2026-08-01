@@ -116,7 +116,7 @@ function usage(): string {
     "Usage:",
     "  npm run manual:presidential-profile:write -- --presidential-cycle-id uuid --presidential-role president|vice_president --file profile.json [--parent-presidential-candidate-fec-id P########] [--emit-record-draft] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--replace-profile-fields f1,f2] [--repair-report-file file] [--dry-run]",
     "",
-    "Payload must match CandidateProfilePayload (has_held_public_office true|false is required: has this person EVER held elected or appointed public office?). Stored candidates.has_held_public_office fills only when NULL; pass --replace-profile-fields has_held_public_office to correct a stale stored value. Live runs find/create a candidate and link it to the presidential cycle.",
+    "Payload must match CandidateProfilePayload (has_held_public_office true|false|null is required: has this person EVER held elected or appointed public office? Answer true/false only from a cited source that carries office history; null means every cited source is silent on it). Stored candidates.has_held_public_office fills only when NULL; pass --replace-profile-fields has_held_public_office to correct a stale stored value. Live runs find/create a candidate and link it to the presidential cycle.",
   ].join("\n");
 }
 

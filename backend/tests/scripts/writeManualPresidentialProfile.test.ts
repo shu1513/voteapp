@@ -20,6 +20,7 @@ function profile(overrides: Partial<CandidateProfilePayload> = {}): CandidatePro
     official_website_url: "https://example.org/jane",
     fec_ids: ["P80000001"],
     current_office: "Governor",
+    has_held_public_office: true,
     summary: "Jane President is a public official.",
     sources: ["https://example.org/jane"],
     ...overrides,

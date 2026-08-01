@@ -14,6 +14,7 @@ function profile(overrides: Partial<CandidateProfilePayload> = {}): CandidatePro
     last_name: "Candidate",
     official_website_url: "https://jane.example",
     summary: "A source-backed profile summary.",
+    has_held_public_office: false,
     sources: ["https://jane.example/about"],
     ...overrides,
   };
@@ -43,6 +44,26 @@ describe("writeManualCandidateProfile quality gaps", () => {
         reason: "Candidate current office is missing.",
       })
     );
+  });
+
+  it("reports a null office-history routing answer as a focused repair gap", () => {
+    const unanswered = buildCandidateProfileQualityGaps({
+      profile: profile({ has_held_public_office: null }),
+      includeParty: false,
+    });
+    expect(unanswered).toContainEqual(
+      expect.objectContaining({
+        id: "candidate_profile.has_held_public_office",
+        outcome: "needs_repair",
+        field: "has_held_public_office",
+      })
+    );
+
+    const answered = buildCandidateProfileQualityGaps({
+      profile: profile({ has_held_public_office: false }),
+      includeParty: false,
+    });
+    expect(answered.some((gap) => gap.id === "candidate_profile.has_held_public_office")).toBe(false);
   });
 
   it("lets confirmed-gap mark missing current_office as confirmed_null", () => {

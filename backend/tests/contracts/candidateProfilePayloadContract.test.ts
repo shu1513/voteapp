@@ -128,7 +128,7 @@ describe("parseCandidateProfilePayload", () => {
     }
   });
 
-  it("requires has_held_public_office as a boolean", () => {
+  it("requires has_held_public_office as true, false, or explicit null", () => {
     const base = {
       display_name: "Jane Doe",
       first_name: "Jane",
@@ -136,6 +136,8 @@ describe("parseCandidateProfilePayload", () => {
       sources: ["https://example.org/profile"],
     };
 
+    // An omitted key is not the same answer as null: null asserts "I checked
+    // and no cited source carries office history", omission asserts nothing.
     const missing = parseCandidateProfilePayload(base);
     expect(missing.ok).toBe(false);
     if (!missing.ok) {
@@ -150,9 +152,18 @@ describe("parseCandidateProfilePayload", () => {
     if (falseAnswer.ok) {
       expect(falseAnswer.payload.has_held_public_office).toBe(false);
     }
+
+    // Sources without an office-history field cannot support false — a
+    // partisan-race aggregator page manufactured false for nonpartisan local
+    // officeholders. null is the sanctioned answer for that pass.
+    const sourcesSilent = parseCandidateProfilePayload({ ...base, has_held_public_office: null });
+    expect(sourcesSilent.ok).toBe(true);
+    if (sourcesSilent.ok) {
+      expect(sourcesSilent.payload.has_held_public_office).toBeNull();
+    }
   });
 
-  it("rejects current_office together with has_held_public_office=false as contradictory", () => {
+  it("rejects current_office unless has_held_public_office is true", () => {
     const base = {
       display_name: "Jane Doe",
       first_name: "Jane",
@@ -167,7 +178,19 @@ describe("parseCandidateProfilePayload", () => {
     });
     expect(contradiction.ok).toBe(false);
     if (!contradiction.ok) {
-      expect(contradiction.reason).toContain('current_office ("Mayor") contradicts');
+      expect(contradiction.reason).toContain('current_office ("Mayor") requires has_held_public_office=true');
+    }
+
+    // A payload that names a current office has already answered the routing
+    // question — null alongside it under-claims the payload's own fact.
+    const underClaim = parseCandidateProfilePayload({
+      ...base,
+      current_office: "Mayor",
+      has_held_public_office: null,
+    });
+    expect(underClaim.ok).toBe(false);
+    if (!underClaim.ok) {
+      expect(underClaim.reason).toContain("requires has_held_public_office=true (got null)");
     }
 
     const officeholder = parseCandidateProfilePayload({

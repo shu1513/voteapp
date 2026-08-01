@@ -78,7 +78,7 @@ function usage(): string {
     "Usage:",
     "  npm run manual:candidate-profile:write -- --election-id uuid --file profile.json [--roster-index n] [--running-mate-of \"Lead Ballot Name\"] [--run-id id] [--is-incumbent true|false] [--emit-record-draft] [--emit-finance-sync] [--allow-no-hard-identifier] [--strict-quality-gate] [--confirmed-gap id] [--replace-profile-fields f1,f2] [--clear-profile-fields f1,f2] [--repair-report-file file] [--dry-run]",
     "",
-    "Payload must match CandidateProfilePayload (has_held_public_office true|false is required: has this person EVER held elected or appointed public office?). Stored candidates.has_held_public_office fills only when NULL; pass --replace-profile-fields has_held_public_office to correct a stale stored value.",
+    "Payload must match CandidateProfilePayload (has_held_public_office true|false|null is required: has this person EVER held elected or appointed public office? Answer true/false only from a cited source that carries office history; null means every cited source is silent on it). Stored candidates.has_held_public_office fills only when NULL; pass --replace-profile-fields has_held_public_office to correct a stale stored value — with a payload null, this retracts a false that was asserted from office-history-silent sources.",
     "On a matched existing candidate, profile_sources becomes the UNION of stored + payload sources (stored facts keep their provenance); pass --replace-profile-fields profile_sources to swap in exactly the payload's list (cleanup of dead/disallowed stored URLs).",
     "With --running-mate-of, the profile is written as the joint-ticket running mate: the candidate is created/matched normally, then linked via candidate_elections.running_mate_candidate_id on the ticket lead's row instead of getting an own candidate_elections row. Write the ticket lead's profile first.",
   ].join("\n");
@@ -481,6 +481,24 @@ export function buildCandidateProfileQualityGaps(input: {
       reason: "Partisan candidate profile is missing party.",
       promptFile: "src/ai/providers/candidateProfilePrompt.ts",
       focusedResearchPass: "Run a focused party-only profile pass using official roster/filing sources. Add party if source-backed, or mark candidate_profile.party confirmed_null if no reliable party exists.",
+    });
+  }
+  // null is a legal contract answer ("no cited source carries office
+  // history"), but it leaves the record sweep unrouted — so it is a gap
+  // driving a focused pass against a source that DOES carry office history
+  // (financial disclosure, voter pamphlet, official bio), not a free pass.
+  if (input.profile.has_held_public_office == null) {
+    gaps.push({
+      id: "candidate_profile.has_held_public_office",
+      stage: "candidate_profile",
+      objectType: "candidate_profile",
+      outcome: "needs_repair",
+      field: "has_held_public_office",
+      failureKind: "quality_gap",
+      reason: "Candidate office-history routing answer is unresolved (no cited source carries office history).",
+      promptFile: "src/ai/providers/candidateProfilePrompt.ts",
+      focusedResearchPass:
+        "Run a focused office-history-only profile pass using a source that carries office history (financial disclosure, voter pamphlet, official bio). Set has_held_public_office true/false from that source via --replace-profile-fields has_held_public_office, or mark candidate_profile.has_held_public_office confirmed_null if no such source exists.",
     });
   }
   if (!input.profile.current_office) {
