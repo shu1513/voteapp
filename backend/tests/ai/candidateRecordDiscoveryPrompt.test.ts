@@ -127,6 +127,9 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     expect(prompt).toContain(
       "For damaging claims, require official/legal sources or reputable news (the importer rejects damaging claims cited to other domains) and do not state allegations as proven facts."
     );
+    expect(prompt).toContain(
+      "- Keep descriptions neutral and factual, built on substance: say what happened, what it concerned, and the candidate's role or action — not just a procedural label (item/amendment numbers, vendor legal names) — and never add substance the source does not state. Keep vote tallies."
+    );
     expect(prompt).toContain("There is no target number of records.");
     expect(prompt).toContain("Include both favorable and unfavorable records when they exist");
     expect(prompt).not.toContain("Do not include rumors or unverified accusations.");

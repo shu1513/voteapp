@@ -20,6 +20,9 @@ describe("buildCandidateRecordSourceRepairPrompt", () => {
       expect(prompt).toContain(rule);
     }
     expect(prompt).toContain("6th-grade reader");
+    expect(prompt).toContain(
+      "- Keep descriptions neutral and factual, built on substance: say what happened, what it concerned, and the candidate's role or action — not just a procedural label (item/amendment numbers, vendor legal names) — and never add substance the source does not state. Keep vote tallies."
+    );
   });
 
   it("includes blocked URLs and allows no_replacement", () => {

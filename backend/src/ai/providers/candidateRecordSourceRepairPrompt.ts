@@ -1,5 +1,5 @@
 import { isUsSenateOfficeTitle } from "../../utils/senateOffice.js";
-import { PLAIN_LANGUAGE_STYLE_RULES } from "./promptWritingStyle.js";
+import { PLAIN_LANGUAGE_STYLE_RULES, RECORD_DESCRIPTION_SUBSTANCE_RULE } from "./promptWritingStyle.js";
 
 export type CandidateRecordSourceRepairPromptBadRecord = {
   badIndex: number;
@@ -89,6 +89,7 @@ export function buildCandidateRecordSourceRepairPrompt(
     "- source_url must not be a social/UGC platform or a personal blog/self-published page (Reddit, X/Twitter, Facebook, YouTube, Medium, Substack, and similar); for damaging claims cite an official/legal source or reputable news outlet.",
     "- event_date must be YYYY-MM-DD.",
     "- Do not invent sources; if no reliable source exists, return no_replacement=true.",
+    RECORD_DESCRIPTION_SUBSTANCE_RULE,
     ...PLAIN_LANGUAGE_STYLE_RULES,
     "- return JSON only (no prose, no markdown).",
     ...(reviewFeedbackLines.length > 0
