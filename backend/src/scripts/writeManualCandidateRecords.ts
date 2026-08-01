@@ -494,11 +494,33 @@ async function main(): Promise<void> {
   }
   const manualKey = `manual:candidate-records:${electionId}:${candidateId}`;
 
+  // Short-lived lookup on purpose: validation runs before the main pool and
+  // office-context load, and the candidate-owned-site policy check (307
+  // self-sourced rows in one November repair scope) needs the display name at
+  // validation time. A separate throwaway pool avoids restructuring the
+  // wall-clock/report flow below.
+  const earlyDatabaseUrl = requireEnv("DATABASE_URL");
+  requireLocalDatabaseTarget(earlyDatabaseUrl);
+  const namePool = new Pool({ connectionString: earlyDatabaseUrl });
+  let candidateDisplayNameForPolicy: string | null = null;
+  try {
+    const nameResult = await namePool.query<{ display_name: string | null }>(
+      `SELECT COALESCE(NULLIF(trim(display_name), ''), trim(first_name || ' ' || last_name)) AS display_name
+         FROM public.candidates
+        WHERE id = $1`,
+      [candidateId]
+    );
+    candidateDisplayNameForPolicy = nameResult.rows[0]?.display_name ?? null;
+  } finally {
+    await namePool.end();
+  }
+
   const rawRecords = await readJsonFile(recordsFile);
   const validatedRecords = await withWallClockTimeout(
     validateCandidateRecordDiscoveryPayload(
       rawRecords,
-      readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000)
+      readPositiveIntegerEnv("AI_TIMEOUT_MS", 90000),
+      { candidateDisplayName: candidateDisplayNameForPolicy }
     ),
     "candidate record citation validation",
     { forceExitAfterMs: WALL_CLOCK_FORCE_EXIT_GRACE_MS }

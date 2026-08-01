@@ -139,7 +139,8 @@ async function verifyUniqueCandidateRecordSourceUrls(
 
 async function verifyCandidateRecordSources(
   records: readonly CandidateDiscoveredRecord[],
-  timeoutMs: number
+  timeoutMs: number,
+  candidateDisplayName?: string | null
 ): Promise<{
   verifiedRecords: CandidateDiscoveredRecord[];
   droppedRecords: Array<{
@@ -183,10 +184,12 @@ async function verifyCandidateRecordSources(
 
     // The stored citation is the post-redirect finalUrl, so the source policy
     // must hold for it too — otherwise a shortener or open redirect that
-    // passes the pre-fetch policy check could land on a blocked platform.
+    // passes the pre-fetch policy check could land on a blocked platform, or
+    // on the candidate's own campaign site.
     const finalUrlPolicy = evaluateCandidateRecordSourcePolicy({
       description: record.description,
       sourceUrl: verification.finalUrl,
+      ...(candidateDisplayName ? { candidateDisplayName } : {}),
     });
     if (!finalUrlPolicy.ok) {
       droppedRecords.push({
@@ -210,7 +213,7 @@ async function verifyCandidateRecordSources(
 export async function validateCandidateRecordDiscoveryPayload(
   payload: unknown,
   timeoutMs: number,
-  options: { sinceDate?: string | null } = {}
+  options: { sinceDate?: string | null; candidateDisplayName?: string | null } = {}
 ): Promise<CandidateRecordDiscoveryPayloadValidationResult> {
   const parsed = parseCandidateRecordDiscoveryPayloadPartial(payload);
   if (!parsed.ok) {
@@ -270,6 +273,7 @@ export async function validateCandidateRecordDiscoveryPayload(
     const policy = evaluateCandidateRecordSourcePolicy({
       description: record.description,
       sourceUrl: record.source_url,
+      ...(options.candidateDisplayName ? { candidateDisplayName: options.candidateDisplayName } : {}),
     });
     if (!policy.ok) {
       policyDroppedRecords.push({
@@ -283,7 +287,11 @@ export async function validateCandidateRecordDiscoveryPayload(
     policyAcceptedRecords.push(record);
   }
 
-  const sourceVerification = await verifyCandidateRecordSources(policyAcceptedRecords, timeoutMs);
+  const sourceVerification = await verifyCandidateRecordSources(
+    policyAcceptedRecords,
+    timeoutMs,
+    options.candidateDisplayName
+  );
   const schemaDroppedRecords: CandidateRecordDroppedRecord[] = parsed.invalid_rows.map((row) => ({
     record: {
       description: row.raw_record.description,
@@ -396,7 +404,7 @@ export async function enrichCandidateRecords(
       const validation = await validateCandidateRecordDiscoveryPayload(
         generated.parsed,
         config.timeoutMs,
-        { sinceDate: input.sinceDate }
+        { sinceDate: input.sinceDate, candidateDisplayName: input.candidateDisplayName }
       );
       if (!validation.ok) {
         const feedbackLine = `Fix payload schema: ${validation.reason}.`;

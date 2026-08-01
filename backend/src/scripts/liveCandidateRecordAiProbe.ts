@@ -13,6 +13,7 @@ import {
   enrichCandidateRecordAreas,
 } from "../ai/enrichCandidateRecordAreas.js";
 import { parseCandidateRecordDiscoveryPayloadPartial } from "../contracts/candidateRecordDiscoveryPayloadContract.js";
+import { classifyCandidateRecordQuality } from "../pipeline/candidates/candidateRecordQuality.js";
 import { verifyHttpUrlReachability } from "../ai/urlReachability.js";
 import {
   evaluateCandidateRecordSourcePolicy,
@@ -216,9 +217,22 @@ async function main(): Promise<void> {
         originalBad && matchesDamagingClaimPattern(originalBad.record.description)
           ? originalBad.record.description
           : row.description;
+      // Same order as the production enricher: quality gate first (repairs
+      // may rewrite descriptions, and quality-dropped rows reach repair too),
+      // then source policy, then reachability.
+      const repairQuality = classifyCandidateRecordQuality({
+        description: row.description,
+        sourceUrl: row.source_url,
+      });
+      if (repairQuality.classification === "disallowed_thin") {
+        console.warn(`repair quality drop ${row.source_url}: ${repairQuality.reason}`);
+        repairedDroppedCount += 1;
+        continue;
+      }
       const policy = evaluateCandidateRecordSourcePolicy({
         description: descriptionForPolicy,
         sourceUrl: row.source_url,
+        candidateDisplayName: context.candidateDisplayName,
       });
       if (!policy.ok) {
         console.warn(`repair source policy drop ${row.source_url}: ${policy.reason}`);
@@ -236,6 +250,7 @@ async function main(): Promise<void> {
       const finalUrlPolicy = evaluateCandidateRecordSourcePolicy({
         description: descriptionForPolicy,
         sourceUrl: verification.finalUrl,
+        candidateDisplayName: context.candidateDisplayName,
       });
       if (!finalUrlPolicy.ok) {
         console.warn(

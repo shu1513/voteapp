@@ -32,8 +32,16 @@ export type PlainLanguageBackfillTarget = {
 };
 
 export type PlainLanguageBackfillDeps = {
+  /**
+   * The input carries targetId alongside the prompt fields so an
+   * operator-authored rewrite implementation can address rows by id — two
+   * rows can share identical original text, and a text-keyed lookup would
+   * silently hand both the same replacement. Model-backed implementations
+   * (rewriteToPlainLanguage) accept the narrower prompt input and simply
+   * ignore the extra field.
+   */
   rewrite: (
-    input: PlainLanguageRewritePromptInput,
+    input: PlainLanguageRewritePromptInput & { targetId: string },
     config: PlainLanguageAiConfig
   ) => Promise<PlainLanguageRewriteResult>;
   /**
@@ -49,6 +57,14 @@ export type PlainLanguageBackfillDeps = {
   aiConfig: PlainLanguageAiConfig;
   dryRun: boolean;
   limit?: number;
+  filter?: PlainLanguageBackfillFilter;
+  /**
+   * Set only when `rewrite` returns operator-authored text rather than a model
+   * call. Skips the independent-verifier step, which has no meaning when a
+   * human wrote the replacement. Never set this for a model-driven run: the
+   * verifier is what catches a dropped fact or a flipped stance.
+   */
+  manualAttestation?: boolean;
   log?: (line: string) => void;
 };
 
@@ -91,11 +107,59 @@ function extractUrls(text: string): Set<string> {
 }
 
 function extractNumberTokens(text: string): Set<string> {
-  // Digit-bearing tokens, normalized: "11,250" and "11250" compare equal, a
-  // trailing sentence period is not part of the number.
+  // Digit-bearing tokens, normalized: "11,250" and "11250" compare equal, and
+  // trailing periods are not part of the number. Plural on purpose: source
+  // texts truncated with a bare ellipsis ("Secs. 15-13-104,....") produced the
+  // token "104..." under the single-period strip, so a clean rewrite's "104"
+  // read as invented (live flag, batch 2 of the operator rewrite run).
   return new Set(
-    (text.match(/\d[\d,.]*/g) ?? []).map((token) => token.replace(/,/g, "").replace(/\.$/, ""))
+    (text.match(/\d[\d,.]*/g) ?? []).map((token) => token.replace(/,/g, "").replace(/\.+$/, ""))
   );
+}
+
+// An ISO date in the original ("2024-04-07") licenses the natural-language
+// form of THAT date: the rewrite "April 7, 2024" tokenizes to "7", which the
+// padded original ("07") does not contain. Hit twice live; each workaround
+// cost a day of date precision ("in April 2024"). The license is anchored to
+// the date expression itself — the matched month-day(-year) phrase is removed
+// before number extraction — never granted corpus-wide: an earlier global
+// version let "2024-04-07" excuse an invented "cutting 7 requirements"
+// anywhere in the rewrite, which matters most for operator-authored rewrites
+// because they skip the model verifier.
+const MONTH_NUMBER_BY_NAME: Record<string, number> = {
+  january: 1, february: 2, march: 3, april: 4, may: 5, june: 6, july: 7,
+  august: 8, september: 9, october: 10, november: 11, december: 12,
+  jan: 1, feb: 2, mar: 3, apr: 4, jun: 6, jul: 7, aug: 8, sep: 9, sept: 9,
+  oct: 10, nov: 11, dec: 12,
+};
+
+const NATURAL_DATE_PATTERN =
+  /\b(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?\s+(\d{1,2})(?:st|nd|rd|th)?(?:,\s*(\d{4}))?\b/gi;
+
+function stripDateExpressionsLicensedByOriginal(originalText: string, rewrittenText: string): string {
+  const monthDayYear = new Set<string>();
+  const monthDay = new Set<string>();
+  for (const match of originalText.matchAll(/\b(\d{4})-(\d{2})-(\d{2})\b/g)) {
+    monthDayYear.add(`${Number(match[2])}|${Number(match[3])}|${match[1]}`);
+    monthDay.add(`${Number(match[2])}|${Number(match[3])}`);
+  }
+  if (monthDay.size === 0) {
+    return rewrittenText;
+  }
+  return rewrittenText.replace(NATURAL_DATE_PATTERN, (match, monthWord: string, dayDigits: string, yearDigits?: string) => {
+    const month = MONTH_NUMBER_BY_NAME[monthWord.toLowerCase()];
+    if (!month) {
+      return match;
+    }
+    const day = Number(dayDigits);
+    const licensed =
+      yearDigits === undefined
+        ? monthDay.has(`${month}|${day}`)
+        : monthDayYear.has(`${month}|${day}|${yearDigits}`);
+    // Keeping the month word preserves surrounding sentence structure; only
+    // the digits the ISO original cannot token-match are removed.
+    return licensed ? monthWord : match;
+  });
 }
 
 // A plain-language rewrite legitimately turns number WORDS into digits
@@ -219,7 +283,8 @@ export function mechanicalCheckFailure(
   // verifier owns dropped-content judgment for every kind.
   const originalNumbers = extractNumberTokens(originalText);
   const licensedByWords = numberTokensLicensedByWords(originalText);
-  for (const token of extractNumberTokens(rewrittenText)) {
+  const rewrittenForNumberCheck = stripDateExpressionsLicensedByOriginal(originalText, rewrittenText);
+  for (const token of extractNumberTokens(rewrittenForNumberCheck)) {
     if (!originalNumbers.has(token) && !licensedByWords.has(token)) {
       return `rewrite introduced a number not in the original: ${token}`;
     }
@@ -267,117 +332,157 @@ function buildFlaggedSql(targetTable: string, targetColumn: string): string {
 }
 
 /**
+ * Narrows what the backfill picks up. Without it the target list is always
+ * candidates -> ballot measures -> candidate records in that order, and
+ * `--limit` slices from the front, so a records-only run had to process every
+ * candidate summary first. `candidateIds` also drops ballot measures, which
+ * belong to no candidate.
+ */
+export type PlainLanguageBackfillFilter = {
+  onlyTable?: PlainLanguageBackfillTarget["targetTable"];
+  candidateIds?: readonly string[];
+  /**
+   * Restrict candidate records to these row ids. An operator-authored run
+   * derives this from its rewrites file, so targets the file does not cover
+   * are never attempted — otherwise the first uncovered row aborts the batch.
+   */
+  recordIds?: readonly string[];
+};
+
+/**
  * Loads every row the backfill still has to process. The audit table is the
  * resume marker: any existing row (applied or flagged) excludes the target,
  * so flagged rows are never auto-retried.
  */
-export async function loadPlainLanguageBackfillTargets(pool: Pool): Promise<PlainLanguageBackfillTarget[]> {
+export async function loadPlainLanguageBackfillTargets(
+  pool: Pool,
+  filter: PlainLanguageBackfillFilter = {}
+): Promise<PlainLanguageBackfillTarget[]> {
   const targets: PlainLanguageBackfillTarget[] = [];
+  // Passed as a nullable array so one query text serves both the filtered and
+  // unfiltered call; an empty list is a real filter that matches nothing.
+  const candidateIds = filter.candidateIds ? [...filter.candidateIds] : null;
+  const recordIds = filter.recordIds ? [...filter.recordIds] : null;
+  const wants = (table: PlainLanguageBackfillTarget["targetTable"]): boolean =>
+    filter.onlyTable === undefined || filter.onlyTable === table;
 
-  const candidateRows = await pool.query<{
-    id: string;
-    summary: string;
-    official_ballot_title: string | null;
-    district_name: string | null;
-    election_date: string | null;
-  }>(
-    `
-      SELECT c.id, c.summary, e.official_ballot_title, d.name AS district_name, e.election_date::text
-      FROM public.candidates c
-      LEFT JOIN LATERAL (
-        SELECT e.official_ballot_title, e.election_date, e.district_id
-        FROM public.candidate_elections ce
-        JOIN public.elections e ON e.id = ce.election_id
-        WHERE ce.candidate_id = c.id
-        ORDER BY e.election_date DESC
-        LIMIT 1
-      ) e ON true
-      LEFT JOIN public.districts d ON d.id = e.district_id
-      WHERE c.summary IS NOT NULL AND c.summary <> '' AND c.deleted_at IS NULL
-        AND NOT EXISTS (
-          SELECT 1 FROM public.plain_language_rewrites r
-          WHERE r.target_table = 'candidates' AND r.target_id = c.id AND r.target_column = 'summary'
-        )
-      ORDER BY c.id
-    `
-  );
-  for (const row of candidateRows.rows) {
-    targets.push({
-      targetTable: "candidates",
-      targetId: row.id,
-      targetColumn: "summary",
-      kind: "candidate_summary",
-      originalText: row.summary,
-      ...(row.official_ballot_title && row.district_name && row.election_date
-        ? {
-            contestContext: {
-              officialBallotTitle: row.official_ballot_title,
-              districtName: row.district_name,
-              electionDate: row.election_date,
-            },
-          }
-        : {}),
-    });
-  }
-
-  const measureRows = await pool.query<{
-    id: string;
-    summary: string | null;
-    what_yes_means: string;
-    what_no_means: string;
-  }>(
-    `
-      SELECT id, summary, what_yes_means, what_no_means
-      FROM public.ballot_measures
-      ORDER BY id
-    `
-  );
-  const measureColumns = [
-    { column: "summary" as const, kind: "measure_summary" as const },
-    { column: "what_yes_means" as const, kind: "measure_what_yes_means" as const },
-    { column: "what_no_means" as const, kind: "measure_what_no_means" as const },
-  ];
-  const processedMeasureTargets = await pool.query<{ target_id: string; target_column: string }>(
-    `SELECT target_id, target_column FROM public.plain_language_rewrites WHERE target_table = 'ballot_measures'`
-  );
-  const processedMeasureKeys = new Set(
-    processedMeasureTargets.rows.map((row) => `${row.target_id}:${row.target_column}`)
-  );
-  for (const row of measureRows.rows) {
-    for (const { column, kind } of measureColumns) {
-      const text = row[column];
-      if (!text || text.trim().length === 0 || processedMeasureKeys.has(`${row.id}:${column}`)) {
-        continue;
-      }
-      targets.push({ targetTable: "ballot_measures", targetId: row.id, targetColumn: column, kind, originalText: text });
+  if (wants("candidates")) {
+    const candidateRows = await pool.query<{
+      id: string;
+      summary: string;
+      official_ballot_title: string | null;
+      district_name: string | null;
+      election_date: string | null;
+    }>(
+      `
+        SELECT c.id, c.summary, e.official_ballot_title, d.name AS district_name, e.election_date::text
+        FROM public.candidates c
+        LEFT JOIN LATERAL (
+          SELECT e.official_ballot_title, e.election_date, e.district_id
+          FROM public.candidate_elections ce
+          JOIN public.elections e ON e.id = ce.election_id
+          WHERE ce.candidate_id = c.id
+          ORDER BY e.election_date DESC
+          LIMIT 1
+        ) e ON true
+        LEFT JOIN public.districts d ON d.id = e.district_id
+        WHERE c.summary IS NOT NULL AND c.summary <> '' AND c.deleted_at IS NULL
+          AND ($1::uuid[] IS NULL OR c.id = ANY($1))
+          AND NOT EXISTS (
+            SELECT 1 FROM public.plain_language_rewrites r
+            WHERE r.target_table = 'candidates' AND r.target_id = c.id AND r.target_column = 'summary'
+          )
+        ORDER BY c.id
+      `,
+      [candidateIds]
+    );
+    for (const row of candidateRows.rows) {
+      targets.push({
+        targetTable: "candidates",
+        targetId: row.id,
+        targetColumn: "summary",
+        kind: "candidate_summary",
+        originalText: row.summary,
+        ...(row.official_ballot_title && row.district_name && row.election_date
+          ? {
+              contestContext: {
+                officialBallotTitle: row.official_ballot_title,
+                districtName: row.district_name,
+                electionDate: row.election_date,
+              },
+            }
+          : {}),
+      });
     }
   }
 
-  const recordRows = await pool.query<{
-    id: string;
-    description: string;
-    source_url: string;
-    event_date: string;
-  }>(
-    `
-      SELECT cr.id, cr.description, cr.source_url, cr.event_date::text
-      FROM public.candidate_records cr
-      WHERE cr.description <> '' AND cr.retired_at IS NULL AND NOT EXISTS (
-        SELECT 1 FROM public.plain_language_rewrites r
-        WHERE r.target_table = 'candidate_records' AND r.target_id = cr.id AND r.target_column = 'description'
-      )
-      ORDER BY cr.id
-    `
-  );
-  for (const row of recordRows.rows) {
-    targets.push({
-      targetTable: "candidate_records",
-      targetId: row.id,
-      targetColumn: "description",
-      kind: "record_description",
-      originalText: row.description,
-      recordIdentity: { sourceUrl: row.source_url, eventDate: row.event_date },
-    });
+  // Ballot measures belong to no candidate, so a candidate-scoped run skips them.
+  if (wants("ballot_measures") && candidateIds === null) {
+    const measureRows = await pool.query<{
+      id: string;
+      summary: string | null;
+      what_yes_means: string;
+      what_no_means: string;
+    }>(
+      `
+        SELECT id, summary, what_yes_means, what_no_means
+        FROM public.ballot_measures
+        ORDER BY id
+      `
+    );
+    const measureColumns = [
+      { column: "summary" as const, kind: "measure_summary" as const },
+      { column: "what_yes_means" as const, kind: "measure_what_yes_means" as const },
+      { column: "what_no_means" as const, kind: "measure_what_no_means" as const },
+    ];
+    const processedMeasureTargets = await pool.query<{ target_id: string; target_column: string }>(
+      `SELECT target_id, target_column FROM public.plain_language_rewrites WHERE target_table = 'ballot_measures'`
+    );
+    const processedMeasureKeys = new Set(
+      processedMeasureTargets.rows.map((row) => `${row.target_id}:${row.target_column}`)
+    );
+    for (const row of measureRows.rows) {
+      for (const { column, kind } of measureColumns) {
+        const text = row[column];
+        if (!text || text.trim().length === 0 || processedMeasureKeys.has(`${row.id}:${column}`)) {
+          continue;
+        }
+        targets.push({ targetTable: "ballot_measures", targetId: row.id, targetColumn: column, kind, originalText: text });
+      }
+    }
+  }
+
+  if (wants("candidate_records")) {
+    const recordRows = await pool.query<{
+      id: string;
+      description: string;
+      source_url: string;
+      event_date: string;
+    }>(
+      `
+        SELECT cr.id, cr.description, cr.source_url, cr.event_date::text
+        FROM public.candidate_records cr
+        WHERE cr.description <> '' AND cr.retired_at IS NULL
+          AND ($1::uuid[] IS NULL OR cr.candidate_id = ANY($1))
+          AND ($2::uuid[] IS NULL OR cr.id = ANY($2))
+          AND NOT EXISTS (
+          SELECT 1 FROM public.plain_language_rewrites r
+          WHERE r.target_table = 'candidate_records' AND r.target_id = cr.id AND r.target_column = 'description'
+        )
+        ORDER BY cr.id
+      `,
+      [candidateIds, recordIds]
+    );
+    for (const row of recordRows.rows) {
+      targets.push({
+        targetTable: "candidate_records",
+        targetId: row.id,
+        targetColumn: "description",
+        kind: "record_description",
+        originalText: row.description,
+        recordIdentity: { sourceUrl: row.source_url, eventDate: row.event_date },
+      });
+    }
   }
 
   return targets;
@@ -388,7 +493,7 @@ export async function runPlainLanguageBackfill(
   deps: PlainLanguageBackfillDeps
 ): Promise<PlainLanguageBackfillSummary> {
   const log = deps.log ?? console.log;
-  const allTargets = await loadPlainLanguageBackfillTargets(pool);
+  const allTargets = await loadPlainLanguageBackfillTargets(pool, deps.filter ?? {});
   const targets = deps.limit !== undefined ? allTargets.slice(0, deps.limit) : allTargets;
 
   let processed = 0;
@@ -419,6 +524,7 @@ export async function runPlainLanguageBackfill(
       {
         kind: target.kind,
         text: target.originalText,
+        targetId: target.targetId,
         ...(target.contestContext ? { contestContext: target.contestContext } : {}),
       },
       deps.aiConfig
@@ -433,20 +539,36 @@ export async function runPlainLanguageBackfill(
 
     let flagReason = mechanicalCheckFailure(target.kind, target.originalText, rewriteResult.rewrittenText);
     let verifierMeta = "";
+    // Operator-authored rewrites skip the model verifier because there is no
+    // second model to be independent OF — the human who wrote the replacement
+    // is the attestation, and the audit row records provider/model as manual
+    // so a later reader can tell these apart from machine rewrites. Every
+    // mechanical check above still applies.
     if (flagReason === null) {
-      const verifyResult = await deps.verify(
-        { kind: target.kind, originalText: target.originalText, rewrittenText: rewriteResult.rewrittenText },
-        deps.aiConfig,
-        rewriteResult.provider
-      );
-      if (!verifyResult.ok) {
+      if (deps.manualAttestation === true) {
+        verifierMeta = " verifier=operator-attested";
+      } else if (rewriteResult.provider === "manual") {
+        // Operator text reached a run that never declared manualAttestation:
+        // refuse rather than silently skip the verifier or pretend a model
+        // wrote it. Mismatched wiring, not a bad rewrite, so no audit row.
         throw new Error(
-          `verify call failed for ${target.targetTable}/${target.targetId}/${target.targetColumn}: ${verifyResult.reason}`
+          `manual rewrite supplied for ${target.targetTable}/${target.targetId}/${target.targetColumn} without manualAttestation`
         );
-      }
-      verifierMeta = ` verifier=${verifyResult.provider}/${verifyResult.model}`;
-      if (verifyResult.verdict === "mismatch") {
-        flagReason = `verifier mismatch: ${verifyResult.reason}`;
+      } else {
+        const verifyResult = await deps.verify(
+          { kind: target.kind, originalText: target.originalText, rewrittenText: rewriteResult.rewrittenText },
+          deps.aiConfig,
+          rewriteResult.provider
+        );
+        if (!verifyResult.ok) {
+          throw new Error(
+            `verify call failed for ${target.targetTable}/${target.targetId}/${target.targetColumn}: ${verifyResult.reason}`
+          );
+        }
+        verifierMeta = ` verifier=${verifyResult.provider}/${verifyResult.model}`;
+        if (verifyResult.verdict === "mismatch") {
+          flagReason = `verifier mismatch: ${verifyResult.reason}`;
+        }
       }
     }
 

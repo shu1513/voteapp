@@ -136,7 +136,7 @@ describe("manual candidate payload validation helpers", () => {
         records: [
           {
             description: "Voted for the city budget.",
-            source_url: "https://city.example/minutes",
+            source_url: "https://city.example/minutes/2026-01-05",
             event_date: "2026-01-05",
           },
         ],
@@ -149,7 +149,7 @@ describe("manual candidate payload validation helpers", () => {
       expect(result.records).toEqual([
         {
           description: "Voted for the city budget.",
-          source_url: "https://city.example/minutes/final",
+          source_url: "https://city.example/minutes/2026-01-05/final",
           event_date: "2026-01-05",
         },
       ]);
@@ -173,7 +173,7 @@ describe("manual candidate payload validation helpers", () => {
         records: [
           {
             description: "Voted for the city budget.",
-            source_url: "https://city.example/minutes",
+            source_url: "https://city.example/minutes/2026-01-05",
             event_date: "2026-01-05",
           },
           {

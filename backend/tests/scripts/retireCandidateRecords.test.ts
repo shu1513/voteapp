@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   parseRetirementsFile,
   retireOneRecord,
+  unretireOneRecord,
   type RetireDeps,
 } from "../../src/scripts/retireCandidateRecords.js";
 
@@ -20,9 +21,68 @@ function makeDeps(overrides: Partial<RetireDeps> = {}): RetireDeps {
   return {
     loadRecord: async () => ({ ...ROW }),
     applyRetirement: async () => 1,
+    applyUnretirement: async () => 1,
     ...overrides,
   };
 }
+
+const RETIRED_ROW = { ...ROW, retired_at: "2026-08-01 03:00:00-07" };
+const UNRETIRE_REASON = "Materiality call reversed: the recusal block shows a pattern voters should see.";
+
+describe("unretireOneRecord", () => {
+  it("dry-runs by default and reports would_unretire", async () => {
+    const applyUnretirement = vi.fn(async () => 1);
+    const outcome = await unretireOneRecord(
+      { recordId: "rec-1", reason: UNRETIRE_REASON },
+      makeDeps({ loadRecord: async () => ({ ...RETIRED_ROW }), applyUnretirement }),
+      { apply: false }
+    );
+    expect(outcome.status).toBe("would_unretire");
+    expect(applyUnretirement).not.toHaveBeenCalled();
+  });
+
+  it("clears the retirement under the same content compare-and-swap", async () => {
+    const applyUnretirement = vi.fn(async () => 1);
+    const outcome = await unretireOneRecord(
+      { recordId: "rec-1", reason: UNRETIRE_REASON },
+      makeDeps({ loadRecord: async () => ({ ...RETIRED_ROW }), applyUnretirement }),
+      { apply: true }
+    );
+    expect(outcome.status).toBe("unretired");
+    expect(applyUnretirement).toHaveBeenCalledWith({
+      recordId: "rec-1",
+      expected: {
+        description: RETIRED_ROW.description,
+        eventDate: RETIRED_ROW.event_date,
+        sourceUrl: RETIRED_ROW.source_url,
+      },
+    });
+  });
+
+  it("skips rows that are not retired", async () => {
+    const applyUnretirement = vi.fn(async () => 1);
+    const outcome = await unretireOneRecord(
+      { recordId: "rec-1", reason: UNRETIRE_REASON },
+      makeDeps({ applyUnretirement }),
+      { apply: true }
+    );
+    expect(outcome).toEqual({
+      recordId: "rec-1",
+      status: "skipped",
+      reason: "record is not retired",
+    });
+    expect(applyUnretirement).not.toHaveBeenCalled();
+  });
+
+  it("skips when the compare-and-swap loses a concurrent write", async () => {
+    const outcome = await unretireOneRecord(
+      { recordId: "rec-1", reason: UNRETIRE_REASON },
+      makeDeps({ loadRecord: async () => ({ ...RETIRED_ROW }), applyUnretirement: async () => 0 }),
+      { apply: true }
+    );
+    expect(outcome.status).toBe("skipped");
+  });
+});
 
 describe("retireOneRecord", () => {
   it("retires the record with the operator's reason under a compare-and-swap guard", async () => {

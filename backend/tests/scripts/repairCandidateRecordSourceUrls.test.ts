@@ -14,6 +14,7 @@ const ROW = {
   source_url: "https://validate.perfdrive.com/?ssc=https%3A%2F%2Fwww.sos.mn.gov%2Fnews%2Fx",
   event_date: "2025-10-21",
   retired_at: null,
+  candidate_display_name: "Steve Simon",
 };
 
 function makeDeps(overrides: Partial<RepairDeps> = {}): RepairDeps {
@@ -54,6 +55,20 @@ describe("repairOneSourceUrl", () => {
         sourceUrl: ROW.source_url,
       },
     });
+  });
+
+  it("refuses a replacement that is the candidate's own campaign site", async () => {
+    // The laundering shape: the stored citation was rejected, and the
+    // "repair" swaps in the same candidate's campaign domain.
+    const outcome = await repairOneSourceUrl(
+      { recordId: "rec-1", sourceUrl: "https://stevesimonforminnesota.com/news" },
+      makeDeps(),
+      { apply: true }
+    );
+    expect(outcome.status).toBe("skipped");
+    if (outcome.status === "skipped") {
+      expect(outcome.reason).toContain("campaign or personal site");
+    }
   });
 
   it("refuses a replacement that REDIRECTS to a blocked domain", async () => {

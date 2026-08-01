@@ -48,6 +48,45 @@ const PURE_CANDIDACY_PATTERNS = [
   /\bfiled\s+(?:a|an|the|his|her|its|their)\s+(?:[\w-]+\s+){0,3}?campaign[-\s]finance\s+(?:report|statement|disclosure)s?\b/i,
   /\bqualifying\s+fees?\b/i,
   /\bqualified\s+as\s+an?\s+(?:[\w-]+\s+){0,3}?candidate\b/i,
+  // Primary/nomination RESULTS are roster evidence, not records: a November
+  // state-legislative repair pass found 22 live "Won the Democratic primary
+  // for X with N votes" rows across 22 candidates — for nine of them it was
+  // the candidate's ONLY row. Deliberately anchored on primary/runoff-stage
+  // words: winning a GENERAL or special election confers office and stays a
+  // service fact (and rows pairing a primary win with a real action are
+  // rescued by the substantive-verbs-first ordering). "advanced to the
+  // general election" is the same fact phrased from the other side.
+  /\b(?:won|lost)\s+(?:the\s+|an?\s+)?(?:[\w'’.,-]+\s+){0,5}?primar(?:y|ies)\b/i,
+  // Runoffs split by stage the same way. LOSING any runoff is roster
+  // evidence (losing confers nothing). WINNING one is only candidacy when a
+  // party adjective marks it as a primary runoff — general runoffs are
+  // nonpartisan and winning one confers office ("Won the 2021 Anchorage
+  // mayoral runoff ... beginning a three-year term as mayor" is a live true
+  // record). "won the Democratic primary runoff" is already caught by the
+  // primary pattern above.
+  /\blost\s+(?:the\s+|an?\s+)?(?:[\w'’.,-]+\s+){0,5}?runoffs?\b/i,
+  /\bwon\s+(?:the\s+|an?\s+)?(?:\d{4}\s+)?(?:Democratic|Republican|GOP|Libertarian|Green)\s+runoffs?\b/i,
+  /\badvanced\s+to\s+the\s+(?:\w+\s+){0,2}?general\s+election\b/i,
+  // "filed as THE Republican candidate" — the older pattern above demanded
+  // the literal article "a", so party-qualified filings slipped through.
+  // Gap words are capitalized (party names) or known qualifiers ONLY, and
+  // never digit-led: "the sworn financial disclosure she filed as a 2026
+  // candidate for Alaska House District 8" is an APOC employment record whose
+  // "filed" object is the disclosure, and "2026" is what distinguishes it.
+  // Case-sensitive on purpose (no /i): the gap class relies on [A-Z] to mean
+  // "a party name", so the verb's own casing is spelled out instead.
+  /\b[Ff]iled\s+[Aa]s\s+(?:[Aa]n?|[Tt]he)\s+(?:(?:[A-Z][\w.'’-]*|qualified|incumbent|write-in|independent|nonpartisan|party)\s+){0,4}?candidate\b/,
+  // Election-office qualification language ("qualified by fee on June 8,
+  // 2026", "Division of Elections recorded X as the … candidate", "remains
+  // active on the general-election candidate list") is exactly the
+  // "election-office listing" the prompt calls roster evidence. "candidate"
+  // must head its noun phrase — followed by for/in/on, punctuation, or the
+  // end — because as an attributive adjective it describes something else
+  // entirely: "the ethics commission recorded the payment as an illegal
+  // candidate contribution" is an enforcement record, not a candidacy row.
+  /\bqualified\s+by\s+(?:fee|petition)\b/i,
+  /\brecorded\b[^.;]{0,60}\bas\b[^.;]{0,40}\bcandidate\b(?=\s*(?:for\b|in\b|on\b|[.;,)]|$))/i,
+  /\bcandidate\s+list\b/i,
 ] as const;
 
 // "promises/pledges/vows" is a verb in "She pledges lower taxes" and a noun in
@@ -141,6 +180,10 @@ const SUBSTANTIVE_ACTION_PATTERNS = [
   /\b(?:voted|signed|vetoed|sponsored|co-sponsored|introduced|authored|passed|enacted)\b/i,
   /\b(?:issued|ordered|appointed|oversaw|implemented|managed|directed|founded|led|chaired)\b/i,
   /\b(?:served|serves|serving)\s+as\b/i,
+  // Seat-holding service without "as": "has served on the board since 2022".
+  // Rescues rows that pair real service with a primary-result clause — the
+  // candidacy patterns below would otherwise drop the whole row.
+  /\b(?:served|serves|serving)\s+on\s+the\s+(?:board|council|commission|committee)\b/i,
   /\b(?:held|holds)\s+(?:public\s+)?office\b/i,
   /\b(?:was|were|is|are)\s+elected\s+to\b/i,
   /\b(?:ruled|sentenced|prosecuted|defended|settled|sued)\b/i,
