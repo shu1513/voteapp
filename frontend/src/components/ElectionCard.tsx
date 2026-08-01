@@ -23,7 +23,7 @@ const MAX_UNSAVED_AREA_CHIPS = 3;
 // area "chip" read as a button and invited dead clicks. Saved and unsaved
 // areas deliberately share one style: the row reads as one list, and
 // position alone marks the saved matches (they lead). Exported so the
-// election detail page's key-issues row matches the card's.
+// election detail page's affects row matches the card's.
 export const AREA_TEXT_CLASS = "font-medium text-green-900";
 
 /**
@@ -177,11 +177,11 @@ function ElectionCard({
         // Position is the only sighted cue, so saved areas carry a
         // screen-reader-only "(saved)" to keep the distinction audible.
         <p className="mt-3 text-sm">
-          {/* Sentence case, matching "Vote impact:" above. Singular when the
-              race touches one issue — "Key issues: Housing" reads as a typo. */}
-          <span className="font-medium text-ink-soft">
-            {election.research_areas.length === 1 ? "Key issue:" : "Key issues:"}
-          </span>{" "}
+          {/* A verb, not a noun phrase: the election is the subject, so the
+              row reads "this election affects these things". A noun label
+              ("Key issues") left it ambiguous whether the topics were the
+              race's subject matter or what it changes. */}
+          <span className="font-medium text-ink-soft">Affects:</span>{" "}
           {/* Comma separators live OUTSIDE the area spans as plain text
               nodes, so each span's text stays exactly the area name. */}
           {[...savedAreas, ...visibleOtherAreas].map((area, index, all) => (

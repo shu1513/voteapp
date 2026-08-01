@@ -342,7 +342,7 @@ describe("ElectionPage", () => {
     expect(candidateChip).toHaveTextContent("(saved)");
   });
 
-  it("renders the office description before the key issues, in public-salience order", async () => {
+  it("renders the office description before the affects row, in public-salience order", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
       electionDetail({
@@ -367,7 +367,7 @@ describe("ElectionPage", () => {
     // Newline-separated duties render as individual bullets.
     expect(screen.getByText("Running the state government")).toBeInTheDocument();
     const description = screen.getByText("Proposing the state budget");
-    const label = screen.getByText("Key issues:");
+    const label = screen.getByText("Affects:");
     expect(description.compareDocumentPosition(label) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     const environment = screen.getByText("Environment & Public Health");
     const civilRights = screen.getByText("Civil Rights");
@@ -454,7 +454,7 @@ describe("ElectionPage", () => {
 
     await screen.findByRole("heading", { name: "Ballot Measure" });
     expect(screen.queryByText("About this office")).not.toBeInTheDocument();
-    expect(screen.queryByText("Key issues:")).not.toBeInTheDocument();
+    expect(screen.queryByText("Affects:")).not.toBeInTheDocument();
   });
 
   it("defaults to my-issues order for viewers with saved areas and can switch to alphabetical", async () => {
