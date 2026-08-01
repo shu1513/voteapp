@@ -6,7 +6,7 @@ import { APP_NAME, apiRequest, useMe } from "@voteapp/api-client";
 import type { ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteapp/api-client";
 import { ResearchAreaPicker } from "../components/ResearchAreaPicker";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
-import { markWelcomeSkipped } from "../lib/welcomeSkip";
+import { markWelcomeSeen } from "../lib/welcomeSeen";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export const meta: MetaFunction = () => [{ title: `Welcome · ${APP_NAME}` }];
@@ -19,7 +19,7 @@ export const meta: MetaFunction = () => [{ title: `Welcome · ${APP_NAME}` }];
 
 export function WelcomePage() {
   useDocumentTitle("Welcome");
-  const { me, isLoading } = useMe();
+  const { me, isLoading, isError: meError, refetch: refetchMe } = useMe();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [orderedIds, setOrderedIds] = useState<string[]>([]);
@@ -41,11 +41,19 @@ export function WelcomePage() {
       }),
     onSuccess: (saved) => {
       queryClient.setQueryData(["me", "research-area-preferences"], saved);
+      // Saving completes the step just as firmly as skipping does: without
+      // the flag, clearing every preference in settings later would make
+      // the next login mistake this user for a brand-new one.
+      if (me) {
+        markWelcomeSeen(me.email);
+      }
       // The saved ballot is server-sorted by these preferences, and the
       // ballot-preferences default can flip to my_areas on first save.
       void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
       void queryClient.invalidateQueries({ queryKey: ["me", "ballot-preferences"] });
-      navigate("/me/ballot");
+      // replace, not push: the step is transient — Back from the ballot
+      // must not reopen a blank welcome screen.
+      navigate("/me/ballot", { replace: true });
     },
   });
 
@@ -61,6 +69,22 @@ export function WelcomePage() {
     }
   }, [me, navigate]);
 
+  if (meError) {
+    // /api/me failed for a non-auth reason (network, 5xx): without this the
+    // !me guard below would spin forever. Same recovery as the saved ballot.
+    return (
+      <div className="mx-auto max-w-md px-4 py-10 space-y-4 text-center">
+        <p className="text-ink-soft">We couldn't check your session. Please try again.</p>
+        <button
+          type="button"
+          onClick={() => void refetchMe()}
+          className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
   if (isLoading || !me || !me.email_verified) {
     return (
       <div className="mx-auto max-w-md px-4 py-10">
@@ -71,9 +95,9 @@ export function WelcomePage() {
 
   function skip() {
     if (me) {
-      markWelcomeSkipped(me.email);
+      markWelcomeSeen(me.email);
     }
-    navigate("/me/ballot");
+    navigate("/me/ballot", { replace: true });
   }
 
   return (

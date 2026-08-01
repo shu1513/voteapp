@@ -5,7 +5,7 @@ import { WelcomePage } from "./WelcomePage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
-import { hasSkippedWelcome } from "../lib/welcomeSkip";
+import { hasSeenWelcome } from "../lib/welcomeSeen";
 
 const CATALOG = {
   research_areas: [
@@ -53,7 +53,7 @@ describe("WelcomePage", () => {
         return { body: { preferences: [] } };
       },
     });
-    renderWelcome();
+    const { router } = renderWelcome();
 
     // Save is disabled until something is picked — an empty save would be a
     // no-op that still skips the step.
@@ -79,6 +79,29 @@ describe("WelcomePage", () => {
         { research_area_id: "a-env", rank: 2 },
       ],
     });
+    // Saving completes the step: a later login must not reopen it even if
+    // the preferences are cleared afterwards.
+    expect(hasSeenWelcome(ME_VERIFIED.user.email)).toBe(true);
+    // The transient step replaces itself in history — Back from the ballot
+    // must not land on a blank welcome screen.
+    expect(router.state.historyAction).toBe("REPLACE");
+  });
+
+  it("shows a retry instead of loading forever when /api/me fails", async () => {
+    const user = userEvent.setup();
+    let meCalls = 0;
+    stubApiRoutes({
+      "/api/me": () => {
+        meCalls += 1;
+        return meCalls === 1 ? apiError(500, "internal_error", "boom") : { body: ME_VERIFIED };
+      },
+      "/api/research-areas": { body: CATALOG },
+    });
+    renderWelcome();
+
+    expect(await screen.findByText("We couldn't check your session. Please try again.")).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByRole("heading", { name: "Welcome, Sam!" })).toBeInTheDocument();
   });
 
   it("skip remembers the choice and goes to the ballot without saving", async () => {
@@ -91,7 +114,7 @@ describe("WelcomePage", () => {
 
     await user.click(await screen.findByRole("button", { name: "Skip for now" }));
     expect(await screen.findByText("Saved ballot placeholder")).toBeInTheDocument();
-    expect(hasSkippedWelcome(ME_VERIFIED.user.email)).toBe(true);
+    expect(hasSeenWelcome(ME_VERIFIED.user.email)).toBe(true);
     await waitFor(() => {
       expect(fetchMock.mock.calls.some(([, init]) => init?.method === "PUT")).toBe(false);
     });

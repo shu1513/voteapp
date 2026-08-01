@@ -6,7 +6,7 @@ import { LoginPage } from "./LoginPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes, type ApiRoute } from "../test/mockApi";
 import { ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
-import { markWelcomeSkipped } from "../lib/welcomeSkip";
+import { markWelcomeSeen } from "../lib/welcomeSeen";
 
 // In the app the header keeps the ["me"] query mounted, which is what the
 // login mutation's invalidateQueries awaits to refresh identity. The probe
@@ -82,10 +82,10 @@ describe("LoginPage first-login onboarding redirect", () => {
     expect(await screen.findByText("Saved ballot placeholder")).toBeInTheDocument();
   });
 
-  it("respects a remembered skip without even checking preferences", async () => {
-    markWelcomeSkipped(ME_VERIFIED.user.email);
+  it("respects a completed or skipped welcome without even checking preferences", async () => {
+    markWelcomeSeen(ME_VERIFIED.user.email);
     // Preferences endpoint deliberately unmocked: requesting it would fail
-    // the test, proving the skip short-circuits the lookup.
+    // the test, proving the seen flag short-circuits the lookup.
     stubApiRoutes(sessionRoutes(ME_VERIFIED));
     renderLogin();
     await logIn();

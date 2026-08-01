@@ -7,16 +7,17 @@ import type { Me, ResearchAreaPreferencesResult } from "@voteapp/api-client";
 import { ErrorNotice } from "../components/Status";
 import { purgeAccountScopedQueries } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
-import { hasSkippedWelcome } from "../lib/welcomeSkip";
+import { hasSeenWelcome } from "../lib/welcomeSeen";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // First-login onboarding hook-in: a verified user with no saved research
-// areas who hasn't skipped the welcome step gets routed there instead of the
-// ballot. Any lookup failure falls back to the ballot — login must never
-// strand the user on an error because an optional step couldn't be checked.
+// areas who hasn't been through the welcome step gets routed there instead
+// of the ballot. Any lookup failure falls back to the ballot — login must
+// never strand the user on an error because an optional step couldn't be
+// checked.
 async function postLoginDestination(queryClient: QueryClient): Promise<string> {
   const me = queryClient.getQueryData<Me | null>(["me"]);
-  if (!me?.email_verified || hasSkippedWelcome(me.email)) {
+  if (!me?.email_verified || hasSeenWelcome(me.email)) {
     return "/me/ballot";
   }
   try {
