@@ -483,6 +483,24 @@ export function buildCandidateProfileQualityGaps(input: {
       focusedResearchPass: "Run a focused party-only profile pass using official roster/filing sources. Add party if source-backed, or mark candidate_profile.party confirmed_null if no reliable party exists.",
     });
   }
+  // null is a legal contract answer ("no cited source carries office
+  // history"), but it leaves the record sweep unrouted — so it is a gap
+  // driving a focused pass against a source that DOES carry office history
+  // (financial disclosure, voter pamphlet, official bio), not a free pass.
+  if (input.profile.has_held_public_office == null) {
+    gaps.push({
+      id: "candidate_profile.has_held_public_office",
+      stage: "candidate_profile",
+      objectType: "candidate_profile",
+      outcome: "needs_repair",
+      field: "has_held_public_office",
+      failureKind: "quality_gap",
+      reason: "Candidate office-history routing answer is unresolved (no cited source carries office history).",
+      promptFile: "src/ai/providers/candidateProfilePrompt.ts",
+      focusedResearchPass:
+        "Run a focused office-history-only profile pass using a source that carries office history (financial disclosure, voter pamphlet, official bio). Set has_held_public_office true/false from that source via --replace-profile-fields has_held_public_office, or mark candidate_profile.has_held_public_office confirmed_null if no such source exists.",
+    });
+  }
   if (!input.profile.current_office) {
     gaps.push({
       id: "candidate_profile.current_office",
