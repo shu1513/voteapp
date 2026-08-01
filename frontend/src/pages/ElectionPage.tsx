@@ -338,15 +338,15 @@ export function ElectionPage() {
               // profile page only. Following also happens there.
               <div
                 key={candidate.candidate_id}
-                // Faint tint + hover, matching the ballot cards: the card is
-                // the click target and needs a visible at-rest cue.
-                className="relative rounded-xl border border-line bg-surface/50 shadow-sm transition hover:bg-surface hover:shadow-md"
+                // Faint tint at rest; hover matches the ballot cards — brand
+                // border plus the name taking the link color (group-hover).
+                className="group relative rounded-xl border border-line bg-surface/50 shadow-sm transition hover:border-rausch hover:shadow-md"
               >
                 <div className="p-4">
                   <h3 className="font-semibold">
                     <Link
                       to={`/candidates/${candidate.candidate_id}`}
-                      className="after:absolute after:inset-0"
+                      className="transition after:absolute after:inset-0 group-hover:text-rausch-dark"
                     >
                       {candidate.display_name}
                     </Link>
