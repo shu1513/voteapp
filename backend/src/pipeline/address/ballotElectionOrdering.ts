@@ -33,7 +33,9 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 // election date ascending (the reader's natural order); `district_size` sorts
 // by the election's district population descending (largest electorate first);
 // `district_size_smallest` is the same key ascending. Unknown populations sort
-// last in both directions. `my_areas` sorts by how strongly the election's
+// last in both directions. Office races with no published candidate list sink
+// below every other race under all of these — see hasNothingToRead.
+// `my_areas` sorts by how strongly the election's
 // research areas match the user's saved research-area preferences (summed
 // weights, see userResearchAreaScoring.ts) and degrades to `vote_power` for
 // anonymous callers and users with no saved areas.
@@ -184,6 +186,19 @@ async function loadFollowedCandidatesByElection(
   return followed;
 }
 
+// An office race whose candidate list has not been published (or not yet
+// imported) shows a "Candidate list not final" card with nothing to read —
+// so it sinks below every race a voter can act on, under every sort. Ballot
+// measures are exempt: zero candidates is their normal state, and the measure
+// text is the content. A recorded result also exempts: winners can be
+// recorded without candidate links (see electionResultPayloadContract), and
+// the ballot keeps races for three days past election day — a decided race
+// is readable regardless of its roster. Applied AFTER the followed-first
+// tier, which it can never contradict — a followed candidate is a candidate.
+function hasNothingToRead(election: OrderedBallotElectionSummary): boolean {
+  return election.race_type !== "ballot_measure" && election.candidate_count === 0 && !election.has_results;
+}
+
 // Stable, in-place ordering of the elections list. `Array.prototype.sort` is
 // stable, so the reader's SQL order (election_date, race_type, title, id) is
 // the deterministic tiebreak whenever the chosen keys are equal.
@@ -200,6 +215,11 @@ function sortBallotElections(
       if (aFollowed !== bFollowed) {
         return aFollowed - bFollowed;
       }
+    }
+    const aEmpty = hasNothingToRead(a) ? 1 : 0;
+    const bEmpty = hasNothingToRead(b) ? 1 : 0;
+    if (aEmpty !== bEmpty) {
+      return aEmpty - bEmpty;
     }
     return compareBySort(a, b, sort, areaScoresByElection);
   });

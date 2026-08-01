@@ -324,4 +324,118 @@ describe("ElectionCard", () => {
     expect(screen.getByText("Civil Rights")).toBeInTheDocument();
     expect(screen.queryByText(/more area/)).not.toBeInTheDocument();
   });
+
+  it("moves races without a candidate list into a closing section, dates on the cards", () => {
+    renderRoutes(
+      [
+        {
+          path: "/",
+          element: (
+            <ElectionList
+              elections={[
+                electionSummary({ id: "e-1", official_ballot_title: "Governor" }),
+                electionSummary({
+                  id: "e-2",
+                  official_ballot_title: "School Board",
+                  candidate_count: 0,
+                  candidate_roster_status: { reason: "awaiting_official_roster", check_after: null },
+                }),
+              ]}
+            />
+          ),
+        },
+      ],
+      "/"
+    );
+
+    // One date heading for the readable race; the pending race sits under the
+    // waiting section instead of repeating that date at the bottom.
+    expect(screen.getAllByRole("heading", { name: "Elections on November 3, 2026" })).toHaveLength(1);
+    expect(screen.getByRole("heading", { name: "Candidate information not yet available" })).toBeInTheDocument();
+    // Its section heading names no date, so the card carries its own.
+    expect(screen.getByText("Alaska · November 3, 2026")).toBeInTheDocument();
+    expect(screen.getByText("Candidate list not final")).toBeInTheDocument();
+  });
+
+  it("keeps candidate-less ballot measures inside their date group", () => {
+    renderRoutes(
+      [
+        {
+          path: "/",
+          element: (
+            <ElectionList
+              elections={[
+                electionSummary({
+                  id: "e-1",
+                  official_ballot_title: "Proposition 4",
+                  race_type: "ballot_measure",
+                  candidate_count: 0,
+                }),
+              ]}
+            />
+          ),
+        },
+      ],
+      "/"
+    );
+
+    // Zero candidates is a measure's normal state — no waiting section.
+    expect(screen.getByRole("heading", { name: "Elections on November 3, 2026" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Candidate information not yet available" })).not.toBeInTheDocument();
+  });
+
+  it("keeps candidate-less races with a recorded result inside their date group", () => {
+    renderRoutes(
+      [
+        {
+          path: "/",
+          element: (
+            <ElectionList
+              elections={[
+                // Winners can be recorded without candidate links, and the
+                // ballot keeps races three days past election day — a decided
+                // race is readable, so it must not sink.
+                electionSummary({
+                  id: "e-1",
+                  official_ballot_title: "County Clerk",
+                  candidate_count: 0,
+                  has_results: true,
+                  current_result_outcome: "won",
+                }),
+              ]}
+            />
+          ),
+        },
+      ],
+      "/"
+    );
+
+    expect(screen.getByRole("heading", { name: "Elections on November 3, 2026" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Candidate information not yet available" })).not.toBeInTheDocument();
+  });
+
+  it("renders only the waiting section when every race lacks a candidate list", () => {
+    renderRoutes(
+      [
+        {
+          path: "/",
+          element: (
+            <ElectionList
+              elections={[
+                electionSummary({
+                  id: "e-1",
+                  candidate_count: 0,
+                  candidate_roster_status: { reason: "awaiting_official_roster", check_after: null },
+                }),
+              ]}
+            />
+          ),
+        },
+      ],
+      "/"
+    );
+
+    expect(screen.getByRole("heading", { name: "Candidate information not yet available" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /Elections on/ })).not.toBeInTheDocument();
+  });
 });
