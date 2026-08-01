@@ -213,7 +213,7 @@ export default function HomeScreen() {
         </Text>
         {/* What the service is, where a first-time visitor looks — same line
             the web hero carries. */}
-        <Text className="mt-3 text-sm font-medium text-ink-soft">
+        <Text className="mt-3 text-center text-sm font-medium text-ink-soft">
           Independent, nonpartisan, AI-assisted election research with linked sources.
         </Text>
 
