@@ -1,55 +1,13 @@
-import type { ElectionSummary } from "@voteapp/api-client";
 import { Pressable, Text, View } from "react-native";
 
 /**
- * "Only my issues" ballot filter, shared by the anonymous and saved ballot
- * screens — port of the web OnlyMyIssuesFilter. Keep = elections whose
- * research areas intersect the viewer's saved areas. Same visibility rule as
- * the election screen's records filter: while OFF it renders only when it
- * could change the current view (viewer has saved areas AND the list splits
- * into matched + unmatched); while ON it stays visible and keeps applying —
- * even when that empties the view ("N elections hidden · Show all" explains
- * the empty list) — because an active filter that silently stops applying
- * would show a full ballot the viewer believes is filtered. A viewer with no
- * saved areas gets the request ignored (the intersection is meaningless
- * without them).
- */
-export function deriveOnlyMyIssues({
-  elections,
-  savedAreaIds,
-  hasSaved,
-  requested,
-}: {
-  elections: ElectionSummary[];
-  savedAreaIds: Set<string>;
-  hasSaved: boolean;
-  requested: boolean;
-}): {
-  visibleElections: ElectionSummary[];
-  filterOn: boolean;
-  showFilter: boolean;
-  hiddenCount: number;
-} {
-  const matched = elections.filter((election) =>
-    election.research_areas.some((area) => savedAreaIds.has(area.id))
-  );
-  const filterOn = hasSaved && requested;
-  const showFilter =
-    filterOn || (hasSaved && matched.length > 0 && matched.length < elections.length);
-  return {
-    visibleElections: filterOn ? matched : elections,
-    filterOn,
-    showFilter,
-    hiddenCount: elections.length - matched.length,
-  };
-}
-
-/**
- * The toggle chip plus the hidden-count line. Render only when
- * deriveOnlyMyIssues says showFilter; the screens own the on/off state
- * (plain state — screens stay mounted under a stack push, so the choice
- * survives navigating into an election and back, matching the web's URL
- * param).
+ * "Only my issues" toggle chip plus the hidden-count line, shared by the
+ * anonymous and saved ballot screens — port of the web OnlyMyIssuesFilter.
+ * Render only when api-client's deriveOnlyMyIssues says showFilter (the
+ * derivation lives there so web and mobile share one copy); the screens own
+ * the on/off state (plain state — screens stay mounted under a stack push,
+ * so the choice survives navigating into an election and back, matching the
+ * web's URL param).
  */
 export function OnlyMyIssuesToggle({
   on,

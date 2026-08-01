@@ -2,6 +2,7 @@ import type { BallotSort, BallotSummary } from "@voteapp/api-client";
 import {
   apiRequest,
   BALLOT_SORT_DESCRIPTIONS,
+  deriveOnlyMyIssues,
   formatDistrictName,
   formatDistrictType,
   PUBLIC_BALLOT_SORTS,
@@ -14,7 +15,7 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { Collapsible } from "../components/Collapsible";
 import { ElectionCard } from "../components/ElectionCard";
-import { deriveOnlyMyIssues, OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
+import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
 import { SortChips } from "../components/SortChips";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { consumeMatchedAddress, type MatchedAddressHandoff } from "../lib/matchedAddress";

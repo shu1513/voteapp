@@ -188,6 +188,23 @@ describe("SavedBallotPage", () => {
       expect(router.state.location.search).not.toContain("issues=mine");
     });
 
+    it("shows a ballot error instead of the withhold notice while saved areas still load", async () => {
+      // A ballot error has no list to withhold: it must win over the
+      // saved-areas gate instead of hiding behind the loading notice.
+      const neverSettles = new Promise<never>(() => {});
+      stubApiRoutes({
+        ...VERIFIED_BASE,
+        "/api/me/research-area-preferences": () => neverSettles,
+        "/api/me/ballot": apiError(500, "internal_error", "boom"),
+      });
+      renderSavedBallot(undefined, "?issues=mine");
+
+      expect(
+        await screen.findByText("The service is having trouble right now. Please try again shortly.")
+      ).toBeInTheDocument();
+      expect(screen.queryByText("Loading your ballot…")).not.toBeInTheDocument();
+    });
+
     it("fails open to the full list when the saved-areas fetch fails on a ?issues=mine load", async () => {
       stubApiRoutes({
         ...VERIFIED_BASE,

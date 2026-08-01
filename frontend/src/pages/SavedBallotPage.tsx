@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "@voteapp/api-client";
 import { BALLOT_SORTS, type BallotPreferences, type BallotSummary } from "@voteapp/api-client";
@@ -11,7 +11,8 @@ import {
 } from "../components/SavedAddressForm";
 import { ElectionList } from "../components/ElectionCard";
 import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
-import { deriveOnlyMyIssues } from "../lib/onlyMyIssues";
+import { deriveOnlyMyIssues } from "@voteapp/api-client";
+import { useIssuesFilterParam } from "../lib/useIssuesFilterParam";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "@voteapp/api-client";
@@ -133,27 +134,7 @@ export function SavedBallotPage() {
     hasSaved,
     isLoading: savedAreasLoading,
   } = useMyResearchAreas();
-  // "Only my issues": URL state like the anonymous ballot's sort, so the
-  // choice survives navigating into an election and back; off by default
-  // (absent param). Deliberately NOT an account preference — hiding races
-  // should never silently persist across visits.
-  const [searchParams, setSearchParams] = useSearchParams();
-  const issuesRequested = searchParams.get("issues") === "mine";
-
-  function onIssuesFilterChange(on: boolean) {
-    setSearchParams(
-      (previous) => {
-        const next = new URLSearchParams(previous);
-        if (on) {
-          next.set("issues", "mine");
-        } else {
-          next.delete("issues");
-        }
-        return next;
-      },
-      { replace: true }
-    );
-  }
+  const { issuesRequested, onIssuesFilterChange } = useIssuesFilterParam();
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
   );
@@ -265,11 +246,7 @@ export function SavedBallotPage() {
     );
   }
 
-  // The saved-areas guard mirrors the anonymous ballot page: a ?issues=mine
-  // load must not flash the full ballot while the saved areas are still
-  // unknown. The flag settles on failure too, falling open to the full list
-  // with the request ignored.
-  if (handoffState !== "done" || ballot.isPending || (issuesRequested && savedAreasLoading)) {
+  if (handoffState !== "done" || ballot.isPending) {
     return <LoadingNotice text="Loading your ballot…" />;
   }
 
@@ -284,6 +261,15 @@ export function SavedBallotPage() {
         <ErrorNotice error={ballot.error} />
       </div>
     );
+  }
+
+  // The saved-areas guard mirrors the anonymous ballot page: a ?issues=mine
+  // load must not flash the full ballot while the saved areas are still
+  // unknown. The flag settles on failure too, falling open to the full list
+  // with the request ignored. AFTER the error branch: a ballot error has no
+  // list to withhold, so it must never hide behind this loading notice.
+  if (issuesRequested && savedAreasLoading) {
+    return <LoadingNotice text="Loading your ballot…" />;
   }
 
   const data = ballot.data;

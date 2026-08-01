@@ -9,7 +9,8 @@ import {
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
 import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
-import { deriveOnlyMyIssues } from "../lib/onlyMyIssues";
+import { deriveOnlyMyIssues } from "@voteapp/api-client";
+import { useIssuesFilterParam } from "../lib/useIssuesFilterParam";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
@@ -51,9 +52,7 @@ export function BallotPage() {
     .filter((id) => id.length > 0);
   const rawSort = searchParams.get("sort") ?? "";
   const sort: BallotSort = SORT_VALUES.includes(rawSort) ? (rawSort as BallotSort) : "vote_power";
-  // URL state like sort, so the choice survives navigating into an election
-  // and back; off by default (absent param).
-  const issuesRequested = searchParams.get("issues") === "mine";
+  const { issuesRequested, onIssuesFilterChange } = useIssuesFilterParam();
 
   const ballot = useQuery({
     queryKey: ["ballot", districtIds.join(","), sort],
@@ -69,21 +68,6 @@ export function BallotPage() {
       (previous) => {
         const next = new URLSearchParams(previous);
         next.set("sort", nextSort);
-        return next;
-      },
-      { replace: true }
-    );
-  }
-
-  function onIssuesFilterChange(on: boolean) {
-    setSearchParams(
-      (previous) => {
-        const next = new URLSearchParams(previous);
-        if (on) {
-          next.set("issues", "mine");
-        } else {
-          next.delete("issues");
-        }
         return next;
       },
       { replace: true }
@@ -169,7 +153,12 @@ export function BallotPage() {
         </p>
       ) : null}
 
-      {ballot.isPending || awaitingSavedAreas ? <LoadingNotice text="Loading your elections…" /> : null}
+      {/* A ballot error wins over the saved-areas withhold: with no list to
+          withhold, gating on the filter would pair the loading notice with
+          the error (or hide the error outright). */}
+      {ballot.isPending || (awaitingSavedAreas && !ballot.isError) ? (
+        <LoadingNotice text="Loading your elections…" />
+      ) : null}
       {ballot.isError ? (
         <div className="mt-4">
           <ErrorNotice error={ballot.error} />

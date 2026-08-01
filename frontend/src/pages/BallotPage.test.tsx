@@ -277,6 +277,23 @@ describe("BallotPage", () => {
       expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
     });
 
+    it("shows a ballot error instead of the withhold notice while saved areas still load", async () => {
+      // A ballot error has no list to withhold: it must win over the
+      // saved-areas gate, not render alongside (or behind) a loading notice.
+      const neverSettles = new Promise<never>(() => {});
+      stubApiRoutes({
+        "/api/me": { body: ME_VERIFIED },
+        "/api/me/research-area-preferences": () => neverSettles,
+        "/api/ballot": apiError(500, "internal_error", "boom"),
+      });
+      renderBallot("/ballot?d=d-1&issues=mine");
+
+      expect(
+        await screen.findByText("The service is having trouble right now. Please try again shortly.")
+      ).toBeInTheDocument();
+      expect(screen.queryByText("Loading your elections…")).not.toBeInTheDocument();
+    });
+
     it("fails open to the full list when the saved-areas fetch fails", async () => {
       stubApiRoutes({
         "/api/me": { body: ME_VERIFIED },

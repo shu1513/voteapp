@@ -1,10 +1,10 @@
 /**
  * "Only my issues" toggle chip plus the hidden-count line, shared by the
- * anonymous and saved ballot pages. Render only when lib/onlyMyIssues'
- * deriveOnlyMyIssues says showFilter (the derivation lives in lib so this
- * file only exports a component — fast refresh); the pages own the on/off
- * state (URL query, like sort) so the choice survives navigating into an
- * election and back.
+ * anonymous and saved ballot pages. Render only when api-client's
+ * deriveOnlyMyIssues says showFilter (the derivation lives there so web and
+ * mobile share one copy — and this file only exports a component, keeping
+ * fast refresh); the pages own the on/off state (lib/useIssuesFilterParam)
+ * so the choice survives navigating into an election and back.
  */
 export function OnlyMyIssuesToggle({
   on,
@@ -16,7 +16,13 @@ export function OnlyMyIssuesToggle({
   onChange: (on: boolean) => void;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    // aria-live sits on this always-mounted container, not on the count
+    // span: a live region that mounts WITH its content is unreliably
+    // announced, while content appearing inside an existing region is the
+    // well-supported case. Polite, so pressing the toggle announces the
+    // hidden count — the whole point of the count is that a filtered
+    // ballot must never silently read as the full one.
+    <div className="flex flex-wrap items-center gap-2" aria-live="polite">
       <button
         type="button"
         onClick={() => onChange(!on)}

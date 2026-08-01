@@ -4,6 +4,7 @@ import {
   apiRequest,
   BALLOT_SORT_DESCRIPTIONS,
   BALLOT_SORTS,
+  deriveOnlyMyIssues,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,7 +14,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../../components/AccountGate";
 import { Checkbox } from "../../components/Checkbox";
 import { ElectionCard } from "../../components/ElectionCard";
-import { deriveOnlyMyIssues, OnlyMyIssuesToggle } from "../../components/OnlyMyIssuesFilter";
+import { OnlyMyIssuesToggle } from "../../components/OnlyMyIssuesFilter";
 import { SavedAddressForm } from "../../components/SavedAddressForm";
 import { SortChips } from "../../components/SortChips";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../../components/Status";

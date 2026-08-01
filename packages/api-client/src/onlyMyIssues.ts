@@ -1,8 +1,10 @@
-import type { ElectionSummary } from "@voteapp/api-client";
+import type { ElectionSummary } from "./types";
 
 /**
- * "Only my issues" ballot filter derivation, shared by the anonymous and
- * saved ballot pages (the toggle UI lives in components/OnlyMyIssuesFilter).
+ * "Only my issues" ballot filter derivation, shared by all four ballot
+ * surfaces (each platform keeps its own toggle UI in its
+ * OnlyMyIssuesFilter component; the policy lives here once, like
+ * partyBucket, so web and mobile cannot drift).
  * Keep = elections whose research areas intersect the viewer's saved areas.
  * Same visibility rule as the election page's records filter: while OFF it
  * renders only when it could change the current view (viewer has saved areas
@@ -13,7 +15,7 @@ import type { ElectionSummary } from "@voteapp/api-client";
  * filtered. A viewer with no saved areas gets the request ignored (the
  * intersection is meaningless without them), which also covers a shared
  * ?issues=mine link opened anonymously. While the saved areas are still
- * LOADING the pages withhold the list instead of calling this (see
+ * LOADING the web pages withhold the list instead of calling this (see
  * useMyResearchAreas().isLoading) — otherwise a ?issues=mine load would
  * flash the full ballot before the filter engages.
  */
