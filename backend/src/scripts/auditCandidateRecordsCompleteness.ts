@@ -27,7 +27,7 @@ import {
  * Red-flag audit for false records-sweep completeness.
  *
  * A candidate whose profile shows real service (a current office or an
- * incumbent election link) but who has ZERO candidate_records rows despite a
+ * incumbent election link) but who has ZERO non-retired candidate_records rows despite a
  * `last_records_searched_at` completion stamp is the signature of a skipped
  * discovery sweep written as `no_records_found`. This read-only script lists
  * those candidates so a session can re-run their record sweeps properly.
@@ -367,7 +367,8 @@ async function main(): Promise<void> {
           AND c.merged_into_candidate_id IS NULL
           AND c.last_records_searched_at IS NOT NULL
           AND NOT EXISTS (
-            SELECT 1 FROM public.candidate_records r WHERE r.candidate_id = c.id
+            SELECT 1 FROM public.candidate_records r
+            WHERE r.candidate_id = c.id AND r.retired_at IS NULL
           )
 ${targetSql}
         GROUP BY c.id, c.display_name, c.current_office, c.last_records_searched_at,
@@ -412,8 +413,9 @@ ${targetSql}
     const SHARED_FINDING_LIST_LIMIT = 50;
 
     // Source-domain detector feed (PR 3 of the source-trust plan): every
-    // stored record in scope plus each candidate's election dates. Tier is
-    // a pure function of the stored URL, so this retro-covers all rows.
+    // non-retired stored record in scope plus each candidate's election
+    // dates. Tier is a pure function of the stored URL, so this retro-covers
+    // all active rows; retired rows are withdrawn and repairing them is moot.
     const recordsResult = await pool.query<SourceAuditRecordRow>(
       `
         SELECT
@@ -429,6 +431,7 @@ ${targetSql}
         JOIN public.candidates c ON c.id = r.candidate_id
         WHERE c.deleted_at IS NULL
           AND c.merged_into_candidate_id IS NULL
+          AND r.retired_at IS NULL
 ${targetSql}
         ORDER BY r.created_at ASC
       `,
@@ -490,7 +493,7 @@ ${targetSql}
           suspectCount: suspects.length,
           confirmedNullCount: confirmedNulls.length,
           explanation:
-            "Suspects: candidates with a records-search completion stamp, a current office or incumbent election link, ZERO candidate_records rows, and no sweep confirmation covering the latest search (a confirmation older than last_records_searched_at is historical — a later search re-opened the question). Each needs a proper per-question record sweep re-run. Confirmed nulls carry an evidence-backed candidate_record_sweep_confirmations row at least as new as the latest completion stamp and need no re-run.",
+            "Suspects: candidates with a records-search completion stamp, a current office or incumbent election link, ZERO non-retired candidate_records rows, and no sweep confirmation covering the latest search (a confirmation older than last_records_searched_at is historical — a later search re-opened the question). Each needs a proper per-question record sweep re-run. Confirmed nulls carry an evidence-backed candidate_record_sweep_confirmations row at least as new as the latest completion stamp and need no re-run.",
           suspects: suspects.map((row) => ({
             candidateId: row.candidate_id,
             displayName: row.display_name,

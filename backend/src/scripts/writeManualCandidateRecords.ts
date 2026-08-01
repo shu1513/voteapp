@@ -933,8 +933,11 @@ async function main(): Promise<void> {
         // decideDeltaZeroRecordConfirmation for why the prior confirmation
         // is refreshed (audit treats confirmations older than the search
         // stamp this write is about to make as historical).
+        // Retired rows are withdrawn claims; a candidate whose only rows are
+        // retired has zero records for completeness purposes, same as the
+        // audit's zero-records check.
         const existingRecords = await client.query<{ record_count: string }>(
-          `SELECT count(*)::text AS record_count FROM public.candidate_records WHERE candidate_id = $1`,
+          `SELECT count(*)::text AS record_count FROM public.candidate_records WHERE candidate_id = $1 AND retired_at IS NULL`,
           [candidateId]
         );
         const priorConfirmation = await client.query<{ confirmed_gap_ids: string[] | null }>(

@@ -95,7 +95,11 @@ export function parseSendCandidateFollowDigestsArgs(
 }
 
 // An unsent event is orphaned when its follow no longer opts into this event
-// type, or the candidate has been deleted/merged since the event was created.
+// type, the candidate has been deleted/merged since the event was created, or
+// its record has been retired (the claim was withdrawn — the event will never
+// be sendable again). Without the retirement branch such events stay
+// unresolved forever and their users consume a --max-users slot every run
+// while receiving nothing.
 const ORPHANED_EVENT_CONDITION = `
   e.notified_at IS NULL
   AND (
@@ -115,6 +119,12 @@ const ORPHANED_EVENT_CONDITION = `
       WHERE c.id = e.candidate_id
         AND c.deleted_at IS NULL
         AND c.merged_into_candidate_id IS NULL
+    )
+    OR EXISTS (
+      SELECT 1
+      FROM public.candidate_records AS r
+      WHERE r.id = e.candidate_record_id
+        AND r.retired_at IS NOT NULL
     )
   )
 `;
@@ -157,8 +167,9 @@ async function selectEligibleUsers(db: Queryable, maxUsers: number): Promise<Eli
         AND EXISTS (
           -- Mirrors the deliverability joins in selectPendingEvents so a user
           -- whose only unsent events are orphaned (unfollowed, notify flag
-          -- off, candidate gone) cannot consume a --max-users slot. Matters in
-          -- dry runs, where orphans are counted but not yet stamped.
+          -- off, candidate gone, record retired) cannot consume a --max-users
+          -- slot. Matters in dry runs, where orphans are counted but not yet
+          -- stamped.
           SELECT 1
           FROM public.user_candidate_follow_notification_events AS e
           JOIN public.candidates AS c
@@ -172,8 +183,11 @@ async function selectEligibleUsers(db: Queryable, maxUsers: number): Promise<Eli
              (e.event_type = 'candidate_record_update' AND f.notify_updates)
              OR (e.event_type IN ('candidate_future_election', 'candidate_election_withdrawal') AND f.notify_elections)
            )
+          LEFT JOIN public.candidate_records AS r
+            ON r.id = e.candidate_record_id
           WHERE e.user_id = u.id
             AND e.notified_at IS NULL
+            AND NOT (e.event_type = 'candidate_record_update' AND r.retired_at IS NOT NULL)
         )
       ORDER BY u.id
       LIMIT $1::int
@@ -220,6 +234,9 @@ async function selectPendingEvents(db: Queryable, userId: string): Promise<Pendi
         ON el.id = e.election_id
       WHERE e.user_id = $1::uuid
         AND e.notified_at IS NULL
+        -- A record retired after its event was created is a withdrawn claim;
+        -- never surface it in a digest. Election events are unaffected.
+        AND NOT (e.event_type = 'candidate_record_update' AND r.retired_at IS NOT NULL)
       ORDER BY candidate_display_name, e.created_at, e.id
     `,
     [userId]

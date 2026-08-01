@@ -362,7 +362,7 @@ export async function loadPlainLanguageBackfillTargets(pool: Pool): Promise<Plai
     `
       SELECT cr.id, cr.description, cr.source_url, cr.event_date::text
       FROM public.candidate_records cr
-      WHERE cr.description <> '' AND NOT EXISTS (
+      WHERE cr.description <> '' AND cr.retired_at IS NULL AND NOT EXISTS (
         SELECT 1 FROM public.plain_language_rewrites r
         WHERE r.target_table = 'candidate_records' AND r.target_id = cr.id AND r.target_column = 'description'
       )

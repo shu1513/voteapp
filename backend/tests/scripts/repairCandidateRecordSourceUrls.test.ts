@@ -13,6 +13,7 @@ const ROW = {
   description: "Appointed a new elections director in 2025.",
   source_url: "https://validate.perfdrive.com/?ssc=https%3A%2F%2Fwww.sos.mn.gov%2Fnews%2Fx",
   event_date: "2025-10-21",
+  retired_at: null,
 };
 
 function makeDeps(overrides: Partial<RepairDeps> = {}): RepairDeps {
@@ -246,6 +247,21 @@ describe("repairOneSourceUrl", () => {
     );
 
     expect(outcome.status === "skipped" && outcome.reason).toContain("rec-duplicate");
+    expect(applyRepair).not.toHaveBeenCalled();
+  });
+
+  it("skips a retired record — repairing a withdrawn claim is moot", async () => {
+    const applyRepair = vi.fn(async () => 1);
+    const outcome = await repairOneSourceUrl(
+      { recordId: "rec-1", sourceUrl: GOOD_URL },
+      makeDeps({
+        applyRepair,
+        loadRecord: async () => ({ ...ROW, retired_at: "2026-07-31 00:00:00+00" }),
+      }),
+      { apply: true }
+    );
+
+    expect(outcome.status === "skipped" && outcome.reason).toContain("retired");
     expect(applyRepair).not.toHaveBeenCalled();
   });
 

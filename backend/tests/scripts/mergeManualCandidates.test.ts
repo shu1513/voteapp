@@ -120,7 +120,7 @@ describe("runMergeCandidates", () => {
     const result = await run({ query });
 
     expect(result.links).toEqual({ rehomed: 1, duplicatesDeleted: 0 });
-    expect(result.records).toEqual({ rehomed: 1, duplicatesDeleted: 0, areaTagsCopied: 0 });
+    expect(result.records).toEqual({ rehomed: 1, duplicatesDeleted: 0, areaTagsCopied: 0, retirementsPropagated: 0 });
     expect(result.follows).toEqual({ rehomed: 1, duplicatesDeleted: 0 });
     expect(result.notificationEvents).toEqual({
       rehomed: 1,
@@ -401,13 +401,68 @@ describe("runMergeCandidates", () => {
 
     const result = await run({ query });
 
-    expect(result.records).toEqual({ rehomed: 1, duplicatesDeleted: 1, areaTagsCopied: 0 });
+    expect(result.records).toEqual({ rehomed: 1, duplicatesDeleted: 1, areaTagsCopied: 0, retirementsPropagated: 0 });
     const del = calls.find((call) => call.text.includes("DELETE FROM public.candidate_records"));
     expect(del?.values).toEqual([["r2"]]);
     const rehome = calls.find((call) =>
       call.text.includes("UPDATE public.candidate_records SET candidate_id")
     );
     expect(rehome?.values).toEqual([["r1"], SURVIVOR]);
+  });
+
+  it("propagates a retired duplicate's retirement onto an active survivor copy", async () => {
+    // Mixed retirement states on an identical-key pair are conflicting
+    // operator decisions about the same claim; deleting the retired copy
+    // while the survivor's stays active would silently resurrect a withdrawn
+    // claim. Retirement wins.
+    const { query, calls } = buildClient(
+      happyResponses({
+        "FROM public.candidate_records\n        WHERE candidate_id = ANY": [
+          [
+            {
+              id: "r2",
+              candidate_id: MERGED,
+              record_identity_key: "shared",
+              retired_at: "2026-07-30 00:00:00+00",
+              retired_reason: "unsupported claim",
+            },
+            { id: "r3", candidate_id: SURVIVOR, record_identity_key: "shared", retired_at: null, retired_reason: null },
+          ],
+        ],
+      })
+    );
+
+    const result = await run({ query });
+
+    expect(result.records).toEqual({ rehomed: 0, duplicatesDeleted: 1, areaTagsCopied: 0, retirementsPropagated: 1 });
+    const propagate = calls.find((call) => call.text.includes("SET retired_at = $2::timestamptz"));
+    expect(propagate?.values).toEqual(["r3", "2026-07-30 00:00:00+00", "unsupported claim"]);
+  });
+
+  it("does not touch a survivor copy that is already retired", async () => {
+    // The reverse direction: duplicate active, survivor retired. The
+    // survivor's own retirement stands; no propagation UPDATE is issued.
+    const { query, calls } = buildClient(
+      happyResponses({
+        "FROM public.candidate_records\n        WHERE candidate_id = ANY": [
+          [
+            { id: "r2", candidate_id: MERGED, record_identity_key: "shared", retired_at: null, retired_reason: null },
+            {
+              id: "r3",
+              candidate_id: SURVIVOR,
+              record_identity_key: "shared",
+              retired_at: "2026-07-30 00:00:00+00",
+              retired_reason: "wrong attribution",
+            },
+          ],
+        ],
+      })
+    );
+
+    const result = await run({ query });
+
+    expect(result.records).toEqual({ rehomed: 0, duplicatesDeleted: 1, areaTagsCopied: 0, retirementsPropagated: 0 });
+    expect(calls.some((call) => call.text.includes("SET retired_at = $2::timestamptz"))).toBe(false);
   });
 
   it("deletes the survivor's sweep confirmation only when records were rehomed", async () => {
@@ -589,7 +644,7 @@ describe("runMergeCandidates", () => {
 
     const live = buildClient(responses());
     const result = await run({ query: live.query });
-    expect(result.records).toEqual({ rehomed: 0, duplicatesDeleted: 1, areaTagsCopied: 1 });
+    expect(result.records).toEqual({ rehomed: 0, duplicatesDeleted: 1, areaTagsCopied: 1, retirementsPropagated: 0 });
     const insert = live.calls.find((call) =>
       call.text.includes("INSERT INTO public.candidate_record_area_tags")
     );

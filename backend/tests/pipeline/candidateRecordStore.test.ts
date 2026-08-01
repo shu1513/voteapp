@@ -189,7 +189,7 @@ describe("upsertCandidateRecords", () => {
 });
 
 describe("deleteCandidateRecordsForReplacementRefresh", () => {
-  it("deletes all candidate records for a candidate and returns the deleted count", async () => {
+  it("deletes only ACTIVE candidate records and returns the deleted count", async () => {
     const query = vi.fn().mockResolvedValue({ rows: [], rowCount: 4 });
 
     await expect(
@@ -199,6 +199,10 @@ describe("deleteCandidateRecordsForReplacementRefresh", () => {
     expect(query).toHaveBeenCalledWith(expect.stringContaining("DELETE FROM public.candidate_records"), [
       "candidate-1",
     ]);
+    // Retirement tombstones survive the refresh: deleting one would cascade
+    // away its notification history and let the next research run recreate
+    // the withdrawn claim as active.
+    expect(query).toHaveBeenCalledWith(expect.stringContaining("retired_at IS NULL"), ["candidate-1"]);
   });
 
   it("does not query when candidate ID is blank", async () => {

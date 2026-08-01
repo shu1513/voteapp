@@ -229,6 +229,7 @@ export async function listUserCandidateFollows(db: Queryable, userId: string): P
           record.event_date::text AS event_date
         FROM public.candidate_records AS record
         WHERE record.candidate_id = candidate.id
+          AND record.retired_at IS NULL
         ORDER BY record.event_date DESC, record.created_at DESC, record.id ASC
         LIMIT 1
       ) AS latest_record ON true

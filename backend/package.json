@@ -68,6 +68,8 @@
     "manual:candidate-records:due": "tsx src/scripts/listFollowedCandidateRecordsDue.ts",
     "manual:records:audit": "tsx src/scripts/auditCandidateRecordsCompleteness.ts",
     "manual:records:repair-source-urls": "tsx src/scripts/repairCandidateRecordSourceUrls.ts",
+    "manual:records:repair-event-dates": "tsx src/scripts/repairCandidateRecordEventDates.ts",
+    "manual:records:retire": "tsx src/scripts/retireCandidateRecords.ts",
     "manual:records:reset-confirmations": "tsx src/scripts/resetCandidateRecordSweepConfirmations.ts",
     "manual:ballot-measure:write": "tsx src/scripts/writeManualBallotMeasure.ts",
     "manual:election-date:correct": "tsx src/scripts/correctManualElectionDate.ts",

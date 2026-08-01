@@ -60,6 +60,7 @@ type RecordRow = {
   description: string;
   source_url: string;
   event_date: string;
+  retired_at: string | null;
 };
 
 function parseArgs(argv: readonly string[]): { repairsFile: string; apply: boolean } {
@@ -148,6 +149,13 @@ export async function repairOneSourceUrl(
   const row = await deps.loadRecord(repair.recordId);
   if (!row) {
     return { recordId: repair.recordId, status: "skipped", reason: "record not found" };
+  }
+  if (row.retired_at !== null) {
+    return {
+      recordId: repair.recordId,
+      status: "skipped",
+      reason: `record is retired (${row.retired_at}); repairing a withdrawn claim is moot`,
+    };
   }
   if (row.source_url === repair.sourceUrl) {
     return {
@@ -285,7 +293,7 @@ function buildPoolDeps(pool: Pool): RepairDeps {
   return {
     loadRecord: async (recordId) => {
       const result = await pool.query<RecordRow>(
-        `SELECT id, candidate_id, description, source_url, event_date::text AS event_date
+        `SELECT id, candidate_id, description, source_url, event_date::text AS event_date, retired_at::text AS retired_at
            FROM public.candidate_records
           WHERE id = $1`,
         [recordId]
@@ -343,7 +351,8 @@ function buildPoolDeps(pool: Pool): RepairDeps {
           WHERE id = $1
             AND description = $4
             AND event_date = $5::date
-            AND source_url = $6`,
+            AND source_url = $6
+            AND retired_at IS NULL`,
         [
           recordId,
           sourceUrl,
@@ -385,15 +394,16 @@ async function main(): Promise<void> {
       }
     }
   } finally {
+    // The report prints BEFORE pool teardown: in --apply mode some rows are
+    // already written by now, and a pool.end() rejection after the loop would
+    // otherwise discard the only account of which.
+    const counts = outcomes.reduce<Record<string, number>>((acc, outcome) => {
+      acc[outcome.status] = (acc[outcome.status] ?? 0) + 1;
+      return acc;
+    }, {});
+    console.log(JSON.stringify({ mode: apply ? "apply" : "dry-run", counts, outcomes }, null, 2));
     await pool.end();
   }
-
-  const counts = outcomes.reduce<Record<string, number>>((acc, outcome) => {
-    acc[outcome.status] = (acc[outcome.status] ?? 0) + 1;
-    return acc;
-  }, {});
-
-  console.log(JSON.stringify({ mode: apply ? "apply" : "dry-run", counts, outcomes }, null, 2));
 
   for (const outcome of outcomes) {
     if (outcome.status === "skipped") {

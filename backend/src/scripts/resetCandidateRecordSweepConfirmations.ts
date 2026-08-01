@@ -205,6 +205,7 @@ export async function runSweepConfirmationReset(
             SELECT count(*)::int
             FROM public.candidate_records r
             WHERE r.candidate_id = sc.candidate_id
+              AND r.retired_at IS NULL
           ) AS record_count
         FROM public.candidate_record_sweep_confirmations sc
         JOIN public.candidates c ON c.id = sc.candidate_id

@@ -198,6 +198,28 @@ describe("sendCandidateFollowDigests", () => {
     }
   });
 
+  it("excludes retired-record events from every event query", async () => {
+    const db = createDbMock({
+      users: [{ id: USER_ALPHA, email: "a@example.com", first_name: "A" }],
+      pendingByUser: { [USER_ALPHA]: [pendingRow("e1", "Jane Doe")] },
+    });
+    const mailer = createMailerMock();
+
+    await sendCandidateFollowDigests(db as never, mailer, { ...options, live: false });
+
+    // A retired record is a withdrawn claim. The orphan sweep must resolve
+    // its events (or they stay unsendable forever), and user eligibility and
+    // pending-event selection must both skip them — otherwise a user whose
+    // only events are retired consumes a --max-users slot every run while
+    // receiving nothing, indefinitely delaying other users' digests.
+    const sqls = db.query.mock.calls.map((call) => String(call[0]));
+    const eventTypeQueries = sqls.filter((sql) => sql.includes("candidate_record_update"));
+    expect(eventTypeQueries.length).toBeGreaterThanOrEqual(3);
+    for (const sql of eventTypeQueries) {
+      expect(sql).toContain("retired_at IS NOT NULL");
+    }
+  });
+
   it("live run sends one digest per user and marks exactly the sent events", async () => {
     const db = createDbMock({
       users: [

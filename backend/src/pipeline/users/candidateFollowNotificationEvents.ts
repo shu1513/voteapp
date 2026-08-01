@@ -56,6 +56,7 @@ export async function createCandidateRecordUpdateNotificationEvents(
         JOIN public.candidates AS candidate
           ON candidate.id = record.candidate_id
         WHERE record.id = $1::uuid
+          AND record.retired_at IS NULL
           AND candidate.deleted_at IS NULL
           AND candidate.merged_into_candidate_id IS NULL
       ),

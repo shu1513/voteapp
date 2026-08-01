@@ -75,7 +75,12 @@ export type MergeCandidatesResult = {
   survivorCandidateName: string;
   links: { rehomed: number; duplicatesDeleted: number };
   mateLinks: { rehomed: number };
-  records: { rehomed: number; duplicatesDeleted: number; areaTagsCopied: number };
+  records: {
+    rehomed: number;
+    duplicatesDeleted: number;
+    areaTagsCopied: number;
+    retirementsPropagated: number;
+  };
   sweepConfirmations: { mergedDeleted: boolean; survivorDeleted: boolean };
   follows: { rehomed: number; duplicatesDeleted: number };
   notificationEvents: {
@@ -122,6 +127,8 @@ type RecordRow = {
   id: string;
   candidate_id: string;
   record_identity_key: string;
+  retired_at: string | null;
+  retired_reason: string | null;
 };
 
 type FollowRow = {
@@ -486,7 +493,7 @@ export async function runMergeCandidates(
     // pending digest events survive the delete.
     const recordsResult = await client.query<RecordRow>(
       `
-        SELECT id, candidate_id, record_identity_key
+        SELECT id, candidate_id, record_identity_key, retired_at::text AS retired_at, retired_reason
         FROM public.candidate_records
         WHERE candidate_id = ANY($1::uuid[])
         ORDER BY id
@@ -514,6 +521,37 @@ export async function runMergeCandidates(
     const survivorRecordIdByDuplicate = new Map(
       duplicateRecordPairs.map((pairRow) => [pairRow.duplicateRecordId, pairRow.survivorRecordId])
     );
+
+    // Mixed retirement states across an identical-key pair are conflicting
+    // operator decisions about the SAME claim for the same person. Retirement
+    // wins: deleting a retired duplicate while the survivor's copy stays
+    // active would silently resurrect a withdrawn claim, and hiding a claim
+    // pending re-review is the recoverable direction (un-hiding a wrongly
+    // shown one is not — it may already have been served). The survivor's own
+    // retirement, when it is the retired side, simply stands.
+    const recordRowById = new Map(recordsResult.rows.map((row) => [row.id, row]));
+    let retirementsPropagated = 0;
+    for (const { duplicateRecordId, survivorRecordId } of duplicateRecordPairs) {
+      const duplicate = recordRowById.get(duplicateRecordId);
+      const survivor = recordRowById.get(survivorRecordId);
+      if (!duplicate?.retired_at || survivor?.retired_at) {
+        continue;
+      }
+      retirementsPropagated += 1;
+      if (!dryRun) {
+        await client.query(
+          `
+            UPDATE public.candidate_records
+            SET retired_at = $2::timestamptz,
+                retired_reason = $3,
+                updated_at = now()
+            WHERE id = $1::uuid
+              AND retired_at IS NULL
+          `,
+          [survivorRecordId, duplicate.retired_at, duplicate.retired_reason]
+        );
+      }
+    }
 
     let areaTagsCopied = 0;
     for (const { duplicateRecordId, survivorRecordId } of duplicateRecordPairs) {
@@ -861,6 +899,7 @@ export async function runMergeCandidates(
         rehomed: rehomeRecordIds.length,
         duplicatesDeleted: duplicateRecordIds.length,
         areaTagsCopied,
+        retirementsPropagated,
       },
       sweepConfirmations: {
         mergedDeleted: mergedConfirmationDeleted,

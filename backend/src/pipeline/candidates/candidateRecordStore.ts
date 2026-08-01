@@ -78,10 +78,16 @@ export async function deleteCandidateRecordsForReplacementRefresh(
     return { deletedCount: 0 };
   }
 
+  // Retired rows survive the refresh: deleting a retirement tombstone would
+  // cascade away its notification history and let the next research run
+  // recreate the withdrawn claim as active. A refreshed row that re-derives
+  // the same claim instead lands on the retired row's identity slot via the
+  // upsert's ON CONFLICT and stays hidden (retired_at is never cleared).
   const result = await client.query(
     `
       DELETE FROM public.candidate_records
       WHERE candidate_id = $1
+        AND retired_at IS NULL
     `,
     [trimmedCandidateId]
   );
