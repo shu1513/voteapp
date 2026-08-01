@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import type { ElectionDetail } from "@voteapp/api-client";
+import type { ElectionDetail, PartyBucket } from "@voteapp/api-client";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
@@ -24,7 +24,6 @@ import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { aggregateRecordAreaStances, scoreStanceRelevance } from "@voteapp/api-client";
 import { partyBucket } from "@voteapp/api-client";
-import type { PartyBucket } from "@voteapp/api-client";
 
 // "alphabetical" is the payload's own order: the API sorts candidates by
 // display name (there is no true ballot-position data). "my_issues" is the
@@ -110,6 +109,13 @@ export function ElectionPage() {
     electionId: "",
     bucket: "all",
   });
+  // "Has a record on my issues" — same per-race keying as the party pick,
+  // for the same reason: it hides candidates, so it must not travel to the
+  // next election this mounted component renders.
+  const [recordsPick, setRecordsPick] = useState<{ electionId: string; on: boolean }>({
+    electionId: "",
+    on: false,
+  });
 
   const data = useLoaderData<typeof loader>();
   const chosenPartyFilter = partyPick.electionId === data.id ? partyPick.bucket : "all";
@@ -130,10 +136,31 @@ export function ElectionPage() {
     showPartyFilter && chosenPartyFilter !== "all" && partyCounts[chosenPartyFilter] > 0
       ? chosenPartyFilter
       : "all";
-  const visibleCandidates =
+  const partyFilteredCandidates =
     partyFilter === "all"
       ? data.candidates
       : data.candidates.filter((candidate) => partyBucket(candidate.party) === partyFilter);
+  // "Has a record on my issues": the exact relevance scoring the "my issues
+  // first" sort uses — score > 0 means at least one stance-bearing record on
+  // a saved area (relevance, not agreement). Applied after the party filter.
+  // While the toggle is OFF it appears only when it could change the current
+  // view: signed-in with saved areas, and the party-filtered set splits into
+  // matched + unmatched. While ON it stays visible and keeps applying — even
+  // when that empties the current party view ("N hidden · Show all" explains
+  // the empty list) — because an active filter that silently stops applying
+  // would show a full roster the viewer believes is filtered. Only a viewer
+  // with no saved areas gets the pick ignored (the scoring is meaningless
+  // without them), same as the sort.
+  const chosenRecordsFilter = recordsPick.electionId === data.id ? recordsPick.on : false;
+  const matchedOnMyIssues = partyFilteredCandidates.filter(
+    (candidate) => scoreStanceRelevance(aggregateRecordAreaStances(candidate.records), weights).score > 0
+  );
+  const recordsFilterOn = hasSaved && chosenRecordsFilter;
+  const showRecordsFilter =
+    recordsFilterOn ||
+    (hasSaved && matchedOnMyIssues.length > 0 && matchedOnMyIssues.length < partyFilteredCandidates.length);
+  const visibleCandidates = recordsFilterOn ? matchedOnMyIssues : partyFilteredCandidates;
+  const hiddenByRecordsFilter = partyFilteredCandidates.length - matchedOnMyIssues.length;
   const measure = data.ballot_measure;
   // Full set, uncapped — the list card previews these; the detail page is
   // where they all fit. Measure elections skip this row: the measure section
@@ -392,6 +419,39 @@ export function ElectionPage() {
                     : `${option.label} (${partyCounts[option.bucket]})`}
                 </button>
               ))}
+            </div>
+          ) : null}
+          {showRecordsFilter ? (
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setRecordsPick({ electionId: data.id, on: !recordsFilterOn })}
+                aria-pressed={recordsFilterOn}
+                className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
+                  recordsFilterOn
+                    ? "border-ink bg-ink text-white"
+                    : "border-line bg-white text-ink hover:bg-surface"
+                }`}
+              >
+                Has a record on my issues
+              </button>
+              {recordsFilterOn && hiddenByRecordsFilter > 0 ? (
+                // The hidden count is always visible while the filter hides
+                // anyone: no records ≠ no stances (rosters are unevenly
+                // researched), so the filtered list must never look like the
+                // full roster. At 0 hidden there is nothing concealed and
+                // the pressed chip alone carries the state.
+                <span className="text-xs text-ink-soft">
+                  {hiddenByRecordsFilter} candidate{hiddenByRecordsFilter === 1 ? "" : "s"} hidden ·{" "}
+                  <button
+                    type="button"
+                    onClick={() => setRecordsPick({ electionId: data.id, on: false })}
+                    className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink"
+                  >
+                    Show all
+                  </button>
+                </span>
+              ) : null}
             </div>
           ) : null}
           <div className="mt-3 space-y-3">
