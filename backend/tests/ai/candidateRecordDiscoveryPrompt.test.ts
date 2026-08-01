@@ -131,6 +131,9 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
       "- Keep descriptions neutral and factual, built on substance: say what happened, what it concerned, and the candidate's role or action — not just a procedural label (item/amendment numbers, vendor legal names) — and never add substance the source does not state. Keep vote tallies."
     );
     expect(prompt).toContain("There is no target number of records.");
+    expect(prompt).toContain(
+      "Substantive means it gives a voter meaningful evidence about the candidate's fitness, competence, integrity, priorities, or governing record: skip routine administrative items (minutes approvals, small routine contracts, ceremonial resolutions) even when the vote was split, unless the candidate's vote or role there genuinely reveals a priority or stance."
+    );
     expect(prompt).toContain("Include both favorable and unfavorable records when they exist");
     expect(prompt).not.toContain("Do not include rumors or unverified accusations.");
     expect(prompt).not.toContain("Starting reference URLs");
@@ -175,6 +178,12 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
       "Describe what the candidate actually did in the case and its effects/impacts."
     );
     expect(prompt).not.toContain("votes, sponsored legislation, official decisions");
+    // The substantive definition must stay compatible with the judicial
+    // objective (legal competence, integrity, impartiality) — a non-judge
+    // judicial candidate has no governing record.
+    expect(prompt).toContain(
+      "Substantive means it gives a voter meaningful evidence about the candidate's fitness, competence, integrity, priorities, or governing record"
+    );
   });
 
   it("states officeholder status as fact when has_held_public_office is true", () => {
@@ -204,6 +213,12 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     );
     expect(prompt).not.toContain("If the candidate holds or has EVER held public office");
     expect(prompt).not.toContain("major votes and sponsored legislation");
+    // The substantive definition must stay compatible with this mode: a
+    // never-held candidate has no governing record, so the definition must
+    // reach fitness/competence/integrity evidence, not governance alone.
+    expect(prompt).toContain(
+      "Substantive means it gives a voter meaningful evidence about the candidate's fitness, competence, integrity, priorities, or governing record"
+    );
   });
 
   it("keeps the self-decide rule only when has_held_public_office is unknown", () => {
