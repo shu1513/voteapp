@@ -131,6 +131,9 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
       "- Keep descriptions neutral and factual, built on substance: say what happened, what it concerned, and the candidate's role or action — not just a procedural label (item/amendment numbers, vendor legal names) — and never add substance the source does not state. Keep vote tallies."
     );
     expect(prompt).toContain("There is no target number of records.");
+    expect(prompt).toContain(
+      "Substantive means it tells a voter something about how the candidate governs: skip routine administrative items (minutes approvals, small routine contracts, ceremonial resolutions) even when the vote was split, unless the candidate's vote or role there genuinely reveals a priority or stance."
+    );
     expect(prompt).toContain("Include both favorable and unfavorable records when they exist");
     expect(prompt).not.toContain("Do not include rumors or unverified accusations.");
     expect(prompt).not.toContain("Starting reference URLs");
