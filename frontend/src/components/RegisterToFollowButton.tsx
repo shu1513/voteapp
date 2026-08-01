@@ -48,7 +48,7 @@ export function RegisterToFollowButton({ candidateName, size = "md" }: RegisterT
               </button>
             </div>
             <p className="mt-2 text-sm text-ink">
-              Register for free to get updates about this candidate.
+              Get a monthly update on {candidateName} with a free account.
             </p>
             <div className="mt-4 flex items-center justify-end gap-3">
               <Link
@@ -61,7 +61,7 @@ export function RegisterToFollowButton({ candidateName, size = "md" }: RegisterT
                 to={`/register?next=${next}`}
                 className="rounded-lg bg-rausch px-4 py-2 text-sm font-semibold text-white hover:bg-rausch-dark"
               >
-                Register for free
+                Sign up
               </Link>
             </div>
           </DialogPanel>
