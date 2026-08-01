@@ -77,6 +77,7 @@ import { updateAuthenticatedAddressDistricts } from "../pipeline/users/userAddre
 import { createContentReport } from "../pipeline/reports/contentReports.js";
 import { listUserCandidateFollows, setUserCandidateFollow } from "../pipeline/users/userCandidateFollows.js";
 import { listUserElectionChoices, setUserElectionChoice } from "../pipeline/users/userElectionChoices.js";
+import { getOrCreateUserPickCardShare, lookupPublicPickCard } from "../pipeline/users/userPickCardShares.js";
 import { initializeUserDistricts } from "../pipeline/users/userDistrictInitializer.js";
 import { listUserDistrictIds } from "../pipeline/users/userDistrictReader.js";
 import { replaceUserDistricts } from "../pipeline/users/userDistrictReplacer.js";
@@ -569,6 +570,9 @@ async function main(): Promise<void> {
     setAuthenticatedCandidateFollow: (userId, input) => setUserCandidateFollow(pool, userId, input),
     listAuthenticatedElectionChoices: (userId) => listUserElectionChoices(pool, userId),
     setAuthenticatedElectionChoice: (userId, input) => setUserElectionChoice(pool, userId, input),
+    createAuthenticatedPickCardShare: (userId, electionDate) =>
+      getOrCreateUserPickCardShare(pool, userId, electionDate),
+    lookupPublicPickCard: (token) => lookupPublicPickCard(pool, token),
     // [ballot-personalized-ordering]
     getAuthenticatedBallotPreferences: (userId) => getUserBallotPreferences(pool, userId),
     setAuthenticatedBallotPreferences: (userId, preferences) => setUserBallotPreferences(pool, userId, preferences),

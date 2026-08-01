@@ -63,8 +63,8 @@ function AccountNav() {
         <Link to="/me/ballot" className="text-ink-soft hover:text-ink">
           My Elections
         </Link>
-        <Link to="/me/follows" className="text-ink-soft hover:text-ink">
-          My Candidates
+        <Link to="/me/picks" className="text-ink-soft hover:text-ink">
+          My Picks
         </Link>
         <Link to="/me/settings" className="text-ink-soft hover:text-ink">
           Settings
@@ -84,8 +84,8 @@ function AccountNav() {
             </Link>
           </MenuItem>
           <MenuItem>
-            <Link to="/me/follows" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
-              My Candidates
+            <Link to="/me/picks" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
+              My Picks
             </Link>
           </MenuItem>
           <MenuItem>

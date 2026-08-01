@@ -47,6 +47,10 @@ import {
   ME_BALLOT_PREFERENCES_PATH,
   ME_CANDIDATE_FOLLOWS_PATH,
   ME_ELECTION_CHOICES_PATH,
+  ME_PICK_CARD_SHARES_PATH,
+  isPickCardPath,
+  parsePickCardToken,
+  parsePickCardShareBodyValue,
   ME_DISTRICTS_INITIALIZE_PATH,
   ME_EMAIL_PREFERENCES_PATH,
   ME_PUSH_TOKENS_PATH,
@@ -134,6 +138,8 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_BALLOT_PREFERENCES_PATH ||
     pathname === ME_CANDIDATE_FOLLOWS_PATH ||
     pathname === ME_ELECTION_CHOICES_PATH ||
+    pathname === ME_PICK_CARD_SHARES_PATH ||
+    isPickCardPath(pathname) ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
     pathname === ME_EMAIL_PREFERENCES_PATH ||
     pathname === ME_PUSH_TOKENS_PATH ||
@@ -420,6 +426,7 @@ function createJsonBodyParser() {
           request.path === ME_EMAIL_PATH ||
           request.path === ME_PASSWORD_PATH ||
           request.path === ME_PUSH_TOKENS_PATH ||
+          request.path === ME_PICK_CARD_SHARES_PATH ||
           request.path === ME_TERMS_ACCEPTANCE_PATH)) ||
       (request.method === "DELETE" && (request.path === ME_PATH || request.path === ME_PUSH_TOKENS_PATH)) ||
       (request.method === "PUT" &&
@@ -1270,6 +1277,67 @@ async function dispatchApiRequest(
     const payload = parseElectionChoiceBodyValue(request.body);
     const result = await options.setAuthenticatedElectionChoice(userId, payload);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_PICK_CARD_SHARES_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/me/pick-card-shares", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    // Same auth posture as election choices: session required, no
+    // verification gate — sharing your own picks sends no notifications.
+    const userId = await resolveAuthenticatedUserId(options, request);
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+    if (!options.createAuthenticatedPickCardShare) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Pick card share storage is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const payload = parsePickCardShareBodyValue(request.body);
+    const result = await options.createAuthenticatedPickCardShare(userId, payload.electionDate);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (isPickCardPath(url.pathname)) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET /api/pick-cards/:token", {
+          ...corsHeaders,
+          allow: "GET",
+        })
+      );
+      return;
+    }
+    if (!options.lookupPublicPickCard) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Pick card lookup is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const token = parsePickCardToken(url);
+    const card = await options.lookupPublicPickCard(token);
+    if (!card) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Pick card not found", corsHeaders));
+      return;
+    }
+    sendApiResponse(response, toJsonResponse(200, card, corsHeaders));
     return;
   }
 

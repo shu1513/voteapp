@@ -5,6 +5,7 @@ import { AuthenticatedAddressDistrictUpdateError } from "../pipeline/users/userA
 import { ContentReportError } from "../pipeline/reports/contentReports.js";
 import { UserCandidateFollowsError } from "../pipeline/users/userCandidateFollows.js";
 import { UserElectionChoicesError } from "../pipeline/users/userElectionChoices.js";
+import { UserPickCardSharesError } from "../pipeline/users/userPickCardShares.js";
 import { InitializeUserDistrictsError } from "../pipeline/users/userDistrictInitializer.js";
 import { UserDistrictReaderError } from "../pipeline/users/userDistrictReader.js";
 import { ReplaceUserDistrictsError } from "../pipeline/users/userDistrictReplacer.js";
@@ -108,6 +109,14 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
     if (error.code === "candidacy_not_available") {
       return { statusCode: 404, code: "not_found", message: "Candidate is not an active candidate in this election" };
     }
+    return { statusCode: 400, code: "invalid_request", message: error.message };
+  }
+  if (error instanceof UserPickCardSharesError) {
+    if (error.code === "invalid_user_id" || error.code === "user_not_found") {
+      return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
+    }
+    // invalid_election_date and no_picks_to_share are both caller problems
+    // with self-explanatory writer messages.
     return { statusCode: 400, code: "invalid_request", message: error.message };
   }
   // [ballot-personalized-ordering]

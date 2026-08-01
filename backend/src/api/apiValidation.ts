@@ -57,6 +57,12 @@ export const ME_CANDIDATE_FOLLOWS_PATH = "/api/me/candidate-follows";
 // verification-gated: a choice is private planning, it triggers no
 // notifications, so a registered session is enough.
 export const ME_ELECTION_CHOICES_PATH = "/api/me/election-choices";
+// POST mints (or returns) the share link for one date's pick card. Same
+// auth posture as election choices: session required, no verification gate.
+export const ME_PICK_CARD_SHARES_PATH = "/api/me/pick-card-shares";
+// Public tokenized read of a shared pick card; no session auth — the token
+// IS the authorization (see user_pick_card_shares migration).
+export const PICK_CARD_PATH_PREFIX = "/api/pick-cards/";
 export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
 export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferences";
 // [ballot-personalized-ordering]
@@ -908,6 +914,47 @@ export function parseCandidateElectionFinancePath(url: URL): { electionId: strin
     throw new TypeError(`Candidate election finance path contains invalid candidate UUID: ${candidateId}`);
   }
   return { electionId, candidateId };
+}
+
+export function isPickCardPath(pathname: string): boolean {
+  return pathname.startsWith(PICK_CARD_PATH_PREFIX);
+}
+
+// Share tokens are 32 random bytes base64url-encoded (43 chars today); the
+// bounds leave room for future length changes without admitting junk. Not a
+// UUID check — the token is an opaque capability, not a row id.
+const PICK_CARD_TOKEN_PATTERN = /^[A-Za-z0-9_-]{20,128}$/;
+
+export function parsePickCardToken(url: URL): string {
+  const token = url.pathname.slice(PICK_CARD_PATH_PREFIX.length).trim();
+  if (token.length === 0 || token.includes("/")) {
+    throw new TypeError("Pick card path must be /api/pick-cards/:token");
+  }
+  if (!PICK_CARD_TOKEN_PATTERN.test(token)) {
+    throw new TypeError("Pick card path contains an invalid token");
+  }
+  return token;
+}
+
+export type PickCardSharePayload = {
+  electionDate: string;
+};
+
+const PICK_CARD_ELECTION_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+export function parsePickCardShareBodyValue(parsed: unknown): PickCardSharePayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+  const payload = parsed as { election_date?: unknown };
+  if (typeof payload.election_date !== "string") {
+    throw new TypeError("Request body must include string field: election_date");
+  }
+  const electionDate = payload.election_date.trim();
+  if (!PICK_CARD_ELECTION_DATE_PATTERN.test(electionDate) || Number.isNaN(Date.parse(electionDate))) {
+    throw new TypeError(`election_date must be a valid YYYY-MM-DD date: ${electionDate}`);
+  }
+  return { electionDate };
 }
 
 export function parseElectionId(url: URL): string {
