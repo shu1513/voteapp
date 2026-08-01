@@ -70,9 +70,13 @@ const PURE_CANDIDACY_PATTERNS = [
   // Election-office qualification language ("qualified by fee on June 8,
   // 2026", "Division of Elections recorded X as the … candidate", "remains
   // active on the general-election candidate list") is exactly the
-  // "election-office listing" the prompt calls roster evidence.
+  // "election-office listing" the prompt calls roster evidence. "candidate"
+  // must head its noun phrase — followed by for/in/on, punctuation, or the
+  // end — because as an attributive adjective it describes something else
+  // entirely: "the ethics commission recorded the payment as an illegal
+  // candidate contribution" is an enforcement record, not a candidacy row.
   /\bqualified\s+by\s+(?:fee|petition)\b/i,
-  /\brecorded\b[^.;]{0,60}\bas\b[^.;]{0,40}\bcandidate\b/i,
+  /\brecorded\b[^.;]{0,60}\bas\b[^.;]{0,40}\bcandidate\b(?=\s*(?:for\b|in\b|on\b|[.;,)]|$))/i,
   /\bcandidate\s+list\b/i,
 ] as const;
 

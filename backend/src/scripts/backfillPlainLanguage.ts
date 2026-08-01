@@ -68,28 +68,22 @@ async function readCandidateIds(): Promise<readonly string[] | undefined> {
  * checks, staleness guard, record_identity_key recompute, audit row — when no
  * AI provider is usable. The verifier is skipped (see manualAttestation).
  *
- * Keyed on originalText rather than targetId because the rewrite dependency
- * receives the text, not the row id. That is also the safety property: if the
- * stored text moved since the file was written, nothing matches and the run
- * fails loudly instead of pasting a rewrite onto changed content. targetId is
- * carried for traceability only.
+ * Keyed on targetId, with originalText required to EQUAL the stored text at
+ * apply time: the id addresses the row (two rows can carry identical text,
+ * and a text-keyed map would silently hand both the same replacement), and
+ * the text equality is the staleness guard — if the stored text moved since
+ * the file was written, the run fails loudly instead of pasting a rewrite
+ * onto content nobody reviewed.
  */
-async function readManualRewrites(): Promise<
-  { byOriginal: Map<string, string>; targetIds: string[] } | undefined
-> {
-  const index = process.argv.indexOf("--rewrites-file");
-  if (index === -1) {
-    return undefined;
-  }
-  const path = process.argv[index + 1];
-  if (!path || path.startsWith("--")) {
-    throw new Error("Missing value for --rewrites-file");
-  }
-  const parsed: unknown = JSON.parse(await readFile(path, "utf8"));
+export function parseManualRewritesFile(raw: string): {
+  byTargetId: Map<string, { originalText: string; rewrittenText: string }>;
+  targetIds: string[];
+} {
+  const parsed: unknown = JSON.parse(raw);
   if (!Array.isArray(parsed)) {
     throw new Error("rewrites file must contain a JSON array");
   }
-  const byOriginal = new Map<string, string>();
+  const byTargetId = new Map<string, { originalText: string; rewrittenText: string }>();
   const targetIds: string[] = [];
   parsed.forEach((entry, position) => {
     const { targetId, originalText, rewrittenText } = (entry ?? {}) as Record<string, unknown>;
@@ -102,10 +96,68 @@ async function readManualRewrites(): Promise<
     if (typeof rewrittenText !== "string" || rewrittenText.trim().length === 0) {
       throw new Error(`rewrites[${position}].rewrittenText must be a non-empty string`);
     }
-    byOriginal.set(originalText, rewrittenText.trim());
-    targetIds.push(targetId.trim());
+    const id = targetId.trim();
+    if (byTargetId.has(id)) {
+      throw new Error(`rewrites[${position}].targetId ${id} appears more than once in the file`);
+    }
+    byTargetId.set(id, { originalText, rewrittenText: rewrittenText.trim() });
+    targetIds.push(id);
   });
-  return { byOriginal, targetIds };
+  return { byTargetId, targetIds };
+}
+
+async function readManualRewrites(): Promise<ReturnType<typeof parseManualRewritesFile> | undefined> {
+  const index = process.argv.indexOf("--rewrites-file");
+  if (index === -1) {
+    return undefined;
+  }
+  const path = process.argv[index + 1];
+  if (!path || path.startsWith("--")) {
+    throw new Error("Missing value for --rewrites-file");
+  }
+  return parseManualRewritesFile(await readFile(path, "utf8"));
+}
+
+/**
+ * A mistyped or already-processed targetId loads no backfill target, so the
+ * run can end "successful" having applied nothing for that entry. Explain
+ * every unprocessed entry after the run: an existing audit row is a normal
+ * resume (that entry was applied earlier), anything else is an error the
+ * operator must see.
+ */
+async function reportUnmatchedRewriteEntries(
+  pool: Pool,
+  targetIds: readonly string[],
+  processed: number
+): Promise<boolean> {
+  if (processed === targetIds.length) {
+    return false;
+  }
+  const { rows } = await pool.query<{ id: string; in_audit: boolean; exists_live: boolean }>(
+    `SELECT ids.id::text AS id,
+            EXISTS (SELECT 1 FROM public.plain_language_rewrites r
+                     WHERE r.target_table = 'candidate_records' AND r.target_id = ids.id
+                       AND r.target_column = 'description') AS in_audit,
+            EXISTS (SELECT 1 FROM public.candidate_records cr
+                     WHERE cr.id = ids.id AND cr.retired_at IS NULL AND cr.description <> '') AS exists_live
+       FROM unnest($1::uuid[]) AS ids(id)`,
+    [[...targetIds]]
+  );
+  let hadError = false;
+  for (const row of rows) {
+    if (row.in_audit) {
+      continue; // applied or flagged in an earlier run — normal resume
+    }
+    if (!row.exists_live) {
+      hadError = true;
+      console.error(
+        `rewrites entry ${row.id}: no live candidate_records row (mistyped id, retired, or empty description); nothing was applied for it`
+      );
+    }
+    // Live rows with no audit row were processed (or halted) this run; the
+    // summary already accounts for them.
+  }
+  return hadError;
 }
 
 async function main(): Promise<void> {
@@ -136,14 +188,20 @@ async function main(): Promise<void> {
     const summary = await runPlainLanguageBackfill(pool, {
       rewrite: manualRewrites
         ? async (input) => {
-            const rewrittenText = manualRewrites.byOriginal.get(input.text);
-            if (rewrittenText === undefined) {
+            const entry = manualRewrites.byTargetId.get(input.targetId);
+            if (entry === undefined) {
               return {
                 ok: false as const,
-                reason: `no operator rewrite supplied for this target; stored text may have changed since the rewrites file was written: ${input.text.slice(0, 120)}`,
+                reason: `no operator rewrite supplied for target ${input.targetId}`,
               };
             }
-            return { ok: true as const, provider: "manual" as const, model: "manual-research", rewrittenText };
+            if (entry.originalText !== input.text) {
+              return {
+                ok: false as const,
+                reason: `stored text for target ${input.targetId} does not match the rewrites file's originalText; the row changed since the file was written — re-review before rewriting: ${input.text.slice(0, 120)}`,
+              };
+            }
+            return { ok: true as const, provider: "manual" as const, model: "manual-research", rewrittenText: entry.rewrittenText };
           }
         : rewriteToPlainLanguage,
       verify: verifyPlainLanguageRewrite,
@@ -159,12 +217,26 @@ async function main(): Promise<void> {
       filter,
     });
     console.log(JSON.stringify(summary, null, 2));
+    if (manualRewrites && !dryRun) {
+      const hadUnmatched = await reportUnmatchedRewriteEntries(
+        pool,
+        manualRewrites.targetIds,
+        summary.processed
+      );
+      if (hadUnmatched) {
+        process.exitCode = 1;
+      }
+    }
   } finally {
     await pool.end();
   }
 }
 
-main().catch((error) => {
-  console.error("plain-language backfill failed:", error);
-  process.exit(1);
-});
+// Entry guard so tests can import parseManualRewritesFile without running
+// the backfill (same pattern as the other manual:* scripts).
+if (process.argv[1] && process.argv[1].endsWith("backfillPlainLanguage.ts")) {
+  main().catch((error) => {
+    console.error("plain-language backfill failed:", error);
+    process.exit(1);
+  });
+}

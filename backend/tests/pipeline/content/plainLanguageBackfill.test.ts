@@ -79,6 +79,27 @@ describe("mechanicalCheckFailure", () => {
         "Sponsored SB 58, enacted on April 7, 2024, cutting 9 requirements for voters challenging rates."
       )
     ).toMatch(/introduced a number/);
+
+    // The ISO license is anchored to the date EXPRESSION, never granted
+    // corpus-wide: the day digit reused outside a date phrase is an invented
+    // number ("cutting 7 requirements" while the only 7 is in 2024-04-07).
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "Sponsored SB 58, enacted on 2024-04-07, simplifying the petition process for voters challenging rates.",
+        "Sponsored SB 58, enacted on April 7, 2024, cutting 7 requirements for voters challenging rates."
+      )
+    ).toMatch(/introduced a number/);
+
+    // A month-day pairing the original's ISO dates never carried is not
+    // licensed either — a shifted date must flag, not silently pass.
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "Sponsored SB 58, enacted on 2024-04-07, simplifying the petition process for voters challenging rates.",
+        "Sponsored SB 58, enacted on April 9, 2024. It simplified the petition process for voters challenging rates."
+      )
+    ).toMatch(/introduced a number/);
   });
 
   it("rejects an introduced number but allows dropped or reformatted numbers", () => {

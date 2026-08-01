@@ -219,6 +219,7 @@ async function main(): Promise<void> {
       const policy = evaluateCandidateRecordSourcePolicy({
         description: descriptionForPolicy,
         sourceUrl: row.source_url,
+        candidateDisplayName: context.candidateDisplayName,
       });
       if (!policy.ok) {
         console.warn(`repair source policy drop ${row.source_url}: ${policy.reason}`);
@@ -236,6 +237,7 @@ async function main(): Promise<void> {
       const finalUrlPolicy = evaluateCandidateRecordSourcePolicy({
         description: descriptionForPolicy,
         sourceUrl: verification.finalUrl,
+        candidateDisplayName: context.candidateDisplayName,
       });
       if (!finalUrlPolicy.ok) {
         console.warn(

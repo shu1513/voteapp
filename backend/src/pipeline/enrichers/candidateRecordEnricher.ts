@@ -675,9 +675,13 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     )
                       ? originalBad.record.description
                       : suggestion.description;
+                    // candidateDisplayName closes a laundering hole: without
+                    // it, a "repair" could replace a rejected campaign-site
+                    // URL with the same candidate's campaign site and pass.
                     const repairPolicy = evaluateCandidateRecordSourcePolicy({
                       description: repairDescriptionForPolicy,
                       sourceUrl: normalizedRepairUrl,
+                      candidateDisplayName: context.candidateDisplayName,
                     });
                     if (!repairPolicy.ok) {
                       unresolvedDetails.push({
@@ -707,6 +711,7 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     const repairFinalUrlPolicy = evaluateCandidateRecordSourcePolicy({
                       description: repairDescriptionForPolicy,
                       sourceUrl: verification.finalUrl,
+                      candidateDisplayName: context.candidateDisplayName,
                     });
                     if (!repairFinalUrlPolicy.ok) {
                       unresolvedDetails.push({

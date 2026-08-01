@@ -32,8 +32,16 @@ export type PlainLanguageBackfillTarget = {
 };
 
 export type PlainLanguageBackfillDeps = {
+  /**
+   * The input carries targetId alongside the prompt fields so an
+   * operator-authored rewrite implementation can address rows by id — two
+   * rows can share identical original text, and a text-keyed lookup would
+   * silently hand both the same replacement. Model-backed implementations
+   * (rewriteToPlainLanguage) accept the narrower prompt input and simply
+   * ignore the extra field.
+   */
   rewrite: (
-    input: PlainLanguageRewritePromptInput,
+    input: PlainLanguageRewritePromptInput & { targetId: string },
     config: PlainLanguageAiConfig
   ) => Promise<PlainLanguageRewriteResult>;
   /**
@@ -109,17 +117,49 @@ function extractNumberTokens(text: string): Set<string> {
   );
 }
 
-// An ISO date in the original ("2024-04-07") licenses its unpadded month and
-// day: the natural-language rewrite "April 7, 2024" tokenizes to "7", which
-// the padded original ("07") does not contain. Hit twice live; each workaround
-// cost a day of date precision ("in April 2024").
-function numberTokensLicensedByIsoDates(text: string): Set<string> {
-  const licensed = new Set<string>();
-  for (const match of text.matchAll(/\b(\d{4})-(\d{2})-(\d{2})\b/g)) {
-    licensed.add(String(Number(match[2])));
-    licensed.add(String(Number(match[3])));
+// An ISO date in the original ("2024-04-07") licenses the natural-language
+// form of THAT date: the rewrite "April 7, 2024" tokenizes to "7", which the
+// padded original ("07") does not contain. Hit twice live; each workaround
+// cost a day of date precision ("in April 2024"). The license is anchored to
+// the date expression itself — the matched month-day(-year) phrase is removed
+// before number extraction — never granted corpus-wide: an earlier global
+// version let "2024-04-07" excuse an invented "cutting 7 requirements"
+// anywhere in the rewrite, which matters most for operator-authored rewrites
+// because they skip the model verifier.
+const MONTH_NUMBER_BY_NAME: Record<string, number> = {
+  january: 1, february: 2, march: 3, april: 4, may: 5, june: 6, july: 7,
+  august: 8, september: 9, october: 10, november: 11, december: 12,
+  jan: 1, feb: 2, mar: 3, apr: 4, jun: 6, jul: 7, aug: 8, sep: 9, sept: 9,
+  oct: 10, nov: 11, dec: 12,
+};
+
+const NATURAL_DATE_PATTERN =
+  /\b(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?\s+(\d{1,2})(?:st|nd|rd|th)?(?:,\s*(\d{4}))?\b/gi;
+
+function stripDateExpressionsLicensedByOriginal(originalText: string, rewrittenText: string): string {
+  const monthDayYear = new Set<string>();
+  const monthDay = new Set<string>();
+  for (const match of originalText.matchAll(/\b(\d{4})-(\d{2})-(\d{2})\b/g)) {
+    monthDayYear.add(`${Number(match[2])}|${Number(match[3])}|${match[1]}`);
+    monthDay.add(`${Number(match[2])}|${Number(match[3])}`);
   }
-  return licensed;
+  if (monthDay.size === 0) {
+    return rewrittenText;
+  }
+  return rewrittenText.replace(NATURAL_DATE_PATTERN, (match, monthWord: string, dayDigits: string, yearDigits?: string) => {
+    const month = MONTH_NUMBER_BY_NAME[monthWord.toLowerCase()];
+    if (!month) {
+      return match;
+    }
+    const day = Number(dayDigits);
+    const licensed =
+      yearDigits === undefined
+        ? monthDay.has(`${month}|${day}`)
+        : monthDayYear.has(`${month}|${day}|${yearDigits}`);
+    // Keeping the month word preserves surrounding sentence structure; only
+    // the digits the ISO original cannot token-match are removed.
+    return licensed ? monthWord : match;
+  });
 }
 
 // A plain-language rewrite legitimately turns number WORDS into digits
@@ -243,9 +283,9 @@ export function mechanicalCheckFailure(
   // verifier owns dropped-content judgment for every kind.
   const originalNumbers = extractNumberTokens(originalText);
   const licensedByWords = numberTokensLicensedByWords(originalText);
-  const licensedByDates = numberTokensLicensedByIsoDates(originalText);
-  for (const token of extractNumberTokens(rewrittenText)) {
-    if (!originalNumbers.has(token) && !licensedByWords.has(token) && !licensedByDates.has(token)) {
+  const rewrittenForNumberCheck = stripDateExpressionsLicensedByOriginal(originalText, rewrittenText);
+  for (const token of extractNumberTokens(rewrittenForNumberCheck)) {
+    if (!originalNumbers.has(token) && !licensedByWords.has(token)) {
       return `rewrite introduced a number not in the original: ${token}`;
     }
   }
@@ -484,6 +524,7 @@ export async function runPlainLanguageBackfill(
       {
         kind: target.kind,
         text: target.originalText,
+        targetId: target.targetId,
         ...(target.contestContext ? { contestContext: target.contestContext } : {}),
       },
       deps.aiConfig

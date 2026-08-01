@@ -592,5 +592,62 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
         true
       );
     }
+
+    // A selector-style query routes an index path to a specific item on many
+    // CMSes — those are detail pages, not indexes. Navigation-only queries
+    // (paging, sorting, date windows) keep the page an index.
+    for (const url of [
+      "https://www.cityofexample.gov/calendar?event=123",
+      "https://council.example.org/meetings?id=42",
+    ]) {
+      expect(evaluateCandidateRecordSourcePolicy({ description: "Voted no on the item.", sourceUrl: url }).ok).toBe(
+        true
+      );
+    }
+    for (const url of [
+      "https://www.cityofexample.gov/minutes?page=2",
+      "https://council.example.org/meetings?year=2026&sort=desc",
+      // MeetingInformation.aspx stays rejected even with a selector: the live
+      // case carried ?Id=67 and was still a JavaScript nav shell.
+      "https://laccd.community.diligentoneplatform.com/Portal/MeetingInformation.aspx?Id=99",
+    ]) {
+      expect(evaluateCandidateRecordSourcePolicy({ description: "Voted no on the item.", sourceUrl: url }).ok).toBe(
+        false
+      );
+    }
+  });
+
+  it("gates the mid-label surname+for branch on an office/district/state tail", () => {
+    // True campaign compositions — nickname or initial hides the name from
+    // front consumption, but the tail is an office or district.
+    for (const [sourceUrl, candidateDisplayName] of [
+      ["https://www.billmoskalforhd80.com", "William Moskal"],
+      ["https://www.ashawforsenate.com/about", "Abraham Shaw"],
+    ] as const) {
+      expect(
+        evaluateCandidateRecordSourcePolicy({
+          description: "Voted for the annual budget.",
+          sourceUrl,
+          candidateDisplayName,
+        }).ok,
+        `${sourceUrl} should be rejected for ${candidateDisplayName}`
+      ).toBe(false);
+    }
+
+    // Substring coincidences: the surname appears mid-word and the "for" tail
+    // is not an office — independent organizations, not campaign sites.
+    for (const [sourceUrl, candidateDisplayName] of [
+      ["https://stanfordfordemocracy.org/report", "Gerald Ford"], // "ford" inside "stanford"
+      ["https://www.stanfordforum.org/events", "Gerald Ford"], // tail "um" is no office
+    ] as const) {
+      expect(
+        evaluateCandidateRecordSourcePolicy({
+          description: "Voted for the annual budget.",
+          sourceUrl,
+          candidateDisplayName,
+        }).ok,
+        `${sourceUrl} must stay acceptable for ${candidateDisplayName}`
+      ).toBe(true);
+    }
   });
 });

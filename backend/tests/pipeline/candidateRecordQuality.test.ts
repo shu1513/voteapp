@@ -141,6 +141,16 @@ describe("candidate record quality", () => {
       })
     ).toEqual({ classification: "substantive", reason: "actual_record_action" });
 
+    // Attributive "candidate" describes another noun — "candidate
+    // contribution" is finance-enforcement language, not a candidacy fact.
+    // The pattern requires "candidate" to head its noun phrase.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "The ethics commission recorded the payment as an illegal candidate contribution.",
+      }).reason
+    ).not.toBe("pure_candidacy");
+
     // A primary win alongside a real completed action is rescued by the
     // substantive-verbs-first ordering.
     expect(

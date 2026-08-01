@@ -572,19 +572,41 @@ export function matchesDamagingClaimPattern(description: string): boolean {
 // IS the index is wrong on every tier, .gov included. Path-end anchored so a
 // real document under a deeper path ("/minutes/2024-06-12.pdf") never matches.
 // Verified against the full live corpus before adding: zero legitimate rows.
-const INDEX_PAGE_PATH_PATTERNS = [
-  /\/MeetingInformation\.aspx$/i,
-  /^\/(?:[^?#]*\/)?(?:meetings?|agendas?|calendar|minutes)\/?$/i,
-];
+// MeetingInformation.aspx is query-immune on purpose: the live case WAS
+// `Portal/MeetingInformation.aspx?Id=67` — the Id selects nothing server-side,
+// the page is a JavaScript nav shell either way. The generic patterns are
+// path-only index names, where a query CAN select a real item.
+const INDEX_PAGE_ALWAYS_PATTERNS = [/\/MeetingInformation\.aspx$/i];
+const INDEX_PAGE_BARE_PATH_PATTERNS = [/^\/(?:[^?#]*\/)?(?:meetings?|agendas?|calendar|minutes)\/?$/i];
+
+// Query keys that only reshape an index (paging, sorting, date windows) — a
+// query made solely of these still cites the listing, not an item.
+const INDEX_PAGE_NAVIGATION_QUERY_KEYS = new Set([
+  "page", "p", "sort", "order", "dir", "view", "lang", "year", "month", "day",
+]);
 
 export function isIndexPageSourcePath(sourceUrl: string): boolean {
-  let pathname: string;
+  let url: URL;
   try {
-    pathname = new URL(sourceUrl).pathname;
+    url = new URL(sourceUrl);
   } catch {
     return false; // unparseable URLs are the schema layer's problem
   }
-  return INDEX_PAGE_PATH_PATTERNS.some((pattern) => pattern.test(pathname));
+  if (INDEX_PAGE_ALWAYS_PATTERNS.some((pattern) => pattern.test(url.pathname))) {
+    return true;
+  }
+  if (!INDEX_PAGE_BARE_PATH_PATTERNS.some((pattern) => pattern.test(url.pathname))) {
+    return false;
+  }
+  // A selector-style query on an index path ("/calendar?event=123") routes to
+  // a specific item on many CMSes; rejecting it would block legitimate dated
+  // detail pages. Navigation-only queries keep the page an index.
+  for (const [key, value] of url.searchParams) {
+    if (value.trim().length > 0 && !INDEX_PAGE_NAVIGATION_QUERY_KEYS.has(key.toLowerCase())) {
+      return false;
+    }
+  }
+  return true;
 }
 
 // Campaign/personal-site prefixes seen across the 307-row live incident.
@@ -602,6 +624,25 @@ const OWNED_HOST_PREFIXES = [
 ] as const;
 
 const NAME_SUFFIX_TOKENS = new Set(["jr", "sr", "ii", "iii", "iv", "v"]);
+
+// What may follow "<surname>for" in the MID-LABEL branch below for the label
+// to read as a campaign composition: a district number or code ("hd80",
+// "d12"), an office word ("senate", "prosecutor"), or a state. The front-
+// anchored branches need no such gate — name tokens consumed from position 0
+// are already a strong signal — but the mid-label branch matches the surname
+// anywhere, and an unconstrained tail turned substring coincidences into
+// hits: "stanfordfordemocracy.org" contains "ford"+"for" for a candidate
+// named Ford, yet "democracy" is no office. Whole-word office/place tails
+// only; place names beyond states are deliberately absent (a place-name tail
+// with a mid-label surname is not enough evidence of ownership).
+const OWNED_HOST_MIDLABEL_TAIL_PATTERN =
+  /^(?:\d|(?:hd|hr|sd|ld|ad|cd|d)\d|(?:house|senate|congress|assembly|legislature|statehouse|staterep|statesenate|mayor|council|alder|trustee|school|board|judge|justice|sheriff|clerk|treasurer|auditor|assessor|coroner|recorder|commissioner|supervisor|governor|prosecutor|attorney|secretary|delegate|regent|state|county|city|district|ward|alabama|alaska|arizona|arkansas|california|colorado|connecticut|delaware|florida|georgia|hawaii|idaho|illinois|indiana|iowa|kansas|kentucky|louisiana|maine|maryland|massachusetts|michigan|minnesota|mississippi|missouri|montana|nebraska|nevada|newhampshire|newjersey|newmexico|newyork|northcarolina|northdakota|ohio|oklahoma|oregon|pennsylvania|rhodeisland|southcarolina|southdakota|tennessee|texas|utah|vermont|virginia|washington|westvirginia|wisconsin|wyoming))/;
+const OWNED_HOST_MIDLABEL_TAIL_EXACT = new Set([
+  "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga", "hi", "id", "il", "in", "ia",
+  "ks", "ky", "la", "me", "md", "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj",
+  "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc", "sd", "tn", "tx", "ut", "vt",
+  "va", "wa", "wv", "wi", "wy",
+]);
 
 function candidateNameTokens(displayName: string): string[] {
   return displayName
@@ -635,7 +676,9 @@ function consumeNameTokens(label: string, tokens: readonly string[]): { consumed
  * standing source policy forbids but nothing detected. Matching is
  * composition-based (exact concatenations of name tokens, campaign prefixes,
  * and "for<place>" tails), never bare substring scans: "Sara Deen" must not
- * flag aberdeennews.com, and "Gerald Ford" must not flag fordfoundation.org.
+ * flag aberdeennews.com, and "Gerald Ford" must not flag fordfoundation.org
+ * or stanfordfordemocracy.org (the mid-label branch gates its tail for the
+ * same reason).
  * Two live misses shaped the token rules: electscott.com used the FIRST name,
  * and `Mooney Jr.` broke a last-token-only match on the suffix.
  */
@@ -670,15 +713,20 @@ export function isCandidateOwnedHostname(hostname: string, candidateDisplayName:
     return true;
   }
 
-  // Mid-label surname + "for" tail: billmoskalforhd80.com for "William
-  // Moskal" — the nickname "bill" is not a display-name token, so front
-  // consumption never starts. A token of 4+ characters immediately followed
-  // by "for" is still unmistakably a campaign composition.
+  // Mid-label surname + "for" + office/district/state tail:
+  // billmoskalforhd80.com for "William Moskal" — the nickname "bill" is not a
+  // display-name token, so front consumption never starts. Because the
+  // surname may sit anywhere in the label here, the "for" tail must itself
+  // read as a campaign composition (see OWNED_HOST_MIDLABEL_TAIL_PATTERN);
+  // "stanfordfordemocracy.org" stays clean for a candidate named Ford.
   for (const token of tokens) {
     if (token.length >= 4) {
       const at = label.indexOf(token);
       if (at >= 0 && label.slice(at + token.length).startsWith("for")) {
-        return true;
+        const tail = label.slice(at + token.length + "for".length);
+        if (OWNED_HOST_MIDLABEL_TAIL_PATTERN.test(tail) || OWNED_HOST_MIDLABEL_TAIL_EXACT.has(tail)) {
+          return true;
+        }
       }
     }
   }
