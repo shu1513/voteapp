@@ -98,13 +98,21 @@ const FUTURE_PROMISE_PATTERNS = [
   // completed-action verbs are matched first, so a description that pairs a
   // real action with its promise is still kept.
   //
-  // The determiner lookbehind excludes the ATTRIBUTIVE participle — "the
-  // promised service", "his promised reforms" — where the promise belongs to
-  // someone else entirely: a timeshare-fraud suit described as "without
-  // delivering the promised service" was rejected as the candidate's own
-  // future promise. A verb use never directly follows a determiner, so the
-  // exclusion cannot hide one.
-  /(?<!\b(?:a|an|the|his|her|its|their|our)\s)\b(?:promised|pledged|vowed)\b/i,
+  // The lookbehinds exclude the ATTRIBUTIVE participle where the promise
+  // demonstrably belongs to someone else: a timeshare-fraud suit described as
+  // "without delivering the promised service" was rejected as the candidate's
+  // own future promise. Articles ("a/an/the promised X"), "its" (a person
+  // cannot be an "its", so the possessor is always an org), and hyphenated
+  // compound modifiers ("long-promised reforms") are safe — a verb use never
+  // follows any of them.
+  //
+  // PERSONAL possessives are deliberately NOT excluded: descriptions are
+  // third-person about the candidate, so "outlined his promised tax cuts" is
+  // usually the candidate's own promise ("their" includes singular-they
+  // candidates; "my/your" would be the speaker's own promise in a quote).
+  // "that promised X" also stays rejected — "that" is indistinguishable from
+  // the relativizer in "a company that promised refunds", a real verb use.
+  /(?<!\b(?:a|an|the|its)\s)(?<!\w-)\b(?:promised|pledged|vowed)\b/i,
   /\b(?:says|said)\s+(?:he|she|they)\s+(?:will|would)\b/i,
   /\b(?:will|would)\s+(?:fight|work|cut|raise|support|oppose|create|expand|reduce|protect)\b/i,
 ] as const;

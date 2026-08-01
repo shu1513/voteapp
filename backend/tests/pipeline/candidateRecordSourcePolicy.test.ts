@@ -358,9 +358,37 @@ describe("matchesDamagingClaimPattern", () => {
     const stillDamaging = [
       "Was accused of sexual assault by a former staffer.",
       "While working as a sexual assault nurse examiner, faced sexual misconduct allegations.",
+      // The credential exemption must not swallow a pronoun-object
+      // accusation — the base pattern only matched this sentence's job
+      // title by accident, so the accusation itself needs its own pattern.
+      "A sexual assault nurse examiner accused him of misconduct.",
     ];
     for (const description of stillDamaging) {
       expect(matchesDamagingClaimPattern(description), description).toBe(true);
+    }
+  });
+
+  it("matches a pronoun-object accusation and keeps the candidate-as-accuser exemption", () => {
+    // Pronoun object = the candidate; no prior pattern covered "accused
+    // <pronoun> of" (\baccused\s+of\b needs adjacency), so these passed as
+    // non-damaging even without any other trigger word.
+    const damaging = [
+      "A former aide accused him of misconduct.",
+      "Accused her of diverting funds during the audit.",
+      "Colleagues accused them of harassment in 2022.",
+      // The dishonesty exemption's word-gap must not clear a pronoun object.
+      "A watchdog group accused him of lying to voters about the budget.",
+    ];
+    for (const description of damaging) {
+      expect(matchesDamagingClaimPattern(description), description).toBe(true);
+    }
+
+    const accuser = [
+      "Accused national news organizations of lying to Americans about Crimea.",
+      "Accused her opponent of lying about endorsements.",
+    ];
+    for (const description of accuser) {
+      expect(matchesDamagingClaimPattern(description), description).toBe(false);
     }
   });
 
