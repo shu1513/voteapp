@@ -539,6 +539,14 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
       ["https://www.vote411.org/ballot", "Sara Hernandez"], // listed civic domain
       ["https://justfacts.votesmart.org/candidate/1", "William Smart"], // listed civic domain
       ["https://smalltownweekly.com/news", "Small Town"],
+      // Front-anchored prefix coincidences: the name token starts the label
+      // and "for" continues an unrelated word. The tail gate must hold on
+      // the FRONT branch too, not just mid-label.
+      ["https://www.hartfordcourant.com/politics/x", "Blake Hart"], // hart|ford…
+      ["https://californiainsider.com/story", "Cali Binks"], // cali|fornia…
+      ["https://marchforourlives.org/about", "Tom March"], // "for our lives" is a cause, not an office
+      ["https://fosterforward.org/programs", "Bill Foster"], // foster|forward
+      ["https://johnhartford.com/bio", "John Hart"], // john+hart|ford — two tokens consumed
     ];
     for (const [sourceUrl, candidateDisplayName] of independent) {
       const result = evaluateCandidateRecordSourcePolicy({
@@ -575,6 +583,7 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
       "https://www.cityofexample.gov/meetings",
       "https://council.example.org/agendas/",
       "https://borough.example.gov/calendar",
+      "https://borough.example.gov/calendars",
       "https://city.example.com/minutes?year=2026",
     ]) {
       expect(evaluateCandidateRecordSourcePolicy({ description: "Voted no on the item.", sourceUrl: url }).ok).toBe(
@@ -582,11 +591,15 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
       );
     }
 
-    // Deeper paths under those segments are real documents and must pass.
+    // Deeper paths under those segments are real documents and must pass —
+    // and a DATE-bearing segment anywhere in the path addresses one meeting's
+    // materials even when the path still ENDS in an index word.
     for (const url of [
       "https://www.cityofexample.gov/minutes/2024-06-12.pdf",
       "https://council.example.org/agendas/2026/agenda-packet-06-12.pdf",
       "https://laccd.community.diligentoneplatform.com/document/4969",
+      "https://city.example.gov/2024/06/12/minutes",
+      "https://city.example.gov/city-council/2024-06-12/agenda",
     ]) {
       expect(evaluateCandidateRecordSourcePolicy({ description: "Voted no on the item.", sourceUrl: url }).ok).toBe(
         true
@@ -621,12 +634,19 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
     }
   });
 
-  it("gates the mid-label surname+for branch on an office/district/state tail", () => {
+  it("gates every surname+for branch on an office/district/state tail", () => {
     // True campaign compositions — nickname or initial hides the name from
-    // front consumption, but the tail is an office or district.
+    // front consumption, but the tail is an office, district, state, place,
+    // or campaign-cause word from the corpus census.
     for (const [sourceUrl, candidateDisplayName] of [
       ["https://www.billmoskalforhd80.com", "William Moskal"],
       ["https://www.ashawforsenate.com/about", "Abraham Shaw"],
+      ["https://www.leslyeforwestchester.com", "Leslye A. Oquendo-Thomas"], // curated place
+      ["https://www.frankforchange.com", "Frank William Collige"], // campaign-cause word
+      ["https://waynerogersforalsecretaryofstate.com", "Wayne Rogers"], // state abbrev + office compound
+      ["https://www.cooleyfor35.com", "Jeff Cooley"], // bare district number
+      ["https://www.millerforjacksoncounty.com", "Tony Miller"], // <place>county composition
+      ["https://www.billmoskalforhd80.co.uk", "William Moskal"], // multi-part TLD
     ] as const) {
       expect(
         evaluateCandidateRecordSourcePolicy({

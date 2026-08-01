@@ -59,6 +59,36 @@ describe("unretireOneRecord", () => {
     });
   });
 
+  it("warns — without blocking — when the restored content would fail the current quality gate", async () => {
+    // Unretirement is the operator's overrule of the detector, so the
+    // detector must never gate it; but restoring a row the write-time gate
+    // would reject deserves a visible advisory in the report.
+    const candidacyRow = {
+      ...RETIRED_ROW,
+      description: "Michele Clark filed as the Democratic candidate for Illinois Senate District 33.",
+    };
+    const outcome = await unretireOneRecord(
+      { recordId: "rec-1", reason: UNRETIRE_REASON },
+      makeDeps({ loadRecord: async () => ({ ...candidacyRow }) }),
+      { apply: true }
+    );
+    expect(outcome.status).toBe("unretired");
+    if (outcome.status === "unretired") {
+      expect(outcome.qualityWarning).toMatch(/quality gate/);
+    }
+
+    // A clean row carries no warning.
+    const clean = await unretireOneRecord(
+      { recordId: "rec-1", reason: UNRETIRE_REASON },
+      makeDeps({ loadRecord: async () => ({ ...RETIRED_ROW }) }),
+      { apply: true }
+    );
+    expect(clean.status).toBe("unretired");
+    if (clean.status === "unretired") {
+      expect(clean.qualityWarning).toBeUndefined();
+    }
+  });
+
   it("skips rows that are not retired", async () => {
     const applyUnretirement = vi.fn(async () => 1);
     const outcome = await unretireOneRecord(

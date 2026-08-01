@@ -175,6 +175,22 @@ describe("candidate record quality", () => {
       }).reason
     ).not.toBe("pure_candidacy");
 
+    // Adjectival "primary" describes a service, not an election stage.
+    for (const description of [
+      "The hospital lost its primary care clinic after the county consolidated services.",
+      "Won a primary school construction award from the state.",
+      "Lost a bid to expand primary care access in rural counties.",
+    ]) {
+      expect(classifyCandidateRecordQuality({ description }).reason, description).not.toBe("pure_candidacy");
+    }
+
+    // "candidate list OF finalists" is hiring language, not a ballot roster.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "The commission published a candidate list of finalists for the police chief job.",
+      }).reason
+    ).not.toBe("pure_candidacy");
+
     // A primary win alongside a real completed action is rescued by the
     // substantive-verbs-first ordering.
     expect(

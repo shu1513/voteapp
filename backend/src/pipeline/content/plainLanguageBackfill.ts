@@ -133,8 +133,13 @@ const MONTH_NUMBER_BY_NAME: Record<string, number> = {
   oct: 10, nov: 11, dec: 12,
 };
 
+// Two alternations on purpose: only ABBREVIATED month forms may carry a
+// period ("Sept. 9"), because a period after a full month name is a sentence
+// boundary — "took effect in April. 7 counties opted out" is not a date, and
+// letting it match stripped the invented "7" from the number check. The
+// separator is a literal space/tab (never newline) for the same reason.
 const NATURAL_DATE_PATTERN =
-  /\b(January|February|March|April|May|June|July|August|September|October|November|December|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?\s+(\d{1,2})(?:st|nd|rd|th)?(?:,\s*(\d{4}))?\b/gi;
+  /\b(?:(January|February|March|April|May|June|July|August|September|October|November|December)|(Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?)[ \t]+(\d{1,2})(?:st|nd|rd|th)?(?:,[ \t]*(\d{4}))?\b/g;
 
 function stripDateExpressionsLicensedByOriginal(originalText: string, rewrittenText: string): string {
   const monthDayYear = new Set<string>();
@@ -146,20 +151,24 @@ function stripDateExpressionsLicensedByOriginal(originalText: string, rewrittenT
   if (monthDay.size === 0) {
     return rewrittenText;
   }
-  return rewrittenText.replace(NATURAL_DATE_PATTERN, (match, monthWord: string, dayDigits: string, yearDigits?: string) => {
-    const month = MONTH_NUMBER_BY_NAME[monthWord.toLowerCase()];
-    if (!month) {
-      return match;
+  return rewrittenText.replace(
+    NATURAL_DATE_PATTERN,
+    (match, fullMonth: string | undefined, abbrevMonth: string | undefined, dayDigits: string, yearDigits?: string) => {
+      const monthWord = fullMonth ?? abbrevMonth;
+      const month = monthWord ? MONTH_NUMBER_BY_NAME[monthWord.toLowerCase()] : undefined;
+      if (!month) {
+        return match;
+      }
+      const day = Number(dayDigits);
+      const licensed =
+        yearDigits === undefined
+          ? monthDay.has(`${month}|${day}`)
+          : monthDayYear.has(`${month}|${day}|${yearDigits}`);
+      // Keeping the month word preserves surrounding sentence structure; only
+      // the digits the ISO original cannot token-match are removed.
+      return licensed ? monthWord! : match;
     }
-    const day = Number(dayDigits);
-    const licensed =
-      yearDigits === undefined
-        ? monthDay.has(`${month}|${day}`)
-        : monthDayYear.has(`${month}|${day}|${yearDigits}`);
-    // Keeping the month word preserves surrounding sentence structure; only
-    // the digits the ISO original cannot token-match are removed.
-    return licensed ? monthWord : match;
-  });
+  );
 }
 
 // A plain-language rewrite legitimately turns number WORDS into digits
