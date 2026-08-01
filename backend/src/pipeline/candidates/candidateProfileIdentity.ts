@@ -71,10 +71,14 @@ export const OVERWRITABLE_PROFILE_FIELDS = [
   "official_website_url",
   "summary",
   "current_office",
-  // Boolean routing fact. Fill-if-NULL by default; listing it under
+  // Tri-state routing fact. Fill-if-NULL by default; listing it under
   // --replace-profile-fields is the supported correction path for a stale
   // stored value (the records writers refuse to sweep past a contradiction).
-  // Not clearable: the profile contract requires an answer on every payload.
+  // Replacing with a payload null is the repair path for a false that was
+  // manufactured from office-history-silent sources — the row returns to
+  // "unanswered" instead of asserting an unresearched negative. Not listed
+  // under --clear-profile-fields: the contract requires an explicit answer,
+  // so a retraction travels in the payload, not as a flag-only clear.
   "has_held_public_office",
   // Provenance list. Merged as a UNION of stored + incoming by default: the
   // merge UPDATE keeps stored facts (fill-if-empty scalars, additive id
@@ -414,10 +418,9 @@ export function assertMergedOfficeRoutingConsistent(input: {
   clearFields?: ReadonlySet<OverwritableProfileField>;
 }): void {
   const incomingHasHeld = input.profile.has_held_public_office ?? null;
-  const effectiveHasHeld =
-    input.overwriteFields?.has("has_held_public_office") && incomingHasHeld !== null
-      ? incomingHasHeld
-      : input.storedHasHeldPublicOffice ?? incomingHasHeld;
+  const effectiveHasHeld = input.overwriteFields?.has("has_held_public_office")
+    ? incomingHasHeld
+    : input.storedHasHeldPublicOffice ?? incomingHasHeld;
 
   const storedOffice = input.storedCurrentOffice?.trim() || null;
   const incomingOffice = input.profile.current_office?.trim() || null;
@@ -547,7 +550,11 @@ async function mergeCandidateIdentifiersForExistingCandidate(
             ELSE current_office
           END,
           has_held_public_office = CASE
-            WHEN $24::boolean AND $23::boolean IS NOT NULL THEN $23::boolean
+            -- Overwrite takes the payload value even when it is NULL: a
+            -- stored false manufactured from office-history-silent sources
+            -- is repaired by an explicit payload null under
+            -- --replace-profile-fields, returning the row to "unanswered".
+            WHEN $24::boolean THEN $23::boolean
             WHEN has_held_public_office IS NULL THEN $23::boolean
             ELSE has_held_public_office
           END,
@@ -587,9 +594,10 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       scalars.official_website_url.clear,
       scalars.summary.clear,
       scalars.current_office.clear,
-      // Boolean routing fact: fill-if-NULL, replace only when explicitly
-      // listed. Never cleared — the contract requires an answer, so a clear
-      // would immediately conflict with the payload (writers refuse the flag).
+      // Tri-state routing fact: fill-if-NULL, replace only when explicitly
+      // listed (including replace with an explicit payload null). Never
+      // cleared via --clear-profile-fields — the contract requires an
+      // answer, so a retraction travels as a payload null instead.
       profile.has_held_public_office ?? null,
       overwriteFields?.has("has_held_public_office") ?? false,
       storedParty,
