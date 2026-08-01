@@ -375,7 +375,11 @@ export function ElectionPage() {
                         {candidate.display_name}
                       </Link>
                     </h3>
-                    {showChoiceControls ? (
+                    {/* Withdrawn candidacies never reach this payload
+                        (ballotLookup filters them), but the writer also
+                        rejects withdrawn/lost — don't render a button whose
+                        only outcome is an error. */}
+                    {showChoiceControls && candidate.status !== "withdrawn" && candidate.status !== "lost" ? (
                       // z-10 lifts the button above the card's stretched
                       // link so clicking it doesn't navigate.
                       <span className="relative z-10">

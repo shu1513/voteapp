@@ -417,7 +417,7 @@ export function CandidatePage() {
                 electionId={election.election_id}
                 candidateId={candidate.candidate_id}
                 choice={choiceByElectionId?.get(election.election_id)}
-                seatsToFill={null}
+                seatsToFill={election.seats_to_fill ?? null}
                 size="sm"
               />
             </div>

@@ -21,9 +21,19 @@ CREATE TABLE public.user_election_choices (
     -- The composite FK targets uq_candidate_elections (candidate_id,
     -- election_id), so a candidate pick can only reference a real candidacy
     -- in that same election — a mismatched pair is unrepresentable.
+    --
+    -- ON UPDATE CASCADE exists for the candidate-merge repair script, whose
+    -- rehome step rewrites candidate_elections.candidate_id in place; the
+    -- pick follows to the surviving candidate row automatically. Collision-
+    -- free by construction: rehome only happens when the survivor has no
+    -- link in that election, and a pick for the survivor there cannot exist
+    -- without one (this same FK). The link-move script never relies on this
+    -- cascade — it refuses to move a link that picks reference, because a
+    -- pick silently teleporting to a different race would be wrong.
     CONSTRAINT fk_user_election_choices_candidacy
         FOREIGN KEY (candidate_id, election_id)
         REFERENCES public.candidate_elections(candidate_id, election_id)
+        ON UPDATE CASCADE
         ON DELETE CASCADE
 );
 

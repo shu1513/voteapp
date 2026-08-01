@@ -54,6 +54,7 @@ import { loadProjectEnv } from "../config/env.js";
 import { mergeIdentifierLists } from "../pipeline/candidates/candidateProfileIdentity.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
+import { listCandidateElectionLinkFkReferences } from "./moveManualCandidateElectionLink.js";
 
 type QueryResultLike<T> = { rows: T[] };
 
@@ -83,6 +84,9 @@ export type MergeCandidatesResult = {
   };
   sweepConfirmations: { mergedDeleted: boolean; survivorDeleted: boolean };
   follows: { rehomed: number; duplicatesDeleted: number };
+  /** user_election_choices on duplicate links; choices on rehomed links ride
+   * the FK's ON UPDATE CASCADE and are not counted here. */
+  choices: { repointedToSurvivor: number; duplicatesDeleted: number };
   notificationEvents: {
     rehomed: number;
     duplicatesDeleted: number;
@@ -439,21 +443,99 @@ export async function runMergeCandidates(
       );
     }
 
+    // Choices on duplicate links, reconciled BEFORE those links are deleted —
+    // the choice FK cascades on link delete, which would silently erase
+    // users' picks. A user who picked both candidates in a duplicate election
+    // keeps the survivor's pick (mirrors the follows rule below); picks
+    // naming only the merged candidate are repointed to the survivor's
+    // identical candidacy, which exists by definition of a duplicate link.
+    // Choices on REHOMED links need no handling here: the FK's ON UPDATE
+    // CASCADE carries them through the rehome UPDATE below, collision-free
+    // because a survivor pick cannot exist for an election the survivor has
+    // no link in (the same FK forbids it).
+    const duplicateChoiceDeleteIds: string[] = [];
+    const repointChoiceIds: string[] = [];
+    if (duplicateLinkIds.length > 0) {
+      const duplicateElectionIds = mergedLinks
+        .filter((link) => survivorLinkByElection.has(link.election_id))
+        .map((link) => link.election_id);
+      const choicesResult = await client.query<{ id: string; survivor_has_pick: boolean }>(
+        `
+          SELECT
+            merged_choice.id,
+            EXISTS (
+              SELECT 1 FROM public.user_election_choices AS survivor_choice
+              WHERE survivor_choice.user_id = merged_choice.user_id
+                AND survivor_choice.election_id = merged_choice.election_id
+                AND survivor_choice.candidate_id = $2::uuid
+            ) AS survivor_has_pick
+          FROM public.user_election_choices AS merged_choice
+          WHERE merged_choice.candidate_id = $1::uuid
+            AND merged_choice.election_id = ANY($3::uuid[])
+          ORDER BY merged_choice.id
+          FOR UPDATE OF merged_choice
+        `,
+        [mergedId, survivorId, duplicateElectionIds]
+      );
+      for (const choice of choicesResult.rows) {
+        if (choice.survivor_has_pick) {
+          duplicateChoiceDeleteIds.push(choice.id);
+        } else {
+          repointChoiceIds.push(choice.id);
+        }
+      }
+      if (!dryRun && duplicateChoiceDeleteIds.length > 0) {
+        await client.query(`DELETE FROM public.user_election_choices WHERE id = ANY($1::uuid[])`, [
+          duplicateChoiceDeleteIds,
+        ]);
+      }
+      if (!dryRun && repointChoiceIds.length > 0) {
+        await client.query(
+          `UPDATE public.user_election_choices SET candidate_id = $2::uuid, updated_at = now() WHERE id = ANY($1::uuid[])`,
+          [repointChoiceIds, survivorId]
+        );
+      }
+    }
+
     // Deleting a duplicate link must not cascade dependents away
     // (fl_candidate_finance_outside_group_links references
     // candidate_elections.id with ON DELETE CASCADE). Checked dynamically so
-    // future link-scoped tables block too.
+    // future link-scoped tables block too. The per-column count is only
+    // meaningful for a single-column FK onto id; any other shape is refused
+    // outright instead of guessed at (same rule as the link-move script) —
+    // except the choices FK, whose rows were reconciled just above.
     if (duplicateLinkIds.length > 0) {
-      const linkReferences = await listFkReferences(client, "public.candidate_elections");
+      const linkReferences = (await listCandidateElectionLinkFkReferences(client)).filter(
+        (ref) =>
+          ref.table !== "public.candidate_elections" &&
+          ref.constraintName !== "fk_user_election_choices_candidacy"
+      );
+      const unsupported = [
+        ...new Set(
+          linkReferences
+            .filter((ref) => ref.columnCount !== 1 || ref.referencedColumn !== "id")
+            .map((ref) => `${ref.table}.${ref.constraintName}`)
+        ),
+      ];
+      if (unsupported.length > 0) {
+        throw new Error(
+          `Foreign keys onto candidate_elections whose shape this guard cannot check ` +
+            `(composite, or not referencing id): ${unsupported.join(", ")}. ` +
+            "Refusing the duplicate-link delete; extend the guard before merging under such constraints."
+        );
+      }
       const blocking: string[] = [];
+      const counted = new Set<string>();
       for (const { table, column } of linkReferences) {
-        if (table === "public.candidate_elections") continue;
+        const key = `${table}.${column}`;
+        if (counted.has(key)) continue;
+        counted.add(key);
         const countResult = await client.query<{ n: string }>(
           `SELECT count(*)::text AS n FROM ${table} WHERE ${column} = ANY($1::uuid[])`,
           [duplicateLinkIds]
         );
         const n = Number(countResult.rows[0]?.n ?? "0");
-        if (n > 0) blocking.push(`${table}.${column} (${n})`);
+        if (n > 0) blocking.push(`${key} (${n})`);
       }
       if (blocking.length > 0) {
         throw new Error(
@@ -906,6 +988,10 @@ export async function runMergeCandidates(
         survivorDeleted: survivorConfirmationDeleted,
       },
       follows: { rehomed: rehomeFollowIds.length, duplicatesDeleted: duplicateFollowIds.length },
+      choices: {
+        repointedToSurvivor: repointChoiceIds.length,
+        duplicatesDeleted: duplicateChoiceDeleteIds.length,
+      },
       notificationEvents: {
         rehomed: rehomeEventIds.length,
         duplicatesDeleted: duplicateEventIds.length,

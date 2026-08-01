@@ -451,6 +451,9 @@ export type CandidateElection = {
   election_date: string;
   is_incumbent: boolean;
   status: string;
+  /** elections.seats_to_fill; NULL (or absent under deploy skew) renders as
+   * a single seat. Feeds the choice controls' seat cap. */
+  seats_to_fill?: number | null;
   office_canonical_name: string | null;
 };
 
