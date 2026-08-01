@@ -22,6 +22,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
+import { ShareButton } from "../../components/ShareButton";
 import { SortChips } from "../../components/SortChips";
 import { SourceLine } from "../../components/SourceLine";
 import { ErrorNotice, LoadingNotice } from "../../components/Status";
@@ -246,6 +247,10 @@ export default function CandidateScreen() {
       <Stack.Screen options={{ title: candidate.display_name }} />
       <View className="flex-row flex-wrap items-center justify-between gap-3">
         <Text className="flex-1 text-2xl font-bold text-ink">{candidate.display_name}</Text>
+        <ShareButton
+          path={`/candidates/${candidate.candidate_id}`}
+          shareText={`${candidate.display_name} (${candidate.party}, ${candidate.state})`}
+        />
         {canFollow && follows ? (
           <FollowButton
             candidateId={candidate.candidate_id}
