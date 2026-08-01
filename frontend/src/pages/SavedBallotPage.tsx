@@ -10,7 +10,9 @@ import {
   type AddressSavedNoticeData,
 } from "../components/SavedAddressForm";
 import { ElectionList } from "../components/ElectionCard";
-import { useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
+import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
+import { deriveOnlyMyIssues, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
+import { useIssuesFilterParam } from "../lib/useIssuesFilterParam";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "@voteapp/api-client";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../lib/pendingDistricts";
@@ -125,7 +127,13 @@ export function SavedBallotPage() {
     }
   }, [location.pathname, location.state, navigate]);
   const queryClient = useQueryClient();
-  const { weights: savedAreaWeights } = useMyResearchAreas();
+  const {
+    weights: savedAreaWeights,
+    savedAreaIds,
+    hasSaved,
+    isLoading: savedAreasLoading,
+  } = useMyResearchAreas();
+  const { issuesRequested, onIssuesFilterChange } = useIssuesFilterParam();
   const { choiceByElectionId } = useElectionChoices();
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
@@ -255,7 +263,22 @@ export function SavedBallotPage() {
     );
   }
 
+  // The saved-areas guard mirrors the anonymous ballot page: a ?issues=mine
+  // load must not flash the full ballot while the saved areas are still
+  // unknown. The flag settles on failure too, falling open to the full list
+  // with the request ignored. AFTER the error branch: a ballot error has no
+  // list to withhold, so it must never hide behind this loading notice.
+  if (issuesRequested && savedAreasLoading) {
+    return <LoadingNotice text="Loading your ballot…" />;
+  }
+
   const data = ballot.data;
+  const issuesView = deriveOnlyMyIssues({
+    elections: data.elections,
+    savedAreaIds,
+    hasSaved,
+    requested: issuesRequested,
+  });
 
   if (data.districts.length === 0) {
     return (
@@ -290,14 +313,23 @@ export function SavedBallotPage() {
           a level-1 target for screen-reader heading navigation. */}
       <h1 className="sr-only">Your saved ballot</h1>
       <div className="flex flex-wrap items-center justify-end gap-3">
+        {issuesView.showFilter ? (
+          <OnlyMyIssuesToggle
+            on={issuesView.filterOn}
+            hiddenCount={issuesView.hiddenCount}
+            onChange={onIssuesFilterChange}
+          />
+        ) : null}
         <BallotPreferenceControls />
       </div>
 
       {data.elections.length === 0 ? (
         <EmptyNotice text="No upcoming elections found for your districts yet. Check back — new elections are added as they are announced." />
       ) : (
+        // An active filter can empty this list; the "N elections hidden ·
+        // Show all" line in the controls row explains the empty view.
         <ElectionList
-          elections={data.elections}
+          elections={issuesView.visibleElections}
           savedAreaWeights={savedAreaWeights}
           choicesByElectionId={choiceByElectionId}
         />

@@ -4,6 +4,7 @@ import {
   apiRequest,
   BALLOT_SORT_DESCRIPTIONS,
   BALLOT_SORTS,
+  deriveOnlyMyIssues,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -13,6 +14,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../../components/AccountGate";
 import { Checkbox } from "../../components/Checkbox";
 import { ElectionCard } from "../../components/ElectionCard";
+import { OnlyMyIssuesToggle } from "../../components/OnlyMyIssuesFilter";
 import { SavedAddressForm } from "../../components/SavedAddressForm";
 import { SortChips } from "../../components/SortChips";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../../components/Status";
@@ -107,7 +109,12 @@ function SavedBallotBody({ email }: { email: string }) {
     queryFn: () => apiRequest<BallotPreferences>("/api/me/ballot-preferences"),
     staleTime: 60_000,
   });
-  const { savedAreaIds } = useMyResearchAreas();
+  const { savedAreaIds, hasSaved } = useMyResearchAreas();
+  // "Only my issues": local state like the anonymous ballot's sort — the tab
+  // stays mounted under a stack push, so the choice survives navigating into
+  // an election and back. Deliberately NOT an account preference — hiding
+  // races should never silently persist across visits.
+  const [onlyMyIssues, setOnlyMyIssues] = useState(false);
   const [handoffState, setHandoffState] = useState<HandoffState>("checking");
   const handoffFiredRef = useRef(false);
 
@@ -204,6 +211,12 @@ function SavedBallotBody({ email }: { email: string }) {
   }
 
   const data = ballot.data;
+  const issuesView = deriveOnlyMyIssues({
+    elections: data.elections,
+    savedAreaIds,
+    hasSaved,
+    requested: onlyMyIssues,
+  });
 
   if (data.districts.length === 0) {
     return (
@@ -228,12 +241,23 @@ function SavedBallotBody({ email }: { email: string }) {
         {BALLOT_SORT_DESCRIPTIONS[savedPrefs.data?.sort ?? "vote_power"]}
       </Text>
       <BallotPreferenceControls />
+      {issuesView.showFilter ? (
+        <View className="mt-2">
+          <OnlyMyIssuesToggle
+            on={issuesView.filterOn}
+            hiddenCount={issuesView.hiddenCount}
+            onChange={setOnlyMyIssues}
+          />
+        </View>
+      ) : null}
 
       {data.elections.length === 0 ? (
         <EmptyNotice text="No upcoming elections found for your districts yet. Check back — new elections are added as they are announced." />
       ) : (
+        // An active filter can empty this list; the "N elections hidden ·
+        // Show all" line above explains the empty view.
         <View className="mt-4 gap-3">
-          {data.elections.map((election) => (
+          {issuesView.visibleElections.map((election) => (
             <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
           ))}
         </View>

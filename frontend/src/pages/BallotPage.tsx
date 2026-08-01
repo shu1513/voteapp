@@ -8,7 +8,9 @@ import {
   type BallotSummary,
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
-import { useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
+import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
+import { deriveOnlyMyIssues, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
+import { useIssuesFilterParam } from "../lib/useIssuesFilterParam";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
@@ -21,8 +23,14 @@ export function BallotPage() {
   useDocumentTitle("Elections");
   // Signed-in verified visitors get their saved areas listed first (in their
   // own rank order) even on the public ballot; anonymous visitors get an
-  // empty map (no personalization).
-  const { weights: savedAreaWeights } = useMyResearchAreas();
+  // empty map (no personalization). The same saved areas gate the "Only my
+  // issues" filter, so a verified visitor's one-off search is filterable too.
+  const {
+    weights: savedAreaWeights,
+    savedAreaIds,
+    hasSaved,
+    isLoading: savedAreasLoading,
+  } = useMyResearchAreas();
   const { choiceByElectionId } = useElectionChoices();
   // Set by the home page's post-search navigation so the visitor can confirm
   // the geocoder matched the right address. Router state only — the address is
@@ -44,6 +52,7 @@ export function BallotPage() {
     .filter((id) => id.length > 0);
   const rawSort = searchParams.get("sort") ?? "";
   const sort: BallotSort = SORT_VALUES.includes(rawSort) ? (rawSort as BallotSort) : "vote_power";
+  const { issuesRequested, onIssuesFilterChange } = useIssuesFilterParam();
 
   const ballot = useQuery({
     queryKey: ["ballot", districtIds.join(","), sort],
@@ -64,6 +73,20 @@ export function BallotPage() {
       { replace: true }
     );
   }
+
+  const issuesView = deriveOnlyMyIssues({
+    elections: ballot.data?.elections ?? [],
+    savedAreaIds,
+    hasSaved,
+    requested: issuesRequested,
+  });
+  // A ?issues=mine load must not flash the full ballot while the saved
+  // areas are still unknown (the ballot is one request; the saved areas are
+  // two chained ones, so the ballot usually lands first). Withhold the list
+  // until the flag settles — it settles on failure too, falling open to the
+  // full list with the request ignored: a ballot app errs toward showing
+  // races, and no on-page element claims filtering in that state.
+  const awaitingSavedAreas = issuesRequested && savedAreasLoading;
 
   if (districtIds.length === 0) {
     return (
@@ -91,6 +114,13 @@ export function BallotPage() {
           stay discoverable, and those are not upcoming. */}
       <h1 className="sr-only">Elections</h1>
       <div className="flex flex-wrap items-center justify-end gap-3">
+        {issuesView.showFilter ? (
+          <OnlyMyIssuesToggle
+            on={issuesView.filterOn}
+            hiddenCount={issuesView.hiddenCount}
+            onChange={onIssuesFilterChange}
+          />
+        ) : null}
         <label className="flex items-center gap-2 text-sm text-ink-soft">
           Sort by
           <select
@@ -123,7 +153,12 @@ export function BallotPage() {
         </p>
       ) : null}
 
-      {ballot.isPending ? <LoadingNotice text="Loading your elections…" /> : null}
+      {/* A ballot error wins over the saved-areas withhold: with no list to
+          withhold, gating on the filter would pair the loading notice with
+          the error (or hide the error outright). */}
+      {ballot.isPending || (awaitingSavedAreas && !ballot.isError) ? (
+        <LoadingNotice text="Loading your elections…" />
+      ) : null}
       {ballot.isError ? (
         <div className="mt-4">
           <ErrorNotice error={ballot.error} />
@@ -142,13 +177,15 @@ export function BallotPage() {
         </Link>
       </p>
 
-      {ballot.isSuccess ? (
+      {ballot.isSuccess && !awaitingSavedAreas ? (
         <>
           {ballot.data.elections.length === 0 ? (
             <EmptyNotice text="No upcoming elections found for these districts yet. Check back — new elections are added as they are announced." />
           ) : (
+            // An active filter can empty this list; the "N elections hidden ·
+            // Show all" line in the controls row explains the empty view.
             <ElectionList
-              elections={ballot.data.elections}
+              elections={issuesView.visibleElections}
               savedAreaWeights={savedAreaWeights}
               choicesByElectionId={choiceByElectionId}
             />

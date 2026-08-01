@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { SavedBallotPage } from "./SavedBallotPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
@@ -11,14 +12,14 @@ const VERIFIED_BASE = {
   "/api/me/research-area-preferences": { body: { preferences: [] } },
 };
 
-function renderSavedBallot(state?: unknown) {
+function renderSavedBallot(state?: unknown, search?: string) {
   return renderRoutes(
     [
       { path: "/me/ballot", element: <SavedBallotPage /> },
       { path: "/login", element: <p /> },
       { path: "/elections/:electionId", element: <p /> },
     ],
-    { pathname: "/me/ballot", state }
+    { pathname: "/me/ballot", search, state }
   );
 }
 
@@ -134,5 +135,95 @@ describe("SavedBallotPage", () => {
     });
     renderSavedBallot();
     expect(await screen.findByRole("heading", { name: "Verify your email" })).toBeInTheDocument();
+  });
+
+  describe("only-my-issues filter", () => {
+    const HOUSING = { id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null };
+    const SAVED_HOUSING = {
+      ...VERIFIED_BASE,
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null, rank: 1 },
+          ],
+        },
+      },
+    };
+
+    it("stays hidden for a viewer with no saved areas", async () => {
+      stubApiRoutes({
+        ...VERIFIED_BASE,
+        "/api/me/ballot": {
+          body: ballotSummary([electionSummary(), electionSummary({ id: "e-2", official_ballot_title: "State Senate" })]),
+        },
+      });
+      renderSavedBallot();
+      expect(await screen.findByText("Governor")).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Only my issues" })).not.toBeInTheDocument();
+    });
+
+    it("filters to matching races with a hidden count, and Show all restores", async () => {
+      stubApiRoutes({
+        ...SAVED_HOUSING,
+        "/api/me/ballot": {
+          body: ballotSummary([
+            electionSummary({ research_areas: [HOUSING] }),
+            electionSummary({ id: "e-2", official_ballot_title: "State Senate" }),
+          ]),
+        },
+      });
+      const user = userEvent.setup();
+      const { router } = renderSavedBallot();
+
+      await user.click(await screen.findByRole("button", { name: "Only my issues" }));
+      expect(screen.getByText("Governor")).toBeInTheDocument();
+      expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
+      expect(screen.getByText(/1 election hidden/)).toBeInTheDocument();
+      // URL state like the anonymous ballot's sort — deliberately not an
+      // account preference, so hiding races never silently persists.
+      expect(router.state.location.search).toContain("issues=mine");
+
+      await user.click(screen.getByRole("button", { name: "Show all" }));
+      expect(screen.getByText("State Senate")).toBeInTheDocument();
+      expect(router.state.location.search).not.toContain("issues=mine");
+    });
+
+    it("shows a ballot error instead of the withhold notice while saved areas still load", async () => {
+      // A ballot error has no list to withhold: it must win over the
+      // saved-areas gate instead of hiding behind the loading notice.
+      const neverSettles = new Promise<never>(() => {});
+      stubApiRoutes({
+        ...VERIFIED_BASE,
+        "/api/me/research-area-preferences": () => neverSettles,
+        "/api/me/ballot": apiError(500, "internal_error", "boom"),
+      });
+      renderSavedBallot(undefined, "?issues=mine");
+
+      expect(
+        await screen.findByText("The service is having trouble right now. Please try again shortly.")
+      ).toBeInTheDocument();
+      expect(screen.queryByText("Loading your ballot…")).not.toBeInTheDocument();
+    });
+
+    it("fails open to the full list when the saved-areas fetch fails on a ?issues=mine load", async () => {
+      stubApiRoutes({
+        ...VERIFIED_BASE,
+        "/api/me/research-area-preferences": apiError(500, "internal_error", "boom"),
+        "/api/me/ballot": {
+          body: ballotSummary([
+            electionSummary({ research_areas: [HOUSING] }),
+            electionSummary({ id: "e-2", official_ballot_title: "State Senate" }),
+          ]),
+        },
+      });
+      renderSavedBallot(undefined, "?issues=mine");
+
+      // Deliberate fail-open, not a spinner: a ballot app errs toward
+      // showing races, and no on-page element claims filtering here — the
+      // request is ignored and the control stays hidden.
+      expect(await screen.findByText("Governor")).toBeInTheDocument();
+      expect(screen.getByText("State Senate")).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Only my issues" })).not.toBeInTheDocument();
+    });
   });
 });

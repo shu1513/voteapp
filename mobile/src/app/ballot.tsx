@@ -2,6 +2,7 @@ import type { BallotSort, BallotSummary } from "@voteapp/api-client";
 import {
   apiRequest,
   BALLOT_SORT_DESCRIPTIONS,
+  deriveOnlyMyIssues,
   formatDistrictName,
   formatDistrictType,
   PUBLIC_BALLOT_SORTS,
@@ -14,6 +15,7 @@ import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { Collapsible } from "../components/Collapsible";
 import { ElectionCard } from "../components/ElectionCard";
+import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
 import { SortChips } from "../components/SortChips";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { consumeMatchedAddress, type MatchedAddressHandoff } from "../lib/matchedAddress";
@@ -29,8 +31,12 @@ import { consumeMatchedAddress, type MatchedAddressHandoff } from "../lib/matche
 export default function BallotScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{ d?: string }>();
-  const { savedAreaIds } = useMyResearchAreas();
+  const { savedAreaIds, hasSaved } = useMyResearchAreas();
   const [sort, setSort] = useState<BallotSort>("vote_power");
+  // "Only my issues": local state like sort — the screen stays mounted under
+  // a stack push, so the choice survives navigating into an election and
+  // back (the web reflects it into the URL for the same reason).
+  const [onlyMyIssues, setOnlyMyIssues] = useState(false);
   // Consume once on mount; state keeps it across re-renders and sort changes.
   const [matched] = useState<MatchedAddressHandoff | null>(consumeMatchedAddress);
   const matchedAddress = matched?.address ?? null;
@@ -50,6 +56,13 @@ export default function BallotScreen() {
         `/api/ballot?district_ids=${encodeURIComponent(districtIds.join(","))}&sort=${sort}`
       ),
     enabled: districtIds.length > 0,
+  });
+
+  const issuesView = deriveOnlyMyIssues({
+    elections: ballot.data?.elections ?? [],
+    savedAreaIds,
+    hasSaved,
+    requested: onlyMyIssues,
   });
 
   if (districtIds.length === 0) {
@@ -94,6 +107,15 @@ export default function BallotScreen() {
       <View className="mt-3">
         <SortChips options={PUBLIC_BALLOT_SORTS} value={sort} onChange={setSort} />
       </View>
+      {issuesView.showFilter ? (
+        <View className="mt-2">
+          <OnlyMyIssuesToggle
+            on={issuesView.filterOn}
+            hiddenCount={issuesView.hiddenCount}
+            onChange={setOnlyMyIssues}
+          />
+        </View>
+      ) : null}
 
       {/* Reaches everyone who sees results, including people the clickwrap
           never reached — a shared device, a link from a text message. For a
@@ -158,8 +180,10 @@ export default function BallotScreen() {
           {ballot.data.elections.length === 0 ? (
             <EmptyNotice text="No upcoming elections found for these districts yet. Check back — new elections are added as they are announced." />
           ) : (
+            // An active filter can empty this list; the "N elections hidden ·
+            // Show all" line above explains the empty view.
             <View className="mt-4 gap-3">
-              {ballot.data.elections.map((election) => (
+              {issuesView.visibleElections.map((election) => (
                 <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
               ))}
             </View>
