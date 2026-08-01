@@ -47,8 +47,12 @@ export function RegisterToFollowButton({ candidateName, size = "md" }: RegisterT
                 Close
               </button>
             </div>
+            {/* Event-gated, not scheduled: the digest job runs daily but emails
+                only followers with unsent events, so "whenever there's news" is
+                the claim that stays true regardless of the cron cadence. Do not
+                name a frequency here — Settings already says "Daily digest". */}
             <p className="mt-2 text-sm text-ink">
-              Get a monthly update on {candidateName} with a free account.
+              Get updates on {candidateName} whenever there&apos;s news. Signing up is free.
             </p>
             <div className="mt-4 flex items-center justify-end gap-3">
               <Link
