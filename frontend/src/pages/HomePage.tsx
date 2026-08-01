@@ -118,8 +118,8 @@ export function HomePage() {
               at 3xl on a phone it ran six lines and pushed the address field
               off the fold. */}
           <h1 className="text-xl font-bold sm:text-3xl">
-            Find out exactly which elections you can vote in and who the candidates really are by
-            their track records instead of their slogans.
+            Find out exactly which elections you can vote in — and who the candidates really are by
+            their track records instead of slogans.
           </h1>
           {/* What the service is, where a first-time visitor actually looks.
               It used to sit in the footer, under the fold, where it repeated
