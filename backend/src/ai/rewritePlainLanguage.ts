@@ -20,8 +20,16 @@ export type PlainLanguageAiConfig = {
   geminiApiKey?: string;
 };
 
+/**
+ * "manual" marks text authored by a human operator rather than a model. It is
+ * deliberately part of this union so an operator-authored backfill records an
+ * honest provider in the audit table instead of impersonating a model. The
+ * verifier only ever receives a real AiProvider — a manual run skips it.
+ */
+export type PlainLanguageRewriteProvider = AiProvider | "manual";
+
 export type PlainLanguageRewriteResult =
-  | { ok: true; provider: AiProvider; model: string; rewrittenText: string }
+  | { ok: true; provider: PlainLanguageRewriteProvider; model: string; rewrittenText: string }
   | { ok: false; reason: string };
 
 export type PlainLanguageVerifyResult =
@@ -61,7 +69,11 @@ async function callFirstWorkingProvider<T>(
   config: PlainLanguageAiConfig,
   parse: (payload: unknown) => T
 ): Promise<{ ok: true; provider: AiProvider; model: string; value: T } | { ok: false; reason: string }> {
-  let lastReason = "No providers were configured";
+  // Every candidate's failure is kept, not just the last one: when the first
+  // rungs fail for unrelated reasons (an exhausted credit balance) and the
+  // last fails for its own (a 404 model id), reporting only the last one
+  // points the operator at the wrong problem entirely.
+  const failures: string[] = [];
   for (const candidate of candidates) {
     const providerResult = await callResearchProvider(candidate, prompt, {
       timeoutMs: config.timeoutMs,
@@ -73,18 +85,23 @@ async function callFirstWorkingProvider<T>(
     if (!providerResult.ok) {
       // Provider-local failures (missing key, rate limit) fall through to the
       // next candidate, matching the other non-research AI callers.
-      lastReason = providerResult.reason;
+      failures.push(`${candidate.provider}/${candidate.model}: ${providerResult.reason}`);
       continue;
     }
     try {
       return { ok: true, provider: candidate.provider, model: candidate.model, value: parse(providerResult.parsed) };
     } catch (error) {
-      lastReason = `${candidate.provider}/${candidate.model} schema mismatch: ${
-        error instanceof Error ? error.message : String(error)
-      } raw=${trimDebugText(providerResult.rawText)}`;
+      failures.push(
+        `${candidate.provider}/${candidate.model} schema mismatch: ${
+          error instanceof Error ? error.message : String(error)
+        } raw=${trimDebugText(providerResult.rawText)}`
+      );
     }
   }
-  return { ok: false, reason: lastReason };
+  return {
+    ok: false,
+    reason: failures.length === 0 ? "No providers were configured" : failures.join(" | "),
+  };
 }
 
 export async function rewriteToPlainLanguage(

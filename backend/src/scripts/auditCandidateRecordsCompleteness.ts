@@ -63,6 +63,7 @@ type AuditRow = {
   confirmed_at: string | null;
   evidence_entry_count: number | null;
   confirmation_covers_latest_search: boolean | null;
+  retired_record_count: number;
 };
 
 const NO_RECORDS_FOUND_GAP_ID = "candidate_records.no_records_found";
@@ -357,7 +358,9 @@ async function main(): Promise<void> {
           sc.confirmed_gap_ids,
           sc.confirmed_at::text AS confirmed_at,
           jsonb_array_length(sc.evidence -> 'entries')::int AS evidence_entry_count,
-          (sc.confirmed_at >= c.last_records_searched_at) AS confirmation_covers_latest_search
+          (sc.confirmed_at >= c.last_records_searched_at) AS confirmation_covers_latest_search,
+          (SELECT count(*) FROM public.candidate_records rr
+            WHERE rr.candidate_id = c.id AND rr.retired_at IS NOT NULL)::int AS retired_record_count
         FROM public.candidates c
         LEFT JOIN public.candidate_elections ce
           ON ce.candidate_id = c.id OR ce.running_mate_candidate_id = c.id
@@ -373,7 +376,19 @@ async function main(): Promise<void> {
 ${targetSql}
         GROUP BY c.id, c.display_name, c.current_office, c.last_records_searched_at,
           sc.confirmed_gap_ids, sc.confirmed_at, sc.evidence
-        HAVING (c.current_office IS NOT NULL OR coalesce(bool_or(ce.is_incumbent), false))
+        -- Third service signal: rows RETIRED out from under a completed sweep.
+        -- A November repair pass retired every stored row for 24 candidates
+        -- (candidacy/self-promotion violations); only 1 of the 24 carried a
+        -- current office or incumbent link, so the other 23 were invisible
+        -- here despite needing a proper re-sweep exactly like the others.
+        HAVING (
+          c.current_office IS NOT NULL
+          OR coalesce(bool_or(ce.is_incumbent), false)
+          OR EXISTS (
+            SELECT 1 FROM public.candidate_records rr
+            WHERE rr.candidate_id = c.id AND rr.retired_at IS NOT NULL
+          )
+        )
         ORDER BY c.display_name ASC
       `,
       target.values
@@ -493,7 +508,7 @@ ${targetSql}
           suspectCount: suspects.length,
           confirmedNullCount: confirmedNulls.length,
           explanation:
-            "Suspects: candidates with a records-search completion stamp, a current office or incumbent election link, ZERO non-retired candidate_records rows, and no sweep confirmation covering the latest search (a confirmation older than last_records_searched_at is historical — a later search re-opened the question). Each needs a proper per-question record sweep re-run. Confirmed nulls carry an evidence-backed candidate_record_sweep_confirmations row at least as new as the latest completion stamp and need no re-run.",
+            "Suspects: candidates with a records-search completion stamp, ZERO non-retired candidate_records rows, no sweep confirmation covering the latest search (a confirmation older than last_records_searched_at is historical — a later search re-opened the question), and a service signal: a current office, an incumbent election link, or previously stored records that were later retired. Each needs a proper per-question record sweep re-run. Confirmed nulls carry an evidence-backed candidate_record_sweep_confirmations row at least as new as the latest completion stamp and need no re-run.",
           suspects: suspects.map((row) => ({
             candidateId: row.candidate_id,
             displayName: row.display_name,
@@ -501,6 +516,7 @@ ${targetSql}
             isIncumbent: row.is_incumbent,
             lastRecordsSearchedAt: row.last_records_searched_at,
             electionTitles: row.election_titles,
+            retiredRecordCount: row.retired_record_count,
             ...(row.confirmed_at
               ? {
                   staleConfirmation: {
@@ -518,6 +534,7 @@ ${targetSql}
             isIncumbent: row.is_incumbent,
             lastRecordsSearchedAt: row.last_records_searched_at,
             electionTitles: row.election_titles,
+            retiredRecordCount: row.retired_record_count,
             confirmedGapIds: row.confirmed_gap_ids,
             confirmedAt: row.confirmed_at,
             evidenceEntryCount: row.evidence_entry_count,

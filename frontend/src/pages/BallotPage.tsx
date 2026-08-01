@@ -9,9 +9,8 @@ import {
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
 import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
-import { deriveOnlyMyIssues } from "@voteapp/api-client";
+import { deriveOnlyMyIssues, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
 import { useIssuesFilterParam } from "../lib/useIssuesFilterParam";
-import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
@@ -32,6 +31,7 @@ export function BallotPage() {
     hasSaved,
     isLoading: savedAreasLoading,
   } = useMyResearchAreas();
+  const { choiceByElectionId } = useElectionChoices();
   // Set by the home page's post-search navigation so the visitor can confirm
   // the geocoder matched the right address. Router state only — the address is
   // personal data and must stay out of the URL; a refresh or shared link
@@ -184,7 +184,11 @@ export function BallotPage() {
           ) : (
             // An active filter can empty this list; the "N elections hidden ·
             // Show all" line in the controls row explains the empty view.
-            <ElectionList elections={issuesView.visibleElections} savedAreaWeights={savedAreaWeights} />
+            <ElectionList
+              elections={issuesView.visibleElections}
+              savedAreaWeights={savedAreaWeights}
+              choicesByElectionId={choiceByElectionId}
+            />
           )}
         </>
       ) : null}

@@ -11,9 +11,8 @@ import {
 } from "../components/SavedAddressForm";
 import { ElectionList } from "../components/ElectionCard";
 import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
-import { deriveOnlyMyIssues } from "@voteapp/api-client";
+import { deriveOnlyMyIssues, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
 import { useIssuesFilterParam } from "../lib/useIssuesFilterParam";
-import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "@voteapp/api-client";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../lib/pendingDistricts";
@@ -135,6 +134,7 @@ export function SavedBallotPage() {
     isLoading: savedAreasLoading,
   } = useMyResearchAreas();
   const { issuesRequested, onIssuesFilterChange } = useIssuesFilterParam();
+  const { choiceByElectionId } = useElectionChoices();
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
   );
@@ -328,7 +328,11 @@ export function SavedBallotPage() {
       ) : (
         // An active filter can empty this list; the "N elections hidden ·
         // Show all" line in the controls row explains the empty view.
-        <ElectionList elections={issuesView.visibleElections} savedAreaWeights={savedAreaWeights} />
+        <ElectionList
+          elections={issuesView.visibleElections}
+          savedAreaWeights={savedAreaWeights}
+          choicesByElectionId={choiceByElectionId}
+        />
       )}
 
       <p className="mt-8 text-sm text-ink-soft">

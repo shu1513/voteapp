@@ -293,6 +293,28 @@ export async function runMoveCandidateElectionLink(
       );
     }
 
+    // User-choice guard, covering both the plain move and the duplicate
+    // merge. A pick is the user's decision about THIS race: the plain move's
+    // UPDATE would drag it to a different election through the choice FK's
+    // ON UPDATE CASCADE (possibly exceeding that race's seat cap), and the
+    // duplicate merge's DELETE would cascade it away entirely. Neither is a
+    // call this script should make for the user, so both refuse.
+    const choiceCount = await client.query<{ n: string }>(
+      `
+        SELECT count(*)::text AS n
+        FROM public.user_election_choices
+        WHERE candidate_id = $1::uuid AND election_id = $2::uuid
+      `,
+      [candidateId, fromElectionId]
+    );
+    const choices = Number(choiceCount.rows[0]?.n ?? "0");
+    if (choices > 0) {
+      throw new Error(
+        `${choices} user_election_choices row(s) name this candidacy on the from-election; a move would ` +
+          "silently rewrite or delete users' planned votes. Resolve those rows first (user decision), then re-run."
+      );
+    }
+
     const targetLinkResult = await client.query<LinkRow>(
       `
         SELECT id, is_incumbent, status, running_mate_candidate_id
@@ -322,7 +344,13 @@ export async function runMoveCandidateElectionLink(
       // (invisible to the election-scoped scan above) would be silently
       // cascaded away by the duplicate-merge delete. Identifiers come from
       // the catalog, not from user input.
-      const linkFkReferences = await listCandidateElectionLinkFkReferences(client);
+      // The choices FK is composite onto (candidate_id, election_id), which
+      // this guard's id-keyed count cannot check — but its rows were already
+      // counted (and refused when present) by the user-choice guard above,
+      // so it is exempt from the unknown-shape refusal.
+      const linkFkReferences = (await listCandidateElectionLinkFkReferences(client)).filter(
+        (ref) => ref.constraintName !== "fk_user_election_choices_candidacy"
+      );
       // The count below keys each child column on the from-link id, which is
       // only meaningful for a single-column FK onto id. Any other shape
       // (composite, or referencing another unique column) would compare the

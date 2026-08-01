@@ -49,6 +49,9 @@ export type CandidateDetailElection = {
   is_partisan: boolean | null;
   is_incumbent: boolean;
   status: CandidateElectionStatus;
+  /** elections.seats_to_fill; NULL means "not recorded", which renders as a
+   * single seat (migration 190). The choice UI uses this for its seat cap. */
+  seats_to_fill: number | null;
   office_scope: OfficeScope | null;
   office_canonical_name: string | null;
 };
@@ -154,6 +157,7 @@ type CandidateElectionRow = {
   is_partisan: boolean | null;
   is_incumbent: boolean;
   status: CandidateElectionStatus;
+  seats_to_fill: number | null;
   office_scope: OfficeScope | null;
   office_canonical_name: string | null;
 };
@@ -322,6 +326,7 @@ async function lookupCandidateElections(
           ELSE FALSE
         END AS is_incumbent,
         candidate_election.status,
+        election.seats_to_fill,
         office.scope AS office_scope,
         office.canonical_name AS office_canonical_name
       FROM public.candidate_elections AS candidate_election
@@ -368,6 +373,7 @@ async function lookupCandidateElections(
     is_partisan: row.is_partisan,
     is_incumbent: row.is_incumbent,
     status: row.status,
+    seats_to_fill: row.seats_to_fill,
     office_scope: row.office_scope,
     office_canonical_name: row.office_canonical_name,
   }));

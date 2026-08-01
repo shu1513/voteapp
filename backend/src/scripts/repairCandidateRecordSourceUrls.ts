@@ -61,6 +61,13 @@ type RecordRow = {
   source_url: string;
   event_date: string;
   retired_at: string | null;
+  /**
+   * Joined from candidates so the owned-host policy check can run: without
+   * it, a repair could replace a rejected campaign-site URL with the same
+   * candidate's campaign site — the exact laundering this script's policy
+   * gate exists to prevent.
+   */
+  candidate_display_name: string | null;
 };
 
 function parseArgs(argv: readonly string[]): { repairsFile: string; apply: boolean } {
@@ -166,10 +173,12 @@ export async function repairOneSourceUrl(
   }
 
   // The replacement has to clear the same gate a fresh write would. Without
-  // this, a repair pass could swap one blocked domain for another.
+  // this, a repair pass could swap one blocked domain for another — or a
+  // rejected campaign site for the same candidate's campaign site.
   const policy = evaluateCandidateRecordSourcePolicy({
     description: row.description,
     sourceUrl: repair.sourceUrl,
+    ...(row.candidate_display_name ? { candidateDisplayName: row.candidate_display_name } : {}),
   });
   if (!policy.ok) {
     return {
@@ -206,6 +215,7 @@ export async function repairOneSourceUrl(
     const resolvedPolicy = evaluateCandidateRecordSourcePolicy({
       description: row.description,
       sourceUrl: resolvedUrl,
+      ...(row.candidate_display_name ? { candidateDisplayName: row.candidate_display_name } : {}),
     });
     if (!resolvedPolicy.ok) {
       return {
@@ -293,9 +303,12 @@ function buildPoolDeps(pool: Pool): RepairDeps {
   return {
     loadRecord: async (recordId) => {
       const result = await pool.query<RecordRow>(
-        `SELECT id, candidate_id, description, source_url, event_date::text AS event_date, retired_at::text AS retired_at
-           FROM public.candidate_records
-          WHERE id = $1`,
+        `SELECT cr.id, cr.candidate_id, cr.description, cr.source_url,
+                cr.event_date::text AS event_date, cr.retired_at::text AS retired_at,
+                COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name)) AS candidate_display_name
+           FROM public.candidate_records cr
+           JOIN public.candidates c ON c.id = cr.candidate_id
+          WHERE cr.id = $1`,
         [recordId]
       );
       const row = result.rows[0];

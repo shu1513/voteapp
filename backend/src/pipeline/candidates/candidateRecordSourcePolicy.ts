@@ -565,9 +565,200 @@ export function matchesDamagingClaimPattern(description: string): boolean {
   );
 }
 
+// A meeting-portal INDEX page can never carry a record's claim: the live case
+// was `Portal/MeetingInformation.aspx?Id=67` — HTTPS, reachable, on the right
+// official domain, and a JavaScript nav list of every meeting 2019-2025. The
+// claim lives in a specific document/minutes page, so a citation whose path
+// IS the index is wrong on every tier, .gov included. Path-end anchored so a
+// real document under a deeper path ("/minutes/2024-06-12.pdf") never matches.
+// Verified against the full live corpus before adding: zero legitimate rows.
+// MeetingInformation.aspx is query-immune on purpose, on every host: the page
+// name is a Diligent-platform fingerprint, not a host quirk. The live case
+// was `Portal/MeetingInformation.aspx?Id=67` — the Id selects nothing
+// server-side, the page is a JavaScript nav shell either way — and wave-21
+// field work confirmed the same shell shape on other tenants of the platform
+// (CivicWeb), where the citable document lives at `/document/<id>/` instead.
+// The generic patterns are path-only index names, where a query CAN select a
+// real item.
+const INDEX_PAGE_ALWAYS_PATTERNS = [/\/MeetingInformation\.aspx$/i];
+const INDEX_PAGE_BARE_PATH_PATTERNS = [/^\/(?:[^?#]*\/)?(?:meetings?|agendas?|calendar|minutes)\/?$/i];
+
+// Query keys that only reshape an index (paging, sorting, date windows) — a
+// query made solely of these still cites the listing, not an item.
+const INDEX_PAGE_NAVIGATION_QUERY_KEYS = new Set([
+  "page", "p", "sort", "order", "dir", "view", "lang", "year", "month", "day",
+]);
+
+// Analytics/attribution keys say nothing about WHAT the page shows —
+// "/minutes?utm_source=email" is still the index. Only a parameter that could
+// plausibly select an item may exempt the URL.
+const INDEX_PAGE_TRACKING_QUERY_KEY_PATTERN = /^(?:utm_\w+|fbclid|gclid|msclkid|mc_cid|mc_eid|ref|source|campaign)$/i;
+
+export function isIndexPageSourcePath(sourceUrl: string): boolean {
+  let url: URL;
+  try {
+    url = new URL(sourceUrl);
+  } catch {
+    return false; // unparseable URLs are the schema layer's problem
+  }
+  if (INDEX_PAGE_ALWAYS_PATTERNS.some((pattern) => pattern.test(url.pathname))) {
+    return true;
+  }
+  if (!INDEX_PAGE_BARE_PATH_PATTERNS.some((pattern) => pattern.test(url.pathname))) {
+    return false;
+  }
+  // A selector-style query on an index path ("/calendar?event=123") routes to
+  // a specific item on many CMSes; rejecting it would block legitimate dated
+  // detail pages. Navigation-only and tracking-only queries keep the page an
+  // index. Selector keys are deliberately NOT an allowlist — CMS selector
+  // names are unbounded, and a false rejection here suppresses a real dated
+  // document.
+  for (const [key, value] of url.searchParams) {
+    if (
+      value.trim().length > 0 &&
+      !INDEX_PAGE_NAVIGATION_QUERY_KEYS.has(key.toLowerCase()) &&
+      !INDEX_PAGE_TRACKING_QUERY_KEY_PATTERN.test(key)
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
+// Campaign/personal-site prefixes seen across the 307-row live incident.
+// Longest first, so "votefor" is tried before "vote".
+const OWNED_HOST_PREFIXES = [
+  "votefor",
+  "electfor",
+  "friendsof",
+  "representative",
+  "senator",
+  "vote",
+  "elect",
+  "team",
+  "rep",
+] as const;
+
+const NAME_SUFFIX_TOKENS = new Set(["jr", "sr", "ii", "iii", "iv", "v"]);
+
+// What may follow "<surname>for" in the MID-LABEL branch below for the label
+// to read as a campaign composition: a district number or code ("hd80",
+// "d12"), an office word ("senate", "prosecutor"), or a state. The front-
+// anchored branches need no such gate — name tokens consumed from position 0
+// are already a strong signal — but the mid-label branch matches the surname
+// anywhere, and an unconstrained tail turned substring coincidences into
+// hits: "stanfordfordemocracy.org" contains "ford"+"for" for a candidate
+// named Ford, yet "democracy" is no office. Whole-word office/place tails
+// only; place names beyond states are deliberately absent (a place-name tail
+// with a mid-label surname is not enough evidence of ownership).
+const OWNED_HOST_MIDLABEL_TAIL_PATTERN =
+  /^(?:\d|(?:hd|hr|sd|ld|ad|cd|d)\d|(?:house|senate|congress|assembly|legislature|statehouse|staterep|statesenate|mayor|council|alder|trustee|school|board|judge|justice|sheriff|clerk|treasurer|auditor|assessor|coroner|recorder|commissioner|supervisor|governor|prosecutor|attorney|secretary|delegate|regent|state|county|city|district|ward|alabama|alaska|arizona|arkansas|california|colorado|connecticut|delaware|florida|georgia|hawaii|idaho|illinois|indiana|iowa|kansas|kentucky|louisiana|maine|maryland|massachusetts|michigan|minnesota|mississippi|missouri|montana|nebraska|nevada|newhampshire|newjersey|newmexico|newyork|northcarolina|northdakota|ohio|oklahoma|oregon|pennsylvania|rhodeisland|southcarolina|southdakota|tennessee|texas|utah|vermont|virginia|washington|westvirginia|wisconsin|wyoming))/;
+const OWNED_HOST_MIDLABEL_TAIL_EXACT = new Set([
+  "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga", "hi", "id", "il", "in", "ia",
+  "ks", "ky", "la", "me", "md", "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj",
+  "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc", "sd", "tn", "tx", "ut", "vt",
+  "va", "wa", "wv", "wi", "wy",
+]);
+
+function candidateNameTokens(displayName: string): string[] {
+  return displayName
+    .toLowerCase()
+    .split(/[\s,]+/)
+    .map((token) => token.replace(/[^a-z]/g, ""))
+    .filter((token) => token.length >= 2 && !NAME_SUFFIX_TOKENS.has(token));
+}
+
+/** Greedily consume name tokens from the front; returns count + remainder. */
+function consumeNameTokens(label: string, tokens: readonly string[]): { consumed: number; rest: string } {
+  let rest = label;
+  let consumed = 0;
+  for (;;) {
+    // Longest matching token first, so "jim"+"mooney" beats a shorter overlap.
+    const next = tokens
+      .filter((token) => rest.startsWith(token))
+      .sort((a, b) => b.length - a.length)[0];
+    if (!next) {
+      return { consumed, rest };
+    }
+    rest = rest.slice(next.length);
+    consumed += 1;
+  }
+}
+
+/**
+ * Does this hostname look like the candidate's OWN campaign or personal
+ * officeholder site? 12% of a November repair scope (307 rows, 50 candidates)
+ * cited such hosts as their only source — candidate self-promotion, which the
+ * standing source policy forbids but nothing detected. Matching is
+ * composition-based (exact concatenations of name tokens, campaign prefixes,
+ * and "for<place>" tails), never bare substring scans: "Sara Deen" must not
+ * flag aberdeennews.com, and "Gerald Ford" must not flag fordfoundation.org
+ * or stanfordfordemocracy.org (the mid-label branch gates its tail for the
+ * same reason).
+ * Two live misses shaped the token rules: electscott.com used the FIRST name,
+ * and `Mooney Jr.` broke a last-token-only match on the suffix.
+ */
+export function isCandidateOwnedHostname(hostname: string, candidateDisplayName: string): boolean {
+  const labels = hostname.toLowerCase().split(".");
+  if (labels.length < 2) {
+    return false;
+  }
+  const label = labels[labels.length - 2]!.replace(/-/g, "");
+  const tokens = candidateNameTokens(candidateDisplayName);
+  if (tokens.length === 0 || label.length === 0) {
+    return false;
+  }
+
+  // Prefixed form: elect<name>, vote(for)<name>, senator<name>, ... — the
+  // remainder must be name tokens exactly.
+  for (const prefix of OWNED_HOST_PREFIXES) {
+    if (label.startsWith(prefix) && label.length > prefix.length) {
+      const { consumed, rest } = consumeNameTokens(label.slice(prefix.length), tokens);
+      if (consumed >= 1 && rest.length === 0) {
+        return true;
+      }
+    }
+  }
+
+  // Bare form: <first><last> exactly, or <name...>for<anything>.
+  const { consumed, rest } = consumeNameTokens(label, tokens);
+  if (consumed >= 2 && /^\d*$/.test(rest)) {
+    return true;
+  }
+  if (consumed >= 1 && rest.startsWith("for")) {
+    return true;
+  }
+
+  // Mid-label surname + "for" + office/district/state tail:
+  // billmoskalforhd80.com for "William Moskal" — the nickname "bill" is not a
+  // display-name token, so front consumption never starts. Because the
+  // surname may sit anywhere in the label here, the "for" tail must itself
+  // read as a campaign composition (see OWNED_HOST_MIDLABEL_TAIL_PATTERN);
+  // "stanfordfordemocracy.org" stays clean for a candidate named Ford.
+  for (const token of tokens) {
+    if (token.length >= 4) {
+      const at = label.indexOf(token);
+      if (at >= 0 && label.slice(at + token.length).startsWith("for")) {
+        const tail = label.slice(at + token.length + "for".length);
+        if (OWNED_HOST_MIDLABEL_TAIL_PATTERN.test(tail) || OWNED_HOST_MIDLABEL_TAIL_EXACT.has(tail)) {
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
 export function evaluateCandidateRecordSourcePolicy(input: {
   description: string;
   sourceUrl: string;
+  /**
+   * When provided, unlisted hosts composed from the candidate's own name
+   * (campaign/personal sites) are rejected. Optional because some callers
+   * (repair tooling on arbitrary rows) do not have the name in scope.
+   */
+  candidateDisplayName?: string;
 }): CandidateRecordSourcePolicyResult {
   const classification = classifyCandidateRecordSourceDomain(input.sourceUrl);
   const { tier, hostname } = classification;
@@ -576,6 +767,26 @@ export function evaluateCandidateRecordSourcePolicy(input: {
     return {
       ok: false,
       reason: describeBlockedSource(hostname, classification.blockedKind),
+    };
+  }
+
+  if (isIndexPageSourcePath(input.sourceUrl)) {
+    return {
+      ok: false,
+      reason: `source URL is a meeting/agenda index page, which lists items but cannot carry this record's claim; cite the specific minutes or document page instead`,
+    };
+  }
+
+  // Unlisted tier only: listed news/civic domains and .gov can never be the
+  // candidate's own site, and the blocked tier is already rejected above.
+  if (
+    tier === "unlisted" &&
+    input.candidateDisplayName &&
+    isCandidateOwnedHostname(hostname, input.candidateDisplayName)
+  ) {
+    return {
+      ok: false,
+      reason: `source domain '${hostname}' appears to be the candidate's own campaign or personal site; self-promotion is not acceptable record evidence — cite an independent publisher`,
     };
   }
 

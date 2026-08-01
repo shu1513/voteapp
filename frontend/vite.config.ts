@@ -29,6 +29,11 @@ const uploadSourceMaps = Boolean(process.env.SENTRY_AUTH_TOKEN?.trim());
 // Dev proxy makes the app same-origin with the backend: no CORS config, and
 // the SameSite=Lax session cookie just works. Test config lives in
 // vitest.config.ts (vite 8 and vitest's bundled vite types conflict).
+//
+// ADDRESS_API_PROXY_TARGET lets a second dev stack (e.g. a worktree session)
+// point its frontend at a backend on an alternate ADDRESS_API_PORT while the
+// main checkout's backend still holds 3001.
+const apiProxyTarget = process.env.ADDRESS_API_PROXY_TARGET ?? "http://127.0.0.1:3001";
 export default defineConfig({
   plugins: [
     reactRouter(),
@@ -60,7 +65,7 @@ export default defineConfig({
     strictPort: Boolean(process.env.PORT),
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:3001",
+        target: apiProxyTarget,
         // Browsers attach an Origin header to POSTs even same-origin; the
         // backend's CORS allowlist would reject it. The proxy makes the app
         // same-origin in substance, so drop the header to match.
@@ -71,7 +76,7 @@ export default defineConfig({
         },
       },
       "/sitemap.xml": {
-        target: "http://127.0.0.1:3001",
+        target: apiProxyTarget,
       },
     },
     fs: {

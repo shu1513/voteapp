@@ -239,8 +239,11 @@ describe("runMergeCandidates", () => {
         "'public.candidate_elections'::regclass": [
           [
             {
+              constraint_name: "fl_group_links_candidate_election_id_fkey",
               table_name: "public.fl_candidate_finance_outside_group_links",
               column_name: "candidate_election_id",
+              referenced_column: "id",
+              column_count: 1,
             },
           ],
         ],
@@ -278,8 +281,11 @@ describe("runMergeCandidates", () => {
         "'public.candidate_elections'::regclass": [
           [
             {
+              constraint_name: "fl_group_links_candidate_election_id_fkey",
               table_name: "public.fl_candidate_finance_outside_group_links",
               column_name: "candidate_election_id",
+              referenced_column: "id",
+              column_count: 1,
             },
           ],
         ],
@@ -291,6 +297,83 @@ describe("runMergeCandidates", () => {
 
     await expect(run({ query })).rejects.toThrow(
       /fl_candidate_finance_outside_group_links\.candidate_election_id \(3\)/
+    );
+  });
+
+  it("reconciles user election choices on duplicate links before deleting them", async () => {
+    const { query, calls } = buildClient(
+      happyResponses({
+        "FROM public.candidate_elections\n        WHERE candidate_id = ANY": [
+          [linkRow(), linkRow({ id: SURVIVOR_LINK_ID, candidate_id: SURVIVOR })],
+        ],
+        // c1's user picked both candidates in the duplicate election (their
+        // survivor pick wins); c2's user picked only the merged candidate
+        // (repointed to the survivor's candidacy).
+        "FROM public.user_election_choices AS merged_choice": [
+          [
+            { id: "c1", survivor_has_pick: true },
+            { id: "c2", survivor_has_pick: false },
+          ],
+        ],
+      })
+    );
+
+    const result = await run({ query });
+    expect(result.choices).toEqual({ repointedToSurvivor: 1, duplicatesDeleted: 1 });
+
+    const choiceDelete = calls.find((call) =>
+      call.text.includes("DELETE FROM public.user_election_choices")
+    );
+    expect(choiceDelete?.values).toEqual([["c1"]]);
+    const choiceRepoint = calls.find((call) =>
+      call.text.includes("UPDATE public.user_election_choices")
+    );
+    expect(choiceRepoint?.values).toEqual([["c2"], SURVIVOR]);
+
+    // The reconciliation must land before the duplicate-link delete, or the
+    // FK cascade would have erased the choices first.
+    const choiceDeleteIndex = calls.findIndex((call) =>
+      call.text.includes("DELETE FROM public.user_election_choices")
+    );
+    const linkDeleteIndex = calls.findIndex((call) =>
+      call.text.includes("DELETE FROM public.candidate_elections")
+    );
+    expect(choiceDeleteIndex).toBeGreaterThan(-1);
+    expect(linkDeleteIndex).toBeGreaterThan(choiceDeleteIndex);
+  });
+
+  it("refuses duplicate-link deletion under an unknown composite FK onto candidate_elections", async () => {
+    const { query } = buildClient(
+      happyResponses({
+        "FROM public.candidate_elections\n        WHERE candidate_id = ANY": [
+          [linkRow(), linkRow({ id: SURVIVOR_LINK_ID, candidate_id: SURVIVOR })],
+        ],
+        // A future table with a composite FK this guard cannot count — must
+        // refuse, not silently pass a wrong-column comparison. The known
+        // choices FK is exempt (bespoke-reconciled).
+        "'public.candidate_elections'::regclass": [
+          [
+            {
+              constraint_name: "fk_user_election_choices_candidacy",
+              table_name: "public.user_election_choices",
+              column_name: "candidate_id",
+              referenced_column: "candidate_id",
+              column_count: 2,
+            },
+            {
+              constraint_name: "fk_future_composite",
+              table_name: "public.future_table",
+              column_name: "candidate_id",
+              referenced_column: "candidate_id",
+              column_count: 2,
+            },
+          ],
+        ],
+      })
+    );
+
+    await expect(run({ query })).rejects.toThrow(
+      /future_table\.fk_future_composite.*extend the guard/s
     );
   });
 

@@ -1,0 +1,423 @@
+import type { Pool, PoolClient } from "pg";
+
+import { isUuid } from "../../utils/uuid.js";
+import { US_LATEST_LOCAL_DATE_SQL } from "../../utils/usLocalDate.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type TransactionalDb = Pick<Pool, "connect">;
+type TransactionClient = Pick<PoolClient, "query" | "release">;
+
+export type UserElectionChoicePick = {
+  candidate_id: string;
+  display_name: string;
+  /** candidate_elections.status at read time — a pick made before a
+   * withdrawal stays visible so the UI can flag it, not silently vanish. */
+  candidacy_status: string;
+};
+
+export type UserElectionChoice = {
+  election_id: string;
+  race_type: "office" | "ballot_measure";
+  official_ballot_title: string;
+  election_date: string;
+  seats_to_fill: number | null;
+  picks: UserElectionChoicePick[];
+  measure_position: "yes" | "no" | null;
+  updated_at: string;
+};
+
+export type UserElectionChoicesResult = {
+  choices: UserElectionChoice[];
+};
+
+export type UserElectionChoiceInput =
+  | { electionId: string; candidateId: string; chosen: boolean }
+  | { electionId: string; measurePosition: "yes" | "no" | null };
+
+export type UserElectionChoiceUpdateResult = {
+  choice: UserElectionChoice;
+};
+
+export type UserElectionChoicesErrorCode =
+  | "invalid_user_id"
+  | "invalid_election_id"
+  | "invalid_candidate_id"
+  | "invalid_choice_input"
+  | "user_not_found"
+  | "election_not_found"
+  | "election_closed"
+  | "candidacy_not_available"
+  | "choice_limit_reached";
+
+export class UserElectionChoicesError extends Error {
+  constructor(
+    readonly code: UserElectionChoicesErrorCode,
+    message: string
+  ) {
+    super(message);
+    this.name = "UserElectionChoicesError";
+  }
+}
+
+type ChoiceRow = {
+  election_id: string;
+  race_type: "office" | "ballot_measure";
+  official_ballot_title: string;
+  election_date: string;
+  seats_to_fill: number | null;
+  candidate_id: string | null;
+  display_name: string | null;
+  candidacy_status: string | null;
+  measure_position: "yes" | "no" | null;
+  updated_at: string | Date;
+};
+
+type ElectionRow = {
+  id: string;
+  race_type: "office" | "ballot_measure";
+  election_date: string;
+  seats_to_fill: number | null;
+  is_upcoming: boolean;
+};
+
+function normalizeUserId(userId: string): string {
+  const normalized = userId.trim();
+  if (!isUuid(normalized)) {
+    throw new UserElectionChoicesError("invalid_user_id", "User ID must be a valid UUID");
+  }
+  return normalized;
+}
+
+function normalizeElectionId(electionId: string): string {
+  const normalized = electionId.trim();
+  if (!isUuid(normalized)) {
+    throw new UserElectionChoicesError("invalid_election_id", "Election ID must be a valid UUID");
+  }
+  return normalized;
+}
+
+function normalizeCandidateId(candidateId: string): string {
+  const normalized = candidateId.trim();
+  if (!isUuid(normalized)) {
+    throw new UserElectionChoicesError("invalid_candidate_id", "Candidate ID must be a valid UUID");
+  }
+  return normalized;
+}
+
+function formatTimestamp(value: string | Date): string {
+  return value instanceof Date ? value.toISOString() : value;
+}
+
+async function rollbackQuietly(client: TransactionClient): Promise<void> {
+  try {
+    await client.query("ROLLBACK");
+  } catch {
+    // Preserve the original failure.
+  }
+}
+
+async function assertActiveUser(db: Queryable, normalizedUserId: string, lock: boolean): Promise<void> {
+  const user = await db.query<{ id: string }>(
+    `
+      SELECT id
+      FROM public.users
+      WHERE id = $1::uuid
+        AND deleted_at IS NULL
+      ${lock ? "FOR UPDATE" : ""}
+    `,
+    [normalizedUserId]
+  );
+  if (user.rows.length === 0) {
+    throw new UserElectionChoicesError("user_not_found", "User not found");
+  }
+}
+
+// Shared by the list read and the post-write read-back so both return the
+// same shape. Rows whose candidate has since been deleted or merged drop
+// out (display_name join fails); withdrawn candidacies stay, flagged by
+// candidacy_status, so a user's pick never silently disappears.
+const CHOICE_ROWS_SQL = `
+  SELECT
+    choice.election_id::text AS election_id,
+    election.race_type,
+    election.official_ballot_title,
+    election.election_date::text AS election_date,
+    election.seats_to_fill,
+    choice.candidate_id::text AS candidate_id,
+    COALESCE(
+      NULLIF(trim(candidate.display_name), ''),
+      trim(concat_ws(' ', candidate.first_name, candidate.last_name))
+    ) AS display_name,
+    candidate_election.status AS candidacy_status,
+    choice.measure_position,
+    choice.updated_at
+  FROM public.user_election_choices AS choice
+  JOIN public.elections AS election
+    ON election.id = choice.election_id
+  LEFT JOIN public.candidates AS candidate
+    ON candidate.id = choice.candidate_id
+   AND candidate.deleted_at IS NULL
+   AND candidate.merged_into_candidate_id IS NULL
+  LEFT JOIN public.candidate_elections AS candidate_election
+    ON candidate_election.candidate_id = choice.candidate_id
+   AND candidate_election.election_id = choice.election_id
+  WHERE choice.user_id = $1::uuid
+`;
+
+function rowsToChoices(rows: ChoiceRow[]): UserElectionChoice[] {
+  const byElection = new Map<string, UserElectionChoice>();
+  for (const row of rows) {
+    let choice = byElection.get(row.election_id);
+    if (!choice) {
+      choice = {
+        election_id: row.election_id,
+        race_type: row.race_type,
+        official_ballot_title: row.official_ballot_title,
+        election_date: row.election_date,
+        seats_to_fill: row.seats_to_fill,
+        picks: [],
+        measure_position: null,
+        updated_at: formatTimestamp(row.updated_at),
+      };
+      byElection.set(row.election_id, choice);
+    }
+    const rowUpdatedAt = formatTimestamp(row.updated_at);
+    if (rowUpdatedAt > choice.updated_at) {
+      choice.updated_at = rowUpdatedAt;
+    }
+    if (row.measure_position !== null) {
+      choice.measure_position = row.measure_position;
+    } else if (row.candidate_id && row.display_name && row.candidacy_status) {
+      choice.picks.push({
+        candidate_id: row.candidate_id,
+        display_name: row.display_name,
+        candidacy_status: row.candidacy_status,
+      });
+    }
+  }
+  // A measure row always renders; an office election whose only picked
+  // candidate has been deleted has nothing left to show.
+  return [...byElection.values()].filter(
+    (choice) => choice.picks.length > 0 || choice.measure_position !== null
+  );
+}
+
+export async function listUserElectionChoices(db: Queryable, userId: string): Promise<UserElectionChoicesResult> {
+  const normalizedUserId = normalizeUserId(userId);
+  await assertActiveUser(db, normalizedUserId, false);
+  const result = await db.query<ChoiceRow>(
+    `
+      ${CHOICE_ROWS_SQL}
+      ORDER BY election.election_date ASC, election.id ASC, choice.created_at ASC, choice.id ASC
+    `,
+    [normalizedUserId]
+  );
+  return { choices: rowsToChoices(result.rows) };
+}
+
+async function readElectionChoice(
+  db: Queryable,
+  normalizedUserId: string,
+  normalizedElectionId: string,
+  election: ElectionRow
+): Promise<UserElectionChoice> {
+  const result = await db.query<ChoiceRow>(
+    `
+      ${CHOICE_ROWS_SQL}
+        AND choice.election_id = $2::uuid
+      ORDER BY choice.created_at ASC, choice.id ASC
+    `,
+    [normalizedUserId, normalizedElectionId]
+  );
+  const choices = rowsToChoices(result.rows);
+  if (choices[0]) {
+    return choices[0];
+  }
+  // Everything cleared: return the empty state so the caller can render it.
+  return {
+    election_id: normalizedElectionId,
+    race_type: election.race_type,
+    official_ballot_title: "",
+    election_date: election.election_date,
+    seats_to_fill: election.seats_to_fill,
+    picks: [],
+    measure_position: null,
+    updated_at: new Date().toISOString(),
+  };
+}
+
+async function lockElection(db: Queryable, normalizedElectionId: string): Promise<ElectionRow> {
+  const result = await db.query<ElectionRow>(
+    `
+      SELECT
+        id::text AS id,
+        race_type,
+        election_date::text AS election_date,
+        seats_to_fill,
+        election_date >= ${US_LATEST_LOCAL_DATE_SQL} AS is_upcoming
+      FROM public.elections
+      WHERE id = $1::uuid
+      FOR SHARE
+    `,
+    [normalizedElectionId]
+  );
+  const election = result.rows[0];
+  if (!election) {
+    throw new UserElectionChoicesError("election_not_found", "Election not found");
+  }
+  if (!election.is_upcoming) {
+    throw new UserElectionChoicesError("election_closed", "Choices can only be changed for upcoming elections");
+  }
+  return election;
+}
+
+export async function setUserElectionChoice(
+  db: TransactionalDb,
+  userId: string,
+  input: UserElectionChoiceInput
+): Promise<UserElectionChoiceUpdateResult> {
+  const normalizedUserId = normalizeUserId(userId);
+  const normalizedElectionId = normalizeElectionId(input.electionId);
+  const client = await db.connect();
+
+  try {
+    await client.query("BEGIN");
+    // FOR UPDATE on the user row serializes this user's choice writes, which
+    // makes the count-then-insert seat cap below race-safe.
+    await assertActiveUser(client, normalizedUserId, true);
+    const election = await lockElection(client, normalizedElectionId);
+
+    if ("candidateId" in input) {
+      if (election.race_type !== "office") {
+        throw new UserElectionChoicesError(
+          "invalid_choice_input",
+          "Candidate choices apply to office elections; use measure_position for ballot measures"
+        );
+      }
+      const normalizedCandidateId = normalizeCandidateId(input.candidateId);
+      if (typeof input.chosen !== "boolean") {
+        throw new UserElectionChoicesError("invalid_choice_input", "chosen must be a boolean");
+      }
+
+      if (!input.chosen) {
+        await client.query(
+          `
+            DELETE FROM public.user_election_choices
+            WHERE user_id = $1::uuid
+              AND election_id = $2::uuid
+              AND candidate_id = $3::uuid
+          `,
+          [normalizedUserId, normalizedElectionId, normalizedCandidateId]
+        );
+      } else {
+        const candidacy = await client.query<{ candidate_id: string }>(
+          `
+            SELECT candidate_election.candidate_id::text AS candidate_id
+            FROM public.candidate_elections AS candidate_election
+            JOIN public.candidates AS candidate
+              ON candidate.id = candidate_election.candidate_id
+             AND candidate.deleted_at IS NULL
+             AND candidate.merged_into_candidate_id IS NULL
+            WHERE candidate_election.candidate_id = $1::uuid
+              AND candidate_election.election_id = $2::uuid
+              AND candidate_election.status NOT IN ('withdrawn', 'lost')
+            FOR SHARE OF candidate_election
+          `,
+          [normalizedCandidateId, normalizedElectionId]
+        );
+        if (candidacy.rows.length === 0) {
+          throw new UserElectionChoicesError(
+            "candidacy_not_available",
+            "Candidate is not an active candidate in this election"
+          );
+        }
+
+        // NULL seats_to_fill means "seat count never recorded", which the
+        // product renders as a single seat everywhere; the cap follows suit.
+        const seatCap = election.seats_to_fill ?? 1;
+        const existing = await client.query<{ count: string }>(
+          `
+            SELECT count(*)::text AS count
+            FROM public.user_election_choices
+            WHERE user_id = $1::uuid
+              AND election_id = $2::uuid
+              AND candidate_id IS NOT NULL
+              AND candidate_id <> $3::uuid
+          `,
+          [normalizedUserId, normalizedElectionId, normalizedCandidateId]
+        );
+        const otherPickCount = Number(existing.rows[0]?.count ?? "0");
+        if (otherPickCount >= seatCap) {
+          if (seatCap === 1) {
+            // Single-seat races behave like a radio button: picking a new
+            // candidate replaces the old pick instead of erroring.
+            await client.query(
+              `
+                DELETE FROM public.user_election_choices
+                WHERE user_id = $1::uuid
+                  AND election_id = $2::uuid
+                  AND candidate_id IS NOT NULL
+              `,
+              [normalizedUserId, normalizedElectionId]
+            );
+          } else {
+            throw new UserElectionChoicesError(
+              "choice_limit_reached",
+              `This election fills ${seatCap} seats; remove a pick before adding another`
+            );
+          }
+        }
+
+        await client.query(
+          `
+            INSERT INTO public.user_election_choices (user_id, election_id, candidate_id)
+            VALUES ($1::uuid, $2::uuid, $3::uuid)
+            ON CONFLICT (user_id, election_id, candidate_id) WHERE candidate_id IS NOT NULL
+            DO UPDATE SET updated_at = now()
+          `,
+          [normalizedUserId, normalizedElectionId, normalizedCandidateId]
+        );
+      }
+    } else {
+      if (election.race_type !== "ballot_measure") {
+        throw new UserElectionChoicesError(
+          "invalid_choice_input",
+          "measure_position applies to ballot-measure elections; use candidate_id for office races"
+        );
+      }
+      if (input.measurePosition === null) {
+        await client.query(
+          `
+            DELETE FROM public.user_election_choices
+            WHERE user_id = $1::uuid
+              AND election_id = $2::uuid
+              AND measure_position IS NOT NULL
+          `,
+          [normalizedUserId, normalizedElectionId]
+        );
+      } else {
+        if (input.measurePosition !== "yes" && input.measurePosition !== "no") {
+          throw new UserElectionChoicesError("invalid_choice_input", "measure_position must be 'yes', 'no', or null");
+        }
+        await client.query(
+          `
+            INSERT INTO public.user_election_choices (user_id, election_id, measure_position)
+            VALUES ($1::uuid, $2::uuid, $3)
+            ON CONFLICT (user_id, election_id) WHERE measure_position IS NOT NULL
+            DO UPDATE SET measure_position = EXCLUDED.measure_position, updated_at = now()
+          `,
+          [normalizedUserId, normalizedElectionId, input.measurePosition]
+        );
+      }
+    }
+
+    const choice = await readElectionChoice(client, normalizedUserId, normalizedElectionId, election);
+    await client.query("COMMIT");
+    return { choice };
+  } catch (error) {
+    await rollbackQuietly(client);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
