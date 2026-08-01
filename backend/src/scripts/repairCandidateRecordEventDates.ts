@@ -265,7 +265,8 @@ function buildPoolDeps(pool: Pool): RepairDeps {
           WHERE id = $1
             AND description = $4
             AND event_date = $5::date
-            AND source_url = $6`,
+            AND source_url = $6
+            AND retired_at IS NULL`,
         [
           recordId,
           eventDate,
@@ -307,15 +308,16 @@ async function main(): Promise<void> {
       }
     }
   } finally {
+    // The report prints BEFORE pool teardown: in --apply mode some rows are
+    // already written by now, and a pool.end() rejection after the loop would
+    // otherwise discard the only account of which.
+    const counts = outcomes.reduce<Record<string, number>>((acc, outcome) => {
+      acc[outcome.status] = (acc[outcome.status] ?? 0) + 1;
+      return acc;
+    }, {});
+    console.log(JSON.stringify({ mode: apply ? "apply" : "dry-run", counts, outcomes }, null, 2));
     await pool.end();
   }
-
-  const counts = outcomes.reduce<Record<string, number>>((acc, outcome) => {
-    acc[outcome.status] = (acc[outcome.status] ?? 0) + 1;
-    return acc;
-  }, {});
-
-  console.log(JSON.stringify({ mode: apply ? "apply" : "dry-run", counts, outcomes }, null, 2));
 
   for (const outcome of outcomes) {
     if (outcome.status === "skipped") {
