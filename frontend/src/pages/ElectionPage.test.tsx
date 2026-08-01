@@ -10,7 +10,7 @@ const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
 // The subject arrives via the route loader (server-fetched in production);
 // tests supply it directly instead of stubbing the loader's fetch.
-function renderElection(loader: () => unknown, id = "e-1") {
+function renderElection(loader: (args: { params: { electionId?: string } }) => unknown, id = "e-1") {
   return renderRoutes(
     [
       {
@@ -193,6 +193,43 @@ describe("ElectionPage", () => {
     await user.click(screen.getByRole("button", { name: "All (4)" }));
     expect(screen.getByText("Riley Republican")).toBeInTheDocument();
     expect(screen.getByText("Indy Other")).toBeInTheDocument();
+  });
+
+  it("resets the party filter when navigating to a different election", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const candidate = (id: string, name: string, party: string) => ({
+      candidate_id: id,
+      display_name: name,
+      party,
+      is_incumbent: false,
+      status: "active",
+      summary: null,
+      finance_summary: null,
+      records: [],
+    });
+    // Same route stays mounted across param changes; both rosters offer the
+    // "Democrats" bucket, so a leaked pick WOULD apply — and must not.
+    const { router } = renderElection(({ params }) =>
+      params.electionId === "e-2"
+        ? electionDetail({
+            id: "e-2",
+            candidates: [candidate("c-5", "Casey Second", "Democratic"), candidate("c-6", "Robin Second", "Republican")],
+          })
+        : electionDetail({
+            id: "e-1",
+            candidates: [candidate("c-1", "Dana First", "Democratic"), candidate("c-2", "Riley First", "Republican")],
+          })
+    );
+
+    await user.click(await screen.findByRole("button", { name: "Democrats (1)" }));
+    expect(screen.queryByText("Riley First")).not.toBeInTheDocument();
+
+    await router.navigate("/elections/e-2");
+    // Fresh election, fresh filter: both candidates visible, All pressed.
+    expect(await screen.findByText("Robin Second")).toBeInTheDocument();
+    expect(screen.getByText("Casey Second")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "All (2)" })).toHaveAttribute("aria-pressed", "true");
   });
 
   it("explains an empty candidate list instead of hiding the section", async () => {

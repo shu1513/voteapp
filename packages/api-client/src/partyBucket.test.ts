@@ -15,6 +15,14 @@ describe("partyBucket", () => {
     expect(partyBucket("Registered Republican")).toBe("republican");
   });
 
+  it("buckets legacy spelling variants until every deployment's backfill has run", () => {
+    expect(partyBucket("DEM")).toBe("democratic");
+    expect(partyBucket("Democrat")).toBe("democratic");
+    expect(partyBucket("Democratic Party")).toBe("democratic");
+    expect(partyBucket("REP")).toBe("republican");
+    expect(partyBucket("Republican Party")).toBe("republican");
+  });
+
   it("is case- and whitespace-insensitive", () => {
     expect(partyBucket("  DEMOCRATIC ")).toBe("democratic");
     expect(partyBucket("republican")).toBe("republican");

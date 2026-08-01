@@ -100,17 +100,26 @@ export function ElectionPage() {
   const [chosenSort, setChosenSort] = useState<CandidateSort | null>(null);
   const effectiveChosenSort = chosenSort === "my_issues" && !hasSaved ? null : chosenSort;
   const candidateSort = effectiveChosenSort ?? (hasSaved ? "my_issues" : "alphabetical");
-  const [chosenPartyFilter, setChosenPartyFilter] = useState<PartyBucket | "all">("all");
+  // The pick carries the election it was made on: this component stays
+  // mounted across param changes, and unlike the sort (a preference that
+  // travels), a party filter is a per-race choice — carrying it into the
+  // next election would silently hide candidates there. A pick from another
+  // election reads as "all"; no effect needed, stale state is simply never
+  // read.
+  const [partyPick, setPartyPick] = useState<{ electionId: string; bucket: PartyBucket | "all" }>({
+    electionId: "",
+    bucket: "all",
+  });
 
   const data = useLoaderData<typeof loader>();
+  const chosenPartyFilter = partyPick.electionId === data.id ? partyPick.bucket : "all";
   // Data-driven visibility: the filter renders only when the roster spans
   // >= 2 buckets — a nonpartisan or one-party roster gets no filter because
   // it could not change anything. is_partisan is deliberately not consulted
   // (it can be null, and a partisan race whose roster is all one bucket
-  // still has nothing to filter). Same resilience pattern as the sort above:
-  // a picked bucket is ignored — not cleared — while it cannot apply (filter
-  // hidden here, or this roster lacks the bucket after navigating between
-  // elections; this component stays mounted across param changes).
+  // still has nothing to filter). The count guard mirrors the sort's
+  // resilience: a picked bucket is ignored — not cleared — while the filter
+  // is hidden.
   const partyCounts: Record<PartyBucket, number> = { democratic: 0, republican: 0, other: 0 };
   for (const candidate of data.candidates) {
     partyCounts[partyBucket(candidate.party)] += 1;
@@ -370,7 +379,7 @@ export function ElectionPage() {
                 <button
                   key={option.bucket}
                   type="button"
-                  onClick={() => setChosenPartyFilter(option.bucket)}
+                  onClick={() => setPartyPick({ electionId: data.id, bucket: option.bucket })}
                   aria-pressed={partyFilter === option.bucket}
                   className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
                     partyFilter === option.bucket

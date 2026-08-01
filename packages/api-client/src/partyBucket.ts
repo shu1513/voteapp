@@ -23,9 +23,22 @@ const DEMOCRATIC_LABELS = new Set([
   // Alaska's top-four registration label: a registration disclosure, not an
   // affiliation claim — but a viewer filtering "Democrats" expects it here.
   "registered democrat",
+  // Legacy spelling variants the backend canonicalizer rewrites at write
+  // time. They stay here because this function runs against whatever a
+  // deployment's data currently holds — a database whose backfill has not
+  // run yet (production today) would otherwise file these under "Other".
+  "dem",
+  "democrat",
+  "democratic party",
 ]);
 
-const REPUBLICAN_LABELS = new Set(["republican", "registered republican"]);
+const REPUBLICAN_LABELS = new Set([
+  "republican",
+  "registered republican",
+  // Legacy variants, same reasoning as the Democratic set.
+  "rep",
+  "republican party",
+]);
 
 export function partyBucket(party: string | null | undefined): PartyBucket {
   if (!party) {
