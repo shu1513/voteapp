@@ -9,6 +9,7 @@ import {
   candidateElection,
   candidateFollow,
   financeSummary,
+  ME_UNVERIFIED,
   ME_VERIFIED,
 } from "../test/fixtures";
 
@@ -264,8 +265,50 @@ describe("CandidatePage", () => {
     );
 
     await screen.findByRole("heading", { name: "Jordan Voter" });
-    expect(screen.getByText("For")).toBeInTheDocument();
-    expect(screen.getByText("Against")).toBeInTheDocument();
+    // The chip names its topic so a card read without its group heading
+    // still says what the stance is about.
+    expect(screen.getByText("Supports Housing")).toBeInTheDocument();
+    expect(screen.getByText("Opposes Transit")).toBeInTheDocument();
+  });
+
+  it("uses evidence wording, not advocacy verbs, for judicial evaluative areas", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    // On legal_competence/impartiality a for/against tag grades the
+    // EVIDENCE (favorable/unfavorable) — "Opposes Legal Competence" would
+    // claim an intent the data never asserted.
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          {
+            id: "r-judicial",
+            description: "Had two rulings reversed on appeal during 2024.",
+            source_url: "https://example.gov/opinions",
+            event_date: "2024-08-01",
+            created_at: "2026-05-02T00:00:00.000Z",
+            research_area_tags: [
+              {
+                research_area_id: "a-competence",
+                slug: "legal_competence",
+                name: "Legal Competence",
+                stance: "against",
+              },
+              {
+                research_area_id: "a-impartiality",
+                slug: "impartiality",
+                name: "Impartiality",
+                stance: "for",
+              },
+            ],
+          },
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Jordan Voter" });
+    expect(screen.getByText("Unfavorable on Legal Competence")).toBeInTheDocument();
+    expect(screen.getByText("Favorable on Impartiality")).toBeInTheDocument();
+    expect(screen.queryByText("Opposes Legal Competence")).not.toBeInTheDocument();
+    expect(screen.queryByText("Supports Impartiality")).not.toBeInTheDocument();
   });
 
   it("keeps mixed records chipless in the newest view and spells out per-tag stances", async () => {
@@ -291,11 +334,10 @@ describe("CandidatePage", () => {
     const user = userEvent.setup();
     await user.selectOptions(await screen.findByRole("combobox"), "newest");
 
-    // No single chip — the record's direction differs by area — but the tag
-    // list carries each area's stance.
-    expect(screen.queryByText("For")).not.toBeInTheDocument();
-    expect(screen.queryByText("Against")).not.toBeInTheDocument();
-    expect(screen.getByText(/Housing \(for\), Transit \(against\)/)).toBeInTheDocument();
+    // The flat view has no single chip — the tag list carries each area's
+    // stance in the same verb phrasing as the grouped chip.
+    expect(screen.getByText("Supports Housing")).toBeInTheDocument();
+    expect(screen.getByText("Opposes Transit")).toBeInTheDocument();
   });
 
   it("renders the profile report button after the record and election sections", async () => {
@@ -351,6 +393,35 @@ describe("CandidatePage", () => {
       await screen.findByText("This candidate's record history has not been researched yet.")
     ).toBeInTheDocument();
     expect(screen.queryByText(/No verified public records/)).not.toBeInTheDocument();
+  });
+
+  it("shows logged-out visitors a Follow button that prompts them to register", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail());
+
+    const followButton = await screen.findByRole("button", { name: "Follow" });
+    await userEvent.click(followButton);
+
+    expect(await screen.findByText("Register for free to get updates about this candidate.")).toBeInTheDocument();
+    // Both links carry the candidate page as the post-auth return path.
+    expect(screen.getByRole("link", { name: "Register for free" })).toHaveAttribute(
+      "href",
+      "/register?next=%2Fcandidates%2Fc-1"
+    );
+    expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute(
+      "href",
+      "/login?next=%2Fcandidates%2Fc-1"
+    );
+  });
+
+  it("shows no follow controls to logged-in but unverified users", async () => {
+    // The follows endpoint is verified-email-gated, and the register prompt
+    // would be wrong for someone who already registered.
+    stubApiRoutes({ "/api/me": { body: ME_UNVERIFIED } });
+    renderCandidate(() => candidateDetail());
+
+    expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Follow" })).not.toBeInTheDocument();
   });
 
   it("shows the follow button as Unfollow once the follows list confirms it", async () => {

@@ -28,7 +28,7 @@ function sessionRoutes(me: unknown): Record<string, ApiRoute> {
   };
 }
 
-function renderLogin() {
+function renderLogin(search = "") {
   return renderRoutes(
     [
       {
@@ -42,8 +42,10 @@ function renderLogin() {
       },
       { path: "/me/welcome", element: <p>Welcome placeholder</p> },
       { path: "/me/ballot", element: <p>Saved ballot placeholder</p> },
+      { path: "/candidates/:candidateId", element: <p>candidate page</p> },
+      { path: "/register", element: <p>register page</p> },
     ],
-    "/login"
+    `/login${search}`
   );
 }
 
@@ -53,6 +55,14 @@ async function logIn() {
   await user.type(screen.getByLabelText("Password"), "correct horse battery");
   await user.click(screen.getByRole("button", { name: "Log in" }));
 }
+
+const SAVED_PREFERENCE = {
+  research_area_id: "a-env",
+  slug: "environment",
+  name: "Environment",
+  description: null,
+  rank: 1,
+};
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -73,9 +83,7 @@ describe("LoginPage first-login onboarding redirect", () => {
   it("sends a user with saved areas straight to the ballot", async () => {
     stubApiRoutes({
       ...sessionRoutes(ME_VERIFIED),
-      "/api/me/research-area-preferences": {
-        body: { preferences: [{ research_area_id: "a-env", slug: "environment", name: "Environment", description: null, rank: 1 }] },
-      },
+      "/api/me/research-area-preferences": { body: { preferences: [SAVED_PREFERENCE] } },
     });
     renderLogin();
     await logIn();
@@ -97,5 +105,53 @@ describe("LoginPage first-login onboarding redirect", () => {
     renderLogin();
     await logIn();
     expect(await screen.findByText("Saved ballot placeholder")).toBeInTheDocument();
+  });
+});
+
+describe("LoginPage next-path return", () => {
+  it("returns to the internal next path after login, skipping the welcome step", async () => {
+    // Preferences endpoint deliberately unmocked: an explicit return path
+    // must win over the onboarding detour without even checking.
+    stubApiRoutes(sessionRoutes(ME_VERIFIED));
+    renderLogin("?next=/candidates/c-1");
+
+    await logIn();
+
+    expect(await screen.findByText("candidate page")).toBeInTheDocument();
+  });
+
+  it("falls back to the ballot when next is missing", async () => {
+    stubApiRoutes({
+      ...sessionRoutes(ME_VERIFIED),
+      "/api/me/research-area-preferences": { body: { preferences: [SAVED_PREFERENCE] } },
+    });
+    renderLogin();
+
+    await logIn();
+
+    expect(await screen.findByText("Saved ballot placeholder")).toBeInTheDocument();
+  });
+
+  it("ignores an external next instead of open-redirecting", async () => {
+    stubApiRoutes({
+      ...sessionRoutes(ME_VERIFIED),
+      "/api/me/research-area-preferences": { body: { preferences: [SAVED_PREFERENCE] } },
+    });
+    // "//evil.example" is protocol-relative — a browser would leave the site.
+    renderLogin(`?next=${encodeURIComponent("//evil.example/phish")}`);
+
+    await logIn();
+
+    expect(await screen.findByText("Saved ballot placeholder")).toBeInTheDocument();
+  });
+
+  it("forwards next to the register link", async () => {
+    stubApiRoutes(sessionRoutes(ME_VERIFIED));
+    renderLogin("?next=/candidates/c-1");
+
+    expect(screen.getByRole("link", { name: "Create an account" })).toHaveAttribute(
+      "href",
+      "/register?next=%2Fcandidates%2Fc-1"
+    );
   });
 });

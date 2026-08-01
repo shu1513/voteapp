@@ -6,15 +6,18 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RegisterPage } from "./RegisterPage";
 import { TERMS_VERSION } from "@voteapp/api-client";
 
-function renderRegister() {
+function renderRegister(search = "") {
   const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
-  const router = createMemoryRouter([
-    { path: "/", element: <RegisterPage /> },
-    { path: "/login", element: <p /> },
-    { path: "/terms", element: <p /> },
-    { path: "/privacy", element: <p /> },
-    { path: "/disclaimer", element: <p /> },
-  ]);
+  const router = createMemoryRouter(
+    [
+      { path: "/", element: <RegisterPage /> },
+      { path: "/login", element: <p /> },
+      { path: "/terms", element: <p /> },
+      { path: "/privacy", element: <p /> },
+      { path: "/disclaimer", element: <p /> },
+    ],
+    { initialEntries: [`/${search}`] }
+  );
   return render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
@@ -98,5 +101,37 @@ describe("RegisterPage clickwrap", () => {
       accepted_terms_version: TERMS_VERSION,
       first_name: "Val",
     });
+  });
+
+  it("forwards an internal next path to the login links", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      headers: new Headers(),
+      json: async () => ({ status: "ok" }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    renderRegister("?next=/candidates/c-1");
+
+    expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute(
+      "href",
+      "/login?next=%2Fcandidates%2Fc-1"
+    );
+
+    // The check-email screen's login button keeps the return path too.
+    await user.type(screen.getByLabelText("Email"), "voter@example.com");
+    await user.type(screen.getByLabelText("Password"), "correct horse battery staple");
+    await user.type(screen.getByLabelText("Confirm password"), "correct horse battery staple");
+    await user.click(screen.getByRole("checkbox"));
+    await user.click(screen.getByRole("button", { name: "Create account" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Check your email")).toBeInTheDocument();
+    });
+    expect(screen.getByRole("link", { name: "Go to login" })).toHaveAttribute(
+      "href",
+      "/login?next=%2Fcandidates%2Fc-1"
+    );
   });
 });
