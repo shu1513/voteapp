@@ -143,7 +143,13 @@ function extractRosterCandidatesFromStagingPayload(payload: unknown): CandidateR
 
   const resolved: CandidateRosterResolvedEntry[] = [];
   for (const [rowIndex, row] of input.candidates.entries()) {
-    const parsedRow = parseCandidateRosterPayload({ candidates: [row] });
+    // Re-parse of an ALREADY-validated/written staging payload (this function
+    // is only reached from that branch): rosters imported before the
+    // source-domain policy can carry a now-blocked URL, and enforcing here
+    // would turn their stream messages into unackable poison and make
+    // targeted re-runs throw. Fresh payloads are enforced upstream, at AI
+    // validation and manual inject, before they can reach these statuses.
+    const parsedRow = parseCandidateRosterPayload({ candidates: [row] }, { enforceSourcePolicy: false });
     if (!parsedRow.ok || parsedRow.payload.candidates.length !== 1) {
       return null;
     }
