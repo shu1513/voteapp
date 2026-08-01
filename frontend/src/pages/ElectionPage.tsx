@@ -167,7 +167,7 @@ export function ElectionPage() {
       ) : null}
 
       {showOfficeInfo ? (
-        // Description first, then the affected areas — what the office does,
+        // Description first, then the key issues — what the office does,
         // then which issues it touches.
         <section className="mt-6 rounded-xl border border-line bg-white p-4">
           <h2 className="text-lg font-semibold">
@@ -191,7 +191,11 @@ export function ElectionPage() {
             // cards: saved matches lead with a screen-reader-only "(saved)"
             // cue, position is the only sighted distinction.
             <p className="mt-3 text-xs">
-              <span className="font-medium text-ink-soft">Affected Areas:</span>{" "}
+              {/* Sentence case and singular/plural, matching the ballot
+                  cards' label. */}
+              <span className="font-medium text-ink-soft">
+                {researchAreas.length === 1 ? "Key issue:" : "Key issues:"}
+              </span>{" "}
               {/* Comma separators live outside the spans as plain text
                   nodes, so each span's text stays exactly the area name. */}
               {[...orderedAreas.saved, ...orderedAreas.others].map((area, index, all) => (
@@ -377,7 +381,7 @@ export function ElectionPage() {
                       {/* Without a label the row was a bare "Housing
                           Affordability +1" — an issue name and a number with
                           nothing saying what was counted. "Records:" names
-                          the source, matching the "Affected Areas:" row on
+                          the source, matching the "Key issues:" row on
                           the election cards. */}
                       <span className="font-medium text-ink-soft">Records:</span>{" "}
                       {stances.map((stance, index, all) => (
