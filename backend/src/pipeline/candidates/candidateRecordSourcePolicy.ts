@@ -565,9 +565,136 @@ export function matchesDamagingClaimPattern(description: string): boolean {
   );
 }
 
+// A meeting-portal INDEX page can never carry a record's claim: the live case
+// was `Portal/MeetingInformation.aspx?Id=67` — HTTPS, reachable, on the right
+// official domain, and a JavaScript nav list of every meeting 2019-2025. The
+// claim lives in a specific document/minutes page, so a citation whose path
+// IS the index is wrong on every tier, .gov included. Path-end anchored so a
+// real document under a deeper path ("/minutes/2024-06-12.pdf") never matches.
+// Verified against the full live corpus before adding: zero legitimate rows.
+const INDEX_PAGE_PATH_PATTERNS = [
+  /\/MeetingInformation\.aspx$/i,
+  /^\/(?:[^?#]*\/)?(?:meetings?|agendas?|calendar|minutes)\/?$/i,
+];
+
+export function isIndexPageSourcePath(sourceUrl: string): boolean {
+  let pathname: string;
+  try {
+    pathname = new URL(sourceUrl).pathname;
+  } catch {
+    return false; // unparseable URLs are the schema layer's problem
+  }
+  return INDEX_PAGE_PATH_PATTERNS.some((pattern) => pattern.test(pathname));
+}
+
+// Campaign/personal-site prefixes seen across the 307-row live incident.
+// Longest first, so "votefor" is tried before "vote".
+const OWNED_HOST_PREFIXES = [
+  "votefor",
+  "electfor",
+  "friendsof",
+  "representative",
+  "senator",
+  "vote",
+  "elect",
+  "team",
+  "rep",
+] as const;
+
+const NAME_SUFFIX_TOKENS = new Set(["jr", "sr", "ii", "iii", "iv", "v"]);
+
+function candidateNameTokens(displayName: string): string[] {
+  return displayName
+    .toLowerCase()
+    .split(/[\s,]+/)
+    .map((token) => token.replace(/[^a-z]/g, ""))
+    .filter((token) => token.length >= 2 && !NAME_SUFFIX_TOKENS.has(token));
+}
+
+/** Greedily consume name tokens from the front; returns count + remainder. */
+function consumeNameTokens(label: string, tokens: readonly string[]): { consumed: number; rest: string } {
+  let rest = label;
+  let consumed = 0;
+  for (;;) {
+    // Longest matching token first, so "jim"+"mooney" beats a shorter overlap.
+    const next = tokens
+      .filter((token) => rest.startsWith(token))
+      .sort((a, b) => b.length - a.length)[0];
+    if (!next) {
+      return { consumed, rest };
+    }
+    rest = rest.slice(next.length);
+    consumed += 1;
+  }
+}
+
+/**
+ * Does this hostname look like the candidate's OWN campaign or personal
+ * officeholder site? 12% of a November repair scope (307 rows, 50 candidates)
+ * cited such hosts as their only source — candidate self-promotion, which the
+ * standing source policy forbids but nothing detected. Matching is
+ * composition-based (exact concatenations of name tokens, campaign prefixes,
+ * and "for<place>" tails), never bare substring scans: "Sara Deen" must not
+ * flag aberdeennews.com, and "Gerald Ford" must not flag fordfoundation.org.
+ * Two live misses shaped the token rules: electscott.com used the FIRST name,
+ * and `Mooney Jr.` broke a last-token-only match on the suffix.
+ */
+export function isCandidateOwnedHostname(hostname: string, candidateDisplayName: string): boolean {
+  const labels = hostname.toLowerCase().split(".");
+  if (labels.length < 2) {
+    return false;
+  }
+  const label = labels[labels.length - 2]!.replace(/-/g, "");
+  const tokens = candidateNameTokens(candidateDisplayName);
+  if (tokens.length === 0 || label.length === 0) {
+    return false;
+  }
+
+  // Prefixed form: elect<name>, vote(for)<name>, senator<name>, ... — the
+  // remainder must be name tokens exactly.
+  for (const prefix of OWNED_HOST_PREFIXES) {
+    if (label.startsWith(prefix) && label.length > prefix.length) {
+      const { consumed, rest } = consumeNameTokens(label.slice(prefix.length), tokens);
+      if (consumed >= 1 && rest.length === 0) {
+        return true;
+      }
+    }
+  }
+
+  // Bare form: <first><last> exactly, or <name...>for<anything>.
+  const { consumed, rest } = consumeNameTokens(label, tokens);
+  if (consumed >= 2 && /^\d*$/.test(rest)) {
+    return true;
+  }
+  if (consumed >= 1 && rest.startsWith("for")) {
+    return true;
+  }
+
+  // Mid-label surname + "for" tail: billmoskalforhd80.com for "William
+  // Moskal" — the nickname "bill" is not a display-name token, so front
+  // consumption never starts. A token of 4+ characters immediately followed
+  // by "for" is still unmistakably a campaign composition.
+  for (const token of tokens) {
+    if (token.length >= 4) {
+      const at = label.indexOf(token);
+      if (at >= 0 && label.slice(at + token.length).startsWith("for")) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 export function evaluateCandidateRecordSourcePolicy(input: {
   description: string;
   sourceUrl: string;
+  /**
+   * When provided, unlisted hosts composed from the candidate's own name
+   * (campaign/personal sites) are rejected. Optional because some callers
+   * (repair tooling on arbitrary rows) do not have the name in scope.
+   */
+  candidateDisplayName?: string;
 }): CandidateRecordSourcePolicyResult {
   const classification = classifyCandidateRecordSourceDomain(input.sourceUrl);
   const { tier, hostname } = classification;
@@ -576,6 +703,26 @@ export function evaluateCandidateRecordSourcePolicy(input: {
     return {
       ok: false,
       reason: describeBlockedSource(hostname, classification.blockedKind),
+    };
+  }
+
+  if (isIndexPageSourcePath(input.sourceUrl)) {
+    return {
+      ok: false,
+      reason: `source URL is a meeting/agenda index page, which lists items but cannot carry this record's claim; cite the specific minutes or document page instead`,
+    };
+  }
+
+  // Unlisted tier only: listed news/civic domains and .gov can never be the
+  // candidate's own site, and the blocked tier is already rejected above.
+  if (
+    tier === "unlisted" &&
+    input.candidateDisplayName &&
+    isCandidateOwnedHostname(hostname, input.candidateDisplayName)
+  ) {
+    return {
+      ok: false,
+      reason: `source domain '${hostname}' appears to be the candidate's own campaign or personal site; self-promotion is not acceptable record evidence — cite an independent publisher`,
     };
   }
 

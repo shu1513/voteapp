@@ -71,6 +71,85 @@ describe("candidate record quality", () => {
     ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
   });
 
+  it("classifies primary results and election-office qualification listings as disallowed thin records", () => {
+    // Live escape (November state-leg repair pass): 22 primary-result rows
+    // across 22 candidates — for nine, the candidate's ONLY row. All of these
+    // are verbatim shapes from the retired rows.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Won the Democratic primary for Georgia State Senate District 31 with 8,555 votes.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Penman won the March 17, 2026 Republican primary for Senate District 33 and advanced to the general election.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Willoughby lost the 2018 Republican primary for Arizona House District 17.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Michele Clark filed as the Democratic candidate for Illinois Senate District 33.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Florida's Division of Elections recorded Woodson as the incumbent Democratic candidate for House District 105, qualified by fee on June 8, 2026, and unopposed for the 2026 general election.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Tom Lally filed as the Republican candidate for Illinois Senate District 9 and remains active on the November 3, 2026 general-election candidate list.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+  });
+
+  it("keeps general/special election wins and legislative-act language out of the candidacy patterns", () => {
+    // Winning the FINAL election confers office — a service fact, not roster
+    // evidence. The patterns anchor on primary/runoff-stage words on purpose.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Won the December 9, 2025 special election for Florida House District 90, succeeding the late Rep. Joe Casello.",
+      }).reason
+    ).not.toBe("pure_candidacy");
+
+    // "was elected to" is substantive and checked first.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Was elected to the Florida House for District 115 in the 2024 general election and has served since.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    // Secretary-of-State ACT recordings must not trip the election-office
+    // "recorded … as … candidate" pattern.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Authored HB 180; the Governor signed it and the Secretary of State recorded it as Act 2024-419 with Shirey named first among its authors.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    // A primary win alongside a real completed action is rescued by the
+    // substantive-verbs-first ordering.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Won the 2026 Republican primary and sponsored HB 1 establishing the state audit office.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+  });
+
   it("rescues campaign-finance misconduct from the candidacy-machinery patterns", () => {
     // The machinery patterns match these sentences, but the misconduct verb
     // is the record: past-tense enforcement/misconduct verbs are substantive

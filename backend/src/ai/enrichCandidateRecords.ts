@@ -210,7 +210,7 @@ async function verifyCandidateRecordSources(
 export async function validateCandidateRecordDiscoveryPayload(
   payload: unknown,
   timeoutMs: number,
-  options: { sinceDate?: string | null } = {}
+  options: { sinceDate?: string | null; candidateDisplayName?: string | null } = {}
 ): Promise<CandidateRecordDiscoveryPayloadValidationResult> {
   const parsed = parseCandidateRecordDiscoveryPayloadPartial(payload);
   if (!parsed.ok) {
@@ -270,6 +270,7 @@ export async function validateCandidateRecordDiscoveryPayload(
     const policy = evaluateCandidateRecordSourcePolicy({
       description: record.description,
       sourceUrl: record.source_url,
+      ...(options.candidateDisplayName ? { candidateDisplayName: options.candidateDisplayName } : {}),
     });
     if (!policy.ok) {
       policyDroppedRecords.push({
@@ -396,7 +397,7 @@ export async function enrichCandidateRecords(
       const validation = await validateCandidateRecordDiscoveryPayload(
         generated.parsed,
         config.timeoutMs,
-        { sinceDate: input.sinceDate }
+        { sinceDate: input.sinceDate, candidateDisplayName: input.candidateDisplayName }
       );
       if (!validation.ok) {
         const feedbackLine = `Fix payload schema: ${validation.reason}.`;

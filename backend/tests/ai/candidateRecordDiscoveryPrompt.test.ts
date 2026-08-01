@@ -132,7 +132,7 @@ describe("buildCandidateRecordDiscoveryPrompt", () => {
     );
     expect(prompt).toContain("There is no target number of records.");
     expect(prompt).toContain(
-      "Substantive means it gives a voter meaningful evidence about the candidate's fitness, competence, integrity, priorities, or governing record: skip routine administrative items (minutes approvals, small routine contracts, ceremonial resolutions) even when the vote was split, unless the candidate's vote or role there genuinely reveals a priority or stance."
+      "Substantive means it gives a voter meaningful evidence about the candidate's fitness, competence, integrity, priorities, or governing record: skip routine administrative items (minutes approvals, small routine contracts, ceremonial resolutions) and near-identical annual repeats of the same action (one budget-adoption row stands for all years), even when the vote was split, unless the candidate's vote or role there genuinely reveals a priority or stance."
     );
     expect(prompt).toContain("Include both favorable and unfavorable records when they exist");
     expect(prompt).not.toContain("Do not include rumors or unverified accusations.");

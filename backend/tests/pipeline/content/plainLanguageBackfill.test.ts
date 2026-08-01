@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { Pool } from "pg";
 
 import {
+  loadPlainLanguageBackfillTargets,
   mechanicalCheckFailure,
   runPlainLanguageBackfill,
   type PlainLanguageBackfillDeps,
@@ -47,6 +48,37 @@ describe("mechanicalCheckFailure", () => {
     expect(
       mechanicalCheckFailure("record_description", "See the report for details on this.", "Read https://evil.example/x for details.")
     ).toContain("introduced a URL");
+  });
+
+  it("licenses ISO-date components and truncation-ellipsis tokens", () => {
+    // Live flag: "2024-04-07" rewritten as "April 7, 2024" — the unpadded "7"
+    // read as invented against the padded "07".
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "Sponsored SB 58, enacted on 2024-04-07, simplifying the petition process for voters challenging rates.",
+        "Sponsored SB 58, enacted on April 7, 2024. It simplified the petition process for voters challenging rates."
+      )
+    ).toBeNull();
+
+    // Live flag: source truncation "Secs. 15-13-104,...." tokenized as
+    // "104...", so a clean rewrite's "104" read as invented.
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "Amended Secs. 15-13-2, 15-13-3, 15-13-7, 15-13-104,.... of the code, providing for pretrial detention.",
+        "It amended Sections 15-13-2, 15-13-3, 15-13-7 and 15-13-104 of the code. It provided for pretrial detention."
+      )
+    ).toBeNull();
+
+    // A number the original never carried in any form still flags.
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "Sponsored SB 58, enacted on 2024-04-07, simplifying the petition process for voters challenging rates.",
+        "Sponsored SB 58, enacted on April 7, 2024, cutting 9 requirements for voters challenging rates."
+      )
+    ).toMatch(/introduced a number/);
   });
 
   it("rejects an introduced number but allows dropped or reformatted numbers", () => {
@@ -223,6 +255,136 @@ const RECORD_TEXT = "Repeatedly rebuffed subpoenas to appear before the county o
 function recordRow(id: string) {
   return { id, description: RECORD_TEXT, source_url: "https://example.com/report", event_date: "2022-12-02" };
 }
+
+describe("loadPlainLanguageBackfillTargets filtering", () => {
+  function issuedQueries(pool: Pool): string[] {
+    return (pool.query as unknown as { mock: { calls: [string, unknown[]?][] } }).mock.calls.map(
+      (call) => call[0]
+    );
+  }
+
+  it("loads every table when no filter is given", async () => {
+    const { pool } = makeFakePool({
+      candidateRows: [{ id: "c1", summary: "A summary." }],
+      recordRows: [recordRow("r1")],
+    });
+
+    const targets = await loadPlainLanguageBackfillTargets(pool);
+
+    expect(targets.map((target) => target.targetTable)).toEqual(["candidates", "candidate_records"]);
+    expect(issuedQueries(pool).some((text) => text.includes("FROM public.ballot_measures"))).toBe(true);
+  });
+
+  it("skips the other tables entirely when onlyTable is candidate_records", async () => {
+    const { pool } = makeFakePool({
+      candidateRows: [{ id: "c1", summary: "A summary." }],
+      recordRows: [recordRow("r1")],
+    });
+
+    const targets = await loadPlainLanguageBackfillTargets(pool, { onlyTable: "candidate_records" });
+
+    expect(targets).toHaveLength(1);
+    expect(targets[0]?.targetTable).toBe("candidate_records");
+    // The point of the flag: --limit slices from the front of the target list,
+    // so the candidate-summary query must not run at all.
+    const texts = issuedQueries(pool);
+    expect(texts.some((text) => text.includes("FROM public.candidates c"))).toBe(false);
+    expect(texts.some((text) => text.includes("FROM public.ballot_measures"))).toBe(false);
+  });
+
+  it("passes candidateIds to the candidate and record queries and drops ballot measures", async () => {
+    const { pool } = makeFakePool({
+      candidateRows: [{ id: "c1", summary: "A summary." }],
+      recordRows: [recordRow("r1")],
+    });
+    const ids = ["11111111-1111-1111-1111-111111111111"];
+
+    await loadPlainLanguageBackfillTargets(pool, { candidateIds: ids });
+
+    const calls = (pool.query as unknown as { mock: { calls: [string, unknown[]?][] } }).mock.calls;
+    const candidateCall = calls.find((call) => call[0].includes("FROM public.candidates c"));
+    const recordCall = calls.find((call) => call[0].includes("FROM public.candidate_records cr"));
+    expect(candidateCall?.[1]).toEqual([ids]);
+    // The record query also carries the recordIds slot, unused here.
+    expect(recordCall?.[1]).toEqual([ids, null]);
+    // Ballot measures belong to no candidate, so a candidate-scoped run skips them.
+    expect(calls.some((call) => call[0].includes("FROM public.ballot_measures"))).toBe(false);
+  });
+
+  it("passes null rather than an array when unfiltered so the query matches every row", async () => {
+    const { pool } = makeFakePool({ recordRows: [recordRow("r1")] });
+
+    await loadPlainLanguageBackfillTargets(pool);
+
+    const calls = (pool.query as unknown as { mock: { calls: [string, unknown[]?][] } }).mock.calls;
+    const recordCall = calls.find((call) => call[0].includes("FROM public.candidate_records cr"));
+    expect(recordCall?.[1]).toEqual([null, null]);
+  });
+
+  it("restricts to recordIds so an operator work list cannot pull in uncovered rows", async () => {
+    const { pool } = makeFakePool({ recordRows: [recordRow("r1")] });
+    const recordIds = ["22222222-2222-2222-2222-222222222222"];
+
+    await loadPlainLanguageBackfillTargets(pool, { onlyTable: "candidate_records", recordIds });
+
+    const calls = (pool.query as unknown as { mock: { calls: [string, unknown[]?][] } }).mock.calls;
+    const recordCall = calls.find((call) => call[0].includes("FROM public.candidate_records cr"));
+    expect(recordCall?.[1]).toEqual([null, recordIds]);
+  });
+});
+
+describe("operator-authored rewrites", () => {
+  const manualRewrite = vi.fn(async () => ({
+    ok: true as const,
+    provider: "manual" as const,
+    model: "manual-research",
+    rewrittenText: "Refused subpoenas to appear before the county oversight commission during hearings.",
+  }));
+
+  it("skips the verifier and records the manual provider", async () => {
+    const { pool, writes } = makeFakePool({ recordRows: [recordRow("r1")] });
+    const verify = vi.fn();
+
+    const summary = await runPlainLanguageBackfill(
+      pool,
+      makeDeps({ rewrite: manualRewrite, verify, manualAttestation: true })
+    );
+
+    expect(summary.applied).toBe(1);
+    // The verifier exists to be independent of the rewriting MODEL; with a
+    // human author there is no second model to be independent of.
+    expect(verify).not.toHaveBeenCalled();
+    const audit = writes.find((write) => write.text.includes("INSERT INTO public.plain_language_rewrites"));
+    expect(audit?.params).toContain("manual");
+    expect(audit?.params).toContain("manual-research");
+  });
+
+  it("refuses manual text when the run did not declare manualAttestation", async () => {
+    const { pool } = makeFakePool({ recordRows: [recordRow("r1")] });
+
+    await expect(
+      runPlainLanguageBackfill(pool, makeDeps({ rewrite: manualRewrite }))
+    ).rejects.toThrow(/without manualAttestation/);
+  });
+
+  it("still applies every mechanical check to operator text", async () => {
+    const { pool } = makeFakePool({ recordRows: [recordRow("r1")] });
+    const inventsANumber = vi.fn(async () => ({
+      ok: true as const,
+      provider: "manual" as const,
+      model: "manual-research",
+      rewrittenText: "Refused 47 subpoenas to appear before the county oversight commission during hearings.",
+    }));
+
+    const summary = await runPlainLanguageBackfill(
+      pool,
+      makeDeps({ rewrite: inventsANumber, manualAttestation: true })
+    );
+
+    expect(summary.applied).toBe(0);
+    expect(summary.flagged).toBe(1);
+  });
+});
 
 describe("runPlainLanguageBackfill", () => {
   it("applies a verified rewrite atomically with staleness guard and recomputed record identity key", async () => {

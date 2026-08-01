@@ -26,8 +26,18 @@ import { Pool } from "pg";
  * Usage:
  *   npm run manual:records:retire -- --retirements-file <path>
  *   npm run manual:records:retire -- --retirements-file <path> --apply
+ *   npm run manual:records:retire -- --retirements-file <path> --unretire [--apply]
  *
  * Dry run is the default; --apply performs the writes.
+ *
+ * --unretire reverses a retirement (clears retired_at/retired_reason) using
+ * the same file format and the same content compare-and-swap. It exists
+ * because retirements are judgment calls applied in bulk (389 in one November
+ * repair pass): without a sanctioned reversal path, disagreeing with one row
+ * means hand-written SQL against a canonical table. The file's `reason` is
+ * still required — it documents WHY the withdrawal was wrong in the run
+ * report — but it is not stored: the schema has no column for it, and the
+ * un-retired row simply returns to normal live status.
  */
 
 type RetirementInput = {
@@ -39,6 +49,8 @@ type RetirementInput = {
 type RetirementOutcome =
   | { recordId: string; status: "retired"; description: string; reason: string; note?: string }
   | { recordId: string; status: "would_retire"; description: string; reason: string; note?: string }
+  | { recordId: string; status: "unretired"; description: string; reason: string; note?: string }
+  | { recordId: string; status: "would_unretire"; description: string; reason: string; note?: string }
   | { recordId: string; status: "skipped"; reason: string };
 
 type RecordRow = {
@@ -49,9 +61,14 @@ type RecordRow = {
   retired_at: string | null;
 };
 
-function parseArgs(argv: readonly string[]): { retirementsFile: string; apply: boolean } {
+function parseArgs(argv: readonly string[]): {
+  retirementsFile: string;
+  apply: boolean;
+  unretire: boolean;
+} {
   let retirementsFile = "";
   let apply = false;
+  let unretire = false;
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === "--retirements-file") {
@@ -63,12 +80,16 @@ function parseArgs(argv: readonly string[]): { retirementsFile: string; apply: b
       apply = true;
       continue;
     }
+    if (arg === "--unretire") {
+      unretire = true;
+      continue;
+    }
     throw new Error(`unknown flag(s): ${arg}`);
   }
   if (!retirementsFile) {
     throw new Error("--retirements-file <path> is required");
   }
-  return { retirementsFile, apply };
+  return { retirementsFile, apply, unretire };
 }
 
 export function parseRetirementsFile(raw: string): RetirementInput[] {
@@ -115,6 +136,15 @@ export type RetireDeps = {
   applyRetirement: (input: {
     recordId: string;
     reason: string;
+    expected: { description: string; eventDate: string; sourceUrl: string };
+  }) => Promise<number>;
+  /**
+   * Same compare-and-swap discipline in reverse: clears the retirement only
+   * if the row is still retired and still carries the content the operator
+   * reviewed when deciding the withdrawal was wrong.
+   */
+  applyUnretirement: (input: {
+    recordId: string;
     expected: { description: string; eventDate: string; sourceUrl: string };
   }) => Promise<number>;
 };
@@ -177,6 +207,55 @@ export async function retireOneRecord(
   };
 }
 
+export async function unretireOneRecord(
+  retirement: RetirementInput,
+  deps: RetireDeps,
+  options: { apply: boolean }
+): Promise<RetirementOutcome> {
+  const row = await deps.loadRecord(retirement.recordId);
+  if (!row) {
+    return { recordId: retirement.recordId, status: "skipped", reason: "record not found" };
+  }
+  if (row.retired_at === null) {
+    return { recordId: retirement.recordId, status: "skipped", reason: "record is not retired" };
+  }
+
+  if (!options.apply) {
+    return {
+      recordId: retirement.recordId,
+      status: "would_unretire",
+      description: row.description,
+      reason: retirement.reason,
+      ...(retirement.note ? { note: retirement.note } : {}),
+    };
+  }
+
+  const updated = await deps.applyUnretirement({
+    recordId: retirement.recordId,
+    expected: {
+      description: row.description,
+      eventDate: row.event_date,
+      sourceUrl: row.source_url,
+    },
+  });
+  if (updated !== 1) {
+    return {
+      recordId: retirement.recordId,
+      status: "skipped",
+      reason:
+        "record changed after it was read (concurrent write); nothing was modified — review the current content and re-run",
+    };
+  }
+
+  return {
+    recordId: retirement.recordId,
+    status: "unretired",
+    description: row.description,
+    reason: retirement.reason,
+    ...(retirement.note ? { note: retirement.note } : {}),
+  };
+}
+
 function buildPoolDeps(pool: Pool): RetireDeps {
   return {
     loadRecord: async (recordId) => {
@@ -203,11 +282,26 @@ function buildPoolDeps(pool: Pool): RetireDeps {
       );
       return result.rowCount ?? 0;
     },
+    applyUnretirement: async ({ recordId, expected }) => {
+      const result = await pool.query(
+        `UPDATE public.candidate_records
+            SET retired_at = NULL,
+                retired_reason = NULL,
+                updated_at = now()
+          WHERE id = $1
+            AND retired_at IS NOT NULL
+            AND description = $2
+            AND event_date = $3::date
+            AND source_url = $4`,
+        [recordId, expected.description, expected.eventDate, expected.sourceUrl]
+      );
+      return result.rowCount ?? 0;
+    },
   };
 }
 
 async function main(): Promise<void> {
-  const { retirementsFile, apply } = parseArgs(process.argv.slice(2));
+  const { retirementsFile, apply, unretire } = parseArgs(process.argv.slice(2));
   const retirements = parseRetirementsFile(await readFile(retirementsFile, "utf8"));
   const databaseUrl = process.env.DATABASE_URL?.trim();
   if (!databaseUrl) {
@@ -220,7 +314,11 @@ async function main(): Promise<void> {
   try {
     for (const retirement of retirements) {
       try {
-        outcomes.push(await retireOneRecord(retirement, deps, { apply }));
+        outcomes.push(
+          unretire
+            ? await unretireOneRecord(retirement, deps, { apply })
+            : await retireOneRecord(retirement, deps, { apply })
+        );
       } catch (error) {
         // One bad row must not abandon the batch: in --apply mode some rows
         // are already retired by this point, and losing the report would
@@ -228,7 +326,7 @@ async function main(): Promise<void> {
         outcomes.push({
           recordId: retirement.recordId,
           status: "skipped",
-          reason: `retirement failed: ${error instanceof Error ? error.message : String(error)}`,
+          reason: `${unretire ? "unretirement" : "retirement"} failed: ${error instanceof Error ? error.message : String(error)}`,
         });
       }
     }
