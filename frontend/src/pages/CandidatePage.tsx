@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type {
@@ -186,69 +186,81 @@ function OngoingElectionFinance({ election, summary }: { election: CandidateElec
   );
 }
 
-// The stance this record card should claim. In a group view the group's area
-// decides: the same record can be for one area and against another, so the
-// other areas' stances must not leak into this group. In the flat view
-// (areaId undefined) a direction shows only when every stance-bearing tag
-// agrees — a mixed record gets per-tag stances in the meta line instead.
-function recordStance(record: CandidateRecord, areaId: string | null | undefined): "for" | "against" | null {
-  if (areaId === null) {
-    // "Other records" pseudo-group: untagged, so no stance to show.
-    return null;
-  }
-  if (areaId !== undefined) {
-    const tag = record.research_area_tags.find((t) => t.research_area_id === areaId);
-    return tag?.stance === "for" || tag?.stance === "against" ? tag.stance : null;
-  }
-  const stances = new Set(
-    record.research_area_tags
-      .map((tag) => tag.stance)
-      .filter((stance): stance is "for" | "against" => stance === "for" || stance === "against")
-  );
-  return stances.size === 1 ? [...stances][0] : null;
+// The stance this record card should claim in a group view: the group's area
+// decides — the same record can be for one area and against another, so the
+// other areas' stances must not leak into this group. The flat view has no
+// single chip; it spells out per-tag stances in the meta line instead.
+function recordStance(record: CandidateRecord, areaId: string): "for" | "against" | null {
+  const tag = record.research_area_tags.find((t) => t.research_area_id === areaId);
+  return tag?.stance === "for" || tag?.stance === "against" ? tag.stance : null;
 }
 
-// Small colored For/Against marker — direction as a quiet cue, not a
-// whole-card color wash. Colored text only, no box: a bordered chip read as
-// a button. Same palette as the stance text on the election page.
-function StanceChip({ stance }: { stance: "for" | "against" }) {
+// Small colored stance marker — direction as a quiet cue, not a whole-card
+// color wash. Colored text only, no box: a bordered chip read as a button.
+// Same palette as the stance text on the election page. It names its topic
+// ("Supports Gun Control", never a bare "For") because cards get read
+// without their group heading — quoted, screenshotted, or far down an open
+// group — and next to a "Voted no ..." description a bare "For" reads as
+// the vote direction, the opposite of what it means.
+function StanceChip({ stance, areaName }: { stance: "for" | "against"; areaName: string }) {
   return (
     <span className={stance === "for" ? "font-medium text-green-900" : "font-medium text-red-900"}>
-      {stance === "for" ? "For" : "Against"}
+      {stance === "for" ? `Supports ${areaName}` : `Opposes ${areaName}`}
     </span>
   );
 }
 
 // One record card, shared by the grouped and flat views (the flat view adds
 // the area tags to the meta line since there is no group heading to carry
-// them). `stanceAreaId` is the group's area in grouped views; undefined in
-// the flat view.
+// them). `stanceAreaId`/`stanceAreaName` are the group's area in grouped
+// views (null id for the untagged "Other records" pseudo-group); both are
+// undefined in the flat view, which has no single chip.
 function RecordItem({
   record,
   showTags,
   reporterEmail,
   stanceAreaId,
+  stanceAreaName,
 }: {
   record: CandidateRecord;
   showTags: boolean;
   reporterEmail?: string | null;
   stanceAreaId?: string | null;
+  stanceAreaName?: string;
 }) {
-  const stance = recordStance(record, stanceAreaId);
+  const stance = stanceAreaId != null ? recordStance(record, stanceAreaId) : null;
   return (
     <li className="rounded-xl border border-line bg-white p-3">
       <p className="text-sm text-ink">{record.description}</p>
       <p className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs text-ink-soft">
         <span>{formatElectionDate(record.event_date)}</span>
-        {stance ? <StanceChip stance={stance} /> : null}
+        {stance && stanceAreaName ? <StanceChip stance={stance} areaName={stanceAreaName} /> : null}
         {showTags && record.research_area_tags.length > 0 ? (
-          // Per-tag stance in the flat view: a record can be for one area and
-          // against another, and the single chip stays silent on mixed records.
+          // Per-tag stance in the flat view, in the same colored verb
+          // phrasing as the grouped chip: a record can be for one area and
+          // against another, so each tag carries its own direction.
           <span>
             ·{" "}
-            {record.research_area_tags
-              .map((tag) => (tag.stance ? `${tag.name} (${tag.stance})` : tag.name))
-              .join(", ")}
+            {record.research_area_tags.map((tag, index) => (
+              <Fragment key={tag.research_area_id}>
+                {index > 0 ? ", " : null}
+                <span
+                  className={
+                    tag.stance === "for"
+                      ? "font-medium text-green-900"
+                      : tag.stance === "against"
+                        ? "font-medium text-red-900"
+                        : undefined
+                  }
+                >
+                  {tag.stance === "for"
+                    ? `Supports ${tag.name}`
+                    : tag.stance === "against"
+                      ? `Opposes ${tag.name}`
+                      : tag.name}
+                </span>
+              </Fragment>
+            ))}
           </span>
         ) : null}
       </p>
@@ -432,6 +444,7 @@ export function CandidatePage() {
                       showTags={false}
                       reporterEmail={me?.email}
                       stanceAreaId={group.areaId}
+                      stanceAreaName={group.areaName}
                     />
                   ))}
                 </ul>

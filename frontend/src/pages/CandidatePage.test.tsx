@@ -264,8 +264,10 @@ describe("CandidatePage", () => {
     );
 
     await screen.findByRole("heading", { name: "Jordan Voter" });
-    expect(screen.getByText("For")).toBeInTheDocument();
-    expect(screen.getByText("Against")).toBeInTheDocument();
+    // The chip names its topic so a card read without its group heading
+    // still says what the stance is about.
+    expect(screen.getByText("Supports Housing")).toBeInTheDocument();
+    expect(screen.getByText("Opposes Transit")).toBeInTheDocument();
   });
 
   it("keeps mixed records chipless in the newest view and spells out per-tag stances", async () => {
@@ -291,11 +293,10 @@ describe("CandidatePage", () => {
     const user = userEvent.setup();
     await user.selectOptions(await screen.findByRole("combobox"), "newest");
 
-    // No single chip — the record's direction differs by area — but the tag
-    // list carries each area's stance.
-    expect(screen.queryByText("For")).not.toBeInTheDocument();
-    expect(screen.queryByText("Against")).not.toBeInTheDocument();
-    expect(screen.getByText(/Housing \(for\), Transit \(against\)/)).toBeInTheDocument();
+    // The flat view has no single chip — the tag list carries each area's
+    // stance in the same verb phrasing as the grouped chip.
+    expect(screen.getByText("Supports Housing")).toBeInTheDocument();
+    expect(screen.getByText("Opposes Transit")).toBeInTheDocument();
   });
 
   it("renders the profile report button after the record and election sections", async () => {
