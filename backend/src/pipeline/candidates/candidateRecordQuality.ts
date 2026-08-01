@@ -56,7 +56,11 @@ const PURE_CANDIDACY_PATTERNS = [
   // service fact (and rows pairing a primary win with a real action are
   // rescued by the substantive-verbs-first ordering). "advanced to the
   // general election" is the same fact phrased from the other side.
-  /\b(?:won|lost)\s+(?:the\s+|an?\s+)?(?:[\w'’.,-]+\s+){0,5}?primar(?:y|ies)\b/i,
+  // "primary" must head its noun phrase — followed by a preposition,
+  // punctuation, the end, or an election word — because as an adjective it
+  // describes something else entirely: "lost its primary care clinic",
+  // "won a primary school construction award" are real service records.
+  /\b(?:won|lost)\s+(?:the\s+|an?\s+)?(?:[\w'’.,-]+\s+){0,5}?primar(?:y|ies)\b(?=\s*(?:for\b|in\b|on\b|to\b|against\b|with\b|by\b|and\b|over\b|at\b|[.;,)]|$)|\s+(?:elections?|runoffs?|contests?|races?|bid|nominations?)\b)/i,
   // Runoffs split by stage the same way. LOSING any runoff is roster
   // evidence (losing confers nothing). WINNING one is only candidacy when a
   // party adjective marks it as a primary runoff — general runoffs are
@@ -86,7 +90,11 @@ const PURE_CANDIDACY_PATTERNS = [
   // candidate contribution" is an enforcement record, not a candidacy row.
   /\bqualified\s+by\s+(?:fee|petition)\b/i,
   /\brecorded\b[^.;]{0,60}\bas\b[^.;]{0,40}\bcandidate\b(?=\s*(?:for\b|in\b|on\b|[.;,)]|$))/i,
-  /\bcandidate\s+list\b/i,
+  // The exemption is HIRING nouns only: "a candidate list OF FINALISTS for
+  // the police chief job" is an appointment process, but "candidate list of
+  // the Democratic Party" is still an election roster — a bare "of" gap
+  // exempted those too.
+  /\bcandidate\s+list\b(?!\s+of\s+(?:semi)?finalists?\b|\s+of\s+applicants?\b)/i,
 ] as const;
 
 // "promises/pledges/vows" is a verb in "She pledges lower taxes" and a noun in

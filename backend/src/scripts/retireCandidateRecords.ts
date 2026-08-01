@@ -2,6 +2,8 @@ import { readFile } from "node:fs/promises";
 
 import { Pool } from "pg";
 
+import { classifyCandidateRecordQuality } from "../pipeline/candidates/candidateRecordQuality.js";
+
 /**
  * Soft-retires EXISTING candidate_records rows whose CLAIM was judged wrong or
  * unsupportable — wrong attribution, an unsupported claim, a stale-by-design
@@ -49,8 +51,8 @@ type RetirementInput = {
 type RetirementOutcome =
   | { recordId: string; status: "retired"; description: string; reason: string; note?: string }
   | { recordId: string; status: "would_retire"; description: string; reason: string; note?: string }
-  | { recordId: string; status: "unretired"; description: string; reason: string; note?: string }
-  | { recordId: string; status: "would_unretire"; description: string; reason: string; note?: string }
+  | { recordId: string; status: "unretired"; description: string; reason: string; note?: string; qualityWarning?: string }
+  | { recordId: string; status: "would_unretire"; description: string; reason: string; note?: string; qualityWarning?: string }
   | { recordId: string; status: "skipped"; reason: string };
 
 type RecordRow = {
@@ -220,6 +222,20 @@ export async function unretireOneRecord(
     return { recordId: retirement.recordId, status: "skipped", reason: "record is not retired" };
   }
 
+  // ADVISORY, never a gate: unretirement exists precisely so an operator can
+  // overrule an over-eager detector, and gating it on the same detector would
+  // make that judgment impossible to apply. But an operator restoring a row
+  // the current quality gate would reject should know they are doing so — the
+  // row re-enters the corpus untouched by any validator.
+  const quality = classifyCandidateRecordQuality({
+    description: row.description,
+    sourceUrl: row.source_url,
+  });
+  const qualityWarning =
+    quality.classification === "disallowed_thin"
+      ? `restored content would FAIL the current write-time quality gate (${quality.reason}); unretiring anyway on operator judgment`
+      : undefined;
+
   if (!options.apply) {
     return {
       recordId: retirement.recordId,
@@ -227,6 +243,7 @@ export async function unretireOneRecord(
       description: row.description,
       reason: retirement.reason,
       ...(retirement.note ? { note: retirement.note } : {}),
+      ...(qualityWarning ? { qualityWarning } : {}),
     };
   }
 
@@ -253,6 +270,7 @@ export async function unretireOneRecord(
     description: row.description,
     reason: retirement.reason,
     ...(retirement.note ? { note: retirement.note } : {}),
+    ...(qualityWarning ? { qualityWarning } : {}),
   };
 }
 

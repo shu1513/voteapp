@@ -200,6 +200,12 @@ async function main(): Promise<void> {
   const onlyTable = readOnlyTable();
   const candidateIds = await readCandidateIds();
   const manualRewrites = await readManualRewrites();
+  // The rewrites file IS the batch, and the flagged-retry clear below acts on
+  // EVERY id in the file before the run starts — combining that with --limit
+  // would destroy flag records for ids the limited run never reprocesses.
+  if (manualRewrites && limit !== undefined) {
+    throw new Error("--limit cannot be combined with --rewrites-file; trim the rewrites file instead");
+  }
   const filter: PlainLanguageBackfillFilter = {
     ...(onlyTable !== undefined ? { onlyTable } : {}),
     ...(candidateIds !== undefined ? { candidateIds } : {}),
@@ -222,7 +228,7 @@ async function main(): Promise<void> {
         );
         for (const row of rows) {
           console.log(
-            `note: target ${row.target_id} was flagged in an earlier run; the dry run skips it, an --apply run will clear the flag and retry it`
+            `note: target ${row.target_id} was flagged in an earlier run; the dry run skips it — rerunning without --dry-run clears the flag and retries it`
           );
         }
       } else {

@@ -94,6 +94,22 @@ describe("candidate record quality", () => {
       })
     ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
 
+    // "primary nomination" is election language even though "nomination" is
+    // not a preposition — the noun-head lookahead must include it.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Won the Democratic primary nomination for governor.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    // "candidate list of <party/qualified candidates>" is still a ballot
+    // roster; only hiring nouns (finalists, applicants) exempt.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Appeared on the official candidate list of the Democratic Party.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
     // Runoffs: LOSING any runoff is roster evidence; WINNING one is candidacy
     // when a party adjective marks it as a primary runoff.
     expect(
@@ -172,6 +188,22 @@ describe("candidate record quality", () => {
       classifyCandidateRecordQuality({
         description:
           "The ethics commission recorded the payment as an illegal candidate contribution.",
+      }).reason
+    ).not.toBe("pure_candidacy");
+
+    // Adjectival "primary" describes a service, not an election stage.
+    for (const description of [
+      "The hospital lost its primary care clinic after the county consolidated services.",
+      "Won a primary school construction award from the state.",
+      "Lost a bid to expand primary care access in rural counties.",
+    ]) {
+      expect(classifyCandidateRecordQuality({ description }).reason, description).not.toBe("pure_candidacy");
+    }
+
+    // "candidate list OF finalists" is hiring language, not a ballot roster.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "The commission published a candidate list of finalists for the police chief job.",
       }).reason
     ).not.toBe("pure_candidacy");
 

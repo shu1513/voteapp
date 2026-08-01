@@ -597,7 +597,13 @@ export function matchesDamagingClaimPattern(description: string): boolean {
 // The generic patterns are path-only index names, where a query CAN select a
 // real item.
 const INDEX_PAGE_ALWAYS_PATTERNS = [/\/MeetingInformation\.aspx$/i];
-const INDEX_PAGE_BARE_PATH_PATTERNS = [/^\/(?:[^?#]*\/)?(?:meetings?|agendas?|calendar|minutes)\/?$/i];
+const INDEX_PAGE_BARE_PATH_PATTERNS = [/^\/(?:[^?#]*\/)?(?:meetings?|agendas?|calendars?|minutes)\/?$/i];
+
+// A FULL-date segment (year, month, and day) anywhere in the path means the
+// URL addresses ONE meeting's materials, not the listing: "/2024/06/12/minutes"
+// is that day's minutes document even though the path ends in an index word.
+// Day required on purpose — "/2026/08/calendar" is a MONTHLY index.
+const INDEX_PAGE_DATED_SEGMENT_PATTERN = /\/\d{4}(?:[-/]\d{1,2}){2}(?:\/|$)/;
 
 // Query keys that only reshape an index (paging, sorting, date windows) — a
 // query made solely of these still cites the listing, not an item.
@@ -619,6 +625,9 @@ export function isIndexPageSourcePath(sourceUrl: string): boolean {
   }
   if (INDEX_PAGE_ALWAYS_PATTERNS.some((pattern) => pattern.test(url.pathname))) {
     return true;
+  }
+  if (INDEX_PAGE_DATED_SEGMENT_PATTERN.test(url.pathname)) {
+    return false;
   }
   if (!INDEX_PAGE_BARE_PATH_PATTERNS.some((pattern) => pattern.test(url.pathname))) {
     return false;
@@ -657,24 +666,83 @@ const OWNED_HOST_PREFIXES = [
 
 const NAME_SUFFIX_TOKENS = new Set(["jr", "sr", "ii", "iii", "iv", "v"]);
 
-// What may follow "<surname>for" in the MID-LABEL branch below for the label
-// to read as a campaign composition: a district number or code ("hd80",
-// "d12"), an office word ("senate", "prosecutor"), or a state. The front-
-// anchored branches need no such gate — name tokens consumed from position 0
-// are already a strong signal — but the mid-label branch matches the surname
-// anywhere, and an unconstrained tail turned substring coincidences into
-// hits: "stanfordfordemocracy.org" contains "ford"+"for" for a candidate
-// named Ford, yet "democracy" is no office. Whole-word office/place tails
-// only; place names beyond states are deliberately absent (a place-name tail
-// with a mid-label surname is not enough evidence of ownership).
-const OWNED_HOST_MIDLABEL_TAIL_PATTERN =
-  /^(?:\d|(?:hd|hr|sd|ld|ad|cd|d)\d|(?:house|senate|congress|assembly|legislature|statehouse|staterep|statesenate|mayor|council|alder|trustee|school|board|judge|justice|sheriff|clerk|treasurer|auditor|assessor|coroner|recorder|commissioner|supervisor|governor|prosecutor|attorney|secretary|delegate|regent|state|county|city|district|ward|alabama|alaska|arizona|arkansas|california|colorado|connecticut|delaware|florida|georgia|hawaii|idaho|illinois|indiana|iowa|kansas|kentucky|louisiana|maine|maryland|massachusetts|michigan|minnesota|mississippi|missouri|montana|nebraska|nevada|newhampshire|newjersey|newmexico|newyork|northcarolina|northdakota|ohio|oklahoma|oregon|pennsylvania|rhodeisland|southcarolina|southdakota|tennessee|texas|utah|vermont|virginia|washington|westvirginia|wisconsin|wyoming))/;
-const OWNED_HOST_MIDLABEL_TAIL_EXACT = new Set([
+// What may follow "<name>for" — on ANY branch — for the label to read as a
+// campaign composition. Every "for" tail goes through this gate: an ungated
+// front-anchored branch turned prefix coincidences into hits
+// ("californiainsider.com" for a candidate named Cali, hartfordcourant.com
+// for one named Hart), exactly the substring class the mid-label gate already
+// excluded. The vocabulary is a corpus census of all 171 live for-tail
+// campaign hosts: a geographic prefix (state name, USPS code, or a curated
+// place list seeded from the corpus), then office words, then digits — and
+// the ENTIRE tail must be consumed, so word fragments ("dcourant",
+// "niainsider", "ourlives", "est") never qualify. A novel place-name tail
+// outside the curated list fails OPEN (not flagged): the detector is a
+// backstop behind the skill/prompt self-promotion rules, and a false positive
+// here rejects legitimate independent evidence.
+const OWNED_HOST_FOR_TAIL_GEO_TOKENS = [
+  // Full state names first (longest-first sorting below makes "florida" win over "fl").
+  "alabama", "alaska", "arizona", "arkansas", "california", "colorado", "connecticut",
+  "delaware", "florida", "georgia", "hawaii", "idaho", "illinois", "indiana", "iowa",
+  "kansas", "kentucky", "louisiana", "maine", "maryland", "massachusetts", "michigan",
+  "minnesota", "mississippi", "missouri", "montana", "nebraska", "nevada", "newhampshire",
+  "newjersey", "newmexico", "newyork", "northcarolina", "northdakota", "ohio", "oklahoma",
+  "oregon", "pennsylvania", "rhodeisland", "southcarolina", "southdakota", "tennessee",
+  "texas", "utah", "vermont", "virginia", "washington", "westvirginia", "wisconsin", "wyoming",
+  // USPS codes.
   "al", "ak", "az", "ar", "ca", "co", "ct", "de", "fl", "ga", "hi", "id", "il", "in", "ia",
   "ks", "ky", "la", "me", "md", "ma", "mi", "mn", "ms", "mo", "mt", "ne", "nv", "nh", "nj",
   "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc", "sd", "tn", "tx", "ut", "vt",
   "va", "wa", "wv", "wi", "wy",
-]);
+  // Places observed in live campaign hosts (curated; extend as the corpus grows).
+  "brevard", "merced", "seattle", "spokane", "thurston", "westchester", "oc",
+];
+const OWNED_HOST_FOR_TAIL_OFFICE_WORDS = [
+  // Only compounds the word list cannot assemble: "statehouse", "countyclerk"
+  // etc. decompose through the consumption loop and are deliberately absent.
+  "secretaryofstate", "staterep",
+  "house", "senate", "congress", "assembly", "legislature", "mayor", "council", "alder",
+  "trustee", "school", "schools", "board", "judge", "justice", "sheriff", "clerk",
+  "treasurer", "auditor", "assessor", "coroner", "recorder", "commissioner", "supervisor",
+  "governor", "gov", "prosecutor", "attorney", "secretary", "delegate", "regent", "state",
+  "county", "city", "district", "hd", "hr", "sd", "ld", "ad", "cd",
+  "ag", "da", "sos", "psc", "cps", "ccsd", "boe", "isd", "usd",
+  // Campaign-cause tails observed live ("forchange", "forus").
+  "change", "us",
+];
+const OWNED_HOST_FOR_TAIL_TOKENS = [
+  ...OWNED_HOST_FOR_TAIL_GEO_TOKENS,
+  ...OWNED_HOST_FOR_TAIL_OFFICE_WORDS,
+].sort((a, b) => b.length - a.length);
+
+function isCampaignForTail(tail: string): boolean {
+  if (tail.length === 0) {
+    return false;
+  }
+  // "<anything>county" is a place composition even when the place itself is
+  // not in the curated list ("jacksoncounty"). County only: no English word
+  // ends in "county", but plenty end in "city" (velocity, publicity,
+  // electricity), and a generic city rule reintroduced exactly the substring
+  // coincidences this gate exists to exclude. A "<place>city" tail must come
+  // through the curated place list instead.
+  if (/^[a-z]{3,}county\d*$/.test(tail)) {
+    return true;
+  }
+  let rest = tail;
+  let consumedAny = false;
+  for (;;) {
+    const next = OWNED_HOST_FOR_TAIL_TOKENS.find((token) => rest.startsWith(token));
+    if (!next) {
+      break;
+    }
+    rest = rest.slice(next.length);
+    consumedAny = true;
+  }
+  // Trailing digits: district numbers and years ("hd80", "judge2026", "35").
+  if (/^\d+$/.test(rest)) {
+    return true; // digits alone are a district-number tail ("cooleyfor35")
+  }
+  return consumedAny && rest.length === 0;
+}
 
 function candidateNameTokens(displayName: string): string[] {
   return displayName
@@ -714,12 +782,20 @@ function consumeNameTokens(label: string, tokens: readonly string[]): { consumed
  * Two live misses shaped the token rules: electscott.com used the FIRST name,
  * and `Mooney Jr.` broke a last-token-only match on the suffix.
  */
+// Second-level labels that mean "the registrable name is one level deeper"
+// (billmoskalforhd80.co.uk must read label "billmoskalforhd80", not "co").
+const MULTI_PART_TLD_SECOND_LEVELS = new Set(["co", "com", "net", "org", "gov", "edu", "ac"]);
+
 export function isCandidateOwnedHostname(hostname: string, candidateDisplayName: string): boolean {
   const labels = hostname.toLowerCase().split(".");
   if (labels.length < 2) {
     return false;
   }
-  const label = labels[labels.length - 2]!.replace(/-/g, "");
+  let labelIndex = labels.length - 2;
+  if (labelIndex > 0 && MULTI_PART_TLD_SECOND_LEVELS.has(labels[labelIndex]!)) {
+    labelIndex -= 1;
+  }
+  const label = labels[labelIndex]!.replace(/-/g, "");
   const tokens = candidateNameTokens(candidateDisplayName);
   if (tokens.length === 0 || label.length === 0) {
     return false;
@@ -736,27 +812,29 @@ export function isCandidateOwnedHostname(hostname: string, candidateDisplayName:
     }
   }
 
-  // Bare form: <first><last> exactly, or <name...>for<anything>.
+  // Bare form: <first><last> exactly, or <name...>for<campaign tail>. The
+  // tail gate applies here too: "cali" + "forniainsider" and "hart" +
+  // "fordcourant" are prefix coincidences, not campaign sites, and the
+  // hartfordcourant.com shape would otherwise reject Connecticut's largest
+  // newspaper for every candidate named Hart.
   const { consumed, rest } = consumeNameTokens(label, tokens);
   if (consumed >= 2 && /^\d*$/.test(rest)) {
     return true;
   }
-  if (consumed >= 1 && rest.startsWith("for")) {
+  if (consumed >= 1 && rest.startsWith("for") && isCampaignForTail(rest.slice("for".length))) {
     return true;
   }
 
-  // Mid-label surname + "for" + office/district/state tail:
-  // billmoskalforhd80.com for "William Moskal" — the nickname "bill" is not a
-  // display-name token, so front consumption never starts. Because the
-  // surname may sit anywhere in the label here, the "for" tail must itself
-  // read as a campaign composition (see OWNED_HOST_MIDLABEL_TAIL_PATTERN);
+  // Mid-label surname + "for" + campaign tail: billmoskalforhd80.com for
+  // "William Moskal" — the nickname "bill" is not a display-name token, so
+  // front consumption never starts. Same tail gate;
   // "stanfordfordemocracy.org" stays clean for a candidate named Ford.
   for (const token of tokens) {
     if (token.length >= 4) {
       const at = label.indexOf(token);
       if (at >= 0 && label.slice(at + token.length).startsWith("for")) {
         const tail = label.slice(at + token.length + "for".length);
-        if (OWNED_HOST_MIDLABEL_TAIL_PATTERN.test(tail) || OWNED_HOST_MIDLABEL_TAIL_EXACT.has(tail)) {
+        if (isCampaignForTail(tail)) {
           return true;
         }
       }

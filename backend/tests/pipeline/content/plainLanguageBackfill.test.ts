@@ -100,6 +100,35 @@ describe("mechanicalCheckFailure", () => {
         "Sponsored SB 58, enacted on April 9, 2024. It simplified the petition process for voters challenging rates."
       )
     ).toMatch(/introduced a number/);
+
+    // Casing does not affect the license — a faithful lowercase date is a
+    // date (the sentence-boundary protection lives in the full/abbreviated
+    // month branch split, not in casing).
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "Enacted on 2024-04-07 by the governor.",
+        "the governor signed it on april 7, 2024."
+      )
+    ).toBeNull();
+
+    // A sentence ENDING on a full month name plus the next sentence's leading
+    // number is not a date — the license must not leak across the boundary
+    // ("in April. 7 counties opted out" was passing).
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "Voted for HB 44, which took effect 2024-04-07 across the state.",
+        "Voted for HB 44. It took effect in April. 7 counties opted out of the program."
+      )
+    ).toMatch(/introduced a number/);
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "Voted for HB 44, which took effect 2024-04-07 across the state.",
+        "Voted for HB 44. It took effect in April.\n7 counties opted out of the program."
+      )
+    ).toMatch(/introduced a number/);
   });
 
   it("rejects an introduced number but allows dropped or reformatted numbers", () => {
