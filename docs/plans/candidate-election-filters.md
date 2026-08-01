@@ -126,12 +126,18 @@ saved areas; the control simply doesn't render).
    account for their own hiding). The toggle is a per-race choice — keyed to
    the election id like the party pick, so it never travels to another race,
    but it persists across party switches within the race.
-5. Visibility is data-driven like the party filter: the toggle renders only
-   when the viewer has saved areas AND the party-filtered set splits into
-   matched + unmatched (all-match would be a no-op; none-match would empty
-   the list). A pick is ignored — not cleared — while the control is hidden.
-6. Tests: hidden-count correctness, interaction with party filter, reset on
-   navigation, control absent when signed out / no saved areas / no split.
+5. Visibility is data-driven like the party filter while the toggle is OFF:
+   it renders only when the viewer has saved areas AND the party-filtered
+   set splits into matched + unmatched (all-match would be a no-op;
+   none-match would empty the list). While ON it stays visible and keeps
+   applying — even when a party switch leaves zero matches and the view
+   goes empty ("N hidden · Show all" explains it) — because an active
+   filter that silently stops applying would show a full roster the viewer
+   believes is filtered. Only a viewer with no saved areas gets the pick
+   ignored, same as the sort.
+6. Tests: hidden-count correctness, interaction with party filter (including
+   a switch into a no-match party), reset on navigation, control absent when
+   signed out / no saved areas / no split.
 
 ## Phase 3 — "Only my issues" toggle on the ballot page (web + mobile)
 

@@ -713,14 +713,30 @@ describe("ElectionPage", () => {
       expect(screen.queryByRole("button", { name: "Has a record on my issues" })).not.toBeInTheDocument();
     });
 
-    it("hides the control when no candidate matches or every candidate matches", async () => {
+    it("hides the control when no candidate matches", async () => {
       stubApiRoutes({ ...SAVED_HOUSING });
       // Default fixture: no candidate has records → filtering would empty
-      // the list. (The all-match no-op case shares this branch: the control
-      // renders only when the roster splits into matched + unmatched.)
+      // the list, so the (off) toggle has nothing to offer.
       renderElection(() => electionDetail());
 
       // The sort dropdown proves the async preferences have arrived.
+      await screen.findByRole("combobox");
+      expect(screen.queryByRole("button", { name: "Has a record on my issues" })).not.toBeInTheDocument();
+    });
+
+    it("hides the control when every candidate matches", async () => {
+      stubApiRoutes({ ...SAVED_HOUSING });
+      // All-match: filtering would be a no-op, so the (off) toggle has
+      // nothing to offer either.
+      renderElection(() =>
+        electionDetail({
+          candidates: [
+            candidate("c-1", "Casey Record", "Independent", [housingRecord("r-1")]),
+            candidate("c-2", "Jamie Record", "Independent", [housingRecord("r-2")]),
+          ],
+        })
+      );
+
       await screen.findByRole("combobox");
       expect(screen.queryByRole("button", { name: "Has a record on my issues" })).not.toBeInTheDocument();
     });
@@ -783,6 +799,44 @@ describe("ElectionPage", () => {
       expect(screen.getByText("Riley Record")).toBeInTheDocument();
       expect(screen.queryByText("Rory Quiet")).not.toBeInTheDocument();
       expect(screen.getByText(/1 candidate hidden/)).toBeInTheDocument();
+    });
+
+    it("keeps an active filter applied when a party switch leaves no matches", async () => {
+      stubApiRoutes({ ...SAVED_HOUSING });
+      const user = userEvent.setup();
+      // Only Democrats have matching records. An active filter must not
+      // silently stop applying when the view moves to Republicans — that
+      // would show a full roster the viewer believes is filtered. It stays
+      // visible and honestly empties the view, with the hidden count and
+      // Show all explaining the empty list.
+      renderElection(() =>
+        electionDetail({
+          candidates: [
+            candidate("c-1", "Dana Record", "Democratic", [housingRecord("r-1")]),
+            candidate("c-2", "Devon Quiet", "Democratic"),
+            candidate("c-3", "Rory Quiet", "Republican"),
+            candidate("c-4", "Robin Quiet", "Republican"),
+          ],
+        })
+      );
+
+      await user.click(await screen.findByRole("button", { name: "Democrats (2)" }));
+      await user.click(screen.getByRole("button", { name: "Has a record on my issues" }));
+      expect(screen.getByText("Dana Record")).toBeInTheDocument();
+
+      await user.click(screen.getByRole("button", { name: "Republicans (2)" }));
+      // Toggle still visible and pressed; every Republican is hidden.
+      expect(screen.getByRole("button", { name: "Has a record on my issues" })).toHaveAttribute(
+        "aria-pressed",
+        "true"
+      );
+      expect(screen.queryByText("Rory Quiet")).not.toBeInTheDocument();
+      expect(screen.queryByText("Robin Quiet")).not.toBeInTheDocument();
+      expect(screen.getByText(/2 candidates hidden/)).toBeInTheDocument();
+
+      await user.click(screen.getByRole("button", { name: "Show all" }));
+      expect(screen.getByText("Rory Quiet")).toBeInTheDocument();
+      expect(screen.getByText("Robin Quiet")).toBeInTheDocument();
     });
 
     it("resets the records filter when navigating to a different election", async () => {

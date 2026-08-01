@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import type { ElectionDetail } from "@voteapp/api-client";
+import type { ElectionDetail, PartyBucket } from "@voteapp/api-client";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
@@ -24,7 +24,6 @@ import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { aggregateRecordAreaStances, scoreStanceRelevance } from "@voteapp/api-client";
 import { partyBucket } from "@voteapp/api-client";
-import type { PartyBucket } from "@voteapp/api-client";
 
 // "alphabetical" is the payload's own order: the API sorts candidates by
 // display name (there is no true ballot-position data). "my_issues" is the
@@ -143,19 +142,23 @@ export function ElectionPage() {
       : data.candidates.filter((candidate) => partyBucket(candidate.party) === partyFilter);
   // "Has a record on my issues": the exact relevance scoring the "my issues
   // first" sort uses — score > 0 means at least one stance-bearing record on
-  // a saved area (relevance, not agreement). Applied after the party filter,
-  // and visible only when it could change the current view: signed-in with
-  // saved areas, and the party-filtered set splits into matched + unmatched
-  // (all-match would be a no-op; none-match would empty the list). Same
-  // resilience as the other controls: a pick is ignored — not cleared —
-  // while the control is hidden.
+  // a saved area (relevance, not agreement). Applied after the party filter.
+  // While the toggle is OFF it appears only when it could change the current
+  // view: signed-in with saved areas, and the party-filtered set splits into
+  // matched + unmatched. While ON it stays visible and keeps applying — even
+  // when that empties the current party view ("N hidden · Show all" explains
+  // the empty list) — because an active filter that silently stops applying
+  // would show a full roster the viewer believes is filtered. Only a viewer
+  // with no saved areas gets the pick ignored (the scoring is meaningless
+  // without them), same as the sort.
   const chosenRecordsFilter = recordsPick.electionId === data.id ? recordsPick.on : false;
   const matchedOnMyIssues = partyFilteredCandidates.filter(
     (candidate) => scoreStanceRelevance(aggregateRecordAreaStances(candidate.records), weights).score > 0
   );
+  const recordsFilterOn = hasSaved && chosenRecordsFilter;
   const showRecordsFilter =
-    hasSaved && matchedOnMyIssues.length > 0 && matchedOnMyIssues.length < partyFilteredCandidates.length;
-  const recordsFilterOn = showRecordsFilter && chosenRecordsFilter;
+    recordsFilterOn ||
+    (hasSaved && matchedOnMyIssues.length > 0 && matchedOnMyIssues.length < partyFilteredCandidates.length);
   const visibleCandidates = recordsFilterOn ? matchedOnMyIssues : partyFilteredCandidates;
   const hiddenByRecordsFilter = partyFilteredCandidates.length - matchedOnMyIssues.length;
   const measure = data.ballot_measure;
@@ -432,10 +435,12 @@ export function ElectionPage() {
               >
                 Has a record on my issues
               </button>
-              {recordsFilterOn ? (
-                // The hidden count is always visible while the filter is on:
-                // no records ≠ no stances (rosters are unevenly researched),
-                // so the filtered list must never look like the full roster.
+              {recordsFilterOn && hiddenByRecordsFilter > 0 ? (
+                // The hidden count is always visible while the filter hides
+                // anyone: no records ≠ no stances (rosters are unevenly
+                // researched), so the filtered list must never look like the
+                // full roster. At 0 hidden there is nothing concealed and
+                // the pressed chip alone carries the state.
                 <span className="text-xs text-ink-soft">
                   {hiddenByRecordsFilter} candidate{hiddenByRecordsFilter === 1 ? "" : "s"} hidden ·{" "}
                   <button
