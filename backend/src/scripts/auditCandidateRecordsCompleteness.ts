@@ -367,7 +367,8 @@ async function main(): Promise<void> {
           AND c.merged_into_candidate_id IS NULL
           AND c.last_records_searched_at IS NOT NULL
           AND NOT EXISTS (
-            SELECT 1 FROM public.candidate_records r WHERE r.candidate_id = c.id
+            SELECT 1 FROM public.candidate_records r
+            WHERE r.candidate_id = c.id AND r.retired_at IS NULL
           )
 ${targetSql}
         GROUP BY c.id, c.display_name, c.current_office, c.last_records_searched_at,
@@ -429,6 +430,7 @@ ${targetSql}
         JOIN public.candidates c ON c.id = r.candidate_id
         WHERE c.deleted_at IS NULL
           AND c.merged_into_candidate_id IS NULL
+          AND r.retired_at IS NULL
 ${targetSql}
         ORDER BY r.created_at ASC
       `,

@@ -1152,6 +1152,7 @@ async function loadFullElectionDetails(
               cr.created_at::text AS created_at
             FROM public.candidate_records AS cr
             WHERE cr.candidate_id = ANY($1::uuid[])
+              AND cr.retired_at IS NULL
             ORDER BY cr.candidate_id, cr.event_date DESC, cr.created_at DESC, cr.id
           `,
           [candidateIds]
@@ -1173,6 +1174,7 @@ async function loadFullElectionDetails(
             JOIN public.research_areas AS ra
               ON ra.id = tag.research_area_id
             WHERE cr.candidate_id = ANY($1::uuid[])
+              AND cr.retired_at IS NULL
             ORDER BY cr.id, ra.slug
           `,
           [candidateIds]

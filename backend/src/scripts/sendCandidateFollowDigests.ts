@@ -220,6 +220,9 @@ async function selectPendingEvents(db: Queryable, userId: string): Promise<Pendi
         ON el.id = e.election_id
       WHERE e.user_id = $1::uuid
         AND e.notified_at IS NULL
+        -- A record retired after its event was created is a withdrawn claim;
+        -- never surface it in a digest. Election events are unaffected.
+        AND NOT (e.event_type = 'candidate_record_update' AND r.retired_at IS NOT NULL)
       ORDER BY candidate_display_name, e.created_at, e.id
     `,
     [userId]

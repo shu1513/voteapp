@@ -247,6 +247,7 @@ async function lookupCandidateRecords(
         record.created_at::text AS created_at
       FROM public.candidate_records AS record
       WHERE record.candidate_id = $1::uuid
+        AND record.retired_at IS NULL
       ORDER BY record.event_date DESC, record.created_at DESC, record.id
     `,
     [normalizedCandidateId]

@@ -60,6 +60,7 @@ type RecordRow = {
   description: string;
   source_url: string;
   event_date: string;
+  retired_at: string | null;
 };
 
 function parseArgs(argv: readonly string[]): { repairsFile: string; apply: boolean } {
@@ -148,6 +149,13 @@ export async function repairOneSourceUrl(
   const row = await deps.loadRecord(repair.recordId);
   if (!row) {
     return { recordId: repair.recordId, status: "skipped", reason: "record not found" };
+  }
+  if (row.retired_at !== null) {
+    return {
+      recordId: repair.recordId,
+      status: "skipped",
+      reason: `record is retired (${row.retired_at}); repairing a withdrawn claim is moot`,
+    };
   }
   if (row.source_url === repair.sourceUrl) {
     return {
@@ -285,7 +293,7 @@ function buildPoolDeps(pool: Pool): RepairDeps {
   return {
     loadRecord: async (recordId) => {
       const result = await pool.query<RecordRow>(
-        `SELECT id, candidate_id, description, source_url, event_date::text AS event_date
+        `SELECT id, candidate_id, description, source_url, event_date::text AS event_date, retired_at::text AS retired_at
            FROM public.candidate_records
           WHERE id = $1`,
         [recordId]
