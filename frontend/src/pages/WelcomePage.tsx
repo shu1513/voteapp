@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import type { MetaFunction } from "react-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { APP_NAME, apiRequest, useMe } from "@voteapp/api-client";
 import type { ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteapp/api-client";
 import { ResearchAreaPicker } from "../components/ResearchAreaPicker";
@@ -56,6 +56,21 @@ export function WelcomePage() {
       navigate("/me/ballot", { replace: true });
     },
   });
+  // Cross-mount in-flight guard, same as the settings editor: these PUTs are
+  // full-list replaces sharing one mutation key, so controls stay locked
+  // until any older write settles. (Render value — saveAndContinue re-checks
+  // the mutation cache imperatively to close the gap before this re-renders.)
+  const saving = useIsMutating({ mutationKey: ["put-research-area-preferences"] }) > 0;
+
+  function saveAndContinue() {
+    // Checked against the mutation cache, not the rendered `saving` value: a
+    // second click in the same tick as the first — or an in-flight settings
+    // PUT from another mount — would otherwise race this full-list replace.
+    if (queryClient.isMutating({ mutationKey: ["put-research-area-preferences"] }) > 0) {
+      return;
+    }
+    save.mutate(orderedIds);
+  }
 
   // The step needs a verified session (the preferences endpoint is
   // verified-only). Anyone else lands somewhere sensible instead of a wall:
@@ -120,7 +135,7 @@ export function WelcomePage() {
         <ResearchAreaPicker
           areas={catalog.data.research_areas}
           orderedIds={orderedIds}
-          disabled={save.isPending}
+          disabled={saving}
           onChange={setOrderedIds}
         />
       ) : null}
@@ -128,8 +143,8 @@ export function WelcomePage() {
       <div className="mt-8 flex items-center gap-4">
         <button
           type="button"
-          disabled={orderedIds.length === 0 || save.isPending}
-          onClick={() => save.mutate(orderedIds)}
+          disabled={orderedIds.length === 0 || saving}
+          onClick={saveAndContinue}
           className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:bg-line"
         >
           {save.isPending ? "Saving…" : "Save and continue"}
