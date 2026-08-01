@@ -40,10 +40,15 @@ describe("App account nav", () => {
     expect(screen.getByRole("link", { name: "My Candidates" })).toHaveAttribute("href", "/me/follows");
     expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/me/settings");
 
+    // The greeting sits beside the logo as plain text, not a link or button.
+    const greeting = screen.getByText("Hi Sam");
+    expect(greeting.closest("a")).toBeNull();
+    expect(greeting.closest("button")).toBeNull();
+
     // The mobile menu opens and repeats the destinations plus log out
     // (Headless UI gives menu entries the menuitem role).
     const user = userEvent.setup();
-    await user.click(screen.getByRole("button", { name: /Hi Sam/ }));
+    await user.click(screen.getByRole("button", { name: "Menu" }));
     const items = screen.getAllByRole("menuitem");
     expect(items.map((item) => item.textContent)).toEqual([
       "My Elections",

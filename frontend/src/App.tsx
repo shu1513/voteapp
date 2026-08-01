@@ -3,7 +3,21 @@ import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { RouteError } from "./components/RouteError";
 import { TermsRenewalGate } from "./components/TermsRenewalGate";
-import { APP_NAME, useLogout, useMe } from "@voteapp/api-client";
+import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, useLogout, useMe } from "@voteapp/api-client";
+
+/**
+ * The greeting lives beside the logo, not in the nav: sitting between
+ * clickable links made it read as a link itself. Dark navy + semibold — a
+ * weight and color no link in the header uses — plus no hover state keep it
+ * visibly inert.
+ */
+function Greeting() {
+  const { me } = useMe();
+  if (!me) {
+    return null;
+  }
+  return <span className="text-sm font-semibold text-navy">Hi {me.first_name}</span>;
+}
 
 function AccountNav() {
   const { me } = useMe();
@@ -43,7 +57,6 @@ function AccountNav() {
   return (
     <>
       <span className="hidden items-center gap-4 sm:flex">
-        <span className="text-ink">Hi {me.first_name}</span>
         <Link to="/me/ballot" className="text-ink-soft hover:text-ink">
           My Elections
         </Link>
@@ -59,8 +72,7 @@ function AccountNav() {
       </span>
       <Menu as="div" className="relative sm:hidden">
         <MenuButton className="rounded-lg border border-line px-3 py-1.5 font-medium text-ink">
-          Hi {me.first_name}{" "}
-          <span aria-hidden="true">▾</span>
+          Menu <span aria-hidden="true">▾</span>
         </MenuButton>
         <MenuItems className="absolute right-0 z-20 mt-2 w-44 rounded-xl border border-line bg-white py-1 shadow-lg focus:outline-none">
           <MenuItem>
@@ -121,9 +133,12 @@ export function App() {
       </a>
       <header className="border-b border-line bg-white">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-          <Link to="/" className="text-xl font-extrabold tracking-tight text-rausch">
-            {APP_NAME}
-          </Link>
+          <span className="flex items-baseline gap-3">
+            <Link to="/" className="text-xl font-extrabold tracking-tight text-rausch">
+              {APP_NAME}
+            </Link>
+            <Greeting />
+          </span>
           <nav className="flex items-center gap-4 text-sm">
             <AccountNav />
           </nav>
@@ -140,6 +155,15 @@ export function App() {
           document from every page, which is also what keeps the clickwrap's
           named documents permanently available rather than only at the gate. */}
       <footer className="mt-16 border-t border-line py-8 text-center text-xs text-ink-soft">
+        {/* Reaches everyone who sees results, including the people the
+            clickwrap never reached — a shared computer, someone else's phone,
+            a link from a text message. For a reliance claim this line carries
+            more weight than the agreement does, because it does not depend on
+            the reader having accepted anything. It used to sit above the
+            election list, where it read as an interruption; the footer keeps
+            it on every page instead of only the ballot, and beside the
+            Disclaimer link it already points at. Non-blocking by design. */}
+        <p className="mb-3 px-4">{VERIFY_WITH_OFFICIALS_NOTE}</p>
         <nav aria-label="Legal" className="flex flex-wrap justify-center gap-x-5 gap-y-2">
           <Link to="/terms" className="underline hover:text-ink">
             Terms of Use
