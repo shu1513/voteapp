@@ -1,4 +1,5 @@
 import { getStateNameByFips } from "../constants/usStates.js";
+import { findBlockedSourceReason } from "../pipeline/candidates/candidateRecordSourcePolicy.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 export type PresidentialPrimaryDateResultStatus = "official_found" | "not_official_yet";
@@ -159,6 +160,13 @@ function parseRow(
   const sources = normalizeSources(input.sources);
   if (!sources) {
     return { ok: false, reason: "sources must be a non-empty array of valid http(s) URLs" };
+  }
+  // Same domain policy as candidate records: a primary-date determination must
+  // cite an election authority or accountable publisher, never a UGC/social
+  // post, generated directory, or bot-check interstitial.
+  const blockedSourceReason = findBlockedSourceReason(sources);
+  if (blockedSourceReason) {
+    return { ok: false, reason: `sources: ${blockedSourceReason}` };
   }
 
   const primaryDate = parsePrimaryDate(input.primary_date, electionYear);

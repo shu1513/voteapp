@@ -95,4 +95,19 @@ describe("parsePresidentialNomineePayload", () => {
       }).ok
     ).toBe(false);
   });
+
+  it("rejects a nominee determination sourced from a blocked platform domain", () => {
+    const parsed = parsePresidentialNomineePayload({
+      nominee_found: true,
+      candidate_name: "Jane President",
+      sources: ["https://x.com/party/status/789"],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toContain("payload.sources:");
+    expect(parsed.reason).toContain("user-generated/social platform");
+  });
 });

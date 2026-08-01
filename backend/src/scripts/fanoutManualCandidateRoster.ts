@@ -111,7 +111,10 @@ function extractRosterCandidates(
   payload: unknown,
   options: { allowFecIds: boolean; requireFecIds: boolean }
 ): { ok: true; candidates: CandidateRosterFanoutEntry[] } | { ok: false; reason: string } {
-  const parsed = parseCandidateRosterPayload(payload, options);
+  // Re-parse of an already-written staging payload: rosters imported before
+  // the source-domain policy can carry a now-blocked URL, and fanout must not
+  // fail over evidence the roster write already accepted.
+  const parsed = parseCandidateRosterPayload(payload, { ...options, enforceSourcePolicy: false });
   if (!parsed.ok) {
     return { ok: false, reason: parsed.reason };
   }

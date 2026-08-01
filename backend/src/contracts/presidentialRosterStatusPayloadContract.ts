@@ -1,3 +1,4 @@
+import { findBlockedSourceReason } from "../pipeline/candidates/candidateRecordSourcePolicy.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 export type PresidentialRosterStatus = "active" | "withdrawn";
@@ -94,6 +95,12 @@ function parseCandidate(
   const sources = normalizeSources(input.sources);
   if (!sources) {
     return { ok: false, reason: "candidate.sources must contain valid URL strings" };
+  }
+  // Same domain policy as candidate records: a status change (withdrawal) must
+  // cite an accountable publisher or official source, never a UGC/social post.
+  const blockedSourceReason = findBlockedSourceReason(sources);
+  if (blockedSourceReason) {
+    return { ok: false, reason: `candidate.sources: ${blockedSourceReason}` };
   }
 
   return {

@@ -504,6 +504,22 @@ export function describeBlockedSource(hostname: string, kind: BlockedSourceKind)
   return `source domain '${hostname}' is ${BLOCKED_SOURCE_KIND_LABEL[kind]}; ${BLOCKED_SOURCE_KIND_REPAIR[kind]}`;
 }
 
+// Blocked-class domains (UGC/social platforms, generated candidate
+// directories, bot-check interstitials) are never acceptable citation
+// evidence for ANY research payload — roster and profile contracts use this
+// alongside the record paths. Returns the repair-worded reason for the first
+// blocked URL so contract failures feed straight into AI retry feedback and
+// manual repair reports; null when every URL is clean.
+export function findBlockedSourceReason(sourceUrls: readonly string[]): string | null {
+  for (const sourceUrl of sourceUrls) {
+    const classification = classifyCandidateRecordSourceDomain(sourceUrl);
+    if (classification.tier === "blocked") {
+      return describeBlockedSource(classification.hostname, classification.blockedKind);
+    }
+  }
+  return null;
+}
+
 // Legacy state-government hostnames predating .gov migration, e.g.
 // courts.state.mn.us, sos.state.tx.us.
 const STATE_US_HOSTNAME_PATTERN = /(?:^|\.)state\.[a-z]{2}\.us$/;

@@ -1,3 +1,4 @@
+import { findBlockedSourceReason } from "../pipeline/candidates/candidateRecordSourcePolicy.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 export type PresidentialRosterCandidateStatus = "active" | "withdrawn";
@@ -184,6 +185,10 @@ function parseRunningMate(
   if (!sources) {
     return { ok: false, reason: "candidate.running_mate.sources must contain valid URL strings" };
   }
+  const blockedSourceReason = findBlockedSourceReason(sources);
+  if (blockedSourceReason) {
+    return { ok: false, reason: `candidate.running_mate.sources: ${blockedSourceReason}` };
+  }
 
   const fecCandidateId = normalizeFecCandidateId(input.fec_candidate_id);
   if (fecCandidateId === null) {
@@ -239,6 +244,15 @@ function parseCandidate(value: unknown, options: PresidentialRosterPayloadParseO
   if (!sources) {
     return { kind: "invalid", reason: "candidate.sources must contain valid URL strings" };
   }
+  // Same domain policy as candidate records: UGC/social platforms, generated
+  // candidate directories, and bot-check interstitials are never citation
+  // evidence. Fresh imports only reach this contract (manual writer + AI
+  // enricher), so unlike the district roster contract there is no stored
+  // re-parse path needing an opt-out.
+  const blockedSourceReason = findBlockedSourceReason(sources);
+  if (blockedSourceReason) {
+    return { kind: "invalid", reason: `candidate.sources: ${blockedSourceReason}` };
+  }
 
   // Candidates who never registered a presidential FEC candidacy are excluded by
   // policy rather than failing the payload. A present-but-malformed ID stays a
@@ -270,6 +284,14 @@ function parseCandidate(value: unknown, options: PresidentialRosterPayloadParseO
       reason:
         "candidate.qualification_evidence must include at least one non-FEC source-backed campaign, party, launch, or ballot-access signal",
     };
+  }
+  // Checked here rather than inside normalizeQualificationEvidence so a
+  // blocked domain gets its specific repair message instead of the generic
+  // shape failure above. A campaign launch announced on social media is
+  // citable via news coverage, never via the platform post itself.
+  const blockedEvidenceReason = findBlockedSourceReason(qualificationEvidence.map((item) => item.source_url));
+  if (blockedEvidenceReason) {
+    return { kind: "invalid", reason: `candidate.qualification_evidence: ${blockedEvidenceReason}` };
   }
 
   const runningMate = parseRunningMate(input.running_mate);
