@@ -362,8 +362,15 @@ describe("CandidatePage", () => {
     await userEvent.click(followButton);
 
     expect(await screen.findByText("Register for free to get updates about this candidate.")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Register for free" })).toHaveAttribute("href", "/register");
-    expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute("href", "/login");
+    // Both links carry the candidate page as the post-auth return path.
+    expect(screen.getByRole("link", { name: "Register for free" })).toHaveAttribute(
+      "href",
+      "/register?next=%2Fcandidates%2Fc-1"
+    );
+    expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute(
+      "href",
+      "/login?next=%2Fcandidates%2Fc-1"
+    );
   });
 
   it("shows no follow controls to logged-in but unverified users", async () => {

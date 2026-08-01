@@ -1,6 +1,6 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 // Stand-in for FollowButton shown to logged-out visitors: styled like the
 // real Follow button, but clicking opens a register prompt instead of
@@ -13,6 +13,10 @@ type RegisterToFollowButtonProps = {
 
 export function RegisterToFollowButton({ candidateName, size = "md" }: RegisterToFollowButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
+  // Carry the candidate page as the post-auth return path so the visitor
+  // lands back here to complete the follow (login honors ?next=; the
+  // register flow forwards it as far as the email hop allows).
+  const next = encodeURIComponent(useLocation().pathname);
   const base =
     size === "sm"
       ? "rounded-lg px-3 py-1 text-xs font-semibold transition"
@@ -48,13 +52,13 @@ export function RegisterToFollowButton({ candidateName, size = "md" }: RegisterT
             </p>
             <div className="mt-4 flex items-center justify-end gap-3">
               <Link
-                to="/login"
+                to={`/login?next=${next}`}
                 className="text-sm text-ink-soft underline underline-offset-2 hover:text-ink"
               >
                 Log in
               </Link>
               <Link
-                to="/register"
+                to={`/register?next=${next}`}
                 className="rounded-lg bg-rausch px-4 py-2 text-sm font-semibold text-white hover:bg-rausch-dark"
               >
                 Register for free
