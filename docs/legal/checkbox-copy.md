@@ -144,9 +144,11 @@ sold.
 > your account or sell it.
 
 Beside the anonymous-search note, **Why do we need the full address?** opens
-an informational dialog on web and mobile. It explains that ZIP codes are
-mail-delivery areas, can contain multiple voting districts, and cannot identify
-every election that applies to a voter. The dialog repeats the address-handling
+an informational dialog on web and mobile. It leads with what the address is
+for — the ballot depends on which voting districts a home sits in — and then
+explains why nothing shorter works: district boundaries do not follow ZIP
+codes and can split a neighborhood or a single street, so two homes in the
+same ZIP can vote in different races. The dialog repeats the address-handling
 summary, links to the Privacy Policy, and closes with **Got it**. It has no
 checkbox or agreement button because it explains the field rather than
 requesting consent.
