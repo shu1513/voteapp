@@ -108,7 +108,7 @@ export function buildCandidateRecordDiscoveryPrompt(input: CandidateRecordDiscov
     "- event_date must be YYYY-MM-DD; use the action/event date when known, otherwise use the source publication date.",
     "- If neither action/event date nor publication date is available, omit that record.",
     "- Use one row per concrete record; do not duplicate the same source/event.",
-    "- Keep descriptions neutral and factual.",
+    "- Keep descriptions neutral and factual, built on substance: say what the item actually does and what the candidate did about it — not just its procedural label (item/amendment numbers, vendor legal names). Keep vote tallies.",
     "- source_url must not be a social/UGC platform or a personal blog/self-published page (Reddit, X/Twitter, Facebook, YouTube, Medium, Substack, and similar); the importer rejects known platform domains.",
     "- For damaging claims, require official/legal sources or reputable news (the importer rejects damaging claims cited to other domains) and do not state allegations as proven facts.",
     ...PLAIN_LANGUAGE_STYLE_RULES,
