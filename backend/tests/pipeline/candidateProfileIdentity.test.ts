@@ -770,6 +770,45 @@ describe("assertMergedOfficeRoutingConsistent", () => {
     ).not.toThrow();
   });
 
+  it("refuses a null-retraction while a stored current office would survive", () => {
+    // The office itself proves the answer is true — retracting beside it
+    // either erases a provable fact or leaves a stale office standing.
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile({ has_held_public_office: null }),
+        storedCurrentOffice: "Mayor",
+        storedHasHeldPublicOffice: true,
+        overwriteFields: new Set(["has_held_public_office"]),
+      })
+    ).toThrow(/refuses to retract has_held_public_office to null while current_office/);
+  });
+
+  it("accepts a null-retraction when the stale office is cleared in the same write", () => {
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile({ has_held_public_office: null }),
+        storedCurrentOffice: "Attorney, Noble Law",
+        storedHasHeldPublicOffice: true,
+        overwriteFields: new Set(["has_held_public_office"]),
+        clearFields: new Set(["current_office"]),
+      })
+    ).not.toThrow();
+  });
+
+  it("accepts a plain null answer that merely fails to repair a legacy office+NULL row", () => {
+    // Legacy rows hold current_office with a NULL routing answer wholesale.
+    // A pass answering null from office-history-silent sources (no overwrite)
+    // leaves both columns untouched and must still be able to fill the row's
+    // other empty fields — only an active retraction is refused.
+    expect(() =>
+      assertMergedOfficeRoutingConsistent({
+        profile: profile({ has_held_public_office: null }),
+        storedCurrentOffice: "Mayor",
+        storedHasHeldPublicOffice: null,
+      })
+    ).not.toThrow();
+  });
+
   it("accepts consistent states: officeholder with office, never-held without one", () => {
     expect(() =>
       assertMergedOfficeRoutingConsistent({

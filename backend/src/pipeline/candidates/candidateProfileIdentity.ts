@@ -435,6 +435,25 @@ export function assertMergedOfficeRoutingConsistent(input: {
       `Profile merge would leave a contradictory candidate row: current_office would be "${effectiveOffice}" (stored: ${JSON.stringify(input.storedCurrentOffice)}, incoming: ${JSON.stringify(input.profile.current_office ?? null)}) while has_held_public_office would be false — a candidate holding a public office now HAS held public office. If the stored office is stale or holds an occupation, clear or replace it (--clear-profile-fields current_office / --replace-profile-fields current_office); if the stored false routing answer is stale, correct it with --replace-profile-fields has_held_public_office. Nothing was written.`
     );
   }
+
+  // A null-retraction is refused while a current office would survive the
+  // write: the office itself proves the answer is true, so retracting to
+  // "unanswered" beside it either erases a provable fact or leaves a stale
+  // office standing. Deliberately narrower than "reject office + non-true":
+  // legacy rows hold current_office with a NULL answer wholesale, and a
+  // routine pass that answers null from office-history-silent sources must
+  // still be able to fill their OTHER empty fields — only the write that
+  // actively retracts is refused, not one that merely fails to repair
+  // pre-existing state.
+  if (
+    input.overwriteFields?.has("has_held_public_office") &&
+    incomingHasHeld === null &&
+    effectiveOffice !== null
+  ) {
+    throw new Error(
+      `Profile merge refuses to retract has_held_public_office to null while current_office would remain "${effectiveOffice}" (stored: ${JSON.stringify(input.storedCurrentOffice)}) — a standing current office proves the answer is true. If the stored office is real, drop the retraction (or answer true); if it is stale or holds an occupation, clear or replace it in the same write (--clear-profile-fields current_office / --replace-profile-fields current_office). Nothing was written.`
+    );
+  }
 }
 
 async function mergeCandidateIdentifiersForExistingCandidate(
