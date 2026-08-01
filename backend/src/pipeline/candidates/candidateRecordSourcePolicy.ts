@@ -680,9 +680,9 @@ const OWNED_HOST_FOR_TAIL_GEO_TOKENS = [
   "brevard", "merced", "seattle", "spokane", "thurston", "westchester", "oc",
 ];
 const OWNED_HOST_FOR_TAIL_OFFICE_WORDS = [
-  // Compounds before their parts, longest-first sorting below handles the rest.
-  "secretaryofstate", "stateauditor", "statehouse", "statesenate", "staterep",
-  "countyclerk", "schoolboard", "akgovernor",
+  // Only compounds the word list cannot assemble: "statehouse", "countyclerk"
+  // etc. decompose through the consumption loop and are deliberately absent.
+  "secretaryofstate", "staterep",
   "house", "senate", "congress", "assembly", "legislature", "mayor", "council", "alder",
   "trustee", "school", "schools", "board", "judge", "justice", "sheriff", "clerk",
   "treasurer", "auditor", "assessor", "coroner", "recorder", "commissioner", "supervisor",
@@ -701,9 +701,13 @@ function isCampaignForTail(tail: string): boolean {
   if (tail.length === 0) {
     return false;
   }
-  // "<anything>county" / "<anything>city" is a place composition even when
-  // the place itself is not in the curated list ("jacksoncounty").
-  if (/^[a-z]{3,}(?:county|city)\d*$/.test(tail)) {
+  // "<anything>county" is a place composition even when the place itself is
+  // not in the curated list ("jacksoncounty"). County only: no English word
+  // ends in "county", but plenty end in "city" (velocity, publicity,
+  // electricity), and a generic city rule reintroduced exactly the substring
+  // coincidences this gate exists to exclude. A "<place>city" tail must come
+  // through the curated place list instead.
+  if (/^[a-z]{3,}county\d*$/.test(tail)) {
     return true;
   }
   let rest = tail;

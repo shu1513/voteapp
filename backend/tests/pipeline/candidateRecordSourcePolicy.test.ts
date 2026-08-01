@@ -547,6 +547,10 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
       ["https://marchforourlives.org/about", "Tom March"], // "for our lives" is a cause, not an office
       ["https://fosterforward.org/programs", "Bill Foster"], // foster|forward
       ["https://johnhartford.com/bio", "John Hart"], // john+hart|ford — two tokens consumed
+      // English words ending in "city" must not satisfy the <place>county
+      // composition rule — that rule is county-only on purpose.
+      ["https://marchforpublicity.org/services", "Tom March"],
+      ["https://smithforelectricity.org/co-op", "John Smith"],
     ];
     for (const [sourceUrl, candidateDisplayName] of independent) {
       const result = evaluateCandidateRecordSourcePolicy({
