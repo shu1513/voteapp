@@ -5,6 +5,10 @@
      gray hierarchy, hairline borders, airy white surfaces. */
   --color-rausch: #ff385c;
   --color-rausch-dark: #e31c5f;
+  /* Darkest brand step, for text on TINTED surfaces. rausch-dark clears
+     WCAG AA on pure white (4.57:1) but not on the cards' surface/50 tint
+     (4.41:1 < 4.5); this shade is 5.8:1 there. */
+  --color-rausch-deep: #c11550;
   --color-ink: #222222;
   /* Between ink and ink-soft: secondary text that still has to be READ in
      full (a committee's description), not skimmed like a caption. ink-soft

@@ -346,7 +346,9 @@ export function ElectionPage() {
                   <h3 className="font-semibold">
                     <Link
                       to={`/candidates/${candidate.candidate_id}`}
-                      className="transition after:absolute after:inset-0 group-hover:text-rausch-dark"
+                      // rausch-deep, not -dark: AA contrast on the tinted card
+                      // bg — see ElectionCard's title.
+                      className="transition after:absolute after:inset-0 group-hover:text-rausch-deep"
                     >
                       {candidate.display_name}
                     </Link>
