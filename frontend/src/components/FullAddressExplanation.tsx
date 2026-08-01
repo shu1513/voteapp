@@ -31,12 +31,12 @@ export function FullAddressExplanation() {
               <div className="mt-3 space-y-3 text-sm text-ink-soft">
                 <p>
                   Your ballot depends on your voting districts — congressional, state, county, city,
-                  school, and more. Different homes fall in different districts, so they get different
-                  elections.
+                  school, and more. Different homes fall in different districts, so they can get
+                  different elections.
                 </p>
                 <p>
-                  District lines are drawn street by street, and they don’t follow ZIP codes. Two homes
-                  in the same ZIP — even on the same street — can vote in different races. Only a full
+                  District boundaries don’t follow ZIP codes — they can split a neighborhood or even a
+                  single street. Two homes in the same ZIP can vote in different races. Only a full
                   street address can match you to the exact districts that apply to you.
                 </p>
                 <p>{ADDRESS_FIELD_PRIVACY_NOTE}</p>
