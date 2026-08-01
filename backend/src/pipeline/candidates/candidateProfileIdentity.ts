@@ -9,6 +9,7 @@ import {
   normalizeTwitterHandle,
 } from "../../utils/candidateIdentity.js";
 import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
+import { canonicalizeParty } from "./candidatePartyCanonicalization.js";
 
 /**
  * Two or more same-name candidates match the incoming profile's hard
@@ -214,9 +215,12 @@ export function resolveStoredCandidateParty(input: {
   rosterParty: string | undefined;
   profileParty: string | undefined;
 }): string {
-  return input.includeParty
-    ? input.rosterParty ?? input.profileParty ?? "Unknown"
-    : "Nonpartisan";
+  // Canonicalized here because this is the single choke point every
+  // candidates.party write flows through (insert and merge alike), so
+  // "DEM" / "Democrat" / "Democratic Party" all store as "Democratic".
+  return canonicalizeParty(
+    input.includeParty ? input.rosterParty ?? input.profileParty ?? "Unknown" : "Nonpartisan"
+  );
 }
 
 export function matchesByHardIdentifier(profile: CandidateProfilePayload, row: ExistingCandidateRow): boolean {
