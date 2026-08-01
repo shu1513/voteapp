@@ -8,6 +8,7 @@ import {
   normalizeOptionalUrl,
   normalizeTwitterHandle,
 } from "../../utils/candidateIdentity.js";
+import { normalizeHttpUrl } from "../../utils/normalizeHttpUrl.js";
 
 /**
  * Two or more same-name candidates match the incoming profile's hard
@@ -75,6 +76,14 @@ export const OVERWRITABLE_PROFILE_FIELDS = [
   // stored value (the records writers refuse to sweep past a contradiction).
   // Not clearable: the profile contract requires an answer on every payload.
   "has_held_public_office",
+  // Provenance list. Merged as a UNION of stored + incoming by default: the
+  // merge UPDATE keeps stored facts (fill-if-empty scalars, additive id
+  // lists), so the sources supporting those surviving facts must survive
+  // too — a narrow correction payload must not wipe the row's provenance.
+  // Listing it under --replace-profile-fields swaps in exactly the payload's
+  // list, the deliberate cleanup path for dead or disallowed stored URLs.
+  // Not clearable: the profile contract requires sources on every payload.
+  "profile_sources",
 ] as const;
 export type OverwritableProfileField = (typeof OVERWRITABLE_PROFILE_FIELDS)[number];
 
@@ -122,6 +131,38 @@ export function mergeIdentifierLists(
   }
 
   return merged.length > 0 ? merged : undefined;
+}
+
+/**
+ * Union of stored and incoming profile sources. Dedupes on the NORMALIZED
+ * URL (trailing slash, hash), not the raw string: stored legacy rows predate
+ * contract-side normalizeHttpUrl, so "https://a.example/page/" and its
+ * normalized twin are the same source. First occurrence wins and stored
+ * order comes first, so repeated re-writes are stable.
+ */
+export function mergeProfileSourceLists(
+  existing: readonly string[],
+  incoming: readonly string[]
+): string[] {
+  const merged: string[] = [];
+  const seen = new Set<string>();
+
+  for (const source of [existing, incoming]) {
+    for (const value of source) {
+      const trimmed = value.trim();
+      if (trimmed.length === 0) {
+        continue;
+      }
+      const key = (normalizeHttpUrl(trimmed) ?? trimmed).toLowerCase();
+      if (seen.has(key)) {
+        continue;
+      }
+      seen.add(key);
+      merged.push(trimmed);
+    }
+  }
+
+  return merged;
 }
 
 function haveSameNormalizedIdentifierSet(
@@ -398,9 +439,10 @@ async function mergeCandidateIdentifiersForExistingCandidate(
     current_office: string | null;
     has_held_public_office: boolean | null;
     party: string | null;
+    profile_sources: unknown;
   }>(
     `
-      SELECT fec_ids, state_filing_ids, current_office, has_held_public_office, party
+      SELECT fec_ids, state_filing_ids, current_office, has_held_public_office, party, profile_sources
       FROM public.candidates
       WHERE id = $1
         AND deleted_at IS NULL
@@ -427,11 +469,19 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   const mergedFecIds = mergeIdentifierLists(existingFecIds, profile.fec_ids);
   const mergedStateFilingIds = mergeIdentifierLists(existingStateFilingIds, profile.state_filing_ids);
 
+  // profile_sources follows the same additive logic as the fact columns it
+  // vouches for: the UPDATE below keeps stored facts, so a narrow correction
+  // payload must not wipe the sources supporting them. Only an explicit
+  // --replace-profile-fields profile_sources swaps in the payload's list.
+  const mergedProfileSources = overwriteFields?.has("profile_sources")
+    ? [...profile.sources]
+    : mergeProfileSourceLists(parseOptionalStringArray(current.profile_sources), profile.sources);
+
   // Scalar fields fill empty columns but never overwrite non-empty stored
   // values, unless the caller explicitly listed the field for replacement —
   // or listed it for clearing, which sets the column to NULL and wins over
-  // every other branch. Identifier lists stay additive and profile_sources
-  // always refreshes.
+  // every other branch. Identifier lists stay additive; profile_sources
+  // unions with the stored list (replace only when explicitly listed).
   const scalarValue = (field: OverwritableProfileField, value: string | undefined | null) => ({
     value: value ?? null,
     overwrite: overwriteFields?.has(field) ?? false,
@@ -509,7 +559,7 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       candidateId,
       mergedFecIds ? JSON.stringify(mergedFecIds) : null,
       mergedStateFilingIds ? JSON.stringify(mergedStateFilingIds) : null,
-      JSON.stringify(profile.sources),
+      JSON.stringify(mergedProfileSources),
       scalars.date_of_birth.value,
       scalars.date_of_birth.overwrite,
       scalars.twitter_handle.value,
