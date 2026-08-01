@@ -26,6 +26,15 @@ const MAX_UNSAVED_AREA_CHIPS = 3;
 // election detail page's affects row matches the card's.
 export const AREA_TEXT_CLASS = "font-medium text-green-900";
 
+// An office race with no published candidate list renders a placeholder card
+// ("Candidate list not final") with nothing to read. Ballot measures are
+// exempt: zero candidates is their normal state, and the measure text is the
+// content. Mirrors hasNothingToRead in the backend's ballotElectionOrdering,
+// which sinks these races to the end of the payload.
+function isAwaitingCandidates(election: ElectionSummary): boolean {
+  return election.race_type !== "ballot_measure" && election.candidate_count === 0;
+}
+
 /**
  * Date-grouped card list shared by both ballot pages. Elections cluster on
  * election days (a typical ballot is one or two dates), so the date renders
@@ -33,6 +42,12 @@ export const AREA_TEXT_CLASS = "font-medium text-green-900";
  * is by consecutive run — purely presentational — so it cannot reorder
  * whatever sort the page requested; a sort that interleaves dates just
  * produces more headings.
+ *
+ * Races still waiting on a candidate list render apart, under one closing
+ * section instead of inside the date groups: the backend sinks them to the
+ * end of the payload, and date-grouping that tail would repeat date headings
+ * at the bottom of the list. Their cards carry their own date (their section
+ * heading names no date), and they keep the payload's relative order.
  */
 export function ElectionList({
   elections,
@@ -45,8 +60,10 @@ export function ElectionList({
    */
   savedAreaWeights?: Map<string, ResearchAreaWeight>;
 }) {
+  const awaitingCandidates = elections.filter(isAwaitingCandidates);
+  const readable = elections.filter((election) => !isAwaitingCandidates(election));
   const groups: { date: string; elections: ElectionSummary[] }[] = [];
-  for (const election of elections) {
+  for (const election of readable) {
     const lastGroup = groups[groups.length - 1];
     if (lastGroup && lastGroup.date === election.election_date) {
       lastGroup.elections.push(election);
@@ -71,6 +88,23 @@ export function ElectionList({
           </div>
         </section>
       ))}
+      {awaitingCandidates.length > 0 ? (
+        <section>
+          {/* "officials", matching the roster-status copy these cards show —
+              the wait is on election officials, not on this app. */}
+          <h2 className="text-xl font-bold text-ink">Waiting on official candidate lists</h2>
+          <div className="mt-2 space-y-3">
+            {awaitingCandidates.map((election) => (
+              <ElectionCard
+                key={election.id}
+                election={election}
+                savedAreaWeights={savedAreaWeights}
+                showDate
+              />
+            ))}
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }
@@ -86,9 +120,16 @@ export function ElectionList({
 function ElectionCard({
   election,
   savedAreaWeights,
+  showDate = false,
 }: {
   election: ElectionSummary;
   savedAreaWeights?: Map<string, ResearchAreaWeight>;
+  /**
+   * The "waiting on candidate lists" section spans dates under one heading,
+   * so its cards must say their own date; everywhere else the group heading
+   * carries it.
+   */
+  showDate?: boolean;
 }) {
   // Saved matches lead (in the user's rank order), unsaved follow in public-
   // salience order — see splitResearchAreasBySaved. The chips that survive
@@ -148,7 +189,10 @@ function ElectionCard({
       {/* Always show the district: ballot titles are often generic ("Mayor",
           "Governor", "State Representative"), and the district name is what
           tells the voter WHERE the race is. */}
-      <p className="mt-0.5 text-sm text-ink-soft">{formatDistrictName(election.district.name)}</p>
+      <p className="mt-0.5 text-sm text-ink-soft">
+        {formatDistrictName(election.district.name)}
+        {showDate ? <> · {formatElectionDate(election.election_date)}</> : null}
+      </p>
       {hasSignalChips ? (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
           {election.followed_candidates && election.followed_candidates.length > 0 ? (
