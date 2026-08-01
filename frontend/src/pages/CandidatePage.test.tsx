@@ -264,8 +264,50 @@ describe("CandidatePage", () => {
     );
 
     await screen.findByRole("heading", { name: "Jordan Voter" });
-    expect(screen.getByText("For")).toBeInTheDocument();
-    expect(screen.getByText("Against")).toBeInTheDocument();
+    // The chip names its topic so a card read without its group heading
+    // still says what the stance is about.
+    expect(screen.getByText("Supports Housing")).toBeInTheDocument();
+    expect(screen.getByText("Opposes Transit")).toBeInTheDocument();
+  });
+
+  it("uses evidence wording, not advocacy verbs, for judicial evaluative areas", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    // On legal_competence/impartiality a for/against tag grades the
+    // EVIDENCE (favorable/unfavorable) — "Opposes Legal Competence" would
+    // claim an intent the data never asserted.
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          {
+            id: "r-judicial",
+            description: "Had two rulings reversed on appeal during 2024.",
+            source_url: "https://example.gov/opinions",
+            event_date: "2024-08-01",
+            created_at: "2026-05-02T00:00:00.000Z",
+            research_area_tags: [
+              {
+                research_area_id: "a-competence",
+                slug: "legal_competence",
+                name: "Legal Competence",
+                stance: "against",
+              },
+              {
+                research_area_id: "a-impartiality",
+                slug: "impartiality",
+                name: "Impartiality",
+                stance: "for",
+              },
+            ],
+          },
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Jordan Voter" });
+    expect(screen.getByText("Unfavorable on Legal Competence")).toBeInTheDocument();
+    expect(screen.getByText("Favorable on Impartiality")).toBeInTheDocument();
+    expect(screen.queryByText("Opposes Legal Competence")).not.toBeInTheDocument();
+    expect(screen.queryByText("Supports Impartiality")).not.toBeInTheDocument();
   });
 
   it("keeps mixed records chipless in the newest view and spells out per-tag stances", async () => {
@@ -291,11 +333,10 @@ describe("CandidatePage", () => {
     const user = userEvent.setup();
     await user.selectOptions(await screen.findByRole("combobox"), "newest");
 
-    // No single chip — the record's direction differs by area — but the tag
-    // list carries each area's stance.
-    expect(screen.queryByText("For")).not.toBeInTheDocument();
-    expect(screen.queryByText("Against")).not.toBeInTheDocument();
-    expect(screen.getByText(/Housing \(for\), Transit \(against\)/)).toBeInTheDocument();
+    // The flat view has no single chip — the tag list carries each area's
+    // stance in the same verb phrasing as the grouped chip.
+    expect(screen.getByText("Supports Housing")).toBeInTheDocument();
+    expect(screen.getByText("Opposes Transit")).toBeInTheDocument();
   });
 
   it("renders the profile report button after the record and election sections", async () => {
