@@ -9,6 +9,7 @@ import {
   candidateElection,
   candidateFollow,
   financeSummary,
+  ME_UNVERIFIED,
   ME_VERIFIED,
 } from "../test/fixtures";
 
@@ -351,6 +352,28 @@ describe("CandidatePage", () => {
       await screen.findByText("This candidate's record history has not been researched yet.")
     ).toBeInTheDocument();
     expect(screen.queryByText(/No verified public records/)).not.toBeInTheDocument();
+  });
+
+  it("shows logged-out visitors a Follow button that prompts them to register", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail());
+
+    const followButton = await screen.findByRole("button", { name: "Follow" });
+    await userEvent.click(followButton);
+
+    expect(await screen.findByText("Register for free to get updates about this candidate.")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Register for free" })).toHaveAttribute("href", "/register");
+    expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute("href", "/login");
+  });
+
+  it("shows no follow controls to logged-in but unverified users", async () => {
+    // The follows endpoint is verified-email-gated, and the register prompt
+    // would be wrong for someone who already registered.
+    stubApiRoutes({ "/api/me": { body: ME_UNVERIFIED } });
+    renderCandidate(() => candidateDetail());
+
+    expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Follow" })).not.toBeInTheDocument();
   });
 
   it("shows the follow button as Unfollow once the follows list confirms it", async () => {
