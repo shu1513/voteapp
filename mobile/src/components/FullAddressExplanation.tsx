@@ -31,13 +31,14 @@ export function FullAddressExplanation({ visible, onClose }: FullAddressExplanat
           </Text>
           <ScrollView className="mt-3">
             <Text className="text-sm text-ink-soft">
-              ZIP codes are designed for mail delivery, not elections. A single ZIP code can contain
-              multiple voting districts, and district boundaries do not follow ZIP-code boundaries.
+              Your ballot depends on your voting districts — congressional, state, county, city,
+              school, and more. Different homes fall in different districts, so they get different
+              elections.
             </Text>
             <Text className="mt-3 text-sm text-ink-soft">
-              Nearby homes—even homes on the same street—can vote in different races. Your full street
-              address lets us find the congressional, state, county, city, school, and other voting
-              districts that apply to you.
+              District lines are drawn street by street, and they don't follow ZIP codes. Two homes
+              in the same ZIP — even on the same street — can vote in different races. Only a full
+              street address can match you to the exact districts that apply to you.
             </Text>
             <Text className="mt-3 text-sm text-ink-soft">{ADDRESS_FIELD_PRIVACY_NOTE}</Text>
             <Text
