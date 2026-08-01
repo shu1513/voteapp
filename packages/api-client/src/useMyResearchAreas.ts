@@ -16,12 +16,14 @@ export function useMyResearchAreas(): {
   savedAreaIds: Set<string>;
   weights: Map<string, ResearchAreaWeight>;
   hasSaved: boolean;
+  isLoading: boolean;
 } {
-  const { me } = useMe();
+  const { me, isLoading: meLoading } = useMe();
+  const enabled = me?.email_verified === true;
   const query = useQuery({
     queryKey: ["me", "research-area-preferences"],
     queryFn: () => apiRequest<ResearchAreaPreferencesResult>("/api/me/research-area-preferences"),
-    enabled: me?.email_verified === true,
+    enabled,
     staleTime: 60_000,
   });
 
@@ -31,5 +33,13 @@ export function useMyResearchAreas(): {
     savedAreaIds: new Set(preferences.map((preference) => preference.research_area_id)),
     weights: buildResearchAreaWeights(preferences),
     hasSaved: preferences.length > 0,
+    // True only while "does the viewer have saved areas?" is not yet
+    // knowable: the identity lookup, then (for verified users) the
+    // preferences fetch. Settles false on every terminal state INCLUDING
+    // failures — a failed fetch falls back to the un-personalized
+    // experience rather than pending forever, so consumers that withhold
+    // personalized views on this flag (the ballot "Only my issues" filter)
+    // fail open instead of spinning.
+    isLoading: enabled ? query.isPending : meLoading,
   };
 }

@@ -248,6 +248,51 @@ describe("BallotPage", () => {
       expect(screen.queryByRole("button", { name: "Only my issues" })).not.toBeInTheDocument();
     });
 
+    it("withholds the list on a ?issues=mine load until the saved areas arrive", async () => {
+      // The ballot is one request; the saved areas are two chained ones, so
+      // the ballot usually lands first. The page must not flash the full
+      // unfiltered list in that window.
+      let releasePreferences!: () => void;
+      const preferencesGate = new Promise<void>((resolve) => {
+        releasePreferences = resolve;
+      });
+      stubApiRoutes({
+        "/api/me": { body: ME_VERIFIED },
+        "/api/me/research-area-preferences": async () => {
+          await preferencesGate;
+          return SAVED_HOUSING["/api/me/research-area-preferences"];
+        },
+        "/api/ballot": SPLIT_BALLOT,
+      });
+      renderBallot("/ballot?d=d-1&issues=mine");
+
+      // The ballot payload lands well within this window; no race may
+      // render while the saved areas are still unknown.
+      await expect(screen.findByText("Governor", {}, { timeout: 250 })).rejects.toThrow();
+      expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
+      expect(screen.getByText("Loading your elections…")).toBeInTheDocument();
+
+      releasePreferences();
+      expect(await screen.findByText("Governor")).toBeInTheDocument();
+      expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
+    });
+
+    it("fails open to the full list when the saved-areas fetch fails", async () => {
+      stubApiRoutes({
+        "/api/me": { body: ME_VERIFIED },
+        "/api/me/research-area-preferences": apiError(500, "internal_error", "boom"),
+        "/api/ballot": SPLIT_BALLOT,
+      });
+      renderBallot("/ballot?d=d-1&issues=mine");
+
+      // Deliberate fail-open, not a spinner: a ballot app errs toward
+      // showing races, and no on-page element claims filtering here — the
+      // request is ignored and the control stays hidden.
+      expect(await screen.findByText("Governor")).toBeInTheDocument();
+      expect(screen.getByText("State Senate")).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Only my issues" })).not.toBeInTheDocument();
+    });
+
     it("keeps an active filter applied and visible when it empties the ballot", async () => {
       stubApiRoutes({
         ...SAVED_HOUSING,

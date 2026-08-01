@@ -160,7 +160,12 @@ saved areas; the control simply doesn't render).
    saved areas AND the list splits into matched + unmatched; while ON it
    stays visible and keeps applying even when that empties the view. A
    viewer with no saved areas gets the request ignored (covers a shared
-   `?issues=mine` link opened anonymously).
+   `?issues=mine` link opened anonymously). While the saved areas are still
+   LOADING on a `?issues=mine` web load, the pages withhold the list
+   (useMyResearchAreas().isLoading) instead of flashing the full ballot
+   before the filter engages; the flag settles on fetch failure too, falling
+   open to the full list — a ballot app errs toward showing races, and no
+   on-page element claims filtering in that state.
 4. Interaction with ordering: filter composes with any sort; with `my_areas`
    sort it truncates the zero-score tail the sort already sank.
 5. Tests: hidden count + Show all restore, URL round-trip, arrives filtered

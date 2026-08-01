@@ -12,14 +12,14 @@ const VERIFIED_BASE = {
   "/api/me/research-area-preferences": { body: { preferences: [] } },
 };
 
-function renderSavedBallot(state?: unknown) {
+function renderSavedBallot(state?: unknown, search?: string) {
   return renderRoutes(
     [
       { path: "/me/ballot", element: <SavedBallotPage /> },
       { path: "/login", element: <p /> },
       { path: "/elections/:electionId", element: <p /> },
     ],
-    { pathname: "/me/ballot", state }
+    { pathname: "/me/ballot", search, state }
   );
 }
 
@@ -186,6 +186,27 @@ describe("SavedBallotPage", () => {
       await user.click(screen.getByRole("button", { name: "Show all" }));
       expect(screen.getByText("State Senate")).toBeInTheDocument();
       expect(router.state.location.search).not.toContain("issues=mine");
+    });
+
+    it("fails open to the full list when the saved-areas fetch fails on a ?issues=mine load", async () => {
+      stubApiRoutes({
+        ...VERIFIED_BASE,
+        "/api/me/research-area-preferences": apiError(500, "internal_error", "boom"),
+        "/api/me/ballot": {
+          body: ballotSummary([
+            electionSummary({ research_areas: [HOUSING] }),
+            electionSummary({ id: "e-2", official_ballot_title: "State Senate" }),
+          ]),
+        },
+      });
+      renderSavedBallot(undefined, "?issues=mine");
+
+      // Deliberate fail-open, not a spinner: a ballot app errs toward
+      // showing races, and no on-page element claims filtering here — the
+      // request is ignored and the control stays hidden.
+      expect(await screen.findByText("Governor")).toBeInTheDocument();
+      expect(screen.getByText("State Senate")).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Only my issues" })).not.toBeInTheDocument();
     });
   });
 });

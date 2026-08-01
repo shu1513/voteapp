@@ -25,7 +25,12 @@ export function BallotPage() {
   // own rank order) even on the public ballot; anonymous visitors get an
   // empty map (no personalization). The same saved areas gate the "Only my
   // issues" filter, so a verified visitor's one-off search is filterable too.
-  const { weights: savedAreaWeights, savedAreaIds, hasSaved } = useMyResearchAreas();
+  const {
+    weights: savedAreaWeights,
+    savedAreaIds,
+    hasSaved,
+    isLoading: savedAreasLoading,
+  } = useMyResearchAreas();
   // Set by the home page's post-search navigation so the visitor can confirm
   // the geocoder matched the right address. Router state only — the address is
   // personal data and must stay out of the URL; a refresh or shared link
@@ -91,6 +96,13 @@ export function BallotPage() {
     hasSaved,
     requested: issuesRequested,
   });
+  // A ?issues=mine load must not flash the full ballot while the saved
+  // areas are still unknown (the ballot is one request; the saved areas are
+  // two chained ones, so the ballot usually lands first). Withhold the list
+  // until the flag settles — it settles on failure too, falling open to the
+  // full list with the request ignored: a ballot app errs toward showing
+  // races, and no on-page element claims filtering in that state.
+  const awaitingSavedAreas = issuesRequested && savedAreasLoading;
 
   if (districtIds.length === 0) {
     return (
@@ -157,7 +169,7 @@ export function BallotPage() {
         </p>
       ) : null}
 
-      {ballot.isPending ? <LoadingNotice text="Loading your elections…" /> : null}
+      {ballot.isPending || awaitingSavedAreas ? <LoadingNotice text="Loading your elections…" /> : null}
       {ballot.isError ? (
         <div className="mt-4">
           <ErrorNotice error={ballot.error} />
@@ -176,7 +188,7 @@ export function BallotPage() {
         </Link>
       </p>
 
-      {ballot.isSuccess ? (
+      {ballot.isSuccess && !awaitingSavedAreas ? (
         <>
           {ballot.data.elections.length === 0 ? (
             <EmptyNotice text="No upcoming elections found for these districts yet. Check back — new elections are added as they are announced." />

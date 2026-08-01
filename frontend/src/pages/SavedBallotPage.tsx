@@ -127,7 +127,12 @@ export function SavedBallotPage() {
     }
   }, [location.pathname, location.state, navigate]);
   const queryClient = useQueryClient();
-  const { weights: savedAreaWeights, savedAreaIds, hasSaved } = useMyResearchAreas();
+  const {
+    weights: savedAreaWeights,
+    savedAreaIds,
+    hasSaved,
+    isLoading: savedAreasLoading,
+  } = useMyResearchAreas();
   // "Only my issues": URL state like the anonymous ballot's sort, so the
   // choice survives navigating into an election and back; off by default
   // (absent param). Deliberately NOT an account preference — hiding races
@@ -260,7 +265,11 @@ export function SavedBallotPage() {
     );
   }
 
-  if (handoffState !== "done" || ballot.isPending) {
+  // The saved-areas guard mirrors the anonymous ballot page: a ?issues=mine
+  // load must not flash the full ballot while the saved areas are still
+  // unknown. The flag settles on failure too, falling open to the full list
+  // with the request ignored.
+  if (handoffState !== "done" || ballot.isPending || (issuesRequested && savedAreasLoading)) {
     return <LoadingNotice text="Loading your ballot…" />;
   }
 

@@ -1,7 +1,9 @@
 import { vi } from "vitest";
 
 type StubResult = { status?: number; body: unknown };
-export type ApiRoute = StubResult | ((url: URL, init?: RequestInit) => StubResult);
+// Function routes may return a promise, so a test can hold a response open
+// (e.g. to prove a page withholds rendering until a slow query settles).
+export type ApiRoute = StubResult | ((url: URL, init?: RequestInit) => StubResult | Promise<StubResult>);
 
 export function apiError(status: number, code: string, message: string): StubResult {
   return { status, body: { error: { code, message } } };
@@ -28,7 +30,7 @@ export function stubApiRoutes(routes: Record<string, ApiRoute>) {
     if (!route) {
       throw new Error(`Unmocked API call: ${url.pathname}`);
     }
-    return toResponse(typeof route === "function" ? route(url, init) : route);
+    return toResponse(typeof route === "function" ? await route(url, init) : route);
   });
   vi.stubGlobal("fetch", fetchMock);
   return fetchMock;
