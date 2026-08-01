@@ -13,6 +13,7 @@ import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
+import { RegisterToFollowButton } from "../components/RegisterToFollowButton";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
 import { formatDistrictName, formatElectionDate } from "@voteapp/api-client";
@@ -370,6 +371,11 @@ export function CandidatePage() {
         <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
         {canFollow && follows ? (
           <FollowButton candidateId={candidate.candidate_id} isFollowing={isFollowing} />
+        ) : me === null ? (
+          // Logged-out visitors get a Follow button that prompts them to
+          // register (me is undefined while the session is still loading —
+          // render nothing then to avoid a flash of the wrong button).
+          <RegisterToFollowButton candidateName={candidate.display_name} />
         ) : null}
       </div>
       <p className="mt-1 text-sm text-ink-soft">

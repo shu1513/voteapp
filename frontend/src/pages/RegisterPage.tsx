@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import type { MetaFunction } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { APP_NAME, apiRequest } from "@voteapp/api-client";
@@ -7,6 +7,7 @@ import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
 import { SIGNUP_CHECKBOX_LABEL, TERMS_VERSION } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
+import { safeInternalPath } from "../lib/safeInternalPath";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export const meta: MetaFunction = () => [{ title: `Create your account · ${APP_NAME}` }];
@@ -27,6 +28,13 @@ export function RegisterPage() {
   useAdoptPreHydrationValue("register-first-name", setFirstName);
   useAdoptPreHydrationValue("register-password", setPassword);
   useAdoptPreHydrationValue("register-confirm-password", setConfirmPassword);
+  // Return path forwarded to the login links so a visitor who arrived
+  // mid-task (e.g. the register-to-follow prompt) can get back after they
+  // log in. The email-verification hop can't carry it — a verification link
+  // may be opened on another device — so only the same-tab path keeps it.
+  const [searchParams] = useSearchParams();
+  const next = safeInternalPath(searchParams.get("next"));
+  const loginHref = next ? `/login?next=${encodeURIComponent(next)}` : "/login";
 
   const register = useMutation({
     mutationFn: () =>
@@ -71,7 +79,7 @@ export function RegisterPage() {
           verify your account, then log in.
         </p>
         <div className="mt-6 flex items-center gap-4 text-sm">
-          <Link to="/login" className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark">
+          <Link to={loginHref} className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark">
             Go to login
           </Link>
           <button
@@ -202,7 +210,7 @@ export function RegisterPage() {
 
       <p className="mt-6 text-sm text-ink-soft">
         Already have an account?{" "}
-        <Link to="/login" className="underline hover:text-ink">
+        <Link to={loginHref} className="underline hover:text-ink">
           Log in
         </Link>
       </p>

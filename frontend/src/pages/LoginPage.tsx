@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import type { MetaFunction } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { APP_NAME, apiRequest } from "@voteapp/api-client";
 import { ErrorNotice } from "../components/Status";
 import { purgeAccountScopedQueries } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
+import { safeInternalPath } from "../lib/safeInternalPath";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 export const meta: MetaFunction = () => [{ title: `Log in · ${APP_NAME}` }];
@@ -19,6 +20,11 @@ export function LoginPage() {
   useAdoptPreHydrationValue("login-password", setPassword);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  // Return path for flows that send visitors here mid-task (e.g. the
+  // register-to-follow prompt on a candidate page). Internal paths only —
+  // anything else falls back to the ballot.
+  const [searchParams] = useSearchParams();
+  const next = safeInternalPath(searchParams.get("next"));
 
   const login = useMutation({
     mutationFn: () =>
@@ -32,7 +38,7 @@ export function LoginPage() {
       purgeAccountScopedQueries(queryClient);
       // Login returns only the session cookie; identity comes from /api/me.
       await queryClient.invalidateQueries({ queryKey: ["me"] });
-      navigate("/me/ballot");
+      navigate(next ?? "/me/ballot");
     },
   });
 
@@ -102,7 +108,10 @@ export function LoginPage() {
         </p>
         <p>
           New here?{" "}
-          <Link to="/register" className="underline hover:text-ink">
+          <Link
+            to={next ? `/register?next=${encodeURIComponent(next)}` : "/register"}
+            className="underline hover:text-ink"
+          >
             Create an account
           </Link>
         </p>
