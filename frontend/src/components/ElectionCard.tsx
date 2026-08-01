@@ -108,16 +108,21 @@ function ElectionCard({
   return (
     <Link
       to={`/elections/${election.id}`}
-      // Faint tint + hover: the card is the click target, and an all-white
-      // card on the white page gave no "this is clickable" cue at rest.
-      className="block rounded-xl border border-line bg-surface/50 p-4 shadow-sm transition hover:bg-surface hover:shadow-md"
+      // Faint tint at rest; on hover the border goes brand and the title
+      // takes the link color (via group-hover below). The old cue — gray bg
+      // one step grayer — was under 2% lightness and read as nothing.
+      className="group block rounded-xl border border-line bg-surface/50 p-4 shadow-sm transition hover:border-rausch hover:shadow-md"
     >
       {/* No per-card date: ElectionList's group heading carries it. The title
           row keeps vote power and the candidate count flush right, so every
           card answers "how much does my vote matter, and who's running?" on
           its first line. */}
       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-        <h3 className="font-semibold text-ink">{election.official_ballot_title}</h3>
+        {/* rausch-deep, not -dark: 16px semibold needs 4.5:1 on the card's
+            tinted bg, and rausch-dark is 4.41:1 there. */}
+        <h3 className="font-semibold text-ink transition group-hover:text-rausch-deep">
+          {election.official_ballot_title}
+        </h3>
         {/* The group wraps between chip and count on very narrow screens;
             nowrap sits on each label so neither breaks mid-phrase. */}
         <span className="flex flex-wrap items-baseline justify-end gap-x-2 gap-y-1">
