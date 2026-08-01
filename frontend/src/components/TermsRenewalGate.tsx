@@ -39,7 +39,7 @@ export function TermsRenewalGate() {
         </h2>
         <p className="mt-2 text-sm text-ink-soft">
           To keep using Elections Simplified, please review and accept the updated Terms of Use, Privacy Policy, and
-          Disclaimer.
+          AI Research and Election Information Disclaimer.
         </p>
         <div className="mt-4">
           <LegalGate

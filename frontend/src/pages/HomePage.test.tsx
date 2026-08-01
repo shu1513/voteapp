@@ -136,7 +136,7 @@ describe("HomePage pre-search clickwrap", () => {
     for (const [name, href] of [
       ["Terms of Use", "/terms"],
       ["Privacy Policy", "/privacy"],
-      ["Disclaimer", "/disclaimer"],
+      ["AI Research and Election Information Disclaimer", "/disclaimer"],
     ] as const) {
       const link = screen.getByRole("link", { name });
       expect(link).toHaveAttribute("href", href);
