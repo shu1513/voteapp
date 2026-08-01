@@ -190,10 +190,13 @@ async function loadFollowedCandidatesByElection(
 // imported) shows a "Candidate list not final" card with nothing to read —
 // so it sinks below every race a voter can act on, under every sort. Ballot
 // measures are exempt: zero candidates is their normal state, and the measure
-// text is the content. Applied AFTER the followed-first tier, which it can
-// never contradict — a followed candidate is a candidate.
+// text is the content. A recorded result also exempts: winners can be
+// recorded without candidate links (see electionResultPayloadContract), and
+// the ballot keeps races for three days past election day — a decided race
+// is readable regardless of its roster. Applied AFTER the followed-first
+// tier, which it can never contradict — a followed candidate is a candidate.
 function hasNothingToRead(election: OrderedBallotElectionSummary): boolean {
-  return election.race_type !== "ballot_measure" && election.candidate_count === 0;
+  return election.race_type !== "ballot_measure" && election.candidate_count === 0 && !election.has_results;
 }
 
 // Stable, in-place ordering of the elections list. `Array.prototype.sort` is

@@ -29,10 +29,12 @@ export const AREA_TEXT_CLASS = "font-medium text-green-900";
 // An office race with no published candidate list renders a placeholder card
 // ("Candidate list not final") with nothing to read. Ballot measures are
 // exempt: zero candidates is their normal state, and the measure text is the
-// content. Mirrors hasNothingToRead in the backend's ballotElectionOrdering,
-// which sinks these races to the end of the payload.
+// content. A recorded result also exempts — winners can be recorded without
+// candidate links, and a decided race is readable regardless of its roster.
+// Mirrors hasNothingToRead in the backend's ballotElectionOrdering, which
+// sinks these races to the end of the payload.
 function isAwaitingCandidates(election: ElectionSummary): boolean {
-  return election.race_type !== "ballot_measure" && election.candidate_count === 0;
+  return election.race_type !== "ballot_measure" && election.candidate_count === 0 && !election.has_results;
 }
 
 /**
@@ -90,9 +92,12 @@ export function ElectionList({
       ))}
       {awaitingCandidates.length > 0 ? (
         <section>
-          {/* "officials", matching the roster-status copy these cards show —
-              the wait is on election officials, not on this app. */}
-          <h2 className="text-xl font-bold text-ink">Waiting on official candidate lists</h2>
+          {/* Neutral about WHO the wait is on: this section spans every
+              zero-candidate reason, and roster_processing means the list is
+              published and this app is still preparing profiles — "waiting
+              on officials" would misplace that blame. Matches the generic
+              roster-status copy. */}
+          <h2 className="text-xl font-bold text-ink">Candidate information not yet available</h2>
           <div className="mt-2 space-y-3">
             {awaitingCandidates.map((election) => (
               <ElectionCard
@@ -125,9 +130,9 @@ function ElectionCard({
   election: ElectionSummary;
   savedAreaWeights?: Map<string, ResearchAreaWeight>;
   /**
-   * The "waiting on candidate lists" section spans dates under one heading,
-   * so its cards must say their own date; everywhere else the group heading
-   * carries it.
+   * The "Candidate information not yet available" section spans dates under
+   * one heading, so its cards must say their own date; everywhere else the
+   * group heading carries it.
    */
   showDate?: boolean;
 }) {

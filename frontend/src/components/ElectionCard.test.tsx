@@ -351,7 +351,7 @@ describe("ElectionCard", () => {
     // One date heading for the readable race; the pending race sits under the
     // waiting section instead of repeating that date at the bottom.
     expect(screen.getAllByRole("heading", { name: "Elections on November 3, 2026" })).toHaveLength(1);
-    expect(screen.getByRole("heading", { name: "Waiting on official candidate lists" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Candidate information not yet available" })).toBeInTheDocument();
     // Its section heading names no date, so the card carries its own.
     expect(screen.getByText("Alaska · November 3, 2026")).toBeInTheDocument();
     expect(screen.getByText("Candidate list not final")).toBeInTheDocument();
@@ -381,7 +381,37 @@ describe("ElectionCard", () => {
 
     // Zero candidates is a measure's normal state — no waiting section.
     expect(screen.getByRole("heading", { name: "Elections on November 3, 2026" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Waiting on official candidate lists" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Candidate information not yet available" })).not.toBeInTheDocument();
+  });
+
+  it("keeps candidate-less races with a recorded result inside their date group", () => {
+    renderRoutes(
+      [
+        {
+          path: "/",
+          element: (
+            <ElectionList
+              elections={[
+                // Winners can be recorded without candidate links, and the
+                // ballot keeps races three days past election day — a decided
+                // race is readable, so it must not sink.
+                electionSummary({
+                  id: "e-1",
+                  official_ballot_title: "County Clerk",
+                  candidate_count: 0,
+                  has_results: true,
+                  current_result_outcome: "won",
+                }),
+              ]}
+            />
+          ),
+        },
+      ],
+      "/"
+    );
+
+    expect(screen.getByRole("heading", { name: "Elections on November 3, 2026" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Candidate information not yet available" })).not.toBeInTheDocument();
   });
 
   it("renders only the waiting section when every race lacks a candidate list", () => {
@@ -405,7 +435,7 @@ describe("ElectionCard", () => {
       "/"
     );
 
-    expect(screen.getByRole("heading", { name: "Waiting on official candidate lists" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Candidate information not yet available" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: /Elections on/ })).not.toBeInTheDocument();
   });
 });

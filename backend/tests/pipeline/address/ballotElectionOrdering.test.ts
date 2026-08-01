@@ -20,6 +20,7 @@ type FakeElection = {
   research_area_ids?: string[];
   race_type?: string;
   candidate_count?: number;
+  has_results?: boolean;
 };
 
 function makeSummary(elections: FakeElection[]): BallotSummaryResult {
@@ -49,7 +50,7 @@ function makeSummary(elections: FakeElection[]): BallotSummaryResult {
         sources: [],
         candidate_count: e.candidate_count ?? 2,
         ballot_measure_id: null,
-        has_results: false,
+        has_results: e.has_results ?? false,
         current_result_outcome: null,
         office: null,
         research_areas: (e.research_area_ids ?? []).map((areaId) => ({
@@ -213,6 +214,22 @@ describe("applyBallotElectionOrdering", () => {
     );
 
     expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
+  });
+
+  it("keeps candidate-less races with a recorded result in their normal position", async () => {
+    const result = await applyBallotElectionOrdering(
+      { query: makeFollowsQuery([]) },
+      makeSummary([
+        // Winners can be recorded without candidate links (unmatched winners,
+        // see electionResultPayloadContract), and the ballot keeps races
+        // three days past election day: a decided race is readable, so it
+        // sorts on vote power like any other.
+        { id: electionA, vote_power_score: 99, candidate_count: 0, has_results: true },
+        { id: electionB, vote_power_score: 10 },
+      ])
+    );
+
+    expect(result.elections.map((e) => e.id)).toEqual([electionA, electionB]);
   });
 
   it("keeps candidate-less ballot measures in their normal position", async () => {
