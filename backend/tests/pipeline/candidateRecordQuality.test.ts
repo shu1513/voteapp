@@ -263,6 +263,39 @@ describe("candidate record quality", () => {
     ).not.toBe("future_promise");
   });
 
+  it("leaves the ATTRIBUTIVE participle alone when the promise is provably someone else's", () => {
+    // Live wave-18 false positive: a timeshare-fraud suit described as
+    // "without delivering the promised service" was rejected as the
+    // candidate's own future promise — the COMPANY promised the service.
+    // Only article-preceded, "its"-preceded, and hyphen-compound participles
+    // are excluded; none of them can be a verb use or the candidate's own
+    // promise.
+    for (const description of [
+      "Filed a consumer-fraud lawsuit against a timeshare exit company that took payments without delivering the promised service.",
+      "Criticized the utility for failing to deliver its promised service upgrades.",
+      "Praised the long-promised reforms after decades of delay.",
+    ]) {
+      expect(classifyCandidateRecordQuality({ description }).reason, description).not.toBe(
+        "future_promise"
+      );
+    }
+
+    // Verb uses and PERSONAL-possessive participles must still reject: in a
+    // third-person description "his promised tax cuts" is normally the
+    // candidate's own promise, and "their" includes singular-they candidates.
+    for (const description of [
+      "She promised lower taxes.",
+      "Promised as a judicial candidate to uphold the law.",
+      "Outlined his promised tax cuts.",
+      "Their promised audit of the borough budget.",
+    ]) {
+      expect(classifyCandidateRecordQuality({ description }), description).toEqual({
+        classification: "disallowed_thin",
+        reason: "future_promise",
+      });
+    }
+  });
+
   it("still keeps completed actions that carry the NOUN 'pledge'", () => {
     // Why the new pattern is determiner-anchored rather than a bare
     // /\bpledges?\b/: signing a pledge IS a completed action, and these must

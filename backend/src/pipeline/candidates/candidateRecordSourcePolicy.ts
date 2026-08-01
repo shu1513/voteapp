@@ -379,8 +379,11 @@ const DAMAGING_CLAIM_ACTOR_EXEMPT_PATTERNS: readonly RegExp[] = [
   // — a column the candidate published, which the dishonesty patterns below
   // otherwise flagged as a smear against him.
   // At least one word must sit between the verb and "of", so the direct
-  // "accused of lying" — the candidate as target — is NOT exempted.
-  /\baccus\w+\s+(?:[\w'’-]+\s+){1,6}?of\s+(?:lying|lies|plagiaris\w+|steal\w+|corruption)\b/i,
+  // "accused of lying" — the candidate as target — is NOT exempted. A bare
+  // PRONOUN object is the candidate too ("accused him of lying"), so the
+  // lookahead refuses it; "accused her opponent of lying" still exempts
+  // because "her" is followed by the opponent, not by "of".
+  /\baccus\w+\s+(?!(?:him|her|them)\s+of\b)(?:[\w'’-]+\s+){1,6}?of\s+(?:lying|lies|plagiaris\w+|steal\w+|corruption)\b/i,
   // Prosecutor/attorney career bios: "handling felony and misdemeanor
   // matters including domestic violence, sexual assault" is a caseload
   // description, not an accusation.
@@ -413,10 +416,20 @@ const DAMAGING_CLAIM_PATTERNS: readonly RegExp[] = [
   /\bunder\s+(?:criminal\s+|federal\s+|state\s+)?(?:indictment|investigation)\b/i,
   /\bnamed\s+in\s+(?:an?\s+)?(?:indictment|lawsuit|ethics\s+complaint)\b/i,
   /\baccused\s+of\b/i,
+  // Pronoun object = the candidate ("a former aide accused him of
+  // misconduct"), mirroring the pronoun-only anchoring of "found him liable"
+  // below. A named object ("accused Governor Bentley of corruption") is the
+  // candidate as ACCUSER and deliberately does not match.
+  /\baccus(?:ed|es|ing)\s+(?:him|her|them)\s+of\b/i,
   /\ballegedly\b|\ballegations?\s+(?:of|that|against)\b/i,
   /\bethics\s+(?:violation|complaint|charge|probe|inquiry)s?\b/i,
   /\bresigned\s+(?:amid|following|after|in\s+disgrace)\b/i,
-  /\bsexual\s+(?:harassment|assault|abuse|misconduct)\b/i,
+  // "Sexual Assault Nurse Examiner" is a nursing credential (SANE), not an
+  // accusation — the lookahead skips only that occurrence, so any other
+  // "sexual assault" phrase in the same sentence still matches. A per-segment
+  // exemption pattern would instead clear the whole sentence, which could
+  // hide a real accusation sharing it with the credential.
+  /\bsexual\s+(?:harassment|abuse|misconduct)\b|\bsexual\s+assault\b(?!\s+nurse\s+examiners?\b)/i,
   /\bfalsified\b/i,
   /\bconcealed\s+(?:contributions?|donations?|payments?|income|assets|funds)\b/i,
   // Corruption/misuse phrasings that skip enforcement verbs entirely:
