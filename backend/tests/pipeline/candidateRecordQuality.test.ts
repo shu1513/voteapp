@@ -94,6 +94,22 @@ describe("candidate record quality", () => {
       })
     ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
 
+    // "primary nomination" is election language even though "nomination" is
+    // not a preposition — the noun-head lookahead must include it.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Won the Democratic primary nomination for governor.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    // "candidate list of <party/qualified candidates>" is still a ballot
+    // roster; only hiring nouns (finalists, applicants) exempt.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Appeared on the official candidate list of the Democratic Party.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
     // Runoffs: LOSING any runoff is roster evidence; WINNING one is candidacy
     // when a party adjective marks it as a primary runoff.
     expect(

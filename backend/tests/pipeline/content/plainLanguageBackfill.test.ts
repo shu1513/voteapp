@@ -101,6 +101,17 @@ describe("mechanicalCheckFailure", () => {
       )
     ).toMatch(/introduced a number/);
 
+    // Casing does not affect the license — a faithful lowercase date is a
+    // date (the sentence-boundary protection lives in the full/abbreviated
+    // month branch split, not in casing).
+    expect(
+      mechanicalCheckFailure(
+        "record_description",
+        "Enacted on 2024-04-07 by the governor.",
+        "the governor signed it on april 7, 2024."
+      )
+    ).toBeNull();
+
     // A sentence ENDING on a full month name plus the next sentence's leading
     // number is not a date — the license must not leak across the boundary
     // ("in April. 7 counties opted out" was passing).

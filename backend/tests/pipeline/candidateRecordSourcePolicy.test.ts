@@ -589,6 +589,9 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
       "https://borough.example.gov/calendar",
       "https://borough.example.gov/calendars",
       "https://city.example.com/minutes?year=2026",
+      // A year-month segment is a MONTHLY index — only a full date (with the
+      // day) addresses one meeting's materials.
+      "https://city.example.gov/2026/08/calendar",
     ]) {
       expect(evaluateCandidateRecordSourcePolicy({ description: "Voted no on the item.", sourceUrl: url }).ok).toBe(
         false

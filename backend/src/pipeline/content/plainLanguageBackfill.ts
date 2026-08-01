@@ -138,8 +138,10 @@ const MONTH_NUMBER_BY_NAME: Record<string, number> = {
 // boundary — "took effect in April. 7 counties opted out" is not a date, and
 // letting it match stripped the invented "7" from the number check. The
 // separator is a literal space/tab (never newline) for the same reason.
+// Case-insensitive: the boundary fix lives in the branch split, not the
+// casing, and a faithful lowercase "april 7, 2024" must stay licensed.
 const NATURAL_DATE_PATTERN =
-  /\b(?:(January|February|March|April|May|June|July|August|September|October|November|December)|(Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?)[ \t]+(\d{1,2})(?:st|nd|rd|th)?(?:,[ \t]*(\d{4}))?\b/g;
+  /\b(?:(January|February|March|April|May|June|July|August|September|October|November|December)|(Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.?)[ \t]+(\d{1,2})(?:st|nd|rd|th)?(?:,[ \t]*(\d{4}))?\b/gi;
 
 function stripDateExpressionsLicensedByOriginal(originalText: string, rewrittenText: string): string {
   const monthDayYear = new Set<string>();

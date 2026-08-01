@@ -583,10 +583,11 @@ export function matchesDamagingClaimPattern(description: string): boolean {
 const INDEX_PAGE_ALWAYS_PATTERNS = [/\/MeetingInformation\.aspx$/i];
 const INDEX_PAGE_BARE_PATH_PATTERNS = [/^\/(?:[^?#]*\/)?(?:meetings?|agendas?|calendars?|minutes)\/?$/i];
 
-// A date-bearing segment anywhere in the path means the URL addresses ONE
-// meeting's materials, not the listing: "/2024/06/12/minutes" is that day's
-// minutes document even though the path ends in an index word.
-const INDEX_PAGE_DATED_SEGMENT_PATTERN = /\/\d{4}(?:[-/]\d{1,2}){1,2}(?:\/|$)/;
+// A FULL-date segment (year, month, and day) anywhere in the path means the
+// URL addresses ONE meeting's materials, not the listing: "/2024/06/12/minutes"
+// is that day's minutes document even though the path ends in an index word.
+// Day required on purpose — "/2026/08/calendar" is a MONTHLY index.
+const INDEX_PAGE_DATED_SEGMENT_PATTERN = /\/\d{4}(?:[-/]\d{1,2}){2}(?:\/|$)/;
 
 // Query keys that only reshape an index (paging, sorting, date windows) — a
 // query made solely of these still cites the listing, not an item.
