@@ -14,9 +14,15 @@ export type CandidateProfilePayload = {
   state_filing_ids?: string[];
   current_office?: string;
   // Has this person EVER held public office (current or former, elected or
-  // appointed)? Routing fact for candidate-record discovery sweeps; required
-  // so every profile pass answers it once and the sweep never re-derives it.
-  has_held_public_office: boolean;
+  // appointed)? Routing fact for candidate-record discovery sweeps; the key is
+  // required so every profile pass answers it once and the sweep never
+  // re-derives it. null is the explicit "sources don't cover it" answer: a
+  // partisan-race aggregator page has no office-history field at all, so a
+  // pass sourced from it alone can never surface a nonpartisan borough,
+  // school-board, or tribal seat — forcing a boolean there manufactured false
+  // for a whole class of local officeholders. false is reserved for research
+  // that actually covered office history and found none.
+  has_held_public_office: boolean | null;
   summary?: string;
   sources: string[];
 };
@@ -233,22 +239,32 @@ export function parseCandidateProfilePayload(
     currentOffice = input.current_office.trim();
   }
 
-  if (typeof input.has_held_public_office !== "boolean") {
+  // Tri-state on purpose, and the key must be present: true/false assert what
+  // the cited sources' office-history coverage actually shows, while null is
+  // the explicit "no cited source carries office history" answer. An OMITTED
+  // key is still rejected — silence and "I checked and the sources are silent"
+  // must stay distinguishable, or the field degrades back to unanswered.
+  if (
+    input.has_held_public_office !== true &&
+    input.has_held_public_office !== false &&
+    input.has_held_public_office !== null
+  ) {
     return {
       ok: false,
       reason:
-        "payload.has_held_public_office must be true or false: has this person EVER held elected or appointed public office (current or former)? Answer it from the profile research; it routes the candidate-record discovery sweep.",
+        "payload.has_held_public_office must be true, false, or null: has this person EVER held elected or appointed public office (current or former)? Answer true/false only when a cited source actually carries office history (bio, experience/elected-experience field, financial disclosure, incumbency marker); use null when every cited source is silent on office history — a source with no office-history field is not evidence of never having held office.",
     };
   }
-  // Holding an office NOW implies having held one: a payload carrying both
-  // current_office and has_held_public_office=false is internally
-  // contradictory. This also catches the recurring misuse of current_office
-  // for an occupation ("Attorney, Noble Law") — occupation belongs in summary.
-  if (currentOffice && input.has_held_public_office === false) {
+  // Holding an office NOW implies having held one: a payload carrying
+  // current_office alongside false is internally contradictory, and alongside
+  // null it under-claims a fact the payload itself asserts. This also catches
+  // the recurring misuse of current_office for an occupation ("Attorney,
+  // Noble Law") — occupation belongs in summary.
+  if (currentOffice && input.has_held_public_office !== true) {
     return {
       ok: false,
       reason:
-        `payload.current_office ("${currentOffice}") contradicts has_held_public_office=false — a candidate holding a public office now HAS held public office. If the office is real, set has_held_public_office=true; if current_office actually holds an occupation or past office, remove it (occupation belongs in summary).`,
+        `payload.current_office ("${currentOffice}") requires has_held_public_office=true (got ${JSON.stringify(input.has_held_public_office)}) — a candidate holding a public office now HAS held public office. If the office is real, set has_held_public_office=true; if current_office actually holds an occupation or past office, remove it (occupation belongs in summary).`,
     };
   }
 
