@@ -119,6 +119,31 @@ async function readManualRewrites(): Promise<ReturnType<typeof parseManualRewrit
 }
 
 /**
+ * A flagged audit row permanently blocks auto-retry — the right behavior for
+ * model rewrites, where the flag routes the row to a human. In an operator
+ * run the human IS here: an entry in the rewrites file is the manual-queue
+ * resolution for that target. Clearing the flagged row (only for targets the
+ * file names, only status 'flagged') lets the corrected rewrite re-run
+ * through every mechanical check; the worst case for an UNcorrected rewrite
+ * is an identical re-flag. Without this, fixing a flagged manual rewrite
+ * required hand-written SQL against the audit table.
+ */
+async function clearFlaggedAuditRowsForRetry(
+  pool: Pool,
+  targetIds: readonly string[]
+): Promise<number> {
+  const result = await pool.query(
+    `DELETE FROM public.plain_language_rewrites
+      WHERE target_table = 'candidate_records'
+        AND target_column = 'description'
+        AND status = 'flagged'
+        AND target_id = ANY($1::uuid[])`,
+    [[...targetIds]]
+  );
+  return result.rowCount ?? 0;
+}
+
+/**
  * A mistyped or already-processed targetId loads no backfill target, so the
  * run can end "successful" having applied nothing for that entry. Explain
  * every unprocessed entry after the run: an existing audit row is a normal
@@ -185,6 +210,28 @@ async function main(): Promise<void> {
   const pool = new Pool({ connectionString: env.DATABASE_URL });
 
   try {
+    if (manualRewrites) {
+      if (dryRun) {
+        // Dry runs must not mutate, so previously-flagged targets stay
+        // excluded from the preview — say so instead of previewing a lie.
+        const { rows } = await pool.query<{ target_id: string }>(
+          `SELECT target_id::text AS target_id FROM public.plain_language_rewrites
+            WHERE target_table = 'candidate_records' AND target_column = 'description'
+              AND status = 'flagged' AND target_id = ANY($1::uuid[])`,
+          [[...manualRewrites.targetIds]]
+        );
+        for (const row of rows) {
+          console.log(
+            `note: target ${row.target_id} was flagged in an earlier run; the dry run skips it, an --apply run will clear the flag and retry it`
+          );
+        }
+      } else {
+        const cleared = await clearFlaggedAuditRowsForRetry(pool, manualRewrites.targetIds);
+        if (cleared > 0) {
+          console.log(`cleared ${cleared} flagged audit row(s) for operator retry`);
+        }
+      }
+    }
     const summary = await runPlainLanguageBackfill(pool, {
       rewrite: manualRewrites
         ? async (input) => {

@@ -572,10 +572,14 @@ export function matchesDamagingClaimPattern(description: string): boolean {
 // IS the index is wrong on every tier, .gov included. Path-end anchored so a
 // real document under a deeper path ("/minutes/2024-06-12.pdf") never matches.
 // Verified against the full live corpus before adding: zero legitimate rows.
-// MeetingInformation.aspx is query-immune on purpose: the live case WAS
-// `Portal/MeetingInformation.aspx?Id=67` — the Id selects nothing server-side,
-// the page is a JavaScript nav shell either way. The generic patterns are
-// path-only index names, where a query CAN select a real item.
+// MeetingInformation.aspx is query-immune on purpose, on every host: the page
+// name is a Diligent-platform fingerprint, not a host quirk. The live case
+// was `Portal/MeetingInformation.aspx?Id=67` — the Id selects nothing
+// server-side, the page is a JavaScript nav shell either way — and wave-21
+// field work confirmed the same shell shape on other tenants of the platform
+// (CivicWeb), where the citable document lives at `/document/<id>/` instead.
+// The generic patterns are path-only index names, where a query CAN select a
+// real item.
 const INDEX_PAGE_ALWAYS_PATTERNS = [/\/MeetingInformation\.aspx$/i];
 const INDEX_PAGE_BARE_PATH_PATTERNS = [/^\/(?:[^?#]*\/)?(?:meetings?|agendas?|calendar|minutes)\/?$/i];
 
@@ -584,6 +588,11 @@ const INDEX_PAGE_BARE_PATH_PATTERNS = [/^\/(?:[^?#]*\/)?(?:meetings?|agendas?|ca
 const INDEX_PAGE_NAVIGATION_QUERY_KEYS = new Set([
   "page", "p", "sort", "order", "dir", "view", "lang", "year", "month", "day",
 ]);
+
+// Analytics/attribution keys say nothing about WHAT the page shows —
+// "/minutes?utm_source=email" is still the index. Only a parameter that could
+// plausibly select an item may exempt the URL.
+const INDEX_PAGE_TRACKING_QUERY_KEY_PATTERN = /^(?:utm_\w+|fbclid|gclid|msclkid|mc_cid|mc_eid|ref|source|campaign)$/i;
 
 export function isIndexPageSourcePath(sourceUrl: string): boolean {
   let url: URL;
@@ -600,9 +609,16 @@ export function isIndexPageSourcePath(sourceUrl: string): boolean {
   }
   // A selector-style query on an index path ("/calendar?event=123") routes to
   // a specific item on many CMSes; rejecting it would block legitimate dated
-  // detail pages. Navigation-only queries keep the page an index.
+  // detail pages. Navigation-only and tracking-only queries keep the page an
+  // index. Selector keys are deliberately NOT an allowlist — CMS selector
+  // names are unbounded, and a false rejection here suppresses a real dated
+  // document.
   for (const [key, value] of url.searchParams) {
-    if (value.trim().length > 0 && !INDEX_PAGE_NAVIGATION_QUERY_KEYS.has(key.toLowerCase())) {
+    if (
+      value.trim().length > 0 &&
+      !INDEX_PAGE_NAVIGATION_QUERY_KEYS.has(key.toLowerCase()) &&
+      !INDEX_PAGE_TRACKING_QUERY_KEY_PATTERN.test(key)
+    ) {
       return false;
     }
   }

@@ -57,6 +57,15 @@ const PURE_CANDIDACY_PATTERNS = [
   // rescued by the substantive-verbs-first ordering). "advanced to the
   // general election" is the same fact phrased from the other side.
   /\b(?:won|lost)\s+(?:the\s+|an?\s+)?(?:[\w'’.,-]+\s+){0,5}?primar(?:y|ies)\b/i,
+  // Runoffs split by stage the same way. LOSING any runoff is roster
+  // evidence (losing confers nothing). WINNING one is only candidacy when a
+  // party adjective marks it as a primary runoff — general runoffs are
+  // nonpartisan and winning one confers office ("Won the 2021 Anchorage
+  // mayoral runoff ... beginning a three-year term as mayor" is a live true
+  // record). "won the Democratic primary runoff" is already caught by the
+  // primary pattern above.
+  /\blost\s+(?:the\s+|an?\s+)?(?:[\w'’.,-]+\s+){0,5}?runoffs?\b/i,
+  /\bwon\s+(?:the\s+|an?\s+)?(?:\d{4}\s+)?(?:Democratic|Republican|GOP|Libertarian|Green)\s+runoffs?\b/i,
   /\badvanced\s+to\s+the\s+(?:\w+\s+){0,2}?general\s+election\b/i,
   // "filed as THE Republican candidate" — the older pattern above demanded
   // the literal article "a", so party-qualified filings slipped through.

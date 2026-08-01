@@ -94,6 +94,20 @@ describe("candidate record quality", () => {
       })
     ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
 
+    // Runoffs: LOSING any runoff is roster evidence; WINNING one is candidacy
+    // when a party adjective marks it as a primary runoff.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Mendheim lost the Republican runoff for a full term on the court.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Won the Republican runoff for Texas House District 12 on 2026-05-26.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
     expect(
       classifyCandidateRecordQuality({
         description: "Michele Clark filed as the Democratic candidate for Illinois Senate District 33.",
@@ -122,6 +136,16 @@ describe("candidate record quality", () => {
       classifyCandidateRecordQuality({
         description:
           "Won the December 9, 2025 special election for Florida House District 90, succeeding the late Rep. Joe Casello.",
+      }).reason
+    ).not.toBe("pure_candidacy");
+
+    // A GENERAL-stage runoff win confers office (general runoffs are
+    // nonpartisan, so no party adjective) — live true record, must stay.
+    // Deliberately phrased WITHOUT a substantive rescue verb so the test
+    // exercises the runoff pattern itself, not the verbs-first ordering.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Won the 2021 Anchorage mayoral runoff after opponent Forrest Dunbar conceded.",
       }).reason
     ).not.toBe("pure_candidacy");
 

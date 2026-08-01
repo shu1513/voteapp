@@ -15,6 +15,7 @@ import {
   enrichCandidateRecordAreas,
 } from "../../ai/enrichCandidateRecordAreas.js";
 import { classifyCitationVerificationFailure, verifyHttpUrlReachability } from "../../ai/urlReachability.js";
+import { classifyCandidateRecordQuality } from "../candidates/candidateRecordQuality.js";
 import {
   evaluateCandidateRecordSourcePolicy,
   matchesDamagingClaimPattern,
@@ -675,6 +676,24 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                     )
                       ? originalBad.record.description
                       : suggestion.description;
+                    // Repair suggestions may rewrite the description, and
+                    // quality-dropped rows (pure candidacy, future promises)
+                    // are in the bad-row list too — so every suggestion must
+                    // re-clear the quality gate, or a "repair" reintroduces
+                    // the exact content the gate dropped. Checked before any
+                    // network is spent on the row.
+                    const repairQuality = classifyCandidateRecordQuality({
+                      description: suggestion.description,
+                      sourceUrl: normalizedRepairUrl,
+                    });
+                    if (repairQuality.classification === "disallowed_thin") {
+                      unresolvedDetails.push({
+                        message: `bad_index=${suggestion.bad_index}: quality gate rejected repaired row: ${repairQuality.reason}`,
+                        failureType: "permanent",
+                      });
+                      continue;
+                    }
+
                     // candidateDisplayName closes a laundering hole: without
                     // it, a "repair" could replace a rejected campaign-site
                     // URL with the same candidate's campaign site and pass.

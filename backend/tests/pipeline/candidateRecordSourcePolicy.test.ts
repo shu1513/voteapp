@@ -607,6 +607,10 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
     for (const url of [
       "https://www.cityofexample.gov/minutes?page=2",
       "https://council.example.org/meetings?year=2026&sort=desc",
+      // Tracking parameters say nothing about what the page shows — the URL
+      // still cites the index.
+      "https://www.cityofexample.gov/minutes?utm_source=email&utm_campaign=x",
+      "https://council.example.org/calendar?fbclid=abc123",
       // MeetingInformation.aspx stays rejected even with a selector: the live
       // case carried ?Id=67 and was still a JavaScript nav shell.
       "https://laccd.community.diligentoneplatform.com/Portal/MeetingInformation.aspx?Id=99",
