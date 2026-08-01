@@ -15,6 +15,7 @@ export default [
     route("reset-password", "pages/ResetPasswordPage.tsx"),
     route("verify-email", "routes/verify-email.tsx"),
     route("verify-email-change", "routes/verify-email-change.tsx"),
+    route("me/welcome", "pages/WelcomePage.tsx"),
     route("me/ballot", "pages/SavedBallotPage.tsx"),
     route("me/follows", "pages/FollowsPage.tsx"),
     route("me/settings", "pages/SettingsPage.tsx"),
