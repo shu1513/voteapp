@@ -14,10 +14,13 @@ import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { RegisterToFollowButton } from "../components/RegisterToFollowButton";
+import { CandidatePickButton } from "../components/ElectionChoiceControls";
+import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
 import { formatDistrictName, formatElectionDate } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
+import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { compareByResearchAreaPriority } from "../lib/researchAreaPriority";
 import { useFollows } from "@voteapp/api-client";
 import { APP_NAME } from "@voteapp/api-client";
@@ -96,17 +99,6 @@ function orderGroupsByPreference(
     }))
     .sort((a, b) => a.rank - b.rank || a.index - b.index)
     .map(({ group }) => group);
-}
-
-// Election dates are YYYY-MM-DD calendar strings; "today" is the last US
-// clock still on a given date — Pacific/Honolulu, UTC-10, no DST — mirroring
-// the backend's US_LATEST_LOCAL_DATE_SQL (usLocalDate.ts): an election
-// counts as past only once the entire United States has finished that day.
-// Fixing the timezone also makes the value identical on the SSR host and in
-// the viewer's browser, so ongoing/past classification cannot flip during
-// hydration. en-CA formats as YYYY-MM-DD.
-function usLatestLocalDate(): string {
-  return new Intl.DateTimeFormat("en-CA", { timeZone: "Pacific/Honolulu" }).format(new Date());
 }
 
 // Loader payload: the candidate detail plus this candidate's finance for
@@ -356,6 +348,18 @@ export function CandidatePage() {
     recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
   const today = usLatestLocalDate();
   const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
+  // "My choice" rows: one per ongoing OFFICE candidacy the candidate hasn't
+  // withdrawn or lost — a candidate can be in several races at once (and
+  // have past ones), so each row names its election and only pickable
+  // candidacies get a button. Rendered only once the choices list is loaded
+  // (no-flash rule, like the follow button).
+  const { choiceByElectionId, canChoose } = useElectionChoices();
+  const pickableElections =
+    canChoose && choiceByElectionId !== undefined
+      ? ongoingElections.filter(
+          (election) => election.race_type === "office" && election.status !== "withdrawn" && election.status !== "lost"
+        )
+      : [];
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -395,6 +399,31 @@ export function CandidatePage() {
         </p>
       ) : null}
       {candidate.summary ? <p className="mt-3 text-ink">{candidate.summary}</p> : null}
+
+      {pickableElections.length > 0 ? (
+        <div className="mt-4 space-y-2">
+          {pickableElections.map((election) => (
+            <div
+              key={election.candidate_election_id}
+              className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-line bg-white p-3"
+            >
+              <span className="text-sm text-ink">
+                {/* Always names the election: several concurrent races (and
+                    past ones) exist, and the pick must land on the right
+                    one. */}
+                {election.official_ballot_title} · {formatElectionDate(election.election_date)}
+              </span>
+              <CandidatePickButton
+                electionId={election.election_id}
+                candidateId={candidate.candidate_id}
+                choice={choiceByElectionId?.get(election.election_id)}
+                seatsToFill={null}
+                size="sm"
+              />
+            </div>
+          ))}
+        </div>
+      ) : null}
 
       {ongoingElections.map((election) => (
         <OngoingElectionFinance

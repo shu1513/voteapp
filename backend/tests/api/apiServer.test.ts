@@ -2002,6 +2002,184 @@ describe("createApiApp", () => {
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
+  it("serves authenticated election choices without requiring email verification", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    // Unverified inbox: follows would 403 here, election choices must not.
+    const lookupAuthenticatedUserEmailVerified = vi.fn().mockResolvedValue(false);
+    const listAuthenticatedElectionChoices = vi.fn().mockResolvedValue({
+      choices: [
+        {
+          election_id: "33333333-3333-4333-8333-333333333333",
+          race_type: "office",
+          official_ballot_title: "Mayor",
+          election_date: "2026-11-03",
+          seats_to_fill: null,
+          picks: [
+            {
+              candidate_id: "22222222-2222-4222-8222-222222222222",
+              display_name: "Jane Smith",
+              candidacy_status: "declared",
+            },
+          ],
+          measure_position: null,
+          updated_at: "2026-01-02T03:04:05.000Z",
+        },
+      ],
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({
+        resolveAddress,
+        resolveAuthenticatedUserId,
+        lookupAuthenticatedUserEmailVerified,
+        listAuthenticatedElectionChoices,
+      }),
+      {
+        method: "GET",
+        path: "/api/me/election-choices",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.choices).toHaveLength(1);
+    expect(response.body.choices[0].picks[0].display_name).toBe("Jane Smith");
+    expect(lookupAuthenticatedUserEmailVerified).not.toHaveBeenCalled();
+    expect(listAuthenticatedElectionChoices).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("updates an authenticated candidate election choice", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const setAuthenticatedElectionChoice = vi.fn().mockResolvedValue({
+      choice: {
+        election_id: "33333333-3333-4333-8333-333333333333",
+        race_type: "office",
+        official_ballot_title: "Mayor",
+        election_date: "2026-11-03",
+        seats_to_fill: null,
+        picks: [
+          {
+            candidate_id: "22222222-2222-4222-8222-222222222222",
+            display_name: "Jane Smith",
+            candidacy_status: "declared",
+          },
+        ],
+        measure_position: null,
+        updated_at: "2026-01-02T03:04:05.000Z",
+      },
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, setAuthenticatedElectionChoice }),
+      {
+        method: "PUT",
+        path: "/api/me/election-choices",
+        body: JSON.stringify({
+          election_id: "33333333-3333-4333-8333-333333333333",
+          candidate_id: "22222222-2222-4222-8222-222222222222",
+          chosen: true,
+        }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.choice.picks).toHaveLength(1);
+    expect(setAuthenticatedElectionChoice).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999", {
+      electionId: "33333333-3333-4333-8333-333333333333",
+      candidateId: "22222222-2222-4222-8222-222222222222",
+      chosen: true,
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("updates an authenticated ballot-measure position", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const setAuthenticatedElectionChoice = vi.fn().mockResolvedValue({
+      choice: {
+        election_id: "33333333-3333-4333-8333-333333333333",
+        race_type: "ballot_measure",
+        official_ballot_title: "Measure A",
+        election_date: "2026-11-03",
+        seats_to_fill: null,
+        picks: [],
+        measure_position: "yes",
+        updated_at: "2026-01-02T03:04:05.000Z",
+      },
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, setAuthenticatedElectionChoice }),
+      {
+        method: "PUT",
+        path: "/api/me/election-choices",
+        body: JSON.stringify({
+          election_id: "33333333-3333-4333-8333-333333333333",
+          measure_position: "yes",
+        }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.choice.measure_position).toBe("yes");
+    expect(setAuthenticatedElectionChoice).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999", {
+      electionId: "33333333-3333-4333-8333-333333333333",
+      measurePosition: "yes",
+    });
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects election choice bodies that mix candidate and measure fields", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const setAuthenticatedElectionChoice = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, setAuthenticatedElectionChoice }),
+      {
+        method: "PUT",
+        path: "/api/me/election-choices",
+        body: JSON.stringify({
+          election_id: "33333333-3333-4333-8333-333333333333",
+          candidate_id: "22222222-2222-4222-8222-222222222222",
+          chosen: true,
+          measure_position: "yes",
+        }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error.code).toBe("invalid_request");
+    expect(setAuthenticatedElectionChoice).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated election choices when authentication is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const listAuthenticatedElectionChoices = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, listAuthenticatedElectionChoices }), {
+      method: "GET",
+      path: "/api/me/election-choices",
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(listAuthenticatedElectionChoices).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
   it("rejects authenticated candidate follows when authentication is not configured", async () => {
     const resolveAddress = vi.fn();
     const listAuthenticatedCandidateFollows = vi.fn();

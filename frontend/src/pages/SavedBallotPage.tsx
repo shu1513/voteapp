@@ -10,7 +10,7 @@ import {
   type AddressSavedNoticeData,
 } from "../components/SavedAddressForm";
 import { ElectionList } from "../components/ElectionCard";
-import { useMyResearchAreas } from "@voteapp/api-client";
+import { useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "@voteapp/api-client";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../lib/pendingDistricts";
@@ -126,6 +126,7 @@ export function SavedBallotPage() {
   }, [location.pathname, location.state, navigate]);
   const queryClient = useQueryClient();
   const { weights: savedAreaWeights } = useMyResearchAreas();
+  const { choiceByElectionId } = useElectionChoices();
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
   );
@@ -295,7 +296,11 @@ export function SavedBallotPage() {
       {data.elections.length === 0 ? (
         <EmptyNotice text="No upcoming elections found for your districts yet. Check back — new elections are added as they are announced." />
       ) : (
-        <ElectionList elections={data.elections} savedAreaWeights={savedAreaWeights} />
+        <ElectionList
+          elections={data.elections}
+          savedAreaWeights={savedAreaWeights}
+          choicesByElectionId={choiceByElectionId}
+        />
       )}
 
       <p className="mt-8 text-sm text-ink-soft">

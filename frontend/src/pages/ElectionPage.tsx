@@ -16,7 +16,10 @@ import {
   formatVotePowerLabel,
 } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
+import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS } from "../components/ElectionCard";
+import { CandidatePickButton, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
+import { useElectionChoices } from "@voteapp/api-client";
 import { splitResearchAreasBySaved } from "../lib/researchAreaPriority";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 import { APP_NAME } from "@voteapp/api-client";
@@ -93,6 +96,13 @@ export function ElectionPage() {
 
   const data = useLoaderData<typeof loader>();
   const measure = data.ballot_measure;
+  // "My choice" controls render only for logged-in viewers with a loaded
+  // choices list (no-flash rule, like FollowButton) on upcoming elections —
+  // the backend rejects choice writes to past ones.
+  const { choiceByElectionId, canChoose } = useElectionChoices();
+  const myChoice = choiceByElectionId?.get(data.id);
+  const showChoiceControls =
+    canChoose && choiceByElectionId !== undefined && data.election_date >= usLatestLocalDate();
   // Full set, uncapped — the list card previews these; the detail page is
   // where they all fit. Measure elections skip this row: the measure section
   // already shows the same areas with their for/against stance. The ??
@@ -254,6 +264,11 @@ export function ElectionPage() {
               <p className="mt-1 text-sm text-red-900">{measure.what_no_means}</p>
             </div>
           </div>
+          {showChoiceControls ? (
+            <div className="mt-3">
+              <MeasureChoiceButtons electionId={data.id} choice={myChoice} />
+            </div>
+          ) : null}
           {measure.results.length > 0 ? (
             <div className="mt-3">
               <h3 className="text-sm font-semibold">Results</h3>
@@ -317,6 +332,11 @@ export function ElectionPage() {
         <section className="mt-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-lg font-semibold">Candidates</h2>
+            {showChoiceControls && data.seats_to_fill != null && data.seats_to_fill > 1 ? (
+              <span className="text-xs text-ink-soft">
+                This election fills {data.seats_to_fill} seats — pick up to {data.seats_to_fill} candidates.
+              </span>
+            ) : null}
             {hasSaved && data.candidates.length > 1 ? (
               <label className="flex items-center gap-2 text-sm text-ink-soft">
                 Sort by
@@ -344,16 +364,31 @@ export function ElectionPage() {
                 className="group relative rounded-xl border border-line bg-surface/50 shadow-sm transition hover:border-rausch hover:shadow-md"
               >
                 <div className="p-4">
-                  <h3 className="font-semibold">
-                    <Link
-                      to={`/candidates/${candidate.candidate_id}`}
-                      // rausch-deep, not -dark: AA contrast on the tinted card
-                      // bg — see ElectionCard's title.
-                      className="transition after:absolute after:inset-0 group-hover:text-rausch-deep"
-                    >
-                      {candidate.display_name}
-                    </Link>
-                  </h3>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="font-semibold">
+                      <Link
+                        to={`/candidates/${candidate.candidate_id}`}
+                        // rausch-deep, not -dark: AA contrast on the tinted card
+                        // bg — see ElectionCard's title.
+                        className="transition after:absolute after:inset-0 group-hover:text-rausch-deep"
+                      >
+                        {candidate.display_name}
+                      </Link>
+                    </h3>
+                    {showChoiceControls ? (
+                      // z-10 lifts the button above the card's stretched
+                      // link so clicking it doesn't navigate.
+                      <span className="relative z-10">
+                        <CandidatePickButton
+                          electionId={data.id}
+                          candidateId={candidate.candidate_id}
+                          choice={myChoice}
+                          seatsToFill={data.seats_to_fill ?? null}
+                          size="sm"
+                        />
+                      </span>
+                    ) : null}
+                  </div>
                   <p className="text-sm text-ink-soft">
                     {candidate.party}
                     {candidate.is_incumbent ? " · Incumbent" : ""}

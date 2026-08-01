@@ -14,6 +14,7 @@ export * from "./legalCopy";
 export * from "./researchAreaScoring";
 export * from "./useAddressSuggestions";
 export * from "./useCandidateSearch";
+export * from "./useElectionChoices";
 export * from "./useFollows";
 export * from "./useMe";
 export * from "./useMyResearchAreas";

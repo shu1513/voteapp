@@ -46,6 +46,7 @@ import {
   ME_PATH,
   ME_BALLOT_PREFERENCES_PATH,
   ME_CANDIDATE_FOLLOWS_PATH,
+  ME_ELECTION_CHOICES_PATH,
   ME_DISTRICTS_INITIALIZE_PATH,
   ME_EMAIL_PREFERENCES_PATH,
   ME_PUSH_TOKENS_PATH,
@@ -56,6 +57,7 @@ import {
   parseAutocompleteRetrieveBodyValue,
   parseAutocompleteSuggestBodyValue,
   parseCandidateFollowBodyValue,
+  parseElectionChoiceBodyValue,
   parseContentReportBodyValue,
   parseBallotPreferencesBodyValue,
   parseEmailPreferencesBodyValue,
@@ -131,6 +133,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_BALLOT_PATH ||
     pathname === ME_BALLOT_PREFERENCES_PATH ||
     pathname === ME_CANDIDATE_FOLLOWS_PATH ||
+    pathname === ME_ELECTION_CHOICES_PATH ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
     pathname === ME_EMAIL_PREFERENCES_PATH ||
     pathname === ME_PUSH_TOKENS_PATH ||
@@ -424,6 +427,7 @@ function createJsonBodyParser() {
           request.path === ME_ADDRESS_PATH ||
           request.path === ME_BALLOT_PREFERENCES_PATH ||
           request.path === ME_CANDIDATE_FOLLOWS_PATH ||
+          request.path === ME_ELECTION_CHOICES_PATH ||
           request.path === ME_EMAIL_PREFERENCES_PATH ||
           request.path === ME_RESEARCH_AREA_PREFERENCES_PATH));
     if (!shouldParseJson) {
@@ -1217,6 +1221,54 @@ async function dispatchApiRequest(
 
     const payload = parseCandidateFollowBodyValue(request.body);
     const result = await options.setAuthenticatedCandidateFollow(userId, payload);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_ELECTION_CHOICES_PATH) {
+    if (request.method !== "GET" && request.method !== "PUT") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET or PUT /api/me/election-choices", {
+          ...corsHeaders,
+          allow: "GET, PUT",
+        })
+      );
+      return;
+    }
+    // Not verification-gated (unlike follows): a planned vote is private to
+    // the session holder and triggers no notifications, so any registered
+    // session may read and write it.
+    const userId = await resolveAuthenticatedUserId(options, request);
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    if (request.method === "GET") {
+      if (!options.listAuthenticatedElectionChoices) {
+        sendApiResponse(
+          response,
+          toErrorResponse(500, "internal_error", "Authenticated election choice lookup is not configured", corsHeaders)
+        );
+        return;
+      }
+
+      const result = await options.listAuthenticatedElectionChoices(userId);
+      sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+      return;
+    }
+
+    if (!options.setAuthenticatedElectionChoice) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Authenticated election choice storage is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const payload = parseElectionChoiceBodyValue(request.body);
+    const result = await options.setAuthenticatedElectionChoice(userId, payload);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }

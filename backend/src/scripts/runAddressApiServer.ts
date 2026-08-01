@@ -76,6 +76,7 @@ import {
 import { updateAuthenticatedAddressDistricts } from "../pipeline/users/userAddressDistrictUpdater.js";
 import { createContentReport } from "../pipeline/reports/contentReports.js";
 import { listUserCandidateFollows, setUserCandidateFollow } from "../pipeline/users/userCandidateFollows.js";
+import { listUserElectionChoices, setUserElectionChoice } from "../pipeline/users/userElectionChoices.js";
 import { initializeUserDistricts } from "../pipeline/users/userDistrictInitializer.js";
 import { listUserDistrictIds } from "../pipeline/users/userDistrictReader.js";
 import { replaceUserDistricts } from "../pipeline/users/userDistrictReplacer.js";
@@ -566,6 +567,8 @@ async function main(): Promise<void> {
     listResearchAreas: () => listSelectableResearchAreas(pool),
     listAuthenticatedCandidateFollows: (userId) => listUserCandidateFollows(pool, userId),
     setAuthenticatedCandidateFollow: (userId, input) => setUserCandidateFollow(pool, userId, input),
+    listAuthenticatedElectionChoices: (userId) => listUserElectionChoices(pool, userId),
+    setAuthenticatedElectionChoice: (userId, input) => setUserElectionChoice(pool, userId, input),
     // [ballot-personalized-ordering]
     getAuthenticatedBallotPreferences: (userId) => getUserBallotPreferences(pool, userId),
     setAuthenticatedBallotPreferences: (userId, preferences) => setUserBallotPreferences(pool, userId, preferences),

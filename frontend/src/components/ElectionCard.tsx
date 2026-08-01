@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Link } from "react-router";
-import type { ElectionSummary, ResearchAreaWeight } from "@voteapp/api-client";
+import type { ElectionChoice, ElectionSummary, ResearchAreaWeight } from "@voteapp/api-client";
 import {
   formatDistrictName,
   formatElectionDate,
@@ -9,7 +9,24 @@ import {
   formatVotePowerLabel,
 } from "@voteapp/api-client";
 import { splitResearchAreasBySaved } from "../lib/researchAreaPriority";
+import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
+
+// "Your pick: Jane Doe" / "Your pick: Jane Doe, John Roe" (multi-seat) /
+// "Your vote: Yes on this measure". A pick whose candidate has since
+// withdrawn gets flagged inline instead of vanishing.
+function formatChoiceLabel(choice: ElectionChoice): string | null {
+  if (choice.measure_position !== null) {
+    return `Your vote: ${choice.measure_position === "yes" ? "Yes" : "No"}`;
+  }
+  if (choice.picks.length === 0) {
+    return null;
+  }
+  const names = choice.picks
+    .map((pick) => (pick.candidacy_status === "withdrawn" ? `${pick.display_name} (withdrew)` : pick.display_name))
+    .join(", ");
+  return `Your pick: ${names}`;
+}
 
 // Statewide races carry a dozen-plus research areas; rendering every one
 // buried the card's actual signal (title, candidates, vote power) under a
@@ -54,6 +71,7 @@ function isAwaitingCandidates(election: ElectionSummary): boolean {
 export function ElectionList({
   elections,
   savedAreaWeights,
+  choicesByElectionId,
 }: {
   elections: ElectionSummary[];
   /**
@@ -61,6 +79,12 @@ export function ElectionList({
    * membership decides which chips lead, rank decides their order.
    */
   savedAreaWeights?: Map<string, ResearchAreaWeight>;
+  /**
+   * The session holder's planned votes (useElectionChoices().choiceByElectionId).
+   * Undefined while anonymous or still loading — cards then show no choice
+   * row at all, so "No pick yet" can never flash for a user who has picked.
+   */
+  choicesByElectionId?: Map<string, ElectionChoice>;
 }) {
   const awaitingCandidates = elections.filter(isAwaitingCandidates);
   const readable = elections.filter((election) => !isAwaitingCandidates(election));
@@ -85,7 +109,13 @@ export function ElectionList({
           <h2 className="text-xl font-bold text-ink">Elections on {formatElectionDate(group.date)}</h2>
           <div className="mt-2 space-y-3">
             {group.elections.map((election) => (
-              <ElectionCard key={election.id} election={election} savedAreaWeights={savedAreaWeights} />
+              <ElectionCard
+                key={election.id}
+                election={election}
+                savedAreaWeights={savedAreaWeights}
+                myChoice={choicesByElectionId?.get(election.id)}
+                showMissingChoice={choicesByElectionId !== undefined}
+              />
             ))}
           </div>
         </section>
@@ -104,6 +134,7 @@ export function ElectionList({
                 key={election.id}
                 election={election}
                 savedAreaWeights={savedAreaWeights}
+                myChoice={choicesByElectionId?.get(election.id)}
                 showDate
               />
             ))}
@@ -125,10 +156,20 @@ export function ElectionList({
 function ElectionCard({
   election,
   savedAreaWeights,
+  myChoice,
+  showMissingChoice = false,
   showDate = false,
 }: {
   election: ElectionSummary;
   savedAreaWeights?: Map<string, ResearchAreaWeight>;
+  /** The viewer's planned vote for this election, when they have one. */
+  myChoice?: ElectionChoice;
+  /**
+   * Show a quiet "No pick yet" on upcoming races without a choice, so a
+   * logged-in voter can scan the list for elections still to decide. Off in
+   * the awaiting-candidates section — there is nobody to pick there yet.
+   */
+  showMissingChoice?: boolean;
   /**
    * The "Candidate information not yet available" section spans dates under
    * one heading, so its cards must say their own date; everywhere else the
@@ -145,12 +186,21 @@ function ElectionCard({
   );
   const visibleOtherAreas = otherAreas.slice(0, MAX_UNSAVED_AREA_CHIPS);
   const hiddenAreaCount = otherAreas.length - visibleOtherAreas.length;
+  // The viewer's planned vote, shown only on upcoming races: a past
+  // election's choice is history, and the "No pick yet" nudge would be
+  // nonsense there. Withdrawn picks stay visible with a flag — a silent
+  // disappearance would read as data loss.
+  const isUpcoming = election.election_date >= usLatestLocalDate();
+  const choiceLabel = myChoice && isUpcoming ? formatChoiceLabel(myChoice) : null;
+  const showNoPickYet = showMissingChoice && isUpcoming && !myChoice;
   // Skip an empty chip row so the card doesn't carry stray spacing when a
   // race has no signals to show.
   const hasSignalChips =
     (election.followed_candidates?.length ?? 0) > 0 ||
     election.historical_competitiveness !== null ||
-    election.has_results;
+    election.has_results ||
+    choiceLabel !== null ||
+    showNoPickYet;
   return (
     <Link
       to={`/elections/${election.id}`}
@@ -200,6 +250,19 @@ function ElectionCard({
       </p>
       {hasSignalChips ? (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+          {choiceLabel ? (
+            // Leads the chip row: the voter's own decision outranks the
+            // other signals. Bordered green, distinct from the solid
+            // followed-candidates chip.
+            <span className="rounded border border-green-700 bg-green-50 px-2 py-0.5 font-medium text-green-900">
+              {choiceLabel}
+            </span>
+          ) : null}
+          {showNoPickYet ? (
+            <span className="rounded border border-dashed border-line px-2 py-0.5 text-ink-soft">
+              No pick yet
+            </span>
+          ) : null}
           {election.followed_candidates && election.followed_candidates.length > 0 ? (
             <span className="rounded bg-green-600 px-2 py-0.5 font-medium text-white">
               {election.followed_candidates.map((candidate) => candidate.display_name).join(", ")}{" "}

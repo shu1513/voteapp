@@ -10,6 +10,7 @@ import {
   AUTH_VERIFY_EMAIL_PATH,
   CANDIDATE_DETAIL_PATH_PREFIX,
   ME_CANDIDATE_FOLLOWS_PATH,
+  ME_ELECTION_CHOICES_PATH,
   MAX_USER_RESEARCH_AREA_PREFERENCES,
   MAX_ADDRESS_INPUT_LENGTH,
   MAX_AUTH_EMAIL_LENGTH,
@@ -25,6 +26,7 @@ import {
   parseAuthenticatedAddressBodyValue,
   parseCandidateFollowBodyValue,
   parseCandidateId,
+  parseElectionChoiceBodyValue,
   parseMeEmailBodyValue,
   parseMeUpdateBodyValue,
   parseResearchAreaPreferencesBodyValue,
@@ -145,6 +147,84 @@ describe("candidate follow API contract constants", () => {
     ],
   ])("rejects invalid candidate follow payload %#", (payload, message) => {
     expect(() => parseCandidateFollowBodyValue(payload)).toThrow(message);
+  });
+});
+
+describe("election choice API contract constants", () => {
+  it("defines the authenticated election-choices path", () => {
+    expect(ME_ELECTION_CHOICES_PATH).toBe("/api/me/election-choices");
+  });
+
+  it("parses candidate choice payloads into pipeline inputs", () => {
+    expect(
+      parseElectionChoiceBodyValue({
+        election_id: "  33333333-3333-4333-8333-333333333333  ",
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        chosen: true,
+      })
+    ).toEqual({
+      electionId: "33333333-3333-4333-8333-333333333333",
+      candidateId: "22222222-2222-4222-8222-222222222222",
+      chosen: true,
+    });
+  });
+
+  it("parses measure position payloads, including the null clear", () => {
+    expect(
+      parseElectionChoiceBodyValue({
+        election_id: "33333333-3333-4333-8333-333333333333",
+        measure_position: "no",
+      })
+    ).toEqual({
+      electionId: "33333333-3333-4333-8333-333333333333",
+      measurePosition: "no",
+    });
+    expect(
+      parseElectionChoiceBodyValue({
+        election_id: "33333333-3333-4333-8333-333333333333",
+        measure_position: null,
+      })
+    ).toEqual({
+      electionId: "33333333-3333-4333-8333-333333333333",
+      measurePosition: null,
+    });
+  });
+
+  it.each([
+    [null, "Request body must be a JSON object"],
+    [{}, "Request body must include UUID string field: election_id"],
+    [{ election_id: "not-a-uuid" }, "election_id must be a valid UUID: not-a-uuid"],
+    [
+      { election_id: "33333333-3333-4333-8333-333333333333" },
+      "Request body must include exactly one of: candidate_id, measure_position",
+    ],
+    [
+      {
+        election_id: "33333333-3333-4333-8333-333333333333",
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        chosen: true,
+        measure_position: "yes",
+      },
+      "Request body must include exactly one of: candidate_id, measure_position",
+    ],
+    [
+      { election_id: "33333333-3333-4333-8333-333333333333", candidate_id: "not-a-uuid", chosen: true },
+      "candidate_id must be a valid UUID: not-a-uuid",
+    ],
+    [
+      { election_id: "33333333-3333-4333-8333-333333333333", candidate_id: "22222222-2222-4222-8222-222222222222" },
+      "Request body must include boolean field: chosen",
+    ],
+    [
+      { election_id: "33333333-3333-4333-8333-333333333333", measure_position: "maybe" },
+      "measure_position must be 'yes', 'no', or null",
+    ],
+    [
+      { election_id: "33333333-3333-4333-8333-333333333333", measure_position: "yes", chosen: true },
+      "chosen applies only to candidate choices",
+    ],
+  ])("rejects invalid election choice payload %#", (payload, message) => {
+    expect(() => parseElectionChoiceBodyValue(payload)).toThrow(message);
   });
 });
 
