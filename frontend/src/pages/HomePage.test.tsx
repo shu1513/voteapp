@@ -97,12 +97,11 @@ describe("HomePage pre-search clickwrap", () => {
     await user.click(trigger);
 
     const dialog = screen.getByRole("dialog", { name: "Why do we need the full address?" });
-    expect(dialog).toHaveTextContent("Your ballot depends on your voting districts");
     expect(dialog).toHaveTextContent(
-      "District boundaries don’t follow ZIP codes — they can split a neighborhood or even a single street."
+      "Your ballot depends on your voting districts, whose boundaries don’t follow ZIP codes"
     );
     expect(dialog).toHaveTextContent("Two homes in the same ZIP can vote in different races.");
-    expect(dialog).toHaveTextContent("We don’t save it to your account or sell it");
+    expect(dialog).toHaveTextContent("We don’t save it to your account");
     expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
 
     const privacyPolicy = screen.getByRole("link", { name: "Read our Privacy Policy" });

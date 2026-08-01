@@ -30,14 +30,10 @@ export function FullAddressExplanation() {
               </DialogTitle>
               <div className="mt-3 space-y-3 text-sm text-ink-soft">
                 <p>
-                  Your ballot depends on your voting districts — congressional, state, county, city,
-                  school, and more. Different homes fall in different districts, so they can get
-                  different elections.
-                </p>
-                <p>
-                  District boundaries don’t follow ZIP codes — they can split a neighborhood or even a
-                  single street. Two homes in the same ZIP can vote in different races. Only a full
-                  street address can match you to the exact districts that apply to you.
+                  Your ballot depends on your voting districts, whose boundaries don’t follow ZIP
+                  codes — they can split a neighborhood or even a single street. Two homes in the same
+                  ZIP can vote in different races. Only a full street address can match you to the
+                  exact districts that apply to you.
                 </p>
                 <p>{ADDRESS_FIELD_PRIVACY_NOTE}</p>
                 <p>

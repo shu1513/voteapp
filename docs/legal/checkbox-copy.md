@@ -134,24 +134,23 @@ This carries the address-specific points that matter at collection without
 repeating the full consent-dialog disclosure beside the field. It carries no
 Privacy Policy link of its own: the footer links the policy on every page, and
 the explainer beside this note links it directly, so a second inline copy sat
-next to the question people actually ask and crowded it out. The 14-day
-lookup cache is described in the Privacy Policy and in the full notice above
-rather than here, to keep this line to the two facts a visitor weighs while
-typing — what it is used for, and that it is neither kept on their account nor
-sold.
+next to the question people actually ask and crowded it out. The 14-day lookup
+cache and the "not sold" assurance are carried by the Privacy Policy and by
+the full notice above rather than repeated here, to keep this line to the two
+facts a visitor weighs while typing — what the address is used for, and that
+it does not end up on their account.
 
 > Your address is only used to find your voting districts. We don’t save it to
-> your account or sell it.
+> your account.
 
 Beside the anonymous-search note, **Why do we need the full address?** opens
-an informational dialog on web and mobile. It leads with what the address is
-for — the ballot depends on which voting districts a home sits in — and then
-explains why nothing shorter works: district boundaries do not follow ZIP
-codes and can split a neighborhood or a single street, so two homes in the
-same ZIP can vote in different races. The dialog repeats the address-handling
-summary, links to the Privacy Policy, and closes with **Got it**. It has no
-checkbox or agreement button because it explains the field rather than
-requesting consent.
+an informational dialog on web and mobile. One paragraph: the ballot depends
+on which voting districts a home sits in, and those boundaries do not follow
+ZIP codes — they can split a neighborhood or a single street, so two homes in
+the same ZIP can vote in different races. The dialog repeats the
+address-handling summary, links to the Privacy Policy, and closes with **Got
+it**. It has no checkbox or agreement button because it explains the field
+rather than requesting consent.
 
 ## Results verification line (ballot and results screens)
 
