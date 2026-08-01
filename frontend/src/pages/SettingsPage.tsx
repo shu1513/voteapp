@@ -1,30 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  closestCenter,
-  DndContext,
-  KeyboardSensor,
-  MouseSensor,
-  TouchSensor,
-  useSensor,
-  useSensors,
-  type DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { apiRequest } from "@voteapp/api-client";
 import type { EmailPreferences, ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
+import { ResearchAreaPicker } from "../components/ResearchAreaPicker";
 import { SavedAddressForm } from "../components/SavedAddressForm";
 import { purgeAccountScopedQueries, useMe, type Me } from "@voteapp/api-client";
-import { MAX_RESEARCH_AREA_RANK } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Account settings. Sections mirror the backend's gating: profile, password,
@@ -379,16 +361,6 @@ function ResearchAreasSection() {
   // save() re-checks the mutation cache imperatively to close the gap before
   // this re-renders.)
   const saving = useIsMutating({ mutationKey: ["put-research-area-preferences"] }) > 0;
-  // Mouse: drag starts after 4px of movement, so the remove button stays a
-  // plain click. Touch: press-and-hold (200ms) then drag, so the list does
-  // not hijack page scrolling. Keyboard sorting stays for accessibility.
-  // MouseSensor + TouchSensor deliberately, not PointerSensor: PointerSensor
-  // also claims touch input, which would bypass the press-and-hold delay.
-  const sensors = useSensors(
-    useSensor(MouseSensor, { activationConstraint: { distance: 4 } }),
-    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
-    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
-  );
 
   if (catalog.isPending || prefs.isPending) {
     return (
@@ -407,11 +379,8 @@ function ResearchAreasSection() {
     );
   }
 
-  const areaById = new Map(catalog.data.research_areas.map((area) => [area.id, area]));
   // Server order is rank ASC NULLS LAST, so it is the editor order directly.
   const orderedIds = pending ?? prefs.data.preferences.map((preference) => preference.research_area_id);
-  const selectedSet = new Set(orderedIds);
-  const atCapacity = orderedIds.length >= MAX_RESEARCH_AREA_RANK;
 
   function save(nextIds: string[]) {
     // Controls disable while a PUT is in flight, but a drag that was already
@@ -427,121 +396,23 @@ function ResearchAreasSection() {
     update.mutate(nextIds);
   }
 
-  function onDragEnd(event: DragEndEvent) {
-    const { active, over } = event;
-    if (!over || active.id === over.id) {
-      return;
-    }
-    const from = orderedIds.indexOf(String(active.id));
-    const to = orderedIds.indexOf(String(over.id));
-    if (from < 0 || to < 0) {
-      return;
-    }
-    save(arrayMove(orderedIds, from, to));
-  }
-
   return (
     <Section title="Issues you care about">
       <p className="mt-1 text-sm text-ink-soft">
         Drag to put what matters most at the top — #1 counts the most in your ballot ordering.
       </p>
-      {orderedIds.length > 0 ? (
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
-          <SortableContext items={orderedIds} strategy={verticalListSortingStrategy}>
-            <ol className="mt-3 space-y-1.5">
-              {orderedIds.map((id, index) => (
-                <SortableAreaRow
-                  key={id}
-                  id={id}
-                  index={index}
-                  name={areaById.get(id)?.name ?? "Unknown area"}
-                  disabled={saving}
-                  onRemove={() => save(orderedIds.filter((other) => other !== id))}
-                />
-              ))}
-            </ol>
-          </SortableContext>
-        </DndContext>
-      ) : (
-        <p className="mt-3 text-sm text-ink-soft">Nothing selected yet — pick up to {MAX_RESEARCH_AREA_RANK} below.</p>
-      )}
-      <p className="mt-4 text-sm font-medium text-ink">
-        Add issues{" "}
-        <span className="font-normal text-ink-soft">
-          ({orderedIds.length}/{MAX_RESEARCH_AREA_RANK})
-        </span>
-      </p>
-      <div className="mt-2 flex flex-wrap gap-2">
-        {catalog.data.research_areas
-          .filter((area) => !selectedSet.has(area.id))
-          .map((area) => (
-            <button
-              key={area.id}
-              type="button"
-              disabled={saving || atCapacity}
-              onClick={() => save([...orderedIds, area.id])}
-              title={area.description ?? undefined}
-              className="rounded-lg border border-line bg-white px-3 py-1.5 text-xs text-ink transition hover:border-rausch disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {area.name}
-            </button>
-          ))}
-      </div>
+      <ResearchAreaPicker
+        areas={catalog.data.research_areas}
+        orderedIds={orderedIds}
+        disabled={saving}
+        onChange={save}
+      />
       {update.isError ? (
         <div className="mt-2">
           <ErrorNotice error={update.error} />
         </div>
       ) : null}
     </Section>
-  );
-}
-
-function SortableAreaRow({
-  id,
-  index,
-  name,
-  disabled,
-  onRemove,
-}: {
-  id: string;
-  index: number;
-  name: string;
-  disabled: boolean;
-  onRemove: () => void;
-}) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id, disabled });
-  // The whole row is the drag surface — grab it anywhere with a mouse, or
-  // press and hold on touch. The remove button still clicks normally thanks
-  // to the sensors' activation constraints.
-  return (
-    <li
-      ref={setNodeRef}
-      {...attributes}
-      {...listeners}
-      style={{ transform: CSS.Transform.toString(transform), transition }}
-      aria-label={`${name}, rank ${index + 1}. Drag to reorder.`}
-      // touch-manipulation, not touch-none: the TouchSensor prevents
-      // scrolling itself once its press-and-hold delay activates, so plain
-      // touches on the list still scroll the page.
-      className={`flex cursor-grab touch-manipulation items-center gap-2 rounded-lg border border-line bg-white px-2 py-2 text-sm select-none ${
-        isDragging ? "z-10 shadow-md" : ""
-      }`}
-    >
-      <span aria-hidden className="px-1 text-ink-soft">
-        ⠿
-      </span>
-      <span className="w-6 shrink-0 text-center text-xs font-semibold text-rausch-dark">#{index + 1}</span>
-      <span className="flex-1 text-ink">{name}</span>
-      <button
-        type="button"
-        disabled={disabled}
-        onClick={onRemove}
-        aria-label={`Remove ${name}`}
-        className="px-2 text-ink-soft hover:text-rausch-dark disabled:opacity-30"
-      >
-        ×
-      </button>
-    </li>
   );
 }
 

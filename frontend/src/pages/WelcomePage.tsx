@@ -1,0 +1,126 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import type { MetaFunction } from "react-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { APP_NAME, apiRequest, useMe } from "@voteapp/api-client";
+import type { ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteapp/api-client";
+import { ResearchAreaPicker } from "../components/ResearchAreaPicker";
+import { ErrorNotice, LoadingNotice } from "../components/Status";
+import { markWelcomeSkipped } from "../lib/welcomeSkip";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
+
+export const meta: MetaFunction = () => [{ title: `Welcome · ${APP_NAME}` }];
+
+// Post-signup onboarding step: pick the issues that drive ballot ordering.
+// Login routes verified users here once, when they have no saved areas and
+// have not skipped. Unlike settings, edits stay local and save as one PUT on
+// "Save and continue" — a brand-new user exploring the list shouldn't fire a
+// network write per tap.
+
+export function WelcomePage() {
+  useDocumentTitle("Welcome");
+  const { me, isLoading } = useMe();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [orderedIds, setOrderedIds] = useState<string[]>([]);
+
+  const catalog = useQuery({
+    queryKey: ["research-areas"],
+    queryFn: () => apiRequest<ResearchAreaCatalog>("/api/research-areas"),
+    staleTime: 5 * 60_000,
+  });
+
+  const save = useMutation({
+    // Same mutation key as the settings editor: both are full-list replaces
+    // of the same resource, so their in-flight guards must see each other.
+    mutationKey: ["put-research-area-preferences"],
+    mutationFn: (ids: string[]) =>
+      apiRequest<ResearchAreaPreferencesResult>("/api/me/research-area-preferences", {
+        method: "PUT",
+        body: { preferences: ids.map((research_area_id, index) => ({ research_area_id, rank: index + 1 })) },
+      }),
+    onSuccess: (saved) => {
+      queryClient.setQueryData(["me", "research-area-preferences"], saved);
+      // The saved ballot is server-sorted by these preferences, and the
+      // ballot-preferences default can flip to my_areas on first save.
+      void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
+      void queryClient.invalidateQueries({ queryKey: ["me", "ballot-preferences"] });
+      navigate("/me/ballot");
+    },
+  });
+
+  // The step needs a verified session (the preferences endpoint is
+  // verified-only). Anyone else lands somewhere sensible instead of a wall:
+  // logged-out visitors at login, unverified users at their ballot, where
+  // the existing verification interstitial takes over.
+  useEffect(() => {
+    if (me === null) {
+      navigate("/login", { replace: true });
+    } else if (me && !me.email_verified) {
+      navigate("/me/ballot", { replace: true });
+    }
+  }, [me, navigate]);
+
+  if (isLoading || !me || !me.email_verified) {
+    return (
+      <div className="mx-auto max-w-md px-4 py-10">
+        <LoadingNotice text="Loading…" />
+      </div>
+    );
+  }
+
+  function skip() {
+    if (me) {
+      markWelcomeSkipped(me.email);
+    }
+    navigate("/me/ballot");
+  }
+
+  return (
+    <div className="mx-auto max-w-2xl px-4 py-10">
+      <h1 className="text-2xl font-bold">
+        {me.first_name ? `Welcome, ${me.first_name}!` : "Welcome!"}
+      </h1>
+      <p className="mt-2 text-sm text-ink-soft">
+        Pick the issues you care about and we'll put the elections and candidates that touch them first.
+        Drag to reorder — #1 counts the most. You can change this any time in Settings.
+      </p>
+
+      {catalog.isPending ? <LoadingNotice text="Loading issues…" /> : null}
+      {catalog.isError ? (
+        <div className="mt-4">
+          <ErrorNotice error={catalog.error} />
+        </div>
+      ) : null}
+      {catalog.isSuccess ? (
+        <ResearchAreaPicker
+          areas={catalog.data.research_areas}
+          orderedIds={orderedIds}
+          disabled={save.isPending}
+          onChange={setOrderedIds}
+        />
+      ) : null}
+
+      <div className="mt-8 flex items-center gap-4">
+        <button
+          type="button"
+          disabled={orderedIds.length === 0 || save.isPending}
+          onClick={() => save.mutate(orderedIds)}
+          className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:bg-line"
+        >
+          {save.isPending ? "Saving…" : "Save and continue"}
+        </button>
+        <button type="button" onClick={skip} className="text-sm text-ink-soft underline hover:text-ink">
+          Skip for now
+        </button>
+      </div>
+      {save.isError ? (
+        <div className="mt-4">
+          <ErrorNotice error={save.error} />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+export default WelcomePage;
