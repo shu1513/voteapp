@@ -460,7 +460,7 @@ describe("ElectionCard", () => {
 
   it("shows the viewer's pick on an upcoming race, flagging withdrawn candidates", () => {
     renderCard(electionSummary(), undefined, new Map([["e-1", electionChoice()]]));
-    expect(screen.getByText("Your pick: Jane Smith")).toBeInTheDocument();
+    expect(screen.getByText("My pick: Jane Smith")).toBeInTheDocument();
     expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
 
     renderCard(
@@ -475,7 +475,27 @@ describe("ElectionCard", () => {
         ],
       ])
     );
-    expect(screen.getByText("Your pick: Jane Smith (withdrew)")).toBeInTheDocument();
+    expect(screen.getByText("My pick: Jane Smith (withdrew)")).toBeInTheDocument();
+  });
+
+  it("pluralizes the label when a multi-seat race carries several picks", () => {
+    renderCard(
+      electionSummary(),
+      undefined,
+      new Map([
+        [
+          "e-1",
+          electionChoice({
+            seats_to_fill: 2,
+            picks: [
+              { candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "declared" },
+              { candidate_id: "c-2", display_name: "John Roe", candidacy_status: "declared" },
+            ],
+          }),
+        ],
+      ])
+    );
+    expect(screen.getByText("My picks: Jane Smith, John Roe")).toBeInTheDocument();
   });
 
   it("shows a measure position as the choice chip", () => {
@@ -503,7 +523,7 @@ describe("ElectionCard", () => {
   it("shows no choice signal for anonymous viewers or past races", () => {
     // No choices map (anonymous / still loading): neither chip nor nudge.
     renderCard(electionSummary());
-    expect(screen.queryByText(/Your pick:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
     expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
 
     // Past race: the pick is history and the nudge would be nonsense.
@@ -512,7 +532,7 @@ describe("ElectionCard", () => {
       undefined,
       new Map([["e-1", electionChoice({ election_date: "2024-11-05" })]])
     );
-    expect(screen.queryByText(/Your pick:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
     expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
   });
 });
