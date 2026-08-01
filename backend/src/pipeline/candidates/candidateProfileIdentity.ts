@@ -139,6 +139,15 @@ export function mergeIdentifierLists(
  * contract-side normalizeHttpUrl, so "https://a.example/page/" and its
  * normalized twin are the same source. First occurrence wins and stored
  * order comes first, so repeated re-writes are stable.
+ *
+ * The normalized key keeps its case: URL parsing already lowercases the
+ * scheme and hostname — the components that ARE case-insensitive — while
+ * paths and queries are case-sensitive per RFC 3986, so "/Bio" and "/bio"
+ * may be distinct documents. Collapsing them would silently discard a
+ * source, the failure this union exists to prevent; keeping a duplicate
+ * URL is harmless and cleanable via --replace-profile-fields. Only the
+ * non-URL fallback (legacy stored junk — the contract refuses non-URL
+ * incoming sources) compares case-insensitively.
  */
 export function mergeProfileSourceLists(
   existing: readonly string[],
@@ -153,7 +162,7 @@ export function mergeProfileSourceLists(
       if (trimmed.length === 0) {
         continue;
       }
-      const key = (normalizeHttpUrl(trimmed) ?? trimmed).toLowerCase();
+      const key = normalizeHttpUrl(trimmed) ?? trimmed.toLowerCase();
       if (seen.has(key)) {
         continue;
       }

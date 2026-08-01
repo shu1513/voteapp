@@ -75,6 +75,28 @@ describe("mergeProfileSourceLists", () => {
     ).toEqual(["https://a.example/page/"]);
   });
 
+  it("keeps URLs that differ only in path or query case — they may be distinct documents", () => {
+    // Paths and queries are case-sensitive per RFC 3986; collapsing them
+    // would silently discard a source. Scheme and hostname ARE
+    // case-insensitive, and URL parsing inside normalizeHttpUrl already
+    // lowercases both, so host-case variants still dedupe.
+    expect(
+      mergeProfileSourceLists(
+        ["https://a.example/Bio", "https://a.example/results?Name=Alice"],
+        ["https://a.example/bio", "https://a.example/results?name=alice"]
+      )
+    ).toEqual([
+      "https://a.example/Bio",
+      "https://a.example/results?Name=Alice",
+      "https://a.example/bio",
+      "https://a.example/results?name=alice",
+    ]);
+
+    expect(
+      mergeProfileSourceLists(["HTTPS://EXAMPLE.com/bio"], ["https://example.com/bio"])
+    ).toEqual(["HTTPS://EXAMPLE.com/bio"]);
+  });
+
   it("ignores blanks and keeps a non-URL string on its raw form", () => {
     expect(mergeProfileSourceLists(["  ", "not a url"], ["NOT A URL"])).toEqual(["not a url"]);
   });
