@@ -18,6 +18,8 @@ type FakeElection = {
   vote_power_score?: number | null;
   population?: number | null;
   research_area_ids?: string[];
+  race_type?: string;
+  candidate_count?: number;
 };
 
 function makeSummary(elections: FakeElection[]): BallotSummaryResult {
@@ -38,14 +40,14 @@ function makeSummary(elections: FakeElection[]): BallotSummaryResult {
           representation_power_score: 50,
           population: e.population ?? null,
         },
-        race_type: "office",
+        race_type: e.race_type ?? "office",
         official_ballot_title: e.official_ballot_title ?? "Office",
         election_date: e.election_date ?? "2026-11-03",
         election_stage: "general",
         is_partisan: false,
         discovery_contest_family: "non_judicial_office",
         sources: [],
-        candidate_count: 2,
+        candidate_count: e.candidate_count ?? 2,
         ballot_measure_id: null,
         has_results: false,
         current_result_outcome: null,
@@ -197,6 +199,48 @@ describe("applyBallotElectionOrdering", () => {
     expect(result.elections.find((e) => e.id === electionA)?.followed_candidates).toEqual([
       { candidate_id: candidateId, display_name: "Jane Doe" },
     ]);
+  });
+
+  it("sinks office races with no published candidate list below every readable race", async () => {
+    const result = await applyBallotElectionOrdering(
+      { query: makeFollowsQuery([]) },
+      makeSummary([
+        // Top vote power, but nothing to read: the card is a "Candidate list
+        // not final" placeholder, so it must not lead the ballot.
+        { id: electionA, vote_power_score: 99, candidate_count: 0 },
+        { id: electionB, vote_power_score: 10 },
+      ])
+    );
+
+    expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
+  });
+
+  it("keeps candidate-less ballot measures in their normal position", async () => {
+    const result = await applyBallotElectionOrdering(
+      { query: makeFollowsQuery([]) },
+      makeSummary([
+        // A measure legitimately has zero candidates — the measure text is the
+        // content, so it sorts on vote power like any other readable race.
+        { id: electionA, vote_power_score: 99, candidate_count: 0, race_type: "ballot_measure" },
+        { id: electionB, vote_power_score: 10 },
+      ])
+    );
+
+    expect(result.elections.map((e) => e.id)).toEqual([electionA, electionB]);
+  });
+
+  it("sinks candidate-less races under every sort, not just the default", async () => {
+    const result = await applyBallotElectionOrdering(
+      { query: makeFollowsQuery([]) },
+      makeSummary([
+        { id: electionA, election_date: "2026-06-02", candidate_count: 0 },
+        { id: electionB, election_date: "2026-11-03" },
+      ]),
+      { sort: "soonest" }
+    );
+
+    // Earliest date would normally lead; having nothing to read outranks it.
+    expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
   });
 
   it("orders by summed saved-area weights when sort=my_areas, non-matching elections last", async () => {
