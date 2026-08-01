@@ -119,6 +119,23 @@ describe("resolveStoredCandidateParty", () => {
       })
     ).toBe("Nonpartisan");
   });
+
+  it("canonicalizes the party spelling on the way to storage", () => {
+    expect(
+      resolveStoredCandidateParty({
+        includeParty: true,
+        rosterParty: "DEM",
+        profileParty: undefined,
+      })
+    ).toBe("Democratic");
+    expect(
+      resolveStoredCandidateParty({
+        includeParty: true,
+        rosterParty: undefined,
+        profileParty: "Republican Party",
+      })
+    ).toBe("Republican");
+  });
 });
 
 describe("findOrCreateCandidateFromProfile", () => {

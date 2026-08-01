@@ -79,6 +79,7 @@
     "manual:candidate-elections:unlink": "tsx src/scripts/unlinkManualCandidateElection.ts",
     "manual:elections:supersede": "tsx src/scripts/supersedeManualElection.ts",
     "manual:candidates:merge": "tsx src/scripts/mergeManualCandidates.ts",
+    "manual:candidates:canonicalize-parties": "tsx src/scripts/canonicalizeCandidateParties.ts",
     "manual:election-results:due": "tsx src/scripts/manualElectionResults.ts due",
     "manual:election-results:context": "tsx src/scripts/manualElectionResults.ts context",
     "manual:election-results:write": "tsx src/scripts/manualElectionResults.ts write",
