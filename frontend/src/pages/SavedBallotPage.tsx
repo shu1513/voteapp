@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "@voteapp/api-client";
 import { BALLOT_SORTS, type BallotPreferences, type BallotSummary } from "@voteapp/api-client";
@@ -10,6 +10,8 @@ import {
   type AddressSavedNoticeData,
 } from "../components/SavedAddressForm";
 import { ElectionList } from "../components/ElectionCard";
+import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
+import { deriveOnlyMyIssues } from "../lib/onlyMyIssues";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "@voteapp/api-client";
@@ -125,7 +127,28 @@ export function SavedBallotPage() {
     }
   }, [location.pathname, location.state, navigate]);
   const queryClient = useQueryClient();
-  const { weights: savedAreaWeights } = useMyResearchAreas();
+  const { weights: savedAreaWeights, savedAreaIds, hasSaved } = useMyResearchAreas();
+  // "Only my issues": URL state like the anonymous ballot's sort, so the
+  // choice survives navigating into an election and back; off by default
+  // (absent param). Deliberately NOT an account preference — hiding races
+  // should never silently persist across visits.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const issuesRequested = searchParams.get("issues") === "mine";
+
+  function onIssuesFilterChange(on: boolean) {
+    setSearchParams(
+      (previous) => {
+        const next = new URLSearchParams(previous);
+        if (on) {
+          next.set("issues", "mine");
+        } else {
+          next.delete("issues");
+        }
+        return next;
+      },
+      { replace: true }
+    );
+  }
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
   );
@@ -255,6 +278,12 @@ export function SavedBallotPage() {
   }
 
   const data = ballot.data;
+  const issuesView = deriveOnlyMyIssues({
+    elections: data.elections,
+    savedAreaIds,
+    hasSaved,
+    requested: issuesRequested,
+  });
 
   if (data.districts.length === 0) {
     return (
@@ -289,13 +318,22 @@ export function SavedBallotPage() {
           a level-1 target for screen-reader heading navigation. */}
       <h1 className="sr-only">Your saved ballot</h1>
       <div className="flex flex-wrap items-center justify-end gap-3">
+        {issuesView.showFilter ? (
+          <OnlyMyIssuesToggle
+            on={issuesView.filterOn}
+            hiddenCount={issuesView.hiddenCount}
+            onChange={onIssuesFilterChange}
+          />
+        ) : null}
         <BallotPreferenceControls />
       </div>
 
       {data.elections.length === 0 ? (
         <EmptyNotice text="No upcoming elections found for your districts yet. Check back — new elections are added as they are announced." />
       ) : (
-        <ElectionList elections={data.elections} savedAreaWeights={savedAreaWeights} />
+        // An active filter can empty this list; the "N elections hidden ·
+        // Show all" line in the controls row explains the empty view.
+        <ElectionList elections={issuesView.visibleElections} savedAreaWeights={savedAreaWeights} />
       )}
 
       <p className="mt-8 text-sm text-ink-soft">

@@ -1,7 +1,7 @@
 # Plan: party canonicalization + candidate/election filters
 
 Status: phase 0 shipped (PR #468) + local backfill applied; phase 1 shipped
-(PR #473); phase 2 implemented; phase 3 not started. Each phase is
+(PR #473); phase 2 shipped (PR #474); phase 3 implemented. Each phase is
 one PR; later phases depend on earlier ones only where noted. Verified facts
 below come from the live local DB and the current code — re-verify counts
 before the backfill run.
@@ -141,16 +141,31 @@ saved areas; the control simply doesn't render).
 
 ## Phase 3 — "Only my issues" toggle on the ballot page (web + mobile)
 
-1. Client-side toggle on `BallotPage` (signed-in ballot; public page never
-   shows it — no saved areas). Keep = elections whose `research_areas`
-   intersect the user's saved area ids (weight map already on the client).
-2. Same mitigation: "N races hidden" count always visible while active;
-   filtered-out races still elect real officials, so the toggle is opt-in
-   and off by default. State in the URL query (like `sort`) so it survives
-   navigation.
-3. Interaction with ordering: filter composes with any sort; with `my_areas`
+1. Client-side toggle on all four ballot surfaces — web `BallotPage` +
+   `SavedBallotPage`, mobile `ballot.tsx` + `my-ballot.tsx`. Keep =
+   elections whose `research_areas` intersect the viewer's saved area ids
+   (`savedAreaIds` already on the client). The gate is `hasSaved`, not the
+   page: anonymous viewers never see it, and a verified visitor's one-off
+   public search is filterable too — same rule as the saved-area chip
+   personalization those pages already share.
+2. Same mitigation: "N elections hidden · Show all" always visible while
+   the filter hides any race; filtered-out races still elect real
+   officials, so the toggle is opt-in and off by default. Web state is the
+   URL query (`issues=mine`, like `sort`) so it survives navigating into an
+   election and back — deliberately NOT an account preference, so hiding
+   races never silently persists across visits. Mobile state is local
+   (screens stay mounted under a stack push, so it survives back-nav the
+   same way).
+3. Visibility mirrors phase 2: while OFF, render only when the viewer has
+   saved areas AND the list splits into matched + unmatched; while ON it
+   stays visible and keeps applying even when that empties the view. A
+   viewer with no saved areas gets the request ignored (covers a shared
+   `?issues=mine` link opened anonymously).
+4. Interaction with ordering: filter composes with any sort; with `my_areas`
    sort it truncates the zero-score tail the sort already sank.
-4. Tests: intersection logic, hidden count, off-by-default, URL round-trip.
+5. Tests: hidden count + Show all restore, URL round-trip, arrives filtered
+   from a shared URL, active filter honestly empties the view, control
+   absent when signed out / no saved areas / no split.
 
 ## Sequencing / PR slicing
 

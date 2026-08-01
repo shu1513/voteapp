@@ -8,6 +8,8 @@ import {
   type BallotSummary,
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
+import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
+import { deriveOnlyMyIssues } from "../lib/onlyMyIssues";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
@@ -21,8 +23,9 @@ export function BallotPage() {
   useDocumentTitle("Elections");
   // Signed-in verified visitors get their saved areas listed first (in their
   // own rank order) even on the public ballot; anonymous visitors get an
-  // empty map (no personalization).
-  const { weights: savedAreaWeights } = useMyResearchAreas();
+  // empty map (no personalization). The same saved areas gate the "Only my
+  // issues" filter, so a verified visitor's one-off search is filterable too.
+  const { weights: savedAreaWeights, savedAreaIds, hasSaved } = useMyResearchAreas();
   // Set by the home page's post-search navigation so the visitor can confirm
   // the geocoder matched the right address. Router state only — the address is
   // personal data and must stay out of the URL; a refresh or shared link
@@ -43,6 +46,9 @@ export function BallotPage() {
     .filter((id) => id.length > 0);
   const rawSort = searchParams.get("sort") ?? "";
   const sort: BallotSort = SORT_VALUES.includes(rawSort) ? (rawSort as BallotSort) : "vote_power";
+  // URL state like sort, so the choice survives navigating into an election
+  // and back; off by default (absent param).
+  const issuesRequested = searchParams.get("issues") === "mine";
 
   const ballot = useQuery({
     queryKey: ["ballot", districtIds.join(","), sort],
@@ -63,6 +69,28 @@ export function BallotPage() {
       { replace: true }
     );
   }
+
+  function onIssuesFilterChange(on: boolean) {
+    setSearchParams(
+      (previous) => {
+        const next = new URLSearchParams(previous);
+        if (on) {
+          next.set("issues", "mine");
+        } else {
+          next.delete("issues");
+        }
+        return next;
+      },
+      { replace: true }
+    );
+  }
+
+  const issuesView = deriveOnlyMyIssues({
+    elections: ballot.data?.elections ?? [],
+    savedAreaIds,
+    hasSaved,
+    requested: issuesRequested,
+  });
 
   if (districtIds.length === 0) {
     return (
@@ -90,6 +118,13 @@ export function BallotPage() {
           stay discoverable, and those are not upcoming. */}
       <h1 className="sr-only">Elections</h1>
       <div className="flex flex-wrap items-center justify-end gap-3">
+        {issuesView.showFilter ? (
+          <OnlyMyIssuesToggle
+            on={issuesView.filterOn}
+            hiddenCount={issuesView.hiddenCount}
+            onChange={onIssuesFilterChange}
+          />
+        ) : null}
         <label className="flex items-center gap-2 text-sm text-ink-soft">
           Sort by
           <select
@@ -146,7 +181,9 @@ export function BallotPage() {
           {ballot.data.elections.length === 0 ? (
             <EmptyNotice text="No upcoming elections found for these districts yet. Check back — new elections are added as they are announced." />
           ) : (
-            <ElectionList elections={ballot.data.elections} savedAreaWeights={savedAreaWeights} />
+            // An active filter can empty this list; the "N elections hidden ·
+            // Show all" line in the controls row explains the empty view.
+            <ElectionList elections={issuesView.visibleElections} savedAreaWeights={savedAreaWeights} />
           )}
         </>
       ) : null}
