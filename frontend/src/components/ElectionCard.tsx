@@ -86,8 +86,9 @@ export function ElectionList({
   savedAreaWeights?: Map<string, ResearchAreaWeight>;
   /**
    * The session holder's planned votes (useElectionChoices().choiceByElectionId).
-   * Undefined while anonymous or still loading — cards then show no choice
-   * row at all, so "No pick yet" can never flash for a user who has picked.
+   * Undefined while anonymous or still loading. Only elections present in the
+   * map get a pick chip; a race without one shows nothing, deliberately — an
+   * empty-state badge on every undecided race was more noise than signal.
    */
   choicesByElectionId?: Map<string, ElectionChoice>;
 }) {
@@ -119,7 +120,6 @@ export function ElectionList({
                 election={election}
                 savedAreaWeights={savedAreaWeights}
                 myChoice={choicesByElectionId?.get(election.id)}
-                showMissingChoice={choicesByElectionId !== undefined}
               />
             ))}
           </div>
@@ -131,8 +131,9 @@ export function ElectionList({
               zero-candidate reason, and roster_processing means the list is
               published and this app is still preparing profiles — "waiting
               on officials" would misplace that blame. Matches the generic
-              roster-status copy. */}
-          <h2 className="text-xl font-bold text-ink">Candidate information not yet available</h2>
+              roster-status copy. Leads with "Elections" to parallel the
+              "Elections on {date}" headings above it. */}
+          <h2 className="text-xl font-bold text-ink">Elections awaiting candidate information</h2>
           <div className="mt-2 space-y-3">
             {awaitingCandidates.map((election) => (
               <ElectionCard
@@ -162,7 +163,6 @@ function ElectionCard({
   election,
   savedAreaWeights,
   myChoice,
-  showMissingChoice = false,
   showDate = false,
 }: {
   election: ElectionSummary;
@@ -170,13 +170,7 @@ function ElectionCard({
   /** The viewer's planned vote for this election, when they have one. */
   myChoice?: ElectionChoice;
   /**
-   * Show a quiet "No pick yet" on upcoming races without a choice, so a
-   * logged-in voter can scan the list for elections still to decide. Off in
-   * the awaiting-candidates section — there is nobody to pick there yet.
-   */
-  showMissingChoice?: boolean;
-  /**
-   * The "Candidate information not yet available" section spans dates under
+   * The "Elections awaiting candidate information" section spans dates under
    * one heading, so its cards must say their own date; everywhere else the
    * group heading carries it.
    */
@@ -192,23 +186,19 @@ function ElectionCard({
   const visibleOtherAreas = otherAreas.slice(0, MAX_UNSAVED_AREA_CHIPS);
   const hiddenAreaCount = otherAreas.length - visibleOtherAreas.length;
   // The viewer's planned vote, shown only on upcoming races: a past
-  // election's choice is history, and the "No pick yet" nudge would be
-  // nonsense there. Withdrawn picks stay visible with a flag — a silent
-  // disappearance would read as data loss.
+  // election's choice is history. Withdrawn picks stay visible with a flag —
+  // a silent disappearance would read as data loss. Races WITHOUT a pick show
+  // nothing: an empty-state badge on every undecided race read as noise, and
+  // the absence of a green chip already marks them.
   const isUpcoming = election.election_date >= usLatestLocalDate();
   const choiceLabel = myChoice && isUpcoming ? formatChoiceLabel(myChoice) : null;
-  // Keyed to the rendered label, not myChoice's presence: a choice object
-  // that formats to nothing (e.g. its only pick's candidate was deleted)
-  // must still show "No pick yet" rather than no signal at all.
-  const showNoPickYet = showMissingChoice && isUpcoming && choiceLabel === null;
   // Skip an empty chip row so the card doesn't carry stray spacing when a
   // race has no signals to show.
   const hasSignalChips =
     (election.followed_candidates?.length ?? 0) > 0 ||
     election.historical_competitiveness !== null ||
     election.has_results ||
-    choiceLabel !== null ||
-    showNoPickYet;
+    choiceLabel !== null;
   return (
     <Link
       to={`/elections/${election.id}`}
@@ -264,11 +254,6 @@ function ElectionCard({
             // followed-candidates chip.
             <span className="rounded border border-green-700 bg-green-50 px-2 py-0.5 font-medium text-green-900">
               {choiceLabel}
-            </span>
-          ) : null}
-          {showNoPickYet ? (
-            <span className="rounded border border-dashed border-line px-2 py-0.5 text-ink-soft">
-              No pick yet
             </span>
           ) : null}
           {election.followed_candidates && election.followed_candidates.length > 0 ? (

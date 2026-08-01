@@ -19,4 +19,8 @@
   --color-surface: #f7f7f7;
   /* Democratic party brand blue; marks ballot-measure labels. */
   --color-dem-blue: #0015bc;
+  /* Neutral dark navy for inert header text (the greeting). Deliberately NOT
+     dem-blue — party brand colors stay on party content in an elections app.
+     8.9:1 on white. */
+  --color-navy: #1e3a5f;
 }

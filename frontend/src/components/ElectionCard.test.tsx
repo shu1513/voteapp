@@ -370,7 +370,7 @@ describe("ElectionCard", () => {
     // One date heading for the readable race; the pending race sits under the
     // waiting section instead of repeating that date at the bottom.
     expect(screen.getAllByRole("heading", { name: "Elections on November 3, 2026" })).toHaveLength(1);
-    expect(screen.getByRole("heading", { name: "Candidate information not yet available" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Elections awaiting candidate information" })).toBeInTheDocument();
     // Its section heading names no date, so the card carries its own.
     expect(screen.getByText("Alaska · November 3, 2026")).toBeInTheDocument();
     expect(screen.getByText("Candidate list not final")).toBeInTheDocument();
@@ -400,7 +400,7 @@ describe("ElectionCard", () => {
 
     // Zero candidates is a measure's normal state — no waiting section.
     expect(screen.getByRole("heading", { name: "Elections on November 3, 2026" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Candidate information not yet available" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Elections awaiting candidate information" })).not.toBeInTheDocument();
   });
 
   it("keeps candidate-less races with a recorded result inside their date group", () => {
@@ -430,7 +430,7 @@ describe("ElectionCard", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Elections on November 3, 2026" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Candidate information not yet available" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Elections awaiting candidate information" })).not.toBeInTheDocument();
   });
 
   it("renders only the waiting section when every race lacks a candidate list", () => {
@@ -454,14 +454,13 @@ describe("ElectionCard", () => {
       "/"
     );
 
-    expect(screen.getByRole("heading", { name: "Candidate information not yet available" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Elections awaiting candidate information" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: /Elections on/ })).not.toBeInTheDocument();
   });
 
   it("shows the viewer's pick on an upcoming race, flagging withdrawn candidates", () => {
     renderCard(electionSummary(), undefined, new Map([["e-1", electionChoice()]]));
     expect(screen.getByText("My pick: Jane Smith")).toBeInTheDocument();
-    expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
 
     renderCard(
       electionSummary(),
@@ -507,32 +506,32 @@ describe("ElectionCard", () => {
     expect(screen.getByText("My vote: Yes")).toBeInTheDocument();
   });
 
-  it("nudges 'No pick yet' only when the viewer's choices are loaded", () => {
-    // Choices map present, no entry for this election → nudge.
+  it("stays silent on an undecided race", () => {
+    // Deliberately no empty-state badge: one on every undecided race read as
+    // noise, and the absence of a pick chip already marks them. Regression
+    // guard for the removed "No pick yet" nudge.
     renderCard(electionSummary(), undefined, new Map());
-    expect(screen.getByText("No pick yet")).toBeInTheDocument();
-  });
+    expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
+    expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
 
-  it("keeps the nudge when a choice object formats to no label", () => {
-    // A choice whose only pick lost its candidate (deleted/merged) renders
-    // no label; the card must fall back to the nudge, not go silent.
+    // Same when a choice row exists but formats to nothing — its only pick's
+    // candidate was deleted or merged.
     renderCard(electionSummary(), undefined, new Map([["e-1", electionChoice({ picks: [] })]]));
-    expect(screen.getByText("No pick yet")).toBeInTheDocument();
+    expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
+    expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
   });
 
-  it("shows no choice signal for anonymous viewers or past races", () => {
-    // No choices map (anonymous / still loading): neither chip nor nudge.
+  it("shows no choice chip for anonymous viewers or past races", () => {
+    // No choices map (anonymous / still loading).
     renderCard(electionSummary());
     expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
-    expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
 
-    // Past race: the pick is history and the nudge would be nonsense.
+    // Past race: the pick is history.
     renderCard(
       electionSummary({ election_date: "2024-11-05", has_results: true }),
       undefined,
       new Map([["e-1", electionChoice({ election_date: "2024-11-05" })]])
     );
     expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
-    expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
   });
 });
