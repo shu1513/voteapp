@@ -110,6 +110,13 @@ export function ElectionPage() {
     electionId: "",
     bucket: "all",
   });
+  // "Has a record on my issues" — same per-race keying as the party pick,
+  // for the same reason: it hides candidates, so it must not travel to the
+  // next election this mounted component renders.
+  const [recordsPick, setRecordsPick] = useState<{ electionId: string; on: boolean }>({
+    electionId: "",
+    on: false,
+  });
 
   const data = useLoaderData<typeof loader>();
   const chosenPartyFilter = partyPick.electionId === data.id ? partyPick.bucket : "all";
@@ -130,10 +137,27 @@ export function ElectionPage() {
     showPartyFilter && chosenPartyFilter !== "all" && partyCounts[chosenPartyFilter] > 0
       ? chosenPartyFilter
       : "all";
-  const visibleCandidates =
+  const partyFilteredCandidates =
     partyFilter === "all"
       ? data.candidates
       : data.candidates.filter((candidate) => partyBucket(candidate.party) === partyFilter);
+  // "Has a record on my issues": the exact relevance scoring the "my issues
+  // first" sort uses — score > 0 means at least one stance-bearing record on
+  // a saved area (relevance, not agreement). Applied after the party filter,
+  // and visible only when it could change the current view: signed-in with
+  // saved areas, and the party-filtered set splits into matched + unmatched
+  // (all-match would be a no-op; none-match would empty the list). Same
+  // resilience as the other controls: a pick is ignored — not cleared —
+  // while the control is hidden.
+  const chosenRecordsFilter = recordsPick.electionId === data.id ? recordsPick.on : false;
+  const matchedOnMyIssues = partyFilteredCandidates.filter(
+    (candidate) => scoreStanceRelevance(aggregateRecordAreaStances(candidate.records), weights).score > 0
+  );
+  const showRecordsFilter =
+    hasSaved && matchedOnMyIssues.length > 0 && matchedOnMyIssues.length < partyFilteredCandidates.length;
+  const recordsFilterOn = showRecordsFilter && chosenRecordsFilter;
+  const visibleCandidates = recordsFilterOn ? matchedOnMyIssues : partyFilteredCandidates;
+  const hiddenByRecordsFilter = partyFilteredCandidates.length - matchedOnMyIssues.length;
   const measure = data.ballot_measure;
   // Full set, uncapped — the list card previews these; the detail page is
   // where they all fit. Measure elections skip this row: the measure section
@@ -392,6 +416,37 @@ export function ElectionPage() {
                     : `${option.label} (${partyCounts[option.bucket]})`}
                 </button>
               ))}
+            </div>
+          ) : null}
+          {showRecordsFilter ? (
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setRecordsPick({ electionId: data.id, on: !recordsFilterOn })}
+                aria-pressed={recordsFilterOn}
+                className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
+                  recordsFilterOn
+                    ? "border-ink bg-ink text-white"
+                    : "border-line bg-white text-ink hover:bg-surface"
+                }`}
+              >
+                Has a record on my issues
+              </button>
+              {recordsFilterOn ? (
+                // The hidden count is always visible while the filter is on:
+                // no records ≠ no stances (rosters are unevenly researched),
+                // so the filtered list must never look like the full roster.
+                <span className="text-xs text-ink-soft">
+                  {hiddenByRecordsFilter} candidate{hiddenByRecordsFilter === 1 ? "" : "s"} hidden ·{" "}
+                  <button
+                    type="button"
+                    onClick={() => setRecordsPick({ electionId: data.id, on: false })}
+                    className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink"
+                  >
+                    Show all
+                  </button>
+                </span>
+              ) : null}
             </div>
           ) : null}
           <div className="mt-3 space-y-3">

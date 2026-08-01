@@ -1,7 +1,7 @@
 # Plan: party canonicalization + candidate/election filters
 
-Status: phase 0 shipped (PR #468) + local backfill applied; phase 1
-implemented; phases 2–3 not started. Each phase is
+Status: phase 0 shipped (PR #468) + local backfill applied; phase 1 shipped
+(PR #473); phase 2 implemented; phase 3 not started. Each phase is
 one PR; later phases depend on earlier ones only where noted. Verified facts
 below come from the live local DB and the current code — re-verify counts
 before the backfill run.
@@ -113,16 +113,25 @@ canonicalize spelling, never reject an unknown party, never call AI.
 Signed-in users with saved research areas only (anonymous users have no
 saved areas; the control simply doesn't render).
 
-1. Filter = `scoreCandidateRecords(...).matchedWeight > 0` — reuses the
-   exact scoring the "My issues first" sort already uses. No new scoring.
+1. Filter = `scoreStanceRelevance(aggregateRecordAreaStances(records),
+   weights).score > 0` — reuses the exact scoring the "My issues first" sort
+   already uses. No new scoring, no api-client change.
 2. Label: "Has a record on my issues" — direction-neutral (relevance, not
    agreement), consistent with the sort's framing.
 3. Mitigation for the coverage caveat (no records ≠ no stances; rosters are
    unevenly researched): always show "N candidates hidden" with a one-tap
-   clear. The filter must never look like the full roster.
-4. Composes with phase 1 (party filter AND records filter).
-5. Tests: hidden-count correctness, interaction with party filter, control
-   absent when signed out / no saved areas.
+   "Show all" while active. The filter must never look like the full roster.
+4. Composes with phase 1: applied after the party filter, and the hidden
+   count is relative to the party-filtered view (the party chips already
+   account for their own hiding). The toggle is a per-race choice — keyed to
+   the election id like the party pick, so it never travels to another race,
+   but it persists across party switches within the race.
+5. Visibility is data-driven like the party filter: the toggle renders only
+   when the viewer has saved areas AND the party-filtered set splits into
+   matched + unmatched (all-match would be a no-op; none-match would empty
+   the list). A pick is ignored — not cleared — while the control is hidden.
+6. Tests: hidden-count correctness, interaction with party filter, reset on
+   navigation, control absent when signed out / no saved areas / no split.
 
 ## Phase 3 — "Only my issues" toggle on the ballot page (web + mobile)
 

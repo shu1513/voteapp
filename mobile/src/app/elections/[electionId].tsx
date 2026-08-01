@@ -75,6 +75,13 @@ export default function ElectionScreen() {
     electionId: "",
     bucket: "all",
   });
+  // "Has a record on my issues" — same per-race keying as the party pick,
+  // for the same reason: it hides candidates, so it must not travel to the
+  // next election this mounted screen renders. Same as the web.
+  const [recordsPick, setRecordsPick] = useState<{ electionId: string; on: boolean }>({
+    electionId: "",
+    on: false,
+  });
 
   const election = useQuery({
     queryKey: ["election", electionId],
@@ -130,10 +137,26 @@ export default function ElectionScreen() {
     showPartyFilter && chosenPartyFilter !== "all" && partyCounts[chosenPartyFilter] > 0
       ? chosenPartyFilter
       : "all";
-  const visibleCandidates =
+  const partyFilteredCandidates =
     partyFilter === "all"
       ? data.candidates
       : data.candidates.filter((candidate) => partyBucket(candidate.party) === partyFilter);
+  // "Has a record on my issues": the exact relevance scoring the "my issues
+  // first" sort uses — score > 0 means at least one stance-bearing record on
+  // a saved area (relevance, not agreement). Applied after the party filter,
+  // and visible only when it could change the current view: signed-in with
+  // saved areas, and the party-filtered set splits into matched + unmatched.
+  // A pick is ignored — not cleared — while the control is hidden. Same as
+  // the web ElectionPage.
+  const chosenRecordsFilter = recordsPick.electionId === data.id ? recordsPick.on : false;
+  const matchedOnMyIssues = partyFilteredCandidates.filter(
+    (candidate) => scoreStanceRelevance(aggregateRecordAreaStances(candidate.records), weights).score > 0
+  );
+  const showRecordsFilter =
+    hasSaved && matchedOnMyIssues.length > 0 && matchedOnMyIssues.length < partyFilteredCandidates.length;
+  const recordsFilterOn = showRecordsFilter && chosenRecordsFilter;
+  const visibleCandidates = recordsFilterOn ? matchedOnMyIssues : partyFilteredCandidates;
+  const hiddenByRecordsFilter = partyFilteredCandidates.length - matchedOnMyIssues.length;
 
   return (
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
@@ -241,6 +264,41 @@ export default function ElectionScreen() {
                 onChange={(bucket) => setPartyPick({ electionId: data.id, bucket })}
                 accessibilityLabel="Filter candidates by party"
               />
+            </View>
+          ) : null}
+          {showRecordsFilter ? (
+            <View className="mt-2 flex-row flex-wrap items-center gap-2">
+              {/* Same chip styling as SortChips; a lone toggle rather than a
+                  chips row because there is no option set to pick from. */}
+              <Pressable
+                onPress={() => setRecordsPick({ electionId: data.id, on: !recordsFilterOn })}
+                accessibilityRole="button"
+                accessibilityState={{ selected: recordsFilterOn }}
+                className={
+                  recordsFilterOn
+                    ? "rounded-full border border-ink bg-ink px-3 py-1.5"
+                    : "rounded-full border border-line bg-white px-3 py-1.5"
+                }
+              >
+                <Text className={recordsFilterOn ? "text-xs font-medium text-white" : "text-xs text-ink"}>
+                  Has a record on my issues
+                </Text>
+              </Pressable>
+              {recordsFilterOn ? (
+                // The hidden count is always visible while the filter is on:
+                // no records ≠ no stances (rosters are unevenly researched),
+                // so the filtered list must never look like the full roster.
+                <Text className="text-xs text-ink-soft">
+                  {hiddenByRecordsFilter} candidate{hiddenByRecordsFilter === 1 ? "" : "s"} hidden ·{" "}
+                  <Text
+                    accessibilityRole="button"
+                    className="font-medium underline"
+                    onPress={() => setRecordsPick({ electionId: data.id, on: false })}
+                  >
+                    Show all
+                  </Text>
+                </Text>
+              ) : null}
             </View>
           ) : null}
           <View className="mt-3 gap-3">
