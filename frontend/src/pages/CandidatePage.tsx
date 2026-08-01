@@ -14,12 +14,14 @@ import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { RegisterToFollowButton } from "../components/RegisterToFollowButton";
+import { ShareButton } from "../components/ShareButton";
 import { CandidatePickButton } from "../components/ElectionChoiceControls";
 import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
 import { formatDistrictName, formatElectionDate } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
+import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { compareByResearchAreaPriority } from "../lib/researchAreaPriority";
 import { useFollows } from "@voteapp/api-client";
@@ -287,9 +289,19 @@ function RecordItem({
   );
 }
 
+// "Name (Party, State)" built from the non-empty parts: party is typed
+// string but the detail reader coalesces a missing value to ""
+// (candidateDetailReader.ts), and "Jane Doe (, CA)" must not reach a share
+// card or a share sheet. Mirrored on the mobile candidate screen.
+function candidateShareText(candidate: { display_name: string; party: string; state: string }): string {
+  const context = [candidate.party, candidate.state].filter(Boolean).join(", ");
+  return context ? `${candidate.display_name} (${context})` : candidate.display_name;
+}
+
 // Replaces useDocumentTitle here: a leaf meta export fully overrides the
-// root's, so it must carry both title and description.
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+// root's, so it must carry the full pageMeta set — title alone would drop
+// the og:*/twitter:* share-card tags on exactly the page people share.
+export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   if (!data) {
     // "Not found" only for real 404s; a 429/502/504 render must not tell
     // crawlers the page doesn't exist.
@@ -297,13 +309,11 @@ export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
     return [{ title: isNotFound ? `Not found · ${APP_NAME}` : `Something went wrong · ${APP_NAME}` }];
   }
   const candidate = data.candidate;
-  return [
-    { title: `${candidate.display_name} · ${APP_NAME}` },
-    {
-      name: "description",
-      content: `${candidate.display_name} (${candidate.party}, ${candidate.state}) — issue-tagged records with sources, election history, and campaign finance.`,
-    },
-  ];
+  return pageMeta({
+    title: `${candidate.display_name} · ${APP_NAME}`,
+    description: `${candidateShareText(candidate)} — issue-tagged records with sources, election history, and campaign finance.`,
+    path: location.pathname,
+  });
 };
 
 export function ErrorBoundary() {
@@ -373,14 +383,20 @@ export function CandidatePage() {
       />
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
-        {canFollow && follows ? (
-          <FollowButton candidateId={candidate.candidate_id} isFollowing={isFollowing} />
-        ) : me === null ? (
-          // Logged-out visitors get a Follow button that prompts them to
-          // register (me is undefined while the session is still loading —
-          // render nothing then to avoid a flash of the wrong button).
-          <RegisterToFollowButton candidateName={candidate.display_name} />
-        ) : null}
+        <div className="flex items-center gap-2">
+          <ShareButton
+            path={`/candidates/${candidate.candidate_id}`}
+            shareText={candidateShareText(candidate)}
+          />
+          {canFollow && follows ? (
+            <FollowButton candidateId={candidate.candidate_id} isFollowing={isFollowing} />
+          ) : me === null ? (
+            // Logged-out visitors get a Follow button that prompts them to
+            // register (me is undefined while the session is still loading —
+            // render nothing then to avoid a flash of the wrong button).
+            <RegisterToFollowButton candidateName={candidate.display_name} />
+          ) : null}
+        </div>
       </div>
       <p className="mt-1 text-sm text-ink-soft">
         {candidate.party} · {candidate.state}

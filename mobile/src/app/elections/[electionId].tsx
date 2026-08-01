@@ -23,6 +23,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
+import { ShareButton } from "../../components/ShareButton";
 import { SortChips } from "../../components/SortChips";
 import { SourceLine } from "../../components/SourceLine";
 import { ErrorNotice, LoadingNotice } from "../../components/Status";
@@ -163,7 +164,13 @@ export default function ElectionScreen() {
   return (
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
       <Stack.Screen options={{ title: data.official_ballot_title }} />
-      <Text className="text-2xl font-bold text-ink">{data.official_ballot_title}</Text>
+      <View className="flex-row flex-wrap items-center justify-between gap-3">
+        <Text className="flex-1 text-2xl font-bold text-ink">{data.official_ballot_title}</Text>
+        <ShareButton
+          path={`/elections/${data.id}`}
+          shareText={`${data.official_ballot_title} — ${formatElectionDate(data.election_date)}`}
+        />
+      </View>
       <Text className="mt-1 text-sm text-ink-soft">
         {formatElectionDate(data.election_date)} · {formatDistrictName(data.district.name)} ·{" "}
         {formatDistrictType(data.district.district_type)}

@@ -7,6 +7,7 @@ import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
 import { SourceLine } from "../components/SourceLine";
 import { ReportContentButton } from "../components/ReportContentButton";
+import { ShareButton } from "../components/ShareButton";
 import {
   formatDistrictType,
   formatDistrictName,
@@ -16,6 +17,7 @@ import {
   formatVotePowerLabel,
 } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
+import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { CandidatePickButton, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
@@ -63,24 +65,23 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 }
 
 // Replaces useDocumentTitle here: a leaf meta export fully overrides the
-// root's, so it must carry both title and description.
-export const meta: MetaFunction<typeof loader> = ({ data, error }) => {
+// root's, so it must carry the full pageMeta set — title alone would drop
+// the og:*/twitter:* share-card tags on exactly the page people share.
+export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
   if (!data) {
     // "Not found" only for real 404s; a 429/502/504 render must not tell
     // crawlers the page doesn't exist.
     const isNotFound = isRouteErrorResponse(error) && error.status === 404;
     return [{ title: isNotFound ? `Not found · ${APP_NAME}` : `Something went wrong · ${APP_NAME}` }];
   }
-  return [
-    { title: `${data.official_ballot_title} · ${APP_NAME}` },
-    {
-      name: "description",
-      // No "campaign finance" here: this page stopped rendering finance
-      // (it lives on candidate profiles now), and a search preview must not
-      // promise content the page doesn't have.
-      content: `${data.official_ballot_title} — ${formatDistrictName(data.district.name)} election on ${data.election_date}: candidates and issue research.`,
-    },
-  ];
+  return pageMeta({
+    title: `${data.official_ballot_title} · ${APP_NAME}`,
+    // No "campaign finance" here: this page stopped rendering finance
+    // (it lives on candidate profiles now), and a search preview must not
+    // promise content the page doesn't have.
+    description: `${data.official_ballot_title} — ${formatDistrictName(data.district.name)} election on ${data.election_date}: candidates and issue research.`,
+    path: location.pathname,
+  });
 };
 
 export function ErrorBoundary() {
@@ -192,7 +193,13 @@ export function ElectionPage() {
           location: { "@type": "AdministrativeArea", name: formatDistrictName(data.district.name) },
         }}
       />
-      <h1 className="text-2xl font-bold">{data.official_ballot_title}</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold">{data.official_ballot_title}</h1>
+        <ShareButton
+          path={`/elections/${data.id}`}
+          shareText={`${data.official_ballot_title} — ${formatElectionDate(data.election_date)}`}
+        />
+      </div>
       <p className="mt-1 text-sm text-ink-soft">
         {formatElectionDate(data.election_date)} · {formatDistrictName(data.district.name)} ·{" "}
         {formatDistrictType(data.district.district_type)}
