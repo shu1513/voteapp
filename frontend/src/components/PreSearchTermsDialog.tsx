@@ -29,7 +29,10 @@ import {
 const DOCUMENT_LINKS = [
   { label: "Terms of Use", href: "/terms" },
   { label: "Privacy Policy", href: "/privacy" },
-  { label: "Disclaimer", href: "/disclaimer" },
+  // Full document title, matching the checkbox label word-for-word: the label
+  // says "AI Research and Election Information Disclaimer", so a bare
+  // "Disclaimer" link would leave the reader unsure it is the same document.
+  { label: "AI Research and Election Information Disclaimer", href: "/disclaimer" },
 ] as const;
 
 type PreSearchTermsDialogProps = {

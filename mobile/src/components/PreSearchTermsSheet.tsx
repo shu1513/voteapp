@@ -17,7 +17,9 @@ import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 const DOCUMENT_LINKS = [
   { label: "Terms of Use", path: "/legal/terms" },
   { label: "Privacy Policy", path: "/legal/privacy" },
-  { label: "Disclaimer", path: "/legal/disclaimer" },
+  // Full document title, matching the checkbox label word-for-word — same as
+  // the web dialog.
+  { label: "AI Research and Election Information Disclaimer", path: "/legal/disclaimer" },
 ] as const;
 
 type PreSearchTermsSheetProps = {

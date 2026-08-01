@@ -45,7 +45,8 @@ export function LegalGate({ label, checked, onChange, inputId }: LegalGateProps)
           Privacy Policy
         </Link>
         <Link to="/disclaimer" className="text-ink underline hover:text-rausch">
-          Disclaimer
+          {/* Full title, matching the checkbox labels word-for-word. */}
+          AI Research and Election Information Disclaimer
         </Link>
       </p>
     </div>
