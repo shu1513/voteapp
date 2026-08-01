@@ -3,7 +3,11 @@ import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryRouter, RouterProvider } from "react-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { PRE_SEARCH_AGREEMENT_PARAGRAPHS, TERMS_VERSION } from "@voteapp/api-client";
+import {
+  ADDRESS_FIELD_PRIVACY_NOTE,
+  PRE_SEARCH_AGREEMENT_PARAGRAPHS,
+  TERMS_VERSION,
+} from "@voteapp/api-client";
 import { HomePage } from "./HomePage";
 
 const ADDRESS_LABEL = "Enter your address to see which elections you can vote in:";
@@ -71,17 +75,16 @@ describe("HomePage pre-search clickwrap", () => {
   it("keeps the privacy note beside the address field, where collection starts", () => {
     renderHome();
     // The autocomplete forwards what is typed before Search is ever pressed,
-    // so this notice may never move into the dialog.
-    expect(
-      screen.getByText(
-        /We use your address to find your voting districts\. We don’t save it to your account or sell it; lookup data may be temporarily cached for up to 14 days\./
-      )
-    ).toBeInTheDocument();
-    // New tab: the address lives in page state, so reading the policy in this
-    // tab would return the visitor to an empty field.
-    const notice = screen.getByRole("link", { name: "Privacy notice" });
-    expect(notice).toHaveAttribute("href", "/privacy");
-    expect(notice).toHaveAttribute("target", "_blank");
+    // so this notice may never move into the dialog. Asserted through the
+    // shared constant rather than a copy of the sentence: the point under test
+    // is that the note renders at the field, and hardcoding the wording only
+    // made this fail on every edit to it.
+    expect(screen.getByText(ADDRESS_FIELD_PRIVACY_NOTE, { exact: false })).toBeInTheDocument();
+    // The policy is reachable without a second inline link — the footer
+    // carries it site-wide and the explainer links it directly — so the note
+    // offers the question people actually ask instead.
+    expect(screen.queryByRole("link", { name: "Privacy notice" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Why do we need the full address?" })).toBeInTheDocument();
   });
 
   it("explains why a full address is needed without treating the explanation as consent", async () => {

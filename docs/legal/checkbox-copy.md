@@ -131,13 +131,17 @@ forced scrolling through the documents.
 ## Short privacy note (beside every address input)
 
 This carries the address-specific points that matter at collection without
-repeating the full consent-dialog disclosure beside the field. On anonymous
-search surfaces, [Privacy notice] links to the policy.
+repeating the full consent-dialog disclosure beside the field. It carries no
+Privacy Policy link of its own: the footer links the policy on every page, and
+the explainer beside this note links it directly, so a second inline copy sat
+next to the question people actually ask and crowded it out. The 14-day
+lookup cache is described in the Privacy Policy and in the full notice above
+rather than here, to keep this line to the two facts a visitor weighs while
+typing — what it is used for, and that it is neither kept on their account nor
+sold.
 
-> We use your address to find your voting districts. We don’t save it to your
-> account or sell it; lookup data may be temporarily cached for up to 14
-> days.
-> [Privacy notice]
+> Your address is only used to find your voting districts. We don’t save it to
+> your account or sell it.
 
 Beside the anonymous-search note, **Why do we need the full address?** opens
 an informational dialog on web and mobile. It explains that ZIP codes are

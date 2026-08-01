@@ -154,22 +154,12 @@ export function HomePage() {
             {/* Notice belongs here, not only in the dialog: the autocomplete
                 forwards what is typed after three characters, so collection
                 starts while the visitor types and long before Search. */}
+            {/* One link, not two. The Privacy Policy is still reachable at the
+                point of collection — the footer carries it on every page, and
+                the explainer below links it directly — so the inline copy of
+                it was noise beside the question people actually ask. */}
             <p className="mt-1 text-xs text-ink-soft">
-              {ADDRESS_FIELD_PRIVACY_NOTE}{" "}
-              {/* New tab, like the dialog's links: the address lives in this
-                  page's state, so navigating away to read the policy and
-                  coming back would hand the visitor an empty field. Reading
-                  what you are told to read must not cost you your work. */}
-              <a
-                href="/privacy"
-                target="_blank"
-                rel="noreferrer"
-                className="underline hover:text-rausch"
-              >
-                Privacy notice
-              </a>
-              {" · "}
-              <FullAddressExplanation />
+              {ADDRESS_FIELD_PRIVACY_NOTE} <FullAddressExplanation />
             </p>
           </div>
 
