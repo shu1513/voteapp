@@ -202,6 +202,39 @@ describe("runCandidateRosterEnricherForElection", () => {
     expect(redisSendCommandMock).toHaveBeenCalled();
   });
 
+  it("still fans out a legacy written roster whose source is now a blocked domain", async () => {
+    // Rosters accepted before the source-domain policy can cite x.com or
+    // facebook.com. The staged-payload re-parse must not enforce the policy:
+    // enforcing would make this throw, leaving stream messages unacked
+    // (poison) and breaking targeted re-runs for those elections. Fresh
+    // payloads are gated upstream at AI validation and manual inject.
+    installCandidateRosterEnricherMocks();
+    mockPoolForElection({
+      stagingStatus: "written",
+      stagingPayload: {
+        election_id: ELECTION_ID,
+        candidates: [
+          {
+            display_name: "Casey Example",
+            party: "Democratic",
+            sources: ["https://x.com/caseyexample/status/123"],
+            roster_index: 0,
+          },
+        ],
+      },
+    });
+
+    const { runCandidateRosterEnricherForElection } = await import(
+      "../../src/pipeline/enrichers/candidateRosterEnricher.js"
+    );
+
+    const result = await runCandidateRosterEnricherForElection(ELECTION_ID);
+
+    expect(result).toEqual({ outcome: "written", candidateCount: 1, rosterSource: "staged_payload", runId: "run_1" });
+    expect(enrichCandidateRosterMock).not.toHaveBeenCalled();
+    expect(redisSendCommandMock).toHaveBeenCalled();
+  });
+
   it("throws on an unknown election id without creating a staging row", async () => {
     installCandidateRosterEnricherMocks();
     mockPoolForElection({ electionExists: false });

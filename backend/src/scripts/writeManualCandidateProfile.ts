@@ -254,6 +254,10 @@ async function loadRosterIdentityHints(input: {
   const parsed = parseCandidateRosterPayload(row.payload, {
     allowFecIds: input.allowFecIds,
     requireFecIds: input.requireFecIds,
+    // Re-parse of an already-written staging payload: rosters imported before
+    // the source-domain policy can carry a now-blocked URL, and a profile
+    // write must not fail over evidence the roster write already accepted.
+    enforceSourcePolicy: false,
   });
   if (!parsed.ok) {
     throw new Error(`Candidate roster staging payload failed validation for this election context: ${parsed.reason}`);

@@ -1,3 +1,4 @@
+import { findBlockedSourceReason } from "../pipeline/candidates/candidateRecordSourcePolicy.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
 export type PresidentialNomineePayload =
@@ -67,6 +68,13 @@ export function parsePresidentialNomineePayload(
   const sources = normalizeSources(input.sources);
   if (!sources) {
     return { ok: false, reason: "payload.sources must contain valid URL strings" };
+  }
+  // Same domain policy as candidate records: UGC/social platforms, generated
+  // candidate directories, and bot-check interstitials are never citation
+  // evidence for a nominee determination.
+  const blockedSourceReason = findBlockedSourceReason(sources);
+  if (blockedSourceReason) {
+    return { ok: false, reason: `payload.sources: ${blockedSourceReason}` };
   }
 
   if (!input.nominee_found) {

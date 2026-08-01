@@ -376,4 +376,73 @@ describe("parsePresidentialRosterPayload", () => {
     expect(parsePresidentialRosterPayload(null).ok).toBe(false);
     expect(parsePresidentialRosterPayload({}).ok).toBe(false);
   });
+
+  it("rejects a candidate sourced from a blocked platform domain", () => {
+    const parsed = parsePresidentialRosterPayload({
+      candidates: [
+        {
+          display_name: "Jane President",
+          party: "Democratic",
+          fec_candidate_id: "P80000001",
+          sources: ["https://x.com/janeprez/status/123"],
+          qualification_evidence: [
+            { kind: "official_campaign_website", source_url: "https://jane.example.org" },
+          ],
+          status: "active",
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    expect(parsed.ok ? "" : parsed.reason).toContain("candidate.sources:");
+    expect(parsed.ok ? "" : parsed.reason).toContain("user-generated/social platform");
+  });
+
+  it("rejects qualification evidence sourced from a blocked platform domain", () => {
+    // A campaign launch announced on social media is citable via news
+    // coverage, never via the platform post itself.
+    const parsed = parsePresidentialRosterPayload({
+      candidates: [
+        {
+          display_name: "Jane President",
+          party: "Democratic",
+          fec_candidate_id: "P80000001",
+          sources: ["https://news.example.org/jane-runs"],
+          qualification_evidence: [
+            { kind: "public_campaign_launch", source_url: "https://www.youtube.com/watch?v=abc123" },
+          ],
+          status: "active",
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    expect(parsed.ok ? "" : parsed.reason).toContain("candidate.qualification_evidence:");
+    expect(parsed.ok ? "" : parsed.reason).toContain("user-generated/social platform");
+  });
+
+  it("rejects a running mate sourced from a blocked platform domain", () => {
+    const parsed = parsePresidentialRosterPayload({
+      candidates: [
+        {
+          display_name: "Jane President",
+          party: "Democratic",
+          fec_candidate_id: "P80000001",
+          sources: ["https://news.example.org/jane-runs"],
+          qualification_evidence: [
+            { kind: "official_campaign_website", source_url: "https://jane.example.org" },
+          ],
+          status: "active",
+          running_mate: {
+            display_name: "Pat Running Mate",
+            sources: ["https://www.facebook.com/patmate/posts/456"],
+          },
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    expect(parsed.ok ? "" : parsed.reason).toContain("candidate.running_mate.sources:");
+    expect(parsed.ok ? "" : parsed.reason).toContain("user-generated/social platform");
+  });
 });

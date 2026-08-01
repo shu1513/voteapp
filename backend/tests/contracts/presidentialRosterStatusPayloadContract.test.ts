@@ -135,4 +135,28 @@ describe("parsePresidentialRosterStatusPayload", () => {
     expect(parsePresidentialRosterStatusPayload({}, { expectedCandidateIds: ["candidate-1"] }).ok).toBe(false);
     expect(parsePresidentialRosterStatusPayload({ candidates: [] }, { expectedCandidateIds: [] }).ok).toBe(false);
   });
+
+  it("rejects a status row sourced from a blocked platform domain", () => {
+    // A withdrawal must cite an accountable publisher or official source,
+    // never the candidate's own social post.
+    const parsed = parsePresidentialRosterStatusPayload(
+      {
+        candidates: [
+          {
+            candidate_id: "candidate-1",
+            status: "withdrawn",
+            sources: ["https://x.com/janeprez/status/321"],
+          },
+        ],
+      },
+      { expectedCandidateIds: ["candidate-1"] }
+    );
+
+    expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toContain("candidate.sources:");
+    expect(parsed.reason).toContain("user-generated/social platform");
+  });
 });

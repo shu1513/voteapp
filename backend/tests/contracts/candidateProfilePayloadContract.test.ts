@@ -297,4 +297,38 @@ describe("parseCandidateProfilePayload", () => {
 
     expect(parsed.ok).toBe(false);
   });
+
+  it("rejects a blocked platform domain used as a citation source", () => {
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      has_held_public_office: true,
+      sources: ["https://www.linkedin.com/in/janedoe/"],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toContain("payload.sources:");
+    expect(parsed.reason).toContain("linkedin.com");
+    expect(parsed.reason).toContain("user-generated/social platform");
+  });
+
+  it("still accepts linkedin_url as a profile link field", () => {
+    // The domain policy gates CITATIONS only. linkedin_url /
+    // official_website_url / twitter_handle are profile link fields, not
+    // evidence, and must stay importable.
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      linkedin_url: "https://www.linkedin.com/in/janedoe/",
+      has_held_public_office: true,
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(true);
+  });
 });

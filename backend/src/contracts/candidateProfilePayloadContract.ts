@@ -1,3 +1,4 @@
+import { findBlockedSourceReason } from "../pipeline/candidates/candidateRecordSourcePolicy.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 import { normalizeTwitterHandle, stripNameFootnoteMarkers } from "../utils/candidateIdentity.js";
 
@@ -154,6 +155,15 @@ export function parseCandidateProfilePayload(
   const sources = normalizeSources(input.sources);
   if (!sources) {
     return { ok: false, reason: "payload.sources must contain valid URL strings" };
+  }
+  // Same domain policy as candidate records: UGC/social platforms, generated
+  // candidate directories, and bot-check interstitials are discovery leads,
+  // never profile citations. Gates only the citation `sources` array —
+  // linkedin_url / official_website_url / twitter_handle are profile LINK
+  // fields, not evidence, and stay exempt.
+  const blockedSourceReason = findBlockedSourceReason(sources);
+  if (blockedSourceReason) {
+    return { ok: false, reason: `payload.sources: ${blockedSourceReason}` };
   }
 
   let party: string | undefined;

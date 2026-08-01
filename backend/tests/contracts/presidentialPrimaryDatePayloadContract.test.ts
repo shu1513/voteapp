@@ -302,3 +302,29 @@ describe("parsePresidentialPrimaryDatePayloadPartial", () => {
     expect(parsed.reviewFeedbackLines.join("\n")).toContain("Fix state_fips=11");
   });
 });
+
+describe("parsePresidentialPrimaryDatePayload source-domain policy", () => {
+  it("rejects a primary-date row sourced from a blocked platform domain", () => {
+    const parsed = parsePresidentialPrimaryDatePayload(
+      validPayload({
+        results: [
+          {
+            state_fips: "06",
+            state_name: "California",
+            status: "official_found",
+            primary_date: "2028-03-07",
+            sources: ["https://www.reddit.com/r/california/comments/abc"],
+          },
+        ],
+      }),
+      { electionYear: 2028, expectedStateFips: ["06"] }
+    );
+
+    expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toContain("sources:");
+    expect(parsed.reason).toContain("user-generated/social platform");
+  });
+});

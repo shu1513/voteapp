@@ -362,4 +362,80 @@ describe("parseCandidateRosterPayload", () => {
     }
     expect(parsed.payload.candidates[0]?.state_filing_ids).toEqual(["CA-777"]);
   });
+
+  it("rejects a candidate sourced from a UGC/social platform domain", () => {
+    const parsed = parseCandidateRosterPayload({
+      candidates: [
+        {
+          display_name: "Jane Doe",
+          sources: ["https://www.facebook.com/janedoe/posts/123"],
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toContain("payload.candidates[0]: row.sources:");
+    expect(parsed.reason).toContain("facebook.com");
+    expect(parsed.reason).toContain("user-generated/social platform");
+  });
+
+  it("rejects a candidate sourced from a generated candidate directory", () => {
+    const parsed = parseCandidateRosterPayload({
+      candidates: [
+        {
+          display_name: "Jane Doe",
+          sources: ["https://civoren.com/candidates/jane-doe"],
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toContain("auto-generated candidate directory");
+  });
+
+  it("rejects a running mate sourced from a blocked platform domain", () => {
+    const parsed = parseCandidateRosterPayload({
+      candidates: [
+        {
+          display_name: "Jane Doe",
+          sources: ["https://sos.example.gov/qualified-list"],
+          running_mate: {
+            display_name: "John Roe",
+            sources: ["https://x.com/johnroe/status/456"],
+          },
+        },
+      ],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toContain("row.running_mate.sources:");
+    expect(parsed.reason).toContain("user-generated/social platform");
+  });
+
+  it("skips the source-domain policy when enforceSourcePolicy is false", () => {
+    // Re-parses of already-written staging payloads (profile write, fanout)
+    // must keep working for rosters imported before the policy existed.
+    const parsed = parseCandidateRosterPayload(
+      {
+        candidates: [
+          {
+            display_name: "Jane Doe",
+            sources: ["https://www.facebook.com/janedoe/posts/123"],
+          },
+        ],
+      },
+      { enforceSourcePolicy: false }
+    );
+
+    expect(parsed.ok).toBe(true);
+  });
 });

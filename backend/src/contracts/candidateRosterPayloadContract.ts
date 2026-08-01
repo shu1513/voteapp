@@ -1,3 +1,4 @@
+import { findBlockedSourceReason } from "../pipeline/candidates/candidateRecordSourcePolicy.js";
 import { stripNameFootnoteMarkers } from "../utils/candidateIdentity.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 
@@ -24,6 +25,14 @@ export type CandidateRosterPayload = {
 type CandidateRosterParseOptions = {
   requireFecIds?: boolean;
   allowFecIds?: boolean;
+  // Domain policy over row/running-mate sources (blocked classes: UGC/social,
+  // generated directories, bot-check interstitials). ON by default so every
+  // fresh import — manual inject and AI validation alike — rejects the same
+  // URLs. Re-parses of ALREADY-WRITTEN staging payloads (profile write,
+  // fanout) must pass false: rosters imported before the policy existed can
+  // carry a now-blocked URL, and downstream work must not fail over evidence
+  // the roster write already accepted.
+  enforceSourcePolicy?: boolean;
 };
 
 function isNonEmptyString(value: unknown): value is string {
@@ -104,6 +113,17 @@ function parseEntry(
   if (!sources) {
     return { ok: false, reason: "row.sources must contain at least one valid URL" };
   }
+  // Same domain policy as candidate records: UGC/social platforms, generated
+  // candidate directories, and bot-check interstitials are never roster
+  // evidence. Enforced here so the AI enricher and the manual inject path
+  // reject identical URLs, and the reason doubles as AI retry feedback.
+  const enforceSourcePolicy = options.enforceSourcePolicy !== false;
+  if (enforceSourcePolicy) {
+    const blockedSourceReason = findBlockedSourceReason(sources);
+    if (blockedSourceReason) {
+      return { ok: false, reason: `row.sources: ${blockedSourceReason}` };
+    }
+  }
 
   let party: string | undefined;
   if (input.party !== undefined && input.party !== null) {
@@ -156,6 +176,12 @@ function parseEntry(
     const mateSources = normalizeSources(mate.sources);
     if (!mateSources) {
       return { ok: false, reason: "row.running_mate.sources must contain at least one valid URL" };
+    }
+    if (enforceSourcePolicy) {
+      const mateBlockedSourceReason = findBlockedSourceReason(mateSources);
+      if (mateBlockedSourceReason) {
+        return { ok: false, reason: `row.running_mate.sources: ${mateBlockedSourceReason}` };
+      }
     }
     let mateParty: string | undefined;
     if (mate.party !== undefined && mate.party !== null) {

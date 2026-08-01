@@ -81,4 +81,21 @@ describe("buildCandidateRosterPrompt", () => {
     expect(prompt).toContain("fec_ids is required");
     expect(prompt).not.toContain('"state_filing_ids":');
   });
+
+  it("carries the roster verification rules in every mode", () => {
+    for (const modeInput of [
+      baseInput,
+      { ...baseInput, districtType: "us_house", officialBallotTitle: "United States Representative, District 12", researchMode: "federal_us_house" as const },
+    ]) {
+      const prompt = buildCandidateRosterPrompt(modeInput);
+      // Authority list beats aggregators/candidate sites, stage-matched.
+      expect(prompt).toContain("certified/qualified candidate list for this exact stage");
+      // Withdrawn/declared exclusion + defer via empty array when uncertified.
+      expect(prompt).toContain("Exclude withdrawn, disqualified, non-qualified, and merely-declared filers");
+      // Endorser/mention is not a candidate.
+      expect(prompt).toContain("only mentioned, endorsed, or speculated about");
+      // Source-domain rule matches the importer's blocked-domain policy.
+      expect(prompt).toContain("sources must not be social/UGC platforms");
+    }
+  });
 });
