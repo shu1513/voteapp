@@ -236,6 +236,60 @@ describe("runMoveCandidateElectionLink", () => {
     expect(calls.at(-1)?.text).toBe("ROLLBACK");
   });
 
+  it("refuses any move while user election choices name the from-candidacy", async () => {
+    const { query, calls } = buildClient(happyResponses({
+      "FROM public.user_election_choices": [[{ n: "2" }]],
+    }));
+
+    await expect(
+      runMoveCandidateElectionLink(
+        { query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+      )
+    ).rejects.toThrow(/2 user_election_choices row\(s\).*planned votes/s);
+    // Refused before any write on either path.
+    expect(calls.some((call) => call.text.includes("UPDATE public.candidate_elections"))).toBe(false);
+    expect(calls.some((call) => call.text.includes("DELETE FROM public.candidate_elections"))).toBe(false);
+    expect(calls.at(-1)?.text).toBe("ROLLBACK");
+  });
+
+  it("exempts the known choices FK from the shape refusal once its guard has passed", async () => {
+    // fk_user_election_choices_candidacy is composite, but its rows are
+    // counted (and refused when present) by the dedicated choice guard —
+    // with zero choices the duplicate merge must proceed, not refuse on
+    // shape.
+    const { query, calls } = buildClient(happyResponses({
+      "FROM public.candidate_elections\n        WHERE candidate_id": [[linkRow()], [linkRow({ id: "99999999-9999-9999-9999-999999999999" })]],
+      "confrelid = 'public.candidate_elections'": [
+        [
+          linkFkRow({
+            constraint_name: "fk_user_election_choices_candidacy",
+            table_name: "public.user_election_choices",
+            column_name: "candidate_id",
+            referenced_column: "candidate_id",
+            column_count: 2,
+          }),
+          linkFkRow({
+            constraint_name: "fk_user_election_choices_candidacy",
+            table_name: "public.user_election_choices",
+            column_name: "election_id",
+            referenced_column: "election_id",
+            column_count: 2,
+          }),
+        ],
+      ],
+    }));
+
+    const result = await runMoveCandidateElectionLink(
+      { query },
+      { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+    );
+
+    expect(result.action).toBe("merged_duplicate");
+    const del = calls.find((call) => call.text.includes("DELETE FROM public.candidate_elections"));
+    expect(del?.values).toEqual([LINK_ID]);
+  });
+
   it("refuses the duplicate merge under an FK shape the guard cannot count", async () => {
     // A composite FK (or one referencing a non-id unique column) cannot be
     // checked by comparing a single child column to the from-link id; the

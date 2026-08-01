@@ -8,7 +8,7 @@ import {
   type BallotSummary,
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
-import { useMyResearchAreas } from "@voteapp/api-client";
+import { useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
@@ -23,6 +23,7 @@ export function BallotPage() {
   // own rank order) even on the public ballot; anonymous visitors get an
   // empty map (no personalization).
   const { weights: savedAreaWeights } = useMyResearchAreas();
+  const { choiceByElectionId } = useElectionChoices();
   // Set by the home page's post-search navigation so the visitor can confirm
   // the geocoder matched the right address. Router state only — the address is
   // personal data and must stay out of the URL; a refresh or shared link
@@ -146,7 +147,11 @@ export function BallotPage() {
           {ballot.data.elections.length === 0 ? (
             <EmptyNotice text="No upcoming elections found for these districts yet. Check back — new elections are added as they are announced." />
           ) : (
-            <ElectionList elections={ballot.data.elections} savedAreaWeights={savedAreaWeights} />
+            <ElectionList
+              elections={ballot.data.elections}
+              savedAreaWeights={savedAreaWeights}
+              choicesByElectionId={choiceByElectionId}
+            />
           )}
         </>
       ) : null}

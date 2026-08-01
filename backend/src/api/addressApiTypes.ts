@@ -23,6 +23,11 @@ import type {
   UserCandidateFollowUpdateResult,
 } from "../pipeline/users/userCandidateFollows.js";
 import type {
+  UserElectionChoiceInput,
+  UserElectionChoicesResult,
+  UserElectionChoiceUpdateResult,
+} from "../pipeline/users/userElectionChoices.js";
+import type {
   ResearchAreaCatalogResult,
   UserResearchAreaPreferenceInput,
   UserResearchAreaPreferencesResult,
@@ -40,6 +45,10 @@ export type AuthenticatedResearchAreaPreferencesResult = UserResearchAreaPrefere
 export type AuthenticatedCandidateFollowsResult = UserCandidateFollowsResult;
 
 export type AuthenticatedCandidateFollowUpdateResult = UserCandidateFollowUpdateResult;
+
+export type AuthenticatedElectionChoicesResult = UserElectionChoicesResult;
+
+export type AuthenticatedElectionChoiceUpdateResult = UserElectionChoiceUpdateResult;
 
 export type AddressApiRateLimitInput = {
   clientIp: string;
@@ -95,6 +104,13 @@ export type AddressApiServerOptions = {
     userId: string,
     input: UserCandidateFollowInput
   ) => Promise<AuthenticatedCandidateFollowUpdateResult>;
+  /** GET|PUT /api/me/election-choices — the session holder's planned votes.
+   * Auth-gated but not verification-gated. */
+  listAuthenticatedElectionChoices?: (userId: string) => Promise<AuthenticatedElectionChoicesResult>;
+  setAuthenticatedElectionChoice?: (
+    userId: string,
+    input: UserElectionChoiceInput
+  ) => Promise<AuthenticatedElectionChoiceUpdateResult>;
   // [ballot-personalized-ordering]
   getAuthenticatedBallotPreferences?: (userId: string) => Promise<UserBallotPreferences>;
   setAuthenticatedBallotPreferences?: (

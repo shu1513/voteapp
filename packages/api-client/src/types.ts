@@ -371,6 +371,33 @@ export type CandidateFollowUpdate = {
   notify_updates?: boolean;
 };
 
+export type ElectionChoicePick = {
+  candidate_id: string;
+  display_name: string;
+  /** candidate_elections.status at read time; e.g. "withdrawn" lets the UI
+   * flag a pick whose candidate has since dropped out. */
+  candidacy_status: string;
+};
+
+export type ElectionChoice = {
+  election_id: string;
+  race_type: "office" | "ballot_measure";
+  official_ballot_title: string;
+  election_date: string;
+  seats_to_fill: number | null;
+  picks: ElectionChoicePick[];
+  measure_position: "yes" | "no" | null;
+  updated_at: string;
+};
+
+export type ElectionChoicesResult = {
+  choices: ElectionChoice[];
+};
+
+export type ElectionChoiceUpdate =
+  | { election_id: string; candidate_id: string; chosen: boolean }
+  | { election_id: string; measure_position: "yes" | "no" | null };
+
 export type BallotPreferences = {
   sort: BallotSort;
   followed_first: boolean;
@@ -424,6 +451,9 @@ export type CandidateElection = {
   election_date: string;
   is_incumbent: boolean;
   status: string;
+  /** elections.seats_to_fill; NULL (or absent under deploy skew) renders as
+   * a single seat. Feeds the choice controls' seat cap. */
+  seats_to_fill?: number | null;
   office_canonical_name: string | null;
 };
 

@@ -9,6 +9,7 @@ import {
 import { GOOGLE_PLACE_ID_PATTERN } from "../pipeline/address/googlePlacesAutocomplete.js";
 import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
 import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFollows.js";
+import type { UserElectionChoiceInput } from "../pipeline/users/userElectionChoices.js";
 import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
 import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
 import type { UserEmailPreferences } from "../pipeline/users/userEmailPreferences.js";
@@ -52,6 +53,10 @@ export const ME_PASSWORD_PATH = "/api/me/password";
 export const ME_EMAIL_PATH = "/api/me/email";
 export const ME_BALLOT_PATH = "/api/me/ballot";
 export const ME_CANDIDATE_FOLLOWS_PATH = "/api/me/candidate-follows";
+// Per-election planned vote ("my choice"). Auth-gated but not
+// verification-gated: a choice is private planning, it triggers no
+// notifications, so a registered session is enough.
+export const ME_ELECTION_CHOICES_PATH = "/api/me/election-choices";
 export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
 export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferences";
 // [ballot-personalized-ordering]
@@ -683,6 +688,59 @@ export function parseCandidateFollowBodyValue(parsed: unknown): CandidateFollowP
     ...(payload.notify_elections === undefined ? {} : { notifyElections: payload.notify_elections }),
     ...(payload.notify_updates === undefined ? {} : { notifyUpdates: payload.notify_updates }),
   };
+}
+
+export type ElectionChoicePayload = UserElectionChoiceInput;
+
+// Two mutually exclusive shapes: an office pick ({candidate_id, chosen}) or
+// a ballot-measure position ({measure_position: 'yes'|'no'|null}). The
+// race-type check against the actual election happens in the writer.
+export function parseElectionChoiceBodyValue(parsed: unknown): ElectionChoicePayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  const payload = parsed as {
+    election_id?: unknown;
+    candidate_id?: unknown;
+    chosen?: unknown;
+    measure_position?: unknown;
+  };
+  if (typeof payload.election_id !== "string") {
+    throw new TypeError("Request body must include UUID string field: election_id");
+  }
+  const electionId = payload.election_id.trim();
+  if (!isUuid(electionId)) {
+    throw new TypeError(`election_id must be a valid UUID: ${electionId}`);
+  }
+
+  const hasCandidate = payload.candidate_id !== undefined;
+  const hasMeasure = payload.measure_position !== undefined;
+  if (hasCandidate === hasMeasure) {
+    throw new TypeError("Request body must include exactly one of: candidate_id, measure_position");
+  }
+
+  if (hasCandidate) {
+    if (typeof payload.candidate_id !== "string") {
+      throw new TypeError("candidate_id must be a UUID string");
+    }
+    const candidateId = payload.candidate_id.trim();
+    if (!isUuid(candidateId)) {
+      throw new TypeError(`candidate_id must be a valid UUID: ${candidateId}`);
+    }
+    if (typeof payload.chosen !== "boolean") {
+      throw new TypeError("Request body must include boolean field: chosen");
+    }
+    return { electionId, candidateId, chosen: payload.chosen };
+  }
+
+  if (payload.chosen !== undefined) {
+    throw new TypeError("chosen applies only to candidate choices");
+  }
+  if (payload.measure_position !== null && payload.measure_position !== "yes" && payload.measure_position !== "no") {
+    throw new TypeError("measure_position must be 'yes', 'no', or null");
+  }
+  return { electionId, measurePosition: payload.measure_position };
 }
 
 // Expo push tokens are opaque short strings (ExponentPushToken[…]); the cap
