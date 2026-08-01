@@ -10,6 +10,7 @@ import type { CandidateElectionFinanceResult } from "../../src/pipeline/address/
 import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAddressGeocoder.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
 import { UserCandidateFollowsError } from "../../src/pipeline/users/userCandidateFollows.js";
+import { UserElectionChoicesError } from "../../src/pipeline/users/userElectionChoices.js";
 import { InitializeUserDistrictsError } from "../../src/pipeline/users/userDistrictInitializer.js";
 import { UserDistrictReaderError } from "../../src/pipeline/users/userDistrictReader.js";
 import { ReplaceUserDistrictsError } from "../../src/pipeline/users/userDistrictReplacer.js";
@@ -2157,6 +2158,87 @@ describe("createApiApp", () => {
     expect(response.statusCode).toBe(400);
     expect(response.body.error.code).toBe("invalid_request");
     expect(setAuthenticatedElectionChoice).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects non-GET/PUT election choice requests with 405 and an allow header", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const listAuthenticatedElectionChoices = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, listAuthenticatedElectionChoices }),
+      {
+        method: "DELETE",
+        path: "/api/me/election-choices",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(405);
+    expect(response.headers).toMatchObject({ allow: "GET, PUT" });
+    expect(response.body.error.code).toBe("method_not_allowed");
+    expect(listAuthenticatedElectionChoices).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when election choice handlers are not configured", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+
+    const listResponse = await invokeExpressApp(createApiApp({ resolveAddress, resolveAuthenticatedUserId }), {
+      method: "GET",
+      path: "/api/me/election-choices",
+      headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+    });
+    expect(listResponse.statusCode).toBe(500);
+    expect(listResponse.body.error.code).toBe("internal_error");
+
+    const putResponse = await invokeExpressApp(createApiApp({ resolveAddress, resolveAuthenticatedUserId }), {
+      method: "PUT",
+      path: "/api/me/election-choices",
+      body: JSON.stringify({
+        election_id: "33333333-3333-4333-8333-333333333333",
+        candidate_id: "22222222-2222-4222-8222-222222222222",
+        chosen: true,
+      }),
+      headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+    });
+    expect(putResponse.statusCode).toBe(500);
+    expect(putResponse.body.error.code).toBe("internal_error");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("maps election choice domain errors thrown by the handler", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const setAuthenticatedElectionChoice = vi
+      .fn()
+      .mockRejectedValue(
+        new UserElectionChoicesError("candidacy_not_available", "Candidate is not an active candidate in this election")
+      );
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, setAuthenticatedElectionChoice }),
+      {
+        method: "PUT",
+        path: "/api/me/election-choices",
+        body: JSON.stringify({
+          election_id: "33333333-3333-4333-8333-333333333333",
+          candidate_id: "22222222-2222-4222-8222-222222222222",
+          chosen: true,
+        }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({
+      error: {
+        code: "not_found",
+        message: "Candidate is not an active candidate in this election",
+      },
+    });
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 

@@ -4,7 +4,7 @@ import { ElectionList } from "./ElectionCard";
 import { renderRoutes } from "../test/render";
 import { electionSummary, VOTE_POWER } from "../test/fixtures";
 import { buildResearchAreaWeights } from "@voteapp/api-client";
-import type { ElectionSummary } from "@voteapp/api-client";
+import type { ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 
 // Test ids double as slugs by default; slugs like "a-1" are unranked in the
 // priority list, so those chips fall back to alphabetical order. Pass a real
@@ -31,7 +31,11 @@ function savedWeights(ranks: Record<string, number | null>) {
 
 // ElectionCard is private to ElectionList (it omits its own date), so the
 // card's chip behavior is exercised through a single-election list.
-function renderCard(election: ElectionSummary, savedAreaRanks?: Record<string, number | null>) {
+function renderCard(
+  election: ElectionSummary,
+  savedAreaRanks?: Record<string, number | null>,
+  choicesByElectionId?: Map<string, ElectionChoice>
+) {
   return renderRoutes(
     [
       {
@@ -40,12 +44,27 @@ function renderCard(election: ElectionSummary, savedAreaRanks?: Record<string, n
           <ElectionList
             elections={[election]}
             savedAreaWeights={savedAreaRanks ? savedWeights(savedAreaRanks) : undefined}
+            choicesByElectionId={choicesByElectionId}
           />
         ),
       },
     ],
     "/"
   );
+}
+
+function electionChoice(overrides: Partial<ElectionChoice> = {}): ElectionChoice {
+  return {
+    election_id: "e-1",
+    race_type: "office",
+    official_ballot_title: "Governor",
+    election_date: "2026-11-03",
+    seats_to_fill: null,
+    picks: [{ candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "declared" }],
+    measure_position: null,
+    updated_at: "2026-08-01T00:00:00.000Z",
+    ...overrides,
+  };
 }
 
 describe("ElectionCard", () => {
@@ -437,5 +456,63 @@ describe("ElectionCard", () => {
 
     expect(screen.getByRole("heading", { name: "Candidate information not yet available" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: /Elections on/ })).not.toBeInTheDocument();
+  });
+
+  it("shows the viewer's pick on an upcoming race, flagging withdrawn candidates", () => {
+    renderCard(electionSummary(), undefined, new Map([["e-1", electionChoice()]]));
+    expect(screen.getByText("Your pick: Jane Smith")).toBeInTheDocument();
+    expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
+
+    renderCard(
+      electionSummary(),
+      undefined,
+      new Map([
+        [
+          "e-1",
+          electionChoice({
+            picks: [{ candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "withdrawn" }],
+          }),
+        ],
+      ])
+    );
+    expect(screen.getByText("Your pick: Jane Smith (withdrew)")).toBeInTheDocument();
+  });
+
+  it("shows a measure position as the choice chip", () => {
+    renderCard(
+      electionSummary({ race_type: "ballot_measure", candidate_count: 0 }),
+      undefined,
+      new Map([["e-1", electionChoice({ race_type: "ballot_measure", picks: [], measure_position: "yes" })]])
+    );
+    expect(screen.getByText("Your vote: Yes")).toBeInTheDocument();
+  });
+
+  it("nudges 'No pick yet' only when the viewer's choices are loaded", () => {
+    // Choices map present, no entry for this election → nudge.
+    renderCard(electionSummary(), undefined, new Map());
+    expect(screen.getByText("No pick yet")).toBeInTheDocument();
+  });
+
+  it("keeps the nudge when a choice object formats to no label", () => {
+    // A choice whose only pick lost its candidate (deleted/merged) renders
+    // no label; the card must fall back to the nudge, not go silent.
+    renderCard(electionSummary(), undefined, new Map([["e-1", electionChoice({ picks: [] })]]));
+    expect(screen.getByText("No pick yet")).toBeInTheDocument();
+  });
+
+  it("shows no choice signal for anonymous viewers or past races", () => {
+    // No choices map (anonymous / still loading): neither chip nor nudge.
+    renderCard(electionSummary());
+    expect(screen.queryByText(/Your pick:/)).not.toBeInTheDocument();
+    expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
+
+    // Past race: the pick is history and the nudge would be nonsense.
+    renderCard(
+      electionSummary({ election_date: "2024-11-05", has_results: true }),
+      undefined,
+      new Map([["e-1", electionChoice({ election_date: "2024-11-05" })]])
+    );
+    expect(screen.queryByText(/Your pick:/)).not.toBeInTheDocument();
+    expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
   });
 });

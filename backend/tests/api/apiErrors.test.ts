@@ -4,6 +4,7 @@ import { mapErrorToResponse } from "../../src/api/apiErrors.js";
 import { CandidateDetailReaderError } from "../../src/pipeline/candidates/candidateDetailReader.js";
 import { AuthenticatedAddressDistrictUpdateError } from "../../src/pipeline/users/userAddressDistrictUpdater.js";
 import { UserCandidateFollowsError } from "../../src/pipeline/users/userCandidateFollows.js";
+import { UserElectionChoicesError } from "../../src/pipeline/users/userElectionChoices.js";
 import { UserDistrictReaderError } from "../../src/pipeline/users/userDistrictReader.js";
 import { ReplaceUserDistrictsError } from "../../src/pipeline/users/userDistrictReplacer.js";
 import { UserResearchAreaPreferencesError } from "../../src/pipeline/users/userResearchAreaPreferences.js";
@@ -132,6 +133,40 @@ describe("mapErrorToResponse", () => {
       statusCode: 404,
       code: "not_found",
       message: "Candidate not found",
+    });
+  });
+
+  it.each([
+    ["invalid_user_id", "User ID must be a valid UUID"],
+    ["user_not_found", "User not found"],
+  ] as const)("maps user election choice %s errors to unauthorized", (code, message) => {
+    expect(mapErrorToResponse(new UserElectionChoicesError(code, message))).toEqual({
+      statusCode: 401,
+      code: "unauthorized",
+      message: "Authentication is required",
+    });
+  });
+
+  it.each([
+    ["election_not_found", "Election not found"],
+    ["candidacy_not_available", "Candidate is not an active candidate in this election"],
+  ] as const)("maps user election choice %s errors to not_found", (code) => {
+    const mapped = mapErrorToResponse(new UserElectionChoicesError(code, "ignored: mapping supplies the message"));
+    expect(mapped.statusCode).toBe(404);
+    expect(mapped.code).toBe("not_found");
+  });
+
+  it.each([
+    ["invalid_election_id", "Election ID must be a valid UUID"],
+    ["invalid_candidate_id", "Candidate ID must be a valid UUID"],
+    ["invalid_choice_input", "chosen must be a boolean"],
+    ["election_closed", "Choices can only be changed for upcoming elections"],
+    ["choice_limit_reached", "This election fills 3 seats; remove a pick before adding another"],
+  ] as const)("maps user election choice %s errors to invalid_request with the writer's message", (code, message) => {
+    expect(mapErrorToResponse(new UserElectionChoicesError(code, message))).toEqual({
+      statusCode: 400,
+      code: "invalid_request",
+      message,
     });
   });
 

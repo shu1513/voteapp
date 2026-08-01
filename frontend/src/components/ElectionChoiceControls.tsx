@@ -53,10 +53,13 @@ export function CandidatePickButton({
   const isPicked = picks.some((pick) => pick.candidate_id === candidateId);
   const seatCap = seatsToFill ?? 1;
   const atMultiSeatCap = seatCap > 1 && !isPicked && picks.length >= seatCap;
+  // disabled:opacity-50 lives in the shared base: `saving` disables EVERY
+  // choice control while any one of them writes, so a picked button must dim
+  // too, not only the unpicked ones.
   const base =
     size === "sm"
-      ? "rounded-lg px-3 py-1 text-xs font-semibold transition"
-      : "rounded-lg px-4 py-2 text-sm font-semibold transition";
+      ? "rounded-lg px-3 py-1 text-xs font-semibold transition disabled:opacity-50"
+      : "rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
 
   return (
     <span className="inline-flex flex-col items-end gap-1">
@@ -71,7 +74,7 @@ export function CandidatePickButton({
         className={
           isPicked
             ? `${base} bg-green-700 text-white hover:bg-green-800`
-            : `${base} border border-line bg-white text-ink hover:border-green-700 disabled:opacity-50`
+            : `${base} border border-line bg-white text-ink hover:border-green-700`
         }
       >
         {setChoice.isPending ? "…" : isPicked ? "✓ My pick" : "Make my pick"}

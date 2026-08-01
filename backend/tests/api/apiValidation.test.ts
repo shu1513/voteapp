@@ -155,11 +155,11 @@ describe("election choice API contract constants", () => {
     expect(ME_ELECTION_CHOICES_PATH).toBe("/api/me/election-choices");
   });
 
-  it("parses candidate choice payloads into pipeline inputs", () => {
+  it("parses candidate choice payloads into pipeline inputs, trimming both UUIDs", () => {
     expect(
       parseElectionChoiceBodyValue({
         election_id: "  33333333-3333-4333-8333-333333333333  ",
-        candidate_id: "22222222-2222-4222-8222-222222222222",
+        candidate_id: "  22222222-2222-4222-8222-222222222222  ",
         chosen: true,
       })
     ).toEqual({
@@ -210,6 +210,10 @@ describe("election choice API contract constants", () => {
     [
       { election_id: "33333333-3333-4333-8333-333333333333", candidate_id: "not-a-uuid", chosen: true },
       "candidate_id must be a valid UUID: not-a-uuid",
+    ],
+    [
+      { election_id: "33333333-3333-4333-8333-333333333333", candidate_id: 123, chosen: true },
+      "candidate_id must be a UUID string",
     ],
     [
       { election_id: "33333333-3333-4333-8333-333333333333", candidate_id: "22222222-2222-4222-8222-222222222222" },

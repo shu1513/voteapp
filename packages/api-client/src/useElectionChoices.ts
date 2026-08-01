@@ -23,7 +23,10 @@ export function useElectionChoices() {
   return {
     choices: query.data?.choices,
     choiceByElectionId: query.data ? byElectionId : undefined,
-    isLoading: query.isPending,
+    // isLoading, not isPending: the query is disabled for anonymous
+    // visitors, and a disabled query stays pending forever — isPending
+    // would read as an eternal spinner for users who can't choose at all.
+    isLoading: query.isLoading,
     isError: query.isError,
     canChoose: me != null,
   };

@@ -192,7 +192,10 @@ function ElectionCard({
   // disappearance would read as data loss.
   const isUpcoming = election.election_date >= usLatestLocalDate();
   const choiceLabel = myChoice && isUpcoming ? formatChoiceLabel(myChoice) : null;
-  const showNoPickYet = showMissingChoice && isUpcoming && !myChoice;
+  // Keyed to the rendered label, not myChoice's presence: a choice object
+  // that formats to nothing (e.g. its only pick's candidate was deleted)
+  // must still show "No pick yet" rather than no signal at all.
+  const showNoPickYet = showMissingChoice && isUpcoming && choiceLabel === null;
   // Skip an empty chip row so the card doesn't carry stray spacing when a
   // race has no signals to show.
   const hasSignalChips =
