@@ -18,6 +18,18 @@
 //   - real distinct parties: Democratic-Farmer-Labor (MN), Democratic-NPL
 //     (ND), state Greens ("Wisconsin Green"), "Libertarian Party of Florida",
 //     "No Political Party" (NV's official phrasing ≠ "No Party Affiliation")
+//   - "Registered Republican" / "Registered Democrat" / "Registered
+//     Libertarian": Alaska's official candidate labels. AK's top-four system
+//     puts the candidate's voter REGISTRATION on the ballot precisely
+//     because it is not a party nomination — collapsing "Registered
+//     Republican" to "Republican" would turn a registration disclosure into
+//     an affiliation claim
+//   - minor parties whose official name carries the "Party" suffix:
+//     "Constitution Party" (ID), "Independent American Party" (NV, distinct
+//     from UT's "Independent American" rows). The major-party mappings below
+//     ("Democratic Party" → "Democratic") do not generalize: for majors the
+//     adjective form is the universal candidate-label convention; for minors
+//     the full name IS the name, and affiliates vary by state
 //   - self-descriptions: "Moderate Democrat", "Pro Gun Liberal"
 //   - parenthesis-mangled import defects ("Independent) (Write-in"): an
 //     upstream splitting bug, not a spelling; the backfill script flags them
@@ -44,17 +56,12 @@ const PARTY_CANON = new Map<string, string>([
   ["dem", "Democratic"],
   ["democrat", "Democratic"],
   ["democratic party", "Democratic"],
-  ["registered democrat", "Democratic"],
   ["rep", "Republican"],
   ["republican party", "Republican"],
-  ["registered republican", "Republican"],
   ["lib", "Libertarian"],
   ["libertarian party", "Libertarian"],
-  ["registered libertarian", "Libertarian"],
   ["gre", "Green"],
   ["ind", "Independent"],
-  ["constitution party", "Constitution"],
-  ["independent american party", "Independent American"],
   ["states no party preference", "No Party Preference"],
 ]);
 

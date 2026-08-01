@@ -8,21 +8,16 @@ describe("canonicalizeParty", () => {
       ["DEM", "Democratic"],
       ["Democrat", "Democratic"],
       ["Democratic Party", "Democratic"],
-      ["Registered Democrat", "Democratic"],
       ["DEMOCRATIC", "Democratic"],
       ["REP", "Republican"],
       ["Republican Party", "Republican"],
-      ["Registered Republican", "Republican"],
       ["REPUBLICAN", "Republican"],
       ["LIB", "Libertarian"],
       ["Libertarian Party", "Libertarian"],
-      ["Registered Libertarian", "Libertarian"],
       ["GRE", "Green"],
       ["IND", "Independent"],
       ["INDEPENDENT", "Independent"],
       ["NONPARTISAN", "Nonpartisan"],
-      ["Constitution Party", "Constitution"],
-      ["Independent American Party", "Independent American"],
       ["No party preference", "No Party Preference"],
       ["STATES NO PARTY PREFERENCE", "No Party Preference"],
     ];
@@ -44,6 +39,23 @@ describe("canonicalizeParty", () => {
     // same thing as "Independent" (no party).
     expect(canonicalizeParty("Independent Party")).toBe("Independent Party");
     expect(canonicalizeParty("Libertarian Party of Florida")).toBe("Libertarian Party of Florida");
+  });
+
+  it("keeps Alaska's registration labels — a registration is not an affiliation", () => {
+    // AK's top-four ballot prints the candidate's voter registration exactly
+    // because it is not a party nomination; "Registered Republican" must not
+    // become the affiliation claim "Republican".
+    expect(canonicalizeParty("Registered Republican")).toBe("Registered Republican");
+    expect(canonicalizeParty("Registered Democrat")).toBe("Registered Democrat");
+    expect(canonicalizeParty("Registered Libertarian")).toBe("Registered Libertarian");
+  });
+
+  it("keeps minor parties whose official name carries the 'Party' suffix", () => {
+    // Unlike the major-party adjective convention, these full names ARE the
+    // names — and same-looking labels can be different state parties
+    // ("Independent American Party" NV vs "Independent American" UT).
+    expect(canonicalizeParty("Constitution Party")).toBe("Constitution Party");
+    expect(canonicalizeParty("Independent American Party")).toBe("Independent American Party");
   });
 
   it("keeps distinct affiliates and official phrasings as themselves", () => {
