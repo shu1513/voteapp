@@ -98,7 +98,7 @@ describe("HomePage pre-search clickwrap", () => {
 
     const dialog = screen.getByRole("dialog", { name: "Why do we need the full address?" });
     expect(dialog).toHaveTextContent("Your ballot depends on your voting districts");
-    expect(dialog).toHaveTextContent("District lines are drawn street by street, and they don't follow ZIP codes.");
+    expect(dialog).toHaveTextContent("District lines are drawn street by street, and they don’t follow ZIP codes.");
     expect(dialog).toHaveTextContent("even on the same street");
     expect(dialog).toHaveTextContent("We don’t save it to your account or sell it");
     expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();

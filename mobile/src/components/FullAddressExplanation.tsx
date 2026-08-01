@@ -36,7 +36,7 @@ export function FullAddressExplanation({ visible, onClose }: FullAddressExplanat
               elections.
             </Text>
             <Text className="mt-3 text-sm text-ink-soft">
-              District lines are drawn street by street, and they don't follow ZIP codes. Two homes
+              District lines are drawn street by street, and they don’t follow ZIP codes. Two homes
               in the same ZIP — even on the same street — can vote in different races. Only a full
               street address can match you to the exact districts that apply to you.
             </Text>
