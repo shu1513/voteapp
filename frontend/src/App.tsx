@@ -16,7 +16,10 @@ function Greeting() {
   if (!me) {
     return null;
   }
-  return <span className="text-sm font-semibold text-navy">Hi {me.first_name}</span>;
+  // min-w-0 + truncate: first names run to 80 chars, and at 375px the row
+  // has ~78px to spare — an unbounded greeting rewraps the logo onto two
+  // lines. The greeting absorbs all the shrink and ellipsizes instead.
+  return <span className="min-w-0 truncate text-sm font-semibold text-navy">Hi {me.first_name}</span>;
 }
 
 function AccountNav() {
@@ -133,13 +136,17 @@ export function App() {
       </a>
       <header className="border-b border-line bg-white">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
-          <span className="flex items-baseline gap-3">
-            <Link to="/" className="text-xl font-extrabold tracking-tight text-rausch">
+          {/* min-w-0 here and shrink-0 on the logo let the greeting (not the
+              two-word logo text) give way when the row runs out of room. */}
+          <span className="flex min-w-0 items-baseline gap-3">
+            <Link to="/" className="shrink-0 text-xl font-extrabold tracking-tight text-rausch">
               {APP_NAME}
             </Link>
             <Greeting />
           </span>
-          <nav className="flex items-center gap-4 text-sm">
+          {/* shrink-0: without it a long greeting squeezes the nav and wraps
+              the Menu button's label onto two lines. */}
+          <nav className="flex shrink-0 items-center gap-4 text-sm">
             <AccountNav />
           </nav>
         </div>
