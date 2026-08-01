@@ -126,8 +126,9 @@ export function ElectionList({
               zero-candidate reason, and roster_processing means the list is
               published and this app is still preparing profiles — "waiting
               on officials" would misplace that blame. Matches the generic
-              roster-status copy. */}
-          <h2 className="text-xl font-bold text-ink">Candidate information not yet available</h2>
+              roster-status copy. Leads with "Elections" to parallel the
+              "Elections on {date}" headings above it. */}
+          <h2 className="text-xl font-bold text-ink">Elections awaiting candidate information</h2>
           <div className="mt-2 space-y-3">
             {awaitingCandidates.map((election) => (
               <ElectionCard
@@ -171,7 +172,7 @@ function ElectionCard({
    */
   showMissingChoice?: boolean;
   /**
-   * The "Candidate information not yet available" section spans dates under
+   * The "Elections awaiting candidate information" section spans dates under
    * one heading, so its cards must say their own date; everywhere else the
    * group heading carries it.
    */
