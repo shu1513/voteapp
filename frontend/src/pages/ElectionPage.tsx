@@ -23,11 +23,21 @@ import { APP_NAME } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
 import { useMyResearchAreas } from "@voteapp/api-client";
 import { aggregateRecordAreaStances, scoreStanceRelevance } from "@voteapp/api-client";
+import { partyBucket } from "@voteapp/api-client";
+import type { PartyBucket } from "@voteapp/api-client";
 
 // "alphabetical" is the payload's own order: the API sorts candidates by
 // display name (there is no true ballot-position data). "my_issues" is the
 // default for viewers with saved research areas.
 type CandidateSort = "alphabetical" | "my_issues";
+
+// The party filter over the candidates list. Order fixes the chip row;
+// labels are plural because the chips answer "show me the …".
+const PARTY_FILTER_OPTIONS: { bucket: PartyBucket; label: string }[] = [
+  { bucket: "democratic", label: "Democrats" },
+  { bucket: "republican", label: "Republicans" },
+  { bucket: "other", label: "Other" },
+];
 
 // Catalog bucket names that are not real-world office titles — "State Lower
 // Chamber Legislator is responsible for:" reads as internal jargon next to a
@@ -90,8 +100,40 @@ export function ElectionPage() {
   const [chosenSort, setChosenSort] = useState<CandidateSort | null>(null);
   const effectiveChosenSort = chosenSort === "my_issues" && !hasSaved ? null : chosenSort;
   const candidateSort = effectiveChosenSort ?? (hasSaved ? "my_issues" : "alphabetical");
+  // The pick carries the election it was made on: this component stays
+  // mounted across param changes, and unlike the sort (a preference that
+  // travels), a party filter is a per-race choice — carrying it into the
+  // next election would silently hide candidates there. A pick from another
+  // election reads as "all"; no effect needed, stale state is simply never
+  // read.
+  const [partyPick, setPartyPick] = useState<{ electionId: string; bucket: PartyBucket | "all" }>({
+    electionId: "",
+    bucket: "all",
+  });
 
   const data = useLoaderData<typeof loader>();
+  const chosenPartyFilter = partyPick.electionId === data.id ? partyPick.bucket : "all";
+  // Data-driven visibility: the filter renders only when the roster spans
+  // >= 2 buckets — a nonpartisan or one-party roster gets no filter because
+  // it could not change anything. is_partisan is deliberately not consulted
+  // (it can be null, and a partisan race whose roster is all one bucket
+  // still has nothing to filter). The count guard mirrors the sort's
+  // resilience: a picked bucket is ignored — not cleared — while the filter
+  // is hidden.
+  const partyCounts: Record<PartyBucket, number> = { democratic: 0, republican: 0, other: 0 };
+  for (const candidate of data.candidates) {
+    partyCounts[partyBucket(candidate.party)] += 1;
+  }
+  const presentPartyOptions = PARTY_FILTER_OPTIONS.filter((option) => partyCounts[option.bucket] > 0);
+  const showPartyFilter = presentPartyOptions.length >= 2;
+  const partyFilter =
+    showPartyFilter && chosenPartyFilter !== "all" && partyCounts[chosenPartyFilter] > 0
+      ? chosenPartyFilter
+      : "all";
+  const visibleCandidates =
+    partyFilter === "all"
+      ? data.candidates
+      : data.candidates.filter((candidate) => partyBucket(candidate.party) === partyFilter);
   const measure = data.ballot_measure;
   // Full set, uncapped — the list card previews these; the detail page is
   // where they all fit. Measure elections skip this row: the measure section
@@ -331,8 +373,29 @@ export function ElectionPage() {
               </label>
             ) : null}
           </div>
+          {showPartyFilter ? (
+            <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Filter candidates by party">
+              {[{ bucket: "all" as const, label: "All" }, ...presentPartyOptions].map((option) => (
+                <button
+                  key={option.bucket}
+                  type="button"
+                  onClick={() => setPartyPick({ electionId: data.id, bucket: option.bucket })}
+                  aria-pressed={partyFilter === option.bucket}
+                  className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
+                    partyFilter === option.bucket
+                      ? "border-ink bg-ink text-white"
+                      : "border-line bg-white text-ink hover:bg-surface"
+                  }`}
+                >
+                  {option.bucket === "all"
+                    ? `All (${data.candidates.length})`
+                    : `${option.label} (${partyCounts[option.bucket]})`}
+                </button>
+              ))}
+            </div>
+          ) : null}
           <div className="mt-3 space-y-3">
-            {sortCandidatesByStance(data.candidates, candidateSort, weights).map(({ candidate, stances }) => (
+            {sortCandidatesByStance(visibleCandidates, candidateSort, weights).map(({ candidate, stances }) => (
               // Whole-card click target via a stretched link: the name
               // Link's ::after overlays the wrapper. Campaign finance is
               // deliberately NOT rendered here — it lives on the candidate

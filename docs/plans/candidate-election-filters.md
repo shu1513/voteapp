@@ -1,6 +1,7 @@
 # Plan: party canonicalization + candidate/election filters
 
-Status: phase 0 implemented (this PR); phases 1–3 not started. Each phase is
+Status: phase 0 shipped (PR #468) + local backfill applied; phase 1
+implemented; phases 2–3 not started. Each phase is
 one PR; later phases depend on earlier ones only where noted. Verified facts
 below come from the live local DB and the current code — re-verify counts
 before the backfill run.

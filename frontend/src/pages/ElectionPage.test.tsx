@@ -10,7 +10,7 @@ const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
 // The subject arrives via the route loader (server-fetched in production);
 // tests supply it directly instead of stubbing the loader's fetch.
-function renderElection(loader: () => unknown, id = "e-1") {
+function renderElection(loader: (args: { params: { electionId?: string } }) => unknown, id = "e-1") {
   return renderRoutes(
     [
       {
@@ -114,6 +114,122 @@ describe("ElectionPage", () => {
 
     expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
     expect(screen.queryByText(/seats/)).not.toBeInTheDocument();
+  });
+
+  it("hides the party filter when the roster spans a single bucket", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    // Default fixture: two Independent candidates — one "other" bucket.
+    renderElection(() => electionDetail());
+
+    await screen.findByRole("heading", { name: "Candidates" });
+    expect(screen.queryByRole("group", { name: "Filter candidates by party" })).not.toBeInTheDocument();
+  });
+
+  it("filters candidates by party bucket and restores with All", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    renderElection(() =>
+      electionDetail({
+        candidates: [
+          {
+            candidate_id: "c-1",
+            display_name: "Dana Democrat",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+          {
+            candidate_id: "c-2",
+            display_name: "Riley Republican",
+            party: "Republican",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+          {
+            candidate_id: "c-3",
+            // The registration label buckets with its party for filtering,
+            // even though storage keeps it distinct.
+            display_name: "Alex Alaskan",
+            party: "Registered Democrat",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+          {
+            candidate_id: "c-4",
+            display_name: "Indy Other",
+            party: "Independent",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+        ],
+      })
+    );
+
+    await screen.findByRole("group", { name: "Filter candidates by party" });
+    // Chips carry counts; All is pressed by default.
+    expect(screen.getByRole("button", { name: "All (4)" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Democrats (2)" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Republicans (1)" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Other (1)" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Democrats (2)" }));
+    expect(screen.getByText("Dana Democrat")).toBeInTheDocument();
+    expect(screen.getByText("Alex Alaskan")).toBeInTheDocument();
+    expect(screen.queryByText("Riley Republican")).not.toBeInTheDocument();
+    expect(screen.queryByText("Indy Other")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "All (4)" }));
+    expect(screen.getByText("Riley Republican")).toBeInTheDocument();
+    expect(screen.getByText("Indy Other")).toBeInTheDocument();
+  });
+
+  it("resets the party filter when navigating to a different election", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const candidate = (id: string, name: string, party: string) => ({
+      candidate_id: id,
+      display_name: name,
+      party,
+      is_incumbent: false,
+      status: "active",
+      summary: null,
+      finance_summary: null,
+      records: [],
+    });
+    // Same route stays mounted across param changes; both rosters offer the
+    // "Democrats" bucket, so a leaked pick WOULD apply — and must not.
+    const { router } = renderElection(({ params }) =>
+      params.electionId === "e-2"
+        ? electionDetail({
+            id: "e-2",
+            candidates: [candidate("c-5", "Casey Second", "Democratic"), candidate("c-6", "Robin Second", "Republican")],
+          })
+        : electionDetail({
+            id: "e-1",
+            candidates: [candidate("c-1", "Dana First", "Democratic"), candidate("c-2", "Riley First", "Republican")],
+          })
+    );
+
+    await user.click(await screen.findByRole("button", { name: "Democrats (1)" }));
+    expect(screen.queryByText("Riley First")).not.toBeInTheDocument();
+
+    await router.navigate("/elections/e-2");
+    // Fresh election, fresh filter: both candidates visible, All pressed.
+    expect(await screen.findByText("Robin Second")).toBeInTheDocument();
+    expect(screen.getByText("Casey Second")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "All (2)" })).toHaveAttribute("aria-pressed", "true");
   });
 
   it("explains an empty candidate list instead of hiding the section", async () => {
