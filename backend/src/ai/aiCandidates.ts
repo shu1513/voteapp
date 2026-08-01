@@ -18,8 +18,18 @@ export type AiCandidate = {
  * results, presidential primary dates — pin "v1beta" and were unaffected).
  * That mismatch made the Gemini rung return 404 "not found for API version
  * v1" in every v1 workflow, so the fallback was silently dead there. Pinning
- * a stable model id that both surfaces serve keeps every rung working;
- * revisit when Google promotes a newer pro model to v1.
+ * a stable model id that both surfaces serve keeps every rung working.
+ *
+ * SCHEDULED SHUTDOWN: Google retires `gemini-2.5-pro` on 2026-10-16 (per
+ * ai.google.dev/gemini-api/docs/deprecations); the named successor is
+ * `gemini-3.1-pro-preview`. The pin is deliberately NOT swapped ahead of a
+ * verification run: preview models are typically v1beta-only, and swapping
+ * unverified would recreate the exact both-surfaces bug above for every v1
+ * caller. Before the shutdown date, verify the successor (or the then-stable
+ * 3.x pro id) answers on BOTH `v1` and `v1beta` with one approved live call
+ * per surface (AI calls are default-deny in this codebase), then update this
+ * pin. Until then, an expired pin fails loudly: provider fallback reports
+ * every rung's error, so a dead Gemini rung cannot mask the others.
  */
 export const FRONTIER_AI_CANDIDATES = [
   { provider: "claude", model: "claude-fable-5" },
