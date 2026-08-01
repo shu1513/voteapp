@@ -5,6 +5,7 @@ import {
   assertMergedOfficeRoutingConsistent,
   findOrCreateCandidateFromProfile,
   mergeIdentifierLists,
+  mergeProfileSourceLists,
   resolveStoredCandidateParty,
 } from "../../src/pipeline/candidates/candidateProfileIdentity.js";
 import type { CandidateProfilePayload } from "../../src/contracts/candidateProfilePayloadContract.js";
@@ -49,6 +50,55 @@ describe("mergeIdentifierLists", () => {
   it("returns undefined when both inputs are empty/missing", () => {
     expect(mergeIdentifierLists(undefined, undefined)).toBeUndefined();
     expect(mergeIdentifierLists([], ["   "])).toBeUndefined();
+  });
+});
+
+describe("mergeProfileSourceLists", () => {
+  it("keeps stored sources first and appends new distinct incoming sources", () => {
+    expect(
+      mergeProfileSourceLists(
+        ["https://stored.example/a", "https://both.example/page"],
+        ["https://both.example/page", "https://incoming.example/b"]
+      )
+    ).toEqual(["https://stored.example/a", "https://both.example/page", "https://incoming.example/b"]);
+  });
+
+  it("dedupes on the normalized URL, not the raw string", () => {
+    // Stored legacy rows predate contract-side normalizeHttpUrl: a trailing
+    // slash or hash variant is the same source, and the wave-18 duplicate
+    // incident came exactly from re-deriving instead of normalizing.
+    expect(
+      mergeProfileSourceLists(
+        ["https://a.example/page/"],
+        ["https://a.example/page", "https://a.example/page#bio"]
+      )
+    ).toEqual(["https://a.example/page/"]);
+  });
+
+  it("keeps URLs that differ only in path or query case — they may be distinct documents", () => {
+    // Paths and queries are case-sensitive per RFC 3986; collapsing them
+    // would silently discard a source. Scheme and hostname ARE
+    // case-insensitive, and URL parsing inside normalizeHttpUrl already
+    // lowercases both, so host-case variants still dedupe.
+    expect(
+      mergeProfileSourceLists(
+        ["https://a.example/Bio", "https://a.example/results?Name=Alice"],
+        ["https://a.example/bio", "https://a.example/results?name=alice"]
+      )
+    ).toEqual([
+      "https://a.example/Bio",
+      "https://a.example/results?Name=Alice",
+      "https://a.example/bio",
+      "https://a.example/results?name=alice",
+    ]);
+
+    expect(
+      mergeProfileSourceLists(["HTTPS://EXAMPLE.com/bio"], ["https://example.com/bio"])
+    ).toEqual(["HTTPS://EXAMPLE.com/bio"]);
+  });
+
+  it("ignores blanks and keeps a non-URL string on its raw form", () => {
+    expect(mergeProfileSourceLists(["  ", "not a url"], ["NOT A URL"])).toEqual(["not a url"]);
   });
 });
 
@@ -451,6 +501,63 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     expect(params[summaryIndex + 1]).toBe(true);
     const websiteIndex = params.indexOf("https://old-site.example");
     expect(params[websiteIndex + 1]).toBe(false);
+  });
+
+  it("unions stored profile_sources with the payload's on a matched re-write", async () => {
+    // The merge UPDATE keeps stored facts (fill-if-empty scalars, additive
+    // id lists), so a narrow correction payload must not wipe the sources
+    // supporting them — six wave-19/20 corrections had to hand-build
+    // supersets because the old write replaced the list unconditionally.
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({ rows: [existingRow] })
+      .mockResolvedValueOnce({
+        rows: [{
+          fec_ids: null,
+          state_filing_ids: null,
+          profile_sources: ["https://stored.example/bio", "https://example.com/profile/"],
+        }],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({ official_website_url: "https://old-site.example" }),
+      state: "OH",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    const params = query.mock.calls[3]?.[1] as unknown[];
+    // $4 = profile_sources; the payload's "https://example.com/profile" is
+    // the stored trailing-slash variant, deduped on the normalized URL.
+    expect(params[3]).toBe(
+      JSON.stringify(["https://stored.example/bio", "https://example.com/profile/"])
+    );
+  });
+
+  it("replaces profile_sources with exactly the payload's list when explicitly listed", async () => {
+    const query = identityQueryMock()
+      .mockResolvedValueOnce({ rows: [existingRow] })
+      .mockResolvedValueOnce({
+        rows: [{
+          fec_ids: null,
+          state_filing_ids: null,
+          profile_sources: ["https://dead-host.example/bio"],
+        }],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({ official_website_url: "https://old-site.example" }),
+      state: "OH",
+      rosterParty: "Democratic",
+      includeParty: true,
+      overwriteProfileFields: new Set(["profile_sources"]),
+    });
+
+    const params = query.mock.calls[3]?.[1] as unknown[];
+    expect(params[3]).toBe(JSON.stringify(["https://example.com/profile"]));
   });
 
   it("replaces a stored party only when party is explicitly listed", async () => {
