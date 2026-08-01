@@ -116,6 +116,85 @@ describe("ElectionPage", () => {
     expect(screen.queryByText(/seats/)).not.toBeInTheDocument();
   });
 
+  it("hides the party filter when the roster spans a single bucket", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    // Default fixture: two Independent candidates — one "other" bucket.
+    renderElection(() => electionDetail());
+
+    await screen.findByRole("heading", { name: "Candidates" });
+    expect(screen.queryByRole("group", { name: "Filter candidates by party" })).not.toBeInTheDocument();
+  });
+
+  it("filters candidates by party bucket and restores with All", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    renderElection(() =>
+      electionDetail({
+        candidates: [
+          {
+            candidate_id: "c-1",
+            display_name: "Dana Democrat",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+          {
+            candidate_id: "c-2",
+            display_name: "Riley Republican",
+            party: "Republican",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+          {
+            candidate_id: "c-3",
+            // The registration label buckets with its party for filtering,
+            // even though storage keeps it distinct.
+            display_name: "Alex Alaskan",
+            party: "Registered Democrat",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+          {
+            candidate_id: "c-4",
+            display_name: "Indy Other",
+            party: "Independent",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+        ],
+      })
+    );
+
+    await screen.findByRole("group", { name: "Filter candidates by party" });
+    // Chips carry counts; All is pressed by default.
+    expect(screen.getByRole("button", { name: "All (4)" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "Democrats (2)" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Republicans (1)" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Other (1)" })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Democrats (2)" }));
+    expect(screen.getByText("Dana Democrat")).toBeInTheDocument();
+    expect(screen.getByText("Alex Alaskan")).toBeInTheDocument();
+    expect(screen.queryByText("Riley Republican")).not.toBeInTheDocument();
+    expect(screen.queryByText("Indy Other")).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "All (4)" }));
+    expect(screen.getByText("Riley Republican")).toBeInTheDocument();
+    expect(screen.getByText("Indy Other")).toBeInTheDocument();
+  });
+
   it("explains an empty candidate list instead of hiding the section", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>

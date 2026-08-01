@@ -10,6 +10,13 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
+    /* Pin the workspace package to THIS checkout's source, mirroring the
+       vitest.config.ts alias: node resolution walks up to the repo root's
+       node_modules, which in a git worktree symlinks to the MAIN checkout's
+       packages/ — typecheck would silently read the wrong sources. */
+    "paths": {
+      "@voteapp/api-client": ["../packages/api-client/src/index.ts"]
+    },
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",

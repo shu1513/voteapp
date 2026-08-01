@@ -8,6 +8,14 @@
       ],
       "@/assets/*": [
         "./assets/*"
+      ],
+      // Pin the workspace package to THIS checkout's source (same as the
+      // frontend tsconfig and vitest alias): node resolution walks up to the
+      // repo root's node_modules, which in a git worktree symlinks to the
+      // MAIN checkout's packages/ — typecheck would silently read the wrong
+      // sources.
+      "@voteapp/api-client": [
+        "../packages/api-client/src/index.ts"
       ]
     }
   },

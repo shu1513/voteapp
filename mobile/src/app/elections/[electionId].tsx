@@ -11,10 +11,12 @@ import {
   formatRosterStatus,
   formatVotePowerLabel,
   hasFinanceContent,
+  partyBucket,
   scoreStanceRelevance,
   useFollows,
   useMyResearchAreas,
 } from "@voteapp/api-client";
+import type { PartyBucket } from "@voteapp/api-client";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
@@ -37,6 +39,14 @@ const CANDIDATE_SORT_OPTIONS = [
   { value: "alphabetical", label: "Alphabetical" },
 ] as const;
 
+// The party filter over the candidates list. Same buckets and labels as the
+// web ElectionPage.
+const PARTY_FILTER_OPTIONS: { bucket: PartyBucket; label: string }[] = [
+  { bucket: "democratic", label: "Democrats" },
+  { bucket: "republican", label: "Republicans" },
+  { bucket: "other", label: "Other" },
+];
+
 /**
  * Port of the web ElectionPage. The web's SSR loader becomes a plain
  * useQuery (no SEO concern on mobile); follow/report controls arrive with
@@ -57,6 +67,7 @@ export default function ElectionScreen() {
   const [chosenSort, setChosenSort] = useState<CandidateSort | null>(null);
   const effectiveChosenSort = chosenSort === "my_issues" && !hasSaved ? null : chosenSort;
   const candidateSort = effectiveChosenSort ?? (hasSaved ? "my_issues" : "alphabetical");
+  const [chosenPartyFilter, setChosenPartyFilter] = useState<PartyBucket | "all">("all");
 
   const election = useQuery({
     queryKey: ["election", electionId],
@@ -97,6 +108,24 @@ export default function ElectionScreen() {
 
   const data = election.data;
   const measure = data.ballot_measure;
+  // Data-driven visibility, same rules and resilience as the web
+  // ElectionPage: render the filter only when the roster spans >= 2
+  // buckets, and ignore — never clear — a picked bucket while it cannot
+  // apply (this screen stays mounted across param changes).
+  const partyCounts: Record<PartyBucket, number> = { democratic: 0, republican: 0, other: 0 };
+  for (const candidate of data.candidates) {
+    partyCounts[partyBucket(candidate.party)] += 1;
+  }
+  const presentPartyOptions = PARTY_FILTER_OPTIONS.filter((option) => partyCounts[option.bucket] > 0);
+  const showPartyFilter = presentPartyOptions.length >= 2;
+  const partyFilter =
+    showPartyFilter && chosenPartyFilter !== "all" && partyCounts[chosenPartyFilter] > 0
+      ? chosenPartyFilter
+      : "all";
+  const visibleCandidates =
+    partyFilter === "all"
+      ? data.candidates
+      : data.candidates.filter((candidate) => partyBucket(candidate.party) === partyFilter);
 
   return (
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
@@ -189,8 +218,23 @@ export default function ElectionScreen() {
               />
             </View>
           ) : null}
+          {showPartyFilter ? (
+            <View className="mt-2">
+              <SortChips
+                options={[
+                  { value: "all" as const, label: `All (${data.candidates.length})` },
+                  ...presentPartyOptions.map((option) => ({
+                    value: option.bucket,
+                    label: `${option.label} (${partyCounts[option.bucket]})`,
+                  })),
+                ]}
+                value={partyFilter}
+                onChange={setChosenPartyFilter}
+              />
+            </View>
+          ) : null}
           <View className="mt-3 gap-3">
-            {sortCandidatesByStance(data.candidates, candidateSort, weights).map(({ candidate, stances }) => (
+            {sortCandidatesByStance(visibleCandidates, candidateSort, weights).map(({ candidate, stances }) => (
               <CandidateCard
                 key={candidate.candidate_id}
                 candidate={candidate}
