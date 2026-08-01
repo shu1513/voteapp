@@ -370,7 +370,7 @@ describe("ElectionCard", () => {
     // One date heading for the readable race; the pending race sits under the
     // waiting section instead of repeating that date at the bottom.
     expect(screen.getAllByRole("heading", { name: "Elections on November 3, 2026" })).toHaveLength(1);
-    expect(screen.getByRole("heading", { name: "Candidate information not yet available" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Elections awaiting candidate information" })).toBeInTheDocument();
     // Its section heading names no date, so the card carries its own.
     expect(screen.getByText("Alaska · November 3, 2026")).toBeInTheDocument();
     expect(screen.getByText("Candidate list not final")).toBeInTheDocument();
@@ -400,7 +400,7 @@ describe("ElectionCard", () => {
 
     // Zero candidates is a measure's normal state — no waiting section.
     expect(screen.getByRole("heading", { name: "Elections on November 3, 2026" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Candidate information not yet available" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Elections awaiting candidate information" })).not.toBeInTheDocument();
   });
 
   it("keeps candidate-less races with a recorded result inside their date group", () => {
@@ -430,7 +430,7 @@ describe("ElectionCard", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Elections on November 3, 2026" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Candidate information not yet available" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Elections awaiting candidate information" })).not.toBeInTheDocument();
   });
 
   it("renders only the waiting section when every race lacks a candidate list", () => {
@@ -454,7 +454,7 @@ describe("ElectionCard", () => {
       "/"
     );
 
-    expect(screen.getByRole("heading", { name: "Candidate information not yet available" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Elections awaiting candidate information" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: /Elections on/ })).not.toBeInTheDocument();
   });
 

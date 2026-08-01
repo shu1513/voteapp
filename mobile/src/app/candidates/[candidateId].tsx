@@ -22,6 +22,7 @@ import { Pressable, ScrollView, Text, View } from "react-native";
 import { FinanceSummaryCard } from "../../components/FinanceSummaryCard";
 import { FollowButton } from "../../components/FollowButton";
 import { NotFoundNotice } from "../../components/NotFoundNotice";
+import { ShareButton } from "../../components/ShareButton";
 import { SortChips } from "../../components/SortChips";
 import { SourceLine } from "../../components/SourceLine";
 import { ErrorNotice, LoadingNotice } from "../../components/Status";
@@ -74,6 +75,15 @@ function orderGroupsByPreference(
     }))
     .sort((a, b) => a.rank - b.rank || a.index - b.index)
     .map(({ group }) => group);
+}
+
+// "Name (Party, State)" built from the non-empty parts: party is typed
+// string but the backend detail reader coalesces a missing value to "", and
+// "Jane Doe (, CA)" must not reach the share sheet. Same logic as the web
+// CandidatePage.
+function candidateShareText(candidate: { display_name: string; party: string; state: string }): string {
+  const context = [candidate.party, candidate.state].filter(Boolean).join(", ");
+  return context ? `${candidate.display_name} (${context})` : candidate.display_name;
 }
 
 // Election dates are YYYY-MM-DD calendar strings; "today" is the last US
@@ -246,6 +256,10 @@ export default function CandidateScreen() {
       <Stack.Screen options={{ title: candidate.display_name }} />
       <View className="flex-row flex-wrap items-center justify-between gap-3">
         <Text className="flex-1 text-2xl font-bold text-ink">{candidate.display_name}</Text>
+        <ShareButton
+          path={`/candidates/${candidate.candidate_id}`}
+          shareText={candidateShareText(candidate)}
+        />
         {canFollow && follows ? (
           <FollowButton
             candidateId={candidate.candidate_id}
