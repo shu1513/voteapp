@@ -36,7 +36,7 @@ describe("setUserElectionChoice", () => {
       })
       .mockResolvedValueOnce({ rows: [{ candidate_id: candidateId }] })
       .mockResolvedValueOnce({ rows: [{ count: "0" }] })
-      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -87,8 +87,43 @@ describe("setUserElectionChoice", () => {
     expect(String(client.query.mock.calls[2]?.[0])).not.toContain("FOR SHARE");
     expect(String(client.query.mock.calls[3]?.[0])).toContain("FROM public.candidate_elections");
     expect(String(client.query.mock.calls[3]?.[0])).not.toContain("FOR SHARE");
-    expect(String(client.query.mock.calls[5]?.[0])).toContain("INSERT INTO public.user_election_choices");
+    const insertSql = String(client.query.mock.calls[5]?.[0]);
+    expect(insertSql).toContain("INSERT INTO public.user_election_choices");
+    // The write itself must carry the eligibility gate: candidacy status,
+    // candidate liveness, and the election window are re-asserted in the
+    // same statement as the INSERT, not just in the earlier plain reads.
+    expect(insertSql).toContain("status NOT IN ('withdrawn', 'lost')");
+    expect(insertSql).toContain("deleted_at IS NULL");
+    expect(insertSql).toContain("merged_into_candidate_id IS NULL");
+    expect(insertSql).toContain("election_date >=");
     expect(client.query.mock.calls[7]?.[0]).toBe("COMMIT");
+    expect(client.release).toHaveBeenCalledOnce();
+  });
+
+  it("refuses the pick when the candidacy is withdrawn between validation and write", async () => {
+    const { db, client } = createMockTransactionalDb();
+    const election = {
+      id: electionId,
+      race_type: "office",
+      election_date: "2026-08-18",
+      seats_to_fill: 1,
+      is_upcoming: true,
+    };
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [{ id: userId }] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [election] }) // readElection
+      .mockResolvedValueOnce({ rows: [{ candidate_id: candidateId }] }) // pre-check passes
+      .mockResolvedValueOnce({ rows: [{ count: "0" }] }) // seat-cap count
+      .mockResolvedValueOnce({ rows: [], rowCount: 0 }) // gated INSERT refuses
+      .mockResolvedValueOnce({ rows: [election] }) // disambiguating re-read: election still open
+      .mockResolvedValueOnce({ rows: [] }); // ROLLBACK
+
+    await expect(
+      setUserElectionChoice(db, userId, { electionId, candidateId, chosen: true })
+    ).rejects.toMatchObject({ code: "candidacy_not_available" });
+
+    expect(client.query.mock.calls.map((call) => String(call[0])).at(-1)).toBe("ROLLBACK");
     expect(client.release).toHaveBeenCalledOnce();
   });
 });
