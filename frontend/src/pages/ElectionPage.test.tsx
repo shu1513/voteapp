@@ -522,7 +522,7 @@ describe("ElectionPage", () => {
 
     expect(
       await screen.findByText(
-        "Save Jordan Voter as your planned pick and keep your whole ballot in one place. Signing up is free."
+        "Save Jordan Voter as your election pick and keep your whole ballot in one place. Signing up is free."
       )
     ).toBeInTheDocument();
     // Both links carry the election page as the post-auth return path.

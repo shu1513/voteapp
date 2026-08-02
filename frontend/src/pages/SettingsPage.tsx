@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
@@ -30,12 +30,24 @@ const buttonClass =
 
 function ProfileSection({ me }: { me: Me }) {
   const [firstName, setFirstName] = useState(me.first_name);
+  // Transient save confirmation: shows for 2s after a successful save, the
+  // standard settle time for inline "Saved" feedback. State + timeout rather
+  // than update.isSuccess so the sign also re-appears on repeat saves.
+  const [justSaved, setJustSaved] = useState(false);
+  useEffect(() => {
+    if (!justSaved) {
+      return;
+    }
+    const timer = setTimeout(() => setJustSaved(false), 2000);
+    return () => clearTimeout(timer);
+  }, [justSaved]);
   const queryClient = useQueryClient();
   const update = useMutation({
     mutationFn: () =>
       apiRequest<{ user: Me }>("/api/me", { method: "PUT", body: { first_name: firstName.trim() } }),
     onSuccess: (response) => {
       queryClient.setQueryData(["me"], response.user);
+      setJustSaved(true);
     },
   });
 
@@ -65,8 +77,14 @@ function ProfileSection({ me }: { me: Me }) {
           />
         </div>
         <button type="submit" disabled={!firstName.trim() || update.isPending} className={buttonClass}>
-          {update.isSuccess && firstName === me.first_name ? "Saved" : "Save"}
+          Save
         </button>
+        {/* Always-mounted live region (content appearing inside an existing
+            region is the reliably-announced case) with a py-2 to sit level
+            with the button text in this items-end row. */}
+        <span role="status" className="py-2 text-sm font-medium text-green-900">
+          {justSaved ? "✓ Saved" : ""}
+        </span>
       </form>
       {update.isError ? (
         <div className="mt-2">
@@ -465,15 +483,6 @@ export function SettingsPage() {
         <>
           <HomeAddressSection />
           <EmailPreferencesSection />
-          {/* The "issues you care about" editor lives on My Picks now,
-              beside the pick cards it reorders. */}
-          <p className="rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">
-            Looking for your issue priorities? They moved to{" "}
-            <Link to="/me/picks" className="underline hover:text-ink">
-              My Picks
-            </Link>
-            .
-          </p>
         </>
       ) : (
         <p className="rounded-xl border border-line bg-surface p-4 text-sm text-ink-soft">

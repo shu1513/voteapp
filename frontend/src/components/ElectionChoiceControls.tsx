@@ -200,7 +200,7 @@ export function MeasureChoiceButtons({ electionId, choice }: MeasureChoiceButton
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <span className="text-sm font-medium text-ink-soft">My vote:</span>
+      <span className="text-sm font-medium text-ink-soft">My pick:</span>
       <button
         type="button"
         disabled={saving}
