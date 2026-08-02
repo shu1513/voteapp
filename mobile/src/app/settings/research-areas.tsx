@@ -92,7 +92,7 @@ function ResearchAreasBody() {
   return (
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
       <Text className="text-sm text-ink-soft">
-        Put what matters most at the top.
+        Put your issues in the order of your priorities.
       </Text>
 
       {orderedIds.length > 0 ? (
