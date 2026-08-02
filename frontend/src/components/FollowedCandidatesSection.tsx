@@ -5,6 +5,15 @@ import { useCandidateSearch, useFollows, useFollowSaving, useSetFollow } from "@
 import type { CandidateFollow, CandidateSearchMatch } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "./Status";
 import { formatElectionDate } from "@voteapp/api-client";
+import type { BackTo } from "../lib/detailNavContext";
+
+// This section lives on My Picks; detail pages reached from it (candidate
+// links, election links, the search combobox) link back there. The shape
+// satisfies both ElectionNavState and CandidateNavState — backTo is their
+// only required field.
+const PICKS_NAV_STATE: { backTo: BackTo } = {
+  backTo: { path: "/me/picks", label: "My Picks" },
+};
 
 // The followed-candidates manager, moved off the retired /me/follows page
 // into My Picks. One deliberate difference from the old page: no
@@ -72,7 +81,11 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
     <li className="rounded-xl border border-line bg-white p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <Link to={`/candidates/${follow.candidate_id}`} className="font-semibold text-ink hover:text-rausch">
+          <Link
+            to={`/candidates/${follow.candidate_id}`}
+            state={PICKS_NAV_STATE}
+            className="font-semibold text-ink hover:text-rausch"
+          >
             {follow.display_name}
           </Link>
           <p className="text-sm text-ink-soft">
@@ -92,7 +105,11 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
       {follow.active_election ? (
         <p className="mt-2 text-sm text-ink-soft">
           On the ballot:{" "}
-          <Link to={`/elections/${follow.active_election.election_id}`} className="underline hover:text-ink">
+          <Link
+            to={`/elections/${follow.active_election.election_id}`}
+            state={PICKS_NAV_STATE}
+            className="underline hover:text-ink"
+          >
             {follow.active_election.official_ballot_title}
           </Link>{" "}
           · {formatElectionDate(follow.active_election.election_date)}
@@ -143,7 +160,7 @@ export function FollowedCandidatesSection() {
             value={null}
             onChange={(match) => {
               if (match) {
-                void navigate(`/candidates/${match.candidate_id}`);
+                void navigate(`/candidates/${match.candidate_id}`, { state: PICKS_NAV_STATE });
               }
             }}
             immediate={false}

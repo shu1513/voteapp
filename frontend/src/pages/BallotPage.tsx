@@ -192,6 +192,9 @@ export function BallotPage() {
               elections={filtersView.visibleElections}
               savedAreaWeights={savedAreaWeights}
               choicesByElectionId={choiceByElectionId}
+              // Full query string: the back link must return to this exact
+              // list — same districts, sort, and filters.
+              backTo={{ path: location.pathname + location.search, label: "All elections" }}
             />
           )}
         </>

@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { Link } from "react-router";
 import type { ElectionChoice, ElectionSummary, ResearchAreaWeight } from "@voteapp/api-client";
+import type { BackTo, ElectionNavState } from "../lib/detailNavContext";
 import {
   formatDistrictName,
   formatElectionDate,
@@ -77,6 +78,7 @@ export function ElectionList({
   elections,
   savedAreaWeights,
   choicesByElectionId,
+  backTo,
 }: {
   elections: ElectionSummary[];
   /**
@@ -91,6 +93,13 @@ export function ElectionList({
    * empty-state badge on every undecided race was more noise than signal.
    */
   choicesByElectionId?: Map<string, ElectionChoice>;
+  /**
+   * Where a detail page's back link should return (the calling page's own
+   * URL including its query string, so sort and filters survive the round
+   * trip). When set, every card hands the election page this destination
+   * plus the ballot's displayed contest order via router state.
+   */
+  backTo?: BackTo;
 }) {
   const awaitingCandidates = elections.filter(isAwaitingCandidates);
   const readable = elections.filter((election) => !isAwaitingCandidates(election));
@@ -103,6 +112,18 @@ export function ElectionList({
       groups.push({ date: election.election_date, elections: [election] });
     }
   }
+  // Contest order = exactly what this list renders: readable races (their
+  // grouping is presentational and keeps this order), then the awaiting
+  // tail. Built here, not by the pages, so it can never drift from the DOM.
+  const navState: ElectionNavState | undefined = backTo
+    ? {
+        backTo,
+        contests: [...readable, ...awaitingCandidates].map((election) => ({
+          id: election.id,
+          title: election.official_ballot_title,
+        })),
+      }
+    : undefined;
   return (
     <div className="mt-4 space-y-6">
       {groups.map((group) => (
@@ -120,6 +141,7 @@ export function ElectionList({
                 election={election}
                 savedAreaWeights={savedAreaWeights}
                 myChoice={choicesByElectionId?.get(election.id)}
+                navState={navState}
               />
             ))}
           </div>
@@ -141,6 +163,7 @@ export function ElectionList({
                 election={election}
                 savedAreaWeights={savedAreaWeights}
                 myChoice={choicesByElectionId?.get(election.id)}
+                navState={navState}
                 showDate
               />
             ))}
@@ -163,12 +186,16 @@ function ElectionCard({
   election,
   savedAreaWeights,
   myChoice,
+  navState,
   showDate = false,
 }: {
   election: ElectionSummary;
   savedAreaWeights?: Map<string, ResearchAreaWeight>;
   /** The viewer's planned vote for this election, when they have one. */
   myChoice?: ElectionChoice;
+  /** ElectionList's nav context (back destination + contest order),
+   * delivered to the election page via the card link's router state. */
+  navState?: ElectionNavState;
   /**
    * The "Elections awaiting candidate information" section spans dates under
    * one heading, so its cards must say their own date; everywhere else the
@@ -202,6 +229,7 @@ function ElectionCard({
   return (
     <Link
       to={`/elections/${election.id}`}
+      state={navState}
       // Faint tint at rest; on hover the border goes brand and the title
       // takes the link color (via group-hover below). The old cue — gray bg
       // one step grayer — was under 2% lightness and read as nothing.

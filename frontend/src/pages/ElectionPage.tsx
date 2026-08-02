@@ -1,7 +1,9 @@
 import { Fragment, useState } from "react";
-import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
+import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { ElectionDetail, PartyBucket } from "@voteapp/api-client";
+import { BackLink } from "../components/BackLink";
+import { readElectionNavState, type CandidateNavState } from "../lib/detailNavContext";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
@@ -187,9 +189,36 @@ export function ElectionPage() {
   const researchAreas = data.research_areas ?? [];
   const orderedAreas = splitResearchAreasBySaved(researchAreas, weights);
   const showOfficeInfo = data.race_type !== "ballot_measure" && (office !== null || researchAreas.length > 0);
+  // Where "back" goes: the list the visitor actually left (router state, when
+  // it validates) — otherwise this district's ballot, the one list that's
+  // always constructible from the payload alone. The fallback label names the
+  // district instead of claiming "All elections": that ballot is one district
+  // and drops elections past the recency window.
+  const location = useLocation();
+  const navState = readElectionNavState(location.state);
+  const backTo = navState?.backTo ?? {
+    path: `/ballot?d=${data.district_id}`,
+    label: `Elections in ${formatDistrictName(data.district.name)}`,
+  };
+  // Computed once, before render: the roster links hand the candidate page
+  // this exact displayed order (sort + party + records filters applied), so
+  // the JSX and the state payload must come from the same array.
+  const orderedCandidates = sortCandidatesByStance(visibleCandidates, candidateSort, weights);
+  const candidateNavState: CandidateNavState = {
+    backTo: { path: `/elections/${data.id}`, label: data.official_ballot_title },
+    // The election page's own incoming context rides along so the back hop
+    // restores it (election → candidate → back keeps the ballot sequence).
+    ...(navState ? { backState: navState } : {}),
+    electionId: data.id,
+    candidates: orderedCandidates.map(({ candidate }) => ({
+      id: candidate.candidate_id,
+      name: candidate.display_name,
+    })),
+  };
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
+      <BackLink backTo={backTo} />
       <JsonLdScript
         data={{
           "@type": "Event",
@@ -487,7 +516,7 @@ export function ElectionPage() {
             </div>
           ) : null}
           <div className="mt-3 space-y-3">
-            {sortCandidatesByStance(visibleCandidates, candidateSort, weights).map(({ candidate, stances }) => (
+            {orderedCandidates.map(({ candidate, stances }) => (
               // Whole-card click target via a stretched link: the name
               // Link's ::after overlays the wrapper. Campaign finance is
               // deliberately NOT rendered here — it lives on the candidate
@@ -503,6 +532,7 @@ export function ElectionPage() {
                     <h3 className="font-semibold">
                       <Link
                         to={`/candidates/${candidate.candidate_id}`}
+                        state={candidateNavState}
                         // rausch-deep, not -dark: AA contrast on the tinted card
                         // bg — see ElectionCard's title.
                         className="transition after:absolute after:inset-0 group-hover:text-rausch-deep"
