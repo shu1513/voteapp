@@ -21,6 +21,7 @@ import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { CandidatePickButton, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
+import { RegisterToPickButton } from "../components/RegisterToPickControls";
 import { useElectionChoices } from "@voteapp/api-client";
 import { splitResearchAreasBySaved } from "../lib/researchAreaPriority";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
@@ -173,6 +174,10 @@ export function ElectionPage() {
   const myChoice = choiceByElectionId?.get(data.id);
   const showChoiceControls =
     canChoose && choiceByElectionId !== undefined && data.election_date >= usLatestLocalDate();
+  // Logged-out visitors get the same pick buttons, but clicking prompts them
+  // to register (mirrors RegisterToFollowButton). me is undefined while the
+  // session loads — render nothing then to avoid a flash of the wrong button.
+  const showRegisterToPick = me === null && data.election_date >= usLatestLocalDate();
   // Full set, uncapped — the list card previews these; the detail page is
   // where they all fit. Measure elections skip this row: the measure section
   // already shows the same areas with their for/against stance. The ??
@@ -509,17 +514,23 @@ export function ElectionPage() {
                         (ballotLookup filters them), but the writer also
                         rejects withdrawn/lost — don't render a button whose
                         only outcome is an error. */}
-                    {showChoiceControls && candidate.status !== "withdrawn" && candidate.status !== "lost" ? (
+                    {(showChoiceControls || showRegisterToPick) &&
+                    candidate.status !== "withdrawn" &&
+                    candidate.status !== "lost" ? (
                       // z-10 lifts the button above the card's stretched
                       // link so clicking it doesn't navigate.
                       <span className="relative z-10">
-                        <CandidatePickButton
-                          electionId={data.id}
-                          candidateId={candidate.candidate_id}
-                          choice={myChoice}
-                          seatsToFill={data.seats_to_fill ?? null}
-                          size="sm"
-                        />
+                        {showChoiceControls ? (
+                          <CandidatePickButton
+                            electionId={data.id}
+                            candidateId={candidate.candidate_id}
+                            choice={myChoice}
+                            seatsToFill={data.seats_to_fill ?? null}
+                            size="sm"
+                          />
+                        ) : (
+                          <RegisterToPickButton candidateName={candidate.display_name} size="sm" />
+                        )}
                       </span>
                     ) : null}
                   </div>

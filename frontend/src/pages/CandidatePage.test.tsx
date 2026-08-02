@@ -436,6 +436,46 @@ describe("CandidatePage", () => {
     expect(await screen.findByRole("button", { name: "Unfollow" })).toBeInTheDocument();
   });
 
+  it("shows logged-out visitors a pick row that prompts them to register", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    const row = await screen.findByRole("button", {
+      name: "Pick Jordan Voter as my pick for Governor · November 3, 2099",
+    });
+    await userEvent.click(row);
+
+    expect(
+      await screen.findByText(
+        "Save Jordan Voter as your planned pick and keep your whole ballot in one place. Signing up is free."
+      )
+    ).toBeInTheDocument();
+    // Both links carry the candidate page as the post-auth return path.
+    expect(screen.getByRole("link", { name: "Sign up" })).toHaveAttribute(
+      "href",
+      "/register?next=%2Fcandidates%2Fc-1"
+    );
+    expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute(
+      "href",
+      "/login?next=%2Fcandidates%2Fc-1"
+    );
+  });
+
+  it("shows logged-out visitors no pick row for withdrawn or past candidacies", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [
+          candidateElection({ status: "withdrawn" }),
+          candidateElection({ candidate_election_id: "ce-2", election_id: "e-2", election_date: "2020-11-03" }),
+        ],
+      })
+    );
+
+    expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /as my pick for/ })).not.toBeInTheDocument();
+  });
+
   it("shows loader-fetched finance for an ongoing election", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     // Finance rides in the loader payload (SSR-rendered for crawlers), not
