@@ -1,250 +1,142 @@
-# VoteApp Frontend Implementation Plan
+# Finance module consolidation plan (v2)
 
-*Written 2026-07-03 against main `30f2ba9a`. Backend is frontend-ready; this
-plan consumes it without backend changes unless explicitly listed.*
+Date: 2026-08-01. Scope: `backend/src/pipeline/*Finance` (34 modules, ~140k lines) plus the shared `backend/src/pipeline/finance/` module. v2 incorporates a second review pass; every claim below was verified against the code in this worktree.
 
-## 1. What the backend provides today (fresh audit)
+## Background
 
-### Anonymous (the whole core product works logged-out)
+The July 12–18 refactor wave extracted four shared pieces:
 
-| Endpoint | Notes |
-|---|---|
-| `POST /api/address/autocomplete` / `.../retrieve` | Google proxy. Complete frontend contract in [docs/address-autocomplete-frontend.md](docs/address-autocomplete-frontend.md) — session tokens, debounce, ARIA, billing, "powered by Google". |
-| `POST /api/address/resolve` `{address}` | → `districts[]` + `district_ids`. 422 `address_not_found` for bad addresses. |
-| `GET /api/ballot?district_ids=…&sort=…&followed_first=…` | Election summary cards: `official_ballot_title`, `election_date`, `district`, `office`, `research_areas`, `candidate_count`, `historical_competitiveness`, `vote_power`, `has_results`. Sorts: `vote_power` (default), `soonest`, `district_size`, `district_size_smallest`. Max 50 district ids. |
-| `GET /api/elections/:id` | Full detail: candidates (profiles, finance summaries incl. industry backing), ballot measure (`what_yes_means`/`what_no_means`), results, sources. |
-| `GET /api/candidates/:id` | Profile, records with `source_url` + dates + research-area tags/stances, election history, `is_following`/`follow` when a session exists. |
-| `GET /api/research-areas` | Catalog for preference picking and tag display. |
+- `createStandardStateFinanceSnapshotWriter` (factory, 610 lines) — adopted by **Texas and Houston only**. Config surface today is only `{label, tables}`.
+- `standardStateFinanceBallotLookupLoader` (parameterized loader, 596 lines) — adopted by **Texas, Illinois, Houston only**.
+- SQL label-normalization function (replaced 22 inline blobs) — fully propagated.
+- Shared outside-industry explanation builder — adopted by ~23 modules. Fully propagated.
 
-### Auth (cookie session `voteapp_auth_session`, httpOnly, SameSite=Lax, 30d)
+After the refactor, feature work continued in the copy-per-state pattern. Fixes land in single states and do not propagate to the 30+ sibling copies.
 
-| Endpoint | Frontend notes |
-|---|---|
-| `POST /api/auth/register` | **Requires `accepted_terms_version` matching the backend's `CURRENT_TERMS_VERSION` ("1.0")**; 400 names the current version, so the client can re-fetch and re-prompt. Returns `{status:"ok"}` — **no auto-login**; show "check your email", then user logs in. |
-| `POST /api/auth/login` | Sets session cookie. Response body is only `{status:"ok"}` — call `GET /api/me` after. |
-| `POST /api/auth/logout` / `logout-all` | Clear cookie. Both require JSON content-type (CSRF guard) — always send `Content-Type: application/json` with `{}`. |
-| `POST /api/auth/verify-email` `{token}` | Email links land on **frontend route `/verify-email?token=…`**, which POSTs this. |
-| `POST /api/auth/forgot-password` / `reset-password` | Reset links land on **frontend route `/reset-password?token=…`**. |
-| `POST /api/auth/verify-email-change` `{token}` | Change-email links land on **frontend route `/verify-email-change?token=…`**. |
-| `POST /api/auth/resend-verification` `{email}` | For the unverified interstitial. |
-| Rate limits | Per-IP and per-email/account, `429` + `retry-after` header on all auth and password-verifying routes. Honor the header. |
+## Evidence of duplication
 
-`AUTH_PUBLIC_BASE_URL` must be set to the frontend origin so email links hit
-the three routes above.
+Pairwise similarity after normalizing state names and whitespace (best-match sibling, % identical lines):
 
-### Authenticated (all `/api/me/*` except `GET/PUT/DELETE /api/me` require verified email; unverified → 403 `"Email verification is required"`)
+| Role file | Files | Lines | Avg similarity | Verdict |
+|---|---|---|---|---|
+| `*FinanceWriter` | 34 | 17.5k | 89% (32 ≥85%) | migrate to factory, exact-shape cohort first |
+| `*BallotLookupFinanceLoader` | 31 modules | 12.4k | 86% | migrate after descriptor redesign + characterization tests |
+| `*CandidateFinanceAutoLink` | 28 | 7.2k | 86% | extract two primitives, not one factory |
+| `*CandidateFinanceBatchSync` | 34 | 17k | 84% | due-list builder first; orchestration later |
+| `*CandidateFinanceSync` | 33 | 13.9k | 78% | partial extraction only, if at all |
+| `*FinanceEligibleOffices` | 34 | 4k | 82% | shared types only; data is real config |
+| `*CandidateCommitteeResolver` | 31 | 10.4k | 70% | leave — genuinely state-specific |
+| `*DirectContributionAggregator` | 30 | 8.4k | 74% | leave |
+| `*OutsideSpendingAggregator` | 20 | 5.7k | 62% | leave |
 
-| Endpoint | Notes |
-|---|---|
-| `GET /api/me` | `{user:{email, first_name, email_verified}}`. Session check + "Hi {first_name}" + unverified detection. Never 403s. |
-| `PUT /api/me` `{first_name}` | Name edit (1–80 chars). |
-| `DELETE /api/me` `{password}` | Delete account; clears cookie. |
-| `POST /api/me/password` `{current_password, new_password}` | Rotates **all** sessions, returns fresh cookie automatically — other devices get logged out, current one stays. Password policy: 12–1024 chars (surface in form). |
-| `POST /api/me/email` `{new_email, password}` | Always returns ok (no enumeration); confirmation goes to the NEW inbox. |
-| `PUT /api/me/address` `{address}` | Replaces districts, returns updated districts + ballot. |
-| `GET /api/me/ballot` | Ballot from saved districts; includes `districts[]` (use for "your districts" display). Query params override saved preferences. |
-| `POST /api/me/districts/initialize` `{district_ids}` | Anon→account handoff: pass the ids from the last anonymous resolve right after first login. |
-| `GET/PUT /api/me/ballot-preferences` | `{sort, followed_first}`. |
-| `GET/PUT /api/me/candidate-follows` | List includes `display_name` + record/election previews. PUT input: `{candidate_id, following, notify_elections?, notify_updates?}`. |
-| `GET/PUT /api/me/research-area-preferences` | Ranked picks from the catalog. |
-| `GET/PUT /api/me/email-preferences` | `{email_digest, email_election_reminders, email_new_election_alerts}`. |
+City outliers: `newYorkCityFinance` and `losAngelesCityFinance` writers are ~35%/31% similar to any sibling. Excluded from writer/loader migration.
 
-Unsubscribe pages are backend-rendered (`/api/email/unsubscribe`) — no frontend work.
+**Line similarity hides schema differences.** Verified examples the percentages don't show:
 
-### Legal (must ship WITH the first public page, not after)
+- Colorado's writer is direct-contributions-only — zero outside-spending code; the factory's five mandatory tables cannot represent it.
+- California adds `needs_review`, `debtsOwed`, extra category types.
+- Illinois adds SBE fields and a signed cash balance; Kentucky (`normalizeNullableSignedAmount`) and Louisiana (`normalizeNullableBalance`) also allow negative cash. The factory rejects negative amounts everywhere.
+- Hawaii keys links on `election_period`; Wisconsin on `entity_id` + `assigned_committee_id`; Vermont uses a numeric entity id.
 
-Texts live in [docs/legal/](docs/legal/checkbox-copy.md) and are versioned; the
-frontend renders them **verbatim**:
+### Semantic drift found (why this is worth doing)
 
-- Pre-search clickwrap checkbox (unchecked by default, Search disabled until
-  checked, visible links, sits directly above the button). Anonymous
-  acceptance is frontend-only; remember per-version in localStorage.
-- Signup clickwrap checkbox (18+, electronic consent) + send
-  `accepted_terms_version: "1.0"` in the register call.
-- Privacy notice line under the address input.
-- AI-research banner on every ballot/election/candidate view.
-- Per-record `Source: [link] · researched [date]` lines.
-- `/disclaimer` route rendering docs/legal/disclaimer.md.
+| Feature | Where it exists | Shared factory has it? |
+|---|---|---|
+| "must receive a Pool" transaction guard | 21 of 35 writers | yes |
+| Outside-group-breakdown ↔ group validation | 6 of 35 | no |
+| `normalizeCommitteeId` (whitespace collapse) | 2 of 35 | no |
+| Summary upsert policy | Factory `COALESCE`s **all** fields; many states (e.g. Maryland) **replace** receipts/disbursements/cash and COALESCE only outside totals | divergent — see Phase 1 prep |
+| Election-year floor | NJ 1980, FL 1996, UT 1998, 20 states 2000, CA/CO 2001, AZ 2002, CT 2008, OK 2014, NM 2020, NE 2021 | hardcoded 2014 |
 
-## 2. Stack (unchanged decision, still right-sized)
+A bug fixed in one state's writer today fixes 1 of 32 copies.
 
-`frontend/` directory in this repo. **Vite + React + TypeScript + React
-Router + TanStack Query + Tailwind.** Hand-written TS types mirroring the
-snake_case JSON (no codegen). Vitest + React Testing Library.
+## Safety net (verified counts)
 
-- Dev: Vite proxy `/api` → `http://127.0.0.1:3001` — same-origin, zero
-  CORS/cookie configuration.
-- Prod (later): same-site subdomains (`app.` + `api.impactperdollar.com`) or a
-  reverse proxy. SameSite=Lax cookies work across same-site subdomains;
-  `ADDRESS_API_ALLOWED_ORIGINS` + `Secure` cookie flags at deploy time.
-- No Next.js/SSR: no SEO requirement yet, SPA is the correct size. Revisit
-  only if organic search matters later.
+- 34 writers, **33 writer tests — Minnesota has none** (fill in Phase 0).
+- 34 batchSync files, 34 tests. 28 auto-link files, 25 tests. **Only 10 loader tests for 31 loaders** — loader migration is NOT low-risk until characterization tests exist.
+- Proven recipe: Texas writer migration (`6b2664b2`) kept every exported name/type as a thin wrapper; tests passed unchanged.
+- Gates per PR: `npm run typecheck` + `npm test` in `backend/`.
 
-### Cross-cutting conventions (Phase 1 establishes, everything reuses)
+## Phases
 
-- **API client:** thin `fetch` wrapper — JSON in/out, `credentials:
-  "same-origin"`, parses the `{error:{code,message}}` envelope into a typed
-  `ApiError`, surfaces `retry-after` on 429.
-- **Auth state:** one TanStack Query `["me"]` on `GET /api/me`. 401 → logged
-  out; `email_verified:false` → verified-gate interstitial for personalized
-  pages. 403 from any `/api/me/*` → same interstitial (resend button).
-- **Session semantics:** login/password-change set cookies automatically —
-  after either, invalidate `["me"]` and refetch.
-- **Legal gate component:** one reusable clickwrap checkbox component fed by
-  the strings from docs/legal/checkbox-copy.md, localStorage-keyed by version
-  for the anonymous flow.
+### Phase 0 — capability matrix + test gaps
 
-## 3. Phases
+One checked-in markdown matrix (`docs/finance-module-capability-matrix.md`), one row per module: link/outside-group identity columns; optional tables/features; extra link+summary fields; category unions; election-year floor; per-field null-merge policy (replace vs preserve); signed-value fields; transaction ownership (Pool-only vs caller-transaction); validation extras; test files present. Populated mechanically (greps + reading upsert statements), reviewed by hand. This matrix decides every cohort below.
 
-### Phase 1 — scaffold, legal gate, anonymous core loop *(shippable product)*
+Also: add the missing Minnesota writer test (copy the sibling pattern).
 
-1. Scaffold `frontend/` (Vite react-ts template), Tailwind, Router, Query,
-   ESLint/vitest; `.claude/launch.json` entry; dev proxy to `:3001`.
-2. API client + error envelope + types for address/ballot/election/candidate
-   payloads; shared formatters (dates, money, district names, source links).
-3. `/disclaimer` page (renders disclaimer.md) + legal-gate checkbox component.
-4. Home page: address form (plain input), privacy notice line, clickwrap gate
-   → `POST /api/address/resolve` → district list → navigate to ballot.
-5. Ballot page: election summary cards (title, date, district, office,
-   candidate count, research-area chips), default `vote_power` order,
-   AI-research banner. District ids in the URL (`/ballot?d=…`) so results are
-   shareable/reloadable.
-6. Election detail page: candidates w/ finance summaries, ballot measure
-   yes/no explanations, results when present, sources w/ dates.
-7. Candidate detail page: profile, records grouped by research area w/
-   source + researched-date lines, election history.
-8. Loading/error/empty states everywhere; 422 address-not-found messaging;
-   429 retry messaging.
+Deliberately NOT doing: auto-generated characterization suites for every module upfront. Characterization tests are written per cohort, right before that cohort migrates.
 
-*Definition of done:* stranger with the URL can go address → ballot →
-candidate without an account, sees legal gate once, every AI-content view
-carries the banner and source lines. Verified live against local backend.
+### Phase 1 — writers, exact-canonical-shape cohort first
 
-### Phase 2 — address autocomplete + ballot polish
+Factory prep (one PR):
+1. `minElectionYear` becomes a **required** config field — no default; every wrapper declares its floor. (Floors range 1980–2021; a default hides real policy.)
+2. Per-field summary update policy: `replace` | `preserveWhenNull` per column, plus a signed-allowed field set. Defaults per state come from the Phase 0 matrix — each wrapper keeps its current behavior; policy changes are separate, explicit PRs.
+3. Adopt outside-group-breakdown ↔ group validation as opt-in config (on for states that have it; turning it on elsewhere is a per-state decision, not a silent upgrade).
+4. Transaction rule from the matrix: Pool-guard states keep the guard; caller-transaction states (the `cycleArtifactRows` cohort: colorado, indiana, maine, maryland, nebraska, newMexico, oklahoma) get a `transactionMode` option if verification shows they rely on it.
 
-1. Autocomplete per the contract doc: session tokens, 250–300ms debounce,
-   3-char minimum, AbortController, ARIA combobox, "powered by Google",
-   plain-input fallback on any autocomplete error (never block manual entry).
-2. Sort switcher (4 sorts) wired to query params.
-3. Competitiveness + vote-power display w/ short "what is this" explainers
-   (methodology honesty per the disclaimer).
-4. Ballot-measure result badges, election result panels.
+Migration: **one pilot state first** (pick the module whose matrix row exactly matches factory canonical shape), full diff review, then batches of 5–6 exact-shape states. Wrapper keeps all exported names/types; per-state tests untouched.
 
-### Phase 3 — accounts
+Explicitly deferred to Phase 5: colorado (direct-only), california, illinois, hawaii, vermont, wisconsin, and any other matrix row with extra columns/tables.
 
-1. Register page: signup clickwrap (18+, electronic consent),
-   `accepted_terms_version`, 12-char password hint, "check your email" state.
-2. Login/logout; header shows "Hi {first_name}" from `["me"]`.
-3. Email-link routes: `/verify-email`, `/reset-password`, `/verify-email-change`
-   — each POSTs its token, shows success/failure, links onward. Set
-   `AUTH_PUBLIC_BASE_URL` to the frontend origin.
-4. Forgot-password flow; unverified interstitial w/ resend button (drives all
-   403s).
-5. Anon→account handoff: keep anonymous district ids in storage and call
-   `POST /api/me/districts/initialize` only once `GET /api/me` reports
-   `email_verified: true` — the endpoint is verified-gated, and login works
-   while still unverified, so initializing straight after login would 403.
-   Then land on `GET /api/me/ballot`.
-6. `PUT /api/me/address` for address changes while logged in.
-7. Returning-user home: logged-in + verified loads the saved ballot
-   (`GET /api/me/ballot`); an empty saved ballot routes to address entry.
+### Phase 2 — shared batchSync due-list query builder
 
-### Phase 4 — personalization + account settings
+The most uniform, highest-fix-traffic slice of batchSync: the due-list query (link table join, staleness ordering, paging, count). Extract a query builder parameterized by a link-identity descriptor (column list + row mapper). States keep their own orchestration loops for now — the loop is where office filters, historical-year gates, embedded auto-link (Vermont), artifact loading, caches, `force`, and dry-run flags live, and those are not uniform.
 
-1. Follow buttons on candidate + election pages (`is_following` already in
-   detail payloads); follows manager page w/ per-follow notify toggles.
-2. Persisted ballot preferences (sort + followed-first) — settings +
-   automatic via ballot page controls.
-3. Research-area picker from the catalog.
-4. Email preferences page (3 toggles — closes the loop with digest +
-   new-election alert emails).
-5. Account settings: name edit, change password, change email, logout
-   everywhere, delete account (type-password confirm, destructive styling).
+### Phase 3 — loaders, after characterization tests
 
-### Phase 5 — launch hardening *(before any public deploy)*
+Descriptor redesign first: the current single committee-column option is insufficient — verified Washington uses `link.committee_id` but `outside_group.sponsor_id`/`sponsor_name` in the same file. Per-relation descriptor:
+- link identity column; outside-group identity + name columns; breakdown identity column (`committee_id`/`committee_key`/`sponsor_id`/`filer_id` variants all exist);
+- optional feature flags for which query families a state has (direct breakdowns, outside groups, industry rollups).
 
-*Re-audited 2026-07-04 after reminders + research-area phases A–E landed.
-Error copy is already centralized in `Status.tsx` (422/429/5xx, used by all
-pages) and `VerifyPrompt` covers 403s; the combobox is Headless UI and the
-rank editor ships a KeyboardSensor — so the old error-copy and a11y items
-shrank, while two gaps the original plan missed were found in code.*
+Keep it a descriptor, not a query DSL. If a state needs genuinely different SQL (New York's classified-industry handling), it stays unmigrated rather than growing the descriptor.
 
-1. Quick wins (found by audit, trivial, launch-embarrassing): replace the
-   scaffold `<title>frontend</title>` with per-route titles; add a NotFound
-   catch-all route + router `errorElement` (today an unknown URL or render
-   error is a blank page); add 404 copy to `Status.tsx` (bad election/
-   candidate id currently reads "Something went wrong").
-2. Page-level tests with mocked API for the six untested pages — Ballot,
-   Election, Candidate, SavedBallot, Follows, Settings (686 lines, most
-   complex, zero tests) — covering empty/error/unverified states. (Replaces
-   the old "mock API fixtures" item; libs + Home/Register/VerifyToken are
-   already tested.)
-3. Playwright smoke tests, three loops: address → ballot → election →
-   candidate; register → verify → saved ballot; save areas → my_areas
-   default sort → drag-rank → ballot reorders.
-4. Accessibility pass, narrowed to real gaps: focus management on route
-   changes (currently none), keyboard pass over the rank editor and follows
-   toggles, checkbox/label audit in the legal gates.
-5. Production env checklist + deploy runbook — grew since the original
-   plan: `ADDRESS_API_ALLOWED_ORIGINS`, cookie `Secure`/`SameSite`/domain
-   flags, `AUTH_PUBLIC_BASE_URL`, `NOTIFICATIONS_UNSUBSCRIBE_URL`, API base
-   URL wiring, plus the notification stack that now exists — Redis + BullMQ
-   scheduler workers (digest, new-election alerts, election reminders) need
-   a where-do-workers-run runbook, SES needs unsandboxing (`AUTH_FROM_EMAIL`,
-   region config), and the issue-broadcast CLI needs an operator note.
-6. AI discoverability basics (cheap, ship with launch): `robots.txt` that
-   allows AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended),
-   `llms.txt` at the site root describing the app and key pages, sitemap,
-   descriptive titles/meta per route, schema.org JSON-LD on election and
-   candidate pages. (Full crawlability needs the SSR/prerender item parked
-   in Phase 6 — the SPA ships near-empty HTML until then.)
+Cohorts: ~26 exact-name non-city loaders remain (31 modules − 3 migrated − 2 cities). Each cohort PR: characterization test capturing current loader output on fixtures **before** the swap (existing coverage is 10 of 31). Differently-named loaders (alaska, arizona, pennsylvania) and Florida (has no lookup loader file) are a final, shape-verified cohort — include or formally drop after inspection.
 
-### Phase 6 — parked (do not build yet)
+### Phase 4 — auto-link primitives
 
-In-app notifications feed, analytics events (needs privacy-policy treatment
-first), and:
+Not one `createStandardCandidateFinanceAutoLink`. Verified non-uniformity: Vermont's auto-link lives inside its batchSync with statewide-only safety logic; Michigan's auto-link file only lists candidates (no resolve/write). Extract two composable pieces:
+1. Missing-link query builder (shares the identity descriptor from Phase 2).
+2. Failure-isolated loop runner (attempted/linked/failed counters, per-item error capture).
 
-- **Error monitoring** — pulled forward pre-launch; superseded the old
-  "error-report endpoint UI" idea (no custom receiver needed). Scoped in
-  [plan-error-monitoring.md](plan-error-monitoring.md): Sentry SDK
-  (GlitchTip-compatible, so the vendor stays swappable), errors only,
-  PII-scrubbed, three phases — backend logging floor, backend SDK,
-  frontend SDK + privacy-policy processor entry.
+Candidate mapping, resolver invocation, link writing, and caps stay per-state hooks. Wrapper-equivalent states (the 24 ≥85% group) collapse to config + resolver; Vermont/Michigan-style modules just reuse the primitives where they fit.
 
-- **SSR/prerender for SEO + AI crawlers** — the SPA serves near-empty HTML,
-  so search engines and AI crawlers (the ones Phase 5's robots.txt/llms.txt
-  welcome) can't read ballot/election/candidate content. Scoped in
-  [plan-ssr-prerender.md](plan-ssr-prerender.md): React Router framework
-  mode, hybrid — dynamic sitemap first, prerender the static routes,
-  server-render only election/candidate detail, CDN caching deferred until
-  load proves out. (Supersedes the earlier "prerendering public routes is
-  likely enough" guess — verified that no AI crawler executes JS, and the
-  detail pages are unenumerable at build time.)
-- **MCP server** — remote Model Context Protocol server wrapping the
-  existing anonymous API (`lookup_ballot(address)`, `get_election(id)`,
-  `get_candidate(id)`, `list_research_areas()`) so AI assistants (Claude,
-  and equivalents on other platforms) can answer "what's on my ballot?"
-  with VoteApp data and link back. Thin read-only wrapper — no new data
-  paths. Every tool response must carry the AI-research disclaimer +
-  source/date lines, same as the web UI. Requires the public API deploy;
-  directory listings (Anthropic connectors directory, ChatGPT apps) are a
-  separate application/review step after the server exists.
+### Phase 5 — remaining writer schema families
 
-## 4. Backend gaps discovered by this audit
+Extend the factory capability-by-capability, driven by the matrix: optional-tables support (Colorado direct-only), extra summary/link columns (California, Illinois, Hawaii, Wisconsin, Vermont). Each capability lands in its own factory PR, then its cohort migrates. If a capability would serve exactly one state, the state keeps its bespoke writer — a fork with one user is cheaper than a meta-framework.
 
-None blocking. Two config-level items when phases land:
+### Phase 6 — full batch orchestration runner (conditional)
 
-1. Phase 3: `AUTH_PUBLIC_BASE_URL` → frontend origin (email links).
-2. Prod deploy: `ADDRESS_API_ALLOWED_ORIGINS`, cookie `Secure`/domain flags,
-   `NOTIFICATIONS_UNSUBSCRIBE_URL` → public API origin.
+Only after Phases 2+4 prove out, and only for states whose loops are by-then-thin wrappers around the shared primitives. If the loop bodies stay heterogeneous, stop here — due-list + primitives already capture the shared fix surface.
 
-## 5. Testing & verification
+### Phase 7 (optional / defer)
 
-- Vitest + Testing Library, weighted toward logic: API client (envelope,
-  429/401/403 handling), legal gate (blocks until checked, version-keyed),
-  auth flows (register payload includes terms version, token pages), handoff
-  logic. Presentational components get light smoke tests.
-- Every phase ends with a live end-to-end pass against the local backend
-  (real resolve → ballot → detail; real register/login with console mailer)
-  before its PR.
-- One branch + PR per phase: `feat/frontend-phase-1` … `-4`.
+- `*CandidateFinanceSync` (78%): extract only the common tail if earlier phases make it obvious.
+- `*FinanceEligibleOffices`: shared type scaffolding only.
+- Scripts layer (~183 finance files, 40 per-state sync CLIs): separate effort.
+
+### Non-goals
+
+- Resolvers, aggregators, portal clients/parsers/data sources — real state-specific logic.
+- NYC and LA City writers/loaders.
+- Silent behavior harmonization. Every behavior change (validation adoption, merge-policy change) is its own reviewed, per-state decision.
+
+## Order and risk
+
+| Phase | Scope | Risk |
+|---|---|---|
+| 0 | matrix + MN test | none |
+| 1 | factory prep + exact-shape writers (pilot → cohorts) | low for exact-shape cohort; medium overall |
+| 2 | due-list query builder | medium |
+| 3 | loader descriptor + cohorts w/ characterization tests | medium |
+| 4 | auto-link primitives | medium-high |
+| 5 | remaining writer families | medium |
+| 6 | full batch runner | high — do only if justified |
+
+Line-deletion estimate (~40k) is provisional and NOT the success criterion. Success = semantic parity proven per cohort + shared fix surface for the four chokepoints.
+
+## Working rules
+
+- Every migration PR: wrapper keeps exported names/types; per-state tests unmodified (plus new characterization tests where coverage was missing); `npm run typecheck` + `npm test` green; the state's matrix row cited in the PR body with any deltas listed.
+- Factory/descriptor changes land in their own PR before any state migrates onto them.
+- A state's extra feature is either promoted into the factory behind config (default = current shared behavior) or the state stays unmigrated. No silent losses, no one-state meta-features.

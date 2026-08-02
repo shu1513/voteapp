@@ -47,6 +47,7 @@ export type HoustonFinanceSnapshotWriteResult = StandardStateFinanceSnapshotWrit
 
 const writer = createStandardStateFinanceSnapshotWriter({
   label: "Houston",
+  minElectionYear: 2014,
   tables: {
     links: "hou_candidate_finance_links",
     summaries: "hou_candidate_finance_summaries",

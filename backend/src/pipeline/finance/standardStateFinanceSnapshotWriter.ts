@@ -92,6 +92,29 @@ export type StandardStateFinanceSnapshotWriter = {
   replaceSnapshot(input: StandardStateFinanceSnapshotInput): Promise<StandardStateFinanceSnapshotWriteResult>;
 };
 
+export type StandardStateFinanceSummaryColumn =
+  | "total_receipts"
+  | "direct_contribution_total"
+  | "total_disbursements"
+  | "cash_on_hand"
+  | "outside_support_total"
+  | "outside_oppose_total"
+  | "source_url";
+
+export type StandardStateFinanceSummaryUpdateMode = "replace" | "preserveWhenNull";
+
+export type StandardStateFinanceOutsideGroupValidation = "none" | "presence" | "pairing";
+
+const SUMMARY_COLUMNS: readonly StandardStateFinanceSummaryColumn[] = [
+  "total_receipts",
+  "direct_contribution_total",
+  "total_disbursements",
+  "cash_on_hand",
+  "outside_support_total",
+  "outside_oppose_total",
+  "source_url",
+];
+
 function assertIdentifier(value: string): string {
   if (!/^[a-z][a-z0-9_]*$/.test(value)) throw new Error(`Invalid standard finance table identifier: ${value}`);
   return value;
@@ -134,14 +157,38 @@ export function createStandardStateFinanceSnapshotWriter(config: {
   /** Human-readable name used in error messages, e.g. "Texas" or "Houston". */
   label: string;
   tables: StandardStateFinanceTables;
+  /**
+   * Reject election years below this floor. Every wrapper declares its state's
+   * floor explicitly — the floors range from 1980 to 2021 across states, so
+   * there is deliberately no default.
+   */
+  minElectionYear: number;
+  /**
+   * Per-column summary upsert behavior. "preserveWhenNull" (the default for
+   * every column) keeps the stored value when the incoming value is NULL;
+   * "replace" always overwrites, including with NULL.
+   */
+  summaryUpdatePolicy?: Partial<Record<StandardStateFinanceSummaryColumn, StandardStateFinanceSummaryUpdateMode>>;
+  /**
+   * How outside-group breakdowns must relate to outside groups in the same
+   * snapshot. "presence" requires at least one group when breakdowns are
+   * supplied; "pairing" additionally requires each breakdown's
+   * (committeeId, supportOppose) to match a supplied group. Default "none".
+   */
+  outsideGroupValidation?: StandardStateFinanceOutsideGroupValidation;
 }): StandardStateFinanceSnapshotWriter {
   const label = config.label;
   const tables = Object.fromEntries(
     Object.entries(config.tables).map(([name, value]) => [name, assertIdentifier(value)])
   ) as StandardStateFinanceTables;
+  if (!Number.isInteger(config.minElectionYear) || config.minElectionYear < 1900 || config.minElectionYear > 2100) {
+    throw new Error(`Invalid ${label} finance minimum election year: ${config.minElectionYear}`);
+  }
+  const minElectionYear = config.minElectionYear;
+  const outsideGroupValidation = config.outsideGroupValidation ?? "none";
 
   function normalizeElectionYear(value: number): number {
-    if (!Number.isInteger(value) || value < 2014 || value > 2100) {
+    if (!Number.isInteger(value) || value < minElectionYear || value > 2100) {
       throw new Error(`Invalid ${label} finance election year: ${value}`);
     }
     return value;
@@ -283,6 +330,13 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     return { linkId };
   }
 
+  const summaryUpdateClauses = SUMMARY_COLUMNS.map((column) => {
+    const mode = config.summaryUpdatePolicy?.[column] ?? "preserveWhenNull";
+    return mode === "replace"
+      ? `${column} = EXCLUDED.${column}`
+      : `${column} = COALESCE(EXCLUDED.${column}, ${tables.summaries}.${column})`;
+  }).join(",\n        ");
+
   async function upsertSummary(input: {
     db: Queryable;
     linkId: string;
@@ -307,13 +361,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
       VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
       ON CONFLICT (link_id, election_year)
       DO UPDATE SET
-        total_receipts = COALESCE(EXCLUDED.total_receipts, ${tables.summaries}.total_receipts),
-        direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total, ${tables.summaries}.direct_contribution_total),
-        total_disbursements = COALESCE(EXCLUDED.total_disbursements, ${tables.summaries}.total_disbursements),
-        cash_on_hand = COALESCE(EXCLUDED.cash_on_hand, ${tables.summaries}.cash_on_hand),
-        outside_support_total = COALESCE(EXCLUDED.outside_support_total, ${tables.summaries}.outside_support_total),
-        outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total, ${tables.summaries}.outside_oppose_total),
-        source_url = COALESCE(EXCLUDED.source_url, ${tables.summaries}.source_url),
+        ${summaryUpdateClauses},
         last_synced_at = EXCLUDED.last_synced_at
     `,
       [
@@ -551,6 +599,33 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     );
   }
 
+  function validateOutsideGroupBreakdowns(input: StandardStateFinanceSnapshotInput): void {
+    if (outsideGroupValidation === "none") {
+      return;
+    }
+    const breakdownCount = input.outsideGroupBreakdowns?.length ?? 0;
+    if (breakdownCount === 0) {
+      return;
+    }
+    if ((input.outsideGroups?.length ?? 0) === 0) {
+      throw new Error(`${label} outside group breakdowns require outside groups in the same snapshot`);
+    }
+    if (outsideGroupValidation !== "pairing") {
+      return;
+    }
+    const groupKeys = new Set(
+      (input.outsideGroups ?? []).map(
+        (group) => `${requireNonEmpty(group.committeeId, `${label} outside group committee id`)}\u0000${group.supportOppose}`
+      )
+    );
+    for (const breakdown of input.outsideGroupBreakdowns ?? []) {
+      const key = `${requireNonEmpty(breakdown.committeeId, `${label} outside breakdown committee id`)}\u0000${breakdown.supportOppose}`;
+      if (!groupKeys.has(key)) {
+        throw new Error(`${label} outside group breakdowns must reference outside groups in the same snapshot`);
+      }
+    }
+  }
+
   async function replaceSnapshot(
     input: StandardStateFinanceSnapshotInput
   ): Promise<StandardStateFinanceSnapshotWriteResult> {
@@ -559,6 +634,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
       throw new Error(`Invalid ${label} finance sync timestamp`);
     }
     validateLinkInput(input.link);
+    validateOutsideGroupBreakdowns(input);
     const electionYear = normalizeElectionYear(input.link.electionYear);
 
     return await withTransaction(input.db, async (db) => {
