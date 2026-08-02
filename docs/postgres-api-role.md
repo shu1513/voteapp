@@ -39,11 +39,22 @@ GRANT INSERT, UPDATE, DELETE ON
   public.user_districts,
   public.user_ballot_preferences,
   public.user_research_area_preferences,   -- email prefs are columns on users
+  public.user_election_choices,
   public.user_push_tokens,
   public.user_push_notification_receipts,  -- cleared on account delete
   public.manual_district_research_requests,-- address resolve enqueues research
   public.staging_items                     -- autoDistrictResearch upsert
 TO voteapp_api;
+
+-- Append-only acceptance history and idempotent pick-card shares need narrower
+-- grants than the general read/write tables above.
+GRANT INSERT ON public.user_terms_acceptances TO voteapp_api;
+GRANT INSERT, UPDATE ON public.user_pick_card_shares TO voteapp_api;
+
+-- PostgreSQL row-locking SELECTs (FOR UPDATE/FOR SHARE/etc.) require UPDATE
+-- privilege. API queries only row-lock tables already listed as writable;
+-- reference/catalog tables such as elections, candidate_elections, and
+-- candidates remain SELECT-only.
 
 -- 4. Future tables created by migrations (which run as the owner) are
 --    readable automatically; new write tables need an explicit GRANT in

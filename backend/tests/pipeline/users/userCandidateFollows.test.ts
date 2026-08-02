@@ -348,6 +348,7 @@ describe("setUserCandidateFollow", () => {
     expect(String(client.query.mock.calls[2]?.[0])).toContain("INSERT INTO public.user_candidate_follows");
     expect(String(client.query.mock.calls[2]?.[0])).toContain("ON CONFLICT (user_id, candidate_id)");
     expect(String(client.query.mock.calls[2]?.[0])).toContain("WITH followable_candidate AS");
+    expect(String(client.query.mock.calls[2]?.[0])).not.toContain("FOR SHARE");
     expect(String(client.query.mock.calls[2]?.[0])).toContain("COALESCE($3::boolean, true)");
     expect(client.query.mock.calls[2]?.[1]).toEqual([userId, candidateIdA, null, null]);
     expect(client.query.mock.calls[3]?.[0]).toBe("COMMIT");

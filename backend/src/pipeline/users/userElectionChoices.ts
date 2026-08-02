@@ -256,7 +256,7 @@ async function readElectionChoice(
   };
 }
 
-async function lockElection(db: Queryable, normalizedElectionId: string): Promise<ElectionRow> {
+async function readElection(db: Queryable, normalizedElectionId: string): Promise<ElectionRow> {
   const result = await db.query<ElectionRow>(
     `
       SELECT
@@ -267,7 +267,9 @@ async function lockElection(db: Queryable, normalizedElectionId: string): Promis
         election_date >= ${US_LATEST_LOCAL_DATE_SQL} AS is_upcoming
       FROM public.elections
       WHERE id = $1::uuid
-      FOR SHARE
+      -- Do not add a row-locking clause here. PostgreSQL requires UPDATE
+      -- privilege for locking SELECTs, while the API role intentionally has
+      -- SELECT-only access to election catalog tables.
     `,
     [normalizedElectionId]
   );
@@ -295,7 +297,7 @@ export async function setUserElectionChoice(
     // FOR UPDATE on the user row serializes this user's choice writes, which
     // makes the count-then-insert seat cap below race-safe.
     await assertActiveUser(client, normalizedUserId, true);
-    const election = await lockElection(client, normalizedElectionId);
+    const election = await readElection(client, normalizedElectionId);
 
     if ("candidateId" in input) {
       if (election.race_type !== "office") {
@@ -331,7 +333,9 @@ export async function setUserElectionChoice(
             WHERE candidate_election.candidate_id = $1::uuid
               AND candidate_election.election_id = $2::uuid
               AND candidate_election.status NOT IN ('withdrawn', 'lost')
-            FOR SHARE OF candidate_election
+            -- Keep this a plain read for the SELECT-only API role. The
+            -- composite foreign key on the inserted choice remains the
+            -- authoritative candidacy-integrity check.
           `,
           [normalizedCandidateId, normalizedElectionId]
         );

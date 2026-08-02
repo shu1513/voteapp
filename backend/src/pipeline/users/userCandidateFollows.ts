@@ -307,7 +307,9 @@ export async function setUserCandidateFollow(
           WHERE id = $2::uuid
             AND deleted_at IS NULL
             AND merged_into_candidate_id IS NULL
-          FOR SHARE
+          -- A locking SELECT would require UPDATE on candidates. The API
+          -- role intentionally keeps this catalog table read-only; the
+          -- follow foreign key protects the insert against concurrent delete.
         )
         INSERT INTO public.user_candidate_follows (
           user_id,

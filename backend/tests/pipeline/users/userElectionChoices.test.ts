@@ -1,0 +1,94 @@
+import { describe, expect, it, vi } from "vitest";
+
+import { setUserElectionChoice } from "../../../src/pipeline/users/userElectionChoices.js";
+
+const userId = "11111111-1111-4111-8111-111111111111";
+const electionId = "22222222-2222-4222-8222-222222222222";
+const candidateId = "33333333-3333-4333-8333-333333333333";
+
+function createMockTransactionalDb() {
+  const client = {
+    query: vi.fn(),
+    release: vi.fn(),
+  };
+  const db = {
+    connect: vi.fn().mockResolvedValue(client),
+  };
+  return { db, client };
+}
+
+describe("setUserElectionChoice", () => {
+  it("keeps election catalog reads compatible with the SELECT-only API role", async () => {
+    const { db, client } = createMockTransactionalDb();
+    client.query
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: electionId,
+            race_type: "office",
+            election_date: "2026-08-18",
+            seats_to_fill: 1,
+            is_upcoming: true,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [{ candidate_id: candidateId }] })
+      .mockResolvedValueOnce({ rows: [{ count: "0" }] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: electionId,
+            race_type: "office",
+            official_ballot_title: "Commissioner of Agriculture",
+            election_date: "2026-08-18",
+            seats_to_fill: 1,
+            candidate_id: candidateId,
+            display_name: "Donald A. Prichard",
+            candidacy_status: "declared",
+            measure_position: null,
+            measure_result: null,
+            updated_at: "2026-08-02T17:00:00.000Z",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    await expect(
+      setUserElectionChoice(db, userId, {
+        electionId,
+        candidateId,
+        chosen: true,
+      })
+    ).resolves.toEqual({
+      choice: {
+        election_id: electionId,
+        race_type: "office",
+        official_ballot_title: "Commissioner of Agriculture",
+        election_date: "2026-08-18",
+        seats_to_fill: 1,
+        picks: [
+          {
+            candidate_id: candidateId,
+            display_name: "Donald A. Prichard",
+            candidacy_status: "declared",
+          },
+        ],
+        measure_position: null,
+        measure_result: null,
+        updated_at: "2026-08-02T17:00:00.000Z",
+      },
+    });
+
+    expect(String(client.query.mock.calls[1]?.[0])).toContain("FOR UPDATE");
+    expect(String(client.query.mock.calls[2]?.[0])).toContain("FROM public.elections");
+    expect(String(client.query.mock.calls[2]?.[0])).not.toContain("FOR SHARE");
+    expect(String(client.query.mock.calls[3]?.[0])).toContain("FROM public.candidate_elections");
+    expect(String(client.query.mock.calls[3]?.[0])).not.toContain("FOR SHARE");
+    expect(String(client.query.mock.calls[5]?.[0])).toContain("INSERT INTO public.user_election_choices");
+    expect(client.query.mock.calls[7]?.[0]).toBe("COMMIT");
+    expect(client.release).toHaveBeenCalledOnce();
+  });
+});
