@@ -1,4 +1,4 @@
-import type { BallotPreferences, BallotSummary } from "@voteapp/api-client";
+import type { BallotPreferences, BallotSummary, VoteImpactThreshold } from "@voteapp/api-client";
 import {
   ApiError,
   apiRequest,
@@ -146,7 +146,7 @@ function SavedBallotBody({ email }: { email: string }) {
   // election and back. Deliberately NOT account preferences — hiding races
   // should never silently persist across visits.
   const [onlyMyIssues, setOnlyMyIssues] = useState(false);
-  const [highImpact, setHighImpact] = useState(false);
+  const [impactLevel, setImpactLevel] = useState<VoteImpactThreshold | null>(null);
   const [handoffState, setHandoffState] = useState<HandoffState>("checking");
   const handoffFiredRef = useRef(false);
 
@@ -248,7 +248,7 @@ function SavedBallotBody({ email }: { email: string }) {
     savedAreaIds,
     hasSaved,
     issuesRequested: onlyMyIssues,
-    impactRequested: highImpact,
+    impactRequested: impactLevel,
   });
 
   if (data.districts.length === 0) {
@@ -281,14 +281,15 @@ function SavedBallotBody({ email }: { email: string }) {
         showIssues={filtersView.showIssuesFilter}
         issuesOn={filtersView.issuesOn}
         onIssuesChange={setOnlyMyIssues}
-        showImpact={filtersView.showImpactFilter}
-        impactOn={filtersView.impactOn}
-        onImpactChange={setHighImpact}
+        showImpactHigh={filtersView.showImpactHigh}
+        showImpactMedium={filtersView.showImpactMedium}
+        impactLevel={filtersView.impactLevel}
+        onImpactChange={setImpactLevel}
         activeFilterCount={filtersView.activeFilterCount}
         hiddenCount={filtersView.hiddenCount}
         onShowAll={() => {
           setOnlyMyIssues(false);
-          setHighImpact(false);
+          setImpactLevel(null);
         }}
         orderSection={<FollowedFirstPreference />}
       />
