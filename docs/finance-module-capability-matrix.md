@@ -1,0 +1,140 @@
+# Finance module capability matrix
+
+Phase 0 deliverable of the finance consolidation plan (see `plan.md`). Extracted mechanically from the writers, loaders, and test tree on 2026-08-01; spot-verified by hand. This matrix decides migration cohorts — cite the relevant row in every migration PR.
+
+## Legend
+
+- **Tables**: which of the five canonical tables (`links`, `summaries`, `direct_breakdowns`, `outside_groups`, `outside_group_breakdowns`) the writer touches. `5` = all five.
+- **Link extras**: link-table columns beyond the canonical set (`candidate_id`, `election_id`, `election_year`, `candidate_name_normalized`, `office_name`, `district`, `committee_id`, `committee_name`, `link_status`, `link_source`, `source_url`, `last_verified_at`). `→` marks a rename of `committee_id`/`committee_name`.
+- **Merge policy** (summaries upsert): `R` = replace all fields (`= EXCLUDED.x`); `C` = COALESCE all (preserve when incoming NULL); `R+oC` = replace, but COALESCE the two outside totals; `C+oR` = COALESCE, but replace outside totals. Field-set deviations noted.
+- **Floor**: minimum accepted election year.
+- **Tx**: `pool` = throws unless given a Pool ("must receive a Pool"); `self` = opens own transaction on a Pool, runs **unwrapped** on a client (pre-refactor Texas semantics); `factory` = delegates to the shared writer.
+- **Val+**: `G` = outside-group-breakdown ↔ group **pairing** validation (each breakdown must match a group in the snapshot; two message variants exist: "require matching…" and "must reference…"); `g` = presence-only check (breakdowns need ≥1 group, no pairing); `N` = `normalizeCommitteeId`; `M` = manual-link protection (link upsert preserves `link_status`/`link_source` when the existing row's `link_source = 'manual'`).
+- **Signed**: summary fields allowed to be negative.
+- **Direct cats**: `std` = `occupation` + `contribution_size`.
+- **Tests** (per-module files): W = writer, L = ballot-lookup loader, A = auto-link, B = batchSync.
+
+The shared factory (`createStandardStateFinanceSnapshotWriter`) after PR #488: canonical link columns, all 5 tables mandatory, `committee_id`/`committee_name` outside-group identity hardcoded, tx `pool`, config = `{label, tables, minElectionYear (required), summaryUpdatePolicy? (per-column replace|preserveWhenNull, default preserve), outsideGroupValidation? (none|presence|pairing, default none)}`. Still missing (add only when a migrating cohort needs it): signed-amount fields, configurable outside-group identity columns, caller-transaction mode, `normalizeCommitteeId`, manual-link protection.
+
+## Writers
+
+| Module | Tables | Link extras | Merge | Floor | Tx | Val+ | Signed | Direct cats |
+|---|---|---|---|---|---|---|---|---|
+| alaska | 5 | →`candidate_filer_id`/`candidate_filer_name` | R | 2000 | pool | G | — | std |
+| arizona | 5 | none | R | 2002 | pool | g | — | std |
+| california | 5 | no `district`; →`controlled_committee_id`/`_name` | C; +`debts_owed`; no `direct_contribution_total` | 2001 | self | — | — | std+`contributor_source_type`+`industry` |
+| colorado | 3 (no outside) | +`tracer_candidate_id` | C; only receipts+source | 2001 | self | — | — | std |
+| connecticut | 3 (no outside) | none | C; no direct/cash | 2008 | self | — | — | std |
+| districtOfColumbia | 5 | →`committee_key` | C | 2000 | pool | G | — | std |
+| florida | **6** (+`outside_group_links`, 2nd insert) | none | R+oC | 1996 | pool | — | — | std |
+| hawaii | 5 | +`election_period` | C+oR | 2000 | pool | g | — | std |
+| houston | factory wrapper | — | factory | factory | factory | — | — | — |
+| illinois | 5 | +`sbe_candidate_id`,`sbe_district_type`,`sbe_office`,`is_at_large`; →`committee_key` | R+oC; +`debts_owed` | 2000 | pool | G,M | `cash_on_hand` | std |
+| indiana | 3 (no outside) | none | R; only receipts+direct | 2000 | self | M | — | std+`pac_backed_industry` |
+| kentucky | 5 | +`candidate_key`; →`committee_key` | R | 2000 | pool | G | `cash_on_hand` | std |
+| losAngelesCity | 4 (no `outside_group_breakdowns`); `lacity_` prefix | different shape (city outlier) | — | none | self | — | — | — |
+| louisiana | 5 | →`filer_number`/`filer_name` | R | 2000 | pool | G | `cash_on_hand` | std+`contributor_type`+`donor` |
+| maine | 5 | none | R+oC | 2000 | pool | G,N | — | std |
+| maryland | 5 | none | R+oC | 2000 | pool | G,N | — | std |
+| massachusetts | 5 | →`candidate_cpf_id`/`filer_name`; keeps `committee_name` | R | 2000 | pool | g | — | std |
+| michigan | 5 | none | R+oC; +`candidate_loan_total` | 2000 | pool | G,M | — | std |
+| minnesota | **4 (no `direct_breakdowns`)** | none | C | 2000 | pool | G,M | — | n/a (no direct table) |
+| nebraska | 3 (no outside) | none | C; only receipts+direct | 2021 | self | — | — | std |
+| newJersey | 5 | →`candidate_entity_s`/`entity_name`; +`election_type_code` | R | 1980 | pool | G | — | std |
+| newMexico | 5 | none | C; no `cash_on_hand` | 2020 | self | — | — | std |
+| newYorkCity | 5 (`nyc_` prefix) | city outlier | different summary fields entirely (`private_contributions`, `net_expenditures`, `outstanding_bills`, `public_funds`) | none | self | M | — | — |
+| newYork | 5 | →`filer_id`/`filer_name` | C+oR | 2000 | pool | g | — | std+`contributor_type`+`donor`+`industry` |
+| oklahoma | 3 (no outside) | none | C; only receipts+direct | 2014 | self | — | — | std |
+| oregon | 5 | none | R | 2000 | pool | g | — | std |
+| pennsylvania | 5 | →`filer_id`/`filer_name` | R+oC | 2000 | pool | G,M | — | std |
+| tennessee | 5 | +`camp_candidate_id`,`owner_name`,`report_list_url` | R; no disb/cash | 2000 | self | G | — | std |
+| texas | factory wrapper | — | factory | factory | factory | — | — | — |
+| utah | 3 + **alt outside tables** (`supporting_committees`, `supporting_committee_industries`) | →`folder_id` | R; no outside | 1998 | self | — | — | `contribution_size` only |
+| vermont | 5 | +`filer_registration_guid`,`entity_id`; →`filer_name` | R | 2000 | pool | g | — | std+`contributor_source_type`+`donor` |
+| virginia | 3 (no outside) | +`committee_code` | C; only receipts+direct | 2000 | self | — | — | std |
+| washington | 5 | +`filer_id`,`candidacy_id` | C+oR | 2000 | pool | g | — | std+`employer`+`industry` |
+| wisconsin | 5 | +`entity_id`,`assigned_committee_id` | C | 2000 | pool | g | — | std+`employer`+`industry` |
+
+### Writer outside-group identity columns
+
+The factory hardcodes `committee_id`/`committee_name` in the outside-groups and outside-group-breakdowns tables (and `committeeId` input fields). Writers diverge (this was missed in the first pass and disqualified Oregon as a pilot):
+
+- **`committee_id`/`committee_name` (factory-canonical)**: arizona, california, florida, hawaii, maine, maryland, michigan, minnesota, newMexico
+- **`committee_key`**: districtOfColumbia, illinois, kentucky, tennessee
+- **`sponsor_id`/`sponsor_name`** (and `sponsorId` input fields): oregon, washington, wisconsin
+- **One-offs**: alaska `outside_group_id`; louisiana `filer_number`; massachusetts `iepac_cpf_id`; newJersey `outside_entity_s`; newYork `filer_id`; newYorkCity `spender_id`; pennsylvania `group_id`; utah `committee_name` only (alt tables); vermont `filer_registration_guid`
+- **No outside tables**: colorado, connecticut, indiana, nebraska, oklahoma, virginia (+ texas/houston wrappers, factory-owned)
+
+Any state outside the factory-canonical group needs a configurable outside-identity column (small factory param, own PR) before its writer can migrate.
+
+Val+ distribution: pairing validation `G` in 12 (two message variants — "require matching": dc, kentucky, maryland, newJersey, tennessee, maine; "must reference": alaska, illinois, louisiana, michigan, minnesota, pennsylvania); presence-only `g` in 10; manual-link protection `M` in 6 (illinois, indiana, michigan, minnesota, newYorkCity, pennsylvania). The shared factory has none of these.
+
+## Ballot-lookup loaders (identity columns per relation)
+
+`link.id`, `link.candidate_id`, `link.election_id`, `*.link_id` are universal and omitted. Shared loader today supports `committee_id`/`committee_key` as one column across all relations.
+
+| Module | File | Link identity | Outside-group / breakdown identity |
+|---|---|---|---|
+| alaska | `alaskaCandidateFinanceBallotLookup.ts` (nonstandard name) | `candidate_filer_id` | `outside_group_id` |
+| arizona | `arizonaFinanceBallotLookup.ts` (nonstandard name) | `committee_id` | `committee_id` |
+| california | standard name | `controlled_committee_id` | `committee_id` |
+| colorado | standard | `committee_id` | direct-only |
+| connecticut | standard | `committee_id` | direct-only |
+| districtOfColumbia | standard | `committee_key` | `committee_key` |
+| florida | **no loader file** | — | — |
+| hawaii | standard | `committee_id` | `committee_id` |
+| houston / illinois / texas | wrappers over shared loader | — | — |
+| indiana | standard | `committee_id` | direct-only |
+| kentucky | standard | `committee_key` | `committee_key` |
+| losAngelesCity | `losAngelesBallotLookupFinanceLoader.ts` | `fppc_committee_id` | city outlier |
+| louisiana | standard | `filer_number` | `filer_number` |
+| maine | standard | `committee_id` | `committee_id` |
+| maryland | standard | `committee_id` | `committee_id` |
+| massachusetts | standard | `candidate_cpf_id` | `iepac_cpf_id` |
+| michigan | standard | `committee_id` | `committee_id` |
+| minnesota | standard | `committee_id` | `committee_id` |
+| nebraska | standard | `committee_id` | direct-only |
+| newJersey | standard | entity columns | entity columns |
+| newMexico | standard | `committee_id` | `committee_id` |
+| newYorkCity | standard | `cfb_candidate_id` | `spender_id` |
+| newYork | standard | `filer_id` | `filer_id` |
+| oklahoma | standard | `committee_id` | direct-only |
+| oregon | standard | `committee_id` | **`sponsor_id`** (mixed) |
+| pennsylvania | `pennsylvaniaBallotLookupFinance.ts` (nonstandard name) | `filer_id` | **`group_id`** (mixed) |
+| tennessee | standard | `camp_candidate_id` | `committee_key` |
+| utah | standard | `folder_id` | alt tables |
+| vermont | standard | `filer_registration_guid` | `filer_registration_guid` |
+| virginia | standard | `committee_id` | direct-only |
+| washington | standard | `committee_id` | **`sponsor_id`** (mixed) |
+| wisconsin | standard | `committee_id` | **`sponsor_id`** (mixed) |
+
+Mixed-identity states (link column ≠ outside column) are why the loader descriptor must be per-relation, not a single option.
+
+## Auto-link shape
+
+- **Standalone file with resolve + write** (wrapper-equivalent candidates): 26 modules.
+- **File without link-writing**: illinois (resolve-only), michigan (list-only).
+- **Embedded in batchSync, no file**: arizona, maryland, vermont (vermont adds statewide-only safety logic).
+- **No auto-link at all**: newJersey, newYorkCity, utah.
+
+## Transaction-ownership note
+
+`self` writers (california, colorado, connecticut, indiana, losAngelesCity, nebraska, newMexico, newYorkCity, oklahoma, tennessee, utah, virginia) open their own transaction only when handed a Pool; on a client they run **without** a wrapping transaction (assumed caller-owned). The factory instead throws on non-Pool input. Migrating a `self` writer to the factory changes this contract — check each one's callers (the `cycleArtifactRows` batch cohort passes clients: colorado, indiana, maine*, maryland*, nebraska, newMexico, oklahoma — *maine/maryland are `pool` writers, so their batch paths must already cope; verify when they migrate).
+
+## Test coverage (per module)
+
+| Role | Have tests | Missing |
+|---|---|---|
+| Writer | 34 of 34 (minnesota added in PR #488) | — |
+| Ballot-lookup loader | 10 of 31 with loader files | 21 modules — characterization tests required before each loader cohort migrates |
+| Auto-link | 25 of 28 files | illinois, michigan + 1 |
+| BatchSync | 34 of 34 | — |
+
+The factory itself has a dedicated config-option test file (`tests/pipeline/finance/standardStateFinanceSnapshotWriter.test.ts`, PR #488) alongside the Texas/Houston wrapper tests.
+
+## Cohort readout (feeds plan phases)
+
+- **Phase 1 pilot (exact canonical shape)**: **arizona** — the only state with canonical link columns, all 5 tables, factory-canonical outside identity, merge `R`, std categories, `pool` tx. The factory prereqs (per-field merge policy, required floor, presence check `g`) shipped in PR #488. Oregon was originally listed as a co-pilot but is disqualified: its outside tables use `sponsor_id`/`sponsor_name` and its exported types use `sponsorId` fields.
+- **Phase 1 second wave (factory-canonical outside identity only)**: maine, maryland (add `G`+`N` + `R+oC` policy), michigan (+`candidate_loan_total`). All other former second-wave states need factory work first: oregon/washington/wisconsin (`sponsor_id`), pennsylvania (`group_id` + `filer_id` link rename), massachusetts (`iepac_cpf_id` + link rename), alaska (`outside_group_id` + link rename), louisiana (`filer_number`), florida (extra table).
+- **Deferred writer families (Phase 5)**: california, illinois, hawaii, kentucky, vermont, wisconsin, washington, newJersey, tennessee (extra columns/fields); colorado, connecticut, indiana, nebraska, oklahoma, virginia (3-table direct-only + reduced summary sets); minnesota (no direct table); utah (alt outside tables); city outliers (nyc, losAngelesCity) stay bespoke.
+- **Loader cohorts**: uniform-identity `committee_id` states first (hawaii, maine, maryland, michigan, minnesota, newMexico + direct-only colorado, connecticut, indiana, nebraska, oklahoma, virginia); then `committee_key` (dc, kentucky); mixed-identity and renamed states after the per-relation descriptor exists; alaska/arizona/pennsylvania (nonstandard filenames) and florida (no loader) resolved case-by-case.
