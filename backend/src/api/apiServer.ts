@@ -76,8 +76,10 @@ import {
   parseElectionId,
   parseInitializeUserDistrictsBodyValue,
   parseResearchAreaPreferencesBodyValue,
+  parseStateResourcesState,
   RESEARCH_AREAS_PATH,
   SITE_SITEMAP_PATH,
+  STATE_RESOURCES_PATH,
 } from "./apiValidation.js";
 import { parseBearerAuthorizationValue } from "../auth/authBearer.js";
 import {
@@ -111,6 +113,7 @@ type ExpressBodyParserError = Error & {
 };
 
 const SITE_SITEMAP_CACHE_CONTROL = "public, max-age=3600";
+const STATE_RESOURCES_CACHE_CONTROL = "public, max-age=3600";
 
 function isKnownApiPath(pathname: string): boolean {
   return (
@@ -145,6 +148,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_PUSH_TOKENS_PATH ||
     pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
     pathname === RESEARCH_AREAS_PATH ||
+    pathname === STATE_RESOURCES_PATH ||
     pathname === SITE_SITEMAP_PATH ||
     // Listed explicitly even though the loose candidate-detail prefix also
     // matches it today: recognition of the search route must not depend on
@@ -510,6 +514,44 @@ async function dispatchApiRequest(
 
     const result = await options.listResearchAreas();
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === STATE_RESOURCES_PATH) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET /api/state-resources?state=CA", {
+          ...corsHeaders,
+          allow: "GET",
+        })
+      );
+      return;
+    }
+    if (!options.getStateVotingResources) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "State voting resources lookup is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const stateAbbreviation = parseStateResourcesState(url);
+    const result = await options.getStateVotingResources(stateAbbreviation);
+    if (!result) {
+      sendApiResponse(
+        response,
+        toErrorResponse(404, "not_found", `No voting resources found for state ${stateAbbreviation}`, corsHeaders)
+      );
+      return;
+    }
+
+    // Official state links change on a research cadence (roughly annual), so
+    // shared caches may hold them briefly, unlike the personalized defaults.
+    sendApiResponse(
+      response,
+      toJsonResponse(200, result, { ...corsHeaders, "cache-control": STATE_RESOURCES_CACHE_CONTROL })
+    );
     return;
   }
 

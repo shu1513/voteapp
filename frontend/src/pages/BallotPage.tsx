@@ -8,6 +8,7 @@ import {
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
 import { BallotFiltersControl } from "../components/BallotFiltersControl";
+import { HowToVoteControl } from "../components/HowToVoteControl";
 import { deriveBallotFilters, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
 import { useBallotFilterParams } from "../lib/useBallotFilterParams";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
@@ -114,33 +115,42 @@ export function BallotPage() {
           elections for BALLOT_PAST_ELECTION_VISIBILITY_DAYS so their results
           stay discoverable, and those are not upcoming. */}
       <h1 className="sr-only">Elections</h1>
-      <div className="flex flex-wrap items-start justify-end gap-3">
-        <BallotFiltersControl
-          showIssues={filtersView.showIssuesFilter}
-          issuesOn={filtersView.issuesOn}
-          onIssuesChange={onIssuesFilterChange}
-          showImpactHigh={filtersView.showImpactHigh}
-          showImpactMedium={filtersView.showImpactMedium}
-          impactLevel={filtersView.impactLevel}
-          onImpactChange={onImpactFilterChange}
-          activeFilterCount={filtersView.activeFilterCount}
-          hiddenCount={filtersView.hiddenCount}
-          onShowAll={onShowAll}
-        />
-        <label className="flex items-center gap-2 text-sm text-ink-soft">
-          Sort by
-          <select
-            value={sort}
-            onChange={(event) => onSortChange(event.target.value)}
-            className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
-          >
-            {PUBLIC_BALLOT_SORTS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
+      {/* Filters and sorting on the left, the "How to vote" resources on the
+          right — the disclosure panels each open inline under their own
+          column. The how-to-vote control waits for the ballot response
+          because that's where its state abbreviation(s) come from. */}
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex flex-wrap items-start gap-3">
+          <BallotFiltersControl
+            showIssues={filtersView.showIssuesFilter}
+            issuesOn={filtersView.issuesOn}
+            onIssuesChange={onIssuesFilterChange}
+            showImpactHigh={filtersView.showImpactHigh}
+            showImpactMedium={filtersView.showImpactMedium}
+            impactLevel={filtersView.impactLevel}
+            onImpactChange={onImpactFilterChange}
+            activeFilterCount={filtersView.activeFilterCount}
+            hiddenCount={filtersView.hiddenCount}
+            onShowAll={onShowAll}
+          />
+          <label className="flex items-center gap-2 text-sm text-ink-soft">
+            Sort by
+            <select
+              value={sort}
+              onChange={(event) => onSortChange(event.target.value)}
+              className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
+            >
+              {PUBLIC_BALLOT_SORTS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+        {ballot.isSuccess ? (
+          <HowToVoteControl states={ballot.data.districts.map((district) => district.state)} />
+        ) : null}
       </div>
 
       {/* The always-on "Matched address" confirmation line was dropped as

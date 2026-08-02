@@ -137,6 +137,25 @@ export type BallotSummary = {
   elections: ElectionSummary[];
 };
 
+// Mirrors StateVotingResources (backend api/stateVotingResources.ts): the
+// official how-to-vote links for one state. mail_ballot_request_type explains
+// how a voter obtains a mail ballot; "not_required" means every registered
+// voter is mailed a ballot automatically (request URL is the official
+// explanatory page and the request deadline is null).
+export type StateVotingResources = {
+  state_abbreviation: string;
+  state_name: string;
+  polling_place_url: string;
+  mail_voting_available: boolean;
+  mail_ballot_request_url: string | null;
+  mail_ballot_request_type: "online_portal" | "form" | "instructions" | "not_required" | null;
+  mail_ballot_request_deadline_rule: string | null;
+};
+
+export type StateVotingResourcesResult = {
+  state_resources: StateVotingResources;
+};
+
 // Mirrors BallotLookupFinanceBreakdown (backend ballotLookupFinanceShared.ts).
 // Industry category_name values arrive as slugs (oil_gas_energy) — display
 // them through formatFinanceCategory; occupation names arrive as free text.

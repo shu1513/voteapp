@@ -36,8 +36,10 @@ import type {
 import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
 import type { EmailUnsubscribePreference } from "./apiValidation.js";
 import type { AddressResolutionDiagnostics } from "./addressApiResponses.js";
+import type { StateVotingResourcesResult } from "./stateVotingResources.js";
 
 export type { ResearchAreaCatalogItem, ResearchAreaCatalogResult } from "../pipeline/users/userResearchAreaPreferences.js";
+export type { StateVotingResources, StateVotingResourcesResult } from "./stateVotingResources.js";
 
 export type AuthenticatedAddressUpdateResult = AuthenticatedAddressDistrictUpdateResult;
 
@@ -103,6 +105,9 @@ export type AddressApiServerOptions = {
    * null = election or candidate/election pairing not found (404). */
   lookupCandidateElectionFinance?: (electionId: string, candidateId: string) => Promise<CandidateElectionFinanceResult | null>;
   listResearchAreas?: () => Promise<ResearchAreaCatalogResult>;
+  /** GET /api/state-resources?state=CA — public official how-to-vote links
+   * for one state. null = state not in state_resources (404). */
+  getStateVotingResources?: (stateAbbreviation: string) => Promise<StateVotingResourcesResult | null>;
   getSitemapXml?: () => Promise<string>;
   listAuthenticatedCandidateFollows?: (userId: string) => Promise<AuthenticatedCandidateFollowsResult>;
   setAuthenticatedCandidateFollow?: (
