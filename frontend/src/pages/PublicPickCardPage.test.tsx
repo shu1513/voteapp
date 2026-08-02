@@ -49,4 +49,14 @@ describe("PublicPickCardPage", () => {
       await screen.findByRole("heading", { name: "Election Picks for November 3, 2026" })
     ).toBeInTheDocument();
   });
+
+  it("keeps a legacy anonymous share unnamed (null first name)", async () => {
+    // Shares minted before the named page existed return first_name: null
+    // (show_owner_name=false) — they were posted under an anonymous page
+    // and must stay that way until the owner re-shares.
+    renderCard(pickCard({ first_name: null }));
+    expect(
+      await screen.findByRole("heading", { name: "Election Picks for November 3, 2026" })
+    ).toBeInTheDocument();
+  });
 });

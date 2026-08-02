@@ -113,7 +113,11 @@ describe("PicksPage", () => {
     // The standard ShareButton takes over once the token exists (menu shape
     // in jsdom — no navigator.share), alongside the visibility warning.
     expect(await screen.findByRole("button", { name: "Share" })).toBeInTheDocument();
-    expect(screen.getByText("Anyone with the link can see this card.")).toBeInTheDocument();
+    // The caption must disclose the name reveal — minting is the consent
+    // event, so the sharer learns it here, not from a recipient.
+    expect(
+      screen.getByText("Anyone with the link can see this card and your first name.")
+    ).toBeInTheDocument();
 
     // The minted URL itself is visible — canonical host in the text, the
     // relative path as the href (the token only resolves where it was

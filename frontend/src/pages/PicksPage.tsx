@@ -97,7 +97,12 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
           path={path}
           shareText={`My ${formatElectionDate(electionDate)} election picks`}
         />
-        <span className="text-xs text-ink-soft">Anyone with the link can see this card.</span>
+        {/* Names the name: the public page shows the owner's first name, and
+            the sharer must learn that HERE, before posting the link — not
+            from a recipient. */}
+        <span className="text-xs text-ink-soft">
+          Anyone with the link can see this card and your first name.
+        </span>
       </span>
     );
   }
