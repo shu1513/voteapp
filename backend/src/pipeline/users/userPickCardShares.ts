@@ -20,6 +20,10 @@ export type PublicPickCardEntry = {
   district_name: string;
   picks: { candidate_id: string; display_name: string; candidacy_status: string }[];
   measure_position: "yes" | "no" | null;
+  /** ballot_measures.result at read time ("passed"/"failed" once certified
+   * results land, null before) — the measure counterpart of the won/lost
+   * candidacy_status on picks. */
+  measure_result: string | null;
 };
 
 /** The public payload behind /picks/<token>. Everything here is public
@@ -197,6 +201,7 @@ type PickCardRow = {
   display_name: string | null;
   candidacy_status: string | null;
   measure_position: "yes" | "no" | null;
+  measure_result: string | null;
 };
 
 /**
@@ -225,7 +230,8 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
           trim(concat_ws(' ', candidate.first_name, candidate.last_name))
         ) AS display_name,
         candidate_election.status AS candidacy_status,
-        choice.measure_position
+        choice.measure_position,
+        measure.result AS measure_result
       FROM public.user_pick_card_shares AS share
       JOIN public.users AS user_row
         ON user_row.id = share.user_id
@@ -253,6 +259,8 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
       LEFT JOIN public.candidate_elections AS candidate_election
         ON candidate_election.candidate_id = choice.candidate_id
        AND candidate_election.election_id = choice.election_id
+      LEFT JOIN public.ballot_measures AS measure
+        ON measure.election_id = election.id
       WHERE share.token = $1
       ORDER BY election.official_ballot_title ASC, election.id ASC, choice.created_at ASC, choice.id ASC
     `,
@@ -290,6 +298,7 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
         district_name: row.district_name,
         picks: [],
         measure_position: null,
+        measure_result: row.measure_result,
       };
       byElection.set(row.election_id, entry);
     }

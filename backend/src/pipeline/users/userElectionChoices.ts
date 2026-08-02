@@ -23,6 +23,10 @@ export type UserElectionChoice = {
   seats_to_fill: number | null;
   picks: UserElectionChoicePick[];
   measure_position: "yes" | "no" | null;
+  /** ballot_measures.result at read time ("passed"/"failed" once certified
+   * results land, null before) — lets a measure pick show its outcome the
+   * way candidacy_status lets a candidate pick show won/lost. */
+  measure_result: string | null;
   updated_at: string;
 };
 
@@ -69,6 +73,7 @@ type ChoiceRow = {
   display_name: string | null;
   candidacy_status: string | null;
   measure_position: "yes" | "no" | null;
+  measure_result: string | null;
   updated_at: string | Date;
 };
 
@@ -150,6 +155,7 @@ const CHOICE_ROWS_SQL = `
     ) AS display_name,
     candidate_election.status AS candidacy_status,
     choice.measure_position,
+    measure.result AS measure_result,
     choice.updated_at
   FROM public.user_election_choices AS choice
   JOIN public.elections AS election
@@ -161,6 +167,8 @@ const CHOICE_ROWS_SQL = `
   LEFT JOIN public.candidate_elections AS candidate_election
     ON candidate_election.candidate_id = choice.candidate_id
    AND candidate_election.election_id = choice.election_id
+  LEFT JOIN public.ballot_measures AS measure
+    ON measure.election_id = election.id
   WHERE choice.user_id = $1::uuid
 `;
 
@@ -177,6 +185,7 @@ function rowsToChoices(rows: ChoiceRow[]): UserElectionChoice[] {
         seats_to_fill: row.seats_to_fill,
         picks: [],
         measure_position: null,
+        measure_result: row.measure_result,
         updated_at: formatTimestamp(row.updated_at),
       };
       byElection.set(row.election_id, choice);
@@ -242,6 +251,7 @@ async function readElectionChoice(
     seats_to_fill: election.seats_to_fill,
     picks: [],
     measure_position: null,
+    measure_result: null,
     updated_at: new Date().toISOString(),
   };
 }
