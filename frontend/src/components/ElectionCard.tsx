@@ -12,12 +12,17 @@ import { splitResearchAreasBySaved } from "../lib/researchAreaPriority";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 
-// "Your pick: Jane Doe" / "Your pick: Jane Doe, John Roe" (multi-seat) /
-// "Your vote: Yes on this measure". A pick whose candidate has since
+// "My pick: Jane Doe" / "My picks: Jane Doe, John Roe" (multi-seat) /
+// "My vote: Yes" on a measure. First person throughout, because both chips
+// render side by side in one ballot list and because these labels echo the
+// controls that set them — MeasureChoiceButtons is headed "My vote:" and
+// the candidate button reads "My pick" (ElectionChoiceControls.tsx). It also
+// matches the rest of the signed-in surface ("My Elections", "My
+// Candidates", "My issues first"). A pick whose candidate has since
 // withdrawn gets flagged inline instead of vanishing.
 function formatChoiceLabel(choice: ElectionChoice): string | null {
   if (choice.measure_position !== null) {
-    return `Your vote: ${choice.measure_position === "yes" ? "Yes" : "No"}`;
+    return `My vote: ${choice.measure_position === "yes" ? "Yes" : "No"}`;
   }
   if (choice.picks.length === 0) {
     return null;
@@ -25,7 +30,7 @@ function formatChoiceLabel(choice: ElectionChoice): string | null {
   const names = choice.picks
     .map((pick) => (pick.candidacy_status === "withdrawn" ? `${pick.display_name} (withdrew)` : pick.display_name))
     .join(", ");
-  return `Your pick: ${names}`;
+  return `${choice.picks.length === 1 ? "My pick" : "My picks"}: ${names}`;
 }
 
 // Statewide races carry a dozen-plus research areas; rendering every one

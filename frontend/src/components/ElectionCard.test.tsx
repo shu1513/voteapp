@@ -460,7 +460,7 @@ describe("ElectionCard", () => {
 
   it("shows the viewer's pick on an upcoming race, flagging withdrawn candidates", () => {
     renderCard(electionSummary(), undefined, new Map([["e-1", electionChoice()]]));
-    expect(screen.getByText("Your pick: Jane Smith")).toBeInTheDocument();
+    expect(screen.getByText("My pick: Jane Smith")).toBeInTheDocument();
 
     renderCard(
       electionSummary(),
@@ -474,7 +474,27 @@ describe("ElectionCard", () => {
         ],
       ])
     );
-    expect(screen.getByText("Your pick: Jane Smith (withdrew)")).toBeInTheDocument();
+    expect(screen.getByText("My pick: Jane Smith (withdrew)")).toBeInTheDocument();
+  });
+
+  it("pluralizes the label when a multi-seat race carries several picks", () => {
+    renderCard(
+      electionSummary(),
+      undefined,
+      new Map([
+        [
+          "e-1",
+          electionChoice({
+            seats_to_fill: 2,
+            picks: [
+              { candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "declared" },
+              { candidate_id: "c-2", display_name: "John Roe", candidacy_status: "declared" },
+            ],
+          }),
+        ],
+      ])
+    );
+    expect(screen.getByText("My picks: Jane Smith, John Roe")).toBeInTheDocument();
   });
 
   it("shows a measure position as the choice chip", () => {
@@ -483,7 +503,7 @@ describe("ElectionCard", () => {
       undefined,
       new Map([["e-1", electionChoice({ race_type: "ballot_measure", picks: [], measure_position: "yes" })]])
     );
-    expect(screen.getByText("Your vote: Yes")).toBeInTheDocument();
+    expect(screen.getByText("My vote: Yes")).toBeInTheDocument();
   });
 
   it("stays silent on an undecided race", () => {
@@ -492,19 +512,19 @@ describe("ElectionCard", () => {
     // guard for the removed "No pick yet" nudge.
     renderCard(electionSummary(), undefined, new Map());
     expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
-    expect(screen.queryByText(/Your pick:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
 
     // Same when a choice row exists but formats to nothing — its only pick's
     // candidate was deleted or merged.
     renderCard(electionSummary(), undefined, new Map([["e-1", electionChoice({ picks: [] })]]));
     expect(screen.queryByText("No pick yet")).not.toBeInTheDocument();
-    expect(screen.queryByText(/Your pick:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
   });
 
   it("shows no choice chip for anonymous viewers or past races", () => {
     // No choices map (anonymous / still loading).
     renderCard(electionSummary());
-    expect(screen.queryByText(/Your pick:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
 
     // Past race: the pick is history.
     renderCard(
@@ -512,6 +532,6 @@ describe("ElectionCard", () => {
       undefined,
       new Map([["e-1", electionChoice({ election_date: "2024-11-05" })]])
     );
-    expect(screen.queryByText(/Your pick:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
   });
 });
