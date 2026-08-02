@@ -1,7 +1,22 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+// Citation verification resolves every cited hostname through
+// dns.promises.lookup BEFORE calling (mocked) fetch, and its lookup timeout
+// (8s) exceeds the 5s per-test timeout — a slow resolver on a loaded CI
+// runner times the test out. Mock DNS so the suite never touches the network.
+const { dnsLookupMock } = vi.hoisted(() => ({ dnsLookupMock: vi.fn() }));
+
+vi.mock("node:dns/promises", () => ({
+  lookup: dnsLookupMock,
+}));
+
 import { enrichStateResources } from "../../src/ai/enrichStateResources.ts";
 
 const originalFetch = globalThis.fetch;
+
+beforeEach(() => {
+  dnsLookupMock.mockResolvedValue([{ address: "93.184.216.34", family: 4 }]);
+});
 
 afterEach(() => {
   globalThis.fetch = originalFetch;
