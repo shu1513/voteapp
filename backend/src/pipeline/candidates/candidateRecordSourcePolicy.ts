@@ -694,7 +694,8 @@ const OWNED_HOST_FOR_TAIL_GEO_TOKENS = [
   "nm", "ny", "nc", "nd", "oh", "ok", "or", "pa", "ri", "sc", "sd", "tn", "tx", "ut", "vt",
   "va", "wa", "wv", "wi", "wy",
   // Places observed in live campaign hosts (curated; extend as the corpus grows).
-  "brevard", "merced", "seattle", "spokane", "thurston", "westchester", "oc",
+  "brevard", "flagstaff", "lansing", "merced", "seattle", "spokane", "thurston",
+  "westchester", "oc",
 ];
 const OWNED_HOST_FOR_TAIL_OFFICE_WORDS = [
   // Only compounds the word list cannot assemble: "statehouse", "countyclerk"
@@ -704,8 +705,8 @@ const OWNED_HOST_FOR_TAIL_OFFICE_WORDS = [
   "trustee", "school", "schools", "board", "judge", "justice", "sheriff", "clerk",
   "treasurer", "auditor", "assessor", "coroner", "recorder", "commissioner", "supervisor",
   "governor", "gov", "prosecutor", "attorney", "secretary", "delegate", "regent", "state",
-  "county", "city", "district", "hd", "hr", "sd", "ld", "ad", "cd",
-  "ag", "da", "sos", "psc", "cps", "ccsd", "boe", "isd", "usd",
+  "county", "city", "district", "rep", "hd", "hr", "sd", "ld", "ad", "cd",
+  "ag", "da", "soe", "sos", "psc", "cps", "ccsd", "boe", "isd", "usd",
   // Campaign-cause tails observed live ("forchange", "forus").
   "change", "us",
 ];
@@ -742,6 +743,44 @@ function isCampaignForTail(tail: string): boolean {
     return true; // digits alone are a district-number tail ("cooleyfor35")
   }
   return consumedAny && rest.length === 0;
+}
+
+// The connector between name and campaign tail is not always the literal
+// "for": digit substitutions are common ("christian4michigan.com",
+// "vote4quinn.com", "lori2lansing.com" — all live corpus; "4" reads as "for",
+// "2" as "to"). English words never carry an interior digit, so a digit
+// connector is if anything LOWER-risk than "for" — the substring coincidences
+// the tail gate exists for ("hart"+"fordcourant") cannot occur. One deliberate
+// asymmetry: after a DIGIT connector the tail must consume real vocabulary —
+// the pure-digit tail branch is refused, because "<name>4<digits>" has no
+// unambiguous campaign reading, while "<name>for<digits>" ("cooleyfor35")
+// does. Returns the tail after the connector, or null when none is present.
+function stripCampaignConnector(rest: string): { tail: string; digit: boolean } | null {
+  if (rest.startsWith("for")) {
+    return { tail: rest.slice(3), digit: false };
+  }
+  if (rest.startsWith("4") || rest.startsWith("2")) {
+    return { tail: rest.slice(1), digit: true };
+  }
+  return null;
+}
+
+// Cause tails ("forus", "forchange") read as campaign labels after the
+// literal "for", but after a digit the same tail is generic org naming
+// ("care4us.org" is a charity shape, not a campaign) — so a digit-connector
+// tail must be geographic/office vocabulary, not a bare cause word. Compounds
+// that merely PASS THROUGH a cause word ("4ussenate" = "us"+"senate") still
+// qualify because the tail is not solely the cause word.
+const DIGIT_CONNECTOR_REFUSED_TAILS = new Set(["us", "change"]);
+
+function connectorTailQualifies(connector: { tail: string; digit: boolean }): boolean {
+  if (connector.digit && /^\d*$/.test(connector.tail)) {
+    return false;
+  }
+  if (connector.digit && DIGIT_CONNECTOR_REFUSED_TAILS.has(connector.tail)) {
+    return false;
+  }
+  return isCampaignForTail(connector.tail);
 }
 
 function candidateNameTokens(displayName: string): string[] {
@@ -802,12 +841,22 @@ export function isCandidateOwnedHostname(hostname: string, candidateDisplayName:
   }
 
   // Prefixed form: elect<name>, vote(for)<name>, senator<name>, ... — the
-  // remainder must be name tokens exactly.
+  // remainder must be name tokens exactly. A digit connector may sit between
+  // prefix and name ("vote4quinn.com" — live corpus, and the literal form
+  // "votefor" is already a prefix), so the remainder is retried with a
+  // leading "4"/"2" stripped when direct consumption fails.
   for (const prefix of OWNED_HOST_PREFIXES) {
     if (label.startsWith(prefix) && label.length > prefix.length) {
-      const { consumed, rest } = consumeNameTokens(label.slice(prefix.length), tokens);
-      if (consumed >= 1 && rest.length === 0) {
-        return true;
+      const remainder = label.slice(prefix.length);
+      const candidates = [remainder];
+      if (/^[42]/.test(remainder)) {
+        candidates.push(remainder.slice(1));
+      }
+      for (const start of candidates) {
+        const { consumed, rest } = consumeNameTokens(start, tokens);
+        if (consumed >= 1 && rest.length === 0) {
+          return true;
+        }
       }
     }
   }
@@ -821,20 +870,25 @@ export function isCandidateOwnedHostname(hostname: string, candidateDisplayName:
   if (consumed >= 2 && /^\d*$/.test(rest)) {
     return true;
   }
-  if (consumed >= 1 && rest.startsWith("for") && isCampaignForTail(rest.slice("for".length))) {
-    return true;
+  if (consumed >= 1) {
+    const connector = stripCampaignConnector(rest);
+    if (connector && connectorTailQualifies(connector)) {
+      return true;
+    }
   }
 
-  // Mid-label surname + "for" + campaign tail: billmoskalforhd80.com for
+  // Mid-label surname + connector + campaign tail: billmoskalforhd80.com for
   // "William Moskal" — the nickname "bill" is not a display-name token, so
   // front consumption never starts. Same tail gate;
-  // "stanfordfordemocracy.org" stays clean for a candidate named Ford.
+  // "stanfordfordemocracy.org" stays clean for a candidate named Ford. The
+  // digit connectors apply here too ("bobsmith4senate" with an unmatched
+  // nickname front).
   for (const token of tokens) {
     if (token.length >= 4) {
       const at = label.indexOf(token);
-      if (at >= 0 && label.slice(at + token.length).startsWith("for")) {
-        const tail = label.slice(at + token.length + "for".length);
-        if (isCampaignForTail(tail)) {
+      if (at >= 0) {
+        const connector = stripCampaignConnector(label.slice(at + token.length));
+        if (connector && connectorTailQualifies(connector)) {
           return true;
         }
       }
