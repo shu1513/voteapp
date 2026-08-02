@@ -10,9 +10,15 @@ import type { BackTo } from "../lib/detailNavContext";
 export function BackLink({ backTo, state }: { backTo: BackTo; state?: unknown }) {
   return (
     <p className="mb-3 text-sm">
-      <Link to={backTo.path} state={state} className="font-medium text-ink-soft transition hover:text-ink">
+      <Link
+        to={backTo.path}
+        state={state}
+        // aria-label, not an sr-only prefix span: adjacent-span text runs
+        // together in accessible-name computation ("Back toAll elections").
+        aria-label={`Back to ${backTo.label}`}
+        className="font-medium text-ink-soft transition hover:text-ink"
+      >
         <span aria-hidden="true">← </span>
-        <span className="sr-only">Back to </span>
         {backTo.label}
       </Link>
     </p>
