@@ -2242,6 +2242,123 @@ describe("createApiApp", () => {
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
+  it("mints a pick card share without requiring email verification", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const lookupAuthenticatedUserEmailVerified = vi.fn().mockResolvedValue(false);
+    const createAuthenticatedPickCardShare = vi.fn().mockResolvedValue({
+      share: { token: "tok_abcdefghijklmnopqrstuvwxyz012345", election_date: "2026-11-03" },
+    });
+
+    const response = await invokeExpressApp(
+      createApiApp({
+        resolveAddress,
+        resolveAuthenticatedUserId,
+        lookupAuthenticatedUserEmailVerified,
+        createAuthenticatedPickCardShare,
+      }),
+      {
+        method: "POST",
+        path: "/api/me/pick-card-shares",
+        body: JSON.stringify({ election_date: "2026-11-03" }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.share.token).toBe("tok_abcdefghijklmnopqrstuvwxyz012345");
+    expect(lookupAuthenticatedUserEmailVerified).not.toHaveBeenCalled();
+    expect(createAuthenticatedPickCardShare).toHaveBeenCalledWith(
+      "99999999-9999-4999-8999-999999999999",
+      "2026-11-03"
+    );
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects pick card share requests without a session or with a bad body", async () => {
+    const resolveAddress = vi.fn();
+    const createAuthenticatedPickCardShare = vi.fn();
+
+    const unauthenticated = await invokeExpressApp(
+      createApiApp({ resolveAddress, createAuthenticatedPickCardShare }),
+      {
+        method: "POST",
+        path: "/api/me/pick-card-shares",
+        body: JSON.stringify({ election_date: "2026-11-03" }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+    expect(unauthenticated.statusCode).toBe(401);
+
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const badDate = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, createAuthenticatedPickCardShare }),
+      {
+        method: "POST",
+        path: "/api/me/pick-card-shares",
+        body: JSON.stringify({ election_date: "November 3rd" }),
+        headers: { "content-type": "application/json", "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+    expect(badDate.statusCode).toBe(400);
+    expect(createAuthenticatedPickCardShare).not.toHaveBeenCalled();
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("serves a public pick card by token without any session", async () => {
+    const resolveAddress = vi.fn();
+    const lookupPublicPickCard = vi.fn().mockResolvedValue({
+      election_date: "2026-11-03",
+      entries: [
+        {
+          election_id: "33333333-3333-4333-8333-333333333333",
+          official_ballot_title: "Mayor",
+          race_type: "office",
+          district_name: "Springfield",
+          picks: [
+            {
+              candidate_id: "22222222-2222-4222-8222-222222222222",
+              display_name: "Jane Smith",
+              candidacy_status: "declared",
+            },
+          ],
+          measure_position: null,
+        },
+      ],
+    });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupPublicPickCard }), {
+      method: "GET",
+      path: "/api/pick-cards/tok_abcdefghijklmnopqrstuvwxyz012345",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body.election_date).toBe("2026-11-03");
+    expect(response.body.entries[0].picks[0].display_name).toBe("Jane Smith");
+    expect(lookupPublicPickCard).toHaveBeenCalledWith("tok_abcdefghijklmnopqrstuvwxyz012345");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("404s an unknown pick card token and 400s a malformed one", async () => {
+    const resolveAddress = vi.fn();
+    const lookupPublicPickCard = vi.fn().mockResolvedValue(null);
+
+    const unknown = await invokeExpressApp(createApiApp({ resolveAddress, lookupPublicPickCard }), {
+      method: "GET",
+      path: "/api/pick-cards/tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    });
+    expect(unknown.statusCode).toBe(404);
+    expect(unknown.body.error.code).toBe("not_found");
+
+    const malformed = await invokeExpressApp(createApiApp({ resolveAddress, lookupPublicPickCard }), {
+      method: "GET",
+      path: "/api/pick-cards/short!",
+    });
+    expect(malformed.statusCode).toBe(400);
+    expect(lookupPublicPickCard).toHaveBeenCalledTimes(1);
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
   it("rejects authenticated election choices when authentication is not configured", async () => {
     const resolveAddress = vi.fn();
     const listAuthenticatedElectionChoices = vi.fn();

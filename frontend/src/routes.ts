@@ -17,8 +17,13 @@ export default [
     route("verify-email-change", "routes/verify-email-change.tsx"),
     route("me/welcome", "pages/WelcomePage.tsx"),
     route("me/ballot", "pages/SavedBallotPage.tsx"),
+    route("me/picks", "pages/PicksPage.tsx"),
+    // Retired page; kept as a redirect so old bookmarks and emailed links
+    // land on My Picks instead of a 404.
     route("me/follows", "pages/FollowsPage.tsx"),
     route("me/settings", "pages/SettingsPage.tsx"),
+    // Public tokenized share page — the token is the authorization.
+    route("picks/:token", "pages/PublicPickCardPage.tsx"),
     route("*", "pages/NotFoundPage.tsx"),
   ]),
 ] satisfies RouteConfig;

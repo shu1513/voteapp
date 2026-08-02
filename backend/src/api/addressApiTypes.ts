@@ -27,6 +27,7 @@ import type {
   UserElectionChoicesResult,
   UserElectionChoiceUpdateResult,
 } from "../pipeline/users/userElectionChoices.js";
+import type { PublicPickCard, UserPickCardShare } from "../pipeline/users/userPickCardShares.js";
 import type {
   ResearchAreaCatalogResult,
   UserResearchAreaPreferenceInput,
@@ -47,6 +48,10 @@ export type AuthenticatedCandidateFollowsResult = UserCandidateFollowsResult;
 export type AuthenticatedCandidateFollowUpdateResult = UserCandidateFollowUpdateResult;
 
 export type AuthenticatedElectionChoicesResult = UserElectionChoicesResult;
+
+export type AuthenticatedPickCardShareResult = { share: UserPickCardShare };
+
+export type PublicPickCardResult = PublicPickCard;
 
 export type AuthenticatedElectionChoiceUpdateResult = UserElectionChoiceUpdateResult;
 
@@ -111,6 +116,11 @@ export type AddressApiServerOptions = {
     userId: string,
     input: UserElectionChoiceInput
   ) => Promise<AuthenticatedElectionChoiceUpdateResult>;
+  /** POST /api/me/pick-card-shares — mint (or return) the share token for one
+   * date's pick card. Auth-gated, not verification-gated. */
+  createAuthenticatedPickCardShare?: (userId: string, electionDate: string) => Promise<AuthenticatedPickCardShareResult>;
+  /** GET /api/pick-cards/:token — public tokenized read; null = 404. */
+  lookupPublicPickCard?: (token: string) => Promise<PublicPickCardResult | null>;
   // [ballot-personalized-ordering]
   getAuthenticatedBallotPreferences?: (userId: string) => Promise<UserBallotPreferences>;
   setAuthenticatedBallotPreferences?: (

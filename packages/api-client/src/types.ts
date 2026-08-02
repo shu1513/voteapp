@@ -398,6 +398,26 @@ export type ElectionChoiceUpdate =
   | { election_id: string; candidate_id: string; chosen: boolean }
   | { election_id: string; measure_position: "yes" | "no" | null };
 
+/** One race on a shared pick card (public payload behind /picks/:token). */
+export type PickCardEntry = {
+  election_id: string;
+  official_ballot_title: string;
+  race_type: "office" | "ballot_measure";
+  district_name: string;
+  picks: { candidate_id: string; display_name: string; candidacy_status: string }[];
+  measure_position: "yes" | "no" | null;
+};
+
+export type PickCard = {
+  election_date: string;
+  entries: PickCardEntry[];
+};
+
+export type PickCardShare = {
+  token: string;
+  election_date: string;
+};
+
 export type BallotPreferences = {
   sort: BallotSort;
   followed_first: boolean;

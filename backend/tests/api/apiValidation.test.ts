@@ -27,6 +27,7 @@ import {
   parseCandidateFollowBodyValue,
   parseCandidateId,
   parseElectionChoiceBodyValue,
+  parsePickCardShareBodyValue,
   parseMeEmailBodyValue,
   parseMeUpdateBodyValue,
   parseResearchAreaPreferencesBodyValue,
@@ -147,6 +148,41 @@ describe("candidate follow API contract constants", () => {
     ],
   ])("rejects invalid candidate follow payload %#", (payload, message) => {
     expect(() => parseCandidateFollowBodyValue(payload)).toThrow(message);
+  });
+});
+
+describe("pick card share API contract", () => {
+  it("parses and trims a valid share body", () => {
+    expect(parsePickCardShareBodyValue({ election_date: "  2026-11-03  " })).toEqual({
+      electionDate: "2026-11-03",
+    });
+  });
+
+  it.each([
+    // V8 rolls impossible days over (2026-02-30 parses as March 2); the
+    // parser must reject them here as a 400, not let Postgres 500 on the
+    // ::date cast.
+    ["2026-02-30"],
+    ["2026-13-01"],
+    ["2026-00-10"],
+    ["not-a-date"],
+    ["2026-1-3"],
+    // Round-trips unchanged in JS (year 0 = 1 BC) but Postgres has no year
+    // zero — must 400 here, not 500 on the ::date cast.
+    ["0000-01-01"],
+  ])("rejects non-calendar election_date %s", (value) => {
+    expect(() => parsePickCardShareBodyValue({ election_date: value })).toThrow(
+      /valid YYYY-MM-DD date/
+    );
+  });
+
+  it("accepts leap-day dates that actually exist", () => {
+    expect(parsePickCardShareBodyValue({ election_date: "2028-02-29" })).toEqual({
+      electionDate: "2028-02-29",
+    });
+    expect(() => parsePickCardShareBodyValue({ election_date: "2026-02-29" })).toThrow(
+      /valid YYYY-MM-DD date/
+    );
   });
 });
 

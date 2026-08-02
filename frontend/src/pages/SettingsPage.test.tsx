@@ -35,17 +35,29 @@ describe("SettingsPage", () => {
     expect(await screen.findByText("Log in to manage your account.")).toBeInTheDocument();
   });
 
-  it("hides notification and issue sections until the email is verified", async () => {
+  it("hides notification sections until the email is verified", async () => {
     stubApiRoutes({ "/api/me": { body: ME_UNVERIFIED } });
     renderSettings();
 
     expect(
-      await screen.findByText("Verify your email to manage your address, notifications and issue preferences.")
+      await screen.findByText("Verify your email to manage your address and notifications.")
     ).toBeInTheDocument();
     expect(screen.queryByText("Email notifications")).not.toBeInTheDocument();
     // Account basics still work unverified (fixing a typo must not need a
     // verified inbox).
     expect(screen.getByRole("heading", { name: "Settings" })).toBeInTheDocument();
+  });
+
+  it("points verified users at My Picks for the moved issue editor", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+    });
+    renderSettings();
+
+    expect(await screen.findByText(/Looking for your issue priorities/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "My Picks" })).toHaveAttribute("href", "/me/picks");
+    expect(screen.queryByText("Issues you care about")).not.toBeInTheDocument();
   });
 
   it("saves a new home address and redirects to the saved ballot", async () => {
