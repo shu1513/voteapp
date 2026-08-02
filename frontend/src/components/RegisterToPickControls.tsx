@@ -14,7 +14,7 @@ import { RegisterPromptDialog } from "./RegisterPromptDialog";
 function pickPitch(candidateName: string) {
   return (
     <>
-      Save {candidateName} as your planned pick and keep your whole ballot in one place. Signing up is
+      Save {candidateName} as your election pick and keep your whole ballot in one place. Signing up is
       free.
     </>
   );
