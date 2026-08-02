@@ -10,8 +10,9 @@ import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Account settings. Sections mirror the backend's gating: profile, password,
 // email change, sessions, and delete work for unverified users too (fixing a
-// typo or leaving must not require a verified inbox); email preferences and
-// research areas are verified-only and hidden until then.
+// typo or leaving must not require a verified inbox); email preferences are
+// verified-only and hidden until then. The research-area editor lives on My
+// Picks (ResearchAreasSection component).
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (

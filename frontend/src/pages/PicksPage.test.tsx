@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ElectionChoice } from "@voteapp/api-client";
@@ -50,7 +50,16 @@ function verifiedRoutes(overrides: Record<string, unknown> = {}) {
   } as Parameters<typeof stubApiRoutes>[0];
 }
 
+// Frozen clock: the page classifies races as upcoming/past against the real
+// date (usLatestLocalDate), so the 2026-11-03 fixtures would flip into the
+// past section — and these assertions would rot — once that day passes.
+beforeEach(() => {
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+  vi.setSystemTime(new Date("2026-08-01T12:00:00Z"));
+});
+
 afterEach(() => {
+  vi.useRealTimers();
   vi.unstubAllGlobals();
 });
 
@@ -96,7 +105,7 @@ describe("PicksPage", () => {
         },
       })
     );
-    const user = userEvent.setup();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderPicks();
 
     await user.click(await screen.findByRole("button", { name: "Share this card" }));
@@ -146,7 +155,7 @@ describe("PicksPage", () => {
         },
       })
     );
-    const user = userEvent.setup();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderPicks();
 
     const summary = await screen.findByText("Past elections (1)");

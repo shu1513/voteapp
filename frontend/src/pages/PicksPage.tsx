@@ -190,7 +190,7 @@ export function PicksPage() {
   useDocumentTitle("My Picks");
   const { me, isLoading } = useMe();
   const verified = me?.email_verified === true;
-  const { choices, choiceByElectionId } = useElectionChoices();
+  const { choices, choiceByElectionId, isError: choicesError } = useElectionChoices();
   // Same source as the saved ballot page: the user's districts decide which
   // races belong on their cards.
   const ballot = useQuery({
@@ -245,6 +245,14 @@ export function PicksPage() {
         {ballot.isError ? (
           <div className="mt-4">
             <ErrorNotice error={ballot.error} />
+          </div>
+        ) : null}
+        {/* A failed choices fetch must not masquerade as "everything
+            undecided" — without this, every race silently reads "no pick
+            yet" and the past section vanishes. */}
+        {choicesError ? (
+          <div className="mt-4">
+            <ErrorNotice error={new Error("Could not load your picks — refresh to try again.")} />
           </div>
         ) : null}
         {ballot.isSuccess && dates.length === 0 ? (

@@ -951,7 +951,15 @@ export function parsePickCardShareBodyValue(parsed: unknown): PickCardSharePaylo
     throw new TypeError("Request body must include string field: election_date");
   }
   const electionDate = payload.election_date.trim();
-  if (!PICK_CARD_ELECTION_DATE_PATTERN.test(electionDate) || Number.isNaN(Date.parse(electionDate))) {
+  // Round-trip through UTC instead of trusting Date.parse alone: V8 rolls
+  // impossible days over ("2026-02-30" parses as March 2), which would pass
+  // a NaN check and later 500 on Postgres's ::date cast instead of 400 here.
+  const parsedDate = new Date(`${electionDate}T00:00:00Z`);
+  const isRealDate =
+    PICK_CARD_ELECTION_DATE_PATTERN.test(electionDate) &&
+    !Number.isNaN(parsedDate.getTime()) &&
+    parsedDate.toISOString().slice(0, 10) === electionDate;
+  if (!isRealDate) {
     throw new TypeError(`election_date must be a valid YYYY-MM-DD date: ${electionDate}`);
   }
   return { electionDate };

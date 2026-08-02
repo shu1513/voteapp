@@ -13,7 +13,9 @@ import { pageMeta } from "../lib/pageMeta";
 // election day; the voter stays unnamed (the payload carries no identity).
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
-  return loadFromApi<PickCard>(`/api/pick-cards/${params.token}`, request);
+  // React Router decodes path params; re-encode so a token containing ?, #,
+  // or % travels as an opaque path segment instead of re-shaping the URL.
+  return loadFromApi<PickCard>(`/api/pick-cards/${encodeURIComponent(params.token ?? "")}`, request);
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
@@ -89,6 +91,11 @@ export function PublicPickCardPage() {
                             <span className="ml-1 rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">
                               Lost
                             </span>
+                          ) : pick.candidacy_status === "withdrawn" ? (
+                            // Same flag the owner's private card shows — a
+                            // recipient must not read a withdrawn candidate
+                            // as still running.
+                            <span className="ml-1 text-xs text-ink-soft">(withdrew)</span>
                           ) : null}
                         </span>
                       ))}

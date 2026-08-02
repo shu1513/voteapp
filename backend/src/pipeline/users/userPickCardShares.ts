@@ -59,7 +59,15 @@ function normalizeUserId(userId: string): string {
 
 function normalizeElectionDate(electionDate: string): string {
   const normalized = electionDate.trim();
-  if (!ELECTION_DATE_PATTERN.test(normalized) || Number.isNaN(Date.parse(normalized))) {
+  // Round-trip through UTC instead of trusting Date.parse alone: V8 rolls
+  // impossible days over ("2026-02-30" parses as March 2), which would pass
+  // a NaN check here and then blow up as a 500 on Postgres's ::date cast.
+  const parsed = new Date(`${normalized}T00:00:00Z`);
+  const isRealDate =
+    ELECTION_DATE_PATTERN.test(normalized) &&
+    !Number.isNaN(parsed.getTime()) &&
+    parsed.toISOString().slice(0, 10) === normalized;
+  if (!isRealDate) {
     throw new UserPickCardSharesError("invalid_election_date", "election_date must be a valid YYYY-MM-DD date");
   }
   return normalized;
@@ -104,15 +112,28 @@ export async function getOrCreateUserPickCardShare(
 
     // An empty card is not shareable: a public page with zero picks says
     // nothing, and minting tokens for every date a user glances at would
-    // scatter live capability URLs nobody asked for.
+    // scatter live capability URLs nobody asked for. Mirrors the public
+    // lookup's rules exactly, or the mint could succeed while the card
+    // renders empty:
+    // - current-district scope (see lookupPublicPickCard on why);
+    // - a candidate pick counts only while its candidate survives
+    //   (deleted/merged candidates drop out of the rendered card).
     const anyPick = await client.query<{ one: number }>(
       `
         SELECT 1 AS one
         FROM public.user_election_choices AS choice
         JOIN public.elections AS election
           ON election.id = choice.election_id
+        JOIN public.user_districts AS user_district
+          ON user_district.user_id = choice.user_id
+         AND user_district.district_id = election.district_id
+        LEFT JOIN public.candidates AS candidate
+          ON candidate.id = choice.candidate_id
+         AND candidate.deleted_at IS NULL
+         AND candidate.merged_into_candidate_id IS NULL
         WHERE choice.user_id = $1::uuid
           AND election.election_date = $2::date
+          AND (choice.measure_position IS NOT NULL OR candidate.id IS NOT NULL)
         LIMIT 1
       `,
       [normalizedUserId, normalizedDate]
@@ -198,6 +219,15 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
       JOIN public.elections AS election
         ON election.id = choice.election_id
        AND election.election_date = share.election_date
+      -- Current-district scope: the owner's private card is built from their
+      -- saved ballot, so this keeps the public card a subset of what the
+      -- owner can SEE when deciding to share. Without it, picks made under a
+      -- previous address would surface here — races the owner's own page no
+      -- longer shows, revealing where they used to live. Live by design:
+      -- moving updates (and can empty) an already-shared card.
+      JOIN public.user_districts AS user_district
+        ON user_district.user_id = share.user_id
+       AND user_district.district_id = election.district_id
       JOIN public.districts AS district
         ON district.id = election.district_id
       LEFT JOIN public.candidates AS candidate
