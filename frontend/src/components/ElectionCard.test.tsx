@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
 import { ElectionList } from "./ElectionCard";
 import { renderRoutes } from "../test/render";
@@ -66,6 +66,18 @@ function electionChoice(overrides: Partial<ElectionChoice> = {}): ElectionChoice
     ...overrides,
   };
 }
+
+// Frozen clock: the choice chip renders only on upcoming races
+// (usLatestLocalDate), so the 2026-11-03 fixtures would stop being
+// "upcoming" — and the chip assertions would rot — once that day passes.
+beforeEach(() => {
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+  vi.setSystemTime(new Date("2026-08-01T12:00:00Z"));
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe("ElectionCard", () => {
   it("puts vote power and the candidate count on the title row, with the district below", () => {
