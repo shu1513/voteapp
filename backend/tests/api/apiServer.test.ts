@@ -2308,6 +2308,7 @@ describe("createApiApp", () => {
   it("serves a public pick card by token without any session", async () => {
     const resolveAddress = vi.fn();
     const lookupPublicPickCard = vi.fn().mockResolvedValue({
+      first_name: "Ava",
       election_date: "2026-11-03",
       entries: [
         {
@@ -2334,6 +2335,9 @@ describe("createApiApp", () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.election_date).toBe("2026-11-03");
+    // The owner's first name rides the public payload — it is what lets the
+    // page say whose card this is.
+    expect(response.body.first_name).toBe("Ava");
     expect(response.body.entries[0].picks[0].display_name).toBe("Jane Smith");
     expect(lookupPublicPickCard).toHaveBeenCalledWith("tok_abcdefghijklmnopqrstuvwxyz012345");
     expect(resolveAddress).not.toHaveBeenCalled();

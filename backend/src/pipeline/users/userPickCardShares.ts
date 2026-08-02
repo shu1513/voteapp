@@ -23,10 +23,13 @@ export type PublicPickCardEntry = {
 };
 
 /** The public payload behind /picks/<token>. Everything here is public
- * information (races, candidate names, results); the only thing the token
- * gates is the ASSOCIATION of these picks with one anonymous voter. No user
- * identity fields, deliberately. */
+ * information (races, candidate names, results) except one identity field:
+ * the owner's FIRST name, so the page can say whose card this is — the
+ * owner mints and posts the link themselves, and a card that names nobody
+ * reads as anonymous data, not a friend's picks. First name only,
+ * deliberately: no last name, email, or user id ever enters this payload. */
 export type PublicPickCard = {
+  first_name: string;
   election_date: string;
   entries: PublicPickCardEntry[];
 };
@@ -176,6 +179,7 @@ export async function getOrCreateUserPickCardShare(
 }
 
 type PickCardRow = {
+  first_name: string;
   election_date: string;
   election_id: string;
   official_ballot_title: string;
@@ -201,6 +205,7 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
   const result = await db.query<PickCardRow>(
     `
       SELECT
+        user_row.first_name,
         share.election_date::text AS election_date,
         election.id::text AS election_id,
         election.official_ballot_title,
@@ -249,9 +254,9 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
     // Distinguish "no such share" from "share with zero surviving picks":
     // the latter still renders a (bare) card rather than a 404, so a link
     // someone posted keeps resolving even if its picks were since cleared.
-    const share = await db.query<{ election_date: string }>(
+    const share = await db.query<{ first_name: string; election_date: string }>(
       `
-        SELECT share.election_date::text AS election_date
+        SELECT user_row.first_name, share.election_date::text AS election_date
         FROM public.user_pick_card_shares AS share
         JOIN public.users AS user_row
           ON user_row.id = share.user_id
@@ -261,7 +266,7 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
       [trimmed]
     );
     const bare = share.rows[0];
-    return bare ? { election_date: bare.election_date, entries: [] } : null;
+    return bare ? { first_name: bare.first_name, election_date: bare.election_date, entries: [] } : null;
   }
 
   const byElection = new Map<string, PublicPickCardEntry>();
@@ -289,6 +294,7 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
     }
   }
   return {
+    first_name: result.rows[0].first_name,
     election_date: result.rows[0].election_date,
     entries: [...byElection.values()].filter(
       (entry) => entry.picks.length > 0 || entry.measure_position !== null
