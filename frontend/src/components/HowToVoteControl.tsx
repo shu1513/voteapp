@@ -52,7 +52,7 @@ function MailSection({ resources }: { resources: StateVotingResources }) {
         ? "Request your ballot online"
         : mail_ballot_request_type === "form"
           ? "Get the mail-ballot application"
-          : "How to request a mail ballot";
+          : "Request a mail ballot";
 
   return (
     <div>
