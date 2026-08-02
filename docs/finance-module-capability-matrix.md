@@ -14,7 +14,7 @@ Phase 0 deliverable of the finance consolidation plan (see `plan.md`). Extracted
 - **Direct cats**: `std` = `occupation` + `contribution_size`.
 - **Tests** (per-module files): W = writer, L = ballot-lookup loader, A = auto-link, B = batchSync.
 
-The shared factory (`createStandardStateFinanceSnapshotWriter`) today: canonical link columns, all 5 tables mandatory, merge policy `C`, floor hardcoded 2014, tx `pool`, no `G`/`N`, no signed fields, config = `{label, tables}` only.
+The shared factory (`createStandardStateFinanceSnapshotWriter`) after PR #488: canonical link columns, all 5 tables mandatory, `committee_id`/`committee_name` outside-group identity hardcoded, tx `pool`, config = `{label, tables, minElectionYear (required), summaryUpdatePolicy? (per-column replace|preserveWhenNull, default preserve), outsideGroupValidation? (none|presence|pairing, default none)}`. Still missing (add only when a migrating cohort needs it): signed-amount fields, configurable outside-group identity columns, caller-transaction mode, `normalizeCommitteeId`, manual-link protection.
 
 ## Writers
 
@@ -54,6 +54,18 @@ The shared factory (`createStandardStateFinanceSnapshotWriter`) today: canonical
 | virginia | 3 (no outside) | +`committee_code` | C; only receipts+direct | 2000 | self | — | — | std |
 | washington | 5 | +`filer_id`,`candidacy_id` | C+oR | 2000 | pool | g | — | std+`employer`+`industry` |
 | wisconsin | 5 | +`entity_id`,`assigned_committee_id` | C | 2000 | pool | g | — | std+`employer`+`industry` |
+
+### Writer outside-group identity columns
+
+The factory hardcodes `committee_id`/`committee_name` in the outside-groups and outside-group-breakdowns tables (and `committeeId` input fields). Writers diverge (this was missed in the first pass and disqualified Oregon as a pilot):
+
+- **`committee_id`/`committee_name` (factory-canonical)**: arizona, california, florida, hawaii, maine, maryland, michigan, minnesota, newMexico
+- **`committee_key`**: districtOfColumbia, illinois, kentucky, tennessee
+- **`sponsor_id`/`sponsor_name`** (and `sponsorId` input fields): oregon, washington, wisconsin
+- **One-offs**: alaska `outside_group_id`; louisiana `filer_number`; massachusetts `iepac_cpf_id`; newJersey `outside_entity_s`; newYork `filer_id`; newYorkCity `spender_id`; pennsylvania `group_id`; utah `committee_name` only (alt tables); vermont `filer_registration_guid`
+- **No outside tables**: colorado, connecticut, indiana, nebraska, oklahoma, virginia (+ texas/houston wrappers, factory-owned)
+
+Any state outside the factory-canonical group needs a configurable outside-identity column (small factory param, own PR) before its writer can migrate.
 
 Val+ distribution: pairing validation `G` in 12 (two message variants — "require matching": dc, kentucky, maryland, newJersey, tennessee, maine; "must reference": alaska, illinois, louisiana, michigan, minnesota, pennsylvania); presence-only `g` in 10; manual-link protection `M` in 6 (illinois, indiana, michigan, minnesota, newYorkCity, pennsylvania). The shared factory has none of these.
 
@@ -113,14 +125,16 @@ Mixed-identity states (link column ≠ outside column) are why the loader descri
 
 | Role | Have tests | Missing |
 |---|---|---|
-| Writer | 33 of 34 | **minnesota** |
+| Writer | 34 of 34 (minnesota added in PR #488) | — |
 | Ballot-lookup loader | 10 of 31 with loader files | 21 modules — characterization tests required before each loader cohort migrates |
 | Auto-link | 25 of 28 files | illinois, michigan + 1 |
 | BatchSync | 34 of 34 | — |
 
+The factory itself has a dedicated config-option test file (`tests/pipeline/finance/standardStateFinanceSnapshotWriter.test.ts`, PR #488) alongside the Texas/Houston wrapper tests.
+
 ## Cohort readout (feeds plan phases)
 
-- **Phase 1 pilot pool (exact canonical shape)**: **arizona, oregon** — canonical link columns, all 5 tables, merge `R`, std categories, `pool` tx. Factory needs per-field merge policy (`R` support), required floor, and the presence-only group check (`g`) first — both pilots have `g` and the factory has no group validation at all.
-- **Phase 1 second wave**: maine, maryland (add `G`+`N` + `R+oC` policy), pennsylvania (rename `filer_id`), michigan (+`candidate_loan_total`), florida (extra table), massachusetts/alaska/louisiana (renames only).
+- **Phase 1 pilot (exact canonical shape)**: **arizona** — the only state with canonical link columns, all 5 tables, factory-canonical outside identity, merge `R`, std categories, `pool` tx. The factory prereqs (per-field merge policy, required floor, presence check `g`) shipped in PR #488. Oregon was originally listed as a co-pilot but is disqualified: its outside tables use `sponsor_id`/`sponsor_name` and its exported types use `sponsorId` fields.
+- **Phase 1 second wave (factory-canonical outside identity only)**: maine, maryland (add `G`+`N` + `R+oC` policy), michigan (+`candidate_loan_total`). All other former second-wave states need factory work first: oregon/washington/wisconsin (`sponsor_id`), pennsylvania (`group_id` + `filer_id` link rename), massachusetts (`iepac_cpf_id` + link rename), alaska (`outside_group_id` + link rename), louisiana (`filer_number`), florida (extra table).
 - **Deferred writer families (Phase 5)**: california, illinois, hawaii, kentucky, vermont, wisconsin, washington, newJersey, tennessee (extra columns/fields); colorado, connecticut, indiana, nebraska, oklahoma, virginia (3-table direct-only + reduced summary sets); minnesota (no direct table); utah (alt outside tables); city outliers (nyc, losAngelesCity) stay bespoke.
 - **Loader cohorts**: uniform-identity `committee_id` states first (hawaii, maine, maryland, michigan, minnesota, newMexico + direct-only colorado, connecticut, indiana, nebraska, oklahoma, virginia); then `committee_key` (dc, kentucky); mixed-identity and renamed states after the per-relation descriptor exists; alaska/arizona/pennsylvania (nonstandard filenames) and florida (no loader) resolved case-by-case.

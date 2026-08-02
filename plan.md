@@ -43,23 +43,24 @@ City outliers: `newYorkCityFinance` and `losAngelesCityFinance` writers are ~35%
 | Feature | Where it exists | Shared factory has it? |
 |---|---|---|
 | "must receive a Pool" transaction guard | 21 of 35 writers | yes |
-| Outside-group-breakdown ↔ group validation | 6 of 35 | no |
+| Outside-group-breakdown ↔ group validation | pairing in 12, presence-only in 10 (see matrix) | **configurable since PR #488** (`outsideGroupValidation`, default none) |
 | `normalizeCommitteeId` (whitespace collapse) | 2 of 35 | no |
-| Summary upsert policy | Factory `COALESCE`s **all** fields; many states (e.g. Maryland) **replace** receipts/disbursements/cash and COALESCE only outside totals | divergent — see Phase 1 prep |
-| Election-year floor | NJ 1980, FL 1996, UT 1998, 20 states 2000, CA/CO 2001, AZ 2002, CT 2008, OK 2014, NM 2020, NE 2021 | hardcoded 2014 |
+| Summary upsert policy | States split across replace-all, COALESCE-all, and mixed (see matrix) | **configurable since PR #488** (`summaryUpdatePolicy`, default = old COALESCE-all) |
+| Election-year floor | NJ 1980, FL 1996, UT 1998, 20 states 2000, CA/CO 2001, AZ 2002, CT 2008, OK 2014, NM 2020, NE 2021 | **required config since PR #488** (`minElectionYear`; was hardcoded 2014) |
+| Outside-group identity columns | 9 states factory-canonical `committee_id`; 4 `committee_key`; 3 `sponsor_id`; 8 one-offs (see matrix) | no — hardcoded `committee_id`/`committee_name` |
 
 A bug fixed in one state's writer today fixes 1 of 32 copies.
 
 ## Safety net (verified counts)
 
-- 34 writers, **33 writer tests — Minnesota has none** (fill in Phase 0).
+- 34 writers, 34 writer tests (Minnesota's was missing; added in PR #488). The factory has its own config-option test file since PR #488.
 - 34 batchSync files, 34 tests. 28 auto-link files, 25 tests. **Only 10 loader tests for 31 loaders** — loader migration is NOT low-risk until characterization tests exist.
 - Proven recipe: Texas writer migration (`6b2664b2`) kept every exported name/type as a thin wrapper; tests passed unchanged.
 - Gates per PR: `npm run typecheck` + `npm test` in `backend/`.
 
 ## Phases
 
-### Phase 0 — capability matrix + test gaps
+### Phase 0 — capability matrix + test gaps — **DONE (PR #488)**
 
 One checked-in markdown matrix (`docs/finance-module-capability-matrix.md`), one row per module: link/outside-group identity columns; optional tables/features; extra link+summary fields; category unions; election-year floor; per-field null-merge policy (replace vs preserve); signed-value fields; transaction ownership (Pool-only vs caller-transaction); validation extras; test files present. Populated mechanically (greps + reading upsert statements), reviewed by hand. This matrix decides every cohort below.
 
@@ -69,13 +70,14 @@ Deliberately NOT doing: auto-generated characterization suites for every module 
 
 ### Phase 1 — writers, exact-canonical-shape cohort first
 
-Factory prep (one PR):
-1. `minElectionYear` becomes a **required** config field — no default; every wrapper declares its floor. (Floors range 1980–2021; a default hides real policy.)
-2. Per-field summary update policy: `replace` | `preserveWhenNull` per column, plus a signed-allowed field set. Defaults per state come from the Phase 0 matrix — each wrapper keeps its current behavior; policy changes are separate, explicit PRs.
-3. Adopt outside-group-breakdown ↔ group validation as opt-in config (on for states that have it; turning it on elsewhere is a per-state decision, not a silent upgrade).
-4. Transaction rule from the matrix: Pool-guard states keep the guard; caller-transaction states (the `cycleArtifactRows` cohort: colorado, indiana, maine, maryland, nebraska, newMexico, oklahoma) get a `transactionMode` option if verification shows they rely on it.
+Factory prep — items 1–3 **shipped in PR #488**:
+1. ~~`minElectionYear` becomes a required config field~~ — done; Texas/Houston pass 2014 explicitly.
+2. ~~Per-field summary update policy (`replace` | `preserveWhenNull`)~~ — done (default = old COALESCE-all). The signed-allowed field set was **deliberately deferred** to Phase 5 — no Phase-1 state needs it (signed cash = IL/KY/LA, all in deferred cohorts).
+3. ~~Outside-group validation as opt-in config~~ — done (`none` | `presence` | `pairing`, default none).
+4. Still open — transaction rule from the matrix: Pool-guard states keep the guard; caller-transaction states (the `cycleArtifactRows` cohort: colorado, indiana, maine, maryland, nebraska, newMexico, oklahoma) get a `transactionMode` option if verification shows they rely on it.
+5. Still open — configurable outside-group identity columns. The factory hardcodes `committee_id`/`committee_name` in outside tables; only 9 states match. `committee_key` (4 states), `sponsor_id` (3), and 8 one-offs need this param (own PR) before their writers can migrate. See the matrix's "Writer outside-group identity columns" section.
 
-Migration: **one pilot state first** (pick the module whose matrix row exactly matches factory canonical shape), full diff review, then batches of 5–6 exact-shape states. Wrapper keeps all exported names/types; per-state tests untouched.
+Migration: pilot = **arizona** (per the matrix, the only fully factory-canonical state — Oregon was disqualified: `sponsor_id` outside identity and `sponsorId` exported input fields). Full diff review, then batches of exact-shape states (second wave: maine, maryland, michigan). Wrapper keeps all exported names/types; per-state tests untouched.
 
 Explicitly deferred to Phase 5: colorado (direct-only), california, illinois, hawaii, vermont, wisconsin, and any other matrix row with extra columns/tables.
 
