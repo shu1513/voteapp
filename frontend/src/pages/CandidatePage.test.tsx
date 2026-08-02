@@ -746,3 +746,43 @@ describe("CandidatePage roster pager", () => {
     );
   });
 });
+
+describe("CandidatePage newest-view expansion across the pager", () => {
+  it("re-collapses the newest list when paging to the next candidate", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    // 21 records — one past the 20-record cap, so "Show all" renders.
+    const manyRecords = Array.from({ length: 21 }, (_, i) => ({
+      id: `r-${i}`,
+      description: `Did a thing (${i}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: [],
+    }));
+    const { router } = renderCandidate(
+      ({ params }) => candidateDetail({ candidate_id: params.candidateId, records: manyRecords }),
+      "c-1",
+      {
+        backTo: { path: "/elections/e-1", label: "Governor" },
+        electionId: "e-1",
+        candidates: [
+          { id: "c-1", name: "Jordan Voter" },
+          { id: "c-2", name: "Riley Runner" },
+        ],
+      }
+    );
+
+    // Switch to the flat newest view and expand past the cap.
+    await user.selectOptions(await screen.findByRole("combobox"), "newest");
+    await user.click(screen.getByRole("button", { name: "Show all 21 records" }));
+    expect(screen.queryByRole("button", { name: /Show all/ })).not.toBeInTheDocument();
+
+    // Page to the neighbor: the component stays mounted (same route), so a
+    // bare boolean would leak the expansion. The next candidate must open
+    // capped again.
+    await user.click(screen.getByRole("link", { name: "Next: Riley Runner" }));
+    expect(router.state.location.pathname).toBe("/candidates/c-2");
+    expect(await screen.findByRole("button", { name: "Show all 21 records" })).toBeInTheDocument();
+  });
+});

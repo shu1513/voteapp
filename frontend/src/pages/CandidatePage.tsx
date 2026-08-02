@@ -354,10 +354,20 @@ export function CandidatePage() {
   const [chosenRecordView, setChosenRecordView] = useState<RecordView | null>(null);
   const effectiveChosenView = chosenRecordView === "my_issues" && !hasSaved ? null : chosenRecordView;
   const recordView = effectiveChosenView ?? (hasSaved ? "my_issues" : "by_issue");
-  const [showAllNewest, setShowAllNewest] = useState(false);
+  // Keyed by candidate, unlike the view pick above: the roster pager keeps
+  // this component mounted across candidates, and a bare boolean would leak
+  // one candidate's 50-record expansion into the next — defeating the
+  // 20-record cap. Same per-entity keying as ElectionPage's party filter
+  // (the view pick is a preference that travels; expanding a list is not);
+  // stale state is simply never read.
+  const [newestExpansion, setNewestExpansion] = useState<{ candidateId: string; on: boolean }>({
+    candidateId: "",
+    on: false,
+  });
 
   const detail = useLoaderData<typeof loader>();
   const candidate = detail.candidate;
+  const showAllNewest = newestExpansion.candidateId === candidate.candidate_id && newestExpansion.on;
   // ?? {}: tolerates loader data from before this field existed (deploy skew
   // between a cached document and fresh code) by rendering no finance.
   const ongoingFinance = detail.ongoing_finance ?? {};
@@ -537,7 +547,7 @@ export function CandidatePage() {
               {!showAllNewest && candidate.records.length > INITIAL_NEWEST_RECORDS ? (
                 <button
                   type="button"
-                  onClick={() => setShowAllNewest(true)}
+                  onClick={() => setNewestExpansion({ candidateId: candidate.candidate_id, on: true })}
                   className="mt-3 rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink"
                 >
                   Show all {candidate.records.length} records
