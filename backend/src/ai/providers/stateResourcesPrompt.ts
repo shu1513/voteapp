@@ -38,8 +38,8 @@ export function buildStateResourcesPrompt(
 
   return [
     "Return only one JSON object with these keys exactly:",
-    "polling_place_url, mail_voting_available, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, mail_ballot_return_deadline_type, early_voting_available, early_voting_start_date_rule, early_voting_end_date_rule, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule, in_person_registration_deadline_rule, sources.",
-    "sources must include keys: polling_place_url, mail_voting_available, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, mail_ballot_return_deadline_type, early_voting_available, early_voting_start_date_rule, early_voting_end_date_rule, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule, in_person_registration_deadline_rule.",
+    "polling_place_url, mail_voting_available, mail_ballot_request_url, mail_ballot_request_type, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, mail_ballot_return_deadline_type, early_voting_available, early_voting_start_date_rule, early_voting_end_date_rule, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule, in_person_registration_deadline_rule, sources.",
+    "sources must include keys: polling_place_url, mail_voting_available, mail_ballot_request_url, mail_ballot_request_type, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, mail_ballot_return_deadline_type, early_voting_available, early_voting_start_date_rule, early_voting_end_date_rule, polling_hours, id_requirements, same_day_registration_available, online_registration_available, online_registration_deadline_rule, in_person_registration_deadline_rule.",
     "Each sources[key] must be an array of URL strings.",
     "Prefer using Evidence URLs when possible.",
     "You may cite additional public URLs if they directly support the claim; do not invent or rewrite URLs.",
@@ -60,8 +60,11 @@ export function buildStateResourcesPrompt(
     "For online_registration_available and online_registration_deadline_rule, start with the Vote.gov state registration reference URL in Evidence URLs (https://vote.gov/register/<state-name-lowercase>).",
     "You may use additional sources beyond that reference URL when needed; it is a starting point, not a restriction.",
     "mail_voting_available must be boolean true or false.",
-    "If mail_voting_available is false, set mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, and mail_ballot_return_deadline_type to null.",
+    "If mail_voting_available is false, set mail_ballot_request_url, mail_ballot_request_type, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, and mail_ballot_return_deadline_type to null.",
     "If mail_voting_available is true, set mail_ballot_return_deadline_rule and mail_ballot_return_deadline_type (postmarked_by or received_by).",
+    "If mail_voting_available is true, set mail_ballot_request_url to this state's OFFICIAL mail/absentee-ballot request destination and mail_ballot_request_type to one of: online_portal (official online request portal), form (official application form/PDF), instructions (official page explaining requests through a local election office), not_required (automatic vote-by-mail state).",
+    "mail_ballot_request_url must belong to this state's official election authority (state or county .gov/.us election site). Never use vote.org, vote.gov, other aggregators, or another state's site.",
+    "For automatic vote-by-mail states: set mail_ballot_request_type to not_required, mail_ballot_request_deadline_rule to null, and mail_ballot_request_url to the state's official page explaining that every registered voter automatically receives a mail ballot.",
     "early_voting_available must be boolean true or false.",
     "For early_voting_available, early_voting_start_date_rule, and early_voting_end_date_rule, start with the NCSL early in-person voting reference URL in Evidence URLs (https://www.ncsl.org/elections-and-campaigns/early-in-person-voting).",
     "If early_voting_available is false, set early_voting_start_date_rule and early_voting_end_date_rule to null.",

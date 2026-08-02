@@ -40,6 +40,8 @@ function validPayload(overrides: Record<string, unknown> = {}) {
     polling_place_url: "https://www.vote.org/polling-place-locator/",
     voter_registration_url: "https://vote.gov/register",
     mail_voting_available: true,
+    mail_ballot_request_url: "https://vote.gov/register/california",
+    mail_ballot_request_type: "instructions",
     mail_ballot_request_deadline_rule:
       "California allows vote-by-mail ballot requests up to state-defined deadlines for each election.",
     mail_ballot_return_deadline_rule:
@@ -63,6 +65,12 @@ function validPayload(overrides: Record<string, unknown> = {}) {
       polling_place_url: [{ source_name: "Vote.org", source_url: "https://www.vote.org/polling-place-locator/" }],
       voter_registration_url: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register" }],
       mail_voting_available: [{ source_name: "Vote.gov", source_url: "https://vote.gov/register/california" }],
+      mail_ballot_request_url: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register/california" },
+      ],
+      mail_ballot_request_type: [
+        { source_name: "Vote.gov", source_url: "https://vote.gov/register/california" },
+      ],
       mail_ballot_request_deadline_rule: [
         { source_name: "Vote.gov", source_url: "https://vote.gov/register/california" },
       ],
@@ -201,7 +209,7 @@ describe("enrichStateResources", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.payload.state_fips).toBe("06");
-      expect(result.schemaVersion).toBe("state_resources_enrichment_v4");
+      expect(result.schemaVersion).toBe("state_resources_enrichment_v5");
     }
     expect(globalThis.fetch).toHaveBeenCalled();
   });

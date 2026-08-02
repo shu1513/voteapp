@@ -4,12 +4,16 @@ export const STATE_RESOURCE_FIELD_GROUP_CONFIG = {
   mail: {
     fieldKeys: [
       "mail_voting_available",
+      "mail_ballot_request_url",
+      "mail_ballot_request_type",
       "mail_ballot_request_deadline_rule",
       "mail_ballot_return_deadline_rule",
       "mail_ballot_return_deadline_type",
     ],
     sourceKeys: [
       "mail_voting_available",
+      "mail_ballot_request_url",
+      "mail_ballot_request_type",
       "mail_ballot_request_deadline_rule",
       "mail_ballot_return_deadline_rule",
       "mail_ballot_return_deadline_type",

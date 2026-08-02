@@ -76,7 +76,7 @@ export type EnrichmentFailure =
 export type EnrichmentSuccess = {
   ok: true;
   payload: StateResourcePayload;
-  schemaVersion: "state_resources_enrichment_v4";
+  schemaVersion: "state_resources_enrichment_v5";
   provider: AiProvider;
   model: string;
   promptVersion: string;

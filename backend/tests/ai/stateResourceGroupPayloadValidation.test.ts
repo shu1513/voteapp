@@ -26,11 +26,15 @@ describe("parseStateResourceGroupPayloadFromAi", () => {
     const result = parseStateResourceGroupPayloadFromAi(
       {
         mail_voting_available: true,
+        mail_ballot_request_url: "https://www.sos.ca.gov/elections/voter-registration/vote-mail",
+        mail_ballot_request_type: "online_portal",
         mail_ballot_request_deadline_rule: "Request by 7 days before Election Day.",
         mail_ballot_return_deadline_rule: "Ballots must be received by Election Day.",
         mail_ballot_return_deadline_type: null,
         sources: {
           mail_voting_available: ["https://vote.gov/register/california"],
+          mail_ballot_request_url: ["https://www.sos.ca.gov/elections/voter-registration/vote-mail"],
+          mail_ballot_request_type: ["https://www.sos.ca.gov/elections/voter-registration/vote-mail"],
           mail_ballot_request_deadline_rule: ["https://vote.gov/register/california"],
           mail_ballot_return_deadline_rule: ["https://vote.gov/register/california"],
           mail_ballot_return_deadline_type: ["https://vote.gov/register/california"],

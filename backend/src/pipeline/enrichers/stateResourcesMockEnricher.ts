@@ -424,6 +424,12 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     mail_voting_available: [
       voteByMailEvidence.url,
     ],
+    mail_ballot_request_url: [
+      voteByMailEvidence.url,
+    ],
+    mail_ballot_request_type: [
+      voteByMailEvidence.url,
+    ],
     mail_ballot_request_deadline_rule: [
       voteByMailEvidence.url,
     ],
@@ -469,6 +475,13 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     polling_place_url: pollingPlaceEvidence.url,
     voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
     mail_voting_available: true,
+    // Placeholder, like every other mock field: the deterministic seeds carry no
+    // official per-state mail-request destination, so this reuses the best
+    // available mail evidence URL (which can be an unrelated page). Real request
+    // URLs come only from the AI enricher / manual research paths; never treat
+    // mock rows as production data.
+    mail_ballot_request_url: voteByMailEvidence.url,
+    mail_ballot_request_type: "instructions",
     mail_ballot_request_deadline_rule: mailBallotRequestDeadlineRule,
     mail_ballot_return_deadline_rule: mailBallotReturnDeadlineRule,
     mail_ballot_return_deadline_type: "received_by",

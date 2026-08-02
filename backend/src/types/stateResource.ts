@@ -5,6 +5,8 @@ export type SourceCitation = string;
 export type StateResourceSources = {
   polling_place_url: SourceCitation[];
   mail_voting_available: SourceCitation[];
+  mail_ballot_request_url: SourceCitation[];
+  mail_ballot_request_type: SourceCitation[];
   mail_ballot_request_deadline_rule: SourceCitation[];
   mail_ballot_return_deadline_rule: SourceCitation[];
   mail_ballot_return_deadline_type: SourceCitation[];
@@ -26,6 +28,8 @@ export type StateResourcePayload = {
   polling_place_url: string;
   voter_registration_url: string;
   mail_voting_available: boolean;
+  mail_ballot_request_url: string | null;
+  mail_ballot_request_type: "online_portal" | "form" | "instructions" | "not_required" | null;
   mail_ballot_request_deadline_rule: string | null;
   mail_ballot_return_deadline_rule: string | null;
   mail_ballot_return_deadline_type: "postmarked_by" | "received_by" | null;

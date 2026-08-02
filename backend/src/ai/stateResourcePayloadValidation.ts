@@ -3,7 +3,9 @@ import {
   STATE_RESOURCE_EARLY_VOTING_START_DATE_RULE_MAX_LENGTH,
   STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH,
   isValidStateResourceIdRequirementValue,
+  isValidStateResourceMailBallotRequestType,
   STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH,
+  STATE_RESOURCE_MAIL_BALLOT_REQUEST_URL_MAX_LENGTH,
   STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
@@ -270,9 +272,25 @@ export function parseStateResourceGroupPayloadFromAi(
         errorCode: "SCHEMA_MISMATCH",
       };
     }
+    const requestUrlRaw = input.mail_ballot_request_url;
+    const requestTypeRaw = input.mail_ballot_request_type;
     const requestRaw = input.mail_ballot_request_deadline_rule;
     const returnRaw = input.mail_ballot_return_deadline_rule;
     const typeRaw = input.mail_ballot_return_deadline_type;
+    if (!(requestUrlRaw === null || isNonEmptyString(requestUrlRaw))) {
+      return {
+        ok: false,
+        reason: "mail_ballot_request_url must be null or a non-empty string",
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
+    if (!(requestTypeRaw === null || isValidStateResourceMailBallotRequestType(requestTypeRaw))) {
+      return {
+        ok: false,
+        reason: "mail_ballot_request_type must be null, online_portal, form, instructions, or not_required",
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
     if (!(requestRaw === null || isNonEmptyString(requestRaw))) {
       return {
         ok: false,
@@ -295,9 +313,52 @@ export function parseStateResourceGroupPayloadFromAi(
       };
     }
 
+    const normalizedRequestUrl = input.mail_voting_available ? (requestUrlRaw as string | null)?.trim() ?? null : null;
+    const normalizedRequestType = input.mail_voting_available
+      ? (requestTypeRaw as "online_portal" | "form" | "instructions" | "not_required" | null)
+      : null;
     const normalizedRequest = input.mail_voting_available ? (requestRaw as string | null)?.trim() ?? null : null;
     const normalizedReturn = input.mail_voting_available ? (returnRaw as string | null)?.trim() ?? null : null;
     const normalizedType = input.mail_voting_available ? (typeRaw as "postmarked_by" | "received_by" | null) : null;
+
+    if (input.mail_voting_available && normalizedRequestUrl === null) {
+      return {
+        ok: false,
+        reason: "mail_ballot_request_url must be provided when mail_voting_available is true",
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
+    if (input.mail_voting_available && normalizedRequestType === null) {
+      return {
+        ok: false,
+        reason: "mail_ballot_request_type must be provided when mail_voting_available is true",
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
+    if (normalizedRequestUrl !== null && !isHttpUrl(normalizedRequestUrl)) {
+      return {
+        ok: false,
+        reason: "mail_ballot_request_url must be a valid http(s) URL",
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
+    if (
+      normalizedRequestUrl !== null &&
+      normalizedRequestUrl.length > STATE_RESOURCE_MAIL_BALLOT_REQUEST_URL_MAX_LENGTH
+    ) {
+      return {
+        ok: false,
+        reason: `mail_ballot_request_url must be ${STATE_RESOURCE_MAIL_BALLOT_REQUEST_URL_MAX_LENGTH} characters or fewer`,
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
+    if (normalizedRequestType === "not_required" && normalizedRequest !== null) {
+      return {
+        ok: false,
+        reason: "mail_ballot_request_deadline_rule must be null when mail_ballot_request_type is not_required",
+        errorCode: "SCHEMA_MISMATCH",
+      };
+    }
 
     if (input.mail_voting_available && normalizedReturn === null) {
       return {
@@ -349,6 +410,8 @@ export function parseStateResourceGroupPayloadFromAi(
     }
 
     payload.mail_voting_available = input.mail_voting_available;
+    payload.mail_ballot_request_url = normalizedRequestUrl;
+    payload.mail_ballot_request_type = normalizedRequestType;
     payload.mail_ballot_request_deadline_rule = normalizedRequest;
     payload.mail_ballot_return_deadline_rule = normalizedReturn;
     payload.mail_ballot_return_deadline_type = normalizedType;
@@ -479,6 +542,8 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     input.online_registration_deadline_rule = null;
   }
   if (input.mail_voting_available === false) {
+    input.mail_ballot_request_url = null;
+    input.mail_ballot_request_type = null;
     input.mail_ballot_request_deadline_rule = null;
     input.mail_ballot_return_deadline_rule = null;
     input.mail_ballot_return_deadline_type = null;
@@ -535,6 +600,37 @@ export function parseStateResourcePayloadFromAi(raw: unknown): ParseResult {
     return {
       ok: false,
       reason: "mail_ballot_return_deadline_type must be provided when mail_voting_available is true",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (payload.mail_voting_available && payload.mail_ballot_request_url === null) {
+    return {
+      ok: false,
+      reason: "mail_ballot_request_url must be provided when mail_voting_available is true",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (payload.mail_voting_available && payload.mail_ballot_request_type === null) {
+    return {
+      ok: false,
+      reason: "mail_ballot_request_type must be provided when mail_voting_available is true",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (payload.mail_ballot_request_url !== null && !isHttpUrl(payload.mail_ballot_request_url)) {
+    return {
+      ok: false,
+      reason: "mail_ballot_request_url must be a valid http(s) URL",
+      errorCode: "SCHEMA_MISMATCH",
+    };
+  }
+  if (
+    payload.mail_ballot_request_url !== null &&
+    payload.mail_ballot_request_url.length > STATE_RESOURCE_MAIL_BALLOT_REQUEST_URL_MAX_LENGTH
+  ) {
+    return {
+      ok: false,
+      reason: `mail_ballot_request_url must be ${STATE_RESOURCE_MAIL_BALLOT_REQUEST_URL_MAX_LENGTH} characters or fewer`,
       errorCode: "SCHEMA_MISMATCH",
     };
   }

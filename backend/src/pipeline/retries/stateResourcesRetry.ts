@@ -332,6 +332,26 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
   if (!(input.online_registration_deadline_rule === null || isNonEmptyString(input.online_registration_deadline_rule))) {
     return null;
   }
+  if (!Object.hasOwn(input, "mail_ballot_request_url")) {
+    return null;
+  }
+  if (!(input.mail_ballot_request_url === null || isNonEmptyString(input.mail_ballot_request_url))) {
+    return null;
+  }
+  if (!Object.hasOwn(input, "mail_ballot_request_type")) {
+    return null;
+  }
+  if (
+    !(
+      input.mail_ballot_request_type === null ||
+      input.mail_ballot_request_type === "online_portal" ||
+      input.mail_ballot_request_type === "form" ||
+      input.mail_ballot_request_type === "instructions" ||
+      input.mail_ballot_request_type === "not_required"
+    )
+  ) {
+    return null;
+  }
   if (!Object.hasOwn(input, "mail_ballot_request_deadline_rule")) {
     return null;
   }
@@ -381,7 +401,22 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
   if (input.mail_voting_available === true && input.mail_ballot_return_deadline_type === null) {
     return null;
   }
+  if (input.mail_voting_available === true && input.mail_ballot_request_url === null) {
+    return null;
+  }
+  if (input.mail_voting_available === true && input.mail_ballot_request_type === null) {
+    return null;
+  }
+  if (input.mail_ballot_request_type === "not_required" && input.mail_ballot_request_deadline_rule !== null) {
+    return null;
+  }
   if (input.mail_voting_available === false) {
+    if (input.mail_ballot_request_url !== null) {
+      return null;
+    }
+    if (input.mail_ballot_request_type !== null) {
+      return null;
+    }
     if (input.mail_ballot_request_deadline_rule !== null) {
       return null;
     }
@@ -432,6 +467,12 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     polling_place_url: (input.polling_place_url as string).trim(),
     voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
     mail_voting_available: input.mail_voting_available as boolean,
+    mail_ballot_request_url:
+      input.mail_ballot_request_url === null ? null : (input.mail_ballot_request_url as string).trim(),
+    mail_ballot_request_type:
+      input.mail_ballot_request_type === null
+        ? null
+        : (input.mail_ballot_request_type as "online_portal" | "form" | "instructions" | "not_required"),
     mail_ballot_request_deadline_rule:
       input.mail_ballot_request_deadline_rule === null
         ? null
@@ -459,6 +500,8 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
     sources: {
       polling_place_url: normalizeBucket(sources.polling_place_url),
       mail_voting_available: normalizeBucket(sources.mail_voting_available),
+      mail_ballot_request_url: normalizeBucket(sources.mail_ballot_request_url),
+      mail_ballot_request_type: normalizeBucket(sources.mail_ballot_request_type),
       mail_ballot_request_deadline_rule: normalizeBucket(sources.mail_ballot_request_deadline_rule),
       mail_ballot_return_deadline_rule: normalizeBucket(sources.mail_ballot_return_deadline_rule),
       mail_ballot_return_deadline_type: normalizeBucket(sources.mail_ballot_return_deadline_type),
@@ -488,6 +531,8 @@ function dedupeSources(payload: StateResourcePayload): { payload: StateResourceP
   const nextSources: StateResourcePayload["sources"] = {
     polling_place_url: [],
     mail_voting_available: [],
+    mail_ballot_request_url: [],
+    mail_ballot_request_type: [],
     mail_ballot_request_deadline_rule: [],
     mail_ballot_return_deadline_rule: [],
     mail_ballot_return_deadline_type: [],
