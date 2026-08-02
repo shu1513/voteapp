@@ -114,7 +114,8 @@ function isHttpUrl(value: string): boolean {
 function isVoterRegistrationLandingUrl(value: string): boolean {
   try {
     const parsed = new URL(value);
-    return parsed.hostname.toLowerCase().replace(/^www\./, "") === "vote.gov";
+    // Strip an absolute-DNS trailing dot first: "vote.gov." resolves to the same host.
+    return parsed.hostname.toLowerCase().replace(/\.$/, "").replace(/^www\./, "") === "vote.gov";
   } catch {
     return false;
   }

@@ -3,7 +3,7 @@ import { Pool } from "pg";
 import { createClient } from "redis";
 
 import { loadProjectEnv } from "../config/env.js";
-import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
+import { requireLocalDatabaseTarget, requireLocalRedisTarget } from "./localDatabaseGuard.js";
 import {
   STAGING_ITEM_TYPE_STATE_RESOURCES,
   STAGING_PENDING_STREAM,
@@ -54,9 +54,11 @@ function usage(): string {
     "mail_ballot_request_type, and per-field sources buckets.",
     "",
     "Rows are staged as pending and published to the state_resources pending",
-    "stream; run the production validator and writer afterwards:",
-    "  npm run state-resources:validate -- --once",
-    "  npm run state-resources:write -- --once",
+    "stream; run the production validator and writer afterwards. One --once pass",
+    "processes a single batch (default 20), so pass --batch-size=<staged count>",
+    "or repeat each command until it reports 0 processed:",
+    "  npm run state-resources:validate -- --once --batch-size=<n>",
+    "  npm run state-resources:write -- --once --batch-size=<n>",
   ].join("\n");
 }
 
@@ -84,7 +86,6 @@ async function main(): Promise<void> {
     { name: "--dry-run", value: "none" },
   ]);
   loadProjectEnv();
-  requireLocalDatabaseTarget();
 
   const file = readFlag("--file");
   if (!file) {
@@ -153,6 +154,10 @@ async function main(): Promise<void> {
   if (!redisUrl) {
     throw new Error("REDIS_URL is required for manual state_resources import");
   }
+  // Guards run after the --dry-run branch so a payload file can be contract-checked
+  // without any database/Redis configuration; live imports stay local-only.
+  requireLocalDatabaseTarget(databaseUrl);
+  requireLocalRedisTarget(redisUrl);
 
   const promptVersion = process.env.STATE_RESOURCES_PROMPT_VERSION?.trim() || "state_resources_v2";
 
@@ -254,9 +259,11 @@ async function main(): Promise<void> {
         staged,
         runId,
         ingestKeys: stagedKeys,
+        // One --once pass drains a single batch; size it to this run so a
+        // 51-state import doesn't stop after the default 20.
         next: [
-          "npm run state-resources:validate -- --once",
-          "npm run state-resources:write -- --once",
+          `npm run state-resources:validate -- --once --batch-size=${staged}`,
+          `npm run state-resources:write -- --once --batch-size=${staged}`,
         ],
       },
       null,

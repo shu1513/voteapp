@@ -33,6 +33,11 @@ ALTER TABLE state_resources
 -- Mail-voting consistency now covers the request destination:
 -- available -> return rule + request URL + request type all present;
 -- unavailable -> every mail-request/return field is null.
+-- NOT VALID: databases populated before this migration hold mail-enabled rows
+-- with NULL request fields; those legacy rows are grandfathered until the
+-- state-resources backfill rewrites them (every new INSERT/UPDATE is still
+-- enforced). Run ALTER TABLE ... VALIDATE CONSTRAINT in a follow-up migration
+-- once production rows carry the request fields.
 ALTER TABLE state_resources
   DROP CONSTRAINT IF EXISTS chk_state_resources_mail_voting_consistency;
 ALTER TABLE state_resources
@@ -52,7 +57,7 @@ ALTER TABLE state_resources
       AND mail_ballot_request_url IS NULL
       AND mail_ballot_request_type IS NULL
     )
-  );
+  ) NOT VALID;
 
 -- Automatic vote-by-mail: there is no request, so there is no request deadline.
 ALTER TABLE state_resources

@@ -407,6 +407,9 @@ function parseEnrichedPayload(value: unknown): StateResourcePayload | null {
   if (input.mail_voting_available === true && input.mail_ballot_request_type === null) {
     return null;
   }
+  if (input.mail_ballot_request_type === "not_required" && input.mail_ballot_request_deadline_rule !== null) {
+    return null;
+  }
   if (input.mail_voting_available === false) {
     if (input.mail_ballot_request_url !== null) {
       return null;

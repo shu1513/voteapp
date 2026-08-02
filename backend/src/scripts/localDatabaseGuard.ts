@@ -32,6 +32,48 @@ function readAllowedLocalDatabaseHosts(): Set<string> {
   return hosts;
 }
 
+/**
+ * Same local-only guard for Redis: manual staging scripts publish pipeline
+ * messages, and a remote REDIS_URL would let a manual run enqueue work on a
+ * production stream even when the database target is local.
+ */
+export function requireLocalRedisTarget(redisUrl = process.env.REDIS_URL ?? ""): void {
+  if (process.env.ALLOW_REMOTE_REDIS_WRITES?.trim() === "1") {
+    return;
+  }
+
+  const trimmed = redisUrl.trim();
+  if (!trimmed) {
+    throw new Error("REDIS_URL is required");
+  }
+
+  let parsed: URL;
+  try {
+    parsed = new URL(trimmed);
+  } catch {
+    throw new Error("Refusing manual write: REDIS_URL must be a redis:// or rediss:// URL");
+  }
+
+  if (parsed.protocol !== "redis:" && parsed.protocol !== "rediss:") {
+    throw new Error(`Refusing manual write: unsupported REDIS_URL protocol ${parsed.protocol}`);
+  }
+
+  const hosts = new Set(DEFAULT_LOCAL_DATABASE_HOSTS);
+  for (const host of (process.env.LOCAL_REDIS_ALLOWED_HOSTS ?? "").split(",")) {
+    const normalized = normalizeHost(host);
+    if (normalized.length > 0) {
+      hosts.add(normalized);
+    }
+  }
+
+  if (!isLocalDatabaseHost(parsed.hostname, hosts)) {
+    throw new Error(
+      `Refusing manual write to non-local REDIS_URL host "${parsed.hostname}". ` +
+        "Use LOCAL_REDIS_ALLOWED_HOSTS for reviewed local aliases, or set ALLOW_REMOTE_REDIS_WRITES=1 only for an intentional remote write."
+    );
+  }
+}
+
 export function requireLocalDatabaseTarget(databaseUrl = process.env.DATABASE_URL ?? ""): void {
   if (process.env.ALLOW_REMOTE_DB_WRITES?.trim() === "1") {
     return;
