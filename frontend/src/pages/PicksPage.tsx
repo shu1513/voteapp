@@ -7,6 +7,7 @@ import { FollowedCandidatesSection } from "../components/FollowedCandidatesSecti
 import { ResearchAreasSection } from "../components/ResearchAreasSection";
 import { ShareButton } from "../components/ShareButton";
 import { VerifyPrompt } from "../components/VerifyPrompt";
+import { SITE_ORIGIN } from "../lib/pageMeta";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 
@@ -68,12 +69,26 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
   });
 
   if (mint.isSuccess) {
+    const path = `/picks/${mint.data.share.token}`;
     return (
       <span className="flex flex-wrap items-center gap-2">
+        {/* The minted URL is the deliverable — it renders here, visibly,
+            the moment it exists. A bare "Share" button next to "anyone with
+            the link…" reads as broken when no link is anywhere in sight.
+            The anchor opens the public card so the sharer can see exactly
+            what recipients will. */}
+        <a
+          href={path}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="break-all text-xs text-ink underline hover:text-rausch"
+        >
+          {`${SITE_ORIGIN.replace(/^https?:\/\//, "")}${path}`}
+        </a>
         {/* pageMeta on the public page supplies the og card; ShareButton
             handles native share / copy / X / Facebook / WhatsApp / email. */}
         <ShareButton
-          path={`/picks/${mint.data.share.token}`}
+          path={path}
           shareText={`My ${formatElectionDate(electionDate)} election picks`}
         />
         <span className="text-xs text-ink-soft">Anyone with the link can see this card.</span>
