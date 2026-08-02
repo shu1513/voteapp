@@ -13,16 +13,16 @@ import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 
 // "My pick: Jane Doe" / "My picks: Jane Doe, John Roe" (multi-seat) /
-// "My vote: Yes" on a measure. First person throughout, because both chips
+// "My pick: Yes" on a measure. First person throughout, because both chips
 // render side by side in one ballot list and because these labels echo the
-// controls that set them — MeasureChoiceButtons is headed "My vote:" and
+// controls that set them — MeasureChoiceButtons is headed "My pick:" and
 // the candidate button reads "My pick" (ElectionChoiceControls.tsx). It also
 // matches the rest of the signed-in surface ("My Elections", "My
 // Candidates", "My issues first"). A pick whose candidate has since
 // withdrawn gets flagged inline instead of vanishing.
 function formatChoiceLabel(choice: ElectionChoice): string | null {
   if (choice.measure_position !== null) {
-    return `My vote: ${choice.measure_position === "yes" ? "Yes" : "No"}`;
+    return `My pick: ${choice.measure_position === "yes" ? "Yes" : "No"}`;
   }
   if (choice.picks.length === 0) {
     return null;
