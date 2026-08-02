@@ -221,11 +221,13 @@ describe("marylandFinanceWriter", () => {
     const summaryCall = db.client.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.md_candidate_finance_summaries")
     );
-    expect(String(summaryCall?.[0])).toContain(
-      "outside_support_total = COALESCE(\n          EXCLUDED.outside_support_total,\n          md_candidate_finance_summaries.outside_support_total\n        )"
+    // Whitespace-insensitive: the factory renders these clauses on one line
+    // where the bespoke writer used three. Same SQL semantics.
+    expect(String(summaryCall?.[0])).toMatch(
+      /outside_support_total = COALESCE\(\s*EXCLUDED\.outside_support_total,\s*md_candidate_finance_summaries\.outside_support_total\s*\)/
     );
-    expect(String(summaryCall?.[0])).toContain(
-      "outside_oppose_total = COALESCE(\n          EXCLUDED.outside_oppose_total,\n          md_candidate_finance_summaries.outside_oppose_total\n        )"
+    expect(String(summaryCall?.[0])).toMatch(
+      /outside_oppose_total = COALESCE\(\s*EXCLUDED\.outside_oppose_total,\s*md_candidate_finance_summaries\.outside_oppose_total\s*\)/
     );
     expect(summaryCall?.[1]?.[6]).toBeNull();
     expect(summaryCall?.[1]?.[7]).toBeNull();
