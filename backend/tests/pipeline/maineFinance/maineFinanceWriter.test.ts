@@ -191,8 +191,10 @@ describe("maineFinanceWriter", () => {
     });
     const sql = client.query.mock.calls.map((call) => String(call[0]));
     const summarySql = sql.find((statement) => statement.includes("INSERT INTO public.me_candidate_finance_summaries"));
-    expect(summarySql).toContain(
-      "outside_support_total = COALESCE(\n          EXCLUDED.outside_support_total"
+    // Whitespace-insensitive: the factory renders this clause on one line
+    // where the bespoke writer used three. Same SQL semantics.
+    expect(summarySql).toMatch(
+      /outside_support_total = COALESCE\(\s*EXCLUDED\.outside_support_total,\s*me_candidate_finance_summaries\.outside_support_total\s*\)/
     );
     expect(sql.some((statement) => statement.includes("DELETE FROM public.me_candidate_finance_direct_breakdowns"))).toBe(false);
     expect(sql.some((statement) => statement.includes("DELETE FROM public.me_candidate_finance_outside_groups"))).toBe(false);
