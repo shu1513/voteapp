@@ -76,7 +76,13 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
             the moment it exists. A bare "Share" button next to "anyone with
             the link…" reads as broken when no link is anywhere in sight.
             The anchor opens the public card so the sharer can see exactly
-            what recipients will. */}
+            what recipients will.
+
+            href is deliberately the RELATIVE path while the text shows the
+            canonical host: the token only exists in the environment that
+            minted it, so an absolute SITE_ORIGIN href would 404 from dev or
+            staging, while in production the two are the same page anyway.
+            The protocol is trimmed from the display only. */}
         <a
           href={path}
           target="_blank"

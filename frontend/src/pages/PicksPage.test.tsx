@@ -115,6 +115,15 @@ describe("PicksPage", () => {
     expect(await screen.findByRole("button", { name: "Share" })).toBeInTheDocument();
     expect(screen.getByText("Anyone with the link can see this card.")).toBeInTheDocument();
 
+    // The minted URL itself is visible — canonical host in the text, the
+    // relative path as the href (the token only resolves where it was
+    // minted; see ShareCardControl).
+    const mintedLink = screen.getByRole("link", {
+      name: "electionssimplified.com/picks/tok_abcdefghijklmnopqrstuvwxyz012345",
+    });
+    expect(mintedLink).toHaveAttribute("href", "/picks/tok_abcdefghijklmnopqrstuvwxyz012345");
+    expect(mintedLink).toHaveAttribute("target", "_blank");
+
     const post = fetchMock.mock.calls.find(([, init]) => init?.method === "POST");
     expect(post).toBeDefined();
     expect(String(post![0])).toContain("/api/me/pick-card-shares");
