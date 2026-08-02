@@ -2,7 +2,7 @@
 
 Status: phase 0 shipped (PR #468) + local backfill applied; phase 1 shipped
 (PR #473); phase 2 shipped (PR #474); phase 3 shipped (PR #476); phase 4
-planned. Each phase is
+implemented. Each phase is
 one PR; later phases depend on earlier ones only where noted. Verified facts
 below come from the live local DB and the current code — re-verify counts
 before the backfill run.
