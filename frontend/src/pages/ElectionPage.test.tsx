@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ElectionPage, ErrorBoundary } from "./ElectionPage";
 import { renderRoutes } from "../test/render";
@@ -1222,5 +1222,80 @@ describe("ElectionPage back link and nav context", () => {
 
     const state = router.state.location.state as { candidates: unknown };
     expect(state.candidates).toEqual([{ id: "c-dem", name: "Dana Democrat" }]);
+  });
+});
+
+describe("ElectionPage ballot pager", () => {
+  const CONTESTS = [
+    { id: "e-1", title: "Governor" },
+    { id: "e-2", title: "Mayor" },
+    { id: "e-3", title: "Sheriff" },
+  ];
+  const ARRIVAL = { backTo: { path: "/ballot?d=d-1", label: "All elections" }, contests: CONTESTS };
+  // The loader answers for whatever id the pager navigates to, so a walk
+  // across contests keeps rendering real pages.
+  const perIdLoader = ({ params }: { params: { electionId?: string } }) =>
+    electionDetail({ id: params.electionId });
+
+  it("renders prev/next around the current contest, forwarding the walk state", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(perIdLoader, "e-2", ARRIVAL);
+
+    const pager = await screen.findByRole("navigation", { name: "Ballot navigation" });
+    expect(within(pager).getByRole("link", { name: "Previous: Governor" })).toHaveAttribute(
+      "href",
+      "/elections/e-1"
+    );
+    expect(within(pager).getByRole("link", { name: "Next: Sheriff" })).toHaveAttribute("href", "/elections/e-3");
+    expect(within(pager).getByRole("link", { name: "Back to All elections" })).toHaveAttribute(
+      "href",
+      "/ballot?d=d-1"
+    );
+  });
+
+  it("leaves the prev slot empty at the start of the sequence", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(perIdLoader, "e-1", ARRIVAL);
+
+    const pager = await screen.findByRole("navigation", { name: "Ballot navigation" });
+    expect(within(pager).queryByRole("link", { name: /^Previous:/ })).not.toBeInTheDocument();
+    expect(within(pager).getByRole("link", { name: "Next: Mayor" })).toBeInTheDocument();
+  });
+
+  it("keeps paging across two consecutive next clicks", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const { router } = renderElection(perIdLoader, "e-1", ARRIVAL);
+
+    await user.click(await screen.findByRole("link", { name: "Next: Mayor" }));
+    // The forwarded state re-renders the pager on the next page.
+    await user.click(await screen.findByRole("link", { name: "Next: Sheriff" }));
+
+    expect(router.state.location.pathname).toBe("/elections/e-3");
+    expect(router.state.location.state).toEqual(ARRIVAL);
+    const pager = await screen.findByRole("navigation", { name: "Ballot navigation" });
+    expect(within(pager).getByRole("link", { name: "Previous: Mayor" })).toBeInTheDocument();
+    expect(within(pager).queryByRole("link", { name: /^Next:/ })).not.toBeInTheDocument();
+  });
+
+  it("shows no pager on a deep link, a stale snapshot, or a single-contest list", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(perIdLoader, "e-1");
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(screen.queryByRole("navigation", { name: "Ballot navigation" })).not.toBeInTheDocument();
+
+    // Current election missing from the snapshot (stale filtered list).
+    renderElection(perIdLoader, "e-9", { ...ARRIVAL });
+    await waitFor(() =>
+      expect(screen.queryByRole("navigation", { name: "Ballot navigation" })).not.toBeInTheDocument()
+    );
+
+    renderElection(perIdLoader, "e-1", {
+      backTo: ARRIVAL.backTo,
+      contests: [{ id: "e-1", title: "Governor" }],
+    });
+    await waitFor(() =>
+      expect(screen.queryByRole("navigation", { name: "Ballot navigation" })).not.toBeInTheDocument()
+    );
   });
 });

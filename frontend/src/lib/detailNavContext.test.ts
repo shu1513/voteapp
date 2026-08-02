@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readCandidateNavState, readElectionNavState } from "./detailNavContext";
+import { pagerNeighbors, readCandidateNavState, readElectionNavState } from "./detailNavContext";
 
 const BACK_TO = { path: "/ballot?d=d-1&sort=soonest", label: "All elections" };
 
@@ -91,5 +91,26 @@ describe("readCandidateNavState", () => {
     expect(
       readCandidateNavState({ backTo: ELECTION_BACK, candidates: [{ id: "c-1", name: " " }] })
     ).toEqual({ backTo: ELECTION_BACK });
+  });
+});
+
+describe("pagerNeighbors", () => {
+  const LIST = [
+    { id: "e-1", title: "Governor" },
+    { id: "e-2", title: "Mayor" },
+    { id: "e-3", title: "Sheriff" },
+  ];
+
+  it("returns both neighbors for a middle entry and null slots at the ends", () => {
+    expect(pagerNeighbors(LIST, "e-2")).toEqual({ prev: LIST[0], next: LIST[2] });
+    expect(pagerNeighbors(LIST, "e-1")).toEqual({ prev: null, next: LIST[1] });
+    expect(pagerNeighbors(LIST, "e-3")).toEqual({ prev: LIST[1], next: null });
+  });
+
+  it("returns null with no list, a short list, or the current id missing", () => {
+    expect(pagerNeighbors(undefined, "e-1")).toBeNull();
+    expect(pagerNeighbors([LIST[0]], "e-1")).toBeNull();
+    // A stale snapshot that no longer contains the page must not page.
+    expect(pagerNeighbors(LIST, "e-999")).toBeNull();
   });
 });

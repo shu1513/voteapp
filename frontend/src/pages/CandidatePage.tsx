@@ -9,7 +9,13 @@ import type {
   ResearchAreaPreference,
 } from "@voteapp/api-client";
 import { BackLink } from "../components/BackLink";
-import { readCandidateNavState, type BackTo, type ElectionNavState } from "../lib/detailNavContext";
+import { DetailPager } from "../components/DetailPager";
+import {
+  pagerNeighbors,
+  readCandidateNavState,
+  type BackTo,
+  type ElectionNavState,
+} from "../lib/detailNavContext";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
@@ -348,10 +354,20 @@ export function CandidatePage() {
   const [chosenRecordView, setChosenRecordView] = useState<RecordView | null>(null);
   const effectiveChosenView = chosenRecordView === "my_issues" && !hasSaved ? null : chosenRecordView;
   const recordView = effectiveChosenView ?? (hasSaved ? "my_issues" : "by_issue");
-  const [showAllNewest, setShowAllNewest] = useState(false);
+  // Keyed by candidate, unlike the view pick above: the roster pager keeps
+  // this component mounted across candidates, and a bare boolean would leak
+  // one candidate's 50-record expansion into the next — defeating the
+  // 20-record cap. Same per-entity keying as ElectionPage's party filter
+  // (the view pick is a preference that travels; expanding a list is not);
+  // stale state is simply never read.
+  const [newestExpansion, setNewestExpansion] = useState<{ candidateId: string; on: boolean }>({
+    candidateId: "",
+    on: false,
+  });
 
   const detail = useLoaderData<typeof loader>();
   const candidate = detail.candidate;
+  const showAllNewest = newestExpansion.candidateId === candidate.candidate_id && newestExpansion.on;
   // ?? {}: tolerates loader data from before this field existed (deploy skew
   // between a cached document and fresh code) by rendering no finance.
   const ongoingFinance = detail.ongoing_finance ?? {};
@@ -402,6 +418,11 @@ export function CandidatePage() {
     (fallbackElection
       ? { path: `/elections/${fallbackElection.election_id}`, label: fallbackElection.official_ballot_title }
       : null);
+  // Bottom pager over the arrival election's displayed roster (a candidate
+  // can be in several races — the sequence is scoped to the one the reader
+  // came from). Null on deep links or when this candidate fell out of the
+  // snapshot.
+  const rosterNeighbors = pagerNeighbors(navState?.candidates, candidate.candidate_id);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -526,7 +547,7 @@ export function CandidatePage() {
               {!showAllNewest && candidate.records.length > INITIAL_NEWEST_RECORDS ? (
                 <button
                   type="button"
-                  onClick={() => setShowAllNewest(true)}
+                  onClick={() => setNewestExpansion({ candidateId: candidate.candidate_id, on: true })}
                   className="mt-3 rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink"
                 >
                   Show all {candidate.records.length} records
@@ -606,6 +627,29 @@ export function CandidatePage() {
         <p className="mt-6 text-xs text-ink-soft">
           Profile last researched {formatElectionDate(candidate.last_researched.slice(0, 10))}.
         </p>
+      ) : null}
+
+      {/* Walk the arrival election's roster candidate-by-candidate in the
+          order the election page displayed it (state-gated: hidden on deep
+          links). navState is non-null whenever rosterNeighbors is — the
+          candidates list only validates inside it. */}
+      {rosterNeighbors && navState ? (
+        <DetailPager
+          ariaLabel="Candidate navigation"
+          prev={
+            rosterNeighbors.prev
+              ? { path: `/candidates/${rosterNeighbors.prev.id}`, label: rosterNeighbors.prev.name }
+              : null
+          }
+          next={
+            rosterNeighbors.next
+              ? { path: `/candidates/${rosterNeighbors.next.id}`, label: rosterNeighbors.next.name }
+              : null
+          }
+          backTo={navState.backTo}
+          backToState={navState.backState}
+          siblingState={navState}
+        />
       ) : null}
 
       {/* Last on purpose: reporting is a reaction to reading the profile, not

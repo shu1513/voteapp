@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CandidatePage, ErrorBoundary, loader } from "./CandidatePage";
 import { renderRoutes } from "../test/render";
@@ -18,7 +18,11 @@ const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 // The subject arrives via the route loader (server-fetched in production);
 // tests supply it directly instead of stubbing the loader's fetch.
 // `state` simulates arriving with nav context (see detailNavContext.ts).
-function renderCandidate(loader: () => unknown, id = "c-1", state?: unknown) {
+function renderCandidate(
+  loader: (args: { params: { candidateId?: string } }) => unknown,
+  id = "c-1",
+  state?: unknown
+) {
   return renderRoutes(
     [
       {
@@ -679,5 +683,106 @@ describe("CandidatePage back link and nav context", () => {
       backTo: { path: "/candidates/c-1", label: "Jordan Voter" },
       backState: picksArrival,
     });
+  });
+});
+
+describe("CandidatePage roster pager", () => {
+  const ROSTER_ARRIVAL = {
+    backTo: { path: "/elections/e-1", label: "Governor" },
+    backState: { backTo: { path: "/ballot?d=d-1", label: "All elections" } },
+    electionId: "e-1",
+    candidates: [
+      { id: "c-1", name: "Jordan Voter" },
+      { id: "c-2", name: "Riley Runner" },
+    ],
+  };
+  // The loader answers for whatever id the pager navigates to.
+  const perIdLoader = ({ params }: { params: { candidateId?: string } }) =>
+    candidateDetail({ candidate_id: params.candidateId });
+
+  it("pages the arrival roster by candidate name and forwards the walk state", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const { router } = renderCandidate(perIdLoader, "c-1", ROSTER_ARRIVAL);
+
+    const pager = await screen.findByRole("navigation", { name: "Candidate navigation" });
+    expect(within(pager).queryByRole("link", { name: /^Previous:/ })).not.toBeInTheDocument();
+    expect(within(pager).getByRole("link", { name: "Back to Governor" })).toHaveAttribute(
+      "href",
+      "/elections/e-1"
+    );
+
+    await user.click(within(pager).getByRole("link", { name: "Next: Riley Runner" }));
+
+    expect(router.state.location.pathname).toBe("/candidates/c-2");
+    expect(router.state.location.state).toEqual(ROSTER_ARRIVAL);
+    // On the neighbor, the walk points back.
+    const nextPager = await screen.findByRole("navigation", { name: "Candidate navigation" });
+    expect(within(nextPager).getByRole("link", { name: "Previous: Jordan Voter" })).toBeInTheDocument();
+    expect(within(nextPager).queryByRole("link", { name: /^Next:/ })).not.toBeInTheDocument();
+  });
+
+  it("delivers the ballot context through the pager's up-level link", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const { router } = renderCandidate(perIdLoader, "c-1", ROSTER_ARRIVAL);
+
+    const pager = await screen.findByRole("navigation", { name: "Candidate navigation" });
+    await user.click(within(pager).getByRole("link", { name: "Back to Governor" }));
+
+    expect(router.state.location.pathname).toBe("/elections/e-1");
+    expect(router.state.location.state).toEqual(ROSTER_ARRIVAL.backState);
+  });
+
+  it("shows no pager on a deep link or when the candidate left the snapshot", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(perIdLoader);
+    await screen.findByRole("heading", { name: "Jordan Voter" });
+    expect(screen.queryByRole("navigation", { name: "Candidate navigation" })).not.toBeInTheDocument();
+
+    renderCandidate(perIdLoader, "c-9", ROSTER_ARRIVAL);
+    await waitFor(() =>
+      expect(screen.queryByRole("navigation", { name: "Candidate navigation" })).not.toBeInTheDocument()
+    );
+  });
+});
+
+describe("CandidatePage newest-view expansion across the pager", () => {
+  it("re-collapses the newest list when paging to the next candidate", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    // 21 records — one past the 20-record cap, so "Show all" renders.
+    const manyRecords = Array.from({ length: 21 }, (_, i) => ({
+      id: `r-${i}`,
+      description: `Did a thing (${i}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: [],
+    }));
+    const { router } = renderCandidate(
+      ({ params }) => candidateDetail({ candidate_id: params.candidateId, records: manyRecords }),
+      "c-1",
+      {
+        backTo: { path: "/elections/e-1", label: "Governor" },
+        electionId: "e-1",
+        candidates: [
+          { id: "c-1", name: "Jordan Voter" },
+          { id: "c-2", name: "Riley Runner" },
+        ],
+      }
+    );
+
+    // Switch to the flat newest view and expand past the cap.
+    await user.selectOptions(await screen.findByRole("combobox"), "newest");
+    await user.click(screen.getByRole("button", { name: "Show all 21 records" }));
+    expect(screen.queryByRole("button", { name: /Show all/ })).not.toBeInTheDocument();
+
+    // Page to the neighbor: the component stays mounted (same route), so a
+    // bare boolean would leak the expansion. The next candidate must open
+    // capped again.
+    await user.click(screen.getByRole("link", { name: "Next: Riley Runner" }));
+    expect(router.state.location.pathname).toBe("/candidates/c-2");
+    expect(await screen.findByRole("button", { name: "Show all 21 records" })).toBeInTheDocument();
   });
 });

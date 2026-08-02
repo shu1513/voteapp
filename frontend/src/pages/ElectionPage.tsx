@@ -3,7 +3,8 @@ import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError }
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { ElectionDetail, PartyBucket } from "@voteapp/api-client";
 import { BackLink } from "../components/BackLink";
-import { readElectionNavState, type CandidateNavState } from "../lib/detailNavContext";
+import { DetailPager } from "../components/DetailPager";
+import { pagerNeighbors, readElectionNavState, type CandidateNavState } from "../lib/detailNavContext";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
@@ -195,6 +196,10 @@ export function ElectionPage() {
   // and drops elections past the recency window.
   const location = useLocation();
   const navState = readElectionNavState(location.state);
+  // Bottom pager over the ballot sequence the visitor arrived with; null
+  // (no pager) on deep links, single-contest lists, or when this election
+  // fell out of the snapshot.
+  const contestNeighbors = pagerNeighbors(navState?.contests, data.id);
   const backTo = navState?.backTo ?? {
     path: `/ballot?d=${data.district_id}`,
     label: `Elections in ${formatDistrictName(data.district.name)}`,
@@ -689,6 +694,29 @@ export function ElectionPage() {
             <SourceLine key={url} url={url} />
           ))}
         </section>
+      ) : null}
+
+      {/* Walk the ballot contest-by-contest in the exact order the list
+          page displayed (state-gated: hidden on deep links, where no
+          sequence exists). Renders only when the sequence contains this
+          election — pagerNeighbors. */}
+      {contestNeighbors ? (
+        <DetailPager
+          ariaLabel="Ballot navigation"
+          prev={
+            contestNeighbors.prev
+              ? { path: `/elections/${contestNeighbors.prev.id}`, label: contestNeighbors.prev.title }
+              : null
+          }
+          next={
+            contestNeighbors.next
+              ? { path: `/elections/${contestNeighbors.next.id}`, label: contestNeighbors.next.title }
+              : null
+          }
+          backTo={backTo}
+          backToState={navState?.backState}
+          siblingState={navState}
+        />
       ) : null}
 
       {/* Last on purpose: reporting is a reaction to reading the page, not a
