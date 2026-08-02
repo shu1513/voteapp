@@ -28,6 +28,9 @@ function SaveError({ error }: { error: unknown }) {
 type CandidatePickButtonProps = {
   electionId: string;
   candidateId: string;
+  /** Carried in the accessible name so the page's N pick buttons stay
+   * distinguishable in screen-reader button lists and voice control. */
+  candidateName: string;
   /** The viewer's current choice state for this election, if any. */
   choice: ElectionChoice | undefined;
   /** elections.seats_to_fill — null renders as a single seat. */
@@ -44,6 +47,7 @@ type CandidatePickButtonProps = {
 export function CandidatePickButton({
   electionId,
   candidateId,
+  candidateName,
   choice,
   seatsToFill,
   size = "md",
@@ -61,13 +65,20 @@ export function CandidatePickButton({
     size === "sm"
       ? "rounded-lg px-3 py-1 text-xs font-semibold transition disabled:opacity-50"
       : "rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
+  const visibleLabel = setChoice.isPending ? "…" : isPicked ? "✓ My pick" : "Make my pick";
 
   return (
     <span className="inline-flex flex-col items-end gap-1">
+      {/* aria-label derives from visibleLabel so name and text can't drift:
+          the candidate suffix keeps the page's N pick buttons apart in
+          screen-reader button lists and voice control, and leading with the
+          visible text keeps the spoken label a prefix of the name (WCAG
+          2.5.3). Matches the ballot cards' "My pick: {name}" chip wording. */}
       <button
         type="button"
         disabled={saving || atMultiSeatCap}
         aria-pressed={isPicked}
+        aria-label={`${visibleLabel}: ${candidateName}`}
         title={atMultiSeatCap ? `This election fills ${seatCap} seats — remove a pick first` : undefined}
         onClick={() =>
           setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: !isPicked })
@@ -78,7 +89,7 @@ export function CandidatePickButton({
             : `${base} border border-line bg-white text-ink hover:border-green-700`
         }
       >
-        {setChoice.isPending ? "…" : isPicked ? "✓ My pick" : "Make my pick"}
+        {visibleLabel}
       </button>
       {/* Only this control's own failure: a shared banner would blame every
           button on the page for one candidate's rejection. */}

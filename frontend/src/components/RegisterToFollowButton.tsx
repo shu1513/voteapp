@@ -1,6 +1,5 @@
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useState } from "react";
-import { Link, useLocation } from "react-router";
+import { RegisterPromptDialog } from "./RegisterPromptDialog";
 
 // Stand-in for FollowButton shown to logged-out visitors: styled like the
 // real Follow button, but clicking opens a register prompt instead of
@@ -13,10 +12,6 @@ type RegisterToFollowButtonProps = {
 
 export function RegisterToFollowButton({ candidateName, size = "md" }: RegisterToFollowButtonProps) {
   const [isOpen, setIsOpen] = useState(false);
-  // Carry the candidate page as the post-auth return path so the visitor
-  // lands back here to complete the follow (login honors ?next=; the
-  // register flow forwards it as far as the email hop allows).
-  const next = encodeURIComponent(useLocation().pathname);
   const base =
     size === "sm"
       ? "rounded-lg px-3 py-1 text-xs font-semibold transition"
@@ -31,46 +26,16 @@ export function RegisterToFollowButton({ candidateName, size = "md" }: RegisterT
       >
         Follow
       </button>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
-        <DialogBackdrop className="fixed inset-0 bg-ink/30" />
-        <div className="fixed inset-0 flex items-center justify-center px-4 py-6">
-          <DialogPanel className="w-full max-w-md rounded-2xl border border-line bg-white p-5 shadow-xl">
-            <div className="flex items-start justify-between gap-4">
-              <DialogTitle className="text-lg font-semibold text-ink">
-                Follow {candidateName}
-              </DialogTitle>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="text-sm text-ink-soft hover:text-ink"
-              >
-                Close
-              </button>
-            </div>
-            {/* Event-gated, not scheduled: the digest job runs daily but emails
-                only followers with unsent events, so "whenever there's news" is
-                the claim that stays true regardless of the cron cadence. Do not
-                name a frequency here — Settings already says "Daily digest". */}
-            <p className="mt-2 text-sm text-ink">
-              Get updates on {candidateName} whenever there&apos;s news. Signing up is free.
-            </p>
-            <div className="mt-4 flex items-center justify-end gap-3">
-              <Link
-                to={`/login?next=${next}`}
-                className="text-sm text-ink-soft underline underline-offset-2 hover:text-ink"
-              >
-                Log in
-              </Link>
-              <Link
-                to={`/register?next=${next}`}
-                className="rounded-lg bg-rausch px-4 py-2 text-sm font-semibold text-white hover:bg-rausch-dark"
-              >
-                Sign up
-              </Link>
-            </div>
-          </DialogPanel>
-        </div>
-      </Dialog>
+      <RegisterPromptDialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        title={`Follow ${candidateName}`}
+        // Event-gated, not scheduled: the digest job runs daily but emails
+        // only followers with unsent events, so "whenever there's news" is
+        // the claim that stays true regardless of the cron cadence. Do not
+        // name a frequency here — Settings already says "Daily digest".
+        description={<>Get updates on {candidateName} whenever there&apos;s news. Signing up is free.</>}
+      />
     </>
   );
 }

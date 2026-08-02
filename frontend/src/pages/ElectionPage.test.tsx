@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ElectionPage, ErrorBoundary } from "./ElectionPage";
 import { renderRoutes } from "../test/render";
@@ -507,6 +507,71 @@ describe("ElectionPage", () => {
       await screen.findByRole("heading", { name: "This office is responsible for:" })
     ).toBeInTheDocument();
     expect(screen.queryByText(/State Lower Chamber Legislator is responsible/)).not.toBeInTheDocument();
+  });
+
+  it("shows logged-out visitors pick buttons that prompt them to register", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail());
+
+    // One per active candidate, same placement as the real control — and each
+    // accessible name carries its candidate, so screen-reader button lists and
+    // voice control can tell the page's pick buttons apart.
+    const jordanPick = await screen.findByRole("button", { name: "Make my pick: Jordan Voter" });
+    expect(screen.getByRole("button", { name: "Make my pick: Riley Runner" })).toBeInTheDocument();
+    await userEvent.setup().click(jordanPick);
+
+    expect(
+      await screen.findByText(
+        "Save Jordan Voter as your planned pick and keep your whole ballot in one place. Signing up is free."
+      )
+    ).toBeInTheDocument();
+    // Both links carry the election page as the post-auth return path.
+    expect(screen.getByRole("link", { name: "Sign up" })).toHaveAttribute(
+      "href",
+      "/register?next=%2Felections%2Fe-1"
+    );
+    expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute(
+      "href",
+      "/login?next=%2Felections%2Fe-1"
+    );
+  });
+
+  it("shows logged-out visitors no pick buttons on past elections", async () => {
+    // The backend rejects choice writes to past elections, so the register
+    // prompt would advertise an action the visitor could never complete.
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ election_date: "2020-11-03" }));
+
+    expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Make my pick/ })).not.toBeInTheDocument();
+  });
+
+  it("gives logged-in viewers the real pick button, not the register prompt", async () => {
+    const fetchMock = stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/election-choices": (_url, init) => {
+        if (init?.method === "PUT") {
+          expect(JSON.parse(String(init.body))).toEqual({
+            election_id: "e-1",
+            candidate_id: "c-1",
+            chosen: true,
+          });
+          return { status: 200, body: { choice: null } };
+        }
+        return { status: 200, body: { choices: [] } };
+      },
+    });
+    renderElection(() => electionDetail());
+
+    const pickButton = await screen.findByRole("button", { name: "Make my pick: Jordan Voter" });
+    await userEvent.setup().click(pickButton);
+
+    // The click writes a choice instead of opening the register dialog.
+    await waitFor(() =>
+      expect(fetchMock.mock.calls.some(([, init]) => (init as RequestInit | undefined)?.method === "PUT")).toBe(true)
+    );
+    expect(screen.queryByRole("link", { name: "Sign up" })).not.toBeInTheDocument();
   });
 
   it("puts the viewer's saved areas first with an sr-only cue", async () => {
