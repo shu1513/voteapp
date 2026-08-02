@@ -217,4 +217,149 @@ describe("createStandardStateFinanceSnapshotWriter config options", () => {
       })
     ).resolves.toMatchObject({ outsideGroupsWritten: 1, outsideGroupBreakdownsWritten: 1 });
   });
+
+  it("applies normalizeCommitteeId to the link, outside rows, and stale-delete keep lists", async () => {
+    const { db, client } = poolWithClient();
+    const writer = makeWriter({
+      normalizeCommitteeId: (value) => value.replace(/\s+/g, " ").toUpperCase(),
+    });
+
+    await writer.replaceSnapshot({
+      db,
+      link: { ...linkInput(), committeeId: " c  1 " },
+      syncedAt: NOW,
+      outsideGroups: [
+        {
+          committeeId: " pac  1 ",
+          committeeName: "Some PAC",
+          supportOppose: "support",
+          amount: 500,
+        },
+      ],
+      outsideGroupBreakdowns: [
+        {
+          committeeId: "pac 1",
+          supportOppose: "support",
+          categoryType: "donor",
+          categoryName: "Some Donor",
+          amount: 500,
+        },
+      ],
+    });
+
+    const calls = client.query.mock.calls;
+    const linkCall = calls.find((call) => String(call[0]).includes(`INSERT INTO public.${TABLES.links}`));
+    const groupCall = calls.find((call) => String(call[0]).includes(`INSERT INTO public.${TABLES.outsideGroups}`));
+    const breakdownCall = calls.find((call) =>
+      String(call[0]).includes(`INSERT INTO public.${TABLES.outsideGroupBreakdowns}`)
+    );
+    const deleteGroupsCall = calls.find((call) =>
+      String(call[0]).includes(`DELETE FROM public.${TABLES.outsideGroups}`)
+    );
+    const deleteBreakdownsCall = calls.find((call) =>
+      String(call[0]).includes(`DELETE FROM public.${TABLES.outsideGroupBreakdowns}`)
+    );
+
+    expect(linkCall?.[1]?.[6]).toBe("C 1");
+    expect(groupCall?.[1]?.[2]).toBe("PAC 1");
+    expect(breakdownCall?.[1]?.[2]).toBe("PAC 1");
+    expect(JSON.parse(String(deleteGroupsCall?.[1]?.[2]))).toEqual([
+      { committee_id: "PAC 1", support_oppose: "support" },
+    ]);
+    expect(JSON.parse(String(deleteBreakdownsCall?.[1]?.[2]))).toEqual([
+      { committee_id: "PAC 1", support_oppose: "support", category_type: "donor", category_name: "Some Donor" },
+    ]);
+  });
+
+  it("pairing validation compares normalized committee ids", async () => {
+    const { db } = poolWithClient();
+
+    await expect(
+      makeWriter({
+        outsideGroupValidation: "pairing",
+        normalizeCommitteeId: (value) => value.toUpperCase(),
+      }).replaceSnapshot({
+        db,
+        link: linkInput(),
+        syncedAt: NOW,
+        outsideGroups: [
+          {
+            committeeId: "pac-1",
+            committeeName: "Some PAC",
+            supportOppose: "support",
+            amount: 500,
+          },
+        ],
+        outsideGroupBreakdowns: [
+          {
+            committeeId: "PAC-1",
+            supportOppose: "support",
+            categoryType: "donor",
+            categoryName: "Some Donor",
+            amount: 500,
+          },
+        ],
+      })
+    ).resolves.toMatchObject({ outsideGroupsWritten: 1, outsideGroupBreakdownsWritten: 1 });
+  });
+
+  it("deactivates superseded same-source links inside the snapshot transaction", async () => {
+    const { db, client } = poolWithClient();
+    const writer = makeWriter({ supersededLinkSource: "bulk_import" });
+
+    await writer.replaceSnapshot({
+      db,
+      link: { ...linkInput(), linkSource: "bulk_import" },
+      syncedAt: NOW,
+      summary: { totalReceipts: 100 },
+    });
+
+    const deactivateCall = client.query.mock.calls[2];
+    expect(String(deactivateCall?.[0])).toContain(`UPDATE public.${TABLES.links}`);
+    expect(String(deactivateCall?.[0])).toContain("SET link_status = 'inactive'");
+    expect(String(deactivateCall?.[0])).toContain("link_source = 'bulk_import'");
+    expect(deactivateCall?.[1]).toEqual([CANDIDATE_ID, ELECTION_ID, "link-1"]);
+  });
+
+  it("does not deactivate links for other sources, inactive links, or plain upsertLink", async () => {
+    const client = {
+      query: vi.fn((sql: unknown) =>
+        Promise.resolve(
+          String(sql).includes(`INSERT INTO public.${TABLES.links}`)
+            ? { rows: [{ id: "link-1" }], rowCount: 1 }
+            : { rows: [], rowCount: 0 }
+        )
+      ),
+      release: vi.fn(),
+    };
+    const db = { connect: vi.fn().mockResolvedValue(client), query: vi.fn() };
+    const writer = makeWriter({ supersededLinkSource: "bulk_import" });
+
+    await writer.replaceSnapshot({
+      db,
+      link: { ...linkInput(), linkSource: "manual" },
+      syncedAt: NOW,
+    });
+    await writer.replaceSnapshot({
+      db,
+      link: { ...linkInput(), linkSource: "bulk_import", linkStatus: "inactive" },
+      syncedAt: NOW,
+    });
+
+    const upsertDb = { query: vi.fn().mockResolvedValue({ rows: [{ id: "link-1" }], rowCount: 1 }) };
+    await writer.upsertLink({ db: upsertDb, link: { ...linkInput(), linkSource: "bulk_import" } });
+
+    const updates = client.query.mock.calls.filter((call) =>
+      String(call[0]).includes(`UPDATE public.${TABLES.links}`)
+    );
+    expect(updates).toHaveLength(0);
+    expect(upsertDb.query).toHaveBeenCalledTimes(1);
+    expect(String(upsertDb.query.mock.calls[0]?.[0])).toContain(`INSERT INTO public.${TABLES.links}`);
+  });
+
+  it("rejects a superseded link source that is not identifier-safe", () => {
+    expect(() => makeWriter({ supersededLinkSource: "bad'source" })).toThrow(
+      "Invalid Zetaland superseded link source: bad'source"
+    );
+  });
 });
