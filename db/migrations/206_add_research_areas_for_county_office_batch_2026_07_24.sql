@@ -32,7 +32,7 @@ BEGIN;
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM public.research_areas) THEN
-    RAISE NOTICE 'migration 205: research_areas is empty (fresh install); the 2026-07-24 county office batch research areas will come from the seed layer';
+    RAISE NOTICE 'migration 206: research_areas is empty (fresh install); the 2026-07-24 county office batch research areas will come from the seed layer';
   END IF;
 END
 $$;
