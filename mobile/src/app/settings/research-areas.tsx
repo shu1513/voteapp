@@ -92,7 +92,8 @@ function ResearchAreasBody() {
   return (
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
       <Text className="text-sm text-ink-soft">
-        Put what matters most at the top — #1 counts the most in your ballot ordering.
+        Put what matters most at the top — #1 counts the most when your ballot or a candidate list is sorted by My
+        issues.
       </Text>
 
       {orderedIds.length > 0 ? (
