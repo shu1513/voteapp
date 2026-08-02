@@ -1,7 +1,8 @@
-import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
+import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { APP_NAME, formatElectionDate } from "@voteapp/api-client";
 import type { PickCard } from "@voteapp/api-client";
+import type { BackTo } from "../lib/detailNavContext";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
 import { loadFromApi } from "../lib/loadFromApi";
@@ -75,6 +76,12 @@ function measureOutcomeChip(position: "yes" | "no", result: string | null | unde
 
 export function PublicPickCardPage() {
   const card = useLoaderData<typeof loader>();
+  // The anonymous card is still a real origin: detail pages reached from it
+  // link back to this tokenized URL. Shape satisfies both nav-state types.
+  const location = useLocation();
+  const shareNavState: { backTo: BackTo } = {
+    backTo: { path: location.pathname, label: "Shared picks" },
+  };
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -87,7 +94,11 @@ export function PublicPickCardPage() {
           <ul className="mt-4 space-y-3">
             {card.entries.map((entry) => (
               <li key={entry.election_id} className="text-sm">
-                <Link to={`/elections/${entry.election_id}`} className="font-medium text-ink hover:text-rausch">
+                <Link
+                  to={`/elections/${entry.election_id}`}
+                  state={shareNavState}
+                  className="font-medium text-ink hover:text-rausch"
+                >
                   {entry.official_ballot_title}
                 </Link>
                 <span className="text-ink-soft"> · {entry.district_name}</span>
@@ -108,7 +119,11 @@ export function PublicPickCardPage() {
                       {entry.picks.map((pick, index) => (
                         <span key={pick.candidate_id}>
                           {index > 0 ? ", " : null}
-                          <Link to={`/candidates/${pick.candidate_id}`} className="hover:text-rausch">
+                          <Link
+                            to={`/candidates/${pick.candidate_id}`}
+                            state={shareNavState}
+                            className="hover:text-rausch"
+                          >
                             {pick.display_name}
                           </Link>
                           {pick.candidacy_status === "won" ? (

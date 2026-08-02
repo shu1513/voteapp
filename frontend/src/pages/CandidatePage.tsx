@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { isRouteErrorResponse, Link, useLoaderData, useRouteError } from "react-router";
+import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type {
   CandidateDetail,
@@ -8,6 +8,8 @@ import type {
   FinanceSummary,
   ResearchAreaPreference,
 } from "@voteapp/api-client";
+import { BackLink } from "../components/BackLink";
+import { readCandidateNavState, type BackTo, type ElectionNavState } from "../lib/detailNavContext";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
@@ -373,9 +375,42 @@ export function CandidatePage() {
   // register (mirrors RegisterToFollowButton). me is undefined while the
   // session loads — render nothing then to avoid a flash of the wrong row.
   const registerToPickElections = me === null ? officeCandidacies : [];
+  const location = useLocation();
+  const navState = readCandidateNavState(location.state);
+  // Every election link on this page (the back-link fallback and the
+  // Elections history list) tells the election page to come back here. This
+  // page's own arrival context rides along (backState) so the round trip
+  // hands it back — without it, My Picks → candidate → election → back
+  // would land on a candidate page that forgot it came from My Picks.
+  const electionNavState: ElectionNavState = {
+    backTo: { path: `/candidates/${candidate.candidate_id}`, label: candidate.display_name },
+    ...(navState ? { backState: navState } : {}),
+  };
+  // Back destination: the arrival context when it validates. Without one,
+  // only an unambiguous election may stand in — the sole candidacy ever,
+  // else the sole ongoing one. Several elections and no context = no back
+  // link; the Elections section below lists them all, and guessing would
+  // misdirect (a candidate can be in several races at once).
+  const fallbackElection =
+    candidate.elections.length === 1
+      ? candidate.elections[0]
+      : ongoingElections.length === 1
+        ? ongoingElections[0]
+        : null;
+  const backTo: BackTo | null =
+    navState?.backTo ??
+    (fallbackElection
+      ? { path: `/elections/${fallbackElection.election_id}`, label: fallbackElection.official_ballot_title }
+      : null);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
+      {backTo ? (
+        // Arrived with context: restore the election page's own ballot
+        // sequence (backState). Fallback link: hand the election page this
+        // candidate as its back destination instead.
+        <BackLink backTo={backTo} state={navState ? navState.backState : electionNavState} />
+      ) : null}
       <JsonLdScript
         data={{
           "@type": "Person",
@@ -547,7 +582,11 @@ export function CandidatePage() {
           <ul className="mt-2 divide-y divide-line rounded-xl border border-line bg-white">
             {candidate.elections.map((election) => (
               <li key={election.candidate_election_id} className="px-3 py-2 text-sm">
-                <Link to={`/elections/${election.election_id}`} className="text-ink underline hover:text-rausch">
+                <Link
+                  to={`/elections/${election.election_id}`}
+                  state={electionNavState}
+                  className="text-ink underline hover:text-rausch"
+                >
                   {election.official_ballot_title}
                 </Link>{" "}
                 <span className="text-ink-soft">

@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useElectionChoices, useMe } from "@voteapp/api-client";
 import type { BallotSummary, ElectionChoice, ElectionSummary, PickCardShare } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
+import type { ElectionNavState } from "../lib/detailNavContext";
 import { FollowedCandidatesSection } from "../components/FollowedCandidatesSection";
 import { ResearchAreasSection } from "../components/ResearchAreasSection";
 import { ShareButton } from "../components/ShareButton";
@@ -16,6 +17,12 @@ import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 // I picked, what's still undecided), the ranked issue editor (moved here
 // from Settings), and the followed-candidates manager (moved from the
 // retired /me/follows page).
+
+// Election links on this page hand the election page its back destination.
+// No contest list: these cards are pick summaries, not a ballot sequence.
+const PICKS_NAV_STATE: ElectionNavState = {
+  backTo: { path: "/me/picks", label: "My Picks" },
+};
 
 // One race row on a date card. "Pick chips" per candidate so a multi-seat
 // race reads name-by-name, with won/lost/withdrawn carried per candidacy.
@@ -177,7 +184,7 @@ function PickDateCard({
             <li key={election.id} className="text-sm">
               {hasRenderablePick(choice) ? (
                 <>
-                  <Link to={`/elections/${election.id}`} className="text-ink hover:text-rausch">
+                  <Link to={`/elections/${election.id}`} state={PICKS_NAV_STATE} className="text-ink hover:text-rausch">
                     {election.official_ballot_title}
                   </Link>
                   <span className="text-ink-soft"> — </span>
@@ -188,6 +195,7 @@ function PickDateCard({
                 // grey, clickable, straight to the race.
                 <Link
                   to={`/elections/${election.id}`}
+                  state={PICKS_NAV_STATE}
                   className="text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink"
                 >
                   {election.official_ballot_title} — no pick yet
@@ -221,7 +229,7 @@ function PastPicks({ choices, today }: { choices: ElectionChoice[]; today: strin
         {past.map((choice) => (
           <li key={choice.election_id} className="text-sm">
             <span className="text-ink-soft">{formatElectionDate(choice.election_date)} · </span>
-            <Link to={`/elections/${choice.election_id}`} className="text-ink hover:text-rausch">
+            <Link to={`/elections/${choice.election_id}`} state={PICKS_NAV_STATE} className="text-ink hover:text-rausch">
               {choice.official_ballot_title}
             </Link>
             <span className="text-ink-soft"> — </span>

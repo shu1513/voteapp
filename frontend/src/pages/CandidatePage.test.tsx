@@ -17,7 +17,8 @@ const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
 // The subject arrives via the route loader (server-fetched in production);
 // tests supply it directly instead of stubbing the loader's fetch.
-function renderCandidate(loader: () => unknown, id = "c-1") {
+// `state` simulates arriving with nav context (see detailNavContext.ts).
+function renderCandidate(loader: () => unknown, id = "c-1", state?: unknown) {
   return renderRoutes(
     [
       {
@@ -29,7 +30,7 @@ function renderCandidate(loader: () => unknown, id = "c-1") {
       },
       { path: "/elections/:electionId", element: <p /> },
     ],
-    `/candidates/${id}`
+    state === undefined ? `/candidates/${id}` : { pathname: `/candidates/${id}`, state }
   );
 }
 
@@ -579,6 +580,104 @@ describe("CandidatePage", () => {
       entity_type: "candidate_record",
       entity_id: "r-1",
       message: "This record needs another source.",
+    });
+  });
+});
+
+describe("CandidatePage back link and nav context", () => {
+  const ARRIVAL = {
+    backTo: { path: "/elections/e-1", label: "Governor" },
+    backState: { backTo: { path: "/ballot?d=d-1", label: "All elections" } },
+    electionId: "e-1",
+    candidates: [{ id: "c-1", name: "Jordan Voter" }],
+  };
+
+  it("links back to the arrival election and restores its nav state on the hop", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const { router } = renderCandidate(() => candidateDetail(), "c-1", ARRIVAL);
+
+    const back = await screen.findByRole("link", { name: "Back to Governor" });
+    expect(back).toHaveAttribute("href", "/elections/e-1");
+
+    await user.click(back);
+    expect(router.state.location.pathname).toBe("/elections/e-1");
+    // The election page gets its own ballot context back.
+    expect(router.state.location.state).toEqual(ARRIVAL.backState);
+  });
+
+  it("falls back to the sole candidacy on a deep link, even a historical one", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [
+          candidateElection({ election_id: "e-9", official_ballot_title: "Mayor", election_date: "2020-11-03" }),
+        ],
+      })
+    );
+
+    const back = await screen.findByRole("link", { name: "Back to Mayor" });
+    expect(back).toHaveAttribute("href", "/elections/e-9");
+  });
+
+  it("shows no back link with several candidacies and no arrival context", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [
+          candidateElection(),
+          candidateElection({ candidate_election_id: "ce-2", election_id: "e-2", official_ballot_title: "Mayor" }),
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Jordan Voter" });
+    expect(screen.queryByRole("link", { name: /^Back to / })).not.toBeInTheDocument();
+  });
+
+  it("hands election-history links this candidate as their back destination", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const { router } = renderCandidate(() =>
+      candidateDetail({
+        elections: [
+          candidateElection(),
+          candidateElection({ candidate_election_id: "ce-2", election_id: "e-2", official_ballot_title: "Mayor" }),
+        ],
+      })
+    );
+
+    await user.click(await screen.findByRole("link", { name: "Mayor" }));
+
+    expect(router.state.location.pathname).toBe("/elections/e-2");
+    expect(router.state.location.state).toEqual({
+      backTo: { path: "/candidates/c-1", label: "Jordan Voter" },
+    });
+  });
+
+  it("ships its own arrival context inside election-history links", async () => {
+    // My Picks → candidate → election-history row must let the election
+    // page hand the My Picks context back on the return hop.
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const picksArrival = { backTo: { path: "/me/picks", label: "My Picks" } };
+    const { router } = renderCandidate(
+      () =>
+        candidateDetail({
+          elections: [
+            candidateElection(),
+            candidateElection({ candidate_election_id: "ce-2", election_id: "e-2", official_ballot_title: "Mayor" }),
+          ],
+        }),
+      "c-1",
+      picksArrival
+    );
+
+    await user.click(await screen.findByRole("link", { name: "Mayor" }));
+
+    expect(router.state.location.state).toEqual({
+      backTo: { path: "/candidates/c-1", label: "Jordan Voter" },
+      backState: picksArrival,
     });
   });
 });

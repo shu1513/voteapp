@@ -10,7 +10,12 @@ const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
 // The subject arrives via the route loader (server-fetched in production);
 // tests supply it directly instead of stubbing the loader's fetch.
-function renderElection(loader: (args: { params: { electionId?: string } }) => unknown, id = "e-1") {
+// `state` simulates arriving with nav context (see detailNavContext.ts).
+function renderElection(
+  loader: (args: { params: { electionId?: string } }) => unknown,
+  id = "e-1",
+  state?: unknown
+) {
   return renderRoutes(
     [
       {
@@ -21,9 +26,10 @@ function renderElection(loader: (args: { params: { electionId?: string } }) => u
         loader,
       },
       { path: "/candidates/:candidateId", element: <p /> },
+      { path: "/ballot", element: <p /> },
       { path: "/disclaimer", element: <p /> },
     ],
-    `/elections/${id}`
+    state === undefined ? `/elections/${id}` : { pathname: `/elections/${id}`, state }
   );
 }
 
@@ -1108,5 +1114,113 @@ describe("ElectionPage", () => {
     expect(await screen.findByRole("link", { name: "sos.example.gov" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "news.example.org" })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /official measure text/ })).not.toBeInTheDocument();
+  });
+});
+
+describe("ElectionPage back link and nav context", () => {
+  const BALLOT_BACK = { path: "/ballot?d=d-1&sort=soonest", label: "All elections" };
+
+  it("uses the arrival context for the back link when router state validates", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail(), "e-1", { backTo: BALLOT_BACK });
+
+    const back = await screen.findByRole("link", { name: "Back to All elections" });
+    // The full query string survives the round trip.
+    expect(back).toHaveAttribute("href", "/ballot?d=d-1&sort=soonest");
+  });
+
+  it("falls back to the district ballot on a deep link with no state", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail());
+
+    const back = await screen.findByRole("link", { name: "Back to Elections in Alaska" });
+    expect(back).toHaveAttribute("href", "/ballot?d=d-1");
+  });
+
+  it("falls back to the district ballot when the stored state is malformed", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail(), "e-1", {
+      backTo: { path: "https://evil.example/phish", label: "All elections" },
+    });
+
+    const back = await screen.findByRole("link", { name: "Back to Elections in Alaska" });
+    expect(back).toHaveAttribute("href", "/ballot?d=d-1");
+  });
+
+  it("restores a candidate page's own context when backing out to it", async () => {
+    // The return half of My Picks → candidate → election → back: the back
+    // link must deliver the candidate's original nav state, or a
+    // multi-election candidate lands stateless and loses its back link.
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const candidateContext = { backTo: { path: "/me/picks", label: "My Picks" } };
+    const { router } = renderElection(() => electionDetail(), "e-1", {
+      backTo: { path: "/candidates/c-1", label: "Jordan Voter" },
+      backState: candidateContext,
+    });
+
+    await user.click(await screen.findByRole("link", { name: "Back to Jordan Voter" }));
+
+    expect(router.state.location.pathname).toBe("/candidates/c-1");
+    expect(router.state.location.state).toEqual(candidateContext);
+  });
+
+  it("hands candidate links this election as back context plus the displayed roster order", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const incoming = { backTo: BALLOT_BACK, contests: [{ id: "e-1", title: "Governor" }] };
+    const { router } = renderElection(() => electionDetail(), "e-1", incoming);
+
+    await user.click(await screen.findByRole("link", { name: "Jordan Voter" }));
+
+    expect(router.state.location.pathname).toBe("/candidates/c-1");
+    expect(router.state.location.state).toEqual({
+      backTo: { path: "/elections/e-1", label: "Governor" },
+      // The election page's own arrival context rides along so the back
+      // hop can restore it.
+      backState: incoming,
+      electionId: "e-1",
+      candidates: [
+        { id: "c-1", name: "Jordan Voter" },
+        { id: "c-2", name: "Riley Runner" },
+      ],
+    });
+  });
+
+  it("scopes the handed-off roster order to the active party filter", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const { router } = renderElection(() =>
+      electionDetail({
+        candidates: [
+          {
+            candidate_id: "c-dem",
+            display_name: "Dana Democrat",
+            party: "Democratic",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+          {
+            candidate_id: "c-rep",
+            display_name: "Rory Republican",
+            party: "Republican",
+            is_incumbent: false,
+            status: "active",
+            summary: null,
+            finance_summary: null,
+            records: [],
+          },
+        ],
+      })
+    );
+
+    await user.click(await screen.findByRole("button", { name: "Democrats (1)" }));
+    await user.click(screen.getByRole("link", { name: "Dana Democrat" }));
+
+    const state = router.state.location.state as { candidates: unknown };
+    expect(state.candidates).toEqual([{ id: "c-dem", name: "Dana Democrat" }]);
   });
 });

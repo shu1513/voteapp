@@ -299,3 +299,22 @@ describe("SavedBallotPage", () => {
     });
   });
 });
+
+describe("SavedBallotPage nav context", () => {
+  it("hands election cards its own URL including active filter params", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes({
+      ...VERIFIED_BASE,
+      "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    const { router } = renderSavedBallot(undefined, "?issues=mine");
+
+    await user.click(await screen.findByRole("link", { name: /Governor/ }));
+
+    expect(router.state.location.pathname).toBe("/elections/e-1");
+    expect(router.state.location.state).toEqual({
+      backTo: { path: "/me/ballot?issues=mine", label: "My Elections" },
+      contests: [{ id: "e-1", title: "Governor" }],
+    });
+  });
+});

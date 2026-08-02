@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import type { PickCard, PickCardEntry } from "@voteapp/api-client";
 import { PublicPickCardPage } from "./PublicPickCardPage";
 import { renderRoutes } from "../test/render";
@@ -9,7 +10,12 @@ import { renderRoutes } from "../test/render";
 // pattern as CandidatePage.test.
 function renderCard(card: PickCard) {
   return renderRoutes(
-    [{ path: "/picks/:token", loader: () => card, element: <PublicPickCardPage /> }],
+    [
+      { path: "/picks/:token", loader: () => card, element: <PublicPickCardPage /> },
+      // Landing routes for the nav-context tests' click-throughs.
+      { path: "/elections/:electionId", element: <p>Election page</p> },
+      { path: "/candidates/:candidateId", element: <p>Candidate page</p> },
+    ],
     "/picks/tok_abcdefghijklmnopqrstuvwxyz012345"
   );
 }
@@ -81,6 +87,32 @@ describe("PublicPickCardPage", () => {
     expect(await screen.findByText("No on this measure")).toBeInTheDocument();
     expect(screen.queryByText("Passed")).not.toBeInTheDocument();
     expect(screen.queryByText("Failed")).not.toBeInTheDocument();
+  });
+});
+
+describe("PublicPickCardPage nav context", () => {
+  const SHARED_STATE = {
+    backTo: { path: "/picks/tok_abcdefghijklmnopqrstuvwxyz012345", label: "Shared picks" },
+  };
+
+  it("hands election links the card as their back destination", async () => {
+    const user = userEvent.setup();
+    const { router } = renderCard(pickCard());
+
+    await user.click(await screen.findByRole("link", { name: "Mayor" }));
+
+    expect(router.state.location.pathname).toBe("/elections/e-1");
+    expect(router.state.location.state).toEqual(SHARED_STATE);
+  });
+
+  it("hands candidate links the card as their back destination", async () => {
+    const user = userEvent.setup();
+    const { router } = renderCard(pickCard());
+
+    await user.click(await screen.findByRole("link", { name: "Jane Smith" }));
+
+    expect(router.state.location.pathname).toBe("/candidates/c-1");
+    expect(router.state.location.state).toEqual(SHARED_STATE);
   });
 });
 

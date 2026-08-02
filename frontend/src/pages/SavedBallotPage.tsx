@@ -379,6 +379,9 @@ export function SavedBallotPage() {
           elections={filtersView.visibleElections}
           savedAreaWeights={savedAreaWeights}
           choicesByElectionId={choiceByElectionId}
+          // Full query string: the back link must return to this exact
+          // list — the ?issues=/?impact= filters survive the round trip.
+          backTo={{ path: location.pathname + location.search, label: "My Elections" }}
         />
       )}
 
