@@ -79,6 +79,40 @@ describe("SavedBallotPage", () => {
     expect(screen.queryByLabelText("New address")).not.toBeInTheDocument();
   });
 
+  it("offers the official how-to-vote resources for the saved ballot's state", async () => {
+    stubApiRoutes({
+      ...VERIFIED_BASE,
+      "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
+      "/api/state-resources": {
+        body: {
+          state_resources: {
+            state_abbreviation: "AK",
+            state_name: "Alaska",
+            polling_place_url: "https://myvoterinformation.alaska.gov",
+            mail_voting_available: true,
+            mail_ballot_request_url: "https://absenteeballotapplication.alaska.gov",
+            mail_ballot_request_type: "online_portal",
+            mail_ballot_request_deadline_rule:
+              "Applications to receive an absentee ballot by mail must be received at least 10 days before the election.",
+          },
+        },
+      },
+    });
+    const user = userEvent.setup();
+    renderSavedBallot();
+
+    // Signed-in voters land here (their home redirects to the saved ballot),
+    // so the how-to-vote disclosure must exist on this page too.
+    const toggle = await screen.findByRole("button", { name: "How to vote in AK" });
+    await user.click(toggle);
+    const requestLink = await screen.findByRole("link", { name: "Request your ballot online" });
+    const pollingLink = screen.getByRole("link", { name: "Find your polling place" });
+    expect(requestLink).toHaveAttribute("href", "https://absenteeballotapplication.alaska.gov");
+    expect(pollingLink).toHaveAttribute("href", "https://myvoterinformation.alaska.gov");
+    // Mail first, in-person second.
+    expect(requestLink.compareDocumentPosition(pollingLink) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
   it("confirms a fresh address save from router state, then wipes the history state", async () => {
     stubApiRoutes({
       ...VERIFIED_BASE,

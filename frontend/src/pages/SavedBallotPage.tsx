@@ -11,6 +11,7 @@ import {
 } from "../components/SavedAddressForm";
 import { ElectionList } from "../components/ElectionCard";
 import { BallotFiltersControl } from "../components/BallotFiltersControl";
+import { HowToVoteControl } from "../components/HowToVoteControl";
 import { deriveBallotFilters, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
 import { useBallotFilterParams } from "../lib/useBallotFilterParams";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
@@ -343,23 +344,29 @@ export function SavedBallotPage() {
           ("Elections on …") carry the page's identity. The sr-only h1 keeps
           a level-1 target for screen-reader heading navigation. */}
       <h1 className="sr-only">Your saved ballot</h1>
-      <div className="flex flex-wrap items-start justify-end gap-3">
-        {/* The Order section makes the disclosure always available here —
-            signed-in viewers always have the followed-first preference even
-            when no filter is offerable. */}
-        <BallotFiltersControl
-          showIssues={filtersView.showIssuesFilter}
-          issuesOn={filtersView.issuesOn}
-          onIssuesChange={onIssuesFilterChange}
-          showImpact={filtersView.showImpactFilter}
-          impactOn={filtersView.impactOn}
-          onImpactChange={onImpactFilterChange}
-          activeFilterCount={filtersView.activeFilterCount}
-          hiddenCount={filtersView.hiddenCount}
-          onShowAll={onShowAll}
-          orderSection={<FollowedFirstPreference />}
-        />
-        <BallotSortPreference />
+      {/* Filters and ordering on the left, official how-to-vote links on the
+          right — the same split as the public ballot page, so the resources
+          reach signed-in voters too (their home page redirects here). */}
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex flex-wrap items-start gap-3">
+          {/* The Order section makes the disclosure always available here —
+              signed-in viewers always have the followed-first preference even
+              when no filter is offerable. */}
+          <BallotFiltersControl
+            showIssues={filtersView.showIssuesFilter}
+            issuesOn={filtersView.issuesOn}
+            onIssuesChange={onIssuesFilterChange}
+            showImpact={filtersView.showImpactFilter}
+            impactOn={filtersView.impactOn}
+            onImpactChange={onImpactFilterChange}
+            activeFilterCount={filtersView.activeFilterCount}
+            hiddenCount={filtersView.hiddenCount}
+            onShowAll={onShowAll}
+            orderSection={<FollowedFirstPreference />}
+          />
+          <BallotSortPreference />
+        </div>
+        <HowToVoteControl states={data.districts.map((district) => district.state)} />
       </div>
 
       {data.elections.length === 0 ? (
