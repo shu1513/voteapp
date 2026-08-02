@@ -217,7 +217,9 @@ export function ElectionPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <BackLink backTo={backTo} />
+      {/* backState: when the back destination is a candidate page, restore
+          its own context (the mirror of the roster links' backState). */}
+      <BackLink backTo={backTo} state={navState?.backState} />
       <JsonLdScript
         data={{
           "@type": "Event",

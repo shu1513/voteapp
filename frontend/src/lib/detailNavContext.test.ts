@@ -22,6 +22,17 @@ describe("readElectionNavState", () => {
     expect(readElectionNavState({ backTo: { path: "//evil.example", label: "x" } })).toBeNull();
   });
 
+  it("keeps a nested candidate backState and drops a malformed one alone", () => {
+    const nested = { backTo: { path: "/candidates/c-1", label: "Jordan Voter" } };
+    expect(readElectionNavState({ backTo: BACK_TO, backState: nested })).toEqual({
+      backTo: BACK_TO,
+      backState: nested,
+    });
+    expect(readElectionNavState({ backTo: BACK_TO, backState: { backTo: null } })).toEqual({
+      backTo: BACK_TO,
+    });
+  });
+
   it("keeps the back link when only the contests list is malformed", () => {
     expect(readElectionNavState({ backTo: BACK_TO, contests: "not-a-list" })).toEqual({ backTo: BACK_TO });
     expect(

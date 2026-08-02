@@ -1147,6 +1147,24 @@ describe("ElectionPage back link and nav context", () => {
     expect(back).toHaveAttribute("href", "/ballot?d=d-1");
   });
 
+  it("restores a candidate page's own context when backing out to it", async () => {
+    // The return half of My Picks → candidate → election → back: the back
+    // link must deliver the candidate's original nav state, or a
+    // multi-election candidate lands stateless and loses its back link.
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const candidateContext = { backTo: { path: "/me/picks", label: "My Picks" } };
+    const { router } = renderElection(() => electionDetail(), "e-1", {
+      backTo: { path: "/candidates/c-1", label: "Jordan Voter" },
+      backState: candidateContext,
+    });
+
+    await user.click(await screen.findByRole("link", { name: "Back to Jordan Voter" }));
+
+    expect(router.state.location.pathname).toBe("/candidates/c-1");
+    expect(router.state.location.state).toEqual(candidateContext);
+  });
+
   it("hands candidate links this election as back context plus the displayed roster order", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const user = userEvent.setup();

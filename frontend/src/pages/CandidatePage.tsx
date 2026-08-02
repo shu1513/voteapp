@@ -378,9 +378,13 @@ export function CandidatePage() {
   const location = useLocation();
   const navState = readCandidateNavState(location.state);
   // Every election link on this page (the back-link fallback and the
-  // Elections history list) tells the election page to come back here.
+  // Elections history list) tells the election page to come back here. This
+  // page's own arrival context rides along (backState) so the round trip
+  // hands it back — without it, My Picks → candidate → election → back
+  // would land on a candidate page that forgot it came from My Picks.
   const electionNavState: ElectionNavState = {
     backTo: { path: `/candidates/${candidate.candidate_id}`, label: candidate.display_name },
+    ...(navState ? { backState: navState } : {}),
   };
   // Back destination: the arrival context when it validates. Without one,
   // only an unambiguous election may stand in — the sole candidacy ever,

@@ -654,4 +654,30 @@ describe("CandidatePage back link and nav context", () => {
       backTo: { path: "/candidates/c-1", label: "Jordan Voter" },
     });
   });
+
+  it("ships its own arrival context inside election-history links", async () => {
+    // My Picks → candidate → election-history row must let the election
+    // page hand the My Picks context back on the return hop.
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const picksArrival = { backTo: { path: "/me/picks", label: "My Picks" } };
+    const { router } = renderCandidate(
+      () =>
+        candidateDetail({
+          elections: [
+            candidateElection(),
+            candidateElection({ candidate_election_id: "ce-2", election_id: "e-2", official_ballot_title: "Mayor" }),
+          ],
+        }),
+      "c-1",
+      picksArrival
+    );
+
+    await user.click(await screen.findByRole("link", { name: "Mayor" }));
+
+    expect(router.state.location.state).toEqual({
+      backTo: { path: "/candidates/c-1", label: "Jordan Voter" },
+      backState: picksArrival,
+    });
+  });
 });

@@ -19,9 +19,14 @@ export type NavContest = { id: string; title: string };
 export type NavCandidate = { id: string; name: string };
 
 /** Handed to /elections/:id links. contests = the ballot in displayed
- * order (races + measures + the awaiting-candidates tail). */
+ * order (races + measures + the awaiting-candidates tail). backState
+ * restores a candidate page's own context on the back hop (set when the
+ * election was reached from a candidate page) — the mirror of
+ * CandidateNavState.backState, so a My Picks → candidate → election →
+ * back round trip keeps the candidate's original back link. */
 export type ElectionNavState = {
   backTo: BackTo;
+  backState?: CandidateNavState;
   contests?: NavContest[];
 };
 
@@ -83,17 +88,28 @@ function readIdLabelList<Key extends string>(
 }
 
 /** null only when there is no usable backTo; a valid backTo with a broken
- * contests list keeps the back link and drops the list. */
+ * optional field keeps the back link and drops only that field. Mutually
+ * recursive with readCandidateNavState via backState — terminates because
+ * the stored structure is finite (each hop nests one more layer). */
 export function readElectionNavState(state: unknown): ElectionNavState | null {
   if (typeof state !== "object" || state === null) {
     return null;
   }
-  const backTo = readBackTo((state as Record<string, unknown>).backTo);
+  const record = state as Record<string, unknown>;
+  const backTo = readBackTo(record.backTo);
   if (backTo === null) {
     return null;
   }
-  const contests = readIdLabelList((state as Record<string, unknown>).contests, "title");
-  return contests === undefined ? { backTo } : { backTo, contests };
+  const result: ElectionNavState = { backTo };
+  const backState = readCandidateNavState(record.backState);
+  if (backState !== null) {
+    result.backState = backState;
+  }
+  const contests = readIdLabelList(record.contests, "title");
+  if (contests !== undefined) {
+    result.contests = contests;
+  }
+  return result;
 }
 
 /** Same layering: backTo is the gate; backState, electionId, and candidates
