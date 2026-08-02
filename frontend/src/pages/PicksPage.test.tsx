@@ -135,9 +135,13 @@ describe("PicksPage", () => {
     const undecided = screen.getByRole("link", { name: "Mayor — no pick yet" });
     expect(undecided).toHaveAttribute("href", "/elections/e-2");
 
-    // The other two sections mounted below.
-    expect(screen.getByText("Issues you care about")).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "Followed candidates" })).toBeInTheDocument();
+    // The other two sections mounted below — followed candidates first
+    // (people the voter actively picked), then issue areas.
+    const followedHeading = screen.getByRole("heading", { name: "Followed candidates" });
+    const areasHeading = screen.getByText("Issues you care about");
+    expect(
+      followedHeading.compareDocumentPosition(areasHeading) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
   });
 
   it("mints a share link on demand and swaps in the share menu", async () => {
