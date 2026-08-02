@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { ApiError, useElectionChoiceSaving, useSetElectionChoice } from "@voteapp/api-client";
 import type { ElectionChoice } from "@voteapp/api-client";
 
@@ -121,6 +122,7 @@ export function CandidatePickRow({
 }: CandidatePickRowProps) {
   const setChoice = useSetElectionChoice();
   const saving = useElectionChoiceSaving();
+  const capMessageId = useId();
   const picks = choice?.picks ?? [];
   const isPicked = picks.some((pick) => pick.candidate_id === candidateId);
   const seatCap = seatsToFill ?? 1;
@@ -134,7 +136,7 @@ export function CandidatePickRow({
         type="button"
         disabled={saving || atMultiSeatCap}
         aria-pressed={isPicked}
-        title={atMultiSeatCap ? `This election fills ${seatCap} seats — remove a pick first` : undefined}
+        aria-describedby={atMultiSeatCap ? capMessageId : undefined}
         onClick={() =>
           setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: !isPicked })
         }
@@ -156,6 +158,15 @@ export function CandidatePickRow({
           </>
         )}
       </button>
+      {/* Visible, not a title tooltip: unlike the election page, this page
+          doesn't show the viewer's other picks, so a dimmed row is otherwise
+          unexplained — and title tooltips never reach touch or keyboard
+          users (a native-disabled button isn't focusable at all). */}
+      {atMultiSeatCap ? (
+        <span id={capMessageId} className="text-xs font-medium text-ink-soft">
+          This election fills {seatCap} seats — remove a pick first
+        </span>
+      ) : null}
       {setChoice.isError && !setChoice.isPending ? <SaveError error={setChoice.error} /> : null}
     </div>
   );

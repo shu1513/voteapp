@@ -195,7 +195,7 @@ describe("CandidatePickRow", () => {
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
   });
 
-  it("disables an unpicked row at the multi-seat cap, with the reason in the tooltip", () => {
+  it("disables an unpicked row at the multi-seat cap, with the reason visible below it", () => {
     stubApiRoutes({});
     renderRow(
       choice({
@@ -207,7 +207,20 @@ describe("CandidatePickRow", () => {
 
     const button = screen.getByRole("button", { name: "Pick Jane Doe as my pick for Governor · November 3, 2026" });
     expect(button).toBeDisabled();
-    expect(button).toHaveAttribute("title", "This election fills 2 seats — remove a pick first");
+    // The reason is visible text (title tooltips never reach touch/keyboard
+    // users) and doubles as the button's accessible description.
+    const message = screen.getByText("This election fills 2 seats — remove a pick first");
+    expect(button).toHaveAttribute("aria-describedby", message.id);
+  });
+
+  it("shows no cap message when the row is picked or the cap isn't reached", () => {
+    stubApiRoutes({});
+    renderRow(choice({ seats_to_fill: 2, picks: [pick(CANDIDATE_ID), pick(OTHER_CANDIDATE_ID)] }), 2);
+
+    expect(screen.queryByText(/fills 2 seats/)).toBeNull();
+    expect(
+      screen.getByRole("button", { name: "✓ Jane Doe is my pick for Governor · November 3, 2026" })
+    ).toBeEnabled();
   });
 
   it("shows the backend's rejection message inline", async () => {
