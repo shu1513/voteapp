@@ -28,6 +28,20 @@ describe("readElectionNavState", () => {
       readElectionNavState({ backTo: BACK_TO, contests: [{ id: "e-1", title: "Governor" }, { id: 7 }] })
     ).toEqual({ backTo: BACK_TO });
   });
+
+  it("treats whitespace-only contest ids and titles as malformed", () => {
+    // A whitespace-only id would build a broken href; a whitespace-only
+    // title would render an invisible pager link.
+    expect(
+      readElectionNavState({ backTo: BACK_TO, contests: [{ id: "   ", title: "Governor" }] })
+    ).toEqual({ backTo: BACK_TO });
+    expect(
+      readElectionNavState({ backTo: BACK_TO, contests: [{ id: "e-1", title: "   " }] })
+    ).toEqual({ backTo: BACK_TO });
+    expect(readElectionNavState({ backTo: BACK_TO, contests: [{ id: "e-1", title: "" }] })).toEqual({
+      backTo: BACK_TO,
+    });
+  });
 });
 
 describe("readCandidateNavState", () => {
@@ -56,6 +70,15 @@ describe("readCandidateNavState", () => {
         electionId: 42,
         candidates: [{ id: "c-1" }],
       })
+    ).toEqual({ backTo: ELECTION_BACK });
+  });
+
+  it("treats whitespace-only candidate ids and names as malformed", () => {
+    expect(
+      readCandidateNavState({ backTo: ELECTION_BACK, candidates: [{ id: " ", name: "Jordan Voter" }] })
+    ).toEqual({ backTo: ELECTION_BACK });
+    expect(
+      readCandidateNavState({ backTo: ELECTION_BACK, candidates: [{ id: "c-1", name: " " }] })
     ).toEqual({ backTo: ELECTION_BACK });
   });
 });

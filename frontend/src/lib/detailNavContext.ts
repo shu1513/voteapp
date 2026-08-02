@@ -71,7 +71,10 @@ function readIdLabelList<Key extends string>(
     }
     const id = (entry as Record<string, unknown>).id;
     const label = (entry as Record<string, unknown>)[labelKey];
-    if (typeof id !== "string" || id === "" || typeof label !== "string") {
+    // trim() both: a whitespace-only id would build a broken href, and a
+    // whitespace-only label would render an invisible pager link. Values are
+    // validated, never normalized — real ids and titles carry no edge spaces.
+    if (typeof id !== "string" || id.trim() === "" || typeof label !== "string" || label.trim() === "") {
       return undefined;
     }
     entries.push({ id, [labelKey]: label } as { id: string } & Record<Key, string>);
