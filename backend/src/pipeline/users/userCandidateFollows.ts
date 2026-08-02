@@ -307,9 +307,15 @@ export async function setUserCandidateFollow(
           WHERE id = $2::uuid
             AND deleted_at IS NULL
             AND merged_into_candidate_id IS NULL
-          -- A locking SELECT would require UPDATE on candidates. The API
-          -- role intentionally keeps this catalog table read-only; the
-          -- follow foreign key protects the insert against concurrent delete.
+          -- A locking SELECT would require UPDATE on candidates, which the
+          -- API role must not hold. This CTE gates the INSERT below in the
+          -- same statement, so a soft-delete or merge COMMITTED before the
+          -- statement's snapshot refuses the follow; the foreign key covers
+          -- hard deletes. An overlapping uncommitted soft-delete can still
+          -- land a follow — accepted: candidates are also deleted or merged
+          -- AFTER legitimate follows, so read paths and notification
+          -- creators re-check eligibility rather than assuming this state
+          -- cannot exist.
         )
         INSERT INTO public.user_candidate_follows (
           user_id,

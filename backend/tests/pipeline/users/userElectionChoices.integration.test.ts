@@ -70,8 +70,13 @@ async function seed(pool: Pool): Promise<void> {
 
 /**
  * A Pool facade whose client runs `sabotage` right before the first statement
- * matching `trigger` — the write lands after validation has already passed,
- * which is exactly the interleaving the removed FOR SHARE used to block.
+ * matching `trigger` — the write lands after validation has already passed.
+ *
+ * Scope: the sabotage COMMITS before the gated statement runs, which is the
+ * interleaving the same-statement gate is built to refuse. A catalog
+ * transaction still uncommitted when the gate takes its snapshot is
+ * deliberately NOT covered — that residual is accepted, not defended
+ * (see the comments on the gated INSERTs in userElectionChoices.ts).
  */
 function sabotagedDb(pool: Pool, trigger: string, sabotage: () => Promise<void>) {
   return {

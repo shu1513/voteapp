@@ -386,10 +386,17 @@ export async function setUserElectionChoice(
 
         // Check-and-write in ONE statement: the SELECT re-asserts candidacy
         // eligibility and the election window under the same snapshot the
-        // INSERT writes with, so a withdrawal, merge, delete, or date
-        // correction committed after the pre-checks above cannot slip a stale
-        // pick in. (The FOR SHARE this replaced needed UPDATE privilege the
-        // API role must not hold; a same-statement gate needs none.)
+        // INSERT writes with, so a catalog change COMMITTED after the
+        // pre-checks above is caught here. A catalog transaction still open
+        // when this statement takes its snapshot is NOT caught (MVCC reads
+        // lock nothing) — accepted, deliberately: a pick on a since-withdrawn
+        // candidacy is also the normal product of time (pick first,
+        // withdrawal later), so the read path renders candidacy_status
+        // truthfully rather than pretending the state can't exist, and a
+        // lock here would only remove this one rare entry path at the cost
+        // of UPDATE privilege the API role must not hold. Do not "fix" this
+        // with advisory locks either: prod catalog writes are operator-run
+        // SQL that would not participate.
         const inserted = await client.query(
           `
             INSERT INTO public.user_election_choices (user_id, election_id, candidate_id)
