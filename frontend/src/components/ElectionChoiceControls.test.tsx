@@ -167,7 +167,7 @@ describe("CandidatePickRow", () => {
 
     renderRow(undefined);
 
-    const button = screen.getByRole("button", { name: "Pick Jane Doe for Governor · November 3, 2026" });
+    const button = screen.getByRole("button", { name: "Pick Jane Doe as my pick for Governor · November 3, 2026" });
     expect(button).toHaveAttribute("aria-pressed", "false");
     await userEvent.setup().click(button);
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
@@ -188,7 +188,7 @@ describe("CandidatePickRow", () => {
     renderRow(choice({ picks: [pick(CANDIDATE_ID)] }));
 
     const button = screen.getByRole("button", {
-      name: "✓ Jane Doe is your pick for Governor · November 3, 2026",
+      name: "✓ Jane Doe is my pick for Governor · November 3, 2026",
     });
     expect(button).toHaveAttribute("aria-pressed", "true");
     await userEvent.setup().click(button);
@@ -205,7 +205,7 @@ describe("CandidatePickRow", () => {
       2
     );
 
-    const button = screen.getByRole("button", { name: "Pick Jane Doe for Governor · November 3, 2026" });
+    const button = screen.getByRole("button", { name: "Pick Jane Doe as my pick for Governor · November 3, 2026" });
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute("title", "This election fills 2 seats — remove a pick first");
   });
@@ -223,7 +223,7 @@ describe("CandidatePickRow", () => {
 
     await userEvent
       .setup()
-      .click(screen.getByRole("button", { name: "Pick Jane Doe for Governor · November 3, 2026" }));
+      .click(screen.getByRole("button", { name: "Pick Jane Doe as my pick for Governor · November 3, 2026" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Choices can only be changed for upcoming elections"
     );
