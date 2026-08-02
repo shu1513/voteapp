@@ -112,6 +112,27 @@ export function readElectionNavState(state: unknown): ElectionNavState | null {
   return result;
 }
 
+/** The pager's neighbors in a validated sibling list, or null when there is
+ * nothing to page: no list, fewer than two entries, or the current page
+ * missing from it (a stale filtered snapshot must not render a pager the
+ * reader never saw). Ends of the sequence yield a null prev/next slot. */
+export function pagerNeighbors<Entry extends { id: string }>(
+  list: Entry[] | undefined,
+  currentId: string
+): { prev: Entry | null; next: Entry | null } | null {
+  if (list === undefined || list.length < 2) {
+    return null;
+  }
+  const index = list.findIndex((entry) => entry.id === currentId);
+  if (index === -1) {
+    return null;
+  }
+  return {
+    prev: index > 0 ? list[index - 1] : null,
+    next: index < list.length - 1 ? list[index + 1] : null,
+  };
+}
+
 /** Same layering: backTo is the gate; backState, electionId, and candidates
  * each validate (and degrade) on their own. */
 export function readCandidateNavState(state: unknown): CandidateNavState | null {
