@@ -86,6 +86,78 @@ export function CandidatePickButton({
   );
 }
 
+type CandidatePickRowProps = {
+  electionId: string;
+  candidateId: string;
+  /** Shown in the row text so the action reads as a sentence. */
+  candidateName: string;
+  /** The election's official ballot title, e.g. "Commissioner of Agriculture". */
+  raceName: string;
+  /** Pre-formatted election date, e.g. "August 18, 2026". */
+  dateLabel: string;
+  /** The viewer's current choice state for this election, if any. */
+  choice: ElectionChoice | undefined;
+  /** elections.seats_to_fill — null renders as a single seat. */
+  seatsToFill: number | null;
+};
+
+/**
+ * Ballot-style pick toggle for the candidate page: the whole row is the
+ * button and its text reads as a sentence ("Pick Jane Doe for Governor"),
+ * because a bare "Make my pick" button next to a race name read as two
+ * unrelated things. Same toggle semantics as CandidatePickButton (radio
+ * for single-seat, capped checkboxes for multi-seat).
+ */
+export function CandidatePickRow({
+  electionId,
+  candidateId,
+  candidateName,
+  raceName,
+  dateLabel,
+  choice,
+  seatsToFill,
+}: CandidatePickRowProps) {
+  const setChoice = useSetElectionChoice();
+  const saving = useElectionChoiceSaving();
+  const picks = choice?.picks ?? [];
+  const isPicked = picks.some((pick) => pick.candidate_id === candidateId);
+  const seatCap = seatsToFill ?? 1;
+  const atMultiSeatCap = seatCap > 1 && !isPicked && picks.length >= seatCap;
+  const base =
+    "w-full rounded-xl border p-3 text-left text-sm transition disabled:opacity-50";
+
+  return (
+    <div className="flex flex-col gap-1">
+      <button
+        type="button"
+        disabled={saving || atMultiSeatCap}
+        aria-pressed={isPicked}
+        title={atMultiSeatCap ? `This election fills ${seatCap} seats — remove a pick first` : undefined}
+        onClick={() =>
+          setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: !isPicked })
+        }
+        className={
+          isPicked
+            ? `${base} border-green-700 bg-green-50 text-green-900 hover:bg-green-100`
+            : `${base} border-line bg-white text-ink hover:border-green-700`
+        }
+      >
+        {isPicked ? (
+          <>
+            ✓ <span className="font-semibold">{candidateName}</span> is your pick for {raceName} ·{" "}
+            {dateLabel}
+          </>
+        ) : (
+          <>
+            Pick <span className="font-semibold">{candidateName}</span> for {raceName} · {dateLabel}
+          </>
+        )}
+      </button>
+      {setChoice.isError && !setChoice.isPending ? <SaveError error={setChoice.error} /> : null}
+    </div>
+  );
+}
+
 type MeasureChoiceButtonsProps = {
   electionId: string;
   choice: ElectionChoice | undefined;

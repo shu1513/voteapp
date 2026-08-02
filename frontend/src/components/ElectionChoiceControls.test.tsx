@@ -2,7 +2,7 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { ElectionChoice } from "@voteapp/api-client";
-import { CandidatePickButton, MeasureChoiceButtons } from "./ElectionChoiceControls";
+import { CandidatePickButton, CandidatePickRow, MeasureChoiceButtons } from "./ElectionChoiceControls";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { renderRoutes } from "../test/render";
 
@@ -131,6 +131,99 @@ describe("CandidatePickButton", () => {
     );
 
     await userEvent.setup().click(screen.getByRole("button", { name: "Make my pick" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Choices can only be changed for upcoming elections"
+    );
+  });
+});
+
+describe("CandidatePickRow", () => {
+  function renderRow(rowChoice: ElectionChoice | undefined, seatsToFill: number | null = null) {
+    return renderControl(
+      <CandidatePickRow
+        electionId={ELECTION_ID}
+        candidateId={CANDIDATE_ID}
+        candidateName="Jane Doe"
+        raceName="Governor"
+        dateLabel="November 3, 2026"
+        choice={rowChoice}
+        seatsToFill={seatsToFill}
+      />
+    );
+  }
+
+  it("reads as a sentence and PUTs a pick", async () => {
+    const fetchMock = stubApiRoutes({
+      "/api/me/election-choices": (_url, init) => {
+        expect(init?.method).toBe("PUT");
+        expect(JSON.parse(String(init?.body))).toEqual({
+          election_id: ELECTION_ID,
+          candidate_id: CANDIDATE_ID,
+          chosen: true,
+        });
+        return { status: 200, body: { choice: choice({ picks: [pick(CANDIDATE_ID)] }) } };
+      },
+    });
+
+    renderRow(undefined);
+
+    const button = screen.getByRole("button", { name: "Pick Jane Doe for Governor · November 3, 2026" });
+    expect(button).toHaveAttribute("aria-pressed", "false");
+    await userEvent.setup().click(button);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+  });
+
+  it("renders the picked sentence and unpicks with chosen: false", async () => {
+    const fetchMock = stubApiRoutes({
+      "/api/me/election-choices": (_url, init) => {
+        expect(JSON.parse(String(init?.body))).toEqual({
+          election_id: ELECTION_ID,
+          candidate_id: CANDIDATE_ID,
+          chosen: false,
+        });
+        return { status: 200, body: { choice: choice() } };
+      },
+    });
+
+    renderRow(choice({ picks: [pick(CANDIDATE_ID)] }));
+
+    const button = screen.getByRole("button", {
+      name: "✓ Jane Doe is your pick for Governor · November 3, 2026",
+    });
+    expect(button).toHaveAttribute("aria-pressed", "true");
+    await userEvent.setup().click(button);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+  });
+
+  it("disables an unpicked row at the multi-seat cap, with the reason in the tooltip", () => {
+    stubApiRoutes({});
+    renderRow(
+      choice({
+        seats_to_fill: 2,
+        picks: [pick(OTHER_CANDIDATE_ID), pick("55555555-5555-4555-8555-555555555555")],
+      }),
+      2
+    );
+
+    const button = screen.getByRole("button", { name: "Pick Jane Doe for Governor · November 3, 2026" });
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute("title", "This election fills 2 seats — remove a pick first");
+  });
+
+  it("shows the backend's rejection message inline", async () => {
+    stubApiRoutes({
+      "/api/me/election-choices": apiError(
+        400,
+        "invalid_request",
+        "Choices can only be changed for upcoming elections"
+      ),
+    });
+
+    renderRow(undefined);
+
+    await userEvent
+      .setup()
+      .click(screen.getByRole("button", { name: "Pick Jane Doe for Governor · November 3, 2026" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Choices can only be changed for upcoming elections"
     );

@@ -15,7 +15,7 @@ import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { RegisterToFollowButton } from "../components/RegisterToFollowButton";
 import { ShareButton } from "../components/ShareButton";
-import { CandidatePickButton } from "../components/ElectionChoiceControls";
+import { CandidatePickRow } from "../components/ElectionChoiceControls";
 import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
@@ -419,24 +419,18 @@ export function CandidatePage() {
       {pickableElections.length > 0 ? (
         <div className="mt-4 space-y-2">
           {pickableElections.map((election) => (
-            <div
+            /* Always names the election: several concurrent races (and past
+               ones) exist, and the pick must land on the right one. */
+            <CandidatePickRow
               key={election.candidate_election_id}
-              className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-line bg-white p-3"
-            >
-              <span className="text-sm text-ink">
-                {/* Always names the election: several concurrent races (and
-                    past ones) exist, and the pick must land on the right
-                    one. */}
-                {election.official_ballot_title} · {formatElectionDate(election.election_date)}
-              </span>
-              <CandidatePickButton
-                electionId={election.election_id}
-                candidateId={candidate.candidate_id}
-                choice={choiceByElectionId?.get(election.election_id)}
-                seatsToFill={election.seats_to_fill ?? null}
-                size="sm"
-              />
-            </div>
+              electionId={election.election_id}
+              candidateId={candidate.candidate_id}
+              candidateName={candidate.display_name}
+              raceName={election.official_ballot_title}
+              dateLabel={formatElectionDate(election.election_date)}
+              choice={choiceByElectionId?.get(election.election_id)}
+              seatsToFill={election.seats_to_fill ?? null}
+            />
           ))}
         </div>
       ) : null}
