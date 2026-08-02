@@ -88,7 +88,7 @@ export function ResearchAreasSection() {
   return (
     <Section title="Issues you care about">
       <p className="mt-1 text-sm text-ink-soft">
-        Drag to put what matters most at the top — #1 is your top priority.
+        Drag to put what matters most at the top.
       </p>
       <ResearchAreaPicker
         areas={catalog.data.research_areas}
