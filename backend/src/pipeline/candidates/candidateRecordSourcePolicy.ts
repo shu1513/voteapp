@@ -269,6 +269,7 @@ const LISTED_SOURCE_DOMAINS: readonly string[] = [
   "fox17online.com",
   "fox2detroit.com",
   "kcci.com",
+  "kcur.org",
   "kjzz.org",
   "komu.com",
   "mauinow.com",
