@@ -137,7 +137,7 @@ describe("SavedBallotPage", () => {
     expect(await screen.findByRole("heading", { name: "Verify your email" })).toBeInTheDocument();
   });
 
-  describe("only-my-issues filter", () => {
+  describe("ballot filters", () => {
     const HOUSING = { id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null };
     const SAVED_HOUSING = {
       ...VERIFIED_BASE,
@@ -150,16 +150,23 @@ describe("SavedBallotPage", () => {
       },
     };
 
-    it("stays hidden for a viewer with no saved areas", async () => {
+    it("offers only the Order section to a viewer with no saved areas", async () => {
       stubApiRoutes({
         ...VERIFIED_BASE,
         "/api/me/ballot": {
           body: ballotSummary([electionSummary(), electionSummary({ id: "e-2", official_ballot_title: "State Senate" })]),
         },
       });
+      const user = userEvent.setup();
       renderSavedBallot();
       expect(await screen.findByText("Governor")).toBeInTheDocument();
+      // The disclosure itself always renders here — signed-in viewers
+      // always have the persisted followed-first preference — but with no
+      // saved areas and a short ballot it holds no filter toggles.
+      await user.click(screen.getByRole("button", { name: "Filters" }));
+      expect(await screen.findByRole("checkbox", { name: "Followed candidates first" })).toBeInTheDocument();
       expect(screen.queryByRole("button", { name: "Only my issues" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "High impact only" })).not.toBeInTheDocument();
     });
 
     it("filters to matching races with a hidden count, and Show all restores", async () => {
@@ -175,10 +182,12 @@ describe("SavedBallotPage", () => {
       const user = userEvent.setup();
       const { router } = renderSavedBallot();
 
+      await user.click(await screen.findByRole("button", { name: "Filters" }));
       await user.click(await screen.findByRole("button", { name: "Only my issues" }));
       expect(screen.getByText("Governor")).toBeInTheDocument();
       expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
       expect(screen.getByText(/1 election hidden/)).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Filters · 1" })).toBeInTheDocument();
       // URL state like the anonymous ballot's sort — deliberately not an
       // account preference, so hiding races never silently persists.
       expect(router.state.location.search).toContain("issues=mine");
@@ -186,6 +195,31 @@ describe("SavedBallotPage", () => {
       await user.click(screen.getByRole("button", { name: "Show all" }));
       expect(screen.getByText("State Senate")).toBeInTheDocument();
       expect(router.state.location.search).not.toContain("issues=mine");
+    });
+
+    it("saves the followed-first preference from the Order section", async () => {
+      const putBodies: unknown[] = [];
+      stubApiRoutes({
+        ...VERIFIED_BASE,
+        "/api/me/ballot-preferences": (_url, init) => {
+          if (init?.method === "PUT") {
+            const body = JSON.parse(String(init.body));
+            putBodies.push(body);
+            return { body };
+          }
+          return { body: { sort: "vote_power", followed_first: true } };
+        },
+        "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
+      });
+      const user = userEvent.setup();
+      renderSavedBallot();
+
+      // The checkbox moved inside the disclosure but keeps its persisted
+      // full-object PUT semantics.
+      await user.click(await screen.findByRole("button", { name: "Filters" }));
+      await user.click(await screen.findByRole("checkbox", { name: "Followed candidates first" }));
+      await waitFor(() => expect(putBodies).toHaveLength(1));
+      expect(putBodies[0]).toEqual({ sort: "vote_power", followed_first: false });
     });
 
     it("shows a ballot error instead of the withhold notice while saved areas still load", async () => {
@@ -220,9 +254,12 @@ describe("SavedBallotPage", () => {
 
       // Deliberate fail-open, not a spinner: a ballot app errs toward
       // showing races, and no on-page element claims filtering here — the
-      // request is ignored and the control stays hidden.
+      // request is ignored and the toggle is not offered (the disclosure
+      // itself stays, for the Order section).
       expect(await screen.findByText("Governor")).toBeInTheDocument();
       expect(screen.getByText("State Senate")).toBeInTheDocument();
+      const user = userEvent.setup();
+      await user.click(screen.getByRole("button", { name: "Filters" }));
       expect(screen.queryByRole("button", { name: "Only my issues" })).not.toBeInTheDocument();
     });
   });

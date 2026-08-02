@@ -8,9 +8,9 @@ import {
   type BallotSummary,
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
-import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
-import { deriveOnlyMyIssues, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
-import { useIssuesFilterParam } from "../lib/useIssuesFilterParam";
+import { BallotFiltersControl } from "../components/BallotFiltersControl";
+import { deriveBallotFilters, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
+import { useBallotFilterParams } from "../lib/useBallotFilterParams";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
@@ -52,7 +52,8 @@ export function BallotPage() {
     .filter((id) => id.length > 0);
   const rawSort = searchParams.get("sort") ?? "";
   const sort: BallotSort = SORT_VALUES.includes(rawSort) ? (rawSort as BallotSort) : "vote_power";
-  const { issuesRequested, onIssuesFilterChange } = useIssuesFilterParam();
+  const { issuesRequested, impactRequested, onIssuesFilterChange, onImpactFilterChange, onShowAll } =
+    useBallotFilterParams();
 
   const ballot = useQuery({
     queryKey: ["ballot", districtIds.join(","), sort],
@@ -74,11 +75,12 @@ export function BallotPage() {
     );
   }
 
-  const issuesView = deriveOnlyMyIssues({
+  const filtersView = deriveBallotFilters({
     elections: ballot.data?.elections ?? [],
     savedAreaIds,
     hasSaved,
-    requested: issuesRequested,
+    issuesRequested,
+    impactRequested,
   });
   // A ?issues=mine load must not flash the full ballot while the saved
   // areas are still unknown (the ballot is one request; the saved areas are
@@ -113,14 +115,18 @@ export function BallotPage() {
           elections for BALLOT_PAST_ELECTION_VISIBILITY_DAYS so their results
           stay discoverable, and those are not upcoming. */}
       <h1 className="sr-only">Elections</h1>
-      <div className="flex flex-wrap items-center justify-end gap-3">
-        {issuesView.showFilter ? (
-          <OnlyMyIssuesToggle
-            on={issuesView.filterOn}
-            hiddenCount={issuesView.hiddenCount}
-            onChange={onIssuesFilterChange}
-          />
-        ) : null}
+      <div className="flex flex-wrap items-start justify-end gap-3">
+        <BallotFiltersControl
+          showIssues={filtersView.showIssuesFilter}
+          issuesOn={filtersView.issuesOn}
+          onIssuesChange={onIssuesFilterChange}
+          showImpact={filtersView.showImpactFilter}
+          impactOn={filtersView.impactOn}
+          onImpactChange={onImpactFilterChange}
+          activeFilterCount={filtersView.activeFilterCount}
+          hiddenCount={filtersView.hiddenCount}
+          onShowAll={onShowAll}
+        />
         <label className="flex items-center gap-2 text-sm text-ink-soft">
           Sort by
           <select
@@ -185,7 +191,7 @@ export function BallotPage() {
             // An active filter can empty this list; the "N elections hidden ·
             // Show all" line in the controls row explains the empty view.
             <ElectionList
-              elections={issuesView.visibleElections}
+              elections={filtersView.visibleElections}
               savedAreaWeights={savedAreaWeights}
               choicesByElectionId={choiceByElectionId}
             />
