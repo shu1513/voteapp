@@ -6,6 +6,7 @@ import {
   formatOutcome,
   formatRosterStatus,
   formatVotePowerLabel,
+  sortByResearchAreaPriority,
 } from "@voteapp/api-client";
 import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
@@ -69,7 +70,7 @@ export function ElectionCard({
               : "Results available"}
           </Text>
         ) : null}
-        {election.research_areas.map((area) => (
+        {sortByResearchAreaPriority(election.research_areas).map((area) => (
           <Text
             key={area.id}
             className={

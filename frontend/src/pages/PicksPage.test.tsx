@@ -77,6 +77,48 @@ describe("PicksPage", () => {
     expect(await screen.findByRole("heading", { name: "Verify your email" })).toBeInTheDocument();
   });
 
+  it("marks a measure pick with its outcome, muted when it went against the pick", async () => {
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/ballot": {
+          body: ballotSummary([
+            electionSummary({ race_type: "ballot_measure", candidate_count: 0 }),
+            electionSummary({
+              id: "e-2",
+              official_ballot_title: "Proposition 9",
+              race_type: "ballot_measure",
+              candidate_count: 0,
+            }),
+          ]),
+        },
+        "/api/me/election-choices": {
+          body: {
+            choices: [
+              electionChoice({ picks: [], measure_position: "yes", measure_result: "passed" }),
+              electionChoice({
+                election_id: "e-2",
+                official_ballot_title: "Proposition 9",
+                race_type: "ballot_measure",
+                picks: [],
+                measure_position: "yes",
+                measure_result: "failed",
+              }),
+            ],
+          },
+        },
+      })
+    );
+    renderPicks();
+
+    // Matched pick: green chip; unmatched: muted — same semantics as the
+    // candidate Won/Lost chips.
+    expect(await screen.findByText("Passed")).toBeInTheDocument();
+    expect(screen.getByText("Passed").className).toContain("bg-green-700");
+    // The exact muted style, not just "not green": a broken class would
+    // otherwise pass.
+    expect(screen.getByText("Failed").className).toContain("bg-surface");
+  });
+
   it("renders a date card with picked and undecided races, and all three sections", async () => {
     stubApiRoutes(verifiedRoutes());
     renderPicks();
@@ -114,7 +156,11 @@ describe("PicksPage", () => {
     // The standard ShareButton takes over once the token exists (menu shape
     // in jsdom — no navigator.share), alongside the visibility warning.
     expect(await screen.findByRole("button", { name: "Share" })).toBeInTheDocument();
-    expect(screen.getByText("Anyone with the link can see this card.")).toBeInTheDocument();
+    // The caption must disclose the name reveal — minting is the consent
+    // event, so the sharer learns it here, not from a recipient.
+    expect(
+      screen.getByText("Anyone with the link can see this card and your first name.")
+    ).toBeInTheDocument();
 
     // The minted URL itself is visible — canonical host in the text, the
     // relative path as the href (the token only resolves where it was

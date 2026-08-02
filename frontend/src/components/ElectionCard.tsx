@@ -8,8 +8,8 @@ import {
   formatOutcome,
   formatRosterStatus,
   formatVotePowerLabel,
+  splitResearchAreasBySaved,
 } from "@voteapp/api-client";
-import { splitResearchAreasBySaved } from "../lib/researchAreaPriority";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 

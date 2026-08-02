@@ -16,8 +16,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { MAX_RESEARCH_AREA_RANK } from "@voteapp/api-client";
-import { sortByResearchAreaPriority } from "../lib/researchAreaPriority";
+import { MAX_RESEARCH_AREA_RANK, sortByResearchAreaPriority } from "@voteapp/api-client";
 
 // Controlled ranked-selection editor for research areas, shared by the
 // post-signup welcome step and the settings section. The parent owns the

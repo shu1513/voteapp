@@ -1,72 +1,39 @@
 import type { Pool, PoolClient } from "pg";
 
+import {
+  createStandardStateFinanceSnapshotWriter,
+  type StandardStateFinanceDirectBreakdownInput,
+  type StandardStateFinanceDirectCategoryType,
+  type StandardStateFinanceLinkInput,
+  type StandardStateFinanceLinkStatus,
+  type StandardStateFinanceOutsideCategoryType,
+  type StandardStateFinanceOutsideGroupBreakdownInput,
+  type StandardStateFinanceOutsideGroupInput,
+  type StandardStateFinanceSnapshotWriteResult,
+  type StandardStateFinanceSummaryInput,
+  type StandardStateFinanceSupportOppose,
+} from "../finance/standardStateFinanceSnapshotWriter.js";
 import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
-import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
   connect: () => Promise<PoolClient>;
 };
-type ClientLikeQueryable = Queryable & {
-  release?: () => void;
-};
 
-export type MaineFinanceLinkStatus = "active" | "inactive";
+export type MaineFinanceLinkStatus = StandardStateFinanceLinkStatus;
 export type MaineFinanceLinkSource = "manual" | "cfis_bulk";
-export type MaineFinanceDirectCategoryType = "occupation" | "contribution_size";
-export type MaineFinanceOutsideCategoryType = "donor" | "industry";
-export type MaineFinanceSupportOppose = "support" | "oppose";
+export type MaineFinanceDirectCategoryType = StandardStateFinanceDirectCategoryType;
+export type MaineFinanceOutsideCategoryType = StandardStateFinanceOutsideCategoryType;
+export type MaineFinanceSupportOppose = StandardStateFinanceSupportOppose;
 
-export type MaineFinanceLinkInput = {
-  candidateId: string;
-  electionId: string;
-  electionYear: number;
-  candidateNameNormalized: string;
-  officeName: string;
-  district?: string | null;
-  committeeId: string;
-  committeeName: string;
-  linkStatus?: MaineFinanceLinkStatus;
+export type MaineFinanceLinkInput = Omit<StandardStateFinanceLinkInput, "linkSource"> & {
   linkSource?: MaineFinanceLinkSource;
-  sourceUrl?: string | null;
-  lastVerifiedAt?: Date | null;
 };
 
-export type MaineFinanceSummaryInput = {
-  totalReceipts?: number | null;
-  directContributionTotal?: number | null;
-  totalDisbursements?: number | null;
-  cashOnHand?: number | null;
-  outsideSupportTotal?: number | null;
-  outsideOpposeTotal?: number | null;
-  sourceUrl?: string | null;
-};
-
-export type MaineFinanceDirectBreakdownInput = {
-  categoryType: MaineFinanceDirectCategoryType;
-  categoryName: string;
-  amount: number;
-  contributorCount?: number | null;
-  sourceUrl?: string | null;
-};
-
-export type MaineFinanceOutsideGroupInput = {
-  committeeId: string;
-  committeeName: string;
-  supportOppose: MaineFinanceSupportOppose;
-  amount: number;
-  sourceUrl?: string | null;
-};
-
-export type MaineFinanceOutsideGroupBreakdownInput = {
-  committeeId: string;
-  supportOppose: MaineFinanceSupportOppose;
-  categoryType: MaineFinanceOutsideCategoryType;
-  categoryName: string;
-  amount: number;
-  contributorCount?: number | null;
-  sourceUrl?: string | null;
-};
+export type MaineFinanceSummaryInput = StandardStateFinanceSummaryInput;
+export type MaineFinanceDirectBreakdownInput = StandardStateFinanceDirectBreakdownInput;
+export type MaineFinanceOutsideGroupInput = StandardStateFinanceOutsideGroupInput;
+export type MaineFinanceOutsideGroupBreakdownInput = StandardStateFinanceOutsideGroupBreakdownInput;
 
 export type MaineFinanceSnapshotInput = {
   db: ConnectableQueryable;
@@ -79,13 +46,36 @@ export type MaineFinanceSnapshotInput = {
   classifications?: readonly FinanceLabelClassification[];
 };
 
-export type MaineFinanceSnapshotWriteResult = {
-  linkId: string;
-  summaryWritten: boolean;
-  directBreakdownsWritten: number;
-  outsideGroupsWritten: number;
-  outsideGroupBreakdownsWritten: number;
-};
+export type MaineFinanceSnapshotWriteResult = StandardStateFinanceSnapshotWriteResult;
+
+function normalizeMaineCommitteeId(value: string): string {
+  return value.replace(/\s+/g, " ").toUpperCase();
+}
+
+const writer = createStandardStateFinanceSnapshotWriter({
+  label: "Maine",
+  minElectionYear: 2000,
+  // Maine replaces every summary column except the outside totals, which keep
+  // the stored value when the incoming value is NULL so a partial refresh
+  // without expenditure data does not wipe them (preserveWhenNull default).
+  summaryUpdatePolicy: {
+    total_receipts: "replace",
+    direct_contribution_total: "replace",
+    total_disbursements: "replace",
+    cash_on_hand: "replace",
+    source_url: "replace",
+  },
+  outsideGroupValidation: "pairing",
+  normalizeCommitteeId: normalizeMaineCommitteeId,
+  supersededLinkSource: "cfis_bulk",
+  tables: {
+    links: "me_candidate_finance_links",
+    summaries: "me_candidate_finance_summaries",
+    directBreakdowns: "me_candidate_finance_direct_breakdowns",
+    outsideGroups: "me_candidate_finance_outside_groups",
+    outsideGroupBreakdowns: "me_candidate_finance_outside_group_breakdowns",
+  },
+});
 
 function requireNonEmpty(value: string, fieldName: string): string {
   const trimmed = value.trim();
@@ -102,61 +92,10 @@ function normalizeElectionYear(value: number): number {
   return value;
 }
 
-function normalizeOptionalText(value: string | null | undefined): string | null {
-  if (value === undefined || value === null) {
-    return null;
-  }
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-}
-
-function normalizeCommitteeId(value: string): string {
-  return requireNonEmpty(value, "Maine committee id").replace(/\s+/g, " ").toUpperCase();
-}
-
-function normalizeNullableDate(value: Date | null | undefined): string | null {
-  if (!value) {
-    return null;
-  }
-  if (Number.isNaN(value.getTime())) {
+function validateNullableDate(value: Date | null | undefined): void {
+  if (value && Number.isNaN(value.getTime())) {
     throw new Error("Invalid Maine finance timestamp");
   }
-  return value.toISOString();
-}
-
-function normalizeAmount(value: number, fieldName: string): number {
-  if (!Number.isFinite(value) || value < 0) {
-    throw new Error(`${fieldName} must be a nonnegative number`);
-  }
-  return value;
-}
-
-function normalizeNullableAmount(value: number | null | undefined, fieldName: string): number | null {
-  if (value === undefined || value === null) {
-    return null;
-  }
-  return normalizeAmount(value, fieldName);
-}
-
-function normalizeNullableCount(value: number | null | undefined): number | null {
-  if (value === undefined || value === null) {
-    return null;
-  }
-  if (!Number.isInteger(value) || value < 0) {
-    throw new Error("Maine finance contributor count must be a nonnegative integer");
-  }
-  return value;
-}
-
-function canOpenTransaction(db: Queryable): db is ConnectableQueryable {
-  return (
-    typeof (db as ConnectableQueryable).connect === "function" &&
-    typeof (db as ClientLikeQueryable).release !== "function"
-  );
-}
-
-function isClientLikeQueryable(db: Queryable): db is ClientLikeQueryable {
-  return typeof (db as ClientLikeQueryable).release === "function";
 }
 
 function validateMaineFinanceLinkInput(link: MaineFinanceLinkInput): void {
@@ -165,15 +104,21 @@ function validateMaineFinanceLinkInput(link: MaineFinanceLinkInput): void {
   normalizeElectionYear(link.electionYear);
   requireNonEmpty(link.candidateNameNormalized, "Maine finance candidate name");
   requireNonEmpty(link.officeName, "Maine finance office name");
-  normalizeCommitteeId(link.committeeId);
+  requireNonEmpty(link.committeeId, "Maine committee id");
   requireNonEmpty(link.committeeName, "Maine committee name");
-  normalizeNullableDate(link.lastVerifiedAt);
+  validateNullableDate(link.lastVerifiedAt);
 }
 
 function outsideGroupKey(group: Pick<MaineFinanceOutsideGroupInput, "committeeId" | "supportOppose">): string {
-  return `${normalizeCommitteeId(group.committeeId)}\u0000${group.supportOppose}`;
+  return `${normalizeMaineCommitteeId(requireNonEmpty(group.committeeId, "Maine committee id"))}\u0000${group.supportOppose}`;
 }
 
+// The factory's pairing validation covers the same inputs, but Maine's
+// original writer phrased its errors differently ("require matching outside
+// groups...") and rejected a defined-but-empty breakdown list with no groups
+// key at all. Per-state tests pin both behaviors, so the wrapper validates
+// first with the legacy semantics; the factory's own pairing check then acts
+// as a backstop and never fires on input that passes here.
 function validateMaineFinanceSnapshotInput(input: MaineFinanceSnapshotInput): void {
   validateMaineFinanceLinkInput(input.link);
   if (input.outsideGroupBreakdowns && !input.outsideGroups) {
@@ -189,390 +134,26 @@ function validateMaineFinanceSnapshotInput(input: MaineFinanceSnapshotInput): vo
   }
 }
 
-async function withMaineFinanceTransaction<T>(db: Queryable, work: (tx: Queryable) => Promise<T>): Promise<T> {
-  if (!canOpenTransaction(db)) {
-    if (isClientLikeQueryable(db)) {
-      throw new Error("Maine finance snapshot writes must receive a Pool, not a PoolClient");
-    }
+// Maine snapshot writes must receive a Pool: a bare queryable without
+// connect() is rejected instead of taking the factory's inline-transaction
+// path. The stub throws on first use rather than up front so that input
+// validation errors still surface before the transaction-contract error.
+function requireMainePool(db: Queryable): Queryable {
+  const candidate = db as { connect?: unknown; release?: unknown };
+  if (typeof candidate.connect === "function" || typeof candidate.release === "function") {
+    return db;
+  }
+  const rejectQuery = () => {
     throw new Error("Maine finance snapshot writes must receive a Pool");
-  }
-
-  const client = await db.connect();
-  try {
-    await client.query("BEGIN");
-    const result = await work(client);
-    await client.query("COMMIT");
-    return result;
-  } catch (error) {
-    try {
-      await client.query("ROLLBACK");
-    } catch {
-      // Preserve the original write failure.
-    }
-    throw error;
-  } finally {
-    client.release();
-  }
+  };
+  return { query: rejectQuery as unknown as Queryable["query"] };
 }
 
 export async function upsertMaineFinanceLink(input: {
   db: Queryable;
   link: MaineFinanceLinkInput;
 }): Promise<{ linkId: string }> {
-  validateMaineFinanceLinkInput(input.link);
-
-  const result = await input.db.query<{ id: string }>(
-    `
-      INSERT INTO public.me_candidate_finance_links (
-        candidate_id,
-        election_id,
-        election_year,
-        candidate_name_normalized,
-        office_name,
-        district,
-        committee_id,
-        committee_name,
-        link_status,
-        link_source,
-        source_url,
-        last_verified_at
-      )
-      VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::timestamptz)
-      ON CONFLICT (candidate_id, election_id, committee_id)
-      DO UPDATE SET
-        election_year = EXCLUDED.election_year,
-        candidate_name_normalized = EXCLUDED.candidate_name_normalized,
-        office_name = EXCLUDED.office_name,
-        district = EXCLUDED.district,
-        committee_name = EXCLUDED.committee_name,
-        link_status = EXCLUDED.link_status,
-        link_source = EXCLUDED.link_source,
-        source_url = EXCLUDED.source_url,
-        last_verified_at = EXCLUDED.last_verified_at
-      RETURNING id
-    `,
-    [
-      requireNonEmpty(input.link.candidateId, "candidate id"),
-      requireNonEmpty(input.link.electionId, "election id"),
-      normalizeElectionYear(input.link.electionYear),
-      requireNonEmpty(input.link.candidateNameNormalized, "Maine finance candidate name"),
-      requireNonEmpty(input.link.officeName, "Maine finance office name"),
-      normalizeOptionalText(input.link.district),
-      normalizeCommitteeId(input.link.committeeId),
-      requireNonEmpty(input.link.committeeName, "Maine committee name"),
-      input.link.linkStatus ?? "active",
-      input.link.linkSource ?? "manual",
-      normalizeOptionalText(input.link.sourceUrl),
-      normalizeNullableDate(input.link.lastVerifiedAt),
-    ]
-  );
-
-  const linkId = result.rows[0]?.id;
-  if (!linkId) {
-    throw new Error("Maine finance link upsert did not return an id");
-  }
-  return { linkId };
-}
-
-async function upsertSummary(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  summary: MaineFinanceSummaryInput;
-  syncedAt: Date;
-}): Promise<void> {
-  await input.db.query(
-    `
-      INSERT INTO public.me_candidate_finance_summaries (
-        link_id,
-        election_year,
-        total_receipts,
-        direct_contribution_total,
-        total_disbursements,
-        cash_on_hand,
-        outside_support_total,
-        outside_oppose_total,
-        source_url,
-        last_synced_at
-      )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
-      ON CONFLICT (link_id, election_year)
-      DO UPDATE SET
-        total_receipts = EXCLUDED.total_receipts,
-        direct_contribution_total = EXCLUDED.direct_contribution_total,
-        total_disbursements = EXCLUDED.total_disbursements,
-        cash_on_hand = EXCLUDED.cash_on_hand,
-        outside_support_total = COALESCE(
-          EXCLUDED.outside_support_total,
-          me_candidate_finance_summaries.outside_support_total
-        ),
-        outside_oppose_total = COALESCE(
-          EXCLUDED.outside_oppose_total,
-          me_candidate_finance_summaries.outside_oppose_total
-        ),
-        source_url = EXCLUDED.source_url,
-        last_synced_at = EXCLUDED.last_synced_at
-    `,
-    [
-      requireNonEmpty(input.linkId, "Maine finance link id"),
-      normalizeElectionYear(input.electionYear),
-      normalizeNullableAmount(input.summary.totalReceipts, "total receipts"),
-      normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
-      normalizeNullableAmount(input.summary.totalDisbursements, "total disbursements"),
-      normalizeNullableAmount(input.summary.cashOnHand, "cash on hand"),
-      normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),
-      normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),
-      normalizeOptionalText(input.summary.sourceUrl),
-      input.syncedAt.toISOString(),
-    ]
-  );
-}
-
-async function deactivateSupersededMaineCfisLinks(input: {
-  db: Queryable;
-  link: MaineFinanceLinkInput;
-  activeLinkId: string;
-}): Promise<void> {
-  if ((input.link.linkStatus ?? "active") !== "active" || (input.link.linkSource ?? "manual") !== "cfis_bulk") {
-    return;
-  }
-
-  await input.db.query(
-    `
-      UPDATE public.me_candidate_finance_links
-      SET link_status = 'inactive'
-      WHERE candidate_id = $1::uuid
-        AND election_id = $2::uuid
-        AND id <> $3::uuid
-        AND link_status = 'active'
-        AND link_source = 'cfis_bulk'
-    `,
-    [
-      requireNonEmpty(input.link.candidateId, "candidate id"),
-      requireNonEmpty(input.link.electionId, "election id"),
-      requireNonEmpty(input.activeLinkId, "Maine finance link id"),
-    ]
-  );
-}
-
-async function upsertDirectBreakdown(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  breakdown: MaineFinanceDirectBreakdownInput;
-  syncedAt: Date;
-}): Promise<void> {
-  await input.db.query(
-    `
-      INSERT INTO public.me_candidate_finance_direct_breakdowns (
-        link_id,
-        election_year,
-        category_type,
-        category_name,
-        amount,
-        contributor_count,
-        source_url,
-        last_synced_at
-      )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
-      ON CONFLICT (link_id, election_year, category_type, category_name)
-      DO UPDATE SET
-        amount = EXCLUDED.amount,
-        contributor_count = EXCLUDED.contributor_count,
-        source_url = EXCLUDED.source_url,
-        last_synced_at = EXCLUDED.last_synced_at
-    `,
-    [
-      requireNonEmpty(input.linkId, "Maine finance link id"),
-      normalizeElectionYear(input.electionYear),
-      input.breakdown.categoryType,
-      requireNonEmpty(input.breakdown.categoryName, "Maine finance direct breakdown category"),
-      normalizeAmount(input.breakdown.amount, "direct breakdown amount"),
-      normalizeNullableCount(input.breakdown.contributorCount),
-      normalizeOptionalText(input.breakdown.sourceUrl),
-      input.syncedAt.toISOString(),
-    ]
-  );
-}
-
-async function upsertOutsideGroup(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  group: MaineFinanceOutsideGroupInput;
-  syncedAt: Date;
-}): Promise<void> {
-  await input.db.query(
-    `
-      INSERT INTO public.me_candidate_finance_outside_groups (
-        link_id,
-        election_year,
-        committee_id,
-        committee_name,
-        support_oppose,
-        amount,
-        source_url,
-        last_synced_at
-      )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
-      ON CONFLICT (link_id, election_year, committee_id, support_oppose)
-      DO UPDATE SET
-        committee_name = EXCLUDED.committee_name,
-        amount = EXCLUDED.amount,
-        source_url = EXCLUDED.source_url,
-        last_synced_at = EXCLUDED.last_synced_at
-    `,
-    [
-      requireNonEmpty(input.linkId, "Maine finance link id"),
-      normalizeElectionYear(input.electionYear),
-      normalizeCommitteeId(input.group.committeeId),
-      requireNonEmpty(input.group.committeeName, "Maine outside group committee name"),
-      input.group.supportOppose,
-      normalizeAmount(input.group.amount, "outside group amount"),
-      normalizeOptionalText(input.group.sourceUrl),
-      input.syncedAt.toISOString(),
-    ]
-  );
-}
-
-async function upsertOutsideGroupBreakdown(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  breakdown: MaineFinanceOutsideGroupBreakdownInput;
-  syncedAt: Date;
-}): Promise<void> {
-  await input.db.query(
-    `
-      INSERT INTO public.me_candidate_finance_outside_group_breakdowns (
-        link_id,
-        election_year,
-        committee_id,
-        support_oppose,
-        category_type,
-        category_name,
-        amount,
-        contributor_count,
-        source_url,
-        last_synced_at
-      )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
-      ON CONFLICT (link_id, election_year, committee_id, support_oppose, category_type, category_name)
-      DO UPDATE SET
-        amount = EXCLUDED.amount,
-        contributor_count = EXCLUDED.contributor_count,
-        source_url = EXCLUDED.source_url,
-        last_synced_at = EXCLUDED.last_synced_at
-    `,
-    [
-      requireNonEmpty(input.linkId, "Maine finance link id"),
-      normalizeElectionYear(input.electionYear),
-      normalizeCommitteeId(input.breakdown.committeeId),
-      input.breakdown.supportOppose,
-      input.breakdown.categoryType,
-      requireNonEmpty(input.breakdown.categoryName, "Maine outside breakdown category"),
-      normalizeAmount(input.breakdown.amount, "outside group breakdown amount"),
-      normalizeNullableCount(input.breakdown.contributorCount),
-      normalizeOptionalText(input.breakdown.sourceUrl),
-      input.syncedAt.toISOString(),
-    ]
-  );
-}
-
-async function deleteStaleDirectBreakdowns(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  breakdowns: readonly MaineFinanceDirectBreakdownInput[];
-}): Promise<void> {
-  const keys = input.breakdowns.map((breakdown) => ({
-    category_type: breakdown.categoryType,
-    category_name: requireNonEmpty(breakdown.categoryName, "Maine finance direct breakdown category"),
-  }));
-
-  await input.db.query(
-    `
-      DELETE FROM public.me_candidate_finance_direct_breakdowns
-      WHERE link_id = $1::uuid
-        AND election_year = $2
-        AND NOT EXISTS (
-          SELECT 1
-          FROM jsonb_to_recordset($3::jsonb) AS keep(
-            category_type text,
-            category_name text
-          )
-          WHERE keep.category_type = me_candidate_finance_direct_breakdowns.category_type
-            AND keep.category_name = me_candidate_finance_direct_breakdowns.category_name
-        )
-    `,
-    [requireNonEmpty(input.linkId, "Maine finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
-  );
-}
-
-async function deleteStaleOutsideGroupBreakdowns(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  breakdowns: readonly MaineFinanceOutsideGroupBreakdownInput[];
-}): Promise<void> {
-  const keys = input.breakdowns.map((breakdown) => ({
-    committee_id: normalizeCommitteeId(breakdown.committeeId),
-    support_oppose: breakdown.supportOppose,
-    category_type: breakdown.categoryType,
-    category_name: requireNonEmpty(breakdown.categoryName, "Maine outside breakdown category"),
-  }));
-
-  await input.db.query(
-    `
-      DELETE FROM public.me_candidate_finance_outside_group_breakdowns
-      WHERE link_id = $1::uuid
-        AND election_year = $2
-        AND NOT EXISTS (
-          SELECT 1
-          FROM jsonb_to_recordset($3::jsonb) AS keep(
-            committee_id text,
-            support_oppose text,
-            category_type text,
-            category_name text
-          )
-          WHERE keep.committee_id = me_candidate_finance_outside_group_breakdowns.committee_id
-            AND keep.support_oppose = me_candidate_finance_outside_group_breakdowns.support_oppose
-            AND keep.category_type = me_candidate_finance_outside_group_breakdowns.category_type
-            AND keep.category_name = me_candidate_finance_outside_group_breakdowns.category_name
-        )
-    `,
-    [requireNonEmpty(input.linkId, "Maine finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
-  );
-}
-
-async function deleteStaleOutsideGroups(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  groups: readonly MaineFinanceOutsideGroupInput[];
-}): Promise<void> {
-  const keys = input.groups.map((group) => ({
-    committee_id: normalizeCommitteeId(group.committeeId),
-    support_oppose: group.supportOppose,
-  }));
-
-  await input.db.query(
-    `
-      DELETE FROM public.me_candidate_finance_outside_groups
-      WHERE link_id = $1::uuid
-        AND election_year = $2
-        AND NOT EXISTS (
-          SELECT 1
-          FROM jsonb_to_recordset($3::jsonb) AS keep(
-            committee_id text,
-            support_oppose text
-          )
-          WHERE keep.committee_id = me_candidate_finance_outside_groups.committee_id
-            AND keep.support_oppose = me_candidate_finance_outside_groups.support_oppose
-        )
-    `,
-    [requireNonEmpty(input.linkId, "Maine finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
-  );
+  return writer.upsertLink(input);
 }
 
 export async function replaceMaineCandidateFinanceSnapshot(
@@ -583,45 +164,5 @@ export async function replaceMaineCandidateFinanceSnapshot(
     throw new Error("Invalid Maine finance sync timestamp");
   }
   validateMaineFinanceSnapshotInput(input);
-  const electionYear = normalizeElectionYear(input.link.electionYear);
-
-  return await withMaineFinanceTransaction(input.db, async (db) => {
-    const { linkId } = await upsertMaineFinanceLink({ db, link: input.link });
-    await deactivateSupersededMaineCfisLinks({ db, link: input.link, activeLinkId: linkId });
-    if (input.summary) {
-      await upsertSummary({ db, linkId, electionYear, summary: input.summary, syncedAt });
-    }
-
-    for (const breakdown of input.directBreakdowns ?? []) {
-      await upsertDirectBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
-    }
-    if (input.directBreakdowns) {
-      await deleteStaleDirectBreakdowns({ db, linkId, electionYear, breakdowns: input.directBreakdowns });
-    }
-
-    for (const group of input.outsideGroups ?? []) {
-      await upsertOutsideGroup({ db, linkId, electionYear, group, syncedAt });
-    }
-    for (const breakdown of input.outsideGroupBreakdowns ?? []) {
-      await upsertOutsideGroupBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
-    }
-    if (input.outsideGroupBreakdowns) {
-      await deleteStaleOutsideGroupBreakdowns({ db, linkId, electionYear, breakdowns: input.outsideGroupBreakdowns });
-    }
-    if (input.outsideGroups) {
-      await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: input.outsideGroups });
-    }
-
-    for (const classification of input.classifications ?? []) {
-      await upsertFinanceLabelClassification({ db, classification });
-    }
-
-    return {
-      linkId,
-      summaryWritten: Boolean(input.summary),
-      directBreakdownsWritten: input.directBreakdowns?.length ?? 0,
-      outsideGroupsWritten: input.outsideGroups?.length ?? 0,
-      outsideGroupBreakdownsWritten: input.outsideGroupBreakdowns?.length ?? 0,
-    };
-  });
+  return writer.replaceSnapshot({ ...input, syncedAt, db: requireMainePool(input.db) });
 }

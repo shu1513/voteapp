@@ -20,13 +20,25 @@ export type PublicPickCardEntry = {
   district_name: string;
   picks: { candidate_id: string; display_name: string; candidacy_status: string }[];
   measure_position: "yes" | "no" | null;
+  /** ballot_measures.result at read time ("passed"/"failed" once certified
+   * results land, null before) — the measure counterpart of the won/lost
+   * candidacy_status on picks. */
+  measure_result: string | null;
 };
 
 /** The public payload behind /picks/<token>. Everything here is public
- * information (races, candidate names, results); the only thing the token
- * gates is the ASSOCIATION of these picks with one anonymous voter. No user
- * identity fields, deliberately. */
+ * information (races, candidate names, results) except one identity field:
+ * the owner's FIRST name, so the page can say whose card this is — the
+ * owner mints and posts the link themselves, and a card that names nobody
+ * reads as anonymous data, not a friend's picks. First name only,
+ * deliberately: no last name, email, or user id ever enters this payload.
+ *
+ * null for shares whose row has show_owner_name=false: tokens minted
+ * before the named page existed (migration 207) stay anonymous — they are
+ * stable, non-expiring URLs the owner may have posted precisely because
+ * the page showed no identity — until the owner clicks Share again. */
 export type PublicPickCard = {
+  first_name: string | null;
   election_date: string;
   entries: PublicPickCardEntry[];
 };
@@ -145,17 +157,20 @@ export async function getOrCreateUserPickCardShare(
       throw new UserPickCardSharesError("no_picks_to_share", "No picks recorded for that election date");
     }
 
-    // 256-bit random capability. ON CONFLICT keeps the FIRST token: a no-op
+    // 256-bit random capability. ON CONFLICT keeps the FIRST token: the
     // update lets RETURNING hand back the existing row instead of burning
     // the fresh token into it (which would silently break links already
-    // shared).
+    // shared). show_owner_name upgrades to true on conflict, deliberately:
+    // rows minted before the named page existed default to anonymous
+    // (see migration 207), and the owner clicking Share under the UI that
+    // shows their name IS the consent to name that link from now on.
     const token = randomBytes(32).toString("base64url");
     const saved = await client.query<{ token: string; election_date: string }>(
       `
-        INSERT INTO public.user_pick_card_shares (user_id, election_date, token)
-        VALUES ($1::uuid, $2::date, $3)
+        INSERT INTO public.user_pick_card_shares (user_id, election_date, token, show_owner_name)
+        VALUES ($1::uuid, $2::date, $3, true)
         ON CONFLICT (user_id, election_date)
-        DO UPDATE SET user_id = user_pick_card_shares.user_id
+        DO UPDATE SET show_owner_name = true
         RETURNING token, election_date::text AS election_date
       `,
       [normalizedUserId, normalizedDate, token]
@@ -176,6 +191,7 @@ export async function getOrCreateUserPickCardShare(
 }
 
 type PickCardRow = {
+  first_name: string | null;
   election_date: string;
   election_id: string;
   official_ballot_title: string;
@@ -185,6 +201,7 @@ type PickCardRow = {
   display_name: string | null;
   candidacy_status: string | null;
   measure_position: "yes" | "no" | null;
+  measure_result: string | null;
 };
 
 /**
@@ -201,6 +218,7 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
   const result = await db.query<PickCardRow>(
     `
       SELECT
+        CASE WHEN share.show_owner_name THEN user_row.first_name END AS first_name,
         share.election_date::text AS election_date,
         election.id::text AS election_id,
         election.official_ballot_title,
@@ -212,7 +230,8 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
           trim(concat_ws(' ', candidate.first_name, candidate.last_name))
         ) AS display_name,
         candidate_election.status AS candidacy_status,
-        choice.measure_position
+        choice.measure_position,
+        measure.result AS measure_result
       FROM public.user_pick_card_shares AS share
       JOIN public.users AS user_row
         ON user_row.id = share.user_id
@@ -240,6 +259,8 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
       LEFT JOIN public.candidate_elections AS candidate_election
         ON candidate_election.candidate_id = choice.candidate_id
        AND candidate_election.election_id = choice.election_id
+      LEFT JOIN public.ballot_measures AS measure
+        ON measure.election_id = election.id
       WHERE share.token = $1
       ORDER BY election.official_ballot_title ASC, election.id ASC, choice.created_at ASC, choice.id ASC
     `,
@@ -249,9 +270,11 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
     // Distinguish "no such share" from "share with zero surviving picks":
     // the latter still renders a (bare) card rather than a 404, so a link
     // someone posted keeps resolving even if its picks were since cleared.
-    const share = await db.query<{ election_date: string }>(
+    const share = await db.query<{ first_name: string | null; election_date: string }>(
       `
-        SELECT share.election_date::text AS election_date
+        SELECT
+          CASE WHEN share.show_owner_name THEN user_row.first_name END AS first_name,
+          share.election_date::text AS election_date
         FROM public.user_pick_card_shares AS share
         JOIN public.users AS user_row
           ON user_row.id = share.user_id
@@ -261,7 +284,7 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
       [trimmed]
     );
     const bare = share.rows[0];
-    return bare ? { election_date: bare.election_date, entries: [] } : null;
+    return bare ? { first_name: bare.first_name, election_date: bare.election_date, entries: [] } : null;
   }
 
   const byElection = new Map<string, PublicPickCardEntry>();
@@ -275,6 +298,7 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
         district_name: row.district_name,
         picks: [],
         measure_position: null,
+        measure_result: row.measure_result,
       };
       byElection.set(row.election_id, entry);
     }
@@ -289,6 +313,7 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
     }
   }
   return {
+    first_name: result.rows[0].first_name,
     election_date: result.rows[0].election_date,
     entries: [...byElection.values()].filter(
       (entry) => entry.picks.length > 0 || entry.measure_position !== null
