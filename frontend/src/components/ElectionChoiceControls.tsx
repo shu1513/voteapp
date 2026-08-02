@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { ApiError, useElectionChoiceSaving, useSetElectionChoice } from "@voteapp/api-client";
 import type { ElectionChoice } from "@voteapp/api-client";
 
@@ -83,6 +84,91 @@ export function CandidatePickButton({
           button on the page for one candidate's rejection. */}
       {setChoice.isError && !setChoice.isPending ? <SaveError error={setChoice.error} /> : null}
     </span>
+  );
+}
+
+type CandidatePickRowProps = {
+  electionId: string;
+  candidateId: string;
+  /** Shown in the row text so the action reads as a sentence. */
+  candidateName: string;
+  /** The election's official ballot title, e.g. "Commissioner of Agriculture". */
+  raceName: string;
+  /** Pre-formatted election date, e.g. "August 18, 2026". */
+  dateLabel: string;
+  /** The viewer's current choice state for this election, if any. */
+  choice: ElectionChoice | undefined;
+  /** elections.seats_to_fill — null renders as a single seat. */
+  seatsToFill: number | null;
+};
+
+/**
+ * Ballot-style pick toggle for the candidate page: the whole row is the
+ * button and its text reads as a sentence ("Pick Jane Doe as my pick for
+ * Governor"), because a bare "Make my pick" button next to a race name read
+ * as two unrelated things. "as my pick" stays in the label so the row reads
+ * as recording a personal choice, not as casting a vote online. Same toggle
+ * semantics as CandidatePickButton (radio for single-seat, capped checkboxes
+ * for multi-seat).
+ */
+export function CandidatePickRow({
+  electionId,
+  candidateId,
+  candidateName,
+  raceName,
+  dateLabel,
+  choice,
+  seatsToFill,
+}: CandidatePickRowProps) {
+  const setChoice = useSetElectionChoice();
+  const saving = useElectionChoiceSaving();
+  const capMessageId = useId();
+  const picks = choice?.picks ?? [];
+  const isPicked = picks.some((pick) => pick.candidate_id === candidateId);
+  const seatCap = seatsToFill ?? 1;
+  const atMultiSeatCap = seatCap > 1 && !isPicked && picks.length >= seatCap;
+  const base =
+    "w-full rounded-xl border p-3 text-left text-sm transition disabled:opacity-50";
+
+  return (
+    <div className="flex flex-col gap-1">
+      <button
+        type="button"
+        disabled={saving || atMultiSeatCap}
+        aria-pressed={isPicked}
+        aria-describedby={atMultiSeatCap ? capMessageId : undefined}
+        onClick={() =>
+          setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: !isPicked })
+        }
+        className={
+          isPicked
+            ? `${base} border-green-700 bg-green-50 text-green-900 hover:bg-green-100`
+            : `${base} border-line bg-white text-ink hover:border-green-700`
+        }
+      >
+        {isPicked ? (
+          <>
+            ✓ <span className="font-semibold">{candidateName}</span> is my pick for {raceName} ·{" "}
+            {dateLabel}
+          </>
+        ) : (
+          <>
+            Pick <span className="font-semibold">{candidateName}</span> as my pick for {raceName} ·{" "}
+            {dateLabel}
+          </>
+        )}
+      </button>
+      {/* Visible, not a title tooltip: unlike the election page, this page
+          doesn't show the viewer's other picks, so a dimmed row is otherwise
+          unexplained — and title tooltips never reach touch or keyboard
+          users (a native-disabled button isn't focusable at all). */}
+      {atMultiSeatCap ? (
+        <span id={capMessageId} className="text-xs font-medium text-ink-soft">
+          This election fills {seatCap} seats — remove a pick first
+        </span>
+      ) : null}
+      {setChoice.isError && !setChoice.isPending ? <SaveError error={setChoice.error} /> : null}
+    </div>
   );
 }
 
