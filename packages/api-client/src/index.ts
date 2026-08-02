@@ -6,12 +6,12 @@
 // crypto.randomUUID (useAddressSuggestions; expo-crypto provides it).
 
 export * from "./types";
+export * from "./ballotFilters";
 export * from "./brand";
 export * from "./client";
 export * from "./finance";
 export * from "./format";
 export * from "./legalCopy";
-export * from "./onlyMyIssues";
 export * from "./partyBucket";
 export * from "./researchAreaScoring";
 export * from "./useAddressSuggestions";
