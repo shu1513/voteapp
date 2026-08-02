@@ -1278,24 +1278,37 @@ describe("ElectionPage ballot pager", () => {
     expect(within(pager).queryByRole("link", { name: /^Next:/ })).not.toBeInTheDocument();
   });
 
-  it("shows no pager on a deep link, a stale snapshot, or a single-contest list", async () => {
+  it("collapses to a back-only bar on a deep link (district fallback, no prev/next)", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(perIdLoader, "e-1");
     await screen.findByRole("heading", { name: "Governor" });
-    expect(screen.queryByRole("navigation", { name: "Ballot navigation" })).not.toBeInTheDocument();
 
+    const pager = screen.getByRole("navigation", { name: "Ballot navigation" });
+    expect(within(pager).getByRole("link", { name: "Back to Elections in Alaska" })).toHaveAttribute(
+      "href",
+      "/ballot?d=d-1"
+    );
+    expect(within(pager).queryByRole("link", { name: /^Previous:/ })).not.toBeInTheDocument();
+    expect(within(pager).queryByRole("link", { name: /^Next:/ })).not.toBeInTheDocument();
+  });
+
+  it("shows no prev/next on a stale snapshot or a single-contest list", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
     // Current election missing from the snapshot (stale filtered list).
     renderElection(perIdLoader, "e-9", { ...ARRIVAL });
-    await waitFor(() =>
-      expect(screen.queryByRole("navigation", { name: "Ballot navigation" })).not.toBeInTheDocument()
-    );
+    await screen.findByRole("heading", { name: "Governor" });
+    let pager = screen.getByRole("navigation", { name: "Ballot navigation" });
+    expect(within(pager).getByRole("link", { name: "Back to All elections" })).toBeInTheDocument();
+    expect(within(pager).queryByRole("link", { name: /^(Previous|Next):/ })).not.toBeInTheDocument();
 
-    renderElection(perIdLoader, "e-1", {
+    renderElection(perIdLoader, "e-2", {
       backTo: ARRIVAL.backTo,
-      contests: [{ id: "e-1", title: "Governor" }],
+      contests: [{ id: "e-2", title: "Mayor" }],
     });
     await waitFor(() =>
-      expect(screen.queryByRole("navigation", { name: "Ballot navigation" })).not.toBeInTheDocument()
+      expect(screen.getAllByRole("navigation", { name: "Ballot navigation" })).toHaveLength(2)
     );
+    pager = screen.getAllByRole("navigation", { name: "Ballot navigation" })[1];
+    expect(within(pager).queryByRole("link", { name: /^(Previous|Next):/ })).not.toBeInTheDocument();
   });
 });

@@ -8,7 +8,6 @@ import type {
   FinanceSummary,
   ResearchAreaPreference,
 } from "@voteapp/api-client";
-import { BackLink } from "../components/BackLink";
 import { DetailPager } from "../components/DetailPager";
 import {
   pagerNeighbors,
@@ -418,19 +417,44 @@ export function CandidatePage() {
     (fallbackElection
       ? { path: `/elections/${fallbackElection.election_id}`, label: fallbackElection.official_ballot_title }
       : null);
-  // Bottom pager over the arrival election's displayed roster (a candidate
+  // Prev/next over the arrival election's displayed roster (a candidate
   // can be in several races — the sequence is scoped to the one the reader
-  // came from). Null on deep links or when this candidate fell out of the
-  // snapshot.
+  // came from). Null (back slot only) on deep links or when this candidate
+  // fell out of the snapshot.
   const rosterNeighbors = pagerNeighbors(navState?.candidates, candidate.candidate_id);
+
+  // Display label for the back slot: when the destination is an election,
+  // its official ballot title runs to legal-name length ("For United States
+  // Representative, 1st Congressional District") and the reader just left
+  // it — the Elections section below names it anyway. A generic "Election"
+  // reads cleaner. List destinations ("My Picks", "Shared picks") keep
+  // their short names.
+  const pagerBackTo =
+    backTo && backTo.path.startsWith("/elections/") ? { path: backTo.path, label: "Election" } : backTo;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      {backTo ? (
-        // Arrived with context: restore the election page's own ballot
-        // sequence (backState). Fallback link: hand the election page this
-        // candidate as its back destination instead.
-        <BackLink backTo={backTo} state={navState ? navState.backState : electionNavState} />
+      {pagerBackTo ? (
+        // One nav bar at the top: prev | back | next, each slot captioned.
+        // Arrived with context: the back slot restores the election page's
+        // own ballot sequence (backState). Fallback link: hand the election
+        // page this candidate as its back destination instead.
+        <DetailPager
+          ariaLabel="Candidate navigation"
+          prev={
+            rosterNeighbors?.prev
+              ? { path: `/candidates/${rosterNeighbors.prev.id}`, label: rosterNeighbors.prev.name }
+              : null
+          }
+          next={
+            rosterNeighbors?.next
+              ? { path: `/candidates/${rosterNeighbors.next.id}`, label: rosterNeighbors.next.name }
+              : null
+          }
+          backTo={pagerBackTo}
+          backToState={navState ? navState.backState : electionNavState}
+          siblingState={navState}
+        />
       ) : null}
       <JsonLdScript
         data={{
@@ -627,29 +651,6 @@ export function CandidatePage() {
         <p className="mt-6 text-xs text-ink-soft">
           Profile last researched {formatElectionDate(candidate.last_researched.slice(0, 10))}.
         </p>
-      ) : null}
-
-      {/* Walk the arrival election's roster candidate-by-candidate in the
-          order the election page displayed it (state-gated: hidden on deep
-          links). navState is non-null whenever rosterNeighbors is — the
-          candidates list only validates inside it. */}
-      {rosterNeighbors && navState ? (
-        <DetailPager
-          ariaLabel="Candidate navigation"
-          prev={
-            rosterNeighbors.prev
-              ? { path: `/candidates/${rosterNeighbors.prev.id}`, label: rosterNeighbors.prev.name }
-              : null
-          }
-          next={
-            rosterNeighbors.next
-              ? { path: `/candidates/${rosterNeighbors.next.id}`, label: rosterNeighbors.next.name }
-              : null
-          }
-          backTo={navState.backTo}
-          backToState={navState.backState}
-          siblingState={navState}
-        />
       ) : null}
 
       {/* Last on purpose: reporting is a reaction to reading the profile, not
