@@ -199,8 +199,9 @@ describe("SavedBallotPage", () => {
       // saved areas and a short ballot it holds no filter toggles.
       await user.click(screen.getByRole("button", { name: "Filters" }));
       expect(await screen.findByRole("checkbox", { name: "Followed candidates first" })).toBeInTheDocument();
-      expect(screen.queryByRole("button", { name: "Only my issues" })).not.toBeInTheDocument();
-      expect(screen.queryByRole("button", { name: "High impact only" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("checkbox", { name: "Affects my issues" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("checkbox", { name: "High or above" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("checkbox", { name: "Average or above" })).not.toBeInTheDocument();
     });
 
     it("filters to matching races with a hidden count, and Show all restores", async () => {
@@ -217,7 +218,7 @@ describe("SavedBallotPage", () => {
       const { router } = renderSavedBallot();
 
       await user.click(await screen.findByRole("button", { name: "Filters" }));
-      await user.click(await screen.findByRole("button", { name: "Only my issues" }));
+      await user.click(await screen.findByRole("checkbox", { name: "Affects my issues" }));
       expect(screen.getByText("Governor")).toBeInTheDocument();
       expect(screen.queryByText("State Senate")).not.toBeInTheDocument();
       expect(screen.getByText(/1 election hidden/)).toBeInTheDocument();
@@ -294,7 +295,7 @@ describe("SavedBallotPage", () => {
       expect(screen.getByText("State Senate")).toBeInTheDocument();
       const user = userEvent.setup();
       await user.click(screen.getByRole("button", { name: "Filters" }));
-      expect(screen.queryByRole("button", { name: "Only my issues" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("checkbox", { name: "Affects my issues" })).not.toBeInTheDocument();
     });
   });
 });

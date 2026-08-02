@@ -11,9 +11,11 @@ describe("sortByResearchAreaPriority", () => {
       area("civil_rights", "Civil Rights"),
       area("anti_corruption", "Anti-Corruption"),
       area("environment_and_public_health", "Environment and Public Health"),
+      area("healthcare_affordability", "Healthcare Affordability"),
       area("reduce_wealth_gap", "Reduce Wealth Gap"),
     ]);
     expect(sorted.map((a) => a.slug)).toEqual([
+      "healthcare_affordability",
       "environment_and_public_health",
       "reduce_wealth_gap",
       "anti_corruption",

@@ -1,4 +1,4 @@
-import type { BallotSort, BallotSummary } from "@voteapp/api-client";
+import type { BallotSort, BallotSummary, VoteImpactThreshold } from "@voteapp/api-client";
 import {
   apiRequest,
   BALLOT_SORT_DESCRIPTIONS,
@@ -37,7 +37,7 @@ export default function BallotScreen() {
   // push, so the choices survive navigating into an election and back (the
   // web reflects them into the URL for the same reason).
   const [onlyMyIssues, setOnlyMyIssues] = useState(false);
-  const [highImpact, setHighImpact] = useState(false);
+  const [impactLevel, setImpactLevel] = useState<VoteImpactThreshold | null>(null);
   // Consume once on mount; state keeps it across re-renders and sort changes.
   const [matched] = useState<MatchedAddressHandoff | null>(consumeMatchedAddress);
   const matchedAddress = matched?.address ?? null;
@@ -64,7 +64,7 @@ export default function BallotScreen() {
     savedAreaIds,
     hasSaved,
     issuesRequested: onlyMyIssues,
-    impactRequested: highImpact,
+    impactRequested: impactLevel,
   });
 
   if (districtIds.length === 0) {
@@ -113,14 +113,15 @@ export default function BallotScreen() {
         showIssues={filtersView.showIssuesFilter}
         issuesOn={filtersView.issuesOn}
         onIssuesChange={setOnlyMyIssues}
-        showImpact={filtersView.showImpactFilter}
-        impactOn={filtersView.impactOn}
-        onImpactChange={setHighImpact}
+        showImpactHigh={filtersView.showImpactHigh}
+        showImpactMedium={filtersView.showImpactMedium}
+        impactLevel={filtersView.impactLevel}
+        onImpactChange={setImpactLevel}
         activeFilterCount={filtersView.activeFilterCount}
         hiddenCount={filtersView.hiddenCount}
         onShowAll={() => {
           setOnlyMyIssues(false);
-          setHighImpact(false);
+          setImpactLevel(null);
         }}
       />
 

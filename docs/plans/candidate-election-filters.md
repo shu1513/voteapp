@@ -176,36 +176,47 @@ saved areas; the control simply doesn't render).
 ## Phase 4 — vote-impact filter + unified "Filters" control (ballot pages)
 
 Two changes in one PR because the second exists to absorb the first: a new
-"High impact only" filter, and a single "Filters" disclosure that groups it
-with "Only my issues" and (on the saved page) "Followed candidates first" so
+vote-impact threshold filter, and a single "Filters" disclosure that groups it
+with "Affects my issues" and (on the saved page) "Followed candidates first" so
 the controls row stops accreting loose chips.
 
-1. **Impact filter.** Keep = elections with `vote_power.label` of `high` or
-   `very_high`. Labels only, never raw `score` — the label thresholds are
-   backend-authored (`votePower.ts`) and already the published grading.
-   `unknown` (and `medium`/`low`/`very_low`) are hidden while the filter is
-   ON but included in the hidden count: the filter claims "high impact",
-   unknown is not known-high, and the count line explains the disappearance.
-   Client-side only; `ElectionSummary.vote_power` is already on every
-   surface, anonymous included — so unlike phase 3 there is no auth gate,
-   no loading withhold, and no fail-open branch.
-2. **Offer gate = long ballots.** While OFF, the toggle renders only when
-   the ballot has MORE THAN 7 elections (`LONG_BALLOT_THRESHOLD = 7` in the
-   shared derivation) AND the list actually splits on the label test
-   (all-high is a no-op; none-high would empty the ballot unexplained). The
-   threshold gates the *offer* only: once engaged — e.g. arriving via a
-   shared `?impact=high` URL onto a short ballot — the filter stays visible
-   and keeps applying regardless of length, per the phase-2/3 rule that an
-   engaged control never vanishes. Unlike `issues=mine` with no saved areas
-   (data missing → request ignored), a short ballot never invalidates the
-   impact request — the data is present, so it applies.
+1. **Impact filter.** A minimum-label threshold, two options: "High or
+   above" (`high` + `very_high`) and "Average or above" (`medium` +
+   `high` + `very_high`) — checkbox labels reuse the card vocabulary from
+   `formatVotePowerLabel` ("Average", never "medium"; the wire/URL word
+   stays `medium`). The thresholds nest, so exactly one can be engaged:
+   checking one swaps the other off, unchecking means any impact (no
+   explicit "Any" option — unchecked already says it). Labels only, never
+   raw `score` — the label thresholds are backend-authored (`votePower.ts`)
+   and already the published grading. `unknown` matches neither threshold
+   but is included in the hidden count: the filter claims a minimum impact,
+   unknown is not known to meet it, and the count line explains the
+   disappearance. Client-side only; `ElectionSummary.vote_power` is already
+   on every surface, anonymous included — so unlike phase 3 there is no
+   auth gate, no loading withhold, and no fail-open branch.
+2. **Offer gate = long ballots.** While OFF, an impact option renders only
+   when the ballot has MORE THAN 7 elections (`LONG_BALLOT_THRESHOLD = 7`
+   in the shared derivation) AND that option's threshold actually splits
+   the list (all-match is a no-op; none-match would empty the ballot
+   unexplained). "Average or above" is additionally withheld when it would
+   keep the same set as "High or above" (a ballot with no Average races) —
+   never two checkboxes doing the same thing. The gate covers the *offer*
+   only: once engaged — e.g. arriving via a shared `?impact=high` URL onto
+   a short ballot — the engaged option stays visible and keeps applying
+   regardless, per the phase-2/3 rule that an engaged control never
+   vanishes. Unlike `issues=mine` with no saved areas (data missing →
+   request ignored), a short ballot never invalidates the impact request —
+   the data is present, so it applies.
 3. **Unified "Filters" control.** One chip-styled disclosure button on all
    four ballot surfaces, `aria-expanded` semantics, active-filter count
    badge ("Filters · 2" — counts filters only, never ordering). Contents in
    two labeled sections, because the two halves persist differently and the
    grouping must not blur that:
-   - **Show**: "Only my issues" (phase-3 gates unchanged) and "High impact
-     only". URL/local state, session-scoped, never persisted.
+   - **Show**: "Affects my issues" (phase-3 gates unchanged; the label
+     reuses the cards' "Affects:" verb — the original "Only my issues"
+     read as filtering issues, not elections) and the "Vote impact"
+     threshold checkboxes. URL/local state, session-scoped, never
+     persisted. All checkboxes, matching the Order section — no chips.
    - **Order** (saved page only): the "Followed candidates first" checkbox
      moves in from `BallotPreferenceControls`, keeping its persisted
      full-object PUT semantics, optimistic overlay, and cross-mount saving
@@ -222,9 +233,10 @@ the controls row stops accreting loose chips.
    hidden count. One "N elections hidden · Show all" line sits OUTSIDE the
    disclosure (visible without opening it), keeps the phase-3 `aria-live`
    container placement, and Show all clears BOTH filters. Web URL state:
-   `issues=mine&impact=high` (extend `useIssuesFilterParam` into a shared
-   two-param hook); mobile stays local `useState`; the disclosure is an
-   inline expandable section on mobile, not a portal.
+   `issues=mine&impact=high|medium` (extend `useIssuesFilterParam` into a
+   shared two-param hook; unknown impact values read as off); mobile stays
+   local `useState`; the disclosure is an inline expandable section on
+   mobile, not a portal.
 5. **Tests.** Derivation unit tests (threshold boundary at exactly 7 and 8,
    unknown-label counting, AND composition, engaged-overrides-offer-gate);
    page tests per web surface — combined hidden count, Show all clears

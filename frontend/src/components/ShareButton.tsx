@@ -2,19 +2,23 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useEffect, useRef, useState } from "react";
 import { SITE_ORIGIN } from "../lib/pageMeta";
 
-// Share control for candidate and election pages. Two shapes by capability:
+// Share control for candidate, election, and pick-card pages. Two shapes:
 //
-// - navigator.share available (nearly all mobile browsers, some desktop):
-//   one button opening the OS share sheet. This is the only web route into
-//   iMessage, Instagram, and every other app the OS knows about — no share
-//   URL exists for those.
-// - otherwise (most desktop): a menu of copy-link plus the networks that DO
-//   have share-intent URLs. Plain prefilled links, no platform scripts —
-//   AddThis-style embeds cost tracking and weight for nothing.
+// - Touch devices with navigator.share: one button opening the OS share
+//   sheet. On a phone that sheet is the point — it is the only web route
+//   into iMessage, Instagram, and every other app the OS knows about.
+// - Everything else, including desktops WHERE navigator.share exists
+//   (macOS/Windows Chrome and Safari have it): a menu showing the link
+//   itself, copy-link, and the networks with share-intent URLs. Capability
+//   is not suitability — the desktop OS sheets offer AirDrop/Notes-grade
+//   targets, no social networks, and never reveal the URL, which reads as
+//   a broken button to someone who wanted "give me a link for Facebook".
+//   Plain prefilled intent links, no platform scripts — AddThis-style
+//   embeds cost tracking and weight for nothing.
 //
-// The capability check runs in an effect, not at render: SSR has no
-// navigator, so the server always renders the menu shape and hydration must
-// match it; the effect swaps in the native button after mount.
+// The device check runs in an effect, not at render: SSR has no navigator,
+// so the server always renders the menu shape and hydration must match it;
+// the effect swaps in the native button after mount.
 //
 // What the recipient sees when the link lands (the og:*/twitter:* card) is
 // pageMeta's job — the pages this button sits on must keep emitting it.
@@ -43,7 +47,11 @@ export function ShareButton({ path, shareText }: ShareButtonProps) {
   const copiedTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
-    setCanNativeShare(typeof navigator.share === "function");
+    // Coarse pointer = touch-first device. Optional-chained: jsdom and old
+    // browsers lack matchMedia, and "no signal" must mean the menu, not a
+    // crash.
+    const touchFirst = window.matchMedia?.("(pointer: coarse)").matches ?? false;
+    setCanNativeShare(touchFirst && typeof navigator.share === "function");
     return () => clearTimeout(copiedTimer.current);
   }, []);
 
@@ -91,7 +99,12 @@ export function ShareButton({ path, shareText }: ShareButtonProps) {
       <span role="status" className={copyStatus ? "absolute right-0 top-full z-20 mt-1 whitespace-nowrap rounded-lg border border-line bg-white px-3 py-1.5 text-xs text-ink shadow-lg" : "sr-only"}>
         {copyStatus === "copied" ? "Link copied" : copyStatus === "failed" ? "Couldn't copy link" : null}
       </span>
-      <MenuItems className="absolute right-0 z-20 mt-2 w-48 rounded-xl border border-line bg-white py-1 shadow-lg focus:outline-none">
+      <MenuItems className="absolute right-0 z-20 mt-2 w-64 rounded-xl border border-line bg-white py-1 shadow-lg focus:outline-none">
+        {/* The link itself, first: "Share" that never shows the URL reads as
+            broken. Static text (not a MenuItem — selecting it should not
+            close the menu); select-all so a click highlights the whole URL
+            for manual copy. */}
+        <div className="select-all break-all border-b border-line px-4 py-2 text-xs text-ink-soft">{url}</div>
         <MenuItem>
           <button type="button" onClick={copyLink} className={`${ITEM_CLASS} w-full text-left`}>
             Copy link

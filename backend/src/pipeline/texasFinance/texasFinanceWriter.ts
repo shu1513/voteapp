@@ -47,6 +47,7 @@ export type TexasFinanceSnapshotWriteResult = StandardStateFinanceSnapshotWriteR
 
 const writer = createStandardStateFinanceSnapshotWriter({
   label: "Texas",
+  minElectionYear: 2014,
   tables: {
     links: "tx_candidate_finance_links",
     summaries: "tx_candidate_finance_summaries",

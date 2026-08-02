@@ -3110,6 +3110,10 @@ CREATE TEMP TABLE curated_office_core_areas (
 
 INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('county', 'Clerk of Court', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
+    -- Missouri-style property-tax collection: County Treasurer's curated set
+    -- (housing_affordability because property-tax administration prices
+    -- people in or out of homes).
+    ('county', 'Collector of Revenue', ARRAY['anti_corruption', 'government_efficiency', 'government_spending_reduction', 'housing_affordability']::text[]),
     -- Same civil-process set as Municipal Constable (housing_affordability
     -- because constables serve evictions).
     ('county', 'Constable', ARRAY['civil_rights', 'housing_affordability', 'public_safety_and_crime_control']::text[]),
@@ -3118,13 +3122,26 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     -- County Recorder curated sets, since the officeholder does both jobs.
     ('county', 'County Assessor-Recorder', ARRAY['anti_corruption', 'corporate_accountability', 'data_privacy', 'government_efficiency', 'housing_affordability']::text[]),
     ('county', 'County Auditor', ARRAY['anti_corruption', 'corporate_accountability', 'election_integrity', 'government_efficiency', 'government_spending_reduction']::text[]),
+    -- Property-tax assessment appeals: the County Assessor's curated set,
+    -- since the board reviews the assessor's valuations.
+    ('county', 'County Board of Review Member', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'housing_affordability']::text[]),
     ('county', 'County Clerk', ARRAY['anti_corruption', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),
+    -- Combined office (e.g. Colorado): union of the County Clerk and County
+    -- Recorder curated sets, since the officeholder does both jobs.
+    ('county', 'County Clerk and Recorder', ARRAY['anti_corruption', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),
     ('county', 'County Commissioner', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('county', 'County Coroner', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'public_safety_and_crime_control']::text[]),
+    -- Roads and capital projects: County Surveyor's infrastructure set with
+    -- government_spending_reduction in place of the surveyor's land-records
+    -- housing slug — the engineer's public exposure is the capital budget.
+    ('county', 'County Engineer', ARRAY['government_efficiency', 'government_spending_reduction', 'public_infrastructure']::text[]),
     ('county', 'County Executive', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('county', 'Borough President', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('county', 'County Level Judge', ARRAY['civil_rights', 'housing_affordability', 'impartiality', 'legal_competence', 'public_safety_and_crime_control']::text[]),
     ('county', 'County Recorder', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
+    -- Business licensing and fee collection (St. Louis): recorder-class
+    -- records set with corporate_accountability for the licensing power.
+    ('county', 'License Collector', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency']::text[]),
     ('county', 'County Superintendent of Schools', ARRAY['civil_rights', 'government_efficiency', 'government_spending_reduction', 'public_education_quality']::text[]),
     ('county', 'County Supervisor', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     -- Boundary records and plats: recorder-adjacent land administration.
@@ -3139,6 +3156,8 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     -- legal_competence mirrors the judge sets (quality of representation);
     -- immigration covers crimmigration consequences of pleas (Padilla).
     ('county', 'Public Defender', ARRAY['civil_rights', 'immigration', 'legal_competence', 'public_safety_and_crime_control']::text[]),
+    -- Same job as County Recorder under its Missouri/Pennsylvania name.
+    ('county', 'Recorder of Deeds', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
     ('county', 'Sheriff', ARRAY['civil_rights', 'data_privacy', 'gun_control', 'immigration', 'public_safety_and_crime_control']::text[]),
     ('county', 'Soil and Water Conservation District Supervisor', ARRAY['environment_and_public_health', 'government_efficiency', 'public_infrastructure']::text[]),
     ('place', 'Alderman', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
