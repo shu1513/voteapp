@@ -5,16 +5,28 @@ import type { ElectionSummary } from "./types";
  * sort already surfaces the high-impact races on top. */
 export const LONG_BALLOT_THRESHOLD = 7;
 
+/** The impact filter is a minimum-label threshold, not a label set: "high"
+ * keeps High + Very high, "medium" keeps Average and above. The wire word
+ * stays `medium` (matching the backend label and the URL param) even though
+ * the UI renders it as "Average" via formatVotePowerLabel. */
+export type VoteImpactThreshold = "high" | "medium";
+
+const IMPACT_LABELS: Record<VoteImpactThreshold, ReadonlySet<string>> = {
+  high: new Set(["high", "very_high"]),
+  medium: new Set(["medium", "high", "very_high"]),
+};
+
 function matchesIssues(election: ElectionSummary, savedAreaIds: Set<string>): boolean {
   return election.research_areas.some((area) => savedAreaIds.has(area.id));
 }
 
-function matchesImpact(election: ElectionSummary): boolean {
+function matchesImpact(election: ElectionSummary, threshold: VoteImpactThreshold): boolean {
   // Labels only, never raw score: the label thresholds are backend-authored
-  // (votePower.ts) and already the published grading. `unknown` does not
-  // match — the filter claims "high impact" and unknown is not known-high;
-  // the combined hidden count explains the disappearance.
-  return election.vote_power.label === "high" || election.vote_power.label === "very_high";
+  // (votePower.ts) and already the published grading. `unknown` matches
+  // neither threshold — the filter claims a minimum impact and unknown is
+  // not known to meet it; the combined hidden count explains the
+  // disappearance.
+  return IMPACT_LABELS[threshold].has(election.vote_power.label);
 }
 
 /**
@@ -23,16 +35,21 @@ function matchesImpact(election: ElectionSummary): boolean {
  * policy lives here once, like partyBucket, so web and mobile cannot drift).
  *
  * Two filters, AND-ed into one visible list with one combined hidden count:
- * - "Only my issues": keep = elections whose research areas intersect the
- *   viewer's saved areas. A viewer with no saved areas gets the request
+ * - "Affects my issues": keep = elections whose research areas intersect
+ *   the viewer's saved areas. A viewer with no saved areas gets the request
  *   ignored (the intersection is meaningless without them), which also
  *   covers a shared ?issues=mine link opened anonymously. While the saved
  *   areas are still LOADING the web pages withhold the list instead of
  *   calling this (see useMyResearchAreas().isLoading).
- * - "High impact only": keep = vote_power label high/very_high. No data
+ * - Vote impact: keep = elections at or above the requested threshold
+ *   ("High or above" / "Average or above"). One threshold at a time — they
+ *   nest, so combining them is meaningless and the UI auto-swaps. No data
  *   gate — vote_power ships on every summary, anonymous included — so an
  *   engaged request always applies; LONG_BALLOT_THRESHOLD gates only the
  *   OFFER (a shared ?impact=high link onto a short ballot still filters).
+ *   The medium option is additionally withheld when it would duplicate the
+ *   high option (a ballot with no Average races), so the panel never
+ *   offers two checkboxes that do the same thing.
  *
  * Same visibility rule as the election page's records filter: while OFF a
  * filter is offered only when it could change the current view (its
@@ -56,42 +73,50 @@ export function deriveBallotFilters({
   savedAreaIds: Set<string>;
   hasSaved: boolean;
   issuesRequested: boolean;
-  impactRequested: boolean;
+  impactRequested: VoteImpactThreshold | null;
 }): {
   visibleElections: ElectionSummary[];
   issuesOn: boolean;
   showIssuesFilter: boolean;
-  impactOn: boolean;
-  showImpactFilter: boolean;
-  /** Filters ON right now — the "Filters · N" badge. Ordering never counts. */
+  /** The engaged threshold; null when the impact filter is off. */
+  impactLevel: VoteImpactThreshold | null;
+  showImpactHigh: boolean;
+  showImpactMedium: boolean;
+  /** Filters ON right now — the "Filters · N" badge; the impact filter
+   * counts once whichever threshold is engaged. Ordering never counts. */
   activeFilterCount: number;
   /** Relative to the full list; one count line covers both filters. */
   hiddenCount: number;
 } {
   const issuesMatched = elections.filter((election) => matchesIssues(election, savedAreaIds));
-  const impactMatched = elections.filter(matchesImpact);
+  const highMatched = elections.filter((election) => matchesImpact(election, "high"));
+  const mediumMatched = elections.filter((election) => matchesImpact(election, "medium"));
   const issuesOn = hasSaved && issuesRequested;
-  const impactOn = impactRequested;
+  const impactLevel = impactRequested;
 
   const visibleElections = elections.filter(
     (election) =>
       (!issuesOn || matchesIssues(election, savedAreaIds)) &&
-      (!impactOn || matchesImpact(election))
+      (!impactLevel || matchesImpact(election, impactLevel))
   );
 
   const splits = (matched: ElectionSummary[]) =>
     matched.length > 0 && matched.length < elections.length;
+  const longBallot = elections.length > LONG_BALLOT_THRESHOLD;
   const showIssuesFilter = issuesOn || (hasSaved && splits(issuesMatched));
-  const showImpactFilter =
-    impactOn || (elections.length > LONG_BALLOT_THRESHOLD && splits(impactMatched));
+  const showImpactHigh = impactLevel === "high" || (longBallot && splits(highMatched));
+  const showImpactMedium =
+    impactLevel === "medium" ||
+    (longBallot && splits(mediumMatched) && mediumMatched.length > highMatched.length);
 
   return {
     visibleElections,
     issuesOn,
     showIssuesFilter,
-    impactOn,
-    showImpactFilter,
-    activeFilterCount: (issuesOn ? 1 : 0) + (impactOn ? 1 : 0),
+    impactLevel,
+    showImpactHigh,
+    showImpactMedium,
+    activeFilterCount: (issuesOn ? 1 : 0) + (impactLevel ? 1 : 0),
     hiddenCount: elections.length - visibleElections.length,
   };
 }
