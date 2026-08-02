@@ -3,11 +3,11 @@
 // card has room for should be the ones voters care about most. Keyed by slug
 // so renames in the DB don't silently break the ordering.
 const RESEARCH_AREA_PRIORITY: readonly string[] = [
+  "healthcare_affordability",
   "environment_and_public_health",
   "reduce_wealth_gap",
   "anti_corruption",
   "government_efficiency",
-  "healthcare_affordability",
   "cost_of_living_reduction",
   "immigration",
   "government_spending_reduction",
