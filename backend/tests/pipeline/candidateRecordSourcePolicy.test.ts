@@ -520,6 +520,15 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
       ["https://votecouch.com", "David Couch"],
       ["https://reppauljacobs.com", "Paul Jacobs"],
       ["https://www.tcmueller.com", "Tamiko T.C. Mueller"],
+      // Digit connectors: "4" reads as "for", "2" as "to". All live corpus —
+      // cms.christian4michigan.com passed the pre-fix detector and reached
+      // the DB (wave-22 incident).
+      ["https://cms.christian4michigan.com/post/x", "Vukasovich, Christian"], // FIRST name + 4 + state
+      ["https://vote4quinn.com/about", "Quinn Dalan"], // prefix + 4 + name
+      ["https://lori2lansing.com", "Luke Lori"], // surname + 2 + place
+      ["https://www.hepp4rep.com", "Bryant Hepp"], // 4 + bare office word
+      ["https://kathryn4ld39.net", "Kathryn Lewandowsky"], // 4 + district code + digits
+      ["https://www.carlton4ussenate.com", "Carlton E. Bowen"], // 4 + compound tail
     ];
     for (const [sourceUrl, candidateDisplayName] of owned) {
       const result = evaluateCandidateRecordSourcePolicy({
@@ -551,6 +560,14 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
       // composition rule — that rule is county-only on purpose.
       ["https://marchforpublicity.org/services", "Tom March"],
       ["https://smithforelectricity.org/co-op", "John Smith"],
+      // Digit-connector coincidences that must stay clean: a digit tail with
+      // no vocabulary ("smith2026" was never flagged and stays unflagged),
+      // TV call-sign digits, and generic org naming with a cause word after
+      // a digit ("care4us" is a charity shape, unlike literal "forus").
+      ["https://smith2026.com/launch", "John Smith"],
+      ["https://fox4kc.com/news/story", "James Fox"],
+      ["https://care2.com/petitions", "Beth Care"],
+      ["https://care4us.org/mission", "Beth Care"],
     ];
     for (const [sourceUrl, candidateDisplayName] of independent) {
       const result = evaluateCandidateRecordSourcePolicy({
