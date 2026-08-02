@@ -35,8 +35,14 @@ export function RegisterToPickButton({ candidateName, size = "md" }: RegisterToP
 
   return (
     <>
+      {/* Every candidate card renders this button, so the accessible name
+          carries the candidate — otherwise screen-reader button lists and
+          voice control see N identical "Make my pick"s. Visible-label-first
+          ("Make my pick: …") keeps the spoken text a prefix of the name
+          (WCAG 2.5.3) and echoes the ballot cards' "My pick: {name}" chip. */}
       <button
         type="button"
+        aria-label={`Make my pick: ${candidateName}`}
         onClick={() => setIsOpen(true)}
         className={`${base} border border-line bg-white text-ink hover:border-green-700`}
       >

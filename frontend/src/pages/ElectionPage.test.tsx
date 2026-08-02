@@ -513,10 +513,12 @@ describe("ElectionPage", () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() => electionDetail());
 
-    // One per active candidate, same placement as the real control.
-    const pickButtons = await screen.findAllByRole("button", { name: "Make my pick" });
-    expect(pickButtons).toHaveLength(2);
-    await userEvent.setup().click(pickButtons[0]);
+    // One per active candidate, same placement as the real control — and each
+    // accessible name carries its candidate, so screen-reader button lists and
+    // voice control can tell the page's pick buttons apart.
+    const jordanPick = await screen.findByRole("button", { name: "Make my pick: Jordan Voter" });
+    expect(screen.getByRole("button", { name: "Make my pick: Riley Runner" })).toBeInTheDocument();
+    await userEvent.setup().click(jordanPick);
 
     expect(
       await screen.findByText(
@@ -541,7 +543,7 @@ describe("ElectionPage", () => {
     renderElection(() => electionDetail({ election_date: "2020-11-03" }));
 
     expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Make my pick" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /Make my pick/ })).not.toBeInTheDocument();
   });
 
   it("gives logged-in viewers the real pick button, not the register prompt", async () => {
@@ -562,8 +564,8 @@ describe("ElectionPage", () => {
     });
     renderElection(() => electionDetail());
 
-    const pickButtons = await screen.findAllByRole("button", { name: "Make my pick" });
-    await userEvent.setup().click(pickButtons[0]);
+    const pickButton = await screen.findByRole("button", { name: "Make my pick: Jordan Voter" });
+    await userEvent.setup().click(pickButton);
 
     // The click writes a choice instead of opening the register dialog.
     await waitFor(() =>

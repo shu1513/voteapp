@@ -53,10 +53,10 @@ describe("CandidatePickButton", () => {
     });
 
     renderControl(
-      <CandidatePickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} choice={undefined} seatsToFill={null} />
+      <CandidatePickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} candidateName="Jane Doe" choice={undefined} seatsToFill={null} />
     );
 
-    await userEvent.setup().click(screen.getByRole("button", { name: "Make my pick" }));
+    await userEvent.setup().click(screen.getByRole("button", { name: "Make my pick: Jane Doe" }));
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
   });
 
@@ -76,12 +76,13 @@ describe("CandidatePickButton", () => {
       <CandidatePickButton
         electionId={ELECTION_ID}
         candidateId={CANDIDATE_ID}
+        candidateName="Jane Doe"
         choice={choice({ picks: [pick(CANDIDATE_ID)] })}
         seatsToFill={null}
       />
     );
 
-    const button = screen.getByRole("button", { name: "✓ My pick" });
+    const button = screen.getByRole("button", { name: "✓ My pick: Jane Doe" });
     expect(button).toHaveAttribute("aria-pressed", "true");
     await userEvent.setup().click(button);
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
@@ -93,12 +94,13 @@ describe("CandidatePickButton", () => {
       <CandidatePickButton
         electionId={ELECTION_ID}
         candidateId={CANDIDATE_ID}
+        candidateName="Jane Doe"
         choice={choice({ seats_to_fill: 2, picks: [pick(OTHER_CANDIDATE_ID), pick("55555555-5555-4555-8555-555555555555")] })}
         seatsToFill={2}
       />
     );
 
-    const button = screen.getByRole("button", { name: "Make my pick" });
+    const button = screen.getByRole("button", { name: "Make my pick: Jane Doe" });
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute("title", "This election fills 2 seats — remove a pick first");
   });
@@ -109,12 +111,13 @@ describe("CandidatePickButton", () => {
       <CandidatePickButton
         electionId={ELECTION_ID}
         candidateId={CANDIDATE_ID}
+        candidateName="Jane Doe"
         choice={choice({ picks: [pick(OTHER_CANDIDATE_ID)] })}
         seatsToFill={null}
       />
     );
 
-    expect(screen.getByRole("button", { name: "Make my pick" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Make my pick: Jane Doe" })).toBeEnabled();
   });
 
   it("shows the backend's rejection message inline", async () => {
@@ -127,10 +130,10 @@ describe("CandidatePickButton", () => {
     });
 
     renderControl(
-      <CandidatePickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} choice={undefined} seatsToFill={null} />
+      <CandidatePickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} candidateName="Jane Doe" choice={undefined} seatsToFill={null} />
     );
 
-    await userEvent.setup().click(screen.getByRole("button", { name: "Make my pick" }));
+    await userEvent.setup().click(screen.getByRole("button", { name: "Make my pick: Jane Doe" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Choices can only be changed for upcoming elections"
     );

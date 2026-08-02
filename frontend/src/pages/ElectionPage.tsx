@@ -524,6 +524,7 @@ export function ElectionPage() {
                           <CandidatePickButton
                             electionId={data.id}
                             candidateId={candidate.candidate_id}
+                            candidateName={candidate.display_name}
                             choice={myChoice}
                             seatsToFill={data.seats_to_fill ?? null}
                             size="sm"
