@@ -56,6 +56,23 @@ export function ErrorBoundary() {
   return <RouteError />;
 }
 
+// Outcome chip for a measure pick — same rules and styling as the owner's
+// card (see PicksPage): the word states the fact, the color says how it
+// landed for the card's owner; anything but "passed"/"failed" renders
+// nothing.
+function measureOutcomeChip(position: "yes" | "no", result: string | null | undefined) {
+  if (result !== "passed" && result !== "failed") {
+    return null;
+  }
+  const matchedPick = (result === "passed") === (position === "yes");
+  const label = result === "passed" ? "Passed" : "Failed";
+  return matchedPick ? (
+    <span className="ml-1 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">{label}</span>
+  ) : (
+    <span className="ml-1 rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">{label}</span>
+  );
+}
+
 export function PublicPickCardPage() {
   const card = useLoaderData<typeof loader>();
 
@@ -84,6 +101,7 @@ export function PublicPickCardPage() {
                       }
                     >
                       {entry.measure_position === "yes" ? "Yes" : "No"} on this measure
+                      {measureOutcomeChip(entry.measure_position, entry.measure_result)}
                     </span>
                   ) : (
                     <span className="font-semibold text-green-900">

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { screen } from "@testing-library/react";
-import type { PickCard } from "@voteapp/api-client";
+import type { PickCard, PickCardEntry } from "@voteapp/api-client";
 import { PublicPickCardPage } from "./PublicPickCardPage";
 import { renderRoutes } from "../test/render";
 
@@ -59,4 +59,40 @@ describe("PublicPickCardPage", () => {
       await screen.findByRole("heading", { name: "Election Picks for November 3, 2026" })
     ).toBeInTheDocument();
   });
+
+  it("marks a measure pick with its outcome once certified results land", async () => {
+    renderCard(pickCard({ entries: [measureEntry({ measure_position: "yes", measure_result: "passed" })] }));
+    expect(await screen.findByText("Yes on this measure")).toBeInTheDocument();
+    // Chip word states the fact; green styling means it matched the pick.
+    expect(screen.getByText("Passed").className).toContain("bg-green-700");
+  });
+
+  it("mutes the outcome chip when the measure went against the pick", async () => {
+    renderCard(pickCard({ entries: [measureEntry({ measure_position: "yes", measure_result: "failed" })] }));
+    expect(await screen.findByText("Failed")).toBeInTheDocument();
+    // The exact muted style, not just "not green": a broken class would
+    // otherwise pass.
+    expect(screen.getByText("Failed").className).toContain("bg-surface");
+  });
+
+  it("shows no outcome chip before a canonical result exists", async () => {
+    // Covers both a null result and a pre-field backend (deploy skew).
+    renderCard(pickCard({ entries: [measureEntry({ measure_position: "no", measure_result: null })] }));
+    expect(await screen.findByText("No on this measure")).toBeInTheDocument();
+    expect(screen.queryByText("Passed")).not.toBeInTheDocument();
+    expect(screen.queryByText("Failed")).not.toBeInTheDocument();
+  });
 });
+
+function measureEntry(overrides: Partial<PickCardEntry> = {}): PickCardEntry {
+  return {
+    election_id: "e-2",
+    official_ballot_title: "Proposition 5",
+    race_type: "ballot_measure",
+    district_name: "Springfield",
+    picks: [],
+    measure_position: "yes",
+    measure_result: null,
+    ...overrides,
+  };
+}

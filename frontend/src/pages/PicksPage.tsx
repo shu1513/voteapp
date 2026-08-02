@@ -32,11 +32,32 @@ function pickStatusChip(status: string) {
   return null;
 }
 
+// Outcome chip for a measure pick — the measure counterpart of the won/lost
+// candidacy chips. The word states the FACT ("Passed"/"Failed"); the color
+// says how it landed for the owner, mirroring Won-green/Lost-muted: green
+// when the outcome matches their vote, muted when it went the other way.
+// Anything but the writer's two canonical values (including a pre-field
+// backend during deploy skew) renders nothing. Mirrored on the public card
+// page.
+function measureOutcomeChip(position: "yes" | "no", result: string | null | undefined) {
+  if (result !== "passed" && result !== "failed") {
+    return null;
+  }
+  const matchedPick = (result === "passed") === (position === "yes");
+  const label = result === "passed" ? "Passed" : "Failed";
+  return matchedPick ? (
+    <span className="ml-1 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">{label}</span>
+  ) : (
+    <span className="ml-1 rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">{label}</span>
+  );
+}
+
 function PickedLine({ choice }: { choice: ElectionChoice }) {
   if (choice.measure_position !== null) {
     return (
       <span className={choice.measure_position === "yes" ? "font-semibold text-green-900" : "font-semibold text-red-900"}>
         {choice.measure_position === "yes" ? "Yes" : "No"}
+        {measureOutcomeChip(choice.measure_position, choice.measure_result)}
       </span>
     );
   }

@@ -387,6 +387,11 @@ export type ElectionChoice = {
   seats_to_fill: number | null;
   picks: ElectionChoicePick[];
   measure_position: "yes" | "no" | null;
+  /** ballot_measures.result at read time ("passed"/"failed" once certified
+   * results land, null before) — the measure counterpart of a pick's
+   * candidacy_status. Optional to tolerate a pre-field backend (deploy
+   * skew): absent renders as "no result yet". */
+  measure_result?: string | null;
   updated_at: string;
 };
 
@@ -406,6 +411,8 @@ export type PickCardEntry = {
   district_name: string;
   picks: { candidate_id: string; display_name: string; candidacy_status: string }[];
   measure_position: "yes" | "no" | null;
+  /** Same contract as ElectionChoice.measure_result. */
+  measure_result?: string | null;
 };
 
 export type PickCard = {
