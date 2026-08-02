@@ -1,19 +1,47 @@
 import { useId, useState, type ReactNode } from "react";
+import type { VoteImpactThreshold } from "@voteapp/api-client";
 
 const CHIP_ON = "rounded-full border border-ink bg-ink px-3 py-1 text-sm font-medium text-white transition";
 const CHIP_OFF =
   "rounded-full border border-line bg-white px-3 py-1 text-sm font-medium text-ink transition hover:bg-surface";
 
+function FilterCheckbox({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+}) {
+  return (
+    <label className="flex cursor-pointer items-center gap-2 text-sm text-ink-soft">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+        className="h-4 w-4 accent-rausch"
+      />
+      {label}
+    </label>
+  );
+}
+
 /**
  * The unified "Filters" disclosure for the ballot pages: one chip-styled
  * button opening an inline panel that holds the session-scoped filters
- * ("Only my issues", "High impact only" — per-filter visibility comes from
- * api-client's deriveBallotFilters) and, on the saved page, the persisted
- * ordering preference the caller passes as orderSection. The two halves
- * persist differently, so the panel keeps them under separate "Show" /
- * "Order" headings rather than blending them. The pages own the filter
- * state (lib/useBallotFilterParams) so the choices survive navigating into
- * an election and back.
+ * (checkboxes — per-filter visibility comes from api-client's
+ * deriveBallotFilters) and, on the saved page, the persisted ordering
+ * preference the caller passes as orderSection. The two halves persist
+ * differently, so the panel keeps them under separate "Show" / "Order"
+ * headings rather than blending them. The pages own the filter state
+ * (lib/useBallotFilterParams) so the choices survive navigating into an
+ * election and back.
+ *
+ * The impact checkboxes are nested thresholds ("High or above" ⊂ "Average
+ * or above"), so exactly one can be engaged: checking one swaps the other
+ * off, and unchecking means any impact. Labels reuse the card vocabulary
+ * from formatVotePowerLabel — "Average", never "medium".
  *
  * Inline disclosure, not a floating popover: the panel opens in flow below
  * the controls row, so there is no portal, positioning, or outside-click
@@ -24,8 +52,9 @@ export function BallotFiltersControl({
   showIssues,
   issuesOn,
   onIssuesChange,
-  showImpact,
-  impactOn,
+  showImpactHigh,
+  showImpactMedium,
+  impactLevel,
   onImpactChange,
   activeFilterCount,
   hiddenCount,
@@ -35,9 +64,10 @@ export function BallotFiltersControl({
   showIssues: boolean;
   issuesOn: boolean;
   onIssuesChange: (on: boolean) => void;
-  showImpact: boolean;
-  impactOn: boolean;
-  onImpactChange: (on: boolean) => void;
+  showImpactHigh: boolean;
+  showImpactMedium: boolean;
+  impactLevel: VoteImpactThreshold | null;
+  onImpactChange: (level: VoteImpactThreshold | null) => void;
   activeFilterCount: number;
   hiddenCount: number;
   onShowAll: () => void;
@@ -45,7 +75,8 @@ export function BallotFiltersControl({
 }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
-  const showSection = showIssues || showImpact;
+  const showImpactGroup = showImpactHigh || showImpactMedium;
+  const showSection = showIssues || showImpactGroup;
   if (!showSection && !orderSection) {
     return null;
   }
@@ -89,34 +120,34 @@ export function BallotFiltersControl({
       {open ? (
         <div id={panelId} className="flex flex-col gap-3 rounded-lg border border-line bg-white p-3">
           {showSection ? (
-            <div className="flex flex-col items-end gap-2">
+            <div className="flex flex-col gap-2">
               <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">Show</p>
-              <div className="flex flex-wrap justify-end gap-2">
-                {showIssues ? (
-                  <button
-                    type="button"
-                    onClick={() => onIssuesChange(!issuesOn)}
-                    aria-pressed={issuesOn}
-                    className={issuesOn ? CHIP_ON : CHIP_OFF}
-                  >
-                    Only my issues
-                  </button>
-                ) : null}
-                {showImpact ? (
-                  <button
-                    type="button"
-                    onClick={() => onImpactChange(!impactOn)}
-                    aria-pressed={impactOn}
-                    className={impactOn ? CHIP_ON : CHIP_OFF}
-                  >
-                    High impact only
-                  </button>
-                ) : null}
-              </div>
+              {showIssues ? (
+                <FilterCheckbox label="Affects my issues" checked={issuesOn} onChange={onIssuesChange} />
+              ) : null}
+              {showImpactGroup ? (
+                <div className="flex flex-col gap-2">
+                  <p className="text-xs text-ink-soft">Vote impact</p>
+                  {showImpactHigh ? (
+                    <FilterCheckbox
+                      label="High or above"
+                      checked={impactLevel === "high"}
+                      onChange={(checked) => onImpactChange(checked ? "high" : null)}
+                    />
+                  ) : null}
+                  {showImpactMedium ? (
+                    <FilterCheckbox
+                      label="Average or above"
+                      checked={impactLevel === "medium"}
+                      onChange={(checked) => onImpactChange(checked ? "medium" : null)}
+                    />
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           ) : null}
           {orderSection ? (
-            <div className="flex flex-col items-end gap-2">
+            <div className="flex flex-col gap-2">
               <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">Order</p>
               {orderSection}
             </div>

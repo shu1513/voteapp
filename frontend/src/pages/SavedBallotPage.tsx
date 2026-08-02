@@ -351,8 +351,9 @@ export function SavedBallotPage() {
           showIssues={filtersView.showIssuesFilter}
           issuesOn={filtersView.issuesOn}
           onIssuesChange={onIssuesFilterChange}
-          showImpact={filtersView.showImpactFilter}
-          impactOn={filtersView.impactOn}
+          showImpactHigh={filtersView.showImpactHigh}
+          showImpactMedium={filtersView.showImpactMedium}
+          impactLevel={filtersView.impactLevel}
           onImpactChange={onImpactFilterChange}
           activeFilterCount={filtersView.activeFilterCount}
           hiddenCount={filtersView.hiddenCount}
