@@ -67,6 +67,8 @@ The factory hardcodes `committee_id`/`committee_name` in the outside-groups and 
 
 Any state outside the factory-canonical group needs a configurable outside-identity column (small factory param, own PR) before its writer can migrate.
 
+**Cascade-FK trap (affects migration validation choice):** the `*_outside_group_breakdowns` tables carry a `FOREIGN KEY ... REFERENCES *_outside_groups ON DELETE CASCADE` (verified for arizona, texas, houston — same DDL template). The factory upserts breakdowns before deleting stale groups, so under validation `none` or `presence` a breakdown referencing a stale group inserts, is cascade-deleted by the stale-group cleanup, and is still counted as written. Any state with this FK must migrate with `outsideGroupValidation: "pairing"` (arizona does, per PR #492 review) — or document why not. Texas/Houston run `none` today; that window predates the factory (it was extracted byte-identical from Texas) and fixing them is a separate behavior-change decision.
+
 Val+ distribution: pairing validation `G` in 12 (two message variants — "require matching": dc, kentucky, maryland, newJersey, tennessee, maine; "must reference": alaska, illinois, louisiana, michigan, minnesota, pennsylvania); presence-only `g` in 10; manual-link protection `M` in 6 (illinois, indiana, michigan, minnesota, newYorkCity, pennsylvania). The shared factory has none of these.
 
 ## Ballot-lookup loaders (identity columns per relation)

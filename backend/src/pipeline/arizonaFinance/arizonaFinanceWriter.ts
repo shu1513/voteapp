@@ -55,7 +55,13 @@ const writer = createStandardStateFinanceSnapshotWriter({
     outside_oppose_total: "replace",
     source_url: "replace",
   },
-  outsideGroupValidation: "presence",
+  // "pairing", not the old writer's presence-only check: the breakdowns table
+  // has an ON DELETE CASCADE foreign key to the outside-groups table, and the
+  // factory deletes stale groups after the breakdown writes. A breakdown that
+  // references a stale group would insert, then be cascade-deleted, while the
+  // result still counted it as written. Pairing rejects that input up front,
+  // like the old writer's foreign-key failure did, but before any write.
+  outsideGroupValidation: "pairing",
   tables: {
     links: "az_candidate_finance_links",
     summaries: "az_candidate_finance_summaries",
