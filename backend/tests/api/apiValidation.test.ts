@@ -167,6 +167,9 @@ describe("pick card share API contract", () => {
     ["2026-00-10"],
     ["not-a-date"],
     ["2026-1-3"],
+    // Round-trips unchanged in JS (year 0 = 1 BC) but Postgres has no year
+    // zero — must 400 here, not 500 on the ::date cast.
+    ["0000-01-01"],
   ])("rejects non-calendar election_date %s", (value) => {
     expect(() => parsePickCardShareBodyValue({ election_date: value })).toThrow(
       /valid YYYY-MM-DD date/

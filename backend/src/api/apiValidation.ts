@@ -954,9 +954,12 @@ export function parsePickCardShareBodyValue(parsed: unknown): PickCardSharePaylo
   // Round-trip through UTC instead of trusting Date.parse alone: V8 rolls
   // impossible days over ("2026-02-30" parses as March 2), which would pass
   // a NaN check and later 500 on Postgres's ::date cast instead of 400 here.
+  // Year 0000 round-trips unchanged in JS (it means 1 BC there) but does
+  // not exist in Postgres's calendar, so it needs its own rejection.
   const parsedDate = new Date(`${electionDate}T00:00:00Z`);
   const isRealDate =
     PICK_CARD_ELECTION_DATE_PATTERN.test(electionDate) &&
+    !electionDate.startsWith("0000") &&
     !Number.isNaN(parsedDate.getTime()) &&
     parsedDate.toISOString().slice(0, 10) === electionDate;
   if (!isRealDate) {

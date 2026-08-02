@@ -128,6 +128,22 @@ describe("PicksPage", () => {
     );
   });
 
+  it("shows an error instead of all-undecided cards when the choices fetch fails", async () => {
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/election-choices": apiError(500, "internal_error", "boom"),
+      })
+    );
+    renderPicks();
+
+    // The error is the whole story: no card may render claiming races are
+    // undecided when the truth is unknown.
+    expect(await screen.findByText(/Could not load your picks/)).toBeInTheDocument();
+    expect(screen.queryByText(/no pick yet/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/races decided/)).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /My November 3, 2026 Picks/ })).not.toBeInTheDocument();
+  });
+
   it("hides the share control on a card with zero picks", async () => {
     stubApiRoutes(verifiedRoutes({ "/api/me/election-choices": { body: { choices: [] } } }));
     renderPicks();

@@ -190,7 +190,12 @@ export function PicksPage() {
   useDocumentTitle("My Picks");
   const { me, isLoading } = useMe();
   const verified = me?.email_verified === true;
-  const { choices, choiceByElectionId, isError: choicesError } = useElectionChoices();
+  const {
+    choices,
+    choiceByElectionId,
+    isLoading: choicesLoading,
+    isError: choicesError,
+  } = useElectionChoices();
   // Same source as the saved ballot page: the user's districts decide which
   // races belong on their cards.
   const ballot = useQuery({
@@ -237,25 +242,36 @@ export function PicksPage() {
   }
   const dates = [...byDate.keys()].sort();
 
+  // Cards are meaningless without the choices: rendering them from an
+  // unloaded map claims "no pick yet" on races the user already decided
+  // (same no-flash rule ElectionCard documents for its chip). One reveal:
+  // nothing below the heading until BOTH queries settle, and no cards at
+  // all when the choices fetch failed — a visible error beats confidently
+  // wrong "0 of N decided" cards.
+  const choicesReady = choiceByElectionId !== undefined;
+  const picksSettled = ballot.isSuccess && choicesReady;
+
   return (
     <div className="mx-auto max-w-3xl space-y-10 px-4 py-8">
       <section>
         <h1 className="text-2xl font-bold">My Picks</h1>
-        {ballot.isPending ? <LoadingNotice text="Loading your elections…" /> : null}
+        {ballot.isPending || (choicesLoading && !choicesError) ? (
+          <LoadingNotice text="Loading your elections…" />
+        ) : null}
         {ballot.isError ? (
           <div className="mt-4">
             <ErrorNotice error={ballot.error} />
           </div>
         ) : null}
-        {/* A failed choices fetch must not masquerade as "everything
-            undecided" — without this, every race silently reads "no pick
-            yet" and the past section vanishes. */}
         {choicesError ? (
-          <div className="mt-4">
-            <ErrorNotice error={new Error("Could not load your picks — refresh to try again.")} />
-          </div>
+          // Not ErrorNotice: it renders generic copy for non-ApiError values,
+          // and this page has two failure slots (ballot, picks) that must
+          // stay tellable apart. Same visual shell, specific words.
+          <p className="mt-4 rounded-lg border border-rausch/40 bg-rausch/5 px-3 py-2 text-sm text-rausch-dark">
+            Could not load your picks — refresh to try again.
+          </p>
         ) : null}
-        {ballot.isSuccess && dates.length === 0 ? (
+        {picksSettled && dates.length === 0 ? (
           <p className="mt-3 text-sm text-ink-soft">
             No upcoming elections on your ballot yet.{" "}
             <Link to="/me/ballot" className="underline hover:text-ink">
@@ -264,17 +280,21 @@ export function PicksPage() {
             to see your races.
           </p>
         ) : null}
-        <div className="mt-4 space-y-4">
-          {dates.map((date) => (
-            <PickDateCard
-              key={date}
-              date={date}
-              elections={byDate.get(date) ?? []}
-              choiceByElectionId={choiceByElectionId}
-            />
-          ))}
-        </div>
-        <PastPicks choices={choices ?? []} today={today} />
+        {picksSettled ? (
+          <>
+            <div className="mt-4 space-y-4">
+              {dates.map((date) => (
+                <PickDateCard
+                  key={date}
+                  date={date}
+                  elections={byDate.get(date) ?? []}
+                  choiceByElectionId={choiceByElectionId}
+                />
+              ))}
+            </div>
+            <PastPicks choices={choices ?? []} today={today} />
+          </>
+        ) : null}
       </section>
 
       <ResearchAreasSection />

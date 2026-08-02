@@ -62,9 +62,12 @@ function normalizeElectionDate(electionDate: string): string {
   // Round-trip through UTC instead of trusting Date.parse alone: V8 rolls
   // impossible days over ("2026-02-30" parses as March 2), which would pass
   // a NaN check here and then blow up as a 500 on Postgres's ::date cast.
+  // Year 0000 round-trips unchanged in JS (it means 1 BC there) but does
+  // not exist in Postgres's calendar, so it needs its own rejection.
   const parsed = new Date(`${normalized}T00:00:00Z`);
   const isRealDate =
     ELECTION_DATE_PATTERN.test(normalized) &&
+    !normalized.startsWith("0000") &&
     !Number.isNaN(parsed.getTime()) &&
     parsed.toISOString().slice(0, 10) === normalized;
   if (!isRealDate) {
