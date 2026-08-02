@@ -14,8 +14,23 @@ const PROPS = {
 };
 const URL = "https://electionssimplified.com/candidates/cand-1";
 
+// The native branch requires BOTH navigator.share and a coarse (touch)
+// pointer; jsdom's matchMedia always reports false, so touch is stubbed.
+function stubTouchDevice() {
+  vi.stubGlobal(
+    "matchMedia",
+    vi.fn().mockImplementation((query: string) => ({
+      matches: query === "(pointer: coarse)",
+      media: query,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    }))
+  );
+}
+
 describe("ShareButton", () => {
-  it("uses the native share sheet when navigator.share exists", async () => {
+  it("uses the native share sheet on a touch device with navigator.share", async () => {
+    stubTouchDevice();
     const share = vi.fn().mockResolvedValue(undefined);
     vi.stubGlobal("navigator", { ...navigator, share });
 
@@ -33,6 +48,7 @@ describe("ShareButton", () => {
   });
 
   it("survives the user dismissing the native sheet", async () => {
+    stubTouchDevice();
     const share = vi.fn().mockRejectedValue(new DOMException("canceled", "AbortError"));
     vi.stubGlobal("navigator", { ...navigator, share });
 
@@ -40,6 +56,29 @@ describe("ShareButton", () => {
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Share" }));
     expect(share).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps the menu on desktop even when navigator.share exists", async () => {
+    // Fine pointer (jsdom default matchMedia: matches=false) + macOS-style
+    // navigator.share: the OS sheet there hides the URL and offers no
+    // social targets, so the menu must win.
+    const share = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal("navigator", { ...navigator, share });
+
+    render(<ShareButton {...PROPS} />);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Share" }));
+
+    expect(share).not.toHaveBeenCalled();
+    expect(screen.getByRole("menuitem", { name: "Copy link" })).toBeInTheDocument();
+  });
+
+  it("shows the shareable URL inside the menu", async () => {
+    render(<ShareButton {...PROPS} />);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Share" }));
+
+    expect(screen.getByText(URL)).toBeInTheDocument();
   });
 
   it("falls back to a menu with copy link and intent links", async () => {
