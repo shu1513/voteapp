@@ -5,7 +5,7 @@ import type { ElectionChoice } from "@voteapp/api-client";
 import { PicksPage } from "./PicksPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
-import { ballotSummary, electionSummary, ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
+import { ballotSummary, candidateFollow, electionSummary, ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
 
 function renderPicks() {
   return renderRoutes(
@@ -13,6 +13,7 @@ function renderPicks() {
       { path: "/me/picks", element: <PicksPage /> },
       { path: "/login", element: <p /> },
       { path: "/elections/:electionId", element: <p>Election page</p> },
+      { path: "/candidates/:candidateId", element: <p>Candidate page</p> },
     ],
     "/me/picks"
   );
@@ -189,5 +190,35 @@ describe("PicksPage", () => {
     expect(screen.getByText("Pat Winner")).toBeInTheDocument();
     expect(screen.getByText("Won")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sheriff" })).toHaveAttribute("href", "/elections/e-old");
+  });
+});
+
+describe("PicksPage nav context", () => {
+  const MY_PICKS_STATE = { backTo: { path: "/me/picks", label: "My Picks" } };
+
+  it("hands election links My Picks as their back destination", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes(verifiedRoutes());
+    const { router } = renderPicks();
+
+    await user.click(await screen.findByRole("link", { name: "Governor" }));
+
+    expect(router.state.location.pathname).toBe("/elections/e-1");
+    expect(router.state.location.state).toEqual(MY_PICKS_STATE);
+  });
+
+  it("hands followed-candidate links My Picks as their back destination", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/candidate-follows": { body: { follows: [candidateFollow()] } },
+      })
+    );
+    const { router } = renderPicks();
+
+    await user.click(await screen.findByRole("link", { name: "Jordan Voter" }));
+
+    expect(router.state.location.pathname).toBe("/candidates/c-1");
+    expect(router.state.location.state).toEqual(MY_PICKS_STATE);
   });
 });

@@ -13,6 +13,7 @@ function renderBallot(entry: string | { pathname: string; search?: string; state
   return renderRoutes(
     [
       { path: "/ballot", element: <BallotPage /> },
+      { path: "/elections/:electionId", element: <p /> },
       { path: "/", element: <p /> },
     ],
     entry
@@ -572,6 +573,35 @@ describe("BallotPage", () => {
       await user.click(toggle);
       expect(await screen.findByRole("link", { name: "Find your polling place" })).toBeInTheDocument();
       expect(calledPaths()).toContain("/api/state-resources");
+    });
+  });
+});
+
+describe("BallotPage nav context", () => {
+  it("hands election cards its own URL and the displayed contest order", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/ballot": {
+        // Awaiting-candidates race first in the payload: the displayed order
+        // (readable races, then the awaiting tail) must win over payload order.
+        body: ballotSummary([
+          electionSummary({ id: "e-2", official_ballot_title: "Mayor", candidate_count: 0 }),
+          electionSummary(),
+        ]),
+      },
+    });
+    const { router } = renderBallot("/ballot?d=d-1&sort=soonest");
+
+    await user.click(await screen.findByRole("link", { name: /Governor/ }));
+
+    expect(router.state.location.pathname).toBe("/elections/e-1");
+    expect(router.state.location.state).toEqual({
+      backTo: { path: "/ballot?d=d-1&sort=soonest", label: "All elections" },
+      contests: [
+        { id: "e-1", title: "Governor" },
+        { id: "e-2", title: "Mayor" },
+      ],
     });
   });
 });
