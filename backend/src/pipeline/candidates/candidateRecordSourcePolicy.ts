@@ -849,11 +849,12 @@ export function isCandidateOwnedHostname(hostname: string, candidateDisplayName:
   for (const prefix of OWNED_HOST_PREFIXES) {
     if (label.startsWith(prefix) && label.length > prefix.length) {
       const remainder = label.slice(prefix.length);
-      const candidates = [remainder];
+      // "remainders", not "candidates": in this file that word means people.
+      const remainders = [remainder];
       if (/^[42]/.test(remainder)) {
-        candidates.push(remainder.slice(1));
+        remainders.push(remainder.slice(1));
       }
-      for (const start of candidates) {
+      for (const start of remainders) {
         const { consumed, rest } = consumeNameTokens(start, tokens);
         if (consumed >= 1 && rest.length === 0) {
           return true;
