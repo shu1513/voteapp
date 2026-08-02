@@ -2,7 +2,7 @@ import type { BallotSort, BallotSummary } from "@voteapp/api-client";
 import {
   apiRequest,
   BALLOT_SORT_DESCRIPTIONS,
-  deriveOnlyMyIssues,
+  deriveBallotFilters,
   formatDistrictName,
   formatDistrictType,
   PUBLIC_BALLOT_SORTS,
@@ -14,8 +14,8 @@ import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { Collapsible } from "../components/Collapsible";
+import { BallotFiltersControl } from "../components/BallotFiltersControl";
 import { ElectionCard } from "../components/ElectionCard";
-import { OnlyMyIssuesToggle } from "../components/OnlyMyIssuesFilter";
 import { SortChips } from "../components/SortChips";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { consumeMatchedAddress, type MatchedAddressHandoff } from "../lib/matchedAddress";
@@ -33,10 +33,11 @@ export default function BallotScreen() {
   const params = useLocalSearchParams<{ d?: string }>();
   const { savedAreaIds, hasSaved } = useMyResearchAreas();
   const [sort, setSort] = useState<BallotSort>("vote_power");
-  // "Only my issues": local state like sort — the screen stays mounted under
-  // a stack push, so the choice survives navigating into an election and
-  // back (the web reflects it into the URL for the same reason).
+  // Filters: local state like sort — the screen stays mounted under a stack
+  // push, so the choices survive navigating into an election and back (the
+  // web reflects them into the URL for the same reason).
   const [onlyMyIssues, setOnlyMyIssues] = useState(false);
+  const [highImpact, setHighImpact] = useState(false);
   // Consume once on mount; state keeps it across re-renders and sort changes.
   const [matched] = useState<MatchedAddressHandoff | null>(consumeMatchedAddress);
   const matchedAddress = matched?.address ?? null;
@@ -58,11 +59,12 @@ export default function BallotScreen() {
     enabled: districtIds.length > 0,
   });
 
-  const issuesView = deriveOnlyMyIssues({
+  const filtersView = deriveBallotFilters({
     elections: ballot.data?.elections ?? [],
     savedAreaIds,
     hasSaved,
-    requested: onlyMyIssues,
+    issuesRequested: onlyMyIssues,
+    impactRequested: highImpact,
   });
 
   if (districtIds.length === 0) {
@@ -107,15 +109,20 @@ export default function BallotScreen() {
       <View className="mt-3">
         <SortChips options={PUBLIC_BALLOT_SORTS} value={sort} onChange={setSort} />
       </View>
-      {issuesView.showFilter ? (
-        <View className="mt-2">
-          <OnlyMyIssuesToggle
-            on={issuesView.filterOn}
-            hiddenCount={issuesView.hiddenCount}
-            onChange={setOnlyMyIssues}
-          />
-        </View>
-      ) : null}
+      <BallotFiltersControl
+        showIssues={filtersView.showIssuesFilter}
+        issuesOn={filtersView.issuesOn}
+        onIssuesChange={setOnlyMyIssues}
+        showImpact={filtersView.showImpactFilter}
+        impactOn={filtersView.impactOn}
+        onImpactChange={setHighImpact}
+        activeFilterCount={filtersView.activeFilterCount}
+        hiddenCount={filtersView.hiddenCount}
+        onShowAll={() => {
+          setOnlyMyIssues(false);
+          setHighImpact(false);
+        }}
+      />
 
       {/* Reaches everyone who sees results, including people the clickwrap
           never reached — a shared device, a link from a text message. For a
@@ -183,7 +190,7 @@ export default function BallotScreen() {
             // An active filter can empty this list; the "N elections hidden ·
             // Show all" line above explains the empty view.
             <View className="mt-4 gap-3">
-              {issuesView.visibleElections.map((election) => (
+              {filtersView.visibleElections.map((election) => (
                 <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
               ))}
             </View>

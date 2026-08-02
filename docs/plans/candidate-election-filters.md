@@ -1,7 +1,8 @@
 # Plan: party canonicalization + candidate/election filters
 
 Status: phase 0 shipped (PR #468) + local backfill applied; phase 1 shipped
-(PR #473); phase 2 shipped (PR #474); phase 3 implemented. Each phase is
+(PR #473); phase 2 shipped (PR #474); phase 3 shipped (PR #476); phase 4
+implemented. Each phase is
 one PR; later phases depend on earlier ones only where noted. Verified facts
 below come from the live local DB and the current code — re-verify counts
 before the backfill run.
@@ -172,6 +173,66 @@ saved areas; the control simply doesn't render).
    from a shared URL, active filter honestly empties the view, control
    absent when signed out / no saved areas / no split.
 
+## Phase 4 — vote-impact filter + unified "Filters" control (ballot pages)
+
+Two changes in one PR because the second exists to absorb the first: a new
+"High impact only" filter, and a single "Filters" disclosure that groups it
+with "Only my issues" and (on the saved page) "Followed candidates first" so
+the controls row stops accreting loose chips.
+
+1. **Impact filter.** Keep = elections with `vote_power.label` of `high` or
+   `very_high`. Labels only, never raw `score` — the label thresholds are
+   backend-authored (`votePower.ts`) and already the published grading.
+   `unknown` (and `medium`/`low`/`very_low`) are hidden while the filter is
+   ON but included in the hidden count: the filter claims "high impact",
+   unknown is not known-high, and the count line explains the disappearance.
+   Client-side only; `ElectionSummary.vote_power` is already on every
+   surface, anonymous included — so unlike phase 3 there is no auth gate,
+   no loading withhold, and no fail-open branch.
+2. **Offer gate = long ballots.** While OFF, the toggle renders only when
+   the ballot has MORE THAN 7 elections (`LONG_BALLOT_THRESHOLD = 7` in the
+   shared derivation) AND the list actually splits on the label test
+   (all-high is a no-op; none-high would empty the ballot unexplained). The
+   threshold gates the *offer* only: once engaged — e.g. arriving via a
+   shared `?impact=high` URL onto a short ballot — the filter stays visible
+   and keeps applying regardless of length, per the phase-2/3 rule that an
+   engaged control never vanishes. Unlike `issues=mine` with no saved areas
+   (data missing → request ignored), a short ballot never invalidates the
+   impact request — the data is present, so it applies.
+3. **Unified "Filters" control.** One chip-styled disclosure button on all
+   four ballot surfaces, `aria-expanded` semantics, active-filter count
+   badge ("Filters · 2" — counts filters only, never ordering). Contents in
+   two labeled sections, because the two halves persist differently and the
+   grouping must not blur that:
+   - **Show**: "Only my issues" (phase-3 gates unchanged) and "High impact
+     only". URL/local state, session-scoped, never persisted.
+   - **Order** (saved page only): the "Followed candidates first" checkbox
+     moves in from `BallotPreferenceControls`, keeping its persisted
+     full-object PUT semantics, optimistic overlay, and cross-mount saving
+     lock exactly as they are.
+   The sort select stays OUTSIDE the disclosure on both pages: it is the
+   most-used control and it is ordering, not filtering. The chip renders
+   only when it has something to offer (any filter offerable-or-engaged, or
+   the Order section present) — an anonymous visitor with a short ballot
+   sees no new UI.
+4. **Composition.** Both filters AND together in one shared derivation —
+   `deriveBallotFilters` in `@voteapp/api-client` replaces
+   `deriveOnlyMyIssues` (same file, same four consumers) and returns the
+   visible list, per-filter availability/engagement, and one combined
+   hidden count. One "N elections hidden · Show all" line sits OUTSIDE the
+   disclosure (visible without opening it), keeps the phase-3 `aria-live`
+   container placement, and Show all clears BOTH filters. Web URL state:
+   `issues=mine&impact=high` (extend `useIssuesFilterParam` into a shared
+   two-param hook); mobile stays local `useState`; the disclosure is an
+   inline expandable section on mobile, not a portal.
+5. **Tests.** Derivation unit tests (threshold boundary at exactly 7 and 8,
+   unknown-label counting, AND composition, engaged-overrides-offer-gate);
+   page tests per web surface — combined hidden count, Show all clears
+   both params, `?impact=high` URL round-trip + arrives filtered, chip
+   hidden on short/no-split ballots, badge count, followed-first still
+   saves from inside the disclosure (saved page), phase-3 regression suite
+   stays green under the new control.
+
 ## Sequencing / PR slicing
 
 - PR A: phase 0 (canonicalizer + contract + tests + backfill script)
@@ -179,6 +240,8 @@ saved areas; the control simply doesn't render).
 - PR B: phase 1 (bucket fn + web UI + mobile)
 - PR C: phase 2
 - PR D: phase 3
+- PR E: phase 4 (impact filter + unified Filters control, one PR — the
+  control exists to house the new filter)
 
 Phase 1 technically works without phase 0 (bucket fn absorbs spelling mess)
 but display stays ugly ("DEM" next to "Democratic"), so phase 0 ships first.

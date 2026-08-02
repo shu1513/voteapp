@@ -4,7 +4,7 @@ import {
   apiRequest,
   BALLOT_SORT_DESCRIPTIONS,
   BALLOT_SORTS,
-  deriveOnlyMyIssues,
+  deriveBallotFilters,
   useMyResearchAreas,
 } from "@voteapp/api-client";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -12,9 +12,9 @@ import { useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { AccountGate } from "../../components/AccountGate";
+import { BallotFiltersControl } from "../../components/BallotFiltersControl";
 import { Checkbox } from "../../components/Checkbox";
 import { ElectionCard } from "../../components/ElectionCard";
-import { OnlyMyIssuesToggle } from "../../components/OnlyMyIssuesFilter";
 import { SavedAddressForm } from "../../components/SavedAddressForm";
 import { SortChips } from "../../components/SortChips";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../../components/Status";
@@ -24,10 +24,15 @@ import { registerForPushRequestingPermission } from "../../lib/pushNotifications
 
 type SavedBallot = BallotSummary & { matched_address?: string };
 
-// Persisted ordering controls, ported from the web SavedBallotPage: unlike
-// the anonymous ballot's local state, these save to the account and apply to
-// every future visit.
-function BallotPreferenceControls() {
+// Persisted ordering preferences, ported from the web SavedBallotPage:
+// unlike the filters' local state, these save to the account and apply to
+// every future visit. The sort chips and the "Followed candidates first"
+// checkbox render in different places (in flow vs. the Filters
+// disclosure's Order section), so the shared query/mutation plumbing lives
+// in this hook — one instance per control is safe because the mutationKey
+// lock below allows only one save in flight, and each control merges its
+// change from its own pending overlay or the shared cache.
+function useBallotPreferences() {
   const queryClient = useQueryClient();
   // Optimistic overlay: consecutive changes must merge from the latest view,
   // not from a stale cache snapshot — the PUT saves the FULL object, so a
@@ -54,23 +59,32 @@ function BallotPreferenceControls() {
   // Cross-mount in-flight guard: component-local isPending resets on
   // remount, but the mutation cache does not — a remounted control must stay
   // locked until the older full-object PUT settles, or two writes could
-  // commit out of order.
+  // commit out of order. Shared across both preference controls, so a save
+  // from one also locks the other.
   const saving = useIsMutating({ mutationKey: ["put-ballot-preferences"] }) > 0;
 
-  if (prefs.isError) {
-    return <ErrorNotice error={prefs.error} />;
-  }
-  if (!prefs.data) {
-    return null;
-  }
-  const current = pending ?? prefs.data;
+  const current = pending ?? prefs.data ?? null;
 
   function change(fields: Partial<BallotPreferences>) {
+    if (!current) {
+      return;
+    }
     const next = { ...current, ...fields };
     setPending(next);
     update.mutate(next);
   }
 
+  return { prefs, update, saving, current, change };
+}
+
+function BallotSortPreference() {
+  const { prefs, update, saving, current, change } = useBallotPreferences();
+  if (prefs.isError) {
+    return <ErrorNotice error={prefs.error} />;
+  }
+  if (!current) {
+    return null;
+  }
   return (
     <View className="mt-3 gap-2">
       {/* Disabled while a save is in flight: the PUT replaces the FULL
@@ -85,6 +99,23 @@ function BallotPreferenceControls() {
           }
         }}
       />
+      {update.isError ? <ErrorNotice error={update.error} /> : null}
+    </View>
+  );
+}
+
+// Lives in the Filters disclosure's Order section; persisted, unlike the
+// session-scoped filters above it in the panel.
+function FollowedFirstPreference() {
+  const { prefs, update, saving, current, change } = useBallotPreferences();
+  if (prefs.isError) {
+    return <ErrorNotice error={prefs.error} />;
+  }
+  if (!current) {
+    return null;
+  }
+  return (
+    <View className="gap-2">
       <Checkbox
         label="Followed candidates first"
         checked={current.followed_first}
@@ -110,11 +141,12 @@ function SavedBallotBody({ email }: { email: string }) {
     staleTime: 60_000,
   });
   const { savedAreaIds, hasSaved } = useMyResearchAreas();
-  // "Only my issues": local state like the anonymous ballot's sort — the tab
-  // stays mounted under a stack push, so the choice survives navigating into
-  // an election and back. Deliberately NOT an account preference — hiding
-  // races should never silently persist across visits.
+  // Filters: local state like the anonymous ballot's sort — the tab stays
+  // mounted under a stack push, so the choices survive navigating into an
+  // election and back. Deliberately NOT account preferences — hiding races
+  // should never silently persist across visits.
   const [onlyMyIssues, setOnlyMyIssues] = useState(false);
+  const [highImpact, setHighImpact] = useState(false);
   const [handoffState, setHandoffState] = useState<HandoffState>("checking");
   const handoffFiredRef = useRef(false);
 
@@ -211,11 +243,12 @@ function SavedBallotBody({ email }: { email: string }) {
   }
 
   const data = ballot.data;
-  const issuesView = deriveOnlyMyIssues({
+  const filtersView = deriveBallotFilters({
     elections: data.elections,
     savedAreaIds,
     hasSaved,
-    requested: onlyMyIssues,
+    issuesRequested: onlyMyIssues,
+    impactRequested: highImpact,
   });
 
   if (data.districts.length === 0) {
@@ -240,16 +273,25 @@ function SavedBallotBody({ email }: { email: string }) {
         {data.districts.length} district{data.districts.length === 1 ? "" : "s"},{" "}
         {BALLOT_SORT_DESCRIPTIONS[savedPrefs.data?.sort ?? "vote_power"]}
       </Text>
-      <BallotPreferenceControls />
-      {issuesView.showFilter ? (
-        <View className="mt-2">
-          <OnlyMyIssuesToggle
-            on={issuesView.filterOn}
-            hiddenCount={issuesView.hiddenCount}
-            onChange={setOnlyMyIssues}
-          />
-        </View>
-      ) : null}
+      <BallotSortPreference />
+      {/* The Order section makes the disclosure always available here —
+          signed-in viewers always have the followed-first preference even
+          when no filter is offerable. */}
+      <BallotFiltersControl
+        showIssues={filtersView.showIssuesFilter}
+        issuesOn={filtersView.issuesOn}
+        onIssuesChange={setOnlyMyIssues}
+        showImpact={filtersView.showImpactFilter}
+        impactOn={filtersView.impactOn}
+        onImpactChange={setHighImpact}
+        activeFilterCount={filtersView.activeFilterCount}
+        hiddenCount={filtersView.hiddenCount}
+        onShowAll={() => {
+          setOnlyMyIssues(false);
+          setHighImpact(false);
+        }}
+        orderSection={<FollowedFirstPreference />}
+      />
 
       {data.elections.length === 0 ? (
         <EmptyNotice text="No upcoming elections found for your districts yet. Check back — new elections are added as they are announced." />
@@ -257,7 +299,7 @@ function SavedBallotBody({ email }: { email: string }) {
         // An active filter can empty this list; the "N elections hidden ·
         // Show all" line above explains the empty view.
         <View className="mt-4 gap-3">
-          {issuesView.visibleElections.map((election) => (
+          {filtersView.visibleElections.map((election) => (
             <ElectionCard key={election.id} election={election} savedAreaIds={savedAreaIds} />
           ))}
         </View>
