@@ -256,7 +256,7 @@ async function readElectionChoice(
   };
 }
 
-async function lockElection(db: Queryable, normalizedElectionId: string): Promise<ElectionRow> {
+async function readElection(db: Queryable, normalizedElectionId: string): Promise<ElectionRow> {
   const result = await db.query<ElectionRow>(
     `
       SELECT
@@ -267,7 +267,9 @@ async function lockElection(db: Queryable, normalizedElectionId: string): Promis
         election_date >= ${US_LATEST_LOCAL_DATE_SQL} AS is_upcoming
       FROM public.elections
       WHERE id = $1::uuid
-      FOR SHARE
+      -- Do not add a row-locking clause here. PostgreSQL requires UPDATE
+      -- privilege for locking SELECTs, while the API role intentionally has
+      -- SELECT-only access to election catalog tables.
     `,
     [normalizedElectionId]
   );
@@ -295,7 +297,7 @@ export async function setUserElectionChoice(
     // FOR UPDATE on the user row serializes this user's choice writes, which
     // makes the count-then-insert seat cap below race-safe.
     await assertActiveUser(client, normalizedUserId, true);
-    const election = await lockElection(client, normalizedElectionId);
+    const election = await readElection(client, normalizedElectionId);
 
     if ("candidateId" in input) {
       if (election.race_type !== "office") {
@@ -320,6 +322,11 @@ export async function setUserElectionChoice(
           [normalizedUserId, normalizedElectionId, normalizedCandidateId]
         );
       } else {
+        // Plain read (the SELECT-only API role cannot take row locks). This
+        // pre-check only exists to fail fast with a specific error before the
+        // seat-cap work below; the INSERT further down re-asserts the same
+        // eligibility predicate in its own statement, which is the enforced
+        // boundary if the candidacy changes between here and there.
         const candidacy = await client.query<{ candidate_id: string }>(
           `
             SELECT candidate_election.candidate_id::text AS candidate_id
@@ -331,7 +338,6 @@ export async function setUserElectionChoice(
             WHERE candidate_election.candidate_id = $1::uuid
               AND candidate_election.election_id = $2::uuid
               AND candidate_election.status NOT IN ('withdrawn', 'lost')
-            FOR SHARE OF candidate_election
           `,
           [normalizedCandidateId, normalizedElectionId]
         );
@@ -378,15 +384,49 @@ export async function setUserElectionChoice(
           }
         }
 
-        await client.query(
+        // Check-and-write in ONE statement: the SELECT re-asserts candidacy
+        // eligibility and the election window under the same snapshot the
+        // INSERT writes with, so a catalog change COMMITTED after the
+        // pre-checks above is caught here. A catalog transaction still open
+        // when this statement takes its snapshot is NOT caught (MVCC reads
+        // lock nothing) — accepted, deliberately: a pick on a since-withdrawn
+        // candidacy is also the normal product of time (pick first,
+        // withdrawal later), so the read path renders candidacy_status
+        // truthfully rather than pretending the state can't exist, and a
+        // lock here would only remove this one rare entry path at the cost
+        // of UPDATE privilege the API role must not hold. Do not "fix" this
+        // with advisory locks either: prod catalog writes are operator-run
+        // SQL that would not participate.
+        const inserted = await client.query(
           `
             INSERT INTO public.user_election_choices (user_id, election_id, candidate_id)
-            VALUES ($1::uuid, $2::uuid, $3::uuid)
+            SELECT $1::uuid, candidate_election.election_id, candidate_election.candidate_id
+            FROM public.candidate_elections AS candidate_election
+            JOIN public.candidates AS candidate
+              ON candidate.id = candidate_election.candidate_id
+             AND candidate.deleted_at IS NULL
+             AND candidate.merged_into_candidate_id IS NULL
+            JOIN public.elections AS election
+              ON election.id = candidate_election.election_id
+             AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
+            WHERE candidate_election.candidate_id = $3::uuid
+              AND candidate_election.election_id = $2::uuid
+              AND candidate_election.status NOT IN ('withdrawn', 'lost')
             ON CONFLICT (user_id, election_id, candidate_id) WHERE candidate_id IS NOT NULL
             DO UPDATE SET updated_at = now()
           `,
           [normalizedUserId, normalizedElectionId, normalizedCandidateId]
         );
+        if ((inserted.rowCount ?? 0) === 0) {
+          // The gate refused: the catalog moved under us. Re-read the
+          // election to surface election_closed when the window is what
+          // changed; otherwise it was the candidacy.
+          await readElection(client, normalizedElectionId);
+          throw new UserElectionChoicesError(
+            "candidacy_not_available",
+            "Candidate is not an active candidate in this election"
+          );
+        }
       }
     } else {
       if (election.race_type !== "ballot_measure") {
@@ -409,15 +449,31 @@ export async function setUserElectionChoice(
         if (input.measurePosition !== "yes" && input.measurePosition !== "no") {
           throw new UserElectionChoicesError("invalid_choice_input", "measure_position must be 'yes', 'no', or null");
         }
-        await client.query(
+        // Same-statement gate as the candidate-pick insert above: re-assert
+        // the election window and race type under the INSERT's own snapshot.
+        const inserted = await client.query(
           `
             INSERT INTO public.user_election_choices (user_id, election_id, measure_position)
-            VALUES ($1::uuid, $2::uuid, $3)
+            SELECT $1::uuid, election.id, $3
+            FROM public.elections AS election
+            WHERE election.id = $2::uuid
+              AND election.race_type = 'ballot_measure'
+              AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
             ON CONFLICT (user_id, election_id) WHERE measure_position IS NOT NULL
             DO UPDATE SET measure_position = EXCLUDED.measure_position, updated_at = now()
           `,
           [normalizedUserId, normalizedElectionId, input.measurePosition]
         );
+        if ((inserted.rowCount ?? 0) === 0) {
+          // readElection throws election_not_found / election_closed as
+          // appropriate; a same-transaction race_type flip is the only other
+          // way through, and the closed-window error is the honest fallback.
+          await readElection(client, normalizedElectionId);
+          throw new UserElectionChoicesError(
+            "election_closed",
+            "Choices can only be changed for upcoming elections"
+          );
+        }
       }
     }
 
