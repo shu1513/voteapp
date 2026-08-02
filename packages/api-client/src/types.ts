@@ -428,6 +428,13 @@ export type PickCardEntry = {
 };
 
 export type PickCard = {
+  /** Card owner's first name — the only identity field on the public
+   * payload (the owner shares the link themselves). null for legacy shares
+   * minted before the named page existed — those stay anonymous until the
+   * owner clicks Share again. Optional to tolerate a backend from before
+   * the field existed (deploy skew): absent and null alike degrade to the
+   * unnamed heading, never a crash. */
+  first_name?: string | null;
   election_date: string;
   entries: PickCardEntry[];
 };
