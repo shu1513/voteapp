@@ -176,6 +176,21 @@ export function createStandardStateFinanceSnapshotWriter(config: {
    * (committeeId, supportOppose) to match a supplied group. Default "none".
    */
   outsideGroupValidation?: StandardStateFinanceOutsideGroupValidation;
+  /**
+   * Optional committee-id normalization (e.g. whitespace collapse, upper-
+   * casing) applied everywhere a committee id is written or compared: the
+   * link upsert, outside-group and outside-breakdown upserts, stale-delete
+   * keep lists, and pairing validation keys. Runs on the trimmed value after
+   * the non-empty check. Default: identity.
+   */
+  normalizeCommitteeId?: (value: string) => string;
+  /**
+   * When set, an incoming active link with this linkSource deactivates every
+   * other active link with the same source for the same candidate +
+   * election, inside the snapshot transaction (bulk-import supersession, as
+   * in Maine/Maryland). Applies to replaceSnapshot only, not upsertLink.
+   */
+  supersededLinkSource?: string;
 }): StandardStateFinanceSnapshotWriter {
   const label = config.label;
   const tables = Object.fromEntries(
@@ -186,6 +201,14 @@ export function createStandardStateFinanceSnapshotWriter(config: {
   }
   const minElectionYear = config.minElectionYear;
   const outsideGroupValidation = config.outsideGroupValidation ?? "none";
+  const normalizeCommitteeId = config.normalizeCommitteeId ?? ((value: string) => value);
+  // The superseded-source literal is interpolated into SQL (states pin the
+  // three-parameter deactivation statement), so restrict it to identifier-safe
+  // characters at construction time.
+  if (config.supersededLinkSource !== undefined && !/^[a-z][a-z0-9_]*$/.test(config.supersededLinkSource)) {
+    throw new Error(`Invalid ${label} superseded link source: ${config.supersededLinkSource}`);
+  }
+  const supersededLinkSource = config.supersededLinkSource;
 
   function normalizeElectionYear(value: number): number {
     if (!Number.isInteger(value) || value < minElectionYear || value > 2100) {
@@ -314,7 +337,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
         requireNonEmpty(input.link.candidateNameNormalized, `${label} finance candidate name`),
         requireNonEmpty(input.link.officeName, `${label} finance office name`),
         normalizeOptionalText(input.link.district),
-        requireNonEmpty(input.link.committeeId, `${label} committee id`),
+        normalizeCommitteeId(requireNonEmpty(input.link.committeeId, `${label} committee id`)),
         requireNonEmpty(input.link.committeeName, `${label} committee name`),
         input.link.linkStatus ?? "active",
         input.link.linkSource ?? "manual",
@@ -449,7 +472,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
       [
         requireNonEmpty(input.linkId, `${label} finance link id`),
         normalizeElectionYear(input.electionYear),
-        requireNonEmpty(input.group.committeeId, `${label} outside group committee id`),
+        normalizeCommitteeId(requireNonEmpty(input.group.committeeId, `${label} outside group committee id`)),
         requireNonEmpty(input.group.committeeName, `${label} outside group committee name`),
         input.group.supportOppose,
         normalizeAmount(input.group.amount, "outside group amount"),
@@ -491,7 +514,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
       [
         requireNonEmpty(input.linkId, `${label} finance link id`),
         normalizeElectionYear(input.electionYear),
-        requireNonEmpty(input.breakdown.committeeId, `${label} outside breakdown committee id`),
+        normalizeCommitteeId(requireNonEmpty(input.breakdown.committeeId, `${label} outside breakdown committee id`)),
         input.breakdown.supportOppose,
         input.breakdown.categoryType,
         requireNonEmpty(input.breakdown.categoryName, `${label} outside breakdown category`),
@@ -540,7 +563,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     breakdowns: readonly StandardStateFinanceOutsideGroupBreakdownInput[];
   }): Promise<void> {
     const keys = input.breakdowns.map((breakdown) => ({
-      committee_id: requireNonEmpty(breakdown.committeeId, `${label} outside breakdown committee id`),
+      committee_id: normalizeCommitteeId(requireNonEmpty(breakdown.committeeId, `${label} outside breakdown committee id`)),
       support_oppose: breakdown.supportOppose,
       category_type: breakdown.categoryType,
       category_name: requireNonEmpty(breakdown.categoryName, `${label} outside breakdown category`),
@@ -576,7 +599,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     groups: readonly StandardStateFinanceOutsideGroupInput[];
   }): Promise<void> {
     const keys = input.groups.map((group) => ({
-      committee_id: requireNonEmpty(group.committeeId, `${label} outside group committee id`),
+      committee_id: normalizeCommitteeId(requireNonEmpty(group.committeeId, `${label} outside group committee id`)),
       support_oppose: group.supportOppose,
     }));
 
@@ -615,15 +638,46 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     }
     const groupKeys = new Set(
       (input.outsideGroups ?? []).map(
-        (group) => `${requireNonEmpty(group.committeeId, `${label} outside group committee id`)}\u0000${group.supportOppose}`
+        (group) =>
+          `${normalizeCommitteeId(requireNonEmpty(group.committeeId, `${label} outside group committee id`))}\u0000${group.supportOppose}`
       )
     );
     for (const breakdown of input.outsideGroupBreakdowns ?? []) {
-      const key = `${requireNonEmpty(breakdown.committeeId, `${label} outside breakdown committee id`)}\u0000${breakdown.supportOppose}`;
+      const key = `${normalizeCommitteeId(requireNonEmpty(breakdown.committeeId, `${label} outside breakdown committee id`))}\u0000${breakdown.supportOppose}`;
       if (!groupKeys.has(key)) {
         throw new Error(`${label} outside group breakdowns must reference outside groups in the same snapshot`);
       }
     }
+  }
+
+  async function deactivateSupersededLinks(input: {
+    db: Queryable;
+    link: StandardStateFinanceLinkInput;
+    activeLinkId: string;
+  }): Promise<void> {
+    if (supersededLinkSource === undefined) {
+      return;
+    }
+    if ((input.link.linkStatus ?? "active") !== "active" || (input.link.linkSource ?? "manual") !== supersededLinkSource) {
+      return;
+    }
+
+    await input.db.query(
+      `
+      UPDATE public.${tables.links}
+      SET link_status = 'inactive'
+      WHERE candidate_id = $1::uuid
+        AND election_id = $2::uuid
+        AND id <> $3::uuid
+        AND link_status = 'active'
+        AND link_source = '${supersededLinkSource}'
+    `,
+      [
+        requireNonEmpty(input.link.candidateId, "candidate id"),
+        requireNonEmpty(input.link.electionId, "election id"),
+        requireNonEmpty(input.activeLinkId, `${label} finance link id`),
+      ]
+    );
   }
 
   async function replaceSnapshot(
@@ -639,6 +693,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
 
     return await withTransaction(input.db, async (db) => {
       const { linkId } = await upsertLink({ db, link: input.link });
+      await deactivateSupersededLinks({ db, link: input.link, activeLinkId: linkId });
       if (input.summary) {
         await upsertSummary({ db, linkId, electionYear, summary: input.summary, syncedAt });
       }
