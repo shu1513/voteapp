@@ -122,7 +122,7 @@ export function WelcomePage() {
       </h1>
       <p className="mt-2 text-sm text-ink-soft">
         Pick the issues you care about and we'll put the elections and candidates that touch them first.
-        Drag to reorder — #1 counts the most. You can change this any time in Settings.
+        Drag to rank them in order of priority. You can change this any time in Settings.
       </p>
 
       {catalog.isPending ? <LoadingNotice text="Loading issues…" /> : null}

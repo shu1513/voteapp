@@ -81,7 +81,7 @@ describe("PicksPage", () => {
     renderPicks();
 
     // Date card heading + decided count.
-    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Picks" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Picks" })).toBeInTheDocument();
     expect(screen.getByText("1 of 2 races decided")).toBeInTheDocument();
 
     // Picked race: title links to the race, pick renders beside it.
@@ -150,14 +150,14 @@ describe("PicksPage", () => {
     expect(await screen.findByText(/Could not load your picks/)).toBeInTheDocument();
     expect(screen.queryByText(/no pick yet/)).not.toBeInTheDocument();
     expect(screen.queryByText(/races decided/)).not.toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: /My November 3, 2026 Picks/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /My November 3, 2026 Election Picks/ })).not.toBeInTheDocument();
   });
 
   it("hides the share control on a card with zero picks", async () => {
     stubApiRoutes(verifiedRoutes({ "/api/me/election-choices": { body: { choices: [] } } }));
     renderPicks();
 
-    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Picks" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Picks" })).toBeInTheDocument();
     expect(screen.getByText("0 of 2 races decided")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Share this card" })).not.toBeInTheDocument();
   });

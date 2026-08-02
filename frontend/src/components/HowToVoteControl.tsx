@@ -2,10 +2,7 @@ import { useId, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
 import type { StateVotingResources, StateVotingResourcesResult } from "@voteapp/api-client";
-
-const CHIP_ON = "rounded-full border border-ink bg-ink px-3 py-1 text-sm font-medium text-white transition";
-const CHIP_OFF =
-  "rounded-full border border-line bg-white px-3 py-1 text-sm font-medium text-ink transition hover:bg-surface";
+import { DisclosureTrigger } from "./DisclosureTrigger";
 
 /** Display form of a link's destination so voters see where they're headed. */
 function linkHost(url: string): string | null {
@@ -125,15 +122,9 @@ export function HowToVoteControl({ states }: { states: string[] }) {
 
   return (
     <div className="flex flex-col items-end gap-2">
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-        aria-controls={panelId}
-        className={open ? CHIP_ON : CHIP_OFF}
-      >
+      <DisclosureTrigger open={open} panelId={panelId} onClick={() => setOpen(!open)}>
         How to vote{uniqueStates.length === 1 ? ` in ${uniqueStates[0]}` : ""}
-      </button>
+      </DisclosureTrigger>
       {open ? (
         <div id={panelId} className="flex w-72 max-w-full flex-col gap-4 rounded-lg border border-line bg-white p-3">
           {uniqueStates.map((state) => (

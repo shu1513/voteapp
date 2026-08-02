@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SettingsPage } from "./SettingsPage";
 import { renderRoutes } from "../test/render";
@@ -48,16 +48,37 @@ describe("SettingsPage", () => {
     expect(screen.getByRole("heading", { name: "Settings" })).toBeInTheDocument();
   });
 
-  it("points verified users at My Picks for the moved issue editor", async () => {
+  it("keeps the issue editor off settings — it lives on My Picks", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
     });
     renderSettings();
 
-    expect(await screen.findByText(/Looking for your issue priorities/)).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "My Picks" })).toHaveAttribute("href", "/me/picks");
+    expect(await screen.findByRole("heading", { name: "Email notifications" })).toBeInTheDocument();
     expect(screen.queryByText("Issues you care about")).not.toBeInTheDocument();
+  });
+
+  it("confirms a saved first name, then clears the confirmation", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+    });
+    renderSettings();
+
+    const input = await screen.findByLabelText("First Name");
+    await user.clear(input);
+    await user.type(input, "Alex");
+    await user.click(screen.getByRole("button", { name: "Save" }));
+
+    // Confirmation is a live region so screen readers announce the save.
+    const status = await screen.findByRole("status");
+    expect(status).toHaveTextContent("Saved");
+
+    // ...and it clears itself, so a stale "Saved" never sits beside a
+    // later, unsaved edit.
+    await waitFor(() => expect(status).toHaveTextContent(""), { timeout: 4000 });
   });
 
   it("saves a new home address and redirects to the saved ballot", async () => {

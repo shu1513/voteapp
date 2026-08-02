@@ -17,6 +17,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { MAX_RESEARCH_AREA_RANK } from "@voteapp/api-client";
+import { sortByResearchAreaPriority } from "../lib/researchAreaPriority";
 
 // Controlled ranked-selection editor for research areas, shared by the
 // post-signup welcome step and the settings section. The parent owns the
@@ -26,6 +27,7 @@ import { MAX_RESEARCH_AREA_RANK } from "@voteapp/api-client";
 
 export type ResearchAreaOption = {
   id: string;
+  slug: string;
   name: string;
   description: string | null;
 };
@@ -99,8 +101,11 @@ export function ResearchAreaPicker({ areas, orderedIds, disabled, onChange }: Re
       {/* Full cards with the description visible, not a title tooltip: the
           welcome step is many users' first contact with these labels, and
           touch devices never see tooltips. */}
+      {/* Public-salience order, not the catalog's alphabetical order — the
+          same ranking the election and candidate pages use, so the issues
+          most users pick first sit at the top of the grid. */}
       <ul className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        {areas
+        {sortByResearchAreaPriority(areas)
           .filter((area) => !selectedSet.has(area.id))
           .map((area) => (
             <li key={area.id}>

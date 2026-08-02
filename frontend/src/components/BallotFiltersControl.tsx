@@ -1,9 +1,6 @@
 import { useId, useState, type ReactNode } from "react";
 import type { VoteImpactThreshold } from "@voteapp/api-client";
-
-const CHIP_ON = "rounded-full border border-ink bg-ink px-3 py-1 text-sm font-medium text-white transition";
-const CHIP_OFF =
-  "rounded-full border border-line bg-white px-3 py-1 text-sm font-medium text-ink transition hover:bg-surface";
+import { DisclosureTrigger } from "./DisclosureTrigger";
 
 function FilterCheckbox({
   label,
@@ -90,17 +87,11 @@ export function BallotFiltersControl({
           the hidden count — a filtered ballot must never silently read as
           the full one. */}
       <div className="flex flex-wrap items-center gap-2" aria-live="polite">
-        <button
-          type="button"
-          onClick={() => setOpen(!open)}
-          aria-expanded={open}
-          aria-controls={panelId}
-          className={open ? CHIP_ON : CHIP_OFF}
-        >
+        <DisclosureTrigger open={open} panelId={panelId} onClick={() => setOpen(!open)}>
           {/* The badge counts active FILTERS only, never ordering — it
               answers "is anything hidden-by-choice right now". */}
           Filters{activeFilterCount > 0 ? ` · ${activeFilterCount}` : ""}
-        </button>
+        </DisclosureTrigger>
         {hiddenCount > 0 ? (
           // Always visible while any filter hides a race — outside the
           // panel, so closing the disclosure never conceals that the list

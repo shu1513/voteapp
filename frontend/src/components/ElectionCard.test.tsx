@@ -515,7 +515,7 @@ describe("ElectionCard", () => {
       undefined,
       new Map([["e-1", electionChoice({ race_type: "ballot_measure", picks: [], measure_position: "yes" })]])
     );
-    expect(screen.getByText("My vote: Yes")).toBeInTheDocument();
+    expect(screen.getByText("My pick: Yes")).toBeInTheDocument();
   });
 
   it("stays silent on an undecided race", () => {
