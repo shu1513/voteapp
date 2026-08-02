@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import type { ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteapp/api-client";
-import { apiRequest, MAX_RESEARCH_AREA_RANK } from "@voteapp/api-client";
+import { apiRequest, MAX_RESEARCH_AREA_RANK, sortByResearchAreaPriority } from "@voteapp/api-client";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { useState } from "react";
@@ -149,9 +149,8 @@ function ResearchAreasBody() {
         </Text>
       </Text>
       <View className="mt-2 flex-row flex-wrap gap-2">
-        {catalog.data.research_areas
-          .filter((area) => !selectedSet.has(area.id))
-          .map((area) => (
+        {sortByResearchAreaPriority(catalog.data.research_areas.filter((area) => !selectedSet.has(area.id))).map(
+          (area) => (
             <Pressable
               key={area.id}
               disabled={saving || atCapacity}
