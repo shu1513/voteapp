@@ -424,6 +424,12 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     mail_voting_available: [
       voteByMailEvidence.url,
     ],
+    mail_ballot_request_url: [
+      voteByMailEvidence.url,
+    ],
+    mail_ballot_request_type: [
+      voteByMailEvidence.url,
+    ],
     mail_ballot_request_deadline_rule: [
       voteByMailEvidence.url,
     ],
@@ -469,6 +475,8 @@ function buildMockPayload(draft: StateResourceDraftPayload, evidence: EvidenceSn
     polling_place_url: pollingPlaceEvidence.url,
     voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
     mail_voting_available: true,
+    mail_ballot_request_url: voteByMailEvidence.url,
+    mail_ballot_request_type: "instructions",
     mail_ballot_request_deadline_rule: mailBallotRequestDeadlineRule,
     mail_ballot_return_deadline_rule: mailBallotReturnDeadlineRule,
     mail_ballot_return_deadline_type: "received_by",

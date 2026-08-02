@@ -1569,6 +1569,15 @@ async function processMessage(
     polling_place_url: (mergedFields.polling_place_url as string) ?? "",
     voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
     mail_voting_available: (mergedFields.mail_voting_available as boolean) ?? false,
+    mail_ballot_request_url: (mergedFields.mail_ballot_request_url as string | null | undefined) ?? null,
+    mail_ballot_request_type:
+      (mergedFields.mail_ballot_request_type as
+        | "online_portal"
+        | "form"
+        | "instructions"
+        | "not_required"
+        | null
+        | undefined) ?? null,
     mail_ballot_request_deadline_rule:
       (mergedFields.mail_ballot_request_deadline_rule as string | null | undefined) ?? null,
     mail_ballot_return_deadline_rule:

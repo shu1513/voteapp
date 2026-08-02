@@ -36,6 +36,7 @@
     "notifications:reminders:scheduler:worker": "tsx src/scripts/runElectionReminderSchedulerWorker.ts",
     "notifications:new-elections:scheduler:worker": "tsx src/scripts/runNewElectionAlertSchedulerWorker.ts",
     "manual:elections:inject": "tsx src/scripts/injectManualElections.ts",
+    "manual:state-resources:import": "tsx src/scripts/importManualStateResources.ts",
     "manual:elections:inject-no-results": "tsx src/scripts/bulkInjectManualNoResultElections.ts",
     "manual:elections:repair-office-ids": "tsx src/scripts/repairElectionOfficeIds.ts",
     "manual:districts:stamp-searched": "tsx src/scripts/stampDistrictElectionsSearched.ts",

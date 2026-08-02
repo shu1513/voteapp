@@ -13,6 +13,7 @@ import {
   STATE_RESOURCE_IN_PERSON_REGISTRATION_DEADLINE_MAX_LENGTH,
   isValidStateResourceIdRequirementValue,
   STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH,
+  STATE_RESOURCE_MAIL_BALLOT_REQUEST_URL_MAX_LENGTH,
   STATE_RESOURCE_MAIL_BALLOT_RETURN_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_ONLINE_REGISTRATION_DEADLINE_MAX_LENGTH,
   STATE_RESOURCE_POLLING_HOURS_MAX_LENGTH,
@@ -101,6 +102,19 @@ function isHttpUrl(value: string): boolean {
   try {
     const parsed = new URL(value);
     return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * vote.gov serves voter REGISTRATION, never mail-ballot requesting.
+ * A mail-ballot request destination pointing there is always wrong data.
+ */
+function isVoterRegistrationLandingUrl(value: string): boolean {
+  try {
+    const parsed = new URL(value);
+    return parsed.hostname.toLowerCase().replace(/^www\./, "") === "vote.gov";
   } catch {
     return false;
   }
@@ -554,6 +568,8 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
     polling_place_url,
     voter_registration_url,
     mail_voting_available,
+    mail_ballot_request_url,
+    mail_ballot_request_type,
     mail_ballot_request_deadline_rule,
     mail_ballot_return_deadline_rule,
     mail_ballot_return_deadline_type,
@@ -598,6 +614,29 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
   if (mail_voting_available && mail_ballot_return_deadline_type === null) {
     reasons.push("mail_ballot_return_deadline_type must be provided when mail_voting_available is true");
   }
+  if (mail_voting_available && mail_ballot_request_url === null) {
+    reasons.push("mail_ballot_request_url must be provided when mail_voting_available is true");
+  }
+  if (mail_voting_available && mail_ballot_request_type === null) {
+    reasons.push("mail_ballot_request_type must be provided when mail_voting_available is true");
+  }
+  if (mail_ballot_request_url !== null && !isHttpUrl(mail_ballot_request_url)) {
+    reasons.push("mail_ballot_request_url must be a valid http(s) URL");
+  }
+  if (mail_ballot_request_url !== null && isVoterRegistrationLandingUrl(mail_ballot_request_url)) {
+    reasons.push(
+      "mail_ballot_request_url must be a mail-ballot request destination, not a voter-registration page (vote.gov/register)"
+    );
+  }
+  if (mail_ballot_request_type === "not_required" && mail_ballot_request_deadline_rule !== null) {
+    reasons.push("mail_ballot_request_deadline_rule must be null when mail_ballot_request_type is not_required");
+  }
+  if (!mail_voting_available && mail_ballot_request_url !== null) {
+    reasons.push("mail_ballot_request_url must be null when mail_voting_available is false");
+  }
+  if (!mail_voting_available && mail_ballot_request_type !== null) {
+    reasons.push("mail_ballot_request_type must be null when mail_voting_available is false");
+  }
   if (!mail_voting_available && mail_ballot_request_deadline_rule !== null) {
     reasons.push("mail_ballot_request_deadline_rule must be null when mail_voting_available is false");
   }
@@ -620,6 +659,14 @@ function validateStateResourcePayload(payload: unknown): ValidationResult {
     reasons.push("early_voting_end_date_rule must be null when early_voting_available is false");
   }
 
+  if (
+    mail_ballot_request_url !== null &&
+    mail_ballot_request_url.length > STATE_RESOURCE_MAIL_BALLOT_REQUEST_URL_MAX_LENGTH
+  ) {
+    reasons.push(
+      `mail_ballot_request_url must be ${STATE_RESOURCE_MAIL_BALLOT_REQUEST_URL_MAX_LENGTH} characters or fewer`
+    );
+  }
   if (
     mail_ballot_request_deadline_rule !== null &&
     mail_ballot_request_deadline_rule.length > STATE_RESOURCE_MAIL_BALLOT_REQUEST_DEADLINE_MAX_LENGTH

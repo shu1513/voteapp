@@ -210,6 +210,8 @@ async function writeStateResourceAndMarkWritten(
           polling_place_url,
           voter_registration_url,
           mail_voting_available,
+          mail_ballot_request_url,
+          mail_ballot_request_type,
           mail_ballot_request_deadline_rule,
           mail_ballot_return_deadline_rule,
           mail_ballot_return_deadline_type,
@@ -224,7 +226,7 @@ async function writeStateResourceAndMarkWritten(
           in_person_registration_deadline_rule,
           sources
         ) VALUES (
-          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19::jsonb
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21::jsonb
         )
         ON CONFLICT (state_fips) DO UPDATE SET
           state_abbreviation = EXCLUDED.state_abbreviation,
@@ -232,6 +234,8 @@ async function writeStateResourceAndMarkWritten(
           polling_place_url = EXCLUDED.polling_place_url,
           voter_registration_url = EXCLUDED.voter_registration_url,
           mail_voting_available = EXCLUDED.mail_voting_available,
+          mail_ballot_request_url = EXCLUDED.mail_ballot_request_url,
+          mail_ballot_request_type = EXCLUDED.mail_ballot_request_type,
           mail_ballot_request_deadline_rule = EXCLUDED.mail_ballot_request_deadline_rule,
           mail_ballot_return_deadline_rule = EXCLUDED.mail_ballot_return_deadline_rule,
           mail_ballot_return_deadline_type = EXCLUDED.mail_ballot_return_deadline_type,
@@ -253,6 +257,8 @@ async function writeStateResourceAndMarkWritten(
         payload.polling_place_url,
         payload.voter_registration_url,
         payload.mail_voting_available,
+        payload.mail_ballot_request_url,
+        payload.mail_ballot_request_type,
         payload.mail_ballot_request_deadline_rule,
         payload.mail_ballot_return_deadline_rule,
         payload.mail_ballot_return_deadline_type,

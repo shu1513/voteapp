@@ -1,6 +1,7 @@
 import {
   STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
   isValidStateResourceIdRequirementValue,
+  isValidStateResourceMailBallotRequestType,
   STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS,
   STATE_RESOURCE_REQUIRED_TEXT_FIELDS,
   STATE_RESOURCE_SOURCE_FIELDS,
@@ -72,6 +73,29 @@ export function parseCanonicalStateResourcePayload(payload: unknown): ParseResul
     };
   }
 
+  if (!Object.hasOwn(input, "mail_ballot_request_url")) {
+    return { ok: false, reason: "payload.mail_ballot_request_url must be present (string or null)" };
+  }
+  if (!(input.mail_ballot_request_url === null || isNonEmptyString(input.mail_ballot_request_url))) {
+    return { ok: false, reason: "payload.mail_ballot_request_url must be null or non-empty string" };
+  }
+  if (!Object.hasOwn(input, "mail_ballot_request_type")) {
+    return {
+      ok: false,
+      reason: "payload.mail_ballot_request_type must be present (online_portal|form|instructions|not_required|null)",
+    };
+  }
+  if (
+    !(
+      input.mail_ballot_request_type === null ||
+      isValidStateResourceMailBallotRequestType(input.mail_ballot_request_type)
+    )
+  ) {
+    return {
+      ok: false,
+      reason: "payload.mail_ballot_request_type must be online_portal, form, instructions, not_required, or null",
+    };
+  }
   if (!Object.hasOwn(input, "mail_ballot_request_deadline_rule")) {
     return { ok: false, reason: "payload.mail_ballot_request_deadline_rule must be present (string or null)" };
   }
@@ -116,7 +140,31 @@ export function parseCanonicalStateResourcePayload(payload: unknown): ParseResul
       reason: "payload.mail_ballot_return_deadline_type must be set when mail_voting_available=true",
     };
   }
+  if (input.mail_voting_available === true && input.mail_ballot_request_url === null) {
+    return {
+      ok: false,
+      reason: "payload.mail_ballot_request_url must be string when mail_voting_available=true",
+    };
+  }
+  if (input.mail_voting_available === true && input.mail_ballot_request_type === null) {
+    return {
+      ok: false,
+      reason: "payload.mail_ballot_request_type must be set when mail_voting_available=true",
+    };
+  }
+  if (input.mail_ballot_request_type === "not_required" && input.mail_ballot_request_deadline_rule !== null) {
+    return {
+      ok: false,
+      reason: "payload.mail_ballot_request_deadline_rule must be null when mail_ballot_request_type=not_required",
+    };
+  }
   if (input.mail_voting_available === false) {
+    if (input.mail_ballot_request_url !== null) {
+      return { ok: false, reason: "payload.mail_ballot_request_url must be null when mail_voting_available=false" };
+    }
+    if (input.mail_ballot_request_type !== null) {
+      return { ok: false, reason: "payload.mail_ballot_request_type must be null when mail_voting_available=false" };
+    }
     if (input.mail_ballot_request_deadline_rule !== null) {
       return { ok: false, reason: "payload.mail_ballot_request_deadline_rule must be null when mail_voting_available=false" };
     }
@@ -185,6 +233,12 @@ export function parseCanonicalStateResourcePayload(payload: unknown): ParseResul
       polling_place_url: (input.polling_place_url as string).trim(),
       voter_registration_url: STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL,
       mail_voting_available: input.mail_voting_available as boolean,
+      mail_ballot_request_url:
+        input.mail_ballot_request_url === null ? null : (input.mail_ballot_request_url as string).trim(),
+      mail_ballot_request_type:
+        input.mail_ballot_request_type === null
+          ? null
+          : (input.mail_ballot_request_type as "online_portal" | "form" | "instructions" | "not_required"),
       mail_ballot_request_deadline_rule:
         input.mail_ballot_request_deadline_rule === null
           ? null

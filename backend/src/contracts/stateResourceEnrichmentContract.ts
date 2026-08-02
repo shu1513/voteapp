@@ -9,7 +9,7 @@ export const STATE_RESOURCE_DRAFT_SCHEMA_VERSION = "state_resources_draft_v1" as
  * Version tag for the state_resources enrichment contract.
  * Keep this stable for one schema shape; bump only on breaking payload changes.
  */
-export const STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION = "state_resources_enrichment_v4" as const;
+export const STATE_RESOURCE_ENRICHMENT_SCHEMA_VERSION = "state_resources_enrichment_v5" as const;
 
 /**
  * Required text fields that an enriched state_resources payload must include.
@@ -41,6 +41,8 @@ export const STATE_RESOURCE_REQUIRED_BOOLEAN_FIELDS = [
 export const STATE_RESOURCE_SOURCE_FIELDS = [
   "polling_place_url",
   "mail_voting_available",
+  "mail_ballot_request_url",
+  "mail_ballot_request_type",
   "mail_ballot_request_deadline_rule",
   "mail_ballot_return_deadline_rule",
   "mail_ballot_return_deadline_type",
@@ -56,6 +58,33 @@ export const STATE_RESOURCE_SOURCE_FIELDS = [
 ] as const satisfies ReadonlyArray<keyof StateResourceSources>;
 
 export const STATE_RESOURCE_FIXED_VOTER_REGISTRATION_URL = "https://vote.gov/register" as const;
+
+/**
+ * How a voter obtains a mail/absentee ballot:
+ * online_portal -> official online request portal
+ * form -> official application form / PDF
+ * instructions -> official instructions page (request goes through a local election office)
+ * not_required -> automatic vote-by-mail; mail_ballot_request_url is an official explanatory page
+ */
+export const STATE_RESOURCE_MAIL_BALLOT_REQUEST_TYPES = [
+  "online_portal",
+  "form",
+  "instructions",
+  "not_required",
+] as const;
+
+export type StateResourceMailBallotRequestType = (typeof STATE_RESOURCE_MAIL_BALLOT_REQUEST_TYPES)[number];
+
+export function isValidStateResourceMailBallotRequestType(
+  value: unknown
+): value is StateResourceMailBallotRequestType {
+  return (
+    typeof value === "string" &&
+    (STATE_RESOURCE_MAIL_BALLOT_REQUEST_TYPES as readonly string[]).includes(value)
+  );
+}
+
+export const STATE_RESOURCE_MAIL_BALLOT_REQUEST_URL_MAX_LENGTH = 2048;
 
 export const STATE_RESOURCE_ID_REQUIREMENT_VALUES = [
   "Strict photo ID",

@@ -19,6 +19,13 @@ type JsonSchemaProperty =
 const FIELD_SCHEMA: Record<string, JsonSchemaProperty> = {
   polling_place_url: { type: "string" },
   mail_voting_available: { type: "boolean" },
+  mail_ballot_request_url: { anyOf: [{ type: "string" }, { type: "null" }] },
+  mail_ballot_request_type: {
+    anyOf: [
+      { type: "string", enum: ["online_portal", "form", "instructions", "not_required"] },
+      { type: "null" },
+    ],
+  },
   mail_ballot_request_deadline_rule: { anyOf: [{ type: "string" }, { type: "null" }] },
   mail_ballot_return_deadline_rule: { anyOf: [{ type: "string" }, { type: "null" }] },
   mail_ballot_return_deadline_type: {
@@ -40,8 +47,11 @@ const FIELD_SCHEMA: Record<string, JsonSchemaProperty> = {
 const GROUP_RULES: Record<StateResourceFieldGroup, string[]> = {
   mail: [
     "mail_voting_available must be boolean true or false.",
-    "If mail_voting_available is false, set mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, and mail_ballot_return_deadline_type to null.",
+    "If mail_voting_available is false, set mail_ballot_request_url, mail_ballot_request_type, mail_ballot_request_deadline_rule, mail_ballot_return_deadline_rule, and mail_ballot_return_deadline_type to null.",
     "If mail_voting_available is true, set mail_ballot_return_deadline_rule and mail_ballot_return_deadline_type (postmarked_by or received_by).",
+    "If mail_voting_available is true, set mail_ballot_request_url to this state's OFFICIAL mail/absentee-ballot request destination and mail_ballot_request_type to one of: online_portal (official online request portal), form (official application form/PDF), instructions (official page explaining requests through a local election office), not_required (automatic vote-by-mail state).",
+    "mail_ballot_request_url must belong to this state's official election authority (state or county .gov/.us election site). Never use vote.org, vote.gov, other aggregators, or another state's site.",
+    "For automatic vote-by-mail states, set mail_ballot_request_type to not_required, set mail_ballot_request_deadline_rule to null, and set mail_ballot_request_url to the state's official page explaining that every registered voter automatically receives a mail ballot.",
     "mail_ballot_request_deadline_rule and mail_ballot_return_deadline_rule must be short plain-language sentences (not URLs) when present.",
   ],
   online_registration: [
@@ -120,14 +130,18 @@ const GROUP_JSON_EXAMPLES: Record<StateResourceFieldGroup, Record<string, unknow
   },
   mail: {
     mail_voting_available: true,
+    mail_ballot_request_url: "https://www.sos.state.example.gov/elections/absentee-ballot-request",
+    mail_ballot_request_type: "online_portal",
     mail_ballot_request_deadline_rule: "Request must be received by 5 p.m. 7 days before Election Day.",
     mail_ballot_return_deadline_rule: "Ballot must be received by 8 p.m. on Election Day.",
     mail_ballot_return_deadline_type: "received_by",
     sources: {
-      mail_voting_available: ["https://vote.gov/register/example-state"],
-      mail_ballot_request_deadline_rule: ["https://vote.gov/register/example-state"],
-      mail_ballot_return_deadline_rule: ["https://vote.gov/register/example-state"],
-      mail_ballot_return_deadline_type: ["https://vote.gov/register/example-state"],
+      mail_voting_available: ["https://www.sos.state.example.gov/elections/absentee-voting"],
+      mail_ballot_request_url: ["https://www.sos.state.example.gov/elections/absentee-ballot-request"],
+      mail_ballot_request_type: ["https://www.sos.state.example.gov/elections/absentee-ballot-request"],
+      mail_ballot_request_deadline_rule: ["https://www.sos.state.example.gov/elections/absentee-voting"],
+      mail_ballot_return_deadline_rule: ["https://www.sos.state.example.gov/elections/absentee-voting"],
+      mail_ballot_return_deadline_type: ["https://www.sos.state.example.gov/elections/absentee-voting"],
     },
   },
   early_voting: {
