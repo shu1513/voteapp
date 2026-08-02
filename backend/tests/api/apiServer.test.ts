@@ -1238,6 +1238,83 @@ describe("createApiApp", () => {
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
+  it("serves state voting resources with a shared-cache header", async () => {
+    const resolveAddress = vi.fn();
+    const stateResources = {
+      state_abbreviation: "WA",
+      state_name: "Washington",
+      polling_place_url: "https://voter.votewa.gov",
+      mail_voting_available: true,
+      mail_ballot_request_url:
+        "https://www.sos.wa.gov/elections/voters/helpful-information/frequently-asked-questions-voting-mail",
+      mail_ballot_request_type: "not_required",
+      mail_ballot_request_deadline_rule: null,
+    };
+    const getStateVotingResources = vi.fn().mockResolvedValue({ state_resources: stateResources });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, getStateVotingResources }), {
+      method: "GET",
+      path: "/api/state-resources?state=wa",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ state_resources: stateResources });
+    expect(response.headers["cache-control"]).toBe("public, max-age=3600");
+    // The parser uppercases before the lookup so callers can pass either case.
+    expect(getStateVotingResources).toHaveBeenCalledWith("WA");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("rejects a malformed state-resources state parameter", async () => {
+    const resolveAddress = vi.fn();
+    const getStateVotingResources = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, getStateVotingResources }), {
+      method: "GET",
+      path: "/api/state-resources?state=California",
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect(getStateVotingResources).not.toHaveBeenCalled();
+  });
+
+  it("returns 404 for a state without voting resources", async () => {
+    const resolveAddress = vi.fn();
+    const getStateVotingResources = vi.fn().mockResolvedValue(null);
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, getStateVotingResources }), {
+      method: "GET",
+      path: "/api/state-resources?state=PR",
+    });
+
+    expect(response.statusCode).toBe(404);
+    expect(getStateVotingResources).toHaveBeenCalledWith("PR");
+  });
+
+  it("rejects non-GET state-resources requests", async () => {
+    const resolveAddress = vi.fn();
+    const getStateVotingResources = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, getStateVotingResources }), {
+      method: "POST",
+      path: "/api/state-resources?state=WA",
+    });
+
+    expect(response.statusCode).toBe(405);
+    expect(getStateVotingResources).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when the state voting resources lookup is not configured", async () => {
+    const resolveAddress = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "GET",
+      path: "/api/state-resources?state=WA",
+    });
+
+    expect(response.statusCode).toBe(500);
+  });
+
   it("returns 500 when the research area catalog lookup is not configured", async () => {
     const resolveAddress = vi.fn();
 

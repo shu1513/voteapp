@@ -89,6 +89,7 @@ export function parseEmailUnsubscribePreference(raw: string | null): EmailUnsubs
     : null;
 }
 export const RESEARCH_AREAS_PATH = "/api/research-areas";
+export const STATE_RESOURCES_PATH = "/api/state-resources";
 export const SITE_SITEMAP_PATH = "/sitemap.xml";
 export const MAX_ADDRESS_REQUEST_BODY_BYTES = 16 * 1024;
 export const MAX_BALLOT_DISTRICT_IDS = 50;
@@ -830,6 +831,15 @@ export function parseBallotSummaryOptions(url: URL): Pick<BallotSummaryOptions, 
   }
 
   return options;
+}
+
+/** ?state=CA — case-insensitive two-letter state/DC abbreviation. */
+export function parseStateResourcesState(url: URL): string {
+  const raw = (url.searchParams.get("state") ?? "").trim().toUpperCase();
+  if (!/^[A-Z]{2}$/.test(raw)) {
+    throw new TypeError("Query parameter state must be a two-letter state abbreviation");
+  }
+  return raw;
 }
 
 export function parseDistrictIds(url: URL): string[] {

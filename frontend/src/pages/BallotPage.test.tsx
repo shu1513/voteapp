@@ -423,4 +423,102 @@ describe("BallotPage", () => {
       expect(screen.getByRole("button", { name: "Only my issues" })).toHaveAttribute("aria-pressed", "true");
     });
   });
+
+  describe("how to vote resources", () => {
+    const AK_RESOURCES = {
+      state_abbreviation: "AK",
+      state_name: "Alaska",
+      polling_place_url: "https://myvoterinformation.alaska.gov",
+      mail_voting_available: true,
+      mail_ballot_request_url: "https://absenteeballotapplication.alaska.gov",
+      mail_ballot_request_type: "online_portal",
+      mail_ballot_request_deadline_rule:
+        "Applications to receive an absentee ballot by mail must be received at least 10 days before the election.",
+    };
+
+    it("opens official mail-first voting resources for the ballot's state", async () => {
+      stubApiRoutes({
+        ...ANONYMOUS,
+        "/api/ballot": { body: ballotSummary([electionSummary()]) },
+        "/api/state-resources": { body: { state_resources: AK_RESOURCES } },
+      });
+      const user = userEvent.setup();
+      renderBallot("/ballot?d=d-1");
+
+      const toggle = await screen.findByRole("button", { name: "How to vote in AK" });
+      expect(toggle).toHaveAttribute("aria-expanded", "false");
+      await user.click(toggle);
+
+      const requestLink = await screen.findByRole("link", { name: "Request your ballot online" });
+      expect(requestLink).toHaveAttribute("href", "https://absenteeballotapplication.alaska.gov");
+      const pollingLink = screen.getByRole("link", { name: "Find your polling place" });
+      expect(pollingLink).toHaveAttribute("href", "https://myvoterinformation.alaska.gov");
+      // Mail leads, "or" separates, in-person follows.
+      expect(screen.getByText("Vote by mail")).toBeInTheDocument();
+      expect(screen.getByText("or")).toBeInTheDocument();
+      expect(screen.getByText("Vote in person")).toBeInTheDocument();
+      expect(
+        requestLink.compareDocumentPosition(pollingLink) & Node.DOCUMENT_POSITION_FOLLOWING
+      ).toBeTruthy();
+      expect(
+        screen.getByText(
+          "Applications to receive an absentee ballot by mail must be received at least 10 days before the election."
+        )
+      ).toBeInTheDocument();
+      // Say where the links go.
+      expect(screen.getByText("absenteeballotapplication.alaska.gov")).toBeInTheDocument();
+      expect(screen.getByText("myvoterinformation.alaska.gov")).toBeInTheDocument();
+    });
+
+    it("explains automatic vote-by-mail states instead of asking voters to sign up", async () => {
+      stubApiRoutes({
+        ...ANONYMOUS,
+        "/api/ballot": { body: ballotSummary([electionSummary()]) },
+        "/api/state-resources": {
+          body: {
+            state_resources: {
+              ...AK_RESOURCES,
+              state_abbreviation: "WA",
+              state_name: "Washington",
+              polling_place_url: "https://voter.votewa.gov",
+              mail_ballot_request_url:
+                "https://www.sos.wa.gov/elections/voters/helpful-information/frequently-asked-questions-voting-mail",
+              mail_ballot_request_type: "not_required",
+              mail_ballot_request_deadline_rule: null,
+            },
+          },
+        },
+      });
+      const user = userEvent.setup();
+      renderBallot("/ballot?d=d-1");
+
+      await user.click(await screen.findByRole("button", { name: "How to vote in AK" }));
+
+      expect(
+        await screen.findByText(
+          "Every registered Washington voter is mailed a ballot automatically — no request needed."
+        )
+      ).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "How vote-by-mail works" })).toBeInTheDocument();
+      expect(screen.queryByRole("link", { name: "Request your ballot online" })).not.toBeInTheDocument();
+    });
+
+    it("fetches the resources lazily, only when the disclosure opens", async () => {
+      const fetchMock = stubApiRoutes({
+        ...ANONYMOUS,
+        "/api/ballot": { body: ballotSummary([electionSummary()]) },
+        "/api/state-resources": { body: { state_resources: AK_RESOURCES } },
+      });
+      const user = userEvent.setup();
+      renderBallot("/ballot?d=d-1");
+
+      const toggle = await screen.findByRole("button", { name: "How to vote in AK" });
+      const calledPaths = () =>
+        fetchMock.mock.calls.map((call) => new URL(String(call[0]), "http://localhost").pathname);
+      expect(calledPaths()).not.toContain("/api/state-resources");
+      await user.click(toggle);
+      expect(await screen.findByRole("link", { name: "Find your polling place" })).toBeInTheDocument();
+      expect(calledPaths()).toContain("/api/state-resources");
+    });
+  });
 });

@@ -78,6 +78,7 @@ import { createContentReport } from "../pipeline/reports/contentReports.js";
 import { listUserCandidateFollows, setUserCandidateFollow } from "../pipeline/users/userCandidateFollows.js";
 import { listUserElectionChoices, setUserElectionChoice } from "../pipeline/users/userElectionChoices.js";
 import { getOrCreateUserPickCardShare, lookupPublicPickCard } from "../pipeline/users/userPickCardShares.js";
+import { getStateVotingResources } from "../api/stateVotingResources.js";
 import { initializeUserDistricts } from "../pipeline/users/userDistrictInitializer.js";
 import { listUserDistrictIds } from "../pipeline/users/userDistrictReader.js";
 import { replaceUserDistricts } from "../pipeline/users/userDistrictReplacer.js";
@@ -566,6 +567,7 @@ async function main(): Promise<void> {
     lookupCandidateElectionFinance: (electionId, candidateId) =>
       lookupCandidateElectionFinanceSummaryById(pool, electionId, candidateId),
     listResearchAreas: () => listSelectableResearchAreas(pool),
+    getStateVotingResources: (stateAbbreviation) => getStateVotingResources(pool, stateAbbreviation),
     listAuthenticatedCandidateFollows: (userId) => listUserCandidateFollows(pool, userId),
     setAuthenticatedCandidateFollow: (userId, input) => setUserCandidateFollow(pool, userId, input),
     listAuthenticatedElectionChoices: (userId) => listUserElectionChoices(pool, userId),
