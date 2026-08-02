@@ -1129,22 +1129,24 @@ describe("ElectionPage back link and nav context", () => {
     expect(back).toHaveAttribute("href", "/ballot?d=d-1&sort=soonest");
   });
 
-  it("falls back to the district ballot on a deep link with no state", async () => {
+  it("shows no nav bar on a deep link with no state", async () => {
+    // Deep links (shares, search engines) have no arrival context — no bar
+    // at all, by product choice.
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() => electionDetail());
 
-    const back = await screen.findByRole("link", { name: "Back to Elections in Alaska" });
-    expect(back).toHaveAttribute("href", "/ballot?d=d-1");
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(screen.queryByRole("navigation", { name: "Ballot navigation" })).not.toBeInTheDocument();
   });
 
-  it("falls back to the district ballot when the stored state is malformed", async () => {
+  it("shows no nav bar when the stored state is malformed", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() => electionDetail(), "e-1", {
       backTo: { path: "https://evil.example/phish", label: "All elections" },
     });
 
-    const back = await screen.findByRole("link", { name: "Back to Elections in Alaska" });
-    expect(back).toHaveAttribute("href", "/ballot?d=d-1");
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(screen.queryByRole("navigation", { name: "Ballot navigation" })).not.toBeInTheDocument();
   });
 
   it("restores a candidate page's own context when backing out to it", async () => {
@@ -1275,20 +1277,6 @@ describe("ElectionPage ballot pager", () => {
     expect(router.state.location.state).toEqual(ARRIVAL);
     const pager = await screen.findByRole("navigation", { name: "Ballot navigation" });
     expect(within(pager).getByRole("link", { name: "Previous: Mayor" })).toBeInTheDocument();
-    expect(within(pager).queryByRole("link", { name: /^Next:/ })).not.toBeInTheDocument();
-  });
-
-  it("collapses to a back-only bar on a deep link (district fallback, no prev/next)", async () => {
-    stubApiRoutes({ ...ANONYMOUS });
-    renderElection(perIdLoader, "e-1");
-    await screen.findByRole("heading", { name: "Governor" });
-
-    const pager = screen.getByRole("navigation", { name: "Ballot navigation" });
-    expect(within(pager).getByRole("link", { name: "Back to Elections in Alaska" })).toHaveAttribute(
-      "href",
-      "/ballot?d=d-1"
-    );
-    expect(within(pager).queryByRole("link", { name: /^Previous:/ })).not.toBeInTheDocument();
     expect(within(pager).queryByRole("link", { name: /^Next:/ })).not.toBeInTheDocument();
   });
 

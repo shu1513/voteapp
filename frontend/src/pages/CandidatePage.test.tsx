@@ -610,7 +610,9 @@ describe("CandidatePage back link and nav context", () => {
     expect(router.state.location.state).toEqual(ARRIVAL.backState);
   });
 
-  it("falls back to the sole candidacy on a deep link, even a historical one", async () => {
+  it("shows no nav bar on a deep link, even with a sole candidacy", async () => {
+    // Deep links have no arrival context — no bar at all, by product
+    // choice; the Elections section below still links every race.
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() =>
       candidateDetail({
@@ -620,8 +622,8 @@ describe("CandidatePage back link and nav context", () => {
       })
     );
 
-    const back = await screen.findByRole("link", { name: "Back to Election" });
-    expect(back).toHaveAttribute("href", "/elections/e-9");
+    await screen.findByRole("heading", { name: "Jordan Voter" });
+    expect(screen.queryByRole("navigation", { name: "Candidate navigation" })).not.toBeInTheDocument();
   });
 
   it("shows no back link with several candidacies and no arrival context", async () => {

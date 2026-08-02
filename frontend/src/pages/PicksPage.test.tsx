@@ -268,3 +268,35 @@ describe("PicksPage nav context", () => {
     expect(router.state.location.state).toEqual(MY_PICKS_STATE);
   });
 });
+
+describe("PicksPage candidate search combobox", () => {
+  it("carries the My Picks context through a picked search suggestion", async () => {
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/candidates/search": {
+          body: {
+            candidates: [
+              {
+                candidate_id: "c-7",
+                display_name: "Sam Searcher",
+                party: "Independent",
+                state: "AK",
+                current_office: null,
+              },
+            ],
+          },
+        },
+      })
+    );
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    const { router } = renderPicks();
+
+    // Typing past the 2-char minimum fires the debounced search; the fake
+    // clock (shouldAdvanceTime) plus advanceTimers lets it elapse.
+    await user.type(await screen.findByRole("combobox", { name: "Search candidates by name" }), "sam");
+    await user.click(await screen.findByRole("option", { name: /Sam Searcher/ }));
+
+    expect(router.state.location.pathname).toBe("/candidates/c-7");
+    expect(router.state.location.state).toEqual({ backTo: { path: "/me/picks", label: "My Picks" } });
+  });
+});
