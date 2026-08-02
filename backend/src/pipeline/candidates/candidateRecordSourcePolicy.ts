@@ -226,6 +226,7 @@ const LISTED_SOURCE_DOMAINS: readonly string[] = [
   "municode.com",
   "muni.org",
   "myflorida.com",
+  "suffolkdistrictattorney.com",
   "tbpr.org",
   // Wires + national outlets
   "abcnews.go.com",
@@ -237,7 +238,11 @@ const LISTED_SOURCE_DOMAINS: readonly string[] = [
   "cbsnews.com",
   "cnbc.com",
   "cnn.com",
+  // National sports desks report the criminal and academic records of
+  // candidates who came out of college or pro athletics.
+  "espn.com",
   "foxnews.com",
+  "foxsports.com",
   "nbcnews.com",
   "npr.org",
   "nytimes.com",
@@ -253,6 +258,9 @@ const LISTED_SOURCE_DOMAINS: readonly string[] = [
   // Nonprofit state-coverage networks
   "calmatters.org",
   "governing.com",
+  // States Newsroom member outlet; its syndication hub newsfromthestates.com
+  // is already listed, and member bylines land on both hosts.
+  "michiganadvance.com",
   "montanafreepress.org",
   "newsfromthestates.com",
   "stateline.org",

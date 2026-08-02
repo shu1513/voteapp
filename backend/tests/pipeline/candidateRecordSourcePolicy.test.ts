@@ -275,6 +275,24 @@ describe("classifyCandidateRecordSourceDomain", () => {
     );
   });
 
+  // Each of these was found carrying a real damaging record during the corpus
+  // repair pass, on a domain the list did not yet cover.
+  it("lists the outlets the corpus repair pass hit", () => {
+    expect(
+      classifyCandidateRecordSourceDomain("https://www.foxsports.com/stories/x").tier
+    ).toBe("listed");
+    expect(classifyCandidateRecordSourceDomain("https://www.espn.com/nba/story/x").tier).toBe(
+      "listed"
+    );
+    expect(classifyCandidateRecordSourceDomain("https://michiganadvance.com/2026/04/29/x").tier).toBe(
+      "listed"
+    );
+    expect(
+      classifyCandidateRecordSourceDomain("https://www.suffolkdistrictattorney.com/press-releases/x")
+        .tier
+    ).toBe("listed");
+  });
+
   it("classifies everything else as unlisted (accepted), including Wikipedia", () => {
     expect(classifyCandidateRecordSourceDomain("https://en.wikipedia.org/wiki/Jane_Doe").tier).toBe(
       "unlisted"
