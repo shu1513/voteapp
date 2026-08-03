@@ -1,5 +1,6 @@
 import type { Pool, PoolClient } from "pg";
 
+import { createStandardStateFinanceDueListQuery } from "../finance/standardStateFinanceDueListQuery.js";
 import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
 import {
   buildTennesseeCampContributionSearchUrl,
@@ -106,24 +107,6 @@ export type TennesseeCandidateFinanceBatchSyncResult = {
   results: TennesseeCandidateFinanceBatchSyncItemResult[];
 };
 
-type TennesseeCandidateFinanceDueQueryRow = {
-  candidate_id: string;
-  election_id: string;
-  candidate_name: string;
-  election_year: number;
-  office_scope: string;
-  office_name: string;
-  district: string | null;
-  camp_candidate_id: string;
-  owner_name: string;
-  committee_name: string | null;
-  link_source: TennesseeFinanceLinkSource;
-  source_url: string | null;
-  report_list_url: string | null;
-  last_synced_at: string | null;
-  total_due_rows: string | number;
-};
-
 const DEFAULT_MAX_CANDIDATES = 25;
 const DEFAULT_STALE_AFTER_DAYS = 7;
 const DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS = 1;
@@ -141,11 +124,6 @@ function normalizePositiveInteger(value: number | undefined, fallback: number, l
     throw new Error(`Invalid Tennessee finance batch sync ${label}: ${value}`);
   }
   return normalized;
-}
-
-function parseTotalDueRows(value: string | number | undefined): number {
-  const parsed = typeof value === "number" ? value : Number(value);
-  return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : 0;
 }
 
 function normalizeDistrict(value: string | null): string | null {
@@ -274,25 +252,6 @@ function fetchCachedPacContributions(
   return cached;
 }
 
-function mapDueRow(row: TennesseeCandidateFinanceDueQueryRow): TennesseeCandidateFinanceDueRow {
-  return {
-    candidateId: row.candidate_id,
-    electionId: row.election_id,
-    candidateName: row.candidate_name,
-    electionYear: row.election_year,
-    officeScope: row.office_scope,
-    officeName: row.office_name,
-    district: normalizeDistrict(row.district),
-    campCandidateId: row.camp_candidate_id,
-    ownerName: row.owner_name,
-    committeeName: row.committee_name,
-    linkSource: row.link_source,
-    sourceUrl: row.source_url,
-    reportListUrl: row.report_list_url,
-    lastSyncedAt: row.last_synced_at,
-  };
-}
-
 export async function loadTennesseeContributionDataForCandidate(input: {
   candidateName: string;
   ownerName: string;
@@ -371,105 +330,35 @@ export async function loadTennesseeContributionDataForCandidate(input: {
   };
 }
 
-export async function listDueTennesseeCandidateFinanceSyncRows(
-  db: Queryable,
-  input: {
-    now: Date;
-    staleAfterDays: number;
-    maxCandidates: number;
-    electionLookbackDays: number;
-    electionLookaheadDays: number;
-  }
-): Promise<{ rows: TennesseeCandidateFinanceDueRow[]; totalDueRows: number }> {
-  const result = await db.query<TennesseeCandidateFinanceDueQueryRow>(
-    `
-      WITH due AS (
-        SELECT
-          link.candidate_id::text AS candidate_id,
-          link.election_id::text AS election_id,
-          COALESCE(
-            NULLIF(trim(candidate.display_name), ''),
-            NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), ''),
-            link.candidate_name_normalized
-          ) AS candidate_name,
-          link.election_year,
-          office.scope AS office_scope,
-          link.office_name,
-          link.district,
-          link.camp_candidate_id,
-          link.owner_name,
-          link.committee_name,
-          link.link_source,
-          link.source_url,
-          link.report_list_url,
-          summary.last_synced_at::text AS last_synced_at,
-          COUNT(*) OVER () AS total_due_rows
-        FROM public.tn_candidate_finance_links AS link
-        JOIN public.candidates AS candidate
-          ON candidate.id = link.candidate_id
-        JOIN public.candidate_elections AS candidate_election
-          ON candidate_election.candidate_id = link.candidate_id
-         AND candidate_election.election_id = link.election_id
-        JOIN public.elections AS election
-          ON election.id = link.election_id
-        JOIN public.districts AS district
-          ON district.id = election.district_id
-        LEFT JOIN public.offices AS office
-          ON office.id = election.office_id
-        LEFT JOIN public.tn_candidate_finance_summaries AS summary
-          ON summary.link_id = link.id
-         AND summary.election_year = link.election_year
-        WHERE link.link_status = 'active'
-          AND candidate.deleted_at IS NULL
-          AND district.state = 'TN'
-          AND election.race_type = 'office'
-          AND election.election_date >= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $4::int))
-          AND election.election_date <= (($1::timestamptz AT TIME ZONE 'UTC')::date + make_interval(days => $5::int))
-          AND candidate_election.status NOT IN ('withdrawn', 'lost')
-          AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
-          AND (
-            summary.last_synced_at IS NULL
-            OR summary.last_synced_at < ($1::timestamptz - make_interval(days => $2::int))
-          )
-        ORDER BY summary.last_synced_at ASC NULLS FIRST,
-                 election.election_date ASC,
-                 link.candidate_name_normalized ASC,
-                 link.id ASC
-        LIMIT $3::int
-      )
-      SELECT
-        candidate_id,
-        election_id,
-        candidate_name,
-        election_year,
-        office_scope,
-        office_name,
-        district,
-        camp_candidate_id,
-        owner_name,
-        committee_name,
-        link_source,
-        source_url,
-        report_list_url,
-        last_synced_at,
-        total_due_rows
-      FROM due
-    `,
-    [
-      input.now.toISOString(),
-      input.staleAfterDays,
-      input.maxCandidates,
-      input.electionLookbackDays,
-      input.electionLookaheadDays,
-      [...TENNESSEE_FINANCE_ELIGIBLE_OFFICE_KEYS],
-    ]
-  );
-
-  return {
-    rows: result.rows.map(mapDueRow),
-    totalDueRows: result.rows.length > 0 ? parseTotalDueRows(result.rows[0]?.total_due_rows) : 0,
-  };
-}
+// Tennessee's bespoke query selected report_list_url after source_url; the
+// builder emits every link column in the slot before it, so the only SQL
+// delta is that column-order move (rows are read by name - no behavior
+// change). The mapper keeps the bespoke trim-to-null normalizeDistrict.
+export const listDueTennesseeCandidateFinanceSyncRows = createStandardStateFinanceDueListQuery({
+  state: "TN",
+  tables: {
+    links: "tn_candidate_finance_links",
+    summaries: "tn_candidate_finance_summaries",
+  },
+  eligibleOfficeKeys: TENNESSEE_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  linkColumns: ["camp_candidate_id", "owner_name", "committee_name", "link_source", "report_list_url"],
+  mapRow: (row): TennesseeCandidateFinanceDueRow => ({
+    candidateId: row.candidate_id,
+    electionId: row.election_id,
+    candidateName: row.candidate_name,
+    electionYear: row.election_year,
+    officeScope: row.office_scope,
+    officeName: row.office_name,
+    district: normalizeDistrict(row.district),
+    campCandidateId: row.camp_candidate_id as string,
+    ownerName: row.owner_name as string,
+    committeeName: row.committee_name as string | null,
+    linkSource: row.link_source as TennesseeFinanceLinkSource,
+    sourceUrl: row.source_url,
+    reportListUrl: row.report_list_url as string | null,
+    lastSyncedAt: row.last_synced_at,
+  }),
+});
 
 export async function syncDueTennesseeCandidateFinance(
   input: TennesseeCandidateFinanceBatchSyncInput
