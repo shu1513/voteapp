@@ -37,6 +37,19 @@ export type StateFinanceLoaderCharacterizationSpec = {
   eligibleOffice: { office_scope: string; office_canonical_name: string };
   /** Set when the loader has an office filter: a row it must reject. */
   ineligibleOffice?: { office_scope: string; office_canonical_name: string };
+  /**
+   * Category types the state's direct-breakdown query returns; default both.
+   * The mock bypasses SQL, so the fixtures must mimic the state's filter — a
+   * contribution_size-only state (Louisiana/Vermont shape) never sees the
+   * occupation rows, and the expected output drops them accordingly.
+   */
+  directCategoryTypes?: readonly ("occupation" | "contribution_size")[];
+  /**
+   * The state's outside-industry explanation action wording; default is the
+   * shared "independent spending supporting this candidate". Louisiana/Vermont
+   * describe their outside groups as PACs.
+   */
+  outsideSupportActionLabel?: string;
 };
 
 const CANDIDATE_A = "11111111-1111-4111-8111-111111111111";
@@ -67,8 +80,8 @@ const QUERY_TABLE_ALIASES: ReadonlyArray<Record<string, string>> = [
   },
 ];
 
-function buildFixtureRows(): LoaderRow[][] {
-  return [
+function buildFixtureRows(directCategoryTypes: readonly ("occupation" | "contribution_size")[]): LoaderRow[][] {
+  const rows: LoaderRow[][] = [
     // 1: summary — A exercises string parsing + direct-null fallback; B the
     // direct-wins precedence with everything else null.
     [
@@ -203,15 +216,20 @@ function buildFixtureRows(): LoaderRow[][] {
       },
     ],
   ];
+  rows[1] = rows[1]!.filter((row) =>
+    directCategoryTypes.includes(row.category_type as "occupation" | "contribution_size")
+  );
+  return rows;
 }
 
 function buildExpected(spec: StateFinanceLoaderCharacterizationSpec): Map<string, BallotLookupFinanceSummary> {
-  const occupationsA = [
-    { category_name: "Attorney", amount: 500, contributor_count: 3, source_url: SUMMARY_A_SOURCE_URL },
-  ];
-  const bucketsA = [
-    { category_name: "$0-$100", amount: 200, contributor_count: null, source_url: DIRECT_BUCKET_SOURCE_URL },
-  ];
+  const directCategoryTypes = spec.directCategoryTypes ?? ["occupation", "contribution_size"];
+  const occupationsA = directCategoryTypes.includes("occupation")
+    ? [{ category_name: "Attorney", amount: 500, contributor_count: 3, source_url: SUMMARY_A_SOURCE_URL }]
+    : [];
+  const bucketsA = directCategoryTypes.includes("contribution_size")
+    ? [{ category_name: "$0-$100", amount: 200, contributor_count: null, source_url: DIRECT_BUCKET_SOURCE_URL }]
+    : [];
   const supportingIndustriesA = [
     { category_name: "energy", amount: 800, contributor_count: 5, source_url: spec.genericSourceUrl },
   ];
@@ -238,9 +256,9 @@ function buildExpected(spec: StateFinanceLoaderCharacterizationSpec): Map<string
       source_url: EVIDENCE_SOURCE_URL,
     },
   ];
-  const occupationsB = [
-    { category_name: "Teacher", amount: 80, contributor_count: null, source_url: spec.genericSourceUrl },
-  ];
+  const occupationsB = directCategoryTypes.includes("occupation")
+    ? [{ category_name: "Teacher", amount: 80, contributor_count: null, source_url: spec.genericSourceUrl }]
+    : [];
 
   return new Map<string, BallotLookupFinanceSummary>([
     [
@@ -290,7 +308,9 @@ function buildExpected(spec: StateFinanceLoaderCharacterizationSpec): Map<string
           top_outside_supporting_industries: [
             {
               ...supportingIndustriesA[0],
-              explanation: buildOutsideIndustrySupportExplanation("energy", energyOrganizations),
+              explanation: spec.outsideSupportActionLabel
+                ? buildOutsideIndustrySupportExplanation("energy", energyOrganizations, spec.outsideSupportActionLabel)
+                : buildOutsideIndustrySupportExplanation("energy", energyOrganizations),
               supporting_organizations: energyOrganizations,
             },
           ],
@@ -391,7 +411,7 @@ export function runStateFinanceLoaderCharacterization(spec: StateFinanceLoaderCh
 
   it("maps the fixture rows to the pinned summaries", async () => {
     vi.stubEnv(spec.flagEnvVar, "true");
-    const fixtures = buildFixtureRows();
+    const fixtures = buildFixtureRows(spec.directCategoryTypes ?? ["occupation", "contribution_size"]);
     const calls: Array<{ sql: string; params: unknown[] }> = [];
     const db: MockDb = {
       query: vi.fn(async (sql: string, params: unknown[]) => {
