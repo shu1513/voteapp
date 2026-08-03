@@ -136,7 +136,7 @@ describe("upsertCandidateRecords", () => {
     expect(result.updated).toBe(1);
     expect(result.recordIdsByIdentityKey.size).toBe(1);
     expect(result.insertedRecordIds).toEqual([]);
-    expect(query).toHaveBeenCalledTimes(2);
+    expect(query).toHaveBeenCalledTimes(3);
     expect(query.mock.calls[1]?.[0]).toContain("UPDATE public.candidate_records");
     // The description actually changed (identity key differs from v3_old), so
     // the similar-record UPDATE re-attributes the row to the current writer:
@@ -146,6 +146,11 @@ describe("upsertCandidateRecords", () => {
       "manual:candidate-records:election-1:cand-1",
       false,
     ]);
+    // A real content change re-keys the row in place, so the writer must
+    // ledger the old->new identity transition for promotion to follow.
+    expect(query.mock.calls[2]?.[0]).toContain("candidate_record_identity_transitions");
+    expect(query.mock.calls[2]?.[1]?.slice(0, 2)).toEqual(["cand-1", "v3_old"]);
+    expect(query.mock.calls[2]?.[1]?.[3]).toBe("research_refresh");
   });
 
   it("preserves existing provenance when a re-import carries identical normalized content", async () => {

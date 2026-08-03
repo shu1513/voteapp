@@ -39,7 +39,10 @@ type ExistingRecordCandidate = {
   record_identity_key: string;
 };
 
-const DESCRIPTION_SIMILARITY_UPDATE_THRESHOLD = 0.86;
+// Exported because promotion (promoteResearchData) and the promoted-duplicate
+// cleanup must recognize "same record, reworded" with exactly the semantics
+// this writer uses — a private copy of the threshold would drift.
+export const DESCRIPTION_SIMILARITY_UPDATE_THRESHOLD = 0.86;
 
 function normalizeTextForIdentity(value: string): string {
   return value
@@ -50,7 +53,7 @@ function normalizeTextForIdentity(value: string): string {
     .trim();
 }
 
-function normalizeUrlForIdentity(value: string): string {
+export function normalizeUrlForIdentity(value: string): string {
   return value.trim().toLowerCase().replace(/\/+$/g, "");
 }
 
@@ -93,6 +96,48 @@ export async function deleteCandidateRecordsForReplacementRefresh(
   );
 
   return { deletedCount: result.rowCount ?? 0 };
+}
+
+export type RecordIdentityTransitionReason =
+  | "plain_language_rewrite"
+  | "event_date_repair"
+  | "source_url_repair"
+  | "research_refresh"
+  | "backfill";
+
+/**
+ * Records that an in-place edit moved a row from one identity key to another.
+ *
+ * Every writer that re-keys a candidate_record MUST call this in the same
+ * transaction as the edit. The ledger is what lets research:promote update a
+ * mirrored row in place instead of inserting a duplicate sibling, and what
+ * lets research:promote:dedupe identify stale old-key rows with provenance
+ * instead of similarity guesses — the 2026-08-02 promotion duplicated 817
+ * rewritten records on production precisely because no such trace existed.
+ *
+ * Idempotent: the unique (candidate_id, old, new) constraint absorbs re-runs.
+ */
+export async function recordIdentityTransition(
+  client: Pick<PoolClient, "query">,
+  input: {
+    candidateId: string;
+    oldIdentityKey: string;
+    newIdentityKey: string;
+    reason: RecordIdentityTransitionReason;
+  }
+): Promise<void> {
+  if (input.oldIdentityKey === input.newIdentityKey) {
+    return;
+  }
+  await client.query(
+    `
+      INSERT INTO public.candidate_record_identity_transitions
+        (candidate_id, old_record_identity_key, new_record_identity_key, reason)
+      VALUES ($1, $2, $3, $4)
+      ON CONFLICT (candidate_id, old_record_identity_key, new_record_identity_key) DO NOTHING
+    `,
+    [input.candidateId, input.oldIdentityKey, input.newIdentityKey, input.reason]
+  );
 }
 
 export function buildCandidateRecordIdentityKey(input: {
@@ -308,6 +353,15 @@ export async function upsertCandidateRecords(
           contentUnchanged,
         ]
       );
+      if (!contentUnchanged) {
+        // The row just moved identity slots; leave the trail promotion needs.
+        await recordIdentityTransition(client, {
+          candidateId: record.candidateId,
+          oldIdentityKey: similar.recordIdentityKey,
+          newIdentityKey: identityKey,
+          reason: "research_refresh",
+        });
+      }
       recordIdsByIdentityKey.set(identityKey, similar.id);
       updated += 1;
       continue;

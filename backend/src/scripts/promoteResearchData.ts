@@ -6,7 +6,12 @@ import { parse as parsePostgresConnectionString } from "pg-connection-string";
 import { Pool, type PoolClient } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
-import { buildCandidateRecordIdentityKey } from "../pipeline/candidates/candidateRecordStore.js";
+import {
+  buildCandidateRecordIdentityKey,
+  DESCRIPTION_SIMILARITY_UPDATE_THRESHOLD,
+  normalizeUrlForIdentity,
+  scoreCandidateRecordDescriptionSimilarity,
+} from "../pipeline/candidates/candidateRecordStore.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 
 // Promotes manually researched rows from the local database to another
@@ -167,6 +172,12 @@ export type RowPlan<T> = {
   unchangedCount: number;
   /** Rows present on the target and absent from source. Reported, never deleted. */
   targetOnlyCount: number;
+  /**
+   * The target-only rows themselves, not just their count: record promotion
+   * matches them against planned inserts to recognize a locally re-keyed row
+   * (see planRecordRekeys) instead of inserting a duplicate sibling.
+   */
+  targetOnlyRows: T[];
 };
 
 export function planRows<T>(input: {
@@ -198,14 +209,14 @@ export function planRows<T>(input: {
     }
   }
 
-  let targetOnlyCount = 0;
-  for (const key of targetByKey.keys()) {
+  const targetOnlyRows: T[] = [];
+  for (const [key, row] of targetByKey.entries()) {
     if (!seenSourceKeys.has(key)) {
-      targetOnlyCount += 1;
+      targetOnlyRows.push(row);
     }
   }
 
-  return { inserts, updates, unchangedCount, targetOnlyCount };
+  return { inserts, updates, unchangedCount, targetOnlyCount: targetOnlyRows.length, targetOnlyRows };
 }
 
 /** Null-safe scalar comparison, mirroring SQL's IS DISTINCT FROM. */
@@ -379,6 +390,251 @@ export function sameRecord(a: RecordRow, b: RecordRow): boolean {
 
 export function sameTag(a: TagRow, b: TagRow): boolean {
   return sameScalar(a.stance, b.stance);
+}
+
+// ---------------------------------------------------------------------------
+// Re-keyed rows
+//
+// record_identity_key hashes (description, url, date), so any sanctioned local
+// edit of a promoted row's description — the plain-language rewrite is the
+// live example — gives it a NEW key. A pure key-based diff then classifies the
+// edited row as an insert and the target's old-key row as target-only, and the
+// "never deletes" rule keeps that old row forever: the reader sees the same
+// fact twice, in two phrasings (817 rewrites were exposed to exactly this in
+// the 2026-08-02 promotion). The planner below closes the gap by re-attaching
+// a planned insert to the target-only row it re-keys, using the SAME identity
+// semantics as the ingest writer (candidate + event date + normalized URL +
+// description similarity >= the writer's own update threshold), so the row is
+// updated in place instead of duplicated.
+// ---------------------------------------------------------------------------
+
+export type TransitionRow = {
+  candidate_id: string;
+  old_record_identity_key: string;
+  new_record_identity_key: string;
+};
+
+export const TRANSITION_PROJECTION_SQL = `
+  SELECT
+    candidate_id::text AS candidate_id,
+    old_record_identity_key,
+    new_record_identity_key
+  FROM public.candidate_record_identity_transitions
+`;
+
+/**
+ * Flattens the transition ledger into old-key -> TERMINAL-key, following
+ * chains (a row rewritten, then date-repaired, holds neither intermediate
+ * key). A cycle — impossible unless the ledger is hand-corrupted — resolves
+ * to the last key before the repeat rather than looping.
+ */
+export function resolveIdentityTransitions(rows: readonly TransitionRow[]): Map<string, string> {
+  const direct = new Map<string, string>();
+  for (const row of rows) {
+    direct.set([row.candidate_id, row.old_record_identity_key].join(KEY_SEPARATOR), row.new_record_identity_key);
+  }
+  const resolved = new Map<string, string>();
+  for (const row of rows) {
+    const start = [row.candidate_id, row.old_record_identity_key].join(KEY_SEPARATOR);
+    const seen = new Set<string>([row.old_record_identity_key]);
+    let current = row.new_record_identity_key;
+    for (;;) {
+      const next = direct.get([row.candidate_id, current].join(KEY_SEPARATOR));
+      if (next === undefined || seen.has(next)) {
+        break;
+      }
+      seen.add(next);
+      current = next;
+    }
+    resolved.set(start, current);
+  }
+  return resolved;
+}
+
+export type RecordRekey = {
+  /** The local row, carrying the new key and the new content. */
+  sourceRow: RecordRow;
+  /** The key the target row currently holds — how the UPDATE addresses it. */
+  oldKey: string;
+  /**
+   * How the pair was matched: 'transition' is exact provenance from the
+   * identity ledger; 'similarity' is the ingest writer's same-slot heuristic,
+   * kept as a backstop for edits made before the ledger existed.
+   */
+  via: "transition" | "similarity";
+};
+
+export type RecordRekeyPlan = {
+  rekeys: RecordRekey[];
+  /** Planned inserts that matched no target-only row; still genuinely new. */
+  inserts: RecordRow[];
+  /**
+   * Target-only rows that look like a re-DATED copy of a planned insert (same
+   * candidate + URL, similar description, different event date). Reported for
+   * manual review, never auto-merged: two real records legitimately share a
+   * candidate and URL across dates (two votes on one meeting document), and
+   * similarity alone cannot tell a date repair from that.
+   */
+  redatedSuspects: { sourceRow: RecordRow; targetRow: RecordRow; similarity: number }[];
+};
+
+export function planRecordRekeys(input: {
+  inserts: readonly RecordRow[];
+  targetOnlyRows: readonly RecordRow[];
+  normalizeUrl: (url: string) => string;
+  similarityOf: (left: string, right: string) => number;
+  threshold: number;
+  /** Chain-resolved ledger from resolveIdentityTransitions; empty disables the exact pass. */
+  transitions?: ReadonlyMap<string, string>;
+}): RecordRekeyPlan {
+  const transitions = input.transitions ?? new Map<string, string>();
+  const exactBucketOf = (row: RecordRow): string =>
+    [row.candidate_id, row.event_date, input.normalizeUrl(row.source_url)].join(KEY_SEPARATOR);
+  const urlBucketOf = (row: RecordRow): string =>
+    [row.candidate_id, input.normalizeUrl(row.source_url)].join(KEY_SEPARATOR);
+
+  const rekeys: RecordRekey[] = [];
+  const inserts: RecordRow[] = [];
+  const redatedSuspects: RecordRekeyPlan["redatedSuspects"] = [];
+  // A target row may be re-keyed by at most one insert. Two inserts claiming
+  // the same row means local research holds two similar records for one
+  // target slot — resolving that by similarity rank would silently guess
+  // which one is "the" successor, so refuse instead.
+  const claimedBy = new Map<string, string>();
+
+  // Exact pass first: the ledger says precisely which old key became which
+  // new key, with no date/URL/similarity conditions — it survives edits the
+  // heuristic below cannot see (a rewrite that rephrased beyond the
+  // similarity threshold, a repair that changed the date or URL itself).
+  const insertByCandKey = new Map(input.inserts.map((row) => [recordKey(row), row]));
+  const rekeyedSourceKeys = new Set<string>();
+  const rekeyedTargetKeys = new Set<string>();
+  for (const targetRow of input.targetOnlyRows) {
+    const finalKey = transitions.get(recordKey(targetRow));
+    if (finalKey === undefined) {
+      continue;
+    }
+    const sourceRow = insertByCandKey.get([targetRow.candidate_id, finalKey].join(KEY_SEPARATOR));
+    if (sourceRow === undefined) {
+      continue;
+    }
+    const claimKey = [targetRow.candidate_id, finalKey].join(KEY_SEPARATOR);
+    const claimant = claimedBy.get(claimKey);
+    if (claimant !== undefined) {
+      throw new Error(
+        `Refusing to promote: target rows ${claimant} and ${targetRow.record_identity_key} both ` +
+          `transition to local key ${finalKey} (candidate ${targetRow.candidate_id}); the ledger ` +
+          "maps two target rows onto one local record. Clean the target up with " +
+          "research:promote:dedupe first."
+      );
+    }
+    claimedBy.set(claimKey, targetRow.record_identity_key);
+    rekeys.push({ sourceRow, oldKey: targetRow.record_identity_key, via: "transition" });
+    rekeyedSourceKeys.add(recordKey(sourceRow));
+    rekeyedTargetKeys.add(recordKey(targetRow));
+  }
+
+  const exactBuckets = new Map<string, RecordRow[]>();
+  const urlBuckets = new Map<string, RecordRow[]>();
+  for (const row of input.targetOnlyRows) {
+    if (rekeyedTargetKeys.has(recordKey(row))) {
+      continue;
+    }
+    const exact = exactBucketOf(row);
+    exactBuckets.set(exact, [...(exactBuckets.get(exact) ?? []), row]);
+    const byUrl = urlBucketOf(row);
+    urlBuckets.set(byUrl, [...(urlBuckets.get(byUrl) ?? []), row]);
+  }
+
+  for (const sourceRow of input.inserts) {
+    if (rekeyedSourceKeys.has(recordKey(sourceRow))) {
+      continue;
+    }
+    const bucket = exactBuckets.get(exactBucketOf(sourceRow)) ?? [];
+    let best: { row: RecordRow; similarity: number } | null = null;
+    let runnerUpSimilarity = 0;
+    for (const targetRow of bucket) {
+      const similarity = input.similarityOf(sourceRow.description, targetRow.description);
+      if (best === null || similarity > best.similarity) {
+        runnerUpSimilarity = best?.similarity ?? 0;
+        best = { row: targetRow, similarity };
+      } else if (similarity > runnerUpSimilarity) {
+        runnerUpSimilarity = similarity;
+      }
+    }
+
+    if (best !== null && best.similarity >= input.threshold) {
+      if (runnerUpSimilarity >= input.threshold) {
+        throw new Error(
+          `Refusing to promote: two target rows for candidate ${sourceRow.candidate_id} on ` +
+            `${sourceRow.event_date} both match one local record above the similarity threshold; ` +
+            "cannot tell which the local edit re-keyed. Repair the target rows first."
+        );
+      }
+      const claimKey = [best.row.candidate_id, best.row.record_identity_key].join(KEY_SEPARATOR);
+      const claimant = claimedBy.get(claimKey);
+      if (claimant !== undefined) {
+        throw new Error(
+          `Refusing to promote: two local records (${claimant} and ${sourceRow.record_identity_key}) ` +
+            `both match the same target row for candidate ${sourceRow.candidate_id} on ` +
+            `${sourceRow.event_date}. Deduplicate the local rows first.`
+        );
+      }
+      claimedBy.set(claimKey, sourceRow.record_identity_key);
+      rekeys.push({ sourceRow, oldKey: best.row.record_identity_key, via: "similarity" });
+      continue;
+    }
+
+    for (const targetRow of urlBuckets.get(urlBucketOf(sourceRow)) ?? []) {
+      if (targetRow.event_date === sourceRow.event_date) {
+        continue; // the exact bucket already judged this row
+      }
+      const similarity = input.similarityOf(sourceRow.description, targetRow.description);
+      if (similarity >= input.threshold) {
+        redatedSuspects.push({ sourceRow, targetRow, similarity });
+      }
+    }
+    inserts.push(sourceRow);
+  }
+
+  return { rekeys, inserts, redatedSuspects };
+}
+
+/**
+ * Moves a target row onto its new identity in place. Addressed by the OLD
+ * key, so the row keeps its id — and with it its tags and notification
+ * events. created_at is untouched for the same reason it is absent from
+ * UPSERT_RECORDS_SQL's update list. No distinctness guard: a planned rekey
+ * changes the key by construction, so the row always really changes.
+ */
+export const REKEY_RECORDS_SQL = `
+  UPDATE public.candidate_records AS t
+  SET
+    record_identity_key = s.record_identity_key,
+    description = s.description,
+    source_url = s.source_url,
+    event_date = s.event_date::date,
+    origin = s.origin,
+    origin_run_id = s.origin_run_id
+  FROM jsonb_to_recordset($1::jsonb) AS s(
+    candidate_id uuid, old_key text, record_identity_key text, description text,
+    source_url text, event_date text, origin text, origin_run_id text)
+  WHERE t.candidate_id = s.candidate_id
+    AND t.record_identity_key = s.old_key
+`;
+
+/** Rekey rows in the wire shape REKEY_RECORDS_SQL expects. */
+export function rekeyWireRows(rekeys: readonly RecordRekey[]): Record<string, unknown>[] {
+  return rekeys.map((rekey) => ({
+    candidate_id: rekey.sourceRow.candidate_id,
+    old_key: rekey.oldKey,
+    record_identity_key: rekey.sourceRow.record_identity_key,
+    description: rekey.sourceRow.description,
+    source_url: rekey.sourceRow.source_url,
+    event_date: rekey.sourceRow.event_date,
+    origin: rekey.sourceRow.origin,
+    origin_run_id: rekey.sourceRow.origin_run_id,
+  }));
 }
 
 export function sameLabel(a: LabelRow, b: LabelRow): boolean {
@@ -790,7 +1046,19 @@ export type PromotionReport = {
   mode: "dry_run" | "apply";
   source: string;
   target: string;
-  tables: Record<string, { inserts: number; updates: number; unchanged: number; targetOnly: number; written?: number }>;
+  tables: Record<
+    string,
+    {
+      inserts: number;
+      updates: number;
+      unchanged: number;
+      targetOnly: number;
+      /** candidate_records only: target rows updated in place onto a new identity key. */
+      rekeys?: number;
+      written?: number;
+      rekeysWritten?: number;
+    }
+  >;
 };
 
 async function main(): Promise<void> {
@@ -856,18 +1124,48 @@ async function main(): Promise<void> {
       loadProjection<LabelRow>(source, LABEL_PROJECTION_SQL),
       loadProjection<LabelRow>(target, LABEL_PROJECTION_SQL),
     ]);
+    // Source only: transitions describe local edit history. The migration
+    // parity check above guarantees the table exists on both sides.
+    const transitions = resolveIdentityTransitions(
+      await loadProjection<TransitionRow>(source, TRANSITION_PROJECTION_SQL)
+    );
 
     const recordPlan = planRows({ sourceRows: sourceRecords, targetRows: targetRecords, keyOf: recordKey, isEqual: sameRecord });
     const tagPlan = planRows({ sourceRows: sourceTags, targetRows: targetTags, keyOf: tagKey, isEqual: sameTag });
     const labelPlan = planRows({ sourceRows: sourceLabels, targetRows: targetLabels, keyOf: labelKey, isEqual: sameLabel });
 
-    // Only rows we are about to write need resolvable parents; untouched rows
-    // are the target's business.
-    const pendingRecords = [...recordPlan.inserts, ...recordPlan.updates];
+    // A local description edit re-keys its row, so the key diff sees an
+    // insert + a target-only orphan. Recognize that pair and update the
+    // target row in place instead of inserting a duplicate sibling.
+    const rekeyPlan = planRecordRekeys({
+      inserts: recordPlan.inserts,
+      targetOnlyRows: recordPlan.targetOnlyRows,
+      normalizeUrl: normalizeUrlForIdentity,
+      similarityOf: scoreCandidateRecordDescriptionSimilarity,
+      threshold: DESCRIPTION_SIMILARITY_UPDATE_THRESHOLD,
+      transitions,
+    });
+    for (const suspect of rekeyPlan.redatedSuspects) {
+      console.warn(
+        `WARNING: target-only row for candidate ${suspect.targetRow.candidate_id} on ` +
+          `${suspect.targetRow.event_date} closely matches a new local record dated ` +
+          `${suspect.sourceRow.event_date} (similarity ${suspect.similarity.toFixed(2)}, same URL). ` +
+          "If a local date repair re-dated this record, the target row is a stale duplicate — " +
+          "review and clean it up with research:promote:dedupe; this run will INSERT the new date."
+      );
+    }
+
+    // pendingRecords feeds the INSERT ... ON CONFLICT upsert, so rekeyed rows
+    // must stay out of it — they are written by the rekey UPDATE, and letting
+    // the upsert see them too would re-insert the very sibling the rekey
+    // exists to prevent. Preflight, by contrast, must see every row any
+    // statement will write.
+    const pendingRecords = [...rekeyPlan.inserts, ...recordPlan.updates];
+    const preflightRecords = [...pendingRecords, ...rekeyPlan.rekeys.map((rekey) => rekey.sourceRow)];
     const pendingTags = [...tagPlan.inserts, ...tagPlan.updates];
     // A stored key that disagrees with its own content means the source row
     // was edited outside the writer; promoting it would carry a stale key.
-    const keyMismatches = findIdentityKeyMismatches(pendingRecords, (input) =>
+    const keyMismatches = findIdentityKeyMismatches(preflightRecords, (input) =>
       buildCandidateRecordIdentityKey(input)
     );
     if (keyMismatches.length > 0) {
@@ -881,7 +1179,7 @@ async function main(): Promise<void> {
 
     assertTransportableArrays([...labelPlan.inserts, ...labelPlan.updates]);
 
-    const pendingCandidateIds = [...new Set(pendingRecords.map((row) => row.candidate_id))];
+    const pendingCandidateIds = [...new Set(preflightRecords.map((row) => row.candidate_id))];
     const missingCandidates = await findUnresolvableCandidates(target, pendingCandidateIds);
     const missingSlugs = await findUnresolvableAreaSlugs(
       target,
@@ -920,10 +1218,13 @@ async function main(): Promise<void> {
       target: describeEndpoint(endpoints.target),
       tables: {
         candidate_records: {
-          inserts: recordPlan.inserts.length,
+          inserts: rekeyPlan.inserts.length,
           updates: recordPlan.updates.length,
           unchanged: recordPlan.unchangedCount,
-          targetOnly: recordPlan.targetOnlyCount,
+          // Rekeyed rows leave the target-only bucket: they are matched, not
+          // orphaned. What remains is genuinely target-only.
+          targetOnly: recordPlan.targetOnlyCount - rekeyPlan.rekeys.length,
+          rekeys: rekeyPlan.rekeys.length,
         },
         candidate_record_area_tags: {
           inserts: tagPlan.inserts.length,
@@ -945,6 +1246,19 @@ async function main(): Promise<void> {
       try {
         await client.query("BEGIN");
         const wrapped: PromotionClient = { query: (text, values) => client.query(text, values as unknown[]) };
+        // Rekeys before the record upsert: they move existing target rows
+        // onto their new keys, and must land before anything else references
+        // those keys. Every planned rekey must hit its row — a shortfall
+        // means the target changed under us, and committing would leave the
+        // old-key duplicate the rekey exists to prevent.
+        const rekeysWritten = await upsertBatched(wrapped, REKEY_RECORDS_SQL, rekeyWireRows(rekeyPlan.rekeys));
+        if (rekeysWritten !== rekeyPlan.rekeys.length) {
+          throw new Error(
+            `Refusing to commit: planned ${rekeyPlan.rekeys.length} record rekey(s) but the target ` +
+              `matched ${rekeysWritten}. The target changed since the plan was computed; re-run.`
+          );
+        }
+        report.tables.candidate_records!.rekeysWritten = rekeysWritten;
         // Records before tags: a tag resolves its parent by natural key, so
         // the record must already exist on the target.
         report.tables.candidate_records!.written = await upsertBatched(wrapped, UPSERT_RECORDS_SQL, pendingRecords);

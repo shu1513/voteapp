@@ -10,12 +10,18 @@ import {
   findIdentityKeyMismatches,
   LABEL_PROJECTION_SQL,
   RECORD_PROJECTION_SQL,
+  REKEY_RECORDS_SQL,
   describeEndpoint,
   diffMigrationSets,
   isLocalHost,
   parseEndpoint,
+  planRecordRekeys,
   planRows,
+  recordKey,
+  rekeyWireRows,
+  resolveIdentityTransitions,
   sameRecord,
+  type RecordRow,
   sameScalar,
   sameStringArray,
   TAG_PROJECTION_SQL,
@@ -412,6 +418,283 @@ describe("sameRecord", () => {
     expect(sameRecord(base, { ...base, description: "different" })).toBe(false);
     expect(sameRecord(base, { ...base, source_url: "other" })).toBe(false);
     expect(sameRecord(base, { ...base, event_date: "2025-12-31" })).toBe(false);
+  });
+});
+
+describe("planRecordRekeys", () => {
+  const recordRow = (overrides: Partial<RecordRow>): RecordRow => ({
+    candidate_id: "c1",
+    record_identity_key: "key",
+    description: "Voted to adopt the budget for fiscal year 2025.",
+    source_url: "https://example.gov/doc/1",
+    event_date: "2024-03-06",
+    created_at_utc: "2026-07-28 06:14:50.777574",
+    origin: null,
+    origin_run_id: null,
+    ...overrides,
+  });
+  // Similarity by exact match keeps the tests deterministic; the production
+  // scorer's behavior is candidateRecordStore's own test surface.
+  const similarityOf = (a: string, b: string) => (a === b ? 1 : 0);
+  const normalizeUrl = (url: string) => url.trim().toLowerCase().replace(/\/+$/g, "");
+
+  // Keys in the transition map are recordKey-joined (NUL separator), never a
+  // hand-built "cand key" string.
+  const candKey = (candidateId: string, key: string) =>
+    recordKey({ candidate_id: candidateId, record_identity_key: key });
+
+  it("re-attaches an insert to the target-only row it re-keys", () => {
+    const sourceRow = recordRow({ record_identity_key: "new-key" });
+    const targetRow = recordRow({ record_identity_key: "old-key" });
+    const plan = planRecordRekeys({
+      inserts: [sourceRow],
+      targetOnlyRows: [targetRow],
+      normalizeUrl,
+      similarityOf,
+      threshold: 0.86,
+    });
+
+    expect(plan.rekeys).toEqual([{ sourceRow, oldKey: "old-key", via: "similarity" }]);
+    expect(plan.inserts).toHaveLength(0);
+    expect(plan.redatedSuspects).toHaveLength(0);
+  });
+
+  it("matches on the normalized URL, like the ingest writer", () => {
+    const sourceRow = recordRow({ record_identity_key: "new-key", source_url: "https://EXAMPLE.gov/doc/1/" });
+    const plan = planRecordRekeys({
+      inserts: [sourceRow],
+      targetOnlyRows: [recordRow({ record_identity_key: "old-key" })],
+      normalizeUrl,
+      similarityOf,
+      threshold: 0.86,
+    });
+    expect(plan.rekeys).toHaveLength(1);
+  });
+
+  it("keeps a below-threshold insert as an insert", () => {
+    const sourceRow = recordRow({ record_identity_key: "new-key", description: "Something else entirely." });
+    const plan = planRecordRekeys({
+      inserts: [sourceRow],
+      targetOnlyRows: [recordRow({ record_identity_key: "old-key" })],
+      normalizeUrl,
+      similarityOf,
+      threshold: 0.86,
+    });
+    expect(plan.rekeys).toHaveLength(0);
+    expect(plan.inserts).toEqual([sourceRow]);
+  });
+
+  it("never matches across candidates or dates or URLs", () => {
+    const sourceRow = recordRow({ record_identity_key: "new-key" });
+    for (const targetRow of [
+      recordRow({ record_identity_key: "old-key", candidate_id: "c2" }),
+      recordRow({ record_identity_key: "old-key", event_date: "2024-03-07" }),
+      recordRow({ record_identity_key: "old-key", source_url: "https://example.gov/doc/2" }),
+    ]) {
+      const plan = planRecordRekeys({
+        inserts: [sourceRow],
+        targetOnlyRows: [targetRow],
+        normalizeUrl,
+        similarityOf,
+        threshold: 0.86,
+      });
+      expect(plan.rekeys).toHaveLength(0);
+      expect(plan.inserts).toEqual([sourceRow]);
+    }
+  });
+
+  it("reports a same-URL different-date near-duplicate for review instead of merging it", () => {
+    const sourceRow = recordRow({ record_identity_key: "new-key", event_date: "2024-03-08" });
+    const targetRow = recordRow({ record_identity_key: "old-key" });
+    const plan = planRecordRekeys({
+      inserts: [sourceRow],
+      targetOnlyRows: [targetRow],
+      normalizeUrl,
+      similarityOf,
+      threshold: 0.86,
+    });
+    // A date repair re-keys too, but two real records can legitimately share
+    // a URL across dates — so this is a warning, never an auto-merge.
+    expect(plan.rekeys).toHaveLength(0);
+    expect(plan.inserts).toEqual([sourceRow]);
+    expect(plan.redatedSuspects).toEqual([{ sourceRow, targetRow, similarity: 1 }]);
+  });
+
+  it("rekeys via the transition ledger even when the rewrite is beyond the similarity threshold", () => {
+    // The live gap: 278 of 817 plain-language rewrites scored below 0.86
+    // against their originals, so the similarity pass alone would still
+    // duplicate them. The ledger is exact.
+    const sourceRow = recordRow({
+      record_identity_key: "new-key",
+      description: "A completely rephrased plain-language description.",
+    });
+    const targetRow = recordRow({ record_identity_key: "old-key" });
+    const plan = planRecordRekeys({
+      inserts: [sourceRow],
+      targetOnlyRows: [targetRow],
+      normalizeUrl,
+      similarityOf,
+      threshold: 0.86,
+      transitions: new Map([[candKey("c1", "old-key"), "new-key"]]),
+    });
+    expect(plan.rekeys).toEqual([{ sourceRow, oldKey: "old-key", via: "transition" }]);
+    expect(plan.inserts).toHaveLength(0);
+  });
+
+  it("rekeys via the ledger even when the edit changed the event date", () => {
+    // A date repair moves the row out of the (candidate, date, url) slot the
+    // similarity heuristic matches on; only the ledger can follow it.
+    const sourceRow = recordRow({ record_identity_key: "new-key", event_date: "2024-04-01" });
+    const targetRow = recordRow({ record_identity_key: "old-key", event_date: "2024-03-06" });
+    const plan = planRecordRekeys({
+      inserts: [sourceRow],
+      targetOnlyRows: [targetRow],
+      normalizeUrl,
+      similarityOf: () => 0,
+      threshold: 0.86,
+      transitions: new Map([[candKey("c1", "old-key"), "new-key"]]),
+    });
+    expect(plan.rekeys).toEqual([{ sourceRow, oldKey: "old-key", via: "transition" }]);
+  });
+
+  it("ignores a ledger entry whose final key matches no planned insert", () => {
+    const targetRow = recordRow({ record_identity_key: "old-key" });
+    const plan = planRecordRekeys({
+      inserts: [],
+      targetOnlyRows: [targetRow],
+      normalizeUrl,
+      similarityOf,
+      threshold: 0.86,
+      transitions: new Map([[candKey("c1", "old-key"), "already-on-target"]]),
+    });
+    expect(plan.rekeys).toHaveLength(0);
+  });
+
+  it("refuses when the ledger maps two target rows onto one local record", () => {
+    expect(() =>
+      planRecordRekeys({
+        inserts: [recordRow({ record_identity_key: "new-key" })],
+        targetOnlyRows: [
+          recordRow({ record_identity_key: "old-key-1" }),
+          recordRow({ record_identity_key: "old-key-2" }),
+        ],
+        normalizeUrl,
+        similarityOf: () => 0,
+        threshold: 0.86,
+        transitions: new Map([
+          [candKey("c1", "old-key-1"), "new-key"],
+          [candKey("c1", "old-key-2"), "new-key"],
+        ]),
+      })
+    ).toThrow(/maps two target rows onto one local record/);
+  });
+
+  it("refuses when two local records claim the same target row", () => {
+    const targetRow = recordRow({ record_identity_key: "old-key" });
+    expect(() =>
+      planRecordRekeys({
+        inserts: [
+          recordRow({ record_identity_key: "new-key-1" }),
+          recordRow({ record_identity_key: "new-key-2" }),
+        ],
+        targetOnlyRows: [targetRow],
+        normalizeUrl,
+        similarityOf,
+        threshold: 0.86,
+      })
+    ).toThrow(/both match the same target row/);
+  });
+
+  it("refuses when one insert matches two target rows equally", () => {
+    expect(() =>
+      planRecordRekeys({
+        inserts: [recordRow({ record_identity_key: "new-key" })],
+        targetOnlyRows: [
+          recordRow({ record_identity_key: "old-key-1" }),
+          recordRow({ record_identity_key: "old-key-2" }),
+        ],
+        normalizeUrl,
+        similarityOf,
+        threshold: 0.86,
+      })
+    ).toThrow(/cannot tell which the local edit re-keyed/);
+  });
+});
+
+describe("resolveIdentityTransitions", () => {
+  const candKeyOf = (candidateId: string, key: string) =>
+    recordKey({ candidate_id: candidateId, record_identity_key: key });
+  const transition = (candidateId: string, oldKey: string, newKey: string) => ({
+    candidate_id: candidateId,
+    old_record_identity_key: oldKey,
+    new_record_identity_key: newKey,
+  });
+
+  it("maps each old key to its terminal key across a chain", () => {
+    // Rewritten, then date-repaired: a target promoted at k1 must land on k3.
+    const resolved = resolveIdentityTransitions([
+      transition("c1", "k1", "k2"),
+      transition("c1", "k2", "k3"),
+    ]);
+    expect(resolved.get(candKeyOf("c1", "k1"))).toBe("k3");
+    expect(resolved.get(candKeyOf("c1", "k2"))).toBe("k3");
+  });
+
+  it("keeps candidates separate", () => {
+    const resolved = resolveIdentityTransitions([
+      transition("c1", "k1", "k2"),
+      transition("c2", "k2", "k3"),
+    ]);
+    expect(resolved.get(candKeyOf("c1", "k1"))).toBe("k2");
+  });
+
+  it("terminates on a hand-corrupted cycle instead of looping", () => {
+    const resolved = resolveIdentityTransitions([
+      transition("c1", "k1", "k2"),
+      transition("c1", "k2", "k1"),
+    ]);
+    expect(resolved.get(candKeyOf("c1", "k1"))).toBe("k2");
+    expect(resolved.get(candKeyOf("c1", "k2"))).toBe("k1");
+  });
+});
+
+describe("REKEY_RECORDS_SQL", () => {
+  it("updates in place — never deletes, inserts, or issues DDL", () => {
+    expect(REKEY_RECORDS_SQL).toMatch(/UPDATE public\.candidate_records/);
+    expect(REKEY_RECORDS_SQL).not.toMatch(/\bDELETE\b/i);
+    expect(REKEY_RECORDS_SQL).not.toMatch(/\bINSERT\b/i);
+    expect(REKEY_RECORDS_SQL).not.toMatch(/\bTRUNCATE\b/i);
+    expect(REKEY_RECORDS_SQL).not.toMatch(/\bDROP\b/i);
+  });
+
+  it("addresses rows by the OLD key and never touches created_at, so the row keeps its id and research date", () => {
+    expect(REKEY_RECORDS_SQL).toMatch(/record_identity_key = s\.old_key/);
+    expect(REKEY_RECORDS_SQL).not.toMatch(/created_at/);
+  });
+
+  it("rekeyWireRows carries the new key and the old key side by side", () => {
+    const sourceRow: RecordRow = {
+      candidate_id: "c1",
+      record_identity_key: "new-key",
+      description: "d",
+      source_url: "u",
+      event_date: "2024-01-01",
+      created_at_utc: "2026-01-01 00:00:00.000000",
+      origin: "manual",
+      origin_run_id: "run-9",
+    };
+    expect(rekeyWireRows([{ sourceRow, oldKey: "old-key" }])).toEqual([
+      {
+        candidate_id: "c1",
+        old_key: "old-key",
+        record_identity_key: "new-key",
+        description: "d",
+        source_url: "u",
+        event_date: "2024-01-01",
+        origin: "manual",
+        origin_run_id: "run-9",
+      },
+    ]);
   });
 });
 

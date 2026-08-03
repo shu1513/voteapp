@@ -314,12 +314,35 @@ export function mechanicalCheckFailure(
 // fresh text. Identifiers are compile-time constants keyed by the target
 // enum, never interpolated from data.
 function buildApplySql(targetTable: string, targetColumn: string): string {
-  const identityKeySet =
-    targetTable === "candidate_records" ? ", record_identity_key = $8" : "";
+  if (targetTable === "candidate_records") {
+    // The rewrite re-keys the row in place, so the same statement must leave
+    // the identity-transition trail ($9 = old key, $8 = new key) that lets
+    // research:promote update a mirrored row instead of inserting a duplicate
+    // sibling — atomically, like the audit row: a crash can never re-key the
+    // row without recording where it moved from.
+    return `
+      WITH updated AS (
+        UPDATE public.candidate_records
+        SET ${targetColumn} = $4, updated_at = now(), record_identity_key = $8
+        WHERE id = $2 AND ${targetColumn} IS NOT DISTINCT FROM $5
+        RETURNING id, candidate_id
+      ),
+      transition AS (
+        INSERT INTO public.candidate_record_identity_transitions
+          (candidate_id, old_record_identity_key, new_record_identity_key, reason)
+        SELECT candidate_id, $9, $8, 'plain_language_rewrite' FROM updated
+        WHERE $9::text IS DISTINCT FROM $8::text
+        ON CONFLICT (candidate_id, old_record_identity_key, new_record_identity_key) DO NOTHING
+      )
+      INSERT INTO public.plain_language_rewrites
+        (target_table, target_id, target_column, status, original_text, rewritten_text, flag_reason, provider, model)
+      SELECT $1, $2, $3, 'applied', $5, $4, NULL, $6, $7 FROM updated
+    `;
+  }
   return `
     WITH updated AS (
       UPDATE public.${targetTable}
-      SET ${targetColumn} = $4, updated_at = now()${identityKeySet}
+      SET ${targetColumn} = $4, updated_at = now()
       WHERE id = $2 AND ${targetColumn} IS NOT DISTINCT FROM $5
       RETURNING id
     )
@@ -608,10 +631,18 @@ export async function runPlainLanguageBackfill(
         }
         // The identity key hashes (url, date, description); the research
         // refresh dedupe relies on the stored key matching the stored text,
-        // and every other description-changing path recomputes it.
+        // and every other description-changing path recomputes it. The old
+        // key rides along so the apply statement can ledger the transition —
+        // computed from the ORIGINAL text the staleness guard pins, so it is
+        // exactly the key the row holds at update time.
         params.push(
           buildCandidateRecordIdentityKey({
             description: rewriteResult.rewrittenText,
+            sourceUrl: target.recordIdentity.sourceUrl,
+            eventDate: target.recordIdentity.eventDate,
+          }),
+          buildCandidateRecordIdentityKey({
+            description: target.originalText,
             sourceUrl: target.recordIdentity.sourceUrl,
             eventDate: target.recordIdentity.eventDate,
           })

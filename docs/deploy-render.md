@@ -113,6 +113,30 @@ dependencies: a record whose candidate is missing on the target, or a tag whose
 research-area slug is missing, aborts the run rather than being skipped, so a
 half-populated graph can never be reported as success.
 
+**Re-keyed rows.** `record_identity_key` hashes (description, url, date), so a
+sanctioned local edit — a plain-language rewrite, an event-date or source-URL
+repair, a research-refresh update — moves the row to a NEW key. Every such
+writer records the old→new pair in `candidate_record_identity_transitions`
+(migration 209), and promotion follows that ledger to update the target row in
+place (`rekeys` in the report) instead of inserting a duplicate sibling. A
+similarity heuristic (same candidate + date + URL, ≥ 0.86 description match —
+the ingest writer's own update rule) backstops edits made before the ledger
+existed. Before the ledger, the 2026-08-02 promotion duplicated 817 rewritten
+records on production; if a target still carries such duplicates, clean them
+with:
+
+```bash
+cd backend
+export PROMOTION_TARGET_DATABASE_URL='postgres://…'
+npm run research:promote:dedupe          # dry run: reports planned deletions
+npm run research:promote:dedupe:apply -- --confirm-target <host>:<port>/<database>
+```
+
+It deletes a target row only when the local database no longer holds its key,
+the ledger (or the similarity rule) names a successor, and that successor is
+present on the target — locally deleted rows and genuine strays are reported,
+never touched.
+
 Notes:
 - The source must be local and the target must not be the same database.
 - `--confirm-target` takes `<host>:<port>/<database>`, not the host alone — one
