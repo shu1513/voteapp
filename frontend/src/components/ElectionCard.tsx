@@ -278,9 +278,17 @@ function ElectionCard({
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
           {choiceLabel ? (
             // Leads the chip row: the voter's own decision outranks the
-            // other signals. Bordered green, distinct from the solid
-            // followed-candidates chip.
-            <span className="rounded border border-green-700 bg-green-50 px-2 py-0.5 font-medium text-green-900">
+            // other signals. Bordered, distinct from the solid
+            // followed-candidates chip. A "No" measure pick renders red to
+            // match the election page's "A NO vote means" box — a green
+            // "My pick: No" read as a contradiction.
+            <span
+              className={`rounded border px-2 py-0.5 font-medium ${
+                myChoice?.measure_position === "no"
+                  ? "border-red-700 bg-red-50 text-red-900"
+                  : "border-green-700 bg-green-50 text-green-900"
+              }`}
+            >
               {choiceLabel}
             </span>
           ) : null}
