@@ -92,6 +92,8 @@ The most uniform, highest-fix-traffic slice of batchSync: the due-list query (li
 
 **Canonical cohort migrated** (all 8 in one PR — the transformation is a uniform mechanical swap, verified per state): each `listDue<State>CandidateFinanceSyncRows` is now the builder under canonical config, the `<State>CandidateFinanceDueRow` types alias `StandardStateFinanceDueRow`, and the private due-query row types + `parseTotalDueRows` + `mapDueRow` helpers are deleted (−155 lines per state). Parity proof per state: the new function's emitted SQL is **byte-identical** to the pre-migration template extracted from main, parameters and row mapping equal, on recording mocks. Per-state batchSync tests unmodified and green. Remaining: the 12-state column-list cohort (needs `linkColumns` + per-state `mapRow`), then real-delta states only if their deltas land behind config.
 
+**Column-list cohort pilot: districtOfColumbia migrated** (smallest delta — `committee_key` for `committee_id`; `linkColumns: ["committee_key", "committee_name"]` + a mapRow producing the state's `committeeKey` field; due-row type kept literal since its field names differ from the canonical row). Same parity proof as the canonical cohort: emitted SQL byte-identical to the pre-migration template from main, params + mapping equal; per-state tests untouched. Remaining 11 column-list states follow in ~2 wave PRs: alaska, hawaii, illinois, louisiana, massachusetts, newYork, tennessee, utah, vermont, virginia, wisconsin.
+
 ### Phase 3 — loaders, after characterization tests
 
 Descriptor redesign first: the current single committee-column option is insufficient — verified Washington uses `link.committee_id` but `outside_group.sponsor_id`/`sponsor_name` in the same file. Per-relation descriptor:
@@ -101,6 +103,19 @@ Descriptor redesign first: the current single committee-column option is insuffi
 Keep it a descriptor, not a query DSL. If a state needs genuinely different SQL (New York's classified-industry handling), it stays unmigrated rather than growing the descriptor.
 
 Cohorts: ~26 exact-name non-city loaders remain (31 modules − 3 migrated − 2 cities). Each cohort PR: characterization test capturing current loader output on fixtures **before** the swap (existing coverage is 10 of 31). Differently-named loaders (alaska, arizona, pennsylvania) and Florida (has no lookup loader file) are a final, shape-verified cohort — include or formally drop after inspection.
+
+### ⏸ Pause point — add new states (and cities) here, after Phase 3
+
+**The best time to add new states is after Phase 3 lands** (writer factory + due-list builder + shared loader all exist). At that point a new state is mostly config: canonical schema, a thin factory writer wrapper, a due-list builder config, a loader descriptor, plus the genuinely bespoke parts (resolver, portal client/parser, eligible offices). Do not wait for Phases 4–6: auto-link is cheap to copy from a sibling, and Phases 5–6 only concern old states' odd schemas and orchestration — they never block a canonically-built new state.
+
+Rules for any new state, whenever it's added:
+
+- **Canonical schema first** — 5 standard tables, `committee_id`/`committee_name` identity, standard summary columns, no extra link columns unless the source data truly cannot fit. Schema drift is what created the 34-way mess this plan is unwinding.
+- Writer = factory wrapper from day one (arizona/oregon pattern); due-list = builder config from day one. Zero migration debt.
+- If added **before** Phase 3: copy the loader and auto-link from a migrated sibling (texas/illinois pattern) and write the loader characterization test up front, so the state sweeps into Phase 3/4 cohorts cheaply instead of joining the untested backlog.
+- A product deadline may pull a state in earlier than this pause point — that's fine under the rules above. Never add a state as a bespoke 4–5k-line copy.
+
+**Cities**: add whenever the product needs them; NYC/LA showed cities don't fit the standard shape (own tables, own summary fields), so a new city stays mostly custom regardless of refactor progress. Timing is product-driven, not refactor-driven.
 
 ### Phase 4 — auto-link primitives
 
