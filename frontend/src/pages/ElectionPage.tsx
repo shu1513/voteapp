@@ -351,34 +351,61 @@ export function ElectionPage() {
           <h2 className="text-lg font-semibold text-dem-blue">Ballot Measure</h2>
           {measure.research_area_tags.length > 0 ? (
             // Comma-separated colored text, not boxed chips (boxes read as
-            // buttons). Stance colors the name: green = the measure works
-            // for that area, red = against it. Stance wins over the
-            // saved-area green (same hue anyway for "for"); stanceless tags
-            // keep the saved/muted styling. The direction renders as visible
-            // text — color alone would be invisible to color-blind readers —
-            // and saved areas keep the sr-only cue used elsewhere.
-            <p className="mt-2 text-xs">
-              {measure.research_area_tags.map((tag, index, all) => (
-                <Fragment key={tag.research_area_id}>
-                  <span
-                    className={
-                      tag.stance === "for"
-                        ? "font-medium text-green-900"
-                        : tag.stance === "against"
-                          ? "font-medium text-red-900"
-                          : savedAreaIds.has(tag.research_area_id)
-                            ? "font-medium text-green-900"
-                            : "text-ink-soft"
-                    }
-                  >
-                    {tag.name}
-                    {tag.stance === "for" || tag.stance === "against" ? ` (${tag.stance})` : null}
-                    {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
-                  </span>
-                  {index < all.length - 1 ? ", " : null}
-                </Fragment>
-              ))}
-            </p>
+            // buttons). Tags group by stance under a leading verb
+            // ("Supports: X, Y" / "Opposes: Z") so the direction reads once
+            // per group instead of as a "(for)" suffix on every name. Color
+            // matches the YES/NO boxes below (green = supports, red =
+            // opposes), but the verb carries the meaning — color alone would
+            // be invisible to color-blind readers. Stanceless tags keep the
+            // ballot cards' "Affects:" label and saved/muted styling, and
+            // saved areas keep the sr-only cue used elsewhere.
+            <div className="mt-2 space-y-1 text-xs">
+              {(
+                [
+                  ["Supports:", "for", "font-medium text-green-900"],
+                  ["Opposes:", "against", "font-medium text-red-900"],
+                ] as const
+              ).map(([label, stance, tagClass]) => {
+                const tags = measure.research_area_tags.filter((tag) => tag.stance === stance);
+                if (tags.length === 0) {
+                  return null;
+                }
+                return (
+                  <p key={stance}>
+                    <span className="font-medium text-ink-soft">{label}</span>{" "}
+                    {tags.map((tag, index, all) => (
+                      <Fragment key={tag.research_area_id}>
+                        <span className={tagClass}>
+                          {tag.name}
+                          {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
+                        </span>
+                        {index < all.length - 1 ? ", " : null}
+                      </Fragment>
+                    ))}
+                  </p>
+                );
+              })}
+              {measure.research_area_tags.some((tag) => tag.stance !== "for" && tag.stance !== "against") ? (
+                <p>
+                  <span className="font-medium text-ink-soft">Affects:</span>{" "}
+                  {measure.research_area_tags
+                    .filter((tag) => tag.stance !== "for" && tag.stance !== "against")
+                    .map((tag, index, all) => (
+                      <Fragment key={tag.research_area_id}>
+                        <span
+                          className={
+                            savedAreaIds.has(tag.research_area_id) ? "font-medium text-green-900" : "text-ink-soft"
+                          }
+                        >
+                          {tag.name}
+                          {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
+                        </span>
+                        {index < all.length - 1 ? ", " : null}
+                      </Fragment>
+                    ))}
+                </p>
+              ) : null}
+            </div>
           ) : null}
           {measure.summary ? <p className="mt-2 text-sm text-ink">{measure.summary}</p> : null}
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
