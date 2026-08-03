@@ -121,4 +121,31 @@ describe("standardStateFinanceBallotLookupLoader identity descriptor", () => {
       `Invalid standard finance ${kind} identity column`
     );
   });
+
+  it("narrows the direct-breakdown filter under directBreakdownCategoryTypes", async () => {
+    const queries = await captureQueries({ directBreakdownCategoryTypes: ["contribution_size"] });
+    const [, direct, ...rest] = queries as [string, string, string, string, string];
+
+    expect(direct).toContain("breakdown.category_type IN ('contribution_size')");
+    expect(direct).not.toContain("'occupation'");
+    // Only the direct-breakdown query changes; the evidence label filter is a
+    // separate option and stays at its default.
+    for (const sql of rest) {
+      expect(sql).not.toContain("IN ('contribution_size')");
+    }
+  });
+
+  it("keeps the default direct-breakdown filter byte-identical", async () => {
+    const queries = await captureQueries({});
+    expect(queries[1]).toContain("WHERE breakdown.category_type IN ('occupation', 'contribution_size')");
+  });
+
+  it.each([
+    ["empty list", { directBreakdownCategoryTypes: [] }],
+    ["unroutable type", { directBreakdownCategoryTypes: ["industry"] }],
+  ])("rejects %s direct category types", async (_label, overrides) => {
+    await expect(captureQueries(overrides as unknown as LoadOverrides)).rejects.toThrow(
+      "Invalid standard finance direct category types"
+    );
+  });
 });
