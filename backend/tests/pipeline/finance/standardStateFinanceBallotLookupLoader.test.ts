@@ -148,4 +148,49 @@ describe("standardStateFinanceBallotLookupLoader identity descriptor", () => {
       "Invalid standard finance direct category types"
     );
   });
+
+  it.each([
+    [undefined, "independent spending supporting this candidate"],
+    ["PAC contributions supporting this candidate", "PAC contributions supporting this candidate"],
+  ])("outsideSupportActionLabel %s puts %s into the explanation", async (label, expectedAction) => {
+    let calls = 0;
+    const query = vi.fn(async () => {
+      calls += 1;
+      if (calls === 1) {
+        return { rows: [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID, election_year: 2026 }] };
+      }
+      if (calls === 4) {
+        return {
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              support_oppose: "support",
+              category_name: "energy",
+              amount: "800",
+              contributor_count: null,
+              source_url: null,
+            },
+          ],
+        };
+      }
+      return { rows: [] };
+    });
+
+    const result = await loadStandardStateFinanceSummariesByCandidateElection({
+      db: { query },
+      candidateRows: [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID }],
+      electionRows: [{ election_id: ELECTION_ID, state: "WA" }],
+      state: "WA",
+      source: "WASHINGTON_PDC" as never,
+      sourceUrl: "https://www.pdc.wa.gov/",
+      enabled: () => true,
+      tables: TABLES,
+      ...(label ? { outsideSupportActionLabel: label } : {}),
+    });
+
+    const summary = result.get(`${CANDIDATE_ID}\u0000${ELECTION_ID}`);
+    const explanation = summary?.backing_summary.top_outside_supporting_industries[0]?.explanation;
+    expect(explanation).toContain(expectedAction);
+  });
 });
