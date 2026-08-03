@@ -352,9 +352,12 @@ export function PicksPage() {
         ) : null}
       </section>
 
-      <ResearchAreasSection />
-
+      {/* Candidates before issue areas: both are "my" lists, but followed
+          candidates are people the voter actively picked — the closer read
+          after the pick cards. */}
       <FollowedCandidatesSection />
+
+      <ResearchAreasSection />
     </div>
   );
 }

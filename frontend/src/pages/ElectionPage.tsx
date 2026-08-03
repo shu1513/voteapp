@@ -2,7 +2,6 @@ import { Fragment, useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { ElectionDetail, PartyBucket } from "@voteapp/api-client";
-import { BackLink } from "../components/BackLink";
 import { DetailPager } from "../components/DetailPager";
 import { pagerNeighbors, readElectionNavState, type CandidateNavState } from "../lib/detailNavContext";
 import { JsonLdScript } from "../components/JsonLdScript";
@@ -189,21 +188,15 @@ export function ElectionPage() {
   const researchAreas = data.research_areas ?? [];
   const orderedAreas = splitResearchAreasBySaved(researchAreas, weights);
   const showOfficeInfo = data.race_type !== "ballot_measure" && (office !== null || researchAreas.length > 0);
-  // Where "back" goes: the list the visitor actually left (router state, when
-  // it validates) — otherwise this district's ballot, the one list that's
-  // always constructible from the payload alone. The fallback label names the
-  // district instead of claiming "All elections": that ballot is one district
-  // and drops elections past the recency window.
+  // The nav bar exists only for in-app arrivals: router state carries where
+  // "back" goes and the ballot sequence. Deep links (shares, search
+  // engines) have neither — they get no bar at all, by product choice.
   const location = useLocation();
   const navState = readElectionNavState(location.state);
-  // Bottom pager over the ballot sequence the visitor arrived with; null
-  // (no pager) on deep links, single-contest lists, or when this election
-  // fell out of the snapshot.
+  // Prev/next over the ballot sequence the visitor arrived with; null (back
+  // slot only) on single-contest lists or when this election fell out of
+  // the snapshot.
   const contestNeighbors = pagerNeighbors(navState?.contests, data.id);
-  const backTo = navState?.backTo ?? {
-    path: `/ballot?d=${data.district_id}`,
-    label: `Elections in ${formatDistrictName(data.district.name)}`,
-  };
   // Computed once, before render: the roster links hand the candidate page
   // this exact displayed order (sort + party + records filters applied), so
   // the JSX and the state payload must come from the same array.
@@ -222,9 +215,27 @@ export function ElectionPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      {/* backState: when the back destination is a candidate page, restore
+      {/* One nav bar at the top: prev | back | next, each slot captioned.
+          backToState: when the back destination is a candidate page, restore
           its own context (the mirror of the roster links' backState). */}
-      <BackLink backTo={backTo} state={navState?.backState} />
+      {navState ? (
+        <DetailPager
+          ariaLabel="Ballot navigation"
+          prev={
+            contestNeighbors?.prev
+              ? { path: `/elections/${contestNeighbors.prev.id}`, label: contestNeighbors.prev.title }
+              : null
+          }
+          next={
+            contestNeighbors?.next
+              ? { path: `/elections/${contestNeighbors.next.id}`, label: contestNeighbors.next.title }
+              : null
+          }
+          backTo={navState.backTo}
+          backToState={navState.backState}
+          siblingState={navState}
+        />
+      ) : null}
       <JsonLdScript
         data={{
           "@type": "Event",
@@ -694,29 +705,6 @@ export function ElectionPage() {
             <SourceLine key={url} url={url} />
           ))}
         </section>
-      ) : null}
-
-      {/* Walk the ballot contest-by-contest in the exact order the list
-          page displayed (state-gated: hidden on deep links, where no
-          sequence exists). Renders only when the sequence contains this
-          election — pagerNeighbors. */}
-      {contestNeighbors ? (
-        <DetailPager
-          ariaLabel="Ballot navigation"
-          prev={
-            contestNeighbors.prev
-              ? { path: `/elections/${contestNeighbors.prev.id}`, label: contestNeighbors.prev.title }
-              : null
-          }
-          next={
-            contestNeighbors.next
-              ? { path: `/elections/${contestNeighbors.next.id}`, label: contestNeighbors.next.title }
-              : null
-          }
-          backTo={backTo}
-          backToState={navState?.backState}
-          siblingState={navState}
-        />
       ) : null}
 
       {/* Last on purpose: reporting is a reaction to reading the page, not a
