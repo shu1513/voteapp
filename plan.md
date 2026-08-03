@@ -48,7 +48,7 @@ City outliers: `newYorkCityFinance` and `losAngelesCityFinance` writers are ~35%
 | Same-source link supersession in replaceSnapshot | 2 of 35 (ME `cfis_bulk`, MD `cfs_public_export`) | **configurable since second-wave prep PR** (`supersededLinkSource`) |
 | Summary upsert policy | States split across replace-all, COALESCE-all, and mixed (see matrix) | **configurable since PR #488** (`summaryUpdatePolicy`, default = old COALESCE-all) |
 | Election-year floor | NJ 1980, FL 1996, UT 1998, 20 states 2000, CA/CO 2001, AZ 2002, CT 2008, OK 2014, NM 2020, NE 2021 | **required config since PR #488** (`minElectionYear`; was hardcoded 2014) |
-| Outside-group identity columns | 9 states factory-canonical `committee_id`; 4 `committee_key`; 3 `sponsor_id`; 8 one-offs (see matrix) | no — hardcoded `committee_id`/`committee_name` |
+| Outside-group identity columns | 9 states factory-canonical `committee_id`; 4 `committee_key`; 3 `sponsor_id`; 8 one-offs (see matrix) | **configurable since PR #509** (`outsideGroupIdentityColumns`, default `committee_id`/`committee_name`) |
 
 A bug fixed in one state's writer today fixes 1 of 32 copies.
 
