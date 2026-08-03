@@ -120,6 +120,13 @@ function assertIdentifier(value: string): string {
   return value;
 }
 
+function assertOutsideIdentityColumn(label: string, value: string): string {
+  if (!/^[a-z][a-z0-9_]*$/.test(value)) {
+    throw new Error(`Invalid ${label} outside-group identity column: ${value}`);
+  }
+  return value;
+}
+
 function requireNonEmpty(value: string, fieldName: string): string {
   const trimmed = value.trim();
   if (trimmed.length === 0) {
@@ -191,6 +198,18 @@ export function createStandardStateFinanceSnapshotWriter(config: {
    * in Maine/Maryland). Applies to replaceSnapshot only, not upsertLink.
    */
   supersededLinkSource?: string;
+  /**
+   * Column names for the outside-group identity in the outside-groups and
+   * outside-group-breakdowns tables. Defaults match the canonical schema:
+   * id "committee_id", name "committee_name". Sponsor-identity states
+   * (e.g. Oregon's sponsor_id/sponsor_name) override both. Input fields stay
+   * committeeId/committeeName — wrappers map state-specific field names onto
+   * them. Interpolated into SQL, so validated as identifiers at construction.
+   */
+  outsideGroupIdentityColumns?: {
+    id?: string;
+    name?: string;
+  };
 }): StandardStateFinanceSnapshotWriter {
   const label = config.label;
   const tables = Object.fromEntries(
@@ -209,6 +228,12 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     throw new Error(`Invalid ${label} superseded link source: ${config.supersededLinkSource}`);
   }
   const supersededLinkSource = config.supersededLinkSource;
+  // Interpolated into SQL like the table names, so identifier-validate both.
+  const outsideIdColumn = assertOutsideIdentityColumn(label, config.outsideGroupIdentityColumns?.id ?? "committee_id");
+  const outsideNameColumn = assertOutsideIdentityColumn(
+    label,
+    config.outsideGroupIdentityColumns?.name ?? "committee_name"
+  );
 
   function normalizeElectionYear(value: number): number {
     if (!Number.isInteger(value) || value < minElectionYear || value > 2100) {
@@ -454,17 +479,17 @@ export function createStandardStateFinanceSnapshotWriter(config: {
       INSERT INTO public.${tables.outsideGroups} (
         link_id,
         election_year,
-        committee_id,
-        committee_name,
+        ${outsideIdColumn},
+        ${outsideNameColumn},
         support_oppose,
         amount,
         source_url,
         last_synced_at
       )
       VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
-      ON CONFLICT (link_id, election_year, committee_id, support_oppose)
+      ON CONFLICT (link_id, election_year, ${outsideIdColumn}, support_oppose)
       DO UPDATE SET
-        committee_name = EXCLUDED.committee_name,
+        ${outsideNameColumn} = EXCLUDED.${outsideNameColumn},
         amount = EXCLUDED.amount,
         source_url = EXCLUDED.source_url,
         last_synced_at = EXCLUDED.last_synced_at
@@ -494,7 +519,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
       INSERT INTO public.${tables.outsideGroupBreakdowns} (
         link_id,
         election_year,
-        committee_id,
+        ${outsideIdColumn},
         support_oppose,
         category_type,
         category_name,
@@ -504,7 +529,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
         last_synced_at
       )
       VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
-      ON CONFLICT (link_id, election_year, committee_id, support_oppose, category_type, category_name)
+      ON CONFLICT (link_id, election_year, ${outsideIdColumn}, support_oppose, category_type, category_name)
       DO UPDATE SET
         amount = EXCLUDED.amount,
         contributor_count = EXCLUDED.contributor_count,
@@ -563,7 +588,10 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     breakdowns: readonly StandardStateFinanceOutsideGroupBreakdownInput[];
   }): Promise<void> {
     const keys = input.breakdowns.map((breakdown) => ({
-      committee_id: normalizeCommitteeId(requireNonEmpty(breakdown.committeeId, `${label} outside breakdown committee id`)),
+      // Key name must match the recordset column alias below.
+      [outsideIdColumn]: normalizeCommitteeId(
+        requireNonEmpty(breakdown.committeeId, `${label} outside breakdown committee id`)
+      ),
       support_oppose: breakdown.supportOppose,
       category_type: breakdown.categoryType,
       category_name: requireNonEmpty(breakdown.categoryName, `${label} outside breakdown category`),
@@ -577,12 +605,12 @@ export function createStandardStateFinanceSnapshotWriter(config: {
         AND NOT EXISTS (
           SELECT 1
           FROM jsonb_to_recordset($3::jsonb) AS keep(
-            committee_id text,
+            ${outsideIdColumn} text,
             support_oppose text,
             category_type text,
             category_name text
           )
-          WHERE keep.committee_id = ${tables.outsideGroupBreakdowns}.committee_id
+          WHERE keep.${outsideIdColumn} = ${tables.outsideGroupBreakdowns}.${outsideIdColumn}
             AND keep.support_oppose = ${tables.outsideGroupBreakdowns}.support_oppose
             AND keep.category_type = ${tables.outsideGroupBreakdowns}.category_type
             AND keep.category_name = ${tables.outsideGroupBreakdowns}.category_name
@@ -599,7 +627,8 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     groups: readonly StandardStateFinanceOutsideGroupInput[];
   }): Promise<void> {
     const keys = input.groups.map((group) => ({
-      committee_id: normalizeCommitteeId(requireNonEmpty(group.committeeId, `${label} outside group committee id`)),
+      // Key name must match the recordset column alias below.
+      [outsideIdColumn]: normalizeCommitteeId(requireNonEmpty(group.committeeId, `${label} outside group committee id`)),
       support_oppose: group.supportOppose,
     }));
 
@@ -611,10 +640,10 @@ export function createStandardStateFinanceSnapshotWriter(config: {
         AND NOT EXISTS (
           SELECT 1
           FROM jsonb_to_recordset($3::jsonb) AS keep(
-            committee_id text,
+            ${outsideIdColumn} text,
             support_oppose text
           )
-          WHERE keep.committee_id = ${tables.outsideGroups}.committee_id
+          WHERE keep.${outsideIdColumn} = ${tables.outsideGroups}.${outsideIdColumn}
             AND keep.support_oppose = ${tables.outsideGroups}.support_oppose
         )
     `,
