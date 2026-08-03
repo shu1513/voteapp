@@ -1,5 +1,6 @@
 import type { Pool, PoolClient } from "pg";
 
+import { createStandardStateFinanceDueListQuery } from "../finance/standardStateFinanceDueListQuery.js";
 import type { FinanceIndustryClassifier } from "../finance/financeIndustryClassificationService.js";
 import {
   aggregateIllinoisOutsideSpending,
@@ -107,25 +108,6 @@ export type IllinoisCandidateFinanceBatchSyncResult = {
   results: IllinoisCandidateFinanceBatchSyncItemResult[];
 };
 
-type IllinoisCandidateFinanceDueQueryRow = {
-  candidate_id: string;
-  election_id: string;
-  candidate_name: string;
-  election_year: number;
-  office_scope: string;
-  office_name: string;
-  district: string | null;
-  sbe_candidate_id: string | null;
-  sbe_district_type: string | null;
-  sbe_office: string | null;
-  is_at_large: boolean | null;
-  committee_key: string;
-  committee_name: string;
-  source_url: string | null;
-  last_synced_at: string | null;
-  total_due_rows: string | number;
-};
-
 const DEFAULT_MAX_CANDIDATES = 25;
 const DEFAULT_STALE_AFTER_DAYS = 7;
 const DEFAULT_POST_ELECTION_FINANCE_SYNC_GRACE_DAYS = 1;
@@ -144,31 +126,6 @@ function normalizePositiveInteger(value: number | undefined, fallback: number, l
     throw new Error(`Invalid Illinois finance batch sync ${label}: ${value}`);
   }
   return normalized;
-}
-
-function parseTotalDueRows(value: string | number | undefined): number {
-  const parsed = typeof value === "number" ? value : Number(value);
-  return Number.isSafeInteger(parsed) && parsed >= 0 ? parsed : 0;
-}
-
-function mapDueRow(row: IllinoisCandidateFinanceDueQueryRow): IllinoisCandidateFinanceDueRow {
-  return {
-    candidateId: row.candidate_id,
-    electionId: row.election_id,
-    candidateName: row.candidate_name,
-    electionYear: row.election_year,
-    officeScope: row.office_scope,
-    officeName: row.office_name,
-    district: row.district,
-    sbeCandidateId: row.sbe_candidate_id,
-    sbeDistrictType: row.sbe_district_type,
-    sbeOffice: row.sbe_office,
-    isAtLarge: row.is_at_large,
-    committeeKey: row.committee_key,
-    committeeName: row.committee_name,
-    sourceUrl: row.source_url,
-    lastSyncedAt: row.last_synced_at,
-  };
 }
 
 function cycleStartDate(electionYear: number): string {
@@ -319,107 +276,34 @@ export async function loadIllinoisFinanceDataForDueRow(
   };
 }
 
-export async function listDueIllinoisCandidateFinanceSyncRows(
-  db: Queryable,
-  input: {
-    now: Date;
-    staleAfterDays: number;
-    maxCandidates: number;
-    electionLookbackDays: number;
-    electionLookaheadDays: number;
-  }
-): Promise<{ rows: IllinoisCandidateFinanceDueRow[]; totalDueRows: number }> {
-  const result = await db.query<IllinoisCandidateFinanceDueQueryRow>(
-    `
-      WITH due AS (
-        SELECT
-          link.candidate_id::text AS candidate_id,
-          link.election_id::text AS election_id,
-          COALESCE(
-            NULLIF(trim(candidate.display_name), ''),
-            NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), ''),
-            link.candidate_name_normalized
-          ) AS candidate_name,
-          link.election_year,
-          office.scope AS office_scope,
-          link.office_name,
-          link.district,
-          link.sbe_candidate_id,
-          link.sbe_district_type,
-          link.sbe_office,
-          link.is_at_large,
-          link.committee_key,
-          link.committee_name,
-          link.source_url,
-          summary.last_synced_at::text AS last_synced_at,
-          COUNT(*) OVER () AS total_due_rows
-        FROM public.il_candidate_finance_links AS link
-        JOIN public.candidates AS candidate
-          ON candidate.id = link.candidate_id
-        JOIN public.candidate_elections AS candidate_election
-          ON candidate_election.candidate_id = link.candidate_id
-         AND candidate_election.election_id = link.election_id
-        JOIN public.elections AS election
-          ON election.id = link.election_id
-        JOIN public.districts AS district
-          ON district.id = election.district_id
-        LEFT JOIN public.offices AS office
-          ON office.id = election.office_id
-        LEFT JOIN public.il_candidate_finance_summaries AS summary
-          ON summary.link_id = link.id
-         AND summary.election_year = link.election_year
-        WHERE link.link_status = 'active'
-          AND candidate.deleted_at IS NULL
-          AND district.state = 'IL'
-          AND election.race_type = 'office'
-          AND election.election_date >= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $4::int))
-          AND election.election_date <= (($1::timestamptz AT TIME ZONE 'UTC')::date + make_interval(days => $5::int))
-          AND candidate_election.status NOT IN ('withdrawn', 'lost')
-          AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
-          AND (
-            summary.last_synced_at IS NULL
-            OR summary.last_synced_at < ($1::timestamptz - make_interval(days => $2::int))
-          )
-        ORDER BY summary.last_synced_at ASC NULLS FIRST,
-                 election.election_date ASC,
-                 link.candidate_name_normalized ASC,
-                 link.id ASC
-        LIMIT $3::int
-      )
-      SELECT
-        candidate_id,
-        election_id,
-        candidate_name,
-        election_year,
-        office_scope,
-        office_name,
-        district,
-        sbe_candidate_id,
-        sbe_district_type,
-        sbe_office,
-        is_at_large,
-        committee_key,
-        committee_name,
-        source_url,
-        last_synced_at,
-        total_due_rows
-      FROM due
-    `,
-    [
-      input.now.toISOString(),
-      input.staleAfterDays,
-      input.maxCandidates,
-      input.electionLookbackDays,
-      input.electionLookaheadDays,
-      [...ILLINOIS_FINANCE_ELIGIBLE_OFFICE_KEYS],
-    ]
-  );
-
-  return {
-    rows: result.rows.map(mapDueRow),
-    totalDueRows: result.rows.length > 0 ? parseTotalDueRows(result.rows[0]?.total_due_rows) : 0,
-  };
-}
+// Illinois links carry the SBE candidate identity columns alongside the
+// committee_key identity used by the sync loop.
+export const listDueIllinoisCandidateFinanceSyncRows = createStandardStateFinanceDueListQuery({
+  state: "IL",
+  tables: {
+    links: "il_candidate_finance_links",
+    summaries: "il_candidate_finance_summaries",
+  },
+  eligibleOfficeKeys: ILLINOIS_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  linkColumns: ["sbe_candidate_id", "sbe_district_type", "sbe_office", "is_at_large", "committee_key", "committee_name"],
+  mapRow: (row): IllinoisCandidateFinanceDueRow => ({
+    candidateId: row.candidate_id,
+    electionId: row.election_id,
+    candidateName: row.candidate_name,
+    electionYear: row.election_year,
+    officeScope: row.office_scope,
+    officeName: row.office_name,
+    district: row.district,
+    sbeCandidateId: row.sbe_candidate_id as string | null,
+    sbeDistrictType: row.sbe_district_type as string | null,
+    sbeOffice: row.sbe_office as string | null,
+    isAtLarge: row.is_at_large as boolean | null,
+    committeeKey: row.committee_key as string,
+    committeeName: row.committee_name as string,
+    sourceUrl: row.source_url,
+    lastSyncedAt: row.last_synced_at,
+  }),
+});
 
 export async function syncDueIllinoisCandidateFinance(
   input: IllinoisCandidateFinanceBatchSyncInput
