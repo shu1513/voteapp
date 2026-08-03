@@ -10,6 +10,12 @@ import { loadStandardStateFinanceSummariesByCandidateElection } from "../finance
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 
+// The bespoke loader exported its own row types; the wrapper keeps the names
+// (working rule: exported names/types survive migration) as aliases of the
+// shared request rows, whose extra election fields are all optional.
+export type ArizonaFinanceBallotLookupCandidateRow = StateFinanceRequestCandidateRow;
+export type ArizonaFinanceBallotLookupElectionRow = StateFinanceRequestElectionRow;
+
 const GENERIC_ARIZONA_SPOTLIGHT_SOURCE_URL = "https://seethemoney.az.gov/Reporting/Explore";
 
 export async function loadArizonaCandidateFinanceSummariesByCandidateElection(

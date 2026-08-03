@@ -1,7 +1,10 @@
 import { expect, it, vi } from "vitest";
 
 import { buildOutsideIndustrySupportExplanation } from "../../src/pipeline/address/ballotLookupFinanceShared.js";
-import type { BallotLookupFinanceSummary } from "../../src/pipeline/address/ballotLookupFinanceShared.js";
+import type {
+  BallotLookupFinanceOutsideIndustrySupportEvidence,
+  BallotLookupFinanceSummary,
+} from "../../src/pipeline/address/ballotLookupFinanceShared.js";
 import { migrationTableColumns } from "./migrationTableColumns.js";
 
 type MockDb = { query: ReturnType<typeof vi.fn> };
@@ -215,7 +218,7 @@ function buildExpected(spec: StateFinanceLoaderCharacterizationSpec): Map<string
   const opposingIndustriesA = [
     { category_name: "law", amount: 100, contributor_count: null, source_url: spec.genericSourceUrl },
   ];
-  const energyOrganizations = [
+  const energyOrganizations: BallotLookupFinanceOutsideIndustrySupportEvidence[] = [
     {
       organization_name: "Acme Corp",
       organization_type: "donor",
@@ -292,7 +295,7 @@ function buildExpected(spec: StateFinanceLoaderCharacterizationSpec): Map<string
             },
           ],
         },
-      } as BallotLookupFinanceSummary,
+      } satisfies BallotLookupFinanceSummary,
     ],
     [
       key(CANDIDATE_B, ELECTION_B),
@@ -324,7 +327,7 @@ function buildExpected(spec: StateFinanceLoaderCharacterizationSpec): Map<string
           top_direct_donor_occupations: occupationsB,
           top_outside_supporting_industries: [],
         },
-      } as BallotLookupFinanceSummary,
+      } satisfies BallotLookupFinanceSummary,
     ],
   ]);
 }
