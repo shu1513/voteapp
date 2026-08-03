@@ -122,6 +122,8 @@ Every non-city batchSync exports `listDue<State>CandidateFinanceSyncRows(db, {no
 
 The shared builder (`createStandardStateFinanceDueListQuery` in `finance/standardStateFinanceDueListQuery.ts`, Phase 2 builder PR) covers the first two groups: config `{state, tables: {links, summaries}, eligibleOfficeKeys, linkColumns?, mapRow?}`, canonical defaults, byte-identical to the bespoke Texas SQL under canonical config (verified). Real-delta states migrate only if their delta lands behind config in its own PR — or they keep their bespoke query.
 
+**The 8-state canonical cohort is migrated** (single PR after the builder PR): their `listDue*` exports are builder instances under canonical config, due-row types alias `StandardStateFinanceDueRow`, private query-row types and `parseTotalDueRows`/`mapDueRow` helpers deleted. Per-state parity verified: emitted SQL byte-identical to the pre-migration template from main, parameters and mapping equal; per-state batchSync tests unmodified. The 12-state column-list cohort is next (each needs `linkColumns` + a state `mapRow`).
+
 ## Auto-link shape
 
 - **Standalone file with resolve + write** (wrapper-equivalent candidates): 26 modules.

@@ -113,7 +113,9 @@ describe("createStandardStateFinanceDueListQuery", () => {
     ]);
   });
 
-  it("matches the bespoke Texas due-list query, parameters, and mapping", async () => {
+  // Texas migrated onto the builder in the canonical-cohort PR, so this now
+  // pins that the exported Texas function stays on the canonical config.
+  it("matches the Texas due-list query, parameters, and mapping", async () => {
     const rows = [
       dueRow(),
       dueRow({
