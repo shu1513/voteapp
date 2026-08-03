@@ -91,7 +91,7 @@ export function ResearchAreaPicker({ areas, orderedIds, disabled, onChange }: Re
         </p>
       )}
       <p className="mt-4 text-sm font-medium text-ink">
-        Add issues{" "}
+        Choose issues{" "}
         <span className="font-normal text-ink-soft">
           ({orderedIds.length}/{MAX_RESEARCH_AREA_RANK})
         </span>
