@@ -246,7 +246,13 @@ export default function CandidateScreen() {
   const today = usLatestLocalDate();
   const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
   // The history list splits on the same date boundary as the web page: "is
-  // in" would misread on a race that finished years ago.
+  // in" would misread on a race that finished years ago — and on a race the
+  // candidate withdrew from, so the ongoing bucket also splits on candidacy
+  // status (the API keeps withdrawn links on purpose, as history).
+  const isExitedCandidacy = (election: CandidateElection): boolean =>
+    election.status === "withdrawn" || election.status === "lost";
+  const activeOngoingElections = ongoingElections.filter((election) => !isExitedCandidacy(election));
+  const exitedOngoingElections = ongoingElections.filter(isExitedCandidacy);
   const pastElections = candidate.elections.filter((election) => election.election_date < today);
   const viewOptions = [
     { value: "by_issue" as const, label: "By issue" },
@@ -339,12 +345,24 @@ export default function CandidateScreen() {
       {/* Not a bare "Elections": on a candidate screen that reads as a generic
           section of election news. Name the person and the relationship, and
           split on the election date — "is in" would misread on a race that
-          finished years ago. */}
-      {ongoingElections.length > 0 ? (
+          finished years ago, and on a race the candidate withdrew from. */}
+      {activeOngoingElections.length > 0 ? (
         <ElectionHistorySection
-          heading={`${ongoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is in:`}
-          elections={ongoingElections}
+          heading={`${activeOngoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is in:`}
+          elections={activeOngoingElections}
           // Ongoing races already show finance eagerly above.
+          showPastFinance={false}
+          candidateId={candidate.candidate_id}
+        />
+      ) : null}
+
+      {exitedOngoingElections.length > 0 ? (
+        <ElectionHistorySection
+          heading={`${exitedOngoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is no longer in:`}
+          elections={exitedOngoingElections}
+          // The eager finance sections above cover every ongoing election,
+          // exited candidacies included — money raised stays real after a
+          // withdrawal — so these rows need no on-demand toggle either.
           showPastFinance={false}
           candidateId={candidate.candidate_id}
         />

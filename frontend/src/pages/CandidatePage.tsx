@@ -410,7 +410,15 @@ export function CandidatePage() {
   const today = usLatestLocalDate();
   const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
   // The history list splits on the same date boundary: "is in" would misread
-  // on a race that finished years ago.
+  // on a race that finished years ago. Within the ongoing bucket it also
+  // splits on candidacy status — a withdrawn (or eliminated) candidate is
+  // not "in" a race whose date is still ahead, but the candidacy stays
+  // visible as history (the API keeps withdrawn links on purpose). Same
+  // status rule as officeCandidacies below.
+  const isExitedCandidacy = (election: CandidateElection): boolean =>
+    election.status === "withdrawn" || election.status === "lost";
+  const activeOngoingElections = ongoingElections.filter((election) => !isExitedCandidacy(election));
+  const exitedOngoingElections = ongoingElections.filter(isExitedCandidacy);
   const pastElections = candidate.elections.filter((election) => election.election_date < today);
   // "My choice" rows: one per ongoing OFFICE candidacy the candidate hasn't
   // withdrawn or lost — a candidate can be in several races at once (and
@@ -647,11 +655,19 @@ export function CandidatePage() {
       {/* Not a bare "Elections": on a candidate page that reads as a generic
           section of election news. Name the person and the relationship, and
           split on the election date — "is in" would misread on a race that
-          finished years ago. */}
-      {ongoingElections.length > 0 ? (
+          finished years ago, and on a race the candidate withdrew from. */}
+      {activeOngoingElections.length > 0 ? (
         <ElectionHistorySection
-          heading={`${ongoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is in:`}
-          elections={ongoingElections}
+          heading={`${activeOngoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is in:`}
+          elections={activeOngoingElections}
+          navState={electionNavState}
+        />
+      ) : null}
+
+      {exitedOngoingElections.length > 0 ? (
+        <ElectionHistorySection
+          heading={`${exitedOngoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is no longer in:`}
+          elections={exitedOngoingElections}
           navState={electionNavState}
         />
       ) : null}
