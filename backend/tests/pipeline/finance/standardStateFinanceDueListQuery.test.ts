@@ -46,6 +46,78 @@ function normalizeSql(sql: string): string {
   return sql.replace(/\s+/g, " ").trim();
 }
 
+// Byte-for-byte pin of the canonical template under Texas config. The
+// remaining migration waves verify each state by byte-comparing builder output
+// against that state's bespoke SQL, so template drift (even whitespace) must
+// fail the suite. Update this literal only on a deliberate template change.
+const EXPECTED_CANONICAL_TEXAS_SQL = `
+      WITH due AS (
+        SELECT
+          link.candidate_id::text AS candidate_id,
+          link.election_id::text AS election_id,
+          COALESCE(
+            NULLIF(trim(candidate.display_name), ''),
+            NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), ''),
+            link.candidate_name_normalized
+          ) AS candidate_name,
+          link.election_year,
+          office.scope AS office_scope,
+          link.office_name,
+          link.district,
+          link.committee_id,
+          link.committee_name,
+          link.source_url,
+          summary.last_synced_at::text AS last_synced_at,
+          COUNT(*) OVER () AS total_due_rows
+        FROM public.tx_candidate_finance_links AS link
+        JOIN public.candidates AS candidate
+          ON candidate.id = link.candidate_id
+        JOIN public.candidate_elections AS candidate_election
+          ON candidate_election.candidate_id = link.candidate_id
+         AND candidate_election.election_id = link.election_id
+        JOIN public.elections AS election
+          ON election.id = link.election_id
+        JOIN public.districts AS district
+          ON district.id = election.district_id
+        LEFT JOIN public.offices AS office
+          ON office.id = election.office_id
+        LEFT JOIN public.tx_candidate_finance_summaries AS summary
+          ON summary.link_id = link.id
+         AND summary.election_year = link.election_year
+        WHERE link.link_status = 'active'
+          AND candidate.deleted_at IS NULL
+          AND district.state = 'TX'
+          AND election.race_type = 'office'
+          AND election.election_date >= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days => $4::int))
+          AND election.election_date <= (($1::timestamptz AT TIME ZONE 'UTC')::date + make_interval(days => $5::int))
+          AND candidate_election.status NOT IN ('withdrawn', 'lost')
+          AND (office.scope || '::' || office.canonical_name) = ANY($6::text[])
+          AND (
+            summary.last_synced_at IS NULL
+            OR summary.last_synced_at < ($1::timestamptz - make_interval(days => $2::int))
+          )
+        ORDER BY summary.last_synced_at ASC NULLS FIRST,
+                 election.election_date ASC,
+                 link.candidate_name_normalized ASC,
+                 link.id ASC
+        LIMIT $3::int
+      )
+      SELECT
+        candidate_id,
+        election_id,
+        candidate_name,
+        election_year,
+        office_scope,
+        office_name,
+        district,
+        committee_id,
+        committee_name,
+        source_url,
+        last_synced_at,
+        total_due_rows
+      FROM due
+    `;
+
 function createCanonicalQuery() {
   return createStandardStateFinanceDueListQuery({
     state: "TX",
@@ -111,6 +183,15 @@ describe("createStandardStateFinanceDueListQuery", () => {
       730,
       [...TEXAS_FINANCE_ELIGIBLE_OFFICE_KEYS],
     ]);
+  });
+
+  it("emits the canonical SQL template byte-for-byte", async () => {
+    const db = createMockDb();
+    const listDueRows = createCanonicalQuery();
+
+    await listDueRows(db, DUE_LIST_INPUT);
+
+    expect(String(db.query.mock.calls[0]?.[0])).toBe(EXPECTED_CANONICAL_TEXAS_SQL);
   });
 
   // Texas migrated onto the builder in the canonical-cohort PR, so this now
