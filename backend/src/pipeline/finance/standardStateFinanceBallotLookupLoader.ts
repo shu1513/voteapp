@@ -44,6 +44,20 @@ export type StandardStateFinanceTables = {
 export type StandardStateFinanceCommitteeColumn = "committee_id" | "committee_key";
 
 /**
+ * Per-relation identity overrides for states whose link and outside tables
+ * name their identity columns differently (e.g. Washington: link.committee_id
+ * but outside_group.sponsor_id/sponsor_name). Both outside relations (groups
+ * and group breakdowns) always share one identity column in every state, so a
+ * single pair covers them. Defaults preserve `committeeColumn` behavior; the
+ * emitted rows keep the canonical committee_id/committee_name aliases either
+ * way, so the row mapping never changes.
+ */
+export type StandardStateFinanceOutsideIdentityColumns = {
+  id?: string;
+  name?: string;
+};
+
+/**
  * How summary rows aggregate across a candidate's committees.
  * - "totals": sum every reported value (single-committee sources).
  * - "illinoisD2": D-2 semantics — receipts/spending only when exactly one
@@ -69,6 +83,15 @@ function assertCommitteeColumn(value: StandardStateFinanceCommitteeColumn): Stan
   return value;
 }
 
+// Interpolated into SQL, so identity columns are identifier-validated like the
+// table names above.
+function assertIdentityColumn(value: string, kind: string): string {
+  if (!/^[a-z][a-z0-9_]*$/.test(value)) {
+    throw new Error(`Invalid standard finance ${kind} identity column: ${value}`);
+  }
+  return value;
+}
+
 function assertEvidenceLabelTypes(
   values: readonly StandardStateFinanceEvidenceLabelType[]
 ): readonly StandardStateFinanceEvidenceLabelType[] {
@@ -89,6 +112,10 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
   tables: StandardStateFinanceTables;
   isEligibleElection?: (row: ElectionRow) => boolean;
   committeeColumn?: StandardStateFinanceCommitteeColumn;
+  /** Link-table identity column for the summary query; default committeeColumn. */
+  linkIdentityColumn?: string;
+  /** Outside-group + outside-group-breakdown identity columns; defaults committeeColumn/committee_name. */
+  outsideGroupIdentityColumns?: StandardStateFinanceOutsideIdentityColumns;
   summaryVariant?: StandardStateFinanceSummaryVariant;
   evidenceLabelTypes?: readonly StandardStateFinanceEvidenceLabelType[];
 }
@@ -100,6 +127,12 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
     Object.entries(input.tables).map(([name, value]) => [name, assertIdentifier(value)])
   ) as StandardStateFinanceTables;
   const committeeColumn = assertCommitteeColumn(input.committeeColumn ?? "committee_id");
+  const linkIdentityColumn = assertIdentityColumn(input.linkIdentityColumn ?? committeeColumn, "link");
+  const outsideIdColumn = assertIdentityColumn(input.outsideGroupIdentityColumns?.id ?? committeeColumn, "outside-group");
+  const outsideNameColumn = assertIdentityColumn(
+    input.outsideGroupIdentityColumns?.name ?? "committee_name",
+    "outside-group name"
+  );
   const summaryVariant = input.summaryVariant ?? "totals";
   const evidenceLabelTypes = assertEvidenceLabelTypes(input.evidenceLabelTypes ?? STANDARD_EVIDENCE_LABEL_TYPES);
   const evidenceLabelTypeList = evidenceLabelTypes.map((value) => `'${value}'`).join(", ");
@@ -113,27 +146,27 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
     summaryVariant === "illinoisD2"
       ? `
         CASE
-          WHEN count(DISTINCT link.${committeeColumn}) = 1 AND count(summary.total_receipts) > 0
+          WHEN count(DISTINCT link.${linkIdentityColumn}) = 1 AND count(summary.total_receipts) > 0
           THEN sum(summary.total_receipts)
           ELSE NULL
         END AS total_receipts,
         CASE
-          WHEN count(DISTINCT link.${committeeColumn}) = 1 AND count(summary.direct_contribution_total) > 0
+          WHEN count(DISTINCT link.${linkIdentityColumn}) = 1 AND count(summary.direct_contribution_total) > 0
           THEN sum(summary.direct_contribution_total)
           ELSE NULL
         END AS direct_contribution_total,
         CASE
-          WHEN count(DISTINCT link.${committeeColumn}) = 1 AND count(summary.total_disbursements) > 0
+          WHEN count(DISTINCT link.${linkIdentityColumn}) = 1 AND count(summary.total_disbursements) > 0
           THEN sum(summary.total_disbursements)
           ELSE NULL
         END AS total_disbursements,
         CASE
-          WHEN count(summary.cash_on_hand) = count(DISTINCT link.${committeeColumn})
+          WHEN count(summary.cash_on_hand) = count(DISTINCT link.${linkIdentityColumn})
           THEN sum(summary.cash_on_hand)
           ELSE NULL
         END AS cash_on_hand,
         CASE
-          WHEN count(summary.debts_owed) = count(DISTINCT link.${committeeColumn})
+          WHEN count(summary.debts_owed) = count(DISTINCT link.${linkIdentityColumn})
           THEN sum(summary.debts_owed)
           ELSE NULL
         END AS debts_owed,`
@@ -161,7 +194,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         requested.candidate_id::text AS candidate_id,
         requested.election_id::text AS election_id,
         CASE
-          WHEN count(DISTINCT link.${committeeColumn}) = 1 THEN min(link.${committeeColumn})
+          WHEN count(DISTINCT link.${linkIdentityColumn}) = 1 THEN min(link.${linkIdentityColumn})
           ELSE NULL
         END AS committee_id,
         max(summary.election_year) AS election_year,${summaryAggregateColumns}
@@ -257,8 +290,8 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         SELECT
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
-          outside_group.${committeeColumn} AS committee_id,
-          min(outside_group.committee_name) AS committee_name,
+          outside_group.${outsideIdColumn} AS committee_id,
+          min(outside_group.${outsideNameColumn}) AS committee_name,
           outside_group.support_oppose,
           max(outside_group.amount) AS amount,
           min(outside_group.source_url) FILTER (WHERE outside_group.source_url IS NOT NULL) AS source_url
@@ -270,7 +303,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         JOIN public.${tables.outsideGroups} AS outside_group
           ON outside_group.link_id = link.id
          AND outside_group.election_year = link.election_year
-        GROUP BY selected.candidate_id, selected.election_id, outside_group.${committeeColumn}, outside_group.support_oppose
+        GROUP BY selected.candidate_id, selected.election_id, outside_group.${outsideIdColumn}, outside_group.support_oppose
       ),
       ranked AS (
         SELECT
@@ -304,7 +337,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         SELECT
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
-          breakdown.${committeeColumn} AS committee_id,
+          breakdown.${outsideIdColumn} AS committee_id,
           breakdown.support_oppose,
           breakdown.category_name,
           max(breakdown.amount) AS amount,
@@ -325,7 +358,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         GROUP BY
           selected.candidate_id,
           selected.election_id,
-          breakdown.${committeeColumn},
+          breakdown.${outsideIdColumn},
           breakdown.support_oppose,
           breakdown.category_name
       ),
@@ -376,7 +409,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         SELECT
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
-          industry.${committeeColumn} AS committee_id,
+          industry.${outsideIdColumn} AS committee_id,
           industry.category_name AS industry_name,
           max(industry.amount) AS amount
         FROM selected
@@ -389,7 +422,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
          AND industry.election_year = link.election_year
         WHERE industry.support_oppose = 'support'
           AND industry.category_type = 'industry'
-        GROUP BY selected.candidate_id, selected.election_id, industry.${committeeColumn}, industry.category_name
+        GROUP BY selected.candidate_id, selected.election_id, industry.${outsideIdColumn}, industry.category_name
       ),
       top_industries_grouped AS (
         SELECT
@@ -418,8 +451,8 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
           selected.candidate_id::text AS candidate_id,
           selected.election_id::text AS election_id,
           top_industries.industry_name,
-          breakdown.${committeeColumn} AS committee_id,
-          COALESCE(outside_group.committee_name, breakdown.${committeeColumn}) AS committee_name,
+          breakdown.${outsideIdColumn} AS committee_id,
+          COALESCE(outside_group.${outsideNameColumn}, breakdown.${outsideIdColumn}) AS committee_name,
           breakdown.support_oppose,
           breakdown.category_name AS organization_name,
           breakdown.category_type AS organization_type,
@@ -428,7 +461,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
           COALESCE(breakdown.source_url, outside_group.source_url) AS source_url,
           row_number() OVER (
             PARTITION BY selected.candidate_id, selected.election_id, top_industries.industry_name
-            ORDER BY breakdown.amount DESC, breakdown.category_name ASC, breakdown.${committeeColumn} ASC
+            ORDER BY breakdown.amount DESC, breakdown.category_name ASC, breakdown.${outsideIdColumn} ASC
           ) AS rn
         FROM selected
         JOIN top_industries
@@ -452,7 +485,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         LEFT JOIN public.${tables.outsideGroups} AS outside_group
           ON outside_group.link_id = breakdown.link_id
          AND outside_group.election_year = breakdown.election_year
-         AND outside_group.${committeeColumn} = breakdown.${committeeColumn}
+         AND outside_group.${outsideIdColumn} = breakdown.${outsideIdColumn}
          AND outside_group.support_oppose = breakdown.support_oppose
         WHERE breakdown.category_type IN (${evidenceLabelTypeList})
           AND breakdown.support_oppose = 'support'

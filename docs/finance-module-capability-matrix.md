@@ -73,7 +73,7 @@ Val+ distribution: pairing validation `G` in 12 (two message variants — "requi
 
 ## Ballot-lookup loaders (identity columns per relation)
 
-`link.id`, `link.candidate_id`, `link.election_id`, `*.link_id` are universal and omitted. Shared loader today supports `committee_id`/`committee_key` as one column across all relations.
+`link.id`, `link.candidate_id`, `link.election_id`, `*.link_id` are universal and omitted. Shared loader supports `committee_id`/`committee_key` as one column across all relations via `committeeColumn`, plus per-relation overrides (Phase 3 descriptor PR): `linkIdentityColumn` for the summary query and `outsideGroupIdentityColumns: {id?, name?}` for the three outside queries — both identifier-validated, defaults chain through `committeeColumn` so existing configs are unchanged.
 
 | Module | File | Link identity | Outside-group / breakdown identity |
 |---|---|---|---|
