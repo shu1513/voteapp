@@ -107,7 +107,7 @@ Val+ distribution: pairing validation `G` in 12 (two message variants — "requi
 | utah | standard | `folder_id` | alt tables |
 | vermont | standard | `filer_registration_guid` | `filer_registration_guid` |
 | virginia | standard | `committee_id` | direct-only |
-| washington | standard | `committee_id` | **`sponsor_id`** (mixed) |
+| washington | **wrapper over shared loader** (descriptor-cohort pilot) | `committee_id` | `sponsor_id`/`sponsor_name` via `outsideGroupIdentityColumns` |
 | wisconsin | standard | `committee_id` | **`sponsor_id`** (mixed) |
 
 Mixed-identity states (link column ≠ outside column) are why the loader descriptor must be per-relation, not a single option.
