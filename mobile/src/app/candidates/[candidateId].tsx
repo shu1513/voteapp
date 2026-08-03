@@ -245,6 +245,9 @@ export default function CandidateScreen() {
     recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
   const today = usLatestLocalDate();
   const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
+  // The history list splits on the same date boundary as the web page: "is
+  // in" would misread on a race that finished years ago.
+  const pastElections = candidate.elections.filter((election) => election.election_date < today);
   const viewOptions = [
     { value: "by_issue" as const, label: "By issue" },
     ...(hasSaved ? [{ value: "my_issues" as const, label: "My issues first" }] : []),
@@ -333,23 +336,28 @@ export default function CandidateScreen() {
         </Text>
       )}
 
-      {candidate.elections.length > 0 ? (
-        <View className="mt-6">
-          <Text className="text-lg font-semibold text-ink">Elections</Text>
-          <View className="mt-2 rounded-xl border border-line bg-white">
-            {candidate.elections.map((election, index) => (
-              <ElectionRow
-                key={election.candidate_election_id}
-                election={election}
-                first={index === 0}
-                // Ongoing races already show finance eagerly above; past
-                // rows offer it on demand.
-                showPastFinance={election.election_date < today}
-                candidateId={candidate.candidate_id}
-              />
-            ))}
-          </View>
-        </View>
+      {/* Not a bare "Elections": on a candidate screen that reads as a generic
+          section of election news. Name the person and the relationship, and
+          split on the election date — "is in" would misread on a race that
+          finished years ago. */}
+      {ongoingElections.length > 0 ? (
+        <ElectionHistorySection
+          heading={`${ongoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is in:`}
+          elections={ongoingElections}
+          // Ongoing races already show finance eagerly above.
+          showPastFinance={false}
+          candidateId={candidate.candidate_id}
+        />
+      ) : null}
+
+      {pastElections.length > 0 ? (
+        <ElectionHistorySection
+          heading={`Past ${pastElections.length === 1 ? "race" : "races"} ${candidate.display_name} ran in:`}
+          elections={pastElections}
+          // Past rows offer finance on demand.
+          showPastFinance
+          candidateId={candidate.candidate_id}
+        />
       ) : null}
 
       {candidate.last_researched ? (
@@ -372,6 +380,37 @@ function RecordItem({ record, showTags = false }: { record: CandidateRecord; sho
           : ""}
       </Text>
       <SourceLine url={record.source_url} researchedDate={record.created_at.slice(0, 10)} />
+    </View>
+  );
+}
+
+// One election list, rendered once for the races still ahead and once for
+// the finished ones. Only the heading and the finance offer differ.
+function ElectionHistorySection({
+  heading,
+  elections,
+  showPastFinance,
+  candidateId,
+}: {
+  heading: string;
+  elections: CandidateElection[];
+  showPastFinance: boolean;
+  candidateId: string;
+}) {
+  return (
+    <View className="mt-6">
+      <Text className="text-lg font-semibold text-ink">{heading}</Text>
+      <View className="mt-2 rounded-xl border border-line bg-white">
+        {elections.map((election, index) => (
+          <ElectionRow
+            key={election.candidate_election_id}
+            election={election}
+            first={index === 0}
+            showPastFinance={showPastFinance}
+            candidateId={candidateId}
+          />
+        ))}
+      </View>
     </View>
   );
 }

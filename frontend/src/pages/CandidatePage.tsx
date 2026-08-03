@@ -301,6 +301,44 @@ function candidateShareText(candidate: { display_name: string; party: string; st
   return context ? `${candidate.display_name} (${context})` : candidate.display_name;
 }
 
+// One election list, rendered once for the races still ahead and once for
+// the finished ones. Only the heading differs.
+function ElectionHistorySection({
+  heading,
+  elections,
+  navState,
+}: {
+  heading: string;
+  elections: CandidateElection[];
+  navState: ElectionNavState;
+}) {
+  return (
+    <section className="mt-6">
+      <h2 className="text-lg font-semibold">{heading}</h2>
+      <ul className="mt-2 divide-y divide-line rounded-xl border border-line bg-white">
+        {elections.map((election) => (
+          <li key={election.candidate_election_id} className="px-3 py-2 text-sm">
+            <Link
+              to={`/elections/${election.election_id}`}
+              state={navState}
+              className="text-ink underline hover:text-rausch"
+            >
+              {election.official_ballot_title}
+            </Link>{" "}
+            <span className="text-ink-soft">
+              · {formatElectionDate(election.election_date)} · {formatDistrictName(election.district.name)}
+              {election.is_incumbent ? " · incumbent" : ""}
+            </span>
+            {/* No finance on any row here: campaign finance shows only for the
+                election(s) the candidate is currently in (the eager section
+                above). */}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 // Replaces useDocumentTitle here: a leaf meta export fully overrides the
 // root's, so it must carry the full pageMeta set — title alone would drop
 // the og:*/twitter:* share-card tags on exactly the page people share.
@@ -371,6 +409,9 @@ export function CandidatePage() {
     recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
   const today = usLatestLocalDate();
   const ongoingElections = candidate.elections.filter((election) => election.election_date >= today);
+  // The history list splits on the same date boundary: "is in" would misread
+  // on a race that finished years ago.
+  const pastElections = candidate.elections.filter((election) => election.election_date < today);
   // "My choice" rows: one per ongoing OFFICE candidacy the candidate hasn't
   // withdrawn or lost — a candidate can be in several races at once (and
   // have past ones), so each row names its election and only pickable
@@ -603,30 +644,24 @@ export function CandidatePage() {
         </p>
       )}
 
-      {candidate.elections.length > 0 ? (
-        <section className="mt-6">
-          <h2 className="text-lg font-semibold">Elections</h2>
-          <ul className="mt-2 divide-y divide-line rounded-xl border border-line bg-white">
-            {candidate.elections.map((election) => (
-              <li key={election.candidate_election_id} className="px-3 py-2 text-sm">
-                <Link
-                  to={`/elections/${election.election_id}`}
-                  state={electionNavState}
-                  className="text-ink underline hover:text-rausch"
-                >
-                  {election.official_ballot_title}
-                </Link>{" "}
-                <span className="text-ink-soft">
-                  · {formatElectionDate(election.election_date)} · {formatDistrictName(election.district.name)}
-                  {election.is_incumbent ? " · incumbent" : ""}
-                </span>
-                {/* No finance on past-election rows: campaign finance shows
-                    only for the election(s) the candidate is currently in
-                    (the eager section above). */}
-              </li>
-            ))}
-          </ul>
-        </section>
+      {/* Not a bare "Elections": on a candidate page that reads as a generic
+          section of election news. Name the person and the relationship, and
+          split on the election date — "is in" would misread on a race that
+          finished years ago. */}
+      {ongoingElections.length > 0 ? (
+        <ElectionHistorySection
+          heading={`${ongoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is in:`}
+          elections={ongoingElections}
+          navState={electionNavState}
+        />
+      ) : null}
+
+      {pastElections.length > 0 ? (
+        <ElectionHistorySection
+          heading={`Past ${pastElections.length === 1 ? "race" : "races"} ${candidate.display_name} ran in:`}
+          elections={pastElections}
+          navState={electionNavState}
+        />
       ) : null}
 
       {candidate.last_researched ? (
