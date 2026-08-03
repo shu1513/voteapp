@@ -362,4 +362,104 @@ describe("createStandardStateFinanceSnapshotWriter config options", () => {
       "Invalid Zetaland superseded link source: bad'source"
     );
   });
+
+  it("renders configured outside-group identity columns in every outside statement", async () => {
+    const { db, client } = poolWithClient();
+    const writer = makeWriter({
+      outsideGroupIdentityColumns: { id: "sponsor_id", name: "sponsor_name" },
+    });
+
+    await writer.replaceSnapshot({
+      db,
+      link: linkInput(),
+      syncedAt: NOW,
+      outsideGroups: [
+        {
+          committeeId: "PAC-1",
+          committeeName: "Some PAC",
+          supportOppose: "support",
+          amount: 500,
+        },
+      ],
+      outsideGroupBreakdowns: [
+        {
+          committeeId: "PAC-1",
+          supportOppose: "support",
+          categoryType: "donor",
+          categoryName: "Some Donor",
+          amount: 500,
+        },
+      ],
+    });
+
+    const calls = client.query.mock.calls;
+    const groupCall = calls.find((call) => String(call[0]).includes(`INSERT INTO public.${TABLES.outsideGroups}`));
+    const breakdownCall = calls.find((call) =>
+      String(call[0]).includes(`INSERT INTO public.${TABLES.outsideGroupBreakdowns}`)
+    );
+    const deleteGroupsCall = calls.find((call) =>
+      String(call[0]).includes(`DELETE FROM public.${TABLES.outsideGroups}`)
+    );
+    const deleteBreakdownsCall = calls.find((call) =>
+      String(call[0]).includes(`DELETE FROM public.${TABLES.outsideGroupBreakdowns}`)
+    );
+
+    const groupSql = String(groupCall?.[0]);
+    expect(groupSql).toContain("sponsor_id,");
+    expect(groupSql).toContain("sponsor_name,");
+    expect(groupSql).toContain("ON CONFLICT (link_id, election_year, sponsor_id, support_oppose)");
+    expect(groupSql).toContain("sponsor_name = EXCLUDED.sponsor_name,");
+    expect(groupSql).not.toContain("committee_id");
+    expect(groupSql).not.toContain("committee_name");
+    // The identity value still comes from the committeeId input field.
+    expect(groupCall?.[1]?.[2]).toBe("PAC-1");
+    expect(groupCall?.[1]?.[3]).toBe("Some PAC");
+
+    const breakdownSql = String(breakdownCall?.[0]);
+    expect(breakdownSql).toContain(
+      "ON CONFLICT (link_id, election_year, sponsor_id, support_oppose, category_type, category_name)"
+    );
+    expect(breakdownSql).not.toContain("committee_id");
+
+    expect(String(deleteGroupsCall?.[0])).toContain("keep.sponsor_id = zz_candidate_finance_outside_groups.sponsor_id");
+    expect(JSON.parse(String(deleteGroupsCall?.[1]?.[2]))).toEqual([
+      { sponsor_id: "PAC-1", support_oppose: "support" },
+    ]);
+    expect(String(deleteBreakdownsCall?.[0])).toContain(
+      "keep.sponsor_id = zz_candidate_finance_outside_group_breakdowns.sponsor_id"
+    );
+    expect(JSON.parse(String(deleteBreakdownsCall?.[1]?.[2]))).toEqual([
+      { sponsor_id: "PAC-1", support_oppose: "support", category_type: "donor", category_name: "Some Donor" },
+    ]);
+  });
+
+  it("does not touch the link table's committee columns when outside identity is overridden", async () => {
+    const { db, client } = poolWithClient();
+
+    await makeWriter({
+      outsideGroupIdentityColumns: { id: "sponsor_id", name: "sponsor_name" },
+    }).replaceSnapshot({
+      db,
+      link: linkInput(),
+      syncedAt: NOW,
+      outsideGroups: [
+        { committeeId: "PAC-1", committeeName: "Some PAC", supportOppose: "support", amount: 500 },
+      ],
+    });
+
+    const linkCall = client.query.mock.calls.find((call) =>
+      String(call[0]).includes(`INSERT INTO public.${TABLES.links}`)
+    );
+    expect(String(linkCall?.[0])).toContain("ON CONFLICT (candidate_id, election_id, committee_id)");
+    expect(String(linkCall?.[0])).toContain("committee_name = EXCLUDED.committee_name,");
+  });
+
+  it("rejects outside-group identity columns that are not identifier-safe", () => {
+    expect(() => makeWriter({ outsideGroupIdentityColumns: { id: "sponsor id" } })).toThrow(
+      "Invalid Zetaland outside-group identity column: sponsor id"
+    );
+    expect(() => makeWriter({ outsideGroupIdentityColumns: { name: 'sponsor"name' } })).toThrow(
+      'Invalid Zetaland outside-group identity column: sponsor"name'
+    );
+  });
 });
