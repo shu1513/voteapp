@@ -462,4 +462,81 @@ describe("createStandardStateFinanceSnapshotWriter config options", () => {
       'Invalid Zetaland outside-group identity column: sponsor"name'
     );
   });
+
+  it("renders configured link identity columns in the link upsert and nowhere else", async () => {
+    const { db, client } = poolWithClient();
+    const writer = makeWriter({
+      linkIdentityColumns: { id: "candidate_filer_id", name: "candidate_filer_name" },
+      supersededLinkSource: "bulk_import",
+    });
+
+    await writer.replaceSnapshot({
+      db,
+      link: { ...linkInput(), linkSource: "bulk_import" },
+      syncedAt: NOW,
+      outsideGroups: [
+        { committeeId: "PAC-1", committeeName: "Some PAC", supportOppose: "support", amount: 500 },
+      ],
+    });
+
+    const calls = client.query.mock.calls;
+    const linkCall = calls.find((call) => String(call[0]).includes(`INSERT INTO public.${TABLES.links}`));
+    const linkSql = String(linkCall?.[0]);
+    expect(linkSql).toContain("candidate_filer_id,");
+    expect(linkSql).toContain("candidate_filer_name,");
+    expect(linkSql).toContain("ON CONFLICT (candidate_id, election_id, candidate_filer_id)");
+    expect(linkSql).toContain("candidate_filer_name = EXCLUDED.candidate_filer_name,");
+    expect(linkSql).not.toContain("committee_id");
+    expect(linkSql).not.toContain("committee_name");
+    // The identity values still come from the committeeId/committeeName fields.
+    expect(linkCall?.[1]?.[6]).toBe("C-1");
+    expect(linkCall?.[1]?.[7]).toBe("Doe for Zetaland");
+
+    // Supersession keys on candidate/election/source, not the identity column.
+    const deactivateCall = calls.find((call) => String(call[0]).includes(`UPDATE public.${TABLES.links}`));
+    expect(String(deactivateCall?.[0])).toContain("link_source = 'bulk_import'");
+    expect(String(deactivateCall?.[0])).not.toContain("candidate_filer_id");
+
+    // Outside tables keep their own (default) identity columns.
+    const groupCall = calls.find((call) => String(call[0]).includes(`INSERT INTO public.${TABLES.outsideGroups}`));
+    expect(String(groupCall?.[0])).toContain("ON CONFLICT (link_id, election_year, committee_id, support_oppose)");
+  });
+
+  it("supports link and outside identity overrides together", async () => {
+    const { db, client } = poolWithClient();
+
+    await makeWriter({
+      linkIdentityColumns: { id: "candidate_filer_id", name: "candidate_filer_name" },
+      outsideGroupIdentityColumns: { id: "outside_group_id", name: "outside_group_name" },
+    }).replaceSnapshot({
+      db,
+      link: linkInput(),
+      syncedAt: NOW,
+      outsideGroups: [
+        { committeeId: "PAC-1", committeeName: "Some PAC", supportOppose: "support", amount: 500 },
+      ],
+    });
+
+    const calls = client.query.mock.calls;
+    const linkSql = String(calls.find((call) => String(call[0]).includes(`INSERT INTO public.${TABLES.links}`))?.[0]);
+    const groupSql = String(
+      calls.find((call) => String(call[0]).includes(`INSERT INTO public.${TABLES.outsideGroups}`))?.[0]
+    );
+    const deleteGroupsCall = calls.find((call) => String(call[0]).includes(`DELETE FROM public.${TABLES.outsideGroups}`));
+    expect(linkSql).toContain("ON CONFLICT (candidate_id, election_id, candidate_filer_id)");
+    expect(groupSql).toContain("ON CONFLICT (link_id, election_year, outside_group_id, support_oppose)");
+    expect(groupSql).toContain("outside_group_name = EXCLUDED.outside_group_name,");
+    expect(JSON.parse(String(deleteGroupsCall?.[1]?.[2]))).toEqual([
+      { outside_group_id: "PAC-1", support_oppose: "support" },
+    ]);
+  });
+
+  it("rejects link identity columns that are not identifier-safe", () => {
+    expect(() => makeWriter({ linkIdentityColumns: { id: "filer id" } })).toThrow(
+      "Invalid Zetaland link identity column: filer id"
+    );
+    expect(() => makeWriter({ linkIdentityColumns: { name: "filer;name" } })).toThrow(
+      "Invalid Zetaland link identity column: filer;name"
+    );
+  });
 });

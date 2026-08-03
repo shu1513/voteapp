@@ -120,9 +120,9 @@ function assertIdentifier(value: string): string {
   return value;
 }
 
-function assertOutsideIdentityColumn(label: string, value: string): string {
+function assertIdentityColumn(label: string, kind: "link" | "outside-group", value: string): string {
   if (!/^[a-z][a-z0-9_]*$/.test(value)) {
-    throw new Error(`Invalid ${label} outside-group identity column: ${value}`);
+    throw new Error(`Invalid ${label} ${kind} identity column: ${value}`);
   }
   return value;
 }
@@ -210,6 +210,19 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     id?: string;
     name?: string;
   };
+  /**
+   * Column names for the committee identity in the links table. Defaults
+   * match the canonical schema: id "committee_id", name "committee_name".
+   * Renamed-link states override the id (DC's committee_key) or both (Alaska's
+   * candidate_filer_id/candidate_filer_name). The id column is part of the
+   * link upsert's conflict target. Input fields stay committeeId /
+   * committeeName — wrappers map state-specific field names onto them.
+   * Interpolated into SQL, so validated as identifiers at construction.
+   */
+  linkIdentityColumns?: {
+    id?: string;
+    name?: string;
+  };
 }): StandardStateFinanceSnapshotWriter {
   const label = config.label;
   const tables = Object.fromEntries(
@@ -229,11 +242,14 @@ export function createStandardStateFinanceSnapshotWriter(config: {
   }
   const supersededLinkSource = config.supersededLinkSource;
   // Interpolated into SQL like the table names, so identifier-validate both.
-  const outsideIdColumn = assertOutsideIdentityColumn(label, config.outsideGroupIdentityColumns?.id ?? "committee_id");
-  const outsideNameColumn = assertOutsideIdentityColumn(
+  const outsideIdColumn = assertIdentityColumn(label, "outside-group", config.outsideGroupIdentityColumns?.id ?? "committee_id");
+  const outsideNameColumn = assertIdentityColumn(
     label,
+    "outside-group",
     config.outsideGroupIdentityColumns?.name ?? "committee_name"
   );
+  const linkIdColumn = assertIdentityColumn(label, "link", config.linkIdentityColumns?.id ?? "committee_id");
+  const linkNameColumn = assertIdentityColumn(label, "link", config.linkIdentityColumns?.name ?? "committee_name");
 
   function normalizeElectionYear(value: number): number {
     if (!Number.isInteger(value) || value < minElectionYear || value > 2100) {
@@ -334,21 +350,21 @@ export function createStandardStateFinanceSnapshotWriter(config: {
         candidate_name_normalized,
         office_name,
         district,
-        committee_id,
-        committee_name,
+        ${linkIdColumn},
+        ${linkNameColumn},
         link_status,
         link_source,
         source_url,
         last_verified_at
       )
       VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::timestamptz)
-      ON CONFLICT (candidate_id, election_id, committee_id)
+      ON CONFLICT (candidate_id, election_id, ${linkIdColumn})
       DO UPDATE SET
         election_year = EXCLUDED.election_year,
         candidate_name_normalized = EXCLUDED.candidate_name_normalized,
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
-        committee_name = EXCLUDED.committee_name,
+        ${linkNameColumn} = EXCLUDED.${linkNameColumn},
         link_status = EXCLUDED.link_status,
         link_source = EXCLUDED.link_source,
         source_url = EXCLUDED.source_url,
