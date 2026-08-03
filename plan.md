@@ -94,6 +94,8 @@ The most uniform, highest-fix-traffic slice of batchSync: the due-list query (li
 
 **Column-list cohort pilot: districtOfColumbia migrated** (smallest delta — `committee_key` for `committee_id`; `linkColumns: ["committee_key", "committee_name"]` + a mapRow producing the state's `committeeKey` field; due-row type kept literal since its field names differ from the canonical row). Same parity proof as the canonical cohort: emitted SQL byte-identical to the pre-migration template from main, params + mapping equal; per-state tests untouched. Remaining 11 column-list states follow in ~2 wave PRs: alaska, hawaii, illinois, louisiana, massachusetts, newYork, tennessee, utah, vermont, virginia, wisconsin.
 
+**Column-list wave 1 migrated** (hawaii, virginia, wisconsin, utah, louisiana, newYork — the extras-only and simple-rename states): each is builder config + a state `mapRow`; per-state quirks preserved verbatim in the mapper — hawaii runs `normalizeHawaiiCscDistrict` on the district, virginia runs its trim-to-null `normalizeDistrict` (kept as a private fn) and types `linkSource` as `VirginiaFinanceLinkSource`; louisiana's office-keys constant is a Set (the only cohort state), spread once in the config. Same per-state parity proof (SQL byte-identical to main, params + mapping equal, fixtures exercising both district normalizers); per-state tests untouched. Remaining wave 2: alaska, illinois, massachusetts, tennessee, vermont (multi-column swaps).
+
 ### Phase 3 — loaders, after characterization tests
 
 Descriptor redesign first: the current single committee-column option is insufficient — verified Washington uses `link.committee_id` but `outside_group.sponsor_id`/`sponsor_name` in the same file. Per-relation descriptor:
