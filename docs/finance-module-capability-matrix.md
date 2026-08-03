@@ -112,6 +112,16 @@ Val+ distribution: pairing validation `G` in 12 (two message variants — "requi
 
 Mixed-identity states (link column ≠ outside column) are why the loader descriptor must be per-relation, not a single option.
 
+## BatchSync due-list queries (Phase 2)
+
+Every non-city batchSync exports `listDue<State>CandidateFinanceSyncRows(db, {now, staleAfterDays, maxCandidates, electionLookbackDays, electionLookaheadDays})` returning `{rows, totalDueRows}` built on one `WITH due AS (…)` template; houston is the exception (no due CTE, different function shape). Normalized diff of all 33 templates against Texas (2026-08-02):
+
+- **Byte-identical modulo link/summary table names + state code (8)**: indiana, maine, maryland, minnesota, nebraska, newMexico, oklahoma, texas.
+- **Column-list-only deltas** — plain `link.<col>` swaps/additions in the slot between `district` and `source_url` (12): alaska (`candidate_filer_id`/`candidate_filer_name`, +`link_source`), districtOfColumbia (`committee_key`), hawaii (+`election_period`), illinois (`sbe_candidate_id`,`sbe_district_type`,`sbe_office`,`is_at_large`,`committee_key`), louisiana (`filer_number`/`filer_name`), massachusetts (`candidate_cpf_id`, +`filer_name`), newYork (`filer_id`/`filer_name`), tennessee (`camp_candidate_id`, +`owner_name`,`link_source`,`report_list_url`), utah (`folder_id`), vermont (`filer_registration_guid`,`entity_id`,`filer_name`), virginia (+`committee_code`,`link_source`), wisconsin (+`entity_id`,`assigned_committee_id`).
+- **Real deltas beyond the column list**: arizona (inner `JOIN offices` — functionally equivalent under the office-key filter — plus `concat_ws` name fallback, which is NOT equivalent when one name part is NULL, +`link_source`); michigan (extra `$7` param: `link.election_year > $7`); oregon (extra `nullif(trim(link.source_url), '') IS NOT NULL`); kentucky (`district AS location`, +`election_date`, `candidate_key`, `committee_key`); washington (`district AS legislative_district`, +`filer_id`,`candidacy_id`); pennsylvania (+`link.id::text AS link_id` alias, `filer_id`/`filer_name`); florida (+`candidate_election_id`, drops `office_scope` from the select); california/colorado/connecticut (no offices join, no office-key filter; california/colorado also drop `district`/`office_scope`); newJersey (starts from candidate_elections with a `LEFT JOIN LATERAL` newest-active-link, whitespace-normalized office keys, link_status filter inside the lateral); newYorkCity/losAngelesCity/houston (city outliers / no CTE).
+
+The shared builder (`createStandardStateFinanceDueListQuery` in `finance/standardStateFinanceDueListQuery.ts`, Phase 2 builder PR) covers the first two groups: config `{state, tables: {links, summaries}, eligibleOfficeKeys, linkColumns?, mapRow?}`, canonical defaults, byte-identical to the bespoke Texas SQL under canonical config (verified). Real-delta states migrate only if their delta lands behind config in its own PR — or they keep their bespoke query.
+
 ## Auto-link shape
 
 - **Standalone file with resolve + write** (wrapper-equivalent candidates): 26 modules.
