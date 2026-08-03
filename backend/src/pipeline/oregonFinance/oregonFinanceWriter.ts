@@ -1,7 +1,13 @@
 import type { Pool, PoolClient } from "pg";
 
+import {
+  createStandardStateFinanceSnapshotWriter,
+  type StandardStateFinanceLinkInput,
+  type StandardStateFinanceLinkStatus,
+  type StandardStateFinanceSnapshotWriteResult,
+  type StandardStateFinanceSummaryInput,
+} from "../finance/standardStateFinanceSnapshotWriter.js";
 import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
-import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
 import type {
   OregonFinanceDirectCategoryType,
   OregonFinanceOutsideCategoryType,
@@ -12,37 +18,15 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
   connect: () => Promise<PoolClient>;
 };
-type ClientLikeQueryable = Queryable & {
-  release?: () => void;
-};
 
-export type OregonFinanceLinkStatus = "active" | "inactive";
+export type OregonFinanceLinkStatus = StandardStateFinanceLinkStatus;
 export type OregonFinanceLinkSource = "manual" | "orestar";
 
-export type OregonFinanceLinkInput = {
-  candidateId: string;
-  electionId: string;
-  electionYear: number;
-  candidateNameNormalized: string;
-  officeName: string;
-  district?: string | null;
-  committeeId: string;
-  committeeName: string;
-  linkStatus?: OregonFinanceLinkStatus;
+export type OregonFinanceLinkInput = Omit<StandardStateFinanceLinkInput, "linkSource"> & {
   linkSource?: OregonFinanceLinkSource;
-  sourceUrl?: string | null;
-  lastVerifiedAt?: Date | null;
 };
 
-export type OregonFinanceSummaryInput = {
-  totalReceipts?: number | null;
-  directContributionTotal?: number | null;
-  totalDisbursements?: number | null;
-  cashOnHand?: number | null;
-  outsideSupportTotal?: number | null;
-  outsideOpposeTotal?: number | null;
-  sourceUrl?: string | null;
-};
+export type OregonFinanceSummaryInput = StandardStateFinanceSummaryInput;
 
 export type OregonFinanceDirectBreakdownInput = {
   categoryType: OregonFinanceDirectCategoryType;
@@ -52,6 +36,11 @@ export type OregonFinanceDirectBreakdownInput = {
   sourceUrl?: string | null;
 };
 
+// Oregon's outside tables identify groups by ORESTAR sponsor, not committee:
+// sponsor_id/sponsor_name columns and sponsorId/sponsorName input fields. The
+// factory writes the sponsor columns via outsideGroupIdentityColumns; the
+// wrapper maps the sponsor input fields onto the factory's committeeId /
+// committeeName fields below.
 export type OregonFinanceOutsideGroupInput = {
   sponsorId: string;
   sponsorName: string;
@@ -81,13 +70,37 @@ export type OregonFinanceSnapshotInput = {
   classifications?: readonly FinanceLabelClassification[];
 };
 
-export type OregonFinanceSnapshotWriteResult = {
-  linkId: string;
-  summaryWritten: boolean;
-  directBreakdownsWritten: number;
-  outsideGroupsWritten: number;
-  outsideGroupBreakdownsWritten: number;
-};
+export type OregonFinanceSnapshotWriteResult = StandardStateFinanceSnapshotWriteResult;
+
+const writer = createStandardStateFinanceSnapshotWriter({
+  label: "Oregon",
+  minElectionYear: 2000,
+  // Oregon replaces every summary column, including the outside totals — a
+  // refresh without expenditure data legitimately nulls them.
+  summaryUpdatePolicy: {
+    total_receipts: "replace",
+    direct_contribution_total: "replace",
+    total_disbursements: "replace",
+    cash_on_hand: "replace",
+    outside_support_total: "replace",
+    outside_oppose_total: "replace",
+    source_url: "replace",
+  },
+  // Presence-only, matching the bespoke writer. The or_ breakdown table does
+  // carry the ON DELETE CASCADE FK to the groups table, so the known
+  // stale-group cascade window (see the capability matrix) exists here exactly
+  // as it did before the migration; tightening to "pairing" would reject
+  // inputs the bespoke writer accepted and is a separate behavior decision.
+  outsideGroupValidation: "presence",
+  outsideGroupIdentityColumns: { id: "sponsor_id", name: "sponsor_name" },
+  tables: {
+    links: "or_candidate_finance_links",
+    summaries: "or_candidate_finance_summaries",
+    directBreakdowns: "or_candidate_finance_direct_breakdowns",
+    outsideGroups: "or_candidate_finance_outside_groups",
+    outsideGroupBreakdowns: "or_candidate_finance_outside_group_breakdowns",
+  },
+});
 
 function requireNonEmpty(value: string, fieldName: string): string {
   const trimmed = value.trim();
@@ -104,59 +117,16 @@ function normalizeElectionYear(value: number): number {
   return value;
 }
 
-function normalizeOptionalText(value: string | null | undefined): string | null {
-  if (value === undefined || value === null) {
-    return null;
-  }
-  const trimmed = value.trim();
-  return trimmed.length > 0 ? trimmed : null;
-}
-
-function normalizeNullableDate(value: Date | null | undefined): string | null {
-  if (!value) {
-    return null;
-  }
-  if (Number.isNaN(value.getTime())) {
+function validateNullableDate(value: Date | null | undefined): void {
+  if (value && Number.isNaN(value.getTime())) {
     throw new Error("Invalid Oregon finance timestamp");
   }
-  return value.toISOString();
 }
 
-function normalizeAmount(value: number, fieldName: string): number {
-  if (!Number.isFinite(value) || value < 0) {
-    throw new Error(`${fieldName} must be a nonnegative number`);
-  }
-  return value;
-}
-
-function normalizeNullableAmount(value: number | null | undefined, fieldName: string): number | null {
-  if (value === undefined || value === null) {
-    return null;
-  }
-  return normalizeAmount(value, fieldName);
-}
-
-function normalizeNullableCount(value: number | null | undefined): number | null {
-  if (value === undefined || value === null) {
-    return null;
-  }
-  if (!Number.isInteger(value) || value < 0) {
-    throw new Error("Oregon finance contributor count must be a nonnegative integer");
-  }
-  return value;
-}
-
-function canOpenTransaction(db: Queryable): db is ConnectableQueryable {
-  return (
-    typeof (db as ConnectableQueryable).connect === "function" &&
-    typeof (db as ClientLikeQueryable).release !== "function"
-  );
-}
-
-function isClientLikeQueryable(db: Queryable): db is ClientLikeQueryable {
-  return typeof (db as ClientLikeQueryable).release === "function";
-}
-
+// The factory's link validation covers the same fields, but the bespoke writer
+// called the committee id an "ORESTAR committee ID" and the per-state test pins
+// that wording — so the wrapper validates first with the legacy nouns and the
+// factory's own check never fires on input that passes here.
 function validateOregonFinanceLinkInput(link: OregonFinanceLinkInput): void {
   requireNonEmpty(link.candidateId, "candidate id");
   requireNonEmpty(link.electionId, "election id");
@@ -165,42 +135,22 @@ function validateOregonFinanceLinkInput(link: OregonFinanceLinkInput): void {
   requireNonEmpty(link.officeName, "Oregon finance office name");
   requireNonEmpty(link.committeeId, "Oregon ORESTAR committee ID");
   requireNonEmpty(link.committeeName, "Oregon committee name");
-  normalizeNullableDate(link.lastVerifiedAt);
+  validateNullableDate(link.lastVerifiedAt);
 }
 
-function validateOregonFinanceSnapshotInput(input: OregonFinanceSnapshotInput): void {
-  validateOregonFinanceLinkInput(input.link);
-  const outsideBreakdownCount = input.outsideGroupBreakdowns?.length ?? 0;
-  const outsideGroupCount = input.outsideGroups?.length ?? 0;
-  if (outsideBreakdownCount > 0 && outsideGroupCount === 0) {
-    throw new Error("Oregon outside group breakdowns require outside groups in the same snapshot");
+// Oregon snapshot writes must receive a Pool: a bare queryable without
+// connect() is rejected instead of taking the factory's inline-transaction
+// path. The stub throws on first use rather than up front so that input
+// validation errors still surface before the transaction-contract error.
+function requireOregonPool(db: Queryable): Queryable {
+  const candidate = db as { connect?: unknown; release?: unknown };
+  if (typeof candidate.connect === "function" || typeof candidate.release === "function") {
+    return db;
   }
-}
-
-async function withOregonFinanceTransaction<T>(db: Queryable, work: (tx: Queryable) => Promise<T>): Promise<T> {
-  if (!canOpenTransaction(db)) {
-    if (isClientLikeQueryable(db)) {
-      throw new Error("Oregon finance snapshot writes must receive a Pool, not a PoolClient");
-    }
+  const rejectQuery = () => {
     throw new Error("Oregon finance snapshot writes must receive a Pool");
-  }
-
-  const client = await db.connect();
-  try {
-    await client.query("BEGIN");
-    const result = await work(client);
-    await client.query("COMMIT");
-    return result;
-  } catch (error) {
-    try {
-      await client.query("ROLLBACK");
-    } catch {
-      // Preserve the original write failure.
-    }
-    throw error;
-  } finally {
-    client.release();
-  }
+  };
+  return { query: rejectQuery as unknown as Queryable["query"] };
 }
 
 export async function upsertOregonFinanceLink(input: {
@@ -208,326 +158,7 @@ export async function upsertOregonFinanceLink(input: {
   link: OregonFinanceLinkInput;
 }): Promise<{ linkId: string }> {
   validateOregonFinanceLinkInput(input.link);
-
-  const result = await input.db.query<{ id: string }>(
-    `
-      INSERT INTO public.or_candidate_finance_links (
-        candidate_id,
-        election_id,
-        election_year,
-        candidate_name_normalized,
-        office_name,
-        district,
-        committee_id,
-        committee_name,
-        link_status,
-        link_source,
-        source_url,
-        last_verified_at
-      )
-      VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12::timestamptz)
-      ON CONFLICT (candidate_id, election_id, committee_id)
-      DO UPDATE SET
-        election_year = EXCLUDED.election_year,
-        candidate_name_normalized = EXCLUDED.candidate_name_normalized,
-        office_name = EXCLUDED.office_name,
-        district = EXCLUDED.district,
-        committee_name = EXCLUDED.committee_name,
-        link_status = EXCLUDED.link_status,
-        link_source = EXCLUDED.link_source,
-        source_url = EXCLUDED.source_url,
-        last_verified_at = EXCLUDED.last_verified_at
-      RETURNING id
-    `,
-    [
-      requireNonEmpty(input.link.candidateId, "candidate id"),
-      requireNonEmpty(input.link.electionId, "election id"),
-      normalizeElectionYear(input.link.electionYear),
-      requireNonEmpty(input.link.candidateNameNormalized, "Oregon finance candidate name"),
-      requireNonEmpty(input.link.officeName, "Oregon finance office name"),
-      normalizeOptionalText(input.link.district),
-      requireNonEmpty(input.link.committeeId, "Oregon ORESTAR committee ID"),
-      requireNonEmpty(input.link.committeeName, "Oregon committee name"),
-      input.link.linkStatus ?? "active",
-      input.link.linkSource ?? "manual",
-      normalizeOptionalText(input.link.sourceUrl),
-      normalizeNullableDate(input.link.lastVerifiedAt),
-    ]
-  );
-
-  const linkId = result.rows[0]?.id;
-  if (!linkId) {
-    throw new Error("Oregon finance link upsert did not return an id");
-  }
-  return { linkId };
-}
-
-async function upsertSummary(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  summary: OregonFinanceSummaryInput;
-  syncedAt: Date;
-}): Promise<void> {
-  await input.db.query(
-    `
-      INSERT INTO public.or_candidate_finance_summaries (
-        link_id,
-        election_year,
-        total_receipts,
-        direct_contribution_total,
-        total_disbursements,
-        cash_on_hand,
-        outside_support_total,
-        outside_oppose_total,
-        source_url,
-        last_synced_at
-      )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
-      ON CONFLICT (link_id, election_year)
-      DO UPDATE SET
-        total_receipts = EXCLUDED.total_receipts,
-        direct_contribution_total = EXCLUDED.direct_contribution_total,
-        total_disbursements = EXCLUDED.total_disbursements,
-        cash_on_hand = EXCLUDED.cash_on_hand,
-        outside_support_total = EXCLUDED.outside_support_total,
-        outside_oppose_total = EXCLUDED.outside_oppose_total,
-        source_url = EXCLUDED.source_url,
-        last_synced_at = EXCLUDED.last_synced_at
-    `,
-    [
-      requireNonEmpty(input.linkId, "Oregon finance link id"),
-      normalizeElectionYear(input.electionYear),
-      normalizeNullableAmount(input.summary.totalReceipts, "total receipts"),
-      normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
-      normalizeNullableAmount(input.summary.totalDisbursements, "total disbursements"),
-      normalizeNullableAmount(input.summary.cashOnHand, "cash on hand"),
-      normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),
-      normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),
-      normalizeOptionalText(input.summary.sourceUrl),
-      input.syncedAt.toISOString(),
-    ]
-  );
-}
-
-async function upsertDirectBreakdown(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  breakdown: OregonFinanceDirectBreakdownInput;
-  syncedAt: Date;
-}): Promise<void> {
-  await input.db.query(
-    `
-      INSERT INTO public.or_candidate_finance_direct_breakdowns (
-        link_id,
-        election_year,
-        category_type,
-        category_name,
-        amount,
-        contributor_count,
-        source_url,
-        last_synced_at
-      )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
-      ON CONFLICT (link_id, election_year, category_type, category_name)
-      DO UPDATE SET
-        amount = EXCLUDED.amount,
-        contributor_count = EXCLUDED.contributor_count,
-        source_url = EXCLUDED.source_url,
-        last_synced_at = EXCLUDED.last_synced_at
-    `,
-    [
-      requireNonEmpty(input.linkId, "Oregon finance link id"),
-      normalizeElectionYear(input.electionYear),
-      input.breakdown.categoryType,
-      requireNonEmpty(input.breakdown.categoryName, "Oregon direct breakdown category"),
-      normalizeAmount(input.breakdown.amount, "direct breakdown amount"),
-      normalizeNullableCount(input.breakdown.contributorCount),
-      normalizeOptionalText(input.breakdown.sourceUrl),
-      input.syncedAt.toISOString(),
-    ]
-  );
-}
-
-async function deleteStaleDirectBreakdowns(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  breakdowns: readonly OregonFinanceDirectBreakdownInput[];
-}): Promise<void> {
-  const keys = input.breakdowns.map((breakdown) => ({
-    category_type: breakdown.categoryType,
-    category_name: requireNonEmpty(breakdown.categoryName, "Oregon direct breakdown category"),
-  }));
-
-  await input.db.query(
-    `
-      DELETE FROM public.or_candidate_finance_direct_breakdowns
-      WHERE link_id = $1::uuid
-        AND election_year = $2
-        AND NOT EXISTS (
-          SELECT 1
-          FROM jsonb_to_recordset($3::jsonb) AS keep(
-            category_type text,
-            category_name text
-          )
-          WHERE keep.category_type = or_candidate_finance_direct_breakdowns.category_type
-            AND keep.category_name = or_candidate_finance_direct_breakdowns.category_name
-        )
-    `,
-    [requireNonEmpty(input.linkId, "Oregon finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
-  );
-}
-
-async function upsertOutsideGroup(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  group: OregonFinanceOutsideGroupInput;
-  syncedAt: Date;
-}): Promise<void> {
-  await input.db.query(
-    `
-      INSERT INTO public.or_candidate_finance_outside_groups (
-        link_id,
-        election_year,
-        sponsor_id,
-        sponsor_name,
-        support_oppose,
-        amount,
-        source_url,
-        last_synced_at
-      )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8::timestamptz)
-      ON CONFLICT (link_id, election_year, sponsor_id, support_oppose)
-      DO UPDATE SET
-        sponsor_name = EXCLUDED.sponsor_name,
-        amount = EXCLUDED.amount,
-        source_url = EXCLUDED.source_url,
-        last_synced_at = EXCLUDED.last_synced_at
-    `,
-    [
-      requireNonEmpty(input.linkId, "Oregon finance link id"),
-      normalizeElectionYear(input.electionYear),
-      requireNonEmpty(input.group.sponsorId, "Oregon outside sponsor id"),
-      requireNonEmpty(input.group.sponsorName, "Oregon outside sponsor name"),
-      input.group.supportOppose,
-      normalizeAmount(input.group.amount, "outside group amount"),
-      normalizeOptionalText(input.group.sourceUrl),
-      input.syncedAt.toISOString(),
-    ]
-  );
-}
-
-async function deleteStaleOutsideGroups(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  groups: readonly OregonFinanceOutsideGroupInput[];
-}): Promise<void> {
-  const keys = input.groups.map((group) => ({
-    sponsor_id: requireNonEmpty(group.sponsorId, "Oregon outside sponsor id"),
-    support_oppose: group.supportOppose,
-  }));
-
-  await input.db.query(
-    `
-      DELETE FROM public.or_candidate_finance_outside_groups
-      WHERE link_id = $1::uuid
-        AND election_year = $2
-        AND NOT EXISTS (
-          SELECT 1
-          FROM jsonb_to_recordset($3::jsonb) AS keep(
-            sponsor_id text,
-            support_oppose text
-          )
-          WHERE keep.sponsor_id = or_candidate_finance_outside_groups.sponsor_id
-            AND keep.support_oppose = or_candidate_finance_outside_groups.support_oppose
-        )
-    `,
-    [requireNonEmpty(input.linkId, "Oregon finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
-  );
-}
-
-async function upsertOutsideGroupBreakdown(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  breakdown: OregonFinanceOutsideGroupBreakdownInput;
-  syncedAt: Date;
-}): Promise<void> {
-  await input.db.query(
-    `
-      INSERT INTO public.or_candidate_finance_outside_group_breakdowns (
-        link_id,
-        election_year,
-        sponsor_id,
-        support_oppose,
-        category_type,
-        category_name,
-        amount,
-        contributor_count,
-        source_url,
-        last_synced_at
-      )
-      VALUES ($1::uuid, $2, $3, $4, $5, $6, $7, $8, $9, $10::timestamptz)
-      ON CONFLICT (link_id, election_year, sponsor_id, support_oppose, category_type, category_name)
-      DO UPDATE SET
-        amount = EXCLUDED.amount,
-        contributor_count = EXCLUDED.contributor_count,
-        source_url = EXCLUDED.source_url,
-        last_synced_at = EXCLUDED.last_synced_at
-    `,
-    [
-      requireNonEmpty(input.linkId, "Oregon finance link id"),
-      normalizeElectionYear(input.electionYear),
-      requireNonEmpty(input.breakdown.sponsorId, "Oregon outside sponsor id"),
-      input.breakdown.supportOppose,
-      input.breakdown.categoryType,
-      requireNonEmpty(input.breakdown.categoryName, "Oregon outside breakdown category"),
-      normalizeAmount(input.breakdown.amount, "outside group breakdown amount"),
-      normalizeNullableCount(input.breakdown.contributorCount),
-      normalizeOptionalText(input.breakdown.sourceUrl),
-      input.syncedAt.toISOString(),
-    ]
-  );
-}
-
-async function deleteStaleOutsideGroupBreakdowns(input: {
-  db: Queryable;
-  linkId: string;
-  electionYear: number;
-  breakdowns: readonly OregonFinanceOutsideGroupBreakdownInput[];
-}): Promise<void> {
-  const keys = input.breakdowns.map((breakdown) => ({
-    sponsor_id: requireNonEmpty(breakdown.sponsorId, "Oregon outside sponsor id"),
-    support_oppose: breakdown.supportOppose,
-    category_type: breakdown.categoryType,
-    category_name: requireNonEmpty(breakdown.categoryName, "Oregon outside breakdown category"),
-  }));
-
-  await input.db.query(
-    `
-      DELETE FROM public.or_candidate_finance_outside_group_breakdowns
-      WHERE link_id = $1::uuid
-        AND election_year = $2
-        AND NOT EXISTS (
-          SELECT 1
-          FROM jsonb_to_recordset($3::jsonb) AS keep(
-            sponsor_id text,
-            support_oppose text,
-            category_type text,
-            category_name text
-          )
-          WHERE keep.sponsor_id = or_candidate_finance_outside_group_breakdowns.sponsor_id
-            AND keep.support_oppose = or_candidate_finance_outside_group_breakdowns.support_oppose
-            AND keep.category_type = or_candidate_finance_outside_group_breakdowns.category_type
-            AND keep.category_name = or_candidate_finance_outside_group_breakdowns.category_name
-        )
-    `,
-    [requireNonEmpty(input.linkId, "Oregon finance link id"), normalizeElectionYear(input.electionYear), JSON.stringify(keys)]
-  );
+  return writer.upsertLink(input);
 }
 
 export async function replaceOregonCandidateFinanceSnapshot(
@@ -537,45 +168,26 @@ export async function replaceOregonCandidateFinanceSnapshot(
   if (Number.isNaN(syncedAt.getTime())) {
     throw new Error("Invalid Oregon finance sync timestamp");
   }
-  validateOregonFinanceSnapshotInput(input);
-  const electionYear = normalizeElectionYear(input.link.electionYear);
-
-  return await withOregonFinanceTransaction(input.db, async (db) => {
-    const { linkId } = await upsertOregonFinanceLink({ db, link: input.link });
-    if (input.summary) {
-      await upsertSummary({ db, linkId, electionYear, summary: input.summary, syncedAt });
-    }
-
-    for (const breakdown of input.directBreakdowns ?? []) {
-      await upsertDirectBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
-    }
-    if (input.directBreakdowns) {
-      await deleteStaleDirectBreakdowns({ db, linkId, electionYear, breakdowns: input.directBreakdowns });
-    }
-
-    for (const group of input.outsideGroups ?? []) {
-      await upsertOutsideGroup({ db, linkId, electionYear, group, syncedAt });
-    }
-    for (const breakdown of input.outsideGroupBreakdowns ?? []) {
-      await upsertOutsideGroupBreakdown({ db, linkId, electionYear, breakdown, syncedAt });
-    }
-    if (input.outsideGroupBreakdowns) {
-      await deleteStaleOutsideGroupBreakdowns({ db, linkId, electionYear, breakdowns: input.outsideGroupBreakdowns });
-    }
-    if (input.outsideGroups) {
-      await deleteStaleOutsideGroups({ db, linkId, electionYear, groups: input.outsideGroups });
-    }
-
-    for (const classification of input.classifications ?? []) {
-      await upsertFinanceLabelClassification({ db, classification });
-    }
-
-    return {
-      linkId,
-      summaryWritten: Boolean(input.summary),
-      directBreakdownsWritten: input.directBreakdowns?.length ?? 0,
-      outsideGroupsWritten: input.outsideGroups?.length ?? 0,
-      outsideGroupBreakdownsWritten: input.outsideGroupBreakdowns?.length ?? 0,
-    };
+  validateOregonFinanceLinkInput(input.link);
+  return writer.replaceSnapshot({
+    ...input,
+    syncedAt,
+    db: requireOregonPool(input.db),
+    outsideGroups: input.outsideGroups?.map((group) => ({
+      committeeId: group.sponsorId,
+      committeeName: group.sponsorName,
+      supportOppose: group.supportOppose,
+      amount: group.amount,
+      sourceUrl: group.sourceUrl,
+    })),
+    outsideGroupBreakdowns: input.outsideGroupBreakdowns?.map((breakdown) => ({
+      committeeId: breakdown.sponsorId,
+      supportOppose: breakdown.supportOppose,
+      categoryType: breakdown.categoryType,
+      categoryName: breakdown.categoryName,
+      amount: breakdown.amount,
+      contributorCount: breakdown.contributorCount,
+      sourceUrl: breakdown.sourceUrl,
+    })),
   });
 }
