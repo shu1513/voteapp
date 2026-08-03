@@ -51,7 +51,6 @@ export function ResearchAreaPicker({ areas, orderedIds, disabled, onChange }: Re
   );
 
   const areaById = new Map(areas.map((area) => [area.id, area]));
-  const selectedSet = new Set(orderedIds);
   const atCapacity = orderedIds.length >= MAX_RESEARCH_AREA_RANK;
 
   function onDragEnd(event: DragEndEvent) {
@@ -103,24 +102,52 @@ export function ResearchAreaPicker({ areas, orderedIds, disabled, onChange }: Re
       {/* Public-salience order, not the catalog's alphabetical order — the
           same ranking the election and candidate pages use, so the issues
           most users pick first sit at the top of the grid. */}
+      {/* Selected areas stay in the grid (tinted, with a rank badge) instead
+          of disappearing into the top list, so the grid never reflows under
+          the user mid-selection. Clicking a selected card unselects it. */}
       <ul className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
-        {sortByResearchAreaPriority(areas)
-          .filter((area) => !selectedSet.has(area.id))
-          .map((area) => (
+        {sortByResearchAreaPriority(areas).map((area) => {
+          const rank = orderedIds.indexOf(area.id);
+          const selected = rank >= 0;
+          return (
             <li key={area.id}>
               <button
                 type="button"
-                disabled={disabled || atCapacity}
-                onClick={() => onChange([...orderedIds, area.id])}
-                className="w-full rounded-lg border border-line bg-white px-3 py-2 text-left transition hover:border-rausch disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={disabled || (!selected && atCapacity)}
+                aria-pressed={selected}
+                aria-label={selected ? `${area.name}, rank ${rank + 1}. Click to remove.` : undefined}
+                onClick={() =>
+                  selected
+                    ? onChange(orderedIds.filter((other) => other !== area.id))
+                    : onChange([...orderedIds, area.id])
+                }
+                // h-full + items-start: every card in a grid row stretches to
+                // the tallest card, so mixed-length descriptions no longer
+                // leave ragged gaps between rows.
+                className={`flex h-full w-full items-start gap-2 rounded-lg border px-3 py-2 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
+                  selected
+                    ? "border-rausch bg-rausch/5"
+                    : "border-line bg-white hover:border-rausch"
+                }`}
               >
-                <span className="block text-sm font-medium text-ink">{area.name}</span>
-                {area.description ? (
-                  <span className="mt-0.5 block text-xs text-ink-soft">{area.description}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-medium text-ink">{area.name}</span>
+                  {area.description ? (
+                    <span className="mt-0.5 block text-xs text-ink-soft">{area.description}</span>
+                  ) : null}
+                </span>
+                {selected ? (
+                  <span
+                    aria-hidden
+                    className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rausch text-[11px] font-semibold text-white"
+                  >
+                    {rank + 1}
+                  </span>
                 ) : null}
               </button>
             </li>
-          ))}
+          );
+        })}
       </ul>
     </div>
   );
