@@ -235,6 +235,24 @@ export function isMarylandCfsRawDataRefreshEnabled(force = false): boolean {
   );
 }
 
+export function isOhioCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("OHIO_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isOhioCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isOhioCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("OHIO_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isOhioSosRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isOhioCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("OHIO_SOS_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isMaineCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("MAINE_CAMPAIGN_FINANCE_ENABLED", false);
 }
