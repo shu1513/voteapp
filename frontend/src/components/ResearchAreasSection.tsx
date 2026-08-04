@@ -87,8 +87,11 @@ export function ResearchAreasSection() {
 
   return (
     <Section title="My most important issues">
+      {/* Choose-then-drag, matching the actual interaction: grid cards
+          select on click; only the ranked rows above the grid drag. */}
       <p className="mt-1 text-sm text-ink-soft">
-        Drag up to {MAX_RESEARCH_AREA_RANK} issues most important to me into the order of priorities.
+        Choose up to {MAX_RESEARCH_AREA_RANK} issues most important to me, then drag them into the
+        order of priorities.
       </p>
       <ResearchAreaPicker
         areas={catalog.data.research_areas}
