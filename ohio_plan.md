@@ -197,7 +197,10 @@ main feasibility risk and also settles the 31-U two-stage question.
 - [x] PR 1 schema + writer (migration 210, `oh_` tables, writer wrapper with
       numeric MASTER_KEY validation, eligible offices, 3 flags; branch
       `claude/ohio-financial-module-55919c`)
-- [ ] PR 2 loader + wiring
+- [x] PR 2 loader + wiring (`ohioBallotLookupFinanceLoader.ts` shared-loader
+      wrapper, characterization pin with Lieutenant-Governor ineligibility,
+      `OHIO_SOS` source union + `FINANCE_SUMMARY_SOURCES`, `ballotLookup.ts`
+      registry entry; branch `claude/ohio-finance-loader-pr2`)
 - [ ] PR 3 acquisition spike (portal access required)
 - [ ] PR 4 artifact cache + parsers
 - [ ] PR 5 resolver + auto-link
