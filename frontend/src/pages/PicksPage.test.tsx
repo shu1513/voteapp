@@ -155,7 +155,7 @@ describe("PicksPage", () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderPicks();
 
-    await user.click(await screen.findByRole("button", { name: "Share this card" }));
+    await user.click(await screen.findByRole("button", { name: "Share my picks" }));
 
     // The standard ShareButton takes over once the token exists (menu shape
     // in jsdom — no navigator.share), alongside the visibility warning.
@@ -210,7 +210,7 @@ describe("PicksPage", () => {
 
     expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Picks" })).toBeInTheDocument();
     expect(screen.getByText("0 of 2 races decided")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Share this card" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Share my picks" })).not.toBeInTheDocument();
   });
 
   it("lists past picks in a collapsible section with won/lost flags", async () => {
