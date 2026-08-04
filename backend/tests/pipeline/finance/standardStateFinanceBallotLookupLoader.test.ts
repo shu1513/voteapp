@@ -121,4 +121,76 @@ describe("standardStateFinanceBallotLookupLoader identity descriptor", () => {
       `Invalid standard finance ${kind} identity column`
     );
   });
+
+  it("narrows the direct-breakdown filter under directBreakdownCategoryTypes", async () => {
+    const queries = await captureQueries({ directBreakdownCategoryTypes: ["contribution_size"] });
+    const [, direct, ...rest] = queries as [string, string, string, string, string];
+
+    expect(direct).toContain("breakdown.category_type IN ('contribution_size')");
+    expect(direct).not.toContain("'occupation'");
+    // Only the direct-breakdown query changes; the evidence label filter is a
+    // separate option and stays at its default.
+    for (const sql of rest) {
+      expect(sql).not.toContain("IN ('contribution_size')");
+    }
+  });
+
+  it("keeps the default direct-breakdown filter byte-identical", async () => {
+    const queries = await captureQueries({});
+    expect(queries[1]).toContain("WHERE breakdown.category_type IN ('occupation', 'contribution_size')");
+  });
+
+  it.each([
+    ["empty list", { directBreakdownCategoryTypes: [] }],
+    ["unroutable type", { directBreakdownCategoryTypes: ["industry"] }],
+  ])("rejects %s direct category types", async (_label, overrides) => {
+    await expect(captureQueries(overrides as unknown as LoadOverrides)).rejects.toThrow(
+      "Invalid standard finance direct category types"
+    );
+  });
+
+  it.each([
+    [undefined, "independent spending supporting this candidate"],
+    ["PAC contributions supporting this candidate", "PAC contributions supporting this candidate"],
+  ])("outsideSupportActionLabel %s puts %s into the explanation", async (label, expectedAction) => {
+    let calls = 0;
+    const query = vi.fn(async () => {
+      calls += 1;
+      if (calls === 1) {
+        return { rows: [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID, election_year: 2026 }] };
+      }
+      if (calls === 4) {
+        return {
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              support_oppose: "support",
+              category_name: "energy",
+              amount: "800",
+              contributor_count: null,
+              source_url: null,
+            },
+          ],
+        };
+      }
+      return { rows: [] };
+    });
+
+    const result = await loadStandardStateFinanceSummariesByCandidateElection({
+      db: { query },
+      candidateRows: [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID }],
+      electionRows: [{ election_id: ELECTION_ID, state: "WA" }],
+      state: "WA",
+      source: "WASHINGTON_PDC" as never,
+      sourceUrl: "https://www.pdc.wa.gov/",
+      enabled: () => true,
+      tables: TABLES,
+      ...(label ? { outsideSupportActionLabel: label } : {}),
+    });
+
+    const summary = result.get(`${CANDIDATE_ID}\u0000${ELECTION_ID}`);
+    const explanation = summary?.backing_summary.top_outside_supporting_industries[0]?.explanation;
+    expect(explanation).toContain(expectedAction);
+  });
 });
