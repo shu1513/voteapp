@@ -142,6 +142,12 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
   evidenceLabelTypes?: readonly StandardStateFinanceEvidenceLabelType[];
   /** Direct-breakdown category types selected; default occupation + contribution_size. */
   directBreakdownCategoryTypes?: readonly StandardStateFinanceDirectCategoryType[];
+  /**
+   * Wording for the outside-industry support explanation's action clause;
+   * default "independent spending supporting this candidate". Louisiana and
+   * Vermont describe their outside groups as PACs instead.
+   */
+  outsideSupportActionLabel?: string;
 }
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
   if (!input.enabled()) {
@@ -612,7 +618,13 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
           const supportingOrganizations = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(evidenceKey) ?? [];
           return {
             ...industry,
-            explanation: buildOutsideIndustrySupportExplanation(industry.category_name, supportingOrganizations),
+            explanation: input.outsideSupportActionLabel
+              ? buildOutsideIndustrySupportExplanation(
+                  industry.category_name,
+                  supportingOrganizations,
+                  input.outsideSupportActionLabel
+                )
+              : buildOutsideIndustrySupportExplanation(industry.category_name, supportingOrganizations),
             supporting_organizations: supportingOrganizations,
           };
         }
