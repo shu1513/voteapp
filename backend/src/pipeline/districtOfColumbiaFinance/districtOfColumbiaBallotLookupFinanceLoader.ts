@@ -30,12 +30,21 @@ export async function loadDistrictOfColumbiaCandidateFinanceSummariesByCandidate
     // everything else is shared defaults — both evidence label types, no
     // office filter.
     //
-    // Deliberate behavior alignment, not a preservation: the bespoke mapper
-    // hardcoded organization_type: "donor" on evidence rows even though its
-    // SQL selects donor AND employer rows, so employer evidence was
-    // mislabeled and its explanation used donor wording. The shared mapper
-    // reads the row's category_type (the c22c24f2 fix DC's copy never got),
-    // matching every other dual-label state.
+    // Accepted no-op delta (alaska precedent): the bespoke mapper hardcoded
+    // organization_type: "donor" on evidence rows while the shared mapper
+    // reads the row's category_type. Unreachable divergence — DC outside
+    // breakdowns are constrained to ('donor', 'industry') by
+    // dc_cff_outside_breakdowns_type_check (migration 120), the shared
+    // snapshot writer's outside category type is likewise "donor" |
+    // "industry", and the evidence filter admits only donor/employer, so
+    // every evidence row's category_type is 'donor' — exactly what the
+    // bespoke mapper hardcoded.
+    //
+    // evidenceLabelTypes stays at the default for the same reason the
+    // bespoke SQL selected IN ('donor', 'employer'): narrowing it to
+    // ["donor"] would change emitted SQL with no output change, and would
+    // split DC from texas/houston/washington, which carry the identical
+    // schema constraint and also run the default.
     committeeColumn: "committee_key",
     tables: {
       links: "dc_candidate_finance_links",
