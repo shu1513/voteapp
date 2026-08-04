@@ -73,11 +73,11 @@ Val+ distribution: pairing validation `G` in 12 (two message variants — "requi
 
 ## Ballot-lookup loaders (identity columns per relation)
 
-`link.id`, `link.candidate_id`, `link.election_id`, `*.link_id` are universal and omitted. Shared loader supports `committee_id`/`committee_key` as one column across all relations via `committeeColumn`, plus per-relation overrides (Phase 3 descriptor PR): `linkIdentityColumn` for the summary query and `outsideGroupIdentityColumns: {id?, name?}` for the three outside queries — both identifier-validated; the ID defaults chain through `committeeColumn` while the name default is always `committee_name`, so existing configs are unchanged.
+`link.id`, `link.candidate_id`, `link.election_id`, `*.link_id` are universal and omitted. Shared loader supports `committee_id`/`committee_key` as one column across all relations via `committeeColumn`, plus per-relation overrides (Phase 3 descriptor PR): `linkIdentityColumn` for the summary query and `outsideGroupIdentityColumns: {id?, name?}` for the three outside queries — both identifier-validated; the ID defaults chain through `committeeColumn` while the name default is always `committee_name`, so existing configs are unchanged. `directBreakdownCategoryTypes?` narrows the direct-breakdown `category_type` filter (default `occupation`+`contribution_size`; whitelisted to the two routable types — unroutable ones like `industry` are rejected rather than mis-landing in `top_occupations`). `outsideSupportActionLabel?` swaps the outside-industry explanation's action wording (default "independent spending supporting this candidate"; louisiana/vermont say "PAC contributions supporting this candidate").
 
 | Module | File | Link identity | Outside-group / breakdown identity |
 |---|---|---|---|
-| alaska | `alaskaCandidateFinanceBallotLookup.ts` (nonstandard name) | `candidate_filer_id` | `outside_group_id` |
+| alaska | **wrapper over shared loader** (`alaskaCandidateFinanceBallotLookup.ts`, nonstandard name) | `candidate_filer_id` via `linkIdentityColumn` | `outside_group_id`/`outside_group_name` via `outsideGroupIdentityColumns` |
 | arizona | `arizonaFinanceBallotLookup.ts` (nonstandard name) | `committee_id` | `committee_id` |
 | california | standard name | `controlled_committee_id` | `committee_id` |
 | colorado | standard | `committee_id` | direct-only |
@@ -92,7 +92,7 @@ Val+ distribution: pairing validation `G` in 12 (two message variants — "requi
 | louisiana | standard | `filer_number` | `filer_number` |
 | maine | standard | `committee_id` | `committee_id` |
 | maryland | standard | `committee_id` | `committee_id` |
-| massachusetts | standard | `candidate_cpf_id` | `iepac_cpf_id` |
+| massachusetts | **wrapper over shared loader** | `candidate_cpf_id` via `linkIdentityColumn` | `iepac_cpf_id`/`iepac_name` via `outsideGroupIdentityColumns` |
 | michigan | standard | `committee_id` | `committee_id` |
 | minnesota | standard | `committee_id` | `committee_id` |
 | nebraska | standard | `committee_id` | direct-only |
@@ -107,15 +107,15 @@ Val+ distribution: pairing validation `G` in 12 (two message variants — "requi
 | utah | standard | `folder_id` | alt tables |
 | vermont | standard | `filer_registration_guid` | `filer_registration_guid` |
 | virginia | standard | `committee_id` | direct-only |
-| washington | standard | `committee_id` | **`sponsor_id`** (mixed) |
-| wisconsin | standard | `committee_id` | **`sponsor_id`** (mixed) |
+| washington | **wrapper over shared loader** (descriptor-cohort pilot) | `committee_id` | `sponsor_id`/`sponsor_name` via `outsideGroupIdentityColumns` |
+| wisconsin | **wrapper over shared loader** | `committee_id` | `sponsor_id`/`sponsor_name` via `outsideGroupIdentityColumns` |
 
 Mixed-identity states (link column ≠ outside column) are why the loader descriptor must be per-relation, not a single option.
 
 **Query-shape families** (normalized SQL cluster of all unmigrated loaders vs the shared loader with its interpolations resolved, 2026-08-02):
 
 - **Config-expressible today, zero factory change (4): arizona, hawaii, maine, maryland** — every query CONFIG-EXACT under existing options. Their donor-evidence variant (`= 'donor'`, hardcoded `organization_type`, pinned `classification.label_type = 'donor'`) is textual-only vs the shared loader's `evidenceLabelTypes: ["donor"]` (`IN ('donor')`, `category_type AS organization_type`, mapper default `?? "donor"`) — outputs equal. **MIGRATED (Phase 3 cohort 0)**: texas-style wrappers; behavior pinned first by characterization tests (shared harness `tests/helpers/stateFinanceLoaderCharacterization.ts`: output map, query order/tables, request params, migration-column cross-check — no SQL text assertions). maine/maryland keep their `isEligibleElection` office filters; ME/MD/HI/AZ all pass `evidenceLabelTypes: ["donor"]`.
-- **Blocked only on the per-relation descriptor** (identity renames, all else CONFIG-EXACT or near): washington/wisconsin/oregon (`sponsor_id`/`sponsor_name` on outside relations; oregon+pennsylvania also aggregate outside totals with sum-CASE instead of `max`), districtOfColumbia (`committee_key` reaches the evidence query beyond what `committeeColumn` covers today — verify at migration), alaska, massachusetts, louisiana, vermont, newYork, pennsylvania, tennessee (+`expenditure_count` outside-group column + trimmed summary), michigan (+`candidate_loan_total` summary column), newJersey (`::text`-cast entity columns).
+- **Identity renames — the per-relation descriptor's cohort** (descriptor shipped in the Phase 3 descriptor PR; **washington MIGRATED as its pilot**, `sponsor_id`/`sponsor_name` via `outsideGroupIdentityColumns`): **wisconsin, alaska, massachusetts MIGRATED (wave 2)** — wisconsin `sponsor_*`, alaska `candidate_filer_id` link + `outside_group_id`/`outside_group_name` (first `linkIdentityColumn` consumer), massachusetts `candidate_cpf_id` + `iepac_cpf_id`/`iepac_name`, all donor-only evidence; alaska helper-copy edge behaviors ("" and trunc) documented as an unobservable no-op delta. Still descriptor-expressible: districtOfColumbia (`committee_key` in the evidence query — verify at migration). Identity rename **plus another blocker**: **louisiana DROPPED** — its loader opens a `BEGIN READ ONLY` transaction when handed a Pool (one-state, grep-verified; stays bespoke per the working rules); vermont (filter + PAC wording — both options now exist, characterization pinned, swap pending), newYork (direct-breakdown `industry` routing to `direct_campaign.top_industries`), tennessee (+`expenditure_count` outside-group column + trimmed summary), oregon/pennsylvania (outside totals aggregated with sum-CASE instead of `max`), michigan (+`candidate_loan_total` summary column), newJersey (`::text`-cast entity columns).
 - **Query-family subsets**: minnesota (no direct-breakdown query), california/newJersey/newMexico (4 queries, no donor evidence), colorado/connecticut/nebraska/indiana/oklahoma/virginia (2 queries, direct-only, each trimming different summary columns), utah (3 queries, alternate outside tables).
 - **Direct-breakdown `category_type` filters**: standard `('occupation','contribution_size')`; `('occupation','industry')` california/colorado/connecticut/nebraska/newMexico; `('contribution_size','industry')` newYork; `= 'contribution_size'` louisiana/vermont/utah; indiana adds `pac_backed_industry`; newJersey adds `employer`. Several of these also route output differently (e.g. nebraska fills `direct_campaign.top_industries`, leaves `total_spent` null).
 - **Structural outliers**: kentucky (extra dedup CTE in donor evidence), newYorkCity/losAngelesCity (city shapes), newYorkCombined (aggregator, no SQL), florida (no loader file).

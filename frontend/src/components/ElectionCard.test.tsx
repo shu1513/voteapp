@@ -515,7 +515,19 @@ describe("ElectionCard", () => {
       undefined,
       new Map([["e-1", electionChoice({ race_type: "ballot_measure", picks: [], measure_position: "yes" })]])
     );
-    expect(screen.getByText("My pick: Yes")).toBeInTheDocument();
+    const yesChip = screen.getByText("My pick: Yes");
+    expect(yesChip.className).toContain("text-green-900");
+  });
+
+  it("renders a No measure pick in red, matching the election page's NO box", () => {
+    renderCard(
+      electionSummary({ race_type: "ballot_measure", candidate_count: 0 }),
+      undefined,
+      new Map([["e-1", electionChoice({ race_type: "ballot_measure", picks: [], measure_position: "no" })]])
+    );
+    const noChip = screen.getByText("My pick: No");
+    expect(noChip.className).toContain("text-red-900");
+    expect(noChip.className).not.toContain("text-green-900");
   });
 
   it("stays silent on an undecided race", () => {

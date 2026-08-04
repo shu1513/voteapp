@@ -398,15 +398,19 @@ describe("ElectionPage", () => {
       })
     );
 
-    // The measure works FOR housing (green), AGAINST civil rights (red);
-    // a stanceless tag stays muted. The direction is visible text, not just
-    // color, so color-blind readers can tell the chips apart too.
-    const forChip = await screen.findByText("Housing Affordability (for)");
+    // The measure works FOR housing (green, under "Supports:"), AGAINST
+    // civil rights (red, under "Opposes:"); a stanceless tag stays muted
+    // under "Affects:". The direction is the visible group label, not just
+    // color, so color-blind readers can tell the groups apart too.
+    const forChip = await screen.findByText("Housing Affordability");
     expect(forChip.className).toContain("text-green-900");
-    const againstChip = screen.getByText("Civil Rights (against)");
+    expect(screen.getByText("Supports:")).toBeInTheDocument();
+    const againstChip = screen.getByText("Civil Rights");
     expect(againstChip.className).toContain("text-red-900");
+    expect(screen.getByText("Opposes:")).toBeInTheDocument();
     const neutralChip = screen.getByText("Gun Control");
     expect(neutralChip.className).toContain("text-ink-soft");
+    expect(screen.getByText("Affects:")).toBeInTheDocument();
   });
 
   it("marks saved areas with an sr-only cue on measure and candidate chips", async () => {
@@ -457,9 +461,15 @@ describe("ElectionPage", () => {
     // fetch, after the loader-fed chips render — so wait on the cue itself.
     const savedCues = await screen.findAllByText("(saved)");
     expect(savedCues).toHaveLength(2);
-    const measureChip = screen.getByText("Housing Affordability (for)");
+    // Both surfaces now render the bare area name; the measure chip lives
+    // under the "Supports:" group label, the candidate chip carries counts.
+    const chips = screen.getAllByText("Housing Affordability");
+    expect(chips).toHaveLength(2);
+    const measureChip = chips.find((chip) => chip.closest("p")?.textContent?.includes("Supports:"))!;
     expect(measureChip).toHaveTextContent("(saved)");
-    const candidateChip = screen.getByText("Housing Affordability").closest("span")!;
+    const candidateChip = chips
+      .find((chip) => !chip.closest("p")?.textContent?.includes("Supports:"))!
+      .closest("span")!;
     expect(candidateChip).toHaveTextContent("1 for");
     expect(candidateChip).toHaveTextContent("(saved)");
   });

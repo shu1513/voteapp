@@ -68,8 +68,21 @@ export type StandardStateFinanceSummaryVariant = "totals" | "illinoisD2";
 
 export type StandardStateFinanceEvidenceLabelType = "donor" | "employer";
 
+/**
+ * Direct-breakdown category types the loader selects AND can route: occupation
+ * rows feed top_occupations, contribution_size rows feed the buckets. States
+ * whose direct table only carries one of them (Louisiana/Vermont: buckets
+ * only) narrow the list. Types the mapper cannot route (e.g. industry) are
+ * deliberately not accepted — routing them lands them in top_occupations.
+ */
+export type StandardStateFinanceDirectCategoryType = "occupation" | "contribution_size";
+
 const STANDARD_COMMITTEE_COLUMNS: readonly StandardStateFinanceCommitteeColumn[] = ["committee_id", "committee_key"];
 const STANDARD_EVIDENCE_LABEL_TYPES: readonly StandardStateFinanceEvidenceLabelType[] = ["donor", "employer"];
+const STANDARD_DIRECT_CATEGORY_TYPES: readonly StandardStateFinanceDirectCategoryType[] = [
+  "occupation",
+  "contribution_size",
+];
 
 function assertIdentifier(value: string): string {
   if (!/^[a-z][a-z0-9_]*$/.test(value)) throw new Error(`Invalid standard finance table identifier: ${value}`);
@@ -101,6 +114,15 @@ function assertEvidenceLabelTypes(
   return values;
 }
 
+function assertDirectCategoryTypes(
+  values: readonly StandardStateFinanceDirectCategoryType[]
+): readonly StandardStateFinanceDirectCategoryType[] {
+  if (values.length === 0 || values.some((value) => !STANDARD_DIRECT_CATEGORY_TYPES.includes(value))) {
+    throw new Error(`Invalid standard finance direct category types: ${values.join(", ")}`);
+  }
+  return values;
+}
+
 export async function loadStandardStateFinanceSummariesByCandidateElection(input: {
   db: Queryable;
   candidateRows: readonly CandidateRow[];
@@ -118,6 +140,14 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
   outsideGroupIdentityColumns?: StandardStateFinanceOutsideIdentityColumns;
   summaryVariant?: StandardStateFinanceSummaryVariant;
   evidenceLabelTypes?: readonly StandardStateFinanceEvidenceLabelType[];
+  /** Direct-breakdown category types selected; default occupation + contribution_size. */
+  directBreakdownCategoryTypes?: readonly StandardStateFinanceDirectCategoryType[];
+  /**
+   * Wording for the outside-industry support explanation's action clause;
+   * default "independent spending supporting this candidate". Louisiana and
+   * Vermont describe their outside groups as PACs instead.
+   */
+  outsideSupportActionLabel?: string;
 }
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
   if (!input.enabled()) {
@@ -136,6 +166,10 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
   const summaryVariant = input.summaryVariant ?? "totals";
   const evidenceLabelTypes = assertEvidenceLabelTypes(input.evidenceLabelTypes ?? STANDARD_EVIDENCE_LABEL_TYPES);
   const evidenceLabelTypeList = evidenceLabelTypes.map((value) => `'${value}'`).join(", ");
+  const directCategoryTypes = assertDirectCategoryTypes(
+    input.directBreakdownCategoryTypes ?? STANDARD_DIRECT_CATEGORY_TYPES
+  );
+  const directCategoryTypeList = directCategoryTypes.map((value) => `'${value}'`).join(", ");
   const { candidateRows, electionRows, source, sourceUrl } = input;
   const requests = buildStateFinanceSummaryRequests(input.state, candidateRows, electionRows, input.isEligibleElection);
   if (requests.length === 0) {
@@ -255,7 +289,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         JOIN public.${tables.directBreakdowns} AS breakdown
           ON breakdown.link_id = link.id
          AND breakdown.election_year = link.election_year
-        WHERE breakdown.category_type IN ('occupation', 'contribution_size')
+        WHERE breakdown.category_type IN (${directCategoryTypeList})
         GROUP BY selected.candidate_id, selected.election_id, breakdown.category_type, breakdown.category_name
       ),
       ranked AS (
@@ -584,7 +618,13 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
           const supportingOrganizations = outsideIndustryEvidenceByCandidateElectionAndIndustry.get(evidenceKey) ?? [];
           return {
             ...industry,
-            explanation: buildOutsideIndustrySupportExplanation(industry.category_name, supportingOrganizations),
+            explanation: input.outsideSupportActionLabel
+              ? buildOutsideIndustrySupportExplanation(
+                  industry.category_name,
+                  supportingOrganizations,
+                  input.outsideSupportActionLabel
+                )
+              : buildOutsideIndustrySupportExplanation(industry.category_name, supportingOrganizations),
             supporting_organizations: supportingOrganizations,
           };
         }
