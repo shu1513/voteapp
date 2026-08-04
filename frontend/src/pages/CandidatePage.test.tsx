@@ -351,8 +351,48 @@ describe("CandidatePage", () => {
 
     await screen.findByRole("heading", { name: "Jordan Voter" });
     const button = screen.getByRole("button", { name: "Report an issue with candidate profile" });
-    const electionsHeading = screen.getByRole("heading", { name: "Elections" });
+    const electionsHeading = screen.getByRole("heading", { name: "Race Jordan Voter is in:" });
     expect(electionsHeading.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("splits the election list into upcoming and past races, pluralized per section", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [
+          candidateElection(),
+          candidateElection({ candidate_election_id: "ce-2", election_id: "e-2", election_date: "2099-12-01" }),
+          candidateElection({ candidate_election_id: "ce-3", election_id: "e-3", election_date: "2000-11-07" }),
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Races Jordan Voter is in:" });
+    const upcoming = screen.getByRole("heading", { name: "Races Jordan Voter is in:" });
+    const past = screen.getByRole("heading", { name: "Past race Jordan Voter ran in:" });
+    // Races still ahead lead; the finished one follows.
+    expect(upcoming.compareDocumentPosition(past) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("files a withdrawn future candidacy under \"no longer in\", never \"is in\"", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [
+          candidateElection({ status: "withdrawn" }),
+          candidateElection({ candidate_election_id: "ce-2", election_id: "e-2", election_date: "2099-12-01" }),
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Jordan Voter" });
+    // A candidate who withdrew from a future-dated race is not "in" it, but
+    // the candidacy stays visible as history.
+    expect(screen.getByRole("heading", { name: "Race Jordan Voter is in:" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Race Jordan Voter is no longer in:" })).toBeInTheDocument();
+    const active = screen.getByRole("heading", { name: "Race Jordan Voter is in:" });
+    const exited = screen.getByRole("heading", { name: "Race Jordan Voter is no longer in:" });
+    expect(active.compareDocumentPosition(exited) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("cuts the newest-first view off at 20 with a show-all button", async () => {
@@ -553,7 +593,9 @@ describe("CandidatePage", () => {
       candidateDetail({ elections: [candidateElection({ election_date: "2000-11-03" })] })
     );
 
-    expect(await screen.findByRole("heading", { name: "Elections" })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "Past race Jordan Voter ran in:" })
+    ).toBeInTheDocument();
     // Campaign finance shows only for elections the candidate is currently
     // in; past rows carry no disclosure and trigger no fetch.
     expect(screen.queryByText("Campaign Finance Information")).not.toBeInTheDocument();
