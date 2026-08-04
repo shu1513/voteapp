@@ -33,8 +33,9 @@ built as the last feature PR. Ohio v1 UI parity target = Maryland/Texas.
   - `outsideGroupValidation: "pairing"` — **mandatory**, cascade-FK trap
     (matrix: breakdowns upsert before stale-group delete; `none`/`presence`
     silently cascade-deletes)
-  - `supersededLinkSource`: the Ohio bulk link source (ME `cfis_bulk` / MD
-    `cfs_public_export` precedent — auto-link re-keys need supersession)
+  - `supersededLinkSource: "sos_bulk_export"` (decided at PR 1; also the
+    link-source CHECK value next to `'manual'` — ME `cfis_bulk` / MD
+    `cfs_public_export` precedent, auto-link re-keys need supersession)
   - No `normalizeCommitteeId` (MASTER_KEY numeric; strict numeric validation +
     trim in wrapper mapping)
   - Pool-guard wrapper stub (maryland's `requireMarylandPool` pattern)
@@ -64,12 +65,17 @@ source. Amounts CHECK `>= 0` (canonical).
    a Phase-5 capability (IL/KY/LA) and Ohio does not adopt it. If a cover page
    reports a negative balance: write NULL + count in sync diagnostics. Never
    clamp to 0.
-2. **Eligible offices v1**: statewide executive set + `state_upper::State
-   Senator` + `state_lower::State Lower Chamber Legislator`. **No judicial
-   offices** — no existing state's eligible list has any (grep-verified
-   2026-08-03); Supreme Court / Court of Appeals / Board of Education deferred
-   until canonical office names are checked. County/municipal excluded (report:
-   e-filing not uniformly required locally).
+2. **Eligible offices v1** (DB-grounded at PR 1 against Ohio 2026 election
+   rows): `statewide::Governor`, `statewide::Attorney General`,
+   `statewide::Secretary of State`, `statewide::State Auditor`,
+   `statewide::State Treasurer`, `state_upper::State Senator`,
+   `state_lower::State Lower Chamber Legislator`. **No Lieutenant Governor**
+   — Ohio elects it on a joint ticket, no separate election rows exist. **No
+   judicial offices** — no existing state's eligible list has any
+   (grep-verified 2026-08-03); Ohio judicial rows use canonical name "State
+   Level Judge"; Supreme Court / Court of Appeals / Board of Education
+   deferred. County/municipal excluded (report: e-filing not uniformly
+   required locally).
 3. **Support/oppose fail-closed**: only rows with explicit SUPPORT/OPPOSE become
    outside-spending rows (schema CHECK enforces anyway). Blank-direction rows →
    excluded-amount + row-count diagnostics. Never infer direction. No dedup of
@@ -188,7 +194,9 @@ main feasibility risk and also settles the 31-U two-stage question.
 
 ## Status
 
-- [ ] PR 1 schema + writer
+- [x] PR 1 schema + writer (migration 210, `oh_` tables, writer wrapper with
+      numeric MASTER_KEY validation, eligible offices, 3 flags; branch
+      `claude/ohio-financial-module-55919c`)
 - [ ] PR 2 loader + wiring
 - [ ] PR 3 acquisition spike (portal access required)
 - [ ] PR 4 artifact cache + parsers
