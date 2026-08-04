@@ -195,8 +195,14 @@ describe("rehome statements", () => {
     expect(REHOME_NOTIFICATION_EVENTS_SQL).toMatch(
       /UPDATE public\.user_candidate_follow_notification_events/
     );
-    expect(REHOME_NOTIFICATION_EVENTS_SQL).toMatch(/SET candidate_record_id = p\.keeper_id/);
+    expect(REHOME_NOTIFICATION_EVENTS_SQL).toMatch(/SET candidate_record_id = m\.keeper_id/);
     expect(REHOME_NOTIFICATION_EVENTS_SQL).toMatch(/NOT EXISTS/);
+    // One event per (user, event_type, keeper) WITHIN the statement: the
+    // plan may map several stale rows onto one keeper, and NOT EXISTS only
+    // sees the statement-start snapshot — without the DISTINCT ON, two
+    // same-user events would collide on the partial unique index and abort
+    // the whole cleanup transaction.
+    expect(REHOME_NOTIFICATION_EVENTS_SQL).toMatch(/DISTINCT ON \(e\.user_id, e\.event_type, p\.keeper_id\)/);
     expect(REHOME_NOTIFICATION_EVENTS_SQL).not.toMatch(/\bDELETE\b/i);
   });
 

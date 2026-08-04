@@ -627,6 +627,16 @@ export function planRecordRekeys(input: {
  * events. created_at is untouched for the same reason it is absent from
  * UPSERT_RECORDS_SQL's update list. No distinctness guard: a planned rekey
  * changes the key by construction, so the row always really changes.
+ *
+ * Provenance is copied unconditionally, and that is NOT the ingest writer's
+ * keep-on-no-op rule being skipped: that rule exists for re-imports of
+ * IDENTICAL normalized content, and a rekey can never be one — the keys
+ * differ, and the key IS the normalized (description, url, date). Every
+ * rekey is therefore a real content change, where UPSERT_RECORDS_SQL's DO
+ * UPDATE also copies the source row's provenance. The local edits that
+ * cause rekeys (plain-language rewrite, URL/date repairs) deliberately do
+ * not re-stamp origin locally, so what is copied is still the introducing
+ * run's attribution — preserved, not rotated.
  */
 export const REKEY_RECORDS_SQL = `
   UPDATE public.candidate_records AS t

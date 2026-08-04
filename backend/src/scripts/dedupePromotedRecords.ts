@@ -179,18 +179,33 @@ const PAIRS_CTE = `
 // The NOT EXISTS guard skips an event whose user already has one for the
 // keeper — that leftover then cascades with the delete, which is correct:
 // it is a duplicate of a notification the keeper's own event already records.
+// The movable CTE picks at most ONE event per (user, event_type, keeper):
+// the plan may map several stale rows onto one keeper, and NOT EXISTS alone
+// judges the statement-start snapshot — moving two same-user events in one
+// statement would trip the partial unique index on
+// (user_id, candidate_record_id) and abort the whole cleanup transaction.
+// The events DISTINCT ON leaves behind stay on their stale rows and cascade
+// with the delete, which is correct: the one that moved already records
+// that this user was told.
 export const REHOME_NOTIFICATION_EVENTS_SQL = `
-  WITH ${PAIRS_CTE}
-  UPDATE public.user_candidate_follow_notification_events AS e
-  SET candidate_record_id = p.keeper_id
-  FROM pairs AS p
-  WHERE e.candidate_record_id = p.stale_id
-    AND NOT EXISTS (
+  WITH ${PAIRS_CTE},
+  movable AS (
+    SELECT DISTINCT ON (e.user_id, e.event_type, p.keeper_id)
+           e.id AS event_id, p.keeper_id
+    FROM public.user_candidate_follow_notification_events AS e
+    JOIN pairs AS p ON e.candidate_record_id = p.stale_id
+    WHERE NOT EXISTS (
       SELECT 1 FROM public.user_candidate_follow_notification_events AS k
       WHERE k.user_id = e.user_id
         AND k.candidate_record_id = p.keeper_id
         AND k.event_type = e.event_type
     )
+    ORDER BY e.user_id, e.event_type, p.keeper_id, e.id
+  )
+  UPDATE public.user_candidate_follow_notification_events AS e
+  SET candidate_record_id = m.keeper_id
+  FROM movable AS m
+  WHERE e.id = m.event_id
 `;
 
 // content_reports.entity_id is a loose UUID with no FK — a report filed

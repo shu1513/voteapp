@@ -709,7 +709,7 @@ describe("REKEY_RECORDS_SQL", () => {
       origin: "manual",
       origin_run_id: "run-9",
     };
-    expect(rekeyWireRows([{ sourceRow, oldKey: "old-key" }])).toEqual([
+    expect(rekeyWireRows([{ sourceRow, oldKey: "old-key", via: "transition" }])).toEqual([
       {
         candidate_id: "c1",
         old_key: "old-key",
