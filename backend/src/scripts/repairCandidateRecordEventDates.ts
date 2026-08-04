@@ -257,16 +257,36 @@ function buildPoolDeps(pool: Pool): RepairDeps {
       return result.rows[0]?.id ?? null;
     },
     applyRepair: async ({ recordId, eventDate, identityKey, expected }) => {
-      const result = await pool.query(
-        `UPDATE public.candidate_records
-            SET event_date = $2::date,
-                record_identity_key = $3,
-                updated_at = now()
-          WHERE id = $1
-            AND description = $4
-            AND event_date = $5::date
-            AND source_url = $6
-            AND retired_at IS NULL`,
+      // The transition rides the same statement as the re-key: the ledger is
+      // what lets research:promote follow this row to its new identity, and
+      // the old key is derivable exactly because the compare-and-swap pins
+      // the content it was computed from.
+      const oldIdentityKey = buildCandidateRecordIdentityKey({
+        description: expected.description,
+        sourceUrl: expected.sourceUrl,
+        eventDate: expected.eventDate,
+      });
+      const result = await pool.query<{ updated: number }>(
+        `WITH updated AS (
+           UPDATE public.candidate_records
+              SET event_date = $2::date,
+                  record_identity_key = $3,
+                  updated_at = now()
+            WHERE id = $1
+              AND description = $4
+              AND event_date = $5::date
+              AND source_url = $6
+              AND retired_at IS NULL
+           RETURNING id, candidate_id
+         ),
+         transition AS (
+           INSERT INTO public.candidate_record_identity_transitions
+             (candidate_id, old_record_identity_key, new_record_identity_key, reason)
+           SELECT candidate_id, $7, $3, 'event_date_repair' FROM updated
+           WHERE $7::text IS DISTINCT FROM $3::text
+           ON CONFLICT (candidate_id, old_record_identity_key, new_record_identity_key) DO NOTHING
+         )
+         SELECT count(*)::int AS updated FROM updated`,
         [
           recordId,
           eventDate,
@@ -274,9 +294,10 @@ function buildPoolDeps(pool: Pool): RepairDeps {
           expected.description,
           expected.eventDate,
           expected.sourceUrl,
+          oldIdentityKey,
         ]
       );
-      return result.rowCount ?? 0;
+      return result.rows[0]?.updated ?? 0;
     },
   };
 }
