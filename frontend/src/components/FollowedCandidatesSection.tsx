@@ -155,7 +155,14 @@ export function FollowedCandidatesSection() {
             filter the follows list below — the list stays put while typing.
             Rendered outside the follows-list branch: discovery must work with
             zero follows and when the follows fetch fails. */}
-        <div className="relative w-full sm:w-56">
+        <div className="flex w-full items-center gap-2 sm:w-auto">
+          <label
+            htmlFor="candidate-search-input"
+            className="shrink-0 text-sm font-medium text-ink"
+          >
+            Search candidates:
+          </label>
+          <div className="relative w-full sm:w-56">
           <Combobox<CandidateSearchMatch | null>
             value={null}
             onChange={(match) => {
@@ -172,8 +179,8 @@ export function FollowedCandidatesSection() {
                 setQuery(event.target.value);
                 onInputChanged(event.target.value);
               }}
-              placeholder="Search by candidate name"
-              aria-label="Search candidates by name"
+              id="candidate-search-input"
+              placeholder="e.g. John Smith"
               className="w-full rounded-lg border border-line bg-white px-3 py-1.5 text-sm text-ink placeholder:text-ink-soft focus:border-rausch focus:outline-none"
             />
             {matches.length > 0 ? (
@@ -194,6 +201,7 @@ export function FollowedCandidatesSection() {
               </ComboboxOptions>
             ) : null}
           </Combobox>
+          </div>
         </div>
       </div>
       {followsLoading ? <LoadingNotice text="Loading follows…" /> : null}

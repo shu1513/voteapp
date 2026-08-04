@@ -78,7 +78,7 @@ describe("FollowedCandidatesSection", () => {
     expect(screen.getByText("Alex Mayor")).toBeInTheDocument();
 
     // The search box is typeahead-only: the followed list must stay put.
-    await user.type(screen.getByRole("combobox", { name: "Search candidates by name" }), "jord");
+    await user.type(screen.getByRole("combobox", { name: "Search candidates:" }), "jord");
     expect(screen.getByText("Jordan Voter")).toBeInTheDocument();
     expect(screen.getByText("Alex Mayor")).toBeInTheDocument();
   });
@@ -105,7 +105,7 @@ describe("FollowedCandidatesSection", () => {
     renderSection();
 
     expect(await screen.findByText("Jordan Voter")).toBeInTheDocument();
-    await user.type(screen.getByRole("combobox", { name: "Search candidates by name" }), "hilar");
+    await user.type(screen.getByRole("combobox", { name: "Search candidates:" }), "hilar");
 
     // Waits out the typeahead debounce; the suggestion is NOT a follow.
     const option = await screen.findByRole("option", { name: /Hilary Brown/ });
@@ -136,7 +136,7 @@ describe("FollowedCandidatesSection", () => {
     renderSection();
 
     expect(await screen.findByText("Jordan Voter")).toBeInTheDocument();
-    await user.type(screen.getByRole("combobox", { name: "Search candidates by name" }), "hilar");
+    await user.type(screen.getByRole("combobox", { name: "Search candidates:" }), "hilar");
     expect(await screen.findByRole("option", { name: /Hilary Brown/ })).toBeInTheDocument();
 
     await user.keyboard("{Escape}");
