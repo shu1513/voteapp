@@ -307,9 +307,17 @@ export function PicksPage() {
   const picksSettled = ballot.isSuccess && choicesReady;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-10 px-4 py-8">
+    // One column on phones/tablets; from lg up the page widens and splits
+    // into two: pick cards (the main read) left, the two "my lists"
+    // (follows, issues) stacked right. space-y drives vertical rhythm in the
+    // stacked layout, gap drives it in the grid — lg:space-y-0 keeps the two
+    // systems from compounding.
+    // 1:1 columns on purpose: pick lines are the primary read and long
+    // ballot titles (judicial divisions) need ~480px to stay on one line,
+    // so the split stays even and the whole container widens at xl instead.
+    <div className="mx-auto max-w-3xl space-y-10 px-4 py-8 lg:grid lg:max-w-6xl lg:grid-cols-2 lg:items-start lg:gap-x-10 lg:space-y-0 xl:max-w-7xl xl:gap-x-14">
       <section>
-        <h1 className="text-2xl font-bold">My Picks</h1>
+        <h1 className="text-2xl font-bold">My Election Picks</h1>
         {ballot.isPending || (choicesLoading && !choicesError) ? (
           <LoadingNotice text="Loading your elections…" />
         ) : null}
@@ -354,10 +362,13 @@ export function PicksPage() {
 
       {/* Candidates before issue areas: both are "my" lists, but followed
           candidates are people the voter actively picked — the closer read
-          after the pick cards. */}
-      <FollowedCandidatesSection />
+          after the pick cards. The wrapper is the grid's right column;
+          space-y-10 spaces the two sections at every width. */}
+      <div className="space-y-10">
+        <FollowedCandidatesSection />
 
-      <ResearchAreasSection />
+        <ResearchAreasSection />
+      </div>
     </div>
   );
 }

@@ -56,7 +56,7 @@ describe("SettingsPage", () => {
     renderSettings();
 
     expect(await screen.findByRole("heading", { name: "Email notifications" })).toBeInTheDocument();
-    expect(screen.queryByText("Issues you care about")).not.toBeInTheDocument();
+    expect(screen.queryByText("My most important issues")).not.toBeInTheDocument();
   });
 
   it("confirms a saved first name, then clears the confirmation", async () => {

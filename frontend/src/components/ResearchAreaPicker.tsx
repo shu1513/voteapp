@@ -124,10 +124,13 @@ export function ResearchAreaPicker({ areas, orderedIds, disabled, onChange }: Re
                 // h-full + items-start: every card in a grid row stretches to
                 // the tallest card, so mixed-length descriptions no longer
                 // leave ragged gaps between rows.
+                // Selected = the app's affirmative green (the YES-vote box and
+                // the chosen-pick button use the same border-green-700 /
+                // bg-green-50 pair); rausch red stays for destructive controls.
                 className={`flex h-full w-full items-start gap-2 rounded-lg border px-3 py-2 text-left transition disabled:cursor-not-allowed disabled:opacity-50 ${
                   selected
-                    ? "border-rausch bg-rausch/5"
-                    : "border-line bg-white hover:border-rausch"
+                    ? "border-green-700 bg-green-50"
+                    : "border-line bg-white hover:border-green-700"
                 }`}
               >
                 <span className="min-w-0 flex-1">
@@ -139,7 +142,7 @@ export function ResearchAreaPicker({ areas, orderedIds, disabled, onChange }: Re
                 {selected ? (
                   <span
                     aria-hidden
-                    className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rausch text-[11px] font-semibold text-white"
+                    className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-700 text-[11px] font-semibold text-white"
                   >
                     {rank + 1}
                   </span>
@@ -187,7 +190,7 @@ function SortableAreaRow({
       <span aria-hidden className="px-1 text-ink-soft">
         ⠿
       </span>
-      <span className="w-6 shrink-0 text-center text-xs font-semibold text-rausch-dark">#{index + 1}</span>
+      <span className="w-6 shrink-0 text-center text-xs font-semibold text-green-800">#{index + 1}</span>
       <span className="flex-1 text-ink">{name}</span>
       <button
         type="button"
