@@ -124,6 +124,7 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
         <ShareButton
           path={path}
           shareText={`My ${formatElectionDate(electionDate)} election picks`}
+          affirmative
         />
         {/* Names the name: the public page shows the owner's first name, and
             the sharer must learn that HERE, before posting the link — not
@@ -142,7 +143,7 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
         onClick={() => mint.mutate()}
         className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink disabled:opacity-50"
       >
-        {mint.isPending ? "…" : "Share this card"}
+        {mint.isPending ? "…" : "Share my picks"}
       </button>
       {mint.isError ? (
         <span role="alert" className="text-xs font-medium text-red-800">

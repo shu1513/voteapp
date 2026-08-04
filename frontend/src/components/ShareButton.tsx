@@ -31,6 +31,10 @@ type ShareButtonProps = {
   /** One line of context sent alongside the link, e.g. the candidate name
    * and race. Platforms that take no text (Facebook) rely on the og card. */
   shareText: string;
+  /** Affirmative (light-green) styling — the same border-green-700/bg-green-50
+   * pair the research-area picker and YES-vote box use for a selected state.
+   * Used where the button appears as the result of a completed action. */
+  affirmative?: boolean;
 };
 
 // Transient copy-outcome message lifetime.
@@ -38,9 +42,11 @@ const COPIED_MS = 2000;
 
 const BUTTON_CLASS =
   "rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink";
+const AFFIRMATIVE_BUTTON_CLASS =
+  "rounded-lg border border-green-700 bg-green-50 px-3 py-1.5 text-sm font-medium text-ink transition hover:border-green-800";
 const ITEM_CLASS = "block px-4 py-2 text-sm text-ink data-[focus]:bg-surface";
 
-export function ShareButton({ path, shareText }: ShareButtonProps) {
+export function ShareButton({ path, shareText, affirmative = false }: ShareButtonProps) {
   const url = `${SITE_ORIGIN}${path}`;
   const [canNativeShare, setCanNativeShare] = useState(false);
   const [copyStatus, setCopyStatus] = useState<"copied" | "failed" | null>(null);
@@ -80,9 +86,11 @@ export function ShareButton({ path, shareText }: ShareButtonProps) {
     copiedTimer.current = setTimeout(() => setCopyStatus(null), COPIED_MS);
   }
 
+  const buttonClass = affirmative ? AFFIRMATIVE_BUTTON_CLASS : BUTTON_CLASS;
+
   if (canNativeShare) {
     return (
-      <button type="button" onClick={shareNative} className={BUTTON_CLASS}>
+      <button type="button" onClick={shareNative} className={buttonClass}>
         Share
       </button>
     );
@@ -92,14 +100,21 @@ export function ShareButton({ path, shareText }: ShareButtonProps) {
   const encodedText = encodeURIComponent(shareText);
   return (
     <Menu as="div" className="relative inline-block">
-      <MenuButton className={BUTTON_CLASS}>Share</MenuButton>
+      <MenuButton className={buttonClass}>Share</MenuButton>
       {/* role="status": announce the copy outcome to screen readers without
           moving focus. Rendered outside MenuItems because the menu closes on
           selection — inside it the message would never be seen. */}
       <span role="status" className={copyStatus ? "absolute right-0 top-full z-20 mt-1 whitespace-nowrap rounded-lg border border-line bg-white px-3 py-1.5 text-xs text-ink shadow-lg" : "sr-only"}>
         {copyStatus === "copied" ? "Link copied" : copyStatus === "failed" ? "Couldn't copy link" : null}
       </span>
-      <MenuItems className="absolute right-0 z-20 mt-2 w-64 rounded-xl border border-line bg-white py-1 shadow-lg focus:outline-none">
+      {/* anchor (not absolute right-0): floating positioning keeps the panel
+          inside the viewport, flipping/shifting when the button sits near a
+          screen edge — right-0 clipped half the panel off-screen when the
+          button rendered on the left side of the page. */}
+      <MenuItems
+        anchor="bottom end"
+        className="z-20 w-64 rounded-xl border border-line bg-white py-1 shadow-lg focus:outline-none [--anchor-gap:8px]"
+      >
         {/* The link itself, first: "Share" that never shows the URL reads as
             broken. Static text (not a MenuItem — selecting it should not
             close the menu); select-all so a click highlights the whole URL
