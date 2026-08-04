@@ -6019,7 +6019,7 @@ describe("lookupElectionDetailById", () => {
     });
     const querySql = query.mock.calls.map((call) => String(call[0])).join("\n");
     expect(querySql).toContain("public.vt_candidate_finance_summaries");
-    expect(querySql).toContain("breakdown.category_type = 'contribution_size'");
+    expect(querySql).toContain("breakdown.category_type IN ('contribution_size')");
     expect(querySql).toContain("public.vt_candidate_finance_outside_groups");
     expect(querySql).toContain("public.vt_candidate_finance_outside_group_breakdowns");
     expect(querySql).toContain("public.finance_label_classifications");
