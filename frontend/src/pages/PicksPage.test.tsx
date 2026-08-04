@@ -297,7 +297,7 @@ describe("PicksPage candidate search combobox", () => {
 
     // Typing past the 2-char minimum fires the debounced search; the fake
     // clock (shouldAdvanceTime) plus advanceTimers lets it elapse.
-    await user.type(await screen.findByRole("combobox", { name: "Search candidates by name" }), "sam");
+    await user.type(await screen.findByRole("combobox", { name: "Search candidates:" }), "sam");
     await user.click(await screen.findByRole("option", { name: /Sam Searcher/ }));
 
     expect(router.state.location.pathname).toBe("/candidates/c-7");
