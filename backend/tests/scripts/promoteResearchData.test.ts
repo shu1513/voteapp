@@ -624,10 +624,14 @@ describe("planRecordRekeys", () => {
 describe("resolveIdentityTransitions", () => {
   const candKeyOf = (candidateId: string, key: string) =>
     recordKey({ candidate_id: candidateId, record_identity_key: key });
-  const transition = (candidateId: string, oldKey: string, newKey: string) => ({
+  // seq orders the history: later seq = later created_at. The resolver sorts
+  // internally, so tests may hand rows in any order.
+  const transition = (candidateId: string, oldKey: string, newKey: string, seq = 0) => ({
+    id: `t-${seq}`,
     candidate_id: candidateId,
     old_record_identity_key: oldKey,
     new_record_identity_key: newKey,
+    created_at_utc: `2026-08-01 00:00:0${seq}.000000`,
   });
 
   it("maps each old key to its terminal key across a chain", () => {
@@ -646,6 +650,28 @@ describe("resolveIdentityTransitions", () => {
       transition("c2", "k2", "k3"),
     ]);
     expect(resolved.get(candKeyOf("c1", "k1"))).toBe("k2");
+  });
+
+  it("resolves a multi-successor history to the NEWEST edit, regardless of row order", () => {
+    // Edit -> revert -> re-edit legally leaves k1 with two successors
+    // (k1->k2 and k1->k3); only the newest says where the row actually is.
+    const history = [
+      transition("c1", "k1", "k2", 0),
+      transition("c1", "k2", "k1", 1),
+      transition("c1", "k1", "k3", 2),
+    ];
+    const shuffled = [history[2]!, history[0]!, history[1]!];
+    for (const rows of [history, shuffled]) {
+      const resolved = resolveIdentityTransitions(rows);
+      expect(resolved.get(candKeyOf("c1", "k1"))).toBe("k3");
+    }
+  });
+
+  it("breaks same-timestamp ties by id so resolution stays deterministic", () => {
+    const a = { ...transition("c1", "k1", "kA", 0), id: "t-a" };
+    const b = { ...transition("c1", "k1", "kB", 0), id: "t-b" };
+    expect(resolveIdentityTransitions([a, b]).get(candKeyOf("c1", "k1"))).toBe("kB");
+    expect(resolveIdentityTransitions([b, a]).get(candKeyOf("c1", "k1"))).toBe("kB");
   });
 
   it("terminates on a hand-corrupted cycle instead of looping", () => {

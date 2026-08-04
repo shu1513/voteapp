@@ -48,9 +48,12 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 //      writer update in place rather than insert.
 //
 // Deletion (not retirement) is deliberate: these rows are transport
-// artifacts, not researched claims someone withdrew. Tags and notification
-// events cascade (both FKs are ON DELETE CASCADE), which is correct — the
-// keeper row carries its own.
+// artifacts, not researched claims someone withdrew. Tags cascade (the
+// keeper carries its own copies), but USER-generated references are rehomed
+// onto the keeper before the delete: notification events (the already-told
+// dedupe ledger — losing them would let a worker re-notify) and content
+// reports (no FK; they would silently dangle). See the rehome statements
+// below.
 
 export type PromotedDuplicate = {
   staleRow: RecordRow;
@@ -140,12 +143,67 @@ export function planPromotedRecordDedupe(input: {
 }
 
 // Addressed by natural key — unique on the target, so each wire row deletes
-// at most one record. Tags and notification events cascade by FK.
+// at most one record. Tags cascade by FK on purpose: the keeper carries its
+// own tags, so the stale row's copies are redundant research data. Anything
+// USER-generated that points at the stale row is rehomed first (below) —
+// cascade must never eat notification history, and content reports have no
+// FK and would silently dangle.
 export const DELETE_DUPLICATES_SQL = `
   DELETE FROM public.candidate_records AS t
-  USING jsonb_to_recordset($1::jsonb) AS s(candidate_id uuid, record_identity_key text)
+  USING jsonb_to_recordset($1::jsonb) AS s(candidate_id uuid, record_identity_key text, keeper_record_identity_key text)
   WHERE t.candidate_id = s.candidate_id
     AND t.record_identity_key = s.record_identity_key
+`;
+
+// Resolves each (stale, keeper) pair to target row ids at execution time —
+// the wire carries natural keys, and ids differ per database.
+const PAIRS_CTE = `
+  pairs AS (
+    SELECT stale.id AS stale_id, keeper.id AS keeper_id
+    FROM jsonb_to_recordset($1::jsonb)
+      AS s(candidate_id uuid, record_identity_key text, keeper_record_identity_key text)
+    JOIN public.candidate_records AS stale
+      ON stale.candidate_id = s.candidate_id
+     AND stale.record_identity_key = s.record_identity_key
+    JOIN public.candidate_records AS keeper
+      ON keeper.candidate_id = s.candidate_id
+     AND keeper.record_identity_key = s.keeper_record_identity_key
+  )
+`;
+
+// Notification events are the "this follower was already told" ledger: the
+// partial unique index (user_id, candidate_record_id) on record-update
+// events is what stops a worker from notifying twice. Deleting the stale
+// row would cascade its events away and let a later worker re-announce the
+// same fact under the keeper's id, so events move to the keeper instead.
+// The NOT EXISTS guard skips an event whose user already has one for the
+// keeper — that leftover then cascades with the delete, which is correct:
+// it is a duplicate of a notification the keeper's own event already records.
+export const REHOME_NOTIFICATION_EVENTS_SQL = `
+  WITH ${PAIRS_CTE}
+  UPDATE public.user_candidate_follow_notification_events AS e
+  SET candidate_record_id = p.keeper_id
+  FROM pairs AS p
+  WHERE e.candidate_record_id = p.stale_id
+    AND NOT EXISTS (
+      SELECT 1 FROM public.user_candidate_follow_notification_events AS k
+      WHERE k.user_id = e.user_id
+        AND k.candidate_record_id = p.keeper_id
+        AND k.event_type = e.event_type
+    )
+`;
+
+// content_reports.entity_id is a loose UUID with no FK — a report filed
+// against the stale row (a duplicated record is exactly what a reader would
+// report) would silently dangle after the delete. Point it at the keeper,
+// which is the same fact.
+export const REHOME_CONTENT_REPORTS_SQL = `
+  WITH ${PAIRS_CTE}
+  UPDATE public.content_reports AS r
+  SET entity_id = p.keeper_id
+  FROM pairs AS p
+  WHERE r.entity_type = 'candidate_record'
+    AND r.entity_id = p.stale_id
 `;
 
 const CASCADED_TAGS_SQL = `
@@ -165,6 +223,10 @@ export type DedupeReport = {
   deletionsViaSimilarity: number;
   unmatchedOrphans: number;
   cascadedTags?: number;
+  /** Notification events moved from stale rows onto their keepers (apply only). */
+  rehomedNotificationEvents?: number;
+  /** Content reports re-pointed from stale rows onto their keepers (apply only). */
+  rehomedContentReports?: number;
   deleted?: number;
   byCandidate: Record<string, number>;
   samples: { candidateId: string; eventDate: string; keep: string; delete: string; similarity: number }[];
@@ -268,6 +330,7 @@ async function main(): Promise<void> {
     const wireRows = plan.deletions.map((deletion) => ({
       candidate_id: deletion.staleRow.candidate_id,
       record_identity_key: deletion.staleRow.record_identity_key,
+      keeper_record_identity_key: deletion.keeperRow.record_identity_key,
     }));
 
     if (apply && wireRows.length > 0) {
@@ -275,9 +338,17 @@ async function main(): Promise<void> {
       try {
         await client.query("BEGIN");
         let cascadedTags = 0;
+        let rehomedEvents = 0;
+        let rehomedReports = 0;
         let deleted = 0;
         for (const batch of chunk(wireRows)) {
           const payload = JSON.stringify(batch);
+          // User-generated references move to the keeper BEFORE the delete;
+          // only redundant research data (tags) is allowed to cascade.
+          const events = await client.query(REHOME_NOTIFICATION_EVENTS_SQL, [payload]);
+          rehomedEvents += events.rowCount ?? 0;
+          const reports = await client.query(REHOME_CONTENT_REPORTS_SQL, [payload]);
+          rehomedReports += reports.rowCount ?? 0;
           const tagCount = await client.query(CASCADED_TAGS_SQL, [payload]);
           cascadedTags += (tagCount.rows as { tags: number }[])[0]?.tags ?? 0;
           const result = await client.query(DELETE_DUPLICATES_SQL, [payload]);
@@ -295,6 +366,8 @@ async function main(): Promise<void> {
         await client.query("COMMIT");
         report.deleted = deleted;
         report.cascadedTags = cascadedTags;
+        report.rehomedNotificationEvents = rehomedEvents;
+        report.rehomedContentReports = rehomedReports;
       } catch (error) {
         await client.query("ROLLBACK").catch((rollbackError: unknown) => {
           console.error(
@@ -310,6 +383,8 @@ async function main(): Promise<void> {
     } else if (apply) {
       report.deleted = 0;
       report.cascadedTags = 0;
+      report.rehomedNotificationEvents = 0;
+      report.rehomedContentReports = 0;
     }
 
     const reportFile = readFlagValue(argv, "--report-file");

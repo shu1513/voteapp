@@ -412,13 +412,19 @@ export type TransitionRow = {
   candidate_id: string;
   old_record_identity_key: string;
   new_record_identity_key: string;
+  /** Orders multi-successor histories; see resolveIdentityTransitions. */
+  created_at_utc: string;
+  /** Tiebreak for same-timestamp rows — arbitrary but deterministic. */
+  id: string;
 };
 
 export const TRANSITION_PROJECTION_SQL = `
   SELECT
+    id::text AS id,
     candidate_id::text AS candidate_id,
     old_record_identity_key,
-    new_record_identity_key
+    new_record_identity_key,
+    to_char(created_at AT TIME ZONE 'UTC', 'YYYY-MM-DD HH24:MI:SS.US') AS created_at_utc
   FROM public.candidate_record_identity_transitions
 `;
 
@@ -427,17 +433,32 @@ export const TRANSITION_PROJECTION_SQL = `
  * chains (a row rewritten, then date-repaired, holds neither intermediate
  * key). A cycle — impossible unless the ledger is hand-corrupted — resolves
  * to the last key before the repeat rather than looping.
+ *
+ * The unique constraint is on the (candidate, old, new) TRIPLE, so an
+ * edit -> revert -> re-edit history legally leaves one old key with several
+ * successors (k1->k2, k2->k1, k1->k3). Only the NEWEST edit describes where
+ * the row actually went, so rows are ordered here — by created_at, then id
+ * for same-timestamp determinism — and the map keeps the last write. Sorting
+ * inside the function (not in the SQL) makes resolution deterministic no
+ * matter how the caller obtained the rows.
  */
 export function resolveIdentityTransitions(rows: readonly TransitionRow[]): Map<string, string> {
+  const ordered = [...rows].sort(
+    (a, b) =>
+      a.created_at_utc.localeCompare(b.created_at_utc) || a.id.localeCompare(b.id)
+  );
   const direct = new Map<string, string>();
-  for (const row of rows) {
+  for (const row of ordered) {
     direct.set([row.candidate_id, row.old_record_identity_key].join(KEY_SEPARATOR), row.new_record_identity_key);
   }
   const resolved = new Map<string, string>();
-  for (const row of rows) {
+  for (const row of ordered) {
     const start = [row.candidate_id, row.old_record_identity_key].join(KEY_SEPARATOR);
     const seen = new Set<string>([row.old_record_identity_key]);
-    let current = row.new_record_identity_key;
+    // Walk from the NEWEST successor (the direct map), never from this row's
+    // own — a superseded row (k1->k2 after a later k1->k3) must resolve the
+    // same way as its newer sibling, or iteration order would decide.
+    let current = direct.get(start)!;
     for (;;) {
       const next = direct.get([row.candidate_id, current].join(KEY_SEPARATOR));
       if (next === undefined || seen.has(next)) {

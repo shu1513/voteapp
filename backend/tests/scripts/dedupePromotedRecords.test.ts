@@ -3,6 +3,8 @@ import { describe, expect, it } from "vitest";
 import {
   DELETE_DUPLICATES_SQL,
   planPromotedRecordDedupe,
+  REHOME_CONTENT_REPORTS_SQL,
+  REHOME_NOTIFICATION_EVENTS_SQL,
 } from "../../src/scripts/dedupePromotedRecords.js";
 import { recordKey, type RecordRow } from "../../src/scripts/promoteResearchData.js";
 
@@ -182,6 +184,34 @@ describe("planPromotedRecordDedupe", () => {
       "old-a",
       "old-b",
     ]);
+  });
+});
+
+describe("rehome statements", () => {
+  it("moves notification events to the keeper, skipping users the keeper already covers", () => {
+    // Cascade-deleting events would erase the "already told this follower"
+    // ledger and let a later worker re-notify the same fact under the
+    // keeper's id.
+    expect(REHOME_NOTIFICATION_EVENTS_SQL).toMatch(
+      /UPDATE public\.user_candidate_follow_notification_events/
+    );
+    expect(REHOME_NOTIFICATION_EVENTS_SQL).toMatch(/SET candidate_record_id = p\.keeper_id/);
+    expect(REHOME_NOTIFICATION_EVENTS_SQL).toMatch(/NOT EXISTS/);
+    expect(REHOME_NOTIFICATION_EVENTS_SQL).not.toMatch(/\bDELETE\b/i);
+  });
+
+  it("re-points content reports at the keeper — no FK means they would silently dangle", () => {
+    expect(REHOME_CONTENT_REPORTS_SQL).toMatch(/UPDATE public\.content_reports/);
+    expect(REHOME_CONTENT_REPORTS_SQL).toMatch(/entity_type = 'candidate_record'/);
+    expect(REHOME_CONTENT_REPORTS_SQL).toMatch(/SET entity_id = p\.keeper_id/);
+    expect(REHOME_CONTENT_REPORTS_SQL).not.toMatch(/\bDELETE\b/i);
+  });
+
+  it("resolves stale and keeper ids from natural keys at execution time", () => {
+    for (const sql of [REHOME_NOTIFICATION_EVENTS_SQL, REHOME_CONTENT_REPORTS_SQL]) {
+      expect(sql).toMatch(/keeper_record_identity_key/);
+      expect(sql).toMatch(/JOIN public\.candidate_records AS keeper/);
+    }
   });
 });
 
