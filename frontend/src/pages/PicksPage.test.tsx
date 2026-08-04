@@ -137,8 +137,8 @@ describe("PicksPage", () => {
 
     // The other two sections mounted below — followed candidates first
     // (people the voter actively picked), then issue areas.
-    const followedHeading = screen.getByRole("heading", { name: "Followed candidates" });
-    const areasHeading = screen.getByText("Issues you care about");
+    const followedHeading = screen.getByRole("heading", { name: "My candidates" });
+    const areasHeading = screen.getByText("My most important issues");
     expect(
       followedHeading.compareDocumentPosition(areasHeading) & Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();

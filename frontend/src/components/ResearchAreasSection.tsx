@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@voteapp/api-client";
+import { apiRequest, MAX_RESEARCH_AREA_RANK } from "@voteapp/api-client";
 import type { ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "./Status";
 import { ResearchAreaPicker } from "./ResearchAreaPicker";
@@ -53,14 +53,14 @@ export function ResearchAreasSection() {
 
   if (catalog.isPending || prefs.isPending) {
     return (
-      <Section title="Issues you care about">
+      <Section title="My most important issues">
         <LoadingNotice text="Loading…" />
       </Section>
     );
   }
   if (catalog.isError || prefs.isError) {
     return (
-      <Section title="Issues you care about">
+      <Section title="My most important issues">
         <div className="mt-2">
           <ErrorNotice error={catalog.error ?? prefs.error} />
         </div>
@@ -86,9 +86,9 @@ export function ResearchAreasSection() {
   }
 
   return (
-    <Section title="Issues you care about">
+    <Section title="My most important issues">
       <p className="mt-1 text-sm text-ink-soft">
-        Drag your issues into the order of your priorities.
+        Drag up to {MAX_RESEARCH_AREA_RANK} issues most important to me into the order of priorities.
       </p>
       <ResearchAreaPicker
         areas={catalog.data.research_areas}
