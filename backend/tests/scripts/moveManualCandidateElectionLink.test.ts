@@ -348,11 +348,63 @@ describe("runMoveCandidateElectionLink", () => {
     ).rejects.toThrow(/merge the candidates first/);
   });
 
-  it("warns but proceeds on a first+last name near-miss on the target roster", async () => {
-    const { query } = buildClient(happyResponses({
+  it("fails closed on a first+last name match unless the operator overrides", async () => {
+    // Review round 2: the live "Matthew McPeak" / "Matthew James McPeak"
+    // pair IS one person — warn-and-proceed still committed the duplicate,
+    // so the variant match now refuses like the exact match.
+    const nearMiss = () => buildClient(happyResponses({
       "FROM public.candidates WHERE id": [[{ display_name: "Matthew McPeak" }]],
       "JOIN public.candidates c ON": [[
         { id: "66666666-6666-6666-6666-666666666666", display_name: "Matthew James McPeak" },
+      ]],
+    }));
+    await expect(
+      runMoveCandidateElectionLink(
+        { query: nearMiss().query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+      )
+    ).rejects.toThrow(/--allow-same-name-target/);
+
+    // The override asserts the operator verified two distinct people; the
+    // move proceeds and the overridden match is recorded.
+    const overridden = await runMoveCandidateElectionLink(
+      { query: nearMiss().query },
+      {
+        candidateId: CANDIDATE_ID,
+        fromElectionId: FROM_ELECTION,
+        toElectionId: TO_ELECTION,
+        dryRun: false,
+        allowSameNameTarget: true,
+      }
+    );
+    expect(overridden.action).toBe("moved");
+    expect(overridden.targetRosterNameWarnings).toHaveLength(1);
+    expect(overridden.targetRosterNameWarnings![0]).toMatch(/OVERRIDDEN/);
+
+    // The override also covers verified name-twins with the EXACT same name.
+    const exact = await runMoveCandidateElectionLink(
+      { query: buildClient(happyResponses({
+        "JOIN public.candidates c ON": [[
+          { id: "66666666-6666-6666-6666-666666666666", display_name: "Alante' J. Gaines" },
+        ]],
+      })).query },
+      {
+        candidateId: CANDIDATE_ID,
+        fromElectionId: FROM_ELECTION,
+        toElectionId: TO_ELECTION,
+        dryRun: false,
+        allowSameNameTarget: true,
+      }
+    );
+    expect(exact.action).toBe("moved");
+    expect(exact.targetRosterNameWarnings![0]).toMatch(/OVERRIDDEN/);
+  });
+
+  it("treats conflicting generational suffixes as two people and proceeds without the flag", async () => {
+    const { query } = buildClient(happyResponses({
+      "FROM public.candidates WHERE id": [[{ display_name: "Harold V. Kane, Jr." }]],
+      "JOIN public.candidates c ON": [[
+        { id: "66666666-6666-6666-6666-666666666666", display_name: "Harold V. Kane, Sr." },
       ]],
     }));
     const result = await runMoveCandidateElectionLink(
@@ -361,7 +413,21 @@ describe("runMoveCandidateElectionLink", () => {
     );
     expect(result.action).toBe("moved");
     expect(result.targetRosterNameWarnings).toHaveLength(1);
-    expect(result.targetRosterNameWarnings![0]).toMatch(/Matthew James McPeak/);
+    expect(result.targetRosterNameWarnings![0]).toMatch(/conflicting generational suffix/);
+
+    // A bare name next to a suffixed one stays presumed-same: a source
+    // omitting "Jr." is far likelier than father and son in one contest.
+    await expect(
+      runMoveCandidateElectionLink(
+        { query: buildClient(happyResponses({
+          "FROM public.candidates WHERE id": [[{ display_name: "Harold V. Kane" }]],
+          "JOIN public.candidates c ON": [[
+            { id: "66666666-6666-6666-6666-666666666666", display_name: "Harold V. Kane, Jr." },
+          ]],
+        })).query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+      )
+    ).rejects.toThrow(/merge the candidates first/);
   });
 
   it("refuses when finance rows on the from-election would be stranded", async () => {

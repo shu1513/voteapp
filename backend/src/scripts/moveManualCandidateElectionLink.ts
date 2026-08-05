@@ -20,8 +20,10 @@
 //   body names, compatible types — assertSiblingDistricts); race_type and
 //   election_stage must always match;
 // - the target roster must not already list a different candidate id with
-//   the same normalized display name (a duplicate PERSON — merge the
-//   candidate rows first); first+last-name near-misses are warned on;
+//   the same first and last name (a presumed duplicate PERSON — merge the
+//   candidate rows first, or assert two distinct people with
+//   --allow-same-name-target); conflicting generational suffixes (Jr./Sr.)
+//   are treated as two people and proceed with a warning;
 // - the from-election has no persisted election_results rows: their
 //   winners JSON references candidate_elections ids, which a move or
 //   merge-delete would corrupt;
@@ -75,6 +77,14 @@ export type MoveCandidateElectionLinkOptions = {
    * guard, both districts sharing a state, and every other guard still hold.
    */
   allowCrossDistrict?: boolean;
+  /**
+   * Overrides the target-roster identity guard for ONE verified case: the
+   * operator has confirmed the same-named target-roster candidate is a
+   * DIFFERENT person (two real name-twins in one contest, or conflicting
+   * middle names checked against sources). Without it, any first+last name
+   * match on the target roster fails closed as a presumed duplicate person.
+   */
+  allowSameNameTarget?: boolean;
 };
 
 export type MoveCandidateElectionLinkResult = {
@@ -88,11 +98,11 @@ export type MoveCandidateElectionLinkResult = {
   /** Present only when --allow-cross-district actually crossed districts. */
   crossDistrict?: { fromDistrict: string; toDistrict: string };
   /**
-   * Near-miss name matches already on the target roster (same first and last
-   * name token, different candidate id). The move proceeds, but these are the
-   * "Matthew McPeak" vs "Matthew James McPeak" shapes the operator should
-   * resolve (usually a candidate merge) before trusting the surviving
-   * roster. EXACT normalized matches refuse the move instead.
+   * Name matches on the target roster that PROCEEDED: conflicting-suffix
+   * pairs (Jr. vs Sr. — evidence of two people) and matches overridden with
+   * --allow-same-name-target. Any other first+last match fails closed as a
+   * presumed duplicate person ("Matthew McPeak" vs "Matthew James McPeak"
+   * was one person in the live repair).
    */
   targetRosterNameWarnings?: string[];
 };
@@ -206,13 +216,19 @@ export function normalizeRosterName(name: string): string {
 
 const GENERATIONAL_SUFFIXES = new Set(["jr", "sr", "ii", "iii", "iv", "v"]);
 
-function firstAndLastNameTokens(normalized: string): { first: string; last: string } | null {
+function firstAndLastNameTokens(
+  normalized: string
+): { first: string; last: string; suffix: string | null } | null {
   const tokens = normalized.replace(/'/g, "").split(" ").filter((token) => token.length > 0);
+  let suffix: string | null = null;
   while (tokens.length > 1 && GENERATIONAL_SUFFIXES.has(tokens[tokens.length - 1]!)) {
-    tokens.pop();
+    // The OUTERMOST suffix is the generational one ("Kane, Jr." → jr);
+    // stacked suffixes are not a thing in ballot names, but popping them all
+    // keeps first/last comparable either way.
+    suffix = tokens.pop()!;
   }
   if (tokens.length < 2) return null;
-  return { first: tokens[0]!, last: tokens[tokens.length - 1]! };
+  return { first: tokens[0]!, last: tokens[tokens.length - 1]!, suffix };
 }
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -557,11 +573,17 @@ export async function runMoveCandidateElectionLink(
       // for the SAME candidate uuid; when the duplicate shell also minted a
       // duplicate CANDIDATE row (the live Jefferson County repair carried
       // seven), moving the un-merged twin would put the same person on the
-      // surviving roster twice (review finding). An exact normalized-name
-      // match under a different id refuses — merge the candidates first —
-      // and a first+last-token match is reported as a warning: two distinct
-      // people CAN share those ("Harold Kane Sr." / "Harold Kane Jr."), so a
-      // hard stop would block legitimate moves, but the operator must look.
+      // surviving roster twice (review finding). FAIL-CLOSED (review round
+      // 2): a first+last match is presumed the same person — the live
+      // "Matthew McPeak" / "Matthew James McPeak" pair IS one person — and
+      // refuses, exact or variant, unless --allow-same-name-target asserts
+      // the operator verified two distinct people. The one detectable
+      // two-person shape proceeds on its own: BOTH names carrying explicit,
+      // CONFLICTING generational suffixes ("Kane, Jr." vs "Kane, Sr."),
+      // which is evidence of two people, not two spellings — a bare name
+      // next to a suffixed one stays presumed-same, since a source omitting
+      // "Jr." is far likelier than father and son in one contest. Every
+      // proceed-path match is still reported in targetRosterNameWarnings.
       const movingCandidate = await client.query<{ display_name: string }>(
         `SELECT display_name FROM public.candidates WHERE id = $1::uuid`,
         [candidateId]
@@ -581,25 +603,44 @@ export async function runMoveCandidateElectionLink(
       const movingTokens = firstAndLastNameTokens(movingNormalized);
       for (const rosterRow of rosterResult.rows) {
         const rosterNormalized = normalizeRosterName(rosterRow.display_name);
-        if (rosterNormalized === movingNormalized) {
-          throw new Error(
-            `Target election already lists "${rosterRow.display_name}" (${rosterRow.id}) — the same ` +
-              `name as the moving candidate "${movingName}" under a different id. Moving would put the ` +
-              `same person on the roster twice; merge the candidates first (manual:candidates:merge), then re-run.`
-          );
-        }
         const rosterTokens = firstAndLastNameTokens(rosterNormalized);
-        if (
-          movingTokens &&
-          rosterTokens &&
+        const exactMatch = rosterNormalized === movingNormalized;
+        const firstLastMatch =
+          movingTokens !== null &&
+          rosterTokens !== null &&
           movingTokens.first === rosterTokens.first &&
-          movingTokens.last === rosterTokens.last
-        ) {
+          movingTokens.last === rosterTokens.last;
+        if (!exactMatch && !firstLastMatch) continue;
+
+        const conflictingSuffixes =
+          !exactMatch &&
+          firstLastMatch &&
+          movingTokens!.suffix !== null &&
+          rosterTokens!.suffix !== null &&
+          movingTokens!.suffix !== rosterTokens!.suffix;
+        if (conflictingSuffixes) {
           targetRosterNameWarnings.push(
             `Target roster candidate "${rosterRow.display_name}" (${rosterRow.id}) shares first and last ` +
-              `name with the moving candidate "${movingName}" — verify they are different people, or merge first.`
+              `name with the moving candidate "${movingName}" but carries a conflicting generational ` +
+              `suffix — treated as a different person.`
           );
+          continue;
         }
+        if (options.allowSameNameTarget) {
+          targetRosterNameWarnings.push(
+            `OVERRIDDEN (--allow-same-name-target): target roster candidate "${rosterRow.display_name}" ` +
+              `(${rosterRow.id}) ${exactMatch ? "has the same normalized name as" : "shares first and last name with"} ` +
+              `the moving candidate "${movingName}" — moved on the operator's assertion they are different people.`
+          );
+          continue;
+        }
+        throw new Error(
+          `Target election already lists "${rosterRow.display_name}" (${rosterRow.id}) — ` +
+            `${exactMatch ? "the same name as" : "the same first and last name as"} the moving candidate ` +
+            `"${movingName}" under a different id. Moving would put the same person on the roster twice; ` +
+            `merge the candidates first (manual:candidates:merge), then re-run — or, if you have verified ` +
+            `these are two different people, re-run with --allow-same-name-target.`
+        );
       }
       if (link.running_mate_candidate_id) {
         // FOR UPDATE pins a found collision row for the friendly error; a
@@ -664,6 +705,7 @@ async function main(): Promise<void> {
     { name: "--to-election-id", value: "space" },
     { name: "--reason", value: "space" },
     { name: "--dry-run", value: "none" },
+    { name: "--allow-same-name-target", value: "none" },
     { name: "--allow-cross-district", value: "none" },
   ]);
   loadProjectEnv();
@@ -674,6 +716,7 @@ async function main(): Promise<void> {
   const reason = requireFlag("--reason");
   const dryRun = process.argv.includes("--dry-run");
   const allowCrossDistrict = process.argv.includes("--allow-cross-district");
+  const allowSameNameTarget = process.argv.includes("--allow-same-name-target");
 
   for (const [name, value] of [
     ["--candidate-id", candidateId],
@@ -697,6 +740,7 @@ async function main(): Promise<void> {
       toElectionId,
       dryRun,
       allowCrossDistrict,
+      allowSameNameTarget,
     });
     console.log(JSON.stringify({ ...result, reason }, null, 2));
   } finally {
