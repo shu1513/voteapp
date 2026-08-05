@@ -361,7 +361,21 @@ main feasibility risk and also settles the 31-U two-stage question.
       files: 0 malformed rows, and the 31-U reconciliation reproduces the spike
       exactly — 13 report keys, 43 rows, $9,800,170.34, 0 mismatches,
       $9,401,220.34 directional, 8 blank-direction rows excluding $398,950.
-- [ ] PR 5 resolver + auto-link
+- [x] PR 5 resolver + auto-link (branch `claude/ohio-finance-resolver-pr5`):
+      `ohioCandidateCommitteeResolver.ts` (maryland shape over the
+      active-candidate list; fail-closed normalized-name + exact OFFICE-token
+      match with the vocabulary pinned from the real 2026-08-04 file —
+      GOVERNOR / ATTORNEY GENERAL / SECRETARY OF STATE / AUDITOR / TREASURER /
+      SENATE / HOUSE; numeric MASTER_KEY required) +
+      `ohioCandidateCommitteeAutoLinker.ts` (due query, exact-match-only link
+      writes via `upsertOhioFinanceLink`, linkSource `sos_bulk_export`).
+      Deviation from maryland worth keeping: Ohio's list carries a verifiable
+      numeric DISTRICT, so General Assembly links are allowed behind an exact
+      district match (maryland refuses legislative links outright); statewide
+      rows ignore the list's junk district values (0/100). The list has no
+      year column (current registrations only), so election year is validated
+      for storage, not used as a row filter. Real-data smoke: Acton → 16171,
+      Ramaswamy → 16178, Stephens (House 93) → 15242, each exactly one match.
 - [ ] PR 6 aggregators (direct + 31-U)
 - [ ] PR 7 sync + batchSync + scripts
 - [ ] PR 8 outside-group funders/industries (#3)
