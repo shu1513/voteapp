@@ -9,11 +9,11 @@ export const CORS_MAX_AGE_SECONDS = "600";
 
 // Acceptance depends on Origin AND (via the same-origin fallback below)
 // Sec-Fetch-Site, so shared caches must key on both. Emitted identically on
-// every path — allowed, rejected, and fallback. A resource whose Vary value
-// changes per request is the actual hazard: a cache that stored a response
-// under `Vary: Origin` has no reason to re-key when a later response widens
-// the set, so it would serve the stored copy to a request that varies only in
-// the header it never recorded.
+// every path — originless, allowed, rejected, and fallback. A resource whose
+// Vary value changes per request is the actual hazard: a cache that stored a
+// response under `Vary: Origin` (or none at all) has no reason to re-key when
+// a later response widens the set, so it would serve the stored copy to a
+// request that varies only in the header it never recorded.
 export const CORS_VARY = "Origin, Sec-Fetch-Site";
 
 export type HeaderRecord = Record<string, string | string[] | undefined>;
@@ -96,7 +96,11 @@ export function resolveCorsHeaders(
 ): CorsResolution {
   const origin = readHeader(headers, "origin")?.trim();
   if (!origin) {
-    return { ok: true, headers: {} };
+    // Still advertise the cache key: an originless response (crawler, curl,
+    // plain navigation) stored without Vary would be served verbatim to a
+    // later cross-origin request, which then fails the browser's CORS check
+    // for want of access-control-allow-origin.
+    return { ok: true, headers: { vary: CORS_VARY } };
   }
 
   const normalizedAllowedOrigins = normalizeAllowedOrigins(allowedOrigins);

@@ -29,6 +29,24 @@ describe("resolveCorsHeaders", () => {
     });
   });
 
+  it("advertises the Vary cache key even when no Origin header is present", () => {
+    // An originless response (crawler, curl, plain navigation) cached without
+    // Vary would be served to a later cross-origin request, which the browser
+    // then blocks for want of access-control-allow-origin.
+    expect(resolveCorsHeaders({}, ["https://frontend.example"])).toEqual({
+      ok: true,
+      headers: { vary: "Origin, Sec-Fetch-Site" },
+    });
+    expect(resolveCorsHeaders({ origin: "   " }, ["https://frontend.example"])).toEqual({
+      ok: true,
+      headers: { vary: "Origin, Sec-Fetch-Site" },
+    });
+    expect(resolveCorsHeaders(undefined, ["https://frontend.example"])).toEqual({
+      ok: true,
+      headers: { vary: "Origin, Sec-Fetch-Site" },
+    });
+  });
+
   it("rejects unknown origins without a same-origin attestation", () => {
     expect(resolveCorsHeaders({ origin: "https://evil.example" }, ["https://frontend.example"])).toEqual({
       ok: false,
