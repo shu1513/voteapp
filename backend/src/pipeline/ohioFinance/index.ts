@@ -1,4 +1,6 @@
 export * from "./ohioBallotLookupFinanceLoader.js";
+export * from "./ohioCandidateCommitteeAutoLinker.js";
+export * from "./ohioCandidateCommitteeResolver.js";
 export * from "./ohioFinanceEligibleOffices.js";
 export * from "./ohioFinanceWriter.js";
 export * from "./ohioSos31uDetail.js";
