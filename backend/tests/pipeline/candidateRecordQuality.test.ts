@@ -479,6 +479,53 @@ describe("candidate record quality", () => {
     ).toEqual({ classification: "substantive", reason: "actual_record_action" });
   });
 
+  it("holds the round-2 review cases: signed complements, signed documents, and ballot subjects", () => {
+    // The pledge mask swallows the promised complement: without it, the
+    // promissory-infinitive mask ate "pledge to veto ..." first and stranded
+    // a bare "Signed a" beside "passed by the legislature" — two verbs, both
+    // the promise's content, scoring the row substantive.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Signed a pledge to veto any tax increase passed by the legislature.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    // SIGNING a candidacy-filing document is the same ballot access as
+    // filing it — "signed" must not vouch for it.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Signed a Statement of Candidacy with the FEC.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Signed her candidate affidavit for the 2026 primary.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    // Multiword candidate names in active ballot removals.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "The commission removed Jane Doe from the 2026 primary ballot.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    // A NAMED measure ("Initiative 976") has identifier tokens between the
+    // measure noun and was/were — the passive exclusion reaches through them.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Initiative 976 was removed from the ballot by court order.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Measure B was stricken from the November ballot.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+  });
+
   it("rejects candidacy-status restatements and candidacy-filing documents", () => {
     // All four shapes are live rows retired in the 2026-08-04 database-wide
     // repair pass; none carries a completed action.

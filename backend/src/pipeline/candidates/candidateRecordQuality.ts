@@ -133,18 +133,20 @@ const PURE_CANDIDACY_PATTERNS = [
   // bars as a record in either direction. Two shapes, both PERSON-anchored so
   // a MEASURE kept off the ballot (a live petition-drive record: "the measure
   // was kept off the ballot over canvasser paperwork") stays untouched:
-  // active with a pronoun or capitalized-name object ("kept him off the
-  // August 6, 2024 Democratic primary ballot", "removed Beavers from the 2022
-  // primary ballot") — case-sensitive so "removed the measure from" cannot
-  // match, and measure NAMES ("kept Initiative 976 off") are excluded from
-  // the name class — and passive with the candidacy verbs but NOT "kept",
-  // whose passive subject in the corpus is always the measure. The passive
-  // form also refuses a measure-noun subject ("her ballot initiative was
-  // removed from the 2026 ballot" is measure advocacy, not the candidate's
-  // ballot access — review finding on this PR). An official's act about a
-  // ballot is rescued by substantive-verbs-first ordering.
-  /\b(?:removed|kept|barred|struck|stricken)\s+(?:him|her|them|(?!(?:Initiative|Measure|Amendment|Proposition|Referendum|Question|Ordinance)\b)[A-Z][\w'’-]+)\s+(?:off|from)\s+the\s+[^.;]{0,60}?\bballot\b/,
-  /(?<!\b(?:measures?|initiatives?|amendments?|referendums?|referenda|propositions?|proposals?|questions?|petitions?|ordinances?|levy|levies|bonds?|issues?)\s)\b(?:was|were)\s+(?:removed|stricken|disqualified|barred)\s+from\s+the\s+(?:[\w'’.,-]+\s+){0,6}?ballot\b/i,
+  // active with a pronoun or capitalized-name object of one to three tokens
+  // ("kept him off the August 6, 2024 Democratic primary ballot", "removed
+  // Beavers from the 2022 primary ballot", "removed Jane Doe from the
+  // ballot" — review round 2 caught the single-token limit) — case-sensitive
+  // so "removed the measure from" cannot match, and measure NAMES ("kept
+  // Initiative 976 off") are excluded token by token — and passive with the
+  // candidacy verbs but NOT "kept", whose passive subject in the corpus is
+  // always the measure. The passive form refuses a measure-noun subject up
+  // to two tokens back, so both "her ballot initiative was removed" and the
+  // NAMED "Initiative 976 was removed from the ballot" (review round 2) stay
+  // measure advocacy, not the candidate's ballot access. An official's act
+  // about a ballot is rescued by substantive-verbs-first ordering.
+  /\b(?:removed|kept|barred|struck|stricken)\s+(?:him|her|them|(?:(?!(?:Initiative|Measure|Amendment|Proposition|Referendum|Question|Ordinance)\b)[A-Z][\w'’-]+\s+){1,3}?(?=off\b|from\b))\s*(?:off|from)\s+the\s+[^.;]{0,60}?\bballot\b/,
+  /(?<!\b(?:measures?|initiatives?|amendments?|referendums?|referenda|propositions?|proposals?|questions?|petitions?|ordinances?|levy|levies|bonds?|issues?)\s(?:[\w'’.-]+\s){0,2})\b(?:was|were)\s+(?:removed|stricken|disqualified|barred)\s+from\s+the\s+(?:[\w'’.,-]+\s+){0,6}?ballot\b/i,
 ] as const;
 
 // "promises/pledges/vows" is a verb in "She pledges lower taxes" and a noun in
@@ -201,16 +203,25 @@ function containsPromissoryVerbUse(value: string): boolean {
 // keeps its other verb and survives, same as every masked family.
 //
 // The object is "pledge" or "convention commitment" — not bare "commitment",
-// which appears in real records ("signed a sister-city commitment"). The gap
-// tokens allow dots and apostrophes because the canonical offender is
-// "U.S. Term Limits' convention pledge". The gap must not contain a
-// LEGISLATIVE object: in "Signed a law honoring the term-limits pledge he
-// made in 2020" the thing signed is the law, the pledge is downstream of it,
-// and masking the phrase would eat the completed action (review finding on
-// this PR — the promissory-infinitive mask happens to rescue "...pledge to
-// expand X", but any non-infinitive tail rejected the row).
+// which appears in real records ("signed a sister-city commitment") — or a
+// candidacy-filing document (Statement of Candidacy, candidate affidavit, …):
+// "Signed a Statement of Candidacy with the FEC" is ballot access, and
+// without the mask the verb scored it substantive before the document-name
+// patterns could run (review round 2). The gap tokens allow dots and
+// apostrophes because the canonical offender is "U.S. Term Limits'
+// convention pledge". The gap must not contain a LEGISLATIVE object: in
+// "Signed a law honoring the term-limits pledge he made in 2020" the thing
+// signed is the law, the pledge is downstream of it, and masking the phrase
+// would eat the completed action (review round 1).
+//
+// The optional infinitive tail swallows the pledge's promised content:
+// "Signed a pledge to veto any tax increase passed by the legislature" left
+// "passed" behind, and "Signed a" plus "passed" scored substantive — the
+// promissory-infinitive mask could not rescue it, because it eats "pledge
+// to …" FIRST and strands the bare "Signed a" (review round 2; this is also
+// why this mask runs BEFORE the promissory ones in classify).
 const PLEDGE_SIGNING_PATTERN =
-  /\bsign(?:ed|s|ing)\s+(?:(?!(?:bills?|laws?|legislation|orders?|ordinances?|resolutions?|measures?|acts?|budgets?|statutes?|proclamations?|contracts?|agreements?|treaty|treaties|letters?|vetoes?)\b)[\w.,'’&-]+\s+){0,7}?(?:pledges?|convention\s+commitments?)\b/gi;
+  /\bsign(?:ed|s|ing)\s+(?:(?!(?:bills?|laws?|legislation|orders?|ordinances?|resolutions?|measures?|acts?|budgets?|statutes?|proclamations?|contracts?|agreements?|treaty|treaties|letters?|vetoes?)\b)[\w.,'’&-]+\s+){0,7}?(?:pledges?|convention\s+commitments?|statement\s+of\s+candidacy|declaration\s+of\s+candidacy|candidate\s+affidavits?|affidavit\s+of\s+(?:identity|candidacy))\b(?:\s+to\s+[^.;,]*)?/gi;
 
 function withoutPledgeSignings(value: string): string {
   PLEDGE_SIGNING_PATTERN.lastIndex = 0;
@@ -404,7 +415,10 @@ export function classifyCandidateRecordQuality(
   // Both completed-action families are judged on the masked text, so a verb
   // sitting inside a promised thing — or the "signed" of a signed pledge —
   // cannot vouch for the record.
-  const withoutPromises = withoutPledgeSignings(withoutPromissoryComplements(description));
+  // Pledge-signing masks FIRST: the promissory-infinitive mask would eat
+  // "pledge to …" and strand a bare "Signed a" whose verb then vouched for
+  // the row (review round 2).
+  const withoutPromises = withoutPromissoryComplements(withoutPledgeSignings(description));
   if (
     matchesAny(withoutPromises, PROMISE_OUTCOME_PATTERNS) ||
     matchesAny(withoutPromises, SUBSTANTIVE_ACTION_PATTERNS)
