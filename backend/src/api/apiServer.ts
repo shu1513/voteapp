@@ -329,7 +329,9 @@ function createCorsAndPreflightMiddleware(options: AddressApiServerOptions) {
       // rate limiter — see createCorsRejectionLogThrottle.
       const origin = truncateForLog(readHeader(request.headers, "origin"));
       const secFetchSite = truncateForLog(readHeader(request.headers, "sec-fetch-site"));
-      const verdict = shouldLogRejection(`${origin} ${secFetchSite}`);
+      // NUL-separated: header values can never contain NUL, so the dedupe key
+      // cannot collide across the two fields the way a space separator could.
+      const verdict = shouldLogRejection(`${origin}\0${secFetchSite}`);
       if (verdict.shouldLog) {
         const suppressedNote =
           verdict.suppressed > 0 ? ` (${verdict.suppressed} further rejections suppressed since the last line)` : "";
