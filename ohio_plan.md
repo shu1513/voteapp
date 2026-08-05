@@ -64,7 +64,8 @@ source. Amounts CHECK `>= 0` (canonical).
 1. **Negative cash-on-hand**: canonical schema rejects negatives; signed cash is
    a Phase-5 capability (IL/KY/LA) and Ohio does not adopt it. If a cover page
    reports a negative balance: write NULL + count in sync diagnostics. Never
-   clamp to 0.
+   clamp to 0. **Spike: this is a real, small case** — `BALANCE_ON_HAND` is
+   negative on 417 of 36,085 cover rows (1.16%), and 7 of 763 for 2026 (0.92%).
 2. **Eligible offices v1** (DB-grounded at PR 1 against Ohio 2026 election
    rows): `statewide::Governor`, `statewide::Attorney General`,
    `statewide::Secretary of State`, `statewide::State Auditor`,
@@ -79,7 +80,12 @@ source. Amounts CHECK `>= 0` (canonical).
 3. **Support/oppose fail-closed**: only rows with explicit SUPPORT/OPPOSE become
    outside-spending rows (schema CHECK enforces anyway). Blank-direction rows →
    excluded-amount + row-count diagnostics. Never infer direction. No dedup of
-   identical-looking expenditures (legitimately repeat).
+   identical-looking expenditures (legitimately repeat). **Spike: the rule
+   bites and the diagnostics matter** — 8 of 43 2026 detail rows carry a blank
+   direction, excluding $398,950 of $9,800,170.34 (4.1%); the remaining 35 rows
+   ($9,401,220.34) split 21 SUPPORT / 14 OPPOSE. The no-dedup rule is also load
+   bearing: V-PAC filed three byte-identical $150,000 rows for the same payee
+   and candidate, two of them on the same date.
 4. **Form 31-U is two-stage** (review finding, confirm in spike): the annual
    candidate/PAC/party expenditure bulk files carry 31-U rows with spender
    MASTER_KEY, REPORT_KEY, vendor, date, amount, purpose — but reportedly NOT
@@ -91,10 +97,38 @@ source. Amounts CHECK `>= 0` (canonical).
    **Annual rows are discovery/reconciliation data only — never sum annual and
    detail amounts.** Observed volume (2026 PAC file): 43 rows, 13 report keys,
    $9.8M — detail fetch count is small.
-5. **Candidate matching (31-U detail)**: exact normalized name + compatible
-   office + cycle, uniquely matching one candidate — else quarantine. **No
-   name-only fallback, no fuzzy links** (v1; revisit only with match-rate data
-   from the live run).
+
+   **CONFIRMED at the spike, exactly as described.** `PAC_EXP_2026.CSV` carries
+   `COM_NAME, MASTER_KEY, RPT_YEAR, REPORT_KEY, REPORT_DESCRIPTION,
+   SHORT_DESCRIPTION, …payee…, EXPEND_DATE, AMOUNT, EVENT_DATE, PURPOSE` and
+   **no office, candidate, or direction**; the detail export carries all three.
+   Volume matched the report precisely: 43 rows of `31-U  Ind Exp by committee`
+   across 13 distinct report keys, $9,800,170.34. **Reconciliation is exact** —
+   detail total equals annual total per report key, 0 mismatches across all 13.
+   Two mechanics the plan lacked:
+   - The **detail export has no `MASTER_KEY`** — it identifies the spender only
+     by `Committee Name`. The spender identity must be carried in from the
+     annual file's `(MASTER_KEY, REPORT_KEY)` pair, never re-derived by name.
+   - The detail lives at
+     `f?p=CFDISCLOSURE:48:::::P48_LISTTYPE,P48_REPORT_ID,P48_TYPE:simple,<REPORT_KEY>,31U`.
+     Its CSV-export link is a session-bound APEX widget URL with a checksum, so
+     it is **not** a stable fetch target; **scrape the page's HTML table
+     instead** — verified to reproduce the exported CSV column-for-column
+     (16 columns, identical rows).
+5. **Candidate matching (31-U detail)** — **REVISED at the spike**: the
+   original "name + compatible office + cycle" rule is unusable as written,
+   because `Office` is blank on the largest rows — the two 2026 gubernatorial
+   targets (AMY ACTON $8.21M, VIVEK RAMASWAMY $600K) carry no office at all,
+   i.e. requiring office would quarantine $8.81M of the $9.40M directional
+   total. Revised rule: **normalized name (upper-cased — the same person
+   appears as both `JASON STEPHENS` and `Jason Stephens`) + cycle + state,
+   uniquely matching exactly one Ohio candidate**; office is used as a
+   *confirming* filter only when present, never as a requirement. The column
+   is `Candidate Name /Ballot Issue` and really does mix kinds — ballot-issue
+   and non-state rows appear (`Jefferson Jackson Good Government`,
+   `Weisburg for Sheriff`) — so reject values that fail to resolve to a single
+   candidate rather than guessing. Still **no fuzzy matching**; ambiguous or
+   unmatched rows quarantine with diagnostics.
 6. **Occupation — fail closed** (review finding: Ohio's single combined
    `Employer/Occupation or Labor Organization` field has no prescribed
    delimiter; sampled 2024 data ~65% row coverage and contains employers, LLC
@@ -106,6 +140,21 @@ source. Amounts CHECK `>= 0` (canonical).
    omitted rows, representative omissions. **Manual precision audit gates
    enabling the feature; if precision is poor, launch Ohio without occupations
    rather than mislabel employers.** Contribution-size buckets are unaffected.
+
+   **RESOLVED at the spike — Ohio launches WITHOUT occupations.** Audit of the
+   real 2026 candidate-contributions file (414,474 rows): 220,369 rows (53.2%;
+   59.8% of dollars) have any `EMP_OCCUPATION` value, but **80.1% of those are
+   not occupations at all** — `RETIRED RETIRED` alone is 162,243 rows, plus
+   `NOT EMPLOYED`, `HOMEMAKER`, `UNEMPLOYED`, `UNKNOWN`, bare `/`. Only 43,779
+   rows — **10.6% of all contributions** — carry anything occupation-like, and
+   those spread over ~21,900 uncontrolled distinct values that concatenate
+   occupation and employer with no delimiter (`PHYSICIAN SELF`, `VP TRIRX
+   MEDICAL`, `TECHNICIAN FRESCO`, `BUCKINGHAM DOOLITTLE  BURROUGHS/ATTORNEY`,
+   `KISHMAN IGA MARKETS`). A high-confidence taxonomy would match a small
+   fraction of an already-small 10.6%, so `top_occupations` stays empty for
+   Ohio and no occupation breakdown rows are written. Revisit only if Ohio
+   splits the field. Contribution-size buckets are unaffected and remain the
+   direct-money breakdown Ohio ships.
 7. **Amendments**: whole-artifact refresh; rebuild each candidate snapshot from
    newest artifact set; replace, never append. Reconcile 31-U totals vs
    cover-page IE totals; quarantine mismatches beyond rounding tolerance.
@@ -122,13 +171,47 @@ source. Amounts CHECK `>= 0` (canonical).
    from parsing: download → validate → SHA-256 → atomically replace snapshot;
    finance sync reads cache only. Product download IDs must be discovered from
    file labels/years on the file-transfer page — never hardcode `P72_GETID`.
+
+   **Confirmed at the spike.** Plain HTTP is 403 even with a descriptive
+   user-agent (Cloudflare serves a 1.2 MB "Website Maintenance" interstitial),
+   so a real browser session is mandatory — no header tweak substitutes for
+   it. Page map: **`CFDISCLOSURE:73` lists** files (`P73_TYPE` =
+   `NEW`|`CAN`|`PAC`|`PARTY`) and **`CFDISCLOSURE:72` serves** them
+   (`P72_GETID:<id>`); session-less URLs work, APEX mints its own session. IDs
+   are confirmed non-sequential (`120`, `123`, `6768`, `6130`, `3`, `3431`,
+   `6770`, `122`, `6772`), so label discovery is mandatory, as planned. **The
+   portal rate-limits: rapid requests return HTTP 429**, so acquisition must be
+   strictly sequential with a delay between files (~8 s worked; a 17-file,
+   305 MB cycle pulled clean). Front door moved to `data.ohiosos.gov/portal/
+   campaign-finance`, but it only links into the same APEX app — no API.
 10. **Parser hardening** (review findings from live samples; build in from the
     first parser PR): Windows-1252 (not valid UTF-8), CR-only row separators,
     duplicate headers (active-candidate file has `OFFICE` twice — second is
     actually party), HTML entities (`&AMP;`), header whitespace/spelling
     drift, currency-formatted detail amounts (`"$31,550.42"`). Annual
     contribution files ≈90 MB → stream parsing + streaming SHA-256, never
-    whole-file in memory.
+    whole-file in memory. **Spike-confirmed on real bytes**: row separators are
+    CR-only (no LF anywhere), `ACT_CAN_LIST.CSV` really does repeat `OFFICE` at
+    positions 19 and 21 with the second holding party (`…,HOUSE,87,REPUBLICAN`),
+    detail amounts are quoted currency (`"$150,000.00"`), and the 2026/2025
+    candidate contribution files are 93 MB / 97 MB. Fixtures capturing each
+    quirk live in `backend/tests/fixtures/ohioFinance/`.
+
+    **PR 4 ran the pinned schemas against all 17 real files (305 MB): every
+    file parsed with 0 malformed rows.** Three further quirks surfaced and are
+    handled in `ohioSosCsv.ts` / `ohioSosBulkFiles.ts`:
+    - **Filer year typos are common enough to poison a naive date range** —
+      `0202`, `0206`, `2926`, `3026`, `3036`, `5025` all appear. ~194 rows
+      across the cycle. Manifest date ranges therefore ignore dates outside a
+      plausible window (1990-01-01 .. next year) and report
+      `implausibleDateRowCount` instead of widening the range.
+    - **Blank `AMOUNT` is real** — 11 rows across the cycle (blank in-kind
+      amounts, a literal `TEST` row). Parsed as `null` and counted in
+      `missingAmountRowCount`; never read as zero.
+    - **The scraped 31-U page renders an empty cell as a bare `-`**, where the
+      CSV export leaves it blank. Only an exact `-` is treated as a
+      placeholder, so the scrape and the export produce identical rows
+      (pinned by a test).
 11. **Artifact manifest fields**: product label + expected year, original
     filename, file-transfer page URL, retrieval time + portal "date modified",
     SHA-256, byte size + row count, detected encoding + row separator,
@@ -144,6 +227,58 @@ source. Amounts CHECK `>= 0` (canonical).
     Not a v1 blocker; last PR. Electioneering mentions without explicit
     support/oppose stay out. Until it ships, source metadata must say
     registered-committee outside spending only.
+
+## Acquisition spike results (run 2026-08-04, user-authorized)
+
+Full cycle-2026 artifact set pulled: **17 files, 305 MB**, cached under
+`scratch/ohio-campaign-finance/sos/` (gitignored territory — never committed).
+Portal files had all been regenerated that morning (08/04/2026 10:30–10:45).
+SHA-256 recorded for every file at download time.
+
+`P72_GETID` map as observed — **re-discover by label each run, never hardcode**:
+
+| File | id | bytes |
+|---|---|---|
+| ACT_CAN_LIST.CSV | 120 | 124,597 |
+| CAN_COVER.CSV | 123 | 4,800,596 |
+| CAC_CON_2026.CSV | 6768 | 93,067,396 |
+| CAC_EXP_2026.CSV | 6769 | 4,239,894 |
+| CAC_CON_2025.CSV | 6130 | 96,890,718 |
+| CAC_EXP_2025.CSV | 6131 | 5,501,878 |
+| ACT_PAC_LIST.CSV | 3 | 268,372 |
+| PAC_COV.CSV | 3431 | 8,511,267 |
+| PAC_CON_2026.CSV | 6770 | 35,959,087 |
+| PAC_EXP_2026.CSV | 6771 | 1,287,947 |
+| PAC_CON_2025.CSV | 6132 | 58,967,666 |
+| PAC_EXP_2025.CSV | 6133 | 2,817,296 |
+| PAR_COVER.CSV | 122 | 854,396 |
+| PPC_CON_2026.CSV | 6772 | 2,025,924 |
+| PPC_EXP_2026.CSV | 6773 | 534,629 |
+| PPC_CON_2025.CSV | 6134 | 2,743,418 |
+| PPC_EXP_2025.CSV | 6135 | 1,035,095 |
+
+Verdict: **Ohio is feasible and the plan survives the spike.** Decision 4 is
+confirmed with exact reconciliation; decisions 1, 3, 10 are confirmed with real
+numbers; decision 9 gains the page map and a rate-limit rule; decision 5 is
+revised (office is unusable as a match requirement) and decision 6 is resolved
+against shipping occupations. Nothing found requires new factory capability or
+schema change — migration 210 stands.
+
+**Acquisition mechanism — RESOLVED at PR 4.** Scripted HTTP is permanently out
+(Cloudflare) and headless / fresh-profile automated Chrome were both refused in
+probes, so the shipped mechanism is an attended step: the user starts their own
+Chrome with `--remote-debugging-port=9222` (Chrome 136+ ignores that flag on
+the default profile directory — if `/json/version` is unreachable, relaunch
+with a dedicated long-lived `--user-data-dir`; a fresh directory may need one
+attended Cloudflare click-through, after which it keeps the trust), and
+`npm run ohio-candidates:finance:raw:refresh` attaches over the DevTools
+protocol (no new dependency — Node's built-in WebSocket). No unattended server
+job, no fingerprint spoofing, no challenge solving; if Cloudflare interstitials,
+the script stops and says so. Cover-page fields
+(`TOTAL_CONTRIBUTIONS`, `TOTAL_EXPENDITURES`, `BALANCE_ON_HAND`,
+`VALUE_IND_EXPENDITURES`) map cleanly onto the canonical summary columns, and
+`CAC_CON_*` carries `CANDIDATE_FIRST_NAME/LAST_NAME/OFFICE/DISTRICT/PARTY`,
+which gives the committee resolver (PR 5) a direct MASTER_KEY → candidate path.
 
 ## Required artifacts per cycle Y
 
@@ -181,7 +316,14 @@ main feasibility risk and also settles the 31-U two-stage question.
    produce reconciliation + occupation-quality reports, capture real fixture
    samples for the parser PR.
 4. Artifact cache + row parsers (encoding/row-separator/header-drift/currency
-   handling per decision 10; manifests per decision 11; fixtures from spike).
+   handling per decision 10; manifests per decision 11; fixtures from spike)
+   **+ acquisition script** (user decision 2026-08-04): a committed script that
+   drives the user's real Chrome session — the only transport that passes the
+   Cloudflare gate (headless AND fresh-profile automated Chrome both got 403 in
+   probes; only the real profile passed). Script does label→ID discovery on
+   `CFDISCLOSURE:73`, sequential paced downloads from `:72`, page-48 31-U
+   detail scrapes, SHA-256 + manifest into the cache dir. User starts it;
+   no unattended server job (would require bot-detection evasion — out).
 5. Committee resolver (+ test) + auto-link copied from maryland (+ test).
 6. Aggregators: direct contributions (occupation fail-closed per decision 6) +
    31-U two-stage outside spending with three-way reconciliation (+ tests).
@@ -201,8 +343,24 @@ main feasibility risk and also settles the 31-U two-stage question.
       wrapper, characterization pin with Lieutenant-Governor ineligibility,
       `OHIO_SOS` source union + `FINANCE_SUMMARY_SOURCES`, `ballotLookup.ts`
       registry entry; branch `claude/ohio-finance-loader-pr2`)
-- [ ] PR 3 acquisition spike (portal access required)
-- [ ] PR 4 artifact cache + parsers
+- [x] PR 3 acquisition spike — RUN 2026-08-04 (see "Acquisition spike results").
+      17 files / 305 MB cached, decision 4 confirmed with exact reconciliation,
+      decision 5 revised, decision 6 resolved (no occupations), fixtures written
+      to `backend/tests/fixtures/ohioFinance/`. No code shipped — the fixtures
+      and these plan updates ride along in PR 4.
+- [x] PR 4 artifact cache + parsers + acquisition script (branch
+      `claude/ohio-finance-parsers-pr4`): `ohioSosCsv.ts` (Windows-1252,
+      CR-only rows, header-drift-tolerant pinned schemas, currency/date/entity
+      handling), `ohioSosBulkFiles.ts` (11 pinned families + streaming reader
+      with manifest stats), `ohioSos31uDetail.ts` (CSV + scraped-table parser,
+      fail-closed direction, three-way reconciliation), `ohioSosArtifactCache.ts`
+      (SHA-256 + manifests per decision 11, atomic install, cycle status),
+      `ohioSosChromeClient.ts` + `ohioSosArtifactAcquisition.ts` +
+      `refreshOhioSosCampaignFinanceRawData.ts` (label→ID discovery, paced
+      sequential downloads, 31-U detail scrapes). Validated against all 17 real
+      files: 0 malformed rows, and the 31-U reconciliation reproduces the spike
+      exactly — 13 report keys, 43 rows, $9,800,170.34, 0 mismatches,
+      $9,401,220.34 directional, 8 blank-direction rows excluding $398,950.
 - [ ] PR 5 resolver + auto-link
 - [ ] PR 6 aggregators (direct + 31-U)
 - [ ] PR 7 sync + batchSync + scripts

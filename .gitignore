@@ -1,1 +1,6 @@
 node_modules/
+
+# Ohio SoS campaign-finance artifact cache: ~305 MB of bulk CSVs per cycle,
+# re-downloadable from the portal. Parser fixtures are committed separately
+# under backend/tests/fixtures/ohioFinance/.
+scratch/ohio-campaign-finance/
