@@ -441,19 +441,250 @@ describe("candidate record quality", () => {
     }
   });
 
-  it("still keeps completed actions that carry the NOUN 'pledge'", () => {
-    // Why the new pattern is determiner-anchored rather than a bare
-    // /\bpledges?\b/: signing a pledge IS a completed action, and these must
-    // survive. Substantive verbs are matched first, which is what rescues them.
+  it("rejects signing a pledge as the promise it is", () => {
+    // REVERSED on 2026-08-04. This test previously pinned the opposite —
+    // "signing a pledge IS a completed action" — and its own example row
+    // below was among the 16 live signed-pledge rows the user approved
+    // retiring that day. references/records.md line 148 is explicit: drop the
+    // pledge clause, keep the completed action. The signing verb is masked
+    // before the substantive check, so "signed" cannot vouch for the row.
     expect(
       classifyCandidateRecordQuality({
         description: "Cloud signed the U.S. Term Limits convention pledge.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Signed U.S. Term Limits' Article V convention commitment supporting congressional term limits.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    // A row that pairs the pledge with an independent completed action keeps
+    // its other verb — masking removes only the signing phrase.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Voted for the state budget after signing the taxpayer protection pledge.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    // Bare "commitment" is NOT a pledge object: legislation and agreements
+    // about commitments are real records.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Prime-sponsored SSB 5073, signed into law as Chapter 264, Laws of 21: Concerning involuntary commitment.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+  });
+
+  it("holds the round-2 review cases: signed complements, signed documents, and ballot subjects", () => {
+    // The pledge mask swallows the promised complement: without it, the
+    // promissory-infinitive mask ate "pledge to veto ..." first and stranded
+    // a bare "Signed a" beside "passed by the legislature" — two verbs, both
+    // the promise's content, scoring the row substantive.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Signed a pledge to veto any tax increase passed by the legislature.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    // SIGNING a candidacy-filing document is the same ballot access as
+    // filing it — "signed" must not vouch for it.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Signed a Statement of Candidacy with the FEC.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Signed her candidate affidavit for the 2026 primary.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    // Multiword candidate names in active ballot removals.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "The commission removed Jane Doe from the 2026 primary ballot.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    // A NAMED measure ("Initiative 976") has identifier tokens between the
+    // measure noun and was/were — the passive exclusion reaches through them.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Initiative 976 was removed from the ballot by court order.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Measure B was stricken from the November ballot.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+  });
+
+  it("rejects candidacy-status restatements and candidacy-filing documents", () => {
+    // All four shapes are live rows retired in the 2026-08-04 database-wide
+    // repair pass; none carries a completed action.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Adam C. Anderson is the qualified incumbent Republican candidate in the 2026 Florida House District 57 general election.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Kane is the Republican nominee for Middlesex County Surrogate in the 2026 election.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "On November 26, 2025, Earl L. Cooper filed a Statement of Candidacy with the Federal Election Commission as a Republican challenger for Delaware's at-large U.S. House seat.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Filed her Colorado House District 23 candidate affidavit.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    // Attributive "candidate" heads someone else's noun phrase and survives.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Was the first candidate to publish ten years of tax returns.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+  });
+
+  it("rejects ballot-access removals and widened primary-result phrasing", () => {
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "The Wayne County Clerk found only 863 of the 1,553 nominating-petition signatures his congressional campaign filed to be valid, 137 short of the statutory threshold, and kept him off the August 6, 2024 Democratic primary ballot.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Was removed from the 2026 Republican primary ballot for Alabama House District 7.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    // Six qualifier words before "primary" — slipped the old {0,5} gap.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Won the 2026 Alabama House District 25 Democratic primary with 2,858 votes, or 67.9 percent.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "pure_candidacy" });
+
+    // An official's substantive act about a ballot is rescued verbs-first.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "The Ohio Supreme Court ordered LaRose to restore a candidate to the ballot after finding that his office improperly disqualified the candidate.",
+      }).classification
+    ).toBe("substantive");
+  });
+
+  it("keeps real records the review round showed the new patterns could swallow", () => {
+    // Review round on this PR, four findings. (1) A legislative object
+    // between "signed" and "pledge" means the pledge was NOT the thing
+    // signed — the action must survive.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Signed a law honoring the term-limits pledge he made in 2020.",
       })
     ).toEqual({ classification: "substantive", reason: "actual_record_action" });
 
     expect(
       classifyCandidateRecordQuality({
-        description: "Voted for the state budget after signing the taxpayer protection pledge.",
+        description: "Signed the bill, keeping his campaign pledge on property taxes.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    // (2) An electoral campaign IS sometimes "a campaign" — electoral
+    // markers in the gap void the indefinite-article exemption...
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Launched a gubernatorial campaign supporting stricter abortion laws.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    // ...while an advocacy org's issue campaign keeps the exemption.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "As executive director of Balanced Justice Network, launched a Transparency in Plea Bargain campaign calling for prosecutorial disclosure of plea data.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+
+    // (3) A MEASURE removed from the ballot is measure advocacy, not the
+    // candidate's ballot access — subject-anchored both ways.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Her ballot initiative was removed from the 2026 ballot after a signature challenge.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "The court kept Initiative 976 off the 2026 ballot.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+
+    // (4) Non-electoral nominations: an executive's appointment nominee and
+    // an award nominee both stay. The status pattern now requires at least
+    // one party/qualifier/year gap token, which every electoral true
+    // positive carries and neither of these does ("governor's" is lowercase
+    // possessive, not a party token).
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Was the governor's nominee for U.S. Attorney for the Middle District of Alabama.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Her film was the nominee in the Best Documentary category.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+  });
+
+  it("rejects platform stance statements under a campaign/platform subject", () => {
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Anthony Eid's campaign supports expanding economic opportunity for Detroit residents.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Fioretti's Attorney General campaign identifies safeguarding civil rights and equal protection under law as a current policy priority.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "During the 2024 campaign, Morrow's published platform supported strong public education, expanded broadband access, and healthcare access.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    // The subject anchor plus verbs-first ordering keeps a real role beside a
+    // campaign: an adviser SERVED, whatever the campaign supported.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "Justin Onwenu served as a senior adviser to the campaign supporting Michigan Proposal 1, which added legislative term-limit and financial-disclosure requirements to the state constitution.",
       })
     ).toEqual({ classification: "substantive", reason: "actual_record_action" });
   });
