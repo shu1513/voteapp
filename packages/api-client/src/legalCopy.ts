@@ -55,7 +55,7 @@ export const PRIVACY_NOTICE =
  * the consent dialog, while this line belongs beside every address field.
  */
 export const ADDRESS_FIELD_PRIVACY_NOTE =
-  "Your address is only used to find your voting districts. We don’t save it to your account.";
+  "The address is only used to find voting districts. We don’t save it to your account.";
 
 /**
  * Shown on results, where it reaches people who never passed the gate at all

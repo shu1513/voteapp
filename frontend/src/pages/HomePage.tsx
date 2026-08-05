@@ -143,7 +143,7 @@ export function HomePage() {
                 rejected as a demand for where you sleep, "Voting address"
                 read as the place you go to vote. */}
             <label htmlFor="address" className="block text-sm font-medium text-ink">
-              Enter your address to see which elections you can vote in:
+              Enter address to see which elections you can vote in:
             </label>
             <AddressAutocomplete
               inputId="address"
