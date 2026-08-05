@@ -144,6 +144,72 @@ describe("runSupersedeElection", () => {
     ).rejects.toThrow(/different date/);
   });
 
+  it("crosses districts only under the explicit flag, and only between same-state siblings", async () => {
+    const OVERLAY_DISTRICT = "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee";
+    const siblingDistricts = [
+      { id: DISTRICT, name: "Jefferson County School District in Anchorage ISD, Kentucky", state: "KY" },
+      { id: OVERLAY_DISTRICT, name: "Jefferson County School District, Kentucky", state: "KY" },
+    ];
+
+    const allowed = buildClient(happyResponses({
+      "WHERE id = ANY($1::uuid[])": [
+        [survivorRow(SURVIVOR_A, { district_id: OVERLAY_DISTRICT }), survivorRow(SURVIVOR_B)],
+      ],
+      "FROM public.districts": [siblingDistricts],
+    }));
+    const result = await runSupersedeElection(
+      { query: allowed.query },
+      { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false, allowCrossDistrict: true }
+    );
+    expect(result.crossDistrict).toEqual([
+      {
+        electionId: SURVIVOR_A,
+        fromDistrict: "Jefferson County School District in Anchorage ISD, Kentucky",
+        toDistrict: "Jefferson County School District, Kentucky",
+      },
+    ]);
+    expect(allowed.calls.at(-1)?.text).toBe("COMMIT");
+
+    // Same-district supersession under the flag reports no crossing.
+    const sameDistrict = buildClient(happyResponses());
+    const sameResult = await runSupersedeElection(
+      { query: sameDistrict.query },
+      { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false, allowCrossDistrict: true }
+    );
+    expect(sameResult.crossDistrict).toBeUndefined();
+
+    // Different states are never siblings, flag or no flag.
+    const crossState = buildClient(happyResponses({
+      "WHERE id = ANY($1::uuid[])": [
+        [survivorRow(SURVIVOR_A, { district_id: OVERLAY_DISTRICT }), survivorRow(SURVIVOR_B)],
+      ],
+      "FROM public.districts": [[
+        { id: DISTRICT, name: "Henry County School District, Tennessee", state: "TN" },
+        { id: OVERLAY_DISTRICT, name: "Henry County School District, Georgia", state: "GA" },
+      ]],
+    }));
+    await expect(
+      runSupersedeElection(
+        { query: crossState.query },
+        { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false, allowCrossDistrict: true }
+      )
+    ).rejects.toThrow(/different states/);
+
+    // The flag never relaxes the date guard.
+    const crossDate = buildClient(happyResponses({
+      "WHERE id = ANY($1::uuid[])": [
+        [survivorRow(SURVIVOR_A, { district_id: OVERLAY_DISTRICT, election_date: "2027-02-24" }), survivorRow(SURVIVOR_B)],
+      ],
+      "FROM public.districts": [siblingDistricts],
+    }));
+    await expect(
+      runSupersedeElection(
+        { query: crossDate.query },
+        { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false, allowCrossDistrict: true }
+      )
+    ).rejects.toThrow(/different date/);
+  });
+
   it("refuses missing retired or superseding elections", async () => {
     const missingRetired = buildClient(happyResponses({
       "WHERE id = $1::uuid\n        FOR UPDATE": [[]],

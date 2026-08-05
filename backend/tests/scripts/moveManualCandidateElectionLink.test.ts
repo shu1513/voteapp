@@ -181,6 +181,85 @@ describe("runMoveCandidateElectionLink", () => {
     ).rejects.toThrow(/different dates/);
   });
 
+  it("crosses districts only under the explicit flag, and only between same-state siblings", async () => {
+    const districtRows = [
+      { id: "dddddddd-dddd-dddd-dddd-dddddddddddd", name: "Jefferson County School District in Anchorage ISD, Kentucky", state: "KY" },
+      { id: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee", name: "Jefferson County School District, Kentucky", state: "KY" },
+    ];
+    const allowed = buildClient(happyResponses({
+      "FROM public.elections": [electionRows({ toDistrict: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee" })],
+      "FROM public.districts": [districtRows],
+    }));
+    const result = await runMoveCandidateElectionLink(
+      { query: allowed.query },
+      {
+        candidateId: CANDIDATE_ID,
+        fromElectionId: FROM_ELECTION,
+        toElectionId: TO_ELECTION,
+        dryRun: false,
+        allowCrossDistrict: true,
+      }
+    );
+    expect(result.action).toBe("moved");
+    expect(result.crossDistrict).toEqual({
+      fromDistrict: "Jefferson County School District in Anchorage ISD, Kentucky",
+      toDistrict: "Jefferson County School District, Kentucky",
+    });
+
+    // Same-district move under the flag reports no crossing.
+    const sameDistrict = buildClient(happyResponses());
+    const sameResult = await runMoveCandidateElectionLink(
+      { query: sameDistrict.query },
+      {
+        candidateId: CANDIDATE_ID,
+        fromElectionId: FROM_ELECTION,
+        toElectionId: TO_ELECTION,
+        dryRun: false,
+        allowCrossDistrict: true,
+      }
+    );
+    expect(sameResult.crossDistrict).toBeUndefined();
+
+    // Different states are never siblings, flag or no flag.
+    const crossState = buildClient(happyResponses({
+      "FROM public.elections": [electionRows({ toDistrict: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee" })],
+      "FROM public.districts": [[
+        { id: "dddddddd-dddd-dddd-dddd-dddddddddddd", name: "Henry County School District, Tennessee", state: "TN" },
+        { id: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee", name: "Henry County School District, Georgia", state: "GA" },
+      ]],
+    }));
+    await expect(
+      runMoveCandidateElectionLink(
+        { query: crossState.query },
+        {
+          candidateId: CANDIDATE_ID,
+          fromElectionId: FROM_ELECTION,
+          toElectionId: TO_ELECTION,
+          dryRun: false,
+          allowCrossDistrict: true,
+        }
+      )
+    ).rejects.toThrow(/different states/);
+
+    // The flag never relaxes the date guard.
+    const crossDate = buildClient(happyResponses({
+      "FROM public.elections": [electionRows({ toDistrict: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee", toDate: "2027-05-01" })],
+      "FROM public.districts": [districtRows],
+    }));
+    await expect(
+      runMoveCandidateElectionLink(
+        { query: crossDate.query },
+        {
+          candidateId: CANDIDATE_ID,
+          fromElectionId: FROM_ELECTION,
+          toElectionId: TO_ELECTION,
+          dryRun: false,
+          allowCrossDistrict: true,
+        }
+      )
+    ).rejects.toThrow(/different dates/);
+  });
+
   it("refuses when finance rows on the from-election would be stranded", async () => {
     const { query } = buildClient(happyResponses({
       "count(*)::text AS n FROM public.az_candidate_finance_links": [[{ n: "2" }]],

@@ -58,6 +58,17 @@ export type MoveCandidateElectionLinkOptions = {
   fromElectionId: string;
   toElectionId: string;
   dryRun: boolean;
+  /**
+   * Relaxes ONLY the same-district guard, for the sibling-district duplicate:
+   * one real contest discovered twice because two district rows legitimately
+   * cover the same body (live case: Jefferson County KY school-board contests
+   * minted on both "Jefferson County School District, Kentucky" and the
+   * Census overlay "Jefferson County School District in Anchorage ISD,
+   * Kentucky" — same date, same candidates, one from the county clerk's
+   * filing PDF and one from a news roster a day later). The election-date
+   * guard, both districts sharing a state, and every other guard still hold.
+   */
+  allowCrossDistrict?: boolean;
 };
 
 export type MoveCandidateElectionLinkResult = {
@@ -68,6 +79,8 @@ export type MoveCandidateElectionLinkResult = {
   fromElectionTitle: string;
   toElectionId: string;
   toElectionTitle: string;
+  /** Present only when --allow-cross-district actually crossed districts. */
+  crossDistrict?: { fromDistrict: string; toDistrict: string };
 };
 
 type LinkRow = {
@@ -244,10 +257,35 @@ export async function runMoveCandidateElectionLink(
     const toElection = electionsResult.rows.find((row) => row.id === toElectionId);
     if (!fromElection) throw new Error(`Election not found: ${fromElectionId}`);
     if (!toElection) throw new Error(`Election not found: ${toElectionId}`);
+    let crossDistrict: MoveCandidateElectionLinkResult["crossDistrict"];
     if (fromElection.district_id !== toElection.district_id) {
-      throw new Error(
-        "Elections belong to different districts; a cross-district move is not a duplicate-shell repair"
+      if (!options.allowCrossDistrict) {
+        throw new Error(
+          "Elections belong to different districts; a cross-district move is not a duplicate-shell repair. " +
+            "If the two districts are siblings covering the same real body (e.g. a school system and its " +
+            "Census place overlay) and this is the same contest duplicated, re-run with --allow-cross-district."
+        );
+      }
+      // Sibling check: crossing districts is only ever a repair when both
+      // rows describe the same real-world body, and same-state is the
+      // cheapest verifiable slice of that. The rest is the operator's
+      // explicit assertion via the flag, recorded in the result.
+      const districtsResult = await client.query<{ id: string; name: string; state: string | null }>(
+        `SELECT id, name, state FROM public.districts WHERE id = ANY($1::uuid[])`,
+        [[fromElection.district_id, toElection.district_id]]
       );
+      const fromDistrict = districtsResult.rows.find((row) => row.id === fromElection.district_id);
+      const toDistrict = districtsResult.rows.find((row) => row.id === toElection.district_id);
+      if (!fromDistrict || !toDistrict) {
+        throw new Error("District row missing for one of the elections; cannot verify siblings");
+      }
+      if (fromDistrict.state !== toDistrict.state) {
+        throw new Error(
+          `--allow-cross-district refused: districts are in different states ` +
+            `(${fromDistrict.name} vs ${toDistrict.name}); not siblings`
+        );
+      }
+      crossDistrict = { fromDistrict: fromDistrict.name, toDistrict: toDistrict.name };
     }
     if (fromElection.election_date !== toElection.election_date) {
       throw new Error(
@@ -441,6 +479,7 @@ export async function runMoveCandidateElectionLink(
       fromElectionTitle: fromElection.official_ballot_title,
       toElectionId,
       toElectionTitle: toElection.official_ballot_title,
+      ...(crossDistrict ? { crossDistrict } : {}),
     };
   } catch (error) {
     await client.query("ROLLBACK").catch(() => undefined);
@@ -455,6 +494,7 @@ async function main(): Promise<void> {
     { name: "--to-election-id", value: "space" },
     { name: "--reason", value: "space" },
     { name: "--dry-run", value: "none" },
+    { name: "--allow-cross-district", value: "none" },
   ]);
   loadProjectEnv();
 
@@ -463,6 +503,7 @@ async function main(): Promise<void> {
   const toElectionId = requireFlag("--to-election-id");
   const reason = requireFlag("--reason");
   const dryRun = process.argv.includes("--dry-run");
+  const allowCrossDistrict = process.argv.includes("--allow-cross-district");
 
   for (const [name, value] of [
     ["--candidate-id", candidateId],
@@ -485,6 +526,7 @@ async function main(): Promise<void> {
       fromElectionId,
       toElectionId,
       dryRun,
+      allowCrossDistrict,
     });
     console.log(JSON.stringify({ ...result, reason }, null, 2));
   } finally {
