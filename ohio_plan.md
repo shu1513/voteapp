@@ -267,7 +267,10 @@ schema change — migration 210 stands.
 **Acquisition mechanism — RESOLVED at PR 4.** Scripted HTTP is permanently out
 (Cloudflare) and headless / fresh-profile automated Chrome were both refused in
 probes, so the shipped mechanism is an attended step: the user starts their own
-Chrome with `--remote-debugging-port=9222`, and
+Chrome with `--remote-debugging-port=9222` (Chrome 136+ ignores that flag on
+the default profile directory — if `/json/version` is unreachable, relaunch
+with a dedicated long-lived `--user-data-dir`; a fresh directory may need one
+attended Cloudflare click-through, after which it keeps the trust), and
 `npm run ohio-candidates:finance:raw:refresh` attaches over the DevTools
 protocol (no new dependency — Node's built-in WebSocket). No unattended server
 job, no fingerprint spoofing, no challenge solving; if Cloudflare interstitials,

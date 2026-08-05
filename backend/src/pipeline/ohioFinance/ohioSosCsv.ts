@@ -150,6 +150,11 @@ export class OhioSosCsvParser {
     if (this.quoted) {
       throw new Error(`Ohio SoS ${this.label} file is incomplete: unterminated quoted field`);
     }
+    // An empty file is "no header", not truncation; a file with content but
+    // no final separator is truncation even when its header never completed.
+    if (this.atStart) {
+      throw new Error(`Ohio SoS ${this.label} file has no header`);
+    }
     if (!this.endedWithSeparator) {
       throw new Error(`Ohio SoS ${this.label} file is incomplete: final row separator is missing`);
     }
@@ -295,14 +300,16 @@ export function normalizeOhioSosTextOrNull(value: string | undefined): string | 
 // 1). Returns integer cents so aggregation never accumulates float error.
 export function parseOhioSosAmountCents(raw: string | undefined): number | null {
   const normalized = normalizeOhioSosText(raw).replace(/[$,]/g, "");
-  if (!normalized || !/^-?(?:\d+(?:\.\d{1,4})?|\.\d{1,4})$/.test(normalized)) {
+  const match = /^(-?)(\d*)(?:\.(\d{1,4}))?$/.exec(normalized);
+  if (!match || (!match[2] && !match[3])) {
     return null;
   }
-  const amount = Number(normalized);
-  if (!Number.isFinite(amount)) {
-    return null;
-  }
-  const cents = Math.round(amount * 100);
+  // Cents are derived from the digits, not from a float: Math.round(x * 100)
+  // loses a cent on inputs like ".145" because the product lands just below
+  // the half-cent. Fraction digits beyond two round half away from zero.
+  const wholeCents = Number(match[2] || "0") * 100;
+  const fractionCents = Math.round(Number((match[3] ?? "").padEnd(4, "0")) / 100);
+  const cents = (match[1] === "-" ? -1 : 1) * (wholeCents + fractionCents);
   return Number.isSafeInteger(cents) ? cents : null;
 }
 

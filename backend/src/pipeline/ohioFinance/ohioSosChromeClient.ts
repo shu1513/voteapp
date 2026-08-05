@@ -145,13 +145,20 @@ export async function connectOhioSosChrome(input: { debugUrl?: string; timeoutMs
   } catch (error) {
     throw new Error(
       `Could not reach Chrome's DevTools endpoint at ${debugUrl} (${(error as Error).message}). ` +
-        "Quit Chrome, then start it with --remote-debugging-port=9222 using your normal profile."
+        "Quit Chrome, then start it with --remote-debugging-port=9222. Chrome 136+ ignores that " +
+        "flag on the default profile directory — if this error persists, add " +
+        "--user-data-dir pointing at a dedicated directory kept for these runs."
     );
   }
 
   const socket = new WebSocket(webSocketDebuggerUrl);
   await new Promise<void>((resolve, reject) => {
-    const timeout = setTimeout(() => reject(new Error("Timed out connecting to Chrome DevTools")), input.timeoutMs ?? 15_000);
+    // Both failure paths close the socket: a connecting handle that nobody
+    // can reach would otherwise keep the process alive after the error.
+    const timeout = setTimeout(() => {
+      socket.close();
+      reject(new Error("Timed out connecting to Chrome DevTools"));
+    }, input.timeoutMs ?? 15_000);
     socket.addEventListener(
       "open",
       () => {
@@ -164,6 +171,7 @@ export async function connectOhioSosChrome(input: { debugUrl?: string; timeoutMs
       "error",
       () => {
         clearTimeout(timeout);
+        socket.close();
         reject(new Error("Failed to connect to Chrome DevTools"));
       },
       { once: true }
@@ -197,6 +205,7 @@ export async function navigateOhioSosChromeTab(
   url: string,
   input: { timeoutMs?: number } = {}
 ): Promise<void> {
+  let cancelLoaded = () => {};
   const loaded = new Promise<void>((resolve, reject) => {
     const timeout = setTimeout(() => {
       off();
@@ -209,8 +218,21 @@ export async function navigateOhioSosChromeTab(
         resolve();
       }
     });
+    cancelLoaded = () => {
+      clearTimeout(timeout);
+      off();
+      resolve();
+    };
   });
-  await session.send("Page.navigate", { url }, tab.sessionId);
+  try {
+    await session.send("Page.navigate", { url }, tab.sessionId);
+  } catch (error) {
+    // The load promise would otherwise keep its listener and timer, and the
+    // timer's later rejection would surface as an unhandled rejection.
+    cancelLoaded();
+    await loaded;
+    throw error;
+  }
   await loaded;
 }
 

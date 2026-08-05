@@ -146,7 +146,11 @@ describe("ohioSosCsv structural validation", () => {
   });
 
   it("rejects a file with no header at all", () => {
-    expect(() => collect("")).toThrow(/final row separator is missing/);
+    expect(() => collect("")).toThrow(/has no header/);
+  });
+
+  it("reports a header-only file without a final separator as truncated", () => {
+    expect(() => collect("A,B")).toThrow(/final row separator is missing/);
   });
 });
 
@@ -189,6 +193,15 @@ describe("parseOhioSosAmountCents", () => {
 
   it("preserves a negative balance rather than clamping it", () => {
     expect(parseOhioSosAmountCents("-31")).toBe(-3100);
+  });
+
+  // Math.round(0.145 * 100) is 14 — the float product lands below the
+  // half-cent. Cents must come from the digits.
+  it("rounds three- and four-decimal amounts exactly, half away from zero", () => {
+    expect(parseOhioSosAmountCents(".145")).toBe(15);
+    expect(parseOhioSosAmountCents("-.145")).toBe(-15);
+    expect(parseOhioSosAmountCents("1.2345")).toBe(123);
+    expect(parseOhioSosAmountCents("0.9999")).toBe(100);
   });
 
   it("returns null for blank and non-numeric values", () => {

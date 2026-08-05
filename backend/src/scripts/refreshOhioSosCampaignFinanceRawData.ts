@@ -37,6 +37,14 @@ import {
 //   1. Quit Chrome, then start it with remote debugging:
 //        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
 //          --remote-debugging-port=9222
+//      Chrome 136+ ignores --remote-debugging-port when Chrome runs on its
+//      default profile directory. If the script cannot reach /json/version,
+//      relaunch with a dedicated long-lived data directory:
+//        ... --remote-debugging-port=9222 \
+//            --user-data-dir="$HOME/.voteapp/ohio-sos-chrome"
+//      A brand-new directory may get a one-time Cloudflare interstitial on
+//      the portal — complete it in that window, then rerun; the directory
+//      keeps the trust for later runs.
 //   2. npm run ohio-candidates:finance:raw:refresh -- --cycle-year=2026
 //
 // Downloads are strictly sequential with a delay between them; the portal
@@ -280,9 +288,11 @@ export async function runRefreshOhioSosCampaignFinanceRawDataScript(input: {
       let details = null;
       if (!options.skipDetails) {
         // The annual totals silently tolerate a missing expenditure file
-        // (ENOENT is skipped), so an incomplete cycle would produce a
-        // partial report-key set that looks successful and would replace a
-        // complete detail bundle. Details run only on a fully ready cycle.
+        // (ENOENT is skipped), and a failed download leaves the previous
+        // snapshot "ready" — so both an incomplete cache and a partly failed
+        // acquisition would derive report keys from a stale or mixed-vintage
+        // snapshot and could replace a good detail bundle. Details run only
+        // when this acquisition was clean and every artifact is ready.
         const cachedAfter = await getOhioSosCycleArtifactStatus({
           cacheDir: options.cacheDir,
           cycleYear: options.cycleYear,
@@ -290,14 +300,22 @@ export async function runRefreshOhioSosCampaignFinanceRawDataScript(input: {
         const notReadyFileNames = cachedAfter
           .filter((status) => status.status !== "ready")
           .map((status) => status.fileName);
+        const blockers: string[] = [];
+        if (acquisition.failures.length > 0) {
+          blockers.push(`download failures: ${acquisition.failures.map((f) => f.fileName).join(", ")}`);
+        }
+        if (acquisition.missingFileNames.length > 0) {
+          blockers.push(`not listed on the portal: ${acquisition.missingFileNames.join(", ")}`);
+        }
         if (notReadyFileNames.length > 0) {
-          log(
-            `Skipping Form 31-U details: cycle artifacts not ready (${notReadyFileNames.join(", ")})`
-          );
+          blockers.push(`artifacts not ready: ${notReadyFileNames.join(", ")}`);
+        }
+        if (blockers.length > 0) {
+          log(`Skipping Form 31-U details: ${blockers.join("; ")}`);
           details = {
             skipped: true,
-            reason: "cycle_artifacts_not_ready",
-            not_ready_file_names: notReadyFileNames,
+            reason: "cycle_incomplete",
+            blockers,
           };
         } else {
           const annualTotals = await collectOhioSos31uAnnualTotals({
@@ -318,6 +336,9 @@ export async function runRefreshOhioSosCampaignFinanceRawDataScript(input: {
           });
           details = {
             detail_path: fetched.detailPath,
+            // False when a prior bundle was preserved because reports failed;
+            // the counts below then describe the scrape, not the file.
+            bundle_written: fetched.written,
             report_count: fetched.reports.length,
             row_count: fetched.reports.reduce((sum, report) => sum + report.rows.length, 0),
             unreconciled_report_keys: fetched.reports

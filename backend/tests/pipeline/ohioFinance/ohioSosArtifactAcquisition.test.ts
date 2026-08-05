@@ -254,6 +254,7 @@ describe("fetchOhioSos31uDetails bundle persistence", () => {
     });
 
     expect(result.failures).toEqual([]);
+    expect(result.written).toBe(true);
     const written = JSON.parse(await readFile(result.detailPath, "utf8")) as {
       reports: Array<{ reportKey: string; reconciled: boolean }>;
     };
@@ -282,6 +283,7 @@ describe("fetchOhioSos31uDetails bundle persistence", () => {
     });
 
     expect(result.failures).toHaveLength(1);
+    expect(result.written).toBe(false);
     expect(await readFile(detailPath, "utf8")).toBe(priorBundle);
   });
 
@@ -301,6 +303,7 @@ describe("fetchOhioSos31uDetails bundle persistence", () => {
     });
 
     expect(result.failures).toHaveLength(1);
+    expect(result.written).toBe(true);
     const written = JSON.parse(await readFile(result.detailPath, "utf8")) as {
       reports: unknown[];
       failures: Array<{ reportKey: string }>;

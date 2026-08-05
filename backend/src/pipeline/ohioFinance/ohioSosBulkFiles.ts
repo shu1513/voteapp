@@ -514,6 +514,11 @@ export const OHIO_SOS_PAC_EXPENDITURES_HEADER = [
   "PURPOSE",
 ] as const;
 
+// The PPC_EXP captures from the 2026-08-04 spike carry exactly the PAC
+// expenditure columns plus a trailing PARTY column; both the 2025 and 2026
+// files parsed against this pinned header with zero malformed rows. The
+// spread records that observation, not an assumption — the strict header
+// check fails loudly if the portal ever diverges the two schemas.
 export const OHIO_SOS_PARTY_EXPENDITURES_HEADER = [
   ...OHIO_SOS_PAC_EXPENDITURES_HEADER,
   "PARTY",

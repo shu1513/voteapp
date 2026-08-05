@@ -362,6 +362,10 @@ export async function downloadOhioSosCycleArtifacts(input: {
       }
     }
   } finally {
+    // setDownloadBehavior outlives the CDP connection: without this reset the
+    // user's own downloads would keep landing, GUID-named, in the deleted
+    // staging directory.
+    await input.session.send("Browser.setDownloadBehavior", { behavior: "default" }).catch(() => {});
     await rm(stagingDir, { recursive: true, force: true }).catch(() => {});
   }
 
@@ -452,6 +456,9 @@ export type OhioSos31uDetailFetchResult = {
 export type OhioSos31uAcquisitionResult = {
   cycleYear: number;
   detailPath: string;
+  // False when a prior bundle was kept because this run had failures — the
+  // reports below were scraped but are NOT what detailPath contains.
+  written: boolean;
   reports: OhioSos31uDetailFetchResult[];
   failures: Array<{ reportKey: string; message: string }>;
 };
@@ -518,7 +525,7 @@ export async function fetchOhioSos31uDetails(input: {
       input.log?.(
         `31-U: ${failures.length} report(s) failed; keeping the existing ${detailPath} untouched`
       );
-      return { cycleYear: input.cycleYear, detailPath, reports, failures };
+      return { cycleYear: input.cycleYear, detailPath, written: false, reports, failures };
     }
   }
   const payload = {
@@ -547,7 +554,7 @@ export async function fetchOhioSos31uDetails(input: {
     throw error;
   }
 
-  return { cycleYear: input.cycleYear, detailPath, reports, failures };
+  return { cycleYear: input.cycleYear, detailPath, written: true, reports, failures };
 }
 
 export async function withOhioSosChromeTab<T>(

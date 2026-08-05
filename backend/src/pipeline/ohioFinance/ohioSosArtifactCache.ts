@@ -342,8 +342,11 @@ export async function storeOhioSosArtifact(input: {
   };
   // Written via rename so a crash can never leave a torn manifest. The data
   // rename above and this rename are still two steps; a crash between them
-  // leaves the new bytes with the old manifest, which the size check reports
-  // as stale and the next refresh re-downloads.
+  // leaves the new bytes with the old manifest. A size change surfaces that
+  // as "stale"; a same-size replacement would not be detected without
+  // hashing on every status check, which the ~90 MB files rule out. The
+  // window is milliseconds in an attended run and the installed bytes were
+  // already validated, so the residual risk is stale metadata, not bad data.
   const tmpManifestPath = `${paths.manifestPath}.tmp-${process.pid}-${retrievedAt.getTime()}`;
   await writeFile(tmpManifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
   try {
