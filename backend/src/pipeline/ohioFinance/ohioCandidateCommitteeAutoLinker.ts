@@ -23,9 +23,19 @@ export type OhioFinanceAutoLinkCandidateElection = {
   electionId: string;
   candidateName: string;
   electionYear: number;
+  // ISO date of the election; also the leading component of the page cursor.
+  electionDate: string;
   officeScope: string;
   officeName: string;
   district: string | null;
+};
+
+// Keyset cursor: strictly-after position in the due list's
+// (election_date, election_id, candidate_id) ordering.
+export type OhioFinanceAutoLinkCursor = {
+  electionDate: string;
+  electionId: string;
+  candidateId: string;
 };
 
 export type OhioFinanceAutoLinkResult =
@@ -49,6 +59,7 @@ type CandidateElectionQueryRow = {
   election_id: string;
   candidate_name: string;
   election_year: number;
+  election_date: string;
   office_scope: string;
   office_name: string;
   district: string | null;
@@ -60,6 +71,7 @@ function mapCandidateElectionRow(row: CandidateElectionQueryRow): OhioFinanceAut
     electionId: row.election_id,
     candidateName: row.candidate_name,
     electionYear: row.election_year,
+    electionDate: row.election_date,
     officeScope: row.office_scope,
     officeName: row.office_name,
     district: row.district,
@@ -73,6 +85,10 @@ export async function listOhioCandidateElectionsMissingFinanceLinks(
     maxCandidates: number;
     electionLookbackDays: number;
     electionLookaheadDays: number;
+    // Resume strictly after this position. Without it the query always
+    // returns the first page, and rows that stay unmatched would occupy it
+    // forever, starving everything behind them.
+    after?: OhioFinanceAutoLinkCursor;
   }
 ): Promise<OhioFinanceAutoLinkCandidateElection[]> {
   const result = await db.query<CandidateElectionQueryRow>(
@@ -85,6 +101,7 @@ export async function listOhioCandidateElectionsMissingFinanceLinks(
           NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')
         ) AS candidate_name,
         extract(year from election.election_date)::int AS election_year,
+        election.election_date::text AS election_date,
         office.scope AS office_scope,
         COALESCE(NULLIF(trim(office.canonical_name), ''), election.official_ballot_title) AS office_name,
         CASE
@@ -123,7 +140,11 @@ export async function listOhioCandidateElectionsMissingFinanceLinks(
             AND link.election_id = election.id
             AND link.link_status = 'active'
         )
-      ORDER BY election.election_date ASC, candidate.display_name ASC NULLS LAST, candidate.id ASC
+        AND (
+          $6::date IS NULL
+          OR (election.election_date, election.id, candidate.id) > ($6::date, $7::uuid, $8::uuid)
+        )
+      ORDER BY election.election_date ASC, election.id ASC, candidate.id ASC
       LIMIT $2::int
     `,
     [
@@ -132,6 +153,9 @@ export async function listOhioCandidateElectionsMissingFinanceLinks(
       input.electionLookbackDays,
       input.electionLookaheadDays,
       [...OHIO_FINANCE_ELIGIBLE_OFFICE_KEYS],
+      input.after?.electionDate ?? null,
+      input.after?.electionId ?? null,
+      input.after?.candidateId ?? null,
     ]
   );
 
@@ -190,6 +214,10 @@ export async function autoLinkOhioCandidateFinanceForCandidateElection(input: {
   };
 }
 
+// Walks the ENTIRE bounded election window in pages of maxCandidates —
+// resolution is local compute, so there is no reason to stop early, and a
+// fixed first-page limit would let permanently unmatched rows starve every
+// candidate behind them.
 export async function autoLinkMissingOhioCandidateFinanceLinks(input: {
   db: Queryable;
   now: Date;
@@ -200,43 +228,62 @@ export async function autoLinkMissingOhioCandidateFinanceLinks(input: {
   sourceUrl?: string | null;
   candidateElections?: readonly OhioFinanceAutoLinkCandidateElection[];
 }): Promise<OhioFinanceAutoLinkResult[]> {
-  const candidates =
-    input.candidateElections ??
-    (await listOhioCandidateElectionsMissingFinanceLinks(input.db, {
+  const results: OhioFinanceAutoLinkResult[] = [];
+
+  async function processPage(candidates: readonly OhioFinanceAutoLinkCandidateElection[]): Promise<void> {
+    for (const candidateElection of candidates) {
+      try {
+        results.push(
+          await autoLinkOhioCandidateFinanceForCandidateElection({
+            db: input.db,
+            candidateElection,
+            candidateListRows: input.candidateListRows,
+            sourceUrl: input.sourceUrl ?? null,
+            now: input.now,
+          })
+        );
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        console.warn("Ohio finance auto-link failed for candidate election; continuing:", {
+          candidateId: candidateElection.candidateId,
+          electionId: candidateElection.electionId,
+          electionYear: candidateElection.electionYear,
+          error: message,
+        });
+        results.push({
+          candidateId: candidateElection.candidateId,
+          electionId: candidateElection.electionId,
+          status: "error",
+          reason: "auto_link_failed",
+          error: message,
+        });
+      }
+    }
+  }
+
+  if (input.candidateElections) {
+    await processPage(input.candidateElections);
+    return results;
+  }
+
+  let after: OhioFinanceAutoLinkCursor | undefined;
+  for (;;) {
+    const page = await listOhioCandidateElectionsMissingFinanceLinks(input.db, {
       now: input.now,
       maxCandidates: input.maxCandidates,
       electionLookbackDays: input.electionLookbackDays,
       electionLookaheadDays: input.electionLookaheadDays,
-    }));
-
-  const results: OhioFinanceAutoLinkResult[] = [];
-  for (const candidateElection of candidates) {
-    try {
-      results.push(
-        await autoLinkOhioCandidateFinanceForCandidateElection({
-          db: input.db,
-          candidateElection,
-          candidateListRows: input.candidateListRows,
-          sourceUrl: input.sourceUrl ?? null,
-          now: input.now,
-        })
-      );
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      console.warn("Ohio finance auto-link failed for candidate election; continuing:", {
-        candidateId: candidateElection.candidateId,
-        electionId: candidateElection.electionId,
-        electionYear: candidateElection.electionYear,
-        error: message,
-      });
-      results.push({
-        candidateId: candidateElection.candidateId,
-        electionId: candidateElection.electionId,
-        status: "error",
-        reason: "auto_link_failed",
-        error: message,
-      });
+      after,
+    });
+    if (page.length === 0) {
+      break;
     }
+    await processPage(page);
+    if (page.length < input.maxCandidates) {
+      break;
+    }
+    const last = page[page.length - 1]!;
+    after = { electionDate: last.electionDate, electionId: last.electionId, candidateId: last.candidateId };
   }
   return results;
 }

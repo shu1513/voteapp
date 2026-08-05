@@ -208,6 +208,57 @@ describe("resolveOhioCandidateCommittee", () => {
     ).toMatchObject({ status: "matched", committeeId: "12345" });
   });
 
+  it("rejects a shortened-name match when both sides state conflicting middle names", () => {
+    expect(
+      resolveOhioCandidateCommittee({
+        candidateName: "Jane Ann Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        district: null,
+        candidateListRows: [listRow({ candidateFirstName: "JANE MARIE", candidateLastName: "DOE" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("treats a middle initial as compatible with the full middle name", () => {
+    expect(
+      resolveOhioCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        district: null,
+        candidateListRows: [listRow({ candidateFirstName: "JANE ANN", candidateLastName: "DOE" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "12345" });
+  });
+
+  it("rejects a match when both sides state conflicting suffixes, but not when one lacks a suffix", () => {
+    const senior = [listRow({ candidateFirstName: "JOHN", candidateLastName: "SMITH SR" })];
+    expect(
+      resolveOhioCandidateCommittee({
+        candidateName: "John Smith Jr.",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        district: null,
+        candidateListRows: senior,
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveOhioCandidateCommittee({
+        candidateName: "John Smith Jr.",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        district: null,
+        candidateListRows: [listRow({ candidateFirstName: "JOHN", candidateLastName: "SMITH" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "12345" });
+  });
+
   it("rejects a blank candidate name and an implausible election year", () => {
     expect(
       resolveOhioCandidateCommittee({

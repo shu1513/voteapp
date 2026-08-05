@@ -36,6 +36,7 @@ const CANDIDATE_ELECTION = {
   electionId: ELECTION_ID,
   candidateName: "Jane Doe",
   electionYear: 2026,
+  electionDate: "2026-11-03",
   officeScope: "state_lower",
   officeName: "State Lower Chamber Legislator",
   district: "87",
@@ -49,6 +50,7 @@ describe("ohioCandidateCommitteeAutoLinker", () => {
         election_id: ELECTION_ID,
         candidate_name: "Jane Doe",
         election_year: 2026,
+        election_date: "2026-11-03",
         office_scope: "state_lower",
         office_name: "State Lower Chamber Legislator",
         district: "87",
@@ -148,6 +150,70 @@ describe("ohioCandidateCommitteeAutoLinker", () => {
     });
 
     expect(db.query).not.toHaveBeenCalled();
+  });
+
+  it("pages through the whole window so unmatched rows cannot starve later candidates", async () => {
+    const unmatchableRow = {
+      candidate_id: CANDIDATE_ID,
+      election_id: ELECTION_ID,
+      candidate_name: "No Committee",
+      election_year: 2026,
+      election_date: "2026-11-03",
+      office_scope: "state_lower",
+      office_name: "State Lower Chamber Legislator",
+      district: "12",
+    };
+    const matchableRow = {
+      candidate_id: "55555555-5555-4555-8555-555555555555",
+      election_id: "66666666-6666-4666-8666-666666666666",
+      candidate_name: "Jane Doe",
+      election_year: 2026,
+      election_date: "2026-11-03",
+      office_scope: "state_lower",
+      office_name: "State Lower Chamber Legislator",
+      district: "87",
+    };
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [unmatchableRow], rowCount: 1 })
+        .mockResolvedValueOnce({ rows: [matchableRow], rowCount: 1 })
+        .mockResolvedValueOnce({ rows: [{ id: "77777777-7777-4777-8777-777777777777" }], rowCount: 1 })
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
+    };
+
+    const results = await autoLinkMissingOhioCandidateFinanceLinks({
+      db,
+      now: NOW,
+      maxCandidates: 1,
+      electionLookbackDays: 1,
+      electionLookaheadDays: 730,
+      candidateListRows: [listRow()],
+      sourceUrl: SOURCE_URL,
+    });
+
+    expect(results).toEqual([
+      {
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        status: "unmatched",
+        reason: "no_candidate_committee_match",
+      },
+      {
+        candidateId: "55555555-5555-4555-8555-555555555555",
+        electionId: "66666666-6666-4666-8666-666666666666",
+        status: "linked",
+        committeeId: "12345",
+      },
+    ]);
+
+    // Page 2's query resumed strictly after page 1's last row.
+    const secondListParams = db.query.mock.calls[1]?.[1] as unknown[];
+    expect(secondListParams?.slice(5)).toEqual(["2026-11-03", ELECTION_ID, CANDIDATE_ID]);
+    // First page had no cursor.
+    const firstListParams = db.query.mock.calls[0]?.[1] as unknown[];
+    expect(firstListParams?.slice(5)).toEqual([null, null, null]);
+    expect(db.query).toHaveBeenCalledTimes(4);
   });
 
   it("continues past a per-candidate failure and reports it", async () => {

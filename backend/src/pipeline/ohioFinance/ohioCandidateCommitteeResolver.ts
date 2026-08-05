@@ -214,20 +214,95 @@ function candidateNameFromListRow(row: OhioSosCandidateCommitteeListRow): string
     .join(" ");
 }
 
+type PersonNameParts = {
+  first: string;
+  middles: string[];
+  last: string;
+  suffix: string | null;
+};
+
+const NAME_SUFFIX_TOKENS = new Set(["JR", "SR", "II", "III", "IV", "V"]);
+
+// Parses a name into first / middles / last / suffix on the same comma-flip
+// and parenthetical rules the key generator uses, but WITHOUT discarding the
+// middle and suffix evidence — that evidence gates the shortened-key match
+// below.
+function parseOhioPersonNameParts(raw: string): PersonNameParts {
+  const withoutParentheticals = raw.replace(/\([^()]+\)/g, " ");
+  let arranged = withoutParentheticals;
+  if (withoutParentheticals.includes(",")) {
+    const commaParts = withoutParentheticals
+      .split(",")
+      .map((part) => part.trim())
+      .filter(Boolean);
+    if (commaParts.length >= 2) {
+      arranged = `${commaParts.slice(1).join(" ")} ${commaParts[0]}`;
+    }
+  }
+  const tokens = normalizeTextKey(arranged).split(" ").filter(Boolean);
+  let suffix: string | null = null;
+  while (tokens.length > 0 && NAME_SUFFIX_TOKENS.has(tokens[tokens.length - 1]!)) {
+    suffix = tokens.pop()!;
+  }
+  if (tokens.length < 2) {
+    return { first: tokens[0] ?? "", middles: [], last: "", suffix };
+  }
+  return {
+    first: tokens[0]!,
+    middles: tokens.slice(1, -1),
+    last: tokens[tokens.length - 1]!,
+    suffix,
+  };
+}
+
+function middleTokensCompatible(left: string, right: string): boolean {
+  if (left === right) {
+    return true;
+  }
+  // An initial is compatible with the full middle name it starts.
+  return (left.length === 1 && right.startsWith(left)) || (right.length === 1 && left.startsWith(right));
+}
+
+// The shortened FIRST LAST key deliberately ignores middle names and
+// suffixes so "Jane Doe" can match the list's "JANE MARIE DOE". That must
+// not let two DIFFERENT people collapse: when both sides state a middle name
+// or a suffix and they disagree ("Jane Ann Doe" vs "JANE MARIE DOE",
+// "John Smith Jr" vs "JOHN SMITH SR"), the pair is rejected. Missing
+// evidence on either side stays permissive — fail-closed only on explicit
+// conflict.
+function namesConflict(left: PersonNameParts, right: PersonNameParts): boolean {
+  if (left.suffix && right.suffix && left.suffix !== right.suffix) {
+    return true;
+  }
+  const pairCount = Math.min(left.middles.length, right.middles.length);
+  for (let index = 0; index < pairCount; index += 1) {
+    if (!middleTokensCompatible(left.middles[index]!, right.middles[index]!)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function rowMatchesCandidateName(input: {
   row: OhioSosCandidateCommitteeListRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   const rowName = candidateNameFromListRow(input.row);
   if (!rowName) {
     return false;
   }
+  let keyMatched = false;
   for (const key of normalizeOhioCandidateNameKeys(rowName)) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  return !namesConflict(parseOhioPersonNameParts(input.candidateName), parseOhioPersonNameParts(rowName));
 }
 
 function toCommitteeMatch(input: {
@@ -303,7 +378,7 @@ export function resolveOhioCandidateCommittee(
     ) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 
