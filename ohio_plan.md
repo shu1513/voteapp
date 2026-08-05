@@ -376,7 +376,30 @@ main feasibility risk and also settles the 31-U two-stage question.
       year column (current registrations only), so election year is validated
       for storage, not used as a row filter. Real-data smoke: Acton → 16171,
       Ramaswamy → 16178, Stephens (House 93) → 15242, each exactly one match.
-- [ ] PR 6 aggregators (direct + 31-U)
+- [x] PR 6 aggregators (branch `claude/ohio-finance-aggregators-pr6`):
+      `ohioDirectContributionAggregator.ts` (streaming accumulator per
+      decision 10 — the caller streams CAC_CON files once and feeds all open
+      accumulators; size buckets only per decision 6, fail-closed
+      SHORT_DESCRIPTION vocabulary: 31-A / 31-E / 31-J-1 are donor support,
+      31-A-2 receipts-only, anything new counted not bucketed) +
+      `ohioOutsideSpendingAggregator.ts` (two-stage 31-U per decision 4:
+      spender pinned from the annual (MASTER_KEY, REPORT_KEY) pair; per-report
+      reconciliation gate annual-vs-detail plus the cover-page IE leg;
+      decision-5 target matching with office as a confirming filter that also
+      rejects a contradicting stated office). Findings baked in from the real
+      2026-cycle files: cover reports chain exactly (AMT_FORWARD = previous
+      BALANCE_ON_HAND, no duplicates, no AMENDED rows), so summary receipts /
+      disbursements come from cover sums and cash from the latest report —
+      cover satisfies receipts − disbursements + forward = cash to the cent,
+      while itemized-only receipts would miss Ramaswamy's $25.4M non-itemized
+      federal transfer (itemized sum kept as a diagnostic); 31-U spans all six
+      expenditure files (candidate and party committees file it too — 28
+      cycle report keys, not 13); 14 of 28 report keys have no cover row
+      (federal-calendar reports), so a missing cover row never quarantines,
+      only a present-and-mismatched one does. Real-data smoke reproduced the
+      spike exactly: 13/13 bundle reports reconciled, Acton oppose
+      $8,211,114.50, Ramaswamy support $600,000, Stephens oppose $217,704.16,
+      JON HUSTED (federal) correctly quarantined unmatched.
 - [ ] PR 7 sync + batchSync + scripts
 - [ ] PR 8 outside-group funders/industries (#3)
 - [ ] PR 9+ PDF path / live run
