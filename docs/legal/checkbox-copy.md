@@ -140,7 +140,7 @@ the full notice above rather than repeated here, to keep this line to the two
 facts a visitor weighs while typing — what the address is used for, and that
 it does not end up on their account.
 
-> Your address is only used to find your voting districts. We don’t save it to
+> The address is only used to find voting districts. We don’t save it to
 > your account.
 
 Beside the anonymous-search note, **Why do we need the full address?** opens
