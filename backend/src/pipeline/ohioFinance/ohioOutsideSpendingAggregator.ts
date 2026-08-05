@@ -342,7 +342,7 @@ export function aggregateOhioOutsideSpending(input: {
       } else {
         accumulator.opposeCents += row.amountCents;
       }
-      const groupKey = `${spender!.committeeId} ${row.direction}`;
+      const groupKey = `${spender!.committeeId}\u0000${row.direction}`;
       const group = accumulator.groups.get(groupKey);
       if (group) {
         group.amountCents += row.amountCents;

@@ -245,6 +245,63 @@ describe("createOhioDirectContributionAccumulator", () => {
     expect(result.itemizedReceiptsTotal).toBe(100);
   });
 
+  it("ignores a fully blank cover row — even as the latest filing — and counts it", () => {
+    const blankMoneyColumns = {
+      amountForwardCents: null,
+      totalContributionsCents: null,
+      totalOtherIncomeCents: null,
+      totalFundsCents: null,
+      totalExpendituresCents: null,
+      balanceOnHandCents: null,
+      valueInkindReceivedCents: null,
+      valueInkindMadeCents: null,
+      outstandingLoansOwedCents: null,
+      outstandingDebtOwedCents: null,
+      outstandingLoansToCents: null,
+      valueIndependentExpendituresCents: null,
+    };
+    const accumulator = createOhioDirectContributionAccumulator({ committeeId: "16171", electionYear: 2026 });
+    const result = accumulator.finish({
+      coverRows: [
+        coverRow({ dateReportFiledIso: "2026-04-23", balanceOnHandCents: 60_00 }),
+        // A later, fully blank filing must not null out the real balance.
+        coverRow({ reportKey: "600000001", dateReportFiledIso: "2026-07-31", ...blankMoneyColumns }),
+      ],
+    });
+    expect(result.summary.cashOnHand).toBe(60);
+    expect(result.summary.totalReceipts).toBe(100);
+    expect(result.coverReportCount).toBe(1);
+    expect(result.blankCoverRowCount).toBe(1);
+
+    // A committee whose only cover rows are blank gets the itemized
+    // fallback and NULLs, never fabricated zeroes.
+    const onlyBlank = createOhioDirectContributionAccumulator({ committeeId: "16171", electionYear: 2026 });
+    onlyBlank.add(contributionRow({ amountCents: 100_00 }));
+    const onlyBlankResult = onlyBlank.finish({
+      coverRows: [coverRow({ ...blankMoneyColumns })],
+    });
+    expect(onlyBlankResult.summary.totalReceipts).toBe(100);
+    expect(onlyBlankResult.summary.totalDisbursements).toBeNull();
+    expect(onlyBlankResult.summary.cashOnHand).toBeNull();
+    expect(onlyBlankResult.coverReportCount).toBe(0);
+    expect(onlyBlankResult.blankCoverRowCount).toBe(1);
+  });
+
+  it("treats a blank money cell on an otherwise-filled cover row as zero", () => {
+    const accumulator = createOhioDirectContributionAccumulator({ committeeId: "16171", electionYear: 2026 });
+    const result = accumulator.finish({
+      coverRows: [
+        coverRow({ totalContributionsCents: null, totalOtherIncomeCents: 25_00 }),
+        coverRow({ reportKey: "600000001", totalExpendituresCents: null, balanceOnHandCents: 10_00 }),
+      ],
+    });
+    // Row 1: blank contributions treated as $0, other income $25.
+    // Row 2: contributions $100, blank expenditures treated as $0.
+    expect(result.summary.totalReceipts).toBe(125);
+    expect(result.summary.totalDisbursements).toBe(40);
+    expect(result.blankCoverRowCount).toBe(0);
+  });
+
   it("caps the number of buckets at maxBreakdownsPerCategory, keeping the largest", () => {
     const accumulator = createOhioDirectContributionAccumulator({
       committeeId: "16171",
