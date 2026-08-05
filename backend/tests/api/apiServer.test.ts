@@ -262,7 +262,7 @@ describe("createApiApp", () => {
       "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
       "access-control-allow-headers": "authorization, content-type, x-voteapp-client",
       "access-control-max-age": "600",
-      vary: "Origin",
+      vary: "Origin, Sec-Fetch-Site",
     });
     expect(rateLimit).not.toHaveBeenCalled();
     expect(resolveAddress).not.toHaveBeenCalled();
@@ -289,7 +289,7 @@ describe("createApiApp", () => {
         message: "Origin is not allowed",
       },
     });
-    expect(response.headers).toMatchObject({ vary: "Origin" });
+    expect(response.headers).toMatchObject({ vary: "Origin, Sec-Fetch-Site" });
     expect(rateLimit).not.toHaveBeenCalled();
     expect(resolveAddress).not.toHaveBeenCalled();
   });
@@ -382,7 +382,7 @@ describe("createApiApp", () => {
     expect(response.statusCode).toBe(200);
     expect(response.headers).toMatchObject({
       "access-control-allow-origin": "*",
-      vary: "Origin",
+      vary: "Origin, Sec-Fetch-Site",
     });
     expect(response.headers).not.toHaveProperty("access-control-allow-credentials");
   });
@@ -407,7 +407,7 @@ describe("createApiApp", () => {
     expect(response.statusCode).toBe(400);
     expect(response.headers).toMatchObject({
       "access-control-allow-origin": "https://frontend.example",
-      vary: "Origin",
+      vary: "Origin, Sec-Fetch-Site",
     });
     expect(response.body).toEqual({
       error: {
@@ -438,7 +438,7 @@ describe("createApiApp", () => {
         message: "Not found",
       },
     });
-    expect(response.headers).toMatchObject({ vary: "Origin" });
+    expect(response.headers).toMatchObject({ vary: "Origin, Sec-Fetch-Site" });
     expect(rateLimit).not.toHaveBeenCalled();
     expect(resolveAddress).not.toHaveBeenCalled();
   });

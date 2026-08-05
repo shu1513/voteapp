@@ -1,6 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { buildAllowedOrigins, resolveCorsHeaders } from "../../src/api/apiCors.js";
+import {
+  buildAllowedOrigins,
+  createCorsRejectionLogThrottle,
+  resolveCorsHeaders,
+  truncateForLog,
+} from "../../src/api/apiCors.js";
 
 describe("resolveCorsHeaders", () => {
   it("enables credentialed CORS for explicit allowed origins", () => {
@@ -19,7 +24,7 @@ describe("resolveCorsHeaders", () => {
         "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
         "access-control-allow-headers": "authorization, content-type, x-voteapp-client",
         "access-control-max-age": "600",
-        vary: "Origin",
+        vary: "Origin, Sec-Fetch-Site",
       },
     });
   });
@@ -27,7 +32,7 @@ describe("resolveCorsHeaders", () => {
   it("rejects unknown origins without a same-origin attestation", () => {
     expect(resolveCorsHeaders({ origin: "https://evil.example" }, ["https://frontend.example"])).toEqual({
       ok: false,
-      headers: { vary: "Origin" },
+      headers: { vary: "Origin, Sec-Fetch-Site" },
     });
   });
 
@@ -38,7 +43,7 @@ describe("resolveCorsHeaders", () => {
       resolveCorsHeaders({ origin: "null", "sec-fetch-site": "Same-Origin" }, ["https://frontend.example"])
     ).toEqual({
       ok: true,
-      headers: { vary: "Origin" },
+      headers: { vary: "Origin, Sec-Fetch-Site" },
     });
   });
 
@@ -48,7 +53,7 @@ describe("resolveCorsHeaders", () => {
         resolveCorsHeaders({ origin: "null", "sec-fetch-site": site }, ["https://frontend.example"])
       ).toEqual({
         ok: false,
-        headers: { vary: "Origin" },
+        headers: { vary: "Origin, Sec-Fetch-Site" },
       });
     }
   });
@@ -61,9 +66,67 @@ describe("resolveCorsHeaders", () => {
         "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
         "access-control-allow-headers": "authorization, content-type, x-voteapp-client",
         "access-control-max-age": "600",
-        vary: "Origin",
+        vary: "Origin, Sec-Fetch-Site",
       },
     });
+  });
+});
+
+describe("truncateForLog", () => {
+  it("marks an absent header instead of printing undefined", () => {
+    expect(truncateForLog(undefined)).toBe("(absent)");
+  });
+
+  it("passes short values through unchanged", () => {
+    expect(truncateForLog("https://frontend.example")).toBe("https://frontend.example");
+  });
+
+  it("caps an oversized value and reports its real length", () => {
+    const result = truncateForLog("x".repeat(9000));
+    expect(result.length).toBeLessThan(200);
+    expect(result).toBe(`${"x".repeat(128)}…[9000 chars]`);
+  });
+});
+
+describe("createCorsRejectionLogThrottle", () => {
+  it("logs the first occurrence of a value and suppresses repeats within the cooldown", () => {
+    const shouldLog = createCorsRejectionLogThrottle();
+    expect(shouldLog("null same-origin", 1_000)).toEqual({ shouldLog: true, suppressed: 0 });
+    expect(shouldLog("null same-origin", 2_000)).toEqual({ shouldLog: false, suppressed: 0 });
+    expect(shouldLog("null same-origin", 60_000)).toEqual({ shouldLog: false, suppressed: 0 });
+  });
+
+  it("logs a distinct value immediately, so a real report is never hidden behind a flood", () => {
+    const shouldLog = createCorsRejectionLogThrottle();
+    shouldLog("https://evil.example cross-site", 1_000);
+    expect(shouldLog("null same-site", 1_001)).toMatchObject({ shouldLog: true });
+  });
+
+  it("re-logs a value once its cooldown lapses, reporting what was dropped", () => {
+    const shouldLog = createCorsRejectionLogThrottle();
+    shouldLog("null same-origin", 0);
+    shouldLog("null same-origin", 1_000);
+    shouldLog("null same-origin", 2_000);
+    expect(shouldLog("null same-origin", 10 * 60_000)).toEqual({ shouldLog: true, suppressed: 2 });
+  });
+
+  it("caps randomized origins at the per-window ceiling instead of logging each one", () => {
+    const shouldLog = createCorsRejectionLogThrottle();
+    let logged = 0;
+    for (let index = 0; index < 5_000; index += 1) {
+      if (shouldLog(`https://random-${index}.example cross-site`, 1_000).shouldLog) {
+        logged += 1;
+      }
+    }
+    expect(logged).toBe(20);
+  });
+
+  it("allows the ceiling to refill in the next window", () => {
+    const shouldLog = createCorsRejectionLogThrottle();
+    for (let index = 0; index < 5_000; index += 1) {
+      shouldLog(`https://random-${index}.example cross-site`, 1_000);
+    }
+    expect(shouldLog("https://late.example cross-site", 90_000)).toMatchObject({ shouldLog: true });
   });
 });
 

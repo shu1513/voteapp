@@ -24,7 +24,7 @@ import {
 } from "./apiValidation.js";
 import type { AddressApiServerOptions } from "./addressApiTypes.js";
 import { mapErrorToResponse } from "./apiErrors.js";
-import { resolveCorsHeaders } from "./apiCors.js";
+import { createCorsRejectionLogThrottle, readHeader, resolveCorsHeaders, truncateForLog } from "./apiCors.js";
 import {
   ADDRESS_AUTOCOMPLETE_PATH,
   ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH,
@@ -312,6 +312,7 @@ function createClientIpMiddleware(options: AddressApiServerOptions) {
 }
 
 function createCorsAndPreflightMiddleware(options: AddressApiServerOptions) {
+  const shouldLogRejection = createCorsRejectionLogThrottle();
   return (request: Request, response: Response<unknown, ApiResponseLocals>, next: NextFunction): void => {
     const cors = resolveCorsHeaders(request.headers, options.allowedOrigins);
     response.locals.corsHeaders = cors.headers;
@@ -324,12 +325,19 @@ function createCorsAndPreflightMiddleware(options: AddressApiServerOptions) {
     if (!cors.ok) {
       // Keep the rejected values visible in server logs: "Origin is not
       // allowed" reports from users are undiagnosable without knowing what
-      // their browser actually sent.
-      console.warn(
-        `CORS rejected ${request.method} ${request.path}: origin=${JSON.stringify(
-          request.headers.origin
-        )} sec-fetch-site=${JSON.stringify(request.headers["sec-fetch-site"])}`
-      );
+      // their browser actually sent. Throttled because this runs ahead of the
+      // rate limiter — see createCorsRejectionLogThrottle.
+      const origin = truncateForLog(readHeader(request.headers, "origin"));
+      const secFetchSite = truncateForLog(readHeader(request.headers, "sec-fetch-site"));
+      const verdict = shouldLogRejection(`${origin} ${secFetchSite}`);
+      if (verdict.shouldLog) {
+        const suppressedNote =
+          verdict.suppressed > 0 ? ` (${verdict.suppressed} further rejections suppressed since the last line)` : "";
+        console.warn(
+          `CORS rejected ${request.method} ${truncateForLog(request.path)}: ` +
+            `origin=${JSON.stringify(origin)} sec-fetch-site=${JSON.stringify(secFetchSite)}${suppressedNote}`
+        );
+      }
       sendApiResponse(response, toErrorResponse(403, "invalid_request", "Origin is not allowed", cors.headers));
       return;
     }
