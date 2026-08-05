@@ -15,7 +15,10 @@
 // Guard rails, all of which must pass before the row is deleted:
 // - every --superseded-by election exists and shares district_id AND
 //   election_date with the retired shell (anything else is not a
-//   supersession);
+//   supersession). --allow-cross-district relaxes ONLY the district
+//   equality, and only for verified SIBLING districts (same state, related
+//   body names, compatible types — assertSiblingDistricts, shared with the
+//   move wrapper); race_type and election_stage must always match;
 // - ZERO rows in ANY table reference the shell (checked dynamically
 //   against every foreign key on public.elections, so candidate links,
 //   follows, results, ballot measures, notification events, and every
@@ -35,6 +38,7 @@ import { Pool } from "pg";
 import { loadProjectEnv } from "../config/env.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
+import { assertSiblingDistricts } from "./moveManualCandidateElectionLink.js";
 
 type QueryResultLike<T> = { rows: T[] };
 
@@ -73,6 +77,8 @@ type ElectionRow = {
   district_id: string;
   election_date: string;
   official_ballot_title: string;
+  race_type: string | null;
+  election_stage: string | null;
   sources: unknown;
 };
 
@@ -168,7 +174,7 @@ export async function runSupersedeElection(
   try {
     const lockedResult = await client.query<ElectionRow>(
       `
-        SELECT id, district_id, election_date::text, official_ballot_title, sources
+        SELECT id, district_id, election_date::text, official_ballot_title, race_type, election_stage, sources
         FROM public.elections
         WHERE id = $1::uuid
         FOR UPDATE
@@ -180,7 +186,7 @@ export async function runSupersedeElection(
 
     const survivorsResult = await client.query<ElectionRow>(
       `
-        SELECT id, district_id, election_date::text, official_ballot_title, sources
+        SELECT id, district_id, election_date::text, official_ballot_title, race_type, election_stage, sources
         FROM public.elections
         WHERE id = ANY($1::uuid[])
         FOR UPDATE
@@ -200,24 +206,15 @@ export async function runSupersedeElection(
               "its Census place overlay) and this is the same contest duplicated, re-run with --allow-cross-district."
           );
         }
-        // Sibling check: same-state is the cheapest verifiable slice of "the
-        // same real-world body"; the rest is the operator's explicit
-        // assertion via the flag, recorded in the result.
-        const districtsResult = await client.query<{ id: string; name: string; state: string | null }>(
-          `SELECT id, name, state FROM public.districts WHERE id = ANY($1::uuid[])`,
-          [[retired.district_id, survivor.district_id]]
+        // Sibling evidence (state + body-name relationship + compatible
+        // district types) lives in assertSiblingDistricts, shared with the
+        // move wrapper — same-state alone was too weak a guard for a
+        // permanent delete (review finding).
+        const { fromDistrict, toDistrict } = await assertSiblingDistricts(
+          client,
+          retired.district_id,
+          survivor.district_id
         );
-        const fromDistrict = districtsResult.rows.find((row) => row.id === retired.district_id);
-        const toDistrict = districtsResult.rows.find((row) => row.id === survivor.district_id);
-        if (!fromDistrict || !toDistrict) {
-          throw new Error("District row missing for one of the elections; cannot verify siblings");
-        }
-        if (fromDistrict.state !== toDistrict.state) {
-          throw new Error(
-            `--allow-cross-district refused: districts are in different states ` +
-              `(${fromDistrict.name} vs ${toDistrict.name}); not siblings`
-          );
-        }
         crossDistrictSurvivors.push({
           electionId: id,
           fromDistrict: fromDistrict.name,
@@ -227,6 +224,22 @@ export async function runSupersedeElection(
       if (survivor.election_date !== retired.election_date) {
         throw new Error(
           `Superseding election ${id} has a different date (${survivor.election_date} vs ${retired.election_date}); not a supersession`
+        );
+      }
+      // A shell and its replacement describe the same KIND of contest; a
+      // mismatch is almost always a mistyped UUID, whose blast radius
+      // --allow-cross-district widens from one district to a whole state's
+      // election day — and a supersede DELETE has no undo (review finding).
+      if (survivor.race_type !== retired.race_type) {
+        throw new Error(
+          `Superseding election ${id} has a different race type ` +
+            `(${survivor.race_type ?? "unknown"} vs ${retired.race_type ?? "unknown"}); not a supersession`
+        );
+      }
+      if (survivor.election_stage !== retired.election_stage) {
+        throw new Error(
+          `Superseding election ${id} is at a different stage ` +
+            `(${survivor.election_stage ?? "unknown"} vs ${retired.election_stage ?? "unknown"}); not a supersession`
         );
       }
     }

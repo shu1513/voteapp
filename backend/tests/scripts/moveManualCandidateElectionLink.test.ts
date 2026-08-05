@@ -29,19 +29,31 @@ function linkFkRow(overrides: Partial<Record<string, unknown>> = {}) {
   };
 }
 
-function electionRows(overrides: { fromDate?: string; toDate?: string; toDistrict?: string } = {}) {
+function electionRows(
+  overrides: {
+    fromDate?: string;
+    toDate?: string;
+    toDistrict?: string;
+    toRaceType?: string;
+    toStage?: string;
+  } = {}
+) {
   return [
     {
       id: FROM_ELECTION,
       district_id: "dddddddd-dddd-dddd-dddd-dddddddddddd",
       election_date: overrides.fromDate ?? "2026-11-03",
       official_ballot_title: "Governing Board",
+      race_type: "office",
+      election_stage: "general",
     },
     {
       id: TO_ELECTION,
       district_id: overrides.toDistrict ?? "dddddddd-dddd-dddd-dddd-dddddddddddd",
       election_date: overrides.toDate ?? "2026-11-03",
       official_ballot_title: "Governing Board Member, Seat 3",
+      race_type: overrides.toRaceType ?? "office",
+      election_stage: overrides.toStage ?? "general",
     },
   ];
 }
@@ -74,6 +86,9 @@ function happyResponses(overrides: Partial<Record<string, unknown[][]>> = {}) {
       [{ table_name: "public.az_candidate_finance_links", election_column: "election_id" }],
     ],
     "count(*)::text AS n FROM public.az_candidate_finance_links": [[{ n: "0" }]],
+    // Moving candidate's name for the target-roster identity guard; the
+    // roster query itself defaults to an empty result (no name collisions).
+    "FROM public.candidates WHERE id": [[{ display_name: "Alante’ J. Gaines" }]],
     ...overrides,
   };
 }
@@ -181,10 +196,10 @@ describe("runMoveCandidateElectionLink", () => {
     ).rejects.toThrow(/different dates/);
   });
 
-  it("crosses districts only under the explicit flag, and only between same-state siblings", async () => {
+  it("crosses districts only under the explicit flag, and only between verified siblings", async () => {
     const districtRows = [
-      { id: "dddddddd-dddd-dddd-dddd-dddddddddddd", name: "Jefferson County School District in Anchorage ISD, Kentucky", state: "KY" },
-      { id: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee", name: "Jefferson County School District, Kentucky", state: "KY" },
+      { id: "dddddddd-dddd-dddd-dddd-dddddddddddd", name: "Jefferson County School District in Anchorage ISD, Kentucky", state: "KY", district_type: "school_secondary" },
+      { id: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee", name: "Jefferson County School District, Kentucky", state: "KY", district_type: "school_unified" },
     ];
     const allowed = buildClient(happyResponses({
       "FROM public.elections": [electionRows({ toDistrict: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee" })],
@@ -224,8 +239,8 @@ describe("runMoveCandidateElectionLink", () => {
     const crossState = buildClient(happyResponses({
       "FROM public.elections": [electionRows({ toDistrict: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee" })],
       "FROM public.districts": [[
-        { id: "dddddddd-dddd-dddd-dddd-dddddddddddd", name: "Henry County School District, Tennessee", state: "TN" },
-        { id: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee", name: "Henry County School District, Georgia", state: "GA" },
+        { id: "dddddddd-dddd-dddd-dddd-dddddddddddd", name: "Henry County School District, Tennessee", state: "TN", district_type: "school_unified" },
+        { id: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee", name: "Henry County School District, Georgia", state: "GA", district_type: "school_unified" },
       ]],
     }));
     await expect(
@@ -258,6 +273,95 @@ describe("runMoveCandidateElectionLink", () => {
         }
       )
     ).rejects.toThrow(/different dates/);
+  });
+
+  it("refuses cross-district moves whose districts are not verifiable siblings", async () => {
+    // Same state, unrelated bodies: the review case — on a general-election
+    // date thousands of contests share state and date, so a mistyped UUID
+    // must die here.
+    const unrelated = buildClient(happyResponses({
+      "FROM public.elections": [electionRows({ toDistrict: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee" })],
+      "FROM public.districts": [[
+        { id: "dddddddd-dddd-dddd-dddd-dddddddddddd", name: "Jefferson County School District, Kentucky", state: "KY", district_type: "school_unified" },
+        { id: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee", name: "Fayette County School District, Kentucky", state: "KY", district_type: "school_unified" },
+      ]],
+    }));
+    await expect(
+      runMoveCandidateElectionLink(
+        { query: unrelated.query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false, allowCrossDistrict: true }
+      )
+    ).rejects.toThrow(/do not describe the same body/);
+
+    // Related names but incompatible district kinds (school vs place).
+    const wrongKind = buildClient(happyResponses({
+      "FROM public.elections": [electionRows({ toDistrict: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee" })],
+      "FROM public.districts": [[
+        { id: "dddddddd-dddd-dddd-dddd-dddddddddddd", name: "Anchorage in Jefferson County, Kentucky", state: "KY", district_type: "place" },
+        { id: "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee", name: "Anchorage, Kentucky", state: "KY", district_type: "school_unified" },
+      ]],
+    }));
+    await expect(
+      runMoveCandidateElectionLink(
+        { query: wrongKind.query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false, allowCrossDistrict: true }
+      )
+    ).rejects.toThrow(/incompatible district types/);
+  });
+
+  it("refuses moves between different contest kinds, cross-district or not", async () => {
+    const wrongRaceType = buildClient(happyResponses({
+      "FROM public.elections": [electionRows({ toRaceType: "ballot_measure" })],
+    }));
+    await expect(
+      runMoveCandidateElectionLink(
+        { query: wrongRaceType.query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+      )
+    ).rejects.toThrow(/different race types/);
+
+    const wrongStage = buildClient(happyResponses({
+      "FROM public.elections": [electionRows({ toStage: "primary" })],
+    }));
+    await expect(
+      runMoveCandidateElectionLink(
+        { query: wrongStage.query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+      )
+    ).rejects.toThrow(/different stages/);
+  });
+
+  it("refuses the move when the target roster lists the same person under another id", async () => {
+    // The live shape: the duplicate shell also minted a duplicate CANDIDATE
+    // row, names differing only by apostrophe character. Moving the un-merged
+    // twin would show the person twice on the surviving election.
+    const { query } = buildClient(happyResponses({
+      "JOIN public.candidates c ON": [[
+        { id: "66666666-6666-6666-6666-666666666666", display_name: "Alante' J. Gaines" },
+      ]],
+    }));
+    await expect(
+      runMoveCandidateElectionLink(
+        { query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+      )
+    ).rejects.toThrow(/merge the candidates first/);
+  });
+
+  it("warns but proceeds on a first+last name near-miss on the target roster", async () => {
+    const { query } = buildClient(happyResponses({
+      "FROM public.candidates WHERE id": [[{ display_name: "Matthew McPeak" }]],
+      "JOIN public.candidates c ON": [[
+        { id: "66666666-6666-6666-6666-666666666666", display_name: "Matthew James McPeak" },
+      ]],
+    }));
+    const result = await runMoveCandidateElectionLink(
+      { query },
+      { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+    );
+    expect(result.action).toBe("moved");
+    expect(result.targetRosterNameWarnings).toHaveLength(1);
+    expect(result.targetRosterNameWarnings![0]).toMatch(/Matthew James McPeak/);
   });
 
   it("refuses when finance rows on the from-election would be stranded", async () => {
