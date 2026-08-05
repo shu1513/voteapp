@@ -322,6 +322,14 @@ function createCorsAndPreflightMiddleware(options: AddressApiServerOptions) {
     }
 
     if (!cors.ok) {
+      // Keep the rejected values visible in server logs: "Origin is not
+      // allowed" reports from users are undiagnosable without knowing what
+      // their browser actually sent.
+      console.warn(
+        `CORS rejected ${request.method} ${request.path}: origin=${JSON.stringify(
+          request.headers.origin
+        )} sec-fetch-site=${JSON.stringify(request.headers["sec-fetch-site"])}`
+      );
       sendApiResponse(response, toErrorResponse(403, "invalid_request", "Origin is not allowed", cors.headers));
       return;
     }

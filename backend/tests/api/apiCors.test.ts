@@ -24,6 +24,35 @@ describe("resolveCorsHeaders", () => {
     });
   });
 
+  it("rejects unknown origins without a same-origin attestation", () => {
+    expect(resolveCorsHeaders({ origin: "https://evil.example" }, ["https://frontend.example"])).toEqual({
+      ok: false,
+      headers: { vary: "Origin" },
+    });
+  });
+
+  it("accepts an unrecognized origin when the browser attests Sec-Fetch-Site: same-origin", () => {
+    // Privacy browsers / in-app webviews can send "Origin: null" on
+    // same-origin POSTs; Sec-Fetch-Site is forbidden-header truth.
+    expect(
+      resolveCorsHeaders({ origin: "null", "sec-fetch-site": "Same-Origin" }, ["https://frontend.example"])
+    ).toEqual({
+      ok: true,
+      headers: { vary: "Origin" },
+    });
+  });
+
+  it("does not extend the same-origin fallback to cross-site or same-site requests", () => {
+    for (const site of ["cross-site", "same-site", "none"]) {
+      expect(
+        resolveCorsHeaders({ origin: "null", "sec-fetch-site": site }, ["https://frontend.example"])
+      ).toEqual({
+        ok: false,
+        headers: { vary: "Origin" },
+      });
+    }
+  });
+
   it("does not advertise credentials for wildcard origins", () => {
     expect(resolveCorsHeaders({ origin: "https://frontend.example" }, ["*"])).toEqual({
       ok: true,

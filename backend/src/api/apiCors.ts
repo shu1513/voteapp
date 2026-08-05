@@ -93,6 +93,19 @@ export function resolveCorsHeaders(
   const normalizedAllowedOrigins = normalizeAllowedOrigins(allowedOrigins);
   const allowAnyOrigin = normalizedAllowedOrigins.has("*");
   if (!allowAnyOrigin && !normalizedAllowedOrigins.has(origin)) {
+    // Same-origin fallback: privacy-hardened browsers, in-app webviews, and
+    // referrer-stripping extensions can rewrite the Origin of a same-origin
+    // request to "null" (or something else unrecognizable). Sec-Fetch-Site is
+    // a forbidden header the browser computes itself — scripts on attacker
+    // pages cannot set it, and a cross-site or sandboxed-iframe request never
+    // carries "same-origin" — so trusting it here keeps the CSRF gate intact.
+    // Non-browser clients can forge it, but they never hold ambient cookies,
+    // which is the only thing this origin check protects. Same-origin
+    // responses need no access-control-* headers, so return only the cache
+    // key.
+    if (readHeader(headers, "sec-fetch-site")?.trim().toLowerCase() === "same-origin") {
+      return { ok: true, headers: { vary: "Origin" } };
+    }
     return { ok: false, headers: { vary: "Origin" } };
   }
 

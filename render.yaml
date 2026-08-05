@@ -77,8 +77,10 @@ services:
       # same-origin, so the site's own origin must be allowlisted or all
       # browser POST/PUT/DELETE calls 403. The server also derives this from
       # SITE_ORIGIN; the explicit value guards against config drift.
+      # www is included even though the edge Worker 301s it to the apex:
+      # a POST that somehow originates from a www page must not 403.
       - key: ADDRESS_API_ALLOWED_ORIGINS
-        value: https://electionssimplified.com
+        value: https://electionssimplified.com,https://www.electionssimplified.com
       - key: AUTH_SESSION_COOKIE_SECURE
         value: "true"
       - key: AUTH_FROM_EMAIL
