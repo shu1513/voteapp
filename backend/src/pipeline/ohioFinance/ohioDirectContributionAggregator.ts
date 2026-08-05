@@ -48,17 +48,20 @@ export type OhioDirectContributionAggregationResult = {
   matchedContributionRowCount: number;
   // Matched rows that entered the direct-contribution total and buckets.
   includedContributionRowCount: number;
+  // Matched rows that did not: matched = included + skipped, and the five
+  // reason counters below partition skipped (each skipped row is counted in
+  // exactly one of them).
   skippedContributionRowCount: number;
-  // Skip reasons (each skipped row is counted in exactly one).
   missingAmountRowCount: number;
   nonPositiveAmountRowCount: number;
   outOfCycleRowCount: number;
-  // Matched in-cycle receipts that are not direct donor support (31-A-2
-  // Other Income) — in totalReceipts, not in the buckets.
+  // The last two skip reasons still count toward itemized receipts — the
+  // row's money is real, it is only excluded from the direct total and the
+  // buckets. otherIncomeRowCount is 31-A-2 Other Income;
+  // unknownShortDescriptionRowCount is a SHORT_DESCRIPTION outside the
+  // pinned vocabulary, so a growing count means the portal added a form
+  // type.
   otherIncomeRowCount: number;
-  // Matched in-cycle rows with a SHORT_DESCRIPTION outside the pinned
-  // vocabulary — in totalReceipts, not in the buckets; a growing count
-  // means the portal added a form type.
   unknownShortDescriptionRowCount: number;
   coverReportCount: number;
   // Cycle cover rows with every money column blank (real: 3 of 1,673 rows

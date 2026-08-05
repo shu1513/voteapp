@@ -150,6 +150,9 @@ describe("createOhioDirectContributionAccumulator", () => {
     expect(result.summary.directContributionTotal).toBe(100);
     expect(result.otherIncomeRowCount).toBe(1);
     expect(result.unknownShortDescriptionRowCount).toBe(0);
+    // Description-classified rows count as skipped: matched = included + skipped.
+    expect(result.includedContributionRowCount).toBe(1);
+    expect(result.skippedContributionRowCount).toBe(1);
     expect(result.directBreakdowns).toHaveLength(1);
   });
 
@@ -160,6 +163,8 @@ describe("createOhioDirectContributionAccumulator", () => {
     expect(result.summary.totalReceipts).toBe(100);
     expect(result.summary.directContributionTotal).toBe(0);
     expect(result.unknownShortDescriptionRowCount).toBe(1);
+    expect(result.includedContributionRowCount).toBe(0);
+    expect(result.skippedContributionRowCount).toBe(1);
     expect(result.directBreakdowns).toHaveLength(0);
   });
 
