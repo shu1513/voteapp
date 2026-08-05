@@ -102,13 +102,22 @@ const PURE_CANDIDACY_PATTERNS = [
   // Republican candidate in the 2026 general election", "is the Democratic
   // nominee for county surrogate", "is the sole printed Republican candidate
   // for Senate District 15". A 2026-08-04 database-wide repair pass retired
-  // nine live rows of this shape — all ballot qualification, none conduct.
+  // fifteen live rows of this shape — all ballot qualification, none conduct.
   // Same head-noun anchoring as the recorded-as pattern above: "candidate/
   // nominee" must be followed by for/in, punctuation, or the end, so an
   // attributive use ("was the first candidate to publish tax returns" —
   // "candidate to" — or a hiring-process "leading candidate to succeed the
-  // chief") stays untouched.
-  /\b(?:is|was|remains)\s+the\s+(?:[\w'’-]+\s+){0,4}?(?:candidate|nominee)\b(?=\s*(?:for\b|in\b|[.;,)]|$))/i,
+  // chief") stays untouched. Gap tokens borrow the filed-as pattern's
+  // technique above — capitalized words (party names), years, or known
+  // qualifiers ONLY, at least one of them, case-sensitive with the verbs'
+  // casing spelled out — because ANY-word gaps swallowed non-electoral
+  // nominations (review findings on this PR): "was the governor's nominee
+  // for U.S. Attorney" is an appointment record ("governor's" is lowercase
+  // and possessive, so it is not a party token), and "was the nominee in
+  // the Best Documentary category" is an award (a bare zero-gap "the
+  // nominee" no longer matches; every corpus true positive carries a party
+  // or qualifier word).
+  /\b(?:[Ii]s|[Ww]as|[Rr]emains)\s+the\s+(?:(?:[A-Z][\w.'’-]*|\d{4}|qualified|certified|incumbent|incumbent-position|sole|printed|presumptive|apparent|write-in|independent|nonpartisan|party)\s+){1,4}?(?:candidate|nominee)\b(?=\s*(?:for\b|in\b|[.;,)]|$))/,
   // The candidacy-machinery FILING documents by name. These nouns are ballot
   // access whatever verb carries them ("filed a Statement of Candidacy with
   // the FEC", "ruling her declaration of candidacy invalid", "filed her
@@ -127,11 +136,15 @@ const PURE_CANDIDACY_PATTERNS = [
   // active with a pronoun or capitalized-name object ("kept him off the
   // August 6, 2024 Democratic primary ballot", "removed Beavers from the 2022
   // primary ballot") — case-sensitive so "removed the measure from" cannot
-  // match — and passive with the candidacy verbs but NOT "kept", whose
-  // passive subject in the corpus is always the measure. An official's act
-  // about a ballot is rescued by substantive-verbs-first ordering.
-  /\b(?:removed|kept|barred|struck|stricken)\s+(?:him|her|them|[A-Z][\w'’-]+)\s+(?:off|from)\s+the\s+[^.;]{0,60}?\bballot\b/,
-  /\b(?:was|were)\s+(?:removed|stricken|disqualified|barred)\s+from\s+the\s+(?:[\w'’.,-]+\s+){0,6}?ballot\b/i,
+  // match, and measure NAMES ("kept Initiative 976 off") are excluded from
+  // the name class — and passive with the candidacy verbs but NOT "kept",
+  // whose passive subject in the corpus is always the measure. The passive
+  // form also refuses a measure-noun subject ("her ballot initiative was
+  // removed from the 2026 ballot" is measure advocacy, not the candidate's
+  // ballot access — review finding on this PR). An official's act about a
+  // ballot is rescued by substantive-verbs-first ordering.
+  /\b(?:removed|kept|barred|struck|stricken)\s+(?:him|her|them|(?!(?:Initiative|Measure|Amendment|Proposition|Referendum|Question|Ordinance)\b)[A-Z][\w'’-]+)\s+(?:off|from)\s+the\s+[^.;]{0,60}?\bballot\b/,
+  /(?<!\b(?:measures?|initiatives?|amendments?|referendums?|referenda|propositions?|proposals?|questions?|petitions?|ordinances?|levy|levies|bonds?|issues?)\s)\b(?:was|were)\s+(?:removed|stricken|disqualified|barred)\s+from\s+the\s+(?:[\w'’.,-]+\s+){0,6}?ballot\b/i,
 ] as const;
 
 // "promises/pledges/vows" is a verb in "She pledges lower taxes" and a noun in
@@ -190,8 +203,14 @@ function containsPromissoryVerbUse(value: string): boolean {
 // The object is "pledge" or "convention commitment" — not bare "commitment",
 // which appears in real records ("signed a sister-city commitment"). The gap
 // tokens allow dots and apostrophes because the canonical offender is
-// "U.S. Term Limits' convention pledge".
-const PLEDGE_SIGNING_PATTERN = /\bsign(?:ed|s|ing)\s+(?:[\w.,'’&-]+\s+){0,7}?(?:pledges?|convention\s+commitments?)\b/gi;
+// "U.S. Term Limits' convention pledge". The gap must not contain a
+// LEGISLATIVE object: in "Signed a law honoring the term-limits pledge he
+// made in 2020" the thing signed is the law, the pledge is downstream of it,
+// and masking the phrase would eat the completed action (review finding on
+// this PR — the promissory-infinitive mask happens to rescue "...pledge to
+// expand X", but any non-infinitive tail rejected the row).
+const PLEDGE_SIGNING_PATTERN =
+  /\bsign(?:ed|s|ing)\s+(?:(?!(?:bills?|laws?|legislation|orders?|ordinances?|resolutions?|measures?|acts?|budgets?|statutes?|proclamations?|contracts?|agreements?|treaty|treaties|letters?|vetoes?)\b)[\w.,'’&-]+\s+){0,7}?(?:pledges?|convention\s+commitments?)\b/gi;
 
 function withoutPledgeSignings(value: string): string {
   PLEDGE_SIGNING_PATTERN.lastIndex = 0;
@@ -213,15 +232,18 @@ const FUTURE_PROMISE_PATTERNS = [
   // report" (also the (?!-) compound guard, pinned by the Karen McDonald
   // test), a "campaign event" someone hosted, a "campaign biography" that
   // merely describes a career. The indefinite-article lookbehind excludes an
-  // ISSUE campaign someone ran as real work: "launched a Transparency in Plea
-  // Bargain campaign calling for prosecutorial disclosure" is an advocacy
-  // record, and a candidate's own electoral campaign is never "a campaign".
-  /(?<!\ban?\s(?:[\w'’-]+\s){0,4})\b(?:campaign|platform|website)(?:'s)?\b(?!-)(?!\s+(?:events?|rall(?:y|ies)|kickoffs?|stops?|committees?|contributions?|finance|reports?|statements?|biograph(?:y|ies)|mailers?|ads?|advertisements?)\b)(?:\s+[\w'’-]+){0,2}?\s+(?:supports?|supported|supporting|opposes?|opposed|opposing|calls?\s+for|called\s+for|calling\s+for|prioritizes?|prioritized|prioritizing|backs\b)/i,
+  // ISSUE campaign someone ran as real work — "launched a Transparency in
+  // Plea Bargain campaign calling for prosecutorial disclosure" is an
+  // advocacy record — but an electoral campaign IS sometimes "a campaign"
+  // ("launched a gubernatorial campaign supporting X", review finding on
+  // this PR), so the exemption's gap tokens must not be electoral markers or
+  // a year, which put the phrase back inside the pattern.
+  /(?<!\ban?\s(?:(?!(?:gubernatorial|mayoral|senatorial|presidential|congressional|legislative|judicial|electoral|political|statewide|citywide|countywide|primary|general|write-in|reelection|re-election|senate|house|assembly|council|\d+)\b)[\w'’-]+\s){0,4})\b(?:campaign|platform|website)(?:'s)?\b(?!-)(?!\s+(?:events?|rall(?:y|ies)|kickoffs?|stops?|committees?|contributions?|finance|reports?|statements?|biograph(?:y|ies)|mailers?|ads?|advertisements?)\b)(?:\s+[\w'’-]+){0,2}?\s+(?:supports?|supported|supporting|opposes?|opposed|opposing|calls?\s+for|called\s+for|calling\s+for|prioritizes?|prioritized|prioritizing|backs\b)/i,
   // "identifies" needs a priority-shaped object as well as proximity:
   // "campaign identifies safeguarding civil rights ... as a current policy
   // priority" is platform, while "campaign biography identifies him as
   // founder of ..." is a career descriptor.
-  /(?<!\ban?\s(?:[\w'’-]+\s){0,4})\b(?:campaign|platform|website)(?:'s)?\b(?!-)(?:\s+[\w'’-]+){0,2}?\s+identif(?:ies|ied)\b[^.;]{0,160}\b(?:priorit|concerns?\b|issues?\b|focus)/i,
+  /(?<!\ban?\s(?:(?!(?:gubernatorial|mayoral|senatorial|presidential|congressional|legislative|judicial|electoral|political|statewide|citywide|countywide|primary|general|write-in|reelection|re-election|senate|house|assembly|council|\d+)\b)[\w'’-]+\s){0,4})\b(?:campaign|platform|website)(?:'s)?\b(?!-)(?:\s+[\w'’-]+){0,2}?\s+identif(?:ies|ied)\b[^.;]{0,160}\b(?:priorit|concerns?\b|issues?\b|focus)/i,
   new RegExp(PLEDGE_SIGNING_PATTERN.source, "i"),
   // Past-tense promissory verbs are still promises, in any position:
   // "Promised as a judicial candidate to uphold ..." slipped past the

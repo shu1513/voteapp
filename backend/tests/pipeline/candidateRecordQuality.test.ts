@@ -547,6 +547,70 @@ describe("candidate record quality", () => {
     ).toBe("substantive");
   });
 
+  it("keeps real records the review round showed the new patterns could swallow", () => {
+    // Review round on this PR, four findings. (1) A legislative object
+    // between "signed" and "pledge" means the pledge was NOT the thing
+    // signed — the action must survive.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Signed a law honoring the term-limits pledge he made in 2020.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Signed the bill, keeping his campaign pledge on property taxes.",
+      })
+    ).toEqual({ classification: "substantive", reason: "actual_record_action" });
+
+    // (2) An electoral campaign IS sometimes "a campaign" — electoral
+    // markers in the gap void the indefinite-article exemption...
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Launched a gubernatorial campaign supporting stricter abortion laws.",
+      })
+    ).toEqual({ classification: "disallowed_thin", reason: "future_promise" });
+
+    // ...while an advocacy org's issue campaign keeps the exemption.
+    expect(
+      classifyCandidateRecordQuality({
+        description:
+          "As executive director of Balanced Justice Network, launched a Transparency in Plea Bargain campaign calling for prosecutorial disclosure of plea data.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+
+    // (3) A MEASURE removed from the ballot is measure advocacy, not the
+    // candidate's ballot access — subject-anchored both ways.
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Her ballot initiative was removed from the 2026 ballot after a signature challenge.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "The court kept Initiative 976 off the 2026 ballot.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+
+    // (4) Non-electoral nominations: an executive's appointment nominee and
+    // an award nominee both stay. The status pattern now requires at least
+    // one party/qualifier/year gap token, which every electoral true
+    // positive carries and neither of these does ("governor's" is lowercase
+    // possessive, not a party token).
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Was the governor's nominee for U.S. Attorney for the Middle District of Alabama.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+
+    expect(
+      classifyCandidateRecordQuality({
+        description: "Her film was the nominee in the Best Documentary category.",
+      }).classification
+    ).not.toBe("disallowed_thin");
+  });
+
   it("rejects platform stance statements under a campaign/platform subject", () => {
     expect(
       classifyCandidateRecordQuality({
