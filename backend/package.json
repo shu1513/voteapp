@@ -256,6 +256,7 @@
     "maryland-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertMarylandCandidateFinanceSyncScheduler.ts",
     "maryland-candidates:finance:scheduler:worker": "tsx src/scripts/runMarylandCandidateFinanceSyncSchedulerWorker.ts",
     "maryland-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerMarylandCandidateFinanceSync.ts",
+    "ohio-candidates:finance:raw:refresh": "tsx src/scripts/refreshOhioSosCampaignFinanceRawData.ts",
     "maine-candidates:finance:sync-due": "tsx src/scripts/syncDueMaineCandidateFinance.ts",
     "maine-candidates:finance:raw:refresh": "tsx src/scripts/refreshMaineCampaignFinanceRawData.ts",
     "maine-candidates:finance:raw:scheduler:upsert": "tsx src/scripts/upsertMaineCfisRawDataRefreshScheduler.ts",
