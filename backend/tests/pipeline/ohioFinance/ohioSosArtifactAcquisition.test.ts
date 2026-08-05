@@ -7,6 +7,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import {
   fetchOhioSos31uDetails,
   ohioSos31uDetailCachePath,
+  readOhioSos31uDetailBundle,
   ohioSosFileDownloadUrl,
   ohioSosFileListUrl,
   planOhioSosCycleDownloads,
@@ -310,5 +311,87 @@ describe("fetchOhioSos31uDetails bundle persistence", () => {
     };
     expect(written.reports).toEqual([]);
     expect(written.failures[0]).toMatchObject({ reportKey: "100" });
+  });
+});
+
+describe("readOhioSos31uDetailBundle", () => {
+  const tempDirs: string[] = [];
+
+  afterEach(async () => {
+    await Promise.all(tempDirs.splice(0).map((dir) => rm(dir, { recursive: true, force: true })));
+  });
+
+  async function makeCacheDir(): Promise<string> {
+    const dir = await mkdtemp(join(tmpdir(), "ohio-31u-read-test-"));
+    tempDirs.push(dir);
+    return dir;
+  }
+
+  async function writeBundle(cacheDir: string, payload: unknown): Promise<void> {
+    await writeFile(ohioSos31uDetailCachePath({ cacheDir, cycleYear: 2026 }), JSON.stringify(payload), "utf8");
+  }
+
+  it("reads the version-1 payload with already-parsed rows", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeBundle(cacheDir, {
+      version: 1,
+      cycleYear: 2026,
+      retrievedAt: "2026-08-04T00:00:00.000Z",
+      header: [...OHIO_SOS_31U_DETAIL_HEADER],
+      reports: [
+        {
+          reportKey: "100",
+          annualTotalCents: 10_000,
+          detailTotalCents: 10_000,
+          reconciled: true,
+          rows: [{ reportKey: "100", spenderCommitteeName: "PAC X", amountCents: 10_000, direction: "support" }],
+        },
+      ],
+      failures: [],
+    });
+
+    const reports = await readOhioSos31uDetailBundle({ cacheDir, cycleYear: 2026 });
+    expect(reports).toHaveLength(1);
+    expect(reports[0]?.reportKey).toBe("100");
+    expect(reports[0]?.rows[0]).toMatchObject({ amountCents: 10_000, direction: "support" });
+  });
+
+  it("parses the legacy spike checkpoint through the pinned-header table parser", async () => {
+    const cacheDir = await makeCacheDir();
+    const row = new Array<string>(OHIO_SOS_31U_DETAIL_HEADER.length).fill("-");
+    row[7] = "$150,000.00";
+    row[12] = "V-PAC";
+    row[13] = "GOVERNOR";
+    row[14] = "AMY ACTON";
+    row[15] = "OPPOSED";
+    await writeBundle(cacheDir, { rows: [{ key: "512315395", n: 1, rows: [row] }], err: [], running: false });
+
+    const reports = await readOhioSos31uDetailBundle({ cacheDir, cycleYear: 2026 });
+    expect(reports).toHaveLength(1);
+    expect(reports[0]?.reportKey).toBe("512315395");
+    expect(reports[0]?.rows[0]).toMatchObject({
+      reportKey: "512315395",
+      spenderCommitteeName: "V-PAC",
+      amountCents: 15_000_000,
+      office: "GOVERNOR",
+      candidateNameOrBallotIssue: "AMY ACTON",
+      direction: "oppose",
+    });
+  });
+
+  it("rejects a version-1 bundle for a different cycle", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeBundle(cacheDir, { version: 1, cycleYear: 2024, reports: [] });
+    await expect(readOhioSos31uDetailBundle({ cacheDir, cycleYear: 2026 })).rejects.toThrow(
+      /for cycle 2024, expected 2026/
+    );
+  });
+
+  it("rejects an unrecognized payload shape", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeBundle(cacheDir, { something: "else" });
+    await expect(readOhioSos31uDetailBundle({ cacheDir, cycleYear: 2026 })).rejects.toThrow(
+      /unrecognized format/
+    );
   });
 });

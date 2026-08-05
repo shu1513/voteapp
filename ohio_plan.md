@@ -400,7 +400,39 @@ main feasibility risk and also settles the 31-U two-stage question.
       spike exactly: 13/13 bundle reports reconciled, Acton oppose
       $8,211,114.50, Ramaswamy support $600,000, Stephens oppose $217,704.16,
       JON HUSTED (federal) correctly quarantined unmatched.
-- [ ] PR 7 sync + batchSync + scripts
+- [x] PR 7 sync + batchSync + scripts (branch `claude/ohio-finance-sync-pr7`):
+      `ohioCandidateFinanceSync.ts` — write step only. Unlike maryland it
+      takes aggregation RESULTS, not raw rows: the batch layer owns the
+      single stream over the ~90 MB CAC_CON files (decision 10). Committee
+      identity is the due row's active link (no resolver call — the due list
+      only returns linked candidates). outsideFinance null → summary outside
+      totals NULL (writer preserveWhenNull keeps stored values) and outside
+      groups untouched; an empty groups list clears stale rows.
+      `ohioCandidateFinanceBatchSync.ts` — due list via the shared factory
+      over the oh_ tables; auto-link phase reuses the PR 5 walker with the
+      cached ACT_CAN_LIST; per election year one accumulator per distinct
+      linked committee is fed by one CAC_CON_{Y-1,Y} pass, cover files load
+      once per run, and outside spending aggregates once per year over
+      (candidate name, office)-DEDUPED targets — without the dedupe a
+      candidate due for both primary and general would appear twice and
+      quarantine every row aimed at them as ambiguous. Missing direct
+      artifacts fail the year's rows (receipts would be fabricated);
+      missing outside artifacts only disable the outside leg, with a
+      per-year availability summary in the batch result.
+      `readOhioSos31uDetailBundle` accepts the version-1 payload AND the
+      2026-08-04 spike checkpoint format, so the existing 305 MB cache
+      works without another attended Chrome session. Scheduler (BullMQ,
+      queue `ohio_candidate_finance_sync_maintenance`, daily cron default
+      `55 9 * * *` UTC) + 4 scripts + npm block
+      (`ohio-candidates:finance:sync-due` / `scheduler:upsert` /
+      `scheduler:worker` / `scheduler:trigger`).
+      Real-data smoke (end-to-end dry run over the cached cycle): Acton
+      receipts $15,898,732.10 / cash $8,136,281.98 / oppose $8,211,114.50;
+      Ramaswamy receipts $55,081,342.57 (cover beats the $30.3M itemized
+      sum) / support $600,000; Stephens receipts $343,371.62 / oppose
+      $217,704.16 — 13 reports reconciled, 0 quarantined, and the
+      attributed-cents delta vs the PR 6 smoke is exactly the Perez+Haines
+      $102,348.10 that this due list does not cover.
 - [ ] PR 8 outside-group funders/industries (#3)
 - [ ] PR 9+ PDF path / live run
 
