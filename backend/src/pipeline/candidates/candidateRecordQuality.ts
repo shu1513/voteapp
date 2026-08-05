@@ -60,7 +60,10 @@ const PURE_CANDIDACY_PATTERNS = [
   // punctuation, the end, or an election word — because as an adjective it
   // describes something else entirely: "lost its primary care clinic",
   // "won a primary school construction award" are real service records.
-  /\b(?:won|lost)\s+(?:the\s+|an?\s+)?(?:[\w'’.,-]+\s+){0,5}?primar(?:y|ies)\b(?=\s*(?:for\b|in\b|on\b|to\b|against\b|with\b|by\b|and\b|over\b|at\b|[.;,)]|$)|\s+(?:elections?|runoffs?|contests?|races?|bid|nominations?)\b)/i,
+  // Gap widened {0,5}→{0,7}: "Won the 2026 Alabama House District 25
+  // Democratic primary" carries six qualifier words and slipped through at
+  // five (live row, retired 2026-08-04).
+  /\b(?:won|lost)\s+(?:the\s+|an?\s+)?(?:[\w'’.,-]+\s+){0,7}?primar(?:y|ies)\b(?=\s*(?:for\b|in\b|on\b|to\b|against\b|with\b|by\b|and\b|over\b|at\b|[.;,)]|$)|\s+(?:elections?|runoffs?|contests?|races?|bid|nominations?)\b)/i,
   // Runoffs split by stage the same way. LOSING any runoff is roster
   // evidence (losing confers nothing). WINNING one is only candidacy when a
   // party adjective marks it as a primary runoff — general runoffs are
@@ -95,6 +98,40 @@ const PURE_CANDIDACY_PATTERNS = [
   // the Democratic Party" is still an election roster — a bare "of" gap
   // exempted those too.
   /\bcandidate\s+list\b(?!\s+of\s+(?:semi)?finalists?\b|\s+of\s+applicants?\b)/i,
+  // Candidacy/nominee STATUS restatements: "is the qualified incumbent
+  // Republican candidate in the 2026 general election", "is the Democratic
+  // nominee for county surrogate", "is the sole printed Republican candidate
+  // for Senate District 15". A 2026-08-04 database-wide repair pass retired
+  // nine live rows of this shape — all ballot qualification, none conduct.
+  // Same head-noun anchoring as the recorded-as pattern above: "candidate/
+  // nominee" must be followed by for/in, punctuation, or the end, so an
+  // attributive use ("was the first candidate to publish tax returns" —
+  // "candidate to" — or a hiring-process "leading candidate to succeed the
+  // chief") stays untouched.
+  /\b(?:is|was|remains)\s+the\s+(?:[\w'’-]+\s+){0,4}?(?:candidate|nominee)\b(?=\s*(?:for\b|in\b|[.;,)]|$))/i,
+  // The candidacy-machinery FILING documents by name. These nouns are ballot
+  // access whatever verb carries them ("filed a Statement of Candidacy with
+  // the FEC", "ruling her declaration of candidacy invalid", "filed her
+  // candidate affidavit", "a challenge to her affidavit of identity") —
+  // substantive-verbs-first ordering still rescues a row that pairs one with
+  // a real completed action.
+  /\bstatement\s+of\s+candidacy\b/i,
+  /\bdeclaration\s+of\s+candidacy\b/i,
+  /\bcandidate\s+affidavit\b/i,
+  /\baffidavit\s+of\s+(?:identity|candidacy)\b/i,
+  // Ballot-access outcomes: being removed from, kept off, or disqualified
+  // from a ballot is a proceeding about candidacy, which references/records.md
+  // bars as a record in either direction. Two shapes, both PERSON-anchored so
+  // a MEASURE kept off the ballot (a live petition-drive record: "the measure
+  // was kept off the ballot over canvasser paperwork") stays untouched:
+  // active with a pronoun or capitalized-name object ("kept him off the
+  // August 6, 2024 Democratic primary ballot", "removed Beavers from the 2022
+  // primary ballot") — case-sensitive so "removed the measure from" cannot
+  // match — and passive with the candidacy verbs but NOT "kept", whose
+  // passive subject in the corpus is always the measure. An official's act
+  // about a ballot is rescued by substantive-verbs-first ordering.
+  /\b(?:removed|kept|barred|struck|stricken)\s+(?:him|her|them|[A-Z][\w'’-]+)\s+(?:off|from)\s+the\s+[^.;]{0,60}?\bballot\b/,
+  /\b(?:was|were)\s+(?:removed|stricken|disqualified|barred)\s+from\s+the\s+(?:[\w'’.,-]+\s+){0,6}?ballot\b/i,
 ] as const;
 
 // "promises/pledges/vows" is a verb in "She pledges lower taxes" and a noun in
@@ -137,8 +174,55 @@ function containsPromissoryVerbUse(value: string): boolean {
   return false;
 }
 
+// Signing an advocacy organization's pledge is the promise itself in written
+// form — a commitment to future conduct, which references/records.md line 148
+// bars as a record ("drop the pledge clause, keep the completed action").
+// This REVERSES an earlier decision, pinned in a test, that "signing a pledge
+// IS a completed action": on 2026-08-04 the user approved retiring all 16
+// live signed-pledge rows — including the test's own example, "Cloud signed
+// the U.S. Term Limits convention pledge." — so the write gate now agrees
+// with the reject list. Mechanics mirror the promissory complements below:
+// the signing phrase is MASKED before the substantive check (so "signed"
+// cannot vouch for the row) and the raw text is then matched as a future
+// promise. A row that pairs the pledge with an independent completed action
+// keeps its other verb and survives, same as every masked family.
+//
+// The object is "pledge" or "convention commitment" — not bare "commitment",
+// which appears in real records ("signed a sister-city commitment"). The gap
+// tokens allow dots and apostrophes because the canonical offender is
+// "U.S. Term Limits' convention pledge".
+const PLEDGE_SIGNING_PATTERN = /\bsign(?:ed|s|ing)\s+(?:[\w.,'’&-]+\s+){0,7}?(?:pledges?|convention\s+commitments?)\b/gi;
+
+function withoutPledgeSignings(value: string): string {
+  PLEDGE_SIGNING_PATTERN.lastIndex = 0;
+  return value.replace(PLEDGE_SIGNING_PATTERN, " ");
+}
+
 const FUTURE_PROMISE_PATTERNS = [
-  /\b(?:campaign|platform|website)\b.*\b(?:promises?|pledges?|vows?|plans?|proposes?)\b/i,
+  /\b(?:campaign|platform|website)\b(?!-).*\b(?:promises?|pledges?|vows?|plans?|proposes?)\b/i,
+  // Stance verbs joined the promissory ones on 2026-08-04: a database-wide
+  // repair pass retired 28 platform rows shaped "the campaign supports X" /
+  // "her published platform supported Z", none of which the promissory verbs
+  // caught. Unlike the promissory pattern above, the verb must sit WITHIN TWO
+  // words of the campaign/platform/website subject — a corpus sweep showed
+  // loose cooccurrence flags real records ("during his 2022 campaign and
+  // after taking office, Sorrell supported transferring public examiners" is
+  // in-office advocacy). The noun exclusions keep enforcement and machinery
+  // rows anchored on the wrong noun out: a "campaign committee" under PDC
+  // enforcement, a "campaign contribution" accepted, a "campaign-finance
+  // report" (also the (?!-) compound guard, pinned by the Karen McDonald
+  // test), a "campaign event" someone hosted, a "campaign biography" that
+  // merely describes a career. The indefinite-article lookbehind excludes an
+  // ISSUE campaign someone ran as real work: "launched a Transparency in Plea
+  // Bargain campaign calling for prosecutorial disclosure" is an advocacy
+  // record, and a candidate's own electoral campaign is never "a campaign".
+  /(?<!\ban?\s(?:[\w'’-]+\s){0,4})\b(?:campaign|platform|website)(?:'s)?\b(?!-)(?!\s+(?:events?|rall(?:y|ies)|kickoffs?|stops?|committees?|contributions?|finance|reports?|statements?|biograph(?:y|ies)|mailers?|ads?|advertisements?)\b)(?:\s+[\w'’-]+){0,2}?\s+(?:supports?|supported|supporting|opposes?|opposed|opposing|calls?\s+for|called\s+for|calling\s+for|prioritizes?|prioritized|prioritizing|backs\b)/i,
+  // "identifies" needs a priority-shaped object as well as proximity:
+  // "campaign identifies safeguarding civil rights ... as a current policy
+  // priority" is platform, while "campaign biography identifies him as
+  // founder of ..." is a career descriptor.
+  /(?<!\ban?\s(?:[\w'’-]+\s){0,4})\b(?:campaign|platform|website)(?:'s)?\b(?!-)(?:\s+[\w'’-]+){0,2}?\s+identif(?:ies|ied)\b[^.;]{0,160}\b(?:priorit|concerns?\b|issues?\b|focus)/i,
+  new RegExp(PLEDGE_SIGNING_PATTERN.source, "i"),
   // Past-tense promissory verbs are still promises, in any position:
   // "Promised as a judicial candidate to uphold ..." slipped past the
   // present-tense handling and became a canonical record. Substantive
@@ -192,6 +276,11 @@ const SUBSTANTIVE_ACTION_PATTERNS = [
   // Rescues rows that pair real service with a primary-result clause — the
   // candidacy patterns below would otherwise drop the whole row.
   /\b(?:served|serves|serving)\s+on\s+the\s+(?:board|council|commission|committee)\b/i,
+  // Present-tense chairing is current service, same as "serves as": without
+  // it, "chairs the Vermont Commission on Women and was the 2024 Democratic
+  // nominee" lost its real service to the nominee-status pattern below.
+  // Determiner-anchored so the plural noun ("arranged the chairs") is safe.
+  /\b(?:co-)?chairs\s+(?:the|a|an|its)\b/i,
   /\b(?:held|holds)\s+(?:public\s+)?office\b/i,
   /\b(?:was|were|is|are)\s+elected\s+to\b/i,
   /\b(?:ruled|sentenced|prosecuted|defended|settled|sued)\b/i,
@@ -291,8 +380,9 @@ export function classifyCandidateRecordQuality(
   }
 
   // Both completed-action families are judged on the masked text, so a verb
-  // sitting inside a promised thing cannot vouch for the record.
-  const withoutPromises = withoutPromissoryComplements(description);
+  // sitting inside a promised thing — or the "signed" of a signed pledge —
+  // cannot vouch for the record.
+  const withoutPromises = withoutPledgeSignings(withoutPromissoryComplements(description));
   if (
     matchesAny(withoutPromises, PROMISE_OUTCOME_PATTERNS) ||
     matchesAny(withoutPromises, SUBSTANTIVE_ACTION_PATTERNS)
