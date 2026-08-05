@@ -229,18 +229,28 @@ const NAME_SUFFIX_TOKENS = new Set(["JR", "SR", "II", "III", "IV", "V"]);
 // below.
 function parseOhioPersonNameParts(raw: string): PersonNameParts {
   const withoutParentheticals = raw.replace(/\([^()]+\)/g, " ");
-  let arranged = withoutParentheticals;
-  if (withoutParentheticals.includes(",")) {
-    const commaParts = withoutParentheticals
-      .split(",")
-      .map((part) => part.trim())
-      .filter(Boolean);
-    if (commaParts.length >= 2) {
-      arranged = `${commaParts.slice(1).join(" ")} ${commaParts[0]}`;
-    }
-  }
-  const tokens = normalizeTextKey(arranged).split(" ").filter(Boolean);
   let suffix: string | null = null;
+  let tokens: string[];
+  const commaParts = withoutParentheticals.includes(",")
+    ? withoutParentheticals
+        .split(",")
+        .map((part) => part.trim())
+        .filter(Boolean)
+    : [];
+  if (commaParts.length >= 2) {
+    // "Smith, John Jr." carries the suffix at the end of the GIVEN segment;
+    // naive rearrangement would produce "John Jr Smith" and misfile JR as a
+    // middle name, slipping past the suffix-conflict guard. Pull it off the
+    // given segment before rearranging.
+    const givenTokens = normalizeTextKey(commaParts.slice(1).join(" ")).split(" ").filter(Boolean);
+    while (givenTokens.length > 0 && NAME_SUFFIX_TOKENS.has(givenTokens[givenTokens.length - 1]!)) {
+      suffix = givenTokens.pop()!;
+    }
+    tokens = [...givenTokens, ...normalizeTextKey(commaParts[0]!).split(" ").filter(Boolean)];
+  } else {
+    tokens = normalizeTextKey(withoutParentheticals).split(" ").filter(Boolean);
+  }
+  // Trailing suffix on the assembled name ("John Smith Jr", "Smith Jr., John").
   while (tokens.length > 0 && NAME_SUFFIX_TOKENS.has(tokens[tokens.length - 1]!)) {
     suffix = tokens.pop()!;
   }

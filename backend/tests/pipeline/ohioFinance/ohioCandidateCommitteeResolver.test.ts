@@ -234,6 +234,34 @@ describe("resolveOhioCandidateCommittee", () => {
     ).toMatchObject({ status: "matched", committeeId: "12345" });
   });
 
+  it("detects a suffix conflict when the suffix arrives in comma form", () => {
+    const senior = [listRow({ candidateFirstName: "JOHN", candidateLastName: "SMITH SR" })];
+    for (const candidateName of ["Smith, John Jr.", "Smith Jr., John"]) {
+      expect(
+        resolveOhioCandidateCommittee({
+          candidateName,
+          officeScope: "statewide",
+          officeName: "Governor",
+          electionYear: 2026,
+          district: null,
+          candidateListRows: senior,
+        })
+      ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+    }
+
+    // Comma-form suffix against a row without one stays permissive.
+    expect(
+      resolveOhioCandidateCommittee({
+        candidateName: "Smith, John Jr.",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        district: null,
+        candidateListRows: [listRow({ candidateFirstName: "JOHN", candidateLastName: "SMITH" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "12345" });
+  });
+
   it("rejects a match when both sides state conflicting suffixes, but not when one lacks a suffix", () => {
     const senior = [listRow({ candidateFirstName: "JOHN", candidateLastName: "SMITH SR" })];
     expect(
