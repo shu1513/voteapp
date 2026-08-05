@@ -293,6 +293,36 @@ function namesConflict(left: PersonNameParts, right: PersonNameParts): boolean {
   return false;
 }
 
+// Shared strict person-name match: some normalized key of each side must
+// coincide AND the stated middle/suffix evidence must not conflict. The 31-U
+// outside-spending aggregator uses this for its target-candidate matching
+// (decision 5) so both matchers accept and reject exactly the same pairs.
+export function ohioPersonNamesMatch(left: string, right: string): boolean {
+  const leftKeys = normalizeOhioCandidateNameKeys(left);
+  if (leftKeys.size === 0) {
+    return false;
+  }
+  let keyMatched = false;
+  for (const key of normalizeOhioCandidateNameKeys(right)) {
+    if (leftKeys.has(key)) {
+      keyMatched = true;
+      break;
+    }
+  }
+  if (!keyMatched) {
+    return false;
+  }
+  return !namesConflict(parseOhioPersonNameParts(left), parseOhioPersonNameParts(right));
+}
+
+// The SoS office vocabulary token (active-candidate list and 31-U detail
+// pages share it) for a VoteApp office name; null when the office is outside
+// the supported set.
+export function ohioSosOfficeTokenForOfficeName(officeName: string): string | null {
+  const canonicalName = canonicalOfficeNameForInput(officeName);
+  return canonicalName === null ? null : LIST_OFFICE_TOKEN_BY_CANONICAL_NAME[canonicalName] ?? null;
+}
+
 function rowMatchesCandidateName(input: {
   row: OhioSosCandidateCommitteeListRow;
   candidateName: string;
