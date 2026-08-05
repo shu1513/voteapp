@@ -15,7 +15,15 @@
 // - the link (candidate, from-election) exists and is row-locked;
 // - both elections exist, are row-locked, and share district_id AND
 //   election_date (crossing either means this is not a duplicate-shell
-//   repair — wrong tool);
+//   repair — wrong tool). --allow-cross-district relaxes ONLY the district
+//   equality, and only for verified SIBLING districts (same state, related
+//   body names, compatible types — assertSiblingDistricts); race_type and
+//   election_stage must always match;
+// - the target roster must not already list a different candidate id with
+//   the same first and last name (a presumed duplicate PERSON — merge the
+//   candidate rows first, or assert two distinct people with
+//   --allow-same-name-target); conflicting generational suffixes (Jr./Sr.)
+//   are treated as two people and proceed with a warning;
 // - the from-election has no persisted election_results rows: their
 //   winners JSON references candidate_elections ids, which a move or
 //   merge-delete would corrupt;
@@ -58,6 +66,25 @@ export type MoveCandidateElectionLinkOptions = {
   fromElectionId: string;
   toElectionId: string;
   dryRun: boolean;
+  /**
+   * Relaxes ONLY the same-district guard, for the sibling-district duplicate:
+   * one real contest discovered twice because two district rows legitimately
+   * cover the same body (live case: Jefferson County KY school-board contests
+   * minted on both "Jefferson County School District, Kentucky" and the
+   * Census overlay "Jefferson County School District in Anchorage ISD,
+   * Kentucky" — same date, same candidates, one from the county clerk's
+   * filing PDF and one from a news roster a day later). The election-date
+   * guard, both districts sharing a state, and every other guard still hold.
+   */
+  allowCrossDistrict?: boolean;
+  /**
+   * Overrides the target-roster identity guard for ONE verified case: the
+   * operator has confirmed the same-named target-roster candidate is a
+   * DIFFERENT person (two real name-twins in one contest, or conflicting
+   * middle names checked against sources). Without it, any first+last name
+   * match on the target roster fails closed as a presumed duplicate person.
+   */
+  allowSameNameTarget?: boolean;
 };
 
 export type MoveCandidateElectionLinkResult = {
@@ -68,6 +95,16 @@ export type MoveCandidateElectionLinkResult = {
   fromElectionTitle: string;
   toElectionId: string;
   toElectionTitle: string;
+  /** Present only when --allow-cross-district actually crossed districts. */
+  crossDistrict?: { fromDistrict: string; toDistrict: string };
+  /**
+   * Name matches on the target roster that PROCEEDED: conflicting-suffix
+   * pairs (Jr. vs Sr. — evidence of two people) and matches overridden with
+   * --allow-same-name-target. Any other first+last match fails closed as a
+   * presumed duplicate person ("Matthew McPeak" vs "Matthew James McPeak"
+   * was one person in the live repair).
+   */
+  targetRosterNameWarnings?: string[];
 };
 
 type LinkRow = {
@@ -82,7 +119,117 @@ type ElectionRow = {
   district_id: string;
   election_date: string;
   official_ballot_title: string;
+  race_type: string | null;
+  election_stage: string | null;
 };
+
+type DistrictRow = {
+  id: string;
+  name: string;
+  state: string | null;
+  district_type: string | null;
+};
+
+/**
+ * Drops the trailing ", <state>" clause every districts.name carries, so the
+ * body names can be compared: "Jefferson County School District in Anchorage
+ * ISD, Kentucky" → "jefferson county school district in anchorage isd".
+ */
+function districtBodyName(name: string): string {
+  return name.replace(/,[^,]*$/, "").trim().toLowerCase();
+}
+
+/**
+ * Verifies two district rows are SIBLINGS — two rows for the same real-world
+ * body — before a cross-district repair is allowed to touch them. Same-state
+ * alone is not evidence (on a general-election date thousands of unrelated
+ * contests share state and date; a mistyped UUID must not survive this
+ * guard — review finding on this PR). Sibling evidence is:
+ * - same state, AND
+ * - a name relationship: the stripped body names are equal, or one is the
+ *   other's Census place overlay ("X" vs "X in <place>") — the signature of
+ *   every live case (Jefferson County KY, and the Rutherford/Williamson/
+ *   Wilson TN pairs), AND
+ * - compatible district types: equal, or both school types (the base row is
+ *   school_unified where its place overlays are school_secondary/elementary).
+ * A sibling shape this cannot verify is refused rather than guessed at; the
+ * tool grows a new evidence rule when a real case shows up.
+ */
+export async function assertSiblingDistricts(
+  client: MoveCandidateElectionLinkClient,
+  fromDistrictId: string,
+  toDistrictId: string
+): Promise<{ fromDistrict: DistrictRow; toDistrict: DistrictRow }> {
+  const districtsResult = await client.query<DistrictRow>(
+    `SELECT id, name, state, district_type FROM public.districts WHERE id = ANY($1::uuid[])`,
+    [[fromDistrictId, toDistrictId]]
+  );
+  const fromDistrict = districtsResult.rows.find((row) => row.id === fromDistrictId);
+  const toDistrict = districtsResult.rows.find((row) => row.id === toDistrictId);
+  if (!fromDistrict || !toDistrict) {
+    throw new Error("District row missing for one of the elections; cannot verify siblings");
+  }
+  if (fromDistrict.state !== toDistrict.state) {
+    throw new Error(
+      `--allow-cross-district refused: districts are in different states ` +
+        `(${fromDistrict.name} vs ${toDistrict.name}); not siblings`
+    );
+  }
+  const fromBody = districtBodyName(fromDistrict.name);
+  const toBody = districtBodyName(toDistrict.name);
+  const namesRelated =
+    fromBody === toBody ||
+    fromBody.startsWith(`${toBody} in `) ||
+    toBody.startsWith(`${fromBody} in `);
+  if (!namesRelated) {
+    throw new Error(
+      `--allow-cross-district refused: district names do not describe the same body ` +
+        `("${fromDistrict.name}" vs "${toDistrict.name}"). Siblings share a body name, ` +
+        `or one is the other's place overlay ("X" vs "X in <place>").`
+    );
+  }
+  const bothSchool =
+    (fromDistrict.district_type ?? "").startsWith("school_") &&
+    (toDistrict.district_type ?? "").startsWith("school_");
+  if (fromDistrict.district_type !== toDistrict.district_type && !bothSchool) {
+    throw new Error(
+      `--allow-cross-district refused: incompatible district types ` +
+        `(${fromDistrict.district_type ?? "unknown"} vs ${toDistrict.district_type ?? "unknown"}); not siblings`
+    );
+  }
+  return { fromDistrict, toDistrict };
+}
+
+/**
+ * Normalization for the target-roster name guard: lowercase, curly→straight
+ * apostrophes (the live Gaines duplicate differed ONLY by that character),
+ * punctuation to spaces, collapsed whitespace.
+ */
+export function normalizeRosterName(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[’‘]/g, "'")
+    .replace(/[.,()"]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const GENERATIONAL_SUFFIXES = new Set(["jr", "sr", "ii", "iii", "iv", "v"]);
+
+function firstAndLastNameTokens(
+  normalized: string
+): { first: string; last: string; suffix: string | null } | null {
+  const tokens = normalized.replace(/'/g, "").split(" ").filter((token) => token.length > 0);
+  let suffix: string | null = null;
+  while (tokens.length > 1 && GENERATIONAL_SUFFIXES.has(tokens[tokens.length - 1]!)) {
+    // The OUTERMOST suffix is the generational one ("Kane, Jr." → jr);
+    // stacked suffixes are not a thing in ballot names, but popping them all
+    // keeps first/last comparable either way.
+    suffix = tokens.pop()!;
+  }
+  if (tokens.length < 2) return null;
+  return { first: tokens[0]!, last: tokens[tokens.length - 1]!, suffix };
+}
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -232,7 +379,7 @@ export async function runMoveCandidateElectionLink(
     // between two concurrent movers.
     const electionsResult = await client.query<ElectionRow>(
       `
-        SELECT id, district_id, election_date::text, official_ballot_title
+        SELECT id, district_id, election_date::text, official_ballot_title, race_type, election_stage
         FROM public.elections
         WHERE id = ANY($1::uuid[])
         ORDER BY id
@@ -244,15 +391,42 @@ export async function runMoveCandidateElectionLink(
     const toElection = electionsResult.rows.find((row) => row.id === toElectionId);
     if (!fromElection) throw new Error(`Election not found: ${fromElectionId}`);
     if (!toElection) throw new Error(`Election not found: ${toElectionId}`);
+    let crossDistrict: MoveCandidateElectionLinkResult["crossDistrict"];
     if (fromElection.district_id !== toElection.district_id) {
-      throw new Error(
-        "Elections belong to different districts; a cross-district move is not a duplicate-shell repair"
+      if (!options.allowCrossDistrict) {
+        throw new Error(
+          "Elections belong to different districts; a cross-district move is not a duplicate-shell repair. " +
+            "If the two districts are siblings covering the same real body (e.g. a school system and its " +
+            "Census place overlay) and this is the same contest duplicated, re-run with --allow-cross-district."
+        );
+      }
+      const { fromDistrict, toDistrict } = await assertSiblingDistricts(
+        client,
+        fromElection.district_id,
+        toElection.district_id
       );
+      crossDistrict = { fromDistrict: fromDistrict.name, toDistrict: toDistrict.name };
     }
     if (fromElection.election_date !== toElection.election_date) {
       throw new Error(
         `Elections have different dates (${fromElection.election_date} vs ${toElection.election_date}); ` +
           "a cross-date move is not a duplicate-shell repair (see manual:election-date:correct for date fixes)"
+      );
+    }
+    // Two shells for one contest agree on what KIND of contest it is. A
+    // mismatch means the target is not this contest's sibling — most likely
+    // a mistyped UUID, whose blast radius --allow-cross-district widens from
+    // one district to a whole state's election day (review finding).
+    if (fromElection.race_type !== toElection.race_type) {
+      throw new Error(
+        `Elections have different race types (${fromElection.race_type ?? "unknown"} vs ` +
+          `${toElection.race_type ?? "unknown"}); not the same contest`
+      );
+    }
+    if (fromElection.election_stage !== toElection.election_stage) {
+      throw new Error(
+        `Elections are at different stages (${fromElection.election_stage ?? "unknown"} vs ` +
+          `${toElection.election_stage ?? "unknown"}); not the same contest`
       );
     }
 
@@ -327,6 +501,7 @@ export async function runMoveCandidateElectionLink(
     const targetLink = targetLinkResult.rows[0];
 
     let action: MoveCandidateElectionLinkResult["action"];
+    const targetRosterNameWarnings: string[] = [];
     if (targetLink) {
       const identical =
         targetLink.is_incumbent === link.is_incumbent &&
@@ -394,6 +569,79 @@ export async function runMoveCandidateElectionLink(
       }
       action = "merged_duplicate";
     } else {
+      // Target-roster identity guard. The convergence path above only fires
+      // for the SAME candidate uuid; when the duplicate shell also minted a
+      // duplicate CANDIDATE row (the live Jefferson County repair carried
+      // seven), moving the un-merged twin would put the same person on the
+      // surviving roster twice (review finding). FAIL-CLOSED (review round
+      // 2): a first+last match is presumed the same person — the live
+      // "Matthew McPeak" / "Matthew James McPeak" pair IS one person — and
+      // refuses, exact or variant, unless --allow-same-name-target asserts
+      // the operator verified two distinct people. The one detectable
+      // two-person shape proceeds on its own: BOTH names carrying explicit,
+      // CONFLICTING generational suffixes ("Kane, Jr." vs "Kane, Sr."),
+      // which is evidence of two people, not two spellings — a bare name
+      // next to a suffixed one stays presumed-same, since a source omitting
+      // "Jr." is far likelier than father and son in one contest. Every
+      // proceed-path match is still reported in targetRosterNameWarnings.
+      const movingCandidate = await client.query<{ display_name: string }>(
+        `SELECT display_name FROM public.candidates WHERE id = $1::uuid`,
+        [candidateId]
+      );
+      const movingName = movingCandidate.rows[0]?.display_name;
+      if (!movingName) throw new Error(`Candidate not found: ${candidateId}`);
+      const rosterResult = await client.query<{ id: string; display_name: string }>(
+        `
+          SELECT c.id, c.display_name
+          FROM public.candidate_elections ce
+          JOIN public.candidates c ON c.id = ce.candidate_id
+          WHERE ce.election_id = $1::uuid AND c.id <> $2::uuid AND c.deleted_at IS NULL
+        `,
+        [toElectionId, candidateId]
+      );
+      const movingNormalized = normalizeRosterName(movingName);
+      const movingTokens = firstAndLastNameTokens(movingNormalized);
+      for (const rosterRow of rosterResult.rows) {
+        const rosterNormalized = normalizeRosterName(rosterRow.display_name);
+        const rosterTokens = firstAndLastNameTokens(rosterNormalized);
+        const exactMatch = rosterNormalized === movingNormalized;
+        const firstLastMatch =
+          movingTokens !== null &&
+          rosterTokens !== null &&
+          movingTokens.first === rosterTokens.first &&
+          movingTokens.last === rosterTokens.last;
+        if (!exactMatch && !firstLastMatch) continue;
+
+        const conflictingSuffixes =
+          !exactMatch &&
+          firstLastMatch &&
+          movingTokens!.suffix !== null &&
+          rosterTokens!.suffix !== null &&
+          movingTokens!.suffix !== rosterTokens!.suffix;
+        if (conflictingSuffixes) {
+          targetRosterNameWarnings.push(
+            `Target roster candidate "${rosterRow.display_name}" (${rosterRow.id}) shares first and last ` +
+              `name with the moving candidate "${movingName}" but carries a conflicting generational ` +
+              `suffix — treated as a different person.`
+          );
+          continue;
+        }
+        if (options.allowSameNameTarget) {
+          targetRosterNameWarnings.push(
+            `OVERRIDDEN (--allow-same-name-target): target roster candidate "${rosterRow.display_name}" ` +
+              `(${rosterRow.id}) ${exactMatch ? "has the same normalized name as" : "shares first and last name with"} ` +
+              `the moving candidate "${movingName}" — moved on the operator's assertion they are different people.`
+          );
+          continue;
+        }
+        throw new Error(
+          `Target election already lists "${rosterRow.display_name}" (${rosterRow.id}) — ` +
+            `${exactMatch ? "the same name as" : "the same first and last name as"} the moving candidate ` +
+            `"${movingName}" under a different id. Moving would put the same person on the roster twice; ` +
+            `merge the candidates first (manual:candidates:merge), then re-run — or, if you have verified ` +
+            `these are two different people, re-run with --allow-same-name-target.`
+        );
+      }
       if (link.running_mate_candidate_id) {
         // FOR UPDATE pins a found collision row for the friendly error; a
         // concurrent INSERT of a colliding row after a not-found result is
@@ -441,6 +689,8 @@ export async function runMoveCandidateElectionLink(
       fromElectionTitle: fromElection.official_ballot_title,
       toElectionId,
       toElectionTitle: toElection.official_ballot_title,
+      ...(crossDistrict ? { crossDistrict } : {}),
+      ...(targetRosterNameWarnings.length > 0 ? { targetRosterNameWarnings } : {}),
     };
   } catch (error) {
     await client.query("ROLLBACK").catch(() => undefined);
@@ -455,6 +705,8 @@ async function main(): Promise<void> {
     { name: "--to-election-id", value: "space" },
     { name: "--reason", value: "space" },
     { name: "--dry-run", value: "none" },
+    { name: "--allow-same-name-target", value: "none" },
+    { name: "--allow-cross-district", value: "none" },
   ]);
   loadProjectEnv();
 
@@ -463,6 +715,8 @@ async function main(): Promise<void> {
   const toElectionId = requireFlag("--to-election-id");
   const reason = requireFlag("--reason");
   const dryRun = process.argv.includes("--dry-run");
+  const allowCrossDistrict = process.argv.includes("--allow-cross-district");
+  const allowSameNameTarget = process.argv.includes("--allow-same-name-target");
 
   for (const [name, value] of [
     ["--candidate-id", candidateId],
@@ -485,6 +739,8 @@ async function main(): Promise<void> {
       fromElectionId,
       toElectionId,
       dryRun,
+      allowCrossDistrict,
+      allowSameNameTarget,
     });
     console.log(JSON.stringify({ ...result, reason }, null, 2));
   } finally {

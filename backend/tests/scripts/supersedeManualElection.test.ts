@@ -16,6 +16,8 @@ function retiredRow(overrides: Partial<Record<string, unknown>> = {}) {
     district_id: DISTRICT,
     election_date: "2026-11-03",
     official_ballot_title: "Chicago Board of Education Member",
+    race_type: "office",
+    election_stage: "general",
     sources: ["https://chicagoelections.gov/contests"],
     ...overrides,
   };
@@ -27,6 +29,8 @@ function survivorRow(id: string, overrides: Partial<Record<string, unknown>> = {
     district_id: DISTRICT,
     election_date: "2026-11-03",
     official_ballot_title: `Chicago Board of Education Member, District ${id.slice(0, 1)}A`,
+    race_type: "office",
+    election_stage: "general",
     sources: ["https://chicagoelections.gov/district"],
     ...overrides,
   };
@@ -142,6 +146,119 @@ describe("runSupersedeElection", () => {
         { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false }
       )
     ).rejects.toThrow(/different date/);
+  });
+
+  it("crosses districts only under the explicit flag, and only between verified siblings", async () => {
+    const OVERLAY_DISTRICT = "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee";
+    const siblingDistricts = [
+      { id: DISTRICT, name: "Jefferson County School District in Anchorage ISD, Kentucky", state: "KY", district_type: "school_secondary" },
+      { id: OVERLAY_DISTRICT, name: "Jefferson County School District, Kentucky", state: "KY", district_type: "school_unified" },
+    ];
+
+    const allowed = buildClient(happyResponses({
+      "WHERE id = ANY($1::uuid[])": [
+        [survivorRow(SURVIVOR_A, { district_id: OVERLAY_DISTRICT }), survivorRow(SURVIVOR_B)],
+      ],
+      "FROM public.districts": [siblingDistricts],
+    }));
+    const result = await runSupersedeElection(
+      { query: allowed.query },
+      { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false, allowCrossDistrict: true }
+    );
+    expect(result.crossDistrict).toEqual([
+      {
+        electionId: SURVIVOR_A,
+        fromDistrict: "Jefferson County School District in Anchorage ISD, Kentucky",
+        toDistrict: "Jefferson County School District, Kentucky",
+      },
+    ]);
+    expect(allowed.calls.at(-1)?.text).toBe("COMMIT");
+
+    // Same-district supersession under the flag reports no crossing.
+    const sameDistrict = buildClient(happyResponses());
+    const sameResult = await runSupersedeElection(
+      { query: sameDistrict.query },
+      { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false, allowCrossDistrict: true }
+    );
+    expect(sameResult.crossDistrict).toBeUndefined();
+
+    // Different states are never siblings, flag or no flag.
+    const crossState = buildClient(happyResponses({
+      "WHERE id = ANY($1::uuid[])": [
+        [survivorRow(SURVIVOR_A, { district_id: OVERLAY_DISTRICT }), survivorRow(SURVIVOR_B)],
+      ],
+      "FROM public.districts": [[
+        { id: DISTRICT, name: "Henry County School District, Tennessee", state: "TN", district_type: "school_unified" },
+        { id: OVERLAY_DISTRICT, name: "Henry County School District, Georgia", state: "GA", district_type: "school_unified" },
+      ]],
+    }));
+    await expect(
+      runSupersedeElection(
+        { query: crossState.query },
+        { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false, allowCrossDistrict: true }
+      )
+    ).rejects.toThrow(/different states/);
+
+    // The flag never relaxes the date guard.
+    const crossDate = buildClient(happyResponses({
+      "WHERE id = ANY($1::uuid[])": [
+        [survivorRow(SURVIVOR_A, { district_id: OVERLAY_DISTRICT, election_date: "2027-02-24" }), survivorRow(SURVIVOR_B)],
+      ],
+      "FROM public.districts": [siblingDistricts],
+    }));
+    await expect(
+      runSupersedeElection(
+        { query: crossDate.query },
+        { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false, allowCrossDistrict: true }
+      )
+    ).rejects.toThrow(/different date/);
+  });
+
+  it("refuses cross-district supersession without sibling evidence, and contest-kind mismatches always", async () => {
+    const OVERLAY_DISTRICT = "eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee";
+
+    // Same state, unrelated bodies — a supersede DELETE has no undo, so a
+    // mistyped UUID must die on the body-name evidence.
+    const unrelated = buildClient(happyResponses({
+      "WHERE id = ANY($1::uuid[])": [
+        [survivorRow(SURVIVOR_A, { district_id: OVERLAY_DISTRICT }), survivorRow(SURVIVOR_B)],
+      ],
+      "FROM public.districts": [[
+        { id: DISTRICT, name: "Jefferson County School District, Kentucky", state: "KY", district_type: "school_unified" },
+        { id: OVERLAY_DISTRICT, name: "Fayette County School District, Kentucky", state: "KY", district_type: "school_unified" },
+      ]],
+    }));
+    await expect(
+      runSupersedeElection(
+        { query: unrelated.query },
+        { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false, allowCrossDistrict: true }
+      )
+    ).rejects.toThrow(/do not describe the same body/);
+
+    // race_type and stage must match with or without the flag.
+    const wrongRaceType = buildClient(happyResponses({
+      "WHERE id = ANY($1::uuid[])": [
+        [survivorRow(SURVIVOR_A, { race_type: "ballot_measure" }), survivorRow(SURVIVOR_B)],
+      ],
+    }));
+    await expect(
+      runSupersedeElection(
+        { query: wrongRaceType.query },
+        { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false }
+      )
+    ).rejects.toThrow(/different race type/);
+
+    const wrongStage = buildClient(happyResponses({
+      "WHERE id = ANY($1::uuid[])": [
+        [survivorRow(SURVIVOR_A, { election_stage: "primary" }), survivorRow(SURVIVOR_B)],
+      ],
+    }));
+    await expect(
+      runSupersedeElection(
+        { query: wrongStage.query },
+        { electionId: RETIRED, supersededByIds: [SURVIVOR_A, SURVIVOR_B], dryRun: false }
+      )
+    ).rejects.toThrow(/different stage/);
   });
 
   it("refuses missing retired or superseding elections", async () => {
