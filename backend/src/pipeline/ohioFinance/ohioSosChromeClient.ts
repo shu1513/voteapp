@@ -40,7 +40,14 @@ export class OhioSosChromeSession {
   constructor(socket: WebSocket) {
     this.socket = socket;
     this.socket.addEventListener("message", (event) => {
-      const message = JSON.parse(String((event as MessageEvent).data)) as CdpMessage;
+      let message: CdpMessage;
+      try {
+        message = JSON.parse(String((event as MessageEvent).data)) as CdpMessage;
+      } catch {
+        // A malformed frame must not throw from the listener; commands it
+        // would have answered are covered by the per-command deadline.
+        return;
+      }
       if (typeof message.id === "number") {
         const pending = this.pending.get(message.id);
         if (!pending) {
@@ -69,14 +76,35 @@ export class OhioSosChromeSession {
     });
   }
 
-  send(method: string, params: Record<string, unknown> = {}, sessionId?: string): Promise<Record<string, unknown>> {
+  // Every command gets a deadline: a Chrome that accepts a command and never
+  // answers while the socket stays open would otherwise hang the promise (and
+  // the whole attended run) forever.
+  send(
+    method: string,
+    params: Record<string, unknown> = {},
+    sessionId?: string,
+    timeoutMs = 60_000
+  ): Promise<Record<string, unknown>> {
     if (this.closed) {
       throw new Error("Chrome DevTools connection is closed");
     }
     const id = this.nextId;
     this.nextId += 1;
     return new Promise((resolve, reject) => {
-      this.pending.set(id, { resolve, reject });
+      const timeout = setTimeout(() => {
+        this.pending.delete(id);
+        reject(new Error(`Chrome DevTools command ${method} timed out after ${timeoutMs} ms`));
+      }, timeoutMs);
+      this.pending.set(id, {
+        resolve: (value) => {
+          clearTimeout(timeout);
+          resolve(value);
+        },
+        reject: (error) => {
+          clearTimeout(timeout);
+          reject(error);
+        },
+      });
       this.socket.send(JSON.stringify({ id, method, params, ...(sessionId ? { sessionId } : {}) }));
     });
   }
@@ -103,7 +131,9 @@ export async function connectOhioSosChrome(input: { debugUrl?: string; timeoutMs
   const debugUrl = (input.debugUrl ?? DEFAULT_OHIO_SOS_CHROME_DEBUG_URL).replace(/\/+$/, "");
   let webSocketDebuggerUrl: string;
   try {
-    const response = await fetch(`${debugUrl}/json/version`);
+    const response = await fetch(`${debugUrl}/json/version`, {
+      signal: AbortSignal.timeout(input.timeoutMs ?? 15_000),
+    });
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }

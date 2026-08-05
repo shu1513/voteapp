@@ -11,11 +11,13 @@ import {
   planOhioSosCycleDownloads,
   withOhioSosChromeTab,
   DEFAULT_OHIO_SOS_REQUEST_SPACING_MS,
+  type OhioSosDownloadPlanEntry,
 } from "../pipeline/ohioFinance/ohioSosArtifactAcquisition.js";
 import {
   getOhioSosCycleArtifactStatus,
   normalizeOhioSosTransactionYear,
   DEFAULT_OHIO_SOS_CACHE_DIR,
+  type OhioSosArtifactCacheStatus,
 } from "../pipeline/ohioFinance/ohioSosArtifactCache.js";
 import {
   connectOhioSosChrome,
@@ -52,6 +54,42 @@ export type RefreshOhioSosCampaignFinanceRawDataScriptOptions = {
   skipDetails: boolean;
   dryRun: boolean;
 };
+
+const VALUE_FLAG_NAMES = [
+  "--cycle-year",
+  "--year",
+  "--cache-dir",
+  "--chrome-debug-url",
+  "--spacing-ms",
+  "--download-timeout-ms",
+] as const;
+const BOOLEAN_FLAG_NAMES = ["--force", "--skip-31u-details", "--dry-run"] as const;
+
+// Every token must be a known flag or a known flag's value. A silently
+// ignored token here is dangerous: a misspelled or value-bearing --dry-run
+// would start a real paced pull against the rate-limited portal.
+function assertKnownRefreshScriptArgs(args: readonly string[]): void {
+  const valueFlagNames: readonly string[] = VALUE_FLAG_NAMES;
+  const booleanFlagNames: readonly string[] = BOOLEAN_FLAG_NAMES;
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index]!;
+    const name = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
+    if (booleanFlagNames.includes(arg)) {
+      continue;
+    }
+    if (booleanFlagNames.includes(name)) {
+      throw new Error(`${name} does not take a value`);
+    }
+    if (valueFlagNames.includes(name)) {
+      if (arg === name) {
+        // The next token is this flag's value; readValueFlags validates it.
+        index += 1;
+      }
+      continue;
+    }
+    throw new Error(`Unknown option: ${arg}`);
+  }
+}
 
 function readValueFlags(args: readonly string[], name: string): string[] {
   const values: string[] = [];
@@ -101,6 +139,12 @@ function parsePositiveInteger(value: string | undefined, fallback: number, flagN
 export function parseRefreshOhioSosCampaignFinanceRawDataScriptArgs(
   args: readonly string[]
 ): RefreshOhioSosCampaignFinanceRawDataScriptOptions {
+  assertKnownRefreshScriptArgs(args);
+  const cycleYearValues = readValueFlags(args, "--cycle-year");
+  const yearValues = readValueFlags(args, "--year");
+  if (cycleYearValues.length > 0 && yearValues.length > 0) {
+    throw new Error("Provide --cycle-year or --year, not both");
+  }
   const cycleYearRaw = readValueFlag(args, "--cycle-year") ?? readValueFlag(args, "--year");
   const cycleYear = normalizeOhioSosTransactionYear(
     parsePositiveInteger(cycleYearRaw, new Date().getUTCFullYear(), "--cycle-year")
@@ -131,6 +175,32 @@ export function parseRefreshOhioSosCampaignFinanceRawDataScriptArgs(
   };
 }
 
+// Without --force, an intact cached artifact is skipped only while the
+// portal's "date modified" still matches the one its manifest recorded at
+// download time. A changed or unknown date re-downloads — a cache that never
+// re-checks the portal would go permanently stale — while an unchanged, clean
+// 305 MB cycle is never re-pulled.
+export function selectOhioSosDownloadSkips(input: {
+  force: boolean;
+  planEntries: readonly OhioSosDownloadPlanEntry[];
+  statusByFileName: ReadonlyMap<string, OhioSosArtifactCacheStatus>;
+}): Set<string> {
+  const skip = new Set<string>();
+  if (input.force) {
+    return skip;
+  }
+  for (const entry of input.planEntries) {
+    const status = input.statusByFileName.get(entry.fileName);
+    if (status?.status !== "ready") {
+      continue;
+    }
+    if (entry.dateModified !== null && status.manifest?.portalDateModified === entry.dateModified) {
+      skip.add(entry.fileName);
+    }
+  }
+  return skip;
+}
+
 export async function runRefreshOhioSosCampaignFinanceRawDataScript(input: {
   options: RefreshOhioSosCampaignFinanceRawDataScriptOptions;
   log?: (message: string) => void;
@@ -147,11 +217,10 @@ export async function runRefreshOhioSosCampaignFinanceRawDataScript(input: {
     cacheDir: options.cacheDir,
     cycleYear: options.cycleYear,
   });
-  // Without --force, artifacts already cached and intact are left alone —
-  // re-pulling a clean 305 MB cycle costs the portal for nothing.
-  const skip = options.force
-    ? new Set<string>()
-    : new Set(cachedBefore.filter((status) => status.status === "ready").map((status) => status.fileName));
+  const statusByFileName = new Map(cachedBefore.map((status) => [status.fileName, status]));
+  const readyFileNames = new Set(
+    cachedBefore.filter((status) => status.status === "ready").map((status) => status.fileName)
+  );
 
   const session = await connectOhioSosChrome({ debugUrl: options.chromeDebugUrl });
   try {
@@ -167,6 +236,12 @@ export async function runRefreshOhioSosCampaignFinanceRawDataScript(input: {
         log(`Not listed on the portal: ${plan.missingFileNames.join(", ")}`);
       }
 
+      const skip = selectOhioSosDownloadSkips({
+        force: options.force,
+        planEntries: plan.entries,
+        statusByFileName,
+      });
+
       if (options.dryRun) {
         return {
           type: "ohio_sos_raw_data_refresh",
@@ -180,7 +255,10 @@ export async function runRefreshOhioSosCampaignFinanceRawDataScript(input: {
             file_name: entry.fileName,
             download_id: entry.downloadId,
             date_modified: entry.dateModified,
-            cached: skip.has(entry.fileName),
+            // What is in the cache, independent of --force.
+            cached: readyFileNames.has(entry.fileName),
+            // What a real run would pull, honoring --force and portal dates.
+            would_download: !skip.has(entry.fileName),
           })),
           missing_file_names: plan.missingFileNames,
         };
@@ -201,39 +279,61 @@ export async function runRefreshOhioSosCampaignFinanceRawDataScript(input: {
 
       let details = null;
       if (!options.skipDetails) {
-        const annualTotals = await collectOhioSos31uAnnualTotals({
+        // The annual totals silently tolerate a missing expenditure file
+        // (ENOENT is skipped), so an incomplete cycle would produce a
+        // partial report-key set that looks successful and would replace a
+        // complete detail bundle. Details run only on a fully ready cycle.
+        const cachedAfter = await getOhioSosCycleArtifactStatus({
           cacheDir: options.cacheDir,
           cycleYear: options.cycleYear,
-          now: startedAt,
         });
-        log(`Found ${annualTotals.size} Form 31-U report keys in the cached expenditure files`);
-        const fetched = await fetchOhioSos31uDetails({
-          session,
-          tab,
-          cacheDir: options.cacheDir,
-          cycleYear: options.cycleYear,
-          annualTotals,
-          spacingMs: options.spacingMs,
-          log,
-          retrievedAt: startedAt,
-        });
-        details = {
-          detail_path: fetched.detailPath,
-          report_count: fetched.reports.length,
-          row_count: fetched.reports.reduce((sum, report) => sum + report.rows.length, 0),
-          unreconciled_report_keys: fetched.reports
-            .filter((report) => !report.reconciliation.matches)
-            .map((report) => report.reportKey),
-          excluded_direction_row_count: fetched.reports.reduce(
-            (sum, report) => sum + report.reconciliation.excludedDirectionRowCount,
-            0
-          ),
-          excluded_direction_cents: fetched.reports.reduce(
-            (sum, report) => sum + report.reconciliation.excludedDirectionCents,
-            0
-          ),
-          failures: fetched.failures,
-        };
+        const notReadyFileNames = cachedAfter
+          .filter((status) => status.status !== "ready")
+          .map((status) => status.fileName);
+        if (notReadyFileNames.length > 0) {
+          log(
+            `Skipping Form 31-U details: cycle artifacts not ready (${notReadyFileNames.join(", ")})`
+          );
+          details = {
+            skipped: true,
+            reason: "cycle_artifacts_not_ready",
+            not_ready_file_names: notReadyFileNames,
+          };
+        } else {
+          const annualTotals = await collectOhioSos31uAnnualTotals({
+            cacheDir: options.cacheDir,
+            cycleYear: options.cycleYear,
+            now: startedAt,
+          });
+          log(`Found ${annualTotals.size} Form 31-U report keys in the cached expenditure files`);
+          const fetched = await fetchOhioSos31uDetails({
+            session,
+            tab,
+            cacheDir: options.cacheDir,
+            cycleYear: options.cycleYear,
+            annualTotals,
+            spacingMs: options.spacingMs,
+            log,
+            retrievedAt: startedAt,
+          });
+          details = {
+            detail_path: fetched.detailPath,
+            report_count: fetched.reports.length,
+            row_count: fetched.reports.reduce((sum, report) => sum + report.rows.length, 0),
+            unreconciled_report_keys: fetched.reports
+              .filter((report) => !report.reconciliation.matches)
+              .map((report) => report.reportKey),
+            excluded_direction_row_count: fetched.reports.reduce(
+              (sum, report) => sum + report.reconciliation.excludedDirectionRowCount,
+              0
+            ),
+            excluded_direction_cents: fetched.reports.reduce(
+              (sum, report) => sum + report.reconciliation.excludedDirectionCents,
+              0
+            ),
+            failures: fetched.failures,
+          };
+        }
       }
 
       return {

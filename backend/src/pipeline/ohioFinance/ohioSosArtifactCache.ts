@@ -340,7 +340,18 @@ export async function storeOhioSosArtifact(input: {
     malformedRowCount: stats.malformedRowCount,
     reportKeys31u: stats.reportKeys31u,
   };
-  await writeFile(paths.manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  // Written via rename so a crash can never leave a torn manifest. The data
+  // rename above and this rename are still two steps; a crash between them
+  // leaves the new bytes with the old manifest, which the size check reports
+  // as stale and the next refresh re-downloads.
+  const tmpManifestPath = `${paths.manifestPath}.tmp-${process.pid}-${retrievedAt.getTime()}`;
+  await writeFile(tmpManifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  try {
+    await rename(tmpManifestPath, paths.manifestPath);
+  } catch (error) {
+    await rm(tmpManifestPath, { force: true }).catch(() => {});
+    throw error;
+  }
   return manifest;
 }
 

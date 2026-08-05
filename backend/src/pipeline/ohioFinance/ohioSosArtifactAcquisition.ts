@@ -1,4 +1,4 @@
-import { mkdtemp, readdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -203,30 +203,64 @@ type DownloadWatcher = {
   dispose: () => void;
 };
 
-function watchOhioSosDownload(session: OhioSosChromeSession, stagingDir: string): DownloadWatcher {
+// Exported for tests only.
+export function watchOhioSosDownload(
+  session: OhioSosChromeSession,
+  stagingDir: string,
+  tab: OhioSosChromeTab
+): DownloadWatcher {
   let guid: string | null = null;
   let settle: ((result: { filePath: string }) => void) | null = null;
   let fail: ((error: Error) => void) | null = null;
+  // A small file can finish while the Page.navigate acknowledgement is still
+  // in flight, before wait() has armed its callbacks — the terminal event is
+  // stored here and replayed by wait().
+  let pendingResult: { filePath: string } | null = null;
+  let pendingError: Error | null = null;
 
   const off = session.on((event) => {
     if (event.method === "Browser.downloadWillBegin") {
-      guid = String(event.params.guid);
+      // Only the navigation this watcher started may claim the download. The
+      // attached Chrome is the user's own profile, so any download they start
+      // mid-run would otherwise hijack the watcher (and be deleted after
+      // install). The main frame id of a page target equals its target id.
+      if (guid === null && String(event.params.frameId) === tab.targetId) {
+        guid = String(event.params.guid);
+      }
       return;
     }
-    if (event.method !== "Browser.downloadProgress" || String(event.params.guid) !== guid) {
+    if (event.method !== "Browser.downloadProgress" || guid === null || String(event.params.guid) !== guid) {
       return;
     }
     const state = String(event.params.state);
-    if (state === "completed" && settle) {
-      settle({ filePath: join(stagingDir, guid!) });
-    } else if (state === "canceled" && fail) {
-      fail(new Error("Chrome canceled the download"));
+    if (state === "completed") {
+      const result = { filePath: join(stagingDir, guid) };
+      if (settle) {
+        settle(result);
+      } else {
+        pendingResult = result;
+      }
+    } else if (state === "canceled") {
+      const error = new Error("Chrome canceled the download");
+      if (fail) {
+        fail(error);
+      } else {
+        pendingError = error;
+      }
     }
   });
 
   return {
     wait: ({ timeoutMs }) =>
       new Promise<{ filePath: string }>((resolve, reject) => {
+        if (pendingResult) {
+          resolve(pendingResult);
+          return;
+        }
+        if (pendingError) {
+          reject(pendingError);
+          return;
+        }
         const timeout = setTimeout(() => reject(new Error("Timed out waiting for the download to finish")), timeoutMs);
         settle = (result) => {
           clearTimeout(timeout);
@@ -297,7 +331,7 @@ export async function downloadOhioSosCycleArtifacts(input: {
       }
       downloadIndex += 1;
 
-      const watcher = watchOhioSosDownload(input.session, stagingDir);
+      const watcher = watchOhioSosDownload(input.session, stagingDir, input.tab);
       try {
         await input.session.send(
           "Page.navigate",
@@ -474,6 +508,19 @@ export async function fetchOhioSos31uDetails(input: {
   }
 
   const detailPath = ohioSos31uDetailCachePath(input);
+  // A run with failures must not destroy an intact bundle from an earlier
+  // run — recovering one means another full paced scrape. With no prior
+  // bundle the partial result is still written: the failures ride along in
+  // the payload and the scraped rows are better than nothing.
+  if (failures.length > 0) {
+    const existing = await stat(detailPath).catch(() => null);
+    if (existing?.isFile()) {
+      input.log?.(
+        `31-U: ${failures.length} report(s) failed; keeping the existing ${detailPath} untouched`
+      );
+      return { cycleYear: input.cycleYear, detailPath, reports, failures };
+    }
+  }
   const payload = {
     version: 1 as const,
     cycleYear: input.cycleYear,
@@ -488,7 +535,17 @@ export async function fetchOhioSos31uDetails(input: {
     })),
     failures,
   };
-  await writeFile(detailPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+  // A details-only run never goes through storeOhioSosArtifact, so the cache
+  // directory may not exist yet.
+  await mkdir(input.cacheDir, { recursive: true });
+  const tmpDetailPath = `${detailPath}.tmp-${process.pid}`;
+  await writeFile(tmpDetailPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+  try {
+    await rename(tmpDetailPath, detailPath);
+  } catch (error) {
+    await rm(tmpDetailPath, { force: true }).catch(() => {});
+    throw error;
+  }
 
   return { cycleYear: input.cycleYear, detailPath, reports, failures };
 }
