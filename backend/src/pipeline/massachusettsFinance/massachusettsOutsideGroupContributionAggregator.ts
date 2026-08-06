@@ -20,11 +20,14 @@ export type MassachusettsOutsideGroupContributionAggregationInput = {
   outsideGroups: readonly MassachusettsOutsideSpendingGroup[];
   reportDetails: readonly MassachusettsOcpfReportDetail[];
   sourceUrl?: string | null;
-  maxBreakdownsPerCategory?: number;
   minIndustryAmount?: number;
 };
 
 export type MassachusettsOutsideGroupContributionAggregationResult = {
+  // ALL donor rows, uncapped (sorted by amount within each group). The sync
+  // layer classifies every donor and only caps the PERSISTED donor display
+  // rows — capping here would silently drop tail donors from the rebuilt
+  // industry totals of a >cap-donor group.
   outsideGroupBreakdowns: MassachusettsFinanceOutsideGroupBreakdown[];
   matchedReceiptRowCount: number;
   includedReceiptRowCount: number;
@@ -49,7 +52,6 @@ type IndustryAggregate = {
   sourceUrl: string | null;
 };
 
-const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 50;
 const DEFAULT_MIN_INDUSTRY_AMOUNT_CENTS = 25_000 * 100;
 
 function normalizeElectionYear(value: number): number {
@@ -57,14 +59,6 @@ function normalizeElectionYear(value: number): number {
     throw new Error(`Invalid Massachusetts outside group contribution election year: ${value}`);
   }
   return value;
-}
-
-function normalizePositiveInteger(value: number | undefined, fallback: number, fieldName: string): number {
-  const normalized = value ?? fallback;
-  if (!Number.isInteger(normalized) || normalized <= 0) {
-    throw new Error(`Invalid Massachusetts outside group contribution ${fieldName}: ${value}`);
-  }
-  return normalized;
 }
 
 function normalizeMinAmount(value: number | undefined): number {
@@ -191,7 +185,6 @@ function breakdownBucketKey(input: { iepacCpfId: string; supportOppose: Massachu
 function toBreakdowns(input: {
   donors: Iterable<DonorAggregate>;
   industries: Iterable<IndustryAggregate>;
-  maxBreakdownsPerCategory: number;
 }): MassachusettsFinanceOutsideGroupBreakdown[] {
   const result: MassachusettsFinanceOutsideGroupBreakdown[] = [];
   const donorsByBucket = new Map<string, DonorAggregate[]>();
@@ -216,9 +209,9 @@ function toBreakdowns(input: {
   for (const bucket of [...donorsByBucket.values()].sort((left, right) =>
     bucketSortKey(left).localeCompare(bucketSortKey(right))
   )) {
-    for (const donor of bucket
-      .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))
-      .slice(0, input.maxBreakdownsPerCategory)) {
+    for (const donor of bucket.sort(
+      (left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName)
+    )) {
       result.push({
         iepacCpfId: donor.iepacCpfId,
         supportOppose: donor.supportOppose,
@@ -234,9 +227,9 @@ function toBreakdowns(input: {
   for (const bucket of [...industriesByBucket.values()].sort((left, right) =>
     bucketSortKey(left).localeCompare(bucketSortKey(right))
   )) {
-    for (const industry of bucket
-      .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
-      .slice(0, input.maxBreakdownsPerCategory)) {
+    for (const industry of bucket.sort(
+      (left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug)
+    )) {
       result.push({
         iepacCpfId: industry.iepacCpfId,
         supportOppose: industry.supportOppose,
@@ -256,11 +249,6 @@ export function aggregateMassachusettsOutsideGroupContributions(
   input: MassachusettsOutsideGroupContributionAggregationInput
 ): MassachusettsOutsideGroupContributionAggregationResult {
   const electionYear = normalizeElectionYear(input.electionYear);
-  const maxBreakdownsPerCategory = normalizePositiveInteger(
-    input.maxBreakdownsPerCategory,
-    DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
-    "maxBreakdownsPerCategory"
-  );
   const minIndustryAmountCents = normalizeMinAmount(input.minIndustryAmount);
   const sourceUrl = input.sourceUrl ?? null;
 
@@ -373,7 +361,6 @@ export function aggregateMassachusettsOutsideGroupContributions(
     outsideGroupBreakdowns: toBreakdowns({
       donors: donors.values(),
       industries: industries.values(),
-      maxBreakdownsPerCategory,
     }),
     matchedReceiptRowCount,
     includedReceiptRowCount,

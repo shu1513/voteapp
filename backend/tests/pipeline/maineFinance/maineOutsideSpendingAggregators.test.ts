@@ -283,6 +283,31 @@ describe("maineOutsideGroupContributionAggregator", () => {
     });
   });
 
+  it("returns every donor uncapped, sorted by amount within the group", () => {
+    // The display cap lives in the SYNC layer, after classification —
+    // capping here would drop tail donors from rebuilt industry totals.
+    const result = aggregateMaineOutsideGroupContributions({
+      electionYear: 2024,
+      outsideGroups: [outsideGroup()],
+      minIndustryAmount: 0,
+      contributionRows: Array.from({ length: 4 }, (_, index) =>
+        contribution({
+          "Receipt ID": `R-${index}`,
+          "Receipt Amount": `${(index + 1) * 1000}.0000`,
+          "Last Name": `DONOR ${index} LLC`,
+        })
+      ),
+    });
+
+    const donors = result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "donor");
+    expect(donors.map((donor) => donor.categoryName)).toEqual([
+      "DONOR 3 LLC",
+      "DONOR 2 LLC",
+      "DONOR 1 LLC",
+      "DONOR 0 LLC",
+    ]);
+  });
+
   it("applies one PAC's donors to each support/opposition target and skips non-organization receipts", () => {
     const result = aggregateMaineOutsideGroupContributions({
       electionYear: 2024,
@@ -343,14 +368,6 @@ describe("maineOutsideGroupContributionAggregator", () => {
         contributionRows: [],
       })
     ).toThrow("Invalid Maine outside group contribution election year");
-    expect(() =>
-      aggregateMaineOutsideGroupContributions({
-        electionYear: 2024,
-        outsideGroups: [],
-        contributionRows: [],
-        maxBreakdownsPerCategory: 0,
-      })
-    ).toThrow("Invalid Maine outside group contribution maxBreakdownsPerCategory");
     expect(() =>
       aggregateMaineOutsideGroupContributions({
         electionYear: 2024,

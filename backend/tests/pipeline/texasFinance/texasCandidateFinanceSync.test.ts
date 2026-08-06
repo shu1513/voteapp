@@ -320,6 +320,67 @@ describe("texasCandidateFinanceSync", () => {
     ]);
   });
 
+  it("classifies every outside donor but caps the persisted donor rows per group", async () => {
+    const db = createMockDb();
+
+    // Cap of 1: the smaller Continental donor must be dropped from the WRITTEN
+    // donor rows, yet still feed the classifications and the rebuilt
+    // oil_gas_energy industry total.
+    const result = await syncTexasCandidateFinance({
+      db,
+      ...baseInput(),
+      outsideMaxBreakdownsPerCategory: 1,
+      filerRows: [filer()],
+      contributionRows: [
+        contribution({ contributionAmount: "100.00", contributorOccupation: "Attorney" }),
+        contribution({
+          filerIdent: "7001",
+          filerTypeCd: "SPAC",
+          filerName: "Texans for Example",
+          contributionInfoId: "OUT1",
+          contributionAmount: "50000.00",
+          contributorPersentTypeCd: "ENTITY",
+          contributorNameOrganization: "Energy Transfer LLC",
+          contributorNameLast: "",
+          contributorNameFirst: "",
+          contributorOccupation: "",
+        }),
+        contribution({
+          filerIdent: "7001",
+          filerTypeCd: "SPAC",
+          filerName: "Texans for Example",
+          contributionInfoId: "OUT2",
+          contributionAmount: "25000.00",
+          contributorPersentTypeCd: "ENTITY",
+          contributorNameOrganization: "Continental Resources Inc",
+          contributorNameLast: "",
+          contributorNameFirst: "",
+          contributorOccupation: "",
+        }),
+      ],
+      candidateRows: [candidate({ expendAmount: "1200.00" })],
+      expenditureRows: [expenditure({ expendAmount: "1200.00" })],
+      spacRows: [spac()],
+    });
+
+    // 1 capped donor row + 1 industry row built from BOTH donors.
+    expect(result.outsideGroupBreakdownsWritten).toBe(2);
+    const breakdownInsertParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("tx_candidate_finance_outside_group_breakdowns"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(breakdownInsertParams).toContain("Energy Transfer LLC");
+    expect(breakdownInsertParams).not.toContain("Continental Resources Inc");
+    // The rebuilt industry total covers the dropped donor too.
+    expect(breakdownInsertParams).toContain("oil_gas_energy");
+    expect(breakdownInsertParams).toContain(75000);
+    // Both donors persisted classification rows.
+    const classificationParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain("Energy Transfer LLC");
+    expect(classificationParams).toContain("Continental Resources Inc");
+  });
+
   it("aggregates but does not write in dry-run mode", async () => {
     const db = createMockDb();
 

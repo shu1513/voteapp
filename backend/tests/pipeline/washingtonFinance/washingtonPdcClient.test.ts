@@ -350,6 +350,30 @@ describe("washingtonPdcClient", () => {
     ]);
   });
 
+  it("returns every organization funder when no limit is given", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([
+          { contributor_name: "Alpha Fund", amount: "300" },
+          { contributor_name: "Beta Fund", amount: "200" },
+          { contributor_name: "Gamma Fund", amount: "100" },
+        ])
+      )
+      .mockResolvedValueOnce(jsonResponse([])) as unknown as typeof fetch;
+
+    await expect(
+      getWashingtonPdcSponsorOrganizationFunders(
+        { filerId: "FUSEV  101", committeeId: "6708", electionYear: 2024 },
+        { fetchImpl, timeoutMs: 1000, pageLimit: 3 }
+      )
+    ).resolves.toEqual([
+      { categoryName: "Alpha Fund", amount: 300, count: 1 },
+      { categoryName: "Beta Fund", amount: 200, count: 1 },
+      { categoryName: "Gamma Fund", amount: 100, count: 1 },
+    ]);
+  });
+
   it("requires a filer ID or committee ID for committee contribution queries", () => {
     expect(() => buildWashingtonPdcDirectOccupationAggregatesUrl({ electionYear: 2024 })).toThrow(
       "filerId or committeeId is required"

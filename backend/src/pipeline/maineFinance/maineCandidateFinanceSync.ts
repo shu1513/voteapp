@@ -55,6 +55,8 @@ export type MaineCandidateFinanceSyncInput = {
   dryRun?: boolean;
   directMaxBreakdownsPerCategory?: number;
   outsideMaxGroups?: number;
+  // Display cap on persisted donor rows per (committee, direction);
+  // classification always sees every donor.
   outsideMaxBreakdownsPerCategory?: number;
   outsideMinIndustryAmount?: number;
   financeIndustryClassifier?: FinanceIndustryClassifier;
@@ -94,6 +96,11 @@ export type MaineCandidateFinanceSyncResult = {
 
 const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
 const STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT = 0;
+// Display cap on PERSISTED donor rows per (committee, direction), applied
+// AFTER classification so a >cap-donor group still gets industry totals
+// built from every donor. Industry rows are naturally bounded by the slug
+// set and are never capped.
+const DEFAULT_MAX_DONOR_BREAKDOWNS_PER_GROUP = 50;
 
 function requireNonEmpty(value: string, fieldName: string): string {
   const trimmed = value.trim();
@@ -124,6 +131,39 @@ function normalizeAiClassificationMinAmount(value: number | undefined): number {
     throw new Error(`Invalid Maine finance AI classification minimum amount: ${value}`);
   }
   return normalized;
+}
+
+function normalizeMaxDonorBreakdowns(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_MAX_DONOR_BREAKDOWNS_PER_GROUP;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Maine finance outsideMaxBreakdownsPerCategory: ${value}`);
+  }
+  return normalized;
+}
+
+function capDonorBreakdowns(
+  breakdowns: readonly MaineFinanceOutsideGroupBreakdownInput[],
+  maxDonorsPerGroup: number
+): MaineFinanceOutsideGroupBreakdownInput[] {
+  const donorsByGroup = new Map<string, MaineFinanceOutsideGroupBreakdownInput[]>();
+  for (const breakdown of breakdowns) {
+    if (breakdown.categoryType !== "donor") {
+      continue;
+    }
+    const key = [breakdown.committeeId.trim().toUpperCase(), breakdown.supportOppose].join("\u0000");
+    const list = donorsByGroup.get(key) ?? [];
+    list.push(breakdown);
+    donorsByGroup.set(key, list);
+  }
+  const kept = new Set<MaineFinanceOutsideGroupBreakdownInput>();
+  for (const list of donorsByGroup.values()) {
+    for (const donor of list
+      .sort((left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName))
+      .slice(0, maxDonorsPerGroup)) {
+      kept.add(donor);
+    }
+  }
+  return breakdowns.filter((breakdown) => breakdown.categoryType !== "donor" || kept.has(breakdown));
 }
 
 function toFinanceLink(input: {
@@ -264,6 +304,7 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   classifier: FinanceIndustryClassifier | undefined;
   aiClassificationMinAmount: number;
   minIndustryAmount: number;
+  maxDonorBreakdownsPerGroup: number;
   dryRun: boolean;
 }): Promise<{
   outsideGroupBreakdowns: MaineFinanceOutsideGroupBreakdownInput[] | undefined;
@@ -295,7 +336,9 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   return {
-    outsideGroupBreakdowns: [...breakdowns.values()],
+    // Capped only HERE, after every donor fed the classifications and the
+    // rebuilt industry rows above.
+    outsideGroupBreakdowns: capDonorBreakdowns([...breakdowns.values()], input.maxDonorBreakdownsPerGroup),
     classifications: [...classifications.values()],
   };
 }
@@ -425,7 +468,6 @@ export async function syncMaineCandidateFinance(
           outsideGroups,
           contributionRows: input.contributionRows,
           sourceUrl: input.contributionSourceUrl ?? null,
-          maxBreakdownsPerCategory: input.outsideMaxBreakdownsPerCategory,
           minIndustryAmount: input.outsideMinIndustryAmount ?? STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT,
         })
       : {
@@ -440,6 +482,7 @@ export async function syncMaineCandidateFinance(
     classifier: input.financeIndustryClassifier,
     aiClassificationMinAmount,
     minIndustryAmount: input.outsideMinIndustryAmount ?? STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT,
+    maxDonorBreakdownsPerGroup: normalizeMaxDonorBreakdowns(input.outsideMaxBreakdownsPerCategory),
     dryRun: input.dryRun === true,
   });
   const link = toFinanceLink({

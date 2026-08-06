@@ -38,11 +38,14 @@ export type FloridaOutsideGroupContributionAggregationInput = {
   outsideGroups: readonly FloridaOutsideFinanceGroup[];
   contributionRows: readonly FloridaContributionRow[];
   sourceUrl?: string | null;
-  maxBreakdownsPerCategory?: number;
   minIndustryAmount?: number;
 };
 
 export type FloridaOutsideGroupContributionAggregationResult = {
+  // ALL donor rows, uncapped (sorted by amount within each group). The sync
+  // layer classifies every donor and only caps the PERSISTED donor display
+  // rows — capping here would silently drop tail donors from the rebuilt
+  // industry totals of a >cap-donor group.
   outsideGroupBreakdowns: FloridaFinanceOutsideGroupBreakdown[];
   matchedContributionRowCount: number;
   includedContributionRowCount: number;
@@ -65,7 +68,6 @@ type IndustryAggregate = {
   donorKeys: Set<string>;
 };
 
-const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 50;
 const DEFAULT_MIN_INDUSTRY_AMOUNT_CENTS = 25_000 * 100;
 
 function requireNonEmpty(value: string, fieldName: string): string {
@@ -81,14 +83,6 @@ function normalizeElectionYear(value: number): number {
     throw new Error(`Invalid Florida outside group contribution election year: ${value}`);
   }
   return value;
-}
-
-function normalizePositiveInteger(value: number | undefined, fallback: number, fieldName: string): number {
-  const normalized = value ?? fallback;
-  if (!Number.isInteger(normalized) || normalized <= 0) {
-    throw new Error(`Invalid Florida outside group contribution ${fieldName}: ${value}`);
-  }
-  return normalized;
 }
 
 function normalizeMinAmount(value: number | undefined): number {
@@ -162,14 +156,12 @@ function toBreakdowns(input: {
   donors: Iterable<DonorAggregate>;
   industries: Iterable<IndustryAggregate>;
   sourceUrl: string | null;
-  maxBreakdownsPerCategory: number;
 }): FloridaFinanceOutsideGroupBreakdown[] {
   const result: FloridaFinanceOutsideGroupBreakdown[] = [];
 
   for (const donors of groupBreakdownAggregates(input.donors)) {
     for (const donor of donors
-      .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))
-      .slice(0, input.maxBreakdownsPerCategory)) {
+      .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))) {
       result.push({
         committeeId: donor.committeeId,
         supportOppose: donor.supportOppose,
@@ -184,8 +176,7 @@ function toBreakdowns(input: {
 
   for (const industries of groupBreakdownAggregates(input.industries)) {
     for (const industry of industries
-      .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
-      .slice(0, input.maxBreakdownsPerCategory)) {
+      .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))) {
       result.push({
         committeeId: industry.committeeId,
         supportOppose: industry.supportOppose,
@@ -205,11 +196,6 @@ export function aggregateFloridaOutsideGroupContributions(
   input: FloridaOutsideGroupContributionAggregationInput
 ): FloridaOutsideGroupContributionAggregationResult {
   const electionYear = normalizeElectionYear(input.electionYear);
-  const maxBreakdownsPerCategory = normalizePositiveInteger(
-    input.maxBreakdownsPerCategory,
-    DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
-    "maxBreakdownsPerCategory"
-  );
   const minIndustryAmountCents = normalizeMinAmount(input.minIndustryAmount);
   const outsideGroups = new Map<string, FloridaOutsideFinanceGroup>();
   for (const group of input.outsideGroups) {
@@ -321,7 +307,6 @@ export function aggregateFloridaOutsideGroupContributions(
       donors: donors.values(),
       industries: industries.values(),
       sourceUrl: input.sourceUrl ?? null,
-      maxBreakdownsPerCategory,
     }),
     matchedContributionRowCount,
     includedContributionRowCount,

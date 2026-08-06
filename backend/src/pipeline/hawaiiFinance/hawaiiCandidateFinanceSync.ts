@@ -87,6 +87,8 @@ export type HawaiiCandidateFinanceSyncInput = {
   dryRun?: boolean;
   directMaxBreakdownsPerCategory?: number;
   outsideMaxGroups?: number;
+  // Display cap on persisted donor rows per (committee, direction);
+  // classification always sees every funder.
   outsideMaxFundersPerGroup?: number;
   financeIndustryClassifier?: FinanceIndustryClassifier;
   aiClassificationMinAmount?: number;
@@ -128,6 +130,9 @@ export type HawaiiCandidateFinanceSyncResult = {
 const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
 const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 20;
 const DEFAULT_OUTSIDE_MAX_GROUPS = 20;
+// Display cap on PERSISTED donor rows per (committee, direction), applied
+// AFTER classification so a >cap-funder group still gets industry totals built
+// from every funder. Industry rows are bounded by the slug set and never capped.
 const DEFAULT_OUTSIDE_MAX_FUNDERS_PER_GROUP = 20;
 const CANDIDATE_CONTRIBUTION_SOURCE_URL = `${HAWAII_CSC_DATA_BASE_URL}/${HAWAII_CSC_CANDIDATE_CONTRIBUTIONS_DATASET}.json`;
 const NONCANDIDATE_CONTRIBUTION_SOURCE_URL = `${HAWAII_CSC_DATA_BASE_URL}/${HAWAII_CSC_NONCANDIDATE_CONTRIBUTIONS_DATASET}.json`;
@@ -164,6 +169,41 @@ function normalizeAiClassificationMinAmount(value: number | undefined): number {
     throw new Error(`Invalid Hawaii finance AI classification minimum amount: ${value}`);
   }
   return normalized;
+}
+
+function normalizeMaxFundersPerGroup(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_OUTSIDE_MAX_FUNDERS_PER_GROUP;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Hawaii finance outsideMaxFundersPerGroup: ${value}`);
+  }
+  return normalized;
+}
+
+function capDonorBreakdowns(
+  breakdowns: readonly HawaiiFinanceOutsideGroupBreakdownInput[],
+  maxDonorsPerGroup: number
+): HawaiiFinanceOutsideGroupBreakdownInput[] {
+  const donorsByGroup = new Map<string, HawaiiFinanceOutsideGroupBreakdownInput[]>();
+  for (const breakdown of breakdowns) {
+    if (breakdown.categoryType !== "donor") {
+      continue;
+    }
+    const key = [breakdown.committeeId.trim().toUpperCase(), breakdown.supportOppose].join(" | ");
+    const list = donorsByGroup.get(key) ?? [];
+    list.push(breakdown);
+    donorsByGroup.set(key, list);
+  }
+  const kept = new Set<HawaiiFinanceOutsideGroupBreakdownInput>();
+  for (const list of donorsByGroup.values()) {
+    for (const donor of list
+      .sort(
+        (left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName)
+      )
+      .slice(0, maxDonorsPerGroup)) {
+      kept.add(donor);
+    }
+  }
+  return breakdowns.filter((breakdown) => breakdown.categoryType !== "donor" || kept.has(breakdown));
 }
 
 function normalizeTimestamp(value: Date | undefined): Date {
@@ -364,6 +404,7 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   outsideGroupBreakdowns: readonly HawaiiFinanceOutsideGroupBreakdownInput[] | undefined;
   classifier: FinanceIndustryClassifier | undefined;
   aiClassificationMinAmount: number;
+  maxDonorBreakdownsPerGroup: number;
   dryRun: boolean;
 }): Promise<{
   outsideGroupBreakdowns: HawaiiFinanceOutsideGroupBreakdownInput[] | undefined;
@@ -410,7 +451,9 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   return {
-    outsideGroupBreakdowns: [...breakdowns.values()],
+    // Capped only HERE, after every funder fed the classifications and the
+    // rebuilt industry rows above.
+    outsideGroupBreakdowns: capDonorBreakdowns([...breakdowns.values()], input.maxDonorBreakdownsPerGroup),
     classifications: [...classifications.values()],
   };
 }
@@ -419,7 +462,6 @@ async function buildOutsideGroupBreakdowns(input: {
   cscClient: HawaiiCscDataClient;
   cscClientOptions?: HawaiiCscClientOptions;
   outsideGroups: readonly HawaiiCscIndependentSpendingGroup[];
-  maxFundersPerGroup: number;
 }): Promise<{
   breakdowns: HawaiiFinanceOutsideGroupBreakdownInput[];
   outsideFunderRowCount: number;
@@ -432,11 +474,11 @@ async function buildOutsideGroupBreakdowns(input: {
   for (const group of input.outsideGroups) {
     let funders: HawaiiCscAggregate[];
     try {
+      // No limit: every funder must reach the industry rebuild downstream.
       funders = await input.cscClient.getNoncandidateCommitteeFunders(
         {
           committeeId: group.committeeId,
           electionPeriod: group.electionPeriod,
-          limit: input.maxFundersPerGroup,
         },
         input.cscClientOptions
       );
@@ -592,13 +634,13 @@ export async function syncHawaiiCandidateFinance(
     cscClient,
     cscClientOptions: input.cscClientOptions,
     outsideGroups,
-    maxFundersPerGroup: input.outsideMaxFundersPerGroup ?? DEFAULT_OUTSIDE_MAX_FUNDERS_PER_GROUP,
   });
   const outsideIndustryFinance = await enrichOutsideGroupIndustryBreakdowns({
     db: input.db,
     outsideGroupBreakdowns: outsideGroupBreakdowns.breakdowns,
     classifier: input.financeIndustryClassifier,
     aiClassificationMinAmount,
+    maxDonorBreakdownsPerGroup: normalizeMaxFundersPerGroup(input.outsideMaxFundersPerGroup),
     dryRun,
   });
   const summary = toSummary({ resolution, outsideGroups, fallbackSourceUrl: input.sourceUrl });

@@ -611,7 +611,9 @@ export function buildHawaiiCscNoncandidateCommitteeFundersUrl(input: HawaiiCscCa
   });
 }
 
-function aggregateNoncandidateCommitteeFunders(rows: unknown[], limit: number): HawaiiCscAggregate[] {
+// An undefined limit returns every aggregated funder: callers that rebuild
+// industry totals from these rows must not lose the tail.
+function aggregateNoncandidateCommitteeFunders(rows: unknown[], limit: number | undefined): HawaiiCscAggregate[] {
   const funders = new Map<string, HawaiiCscAggregate>();
   for (const row of rows) {
     if (!isRecord(row) || !isOrganizationContributorType(getString(row, "contributor_type"))) {
@@ -631,10 +633,10 @@ function aggregateNoncandidateCommitteeFunders(rows: unknown[], limit: number): 
     }
     funders.set(key, { categoryName: donorName, amount, count: 1 });
   }
-  return [...funders.values()]
+  const aggregates = [...funders.values()]
     .map((funder) => ({ ...funder, amount: roundCurrency(funder.amount) }))
-    .sort((left, right) => right.amount - left.amount)
-    .slice(0, limit);
+    .sort((left, right) => right.amount - left.amount);
+  return limit === undefined ? aggregates : aggregates.slice(0, limit);
 }
 
 export async function getHawaiiCscNoncandidateCommitteeFunders(
@@ -647,5 +649,8 @@ export async function getHawaiiCscNoncandidateCommitteeFunders(
     Object.fromEntries(url.searchParams.entries()),
     options
   );
-  return aggregateNoncandidateCommitteeFunders(rows, normalizeLimit(input.limit, 20));
+  return aggregateNoncandidateCommitteeFunders(
+    rows,
+    input.limit === undefined ? undefined : normalizeLimit(input.limit, 20)
+  );
 }

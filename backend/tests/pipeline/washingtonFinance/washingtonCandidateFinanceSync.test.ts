@@ -408,6 +408,49 @@ describe("washingtonCandidateFinanceSync", () => {
     );
   });
 
+  it("classifies every funder but caps the persisted donor rows per group", async () => {
+    const db = createMockDb();
+    const pdcClient = createPdcClient({
+      sponsorFunders: [
+        { categoryName: "IBEW Local 46", amount: 50_000, count: 1, sourceUrl: CONTRIBUTION_SOURCE_URL },
+        { categoryName: "IBEW Local 77", amount: 25_000, count: 1, sourceUrl: CONTRIBUTION_SOURCE_URL },
+      ],
+    });
+
+    const result = await syncWashingtonCandidateFinance({
+      db,
+      ...baseInput(),
+      pdcClient,
+      // Cap of 1: the smaller IBEW funder must be dropped from the WRITTEN
+      // donor rows, yet still feed the classifications and the rebuilt
+      // labor_unions industry total.
+      outsideMaxFundersPerGroup: 1,
+    });
+
+    // 1 capped donor row + 1 industry row built from BOTH funders.
+    expect(result.outsideGroupBreakdownsWritten).toBe(2);
+    expect(result.outsideFunderRowCount).toBe(2);
+    // No limit: funders are fetched uncapped so every one feeds classification.
+    expect(pdcClient.getSponsorOrganizationFunders).toHaveBeenCalledWith(
+      { filerId: "FUSEV  147", committeeId: "7777", electionYear: 2024 },
+      undefined
+    );
+    const breakdownInsertParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("wa_candidate_finance_outside_group_breakdowns"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(breakdownInsertParams).toContain("IBEW Local 46");
+    expect(breakdownInsertParams).not.toContain("IBEW Local 77");
+    // The rebuilt industry total covers the dropped funder too.
+    expect(breakdownInsertParams).toContain("labor_unions");
+    expect(breakdownInsertParams).toContain(75_000);
+    // Both funders persisted classification rows.
+    const classificationParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain("IBEW Local 46");
+    expect(classificationParams).toContain("IBEW Local 77");
+  });
+
   it("skips outside funder backtrace when sponsor resolution is ambiguous", async () => {
     const db = createMockDb();
     const pdcClient = createPdcClient({

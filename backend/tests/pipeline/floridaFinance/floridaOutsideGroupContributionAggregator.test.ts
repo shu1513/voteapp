@@ -143,10 +143,11 @@ describe("floridaOutsideGroupContributionAggregator", () => {
     );
   });
 
-  it("applies breakdown caps per outside group and support side", () => {
+  it("returns every donor uncapped, sorted by amount within each outside group and support side", () => {
+    // The display cap lives in the SYNC layer, after classification —
+    // capping here would drop tail donors from rebuilt industry totals.
     const result = aggregateFloridaOutsideGroupContributions({
       electionYear: 2026,
-      maxBreakdownsPerCategory: 1,
       outsideGroups: [
         outsideGroup({
           committeeId: "FLORIDIANS_FOR_JANE_DOE",
@@ -191,10 +192,22 @@ describe("floridaOutsideGroupContributionAggregator", () => {
         amount: 60000,
       }),
       expect.objectContaining({
+        committeeId: "FLORIDIANS_FOR_JANE_DOE",
+        supportOppose: "support",
+        categoryName: "IBEW Voluntary PAC",
+        amount: 50000,
+      }),
+      expect.objectContaining({
         committeeId: "SUNSHINE_ACCOUNTABILITY_PAC",
         supportOppose: "oppose",
         categoryName: "Sunshine Realty LLC",
         amount: 40000,
+      }),
+      expect.objectContaining({
+        committeeId: "SUNSHINE_ACCOUNTABILITY_PAC",
+        supportOppose: "oppose",
+        categoryName: "Midland Energy LLC",
+        amount: 30000,
       }),
     ]);
     expect(result.outsideGroupBreakdowns.filter((row) => row.categoryType === "industry")).toEqual([
@@ -205,10 +218,22 @@ describe("floridaOutsideGroupContributionAggregator", () => {
         amount: 60000,
       }),
       expect.objectContaining({
+        committeeId: "FLORIDIANS_FOR_JANE_DOE",
+        supportOppose: "support",
+        categoryName: "labor_unions",
+        amount: 50000,
+      }),
+      expect.objectContaining({
         committeeId: "SUNSHINE_ACCOUNTABILITY_PAC",
         supportOppose: "oppose",
         categoryName: "real_estate",
         amount: 40000,
+      }),
+      expect.objectContaining({
+        committeeId: "SUNSHINE_ACCOUNTABILITY_PAC",
+        supportOppose: "oppose",
+        categoryName: "oil_gas_energy",
+        amount: 30000,
       }),
     ]);
   });
@@ -252,14 +277,6 @@ describe("floridaOutsideGroupContributionAggregator", () => {
         contributionRows: [],
       })
     ).toThrow("Invalid Florida outside group contribution election year");
-    expect(() =>
-      aggregateFloridaOutsideGroupContributions({
-        electionYear: 2026,
-        outsideGroups: [],
-        contributionRows: [],
-        maxBreakdownsPerCategory: 0,
-      })
-    ).toThrow("Invalid Florida outside group contribution maxBreakdownsPerCategory");
     expect(() =>
       aggregateFloridaOutsideGroupContributions({
         electionYear: 2026,

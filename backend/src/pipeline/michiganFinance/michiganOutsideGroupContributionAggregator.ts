@@ -21,11 +21,14 @@ export type MichiganOutsideGroupContributionAggregationInput = {
   outsideGroups: readonly MichiganOutsideSpendingGroup[];
   contributionRows: readonly MichiganMitnLegacyContributionRow[];
   sourceUrl?: string | null;
-  maxBreakdownsPerCategory?: number;
   minIndustryAmount?: number;
 };
 
 export type MichiganOutsideGroupContributionAggregationResult = {
+  // ALL donor rows, uncapped (sorted by amount). The sync layer classifies
+  // every donor and only caps the PERSISTED donor display rows — capping
+  // here would silently drop tail donors from the rebuilt industry totals
+  // of a >cap-donor group.
   outsideGroupBreakdowns: MichiganFinanceOutsideGroupBreakdown[];
   matchedContributionRowCount: number;
   includedContributionRowCount: number;
@@ -48,16 +51,7 @@ type IndustryAggregate = {
   donorKeys: Set<string>;
 };
 
-const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 50;
 const DEFAULT_MIN_INDUSTRY_AMOUNT_CENTS = 25_000 * 100;
-
-function normalizePositiveInteger(value: number | undefined, fallback: number, fieldName: string): number {
-  const normalized = value ?? fallback;
-  if (!Number.isInteger(normalized) || normalized <= 0) {
-    throw new Error(`Invalid Michigan outside group contribution ${fieldName}: ${normalized}`);
-  }
-  return normalized;
-}
 
 function normalizeMinAmount(value: number | undefined): number {
   if (value === undefined) {
@@ -172,13 +166,12 @@ function toBreakdowns(input: {
   donors: Iterable<DonorAggregate>;
   industries: Iterable<IndustryAggregate>;
   sourceUrl: string | null;
-  maxBreakdownsPerCategory: number;
 }): MichiganFinanceOutsideGroupBreakdown[] {
   const result: MichiganFinanceOutsideGroupBreakdown[] = [];
 
-  for (const donor of [...input.donors]
-    .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))
-    .slice(0, input.maxBreakdownsPerCategory)) {
+  for (const donor of [...input.donors].sort(
+    (left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName)
+  )) {
     result.push({
       committeeId: donor.committeeId,
       supportOppose: donor.supportOppose,
@@ -190,9 +183,9 @@ function toBreakdowns(input: {
     });
   }
 
-  for (const industry of [...input.industries]
-    .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
-    .slice(0, input.maxBreakdownsPerCategory)) {
+  for (const industry of [...input.industries].sort(
+    (left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug)
+  )) {
     result.push({
       committeeId: industry.committeeId,
       supportOppose: industry.supportOppose,
@@ -211,11 +204,6 @@ export function aggregateMichiganOutsideGroupContributions(
   input: MichiganOutsideGroupContributionAggregationInput
 ): MichiganOutsideGroupContributionAggregationResult {
   const electionYear = normalizeMichiganMitnLegacyArchiveYear(input.electionYear);
-  const maxBreakdownsPerCategory = normalizePositiveInteger(
-    input.maxBreakdownsPerCategory,
-    DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
-    "maxBreakdownsPerCategory"
-  );
   const minIndustryAmountCents = normalizeMinAmount(input.minIndustryAmount);
 
   const outsideGroupKeys = new Map<string, MichiganOutsideSpendingGroup>();
@@ -322,7 +310,6 @@ export function aggregateMichiganOutsideGroupContributions(
       donors: donors.values(),
       industries: industries.values(),
       sourceUrl: input.sourceUrl ?? null,
-      maxBreakdownsPerCategory,
     }),
     matchedContributionRowCount,
     includedContributionRowCount,

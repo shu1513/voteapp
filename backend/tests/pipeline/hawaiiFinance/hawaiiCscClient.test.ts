@@ -299,6 +299,30 @@ describe("hawaiiCscClient", () => {
     ]);
   });
 
+  it("returns every organization funder when no limit is given", async () => {
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([
+          { contributor_type: "Vendor / Business", contributor_name: "Alpha Fund", amount: "300" },
+          { contributor_type: "Vendor / Business", contributor_name: "Beta Fund", amount: "200" },
+          { contributor_type: "Vendor / Business", contributor_name: "Gamma Fund", amount: "100" },
+        ])
+      )
+      .mockResolvedValueOnce(jsonResponse([])) as unknown as typeof fetch;
+
+    await expect(
+      getHawaiiCscNoncandidateCommitteeFunders(
+        { committeeId: "NC20760", electionPeriod: "2020-2022 (KP2)" },
+        { fetchImpl, timeoutMs: 1000, pageLimit: 3 }
+      )
+    ).resolves.toEqual([
+      { categoryName: "Alpha Fund", amount: 300, count: 1 },
+      { categoryName: "Beta Fund", amount: 200, count: 1 },
+      { categoryName: "Gamma Fund", amount: 100, count: 1 },
+    ]);
+  });
+
   it("caps paged reads defensively", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(jsonResponse([{ amount: "25" }])) as unknown as typeof fetch;
 

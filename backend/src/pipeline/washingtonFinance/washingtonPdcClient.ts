@@ -680,7 +680,9 @@ export function buildWashingtonPdcSponsorOrganizationFundersUrl(input: Washingto
   });
 }
 
-function aggregateSponsorFunders(rows: unknown[], limit: number): WashingtonPdcAggregate[] {
+// An undefined limit returns every aggregated funder: callers that rebuild
+// industry totals from these rows must not lose the tail.
+function aggregateSponsorFunders(rows: unknown[], limit: number | undefined): WashingtonPdcAggregate[] {
   const funders = new Map<string, WashingtonPdcAggregate>();
   for (const row of rows) {
     if (!isRecord(row)) {
@@ -705,10 +707,10 @@ function aggregateSponsorFunders(rows: unknown[], limit: number): WashingtonPdcA
       ...(extractUrl(row.url) ? { sourceUrl: extractUrl(row.url) } : {}),
     });
   }
-  return [...funders.values()]
+  const aggregates = [...funders.values()]
     .map((funder) => ({ ...funder, amount: roundCurrency(funder.amount) }))
-    .sort((left, right) => right.amount - left.amount)
-    .slice(0, limit);
+    .sort((left, right) => right.amount - left.amount);
+  return limit === undefined ? aggregates : aggregates.slice(0, limit);
 }
 
 export async function getWashingtonPdcSponsorOrganizationFunders(
@@ -721,5 +723,5 @@ export async function getWashingtonPdcSponsorOrganizationFunders(
     Object.fromEntries(url.searchParams.entries()),
     options
   );
-  return aggregateSponsorFunders(rows, normalizeLimit(input.limit, 20));
+  return aggregateSponsorFunders(rows, input.limit === undefined ? undefined : normalizeLimit(input.limit, 20));
 }

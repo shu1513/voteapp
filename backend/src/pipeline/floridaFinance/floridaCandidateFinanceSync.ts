@@ -42,6 +42,11 @@ import {
 type Queryable = Pick<Pool | PoolClient, "query">;
 
 const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
+// Display cap on PERSISTED donor rows per (committee, direction), applied
+// AFTER classification so a >cap-donor group still gets industry totals
+// built from every donor. Industry rows are naturally bounded by the slug
+// set and are never capped.
+const DEFAULT_MAX_DONOR_BREAKDOWNS_PER_GROUP = 50;
 
 export type FloridaCandidateFinanceTrustedCommittee = {
   committeeId: string;
@@ -94,6 +99,8 @@ export type FloridaCandidateFinanceSyncInput = {
   dryRun?: boolean;
   linkSource?: FloridaFinanceLinkSource;
   directMaxBreakdownsPerCategory?: number;
+  // Display cap on persisted donor rows per (committee, direction);
+  // classification always sees every donor.
   outsideMaxBreakdownsPerCategory?: number;
   outsideMinIndustryAmount?: number;
   financeIndustryClassifier?: FinanceIndustryClassifier;
@@ -165,6 +172,14 @@ function normalizeAiClassificationMinAmount(value: number | undefined): number {
   const normalized = value ?? DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT;
   if (!Number.isFinite(normalized) || normalized < 0) {
     throw new Error(`Invalid Florida finance AI classification minimum amount: ${value}`);
+  }
+  return normalized;
+}
+
+function normalizeMaxDonorBreakdowns(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_MAX_DONOR_BREAKDOWNS_PER_GROUP;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Florida finance outsideMaxBreakdownsPerCategory: ${value}`);
   }
   return normalized;
 }
@@ -405,11 +420,37 @@ function collectOutsideClassifications(
   return classifications;
 }
 
+function capDonorBreakdowns(
+  breakdowns: readonly FloridaFinanceOutsideGroupBreakdownInput[],
+  maxDonorsPerGroup: number
+): FloridaFinanceOutsideGroupBreakdownInput[] {
+  const donorsByGroup = new Map<string, FloridaFinanceOutsideGroupBreakdownInput[]>();
+  for (const breakdown of breakdowns) {
+    if (breakdown.categoryType !== "donor") {
+      continue;
+    }
+    const key = `${breakdown.committeeId.trim().toUpperCase()}\u0000${breakdown.supportOppose}`;
+    const list = donorsByGroup.get(key) ?? [];
+    list.push(breakdown);
+    donorsByGroup.set(key, list);
+  }
+  const kept = new Set<FloridaFinanceOutsideGroupBreakdownInput>();
+  for (const list of donorsByGroup.values()) {
+    for (const donor of list
+      .sort((left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName))
+      .slice(0, maxDonorsPerGroup)) {
+      kept.add(donor);
+    }
+  }
+  return breakdowns.filter((breakdown) => breakdown.categoryType !== "donor" || kept.has(breakdown));
+}
+
 async function enrichOutsideGroupIndustryBreakdowns(input: {
   db: Queryable;
   outsideGroupBreakdowns: readonly FloridaFinanceOutsideGroupBreakdownInput[] | undefined;
   classifier: FinanceIndustryClassifier | undefined;
   aiClassificationMinAmount: number;
+  maxDonorBreakdownsPerGroup: number;
   dryRun: boolean;
 }): Promise<{
   outsideGroupBreakdowns: FloridaFinanceOutsideGroupBreakdownInput[] | undefined;
@@ -455,7 +496,9 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   return {
-    outsideGroupBreakdowns: [...breakdowns.values()],
+    // Capped only HERE, after every donor fed the classifications and the
+    // rebuilt industry rows above.
+    outsideGroupBreakdowns: capDonorBreakdowns([...breakdowns.values()], input.maxDonorBreakdownsPerGroup),
     classifications: [...classifications.values()],
   };
 }
@@ -465,7 +508,6 @@ function aggregateOutsideBreakdowns(input: {
   outsideContributionRows: readonly FloridaContributionRow[] | undefined;
   electionYear: number;
   sourceUrl?: string | null;
-  maxBreakdownsPerCategory?: number;
   minIndustryAmount?: number;
 }): {
   breakdowns: FloridaFinanceOutsideGroupBreakdownInput[] | undefined;
@@ -487,7 +529,6 @@ function aggregateOutsideBreakdowns(input: {
     outsideGroups: toAggregatorOutsideGroups(input.trustedOutsideGroups),
     contributionRows: input.outsideContributionRows,
     sourceUrl: input.sourceUrl ?? null,
-    maxBreakdownsPerCategory: input.maxBreakdownsPerCategory,
     minIndustryAmount: input.minIndustryAmount,
   });
 
@@ -570,7 +611,6 @@ export async function syncFloridaCandidateFinance(
     outsideContributionRows: input.outsideContributionRows,
     electionYear,
     sourceUrl: input.outsideSourceUrl ?? input.sourceUrl ?? null,
-    maxBreakdownsPerCategory: input.outsideMaxBreakdownsPerCategory,
     minIndustryAmount: input.outsideMinIndustryAmount,
   });
   const outsideIndustryFinance = await enrichOutsideGroupIndustryBreakdowns({
@@ -578,6 +618,7 @@ export async function syncFloridaCandidateFinance(
     outsideGroupBreakdowns: outsideBreakdowns.breakdowns,
     classifier: input.financeIndustryClassifier,
     aiClassificationMinAmount,
+    maxDonorBreakdownsPerGroup: normalizeMaxDonorBreakdowns(input.outsideMaxBreakdownsPerCategory),
     dryRun: input.dryRun === true,
   });
   const link = toFinanceLink({

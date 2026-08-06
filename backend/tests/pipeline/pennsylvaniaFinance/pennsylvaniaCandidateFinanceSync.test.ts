@@ -213,6 +213,71 @@ describe("pennsylvaniaCandidateFinanceSync", () => {
     expect(sql.some((statement) => statement.includes("INSERT INTO public.finance_label_classifications"))).toBe(true);
   });
 
+  it("classifies every outside donor but caps the persisted donor rows per group", async () => {
+    const db = createMockDb();
+
+    // Cap of 1: the smaller Continental donor must be dropped from the WRITTEN
+    // donor rows, yet still feed the classifications and the rebuilt
+    // oil_gas_energy industry total.
+    const result = await syncPennsylvaniaCandidateFinance({
+      db,
+      ...baseInput(),
+      outsideMaxBreakdownsPerCategory: 1,
+      filerRows: [
+        filerRow(),
+        filerRow({
+          FILERID: "PAC123",
+          FILERTYPE: "4",
+          FILERNAME: "PENNSYLVANIANS FOR ACTION",
+          OFFICE: "",
+        }),
+      ],
+      outsideGroups: [
+        {
+          groupId: "PENNSYLVANIANS FOR ACTION",
+          groupName: "Pennsylvanians for Action",
+          supportOppose: "support",
+          amount: 100000,
+          sourceUrl: SOURCE_URL,
+        },
+      ],
+      contributionRows: [
+        contribution({ CampaignFinanceID: "1", CONTAMT1: "100.00", OCCUPATION: "Attorney" }),
+        contribution({
+          CampaignFinanceID: "2",
+          FilerID: "PAC123",
+          CONTRIBUTOR: "Energy Transfer LLC",
+          OCCUPATION: "",
+          CONTAMT1: "50000.00",
+        }),
+        contribution({
+          CampaignFinanceID: "3",
+          FilerID: "PAC123",
+          CONTRIBUTOR: "Continental Resources Inc",
+          OCCUPATION: "",
+          CONTAMT1: "25000.00",
+        }),
+      ],
+    });
+
+    // 1 capped donor row + 1 industry row built from BOTH donors.
+    expect(result.outsideGroupBreakdownsWritten).toBe(2);
+    const breakdownInsertParams = db.client.query.mock.calls
+      .filter((call) => String(call[0]).includes("pa_candidate_finance_outside_group_breakdowns"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(breakdownInsertParams).toContain("Energy Transfer LLC");
+    expect(breakdownInsertParams).not.toContain("Continental Resources Inc");
+    // The rebuilt industry total covers the dropped donor too.
+    expect(breakdownInsertParams).toContain("oil_gas_energy");
+    expect(breakdownInsertParams).toContain(75000);
+    // Both donors persisted classification rows.
+    const classificationParams = db.client.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain("Energy Transfer LLC");
+    expect(classificationParams).toContain("Continental Resources Inc");
+  });
+
   it("writes unmapped outside groups but skips donor and industry enrichment", async () => {
     const db = createMockDb();
 

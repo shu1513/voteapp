@@ -181,6 +181,31 @@ describe("michiganOutsideGroupContributionAggregator", () => {
     expect(result.skippedContributionRowCount).toBe(1);
   });
 
+  it("returns every donor uncapped, sorted by amount", () => {
+    // The display cap lives in the SYNC layer, after classification —
+    // capping here would drop tail donors from rebuilt industry totals.
+    const result = aggregateMichiganOutsideGroupContributions({
+      electionYear: 2022,
+      minIndustryAmount: 0,
+      outsideGroups: [outsideGroup()],
+      contributionRows: Array.from({ length: 4 }, (_, index) =>
+        contribution({
+          cont_detail_id: String(index),
+          amount: `${(index + 1) * 1000}.00`,
+          l_name_or_org: `DONOR ${index} LLC`,
+        })
+      ),
+    });
+
+    const donors = result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "donor");
+    expect(donors.map((donor) => donor.categoryName)).toEqual([
+      "DONOR 3 LLC",
+      "DONOR 2 LLC",
+      "DONOR 1 LLC",
+      "DONOR 0 LLC",
+    ]);
+  });
+
   it("skips invalid outside donor receipts", () => {
     const result = aggregateMichiganOutsideGroupContributions({
       electionYear: 2022,
@@ -219,7 +244,7 @@ describe("michiganOutsideGroupContributionAggregator", () => {
     });
   });
 
-  it("allows future election years and validates max breakdowns and min industry amount", () => {
+  it("allows future election years and validates the min industry amount", () => {
     expect(
       aggregateMichiganOutsideGroupContributions({
         electionYear: 2026,
@@ -238,15 +263,6 @@ describe("michiganOutsideGroupContributionAggregator", () => {
         contributionRows: [],
       })
     ).toThrow("Invalid Michigan MiTN legacy archive year");
-
-    expect(() =>
-      aggregateMichiganOutsideGroupContributions({
-        electionYear: 2022,
-        maxBreakdownsPerCategory: 0,
-        outsideGroups: [outsideGroup()],
-        contributionRows: [],
-      })
-    ).toThrow("maxBreakdownsPerCategory");
 
     expect(() =>
       aggregateMichiganOutsideGroupContributions({

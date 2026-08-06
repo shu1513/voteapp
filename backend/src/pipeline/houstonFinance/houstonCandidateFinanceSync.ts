@@ -22,6 +22,10 @@ import { replaceHoustonCandidateFinanceSnapshot, type HoustonFinanceOutsideGroup
 
 type ConnectableDb = Pick<Pool, "query" | "connect">;
 const DEFAULT_AI_MIN_AMOUNT = 25_000;
+// Display cap on PERSISTED donor rows per (committee, direction). The Texas
+// funder aggregator returns every donor uncapped so classification and the
+// rebuilt industry totals see the whole tail; only the display rows are cut.
+const MAX_DONOR_BREAKDOWNS_PER_GROUP = 50;
 
 function required(value: string, label: string): string {
   const trimmed = value.trim();
@@ -219,10 +223,20 @@ export async function syncHoustonCandidateFinance(input: {
       classifications,
     }).outsideIndustryBreakdowns.map((breakdown) => ({ ...breakdown, categoryType: "industry" as const }))
   );
+  const donorBreakdownsByGroup = new Map<string, typeof donorBreakdowns>();
+  for (const breakdown of donorBreakdowns) {
+    const key = `${breakdown.committeeId.trim().toUpperCase()}|${breakdown.supportOppose}`;
+    donorBreakdownsByGroup.set(key, [...(donorBreakdownsByGroup.get(key) ?? []), breakdown]);
+  }
+  const displayDonorBreakdowns = [...donorBreakdownsByGroup.values()].flatMap((list) =>
+    [...list]
+      .sort((left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName))
+      .slice(0, MAX_DONOR_BREAKDOWNS_PER_GROUP)
+  );
   const outsideBreakdowns: HoustonFinanceOutsideGroupBreakdownInput[] | undefined = baseBreakdowns === undefined
     ? undefined
     : [
-        ...donorBreakdowns.map((breakdown) => ({ ...breakdown, categoryType: "donor" as const })),
+        ...displayDonorBreakdowns.map((breakdown) => ({ ...breakdown, categoryType: "donor" as const })),
         ...industryBreakdowns,
       ];
 

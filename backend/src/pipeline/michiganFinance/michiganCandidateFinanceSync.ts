@@ -46,6 +46,11 @@ import type {
 type Queryable = Pick<Pool | PoolClient, "query">;
 
 const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
+// Display cap on PERSISTED donor rows per (committee, direction), applied
+// AFTER classification so a >cap-donor group still gets industry totals
+// built from every donor. Industry rows are naturally bounded by the slug
+// set and are never capped.
+const DEFAULT_MAX_DONOR_BREAKDOWNS_PER_GROUP = 50;
 
 export type MichiganCandidateFinanceSyncInput = {
   db: Queryable;
@@ -68,6 +73,8 @@ export type MichiganCandidateFinanceSyncInput = {
   dryRun?: boolean;
   directMaxBreakdownsPerCategory?: number;
   outsideMaxGroups?: number;
+  // Display cap on persisted donor rows per (committee, direction);
+  // classification always sees every donor.
   outsideMaxBreakdownsPerCategory?: number;
   outsideMinIndustryAmount?: number;
   financeIndustryClassifier?: FinanceIndustryClassifier;
@@ -132,6 +139,14 @@ function normalizeAiClassificationMinAmount(value: number | undefined): number {
   const normalized = value ?? DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT;
   if (!Number.isFinite(normalized) || normalized < 0) {
     throw new Error("Michigan finance aiClassificationMinAmount must be a nonnegative number");
+  }
+  return normalized;
+}
+
+function normalizeMaxDonorBreakdowns(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_MAX_DONOR_BREAKDOWNS_PER_GROUP;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Michigan finance outsideMaxBreakdownsPerCategory: ${value}`);
   }
   return normalized;
 }
@@ -234,7 +249,6 @@ function toOutsideGroupBreakdowns(input: {
   contributionRows: readonly MichiganMitnLegacyContributionRow[];
   contributionSourceUrl?: string | null;
   electionYear: number;
-  maxBreakdownsPerCategory?: number;
   minIndustryAmount?: number;
 }): {
   breakdowns: MichiganFinanceOutsideGroupBreakdownInput[] | undefined;
@@ -256,7 +270,6 @@ function toOutsideGroupBreakdowns(input: {
     outsideGroups: input.outsideGroups,
     contributionRows: input.contributionRows,
     sourceUrl: input.contributionSourceUrl ?? null,
-    maxBreakdownsPerCategory: input.maxBreakdownsPerCategory,
     minIndustryAmount: input.minIndustryAmount,
   });
   return {
@@ -327,11 +340,37 @@ function collectOutsideClassifications(
   return classifications;
 }
 
+function capDonorBreakdowns(
+  breakdowns: readonly MichiganFinanceOutsideGroupBreakdownInput[],
+  maxDonorsPerGroup: number
+): MichiganFinanceOutsideGroupBreakdownInput[] {
+  const donorsByGroup = new Map<string, MichiganFinanceOutsideGroupBreakdownInput[]>();
+  for (const breakdown of breakdowns) {
+    if (breakdown.categoryType !== "donor") {
+      continue;
+    }
+    const key = `${breakdown.committeeId.trim().toUpperCase()}\u0000${breakdown.supportOppose}`;
+    const list = donorsByGroup.get(key) ?? [];
+    list.push(breakdown);
+    donorsByGroup.set(key, list);
+  }
+  const kept = new Set<MichiganFinanceOutsideGroupBreakdownInput>();
+  for (const list of donorsByGroup.values()) {
+    for (const donor of list
+      .sort((left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName))
+      .slice(0, maxDonorsPerGroup)) {
+      kept.add(donor);
+    }
+  }
+  return breakdowns.filter((breakdown) => breakdown.categoryType !== "donor" || kept.has(breakdown));
+}
+
 async function enrichOutsideGroupIndustryBreakdowns(input: {
   db: Queryable;
   outsideGroupBreakdowns: readonly MichiganFinanceOutsideGroupBreakdownInput[] | undefined;
   classifier: FinanceIndustryClassifier | undefined;
   aiClassificationMinAmount: number;
+  maxDonorBreakdownsPerGroup: number;
   dryRun: boolean;
 }): Promise<{
   outsideGroupBreakdowns: MichiganFinanceOutsideGroupBreakdownInput[] | undefined;
@@ -368,7 +407,9 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   return {
-    outsideGroupBreakdowns: [...breakdowns.values()],
+    // Capped only HERE, after every donor fed the classifications and the
+    // rebuilt industry rows above.
+    outsideGroupBreakdowns: capDonorBreakdowns([...breakdowns.values()], input.maxDonorBreakdownsPerGroup),
     classifications: [...classifications.values()],
   };
 }
@@ -509,7 +550,6 @@ export async function syncMichiganCandidateFinance(
     contributionRows: input.contributionRows,
     contributionSourceUrl: input.contributionSourceUrl,
     electionYear,
-    maxBreakdownsPerCategory: input.outsideMaxBreakdownsPerCategory,
     minIndustryAmount: input.outsideMinIndustryAmount,
   });
   const outsideIndustryFinance = await enrichOutsideGroupIndustryBreakdowns({
@@ -517,6 +557,7 @@ export async function syncMichiganCandidateFinance(
     outsideGroupBreakdowns: outsideGroupBreakdowns.breakdowns,
     classifier: input.financeIndustryClassifier,
     aiClassificationMinAmount,
+    maxDonorBreakdownsPerGroup: normalizeMaxDonorBreakdowns(input.outsideMaxBreakdownsPerCategory),
     dryRun: input.dryRun === true,
   });
   const link = toFinanceLink({
