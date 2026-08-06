@@ -261,6 +261,67 @@ describe("marylandCandidateFinanceSync", () => {
     );
   });
 
+  it("classifies every donor but caps the persisted donor rows per group", async () => {
+    const db = createMockDb();
+
+    const result = await syncMarylandCandidateFinance({
+      db,
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      candidateName: "Justin Gallucci",
+      electionYear: 2026,
+      officeScope: "statewide",
+      officeName: "Governor",
+      sourceUrl: SOURCE_URL,
+      committeeRows: [committee({ "Office Sought": "Governor/Lieutenant Governor" })],
+      // Cap of 1: the smaller IBEW Local 24 donor must be dropped from the
+      // WRITTEN donor rows, yet still feed the classifications and the
+      // rebuilt labor_unions industry total.
+      outsideMaxDonorBreakdownsPerGroup: 1,
+      contributionRows: [
+        contribution({
+          "Filing Entity Id": "16020184",
+          "Committee Name": "Momentum Maryland PAC",
+          "Committee Type": "Political Action Committee",
+          "Contributor Type": "Political Committee",
+          "Contributor Company Name": "IBEW Local 26 PAC",
+          "Contributor Last Name": "",
+          "Contributor First Name": "",
+          "Transaction Amount": "$30,000.00",
+        }),
+        contribution({
+          "Filing Entity Id": "16020184",
+          "Committee Name": "Momentum Maryland PAC",
+          "Committee Type": "Political Action Committee",
+          "Contributor Type": "Political Committee",
+          "Contributor Company Name": "IBEW Local 24 PAC",
+          "Contributor Last Name": "",
+          "Contributor First Name": "",
+          "Transaction Amount": "$20,000.00",
+        }),
+      ],
+      expenditureRows: [expenditure({ "Office Sought": "Governor/Lieutenant Governor" })],
+      now: new Date("2026-07-08T09:10:11.000Z"),
+    });
+
+    // 1 capped donor row + 1 industry row built from BOTH donors.
+    expect(result.outsideGroupBreakdownsWritten).toBe(2);
+    const breakdownParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("md_candidate_finance_outside_group_breakdowns"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(breakdownParams).toContain("IBEW Local 26 PAC");
+    expect(breakdownParams).not.toContain("IBEW Local 24 PAC");
+    // The rebuilt industry total covers the dropped donor too.
+    expect(breakdownParams).toContain("labor_unions");
+    expect(breakdownParams).toContain(50000);
+    // Both donors persisted classification rows.
+    const classificationParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain("IBEW Local 26 PAC");
+    expect(classificationParams).toContain("IBEW Local 24 PAC");
+  });
+
   it("does not write when resolution is unmatched or dry run is enabled", async () => {
     const unmatchedDb = createMockDb();
     const unmatched = await syncMarylandCandidateFinance({

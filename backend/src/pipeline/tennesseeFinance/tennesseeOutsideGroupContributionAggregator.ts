@@ -17,11 +17,14 @@ export type TennesseeOutsideGroupContributionAggregationInput = {
   outsideGroups: readonly TennesseeOutsideSpendingGroup[];
   contributionRecords: readonly TennesseeCampContributionRecord[];
   sourceUrl?: string | null;
-  maxBreakdownsPerCategory?: number;
   minIndustryAmount?: number;
 };
 
 export type TennesseeOutsideGroupContributionAggregationResult = {
+  // ALL label rows, uncapped (sorted by amount within each group and
+  // category). The sync layer classifies every donor/employer and only caps
+  // the PERSISTED display rows — capping here would silently drop tail
+  // labels from the rebuilt industry totals of a >cap-label group.
   outsideGroupBreakdowns: TennesseeFinanceOutsideGroupBreakdown[];
   matchedContributionRowCount: number;
   includedContributionRowCount: number;
@@ -48,7 +51,6 @@ type IndustryAggregate = {
   contributorKeys: Set<string>;
 };
 
-const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 50;
 const DEFAULT_MIN_INDUSTRY_AMOUNT_CENTS = 25_000 * 100;
 
 function normalizeElectionYear(value: number): number {
@@ -56,14 +58,6 @@ function normalizeElectionYear(value: number): number {
     throw new Error(`Invalid Tennessee outside group contribution election year: ${value}`);
   }
   return value;
-}
-
-function normalizePositiveInteger(value: number | undefined, fallback: number, fieldName: string): number {
-  const normalized = value ?? fallback;
-  if (!Number.isInteger(normalized) || normalized <= 0) {
-    throw new Error(`Invalid Tennessee outside group contribution ${fieldName}: ${value}`);
-  }
-  return normalized;
 }
 
 function normalizeMinAmount(value: number | undefined): number {
@@ -243,7 +237,6 @@ function toBreakdowns(input: {
   labels: Iterable<LabelAggregate>;
   industries: Iterable<IndustryAggregate>;
   sourceUrl: string | null;
-  maxBreakdownsPerCategory: number;
 }): TennesseeFinanceOutsideGroupBreakdown[] {
   const result: TennesseeFinanceOutsideGroupBreakdown[] = [];
   const labelsByBucket = new Map<string, LabelAggregate[]>();
@@ -288,8 +281,7 @@ function toBreakdowns(input: {
           categoryOrder[left.categoryType] - categoryOrder[right.categoryType] ||
           right.amountCents - left.amountCents ||
           left.displayName.localeCompare(right.displayName)
-        )
-        .slice(0, input.maxBreakdownsPerCategory)) {
+        )) {
         result.push({
           committeeKey: label.committeeKey,
           supportOppose: label.supportOppose,
@@ -307,8 +299,7 @@ function toBreakdowns(input: {
     bucketSortKey(left).localeCompare(bucketSortKey(right))
   )) {
     for (const industry of bucket
-      .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
-      .slice(0, input.maxBreakdownsPerCategory)) {
+      .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))) {
       result.push({
         committeeKey: industry.committeeKey,
         supportOppose: industry.supportOppose,
@@ -328,11 +319,6 @@ export function aggregateTennesseeOutsideGroupContributions(
   input: TennesseeOutsideGroupContributionAggregationInput
 ): TennesseeOutsideGroupContributionAggregationResult {
   const electionYear = normalizeElectionYear(input.electionYear);
-  const maxBreakdownsPerCategory = normalizePositiveInteger(
-    input.maxBreakdownsPerCategory,
-    DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
-    "maxBreakdownsPerCategory"
-  );
   const minIndustryAmountCents = normalizeMinAmount(input.minIndustryAmount);
 
   const outsideGroupsByCommitteeKey = new Map<string, TennesseeOutsideSpendingGroup[]>();
@@ -469,7 +455,6 @@ export function aggregateTennesseeOutsideGroupContributions(
       labels: labels.values(),
       industries: industries.values(),
       sourceUrl: input.sourceUrl ?? null,
-      maxBreakdownsPerCategory,
     }),
     matchedContributionRowCount,
     includedContributionRowCount,

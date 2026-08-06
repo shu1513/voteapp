@@ -51,7 +51,6 @@ describe("tennesseeOutsideGroupContributionAggregator", () => {
         contribution({ recipientName: "OTHER PAC", contributorName: "ENERGY TRANSFER" }),
       ],
       sourceUrl: "https://apps.tn.gov/tncamp/public/ceresults.htm?export=1",
-      maxBreakdownsPerCategory: 5,
       minIndustryAmount: 10000,
     });
 
@@ -124,6 +123,38 @@ describe("tennesseeOutsideGroupContributionAggregator", () => {
         contributorCount: 1,
         sourceUrl: "https://apps.tn.gov/tncamp/public/ceresults.htm?export=1",
       },
+    ]);
+  });
+
+  it("returns every donor uncapped, sorted by amount within the group", () => {
+    // The display cap lives in the SYNC layer, after classification —
+    // capping here would drop tail labels from rebuilt industry totals.
+    const result = aggregateTennesseeOutsideGroupContributions({
+      electionYear: 2022,
+      outsideGroups: [
+        {
+          committeeKey: "RIGHT TENNESSEE",
+          committeeName: "RIGHT TENNESSEE",
+          supportOppose: "support",
+          amount: 100000,
+          expenditureCount: 1,
+          sourceUrl: null,
+        },
+      ],
+      contributionRecords: Array.from({ length: 4 }, (_, index) =>
+        contribution({
+          amount: (index + 1) * 1000,
+          contributorName: `DONOR ${index} LLC`,
+        })
+      ),
+    });
+
+    const donors = result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "donor");
+    expect(donors.map((donor) => donor.categoryName)).toEqual([
+      "DONOR 3 LLC",
+      "DONOR 2 LLC",
+      "DONOR 1 LLC",
+      "DONOR 0 LLC",
     ]);
   });
 

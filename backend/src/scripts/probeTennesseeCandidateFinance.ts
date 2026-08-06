@@ -399,7 +399,6 @@ export async function runProbeTennesseeCandidateFinance(input: {
     outsideGroups,
     contributionRecords: data.outsideGroupContributionRecords,
     sourceUrl: data.outsideContributionSourceUrl ?? data.sourceUrl ?? null,
-    maxBreakdownsPerCategory: input.args.limit,
     minIndustryAmount: input.args.minIndustryAmount,
   });
   const outsideIndustries = buildOutsideIndustries({

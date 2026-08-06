@@ -58,6 +58,8 @@ export type TennesseeCandidateFinanceSyncInput = {
   dryRun?: boolean;
   directMaxBreakdownsPerCategory?: number;
   outsideMaxGroups?: number;
+  // Display cap on persisted label rows per (committee, direction,
+  // category); classification always sees every donor/employer.
   outsideMaxBreakdownsPerCategory?: number;
   financeIndustryClassifier?: FinanceIndustryClassifier;
   aiClassificationMinAmount?: number;
@@ -90,6 +92,16 @@ export type TennesseeCandidateFinanceSyncResult = {
 };
 
 const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
+// Every donor/employer label is rule-classified regardless of size
+// (maryland/ohio parity). Static rules are free, so the AI amount floor
+// (aiClassificationMinAmount) must not gate them — otherwise many small
+// same-industry donors sum to a large industry total that never gets
+// counted.
+const STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT = 0;
+// Display cap on PERSISTED label rows per (committee, direction, category),
+// applied AFTER classification so a >cap-label group still gets industry
+// totals built from every donor/employer. Industry rows are naturally
+// bounded by the slug set and are never capped.
 const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 20;
 const DEFAULT_OUTSIDE_MAX_GROUPS = 20;
 
@@ -126,6 +138,41 @@ function normalizeAiClassificationMinAmount(value: number | undefined): number {
     throw new Error(`Invalid Tennessee finance AI classification minimum amount: ${value}`);
   }
   return normalized;
+}
+
+function normalizeMaxBreakdownsPerCategory(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Tennessee finance outsideMaxBreakdownsPerCategory: ${value}`);
+  }
+  return normalized;
+}
+
+function capLabelBreakdowns(
+  breakdowns: readonly TennesseeFinanceOutsideGroupBreakdownInput[],
+  maxLabelsPerCategory: number
+): TennesseeFinanceOutsideGroupBreakdownInput[] {
+  const labelsByCategoryGroup = new Map<string, TennesseeFinanceOutsideGroupBreakdownInput[]>();
+  for (const breakdown of breakdowns) {
+    if (breakdown.categoryType === "industry") {
+      continue;
+    }
+    const key = [breakdown.committeeKey.trim().toUpperCase(), breakdown.supportOppose, breakdown.categoryType].join(
+      "\u0000"
+    );
+    const list = labelsByCategoryGroup.get(key) ?? [];
+    list.push(breakdown);
+    labelsByCategoryGroup.set(key, list);
+  }
+  const kept = new Set<TennesseeFinanceOutsideGroupBreakdownInput>();
+  for (const list of labelsByCategoryGroup.values()) {
+    for (const label of list
+      .sort((left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName))
+      .slice(0, maxLabelsPerCategory)) {
+      kept.add(label);
+    }
+  }
+  return breakdowns.filter((breakdown) => breakdown.categoryType === "industry" || kept.has(breakdown));
 }
 
 function toFinanceLink(input: TennesseeCandidateFinanceSyncInput & {
@@ -282,6 +329,7 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   outsideGroupBreakdowns: readonly TennesseeFinanceOutsideGroupBreakdownInput[] | undefined;
   classifier: FinanceIndustryClassifier | undefined;
   aiClassificationMinAmount: number;
+  maxBreakdownsPerCategory: number;
   dryRun: boolean;
 }): Promise<{
   outsideGroupBreakdowns: TennesseeFinanceOutsideGroupBreakdownInput[] | undefined;
@@ -299,7 +347,9 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   const classifiableOutsideBreakdowns = asClassifiableOutsideBreakdowns(breakdowns.values());
-  const classifications = collectOutsideClassifications(breakdowns.values(), input.aiClassificationMinAmount);
+  // Rule classification at the state floor (0) — only the AI call below
+  // keeps the aiClassificationMinAmount gate.
+  const classifications = collectOutsideClassifications(breakdowns.values(), STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT);
   await resolveFinanceIndustryClassifications({
     db: input.db,
     directBreakdowns: [],
@@ -328,7 +378,9 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   return {
-    outsideGroupBreakdowns: [...breakdowns.values()],
+    // Capped only HERE, after every label fed the classifications and the
+    // rebuilt industry rows above.
+    outsideGroupBreakdowns: capLabelBreakdowns([...breakdowns.values()], input.maxBreakdownsPerCategory),
     classifications: [...classifications.values()],
   };
 }
@@ -366,8 +418,7 @@ export async function syncTennesseeCandidateFinance(
         outsideGroups: outsideFinance.summary?.groups ?? [],
         contributionRecords: input.outsideGroupContributionRecords,
         sourceUrl: input.outsideContributionSourceUrl ?? input.contributionSourceUrl ?? link.sourceUrl ?? null,
-        maxBreakdownsPerCategory: input.outsideMaxBreakdownsPerCategory ?? DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
-        minIndustryAmount: aiClassificationMinAmount,
+        minIndustryAmount: STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT,
       })
     : null;
   const outsideGroupBreakdowns = rawOutsideGroupBreakdowns
@@ -378,6 +429,7 @@ export async function syncTennesseeCandidateFinance(
     outsideGroupBreakdowns,
     classifier: input.financeIndustryClassifier,
     aiClassificationMinAmount,
+    maxBreakdownsPerCategory: normalizeMaxBreakdownsPerCategory(input.outsideMaxBreakdownsPerCategory),
     dryRun,
   });
 
