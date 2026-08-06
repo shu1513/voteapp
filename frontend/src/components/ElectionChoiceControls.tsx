@@ -115,9 +115,9 @@ type CandidatePickRowProps = {
 
 /**
  * Ballot-style pick toggle for the candidate page: the whole row is the
- * button and its text reads as a sentence ("Pick Jane Doe as my pick for
+ * button and its text reads as a sentence ("Make Jane Doe my pick for
  * Governor"), because a bare "Make my pick" button next to a race name read
- * as two unrelated things. "as my pick" stays in the label so the row reads
+ * as two unrelated things. "my pick" stays in the label so the row reads
  * as recording a personal choice, not as casting a vote online. Same toggle
  * semantics as CandidatePickButton (radio for single-seat, capped checkboxes
  * for multi-seat).
@@ -164,7 +164,7 @@ export function CandidatePickRow({
           </>
         ) : (
           <>
-            Pick <span className="font-semibold">{candidateName}</span> as my pick for {raceName} ·{" "}
+            Make <span className="font-semibold">{candidateName}</span> my pick for {raceName} ·{" "}
             {dateLabel}
           </>
         )}

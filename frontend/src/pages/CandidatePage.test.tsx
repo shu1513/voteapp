@@ -486,7 +486,7 @@ describe("CandidatePage", () => {
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
     const row = await screen.findByRole("button", {
-      name: "Pick Jordan Voter as my pick for Governor · November 3, 2099",
+      name: "Make Jordan Voter my pick for Governor · November 3, 2099",
     });
     await userEvent.click(row);
 
@@ -518,7 +518,7 @@ describe("CandidatePage", () => {
     );
 
     expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: /as my pick for/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /my pick for/ })).not.toBeInTheDocument();
   });
 
   it("shows loader-fetched finance for an ongoing election", async () => {
