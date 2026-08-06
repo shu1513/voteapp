@@ -160,6 +160,8 @@ services:
         value: "true"
       - key: NEW_YORK_CITY_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: OHIO_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
       - key: OKLAHOMA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: OREGON_CAMPAIGN_FINANCE_ENABLED
