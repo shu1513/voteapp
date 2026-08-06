@@ -13,17 +13,27 @@ import { ErrorNotice, LoadingNotice } from "../../components/Status";
 // enforces the same rule if someone lands here unverified.
 
 const LABELS: { key: keyof EmailPreferences; label: string; description?: string }[] = [
-  { key: "email_digest", label: "Daily digest about candidates you follow" },
-  { key: "email_new_election_alerts", label: "New elections in your districts" },
+  {
+    key: "email_digest",
+    // This one opt-in gates two senders: the candidate-follow digest AND
+    // district election-result alerts (sendElectionResultAlerts rides
+    // email_digest), so the copy must name both. Frequency-free on
+    // purpose: both jobs are event-gated with no enforced cadence, and
+    // result alerts cluster right after election days.
+    label: "Updates about my candidates and election results",
+    description:
+      "Occasional emails when candidates I follow take new actions, and when elections in my districts have results.",
+  },
+  { key: "email_new_election_alerts", label: "Notify me about new elections coming up in my districts" },
   {
     key: "email_election_reminders",
-    label: "Remind me the day before each election",
-    description: "One email covering everything on your ballot that day.",
+    label: "Election reminder the day before election day",
+    description: "One email reminder to vote the day before election day.",
   },
   {
     key: "email_issue_updates",
     label: "Updates about the issues you saved",
-    description: "Occasional emails when there is something worth knowing about your issues.",
+    description: "Occasional emails when there is something important about the issues that matter most to you.",
   },
 ];
 

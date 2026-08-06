@@ -117,13 +117,13 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
       ) : null}
       <div className="mt-3 flex flex-wrap gap-4">
         <NotifyToggle
-          label="Email me about their elections"
+          label="Email me about their future elections"
           checked={notify.notify_elections}
           disabled={saving}
           onChange={(next) => update({ notify_elections: next })}
         />
         <NotifyToggle
-          label="Email me about record updates"
+          label="Email me about their new actions"
           checked={notify.notify_updates}
           disabled={saving}
           onChange={(next) => update({ notify_updates: next })}

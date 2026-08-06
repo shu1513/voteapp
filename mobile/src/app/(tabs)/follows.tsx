@@ -85,13 +85,13 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
       ) : null}
       <View className="mt-3 gap-2">
         <Checkbox
-          label="Email me about their elections"
+          label="Email me about their future elections"
           checked={notify.notify_elections}
           disabled={saving}
           onChange={(next) => update({ notify_elections: next })}
         />
         <Checkbox
-          label="Email me about record updates"
+          label="Email me about their new actions"
           checked={notify.notify_updates}
           disabled={saving}
           onChange={(next) => update({ notify_updates: next })}
@@ -113,7 +113,8 @@ function FollowsBody() {
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
       <Text className="text-2xl font-bold text-ink">Candidates you follow</Text>
       <Text className="mt-1 text-sm text-ink-soft">
-        Followed candidates surface first on your ballot; the toggles control the daily email digest.
+        Followed candidates surface first on your ballot; the toggles control which email updates you get
+        about each candidate.
       </Text>
       {isLoading ? <LoadingNotice text="Loading follows…" /> : null}
       {isError ? (
