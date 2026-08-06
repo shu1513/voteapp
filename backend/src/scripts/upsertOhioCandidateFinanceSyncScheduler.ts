@@ -28,6 +28,12 @@ function validateKnownFlags(args: readonly string[]): void {
     if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
       throw new Error(`Unknown Ohio candidate finance sync flag: ${name}`);
     }
+    // --dry-run=true would pass the name check yet fail the later
+    // args.includes("--dry-run") test and run a REAL sync - boolean
+    // flags never take a value.
+    if (KNOWN_BOOLEAN_FLAGS.has(name) && arg.includes("=")) {
+      throw new Error(`Boolean flag does not accept a value: ${name}`);
+    }
   }
 }
 
