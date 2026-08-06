@@ -50,6 +50,12 @@ export type StateFinanceLoaderCharacterizationSpec = {
    * describe their outside groups as PACs.
    */
   outsideSupportActionLabel?: string;
+  /**
+   * The state's outside-coverage note, when its source has a known gap the
+   * summary must disclose. Omitted for every state whose totals carry no
+   * such caveat — those payloads must not gain the field at all.
+   */
+  outsideCoverageNote?: string;
 };
 
 const CANDIDATE_A = "11111111-1111-4111-8111-111111111111";
@@ -282,6 +288,11 @@ function buildExpected(spec: StateFinanceLoaderCharacterizationSpec): Map<string
         outside_spending: {
           support_total: 900,
           oppose_total: null,
+          // Absent (not null) for states with no disclosed gap, so this pins
+          // both that Ohio sends it and that nobody else gained the field.
+          ...(spec.outsideCoverageNote === undefined
+            ? {}
+            : { outside_coverage_note: spec.outsideCoverageNote }),
           top_supporting_groups: [
             {
               committee_id: "PAC-1",
@@ -338,6 +349,12 @@ function buildExpected(spec: StateFinanceLoaderCharacterizationSpec): Map<string
         outside_spending: {
           support_total: null,
           oppose_total: null,
+          // The note describes the SOURCE, so it rides along even on a
+          // candidate with no outside rows — the gap is why the totals may
+          // be empty.
+          ...(spec.outsideCoverageNote === undefined
+            ? {}
+            : { outside_coverage_note: spec.outsideCoverageNote }),
           top_supporting_groups: [],
           top_opposing_groups: [],
           top_supporting_industries: [],

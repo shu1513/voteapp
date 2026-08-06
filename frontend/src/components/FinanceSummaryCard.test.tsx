@@ -124,6 +124,42 @@ describe("FinanceSummaryCard", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("shows the outside coverage note only when the source discloses a gap", () => {
+    // No note by default: most sources have no known systematic gap, and an
+    // unconditional caveat would understate data that is in fact complete.
+    const { rerender } = render(<FinanceSummaryCard summary={financeSummary()} />);
+    expect(screen.queryByText(/not included yet/)).not.toBeInTheDocument();
+
+    const summary = financeSummary();
+    summary.outside_spending.outside_coverage_note =
+      "Covers outside spending reported by committees registered with the Ohio Secretary of State. " +
+      "Groups that spend without registering file separately and are not included yet.";
+    rerender(<FinanceSummaryCard summary={summary} />);
+    const note = screen.getByText(/Groups that spend without registering/);
+    expect(note).toBeInTheDocument();
+    // It must sit with the totals, not down in the source footnote — a
+    // reader who sees the dollar figure has to see the caveat.
+    const outsideHeading = screen.getByText("Spending by outside groups");
+    const supportTotal = screen.getByText(/Outside money spent supporting this candidate/);
+    expect(
+      outsideHeading.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+    expect(note.compareDocumentPosition(supportTotal) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+    // The note qualifies SHOWN figures. A summary whose only outside field
+    // is the note renders no outside section and no note: with nothing
+    // shown the card asserts nothing about outside money, so there is
+    // nothing to caveat (same rule that hides a $0 direction). Deliberate —
+    // pinned so a future edit doesn't silently change it in either
+    // direction.
+    const noteOnly = emptyFinanceSummary();
+    noteOnly.direct_campaign.total_raised = 100;
+    noteOnly.outside_spending.outside_coverage_note = summary.outside_spending.outside_coverage_note;
+    rerender(<FinanceSummaryCard summary={noteOnly} />);
+    expect(screen.queryByText("Spending by outside groups")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Groups that spend without registering/)).not.toBeInTheDocument();
+  });
+
   it("color-codes outside support green and opposition red", () => {
     const summary = financeSummary();
     const { container } = render(<FinanceSummaryCard summary={summary} />);

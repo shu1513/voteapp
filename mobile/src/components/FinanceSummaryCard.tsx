@@ -314,6 +314,16 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
             PACs — not by the candidate&apos;s own campaign. This spending is not coordinated with the
             candidate&apos;s campaign and does not go directly to the candidate.
           </Text>
+          {/* Stated with the totals, not in the footnote: a reader who sees a
+              dollar figure assumes it is all the outside money in the race.
+              Only sources with a known gap send this. Deliberately inside the
+              hasOutsideFinanceContent gate: with no figures shown the card
+              asserts nothing about outside money, and a disclaimer under a
+              heading with no data would imply there is data (same rule that
+              hides a $0 direction). */}
+          {outside.outside_coverage_note ? (
+            <Text className="mt-1 text-xs text-ink-soft">{outside.outside_coverage_note}</Text>
+          ) : null}
           <OutsideSection
             direction="support"
             total={outside.support_total}
