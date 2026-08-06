@@ -513,6 +513,17 @@ main feasibility risk and also settles the 31-U two-stage question.
       exact direct totals (Acton $15,898,732.10 / cash $8,136,281.98), the
       stale bundle correctly disabling outside AND funders (stored rows
       preserved).
+      Review round (Codex, both fixed): (1) the aggregator no longer caps
+      donor rows — the sync layer classifies EVERY donor, rebuilds industry
+      totals from all of them, and only then caps the persisted donor
+      display rows (`outsideMaxDonorBreakdownsPerGroup`, default 50) — the
+      old order rebuilt a >50-donor group's industries from just the top 50
+      (maryland/tennessee carry the same inherited flaw; out of this PR's
+      scope). (2) The aggregator's key helpers carried five literal NUL
+      bytes (the recurring Write-tool trap), making the file binary to Git
+      and its diff invisible — replaced with textual `\u0000` escapes; the
+      `grep -P` pre-commit check that was supposed to catch this is silent
+      on BSD grep, so the check is now `python3` byte-count.
 - [ ] PR 9+ PDF path / live run
 
 Update the checklist + any changed decision here as PRs land; also update the

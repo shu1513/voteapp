@@ -236,7 +236,9 @@ describe("aggregateOhioOutsideGroupContributions", () => {
     ).toHaveLength(1);
   });
 
-  it("caps donors per group at maxBreakdownsPerCategory by amount", () => {
+  it("returns every donor uncapped, sorted by amount within the group", () => {
+    // The display cap lives in the SYNC layer, after classification —
+    // capping here would drop tail donors from rebuilt industry totals.
     const rows = Array.from({ length: 4 }, (_, index) =>
       contributionRow({
         nonIndividual: `DONOR ${index} LLC`,
@@ -247,11 +249,15 @@ describe("aggregateOhioOutsideGroupContributions", () => {
       electionYear: 2026,
       outsideGroups: [group()],
       contributionRows: rows,
-      maxBreakdownsPerCategory: 2,
     });
 
     const donors = result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "donor");
-    expect(donors.map((donor) => donor.categoryName)).toEqual(["DONOR 3 LLC", "DONOR 2 LLC"]);
+    expect(donors.map((donor) => donor.categoryName)).toEqual([
+      "DONOR 3 LLC",
+      "DONOR 2 LLC",
+      "DONOR 1 LLC",
+      "DONOR 0 LLC",
+    ]);
   });
 
   it("returns empty result when the candidate has no valid outside groups", () => {

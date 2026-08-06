@@ -92,6 +92,9 @@ export type OhioCandidateFinanceSyncInput = {
   // for the manual industry-label queue).
   financeIndustryClassifier?: FinanceIndustryClassifier;
   aiClassificationMinAmount?: number;
+  // Display cap on persisted donor rows per (committee, direction);
+  // classification always sees every donor.
+  outsideMaxDonorBreakdownsPerGroup?: number;
 };
 
 export type OhioCandidateFinanceSyncResult = {
@@ -150,6 +153,46 @@ function normalizeTimestamp(value: Date | undefined): Date {
 const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
 // Every donor is rule-classified regardless of size (maryland parity).
 const STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT = 0;
+// Display cap on PERSISTED donor rows per (committee, direction), applied
+// AFTER classification so a >cap-donor group still gets industry totals
+// built from every donor. Industry rows are naturally bounded by the slug
+// set and are never capped.
+const DEFAULT_MAX_DONOR_BREAKDOWNS_PER_GROUP = 50;
+
+function normalizeMaxDonorBreakdowns(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_MAX_DONOR_BREAKDOWNS_PER_GROUP;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Ohio finance outsideMaxDonorBreakdownsPerGroup: ${value}`);
+  }
+  return normalized;
+}
+
+function capDonorBreakdowns(
+  breakdowns: readonly OhioFinanceOutsideGroupBreakdownInput[],
+  maxDonorsPerGroup: number
+): OhioFinanceOutsideGroupBreakdownInput[] {
+  const donorsByGroup = new Map<string, OhioFinanceOutsideGroupBreakdownInput[]>();
+  for (const breakdown of breakdowns) {
+    if (breakdown.categoryType !== "donor") {
+      continue;
+    }
+    const key = [breakdown.committeeId.trim(), breakdown.supportOppose].join(" | ");
+    const list = donorsByGroup.get(key) ?? [];
+    list.push(breakdown);
+    donorsByGroup.set(key, list);
+  }
+  const kept = new Set<OhioFinanceOutsideGroupBreakdownInput>();
+  for (const list of donorsByGroup.values()) {
+    for (const donor of list
+      .sort(
+        (left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName)
+      )
+      .slice(0, maxDonorsPerGroup)) {
+      kept.add(donor);
+    }
+  }
+  return breakdowns.filter((breakdown) => breakdown.categoryType !== "donor" || kept.has(breakdown));
+}
 
 function normalizeAiClassificationMinAmount(value: number | undefined): number {
   const normalized = value ?? DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT;
@@ -218,6 +261,7 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   outsideGroupBreakdowns: readonly OhioFinanceOutsideGroupBreakdownInput[] | undefined;
   classifier: FinanceIndustryClassifier | undefined;
   aiClassificationMinAmount: number;
+  maxDonorBreakdownsPerGroup: number;
   dryRun: boolean;
 }): Promise<{
   outsideGroupBreakdowns: OhioFinanceOutsideGroupBreakdownInput[] | undefined;
@@ -258,7 +302,9 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   return {
-    outsideGroupBreakdowns: [...breakdowns.values()],
+    // Capped only HERE, after every donor fed the classifications and the
+    // rebuilt industry rows above.
+    outsideGroupBreakdowns: capDonorBreakdowns([...breakdowns.values()], input.maxDonorBreakdownsPerGroup),
     classifications: [...classifications.values()],
   };
 }
@@ -316,6 +362,7 @@ export async function syncOhioCandidateFinance(
     outsideGroupBreakdowns: funders === null ? undefined : funders.breakdowns,
     classifier: input.financeIndustryClassifier,
     aiClassificationMinAmount: normalizeAiClassificationMinAmount(input.aiClassificationMinAmount),
+    maxDonorBreakdownsPerGroup: normalizeMaxDonorBreakdowns(input.outsideMaxDonorBreakdownsPerGroup),
     dryRun,
   });
 
