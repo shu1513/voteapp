@@ -1,7 +1,9 @@
 import {
   classifyFinanceLabel,
   normalizeFinanceLabel,
+  type FinanceLabelClassification,
 } from "../finance/financeLabelClassifier.js";
+import { mergeFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
 import {
   getVermontContributionDetails,
   type VermontCampaignFinanceClientOptions,
@@ -30,6 +32,10 @@ export type VermontOutsideGroupContributionAggregationInput = {
 
 export type VermontOutsideGroupContributionAggregationResult = {
   outsideGroupBreakdowns: VermontFinanceOutsideGroupBreakdown[];
+  // Classifications for every donor at or above minIndustryAmount, collected
+  // BEFORE the per-group display cap so donors past the cap still reach the
+  // manual label queue.
+  outsideDonorClassifications: FinanceLabelClassification[];
   matchedContributionRowCount: number;
   includedContributionRowCount: number;
   skippedContributionRowCount: number;
@@ -255,6 +261,7 @@ export function aggregateVermontOutsideGroupContributions(
   if (outsideGroupsByFiler.size === 0) {
     return {
       outsideGroupBreakdowns: [],
+      outsideDonorClassifications: [],
       matchedContributionRowCount: 0,
       includedContributionRowCount: 0,
       skippedContributionRowCount: 0,
@@ -309,11 +316,13 @@ export function aggregateVermontOutsideGroupContributions(
   }
 
   const industries = new Map<string, IndustryAggregate>();
+  const donorClassifications = new Map<string, FinanceLabelClassification>();
   for (const donor of donors.values()) {
     if (donor.amountCents < minIndustryAmountCents) {
       continue;
     }
     const classification = classifyFinanceLabel({ rawLabel: donor.displayName, labelType: "donor" });
+    mergeFinanceLabelClassification(donorClassifications, classification);
     if (!classification.industrySlug) {
       continue;
     }
@@ -344,6 +353,7 @@ export function aggregateVermontOutsideGroupContributions(
       sourceUrl,
       maxBreakdownsPerCategory,
     }),
+    outsideDonorClassifications: [...donorClassifications.values()],
     matchedContributionRowCount,
     includedContributionRowCount,
     skippedContributionRowCount,

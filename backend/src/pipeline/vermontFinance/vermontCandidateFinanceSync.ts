@@ -1,11 +1,6 @@
 import type { Pool, PoolClient } from "pg";
 
 import {
-  classifyFinanceLabel,
-  type FinanceLabelClassification,
-} from "../finance/financeLabelClassifier.js";
-import { mergeFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
-import {
   getVermontContributionDetails,
   getVermontExpenditureDetails,
   type VermontCampaignFinanceClientOptions,
@@ -331,23 +326,6 @@ function emptyResult(input: {
   };
 }
 
-function collectOutsideClassifications(input: {
-  breakdowns: readonly { categoryType: string; categoryName: string; amount: number }[];
-  minAmount: number;
-}): FinanceLabelClassification[] {
-  const classifications = new Map<string, FinanceLabelClassification>();
-  for (const breakdown of input.breakdowns) {
-    if (breakdown.categoryType !== "donor" || breakdown.amount < input.minAmount) {
-      continue;
-    }
-    mergeFinanceLabelClassification(
-      classifications,
-      classifyFinanceLabel({ rawLabel: breakdown.categoryName, labelType: "donor" })
-    );
-  }
-  return [...classifications.values()];
-}
-
 export async function syncVermontCandidateFinance(
   input: VermontCandidateFinanceSyncInput
 ): Promise<VermontCandidateFinanceSyncResult> {
@@ -450,10 +428,9 @@ export async function syncVermontCandidateFinance(
   });
   const directBreakdowns = toDirectBreakdowns(directFinance.directBreakdowns);
   const outsideGroups = toOutsideGroups(outsideFinance.summary.groups);
-  const classifications = collectOutsideClassifications({
-    breakdowns: outsideGroupBreakdowns.outsideGroupBreakdowns,
-    minAmount: aiClassificationMinAmount,
-  });
+  // Pre-cap classifications from the aggregator, so donors past the display
+  // cap still reach the manual label queue.
+  const classifications = outsideGroupBreakdowns.outsideDonorClassifications;
   const link = toFinanceLink({
     candidateId,
     electionId,

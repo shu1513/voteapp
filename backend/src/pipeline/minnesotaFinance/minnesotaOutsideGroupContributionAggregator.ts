@@ -183,6 +183,19 @@ function industryKey(input: {
   return `${normalizeId(input.committeeId)}\u0000${input.supportOppose}\u0000${input.industrySlug}`;
 }
 
+function bucketByGroup<T extends { committeeId: string; supportOppose: MinnesotaSupportOppose }>(
+  values: Iterable<T>
+): T[][] {
+  const buckets = new Map<string, T[]>();
+  for (const value of values) {
+    const key = outsideGroupKey(value);
+    const bucket = buckets.get(key) ?? [];
+    bucket.push(value);
+    buckets.set(key, bucket);
+  }
+  return [...buckets.entries()].sort(([left], [right]) => left.localeCompare(right)).map(([, bucket]) => bucket);
+}
+
 function toBreakdowns(input: {
   donors: Iterable<DonorAggregate>;
   industries: Iterable<IndustryAggregate>;
@@ -191,32 +204,40 @@ function toBreakdowns(input: {
 }): MinnesotaFinanceOutsideGroupBreakdownInput[] {
   const result: MinnesotaFinanceOutsideGroupBreakdownInput[] = [];
 
-  for (const donor of [...input.donors]
-    .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))
-    .slice(0, input.maxBreakdownsPerCategory)) {
-    result.push({
-      committeeId: donor.committeeId,
-      supportOppose: donor.supportOppose,
-      categoryType: "donor",
-      categoryName: donor.displayName,
-      amount: centsToDollars(donor.amountCents),
-      contributorCount: 1,
-      sourceUrl: input.sourceUrl,
-    });
+  // Cap donors per (committee, direction) bucket so every outside group keeps
+  // its own top donors instead of competing in one global list.
+  for (const bucket of bucketByGroup(input.donors)) {
+    for (const donor of bucket
+      .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))
+      .slice(0, input.maxBreakdownsPerCategory)) {
+      result.push({
+        committeeId: donor.committeeId,
+        supportOppose: donor.supportOppose,
+        categoryType: "donor",
+        categoryName: donor.displayName,
+        amount: centsToDollars(donor.amountCents),
+        contributorCount: 1,
+        sourceUrl: input.sourceUrl,
+      });
+    }
   }
 
-  for (const industry of [...input.industries]
-    .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
-    .slice(0, input.maxBreakdownsPerCategory)) {
-    result.push({
-      committeeId: industry.committeeId,
-      supportOppose: industry.supportOppose,
-      categoryType: "industry",
-      categoryName: industry.industrySlug,
-      amount: centsToDollars(industry.amountCents),
-      contributorCount: industry.donorKeys.size,
-      sourceUrl: input.sourceUrl,
-    });
+  // Industry rows are bounded per bucket by the finance industry slug set and
+  // are never capped.
+  for (const bucket of bucketByGroup(input.industries)) {
+    for (const industry of bucket.sort(
+      (left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug)
+    )) {
+      result.push({
+        committeeId: industry.committeeId,
+        supportOppose: industry.supportOppose,
+        categoryType: "industry",
+        categoryName: industry.industrySlug,
+        amount: centsToDollars(industry.amountCents),
+        contributorCount: industry.donorKeys.size,
+        sourceUrl: input.sourceUrl,
+      });
+    }
   }
 
   return result;
