@@ -7,6 +7,7 @@ export type ApiErrorCode =
   | "invalid_request"
   | "unsupported_media_type"
   | "rate_limited"
+  | "follow_limit_reached"
   | "address_not_found"
   | "districts_unavailable"
   | "upstream_unavailable"

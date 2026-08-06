@@ -137,7 +137,7 @@ describe("PicksPage", () => {
 
     // The other two sections mounted below — followed candidates first
     // (people the voter actively picked), then issue areas.
-    const followedHeading = screen.getByRole("heading", { name: "My candidates" });
+    const followedHeading = screen.getByRole("heading", { name: "My Candidates" });
     const areasHeading = screen.getByText("My most important issues");
     expect(
       followedHeading.compareDocumentPosition(areasHeading) & Node.DOCUMENT_POSITION_FOLLOWING
@@ -240,6 +240,43 @@ describe("PicksPage", () => {
     expect(screen.getByText("Pat Winner")).toBeInTheDocument();
     expect(screen.getByText("Won")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sheriff" })).toHaveAttribute("href", "/elections/e-old");
+  });
+});
+
+describe("PicksPage followed-candidates sort", () => {
+  function followFixtures() {
+    return [
+      candidateFollow({
+        candidate_id: "c-1",
+        display_name: "Walter Late",
+        active_election: { election_id: "e-1", official_ballot_title: "Governor", election_date: "2026-11-03" },
+      }),
+      candidateFollow({
+        candidate_id: "c-2",
+        display_name: "Zoe Soon",
+        active_election: { election_id: "e-3", official_ballot_title: "Mayor", election_date: "2026-09-01" },
+      }),
+      candidateFollow({ candidate_id: "c-3", display_name: "Adam None", active_election: null }),
+    ];
+  }
+
+  function followedNames(): (string | null)[] {
+    return screen
+      .getAllByRole("link")
+      .filter((link) => link.getAttribute("href")?.startsWith("/candidates/"))
+      .map((link) => link.textContent);
+  }
+
+  it("defaults to next-election order with electionless follows last, and can switch to A–Z", async () => {
+    stubApiRoutes(verifiedRoutes({ "/api/me/candidate-follows": { body: { follows: followFixtures() } } }));
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    renderPicks();
+
+    await screen.findByText("Zoe Soon");
+    expect(followedNames()).toEqual(["Zoe Soon", "Walter Late", "Adam None"]);
+
+    await user.selectOptions(screen.getByRole("combobox", { name: "Sort by:" }), "name");
+    expect(followedNames()).toEqual(["Adam None", "Walter Late", "Zoe Soon"]);
   });
 });
 

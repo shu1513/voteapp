@@ -140,7 +140,9 @@ describe("FollowedCandidatesSection", () => {
     expect(await screen.findByRole("option", { name: /Hilary Brown/ })).toBeInTheDocument();
 
     await user.keyboard("{Escape}");
-    expect(screen.queryByRole("option")).not.toBeInTheDocument();
+    // Scoped to the suggestion: the sort <select>'s own <option>s are always
+    // in the document.
+    expect(screen.queryByRole("option", { name: /Hilary Brown/ })).not.toBeInTheDocument();
   });
 
   it("sends following:false on Unfollow", async () => {
