@@ -53,18 +53,20 @@ import {
 // linked committee; the cover files and 31-U rows are small enough to hold.
 //
 // Outside spending is aggregated once per election year over the DEDUPED
-// (candidate name, office) targets of that year's due rows — a candidate
+// (candidateId, office) targets of that year's due rows — a candidate
 // whose primary and general elections are both due would otherwise appear
 // twice in the target list and quarantine every row aimed at them as
-// ambiguous. Identical (name, office) pairs share one result; genuinely
-// different candidates with the same name stay ambiguous by design
-// (decision 5).
+// ambiguous. The dedupe key is the candidate id, never the display name:
+// two different people sharing a name must remain separate targets so the
+// aggregator quarantines that name as ambiguous instead of paying the
+// same money to both (decision 5).
 //
 // Artifact failure policy: missing direct artifacts (contributions or the
 // candidate cover file) fail every due row of the year — receipts without
-// them would be fabricated. Missing outside artifacts (expenditure files,
-// PAC/party covers, or the 31-U detail bundle) only disable the outside
-// leg: the sync passes outsideFinance null, the writer's preserveWhenNull
+// them would be fabricated. Missing or STALE outside artifacts (expenditure
+// files, PAC/party covers, the 31-U detail bundle, or a bundle missing
+// report keys the annual files discovered) only disable the outside leg:
+// the sync passes outsideFinance null, the writer's preserveWhenNull
 // policy keeps the stored outside totals, and the group rows are left
 // untouched.
 
@@ -274,6 +276,9 @@ async function aggregateDirectForYear(input: {
       }),
     ])
   );
+  if (accumulators.size === 0) {
+    return new Map();
+  }
 
   for (const transactionYear of [input.electionYear - 1, input.electionYear]) {
     const { filePath } = getOhioSosArtifactPaths({
@@ -285,10 +290,11 @@ async function aggregateDirectForYear(input: {
       path: filePath,
       family: OHIO_SOS_CANDIDATE_CONTRIBUTIONS_FAMILY,
       now: input.now,
+      // Rows are routed by MASTER_KEY instead of offering every row to
+      // every accumulator — same result (add() ignores other committees'
+      // rows anyway), without the rows × committees scan.
       visit: (row) => {
-        for (const accumulator of accumulators.values()) {
-          accumulator.add(row);
-        }
+        accumulators.get(row.masterKey.trim())?.add(row);
       },
     });
   }
@@ -311,8 +317,13 @@ const OUTSIDE_EXPENDITURE_PRODUCTS: ReadonlyArray<{
   { productKey: "party_expenditures", family: OHIO_SOS_PARTY_EXPENDITURES_FAMILY },
 ];
 
-function outsideTargetKey(row: Pick<OhioCandidateFinanceDueRow, "candidateName" | "officeName">): string {
-  return `${row.candidateName}\u0000${row.officeName}`;
+// Keyed by candidateId + office so one PERSON due for several elections
+// (primary + general) shares a single target, while two DIFFERENT people
+// who happen to share a name stay separate targets - the aggregator then
+// quarantines rows aimed at that shared name as ambiguous instead of
+// paying the same money to both (decision 5 fail-closed).
+function outsideTargetKey(row: Pick<OhioCandidateFinanceDueRow, "candidateId" | "officeName">): string {
+  return `${row.candidateId}\u0000${row.officeName}`;
 }
 
 type OutsideAggregationForYear = {
@@ -376,6 +387,32 @@ async function aggregateOutsideForYear(input: {
       sourceUrl: input.sourceUrl,
     });
 
+    // A report key discovered in the annual files with no detail report
+    // means the bundle predates that filing — its money is invisible, so
+    // any total published from this bundle could be a false zero or an
+    // undercount. The whole year fails closed to "unavailable" (stored
+    // outside data is preserved) until the bundle is refreshed.
+    if (aggregation.missingDetailReportKeys.length > 0) {
+      const message =
+        `31-U detail bundle is stale: ${aggregation.missingDetailReportKeys.length} annual report key(s) have no ` +
+        `detail report (re-run ohio-candidates:finance:raw:refresh): ${aggregation.missingDetailReportKeys.join(", ")}`;
+      console.warn(
+        `Ohio SoS outside-spending data incomplete for ${input.electionYear}; syncing direct finance and preserving stored outside totals:`,
+        message
+      );
+      return {
+        byTargetKey: null,
+        summary: {
+          electionYear: input.electionYear,
+          available: false,
+          error: message,
+          reportCount: aggregation.reports.length,
+          quarantinedReportCount: aggregation.quarantinedReportCount,
+          missingDetailReportKeyCount: aggregation.missingDetailReportKeys.length,
+        },
+      };
+    }
+
     const byTargetKey = new Map<string, OhioCandidateOutsideFinanceInput>();
     for (const key of targetsByKey.keys()) {
       // The aggregation only lists candidates with attributed rows; every
@@ -406,8 +443,11 @@ async function aggregateOutsideForYear(input: {
     };
   } catch (error) {
     const message = errorMessage(error);
+    // The message carries the real cause — this can be a missing artifact
+    // OR an aggregation failure (e.g. a duplicate detail report key), so
+    // the warning stays neutral about which.
     console.warn(
-      `Ohio SoS outside-spending artifacts unavailable for ${input.electionYear}; syncing direct finance and preserving stored outside totals:`,
+      `Ohio SoS outside-spending aggregation unavailable for ${input.electionYear}; syncing direct finance and preserving stored outside totals:`,
       message
     );
     return {

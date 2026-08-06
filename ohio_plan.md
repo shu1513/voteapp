@@ -433,6 +433,24 @@ main feasibility risk and also settles the 31-U two-stage question.
       $217,704.16 — 13 reports reconciled, 0 quarantined, and the
       attributed-cents delta vs the PR 6 smoke is exactly the Perez+Haines
       $102,348.10 that this due list does not cover.
+      Review round (Codex + CodeRabbit): (1) a bundle missing annual report
+      keys now fails the year closed to outside-unavailable — the real
+      cache's spike bundle misses 15 keys carrying ~$5.9M of annual 31-U
+      money (incl. V-PAC $4.0M + $0.9M), so publishing zeros from it would
+      have been false; totals return after `raw:refresh`. (2) Outside
+      target dedupe keys on candidateId, not display name — two different
+      same-name people stay separate targets and quarantine as ambiguous
+      instead of both being paid. (3) The version-1 bundle reader validates
+      every consumed field (a direction outside support/oppose/null would
+      have landed in the aggregator's oppose branch). (4) #542 leftover
+      closed: on a FILLED cover row a blank VALUE_IND_EXPENDITURES now
+      feeds the gate as 0 (fully-blank rows stay ignored); probe of all 28
+      cycle keys found 13 exact IE matches, 15 no-cover, 0 blank-on-filled,
+      so the change is pure added protection. Declined: streaming-JSON for
+      the bundle (it is 9.8 KB — 305 MB is the whole cache), shared CLI
+      flag parser and dropping `force` from the recurring scheduler payload
+      (both verbatim the maryland/all-states template; repo-wide questions,
+      not Ohio's).
 - [ ] PR 8 outside-group funders/industries (#3)
 - [ ] PR 9+ PDF path / live run
 

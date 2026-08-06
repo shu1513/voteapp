@@ -1,4 +1,8 @@
-import type { OhioSosContributionRow, OhioSosCoverPageRow } from "./ohioSosBulkFiles.js";
+import {
+  isBlankOhioSosCoverPageRow,
+  type OhioSosContributionRow,
+  type OhioSosCoverPageRow,
+} from "./ohioSosBulkFiles.js";
 
 // Direct-money aggregation for one Ohio candidate committee over one
 // election cycle (ohio_plan.md PR 6). Itemized receipts come from the
@@ -156,29 +160,6 @@ function contributionSizeBucket(amountCents: number): string {
   return "$5,000+";
 }
 
-// A cover row whose every money column is blank carries no data at all
-// (observed as rare e-filing damage). A PARTIALLY blank row is different:
-// on the real 2026-cycle file all 583 rows with a blank TOTAL_CONTRIBUTIONS
-// satisfy TOTAL_FUNDS = AMT_FORWARD + TOTAL_OTHER_INCOME exactly, so a
-// blank money cell on an otherwise-filled row provably means zero and the
-// `?? 0` sums below are correct.
-function isBlankCoverRow(row: OhioSosCoverPageRow): boolean {
-  return (
-    row.amountForwardCents === null &&
-    row.totalContributionsCents === null &&
-    row.totalOtherIncomeCents === null &&
-    row.totalFundsCents === null &&
-    row.totalExpendituresCents === null &&
-    row.balanceOnHandCents === null &&
-    row.valueInkindReceivedCents === null &&
-    row.valueInkindMadeCents === null &&
-    row.outstandingLoansOwedCents === null &&
-    row.outstandingDebtOwedCents === null &&
-    row.outstandingLoansToCents === null &&
-    row.valueIndependentExpendituresCents === null
-  );
-}
-
 function contributorIdentityKey(row: OhioSosContributionRow, rowIndex: number): string {
   const parts = [
     row.nonIndividual,
@@ -310,8 +291,11 @@ export function createOhioDirectContributionAccumulator(input: {
         row.reportYear >= cycleStartYear &&
         row.reportYear <= electionYear
     );
-    const blankCoverRowCount = cycleRows.filter(isBlankCoverRow).length;
-    const cycleCoverRows = cycleRows.filter((row) => !isBlankCoverRow(row));
+    // Fully blank rows carry no data (isBlankOhioSosCoverPageRow); on the
+    // remaining rows a blank money cell provably means zero, so the `?? 0`
+    // sums below are correct.
+    const blankCoverRowCount = cycleRows.filter(isBlankOhioSosCoverPageRow).length;
+    const cycleCoverRows = cycleRows.filter((row) => !isBlankOhioSosCoverPageRow(row));
 
     let totalDisbursementsCents: number | null = null;
     let coverReceiptsCents: number | null = null;

@@ -404,6 +404,89 @@ describe("syncDueOhioCandidateFinance", () => {
     });
   });
 
+  it("keeps two different same-name candidates as separate targets so their money quarantines", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeCycleArtifacts(cacheDir);
+    // Two DIFFERENT people (distinct candidate ids), same display name and
+    // office, different districts. Attributing the same $1,000 to both
+    // would double-pay; the aggregator must see two targets and quarantine
+    // the name as ambiguous instead.
+    const rows = [
+      dueRow(),
+      dueRow({
+        candidateId: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        electionId: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        district: "12",
+        committeeId: "16258",
+        committeeName: "KALMBACH FOR THE 12TH",
+      }),
+    ];
+    const db = createDueListDb(rows);
+
+    const result = await syncDueOhioCandidateFinance({
+      db,
+      now: new Date("2026-08-05T09:10:11.000Z"),
+      dryRun: true,
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: cacheDir,
+    });
+
+    expect(result.syncedCandidateCount).toBe(2);
+    expect(result.results[0]?.result?.outsideSupportTotal).toBe(0);
+    expect(result.results[1]?.result?.outsideSupportTotal).toBe(0);
+    expect(result.outsideAggregationByYear[0]).toMatchObject({
+      available: true,
+      ambiguousTargetCount: 1,
+      attributedRowCount: 0,
+    });
+  });
+
+  it("treats a bundle missing annual report keys as unavailable and preserves stored outside data", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeCycleArtifacts(cacheDir);
+    // A second 31-U filing exists in the annual file but not in the bundle:
+    // its money is invisible, so no outside total from this bundle can be
+    // trusted — the year must fail closed to "unavailable".
+    await writeBulkCsv({
+      cacheDir,
+      fileName: "PPC_EXP_2026.CSV",
+      header: OHIO_SOS_PARTY_EXPENDITURES_HEADER,
+      rows: [
+        {
+          COM_NAME: "SOME PARTY COMMITTEE",
+          MASTER_KEY: "4242",
+          RPT_YEAR: "2026",
+          REPORT_KEY: "600000000",
+          SHORT_DESCRIPTION: "31-U  Ind Exp by committee",
+          NON_INDIVIDUAL: "AD BUYER",
+          EXPEND_DATE: "05/01/2026",
+          AMOUNT: "500",
+          PARTY: "REPUBLICAN",
+        },
+      ],
+    });
+    const rows = [dueRow()];
+    const db = createDueListDb(rows);
+    const syncFn = vi.fn().mockResolvedValue({ ok: true });
+
+    const result = await syncDueOhioCandidateFinance({
+      db,
+      now: new Date("2026-08-05T09:10:11.000Z"),
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: cacheDir,
+      syncOhioCandidateFinanceFn: syncFn as never,
+    });
+
+    expect(result.syncedCandidateCount).toBe(1);
+    expect(syncFn.mock.calls[0]?.[0]).toMatchObject({ outsideFinance: null });
+    expect(result.outsideAggregationByYear[0]).toMatchObject({
+      electionYear: 2026,
+      available: false,
+      missingDetailReportKeyCount: 1,
+    });
+    expect(result.outsideAggregationByYear[0]?.error).toContain("600000000");
+  });
+
   it("fails the year's candidates when a direct artifact is missing", async () => {
     const cacheDir = await makeCacheDir();
     await writeCycleArtifacts(cacheDir);

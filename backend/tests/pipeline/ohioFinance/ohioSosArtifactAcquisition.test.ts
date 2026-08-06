@@ -331,9 +331,20 @@ describe("readOhioSos31uDetailBundle", () => {
     await writeFile(ohioSos31uDetailCachePath({ cacheDir, cycleYear: 2026 }), JSON.stringify(payload), "utf8");
   }
 
-  it("reads the version-1 payload with already-parsed rows", async () => {
-    const cacheDir = await makeCacheDir();
-    await writeBundle(cacheDir, {
+  function bundleRow(overrides: Record<string, unknown> = {}): Record<string, unknown> {
+    return {
+      reportKey: "100",
+      spenderCommitteeName: "PAC X",
+      amountCents: 10_000,
+      direction: "support",
+      candidateNameOrBallotIssue: "AMY ACTON",
+      office: null,
+      ...overrides,
+    };
+  }
+
+  function versionOneBundle(rows: Array<Record<string, unknown>>): Record<string, unknown> {
+    return {
       version: 1,
       cycleYear: 2026,
       retrievedAt: "2026-08-04T00:00:00.000Z",
@@ -344,16 +355,72 @@ describe("readOhioSos31uDetailBundle", () => {
           annualTotalCents: 10_000,
           detailTotalCents: 10_000,
           reconciled: true,
-          rows: [{ reportKey: "100", spenderCommitteeName: "PAC X", amountCents: 10_000, direction: "support" }],
+          rows,
         },
       ],
       failures: [],
-    });
+    };
+  }
+
+  it("reads the version-1 payload with already-parsed rows", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeBundle(cacheDir, versionOneBundle([bundleRow()]));
 
     const reports = await readOhioSos31uDetailBundle({ cacheDir, cycleYear: 2026 });
     expect(reports).toHaveLength(1);
     expect(reports[0]?.reportKey).toBe("100");
     expect(reports[0]?.rows[0]).toMatchObject({ amountCents: 10_000, direction: "support" });
+  });
+
+  it("rejects a version-1 row whose direction is outside the pinned vocabulary", async () => {
+    // The aggregator's attribution branch treats any non-null direction
+    // that is not "support" as opposition, so a bogus value must throw
+    // here instead of becoming oppose money.
+    const cacheDir = await makeCacheDir();
+    await writeBundle(cacheDir, versionOneBundle([bundleRow({ direction: "unknown" })]));
+    await expect(readOhioSos31uDetailBundle({ cacheDir, cycleYear: 2026 })).rejects.toThrow(
+      /row 1 has a malformed direction/
+    );
+  });
+
+  it("rejects a version-1 row whose amount is not an integer cents value", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeBundle(cacheDir, versionOneBundle([bundleRow({ amountCents: "10000" })]));
+    await expect(readOhioSos31uDetailBundle({ cacheDir, cycleYear: 2026 })).rejects.toThrow(
+      /row 1 has a malformed amountCents/
+    );
+  });
+
+  it("rejects a version-1 row whose reportKey does not match its report", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeBundle(cacheDir, versionOneBundle([bundleRow({ reportKey: "999" })]));
+    await expect(readOhioSos31uDetailBundle({ cacheDir, cycleYear: 2026 })).rejects.toThrow(
+      /row 1 has a malformed reportKey/
+    );
+  });
+
+  it("rejects a version-1 report entry without a string reportKey", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeBundle(cacheDir, { version: 1, cycleYear: 2026, reports: [{ reportKey: 100, rows: [] }] });
+    await expect(readOhioSos31uDetailBundle({ cacheDir, cycleYear: 2026 })).rejects.toThrow(
+      /malformed report entry/
+    );
+  });
+
+  it("rejects a legacy entry without a string key", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeBundle(cacheDir, { rows: [{ key: 512315395, rows: [] }] });
+    await expect(readOhioSos31uDetailBundle({ cacheDir, cycleYear: 2026 })).rejects.toThrow(
+      /malformed legacy report entry/
+    );
+  });
+
+  it("rejects a version-1 payload without a reports array", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeBundle(cacheDir, { version: 1, cycleYear: 2026 });
+    await expect(readOhioSos31uDetailBundle({ cacheDir, cycleYear: 2026 })).rejects.toThrow(
+      /unrecognized format/
+    );
   });
 
   it("parses the legacy spike checkpoint through the pinned-header table parser", async () => {

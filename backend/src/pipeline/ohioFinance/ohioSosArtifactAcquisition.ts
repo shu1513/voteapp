@@ -503,7 +503,38 @@ export async function readOhioSos31uDetailBundle(input: {
       if (typeof report.reportKey !== "string" || !Array.isArray(report.rows)) {
         throw new Error(`Ohio SoS 31-U detail bundle at ${detailPath} has a malformed report entry`);
       }
-      return { reportKey: report.reportKey, rows: report.rows as OhioSos31uDetailRow[] };
+      const reportKey = report.reportKey;
+      // Every field the aggregator consumes is validated, not cast: a
+      // damaged or hand-edited bundle must throw here, never mis-aggregate.
+      // In particular a direction outside {support, oppose, null} would
+      // fall into the aggregator's oppose branch.
+      const rows = report.rows.map((rawRow, rowIndex) => {
+        const row = rawRow as Partial<OhioSos31uDetailRow>;
+        const malformed = (field: string): Error =>
+          new Error(
+            `Ohio SoS 31-U detail bundle at ${detailPath} report ${reportKey} row ${rowIndex + 1} has a malformed ${field}`
+          );
+        if (row.reportKey !== reportKey) {
+          throw malformed("reportKey");
+        }
+        if (typeof row.spenderCommitteeName !== "string") {
+          throw malformed("spenderCommitteeName");
+        }
+        if (row.amountCents !== null && !Number.isInteger(row.amountCents)) {
+          throw malformed("amountCents");
+        }
+        if (row.direction !== null && row.direction !== "support" && row.direction !== "oppose") {
+          throw malformed("direction");
+        }
+        if (row.candidateNameOrBallotIssue !== null && typeof row.candidateNameOrBallotIssue !== "string") {
+          throw malformed("candidateNameOrBallotIssue");
+        }
+        if (row.office !== null && typeof row.office !== "string") {
+          throw malformed("office");
+        }
+        return row as OhioSos31uDetailRow;
+      });
+      return { reportKey, rows };
     });
   }
 

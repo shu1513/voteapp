@@ -331,6 +331,37 @@ describe("aggregateOhioOutsideSpending", () => {
     expect(result.reports[0]?.coverIeCents).toBe(100_00);
   });
 
+  it("reads a blank IE cell on an otherwise-filled cover row as zero and quarantines", () => {
+    // A present cover page that claims no independent spending contradicts
+    // a nonzero annual 31-U total — that must hit the gate, not bypass it.
+    const result = aggregateOhioOutsideSpending({
+      electionYear: 2026,
+      annualExpenditureRows: [annualRow({ amountCents: 100_00 })],
+      detailReports: [{ reportKey: "512315395", rows: [detailRow()] }],
+      coverRows: [
+        coverRow({ totalExpendituresCents: 100_00, balanceOnHandCents: 0, valueIndependentExpendituresCents: null }),
+      ],
+      candidates: [ACTON],
+    });
+    expect(result.reports[0]?.coverIeCents).toBe(0);
+    expect(result.reports[0]?.quarantineReason).toBe("cover_mismatch");
+    expect(result.candidates).toHaveLength(0);
+  });
+
+  it("ignores a fully blank cover row exactly like a missing one", () => {
+    // Every money column blank = e-filing damage, not a claim of zero.
+    const result = aggregateOhioOutsideSpending({
+      electionYear: 2026,
+      annualExpenditureRows: [annualRow({ amountCents: 100_00 })],
+      detailReports: [{ reportKey: "512315395", rows: [detailRow()] }],
+      coverRows: [coverRow()],
+      candidates: [ACTON],
+    });
+    expect(result.quarantinedReportCount).toBe(0);
+    expect(result.reports[0]?.coverIeCents).toBeNull();
+    expect(result.candidates).toHaveLength(1);
+  });
+
   it("quarantines a detail report whose key never appears in the annual files", () => {
     const result = aggregateOhioOutsideSpending({
       electionYear: 2026,
