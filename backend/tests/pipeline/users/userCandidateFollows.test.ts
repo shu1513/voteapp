@@ -324,7 +324,7 @@ describe("setUserCandidateFollow", () => {
     client.query
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ id: userId }] })
-      .mockResolvedValueOnce({ rows: [{ count: String(USER_CANDIDATE_FOLLOW_LIMIT) }] });
+      .mockResolvedValueOnce({ rows: [{ count: String(USER_CANDIDATE_FOLLOW_LIMIT), already_followed: false }] });
 
     await expect(setUserCandidateFollow(db, userId, { candidateId: candidateIdA, following: true })).rejects.toSatisfy(
       (error) => {
@@ -350,7 +350,7 @@ describe("setUserCandidateFollow", () => {
     client.query
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ id: userId }] })
-      .mockResolvedValueOnce({ rows: [{ count: String(USER_CANDIDATE_FOLLOW_LIMIT - 1) }] })
+      .mockResolvedValueOnce({ rows: [{ count: String(USER_CANDIDATE_FOLLOW_LIMIT - 1), already_followed: true }] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -366,6 +366,33 @@ describe("setUserCandidateFollow", () => {
     await expect(
       setUserCandidateFollow(db, userId, { candidateId: candidateIdA, following: true, notifyElections: false })
     ).resolves.toMatchObject({ follow: { candidate_id: candidateIdA, following: true } });
+    expect(client.query.mock.calls[4]?.[0]).toBe("COMMIT");
+  });
+
+  it("allows updating an existing follow for a user grandfathered above the limit", async () => {
+    const { db, client } = createMockTransactionalDb();
+    client.query
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      // 30 OTHER visible follows — over the cap — but the target is already
+      // followed, so this is a notification-flag update, not a new follow.
+      .mockResolvedValueOnce({ rows: [{ count: "30", already_followed: true }] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateIdA,
+            notify_elections: true,
+            notify_updates: false,
+            created_at: "2026-01-02T03:04:05.000Z",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    await expect(
+      setUserCandidateFollow(db, userId, { candidateId: candidateIdA, following: true, notifyUpdates: false })
+    ).resolves.toMatchObject({ follow: { candidate_id: candidateIdA, following: true } });
+    expect(String(client.query.mock.calls[2]?.[0])).toContain("already_followed");
     expect(client.query.mock.calls[4]?.[0]).toBe("COMMIT");
   });
 

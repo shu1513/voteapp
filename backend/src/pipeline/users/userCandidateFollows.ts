@@ -307,15 +307,24 @@ export async function setUserCandidateFollow(
 
     // Enforce the follow cap inside the transaction: assertActiveUser locked
     // the user row FOR UPDATE, so concurrent follows for the same user
-    // serialize and cannot both pass this count. The candidate being
-    // (re-)followed is excluded so notification-flag updates on an existing
-    // follow still work at the limit. Only follows the user can see count:
-    // the join mirrors listUserCandidateFollows' visibility rule, so a stale
-    // follow whose candidate was soft-deleted or merged (hidden from the
-    // list, thus impossible to unfollow from it) cannot consume quota.
-    const existing = await client.query<{ count: string }>(
+    // serialize and cannot both pass this count. The cap applies only to
+    // genuinely NEW follows — already_followed bypasses it, so notification-
+    // flag updates (the UI sends following: true for those) keep working for
+    // users at or grandfathered above the limit. Only follows the user can
+    // see count: the join mirrors listUserCandidateFollows' visibility rule,
+    // so a stale follow whose candidate was soft-deleted or merged (hidden
+    // from the list, thus impossible to unfollow from it) cannot consume
+    // quota.
+    const existing = await client.query<{ count: string; already_followed: boolean }>(
       `
-        SELECT count(*) AS count
+        SELECT
+          count(*) AS count,
+          EXISTS (
+            SELECT 1
+            FROM public.user_candidate_follows
+            WHERE user_id = $1::uuid
+              AND candidate_id = $2::uuid
+          ) AS already_followed
         FROM public.user_candidate_follows AS follow
         JOIN public.candidates AS candidate
           ON candidate.id = follow.candidate_id
@@ -326,7 +335,10 @@ export async function setUserCandidateFollow(
       `,
       [normalizedUserId, normalizedInput.candidateId]
     );
-    if (Number(existing.rows[0]?.count ?? 0) >= USER_CANDIDATE_FOLLOW_LIMIT) {
+    if (
+      !existing.rows[0]?.already_followed &&
+      Number(existing.rows[0]?.count ?? 0) >= USER_CANDIDATE_FOLLOW_LIMIT
+    ) {
       throw new UserCandidateFollowsError(
         "follow_limit_reached",
         `You can follow up to ${USER_CANDIDATE_FOLLOW_LIMIT} candidates. Unfollow one to add another.`
