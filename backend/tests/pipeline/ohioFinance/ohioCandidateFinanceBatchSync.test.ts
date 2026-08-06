@@ -13,8 +13,10 @@ import {
   OHIO_SOS_CANDIDATE_CONTRIBUTIONS_HEADER,
   OHIO_SOS_CANDIDATE_COVER_HEADER,
   OHIO_SOS_CANDIDATE_EXPENDITURES_HEADER,
+  OHIO_SOS_PAC_CONTRIBUTIONS_HEADER,
   OHIO_SOS_PAC_COVER_HEADER,
   OHIO_SOS_PAC_EXPENDITURES_HEADER,
+  OHIO_SOS_PARTY_CONTRIBUTIONS_HEADER,
   OHIO_SOS_PARTY_COVER_HEADER,
   OHIO_SOS_PARTY_EXPENDITURES_HEADER,
   type OhioSosCandidateCommitteeListRow,
@@ -214,6 +216,51 @@ async function writeCycleArtifacts(cacheDir: string): Promise<void> {
     });
   }
 
+  // Funder-leg sources (PR 8): who funds spender 1792.
+  await writeBulkCsv({
+    cacheDir,
+    fileName: "PAC_CON_2025.CSV",
+    header: OHIO_SOS_PAC_CONTRIBUTIONS_HEADER,
+    rows: [],
+  });
+  await writeBulkCsv({
+    cacheDir,
+    fileName: "PAC_CON_2026.CSV",
+    header: OHIO_SOS_PAC_CONTRIBUTIONS_HEADER,
+    rows: [
+      {
+        COM_NAME: "NFIB OHIO PAC",
+        MASTER_KEY: "1792",
+        RPT_YEAR: "2026",
+        REPORT_KEY: "501544249",
+        SHORT_DESCRIPTION: "31-A  Stmt of Contribution",
+        NON_INDIVIDUAL: "MAIN STREET ALLIANCE LLC",
+        AMOUNT: "2500",
+        FILE_DATE: "05/01/2026",
+      },
+      {
+        // Individual member dues — never a donor label.
+        COM_NAME: "NFIB OHIO PAC",
+        MASTER_KEY: "1792",
+        RPT_YEAR: "2026",
+        REPORT_KEY: "501544249",
+        SHORT_DESCRIPTION: "31-A  Stmt of Contribution",
+        FIRST_NAME: "SAM",
+        LAST_NAME: "OWNER",
+        AMOUNT: "50",
+        FILE_DATE: "05/02/2026",
+      },
+    ],
+  });
+  for (const fileName of ["PPC_CON_2025.CSV", "PPC_CON_2026.CSV"]) {
+    await writeBulkCsv({
+      cacheDir,
+      fileName,
+      header: OHIO_SOS_PARTY_CONTRIBUTIONS_HEADER,
+      rows: [],
+    });
+  }
+
   await writeBulkCsv({
     cacheDir,
     fileName: "PAC_COV.CSV",
@@ -374,8 +421,18 @@ describe("syncDueOhioCandidateFinance", () => {
         ambiguousTargetCount: 0,
         attributedRowCount: 1,
         attributedCents: 100_000,
+        fundersAvailable: true,
+        funderContributionRowCount: 2,
       },
     ]);
+
+    // Funder leg (PR 8): the organization donor is counted, the individual
+    // row is matched-but-skipped.
+    expect(kalmbach).toMatchObject({
+      matchedOutsideContributionRowCount: 2,
+      includedOutsideContributionRowCount: 1,
+      skippedOutsideContributionRowCount: 1,
+    });
   });
 
   it("shares one outside target across a candidate's primary and general due rows", async () => {
@@ -488,6 +545,37 @@ describe("syncDueOhioCandidateFinance", () => {
       missingDetailReportKeyCount: 1,
     });
     expect(result.outsideAggregationByYear[0]?.error).toContain("600000000");
+  });
+
+  it("only disables the funder leg when the funder contribution artifacts are missing", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeCycleArtifacts(cacheDir);
+    // The funder sources are gone; the outside totals leg must still sync
+    // and the funder slice must be null (stored breakdowns preserved), not
+    // an empty list (which would clear them).
+    await rm(join(cacheDir, "PAC_CON_2025.CSV"));
+    await rm(join(cacheDir, "PAC_CON_2026.CSV"));
+    const rows = [dueRow()];
+    const db = createDueListDb(rows);
+    const syncFn = vi.fn().mockResolvedValue({ ok: true });
+
+    const result = await syncDueOhioCandidateFinance({
+      db,
+      now: new Date("2026-08-05T09:10:11.000Z"),
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: cacheDir,
+      syncOhioCandidateFinanceFn: syncFn as never,
+    });
+
+    expect(result.syncedCandidateCount).toBe(1);
+    expect(syncFn.mock.calls[0]?.[0]).toMatchObject({
+      outsideFinance: { supportTotal: 1000, opposeTotal: 0, funders: null },
+    });
+    expect(result.outsideAggregationByYear[0]).toMatchObject({
+      available: true,
+      fundersAvailable: false,
+    });
+    expect(result.outsideAggregationByYear[0]?.fundersError).toBeTruthy();
   });
 
   it("sees a same-name double from the active-link universe even when it is not due", async () => {

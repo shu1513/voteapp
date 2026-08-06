@@ -12,6 +12,7 @@ import {
   type OhioCandidateOutsideFinanceInput,
   type OhioCandidateFinanceSyncResult,
 } from "./ohioCandidateFinanceSync.js";
+import { aggregateOhioOutsideGroupContributions } from "./ohioOutsideGroupContributionAggregator.js";
 import {
   createOhioDirectContributionAccumulator,
   type OhioDirectContributionAggregationResult,
@@ -38,12 +39,15 @@ import {
   OHIO_SOS_CANDIDATE_COVER_FAMILY,
   OHIO_SOS_CANDIDATE_EXPENDITURES_FAMILY,
   OHIO_SOS_CANDIDATE_LIST_FAMILY,
+  OHIO_SOS_PAC_CONTRIBUTIONS_FAMILY,
   OHIO_SOS_PAC_COVER_FAMILY,
   OHIO_SOS_PAC_EXPENDITURES_FAMILY,
+  OHIO_SOS_PARTY_CONTRIBUTIONS_FAMILY,
   OHIO_SOS_PARTY_COVER_FAMILY,
   OHIO_SOS_PARTY_EXPENDITURES_FAMILY,
   type OhioSosBulkFileFamily,
   type OhioSosCandidateCommitteeListRow,
+  type OhioSosContributionRow,
   type OhioSosCoverPageRow,
   type OhioSosExpenditureRow,
 } from "./ohioSosBulkFiles.js";
@@ -131,6 +135,13 @@ export type OhioOutsideAggregationYearSummary = {
   ambiguousTargetCount?: number;
   attributedRowCount?: number;
   attributedCents?: number;
+  // Outside-group funder leg (PR 8). Absent when the outside leg itself was
+  // unavailable; false when the PAC/party contribution artifacts could not
+  // be loaded (stored breakdown rows are then preserved).
+  fundersAvailable?: boolean;
+  fundersError?: string;
+  // Contribution rows kept for the year's 31-U spender committees.
+  funderContributionRowCount?: number;
 };
 
 export type OhioCandidateFinanceBatchSyncResult = {
@@ -350,6 +361,46 @@ const OUTSIDE_EXPENDITURE_PRODUCTS: ReadonlyArray<{
   { productKey: "party_expenditures", family: OHIO_SOS_PARTY_EXPENDITURES_FAMILY },
 ];
 
+// Funder-leg sources (PR 8). Candidate-committee 31-U spenders are NOT
+// covered: their receipts live in the ~90 MB CAC_CON files, and on the real
+// 2026-cycle files no bundle-covered spender is a candidate committee —
+// their groups simply carry no funder breakdowns.
+const OUTSIDE_FUNDER_CONTRIBUTION_PRODUCTS: ReadonlyArray<{
+  productKey: OhioSosProductKey;
+  family: OhioSosBulkFileFamily<OhioSosContributionRow>;
+}> = [
+  { productKey: "pac_contributions", family: OHIO_SOS_PAC_CONTRIBUTIONS_FAMILY },
+  { productKey: "party_contributions", family: OHIO_SOS_PARTY_CONTRIBUTIONS_FAMILY },
+];
+
+// One filtered pass over the year's PAC/party contribution files: only rows
+// whose MASTER_KEY belongs to a 31-U spender committee are kept, so the
+// held slice stays small (the files themselves are 2–60 MB).
+async function collectFunderContributionRows(input: {
+  electionYear: number;
+  spenderCommitteeIds: ReadonlySet<string>;
+  cacheDir: string;
+  now?: Date;
+}): Promise<OhioSosContributionRow[]> {
+  const rows: OhioSosContributionRow[] = [];
+  for (const { productKey, family } of OUTSIDE_FUNDER_CONTRIBUTION_PRODUCTS) {
+    for (const transactionYear of [input.electionYear - 1, input.electionYear]) {
+      const filePath = await verifiedArtifactPath({ cacheDir: input.cacheDir, productKey, transactionYear });
+      await streamOhioSosBulkFile<OhioSosContributionRow>({
+        path: filePath,
+        family,
+        now: input.now,
+        visit: (row) => {
+          if (input.spenderCommitteeIds.has(row.masterKey.trim())) {
+            rows.push(row);
+          }
+        },
+      });
+    }
+  }
+  return rows;
+}
+
 // Keyed by candidateId + office so one PERSON due for several elections
 // (primary + general) shares a single target, while two DIFFERENT people
 // who happen to share a name stay separate targets - the aggregator then
@@ -511,6 +562,58 @@ async function aggregateOutsideForYear(input: {
       });
     }
 
+    // Funder leg (PR 8): one filtered pass over the PAC/party contribution
+    // files for the year's 31-U spender committees, then a per-candidate
+    // slice. A funder artifact failure only disables this leg (funders
+    // null → the writer keeps the stored breakdown rows); the outside
+    // totals above still sync.
+    const spenderCommitteeIds = new Set<string>();
+    for (const slice of byTargetKey.values()) {
+      for (const group of slice.groups) {
+        spenderCommitteeIds.add(group.committeeId.trim());
+      }
+    }
+    let funderRows: OhioSosContributionRow[] | null = [];
+    let fundersError: string | undefined;
+    if (spenderCommitteeIds.size > 0) {
+      try {
+        funderRows = await collectFunderContributionRows({
+          electionYear: input.electionYear,
+          spenderCommitteeIds,
+          cacheDir: input.cacheDir,
+          now: input.now,
+        });
+      } catch (error) {
+        funderRows = null;
+        fundersError = errorMessage(error);
+        console.warn(
+          `Ohio SoS outside-group funder artifacts unavailable for ${input.electionYear}; syncing outside totals and preserving stored funder breakdowns:`,
+          fundersError
+        );
+      }
+    }
+    for (const [key, slice] of byTargetKey) {
+      if (funderRows === null) {
+        byTargetKey.set(key, { ...slice, funders: null });
+        continue;
+      }
+      const funderAggregation = aggregateOhioOutsideGroupContributions({
+        electionYear: input.electionYear,
+        outsideGroups: slice.groups,
+        contributionRows: funderRows,
+        sourceUrl: input.sourceUrl,
+      });
+      byTargetKey.set(key, {
+        ...slice,
+        funders: {
+          breakdowns: funderAggregation.outsideGroupBreakdowns,
+          matchedContributionRowCount: funderAggregation.matchedContributionRowCount,
+          includedContributionRowCount: funderAggregation.includedContributionRowCount,
+          skippedContributionRowCount: funderAggregation.skippedContributionRowCount,
+        },
+      });
+    }
+
     return {
       byTargetKey,
       summary: {
@@ -523,6 +626,9 @@ async function aggregateOutsideForYear(input: {
         ambiguousTargetCount: aggregation.ambiguousTargets.length,
         attributedRowCount: aggregation.attributedRowCount,
         attributedCents: aggregation.attributedCents,
+        fundersAvailable: funderRows !== null,
+        ...(fundersError === undefined ? {} : { fundersError }),
+        ...(funderRows === null ? {} : { funderContributionRowCount: funderRows.length }),
       },
     };
   } catch (error) {

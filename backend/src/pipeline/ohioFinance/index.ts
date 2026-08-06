@@ -6,6 +6,7 @@ export * from "./ohioCandidateFinanceSync.js";
 export * from "./ohioDirectContributionAggregator.js";
 export * from "./ohioFinanceEligibleOffices.js";
 export * from "./ohioFinanceWriter.js";
+export * from "./ohioOutsideGroupContributionAggregator.js";
 export * from "./ohioOutsideSpendingAggregator.js";
 export * from "./ohioSos31uDetail.js";
 export * from "./ohioSosArtifactAcquisition.js";

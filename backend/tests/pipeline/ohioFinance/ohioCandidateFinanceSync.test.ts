@@ -163,6 +163,145 @@ describe("syncOhioCandidateFinance", () => {
     expect(executedSql(db)).toContain("oh_candidate_finance_outside_groups");
   });
 
+  it("writes funder breakdowns and persists classification rows for the manual queue", async () => {
+    const db = createMockDb();
+    const input = baseInput(db);
+    const result = await syncOhioCandidateFinance({
+      ...input,
+      outsideFinance: {
+        ...input.outsideFinance,
+        funders: {
+          breakdowns: [
+            {
+              committeeId: "1792",
+              supportOppose: "support" as const,
+              categoryType: "donor" as const,
+              categoryName: "MAIN STREET ALLIANCE LLC",
+              amount: 2500,
+              contributorCount: 1,
+              sourceUrl: SOURCE_URL,
+            },
+          ],
+          matchedContributionRowCount: 2,
+          includedContributionRowCount: 1,
+          skippedContributionRowCount: 1,
+        },
+      },
+    });
+
+    expect(result).toMatchObject({
+      outsideGroupBreakdownsWritten: 1,
+      matchedOutsideContributionRowCount: 2,
+      includedOutsideContributionRowCount: 1,
+      skippedOutsideContributionRowCount: 1,
+    });
+    const sql = executedSql(db);
+    expect(sql).toContain("oh_candidate_finance_outside_group_breakdowns");
+    // The unresolved donor persists an 'unknown' classification row — the
+    // manual industry-label queue reads exactly these.
+    expect(sql).toContain("finance_label_classifications");
+    const classificationParams = db.client.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain("MAIN STREET ALLIANCE LLC");
+    expect(classificationParams).toContain("unknown");
+  });
+
+  it("classifies every donor but caps the persisted donor rows per group", async () => {
+    const db = createMockDb();
+    const input = baseInput(db);
+    const result = await syncOhioCandidateFinance({
+      ...input,
+      // Cap of 1: the smaller IBEW donor must be dropped from the WRITTEN
+      // donor rows, yet still feed the classifications and the rebuilt
+      // labor_unions industry total.
+      outsideMaxDonorBreakdownsPerGroup: 1,
+      outsideFinance: {
+        ...input.outsideFinance,
+        funders: {
+          breakdowns: [
+            {
+              committeeId: "1792",
+              supportOppose: "support" as const,
+              categoryType: "donor" as const,
+              categoryName: "IBEW LOCAL 540",
+              amount: 50_000,
+              contributorCount: 1,
+              sourceUrl: SOURCE_URL,
+            },
+            {
+              committeeId: "1792",
+              supportOppose: "support" as const,
+              categoryType: "donor" as const,
+              categoryName: "IBEW LOCAL 8",
+              amount: 25_000,
+              contributorCount: 1,
+              sourceUrl: SOURCE_URL,
+            },
+          ],
+          matchedContributionRowCount: 2,
+          includedContributionRowCount: 2,
+          skippedContributionRowCount: 0,
+        },
+      },
+    });
+
+    // 1 capped donor row + 1 industry row built from BOTH donors.
+    expect(result.outsideGroupBreakdownsWritten).toBe(2);
+    const breakdownInsertParams = db.client.query.mock.calls
+      .filter((call) => String(call[0]).includes("oh_candidate_finance_outside_group_breakdowns"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(breakdownInsertParams).toContain("IBEW LOCAL 540");
+    expect(breakdownInsertParams).not.toContain("IBEW LOCAL 8");
+    // The rebuilt industry total covers the dropped donor too.
+    expect(breakdownInsertParams).toContain("labor_unions");
+    expect(breakdownInsertParams).toContain(75_000);
+    // Both donors persisted classification rows.
+    const classificationParams = db.client.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain("IBEW LOCAL 540");
+    expect(classificationParams).toContain("IBEW LOCAL 8");
+  });
+
+  it("keeps stored funder breakdowns when the funder leg is unavailable", async () => {
+    const db = createMockDb();
+    const input = baseInput(db);
+    const result = await syncOhioCandidateFinance({
+      ...input,
+      outsideFinance: { ...input.outsideFinance, funders: null },
+    });
+
+    expect(result.outsideGroupBreakdownsWritten).toBe(0);
+    // Groups still refresh; the breakdowns table is never touched directly
+    // (no upsert, no delete-stale pass).
+    const sql = executedSql(db);
+    expect(sql).toContain("oh_candidate_finance_outside_groups");
+    expect(sql).not.toContain("oh_candidate_finance_outside_group_breakdowns");
+  });
+
+  it("clears stale funder breakdowns when the funder aggregation ran and found none", async () => {
+    const db = createMockDb();
+    const input = baseInput(db);
+    const result = await syncOhioCandidateFinance({
+      ...input,
+      outsideFinance: {
+        ...input.outsideFinance,
+        funders: {
+          breakdowns: [],
+          matchedContributionRowCount: 0,
+          includedContributionRowCount: 0,
+          skippedContributionRowCount: 0,
+        },
+      },
+    });
+
+    expect(result.outsideGroupBreakdownsWritten).toBe(0);
+    // The delete-stale pass must run so previously stored funder rows do
+    // not survive a refresh where the donors disappeared.
+    expect(executedSql(db)).toContain("oh_candidate_finance_outside_group_breakdowns");
+  });
+
   it("does not touch the database on a dry run", async () => {
     const db = createMockDb();
     const result = await syncOhioCandidateFinance({
