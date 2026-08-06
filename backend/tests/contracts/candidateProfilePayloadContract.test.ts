@@ -331,4 +331,82 @@ describe("parseCandidateProfilePayload", () => {
 
     expect(parsed.ok).toBe(true);
   });
+
+  it("accepts a summary that follows the role/credentials/priorities formula", () => {
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      has_held_public_office: false,
+      summary:
+        "Community organizer in South Los Angeles for about 20 years and co-director of ACCE's LA chapter. Priorities: tenant protections and more affordable housing.",
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (parsed.ok) {
+      expect(parsed.payload.summary).toContain("Community organizer");
+    }
+  });
+
+  it("rejects a summary over the length cap", () => {
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      has_held_public_office: false,
+      summary: "A ".repeat(200).trim(),
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toContain("max 300");
+    expect(parsed.reason).toContain("2 sentences");
+  });
+
+  it("rejects horse-race content in the summary", () => {
+    // The live over-cap example also violated the horse-race ban: office,
+    // runoff, and vote share all next to a contest card that already shows
+    // the race.
+    const horseRaceSummaries = [
+      "Longtime organizer running for City Council District 9.",
+      "State legislator seeking re-election after two terms.",
+      "Advanced to the November runoff against another Democrat.",
+      "Won about 26% in the June primary.",
+      "Won 26 percent of the vote in June.",
+    ];
+    for (const summary of horseRaceSummaries) {
+      const parsed = parseCandidateProfilePayload({
+        display_name: "Jane Doe",
+        first_name: "Jane",
+        last_name: "Doe",
+        has_held_public_office: false,
+        summary,
+        sources: ["https://example.org/profile"],
+      });
+      expect(parsed.ok, summary).toBe(false);
+      if (!parsed.ok) {
+        expect(parsed.reason).toContain("horse-race");
+      }
+    }
+  });
+
+  it("does not false-positive the horse-race patterns on biography wording", () => {
+    // "primary care physician" and "percentage" must survive — the patterns
+    // stay narrow so legitimate bios are not rejected.
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      has_held_public_office: false,
+      summary:
+        "Primary care physician and clinic director. Priorities: lowering the percentage of uninsured residents and expanding rural clinics.",
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(true);
+  });
 });

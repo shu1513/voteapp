@@ -33,6 +33,25 @@ export type CandidateProfilePayloadParseOptions = {
   allowFecIds?: boolean;
 };
 
+// Voters skim the summary next to the contest; the formula is 2 sentences —
+// current role, 1-2 credentials, top 2 priorities. 300 characters holds that
+// comfortably (live over-cap example: a 560-character organizer bio with
+// runoff percentages). The prompt states the formula; this cap and the
+// horse-race patterns below are the enforcement, so manual-research payloads
+// hit the same wall as AI ones.
+export const CANDIDATE_PROFILE_SUMMARY_MAX_LENGTH = 300;
+
+// The app renders the contest name, date, and stage beside the summary, so
+// race content inside it is always redundant and goes stale after election
+// day. Patterns stay narrow on purpose — "primary" alone would reject
+// "primary care physician".
+const SUMMARY_HORSE_RACE_PATTERNS: ReadonlyArray<{ pattern: RegExp; label: string }> = [
+  { pattern: /\brunning for\b/i, label: 'the phrase "running for"' },
+  { pattern: /\bseeking\s+re-?election\b/i, label: 'the phrase "seeking re-election"' },
+  { pattern: /\brunoff\b/i, label: '"runoff"' },
+  { pattern: /\d+(?:\.\d+)?\s*(?:%|percent\b)/i, label: "a percentage (vote-share/horse-race content)" },
+];
+
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
@@ -283,7 +302,23 @@ export function parseCandidateProfilePayload(
     if (!isNonEmptyString(input.summary)) {
       return { ok: false, reason: "payload.summary must be non-empty string when present" };
     }
-    summary = input.summary.trim();
+    const trimmedSummary = input.summary.trim();
+    if (trimmedSummary.length > CANDIDATE_PROFILE_SUMMARY_MAX_LENGTH) {
+      return {
+        ok: false,
+        reason:
+          `payload.summary is ${trimmedSummary.length} characters (max ${CANDIDATE_PROFILE_SUMMARY_MAX_LENGTH}) — voters skim it next to the contest. Rewrite as 2 sentences: current role, 1-2 credentials, top 2 priorities; cut everything else.`,
+      };
+    }
+    const horseRaceMatch = SUMMARY_HORSE_RACE_PATTERNS.find(({ pattern }) => pattern.test(trimmedSummary));
+    if (horseRaceMatch) {
+      return {
+        ok: false,
+        reason:
+          `payload.summary contains ${horseRaceMatch.label} — the app already names the contest next to the summary, so campaign-status and horse-race content is banned. Describe who the person is (current role, 1-2 credentials, top 2 priorities), not the race.`,
+      };
+    }
+    summary = trimmedSummary;
   }
 
   return {
