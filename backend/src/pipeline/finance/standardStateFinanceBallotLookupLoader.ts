@@ -148,6 +148,12 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
    * Vermont describe their outside groups as PACs instead.
    */
   outsideSupportActionLabel?: string;
+  /**
+   * One sentence naming what this source's outside-spending totals do not
+   * cover (see BallotLookupFinanceSummary.outside_spending). Omit unless the
+   * source has a known, systematic gap.
+   */
+  outsideCoverageNote?: string;
 }
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
   if (!input.enabled()) {
@@ -653,6 +659,11 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
           outside_spending: {
             support_total: parseFinanceAmount(row.outside_support_total),
             oppose_total: parseFinanceAmount(row.outside_oppose_total),
+            // Omitted entirely (not null) when the source has no known gap,
+            // so every other state's payload is byte-identical to before.
+            ...(input.outsideCoverageNote === undefined
+              ? {}
+              : { outside_coverage_note: input.outsideCoverageNote }),
             top_supporting_groups: supportingGroupsByCandidateElection.get(key) ?? [],
             top_opposing_groups: opposingGroupsByCandidateElection.get(key) ?? [],
             top_supporting_industries: supportingIndustriesByCandidateElection.get(key) ?? [],

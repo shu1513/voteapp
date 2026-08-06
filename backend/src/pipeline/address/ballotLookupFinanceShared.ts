@@ -124,6 +124,14 @@ export type BallotLookupFinanceSummary = {
      */
     membership_support_total?: number | null;
     membership_oppose_total?: number | null;
+    /**
+     * One sentence naming what this source's outside-spending totals do NOT
+     * cover, shown with the totals. Set only by loaders whose source has a
+     * known, systematic gap — a state where some spenders disclose through a
+     * channel the pipeline does not read yet. Without it a reader reasonably
+     * assumes the totals are all the outside money in the race.
+     */
+    outside_coverage_note?: string | null;
     top_supporting_groups: BallotLookupFinanceOutsideGroup[];
     top_opposing_groups: BallotLookupFinanceOutsideGroup[];
     top_supporting_industries: BallotLookupFinanceBreakdown[];

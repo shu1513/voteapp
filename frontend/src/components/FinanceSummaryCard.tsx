@@ -367,6 +367,12 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
             candidate's own campaign. This spending is not coordinated with the candidate's campaign
             and does not go directly to the candidate.
           </p>
+          {/* Stated with the totals, not in the footnote: a reader who sees a
+              dollar figure assumes it is all the outside money in the race.
+              Only sources with a known gap send this. */}
+          {outside.outside_coverage_note ? (
+            <p className="mt-1 text-xs text-ink-soft">{outside.outside_coverage_note}</p>
+          ) : null}
           <OutsideSection
             direction="support"
             total={outside.support_total}

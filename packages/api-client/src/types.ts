@@ -235,6 +235,10 @@ export type FinanceSummary = {
      * by sources that disclose it. */
     membership_support_total?: number | null;
     membership_oppose_total?: number | null;
+    /** One sentence naming what these totals do not cover. Set only by
+     * sources with a known, systematic gap (e.g. Ohio, where unregistered
+     * spenders disclose through filings the pipeline does not read yet). */
+    outside_coverage_note?: string | null;
     top_supporting_groups: FinanceOutsideGroup[];
     top_opposing_groups: FinanceOutsideGroup[];
     top_supporting_industries: FinanceBreakdown[];

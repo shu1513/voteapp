@@ -228,6 +228,17 @@ source. Amounts CHECK `>= 0` (canonical).
     support/oppose stay out. Until it ships, source metadata must say
     registered-committee outside spending only.
 
+    **Disclosure SHIPPED 2026-08-06** (the live run made it load-bearing —
+    $9.03M of outside spending is now published). New optional summary field
+    `outside_spending.outside_coverage_note`, set only by loaders whose
+    source has a known systematic gap (same "only sources that disclose it
+    set this" seam as `membership_*_total`); the Ohio loader supplies it, the
+    web and mobile finance cards render it directly under the outside-spending
+    explanation — with the totals, not in the source footnote, since a reader
+    who sees a dollar figure assumes it is all the outside money in the race.
+    Absent (not null) for every other state, so their payloads are unchanged.
+    **Delete the note and its loader option when the PDF path ships.**
+
 ## Acquisition spike results (run 2026-08-04, user-authorized)
 
 Full cycle-2026 artifact set pulled: **17 files, 305 MB**, cached under
@@ -569,7 +580,15 @@ main feasibility risk and also settles the 31-U two-stage question.
       minimum is 1) — 25 rows needed `last_synced_at` aged to refresh. A
       refresh that changes artifact availability should be followed by a
       forced re-sync of anything synced during the outage.
-- [ ] PR 9+ PDF path (Miscellaneous Filings, nonregistered spenders)
+- [x] Read flag + outside-coverage disclosure (2026-08-06): two gaps the
+      live run exposed. (1) `OHIO_CAMPAIGN_FINANCE_ENABLED` was set in NO
+      `.env`, so all 189 synced summaries rendered nothing — the registry
+      wiring was fine, the flag was the only gate. Added to `backend/.env`
+      per the free-read-flag policy; **still needs adding to the main
+      checkout's `.env` and to Render before prod shows Ohio.** (2) Decision
+      13's disclosure requirement shipped — see that decision for the design.
+- [ ] PR 9+ PDF path (Miscellaneous Filings, nonregistered spenders) —
+      when it lands, remove the Ohio coverage note (decision 13).
 
 Update the checklist + any changed decision here as PRs land; also update the
 finance-consolidation memory at campaign end.
