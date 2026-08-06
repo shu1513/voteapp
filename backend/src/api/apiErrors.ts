@@ -97,6 +97,9 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
     if (error.code === "candidate_not_found") {
       return { statusCode: 404, code: "not_found", message: "Candidate not found" };
     }
+    if (error.code === "follow_limit_reached") {
+      return { statusCode: 409, code: "follow_limit_reached", message: error.message };
+    }
     return { statusCode: 400, code: "invalid_request", message: error.message };
   }
   if (error instanceof UserElectionChoicesError) {

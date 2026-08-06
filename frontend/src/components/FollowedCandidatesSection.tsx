@@ -15,6 +15,26 @@ const PICKS_NAV_STATE: { backTo: BackTo } = {
   backTo: { path: "/me/picks", label: "My Picks" },
 };
 
+type FollowSort = "election" | "name";
+
+// Client-side sort: the list is capped at 25 follows and every row already
+// carries its next election date, so re-sorting needs no server round trip.
+// "election" puts the soonest ballot first; follows with no upcoming election
+// sink to the bottom. Election dates are YYYY-MM-DD strings, so plain string
+// comparison orders them correctly.
+function compareFollows(a: CandidateFollow, b: CandidateFollow, sort: FollowSort): number {
+  if (sort === "election") {
+    const aDate = a.active_election?.election_date ?? null;
+    const bDate = b.active_election?.election_date ?? null;
+    if (aDate !== bDate) {
+      if (aDate === null) return 1;
+      if (bDate === null) return -1;
+      return aDate < bDate ? -1 : 1;
+    }
+  }
+  return a.display_name.localeCompare(b.display_name);
+}
+
 // The followed-candidates manager, moved off the retired /me/follows page
 // into My Picks. One deliberate difference from the old page: no
 // "Latest: <record>" preview line — on a page about planning votes it was
@@ -141,13 +161,15 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
 export function FollowedCandidatesSection() {
   const { follows, isLoading: followsLoading, isError } = useFollows();
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<FollowSort>("election");
   const { matches, onInputChanged } = useCandidateSearch();
   const navigate = useNavigate();
+  const sortedFollows = follows ? [...follows].sort((a, b) => compareFollows(a, b, sort)) : undefined;
 
   return (
     <section>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-xl font-bold text-ink">My candidates</h2>
+        <h2 className="text-xl font-bold text-ink">My Candidates</h2>
         {/* Typeahead over the whole candidate database (ARIA combobox via
             Headless UI — do not hand-roll keyboard handling; no `static` on
             the options so Escape/blur close the dropdown natively). Picking a
@@ -213,12 +235,28 @@ export function FollowedCandidatesSection() {
       {follows && follows.length === 0 ? (
         <EmptyNotice text="You aren't following anyone yet. Use the Follow button on any candidate page." />
       ) : null}
-      {follows && follows.length > 0 ? (
-        <ul className="mt-4 space-y-3">
-          {follows.map((follow) => (
-            <FollowRow key={follow.candidate_id} follow={follow} />
-          ))}
-        </ul>
+      {sortedFollows && sortedFollows.length > 0 ? (
+        <>
+          <div className="mt-4 flex items-center justify-end gap-2">
+            <label htmlFor="follow-sort-select" className="text-sm font-medium text-ink">
+              Sort by:
+            </label>
+            <select
+              id="follow-sort-select"
+              value={sort}
+              onChange={(event) => setSort(event.target.value as FollowSort)}
+              className="rounded-lg border border-line bg-white px-2 py-1 text-sm text-ink focus:border-rausch focus:outline-none"
+            >
+              <option value="election">Next election</option>
+              <option value="name">Name (A–Z)</option>
+            </select>
+          </div>
+          <ul className="mt-2 space-y-3">
+            {sortedFollows.map((follow) => (
+              <FollowRow key={follow.candidate_id} follow={follow} />
+            ))}
+          </ul>
+        </>
       ) : null}
     </section>
   );

@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   listUserCandidateFollows,
   setUserCandidateFollow,
+  USER_CANDIDATE_FOLLOW_LIMIT,
   UserCandidateFollowsError,
 } from "../../../src/pipeline/users/userCandidateFollows.js";
 
@@ -302,6 +303,7 @@ describe("setUserCandidateFollow", () => {
     client.query
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      .mockResolvedValueOnce({ rows: [{ count: "0" }] })
       .mockResolvedValueOnce({ rows: [] });
 
     await expect(setUserCandidateFollow(db, userId, { candidateId: candidateIdA, following: true })).rejects.toSatisfy(
@@ -311,10 +313,56 @@ describe("setUserCandidateFollow", () => {
       }
     );
 
-    expect(String(client.query.mock.calls[2]?.[0])).toContain("WITH followable_candidate AS");
-    expect(String(client.query.mock.calls[2]?.[0])).toContain("merged_into_candidate_id IS NULL");
+    expect(String(client.query.mock.calls[3]?.[0])).toContain("WITH followable_candidate AS");
+    expect(String(client.query.mock.calls[3]?.[0])).toContain("merged_into_candidate_id IS NULL");
+    expect(client.query.mock.calls[4]?.[0]).toBe("ROLLBACK");
+    expect(client.release).toHaveBeenCalledOnce();
+  });
+
+  it("rejects new follows past the limit and rolls back", async () => {
+    const { db, client } = createMockTransactionalDb();
+    client.query
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      .mockResolvedValueOnce({ rows: [{ count: String(USER_CANDIDATE_FOLLOW_LIMIT) }] });
+
+    await expect(setUserCandidateFollow(db, userId, { candidateId: candidateIdA, following: true })).rejects.toSatisfy(
+      (error) => {
+        expectCandidateFollowsError(error, "follow_limit_reached");
+        return true;
+      }
+    );
+
+    // The count excludes the candidate being followed, so flag updates on an
+    // existing follow still work at the limit.
+    expect(String(client.query.mock.calls[2]?.[0])).toContain("candidate_id <> $2::uuid");
+    expect(client.query.mock.calls[2]?.[1]).toEqual([userId, candidateIdA]);
     expect(client.query.mock.calls[3]?.[0]).toBe("ROLLBACK");
     expect(client.release).toHaveBeenCalledOnce();
+  });
+
+  it("allows updating an existing follow when other follows sit at the limit boundary", async () => {
+    const { db, client } = createMockTransactionalDb();
+    client.query
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      .mockResolvedValueOnce({ rows: [{ count: String(USER_CANDIDATE_FOLLOW_LIMIT - 1) }] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: candidateIdA,
+            notify_elections: false,
+            notify_updates: true,
+            created_at: "2026-01-02T03:04:05.000Z",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    await expect(
+      setUserCandidateFollow(db, userId, { candidateId: candidateIdA, following: true, notifyElections: false })
+    ).resolves.toMatchObject({ follow: { candidate_id: candidateIdA, following: true } });
+    expect(client.query.mock.calls[4]?.[0]).toBe("COMMIT");
   });
 
   it("inserts a candidate follow with default notification flags", async () => {
@@ -322,6 +370,7 @@ describe("setUserCandidateFollow", () => {
     client.query
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      .mockResolvedValueOnce({ rows: [{ count: "0" }] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -345,13 +394,13 @@ describe("setUserCandidateFollow", () => {
         created_at: "2026-01-02T03:04:05.000Z",
       },
     });
-    expect(String(client.query.mock.calls[2]?.[0])).toContain("INSERT INTO public.user_candidate_follows");
-    expect(String(client.query.mock.calls[2]?.[0])).toContain("ON CONFLICT (user_id, candidate_id)");
-    expect(String(client.query.mock.calls[2]?.[0])).toContain("WITH followable_candidate AS");
-    expect(String(client.query.mock.calls[2]?.[0])).not.toContain("FOR SHARE");
-    expect(String(client.query.mock.calls[2]?.[0])).toContain("COALESCE($3::boolean, true)");
-    expect(client.query.mock.calls[2]?.[1]).toEqual([userId, candidateIdA, null, null]);
-    expect(client.query.mock.calls[3]?.[0]).toBe("COMMIT");
+    expect(String(client.query.mock.calls[3]?.[0])).toContain("INSERT INTO public.user_candidate_follows");
+    expect(String(client.query.mock.calls[3]?.[0])).toContain("ON CONFLICT (user_id, candidate_id)");
+    expect(String(client.query.mock.calls[3]?.[0])).toContain("WITH followable_candidate AS");
+    expect(String(client.query.mock.calls[3]?.[0])).not.toContain("FOR SHARE");
+    expect(String(client.query.mock.calls[3]?.[0])).toContain("COALESCE($3::boolean, true)");
+    expect(client.query.mock.calls[3]?.[1]).toEqual([userId, candidateIdA, null, null]);
+    expect(client.query.mock.calls[4]?.[0]).toBe("COMMIT");
   });
 
   it("updates notification flags when following an already-followed candidate", async () => {
@@ -359,6 +408,7 @@ describe("setUserCandidateFollow", () => {
     client.query
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      .mockResolvedValueOnce({ rows: [{ count: "1" }] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -387,7 +437,7 @@ describe("setUserCandidateFollow", () => {
         created_at: "2026-01-02T03:04:05.000Z",
       },
     });
-    expect(client.query.mock.calls[2]?.[1]).toEqual([userId, candidateIdA, false, true]);
+    expect(client.query.mock.calls[3]?.[1]).toEqual([userId, candidateIdA, false, true]);
   });
 
   it("preserves existing notification flags when following without optional flags", async () => {
@@ -395,6 +445,7 @@ describe("setUserCandidateFollow", () => {
     client.query
       .mockResolvedValueOnce({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      .mockResolvedValueOnce({ rows: [{ count: "1" }] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -416,13 +467,13 @@ describe("setUserCandidateFollow", () => {
         created_at: "2026-01-02T03:04:05.000Z",
       },
     });
-    expect(String(client.query.mock.calls[2]?.[0])).toContain(
+    expect(String(client.query.mock.calls[3]?.[0])).toContain(
       "notify_elections = COALESCE($3::boolean, user_candidate_follows.notify_elections)"
     );
-    expect(String(client.query.mock.calls[2]?.[0])).toContain(
+    expect(String(client.query.mock.calls[3]?.[0])).toContain(
       "notify_updates = COALESCE($4::boolean, user_candidate_follows.notify_updates)"
     );
-    expect(client.query.mock.calls[2]?.[1]).toEqual([userId, candidateIdA, null, null]);
+    expect(client.query.mock.calls[3]?.[1]).toEqual([userId, candidateIdA, null, null]);
   });
 
   it("deletes a candidate follow idempotently when unfollowing", async () => {

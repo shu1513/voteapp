@@ -1,5 +1,5 @@
-import { useFollowSaving, useSetFollow } from "@voteapp/api-client";
-import { Pressable, Text } from "react-native";
+import { ApiError, useFollowSaving, useSetFollow } from "@voteapp/api-client";
+import { Alert, Pressable, Text } from "react-native";
 import { registerForPushRequestingPermission } from "../lib/pushNotifications";
 
 // Follow/unfollow toggle. Rendered only for verified users (callers gate on
@@ -34,6 +34,17 @@ export function FollowButton({ candidateId, isFollowing, size = "md" }: FollowBu
               if (!isFollowing) {
                 void registerForPushRequestingPermission();
               }
+            },
+            // Surface follow failures (notably the follow limit, a 4xx with a
+            // user-readable server message) — a silent no-op button reads as
+            // broken. Mirrors the web component's error line.
+            onError: (error) => {
+              Alert.alert(
+                "Could not save",
+                error instanceof ApiError && error.status < 500
+                  ? error.message
+                  : "Something went wrong. Please try again."
+              );
             },
           }
         )

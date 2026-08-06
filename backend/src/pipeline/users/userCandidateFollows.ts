@@ -54,12 +54,18 @@ export type UserCandidateFollowUpdateResult = {
   follow: UserCandidateFollowState;
 };
 
+/** Hard cap on follows per user: keeps the My Picks list, digest emails, and
+ * the monthly manual records refresh bounded. Raising it later is safe;
+ * lowering it would strand existing follows. */
+export const USER_CANDIDATE_FOLLOW_LIMIT = 25;
+
 export type UserCandidateFollowsErrorCode =
   | "invalid_user_id"
   | "invalid_candidate_id"
   | "invalid_follow_input"
   | "user_not_found"
-  | "candidate_not_found";
+  | "candidate_not_found"
+  | "follow_limit_reached";
 
 export class UserCandidateFollowsError extends Error {
   constructor(
@@ -297,6 +303,27 @@ export async function setUserCandidateFollow(
           created_at: null,
         },
       };
+    }
+
+    // Enforce the follow cap inside the transaction: assertActiveUser locked
+    // the user row FOR UPDATE, so concurrent follows for the same user
+    // serialize and cannot both pass this count. The candidate being
+    // (re-)followed is excluded so notification-flag updates on an existing
+    // follow still work at the limit.
+    const existing = await client.query<{ count: string }>(
+      `
+        SELECT count(*) AS count
+        FROM public.user_candidate_follows
+        WHERE user_id = $1::uuid
+          AND candidate_id <> $2::uuid
+      `,
+      [normalizedUserId, normalizedInput.candidateId]
+    );
+    if (Number(existing.rows[0]?.count ?? 0) >= USER_CANDIDATE_FOLLOW_LIMIT) {
+      throw new UserCandidateFollowsError(
+        "follow_limit_reached",
+        `You can follow up to ${USER_CANDIDATE_FOLLOW_LIMIT} candidates. Unfollow one to add another.`
+      );
     }
 
     const saved = await client.query<CandidateFollowStateRow>(
