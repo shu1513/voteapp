@@ -400,7 +400,71 @@ main feasibility risk and also settles the 31-U two-stage question.
       spike exactly: 13/13 bundle reports reconciled, Acton oppose
       $8,211,114.50, Ramaswamy support $600,000, Stephens oppose $217,704.16,
       JON HUSTED (federal) correctly quarantined unmatched.
-- [ ] PR 7 sync + batchSync + scripts
+- [x] PR 7 sync + batchSync + scripts (branch `claude/ohio-finance-sync-pr7`):
+      `ohioCandidateFinanceSync.ts` — write step only. Unlike maryland it
+      takes aggregation RESULTS, not raw rows: the batch layer owns the
+      single stream over the ~90 MB CAC_CON files (decision 10). Committee
+      identity is the due row's active link (no resolver call — the due list
+      only returns linked candidates). outsideFinance null → summary outside
+      totals NULL (writer preserveWhenNull keeps stored values) and outside
+      groups untouched; an empty groups list clears stale rows.
+      `ohioCandidateFinanceBatchSync.ts` — due list via the shared factory
+      over the oh_ tables; auto-link phase reuses the PR 5 walker with the
+      cached ACT_CAN_LIST; per election year one accumulator per distinct
+      linked committee is fed by one CAC_CON_{Y-1,Y} pass, cover files load
+      once per run, and outside spending aggregates once per year over
+      (candidate name, office)-DEDUPED targets — without the dedupe a
+      candidate due for both primary and general would appear twice and
+      quarantine every row aimed at them as ambiguous. Missing direct
+      artifacts fail the year's rows (receipts would be fabricated);
+      missing outside artifacts only disable the outside leg, with a
+      per-year availability summary in the batch result.
+      `readOhioSos31uDetailBundle` accepts the version-1 payload AND the
+      2026-08-04 spike checkpoint format, so the existing 305 MB cache
+      works without another attended Chrome session. Scheduler (BullMQ,
+      queue `ohio_candidate_finance_sync_maintenance`, daily cron default
+      `55 9 * * *` UTC) + 4 scripts + npm block
+      (`ohio-candidates:finance:sync-due` / `scheduler:upsert` /
+      `scheduler:worker` / `scheduler:trigger`).
+      Real-data smoke (end-to-end dry run over the cached cycle): Acton
+      receipts $15,898,732.10 / cash $8,136,281.98 / oppose $8,211,114.50;
+      Ramaswamy receipts $55,081,342.57 (cover beats the $30.3M itemized
+      sum) / support $600,000; Stephens receipts $343,371.62 / oppose
+      $217,704.16 — 13 reports reconciled, 0 quarantined, and the
+      attributed-cents delta vs the PR 6 smoke is exactly the Perez+Haines
+      $102,348.10 that this due list does not cover.
+      Review round (Codex + CodeRabbit): (1) a bundle missing annual report
+      keys now fails the year closed to outside-unavailable — the real
+      cache's spike bundle misses 15 keys carrying ~$5.9M of annual 31-U
+      money (incl. V-PAC $4.0M + $0.9M), so publishing zeros from it would
+      have been false; totals return after `raw:refresh`. (2) Outside
+      target dedupe keys on candidateId, not display name — two different
+      same-name people stay separate targets and quarantine as ambiguous
+      instead of both being paid. (3) The version-1 bundle reader validates
+      every consumed field (a direction outside support/oppose/null would
+      have landed in the aggregator's oppose branch). (4) #542 leftover
+      closed: on a FILLED cover row a blank VALUE_IND_EXPENDITURES now
+      feeds the gate as 0 (fully-blank rows stay ignored); probe of all 28
+      cycle keys found 13 exact IE matches, 15 no-cover, 0 blank-on-filled,
+      so the change is pure added protection. Declined: streaming-JSON for
+      the bundle (it is 9.8 KB — 305 MB is the whole cache), shared CLI
+      flag parser and dropping `force` from the recurring scheduler payload
+      (both verbatim the maryland/all-states template; repo-wide questions,
+      not Ohio's).
+      Review round 2 (Codex, all four fixed): (1) every cached stream now
+      passes a manifest gate — size-vs-manifest mismatch fails the year
+      ("stale" = the only detectable corruption; a manifest-less file
+      streams with a warning since there is nothing to verify against, and
+      the extant spike cache has no manifests); (2) the outside ambiguity
+      guard matches against the year's FULL active-link universe (new
+      query), not the stale-filtered 25-row due page, so a same-name
+      double is seen even when not due — unlinked doubles remain the
+      residual blind spot; (3) link_source rides in the due row
+      (alaska/tennessee/virginia linkColumns pattern) and is written back
+      as-is, so manual links keep provenance and auto-supersession
+      immunity; (4) trigger/upsert scripts validate known flags and reject
+      duplicates like sync-due (a --dryrun typo now fails instead of
+      enqueueing a real write).
 - [ ] PR 8 outside-group funders/industries (#3)
 - [ ] PR 9+ PDF path / live run
 

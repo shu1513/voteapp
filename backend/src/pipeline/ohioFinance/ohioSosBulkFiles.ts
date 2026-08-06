@@ -796,6 +796,29 @@ export const OHIO_SOS_PARTY_EXPENDITURES_FAMILY = family<OhioSosExpenditureRow>(
   tolerateMalformedRows: true,
 });
 
+// A cover row whose every money column is blank carries no data at all —
+// rare e-filing damage (3 of 1,673 cycle rows on the real 2026 candidate
+// cover file). Consumers skip such rows instead of reading their blanks as
+// zeroes; a blank cell on an otherwise-FILLED row is different and provably
+// means zero (all 583 real rows with a blank TOTAL_CONTRIBUTIONS satisfy
+// TOTAL_FUNDS = AMT_FORWARD + TOTAL_OTHER_INCOME exactly).
+export function isBlankOhioSosCoverPageRow(row: OhioSosCoverPageRow): boolean {
+  return (
+    row.amountForwardCents === null &&
+    row.totalContributionsCents === null &&
+    row.totalOtherIncomeCents === null &&
+    row.totalFundsCents === null &&
+    row.totalExpendituresCents === null &&
+    row.balanceOnHandCents === null &&
+    row.valueInkindReceivedCents === null &&
+    row.valueInkindMadeCents === null &&
+    row.outstandingLoansOwedCents === null &&
+    row.outstandingDebtOwedCents === null &&
+    row.outstandingLoansToCents === null &&
+    row.valueIndependentExpendituresCents === null
+  );
+}
+
 // Ohio's published bulk data starts in 1990 (earliest real cover page:
 // 1990-01-22). Filers mistype the year often enough to poison a naive
 // min/max — the 2026 candidate-contribution file alone carries 0202, 0206,

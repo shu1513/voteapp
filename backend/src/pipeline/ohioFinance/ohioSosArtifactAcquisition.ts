@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, readdir, rename, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -465,6 +465,95 @@ export type OhioSos31uAcquisitionResult = {
 
 export function ohioSos31uDetailCachePath(input: { cacheDir: string; cycleYear: number }): string {
   return join(input.cacheDir, `31U_DETAIL_${input.cycleYear}.json`);
+}
+
+export type OhioSos31uDetailBundleReport = {
+  reportKey: string;
+  rows: OhioSos31uDetailRow[];
+};
+
+// Reads the cached 31-U detail bundle for the sync (fail-closed: any shape
+// surprise throws rather than silently dropping reports). Two formats are
+// accepted:
+// - the version-1 payload fetchOhioSos31uDetails writes (reports with
+//   already-parsed rows), and
+// - the 2026-08-04 spike's checkpoint format ({ rows: [{ key, rows }] }
+//   with raw table cells), which is what the existing cache holds — parsing
+//   it through the pinned-header table parser keeps that 305 MB cache
+//   usable without another attended Chrome session.
+export async function readOhioSos31uDetailBundle(input: {
+  cacheDir: string;
+  cycleYear: number;
+}): Promise<OhioSos31uDetailBundleReport[]> {
+  const detailPath = ohioSos31uDetailCachePath(input);
+  const payload = JSON.parse(await readFile(detailPath, "utf8")) as {
+    version?: number;
+    cycleYear?: number;
+    reports?: Array<{ reportKey?: unknown; rows?: unknown }>;
+    rows?: Array<{ key?: unknown; rows?: unknown }>;
+  };
+
+  if (payload.version === 1 && Array.isArray(payload.reports)) {
+    if (payload.cycleYear !== input.cycleYear) {
+      throw new Error(
+        `Ohio SoS 31-U detail bundle at ${detailPath} is for cycle ${payload.cycleYear}, expected ${input.cycleYear}`
+      );
+    }
+    return payload.reports.map((report) => {
+      if (typeof report.reportKey !== "string" || !Array.isArray(report.rows)) {
+        throw new Error(`Ohio SoS 31-U detail bundle at ${detailPath} has a malformed report entry`);
+      }
+      const reportKey = report.reportKey;
+      // Every field the aggregator consumes is validated, not cast: a
+      // damaged or hand-edited bundle must throw here, never mis-aggregate.
+      // In particular a direction outside {support, oppose, null} would
+      // fall into the aggregator's oppose branch.
+      const rows = report.rows.map((rawRow, rowIndex) => {
+        const row = rawRow as Partial<OhioSos31uDetailRow>;
+        const malformed = (field: string): Error =>
+          new Error(
+            `Ohio SoS 31-U detail bundle at ${detailPath} report ${reportKey} row ${rowIndex + 1} has a malformed ${field}`
+          );
+        if (row.reportKey !== reportKey) {
+          throw malformed("reportKey");
+        }
+        if (typeof row.spenderCommitteeName !== "string") {
+          throw malformed("spenderCommitteeName");
+        }
+        if (row.amountCents !== null && !Number.isInteger(row.amountCents)) {
+          throw malformed("amountCents");
+        }
+        if (row.direction !== null && row.direction !== "support" && row.direction !== "oppose") {
+          throw malformed("direction");
+        }
+        if (row.candidateNameOrBallotIssue !== null && typeof row.candidateNameOrBallotIssue !== "string") {
+          throw malformed("candidateNameOrBallotIssue");
+        }
+        if (row.office !== null && typeof row.office !== "string") {
+          throw malformed("office");
+        }
+        return row as OhioSos31uDetailRow;
+      });
+      return { reportKey, rows };
+    });
+  }
+
+  if (payload.version === undefined && Array.isArray(payload.rows)) {
+    return payload.rows.map((report) => {
+      if (typeof report.key !== "string" || !Array.isArray(report.rows)) {
+        throw new Error(`Ohio SoS 31-U detail bundle at ${detailPath} has a malformed legacy report entry`);
+      }
+      return {
+        reportKey: report.key,
+        rows: parseOhioSos31uDetailTable(
+          { headers: [...OHIO_SOS_31U_DETAIL_HEADER], rows: report.rows as string[][] },
+          { reportKey: report.key }
+        ),
+      };
+    });
+  }
+
+  throw new Error(`Ohio SoS 31-U detail bundle at ${detailPath} has an unrecognized format`);
 }
 
 export async function fetchOhioSos31uDetails(input: {

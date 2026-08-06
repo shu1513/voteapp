@@ -5,6 +5,7 @@ import {
   type OhioSos31uReconciliation,
 } from "./ohioSos31uDetail.js";
 import {
+  isBlankOhioSosCoverPageRow,
   isOhioSos31uExpenditureRow,
   type OhioSosCoverPageRow,
   type OhioSosExpenditureRow,
@@ -224,12 +225,23 @@ export function aggregateOhioOutsideSpending(input: {
     }
   }
 
-  const coverIeByReportKey = new Map<string, number | null>();
+  const coverIeByReportKey = new Map<string, number>();
   for (const row of input.coverRows) {
     const reportKey = row.reportKey.trim();
-    if (spendersByReportKey.has(reportKey) && !coverIeByReportKey.has(reportKey)) {
-      coverIeByReportKey.set(reportKey, row.valueIndependentExpendituresCents);
+    if (!spendersByReportKey.has(reportKey) || coverIeByReportKey.has(reportKey)) {
+      continue;
     }
+    // A fully blank cover row carries no data (e-filing damage) and is
+    // ignored exactly like a missing cover row. On a FILLED row a blank
+    // money cell provably means zero (PR 6 cover-identity check), so a
+    // blank VALUE_IND_EXPENDITURES feeds the gate as 0 — a present cover
+    // page that claims no independent spending must not silently bypass
+    // the third reconciliation leg. On the real 2026-cycle files this case
+    // never occurs (every present cover row states the exact IE value).
+    if (isBlankOhioSosCoverPageRow(row)) {
+      continue;
+    }
+    coverIeByReportKey.set(reportKey, row.valueIndependentExpendituresCents ?? 0);
   }
 
   // --- Candidate matching setup (decision 5). ---
