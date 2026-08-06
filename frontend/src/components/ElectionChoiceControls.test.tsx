@@ -170,7 +170,7 @@ describe("CandidatePickRow", () => {
 
     renderRow(undefined);
 
-    const button = screen.getByRole("button", { name: "Pick Jane Doe as my pick for Governor · November 3, 2026" });
+    const button = screen.getByRole("button", { name: "Make Jane Doe my pick for Governor · November 3, 2026" });
     expect(button).toHaveAttribute("aria-pressed", "false");
     await userEvent.setup().click(button);
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
@@ -208,7 +208,7 @@ describe("CandidatePickRow", () => {
       2
     );
 
-    const button = screen.getByRole("button", { name: "Pick Jane Doe as my pick for Governor · November 3, 2026" });
+    const button = screen.getByRole("button", { name: "Make Jane Doe my pick for Governor · November 3, 2026" });
     expect(button).toBeDisabled();
     // The reason is visible text (title tooltips never reach touch/keyboard
     // users) and doubles as the button's accessible description.
@@ -239,7 +239,7 @@ describe("CandidatePickRow", () => {
 
     await userEvent
       .setup()
-      .click(screen.getByRole("button", { name: "Pick Jane Doe as my pick for Governor · November 3, 2026" }));
+      .click(screen.getByRole("button", { name: "Make Jane Doe my pick for Governor · November 3, 2026" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Choices can only be changed for upcoming elections"
     );

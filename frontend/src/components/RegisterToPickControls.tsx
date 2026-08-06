@@ -81,7 +81,7 @@ export function RegisterToPickRow({ candidateName, raceName, dateLabel }: Regist
         onClick={() => setIsOpen(true)}
         className="w-full rounded-xl border border-line bg-white p-3 text-left text-sm text-ink transition hover:border-green-700"
       >
-        Pick <span className="font-semibold">{candidateName}</span> as my pick for {raceName} ·{" "}
+        Make <span className="font-semibold">{candidateName}</span> my pick for {raceName} ·{" "}
         {dateLabel}
       </button>
       <RegisterPromptDialog
