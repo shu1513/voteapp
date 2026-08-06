@@ -106,6 +106,51 @@ describe("alaskaOutsideGroupContributionAggregator", () => {
     });
   });
 
+  it("caps donors per (committee, direction) bucket and never caps industries", () => {
+    const result = aggregateAlaskaOutsideGroupContributions({
+      electionYear: 2026,
+      maxBreakdownsPerCategory: 1,
+      minIndustryAmount: 1000,
+      outsideGroups: [
+        outsideGroup(),
+        outsideGroup({ committeeId: "8002", committeeName: "Stop Them PAC", supportOppose: "oppose" }),
+      ],
+      contributionRows: [
+        contribution({ contributor: "Energy Transfer LLC", amount: 40_000 }),
+        contribution({ contributor: "IBEW Voluntary PAC", amount: 35_000 }),
+        contribution({ filerId: "8002", filerName: "Stop Them PAC", contributor: "Energy Transfer LLC", amount: 5_000 }),
+        contribution({ filerId: "8002", filerName: "Stop Them PAC", contributor: "IBEW Voluntary PAC", amount: 2_000 }),
+      ],
+    });
+
+    const donors = result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "donor");
+    expect(donors).toEqual([
+      expect.objectContaining({
+        committeeId: "8001",
+        supportOppose: "support",
+        categoryName: "Energy Transfer LLC",
+        amount: 40000,
+      }),
+      expect.objectContaining({
+        committeeId: "8002",
+        supportOppose: "oppose",
+        categoryName: "Energy Transfer LLC",
+        amount: 5000,
+      }),
+    ]);
+
+    const industries = result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "industry");
+    expect(industries).toHaveLength(4);
+    expect(industries).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ committeeId: "8001", supportOppose: "support", categoryName: "oil_gas_energy" }),
+        expect.objectContaining({ committeeId: "8001", supportOppose: "support", categoryName: "labor_unions" }),
+        expect.objectContaining({ committeeId: "8002", supportOppose: "oppose", categoryName: "oil_gas_energy" }),
+        expect.objectContaining({ committeeId: "8002", supportOppose: "oppose", categoryName: "labor_unions" }),
+      ])
+    );
+  });
+
   it("uses employer or occupation classification when donor name is not classifiable", () => {
     expect(
       classifyAlaskaOutsideGroupContributionRow({

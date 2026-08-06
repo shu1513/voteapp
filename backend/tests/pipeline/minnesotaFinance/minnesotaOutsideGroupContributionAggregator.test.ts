@@ -132,6 +132,72 @@ describe("Minnesota outside group contribution aggregator", () => {
     );
   });
 
+  it("caps donors per (committee, direction) bucket and never caps industries", () => {
+    const result = aggregateMinnesotaOutsideGroupContributions({
+      electionYear: 2026,
+      maxBreakdownsPerCategory: 1,
+      outsideGroups: [
+        {
+          committeeId: "SP123",
+          committeeName: "Better Minnesota",
+          supportOppose: "support",
+          amount: 70_000,
+        },
+        {
+          committeeId: "SP999",
+          committeeName: "Wrong Way PAC",
+          supportOppose: "oppose",
+          amount: 10_000,
+        },
+      ],
+      contributionRows: [
+        contributionRow({ Contributor: "Google LLC", "Contrib type": "Business", Amount: "200.00" }),
+        contributionRow({ Contributor: "AFL CIO", "Contrib type": "Committee", Amount: "100.00" }),
+        contributionRow({
+          "Recipient reg num": "SP999",
+          Recipient: "Wrong Way PAC",
+          Contributor: "Google LLC",
+          "Contrib type": "Business",
+          Amount: "50.00",
+        }),
+        contributionRow({
+          "Recipient reg num": "SP999",
+          Recipient: "Wrong Way PAC",
+          Contributor: "AFL CIO",
+          "Contrib type": "Committee",
+          Amount: "25.00",
+        }),
+      ],
+    });
+
+    const donors = result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "donor");
+    expect(donors).toEqual([
+      expect.objectContaining({
+        committeeId: "SP123",
+        supportOppose: "support",
+        categoryName: "Google LLC",
+        amount: 200,
+      }),
+      expect.objectContaining({
+        committeeId: "SP999",
+        supportOppose: "oppose",
+        categoryName: "Google LLC",
+        amount: 50,
+      }),
+    ]);
+
+    const industries = result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "industry");
+    expect(industries).toHaveLength(4);
+    expect(industries).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ committeeId: "SP123", supportOppose: "support", categoryName: "technology" }),
+        expect.objectContaining({ committeeId: "SP123", supportOppose: "support", categoryName: "labor_unions" }),
+        expect.objectContaining({ committeeId: "SP999", supportOppose: "oppose", categoryName: "technology" }),
+        expect.objectContaining({ committeeId: "SP999", supportOppose: "oppose", categoryName: "labor_unions" }),
+      ])
+    );
+  });
+
   it("skips contributions outside the election cycle", () => {
     const result = aggregateMinnesotaOutsideGroupContributions({
       electionYear: 2026,

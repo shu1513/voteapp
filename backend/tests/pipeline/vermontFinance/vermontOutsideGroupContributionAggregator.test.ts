@@ -85,6 +85,10 @@ describe("vermontOutsideGroupContributionAggregator", () => {
       matchedContributionRowCount: 4,
       includedContributionRowCount: 3,
       skippedContributionRowCount: 1,
+      outsideDonorClassifications: [
+        expect.objectContaining({ rawLabel: "Sierra Club", labelType: "donor", industrySlug: "environmental_group" }),
+        expect.objectContaining({ rawLabel: "IBEW Local 300", labelType: "donor", industrySlug: "labor_unions" }),
+      ],
       outsideGroupBreakdowns: [
         {
           filerRegistrationGuid: "pac-guid",
@@ -124,6 +128,35 @@ describe("vermontOutsideGroupContributionAggregator", () => {
         },
       ],
     });
+  });
+
+  it("collects donor classifications before the per-group display cap", () => {
+    const result = aggregateVermontOutsideGroupContributions({
+      electionYear: 2024,
+      minIndustryAmount: 1000,
+      maxBreakdownsPerCategory: 1,
+      outsideGroups: [outsideGroup()],
+      contributionRows: [
+        contribution({ transactionAmount: 20000, sourceName: "Sierra Club" }),
+        contribution({
+          transactionId: 2,
+          guid: "row-2",
+          transactionAmount: 15000,
+          sourceName: "IBEW Local 300",
+          transactionSourceTypeCode: "TPAC",
+        }),
+      ],
+    });
+
+    expect(
+      result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "donor")
+    ).toEqual([expect.objectContaining({ categoryName: "Sierra Club" })]);
+    expect(result.outsideDonorClassifications).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ rawLabel: "Sierra Club" }),
+        expect.objectContaining({ rawLabel: "IBEW Local 300" }),
+      ])
+    );
   });
 
   it("skips ambiguous support side when one PAC has support and oppose groups", () => {

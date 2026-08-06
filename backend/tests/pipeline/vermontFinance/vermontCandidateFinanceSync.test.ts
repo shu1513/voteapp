@@ -169,6 +169,17 @@ function createVermontClient(input: { resolution?: VermontCandidateCommitteeReso
       matchedContributionRowCount: 2,
       includedContributionRowCount: 2,
       skippedContributionRowCount: 0,
+      outsideDonorClassifications: [
+        {
+          rawLabel: "Sierra Club",
+          labelType: "donor" as const,
+          normalizedLabel: "SIERRA CLUB",
+          industrySlug: "environmental_group" as const,
+          confidence: "high" as const,
+          classificationSource: "rule" as const,
+          matchedRule: "environmental_group",
+        },
+      ],
       outsideGroupBreakdowns: [
         {
           filerRegistrationGuid: "pac-guid",
@@ -296,6 +307,11 @@ describe("vermontCandidateFinanceSync", () => {
       SOURCE_URL,
       "2026-06-02T03:04:05.000Z",
     ]);
+
+    const classificationCall = db.client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.finance_label_classifications")
+    );
+    expect(classificationCall?.[1]).toEqual(expect.arrayContaining(["SIERRA CLUB"]));
   });
 
   it("does not write in dry-run mode but returns aggregation counts", async () => {
