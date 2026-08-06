@@ -10,19 +10,45 @@ import {
   readOhioSos31uDetailBundle,
   ohioSosFileDownloadUrl,
   ohioSosFileListUrl,
+  ohioSosProductFromListingRow,
   planOhioSosCycleDownloads,
   watchOhioSosDownload,
   type OhioSosListedFile,
 } from "../../../src/pipeline/ohioFinance/ohioSosArtifactAcquisition.js";
 import { OHIO_SOS_31U_DETAIL_HEADER } from "../../../src/pipeline/ohioFinance/ohioSos31uDetail.js";
+import {
+  OHIO_SOS_PRODUCTS,
+  type OhioSosProductKey,
+} from "../../../src/pipeline/ohioFinance/ohioSosArtifactCache.js";
 import type {
   OhioSosChromeSession,
   OhioSosChromeTab,
 } from "../../../src/pipeline/ohioFinance/ohioSosChromeClient.js";
 
+// The listing carries product labels, not file names; the file name is
+// derived from the matched product. Tests still read best keyed by file
+// name, so the helper recovers the product the same way.
+function productForFileName(fileName: string): {
+  productKey: OhioSosProductKey;
+  transactionYear: number | undefined;
+} {
+  for (const product of Object.values(OHIO_SOS_PRODUCTS)) {
+    const escaped = product.fileNamePattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const match = new RegExp(`^${escaped.replace("<YEAR>", "(\\d{4})")}$`).exec(fileName);
+    if (match) {
+      return {
+        productKey: product.key,
+        transactionYear: match[1] === undefined ? undefined : Number(match[1]),
+      };
+    }
+  }
+  throw new Error(`Test helper: unknown Ohio SoS file name ${fileName}`);
+}
+
 function listed(fileName: string, downloadId: string, overrides: Partial<OhioSosListedFile> = {}): OhioSosListedFile {
   return {
     listType: "CAN",
+    ...productForFileName(fileName),
     fileName,
     downloadId,
     dateModified: "08/04/2026 10:30 AM",
@@ -48,6 +74,90 @@ describe("Ohio SoS portal URLs", () => {
 
   it("rejects a non-numeric download id", () => {
     expect(() => ohioSosFileDownloadUrl("6768; drop")).toThrow(/Invalid Ohio SoS download id/);
+  });
+});
+
+describe("ohioSosProductFromListingRow", () => {
+  // Every label below is verbatim from the live portal (2026-08-06). The
+  // listing publishes product labels, never file names.
+  it("resolves each statewide product from its exact label on its own list page", () => {
+    const cases: Array<{
+      listType: "NEW" | "CAN" | "PAC" | "PARTY";
+      label: string;
+      productKey: OhioSosProductKey;
+      transactionYear: number | undefined;
+    }> = [
+      { listType: "CAN", label: "Active Candidate List", productKey: "candidate_list", transactionYear: undefined },
+      { listType: "CAN", label: "Candidate Cover Pages", productKey: "candidate_cover", transactionYear: undefined },
+      {
+        listType: "CAN",
+        label: "Candidate Contributions--2026",
+        productKey: "candidate_contributions",
+        transactionYear: 2026,
+      },
+      {
+        listType: "CAN",
+        label: "Candidate Expenditures--2025",
+        productKey: "candidate_expenditures",
+        transactionYear: 2025,
+      },
+      { listType: "PAC", label: "Active PAC List", productKey: "pac_list", transactionYear: undefined },
+      // The portal renders this one in caps; matching is case-insensitive.
+      { listType: "PAC", label: "PAC COVER PAGES", productKey: "pac_cover", transactionYear: undefined },
+      { listType: "PAC", label: "PAC Contributions--2026", productKey: "pac_contributions", transactionYear: 2026 },
+      { listType: "PAC", label: "PAC Expenditures--2025", productKey: "pac_expenditures", transactionYear: 2025 },
+      { listType: "PARTY", label: "Party Cover Pages", productKey: "party_cover", transactionYear: undefined },
+      {
+        listType: "PARTY",
+        label: "Party Contributions--2026",
+        productKey: "party_contributions",
+        transactionYear: 2026,
+      },
+      {
+        listType: "PARTY",
+        label: "Party Expenditures--2025",
+        productKey: "party_expenditures",
+        transactionYear: 2025,
+      },
+    ];
+
+    for (const testCase of cases) {
+      expect(
+        ohioSosProductFromListingRow({
+          listType: testCase.listType,
+          cells: [testCase.label, "08/05/2026 10:44:17 AM", "91023 KB", "Download"],
+        })
+      ).toEqual({ productKey: testCase.productKey, transactionYear: testCase.transactionYear });
+    }
+  });
+
+  // The single most dangerous row on the portal: a per-committee file whose
+  // label differs from the statewide annual only by the committee name.
+  // Matching it would publish ONE committee's contributions as the whole
+  // state's.
+  it("never matches a per-committee file from the NEW list", () => {
+    const perCommitteeLabels = [
+      "Candidate Contributions-VIVEK RAMASWAMY AND ROB MCCOLLEY FOR OHIO-2026",
+      "Candidate Expenditures-OHIOANS FOR AMY ACTON AND DAVID PEPPER-2026",
+      "Candidate Contributions-DAVE YOST FOR OHIO-2026",
+    ];
+    for (const label of perCommitteeLabels) {
+      expect(ohioSosProductFromListingRow({ listType: "NEW", cells: [label, "08/05/2026", "5 KB"] })).toBeNull();
+      // Even if such a row ever appeared on the candidate tab, the label is
+      // not an exact match and must still be rejected.
+      expect(ohioSosProductFromListingRow({ listType: "CAN", cells: [label, "08/05/2026", "5 KB"] })).toBeNull();
+    }
+  });
+
+  it("rejects a statewide label listed under the wrong tab", () => {
+    expect(
+      ohioSosProductFromListingRow({ listType: "PAC", cells: ["Candidate Contributions--2026"] })
+    ).toBeNull();
+  });
+
+  it("returns null for unrelated rows", () => {
+    expect(ohioSosProductFromListingRow({ listType: "CAN", cells: ["Download", "08/05/2026", "5 KB"] })).toBeNull();
+    expect(ohioSosProductFromListingRow({ listType: "CAN", cells: [] })).toBeNull();
   });
 });
 

@@ -12,6 +12,7 @@ import {
 } from "./ohioSos31uDetail.js";
 import {
   getOhioSosArtifactPaths,
+  ohioSosArtifactFileName,
   ohioSosCycleArtifacts,
   storeOhioSosArtifact,
   type OhioSosArtifactManifest,
@@ -68,11 +69,83 @@ export function ohioSosFileDownloadUrl(downloadId: string): string {
 
 export type OhioSosListedFile = {
   listType: OhioSosFileListType;
-  // Published file name, e.g. "CAC_CON_2026.CSV".
+  productKey: OhioSosProductKey;
+  transactionYear: number | undefined;
+  // Cache file name for the matched product, e.g. "CAC_CON_2026.CSV". The
+  // portal listing does NOT publish file names (see the label table below),
+  // so this is derived from the product, not read off the page.
   fileName: string;
   downloadId: string;
   dateModified: string | null;
 };
+
+// The file-transfer page lists PRODUCT LABELS, never file names — the file
+// name only appears on the download itself. Each product is therefore
+// identified by its exact label on its own list page (decision 9: discover
+// by label, never hardcode P72_GETID).
+//
+// Exactness is load-bearing. The NEW list carries per-committee files whose
+// labels differ from the statewide annual ones only by the committee name
+// between single dashes:
+//
+//   "Candidate Contributions--2026"                       <- statewide annual
+//   "Candidate Contributions-DAVE YOST FOR OHIO-2026"     <- ONE committee
+//
+// A prefix or substring match would silently install one committee's file
+// as the whole state's annual contributions. Matching is a full-string
+// comparison, scoped to the product's own list type, so the NEW page can
+// never satisfy a required artifact.
+const OHIO_SOS_PORTAL_PRODUCT_LABELS: Readonly<
+  Record<OhioSosProductKey, { listType: OhioSosFileListType; labelPattern: string }>
+> = {
+  candidate_list: { listType: "CAN", labelPattern: "Active Candidate List" },
+  pac_list: { listType: "PAC", labelPattern: "Active PAC List" },
+  candidate_cover: { listType: "CAN", labelPattern: "Candidate Cover Pages" },
+  // Observed uppercase ("PAC COVER PAGES"); matching is case-insensitive.
+  pac_cover: { listType: "PAC", labelPattern: "PAC Cover Pages" },
+  party_cover: { listType: "PARTY", labelPattern: "Party Cover Pages" },
+  candidate_contributions: { listType: "CAN", labelPattern: "Candidate Contributions--<YEAR>" },
+  candidate_expenditures: { listType: "CAN", labelPattern: "Candidate Expenditures--<YEAR>" },
+  pac_contributions: { listType: "PAC", labelPattern: "PAC Contributions--<YEAR>" },
+  pac_expenditures: { listType: "PAC", labelPattern: "PAC Expenditures--<YEAR>" },
+  party_contributions: { listType: "PARTY", labelPattern: "Party Contributions--<YEAR>" },
+  party_expenditures: { listType: "PARTY", labelPattern: "Party Expenditures--<YEAR>" },
+};
+
+function normalizePortalLabel(value: string): string {
+  return value.replace(/\s+/g, " ").trim().toUpperCase();
+}
+
+function portalLabelMatcher(labelPattern: string): RegExp {
+  const normalized = normalizePortalLabel(labelPattern);
+  const escaped = normalized.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`^${escaped.replace("<YEAR>", "(\\d{4})")}$`);
+}
+
+// Exported for tests: resolves one listing row to the product it publishes,
+// or null when the row is not a required statewide artifact.
+export function ohioSosProductFromListingRow(input: {
+  listType: OhioSosFileListType;
+  cells: readonly string[];
+}): { productKey: OhioSosProductKey; transactionYear: number | undefined } | null {
+  for (const [productKey, definition] of Object.entries(OHIO_SOS_PORTAL_PRODUCT_LABELS) as Array<
+    [OhioSosProductKey, { listType: OhioSosFileListType; labelPattern: string }]
+  >) {
+    if (definition.listType !== input.listType) {
+      continue;
+    }
+    const matcher = portalLabelMatcher(definition.labelPattern);
+    for (const cell of input.cells) {
+      const match = matcher.exec(normalizePortalLabel(cell));
+      if (!match) {
+        continue;
+      }
+      const year = match[1] === undefined ? undefined : Number(match[1]);
+      return { productKey, transactionYear: year };
+    }
+  }
+  return null;
+}
 
 // Reads the listing table straight out of the rendered page. Anchor hrefs
 // carry the `P72_GETID` value; the label column carries the file name.
@@ -96,16 +169,6 @@ function looksLikeDate(value: string): boolean {
   return /\d{1,2}\/\d{1,2}\/\d{4}/.test(value);
 }
 
-function fileNameFromListing(input: { label: string; cells: readonly string[] }): string | null {
-  const candidates = [input.label, ...input.cells];
-  for (const candidate of candidates) {
-    const match = /([A-Z0-9_]+\.CSV)/i.exec(candidate);
-    if (match) {
-      return match[1]!.toUpperCase();
-    }
-  }
-  return null;
-}
 
 export async function listOhioSosPortalFiles(input: {
   session: OhioSosChromeSession;
@@ -135,13 +198,18 @@ export async function listOhioSosPortalFiles(input: {
       );
     }
     for (const entry of listed) {
-      const fileName = fileNameFromListing(entry);
-      if (!fileName) {
+      const product = ohioSosProductFromListingRow({ listType, cells: entry.cells });
+      if (!product) {
         continue;
       }
       files.push({
         listType,
-        fileName,
+        productKey: product.productKey,
+        transactionYear: product.transactionYear,
+        fileName: ohioSosArtifactFileName({
+          productKey: product.productKey,
+          transactionYear: product.transactionYear,
+        }),
         downloadId: entry.downloadId,
         dateModified: entry.cells.find(looksLikeDate) ?? null,
       });
