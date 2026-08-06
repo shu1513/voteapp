@@ -182,11 +182,12 @@ describe("marylandOutsideGroupContributionAggregator", () => {
     );
   });
 
-  it("respects max breakdowns per outside group and minimum industry amount", () => {
+  it("returns every donor uncapped and respects the minimum industry amount", () => {
+    // The display cap lives in the SYNC layer, after classification —
+    // capping here would drop tail donors from rebuilt industry totals.
     const result = aggregateMarylandOutsideGroupContributions({
       electionYear: 2026,
       outsideGroups: [outsideGroup()],
-      maxBreakdownsPerCategory: 1,
       minIndustryAmount: 10000,
       contributionRows: [
         contribution({
@@ -206,6 +207,11 @@ describe("marylandOutsideGroupContributionAggregator", () => {
         categoryType: "donor",
         categoryName: "IBEW Local 26 PAC",
         amount: 12000,
+      }),
+      expect.objectContaining({
+        categoryType: "donor",
+        categoryName: "Old Construction Company LLC",
+        amount: 9999.99,
       }),
       expect.objectContaining({
         categoryType: "industry",
@@ -272,14 +278,6 @@ describe("marylandOutsideGroupContributionAggregator", () => {
         contributionRows: [],
       })
     ).toThrow("Invalid Maryland outside group contribution election year");
-    expect(() =>
-      aggregateMarylandOutsideGroupContributions({
-        electionYear: 2026,
-        outsideGroups: [],
-        contributionRows: [],
-        maxBreakdownsPerCategory: 0,
-      })
-    ).toThrow("Invalid Maryland outside group contribution maxBreakdownsPerCategory");
     expect(() =>
       aggregateMarylandOutsideGroupContributions({
         electionYear: 2026,
