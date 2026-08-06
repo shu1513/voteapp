@@ -6,6 +6,7 @@ import type { OhioFinanceOutsideGroup } from "./ohioOutsideSpendingAggregator.js
 import {
   replaceOhioCandidateFinanceSnapshot,
   type OhioFinanceLinkInput,
+  type OhioFinanceLinkSource,
   type OhioFinanceOutsideGroupInput,
   type OhioFinanceSummaryInput,
 } from "./ohioFinanceWriter.js";
@@ -42,10 +43,14 @@ export type OhioCandidateFinanceSyncInput = {
   electionYear: number;
   officeName: string;
   district?: string | null;
-  // The linked committee from the due row — trusted, not re-resolved.
+  // The linked committee from the due row — trusted, not re-resolved. The
+  // link's original provenance is written back as-is: a manual link must
+  // stay "manual" (defaulted for auto flows), or it would lose provenance
+  // and become eligible for auto-link supersession.
   committee: {
     committeeId: string;
     committeeName: string;
+    linkSource?: OhioFinanceLinkSource;
     sourceUrl?: string | null;
   };
   directFinance: OhioDirectContributionAggregationResult;
@@ -131,7 +136,7 @@ export async function syncOhioCandidateFinance(
     committeeId,
     committeeName,
     linkStatus: "active",
-    linkSource: "sos_bulk_export",
+    linkSource: input.committee.linkSource ?? "sos_bulk_export",
     sourceUrl: input.committee.sourceUrl ?? input.sourceUrl ?? null,
     lastVerifiedAt: syncedAt,
   };

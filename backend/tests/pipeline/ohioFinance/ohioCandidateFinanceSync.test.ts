@@ -183,6 +183,21 @@ describe("syncOhioCandidateFinance", () => {
     expect(db.connect).not.toHaveBeenCalled();
   });
 
+  it("writes a manual link back as manual instead of claiming sos_bulk_export", async () => {
+    const db = createMockDb();
+    const input = baseInput(db);
+    await syncOhioCandidateFinance({
+      ...input,
+      committee: { ...input.committee, linkSource: "manual" },
+    });
+
+    const linkUpsertParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("oh_candidate_finance_links"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(linkUpsertParams).toContain("manual");
+    expect(linkUpsertParams).not.toContain("sos_bulk_export");
+  });
+
   it("rejects a non-numeric committee id before writing anything", async () => {
     const db = createMockDb();
     await expect(

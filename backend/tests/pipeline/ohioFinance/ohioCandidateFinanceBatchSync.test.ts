@@ -270,6 +270,7 @@ function dueRow(overrides: Partial<OhioCandidateFinanceDueRow> = {}): OhioCandid
     district: "87",
     committeeId: "15877",
     committeeName: "CITIZENS FOR KALMBACH",
+    linkSource: "sos_bulk_export",
     sourceUrl: SOURCE_URL,
     lastSyncedAt: null,
     ...overrides,
@@ -288,6 +289,7 @@ function createDueListDb(rows: OhioCandidateFinanceDueRow[]) {
       district: row.district,
       committee_id: row.committeeId,
       committee_name: row.committeeName,
+      link_source: row.linkSource,
       source_url: row.sourceUrl,
       last_synced_at: row.lastSyncedAt,
       total_due_rows: index === 0 ? rows.length : undefined,
@@ -329,7 +331,8 @@ describe("syncDueOhioCandidateFinance", () => {
       syncedCandidateCount: 2,
       failedCandidateCount: 0,
     });
-    expect(db.query).toHaveBeenCalledTimes(1);
+    // Due-list query plus the year's outside target-universe query.
+    expect(db.query).toHaveBeenCalledTimes(2);
     expect(db.connect).not.toHaveBeenCalled();
 
     const kalmbach = result.results[0]?.result;
@@ -485,6 +488,137 @@ describe("syncDueOhioCandidateFinance", () => {
       missingDetailReportKeyCount: 1,
     });
     expect(result.outsideAggregationByYear[0]?.error).toContain("600000000");
+  });
+
+  it("sees a same-name double from the active-link universe even when it is not due", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeCycleArtifacts(cacheDir);
+    // Only ONE Kalmbach is due this run, but a second same-name candidate
+    // holds an active link for the year. The ambiguity guard must match
+    // against the full universe, not the due page, or attribution would
+    // depend on sync timing.
+    const dueRows = [dueRow()];
+    const query = vi
+      .fn()
+      // Due list.
+      .mockResolvedValueOnce({
+        rows: dueRows.map((row, index) => ({
+          candidate_id: row.candidateId,
+          election_id: row.electionId,
+          candidate_name: row.candidateName,
+          election_year: row.electionYear,
+          office_scope: row.officeScope,
+          office_name: row.officeName,
+          district: row.district,
+          committee_id: row.committeeId,
+          committee_name: row.committeeName,
+          link_source: row.linkSource,
+          source_url: row.sourceUrl,
+          last_synced_at: row.lastSyncedAt,
+          total_due_rows: index === 0 ? dueRows.length : undefined,
+        })),
+      })
+      // Outside target universe for 2026: the due candidate plus a
+      // different person with the same display name and office.
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: dueRows[0]!.candidateId,
+            candidate_name: "Daniel Kalmbach",
+            office_name: "State Lower Chamber Legislator",
+          },
+          {
+            candidate_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+            candidate_name: "Daniel Kalmbach",
+            office_name: "State Lower Chamber Legislator",
+          },
+        ],
+      });
+    const db = { query, connect: vi.fn() };
+
+    const result = await syncDueOhioCandidateFinance({
+      db,
+      now: new Date("2026-08-05T09:10:11.000Z"),
+      dryRun: true,
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: cacheDir,
+    });
+
+    expect(result.syncedCandidateCount).toBe(1);
+    expect(result.results[0]?.result?.outsideSupportTotal).toBe(0);
+    expect(result.outsideAggregationByYear[0]).toMatchObject({
+      available: true,
+      ambiguousTargetCount: 1,
+      attributedRowCount: 0,
+    });
+  });
+
+  it("refuses a cached file whose size no longer matches its manifest", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeCycleArtifacts(cacheDir);
+    // A manifest that disagrees with the bytes on disk means the file
+    // changed after install — a torn copy or truncation the parser might
+    // not notice. The year must fail, never publish from it.
+    await writeFile(
+      join(cacheDir, "CAC_CON_2026.CSV.manifest.json"),
+      JSON.stringify({
+        version: 1,
+        productKey: "candidate_contributions",
+        fileName: "CAC_CON_2026.CSV",
+        transactionYear: 2026,
+        filePath: join(cacheDir, "CAC_CON_2026.CSV"),
+        manifestPath: join(cacheDir, "CAC_CON_2026.CSV.manifest.json"),
+        fileTransferPageUrl: SOURCE_URL,
+        portalDateModified: null,
+        retrievedAt: "2026-08-04T00:00:00.000Z",
+        sha256: "0".repeat(64),
+        byteSize: 999_999_999,
+        rowCount: 2,
+        encoding: "windows-1252",
+        rowSeparator: "\r",
+        minTransactionDateIso: null,
+        maxTransactionDateIso: null,
+        implausibleDateRowCount: 0,
+        missingDateRowCount: 0,
+        missingAmountRowCount: 0,
+        malformedRowCount: 0,
+        reportKeys31u: [],
+      }),
+      "utf8"
+    );
+    const db = createDueListDb([dueRow()]);
+
+    const result = await syncDueOhioCandidateFinance({
+      db,
+      now: new Date("2026-08-05T09:10:11.000Z"),
+      dryRun: true,
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: cacheDir,
+    });
+
+    expect(result.syncedCandidateCount).toBe(0);
+    expect(result.failedCandidateCount).toBe(1);
+    expect(result.results[0]?.error).toContain("does not match its manifest");
+  });
+
+  it("passes the link's original provenance through to the sync", async () => {
+    const cacheDir = await makeCacheDir();
+    await writeCycleArtifacts(cacheDir);
+    const rows = [dueRow({ linkSource: "manual" })];
+    const db = createDueListDb(rows);
+    const syncFn = vi.fn().mockResolvedValue({ ok: true });
+
+    await syncDueOhioCandidateFinance({
+      db,
+      now: new Date("2026-08-05T09:10:11.000Z"),
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: cacheDir,
+      syncOhioCandidateFinanceFn: syncFn as never,
+    });
+
+    expect(syncFn.mock.calls[0]?.[0]).toMatchObject({
+      committee: { committeeId: "15877", linkSource: "manual" },
+    });
   });
 
   it("fails the year's candidates when a direct artifact is missing", async () => {

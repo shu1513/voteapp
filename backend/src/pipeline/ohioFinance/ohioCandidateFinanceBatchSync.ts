@@ -17,6 +17,7 @@ import {
   type OhioDirectContributionAggregationResult,
 } from "./ohioDirectContributionAggregator.js";
 import { OHIO_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./ohioFinanceEligibleOffices.js";
+import type { OhioFinanceLinkSource } from "./ohioFinanceWriter.js";
 import {
   aggregateOhioOutsideSpending,
   type OhioOutsideSpendingCandidateTarget,
@@ -25,6 +26,7 @@ import { readOhioSos31uDetailBundle } from "./ohioSosArtifactAcquisition.js";
 import {
   DEFAULT_OHIO_SOS_CACHE_DIR,
   getOhioSosArtifactPaths,
+  getOhioSosArtifactStatus,
   OHIO_SOS_FILE_TRANSFER_PAGE_URL,
   readOhioSosArtifactManifest,
   type OhioSosProductKey,
@@ -75,7 +77,13 @@ type ConnectableQueryable = Queryable & {
   connect: () => Promise<PoolClient>;
 };
 
-export type OhioCandidateFinanceDueRow = StandardStateFinanceDueRow;
+// link_source rides along (alaska/tennessee/virginia pattern) so a sync
+// refresh writes the link back with its ORIGINAL provenance — rewriting a
+// manual link as sos_bulk_export would both lose the provenance and
+// expose the manual pin to auto-link supersession.
+export type OhioCandidateFinanceDueRow = StandardStateFinanceDueRow & {
+  linkSource: OhioFinanceLinkSource;
+};
 
 export type OhioCandidateListData = {
   rows: OhioSosCandidateCommitteeListRow[];
@@ -175,6 +183,31 @@ function groupDueRowsByYear(rows: readonly OhioCandidateFinanceDueRow[]): Map<nu
   return byYear;
 }
 
+// Every stream goes through the manifest gate first: a cached file whose
+// size no longer matches its manifest (a torn copy, an outside edit, a
+// truncation that happens to land on a row boundary the parser cannot
+// see) must never feed a sync. A file with NO manifest carries nothing to
+// verify against — the parser's own validation is then the only defense —
+// so it streams with a warning instead of bricking a hand-installed
+// cache; a truly absent file still fails when the stream opens.
+async function verifiedArtifactPath(input: {
+  cacheDir: string;
+  productKey: OhioSosProductKey;
+  transactionYear?: number;
+}): Promise<string> {
+  const status = await getOhioSosArtifactStatus(input);
+  if (status.status === "stale") {
+    throw new Error(
+      `Ohio SoS artifact ${status.fileName} does not match its manifest ` +
+        `(expected ${status.manifest?.byteSize} bytes) — re-run ohio-candidates:finance:raw:refresh`
+    );
+  }
+  if (status.manifest === null) {
+    console.warn(`Ohio SoS artifact ${status.fileName} has no manifest; cache integrity cannot be verified`);
+  }
+  return status.filePath;
+}
+
 async function collectBulkFileRows<T>(input: {
   cacheDir: string;
   productKey: OhioSosProductKey;
@@ -183,7 +216,7 @@ async function collectBulkFileRows<T>(input: {
   now?: Date;
   filter?: (row: T) => boolean;
 }): Promise<T[]> {
-  const { filePath } = getOhioSosArtifactPaths(input);
+  const filePath = await verifiedArtifactPath(input);
   const rows: T[] = [];
   await streamOhioSosBulkFile<T>({
     path: filePath,
@@ -281,7 +314,7 @@ async function aggregateDirectForYear(input: {
   }
 
   for (const transactionYear of [input.electionYear - 1, input.electionYear]) {
-    const { filePath } = getOhioSosArtifactPaths({
+    const filePath = await verifiedArtifactPath({
       cacheDir: input.cacheDir,
       productKey: "candidate_contributions",
       transactionYear,
@@ -332,7 +365,54 @@ type OutsideAggregationForYear = {
   summary: OhioOutsideAggregationYearSummary;
 };
 
+type OhioOutsideTargetCandidateRow = {
+  candidateId: string;
+  candidateName: string;
+  officeName: string;
+};
+
+// The ambiguity guard is only as good as its target universe: matching
+// against just the current due page (stale-filtered and capped at
+// maxCandidates) would let a same-name candidate look unique whenever
+// their double is not due in the same run, and attribution would then
+// depend on sync timing. The universe is every ACTIVE link of the
+// election year — written rows stay limited to the due page. A same-name
+// candidate with no link at all is still invisible here; auto-link runs
+// first and links everyone the SoS list resolves.
+async function listOhioOutsideTargetCandidatesForYear(
+  db: Queryable,
+  electionYear: number
+): Promise<OhioOutsideTargetCandidateRow[]> {
+  const result = await db.query<{ candidate_id: string; candidate_name: string | null; office_name: string }>(
+    `
+      SELECT DISTINCT
+        candidate.id::text AS candidate_id,
+        COALESCE(
+          NULLIF(trim(candidate.display_name), ''),
+          NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), ''),
+          link.candidate_name_normalized
+        ) AS candidate_name,
+        link.office_name
+      FROM public.oh_candidate_finance_links AS link
+      JOIN public.candidates AS candidate
+        ON candidate.id = link.candidate_id
+      WHERE link.link_status = 'active'
+        AND link.election_year = $1::int
+        AND candidate.deleted_at IS NULL
+    `,
+    [electionYear]
+  );
+  return result.rows
+    .filter((row) => (row.candidate_name ?? "").trim().length > 0)
+    .map((row) => ({
+      candidateId: row.candidate_id,
+      candidateName: row.candidate_name!,
+      officeName: row.office_name,
+    }));
+}
+
 async function aggregateOutsideForYear(input: {
+  db: Queryable;
   electionYear: number;
   dueRows: readonly OhioCandidateFinanceDueRow[];
   cacheDir: string;
@@ -345,7 +425,7 @@ async function aggregateOutsideForYear(input: {
     const annualExpenditureRows: OhioSosExpenditureRow[] = [];
     for (const { productKey, family } of OUTSIDE_EXPENDITURE_PRODUCTS) {
       for (const transactionYear of [input.electionYear - 1, input.electionYear]) {
-        const { filePath } = getOhioSosArtifactPaths({ cacheDir: input.cacheDir, productKey, transactionYear });
+        const filePath = await verifiedArtifactPath({ cacheDir: input.cacheDir, productKey, transactionYear });
         await streamOhioSosBulkFile<OhioSosExpenditureRow>({
           path: filePath,
           family,
@@ -365,8 +445,12 @@ async function aggregateOutsideForYear(input: {
     });
     const coverRows = await input.coverRows.allCoverRows();
 
+    // Due rows first (their result slices are the ones written), then the
+    // year's full active-link universe so same-name doubles are visible to
+    // the ambiguity guard even when they are not due this run.
+    const universeRows = await listOhioOutsideTargetCandidatesForYear(input.db, input.electionYear);
     const targetsByKey = new Map<string, OhioOutsideSpendingCandidateTarget>();
-    for (const row of input.dueRows) {
+    for (const row of [...input.dueRows, ...universeRows]) {
       const key = outsideTargetKey(row);
       if (!targetsByKey.has(key)) {
         targetsByKey.set(key, {
@@ -464,6 +548,22 @@ export const listDueOhioCandidateFinanceSyncRows = createStandardStateFinanceDue
     summaries: "oh_candidate_finance_summaries",
   },
   eligibleOfficeKeys: OHIO_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  linkColumns: ["committee_id", "committee_name", "link_source"],
+  mapRow: (row): OhioCandidateFinanceDueRow => ({
+    candidateId: row.candidate_id,
+    electionId: row.election_id,
+    candidateName: row.candidate_name,
+    electionYear: row.election_year,
+    officeScope: row.office_scope,
+    officeName: row.office_name,
+    district: row.district,
+    committeeId: row.committee_id as string,
+    committeeName: row.committee_name as string,
+    // The DB CHECK constraint pins link_source to this union.
+    linkSource: row.link_source as OhioFinanceLinkSource,
+    sourceUrl: row.source_url,
+    lastSyncedAt: row.last_synced_at,
+  }),
 });
 
 export async function syncDueOhioCandidateFinance(
@@ -567,6 +667,7 @@ export async function syncDueOhioCandidateFinance(
     outsideByYear.set(
       year,
       await aggregateOutsideForYear({
+        db: input.db,
         electionYear: year,
         dueRows: yearRows,
         cacheDir,
@@ -619,6 +720,7 @@ export async function syncDueOhioCandidateFinance(
         committee: {
           committeeId: row.committeeId,
           committeeName: row.committeeName,
+          linkSource: row.linkSource,
           sourceUrl: row.sourceUrl,
         },
         directFinance,

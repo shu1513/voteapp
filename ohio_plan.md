@@ -451,6 +451,20 @@ main feasibility risk and also settles the 31-U two-stage question.
       flag parser and dropping `force` from the recurring scheduler payload
       (both verbatim the maryland/all-states template; repo-wide questions,
       not Ohio's).
+      Review round 2 (Codex, all four fixed): (1) every cached stream now
+      passes a manifest gate — size-vs-manifest mismatch fails the year
+      ("stale" = the only detectable corruption; a manifest-less file
+      streams with a warning since there is nothing to verify against, and
+      the extant spike cache has no manifests); (2) the outside ambiguity
+      guard matches against the year's FULL active-link universe (new
+      query), not the stale-filtered 25-row due page, so a same-name
+      double is seen even when not due — unlinked doubles remain the
+      residual blind spot; (3) link_source rides in the due row
+      (alaska/tennessee/virginia linkColumns pattern) and is written back
+      as-is, so manual links keep provenance and auto-supersession
+      immunity; (4) trigger/upsert scripts validate known flags and reject
+      duplicates like sync-due (a --dryrun typo now fails instead of
+      enqueueing a real write).
 - [ ] PR 8 outside-group funders/industries (#3)
 - [ ] PR 9+ PDF path / live run
 
