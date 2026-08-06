@@ -92,6 +92,12 @@ export type TennesseeCandidateFinanceSyncResult = {
 };
 
 const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
+// Every donor/employer label is rule-classified regardless of size
+// (maryland/ohio parity). Static rules are free, so the AI amount floor
+// (aiClassificationMinAmount) must not gate them — otherwise many small
+// same-industry donors sum to a large industry total that never gets
+// counted.
+const STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT = 0;
 // Display cap on PERSISTED label rows per (committee, direction, category),
 // applied AFTER classification so a >cap-label group still gets industry
 // totals built from every donor/employer. Industry rows are naturally
@@ -341,7 +347,9 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   const classifiableOutsideBreakdowns = asClassifiableOutsideBreakdowns(breakdowns.values());
-  const classifications = collectOutsideClassifications(breakdowns.values(), input.aiClassificationMinAmount);
+  // Rule classification at the state floor (0) — only the AI call below
+  // keeps the aiClassificationMinAmount gate.
+  const classifications = collectOutsideClassifications(breakdowns.values(), STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT);
   await resolveFinanceIndustryClassifications({
     db: input.db,
     directBreakdowns: [],
@@ -410,7 +418,7 @@ export async function syncTennesseeCandidateFinance(
         outsideGroups: outsideFinance.summary?.groups ?? [],
         contributionRecords: input.outsideGroupContributionRecords,
         sourceUrl: input.outsideContributionSourceUrl ?? input.contributionSourceUrl ?? link.sourceUrl ?? null,
-        minIndustryAmount: aiClassificationMinAmount,
+        minIndustryAmount: STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT,
       })
     : null;
   const outsideGroupBreakdowns = rawOutsideGroupBreakdowns

@@ -127,26 +127,39 @@ describe("tennesseeCandidateFinanceSync", () => {
           contributorOccupation: null,
           contributorEmployer: null,
         }),
+        // Below the $25k AI floor: rule classification must still run, so
+        // this donor feeds the industry total (and the classification
+        // rows) despite never being sent to AI.
+        contribution({
+          amount: 10_000,
+          recipientName: "RIGHT TENNESSEE",
+          contributorName: "MEMPHIS BANK PAC",
+          contributorOccupation: null,
+          contributorEmployer: null,
+        }),
       ],
       now: new Date("2026-01-01T00:00:00.000Z"),
     });
 
-    // 1 capped donor row + 1 industry row built from BOTH donors.
+    // 1 capped donor row + 1 industry row built from ALL THREE donors.
     expect(result.outsideGroupBreakdownsWritten).toBe(2);
     const breakdownParams = db.query.mock.calls
       .filter((call) => String(call[0]).includes("tn_candidate_finance_outside_group_breakdowns"))
       .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
     expect(breakdownParams).toContain("TENNESSEE BANK PAC");
     expect(breakdownParams).not.toContain("NASHVILLE BANK PAC");
-    // The rebuilt industry total covers the dropped donor too.
+    expect(breakdownParams).not.toContain("MEMPHIS BANK PAC");
+    // The rebuilt industry total covers the dropped donors too — including
+    // the sub-$25k one.
     expect(breakdownParams).toContain("finance_investment");
-    expect(breakdownParams).toContain(80_000);
-    // Both donors persisted classification rows.
+    expect(breakdownParams).toContain(90_000);
+    // All three donors persisted classification rows.
     const classificationParams = db.query.mock.calls
       .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
       .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
     expect(classificationParams).toContain("TENNESSEE BANK PAC");
     expect(classificationParams).toContain("NASHVILLE BANK PAC");
+    expect(classificationParams).toContain("MEMPHIS BANK PAC");
   });
 
   it("preserves unknown outside totals as null when outside spending data is absent", async () => {
