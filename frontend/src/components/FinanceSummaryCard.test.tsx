@@ -145,6 +145,19 @@ describe("FinanceSummaryCard", () => {
       outsideHeading.compareDocumentPosition(note) & Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
     expect(note.compareDocumentPosition(supportTotal) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+
+    // The note qualifies SHOWN figures. A summary whose only outside field
+    // is the note renders no outside section and no note: with nothing
+    // shown the card asserts nothing about outside money, so there is
+    // nothing to caveat (same rule that hides a $0 direction). Deliberate —
+    // pinned so a future edit doesn't silently change it in either
+    // direction.
+    const noteOnly = emptyFinanceSummary();
+    noteOnly.direct_campaign.total_raised = 100;
+    noteOnly.outside_spending.outside_coverage_note = summary.outside_spending.outside_coverage_note;
+    rerender(<FinanceSummaryCard summary={noteOnly} />);
+    expect(screen.queryByText("Spending by outside groups")).not.toBeInTheDocument();
+    expect(screen.queryByText(/Groups that spend without registering/)).not.toBeInTheDocument();
   });
 
   it("color-codes outside support green and opposition red", () => {

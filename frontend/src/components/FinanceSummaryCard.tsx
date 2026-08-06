@@ -369,7 +369,11 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
           </p>
           {/* Stated with the totals, not in the footnote: a reader who sees a
               dollar figure assumes it is all the outside money in the race.
-              Only sources with a known gap send this. */}
+              Only sources with a known gap send this. Deliberately inside the
+              hasOutsideFinanceContent gate: with no figures shown the card
+              asserts nothing about outside money, and a disclaimer under a
+              heading with no data would imply there is data (same rule that
+              hides a $0 direction). */}
           {outside.outside_coverage_note ? (
             <p className="mt-1 text-xs text-ink-soft">{outside.outside_coverage_note}</p>
           ) : null}

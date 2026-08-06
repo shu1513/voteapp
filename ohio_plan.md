@@ -581,11 +581,12 @@ main feasibility risk and also settles the 31-U two-stage question.
       refresh that changes artifact availability should be followed by a
       forced re-sync of anything synced during the outage.
 - [x] Read flag + outside-coverage disclosure (2026-08-06): two gaps the
-      live run exposed. (1) `OHIO_CAMPAIGN_FINANCE_ENABLED` was set in NO
-      `.env`, so all 189 synced summaries rendered nothing — the registry
-      wiring was fine, the flag was the only gate. Added to `backend/.env`
-      per the free-read-flag policy; **still needs adding to the main
-      checkout's `.env` and to Render before prod shows Ohio.** (2) Decision
+      live run exposed. (1) `OHIO_CAMPAIGN_FINANCE_ENABLED` was absent from
+      every checkout's `backend/.env` (and from Render), so all 189 synced
+      summaries rendered nothing — the registry wiring was fine, the flag
+      was the only gate. Added to this worktree's `backend/.env` per the
+      free-read-flag policy; **still needs adding to the main checkout's
+      `backend/.env` and to Render before prod shows Ohio.** (2) Decision
       13's disclosure requirement shipped — see that decision for the design.
 - [ ] PR 9+ PDF path (Miscellaneous Filings, nonregistered spenders) —
       when it lands, remove the Ohio coverage note (decision 13).
