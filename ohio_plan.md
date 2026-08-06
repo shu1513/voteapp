@@ -524,7 +524,52 @@ main feasibility risk and also settles the 31-U two-stage question.
       and its diff invisible — replaced with textual `\u0000` escapes; the
       `grep -P` pre-commit check that was supposed to catch this is silent
       on BSD grep, so the check is now `python3` byte-count.
-- [ ] PR 9+ PDF path / live run
+- [x] **First live run (2026-08-06)** — attended refresh + full sync on the
+      local DB. **Found and fixed a blocking acquisition bug**: the
+      file-transfer page lists PRODUCT LABELS ("Candidate
+      Contributions--2026"), never file names, but discovery searched each
+      row for a `*.CSV` name — so all 303 listed rows matched nothing and
+      every one of the 17 artifacts reported missing. The label-discovery
+      path had never actually completed against the portal (the spike
+      downloaded by a different route). Fixed with an exact,
+      list-type-scoped label table (`ohioSosProductFromListingRow`); the
+      file name is derived from the matched product, so plan/download/
+      manifest code is unchanged. **The exactness is load-bearing**: the
+      NEW tab lists per-committee files whose labels differ from the
+      statewide annual only by a committee name between single dashes
+      (`Candidate Contributions-DAVE YOST FOR OHIO-2026` vs
+      `Candidate Contributions--2026`), so a prefix/substring match would
+      install ONE committee's file as the whole state's. Tests pin all 11
+      label forms verbatim plus that trap.
+      Refresh: 17/17 files, 0 failures, manifests written for the first
+      time (the spike cache had none). `CAC_CON_2026.CSV` came down 133 MB
+      /593,131 rows vs the portal's listed 91,023 KB — verified legitimate
+      (all rows RPT_YEAR=2026, 341 distinct committees, row count scaling
+      with bytes), i.e. a post-deadline batch, not a bad download; the
+      portal's size column is stale.
+      31-U bundle un-staled: **28/28 reports fetched** (was 13, 15
+      missing), 118 rows, **2 unreconciled** (481068415 detail −$86,455.17,
+      506135809 detail −$418.40) which quarantine per decision 4 rather
+      than publish; 40 blank-direction rows excluded ($5,354,928.83) per
+      decision 3.
+      Sync: **189/189 candidates synced, 0 failed**, receipts
+      $104,396,358.50, **outside spending published for the first time —
+      $9,034,464.14** across 9 group rows (V-PAC oppose $8,211,114.50 +
+      support $600,000, Ohioans for a Healthy Economy oppose $217,704.16),
+      859 direct breakdowns, 0 ambiguous targets, 24 unmatched targets
+      (mostly federal/ballot-issue names, decision 5 quarantine).
+      **Funder leg correctly published almost nothing**: of 254 funder rows
+      for the 7 spender committees only 20 carry an organization name and
+      ALL 20 are `31-A-2 Other Income` (candidate committees transferring
+      to a PAC), which the pinned vocabulary excludes — so 2 donor rows
+      total (RYAN B WALKER CPA INC → NFIB). Empty here is the honest
+      answer, not a gap.
+      Operational lesson: rows synced while the bundle was stale kept NULL
+      outside totals and were not due again for a day (`staleAfterDays`
+      minimum is 1) — 25 rows needed `last_synced_at` aged to refresh. A
+      refresh that changes artifact availability should be followed by a
+      forced re-sync of anything synced during the outage.
+- [ ] PR 9+ PDF path (Miscellaneous Filings, nonregistered spenders)
 
 Update the checklist + any changed decision here as PRs land; also update the
 finance-consolidation memory at campaign end.
