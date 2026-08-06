@@ -309,13 +309,20 @@ export async function setUserCandidateFollow(
     // the user row FOR UPDATE, so concurrent follows for the same user
     // serialize and cannot both pass this count. The candidate being
     // (re-)followed is excluded so notification-flag updates on an existing
-    // follow still work at the limit.
+    // follow still work at the limit. Only follows the user can see count:
+    // the join mirrors listUserCandidateFollows' visibility rule, so a stale
+    // follow whose candidate was soft-deleted or merged (hidden from the
+    // list, thus impossible to unfollow from it) cannot consume quota.
     const existing = await client.query<{ count: string }>(
       `
         SELECT count(*) AS count
-        FROM public.user_candidate_follows
-        WHERE user_id = $1::uuid
-          AND candidate_id <> $2::uuid
+        FROM public.user_candidate_follows AS follow
+        JOIN public.candidates AS candidate
+          ON candidate.id = follow.candidate_id
+         AND candidate.deleted_at IS NULL
+         AND candidate.merged_into_candidate_id IS NULL
+        WHERE follow.user_id = $1::uuid
+          AND follow.candidate_id <> $2::uuid
       `,
       [normalizedUserId, normalizedInput.candidateId]
     );

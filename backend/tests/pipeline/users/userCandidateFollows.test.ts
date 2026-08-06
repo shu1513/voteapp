@@ -336,6 +336,10 @@ describe("setUserCandidateFollow", () => {
     // The count excludes the candidate being followed, so flag updates on an
     // existing follow still work at the limit.
     expect(String(client.query.mock.calls[2]?.[0])).toContain("candidate_id <> $2::uuid");
+    // Only follows visible in the list count: stale follows whose candidate
+    // was soft-deleted or merged must not consume quota.
+    expect(String(client.query.mock.calls[2]?.[0])).toContain("candidate.deleted_at IS NULL");
+    expect(String(client.query.mock.calls[2]?.[0])).toContain("candidate.merged_into_candidate_id IS NULL");
     expect(client.query.mock.calls[2]?.[1]).toEqual([userId, candidateIdA]);
     expect(client.query.mock.calls[3]?.[0]).toBe("ROLLBACK");
     expect(client.release).toHaveBeenCalledOnce();

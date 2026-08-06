@@ -41,7 +41,12 @@ export function FollowButton({ candidateId, isFollowing, size = "md" }: FollowBu
       >
         {setFollow.isPending ? "…" : isFollowing ? "Unfollow" : "Follow"}
       </button>
-      {errorMessage ? <p className="mt-1 max-w-56 text-xs text-rausch-dark">{errorMessage}</p> : null}
+      {errorMessage ? (
+        // role="alert": announced to assistive technology when it appears.
+        <p role="alert" className="mt-1 max-w-56 text-xs text-rausch-dark">
+          {errorMessage}
+        </p>
+      ) : null}
     </div>
   );
 }

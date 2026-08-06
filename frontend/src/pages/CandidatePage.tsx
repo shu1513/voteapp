@@ -503,7 +503,15 @@ export function CandidatePage() {
             shareText={candidateShareText(candidate)}
           />
           {canFollow && follows ? (
-            <FollowButton candidateId={candidate.candidate_id} isFollowing={isFollowing} />
+            <FollowButton
+              // Remount on candidate change: the route element stays mounted
+              // across candidate-to-candidate navigation, and without the key
+              // a follow error from the previous candidate would linger under
+              // this one's button.
+              key={candidate.candidate_id}
+              candidateId={candidate.candidate_id}
+              isFollowing={isFollowing}
+            />
           ) : me === null ? (
             // Logged-out visitors get a Follow button that prompts them to
             // register (me is undefined while the session is still loading —
