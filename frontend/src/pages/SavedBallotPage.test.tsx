@@ -128,7 +128,9 @@ describe("SavedBallotPage", () => {
     // states only what WAS saved instead of announcing "Address saved" or
     // making an absolute no-save claim (the backend's 14-day geocoder cache
     // would falsify one).
-    expect(confirmation).toHaveTextContent("Only the new election districts were saved in your profile");
+    expect(confirmation).toHaveTextContent(
+      "Only the new election districts were saved in your profile — not your address",
+    );
     expect(confirmation).not.toHaveTextContent("Address saved");
     // Exact single match: no ambiguity warning.
     expect(confirmation).not.toHaveTextContent("possible locations");

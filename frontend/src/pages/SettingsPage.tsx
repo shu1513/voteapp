@@ -279,17 +279,24 @@ function EmailPreferencesSection() {
   const saving = useIsMutating({ mutationKey: ["put-email-preferences"] }) > 0;
 
   const labels: Array<{ key: keyof EmailPreferences; label: string; description?: string }> = [
-    { key: "email_digest", label: "Daily digest about candidates you follow" },
-    { key: "email_new_election_alerts", label: "New elections in your districts" },
+    {
+      key: "email_digest",
+      label: "Updates about candidates I follow",
+      // "About once a month": the digest job runs daily but is event-gated,
+      // and follow-up record research lands roughly monthly — hedged so the
+      // copy stays true if the cadence drifts.
+      description: "About once a month, get an update on the actions my candidates took.",
+    },
+    { key: "email_new_election_alerts", label: "Notify me about new elections coming up in my districts" },
     {
       key: "email_election_reminders",
-      label: "Remind me the day before each election",
-      description: "One email covering everything on your ballot that day.",
+      label: "Election reminder the day before election day",
+      description: "One email reminder to vote the day before election day.",
     },
     {
       key: "email_issue_updates",
       label: "Updates about the issues you saved",
-      description: "Occasional emails when there is something worth knowing about your issues.",
+      description: "Occasional emails when there is something important about the issues that matter most to you.",
     },
   ];
 

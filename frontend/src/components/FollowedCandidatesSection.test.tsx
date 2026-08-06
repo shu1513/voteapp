@@ -54,8 +54,8 @@ describe("FollowedCandidatesSection", () => {
     expect(screen.queryByText(/Latest:/)).not.toBeInTheDocument();
     expect(screen.queryByText(/expand transit funding/)).not.toBeInTheDocument();
     // The notification toggles survive the move.
-    expect(screen.getByLabelText("Email me about their elections")).toBeInTheDocument();
-    expect(screen.getByLabelText("Email me about record updates")).toBeInTheDocument();
+    expect(screen.getByLabelText("Email me about their future elections")).toBeInTheDocument();
+    expect(screen.getByLabelText("Email me about their new actions")).toBeInTheDocument();
   });
 
   it("keeps the follows list unfiltered while typing in the search box", async () => {

@@ -109,17 +109,17 @@ export function SavedAddressForm({ inputId, label }: { inputId: string; label: s
 // state the form navigates with. The PUT succeeds silently server-side, so
 // this line is the user's only textual feedback on what was matched. The
 // copy leads with election districts, not "address saved", because that is
-// what the account keeps: user_districts has no address column. It states
-// only what WAS saved ("in your profile") and makes no absolute claim
-// about the address — the backend keeps a 14-day geocoder cache (see
-// addressResolutionCache.ts) which the privacy policy discloses, so
-// "we never save your address" would be false.
+// what the account keeps: user_districts has no address column. The
+// "not your address" clause is scoped to the profile ("saved in your
+// profile") on purpose — the backend keeps a 14-day geocoder cache (see
+// addressResolutionCache.ts) which the privacy policy discloses, so an
+// absolute "we never save your address" would be false.
 export function AddressSavedNotice({ saved }: { saved: AddressSavedNoticeData }) {
   return (
     <p role="status" className="rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
       Your election districts are updated
       {saved.matched_address ? <> from <strong>{saved.matched_address}</strong></> : null}. Only the new
-      election districts were saved in your profile.
+      election districts were saved in your profile — not your address.
       {typeof saved.address_match_count === "number" && saved.address_match_count > 1 ? (
         // The geocoder returned multiple candidates and saved the first —
         // a silently wrong match here replaces the user's whole ballot.

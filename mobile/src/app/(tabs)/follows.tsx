@@ -85,13 +85,13 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
       ) : null}
       <View className="mt-3 gap-2">
         <Checkbox
-          label="Email me about their elections"
+          label="Email me about their future elections"
           checked={notify.notify_elections}
           disabled={saving}
           onChange={(next) => update({ notify_elections: next })}
         />
         <Checkbox
-          label="Email me about record updates"
+          label="Email me about their new actions"
           checked={notify.notify_updates}
           disabled={saving}
           onChange={(next) => update({ notify_updates: next })}

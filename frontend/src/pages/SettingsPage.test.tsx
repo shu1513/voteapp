@@ -112,9 +112,9 @@ describe("SettingsPage", () => {
     });
     renderSettings();
 
-    expect(await screen.findByLabelText("Daily digest about candidates you follow")).toBeChecked();
-    expect(screen.getByLabelText(/Remind me the day before each election/)).not.toBeChecked();
-    expect(screen.getByLabelText("New elections in your districts")).toBeChecked();
+    expect(await screen.findByLabelText(/Updates about candidates I follow/)).toBeChecked();
+    expect(screen.getByLabelText(/Election reminder the day before election day/)).not.toBeChecked();
+    expect(screen.getByLabelText("Notify me about new elections coming up in my districts")).toBeChecked();
     expect(screen.getByLabelText(/Updates about the issues you saved/)).toBeChecked();
   });
 });
