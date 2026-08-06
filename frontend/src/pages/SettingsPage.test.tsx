@@ -112,7 +112,7 @@ describe("SettingsPage", () => {
     });
     renderSettings();
 
-    expect(await screen.findByLabelText(/Updates about candidates I follow/)).toBeChecked();
+    expect(await screen.findByLabelText(/Updates about my candidates and election results/)).toBeChecked();
     expect(screen.getByLabelText(/Election reminder the day before election day/)).not.toBeChecked();
     expect(screen.getByLabelText("Notify me about new elections coming up in my districts")).toBeChecked();
     expect(screen.getByLabelText(/Updates about the issues you saved/)).toBeChecked();

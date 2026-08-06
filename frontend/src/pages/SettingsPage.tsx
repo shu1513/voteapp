@@ -281,11 +281,14 @@ function EmailPreferencesSection() {
   const labels: Array<{ key: keyof EmailPreferences; label: string; description?: string }> = [
     {
       key: "email_digest",
-      label: "Updates about candidates I follow",
-      // "About once a month": the digest job runs daily but is event-gated,
-      // and follow-up record research lands roughly monthly — hedged so the
-      // copy stays true if the cadence drifts.
-      description: "About once a month, get an update on the actions my candidates took.",
+      // This one opt-in gates two senders: the candidate-follow digest AND
+      // district election-result alerts (sendElectionResultAlerts rides
+      // email_digest), so the copy must name both. Frequency-free on
+      // purpose: both jobs are event-gated with no enforced cadence, and
+      // result alerts cluster right after election days.
+      label: "Updates about my candidates and election results",
+      description:
+        "Occasional emails when candidates I follow take new actions, and when elections in my districts have results.",
     },
     { key: "email_new_election_alerts", label: "Notify me about new elections coming up in my districts" },
     {

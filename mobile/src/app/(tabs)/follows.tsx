@@ -113,7 +113,8 @@ function FollowsBody() {
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
       <Text className="text-2xl font-bold text-ink">Candidates you follow</Text>
       <Text className="mt-1 text-sm text-ink-soft">
-        Followed candidates surface first on your ballot; the toggles control the daily email digest.
+        Followed candidates surface first on your ballot; the toggles control which email updates you get
+        about each candidate.
       </Text>
       {isLoading ? <LoadingNotice text="Loading follows…" /> : null}
       {isError ? (

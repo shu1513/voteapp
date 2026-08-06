@@ -33,8 +33,8 @@ export function RegisterToFollowButton({ candidateName, size = "md" }: RegisterT
         // Event-gated, not scheduled: the digest job runs daily but emails
         // only followers with unsent events, so "whenever there's news" is
         // the claim that stays true regardless of the cron cadence. Do not
-        // name a frequency here — Settings copy owns the cadence claim
-        // ("About once a month…", hedged for the same reason).
+        // name a frequency here — Settings copy is frequency-free for the
+        // same reason ("Occasional emails…").
         description={<>Get updates on {candidateName} whenever there&apos;s news. Signing up is free.</>}
       />
     </>
