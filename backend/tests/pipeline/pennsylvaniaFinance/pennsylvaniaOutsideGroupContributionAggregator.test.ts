@@ -184,6 +184,39 @@ describe("pennsylvaniaOutsideGroupContributionAggregator", () => {
     expect(result.skippedContributionEventCount).toBe(2);
   });
 
+  it("returns every donor uncapped, sorted by amount", () => {
+    // The display cap lives in the SYNC layer, after classification —
+    // capping here would drop tail donors from rebuilt industry totals.
+    const result = aggregatePennsylvaniaOutsideGroupContributions({
+      electionYear: 2026,
+      outsideGroups: [
+        {
+          groupId: "PENNSYLVANIANS FOR ACTION",
+          groupName: "Pennsylvanians for Action",
+          supportOppose: "support",
+          amount: 100000,
+          sourceUrl: null,
+        },
+      ],
+      filerRows: [filerRow()],
+      contributionRows: Array.from({ length: 4 }, (_, index) =>
+        contribution({
+          CampaignFinanceID: `20${index}`,
+          CONTRIBUTOR: `Donor ${index} LLC`,
+          CONTAMT1: `${(index + 1) * 1000}.00`,
+        })
+      ),
+    });
+
+    const donors = result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "donor");
+    expect(donors.map((donor) => donor.categoryName)).toEqual([
+      "Donor 3 LLC",
+      "Donor 2 LLC",
+      "Donor 1 LLC",
+      "Donor 0 LLC",
+    ]);
+  });
+
   it("skips donor and industry breakdowns when the IE organization cannot be mapped to a PA filer", () => {
     const result = aggregatePennsylvaniaOutsideGroupContributions({
       electionYear: 2026,

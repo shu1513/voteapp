@@ -187,6 +187,67 @@ describe("maineCandidateFinanceSync", () => {
     expect(sql.some((statement) => statement.includes("INSERT INTO public.me_candidate_finance_outside_group_breakdowns"))).toBe(true);
   });
 
+  it("classifies every donor but caps the persisted donor rows per group", async () => {
+    const { db, client } = createDb();
+    function pacDonor(overrides: Partial<MaineCfisContributionRow>): MaineCfisContributionRow {
+      return contribution({
+        OrgID: "242",
+        LegacyID: "611",
+        "Committee Name": "ASSOCIATED BUILDERS AND CONTRACTORS OF MAINE PAC",
+        "Candidate Name": "",
+        "First Name": "",
+        "Receipt Source Type": "Business/Organization",
+        "Committee Type": "Political Action Committee",
+        Occupation: "",
+        Employer: "",
+        ...overrides,
+      });
+    }
+
+    const result = await syncMaineCandidateFinance({
+      db,
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      candidateName: "Reagan LeeAnn Paul",
+      electionYear: 2024,
+      officeScope: "state_lower",
+      officeName: "Representative",
+      district: "37",
+      cfisCandidateId: "481737",
+      now: new Date("2026-06-25T12:00:00.000Z"),
+      trustedCommittee: {
+        committeeId: "1001",
+        committeeName: "Paul for Maine",
+      },
+      // Cap of 1: the smaller IBEW donor must be dropped from the WRITTEN
+      // donor rows, yet still feed the classifications and the rebuilt
+      // labor_unions industry total.
+      outsideMaxBreakdownsPerCategory: 1,
+      contributionRows: [
+        pacDonor({ "Receipt ID": "PAC-1", "Receipt Amount": "50000.0000", "Last Name": "IBEW LOCAL 540" }),
+        pacDonor({ "Receipt ID": "PAC-2", "Receipt Amount": "25000.0000", "Last Name": "IBEW LOCAL 8" }),
+      ],
+      expenditureRows: [expenditure()],
+    });
+
+    // 1 capped donor row + 1 industry row built from BOTH donors.
+    expect(result.outsideGroupBreakdownsWritten).toBe(2);
+    const breakdownInsertParams = client.query.mock.calls
+      .filter((call) => String(call[0]).includes("me_candidate_finance_outside_group_breakdowns"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(breakdownInsertParams).toContain("IBEW LOCAL 540");
+    expect(breakdownInsertParams).not.toContain("IBEW LOCAL 8");
+    // The rebuilt industry total covers the dropped donor too.
+    expect(breakdownInsertParams).toContain("labor_unions");
+    expect(breakdownInsertParams).toContain(75_000);
+    // Both donors persisted classification rows.
+    const classificationParams = client.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain("IBEW LOCAL 540");
+    expect(classificationParams).toContain("IBEW LOCAL 8");
+  });
+
   it("returns unmatched without writing when resolver cannot find one committee", async () => {
     const { db } = createDb();
     const result = await syncMaineCandidateFinance({

@@ -60,6 +60,8 @@ export type DistrictOfColumbiaCandidateFinanceSyncInput = {
   dryRun?: boolean;
   directMaxBreakdownsPerCategory?: number;
   outsideMaxGroups?: number;
+  // Display cap on persisted donor rows per (committee, direction);
+  // classification always sees every donor.
   outsideMaxBreakdownsPerCategory?: number;
   financeIndustryClassifier?: FinanceIndustryClassifier;
   aiClassificationMinAmount?: number;
@@ -99,6 +101,10 @@ export type DistrictOfColumbiaCandidateFinanceSyncResult = {
 };
 
 const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
+// For outside groups this is a display cap on PERSISTED donor rows per
+// (committee, direction), applied AFTER classification so a >cap-donor group
+// still gets industry totals built from every donor. Industry rows are
+// bounded by the slug set and are never capped.
 const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 20;
 const DEFAULT_OUTSIDE_MAX_GROUPS = 20;
 
@@ -129,6 +135,14 @@ function normalizeAiClassificationMinAmount(value: number | undefined): number {
   const normalized = value ?? DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT;
   if (!Number.isFinite(normalized) || normalized < 0) {
     throw new Error(`Invalid D.C. finance AI classification minimum amount: ${value}`);
+  }
+  return normalized;
+}
+
+function normalizeMaxDonorBreakdowns(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid D.C. finance outsideMaxBreakdownsPerCategory: ${value}`);
   }
   return normalized;
 }
@@ -277,11 +291,37 @@ function asClassifiableOutsideBreakdowns(breakdowns: Iterable<DistrictOfColumbia
   }));
 }
 
+function capDonorBreakdowns(
+  breakdowns: readonly DistrictOfColumbiaFinanceOutsideGroupBreakdownInput[],
+  maxDonorsPerGroup: number
+): DistrictOfColumbiaFinanceOutsideGroupBreakdownInput[] {
+  const donorsByGroup = new Map<string, DistrictOfColumbiaFinanceOutsideGroupBreakdownInput[]>();
+  for (const breakdown of breakdowns) {
+    if (breakdown.categoryType !== "donor") {
+      continue;
+    }
+    const key = `${breakdown.committeeKey.trim().toUpperCase()}\u0000${breakdown.supportOppose}`;
+    const list = donorsByGroup.get(key) ?? [];
+    list.push(breakdown);
+    donorsByGroup.set(key, list);
+  }
+  const kept = new Set<DistrictOfColumbiaFinanceOutsideGroupBreakdownInput>();
+  for (const list of donorsByGroup.values()) {
+    for (const donor of list
+      .sort((left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName))
+      .slice(0, maxDonorsPerGroup)) {
+      kept.add(donor);
+    }
+  }
+  return breakdowns.filter((breakdown) => breakdown.categoryType !== "donor" || kept.has(breakdown));
+}
+
 async function enrichOutsideGroupIndustryBreakdowns(input: {
   db: Queryable;
   outsideGroupBreakdowns: readonly DistrictOfColumbiaFinanceOutsideGroupBreakdownInput[] | undefined;
   classifier: FinanceIndustryClassifier | undefined;
   aiClassificationMinAmount: number;
+  maxDonorBreakdownsPerGroup: number;
   dryRun: boolean;
 }): Promise<{
   outsideGroupBreakdowns: DistrictOfColumbiaFinanceOutsideGroupBreakdownInput[] | undefined;
@@ -328,7 +368,9 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   return {
-    outsideGroupBreakdowns: [...breakdowns.values()],
+    // Capped only HERE, after every donor fed the classifications and the
+    // rebuilt industry rows above.
+    outsideGroupBreakdowns: capDonorBreakdowns([...breakdowns.values()], input.maxDonorBreakdownsPerGroup),
     classifications: [...classifications.values()],
   };
 }
@@ -432,7 +474,6 @@ export async function syncDistrictOfColumbiaCandidateFinance(
           })),
           contributionRecords: input.outsideContributionRecords,
           sourceUrl: input.sourceUrl ?? null,
-          maxBreakdownsPerCategory: input.outsideMaxBreakdownsPerCategory ?? DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
           minIndustryAmount: aiClassificationMinAmount,
         })
       : null;
@@ -444,6 +485,7 @@ export async function syncDistrictOfColumbiaCandidateFinance(
     outsideGroupBreakdowns,
     classifier: input.financeIndustryClassifier,
     aiClassificationMinAmount,
+    maxDonorBreakdownsPerGroup: normalizeMaxDonorBreakdowns(input.outsideMaxBreakdownsPerCategory),
     dryRun,
   });
 

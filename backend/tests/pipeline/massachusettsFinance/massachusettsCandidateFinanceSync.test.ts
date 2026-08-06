@@ -279,6 +279,59 @@ describe("massachusettsCandidateFinanceSync", () => {
     ).toHaveLength(2);
   });
 
+  it("classifies every donor but caps the persisted donor rows per IE PAC", async () => {
+    const db = createMockDb();
+    const ocpfClient = createOcpfClient({
+      details: [
+        reportDetail({
+          receipts: [
+            {
+              contributorName: "IBEW 103",
+              recordTypeDescription: "Union/Association",
+              amount: 32_420,
+              date: "11/08/2022",
+              sourceUrl: "https://www.ocpf.us/Reports/DisplayReport?menuHidden=true&id=858575",
+            },
+            {
+              contributorName: "IBEW 218",
+              recordTypeDescription: "Union/Association",
+              amount: 26_000,
+              date: "11/02/2022",
+              sourceUrl: "https://www.ocpf.us/Reports/DisplayReport?menuHidden=true&id=858575",
+            },
+          ],
+        }),
+      ],
+    });
+
+    const result = await syncMassachusettsCandidateFinance({
+      db,
+      ...baseInput(),
+      ocpfClient,
+      // Cap of 1: the smaller IBEW donor must be dropped from the WRITTEN
+      // donor rows, yet still feed the classifications and the rebuilt
+      // labor_unions industry total.
+      outsideMaxBreakdownsPerCategory: 1,
+    });
+
+    // 1 capped donor row + 1 industry row built from BOTH donors.
+    expect(result.outsideGroupBreakdownsWritten).toBe(2);
+    const breakdownInsertParams = db.client.query.mock.calls
+      .filter((call) => String(call[0]).includes("ma_candidate_finance_outside_group_breakdowns"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(breakdownInsertParams).toContain("IBEW 103");
+    expect(breakdownInsertParams).not.toContain("IBEW 218");
+    // The rebuilt industry total covers the dropped donor too.
+    expect(breakdownInsertParams).toContain("labor_unions");
+    expect(breakdownInsertParams).toContain(58_420);
+    // Both donors persisted classification rows.
+    const classificationParams = db.client.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain(normalizeFinanceLabel("IBEW 103", "donor"));
+    expect(classificationParams).toContain(normalizeFinanceLabel("IBEW 218", "donor"));
+  });
+
   it("continues syncing when one OCPF IE PAC report detail fails", async () => {
     const db = createMockDb();
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);

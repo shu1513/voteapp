@@ -265,6 +265,56 @@ describe("newMexicoCandidateFinanceSync", () => {
     ]);
   });
 
+  it("classifies every donor but caps the persisted donor rows per group", async () => {
+    const db = createMockDb();
+
+    const outsideDonor = (transactionId: string, amount: string, name: string) =>
+      contribution({
+        OrgID: "9001",
+        "Report Entity Type": "PAC - Independent Expenditure",
+        "Committee Name": "Accountable New Mexico",
+        "Transaction ID": transactionId,
+        "Transaction Amount": amount,
+        "Last Name": name,
+        "First Name": "",
+        "Contributor Code": "Other (e.g. business entity)",
+        "Contributor Occupation": "",
+      });
+
+    const result = await syncNewMexicoCandidateFinance({
+      db,
+      ...baseInput(),
+      // Cap of 1: the smaller construction donor must be dropped from the
+      // WRITTEN donor rows, yet still feed the classifications and the
+      // rebuilt construction industry total.
+      outsideMaxDonorBreakdownsPerGroup: 1,
+      contributionRows: [
+        contribution({ "Transaction Amount": "250.00" }),
+        outsideDonor("OUT1", "60000.00", "Guzman Construction Solutions LLC"),
+        outsideDonor("OUT2", "30000.00", "Sandia Construction Group LLC"),
+      ],
+      expenditureRows: [expenditure({ "Expenditure Amount": "1200.00" })],
+      aiClassificationMinAmount: 100_000,
+    });
+
+    // 1 capped donor row + 1 industry row built from BOTH donors.
+    expect(result.outsideGroupBreakdownsWritten).toBe(2);
+    const breakdownInsertParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("nm_candidate_finance_outside_group_breakdowns"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(breakdownInsertParams).toContain("Guzman Construction Solutions LLC");
+    expect(breakdownInsertParams).not.toContain("Sandia Construction Group LLC");
+    // The rebuilt industry total covers the dropped donor too.
+    expect(breakdownInsertParams).toContain("construction");
+    expect(breakdownInsertParams).toContain(90_000);
+    // Both donors persisted classification rows.
+    const classificationParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain("Guzman Construction Solutions LLC");
+    expect(classificationParams).toContain("Sandia Construction Group LLC");
+  });
+
   it("aggregates but does not write in dry-run mode", async () => {
     const db = createMockDb();
 

@@ -95,6 +95,8 @@ export type WashingtonCandidateFinanceSyncInput = {
   dryRun?: boolean;
   directMaxBreakdownsPerCategory?: number;
   outsideMaxGroups?: number;
+  // Display cap on persisted donor rows per (sponsor, direction);
+  // classification always sees every funder.
   outsideMaxFundersPerGroup?: number;
   financeIndustryClassifier?: FinanceIndustryClassifier;
   aiClassificationMinAmount?: number;
@@ -135,6 +137,9 @@ export type WashingtonCandidateFinanceSyncResult = {
 const DEFAULT_AI_CLASSIFICATION_MIN_AMOUNT = 25_000;
 const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 20;
 const DEFAULT_OUTSIDE_MAX_GROUPS = 20;
+// Display cap on PERSISTED donor rows per (sponsor, direction), applied AFTER
+// classification so a >cap-funder group still gets industry totals built from
+// every funder. Industry rows are bounded by the slug set and never capped.
 const DEFAULT_OUTSIDE_MAX_FUNDERS_PER_GROUP = 20;
 
 const DEFAULT_PDC_CLIENT: WashingtonPdcDataClient = {
@@ -185,6 +190,41 @@ function normalizeAiClassificationMinAmount(value: number | undefined): number {
 
 function normalizeCandidateNameForStorage(value: string): string {
   return [...normalizeWashingtonCandidateNameKeys(value)][0] ?? requireNonEmpty(value, "candidate name").replace(/\s+/g, " ").toUpperCase();
+}
+
+function normalizeMaxFundersPerGroup(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_OUTSIDE_MAX_FUNDERS_PER_GROUP;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Washington finance outsideMaxFundersPerGroup: ${value}`);
+  }
+  return normalized;
+}
+
+function capDonorBreakdowns(
+  breakdowns: readonly WashingtonFinanceOutsideGroupBreakdownInput[],
+  maxDonorsPerGroup: number
+): WashingtonFinanceOutsideGroupBreakdownInput[] {
+  const donorsByGroup = new Map<string, WashingtonFinanceOutsideGroupBreakdownInput[]>();
+  for (const breakdown of breakdowns) {
+    if (breakdown.categoryType !== "donor") {
+      continue;
+    }
+    const key = [breakdown.sponsorId.trim().toUpperCase(), breakdown.supportOppose].join(" | ");
+    const list = donorsByGroup.get(key) ?? [];
+    list.push(breakdown);
+    donorsByGroup.set(key, list);
+  }
+  const kept = new Set<WashingtonFinanceOutsideGroupBreakdownInput>();
+  for (const list of donorsByGroup.values()) {
+    for (const donor of list
+      .sort(
+        (left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName)
+      )
+      .slice(0, maxDonorsPerGroup)) {
+      kept.add(donor);
+    }
+  }
+  return breakdowns.filter((breakdown) => breakdown.categoryType !== "donor" || kept.has(breakdown));
 }
 
 function mergePdcClient(client: Partial<WashingtonPdcDataClient> | undefined): WashingtonPdcDataClient {
@@ -409,6 +449,7 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   outsideGroupBreakdowns: readonly WashingtonFinanceOutsideGroupBreakdownInput[] | undefined;
   classifier: FinanceIndustryClassifier | undefined;
   aiClassificationMinAmount: number;
+  maxDonorBreakdownsPerGroup: number;
   dryRun: boolean;
 }): Promise<{
   outsideGroupBreakdowns: WashingtonFinanceOutsideGroupBreakdownInput[] | undefined;
@@ -455,7 +496,9 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   return {
-    outsideGroupBreakdowns: [...breakdowns.values()],
+    // Capped only HERE, after every funder fed the classifications and the
+    // rebuilt industry rows above.
+    outsideGroupBreakdowns: capDonorBreakdowns([...breakdowns.values()], input.maxDonorBreakdownsPerGroup),
     classifications: [...classifications.values()],
   };
 }
@@ -465,7 +508,6 @@ async function buildOutsideGroupBreakdowns(input: {
   pdcClientOptions?: WashingtonPdcClientOptions;
   outsideGroups: readonly WashingtonPdcIndependentSpendingGroup[];
   electionYear: number;
-  maxFundersPerGroup: number;
 }): Promise<{
   breakdowns: WashingtonFinanceOutsideGroupBreakdownInput[];
   outsideFunderRowCount: number;
@@ -486,12 +528,12 @@ async function buildOutsideGroupBreakdowns(input: {
       continue;
     }
 
+    // No limit: every funder must reach the industry rebuild downstream.
     const funders = await input.pdcClient.getSponsorOrganizationFunders(
       {
         filerId: sponsorResolution.filerId,
         committeeId: sponsorResolution.committeeId,
         electionYear: input.electionYear,
-        limit: input.maxFundersPerGroup,
       },
       input.pdcClientOptions
     );
@@ -651,13 +693,13 @@ export async function syncWashingtonCandidateFinance(
     pdcClientOptions: input.pdcClientOptions,
     outsideGroups,
     electionYear,
-    maxFundersPerGroup: input.outsideMaxFundersPerGroup ?? DEFAULT_OUTSIDE_MAX_FUNDERS_PER_GROUP,
   });
   const outsideIndustryFinance = await enrichOutsideGroupIndustryBreakdowns({
     db: input.db,
     outsideGroupBreakdowns: outsideGroupBreakdowns.breakdowns,
     classifier: input.financeIndustryClassifier,
     aiClassificationMinAmount,
+    maxDonorBreakdownsPerGroup: normalizeMaxFundersPerGroup(input.outsideMaxFundersPerGroup),
     dryRun,
   });
   const summary = toSummary({ resolution, outsideGroups, fallbackSourceUrl: input.sourceUrl });

@@ -125,6 +125,26 @@ describe("newMexicoOutsideGroupContributionAggregator", () => {
     });
   });
 
+  it("returns every donor row uncapped so the sync can classify all of them", () => {
+    const donorCount = 60;
+    const result = aggregateNewMexicoOutsideGroupContributions({
+      electionYear: 2026,
+      outsideGroups: [outsideGroup()],
+      contributionRows: Array.from({ length: donorCount }, (_unused, index) =>
+        contribution({
+          "Transaction ID": `T${index}`,
+          "Transaction Amount": `${100_000 - index * 100}.00`,
+          "Last Name": `Guzman Construction Solutions ${index} LLC`,
+        })
+      ),
+    });
+
+    const donors = result.outsideGroupBreakdowns.filter((row) => row.categoryType === "donor");
+    expect(donors).toHaveLength(donorCount);
+    expect(donors[0]?.amount).toBe(100_000);
+    expect(donors.at(-1)?.amount).toBe(100_000 - (donorCount - 1) * 100);
+  });
+
   it("only classifies organization donors above the state threshold", () => {
     const result = aggregateNewMexicoOutsideGroupContributions({
       electionYear: 2026,
@@ -178,14 +198,6 @@ describe("newMexicoOutsideGroupContributionAggregator", () => {
         contributionRows: [],
       })
     ).toThrow("Invalid New Mexico outside group contribution election year");
-    expect(() =>
-      aggregateNewMexicoOutsideGroupContributions({
-        electionYear: 2026,
-        outsideGroups: [],
-        contributionRows: [],
-        maxBreakdownsPerCategory: 0,
-      })
-    ).toThrow("Invalid New Mexico outside group contribution maxBreakdownsPerCategory");
     expect(() =>
       aggregateNewMexicoOutsideGroupContributions({
         electionYear: 2026,

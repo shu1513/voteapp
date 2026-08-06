@@ -189,6 +189,42 @@ describe("districtOfColumbiaCandidateFinanceSync", () => {
     ]);
   });
 
+  it("classifies every outside donor but caps the persisted donor rows per group", async () => {
+    const db = createMockDb();
+
+    // Cap of 1: the smaller Anacostia donor must be dropped from the WRITTEN
+    // donor rows, yet still feed the classifications and the rebuilt
+    // construction industry total.
+    const result = await syncDistrictOfColumbiaCandidateFinance({
+      db,
+      ...baseInput(),
+      outsideMaxBreakdownsPerCategory: 1,
+      contributionRecords: [directContribution({ amount: 250 })],
+      expenditureRecords: [expenditure()],
+      outsideContributionRecords: [
+        outsideContribution({ amount: 50_000 }),
+        outsideContribution({ contributorName: "Anacostia Builders LLC", amount: 25_000 }),
+      ],
+    });
+
+    // 1 capped donor row + 1 industry row built from BOTH donors.
+    expect(result.outsideGroupBreakdownsWritten).toBe(2);
+    const breakdownInsertParams = db.client.query.mock.calls
+      .filter((call) => String(call[0]).includes("dc_candidate_finance_outside_group_breakdowns"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(breakdownInsertParams).toContain("Guzman Construction Solutions LLC");
+    expect(breakdownInsertParams).not.toContain("Anacostia Builders LLC");
+    // The rebuilt industry total covers the dropped donor too.
+    expect(breakdownInsertParams).toContain("construction");
+    expect(breakdownInsertParams).toContain(75_000);
+    // Both donors persisted classification rows.
+    const classificationParams = db.client.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain("Guzman Construction Solutions LLC");
+    expect(classificationParams).toContain("Anacostia Builders LLC");
+  });
+
   it("aggregates but does not write in dry-run mode", async () => {
     const db = createMockDb();
 

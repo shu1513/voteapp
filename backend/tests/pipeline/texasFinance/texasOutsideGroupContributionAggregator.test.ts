@@ -219,6 +219,30 @@ describe("texasOutsideGroupContributionAggregator", () => {
     });
   });
 
+  it("returns every donor uncapped, sorted by amount", () => {
+    // The display cap lives in the SYNC layer, after classification —
+    // capping here would drop tail donors from rebuilt industry totals.
+    const result = aggregateTexasOutsideGroupContributions({
+      electionYear: 2026,
+      outsideGroups: [outsideGroup()],
+      contributionRows: Array.from({ length: 4 }, (_, index) =>
+        contribution({
+          contributionInfoId: `200${index}`,
+          contributionAmount: `${(index + 1) * 1000}.00`,
+          contributorNameOrganization: `Donor ${index} LLC`,
+        })
+      ),
+    });
+
+    const donors = result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "donor");
+    expect(donors.map((donor) => donor.categoryName)).toEqual([
+      "Donor 3 LLC",
+      "Donor 2 LLC",
+      "Donor 1 LLC",
+      "Donor 0 LLC",
+    ]);
+  });
+
   it("validates inputs", () => {
     expect(() =>
       aggregateTexasOutsideGroupContributions({
@@ -227,14 +251,6 @@ describe("texasOutsideGroupContributionAggregator", () => {
         contributionRows: [],
       })
     ).toThrow("Invalid Texas outside group contribution election year");
-    expect(() =>
-      aggregateTexasOutsideGroupContributions({
-        electionYear: 2026,
-        outsideGroups: [],
-        contributionRows: [],
-        maxBreakdownsPerCategory: 0,
-      })
-    ).toThrow("Invalid Texas outside group contribution maxBreakdownsPerCategory");
     expect(() =>
       aggregateTexasOutsideGroupContributions({
         electionYear: 2026,

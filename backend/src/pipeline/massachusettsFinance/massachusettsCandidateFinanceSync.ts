@@ -86,6 +86,8 @@ export type MassachusettsCandidateFinanceSyncInput = {
   contributionItemLimit?: number;
   iepacReportLimit?: number;
   outsideMaxGroups?: number;
+  // Display cap on persisted donor rows per (IE PAC, direction);
+  // classification always sees every donor.
   outsideMaxBreakdownsPerCategory?: number;
   financeIndustryClassifier?: FinanceIndustryClassifier;
   aiClassificationMinAmount?: number;
@@ -325,6 +327,35 @@ function addOutsideBreakdown(
   });
 }
 
+// Display cap on PERSISTED donor rows per (IE PAC, direction), applied AFTER
+// classification so a >cap-donor group still gets industry totals built from
+// every donor. Industry rows are naturally bounded by the slug set and are
+// never capped.
+function capDonorBreakdowns(
+  breakdowns: readonly MassachusettsFinanceOutsideGroupBreakdownInput[],
+  maxDonorsPerGroup: number
+): MassachusettsFinanceOutsideGroupBreakdownInput[] {
+  const donorsByGroup = new Map<string, MassachusettsFinanceOutsideGroupBreakdownInput[]>();
+  for (const breakdown of breakdowns) {
+    if (breakdown.categoryType !== "donor") {
+      continue;
+    }
+    const key = `${breakdown.iepacCpfId.trim()}\u0000${breakdown.supportOppose}`;
+    const list = donorsByGroup.get(key) ?? [];
+    list.push(breakdown);
+    donorsByGroup.set(key, list);
+  }
+  const kept = new Set<MassachusettsFinanceOutsideGroupBreakdownInput>();
+  for (const list of donorsByGroup.values()) {
+    for (const donor of list
+      .sort((left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName))
+      .slice(0, maxDonorsPerGroup)) {
+      kept.add(donor);
+    }
+  }
+  return breakdowns.filter((breakdown) => breakdown.categoryType !== "donor" || kept.has(breakdown));
+}
+
 function collectOutsideClassifications(
   breakdowns: Iterable<MassachusettsFinanceOutsideGroupBreakdownInput>,
   minAmount: number
@@ -359,6 +390,7 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   outsideGroupBreakdowns: readonly MassachusettsFinanceOutsideGroupBreakdownInput[] | undefined;
   classifier: FinanceIndustryClassifier | undefined;
   aiClassificationMinAmount: number;
+  maxDonorBreakdownsPerGroup: number;
   dryRun: boolean;
 }): Promise<{
   outsideGroupBreakdowns: MassachusettsFinanceOutsideGroupBreakdownInput[] | undefined;
@@ -405,7 +437,9 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   }
 
   return {
-    outsideGroupBreakdowns: [...breakdowns.values()],
+    // Capped only HERE, after every donor fed the classifications and the
+    // rebuilt industry rows above.
+    outsideGroupBreakdowns: capDonorBreakdowns([...breakdowns.values()], input.maxDonorBreakdownsPerGroup),
     classifications: [...classifications.values()],
   };
 }
@@ -532,7 +566,6 @@ export async function syncMassachusettsCandidateFinance(
     outsideGroups: outsideFinance.summary?.groups ?? [],
     reportDetails,
     sourceUrl: iepacSourceUrl,
-    maxBreakdownsPerCategory: input.outsideMaxBreakdownsPerCategory ?? DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
     minIndustryAmount: aiClassificationMinAmount,
   });
   const outsideIndustryFinance = await enrichOutsideGroupIndustryBreakdowns({
@@ -540,6 +573,11 @@ export async function syncMassachusettsCandidateFinance(
     outsideGroupBreakdowns: outsideGroupBreakdowns.outsideGroupBreakdowns,
     classifier: input.financeIndustryClassifier,
     aiClassificationMinAmount,
+    maxDonorBreakdownsPerGroup: normalizePositiveInteger(
+      input.outsideMaxBreakdownsPerCategory,
+      DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
+      "outsideMaxBreakdownsPerCategory"
+    ),
     dryRun,
   });
   const summary = toSummary({

@@ -494,7 +494,6 @@ export async function runProbeMassachusettsCandidateFinance(input: {
     outsideGroups: outside.summary?.groups ?? [],
     reportDetails,
     sourceUrl: buildMassachusettsOcpfIepacReportSummariesUrl(input.args.electionYear),
-    maxBreakdownsPerCategory: input.args.limit,
     minIndustryAmount: input.args.minIndustryAmount,
   });
 

@@ -194,10 +194,9 @@ describe("massachusettsOutsideGroupContributionAggregator", () => {
     );
   });
 
-  it("limits donor and industry breakdowns independently", () => {
+  it("returns every donor and industry row uncapped, sorted by amount", () => {
     const result = aggregateMassachusettsOutsideGroupContributions({
       electionYear: 2022,
-      maxBreakdownsPerCategory: 1,
       outsideGroups: [outsideGroup()],
       reportDetails: [
         report({
@@ -211,14 +210,15 @@ describe("massachusettsOutsideGroupContributionAggregator", () => {
 
     expect(result.outsideGroupBreakdowns).toEqual([
       expect.objectContaining({ categoryType: "donor", categoryName: "Sierra Club", amount: 50_000 }),
+      expect.objectContaining({ categoryType: "donor", categoryName: "IBEW Local 103", amount: 25_000 }),
       expect.objectContaining({ categoryType: "industry", categoryName: "environmental_group", amount: 50_000 }),
+      expect.objectContaining({ categoryType: "industry", categoryName: "labor_unions", amount: 25_000 }),
     ]);
   });
 
-  it("applies donor and industry caps independently within each IE PAC support bucket", () => {
+  it("keeps every IE PAC support bucket's donor and industry rows", () => {
     const result = aggregateMassachusettsOutsideGroupContributions({
       electionYear: 2022,
-      maxBreakdownsPerCategory: 1,
       outsideGroups: [
         outsideGroup({ iepacCpfId: "81068", supportOppose: "support" }),
         outsideGroup({ iepacCpfId: "81069", supportOppose: "support" }),
@@ -241,13 +241,17 @@ describe("massachusettsOutsideGroupContributionAggregator", () => {
       ],
     });
 
-    expect(result.outsideGroupBreakdowns).toHaveLength(4);
+    expect(result.outsideGroupBreakdowns).toHaveLength(8);
     expect(result.outsideGroupBreakdowns).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ iepacCpfId: "81068", categoryType: "donor", categoryName: "Sierra Club", amount: 50_000 }),
+        expect.objectContaining({ iepacCpfId: "81068", categoryType: "donor", categoryName: "IBEW Local 103", amount: 25_000 }),
         expect.objectContaining({ iepacCpfId: "81068", categoryType: "industry", categoryName: "environmental_group", amount: 50_000 }),
+        expect.objectContaining({ iepacCpfId: "81068", categoryType: "industry", categoryName: "labor_unions", amount: 25_000 }),
         expect.objectContaining({ iepacCpfId: "81069", categoryType: "donor", categoryName: "IBEW Local 222", amount: 75_000 }),
+        expect.objectContaining({ iepacCpfId: "81069", categoryType: "donor", categoryName: "Sierra Club", amount: 30_000 }),
         expect.objectContaining({ iepacCpfId: "81069", categoryType: "industry", categoryName: "labor_unions", amount: 75_000 }),
+        expect.objectContaining({ iepacCpfId: "81069", categoryType: "industry", categoryName: "environmental_group", amount: 30_000 }),
       ])
     );
   });
@@ -256,14 +260,6 @@ describe("massachusettsOutsideGroupContributionAggregator", () => {
     expect(() =>
       aggregateMassachusettsOutsideGroupContributions({ electionYear: 1999, outsideGroups: [], reportDetails: [] })
     ).toThrow("Invalid Massachusetts outside group contribution election year");
-    expect(() =>
-      aggregateMassachusettsOutsideGroupContributions({
-        electionYear: 2022,
-        outsideGroups: [],
-        reportDetails: [],
-        maxBreakdownsPerCategory: 0,
-      })
-    ).toThrow("maxBreakdownsPerCategory");
     expect(() =>
       aggregateMassachusettsOutsideGroupContributions({
         electionYear: 2022,

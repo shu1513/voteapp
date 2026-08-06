@@ -216,6 +216,26 @@ describe("districtOfColumbiaOutsideGroupContributionAggregator", () => {
     );
   });
 
+  it("returns every donor uncapped, sorted by amount", () => {
+    // The display cap lives in the SYNC layer, after classification —
+    // capping here would drop tail donors from rebuilt industry totals.
+    const result = aggregateDistrictOfColumbiaOutsideGroupContributions({
+      electionYear: 2022,
+      outsideGroups: [outsideGroup()],
+      contributionRecords: Array.from({ length: 4 }, (_, index) =>
+        contribution({ contributorName: `Donor ${index} LLC`, amount: (index + 1) * 1_000 })
+      ),
+    });
+
+    const donors = result.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "donor");
+    expect(donors.map((donor) => donor.categoryName)).toEqual([
+      "Donor 3 LLC",
+      "Donor 2 LLC",
+      "Donor 1 LLC",
+      "Donor 0 LLC",
+    ]);
+  });
+
   it("validates inputs", () => {
     expect(() =>
       aggregateDistrictOfColumbiaOutsideGroupContributions({
@@ -224,14 +244,6 @@ describe("districtOfColumbiaOutsideGroupContributionAggregator", () => {
         contributionRecords: [],
       })
     ).toThrow("Invalid D.C. outside group contribution election year");
-    expect(() =>
-      aggregateDistrictOfColumbiaOutsideGroupContributions({
-        electionYear: 2022,
-        outsideGroups: [],
-        contributionRecords: [],
-        maxBreakdownsPerCategory: 0,
-      })
-    ).toThrow("Invalid D.C. outside group contribution maxBreakdownsPerCategory");
     expect(() =>
       aggregateDistrictOfColumbiaOutsideGroupContributions({
         electionYear: 2022,

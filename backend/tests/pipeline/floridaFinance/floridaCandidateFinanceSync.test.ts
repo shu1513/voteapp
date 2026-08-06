@@ -229,6 +229,50 @@ describe("floridaCandidateFinanceSync", () => {
     ]);
   });
 
+  it("classifies every donor but caps the persisted donor rows per group", async () => {
+    const db = createMockDb();
+
+    const result = await syncFloridaCandidateFinance({
+      db,
+      ...baseInput(),
+      // Cap of 1: the smaller IBEW donor must be dropped from the WRITTEN
+      // donor rows, yet still feed the classifications and the rebuilt
+      // labor_unions industry total.
+      outsideMaxBreakdownsPerCategory: 1,
+      contributionRows: [contribution({ amount: "100.00" })],
+      trustedOutsideGroups: [
+        {
+          committeeId: "FLORIDIANS_FOR_JANE_DOE",
+          committeeName: "Floridians for Jane Doe",
+          supportOppose: "support",
+          amount: 1200,
+          sourceUrl: SOURCE_URL,
+        },
+      ],
+      outsideContributionRows: [
+        outsideContribution({ amount: "50000.00", contributorName: "IBEW Local 540" }),
+        outsideContribution({ amount: "30000.00", contributorName: "IBEW Voluntary PAC" }),
+      ],
+    });
+
+    // 1 capped donor row + 1 industry row built from BOTH donors.
+    expect(result.outsideGroupBreakdownsWritten).toBe(2);
+    const breakdownInsertParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.fl_candidate_finance_outside_group_breakdowns"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(breakdownInsertParams).toContain("IBEW Local 540");
+    expect(breakdownInsertParams).not.toContain("IBEW Voluntary PAC");
+    // The rebuilt industry total covers the dropped donor too.
+    expect(breakdownInsertParams).toContain("labor_unions");
+    expect(breakdownInsertParams).toContain(80_000);
+    // Both donors persisted classification rows.
+    const classificationParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain("IBEW Local 540");
+    expect(classificationParams).toContain("IBEW Voluntary PAC");
+  });
+
   it("resolves trusted outside group support evidence into outside groups and persists the evidence link", async () => {
     const db = createMockDb();
 

@@ -20,11 +20,13 @@ export type TexasOutsideGroupContributionAggregationInput = {
   outsideGroups: readonly TexasOutsideSpendingGroup[];
   contributionRows: readonly TexasTecContributionRow[];
   sourceUrl?: string | null;
-  maxBreakdownsPerCategory?: number;
   minIndustryAmount?: number;
 };
 
 export type TexasOutsideGroupContributionAggregationResult = {
+  // ALL donor rows, uncapped (sorted by amount). The sync layer classifies
+  // every donor and only caps the PERSISTED donor display rows — capping here
+  // would silently drop tail donors from the rebuilt industry totals.
   outsideGroupBreakdowns: TexasFinanceOutsideGroupBreakdown[];
   matchedContributionRowCount: number;
   includedContributionRowCount: number;
@@ -47,7 +49,6 @@ type IndustryAggregate = {
   donorKeys: Set<string>;
 };
 
-const DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY = 50;
 const DEFAULT_MIN_INDUSTRY_AMOUNT_CENTS = 25_000 * 100;
 
 function normalizeElectionYear(value: number): number {
@@ -55,14 +56,6 @@ function normalizeElectionYear(value: number): number {
     throw new Error(`Invalid Texas outside group contribution election year: ${value}`);
   }
   return value;
-}
-
-function normalizePositiveInteger(value: number | undefined, fallback: number, fieldName: string): number {
-  const normalized = value ?? fallback;
-  if (!Number.isInteger(normalized) || normalized <= 0) {
-    throw new Error(`Invalid Texas outside group contribution ${fieldName}: ${value}`);
-  }
-  return normalized;
 }
 
 function normalizeMinAmount(value: number | undefined): number {
@@ -184,13 +177,11 @@ function toBreakdowns(input: {
   donors: Iterable<DonorAggregate>;
   industries: Iterable<IndustryAggregate>;
   sourceUrl: string | null;
-  maxBreakdownsPerCategory: number;
 }): TexasFinanceOutsideGroupBreakdown[] {
   const result: TexasFinanceOutsideGroupBreakdown[] = [];
 
   for (const donor of [...input.donors]
-    .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))
-    .slice(0, input.maxBreakdownsPerCategory)) {
+    .sort((left, right) => right.amountCents - left.amountCents || left.displayName.localeCompare(right.displayName))) {
     result.push({
       committeeId: donor.committeeId,
       supportOppose: donor.supportOppose,
@@ -203,8 +194,7 @@ function toBreakdowns(input: {
   }
 
   for (const industry of [...input.industries]
-    .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))
-    .slice(0, input.maxBreakdownsPerCategory)) {
+    .sort((left, right) => right.amountCents - left.amountCents || left.industrySlug.localeCompare(right.industrySlug))) {
     result.push({
       committeeId: industry.committeeId,
       supportOppose: industry.supportOppose,
@@ -223,11 +213,6 @@ export function aggregateTexasOutsideGroupContributions(
   input: TexasOutsideGroupContributionAggregationInput
 ): TexasOutsideGroupContributionAggregationResult {
   const electionYear = normalizeElectionYear(input.electionYear);
-  const maxBreakdownsPerCategory = normalizePositiveInteger(
-    input.maxBreakdownsPerCategory,
-    DEFAULT_MAX_BREAKDOWNS_PER_CATEGORY,
-    "maxBreakdownsPerCategory"
-  );
   const minIndustryAmountCents = normalizeMinAmount(input.minIndustryAmount);
   const outsideGroupKeys = new Map<string, TexasOutsideSpendingGroup>();
   for (const group of input.outsideGroups) {
@@ -332,7 +317,6 @@ export function aggregateTexasOutsideGroupContributions(
       donors: donors.values(),
       industries: industries.values(),
       sourceUrl: input.sourceUrl ?? null,
-      maxBreakdownsPerCategory,
     }),
     matchedContributionRowCount,
     includedContributionRowCount,

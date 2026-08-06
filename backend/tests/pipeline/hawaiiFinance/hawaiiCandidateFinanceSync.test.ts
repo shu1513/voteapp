@@ -171,12 +171,13 @@ describe("hawaiiCandidateFinanceSync", () => {
       { candidateName: "Josh Green", electionYear: 2022, limit: 20 },
       undefined
     );
+    // No limit: funders are fetched uncapped so every one feeds classification.
     expect(cscClient.getNoncandidateCommitteeFunders).toHaveBeenCalledWith(
-      { committeeId: "NC101", electionPeriod: "2020-2022 (KP2)", limit: 20 },
+      { committeeId: "NC101", electionPeriod: "2020-2022 (KP2)" },
       undefined
     );
     expect(cscClient.getNoncandidateCommitteeFunders).toHaveBeenCalledWith(
-      { committeeId: "NC202", electionPeriod: "2020-2022 (KP2)", limit: 20 },
+      { committeeId: "NC202", electionPeriod: "2020-2022 (KP2)" },
       undefined
     );
     expect(financeIndustryClassifier).not.toHaveBeenCalled();
@@ -373,6 +374,54 @@ describe("hawaiiCandidateFinanceSync", () => {
     );
     expect(outsideBreakdownCalls).toHaveLength(2);
     expect(outsideBreakdownCalls.map((call) => call[1]?.[3])).toEqual(["oppose", "oppose"]);
+  });
+
+  it("classifies every funder but caps the persisted donor rows per group", async () => {
+    const db = createMockDb();
+    const cscClient = createCscClient({
+      outsideGroups: [
+        {
+          committeeId: "NC101",
+          committeeName: "Be Change Now",
+          supportOppose: "support",
+          amount: 500557,
+          expenditureCount: 1,
+          electionPeriod: "2020-2022 (KP2)",
+        },
+      ],
+      outsideFunders: [
+        { categoryName: "IBEW Local 1186", amount: 50_000, count: 1 },
+        { categoryName: "IBEW Local 1260", amount: 25_000, count: 1 },
+      ],
+    });
+
+    const result = await syncHawaiiCandidateFinance({
+      db,
+      ...baseInput(),
+      cscClient,
+      // Cap of 1: the smaller IBEW funder must be dropped from the WRITTEN
+      // donor rows, yet still feed the classifications and the rebuilt
+      // labor_unions industry total.
+      outsideMaxFundersPerGroup: 1,
+    });
+
+    // 1 capped donor row + 1 industry row built from BOTH funders.
+    expect(result.outsideGroupBreakdownsWritten).toBe(2);
+    expect(result.outsideFunderRowCount).toBe(2);
+    const breakdownInsertParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("hi_candidate_finance_outside_group_breakdowns"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(breakdownInsertParams).toContain("IBEW Local 1186");
+    expect(breakdownInsertParams).not.toContain("IBEW Local 1260");
+    // The rebuilt industry total covers the dropped funder too.
+    expect(breakdownInsertParams).toContain("labor_unions");
+    expect(breakdownInsertParams).toContain(75_000);
+    // Both funders persisted classification rows.
+    const classificationParams = db.query.mock.calls
+      .filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
+      .flatMap((call) => (Array.isArray(call[1]) ? call[1] : []));
+    expect(classificationParams).toContain("IBEW Local 1186");
+    expect(classificationParams).toContain("IBEW Local 1260");
   });
 
   it("hydrates totals for a trusted committee when the link does not carry a total amount", async () => {
