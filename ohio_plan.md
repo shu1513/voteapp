@@ -465,7 +465,54 @@ main feasibility risk and also settles the 31-U two-stage question.
       immunity; (4) trigger/upsert scripts validate known flags and reject
       duplicates like sync-due (a --dryrun typo now fails instead of
       enqueueing a real write).
-- [ ] PR 8 outside-group funders/industries (#3)
+- [x] PR 8 outside-group funders/industries (#3) (branch
+      `claude/ohio-finance-pr8`): `ohioOutsideGroupContributionAggregator.ts`
+      — maryland pattern (donor + industry only, the standard writer's
+      outside category set), adapted to Ohio: matching is by the spender's
+      numeric MASTER_KEY (never name), the cycle window is RPT_YEAR ∈
+      {Y−1, Y}, and organization donors come from the explicit
+      NON_INDIVIDUAL column — no name heuristics, individuals never become
+      labels. Donor vocabulary pinned from the real files (31-A / 31-E /
+      31-J-1; 31-A-2 and the party-only 31-CC are known-excluded; anything
+      else fails closed into an unknown counter — the real 2026 PAC/party
+      files have ZERO unknowns). Real-data finding: union PACs put
+      transaction descriptions in NON_INDIVIDUAL ("CONTRIBUTION FROM DUES
+      MONEY" $76K, "TRANSFER OF MEMBERSHIP DUES" $855K), so a value is
+      rejected (counted, nonEntityLabelRowCount) only when it BOTH starts
+      like a generic description AND carries dues/transfer context —
+      entity-bearing values ("OHIO AFL-CIO/DUES MONEY", "UAW REGION 2B
+      MEMBERSHIP DUES") keep their verbatim label.
+      Batch: after the year's outside aggregation succeeds, ONE filtered
+      pass over PAC_CON_{Y-1,Y} + PPC_CON_{Y-1,Y} keeps only rows whose
+      MASTER_KEY is a 31-U spender, then a per-candidate slice feeds the
+      sync. Candidate-committee 31-U spenders are NOT covered (receipts
+      live in the ~90 MB CAC_CON files; no bundle-covered spender is one
+      on the real 2026 files) — their groups simply carry no funder rows.
+      A funder artifact failure only disables this leg (funders null →
+      writer keeps stored breakdown rows; year summary carries
+      fundersAvailable/fundersError); the outside totals still sync.
+      Sync: maryland's industry enrichment verbatim — the aggregator's
+      static industry rows are discarded and rebuilt from merged
+      classification state (rules + cached DB rows + manual verdicts), so
+      manual industry labels always win and every unresolved donor
+      persists a classification_source='unknown' row. No AI classifier is
+      constructed by default (rule/cached-only).
+      Queue entries needed NO new code: the committee-label due list reads
+      outside groups through the merged read path (live since PR 7) and
+      the industry-label due list reads the 'unknown' classification rows
+      this PR persists; OHIO_SOS was already in FINANCE_SUMMARY_SOURCES.
+      Real-data smoke: probe showed all 13 bundle-covered spenders are
+      PACs; funder aggregation over the cached cycle: 1,290 filtered rows
+      → 6 org-donor rows (RYAN B WALKER CPA INC $300 for NFIB; Libertarian
+      Party state fund $19,000 + Butler County LP $394.50), 1,218
+      individuals skipped, 4 non-entity dues labels rejected, 62
+      excluded-form rows, 0 unknown forms. Big super PACs (V-PAC $8.66M)
+      have NO PAC_CON rows at all — funder coverage is structurally
+      partial, and empty is correct (never fabricate). Full non-dry batch
+      run on the local DB (migration 210 applied): 25/25 synced with PR 7's
+      exact direct totals (Acton $15,898,732.10 / cash $8,136,281.98), the
+      stale bundle correctly disabling outside AND funders (stored rows
+      preserved).
 - [ ] PR 9+ PDF path / live run
 
 Update the checklist + any changed decision here as PRs land; also update the
