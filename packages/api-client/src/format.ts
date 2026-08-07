@@ -143,6 +143,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   TEXAS_TEC: "Texas Ethics Commission",
   HOUSTON_CAMPAIGN_FINANCE: "City of Houston / Texas Ethics Commission",
   FLORIDA_DOS: "Florida Division of Elections",
+  GEORGIA_ETHICS: "Georgia Ethics Commission",
   UTAH_DISCLOSURES: "Utah Financial Disclosures",
   HAWAII_CSC: "Hawaii Campaign Spending Commission",
   VIRGINIA_CFREPORTS: "Virginia CFReports",

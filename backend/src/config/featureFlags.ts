@@ -271,6 +271,24 @@ export function isNorthCarolinaNcsbeRawDataRefreshEnabled(force = false): boolea
   );
 }
 
+export function isGeorgiaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("GEORGIA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isGeorgiaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isGeorgiaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("GEORGIA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isGeorgiaEthicsRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isGeorgiaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("GEORGIA_ETHICS_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isMaineCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("MAINE_CAMPAIGN_FINANCE_ENABLED", false);
 }
