@@ -123,6 +123,12 @@ export type ElectionSummary = {
   ballot_measure_id: string | null;
   has_results: boolean;
   current_result_outcome: string | null;
+  /**
+   * Winners of the current (most authoritative) result row — who advanced or
+   * won, for the card's result chip. Empty for ballot measures. `?? []` on
+   * read: a not-yet-redeployed backend omits the field.
+   */
+  current_result_winners?: ElectionResultWinner[];
   office: OfficeSummary | null;
   research_areas: ResearchAreaSummary[];
   historical_competitiveness: HistoricalCompetitiveness | null;

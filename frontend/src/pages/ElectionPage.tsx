@@ -11,6 +11,7 @@ import { SourceLine } from "../components/SourceLine";
 import { ReportContentButton } from "../components/ReportContentButton";
 import { ShareButton } from "../components/ShareButton";
 import {
+  deriveCandidateResultBadges,
   formatDistrictType,
   formatDistrictName,
   formatElectionDate,
@@ -179,6 +180,11 @@ export function ElectionPage() {
   // to register (mirrors RegisterToFollowButton). me is undefined while the
   // session loads — render nothing then to avoid a flash of the wrong button.
   const showRegisterToPick = me === null && data.election_date >= usLatestLocalDate();
+  // Per-candidate result badges (Won / Advanced / Lost / …); the matching and
+  // completeness guards — roster-matched winners only, losers only where the
+  // outcome's own signal proves the race decided — live in
+  // deriveCandidateResultBadges.
+  const resultBadges = deriveCandidateResultBadges(data.results, data.candidates, data.seats_to_fill ?? null);
   // Full set, uncapped — the list card previews these; the detail page is
   // where they all fit. Measure elections skip this row: the measure section
   // already shows the same areas with their for/against stance. The ??
@@ -573,17 +579,40 @@ export function ElectionPage() {
               >
                 <div className="p-4">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="font-semibold">
-                      <Link
-                        to={`/candidates/${candidate.candidate_id}`}
-                        state={candidateNavState}
-                        // rausch-deep, not -dark: AA contrast on the tinted card
-                        // bg — see ElectionCard's title.
-                        className="transition after:absolute after:inset-0 group-hover:text-rausch-deep"
-                      >
-                        {candidate.display_name}
-                      </Link>
-                    </h3>
+                    {/* The badge sits beside the heading, not inside it (an
+                        in-heading badge fuses into the accessible name —
+                        "Jordan VoterAdvanced"), and the wrapper is a div
+                        because a heading is flow content, invalid in a span. */}
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-semibold">
+                        <Link
+                          to={`/candidates/${candidate.candidate_id}`}
+                          state={candidateNavState}
+                          // rausch-deep, not -dark: AA contrast on the tinted card
+                          // bg — see ElectionCard's title.
+                          className="transition after:absolute after:inset-0 group-hover:text-rausch-deep"
+                        >
+                          {candidate.display_name}
+                        </Link>
+                      </h3>
+                      {(() => {
+                        const badge = resultBadges.get(candidate.candidate_id);
+                        if (!badge) {
+                          return null;
+                        }
+                        return (
+                          <span
+                            className={
+                              badge.kind === "winner"
+                                ? "rounded border border-green-700 bg-green-50 px-2 py-0.5 text-xs font-medium text-green-900"
+                                : "rounded border border-line bg-surface px-2 py-0.5 text-xs font-medium text-ink-soft"
+                            }
+                          >
+                            {badge.label}
+                          </span>
+                        );
+                      })()}
+                    </div>
                     {/* Withdrawn candidacies never reach this payload
                         (ballotLookup filters them), but the writer also
                         rejects withdrawn/lost — don't render a button whose

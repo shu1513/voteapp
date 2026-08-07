@@ -15,6 +15,7 @@ export * from "./legalCopy";
 export * from "./partyBucket";
 export * from "./researchAreaPriority";
 export * from "./researchAreaScoring";
+export * from "./resultBadges";
 export * from "./useAddressSuggestions";
 export * from "./useCandidateSearch";
 export * from "./useElectionChoices";

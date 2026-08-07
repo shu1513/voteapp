@@ -9,9 +9,11 @@ import {
   formatNameList,
   formatOutcome,
   formatOutsideEvidenceLines,
+  formatResultChipLabel,
   formatRosterStatus,
   formatSourceHost,
   formatVotePowerLabel,
+  formatWinnerNames,
   sortContributionSizeBuckets,
 } from "./format";
 import type { FinanceOutsideIndustryEvidence } from "./types";
@@ -257,5 +259,46 @@ describe("formatOutsideEvidenceLines", () => {
   it("returns no lines for empty or name-less evidence", () => {
     expect(formatOutsideEvidenceLines([])).toEqual([]);
     expect(formatOutsideEvidenceLines([evidence({ organization_name: "  " })])).toEqual([]);
+  });
+});
+
+describe("formatWinnerNames", () => {
+  it("joins names with parties, dropping nameless entries", () => {
+    expect(
+      formatWinnerNames([
+        { candidate_name: "Jocelyn Benson", party: "Democratic" },
+        { candidate_name: "John James", party: "Republican" },
+        { party: "Green" },
+      ])
+    ).toBe("Jocelyn Benson (Democratic), John James (Republican)");
+  });
+
+  it("omits the party when absent and returns empty for nothing", () => {
+    expect(formatWinnerNames([{ candidate_name: "Dana Reyes" }])).toBe("Dana Reyes");
+    expect(formatWinnerNames([])).toBe("");
+  });
+});
+
+describe("formatResultChipLabel", () => {
+  it("names the winners on decisive outcomes", () => {
+    expect(
+      formatResultChipLabel("advanced", [
+        { candidate_name: "Jocelyn Benson", party: "Democratic" },
+        { candidate_name: "John James", party: "Republican" },
+      ])
+    ).toBe("Result: Advanced — Jocelyn Benson (Democratic), John James (Republican)");
+  });
+
+  it("suppresses names on a non-decisive outcome", () => {
+    // The contract permits winners on a too_close row (a recorded leader);
+    // "Result: Too close — Jane Smith" would read as calling the race.
+    expect(formatResultChipLabel("too_close", [{ candidate_name: "Jane Smith" }])).toBe(
+      "Result: Too close"
+    );
+  });
+
+  it("falls back to the outcome alone with no named winners", () => {
+    expect(formatResultChipLabel("passed", [])).toBe("Result: Passed");
+    expect(formatResultChipLabel("won", [{ party: "Independent" }])).toBe("Result: Won");
   });
 });

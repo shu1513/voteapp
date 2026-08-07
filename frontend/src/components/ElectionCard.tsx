@@ -5,7 +5,7 @@ import type { BackTo, ElectionNavState } from "../lib/detailNavContext";
 import {
   formatDistrictName,
   formatElectionDate,
-  formatOutcome,
+  formatResultChipLabel,
   formatRosterStatus,
   formatVotePowerLabel,
   splitResearchAreasBySaved,
@@ -306,7 +306,7 @@ function ElectionCard({
           {election.has_results ? (
             <span className="rounded bg-surface px-2 py-0.5 text-ink">
               {election.current_result_outcome
-                ? `Result: ${formatOutcome(election.current_result_outcome)}`
+                ? formatResultChipLabel(election.current_result_outcome, election.current_result_winners ?? [])
                 : "Results available"}
             </span>
           ) : null}

@@ -3,7 +3,7 @@ import {
   formatDistrictName,
   formatDistrictType,
   formatElectionDate,
-  formatOutcome,
+  formatResultChipLabel,
   formatRosterStatus,
   formatVotePowerLabel,
   sortByResearchAreaPriority,
@@ -66,7 +66,7 @@ export function ElectionCard({
         {election.has_results ? (
           <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink">
             {election.current_result_outcome
-              ? `Result: ${formatOutcome(election.current_result_outcome)}`
+              ? formatResultChipLabel(election.current_result_outcome, election.current_result_winners ?? [])
               : "Results available"}
           </Text>
         ) : null}
