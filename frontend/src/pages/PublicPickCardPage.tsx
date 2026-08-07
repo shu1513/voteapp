@@ -6,7 +6,7 @@ import type { BackTo } from "../lib/detailNavContext";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
 import { loadFromApi } from "../lib/loadFromApi";
-import { pageMeta } from "../lib/pageMeta";
+import { pageMeta, SITE_ORIGIN } from "../lib/pageMeta";
 
 // The public face of a shared pick card: /picks/<token>. The token in the
 // path is the whole authorization, and loadFromApi never forwards cookies.
@@ -31,7 +31,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
   return loadFromApi<PickCard>(`/api/pick-cards/${encodeURIComponent(params.token ?? "")}`, request);
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => {
+export const meta: MetaFunction<typeof loader> = ({ data, error, location, params }) => {
   if (!data) {
     const isNotFound = isRouteErrorResponse(error) && error.status === 404;
     return [{ title: isNotFound ? `Not found · ${APP_NAME}` : `Something went wrong · ${APP_NAME}` }];
@@ -42,6 +42,13 @@ export const meta: MetaFunction<typeof loader> = ({ data, error, location }) => 
       title: `${cardTitle(data)} · ${APP_NAME}`,
       description: `${raceCount} race${raceCount === 1 ? "" : "s"} picked for the ${formatElectionDate(data.election_date)} election on ${APP_NAME}.`,
       path: location.pathname,
+      // Per-share generated image ("See Shu's picks for Nov 3, 2026
+      // Elections") — the picture dominates the preview card in messaging
+      // apps, so it, not just the title, must carry the owner's name.
+      image: {
+        url: `${SITE_ORIGIN}/api/pick-cards/${encodeURIComponent(params.token ?? "")}/og-image.png`,
+        alt: cardTitle(data),
+      },
     }),
     // Unguessable capability URLs must stay out of search indexes: the link
     // is shared person-to-person, not published.

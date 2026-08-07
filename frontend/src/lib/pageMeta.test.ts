@@ -79,4 +79,16 @@ describe("pageMeta", () => {
     expect(byProperty(descriptors, "og:image:width")).toBe("1200");
     expect(byProperty(descriptors, "og:image:height")).toBe("630");
   });
+
+  it("lets a page swap in its own share image in both namespaces", () => {
+    // The shared pick card points here at its generated per-share image.
+    const descriptors = pageMeta({
+      title: "A Page",
+      image: { url: `${SITE_ORIGIN}/api/pick-cards/tok/og-image.png`, alt: "Shu's picks" },
+    }) as Descriptor[];
+    expect(byProperty(descriptors, "og:image")).toBe(`${SITE_ORIGIN}/api/pick-cards/tok/og-image.png`);
+    expect(byProperty(descriptors, "twitter:image")).toBe(`${SITE_ORIGIN}/api/pick-cards/tok/og-image.png`);
+    expect(byProperty(descriptors, "og:image:alt")).toBe("Shu's picks");
+    expect(byProperty(descriptors, "twitter:image:alt")).toBe("Shu's picks");
+  });
 });
