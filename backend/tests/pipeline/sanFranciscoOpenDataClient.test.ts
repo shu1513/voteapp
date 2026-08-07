@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   getSanFranciscoCandidateTargetedSpending,
+  getSanFranciscoCommitteeItemizedTransactions,
   getSanFranciscoCommitteeSummaryRows,
+  getSanFranciscoFilers,
+  getSanFranciscoPublicFundsApproved,
   moneyStringToCents,
 } from "../../src/pipeline/sanFranciscoFinance/sanFranciscoOpenDataClient.js";
 
@@ -170,7 +173,11 @@ describe("getSanFranciscoCandidateTargetedSpending", () => {
       return new Response(JSON.stringify(pages.shift() ?? []), { status: 200 });
     };
     const rows = await getSanFranciscoCandidateTargetedSpending(
-      { candidateLastName: "Wong" },
+      {
+        candidateLastName: "Wong",
+        transactionDateFrom: "2024-06-02",
+        transactionDateTo: "2026-07-02",
+      },
       { fetchImpl, pageLimit },
     );
     expect(rows).toHaveLength(1);
@@ -180,12 +187,224 @@ describe("getSanFranciscoCandidateTargetedSpending", () => {
     );
   });
 
-  it("rejects malformed transaction dates", async () => {
+  it("rejects malformed and impossible transaction dates", async () => {
     await expect(
       getSanFranciscoCandidateTargetedSpending(
-        { candidateLastName: "Wong", transactionDateFrom: "06/02/2026" },
+        {
+          candidateLastName: "Wong",
+          transactionDateFrom: "06/02/2026",
+          transactionDateTo: "2026-07-02",
+        },
         { fetchImpl: jsonFetch([]) },
       ),
     ).rejects.toThrow(/Invalid San Francisco transaction date/);
+    // V8 would silently normalize this to March 3; it must fail here instead.
+    await expect(
+      getSanFranciscoCandidateTargetedSpending(
+        {
+          candidateLastName: "Wong",
+          transactionDateFrom: "2026-02-31",
+          transactionDateTo: "2026-07-02",
+        },
+        { fetchImpl: jsonFetch([]) },
+      ),
+    ).rejects.toThrow(/Invalid San Francisco transaction date: 2026-02-31/);
+  });
+
+  it("rejects an empty or reversed date window", async () => {
+    await expect(
+      getSanFranciscoCandidateTargetedSpending(
+        {
+          candidateLastName: "Wong",
+          transactionDateFrom: "2026-07-02",
+          transactionDateTo: "2024-06-02",
+        },
+        { fetchImpl: jsonFetch([]) },
+      ),
+    ).rejects.toThrow(/Empty San Francisco transaction-date window/);
+    await expect(
+      getSanFranciscoCandidateTargetedSpending(
+        {
+          candidateLastName: "Wong",
+          transactionDateFrom: "2026-07-02",
+          transactionDateTo: "2026-07-02",
+        },
+        { fetchImpl: jsonFetch([]) },
+      ),
+    ).rejects.toThrow(/Empty San Francisco transaction-date window/);
+  });
+});
+
+describe("getSanFranciscoFilers", () => {
+  const registryRow = {
+    filer_nid: "215112140",
+    fppc_id: "1485709",
+    filer_name: "ALAN WONG FOR SUPERVISOR 2026",
+    filer_type: "Candidate or Officeholder",
+    candidate_name: "Wong, Alan",
+    status: "ACTIVE",
+    is_terminated: false,
+  };
+
+  it("maps registry rows and nulls a pending FPPC id", async () => {
+    const rows = await getSanFranciscoFilers(
+      { fppcId: "1485709" },
+      {
+        fetchImpl: jsonFetch([
+          registryRow,
+          { ...registryRow, filer_nid: "217168240", fppc_id: "pending" },
+        ]),
+      },
+    );
+    expect(rows).toEqual([
+      {
+        filerNid: "215112140",
+        fppcId: "1485709",
+        filerName: "ALAN WONG FOR SUPERVISOR 2026",
+        filerType: "Candidate or Officeholder",
+        candidateName: "Wong, Alan",
+        status: "ACTIVE",
+        isTerminated: false,
+      },
+      expect.objectContaining({ filerNid: "217168240", fppcId: null }),
+    ]);
+  });
+
+  it("filters by candidate-name fragment case-insensitively", async () => {
+    const requestedUrls: string[] = [];
+    const fetchImpl: typeof fetch = async (input) => {
+      requestedUrls.push(String(input));
+      return new Response("[]", { status: 200 });
+    };
+    await getSanFranciscoFilers({ candidateName: "Wong" }, { fetchImpl });
+    expect(new URL(requestedUrls[0]!).searchParams.get("$where")).toBe(
+      "upper(candidate_name) like '%WONG%'",
+    );
+  });
+
+  it("requires at least one filter", async () => {
+    await expect(
+      getSanFranciscoFilers({}, { fetchImpl: jsonFetch([]) }),
+    ).rejects.toThrow(/needs an FPPC id or a candidate name/);
+  });
+});
+
+describe("getSanFranciscoCommitteeItemizedTransactions", () => {
+  // Real row shape captured live 2026-08-06 (Lurie Schedule A).
+  const scheduleARow = {
+    filing_nid: "179442009",
+    transaction_id: "INC139",
+    form_type: "A",
+    transaction_date: "2023-09-26T00:00:00.000",
+    transaction_first_name: "MICHAEL",
+    transaction_last_name: "EISLER",
+    transaction_occupation: "BACO PROPERTIES",
+    transaction_employer: "REAL ESTATE INVESTOR",
+    entity_code: "IND",
+    calculated_amount: "500.0",
+    transaction_amount_1: "500.0",
+    memo_code: false,
+    is_itemized: true,
+  };
+
+  it("maps rows and drops one whose canonical amount is unparseable", async () => {
+    const rows = await getSanFranciscoCommitteeItemizedTransactions(
+      {
+        fppcId: "1463099",
+        formTypes: ["A", "C"],
+        transactionDateFrom: "2022-12-05",
+        transactionDateTo: "2024-12-05",
+      },
+      {
+        fetchImpl: jsonFetch([
+          scheduleARow,
+          { ...scheduleARow, calculated_amount: "n/a" },
+        ]),
+      },
+    );
+    expect(rows).toEqual([
+      {
+        filingNid: "179442009",
+        transactionId: "INC139",
+        formType: "A",
+        transactionDate: "2023-09-26T00:00:00.000",
+        contributorFirstName: "MICHAEL",
+        contributorLastName: "EISLER",
+        occupation: "BACO PROPERTIES",
+        employer: "REAL ESTATE INVESTOR",
+        city: null,
+        state: null,
+        zip: null,
+        entityCode: "IND",
+        calculatedAmountCents: 50000,
+        transactionAmount1Cents: 50000,
+        memoCode: false,
+        isItemized: true,
+        crossReferenceMatch: null,
+        crossReferenceSchedule: null,
+        supportOpposeCode: null,
+        transactionCode: null,
+      },
+    ]);
+  });
+
+  it("queries by committee and explicit form types with a total order", async () => {
+    const requestedUrls: string[] = [];
+    const fetchImpl: typeof fetch = async (input) => {
+      requestedUrls.push(String(input));
+      return new Response("[]", { status: 200 });
+    };
+    await getSanFranciscoCommitteeItemizedTransactions(
+      {
+        fppcId: "1463099",
+        formTypes: ["a", "F496"],
+        transactionDateFrom: "2023-01-01",
+        transactionDateTo: "2024-12-05",
+      },
+      { fetchImpl },
+    );
+    const params = new URL(requestedUrls[0]!).searchParams;
+    expect(params.get("$where")).toBe(
+      "fppc_id='1463099' AND form_type in ('A','F496') AND transaction_date>='2023-01-01T00:00:00.000' AND transaction_date<'2024-12-05T00:00:00.000'",
+    );
+    expect(params.get("$order")).toBe("transaction_date,transaction_id,:id");
+    expect(params.get("$select")).toContain("calculated_amount");
+    expect(params.get("$select")).toContain("transaction_occupation");
+  });
+
+  it("rejects empty and malformed form types", async () => {
+    const window = {
+      transactionDateFrom: "2022-12-05",
+      transactionDateTo: "2024-12-05",
+    };
+    await expect(
+      getSanFranciscoCommitteeItemizedTransactions(
+        { fppcId: "1463099", formTypes: [], ...window },
+        { fetchImpl: jsonFetch([]) },
+      ),
+    ).rejects.toThrow(/needs at least one form type/);
+    await expect(
+      getSanFranciscoCommitteeItemizedTransactions(
+        { fppcId: "1463099", formTypes: ["A'; drop"], ...window },
+        { fetchImpl: jsonFetch([]) },
+      ),
+    ).rejects.toThrow(/Invalid San Francisco form type/);
+  });
+});
+
+describe("getSanFranciscoPublicFundsApproved", () => {
+  it("scopes by district server-side when asked", async () => {
+    const requestedUrls: string[] = [];
+    const fetchImpl: typeof fetch = async (input) => {
+      requestedUrls.push(String(input));
+      return new Response("[]", { status: 200 });
+    };
+    await getSanFranciscoPublicFundsApproved(
+      { electionDate: "2024-11-05", district: "Mayor" },
+      { fetchImpl },
+    );
+    expect(new URL(requestedUrls[0]!).searchParams.get("$where")).toBe(
+      "election_date='2024-11-05T00:00:00.000' AND district='Mayor'",
+    );
   });
 });

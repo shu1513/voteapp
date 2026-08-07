@@ -3,6 +3,7 @@ export const SAN_FRANCISCO_OPEN_DATA_BASE_URL =
 export const SAN_FRANCISCO_SUMMARY_TOTALS_DATASET_ID = "9ggq-m8hp";
 export const SAN_FRANCISCO_TRANSACTIONS_DATASET_ID = "pitq-e56w";
 export const SAN_FRANCISCO_PUBLIC_FUNDS_DATASET_ID = "dbak-p2fq";
+export const SAN_FRANCISCO_FILERS_DATASET_ID = "4c8t-ngau";
 
 const DEFAULT_TIMEOUT_MS = 30_000;
 const DEFAULT_PAGE_LIMIT = 1_000;
@@ -52,6 +53,59 @@ function soqlString(value: string): string {
 function stringValue(row: Record<string, unknown>, key: string): string {
   const value = row[key];
   return typeof value === "string" ? value.trim() : "";
+}
+
+function nullableString(
+  row: Record<string, unknown>,
+  key: string,
+): string | null {
+  return stringValue(row, key) || null;
+}
+
+function nullableBoolean(
+  row: Record<string, unknown>,
+  key: string,
+): boolean | null {
+  const value = row[key];
+  return typeof value === "boolean" ? value : null;
+}
+
+// Transaction rows carry no election_date on late filings (verified live:
+// all 2024 mayoral F496 rows have it null), so every transaction query
+// bounds contests by transaction date instead. The bounds are mandatory:
+// committees keep filing across cycles under the same FPPC id (verified
+// live: the 2024 Lurie mayoral committee has 2026 Schedule A rows, incl.
+// $165,000 on 2026-01-21), so an unbounded query silently mixes elections.
+// Shape check plus a UTC round-trip so impossible calendar dates fail here
+// with a clear message instead of as an opaque Socrata 400 — and because V8
+// silently normalizes ISO overflow ("2026-02-31" parses to March 3), any
+// caller that computed a window through Date arithmetic could otherwise
+// smuggle a shifted date into the query.
+function assertRealIsoDate(value: string, label: string): void {
+  const time = Date.parse(`${value}T00:00:00.000Z`);
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(value) ||
+    Number.isNaN(time) ||
+    new Date(time).toISOString().slice(0, 10) !== value
+  )
+    throw new Error(`Invalid San Francisco ${label}: ${value}`);
+}
+
+function transactionDateConditions(
+  transactionDateFrom: string,
+  transactionDateTo: string,
+): string[] {
+  for (const value of [transactionDateFrom, transactionDateTo])
+    assertRealIsoDate(value, "transaction date");
+  // Half-open window [from, to); ISO dates compare correctly as strings.
+  if (transactionDateFrom >= transactionDateTo)
+    throw new Error(
+      `Empty San Francisco transaction-date window: ${transactionDateFrom} to ${transactionDateTo}`,
+    );
+  return [
+    `transaction_date>=${soqlString(`${transactionDateFrom}T00:00:00.000`)}`,
+    `transaction_date<${soqlString(`${transactionDateTo}T00:00:00.000`)}`,
+  ];
 }
 
 async function fetchRows(
@@ -221,11 +275,11 @@ export async function getSanFranciscoCandidateTargetedSpending(
   input: {
     candidateLastName: string;
     candidateFirstName?: string;
-    // F496 rows carry no election_date (verified live: all of the 2024
-    // mayoral independent expenditures have it null), so contests are
-    // bounded by transaction date instead.
-    transactionDateFrom?: string;
-    transactionDateTo?: string;
+    // Required cycle window — see transactionDateConditions. Name filters
+    // alone mix same-surname candidates and same-committee activity across
+    // election cycles.
+    transactionDateFrom: string;
+    transactionDateTo: string;
   },
   options: SanFranciscoOpenDataClientOptions = {},
 ): Promise<SanFranciscoTargetedSpendingRow[]> {
@@ -236,15 +290,12 @@ export async function getSanFranciscoCandidateTargetedSpending(
   const firstName = input.candidateFirstName?.trim().toUpperCase();
   if (firstName)
     conditions.push(`upper(candidate_first_name)=${soqlString(firstName)}`);
-  for (const [key, value] of [
-    ["transaction_date>=", input.transactionDateFrom],
-    ["transaction_date<", input.transactionDateTo],
-  ] as const) {
-    if (value === undefined) continue;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(value))
-      throw new Error(`Invalid San Francisco transaction date: ${value}`);
-    conditions.push(`${key}${soqlString(`${value}T00:00:00.000`)}`);
-  }
+  conditions.push(
+    ...transactionDateConditions(
+      input.transactionDateFrom,
+      input.transactionDateTo,
+    ),
+  );
   const rows = await fetchAllPages(
     SAN_FRANCISCO_TRANSACTIONS_DATASET_ID,
     {
@@ -298,17 +349,23 @@ export type SanFranciscoPublicFundsRow = {
  * exactly (funds = Form 460 line-5 contributions + public funds approved).
  */
 export async function getSanFranciscoPublicFundsApproved(
-  input: { electionDate: string },
+  input: {
+    electionDate: string;
+    /** Optional server-side scope: "Mayor" or a supervisor district number. */
+    district?: string;
+  },
   options: SanFranciscoOpenDataClientOptions = {},
 ): Promise<SanFranciscoPublicFundsRow[]> {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(input.electionDate))
-    throw new Error(
-      `Invalid San Francisco election date: ${input.electionDate}`,
-    );
+  assertRealIsoDate(input.electionDate, "election date");
+  const conditions = [
+    `election_date=${soqlString(`${input.electionDate}T00:00:00.000`)}`,
+  ];
+  const district = input.district?.trim();
+  if (district) conditions.push(`district=${soqlString(district)}`);
   const rows = await fetchAllPages(
     SAN_FRANCISCO_PUBLIC_FUNDS_DATASET_ID,
     {
-      $where: `election_date=${soqlString(`${input.electionDate}T00:00:00.000`)}`,
+      $where: conditions.join(" AND "),
       $order: "candidate,date_of_submission,:id",
     },
     options,
@@ -323,6 +380,217 @@ export async function getSanFranciscoPublicFundsApproved(
       district: stringValue(row, "district"),
       pendingCompleted: stringValue(row, "pending_completed") || null,
       fundsApprovedCents,
+    });
+  }
+  return results;
+}
+
+export type SanFranciscoFilerRow = {
+  filerNid: string;
+  /** FPPC committee id; null while the registry still says "pending". */
+  fppcId: string | null;
+  filerName: string;
+  /** "Candidate or Officeholder" / "Primarily Formed Candidate" / "General Purpose" / … */
+  filerType: string;
+  /** "Last, First" as disclosed; null for non-candidate filers. */
+  candidateName: string | null;
+  status: string;
+  isTerminated: boolean | null;
+};
+
+/**
+ * Filer-registry lookup, by FPPC id and/or candidate-name fragment. Used by
+ * the Phase 3 resolver to cross-check that a manifest committee really is
+ * the candidate's controlled committee (filer_type) and still active. The
+ * name filter is a case-insensitive contains-match because the registry
+ * discloses "Last, First" with inconsistent middle names.
+ */
+export async function getSanFranciscoFilers(
+  input: { fppcId?: string; candidateName?: string },
+  options: SanFranciscoOpenDataClientOptions = {},
+): Promise<SanFranciscoFilerRow[]> {
+  const conditions: string[] = [];
+  if (input.fppcId !== undefined) {
+    const fppcId = input.fppcId.trim();
+    if (!/^\d{4,12}$/.test(fppcId))
+      throw new Error(`Invalid San Francisco FPPC id: ${input.fppcId}`);
+    conditions.push(`fppc_id=${soqlString(fppcId)}`);
+  }
+  const candidateName = input.candidateName?.trim().toUpperCase();
+  if (candidateName)
+    conditions.push(
+      `upper(candidate_name) like ${soqlString(`%${candidateName}%`)}`,
+    );
+  if (conditions.length === 0)
+    throw new Error(
+      "San Francisco filer lookup needs an FPPC id or a candidate name",
+    );
+  const rows = await fetchAllPages(
+    SAN_FRANCISCO_FILERS_DATASET_ID,
+    {
+      $where: conditions.join(" AND "),
+      $order: "filer_nid,:id",
+    },
+    options,
+  );
+  const results: SanFranciscoFilerRow[] = [];
+  for (const row of rows) {
+    const filerNid = stringValue(row, "filer_nid");
+    const filerName = stringValue(row, "filer_name");
+    const filerType = stringValue(row, "filer_type");
+    if (!filerNid || !filerName || !filerType) continue;
+    const fppcId = stringValue(row, "fppc_id");
+    results.push({
+      filerNid,
+      fppcId: /^\d{4,12}$/.test(fppcId) ? fppcId : null,
+      filerName,
+      filerType,
+      candidateName: nullableString(row, "candidate_name"),
+      status: stringValue(row, "status"),
+      isTerminated: nullableBoolean(row, "is_terminated"),
+    });
+  }
+  return results;
+}
+
+export type SanFranciscoItemizedTransactionRow = {
+  filingNid: string;
+  /** Filer-assigned id ("INC139"); unique within a filing, not globally. */
+  transactionId: string | null;
+  formType: string;
+  transactionDate: string | null;
+  contributorFirstName: string | null;
+  /** Individuals' last name; organizations disclose their full name here. */
+  contributorLastName: string | null;
+  occupation: string | null;
+  employer: string | null;
+  city: string | null;
+  state: string | null;
+  zip: string | null;
+  /** "IND" for individuals; the Phase 4 occupation/employer filter key. */
+  entityCode: string | null;
+  /** DataSF's canonical amount column — all aggregation uses this. Cents. */
+  calculatedAmountCents: number;
+  /** Raw form amount, kept for diagnostics only. Cents. */
+  transactionAmount1Cents: number | null;
+  memoCode: boolean | null;
+  isItemized: boolean | null;
+  /**
+   * Both cross-reference columns are 100% null upstream today (verified
+   * 2026-08-06 across all 971k rows), so Phase 4's late-filing dedupe
+   * cannot rely on them; carried so repopulation becomes visible.
+   */
+  crossReferenceMatch: string | null;
+  crossReferenceSchedule: string | null;
+  supportOpposeCode: string | null;
+  transactionCode: string | null;
+};
+
+const ITEMIZED_TRANSACTION_SELECT = [
+  "filing_nid",
+  "transaction_id",
+  "form_type",
+  "transaction_date",
+  "transaction_first_name",
+  "transaction_last_name",
+  "transaction_occupation",
+  "transaction_employer",
+  "transaction_city",
+  "transaction_state",
+  "transaction_zip",
+  "entity_code",
+  "calculated_amount",
+  "transaction_amount_1",
+  "memo_code",
+  "cross_reference_match",
+  "cross_reference_schedule",
+  "is_itemized",
+  "support_oppose_code",
+  "transaction_code",
+].join(",");
+
+/**
+ * Itemized transaction rows for one committee, filtered to explicit form
+ * types (e.g. ["A", "C"] for Schedule A/C contributions, ["F496"] for late
+ * independent expenditures). Raw fetch only: the contributor-formula
+ * composition rules stay in the Phase 4 aggregator behind its entry gate.
+ * Rows whose canonical amount cannot be parsed are dropped, never thrown.
+ * The transaction-date window is mandatory — committees file across cycles
+ * under one FPPC id, so an unbounded fetch would silently mix elections;
+ * a diagnostic that truly wants all history passes a wide explicit window.
+ */
+export async function getSanFranciscoCommitteeItemizedTransactions(
+  input: {
+    fppcId: string;
+    formTypes: string[];
+    transactionDateFrom: string;
+    transactionDateTo: string;
+  },
+  options: SanFranciscoOpenDataClientOptions = {},
+): Promise<SanFranciscoItemizedTransactionRow[]> {
+  const fppcId = input.fppcId.trim();
+  if (!/^\d{4,12}$/.test(fppcId))
+    throw new Error(`Invalid San Francisco FPPC id: ${input.fppcId}`);
+  if (input.formTypes.length === 0)
+    throw new Error(
+      "San Francisco itemized-transaction query needs at least one form type",
+    );
+  const formTypes = input.formTypes.map((formType) => {
+    const trimmed = formType.trim().toUpperCase();
+    if (!/^[A-Z0-9]{1,8}$/.test(trimmed))
+      throw new Error(`Invalid San Francisco form type: ${formType}`);
+    return trimmed;
+  });
+  const conditions = [
+    `fppc_id=${soqlString(fppcId)}`,
+    `form_type in (${formTypes.map(soqlString).join(",")})`,
+    ...transactionDateConditions(
+      input.transactionDateFrom,
+      input.transactionDateTo,
+    ),
+  ];
+  const rows = await fetchAllPages(
+    SAN_FRANCISCO_TRANSACTIONS_DATASET_ID,
+    {
+      $select: ITEMIZED_TRANSACTION_SELECT,
+      $where: conditions.join(" AND "),
+      $order: "transaction_date,transaction_id,:id",
+    },
+    options,
+  );
+  const results: SanFranciscoItemizedTransactionRow[] = [];
+  for (const row of rows) {
+    const filingNid = stringValue(row, "filing_nid");
+    const formType = stringValue(row, "form_type");
+    const calculatedAmountCents = moneyStringToCents(row["calculated_amount"]);
+    if (!filingNid || !formType || calculatedAmountCents === null) continue;
+    results.push({
+      filingNid,
+      transactionId: nullableString(row, "transaction_id"),
+      formType,
+      transactionDate: nullableString(row, "transaction_date"),
+      contributorFirstName: nullableString(row, "transaction_first_name"),
+      contributorLastName: nullableString(row, "transaction_last_name"),
+      occupation: nullableString(row, "transaction_occupation"),
+      employer: nullableString(row, "transaction_employer"),
+      city: nullableString(row, "transaction_city"),
+      state: nullableString(row, "transaction_state"),
+      zip: nullableString(row, "transaction_zip"),
+      entityCode: nullableString(row, "entity_code"),
+      calculatedAmountCents,
+      transactionAmount1Cents: moneyStringToCents(row["transaction_amount_1"]),
+      memoCode: nullableBoolean(row, "memo_code"),
+      isItemized: nullableBoolean(row, "is_itemized"),
+      crossReferenceMatch:
+        row["cross_reference_match"] == null
+          ? null
+          : String(row["cross_reference_match"]),
+      crossReferenceSchedule:
+        row["cross_reference_schedule"] == null
+          ? null
+          : String(row["cross_reference_schedule"]),
+      supportOpposeCode: nullableString(row, "support_oppose_code"),
+      transactionCode: nullableString(row, "transaction_code"),
     });
   }
   return results;

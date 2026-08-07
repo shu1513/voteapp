@@ -52,6 +52,13 @@ export type SanFranciscoContestManifest = {
   candidates: SanFranciscoManifestCandidate[];
   outsideRelations: SanFranciscoManifestOutsideRelation[];
   sourceUrl: string;
+  /**
+   * Sorted union of the frontmatter keys seen at each level
+   * ("top:…|candidate:…|ie_candidate:…|ie_committee:…"). Recorded with every
+   * parse so upstream schema drift shows up in diagnostics — added or renamed
+   * keys change this string before they change behavior.
+   */
+  schemaFingerprint: string;
 };
 
 export function defaultSanFranciscoDashboardManifestClientOptions(): SanFranciscoDashboardManifestClientOptions {
@@ -65,6 +72,15 @@ export function defaultSanFranciscoDashboardManifestClientOptions(): SanFrancisc
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function fingerprintLevel(prefix: string, rows: unknown[]): string {
+  const keys = new Set<string>();
+  for (const row of rows) {
+    if (!isPlainObject(row)) continue;
+    for (const key of Object.keys(row)) keys.add(key);
+  }
+  return `${prefix}:${[...keys].sort().join(",")}`;
 }
 
 function requiredString(
@@ -217,6 +233,19 @@ export function parseSanFranciscoContestManifest(input: {
       });
     }
   }
+  const schemaFingerprint = [
+    fingerprintLevel("top", [frontmatter]),
+    fingerprintLevel("candidate", frontmatter.candidates),
+    fingerprintLevel("ie_candidate", ieCandidates),
+    fingerprintLevel(
+      "ie_committee",
+      ieCandidates.flatMap((entry) =>
+        isPlainObject(entry) && Array.isArray(entry.committees)
+          ? entry.committees
+          : [],
+      ),
+    ),
+  ].join("|");
   return {
     electionDate: input.electionDate,
     contestCode: input.contestCode,
@@ -224,15 +253,16 @@ export function parseSanFranciscoContestManifest(input: {
     candidates,
     outsideRelations,
     sourceUrl: input.sourceUrl,
+    schemaFingerprint,
   };
 }
 
-export function buildSanFranciscoContestManifestUrl(input: {
+function validatedManifestPath(input: {
   electionDate: string;
   contestCode: string;
   repo?: string;
   branch?: string;
-}): string {
+}): { repo: string; branch: string; path: string } {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(input.electionDate))
     throw new Error(
       `Invalid San Francisco dashboard election date: ${input.electionDate}`,
@@ -247,12 +277,45 @@ export function buildSanFranciscoContestManifestUrl(input: {
     throw new Error(`Invalid San Francisco dashboard repo: ${repo}`);
   if (!/^[\w.-]+$/.test(branch))
     throw new Error(`Invalid San Francisco dashboard branch: ${branch}`);
-  return `https://raw.githubusercontent.com/${repo}/${branch}/elections/${input.electionDate}/contests/${input.contestCode}.md`;
+  return {
+    repo,
+    branch,
+    path: `elections/${input.electionDate}/contests/${input.contestCode}.md`,
+  };
+}
+
+export function buildSanFranciscoContestManifestUrl(input: {
+  electionDate: string;
+  contestCode: string;
+  repo?: string;
+  branch?: string;
+}): string {
+  const { repo, branch, path } = validatedManifestPath(input);
+  return `https://raw.githubusercontent.com/${repo}/${branch}/${path}`;
+}
+
+/**
+ * Fallback fetch URL: the GitHub contents API serves the identical bytes
+ * (verified 2026-08-06) through a separate service path from the raw host,
+ * and follows repository renames. The rendered campaign.sfethics.org site
+ * cannot be the fallback the plan first suggested — GitHub Pages runs the
+ * markdown through Jekyll, serves HTML only, and 404s the `.md` path
+ * (verified live), so it can never feed this parser.
+ */
+export function buildSanFranciscoContestManifestApiUrl(input: {
+  electionDate: string;
+  contestCode: string;
+  repo?: string;
+  branch?: string;
+}): string {
+  const { repo, branch, path } = validatedManifestPath(input);
+  return `https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`;
 }
 
 async function fetchText(
   url: string,
   options: SanFranciscoDashboardManifestClientOptions,
+  accept: string,
 ): Promise<string> {
   const retries = options.retryCount ?? 2;
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
@@ -261,7 +324,7 @@ async function fetchText(
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
       const response = await (options.fetchImpl ?? fetch)(url, {
-        headers: { accept: "text/plain" },
+        headers: { accept },
         signal: controller.signal,
       });
       if (!response.ok) {
@@ -298,17 +361,46 @@ export async function getSanFranciscoContestManifest(
   input: { electionDate: string; contestCode: string },
   options: SanFranciscoDashboardManifestClientOptions = {},
 ): Promise<SanFranciscoContestManifest> {
-  const url = buildSanFranciscoContestManifestUrl({
+  const target = {
     electionDate: input.electionDate,
     contestCode: input.contestCode,
     repo: options.repo,
     branch: options.branch,
-  });
-  const markdown = await fetchText(url, options);
+  };
+  const rawUrl = buildSanFranciscoContestManifestUrl(target);
+  let markdown: string;
+  let sourceUrl = rawUrl;
+  try {
+    markdown = await fetchText(rawUrl, options, "text/plain");
+  } catch (primaryError) {
+    // Fetch fallback only: a parse failure below is never retried through
+    // the API, because the API serves the same bytes.
+    const apiUrl = buildSanFranciscoContestManifestApiUrl(target);
+    try {
+      markdown = await fetchText(
+        apiUrl,
+        options,
+        "application/vnd.github.raw+json",
+      );
+      sourceUrl = apiUrl;
+    } catch (fallbackError) {
+      throw new Error(
+        `San Francisco dashboard manifest fetch failed on both hosts: ${
+          primaryError instanceof Error
+            ? primaryError.message
+            : String(primaryError)
+        }; fallback: ${
+          fallbackError instanceof Error
+            ? fallbackError.message
+            : String(fallbackError)
+        }`,
+      );
+    }
+  }
   return parseSanFranciscoContestManifest({
     markdown,
     electionDate: input.electionDate,
     contestCode: input.contestCode,
-    sourceUrl: url,
+    sourceUrl,
   });
 }
