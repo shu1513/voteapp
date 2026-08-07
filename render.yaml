@@ -126,6 +126,8 @@ services:
         value: "true"
       - key: FLORIDA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: GEORGIA_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
       - key: HAWAII_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: HOUSTON_CAMPAIGN_FINANCE_ENABLED

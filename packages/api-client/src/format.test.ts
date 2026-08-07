@@ -145,6 +145,7 @@ describe("financeSourceLabel", () => {
     expect(financeSourceLabel("NEW_YORK_CITY_CFB")).toBe("NYC Campaign Finance Board");
     expect(financeSourceLabel("OHIO_SOS")).toBe("Ohio Secretary of State");
     expect(financeSourceLabel("NORTH_CAROLINA_SBE")).toBe("North Carolina State Board of Elections");
+    expect(financeSourceLabel("GEORGIA_ETHICS")).toBe("Georgia Ethics Commission");
     expect(financeSourceLabel("HOUSTON_CAMPAIGN_FINANCE")).toBe("City of Houston / Texas Ethics Commission");
   });
 
