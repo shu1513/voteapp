@@ -1412,7 +1412,7 @@ async function dispatchApiRequest(
         sendApiResponse(response, toErrorResponse(404, "not_found", "Pick card not found", corsHeaders));
         return;
       }
-      const png = renderPickCardOgImage({ firstName: card.first_name, electionDate: card.election_date });
+      const png = await renderPickCardOgImage({ firstName: card.first_name, electionDate: card.election_date });
       // A day of caching is safe: the image carries only first name +
       // election date, both effectively fixed for the life of a share.
       sendApiResponse(

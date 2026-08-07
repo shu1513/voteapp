@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { Resvg } from "@resvg/resvg-js";
+import { renderAsync } from "@resvg/resvg-js";
 
 // The per-share link-preview image for /picks/<token>. Scrapers (iMessage,
 // WhatsApp, Facebook, X) show the og:image far larger than the title text, so
@@ -61,27 +61,57 @@ export function pickCardOgHeadline(firstName: string | null, electionDate: strin
 }
 
 function escapeXml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+  return (
+    text
+      // C0 controls and DEL are invalid XML 1.0 even escaped — first-name
+      // validation only checks trim + length, so U+0001 etc. reach this
+      // boundary and would fail the SVG parse (a 500) if kept.
+      .replace(/[\u0000-\u001f\u007f]/g, "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;")
+  );
 }
 
 // Greedy word wrap against an estimated glyph width. 0.56em approximates the
 // average advance of Inter Bold for mixed-case English; resvg gives us no
 // text-measurement API, so the fit check is an estimate with the margin
-// built into the factor. A single word longer than a line (an 80-char
-// first name with no spaces) is emitted as its own overlong line and caught
-// by the caller's font-size step-down.
+// built into the factor. Wide-glyph-heavy real names can still exceed the
+// text region by a little, but the 90px side margins absorb that; only the
+// pathological cases below get special handling.
 const AVG_GLYPH_WIDTH_EM = 0.56;
+
+// A single word longer than a whole line (an 80-char first name with no
+// spaces — garbage input, but length validation admits it) is hard-split
+// into chunks that each get their own line. Chunks are sized at 1.1em per
+// glyph — Inter Bold's widest glyph, W, advances ~1.05em — because a chunk
+// is by definition estimate-hostile, and an overflowing line clips at the
+// canvas edge. The caller's font-size ladder absorbs the extra lines; if
+// even the smallest size cannot hold them, its four-line truncation drops
+// tail chunks, which is the right degradation for such a name.
+const CHUNK_GLYPH_WIDTH_EM = 1.1;
 
 function wrapHeadline(text: string, fontSize: number): string[] {
   const maxChars = Math.floor(USABLE_WIDTH / (fontSize * AVG_GLYPH_WIDTH_EM));
+  const chunkChars = Math.max(1, Math.floor(USABLE_WIDTH / (fontSize * CHUNK_GLYPH_WIDTH_EM)));
   const lines: string[] = [];
   let current = "";
+  const flush = () => {
+    if (current.length > 0) {
+      lines.push(current);
+      current = "";
+    }
+  };
   for (const word of text.split(" ")) {
+    if (word.length > maxChars) {
+      flush();
+      for (let start = 0; start < word.length; start += chunkChars) {
+        lines.push(word.slice(start, start + chunkChars));
+      }
+      continue;
+    }
     const candidate = current.length === 0 ? word : `${current} ${word}`;
     if (candidate.length <= maxChars || current.length === 0) {
       current = candidate;
@@ -90,9 +120,7 @@ function wrapHeadline(text: string, fontSize: number): string[] {
       current = word;
     }
   }
-  if (current.length > 0) {
-    lines.push(current);
-  }
+  flush();
   return lines;
 }
 
@@ -159,8 +187,18 @@ export function buildPickCardOgSvg(input: PickCardOgImageInput): string {
 </svg>`;
 }
 
-export function renderPickCardOgImage(input: PickCardOgImageInput): Buffer {
-  const resvg = new Resvg(buildPickCardOgSvg(input), {
+// Rendering costs ~100ms of CPU, and the endpoint is public: without a
+// cache, every request renders (Cloudflare treats each distinct query
+// string as a separate cache key, so origin traffic is easy to force).
+// The image depends only on first name + election date, so a small
+// keyed cache turns any amount of repeat traffic into lookups. Promises
+// are cached, not buffers, so concurrent misses for the same card share
+// one render. ~30KB per entry bounds the cache at a few MB.
+const RENDER_CACHE_MAX_ENTRIES = 200;
+const renderCache = new Map<string, Promise<Buffer>>();
+
+async function renderPng(input: PickCardOgImageInput): Promise<Buffer> {
+  const rendered = await renderAsync(buildPickCardOgSvg(input), {
     fitTo: { mode: "width", value: WIDTH },
     font: {
       fontFiles: [FONT_PATH],
@@ -168,5 +206,25 @@ export function renderPickCardOgImage(input: PickCardOgImageInput): Buffer {
       loadSystemFonts: true,
     },
   });
-  return Buffer.from(resvg.render().asPng());
+  return Buffer.from(rendered.asPng());
+}
+
+export function renderPickCardOgImage(input: PickCardOgImageInput): Promise<Buffer> {
+  const key = `${input.firstName ?? ""} ${input.electionDate}`;
+  const cached = renderCache.get(key);
+  if (cached) {
+    return cached;
+  }
+  const pending = renderPng(input);
+  renderCache.set(key, pending);
+  // A failed render must not be pinned as the permanent answer for this card.
+  pending.catch(() => renderCache.delete(key));
+  if (renderCache.size > RENDER_CACHE_MAX_ENTRIES) {
+    // Maps iterate in insertion order, so the first key is the oldest entry.
+    const oldest = renderCache.keys().next().value;
+    if (oldest !== undefined) {
+      renderCache.delete(oldest);
+    }
+  }
+  return pending;
 }
