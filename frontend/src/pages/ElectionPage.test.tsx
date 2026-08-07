@@ -1196,6 +1196,50 @@ describe("ElectionPage candidate result badges", () => {
     expect(badgeFor("Riley Runner")).toBeNull();
   });
 
+  it("badges nobody when the winner id points outside the displayed roster", async () => {
+    // A stale or filtered-out id (e.g. a withdrawn candidate dropped from the
+    // payload) must not flip everyone else to losers.
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        results: [
+          officeResult({
+            outcome: "won",
+            winners: [{ candidate_id: "c-elsewhere", candidate_name: "Sam Elsewhere" }],
+          }),
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(badgeFor("Jordan Voter")).toBeNull();
+    expect(badgeFor("Riley Runner")).toBeNull();
+  });
+
+  it("withholds loser badges on a partial match", async () => {
+    // One winner matched, the other name-only: that second winner might be a
+    // roster candidate the matcher missed, so only the confirmed winner is
+    // marked and nobody is called a loser.
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        results: [
+          officeResult({
+            outcome: "advanced",
+            winners: [
+              { candidate_id: "c-1", candidate_name: "Jordan Voter" },
+              { candidate_name: "Sam Writein" },
+            ],
+          }),
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(badgeFor("Jordan Voter")).toBe("Advanced");
+    expect(badgeFor("Riley Runner")).toBeNull();
+  });
+
   it("badges nobody on an undecided result", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>

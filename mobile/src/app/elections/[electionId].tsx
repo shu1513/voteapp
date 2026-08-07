@@ -3,6 +3,7 @@ import {
   aggregateRecordAreaStances,
   ApiError,
   apiRequest,
+  deriveCandidateResultBadges,
   formatDistrictName,
   formatDistrictType,
   formatElectionDate,
@@ -16,6 +17,7 @@ import {
   useFollows,
   useMyResearchAreas,
 } from "@voteapp/api-client";
+import type { CandidateResultBadge } from "@voteapp/api-client";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
@@ -160,6 +162,11 @@ export default function ElectionScreen() {
     (hasSaved && matchedOnMyIssues.length > 0 && matchedOnMyIssues.length < partyFilteredCandidates.length);
   const visibleCandidates = recordsFilterOn ? matchedOnMyIssues : partyFilteredCandidates;
   const hiddenByRecordsFilter = partyFilteredCandidates.length - matchedOnMyIssues.length;
+  // Per-candidate result badges (Won / Advanced / Lost / …); the matching
+  // guards — roster-matched winners only, losers only under an exhaustive
+  // winner set — live in deriveCandidateResultBadges. Mirrors the web
+  // election page.
+  const resultBadges = deriveCandidateResultBadges(data.results, data.candidates);
 
   return (
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">
@@ -319,6 +326,7 @@ export default function ElectionScreen() {
                 candidate={candidate}
                 stances={stances}
                 savedAreaIds={savedAreaIds}
+                resultBadge={resultBadges.get(candidate.candidate_id)}
                 followButton={
                   canFollow && follows ? (
                     <FollowButton
@@ -393,11 +401,14 @@ function CandidateCard({
   candidate,
   stances,
   savedAreaIds,
+  resultBadge,
   followButton,
 }: {
   candidate: ElectionDetail["candidates"][number];
   stances: ReturnType<typeof aggregateRecordAreaStances>;
   savedAreaIds: Set<string>;
+  /** Won / Advanced / Lost / … once a decisive result is recorded. */
+  resultBadge?: CandidateResultBadge;
   followButton?: React.ReactNode;
 }) {
   const router = useRouter();
@@ -411,7 +422,20 @@ function CandidateCard({
       >
         <View className="flex-row items-start justify-between gap-3">
           <View className="flex-1">
-            <Text className="font-semibold text-ink">{candidate.display_name}</Text>
+            <View className="flex-row flex-wrap items-center gap-2">
+              <Text className="font-semibold text-ink">{candidate.display_name}</Text>
+              {resultBadge ? (
+                <Text
+                  className={
+                    resultBadge.kind === "winner"
+                      ? "rounded border border-green-700 bg-green-50 px-2 py-0.5 text-xs font-medium text-green-900"
+                      : "rounded border border-line bg-surface px-2 py-0.5 text-xs font-medium text-ink-soft"
+                  }
+                >
+                  {resultBadge.label}
+                </Text>
+              ) : null}
+            </View>
             <Text className="text-sm text-ink-soft">
               {candidate.party}
               {candidate.is_incumbent ? " · Incumbent" : ""}

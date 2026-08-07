@@ -104,6 +104,27 @@ export function formatWinnerNames(
     .join(", ");
 }
 
+// Only decisive outcomes present their winner set as winners. The stored
+// payload may carry winners on a too_close row (a recorded leader), but
+// "Result: Too close — Jane Smith" would read as calling the race for Jane.
+const NAMED_RESULT_OUTCOMES = new Set(["won", "advanced", "runoff"]);
+
+/**
+ * Ballot-card result chip: "Result: Advanced — Jocelyn Benson (Democratic),
+ * John James (Republican)". The names are the answer the voter came for, so
+ * the chip carries them, not just the outcome word. Falls back to
+ * "Result: <outcome>" for non-decisive outcomes, nameless winner sets, and
+ * ballot measures (Passed/Failed already says everything).
+ */
+export function formatResultChipLabel(
+  outcome: string,
+  winners: readonly { candidate_name?: string; party?: string }[]
+): string {
+  const names = NAMED_RESULT_OUTCOMES.has(outcome) ? formatWinnerNames(winners) : "";
+  const base = `Result: ${formatOutcome(outcome)}`;
+  return names.length > 0 ? `${base} — ${names}` : base;
+}
+
 // Mirrors the backend's FINANCE_INDUSTRY_DISPLAY_NAMES
 // (ballotLookupFinanceShared.ts). Finance industry categories arrive as
 // slugs; occupation categories arrive as free text and pass through

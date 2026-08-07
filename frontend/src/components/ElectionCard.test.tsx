@@ -592,6 +592,20 @@ describe("ElectionCard result chip", () => {
     expect(screen.getByText("Result: Won — Dana Reyes")).toBeInTheDocument();
   });
 
+  it("suppresses winner names on a non-decisive outcome", () => {
+    // The contract permits winners on a too_close row (a recorded leader);
+    // "Result: Too close — Jane Smith" would read as calling the race.
+    renderCard(
+      electionSummary({
+        election_date: "2026-08-04",
+        has_results: true,
+        current_result_outcome: "too_close",
+        current_result_winners: [{ candidate_id: "c-1", candidate_name: "Jane Smith" }],
+      })
+    );
+    expect(screen.getByText("Result: Too close")).toBeInTheDocument();
+  });
+
   it("falls back to the outcome alone when no winner is named", () => {
     // Ballot measures (Passed/Failed already says everything) and office rows
     // whose winners are all nameless both take this path.
