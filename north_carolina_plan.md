@@ -42,9 +42,8 @@ fallback and county/municipal candidates are out of v1 (decisions 2, 13).
     two outside totals (direct and outside are built from different artifact
     sets; a direct-only refresh must not wipe outside totals)
   - `outsideGroupValidation: "pairing"` — **mandatory**, cascade-FK trap
-  - `supersededLinkSource`: NC bulk value (decided at PR 1; the link-source
-    CHECK value next to `'manual'` — OH `sos_bulk_export` precedent;
-    suggestion: `ncsbe_portal`)
+  - `supersededLinkSource`: `ncsbe_portal` (settled at PR 1; the link-source
+    CHECK value next to `'manual'` — OH `sos_bulk_export` precedent)
   - `normalizeCommitteeId`: trim + upper-case. PR 1 validates loosely
     (nonempty after trim); the exact SBoEID regex is pinned at PR 4 from
     spike bytes, not invented at PR 1. All synthetic keys are defined
@@ -65,9 +64,10 @@ fallback and county/municipal candidates are out of v1 (decisions 2, 13).
 - **Auto-link** — copy ohio/maryland auto-linker shape over the committee
   search results (decision 5).
 
-## Schema (allocate migration number at PR time)
+## Schema
 
-`db/migrations/<next>_add_north_carolina_campaign_finance_tables.sql` — clone
+`db/migrations/212_add_north_carolina_campaign_finance_tables.sql` (211 is
+owned by open PR #563) — clone
 the ohio migration (210), `nc_` prefix. Identifiers ≤63 chars: longest is
 `nc_candidate_finance_direct_breakdowns_source_url_check` (55); the
 outside-group-breakdowns table uses the short constraint prefix `nc_cff_`
@@ -363,7 +363,10 @@ The acquisition spike is the gate before parser/aggregator work.
 
 ## Status
 
-- [ ] PR 1 schema + writer + flags (env + render.yaml)
+- [x] PR 1 schema + writer + flags (env + render.yaml) — migration 212;
+  eligible set DB-grounded 2026-08-06: only `state_upper::State Senator` +
+  `state_lower::State Lower Chamber Legislator` (zero Council-of-State 2026
+  rows; the lone statewide row is United States Senator = federal/FEC)
 - [ ] PR 2 loader + wiring + coverage note
 - [ ] PR 3 acquisition spike (user-authorized)
 - [ ] PR 4 client + cache + parsers + acquisition script

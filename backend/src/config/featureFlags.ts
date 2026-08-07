@@ -253,6 +253,24 @@ export function isOhioSosRawDataRefreshEnabled(force = false): boolean {
   );
 }
 
+export function isNorthCarolinaCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("NORTH_CAROLINA_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isNorthCarolinaCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isNorthCarolinaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("NORTH_CAROLINA_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isNorthCarolinaNcsbeRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isNorthCarolinaCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("NORTH_CAROLINA_NCSBE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isMaineCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("MAINE_CAMPAIGN_FINANCE_ENABLED", false);
 }
