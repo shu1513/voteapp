@@ -137,6 +137,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   NEBRASKA_NADC: "Nebraska NADC",
   NEW_JERSEY_ELEC: "New Jersey ELEC",
   NEW_MEXICO_CFIS: "New Mexico CFIS",
+  OHIO_SOS: "Ohio Secretary of State",
   OKLAHOMA_GUARDIAN: "Oklahoma Guardian",
   TEXAS_TEC: "Texas Ethics Commission",
   HOUSTON_CAMPAIGN_FINANCE: "City of Houston / Texas Ethics Commission",
