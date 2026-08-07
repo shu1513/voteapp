@@ -63,12 +63,22 @@ Source guarantees verified and relied upon:
 ## Hard prerequisites (before the adapter can display anything)
 
 1. **Candidate rosters.** Every November 2026 San Francisco election in the local database has zero linked candidates. Roster and profile work goes through the `voteapp-manual-research` skill. Can proceed in parallel with adapter phases.
-2. **Office-scope modeling (Phase −1, blocking).** San Francisco is a consolidated city-county and the catalog splits its offices across scopes. Verified constraints:
-   - `backend/src/pipeline/validators/electionsValidator.ts` rejects mayor-titled races under `county` scope (`cityLike` check) and DA/Sheriff-titled races under `place` scope (`countyLike` check).
-   - Current local rows: Supervisor, Assessor-Recorder, Public Defender as `county::06075`; Board of Education as `school_unified::0634410`; ballot measures as `place::0667000`.
-   - Expected catalog placement for offices not yet ingested: `place::Mayor`, `place::Municipal Attorney` (City Attorney), `place::City Treasurer`; `county::District Attorney`, `county::Sheriff`.
-   Phase −1 confirms each SF office's canonical office + scope against the catalog and validator before eligibility code is written.
-3. **Community College Board decision (Phase −1).** `ElectionDistrictType` has no community-college type (`backend/src/types/election.ts` — only elementary/secondary/unified school types) and no `Community College Board Member` canonical office exists. SFEC data is ready (`ccb.md` in the manifest), but VoteApp cannot model the contest. Decide explicitly: (a) defer CCB out of v1, or (b) add an election-model migration (new district type or a deliberate county/place-scoped modeling of this SF-only contest). Roster research alone cannot solve this; default recommendation is (a) defer, ship the other nine offices, and file (b) as follow-up.
+2. **Office-scope modeling (Phase −1) — DONE (2026-08-07).** Confirmed against the office catalog (`seedOffices.ts` + local `offices` table), `electionsValidator.ts`, the local district rows, and the live SFEC repo contest listings (2024-11-05: `bos01/03/05/07/09/11, cat, ccb, dat, myr, shf, ttx, usd`; 2026-11-03: `asr, bos02/04/06/08/10, ccb, pdr, usd`):
+
+   | SFEC contest | Ballot office | Scope::canonical office | Geoid |
+   |---|---|---|---|
+   | `myr` | Mayor | `place::Mayor` | 0667000 |
+   | `cat` | City Attorney | `place::Municipal Attorney` (catalog alias "City Attorney") | 0667000 |
+   | `ttx` | Treasurer | `place::City Treasurer` | 0667000 |
+   | `dat` | District Attorney | `county::District Attorney` | 06075 |
+   | `shf` | Sheriff | `county::Sheriff` | 06075 |
+   | `bosNN` | Supervisor District N (1–11) | `county::County Supervisor` | 06075 |
+   | `asr` | Assessor-Recorder | `county::County Assessor-Recorder` | 06075 |
+   | `pdr` | Public Defender | `county::Public Defender` | 06075 |
+   | `usd` | Board of Education (at-large) | `school_unified::School Board Member` | 0634410 |
+
+   The validator's `cityLike` check forces mayor/city titles into `place` and its `countyLike` check forces sheriff/DA titles into `county`, so these pairs are the only ones it accepts. Local ballot titles read "Member, Board of Supervisors, District N"; the local Nov 2026 rows are exactly the manifest contests minus `ccb`, all with zero candidates.
+3. **Community College Board decision (Phase −1) — DECIDED (2026-08-07): deferred out of v1.** `ElectionDistrictType` has no community-college type and no `Community College Board Member` canonical office exists; the local database correspondingly has no CCB election row. SFEC data stays ready (`ccb.md` in both cycles), so the follow-up remains: an election-model migration (new district type or deliberate scoped modeling) if CCB is ever brought in.
 
 ## Goal and v1 scope
 
@@ -103,13 +113,13 @@ A standalone probe (`probeSanFranciscoCandidateFinance.ts`, kept afterward as a 
 - `sanFranciscoOpenDataClient.ts` — SODA client modeled on `losAngelesOpenDataClient.ts`: base `https://data.sfgov.org/resource/<id>.json`, optional `SAN_FRANCISCO_OPEN_DATA_APP_TOKEN` (`X-App-Token`), 30s timeout, retry on 429/5xx, stable `$order` including `:id`, bounded paging. Typed fetchers: filers by fppc_id/candidate-name fragment (`4c8t-ngau`, "pending" ids map to null); summary rows by `fppc_id`; itemized transactions by committee + explicit form types + transaction-date bounds; public-funds rows by election date + optional district. Fetches `calculated_amount` (canonical) and `transaction_amount_1` (diagnostic); integer cents throughout; server-side `$select`/`$where`/`$group`; per-row rejects drop the row, never throw. Live-verified: Wong filer lookup, 525 Schedule A rows ($157,005.00), 27 mayoral 2024 public-funds rows.
 - **Phase 1 discovery for the Phase 4 gate**: `cross_reference_match` and `cross_reference_schedule` are 100% null across all 971k transaction rows (verified 2026-08-06) — the late-filing dedupe cannot rely on them and must be proven with transaction ids/amount-and-date matching instead. The columns stay in the row type so upstream repopulation becomes visible.
 
-## Phase 2: eligibility and office mapping
+## Phase 2: eligibility and office mapping — COMPLETE (2026-08-07, branch `claude/sf-finance-phase-2`)
 
-`sanFranciscoFinanceEligibleOffices.ts`, written **after** Phase −1 confirms scopes:
+`sanFranciscoFinanceEligibleOffices.ts`:
 
-- State `CA`; district/GEOID pairs: `county::06075`, `place::0667000`, `school_unified::0634410`.
-- Office → (scope, contest-code) map per Phase −1 results, e.g. `County Supervisor` → `county` + `bosNN` (seat from ballot title "District N", N ∈ 1–11, NFKD-normalized parsing like LA's), `County Assessor-Recorder` → `county` + `asr`, `Public Defender` → `county` + `pdr`, `Mayor` → `place` + `myr`, `School Board Member` → `school_unified` + `usd`, etc.
-- Eligibility is exact; contest-code mapping doubles as the manifest file locator.
+- State `CA`; district/GEOID pairs: `county::06075`, `place::0667000`, `school_unified::0634410`; office scope must equal the district type it sits in.
+- Office → contest-code map per the Phase −1 table above; `County Supervisor` → `bosNN` (zero-padded, N ∈ 1–11 parsed NFKD-normalized from "Member, Board of Supervisors, District N"); CCB absent by decision.
+- Eligibility is exact; the contest code doubles as the manifest file locator. Live-verified against the local database: all eight Nov 2026 races map to their exact SFEC contest codes, all five ballot measures reject.
 
 ## Phase 3: identity, links, and relations
 
