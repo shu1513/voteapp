@@ -127,7 +127,11 @@ describe("runMergeCandidates", () => {
       duplicatesDeleted: 0,
       remappedToSurvivorRecords: 0,
     });
-    expect(result.profile).toEqual({ fieldsFilled: [], sourcesAppended: 0 });
+    expect(result.profile).toEqual({
+      fieldsFilled: [],
+      sourcesAppended: 0,
+      formerWebsiteUrlsAppended: 0,
+    });
     expect(result.otherTables).toEqual([
       { table: "public.az_candidate_finance_links", column: "candidate_id", rowsRehomed: 2 },
     ]);
@@ -813,6 +817,74 @@ describe("runMergeCandidates", () => {
     expect(del?.values).toEqual([["e1"]]);
   });
 
+  it("archives the duplicate's differing website into the survivor's former_website_urls", async () => {
+    const { query, calls } = buildClient(
+      happyResponses({
+        "FROM public.candidates\n        WHERE id = ANY": [
+          [
+            candidateRow(MERGED, {
+              official_website_url: "https://pat2024.example",
+              former_website_urls: ["https://pat2022.example"],
+            }),
+            candidateRow(SURVIVOR, {
+              official_website_url: "https://pat2026.example",
+            }),
+          ],
+        ],
+      })
+    );
+
+    const result = await run({ query });
+
+    // The survivor's populated site wins; the duplicate's current + former
+    // sites keep identifying the person via the archive.
+    expect(result.profile).toEqual({
+      fieldsFilled: [],
+      sourcesAppended: 0,
+      formerWebsiteUrlsAppended: 2,
+    });
+    const update = calls.find((call) => call.text.includes("former_website_urls = $"));
+    expect(update?.values?.[0]).toBe(SURVIVOR);
+    expect(JSON.parse(update?.values?.at(-1) as string)).toEqual([
+      "https://pat2022.example",
+      "https://pat2024.example",
+    ]);
+  });
+
+  it("counts appended former websites against the survivor's normalized baseline", async () => {
+    // The survivor's stored archive carries a normalized duplicate AND its
+    // own current site; measured against the raw list those would offset the
+    // genuinely new URL and report 0 appended.
+    const { query, calls } = buildClient(
+      happyResponses({
+        "FROM public.candidates\n        WHERE id = ANY": [
+          [
+            candidateRow(MERGED, {
+              official_website_url: "https://pat2024.example",
+            }),
+            candidateRow(SURVIVOR, {
+              official_website_url: "https://pat2026.example",
+              former_website_urls: [
+                "https://pat2022.example",
+                "https://pat2022.example/",
+                "https://pat2026.example",
+              ],
+            }),
+          ],
+        ],
+      })
+    );
+
+    const result = await run({ query });
+
+    expect(result.profile.formerWebsiteUrlsAppended).toBe(1);
+    const update = calls.find((call) => call.text.includes("former_website_urls = $"));
+    expect(JSON.parse(update?.values?.at(-1) as string)).toEqual([
+      "https://pat2022.example",
+      "https://pat2024.example",
+    ]);
+  });
+
   it("fills blank survivor profile fields from the duplicate and unions profile sources", async () => {
     const { query, calls } = buildClient(
       happyResponses({
@@ -841,6 +913,9 @@ describe("runMergeCandidates", () => {
     expect(result.profile).toEqual({
       fieldsFilled: ["summary", "official_website_url"],
       sourcesAppended: 1,
+      // The duplicate's site became the survivor's current site via the fill,
+      // so nothing lands in the archive.
+      formerWebsiteUrlsAppended: 0,
     });
     const update = calls.find((call) => call.text.includes("summary = $"));
     expect(update?.values?.[0]).toBe(SURVIVOR);

@@ -32,6 +32,7 @@ export type ExistingCandidateRow = {
   twitter_handle: string | null;
   linkedin_url: string | null;
   official_website_url: string | null;
+  former_website_urls: unknown;
   fec_ids: unknown;
   state_filing_ids: unknown;
   current_office: string | null;
@@ -69,6 +70,13 @@ export const OVERWRITABLE_PROFILE_FIELDS = [
   "date_of_birth",
   "twitter_handle",
   "linkedin_url",
+  // Volatile identifier: campaign sites change when a candidate enters a new
+  // race, so the merge REPLACES a differing stored URL with the incoming one
+  // by default and archives the old URL in former_website_urls (which still
+  // matches as a hard identifier). Listing it under --replace-profile-fields
+  // is the correction path for a WRONG stored URL — the stored value is
+  // dropped without being archived. --clear-profile-fields drops it without
+  // archiving too.
   "official_website_url",
   "summary",
   "current_office",
@@ -179,6 +187,120 @@ export function mergeProfileSourceLists(
   return merged;
 }
 
+function websiteUrlKey(url: string): string {
+  return normalizeOptionalUrl(url) ?? url.toLowerCase();
+}
+
+function dedupeWebsiteUrlList(urls: readonly string[]): string[] {
+  const merged: string[] = [];
+  const seen = new Set<string>();
+  for (const url of urls) {
+    const trimmed = url.trim();
+    if (trimmed.length === 0) {
+      continue;
+    }
+    const key = websiteUrlKey(trimmed);
+    if (seen.has(key)) {
+      continue;
+    }
+    seen.add(key);
+    merged.push(trimmed);
+  }
+  return merged;
+}
+
+function withoutWebsiteUrl(urls: readonly string[], url: string | null): string[] {
+  if (!url) {
+    return [...urls];
+  }
+  const key = websiteUrlKey(url);
+  return urls.filter((candidate) => websiteUrlKey(candidate) !== key);
+}
+
+/**
+ * official_website_url is the one hard identifier that legitimately CHANGES:
+ * candidates stand up a new campaign site per race. So unlike every other
+ * scalar (fill-if-empty), a differing incoming URL replaces the stored one by
+ * default, and the replaced URL is archived in former_website_urls — where it
+ * keeps matching as a hard identifier, so a payload carrying either the old
+ * or the new site resolves to the same person.
+ *
+ * An incoming URL that is already ARCHIVED does not rotate back in: the
+ * archive only holds URLs a later write displaced, so such a payload is a
+ * stale replay (retried job, re-run research file) — it matches the person
+ * but the stored, newer site is kept. A genuine return to an archived URL
+ * takes --replace-profile-fields official_website_url.
+ *
+ * The explicit flags keep their correction semantics: --replace-profile-fields
+ * swaps in the incoming URL WITHOUT archiving the stored one (the stored value
+ * was wrong, and archiving a wrong URL would poison future matching);
+ * --clear-profile-fields drops the stored URL without archiving for the same
+ * reason. The former list is deduped on the normalized URL and never contains
+ * the current URL.
+ */
+export function resolveWebsiteRotationOnMerge(input: {
+  storedWebsite: string | null | undefined;
+  storedFormerWebsites: readonly string[];
+  incomingWebsite: string | null | undefined;
+  overwrite: boolean;
+  clear: boolean;
+}): { website: string | null; formerWebsites: string[] } {
+  const stored = input.storedWebsite?.trim() || null;
+  const incoming = input.incomingWebsite?.trim() || null;
+  const storedFormer = dedupeWebsiteUrlList(input.storedFormerWebsites);
+
+  if (input.clear) {
+    return { website: null, formerWebsites: storedFormer };
+  }
+  if (input.overwrite && incoming) {
+    return { website: incoming, formerWebsites: withoutWebsiteUrl(storedFormer, incoming) };
+  }
+  if (!stored) {
+    return { website: incoming, formerWebsites: withoutWebsiteUrl(storedFormer, incoming) };
+  }
+  if (incoming && normalizeOptionalUrl(incoming) !== normalizeOptionalUrl(stored)) {
+    // An incoming URL that sits in the archive proves IDENTITY, not
+    // freshness: a URL is only archived because a later write displaced it,
+    // so a payload carrying it (a retried job, a re-run of an old research
+    // file) is older than the row. Rotating it back in would silently revert
+    // the newer site — keep the stored one. A candidate who genuinely
+    // returned to an archived URL goes through --replace-profile-fields
+    // official_website_url.
+    const incomingKey = websiteUrlKey(incoming);
+    if (storedFormer.some((url) => websiteUrlKey(url) === incomingKey)) {
+      return { website: stored, formerWebsites: storedFormer };
+    }
+    return {
+      website: incoming,
+      formerWebsites: withoutWebsiteUrl(dedupeWebsiteUrlList([...storedFormer, stored]), incoming),
+    };
+  }
+  return { website: stored, formerWebsites: storedFormer };
+}
+
+/**
+ * Duplicate-row merge (manual:candidates:merge): the duplicate's current and
+ * former websites join the survivor's archive so they keep identifying the
+ * person after the duplicate row is gone — losing them would undo exactly the
+ * identity work the merge encodes. The survivor's EFFECTIVE current website
+ * (which may have been filled from the duplicate) never appears in the list.
+ */
+export function unionFormerWebsiteUrls(input: {
+  survivorCurrentWebsite: string | null;
+  survivorFormerWebsites: readonly string[];
+  duplicateCurrentWebsite: string | null;
+  duplicateFormerWebsites: readonly string[];
+}): string[] {
+  return withoutWebsiteUrl(
+    dedupeWebsiteUrlList([
+      ...input.survivorFormerWebsites,
+      ...input.duplicateFormerWebsites,
+      ...(input.duplicateCurrentWebsite ? [input.duplicateCurrentWebsite] : []),
+    ]),
+    input.survivorCurrentWebsite
+  );
+}
+
 function haveSameNormalizedIdentifierSet(
   left: readonly string[] | undefined,
   right: readonly string[] | undefined
@@ -246,9 +368,23 @@ export function matchesByHardIdentifier(profile: CandidateProfilePayload, row: E
     }
   }
 
-  if (profile.official_website_url && row.official_website_url) {
-    if (normalizeOptionalUrl(profile.official_website_url) === normalizeOptionalUrl(row.official_website_url)) {
+  const incomingWebsite = profile.official_website_url
+    ? normalizeOptionalUrl(profile.official_website_url)
+    : null;
+  if (incomingWebsite) {
+    if (
+      row.official_website_url &&
+      incomingWebsite === normalizeOptionalUrl(row.official_website_url)
+    ) {
       return true;
+    }
+    // Campaign sites change between races; the merge archives the replaced
+    // URL, so a payload still carrying the OLD site must keep matching the
+    // person instead of minting a duplicate row.
+    for (const formerUrl of parseOptionalStringArray(row.former_website_urls)) {
+      if (incomingWebsite === normalizeOptionalUrl(formerUrl)) {
+        return true;
+      }
     }
   }
 
@@ -286,6 +422,7 @@ export async function loadSameNameCandidates(
         twitter_handle,
         linkedin_url,
         official_website_url,
+        former_website_urls,
         fec_ids,
         state_filing_ids,
         current_office,
@@ -316,6 +453,7 @@ export async function loadSameNameCandidatesAcrossStates(
         twitter_handle,
         linkedin_url,
         official_website_url,
+        former_website_urls,
         fec_ids,
         state_filing_ids,
         current_office,
@@ -475,9 +613,12 @@ async function mergeCandidateIdentifiersForExistingCandidate(
     has_held_public_office: boolean | null;
     party: string | null;
     profile_sources: unknown;
+    official_website_url: string | null;
+    former_website_urls: unknown;
   }>(
     `
-      SELECT fec_ids, state_filing_ids, current_office, has_held_public_office, party, profile_sources
+      SELECT fec_ids, state_filing_ids, current_office, has_held_public_office, party, profile_sources,
+             official_website_url, former_website_urls
       FROM public.candidates
       WHERE id = $1
         AND deleted_at IS NULL
@@ -517,6 +658,9 @@ async function mergeCandidateIdentifiersForExistingCandidate(
   // or listed it for clearing, which sets the column to NULL and wins over
   // every other branch. Identifier lists stay additive; profile_sources
   // unions with the stored list (replace only when explicitly listed).
+  // official_website_url is the exception: it is volatile, so it is resolved
+  // in TS from the locked row (replace-and-archive by default; see
+  // resolveWebsiteRotationOnMerge) and written directly.
   const scalarValue = (field: OverwritableProfileField, value: string | undefined | null) => ({
     value: value ?? null,
     overwrite: overwriteFields?.has(field) ?? false,
@@ -526,10 +670,16 @@ async function mergeCandidateIdentifiersForExistingCandidate(
     date_of_birth: scalarValue("date_of_birth", profile.date_of_birth),
     twitter_handle: scalarValue("twitter_handle", profile.twitter_handle),
     linkedin_url: scalarValue("linkedin_url", profile.linkedin_url),
-    official_website_url: scalarValue("official_website_url", profile.official_website_url),
     summary: scalarValue("summary", profile.summary),
     current_office: scalarValue("current_office", profile.current_office),
   };
+  const website = resolveWebsiteRotationOnMerge({
+    storedWebsite: current.official_website_url,
+    storedFormerWebsites: parseOptionalStringArray(current.former_website_urls),
+    incomingWebsite: profile.official_website_url,
+    overwrite: overwriteFields?.has("official_website_url") ?? false,
+    clear: clearFields?.has("official_website_url") ?? false,
+  });
 
   await client.query(
     `
@@ -537,39 +687,38 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       SET fec_ids = $2::jsonb,
           state_filing_ids = $3::jsonb,
           date_of_birth = CASE
-            WHEN $17::boolean THEN NULL
+            WHEN $15::boolean THEN NULL
             WHEN $6::boolean AND $5::date IS NOT NULL THEN $5::date
             WHEN date_of_birth IS NULL THEN $5::date
             ELSE date_of_birth
           END,
           twitter_handle = CASE
-            WHEN $18::boolean THEN NULL
+            WHEN $16::boolean THEN NULL
             WHEN $8::boolean AND $7::text IS NOT NULL AND length(trim($7::text)) > 0 THEN $7::text
             WHEN twitter_handle IS NULL OR length(trim(twitter_handle)) = 0 THEN COALESCE($7::text, twitter_handle)
             ELSE twitter_handle
           END,
           linkedin_url = CASE
-            WHEN $19::boolean THEN NULL
+            WHEN $17::boolean THEN NULL
             WHEN $10::boolean AND $9::text IS NOT NULL AND length(trim($9::text)) > 0 THEN $9::text
             WHEN linkedin_url IS NULL OR length(trim(linkedin_url)) = 0 THEN COALESCE($9::text, linkedin_url)
             ELSE linkedin_url
           END,
-          official_website_url = CASE
-            WHEN $20::boolean THEN NULL
-            WHEN $12::boolean AND $11::text IS NOT NULL AND length(trim($11::text)) > 0 THEN $11::text
-            WHEN official_website_url IS NULL OR length(trim(official_website_url)) = 0 THEN COALESCE($11::text, official_website_url)
-            ELSE official_website_url
-          END,
+          -- Resolved in TS from the locked row (resolveWebsiteRotationOnMerge):
+          -- the volatile website replaces-and-archives instead of fill-if-empty,
+          -- so the value arrives fully decided.
+          official_website_url = $24::text,
+          former_website_urls = $25::jsonb,
           summary = CASE
-            WHEN $21::boolean THEN NULL
-            WHEN $14::boolean AND $13::text IS NOT NULL AND length(trim($13::text)) > 0 THEN $13::text
-            WHEN summary IS NULL OR length(trim(summary)) = 0 THEN COALESCE($13::text, summary)
+            WHEN $18::boolean THEN NULL
+            WHEN $12::boolean AND $11::text IS NOT NULL AND length(trim($11::text)) > 0 THEN $11::text
+            WHEN summary IS NULL OR length(trim(summary)) = 0 THEN COALESCE($11::text, summary)
             ELSE summary
           END,
           current_office = CASE
-            WHEN $22::boolean THEN NULL
-            WHEN $16::boolean AND $15::text IS NOT NULL AND length(trim($15::text)) > 0 THEN $15::text
-            WHEN current_office IS NULL OR length(trim(current_office)) = 0 THEN COALESCE($15::text, current_office)
+            WHEN $19::boolean THEN NULL
+            WHEN $14::boolean AND $13::text IS NOT NULL AND length(trim($13::text)) > 0 THEN $13::text
+            WHEN current_office IS NULL OR length(trim(current_office)) = 0 THEN COALESCE($13::text, current_office)
             ELSE current_office
           END,
           has_held_public_office = CASE
@@ -577,16 +726,16 @@ async function mergeCandidateIdentifiersForExistingCandidate(
             -- stored false manufactured from office-history-silent sources
             -- is repaired by an explicit payload null under
             -- --replace-profile-fields, returning the row to "unanswered".
-            WHEN $24::boolean THEN $23::boolean
-            WHEN has_held_public_office IS NULL THEN $23::boolean
+            WHEN $21::boolean THEN $20::boolean
+            WHEN has_held_public_office IS NULL THEN $20::boolean
             ELSE has_held_public_office
           END,
           party = CASE
-            WHEN $26::boolean AND length(trim($25::text)) > 0 THEN $25::text
+            WHEN $23::boolean AND length(trim($22::text)) > 0 THEN $22::text
             -- party has been NOT NULL since migration 001. Repair blank
             -- values, but never turn schema-drift NULLs into "Unknown"
             -- without the explicit overwrite branch above.
-            WHEN party IS NOT NULL AND length(trim(party)) = 0 THEN $25::text
+            WHEN party IS NOT NULL AND length(trim(party)) = 0 THEN $22::text
             ELSE party
           END,
           profile_sources = $4::jsonb,
@@ -605,8 +754,6 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       scalars.twitter_handle.overwrite,
       scalars.linkedin_url.value,
       scalars.linkedin_url.overwrite,
-      scalars.official_website_url.value,
-      scalars.official_website_url.overwrite,
       scalars.summary.value,
       scalars.summary.overwrite,
       scalars.current_office.value,
@@ -614,7 +761,6 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       scalars.date_of_birth.clear,
       scalars.twitter_handle.clear,
       scalars.linkedin_url.clear,
-      scalars.official_website_url.clear,
       scalars.summary.clear,
       scalars.current_office.clear,
       // Tri-state routing fact: fill-if-NULL, replace only when explicitly
@@ -625,6 +771,8 @@ async function mergeCandidateIdentifiersForExistingCandidate(
       overwriteFields?.has("has_held_public_office") ?? false,
       storedParty,
       overwriteFields?.has("party") ?? false,
+      website.website,
+      website.formerWebsites.length > 0 ? JSON.stringify(website.formerWebsites) : null,
     ]
   );
 }

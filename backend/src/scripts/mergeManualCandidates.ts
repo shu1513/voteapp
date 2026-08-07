@@ -51,7 +51,10 @@ import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
-import { mergeIdentifierLists } from "../pipeline/candidates/candidateProfileIdentity.js";
+import {
+  mergeIdentifierLists,
+  unionFormerWebsiteUrls,
+} from "../pipeline/candidates/candidateProfileIdentity.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { listCandidateElectionLinkFkReferences } from "./moveManualCandidateElectionLink.js";
@@ -95,7 +98,11 @@ export type MergeCandidatesResult = {
   otherTables: { table: string; column: string; rowsRehomed: number }[];
   chainCollapsedCandidates: number;
   identifiers: { fecIdsAppended: number; stateFilingIdsAppended: number };
-  profile: { fieldsFilled: string[]; sourcesAppended: number };
+  profile: {
+    fieldsFilled: string[];
+    sourcesAppended: number;
+    formerWebsiteUrlsAppended: number;
+  };
 };
 
 type CandidateRow = {
@@ -115,6 +122,7 @@ type CandidateRow = {
   twitter_handle: string | null;
   linkedin_url: string | null;
   official_website_url: string | null;
+  former_website_urls: unknown;
   profile_sources: unknown;
 };
 
@@ -289,7 +297,7 @@ export async function runMergeCandidates(
         SELECT id, display_name, first_name, last_name, party, state,
                deleted_at::text, merged_into_candidate_id, fec_ids, state_filing_ids,
                summary, current_office, date_of_birth::text, twitter_handle,
-               linkedin_url, official_website_url, profile_sources
+               linkedin_url, official_website_url, former_website_urls, profile_sources
         FROM public.candidates
         WHERE id = ANY($1::uuid[])
         ORDER BY id
@@ -922,6 +930,39 @@ export async function runMergeCandidates(
     ];
     const profileSourcesAppended = mergedProfileSources.length - survivorProfileSources.length;
 
+    // The duplicate's websites (current + former) join the survivor's
+    // former_website_urls archive so they keep matching this person in future
+    // profile writes. The survivor's effective current website — its own, or
+    // the duplicate's when the fill above copied it over — stays out of the
+    // archive.
+    const survivorEffectiveWebsite =
+      !isBlank(survivor.official_website_url) || !fieldsFilled.includes("official_website_url")
+        ? survivor.official_website_url
+        : merged.official_website_url;
+    const survivorFormerWebsites = normalizeUrlList(survivor.former_website_urls);
+    // The appended count is measured against a baseline given the SAME
+    // dedupe + current-site exclusion as the union below (same trap as the
+    // identifier counts above): a stored archive already carrying a
+    // normalized duplicate, or the survivor's own current site, would
+    // otherwise offset a genuinely new URL and hide the append. The baseline
+    // is a subset of the union, so the difference cannot go negative.
+    const survivorFormerWebsitesBaseline = unionFormerWebsiteUrls({
+      survivorCurrentWebsite: isBlank(survivorEffectiveWebsite) ? null : survivorEffectiveWebsite,
+      survivorFormerWebsites,
+      duplicateCurrentWebsite: null,
+      duplicateFormerWebsites: [],
+    });
+    const mergedFormerWebsites = unionFormerWebsiteUrls({
+      survivorCurrentWebsite: isBlank(survivorEffectiveWebsite) ? null : survivorEffectiveWebsite,
+      survivorFormerWebsites,
+      duplicateCurrentWebsite: isBlank(merged.official_website_url)
+        ? null
+        : merged.official_website_url,
+      duplicateFormerWebsites: normalizeUrlList(merged.former_website_urls),
+    });
+    const formerWebsiteUrlsAppended =
+      mergedFormerWebsites.length - survivorFormerWebsitesBaseline.length;
+
     // Column names come from the PROFILE_FILL_FIELDS constant above, never
     // from user input.
     const survivorSet: string[] = [];
@@ -939,6 +980,13 @@ export async function runMergeCandidates(
     }
     if (profileSourcesAppended > 0) {
       addAssignment("profile_sources", "::jsonb", JSON.stringify(mergedProfileSources));
+    }
+    if (JSON.stringify(mergedFormerWebsites) !== JSON.stringify(survivorFormerWebsites)) {
+      addAssignment(
+        "former_website_urls",
+        "::jsonb",
+        mergedFormerWebsites.length > 0 ? JSON.stringify(mergedFormerWebsites) : null
+      );
     }
     if (!dryRun && survivorSet.length > 0) {
       await client.query(
@@ -1000,7 +1048,11 @@ export async function runMergeCandidates(
       otherTables,
       chainCollapsedCandidates: chainResult.rows.length,
       identifiers: { fecIdsAppended, stateFilingIdsAppended },
-      profile: { fieldsFilled: fieldsFilled, sourcesAppended: profileSourcesAppended },
+      profile: {
+        fieldsFilled: fieldsFilled,
+        sourcesAppended: profileSourcesAppended,
+        formerWebsiteUrlsAppended,
+      },
     };
   } catch (error) {
     await client.query("ROLLBACK").catch(() => undefined);

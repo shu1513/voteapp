@@ -4,9 +4,12 @@ import {
   AmbiguousCandidateIdentityError,
   assertMergedOfficeRoutingConsistent,
   findOrCreateCandidateFromProfile,
+  matchesByHardIdentifier,
   mergeIdentifierLists,
   mergeProfileSourceLists,
   resolveStoredCandidateParty,
+  resolveWebsiteRotationOnMerge,
+  unionFormerWebsiteUrls,
 } from "../../src/pipeline/candidates/candidateProfileIdentity.js";
 import type { CandidateProfilePayload } from "../../src/contracts/candidateProfilePayloadContract.js";
 
@@ -277,14 +280,11 @@ describe("findOrCreateCandidateFromProfile", () => {
       false,
       null,
       false,
-      null,
-      false,
       "Candidate summary",
       false,
       "Governor",
       false,
       // clear flags: no field listed for clearing
-      false,
       false,
       false,
       false,
@@ -296,6 +296,9 @@ describe("findOrCreateCandidateFromProfile", () => {
       // effective party + overwrite flag
       "Democratic",
       false,
+      // resolved website + former-website archive (nothing stored or incoming)
+      null,
+      null,
     ]);
   });
 
@@ -345,14 +348,11 @@ describe("findOrCreateCandidateFromProfile", () => {
       false,
       null,
       false,
-      null,
-      false,
       "Candidate summary",
       false,
       "Governor",
       false,
       // clear flags: no field listed for clearing
-      false,
       false,
       false,
       false,
@@ -364,6 +364,9 @@ describe("findOrCreateCandidateFromProfile", () => {
       // effective party + overwrite flag
       "Democratic",
       false,
+      // resolved website + former-website archive (nothing stored or incoming)
+      null,
+      null,
     ]);
   });
 
@@ -463,7 +466,9 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     expect(result.matchedExisting).toBe(true);
     const updateSql = String(query.mock.calls[3]?.[0]);
     expect(updateSql).toContain("linkedin_url = CASE");
-    expect(updateSql).toContain("official_website_url = CASE");
+    // The volatile website is resolved TS-side and written directly.
+    expect(updateSql).toContain("official_website_url = $24::text");
+    expect(updateSql).toContain("former_website_urls = $25::jsonb");
     expect(updateSql).toContain("summary = CASE");
     const params = query.mock.calls[3]?.[1] as unknown[];
     // linkedin value present, overwrite false: fills only because column is empty
@@ -512,12 +517,12 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     });
 
     const params = query.mock.calls[3]?.[1] as unknown[];
-    // summary value + its overwrite flag true; website overwrite flag stays false
+    // summary value + its overwrite flag true
     const summaryIndex = params.indexOf("Corrected summary");
     expect(summaryIndex).toBeGreaterThan(-1);
     expect(params[summaryIndex + 1]).toBe(true);
-    const websiteIndex = params.indexOf("https://old-site.example");
-    expect(params[websiteIndex + 1]).toBe(false);
+    // resolved website rides the dedicated tail slot, not an overwrite pair
+    expect(params[23]).toBe("https://old-site.example");
   });
 
   it("unions stored profile_sources with the payload's on a matched re-write", async () => {
@@ -607,10 +612,10 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     // The overwrite branch must take the payload value even when NULL — an
     // IS NOT NULL guard here would turn the manufactured-false repair into a
     // silent no-op.
-    expect(updateSql).toContain("WHEN $24::boolean THEN $23::boolean");
+    expect(updateSql).toContain("WHEN $21::boolean THEN $20::boolean");
     const params = query.mock.calls[3]?.[1] as unknown[];
     // has_held_public_office value + overwrite flag
-    expect(params.slice(22, 24)).toEqual([null, true]);
+    expect(params.slice(19, 21)).toEqual([null, true]);
   });
 
   it("replaces a stored party only when party is explicitly listed", async () => {
@@ -639,9 +644,9 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     const updateSql = String(query.mock.calls[3]?.[0]);
     const params = query.mock.calls[3]?.[1] as unknown[];
     expect(updateSql).toContain("party = CASE");
-    expect(updateSql).toContain("WHEN party IS NOT NULL AND length(trim(party)) = 0 THEN $25::text");
+    expect(updateSql).toContain("WHEN party IS NOT NULL AND length(trim(party)) = 0 THEN $22::text");
     expect(updateSql).not.toContain("WHEN party IS NULL OR");
-    expect(params.slice(-2)).toEqual(["Republican", true]);
+    expect(params.slice(21, 23)).toEqual(["Republican", true]);
   });
 
   it("never overwrites a stored value with a blank string, even for overwrite-listed fields", async () => {
@@ -663,7 +668,7 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
 
     const updateSql = String(query.mock.calls[3]?.[0]);
     // The overwrite branch requires a non-blank incoming value.
-    expect(updateSql).toContain("length(trim($13::text)) > 0");
+    expect(updateSql).toContain("length(trim($11::text)) > 0");
   });
 
   it("clears listed fields to NULL on a matched re-write, winning over fill-if-empty", async () => {
@@ -687,11 +692,11 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     const updateSql = String(query.mock.calls[3]?.[0]);
     // The clear branch leads every scalar CASE so it wins over overwrite and
     // fill-if-empty alike.
-    expect(updateSql).toContain("current_office = CASE\n            WHEN $22::boolean THEN NULL");
+    expect(updateSql).toContain("current_office = CASE\n            WHEN $19::boolean THEN NULL");
     const params = query.mock.calls[3]?.[1] as unknown[];
-    // The six per-field clear flags (declaration order, only current_office
+    // The five per-field clear flags (declaration order, only current_office
     // set) are followed by the has_held_public_office value + overwrite flag.
-    expect(params.slice(16, 24)).toEqual([false, false, false, false, false, true, false, false]);
+    expect(params.slice(14, 21)).toEqual([false, false, false, false, true, false, false]);
   });
 
   it("passes clear flags as false for every field when clearing is not requested", async () => {
@@ -709,7 +714,7 @@ describe("findOrCreateCandidateFromProfile field persistence and election-scoped
     });
 
     const params = query.mock.calls[3]?.[1] as unknown[];
-    expect(params.slice(16, 24)).toEqual([false, false, false, false, false, false, false, false]);
+    expect(params.slice(14, 21)).toEqual([false, false, false, false, false, false, false]);
   });
 
   it("throws when two same-name candidates are linked to the election", async () => {
@@ -892,5 +897,221 @@ describe("findOrCreateCandidateFromProfile identity hardening", () => {
     expect(lockSql).toContain("pg_advisory_xact_lock");
     expect(query.mock.calls[0]?.[1]).toEqual(["jane candidate"]);
     expect(String(query.mock.calls[1]?.[0])).toContain("FROM public.candidates");
+  });
+});
+
+describe("website rotation (campaign sites change between races)", () => {
+  const row = {
+    id: "candidate-existing",
+    first_name: "Jane",
+    last_name: "Candidate",
+    date_of_birth: null,
+    twitter_handle: null,
+    linkedin_url: null,
+    official_website_url: "https://jane2026.example",
+    former_website_urls: null as unknown,
+    fec_ids: null,
+    state_filing_ids: null,
+    current_office: null,
+    state: "OH",
+  };
+
+  it("matches on a former website URL — the old campaign site still identifies the person", () => {
+    const matched = matchesByHardIdentifier(
+      profile({ official_website_url: "https://jane2024.example/" }),
+      { ...row, former_website_urls: ["https://jane2024.example"] }
+    );
+    expect(matched).toBe(true);
+  });
+
+  it("does not match two junk (non-URL) website values", () => {
+    const matched = matchesByHardIdentifier(
+      profile({ official_website_url: "not a url" }),
+      { ...row, official_website_url: "also not a url" }
+    );
+    expect(matched).toBe(false);
+  });
+
+  it("replaces a differing stored website on a matched re-write and archives the old one", async () => {
+    const query = identityQueryMock()
+      // loadSameNameCandidates: matched via FEC id, stored site is the old race's
+      .mockResolvedValueOnce({
+        rows: [{ ...row, official_website_url: "https://jane2024.example", fec_ids: ["P80000001"] }],
+      })
+      // merge lock SELECT re-reads the stored site under FOR UPDATE
+      .mockResolvedValueOnce({
+        rows: [{
+          fec_ids: ["P80000001"],
+          state_filing_ids: null,
+          official_website_url: "https://jane2024.example",
+          former_website_urls: null,
+        }],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 });
+
+    await findOrCreateCandidateFromProfile({
+      client: { query } as never,
+      profile: profile({ fec_ids: ["P80000001"], official_website_url: "https://jane2026.example" }),
+      state: "OH",
+      rosterParty: "Democratic",
+      includeParty: true,
+    });
+
+    const params = query.mock.calls[3]?.[1] as unknown[];
+    expect(params[23]).toBe("https://jane2026.example");
+    expect(params[24]).toBe(JSON.stringify(["https://jane2024.example"]));
+  });
+
+  describe("resolveWebsiteRotationOnMerge", () => {
+    it("rotates a differing incoming URL in and archives the stored one", () => {
+      expect(
+        resolveWebsiteRotationOnMerge({
+          storedWebsite: "https://jane2024.example",
+          storedFormerWebsites: [],
+          incomingWebsite: "https://jane2026.example",
+          overwrite: false,
+          clear: false,
+        })
+      ).toEqual({
+        website: "https://jane2026.example",
+        formerWebsites: ["https://jane2024.example"],
+      });
+    });
+
+    it("keeps the stored URL when the incoming one is the same after normalization", () => {
+      expect(
+        resolveWebsiteRotationOnMerge({
+          storedWebsite: "https://jane.example",
+          storedFormerWebsites: ["https://old.example"],
+          incomingWebsite: "https://jane.example/#home",
+          overwrite: false,
+          clear: false,
+        })
+      ).toEqual({ website: "https://jane.example", formerWebsites: ["https://old.example"] });
+    });
+
+    it("keeps the stored URL when the payload carries none", () => {
+      expect(
+        resolveWebsiteRotationOnMerge({
+          storedWebsite: "https://jane.example",
+          storedFormerWebsites: [],
+          incomingWebsite: undefined,
+          overwrite: false,
+          clear: false,
+        })
+      ).toEqual({ website: "https://jane.example", formerWebsites: [] });
+    });
+
+    it("fills an empty stored URL without archiving anything", () => {
+      expect(
+        resolveWebsiteRotationOnMerge({
+          storedWebsite: null,
+          storedFormerWebsites: [],
+          incomingWebsite: "https://jane.example",
+          overwrite: false,
+          clear: false,
+        })
+      ).toEqual({ website: "https://jane.example", formerWebsites: [] });
+    });
+
+    it("keeps the stored site when the incoming URL is an archived former site (stale-replay guard)", () => {
+      // A URL is only in the archive because a LATER write displaced it, so
+      // a payload carrying it (retried job, re-run of an old research file)
+      // is older than the row: it matches the person but must not revert the
+      // newer stored site.
+      expect(
+        resolveWebsiteRotationOnMerge({
+          storedWebsite: "https://jane2026.example",
+          storedFormerWebsites: ["https://jane2024.example"],
+          incomingWebsite: "https://jane2024.example/",
+          overwrite: false,
+          clear: false,
+        })
+      ).toEqual({
+        website: "https://jane2026.example",
+        formerWebsites: ["https://jane2024.example"],
+      });
+    });
+
+    it("replace (overwrite) is the sanctioned path back to an archived URL", () => {
+      // Genuine return to an earlier site: the operator names the field. The
+      // reverted-to URL leaves the archive; the displaced URL is dropped, not
+      // archived (replace never archives).
+      expect(
+        resolveWebsiteRotationOnMerge({
+          storedWebsite: "https://jane2026.example",
+          storedFormerWebsites: ["https://jane2024.example"],
+          incomingWebsite: "https://jane2024.example",
+          overwrite: true,
+          clear: false,
+        })
+      ).toEqual({
+        website: "https://jane2024.example",
+        formerWebsites: [],
+      });
+    });
+
+    it("replace (overwrite) swaps the URL WITHOUT archiving the wrong stored value", () => {
+      expect(
+        resolveWebsiteRotationOnMerge({
+          storedWebsite: "https://wrong-person.example",
+          storedFormerWebsites: ["https://old.example"],
+          incomingWebsite: "https://jane.example",
+          overwrite: true,
+          clear: false,
+        })
+      ).toEqual({ website: "https://jane.example", formerWebsites: ["https://old.example"] });
+    });
+
+    it("clear drops the stored URL without archiving it", () => {
+      expect(
+        resolveWebsiteRotationOnMerge({
+          storedWebsite: "https://wrong-person.example",
+          storedFormerWebsites: ["https://old.example"],
+          incomingWebsite: undefined,
+          overwrite: false,
+          clear: true,
+        })
+      ).toEqual({ website: null, formerWebsites: ["https://old.example"] });
+    });
+
+    it("dedupes the archive on the normalized URL", () => {
+      expect(
+        resolveWebsiteRotationOnMerge({
+          storedWebsite: "https://jane2024.example",
+          storedFormerWebsites: ["https://jane2024.example/"],
+          incomingWebsite: "https://jane2026.example",
+          overwrite: false,
+          clear: false,
+        })
+      ).toEqual({
+        website: "https://jane2026.example",
+        formerWebsites: ["https://jane2024.example/"],
+      });
+    });
+  });
+
+  describe("unionFormerWebsiteUrls", () => {
+    it("folds the duplicate's current and former sites into the survivor's archive", () => {
+      expect(
+        unionFormerWebsiteUrls({
+          survivorCurrentWebsite: "https://jane2026.example",
+          survivorFormerWebsites: ["https://jane2022.example"],
+          duplicateCurrentWebsite: "https://jane2024.example",
+          duplicateFormerWebsites: ["https://jane2022.example/"],
+        })
+      ).toEqual(["https://jane2022.example", "https://jane2024.example"]);
+    });
+
+    it("keeps the survivor's effective current site out of the archive", () => {
+      expect(
+        unionFormerWebsiteUrls({
+          survivorCurrentWebsite: "https://jane2026.example",
+          survivorFormerWebsites: [],
+          duplicateCurrentWebsite: "https://jane2026.example/",
+          duplicateFormerWebsites: [],
+        })
+      ).toEqual([]);
+    });
   });
 });

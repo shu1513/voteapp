@@ -35,6 +35,7 @@ const REQUIRED_COLUMNS: RequiredColumn[] = [
   { table: "staging_items", column: "ai_raw_debug" },
   { table: "candidates", column: "display_name" },
   { table: "candidates", column: "official_website_url" },
+  { table: "candidates", column: "former_website_urls" },
   { table: "candidates", column: "fec_ids" },
   { table: "candidates", column: "state_filing_ids" },
   { table: "candidate_elections", column: "candidate_id" },
