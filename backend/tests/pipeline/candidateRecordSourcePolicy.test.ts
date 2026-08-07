@@ -781,9 +781,28 @@ function cloneCheckTokens(domain: string): string[] {
     .filter((token) => token.length > 0);
 }
 
+// Separator-free decorations for SHORT listed names: "cnnnews.com" carries no
+// token boundary for the token rule, and 3-char labels cannot use substring
+// containment ("adn" sits inside "roadnews" by coincidence). So a short
+// listed label concatenated directly with one of these generic news-y words —
+// either order — reads as a clone. Exact remainder match on purpose: the
+// remainder IS the whole decoration, so ordinary words that merely start with
+// a brand ("esplanade" for "espn") never fire.
+const SHORT_BRAND_DECORATIONS = new Set([
+  "alert", "alerts", "breaking", "channel", "chronicle", "coverage", "daily",
+  "digest", "dispatch", "feed", "gazette", "herald", "journal", "live",
+  "local", "media", "monitor", "network", "news", "now", "observer", "online",
+  "post", "press", "report", "reports", "times", "today", "tribune", "tv",
+  "update", "updates", "watch", "wire",
+]);
+
 // The clone-shaped-addition rule: a listed outlet's name plus decoration
-// ("denverpost-news.com", "cnn-news.com", "denverpost.co"). Returns the
-// listed domain the candidate addition reads as a clone of, or null.
+// ("denverpost-news.com", "cnn-news.com", "cnnnews.com", "denverpost.co").
+// Returns the listed domain the candidate addition reads as a clone of, or
+// null. Known residual: 2-letter listed labels ("al.com", "nj.com") get no
+// concatenation rule at all — at that length every heuristic false-positives
+// on real outlets ("alreporter.com", "njspotlightnews.org"), so their clones
+// must be caught by the evidence requirements instead.
 function findCloneOfListed(domain: string, listedOthers: readonly string[]): string | null {
   const additionLabel = cloneCheckLabel(domain);
   const additionTokens = new Set(cloneCheckTokens(domain));
@@ -802,6 +821,22 @@ function findCloneOfListed(domain: string, listedOthers: readonly string[]): str
       (additionLabel.includes(listedLabel) || listedLabel.includes(additionLabel))
     ) {
       return listed;
+    }
+    // Short-brand concatenation hit: 3-4 char label + generic decoration with
+    // no separator ("cnnnews", "nprlocal", "newsbbc").
+    if (listedLabel.length >= 3 && listedLabel.length < 5) {
+      if (
+        additionLabel.startsWith(listedLabel) &&
+        SHORT_BRAND_DECORATIONS.has(additionLabel.slice(listedLabel.length))
+      ) {
+        return listed;
+      }
+      if (
+        additionLabel.endsWith(listedLabel) &&
+        SHORT_BRAND_DECORATIONS.has(additionLabel.slice(0, -listedLabel.length))
+      ) {
+        return listed;
+      }
     }
   }
   return null;
@@ -951,6 +986,13 @@ describe("addition guard predicates (fixture-driven)", () => {
       ["denver-post.co", "denverpost.com"],
       ["denverpost.co", "denverpost.com"],
       ["apnews.wtf", "apnews.com"],
+      // Separator-free short-brand concatenations: no token boundary, too
+      // short for containment — the decoration rule must catch them.
+      ["cnnnews.com", "cnn.com"],
+      ["nprlocal.com", "npr.org"],
+      ["bbcreport.com", "bbc.co.uk"],
+      ["newsbbc.com", "bbc.co.uk"],
+      ["kccinews.com", "kcci.com"],
     ] as const) {
       expect(
         findCloneOfListed(domain, FOUNDING_LISTED_SOURCE_DOMAINS),
@@ -958,9 +1000,20 @@ describe("addition guard predicates (fixture-driven)", () => {
       ).toBe(expectedListed);
     }
     // Coincidences stay clean: "roadnews" CONTAINS the short founding label
-    // "adn" (adn.com) but never as a decoration-delimited token, and real
-    // distinct outlets share no listed name.
-    for (const domain of ["roadnews.com", "kare11.com", "wisconsinwatch.org", "mauitime.com"]) {
+    // "adn" (adn.com) but never as a decoration-delimited token or an exact
+    // brand+decoration split; "esplanade" merely STARTS like "espn"; real
+    // outlets on 2-letter state labels ("alreporter.com" vs al.com,
+    // "njspotlightnews.org" vs nj.com) are the documented residual the
+    // 3-char floor protects.
+    for (const domain of [
+      "roadnews.com",
+      "kare11.com",
+      "wisconsinwatch.org",
+      "mauitime.com",
+      "esplanade.com",
+      "alreporter.com",
+      "njspotlightnews.org",
+    ]) {
       expect(
         findCloneOfListed(domain, FOUNDING_LISTED_SOURCE_DOMAINS),
         `'${domain}' must NOT read as a clone`
