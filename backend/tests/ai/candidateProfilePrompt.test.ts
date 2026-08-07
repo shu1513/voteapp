@@ -22,7 +22,9 @@ describe("buildCandidateProfilePrompt", () => {
     for (const rule of PLAIN_LANGUAGE_STYLE_RULES) {
       expect(prompt).toContain(rule);
     }
-    expect(prompt).toContain("summary is who the person is and what they have done");
+    expect(prompt).toContain(
+      "summary is at most 2 sentences and 300 characters, in plain language: current role, 1-2 qualifications, and the top 2 priorities they campaign on"
+    );
     expect(prompt).toContain(
       "do not name the office, election, election date, or stage the candidate is running for"
     );

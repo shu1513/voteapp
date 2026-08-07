@@ -331,4 +331,122 @@ describe("parseCandidateProfilePayload", () => {
 
     expect(parsed.ok).toBe(true);
   });
+
+  it("accepts a summary that follows the role/credentials/priorities formula", () => {
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      has_held_public_office: false,
+      summary:
+        "Community organizer in South Los Angeles for about 20 years and co-director of ACCE's LA chapter. Priorities: tenant protections and more affordable housing.",
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(true);
+    if (parsed.ok) {
+      expect(parsed.payload.summary).toContain("Community organizer");
+    }
+  });
+
+  it("rejects a summary over the length cap", () => {
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      has_held_public_office: false,
+      summary: "A ".repeat(200).trim(),
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(false);
+    if (parsed.ok) {
+      return;
+    }
+    expect(parsed.reason).toContain("max 300");
+    expect(parsed.reason).toContain("2 sentences");
+  });
+
+  it("rejects horse-race content in the summary", () => {
+    // The live over-cap example also violated the horse-race ban: office,
+    // runoff, and vote share all next to a contest card that already shows
+    // the race.
+    const horseRaceSummaries = [
+      "Longtime organizer running for City Council District 9.",
+      "State legislator seeking re-election after two terms.",
+      "Advanced to the November runoff against another Democrat.",
+      "Won about 26% in the June primary.",
+      "Won 26 percent of the vote in June.",
+      "She won 52%.",
+      "She lost the runoff.",
+      "She advanced with 26%.",
+      "She won 52% in the U.S. Senate primary.",
+      "Community advocate who received nearly 31 percent of the vote.",
+      "She won the June primary.",
+      "Won the Democratic nomination for governor.",
+      "Faces Jose Ugarte in the runoff.",
+      "Competing in the November runoff.",
+    ];
+    for (const summary of horseRaceSummaries) {
+      const parsed = parseCandidateProfilePayload({
+        display_name: "Jane Doe",
+        first_name: "Jane",
+        last_name: "Doe",
+        has_held_public_office: false,
+        summary,
+        sources: ["https://example.org/profile"],
+      });
+      expect(parsed.ok, summary).toBe(false);
+      if (!parsed.ok) {
+        expect(parsed.reason).toContain("horse-race");
+      }
+    }
+  });
+
+  it("does not false-positive the horse-race patterns on biography wording", () => {
+    // Percentages and "runoff" are horse-race only inside a result
+    // construction: biography statistics (even about voters or elections),
+    // policy runoff, and article-carrying stat claims ("secured a 40%
+    // increase") must all survive.
+    const biographySummaries = [
+      "Primary care physician and clinic director. Priorities: lowering the percentage of uninsured residents and expanding rural clinics.",
+      "Pediatrician who cut uninsured rates by 15% in her county. Priorities: expanding rural clinics and lowering drug costs.",
+      "Farmer and county water-board member. Priorities: reducing agricultural runoff and improving drinking-water quality.",
+      "Former election commissioner. Cut clinic costs by 20% as hospital administrator.",
+      "Registered 20% more voters as election commissioner.",
+      "Primary-care physician who reduced uninsured rates by 15%.",
+      "Reduced agricultural runoff by 20% countywide as water-board chair.",
+      "Won a state grant to curb stormwater runoff. Advanced legislation to protect wetlands.",
+      "Secured a 40% increase in park funding as council aide.",
+      "Environmental engineer who measured contaminants in the runoff.",
+      "Former mayor who was elected in 2022. Priorities: housing and transit.",
+    ];
+    for (const summary of biographySummaries) {
+      const parsed = parseCandidateProfilePayload({
+        display_name: "Jane Doe",
+        first_name: "Jane",
+        last_name: "Doe",
+        has_held_public_office: false,
+        summary,
+        sources: ["https://example.org/profile"],
+      });
+      expect(parsed.ok, summary).toBe(true);
+    }
+  });
+
+  it("accepts three short sentences under the cap — sentence count is prompt guidance only", () => {
+    // Enforcing a sentence count mechanically would false-reject legitimate
+    // abbreviations ("St. Paul", "Jr."); the 300-character cap is the
+    // enforceable proxy.
+    const parsed = parseCandidateProfilePayload({
+      display_name: "Jane Doe",
+      first_name: "Jane",
+      last_name: "Doe",
+      has_held_public_office: false,
+      summary: "High-school teacher in St. Paul. Former school-board member. Priorities: smaller classes and safer streets.",
+      sources: ["https://example.org/profile"],
+    });
+
+    expect(parsed.ok).toBe(true);
+  });
 });

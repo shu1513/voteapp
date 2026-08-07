@@ -33,6 +33,117 @@ export type CandidateProfilePayloadParseOptions = {
   allowFecIds?: boolean;
 };
 
+// Voters skim the summary next to the contest; the formula is 2 sentences —
+// current role, 1-2 credentials, top 2 priorities. 300 characters holds that
+// comfortably (live over-cap example: a 560-character organizer bio with
+// runoff percentages). The prompt states the formula; this cap and the
+// horse-race patterns below are the enforcement, so manual-research payloads
+// hit the same wall as AI ones. The sentence count itself stays prompt
+// guidance only: counting sentences mechanically false-rejects legitimate
+// abbreviations ("St. Paul", "Jr.", "D.C."), so the cap is the enforceable
+// proxy for it.
+export const CANDIDATE_PROFILE_SUMMARY_MAX_LENGTH = 300;
+
+// The app renders the contest name, date, and stage beside the summary, so
+// race content inside it is always redundant and goes stale after election
+// day. Patterns stay narrow on purpose — "primary" alone would reject
+// "primary care physician". These phrases are horse-race in any context:
+const SUMMARY_HORSE_RACE_PATTERNS: ReadonlyArray<{ pattern: RegExp; label: string }> = [
+  { pattern: /\brunning for\b/i, label: 'the phrase "running for"' },
+  { pattern: /\bseeking\s+re-?election\b/i, label: 'the phrase "seeking re-election"' },
+];
+
+// A percentage or "runoff" is horse-race content only inside a result
+// CONSTRUCTION — "won 52%", "advanced with 26%", "26% of the vote", "won the
+// runoff" — never as a bare word co-occurrence. Cue-word lists over-matched
+// ("registered 20% more voters as election commissioner" is a credential),
+// and sentence-scoped cues mis-split on "U.S.", letting "won 52% in the U.S.
+// Senate primary" through. Tight constructions need no sentence splitting,
+// and English discriminates naturally at the article: vote shares read
+// "won 52%" while biography statistics read "secured a 40% increase".
+const RESULT_QUALIFIER = String.raw`(?:(?:about|around|nearly|roughly|over|almost|approximately|under)\s+)?`;
+const PERCENT = String.raw`\d+(?:\.\d+)?\s*(?:%|percent\b)`;
+// Words allowed between an article and an electoral "runoff" ("the November
+// 2026 runoff", "a Democratic primary runoff") — whitelisted so "won the
+// fight against runoff" (environmental) never matches through a free gap.
+const RUNOFF_FILLER_WORD = String.raw`(?:january|february|march|april|may|june|july|august|september|october|november|december|\d{4}|primar(?:y|ies)|mayoral|special|general|citywide|city|county|statewide|democratic|republican|nonpartisan)`;
+const RUNOFF_FILLER = String.raw`(?:${RUNOFF_FILLER_WORD}\s+){0,2}`;
+const RUNOFF_FILLER_REQUIRED = String.raw`(?:${RUNOFF_FILLER_WORD}\s+){1,2}`;
+
+const PERCENT_LABEL = "a vote percentage (horse-race content)";
+const RUNOFF_LABEL = '"runoff" as an election result (horse-race content)';
+
+const SUMMARY_HORSE_RACE_CONSTRUCTIONS: ReadonlyArray<{ pattern: RegExp; label: string }> = [
+  // "won 52%", "received about 31 percent", "garnered nearly 26%"
+  {
+    pattern: new RegExp(String.raw`\b(?:won|lost|received|garnered|polled)\s+${RESULT_QUALIFIER}${PERCENT}`, "i"),
+    label: PERCENT_LABEL,
+  },
+  // "advanced with 26%", "finished with about 31 percent"
+  {
+    pattern: new RegExp(String.raw`\b(?:advanc(?:e[ds]?|ing)|finish(?:ed|ing)?)\s+with\s+${RESULT_QUALIFIER}${PERCENT}`, "i"),
+    label: PERCENT_LABEL,
+  },
+  // "26% of the vote"
+  {
+    pattern: new RegExp(String.raw`${PERCENT}\s+of\s+(?:the\s+)?votes?\b`, "i"),
+    label: PERCENT_LABEL,
+  },
+  // "26% in the June primary", "52 percent in the U.S. Senate primary"
+  {
+    pattern: new RegExp(
+      String.raw`${PERCENT}\s+in\s+the\s+(?:\S+\s+){0,3}(?:primar(?:y|ies)|runoff|caucus(?:es)?|general|election)\b`,
+      "i"
+    ),
+    label: PERCENT_LABEL,
+  },
+  // "won the runoff", "lost a runoff", "won the June primary", "won the
+  // Democratic nomination" — stage results are race trivia even without a
+  // percentage. "election" is deliberately NOT a terminal noun: "won the 2020
+  // election" is the same credential as "elected in 2020", which stays legal
+  // biography (past office is exactly what the formula asks for).
+  {
+    pattern: new RegExp(
+      String.raw`\b(?:won|lost|forced|entered)\s+(?:the|a)\s+${RUNOFF_FILLER}(?:runoff|primar(?:y|ies)|nomination|caucus(?:es)?)\b`,
+      "i"
+    ),
+    label: RUNOFF_LABEL,
+  },
+  // "advanced to the November 2026 runoff" — requires "to the/a", so
+  // "advanced legislation to curb runoff" stays a biography fact
+  {
+    pattern: new RegExp(String.raw`\badvanc(?:e[ds]?|ing)\s+to\s+(?:the|a)\s+(?:\S+\s+){0,3}runoff\b`, "i"),
+    label: RUNOFF_LABEL,
+  },
+  // "in the November runoff" — the filler is REQUIRED here: a bare "in the
+  // runoff" is how environmental summaries read ("measured contaminants in
+  // the runoff"), so it only counts with an electoral filler word present
+  {
+    pattern: new RegExp(String.raw`\bin\s+(?:the|a)\s+${RUNOFF_FILLER_REQUIRED}runoff\b`, "i"),
+    label: RUNOFF_LABEL,
+  },
+  // "faces X in the runoff" — a contest verb supplies the electoral context
+  // that the bare construction above no longer assumes
+  {
+    pattern: new RegExp(
+      String.raw`\b(?:fac(?:es?|ing)|meets?|meeting|compet(?:es?|ing))\s+[^!?]{0,30}\bin\s+(?:the|a)\s+${RUNOFF_FILLER}runoff\b`,
+      "i"
+    ),
+    label: RUNOFF_LABEL,
+  },
+  // "runoff election", "runoff against"
+  { pattern: /\brunoff\s+(?:election|against)\b/i, label: RUNOFF_LABEL },
+];
+
+function findSummaryHorseRaceContent(summary: string): string | null {
+  const phrase = SUMMARY_HORSE_RACE_PATTERNS.find(({ pattern }) => pattern.test(summary));
+  if (phrase) {
+    return phrase.label;
+  }
+  const construction = SUMMARY_HORSE_RACE_CONSTRUCTIONS.find(({ pattern }) => pattern.test(summary));
+  return construction ? construction.label : null;
+}
+
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
@@ -283,7 +394,23 @@ export function parseCandidateProfilePayload(
     if (!isNonEmptyString(input.summary)) {
       return { ok: false, reason: "payload.summary must be non-empty string when present" };
     }
-    summary = input.summary.trim();
+    const trimmedSummary = input.summary.trim();
+    if (trimmedSummary.length > CANDIDATE_PROFILE_SUMMARY_MAX_LENGTH) {
+      return {
+        ok: false,
+        reason:
+          `payload.summary is ${trimmedSummary.length} characters (max ${CANDIDATE_PROFILE_SUMMARY_MAX_LENGTH}) — voters skim it next to the contest. Rewrite as 2 sentences: current role, 1-2 credentials, top 2 priorities; cut everything else.`,
+      };
+    }
+    const horseRaceLabel = findSummaryHorseRaceContent(trimmedSummary);
+    if (horseRaceLabel) {
+      return {
+        ok: false,
+        reason:
+          `payload.summary contains ${horseRaceLabel} — the app already names the contest next to the summary, so campaign-status and horse-race content is banned. Describe who the person is (current role, 1-2 credentials, top 2 priorities), not the race.`,
+      };
+    }
+    summary = trimmedSummary;
   }
 
   return {
