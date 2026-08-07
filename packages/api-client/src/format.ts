@@ -125,6 +125,25 @@ export function formatResultChipLabel(
   return names.length > 0 ? `${base} — ${names}` : base;
 }
 
+export type ResultChipTone = "positive" | "negative" | "neutral";
+
+/**
+ * Color tone for the ballot-card result chip, matching the badge colors on
+ * the election page: decided-forward outcomes (a winner, an advancer, a
+ * passed measure) read green, a failed measure reads red, and everything
+ * undecided (too_close, unknown, no outcome yet) stays neutral so color
+ * always means "called", never just "row exists".
+ */
+export function resultChipTone(outcome: string | null | undefined): ResultChipTone {
+  if (outcome === "won" || outcome === "advanced" || outcome === "runoff" || outcome === "passed") {
+    return "positive";
+  }
+  if (outcome === "failed") {
+    return "negative";
+  }
+  return "neutral";
+}
+
 // Mirrors the backend's FINANCE_INDUSTRY_DISPLAY_NAMES
 // (ballotLookupFinanceShared.ts). Finance industry categories arrive as
 // slugs; occupation categories arrive as free text and pass through

@@ -6,10 +6,20 @@ import {
   formatResultChipLabel,
   formatRosterStatus,
   formatVotePowerLabel,
+  resultChipTone,
   sortByResearchAreaPriority,
 } from "@voteapp/api-client";
+import type { ResultChipTone } from "@voteapp/api-client";
 import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
+
+// Same green/red as the election page's candidate result badges — one color
+// language for "called" across surfaces. Mirrors the web ElectionCard.
+const RESULT_CHIP_CLASSES: Record<ResultChipTone, string> = {
+  positive: "rounded border border-green-700 bg-green-50 px-2 py-0.5 text-xs font-medium text-green-900",
+  negative: "rounded border border-red-700 bg-red-50 px-2 py-0.5 text-xs font-medium text-red-900",
+  neutral: "rounded bg-surface px-2 py-0.5 text-xs text-ink",
+};
 
 /**
  * Shared between the anonymous ballot and (later) the saved ballot.
@@ -64,7 +74,11 @@ export function ElectionCard({
           </Text>
         ) : null}
         {election.has_results ? (
-          <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink">
+          // Called results get the badge colors from the election page
+          // (green = decided forward, red = failed) so the answer stands out
+          // from the neutral info chips; undecided rows stay neutral so
+          // color always means "called".
+          <Text className={RESULT_CHIP_CLASSES[resultChipTone(election.current_result_outcome)]}>
             {election.current_result_outcome
               ? formatResultChipLabel(election.current_result_outcome, election.current_result_winners ?? [])
               : "Results available"}

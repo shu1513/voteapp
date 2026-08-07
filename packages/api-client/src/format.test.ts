@@ -11,6 +11,7 @@ import {
   formatOutsideEvidenceLines,
   formatResultChipLabel,
   formatRosterStatus,
+  resultChipTone,
   formatSourceHost,
   formatVotePowerLabel,
   formatWinnerNames,
@@ -300,5 +301,18 @@ describe("formatResultChipLabel", () => {
   it("falls back to the outcome alone with no named winners", () => {
     expect(formatResultChipLabel("passed", [])).toBe("Result: Passed");
     expect(formatResultChipLabel("won", [{ party: "Independent" }])).toBe("Result: Won");
+  });
+});
+
+describe("resultChipTone", () => {
+  it("greens decided-forward outcomes, reds failed, neutrals the undecided", () => {
+    expect(resultChipTone("won")).toBe("positive");
+    expect(resultChipTone("advanced")).toBe("positive");
+    expect(resultChipTone("runoff")).toBe("positive");
+    expect(resultChipTone("passed")).toBe("positive");
+    expect(resultChipTone("failed")).toBe("negative");
+    expect(resultChipTone("too_close")).toBe("neutral");
+    expect(resultChipTone("unknown")).toBe("neutral");
+    expect(resultChipTone(null)).toBe("neutral");
   });
 });

@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Link } from "react-router";
-import type { ElectionChoice, ElectionSummary, ResearchAreaWeight } from "@voteapp/api-client";
+import type { ElectionChoice, ElectionSummary, ResearchAreaWeight, ResultChipTone } from "@voteapp/api-client";
 import type { BackTo, ElectionNavState } from "../lib/detailNavContext";
 import {
   formatDistrictName,
@@ -8,6 +8,7 @@ import {
   formatResultChipLabel,
   formatRosterStatus,
   formatVotePowerLabel,
+  resultChipTone,
   splitResearchAreasBySaved,
 } from "@voteapp/api-client";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
@@ -33,6 +34,14 @@ function formatChoiceLabel(choice: ElectionChoice): string | null {
     .join(", ");
   return `${choice.picks.length === 1 ? "My pick" : "My picks"}: ${names}`;
 }
+
+// Same green/red as the election page's candidate result badges (and the
+// measure No chip's red) — one color language for "called" across surfaces.
+const RESULT_CHIP_CLASSES: Record<ResultChipTone, string> = {
+  positive: "rounded border border-green-700 bg-green-50 px-2 py-0.5 font-medium text-green-900",
+  negative: "rounded border border-red-700 bg-red-50 px-2 py-0.5 font-medium text-red-900",
+  neutral: "rounded bg-surface px-2 py-0.5 text-ink",
+};
 
 // Statewide races carry a dozen-plus research areas; rendering every one
 // buried the card's actual signal (title, candidates, vote power) under a
@@ -304,7 +313,11 @@ function ElectionCard({
             </span>
           ) : null}
           {election.has_results ? (
-            <span className="rounded bg-surface px-2 py-0.5 text-ink">
+            // Called results get the badge colors from the election page
+            // (green = decided forward, red = failed) so the answer stands
+            // out from the neutral info chips around it; undecided rows stay
+            // neutral so color always means "called".
+            <span className={RESULT_CHIP_CLASSES[resultChipTone(election.current_result_outcome)]}>
               {election.current_result_outcome
                 ? formatResultChipLabel(election.current_result_outcome, election.current_result_winners ?? [])
                 : "Results available"}

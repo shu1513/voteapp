@@ -592,6 +592,47 @@ describe("ElectionCard result chip", () => {
     expect(screen.getByText("Result: Won — Dana Reyes")).toBeInTheDocument();
   });
 
+  it("colors called results green (or red for a failed measure) and keeps undecided neutral", () => {
+    // The chip carries the answer the voter came for — badge colors from the
+    // election page make it stand out from the neutral info chips around it.
+    renderCard(
+      electionSummary({
+        election_date: "2026-08-04",
+        has_results: true,
+        current_result_outcome: "advanced",
+        current_result_winners: [{ candidate_id: "c-1", candidate_name: "Jocelyn Benson", party: "Democratic" }],
+      })
+    );
+    const advanced = screen.getByText("Result: Advanced — Jocelyn Benson (Democratic)");
+    expect(advanced.className).toContain("text-green-900");
+    expect(advanced.className).toContain("font-medium");
+
+    renderCard(
+      electionSummary({
+        id: "e-2",
+        race_type: "ballot_measure",
+        candidate_count: 0,
+        election_date: "2026-08-04",
+        has_results: true,
+        current_result_outcome: "failed",
+      })
+    );
+    expect(screen.getByText("Result: Failed").className).toContain("text-red-900");
+
+    renderCard(
+      electionSummary({
+        id: "e-3",
+        election_date: "2026-08-04",
+        has_results: true,
+        current_result_outcome: "too_close",
+      })
+    );
+    // Undecided stays neutral: color always means "called".
+    const tooClose = screen.getByText("Result: Too close");
+    expect(tooClose.className).not.toContain("text-green-900");
+    expect(tooClose.className).not.toContain("text-red-900");
+  });
+
   it("suppresses winner names on a non-decisive outcome", () => {
     // The contract permits winners on a too_close row (a recorded leader);
     // "Result: Too close — Jane Smith" would read as calling the race.
