@@ -376,11 +376,12 @@ export type ListedSourceAdditionJustification = {
    */
   rationale: string;
   /**
-   * At least two URLs, on at least two different hosts, NEITHER on the domain
-   * being added, proving the outlet is real and established: a Wikipedia
-   * article, a press-association member roster, a state library / Chronicling
-   * America entry, an archive.org capture history showing age. A domain must
-   * never vouch for itself.
+   * At least two HTTPS URLs on at least two different registrable domains
+   * (en.wikipedia.org and fr.wikipedia.org are ONE source), none sharing a
+   * registrable domain with the domain being added (no self-, parent-, or
+   * sibling-vouching), proving the outlet is real and established: a
+   * Wikipedia article, a press-association member roster, a state library /
+   * Chronicling America entry, an archive.org capture history showing age.
    */
   evidence: readonly string[];
 };
@@ -417,7 +418,12 @@ export const LISTED_SOURCE_DOMAIN_ADDITIONS: Readonly<
   // (no additions yet)
 };
 
-const LISTED_SOURCE_DOMAINS: readonly string[] = [
+// Exported ONLY so the policy test can pin this list to exactly
+// founding + addition keys: a domain appended directly here would otherwise
+// skip every justification requirement above — the one-line bypass the guard
+// exists to close. Never append here; never import this for runtime use
+// outside this module.
+export const LISTED_SOURCE_DOMAINS: readonly string[] = [
   ...FOUNDING_LISTED_SOURCE_DOMAINS,
   ...Object.keys(LISTED_SOURCE_DOMAIN_ADDITIONS),
 ];

@@ -2,12 +2,15 @@ import { describe, expect, it } from "vitest";
 
 import { createHash } from "node:crypto";
 
+import { getDomain, getPublicSuffix } from "tldts";
+
 import {
   BLOCKED_SOURCE_DOMAIN_REGISTRY,
   classifyCandidateRecordSourceDomain,
   evaluateCandidateRecordSourcePolicy,
   FOUNDING_LISTED_SOURCE_DOMAINS,
   LISTED_SOURCE_DOMAIN_ADDITIONS,
+  LISTED_SOURCE_DOMAINS,
   matchesDamagingClaimPattern,
 } from "../../src/pipeline/candidates/candidateRecordSourcePolicy.js";
 
@@ -733,20 +736,293 @@ describe("evaluateCandidateRecordSourcePolicy", () => {
 // added to the allowlist. Never weaken, skip, or delete a test here to make
 // an addition pass; an addition that cannot satisfy this suite is exactly the
 // addition the suite exists to stop.
+//
+// Structure: the guard rules are pure predicates, exercised two ways —
+// fixture-driven tests that prove each predicate catches its attack shape
+// (the additions registry starts empty, so registry loops alone would leave
+// the predicates untested until the exact moment they must work), and
+// registry-driven tests that hold every real addition to those predicates.
 // ---------------------------------------------------------------------------
 
-// Registrable label with hyphens removed and well-known TLD / second-level
-// suffixes stripped: "denverpost.com" -> "denverpost", "bbc.co.uk" -> "bbc",
-// "denver-post.news" -> "denverpost". Used for clone-shape detection.
-const SECOND_LEVEL_SUFFIXES = new Set(["co", "com", "net", "org", "gov", "edu", "ac"]);
-function cloneCheckLabel(domain: string): string {
-  const labels = domain.split(".");
-  labels.pop(); // TLD
-  if (labels.length > 1 && SECOND_LEVEL_SUFFIXES.has(labels[labels.length - 1]!)) {
-    labels.pop();
-  }
-  return labels.join("").replace(/-/g, "");
+// Public-Suffix-List-aware parsing (tldts), private section included:
+// "github.io" and "co.uk" are suffixes (registrable domain null), while
+// "denverpost.com" and "bbc.co.uk" are registrable. Hand-rolled suffix lists
+// cannot keep up with the PSL and previously let "github.io" read as a
+// registrable domain.
+const PSL_OPTIONS = { allowPrivateDomains: true } as const;
+
+// "a.b.example.co.uk" -> "example.co.uk"; hosts without a PSL match (rare:
+// localhost-style names) fall back to themselves.
+function registrableDomainOf(host: string): string {
+  return getDomain(host, PSL_OPTIONS) ?? host;
 }
+
+function stripPublicSuffix(domain: string): string {
+  const suffix = getPublicSuffix(domain, PSL_OPTIONS);
+  return suffix && domain.endsWith(`.${suffix}`)
+    ? domain.slice(0, -(suffix.length + 1))
+    : domain;
+}
+
+// Hyphen- and dot-free name label for clone detection:
+// "denver-post.co.uk" -> "denverpost".
+function cloneCheckLabel(domain: string): string {
+  return stripPublicSuffix(domain).replace(/[.-]/g, "");
+}
+
+// Name tokens as written: "cnn-news.com" -> ["cnn", "news"]. Decoration
+// separators are the fake-outlet tell, so tokens are compared EXACTLY against
+// listed labels — that catches short famous brands ("cnn", "npr", "bbc") that
+// substring containment must skip (an "adn" substring sits inside
+// "roadnews.com" by pure coincidence).
+function cloneCheckTokens(domain: string): string[] {
+  return stripPublicSuffix(domain)
+    .split(/[.-]/)
+    .filter((token) => token.length > 0);
+}
+
+// The clone-shaped-addition rule: a listed outlet's name plus decoration
+// ("denverpost-news.com", "cnn-news.com", "denverpost.co"). Returns the
+// listed domain the candidate addition reads as a clone of, or null.
+function findCloneOfListed(domain: string, listedOthers: readonly string[]): string | null {
+  const additionLabel = cloneCheckLabel(domain);
+  const additionTokens = new Set(cloneCheckTokens(domain));
+  for (const listed of listedOthers) {
+    const listedLabel = cloneCheckLabel(listed);
+    // Exact token hit: any decoration-delimited token equal to a listed name
+    // ("cnn-news" carries "cnn"), any label length.
+    if (additionTokens.has(listedLabel)) {
+      return listed;
+    }
+    // Containment hit: concatenations without separators ("denverpostnews").
+    // Length-gated because short labels collide by coincidence; both
+    // directions, so a truncation of a listed name fails too.
+    if (
+      listedLabel.length >= 5 &&
+      (additionLabel.includes(listedLabel) || listedLabel.includes(additionLabel))
+    ) {
+      return listed;
+    }
+  }
+  return null;
+}
+
+function domainsSuffixOverlap(a: string, b: string): boolean {
+  return a === b || a.endsWith(`.${b}`) || b.endsWith(`.${a}`);
+}
+
+const ADDITION_KEY_PATTERN = /^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}$/;
+
+// Key-shape rule. Returns a human-readable violation or null.
+function additionKeyViolation(domain: string): string | null {
+  if (!ADDITION_KEY_PATTERN.test(domain)) {
+    return "must be a bare lowercase domain — no scheme, path, port, wildcard, or uppercase";
+  }
+  if (domain.startsWith("www.")) {
+    return "must not carry a www. prefix (matching is suffix-based)";
+  }
+  // A public suffix as a key would list every site anyone can create under
+  // it: "github.io" would trust every GitHub Pages site. Note the inverse is
+  // allowed — a specific registrable name under a shared suffix, or a
+  // specific subdomain of a larger org (founding "abcnews.go.com"), scopes
+  // trust NARROWER, not wider.
+  if (getDomain(domain, PSL_OPTIONS) === null) {
+    return "is a public suffix — listing it would trust every site registered under it";
+  }
+  return null;
+}
+
+// addedOn rule: real ISO calendar date (JS Date silently rolls "2026-02-30"
+// to March 2, so the parse must roundtrip), no earlier than the mechanism's
+// own introduction, and never in the future (an addition is dated the day it
+// lands; a future date is a tamper signal, never legitimate).
+function addedOnViolation(addedOn: string): string | null {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(addedOn)) {
+    return "must be YYYY-MM-DD";
+  }
+  const parsed = new Date(`${addedOn}T00:00:00Z`);
+  if (Number.isNaN(parsed.getTime()) || parsed.toISOString().slice(0, 10) !== addedOn) {
+    return "is not a real calendar date";
+  }
+  if (addedOn < "2026-08-06") {
+    return "predates the addition mechanism itself";
+  }
+  if (parsed.getTime() > Date.now()) {
+    return "is in the future";
+  }
+  return null;
+}
+
+// Evidence rules, all violations reported at once: >= 2 HTTPS URLs on >= 2
+// different REGISTRABLE domains (en.wikipedia.org + fr.wikipedia.org is one
+// source), none sharing a registrable domain with the domain being added
+// (self-, parent-, and sibling-vouching all prove nothing), none on a
+// blocked-class host (anyone can write a Reddit post).
+function evidenceViolations(domain: string, evidence: readonly string[]): string[] {
+  const problems: string[] = [];
+  if (evidence.length < 2) {
+    problems.push("needs at least two evidence URLs");
+  }
+  const evidenceRegistrables = new Set<string>();
+  for (const evidenceUrl of evidence) {
+    let url: URL;
+    try {
+      url = new URL(evidenceUrl);
+    } catch {
+      problems.push(`evidence '${evidenceUrl}' is not a valid URL`);
+      continue;
+    }
+    if (url.protocol !== "https:") {
+      problems.push(`evidence '${evidenceUrl}' must be https (plain http is tamper-prone)`);
+    }
+    const host = url.hostname.toLowerCase().replace(/\.$/, "");
+    const registrable = registrableDomainOf(host);
+    evidenceRegistrables.add(registrable);
+    if (registrable === registrableDomainOf(domain)) {
+      problems.push(
+        `evidence '${evidenceUrl}' shares the added domain's registrable domain — a domain cannot vouch for itself`
+      );
+    }
+    if (classifyCandidateRecordSourceDomain(evidenceUrl).tier === "blocked") {
+      problems.push(
+        `evidence '${evidenceUrl}' sits on a blocked-class host and cannot vouch for anything`
+      );
+    }
+  }
+  if (evidenceRegistrables.size < 2) {
+    problems.push("evidence must span at least two different registrable domains");
+  }
+  return problems;
+}
+
+describe("addition guard predicates (fixture-driven)", () => {
+  // The additions registry starts empty, so every registry-driven loop below
+  // runs zero iterations until the first real addition lands — which is the
+  // exact moment the guards must already work. These fixtures keep the
+  // predicates honest in the meantime.
+
+  it("accepts a legitimately-shaped addition end to end", () => {
+    const domain = "wisconsinwatch.org";
+    expect(additionKeyViolation(domain)).toBeNull();
+    expect(addedOnViolation("2026-08-06")).toBeNull();
+    expect(
+      evidenceViolations(domain, [
+        "https://en.wikipedia.org/wiki/Wisconsin_Watch",
+        "https://inn.org/members/wisconsin-watch/",
+      ])
+    ).toEqual([]);
+    expect(findCloneOfListed(domain, FOUNDING_LISTED_SOURCE_DOMAINS)).toBeNull();
+  });
+
+  it("rejects public-suffix and malformed keys", () => {
+    // "github.io" passes a naive shape regex but is a Public Suffix List
+    // entry: listing it would make every *.github.io site a trusted source
+    // for damaging claims.
+    for (const domain of ["github.io", "co.uk", "pages.dev"]) {
+      expect(additionKeyViolation(domain), `'${domain}' must be rejected as a public suffix`).toContain(
+        "public suffix"
+      );
+    }
+    for (const domain of [
+      "www.example.com",
+      "Example.com",
+      "https://example.com",
+      "example.com/path",
+      "example",
+      "*.example.com",
+    ]) {
+      expect(additionKeyViolation(domain), `'${domain}' must be rejected`).not.toBeNull();
+    }
+    // Narrower-than-registrable keys stay allowed: founding "abcnews.go.com"
+    // is the live precedent.
+    expect(additionKeyViolation("abcnews.go.com")).toBeNull();
+  });
+
+  it("rejects clone-shaped names including decorated short brands", () => {
+    // The exact fake-outlet shape: famous name + decoration. Short labels
+    // ("cnn", "npr", "bbc") are caught by the token rule; longer ones by
+    // containment.
+    for (const [domain, expectedListed] of [
+      ["cnn-news.com", "cnn.com"],
+      ["npr-local.com", "npr.org"],
+      ["bbc-report.com", "bbc.co.uk"], // first bbc entry in founding order
+      ["denverpost-news.com", "denverpost.com"],
+      ["denverpostnews.com", "denverpost.com"],
+      ["denver-post.co", "denverpost.com"],
+      ["denverpost.co", "denverpost.com"],
+      ["apnews.wtf", "apnews.com"],
+    ] as const) {
+      expect(
+        findCloneOfListed(domain, FOUNDING_LISTED_SOURCE_DOMAINS),
+        `'${domain}' must read as a clone`
+      ).toBe(expectedListed);
+    }
+    // Coincidences stay clean: "roadnews" CONTAINS the short founding label
+    // "adn" (adn.com) but never as a decoration-delimited token, and real
+    // distinct outlets share no listed name.
+    for (const domain of ["roadnews.com", "kare11.com", "wisconsinwatch.org", "mauitime.com"]) {
+      expect(
+        findCloneOfListed(domain, FOUNDING_LISTED_SOURCE_DOMAINS),
+        `'${domain}' must NOT read as a clone`
+      ).toBeNull();
+    }
+  });
+
+  it("rejects dependent, weak, or self-serving evidence", () => {
+    // Same registrable domain twice = one source, however many hostnames.
+    expect(
+      evidenceViolations("faketimes.com", [
+        "https://en.wikipedia.org/wiki/X",
+        "https://fr.wikipedia.org/wiki/X",
+      ])
+    ).toContainEqual(expect.stringContaining("two different registrable domains"));
+    // Self-vouching, including the parent/sibling flavor a hostname-suffix
+    // check missed: a subdomain addition citing its own parent.
+    expect(
+      evidenceViolations("news.faketimes.com", [
+        "https://faketimes.com/about-our-newsroom",
+        "https://en.wikipedia.org/wiki/X",
+      ])
+    ).toContainEqual(expect.stringContaining("vouch for itself"));
+    // Blocked-class hosts prove nothing.
+    expect(
+      evidenceViolations("faketimes.com", [
+        "https://www.reddit.com/r/news/comments/1/faketimes_is_legit/",
+        "https://en.wikipedia.org/wiki/X",
+      ])
+    ).toContainEqual(expect.stringContaining("blocked-class"));
+    // Plain http and non-URLs.
+    expect(
+      evidenceViolations("faketimes.com", [
+        "http://en.wikipedia.org/wiki/X",
+        "https://inn.org/members/x/",
+      ])
+    ).toContainEqual(expect.stringContaining("must be https"));
+    expect(evidenceViolations("faketimes.com", ["not a url", "https://inn.org/x"])).toContainEqual(
+      expect.stringContaining("not a valid URL")
+    );
+    // One URL is short two ways: count and independence.
+    expect(evidenceViolations("faketimes.com", ["https://en.wikipedia.org/wiki/X"]).length).toBe(2);
+  });
+
+  it("rejects impossible, premature, and future dates", () => {
+    // JS Date rolls 2026-02-30 over to March 2 instead of failing; the
+    // roundtrip check refuses the rollover.
+    expect(addedOnViolation("2026-02-30")).toContain("not a real calendar date");
+    expect(addedOnViolation("2026-8-6")).toContain("YYYY-MM-DD");
+    expect(addedOnViolation("2026-08-05")).toContain("predates");
+    const tomorrow = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    expect(addedOnViolation(tomorrow)).toContain("future");
+  });
+
+  it("detects suffix overlap in both directions", () => {
+    expect(domainsSuffixOverlap("sub.denverpost.com", "denverpost.com")).toBe(true);
+    expect(domainsSuffixOverlap("go.com", "abcnews.go.com")).toBe(true);
+    expect(domainsSuffixOverlap("denverpost.com", "denverpost.com")).toBe(true);
+    expect(domainsSuffixOverlap("denverpost.com", "denverpost.co")).toBe(false);
+    expect(domainsSuffixOverlap("post.com", "denverpost.com")).toBe(false);
+  });
+});
 
 describe("listed-source addition guard", () => {
   it("keeps the founding cohort frozen (count + content hash)", () => {
@@ -764,34 +1040,32 @@ describe("listed-source addition guard", () => {
     expect(hash).toBe("609cc32423a8aa9322e49a899e5cb3bd623be194d83ac18bf0be0b1ce9eef7f0");
   });
 
+  it("pins the runtime listed list to founding + additions exactly", () => {
+    // Closes the one-line bypass: a domain appended directly to
+    // LISTED_SOURCE_DOMAINS would skip every justification requirement while
+    // the founding hash and the addition tests all still pass. The derived
+    // list must be exactly the union — nothing extra, nothing missing.
+    const expected = [
+      ...FOUNDING_LISTED_SOURCE_DOMAINS,
+      ...Object.keys(LISTED_SOURCE_DOMAIN_ADDITIONS),
+    ].sort();
+    expect([...LISTED_SOURCE_DOMAINS].sort()).toEqual(expected);
+  });
+
   const additions = Object.entries(LISTED_SOURCE_DOMAIN_ADDITIONS);
 
-  it("requires every addition key to be a bare lowercase registrable domain", () => {
+  it("holds every addition key to the key-shape rule", () => {
     for (const [domain] of additions) {
-      expect(
-        /^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}$/.test(domain),
-        `'${domain}' must be a bare lowercase domain — no scheme, path, port, wildcard, or uppercase`
-      ).toBe(true);
-      expect(domain.startsWith("www."), `'${domain}' must not carry a www. prefix (matching is suffix-based)`).toBe(
-        false
-      );
+      expect(additionKeyViolation(domain), `'${domain}' ${additionKeyViolation(domain) ?? ""}`).toBeNull();
     }
   });
 
   it("requires a dated, reasoned justification on every addition", () => {
     for (const [domain, justification] of additions) {
       expect(
-        /^\d{4}-\d{2}-\d{2}$/.test(justification.addedOn),
-        `'${domain}' addedOn must be YYYY-MM-DD`
-      ).toBe(true);
-      const parsed = new Date(`${justification.addedOn}T00:00:00Z`);
-      expect(Number.isNaN(parsed.getTime()), `'${domain}' addedOn must be a real date`).toBe(false);
-      // The justification requirement postdates the founding freeze, so no
-      // addition can honestly predate it.
-      expect(
-        justification.addedOn >= "2026-08-06",
-        `'${domain}' addedOn predates the addition mechanism itself`
-      ).toBe(true);
+        addedOnViolation(justification.addedOn),
+        `'${domain}' addedOn ${addedOnViolation(justification.addedOn) ?? ""}`
+      ).toBeNull();
       expect(
         justification.rationale.trim().length >= 40,
         `'${domain}' rationale must actually explain the outlet's accountability (>= 40 chars)`
@@ -799,61 +1073,27 @@ describe("listed-source addition guard", () => {
     }
   });
 
-  it("requires two independent off-domain evidence URLs per addition", () => {
+  it("requires independent off-domain evidence on every addition", () => {
     for (const [domain, justification] of additions) {
       expect(
-        justification.evidence.length >= 2,
-        `'${domain}' needs at least two evidence URLs`
-      ).toBe(true);
-      const evidenceHosts = new Set<string>();
-      for (const evidenceUrl of justification.evidence) {
-        let url: URL;
-        try {
-          url = new URL(evidenceUrl);
-        } catch {
-          throw new Error(`'${domain}' evidence '${evidenceUrl}' is not a valid URL`);
-        }
-        expect(
-          url.protocol === "https:" || url.protocol === "http:",
-          `'${domain}' evidence '${evidenceUrl}' must be http(s)`
-        ).toBe(true);
-        const host = url.hostname.toLowerCase().replace(/\.$/, "");
-        evidenceHosts.add(host);
-        // A domain must never vouch for itself.
-        expect(
-          host === domain || host.endsWith(`.${domain}`),
-          `'${domain}' evidence '${evidenceUrl}' is on the domain being added — self-vouching is not evidence`
-        ).toBe(false);
-        // Evidence hosted on a blocked class (UGC/social, generated
-        // directories) proves nothing: anyone can write it.
-        expect(
-          classifyCandidateRecordSourceDomain(evidenceUrl).tier,
-          `'${domain}' evidence '${evidenceUrl}' sits on a blocked-class host and cannot vouch for anything`
-        ).not.toBe("blocked");
-      }
-      expect(
-        evidenceHosts.size >= 2,
-        `'${domain}' evidence must come from at least two different hosts`
-      ).toBe(true);
+        evidenceViolations(domain, justification.evidence),
+        `'${domain}' evidence problems`
+      ).toEqual([]);
     }
   });
 
-  it("rejects additions that suffix-overlap the founding list or blocked registries", () => {
+  it("rejects additions that suffix-overlap the founding list, blocked registries, or each other", () => {
     const blockedDomains = Object.values(BLOCKED_SOURCE_DOMAIN_REGISTRY).flat();
     for (const [domain] of additions) {
       for (const founding of FOUNDING_LISTED_SOURCE_DOMAINS) {
-        const overlaps =
-          domain === founding || domain.endsWith(`.${founding}`) || founding.endsWith(`.${domain}`);
         expect(
-          overlaps,
+          domainsSuffixOverlap(domain, founding),
           `'${domain}' duplicates or suffix-overlaps founding domain '${founding}' — already covered, or a coverage-broadening parent`
         ).toBe(false);
       }
       for (const blocked of blockedDomains) {
-        const overlaps =
-          domain === blocked || domain.endsWith(`.${blocked}`) || blocked.endsWith(`.${domain}`);
         expect(
-          overlaps,
+          domainsSuffixOverlap(domain, blocked),
           `'${domain}' suffix-overlaps blocked domain '${blocked}' — a domain cannot be listed and blocked`
         ).toBe(false);
       }
@@ -861,9 +1101,8 @@ describe("listed-source addition guard", () => {
         if (other === domain) {
           continue;
         }
-        const overlaps = domain.endsWith(`.${other}`) || other.endsWith(`.${domain}`);
         expect(
-          overlaps,
+          domainsSuffixOverlap(domain, other),
           `additions '${domain}' and '${other}' suffix-overlap each other — one already covers the other`
         ).toBe(false);
       }
@@ -871,28 +1110,17 @@ describe("listed-source addition guard", () => {
   });
 
   it("rejects clone-shaped additions of already-listed outlet names", () => {
-    // "denverpost-news.com", "denverpost.co", "denver-post.news": the classic
-    // smear-site shape is a listed outlet's name plus decoration. Compare
-    // hyphen-stripped labels; a containment hit either way fails. If a REAL
-    // distinct outlet trips this (rare — e.g. a name that embeds another
-    // paper's name), listing it requires the break-glass founding-cohort route
-    // so the collision is confronted deliberately, never waved through.
+    // If a REAL distinct outlet trips this (rare — a name that embeds another
+    // paper's name, e.g. "al-monitor.com" vs the founding "al.com" label),
+    // listing it requires the break-glass founding-cohort route so the
+    // collision is confronted deliberately, never waved through.
     for (const [domain] of additions) {
-      const additionLabel = cloneCheckLabel(domain);
       const listedOthers = [
         ...FOUNDING_LISTED_SOURCE_DOMAINS,
         ...Object.keys(LISTED_SOURCE_DOMAIN_ADDITIONS).filter((other) => other !== domain),
       ];
-      for (const listed of listedOthers) {
-        const listedLabel = cloneCheckLabel(listed);
-        if (listedLabel.length < 5) {
-          continue; // short labels ("adn", "ajc") collide by coincidence
-        }
-        expect(
-          additionLabel.includes(listedLabel) || listedLabel.includes(additionLabel),
-          `'${domain}' reads as a name-clone of listed '${listed}'`
-        ).toBe(false);
-      }
+      const clone = findCloneOfListed(domain, listedOthers);
+      expect(clone, `'${domain}' reads as a name-clone of listed '${clone}'`).toBeNull();
     }
   });
 
