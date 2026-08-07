@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  buildSanFranciscoContestManifestApiUrl,
   buildSanFranciscoContestManifestUrl,
+  getSanFranciscoContestManifest,
   parseSanFranciscoContestManifest,
 } from "../../src/pipeline/sanFranciscoFinance/sanFranciscoDashboardManifestClient.js";
 
@@ -158,6 +160,31 @@ describe("parseSanFranciscoContestManifest", () => {
     ).toThrow(/unknown position: assist/);
   });
 
+  it("records a schema fingerprint that surfaces upstream drift", () => {
+    const manifest = parseSanFranciscoContestManifest({
+      ...PARSE_INPUT,
+      markdown: BOS04_FIXTURE,
+    });
+    expect(manifest.schemaFingerprint).toBe(
+      [
+        "top:candidate,candidates,contributors,election,ie_candidates,layout,title,unknown_future_key",
+        "candidate:candidate_name,committee_name,expenses,filer_id,filer_nid,funds",
+        "ie_candidate:candidate_name,committees,filer_id",
+        "ie_committee:committee_name,expenses,filer_id,funds,position",
+      ].join("|"),
+    );
+    const drifted = parseSanFranciscoContestManifest({
+      ...PARSE_INPUT,
+      markdown: BOS04_FIXTURE.replace(
+        "  funds: 412371.0\n",
+        "  funds: 412371.0\n  new_column: 1\n",
+      ),
+    });
+    expect(drifted.schemaFingerprint).toContain("candidate:candidate_name");
+    expect(drifted.schemaFingerprint).toContain("new_column");
+    expect(drifted.schemaFingerprint).not.toBe(manifest.schemaFingerprint);
+  });
+
   it("rejects a file without frontmatter", () => {
     expect(() =>
       parseSanFranciscoContestManifest({
@@ -193,5 +220,74 @@ describe("buildSanFranciscoContestManifestUrl", () => {
         contestCode: "../secrets",
       }),
     ).toThrow(/Invalid San Francisco dashboard contest code/);
+    expect(() =>
+      buildSanFranciscoContestManifestApiUrl({
+        electionDate: "2024-11-05",
+        contestCode: "../secrets",
+      }),
+    ).toThrow(/Invalid San Francisco dashboard contest code/);
+  });
+
+  it("builds the GitHub contents API fallback URL", () => {
+    expect(
+      buildSanFranciscoContestManifestApiUrl({
+        electionDate: "2026-06-02",
+        contestCode: "bos04",
+      }),
+    ).toBe(
+      "https://api.github.com/repos/sfethics/dashboards-2025/contents/elections/2026-06-02/contests/bos04.md?ref=main",
+    );
+  });
+});
+
+describe("getSanFranciscoContestManifest", () => {
+  it("falls back to the contents API when the raw host fails", async () => {
+    const requests: { url: string; accept: string | null }[] = [];
+    const fetchImpl: typeof fetch = async (input, init) => {
+      const url = String(input);
+      requests.push({
+        url,
+        accept: new Headers(init?.headers).get("accept"),
+      });
+      if (url.startsWith("https://raw.githubusercontent.com/"))
+        return new Response("raw host down", { status: 503 });
+      return new Response(BOS04_FIXTURE, { status: 200 });
+    };
+    const manifest = await getSanFranciscoContestManifest(
+      { electionDate: "2026-06-02", contestCode: "bos04" },
+      { fetchImpl, retryCount: 0 },
+    );
+    expect(manifest.candidates).toHaveLength(2);
+    expect(manifest.sourceUrl).toBe(
+      "https://api.github.com/repos/sfethics/dashboards-2025/contents/elections/2026-06-02/contests/bos04.md?ref=main",
+    );
+    expect(requests).toHaveLength(2);
+    expect(requests[1]?.accept).toBe("application/vnd.github.raw+json");
+  });
+
+  it("does not retry a parse failure through the fallback host", async () => {
+    const requestedUrls: string[] = [];
+    const fetchImpl: typeof fetch = async (input) => {
+      requestedUrls.push(String(input));
+      return new Response("# not a manifest", { status: 200 });
+    };
+    await expect(
+      getSanFranciscoContestManifest(
+        { electionDate: "2026-06-02", contestCode: "bos04" },
+        { fetchImpl, retryCount: 0 },
+      ),
+    ).rejects.toThrow(/no YAML frontmatter/);
+    expect(requestedUrls).toHaveLength(1);
+  });
+
+  it("reports both hosts when primary and fallback fail", async () => {
+    const fetchImpl: typeof fetch = async () =>
+      new Response("down", { status: 500 });
+    await expect(
+      getSanFranciscoContestManifest(
+        { electionDate: "2026-06-02", contestCode: "bos04" },
+        { fetchImpl, retryCount: 0 },
+      ),
+    ).rejects.toThrow(/failed on both hosts: .*500.*; fallback: .*500/);
   });
 });
