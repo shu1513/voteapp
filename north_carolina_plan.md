@@ -215,9 +215,19 @@ rendered nothing).
      has two amendments, RIDs 225581 and 232191 — `IsAmendment` is a flag,
      not a counter, so it cannot tell them apart); any other mix (an extra
      IMAGE row that could be a newer image-only amendment hiding behind an
-     older structured one) is ambiguous lineage → quarantine the group. PR 4
-     checks the `ReportDetail`/CSV cover bytes for an amendment counter that
-     pins filing identity; if one exists it replaces this heuristic.
+     older structured one) is ambiguous lineage → quarantine the group.
+     **PR 4 probe result (from spike bytes): NO amendment counter exists** —
+     `dataCover` carries only `ReportVersion` (a form version, "2007" on
+     every probed cover) and the CSV COVER section has no counter either, so
+     the heuristic stays. What the cover DOES carry is `FiledDate`, which
+     differs between an original and its amendment (Berger YE-2025:
+     01/30/2026 original vs 07/10/2026 amendment) — per-filing chronology
+     evidence for the PR 6 selector, available without any counter.
+     Second parser finding: inventory `IsAmendment` can be **blank** — only
+     on correspondence/certification noise rows in every sampled inventory,
+     never on Disclosure or Informational Reports — parsed as null, and the
+     selector must treat null as ambiguous (quarantine), never as "not an
+     amendment".
    - *Selection group* — picks the current filing: the same key **without
      `IsAmendment`** (originals and amendments must share a group or an
      amendment could never supersede its original). Within it, select by
@@ -314,9 +324,14 @@ rendered nothing).
     the fallback title-cases raw enum values (`OHIO_SOS` renders "Ohio Sos"
     today because its label was never added; do not repeat that).
 15. **Artifact manifest fields**: route + query params, report/document IDs,
-    retrieval time + the portal's "data current as of" stamp, SHA-256, byte
-    size + row count vs `recordCountKey`, amendment flag + import dates,
-    parser version, reconciliation result.
+    retrieval time, SHA-256, byte size + row count vs `recordCountKey`,
+    amendment flag + import dates, parser version. **Revised at PR 4**: no
+    "data current as of" stamp exists anywhere in the portal bytes (checked
+    search/inventory/cover pages), so the manifest records `retrievedAt`
+    only; and cover-vs-itemized reconciliation is aggregation work (PR 6),
+    so the per-artifact reconciliation field is the transaction pages'
+    `rowCount` vs `recordCountKey` — enforced at fetch time by the paging
+    loop, recorded per page.
 
 ## Acquisition spike must confirm (or revise) before parser work
 
@@ -574,7 +589,22 @@ The acquisition spike is the gate before parser/aggregator work.
   grouping keys + IE single-source rule + cover-derived
   `direct_contribution_total` revised; Cycle chain proven; no schema or
   factory change needed
-- [ ] PR 4 client + cache + parsers + acquisition script
+- [x] PR 4 client + cache + parsers + acquisition script — 2026-08-07, from
+  spike bytes only (no portal hits): `northCarolinaNcsbeClient.ts` (all
+  routes + paced serialized transport + recordCountKey-complete paging),
+  `northCarolinaNcsbeParsers.ts` (bracket-scan embedded-JSON extraction, 34
+  pinned cover sections, SBoEID regex, sane-range dates, verbatim
+  `"IND "`/`"DON "` codes), `northCarolinaNcsbeArtifactCache.ts`
+  (validate-before-install, SHA-256 + per-artifact manifest, parser-version
+  staleness), `northCarolinaNcsbeArtifactAcquisition.ts` (inventory-driven
+  discovery, period-overlap selection incl. bad-date widening,
+  DataImportDate skip logic, per-report failure isolation) +
+  `refreshNorthCarolinaNcsbeCampaignFinanceRawData.ts` script wired as
+  `north-carolina-candidates:finance:raw:refresh` (flag-gated). Real spike
+  bytes committed under `backend/tests/fixtures/northCarolinaFinance/`
+  (11 fixtures). Decision 8 amendment-counter probe answered (none exists;
+  cover `FiledDate` is the chronology bonus); decision 15 manifest revised;
+  new blank-`IsAmendment` noise-row finding folded into decision 8
 - [ ] PR 5 resolver + auto-link
 - [ ] PR 6 aggregators
 - [ ] PR 7 sync + batchSync + scripts

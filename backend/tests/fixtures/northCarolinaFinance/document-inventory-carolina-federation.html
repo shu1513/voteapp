@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<title>Campaign Document Search By Entity</title>
+
+        <link rel="icon" href="/Content/img/favicon.ico" />
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+		<!-- Add local styles, mostly for plugins css file -->
+		
+        <link href="/Scripts/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
+
+        <link href="/Content/plugins/igniteui/css/themes/bootstrap4/infragistics.theme.css" rel="stylesheet"/>
+
+        <link href="/Content/plugins/igniteui/css/structure/infragistics.css" rel="stylesheet"/>
+
+        <link href="/Content/css/seims.css" rel="stylesheet"/>
+
+    
+
+		<!-- Primary Inspinia style -->     
+		<link href="/Content/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="/Content/css/animate.css" rel="stylesheet"/>
+<link href="/Content/css/style.css" rel="stylesheet"/>
+
+
+		<link href="/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+
+	</head>
+
+	<body class="top-navigation">
+		<!-- Page wraper -->
+		<div id="page-wrapper" class="gray-bg">
+
+			<!-- Top Navbar -->
+			<div class="row border-bottom white-bg" style="white-space: nowrap;">
+	<nav class="navbar navbar-static-top" role="navigation" style="padding: 5px;">
+		<div class="navbar-header">
+			<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+				<i class="fa fa-reorder"></i>
+			</button>
+			<a href="https://www.ncsbe.gov/"><img style="padding-right: 12px;" src="/Content/img/logo_sbe_small.png" /></a>
+		</div>
+		<div class="navbar-collapse collapse navbar-right" id="navbar" style="width:224px;">
+			<ul id="menu_mobile" class="nav navbar-nav" style="float:right;">
+                <li class="dropdown hidden-xs">
+                    <a aria-expanded="false" role="button" class="dropdown-toggle" data-toggle="dropdown">Applications<span class="caret"></span></a>
+                    <ul id="menu_desktop" role="menu" class="dropdown-menu">
+                        
+                    </ul>
+                </li>
+				
+				
+			</ul>
+		</div>
+        <div class="text-center" style="white-space: normal;">
+            <h2 style="margin-top: 12px;">Campaign Document Search By Entity</h2>
+        </div>
+	</nav>
+</div>
+
+
+			<div class="container-fluid">
+				<div class="wrapper-content">
+					<!-- Main view  -->
+					
+
+
+<form action="/CFOrgLkup/DocumentGeneralResult/?OGID=50391&amp;SID=STA-98J33C-C-001" method="post">    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div style="text-align:center;" class="font-bold">
+                <h2>
+                        <span>CAROLINA FEDERATION FREEDOM PAC [STA-98J33C-C-001]</span>
+                </h2>
+
+
+                Click on the link(s) below to view the document.
+
+<a href="/CFOrgLkup/ExportSearchResults/?OGID=50391&amp;Title=CAROLINA%20FEDERATION%20FREEDOM%20PAC%20-%20STA-98J33C-C-001&amp;Type=DocGen" style="text-decoration:underline;">Export list to .CSV</a>
+            </div>
+
+            <div class="font-bold">
+                <br />
+                Results Returned: 29
+            </div>
+
+            <div id="divResults">
+                    <table id="gridDocumentResults"></table>
+            </div>
+
+        </div>
+    </div>
+</form>
+				</div>
+			</div>
+
+			<!-- Footer -->
+			
+<div class="footer">
+    <div class="pull-right">
+        
+        
+    </div>
+	<div>
+		© 2014-2026
+		<a type="button" class="btn-link" href="https://www.ncsbe.gov/" style="white-space: nowrap;"><strong>NC State Board of Elections</strong></a>
+	</div>
+</div>
+
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+		<div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">×</span>
+					<span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Site Feedback</h4>
+                <small class="font-bold">Please fill out the form and click Submit to provide feedback.</small>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+					<label>Feedback</label>
+					<textarea class="form-control" placeholder="Enter feedback here..." style="height:100px; resize: none;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+		</div>
+		<!-- End page wrapper-->
+		<!-- Section for main scripts render -->
+		<script src="/Scripts/jquery-2.1.1.min.js"></script>
+
+		<script src="/Scripts/bootstrap.min.js"></script>
+
+		<script src="/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+		<script src="/Scripts/inspinia.js"></script>
+
+
+		<!-- Handler for local scripts -->
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-159880906-2"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() { dataLayer.push(arguments); }
+			gtag('js', new Date());
+
+			gtag('config', 'UA-159880906-2');
+		</script>
+
+		<script type="text/javascript">
+			//load the menus with the sites in /Content/sites.txt
+			$(document).ready(function () {
+				var fileSites = new XMLHttpRequest();
+				var arrSites;
+				var timeDayHourMinute = String(new Date().getDate()) + '-' + String(new Date().getHours()) + '-' + String(new Date().getMinutes());
+
+				fileSites.open('get', "/Content/sites.txt" + '?v=' + timeDayHourMinute, false);
+				fileSites.send(null);
+
+				arrSites = JSON.parse(fileSites.responseText);
+
+				arrSites.sort(function (a, b) {
+					if (a.name > b.name) { return 1 }
+					if (a.name < b.name) { return -1 }
+					return 0;
+				});
+
+				for (i = 0; i < arrSites.length; i++) {
+					$('#menu_mobile').append('<li class="visible-xs-block">' + '<a href="/CFOrgLkup/_url_/">_name_</a>'.replace('_name_', arrSites[i].name).replace('_url_', arrSites[i].url) + '</li>');
+					$('#menu_desktop').append('<li>' + '<a href="/CFOrgLkup/_url_/">_name_</a>'.replace('_name_', arrSites[i].name).replace('_url_', arrSites[i].url) + '</li>');
+					if ($('#menu_index').length) {
+						$('#menu_index').append('<li>' + '<a href="/CFOrgLkup/_url_/">_name_</a>'.replace('_name_', arrSites[i].name).replace('_url_', arrSites[i].url) + '</li>');
+					}
+				}
+			});
+		</script>
+
+		
+        <script src="/Scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+        <script src="/Scripts/plugins/igniteui/js/infragistics.core.js"></script>
+<script src="/Scripts/plugins/igniteui/js/infragistics.lob.js"></script>
+
+
+        <script id="colImage" type="text/template">       
+            <a href='../ImageLink' style="text-decoration:underline" target="_blank">Text</a>
+        </script>
+
+        <script id="colData" type="text/template">
+            <span>
+                <a href="/CFOrgLkup/ReportSection/?RID=ridParam&amp;SID=sidParam&amp;CN=cnParam&amp;RN=rnParam" style="text-decoration:underline;">column_name</a>
+            </span>
+        </script>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                SetupGrid();
+            });
+
+            function SetupGrid()
+            {
+                var data = [{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"07/10/2026","DataImportDate":"","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/01/3026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=339369"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Second Quarter","IsAmendment":"N","ImageReceiptDate":"07/10/2026","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"232615","ImageLink":"ViewDocumentImage/?DID=339368"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"04/09/2026","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"232613","ImageLink":"ViewDocumentImage/?DID=335192"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2026,"DocumentType":"Committee Correspondence - Outgoing","ReportType":"Memorandum","IsAmendment":"","ImageReceiptDate":"02/25/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=332879"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2026,"DocumentType":"Committee Correspondence - Outgoing","ReportType":"Memorandum","IsAmendment":"","ImageReceiptDate":"02/24/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=332639"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"First Quarter","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/19/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229235","ImageLink":"ViewDocumentImage/?DID=334243"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"48-Hour","IsAmendment":"N","ImageReceiptDate":"02/23/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=333319"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2026,"DocumentType":"Committee Correspondence - Incoming","ReportType":"Miscellaneous Correspondence","IsAmendment":"","ImageReceiptDate":"02/19/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=333878"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2025,"DocumentType":"Disclosure Report","ReportType":"Year End Semi-Annual","IsAmendment":"Y","ImageReceiptDate":"04/09/2026","DataImportDate":"04/09/2026","PeriodStartDate":"07/01/2025","PeriodEndDate":"12/31/2025","ImageType":"IMAGE","DataType":"DATA","DataLink":"230622","ImageLink":"ViewDocumentImage/?DID=335193"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2025,"DocumentType":"Disclosure Report","ReportType":"Year End Semi-Annual","IsAmendment":"N","ImageReceiptDate":"01/21/2026","DataImportDate":"01/20/2026","PeriodStartDate":"07/01/2025","PeriodEndDate":"12/31/2025","ImageType":"IMAGE","DataType":"DATA","DataLink":"227151","ImageLink":"ViewDocumentImage/?DID=330008"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2025,"DocumentType":"Statement of Organization","ReportType":"","IsAmendment":"Y","ImageReceiptDate":"09/04/2025","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=326798"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2025,"DocumentType":"Disclosure Report","ReportType":"Mid Year Semi-Annual","IsAmendment":"N","ImageReceiptDate":"07/07/2025","DataImportDate":"07/07/2025","PeriodStartDate":"01/01/2025","PeriodEndDate":"06/30/2025","ImageType":"IMAGE","DataType":"DATA","DataLink":"223757","ImageLink":"ViewDocumentImage/?DID=324291"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2025,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"04/09/2026","PeriodStartDate":"07/01/2025","PeriodEndDate":"12/31/2025","ImageType":"","DataType":"DATA","DataLink":"230621","ImageLink":null},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2024,"DocumentType":"Disclosure Report","ReportType":"Fourth Quarter","IsAmendment":"N","ImageReceiptDate":"01/09/2025","DataImportDate":"01/09/2025","PeriodStartDate":"10/20/2024","PeriodEndDate":"12/31/2024","ImageType":"IMAGE","DataType":"DATA","DataLink":"221938","ImageLink":"ViewDocumentImage/?DID=318142"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2024,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"Y","ImageReceiptDate":"01/09/2025","DataImportDate":"01/09/2025","PeriodStartDate":"07/01/2024","PeriodEndDate":"10/19/2024","ImageType":"IMAGE","DataType":"DATA","DataLink":"221936","ImageLink":"ViewDocumentImage/?DID=318133"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2024,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"01/09/2025","DataImportDate":"01/09/2025","PeriodStartDate":"10/20/2024","PeriodEndDate":"12/31/2024","ImageType":"IMAGE","DataType":"DATA","DataLink":"221935","ImageLink":"ViewDocumentImage/?DID=318144"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2024,"DocumentType":"Disclosure Report","ReportType":"Third Quarter","IsAmendment":"Y","ImageReceiptDate":"01/09/2025","DataImportDate":"01/09/2025","PeriodStartDate":"07/01/2024","PeriodEndDate":"10/19/2024","ImageType":"IMAGE","DataType":"DATA","DataLink":"221937","ImageLink":"ViewDocumentImage/?DID=318098"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2024,"DocumentType":"Statement of Organization","ReportType":"","IsAmendment":"Y","ImageReceiptDate":"12/10/2024","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=316318"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2024,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"10/29/2024","DataImportDate":"10/28/2024","PeriodStartDate":"07/01/2024","PeriodEndDate":"10/19/2024","ImageType":"IMAGE","DataType":"DATA","DataLink":"220020","ImageLink":"ViewDocumentImage/?DID=315116"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2024,"DocumentType":"Disclosure Report","ReportType":"Third Quarter","IsAmendment":"N","ImageReceiptDate":"10/29/2024","DataImportDate":"10/28/2024","PeriodStartDate":"07/01/2024","PeriodEndDate":"10/19/2024","ImageType":"IMAGE","DataType":"DATA","DataLink":"220019","ImageLink":"ViewDocumentImage/?DID=315118"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2024,"DocumentType":"Informational Report","ReportType":"48-Hour","IsAmendment":"N","ImageReceiptDate":"10/22/2024","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=313065"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2024,"DocumentType":"Disclosure Report","ReportType":"Second Quarter","IsAmendment":"N","ImageReceiptDate":"07/08/2024","DataImportDate":"07/07/2024","PeriodStartDate":"02/18/2024","PeriodEndDate":"06/30/2024","ImageType":"IMAGE","DataType":"DATA","DataLink":"217081","ImageLink":"ViewDocumentImage/?DID=309522"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2024,"DocumentType":"Disclosure Report","ReportType":"First Quarter","IsAmendment":"N","ImageReceiptDate":"02/27/2024","DataImportDate":"02/26/2024","PeriodStartDate":"01/01/2024","PeriodEndDate":"02/17/2024","ImageType":"IMAGE","DataType":"DATA","DataLink":"214975","ImageLink":"ViewDocumentImage/?DID=306718"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2023,"DocumentType":"Disclosure Report","ReportType":"Year End Semi-Annual","IsAmendment":"N","ImageReceiptDate":"01/24/2024","DataImportDate":"01/11/2024","PeriodStartDate":"07/01/2023","PeriodEndDate":"12/31/2023","ImageType":"IMAGE","DataType":"DATA","DataLink":"211982","ImageLink":"ViewDocumentImage/?DID=303298"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2023,"DocumentType":"Disclosure Report","ReportType":"Mid Year Semi-Annual","IsAmendment":"N","ImageReceiptDate":"07/03/2023","DataImportDate":"07/02/2023","PeriodStartDate":"01/01/2023","PeriodEndDate":"06/30/2023","ImageType":"IMAGE","DataType":"DATA","DataLink":"208037","ImageLink":"ViewDocumentImage/?DID=294659"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2022,"DocumentType":"Disclosure Report","ReportType":"Fourth Quarter","IsAmendment":"N","ImageReceiptDate":"01/11/2023","DataImportDate":"01/11/2023","PeriodStartDate":"11/05/2022","PeriodEndDate":"12/31/2022","ImageType":"IMAGE","DataType":"DATA","DataLink":"205584","ImageLink":"ViewDocumentImage/?DID=288661"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2022,"DocumentType":"Committee Correspondence - Outgoing","ReportType":"Miscellaneous Correspondence","IsAmendment":"","ImageReceiptDate":"11/16/2022","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=285761"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2022,"DocumentType":"Statement of Organization","ReportType":"","IsAmendment":"N","ImageReceiptDate":"11/08/2022","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=285552"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2022,"DocumentType":"Disclosure Report","ReportType":"Organizational","IsAmendment":"N","ImageReceiptDate":"11/08/2022","DataImportDate":"11/07/2022","PeriodStartDate":"11/01/2022","PeriodEndDate":"11/04/2022","ImageType":"IMAGE","DataType":"DATA","DataLink":"203704","ImageLink":"ViewDocumentImage/?DID=285548"}]
+
+                    $("#gridDocumentResults").igGrid({
+                        width: "100%",
+                        autoGenerateColumns: false,
+                        dataSource: data,
+                        dataSourceType: "json",
+                        columns: [
+                            { key: "ReportYear", headerText: "Year", dataType: "string", width: "5%", columnCssClass: "text-center" },
+                            { key: "DocumentType", headerText: "Doc Type", dataType: "string", width: "18%" },
+                            { key: "ReportType", headerText: "Doc Name (if any)", dataType: "string", width: "18%" },
+                            { key: "IsAmendment", headerText: "Amend", dataType: "string", width: "6%", columnCssClass: "text-center" },
+							{ key: "ImageReceiptDate", headerText: "Received Image", dataType: "date", width: "13%", format: "MM/dd/yyyy", columnCssClass: "text-center" },
+							{ key: "DataImportDate", headerText: "Received Data", dataType: "date", width: "9%", format: "MM/dd/yyyy", columnCssClass: "text-center" },
+                            { key: "PeriodStartDate", headerText: "Start Date (if available)", dataType: "date", width: "13%", format: "MM/dd/yyyy", columnCssClass: "text-center" },
+                            { key: "PeriodEndDate", headerText: "End Date (if available)", dataType: "date", width: "13%", format: "MM/dd/yyyy", columnCssClass: "text-center" },
+                            { key: "ImageType", headerText: "Image", dataType: "string", width: "7%", columnCssClass: "text-center", template: $("#colImage").html().replace("ImageLink", "${ImageLink}").replace("Text", "${ImageType}") },
+                            { key: "DataType", headerText: "Data", dataType: "string", width: "7%", columnCssClass: "text-center", template: $("#colData").html().replace("column_name", "${DataType}").replace("ridParam", "${DataLink}").replace("sidParam", "${SBoEID}").replace("cnParam", "${CommitteeName}").replace("rnParam", "${ReportYear}" + " " + "${ReportType}") },
+                            { key: "CommitteeName", headerText: "", dataType: "string", width: "0%", hidden: true },
+                            { key: "SBoEID", headerText: "", dataType: "string", width: "0%", hidden: true },
+                            { key: "DataLink", headerText: "", dataType: "string", width: "0%", hidden: true },
+                            { key: "ImageLink", headerText: "", dataType: "string", width: "0%", hidden: true }
+                        ],
+                        autoGenerateLayouts: false,
+                        features: [
+                            {
+                                name: "Sorting",
+                                type: "local",
+                                applySortedColumnCss: false,
+                                sortedColumnTooltip: "",
+                                unsortedColumnTooltip: ""
+                            }
+                        ]
+                    })
+             }  
+        </script>
+
+    
+	</body>
+</html>
