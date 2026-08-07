@@ -940,6 +940,18 @@ export async function runMergeCandidates(
         ? survivor.official_website_url
         : merged.official_website_url;
     const survivorFormerWebsites = normalizeUrlList(survivor.former_website_urls);
+    // The appended count is measured against a baseline given the SAME
+    // dedupe + current-site exclusion as the union below (same trap as the
+    // identifier counts above): a stored archive already carrying a
+    // normalized duplicate, or the survivor's own current site, would
+    // otherwise offset a genuinely new URL and hide the append. The baseline
+    // is a subset of the union, so the difference cannot go negative.
+    const survivorFormerWebsitesBaseline = unionFormerWebsiteUrls({
+      survivorCurrentWebsite: isBlank(survivorEffectiveWebsite) ? null : survivorEffectiveWebsite,
+      survivorFormerWebsites,
+      duplicateCurrentWebsite: null,
+      duplicateFormerWebsites: [],
+    });
     const mergedFormerWebsites = unionFormerWebsiteUrls({
       survivorCurrentWebsite: isBlank(survivorEffectiveWebsite) ? null : survivorEffectiveWebsite,
       survivorFormerWebsites,
@@ -948,10 +960,8 @@ export async function runMergeCandidates(
         : merged.official_website_url,
       duplicateFormerWebsites: normalizeUrlList(merged.former_website_urls),
     });
-    const formerWebsiteUrlsAppended = Math.max(
-      0,
-      mergedFormerWebsites.length - survivorFormerWebsites.length
-    );
+    const formerWebsiteUrlsAppended =
+      mergedFormerWebsites.length - survivorFormerWebsitesBaseline.length;
 
     // Column names come from the PROFILE_FILL_FIELDS constant above, never
     // from user input.

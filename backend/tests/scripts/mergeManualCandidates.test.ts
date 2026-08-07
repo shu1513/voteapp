@@ -851,6 +851,40 @@ describe("runMergeCandidates", () => {
     ]);
   });
 
+  it("counts appended former websites against the survivor's normalized baseline", async () => {
+    // The survivor's stored archive carries a normalized duplicate AND its
+    // own current site; measured against the raw list those would offset the
+    // genuinely new URL and report 0 appended.
+    const { query, calls } = buildClient(
+      happyResponses({
+        "FROM public.candidates\n        WHERE id = ANY": [
+          [
+            candidateRow(MERGED, {
+              official_website_url: "https://pat2024.example",
+            }),
+            candidateRow(SURVIVOR, {
+              official_website_url: "https://pat2026.example",
+              former_website_urls: [
+                "https://pat2022.example",
+                "https://pat2022.example/",
+                "https://pat2026.example",
+              ],
+            }),
+          ],
+        ],
+      })
+    );
+
+    const result = await run({ query });
+
+    expect(result.profile.formerWebsiteUrlsAppended).toBe(1);
+    const update = calls.find((call) => call.text.includes("former_website_urls = $"));
+    expect(JSON.parse(update?.values?.at(-1) as string)).toEqual([
+      "https://pat2022.example",
+      "https://pat2024.example",
+    ]);
+  });
+
   it("fills blank survivor profile fields from the duplicate and unions profile sources", async () => {
     const { query, calls } = buildClient(
       happyResponses({
