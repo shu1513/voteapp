@@ -187,7 +187,7 @@ describe("getSanFranciscoCandidateTargetedSpending", () => {
     );
   });
 
-  it("rejects malformed transaction dates", async () => {
+  it("rejects malformed and impossible transaction dates", async () => {
     await expect(
       getSanFranciscoCandidateTargetedSpending(
         {
@@ -198,6 +198,17 @@ describe("getSanFranciscoCandidateTargetedSpending", () => {
         { fetchImpl: jsonFetch([]) },
       ),
     ).rejects.toThrow(/Invalid San Francisco transaction date/);
+    // V8 would silently normalize this to March 3; it must fail here instead.
+    await expect(
+      getSanFranciscoCandidateTargetedSpending(
+        {
+          candidateLastName: "Wong",
+          transactionDateFrom: "2026-02-31",
+          transactionDateTo: "2026-07-02",
+        },
+        { fetchImpl: jsonFetch([]) },
+      ),
+    ).rejects.toThrow(/Invalid San Francisco transaction date: 2026-02-31/);
   });
 
   it("rejects an empty or reversed date window", async () => {

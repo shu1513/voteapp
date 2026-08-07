@@ -76,14 +76,27 @@ function nullableBoolean(
 // committees keep filing across cycles under the same FPPC id (verified
 // live: the 2024 Lurie mayoral committee has 2026 Schedule A rows, incl.
 // $165,000 on 2026-01-21), so an unbounded query silently mixes elections.
+// Shape check plus a UTC round-trip so impossible calendar dates fail here
+// with a clear message instead of as an opaque Socrata 400 — and because V8
+// silently normalizes ISO overflow ("2026-02-31" parses to March 3), any
+// caller that computed a window through Date arithmetic could otherwise
+// smuggle a shifted date into the query.
+function assertRealIsoDate(value: string, label: string): void {
+  const time = Date.parse(`${value}T00:00:00.000Z`);
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(value) ||
+    Number.isNaN(time) ||
+    new Date(time).toISOString().slice(0, 10) !== value
+  )
+    throw new Error(`Invalid San Francisco ${label}: ${value}`);
+}
+
 function transactionDateConditions(
   transactionDateFrom: string,
   transactionDateTo: string,
 ): string[] {
-  for (const value of [transactionDateFrom, transactionDateTo]) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(value))
-      throw new Error(`Invalid San Francisco transaction date: ${value}`);
-  }
+  for (const value of [transactionDateFrom, transactionDateTo])
+    assertRealIsoDate(value, "transaction date");
   // Half-open window [from, to); ISO dates compare correctly as strings.
   if (transactionDateFrom >= transactionDateTo)
     throw new Error(
@@ -343,10 +356,7 @@ export async function getSanFranciscoPublicFundsApproved(
   },
   options: SanFranciscoOpenDataClientOptions = {},
 ): Promise<SanFranciscoPublicFundsRow[]> {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(input.electionDate))
-    throw new Error(
-      `Invalid San Francisco election date: ${input.electionDate}`,
-    );
+  assertRealIsoDate(input.electionDate, "election date");
   const conditions = [
     `election_date=${soqlString(`${input.electionDate}T00:00:00.000`)}`,
   ];
