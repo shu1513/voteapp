@@ -429,7 +429,7 @@ function CandidateCard({
                   className={
                     resultBadge.kind === "winner"
                       ? "rounded border border-green-700 bg-green-50 px-2 py-0.5 text-xs font-medium text-green-900"
-                      : "rounded border border-line bg-surface px-2 py-0.5 text-xs font-medium text-ink-soft"
+                      : "rounded border border-red-700 bg-red-50 px-2 py-0.5 text-xs font-medium text-red-900"
                   }
                 >
                   {resultBadge.label}
