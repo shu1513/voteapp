@@ -1142,11 +1142,15 @@ describe("ElectionPage candidate result badges", () => {
     };
   }
 
+  /** The badge element sitting next to one candidate's name, if any. */
+  function badgeElementFor(name: string): HTMLElement | null {
+    const row = screen.getByRole("heading", { name }).parentElement;
+    return row?.querySelector<HTMLElement>("span:not(:has(h3))") ?? null;
+  }
+
   /** The badge text sitting next to one candidate's name, if any. */
   function badgeFor(name: string): string | null {
-    const row = screen.getByRole("heading", { name }).parentElement;
-    const badge = row?.querySelector("span:not(:has(h3))");
-    return badge?.textContent ?? null;
+    return badgeElementFor(name)?.textContent ?? null;
   }
 
   it("marks who advanced and who did not", async () => {
@@ -1157,6 +1161,20 @@ describe("ElectionPage candidate result badges", () => {
     // The roster itself says who moved on — no trip to the results section.
     expect(badgeFor("Jordan Voter")).toBe("Advanced");
     expect(badgeFor("Riley Runner")).toBe("Did not advance");
+  });
+
+  it("colors the outcome green for winners and red for losers", async () => {
+    // Same red as the measure "No" chip and the "A NO vote means" box: the
+    // badge pair has to read at a glance, and gray registered as "no data"
+    // rather than "this candidate lost".
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ results: [officeResult()] }));
+
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(badgeElementFor("Jordan Voter")?.className).toContain("text-green-900");
+    const loser = badgeElementFor("Riley Runner");
+    expect(loser?.className).toContain("text-red-900");
+    expect(loser?.className).not.toContain("text-ink-soft");
   });
 
   it("says Won and Lost on a general-election result", async () => {
