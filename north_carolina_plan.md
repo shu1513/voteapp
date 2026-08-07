@@ -178,7 +178,10 @@ rendered nothing).
    pinned set quarantines the derived breakdowns and `direct_contribution_total`
    for that candidate (cover-summary totals are unaffected — decision 11),
    never just a counter.
-8. **Report selection + amendments**: group filings by (filer, report type,
+8. **Report selection + amendments** (**grouping REVISED at the spike** —
+   results item 8: merge same-filing DATA + IMAGE inventory rows before any
+   supersession test; chronology uses the max available date across the
+   merged filing's rows): group filings by (filer, report type,
    period start, period end); within a group, select by **filing chronology
    first** — newest `ImageReceiptDate` (what was legally filed last), with
    `DataImportDate` only as tie-break; import order is administrative and can
@@ -203,10 +206,13 @@ rendered nothing).
    Whole-artifact refresh: rebuild each candidate snapshot from the current
    selected set; replace, never append.
 9. **Paging + fail-closed transport** (both found in re-verification, absent
-   from the feasibility report):
+   from the feasibility report; **paging contract REVISED at the spike** —
+   see results item 1):
    - `GetReceipts`/`GetExpenditures` **require `page` (0-indexed) and
      `pageSize`** — a bare call returns HTTP 200 with an HTML error page.
-     Every JSON fetch validates content shape (parses as JSON, has
+     Spike finding: the server then **ignores `pageSize`** and serves fixed
+     300-row disjoint pages; `Content-Type` stays `text/html` even for real
+     JSON. Every JSON fetch validates content shape (parses as JSON, has
      `Data.results`) and pages until row count equals `recordCountKey`;
      mismatch fails the report closed.
    - The doc-type inventory GET requires **single-quoted codes**:
@@ -301,6 +307,111 @@ rendered nothing).
 - Whether transactions ever repeat across selected overlapping-period
   reports (decision 8's dedup question).
 
+## Acquisition spike results (run 2026-08-07, user-authorized)
+
+~55 paced requests (1 in flight, ~2s gaps, descriptive UA), zero blocks or
+429s. Artifacts + SHA-256 manifest cached under
+`scratch/north-carolina-campaign-finance/ncsbe/` (gitignored — never
+committed). Sample: 8 committees (Berger, Hall, Grafstein, Galey, Jeffers,
+Pierce, Gadson legislative; Stein Council of State) + both IE inventories +
+9 report covers + 6 receipt sets + 5 expenditure sets + 1 CSV export.
+
+Verdict: **NC is feasible and the plan survives the spike.** No new factory
+capability, no schema change — migration 212 stands. Every probe money number
+reproduced (Gadson $6,073.24; IE `IEAmount` $29,306.30 vs `Amount`
+$49,306.29; Rolling Sea Fund $24,506 funder row). Spike-item answers:
+
+1. **Paging contract (REVISES decision 9's assumption):** the server
+   **ignores `pageSize` entirely** and returns fixed **300-row pages**,
+   0-indexed and disjoint; a report smaller than 300 rows arrives whole on
+   page 0; pages past the end return 0 rows. Verified on 111-row (1 page),
+   335-row (300+35), and 121,124-row (300/page) reports. Completeness = loop
+   pages until fetched row count equals `recordCountKey`, fail closed on
+   mismatch. **`Content-Type` is `text/html` even for real JSON** — validate
+   body shape (`Data.results` + `recordCountKey`), never the header.
+2. **Cover summary = 34 fixed `Section` strings** with stable `Sequence` ids
+   and numeric `Period`/`Cycle` values (no string parsing). Component sums
+   reconcile to `Total Receipts`/`Total Expenditures` exactly.
+   `Debts and Obligations owed BY the Committee` maps to canonical
+   `debts_owed`. "Contributions from Individuals" + "Aggregated Contributions
+   from Individuals" give `direct_contribution_total` inputs straight off the
+   cover. Beware: `ReportDetail` also embeds a JS grid config mentioning
+   `Section` — extract the `{"Sequence":…}` data rows, not the first array.
+3. **Occupation placeholders (observed, case-varying):** `Not Employed`,
+   `Not employed`, `Retired`, `Homemaker`, `homemaker`, `No Job Title`,
+   blank, plus junk value `United States` (21×) — placeholder matching must
+   be case-insensitive; `Profession` is free text (135 distinct across 542
+   itemized rows).
+4. **IE target formats:** `LAST FIRST` and `LAST FIRST M`; **real
+   misspellings of the same target across filings** (`DEBERRY SATANA` /
+   `DEWBERRY SANTANA`) — fail-closed matching quarantines them, as designed.
+   Sentinel value `SPECIFIC NON CANDIDATE` = known non-candidate target,
+   pin as excluded. `OfficeSought` variants: `House`,
+   `US HOUSE OF REPRESENTATIVES`, `U.S. HOUSE OF REPRESENTATIVES` (filter
+   both federal spellings), `County/Municipal` (out of scope).
+5. **Dollar coverage of image-only filings is unmeasurable** — they carry no
+   structured dollars anywhere and OCR is banned, so the count split (2026:
+   72 structured / 23 image; 2025: 35/16) is the only honest number. The
+   PR 2 coverage note is deliberately count-free; keep it that way.
+6. **SBoEID pattern:** `^([A-Z]{3}|\d{3})-[A-Z0-9]{6}-[CF]-\d{3}$` — prefix
+   is `STA` or a county alpha/numeric code; `F` = legal-expense fund
+   (**exclude F-type from candidate finance**; Berger has one). Literal
+   `No Id` on unregistered IE filers (decision 6 stands). `CandName` can be
+   the literal string `&nbsp;` — HTML entities occur inside JSON values;
+   decode or reject.
+7. **Rate limits:** none observed at ~55 requests with 2s pacing. Full-cycle
+   scale still unproven — keep decision 10's pacing + bounded retries.
+8. **Direct structured coverage: 8/8 sampled committees fully structured**
+   for 2025–26 — but only after a **grouping revision (decision 8): the same
+   filing can appear as TWO inventory rows** — a DATA row (`DataLink` set,
+   `ImageReceiptDate` often empty) and an IMAGE row (`DataLink` null, image
+   date days later). Rows must be merged per (DocumentType, ReportType,
+   period, IsAmendment) before any image-only-supersession test, else a
+   healthy e-filed report reads as superseded-unavailable. Single rows with
+   both links also occur. Filing chronology uses the max available date
+   across the merged filing's rows.
+9. **IE completeness: registered committees' IEs appear ONLY in their IE
+   informational reports** — zero row overlap with their regular quarterlies
+   (Down Home NC IE PAC verified). Regular-report `ShowIEColumns` values are
+   **junk** (`Declaration: Oppose` + `Candidate` = vendor name on plain
+   Operating Expense rows — 119 of Berger's 129). Outside aggregation reads
+   only reports discovered via the IE doc-type inventories; decision 3's
+   `ExpenditureTypeDesc` conjunction also excludes the junk independently.
+10. **48-hour IE filings: none exist in either year's IE inventory**;
+    candidate-committee 48-hours are all image-only (`DataLink` null, 385
+    sampled), so structured-only ingestion excludes them naturally. Cover
+    section `48-Hour Notice Reports Sum` is the diagnostic hook. Watch item
+    at PR 9's audit.
+11. **Cycle column semantics PROVEN:** `Cycle_n = Cycle_{n-1} + Period_n`
+    chain-exact on Stein (4-year office) and Pierce; Berger's chain closed
+    only through his amended YE-2025 report (a real $6,800 amendment delta —
+    live proof amendment selection changes money). Cycle = official
+    election-cycle-to-date (resets after the office's election), **not
+    Y−1..Y** — usable as a secondary check only when summing every report
+    since cycle start; the Y−1..Y house window stands unchanged.
+12. **ReceiptTypeCode pinned set (sample):** `"IND "` (trailing space
+    confirmed; also on aggregated rows — those are `IsAggregated: true` with
+    `OrgName` `Aggregated Individual Contribution`), `"CPCM"` (other
+    political committee), `"PPTY"` (party). Noncommittee IE-filer funder
+    rows use `ReceiptTypeDesc` `Donation`. Vocabulary will grow — the
+    stranger-code quarantine rule (decision 7) is the guard.
+13. **No cross-report transaction repeats observed:** Pierce Q1/Q2 disjoint
+    (0 of 281), and Advance NC's overlapping-period IE reports are
+    **incremental, not cumulative** (0 of 7 rows repeated despite nested
+    periods). No dedup rule; keep the overlap diagnostic.
+
+Extra findings for PR 4–7: report cadence is quarters in election years,
+semi-annuals off-year, plus `Organizational` and `Interim` types (both can
+carry `DataLink`) — the selector matches `DocumentType = "Disclosure Report"`
+rows by **period overlap with Y−1..Y**, not a report-type whitelist;
+correspondence/penalty/Statement-of-Organization/Certification rows are
+noise. Committee-search JSON keys: `OrgName`, `SBoEID`, `OldID`, `CandName`,
+`StatusDesc` (`ACTIVE (NON-EXEMPT)`, `CLOSED`, `CLOSED (PENDING)`,
+`CONDITIONALLY CLOSED`, `INACTIVE`), `OrgGroupID`. CSV export works
+(`text/csv`, COVER section + `Committee Type: Candidate Committee` — resolver
+evidence). Receipts carry `GroupID`; expenditure rows have no row id —
+report ID + ordinal stands (decision 8).
+
 ## Required artifacts per cycle Y
 
 - Committee search result per roster candidate (resolver evidence)
@@ -370,7 +481,10 @@ The acquisition spike is the gate before parser/aggregator work.
 - [x] PR 2 loader + wiring + coverage note — characterization pin, `NC`
   registry entry, `NORTH_CAROLINA_SBE` union + `FINANCE_SUMMARY_SOURCES` +
   `format.ts` label ("North Carolina State Board of Elections") + test
-- [ ] PR 3 acquisition spike (user-authorized)
+- [x] PR 3 acquisition spike — RUN 2026-08-07 (see "Acquisition spike
+  results"): all 13 items answered; paging contract + dual-row grouping
+  revised; Cycle chain proven; IE-only-in-IE-reports proven; no schema or
+  factory change needed
 - [ ] PR 4 client + cache + parsers + acquisition script
 - [ ] PR 5 resolver + auto-link
 - [ ] PR 6 aggregators
