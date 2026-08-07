@@ -66,7 +66,9 @@ const PERCENT = String.raw`\d+(?:\.\d+)?\s*(?:%|percent\b)`;
 // Words allowed between an article and an electoral "runoff" ("the November
 // 2026 runoff", "a Democratic primary runoff") — whitelisted so "won the
 // fight against runoff" (environmental) never matches through a free gap.
-const RUNOFF_FILLER = String.raw`(?:(?:january|february|march|april|may|june|july|august|september|october|november|december|\d{4}|primar(?:y|ies)|mayoral|special|general|citywide|city|county|statewide|democratic|republican|nonpartisan)\s+){0,2}`;
+const RUNOFF_FILLER_WORD = String.raw`(?:january|february|march|april|may|june|july|august|september|october|november|december|\d{4}|primar(?:y|ies)|mayoral|special|general|citywide|city|county|statewide|democratic|republican|nonpartisan)`;
+const RUNOFF_FILLER = String.raw`(?:${RUNOFF_FILLER_WORD}\s+){0,2}`;
+const RUNOFF_FILLER_REQUIRED = String.raw`(?:${RUNOFF_FILLER_WORD}\s+){1,2}`;
 
 const PERCENT_LABEL = "a vote percentage (horse-race content)";
 const RUNOFF_LABEL = '"runoff" as an election result (horse-race content)';
@@ -95,9 +97,16 @@ const SUMMARY_HORSE_RACE_CONSTRUCTIONS: ReadonlyArray<{ pattern: RegExp; label: 
     ),
     label: PERCENT_LABEL,
   },
-  // "won the runoff", "lost a runoff", "forced a December runoff"
+  // "won the runoff", "lost a runoff", "won the June primary", "won the
+  // Democratic nomination" — stage results are race trivia even without a
+  // percentage. "election" is deliberately NOT a terminal noun: "won the 2020
+  // election" is the same credential as "elected in 2020", which stays legal
+  // biography (past office is exactly what the formula asks for).
   {
-    pattern: new RegExp(String.raw`\b(?:won|lost|forced|entered)\s+(?:the|a)\s+${RUNOFF_FILLER}runoff\b`, "i"),
+    pattern: new RegExp(
+      String.raw`\b(?:won|lost|forced|entered)\s+(?:the|a)\s+${RUNOFF_FILLER}(?:runoff|primar(?:y|ies)|nomination|caucus(?:es)?)\b`,
+      "i"
+    ),
     label: RUNOFF_LABEL,
   },
   // "advanced to the November 2026 runoff" — requires "to the/a", so
@@ -106,9 +115,20 @@ const SUMMARY_HORSE_RACE_CONSTRUCTIONS: ReadonlyArray<{ pattern: RegExp; label: 
     pattern: new RegExp(String.raw`\badvanc(?:e[ds]?|ing)\s+to\s+(?:the|a)\s+(?:\S+\s+){0,3}runoff\b`, "i"),
     label: RUNOFF_LABEL,
   },
-  // "faces X in the runoff", "is in a runoff against"
+  // "in the November runoff" — the filler is REQUIRED here: a bare "in the
+  // runoff" is how environmental summaries read ("measured contaminants in
+  // the runoff"), so it only counts with an electoral filler word present
   {
-    pattern: new RegExp(String.raw`\bin\s+(?:the|a)\s+${RUNOFF_FILLER}runoff\b`, "i"),
+    pattern: new RegExp(String.raw`\bin\s+(?:the|a)\s+${RUNOFF_FILLER_REQUIRED}runoff\b`, "i"),
+    label: RUNOFF_LABEL,
+  },
+  // "faces X in the runoff" — a contest verb supplies the electoral context
+  // that the bare construction above no longer assumes
+  {
+    pattern: new RegExp(
+      String.raw`\b(?:fac(?:es?|ing)|meets?|meeting|compet(?:es?|ing))\s+[^!?]{0,30}\bin\s+(?:the|a)\s+${RUNOFF_FILLER}runoff\b`,
+      "i"
+    ),
     label: RUNOFF_LABEL,
   },
   // "runoff election", "runoff against"

@@ -382,6 +382,10 @@ describe("parseCandidateProfilePayload", () => {
       "She advanced with 26%.",
       "She won 52% in the U.S. Senate primary.",
       "Community advocate who received nearly 31 percent of the vote.",
+      "She won the June primary.",
+      "Won the Democratic nomination for governor.",
+      "Faces Jose Ugarte in the runoff.",
+      "Competing in the November runoff.",
     ];
     for (const summary of horseRaceSummaries) {
       const parsed = parseCandidateProfilePayload({
@@ -414,6 +418,8 @@ describe("parseCandidateProfilePayload", () => {
       "Reduced agricultural runoff by 20% countywide as water-board chair.",
       "Won a state grant to curb stormwater runoff. Advanced legislation to protect wetlands.",
       "Secured a 40% increase in park funding as council aide.",
+      "Environmental engineer who measured contaminants in the runoff.",
+      "Former mayor who was elected in 2022. Priorities: housing and transit.",
     ];
     for (const summary of biographySummaries) {
       const parsed = parseCandidateProfilePayload({
