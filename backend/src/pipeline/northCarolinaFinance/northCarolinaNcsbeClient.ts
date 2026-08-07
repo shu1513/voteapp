@@ -283,9 +283,10 @@ export type NcsbeTransactionFetchResult<Row> = {
 };
 
 // Pages 0.. until the fetched row count equals the report's recordCountKey.
-// Completeness is the contract (decision 9): an empty page before the count
-// is reached, a drifting recordCountKey, or an overshoot all fail the report
-// closed rather than caching a partial transaction set.
+// Both completeness AND page layout are the contract (decision 9): a
+// drifting recordCountKey or a page that is not exactly min(300, remaining)
+// rows fails the report closed rather than caching a transaction set whose
+// layout downstream page math would misread.
 async function fetchNcsbeTransactionPagesInternal<Row>(
   transport: NcsbeTransport,
   input: { reportId: string; kind: "receipts" | "expenditures" },
@@ -315,19 +316,22 @@ async function fetchNcsbeTransactionPagesInternal<Row>(
           `(${recordCount} -> ${parsed.recordCount} on page ${page})`
       );
     }
-    if (rows.length < recordCount && parsed.rows.length === 0) {
+    // The spike pinned the page contract: fixed 300-row disjoint pages, so
+    // every page must deliver exactly min(300, remaining) rows. Enforcing
+    // that here (not just total completeness) keeps downstream
+    // ceil(recordCountKey / 300) page math — the cache skip check and the
+    // sync's page enumeration — valid by construction, and hard-bounds this
+    // loop even at the recordCountKey ceiling (~3,334 pages).
+    const expectedRowCount = Math.min(NCSBE_TRANSACTION_PAGE_SIZE, recordCount - rows.length);
+    if (parsed.rows.length !== expectedRowCount) {
       throw new Error(
-        `NCSBE ${input.kind} report ${reportId}: page ${page} was empty with ` +
-          `${rows.length} of ${recordCount} rows fetched`
+        `NCSBE ${input.kind} report ${reportId}: page ${page} returned ${parsed.rows.length} rows, ` +
+          `expected ${expectedRowCount} under the fixed ${NCSBE_TRANSACTION_PAGE_SIZE}-row page contract ` +
+          `(${rows.length} of ${recordCount} fetched)`
       );
     }
     pages.push({ page, url, body, rowCount: parsed.rows.length });
     rows.push(...parsed.rows);
-    if (rows.length > recordCount) {
-      throw new Error(
-        `NCSBE ${input.kind} report ${reportId}: fetched ${rows.length} rows, expected ${recordCount}`
-      );
-    }
     if (rows.length === recordCount) {
       return { reportId, kind: input.kind, recordCount, pages, rows };
     }

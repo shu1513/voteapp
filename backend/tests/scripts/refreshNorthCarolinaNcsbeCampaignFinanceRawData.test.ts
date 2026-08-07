@@ -1,3 +1,9 @@
+import { readFileSync } from "node:fs";
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { describe, expect, it } from "vitest";
 
 import {
@@ -76,6 +82,84 @@ describe("parseRefreshNorthCarolinaNcsbeRawDataScriptArgs", () => {
 });
 
 describe("runRefreshNorthCarolinaNcsbeRawDataScript", () => {
+  it("flags total_failure when no requested scope succeeds", async () => {
+    const options = parseRefreshNorthCarolinaNcsbeRawDataScriptArgs([
+      "--cycle-year=2026",
+      "--committee=STA-JV516O-C-001:57190",
+    ]);
+    const output = await runRefreshNorthCarolinaNcsbeRawDataScript({
+      options,
+      transport: {
+        fetchText: async () => {
+          throw new Error("portal unreachable");
+        },
+      },
+      log: () => {},
+      now: new Date("2026-08-07T17:00:00Z"),
+    });
+    expect(output).toMatchObject({
+      dry_run: false,
+      committees: [],
+      ie: null,
+      total_failure: true,
+    });
+    if ("committee_failures" in output) {
+      expect(output.committee_failures).toHaveLength(1);
+      expect(output.ie_failure?.message).toMatch(/portal unreachable/);
+    }
+  });
+
+  it("does not flag total_failure when one scope succeeds", async () => {
+    const inventoryBody = readFileSync(
+      fileURLToPath(new URL("../fixtures/northCarolinaFinance/document-inventory-gadson.html", import.meta.url)),
+      "utf8"
+    );
+    const coverBody = readFileSync(
+      fileURLToPath(new URL("../fixtures/northCarolinaFinance/report-cover-gadson-229931.html", import.meta.url)),
+      "utf8"
+    );
+    const receiptsBody = readFileSync(
+      fileURLToPath(new URL("../fixtures/northCarolinaFinance/receipts-gadson-229931-p0.json", import.meta.url)),
+      "utf8"
+    );
+    const expBody = readFileSync(
+      fileURLToPath(
+        new URL("../fixtures/northCarolinaFinance/ie-expenditures-carolina-federation-p0.json", import.meta.url)
+      ),
+      "utf8"
+    );
+    const cacheDir = await mkdtemp(join(tmpdir(), "ncsbe-refresh-"));
+    try {
+      const options = parseRefreshNorthCarolinaNcsbeRawDataScriptArgs([
+        "--cycle-year=2026",
+        "--committee=STA-JV516O-C-001:57190",
+        `--cache-dir=${cacheDir}`,
+      ]);
+      const output = await runRefreshNorthCarolinaNcsbeRawDataScript({
+        options,
+        transport: {
+          fetchText: async (url: string) => {
+            if (url.includes("/DocumentGeneralResult/")) return inventoryBody;
+            if (url.includes("/ReportDetail/")) return coverBody;
+            if (url.includes("GetReceipts")) return receiptsBody;
+            if (url.includes("GetExpenditures")) return expBody;
+            // The IE inventories fail; the committee scope still succeeded.
+            throw new Error("IE inventory unreachable");
+          },
+        },
+        log: () => {},
+        now: new Date("2026-08-07T17:00:00Z"),
+      });
+      expect(output).toMatchObject({ dry_run: false, total_failure: false });
+      if ("ie_failure" in output) {
+        expect(output.ie_failure?.message).toMatch(/IE inventory unreachable/);
+        expect(output.committees).toHaveLength(1);
+      }
+    } finally {
+      await rm(cacheDir, { recursive: true, force: true });
+    }
+  });
+
   it("dry run reports the plan without any portal request", async () => {
     const options = parseRefreshNorthCarolinaNcsbeRawDataScriptArgs([
       "--cycle-year=2026",

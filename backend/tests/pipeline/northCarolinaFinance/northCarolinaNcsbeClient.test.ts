@@ -216,7 +216,7 @@ describe("fetchNcsbeReceiptPages", () => {
         }),
         "1"
       )
-    ).rejects.toThrow(/page 1 was empty with 300 of 400 rows/);
+    ).rejects.toThrow(/page 1 returned 0 rows, expected 100 under the fixed 300-row page contract/);
   });
 
   it("fails closed when recordCountKey drifts mid-fetch", async () => {
@@ -235,7 +235,22 @@ describe("fetchNcsbeReceiptPages", () => {
   it("fails closed on an overshoot", async () => {
     await expect(
       fetchNcsbeReceiptPages(directTransport(() => transactionBody(250, 300)), "1")
-    ).rejects.toThrow(/fetched 300 rows, expected 250/);
+    ).rejects.toThrow(/page 0 returned 300 rows, expected 250 under the fixed 300-row page contract/);
+  });
+
+  it("rejects a non-final page shorter than the fixed 300-row contract", async () => {
+    // 400 rows served as 100-row pages would satisfy pure completeness but
+    // break every downstream ceil(recordCountKey / 300) page enumeration —
+    // the pinned page layout is part of the contract, so it fails closed.
+    await expect(
+      fetchNcsbeReceiptPages(
+        directTransport((url) => {
+          const page = Number(/page=(\d+)/.exec(url)![1]);
+          return transactionBody(400, 100, page * 100);
+        }),
+        "1"
+      )
+    ).rejects.toThrow(/page 0 returned 100 rows, expected 300 under the fixed 300-row page contract/);
   });
 
   it("fails closed on an HTML error body", async () => {

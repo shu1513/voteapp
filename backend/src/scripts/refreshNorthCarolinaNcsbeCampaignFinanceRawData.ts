@@ -12,6 +12,7 @@ import {
   createNcsbeTransport,
   requireNcsbeYear,
   DEFAULT_NCSBE_REQUEST_SPACING_MS,
+  type NcsbeTransport,
 } from "../pipeline/northCarolinaFinance/northCarolinaNcsbeClient.js";
 import { NORTH_CAROLINA_SBOEID_PATTERN } from "../pipeline/northCarolinaFinance/northCarolinaNcsbeParsers.js";
 
@@ -179,6 +180,8 @@ export function parseRefreshNorthCarolinaNcsbeRawDataScriptArgs(
 
 export async function runRefreshNorthCarolinaNcsbeRawDataScript(input: {
   options: RefreshNorthCarolinaNcsbeRawDataScriptOptions;
+  // Test seam; a real run builds the paced transport itself.
+  transport?: NcsbeTransport;
   log?: (message: string) => void;
   now?: Date;
 }) {
@@ -210,7 +213,7 @@ export async function runRefreshNorthCarolinaNcsbeRawDataScript(input: {
     };
   }
 
-  const transport = createNcsbeTransport({ spacingMs: options.spacingMs, log });
+  const transport = input.transport ?? createNcsbeTransport({ spacingMs: options.spacingMs, log });
   const acquisition = await acquireNcsbeCycleArtifacts({
     transport,
     cacheDir: options.cacheDir,
@@ -261,6 +264,12 @@ export async function runRefreshNorthCarolinaNcsbeRawDataScript(input: {
             })),
           },
     ie_failure: acquisition.ieFailure,
+    // True when NO requested scope succeeded — every committee failed and
+    // the IE pass (if requested) failed too. Partial results keep exit code
+    // 0 (failures ride in the payload and the next run's skip logic makes
+    // retries cheap), but a run that acquired nothing must fail loudly so
+    // automation can alert and retry instead of trusting an empty success.
+    total_failure: acquisition.committees.length === 0 && acquisition.ie === null,
   };
 }
 
@@ -273,6 +282,10 @@ async function main(): Promise<void> {
   }
   const output = await runRefreshNorthCarolinaNcsbeRawDataScript({ options });
   console.log(JSON.stringify(output, null, 2));
+  if ("total_failure" in output && output.total_failure) {
+    console.error("North Carolina NCSBE raw data refresh acquired nothing; see failures in the output above");
+    process.exitCode = 1;
+  }
 }
 
 const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
