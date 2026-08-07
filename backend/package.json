@@ -363,6 +363,7 @@
   "dependencies": {
     "@aws-sdk/client-sesv2": "^3.1078.0",
     "@node-rs/argon2": "^2.0.2",
+    "@resvg/resvg-js": "^2.6.2",
     "@sentry/node": "^10.63.0",
     "bullmq": "^5.71.1",
     "expo-server-sdk": "^6.1.0",

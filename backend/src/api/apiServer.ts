@@ -49,7 +49,9 @@ import {
   ME_ELECTION_CHOICES_PATH,
   ME_PICK_CARD_SHARES_PATH,
   isPickCardPath,
+  isPickCardImagePath,
   parsePickCardToken,
+  parsePickCardImageToken,
   parsePickCardShareBodyValue,
   ME_DISTRICTS_INITIALIZE_PATH,
   ME_EMAIL_PREFERENCES_PATH,
@@ -95,10 +97,12 @@ import {
   toEmptyResponse,
   toErrorResponse,
   toJsonResponse,
+  toPngResponse,
   toXmlResponse,
   type ApiErrorBody,
   type ApiResponse,
 } from "./apiResponses.js";
+import { renderPickCardOgImage } from "./pickCardOgImage.js";
 import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
 
 type ApiResponseLocals = {
@@ -113,6 +117,7 @@ type ExpressBodyParserError = Error & {
 };
 
 const SITE_SITEMAP_CACHE_CONTROL = "public, max-age=3600";
+const PICK_CARD_OG_IMAGE_CACHE_CONTROL = "public, max-age=86400";
 const STATE_RESOURCES_CACHE_CONTROL = "public, max-age=3600";
 
 function isKnownApiPath(pathname: string): boolean {
@@ -290,6 +295,12 @@ function sendApiResponse(response: Response, apiResponse: ApiResponse): void {
   response.status(apiResponse.statusCode).set(apiResponse.headers);
   if (apiResponse.body === undefined) {
     response.end();
+    return;
+  }
+  // Binary bodies (the pick-card og image) ship as-is; express keeps the
+  // content-type the response headers already set.
+  if (Buffer.isBuffer(apiResponse.body)) {
+    response.send(apiResponse.body);
     return;
   }
   if (
@@ -1387,6 +1398,26 @@ async function dispatchApiRequest(
       sendApiResponse(
         response,
         toErrorResponse(500, "internal_error", "Pick card lookup is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    // The share-link preview image (og:image target). Checked before the
+    // plain token parse because the JSON route's parser rejects any extra
+    // path segment.
+    if (isPickCardImagePath(url.pathname)) {
+      const token = parsePickCardImageToken(url);
+      const card = await options.lookupPublicPickCard(token);
+      if (!card) {
+        sendApiResponse(response, toErrorResponse(404, "not_found", "Pick card not found", corsHeaders));
+        return;
+      }
+      const png = renderPickCardOgImage({ firstName: card.first_name, electionDate: card.election_date });
+      // A day of caching is safe: the image carries only first name +
+      // election date, both effectively fixed for the life of a share.
+      sendApiResponse(
+        response,
+        toPngResponse(200, png, { ...corsHeaders, "cache-control": PICK_CARD_OG_IMAGE_CACHE_CONTROL })
       );
       return;
     }

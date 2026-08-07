@@ -38,9 +38,18 @@ type PageMetaInput = {
    * fetched, which is always right.
    */
   path?: string;
+  /**
+   * Per-page share image, absolute URL. Defaults to the static site-wide
+   * card; pages with a generated image (a shared pick card) override it so
+   * the picture, not just the title, is theirs. Dimensions must stay
+   * 1200×630 — the og:image:width/height tags below promise it.
+   */
+  image?: { url: string; alt: string };
 };
 
-export function pageMeta({ title, description = DEFAULT_DESCRIPTION, path }: PageMetaInput): MetaDescriptor[] {
+export function pageMeta({ title, description = DEFAULT_DESCRIPTION, path, image }: PageMetaInput): MetaDescriptor[] {
+  const imageUrl = image?.url ?? SHARE_IMAGE;
+  const imageAlt = image?.alt ?? SHARE_IMAGE_ALT;
   return [
     { title },
     { name: "description", content: description },
@@ -51,18 +60,18 @@ export function pageMeta({ title, description = DEFAULT_DESCRIPTION, path }: Pag
     { property: "og:title", content: title },
     { property: "og:description", content: description },
     ...(path ? [{ property: "og:url", content: `${SITE_ORIGIN}${path}` }] : []),
-    { property: "og:image", content: SHARE_IMAGE },
+    { property: "og:image", content: imageUrl },
     // Declared so the card reserves the right space before the image loads,
     // and so scrapers that refuse unsized images still render it large.
     { property: "og:image:width", content: "1200" },
     { property: "og:image:height", content: "630" },
-    { property: "og:image:alt", content: SHARE_IMAGE_ALT },
+    { property: "og:image:alt", content: imageAlt },
 
     // X/Twitter reads its own namespace and ignores og:* for the card size.
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: title },
     { name: "twitter:description", content: description },
-    { name: "twitter:image", content: SHARE_IMAGE },
-    { name: "twitter:image:alt", content: SHARE_IMAGE_ALT },
+    { name: "twitter:image", content: imageUrl },
+    { name: "twitter:image:alt", content: imageAlt },
   ];
 }

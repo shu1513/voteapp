@@ -946,6 +946,26 @@ export function parsePickCardToken(url: URL): string {
   return token;
 }
 
+// The share-card preview image: /api/pick-cards/:token/og-image.png. A fixed
+// suffix rather than a query parameter because scrapers treat the og:image
+// URL as opaque — the path just has to be self-describing.
+export const PICK_CARD_IMAGE_SUFFIX = "/og-image.png";
+
+export function isPickCardImagePath(pathname: string): boolean {
+  return pathname.startsWith(PICK_CARD_PATH_PREFIX) && pathname.endsWith(PICK_CARD_IMAGE_SUFFIX);
+}
+
+export function parsePickCardImageToken(url: URL): string {
+  const token = url.pathname.slice(PICK_CARD_PATH_PREFIX.length, -PICK_CARD_IMAGE_SUFFIX.length).trim();
+  if (token.length === 0 || token.includes("/")) {
+    throw new TypeError("Pick card image path must be /api/pick-cards/:token/og-image.png");
+  }
+  if (!PICK_CARD_TOKEN_PATTERN.test(token)) {
+    throw new TypeError("Pick card image path contains an invalid token");
+  }
+  return token;
+}
+
 export type PickCardSharePayload = {
   electionDate: string;
 };

@@ -2440,6 +2440,47 @@ describe("createApiApp", () => {
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
+  it("serves a pick card og image by token without any session", async () => {
+    const resolveAddress = vi.fn();
+    const lookupPublicPickCard = vi.fn().mockResolvedValue({
+      first_name: "Ava",
+      election_date: "2026-11-03",
+      entries: [],
+    });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, lookupPublicPickCard }), {
+      method: "GET",
+      path: "/api/pick-cards/tok_abcdefghijklmnopqrstuvwxyz012345/og-image.png",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.headers["content-type"]).toBe("image/png");
+    expect(response.headers["cache-control"]).toBe("public, max-age=86400");
+    // The utf8 round-trip mangles binary, but the PNG tag survives.
+    expect(response.rawBody).toContain("PNG");
+    expect(lookupPublicPickCard).toHaveBeenCalledWith("tok_abcdefghijklmnopqrstuvwxyz012345");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("404s an unknown og-image token and 400s a malformed one", async () => {
+    const resolveAddress = vi.fn();
+    const lookupPublicPickCard = vi.fn().mockResolvedValue(null);
+
+    const unknown = await invokeExpressApp(createApiApp({ resolveAddress, lookupPublicPickCard }), {
+      method: "GET",
+      path: "/api/pick-cards/tok_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/og-image.png",
+    });
+    expect(unknown.statusCode).toBe(404);
+    expect(unknown.body.error.code).toBe("not_found");
+
+    const malformed = await invokeExpressApp(createApiApp({ resolveAddress, lookupPublicPickCard }), {
+      method: "GET",
+      path: "/api/pick-cards/short!/og-image.png",
+    });
+    expect(malformed.statusCode).toBe(400);
+    expect(lookupPublicPickCard).toHaveBeenCalledTimes(1);
+  });
+
   it("rejects authenticated election choices when authentication is not configured", async () => {
     const resolveAddress = vi.fn();
     const listAuthenticatedElectionChoices = vi.fn();

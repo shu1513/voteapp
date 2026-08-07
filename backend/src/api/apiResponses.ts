@@ -60,6 +60,21 @@ export function toXmlResponse(
   };
 }
 
+export function toPngResponse(
+  statusCode: number,
+  body: Buffer,
+  extraHeaders: Record<string, string> = {}
+): ApiResponse {
+  return {
+    statusCode,
+    headers: {
+      ...extraHeaders,
+      "content-type": "image/png",
+    },
+    body,
+  };
+}
+
 export function toEmptyResponse(statusCode: number, extraHeaders: Record<string, string> = {}): ApiResponse {
   return {
     statusCode,
