@@ -69,10 +69,16 @@ export function parseNcsbeDate(raw: string | null | undefined): NcsbeDate {
   const month = Number(monthRaw);
   const day = Number(dayRaw);
   const year = Number(yearRaw);
-  const iso = `${yearRaw}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
   if (year < 1990 || year > 2100 || month < 1 || month > 12 || day < 1 || day > 31) {
     return { raw: value, iso: null, implausible: true };
   }
+  // Round-trip through a real calendar so impossible dates (02/31, non-leap
+  // 02/29) fail closed instead of minting a nonexistent ISO day.
+  const utc = new Date(Date.UTC(year, month - 1, day));
+  if (utc.getUTCFullYear() !== year || utc.getUTCMonth() !== month - 1 || utc.getUTCDate() !== day) {
+    return { raw: value, iso: null, implausible: true };
+  }
+  const iso = `${yearRaw}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
   return { raw: value, iso, implausible: false };
 }
 
@@ -350,6 +356,12 @@ export type NcsbeReportDetail = {
   summarySections: NcsbeCoverSummarySection[];
 };
 
+// Thrown when a grid matches the summary row shape but fails validation —
+// that is a real page change, never one of the page's other SetupGrid calls.
+// A sentinel class, not a message-substring test, so relabeling an error can
+// never silently downgrade a validation failure into "not the summary grid".
+class NcsbeCoverSummaryError extends Error {}
+
 function isCoverSummaryShape(rows: unknown): rows is Array<Record<string, unknown>> {
   return (
     Array.isArray(rows) &&
@@ -397,8 +409,8 @@ export function parseNcsbeReportDetailPage(html: string): NcsbeReportDetail {
       });
       const parsed = parseJsonStrict(gridExtract.raw, "cover grid");
       if (isCoverSummaryShape(parsed)) {
-        summaryCandidates.push(
-          parsed.map((row, index) => {
+        try {
+          const sections = parsed.map((row, index) => {
             const sequence = requireInteger(row.Sequence, `cover summary row ${index} Sequence`);
             const section = requireString(row.Section, `cover summary row ${index} Section`);
             const pinned = NCSBE_COVER_SECTIONS.get(sequence);
@@ -413,13 +425,30 @@ export function parseNcsbeReportDetailPage(html: string): NcsbeReportDetail {
               periodCents: ncsbeAmountToCents(row.Period, `cover summary row ${index} Period`),
               cycleCents: ncsbeAmountToCents(row.Cycle, `cover summary row ${index} Cycle`),
             };
-          })
-        );
+          });
+          // The 34 sections are a fixed set (spike results item 2): a
+          // truncated or duplicated grid must fail here, not surface later as
+          // a silently missing Total Receipts.
+          const seenSequences = new Set(sections.map((row) => row.sequence));
+          if (seenSequences.size !== sections.length) {
+            throw new Error("NCSBE cover summary grid repeats a section sequence");
+          }
+          if (sections.length !== NCSBE_COVER_SECTIONS.size) {
+            const missing = [...NCSBE_COVER_SECTIONS.keys()].filter((sequence) => !seenSequences.has(sequence));
+            throw new Error(
+              `NCSBE cover summary grid has ${sections.length} of ${NCSBE_COVER_SECTIONS.size} sections ` +
+                `(missing sequences: ${missing.join(", ")})`
+            );
+          }
+          summaryCandidates.push(sections);
+        } catch (error) {
+          throw new NcsbeCoverSummaryError((error as Error).message);
+        }
       }
     } catch (error) {
       // A grid that matches the summary shape but fails validation is a real
       // failure; anything else is one of the page's other grids.
-      if ((error as Error).message.includes("cover summary row")) {
+      if (error instanceof NcsbeCoverSummaryError) {
         throw error;
       }
     }

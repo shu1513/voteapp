@@ -1,10 +1,10 @@
 import { readFileSync } from "node:fs";
-import { mkdtemp } from "node:fs/promises";
+import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import {
   acquireNcsbeCommitteeArtifacts,
@@ -114,6 +114,10 @@ let cacheDir: string;
 
 beforeEach(async () => {
   cacheDir = await mkdtemp(join(tmpdir(), "ncsbe-acquisition-"));
+});
+
+afterEach(async () => {
+  await rm(cacheDir, { recursive: true, force: true });
 });
 
 const GADSON = { sboeId: "STA-JV516O-C-001", orgGroupId: 57190 };
@@ -246,6 +250,42 @@ describe("acquireNcsbeCommitteeArtifacts", () => {
     const coverStatus = await getNcsbeArtifactStatus({ cacheDir, key: { type: "report_cover", reportId: "227042" } });
     expect(coverStatus.status).toBe("missing");
   });
+
+  it("installs nothing for a report whose transaction fetch fails mid-report, then re-fetches it", async () => {
+    // The cover fetch succeeds and the receipts fetch fails: with
+    // fetch-all-then-install, NO artifact of the report may be installed —
+    // a mixed-vintage cover/receipts/expenditures snapshot must be
+    // impossible to create, and the next run must re-fetch, not skip.
+    const failing = { requests: [] as string[] };
+    const first = await acquireNcsbeCommitteeArtifacts({
+      transport: fakeGadsonTransport(failing, {
+        "https://cf.ncsbe.gov/CFOrgLkup/GetReceipts?ReportID=227042&page=0&pageSize=300":
+          "<html>An error occurred</html>",
+      }),
+      cacheDir,
+      cycleYear: 2026,
+      committee: GADSON,
+      retrievedAt: NOW,
+    });
+    expect(first.failures).toHaveLength(1);
+    expect(first.failures[0]).toMatchObject({ reportId: "227042" });
+    // The cover WAS fetched but must not have been installed.
+    expect(failing.requests.some((url) => url.includes("RID=227042"))).toBe(true);
+    const coverStatus = await getNcsbeArtifactStatus({ cacheDir, key: { type: "report_cover", reportId: "227042" } });
+    expect(coverStatus.status).toBe("missing");
+
+    const second = { requests: [] as string[] };
+    const retry = await acquireNcsbeCommitteeArtifacts({
+      transport: fakeGadsonTransport(second),
+      cacheDir,
+      cycleYear: 2026,
+      committee: GADSON,
+      retrievedAt: NOW,
+    });
+    expect(retry.fetched.map((report) => report.reportId)).toEqual(["227042"]);
+    expect(retry.skippedReportIds.sort()).toEqual(["226297", "229931"]);
+    expect(retry.failures).toEqual([]);
+  });
 });
 
 describe("acquireNcsbeCycleArtifacts", () => {
@@ -266,10 +306,13 @@ describe("acquireNcsbeCycleArtifacts", () => {
     // 72 structured reports appear twice and must be fetched once.
     expect(result.ie!.years).toEqual([2025, 2026]);
     expect(result.ie!.inventoryRowCount).toBe(190);
-    expect(result.ie!.structuredReportCount).toBe(144);
-    expect(result.ie!.imageOnlyReportCount).toBe(46);
+    // Row counts, deliberately: the same 72 structured filings appear in both
+    // fake-year inventories, and the deduplicated fetch set is 72.
+    expect(result.ie!.structuredRowCount).toBe(144);
+    expect(result.ie!.imageOnlyRowCount).toBe(46);
     expect(result.ie!.fetched).toHaveLength(72);
     expect(result.ie!.failures).toEqual([]);
+    expect(result.ieFailure).toBeNull();
 
     for (const year of [2025, 2026]) {
       const status = await getNcsbeArtifactStatus({ cacheDir, key: { type: "ie_doc_type_inventory", year } });
@@ -296,5 +339,24 @@ describe("acquireNcsbeCycleArtifacts", () => {
     expect(result.committees).toHaveLength(1);
     expect(result.committees[0]?.sboeId).toBe(GADSON.sboeId);
     expect(result.ie).toBeNull();
+  });
+
+  it("isolates an IE inventory failure and preserves the committee results", async () => {
+    const state = { requests: [] as string[] };
+    const transport = fakeGadsonTransport(state, {
+      "https://cf.ncsbe.gov/CFDocLkup/DocumentResult/?year=2025&reports=%27IRIEX%27,%27IRCIX%27,%27RPIER%27":
+        "<html>An error occurred</html>",
+    });
+    const result = await acquireNcsbeCycleArtifacts({
+      transport,
+      cacheDir,
+      cycleYear: 2026,
+      committees: [GADSON],
+      retrievedAt: NOW,
+    });
+    expect(result.committees).toHaveLength(1);
+    expect(result.committees[0]?.fetched).toHaveLength(3);
+    expect(result.ie).toBeNull();
+    expect(result.ieFailure?.message).toMatch(/marker/);
   });
 });

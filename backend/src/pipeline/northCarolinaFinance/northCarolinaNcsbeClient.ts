@@ -42,6 +42,12 @@ export const NCSBE_TRANSACTION_PAGE_SIZE = 300;
 // registered-committee IE informational reports, and electioneering reports.
 export const NCSBE_IE_DOC_TYPE_CODES = ["IRIEX", "IRCIX", "RPIER"] as const;
 
+// Sanity ceiling on a report's claimed row count. The largest real report the
+// spike saw was 121,124 rows (~404 pages); a corrupted or absurd
+// recordCountKey must fail the report instead of driving a paced fetch loop
+// for hours.
+export const NCSBE_MAX_TRANSACTION_ROWS = 1_000_000;
+
 function requireNcsbeReportId(reportId: string): string {
   const trimmed = reportId.trim();
   if (!/^\d+$/.test(trimmed)) {
@@ -296,6 +302,12 @@ async function fetchNcsbeTransactionPagesInternal<Row>(
     const body = await transport.fetchText(url);
     const parsed = parsePage(body);
     if (recordCount === null) {
+      if (parsed.recordCount > NCSBE_MAX_TRANSACTION_ROWS) {
+        throw new Error(
+          `NCSBE ${input.kind} report ${reportId}: recordCountKey ${parsed.recordCount} exceeds the ` +
+            `sanity ceiling of ${NCSBE_MAX_TRANSACTION_ROWS}`
+        );
+      }
       recordCount = parsed.recordCount;
     } else if (parsed.recordCount !== recordCount) {
       throw new Error(

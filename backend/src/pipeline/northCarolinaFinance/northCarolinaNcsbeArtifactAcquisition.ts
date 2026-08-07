@@ -82,11 +82,12 @@ function expectedTransactionPageCount(recordCountKey: number): number {
   return Math.max(1, Math.ceil(recordCountKey / NCSBE_TRANSACTION_PAGE_SIZE));
 }
 
-// A report is skippable when its whole artifact set is "ready" and was
-// fetched for the same DataImportDate the inventory reports now — the
-// portal's import date is the freshness signal, so a re-imported report is
-// re-pulled while an unchanged one costs zero requests (Ohio's date-modified
-// skip, per report).
+// A report is skippable when its whole artifact set is "ready" and EVERY
+// artifact — cover and each transaction page — was fetched for the same
+// DataImportDate the inventory reports now. The portal's import date is the
+// freshness signal (Ohio's date-modified skip, per report), and requiring it
+// on every page means a mixed-vintage snapshot (however it was produced) can
+// never satisfy the skip — it is re-fetched instead.
 export async function isNcsbeReportCached(input: {
   cacheDir: string;
   row: NcsbeDocumentRow;
@@ -95,14 +96,12 @@ export async function isNcsbeReportCached(input: {
   if (reportId === null) {
     return false;
   }
+  const importDate = input.row.dataImportDate.raw;
   const cover = await getNcsbeArtifactStatus({
     cacheDir: input.cacheDir,
     key: { type: "report_cover", reportId },
   });
-  if (cover.status !== "ready") {
-    return false;
-  }
-  if (cover.manifest?.sourceDocument?.dataImportDate !== input.row.dataImportDate.raw) {
+  if (cover.status !== "ready" || cover.manifest?.sourceDocument?.dataImportDate !== importDate) {
     return false;
   }
   for (const kind of ["receipts", "expenditures"] as const) {
@@ -110,7 +109,12 @@ export async function isNcsbeReportCached(input: {
       cacheDir: input.cacheDir,
       key: { type: "report_transactions", reportId, kind, page: 0 },
     });
-    if (firstPage.status !== "ready" || !firstPage.manifest || firstPage.manifest.recordCountKey === null) {
+    if (
+      firstPage.status !== "ready" ||
+      !firstPage.manifest ||
+      firstPage.manifest.recordCountKey === null ||
+      firstPage.manifest.sourceDocument?.dataImportDate !== importDate
+    ) {
       return false;
     }
     const pageCount = expectedTransactionPageCount(firstPage.manifest.recordCountKey);
@@ -119,7 +123,7 @@ export async function isNcsbeReportCached(input: {
         cacheDir: input.cacheDir,
         key: { type: "report_transactions", reportId, kind, page },
       });
-      if (pageStatus.status !== "ready") {
+      if (pageStatus.status !== "ready" || pageStatus.manifest?.sourceDocument?.dataImportDate !== importDate) {
         return false;
       }
     }
@@ -135,9 +139,13 @@ export type NcsbeReportFetchSummary = {
   expenditureRowCount: number;
 };
 
-// Fetches and installs one structured report: cover + complete receipt and
-// expenditure page sets. Any validation or transport failure throws — the
-// caller isolates it so one bad report cannot abandon the run.
+// Fetches one structured report — cover + complete receipt and expenditure
+// page sets — and installs artifacts only after EVERY fetch has succeeded.
+// A transport or validation failure mid-report therefore leaves the previous
+// snapshot fully intact instead of a mixed-vintage cover/receipts/expenditure
+// set (which the per-page DataImportDate check in isNcsbeReportCached would
+// otherwise have to catch after the fact). Any failure throws — the caller
+// isolates it so one bad report cannot abandon the run.
 export async function acquireNcsbeReport(input: {
   transport: NcsbeTransport;
   cacheDir: string;
@@ -150,7 +158,13 @@ export async function acquireNcsbeReport(input: {
   }
   const sourceDocument = ncsbeSourceDocumentMetadata(input.row);
 
+  // Phase 1: fetch everything. Nothing is written yet.
   const cover = await fetchNcsbeReportDetail(input.transport, reportId);
+  const receipts = await fetchNcsbeReceiptPages(input.transport, reportId);
+  const expenditures = await fetchNcsbeExpenditurePages(input.transport, reportId);
+
+  // Phase 2: install. Only local validated writes remain; a crash here still
+  // leaves per-page import dates that isNcsbeReportCached refuses to skip.
   await storeNcsbeArtifact({
     cacheDir: input.cacheDir,
     key: { type: "report_cover", reportId },
@@ -159,8 +173,6 @@ export async function acquireNcsbeReport(input: {
     sourceDocument,
     retrievedAt: input.retrievedAt,
   });
-
-  const receipts = await fetchNcsbeReceiptPages(input.transport, reportId);
   for (const page of receipts.pages) {
     await storeNcsbeArtifact({
       cacheDir: input.cacheDir,
@@ -171,8 +183,6 @@ export async function acquireNcsbeReport(input: {
       retrievedAt: input.retrievedAt,
     });
   }
-
-  const expenditures = await fetchNcsbeExpenditurePages(input.transport, reportId);
   for (const page of expenditures.pages) {
     await storeNcsbeArtifact({
       cacheDir: input.cacheDir,
@@ -206,9 +216,14 @@ export type NcsbeCommitteeAcquisitionResult = {
 
 export type NcsbeIeAcquisitionResult = {
   years: number[];
+  // Row counts across both year inventories — the same filing can appear in
+  // more than one inventory, so these are NOT distinct-filing counts; the
+  // deduplicated fetch set is what `fetched`/`skippedReportIds` describe, and
+  // the coverage-gap table is built from the cached inventories at
+  // aggregation time.
   inventoryRowCount: number;
-  structuredReportCount: number;
-  imageOnlyReportCount: number;
+  structuredRowCount: number;
+  imageOnlyRowCount: number;
   fetched: NcsbeReportFetchSummary[];
   skippedReportIds: string[];
   failures: Array<{ reportId: string; message: string }>;
@@ -220,6 +235,9 @@ export type NcsbeAcquisitionResult = {
   committees: NcsbeCommitteeAcquisitionResult[];
   committeeFailures: Array<{ sboeId: string; message: string }>;
   ie: NcsbeIeAcquisitionResult | null;
+  // Set when the IE pass itself failed (e.g. an inventory fetch) — committee
+  // results above are preserved, matching the per-committee isolation.
+  ieFailure: { message: string } | null;
 };
 
 async function acquireReportSet(input: {
@@ -359,8 +377,8 @@ export async function acquireNcsbeIeArtifacts(input: {
   return {
     years,
     inventoryRowCount: allRows.length,
-    structuredReportCount: structuredRows.length,
-    imageOnlyReportCount: allRows.length - structuredRows.length,
+    structuredRowCount: structuredRows.length,
+    imageOnlyRowCount: allRows.length - structuredRows.length,
     ...reportSet,
   };
 }
@@ -397,15 +415,23 @@ export async function acquireNcsbeCycleArtifacts(input: {
   }
 
   let ie: NcsbeIeAcquisitionResult | null = null;
+  let ieFailure: { message: string } | null = null;
   if (input.includeIe ?? true) {
-    ie = await acquireNcsbeIeArtifacts({
-      transport: input.transport,
-      cacheDir: input.cacheDir,
-      cycleYear: input.cycleYear,
-      force: input.force,
-      retrievedAt: input.retrievedAt,
-      log: input.log,
-    });
+    try {
+      ie = await acquireNcsbeIeArtifacts({
+        transport: input.transport,
+        cacheDir: input.cacheDir,
+        cycleYear: input.cycleYear,
+        force: input.force,
+        retrievedAt: input.retrievedAt,
+        log: input.log,
+      });
+    } catch (error) {
+      // An IE inventory failure must not throw away the committee results —
+      // same isolation as a failing committee.
+      ieFailure = { message: (error as Error).message };
+      input.log?.(`IE acquisition: FAILED — ${(error as Error).message}`);
+    }
   }
 
   return {
@@ -414,5 +440,6 @@ export async function acquireNcsbeCycleArtifacts(input: {
     committees,
     committeeFailures,
     ie,
+    ieFailure,
   };
 }

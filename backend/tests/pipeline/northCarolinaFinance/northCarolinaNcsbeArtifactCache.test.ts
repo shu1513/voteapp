@@ -35,8 +35,16 @@ beforeEach(async () => {
 
 describe("ncsbeArtifactRelativePath", () => {
   it("maps every artifact type to a stable relative path", () => {
-    expect(ncsbeArtifactRelativePath({ type: "committee_search", query: "Gadson, Marcus" })).toBe(
-      "committee-search/gadson-marcus.html"
+    expect(ncsbeArtifactRelativePath({ type: "committee_search", query: "Gadson, Marcus" })).toMatch(
+      /^committee-search\/gadson-marcus-[0-9a-f]{8}\.html$/
+    );
+    // The slug alone is lossy; the query hash keeps distinct searches apart.
+    const collidingPaths = new Set(
+      ["a b", "a-b", "a&b"].map((query) => ncsbeArtifactRelativePath({ type: "committee_search", query }))
+    );
+    expect(collidingPaths.size).toBe(3);
+    expect(ncsbeArtifactRelativePath({ type: "committee_search", query: "a b" })).toBe(
+      ncsbeArtifactRelativePath({ type: "committee_search", query: "a b" })
     );
     expect(ncsbeArtifactRelativePath({ type: "document_inventory", sboeId: "STA-JV516O-C-001" })).toBe(
       "document-inventory/STA-JV516O-C-001.html"
@@ -167,5 +175,47 @@ describe("getNcsbeArtifactStatus", () => {
     await writeFile(paths.manifestPath, JSON.stringify(manifest), "utf8");
     const status = await getNcsbeArtifactStatus({ cacheDir, key });
     expect(status.status).toBe("stale");
+  });
+
+  it("reports stale on same-size corruption — the SHA-256 is verified, not just the size", async () => {
+    const key = { type: "committee_search", query: "gadson" } as const;
+    const body = fixture("committee-search-gadson.html");
+    await storeNcsbeArtifact({ cacheDir, key, url: "u", body, retrievedAt: NOW });
+    const paths = getNcsbeArtifactPaths({ cacheDir, key });
+    // Flip one byte without changing the length.
+    const corrupted = `${body.slice(0, 100)}${body[100] === "x" ? "y" : "x"}${body.slice(101)}`;
+    expect(corrupted.length).toBe(body.length);
+    await writeFile(paths.filePath, corrupted, "utf8");
+    const status = await getNcsbeArtifactStatus({ cacheDir, key });
+    expect(status.status).toBe("stale");
+  });
+
+  it("reports stale when the manifest's key does not identify the requested artifact", async () => {
+    const key = { type: "committee_search", query: "gadson" } as const;
+    await storeNcsbeArtifact({ cacheDir, key, url: "u", body: fixture("committee-search-gadson.html"), retrievedAt: NOW });
+    const paths = getNcsbeArtifactPaths({ cacheDir, key });
+    const manifest = JSON.parse(await readFile(paths.manifestPath, "utf8"));
+    manifest.key = { type: "committee_search", query: "someone-else" };
+    await writeFile(paths.manifestPath, JSON.stringify(manifest), "utf8");
+    const status = await getNcsbeArtifactStatus({ cacheDir, key });
+    expect(status.status).toBe("stale");
+  });
+
+  it("treats a manifest without recordCountKey as invalid — undefined must not impersonate null", async () => {
+    const key = { type: "report_transactions", reportId: "229931", kind: "receipts", page: 0 } as const;
+    await storeNcsbeArtifact({
+      cacheDir,
+      key,
+      url: "u",
+      body: fixture("receipts-gadson-229931-p0.json"),
+      retrievedAt: NOW,
+    });
+    const paths = getNcsbeArtifactPaths({ cacheDir, key });
+    const manifest = JSON.parse(await readFile(paths.manifestPath, "utf8"));
+    delete manifest.recordCountKey;
+    await writeFile(paths.manifestPath, JSON.stringify(manifest), "utf8");
+    expect(await readNcsbeArtifactManifest(paths.manifestPath)).toBeNull();
+    const status = await getNcsbeArtifactStatus({ cacheDir, key });
+    expect(status.status).toBe("missing");
   });
 });

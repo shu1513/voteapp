@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
 import {
@@ -41,7 +41,10 @@ function slugifyNcsbeQuery(query: string): string {
   if (slug.length === 0) {
     throw new Error(`NCSBE committee-search query has no cacheable slug: ${JSON.stringify(query)}`);
   }
-  return slug;
+  // The readable slug is lossy ("A&B" and "A B" both slug to "a-b"), so a
+  // hash of the exact query keeps distinct searches in distinct files.
+  const queryHash = createHash("sha256").update(query, "utf8").digest("hex").slice(0, 8);
+  return `${slug}-${queryHash}`;
 }
 
 function requireSafePathSegment(value: string, label: string): string {
@@ -201,8 +204,9 @@ export async function storeNcsbeArtifact(input: {
     sourceDocument: input.sourceDocument ?? null,
   };
   // Two renames, so a crash between them leaves new bytes with the old
-  // manifest; the size check in getNcsbeArtifactStatus surfaces that as
-  // "stale" (same trade-off as the Ohio cache, and these files are small).
+  // manifest; the SHA-256 re-check in getNcsbeArtifactStatus surfaces that
+  // as "stale" (unlike Ohio's ~90 MB bulk files, these artifacts are small
+  // enough to hash on every status call).
   await writeFileAtomically(paths.manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
   return manifest;
 }
@@ -219,7 +223,12 @@ export async function readNcsbeArtifactManifest(manifestPath: string): Promise<N
       typeof parsed.rowCount !== "number" ||
       typeof parsed.retrievedAt !== "string" ||
       typeof parsed.key !== "object" ||
-      parsed.key === null
+      parsed.key === null ||
+      // Null is valid (non-transaction artifacts); absent or mistyped is not —
+      // an undefined recordCountKey would sail through `=== null` checks and
+      // let a transaction artifact skip its page-count verification.
+      !("recordCountKey" in parsed) ||
+      (parsed.recordCountKey !== null && typeof parsed.recordCountKey !== "number")
     ) {
       return null;
     }
@@ -236,12 +245,27 @@ export async function readNcsbeArtifactManifest(manifestPath: string): Promise<N
 export type NcsbeArtifactStatus = {
   key: NcsbeArtifactKey;
   filePath: string;
-  // "ready" — file and manifest agree and were validated by the current
-  // parser; "stale" — bytes and manifest disagree, or the artifact was
-  // validated by an older parser version; "missing" — not fetched yet.
+  // "ready" — the bytes hash to the manifest's SHA-256, the manifest's key
+  // identifies this artifact, and the current parser validated it; "stale" —
+  // any of those no longer holds; "missing" — not fetched yet.
   status: "ready" | "stale" | "missing";
   manifest: NcsbeArtifactManifest | null;
+  // Present only when status is "ready", so callers never re-read bytes the
+  // hash check already loaded.
+  body: string | null;
 };
+
+// The manifest must describe the artifact that was asked for — a manifest
+// copied or renamed into another key's path must read as stale, not ready.
+function manifestKeyMatches(manifest: NcsbeArtifactManifest, key: NcsbeArtifactKey): boolean {
+  try {
+    return (
+      manifest.key.type === key.type && ncsbeArtifactRelativePath(manifest.key) === ncsbeArtifactRelativePath(key)
+    );
+  } catch {
+    return false;
+  }
+}
 
 export async function getNcsbeArtifactStatus(input: {
   cacheDir: string;
@@ -249,22 +273,31 @@ export async function getNcsbeArtifactStatus(input: {
 }): Promise<NcsbeArtifactStatus> {
   const paths = getNcsbeArtifactPaths(input);
   const manifest = await readNcsbeArtifactManifest(paths.manifestPath);
-  let fileStat: Awaited<ReturnType<typeof stat>> | null = null;
+  let body: string | null = null;
   try {
-    fileStat = await stat(paths.filePath);
+    body = await readFile(paths.filePath, "utf8");
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
       throw error;
     }
   }
   const base = { key: input.key, filePath: paths.filePath };
-  if (!manifest || !fileStat?.isFile()) {
-    return { ...base, status: "missing", manifest };
+  if (!manifest || body === null) {
+    return { ...base, status: "missing", manifest, body: null };
   }
-  if (fileStat.size !== manifest.byteSize || manifest.parserVersion !== NCSBE_PARSER_VERSION) {
-    return { ...base, status: "stale", manifest };
+  // Full SHA-256 re-check on every status call: these artifacts are the
+  // source of truth for money, and they are small — a same-size corruption
+  // or a torn two-rename install must never read as "ready".
+  const { sha256, byteSize } = hashNcsbeArtifactBody(body);
+  if (
+    sha256 !== manifest.sha256 ||
+    byteSize !== manifest.byteSize ||
+    manifest.parserVersion !== NCSBE_PARSER_VERSION ||
+    !manifestKeyMatches(manifest, input.key)
+  ) {
+    return { ...base, status: "stale", manifest, body: null };
   }
-  return { ...base, status: "ready", manifest };
+  return { ...base, status: "ready", manifest, body };
 }
 
 // Reads a cached artifact for the sync. Fail-closed: a missing or stale
@@ -275,8 +308,8 @@ export async function readNcsbeArtifact(input: {
   key: NcsbeArtifactKey;
 }): Promise<{ body: string; manifest: NcsbeArtifactManifest }> {
   const status = await getNcsbeArtifactStatus(input);
-  if (status.status !== "ready" || !status.manifest) {
+  if (status.status !== "ready" || !status.manifest || status.body === null) {
     throw new Error(`NCSBE artifact ${ncsbeArtifactRelativePath(input.key)} is ${status.status}`);
   }
-  return { body: await readFile(status.filePath, "utf8"), manifest: status.manifest };
+  return { body: status.body, manifest: status.manifest };
 }

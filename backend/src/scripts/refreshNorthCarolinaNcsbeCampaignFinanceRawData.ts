@@ -200,7 +200,10 @@ export async function runRefreshNorthCarolinaNcsbeRawDataScript(input: {
       cycle_year: options.cycleYear,
       cache_dir: options.cacheDir,
       dry_run: true,
-      committees: options.committees,
+      committees: options.committees.map((committee) => ({
+        sboe_id: committee.sboeId,
+        org_group_id: committee.orgGroupId,
+      })),
       include_ie: options.includeIe,
       spacing_ms: options.spacingMs,
       force: options.force,
@@ -233,21 +236,31 @@ export async function runRefreshNorthCarolinaNcsbeRawDataScript(input: {
       unusable_period_row_count: committee.unusablePeriodRowCount,
       fetched_report_count: committee.fetched.length,
       skipped_report_ids: committee.skippedReportIds,
-      failures: committee.failures,
+      failures: committee.failures.map((failure) => ({
+        report_id: failure.reportId,
+        message: failure.message,
+      })),
     })),
-    committee_failures: acquisition.committeeFailures,
+    committee_failures: acquisition.committeeFailures.map((failure) => ({
+      sboe_id: failure.sboeId,
+      message: failure.message,
+    })),
     ie:
       acquisition.ie === null
         ? null
         : {
             years: acquisition.ie.years,
             inventory_row_count: acquisition.ie.inventoryRowCount,
-            structured_report_count: acquisition.ie.structuredReportCount,
-            image_only_report_count: acquisition.ie.imageOnlyReportCount,
+            structured_row_count: acquisition.ie.structuredRowCount,
+            image_only_row_count: acquisition.ie.imageOnlyRowCount,
             fetched_report_count: acquisition.ie.fetched.length,
             skipped_report_ids: acquisition.ie.skippedReportIds,
-            failures: acquisition.ie.failures,
+            failures: acquisition.ie.failures.map((failure) => ({
+              report_id: failure.reportId,
+              message: failure.message,
+            })),
           },
+    ie_failure: acquisition.ieFailure,
   };
 }
 

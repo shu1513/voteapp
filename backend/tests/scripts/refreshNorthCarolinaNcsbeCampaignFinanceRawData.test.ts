@@ -91,7 +91,7 @@ describe("runRefreshNorthCarolinaNcsbeRawDataScript", () => {
       cycle_year: 2026,
       dry_run: true,
       include_ie: true,
-      committees: [{ sboeId: "STA-JV516O-C-001", orgGroupId: 57190 }],
+      committees: [{ sboe_id: "STA-JV516O-C-001", org_group_id: 57190 }],
     });
   });
 });

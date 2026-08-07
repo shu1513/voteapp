@@ -243,4 +243,10 @@ describe("fetchNcsbeReceiptPages", () => {
       fetchNcsbeReceiptPages(directTransport(() => "<html>An error occurred</html>"), "1")
     ).rejects.toThrow(/does not parse/);
   });
+
+  it("fails closed on an absurd recordCountKey instead of paging for hours", async () => {
+    await expect(
+      fetchNcsbeReceiptPages(directTransport(() => transactionBody(5_000_000, 300)), "1")
+    ).rejects.toThrow(/recordCountKey 5000000 exceeds the sanity ceiling/);
+  });
 });

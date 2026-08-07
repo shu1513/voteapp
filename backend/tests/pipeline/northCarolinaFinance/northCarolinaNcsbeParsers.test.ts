@@ -21,7 +21,11 @@ import {
 
 // Fixtures are real portal bytes captured during the 2026-08-07 acquisition
 // spike (see north_carolina_plan.md "Acquisition spike results"); the pinned
-// numbers below reproduce the spike's verified money numbers.
+// numbers below reproduce the spike's verified money numbers. One deliberate
+// deviation: individual contributors' street addresses (Street1/Street2, and
+// the +4 zip suffix) are redacted from the receipts fixture — they are public
+// record but do not belong in the repo; every field the pipeline consumes is
+// untouched.
 function fixture(name: string): string {
   return readFileSync(
     fileURLToPath(new URL(`../../fixtures/northCarolinaFinance/${name}`, import.meta.url)),
@@ -46,6 +50,14 @@ describe("parseNcsbeDate", () => {
   it("flags unparseable dates as implausible", () => {
     expect(parseNcsbeDate("2026-02-24").implausible).toBe(true);
     expect(parseNcsbeDate("13/40/2026").implausible).toBe(true);
+  });
+
+  it("rejects impossible calendar dates instead of minting nonexistent ISO days", () => {
+    expect(parseNcsbeDate("02/31/2026")).toEqual({ raw: "02/31/2026", iso: null, implausible: true });
+    expect(parseNcsbeDate("02/29/2025")).toEqual({ raw: "02/29/2025", iso: null, implausible: true });
+    expect(parseNcsbeDate("04/31/2026").implausible).toBe(true);
+    // Real leap day stays valid.
+    expect(parseNcsbeDate("02/29/2024")).toEqual({ raw: "02/29/2024", iso: "2024-02-29", implausible: false });
   });
 });
 
@@ -163,7 +175,7 @@ describe("parseNcsbeDocumentListPage", () => {
     expect(rows).toHaveLength(95);
     // Spike-verified 2026 split: 72 structured, 23 image-only.
     expect(rows.filter((row) => row.dataLink !== null)).toHaveLength(72);
-    expect(rows.filter((row) => row.isAmendment)).toHaveLength(4);
+    expect(rows.filter((row) => row.isAmendment === true)).toHaveLength(4);
     expect(rows.filter((row) => row.sboeId === null)).toHaveLength(58);
     expect(rows.some((row) => row.sboeId?.toUpperCase() === "NO ID")).toBe(false);
   });
@@ -212,6 +224,22 @@ describe("parseNcsbeReportDetailPage", () => {
     expect(() => parseNcsbeReportDetailPage('var dataCover = {"BoeID":"X","OrgName":"Y"};')).toThrow(
       /expected exactly one summary grid, found 0/
     );
+  });
+
+  it("fails closed on a truncated summary grid — all 34 sections are required", () => {
+    const html = fixture("report-cover-gadson-229931.html").replace(
+      /\{"Sequence":60,"Section":"Total Receipts"[^}]*\},/,
+      ""
+    );
+    expect(() => parseNcsbeReportDetailPage(html)).toThrow(/33 of 34 sections .*missing sequences: 60/);
+  });
+
+  it("fails closed on a duplicated summary section", () => {
+    const html = fixture("report-cover-gadson-229931.html").replace(
+      /(\{"Sequence":60,"Section":"Total Receipts"[^}]*\},)/,
+      "$1$1"
+    );
+    expect(() => parseNcsbeReportDetailPage(html)).toThrow(/repeats a section sequence/);
   });
 });
 
