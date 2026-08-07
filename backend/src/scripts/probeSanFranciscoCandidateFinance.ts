@@ -1,8 +1,10 @@
 // Phase 0 probe (plan-san-francisco-finance.md): validates the SFEC
 // dashboard-manifest path (0A) against the raw DataSF reconstruction (0B)
 // for real contests, and quantifies every residual difference. Kept as a
-// live smoke test after Phase 0 — if SFEC changes its methodology or
-// manifest schema, this fails loudly instead of letting numbers drift.
+// live smoke test after Phase 0: any candidate-level failure (fetch,
+// schema, parse) exits non-zero so automation notices; reference-value
+// mismatches are reported in the JSON but stay warning-only, because the
+// dashboards legitimately move while committees keep filing.
 import {
   defaultSanFranciscoDashboardManifestClientOptions,
   getSanFranciscoContestManifest,
@@ -60,15 +62,42 @@ function centsToMoney(cents: number | null): string | null {
   return cents === null ? null : (cents / 100).toFixed(2);
 }
 
-function lastNameOf(candidateName: string): string {
+// One key derivation for every name comparison in this probe, so map
+// construction and lookup can never disagree.
+function nameKey(name: string): string {
+  return name.trim().replace(/\s+/g, " ").toUpperCase();
+}
+
+// Manifest names are "FIRST LAST"; split into the DataSF name-field filters.
+// First AND last are both sent to the transactions query — last name alone
+// mixes candidates who share a surname (verified live: David Lee's Schedule D
+// picked up Barbara Lee's $2,600). The naive first/last token split can still
+// miss compound names, so the probe reports the filter it used.
+function splitCandidateName(candidateName: string): {
+  firstName: string;
+  lastName: string;
+} {
   const parts = candidateName.trim().split(/\s+/);
-  return parts[parts.length - 1] ?? candidateName;
+  return {
+    firstName: parts[0] ?? candidateName,
+    lastName: parts[parts.length - 1] ?? candidateName,
+  };
 }
 
 // Public-funds rows disclose "Last, First"; the manifest uses "FIRST LAST".
 function normalizeCommaName(name: string): string {
   const [last, first] = name.split(",", 2);
-  return `${(first ?? "").trim()} ${(last ?? "").trim()}`.trim().toUpperCase();
+  return nameKey(`${(first ?? "").trim()} ${(last ?? "").trim()}`);
+}
+
+// The public-financing program covers Mayor and Supervisor races only, and
+// its rows carry a district ("Mayor" or a bare district number). Scope the
+// lookup to this contest's district so a same-surname candidate in another
+// contest on the same ballot can never be summed in.
+function publicFundsDistrictFor(contestCode: string): string | null {
+  if (contestCode === "myr") return "Mayor";
+  const supervisorMatch = /^bos(\d{2})$/.exec(contestCode);
+  return supervisorMatch ? String(Number(supervisorMatch[1])) : null;
 }
 
 function shiftDate(isoDate: string, days: number): string {
@@ -77,7 +106,9 @@ function shiftDate(isoDate: string, days: number): string {
   return new Date(time + days * 86_400_000).toISOString().slice(0, 10);
 }
 
-async function probeContest(target: ContestTarget): Promise<unknown> {
+async function probeContest(
+  target: ContestTarget,
+): Promise<{ report: unknown; errorCount: number }> {
   const manifest: SanFranciscoContestManifest =
     await getSanFranciscoContestManifest(target, {
       ...defaultSanFranciscoDashboardManifestClientOptions(),
@@ -86,18 +117,23 @@ async function probeContest(target: ContestTarget): Promise<unknown> {
   // Public financing explains the gap between raw Form 460 contribution
   // sums and the dashboard "funds" figure (verified to the cent for the
   // 2024 Mayor and June 2026 D4 races): funds = line-5 sum + public funds.
-  const publicFundsRows = await getSanFranciscoPublicFundsApproved(
-    { electionDate: target.electionDate },
-    sodaOptions,
-  );
+  const publicFundsDistrict = publicFundsDistrictFor(target.contestCode);
+  const publicFundsRows = publicFundsDistrict
+    ? await getSanFranciscoPublicFundsApproved(
+        { electionDate: target.electionDate },
+        sodaOptions,
+      )
+    : [];
   const publicFundsCentsByCandidate = new Map<string, number>();
   for (const row of publicFundsRows) {
+    if (row.district !== publicFundsDistrict) continue;
     const key = normalizeCommaName(row.candidateName);
     publicFundsCentsByCandidate.set(
       key,
       (publicFundsCentsByCandidate.get(key) ?? 0) + row.fundsApprovedCents,
     );
   }
+  let errorCount = 0;
   const candidates = [];
   for (const candidate of manifest.candidates) {
     const referenceKey = `${target.electionDate}/${target.contestCode}/${candidate.candidateName}`;
@@ -112,7 +148,7 @@ async function probeContest(target: ContestTarget): Promise<unknown> {
       // filing. Walk period prefixes and report where — or whether — the
       // manifest total is reproduced exactly.
       const publicFundsCents =
-        publicFundsCentsByCandidate.get(candidate.candidateName) ?? 0;
+        publicFundsCentsByCandidate.get(nameKey(candidate.candidateName)) ?? 0;
       let runningContributions = publicFundsCents;
       let runningExpenditures = 0;
       let matchedCutoff: {
@@ -137,9 +173,11 @@ async function probeContest(target: ContestTarget): Promise<unknown> {
       const manifestOpposeCents = manifestOutside
         .filter((relation) => relation.position === "oppose")
         .reduce((sum, relation) => sum + relation.amountCents, 0);
+      const nameFilter = splitCandidateName(candidate.candidateName);
       const targeted = await getSanFranciscoCandidateTargetedSpending(
         {
-          candidateLastName: lastNameOf(candidate.candidateName),
+          candidateLastName: nameFilter.lastName,
+          candidateFirstName: nameFilter.firstName,
           // F496 rows carry no election_date; bound the contest by a
           // two-year cycle window ending shortly after election day.
           transactionDateFrom: shiftDate(target.electionDate, -730),
@@ -207,6 +245,7 @@ async function probeContest(target: ContestTarget): Promise<unknown> {
         outside: {
           manifest_support: centsToMoney(manifestSupportCents),
           manifest_oppose: centsToMoney(manifestOpposeCents),
+          targeted_name_filter: nameFilter,
           candidate_tagged_f496_support: centsToMoney(taggedF496SupportCents),
           candidate_tagged_f496_oppose: centsToMoney(taggedF496OpposeCents),
           candidate_tagged_schedule_d: centsToMoney(taggedScheduleDCents),
@@ -232,6 +271,7 @@ async function probeContest(target: ContestTarget): Promise<unknown> {
           : {}),
       });
     } catch (error) {
+      errorCount += 1;
       candidates.push({
         candidate: candidate.candidateName,
         fppc_committee_id: candidate.fppcId,
@@ -240,17 +280,28 @@ async function probeContest(target: ContestTarget): Promise<unknown> {
     }
   }
   return {
-    election_date: target.electionDate,
-    contest_code: target.contestCode,
-    title: manifest.title,
-    source_url: manifest.sourceUrl,
-    candidate_count: manifest.candidates.length,
-    outside_relation_count: manifest.outsideRelations.length,
-    candidates,
+    errorCount,
+    report: {
+      election_date: target.electionDate,
+      contest_code: target.contestCode,
+      title: manifest.title,
+      source_url: manifest.sourceUrl,
+      candidate_count: manifest.candidates.length,
+      outside_relation_count: manifest.outsideRelations.length,
+      candidates,
+    },
   };
 }
 
 const targets = parseTargets(process.argv);
 const contests = [];
-for (const target of targets) contests.push(await probeContest(target));
-console.log(JSON.stringify({ contests }, null, 2));
+let candidateErrorCount = 0;
+for (const target of targets) {
+  const { report, errorCount } = await probeContest(target);
+  contests.push(report);
+  candidateErrorCount += errorCount;
+}
+console.log(
+  JSON.stringify({ candidate_error_count: candidateErrorCount, contests }, null, 2),
+);
+if (candidateErrorCount > 0) process.exitCode = 1;

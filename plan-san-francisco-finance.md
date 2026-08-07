@@ -16,6 +16,8 @@ Implemented: `sanFranciscoDashboardManifestClient.ts` (0A), a lean `sanFrancisco
 
 **Decision: hybrid confirmed.** Manifest primary for identity, headline totals, and outside relations; DataSF for occupations/employers/buckets/balances/public funds; raw path retained as oracle via the probe.
 
+**Explicitly NOT proven in Phase 0** (deferred to the Phase 4 entry gate, which must prove them before the direct-contribution aggregator ships): the itemized contributor formula (Sch A + C + 496 ≥$100 + 497P1 ≥$1,000), occupation/employer extraction, `entity_code` individual filtering, refund handling, F496/F497-vs-460 deduplication, memo/cross-reference rules, and outside-spender funding backtrace. Phase 0 validated headline totals and outside relations only. Also deferred to Phase 1: the rendered-site fetch fallback and manifest schema-version recording (the parser ships fail-loudly validation but no hash).
+
 ## Verified sources (probed live 2026-08-06)
 
 ### SFEC dashboard repository (primary for identity and headline totals)
@@ -87,17 +89,17 @@ Out of scope for v1: ballot-measure committees, behested payments, DCCC races, I
 
 A standalone probe (`probeSanFranciscoCandidateFinance.ts`, kept afterward as a smoke test) proves both paths before any schema or runtime code:
 
-**0A — manifest parser.** Typed, defensive parser for the contest frontmatter (unknown keys tolerated, missing/renamed known keys fail loudly, schema hash recorded). Fetch from configured repo raw URLs with the rendered-site fallback. Validate against Lurie (2024 Mayor) and the June 2026 D4 contest: candidate totals, committee identities, per-relation outside amounts must match the rendered dashboards to the cent.
+**0A — manifest parser** (done). Typed, defensive parser for the contest frontmatter: unknown keys tolerated, missing/renamed known keys fail loudly. Validated against Lurie (2024 Mayor) and the June 2026 D4 contest: candidate totals, committee identities, per-relation outside amounts match the rendered dashboards to the cent. Rendered-site fetch fallback and schema-version recording were deferred to the Phase 1 client.
 
-**0B — raw reconstruction as oracle.** From DataSF only, reproduce for the same two races: contribution totals per the documented contributor formula (Sch A + C itemized + 496 ≥$100 + 497P1 ≥$1,000 late, refunds negative), and outside totals (F496 + primarily-formed committee spending, Schedule D/F496 dedupe via `cross_reference_match`/`cross_reference_schedule`/transaction IDs, memo-row handling proven — not blanket-excluded until the data shows the rule). Compare raw vs manifest vs rendered site; document every residual difference and its cause.
+**0B — raw reconstruction as headline oracle** (done, deliberately narrower than first drafted). From DataSF, reproduce the dashboard funds figure (Form 460 line-5 prefix + public funds) and quantify how far candidate-tagged F496/Schedule D rows diverge from the manifest's outside relations. The itemized contributor formula (Sch A + C + 496 ≥$100 + 497P1 ≥$1,000, refunds, `entity_code`, memo/cross-reference rules, spender backtrace) was NOT exercised here — it belongs to the Phase 4 entry gate, where the direct-contribution aggregator needs it.
 
-**Decision point.** Confirm hybrid (manifest primary, raw oracle) or fall back to raw-only if the manifest proves unstable. Only the proven composition rules ship. Record the methodology version with every snapshot.
+**Decision point** (done). Hybrid confirmed: manifest primary, raw oracle for headline reconciliation. Only composition rules proven by a gate ship. Record the methodology version with every snapshot.
 
 ## Phase 1: clients
 
 `backend/src/pipeline/sanFranciscoFinance/`:
 
-- `sanFranciscoDashboardManifestClient.ts` — fetches contest files from the configured SFEC repo (raw.githubusercontent.com, branch + repo name in config, rendered-site fallback), parses frontmatter, returns typed contest data. Bounded timeouts, retry on 429/5xx.
+- `sanFranciscoDashboardManifestClient.ts` — fetches contest files from the configured SFEC repo (raw.githubusercontent.com, branch + repo name in config), parses frontmatter, returns typed contest data. Bounded timeouts, retry on 429/5xx. Phase 1 additions still owed on top of the Phase 0 version: a rendered-site (`campaign.sfethics.org`) fetch fallback for repo outages/renames, and recording a schema fingerprint of the parsed frontmatter keys with each fetch so drift is visible in diagnostics, not just in thrown errors.
 - `sanFranciscoOpenDataClient.ts` — SODA client modeled on `losAngelesOpenDataClient.ts`: base `https://data.sfgov.org/resource/<id>.json`, optional `SAN_FRANCISCO_OPEN_DATA_APP_TOKEN` (`X-App-Token`), 30s timeout, retry on 429/5xx, stable `$order` including `:id`, bounded paging. Typed fetchers: filers by name/fppc_id; summary rows by `fppc_id`; itemized transactions by committee and by form types; public-funds rows by election date + district. Fetch `calculated_amount` and `transaction_amount_1`; aggregate on `calculated_amount`; integer cents throughout. Server-side `$select`/`$where`/`$group` to keep transfers small. Defensive row mapping; per-row rejects never throw.
 
 ## Phase 2: eligibility and office mapping
@@ -120,8 +122,8 @@ A standalone probe (`probeSanFranciscoCandidateFinance.ts`, kept afterward as a 
 
 - `sanFranciscoHeadlineTotals` (from manifest): `total_raised` = `funds`, `total_spent` = `expenses` per candidate. Outside `support_total`/`oppose_total` = sums of the candidate's manifest relations by direction; groups list = the relations themselves with source URLs to the contest dashboard.
 - `sanFranciscoBalanceAggregator` (from summary totals): cash on hand and outstanding debt from the latest filing's ending-balance lines; loans from Schedule B lines (`loans_received`, excluded from `total_raised` per the shared contract). Assert the no-duplicate-`filing_nid` guarantee.
-- `sanFranciscoPublicFundsMatcher` (from `dbak-p2fq`): match by election date + district + normalized candidate name; sum rows whose status (`pending_completed` / certification date) marks them approved; ambiguous name matches fail closed (no public-funds figure rather than a wrong one). Mayor/Supervisor only.
-- `sanFranciscoDirectContributionAggregator` (from transactions): the documented contributor formula (Sch A + C itemized + qualifying 496/497P1 late-period rows, deduplicated against later 460 reporting per Phase 0 rules). Occupation/employer analysis restricted to individual contributors via `entity_code`. Refunds reduce totals and are excluded from size buckets (no absolute-value bucketing). Occupations stay as disclosed — `classifyFinanceLabel` classifies industries and does not merge occupation synonyms ("ATTORNEY" and "LAWYER" remain separate rows); any alias layer is a separately tested follow-up, not v1. Reconcile the itemized sum against the manifest `funds` figure and store the difference (unitemized + timing) as a diagnostic.
+- `sanFranciscoPublicFundsMatcher` (from `dbak-p2fq`): match by election date + district + normalized candidate name; sum `funds_approved` rows directly — every published row is an approval. `pending_completed` is no longer populated by the source (verified live: 152 valid approved rows carry it blank) and must never gate approval; `date_certified_approved` may optionally be required as a stricter signal. Ambiguous name matches fail closed (no public-funds figure rather than a wrong one). Mayor/Supervisor only.
+- `sanFranciscoDirectContributionAggregator` (from transactions): **entry gate first** — before this aggregator ships, extend the probe to prove the itemized contributor formula against the two canonical races (Sch A + C itemized + qualifying 496/497P1 late-period rows, dedupe against later 460 reporting via `cross_reference_match`/`cross_reference_schedule`/transaction IDs, memo-row handling shown by the data rather than blanket-excluded, refunds negative). Phase 0 did not exercise these rules. Then implement the proven formula. Occupation/employer analysis restricted to individual contributors via `entity_code`. Refunds reduce totals and are excluded from size buckets (no absolute-value bucketing). Occupations stay as disclosed — `classifyFinanceLabel` classifies industries and does not merge occupation synonyms ("ATTORNEY" and "LAWYER" remain separate rows); any alias layer is a separately tested follow-up, not v1. Reconcile the itemized sum against the manifest `funds` figure and store the difference (unitemized + timing) as a diagnostic.
 
 ## Phase 5: schema, flags, writer
 
@@ -150,7 +152,7 @@ Flags, default off, LA-pattern pair:
 
 Scripts mirroring the LA set: `syncDueSanFranciscoCandidateFinance.ts`, `triggerSanFranciscoCandidateFinanceSync.ts`, `probeSanFranciscoCandidateFinance.ts`, plus scheduler upsert/worker scripts if the resident-worker route is chosen.
 
-**Production scheduling is explicit, not implied.** render.yaml currently enables read flags only and deliberately omits all `*_SYNC_ENABLED` flags and finance cron jobs, so creating scheduler scripts alone runs nothing. v1 recommendation: a one-shot Render cron invoking the due-sync command daily at **16:30 UTC** (08:30 PDT / 09:30 PST — after DataSF's nightly refresh year-round), with the sync flag set on the cron service only. Alternative: deploy a resident scheduler worker. Either way the deploy checklist names the choice.
+**Production scheduling is explicit, not implied.** render.yaml currently enables read flags only and deliberately omits all `*_SYNC_ENABLED` flags and finance cron jobs, so creating scheduler scripts alone runs nothing. v1 recommendation: a one-shot Render cron invoking the due-sync command daily at **16:30 UTC** (09:30 PDT / 08:30 PST — after DataSF's nightly refresh year-round), with the sync flag set on the cron service only. Alternative: deploy a resident scheduler worker. Either way the deploy checklist names the choice.
 
 **Historical backfill** (2024 Mayor et al.): `--force` bypasses only the feature-flag gate, not the due-query date window. Backfill needs historical candidate/election links to exist plus explicit targeting — `--election-id` / `--lookback-days` options on the due-sync script — and a test proving the ordinary due query cannot silently pull unbounded history. Pre-2024 elections are absent from the manifest repo; anything older runs raw-path-only and is a separate, later decision.
 
@@ -169,7 +171,7 @@ Fixtures are compact captured rows/frontmatter, not dataset dumps.
 - Manifest parser: schema drift (unknown keys pass, missing known keys fail), synthetic-id fallback for id-less committees, dual-direction committee relations, fetch fallback.
 - SODA client: paging, retry, `$where` construction, malformed-row rejection, cents conversion.
 - Source guarantees: duplicate-`filing_nid` assertion fires; `sync_flag`/freshness gates blockwrites; anomaly bounds.
-- Contributor formula: Sch A + C + 496/497P1 composition, late-period dedupe vs later 460s, refund sign handling and bucket exclusion, `entity_code` individual filter, memo-row rule as proven in Phase 0.
+- Contributor formula: Sch A + C + 496/497P1 composition, late-period dedupe vs later 460s, refund sign handling and bucket exclusion, `entity_code` individual filter, memo-row rule as proven by the Phase 4 entry gate.
 - Resolver: manifest-driven linking, ambiguous-name fail-closed, disappearance flagging, prior-office committee rejection.
 - Public funds: name+district match, approved-only summation, ambiguity fail-closed.
 - Eligibility: per-office scope matrix from Phase −1, seat parsing, non-SF CA rejection, LA/CA-state adapters untouched.
@@ -177,7 +179,7 @@ Fixtures are compact captured rows/frontmatter, not dataset dumps.
 - No-AI guarantee: sync path performs zero classifier calls; unresolved labels enqueue to the manual due queue.
 - Loader registration and shared finance output shape; flag gating; scheduler-choice behavior.
 
-Validation gates: backend typecheck; focused SF tests; full backend suite; empty-database migration run; api-client tests; live Lurie + June-2026-D4 probe matching the rendered dashboards to the cent on both paths; then a live 2026-cycle run against real linked candidates once rosters exist, and database-backed candidate-profile API verification.
+Validation gates: backend typecheck; focused SF tests; full backend suite; empty-database migration run; api-client tests; live Lurie + June-2026-D4 probe with manifest headline and outside values matching the rendered dashboards to the cent, while the raw path validates the proven contribution formula and records residuals (raw expenses and outside tagging are documented as non-reproducible); then a live 2026-cycle run against real linked candidates once rosters exist, and database-backed candidate-profile API verification.
 
 ## Sequencing
 

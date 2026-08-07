@@ -57,7 +57,7 @@ function stringValue(row: Record<string, unknown>, key: string): string {
 async function fetchRows(
   url: string,
   options: SanFranciscoOpenDataClientOptions,
-): Promise<Record<string, unknown>[]> {
+): Promise<{ rows: Record<string, unknown>[]; rawCount: number }> {
   const retries = options.retryCount ?? 2;
   const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
   for (let attempt = 0; attempt <= retries; attempt += 1) {
@@ -84,10 +84,16 @@ async function fetchRows(
       const payload: unknown = await response.json();
       if (!Array.isArray(payload))
         throw new Error("San Francisco Open Data response is not an array");
-      return payload.filter(
-        (row): row is Record<string, unknown> =>
-          typeof row === "object" && row !== null && !Array.isArray(row),
-      );
+      // rawCount (pre-filter) is what pagination must compare against the
+      // page limit: dropping a malformed element from a full page must not
+      // end pagination early and silently lose the remaining pages.
+      return {
+        rawCount: payload.length,
+        rows: payload.filter(
+          (row): row is Record<string, unknown> =>
+            typeof row === "object" && row !== null && !Array.isArray(row),
+        ),
+      };
     } catch (error) {
       if (
         attempt < retries &&
@@ -125,9 +131,9 @@ async function fetchAllPages(
       url.searchParams.set(key, value);
     url.searchParams.set("$limit", String(pageLimit));
     url.searchParams.set("$offset", String(page * pageLimit));
-    const rows = await fetchRows(url.toString(), options);
+    const { rows, rawCount } = await fetchRows(url.toString(), options);
     results.push(...rows);
-    if (rows.length < pageLimit) return results;
+    if (rawCount < pageLimit) return results;
   }
   throw new Error(
     `San Francisco Open Data query exceeded ${maxPages} pages: ${datasetId}`,
@@ -246,7 +252,9 @@ export async function getSanFranciscoCandidateTargetedSpending(
         "fppc_id,filer_name,form_type,support_oppose_code,sum(calculated_amount) AS amount,count(*) AS transaction_count",
       $where: conditions.join(" AND "),
       $group: "fppc_id,filer_name,form_type,support_oppose_code",
-      $order: "amount DESC",
+      // Offset pagination needs a total order; ":id" is unavailable on
+      // aggregate queries, so the group keys are the tiebreakers.
+      $order: "amount DESC,fppc_id,filer_name,form_type,support_oppose_code",
     },
     options,
   );
@@ -272,6 +280,11 @@ export type SanFranciscoPublicFundsRow = {
   candidateName: string;
   /** "Mayor" or a supervisor district number. */
   district: string;
+  /**
+   * Diagnostic only: the source stopped populating this column (verified
+   * live: 152 valid approved rows carry it blank). Never gate approval on
+   * it — every published funds_approved row is an approval.
+   */
   pendingCompleted: string | null;
   fundsApprovedCents: number;
 };

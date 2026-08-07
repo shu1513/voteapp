@@ -146,6 +146,40 @@ describe("getSanFranciscoCandidateTargetedSpending", () => {
     ]);
   });
 
+  it("orders grouped pages with a total order and keeps paging past filtered rows", async () => {
+    const requestedUrls: string[] = [];
+    const pageLimit = 2;
+    // Page 1 is "full" (rawCount = pageLimit) but one element is malformed
+    // and filtered out — pagination must still fetch page 2.
+    const pages = [
+      [
+        {
+          fppc_id: "1488188",
+          filer_name: "GROWSF",
+          form_type: "F496",
+          support_oppose_code: "S",
+          amount: "1.00",
+          transaction_count: "1",
+        },
+        "not-an-object",
+      ],
+      [],
+    ];
+    const fetchImpl: typeof fetch = async (input) => {
+      requestedUrls.push(String(input));
+      return new Response(JSON.stringify(pages.shift() ?? []), { status: 200 });
+    };
+    const rows = await getSanFranciscoCandidateTargetedSpending(
+      { candidateLastName: "Wong" },
+      { fetchImpl, pageLimit },
+    );
+    expect(rows).toHaveLength(1);
+    expect(requestedUrls).toHaveLength(2);
+    expect(new URL(requestedUrls[0]!).searchParams.get("$order")).toBe(
+      "amount DESC,fppc_id,filer_name,form_type,support_oppose_code",
+    );
+  });
+
   it("rejects malformed transaction dates", async () => {
     await expect(
       getSanFranciscoCandidateTargetedSpending(
