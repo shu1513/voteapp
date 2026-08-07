@@ -40,6 +40,7 @@ import { loadVirginiaCandidateFinanceSummariesByCandidateElection } from "../vir
 import { loadMaineCandidateFinanceSummariesByCandidateElection } from "../maineFinance/maineBallotLookupFinanceLoader.js";
 import { loadMarylandCandidateFinanceSummariesByCandidateElection } from "../marylandFinance/marylandBallotLookupFinanceLoader.js";
 import { loadOhioCandidateFinanceSummariesByCandidateElection } from "../ohioFinance/ohioBallotLookupFinanceLoader.js";
+import { loadNorthCarolinaCandidateFinanceSummariesByCandidateElection } from "../northCarolinaFinance/northCarolinaBallotLookupFinanceLoader.js";
 import { loadMichiganCandidateFinanceSummariesByCandidateElection } from "../michiganFinance/michiganBallotLookupFinanceLoader.js";
 import { loadMassachusettsCandidateFinanceSummariesByCandidateElection } from "../massachusettsFinance/massachusettsBallotLookupFinanceLoader.js";
 import { loadWisconsinCandidateFinanceSummariesByCandidateElection } from "../wisconsinFinance/wisconsinBallotLookupFinanceLoader.js";
@@ -863,6 +864,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "CA", load: loadCaliforniaCandidateFinanceSummariesByCandidateElection },
   { state: "CA", load: loadLosAngelesCandidateFinanceSummariesByCandidateElection },
   { state: "OH", load: loadOhioCandidateFinanceSummariesByCandidateElection },
+  { state: "NC", load: loadNorthCarolinaCandidateFinanceSummariesByCandidateElection },
 ];
 
 // Fault-isolated sources swallow errors that previously reached the API

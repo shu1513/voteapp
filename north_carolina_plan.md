@@ -367,7 +367,9 @@ The acquisition spike is the gate before parser/aggregator work.
   eligible set DB-grounded 2026-08-06: only `state_upper::State Senator` +
   `state_lower::State Lower Chamber Legislator` (zero Council-of-State 2026
   rows; the lone statewide row is United States Senator = federal/FEC)
-- [ ] PR 2 loader + wiring + coverage note
+- [x] PR 2 loader + wiring + coverage note — characterization pin, `NC`
+  registry entry, `NORTH_CAROLINA_SBE` union + `FINANCE_SUMMARY_SOURCES` +
+  `format.ts` label ("North Carolina State Board of Elections") + test
 - [ ] PR 3 acquisition spike (user-authorized)
 - [ ] PR 4 client + cache + parsers + acquisition script
 - [ ] PR 5 resolver + auto-link
