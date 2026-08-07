@@ -162,11 +162,11 @@ export default function ElectionScreen() {
     (hasSaved && matchedOnMyIssues.length > 0 && matchedOnMyIssues.length < partyFilteredCandidates.length);
   const visibleCandidates = recordsFilterOn ? matchedOnMyIssues : partyFilteredCandidates;
   const hiddenByRecordsFilter = partyFilteredCandidates.length - matchedOnMyIssues.length;
-  // Per-candidate result badges (Won / Advanced / Lost / …); the matching
-  // guards — roster-matched winners only, losers only under an exhaustive
-  // winner set — live in deriveCandidateResultBadges. Mirrors the web
-  // election page.
-  const resultBadges = deriveCandidateResultBadges(data.results, data.candidates);
+  // Per-candidate result badges (Won / Advanced / Lost / …); the matching and
+  // completeness guards — roster-matched winners only, losers only where the
+  // outcome's own signal proves the race decided — live in
+  // deriveCandidateResultBadges. Mirrors the web election page.
+  const resultBadges = deriveCandidateResultBadges(data.results, data.candidates, data.seats_to_fill ?? null);
 
   return (
     <ScrollView className="flex-1 bg-white" contentContainerClassName="px-4 py-8">

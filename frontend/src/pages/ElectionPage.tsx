@@ -180,10 +180,11 @@ export function ElectionPage() {
   // to register (mirrors RegisterToFollowButton). me is undefined while the
   // session loads — render nothing then to avoid a flash of the wrong button.
   const showRegisterToPick = me === null && data.election_date >= usLatestLocalDate();
-  // Per-candidate result badges (Won / Advanced / Lost / …); the matching
-  // guards — roster-matched winners only, losers only under an exhaustive
-  // winner set — live in deriveCandidateResultBadges.
-  const resultBadges = deriveCandidateResultBadges(data.results, data.candidates);
+  // Per-candidate result badges (Won / Advanced / Lost / …); the matching and
+  // completeness guards — roster-matched winners only, losers only where the
+  // outcome's own signal proves the race decided — live in
+  // deriveCandidateResultBadges.
+  const resultBadges = deriveCandidateResultBadges(data.results, data.candidates, data.seats_to_fill ?? null);
   // Full set, uncapped — the list card previews these; the detail page is
   // where they all fit. Measure elections skip this row: the measure section
   // already shows the same areas with their for/against stance. The ??
