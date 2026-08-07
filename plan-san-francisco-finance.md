@@ -82,7 +82,7 @@ Source guarantees verified and relied upon:
 
 ## Goal and v1 scope
 
-San Francisco municipal candidate races: Mayor, Board of Supervisors, City Attorney, District Attorney, Sheriff, Treasurer, Assessor-Recorder, Public Defender, Board of Education (Community College Board pending the Phase −1 decision).
+San Francisco municipal candidate races: Mayor, Board of Supervisors, City Attorney, District Attorney, Sheriff, Treasurer, Assessor-Recorder, Public Defender, Board of Education. Community College Board is excluded from v1 (Phase −1 decision — no district type or canonical office; follow-up migration filed above).
 
 Per candidate and election cycle:
 
@@ -194,7 +194,7 @@ Validation gates: backend typecheck; focused SF tests; full backend suite; empty
 
 ## Sequencing
 
-1. **Phase −1**: office-scope confirmation + Community College Board modeling decision. Roster work (all nine/ten races) proceeds in parallel via the manual-research skill.
+1. **Phase −1** (done): office-scope confirmation + Community College Board deferral. Roster work (the eight Nov 2026 races in the local database) proceeds in parallel via the manual-research skill.
 2. **Phase 0** dual-path validation. Gate + architecture decision.
 3. Phases 1–6 (clients, eligibility, identity, aggregation, schema, sync).
 4. Phase 7 scheduling decision wired into deploy config; Phase 8 loader + label; Phase 9 validation.
