@@ -38,19 +38,50 @@ export type CandidateProfilePayloadParseOptions = {
 // comfortably (live over-cap example: a 560-character organizer bio with
 // runoff percentages). The prompt states the formula; this cap and the
 // horse-race patterns below are the enforcement, so manual-research payloads
-// hit the same wall as AI ones.
+// hit the same wall as AI ones. The sentence count itself stays prompt
+// guidance only: counting sentences mechanically false-rejects legitimate
+// abbreviations ("St. Paul", "Jr.", "D.C."), so the cap is the enforceable
+// proxy for it.
 export const CANDIDATE_PROFILE_SUMMARY_MAX_LENGTH = 300;
 
 // The app renders the contest name, date, and stage beside the summary, so
 // race content inside it is always redundant and goes stale after election
 // day. Patterns stay narrow on purpose — "primary" alone would reject
-// "primary care physician".
+// "primary care physician". These phrases are horse-race in any context:
 const SUMMARY_HORSE_RACE_PATTERNS: ReadonlyArray<{ pattern: RegExp; label: string }> = [
   { pattern: /\brunning for\b/i, label: 'the phrase "running for"' },
   { pattern: /\bseeking\s+re-?election\b/i, label: 'the phrase "seeking re-election"' },
-  { pattern: /\brunoff\b/i, label: '"runoff"' },
-  { pattern: /\d+(?:\.\d+)?\s*(?:%|percent\b)/i, label: "a percentage (vote-share/horse-race content)" },
 ];
+
+// "runoff" and percentages are horse-race only in an electoral sentence —
+// "reducing agricultural runoff" and "cut uninsured rates by 15%" are
+// legitimate biography facts, while "advanced to the runoff with 26%" is race
+// coverage. Cue matching is scoped to the sentence carrying the term so a cue
+// in one sentence cannot condemn a fact in the other ("Former election
+// commissioner. Cut clinic costs by 20%." must pass). The naive [.!?] split
+// only ever shrinks a sentence, so a mis-split ("U.S.") can only under-block,
+// never false-reject.
+const SUMMARY_PERCENTAGE = /\d+(?:\.\d+)?\s*(?:%|percent\b)/i;
+const PERCENTAGE_ELECTORAL_CUE =
+  /\b(?:votes?|voters|primar(?:y|ies)(?!\s+(?:care|school))|elections?|runoffs?|polls?|polling|ballots?|re-?elections?)\b/i;
+const RUNOFF_ELECTORAL_CUE =
+  /\b(?:advanc(?:e[ds]?|ing)|faces|opponents?|elections?|primar(?:y|ies)|votes?|voters|ballots?|polls?|percent)\b|%/i;
+
+function findSummaryHorseRaceContent(summary: string): string | null {
+  const phrase = SUMMARY_HORSE_RACE_PATTERNS.find(({ pattern }) => pattern.test(summary));
+  if (phrase) {
+    return phrase.label;
+  }
+  for (const sentence of summary.split(/(?<=[.!?])\s+/)) {
+    if (SUMMARY_PERCENTAGE.test(sentence) && PERCENTAGE_ELECTORAL_CUE.test(sentence)) {
+      return "a vote percentage (horse-race content)";
+    }
+    if (/\brunoff\b/i.test(sentence) && RUNOFF_ELECTORAL_CUE.test(sentence)) {
+      return '"runoff" in an electoral context';
+    }
+  }
+  return null;
+}
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
@@ -310,12 +341,12 @@ export function parseCandidateProfilePayload(
           `payload.summary is ${trimmedSummary.length} characters (max ${CANDIDATE_PROFILE_SUMMARY_MAX_LENGTH}) — voters skim it next to the contest. Rewrite as 2 sentences: current role, 1-2 credentials, top 2 priorities; cut everything else.`,
       };
     }
-    const horseRaceMatch = SUMMARY_HORSE_RACE_PATTERNS.find(({ pattern }) => pattern.test(trimmedSummary));
-    if (horseRaceMatch) {
+    const horseRaceLabel = findSummaryHorseRaceContent(trimmedSummary);
+    if (horseRaceLabel) {
       return {
         ok: false,
         reason:
-          `payload.summary contains ${horseRaceMatch.label} — the app already names the contest next to the summary, so campaign-status and horse-race content is banned. Describe who the person is (current role, 1-2 credentials, top 2 priorities), not the race.`,
+          `payload.summary contains ${horseRaceLabel} — the app already names the contest next to the summary, so campaign-status and horse-race content is banned. Describe who the person is (current role, 1-2 credentials, top 2 priorities), not the race.`,
       };
     }
     summary = trimmedSummary;

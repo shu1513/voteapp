@@ -395,15 +395,38 @@ describe("parseCandidateProfilePayload", () => {
   });
 
   it("does not false-positive the horse-race patterns on biography wording", () => {
-    // "primary care physician" and "percentage" must survive — the patterns
-    // stay narrow so legitimate bios are not rejected.
+    // Percentages and "runoff" are horse-race only in an electoral sentence:
+    // biography statistics, policy runoff, and cross-sentence cue collisions
+    // ("election commissioner" beside a clinic statistic) must all survive.
+    const biographySummaries = [
+      "Primary care physician and clinic director. Priorities: lowering the percentage of uninsured residents and expanding rural clinics.",
+      "Pediatrician who cut uninsured rates by 15% in her county. Priorities: expanding rural clinics and lowering drug costs.",
+      "Farmer and county water-board member. Priorities: reducing agricultural runoff and improving drinking-water quality.",
+      "Former election commissioner. Cut clinic costs by 20% as hospital administrator.",
+    ];
+    for (const summary of biographySummaries) {
+      const parsed = parseCandidateProfilePayload({
+        display_name: "Jane Doe",
+        first_name: "Jane",
+        last_name: "Doe",
+        has_held_public_office: false,
+        summary,
+        sources: ["https://example.org/profile"],
+      });
+      expect(parsed.ok, summary).toBe(true);
+    }
+  });
+
+  it("accepts three short sentences under the cap — sentence count is prompt guidance only", () => {
+    // Enforcing a sentence count mechanically would false-reject legitimate
+    // abbreviations ("St. Paul", "Jr."); the 300-character cap is the
+    // enforceable proxy.
     const parsed = parseCandidateProfilePayload({
       display_name: "Jane Doe",
       first_name: "Jane",
       last_name: "Doe",
       has_held_public_office: false,
-      summary:
-        "Primary care physician and clinic director. Priorities: lowering the percentage of uninsured residents and expanding rural clinics.",
+      summary: "High-school teacher in St. Paul. Former school-board member. Priorities: smaller classes and safer streets.",
       sources: ["https://example.org/profile"],
     });
 
