@@ -1,0 +1,380 @@
+# North Carolina campaign finance — implementation plan
+
+Date: 2026-08-06. Governs the North Carolina state-finance build. Read
+alongside `plan.md` ("Pause point — add new states") and
+`docs/finance-module-capability-matrix.md` — their rules apply to every PR
+here. Feasibility research: agent report dated 2026-08-02, independently
+re-verified live 2026-08-06 (every money number reproduced; two portal quirks
+the report missed are folded into decisions 9–10). Do not re-hit the portal
+during code-only PRs — portal work happens only in the acquisition spike, when
+authorized.
+
+## Verdict
+
+North Carolina is born on the shared factories with **zero migration debt**
+and **zero new factory capability**. Canonical identity (`committee_id` =
+NCSBE `SBoEID`, e.g. `STA-JV516O-C-001`; `committee_name`), all 5 standard
+tables, standard summary columns, std direct categories (`occupation` +
+`contribution_size` — unlike Ohio, NC's separate `Profession` /
+`EmployersName` fields make occupations shippable), donor/industry outside
+breakdowns. Reference siblings: **ohio** (the first pause-point state — same
+ladder) and **maryland** (writer/loader/auto-link shape); diff against them
+before writing each file.
+
+Two structural advantages over Ohio, verified live: **no Cloudflare wall**
+(plain unauthenticated HTTP works — ~15 probe requests, zero blocks) and
+**per-report JSON endpoints** instead of 90 MB bulk CSVs. One structural
+disadvantage: ~24% of independent-expenditure filings are image-only
+(23 of 95 in the 2026 inventory) — v1 ships with an `outsideCoverageNote`
+from day one (decision 13).
+
+Scope: direct finance (receipts, expenditures, cash, contribution sizes,
+occupations) + structured outside support/oppose + outside-group
+funders/industries (#3, last feature PR — tennessee/ohio pattern). PDF/image
+fallback and county/municipal candidates are out of v1 (decisions 2, 13).
+
+## Shared-piece config (settled)
+
+- **Writer** — `createStandardStateFinanceSnapshotWriter` wrapper, ohio/maryland
+  pattern:
+  - `label: "North Carolina"`, `minElectionYear: 2000`
+  - `summaryUpdatePolicy`: replace all summary fields, preserve-when-null the
+    two outside totals (direct and outside are built from different artifact
+    sets; a direct-only refresh must not wipe outside totals)
+  - `outsideGroupValidation: "pairing"` — **mandatory**, cascade-FK trap
+  - `supersededLinkSource`: `ncsbe_portal` (settled at PR 1; the link-source
+    CHECK value next to `'manual'` — OH `sos_bulk_export` precedent)
+  - `normalizeCommitteeId`: trim + upper-case. PR 1 validates loosely
+    (nonempty after trim); the exact SBoEID regex is pinned at PR 4 from
+    spike bytes, not invented at PR 1. All synthetic keys are defined
+    uppercase (decision 6) so the normalizer stays unconditional.
+  - No pool-guard stub — ohio precedent (maryland's `requireMarylandPool`
+    is legacy; `ohioFinanceWriter.ts` has none).
+- **Due-list** — `createStandardStateFinanceDueListQuery` with
+  `linkColumns: ["committee_id", "committee_name", "link_source"]` + `mapRow`
+  (ohio pattern, `ohioCandidateFinanceBatchSync.ts:657`): `link_source` rides
+  in the due row and is written back as-is, so manual links keep provenance
+  and auto-supersession immunity. Canonical config without it would re-key
+  manual links to the bulk source on every sync.
+- **Loader** — `loadStandardStateFinanceSummariesByCandidateElection` wrapper
+  (~40 lines, ohio shape): defaults + `isEligibleElection` +
+  `evidenceLabelTypes: ["donor"]` + `outsideCoverageNote` (decision 13).
+  Characterization test via
+  `tests/helpers/stateFinanceLoaderCharacterization.ts` written **up front**.
+- **Auto-link** — copy ohio/maryland auto-linker shape over the committee
+  search results (decision 5).
+
+## Schema
+
+`db/migrations/212_add_north_carolina_campaign_finance_tables.sql` (211 is
+owned by open PR #563) — clone
+the ohio migration (210), `nc_` prefix. Identifiers ≤63 chars: longest is
+`nc_candidate_finance_direct_breakdowns_source_url_check` (55); the
+outside-group-breakdowns table uses the short constraint prefix `nc_cff_`
+(maryland's `md_cff_` trick). Link-source CHECK lists `'manual'` + the NC bulk
+source. Amounts CHECK `>= 0` (canonical).
+
+Per the hardened pause-point rules: **the read flag is wired end-to-end in
+this same PR** — `render.yaml` and `backend/.env.example` (both committable;
+`backend/.env` itself is gitignored, so the flag is added by hand to the main
+checkout's `.env` at merge time — Ohio shipped without any of this and
+rendered nothing).
+
+## Settled design decisions
+
+1. **Data access is per-report JSON/CSV over stable GET routes** (verified
+   live 2026-08-06, unauthenticated):
+   - Committee search:
+     `/CFOrgLkup/CommitteeGeneralResult/?name=<q>&useOrgName=True&useCandName=True&useInHouseName=True&useAcronym=False`
+     — page embeds JSON with `CommitteeName`, `CandidateName`, `SBoEID`,
+     `OrgGroupID`, status.
+   - Document inventory:
+     `/CFOrgLkup/DocumentGeneralResult/?OGID=<OrgGroupID>&SID=<SBoEID>` — page
+     embeds JSON rows with `ReportType`, `IsAmendment`, `ImageReceiptDate`,
+     `DataImportDate`, `PeriodStartDate/EndDate`, `DataLink` (structured
+     report ID) and `ImageLink` (scanned doc).
+   - Report cover + summary: `/CFOrgLkup/ReportDetail/?RID=<id>&TP=ALL` —
+     page embeds a summary JSON array of `{Section, Period, Cycle}` rows
+     (Total Receipts / Total Expenditures / Cash on Hand at End of Reporting
+     Period / …).
+   - Transactions: `/CFOrgLkup/GetReceipts?ReportID=<id>&page=<n>&pageSize=<m>`
+     and `/CFOrgLkup/GetExpenditures?ReportID=<id>&ShowIEColumns=true&page=<n>&pageSize=<m>`
+     — real JSON (`Data.recordCountKey` + `Data.results`).
+   - CSV export: `/CFOrgLkup/ExportDetailResults/?ReportID=<id>&Type=ALL&Title=<t>`
+     (`text/csv`, COVER section included) — reconciliation artifact.
+   - The **advanced transaction search (`/CFTxnLkup/`) is not an ingestion
+     path** (session-backed, slow); it is a later completeness-audit tool
+     only.
+2. **Eligible offices v1** (DB-grounded at PR 1 against NC 2026 election
+   rows): NC state-controlled filings cover Council of State, NC House, NC
+   Senate, judicial, and district attorney. v1 eligible set = `state_upper` +
+   `state_lower` legislators plus whatever statewide Council-of-State rows
+   actually exist for the cycle (2026 is a midterm — most Council of State
+   races run in presidential years — when a presidential cycle enters scope,
+   the full ten-office Council of State set becomes eligible: Governor, Lt.
+   Governor, Attorney General, Secretary of State, Auditor, Treasurer,
+   Agriculture/Insurance/Labor Commissioners, Superintendent of Public
+   Instruction; grounded against real election rows then, not invented now).
+   **No judicial offices** (no existing
+   state's eligible list has any — grep-verified precedent from the Ohio
+   plan); DA deferred with them. **County and municipal candidates excluded**
+   — they file with county boards and appear in the state portal only when
+   filed electronically; never advertise local coverage.
+3. **Support/oppose fail-closed**: only expenditure rows with
+   `ExpenditureTypeDesc = "Independent Expenditure"` AND explicit
+   `Declaration` of `Support`/`Oppose` enter outside totals. Blank or other
+   declarations → excluded-amount + row-count diagnostics. Never infer
+   direction from a group's name or politics. Electioneering communications
+   stay out entirely.
+4. **Outside amount = `IEAmount`, never `Amount`** (verified live: report
+   RID=232624 has 39 target rows; `IEAmount` sums to $29,306.30 = official
+   total, while `Amount` repeats the full vendor invoice on every target row
+   and sums to $49,306.29 — a $20K overstatement). Reconcile the `IEAmount`
+   sum to the report's official expenditure total with a tolerance of one
+   cent per split vendor transaction, not a percentage. No dedup on
+   (date, vendor, `Amount`) — one invoice legitimately yields several target
+   rows; expenditure fingerprints (decision 8) include candidate, direction,
+   and `IEAmount`.
+5. **Candidate matching — fail closed.** Direct link: exact normalized
+   candidate name + one active, non-exempt candidate committee from the
+   committee search; multiple plausible matches quarantine; manual override
+   keyed by `SBoEID`. Outside targets: rows carry `Candidate` (observed
+   format `LAST FIRST`, e.g. `PIERCE RODNEY`) + broad `OfficeSought`
+   (`House`, no district). Match = normalized name + cycle uniquely matching
+   exactly one NC candidate, with office as a *confirming* filter only
+   (Ohio's decision-5 lesson: requiring office quarantines the biggest rows).
+   **Federal targets are filtered before matching** (verified live:
+   `US HOUSE OF REPRESENTATIVES` rows appear in the same report) — FEC owns
+   federal money; NC federal rows survive only as audit artifacts. No fuzzy
+   matching anywhere.
+6. **Outside-group identity**: `SBoEID` when present; else the portal's
+   numeric `OrgGroupID` resolved by exact entity search as `NC-OGID:<id>`;
+   else a synthetic source-scoped key `NC-IE-FILER:<sha256-of-normalized-name>`.
+   All keys uppercase by definition, so the writer's unconditional upper-case
+   normalizer never mangles a namespace. Never key on the literal `No Id`. Noncommittee filers' same-report donation rows
+   (verified live: Rolling Sea Fund $24,506 `Donation` inside the Advance NC
+   IE report) aggregate under the label **disclosed IE funders** — never
+   presented as the group's full funding, never backfilled from older cycles.
+7. **Occupations ship for NC** (the feature Ohio had to kill): built only
+   from itemized individual receipts —
+   `ReceiptTypeCode == "IND "` (**trailing space is real**, pin it),
+   `IsAggregated == false`, `Amount > 0`. Sum `Amount`; never `SumToDate`
+   (contributor-cumulative). `Profession` and `EmployersName` are separate
+   fields; never infer occupation from employer. Placeholder vocabulary
+   (`Not Employed`, `Retired`, `Self`, blank, …) is pinned from spike bytes
+   and excluded from `top_occupations` (counted in diagnostics). Employer
+   values live in raw artifacts/diagnostics only — the canonical direct
+   tables accept only `occupation` and `contribution_size` categories
+   (industry routing is a deferred factory capability, per plan.md), so no
+   direct employer/industry rows are written. Aggregated individual
+   money stays in direct totals but outside occupation rows. Publish
+   occupation dollar coverage as a diagnostic.
+   **Derived-stat inputs**: `direct_contribution_total` = individual
+   contributions (itemized `IND ` + properly aggregated individual money);
+   contribution-size buckets = itemized individual transaction amounts
+   (VoteApp standard buckets). The full `ReceiptTypeCode` → (official
+   receipts / direct contributions / size buckets / occupations) mapping
+   table is a spike deliverable, pinned from real bytes; a code outside the
+   pinned set quarantines the derived breakdowns and `direct_contribution_total`
+   for that candidate (cover-summary totals are unaffected — decision 11),
+   never just a counter.
+8. **Report selection + amendments**: group filings by (filer, report type,
+   period start, period end); within a group, select by **filing chronology
+   first** — newest `ImageReceiptDate` (what was legally filed last), with
+   `DataImportDate` only as tie-break; import order is administrative and can
+   lag or reorder (an older amendment imported later must not beat a newer
+   one). The grouping key is not assumed unique — if a group's lineage stays
+   ambiguous (multiple non-amendment originals sharing a period beyond the
+   48-hour case), fail closed and quarantine the group. **If the
+   selected-newest filing in a group is image-only (`DataLink` empty), the
+   period is superseded-unavailable — never silently keep the older
+   structured report. When that (or a failed reconciliation) hits a required
+   direct period, the sync WRITES the honest snapshot: direct summary fields
+   null + direct breakdowns emptied (outside totals preserved by the writer's
+   preserve-when-null policy) — it does not skip the write and leave stale
+   money visible.** A transport failure is different: keep the previous valid
+   snapshot (ohio distinction — absence of evidence vs evidence of
+   supersession). Receipts keep source `GroupID` + report ID; expenditure row
+   identity = report ID + row ordinal within the report (byte-identical
+   legitimate rows must survive — Ohio's V-PAC filed three identical $150K
+   rows). No cross-report dedup in v1; overlapping-period duplicate-looking
+   rows land in a diagnostic, and a dedup rule is added only if the spike
+   proves the portal actually repeats transactions across selected reports.
+   Whole-artifact refresh: rebuild each candidate snapshot from the current
+   selected set; replace, never append.
+9. **Paging + fail-closed transport** (both found in re-verification, absent
+   from the feasibility report):
+   - `GetReceipts`/`GetExpenditures` **require `page` (0-indexed) and
+     `pageSize`** — a bare call returns HTTP 200 with an HTML error page.
+     Every JSON fetch validates content shape (parses as JSON, has
+     `Data.results`) and pages until row count equals `recordCountKey`;
+     mismatch fails the report closed.
+   - The doc-type inventory GET requires **single-quoted codes**:
+     `/CFDocLkup/DocumentResult/?year=<Y>&reports=%27IRIEX%27,%27IRCIX%27,%27RPIER%27`
+     — the unquoted form is an error page. Query all three IE codes for both
+     cycle years (2026 inventory verified live: 95 filings = 72 structured +
+     23 image-only, 4 amendments).
+10. **Artifact retrieval**: plain HTTP with a descriptive user agent works —
+    no browser session needed (the opposite of Ohio). Low concurrency (1–2
+    in flight), delays between requests, bounded retries with backoff.
+    Retrieval stays separate from parsing: fetch → validate → SHA-256 →
+    atomic install with manifest; sync reads cache only. **The portal is an
+    early-2000s ASP.NET app the state is actively replacing** (2026-05 RFP)
+    — route changes are expected migration work, so every route lives in the
+    client module, nowhere else. Report IDs are discovered from inventories
+    each run, never hardcoded.
+11. **Summary calculation**: for election year Y, select regular reports
+    covering Y−1 and Y within the candidate's cycle. `total_receipts` /
+    `total_disbursements` = sum of selected reports' official **Period**
+    section values (cover summary is authoritative; itemized sums are
+    reconciliation diagnostics — Ohio's lesson: itemized-only missed a
+    $25.4M non-itemized transfer). `cash_on_hand` = latest selected report's
+    end-of-period cash; **never sum cash across reports**. The Y−1..Y window
+    is the house convention for every state including 4-year offices
+    (maryland + ohio governors, grep-verified) — NC does not invent
+    office-term cycle math. The newest report's **Cycle** column ("Total this
+    Election") is a second cycle-level check only; its semantics for offices
+    whose legal cycle exceeds Y−1..Y are unconfirmed (spike item) — on
+    mismatch, drop the check for that office class, never widen the window.
+    **48-hour reports never enter totals** (their contributions
+    reappear on the next scheduled report; on the probed committee they were
+    image-only anyway). Negative cash: write NULL + diagnostic, never clamp
+    (canonical schema rejects negatives).
+12. **Flags** (free read flag ON in `backend/.env` per policy; others off):
+    - `NORTH_CAROLINA_CAMPAIGN_FINANCE_ENABLED`
+    - `NORTH_CAROLINA_CAMPAIGN_FINANCE_SYNC_ENABLED`
+    - `NORTH_CAROLINA_NCSBE_RAW_DATA_REFRESH_ENABLED` (house raw-refresh
+      naming)
+    Paper/PDF fallback gets its own flag only when that path is built.
+13. **Structured-coverage gap is disclosed with the totals**: set the
+    loader's `outsideCoverageNote` (the seam decision 13 of the Ohio plan
+    built). The gap is **reports without a structured `DATA` view** (23 of 95
+    IE filings in the 2026 inventory) — not "paper filings": staff-entered
+    paper reports can gain a `DATA` view, and e-filing thresholds differ by
+    filer type, so small filers may legally file paper indefinitely. Remove
+    the note only when a reviewed, fail-closed PDF/image path ships
+    (out of v1; last on the ladder, own gated flag). Never OCR into
+    production totals.
+14. **Source label**: `"NORTH_CAROLINA_SBE"` — `ILLINOIS_SBE` is the exact
+    precedent (Illinois State Board of Elections). New member in
+    `ballotLookupFinanceShared.ts` source union + `FINANCE_SUMMARY_SOURCES`,
+    registry entry in `ballotLookup.ts`, **and a display label
+    ("North Carolina State Board of Elections") in
+    `packages/api-client/src/format.ts` `FINANCE_SOURCE_LABELS` + test** —
+    the fallback title-cases raw enum values (`OHIO_SOS` renders "Ohio Sos"
+    today because its label was never added; do not repeat that).
+15. **Artifact manifest fields**: route + query params, report/document IDs,
+    retrieval time + the portal's "data current as of" stamp, SHA-256, byte
+    size + row count vs `recordCountKey`, amendment flag + import dates,
+    parser version, reconciliation result.
+
+## Acquisition spike must confirm (or revise) before parser work
+
+- Paging behavior on a large report (rows > pageSize; verify
+  `recordCountKey` completeness contract) — probes only saw ≤39-row reports.
+- Full `ReceiptTypeCode` vocabulary (probes saw `IND ` and `PPTY`) and the
+  cover-summary `Section` vocabulary — pin both, fail closed on strangers.
+- Occupation placeholder vocabulary from real bytes (decision 7).
+- `Candidate` name format variants in IE rows (`LAST FIRST` vs
+  `LAST FIRST MIDDLE`) and `OfficeSought` variants (`House` / `N.C. House` /
+  federal strings) — pin the normalizer table.
+- Structured-vs-image **dollar** coverage for the cycle (the 72/23 split is
+  filing counts, not dollars) — feeds the coverage-note wording.
+- SBoEID pattern across committee types (decision on the validation regex).
+- Rate-limit behavior under a real full-cycle pull (Ohio hit 429s; NC probes
+  were too small to know).
+- Whether every 2026 candidate committee's current report has structured
+  `DataLink` (the e-filing thresholds mean small committees may be
+  image-only — measures direct-finance coverage, not just outside).
+- **IE completeness**: whether registered committees' independent
+  expenditures appear ONLY in the `IRIEX`/`IRCIX`/`RPIER` inventories, or
+  also/instead inside their regular quarterly reports (`ShowIEColumns` rows)
+  — a miss means undercounting, an overlap means double-counting; pin the
+  rule from a spender with known IE activity in both views.
+- 48-hour reporting for **IE filers specifically** (their regime differs
+  from candidate committees' — confirm whether IE 48-hour rows also appear
+  on a later scheduled report before excluding them like direct 48-hours).
+- "Total this Election" Cycle-column semantics on a 4-year-office report
+  (decision 11's secondary check; a 2026-only spike can use any Council of
+  State committee's prior filings).
+- The full `ReceiptTypeCode` mapping table (decision 7) from real bytes.
+- Whether transactions ever repeat across selected overlapping-period
+  reports (decision 8's dedup question).
+
+## Required artifacts per cycle Y
+
+- Committee search result per roster candidate (resolver evidence)
+- Document inventory per linked committee (Y−1, Y)
+- Selected regular reports: cover/summary JSON + receipts JSON + expenditures
+  JSON (+ CSV export for reconciliation spot checks)
+- IE doc-type inventories: `IRIEX`, `IRCIX`, `RPIER` for Y−1 and Y
+- Selected IE reports: expenditures JSON (`ShowIEColumns=true`) + receipts
+  JSON (noncommittee disclosed funders, decision 6)
+- For #3: registered spender committees' document inventories + regular-report
+  receipts (funders/industries)
+- Coverage-gap table rows for every image-only filing encountered
+
+## Module layout
+
+`backend/src/pipeline/northCarolinaFinance/`: portal client (all routes +
+fail-closed transport), artifact cache, report inventory + snapshot selector
+(amendment logic), candidate committee resolver, direct-contribution
+aggregator, outside-spending aggregator, outside-group contribution
+aggregator (#3, last), writer wrapper, ballot-lookup loader wrapper, eligible
+offices, auto-link, sync, batchSync, `index.ts`.
+
+## PR sequence (one PR at a time; `npm run typecheck` + `npm test` green in `backend/`; cite matrix row)
+
+Code-only PRs 1–2 are data-independent and proceed under the no-portal rule.
+The acquisition spike is the gate before parser/aggregator work.
+
+1. Migration + writer wrapper + writer test + eligible offices (+ test) +
+   feature flags **wired into `backend/.env` and `render.yaml`**.
+2. Loader wrapper + characterization pin + flag-gate test + `ballotLookup.ts`
+   registry + `NORTH_CAROLINA_SBE` source union entry + `format.ts` display
+   label (+ test) + coverage note.
+3. **Acquisition spike** (needs user authorization for portal access; no
+   migration, no DB writes): pull the 2025–2026 cycle-to-date for several
+   candidates
+   spanning statewide/legislative + the complete IE inventory; confirm/refute
+   every item in "Acquisition spike must confirm"; capture real fixtures;
+   produce reconciliation + occupation-coverage + structured-coverage
+   reports.
+4. Portal client + artifact cache + parsers (fail-closed transport per
+   decision 9, manifests per decision 15, fixtures from spike) **+ committed
+   acquisition script** (label/inventory-driven discovery, paced sequential
+   fetches, SHA-256 + manifest install).
+5. Committee resolver (+ test) + auto-link (+ test).
+6. Aggregators: direct contributions (occupations per decision 7, summary per
+   decision 11) + outside spending (decisions 3–5, `IEAmount` reconciliation)
+   (+ tests).
+7. Sync + batchSync (due-list builder config) + npm scripts
+   (`north-carolina-candidates:finance:*`, ohio block as template) +
+   scheduler.
+8. **#3**: outside-group contribution aggregator (TN/OH pattern) + registered
+   spender receipts + noncommittee disclosed-funders + committee-label /
+   industry-label queue entries.
+9. **First live run through the committed acquisition script** (the final
+   gate — fresh portal pull, full sync, money-reconciliation + match-rate +
+   coverage report, **including an advanced-transaction-search spot audit**:
+   sample candidates' portal-search totals vs pipeline totals, catching rows
+   the report-type inventories missed). Later, separately gated: PDF/image
+   fallback; when it ships, remove the coverage note.
+
+## Status
+
+- [x] PR 1 schema + writer + flags (env + render.yaml) — migration 212;
+  eligible set DB-grounded 2026-08-06: only `state_upper::State Senator` +
+  `state_lower::State Lower Chamber Legislator` (zero Council-of-State 2026
+  rows; the lone statewide row is United States Senator = federal/FEC)
+- [ ] PR 2 loader + wiring + coverage note
+- [ ] PR 3 acquisition spike (user-authorized)
+- [ ] PR 4 client + cache + parsers + acquisition script
+- [ ] PR 5 resolver + auto-link
+- [ ] PR 6 aggregators
+- [ ] PR 7 sync + batchSync + scripts
+- [ ] PR 8 outside-group funders/industries (#3)
+- [ ] PR 9 live run (+ later: PDF path, own flag)
+
+Update the checklist + any changed decision here as PRs land; also update the
+north-carolina memory at campaign end.
