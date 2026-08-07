@@ -179,6 +179,26 @@ export function ElectionPage() {
   // to register (mirrors RegisterToFollowButton). me is undefined while the
   // session loads — render nothing then to avoid a flash of the wrong button.
   const showRegisterToPick = me === null && data.election_date >= usLatestLocalDate();
+  // Per-candidate result badges. results[0] is the most authoritative row
+  // (certified before election_night, then freshest — the API's sort order);
+  // only decisive outcomes mark candidates, and only when at least one winner
+  // was id-matched to the roster — a name-only (write-in) winner set would
+  // wrongly show every roster candidate as having lost. Non-winners are only
+  // marked on won/advanced, where the winner set is exhaustive by definition;
+  // a runoff row only names who continues, not who is out.
+  const currentResult = data.results.length > 0 ? data.results[0] : null;
+  const resultWinnerCandidateIds =
+    currentResult && ["won", "advanced", "runoff"].includes(currentResult.outcome)
+      ? new Set(
+          currentResult.winners
+            .map((winner) => winner.candidate_id)
+            .filter((id): id is string => typeof id === "string" && id.length > 0)
+        )
+      : null;
+  const winnerBadgeLabel =
+    currentResult?.outcome === "won" ? "Won" : currentResult?.outcome === "advanced" ? "Advanced" : "In runoff";
+  const loserBadgeLabel =
+    currentResult?.outcome === "won" ? "Lost" : currentResult?.outcome === "advanced" ? "Did not advance" : null;
   // Full set, uncapped — the list card previews these; the detail page is
   // where they all fit. Measure elections skip this row: the measure section
   // already shows the same areas with their for/against stance. The ??
@@ -573,17 +593,33 @@ export function ElectionPage() {
               >
                 <div className="p-4">
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="font-semibold">
-                      <Link
-                        to={`/candidates/${candidate.candidate_id}`}
-                        state={candidateNavState}
-                        // rausch-deep, not -dark: AA contrast on the tinted card
-                        // bg — see ElectionCard's title.
-                        className="transition after:absolute after:inset-0 group-hover:text-rausch-deep"
-                      >
-                        {candidate.display_name}
-                      </Link>
-                    </h3>
+                    {/* The badge sits beside the heading, not inside it: an
+                        in-heading badge fuses into the accessible name
+                        ("Jordan VoterAdvanced"). */}
+                    <span className="flex items-center gap-2">
+                      <h3 className="font-semibold">
+                        <Link
+                          to={`/candidates/${candidate.candidate_id}`}
+                          state={candidateNavState}
+                          // rausch-deep, not -dark: AA contrast on the tinted card
+                          // bg — see ElectionCard's title.
+                          className="transition after:absolute after:inset-0 group-hover:text-rausch-deep"
+                        >
+                          {candidate.display_name}
+                        </Link>
+                      </h3>
+                      {resultWinnerCandidateIds && resultWinnerCandidateIds.size > 0 ? (
+                        resultWinnerCandidateIds.has(candidate.candidate_id) ? (
+                          <span className="rounded border border-green-700 bg-green-50 px-2 py-0.5 text-xs font-medium text-green-900">
+                            {winnerBadgeLabel}
+                          </span>
+                        ) : loserBadgeLabel && candidate.status !== "withdrawn" ? (
+                          <span className="rounded border border-line bg-surface px-2 py-0.5 text-xs font-medium text-ink-soft">
+                            {loserBadgeLabel}
+                          </span>
+                        ) : null
+                      ) : null}
+                    </span>
                     {/* Withdrawn candidacies never reach this payload
                         (ballotLookup filters them), but the writer also
                         rejects withdrawn/lost — don't render a button whose

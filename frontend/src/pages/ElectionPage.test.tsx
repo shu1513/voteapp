@@ -5,6 +5,7 @@ import { ElectionPage, ErrorBoundary } from "./ElectionPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { electionDetail, financeSummary, ME_VERIFIED, VOTE_POWER_WITH_EXPLANATION } from "../test/fixtures";
+import type { ElectionDetail } from "@voteapp/api-client";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
 
@@ -1124,6 +1125,95 @@ describe("ElectionPage", () => {
     expect(await screen.findByRole("link", { name: "sos.example.gov" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "news.example.org" })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /official measure text/ })).not.toBeInTheDocument();
+  });
+});
+
+describe("ElectionPage candidate result badges", () => {
+  function officeResult(overrides: Partial<ElectionDetail["results"][number]> = {}) {
+    return {
+      id: "r-1",
+      pass_type: "election_night",
+      result_status: "unofficial",
+      outcome: "advanced",
+      winners: [{ candidate_id: "c-1", candidate_name: "Jordan Voter", party: "Independent" }],
+      source_url: "https://results.example.gov/governor",
+      retrieved_at: "2026-11-04T06:00:00.000Z",
+      ...overrides,
+    };
+  }
+
+  /** The badge text sitting next to one candidate's name, if any. */
+  function badgeFor(name: string): string | null {
+    const row = screen.getByRole("heading", { name }).parentElement;
+    const badge = row?.querySelector("span:not(:has(h3))");
+    return badge?.textContent ?? null;
+  }
+
+  it("marks who advanced and who did not", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ results: [officeResult()] }));
+
+    await screen.findByRole("heading", { name: "Governor" });
+    // The roster itself says who moved on — no trip to the results section.
+    expect(badgeFor("Jordan Voter")).toBe("Advanced");
+    expect(badgeFor("Riley Runner")).toBe("Did not advance");
+  });
+
+  it("says Won and Lost on a general-election result", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ results: [officeResult({ outcome: "won" })] }));
+
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(badgeFor("Jordan Voter")).toBe("Won");
+    expect(badgeFor("Riley Runner")).toBe("Lost");
+  });
+
+  it("marks only who continues in a runoff", async () => {
+    // A runoff row names who advances to the next round; it says nothing
+    // about who is out, so no loser badge goes out.
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ results: [officeResult({ outcome: "runoff" })] }));
+
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(badgeFor("Jordan Voter")).toBe("In runoff");
+    expect(badgeFor("Riley Runner")).toBeNull();
+  });
+
+  it("badges nobody when no winner matched the roster", async () => {
+    // A name-only (write-in) winner set is not exhaustive over the roster —
+    // marking every listed candidate as a loser would be a false statement.
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        results: [
+          officeResult({ outcome: "won", winners: [{ candidate_name: "Sam Writein" }] }),
+        ],
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(badgeFor("Jordan Voter")).toBeNull();
+    expect(badgeFor("Riley Runner")).toBeNull();
+  });
+
+  it("badges nobody on an undecided result", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({ results: [officeResult({ outcome: "too_close", winners: [] })] })
+    );
+
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(badgeFor("Jordan Voter")).toBeNull();
+    expect(badgeFor("Riley Runner")).toBeNull();
+  });
+
+  it("keeps the candidate name out of the badge's accessible name", async () => {
+    // Regression guard: an in-heading badge fused into the accessible name
+    // ("Jordan VoterAdvanced").
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ results: [officeResult()] }));
+
+    expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
   });
 });
 

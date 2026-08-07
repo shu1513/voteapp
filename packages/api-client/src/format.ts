@@ -83,6 +83,27 @@ export function formatOutcome(outcome: string): string {
   return spaced.length > 0 ? spaced[0].toUpperCase() + spaced.slice(1) : outcome;
 }
 
+/**
+ * "Jocelyn Benson (Democratic), John James (Republican)" from a result row's
+ * winners. Nameless entries (unmatched write-ins) drop out; returns "" when
+ * nothing remains so callers can append unconditionally.
+ */
+export function formatWinnerNames(
+  winners: readonly { candidate_name?: string; party?: string }[]
+): string {
+  return winners
+    .map((winner) => {
+      const name = winner.candidate_name?.trim();
+      if (!name) {
+        return null;
+      }
+      const party = winner.party?.trim();
+      return party ? `${name} (${party})` : name;
+    })
+    .filter((name): name is string => name !== null)
+    .join(", ");
+}
+
 // Mirrors the backend's FINANCE_INDUSTRY_DISPLAY_NAMES
 // (ballotLookupFinanceShared.ts). Finance industry categories arrive as
 // slugs; occupation categories arrive as free text and pass through

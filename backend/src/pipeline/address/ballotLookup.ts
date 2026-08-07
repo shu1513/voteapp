@@ -271,6 +271,10 @@ export type BallotLookupElectionSummary = {
   ballot_measure_id: string | null;
   has_results: boolean;
   current_result_outcome: string | null;
+  // Winners of the current (most authoritative) result row, so the ballot
+  // card can say WHO advanced/won, not just that a result exists. Empty for
+  // ballot measures (the outcome alone — passed/failed — is the answer).
+  current_result_winners: BallotLookupElectionResultWinner[];
   office: BallotLookupOfficeSummary | null;
   research_areas: BallotLookupResearchAreaSummary[];
   historical_competitiveness: BallotLookupHistoricalCompetitiveness | null;
@@ -432,6 +436,7 @@ function mergeResearchAreaSummaries(
 type ElectionResultSummaryRow = {
   election_id: string;
   outcome: string;
+  winners: unknown;
 };
 
 type CandidateRow = {
@@ -1523,6 +1528,7 @@ export async function lookupBallotSummariesByDistrictIds(
         SELECT
           er.election_id,
           er.outcome,
+          er.winners,
           er.pass_type,
           er.retrieved_at
         FROM public.election_results AS er
@@ -1534,6 +1540,7 @@ export async function lookupBallotSummariesByDistrictIds(
         SELECT
           bm.election_id,
           bmr.outcome,
+          '[]'::jsonb AS winners,
           bmr.pass_type,
           bmr.retrieved_at
         FROM public.ballot_measure_results AS bmr
@@ -1546,6 +1553,7 @@ export async function lookupBallotSummariesByDistrictIds(
         SELECT
           election_id,
           outcome,
+          winners,
           row_number() OVER (
             PARTITION BY election_id
             ORDER BY
@@ -1559,7 +1567,7 @@ export async function lookupBallotSummariesByDistrictIds(
           ) AS rn
         FROM all_results
       )
-      SELECT election_id, outcome
+      SELECT election_id, outcome, winners
       FROM ranked
       WHERE rn = 1
     `,
@@ -1578,6 +1586,9 @@ export async function lookupBallotSummariesByDistrictIds(
   const researchAreasByOffice = groupBy(officeResearchAreaRows, (row) => row.office_id);
   const measureResearchAreasByElection = groupBy(measureResearchAreaRows, (row) => row.election_id);
   const resultOutcomeByElection = new Map(resultSummaryResult.rows.map((row) => [row.election_id, row.outcome]));
+  const resultWinnersByElection = new Map(
+    resultSummaryResult.rows.map((row) => [row.election_id, parseWinners(row.winners)])
+  );
   const historicalCompetitivenessByElection = await loadHistoricalCompetitivenessByElection(db, electionResult.rows);
 
   // Empty office rosters get a "why" status; issued last so populated
@@ -1624,6 +1635,7 @@ export async function lookupBallotSummariesByDistrictIds(
       ballot_measure_id: ballotMeasureIdsByElection.get(row.election_id) ?? null,
       has_results: currentResultOutcome !== null,
       current_result_outcome: currentResultOutcome,
+      current_result_winners: resultWinnersByElection.get(row.election_id) ?? [],
       office,
       // Office links first, then ballot-measure tags not already present
       // (deduped by area id); both sources arrive slug-ordered, so the

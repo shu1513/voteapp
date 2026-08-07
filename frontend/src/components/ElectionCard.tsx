@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Link } from "react-router";
-import type { ElectionChoice, ElectionSummary, ResearchAreaWeight } from "@voteapp/api-client";
+import type { ElectionChoice, ElectionResultWinner, ElectionSummary, ResearchAreaWeight } from "@voteapp/api-client";
 import type { BackTo, ElectionNavState } from "../lib/detailNavContext";
 import {
   formatDistrictName,
@@ -8,6 +8,7 @@ import {
   formatOutcome,
   formatRosterStatus,
   formatVotePowerLabel,
+  formatWinnerNames,
   splitResearchAreasBySaved,
 } from "@voteapp/api-client";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
@@ -32,6 +33,15 @@ function formatChoiceLabel(choice: ElectionChoice): string | null {
     .map((pick) => (pick.candidacy_status === "withdrawn" ? `${pick.display_name} (withdrew)` : pick.display_name))
     .join(", ");
   return `${choice.picks.length === 1 ? "My pick" : "My picks"}: ${names}`;
+}
+
+// "Result: Advanced — Jocelyn Benson (Democratic), John James (Republican)".
+// The names are the answer the voter came for, so the chip carries them, not
+// just the outcome word. Measures have no winners and keep the outcome-only
+// form (Passed/Failed already says everything).
+function formatResultChipLabel(outcome: string, winners: readonly ElectionResultWinner[]): string {
+  const names = formatWinnerNames(winners);
+  return names.length > 0 ? `Result: ${formatOutcome(outcome)} — ${names}` : `Result: ${formatOutcome(outcome)}`;
 }
 
 // Statewide races carry a dozen-plus research areas; rendering every one
@@ -306,7 +316,7 @@ function ElectionCard({
           {election.has_results ? (
             <span className="rounded bg-surface px-2 py-0.5 text-ink">
               {election.current_result_outcome
-                ? `Result: ${formatOutcome(election.current_result_outcome)}`
+                ? formatResultChipLabel(election.current_result_outcome, election.current_result_winners ?? [])
                 : "Results available"}
             </span>
           ) : null}

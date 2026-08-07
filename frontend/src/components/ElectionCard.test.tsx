@@ -559,3 +559,63 @@ describe("ElectionCard", () => {
     expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
   });
 });
+
+describe("ElectionCard result chip", () => {
+  it("names the winners next to the outcome", () => {
+    // "Advanced" alone left the voter asking who — the names are the answer
+    // they came for, so the chip carries them.
+    renderCard(
+      electionSummary({
+        election_date: "2026-08-04",
+        has_results: true,
+        current_result_outcome: "advanced",
+        current_result_winners: [
+          { candidate_id: "c-1", candidate_name: "Jocelyn Benson", party: "Democratic" },
+          { candidate_id: "c-2", candidate_name: "John James", party: "Republican" },
+        ],
+      })
+    );
+    expect(
+      screen.getByText("Result: Advanced — Jocelyn Benson (Democratic), John James (Republican)")
+    ).toBeInTheDocument();
+  });
+
+  it("omits the party when the winner has none", () => {
+    renderCard(
+      electionSummary({
+        election_date: "2026-08-04",
+        has_results: true,
+        current_result_outcome: "won",
+        current_result_winners: [{ candidate_id: "c-1", candidate_name: "Dana Reyes" }],
+      })
+    );
+    expect(screen.getByText("Result: Won — Dana Reyes")).toBeInTheDocument();
+  });
+
+  it("falls back to the outcome alone when no winner is named", () => {
+    // Ballot measures (Passed/Failed already says everything) and office rows
+    // whose winners are all nameless both take this path.
+    renderCard(
+      electionSummary({
+        race_type: "ballot_measure",
+        candidate_count: 0,
+        election_date: "2026-08-04",
+        has_results: true,
+        current_result_outcome: "passed",
+        current_result_winners: [],
+      })
+    );
+    expect(screen.getByText("Result: Passed")).toBeInTheDocument();
+
+    // Deploy skew: a backend that predates the field omits it entirely.
+    renderCard(
+      electionSummary({
+        id: "e-2",
+        election_date: "2026-08-04",
+        has_results: true,
+        current_result_outcome: "won",
+      })
+    );
+    expect(screen.getByText("Result: Won")).toBeInTheDocument();
+  });
+});

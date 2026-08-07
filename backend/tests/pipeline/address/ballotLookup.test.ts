@@ -132,6 +132,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           {
             election_id: officeElectionId,
             outcome: "won",
+            winners: [{ candidate_id: "22222222-2222-4222-8222-222222222222", candidate_name: "Jane Winner", party: "Nonpartisan" }],
           },
         ],
       })
@@ -183,6 +184,9 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           ballot_measure_id: null,
           has_results: true,
           current_result_outcome: "won",
+          current_result_winners: [
+            { candidate_id: "22222222-2222-4222-8222-222222222222", candidate_name: "Jane Winner", party: "Nonpartisan" },
+          ],
           office: {
             id: officeId,
             scope: "county",
@@ -232,6 +236,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           ballot_measure_id: ballotMeasureId,
           has_results: false,
           current_result_outcome: null,
+          current_result_winners: [],
           office: null,
           research_areas: [
             {
