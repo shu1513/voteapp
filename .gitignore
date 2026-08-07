@@ -4,3 +4,8 @@ node_modules/
 # re-downloadable from the portal. Parser fixtures are committed separately
 # under backend/tests/fixtures/ohioFinance/.
 scratch/ohio-campaign-finance/
+
+# North Carolina NCSBE artifact cache (acquisition spike + sync runs),
+# re-downloadable from the portal. Parser fixtures are committed separately
+# under backend/tests/fixtures/northCarolinaFinance/.
+scratch/north-carolina-campaign-finance/

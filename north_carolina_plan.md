@@ -125,7 +125,15 @@ rendered nothing).
    `Declaration` of `Support`/`Oppose` enter outside totals. Blank or other
    declarations → excluded-amount + row-count diagnostics. Never infer
    direction from a group's name or politics. Electioneering communications
-   stay out entirely.
+   stay out entirely. **Single-source rule (added after PR 3 review)**:
+   outside totals are aggregated ONLY from reports discovered via the IE
+   doc-type inventories (`IRIEX`/`IRCIX`/`RPIER`) — the spike found the same
+   IE row duplicated verbatim in a registered committee's regular quarterly
+   (Carolina Federation, results item 9), so counting both sources
+   double-counts. Regular-report rows that pass this decision's filters
+   become a cross-check diagnostic instead: a committee with IE-typed
+   regular-report rows but no ingested IE informational report is flagged
+   for audit, catching the inverse miss.
 4. **Outside amount = `IEAmount`, never `Amount`** (verified live: report
    RID=232624 has 39 target rows; `IEAmount` sums to $29,306.30 = official
    total, while `Amount` repeats the full vendor invoice on every target row
@@ -134,13 +142,25 @@ rendered nothing).
    cent per split vendor transaction, not a percentage. No dedup on
    (date, vendor, `Amount`) — one invoice legitimately yields several target
    rows; expenditure fingerprints (decision 8) include candidate, direction,
-   and `IEAmount`.
+   and `IEAmount`. **Form-dependence found after PR 3 review**: on
+   registered-committee IE rows (`IRCIX` informational reports and their
+   regular-report mirrors) `IEAmount` can be **null** with `Amount` holding
+   the true single-target value (Carolina Federation's $10,500 Pivot Group
+   row, both views). Amount-field semantics are pinned **per report form**
+   at PR 6: `IEAmount` where populated (the multi-target vendor-invoice
+   inflation lives on the unregistered form), `Amount` only where `IEAmount`
+   is null on a registered-committee form — and the official-total
+   reconciliation is the guard either way; a form that fails it quarantines.
 5. **Candidate matching — fail closed.** Direct link: exact normalized
    candidate name + one active, non-exempt candidate committee from the
    committee search; multiple plausible matches quarantine; manual override
-   keyed by `SBoEID`. Outside targets: rows carry `Candidate` (observed
-   format `LAST FIRST`, e.g. `PIERCE RODNEY`) + broad `OfficeSought`
-   (`House`, no district). Match = normalized name + cycle uniquely matching
+   keyed by `SBoEID`. Outside targets: rows carry `Candidate` — observed in
+   **both token orders across filers** (`PIERCE RODNEY`, `PIERCE RODNEY D`,
+   and `RODNEY PIERCE` all name the same person; spike results item 4) —
+   + `OfficeSought` ranging from broad (`House`) to district-bearing
+   (`NC HOUSE 27`). The name normalizer must match order-insensitively
+   (pinned at PR 6 from fixtures) — order-sensitive exact matching would
+   silently drop a filer's whole report. Match = normalized name + cycle uniquely matching
    exactly one NC candidate, with office as a *confirming* filter only
    (Ohio's decision-5 lesson: requiring office quarantines the biggest rows).
    **Federal targets are filtered before matching** (verified live:
@@ -169,23 +189,45 @@ rendered nothing).
    direct employer/industry rows are written. Aggregated individual
    money stays in direct totals but outside occupation rows. Publish
    occupation dollar coverage as a diagnostic.
-   **Derived-stat inputs**: `direct_contribution_total` = individual
-   contributions (itemized `IND ` + properly aggregated individual money);
-   contribution-size buckets = itemized individual transaction amounts
-   (VoteApp standard buckets). The full `ReceiptTypeCode` → (official
+   **Derived-stat inputs (REVISED after PR 3 review)**:
+   `direct_contribution_total` comes **from the cover summary** — the spike
+   proved the cover carries `Contributions from Individuals` +
+   `Aggregated Contributions from Individuals` as separate authoritative
+   sections (results item 2), so the individual-money total follows the same
+   cover-is-authoritative rule as `total_receipts` (decision 11) and the
+   itemized+aggregated receipt-row sum becomes its reconciliation
+   diagnostic. Contribution-size buckets = itemized individual transaction
+   amounts (VoteApp standard buckets). The `ReceiptTypeCode` → (official
    receipts / direct contributions / size buckets / occupations) mapping
-   table is a spike deliverable, pinned from real bytes; a code outside the
-   pinned set quarantines the derived breakdowns and `direct_contribution_total`
-   for that candidate (cover-summary totals are unaffected — decision 11),
-   never just a counter.
-8. **Report selection + amendments**: group filings by (filer, report type,
-   period start, period end); within a group, select by **filing chronology
-   first** — newest `ImageReceiptDate` (what was legally filed last), with
-   `DataImportDate` only as tie-break; import order is administrative and can
-   lag or reorder (an older amendment imported later must not beat a newer
-   one). The grouping key is not assumed unique — if a group's lineage stays
-   ambiguous (multiple non-amendment originals sharing a period beyond the
-   48-hour case), fail closed and quarantine the group. **If the
+   table is seeded from spike bytes and grows at PR 4/6 fixture time; a code
+   outside the pinned set **quarantines the derived breakdowns only**
+   (occupations + size buckets) for that candidate — cover-derived totals,
+   including `direct_contribution_total`, are unaffected — and always as a
+   counted diagnostic, never just a counter.
+8. **Report selection + amendments** (**grouping REVISED at the spike, keys
+   settled after PR 3 review** — two levels, don't conflate them):
+   - *Row-merge key* — assembles one filing from its split inventory rows:
+     (filer, `DocumentType`, `ReportType`, period start, period end,
+     `IsAmendment`). The same filing can appear as a DATA row and a separate
+     IMAGE row (results item 8); merge is allowed **only when unambiguous**:
+     exactly one DATA row + at most one IMAGE row = one filing; an all-DATA
+     group = a chain of distinct structured filings (Berger's Mid-Year 2025
+     has two amendments, RIDs 225581 and 232191 — `IsAmendment` is a flag,
+     not a counter, so it cannot tell them apart); any other mix (an extra
+     IMAGE row that could be a newer image-only amendment hiding behind an
+     older structured one) is ambiguous lineage → quarantine the group. PR 4
+     checks the `ReportDetail`/CSV cover bytes for an amendment counter that
+     pins filing identity; if one exists it replaces this heuristic.
+   - *Selection group* — picks the current filing: the same key **without
+     `IsAmendment`** (originals and amendments must share a group or an
+     amendment could never supersede its original). Within it, select by
+     **filing chronology first** — newest `ImageReceiptDate` (what was
+     legally filed last; for a merged filing, the max available date across
+     its rows), with `DataImportDate` only as tie-break; import order is
+     administrative and can lag or reorder (an older amendment imported
+     later must not beat a newer one). If a group's lineage stays ambiguous
+     (multiple non-amendment originals sharing a period beyond the 48-hour
+     case), fail closed and quarantine the group. **If the
    selected-newest filing in a group is image-only (`DataLink` empty), the
    period is superseded-unavailable — never silently keep the older
    structured report. When that (or a failed reconciliation) hits a required
@@ -203,10 +245,13 @@ rendered nothing).
    Whole-artifact refresh: rebuild each candidate snapshot from the current
    selected set; replace, never append.
 9. **Paging + fail-closed transport** (both found in re-verification, absent
-   from the feasibility report):
+   from the feasibility report; **paging contract REVISED at the spike** —
+   see results item 1):
    - `GetReceipts`/`GetExpenditures` **require `page` (0-indexed) and
      `pageSize`** — a bare call returns HTTP 200 with an HTML error page.
-     Every JSON fetch validates content shape (parses as JSON, has
+     Spike finding: the server then **ignores `pageSize`** and serves fixed
+     300-row disjoint pages; `Content-Type` stays `text/html` even for real
+     JSON. Every JSON fetch validates content shape (parses as JSON, has
      `Data.results`) and pages until row count equals `recordCountKey`;
      mismatch fails the report closed.
    - The doc-type inventory GET requires **single-quoted codes**:
@@ -233,9 +278,14 @@ rendered nothing).
     is the house convention for every state including 4-year offices
     (maryland + ohio governors, grep-verified) — NC does not invent
     office-term cycle math. The newest report's **Cycle** column ("Total this
-    Election") is a second cycle-level check only; its semantics for offices
-    whose legal cycle exceeds Y−1..Y are unconfirmed (spike item) — on
-    mismatch, drop the check for that office class, never widen the window.
+    Election") is a second cycle-level check only; **semantics CONFIRMED at
+    the spike** (results item 11): Cycle = election-cycle-to-date, resetting
+    after the office's election, with chain-exact arithmetic
+    `Cycle_n = Cycle_{n-1} + Period_n` — so the check is valid only when
+    summing every report since the office's cycle start, and for mid-cycle
+    4-year offices it spans more than Y−1..Y; the Y−1..Y summary window
+    itself is unchanged. On mismatch, drop the check for that office class,
+    never widen the window.
     **48-hour reports never enter totals** (their contributions
     reappear on the next scheduled report; on the probed committee they were
     image-only anyway). Negative cash: write NULL + diagnostic, never clamp
@@ -300,6 +350,154 @@ rendered nothing).
 - The full `ReceiptTypeCode` mapping table (decision 7) from real bytes.
 - Whether transactions ever repeat across selected overlapping-period
   reports (decision 8's dedup question).
+
+## Acquisition spike results (run 2026-08-07, user-authorized)
+
+~60 paced requests (1 in flight, ~2s gaps, descriptive UA), zero blocks or
+429s. Artifacts + SHA-256 manifest cached under
+`scratch/north-carolina-campaign-finance/ncsbe/` (gitignored — never
+committed). Sample: 9 committees (Berger, Hall, Grafstein, Galey, Jeffers,
+Pierce, Gadson legislative; Stein Council of State; Carolina Federation
+Freedom PAC IE filer — added in the post-review follow-up, plus Down Home NC
+IE PAC) + both IE inventories + 9 report covers + 7 receipt sets + 7
+expenditure sets + 1 CSV export.
+
+Verdict: **NC is feasible and the plan survives the spike.** No new factory
+capability, no schema change — migration 212 stands. Every probe money number
+reproduced (Gadson $6,073.24; IE `IEAmount` $29,306.30 vs `Amount`
+$49,306.29; Rolling Sea Fund $24,506 funder row). **11 of 13 items fully
+answered; items 8 (population-wide structured coverage) and 12 (full
+receipt-code vocabulary) are answered for the sample only and close at PR 9's
+live-run audit** — each says so inline. Spike-item answers:
+
+1. **Paging contract (REVISES decision 9's assumption):** the server
+   **ignores `pageSize` entirely** and returns fixed **300-row pages**,
+   0-indexed and disjoint; a report smaller than 300 rows arrives whole on
+   page 0; pages past the end return 0 rows. Verified on 111-row (1 page),
+   335-row (300+35), and 121,124-row (300/page) reports. Completeness = loop
+   pages until fetched row count equals `recordCountKey`, fail closed on
+   mismatch. **`Content-Type` is `text/html` even for real JSON** — validate
+   body shape (`Data.results` + `recordCountKey`), never the header.
+2. **Cover summary = 34 fixed `Section` strings** with stable `Sequence` ids
+   and numeric `Period`/`Cycle` values (no string parsing). Component sums
+   reconcile to `Total Receipts`/`Total Expenditures` exactly.
+   `Debts and Obligations owed BY the Committee` maps to canonical
+   `debts_owed`. "Contributions from Individuals" + "Aggregated Contributions
+   from Individuals" give `direct_contribution_total` inputs straight off the
+   cover. Beware: `ReportDetail` also embeds a JS grid config mentioning
+   `Section` — extract the `{"Sequence":…}` data rows, not the first array.
+3. **Occupation placeholders (observed, case-varying):** `Not Employed`,
+   `Not employed`, `Retired`, `Homemaker`, `homemaker`, `No Job Title`,
+   blank, plus junk value `United States` (21×) — placeholder matching must
+   be case-insensitive; `Profession` is free text (135 distinct across 542
+   itemized rows).
+4. **IE target formats:** `LAST FIRST`, `LAST FIRST M`, **and `FIRST LAST`**
+   — Rodney Pierce appears as `PIERCE RODNEY`, `PIERCE RODNEY D`, and
+   `RODNEY PIERCE` across three filers' reports, so the matcher must be
+   token-order-insensitive (decision 5 updated). **Real misspellings of the
+   same target across filings** (`DEBERRY SATANA` / `DEWBERRY SANTANA`) —
+   fail-closed matching quarantines them, as designed. Sentinel value
+   `SPECIFIC NON CANDIDATE` = known non-candidate target, pin as excluded.
+   `OfficeSought` variants: `House`, `NC HOUSE 27` (district-bearing),
+   `US HOUSE OF REPRESENTATIVES`, `U.S. HOUSE OF REPRESENTATIVES` (filter
+   both federal spellings), `County/Municipal` (out of scope).
+5. **Dollar coverage of image-only filings is unmeasurable** — they carry no
+   structured dollars anywhere and OCR is banned, so the count split (2026:
+   72 structured / 23 image; 2025: 35/16) is the only honest number. The
+   PR 2 coverage note is deliberately count-free; keep it that way.
+6. **SBoEID pattern:** `^([A-Z]{3}|\d{3})-[A-Z0-9]{6}-[CF]-\d{3}$` — prefix
+   is `STA` or a county alpha/numeric code; `F` = legal-expense fund
+   (**exclude F-type from candidate finance**; Berger has one). Literal
+   `No Id` on unregistered IE filers (decision 6 stands). `CandName` can be
+   the literal string `&nbsp;` — HTML entities occur inside JSON values;
+   decode or reject.
+7. **Rate limits:** none observed at ~55 requests with 2s pacing. Full-cycle
+   scale still unproven — keep decision 10's pacing + bounded retries.
+8. **Direct structured coverage: 8/8 SAMPLED committees fully structured**
+   for 2025–26 — sampled evidence only; the checklist question ("every 2026
+   candidate committee") **stays open** and is measured for the full
+   population as a free byproduct of the first live sync (PR 9 reports it).
+   The sample did force a **grouping revision (decision 8): the same filing
+   can appear as TWO inventory rows** — a DATA row (`DataLink` set,
+   `ImageReceiptDate` often empty) and an IMAGE row (`DataLink` null, image
+   date days later) — which must be merged before any
+   image-only-supersession test, else a healthy e-filed report reads as
+   superseded-unavailable. Because `IsAmendment` is a flag, not a counter,
+   merging is restricted to unambiguous one-DATA/one-IMAGE groups and
+   all-DATA amendment chains; anything else quarantines (full rules +
+   the PR 4 amendment-counter probe now live in decision 8). Single rows
+   with both links also occur.
+9. **IE completeness — REVISED after a second-filer check (PR 3 review
+   follow-up): filers are INCONSISTENT, and the double-count is real.**
+   Down Home NC IE PAC: zero row overlap between its IE informational report
+   and its regular quarterly (IEs only in the informational). Carolina
+   Federation Freedom PAC: its single IE row ($10,500 Pivot Group →
+   RODNEY PIERCE, Support) appears **verbatim in BOTH** its `IRCIX`
+   informational report and its regular Q2 as an
+   `ExpenditureTypeDesc: "Independent Expenditure"` row — so decision 3's
+   row filters alone would double-count it. Rule (now in decision 3):
+   aggregate outside totals ONLY from IE-inventory-discovered reports;
+   IE-typed regular-report rows become the cross-check diagnostic that
+   catches the inverse case (a filer whose IEs appear only in regular
+   reports). Provisional on n=2 — PR 9's advanced-transaction-search spot
+   audit is the population-level gate. Separately: candidate-committee
+   regular-report `ShowIEColumns` values can be **junk** (`Declaration:
+   Oppose` + `Candidate` = vendor name on plain Operating Expense rows — 119
+   of Berger's 129), excluded independently by the `ExpenditureTypeDesc`
+   conjunction.
+10. **48-hour filings — exclusion stays PROVISIONAL.** None appear in either
+    year's IE doc-type inventories, but an IE filer's own inventory can
+    carry one (Carolina Federation has a 2026 48-Hour informational,
+    image-only) — the three IE codes don't surface them. All 385+ sampled
+    48-hours are image-only (`DataLink` null), so structured-only ingestion
+    excludes them mechanically; what the spike could NOT verify (images,
+    OCR banned) is decision 11's premise that excluded 48-hour money
+    reappears on the next scheduled report. If it doesn't, direct totals
+    undercount. Cover section `48-Hour Notice Reports Sum` is the per-report
+    diagnostic hook, and PR 9's portal-search spot audit is the gate that
+    would expose any systematic gap.
+11. **Cycle column semantics PROVEN:** `Cycle_n = Cycle_{n-1} + Period_n`
+    chain-exact on Stein (4-year office) and Pierce; Berger's chain closed
+    only through his amended YE-2025 report (a real $6,800 amendment delta —
+    live proof amendment selection changes money). Cycle = official
+    election-cycle-to-date (resets after the office's election), **not
+    Y−1..Y** — usable as a secondary check only when summing every report
+    since cycle start; the Y−1..Y house window stands unchanged.
+12. **ReceiptTypeCode — PARTIAL, by design.** Pinned from sample bytes:
+    `"IND "` (trailing space confirmed; also on aggregated rows — those are
+    `IsAggregated: true` with `OrgName` `Aggregated Individual
+    Contribution`), `"CPCM"` (other political committee), `"PPTY"` (party).
+    Noncommittee IE-filer funder rows use `ReceiptTypeDesc` `Donation`. The
+    checklist asked for the FULL mapping table; a finite sample cannot prove
+    vocabulary completeness (the sampled committees simply had no loans,
+    interest, or refunds), so the deliverable is restated honestly: the
+    pinned set is **seeded** here and **extended at PR 4/6 fixture time**,
+    with decision 7's stranger-code quarantine as the permanent guard —
+    and since `direct_contribution_total` is now cover-derived (decision 7
+    revision), an unknown code can only ever quarantine breakdowns, never
+    totals.
+13. **No cross-report transaction repeats within a source chain:** Pierce
+    Q1/Q2 disjoint (0 of 281), and Advance NC's overlapping-period IE
+    reports are **incremental, not cumulative** (0 of 7 rows repeated
+    despite nested periods). The one verbatim repeat found lives **across
+    source chains** — an IE row mirrored into the filer's regular quarterly
+    (item 9) — and is handled structurally by decision 3's single-source
+    rule, not row dedup. No dedup rule; keep the overlap diagnostic.
+
+Extra findings for PR 4–7: report cadence is quarters in election years,
+semi-annuals off-year, plus `Organizational` and `Interim` types (both can
+carry `DataLink`) — the selector matches `DocumentType = "Disclosure Report"`
+rows by **period overlap with Y−1..Y**, not a report-type whitelist;
+correspondence/penalty/Statement-of-Organization/Certification rows are
+noise. Committee-search JSON keys: `OrgName`, `SBoEID`, `OldID`, `CandName`,
+`StatusDesc` (`ACTIVE (NON-EXEMPT)`, `CLOSED`, `CLOSED (PENDING)`,
+`CONDITIONALLY CLOSED`, `INACTIVE`), `OrgGroupID`. CSV export works
+(`text/csv`, COVER section + `Committee Type: Candidate Committee` — resolver
+evidence). Receipts carry `GroupID`; expenditure rows have no row id —
+report ID + ordinal stands (decision 8). Real data-quality landmine: a
+`PeriodEndDate` of `06/01/3026` (year 3026) sits in Carolina Federation's
+live inventory — every parsed date gets a sane-range check (fail closed,
+count in diagnostics), and period math must never trust raw bounds.
 
 ## Required artifacts per cycle Y
 
@@ -370,7 +568,12 @@ The acquisition spike is the gate before parser/aggregator work.
 - [x] PR 2 loader + wiring + coverage note — characterization pin, `NC`
   registry entry, `NORTH_CAROLINA_SBE` union + `FINANCE_SUMMARY_SOURCES` +
   `format.ts` label ("North Carolina State Board of Elections") + test
-- [ ] PR 3 acquisition spike (user-authorized)
+- [x] PR 3 acquisition spike — RUN 2026-08-07 + review follow-up (see
+  "Acquisition spike results"): 11 of 13 items fully answered; items 8 and
+  12 sample-answered, closing at PR 9's live-run audit. Paging contract +
+  grouping keys + IE single-source rule + cover-derived
+  `direct_contribution_total` revised; Cycle chain proven; no schema or
+  factory change needed
 - [ ] PR 4 client + cache + parsers + acquisition script
 - [ ] PR 5 resolver + auto-link
 - [ ] PR 6 aggregators
