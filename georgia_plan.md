@@ -159,7 +159,10 @@ Numbered like Ohio's decisions; **F** = fact probed from real bytes.
    PeachFile `100035` — one committee, two ids). **A legally separate
    committee is NEVER a source id of the candidate's canonical entity**
    (A6 refuted the earlier F4 reading): Carr's legacy `2750` is its own
-   terminated ledger whose $1,202,308.37 stays out of candidate totals —
+   terminated ledger (termination signal = `filerStatusCode: "T"` — never
+   the `isTerminated` boolean, which is `false` on this very registration;
+   see D8's string-codes-only rule) whose $1,202,308.37 stays out of
+   candidate totals —
    Georgia's own official number excludes it, and its only crossing is an
    $8,400 capped transfer that appears as an ordinary itemized contribution
    row. Legacy committees get mapped, if at all, as distinct entities
@@ -286,6 +289,25 @@ Numbered like Ohio's decisions; **F** = fact probed from real bytes.
      never enumerate names in logic. Amendment chains ride
      `hasChild`/`childResults` (per-version GUIDs, per-version PDF paths,
      `reportStatus` "Version N").
+   - **Timed-pending rows carry no real `filerReportGuid`, and the two
+     endpoints encode the absence DIFFERENTLY**: the TCON endpoint writes
+     the zero GUID (`00000000-0000-0000-0000-000000000000`) while the IE
+     endpoint writes `null` (both captured in fixtures). Grouping rule:
+     when `filerReportGuid` is null OR the zero GUID, group the row by
+     `timedFiledReportGuid` (populated on those rows; `filerReportId` is a
+     cross-check where present). A null-only check misses the sentinel and
+     would collapse every filer's timed-pending money into one pseudo-report
+     that matches no inventory entry — and since TPEN money is inside
+     official totals (D4), those rows must reconcile, not fail.
+   - **String status codes are authoritative; the boolean convenience flags
+     are broken upstream and must never carry logic.** Captured in
+     fixtures on BOTH hosts: registration 15866 has
+     `filerStatusCode: "T"`/`filerStatus: "Terminated"` with
+     `isTerminated: false`; reports 13310 (archive) and 38 (PeachFile) have
+     `reportStatus: "Amended"`/`reportVersionId: 2` with
+     `isAmended: false`. Key on `filerStatusCode`, `reportStatus`,
+     `reportVersionId`, and `hasChild`/`childResults` — never on
+     `isAmended`/`isTerminated`.
    - Bulk `Amended` flag (`Y` on live rows) stays the cross-check, with the
      caveat that bulk lags: it contains only CCDR-disclosed rows (timed-
      pending money and the newest grace-window filings are API-only).
@@ -366,7 +388,17 @@ closed exactly:
    client pins `sortBy: "Transaction Date"` and treats empty-on-nonempty-
    filer as failure. Sync rule: page-until-short-page + dedup by
    `transactionId` + per-report row-count/sum reconciliation; slice by date
-   windows to bound drift. **Residual risk, owned by PR 3**: date filters
+   windows to bound drift. **Date windows must not become filters that lose
+   rows**: the store contains garbage transaction dates on valid rows
+   (fixture: IE transaction 257851 dated 2001-04-27 on a 2026 report — the
+   F9 stray-2001–2024-dates hazard exists in the API store, not just bulk).
+   Window bounds derive from nothing narrower than the filer's full
+   plausible range, and every per-filer pull ends with an unbounded
+   (no-date-filter) sweep pass whose job is to catch out-of-window rows;
+   out-of-range dates land in the row's report group normally (report
+   membership comes from `filerReportGuid`/`timedFiledReportGuid`, never
+   from the transaction date) plus an impossible-date diagnostic.
+   **Residual risk, owned by PR 3**: date filters
    can't subdivide below one day, so a deadline day with more than one page
    of tied rows rides on dedup + reconciliation alone — the client needs a
    tested bounded-retry (re-pull window until the unique-id set is stable
@@ -401,16 +433,31 @@ closed exactly:
    caveat, first live sync measures it). Archive bulk export remains
    406-blocked for non-browser clients; archive search/PDF endpoints are
    fine.
-8. **A8 — transaction taxonomy pinned from real bytes** (sample-complete,
-   population-checked at the live run): TCON types {Contribution, Loan
-   Received, Return Contribution, Interest Earned (Non-Investment Account),
-   Loan Payment, Loan Forgiven}; subtypes {Itemized, Unitemized, In-Kind,
-   Anonymous}; sourceTypes {TIND individual, TBSN business, null};
-   statuses per D8. TEXP types {Expenditure, Independent Expenditure,
-   Return Expenditure}. Bulk hazards confirmed on the new files: cp1252,
-   parenthesized negatives, `="…"` Excel guards, ragged rows (a stray
-   "SELF EMployed" leaks into Transaction Type on 3 rows — ragged-row
-   detection stays mandatory). Data-key PDFs committed as fixtures.
+8. **A8 — transaction taxonomy pinned from real bytes, PER HOST**
+   (sample-complete, population-checked at the live run; like the D8 status
+   codes, EVERY taxonomy field is a disjoint vocabulary per host — a merged
+   list would silently break one host's store):
+   - **PeachFile**: bulk/API types {Contribution, Loan Received, Return
+     Contribution, Interest Earned (Non-Investment Account), Loan Payment,
+     Loan Forgiven}; subtypes {Itemized Contribution, Unitemized
+     Contribution, In-Kind Contribution, Anonymous Contribution};
+     `transactionSourceTypeCode` {TIND individual, TBSN business, null}.
+   - **Archive** (from the 1,114-row Carr pull): `transactionTypeCode`
+     {CON, description "Contributions" — plural}; subtypes {Monetary
+     Itemized, Monetary Non-Itemized, In-Kind, Anonymous};
+     `transactionSourceTypeCode` {IND individual (722), null (274),
+     OTH (98), COM (20)}.
+   - **D5's individuals-only occupation gate keys on the per-host
+     individual code — `TIND` on PeachFile, `IND` on the archive.** Pinning
+     only the PeachFile codes would silently drop every pre-cutover
+     individual contribution from the occupation breakdown with no error
+     raised (the outside-pinned-set rule diagnoses-and-excludes), gutting
+     D12 occupation coverage for archive money.
+   - TEXP types {Expenditure, Independent Expenditure, Return Expenditure}
+     (PeachFile bulk). Bulk hazards confirmed on the new files: cp1252,
+     parenthesized negatives, `="…"` Excel guards, ragged rows (a stray
+     "SELF EMployed" leaks into Transaction Type on 3 rows — ragged-row
+     detection stays mandatory). Data-key PDFs committed as fixtures.
    Note: `GetTransactionDetails` ignores `transactionTypeCode:"TEXP"`
    (returns TCON) — candidate expenditure line-items aren't needed for any
    v1 feature; the funders leg uses TCON of IE spenders.
