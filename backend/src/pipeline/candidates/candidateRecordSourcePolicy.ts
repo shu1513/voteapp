@@ -187,13 +187,21 @@ const BOT_CHECK_INTERSTITIAL_DOMAINS: readonly string[] = [
 ];
 
 // Single accept tier (user decision: no A/B split): sources with official or
-// editorial accountability. This is a STARTER list, not a gate — unlisted
-// domains are still accepted (see evaluateCandidateRecordSourcePolicy); the
-// list's only hard effect is on damaging claims, and it grows by trivial PR
-// whenever research hits a legitimate domain that is missing. Any .gov/.mil
-// hostname and the legacy *.state.XX.us pattern are listed by rule, so
-// legislatures, courts, SoS offices, and agencies need no enumeration.
-const LISTED_SOURCE_DOMAINS: readonly string[] = [
+// editorial accountability. Unlisted domains are still accepted (see
+// evaluateCandidateRecordSourcePolicy); the list's only hard effect is on
+// damaging claims. Any .gov/.mil hostname and the legacy *.state.XX.us
+// pattern are listed by rule, so legislatures, courts, SoS offices, and
+// agencies need no enumeration.
+//
+// FROZEN FOUNDING COHORT — do not append here. The damaging-claim gate is
+// only as strong as this list's membership, and membership changes are the
+// one write this pipeline cannot self-police, so the policy test pins this
+// array's exact content (count + hash). New domains go through
+// LISTED_SOURCE_DOMAIN_ADDITIONS below, which forces a recorded
+// justification with independent evidence. Editing THIS array is the
+// break-glass path: it requires updating the pinned hash in the test, and
+// that diff is the audit signal.
+export const FOUNDING_LISTED_SOURCE_DOMAINS: readonly string[] = [
   // Civic / legal data
   "ballotpedia.org",
   "ballotready.org",
@@ -348,6 +356,76 @@ const LISTED_SOURCE_DOMAINS: readonly string[] = [
   "tampabay.com",
   "tennessean.com",
   "unionleader.com",
+];
+
+// A recorded, testable justification for every domain listed AFTER the
+// founding cohort. This exists because listing a domain is a safety-relevant
+// write: a listed domain may assert damaging claims (arrests, indictments,
+// ethics findings) about candidates with no further check, and the cheapest
+// poisoning play is not defeating the damaging-claim regexes — it is standing
+// up a convincing fake outlet and getting it listed. There is no human
+// review on this pipeline, so the vetting protocol below is enforced by the
+// policy test instead of by a reviewer.
+export type ListedSourceAdditionJustification = {
+  /** ISO date (YYYY-MM-DD) the domain was vetted and added. */
+  addedOn: string;
+  /**
+   * Why this outlet has editorial or official accountability — named
+   * newsroom, public masthead, established publication history. One or two
+   * sentences; "research needed it" is not a rationale.
+   */
+  rationale: string;
+  /**
+   * At least two HTTPS URLs on at least two different registrable domains
+   * (en.wikipedia.org and fr.wikipedia.org are ONE source), none sharing a
+   * registrable domain with the domain being added (no self-, parent-, or
+   * sibling-vouching), proving the outlet is real and established: a
+   * Wikipedia article, a press-association member roster, a state library /
+   * Chronicling America entry, an archive.org capture history showing age.
+   */
+  evidence: readonly string[];
+};
+
+// VETTING PROTOCOL — complete every step BEFORE adding an entry:
+//
+//   1. Age: the domain must have existed for 2+ years. Verify via
+//      archive.org's capture history (first snapshot date), not the site's
+//      own "since 1985" claim. Freshly registered "news" domains are the
+//      canonical smear-injection vector.
+//   2. Independent existence: find the outlet described somewhere that is
+//      not the outlet itself — Wikipedia, a press-association roster, a
+//      journalism directory, coverage BY other listed outlets. Record those
+//      URLs in `evidence`.
+//   3. Masthead: the site names real, searchable staff. Anonymous "teams"
+//      fail.
+//   4. Lookalike check: the name must not be a variant of an already-listed
+//      or well-known outlet ("denverpost-news.com", "denverpost.co"). The
+//      policy test enforces a label-containment version of this mechanically;
+//      passing the test does not excuse skipping the judgment call.
+//   5. Motive check: NEVER list a domain because a specific record needs it
+//      to pass the damaging-claim gate. That pressure — "this scandal row
+//      only has this one source" — is exactly the attack shape. A real
+//      scandal has listed coverage; if only one unknown site carries it,
+//      the correct outcome is that the row is dropped.
+//
+// Entries are permanent audit records: never delete one to silence a test
+// failure. If a listed addition turns out to be bad, move the domain to the
+// appropriate blocked registry and leave a comment here explaining the
+// removal, so the provenance purge has a paper trail.
+export const LISTED_SOURCE_DOMAIN_ADDITIONS: Readonly<
+  Record<string, ListedSourceAdditionJustification>
+> = {
+  // (no additions yet)
+};
+
+// Exported ONLY so the policy test can pin this list to exactly
+// founding + addition keys: a domain appended directly here would otherwise
+// skip every justification requirement above — the one-line bypass the guard
+// exists to close. Never append here; never import this for runtime use
+// outside this module.
+export const LISTED_SOURCE_DOMAINS: readonly string[] = [
+  ...FOUNDING_LISTED_SOURCE_DOMAINS,
+  ...Object.keys(LISTED_SOURCE_DOMAIN_ADDITIONS),
 ];
 
 // Actor-context guard for the damaging-claim heuristic: a live-corpus run
