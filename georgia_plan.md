@@ -154,16 +154,27 @@ Numbered like Ohio's decisions; **F** = fact probed from real bytes.
    spending in both halves of the cycle must land under one outside-group
    identity). Rows: canonical (PeachFile) filer id ↔ per-system
    `filerEntityId` + registration `guid`, role, cycle, provenance,
-   verified-at; multiple source ids per canonical entity (F4: legacy
-   committee + candidate filer). Discovery collects **every archive filer
-   associated with the candidate by name + cycle as evidence** — office
-   match is corroboration, never a discovery filter, because a legacy
-   committee registered for a prior race's office (F4: Carr's 2022 AG
-   committee) can carry current-cycle money and an office-exact rule could
-   never propose it. Inclusion is then decided by reconciling the candidate
-   filer set against the official candidate-index totals; a cross-office
-   carryover filer enters the map only with manual confirmation. Ambiguous →
-   manual review, fail closed. **The map table's migration lands post-spike**
+   verified-at; multiple source ids per canonical entity mean **the same
+   registration chain re-keyed across systems** (A6: archive `757274` ↔
+   PeachFile `100035` — one committee, two ids). **A legally separate
+   committee is NEVER a source id of the candidate's canonical entity**
+   (A6 refuted the earlier F4 reading): Carr's legacy `2750` is its own
+   terminated ledger whose $1,202,308.37 stays out of candidate totals —
+   Georgia's own official number excludes it, and its only crossing is an
+   $8,400 capped transfer that appears as an ordinary itemized contribution
+   row. Legacy committees get mapped, if at all, as distinct entities
+   (relevant as donors or outside-spender identities), and the map schema
+   must make candidate-total inclusion an explicit per-row property, not a
+   consequence of sharing a canonical id. Discovery still collects **every
+   archive filer associated with the candidate by name + cycle as
+   evidence** — office match is corroboration, never a discovery filter,
+   because a legacy committee registered for a prior race's office (Carr's
+   2022 AG committee) can carry current-cycle rows and an office-exact rule
+   could never propose it for the map at all. Inclusion in candidate totals
+   is then decided by reconciling the candidate filer set against the
+   official candidate-index totals; a cross-office carryover filer enters
+   the map only with manual confirmation. Ambiguous → manual review, fail
+   closed. **The map table's migration lands post-spike**
    (its shape depends on A6); the 5 canonical tables don't wait for it.
    **Name-form facts pinned at the spike** (results item 3): archive
    transaction search keys candidate filers by the person's display name
@@ -244,24 +255,37 @@ Numbered like Ohio's decisions; **F** = fact probed from real bytes.
      `TAMD`, and no prior-version rows appear. Latest-version-atomic is
      therefore a *verification* (assert version consistency per report), not
      a selection algorithm.
-   - **Pinned `transactionStatusCode` vocabulary**: `TFIL` (disclosed on a
-     filed CCDR), `TPEN` (disclosed on a timed report — Two Business Day
-     etc. — not yet folded into a CCDR; **included in official index totals**,
-     so included in ours; the store holds each contribution once, never
-     timed+CCDR duplicated), `TAMD` (current value of an amended row),
-     `TPAMD` (amended while still timed-pending). Anything else fails
-     closed: excluded + counted.
+   - **Pinned `transactionStatusCode` vocabularies — PER HOST** (the two
+     systems use disjoint code sets; a single list would reject one host's
+     entire store). PeachFile: `TFIL` (disclosed on a filed CCDR), `TPEN`
+     (disclosed on a timed report — Two Business Day etc. — not yet folded
+     into a CCDR; **included in official index totals**, so included in
+     ours; the store holds each contribution once, never timed+CCDR
+     duplicated), `TAMD` (current value of an amended row), `TPAMD`
+     (amended while still timed-pending). Archive: `F` (filed — every one
+     of the 1,114 archive TCON rows probed) and `A` (amended-current;
+     observed once, on an IE row). Anything outside the host's own set
+     fails closed: excluded + counted.
    - **Report-source selection across hosts**: build the report inventory
-     per registration as the UNION of both hosts' `GetFilerReport` results
-     matched on (period start, period end, report type); where both hosts
-     hold the same report, **PeachFile wins** (it carries current amendment
-     state — pre-cutover reports get amended in PeachFile after migration);
+     per registration as the UNION of both hosts' `GetFilerReport` results.
+     The cross-host match key is **(registration via the D3 map, normalized
+     report family, period start, period end)** — NEVER the raw
+     `reportTypeCode` (the hosts use disjoint code sets: archive `103`/`104`
+     vs PeachFile `FPCFDR`/`FPTBDR`, so raw-code matching would let the same
+     report survive the union twice and double-count its contributions),
+     and NEVER report/amendment status (the PeachFile copy of a migrated
+     report is often "Amended" while the archive copy stays "Original" —
+     status is version state, not identity). The per-host
+     `reportTypeCode` → normalized-family mapping is pinned from fixtures
+     at PR 3 and fails closed on unknown codes. Where both hosts hold the
+     same report, **PeachFile wins** (it carries current amendment state —
+     pre-cutover reports get amended in PeachFile after migration);
      archive-only reports sync from the archive. Report NAMES are an open
      vocabulary ("2026 Jul 31 CCDR", "Two Business Day Report", "Two Week
      Prior CCDR", "6 Day Prior CCDR", "Special General CCDR Nov 17", …) —
-     never enumerate names in logic; key on `reportTypeCode` + period +
-     status. Amendment chains ride `hasChild`/`childResults` (per-version
-     GUIDs, per-version PDF paths, `reportStatus` "Version N").
+     never enumerate names in logic. Amendment chains ride
+     `hasChild`/`childResults` (per-version GUIDs, per-version PDF paths,
+     `reportStatus` "Version N").
    - Bulk `Amended` flag (`Y` on live rows) stays the cross-check, with the
      caveat that bulk lags: it contains only CCDR-disclosed rows (timed-
      pending money and the newest grace-window filings are API-only).
@@ -342,7 +366,12 @@ closed exactly:
    client pins `sortBy: "Transaction Date"` and treats empty-on-nonempty-
    filer as failure. Sync rule: page-until-short-page + dedup by
    `transactionId` + per-report row-count/sum reconciliation; slice by date
-   windows to bound drift.
+   windows to bound drift. **Residual risk, owned by PR 3**: date filters
+   can't subdivide below one day, so a deadline day with more than one page
+   of tied rows rides on dedup + reconciliation alone — the client needs a
+   tested bounded-retry (re-pull window until the unique-id set is stable
+   across two passes) that fails the report closed when it never
+   stabilizes.
 5. **A5 — `amountApplied` == bulk `Transaction Amount` for all 387
    CCDR-disclosed IE transactions (0 mismatches)**; the API additionally
    carries 164 timed-pending IE txns (TPEN/TPAMD) the bulk lacks (~30%
