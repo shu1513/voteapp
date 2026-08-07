@@ -2,9 +2,41 @@ import { describe, expect, it } from "vitest";
 import {
   buildPickCardOgSvg,
   formatElectionDateShort,
+  measureTextPx,
   pickCardOgHeadline,
   renderPickCardOgImage,
 } from "../../src/api/pickCardOgImage.js";
+
+/** Every headline line of an SVG with its font size, brand label excluded.
+ * Entities are unescaped so the text measures as it renders. */
+function headlineLines(svg: string): Array<{ fontSize: number; text: string }> {
+  const unescape = (text: string) =>
+    text
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&apos;/g, "'")
+      .replace(/&amp;/g, "&");
+  return [...svg.matchAll(/font-size="(\d+)"[^>]*>([^<]*)<\/text>/g)]
+    .map((match) => ({ fontSize: Number(match[1]), text: unescape(match[2]) }))
+    .filter((line) => line.text !== "Elections Simplified");
+}
+
+describe("measureTextPx", () => {
+  it("reads real advance widths from the vendored font", () => {
+    // Inter Bold's W is close to 1em; i far narrower. Exact values come from
+    // the font tables, so only sanity-bound them.
+    const wide = measureTextPx("W", 100);
+    const narrow = measureTextPx("i", 100);
+    expect(wide).toBeGreaterThan(80);
+    expect(wide).toBeLessThan(120);
+    expect(narrow).toBeLessThan(wide / 2);
+  });
+
+  it("gives glyphs outside the font a pessimistic fallback width", () => {
+    expect(measureTextPx("😀", 100)).toBe(140);
+  });
+});
 
 describe("formatElectionDateShort", () => {
   it("shortens an ISO election date", () => {
@@ -54,21 +86,52 @@ describe("buildPickCardOgSvg", () => {
     expect(svg).not.toContain(String.fromCharCode(1));
   });
 
-  it("hard-splits a single word wider than a line so no line overflows", () => {
-    // 80 W's — the widest legal glyph at the maximum legal length. Every
-    // rendered line must stay under 1em-per-glyph of the usable width.
+  it("strips the XML-invalid noncharacters U+FFFE and U+FFFF", () => {
+    for (const codePoint of [0xfffe, 0xffff]) {
+      const svg = buildPickCardOgSvg({
+        firstName: `Av${String.fromCharCode(codePoint)}a`,
+        electionDate: "2026-11-03",
+      });
+      expect(svg).toContain("Ava&apos;s picks");
+      expect(svg).not.toContain(String.fromCharCode(codePoint));
+    }
+  });
+
+  it("never splits a surrogate pair when chunking an emoji name", () => {
+    // 40 emoji = 80 UTF-16 units: passes length validation, forces chunking.
+    const svg = buildPickCardOgSvg({ firstName: "😀".repeat(40), electionDate: "2026-11-03" });
+    const loneSurrogate = /[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/;
+    expect(loneSurrogate.test(svg)).toBe(false);
+    expect(svg).toContain("😀");
+  });
+
+  it("truncates the name, not the message, when the headline cannot fit", () => {
+    // The fixed suffix is the image's purpose; an 80-W name must lose W's,
+    // not "picks for … Elections".
     const svg = buildPickCardOgSvg({ firstName: "W".repeat(80), electionDate: "2026-11-03" });
-    const lines = [...svg.matchAll(/font-size="(\d+)"[^>]*>([^<]*)<\/text>/g)]
-      .map((match) => ({ fontSize: Number(match[1]), text: match[2] }))
-      // The brand label is fixed-width and not part of the headline.
-      .filter((line) => line.text !== "Elections Simplified");
-    const chunkLines = lines.filter((line) => /^W+$/.test(line.text));
-    expect(chunkLines.length).toBeGreaterThan(0);
-    // Chunk lines hold the widest glyph (W ≈ 1.05em in Inter Bold), so they
-    // get the 1.1em-per-glyph budget; ordinary lines keep the 0.56em estimate.
+    expect(svg).toContain("…");
+    expect(svg).toContain("picks for");
+    expect(svg).toContain("Elections</text>");
+  });
+
+  it("hard-splits a single word wider than a line so no line overflows", () => {
+    // 44 W's: wide enough that no font size fits it unbroken, small enough
+    // that its chunks + the fixed suffix fit four lines without truncation.
+    const svg = buildPickCardOgSvg({ firstName: "W".repeat(44), electionDate: "2026-11-03" });
+    const lines = headlineLines(svg);
+    expect(lines.filter((line) => /^W+$/.test(line.text)).length).toBeGreaterThan(0);
     for (const line of lines) {
-      const emBudget = /^W+$/.test(line.text) ? 1.1 : 0.56;
-      expect(line.text.length * line.fontSize * emBudget).toBeLessThanOrEqual(1020);
+      expect(measureTextPx(line.text, line.fontSize)).toBeLessThanOrEqual(1020);
+    }
+  });
+
+  it("keeps every line inside the text region for adversarially wide names", () => {
+    // Layout uses measured widths, so this must hold for any input at all.
+    for (const firstName of ["W".repeat(80), "😀".repeat(40), "MWMWMWMWMW", "Iiii", null]) {
+      const svg = buildPickCardOgSvg({ firstName, electionDate: "2026-11-03" });
+      for (const line of headlineLines(svg)) {
+        expect(measureTextPx(line.text, line.fontSize)).toBeLessThanOrEqual(1020);
+      }
     }
   });
 });

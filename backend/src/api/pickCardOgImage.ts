@@ -29,10 +29,149 @@ const INK_COLOR = "#222222";
 const moduleDir = dirname(fileURLToPath(import.meta.url));
 const FONT_PATH = join(moduleDir, "../../assets/fonts/Inter_700Bold.ttf");
 
-// Touch the file at module load: a missing font should fail server startup
+// Read at module load: a missing or corrupt font should fail server startup
 // loudly, not surface as a per-request 500 the first time a scraper asks.
-// resvg itself loads from the path (its 2.x API takes fontFiles, not buffers).
-readFileSync(FONT_PATH);
+// resvg loads from the path (its 2.x API takes fontFiles, not buffers); the
+// buffer here feeds the metrics parser below.
+const fontData = readFileSync(FONT_PATH);
+
+// ---------------------------------------------------------------------------
+// Real text measurement. Width ESTIMATES kept producing edge cases (a wall of
+// W's is nearly twice the average glyph width; emoji are wider still), and an
+// overflowing line clips at the canvas edge. The vendored font is right
+// there, so read true advance widths from its cmap + hmtx tables instead of
+// guessing. Kerning and ligatures in Inter only ever narrow a line, so
+// summing bare advances errs safe. Glyphs Inter lacks (emoji, CJK) render in
+// an unknown fallback font and get a pessimistic 1.4em.
+
+const FALLBACK_GLYPH_WIDTH_EM = 1.4;
+
+type FontMetrics = {
+  unitsPerEm: number;
+  glyphForCodePoint: (codePoint: number) => number | null;
+  advanceForGlyph: (glyphId: number) => number;
+};
+
+function parseFontMetrics(data: Buffer): FontMetrics {
+  const tables = new Map<string, number>();
+  const tableCount = data.readUInt16BE(4);
+  for (let index = 0; index < tableCount; index += 1) {
+    const record = 12 + index * 16;
+    tables.set(data.toString("ascii", record, record + 4), data.readUInt32BE(record + 8));
+  }
+  const offsetOf = (tag: string): number => {
+    const offset = tables.get(tag);
+    if (offset === undefined) {
+      throw new Error(`font is missing required table ${tag}`);
+    }
+    return offset;
+  };
+
+  const unitsPerEm = data.readUInt16BE(offsetOf("head") + 18);
+  const numberOfHMetrics = data.readUInt16BE(offsetOf("hhea") + 34);
+  const hmtxOffset = offsetOf("hmtx");
+  const advanceForGlyph = (glyphId: number): number =>
+    data.readUInt16BE(hmtxOffset + Math.min(glyphId, numberOfHMetrics - 1) * 4);
+
+  // Prefer a format 12 unicode subtable (full range), else format 4 (BMP).
+  const cmapOffset = offsetOf("cmap");
+  let subtable: { offset: number; format: number } | null = null;
+  const subtableCount = data.readUInt16BE(cmapOffset + 2);
+  for (let index = 0; index < subtableCount; index += 1) {
+    const record = cmapOffset + 4 + index * 8;
+    const platform = data.readUInt16BE(record);
+    const encoding = data.readUInt16BE(record + 2);
+    if (platform !== 0 && !(platform === 3 && (encoding === 1 || encoding === 10))) {
+      continue;
+    }
+    const offset = cmapOffset + data.readUInt32BE(record + 4);
+    const format = data.readUInt16BE(offset);
+    if (format === 12 || (format === 4 && subtable?.format !== 12)) {
+      subtable = { offset, format };
+    }
+  }
+  if (!subtable) {
+    throw new Error("font has no usable unicode cmap subtable");
+  }
+  const { offset: sub, format } = subtable;
+
+  const glyphForCodePoint = (codePoint: number): number | null => {
+    if (format === 12) {
+      const groupCount = data.readUInt32BE(sub + 12);
+      let low = 0;
+      let high = groupCount - 1;
+      while (low <= high) {
+        const mid = (low + high) >> 1;
+        const group = sub + 16 + mid * 12;
+        const start = data.readUInt32BE(group);
+        const end = data.readUInt32BE(group + 4);
+        if (codePoint < start) {
+          high = mid - 1;
+        } else if (codePoint > end) {
+          low = mid + 1;
+        } else {
+          return data.readUInt32BE(group + 8) + (codePoint - start);
+        }
+      }
+      return null;
+    }
+    // Format 4: segmented BMP mapping.
+    if (codePoint > 0xffff) {
+      return null;
+    }
+    const segCountX2 = data.readUInt16BE(sub + 6);
+    const endCodes = sub + 14;
+    const startCodes = endCodes + segCountX2 + 2;
+    const idDeltas = startCodes + segCountX2;
+    const idRangeOffsets = idDeltas + segCountX2;
+    for (let seg = 0; seg < segCountX2; seg += 2) {
+      if (codePoint > data.readUInt16BE(endCodes + seg)) {
+        continue;
+      }
+      const start = data.readUInt16BE(startCodes + seg);
+      if (codePoint < start) {
+        return null;
+      }
+      const rangeOffset = data.readUInt16BE(idRangeOffsets + seg);
+      if (rangeOffset === 0) {
+        return (codePoint + data.readInt16BE(idDeltas + seg)) & 0xffff;
+      }
+      const glyphAddress = idRangeOffsets + seg + rangeOffset + (codePoint - start) * 2;
+      const glyph = data.readUInt16BE(glyphAddress);
+      return glyph === 0 ? null : (glyph + data.readInt16BE(idDeltas + seg)) & 0xffff;
+    }
+    return null;
+  };
+
+  return { unitsPerEm, glyphForCodePoint, advanceForGlyph };
+}
+
+const fontMetrics = parseFontMetrics(fontData);
+const advanceCache = new Map<number, number>();
+
+function codePointWidthEm(codePoint: number): number {
+  const cached = advanceCache.get(codePoint);
+  if (cached !== undefined) {
+    return cached;
+  }
+  const glyph = fontMetrics.glyphForCodePoint(codePoint);
+  const width =
+    glyph === null || glyph === 0
+      ? FALLBACK_GLYPH_WIDTH_EM
+      : fontMetrics.advanceForGlyph(glyph) / fontMetrics.unitsPerEm;
+  advanceCache.set(codePoint, width);
+  return width;
+}
+
+/** Measured width of a single rendered line, in px at the given font size.
+ * Exported so tests can assert real fit instead of re-deriving estimates. */
+export function measureTextPx(text: string, fontSize: number): number {
+  let em = 0;
+  for (const character of text) {
+    em += codePointWidthEm(character.codePointAt(0) ?? 0);
+  }
+  return em * fontSize;
+}
 
 const MONTH_ABBREVIATIONS = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -63,10 +202,13 @@ export function pickCardOgHeadline(firstName: string | null, electionDate: strin
 function escapeXml(text: string): string {
   return (
     text
-      // C0 controls and DEL are invalid XML 1.0 even escaped — first-name
-      // validation only checks trim + length, so U+0001 etc. reach this
-      // boundary and would fail the SVG parse (a 500) if kept.
-      .replace(/[\u0000-\u001f\u007f]/g, "")
+      // Characters XML 1.0 rejects even escaped — first-name validation only
+      // checks trim + length, so any of these reach this boundary and would
+      // fail the SVG parse (a 500) if kept: C0 controls, DEL, and the
+      // noncharacters U+FFFE/U+FFFF. Lone surrogates are dropped too rather
+      // than left to lossy UTF-8 conversion at the native boundary.
+      .replace(/[\u0000-\u001f\u007f\ufffe\uffff]/g, "")
+      .replace(/[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]/g, "")
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
@@ -75,27 +217,36 @@ function escapeXml(text: string): string {
   );
 }
 
-// Greedy word wrap against an estimated glyph width. 0.56em approximates the
-// average advance of Inter Bold for mixed-case English; resvg gives us no
-// text-measurement API, so the fit check is an estimate with the margin
-// built into the factor. Wide-glyph-heavy real names can still exceed the
-// text region by a little, but the 90px side margins absorb that; only the
-// pathological cases below get special handling.
-const AVG_GLYPH_WIDTH_EM = 0.56;
+// Splitting must respect grapheme boundaries: word.slice() indexes UTF-16
+// units and would cut an emoji's surrogate pair in half, leaving lone
+// surrogates in the SVG.
+const graphemeSegmenter = new Intl.Segmenter();
 
-// A single word longer than a whole line (an 80-char first name with no
+function splitGraphemes(text: string): string[] {
+  return [...graphemeSegmenter.segment(text)].map((segment) => segment.segment);
+}
+
+// A single word wider than a whole line (an 80-char first name with no
 // spaces — garbage input, but length validation admits it) is hard-split
-// into chunks that each get their own line. Chunks are sized at 1.1em per
-// glyph — Inter Bold's widest glyph, W, advances ~1.05em — because a chunk
-// is by definition estimate-hostile, and an overflowing line clips at the
-// canvas edge. The caller's font-size ladder absorbs the extra lines; if
-// even the smallest size cannot hold them, its four-line truncation drops
-// tail chunks, which is the right degradation for such a name.
-const CHUNK_GLYPH_WIDTH_EM = 1.1;
+// into measured chunks that each get their own line.
+function chunkWord(word: string, fontSize: number): string[] {
+  const chunks: string[] = [];
+  let current = "";
+  for (const grapheme of splitGraphemes(word)) {
+    if (current.length > 0 && measureTextPx(current + grapheme, fontSize) > USABLE_WIDTH) {
+      chunks.push(current);
+      current = "";
+    }
+    current += grapheme;
+  }
+  if (current.length > 0) {
+    chunks.push(current);
+  }
+  return chunks;
+}
 
+// Greedy word wrap against measured widths.
 function wrapHeadline(text: string, fontSize: number): string[] {
-  const maxChars = Math.floor(USABLE_WIDTH / (fontSize * AVG_GLYPH_WIDTH_EM));
-  const chunkChars = Math.max(1, Math.floor(USABLE_WIDTH / (fontSize * CHUNK_GLYPH_WIDTH_EM)));
   const lines: string[] = [];
   let current = "";
   const flush = () => {
@@ -105,15 +256,13 @@ function wrapHeadline(text: string, fontSize: number): string[] {
     }
   };
   for (const word of text.split(" ")) {
-    if (word.length > maxChars) {
+    if (measureTextPx(word, fontSize) > USABLE_WIDTH) {
       flush();
-      for (let start = 0; start < word.length; start += chunkChars) {
-        lines.push(word.slice(start, start + chunkChars));
-      }
+      lines.push(...chunkWord(word, fontSize));
       continue;
     }
     const candidate = current.length === 0 ? word : `${current} ${word}`;
-    if (candidate.length <= maxChars || current.length === 0) {
+    if (current.length === 0 || measureTextPx(candidate, fontSize) <= USABLE_WIDTH) {
       current = candidate;
     } else {
       lines.push(current);
@@ -131,19 +280,21 @@ const HEADLINE_FONT_SIZES = [72, 60, 50, 40];
 const MAX_HEADLINE_LINES = 4;
 const LINE_HEIGHT_FACTOR = 1.2;
 
-function layoutHeadline(text: string): { fontSize: number; lines: string[] } {
+function layoutHeadline(text: string): { fontSize: number; lines: string[]; fits: boolean } {
   let fallback: { fontSize: number; lines: string[] } | null = null;
   for (const fontSize of HEADLINE_FONT_SIZES) {
     const lines = wrapHeadline(text, fontSize);
-    const maxChars = Math.floor(USABLE_WIDTH / (fontSize * AVG_GLYPH_WIDTH_EM));
-    const fits = lines.length <= MAX_HEADLINE_LINES && lines.every((line) => line.length <= maxChars);
-    if (fits) {
-      return { fontSize, lines };
+    // Wrapping already guarantees per-line width, so fit is line count alone.
+    if (lines.length <= MAX_HEADLINE_LINES) {
+      return { fontSize, lines, fits: true };
     }
     fallback = { fontSize, lines: lines.slice(0, MAX_HEADLINE_LINES) };
   }
-  // Unreachable for legal names; truncating at the smallest size beats a 500.
-  return fallback ?? { fontSize: HEADLINE_FONT_SIZES.at(-1) ?? 40, lines: [text] };
+  // Only reachable when the caller's name truncation is exhausted too;
+  // dropping tail lines at the smallest size beats a 500.
+  return fallback
+    ? { ...fallback, fits: false }
+    : { fontSize: HEADLINE_FONT_SIZES.at(-1) ?? 40, lines: [text], fits: false };
 }
 
 export type PickCardOgImageInput = {
@@ -157,11 +308,22 @@ export function buildPickCardOgSvg(input: PickCardOgImageInput): string {
   // Non-breaking spaces inside the date keep "Nov 3, 2026" on one line; the
   // wrapper only splits on regular spaces.
   const date = formatElectionDateShort(input.electionDate);
-  const headline = pickCardOgHeadline(input.firstName, input.electionDate).replace(
-    date,
-    date.replace(/ /g, " ")
-  );
-  const { fontSize, lines } = layoutHeadline(headline);
+  const composeHeadline = (firstName: string | null) =>
+    pickCardOgHeadline(firstName, input.electionDate).replace(date, date.replace(/ /g, " "));
+
+  // When even the smallest font size cannot hold the whole headline, shorten
+  // the NAME with an ellipsis rather than dropping tail lines: "See WWWW…"
+  // without "picks for Nov 3, 2026 Elections" has lost the image's entire
+  // message. Trimming is grapheme-wise for the same reason chunking is.
+  let layout = layoutHeadline(composeHeadline(input.firstName));
+  if (!layout.fits && input.firstName) {
+    const graphemes = splitGraphemes(input.firstName);
+    while (!layout.fits && graphemes.length > 1) {
+      graphemes.pop();
+      layout = layoutHeadline(composeHeadline(`${graphemes.join("")}…`));
+    }
+  }
+  const { fontSize, lines } = layout;
   const lineHeight = Math.round(fontSize * LINE_HEIGHT_FACTOR);
 
   // Center the headline block in the space under the brand label (y 170–600),
