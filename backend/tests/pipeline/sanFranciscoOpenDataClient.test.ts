@@ -173,7 +173,11 @@ describe("getSanFranciscoCandidateTargetedSpending", () => {
       return new Response(JSON.stringify(pages.shift() ?? []), { status: 200 });
     };
     const rows = await getSanFranciscoCandidateTargetedSpending(
-      { candidateLastName: "Wong" },
+      {
+        candidateLastName: "Wong",
+        transactionDateFrom: "2024-06-02",
+        transactionDateTo: "2026-07-02",
+      },
       { fetchImpl, pageLimit },
     );
     expect(rows).toHaveLength(1);
@@ -186,10 +190,37 @@ describe("getSanFranciscoCandidateTargetedSpending", () => {
   it("rejects malformed transaction dates", async () => {
     await expect(
       getSanFranciscoCandidateTargetedSpending(
-        { candidateLastName: "Wong", transactionDateFrom: "06/02/2026" },
+        {
+          candidateLastName: "Wong",
+          transactionDateFrom: "06/02/2026",
+          transactionDateTo: "2026-07-02",
+        },
         { fetchImpl: jsonFetch([]) },
       ),
     ).rejects.toThrow(/Invalid San Francisco transaction date/);
+  });
+
+  it("rejects an empty or reversed date window", async () => {
+    await expect(
+      getSanFranciscoCandidateTargetedSpending(
+        {
+          candidateLastName: "Wong",
+          transactionDateFrom: "2026-07-02",
+          transactionDateTo: "2024-06-02",
+        },
+        { fetchImpl: jsonFetch([]) },
+      ),
+    ).rejects.toThrow(/Empty San Francisco transaction-date window/);
+    await expect(
+      getSanFranciscoCandidateTargetedSpending(
+        {
+          candidateLastName: "Wong",
+          transactionDateFrom: "2026-07-02",
+          transactionDateTo: "2026-07-02",
+        },
+        { fetchImpl: jsonFetch([]) },
+      ),
+    ).rejects.toThrow(/Empty San Francisco transaction-date window/);
   });
 });
 
@@ -267,7 +298,12 @@ describe("getSanFranciscoCommitteeItemizedTransactions", () => {
 
   it("maps rows and drops one whose canonical amount is unparseable", async () => {
     const rows = await getSanFranciscoCommitteeItemizedTransactions(
-      { fppcId: "1463099", formTypes: ["A", "C"] },
+      {
+        fppcId: "1463099",
+        formTypes: ["A", "C"],
+        transactionDateFrom: "2022-12-05",
+        transactionDateTo: "2024-12-05",
+      },
       {
         fetchImpl: jsonFetch([
           scheduleARow,
@@ -326,15 +362,19 @@ describe("getSanFranciscoCommitteeItemizedTransactions", () => {
   });
 
   it("rejects empty and malformed form types", async () => {
+    const window = {
+      transactionDateFrom: "2022-12-05",
+      transactionDateTo: "2024-12-05",
+    };
     await expect(
       getSanFranciscoCommitteeItemizedTransactions(
-        { fppcId: "1463099", formTypes: [] },
+        { fppcId: "1463099", formTypes: [], ...window },
         { fetchImpl: jsonFetch([]) },
       ),
     ).rejects.toThrow(/needs at least one form type/);
     await expect(
       getSanFranciscoCommitteeItemizedTransactions(
-        { fppcId: "1463099", formTypes: ["A'; drop"] },
+        { fppcId: "1463099", formTypes: ["A'; drop"], ...window },
         { fetchImpl: jsonFetch([]) },
       ),
     ).rejects.toThrow(/Invalid San Francisco form type/);

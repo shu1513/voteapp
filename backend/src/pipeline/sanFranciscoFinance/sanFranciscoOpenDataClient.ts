@@ -72,22 +72,27 @@ function nullableBoolean(
 
 // Transaction rows carry no election_date on late filings (verified live:
 // all 2024 mayoral F496 rows have it null), so every transaction query
-// bounds contests by transaction date instead.
+// bounds contests by transaction date instead. The bounds are mandatory:
+// committees keep filing across cycles under the same FPPC id (verified
+// live: the 2024 Lurie mayoral committee has 2026 Schedule A rows, incl.
+// $165,000 on 2026-01-21), so an unbounded query silently mixes elections.
 function transactionDateConditions(
-  transactionDateFrom: string | undefined,
-  transactionDateTo: string | undefined,
+  transactionDateFrom: string,
+  transactionDateTo: string,
 ): string[] {
-  const conditions: string[] = [];
-  for (const [key, value] of [
-    ["transaction_date>=", transactionDateFrom],
-    ["transaction_date<", transactionDateTo],
-  ] as const) {
-    if (value === undefined) continue;
+  for (const value of [transactionDateFrom, transactionDateTo]) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value))
       throw new Error(`Invalid San Francisco transaction date: ${value}`);
-    conditions.push(`${key}${soqlString(`${value}T00:00:00.000`)}`);
   }
-  return conditions;
+  // Half-open window [from, to); ISO dates compare correctly as strings.
+  if (transactionDateFrom >= transactionDateTo)
+    throw new Error(
+      `Empty San Francisco transaction-date window: ${transactionDateFrom} to ${transactionDateTo}`,
+    );
+  return [
+    `transaction_date>=${soqlString(`${transactionDateFrom}T00:00:00.000`)}`,
+    `transaction_date<${soqlString(`${transactionDateTo}T00:00:00.000`)}`,
+  ];
 }
 
 async function fetchRows(
@@ -257,11 +262,11 @@ export async function getSanFranciscoCandidateTargetedSpending(
   input: {
     candidateLastName: string;
     candidateFirstName?: string;
-    // F496 rows carry no election_date (verified live: all of the 2024
-    // mayoral independent expenditures have it null), so contests are
-    // bounded by transaction date instead.
-    transactionDateFrom?: string;
-    transactionDateTo?: string;
+    // Required cycle window — see transactionDateConditions. Name filters
+    // alone mix same-surname candidates and same-committee activity across
+    // election cycles.
+    transactionDateFrom: string;
+    transactionDateTo: string;
   },
   options: SanFranciscoOpenDataClientOptions = {},
 ): Promise<SanFranciscoTargetedSpendingRow[]> {
@@ -500,13 +505,16 @@ const ITEMIZED_TRANSACTION_SELECT = [
  * independent expenditures). Raw fetch only: the contributor-formula
  * composition rules stay in the Phase 4 aggregator behind its entry gate.
  * Rows whose canonical amount cannot be parsed are dropped, never thrown.
+ * The transaction-date window is mandatory — committees file across cycles
+ * under one FPPC id, so an unbounded fetch would silently mix elections;
+ * a diagnostic that truly wants all history passes a wide explicit window.
  */
 export async function getSanFranciscoCommitteeItemizedTransactions(
   input: {
     fppcId: string;
     formTypes: string[];
-    transactionDateFrom?: string;
-    transactionDateTo?: string;
+    transactionDateFrom: string;
+    transactionDateTo: string;
   },
   options: SanFranciscoOpenDataClientOptions = {},
 ): Promise<SanFranciscoItemizedTransactionRow[]> {
