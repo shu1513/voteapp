@@ -225,13 +225,18 @@ function withoutWebsiteUrl(urls: readonly string[], url: string | null): string[
  * keeps matching as a hard identifier, so a payload carrying either the old
  * or the new site resolves to the same person.
  *
+ * An incoming URL that is already ARCHIVED does not rotate back in: the
+ * archive only holds URLs a later write displaced, so such a payload is a
+ * stale replay (retried job, re-run research file) — it matches the person
+ * but the stored, newer site is kept. A genuine return to an archived URL
+ * takes --replace-profile-fields official_website_url.
+ *
  * The explicit flags keep their correction semantics: --replace-profile-fields
  * swaps in the incoming URL WITHOUT archiving the stored one (the stored value
  * was wrong, and archiving a wrong URL would poison future matching);
  * --clear-profile-fields drops the stored URL without archiving for the same
  * reason. The former list is deduped on the normalized URL and never contains
- * the current URL (a site that reverts to an earlier URL moves that URL back
- * out of the archive).
+ * the current URL.
  */
 export function resolveWebsiteRotationOnMerge(input: {
   storedWebsite: string | null | undefined;
@@ -254,6 +259,17 @@ export function resolveWebsiteRotationOnMerge(input: {
     return { website: incoming, formerWebsites: withoutWebsiteUrl(storedFormer, incoming) };
   }
   if (incoming && normalizeOptionalUrl(incoming) !== normalizeOptionalUrl(stored)) {
+    // An incoming URL that sits in the archive proves IDENTITY, not
+    // freshness: a URL is only archived because a later write displaced it,
+    // so a payload carrying it (a retried job, a re-run of an old research
+    // file) is older than the row. Rotating it back in would silently revert
+    // the newer site — keep the stored one. A candidate who genuinely
+    // returned to an archived URL goes through --replace-profile-fields
+    // official_website_url.
+    const incomingKey = websiteUrlKey(incoming);
+    if (storedFormer.some((url) => websiteUrlKey(url) === incomingKey)) {
+      return { website: stored, formerWebsites: storedFormer };
+    }
     return {
       website: incoming,
       formerWebsites: withoutWebsiteUrl(dedupeWebsiteUrlList([...storedFormer, stored]), incoming),

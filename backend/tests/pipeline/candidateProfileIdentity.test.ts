@@ -1014,20 +1014,40 @@ describe("website rotation (campaign sites change between races)", () => {
       ).toEqual({ website: "https://jane.example", formerWebsites: [] });
     });
 
-    it("moves a reverted-to URL back out of the archive", () => {
-      // The candidate went back to an earlier site: it becomes current again
-      // and only the displaced site stays archived.
+    it("keeps the stored site when the incoming URL is an archived former site (stale-replay guard)", () => {
+      // A URL is only in the archive because a LATER write displaced it, so
+      // a payload carrying it (retried job, re-run of an old research file)
+      // is older than the row: it matches the person but must not revert the
+      // newer stored site.
+      expect(
+        resolveWebsiteRotationOnMerge({
+          storedWebsite: "https://jane2026.example",
+          storedFormerWebsites: ["https://jane2024.example"],
+          incomingWebsite: "https://jane2024.example/",
+          overwrite: false,
+          clear: false,
+        })
+      ).toEqual({
+        website: "https://jane2026.example",
+        formerWebsites: ["https://jane2024.example"],
+      });
+    });
+
+    it("replace (overwrite) is the sanctioned path back to an archived URL", () => {
+      // Genuine return to an earlier site: the operator names the field. The
+      // reverted-to URL leaves the archive; the displaced URL is dropped, not
+      // archived (replace never archives).
       expect(
         resolveWebsiteRotationOnMerge({
           storedWebsite: "https://jane2026.example",
           storedFormerWebsites: ["https://jane2024.example"],
           incomingWebsite: "https://jane2024.example",
-          overwrite: false,
+          overwrite: true,
           clear: false,
         })
       ).toEqual({
         website: "https://jane2024.example",
-        formerWebsites: ["https://jane2026.example"],
+        formerWebsites: [],
       });
     });
 
