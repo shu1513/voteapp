@@ -2,6 +2,7 @@ export const SAN_FRANCISCO_OPEN_DATA_BASE_URL =
   "https://data.sfgov.org/resource";
 export const SAN_FRANCISCO_SUMMARY_TOTALS_DATASET_ID = "9ggq-m8hp";
 export const SAN_FRANCISCO_TRANSACTIONS_DATASET_ID = "pitq-e56w";
+export const SAN_FRANCISCO_PUBLIC_FUNDS_DATASET_ID = "dbak-p2fq";
 
 const DEFAULT_TIMEOUT_MS = 30_000;
 const DEFAULT_PAGE_LIMIT = 1_000;
@@ -214,7 +215,11 @@ export async function getSanFranciscoCandidateTargetedSpending(
   input: {
     candidateLastName: string;
     candidateFirstName?: string;
-    electionDate?: string;
+    // F496 rows carry no election_date (verified live: all of the 2024
+    // mayoral independent expenditures have it null), so contests are
+    // bounded by transaction date instead.
+    transactionDateFrom?: string;
+    transactionDateTo?: string;
   },
   options: SanFranciscoOpenDataClientOptions = {},
 ): Promise<SanFranciscoTargetedSpendingRow[]> {
@@ -225,14 +230,14 @@ export async function getSanFranciscoCandidateTargetedSpending(
   const firstName = input.candidateFirstName?.trim().toUpperCase();
   if (firstName)
     conditions.push(`upper(candidate_first_name)=${soqlString(firstName)}`);
-  if (input.electionDate) {
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(input.electionDate))
-      throw new Error(
-        `Invalid San Francisco election date: ${input.electionDate}`,
-      );
-    conditions.push(
-      `election_date=${soqlString(`${input.electionDate}T00:00:00.000`)}`,
-    );
+  for (const [key, value] of [
+    ["transaction_date>=", input.transactionDateFrom],
+    ["transaction_date<", input.transactionDateTo],
+  ] as const) {
+    if (value === undefined) continue;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value))
+      throw new Error(`Invalid San Francisco transaction date: ${value}`);
+    conditions.push(`${key}${soqlString(`${value}T00:00:00.000`)}`);
   }
   const rows = await fetchAllPages(
     SAN_FRANCISCO_TRANSACTIONS_DATASET_ID,
@@ -257,6 +262,54 @@ export async function getSanFranciscoCandidateTargetedSpending(
       supportOpposeCode: stringValue(row, "support_oppose_code") || null,
       amountCents,
       transactionCount: Number(row["transaction_count"] ?? 0) || 0,
+    });
+  }
+  return results;
+}
+
+export type SanFranciscoPublicFundsRow = {
+  /** "Last, First" as disclosed. */
+  candidateName: string;
+  /** "Mayor" or a supervisor district number. */
+  district: string;
+  pendingCompleted: string | null;
+  fundsApprovedCents: number;
+};
+
+/**
+ * Public-financing approvals for one election. The dataset has no committee
+ * id — rows carry only election date, district ("Mayor" or a supervisor
+ * district number), candidate name, and approved amount — so callers match
+ * by normalized candidate name and district, failing closed on ambiguity.
+ * Verified live: per-candidate sums explain the dashboard "funds" figure
+ * exactly (funds = Form 460 line-5 contributions + public funds approved).
+ */
+export async function getSanFranciscoPublicFundsApproved(
+  input: { electionDate: string },
+  options: SanFranciscoOpenDataClientOptions = {},
+): Promise<SanFranciscoPublicFundsRow[]> {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(input.electionDate))
+    throw new Error(
+      `Invalid San Francisco election date: ${input.electionDate}`,
+    );
+  const rows = await fetchAllPages(
+    SAN_FRANCISCO_PUBLIC_FUNDS_DATASET_ID,
+    {
+      $where: `election_date=${soqlString(`${input.electionDate}T00:00:00.000`)}`,
+      $order: "candidate,date_of_submission,:id",
+    },
+    options,
+  );
+  const results: SanFranciscoPublicFundsRow[] = [];
+  for (const row of rows) {
+    const candidateName = stringValue(row, "candidate");
+    const fundsApprovedCents = moneyStringToCents(row["funds_approved"]);
+    if (!candidateName || fundsApprovedCents === null) continue;
+    results.push({
+      candidateName,
+      district: stringValue(row, "district"),
+      pendingCompleted: stringValue(row, "pending_completed") || null,
+      fundsApprovedCents,
     });
   }
   return results;

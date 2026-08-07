@@ -4,6 +4,18 @@ Written 2026-08-06; revised the same day after a second investigation round. Pro
 
 The Los Angeles City adapter (`backend/src/pipeline/losAngelesCityFinance/`, migration `173`) is the closest structural blueprint. San Francisco's key difference: DataSF serves only raw filing data, but **SFEC publishes its reconciled dashboard data as machine-readable files in an official GitHub repository**, which this plan uses as the primary identity-and-totals source, with raw DataSF reconstruction as validator and fallback.
 
+## Phase 0 status — COMPLETE (2026-08-06, branch `claude/sf-finance-phase-0`)
+
+Implemented: `sanFranciscoDashboardManifestClient.ts` (0A), a lean `sanFranciscoOpenDataClient.ts` (0B oracle), and `probeSanFranciscoCandidateFinance.ts` (npm `san-francisco-candidates:finance:probe`), with parser/client unit tests. Live results across both canonical contests (10 mayoral + 5 D4 candidates):
+
+- **Funds formula proven**: dashboard `funds` = Form 460 line-5 contributions (period prefix up to a cutoff filing) **+ public funds approved** (`dbak-p2fq`). Exact to the cent for 14 of 15 candidates (Breed's `$1,185,000`, Peskin's `$1,200,006`, Wong's `$252,000` public funds all reconcile exactly). Sole residual: Hirsch-Shell off by `$29.38` (immaterial; likely a returned-contribution edge).
+- **Expenses are not raw-reproducible**: naive line-11 sums differ per candidate (`$0` for some, `+$51,338` Lurie, `+$102,896` Chow) — manifest stays authoritative for expenses.
+- **Outside spending requires the manifest**: candidate-tagged F496 sums diverge from dashboard relations in both directions (Wong `$0` tagged vs `$744k` manifest; Breed `$3.19M` tagged vs `$2.69M` manifest), and Schedule D overlaps F496.
+- **New source fact**: F496 transaction rows carry no `election_date` — contest bounding must use transaction-date windows.
+- All four reference checks (Lurie funds/expenses, Wong funds/expenses/outside S/O) pass live.
+
+**Decision: hybrid confirmed.** Manifest primary for identity, headline totals, and outside relations; DataSF for occupations/employers/buckets/balances/public funds; raw path retained as oracle via the probe.
+
 ## Verified sources (probed live 2026-08-06)
 
 ### SFEC dashboard repository (primary for identity and headline totals)

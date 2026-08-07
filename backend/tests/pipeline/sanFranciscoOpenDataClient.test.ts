@@ -95,7 +95,11 @@ describe("getSanFranciscoCommitteeSummaryRows", () => {
 describe("getSanFranciscoCandidateTargetedSpending", () => {
   it("maps grouped rows and tolerates missing ids", async () => {
     const rows = await getSanFranciscoCandidateTargetedSpending(
-      { candidateLastName: "Wong", electionDate: "2026-06-02" },
+      {
+        candidateLastName: "Wong",
+        transactionDateFrom: "2024-06-02",
+        transactionDateTo: "2026-07-02",
+      },
       {
         fetchImpl: jsonFetch([
           {
@@ -142,12 +146,12 @@ describe("getSanFranciscoCandidateTargetedSpending", () => {
     ]);
   });
 
-  it("rejects malformed election dates", async () => {
+  it("rejects malformed transaction dates", async () => {
     await expect(
       getSanFranciscoCandidateTargetedSpending(
-        { candidateLastName: "Wong", electionDate: "06/02/2026" },
+        { candidateLastName: "Wong", transactionDateFrom: "06/02/2026" },
         { fetchImpl: jsonFetch([]) },
       ),
-    ).rejects.toThrow(/Invalid San Francisco election date/);
+    ).rejects.toThrow(/Invalid San Francisco transaction date/);
   });
 });
