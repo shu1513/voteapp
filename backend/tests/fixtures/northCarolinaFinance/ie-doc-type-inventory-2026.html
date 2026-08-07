@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<title>Campaign Document Search By Type</title>
+
+        <link rel="icon" href="/Content/img/favicon.ico" />
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+		<!-- Add local styles, mostly for plugins css file -->
+		
+        <link href="/Scripts/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
+
+        <link href="/Content/plugins/igniteui/css/themes/bootstrap4/infragistics.theme.css" rel="stylesheet"/>
+
+        <link href="/Content/plugins/igniteui/css/structure/infragistics.css" rel="stylesheet"/>
+
+        <link href="/Content/css/seims.css" rel="stylesheet"/>
+
+    
+
+		<!-- Primary Inspinia style -->     
+		<link href="/Content/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="/Content/css/animate.css" rel="stylesheet"/>
+<link href="/Content/css/style.css" rel="stylesheet"/>
+
+
+		<link href="/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+
+	</head>
+
+	<body class="top-navigation">
+		<!-- Page wraper -->
+		<div id="page-wrapper" class="gray-bg">
+
+			<!-- Top Navbar -->
+			<div class="row border-bottom white-bg" style="white-space: nowrap;">
+	<nav class="navbar navbar-static-top" role="navigation" style="padding: 5px;">
+		<div class="navbar-header">
+			<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+				<i class="fa fa-reorder"></i>
+			</button>
+			<a href="https://www.ncsbe.gov/"><img style="padding-right: 12px;" src="/Content/img/logo_sbe_small.png" /></a>
+		</div>
+		<div class="navbar-collapse collapse navbar-right" id="navbar" style="width:224px;">
+			<ul id="menu_mobile" class="nav navbar-nav" style="float:right;">
+                <li class="dropdown hidden-xs">
+                    <a aria-expanded="false" role="button" class="dropdown-toggle" data-toggle="dropdown">Applications<span class="caret"></span></a>
+                    <ul id="menu_desktop" role="menu" class="dropdown-menu">
+                        
+                    </ul>
+                </li>
+				
+				
+			</ul>
+		</div>
+        <div class="text-center" style="white-space: normal;">
+            <h2 style="margin-top: 12px;">Campaign Document Search By Type</h2>
+        </div>
+	</nav>
+</div>
+
+
+			<div class="container-fluid">
+				<div class="wrapper-content">
+					<!-- Main view  -->
+					
+
+
+
+<form action="/CFDocLkup/DocumentResult/?year=2026&amp;reports=%27IRIEX%27,%27IRCIX%27,%27RPIER%27" method="post">    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="font-bold">
+                <center>
+                    Click on one of the link(s) below to view the document.
+
+<a href="/CFDocLkup/ExportSearchResults/?year=2026&amp;reports=%27IRIEX%27%2C%27IRCIX%27%2C%27RPIER%27" style="text-decoration:underline;">Export list to .CSV</a>                </center>
+                <br />
+
+                Results Returned: 95
+            </div>
+
+            <div id="divResults">
+                    <table id="gridDocumentResults"></table>
+            </div>
+
+        </div>
+    </div>
+</form>
+				</div>
+			</div>
+
+			<!-- Footer -->
+			
+<div class="footer">
+    <div class="pull-right">
+        
+        
+    </div>
+	<div>
+		© 2014-2026
+		<a type="button" class="btn-link" href="https://www.ncsbe.gov/" style="white-space: nowrap;"><strong>NC State Board of Elections</strong></a>
+	</div>
+</div>
+
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+		<div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">×</span>
+					<span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Site Feedback</h4>
+                <small class="font-bold">Please fill out the form and click Submit to provide feedback.</small>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+					<label>Feedback</label>
+					<textarea class="form-control" placeholder="Enter feedback here..." style="height:100px; resize: none;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+		</div>
+		<!-- End page wrapper-->
+		<!-- Section for main scripts render -->
+		<script src="/Scripts/jquery-2.1.1.min.js"></script>
+
+		<script src="/Scripts/bootstrap.min.js"></script>
+
+		<script src="/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+		<script src="/Scripts/inspinia.js"></script>
+
+
+		<!-- Handler for local scripts -->
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-159880906-2"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() { dataLayer.push(arguments); }
+			gtag('js', new Date());
+
+			gtag('config', 'UA-159880906-2');
+		</script>
+
+		<script type="text/javascript">
+			//load the menus with the sites in /Content/sites.txt
+			$(document).ready(function () {
+				var fileSites = new XMLHttpRequest();
+				var arrSites;
+				var timeDayHourMinute = String(new Date().getDate()) + '-' + String(new Date().getHours()) + '-' + String(new Date().getMinutes());
+
+				fileSites.open('get', "/Content/sites.txt" + '?v=' + timeDayHourMinute, false);
+				fileSites.send(null);
+
+				arrSites = JSON.parse(fileSites.responseText);
+
+				arrSites.sort(function (a, b) {
+					if (a.name > b.name) { return 1 }
+					if (a.name < b.name) { return -1 }
+					return 0;
+				});
+
+				for (i = 0; i < arrSites.length; i++) {
+					$('#menu_mobile').append('<li class="visible-xs-block">' + '<a href="/CFDocLkup/_url_/">_name_</a>'.replace('_name_', arrSites[i].name).replace('_url_', arrSites[i].url) + '</li>');
+					$('#menu_desktop').append('<li>' + '<a href="/CFDocLkup/_url_/">_name_</a>'.replace('_name_', arrSites[i].name).replace('_url_', arrSites[i].url) + '</li>');
+					if ($('#menu_index').length) {
+						$('#menu_index').append('<li>' + '<a href="/CFDocLkup/_url_/">_name_</a>'.replace('_name_', arrSites[i].name).replace('_url_', arrSites[i].url) + '</li>');
+					}
+				}
+			});
+		</script>
+
+		
+        <script src="/Scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+        <script src="/Scripts/plugins/igniteui/js/infragistics.core.js"></script>
+<script src="/Scripts/plugins/igniteui/js/infragistics.lob.js"></script>
+
+
+        <script id="colImage" type="text/template">
+            <a href="/CFOrgLkup/ImageLink" target="_blank" style="text-decoration:underline">Text</a>
+        </script>
+
+        <script id="colData" type="text/template">
+            <a href='/CFOrgLkup/ReportSection/?RID=ridParam&amp;SID=sidParam&amp;CN=cnParam&amp;RN=rnParam' style="text-decoration:underline">Text</a>
+        </script>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                SetupGrid();
+            });
+
+            function SetupGrid()
+            {
+                var data = [{"CommitteeName":"AARP, INC","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"05/02/2026","DataImportDate":"","PeriodStartDate":"02/24/2026","PeriodEndDate":"02/24/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=335622"},{"CommitteeName":"ADVANCE NORTH CAROLINA","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/25/2026","DataImportDate":"02/24/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"02/24/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229305","ImageLink":"ViewDocumentImage/?DID=333073"},{"CommitteeName":"ADVANCE NORTH CAROLINA","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/21/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/19/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229253","ImageLink":"ViewDocumentImage/?DID=333122"},{"CommitteeName":"ADVANCE NORTH CAROLINA","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"232624","ImageLink":null},{"CommitteeName":"AFFORDABLE HEALTHCARE COALITION OF NORTH CAROLINA","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/24/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230023","ImageLink":"ViewDocumentImage/?DID=333843"},{"CommitteeName":"AFFORDABLE HEALTHCARE COALITION OF NORTH CAROLINA","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"232783","ImageLink":null},{"CommitteeName":"AMERICAN CIVIL LIBERTIES UNION OF NORTH CAROLINA","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/20/2026","DataImportDate":"02/20/2026","PeriodStartDate":"02/19/2026","PeriodEndDate":"02/20/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229034","ImageLink":"ViewDocumentImage/?DID=333172"},{"CommitteeName":"AMERICAN CONSERVATIVE FUND","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/27/2026","DataImportDate":"02/13/2026","PeriodStartDate":"02/23/2026","PeriodEndDate":"02/24/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230090","ImageLink":"ViewDocumentImage/?DID=333704"},{"CommitteeName":"AMERICAN CONSERVATIVE FUND","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/23/2026","DataImportDate":"02/23/2026","PeriodStartDate":"01/31/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229629","ImageLink":"ViewDocumentImage/?DID=334324"},{"CommitteeName":"AMERICAN CONSERVATIVE FUND","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/13/2026","DataImportDate":"02/13/2025","PeriodStartDate":"01/22/2026","PeriodEndDate":"01/30/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230649","ImageLink":"ViewDocumentImage/?DID=333597"},{"CommitteeName":"AMERICAN CONSERVATIVE FUND","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"02/27/2026","PeriodStartDate":"02/26/2026","PeriodEndDate":"02/26/2026","ImageType":"","DataType":"DATA","DataLink":"230158","ImageLink":null},{"CommitteeName":"AMERICANS FOR PROSPERITY","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/25/2026","DataImportDate":"02/18/2026","PeriodStartDate":"02/17/2026","PeriodEndDate":"02/17/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"228757","ImageLink":"ViewDocumentImage/?DID=334013"},{"CommitteeName":"AMERICANS FOR PROSPERITY","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/25/2026","DataImportDate":"02/18/2026","PeriodStartDate":"02/16/2026","PeriodEndDate":"02/16/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"228756","ImageLink":"ViewDocumentImage/?DID=334010"},{"CommitteeName":"AMERICANS FOR PROSPERITY","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/25/2026","DataImportDate":"02/18/2026","PeriodStartDate":"01/27/2026","PeriodEndDate":"02/12/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"228934","ImageLink":"ViewDocumentImage/?DID=334009"},{"CommitteeName":"AMERICANS FOR PROSPERITY","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/21/2026","DataImportDate":"02/21/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229309","ImageLink":"ViewDocumentImage/?DID=333395"},{"CommitteeName":"AMERICANS FOR PROSPERITY","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"02/25/2026","PeriodStartDate":"02/23/2026","PeriodEndDate":"02/24/2026","ImageType":"","DataType":"DATA","DataLink":"229324","ImageLink":null},{"CommitteeName":"AMERICANS FOR PROSPERITY","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"232309","ImageLink":null},{"CommitteeName":"AMERICANS FOR PROSPERITY ACTION","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/25/2026","DataImportDate":"02/18/2026","PeriodStartDate":"01/27/2026","PeriodEndDate":"02/12/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229109","ImageLink":"ViewDocumentImage/?DID=335628"},{"CommitteeName":"AMERICANS FOR PROSPERITY ACTION","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/25/2026","DataImportDate":"02/25/2026","PeriodStartDate":"02/23/2026","PeriodEndDate":"02/24/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230651","ImageLink":"ViewDocumentImage/?DID=333440"},{"CommitteeName":"AMERICANS FOR PROSPERITY ACTION","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/23/2026","DataImportDate":"02/23/2026","PeriodStartDate":"02/21/2026","PeriodEndDate":"02/21/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"228931","ImageLink":"ViewDocumentImage/?DID=332948"},{"CommitteeName":"AMERICANS FOR PROSPERITY ACTION","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/21/2026","DataImportDate":"02/21/2026","PeriodStartDate":"02/19/2026","PeriodEndDate":"02/19/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"228863","ImageLink":"ViewDocumentImage/?DID=332642"},{"CommitteeName":"AMERICANS FOR PROSPERITY ACTION","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/18/2026","DataImportDate":"02/18/2026","PeriodStartDate":"02/16/2026","PeriodEndDate":"02/16/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230650","ImageLink":"ViewDocumentImage/?DID=332203"},{"CommitteeName":"CAMPAIGN TO ELECT DEXTER SHORT","SBoEID":"DVD-H031EW-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/09/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"232038","ImageLink":null},{"CommitteeName":"CAROLINA ECONOMIC SUCCESS COMMITTEE","SBoEID":"STA-F03QL8-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"07/10/2026","DataImportDate":"07/10/2026","PeriodStartDate":"02/25/2026","PeriodEndDate":"06/30/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"232826","ImageLink":"ViewDocumentImage/?DID=339454"},{"CommitteeName":"CAROLINA FEDERATION","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/19/2026","DataImportDate":"02/19/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229236","ImageLink":"ViewDocumentImage/?DID=333879"},{"CommitteeName":"CAROLINA FEDERATION","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/07/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"231878","ImageLink":null},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"07/10/2026","DataImportDate":"","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/01/3026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=339369"},{"CommitteeName":"CAROLINA FEDERATION FREEDOM PAC","SBoEID":"STA-98J33C-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"04/09/2026","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"232613","ImageLink":"ViewDocumentImage/?DID=335192"},{"CommitteeName":"CAROLINA FORWARD","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/25/2026","DataImportDate":"","PeriodStartDate":"02/01/2026","PeriodEndDate":"03/03/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=333124"},{"CommitteeName":"CITIZENS FOR A BETTER NORTH CAROLINA","SBoEID":"STA-9I5Y56-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"07/10/2026","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"232832","ImageLink":"ViewDocumentImage/?DID=339455"},{"CommitteeName":"CITIZENS FOR A BETTER NORTH CAROLINA","SBoEID":"STA-9I5Y56-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/24/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229952","ImageLink":"ViewDocumentImage/?DID=333839"},{"CommitteeName":"CITIZENS FOR NC JOBS ACTION PAC","SBoEID":"STA-BF20V2-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"07/10/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=339405"},{"CommitteeName":"CITIZENS FOR NC JOBS ACTION PAC","SBoEID":"STA-BF20V2-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"03/24/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=335030"},{"CommitteeName":"CITIZENS FOR NC JOBS ACTION PAC","SBoEID":"STA-BF20V2-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"03/02/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=334559"},{"CommitteeName":"CITIZENS FOR NC JOBS ACTION PAC","SBoEID":"STA-BF20V2-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/24/2026","PeriodStartDate":"01/23/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229951","ImageLink":"ViewDocumentImage/?DID=333841"},{"CommitteeName":"CITIZENS FOR NC JOBS ACTION PAC","SBoEID":"STA-BF20V2-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/21/2026","DataImportDate":"","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/18/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=333379"},{"CommitteeName":"CITIZENS FOR NC JOBS ACTION PAC","SBoEID":"STA-BF20V2-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"01/29/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=331526"},{"CommitteeName":"CITIZENS FOR NC JOBS ACTION PAC","SBoEID":"STA-BF20V2-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/21/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"232707","ImageLink":null},{"CommitteeName":"COALITION FOR A BETTER FUTURE","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/24/2026","PeriodStartDate":"02/20/2026","PeriodEndDate":"02/23/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229895","ImageLink":"ViewDocumentImage/?DID=335308"},{"CommitteeName":"CONSERVATION VOTES PAC","SBoEID":"STA-2301JS-C-001","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"Y","ImageReceiptDate":"03/03/2026","DataImportDate":"","PeriodStartDate":"02/15/2026","PeriodEndDate":"03/03/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=334354"},{"CommitteeName":"CONSERVATION VOTES PAC","SBoEID":"STA-2301JS-C-001","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/20/2026","DataImportDate":"","PeriodStartDate":"02/15/2026","PeriodEndDate":"03/03/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=333056"},{"CommitteeName":"CONSERVATION VOTES PAC","SBoEID":"STA-2301JS-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/20/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=333055"},{"CommitteeName":"CONVENTION OF STATES ACTION","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/17/2026","DataImportDate":"","PeriodStartDate":"01/26/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=333120"},{"CommitteeName":"DOWN HOME NC","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/24/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229993","ImageLink":"ViewDocumentImage/?DID=333371"},{"CommitteeName":"DOWN HOME NC IE PAC","SBoEID":"STA-J70AQ6-C-001","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"03/05/2026","DataImportDate":"","PeriodStartDate":"03/03/2026","PeriodEndDate":"03/03/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=334614"},{"CommitteeName":"DOWN HOME NC IE PAC","SBoEID":"STA-J70AQ6-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"232773","ImageLink":null},{"CommitteeName":"DRIVING NC FORWARD","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/07/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"231498","ImageLink":null},{"CommitteeName":"EDF ACTION VOTES","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"03/02/2026","DataImportDate":"02/06/2026","PeriodStartDate":"02/06/2026","PeriodEndDate":"02/06/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230653","ImageLink":"ViewDocumentImage/?DID=334541"},{"CommitteeName":"EDF ACTION VOTES","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/05/2026","DataImportDate":"02/05/2026","PeriodStartDate":"02/03/2026","PeriodEndDate":"02/03/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"228228","ImageLink":"ViewDocumentImage/?DID=330348"},{"CommitteeName":"FIGHT FOR OUR RIGHTS PAC","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/21/2026","DataImportDate":"02/21/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/19/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229307","ImageLink":"ViewDocumentImage/?DID=333397"},{"CommitteeName":"GUILFORD-ROCKINGHAM ALLIANCE","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"Y","ImageReceiptDate":"03/26/2026","DataImportDate":"03/23/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230554","ImageLink":"ViewDocumentImage/?DID=335083"},{"CommitteeName":"GUILFORD-ROCKINGHAM ALLIANCE","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/22/2026","PeriodStartDate":"01/10/2026","PeriodEndDate":"02/16/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230460","ImageLink":"ViewDocumentImage/?DID=333767"},{"CommitteeName":"GUILFORD-ROCKINGHAM ALLIANCE","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/05/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"231285","ImageLink":null},{"CommitteeName":"GUILFORD-ROCKINGHAM ALLIANCE","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"Y","ImageReceiptDate":"","DataImportDate":"05/31/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"","DataType":"DATA","DataLink":"230869","ImageLink":null},{"CommitteeName":"GUILFORD-ROCKINGHAM ALLIANCE","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"06/03/2026","PeriodStartDate":"02/19/2026","PeriodEndDate":"02/19/2026","ImageType":"","DataType":"DATA","DataLink":"230884","ImageLink":null},{"CommitteeName":"GUILFORD-ROCKINGHAM ALLIANCE","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"Y","ImageReceiptDate":"","DataImportDate":"06/03/2026","PeriodStartDate":"02/23/2026","PeriodEndDate":"02/25/2026","ImageType":"","DataType":"DATA","DataLink":"230883","ImageLink":null},{"CommitteeName":"HEALTHY EVOLVING MARKET PATRIOTS (HEMP)","SBoEID":"STA-7N3FK5-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"07/08/2026","DataImportDate":"07/08/2026","PeriodStartDate":"02/11/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"232095","ImageLink":"ViewDocumentImage/?DID=338696"},{"CommitteeName":"HEALTHY EVOLVING MARKET PATRIOTS (HEMP)","SBoEID":"STA-7N3FK5-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"02/11/2026","PeriodStartDate":"02/02/2026","PeriodEndDate":"02/02/2026","ImageType":"","DataType":"DATA","DataLink":"228700","ImageLink":null},{"CommitteeName":"LAKE NORMAN RW","SBoEID":"STA-2R3509-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"06/12/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"","DataType":"DATA","DataLink":"230926","ImageLink":null},{"CommitteeName":"MAKE LIBERTY WIN","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=333880"},{"CommitteeName":"MULTIFAMILY HOUSING COALITION OF NC","SBoEID":"STA-YL98H9-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"03/06/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=334659"},{"CommitteeName":"NC AG ACTION PAC","SBoEID":"STA-19C459-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"07/10/2026","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"232817","ImageLink":"ViewDocumentImage/?DID=339452"},{"CommitteeName":"NC AG ACTION PAC","SBoEID":"STA-19C459-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/24/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230014","ImageLink":"ViewDocumentImage/?DID=333840"},{"CommitteeName":"NC ALLIANCE FOR HOSPITALITY JOBS, INC","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"04/13/2026","DataImportDate":"04/13/2026","PeriodStartDate":"03/12/2026","PeriodEndDate":"03/31/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230634","ImageLink":"ViewDocumentImage/?DID=335226"},{"CommitteeName":"NC CHAMBER","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/18/2026","DataImportDate":"02/18/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229059","ImageLink":"ViewDocumentImage/?DID=332295"},{"CommitteeName":"NC CHAMBER","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/06/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"231483","ImageLink":null},{"CommitteeName":"NC CITIZENS FOR A BETTER TOMORROW","SBoEID":"STA-65I23I-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/24/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230011","ImageLink":"ViewDocumentImage/?DID=333838"},{"CommitteeName":"NC CITIZENS FOR PATIENT SAFETY INC","SBoEID":"STA-0B0X6J-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/20/2026","DataImportDate":"02/19/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229183","ImageLink":"ViewDocumentImage/?DID=333051"},{"CommitteeName":"NC CITIZENS FOR PATIENT SAFETY INC","SBoEID":"STA-0B0X6J-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/06/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"231664","ImageLink":null},{"CommitteeName":"NC JOBS PAC","SBoEID":"STA-FVXT87-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"07/10/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=339432"},{"CommitteeName":"NC JOBS PAC","SBoEID":"STA-FVXT87-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/24/2026","PeriodStartDate":"01/16/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230046","ImageLink":"ViewDocumentImage/?DID=333837"},{"CommitteeName":"NC JOBS PAC","SBoEID":"STA-FVXT87-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"232758","ImageLink":null},{"CommitteeName":"NC OUR HOME","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"03/17/2026","DataImportDate":"","PeriodStartDate":"03/01/2026","PeriodEndDate":"03/05/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=334864"},{"CommitteeName":"NC OUR HOME","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"","PeriodStartDate":"02/22/2026","PeriodEndDate":"03/03/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=333077"},{"CommitteeName":"NC SUSTAINABLE ENERGY ASSOCIATION LEADERSHIP FUND","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"04/20/2026","PeriodStartDate":"03/03/2026","PeriodEndDate":"03/03/2026","ImageType":"","DataType":"DATA","DataLink":"230672","ImageLink":null},{"CommitteeName":"NC TRUE CONSERVATIVES","SBoEID":"STA-JPK0Q9-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"07/10/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=339435"},{"CommitteeName":"NC TRUE CONSERVATIVES","SBoEID":"STA-JPK0Q9-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/24/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230049","ImageLink":"ViewDocumentImage/?DID=333836"},{"CommitteeName":"NC TRUE CONSERVATIVES","SBoEID":"STA-JPK0Q9-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"232760","ImageLink":null},{"CommitteeName":"NC VALUES COALITION","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"","PeriodStartDate":"01/20/2026","PeriodEndDate":"02/12/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=333770"},{"CommitteeName":"NCAAT IN ACTION","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/19/2026","DataImportDate":"02/19/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229244","ImageLink":"ViewDocumentImage/?DID=333887"},{"CommitteeName":"NEIGHBORS HELPING NC, INC (IE PAC) (FKA: (NC PROPERTY RIGHTS FUND INC))","SBoEID":"STA-TG467D-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/19/2026","DataImportDate":"07/06/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"231751","ImageLink":"ViewDocumentImage/?DID=333498"},{"CommitteeName":"NEIGHBORS HELPING NC, INC (IE PAC) (FKA: (NC PROPERTY RIGHTS FUND INC))","SBoEID":"STA-TG467D-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"02/19/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"","DataType":"DATA","DataLink":"229203","ImageLink":null},{"CommitteeName":"NEW NORTH CAROLINA PROJECT","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/19/2026","DataImportDate":"02/19/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229240","ImageLink":"ViewDocumentImage/?DID=333886"},{"CommitteeName":"NORTH CAROLINA FAMILIES FIRST (NC FAMILIES FIRST)","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/23/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/20/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229633","ImageLink":"ViewDocumentImage/?DID=333709"},{"CommitteeName":"OPPORTUNITY FOR NC","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/24/2026","DataImportDate":"02/24/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/14/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"230045","ImageLink":"ViewDocumentImage/?DID=333842"},{"CommitteeName":"OPPORTUNITY FOR NC","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/10/2026","PeriodStartDate":"02/15/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"232747","ImageLink":null},{"CommitteeName":"RED WINE AND BLUE","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/20/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=335504"},{"CommitteeName":"RED WINE AND BLUE","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/20/2026","DataImportDate":"","PeriodStartDate":"","PeriodEndDate":"","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=335502"},{"CommitteeName":"SUPPORTERS OF NORTH CAROLINA'S SKILLED NURSING FACILITIES","SBoEID":"STA-KV2H8R-C-001","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"03/02/2026","DataImportDate":"","PeriodStartDate":"02/28/2026","PeriodEndDate":"03/02/2026","ImageType":"IMAGE","DataType":"","DataLink":null,"ImageLink":"ViewDocumentImage/?DID=333752"},{"CommitteeName":"SURRY REC","SBoEID":"STA-C4274N-C-001","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure for Registered Committees","IsAmendment":"N","ImageReceiptDate":"02/20/2026","DataImportDate":"02/18/2026","PeriodStartDate":"01/01/2026","PeriodEndDate":"02/17/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229035","ImageLink":"ViewDocumentImage/?DID=332693"},{"CommitteeName":"WORKERS VOTE","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/20/2026","DataImportDate":"02/20/2026","PeriodStartDate":"01/30/2026","PeriodEndDate":"02/20/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229048","ImageLink":"ViewDocumentImage/?DID=333165"},{"CommitteeName":"WORKERS VOTE","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"03/05/2026","PeriodStartDate":"03/03/2026","PeriodEndDate":"03/05/2026","ImageType":"","DataType":"DATA","DataLink":"230348","ImageLink":null},{"CommitteeName":"YES FOR DURHAM","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/23/2026","DataImportDate":"02/23/2026","PeriodStartDate":"02/19/2026","PeriodEndDate":"02/21/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229511","ImageLink":"ViewDocumentImage/?DID=333915"},{"CommitteeName":"YOUR FOOD OUR FARMS NC","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Disclosure Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"02/20/2026","DataImportDate":"02/20/2026","PeriodStartDate":"02/18/2026","PeriodEndDate":"02/18/2026","ImageType":"IMAGE","DataType":"DATA","DataLink":"229021","ImageLink":"ViewDocumentImage/?DID=333147"},{"CommitteeName":"YOUR FOOD OUR FARMS NC","SBoEID":"No Id","ReportYear":2026,"DocumentType":"Informational Report","ReportType":"Independent Expenditure Report","IsAmendment":"N","ImageReceiptDate":"","DataImportDate":"07/10/2026","PeriodStartDate":"02/19/2026","PeriodEndDate":"06/30/2026","ImageType":"","DataType":"DATA","DataLink":"232745","ImageLink":null}]
+
+                    $("#gridDocumentResults").igGrid({
+                        width: "100%",
+                        autoGenerateColumns: false,
+                        dataSource: data,
+                        dataSourceType: "json",
+                        columns: [
+                            { key: "CommitteeName", headerText: "Committee Name", dataType: "string", width: "28%" },
+                            { key: "ReportYear", headerText: "Report Year", dataType: "string", width: "7%", columnCssClass: "text-center" },
+                            { key: "ReportType", headerText: "Report Type", dataType: "string", width: "18%" },
+                            { key: "IsAmendment", headerText: "Amend", dataType: "string", width: "6%", columnCssClass: "text-center" },
+							{ key: "ImageReceiptDate", headerText: "Received Image", dataType: "date", width: "9%", format: "MM/dd/yyyy", columnCssClass: "text-center" },
+							{ key: "DataImportDate", headerText: "Received Data", dataType: "date", width: "9%", format: "MM/dd/yyyy", columnCssClass: "text-center" },
+                            { key: "PeriodStartDate", headerText: "Start Date", dataType: "date", width: "9%", format: "MM/dd/yyyy", columnCssClass: "text-center" },
+                            { key: "PeriodEndDate", headerText: "End Date", dataType: "date", width: "9%", format: "MM/dd/yyyy", columnCssClass: "text-center" },
+                            { key: "ImageType", headerText: "Image", dataType: "string", width: "7%", columnCssClass: "text-center", template: $("#colImage").html().replace("ImageLink", "${ImageLink}").replace("Text", "${ImageType}") },
+                            { key: "DataType", headerText: "Data", dataType: "string", width: "7%", columnCssClass: "text-center", template: $("#colData").html().replace("Text", "${DataType}").replace("ridParam", "${DataLink}").replace("sidParam", "${SBoEID}").replace("cnParam", "${CommitteeName}").replace("rnParam", "${ReportYear}" + " " + "${ReportType}") },
+                            { key: "DocumentType", headerText: "Doc Type", dataType: "string", width: "18%", hidden: true },
+                            { key: "SBoEID", headerText: "", dataType: "string", width: "0%", hidden: true },
+                            { key: "DataLink", headerText: "", dataType: "string", width: "0%", hidden: true },
+                            { key: "ImageLink", headerText: "", dataType: "string", width: "0%", hidden: true }
+                        ],
+                        autoGenerateLayouts: false,
+                        features: [
+                            {
+                                name: "Sorting",
+                                type: "local",
+                                applySortedColumnCss: false,
+                                sortedColumnTooltip: "",
+                                unsortedColumnTooltip: ""
+                            }
+                        ]
+                    })
+            }
+        </script>
+
+    
+	</body>
+</html>

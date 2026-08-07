@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<title>Campaign Document Search By Entity</title>
+
+        <link rel="icon" href="/Content/img/favicon.ico" />
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+		<!-- Add local styles, mostly for plugins css file -->
+		
+            <link href="/Scripts/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
+
+            <link href="/Content/plugins/igniteui/css/themes/bootstrap4/infragistics.theme.css" rel="stylesheet"/>
+
+            <link href="/Content/plugins/igniteui/css/structure/infragistics.css" rel="stylesheet"/>
+
+            <link href="/Content/css/seims.css" rel="stylesheet"/>
+
+            <link href="/Content/css/cforglkup.css" rel="stylesheet"/>
+
+    
+
+		<!-- Primary Inspinia style -->     
+		<link href="/Content/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="/Content/css/animate.css" rel="stylesheet"/>
+<link href="/Content/css/style.css" rel="stylesheet"/>
+
+
+		<link href="/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+
+	</head>
+
+	<body class="top-navigation">
+		<!-- Page wraper -->
+		<div id="page-wrapper" class="gray-bg">
+
+			<!-- Top Navbar -->
+			<div class="row border-bottom white-bg" style="white-space: nowrap;">
+	<nav class="navbar navbar-static-top" role="navigation" style="padding: 5px;">
+		<div class="navbar-header">
+			<button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
+				<i class="fa fa-reorder"></i>
+			</button>
+			<a href="https://www.ncsbe.gov/"><img style="padding-right: 12px;" src="/Content/img/logo_sbe_small.png" /></a>
+		</div>
+		<div class="navbar-collapse collapse navbar-right" id="navbar" style="width:224px;">
+			<ul id="menu_mobile" class="nav navbar-nav" style="float:right;">
+                <li class="dropdown hidden-xs">
+                    <a aria-expanded="false" role="button" class="dropdown-toggle" data-toggle="dropdown">Applications<span class="caret"></span></a>
+                    <ul id="menu_desktop" role="menu" class="dropdown-menu">
+                        
+                    </ul>
+                </li>
+				
+				
+			</ul>
+		</div>
+        <div class="text-center" style="white-space: normal;">
+            <h2 style="margin-top: 12px;">Campaign Document Search By Entity</h2>
+        </div>
+	</nav>
+</div>
+
+
+			<div class="container-fluid">
+				<div class="wrapper-content">
+					<!-- Main view  -->
+					
+
+
+<form action="/CFOrgLkup/ReportDetail/?RID=229931&amp;TP=ALL" method="post">    <div style="text-align:center;">
+        <h3>Political Committee Disclosure Report</h3>        
+<a href="/CFOrgLkup/ExportDetailResults/?ReportID=229931&amp;Type=ALL&amp;Title=Gadson%20for%20North%20Carolina%20-%202026%20First%20Quarter" style="text-decoration:underline;">Export data to .CSV</a>        <br />
+        <br />
+    </div>
+            <div id="divCover" class="row">
+                <div class="col-lg-12">
+                    <div class="ibox open">
+                        <div class="ibox-title blue-bg collapse-link">
+                            <h5>COVER</h5>
+                            <div class="ibox-tools">
+                                <a style="color: white;">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content ibox-content-xs">
+                            <table id="gridCover"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="divOfficer" class="row">            
+                <div class="col-lg-12">                
+                    <div class="ibox open">                    
+                        <div class="ibox-title blue-bg collapse-link">
+                        <h5>OFFICERS</h5>                        
+                            <div class="ibox-tools">
+                            <a style="color: white;">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>                        
+                            </div>                    
+                        </div>                    
+                        <div class="ibox-content ibox-content-xs">                        
+                            <table id="gridOfficer"></table>                    
+                        </div>                
+                    </div>            
+                </div>        
+            </div>
+            <div id="divAccount" class="row">
+                <div class="col-lg-12">
+                    <div class="ibox open">
+                        <div class="ibox-title blue-bg collapse-link">
+                            <h5>ACCOUNTS</h5>
+                            <div class="ibox-tools">
+                                <a style="color: white;">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content ibox-content-xs">
+                            <table id="gridAccount"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div id="divSummary" class="row">
+            <div class="col-lg-12">
+                <div class="ibox open">
+                    <div class="ibox-title blue-bg collapse-link">
+                        <h5>SUMMARY</h5>
+                        <div class="ibox-tools">
+                            <a style="color: white;">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content ibox-content-xs">
+                        <table id="gridSummary"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="divReceipt" class="row">
+            <div class="col-lg-12">
+                <div class="ibox open">
+                    <div class="ibox-title blue-bg collapse-link">
+                        <h5>RECEIPTS</h5>
+                        <div class="ibox-tools">
+                            <a style="color: white;">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content ibox-content-xs">
+                        <table id="gridReceipt"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="divExpenditure" class="row">
+            <div class="col-lg-12">
+                <div class="ibox open">
+                    <div class="ibox-title blue-bg collapse-link">
+                        <h5>EXPENDITURES</h5>
+                        <div class="ibox-tools">
+                            <a style="color: white;">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content ibox-content-xs">
+                        <table id="gridExpenditure"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+</form>
+				</div>
+			</div>
+
+			<!-- Footer -->
+			
+<div class="footer">
+    <div class="pull-right">
+        
+        
+    </div>
+	<div>
+		© 2014-2026
+		<a type="button" class="btn-link" href="https://www.ncsbe.gov/" style="white-space: nowrap;"><strong>NC State Board of Elections</strong></a>
+	</div>
+</div>
+
+<div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+		<div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">×</span>
+					<span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title">Site Feedback</h4>
+                <small class="font-bold">Please fill out the form and click Submit to provide feedback.</small>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+					<label>Feedback</label>
+					<textarea class="form-control" placeholder="Enter feedback here..." style="height:100px; resize: none;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+		</div>
+		<!-- End page wrapper-->
+		<!-- Section for main scripts render -->
+		<script src="/Scripts/jquery-2.1.1.min.js"></script>
+
+		<script src="/Scripts/bootstrap.min.js"></script>
+
+		<script src="/Scripts/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+		<script src="/Scripts/inspinia.js"></script>
+
+
+		<!-- Handler for local scripts -->
+
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=UA-159880906-2"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() { dataLayer.push(arguments); }
+			gtag('js', new Date());
+
+			gtag('config', 'UA-159880906-2');
+		</script>
+
+		<script type="text/javascript">
+			//load the menus with the sites in /Content/sites.txt
+			$(document).ready(function () {
+				var fileSites = new XMLHttpRequest();
+				var arrSites;
+				var timeDayHourMinute = String(new Date().getDate()) + '-' + String(new Date().getHours()) + '-' + String(new Date().getMinutes());
+
+				fileSites.open('get', "/Content/sites.txt" + '?v=' + timeDayHourMinute, false);
+				fileSites.send(null);
+
+				arrSites = JSON.parse(fileSites.responseText);
+
+				arrSites.sort(function (a, b) {
+					if (a.name > b.name) { return 1 }
+					if (a.name < b.name) { return -1 }
+					return 0;
+				});
+
+				for (i = 0; i < arrSites.length; i++) {
+					$('#menu_mobile').append('<li class="visible-xs-block">' + '<a href="/CFOrgLkup/_url_/">_name_</a>'.replace('_name_', arrSites[i].name).replace('_url_', arrSites[i].url) + '</li>');
+					$('#menu_desktop').append('<li>' + '<a href="/CFOrgLkup/_url_/">_name_</a>'.replace('_name_', arrSites[i].name).replace('_url_', arrSites[i].url) + '</li>');
+					if ($('#menu_index').length) {
+						$('#menu_index').append('<li>' + '<a href="/CFOrgLkup/_url_/">_name_</a>'.replace('_name_', arrSites[i].name).replace('_url_', arrSites[i].url) + '</li>');
+					}
+				}
+			});
+		</script>
+
+		
+            <script src="/Scripts/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+            <script src="/Scripts/plugins/igniteui/js/infragistics.core.js"></script>
+<script src="/Scripts/plugins/igniteui/js/infragistics.lob.js"></script>
+
+
+            <script type="text/javascript">
+
+                $(document).ready(function () {
+                    var rptType = "ALL";
+                    var rptID = 229931;
+					var sumOperands =  [{ "type": "sum", "rowDisplayLabel": ""}];
+					var ShowIEColumns = !false;
+
+                    if(rptType == 'ALL' || rptType == 'CVR')
+                    {
+                        //COVER
+                        var dataCover = {"BoeID":"STA-JV516O-C-001","OrgName":"Gadson for North Carolina","IsOrg":"True","IsUS":"True","Street1":"PO Box 425","Street2":null,"City":"Fuquay Varina","State":"NC","FullZip":"27526-0179","CountryName":"United States","OutsideUSPostalCode":"US","EntityTypeDesc":"Candidate Committee","FundTypeDesc":null,"FundName":null,"BeginDate":"01/01/2026","EndDate":"02/14/2026","FiledDate":"02/24/2026","ReportVersion":"2007","FullReportName":"2026 First Quarter"};
+
+                        var colsCover = [
+                            { key: "OrgName", headerText: "Committee Name", dataType: "string", width: "25%", formatter: GetOrgName },
+                            { key: "EntityTypeDesc", headerText: "Committee Type", dataType: "string", width: "20%", columnCssClass: "text-center" },
+                            { key: "BoeID", headerText: "SBoE ID", dataType: "string", width: "20%", columnCssClass: "text-center" },
+                            { key: "FullReportName", headerText: "Report Type", dataType: "string", width: "20%", columnCssClass: "text-center" },
+                            { key: "BeginDate", headerText: "Period Covered", dataType: "string", width: "15%", formatter: GetDates },
+                            { key: "EndDate", headerText: "", dataType: "string", width: "0", hidden:true },
+                            { key: "FiledDate", headerText: "", dataType: "string", width: "0", hidden:true },
+                            { key: "Street1", headerText: "", dataType: "string", width: "0", hidden:true },
+                            { key: "Street2", headerText: "", dataType: "string", width: "0", hidden:true },
+                            { key: "City", headerText: "", dataType: "string", width: "0", hidden:true },
+                            { key: "State", headerText: "", dataType: "string", width: "0", hidden:true },
+                            { key: "FullZip", headerText: "", dataType: "string", width: "0", hidden:true }
+                        ];
+
+                        SetupGrid(dataCover, "#gridCover", colsCover);
+
+                        //OFFICERS
+                        var colsOff = [
+                            { key: "NameTypeDesc", headerText: "Type", dataType: "string", width: "25%"},
+                            { key: "OrgName", headerText: "Name", dataType: "string", width: "25%" },
+                            { key: "FullAddr", headerText: "Address", dataType: "string", width: "50%"}
+                        ];
+
+                        SetupGrid([{"NameTypeDesc":"Candidate","OrgName":"Marcus Gadson","IsOrg":false,"IsUS":true,"Street1":"PO Box 425","Street2":null,"City":"Fuquay Varina","State":"NC","FullZip":"27526-0179","CountryName":"United States","OutsideUSPostalCode":"US","FullPhone":null,"FullAddr":"PO Box 425, Fuquay Varina, NC, 27526-0179"},{"NameTypeDesc":"Treasurer","OrgName":"Andrew Richards","IsOrg":false,"IsUS":true,"Street1":"PO Box 425","Street2":null,"City":"Fuquay Varina","State":"NC","FullZip":"27526-0179","CountryName":"United States","OutsideUSPostalCode":"US","FullPhone":null,"FullAddr":"PO Box 425, Fuquay Varina, NC, 27526-0179"}], "#gridOfficer", colsOff);
+
+                        //ACCOUNTS
+                        var colsAcc = [
+                            { key: "OrgName", headerText: "Name", dataType: "string", width: "15%"},
+                            { key: "AccountType", headerText: "Type", dataType: "string", width: "15%"},
+                            { key: "FullAddr", headerText: "Address", dataType: "string", width: "25%"},
+                            { key: "Purpose", headerText: "Purpose", dataType: "string", width: "25%"},
+                            { key: "BeginBalance", headerText: "Begin Balance", dataType: "string", width: "10%", columnCssClass: "text-right"},
+                            { key: "EndBalance", headerText: "End Balance", dataType: "string", width: "10%", columnCssClass: "text-right"}
+                        ];
+
+                        SetupGrid([{"AccountAbbr":"1","AccountType":"Checking","Purpose":"Main Acct","OrgName":"Wells Fargo, N.A.","IsOrg":true,"IsUS":true,"Street1":"165 E Franklin St","Street2":null,"City":"Chapel Hill","State":"NC","FullZip":"27514-3620","CountryName":"United States","OutsideUSPostalCode":"US","FullAddr":"165 E Franklin St, Chapel Hill, NC 27514-3620","BeginBalance":"$0.00","EndBalance":"$0.00"}], "#gridAccount", colsAcc);
+                    };
+
+                    if(rptType == 'ALL' || rptType == 'SUM')
+                    {
+                        //SUMMARY
+                        var colsSum = [
+                            { key: "Section", headerText: "", dataType: "string", width: "50%"},
+                            { key: "Period", headerText: "Total this Period", dataType: "string", width: "25%", format: "currency", columnCssClass: "text-right" },
+                            { key: "Cycle", headerText: "Total this Election", dataType: "string", width: "25%", format: "currency", columnCssClass: "text-right" }
+                        ];
+
+                        SetupGrid([{"Sequence":5,"Section":"Cash on Hand at Beginning","Period":31829.1000,"Cycle":0.0000},{"Sequence":10,"Section":"RECEIPTS","Period":0.0000,"Cycle":0.0000},{"Sequence":15,"Section":"Aggregated Contributions from Individuals","Period":110.0000,"Cycle":1261.0000},{"Sequence":20,"Section":"Contributions from Individuals","Period":5463.2400,"Cycle":37854.1200},{"Sequence":30,"Section":"Political Party Committees","Period":500.0000,"Cycle":1000.0000},{"Sequence":35,"Section":"Other Political Committees (such as PACs)","Period":0.0000,"Cycle":0.0000},{"Sequence":45,"Section":"Loan Proceeds","Period":0.0000,"Cycle":0.0000},{"Sequence":50,"Section":"Refunds/Reimbursements To the Committee","Period":0.0000,"Cycle":0.0000},{"Sequence":55,"Section":"Interest on Bank Accounts","Period":0.0000,"Cycle":0.0000},{"Sequence":56,"Section":"Contributions from Not-For-Profit Organizations","Period":0.0000,"Cycle":0.0000},{"Sequence":57,"Section":"Outside Sources of Income","Period":0.0000,"Cycle":0.0000},{"Sequence":58,"Section":"Legal Expense Fund - Other Sources","Period":0.0000,"Cycle":0.0000},{"Sequence":59,"Section":"Exempt Purchase Price Sales","Period":0.0000,"Cycle":0.0000},{"Sequence":60,"Section":"Total Receipts","Period":6073.2400,"Cycle":40115.1200},{"Sequence":65,"Section":"EXPENDITURES","Period":0.0000,"Cycle":0.0000},{"Sequence":70,"Section":"Operating Expenditures","Period":24145.9200,"Cycle":25194.4700},{"Sequence":75,"Section":"Contributions to Candidates/Political Committees","Period":0.0000,"Cycle":0.0000},{"Sequence":80,"Section":"Coordinated Party Expenditures","Period":0.0000,"Cycle":0.0000},{"Sequence":81,"Section":"Aggregated Non-Media Expenditures","Period":34.6200,"Cycle":162.9700},{"Sequence":85,"Section":"Loan Repayments","Period":0.0000,"Cycle":0.0000},{"Sequence":86,"Section":"Refunds/Reimbursements From the Committee","Period":0.0000,"Cycle":0.0000},{"Sequence":87,"Section":"In-Kind Contributions","Period":563.2400,"Cycle":1599.1200},{"Sequence":90,"Section":"Total Expenditures","Period":24743.7800,"Cycle":26956.5600},{"Sequence":95,"Section":"Cash on Hand at End of Reporting Period","Period":13158.5600,"Cycle":13158.5600},{"Sequence":96,"Section":"ADDITIONAL INFORMATION","Period":0.0000,"Cycle":0.0000},{"Sequence":97,"Section":"Non-Monetary Gifts Given to Other Committees","Period":0.0000,"Cycle":0.0000},{"Sequence":98,"Section":"Outstanding Loans (incl. ones from other campaigns)","Period":0.0000,"Cycle":0.0000},{"Sequence":100,"Section":"Debts and Obligations owed BY the Committee","Period":0.0000,"Cycle":0.0000},{"Sequence":105,"Section":"Debts and Obligations owed TO the Committee","Period":0.0000,"Cycle":0.0000},{"Sequence":106,"Section":"Account Transfers Within the Committee","Period":0.0000,"Cycle":0.0000},{"Sequence":107,"Section":"Administrative Support","Period":0.0000,"Cycle":0.0000},{"Sequence":108,"Section":"Forgiven Loans","Period":0.0000,"Cycle":0.0000},{"Sequence":109,"Section":"48-Hour Notice Reports Sum","Period":0.0000,"Cycle":0.0000},{"Sequence":110,"Section":"Contributions to be Refunded","Period":0.0000,"Cycle":0.0000}], "#gridSummary", colsSum);
+                    };
+
+                    if(rptType == 'ALL' || rptType == 'REC')
+                    {
+                        $("#gridReceipt").igHierarchicalGrid({
+                            width: "100%",
+                            dataSource: "../GetReceipts?ReportID=" + rptID,
+                            responseDataKey: "Data.results",
+                            primaryKey: "GroupID",
+                            autoGenerateColumns: false,
+                            columns: [
+                                        {key: "GroupID", headerText: "Group ID", dataType: "number", width: "0%", hidden:true},
+                                        {key: "OccurDate", headerText: "Date", dataType: "date", format: "MM/dd/yyyy",  width: "8%", columnCssClass: "text-center" },
+                                        {key: "IsPrior", headerText: "Is Prior", dataType: "string", width: "5%", columnCssClass: "text-center"},
+                                        {key: "OrgName", headerText: "Name of Contributor and Complete Mailing Address", dataType: "string", width: "31%", formatter: GetOrgNameWProf},
+                                        {key: "Profession", headerText: "Profession", dataType: "string", width: "0%", hidden:true},
+                                        {key: "EmployersName", headerText: "Employers Name", dataType: "string", width: "0%", hidden:true},
+                                        {key: "Street1", headerText: "Street 1", dataType: "string", width: "0%", hidden:true},
+                                        {key: "Street2", headerText: "Street 2", dataType: "string", width: "0%", hidden:true},
+                                        {key: "City", headerText: "City", dataType: "string", width: "0%", hidden:true},
+                                        {key: "State", headerText: "State", dataType: "string", width: "0%", hidden:true},
+                                        {key: "FullZip", headerText: "Full Zip", dataType: "string", width: "0%", hidden:true},
+                                        {key: "ReceiptTypeDesc", headerText: "Receipt Type", dataType: "string", width: "8%"},
+                                        {key: "Purpose", headerText: "Purpose", dataType: "string", width: "8%"},
+                                        {key: "Description", headerText: "Description", dataType: "string", width: "8%"},
+                                        {key: "AccountAbbr", headerText: "Account Code", dataType: "string", width: "8%"},
+                                        {key: "FormOfPaymentDesc", headerText: "Form of Payment", dataType: "string", width: "8%"},
+                                        {key: "Amount", headerText: "Amount of Receipt", dataType: "number", width: "8%", format: "currency",  columnCssClass: "text-right"},
+                                        {key: "SumToDate", headerText: "Sum To Date", dataType: "number", width: "8%", format: "currency",  columnCssClass: "text-right"}
+                            ],
+                            features: [
+                                {
+                                    name: "Paging",
+                                    type: "remote",
+                                    showPageSizeDropDown: false,
+                                    pageSize: 300,
+                                    recordCountKey: "Data.recordCountKey",
+                                    pageIndexUrlKey: "page",
+                                    pageSizeUrlKey: "pageSize"
+                                }
+                            ],
+                            dataRendered: function(evt, ui){
+                                AppendSummaryRow("#gridReceipt", 6073.2400);
+                            },
+                            columnLayouts: [
+                                {
+                                    key: "GNSItemList",
+                                    width: "75%",
+                                    autoGenerateColumns:false,
+                                    primaryKey: "ReceiptID",
+                                    foreignKey: "GroupID",
+                                    columns: [
+                                        {key: "GroupID", headerText: "Group ID", dataType: "number", width: "0%", hidden:true},
+                                        {key: "TotalCount", headerText: "Total Count", dataType: "number", width: "12%", columnCssClass: "text-center"},
+                                        {key: "CheckCount", headerText: "Check Count", dataType: "number", width: "12%", columnCssClass: "text-center"},
+                                        {key: "CashCount", headerText: "Cash Count", dataType: "number", width: "12%", columnCssClass: "text-center"},
+                                        {key: "OtherCount", headerText: "Other Count", dataType: "number", width: "12%", columnCssClass: "text-center"},
+                                        {key: "OccurDate", headerText: "Date", dataType: "date", format: "MM/dd/yyyy", width: "13%", columnCssClass: "text-center"},
+                                        {key: "AccountAbbr", headerText: "Account Code", dataType: "number", width: "13%", format: "currency",  columnCssClass: "text-right"},
+                                        {key: "IndividualAmount", headerText: "Item Amount", dataType: "number", width: "13%", format: "currency",  columnCssClass: "text-right"},
+                                        {key: "Amount", headerText: "Total Amount", dataType: "number", width: "13%", format: "currency",  columnCssClass: "text-right"}
+                                    ]
+                                }
+                            ]
+                        });
+                    };
+
+                    if(rptType == 'ALL' || rptType == 'EXP')
+					{						
+						$("#gridExpenditure").igGrid({
+							dataSource: "../GetExpenditures?ReportID=" + rptID + "&ShowIEColumns=" + !ShowIEColumns,
+							responseDataKey: "Data.results",
+							recordCountKey: "Data.recordCountKey",
+							autoGenerateColumns: false,
+							columns: [
+										{key: "OccurDate", headerText: "Date", dataType: "date", format: "MM/dd/yyyy", width: "6%", columnCssClass: "text-center" },
+										{key: "OrgName", headerText: "Name of Payee and Complete Mailing Address", dataType: "string", width: "23%", formatter: GetOrgNameWProf },
+										{key: "Profession", headerText: "Profession", dataType: "string", width: "0%", hidden: true },
+										{key: "EmployersName", headerText: "Employers Name", dataType: "string", width: "0%", hidden: true },
+										{key: "Street1", headerText: "Street 1", dataType: "string", width: "0%", hidden: true },
+										{key: "Street2", headerText: "Street 2", dataType: "string", width: "0%", hidden: true },
+										{key: "City", headerText: "City", dataType: "string", width: "0%", hidden: true },
+										{key: "State", headerText: "State", dataType: "string", width: "0%", hidden: true },
+										{key: "FullZip", headerText: "Full Zip", dataType: "string", width: "0%", hidden: true },
+										{key: "ExpenditureTypeDesc", headerText: "Expenditure Type", dataType: "string", width: "8%" },
+										{key: "Purpose", headerText: "Purpose", dataType: "string", width: "8%" },
+										{key: "Candidate", headerText: "Candidate", dataType: "string", width: "20%", hidden: ShowIEColumns },
+										{key: "OfficeSought", headerText: "Office Sought", dataType: "string", width: "10%", hidden: ShowIEColumns },
+										{key: "Declaration", headerText: "Declaration", dataType: "string", width: "8%", hidden: ShowIEColumns },
+										{key: "IEAmount", headerText: "Amount", dataType: "number", width: "8%", format: "currency", columnCssClass: "text-right", hidden: ShowIEColumns},
+										{key: "Description", headerText: "In-Kind Description", dataType: "string", width: "8%"},
+										{key: "AccountAbbr", headerText: "Account Code", dataType: "string", width: "8%"},
+										{key: "FormOfPaymentDesc", headerText: "Form of Payment", dataType: "string", width: "8%"},
+										{key: "Amount", headerText: "Amount of Expenditure", dataType: "number", width: "8%", format: "currency",  columnCssClass: "text-right"},
+										{key: "SumToDate", headerText: "Sum To Date", dataType: "number", width: "8%", format: "currency",  columnCssClass: "text-right"}
+                            ],
+                            features: [
+                                {
+                                    name: "Paging",
+                                    type: "remote",
+                                    showPageSizeDropDown: false,
+                                    pageSize: 300,
+                                    recordCountKey: "Data.recordCountKey",
+                                    pageIndexUrlKey: "page",
+                                    pageSizeUrlKey: "pageSize"
+                                }
+							],							
+							dataRendered: function (evt, ui) {								
+                                AppendSummaryRow("#gridExpenditure", 24743.7800);
+                            }
+                        });
+                    };
+
+                    if(rptType=='ALL' || rptType=='LPR')
+                    {
+                        //LOAN PROCEED
+                        var colsParent = [
+                            { key: "GroupID", headerText: "Group ID", dataType: "number", width: "0%", hidden: true },
+                            { key: "OccurDate", headerText: "Date", dataType: "date", format: "MM/dd/yyyy", width: "9%", columnCssClass: "text-center"  },
+                            { key: "Street1", headerText: "Name of Lender and Complete Mailing Address", dataType: "string", width: "30%", formatter: GetOrgNameWProf },
+                            { key: "InterestRate", headerText: "Interest Rate", dataType: "number", format: "0.000",  width: "8%",  columnCssClass: "text-center" },
+                            { key: "SecurityPledged", headerText: "Security Pledged", dataType: "string", width: "15%" },
+                            { key: "LendingInstitution", headerText: "Lending Institution", dataType: "string", width: "15%" },
+                            { key: "LoanNumber", headerText: "Loan Number", dataType: "number", width: "11%", columnCssClass: "text-right" },
+                            { key: "Amount", headerText: "Amount", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right"},
+                            { key: "OrgName", headerText: "Org Name", dataType: "string", width: "0%", hidden: true },
+                            { key: "Profession", headerText: "Profession", dataType: "string", width: "0%", hidden: true },
+                            { key: "EmployersName", headerText: "Employer Name", dataType: "string", width: "0%", hidden: true },
+                            { key: "Street2", headerText: "Street 2", dataType: "string", width: "0%", hidden: true },
+                            { key: "City", headerText: "City", dataType: "string", width: "0%", hidden: true },
+                            { key: "State", headerText: "State", dataType: "string", width: "0%", hidden: true },
+                            { key: "FullZip", headerText: "Full Zip", dataType: "string", width: "0%", hidden: true }
+                        ];
+
+                        var colsChild = [
+                            { key: "ReceiptID", headerText: "Receipt ID", dataType: "number", width: "0%", hidden:true},
+                            { key: "FullName", headerText: "Name of Endorser and Full Mailing Address", dataType: "string", width: "50%", formatter: GetFullNameWProf },
+                            { key: "AmountShare", headerText: "Amount/Share", dataType: "string", width: "25%", columnCssClass: "text-right" },
+                            { key: "SumToDate", headerText: "Sum to Date", dataType: "number", width: "25%", columnCssClass: "text-right" },
+                            { key: "Street1", headerText: "Address", dataType: "string", width: "0%", hidden:true },
+                            { key: "Profession", headerText: "Profession", dataType: "string", width: "0%", hidden:true},
+                            { key: "EmployersName", headerText: "Employers Name", dataType: "string", width: "0%", hidden:true},
+                            { key: "Street2", headerText: "Street2", dataType: "string", width: "0%", hidden:true},
+                            { key: "City", headerText: "City", dataType: "string", width: "0%", hidden:true},
+                            { key: "State", headerText: "State", dataType: "string", width: "0%", hidden:true},
+                            { key: "FullZip", headerText: "FullZip", dataType: "string", width: "0%", hidden:true}
+                        ];
+
+                        var colsSummary = [
+                            { columnKey: "GroupID", allowSummaries: false },
+                            { columnKey: "OccurDate", allowSummaries: false },
+                            { columnKey: "Street1", allowSummaries: false },
+                            { columnKey: "InterestRate", allowSummaries: false },
+                            { columnKey: "SecurityPledged", allowSummaries: false },
+                            { columnKey: "LendingInstitution", allowSummaries: false },
+                            { columnKey: "LoanNumber", allowSummaries: false },
+                            { columnKey: "Amount", allowSummaries: true, summaryOperands: sumOperands },
+                            { columnKey: "OrgName", allowSummaries: false },
+                            { columnKey: "Profession", allowSummaries: false },
+                            { columnKey: "EmployersName", allowSummaries: false },
+                            { columnKey: "Street2", allowSummaries: false },
+                            { columnKey: "City", allowSummaries: false },
+                            { columnKey: "State", allowSummaries: false },
+                            { columnKey: "FullZip", allowSummaries: false }
+                        ];
+
+                        SetupHGrid([], "#gridLoanProceed", "GroupID", "ReceiptID", "LoanProceedItemList", colsParent, colsChild, colsSummary);
+                    };
+
+                    if(rptType=='ALL' || rptType=='LRE')
+                    {
+                        //LOAN REPAYMENT
+                        var colsLRE = [
+                            { key: "OccurDate", headerText: "Repayment Date", dataType: "date", format: "MM/dd/yyyy", width: "12%", columnCssClass: "text-center" },
+                            { key: "OrgName", headerText: "Name of Lender and Complete Mailing Address", dataType: "string", width: "40%", formatter: GetOrgName },
+                            { key: "Street1", headerText: "Street 1", dataType: "string", width: "0%", hidden: true },
+                            { key: "Street2", headerText: "Street 2", dataType: "string", width: "0%", hidden: true },
+                            { key: "City", headerText: "City", dataType: "string", width: "0%", hidden: true },
+                            { key: "State", headerText: "State", dataType: "string", width: "0%", hidden: true },
+                            { key: "FullZip", headerText: "Full Zip", dataType: "string", width: "0%", hidden: true },
+                            { key: "OriginalDate", headerText: "Original Loan Date", dataType: "date", format: "MM/dd/yyyy", width: "12%", columnCssClass: "text-center" },
+                            { key: "OriginalAmount", headerText: "Original Loan Amount", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" },
+                            { key: "Balance", headerText: "Remaining Loan Balance", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" },
+                            { key: "Amount", headerText: "Amount", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" }
+                        ];
+
+                        var colsSummary = [
+                            { columnKey: "OccurDate", allowSummaries: false },
+                            { columnKey: "OrgName", allowSummaries: false },
+                            { columnKey: "Street1", allowSummaries: false },
+                            { columnKey: "Street2", allowSummaries: false },
+                            { columnKey: "InterestRate", allowSummaries: false },
+                            { columnKey: "City", allowSummaries: false },
+                            { columnKey: "State", allowSummaries: false },
+                            { columnKey: "FullZip", allowSummaries: false },
+                            { columnKey: "OriginalDate", allowSummaries: false },
+                            { columnKey: "OriginalAmount", allowSummaries: false },
+                            { columnKey: "Balance", allowSummaries: true, summaryOperands: sumOperands },
+                            { columnKey: "Amount", allowSummaries: true, summaryOperands: sumOperands }
+                        ];
+
+                        SetupGridWithTotals([], "#gridLoanRepayment", colsLRE, colsSummary);
+                    };
+
+                    if(rptType=='ALL' || rptType=='FRL')
+                    {
+                        //FORGIVEN LOANS
+                        var colsFRL_P =[
+                            { key: "GroupID", headerText: "Group ID", dataType: "number", width: "0%", hidden:true },
+                            { key: "OccurDate", headerText: "Date", dataType: "date", format: "MM/dd/yyyy", width: "12%", columnCssClass: "text-center" },
+                            { key: "OrgName", headerText: "Name of Lender and Complete Mailing Address", dataType: "string", width: "40%", formatter: GetOrgName },
+                            { key: "Street1", headerText: "Street 1", dataType: "string", width: "0%", hidden: true },
+                            { key: "Street2", headerText: "Street 2", dataType: "string", width: "0%", hidden: true },
+                            { key: "City", headerText: "City", dataType: "string", width: "0%", hidden: true },
+                            { key: "State", headerText: "State", dataType: "string", width: "0%", hidden: true },
+                            { key: "FullZip", headerText: "Full Zip", dataType: "string", width: "0%", hidden: true },
+                            { key: "OriginalDate", headerText: "Original Loan Date", dataType: "date", format: "MM/dd/yyyy", width: "12%", columnCssClass: "text-center" },
+                            { key: "OriginalAmount", headerText: "Original Loan Amount", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" },
+                            { key: "Balance", headerText: "Remaining Loan Balance", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" },
+                            { key: "Amount", headerText: "Forgiven Amount", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" }
+                        ];
+
+                        var colsFRL_C = [
+                            { key: "ReceiptID", headerText: "Receipt ID", dataType: "number", width: "0%", hidden:true},
+                            { key: "FullName", headerText: "Purchase Place", dataType: "string", width: "50%", formatter: GetFullNameWProf },
+                            { key: "Profession", headerText: "Profession", dataType: "string", width: "0%", hidden:true},
+                            { key: "EmployersName", headerText: "Employers Name", dataType: "string", width: "0%", hidden:true},
+                            { key: "Street1", headerText: "Address", dataType: "string", width: "0%", hidden:true },
+                            { key: "Street2", headerText: "Street2", dataType: "string", width: "0%", hidden:true},
+                            { key: "City", headerText: "City", dataType: "string", width: "0%", hidden:true},
+                            { key: "State", headerText: "State", dataType: "string", width: "0%", hidden:true},
+                            { key: "FullZip", headerText: "FullZip", dataType: "string", width: "0%", hidden:true},
+                            { key: "Amount", headerText: "Amount", dataType: "number", width: "25%", format: "currency", columnCssClass: "text-right" },
+                            { key: "SumToDate", headerText: "Sum to Date", dataType: "number", width: "25%", format: "currency", columnCssClass: "text-right" }
+                        ];
+
+                        var colsSummary = [
+                            { columnKey: "GroupID", allowSummaries: false },
+                            { columnKey: "OccurDate", allowSummaries: false },
+                            { columnKey: "OrgName", allowSummaries: false },
+                            { columnKey: "Street1", allowSummaries: false },
+                            { columnKey: "Street2", allowSummaries: false },
+                            { columnKey: "City", allowSummaries: false },
+                            { columnKey: "State", allowSummaries: false },
+                            { columnKey: "FullZip", allowSummaries: false },
+                            { columnKey: "OriginalDate", allowSummaries: false },
+                            { columnKey: "OriginalAmount", allowSummaries: false },
+                            { columnKey: "Balance", allowSummaries: true, summaryOperands: sumOperands },
+                            { columnKey: "Amount", allowSummaries: true, summaryOperands: sumOperands },
+                            { columnKey: "Profession", allowSummaries: false },
+                            { columnKey: "EmployersName", allowSummaries: false },
+                        ];
+
+                        SetupHGrid([], "#gridForgivenLoan", "GroupID", "ReceiptID", "ForgivenLoanItemList", colsFRL_P, colsFRL_C, colsSummary);
+                    };
+
+                    if(rptType=='ALL' || rptType=='OTL')
+                    {
+                        //OUTSTANDING LOANS
+                        var colsOTL = [
+                            { key: "OrgName", headerText: "Name of Lender and Complete Mailing Address", dataType: "string", width: "40%", formatter: GetOrgNameWProf },
+                            { key: "Profession", headerText: "Profession", dataType: "string", width: "0%", hidden: true },
+                            { key: "EmployersName", headerText: "Employer Name", dataType: "string", width: "0%", hidden: true },
+                            { key: "Street1", headerText: "Street 1", dataType: "string", width: "0%", hidden: true },
+                            { key: "Street2", headerText: "Street 2", dataType: "string", width: "0%", hidden: true },
+                            { key: "City", headerText: "City", dataType: "string", width: "0%", hidden: true },
+                            { key: "State", headerText: "State", dataType: "string", width: "0%", hidden: true },
+                            { key: "FullZip", headerText: "Full Zip", dataType: "string", width: "0%", hidden: true },
+                            { key: "OriginalAmount", headerText: "Original Loan Amount", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" },
+                            { key: "Balance", headerText: "Remaining Loan Balance", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" }
+                        ];
+
+                        var colsSummary = [
+                            { columnKey: "OrgName", allowSummaries: false },
+                            { columnKey: "Profession", allowSummaries: false },
+                            { columnKey: "EmployersName", allowSummaries: false },
+                            { columnKey: "Street1", allowSummaries: false },
+                            { columnKey: "Street2", allowSummaries: false },
+                            { columnKey: "InterestRate", allowSummaries: false },
+                            { columnKey: "City", allowSummaries: false },
+                            { columnKey: "State", allowSummaries: false },
+                            { columnKey: "FullZip", allowSummaries: false },
+                            { columnKey: "OriginalAmount", allowSummaries: false },
+                            { columnKey: "Balance", allowSummaries: true, summaryOperands: sumOperands }
+                        ];
+
+                        SetupGridWithTotals([], "#gridOutstandingLoan", colsOTL, colsSummary);
+                    };
+
+                    if(rptType=='ALL' || rptType=='DTO')
+                    {
+                        //DEBT TO
+                        var colsDTO_P = [
+                            { key: "GroupID", headerText: "Group ID", dataType: "number", width: "0%", hidden: true },
+                            { key: "OrgName", headerText: "Name of Contributor and Complete Mailing Address", dataType: "string", width: "26%", formatter: GetOrgName },
+                            { key: "Street1", headerText: "Street 1", dataType: "string", width: "0%", hidden: true },
+                            { key: "Street2", headerText: "Street 2", dataType: "string", width: "0%", hidden: true },
+                            { key: "City", headerText: "City", dataType: "string", width: "0%", hidden: true },
+                            { key: "State", headerText: "State", dataType: "string", width: "0%", hidden: true },
+                            { key: "FullZip", headerText: "Full Zip", dataType: "string", width: "0%", hidden: true },
+                            { key: "Description", headerText: "Description", dataType: "string", width: "26%" },
+                            { key: "BeginBalance", headerText: "Beginning Balance", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" },
+                            { key: "IncurredAmount", headerText: "Amount Incurred", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" },
+                            { key: "PaidAmount", headerText: "Amount Paid", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" },
+                            { key: "EndBalance", headerText: "Ending Balance", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" }
+                        ];
+
+                        var colsDTO_C = [
+                            { key: "DebtID", headerText: "Debt ID", dataType: "number", width: "0%", hidden: true },
+                            { key: "OccurDate", headerText: "Date", dataType: "date", format: "MM/dd/yyyy", width: "25%", columnCssClass: "text-center" },
+                            { key: "Amount", headerText: "Amount", dataType: "number", width: "25%", format: "currency", columnCssClass: "text-right" },
+                            { key: "Description", headerText: "Description", dataType: "string", width: "50%" }
+                        ];
+
+                        var colsSummary = [
+                            { columnKey: "GroupID", allowSummaries: false },
+                            { columnKey: "OrgName", allowSummaries: false },
+                            { columnKey: "Street1", allowSummaries: false },
+                            { columnKey: "Street2", allowSummaries: false },
+                            { columnKey: "City", allowSummaries: false },
+                            { columnKey: "State", allowSummaries: false },
+                            { columnKey: "FullZip", allowSummaries: false },
+                            { columnKey: "Description", allowSummaries: false },
+                            { columnKey: "BeginBalance", allowSummaries: true, summaryOperands: sumOperands },
+                            { columnKey: "IncurredAmount", allowSummaries: true, summaryOperands: sumOperands },
+                            { columnKey: "PaidAmount", allowSummaries: true, summaryOperands: sumOperands },
+                            { columnKey: "EndBalance", allowSummaries: true, summaryOperands: sumOperands }
+                        ];
+
+                        SetupHGrid([], "#gridDebtTo", "GroupID", "DebtID", "DebtToItemList", colsDTO_P, colsDTO_C, colsSummary);
+                    };
+
+                    if(rptType=='ALL' || rptType=='DBY')
+                    {
+                        //DEBT BY
+                        var colsDBY_P = [
+                            { key: "GroupID", headerText: "Group ID", dataType: "number", width: "0%", hidden: true },
+                            { key: "OrgName", headerText: "Name of Contributor and Complete Mailing Address", dataType: "string", width: "26%", formatter: GetOrgName },
+                            { key: "Street1", headerText: "Street 1", dataType: "string", width: "0%", hidden: true },
+                            { key: "Street2", headerText: "Street 2", dataType: "string", width: "0%", hidden: true },
+                            { key: "City", headerText: "City", dataType: "string", width: "0%", hidden: true },
+                            { key: "State", headerText: "State", dataType: "string", width: "0%", hidden: true },
+                            { key: "FullZip", headerText: "Full Zip", dataType: "string", width: "0%", hidden: true },
+                            { key: "Description", headerText: "Description", dataType: "string", width: "26%" },
+                            { key: "BeginBalance", headerText: "Beginning Balance", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" },
+                            { key: "IncurredAmount", headerText: "Amount Incurred", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" },
+                            { key: "PaidAmount", headerText: "Amount Paid", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" },
+                            { key: "EndBalance", headerText: "Ending Balance", dataType: "number", width: "12%", format: "currency", columnCssClass: "text-right" }
+                        ];
+
+                        var colsDBY_C = [
+                            { key: "DebtID", headerText: "Debt ID", dataType: "number", width: "0%", hidden: true },
+                            { key: "OccurDate", headerText: "Date", dataType: "date", format: "MM/dd/yyyy", width: "20%", columnCssClass: "text-center" },
+                            { key: "Amount", headerText: "Amount", dataType: "number", width: "20%", format: "currency", columnCssClass: "text-right" },
+                            { key: "Description", headerText: "Description", dataType: "string", width: "30%" },
+                            { key: "FullName", headerText: "Purchase Place", dataType: "string", width: "30%", formatter: GetFullName },
+                            { key: "Street1", headerText: "Street 1", dataType: "string", width: "0%", hidden: true },
+                            { key: "Street2", headerText: "Street 2", dataType: "string", width: "0%", hidden: true },
+                            { key: "City", headerText: "City", dataType: "string", width: "0%", hidden: true },
+                            { key: "State", headerText: "State", dataType: "string", width: "0%", hidden: true },
+                            { key: "FullZip", headerText: "Full Zip", dataType: "string", width: "0%", hidden: true }
+                        ];
+
+                        var colsSummary = [
+                            { columnKey: "GroupID", allowSummaries: false },
+                            { columnKey: "OrgName", allowSummaries: false },
+                            { columnKey: "Street1", allowSummaries: false },
+                            { columnKey: "Street2", allowSummaries: false },
+                            { columnKey: "City", allowSummaries: false },
+                            { columnKey: "State", allowSummaries: false },
+                            { columnKey: "FullZip", allowSummaries: false },
+                            { columnKey: "Description", allowSummaries: false },
+                            { columnKey: "BeginBalance", allowSummaries: true, summaryOperands: sumOperands},
+                            { columnKey: "IncurredAmount", allowSummaries: true, summaryOperands: sumOperands },
+                            { columnKey: "PaidAmount", allowSummaries: true, summaryOperands: sumOperands },
+                            { columnKey: "EndBalance", allowSummaries: true, summaryOperands: sumOperands }
+                        ];
+
+                        SetupHGrid([], "#gridDebtBy", "GroupID", "DebtID", "DebtByItemList", colsDBY_P, colsDBY_C, colsSummary);
+
+                    };
+
+                    if(rptType=='ALL' || rptType=='TRN')
+                    {
+                        //Transfers
+                        var colsTRN = [
+                            { key: "AccountAbbrFrom", headerText: "Account From", dataType: "string", width: "35%" },
+                            { key: "AccountAbbrTo", headerText: "Account To", dataType: "string", width: "35%" },
+                            { key: "OccurDate", headerText: "Date", dataType: "date", format: "MM/dd/yyyy", width: "15%", columnCssClass: "text-center" },
+                            { key: "Amount", headerText: "Amount", dataType: "number", format: "currency", width: "15%", columnCssClass: "text-right" }
+                        ];
+
+                        var colsSummary = [
+                            { columnKey: "AccountAbbrFrom", allowSummaries: false },
+                            { columnKey: "AccountAbbrTo", allowSummaries: false },
+                            { columnKey: "OccurDate", allowSummaries: false },
+                            { columnKey: "Amount", allowSummaries: true, summaryOperands: sumOperands }
+                        ];
+
+                        SetupGridWithTotals([], "#gridTransfer", colsTRN, colsSummary);
+                    };
+
+                    if(rptType=='ALL' || rptType=='ADM')
+                    {
+                        //Admin Support
+                        var colsADM = [
+                            { key: "SupportItemDesc", headerText: "Description", dataType: "string", width: "70%" },
+                            { key: "Amount", headerText: "Amount", dataType: "number", format: "currency", width: "30%", columnCssClass: "text-right" }
+                        ];
+
+                        var colsSummary = [
+                            { columnKey: "SupportItemDesc", allowSummaries: false },
+                            { columnKey: "Amount", allowSummaries: true, summaryOperands: sumOperands }
+                        ];
+
+                        SetupGridWithTotals([], "#gridAdmin", colsADM, colsSummary);
+                    };
+                })
+
+                //sets up single level grid
+                function SetupGrid(data, grid, cols){
+
+                    $(grid).igGrid({
+                        width: "100%",
+                        dataSource: data,
+                        dataSourceType: "json",
+                        autoGenerateColumns: false,
+                        columns: cols
+                    });
+                };
+
+                //sets up single level grid with summaries
+                function SetupGridWithTotals(data, grid, cols, colsSummary){
+
+                    $(grid).igGrid({
+                        width: "100%",
+                        dataSource: data,
+                        dataSourceType: "json",
+                        autoGenerateColumns: false,
+                        columns: cols,
+                        features: [
+                            {
+                                name: "Sorting",
+                                type: "local",
+                                applySortedColumnCss: false,
+                                sortedColumnTooltip: "",
+                                unsortedColumnTooltip: ""
+                            },
+                            {
+                                name: "Summaries",
+                                showSummariesButton: false,
+                                columnSettings: colsSummary,
+                                resultTemplate: "{0}{1}"
+                            }
+                        ],
+                        rendered: function() {
+                            $("td.ui-widget-footer").unbind();
+                        },
+                    });
+                };
+
+                //Sets up Hierarchical grid with summaries
+                function SetupHGrid(dSource, grid, parentKey, childKey, childList, colsParent, colsChild, colsSummary){
+
+                    $(grid).igHierarchicalGrid({
+                        width: "100%",
+                        dataSource: dSource,
+                        dataSourceType: "json",
+                        autoGenerateColumns: false,
+                        primaryKey: parentKey,
+                        columns: colsParent,
+                        features: [
+                            {
+                                name: "Sorting",
+                                type: "local",
+                                applySortedColumnCss: false,
+                                sortedColumnTooltip: "",
+                                unsortedColumnTooltip: ""
+                            },
+                            {
+                                name: "Summaries",
+                                showSummariesButton: false,
+                                columnSettings: colsSummary,
+                                resultTemplate: "{0}{1}"
+                            },
+                        ],
+                        rendered: function() {
+                            $("td.ui-widget-footer").unbind();
+                        },
+                        autoGenerateColumns: false,
+                        columnLayouts: [
+                            {
+                                key: childList,
+                                width: "75%",
+                                autoGenerateColumns: false,
+                                primaryKey: childKey,
+                                foreignKey: parentKey,
+                                columns: colsChild,
+                                features: [
+                                    {
+                                        name: "Sorting",
+                                        type: "local",
+                                        applySortedColumnCss: false,
+                                        sortedColumnTooltip: "",
+                                        unsortedColumnTooltip: ""
+                                    }
+                                ],
+                            }
+                        ]
+                    });
+                };
+
+                //returns string with date time span
+                function GetDates(value, data)
+                {
+                    var string = '';
+
+                    if(data.BeginDate != '' || data.EndDate != '' || data.FiledDate != '')
+                    {
+                        string += '<table id="DateTable">',
+                        string += data.BeginDate != '' ? '<tr><td style="border:0px;"><b>From:</b></td><td style="border:0px;">' + data.BeginDate + '</td></tr>' : '',
+                        string += data.EndDate != '' ? '<tr><td style="border:0px;"><b>To:</b></td><td style="border:0px;">' + data.EndDate + '</td></tr>' : '',
+                        string += data.FiledDate != '' ? '<tr><td style="border:0px;"><b>Filed:</b></td><td style="border:0px;">' + data.FiledDate + '</td></tr>' : '',
+                        string+= '</table>';
+                    }
+
+                    return string;
+                };
+
+                //returns string with Address information
+                function GetAddress(data)
+                {
+                    var addString = '';
+
+                    addString += data.Street1 != '' ? '<br/>' + data.Street1: '',
+                    addString += data.Street2 != '' ? '<br/>' + data.Street2: '',
+                    addString += (data.City != '' || data.State != '' || data.FullZip  != '') ? '<br/>' : '',
+                    addString += data.City != '' ? data.City : '',
+                    addString += data.State != ''? ', ' + data.State : '',
+                    addString += data.FullZip != ''? ' ' + data.FullZip : '';
+
+                    return addString;
+                }
+
+                //returns string with the name of an organization
+                function GetOrgName(value, data)
+                {
+                    var orgName = '';
+
+                    orgName += data.OrgName != '' ? data.OrgName : '';
+                    orgName += GetAddress(data);
+
+                    return orgName;
+                };
+
+                //returns string with the name of an organization and career information
+                function GetOrgNameWProf(value, data)
+                {
+                    var orgNameProf = '';
+
+                    orgNameProf += data.OrgName != '' ? data.OrgName : '',
+                    orgNameProf += data.Profession != '' ? '<br/>' + data.Profession : '',
+                    orgNameProf += data.EmployersName != '' ? '<br/>' + data.EmployersName : '';
+                    orgNameProf += GetAddress(data);
+
+                    return orgNameProf;
+                };
+
+                //returns string with full name
+                function GetFullName(value, data)
+                {
+                    var fullName = '';
+
+                    fullName += data.FullName != '' ? data.FullName : '';
+                    fullName += GetAddress(data);
+
+                    return fullName;
+                };
+
+                //returns string with full name and career information
+                function GetFullNameWProf(value, data)
+                {
+                    var fullNameWProf = '';
+
+                    fullNameWProf += data.FullName != '' ? data.FullName : '',
+                    fullNameWProf += data.Profession != '' ? '<br/>' + data.Profession : '',
+                    fullNameWProf += data.EmployersName != '' ? '<br/>' + data.EmployersName : '';
+                    fullNameWProf += GetAddress(data);
+
+                    return fullNameWProf;
+                };
+
+                //appends row after grid is rendered
+                function AppendSummaryRow(gridName, total){
+					var totalSum;
+					var hiddencols = ''
+					
+                    totalSum = total.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+
+                    if(gridName=="#gridReceipt")
+                    {
+                        $(gridName).find('tbody')
+                          .append($('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td align=right>$' + totalSum + '</td><td></td></tr>'));
+                    }
+                    else
+					{
+						// when IE columns are shown then add those columns
+						if (false) {
+							hiddencols = '<td></td><td></td><td></td><td></td>'
+						}
+						$(gridName).find('tbody')
+							.append($('<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td>' + hiddencols + '<td align=right>$' + totalSum + '</td><td></td></tr>'));
+                    }
+				};				
+
+            </script>
+        
+	</body>
+</html>
