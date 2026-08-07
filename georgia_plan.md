@@ -86,9 +86,12 @@ Numbered like Ohio's decisions; **F** = fact probed from real bytes.
   carries $995k of 2026-cycle rows), archive `757274`
   ("Carr, Christopher Michael"), PeachFile `100035`
   ("Carr for Georgia, Inc."). Archive-757274-2026 + PeachFile = $5.27M vs
-  official $5.37M; the residual sits in the legacy-filer 2026 rows. A naive
-  per-year split **loses money**. A per-candidate cross-system filer map is
-  mandatory (decision D3).
+  official $5.37M — a $103k residual whose composition is UNPROVEN: the
+  legacy filer's 2026-cycle rows total $995k, so at most a slice of them is
+  inside the official total (which slice, and whether the residual involves
+  them at all, is spike work — A6). A naive per-year split **loses money**,
+  and an office-exact filer match can never surface the legacy committee. A
+  per-candidate cross-system filer map is mandatory (decision D3).
 - **F5 — independent expenditures.**
   `POST /api/PublicIndependentExpenditureDetails/GetIndependentExpenditureDetails`
   (both hosts; PeachFile 551 txns, archive 3,679 as of probe). Each item:
@@ -150,9 +153,15 @@ Numbered like Ohio's decisions; **F** = fact probed from real bytes.
    identity). Rows: canonical (PeachFile) filer id ↔ per-system
    `filerEntityId` + registration `guid`, role, cycle, provenance,
    verified-at; multiple source ids per canonical entity (F4: legacy
-   committee + candidate filer). Auto-populate candidates by matched
-   name+office+cycle in the archive candidate index; ambiguous → manual
-   review, fail closed. **The map table's migration lands post-spike**
+   committee + candidate filer). Discovery collects **every archive filer
+   associated with the candidate by name + cycle as evidence** — office
+   match is corroboration, never a discovery filter, because a legacy
+   committee registered for a prior race's office (F4: Carr's 2022 AG
+   committee) can carry current-cycle money and an office-exact rule could
+   never propose it. Inclusion is then decided by reconciling the candidate
+   filer set against the official candidate-index totals; a cross-office
+   carryover filer enters the map only with manual confirmation. Ambiguous →
+   manual review, fail closed. **The map table's migration lands post-spike**
    (its shape depends on A6); the 5 canonical tables don't wait for it.
 4. **D4 — summary source**: candidate-index totals (F3) are official and
    full-cycle, and Georgia's "total contributions" includes loans, interest,
@@ -252,7 +261,10 @@ Numbered like Ohio's decisions; **F** = fact probed from real bytes.
 - **A6**: archive candidate index exposes the same
   totals/identity fields as F3 (probe `GetCandidateDetails` on
   api-recordsearch) — settles the filer-map shape (D3) before its
-  migration.
+  migration. Must also decompose one full candidate (Carr): which archive
+  filers' transactions compose the official full-cycle total, including how
+  much of the legacy filer's current-cycle money ($995k on filer 2750)
+  belongs in it and what explains the $103k residual (F4).
 - **A7**: rate limits / WAF behavior under sustained polite paging from a
   server IP (Render egress), not just a residential IP.
 - **A8 — transaction taxonomy gate**: pin the complete observed vocabulary

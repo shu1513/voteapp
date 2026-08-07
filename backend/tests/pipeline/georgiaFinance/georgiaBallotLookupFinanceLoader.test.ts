@@ -21,12 +21,13 @@ describe("georgiaBallotLookupFinanceLoader", () => {
     // (georgia_plan.md D9).
     ineligibleOffice: { office_scope: "statewide", office_canonical_name: "United States Senator" },
     // georgia_plan.md D6/D12: no per-target amount exists on Georgia
-    // independent expenditures, so multi-candidate expenditures stay out of
-    // the per-candidate totals. Pinned so the disclosure cannot quietly
+    // independent expenditures, so any multi-target expenditure — several
+    // candidates, or a candidate plus a ballot measure — stays out of the
+    // per-candidate totals. Pinned so the disclosure cannot quietly
     // disappear while the gap remains.
     outsideCoverageNote:
       "Covers independent expenditures that name a single candidate, as reported to the Georgia Government " +
-      "Transparency and Campaign Finance Commission. Spending that names several candidates in one expenditure " +
-      "is not included yet.",
+      "Transparency and Campaign Finance Commission. Spending reported for more than one candidate or measure " +
+      "in a single expenditure is not included yet.",
   });
 });

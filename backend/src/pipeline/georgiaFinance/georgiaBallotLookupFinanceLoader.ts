@@ -15,16 +15,19 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 const GENERIC_GEORGIA_ETHICS_SOURCE_URL = "https://ethics.ga.gov/records-search-all/";
 
 // georgia_plan.md D6/D12: Georgia discloses no per-target amount on an
-// independent expenditure, so a transaction naming several candidates at
-// once has no defensible split and stays out of the per-candidate totals
-// (49 of 387 IE transactions in the 2026 filing-year probe). That is a
-// systematic gap, not a rounding error, so it is stated with the totals
-// until the source discloses target-level amounts — at which point this
-// note is removed.
+// independent expenditure, so a transaction naming more than one target —
+// several candidates, or a candidate plus a ballot measure — has no
+// defensible split and stays out of the per-candidate totals (49 of 387 IE
+// transactions in the 2026 filing-year probe). That is a systematic gap,
+// not a rounding error, so it is stated with the totals until the source
+// discloses target-level amounts — at which point this note is removed.
+// (Malformed rows D6 also quarantines — duplicate or missing targets,
+// conflicting stances — are data-quality diagnostics, not a systematic
+// gap, and deliberately stay out of this user-facing sentence.)
 const GEORGIA_OUTSIDE_COVERAGE_NOTE =
   "Covers independent expenditures that name a single candidate, as reported to the Georgia Government " +
-  "Transparency and Campaign Finance Commission. Spending that names several candidates in one expenditure " +
-  "is not included yet.";
+  "Transparency and Campaign Finance Commission. Spending reported for more than one candidate or measure " +
+  "in a single expenditure is not included yet.";
 
 export async function loadGeorgiaCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
