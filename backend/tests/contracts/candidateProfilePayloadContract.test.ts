@@ -377,6 +377,11 @@ describe("parseCandidateProfilePayload", () => {
       "Advanced to the November runoff against another Democrat.",
       "Won about 26% in the June primary.",
       "Won 26 percent of the vote in June.",
+      "She won 52%.",
+      "She lost the runoff.",
+      "She advanced with 26%.",
+      "She won 52% in the U.S. Senate primary.",
+      "Community advocate who received nearly 31 percent of the vote.",
     ];
     for (const summary of horseRaceSummaries) {
       const parsed = parseCandidateProfilePayload({
@@ -395,14 +400,20 @@ describe("parseCandidateProfilePayload", () => {
   });
 
   it("does not false-positive the horse-race patterns on biography wording", () => {
-    // Percentages and "runoff" are horse-race only in an electoral sentence:
-    // biography statistics, policy runoff, and cross-sentence cue collisions
-    // ("election commissioner" beside a clinic statistic) must all survive.
+    // Percentages and "runoff" are horse-race only inside a result
+    // construction: biography statistics (even about voters or elections),
+    // policy runoff, and article-carrying stat claims ("secured a 40%
+    // increase") must all survive.
     const biographySummaries = [
       "Primary care physician and clinic director. Priorities: lowering the percentage of uninsured residents and expanding rural clinics.",
       "Pediatrician who cut uninsured rates by 15% in her county. Priorities: expanding rural clinics and lowering drug costs.",
       "Farmer and county water-board member. Priorities: reducing agricultural runoff and improving drinking-water quality.",
       "Former election commissioner. Cut clinic costs by 20% as hospital administrator.",
+      "Registered 20% more voters as election commissioner.",
+      "Primary-care physician who reduced uninsured rates by 15%.",
+      "Reduced agricultural runoff by 20% countywide as water-board chair.",
+      "Won a state grant to curb stormwater runoff. Advanced legislation to protect wetlands.",
+      "Secured a 40% increase in park funding as council aide.",
     ];
     for (const summary of biographySummaries) {
       const parsed = parseCandidateProfilePayload({

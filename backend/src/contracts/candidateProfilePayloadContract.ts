@@ -53,34 +53,75 @@ const SUMMARY_HORSE_RACE_PATTERNS: ReadonlyArray<{ pattern: RegExp; label: strin
   { pattern: /\bseeking\s+re-?election\b/i, label: 'the phrase "seeking re-election"' },
 ];
 
-// "runoff" and percentages are horse-race only in an electoral sentence —
-// "reducing agricultural runoff" and "cut uninsured rates by 15%" are
-// legitimate biography facts, while "advanced to the runoff with 26%" is race
-// coverage. Cue matching is scoped to the sentence carrying the term so a cue
-// in one sentence cannot condemn a fact in the other ("Former election
-// commissioner. Cut clinic costs by 20%." must pass). The naive [.!?] split
-// only ever shrinks a sentence, so a mis-split ("U.S.") can only under-block,
-// never false-reject.
-const SUMMARY_PERCENTAGE = /\d+(?:\.\d+)?\s*(?:%|percent\b)/i;
-const PERCENTAGE_ELECTORAL_CUE =
-  /\b(?:votes?|voters|primar(?:y|ies)(?!\s+(?:care|school))|elections?|runoffs?|polls?|polling|ballots?|re-?elections?)\b/i;
-const RUNOFF_ELECTORAL_CUE =
-  /\b(?:advanc(?:e[ds]?|ing)|faces|opponents?|elections?|primar(?:y|ies)|votes?|voters|ballots?|polls?|percent)\b|%/i;
+// A percentage or "runoff" is horse-race content only inside a result
+// CONSTRUCTION — "won 52%", "advanced with 26%", "26% of the vote", "won the
+// runoff" — never as a bare word co-occurrence. Cue-word lists over-matched
+// ("registered 20% more voters as election commissioner" is a credential),
+// and sentence-scoped cues mis-split on "U.S.", letting "won 52% in the U.S.
+// Senate primary" through. Tight constructions need no sentence splitting,
+// and English discriminates naturally at the article: vote shares read
+// "won 52%" while biography statistics read "secured a 40% increase".
+const RESULT_QUALIFIER = String.raw`(?:(?:about|around|nearly|roughly|over|almost|approximately|under)\s+)?`;
+const PERCENT = String.raw`\d+(?:\.\d+)?\s*(?:%|percent\b)`;
+// Words allowed between an article and an electoral "runoff" ("the November
+// 2026 runoff", "a Democratic primary runoff") — whitelisted so "won the
+// fight against runoff" (environmental) never matches through a free gap.
+const RUNOFF_FILLER = String.raw`(?:(?:january|february|march|april|may|june|july|august|september|october|november|december|\d{4}|primar(?:y|ies)|mayoral|special|general|citywide|city|county|statewide|democratic|republican|nonpartisan)\s+){0,2}`;
+
+const PERCENT_LABEL = "a vote percentage (horse-race content)";
+const RUNOFF_LABEL = '"runoff" as an election result (horse-race content)';
+
+const SUMMARY_HORSE_RACE_CONSTRUCTIONS: ReadonlyArray<{ pattern: RegExp; label: string }> = [
+  // "won 52%", "received about 31 percent", "garnered nearly 26%"
+  {
+    pattern: new RegExp(String.raw`\b(?:won|lost|received|garnered|polled)\s+${RESULT_QUALIFIER}${PERCENT}`, "i"),
+    label: PERCENT_LABEL,
+  },
+  // "advanced with 26%", "finished with about 31 percent"
+  {
+    pattern: new RegExp(String.raw`\b(?:advanc(?:e[ds]?|ing)|finish(?:ed|ing)?)\s+with\s+${RESULT_QUALIFIER}${PERCENT}`, "i"),
+    label: PERCENT_LABEL,
+  },
+  // "26% of the vote"
+  {
+    pattern: new RegExp(String.raw`${PERCENT}\s+of\s+(?:the\s+)?votes?\b`, "i"),
+    label: PERCENT_LABEL,
+  },
+  // "26% in the June primary", "52 percent in the U.S. Senate primary"
+  {
+    pattern: new RegExp(
+      String.raw`${PERCENT}\s+in\s+the\s+(?:\S+\s+){0,3}(?:primar(?:y|ies)|runoff|caucus(?:es)?|general|election)\b`,
+      "i"
+    ),
+    label: PERCENT_LABEL,
+  },
+  // "won the runoff", "lost a runoff", "forced a December runoff"
+  {
+    pattern: new RegExp(String.raw`\b(?:won|lost|forced|entered)\s+(?:the|a)\s+${RUNOFF_FILLER}runoff\b`, "i"),
+    label: RUNOFF_LABEL,
+  },
+  // "advanced to the November 2026 runoff" — requires "to the/a", so
+  // "advanced legislation to curb runoff" stays a biography fact
+  {
+    pattern: new RegExp(String.raw`\badvanc(?:e[ds]?|ing)\s+to\s+(?:the|a)\s+(?:\S+\s+){0,3}runoff\b`, "i"),
+    label: RUNOFF_LABEL,
+  },
+  // "faces X in the runoff", "is in a runoff against"
+  {
+    pattern: new RegExp(String.raw`\bin\s+(?:the|a)\s+${RUNOFF_FILLER}runoff\b`, "i"),
+    label: RUNOFF_LABEL,
+  },
+  // "runoff election", "runoff against"
+  { pattern: /\brunoff\s+(?:election|against)\b/i, label: RUNOFF_LABEL },
+];
 
 function findSummaryHorseRaceContent(summary: string): string | null {
   const phrase = SUMMARY_HORSE_RACE_PATTERNS.find(({ pattern }) => pattern.test(summary));
   if (phrase) {
     return phrase.label;
   }
-  for (const sentence of summary.split(/(?<=[.!?])\s+/)) {
-    if (SUMMARY_PERCENTAGE.test(sentence) && PERCENTAGE_ELECTORAL_CUE.test(sentence)) {
-      return "a vote percentage (horse-race content)";
-    }
-    if (/\brunoff\b/i.test(sentence) && RUNOFF_ELECTORAL_CUE.test(sentence)) {
-      return '"runoff" in an electoral context';
-    }
-  }
-  return null;
+  const construction = SUMMARY_HORSE_RACE_CONSTRUCTIONS.find(({ pattern }) => pattern.test(summary));
+  return construction ? construction.label : null;
 }
 
 function isNonEmptyString(value: unknown): value is string {
