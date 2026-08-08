@@ -713,3 +713,24 @@ shape) and lands first; only the D3 map table waits for the spike.
   IE store is pulled once per run and shared across every candidate;
   skipped entirely when nothing is due. 118 GA tests; full suite 6,743
   green.
+- 2026-08-08: **PR 5 review round** (external, both findings verified against
+  the code before acting, both adopted): (1) a stable EMPTY IE store now
+  fails closed in the client — both stores are pinned nonempty and cumulative
+  (551 PeachFile / 3,679 archive at the spike, a full-store pull can only
+  grow), so two agreeing empty passes are a dead endpoint being perfectly
+  reproducible, and writing them through would delete every stored outside
+  group and zero the totals (same class as the PR 4 zero-coverage guard).
+  (2) an IE-side client failure no longer blocks the direct leg: the IE
+  fetch is the LAST fetch, after the direct pull's hundreds of paced
+  requests have succeeded and reconciled, so the sync catches
+  GeorgiaEthicsClientError (network / WAF / unstable / empty-store) and
+  degrades to direct-only — outside summary fields go null
+  (preserveWhenNull keeps stored values), outsideGroups goes undefined
+  (stored groups untouched, the partial-snapshot contract's exact purpose),
+  and the skip reason rides the result. The batch layer catches the shared
+  store pull's client failures the same way and passes the NULL sentinel so
+  candidates never each retry a known-dead fetch
+  (independentExpenditureStoreError surfaces it); non-client errors are
+  bugs and still throw everywhere. The two guards compose: empty store →
+  client throws → sync degrades → stored outside data preserved. 122 GA
+  tests, suite 6,747 green.

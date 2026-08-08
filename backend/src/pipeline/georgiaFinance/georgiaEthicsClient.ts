@@ -1028,6 +1028,18 @@ export async function fetchGeorgiaIndependentExpenditureRows(
     }
     const ids = new Set(rowsById.keys());
     if (previousIds && ids.size === previousIds.size && [...ids].every((id) => previousIds!.has(id))) {
+      // Both hosts' IE stores are pinned nonempty and cumulative (551
+      // PeachFile / 3,679 archive rows at the spike — a full-store pull can
+      // only grow), so a stable EMPTY result is an upstream failure shape,
+      // not a truthful zero. Writing it through would delete every stored
+      // outside group and zero the totals on the say-so of a dead endpoint.
+      if (rowsById.size === 0) {
+        throw new GeorgiaEthicsClientError(
+          "bad_response",
+          `Georgia ${host} independent-expenditure fetch returned a stable EMPTY store — ` +
+            "the IE stores are known nonempty, so this is an upstream failure, not zero outside spending"
+        );
+      }
       return {
         rows: [...rowsById.values()],
         fetchedRowCount: fetched.length,

@@ -586,6 +586,16 @@ describe("independent expenditures", () => {
       }
     );
   });
+
+  it("fails closed on a stable EMPTY store — the IE stores are known nonempty", async () => {
+    // A dead endpoint answering [] every pass is perfectly "stable"; writing
+    // it through would delete every stored outside group.
+    const transport = transportFromResponses([{ body: pageBody([]) }]);
+    await expect(fetchGeorgiaIndependentExpenditureRows(transport, "peachfile")).rejects.toMatchObject({
+      code: "bad_response",
+      message: expect.stringContaining("stable EMPTY store"),
+    });
+  });
 });
 
 describe("per-host vocabularies", () => {

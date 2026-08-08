@@ -690,12 +690,26 @@ describe("syncGeorgiaCandidateFinance", () => {
     expect(fetchers.fetchIndependentExpenditureRows).not.toHaveBeenCalled();
   });
 
-  it("writes a truthful zero outside leg when no IE targets the candidate", async () => {
+  it("writes a truthful zero outside leg when the (nonempty) store has no IE targeting the candidate", async () => {
     const db = createMockDb();
     const fetchers = carrFetchers();
+    // The store is never legitimately empty (client guard), but a candidate
+    // nobody targeted sees only foreign rows.
     fetchers.fetchIndependentExpenditureRows.mockImplementation(async () => ({
-      rows: [],
-      fetchedRowCount: 0,
+      rows: [
+        ieRow({
+          transactionId: 301,
+          candidateMeasures: [
+            {
+              candidateMeasureTitle: "Someone Else for Georgia",
+              stance: "Support",
+              reasonTypeCode: "CAN",
+              filerRegistrationGuid: "someone-else-guid",
+            },
+          ],
+        }),
+      ],
+      fetchedRowCount: 1,
       duplicateRowCount: 0,
       passCount: 2,
     }));
@@ -703,7 +717,46 @@ describe("syncGeorgiaCandidateFinance", () => {
     expect(result.outsideSupportTotal).toBe(0);
     expect(result.outsideOpposeTotal).toBe(0);
     expect(result.outsideGroupsWritten).toBe(0);
-    expect(result.outsideSpending.storeRowCount).toBe(0);
+    expect(result.outsideSpending?.storeRowCount).toBe(1);
+    expect(result.outsideSpendingSkippedReason).toBeNull();
+    expect(db.connect).toHaveBeenCalled();
+  });
+
+  it("degrades to a direct-only sync when the IE fetch fails with a client error, preserving stored outside data", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    fetchers.fetchIndependentExpenditureRows.mockImplementation(async () => {
+      throw new GeorgiaEthicsClientError("bad_response", "stable EMPTY store");
+    });
+    const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
+    // Direct leg still written in full.
+    expect(result.syncedRowSum).toBe(3500);
+    expect(result.directBreakdownsWritten).toBeGreaterThan(0);
+    expect(db.connect).toHaveBeenCalled();
+    // Outside leg skipped: null totals (preserveWhenNull keeps stored
+    // values), zero groups written, reason carried through.
+    expect(result.outsideSupportTotal).toBeNull();
+    expect(result.outsideOpposeTotal).toBeNull();
+    expect(result.outsideGroupsWritten).toBe(0);
+    expect(result.outsideSpending).toBeNull();
+    expect(result.outsideSpendingSkippedReason).toContain("stable EMPTY store");
+
+    // A non-client error is a bug and still fails the sync.
+    fetchers.fetchIndependentExpenditureRows.mockImplementation(async () => {
+      throw new TypeError("boom");
+    });
+    await expect(syncGeorgiaCandidateFinance(baseInput(db, fetchers))).rejects.toThrow("boom");
+  });
+
+  it("skips the outside leg without fetching when the batch passes the null store sentinel", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers, { independentExpenditureRows: null }));
+    expect(fetchers.fetchIndependentExpenditureRows).not.toHaveBeenCalled();
+    expect(result.outsideSpending).toBeNull();
+    expect(result.outsideSupportTotal).toBeNull();
+    expect(result.outsideSpendingSkippedReason).toContain("IE store unavailable");
+    expect(result.syncedRowSum).toBe(3500);
     expect(db.connect).toHaveBeenCalled();
   });
 

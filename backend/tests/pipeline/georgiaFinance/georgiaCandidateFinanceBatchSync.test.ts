@@ -2,9 +2,10 @@ import { describe, expect, it, vi } from "vitest";
 
 import { syncDueGeorgiaCandidateFinance } from "../../../src/pipeline/georgiaFinance/georgiaCandidateFinanceBatchSync.js";
 import type { GeorgiaCandidateFinanceSyncResult } from "../../../src/pipeline/georgiaFinance/georgiaCandidateFinanceSync.js";
-import type {
-  GeorgiaEthicsTransport,
-  GeorgiaIndependentExpenditureRow,
+import {
+  GeorgiaEthicsClientError,
+  type GeorgiaEthicsTransport,
+  type GeorgiaIndependentExpenditureRow,
 } from "../../../src/pipeline/georgiaFinance/georgiaEthicsClient.js";
 
 const NOW = new Date("2026-08-07T12:00:00Z");
@@ -145,6 +146,7 @@ function syncResult(overrides: Partial<GeorgiaCandidateFinanceSyncResult> = {}):
       unrecognizedStatusRowCount: 0,
       unrecognizedStatusAmount: 0,
     },
+    outsideSpendingSkippedReason: null,
     ...overrides,
   };
 }
@@ -188,6 +190,49 @@ describe("syncDueGeorgiaCandidateFinance", () => {
     for (const call of syncFn.mock.calls) {
       expect((call as unknown[])[0]).toMatchObject({ independentExpenditureRows: IE_STORE_ROWS });
     }
+  });
+
+  it("degrades to direct-only when the IE store pull fails with a client error, and rethrows bugs", async () => {
+    const dueRows = [dueQueryRow(), dueQueryRow({ candidate_id: "candidate-2", committee_id: "100200" })];
+    const db = createMockDb(dueRows);
+    const syncFn = vi.fn(async () => syncResult({ outsideSpendingSkippedReason: "IE store unavailable" }));
+    const failingFetch = vi.fn(async () => {
+      throw new GeorgiaEthicsClientError("bad_response", "stable EMPTY store");
+    });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const result = await syncDueGeorgiaCandidateFinance({
+        db,
+        transport: dummyTransport,
+        now: NOW,
+        syncGeorgiaCandidateFinanceFn: syncFn,
+        fetchIndependentExpenditureRowsFn: failingFetch,
+      });
+      // Every candidate still synced, with the null sentinel so nobody
+      // retries the dead fetch.
+      expect(result.syncedCandidateCount).toBe(2);
+      expect(result.independentExpenditureStoreError).toContain("stable EMPTY store");
+      expect(failingFetch).toHaveBeenCalledTimes(1);
+      for (const call of syncFn.mock.calls) {
+        expect((call as unknown[])[0]).toMatchObject({ independentExpenditureRows: null });
+      }
+    } finally {
+      warn.mockRestore();
+    }
+
+    // A non-client error is a bug and fails the batch.
+    const buggyFetch = vi.fn(async () => {
+      throw new TypeError("boom");
+    });
+    await expect(
+      syncDueGeorgiaCandidateFinance({
+        db: createMockDb(dueRows),
+        transport: dummyTransport,
+        now: NOW,
+        syncGeorgiaCandidateFinanceFn: syncFn,
+        fetchIndependentExpenditureRowsFn: buggyFetch,
+      })
+    ).rejects.toThrow("boom");
   });
 
   it("skips the IE store pull when nothing is due", async () => {

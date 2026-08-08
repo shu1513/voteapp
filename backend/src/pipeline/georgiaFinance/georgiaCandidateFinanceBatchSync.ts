@@ -14,6 +14,7 @@ import {
 import {
   createGeorgiaEthicsTransport,
   fetchGeorgiaIndependentExpenditureRows,
+  GeorgiaEthicsClientError,
   type GeorgiaEthicsTransport,
   type GeorgiaIndependentExpenditureRow,
 } from "./georgiaEthicsClient.js";
@@ -72,6 +73,9 @@ export type GeorgiaCandidateFinanceBatchSyncResult = {
   failedCandidateCount: number;
   autoLinkAttemptedCount: number;
   autoLinkLinkedCount: number;
+  // Set when the shared IE store pull failed and every candidate ran
+  // direct-only (stored outside data preserved).
+  independentExpenditureStoreError: string | null;
   results: GeorgiaCandidateFinanceBatchSyncItemResult[];
 };
 
@@ -163,11 +167,29 @@ export async function syncDueGeorgiaCandidateFinance(
   });
 
   // The PeachFile IE store (F5) is candidate-independent, so one paced pull
-  // serves every candidate in the run instead of one per candidate.
-  let independentExpenditureRows: readonly GeorgiaIndependentExpenditureRow[] | undefined;
+  // serves every candidate in the run instead of one per candidate. A client
+  // failure here (network, WAF, unstable paging, the empty-store guard) must
+  // not block the direct-finance refreshes: the run degrades to direct-only
+  // with the NULL sentinel — the syncs skip the outside leg and preserve
+  // stored outside data instead of each retrying a known-dead fetch.
+  // Anything that is not a client error is a bug and still throws.
+  let independentExpenditureRows: readonly GeorgiaIndependentExpenditureRow[] | null | undefined;
+  let independentExpenditureStoreError: string | null = null;
   if (due.rows.length > 0) {
     const fetchIeFn = input.fetchIndependentExpenditureRowsFn ?? fetchGeorgiaIndependentExpenditureRows;
-    independentExpenditureRows = (await fetchIeFn(transport, "peachfile", { maxPasses: input.maxPasses })).rows;
+    try {
+      independentExpenditureRows = (await fetchIeFn(transport, "peachfile", { maxPasses: input.maxPasses })).rows;
+    } catch (error) {
+      if (!(error instanceof GeorgiaEthicsClientError)) {
+        throw error;
+      }
+      independentExpenditureStoreError = error.message;
+      independentExpenditureRows = null;
+      console.warn(
+        "Georgia IE store fetch failed; syncing direct-only and preserving stored outside data:",
+        error.message
+      );
+    }
   }
 
   const results: GeorgiaCandidateFinanceBatchSyncItemResult[] = [];
@@ -235,6 +257,7 @@ export async function syncDueGeorgiaCandidateFinance(
     failedCandidateCount: results.filter((result) => !result.ok).length,
     autoLinkAttemptedCount,
     autoLinkLinkedCount,
+    independentExpenditureStoreError,
     results,
   };
 }
