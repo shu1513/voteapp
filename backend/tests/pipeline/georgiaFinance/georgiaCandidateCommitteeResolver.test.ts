@@ -107,6 +107,16 @@ describe("georgiaCandidateNameMatchesRowNames (middle-name evidence)", () => {
     // reads VAN-vs-B as a middle conflict; the real VAN DYKE alignment wins.
     expect(georgiaCandidateNameMatchesRowNames("Mary Van Dyke", ["MARY B VAN DYKE"])).toBe(true);
   });
+
+  it("never lets an ambiguous space-form split override a comma-form conflict", () => {
+    // The comma form pins the surname, so its A-vs-B conflict is
+    // authoritative; the space-form sibling name re-splitting as surname
+    // "A SMITH" must not resurrect the match through the longest-surname
+    // fallback.
+    expect(
+      georgiaCandidateNameMatchesRowNames("John A. Smith", ["Smith, John B. A.", "John B A Smith"])
+    ).toBe(false);
+  });
 });
 
 describe("resolveGeorgiaCandidateCommittee", () => {
