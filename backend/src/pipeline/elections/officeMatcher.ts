@@ -479,6 +479,25 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
     return 0;
   }
 
+  // South Carolina's circuit "Solicitor" is that state's chief FELONY
+  // prosecutor — a District Attorney by another name — while Georgia's county
+  // "Solicitor General" is the State Court's misdemeanor prosecutor, a
+  // different elected office. "general" is a STOPWORD above (it strips
+  // "General Election"), so this office tokenizes to ["solicitor"] alone and a
+  // bare "Solicitor" title is token-identical to it: a perfect f1, confidence
+  // 1.0, with nothing else in range. No confidence floor or margin could
+  // separate the two, because after tokenization there is nothing left to tell
+  // apart — but the raw matcher key still carries "general", so a phrase test
+  // can. The bare title then stays unmatched, exactly as it was before this
+  // office existed, instead of silently filing a felony prosecutor under the
+  // misdemeanor office.
+  if (
+    office.canonicalMatcherKey === "solicitor general" &&
+    !hasPhrase(titleMatcherKey, "solicitor general")
+  ) {
+    return 0;
+  }
+
   const titleSet = new Set(titleTokens);
   let intersectionCount = 0;
   for (const token of office.canonicalTokens) {

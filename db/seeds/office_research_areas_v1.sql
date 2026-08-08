@@ -3158,6 +3158,15 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('county', 'Public Defender', ARRAY['civil_rights', 'immigration', 'legal_competence', 'public_safety_and_crime_control']::text[]),
     -- Same job as County Recorder under its Missouri/Pennsylvania name.
     ('county', 'Recorder of Deeds', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
+    -- Georgia's county misdemeanor prosecutor (State Court), a separate
+    -- elected office from the District Attorney: the DA set MINUS the two
+    -- slugs that track felony-only charging discretion, since in Georgia
+    -- abortion-law violations (womens_reproductive_rights) and white-collar
+    -- fraud (corporate_accountability) are felonies this office cannot bring.
+    -- gun_control stays: Georgia's weapons misdemeanors — carrying in a
+    -- prohibited location, possession by a minor, pointing a firearm at
+    -- another — are State Court cases. See db/migrations/219.
+    ('county', 'Solicitor General', ARRAY['anti_corruption', 'civil_rights', 'gun_control', 'public_safety_and_crime_control']::text[]),
     ('county', 'Sheriff', ARRAY['civil_rights', 'data_privacy', 'gun_control', 'immigration', 'public_safety_and_crime_control']::text[]),
     ('county', 'Soil and Water Conservation District Supervisor', ARRAY['environment_and_public_health', 'government_efficiency', 'public_infrastructure']::text[]),
     ('place', 'Alderman', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
