@@ -126,6 +126,37 @@ export function middleNameEvidence(a: string[], b: string[]): "strong" | "weak" 
   return "strong";
 }
 
+// Committee names bury the person name inside designator text ("Citizens for
+// Jane B Doe for Governor", "Jane B Doe 2026"). The trailing tokens block
+// first+last alignment, so a contradicting middle would produce no evidence
+// and slip through a committee-name match. Callers vetoing against a
+// committee name expand it into candidate row-name strings first: the raw
+// name, the name with 4-digit years removed, and each "for"-delimited
+// segment — the person-name segment then aligns cleanly. Extra segments can
+// only add aligned evidence, never block alignment that already existed.
+export function committeeNameMiddleEvidenceRowNames(raw: string): string[] {
+  const names = new Set<string>();
+  const trimmed = raw.trim();
+  if (!trimmed) {
+    return [];
+  }
+  names.add(trimmed);
+  const withoutYears = trimmed
+    .replace(/\b(?:19|20)\d{2}\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (withoutYears) {
+    names.add(withoutYears);
+    for (const segment of withoutYears.split(/\bfor\b/i)) {
+      const trimmedSegment = segment.trim();
+      if (trimmedSegment) {
+        names.add(trimmedSegment);
+      }
+    }
+  }
+  return [...names];
+}
+
 export type MiddleNameConflictInput = {
   candidateName: string;
   rowNames: readonly string[];
@@ -136,6 +167,59 @@ export type MiddleNameConflictInput = {
   // Defaults to strict equality.
   firstNamesEquivalent?: (candidateFirst: string, rowFirst: string) => boolean;
 };
+
+// Aggregated middle evidence across aligned candidate/row variant pairs.
+// Only pairs aligned on the LONGEST matching surname interpretation carry
+// evidence: a shorter split misreads part of a compound surname as a middle
+// name and can manufacture a conflict ("Mary [VAN] DYKE" vs
+// "Mary [B VAN] DYKE" conflicts, while the true "VAN DYKE" alignment is a
+// clean weak fallback). The wrong split still can never manufacture
+// AGREEMENT — first and last must align token-for-token — so preferring the
+// most-specific alignment only discards manufactured contradictions.
+function collectMiddleEvidence(input: MiddleNameConflictInput): {
+  sawStrong: boolean;
+  sawWeak: boolean;
+  sawConflict: boolean;
+} {
+  const firstNamesEquivalent =
+    input.firstNamesEquivalent ?? ((candidateFirst: string, rowFirst: string) => candidateFirst === rowFirst);
+  const candidateVariants = personNameParseVariants(input.candidateName, input.normalizePersonName);
+  let surnameTokenCount = 0;
+  let sawStrong = false;
+  let sawWeak = false;
+  let sawConflict = false;
+  for (const rowName of input.rowNames) {
+    for (const rowVariant of personNameParseVariants(rowName, input.normalizePersonName)) {
+      for (const candidateVariant of candidateVariants) {
+        if (candidateVariant.last !== rowVariant.last) {
+          continue;
+        }
+        if (!firstNamesEquivalent(candidateVariant.first, rowVariant.first)) {
+          continue;
+        }
+        const pairSurnameTokenCount = rowVariant.last.split(" ").length;
+        if (pairSurnameTokenCount < surnameTokenCount) {
+          continue;
+        }
+        if (pairSurnameTokenCount > surnameTokenCount) {
+          surnameTokenCount = pairSurnameTokenCount;
+          sawStrong = false;
+          sawWeak = false;
+          sawConflict = false;
+        }
+        const evidence = middleNameEvidence(candidateVariant.middles, rowVariant.middles);
+        if (evidence === "strong") {
+          sawStrong = true;
+        } else if (evidence === "conflict") {
+          sawConflict = true;
+        } else {
+          sawWeak = true;
+        }
+      }
+    }
+  }
+  return { sawStrong, sawWeak, sawConflict };
+}
 
 // True when the candidate and row names align on first+last, at least one
 // aligned pair carries contradicting middle names, and no aligned pair
@@ -150,28 +234,19 @@ export type MiddleNameConflictInput = {
 // caller did not surface here) there is no middle evidence either way and the
 // state's key-overlap verdict stands.
 export function hasMiddleNameConflict(input: MiddleNameConflictInput): boolean {
-  const firstNamesEquivalent =
-    input.firstNamesEquivalent ?? ((candidateFirst: string, rowFirst: string) => candidateFirst === rowFirst);
-  const candidateVariants = personNameParseVariants(input.candidateName, input.normalizePersonName);
-  let sawConflict = false;
-  for (const rowName of input.rowNames) {
-    for (const rowVariant of personNameParseVariants(rowName, input.normalizePersonName)) {
-      for (const candidateVariant of candidateVariants) {
-        if (candidateVariant.last !== rowVariant.last) {
-          continue;
-        }
-        if (!firstNamesEquivalent(candidateVariant.first, rowVariant.first)) {
-          continue;
-        }
-        const evidence = middleNameEvidence(candidateVariant.middles, rowVariant.middles);
-        if (evidence === "strong") {
-          return false;
-        }
-        if (evidence === "conflict") {
-          sawConflict = true;
-        }
-      }
-    }
-  }
-  return sawConflict;
+  const evidence = collectMiddleEvidence(input);
+  return !evidence.sawStrong && evidence.sawConflict;
+}
+
+// Full match verdict (the georgia aggregation), for states whose key sets
+// carry NO first+last collapse (colorado pattern: full-string and comma-flip
+// keys only). Those states have the opposite problem — "John A. Smith" never
+// matches "Smith, John" at all — so they call this as a RECALL fallback after
+// their exact-key match misses: any strong pair matches; otherwise any middle
+// conflict rejects; otherwise a first+last alignment with middle information
+// missing on a side matches. No alignment at all is no match — this function
+// never widens beyond first+last agreement.
+export function personNamesMatchWithMiddleEvidence(input: MiddleNameConflictInput): boolean {
+  const evidence = collectMiddleEvidence(input);
+  return evidence.sawStrong || (evidence.sawWeak && !evidence.sawConflict);
 }

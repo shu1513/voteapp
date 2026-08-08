@@ -107,6 +107,25 @@ describe("districtOfColumbiaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("rejects a fallback conflict hidden behind office or year designators", () => {
+    expect(
+      resolveDistrictOfColumbiaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2026,
+        contributionRecords: [
+          record({
+            candidateName: undefined,
+            office: undefined,
+            committeeName: "John B. Smith for Mayor 2026",
+            committeeKey: "JOHN B SMITH FOR MAYOR 2026",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("keeps a committee-name fallback whose middle corroborates the candidate", () => {
     expect(
       resolveDistrictOfColumbiaCandidateCommittee({

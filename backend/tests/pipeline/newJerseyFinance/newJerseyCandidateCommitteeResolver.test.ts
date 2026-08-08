@@ -139,6 +139,49 @@ describe("newJerseyCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_entity_match" });
   });
 
+  it("reads middle evidence from the structured middleInitial column", () => {
+    // entityName and firstName carry no middle at all — only the ELEC
+    // MIDDLE_INITIAL column does. Before it was wired in, this entity
+    // slipped past the gate on the first+last fallback.
+    expect(
+      resolveNewJerseyCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        entityRows: [
+          entity({
+            entityS: 500001,
+            entityName: "SMITH, JOHN",
+            firstName: "John",
+            middleInitial: "B",
+            lastName: "Smith",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_entity_match" });
+  });
+
+  it("lets the middleInitial column corroborate the candidate's full middle name", () => {
+    expect(
+      resolveNewJerseyCandidateCommittee({
+        candidateName: "John Andrew Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        entityRows: [
+          entity({
+            entityS: 500001,
+            entityName: "SMITH, JOHN",
+            firstName: "John",
+            middleInitial: "A",
+            lastName: "Smith",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", entityS: 500001 });
+  });
+
   it("does not guess when primary and general entities both match", () => {
     expect(
       resolveNewJerseyCandidateCommittee({

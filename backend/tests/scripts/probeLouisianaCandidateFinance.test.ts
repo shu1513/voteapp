@@ -110,7 +110,10 @@ describe("probeLouisianaCandidateFinance script", () => {
       "--expected-outside-support-total=5000",
       "--pac-filer-number=PAC1",
       "--expected-pac-receipts-total=8000",
-      "--ambiguous-candidate-name=John Edwards",
+      // A middle-conflicting namesake: the middle-evidence gate now matches
+      // middle-less first+last alignments ("John Edwards"), so the probe's
+      // must-not-match check uses a name whose middle contradicts the filer.
+      "--ambiguous-candidate-name=John Paul Edwards",
     ]);
 
     const output = await runProbeLouisianaCandidateFinance({
@@ -158,7 +161,7 @@ describe("probeLouisianaCandidateFinance script", () => {
         expected_total_comparison_ok: true,
         no_occupation_data: true,
         ambiguous_candidate_check: {
-          candidate_name: "John Edwards",
+          candidate_name: "John Paul Edwards",
           expected_status: "not_matched",
           actual_status: "unmatched",
           ok: true,
