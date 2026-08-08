@@ -484,6 +484,16 @@ const SEED_OFFICES: SeedOffice[] = [
     // from county or city government (Florida alone puts dozens of these
     // boards on the ballot). Filed at county scope because the district sits
     // inside one county and its seats appear on that county's ballot.
+    //
+    // Caveat for whoever imports these contests: a fire district's boundaries
+    // are SUB-county and there is no districts row for them, so an election
+    // attached to the county district shows to every voter in the county, not
+    // only the ones inside that fire district. That is the same limitation
+    // county-scope seat elections already carry (County Commissioner District
+    // 2 and friends, ~600 live rows) and it needs address-resolved special
+    // districts to fix properly — but it bites harder here, because a fire
+    // district is a separate jurisdiction rather than one seat on a body that
+    // governs the whole county. Weigh that before publishing a roster.
     scope: "county",
     canonicalName: "Fire Control District Commissioner",
     summary: [

@@ -1975,6 +1975,53 @@ describe("OfficeMatcher", () => {
     }
   });
 
+  it("leaves non-board fire-district roles unmatched instead of folding them into the board seat", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-fire-district", canonical_name: "Fire Control District Commissioner" },
+          { id: "office-county-treasurer", canonical_name: "County Treasurer" },
+          { id: "office-county-clerk", canonical_name: "County Clerk" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // New York's Town Law §174 seats an elected district treasurer alongside
+    // the board of fire commissioners; the district phrase is common to both.
+    // The catalog has no office for these roles, so no match is the honest
+    // answer — and nothing may be persisted as a learned alias.
+    const titles = [
+      "Smithtown Fire District Treasurer",
+      "Smithtown Fire District Secretary",
+      "Fire District Clerk",
+      "Treasurer, Smithtown Fire District",
+    ];
+    for (const title of titles) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: "Suffolk County, New York",
+        state: "NY",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, title).toBeNull();
+      expect(result.shouldPersistAlias, title).toBe(false);
+    }
+
+    // The board seat itself still folds, including the comma form the
+    // non-board guard has to see past.
+    const board = await matcher.resolve({
+      scope: "county",
+      districtName: "Suffolk County, New York",
+      state: "NY",
+      officialBallotTitle: "Commissioner, Smithtown Fire District",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(board.officeId).toBe("office-fire-district");
+  });
+
   it("matches the seeded bare Fire Commissioner alias without touching other county offices", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: {
