@@ -49,6 +49,18 @@ const LEGACY_DUPLICATE_MIGRATION_FILES_BY_PREFIX = new Map<string, string[]>([
       "128_add_utah_supporting_committee_finance_tables.sql",
     ],
   ],
+  // PRs #582 and #583 merged the same day, each claiming 215; both files were
+  // already applied by filename to local databases before the collision was
+  // noticed, so renumbering would replay one of them. The two migrations
+  // touch unrelated objects (SF link tables vs. a district-research check
+  // constraint), so filename-order application is safe.
+  [
+    "215",
+    [
+      "215_add_san_francisco_campaign_finance_link_tables.sql",
+      "215_widen_manual_district_research_trigger_source.sql",
+    ],
+  ],
 ]);
 
 function toReason(error: unknown): string {
