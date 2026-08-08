@@ -213,6 +213,104 @@ describe("PicksPage", () => {
     expect(screen.queryByRole("button", { name: "Share my picks" })).not.toBeInTheDocument();
   });
 
+  it("keeps a just-finished election's card, with result chips, out of Past elections", async () => {
+    // The ballot payload keeps finished races for a few days; the card must
+    // live exactly as long, so results land on the very card that planned
+    // the votes — not in the collapsed history.
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/ballot": {
+          body: ballotSummary([
+            electionSummary({
+              election_date: "2026-07-28",
+              has_results: true,
+              current_result_outcome: "advanced",
+              current_result_winners: [
+                { candidate_id: "c-1", candidate_name: "Jane Smith", party: "Democratic" },
+                { candidate_id: "c-2", candidate_name: "John James", party: "Republican" },
+              ],
+            }),
+            electionSummary({ id: "e-2", official_ballot_title: "Mayor", election_date: "2026-07-28" }),
+          ]),
+        },
+        "/api/me/election-choices": {
+          body: { choices: [electionChoice({ election_date: "2026-07-28" })] },
+        },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByText("My July 28, 2026 Election Picks")).toBeInTheDocument();
+    // The pick's own line carries the call.
+    expect(screen.getByText("Advanced")).toBeInTheDocument();
+    // Still carded → not double-listed under Past elections.
+    expect(screen.queryByText(/Past elections/)).not.toBeInTheDocument();
+    // A race that can no longer be decided drops the "yet".
+    expect(screen.getByText("Mayor — no pick")).toBeInTheDocument();
+    expect(screen.queryByText(/no pick yet/)).not.toBeInTheDocument();
+  });
+
+  it("stays silent on a pick that missed the winners", async () => {
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/ballot": {
+          body: ballotSummary([
+            electionSummary({
+              election_date: "2026-07-28",
+              has_results: true,
+              current_result_outcome: "advanced",
+              current_result_winners: [
+                { candidate_id: "c-2", candidate_name: "John James", party: "Republican" },
+              ],
+            }),
+          ]),
+        },
+        "/api/me/election-choices": {
+          body: { choices: [electionChoice({ election_date: "2026-07-28" })] },
+        },
+      })
+    );
+    renderPicks();
+
+    // The pick (c-1) is not among the winners: no chip, no loss flag.
+    expect(await screen.findByText("Jane Smith")).toBeInTheDocument();
+    expect(screen.queryByText("Advanced")).not.toBeInTheDocument();
+    expect(screen.queryByText("Lost")).not.toBeInTheDocument();
+  });
+
+  it("never doubles a certified candidacy chip with the result-derived one", async () => {
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/ballot": {
+          body: ballotSummary([
+            electionSummary({
+              election_date: "2026-07-28",
+              has_results: true,
+              current_result_outcome: "won",
+              current_result_winners: [
+                { candidate_id: "c-1", candidate_name: "Jane Smith", party: "Democratic" },
+              ],
+            }),
+          ]),
+        },
+        "/api/me/election-choices": {
+          body: {
+            choices: [
+              electionChoice({
+                election_date: "2026-07-28",
+                picks: [{ candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "won" }],
+              }),
+            ],
+          },
+        },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByText("Jane Smith")).toBeInTheDocument();
+    expect(screen.getAllByText("Won")).toHaveLength(1);
+  });
+
   it("lists past picks in a collapsible section with won/lost flags", async () => {
     stubApiRoutes(
       verifiedRoutes({
