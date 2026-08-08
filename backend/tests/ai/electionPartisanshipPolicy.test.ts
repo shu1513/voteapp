@@ -595,6 +595,37 @@ describe("electionPartisanshipPolicy", () => {
     }
   });
 
+  it("keeps Indiana city and town courts partisan inside the nonpartisan counties", () => {
+    // A city or town court sits inside a county without being one of its
+    // courts. IC 33-35-1-1 elects those judges at the municipal election with
+    // a party label in every county, so the county-wide Vanderburgh and Allen
+    // carve-outs must not swallow them.
+    for (const title of [
+      "Judge of the Darmstadt Town Court, Vanderburgh County",
+      "Vanderburgh County - Judge of the City Court",
+      "Judge, New Haven City Court, Allen County",
+    ]) {
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "place",
+          state: "IN",
+          officialBallotTitle: title,
+        })
+      ).toBe(true);
+    }
+
+    // The carve-out still has to survive a title that names no court level,
+    // which is why the county patterns stay broad rather than being narrowed
+    // to "circuit"/"superior".
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "county",
+        state: "IN",
+        officialBallotTitle: "Vanderburgh County Judge",
+      })
+    ).toBe(false);
+  });
+
   it("keeps the remaining partisan-judicial states forcing partisan", () => {
     // Audited 2026-08-08 against per-court-level ballot rules. These states
     // print the party at every level that reaches a ballot; where they do not

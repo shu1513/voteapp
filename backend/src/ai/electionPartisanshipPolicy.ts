@@ -72,6 +72,23 @@ const OHIO_PARTISAN_JUDICIAL_TITLE = /\b(?:supreme court|court of appeals?)\b/i;
 const INDIANA_NONPARTISAN_JUDICIAL_TITLE =
   /\bvanderburgh\b|\ballen\s+(?:county\s+)?superior\s+court\b|\bsuperior\s+court\b[^.]{0,24}\ballen\s+county\b/i;
 
+// The county exceptions above are county-WIDE patterns, and a city or town
+// court sits inside a county without being one of its courts. Indiana city and
+// town court judges are elected at the municipal election under IC 33-35-1-1
+// (via IC 3-10-6 / IC 3-10-7) with a party label, in every county — so a
+// Vanderburgh or Allen County municipal bench must NOT inherit the county's
+// nonpartisan rule. This rule is ordered ahead of that one to stop it.
+//
+// The alternative fix — narrowing the county patterns to name "circuit" and
+// "superior" — reintroduces exactly the failure the Ohio comment above
+// describes: a Vanderburgh title that names no court level ("VANDERBURGH
+// COUNTY JUDGE") would match nothing and fall through to the partisan
+// fallback, which is the wrong answer for the courts the statute covers.
+// Matching the county broadly and carving out the municipal bench keeps both
+// ends right. Redundant against the `partisan` fallback by design: its job is
+// to win the first-match race, so do not "simplify" it away.
+const INDIANA_PARTISAN_MUNICIPAL_COURT_TITLE = /\b(?:city|town)\s+court\b/i;
+
 const STATE_JUDICIAL_BALLOT_POLICY = new Map<string, StateJudicialBallotPolicy>([
   // Every court but the municipal bench (appointed) is elected with a party
   // label; Alabama runs no judicial retention elections at all.
@@ -93,7 +110,10 @@ const STATE_JUDICIAL_BALLOT_POLICY = new Map<string, StateJudicialBallotPolicy>(
   ["IL", { fallback: "partisan" }],
   ["IN", {
     fallback: "partisan",
-    titleRules: [{ pattern: INDIANA_NONPARTISAN_JUDICIAL_TITLE, mode: "nonpartisan" }],
+    titleRules: [
+      { pattern: INDIANA_PARTISAN_MUNICIPAL_COURT_TITLE, mode: "partisan" },
+      { pattern: INDIANA_NONPARTISAN_JUDICIAL_TITLE, mode: "nonpartisan" },
+    ],
   }],
   // 14 judicial districts elect district judges on the party ballot; the other
   // 17, plus the appellate courts, use merit selection and reach voters as
