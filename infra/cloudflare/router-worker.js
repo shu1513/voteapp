@@ -114,6 +114,49 @@ export function withSecurityHeaders(response, pathname = "") {
   return wrapped;
 }
 
+// ---------------------------------------------------------------- cache ----
+// Edge caching for public pages: the SSR loaders on these routes are
+// anonymous by design (personalization happens client-side after hydration
+// — see frontend/src/pages/CandidatePage.tsx), so their HTML is identical
+// for every visitor and safe to share from cache. The origin can't declare
+// this itself: react-router-serve serves prerendered HTML with max-age=0
+// and SSR responses with no Cache-Control at all, so the Worker owns the
+// policy via forced cf.cacheTtl on its fetch. Zone Cache Rules would not
+// help here — Workers run before the zone cache, and the subrequest goes to
+// the *.onrender.com host, which zone rules never match.
+//
+// Eligibility is deliberately narrow, all four conditions required:
+//   GET + SSR-bound + allowlisted path + no session cookie on the request.
+// The allowlist keeps /me/*, /picks/:token (token-authorized content),
+// auth/token pages, and the 404 catch-all out of cache — the last also
+// stops random-URL requests from filling the cache. The cookie gate means a
+// logged-in user's request is never even cache-eligible, so a response
+// generated for one can never be stored.
+export const SESSION_COOKIE_NAME = "voteapp_auth_session";
+export const EDGE_CACHE_TTL_SECONDS = 60;
+
+const CACHEABLE_EXACT_PATHS = new Set(["/", "/ballot", "/disclaimer", "/terms", "/privacy"]);
+const CACHEABLE_PATH_PREFIXES = ["/elections/", "/candidates/"];
+
+export function isCacheablePublicPage(pathname) {
+  // React Router matches case-insensitively and ignores trailing slashes
+  // (same normalization as referrerPolicyForPath). "/elections/" collapses
+  // to "/elections", which matches neither list — that's the 404 catch-all
+  // and stays uncached.
+  const normalized = pathname.toLowerCase().replace(/\/+$/, "") || "/";
+  if (CACHEABLE_EXACT_PATHS.has(normalized)) {
+    return true;
+  }
+  return CACHEABLE_PATH_PREFIXES.some((prefix) => normalized.startsWith(prefix) && normalized.length > prefix.length);
+}
+
+export function hasSessionCookie(cookieHeader) {
+  if (!cookieHeader) {
+    return false;
+  }
+  return new RegExp(`(?:^|;\\s*)${SESSION_COOKIE_NAME}=`).test(cookieHeader);
+}
+
 // RFC 1123 label: 1-63 chars, alphanumeric at both ends, alphanumeric or
 // hyphen inside. Deliberately stricter than the URL parser, which (with the
 // non-strict IDNA browsers use) happily accepts ".", "foo..bar",
@@ -176,7 +219,8 @@ export default {
       );
     }
 
-    const upstreamHost = isApiPath(url.pathname) ? apiHost : ssrHost;
+    const apiBound = isApiPath(url.pathname);
+    const upstreamHost = apiBound ? apiHost : ssrHost;
     // The Worker owns both the apex and its www variant; an origin equal to
     // either would send traffic back into hostnames this Worker serves (or
     // their placeholder DNS records) instead of a real upstream.
@@ -219,6 +263,29 @@ export default {
     const clientIp = request.headers.get("CF-Connecting-IP");
     if (clientIp) {
       upstreamRequest.headers.set(CLIENT_IP_HEADER, clientIp);
+    }
+    // Edge cache for public pages (see the cache section above). cacheTtl
+    // forces a 60s shared cache regardless of origin headers; within that
+    // window all identical anonymous requests are served from Cloudflare's
+    // edge without touching Render. The subrequest's CF-Cache-Status is
+    // copied to a custom header for verification, because the zone stamps
+    // its own cf-cache-status (always DYNAMIC for Worker responses) on the
+    // way out.
+    if (
+      request.method === "GET" &&
+      !apiBound &&
+      isCacheablePublicPage(url.pathname) &&
+      !hasSessionCookie(request.headers.get("Cookie"))
+    ) {
+      const upstreamResponse = await fetch(upstreamRequest, {
+        cf: { cacheEverything: true, cacheTtl: EDGE_CACHE_TTL_SECONDS },
+      });
+      const response = withSecurityHeaders(upstreamResponse, url.pathname);
+      const cacheStatus = upstreamResponse.headers.get("CF-Cache-Status");
+      if (cacheStatus) {
+        response.headers.set("X-Voteapp-Edge-Cache", cacheStatus);
+      }
+      return response;
     }
     return withSecurityHeaders(await fetch(upstreamRequest), url.pathname);
   },
