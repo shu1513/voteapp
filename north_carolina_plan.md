@@ -667,7 +667,47 @@ The acquisition spike is the gate before parser/aggregator work.
   parsed (no fixture) — if their summary grid deviates from the 34-section
   pin, those reports quarantine as `missing_official_total` until the parser
   learns the form.
-- [ ] PR 7 sync + batchSync + scripts
+- [x] PR 7 sync + batchSync + scripts + scheduler — 2026-08-08, cache-fed
+  (zero portal hits, decision 10 honored literally: the sync never fetches).
+  `northCarolinaCandidateFinanceSync.ts` (per-candidate write step, ohio
+  shape, taking aggregation RESULTS; enforces the PR 6 three-status contract —
+  `ok` and `honest_null` both write [the writer's preserve-when-null keeps
+  outside totals through an honest null], `incomplete_artifacts` THROWS so a
+  direct caller can never write suspect money; manual link provenance rides
+  through untouched; funders/industry enrichment deliberately absent until
+  PR 8). `northCarolinaCandidateFinanceBatchSync.ts` (due list via
+  `createStandardStateFinanceDueListQuery` with `link_source` in linkColumns +
+  mapRow; auto-link over `createNcsbeCachedCommitteeSearchLoader` — the
+  cached committee-search artifact keyed by the trimmed candidate name via
+  `northCarolinaCommitteeSearchQueryForCandidateName`, fail-closed when the
+  search was never cached; per-(year, committee) direct aggregation reading
+  inventory + cover + complete transaction page sets from cache, replaying
+  decision 9's completeness contract at read time [every page must agree on
+  recordCountKey and the reassembled row count must equal it]; the
+  incomplete_artifacts leg fails the item with per-report read failures in
+  the error and never calls the sync; outside aggregation once per year over
+  due rows + the year's full active-link universe [ohio's same-name-double
+  guard], with the whole year failing closed to "unavailable" — stored
+  outside totals preserved — when an IE inventory is uncached OR any
+  selected structured IE report has no readable artifacts [Ohio's stale-31-U
+  precedent: invisible money must not publish as a false zero]; portal-reason
+  quarantines (reconciliation mismatch, null IEAmount) stay diagnostics; the
+  decision-3 inverse-miss cross-check is wired here — IE-typed regular-report
+  rows with no aggregated IE-inventory report for that filer flag
+  `ieInverseMissSuspected` for the PR 9 audit). The sync needs NO OrgGroupID
+  (inventories are cached by SBoEID alone) — the PR 5 SBoEID→OGID derivation
+  note lands on the acquisition side, where the portal URL is built.
+  Scheduler: `northCarolinaCandidateFinanceSyncScheduler.ts` (ohio clone;
+  queue `north_carolina_candidate_finance_sync_maintenance`, daily cron
+  default `25 10 * * *` offset from Ohio's 09:55) + 4 scripts
+  (`sync-due`, `scheduler:upsert`, `scheduler:worker`, `scheduler:trigger`)
+  under `north-carolina-candidates:finance:*`. **Known gap, owed before
+  PR 9's live run**: the committed acquisition script still takes explicit
+  `--committee <SBoEID>:<OGID>` args and never fetches committee searches —
+  roster-driven discovery (search per roster candidate, committees from
+  active links, OGID derived from the cached searches) must be added to the
+  acquisition side, else auto-link has no cached searches to resolve against
+  and every committee must be typed by hand.
 - [ ] PR 8 outside-group funders/industries (#3)
 - [ ] PR 9 live run (+ later: PDF path, own flag)
 
