@@ -121,9 +121,19 @@ export function withSecurityHeaders(response, pathname = "") {
 // for every visitor and safe to share from cache. The origin can't declare
 // this itself: react-router-serve serves prerendered HTML with max-age=0
 // and SSR responses with no Cache-Control at all, so the Worker owns the
-// policy via forced cf.cacheTtlByStatus on its fetch. Zone Cache Rules would not
-// help here — Workers run before the zone cache, and the subrequest goes to
-// the *.onrender.com host, which zone rules never match.
+// policy. Mechanism notes, learned the hard way:
+//   - Zone Cache Rules never apply: Workers run before the zone cache, and
+//     the subrequest goes to the *.onrender.com host, which zone rules
+//     never match.
+//   - fetch cf options (cacheEverything/cacheTtlByStatus) are silently
+//     ignored here too: the *.onrender.com upstream sits on ANOTHER
+//     Cloudflare account's zone (Render's), and a Worker can only drive its
+//     own zone's cache — verified empirically 2026-08-07 (no CF-Cache-Status
+//     on subrequests, no latency change).
+//   - So the Worker uses the Cache API (caches.default) explicitly: match
+//     by public URL, store only status-200 cookie-free responses with
+//     s-maxage. Per-colo cache (each Cloudflare datacenter holds its own
+//     copy) — exactly what spike absorption needs.
 //
 // Eligibility is deliberately narrow, all four conditions required:
 //   GET + SSR-bound + allowlisted path + no session cookie on the request.
@@ -198,7 +208,7 @@ export function resolveUpstreamHost(raw) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     // The redirect reads no origin config — keep www working (301 to apex)
@@ -264,35 +274,48 @@ export default {
     if (clientIp) {
       upstreamRequest.headers.set(CLIENT_IP_HEADER, clientIp);
     }
-    // Edge cache for public pages (see the cache section above).
-    // cacheTtlByStatus forces a 60s shared cache for SUCCESSFUL responses
-    // regardless of origin headers; within that window all identical
-    // anonymous requests are served from Cloudflare's edge without touching
-    // Render. Non-2xx responses (unknown-id 404s, loader redirects, origin
-    // errors during a Render cold start) use a negative TTL, which per the
-    // Workers Request docs "instructs Cloudflare not to cache at all" — a
-    // transient failure can never become the shared response for a URL.
-    // Deliberately -1 and not 0: a TTL of 0 still stores the asset (as
-    // immediately expired). The subrequest's CF-Cache-Status is copied to a
-    // custom header for verification, because the zone stamps its own
-    // cf-cache-status (always DYNAMIC for Worker responses) on the way out.
+    // Edge cache for public pages (see the cache section above). Keyed by
+    // the PUBLIC url (request.url, query included), never the upstream one,
+    // so a service recreation that changes the onrender.com hostname can't
+    // orphan or split cache entries. Only exact status 200 is stored:
+    // unknown-id 404s, loader redirects, and origin errors during a Render
+    // cold start must never become the shared response for a URL, and
+    // cache.put throws on 206. A Set-Cookie response is never stored (none
+    // is expected from SSR — belt and braces). The stored copy's
+    // s-maxage=60 gives the shared cache its TTL while max-age=0 keeps
+    // browsers revalidating; X-Voteapp-Edge-Cache: HIT/MISS is stamped for
+    // verification (the zone's own cf-cache-status always reads DYNAMIC for
+    // Worker responses). Served stale worst case: 60s — fine for pages that
+    // change via research imports, not user actions.
     if (
       request.method === "GET" &&
       !apiBound &&
       isCacheablePublicPage(url.pathname) &&
       !hasSessionCookie(request.headers.get("Cookie"))
     ) {
-      const upstreamResponse = await fetch(upstreamRequest, {
-        cf: {
-          cacheEverything: true,
-          cacheTtlByStatus: { "200-299": EDGE_CACHE_TTL_SECONDS, "300-599": -1 },
-        },
-      });
-      const response = withSecurityHeaders(upstreamResponse, url.pathname);
-      const cacheStatus = upstreamResponse.headers.get("CF-Cache-Status");
-      if (cacheStatus) {
-        response.headers.set("X-Voteapp-Edge-Cache", cacheStatus);
+      const cache = caches.default;
+      const cached = await cache.match(request.url);
+      if (cached) {
+        const response = withSecurityHeaders(cached, url.pathname);
+        response.headers.set("X-Voteapp-Edge-Cache", "HIT");
+        return response;
       }
+      const upstreamResponse = await fetch(upstreamRequest);
+      if (upstreamResponse.status === 200 && !upstreamResponse.headers.has("Set-Cookie")) {
+        const copy = upstreamResponse.clone();
+        const stored = new Response(copy.body, copy);
+        stored.headers.set("Cache-Control", `public, max-age=0, s-maxage=${EDGE_CACHE_TTL_SECONDS}`);
+        // A failed put (e.g. a Vary: * response) must never break serving;
+        // the next request just misses again.
+        const storing = cache.put(request.url, stored).catch(() => {});
+        if (ctx?.waitUntil) {
+          ctx.waitUntil(storing);
+        } else {
+          await storing;
+        }
+      }
+      const response = withSecurityHeaders(upstreamResponse, url.pathname);
+      response.headers.set("X-Voteapp-Edge-Cache", "MISS");
       return response;
     }
     return withSecurityHeaders(await fetch(upstreamRequest), url.pathname);
