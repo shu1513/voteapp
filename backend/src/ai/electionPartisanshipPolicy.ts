@@ -30,6 +30,29 @@ const PARTISAN_JUDICIAL_STATES = new Set([
   "TX",
 ]);
 
+// A state can be nonpartisan for the bench as a whole and still run one
+// judicial office on the party ballot. Arizona is the live case: the Justice of
+// the Peace is a precinct office printed in section one of the general ballot
+// with the party in bold-faced letters (A.R.S. § 16-502(C)(5)), so those
+// contests are partisan even though every other elected Arizona judge is
+// printed "without partisan or other designation" — Superior Court judges in
+// the counties that elect rather than retain them are nonpartisan on the
+// general ballot by constitutional command (Ariz. Const. art. 6 § 12(A)) and
+// sit in section two with the appellate courts (A.R.S. § 16-502(J)), whatever
+// party nominated them in the primary.
+const PARTISAN_JUDICIAL_TITLE_EXCEPTIONS = new Map<string, RegExp>([
+  ["AZ", /\bjustice of the peace\b/i],
+]);
+
+function isPartisanJudicialContest(input: { state: string; officialBallotTitle: string }): boolean {
+  const state = normalizeState(input.state);
+  const partisanTitle = PARTISAN_JUDICIAL_TITLE_EXCEPTIONS.get(state);
+  if (partisanTitle?.test(input.officialBallotTitle)) {
+    return true;
+  }
+  return PARTISAN_JUDICIAL_STATES.has(state);
+}
+
 function isWashingtonStateLegislativeContest(input: {
   districtType: string;
   state: string;
@@ -57,7 +80,17 @@ function getSchoolPartisanshipMode(state: string): SchoolPartisanshipMode {
   return "nonpartisan";
 }
 
+// A court clerk keeps the case files; they do not judge. The office catalog
+// resolves "Clerk of Superior Court" and friends to the non-judicial county
+// office "Clerk of Court", but the bare "superior court" token below swallowed
+// them and handed the whole office to judicial policy (live 2026-08-08: Yuma
+// County's partisan Clerk of Superior Court contest was rejected as a judge).
+const COURT_CLERK_TITLE_PATTERN = /\bclerks?\b/i;
+
 export function isJudicialOfficeTitle(title: string): boolean {
+  if (COURT_CLERK_TITLE_PATTERN.test(title)) {
+    return false;
+  }
   return /\b(judge|justice|judicial|superior court|court of appeal(s)?|supreme court|retention|magistrate)\b/i.test(
     title
   );
@@ -119,7 +152,10 @@ function getPartisanshipModeForContest(args: {
     if (isJudicialRetentionTitle(args.officialBallotTitle)) {
       return "force_false";
     }
-    return PARTISAN_JUDICIAL_STATES.has(normalizeState(args.draft.state))
+    return isPartisanJudicialContest({
+      state: args.draft.state,
+      officialBallotTitle: args.officialBallotTitle,
+    })
       ? "force_true"
       : "force_false";
   }
@@ -151,7 +187,7 @@ function getPartisanshipModeForOfficeScope(input: {
     if (isJudicialRetentionTitle(input.officialBallotTitle)) {
       return "force_false";
     }
-    return PARTISAN_JUDICIAL_STATES.has(normalizeState(input.state)) ? "force_true" : "force_false";
+    return isPartisanJudicialContest(input) ? "force_true" : "force_false";
   }
 
   return "ask_ai";
