@@ -351,7 +351,12 @@ describe("buildResultChipParts", () => {
       new Set(["c-1"])
     );
     // The id-matched winner is nameless (dropped), and the named winner has
-    // no id — neither can claim the marker.
+    // no id — neither can claim the marker. Deliberate, not an oversight:
+    // the marker renders inline after its winner's name, so a nameless
+    // winner gives it no anchor — and the id-with-no-name shape is
+    // unproducible anyway (the result matcher's toMatchedWinner backfills
+    // the roster display name in the same assignment that sets
+    // candidate_id). See the myPickMarker comment in buildResultChipParts.
     expect(parts.winners).toEqual([{ label: "Jocelyn Benson", isMyPick: false }]);
     expect(parts.myPickMarker).toBe(null);
   });

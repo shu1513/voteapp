@@ -174,6 +174,14 @@ export function buildResultChipParts(
     winners: named,
     // "won" claims the seat; "advanced" and "runoff" only move the pick to
     // the next round, so both read "advanced".
+    //
+    // Derived from the NAMED winners, not the raw list, deliberately: the
+    // marker renders inline after the matched winner's name, so a nameless
+    // winner gives it no anchor. The id-with-no-name shape is also
+    // unproducible — candidate_id is only ever written by the result
+    // matcher's toMatchedWinner, which backfills the roster display name in
+    // the same assignment — and if it ever appeared anyway, skipping the
+    // personal claim is the conservative failure mode used throughout.
     myPickMarker: named.some((winner) => winner.isMyPick)
       ? outcome === "won"
         ? "My pick won ✓"
