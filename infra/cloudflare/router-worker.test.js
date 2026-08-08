@@ -265,6 +265,10 @@ describe("isCacheablePublicPage", () => {
     "/elections/",
     "/candidates",
     "/anything-else",
+    // Nested paths under the detail routes are also the 404 catch-all: the
+    // declared routes are exactly /elections/:id and /candidates/:id.
+    "/elections/x/junk",
+    "/candidates/x/settings",
   ];
   for (const path of uncacheable) {
     it(`does not cache ${path}`, () => {
@@ -289,7 +293,13 @@ describe("hasSessionCookie", () => {
 });
 
 describe("edge cache", () => {
-  const CACHE_CF = { cacheEverything: true, cacheTtl: EDGE_CACHE_TTL_SECONDS };
+  // Only successful responses are cached; a negative TTL means "not cached
+  // at all" (unlike 0, which stores the asset as immediately expired), so a
+  // transient 404/redirect/5xx never becomes the shared response for a URL.
+  const CACHE_CF = {
+    cacheEverything: true,
+    cacheTtlByStatus: { "200-299": EDGE_CACHE_TTL_SECONDS, "300-599": -1 },
+  };
 
   it("fetches eligible anonymous page requests with forced cache options", async () => {
     const calls = stubFetchRecordingInit();

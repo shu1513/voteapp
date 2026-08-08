@@ -121,7 +121,7 @@ export function withSecurityHeaders(response, pathname = "") {
 // for every visitor and safe to share from cache. The origin can't declare
 // this itself: react-router-serve serves prerendered HTML with max-age=0
 // and SSR responses with no Cache-Control at all, so the Worker owns the
-// policy via forced cf.cacheTtl on its fetch. Zone Cache Rules would not
+// policy via forced cf.cacheTtlByStatus on its fetch. Zone Cache Rules would not
 // help here — Workers run before the zone cache, and the subrequest goes to
 // the *.onrender.com host, which zone rules never match.
 //
@@ -136,7 +136,10 @@ export const SESSION_COOKIE_NAME = "voteapp_auth_session";
 export const EDGE_CACHE_TTL_SECONDS = 60;
 
 const CACHEABLE_EXACT_PATHS = new Set(["/", "/ballot", "/disclaimer", "/terms", "/privacy"]);
-const CACHEABLE_PATH_PREFIXES = ["/elections/", "/candidates/"];
+// Exactly one path segment, mirroring the declared routes /elections/:id and
+// /candidates/:id (frontend/src/routes.ts). Nested paths like
+// /elections/x/junk render the 404 catch-all and must stay cache-ineligible.
+const CACHEABLE_DETAIL_PATH = /^\/(?:elections|candidates)\/[^/]+$/;
 
 export function isCacheablePublicPage(pathname) {
   // React Router matches case-insensitively and ignores trailing slashes
@@ -144,10 +147,7 @@ export function isCacheablePublicPage(pathname) {
   // to "/elections", which matches neither list — that's the 404 catch-all
   // and stays uncached.
   const normalized = pathname.toLowerCase().replace(/\/+$/, "") || "/";
-  if (CACHEABLE_EXACT_PATHS.has(normalized)) {
-    return true;
-  }
-  return CACHEABLE_PATH_PREFIXES.some((prefix) => normalized.startsWith(prefix) && normalized.length > prefix.length);
+  return CACHEABLE_EXACT_PATHS.has(normalized) || CACHEABLE_DETAIL_PATH.test(normalized);
 }
 
 export function hasSessionCookie(cookieHeader) {
@@ -264,13 +264,18 @@ export default {
     if (clientIp) {
       upstreamRequest.headers.set(CLIENT_IP_HEADER, clientIp);
     }
-    // Edge cache for public pages (see the cache section above). cacheTtl
-    // forces a 60s shared cache regardless of origin headers; within that
-    // window all identical anonymous requests are served from Cloudflare's
-    // edge without touching Render. The subrequest's CF-Cache-Status is
-    // copied to a custom header for verification, because the zone stamps
-    // its own cf-cache-status (always DYNAMIC for Worker responses) on the
-    // way out.
+    // Edge cache for public pages (see the cache section above).
+    // cacheTtlByStatus forces a 60s shared cache for SUCCESSFUL responses
+    // regardless of origin headers; within that window all identical
+    // anonymous requests are served from Cloudflare's edge without touching
+    // Render. Non-2xx responses (unknown-id 404s, loader redirects, origin
+    // errors during a Render cold start) use a negative TTL, which per the
+    // Workers Request docs "instructs Cloudflare not to cache at all" — a
+    // transient failure can never become the shared response for a URL.
+    // Deliberately -1 and not 0: a TTL of 0 still stores the asset (as
+    // immediately expired). The subrequest's CF-Cache-Status is copied to a
+    // custom header for verification, because the zone stamps its own
+    // cf-cache-status (always DYNAMIC for Worker responses) on the way out.
     if (
       request.method === "GET" &&
       !apiBound &&
@@ -278,7 +283,10 @@ export default {
       !hasSessionCookie(request.headers.get("Cookie"))
     ) {
       const upstreamResponse = await fetch(upstreamRequest, {
-        cf: { cacheEverything: true, cacheTtl: EDGE_CACHE_TTL_SECONDS },
+        cf: {
+          cacheEverything: true,
+          cacheTtlByStatus: { "200-299": EDGE_CACHE_TTL_SECONDS, "300-599": -1 },
+        },
       });
       const response = withSecurityHeaders(upstreamResponse, url.pathname);
       const cacheStatus = upstreamResponse.headers.get("CF-Cache-Status");
