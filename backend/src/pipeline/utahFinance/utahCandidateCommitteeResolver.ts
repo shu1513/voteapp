@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   buildUtahAdvancedSearchUrl,
   fetchUtahEntityReportListHtml,
@@ -214,6 +215,7 @@ function candidateNameNormalized(value: string): string {
 
 function entityNameMatchesCandidate(input: {
   entityName: string;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   const entityKey = normalizeTextKey(input.entityName);
@@ -221,13 +223,26 @@ function entityNameMatchesCandidate(input: {
     return false;
   }
   const entityTokens = new Set(entityKey.split(" ").filter(Boolean));
+  let keyMatched = false;
   for (const key of input.candidateNameKeys) {
     const candidateTokens = key.split(" ").filter(Boolean);
     if (candidateTokens.length >= 2 && candidateTokens.every((token) => entityTokens.has(token))) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Token containment collapses names to first+last, so folder "Doe, Jane Q."
+  // would match candidate "Jane R. Doe" as an "exact" committee whenever the
+  // folder title's office, district, and year agree. A contradicting middle
+  // name rejects the folder.
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [input.entityName],
+    normalizePersonName,
+  });
 }
 
 function rowMatchesElectionYear(row: UtahDisclosuresEntitySearchRow, electionYear: number): boolean {
@@ -329,7 +344,13 @@ export function resolveUtahCandidateCommittee(
     if (!rowMatchesOfficeAndDistrict({ row, officeName: input.officeName, district: input.district })) {
       continue;
     }
-    if (!entityNameMatchesCandidate({ entityName: committeeName, candidateNameKeys })) {
+    if (
+      !entityNameMatchesCandidate({
+        entityName: committeeName,
+        candidateName: input.candidateName,
+        candidateNameKeys,
+      })
+    ) {
       continue;
     }
 

@@ -1,4 +1,5 @@
 import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { ConnecticutEcrisArtifactRow } from "./connecticutEcrisArtifactReader.js";
 import {
   mapConnecticutEcrisOffice,
@@ -155,14 +156,33 @@ function candidateNameFromReceiptRow(row: ConnecticutEcrisArtifactRow): string {
 
 function rowMatchesCandidateName(input: {
   row: ConnecticutEcrisArtifactRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
-  for (const key of normalizeConnecticutCandidateNameKeys(candidateNameFromReceiptRow(input.row))) {
+  const rowName = candidateNameFromReceiptRow(input.row);
+  let keyMatched = false;
+  for (const key of normalizeConnecticutCandidateNameKeys(rowName)) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, which would link
+  // "John A. Smith" to a row carrying middle initial "B" as an "exact" match
+  // whenever office, district, and year agree. The eCRIS middle-initial
+  // column is exactly the contradicting evidence, so it rejects the row.
+  // Nickname expansion is one-sided, so the first-name comparison expands the
+  // VoteApp side only.
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [rowName],
+    normalizePersonName,
+    firstNamesEquivalent: (candidateFirst, rowFirst) =>
+      candidateFirst === rowFirst || firstNameVariants(candidateFirst).includes(rowFirst),
+  });
 }
 
 function normalizeDistrict(value: string | null | undefined): string {
@@ -317,7 +337,7 @@ export function resolveConnecticutCandidateCommittee(
     if (!rowMatchesOffice({ row, expectedOfficeCanonicalName, expectedDistrict })) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

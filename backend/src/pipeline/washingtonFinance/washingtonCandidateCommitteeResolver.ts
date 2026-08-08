@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   searchWashingtonPdcCandidateSummaries,
   type WashingtonPdcCandidateSummary,
@@ -142,14 +143,29 @@ function candidateNameNormalized(value: string): string {
 
 function candidateSummaryMatchesName(input: {
   summary: WashingtonPdcCandidateSummary;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
+  let keyMatched = false;
   for (const key of normalizeWashingtonCandidateNameKeys(input.summary.filerName)) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, so filer "Robert B. Ferguson"
+  // would match candidate "Robert W. Ferguson" as an "exact" committee
+  // whenever office, district, and year agree. A contradicting middle name
+  // rejects the summary; parenthetical public names ("(Bob Ferguson)") are
+  // parsed as their own variant, so a nickname alias still corroborates.
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [input.summary.filerName],
+    normalizePersonName,
+  });
 }
 
 function statusText(value: string | undefined): string {
@@ -284,7 +300,7 @@ export function resolveWashingtonCandidateCommittee(
     ) {
       continue;
     }
-    if (!candidateSummaryMatchesName({ summary, candidateNameKeys })) {
+    if (!candidateSummaryMatchesName({ summary, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

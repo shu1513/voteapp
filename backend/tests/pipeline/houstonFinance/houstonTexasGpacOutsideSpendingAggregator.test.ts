@@ -46,6 +46,75 @@ describe("Houston Texas GPAC outside spending", () => {
     expect(result.summary?.opposeTotal).toBe(50000);
   });
 
+  it("rejects a purpose relation whose middle name contradicts the candidate", () => {
+    // Same office, city, and year — before the middle gate, the first+last key
+    // collapse attributed the other John Whitmire's spending to the candidate.
+    // The candidate rows are deliberately clean so ONLY the purpose-relation
+    // gate excludes the $9,000: a regression there cannot hide behind the
+    // candidate-row gate.
+    const result = aggregateHoustonTexasGpacOutsideSpending({
+      candidateName: "John A. Whitmire",
+      electionYear: 2023,
+      purposeRows: [
+        purpose({ filerIdent: "100", filerTypeCd: "GPAC", reportInfoIdent: "10", subjectCategoryCd: "CANDIDATE", subjectPositionCd: "SUPPORT", commActivityName: "Whitmire, John B.", activitySeekOfficeDescr: "Mayor", activitySeekOfficePlace: "Houston" }),
+        purpose({ filerIdent: "200", filerTypeCd: "GPAC", reportInfoIdent: "20", subjectCategoryCd: "CANDIDATE", subjectPositionCd: "SUPPORT", commActivityName: "Whitmire, John", activitySeekOfficeDescr: "Mayor", activitySeekOfficePlace: "Houston" }),
+      ],
+      candidateRows: [
+        candidate({ filerIdent: "100", filerName: "Rival Group", reportInfoIdent: "10", expendInfoId: "1", candidateNameFirst: "John", candidateNameLast: "Whitmire", candidateSeekOfficeDescr: "Mayor", candidateSeekOfficePlace: "Houston" }),
+        candidate({ filerIdent: "200", filerName: "Fallback Group", reportInfoIdent: "20", expendInfoId: "2", candidateNameFirst: "John", candidateNameLast: "Whitmire", candidateSeekOfficeDescr: "Mayor", candidateSeekOfficePlace: "Houston" }),
+      ],
+      expenditureRows: [
+        expenditure({ filerIdent: "100", expendInfoId: "1", expendDt: "20231001", expendAmount: "900000" }),
+        expenditure({ filerIdent: "200", expendInfoId: "2", expendDt: "20231002", expendAmount: "100" }),
+      ],
+    });
+    expect(result.summary?.groups).toHaveLength(1);
+    expect(result.summary?.groups[0]?.committeeName).toBe("Fallback Group");
+    expect(result.summary?.supportTotal).toBe(100);
+  });
+
+  it("rejects a candidate row whose middle name contradicts the candidate", () => {
+    // Mirror case: the purpose relations are clean, so ONLY the candidate-row
+    // gate excludes the $9,000.
+    const result = aggregateHoustonTexasGpacOutsideSpending({
+      candidateName: "John A. Whitmire",
+      electionYear: 2023,
+      purposeRows: [
+        purpose({ filerIdent: "100", filerTypeCd: "GPAC", reportInfoIdent: "10", subjectCategoryCd: "CANDIDATE", subjectPositionCd: "SUPPORT", commActivityName: "Whitmire, John", activitySeekOfficeDescr: "Mayor", activitySeekOfficePlace: "Houston" }),
+        purpose({ filerIdent: "200", filerTypeCd: "GPAC", reportInfoIdent: "20", subjectCategoryCd: "CANDIDATE", subjectPositionCd: "SUPPORT", commActivityName: "Whitmire, John", activitySeekOfficeDescr: "Mayor", activitySeekOfficePlace: "Houston" }),
+      ],
+      candidateRows: [
+        candidate({ filerIdent: "100", filerName: "Rival Group", reportInfoIdent: "10", expendInfoId: "1", candidateNameFirst: "John B.", candidateNameLast: "Whitmire", candidateSeekOfficeDescr: "Mayor", candidateSeekOfficePlace: "Houston" }),
+        candidate({ filerIdent: "200", filerName: "Fallback Group", reportInfoIdent: "20", expendInfoId: "2", candidateNameFirst: "John", candidateNameLast: "Whitmire", candidateSeekOfficeDescr: "Mayor", candidateSeekOfficePlace: "Houston" }),
+      ],
+      expenditureRows: [
+        expenditure({ filerIdent: "100", expendInfoId: "1", expendDt: "20231001", expendAmount: "900000" }),
+        expenditure({ filerIdent: "200", expendInfoId: "2", expendDt: "20231002", expendAmount: "100" }),
+      ],
+    });
+    expect(result.summary?.groups).toHaveLength(1);
+    expect(result.summary?.groups[0]?.committeeName).toBe("Fallback Group");
+    expect(result.summary?.supportTotal).toBe(100);
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    const result = aggregateHoustonTexasGpacOutsideSpending({
+      candidateName: "John A. Whitmire",
+      electionYear: 2023,
+      purposeRows: [
+        purpose({ filerIdent: "100", filerTypeCd: "GPAC", reportInfoIdent: "10", subjectCategoryCd: "CANDIDATE", subjectPositionCd: "SUPPORT", commActivityName: "Whitmire, John Andrew", activitySeekOfficeDescr: "Mayor", activitySeekOfficePlace: "Houston" }),
+      ],
+      candidateRows: [
+        candidate({ filerIdent: "100", filerName: "Corroborated Group", reportInfoIdent: "10", expendInfoId: "1", candidateNameFirst: "John Andrew", candidateNameLast: "Whitmire", candidateSeekOfficeDescr: "Mayor", candidateSeekOfficePlace: "Houston" }),
+      ],
+      expenditureRows: [
+        expenditure({ filerIdent: "100", expendInfoId: "1", expendDt: "20231001", expendAmount: "250" }),
+      ],
+    });
+    expect(result.summary?.groups).toHaveLength(1);
+    expect(result.summary?.supportTotal).toBe(250);
+  });
+
   it("skips blank or conflicting report direction", () => {
     const result = aggregateHoustonTexasGpacOutsideSpending({
       candidateName: "John Whitmire", electionYear: 2023,

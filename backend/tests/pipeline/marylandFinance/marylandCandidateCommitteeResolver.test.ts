@@ -141,6 +141,80 @@ describe("marylandCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a same-race committee whose middle name contradicts the candidate", () => {
+    // Same office and election year — only the middle evidence differs.
+    // Without the middle gate this committee linked as an "exact" match and
+    // attached the other Justin Gallucci's finance records.
+    expect(
+      resolveMarylandCandidateCommittee({
+        candidateName: "Justin L. Gallucci",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committeeRows: [
+          committee({
+            "Office Sought": "Governor",
+            "Candidate Middle Name": "M.",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveMarylandCandidateCommittee({
+        candidateName: "Justin L. Gallucci",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committeeRows: [
+          committee({
+            "Office Sought": "Governor",
+            "Candidate Middle Name": "Lee",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "16018290" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveMarylandCandidateCommittee({
+        candidateName: "Justin Gallucci",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committeeRows: [
+          committee({
+            "Office Sought": "Governor",
+            "Candidate Middle Name": "M.",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "16018290" });
+  });
+
+  it("lets a middle conflict veto a committee-name match on the same row", () => {
+    // The committee name carries the middle-less "Friends of Justin Gallucci"
+    // alias, but the row's own candidate fields name a different person.
+    expect(
+      resolveMarylandCandidateCommittee({
+        candidateName: "Justin L. Gallucci",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committeeRows: [
+          committee({
+            "Office Sought": "Governor",
+            "Committee Name": "Friends of Justin Gallucci",
+            "Candidate Middle Name": "M.",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("treats public financing committees with candidate fields as candidate committees", () => {
     expect(
       resolveMarylandCandidateCommittee({

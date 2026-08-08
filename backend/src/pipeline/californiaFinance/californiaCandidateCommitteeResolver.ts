@@ -1,3 +1,5 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
+
 export type CalAccessCampaignCoverRow = Record<string, string | null | undefined>;
 export type CalAccessFilerNameRow = Record<string, string | null | undefined>;
 
@@ -128,16 +130,34 @@ function candidateNameFromCoverRow(row: CalAccessCampaignCoverRow): string {
     .join(" ");
 }
 
-function candidateMatches(inputKeys: Set<string>, row: CalAccessCampaignCoverRow): boolean {
-  if (inputKeys.size === 0) {
+function candidateMatches(input: {
+  candidateName: string;
+  candidateNameKeys: Set<string>;
+  row: CalAccessCampaignCoverRow;
+}): boolean {
+  if (input.candidateNameKeys.size === 0) {
     return false;
   }
-  for (const key of nameKeysFromDisplayName(candidateNameFromCoverRow(row))) {
-    if (inputKeys.has(key)) {
-      return true;
+  const rowCandidateName = candidateNameFromCoverRow(input.row);
+  let keyMatched = false;
+  for (const key of nameKeysFromDisplayName(rowCandidateName)) {
+    if (input.candidateNameKeys.has(key)) {
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, which would link
+  // "John A. Smith" to a cover row naming "John B. Smith" as an "exact" match
+  // whenever the office and election date agree. A contradicting middle name
+  // rejects the row (georgia pattern).
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [rowCandidateName],
+    normalizePersonName,
+  });
 }
 
 function officeKeysFromName(input: string): Set<string> {
@@ -295,7 +315,7 @@ export function resolveCaliforniaCandidateCommittee(
   const rowsByCommittee = new Map<string, CalAccessCampaignCoverRow[]>();
 
   for (const row of input.campaignCoverRows) {
-    if (!candidateMatches(candidateNameKeys, row)) {
+    if (!candidateMatches({ candidateName, candidateNameKeys, row })) {
       continue;
     }
     if (!officeMatches(officeKeys, row)) {

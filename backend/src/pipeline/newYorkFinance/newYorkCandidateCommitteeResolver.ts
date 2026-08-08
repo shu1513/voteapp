@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   searchNewYorkActiveAuthorizedCommitteeFilers,
   searchNewYorkActiveCandidateFilers,
@@ -148,10 +149,22 @@ export function newYorkCandidateFirstLastName(value: string): { firstName: strin
   return null;
 }
 
-function filerNameMatchesCandidate(filerName: string, candidateNameKeys: ReadonlySet<string>): boolean {
+// Shared middle-name evidence gate: the key set collapses names to first+last,
+// which would treat "Kathy C. Hochul" and "HOCHUL, KATHY B." as the same
+// registered filer whenever office and district agree. A contradicting middle
+// name rejects the pair.
+export function newYorkCandidateNameMiddleConflict(candidateName: string, rowName: string): boolean {
+  return hasMiddleNameConflict({ candidateName, rowNames: [rowName], normalizePersonName });
+}
+
+function filerNameMatchesCandidate(
+  filerName: string,
+  candidateName: string,
+  candidateNameKeys: ReadonlySet<string>
+): boolean {
   for (const key of normalizeNewYorkCandidateNameKeys(filerName)) {
     if (candidateNameKeys.has(key)) {
-      return true;
+      return !newYorkCandidateNameMiddleConflict(candidateName, filerName);
     }
   }
   return false;
@@ -199,7 +212,7 @@ export function resolveNewYorkCandidateCommittee(
   }
 
   const registeredCandidates = input.candidateFilers.filter((filer) =>
-    filerNameMatchesCandidate(filer.filerName, candidateNameKeys)
+    filerNameMatchesCandidate(filer.filerName, input.candidateName, candidateNameKeys)
   );
   if (registeredCandidates.length === 0) {
     return {

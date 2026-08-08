@@ -44,6 +44,59 @@ describe("pennsylvaniaCandidateCommitteeResolver", () => {
     expect([...normalizePennsylvaniaCandidateNameKeys("Jane E. Doe")]).toEqual(["JANE E DOE", "JANE DOE"]);
   });
 
+  it("rejects a same-race filer whose middle name contradicts the candidate", () => {
+    // Same office and year — only the middle evidence differs. Without the
+    // middle gate this filer linked as an "exact" match and attached the other
+    // John Smith's finance records.
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filerRow({ FILERID: "55555", FILERNAME: "SMITH, JOHN B." })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filerRow({ FILERID: "55555", FILERNAME: "SMITH, JOHN ANDREW" })],
+      })
+    ).toMatchObject({ status: "matched", filerId: "55555" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "John Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filerRow({ FILERID: "55555", FILERNAME: "SMITH, JOHN B." })],
+      })
+    ).toMatchObject({ status: "matched", filerId: "55555" });
+  });
+
+  it("leaves the committee-name match path untouched", () => {
+    // "FRIENDS OF ..." matches on the committee key, which never aligns on
+    // first+last, so the middle gate has no evidence and cannot veto it.
+    expect(
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filerRow({ FILERID: "55555", FILERNAME: "FRIENDS OF JOHN SMITH" })],
+      })
+    ).toMatchObject({ status: "matched", filerId: "55555" });
+  });
+
   it("matches exactly one Pennsylvania candidate filer by office and filer name", () => {
     expect(
       resolvePennsylvaniaCandidateCommittee({

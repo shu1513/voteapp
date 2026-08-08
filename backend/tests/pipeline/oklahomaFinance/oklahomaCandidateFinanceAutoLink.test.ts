@@ -252,6 +252,45 @@ describe("oklahomaCandidateFinanceAutoLink", () => {
     expect(db.query.mock.calls[0]?.[1]).toEqual(expect.arrayContaining(["11813"]));
   });
 
+  it("drops a candidate-detail page whose middle name contradicts the candidate", async () => {
+    // Both committees pass office, district, and cycle; only the middle
+    // evidence separates them. Without the middle gate the disambiguator saw
+    // two equally good matches and stayed ambiguous.
+    const db = createMockDb([{ id: "link-1" }]);
+    const fetchCandidateDetail = vi.fn(async ({ organizationId }: { organizationId: string }) =>
+      candidateDetail(organizationId, {
+        candidateName: organizationId === "11954" ? "BRENT ROBERT DISHMAN" : "BRENT ALAN DISHMAN",
+      })
+    );
+
+    await expect(
+      autoLinkOklahomaCandidateFinanceForCandidateElection({
+        db,
+        now: NOW,
+        sourceUrl: "https://guardian.ok.gov/PublicSite/DataDownload.aspx",
+        contributionRows: [
+          contribution({ "Candidate Name": "Brent Dishman" }),
+          contribution({ "Org ID": "99999", "Candidate Name": "Brent Dishman" }),
+        ],
+        candidateElection: {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          candidateName: "Brent A. Dishman",
+          electionYear: 2026,
+          officeScope: "state_upper",
+          officeName: "State Senator",
+          district: "47",
+        },
+        fetchCandidateDetail,
+      })
+    ).resolves.toEqual({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      status: "linked",
+      committeeId: "99999",
+    });
+  });
+
   it("preserves ambiguity when candidate-detail lookup fails", async () => {
     const db = createMockDb();
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);

@@ -168,6 +168,37 @@ describe("aggregateNewYorkOutsideSpending", () => {
     ]);
     expect(result).toMatchObject({ supportTotal: 100, opposeTotal: 25 });
   });
+
+  it("rejects an allocation whose middle name contradicts the candidate", () => {
+    // Without the middle gate the first+last key credited another Kathy
+    // Hochul's Schedule R allocations to this candidate.
+    const result = aggregateNewYorkOutsideSpending({
+      candidateName: "Kathy A. Hochul",
+      allocations: [allocation({ candidateMiddleName: "C" })],
+      filerRecords: new Map([["590891", CFAR]]),
+      parentExpendituresByFiler: new Map([["590891", parents({ "M-1": [F_PARENT] })]]),
+    });
+    expect(result.groups).toEqual([]);
+    expect(result.counters).toMatchObject({ nameMatchedRowCount: 0 });
+  });
+
+  it("accepts a corroborating initial and keeps the first+last fallback", () => {
+    const corroborated = aggregateNewYorkOutsideSpending({
+      candidateName: "Kathy C. Hochul",
+      allocations: [allocation({ candidateMiddleName: "Christine" })],
+      filerRecords: new Map([["590891", CFAR]]),
+      parentExpendituresByFiler: new Map([["590891", parents({ "M-1": [F_PARENT] })]]),
+    });
+    expect(corroborated.counters).toMatchObject({ nameMatchedRowCount: 1, acceptedRowCount: 1 });
+
+    const fallback = aggregateNewYorkOutsideSpending({
+      candidateName: "Kathy Hochul",
+      allocations: [allocation({ candidateMiddleName: "C" })],
+      filerRecords: new Map([["590891", CFAR]]),
+      parentExpendituresByFiler: new Map([["590891", parents({ "M-1": [F_PARENT] })]]),
+    });
+    expect(fallback.counters).toMatchObject({ nameMatchedRowCount: 1, acceptedRowCount: 1 });
+  });
 });
 
 describe("collectNewYorkOutsideSpending", () => {

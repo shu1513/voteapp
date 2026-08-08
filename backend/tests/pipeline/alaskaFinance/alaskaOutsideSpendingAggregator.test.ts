@@ -283,6 +283,44 @@ describe("alaskaOutsideSpendingAggregator", () => {
     ]);
   });
 
+  it("rejects an IE row whose named candidate carries a contradicting middle name", () => {
+    // The reversed key "DOE JANE" matches "Doe, Jane B" contiguously, so
+    // without middle-name evidence another Jane Doe's IE money lands here.
+    const rows = [
+      expenditure({
+        candidateProposition: "Doe, Jane B",
+        description: "Mailers supporting Doe, Jane B",
+        amount: 25_000,
+      }),
+    ];
+
+    expect(
+      aggregateAlaskaOutsideSpending({
+        candidateName: "Jane A. Doe",
+        electionYear: 2026,
+        expenditureRows: rows,
+      })
+    ).toMatchObject({ summary: null, matchedExpenditureRowCount: 0 });
+
+    // A candidate with no middle of its own still falls back to first+last.
+    expect(
+      aggregateAlaskaOutsideSpending({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        expenditureRows: rows,
+      }).summary?.supportTotal
+    ).toBe(25000);
+
+    // An initial corroborating the full middle keeps matching.
+    expect(
+      aggregateAlaskaOutsideSpending({
+        candidateName: "Jane A. Doe",
+        electionYear: 2026,
+        expenditureRows: [expenditure({ candidateProposition: "Doe, Jane Ann", amount: 25_000 })],
+      }).summary?.supportTotal
+    ).toBe(25000);
+  });
+
   it("maps APOC position text to support or oppose", () => {
     expect(supportOpposeFromAlaskaApocPosition("Support")).toBe("support");
     expect(supportOpposeFromAlaskaApocPosition("Supports")).toBe("support");

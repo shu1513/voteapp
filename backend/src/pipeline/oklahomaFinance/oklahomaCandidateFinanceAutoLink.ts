@@ -4,6 +4,7 @@ import {
   canonicalOklahomaCandidateOfficeName,
   normalizeOklahomaCandidateDistrict,
   normalizeOklahomaCandidateNameKeys,
+  oklahomaCandidateNameMiddleConflict,
   resolveOklahomaCandidateCommittee,
   type OklahomaCandidateCommitteeResolution,
 } from "./oklahomaCandidateCommitteeResolver.js";
@@ -78,7 +79,8 @@ function candidateNameKeysIntersect(left: string, right: string): boolean {
   const rightKeys = normalizeOklahomaCandidateNameKeys(right);
   for (const leftKey of normalizeOklahomaCandidateNameKeys(left)) {
     if (rightKeys.has(leftKey)) {
-      return true;
+      // `right` is the app candidate; `left` is the Guardian detail page name.
+      return !oklahomaCandidateNameMiddleConflict(right, left);
     }
   }
   return false;

@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { MinnesotaCampaignFinanceCsvRow } from "./minnesotaCampaignFinanceArtifactReader.js";
 import {
   mapMinnesotaFinanceOffice,
@@ -204,15 +205,8 @@ export function normalizeMinnesotaCandidateNameForStorage(value: string): string
   return candidateNameNormalized(value);
 }
 
-function recordCandidateNameKeys(record: MinnesotaCampaignFinanceCsvRow): Set<string> {
-  const name = firstNonEmpty(record, [
-    "Candidate",
-    "Candidate Name",
-    "candidate",
-    "candidate_name",
-    "Recipient",
-  ]);
-  return normalizeMinnesotaCandidateNameKeys(name);
+function recordCandidateName(record: MinnesotaCampaignFinanceCsvRow): string {
+  return firstNonEmpty(record, ["Candidate", "Candidate Name", "candidate", "candidate_name", "Recipient"]);
 }
 
 function recordElectionYear(record: MinnesotaCampaignFinanceCsvRow): number | null {
@@ -336,13 +330,24 @@ export function resolveMinnesotaCandidateCommittee(
     if (rowElectionYear !== null && (rowElectionYear < electionYear - 1 || rowElectionYear > electionYear)) {
       continue;
     }
-    const rowCandidateKeys = parsedRecipient
-      ? normalizeMinnesotaCandidateNameKeys(parsedRecipient.candidateName)
-      : recordCandidateNameKeys(record);
+    const rowCandidateName = parsedRecipient ? parsedRecipient.candidateName : recordCandidateName(record);
+    const rowCandidateKeys = normalizeMinnesotaCandidateNameKeys(rowCandidateName);
     if (!rowCandidateKeys.size) {
       continue;
     }
     if (![...rowCandidateKeys].some((key) => candidateNameKeys.has(key))) {
+      continue;
+    }
+    // Key overlap collapses names to first+last, so "Jane A. Doe" would take
+    // "Doe, Jane B."'s committee as an "exact" match once the office, district,
+    // and year agree. A contradicting middle name rejects the row.
+    if (
+      hasMiddleNameConflict({
+        candidateName: input.candidateName,
+        rowNames: [rowCandidateName],
+        normalizePersonName,
+      })
+    ) {
       continue;
     }
     if (!recordOfficeMatch({ record, parsedRecipient, expectedOfficeName, expectedDistrict })) {

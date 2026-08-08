@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   DISTRICT_OF_COLUMBIA_OCF_FILER_TYPES,
   buildDistrictOfColumbiaOcfDataDownloadUrl,
@@ -126,12 +127,22 @@ function candidateNameNormalized(value: string): string {
 
 function recordNameMatchesCandidate(input: {
   record: DistrictOfColumbiaOcfContributionRecord;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
-  if (input.record.candidateName) {
-    for (const key of normalizeDistrictOfColumbiaCandidateNameKeys(input.record.candidateName)) {
+  const recordCandidateName = input.record.candidateName;
+  if (recordCandidateName) {
+    for (const key of normalizeDistrictOfColumbiaCandidateNameKeys(recordCandidateName)) {
       if (input.candidateNameKeys.has(key)) {
-        return true;
+        // Key overlap collapses names to first+last, which would link
+        // "John A. Smith" to a row naming "John B. Smith" as an "exact" match
+        // whenever the office and cycle agree. A contradicting middle name
+        // rejects the row (georgia pattern).
+        return !hasMiddleNameConflict({
+          candidateName: input.candidateName,
+          rowNames: [recordCandidateName],
+          normalizePersonName,
+        });
       }
     }
     return false;
@@ -144,7 +155,17 @@ function recordNameMatchesCandidate(input: {
   for (const key of input.candidateNameKeys) {
     const tokens = key.split(" ").filter(Boolean);
     if (tokens.length >= 2 && tokens.every((token) => committeeNameKey.split(" ").includes(token))) {
-      return true;
+      // The token-containment test accepts "Committee to Elect John B. Smith"
+      // for candidate "John A. Smith" — another Smith's committee.
+      // normalizePersonName strips the committee wrappers (TO/ELECT/...), so
+      // the remaining text parses as a person name and the middle gate
+      // applies here too. Names that keep trailing office tokens never align
+      // on the surname, produce no evidence, and pass through unchanged.
+      return !hasMiddleNameConflict({
+        candidateName: input.candidateName,
+        rowNames: [input.record.committeeName ?? ""],
+        normalizePersonName,
+      });
     }
   }
   return false;
@@ -276,7 +297,7 @@ export function resolveDistrictOfColumbiaCandidateCommittee(
     ) {
       continue;
     }
-    if (!recordNameMatchesCandidate({ record, candidateNameKeys })) {
+    if (!recordNameMatchesCandidate({ record, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

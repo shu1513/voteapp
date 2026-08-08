@@ -1,4 +1,7 @@
-import { normalizeNewYorkCandidateNameKeys } from "./newYorkCandidateCommitteeResolver.js";
+import {
+  newYorkCandidateNameMiddleConflict,
+  normalizeNewYorkCandidateNameKeys,
+} from "./newYorkCandidateCommitteeResolver.js";
 import {
   getNewYorkFilerRecords,
   getNewYorkParentExpenditures,
@@ -65,7 +68,11 @@ function roundCurrency(value: number): number {
   return Math.round(value * 100) / 100;
 }
 
-function allocationMatchesCandidate(row: NewYorkScheduleRAllocationRow, candidateNameKeys: ReadonlySet<string>): boolean {
+function allocationMatchesCandidate(
+  row: NewYorkScheduleRAllocationRow,
+  candidateName: string,
+  candidateNameKeys: ReadonlySet<string>
+): boolean {
   const rowName = [row.candidateFirstName, row.candidateMiddleName, row.candidateLastName]
     .filter((part) => part.length > 0)
     .join(" ");
@@ -74,7 +81,7 @@ function allocationMatchesCandidate(row: NewYorkScheduleRAllocationRow, candidat
   }
   for (const key of normalizeNewYorkCandidateNameKeys(rowName)) {
     if (candidateNameKeys.has(key)) {
-      return true;
+      return !newYorkCandidateNameMiddleConflict(candidateName, rowName);
     }
   }
   return false;
@@ -112,7 +119,7 @@ export function aggregateNewYorkOutsideSpending(input: {
   const acceptedAmountByParent = new Map<string, number>();
 
   for (const allocation of input.allocations) {
-    if (!allocationMatchesCandidate(allocation, candidateNameKeys)) {
+    if (!allocationMatchesCandidate(allocation, input.candidateName, candidateNameKeys)) {
       continue;
     }
     counters.nameMatchedRowCount += 1;
@@ -232,7 +239,7 @@ export async function collectNewYorkOutsideSpending(
 
   const candidateNameKeys = normalizeNewYorkCandidateNameKeys(input.candidateName);
   const candidateAllocations = allocations.filter((allocation) =>
-    allocationMatchesCandidate(allocation, candidateNameKeys)
+    allocationMatchesCandidate(allocation, input.candidateName, candidateNameKeys)
   );
 
   const filerIds = [...new Set(candidateAllocations.map((allocation) => allocation.filerId))];

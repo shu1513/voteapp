@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   searchTennesseeCampCandidates,
   type TennesseeCampCandidateRecord,
@@ -152,17 +153,34 @@ function lastNameSearchToken(candidateName: string): string {
 
 function recordMatchesCandidateName(input: {
   record: TennesseeCampCandidateRecord;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   const names = [input.record.name, input.record.ownerName].filter(Boolean);
+  let keyMatched = false;
   for (const name of names) {
     for (const key of normalizeTennesseeCandidateNameKeys(name)) {
       if (input.candidateNameKeys.has(key)) {
-        return true;
+        keyMatched = true;
+        break;
       }
     }
+    if (keyMatched) {
+      break;
+    }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, which would link
+  // "John A. Smith" to "SMITH, JOHN B." as an "exact" match whenever office,
+  // district, and year agree. A contradicting middle name rejects the row
+  // (georgia pattern).
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: names,
+    normalizePersonName,
+  });
 }
 
 function toCommitteeMatch(accumulator: CandidateAccumulator): TennesseeCandidateCommitteeMatch {
@@ -249,7 +267,7 @@ export function resolveTennesseeCandidateCommittee(
     if (!recordMatchesDistrict({ record, expectedDistrict })) {
       continue;
     }
-    if (!recordMatchesCandidateName({ record, candidateNameKeys })) {
+    if (!recordMatchesCandidateName({ record, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
     const accumulator = matches.get(campCandidateId) ?? {

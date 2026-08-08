@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   searchWisconsinSunshineCommittees,
   type WisconsinSunshineClientOptions,
@@ -139,17 +140,35 @@ export function normalizeWisconsinCandidateNameForStorage(value: string): string
 
 function committeeMatchesCandidateName(input: {
   committee: WisconsinSunshineCommittee;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   const names = [input.committee.committeeName, ...input.committee.candidateNames];
+  let keyMatched = false;
   for (const name of names) {
     for (const key of normalizeWisconsinCandidateNameKeys(name)) {
       if (input.candidateNameKeys.has(key)) {
-        return true;
+        keyMatched = true;
+        break;
       }
     }
+    if (keyMatched) {
+      break;
+    }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, so candidate connection
+  // "Tiffany, Thomas J." would match candidate "Thomas P. Tiffany" as an
+  // "exact" committee. A contradicting middle name rejects the committee, and
+  // the veto reads every connection name because one committee row can carry
+  // both a middle-bearing and a middle-less spelling of the same person.
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: names,
+    normalizePersonName,
+  });
 }
 
 function statusText(value: string | undefined): string {
@@ -232,7 +251,7 @@ export function resolveWisconsinCandidateCommittee(
     if (!isCommitteeUsable(committee)) {
       continue;
     }
-    if (!committeeMatchesCandidateName({ committee, candidateNameKeys })) {
+    if (!committeeMatchesCandidateName({ committee, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

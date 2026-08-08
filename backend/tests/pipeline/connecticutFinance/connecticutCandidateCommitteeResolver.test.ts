@@ -279,6 +279,72 @@ describe("connecticutCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_office_year_match" });
   });
 
+  it("rejects a same-race receipt row whose middle name contradicts the candidate", () => {
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Timothy R. Ackert",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        receiptRows: [receiptRow()],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_office_year_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Timothy James Ackert",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        receiptRows: [receiptRow()],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "14376" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Timothy J. Ackert",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        receiptRows: [receiptRow({ "Candidate Middle Intial": "" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "14376" });
+  });
+
+  it("reads middle-name evidence through one-sided nickname expansion", () => {
+    const rows = [
+      receiptRow({
+        "Candidate First Name": "Michael",
+        "Candidate Middle Intial": "B",
+        "Candidate Last Name": "Smith",
+      }),
+    ];
+
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Mike A. Smith",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        receiptRows: rows,
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_office_year_match" });
+
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Mike Smith",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        receiptRows: rows,
+      })
+    ).toMatchObject({ status: "matched", committeeId: "14376" });
+  });
+
   it("rejects unsupported office names and invalid election years", () => {
     expect(
       resolveConnecticutCandidateCommittee({

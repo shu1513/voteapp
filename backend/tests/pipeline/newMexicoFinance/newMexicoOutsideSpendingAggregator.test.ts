@@ -233,4 +233,33 @@ describe("newMexicoOutsideSpendingAggregator", () => {
       })
     ).toThrow("Invalid New Mexico outside spending aggregation maxGroups");
   });
+
+  it("rejects a target whose middle name contradicts the candidate", () => {
+    // Without the middle gate the first+last key credited another Deb
+    // Haaland's outside spending to this candidate.
+    expect(
+      aggregateNewMexicoOutsideSpending({
+        candidateName: "Deb A. Haaland",
+        electionYear: 2026,
+        expenditureRows: [expenditure({ Reason: "Haaland, Deb B." })],
+      })
+    ).toMatchObject({ summary: null, matchedExpenditureRowCount: 0 });
+  });
+
+  it("accepts an initial that corroborates the full middle name and keeps the first+last fallback", () => {
+    expect(
+      aggregateNewMexicoOutsideSpending({
+        candidateName: "Deb A. Haaland",
+        electionYear: 2026,
+        expenditureRows: [expenditure({ Reason: "Haaland, Deb Anne" })],
+      })
+    ).toMatchObject({ matchedExpenditureRowCount: 1, includedExpenditureRowCount: 1 });
+    expect(
+      aggregateNewMexicoOutsideSpending({
+        candidateName: "Deb Haaland",
+        electionYear: 2026,
+        expenditureRows: [expenditure({ Reason: "Haaland, Deb B." })],
+      })
+    ).toMatchObject({ matchedExpenditureRowCount: 1, includedExpenditureRowCount: 1 });
+  });
 });

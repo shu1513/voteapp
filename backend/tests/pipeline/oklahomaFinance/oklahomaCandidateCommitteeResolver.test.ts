@@ -272,6 +272,48 @@ describe("oklahomaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a same-race row whose middle name contradicts the candidate", () => {
+    // Same office, district, and cycle — only the middle evidence differs.
+    // Without the middle gate this row linked as an "exact" match and attached
+    // the other Brent Dishman's committee.
+    expect(
+      resolveOklahomaCandidateCommittee({
+        candidateName: "Brent A. Dishman",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "47",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Name": "DISHMAN, BRENT B." })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveOklahomaCandidateCommittee({
+        candidateName: "Brent A. Dishman",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "47",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Name": "DISHMAN, BRENT ALAN" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "11954" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveOklahomaCandidateCommittee({
+        candidateName: "Brent Dishman",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "47",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Name": "DISHMAN, BRENT B." })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "11954" });
+  });
+
   it("rejects invalid election years", () => {
     expect(() =>
       resolveOklahomaCandidateCommittee({

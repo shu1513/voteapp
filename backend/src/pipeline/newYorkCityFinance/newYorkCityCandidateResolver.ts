@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { NewYorkCityCfbFinancialAnalysisRow } from "./newYorkCityCfbCsv.js";
 import { toNewYorkCityCfbOfficeSearchInput } from "./newYorkCityFinanceEligibleOffices.js";
 
@@ -69,6 +70,15 @@ export function resolveNewYorkCityCandidate(input: {
     ) continue;
     const rowKeys = newYorkCityCandidateNameKeys(row.candidateName);
     if (![...candidateKeys].some((key) => rowKeys.has(key))) continue;
+    // The keys collapse to first+last, so "Jane Q. Doe" would take
+    // "DOE, JANE R."'s CFB filings whenever office, borough, and year agree.
+    if (
+      hasMiddleNameConflict({
+        candidateName: input.candidateName,
+        rowNames: [row.candidateName],
+        normalizePersonName: normalizePerson,
+      })
+    ) continue;
     const rows = rowsByCandidate.get(row.candidateId) ?? [];
     rows.push(row);
     rowsByCandidate.set(row.candidateId, rows);

@@ -1,5 +1,6 @@
 import type { Pool, PoolClient } from "pg";
 
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   floridaElectionCycleStartYear,
   normalizeFloridaDisplayText,
@@ -107,11 +108,15 @@ export function floridaCandidateCommitteeIdFromName(committeeName: string): stri
   return requireNonEmpty(normalized, "Florida committee name");
 }
 
-export function normalizeFloridaCandidateNameKeys(candidateName: string): Set<string> {
-  const normalized = normalizeFloridaTextKey(candidateName)
+function normalizeFloridaPersonName(value: string | undefined): string {
+  return normalizeFloridaTextKey(value)
     .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+export function normalizeFloridaCandidateNameKeys(candidateName: string): Set<string> {
+  const normalized = normalizeFloridaPersonName(candidateName);
   const keys = new Set<string>();
   if (normalized) {
     keys.add(normalized);
@@ -249,8 +254,18 @@ export function resolveFloridaCandidateCommittee(input: {
     return { status: "unmatched", reason: "no_contributions" };
   }
 
-  const matchingGroups = groupRowsByRecipient(cycleRows).filter((group) =>
-    committeeNameMentionsCandidate({ committeeName: group.committeeName, candidateNameKeys })
+  const matchingGroups = groupRowsByRecipient(cycleRows).filter(
+    (group) =>
+      committeeNameMentionsCandidate({ committeeName: group.committeeName, candidateNameKeys }) &&
+      // DOS recipient names are the candidate's own name, surname first
+      // ("DOE, JANE B. (DEM)(GOV)"), and the short reversed key drops the
+      // middle — so "Jane A. Doe" matched the other Jane Doe's committee.
+      // A contradicting middle name rejects the group (georgia pattern).
+      !hasMiddleNameConflict({
+        candidateName: input.candidateName,
+        rowNames: group.recipientNames,
+        normalizePersonName: normalizeFloridaPersonName,
+      })
   );
   if (matchingGroups.length === 0) {
     return { status: "unmatched", reason: "no_matching_committee" };

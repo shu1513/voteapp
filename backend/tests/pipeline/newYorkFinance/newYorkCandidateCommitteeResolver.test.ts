@@ -72,6 +72,39 @@ describe("newYorkCandidateCommitteeResolver", () => {
     expect(resolution).toMatchObject({ status: "unmatched", reason: "no_registered_candidate" });
   });
 
+  it("rejects a registered filer whose middle name contradicts the candidate", () => {
+    // Same office and district — only the middle evidence differs. Without the
+    // middle gate this filer registered as an "exact" match and the other
+    // Hochul's authorized committee became this candidate's finance link.
+    const resolution = resolveNewYorkCandidateCommittee({
+      ...GOVERNOR_INPUT,
+      candidateName: "Kathy A. Hochul",
+      candidateFilers: [HOCHUL_CANDIDATE],
+      committeeFilers: [HOCHUL_COMMITTEE],
+    });
+    expect(resolution).toMatchObject({ status: "unmatched", reason: "no_registered_candidate" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    const resolution = resolveNewYorkCandidateCommittee({
+      ...GOVERNOR_INPUT,
+      candidateName: "Kathy Christine Hochul",
+      candidateFilers: [HOCHUL_CANDIDATE],
+      committeeFilers: [HOCHUL_COMMITTEE],
+    });
+    expect(resolution).toMatchObject({ status: "matched", candidateFilerId: "27197" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    const resolution = resolveNewYorkCandidateCommittee({
+      ...GOVERNOR_INPUT,
+      candidateName: "Kathy Hochul",
+      candidateFilers: [HOCHUL_CANDIDATE],
+      committeeFilers: [HOCHUL_COMMITTEE],
+    });
+    expect(resolution).toMatchObject({ status: "matched", candidateFilerId: "27197" });
+  });
+
   it("skips when several distinct registered candidates share the name", () => {
     const resolution = resolveNewYorkCandidateCommittee({
       ...GOVERNOR_INPUT,
