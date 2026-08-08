@@ -626,7 +626,47 @@ The acquisition spike is the gate before parser/aggregator work.
   kind — exact-SBoEID filter over the per-cycle committee-search artifact
   ("Required artifacts per cycle Y") — while same-run auto-link results
   carry `orgGroupId` so a fresh resolution skips that lookup
-- [ ] PR 6 aggregators
+- [x] PR 6 aggregators — 2026-08-07, fixture-driven (no portal hits), three
+  pure modules the PR 7 sync feeds from the artifact cache:
+  `northCarolinaReportSelector.ts` (decision 8 as written: structured rows
+  dedup by report id across inventories; row-merge allows 1 DATA + ≤1 IMAGE,
+  all-DATA amendment chains, or a single IMAGE row — any other mix
+  quarantines; selection groups drop `IsAmendment`, order by
+  `ImageReceiptDate` then `DataImportDate` then the amendment flag itself —
+  a same-day amendment still beats its original by flag semantics, but two
+  amendments tying on the whole key quarantine (`ambiguous_filing_chronology`;
+  review round: report ids are NOT chronology evidence — nothing pins them
+  monotonic — so money is never selected by id ordering); null flags,
+  multiple originals, and a chronology pick that puts an original over an
+  existing amendment all quarantine; image-only current filing =
+  superseded-unavailable, never a fallback). `northCarolinaDirectContributionAggregator.ts` (decisions 7+11:
+  cover-authoritative Period sums for receipts/disbursements + cover 15+20
+  for `direct_contribution_total`; latest-report cash with negative→NULL;
+  Cycle chain check as an advisory consecutive-report diagnostic;
+  occupations + size buckets from itemized `"IND "` rows with the
+  case-insensitive placeholder set, contributor identity = receipt `GroupID`;
+  unknown receipt codes quarantine breakdowns only — direct-known set pinned
+  to `IND `/`CPCM`/`PPTY`, `DON ` stays IE-side; three outcomes: `ok`,
+  `honest_null` — supersession/ambiguity proof → write null summary + empty
+  breakdowns — and `incomplete_artifacts` — missing cached report OR a
+  cover whose own period contradicts its inventory filing (mispaired
+  artifact, checked before any summing; review round) → do NOT write,
+  reacquire; IE-typed regular rows counted as the decision-3 cross-check).
+  `northCarolinaOutsideSpendingAggregator.ts` (decisions 3–6: pinned two IE
+  report types; per-form amounts — `IEAmount` required on the unregistered
+  form, `IEAmount ?? Amount` on the registered form; per-report
+  reconciliation gate vs cover official total with one cent slack per split
+  vendor row; token-order-insensitive target matching via a LAST-first
+  reading layered on the resolver matcher; federal/`SPECIFIC NON CANDIDATE`/
+  County-Municipal rows filtered with money counted; office+district
+  confirm-only filters; group keys `SBoEID` else `NC-IE-FILER:<sha256>`
+  — the `NC-OGID:` variant needs a portal entity search and joins at PR 8;
+  overlapping-report duplicate-looking rows surfaced, never deduped;
+  image-only/quarantined filings emitted as coverage-gap rows). Live-run
+  watch item for PR 9: unregistered IE filers' report covers have never been
+  parsed (no fixture) — if their summary grid deviates from the 34-section
+  pin, those reports quarantine as `missing_official_total` until the parser
+  learns the form.
 - [ ] PR 7 sync + batchSync + scripts
 - [ ] PR 8 outside-group funders/industries (#3)
 - [ ] PR 9 live run (+ later: PDF path, own flag)
