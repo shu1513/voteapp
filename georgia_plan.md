@@ -403,7 +403,13 @@ closed exactly:
    of tied rows rides on dedup + reconciliation alone — the client needs a
    tested bounded-retry (re-pull window until the unique-id set is stable
    across two passes) that fails the report closed when it never
-   stabilizes.
+   stabilizes. **Stability proves reproducibility, not completeness** (a
+   tie-ordering that drops the SAME rows every pass yields equal-but-short
+   id sets), so the client's windowed fetch always unions with the
+   mandatory unbounded sweep — which also changes the offset geometry and
+   can surface reproducibly-dropped rows — and reports sweep-only rows as a
+   diagnostic; the completeness PROOF stays with PR 4's per-report
+   count/sum reconciliation against the inventory and index totals.
 5. **A5 — `amountApplied` == bulk `Transaction Amount` for all 387
    CCDR-disclosed IE transactions (0 mismatches)**; the API additionally
    carries 164 timed-pending IE txns (TPEN/TPAMD) the bulk lacks (~30%
@@ -595,3 +601,84 @@ shape) and lands first; only the D3 map table waits for the spike.
   (D5), pagination/fail-closed rules pinned (A4), fixtures + data keys
   committed. Schema and factory config unchanged — migration 213 stands.
   Next: PR 3 (map migration + client + resolver + auto-link).
+- 2026-08-07: **PR 3 implemented** — migration 214
+  (`ga_finance_filer_identity_map`: per-host filerEntityId + registration
+  guid + per-host name forms, explicit `include_in_candidate_totals`,
+  outside spenders unrepresentable inside candidate totals) + map access
+  module; `georgiaEthicsClient` (paced single-flight transport, pinned
+  request bodies, per-host status/taxonomy/report-family vocabularies,
+  A4 paging: pinned sortBy + short-page loop + id-dedup +
+  filter-effectiveness hard error + bounded-retry stability loop, D8
+  report-inventory union with PeachFile-wins and standalone null-period
+  archive rows — a fixture-checked case: 2022-era archive inventory rows
+  can carry no period); PeachFile candidate-index resolver (office labels
+  pinned from spike bytes — Agriculture/Labor never appeared in the probed
+  sample, so both orderings are listed and a wrong alias can only fail
+  closed); auto-link (tennessee pattern; ambiguous is report-only — the
+  links status vocabulary is active/inactive); due-list config on the
+  shared factory. Fixture-driven tests throughout (the Carr union test
+  proves cross-host identity matching on disjoint raw codes and statuses).
+- 2026-08-07: **PR 3 review round** (external, both findings verified against
+  the code before acting): (1) resolver now preserves middle-name evidence —
+  "John A. Smith" no longer matches "Smith, John B." on a shared first+last
+  key; conflicting middles reject, an initial corroborating the full middle
+  matches, and the first+last fallback applies only when a side lacks middle
+  information (the index's structured `candidateMiddleName` field is now
+  read, so evidence is as rich as the portal provides). (2)
+  `fetchGeorgiaTransactionRowsWindowed` added: windowed stable pulls sharing
+  boundary days + the mandatory unbounded sweep union with sweep-only/
+  sweep-missed diagnostics; docs state explicitly that equal id sets prove
+  reproducibility, not completeness — reconciliation (PR 4) is the proof.
+- 2026-08-07: **PR 4 implemented** — direct finance.
+  `georgiaDirectContributionAggregator` (D5/A8: per-host subtype codes pinned
+  from spike bytes — PeachFile ITMY/NITMY/INKIND, archive MOI/NIM/IKD/ANO;
+  occupation = itemized individuals via the per-host individual code with an
+  explicit "Unknown" bucket for blank/placeholder filings; size buckets =
+  every positive itemized row; unitemized/in-kind/anonymous/returns/unpinned
+  subtypes stay IN the synced-row sum and out of the buckets — the index
+  total includes loans, interest, and unitemized money and nets returns;
+  unrecognized statuses excluded from everything + counted; no transaction
+  date ever gates anything). `georgiaCandidateFinanceSync`: PeachFile index
+  row (matched on the linked filerEntityId) is the summary source AND the
+  reconciliation anchor; archive side = identity-map rows when any archive
+  candidate-committee row exists (a lone exclusion row suppresses discovery),
+  else discovery from the archive candidate index (same person via the
+  middle-evidence matcher, cycle label leads with the election year,
+  `filerStatusCode` ≠ "T" — excludes Carr's terminated legacy 2750, keeps
+  757274; discovery is in-memory only, nothing writes to the map); report
+  inventories both hosts (PeachFile keyed by committee name — the person-name
+  form returns zero rows there, archive keyed per source filer name), scoped
+  by registration guid, D8 union, per-host selected guid sets including
+  child-version guids (spike artifacts confirm rows reference both parent and
+  version guids and all 12 timed guids resolve to FPTBDR inventory rows);
+  windowed+sweep TCON pulls with the window range derived from the earliest
+  inventory period start; rows selected by report-group guid, superseded
+  archive copies and unassigned groups excluded + counted; reconciliation
+  guard |sum − index total| ≤ max($2,500, 2%) (Carr's migrated-copy drift is
+  0.40%) — breach throws and keeps the previous snapshot. Client gained
+  per-window filter_ineffective tolerance (a quiet window with only foreign
+  name-matches is expected; the sweep stays the authority) and a whole-pull
+  filter_ineffective on one leg is treated as zero rows with the guard
+  arbitrating. Summary write per D4: index totals to
+  totalReceipts/totalDisbursements/cashOnHand, direct_contribution_total
+  NULL, outside legs untouched (undefined, never []). Due list now carries
+  link_source so provenance survives the write-back; batch sync (tennessee
+  shape, auto-link first, per-candidate isolation, default 10
+  candidates/run — Georgia candidates cost hundreds of paced requests);
+  `syncDueGeorgiaCandidateFinance` script + `georgia-candidates:finance:sync-due`
+  npm script gated on the sync flag.
+- 2026-08-07: **PR 4 review round** (external, all three findings verified
+  against the code before acting): (1) reconciliation floor cut $2,500 →
+  $100 — the relative share is the real absorber (drift scales with the
+  money) and the old floor dominated the tolerance for every filer under
+  $125k, exactly the small campaigns it endangered — plus an explicit
+  zero-coverage guard: a nonzero index total with zero selected rows is
+  PROOF of a broken pull (the index is the exact sum of the store's rows,
+  A6), so no tolerance may excuse it and the stored breakdowns are never
+  deleted on a dead pull's say-so. (2) index-row selection now applies the
+  election-cycle gate that created the link (entity id alone is
+  API-order-dependent once a committee re-registers for a later cycle — the
+  archive's filer 2750 shows the two-rows-one-entity shape) and requires
+  exactly one surviving row. (3) null official totals fail closed instead
+  of `?? 0` — no-money filers report 0.0, never null, and the summary
+  policy is "replace", so a null would overwrite stored values.

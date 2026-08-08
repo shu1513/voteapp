@@ -3,9 +3,9 @@ import { Link } from "react-router";
 import type { ElectionChoice, ElectionSummary, ResearchAreaWeight, ResultChipTone } from "@voteapp/api-client";
 import type { BackTo, ElectionNavState } from "../lib/detailNavContext";
 import {
+  buildResultChipParts,
   formatDistrictName,
   formatElectionDate,
-  formatResultChipLabel,
   formatRosterStatus,
   formatVotePowerLabel,
   resultChipTone,
@@ -228,6 +228,14 @@ function ElectionCard({
   // the absence of a green chip already marks them.
   const isUpcoming = election.election_date >= usLatestLocalDate();
   const choiceLabel = myChoice && isUpcoming ? formatChoiceLabel(myChoice) : null;
+  // The viewer's picked candidate ids, feeding the result chip's
+  // "My pick won ✓" marker. Built even on past races — the pick CHIP hides
+  // once the election passes (a choice is history), but the marker is the
+  // payoff of that history, so it renders regardless of date.
+  const myPickCandidateIds =
+    myChoice && myChoice.picks.length > 0
+      ? new Set(myChoice.picks.map((pick) => pick.candidate_id))
+      : undefined;
   // Skip an empty chip row so the card doesn't carry stray spacing when a
   // race has no signals to show.
   const hasSignalChips =
@@ -319,7 +327,43 @@ function ElectionCard({
             // neutral so color always means "called".
             <span className={RESULT_CHIP_CLASSES[resultChipTone(election.current_result_outcome)]}>
               {election.current_result_outcome
-                ? formatResultChipLabel(election.current_result_outcome, election.current_result_winners ?? [])
+                ? (() => {
+                    const parts = buildResultChipParts(
+                      election.current_result_outcome,
+                      election.current_result_winners ?? [],
+                      myPickCandidateIds
+                    );
+                    if (parts.winners.length === 0) {
+                      return parts.heading;
+                    }
+                    return (
+                      <>
+                        {parts.heading} —{" "}
+                        {parts.winners.map((winner, index) => (
+                          <Fragment key={`${winner.label}-${index}`}>
+                            {winner.label}
+                            {winner.isMyPick && parts.myPickMarker ? (
+                              // Solid pill inside the tinted chip so the
+                              // personal payoff outshines the surrounding
+                              // roll call. Winner-name matching is id-only,
+                              // and a losing pick renders nothing (see
+                              // buildResultChipParts). Leading space:
+                              // margin is only visual, and without it the
+                              // copy/accessible text runs the name into the
+                              // marker ("(Democratic)My pick advanced ✓").
+                              <>
+                                {" "}
+                                <span className="whitespace-nowrap rounded bg-green-700 px-1.5 font-semibold text-white">
+                                  {parts.myPickMarker}
+                                </span>
+                              </>
+                            ) : null}
+                            {index < parts.winners.length - 1 ? ", " : null}
+                          </Fragment>
+                        ))}
+                      </>
+                    );
+                  })()
                 : "Results available"}
             </span>
           ) : null}

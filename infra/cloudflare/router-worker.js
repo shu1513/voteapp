@@ -114,6 +114,59 @@ export function withSecurityHeaders(response, pathname = "") {
   return wrapped;
 }
 
+// ---------------------------------------------------------------- cache ----
+// Edge caching for public pages: the SSR loaders on these routes are
+// anonymous by design (personalization happens client-side after hydration
+// — see frontend/src/pages/CandidatePage.tsx), so their HTML is identical
+// for every visitor and safe to share from cache. The origin can't declare
+// this itself: react-router-serve serves prerendered HTML with max-age=0
+// and SSR responses with no Cache-Control at all, so the Worker owns the
+// policy. Mechanism notes, learned the hard way:
+//   - Zone Cache Rules never apply: Workers run before the zone cache, and
+//     the subrequest goes to the *.onrender.com host, which zone rules
+//     never match.
+//   - fetch cf options (cacheEverything/cacheTtlByStatus) are silently
+//     ignored here too: the *.onrender.com upstream sits on ANOTHER
+//     Cloudflare account's zone (Render's), and a Worker can only drive its
+//     own zone's cache — verified empirically 2026-08-07 (no CF-Cache-Status
+//     on subrequests, no latency change).
+//   - So the Worker uses the Cache API (caches.default) explicitly: match
+//     by public URL, store only status-200 cookie-free responses with
+//     s-maxage. Per-colo cache (each Cloudflare datacenter holds its own
+//     copy) — exactly what spike absorption needs.
+//
+// Eligibility is deliberately narrow, all four conditions required:
+//   GET + SSR-bound + allowlisted path + no session cookie on the request.
+// The allowlist keeps /me/*, /picks/:token (token-authorized content),
+// auth/token pages, and the 404 catch-all out of cache — the last also
+// stops random-URL requests from filling the cache. The cookie gate means a
+// logged-in user's request is never even cache-eligible, so a response
+// generated for one can never be stored.
+export const SESSION_COOKIE_NAME = "voteapp_auth_session";
+export const EDGE_CACHE_TTL_SECONDS = 60;
+
+const CACHEABLE_EXACT_PATHS = new Set(["/", "/ballot", "/disclaimer", "/terms", "/privacy"]);
+// Exactly one path segment, mirroring the declared routes /elections/:id and
+// /candidates/:id (frontend/src/routes.ts). Nested paths like
+// /elections/x/junk render the 404 catch-all and must stay cache-ineligible.
+const CACHEABLE_DETAIL_PATH = /^\/(?:elections|candidates)\/[^/]+$/;
+
+export function isCacheablePublicPage(pathname) {
+  // React Router matches case-insensitively and ignores trailing slashes
+  // (same normalization as referrerPolicyForPath). "/elections/" collapses
+  // to "/elections", which matches neither list — that's the 404 catch-all
+  // and stays uncached.
+  const normalized = pathname.toLowerCase().replace(/\/+$/, "") || "/";
+  return CACHEABLE_EXACT_PATHS.has(normalized) || CACHEABLE_DETAIL_PATH.test(normalized);
+}
+
+export function hasSessionCookie(cookieHeader) {
+  if (!cookieHeader) {
+    return false;
+  }
+  return new RegExp(`(?:^|;\\s*)${SESSION_COOKIE_NAME}=`).test(cookieHeader);
+}
+
 // RFC 1123 label: 1-63 chars, alphanumeric at both ends, alphanumeric or
 // hyphen inside. Deliberately stricter than the URL parser, which (with the
 // non-strict IDNA browsers use) happily accepts ".", "foo..bar",
@@ -155,7 +208,7 @@ export function resolveUpstreamHost(raw) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     // The redirect reads no origin config — keep www working (301 to apex)
@@ -176,7 +229,8 @@ export default {
       );
     }
 
-    const upstreamHost = isApiPath(url.pathname) ? apiHost : ssrHost;
+    const apiBound = isApiPath(url.pathname);
+    const upstreamHost = apiBound ? apiHost : ssrHost;
     // The Worker owns both the apex and its www variant; an origin equal to
     // either would send traffic back into hostnames this Worker serves (or
     // their placeholder DNS records) instead of a real upstream.
@@ -219,6 +273,50 @@ export default {
     const clientIp = request.headers.get("CF-Connecting-IP");
     if (clientIp) {
       upstreamRequest.headers.set(CLIENT_IP_HEADER, clientIp);
+    }
+    // Edge cache for public pages (see the cache section above). Keyed by
+    // the PUBLIC url (request.url, query included), never the upstream one,
+    // so a service recreation that changes the onrender.com hostname can't
+    // orphan or split cache entries. Only exact status 200 is stored:
+    // unknown-id 404s, loader redirects, and origin errors during a Render
+    // cold start must never become the shared response for a URL, and
+    // cache.put throws on 206. A Set-Cookie response is never stored (none
+    // is expected from SSR — belt and braces). The stored copy's
+    // s-maxage=60 gives the shared cache its TTL while max-age=0 keeps
+    // browsers revalidating; X-Voteapp-Edge-Cache: HIT/MISS is stamped for
+    // verification (the zone's own cf-cache-status always reads DYNAMIC for
+    // Worker responses). Served stale worst case: 60s — fine for pages that
+    // change via research imports, not user actions.
+    if (
+      request.method === "GET" &&
+      !apiBound &&
+      isCacheablePublicPage(url.pathname) &&
+      !hasSessionCookie(request.headers.get("Cookie"))
+    ) {
+      const cache = caches.default;
+      const cached = await cache.match(request.url);
+      if (cached) {
+        const response = withSecurityHeaders(cached, url.pathname);
+        response.headers.set("X-Voteapp-Edge-Cache", "HIT");
+        return response;
+      }
+      const upstreamResponse = await fetch(upstreamRequest);
+      if (upstreamResponse.status === 200 && !upstreamResponse.headers.has("Set-Cookie")) {
+        const copy = upstreamResponse.clone();
+        const stored = new Response(copy.body, copy);
+        stored.headers.set("Cache-Control", `public, max-age=0, s-maxage=${EDGE_CACHE_TTL_SECONDS}`);
+        // A failed put (e.g. a Vary: * response) must never break serving;
+        // the next request just misses again.
+        const storing = cache.put(request.url, stored).catch(() => {});
+        if (ctx?.waitUntil) {
+          ctx.waitUntil(storing);
+        } else {
+          await storing;
+        }
+      }
+      const response = withSecurityHeaders(upstreamResponse, url.pathname);
+      response.headers.set("X-Voteapp-Edge-Cache", "MISS");
+      return response;
     }
     return withSecurityHeaders(await fetch(upstreamRequest), url.pathname);
   },

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  buildResultChipParts,
   financeSourceLabel,
   formatDistrictName,
   formatDistrictType,
@@ -301,6 +302,70 @@ describe("formatResultChipLabel", () => {
   it("falls back to the outcome alone with no named winners", () => {
     expect(formatResultChipLabel("passed", [])).toBe("Result: Passed");
     expect(formatResultChipLabel("won", [{ party: "Independent" }])).toBe("Result: Won");
+  });
+});
+
+describe("buildResultChipParts", () => {
+  const WINNERS = [
+    { candidate_id: "c-1", candidate_name: "Jocelyn Benson", party: "Democratic" },
+    { candidate_id: "c-2", candidate_name: "John James", party: "Republican" },
+  ];
+
+  it("marks the viewer's pick among the winners and offers the advanced marker", () => {
+    const parts = buildResultChipParts("advanced", WINNERS, new Set(["c-1"]));
+    expect(parts.heading).toBe("Result: Advanced");
+    expect(parts.winners).toEqual([
+      { label: "Jocelyn Benson (Democratic)", isMyPick: true },
+      { label: "John James (Republican)", isMyPick: false },
+    ]);
+    expect(parts.myPickMarker).toBe("My pick advanced ✓");
+  });
+
+  it('says "won" only when the outcome claims the seat', () => {
+    expect(buildResultChipParts("won", WINNERS, new Set(["c-1"])).myPickMarker).toBe("My pick won ✓");
+    // A runoff berth is a round forward, not the seat.
+    expect(buildResultChipParts("runoff", WINNERS, new Set(["c-1"])).myPickMarker).toBe(
+      "My pick advanced ✓"
+    );
+  });
+
+  it("stays silent when the pick is not among the winners", () => {
+    // A losing pick gets nothing — no marker, no flag.
+    const parts = buildResultChipParts("advanced", WINNERS, new Set(["c-9"]));
+    expect(parts.winners.every((winner) => !winner.isMyPick)).toBe(true);
+    expect(parts.myPickMarker).toBe(null);
+  });
+
+  it("never marks a non-decisive outcome, even when the pick leads", () => {
+    // too_close rows may carry a recorded leader; a marker there would call
+    // the race for the viewer's pick.
+    const parts = buildResultChipParts("too_close", WINNERS, new Set(["c-1"]));
+    expect(parts.winners).toEqual([]);
+    expect(parts.myPickMarker).toBe(null);
+  });
+
+  it("matches by candidate id only, and drops nameless winners", () => {
+    const parts = buildResultChipParts(
+      "won",
+      [{ candidate_id: "c-1", party: "Independent" }, { candidate_name: "Jocelyn Benson" }],
+      new Set(["c-1"])
+    );
+    // The id-matched winner is nameless (dropped), and the named winner has
+    // no id — neither can claim the marker. Deliberate, not an oversight:
+    // the marker renders inline after its winner's name, so a nameless
+    // winner gives it no anchor — and the id-with-no-name shape is
+    // unproducible anyway (the result matcher's toMatchedWinner backfills
+    // the roster display name in the same assignment that sets
+    // candidate_id). See the myPickMarker comment in buildResultChipParts.
+    expect(parts.winners).toEqual([{ label: "Jocelyn Benson", isMyPick: false }]);
+    expect(parts.myPickMarker).toBe(null);
+  });
+
+  it("agrees with formatResultChipLabel when no pick set is given", () => {
+    const parts = buildResultChipParts("advanced", WINNERS);
+    expect(`${parts.heading} — ${parts.winners.map((winner) => winner.label).join(", ")}`).toBe(
+      formatResultChipLabel("advanced", WINNERS)
+    );
   });
 });
 

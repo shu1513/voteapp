@@ -70,6 +70,23 @@ describe("useAddressSuggestions", () => {
     expect(secondToken).toBe(firstToken);
   });
 
+  it("treats a malformed 200 (no suggestions array) as no suggestions, never undefined", async () => {
+    // Autocomplete failing must never block the form — that includes a
+    // body without a suggestions array, which once crashed the landing
+    // page at suggestions.length.
+    apiRequestMock.mockResolvedValue({ user: null });
+    const { result } = renderHook(() => useAddressSuggestions());
+
+    act(() => {
+      result.current.onInputChanged("200 N Spring");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
+    });
+    expect(apiRequestMock).toHaveBeenCalledTimes(1);
+    expect(result.current.suggestions).toEqual([]);
+  });
+
   it("sends the same token on retrieve, then kills the session (billing rule)", async () => {
     apiRequestMock.mockResolvedValueOnce({ suggestions: [SUGGESTION] });
     const { result } = renderHook(() => useAddressSuggestions());

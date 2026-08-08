@@ -1,7 +1,16 @@
 import assert from "node:assert/strict";
-import { afterEach, describe, it } from "node:test";
+import { afterEach, beforeEach, describe, it } from "node:test";
 
-import worker, { CLIENT_IP_HEADER, isApiPath, resolveUpstreamHost, withSecurityHeaders } from "./router-worker.js";
+import worker, {
+  CLIENT_IP_HEADER,
+  EDGE_CACHE_TTL_SECONDS,
+  SESSION_COOKIE_NAME,
+  hasSessionCookie,
+  isApiPath,
+  isCacheablePublicPage,
+  resolveUpstreamHost,
+  withSecurityHeaders,
+} from "./router-worker.js";
 
 const ENV = {
   API_ORIGIN: "voteapp-api-pzns.onrender.com",
@@ -21,8 +30,26 @@ function stubFetch() {
   return calls;
 }
 
+// Node has no `caches` global; the worker touches caches.default on
+// cache-eligible paths, so every test gets a fresh in-memory fake.
+beforeEach(() => {
+  const entries = new Map();
+  globalThis.caches = {
+    default: {
+      async match(url) {
+        const stored = entries.get(url);
+        return stored ? stored.clone() : undefined;
+      },
+      async put(url, response) {
+        entries.set(url, response);
+      },
+    },
+  };
+});
+
 afterEach(() => {
   globalThis.fetch = realFetch;
+  delete globalThis.caches;
 });
 
 describe("resolveUpstreamHost", () => {
@@ -203,6 +230,162 @@ describe("fetch handler", () => {
     assert.equal(calls[0].method, "POST");
     assert.equal(calls[0].headers.get("cf-connecting-ip"), "203.0.113.9");
     assert.equal(new URL(calls[0].url).pathname, "/api/auth/login");
+  });
+});
+
+describe("isCacheablePublicPage", () => {
+  const cacheable = [
+    "/",
+    "/ballot",
+    "/disclaimer",
+    "/terms",
+    "/privacy",
+    "/elections/abc123",
+    "/candidates/abc123",
+    // React Router renders these variants too — same normalization rules
+    // as the referrer policy.
+    "/Elections/ABC",
+    "/candidates/abc/",
+    "/ballot///",
+  ];
+  for (const path of cacheable) {
+    it(`caches ${path}`, () => {
+      assert.equal(isCacheablePublicPage(path), true, path);
+    });
+  }
+
+  const uncacheable = [
+    // Personalized / token-authorized pages.
+    "/me/picks",
+    "/me/ballot",
+    "/me/settings",
+    "/picks/share-token-123",
+    // Auth and token-bearing pages.
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/reset-password",
+    "/verify-email",
+    "/verify-email-change",
+    // Bare prefixes are the 404 catch-all, as is any random URL — keeping
+    // them out stops junk URLs from filling the cache.
+    "/elections",
+    "/elections/",
+    "/candidates",
+    "/anything-else",
+    // Nested paths under the detail routes are also the 404 catch-all: the
+    // declared routes are exactly /elections/:id and /candidates/:id.
+    "/elections/x/junk",
+    "/candidates/x/settings",
+  ];
+  for (const path of uncacheable) {
+    it(`does not cache ${path}`, () => {
+      assert.equal(isCacheablePublicPage(path), false, path);
+    });
+  }
+});
+
+describe("hasSessionCookie", () => {
+  it("detects the session cookie in any position", () => {
+    assert.equal(hasSessionCookie(`${SESSION_COOKIE_NAME}=abc`), true);
+    assert.equal(hasSessionCookie(`other=1; ${SESSION_COOKIE_NAME}=abc; more=2`), true);
+  });
+
+  it("ignores absent, empty, and lookalike cookies", () => {
+    assert.equal(hasSessionCookie(null), false);
+    assert.equal(hasSessionCookie(""), false);
+    assert.equal(hasSessionCookie("other=1; unrelated=2"), false);
+    // A cookie whose name merely contains the session name must not match.
+    assert.equal(hasSessionCookie(`x${SESSION_COOKIE_NAME}=abc`), false);
+  });
+});
+
+describe("edge cache", () => {
+  it("serves the second identical anonymous request from cache", async () => {
+    const calls = stubFetch();
+
+    const first = await worker.fetch(new Request("https://electionssimplified.com/elections/x"), ENV);
+    const second = await worker.fetch(new Request("https://electionssimplified.com/elections/x"), ENV);
+
+    assert.equal(first.headers.get("x-voteapp-edge-cache"), "MISS");
+    assert.equal(second.headers.get("x-voteapp-edge-cache"), "HIT");
+    // The origin was reached exactly once; the hit came from the cache.
+    assert.equal(calls.length, 1);
+    assert.equal(await second.text(), "upstream ok");
+    // Stored copy carries the shared-cache TTL; max-age=0 keeps browsers
+    // revalidating so only Cloudflare's edge holds the page for 60s.
+    assert.equal(second.headers.get("cache-control"), `public, max-age=0, s-maxage=${EDGE_CACHE_TTL_SECONDS}`);
+    // Cached responses are stamped like any other.
+    assert.equal(second.headers.get("x-frame-options"), "DENY");
+  });
+
+  it("keys the cache by full URL including the query string", async () => {
+    const calls = stubFetch();
+
+    await worker.fetch(new Request("https://electionssimplified.com/elections/x"), ENV);
+    const other = await worker.fetch(new Request("https://electionssimplified.com/elections/x?tab=finance"), ENV);
+
+    assert.equal(other.headers.get("x-voteapp-edge-cache"), "MISS");
+    assert.equal(calls.length, 2);
+  });
+
+  it("never stores non-200 responses", async () => {
+    let originHits = 0;
+    globalThis.fetch = async () => {
+      originHits += 1;
+      return new Response("not found", { status: 404 });
+    };
+
+    const first = await worker.fetch(new Request("https://electionssimplified.com/elections/gone"), ENV);
+    const second = await worker.fetch(new Request("https://electionssimplified.com/elections/gone"), ENV);
+
+    assert.equal(first.headers.get("x-voteapp-edge-cache"), "MISS");
+    assert.equal(second.headers.get("x-voteapp-edge-cache"), "MISS");
+    assert.equal(originHits, 2);
+  });
+
+  it("never stores Set-Cookie responses", async () => {
+    let originHits = 0;
+    globalThis.fetch = async () => {
+      originHits += 1;
+      return new Response("ok", { status: 200, headers: { "set-cookie": "sneaky=1" } });
+    };
+
+    await worker.fetch(new Request("https://electionssimplified.com/ballot"), ENV);
+    const second = await worker.fetch(new Request("https://electionssimplified.com/ballot"), ENV);
+
+    assert.equal(second.headers.get("x-voteapp-edge-cache"), "MISS");
+    assert.equal(originHits, 2);
+  });
+
+  it("bypasses the cache entirely for ineligible requests", async () => {
+    const calls = stubFetch();
+
+    // Warm the cache anonymously, then prove a logged-in request for the
+    // SAME url still reaches the origin instead of the stored copy.
+    await worker.fetch(new Request("https://electionssimplified.com/elections/x"), ENV);
+    const cookied = await worker.fetch(
+      new Request("https://electionssimplified.com/elections/x", {
+        headers: { cookie: `${SESSION_COOKIE_NAME}=session-value`, "cf-connecting-ip": "203.0.113.9" },
+      }),
+      ENV
+    );
+    assert.equal(cookied.headers.get("x-voteapp-edge-cache"), null);
+    assert.equal(calls.length, 2);
+    // The rest of the proxy pipeline (client-IP stamping) is unaffected.
+    assert.equal(calls[1].headers.get(CLIENT_IP_HEADER), "203.0.113.9");
+
+    // API paths (even GET), non-GET, and unlisted paths never touch cache.
+    const api = await worker.fetch(new Request("https://electionssimplified.com/api/elections"), ENV);
+    const post = await worker.fetch(
+      new Request("https://electionssimplified.com/ballot", { method: "POST", body: "{}" }),
+      ENV
+    );
+    const unlisted = await worker.fetch(new Request("https://electionssimplified.com/me/picks"), ENV);
+    for (const response of [api, post, unlisted]) {
+      assert.equal(response.headers.get("x-voteapp-edge-cache"), null);
+    }
+    assert.equal(calls.length, 5);
   });
 });
 
