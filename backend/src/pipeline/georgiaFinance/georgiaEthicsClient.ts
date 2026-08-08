@@ -737,11 +737,19 @@ export type GeorgiaTransactionWindowResult = {
   toDate: string;
   uniqueRowCount: number;
   passCount: number;
+  // True when this window returned zero rows for the expected filer while the
+  // name filter matched only foreign filers. Inside a window that is the
+  // EXPECTED shape of a quiet quarter (the filer had no activity, other
+  // filers matching the name substring did), so it is tolerated and counted;
+  // the unbounded sweep stays strict and remains the filter-effectiveness
+  // authority for the whole pull.
+  filterIneffective: boolean;
 };
 
 export type GeorgiaWindowedTransactionFetchResult = {
   rows: GeorgiaTransactionRow[];
   windows: GeorgiaTransactionWindowResult[];
+  windowFilterIneffectiveCount: number;
   sweepPassCount: number;
   // Rows only the unbounded sweep surfaced — out-of-window dates (the store
   // holds garbage dates on valid rows) or rows the dated queries reproducibly
@@ -801,13 +809,35 @@ export async function fetchGeorgiaTransactionRowsWindowed(
 
   const rowsById = new Map<number, GeorgiaTransactionRow>();
   const windows: GeorgiaTransactionWindowResult[] = [];
+  let windowFilterIneffectiveCount = 0;
   for (const bounds of windowBounds) {
-    const result = await fetchGeorgiaTransactionRowsStable(
-      transport,
-      host,
-      { filerName: input.filerName, fromDate: bounds.fromDate, toDate: bounds.toDate },
-      { expectedFilerEntityIds: input.expectedFilerEntityIds, maxPasses: input.maxPasses }
-    );
+    let result: GeorgiaStableTransactionFetchResult;
+    try {
+      result = await fetchGeorgiaTransactionRowsStable(
+        transport,
+        host,
+        { filerName: input.filerName, fromDate: bounds.fromDate, toDate: bounds.toDate },
+        { expectedFilerEntityIds: input.expectedFilerEntityIds, maxPasses: input.maxPasses }
+      );
+    } catch (error) {
+      // A quiet window legitimately holds zero rows for the expected filer
+      // while foreign filers still match the name substring — that shape is
+      // indistinguishable from an ineffective filter at window scope, so it
+      // is tolerated here and counted; only the sweep's verdict is
+      // authoritative. Every other failure still fails the pull.
+      if (error instanceof GeorgiaEthicsClientError && error.code === "filter_ineffective") {
+        windowFilterIneffectiveCount += 1;
+        windows.push({
+          fromDate: bounds.fromDate,
+          toDate: bounds.toDate,
+          uniqueRowCount: 0,
+          passCount: 0,
+          filterIneffective: true,
+        });
+        continue;
+      }
+      throw error;
+    }
     for (const row of result.rows) {
       if (!rowsById.has(row.transactionId)) {
         rowsById.set(row.transactionId, row);
@@ -818,6 +848,7 @@ export async function fetchGeorgiaTransactionRowsWindowed(
       toDate: bounds.toDate,
       uniqueRowCount: result.rows.length,
       passCount: result.passCount,
+      filterIneffective: false,
     });
   }
 
@@ -846,6 +877,7 @@ export async function fetchGeorgiaTransactionRowsWindowed(
   return {
     rows: [...rowsById.values()],
     windows,
+    windowFilterIneffectiveCount,
     sweepPassCount: sweep.passCount,
     sweepOnlyRowCount,
     sweepMissedRowCount,

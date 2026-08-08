@@ -629,3 +629,56 @@ shape) and lands first; only the D3 map table waits for the spike.
   boundary days + the mandatory unbounded sweep union with sweep-only/
   sweep-missed diagnostics; docs state explicitly that equal id sets prove
   reproducibility, not completeness — reconciliation (PR 4) is the proof.
+- 2026-08-07: **PR 4 implemented** — direct finance.
+  `georgiaDirectContributionAggregator` (D5/A8: per-host subtype codes pinned
+  from spike bytes — PeachFile ITMY/NITMY/INKIND, archive MOI/NIM/IKD/ANO;
+  occupation = itemized individuals via the per-host individual code with an
+  explicit "Unknown" bucket for blank/placeholder filings; size buckets =
+  every positive itemized row; unitemized/in-kind/anonymous/returns/unpinned
+  subtypes stay IN the synced-row sum and out of the buckets — the index
+  total includes loans, interest, and unitemized money and nets returns;
+  unrecognized statuses excluded from everything + counted; no transaction
+  date ever gates anything). `georgiaCandidateFinanceSync`: PeachFile index
+  row (matched on the linked filerEntityId) is the summary source AND the
+  reconciliation anchor; archive side = identity-map rows when any archive
+  candidate-committee row exists (a lone exclusion row suppresses discovery),
+  else discovery from the archive candidate index (same person via the
+  middle-evidence matcher, cycle label leads with the election year,
+  `filerStatusCode` ≠ "T" — excludes Carr's terminated legacy 2750, keeps
+  757274; discovery is in-memory only, nothing writes to the map); report
+  inventories both hosts (PeachFile keyed by committee name — the person-name
+  form returns zero rows there, archive keyed per source filer name), scoped
+  by registration guid, D8 union, per-host selected guid sets including
+  child-version guids (spike artifacts confirm rows reference both parent and
+  version guids and all 12 timed guids resolve to FPTBDR inventory rows);
+  windowed+sweep TCON pulls with the window range derived from the earliest
+  inventory period start; rows selected by report-group guid, superseded
+  archive copies and unassigned groups excluded + counted; reconciliation
+  guard |sum − index total| ≤ max($2,500, 2%) (Carr's migrated-copy drift is
+  0.40%) — breach throws and keeps the previous snapshot. Client gained
+  per-window filter_ineffective tolerance (a quiet window with only foreign
+  name-matches is expected; the sweep stays the authority) and a whole-pull
+  filter_ineffective on one leg is treated as zero rows with the guard
+  arbitrating. Summary write per D4: index totals to
+  totalReceipts/totalDisbursements/cashOnHand, direct_contribution_total
+  NULL, outside legs untouched (undefined, never []). Due list now carries
+  link_source so provenance survives the write-back; batch sync (tennessee
+  shape, auto-link first, per-candidate isolation, default 10
+  candidates/run — Georgia candidates cost hundreds of paced requests);
+  `syncDueGeorgiaCandidateFinance` script + `georgia-candidates:finance:sync-due`
+  npm script gated on the sync flag.
+- 2026-08-07: **PR 4 review round** (external, all three findings verified
+  against the code before acting): (1) reconciliation floor cut $2,500 →
+  $100 — the relative share is the real absorber (drift scales with the
+  money) and the old floor dominated the tolerance for every filer under
+  $125k, exactly the small campaigns it endangered — plus an explicit
+  zero-coverage guard: a nonzero index total with zero selected rows is
+  PROOF of a broken pull (the index is the exact sum of the store's rows,
+  A6), so no tolerance may excuse it and the stored breakdowns are never
+  deleted on a dead pull's say-so. (2) index-row selection now applies the
+  election-cycle gate that created the link (entity id alone is
+  API-order-dependent once a committee re-registers for a later cycle — the
+  archive's filer 2750 shows the two-rows-one-entity shape) and requires
+  exactly one surviving row. (3) null official totals fail closed instead
+  of `?? 0` — no-money filers report 0.0, never null, and the summary
+  policy is "replace", so a null would overwrite stored values.

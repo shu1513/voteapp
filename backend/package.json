@@ -263,6 +263,7 @@
     "ohio-candidates:finance:scheduler:worker": "tsx src/scripts/runOhioCandidateFinanceSyncSchedulerWorker.ts",
     "ohio-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerOhioCandidateFinanceSync.ts",
     "north-carolina-candidates:finance:raw:refresh": "tsx src/scripts/refreshNorthCarolinaNcsbeCampaignFinanceRawData.ts",
+    "georgia-candidates:finance:sync-due": "tsx src/scripts/syncDueGeorgiaCandidateFinance.ts",
     "maine-candidates:finance:sync-due": "tsx src/scripts/syncDueMaineCandidateFinance.ts",
     "maine-candidates:finance:raw:refresh": "tsx src/scripts/refreshMaineCampaignFinanceRawData.ts",
     "maine-candidates:finance:raw:scheduler:upsert": "tsx src/scripts/upsertMaineCfisRawDataRefreshScheduler.ts",
