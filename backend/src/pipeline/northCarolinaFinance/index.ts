@@ -1,4 +1,6 @@
 export * from "./northCarolinaBallotLookupFinanceLoader.js";
+export * from "./northCarolinaCandidateCommitteeAutoLinker.js";
+export * from "./northCarolinaCandidateCommitteeResolver.js";
 export * from "./northCarolinaFinanceEligibleOffices.js";
 export * from "./northCarolinaFinanceWriter.js";
 export * from "./northCarolinaNcsbeArtifactAcquisition.js";

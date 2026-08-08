@@ -605,7 +605,27 @@ The acquisition spike is the gate before parser/aggregator work.
   (11 fixtures). Decision 8 amendment-counter probe answered (none exists;
   cover `FiledDate` is the chronology bonus); decision 15 manifest revised;
   new blank-`IsAmendment` noise-row finding folded into decision 8
-- [ ] PR 5 resolver + auto-link
+- [x] PR 5 resolver + auto-link — 2026-08-07, fixture-driven (no portal
+  hits): `northCarolinaCandidateCommitteeResolver.ts` (decision 5 fail-closed
+  direct link over committee-search rows: strict `CandName` name-key match
+  with middle/suffix conflict guard — ohio machinery + NC digit-suffix
+  handling ("SIDNEY RALPH PIERCE 3" = III), restricted to
+  `ACTIVE (NON-EXEMPT)` + STA-prefixed `-C-` SBoEIDs; county prefixes are a
+  live mislink hazard (active same-name county sheriff in the pierce
+  fixture) so non-STA rows never match — a hypothetical county-filed
+  legislative committee goes unmatched → manual link, never mislinked;
+  multiple matches quarantine as ambiguous; match carries `orgGroupId` so
+  the sync can fetch inventories without a second search) +
+  `northCarolinaCandidateCommitteeAutoLinker.ts` (ohio keyset-cursor
+  full-window walk over `nc_candidate_finance_links`, with a per-candidate
+  `loadCandidateSearchRows` seam — NCSBE is searched per candidate, so the
+  PR 7 sync owns pacing/caching and this module never fetches; loader
+  returns rows + the search URL as link provenance). OGID is deliberately
+  NOT persisted on the link row: manual links are keyed by SBoEID alone
+  (decision 5), so the PR 7 sync must derive SBoEID→OGID for every link
+  kind — exact-SBoEID filter over the per-cycle committee-search artifact
+  ("Required artifacts per cycle Y") — while same-run auto-link results
+  carry `orgGroupId` so a fresh resolution skips that lookup
 - [ ] PR 6 aggregators
 - [ ] PR 7 sync + batchSync + scripts
 - [ ] PR 8 outside-group funders/industries (#3)
