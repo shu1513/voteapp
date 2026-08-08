@@ -72,11 +72,19 @@ const INPUT_CANDIDATES = APP_CANDIDATE_ROWS.map((row) => ({
   contestCode: "bos04",
 }));
 
-// Routes by SQL shape; records calls for assertions.
-function fakeDb() {
+// Routes by SQL shape; records calls for assertions. connect() hands back a
+// client sharing the same query fn, so transactional statements are visible
+// in the same call log.
+function fakeDb(overrides?: {
+  onSql?: (sql: string) => { rows: unknown[] } | undefined;
+}) {
   const calls: Array<{ sql: string; params: unknown[] }> = [];
   const query = vi.fn(async (sql: string, params?: unknown[]) => {
     calls.push({ sql, params: params ?? [] });
+    const overridden = overrides?.onSql?.(sql);
+    if (overridden) return overridden;
+    if (sql === "BEGIN" || sql === "COMMIT" || sql === "ROLLBACK")
+      return { rows: [] };
     if (sql.includes("FROM public.candidate_elections"))
       return { rows: APP_CANDIDATE_ROWS };
     if (sql.includes("link_source='manual'") && sql.startsWith("SELECT"))
@@ -91,7 +99,11 @@ function fakeDb() {
       return { rows: [] };
     throw new Error(`unexpected sql: ${sql}`);
   });
-  return { db: { query }, calls };
+  const db = {
+    query,
+    connect: async () => ({ query, release: vi.fn() }) as never,
+  };
+  return { db, calls, query };
 }
 
 const manifestFetch = (async (url: RequestInfo | URL) => {
@@ -229,5 +241,39 @@ describe("autoLinkMissingSanFranciscoCandidateFinanceLinks", () => {
     for (const result of results)
       expect(result).toMatchObject({ status: "error" });
     expect(db.query).not.toHaveBeenCalled();
+  });
+
+  it("rolls the whole election back when a write inside the transaction fails", async () => {
+    const { db, calls } = fakeDb({
+      onSql: (sql) => {
+        if (
+          sql.includes(
+            "DELETE FROM public.sfc_candidate_finance_outside_committee_links",
+          )
+        )
+          throw new Error("disk full");
+        return undefined;
+      },
+    });
+    const { results, diagnostics } =
+      await autoLinkMissingSanFranciscoCandidateFinanceLinks({
+        db,
+        now: new Date("2026-08-07T00:00:00Z"),
+        candidates: INPUT_CANDIDATES,
+        manifestClientOptions: { fetchImpl: manifestFetch, retryCount: 0 },
+        openDataClientOptions: {
+          fetchImpl: filerRegistryFetch("Candidate or Officeholder"),
+          retryCount: 0,
+        },
+      });
+    expect(calls.map((call) => call.sql)).toContain("ROLLBACK");
+    expect(results).toHaveLength(3);
+    for (const result of results)
+      expect(result).toMatchObject({
+        status: "error",
+        reason: expect.stringContaining("rolled back"),
+      });
+    expect(diagnostics.electionErrors).toHaveLength(1);
+    expect(diagnostics.flaggedLinkIds).toEqual([]);
   });
 });

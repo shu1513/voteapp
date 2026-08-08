@@ -47,7 +47,10 @@ export async function upsertSanFranciscoFinanceLink(input: {
   const link = input.link;
   const linkStatus = link.linkStatus ?? "active";
   const linkSource = link.linkSource ?? "manual";
-  if (linkSource === "sfec_dashboard" && linkStatus === "active") {
+  // Manual protection applies to EVERY automatic write, not only active ones:
+  // a needs_review upsert with the manual link's fppc_id would otherwise hit
+  // ON CONFLICT and rewrite the operator's row to sfec_dashboard/needs_review.
+  if (linkSource === "sfec_dashboard") {
     const manual = await input.db.query<{ id: string; fppc_id: string }>(
       `SELECT id::text,fppc_id FROM public.sfc_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_status='active' AND link_source='manual' LIMIT 1`,
       [link.candidateId, link.electionId],

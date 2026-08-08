@@ -159,6 +159,7 @@ Flags, default off, LA-pattern pair:
 - `sanFranciscoCandidateFinanceSync.ts` — one candidate/election: manifest fetch, DataSF fetches, aggregate, deterministic + cached-manual industry classification only (no classifier injected; unresolved labels ≥ the existing threshold are enqueued to the manual industry-label due queue), stage, health-check, write, return diagnostics (raw-vs-manifest reconciliation difference included).
 - Source-health checks before any write: dataset `data_as_of`/`data_loaded_at` recency vs the filings index; summary `sync_flag` validation; cross-dataset freshness coherence; previous-vs-new total anomaly bounds (an order-of-magnitude drop on an unchanged filing set aborts the write and reports).
 - `sanFranciscoCandidateFinanceBatchSync.ts` — LA due-query pattern with Phase 2 geography predicates: auto-link missing links first (warn-and-continue), sync due links stalest-first; defaults 25 candidates, 1-day staleness, 45-day lookback, 730-day lookahead; skip `withdrawn`/`lost`. Manifest contest files cached per batch run.
+- **Election-level refresh requirement (from Phase 3 review):** the Phase 3 auto-link only visits elections that still have candidates *missing* active links, so a fully linked election stops receiving its wholesale refresh — outside relations and manifest-disappearance flags would go stale. The due-links selector here must therefore drive per-election manifest refreshes off active-link staleness (`last_verified_at`), independent of missing-link discovery.
 
 ## Phase 7: scheduling, scripts, backfill
 

@@ -77,15 +77,36 @@ describe("upsertSanFranciscoFinanceLink", () => {
 
   it("writes a needs_review link without touching active links", async () => {
     const db = {
-      query: vi.fn().mockResolvedValueOnce({ rows: [{ id: "link-2" }] }),
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [] }) // manual-link probe
+        .mockResolvedValueOnce({ rows: [{ id: "link-2" }] }),
     };
     const result = await upsertSanFranciscoFinanceLink({
       db,
       link: { ...LINK, linkStatus: "needs_review" },
     });
     expect(result.linkId).toBe("link-2");
+    expect(db.query).toHaveBeenCalledTimes(2);
+    expect(db.query.mock.calls[1]![0]).toContain("INSERT INTO");
+  });
+
+  it("protects a manual link from a needs_review automatic write too", async () => {
+    // Without status-independent protection, this upsert would hit
+    // ON CONFLICT on the manual row and rewrite it to sfec_dashboard.
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [{ id: "manual-1", fppc_id: "1489126" }],
+        }),
+    };
+    const result = await upsertSanFranciscoFinanceLink({
+      db,
+      link: { ...LINK, linkStatus: "needs_review" },
+    });
+    expect(result.linkId).toBe("manual-1");
     expect(db.query).toHaveBeenCalledTimes(1);
-    expect(db.query.mock.calls[0]![0]).toContain("INSERT INTO");
   });
 });
 

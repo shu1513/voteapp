@@ -9,6 +9,12 @@
 // slice — link upserts are idempotent for already-linked candidates, and a
 // candidate whose manifest relations vanished gets their relation rows
 // cleared rather than left stale.
+//
+// Ordering rule: every remote read (manifest fetch, filer-registry
+// cross-checks) happens BEFORE the election's database writes, and the
+// writes apply in one transaction per election — a mid-refresh failure rolls
+// the election back instead of leaving deactivated links or deleted
+// relation rows behind.
 
 import type { Pool, PoolClient } from "pg";
 import {
@@ -36,10 +42,12 @@ import {
   flagSanFranciscoFinanceLinksMissingFromManifest,
   replaceSanFranciscoOutsideCommitteeLinks,
   upsertSanFranciscoFinanceLink,
+  type SanFranciscoFinanceLinkInput,
   type SanFranciscoOutsideCommitteeLinkInput,
 } from "./sanFranciscoFinanceWriter.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
+type PoolLike = Queryable & { connect: () => Promise<PoolClient> };
 
 export type SanFranciscoFinanceAutoLinkCandidate = {
   candidateId: string;
@@ -167,6 +175,19 @@ async function listElectionAppCandidates(
   }));
 }
 
+async function listElectionManualActiveLinks(
+  db: Queryable,
+  electionId: string,
+): Promise<Map<string, string>> {
+  const result = await db.query<{ candidate_id: string; fppc_id: string }>(
+    `SELECT candidate_id::text,fppc_id FROM public.sfc_candidate_finance_links WHERE election_id=$1::uuid AND link_status='active' AND link_source='manual'`,
+    [electionId],
+  );
+  return new Map(
+    result.rows.map((row) => [row.candidate_id, row.fppc_id]),
+  );
+}
+
 // The manifest is the identity source; the filer registry is the cross-check
 // that the committee really is candidate-controlled. A registry row that is
 // missing (nightly lag) or typed as anything else fails closed to
@@ -190,7 +211,7 @@ async function crossCheckFilerType(
 }
 
 export async function autoLinkMissingSanFranciscoCandidateFinanceLinks(input: {
-  db: Queryable;
+  db: PoolLike;
   now: Date;
   candidates: readonly SanFranciscoFinanceAutoLinkCandidate[];
   manifestClientOptions?: SanFranciscoDashboardManifestClientOptions;
@@ -222,6 +243,8 @@ export async function autoLinkMissingSanFranciscoCandidateFinanceLinks(input: {
       for (const candidateId of inputCandidateIds)
         results.push({ candidateId, electionId, status: "error", reason });
     };
+
+    // --- Remote reads and planning: no database writes yet. ---
     let manifest: SanFranciscoContestManifest;
     try {
       manifest = await getSanFranciscoContestManifest(
@@ -238,8 +261,13 @@ export async function autoLinkMissingSanFranciscoCandidateFinanceLinks(input: {
       continue;
     }
     let appCandidates: SanFranciscoAppCandidate[];
+    let manualLinkFppcIdByCandidateId: Map<string, string>;
     try {
       appCandidates = await listElectionAppCandidates(input.db, electionId);
+      manualLinkFppcIdByCandidateId = await listElectionManualActiveLinks(
+        input.db,
+        electionId,
+      );
     } catch (error) {
       reportError(error instanceof Error ? error.message : String(error));
       continue;
@@ -249,11 +277,11 @@ export async function autoLinkMissingSanFranciscoCandidateFinanceLinks(input: {
       appCandidates,
     });
     const candidateIdByFppcId = new Map<string, string>();
-    const linkedFppcIds: string[] = [];
     const statusByCandidateId = new Map<
       string,
       { status: "linked" | "needs_review" | "error"; reason?: string }
     >();
+    const linkPlans: SanFranciscoFinanceLinkInput[] = [];
     for (const resolution of resolutions) {
       if (resolution.status !== "matched") {
         diagnostics.unmatchedManifestCandidates.push({
@@ -265,46 +293,49 @@ export async function autoLinkMissingSanFranciscoCandidateFinanceLinks(input: {
         continue;
       }
       const manifestCandidate = resolution.manifestCandidate;
+      candidateIdByFppcId.set(manifestCandidate.fppcId, resolution.candidateId);
+      // Manual links are decided before the transaction so a conflict skips
+      // this candidate's plan instead of aborting the whole election.
+      const manualFppcId = manualLinkFppcIdByCandidateId.get(
+        resolution.candidateId,
+      );
+      if (manualFppcId !== undefined) {
+        if (manualFppcId === manifestCandidate.fppcId)
+          statusByCandidateId.set(resolution.candidateId, { status: "linked" });
+        else
+          statusByCandidateId.set(resolution.candidateId, {
+            status: "error",
+            reason: `Manifest committee ${manifestCandidate.fppcId} conflicts with protected manual link ${manualFppcId}`,
+          });
+        continue;
+      }
       try {
         const crossCheck = await crossCheckFilerType(
           manifestCandidate.fppcId,
           input.openDataClientOptions,
         );
-        await upsertSanFranciscoFinanceLink({
-          db: input.db,
-          link: {
-            candidateId: resolution.candidateId,
-            electionId,
-            electionYear: election.electionYear,
-            candidateNameNormalized:
-              normalizeSanFranciscoCandidateNameForStorage(
-                manifestCandidate.candidateName,
-              ),
-            contestCode: election.contestCode,
-            fppcId: manifestCandidate.fppcId,
-            filerNid: manifestCandidate.filerNid,
-            committeeName: manifestCandidate.committeeName,
-            linkStatus: crossCheck.ok ? "active" : "needs_review",
-            linkSource: "sfec_dashboard",
-            sourceUrl: manifest.sourceUrl,
-            lastVerifiedAt: input.now,
-          },
+        linkPlans.push({
+          candidateId: resolution.candidateId,
+          electionId,
+          electionYear: election.electionYear,
+          candidateNameNormalized: normalizeSanFranciscoCandidateNameForStorage(
+            manifestCandidate.candidateName,
+          ),
+          contestCode: election.contestCode,
+          fppcId: manifestCandidate.fppcId,
+          filerNid: manifestCandidate.filerNid,
+          committeeName: manifestCandidate.committeeName,
+          linkStatus: crossCheck.ok ? "active" : "needs_review",
+          linkSource: "sfec_dashboard",
+          sourceUrl: manifest.sourceUrl,
+          lastVerifiedAt: input.now,
         });
-        candidateIdByFppcId.set(
-          manifestCandidate.fppcId,
+        statusByCandidateId.set(
           resolution.candidateId,
+          crossCheck.ok
+            ? { status: "linked" }
+            : { status: "needs_review", reason: crossCheck.reason },
         );
-        if (crossCheck.ok) {
-          linkedFppcIds.push(manifestCandidate.fppcId);
-          statusByCandidateId.set(resolution.candidateId, {
-            status: "linked",
-          });
-        } else {
-          statusByCandidateId.set(resolution.candidateId, {
-            status: "needs_review",
-            reason: crossCheck.reason,
-          });
-        }
       } catch (error) {
         statusByCandidateId.set(resolution.candidateId, {
           status: "error",
@@ -323,15 +354,22 @@ export async function autoLinkMissingSanFranciscoCandidateFinanceLinks(input: {
       relationsByCandidateId.set(appCandidate.candidateId, []);
     for (const relation of manifest.outsideRelations) {
       let targetCandidateId: string | null = null;
+      let targetAmbiguous = false;
       if (relation.candidateFppcId) {
         targetCandidateId =
-          candidateIdByFppcId.get(relation.candidateFppcId) ??
-          appCandidates.find((candidate) =>
+          candidateIdByFppcId.get(relation.candidateFppcId) ?? null;
+        if (!targetCandidateId) {
+          const idMatches = appCandidates.filter((candidate) =>
             candidate.stateFilingIds.includes(relation.candidateFppcId!),
-          )?.candidateId ??
-          null;
+          );
+          // Same fail-closed rule as the committee resolver: an id shared by
+          // two candidates is a data error, never a coin flip.
+          if (idMatches.length === 1)
+            targetCandidateId = idMatches[0]!.candidateId;
+          else if (idMatches.length > 1) targetAmbiguous = true;
+        }
       }
-      if (!targetCandidateId) {
+      if (!targetCandidateId && !targetAmbiguous) {
         const nameMatches = appCandidates.filter((candidate) =>
           sanFranciscoCandidateNameMatches(
             candidate.displayName,
@@ -358,42 +396,45 @@ export async function autoLinkMissingSanFranciscoCandidateFinanceLinks(input: {
         sourceUrl: manifest.sourceUrl,
       });
     }
-    for (const [candidateId, relations] of relationsByCandidateId) {
-      try {
+
+    // --- Transactional apply: links, relations, disappearance flags. ---
+    const client = await input.db.connect();
+    let flaggedLinkIds: string[] = [];
+    try {
+      await client.query("BEGIN");
+      for (const plan of linkPlans)
+        await upsertSanFranciscoFinanceLink({ db: client, link: plan });
+      for (const [candidateId, relations] of relationsByCandidateId)
         await replaceSanFranciscoOutsideCommitteeLinks({
-          db: input.db,
+          db: client,
           candidateId,
           electionId,
           electionYear: election.electionYear,
           relations,
           lastVerifiedAt: input.now,
         });
-      } catch (error) {
-        const existing = statusByCandidateId.get(candidateId);
-        if (!existing || existing.status === "linked")
-          statusByCandidateId.set(candidateId, {
-            status: "error",
-            reason: `Outside relation write failed: ${error instanceof Error ? error.message : String(error)}`,
-          });
-      }
-    }
-    try {
-      diagnostics.flaggedLinkIds.push(
-        ...(await flagSanFranciscoFinanceLinksMissingFromManifest({
-          db: input.db,
-          electionId,
-          presentFppcIds: manifest.candidates.map(
-            (candidate) => candidate.fppcId,
-          ),
-        })),
-      );
+      flaggedLinkIds = await flagSanFranciscoFinanceLinksMissingFromManifest({
+        db: client,
+        electionId,
+        presentFppcIds: manifest.candidates.map(
+          (candidate) => candidate.fppcId,
+        ),
+      });
+      await client.query("COMMIT");
     } catch (error) {
+      await client.query("ROLLBACK").catch(() => undefined);
+      const message = error instanceof Error ? error.message : String(error);
       diagnostics.electionErrors.push({
         electionId,
         contestCode: election.contestCode,
-        message: `Manifest-disappearance flagging failed: ${error instanceof Error ? error.message : String(error)}`,
+        message: `Election refresh rolled back: ${message}`,
       });
+      reportError(`Election refresh rolled back: ${message}`);
+      continue;
+    } finally {
+      client.release();
     }
+    diagnostics.flaggedLinkIds.push(...flaggedLinkIds);
     for (const candidateId of inputCandidateIds) {
       const status = statusByCandidateId.get(candidateId);
       results.push(

@@ -63,6 +63,14 @@ describe("sanFranciscoCandidateNameMatches", () => {
     expect(
       sanFranciscoCandidateNameMatches("Michael T. Nguyen", "MICHAEL J NGUYEN"),
     ).toBe(false);
+    // A conflict past the first middle token still rejects: agreeing on
+    // MICHAEL must not hide the ANDREW-vs-BERNARD disagreement.
+    expect(
+      sanFranciscoCandidateNameMatches(
+        "John Michael Andrew Smith",
+        "SMITH, JOHN MICHAEL BERNARD",
+      ),
+    ).toBe(false);
     // The two McCoys of November 2026 (D2 and D8) must never cross-match.
     expect(sanFranciscoCandidateNameMatches("Gary McCoy", "GUY MCCOY")).toBe(
       false,
@@ -70,6 +78,18 @@ describe("sanFranciscoCandidateNameMatches", () => {
     expect(sanFranciscoCandidateNameMatches("Alan Wong", "NATALIE GEE")).toBe(
       false,
     );
+  });
+
+  it("trusts the longest surname alignment for compound surnames", () => {
+    // The bogus DYKE-surname split reads VAN-vs-B as a middle conflict; the
+    // real VAN DYKE alignment is weak and must win.
+    expect(
+      sanFranciscoCandidateNameMatches("Mary Van Dyke", "MARY B VAN DYKE"),
+    ).toBe(true);
+    // A genuine conflict at the longest alignment still rejects.
+    expect(
+      sanFranciscoCandidateNameMatches("Mary C. Van Dyke", "MARY B VAN DYKE"),
+    ).toBe(false);
   });
 });
 

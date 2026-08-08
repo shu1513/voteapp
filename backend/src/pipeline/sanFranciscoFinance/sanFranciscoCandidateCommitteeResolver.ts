@@ -97,33 +97,44 @@ function personNameVariants(value: string): ParsedPersonName[] {
 }
 
 // Middle-name evidence between two parses whose first and last already agree:
-// "strong" when the middles corroborate (equal, or an initial matching the
-// full form), "conflict" when both sides carry middles that disagree, "weak"
-// when at least one side has no middle information.
+// "strong" when every shared-position middle corroborates (equal, or an
+// initial matching the full form), "conflict" when any shared position
+// disagrees, "weak" when at least one side has no middle information. All
+// shared positions are compared — "MICHAEL ANDREW" vs "MICHAEL BERNARD" is a
+// conflict even though the first tokens agree.
 function middleNameEvidence(
   a: string[],
   b: string[],
 ): "strong" | "weak" | "conflict" {
   if (a.length === 0 || b.length === 0) return "weak";
-  const tokenA = a[0]!;
-  const tokenB = b[0]!;
-  if (tokenA === tokenB) return "strong";
-  if (tokenA.length === 1 && tokenB.startsWith(tokenA)) return "strong";
-  if (tokenB.length === 1 && tokenA.startsWith(tokenB)) return "strong";
-  return "conflict";
+  const shared = Math.min(a.length, b.length);
+  for (let index = 0; index < shared; index += 1) {
+    const tokenA = a[index]!;
+    const tokenB = b[index]!;
+    if (tokenA === tokenB) continue;
+    if (tokenA.length === 1 && tokenB.startsWith(tokenA)) continue;
+    if (tokenB.length === 1 && tokenA.startsWith(tokenB)) continue;
+    return "conflict";
+  }
+  return "strong";
 }
 
-// Aggregation across all variant pairs: any strong pair matches; otherwise
-// any middle conflict rejects (the first+last fallback is only trusted when
-// NO pair carried contradicting middle evidence); otherwise a first+last
+// Aggregation across all variant pairs: any strong pair matches. Otherwise
+// weak/conflict evidence is judged only at the LONGEST aligned surname —
+// a compound surname emits bogus shorter splits ("Mary Van Dyke" vs
+// "MARY B VAN DYKE" aligns correctly on "VAN DYKE" but the "DYKE"-surname
+// split reads VAN-vs-B as a middle conflict), and the longest alignment is
+// the real one. At that length, any conflict rejects; otherwise a first+last
 // agreement with middle information missing on a side matches.
 export function sanFranciscoCandidateNameMatches(
   appCandidateName: string,
   manifestCandidateName: string,
 ): boolean {
   const appVariants = personNameVariants(appCandidateName);
-  let sawWeak = false;
-  let sawConflict = false;
+  const evidenceBySurnameLength = new Map<
+    number,
+    { weak: boolean; conflict: boolean }
+  >();
   for (const manifestVariant of personNameVariants(manifestCandidateName)) {
     for (const appVariant of appVariants) {
       if (
@@ -136,11 +147,19 @@ export function sanFranciscoCandidateNameMatches(
         manifestVariant.middles,
       );
       if (evidence === "strong") return true;
-      if (evidence === "conflict") sawConflict = true;
-      else sawWeak = true;
+      const surnameLength = appVariant.last.split(" ").length;
+      const bucket = evidenceBySurnameLength.get(surnameLength) ?? {
+        weak: false,
+        conflict: false,
+      };
+      bucket[evidence] = true;
+      evidenceBySurnameLength.set(surnameLength, bucket);
     }
   }
-  return sawWeak && !sawConflict;
+  if (evidenceBySurnameLength.size === 0) return false;
+  const longest = Math.max(...evidenceBySurnameLength.keys());
+  const decisive = evidenceBySurnameLength.get(longest)!;
+  return decisive.weak && !decisive.conflict;
 }
 
 // Stable identity for a manifest outside committee that carries no FPPC id.
