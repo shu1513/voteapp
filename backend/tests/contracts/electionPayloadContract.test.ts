@@ -273,6 +273,74 @@ describe("parseCanonicalElectionPayload", () => {
         "payload.entries[0] must omit discovery_contest_family; us_house districts research one combined pass with no per-entry family",
     });
   });
+
+  it("accepts partisan Arizona county judicial and clerk contests", () => {
+    // Yuma County, 2026-08-08: partisanship policy rejected the whole payload
+    // because Arizona was missing from the partisan-judicial list and "Clerk of
+    // Superior Court" was being read as a judgeship.
+    const result = parseCanonicalElectionPayload({
+      district_id: "d-az",
+      district_name: "Yuma County, Arizona",
+      district_type: "county",
+      state: "AZ",
+      entries: [
+        {
+          official_ballot_title: "Clerk of Superior Court",
+          election_date: "2026-11-03",
+          race_type: "office",
+          discovery_contest_family: "non_judicial_office",
+          is_partisan: true,
+          sources: ["https://www.yumacountyaz.gov/government/election-services/candidate-listing"],
+        },
+        {
+          official_ballot_title: "Judge of Superior Court, Division 2",
+          election_date: "2026-11-03",
+          race_type: "office",
+          discovery_contest_family: "judicial_office",
+          is_partisan: true,
+          sources: ["https://www.yumacountyaz.gov/government/election-services/candidate-listing"],
+        },
+        {
+          official_ballot_title: "Justice of the Peace, Precinct 1",
+          election_date: "2026-11-03",
+          race_type: "office",
+          discovery_contest_family: "judicial_office",
+          is_partisan: true,
+          sources: ["https://www.yumacountyaz.gov/government/election-services/candidate-listing"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries.map((entry) => entry.is_partisan)).toEqual([true, true, true]);
+    }
+  });
+
+  it("rejects a nonpartisan Arizona county judicial contest", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d-az",
+      district_name: "Yuma County, Arizona",
+      district_type: "county",
+      state: "AZ",
+      entries: [
+        {
+          official_ballot_title: "Judge of Superior Court, Division 3",
+          election_date: "2026-11-03",
+          race_type: "office",
+          discovery_contest_family: "judicial_office",
+          is_partisan: false,
+          sources: ["https://www.yumacountyaz.gov/government/election-services/candidate-listing"],
+        },
+      ],
+    });
+
+    expect(result).toEqual({
+      ok: false,
+      reason:
+        "payload.entries[0].is_partisan=false contradicts fixed partisanship policy for AZ county (expected true)",
+    });
+  });
 });
 
 describe("parseAiElectionEntriesPayload", () => {

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   isJudicialOfficeTitle,
   isJudicialRetentionTitle,
+  resolveCandidateContestPartisanshipByPolicy,
   resolveElectionIsPartisan,
   shouldIncludeCandidatePartyByPolicy,
   shouldAskIsPartisanInPrompt,
@@ -228,6 +229,144 @@ describe("electionPartisanshipPolicy", () => {
       officialBallotTitle: "Shall Justice Jane Doe be retained in office?",
     });
     expect(includeParty).toBe(false);
+  });
+
+  it("forces Arizona county judicial contests to partisan", () => {
+    // Yuma County's official candidate listing carries a REP/DEM party column
+    // for these offices, and its July 2026 primary results head the contests
+    // "REP Judge of Superior Court Div. 2" / "DEM Justice of the Peace Prec. 2".
+    for (const title of [
+      "Judge of Superior Court, Division 2",
+      "Justice of the Peace, Precinct 1",
+    ]) {
+      expect(
+        resolveElectionIsPartisan({
+          draft: {
+            district_id: "d-az",
+            district_name: "Yuma County, Arizona",
+            district_type: "county",
+            state: "AZ",
+          },
+          contestFamily: "judicial_office",
+          raceType: "office",
+          officialBallotTitle: title,
+          aiValue: false,
+        })
+      ).toBe(true);
+
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "county",
+          state: "AZ",
+          officialBallotTitle: title,
+        })
+      ).toBe(true);
+
+      expect(
+        shouldIncludeCandidatePartyByPolicy({
+          districtType: "county",
+          state: "AZ",
+          officialBallotTitle: title,
+        })
+      ).toBe(true);
+    }
+  });
+
+  it("keeps Arizona merit-selection retention contests nonpartisan", () => {
+    // Maricopa, Pima, and Pinal judges — and every Arizona appellate judge —
+    // stand for retention instead. Ariz. Const. art. 6 § 38 fixes the ballot
+    // question as "Shall (name) of the (applicable) court be retained in
+    // office?", so the retention guard has the keyword in every real title.
+    const retentionTitles = [
+      "Shall Judge Jane Doe of the Superior Court in Maricopa County be retained in office?",
+      "Shall Justice John Roe of the Supreme Court of Arizona be retained in office?",
+      "Judge of the Superior Court in Pima County (Retention) - Jane Doe",
+      "Arizona Court of Appeals, Division One Retention - John Roe",
+    ];
+
+    for (const title of retentionTitles) {
+      expect(isJudicialRetentionTitle(title)).toBe(true);
+
+      for (const districtType of ["county", "statewide"] as const) {
+        expect(
+          resolveElectionIsPartisan({
+            draft: {
+              district_id: "d-az",
+              district_name: "Maricopa County, Arizona",
+              district_type: districtType,
+              state: "AZ",
+            },
+            contestFamily: "judicial_office",
+            raceType: "office",
+            officialBallotTitle: title,
+            aiValue: true,
+          })
+        ).toBe(false);
+
+        expect(
+          shouldIncludeCandidatePartyByPolicy({
+            districtType,
+            state: "AZ",
+            officialBallotTitle: title,
+          })
+        ).toBe(false);
+      }
+    }
+  });
+
+  it("does not force Arizona municipal judges partisan", () => {
+    // City magistrates are nonpartisan, and their titles carry no retention
+    // wording, so the partisan-judicial rule stays scoped to counties. A live
+    // row already holds this contest as nonpartisan; a statewide AZ entry in
+    // the partisan list would have flipped it to partisan and broken rewrites.
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "place",
+        state: "AZ",
+        officialBallotTitle: "Presiding Municipal Judge, City of Yuma",
+      })
+    ).toBe(false);
+
+    expect(
+      resolveElectionIsPartisan({
+        draft: {
+          district_id: "d-az-place",
+          district_name: "Yuma, Arizona",
+          district_type: "place",
+          state: "AZ",
+        },
+        contestFamily: "judicial_office",
+        raceType: "office",
+        officialBallotTitle: "Presiding Municipal Judge, City of Yuma",
+        aiValue: false,
+      })
+    ).toBe(false);
+  });
+
+  it("treats Clerk of Superior Court as a non-judicial office", () => {
+    expect(isJudicialOfficeTitle("Clerk of Superior Court")).toBe(false);
+    expect(isJudicialOfficeTitle("Clerk of the Circuit Court")).toBe(false);
+    expect(isJudicialOfficeTitle("Judge of Superior Court, Division 2")).toBe(true);
+
+    // The clerk is an elected partisan county officer in Arizona, so policy
+    // must leave the value alone instead of forcing it nonpartisan.
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "county",
+        state: "AZ",
+        officialBallotTitle: "Clerk of Superior Court",
+      })
+    ).toBeUndefined();
+
+    // California is not a partisan-judicial state; before the fix the clerk
+    // was dragged into judicial policy and forced nonpartisan there too.
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "county",
+        state: "CA",
+        officialBallotTitle: "Clerk of Superior Court",
+      })
+    ).toBeUndefined();
   });
 
   it("forces Washington state-legislative contests to partisan", () => {

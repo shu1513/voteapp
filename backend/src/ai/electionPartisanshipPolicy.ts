@@ -15,6 +15,7 @@ const SCHOOL_MIXED_STATES = new Set(["GA", "NC", "RI", "SC", "TN"]);
 // Policy lists are based on election-law summaries (e.g., Ballotpedia/NCSC); update as laws evolve.
 const PARTISAN_JUDICIAL_STATES = new Set([
   "AL",
+  "AZ",
   "IL",
   "IN",
   "KS",
@@ -29,6 +30,28 @@ const PARTISAN_JUDICIAL_STATES = new Set([
   "TN",
   "TX",
 ]);
+
+// Most states above put every judicial scope on a party ballot. Arizona only
+// does it at the county scope: Superior Court judges in the counties that never
+// adopted merit selection, plus Justices of the Peace, are nominated in party
+// primaries and carry a party into the general (Yuma County's official 2026
+// candidate listing shows REP/DEM for "Judge of Superior Court, Division 5" and
+// "Justice of the Peace, Precinct 2"). The other two Arizona scopes are not
+// partisan: city magistrates are nonpartisan, and the appellate courts — plus
+// Superior Court in Maricopa/Pima/Pinal — appear only as retention questions,
+// which the retention guard below already forces nonpartisan.
+const PARTISAN_JUDICIAL_STATE_SCOPES = new Map<string, ReadonlySet<string>>([
+  ["AZ", new Set(["county"])],
+]);
+
+function isPartisanJudicialContest(input: { state: string; districtType: string }): boolean {
+  const state = normalizeState(input.state);
+  if (!PARTISAN_JUDICIAL_STATES.has(state)) {
+    return false;
+  }
+  const scopes = PARTISAN_JUDICIAL_STATE_SCOPES.get(state);
+  return scopes === undefined || scopes.has(input.districtType);
+}
 
 function isWashingtonStateLegislativeContest(input: {
   districtType: string;
@@ -57,7 +80,17 @@ function getSchoolPartisanshipMode(state: string): SchoolPartisanshipMode {
   return "nonpartisan";
 }
 
+// A court clerk keeps the case files; they do not judge. The office catalog
+// resolves "Clerk of Superior Court" and friends to the non-judicial county
+// office "Clerk of Court", but the bare "superior court" token below swallowed
+// them and handed the whole office to judicial policy (live 2026-08-08: Yuma
+// County's partisan Clerk of Superior Court contest was rejected as a judge).
+const COURT_CLERK_TITLE_PATTERN = /\bclerks?\b/i;
+
 export function isJudicialOfficeTitle(title: string): boolean {
+  if (COURT_CLERK_TITLE_PATTERN.test(title)) {
+    return false;
+  }
   return /\b(judge|justice|judicial|superior court|court of appeal(s)?|supreme court|retention|magistrate)\b/i.test(
     title
   );
@@ -119,7 +152,10 @@ function getPartisanshipModeForContest(args: {
     if (isJudicialRetentionTitle(args.officialBallotTitle)) {
       return "force_false";
     }
-    return PARTISAN_JUDICIAL_STATES.has(normalizeState(args.draft.state))
+    return isPartisanJudicialContest({
+      state: args.draft.state,
+      districtType: args.draft.district_type,
+    })
       ? "force_true"
       : "force_false";
   }
@@ -151,7 +187,7 @@ function getPartisanshipModeForOfficeScope(input: {
     if (isJudicialRetentionTitle(input.officialBallotTitle)) {
       return "force_false";
     }
-    return PARTISAN_JUDICIAL_STATES.has(normalizeState(input.state)) ? "force_true" : "force_false";
+    return isPartisanJudicialContest(input) ? "force_true" : "force_false";
   }
 
   return "ask_ai";
