@@ -1696,7 +1696,8 @@ describe("OfficeMatcher", () => {
       ["Detroit city, Michigan", "MI", "City Council Member 4th District", "city council member"],
       // Ordinal-first must win over the ordinal-last rule when a term suffix
       // follows: matching "Ward 4" out of "1st Ward 4 Year Term" would strand
-      // the leading "1st".
+      // the leading "1st". The residual "4 year term" is a SEPARATE, unfixed
+      // gap — see the term-suffix test below for what it still costs.
       [
         "Grand Rapids city, Michigan",
         "MI",
@@ -2011,6 +2012,56 @@ describe("OfficeMatcher", () => {
       });
       expect(result.officeId, officialBallotTitle).toBe(expected);
       expect(result.method, officialBallotTitle).toBe("alias_exact");
+    }
+  });
+
+  it("pins the unfixed 'N Year Term' suffix gap", async () => {
+    // Kent County prints the term length on the heading line ("City
+    // Commissioner 1st Ward 4 Year Term"). Nothing strips "N Year Term", so
+    // the residual key misses the alias table and the token scorer falls
+    // under its floor. This is NOT ward-specific — plain "City Comptroller
+    // 4 Year Term" fails the same way — so it is deliberately out of scope
+    // for the ordinal-first fix and pinned here instead of hidden.
+    //
+    // The district's written rows follow the corpus convention and drop the
+    // term boilerplate ("City Comptroller"), so the live data path is
+    // unaffected. When the suffix strip lands, this test flips to expecting
+    // a match.
+    const aliasRow = (officeId: string, aliasText: string) => ({
+      office_id: officeId,
+      normalized_alias: normalizeElectionTitleKey(aliasText),
+    });
+    const matcher = new OfficeMatcher(
+      createMatcherDataClient({
+        aliasesByScope: {
+          place: [
+            aliasRow("office-city-council-member", "City Commissioner"),
+            aliasRow("office-comptroller", "City Comptroller"),
+          ],
+        },
+        officesByScope: {
+          place: [
+            { id: "office-city-council-member", canonical_name: "City Council Member" },
+            { id: "office-comptroller", canonical_name: "Comptroller" },
+            { id: "office-mayor", canonical_name: "Mayor" },
+          ],
+        },
+      }) as never
+    );
+
+    for (const officialBallotTitle of [
+      "City Commissioner 1st Ward 4 Year Term",
+      "City Comptroller 4 Year Term",
+    ]) {
+      const result = await matcher.resolve({
+        scope: "place",
+        districtName: "Grand Rapids city, Michigan",
+        state: "MI",
+        officialBallotTitle,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, officialBallotTitle).toBeNull();
+      expect(result.method, officialBallotTitle).toBe("none");
     }
   });
 });
