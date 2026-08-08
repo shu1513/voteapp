@@ -393,6 +393,28 @@ describe("alaskaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", candidateFilerId: "6001" });
   });
 
+  it("carries the outer middle through a quoted call name into the evidence", () => {
+    // The call-name variant keeps the roster's middle initial: a filer whose
+    // middle contradicts it ("Prax, Mike B" vs Glenn A. "Mike" Prax) must
+    // refuse rather than link the namesake's committee.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: 'Glenn A. "Mike" Prax',
+        electionYear: 2026,
+        incomeRows: [income({ filerId: "6002", filerName: "Prax, Mike B", name: "Prax, Mike B" })],
+      })
+    ).toMatchObject({ status: "unmatched" });
+
+    // The middle-less filer spelling still matches through the call name.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: 'Glenn A. "Mike" Prax',
+        electionYear: 2026,
+        incomeRows: [income({ filerId: "6002", filerName: "Prax, Mike", name: "Prax, Mike" })],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "6002" });
+  });
+
   it("ignores out-of-cycle rows", () => {
     expect(
       resolveAlaskaCandidateCommittee({

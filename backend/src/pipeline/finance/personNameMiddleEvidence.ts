@@ -66,40 +66,64 @@ export function parsePersonNameCandidates(
 
 // Expands a display name into parse variants: the name outside parentheses
 // plus each parenthetical alias ("LEE, Bill (Bill Lee)") parsed on its own.
+// A single-token parenthetical is a call name substituting the FIRST name
+// ("Glenn A. (Mike) Prax", "Robert (Bob) Smith"), not a standalone person, so
+// it also yields the outer parses with the first token swapped — keeping the
+// outer middles and surname so their evidence survives ("Mike A Prax" still
+// contradicts "Prax, Mike B"). Single characters are excluded: a lone letter
+// in parentheses is a party or ballot marker, not a call name.
 export function personNameParseVariants(
   value: string,
   normalizePersonName: NormalizePersonName
 ): ParsedPersonName[] {
   const variants: ParsedPersonName[] = [];
-  variants.push(...parsePersonNameCandidates(value.replace(/\([^()]+\)/g, " "), normalizePersonName));
+  const outerParses = parsePersonNameCandidates(value.replace(/\([^()]+\)/g, " "), normalizePersonName);
+  variants.push(...outerParses);
   for (const match of value.matchAll(/\(([^()]+)\)/g)) {
-    if (match[1]) {
-      variants.push(...parsePersonNameCandidates(match[1], normalizePersonName));
+    if (!match[1]) {
+      continue;
+    }
+    variants.push(...parsePersonNameCandidates(match[1], normalizePersonName));
+    const aliasTokens = normalizePersonName(match[1]).split(" ").filter(Boolean);
+    const callName = aliasTokens.length === 1 && aliasTokens[0]!.length >= 2 ? aliasTokens[0]! : null;
+    if (callName) {
+      for (const outer of outerParses) {
+        if (callName !== outer.first) {
+          variants.push({ first: callName, middles: outer.middles, last: outer.last });
+        }
+      }
     }
   }
   return variants;
 }
 
+function middleTokensCorroborate(tokenA: string, tokenB: string): boolean {
+  if (tokenA === tokenB) {
+    return true;
+  }
+  if (tokenA.length === 1 && tokenB.startsWith(tokenA)) {
+    return true;
+  }
+  return tokenB.length === 1 && tokenA.startsWith(tokenB);
+}
+
 // Middle-name evidence between two parses whose first and last already agree:
-// "strong" when the middles corroborate (equal, or an initial matching the
-// full form), "conflict" when both sides carry middles that disagree, "weak"
-// when at least one side has no middle information.
+// "strong" when the middles corroborate position by position (equal, or an
+// initial matching the full form), "conflict" when any shared position
+// disagrees ("John A. B. Smith" vs "Smith, John A. C." conflicts on the
+// second middle), "weak" when at least one side has no middle information.
+// Tokens past the shorter side's length are one-sided and carry no evidence.
 export function middleNameEvidence(a: string[], b: string[]): "strong" | "weak" | "conflict" {
   if (a.length === 0 || b.length === 0) {
     return "weak";
   }
-  const tokenA = a[0]!;
-  const tokenB = b[0]!;
-  if (tokenA === tokenB) {
-    return "strong";
+  const shared = Math.min(a.length, b.length);
+  for (let index = 0; index < shared; index += 1) {
+    if (!middleTokensCorroborate(a[index]!, b[index]!)) {
+      return "conflict";
+    }
   }
-  if (tokenA.length === 1 && tokenB.startsWith(tokenA)) {
-    return "strong";
-  }
-  if (tokenB.length === 1 && tokenA.startsWith(tokenB)) {
-    return "strong";
-  }
-  return "conflict";
+  return "strong";
 }
 
 export type MiddleNameConflictInput = {

@@ -73,6 +73,14 @@ describe("middleNameEvidence", () => {
     expect(middleNameEvidence(["ANDREW"], ["BERNARD"])).toBe("conflict");
     expect(middleNameEvidence(["ANDREW"], ["ANN"])).toBe("conflict");
   });
+
+  it("compares every shared middle position, not just the first", () => {
+    expect(middleNameEvidence(["MICHAEL", "ANDREW"], ["MICHAEL", "BERNARD"])).toBe("conflict");
+    expect(middleNameEvidence(["A", "B"], ["A", "C"])).toBe("conflict");
+    expect(middleNameEvidence(["A", "B"], ["ANDREW", "BERNARD"])).toBe("strong");
+    // Tokens past the shorter side carry no evidence.
+    expect(middleNameEvidence(["MICHAEL"], ["MICHAEL", "BERNARD"])).toBe("strong");
+  });
 });
 
 describe("hasMiddleNameConflict", () => {
@@ -109,6 +117,26 @@ describe("hasMiddleNameConflict", () => {
     expect(conflict("John A. Smith", ["Jones, Mary B."])).toBe(false);
     expect(conflict("John A. Smith", ["Friends Of Somebody Else"])).toBe(false);
     expect(conflict("John A. Smith", [])).toBe(false);
+  });
+
+  it("vetoes a contradiction hidden past a matching first middle", () => {
+    expect(conflict("John Michael Andrew Smith", ["Smith, John Michael Bernard"])).toBe(true);
+    expect(conflict("John A. B. Smith", ["Smith, John A. C."])).toBe(true);
+  });
+
+  it("treats a single-token parenthetical as a call name that keeps outer middle evidence", () => {
+    // "Glenn A. (Mike) Prax" is one person: Mike substitutes the first name,
+    // the A stays. A filer "Prax, Mike B" contradicts it.
+    expect(conflict("Glenn A. (Mike) Prax", ["Prax, Mike B"])).toBe(true);
+    expect(conflict("Robert A. (Bob) Smith", ["Smith, Bob B"])).toBe(true);
+    // Weak fallback and corroboration behave as usual through the call name.
+    expect(conflict("Robert (Bob) Smith", ["Smith, Bob B"])).toBe(false);
+    expect(conflict("Robert A. (Bob) Smith", ["Smith, Bob Andrew"])).toBe(false);
+  });
+
+  it("does not read a single-letter parenthetical as a call name", () => {
+    // "(D)" is a party marker, not a nickname.
+    expect(conflict("Jane Doe (D)", ["Doe, Jane B"])).toBe(false);
   });
 
   it("keeps multi-word surnames aligned across name orders", () => {

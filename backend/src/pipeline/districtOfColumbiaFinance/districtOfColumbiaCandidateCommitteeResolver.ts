@@ -155,7 +155,17 @@ function recordNameMatchesCandidate(input: {
   for (const key of input.candidateNameKeys) {
     const tokens = key.split(" ").filter(Boolean);
     if (tokens.length >= 2 && tokens.every((token) => committeeNameKey.split(" ").includes(token))) {
-      return true;
+      // The token-containment test accepts "Committee to Elect John B. Smith"
+      // for candidate "John A. Smith" — another Smith's committee.
+      // normalizePersonName strips the committee wrappers (TO/ELECT/...), so
+      // the remaining text parses as a person name and the middle gate
+      // applies here too. Names that keep trailing office tokens never align
+      // on the surname, produce no evidence, and pass through unchanged.
+      return !hasMiddleNameConflict({
+        candidateName: input.candidateName,
+        rowNames: [input.record.committeeName ?? ""],
+        normalizePersonName,
+      });
     }
   }
   return false;
