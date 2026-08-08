@@ -416,6 +416,14 @@ describe("electionPartisanshipPolicy", () => {
       "Judge Ct. of Com Pleas - Probate - FT Commencing 2/9/2027",
       "Judge of the Municipal Court (Full term commencing 1/1/2027)",
       "Judge of the County Court, Eastern District",
+      // The probate and juvenile courts are divisions of the court of common
+      // pleas (ORC 2101.01), and boards title them without ever naming that
+      // court — Ross County files this exact form. Enumerating lower courts
+      // would force these partisan; naming the two partisan courts does not.
+      "PROBATE COURT JUDGE, JUVENILE DIVISION",
+      "Judge of the Probate Court",
+      "Juvenile Court Judge",
+      "Domestic Relations Judge",
     ];
 
     for (const title of nonpartisanTitles) {

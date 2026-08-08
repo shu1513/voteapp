@@ -50,10 +50,18 @@ type StateJudicialBallotPolicy = {
 // and still appear in November with no party. Forcing every Ohio judicial
 // contest partisan rejected the legally correct common-pleas rows on rewrite
 // (live 2026-08-08: near-identical common pleas titles stored as both t and f).
-// County boards abbreviate the court freely ("Judge Ct. of Com Pleas - Probate"
-// is a live title), so match the court name rather than a fixed phrase.
-const OHIO_NONPARTISAN_JUDICIAL_TITLE =
-  /\b(?:com(?:mon)?\.?\s+pleas|municipal\s+court|county\s+court)\b/i;
+//
+// Ohio is therefore expressed as nonpartisan-with-two-partisan-titles rather
+// than the other way round. Enumerating the lower courts cannot be made safe:
+// the probate and juvenile courts ARE divisions of the court of common pleas
+// (ORC 2101.01 defines "probate court" as "the probate division of the court of
+// common pleas" and its judge as "the judge of the court of common pleas who is
+// judge of the probate division"), so a board that titles the contest "PROBATE
+// COURT JUDGE, JUVENILE DIVISION" names no lower court a pattern could key on
+// and would fall through to partisan. Naming the two courts that DO print a
+// party is closed: ORC 3505.03 lists exactly the supreme court and the courts
+// of appeals, and every other elected Ohio judge sits below them.
+const OHIO_PARTISAN_JUDICIAL_TITLE = /\b(?:supreme court|court of appeals?)\b/i;
 
 // Indiana runs partisan trial-court elections in most counties, but Vanderburgh
 // puts its circuit and superior judges on the ballot "without party
@@ -121,8 +129,8 @@ const STATE_JUDICIAL_BALLOT_POLICY = new Map<string, StateJudicialBallotPolicy>(
   // cannot decide this, so the researched ballot-facing value stands.
   ["TN", { fallback: "ask" }],
   ["OH", {
-    fallback: "partisan",
-    titleRules: [{ pattern: OHIO_NONPARTISAN_JUDICIAL_TITLE, mode: "nonpartisan" }],
+    fallback: "nonpartisan",
+    titleRules: [{ pattern: OHIO_PARTISAN_JUDICIAL_TITLE, mode: "partisan" }],
   }],
   ["TX", { fallback: "partisan" }],
 ]);
