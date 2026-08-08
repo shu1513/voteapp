@@ -179,6 +179,10 @@ function normalizeMatcherText(value: string): string {
     // combined office; the compound form scores 1-of-3 token overlap against
     // "County Treasurer" and misses the confidence floor.
     .replace(/\btreasurer\s*[/-]\s*tax collector\b/g, "treasurer")
+    // Wisconsin and Ohio counties title the court clerk in the plural ("Waukesha
+    // County Clerk of Courts", live); the catalog and its aliases key on the
+    // singular, and the plural token matches neither ("courts" ≠ "court").
+    .replace(/\bclerk of (?:the )?courts\b/g, "clerk of court")
     .replace(/[^a-z0-9\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -386,6 +390,108 @@ function toMatcherTokens(value: string): string[] {
     .filter((token) => token.length > 0 && !STOPWORDS.has(token));
 }
 
+// A composite ballot title can contain more than one catalog phrase, and the
+// SHORTER one is often a different elected office. Wisconsin titles the court
+// clerk "<County> County Clerk of Circuit Court" (myvote.wi.gov sample ballot,
+// live): the jurisdiction strip removes the county's proper noun but
+// deliberately keeps the generic civic word, so the key "county clerk of
+// circuit court" leads with the "county clerk" alias — a genuinely different
+// county office — while the "clerk of circuit court" alias for the office
+// actually on the ballot sits behind it. The token scorer only ever sees
+// canonical names, so it hands the contest to County Clerk at 0.79 and then
+// persists that as a learned alias, which turns every later county's title
+// into a confident alias_exact match on the wrong office.
+//
+// Rule: a contained phrase is only accepted when it explains the WHOLE key
+// apart from generic jurisdiction words, so "clerk of circuit court" qualifies
+// (leftover: "county") and "county clerk" does not (leftover: "circuit
+// court"). Among qualifying phrases the longest wins; when two different
+// offices tie there, the title really is ambiguous and no office is better
+// than a wrong one — a bad office_id silently gives the election the wrong
+// office_research_areas.
+type OfficePhrase = {
+  officeId: string;
+  tokens: string[];
+};
+
+type ContainedPhraseMatch = { kind: "match"; officeId: string } | { kind: "ambiguous" } | null;
+
+function containsPhraseWithJurisdictionOnlyRemainder(titleTokens: string[], phraseTokens: string[]): boolean {
+  if (phraseTokens.length === 0 || phraseTokens.length > titleTokens.length) {
+    return false;
+  }
+  for (let start = 0; start + phraseTokens.length <= titleTokens.length; start += 1) {
+    const matchesHere = phraseTokens.every((token, offset) => titleTokens[start + offset] === token);
+    if (!matchesHere) {
+      continue;
+    }
+    const remainder = [
+      ...titleTokens.slice(0, start),
+      ...titleTokens.slice(start + phraseTokens.length),
+    ];
+    if (remainder.every((token) => GENERIC_DISTRICT_SUFFIX_TOKENS.has(token))) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function findContainedPhraseMatch(
+  titleTokens: string[],
+  phrases: OfficePhrase[],
+  eligibleOfficeIds: Set<string>
+): ContainedPhraseMatch {
+  let bestTokenCount = 0;
+  let bestOfficeIds = new Set<string>();
+
+  for (const phrase of phrases) {
+    // Offices filtered out of scoring (judge offices under a non-judicial
+    // contest family) must not sneak back in through their aliases.
+    if (!eligibleOfficeIds.has(phrase.officeId)) {
+      continue;
+    }
+    // Single-token phrases ("clerk", "judge", "member") are too generic to
+    // carry a title on their own — the same guard the civic-word-free alias
+    // lookup applies.
+    if (phrase.tokens.length < 2 || phrase.tokens.length < bestTokenCount) {
+      continue;
+    }
+    if (!containsPhraseWithJurisdictionOnlyRemainder(titleTokens, phrase.tokens)) {
+      continue;
+    }
+    if (phrase.tokens.length > bestTokenCount) {
+      bestTokenCount = phrase.tokens.length;
+      bestOfficeIds = new Set([phrase.officeId]);
+    } else {
+      bestOfficeIds.add(phrase.officeId);
+    }
+  }
+
+  if (bestOfficeIds.size === 0) {
+    return null;
+  }
+  if (bestOfficeIds.size > 1) {
+    return { kind: "ambiguous" };
+  }
+  return { kind: "match", officeId: [...bestOfficeIds][0] as string };
+}
+
+function buildOfficePhrases(aliases: Map<string, string>, offices: OfficeCandidate[]): OfficePhrase[] {
+  const phrases: OfficePhrase[] = offices.map((office) => ({
+    officeId: office.id,
+    tokens: office.canonicalTokens,
+  }));
+  const officeIds = new Set(offices.map((office) => office.id));
+  for (const [alias, officeId] of aliases) {
+    // An alias whose office is not in this scope's catalog cannot be matched.
+    if (!officeIds.has(officeId)) {
+      continue;
+    }
+    phrases.push({ officeId, tokens: toMatcherTokens(normalizeMatcherText(alias)) });
+  }
+  return phrases;
+}
+
 function toMatcherKeyFromBallotTitle(input: OfficeMatchInput): string {
   const normalized = normalizeMatcherText(input.officialBallotTitle);
   const withoutJurisdiction = stripJurisdictionPrefixes(normalized, {
@@ -549,6 +655,7 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
 export class OfficeMatcher {
   private readonly aliasByScope = new Map<ElectionDistrictType, Map<string, string>>();
   private readonly officesByScope = new Map<ElectionDistrictType, OfficeCandidate[]>();
+  private readonly phrasesByScope = new Map<ElectionDistrictType, OfficePhrase[]>();
 
   constructor(private readonly client: Pick<PoolClient, "query">) {}
 
@@ -604,6 +711,23 @@ export class OfficeMatcher {
     return offices;
   }
 
+  // Tokenizing every alias on every resolve() call is wasted work across a
+  // batch of contests in one scope; the list only changes when rememberAlias
+  // adds one, which invalidates the cache.
+  private getOfficePhrases(
+    scope: ElectionDistrictType,
+    aliases: Map<string, string>,
+    offices: OfficeCandidate[]
+  ): OfficePhrase[] {
+    const cached = this.phrasesByScope.get(scope);
+    if (cached) {
+      return cached;
+    }
+    const phrases = buildOfficePhrases(aliases, offices);
+    this.phrasesByScope.set(scope, phrases);
+    return phrases;
+  }
+
   rememberAlias(scope: ElectionDistrictType, normalizedAlias: string, officeId: string): void {
     if (!normalizedAlias) {
       return;
@@ -613,6 +737,7 @@ export class OfficeMatcher {
       return;
     }
     existing.set(normalizedAlias, officeId);
+    this.phrasesByScope.delete(scope);
   }
 
   async resolve(input: OfficeMatchInput): Promise<OfficeMatchResult> {
@@ -777,6 +902,37 @@ export class OfficeMatcher {
       input.discoveryContestFamily === "non_judicial_office"
         ? offices.filter((office) => !isJudicialOfficeCanonicalName(office.canonicalName))
         : offices;
+
+    // Longest catalog phrase that explains everything but the jurisdiction
+    // words, checked before the token scorer: the scorer compares canonical
+    // names only, so it cannot see that a longer alias for another office sits
+    // inside the title.
+    const containedPhraseMatch = findContainedPhraseMatch(
+      titleTokens,
+      this.getOfficePhrases(input.scope, aliases, offices),
+      new Set(scoreableOffices.map((office) => office.id))
+    );
+    if (containedPhraseMatch?.kind === "ambiguous") {
+      return {
+        officeId: null,
+        method: "ambiguous",
+        confidence: 0,
+        normalizedAlias,
+        aliasMemoryKey: titleMatcherKey,
+        shouldPersistAlias: false,
+      };
+    }
+    if (containedPhraseMatch) {
+      return {
+        officeId: containedPhraseMatch.officeId,
+        method: "deterministic_fallback",
+        confidence: 1,
+        normalizedAlias,
+        aliasMemoryKey: titleMatcherKey,
+        shouldPersistAlias: titleMatcherKey.length > 0,
+      };
+    }
+
     const scored = scoreableOffices
       .map((office) => ({
         officeId: office.id,

@@ -1700,6 +1700,172 @@ describe("OfficeMatcher", () => {
     }
   });
 
+  it("keeps a county-name-prefixed clerk-of-court title off County Clerk (Wisconsin)", async () => {
+    // "<County> County Clerk of Circuit Court" is Wisconsin's official ballot
+    // form (myvote.wi.gov sample ballot, Racine County, Aug 11 2026 partisan
+    // primary), so every Wisconsin county with an elected clerk of circuit
+    // court hits it — and the same shape shows up in NC/NE/IN/KS titles. The
+    // jurisdiction strip removes "racine" but keeps the generic civic word, so
+    // the key leads with the "county clerk" alias for a DIFFERENT elected
+    // office; the token scorer (which only sees canonical names) handed the
+    // contest to County Clerk at 0.79 and persisted that as a learned alias,
+    // after which every later county matched the wrong office at alias_exact
+    // 1.00. A wrong office_id is worse than NULL: it silently gives the
+    // election the wrong office_research_areas.
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          { office_id: "office-county-clerk", normalized_alias: "county clerk" },
+          { office_id: "office-clerk-of-court", normalized_alias: "clerk of court" },
+          { office_id: "office-clerk-of-court", normalized_alias: "clerk of circuit court" },
+          { office_id: "office-clerk-of-court", normalized_alias: "clerk of the circuit court" },
+          { office_id: "office-clerk-of-court", normalized_alias: "clerk of the superior court" },
+          { office_id: "office-clerk-of-court", normalized_alias: "clerk of the district court" },
+          { office_id: "office-clerk-of-court", normalized_alias: "circuit court clerk" },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-clerk-of-court", canonical_name: "Clerk of Court" },
+          { id: "office-county-clerk", canonical_name: "County Clerk" },
+          { id: "office-county-treasurer", canonical_name: "County Treasurer" },
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const cases: Array<[district: string, state: string, title: string]> = [
+      ["Racine County, Wisconsin", "WI", "Racine County Clerk Of Circuit Court"],
+      ["Racine County, Wisconsin", "WI", "Racine County Clerk of the Circuit Court"],
+      ["Racine County, Wisconsin", "WI", "Racine County Circuit Court Clerk"],
+      // Comma form: the county sits AFTER the office, so the leftover civic
+      // word is trailing rather than leading (previously ambiguous → NULL).
+      ["Racine County, Wisconsin", "WI", "Clerk of Circuit Court, Racine County"],
+      ["Milwaukee County, Wisconsin", "WI", "Milwaukee County Clerk of Circuit Court"],
+      // Wisconsin/Ohio plural form of the same office.
+      ["Waukesha County, Wisconsin", "WI", "Waukesha County Clerk of Courts"],
+      ["Waukesha County, Wisconsin", "WI", "Clerk of Courts"],
+      // Same shape, other states: the seeded alias carries "the", the ballot
+      // title does not (and vice versa).
+      ["Wake County, North Carolina", "NC", "Wake County Clerk of Superior Court"],
+      ["Guilford County, North Carolina", "NC", "Guilford County Clerk of the Superior Court"],
+      ["Douglas County, Nebraska", "NE", "Douglas County Clerk of the District Court"],
+      ["Marion County, Indiana", "IN", "Marion County Clerk of the Circuit Court"],
+    ];
+    for (const [districtName, state, officialBallotTitle] of cases) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName,
+        state,
+        officialBallotTitle,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, officialBallotTitle).toBe("office-clerk-of-court");
+    }
+
+    // The wrong learned alias is what turned a scoring miss into a permanent
+    // one, so pin the office the persisted key now points at: "county clerk of
+    // superior court" was live in the alias table pointing at County Clerk.
+    const learned = await matcher.resolve({
+      scope: "county",
+      districtName: "Wake County, North Carolina",
+      state: "NC",
+      officialBallotTitle: "Wake County Clerk of Superior Court",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(learned).toMatchObject({
+      officeId: "office-clerk-of-court",
+      method: "deterministic_fallback",
+      aliasMemoryKey: "county clerk of superior court",
+      shouldPersistAlias: true,
+    });
+
+    // Guard the office the prefix belongs to: a bare county clerk title is
+    // still the County Clerk, and a longer exact alias still wins outright.
+    const countyClerk = await matcher.resolve({
+      scope: "county",
+      districtName: "Racine County, Wisconsin",
+      state: "WI",
+      officialBallotTitle: "Racine County Clerk",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(countyClerk.officeId).toBe("office-county-clerk");
+    expect(countyClerk.method).toBe("alias_exact");
+  });
+
+  it("returns no office when two offices tie on the longest contained catalog phrase", async () => {
+    // Contradictory catalog phrases of equal length (here two spellings of the
+    // same alias pointing at different offices) are a genuine ambiguity, and a
+    // wrong high-confidence office is worse than NULL.
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          { office_id: "office-clerk-of-court", normalized_alias: "clerk of circuit court" },
+          { office_id: "office-county-clerk", normalized_alias: "clerk of the circuit court" },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-clerk-of-court", canonical_name: "Clerk of Court" },
+          { id: "office-county-clerk", canonical_name: "County Clerk" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Racine County, Wisconsin",
+      state: "WI",
+      // Comma form, so neither the matcher key nor its civic-word-free form is
+      // itself an alias and the contained-phrase scan is what decides.
+      officialBallotTitle: "Clerk of Circuit Court, Racine County",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("ambiguous");
+    expect(result.shouldPersistAlias).toBe(false);
+  });
+
+  it("does not reach a judge office through a contained alias under a non-judicial family", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          { office_id: "office-county-level-judge", normalized_alias: "judge of circuit court" },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-county-level-judge", canonical_name: "County Level Judge" },
+          { id: "office-county-clerk", canonical_name: "County Clerk" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Racine County, Wisconsin",
+      state: "WI",
+      officialBallotTitle: "Racine County Judge of Circuit Court",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).not.toBe("office-county-level-judge");
+
+    // Under the judicial family the same title does resolve to the judge office.
+    const judicial = await matcher.resolve({
+      scope: "county",
+      districtName: "Racine County, Wisconsin",
+      state: "WI",
+      officialBallotTitle: "Racine County Judge of Circuit Court",
+      discoveryContestFamily: "judicial_office",
+    });
+    expect(judicial.officeId).toBe("office-county-level-judge");
+  });
+
   it("resolves the migration 184 alias gaps end-to-end from the live ballot titles", async () => {
     // Guards the normalizer-parity invariant for migration 184's aliases
     // (same guard pattern as migrations 164/165/169): the migration stores
