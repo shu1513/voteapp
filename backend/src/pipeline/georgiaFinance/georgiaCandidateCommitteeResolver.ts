@@ -176,7 +176,9 @@ function normalizeGeorgiaDistrict(value: string | null | undefined): string | nu
   return digits || null;
 }
 
-type GeorgiaParsedPersonName = { first: string; middles: string[]; last: string };
+// `exact` marks parses whose surname boundary is explicit (comma form,
+// single token) rather than guessed from a space-form split.
+type GeorgiaParsedPersonName = { first: string; middles: string[]; last: string; exact: boolean };
 
 // Parses a raw display name into (first, middles, last). Comma forms
 // ("Carr, Christopher M.") are unambiguous and yield one parse. Space forms
@@ -191,14 +193,14 @@ function parseGeorgiaPersonName(raw: string): GeorgiaParsedPersonName[] {
     if (!last || restTokens.length === 0) {
       return [];
     }
-    return [{ first: restTokens[0]!, middles: restTokens.slice(1), last }];
+    return [{ first: restTokens[0]!, middles: restTokens.slice(1), last, exact: true }];
   }
   const tokens = normalizePersonName(raw).split(" ").filter(Boolean);
   if (tokens.length === 0) {
     return [];
   }
   if (tokens.length === 1) {
-    return [{ first: tokens[0]!, middles: [], last: tokens[0]! }];
+    return [{ first: tokens[0]!, middles: [], last: tokens[0]!, exact: true }];
   }
   const parses: GeorgiaParsedPersonName[] = [];
   for (let lastStart = 1; lastStart < tokens.length; lastStart += 1) {
@@ -206,6 +208,7 @@ function parseGeorgiaPersonName(raw: string): GeorgiaParsedPersonName[] {
       first: tokens[0]!,
       middles: tokens.slice(1, lastStart),
       last: tokens.slice(lastStart).join(" "),
+      exact: tokens.length === 2,
     });
   }
   return parses;
@@ -222,42 +225,59 @@ function georgiaPersonNameVariants(value: string): GeorgiaParsedPersonName[] {
   return variants;
 }
 
+function georgiaMiddleTokensCorroborate(tokenA: string, tokenB: string): boolean {
+  if (tokenA === tokenB) {
+    return true;
+  }
+  if (tokenA.length === 1 && tokenB.startsWith(tokenA)) {
+    return true;
+  }
+  return tokenB.length === 1 && tokenA.startsWith(tokenB);
+}
+
 // Middle-name evidence between two parses whose first and last already agree:
-// "strong" when the middles corroborate (equal, or an initial matching the
-// full form), "conflict" when both sides carry middles that disagree, "weak"
-// when at least one side has no middle information.
+// "strong" when every shared-position middle corroborates (equal, or an
+// initial matching the full form), "conflict" when any shared position
+// disagrees ("MICHAEL ANDREW" vs "MICHAEL BERNARD" conflicts on the second
+// middle even though the first agrees), "weak" when at least one side has no
+// middle information. Tokens past the shorter side's length are one-sided
+// and carry no evidence.
 function georgiaMiddleNameEvidence(a: string[], b: string[]): "strong" | "weak" | "conflict" {
   if (a.length === 0 || b.length === 0) {
     return "weak";
   }
-  const tokenA = a[0]!;
-  const tokenB = b[0]!;
-  if (tokenA === tokenB) {
-    return "strong";
+  const shared = Math.min(a.length, b.length);
+  for (let index = 0; index < shared; index += 1) {
+    if (!georgiaMiddleTokensCorroborate(a[index]!, b[index]!)) {
+      return "conflict";
+    }
   }
-  if (tokenA.length === 1 && tokenB.startsWith(tokenA)) {
-    return "strong";
-  }
-  if (tokenB.length === 1 && tokenA.startsWith(tokenB)) {
-    return "strong";
-  }
-  return "conflict";
+  return "strong";
 }
 
 // Name matching preserves middle-name evidence instead of collapsing every
 // name to a first+last key: "John A. Smith" must NOT match "Smith, John B."
 // even when office, district, and cycle agree — that would attach another
 // person's money. Aggregation rule across all variant pairs: any strong pair
-// matches; otherwise any middle conflict rejects (the first+last fallback is
-// only trusted when NO pair carried contradicting middle evidence); otherwise
+// matches. A conflict on an EXACT pair — one whose surname boundary is
+// explicit (comma form) rather than guessed, which pins the aligned parse on
+// the other side too — is authoritative and rejects outright: an ambiguous
+// space-form split elsewhere must never override it ("Smith, John B. A."
+// conflicts with "John A. Smith" no matter how "John B A Smith" re-splits).
+// Purely ambiguous weak/conflict evidence is judged only at the LONGEST
+// aligned surname — a compound surname emits bogus shorter splits ("Mary Van
+// Dyke" vs "MARY B VAN DYKE" aligns correctly on "VAN DYKE" but the
+// "DYKE"-surname split reads VAN-vs-B as a middle conflict), and the longest
+// alignment is the real one. At that length, any conflict rejects; otherwise
 // a first+last agreement with middle information missing on a side matches.
 export function georgiaCandidateNameMatchesRowNames(
   candidateName: string,
   rowNames: readonly string[]
 ): boolean {
   const appVariants = georgiaPersonNameVariants(candidateName);
-  let sawWeak = false;
-  let sawConflict = false;
+  const evidenceBySurnameLength = new Map<number, { weak: boolean; conflict: boolean }>();
+  let sawStrong = false;
+  let sawExactConflict = false;
   for (const rowName of rowNames) {
     for (const rowVariant of georgiaPersonNameVariants(rowName)) {
       for (const appVariant of appVariants) {
@@ -266,26 +286,43 @@ export function georgiaCandidateNameMatchesRowNames(
         }
         const evidence = georgiaMiddleNameEvidence(appVariant.middles, rowVariant.middles);
         if (evidence === "strong") {
-          return true;
+          sawStrong = true;
+          continue;
         }
-        if (evidence === "conflict") {
-          sawConflict = true;
-        } else {
-          sawWeak = true;
+        if (evidence === "conflict" && (appVariant.exact || rowVariant.exact)) {
+          sawExactConflict = true;
+          continue;
         }
+        const surnameLength = appVariant.last.split(" ").length;
+        const bucket = evidenceBySurnameLength.get(surnameLength) ?? { weak: false, conflict: false };
+        bucket[evidence] = true;
+        evidenceBySurnameLength.set(surnameLength, bucket);
       }
     }
   }
-  return sawWeak && !sawConflict;
+  if (sawStrong) {
+    return true;
+  }
+  if (sawExactConflict) {
+    return false;
+  }
+  if (evidenceBySurnameLength.size === 0) {
+    return false;
+  }
+  const longest = Math.max(...evidenceBySurnameLength.keys());
+  const decisive = evidenceBySurnameLength.get(longest)!;
+  return decisive.weak && !decisive.conflict;
 }
 
 function rowMatchesCandidateName(row: GeorgiaCandidateIndexRow, candidateName: string): boolean {
   // The structured name fields carry the FULL middle name where filerName
   // only shows an initial — include them so middle evidence is as rich as
-  // the index provides.
+  // the index provides. Rendered in comma form so the parser keeps the
+  // surname boundary the index already states, instead of re-guessing it
+  // from a flattened space-form string.
   const structuredName =
     row.candidateFirstName && row.candidateLastName
-      ? [row.candidateFirstName, row.candidateMiddleName, row.candidateLastName].filter(Boolean).join(" ")
+      ? `${row.candidateLastName}, ${[row.candidateFirstName, row.candidateMiddleName].filter(Boolean).join(" ")}`
       : null;
   const names = [row.filerName, row.ballotFullName, structuredName].filter(
     (name): name is string => Boolean(name && name.trim())
