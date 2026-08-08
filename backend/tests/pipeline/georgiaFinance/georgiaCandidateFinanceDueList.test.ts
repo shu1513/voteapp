@@ -23,6 +23,7 @@ describe("listDueGeorgiaCandidateFinanceSyncRows", () => {
     expect(sql).toContain("LEFT JOIN public.ga_candidate_finance_summaries AS summary");
     expect(sql).toContain("district.state = 'GA'");
     expect(sql).toContain("link.committee_id");
+    expect(sql).toContain("link.link_source");
     expect(params).toEqual([NOW.toISOString(), 7, 25, 30, 730, [...GEORGIA_FINANCE_ELIGIBLE_OFFICE_KEYS]]);
   });
 
@@ -40,6 +41,7 @@ describe("listDueGeorgiaCandidateFinanceSyncRows", () => {
             district: null,
             committee_id: "100035",
             committee_name: "Carr for Georgia, Inc.",
+            link_source: "peachfile_api",
             source_url: "https://ethics.ga.gov/records-search-all/",
             last_synced_at: null,
             total_due_rows: "1",
@@ -59,6 +61,7 @@ describe("listDueGeorgiaCandidateFinanceSyncRows", () => {
       district: null,
       committeeId: "100035",
       committeeName: "Carr for Georgia, Inc.",
+      linkSource: "peachfile_api",
       sourceUrl: "https://ethics.ga.gov/records-search-all/",
       lastSyncedAt: null,
     });

@@ -391,6 +391,58 @@ describe("fetchGeorgiaTransactionRowsWindowed", () => {
     expect(result.sweepMissedRowCount).toBe(0);
   });
 
+  it("tolerates a quiet window that matched only foreign filers, while the sweep stays strict", async () => {
+    // Window 1 holds only a foreign filer's row (the quiet-quarter shape);
+    // the rest of the store belongs to the expected filer.
+    const store = [
+      transactionItem({ transactionId: 900, filerEntityId: 999, transactionDate: "2026-01-05" }),
+      transactionItem({ transactionId: 1, transactionDate: "2026-01-15" }),
+    ];
+    const transport = createGeorgiaEthicsTransport({
+      sleep: async () => {},
+      fetch: async (_url, rawBody) => {
+        const body = JSON.parse(rawBody) as { fromDate: string | null; toDate: string | null };
+        const items = store.filter((row) => {
+          if (body.fromDate === null && body.toDate === null) {
+            return true;
+          }
+          const date = row.transactionDate as string;
+          return date >= (body.fromDate ?? "0000") && date <= (body.toDate ?? "9999");
+        });
+        return { status: 200, body: pageBody(items) };
+      },
+    });
+    const result = await fetchGeorgiaTransactionRowsWindowed(transport, "efile_archive", {
+      filerName: "Carr, Christopher Michael",
+      fromDate: "2026-01-01",
+      toDate: "2026-01-20",
+      windowDays: 10,
+      expectedFilerEntityIds: [100035],
+    });
+    expect(result.windowFilterIneffectiveCount).toBe(1);
+    expect(result.windows[0]).toMatchObject({ filterIneffective: true, uniqueRowCount: 0, passCount: 0 });
+    expect(result.rows.map((row) => row.transactionId)).toEqual([1]);
+
+    // The whole-store shape — nothing for the expected filer anywhere —
+    // still fails via the sweep.
+    const foreignOnlyTransport = createGeorgiaEthicsTransport({
+      sleep: async () => {},
+      fetch: async () => ({
+        status: 200,
+        body: pageBody([transactionItem({ transactionId: 900, filerEntityId: 999, transactionDate: "2026-01-05" })]),
+      }),
+    });
+    await expect(
+      fetchGeorgiaTransactionRowsWindowed(foreignOnlyTransport, "efile_archive", {
+        filerName: "Carr, Christopher Michael",
+        fromDate: "2026-01-01",
+        toDate: "2026-01-20",
+        windowDays: 10,
+        expectedFilerEntityIds: [100035],
+      })
+    ).rejects.toMatchObject({ code: "filter_ineffective" });
+  });
+
   it("rejects inverted ranges and invalid window sizes", async () => {
     const transport = windowedFakeTransport();
     await expect(
