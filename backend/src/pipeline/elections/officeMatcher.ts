@@ -302,8 +302,28 @@ function singularizeCommissionerBodyForms(value: string): string {
   );
 }
 
+// An independent fire district titles each board seat by the district's own
+// name ("Holley-Navarre Fire District Seat 3", "Navarre Beach Fire Rescue
+// District, Seat 5" — Santa Rosa County FL live, 13 seats across five
+// districts on the Nov 2026 ballot). The district is its own taxing body, not
+// the county, so the jurisdiction strip never removes its proper noun: the
+// name both dilutes the token overlap against the catalog office (Fire
+// Control District Commissioner) and differs per district, so no fixed alias
+// can cover the family. The live titles scored 0.40-0.57 against the 0.56
+// floor and stranded NULL-office shells. Map the named body form onto the
+// office it elects, consuming the name (up to four tokens — "Avalon
+// Beach-Mulat" is the longest live one) so what remains is the catalog's own
+// key. Applied to canonical names too, where it is a no-op by construction.
+const FIRE_DISTRICT_BODY_PATTERN =
+  /\b(?:[a-z0-9]+ ){0,4}fire (?:(?:control|rescue|protection|suppression|and rescue) )?district(?: (?:board|commission|commissioner))?\b/g;
+const FIRE_DISTRICT_OFFICE_KEY = "fire control district commissioner";
+
+function mapFireDistrictBodyForms(value: string): string {
+  return value.replace(FIRE_DISTRICT_BODY_PATTERN, FIRE_DISTRICT_OFFICE_KEY);
+}
+
 function stripSeatSuffixes(value: string): string {
-  return singularizeCommissionerBodyForms(value)
+  return mapFireDistrictBodyForms(singularizeCommissionerBodyForms(value))
     .replace(/\boffice (?:no )?\d+\b/g, " ")
     .replace(/\bposition (?:no )?\d+\b/g, " ")
     // "Council District No. 5" (Seattle live) titles the council-member SEAT

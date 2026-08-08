@@ -479,6 +479,20 @@ const SEED_OFFICES: SeedOffice[] = [
       "Directing conservation funding and priorities in the district",
     ].join("\n"),
   },
+  {
+    // Independent fire districts are their own elected taxing bodies, separate
+    // from county or city government (Florida alone puts dozens of these
+    // boards on the ballot). Filed at county scope because the district sits
+    // inside one county and its seats appear on that county's ballot.
+    scope: "county",
+    canonicalName: "Fire Control District Commissioner",
+    summary: [
+      "Setting the budget for an independent fire district and the taxes or assessments that pay for it",
+      "Overseeing the district's fire stations, trucks, and emergency medical service",
+      "Hiring and supervising the fire chief",
+      "Approving contracts, staffing levels, and equipment purchases for the district",
+    ].join("\n"),
+  },
   // The four offices below reached long-lived databases through a version of
   // this seed that was edited afterwards, so no current file reproduced them.
   // Definitions recovered verbatim from the local catalog.
@@ -1845,6 +1859,39 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Board of Review Member",
     aliasText: "County Board of Review",
+  },
+  // Florida's Notice of General Election titles these seats by the district's
+  // own name and a seat number ("Holley-Navarre Fire District Seat 3",
+  // "Navarre Beach Fire Rescue District, Seat 5", "Avalon Beach-Mulat Fire
+  // Protection District Seat 1" — Santa Rosa County, Nov 2026). The proper
+  // noun cannot be enumerated as an alias, so the matcher folds every named
+  // fire-district body form onto this canonical key; the self-alias below is
+  // what that folded key lands on. The remaining rows cover the bare
+  // district-flavor forms a ballot may print without a district name.
+  {
+    scope: "county",
+    officeCanonicalName: "Fire Control District Commissioner",
+    aliasText: "Fire Control District Commissioner",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Fire Control District Commissioner",
+    aliasText: "Fire District Commissioner",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Fire Control District Commissioner",
+    aliasText: "Fire Rescue District Commissioner",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Fire Control District Commissioner",
+    aliasText: "Fire Protection District Commissioner",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Fire Control District Commissioner",
+    aliasText: "Fire Commissioner",
   },
 ];
 

@@ -1933,4 +1933,85 @@ describe("OfficeMatcher", () => {
       expect(result.officeId, testCase.title).toBe(testCase.expected);
     }
   });
+
+  it("folds district-named Florida fire-district seat titles onto the fire-district office", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-fire-district", canonical_name: "Fire Control District Commissioner" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          {
+            id: "office-soil-water-supervisor",
+            canonical_name: "Soil and Water Conservation District Supervisor",
+          },
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // Every form on the Santa Rosa County, FL Nov 2026 ballot. The district's
+    // own proper noun is unenumerable, so these must resolve without an alias.
+    const titles = [
+      "Holley-Navarre Fire District Seat 3",
+      "Navarre Beach Fire Rescue District, Seat 5",
+      "Avalon Beach-Mulat Fire Protection District Seat 1",
+      "Midway Fire District Seat 2",
+      "Pace Fire Rescue District Seat 4",
+    ];
+    for (const title of titles) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: "Santa Rosa County, Florida",
+        state: "FL",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, title).toBe("office-fire-district");
+      // The folded key is the canonical office's own, so the alias the writer
+      // learns is district-agnostic rather than one row per fire district.
+      expect(result.aliasMemoryKey, title).toBe("fire control district commissioner");
+    }
+  });
+
+  it("matches the seeded bare Fire Commissioner alias without touching other county offices", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          {
+            office_id: "office-fire-district",
+            normalized_alias: normalizeElectionTitleKey("Fire Commissioner"),
+          },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-fire-district", canonical_name: "Fire Control District Commissioner" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const fire = await matcher.resolve({
+      scope: "county",
+      districtName: "Santa Rosa County, Florida",
+      state: "FL",
+      officialBallotTitle: "Fire Commissioner",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(fire).toMatchObject({ officeId: "office-fire-district", method: "alias_exact" });
+
+    // The fire mapping keys on "fire ... district"; a plain county-commission
+    // seat in the same county must stay with County Commissioner.
+    const commissioner = await matcher.resolve({
+      scope: "county",
+      districtName: "Santa Rosa County, Florida",
+      state: "FL",
+      officialBallotTitle: "Santa Rosa County Board of Commissioners District 4",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(commissioner.officeId).toBe("office-county-commissioner");
+  });
 });
