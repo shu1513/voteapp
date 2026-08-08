@@ -48,7 +48,12 @@ export type NcsbeQuarantinedGroupReason =
   | "ambiguous_row_merge"
   // Filing chronology put a non-amendment newest while the group holds
   // amendments — contradictory lineage evidence.
-  | "original_newer_than_amendment";
+  | "original_newer_than_amendment"
+  // Two distinct filings (necessarily two amendments — multiple originals
+  // already quarantined) tie on every chronology key. Report ids are NOT
+  // evidence: nothing pins them as monotonic with filing time, so a tie is
+  // genuinely ambiguous and money must not be selected by id ordering.
+  | "ambiguous_filing_chronology";
 
 export type NcsbeQuarantinedGroup = {
   filerKey: string;
@@ -163,13 +168,17 @@ function buildFilings(
 
 // Chronology (decision 8): newest ImageReceiptDate first — what was legally
 // filed last — with DataImportDate only as tie-break (import order is
-// administrative and can lag or reorder). reportId is a final deterministic
-// tie-break for filings with no dates at all.
+// administrative and can lag or reorder). When both dates tie, the amendment
+// flag decides: an amendment supersedes its original by definition, no
+// chronology needed (a same-day amendment is still the amendment). What is
+// deliberately NOT a key is the report id — nothing pins ids as monotonic
+// with filing time, so two filings tying on this whole key are ambiguous
+// (quarantined below), never id-ordered.
 function chronologyKey(filing: NcsbeFiling): [string, string, string] {
   return [
     filing.filedDateIso ?? "",
     maxIso(filing.rows.map((row) => row.dataImportDate.iso)) ?? "",
-    filing.reportId ?? "",
+    filing.isAmendment ? "1" : "0",
   ];
 }
 
@@ -295,6 +304,14 @@ export function selectNcsbeCurrentFilings(input: {
     // usable dates); stale money must not win a coin toss.
     if (!current.isAmendment && amendments.length > 0) {
       quarantine(group, "original_newer_than_amendment");
+      continue;
+    }
+    // Two amendments tying on the full chronology key (same image date, same
+    // import date) cannot be ordered by any pinned evidence — their money can
+    // differ (a real amendment moved $6,800 on Berger's chain), so the group
+    // fails closed instead of picking by id.
+    if (filings.length > 1 && compareChronology(current, filings[filings.length - 2]!) === 0) {
+      quarantine(group, "ambiguous_filing_chronology");
       continue;
     }
     if (current.reportId === null) {

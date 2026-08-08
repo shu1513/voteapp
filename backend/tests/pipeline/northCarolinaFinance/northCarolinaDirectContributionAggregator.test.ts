@@ -345,7 +345,9 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
     expect(result.ieTypedRegularReportCents).toBe(1_050_000);
   });
 
-  it("flags a cover whose period disagrees with the inventory filing", () => {
+  it("refuses to aggregate a cover whose period disagrees with the inventory filing", () => {
+    // A mispaired cached artifact may be another report's bytes: never
+    // writable money — do not write, reacquire.
     const wrongCover = makeCover({
       beginDate: "01/01/2026",
       endDate: "03/31/2026",
@@ -356,6 +358,9 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
       inventoryRows: [GADSON_Q1_ROW],
       reports: [{ reportId: "229931", cover: wrongCover, receiptRows: [] }],
     });
+    expect(result.status).toBe("incomplete_artifacts");
     expect(result.coverPeriodMismatchReportIds).toEqual(["229931"]);
+    expect(result.summary.totalReceipts).toBeNull();
+    expect(result.directBreakdowns).toEqual([]);
   });
 });

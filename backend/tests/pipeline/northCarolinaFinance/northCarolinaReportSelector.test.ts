@@ -188,6 +188,29 @@ describe("selectNcsbeCurrentFilings", () => {
     ]);
   });
 
+  it("selects the amendment when it ties its original on every date — flag semantics need no chronology", () => {
+    const original = documentRow();
+    const amendment = documentRow({ isAmendment: true, dataLink: "100003" });
+    const result = selectNcsbeCurrentFilings({ rows: [original, amendment] });
+    expect(result.quarantinedGroups).toEqual([]);
+    expect(result.selected).toHaveLength(1);
+    expect(result.selected[0]).toMatchObject({ reportId: "100003", isAmendment: true });
+  });
+
+  it("quarantines two amendments tying on every chronology key — never ordered by report id", () => {
+    const original = documentRow({
+      imageReceiptDate: parseNcsbeDate("02/20/2026"),
+      dataImportDate: parseNcsbeDate("02/20/2026"),
+    });
+    const firstAmendment = documentRow({ isAmendment: true, dataLink: "100009" });
+    const secondAmendment = documentRow({ isAmendment: true, dataLink: "1000010" });
+    const result = selectNcsbeCurrentFilings({ rows: [original, firstAmendment, secondAmendment] });
+    expect(result.selected).toEqual([]);
+    expect(result.quarantinedGroups).toEqual([
+      expect.objectContaining({ reason: "ambiguous_filing_chronology" }),
+    ]);
+  });
+
   it("quarantines when chronology says the original is newer than an amendment", () => {
     const original = documentRow({ imageReceiptDate: parseNcsbeDate("05/01/2026") });
     const amendment = documentRow({

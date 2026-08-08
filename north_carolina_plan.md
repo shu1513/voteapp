@@ -632,10 +632,14 @@ The acquisition spike is the gate before parser/aggregator work.
   dedup by report id across inventories; row-merge allows 1 DATA + ≤1 IMAGE,
   all-DATA amendment chains, or a single IMAGE row — any other mix
   quarantines; selection groups drop `IsAmendment`, order by
-  `ImageReceiptDate` then `DataImportDate`; null flags, multiple originals,
-  and a chronology pick that puts an original over an existing amendment all
-  quarantine; image-only current filing = superseded-unavailable, never a
-  fallback). `northCarolinaDirectContributionAggregator.ts` (decisions 7+11:
+  `ImageReceiptDate` then `DataImportDate` then the amendment flag itself —
+  a same-day amendment still beats its original by flag semantics, but two
+  amendments tying on the whole key quarantine (`ambiguous_filing_chronology`;
+  review round: report ids are NOT chronology evidence — nothing pins them
+  monotonic — so money is never selected by id ordering); null flags,
+  multiple originals, and a chronology pick that puts an original over an
+  existing amendment all quarantine; image-only current filing =
+  superseded-unavailable, never a fallback). `northCarolinaDirectContributionAggregator.ts` (decisions 7+11:
   cover-authoritative Period sums for receipts/disbursements + cover 15+20
   for `direct_contribution_total`; latest-report cash with negative→NULL;
   Cycle chain check as an advisory consecutive-report diagnostic;
@@ -644,8 +648,10 @@ The acquisition spike is the gate before parser/aggregator work.
   unknown receipt codes quarantine breakdowns only — direct-known set pinned
   to `IND `/`CPCM`/`PPTY`, `DON ` stays IE-side; three outcomes: `ok`,
   `honest_null` — supersession/ambiguity proof → write null summary + empty
-  breakdowns — and `incomplete_artifacts` — missing cached report → do NOT
-  write; IE-typed regular rows counted as the decision-3 cross-check).
+  breakdowns — and `incomplete_artifacts` — missing cached report OR a
+  cover whose own period contradicts its inventory filing (mispaired
+  artifact, checked before any summing; review round) → do NOT write,
+  reacquire; IE-typed regular rows counted as the decision-3 cross-check).
   `northCarolinaOutsideSpendingAggregator.ts` (decisions 3–6: pinned two IE
   report types; per-form amounts — `IEAmount` required on the unregistered
   form, `IEAmount ?? Amount` on the registered form; per-report

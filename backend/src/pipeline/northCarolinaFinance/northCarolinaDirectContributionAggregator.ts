@@ -59,8 +59,12 @@ export type NorthCarolinaDirectAggregationInput = {
 //   preserve-when-null policy keeps outside totals). Never leave stale money
 //   visible.
 // - "incomplete_artifacts": a selected report's cached artifacts were not
-//   supplied — absence of evidence, not evidence of supersession. Do NOT
-//   write; keep the previous valid snapshot and re-acquire.
+//   supplied, or a supplied cover's own period contradicts the inventory
+//   filing it was cached for (a mispaired artifact — possibly another
+//   report's bytes). Either way the cache, not the portal, is suspect: do
+//   NOT write; keep the previous valid snapshot and re-acquire. A mismatch
+//   that survives a forced refetch is a portal typo and stays unwritten
+//   until reviewed.
 export type NorthCarolinaDirectAggregationStatus = "ok" | "honest_null" | "incomplete_artifacts";
 
 export type NorthCarolinaDirectFinanceSummary = {
@@ -110,7 +114,9 @@ export type NorthCarolinaDirectAggregationResult = {
   // a missing filing between them or portal damage.
   cycleChainMismatches: NorthCarolinaCycleChainMismatch[];
   // Cover begin/end dates disagreeing with the inventory period of the
-  // selected filing — a mispaired cached artifact.
+  // selected filing — a mispaired cached artifact. Nonempty forces
+  // status "incomplete_artifacts": provably-suspect bytes never become
+  // writable money.
   coverPeriodMismatchReportIds: string[];
   // Derived-breakdown quarantine (decision 7): a ReceiptTypeCode outside the
   // pinned vocabulary empties occupations + size buckets for this candidate.
@@ -321,6 +327,27 @@ export function aggregateNorthCarolinaDirectFinance(
   const reportsById = new Map(input.reports.map((report) => [report.reportId, report]));
   const missingReportIds = selectedReportIds.filter((reportId) => !reportsById.has(reportId));
 
+  // Mispaired-artifact guard: a supplied cover whose own period contradicts
+  // the inventory filing it was cached for may be another report's bytes —
+  // checked BEFORE any summing so it can never become writable money. Only
+  // usable dates on both sides can conflict (the live year-3026 inventory
+  // typo parses to a null ISO and stays out of this check).
+  const coverPeriodMismatchReportIds: string[] = [];
+  for (const filing of selectedFilings) {
+    const report = reportsById.get(filing.reportId!);
+    if (!report) {
+      continue;
+    }
+    const coverBegin = report.cover.cover.beginDate.iso;
+    const coverEnd = report.cover.cover.endDate.iso;
+    if (
+      (coverBegin !== null && filing.periodStartIso !== null && coverBegin !== filing.periodStartIso) ||
+      (coverEnd !== null && filing.periodEndIso !== null && coverEnd !== filing.periodEndIso)
+    ) {
+      coverPeriodMismatchReportIds.push(filing.reportId!);
+    }
+  }
+
   const nullSummary: NorthCarolinaDirectFinanceSummary = {
     totalReceipts: null,
     directContributionTotal: null,
@@ -339,7 +366,7 @@ export function aggregateNorthCarolinaDirectFinance(
     itemizedIndividualCents: 0,
     coverIndividualContributionCents: null,
     cycleChainMismatches: [],
-    coverPeriodMismatchReportIds: [],
+    coverPeriodMismatchReportIds,
     derivedBreakdownsQuarantined: false,
     unknownReceiptTypeCodes: [],
     includedIndividualRowCount: 0,
@@ -365,9 +392,10 @@ export function aggregateNorthCarolinaDirectFinance(
       ...emptyDiagnostics,
     };
   }
-  // Missing cached artifacts are a transport/acquisition gap, not portal
-  // evidence — the sync keeps the previous snapshot and re-acquires.
-  if (missingReportIds.length > 0) {
+  // Missing cached artifacts and mispaired covers are cache/acquisition
+  // problems, not portal evidence — the sync keeps the previous snapshot
+  // and re-acquires.
+  if (missingReportIds.length > 0 || coverPeriodMismatchReportIds.length > 0) {
     return {
       status: "incomplete_artifacts",
       summary: nullSummary,
@@ -391,7 +419,6 @@ export function aggregateNorthCarolinaDirectFinance(
   let ieTypedRegularReportRowCount = 0;
   let ieTypedRegularReportCents = 0;
   const cycleChainMismatches: NorthCarolinaCycleChainMismatch[] = [];
-  const coverPeriodMismatchReportIds: string[] = [];
   const unknownReceiptTypeCodes = new Map<string, { code: string; rowCount: number; amountCents: number }>();
   const occupationAggregates = new Map<string, OccupationAggregate>();
   const bucketAggregates = new Map<string, OccupationAggregate>();
@@ -403,18 +430,6 @@ export function aggregateNorthCarolinaDirectFinance(
     const reportId = filing.reportId!;
     const report = reportsById.get(reportId)!;
     const sections = coverSectionValues(report.cover);
-
-    // Mispaired artifact guard: the cover's own period must agree with the
-    // inventory row the selection was based on (when both state usable
-    // dates).
-    const coverBegin = report.cover.cover.beginDate.iso;
-    const coverEnd = report.cover.cover.endDate.iso;
-    if (
-      (coverBegin !== null && filing.periodStartIso !== null && coverBegin !== filing.periodStartIso) ||
-      (coverEnd !== null && filing.periodEndIso !== null && coverEnd !== filing.periodEndIso)
-    ) {
-      coverPeriodMismatchReportIds.push(reportId);
-    }
 
     totalReceiptsCents += requireSection(sections, SECTION_TOTAL_RECEIPTS, reportId).periodCents;
     totalDisbursementsCents += requireSection(sections, SECTION_TOTAL_EXPENDITURES, reportId).periodCents;
