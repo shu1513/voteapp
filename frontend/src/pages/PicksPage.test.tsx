@@ -336,6 +336,28 @@ describe("PicksPage", () => {
                   { candidate_id: "c-11", display_name: "Rae Runoff", candidacy_status: "runoff" },
                 ],
               }),
+              // Pre-certification: candidacy_status still "declared", but the
+              // choices list read attaches the canonical election-night
+              // result — history must not lose the call for the weeks until
+              // certification.
+              electionChoice({
+                election_id: "e-old-3",
+                official_ballot_title: "Auditor",
+                election_date: "2026-07-28",
+                picks: [{ candidate_id: "c-12", display_name: "Nia Night", candidacy_status: "declared" }],
+                current_result_outcome: "won",
+                current_result_winners: [{ candidate_id: "c-12", candidate_name: "Nia Night" }],
+              }),
+              electionChoice({
+                election_id: "e-old-4",
+                official_ballot_title: "Prop 9",
+                election_date: "2026-07-28",
+                race_type: "ballot_measure",
+                picks: [],
+                measure_position: "yes",
+                measure_result: null,
+                current_result_outcome: "passed",
+              }),
             ],
           },
         },
@@ -344,13 +366,16 @@ describe("PicksPage", () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderPicks();
 
-    const summary = await screen.findByText("Past elections (2)");
+    const summary = await screen.findByText("Past elections (4)");
     await user.click(summary);
 
     expect(screen.getByText("Pat Winner")).toBeInTheDocument();
-    expect(screen.getByText("Won")).toBeInTheDocument();
     expect(screen.getByText("Advanced")).toBeInTheDocument();
     expect(screen.getByText("In runoff")).toBeInTheDocument();
+    // Pat Winner's certified chip and Nia Night's election-night chip.
+    expect(screen.getAllByText("Won")).toHaveLength(2);
+    // The measure's election-night passed fills in for the certified field.
+    expect(screen.getByText("Passed")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sheriff" })).toHaveAttribute("href", "/elections/e-old");
   });
 });

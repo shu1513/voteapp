@@ -94,15 +94,15 @@ function measureOutcomeChip(position: "yes" | "no", result: string | null | unde
 // decisive outcomes only, the same conservatism as the ballot card's
 // "My pick won ✓" marker — and the same silence when the pick isn't among
 // the winners: the card announces the payoff, it doesn't rub in the loss.
-function pickResultChip(election: ElectionSummary | undefined, candidateId: string) {
-  const outcome = election?.current_result_outcome;
-  if (!election?.has_results || !outcome) {
-    return null;
-  }
+function pickResultChip(
+  outcome: string | null | undefined,
+  winners: readonly { candidate_id?: string }[] | undefined,
+  candidateId: string
+) {
   if (outcome !== "won" && outcome !== "advanced" && outcome !== "runoff") {
     return null;
   }
-  if (!(election.current_result_winners ?? []).some((winner) => winner.candidate_id === candidateId)) {
+  if (!(winners ?? []).some((winner) => winner.candidate_id === candidateId)) {
     return null;
   }
   // Same vocabulary as the election page's badges and pickStatusChip: a
@@ -118,6 +118,12 @@ function pickResultChip(election: ElectionSummary | undefined, candidateId: stri
 }
 
 function PickedLine({ choice, election }: { choice: ElectionChoice; election?: ElectionSummary }) {
+  // The canonical result reaches this line two ways: via the ballot summary
+  // while the race is still carded, and via the choice itself afterwards
+  // (attached on the choices list read) — so PastPicks keeps showing an
+  // election-night call during the weeks before certification.
+  const resultOutcome = election?.current_result_outcome ?? choice.current_result_outcome;
+  const resultWinners = election?.current_result_winners ?? choice.current_result_winners;
   if (choice.measure_position !== null) {
     return (
       <span className={choice.measure_position === "yes" ? "font-semibold text-green-900" : "font-semibold text-red-900"}>
@@ -125,7 +131,7 @@ function PickedLine({ choice, election }: { choice: ElectionChoice; election?: E
         {/* Certified measure result first; before it lands, the canonical
             result row's election-night passed/failed fills in. Anything
             else (too_close, unknown) renders nothing, as the chip demands. */}
-        {measureOutcomeChip(choice.measure_position, choice.measure_result ?? election?.current_result_outcome)}
+        {measureOutcomeChip(choice.measure_position, choice.measure_result ?? resultOutcome)}
       </span>
     );
   }
@@ -137,7 +143,8 @@ function PickedLine({ choice, election }: { choice: ElectionChoice; election?: E
           {pick.display_name}
           {/* candidacy_status (certified won/lost, withdrawn) outranks the
               result-derived chip — never both. */}
-          {pickStatusChip(pick.candidacy_status) ?? pickResultChip(election, pick.candidate_id)}
+          {pickStatusChip(pick.candidacy_status) ??
+            pickResultChip(resultOutcome, resultWinners, pick.candidate_id)}
         </span>
       ))}
     </span>

@@ -2,6 +2,8 @@ import type { Pool, PoolClient } from "pg";
 
 import { isUuid } from "../../utils/uuid.js";
 import { US_LATEST_LOCAL_DATE_SQL } from "../../utils/usLocalDate.js";
+import { loadCanonicalElectionResults } from "../electionResults/canonicalElectionResults.js";
+import type { CanonicalElectionResultWinner } from "../electionResults/canonicalElectionResults.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type TransactionalDb = Pick<Pool, "connect">;
@@ -27,6 +29,15 @@ export type UserElectionChoice = {
    * results land, null before) — lets a measure pick show its outcome the
    * way candidacy_status lets a candidate pick show won/lost. */
   measure_result: string | null;
+  /** The election's canonical result (certified over election_night, then
+   * freshest), attached on the LIST read only: picks history outlives the
+   * ballot's just-finished window, and without this an election-night call
+   * would vanish from history until certification flips candidacy_status —
+   * weeks later. The post-write read-back leaves these empty (null / [])
+   * because writes are gated to races the ballot still cards, where the
+   * ballot summary carries the same fields. */
+  current_result_outcome: string | null;
+  current_result_winners: CanonicalElectionResultWinner[];
   updated_at: string;
 };
 
@@ -186,6 +197,8 @@ function rowsToChoices(rows: ChoiceRow[]): UserElectionChoice[] {
         picks: [],
         measure_position: null,
         measure_result: row.measure_result,
+        current_result_outcome: null,
+        current_result_winners: [],
         updated_at: formatTimestamp(row.updated_at),
       };
       byElection.set(row.election_id, choice);
@@ -221,7 +234,23 @@ export async function listUserElectionChoices(db: Queryable, userId: string): Pr
     `,
     [normalizedUserId]
   );
-  return { choices: rowsToChoices(result.rows) };
+  const choices = rowsToChoices(result.rows);
+  if (choices.length > 0) {
+    // See current_result_outcome on UserElectionChoice for why the list read
+    // alone carries the canonical result.
+    const canonical = await loadCanonicalElectionResults(
+      db,
+      choices.map((choice) => choice.election_id)
+    );
+    for (const choice of choices) {
+      const canonicalResult = canonical.get(choice.election_id);
+      if (canonicalResult) {
+        choice.current_result_outcome = canonicalResult.outcome;
+        choice.current_result_winners = canonicalResult.winners;
+      }
+    }
+  }
+  return { choices };
 }
 
 async function readElectionChoice(
@@ -252,6 +281,8 @@ async function readElectionChoice(
     picks: [],
     measure_position: null,
     measure_result: null,
+    current_result_outcome: null,
+    current_result_winners: [],
     updated_at: new Date().toISOString(),
   };
 }
