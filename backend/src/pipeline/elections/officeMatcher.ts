@@ -455,6 +455,31 @@ function judgeCanonicalNameForScope(scope: ElectionDistrictType): string | null 
   return null;
 }
 
+// "<County> Clerk of the District Court" (Nebraska) and "<County> Clerk of
+// Circuit Court" / "Clerk of Courts" (Wisconsin) elect the clerk of court, a
+// distinct office from the county's own clerk. Those titles put the county
+// name FIRST, so the jurisdiction strip leaves "county clerk of ... court":
+// the short generic "county clerk" key sits inside it as a prefix and takes
+// the phrase-containment boost, while the specific "clerk of court" key —
+// split apart by the interposed court name, or pluralized to "courts" —
+// scores lower and loses. Every Wisconsin county with an elected clerk of
+// circuit court and every Nebraska county uses this title form, so the wrong
+// office was systemic rather than one-off. Naming a COURT is what marks the
+// seat: Nebraska's own county-clerk title ("Clerk Register of Deeds") names
+// none and stays with County Clerk.
+const COURT_CLERK_TITLE_PATTERNS = [/\bclerk of (?:the )?(?:[a-z]+ )?courts?\b/, /\bcourts? clerk\b/];
+
+function isCourtClerkTitle(titleMatcherKey: string): boolean {
+  return COURT_CLERK_TITLE_PATTERNS.some((pattern) => pattern.test(titleMatcherKey));
+}
+
+// The clerk offices that name no court of their own — County Clerk, County
+// Clerk and Recorder, City Clerk — are exactly the wrong targets for such a
+// title.
+function isNonCourtClerkOfficeKey(canonicalMatcherKey: string): boolean {
+  return /\bclerk\b/.test(canonicalMatcherKey) && !/\bcourts?\b/.test(canonicalMatcherKey);
+}
+
 function isWashingtonState(state: string): boolean {
   const normalized = state.trim().toLowerCase();
   return normalized === "wa" || normalized === "washington";
@@ -476,6 +501,14 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
     hasPhrase(titleMatcherKey, "township supervisor") &&
     office.canonicalMatcherKey === "county supervisor"
   ) {
+    return 0;
+  }
+
+  // Backstop for a catalog with no Clerk of Court office in scope: without it
+  // the containment boost still hands a court-clerk title to the plain clerk
+  // office and persists that as a learned alias. No-match is the honest
+  // outcome there.
+  if (isCourtClerkTitle(titleMatcherKey) && isNonCourtClerkOfficeKey(office.canonicalMatcherKey)) {
     return 0;
   }
 
@@ -649,6 +682,16 @@ export class OfficeMatcher {
         exactOfficeId = undefined;
       }
     }
+    if (exactOfficeId && isCourtClerkTitle(titleMatcherKey)) {
+      // Runs already learned the mis-scored alias ("county clerk of the
+      // district court" -> County Clerk), and an exact alias hit outranks the
+      // deterministic rule below. The title names the court itself, so it is
+      // authoritative over a stored clerk office that names none.
+      const aliasTarget = (await this.loadOffices(input.scope)).find((office) => office.id === exactOfficeId);
+      if (aliasTarget && isNonCourtClerkOfficeKey(aliasTarget.canonicalMatcherKey)) {
+        exactOfficeId = undefined;
+      }
+    }
     if (exactOfficeId) {
       return {
         officeId: exactOfficeId,
@@ -740,6 +783,24 @@ export class OfficeMatcher {
       isWashingtonState(input.state) &&
       titleMatcherKey === "clerk"
     ) {
+      const office = findSingleScopeOffice(offices, CLERK_OF_COURT_CANONICAL_NAME);
+      if (office) {
+        return {
+          officeId: office.id,
+          method: "deterministic_fallback",
+          confidence: 1,
+          normalizedAlias,
+          aliasMemoryKey: titleMatcherKey,
+          shouldPersistAlias: false,
+        };
+      }
+    }
+
+    // A county title that names a court's clerk is that court's clerk, however
+    // the state words it ("Clerk of the District Court", "Clerk of Circuit
+    // Court", "Clerk of Courts", "Circuit Court Clerk"). The token scorer
+    // cannot see past the generic county-clerk prefix, so decide it here.
+    if (input.scope === "county" && isCourtClerkTitle(titleMatcherKey)) {
       const office = findSingleScopeOffice(offices, CLERK_OF_COURT_CANONICAL_NAME);
       if (office) {
         return {
