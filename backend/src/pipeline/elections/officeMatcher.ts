@@ -190,6 +190,14 @@ function normalizeMatcherText(value: string): string {
     // combined office; the compound form scores 1-of-3 token overlap against
     // "County Treasurer" and misses the confidence floor.
     .replace(/\btreasurer\s*[/-]\s*tax collector\b/g, "treasurer")
+    // "(s)" is an optional-plural marker on the office word, never a word of
+    // its own: St. Tammany Parish LA titles 19 live seats "Constable(s) Justice
+    // of the Peace Ward N" and "Justice(s) of the Peace ...". The generic
+    // punctuation fold below would leave a stray "s" token mid-phrase, which
+    // both breaks the office phrase and costs a token of precision — the
+    // constable form failed at exactly 0.520, the same way Jefferson's did.
+    // Dropped before that fold so the phrase survives intact.
+    .replace(/\(s\)/g, "")
     .replace(/[^a-z0-9\s]/g, " ")
     .replace(/\s+/g, " ")
     .trim()

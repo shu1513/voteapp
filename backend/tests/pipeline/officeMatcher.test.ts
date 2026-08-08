@@ -2017,6 +2017,38 @@ describe("OfficeMatcher", () => {
       });
     });
 
+    it("folds the '(s)' optional-plural marker on both St. Tammany seat forms", async () => {
+      // 19 live St. Tammany rows title the seat "Constable(s) Justice of the
+      // Peace Ward N" / "Justice(s) of the Peace ...". Punctuation folding alone
+      // leaves a stray "s" token mid-phrase, which broke the constable form at
+      // exactly 0.520 — the same failure as Jefferson's.
+      const matcher = createLouisianaMatcher([
+        { office_id: "office-constable", normalized_alias: "constable" },
+        { office_id: "office-justice-of-the-peace", normalized_alias: "justice of the peace" },
+      ]);
+
+      const constable = await matcher.resolve({
+        scope: "county",
+        districtName: "St. Tammany Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Constable(s) Justice of the Peace Ward 10",
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(constable).toMatchObject({ officeId: "office-constable", method: "alias_exact" });
+
+      const justiceOfThePeace = await matcher.resolve({
+        scope: "county",
+        districtName: "St. Tammany Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Justice(s) of the Peace Justice of the Peace Ward 1",
+        discoveryContestFamily: "judicial_office",
+      });
+      expect(justiceOfThePeace).toMatchObject({
+        officeId: "office-justice-of-the-peace",
+        method: "alias_exact",
+      });
+    });
+
     it("resolves Caddo's 'Constable Justice of the Peace Ward N' to Constable, not the JP office", async () => {
       const result = await createLouisianaMatcher([
         { office_id: "office-constable", normalized_alias: "constable" },

@@ -145,4 +145,33 @@ WHERE office.scope = 'county'
   AND office.canonical_name = 'Justice of the Peace'
 ON CONFLICT (office_id, research_area_id) DO NOTHING;
 
+-- Rehome the elections the reclaimed aliases had already filed under County
+-- Level Judge. Without this the catalog contradicts itself: the alias says
+-- Justice of the Peace while the rows it matched still say County Level Judge,
+-- and nothing else would ever fix them —
+-- manual:elections:repair-office-ids selects office_id IS NULL only, so a row
+-- holding a wrong-but-present office_id is invisible to it (same constraint
+-- that forced the Solicitor General split to rehome inside its own migration).
+--
+-- official_ballot_title_key is normalized lowercase with single spaces, so the
+-- phrase test is exact rather than fuzzy. It matches the parenthesized-plural
+-- form too ("Justice(s) of the Peace Justice of the Peace Ward 1", St. Tammany
+-- live) on the title's second, unparenthesized copy of the phrase. Constable
+-- titles are excluded: a Louisiana constable's seat is NAMED after the justice
+-- court it serves, and those rows already hold the correct Constable office.
+-- 16 rows on 2026-08-08: 9 St. Tammany LA, 5 Pima AZ, 1 Calcasieu LA, 1 East
+-- Baton Rouge LA.
+UPDATE public.elections e
+SET office_id = justice_of_the_peace.id,
+    updated_at = now()
+FROM public.offices justice_of_the_peace,
+     public.offices county_level_judge
+WHERE justice_of_the_peace.scope = 'county'
+  AND justice_of_the_peace.canonical_name = 'Justice of the Peace'
+  AND county_level_judge.scope = 'county'
+  AND county_level_judge.canonical_name = 'County Level Judge'
+  AND e.office_id = county_level_judge.id
+  AND e.official_ballot_title_key LIKE '%justice of the peace%'
+  AND e.official_ballot_title_key NOT LIKE '%constable%';
+
 COMMIT;
