@@ -92,16 +92,19 @@ export function formatWinnerNames(
   winners: readonly { candidate_name?: string; party?: string }[]
 ): string {
   return winners
-    .map((winner) => {
-      const name = winner.candidate_name?.trim();
-      if (!name) {
-        return null;
-      }
-      const party = winner.party?.trim();
-      return party ? `${name} (${party})` : name;
-    })
+    .map(formatWinnerName)
     .filter((name): name is string => name !== null)
     .join(", ");
+}
+
+/** "Jocelyn Benson (Democratic)"; null for a nameless (unmatched) winner. */
+function formatWinnerName(winner: { candidate_name?: string; party?: string }): string | null {
+  const name = winner.candidate_name?.trim();
+  if (!name) {
+    return null;
+  }
+  const party = winner.party?.trim();
+  return party ? `${name} (${party})` : name;
 }
 
 // Only decisive outcomes present their winner set as winners. The stored
@@ -120,9 +123,71 @@ export function formatResultChipLabel(
   outcome: string,
   winners: readonly { candidate_name?: string; party?: string }[]
 ): string {
-  const names = NAMED_RESULT_OUTCOMES.has(outcome) ? formatWinnerNames(winners) : "";
-  const base = `Result: ${formatOutcome(outcome)}`;
-  return names.length > 0 ? `${base} — ${names}` : base;
+  const parts = buildResultChipParts(outcome, winners);
+  return parts.winners.length > 0
+    ? `${parts.heading} — ${parts.winners.map((winner) => winner.label).join(", ")}`
+    : parts.heading;
+}
+
+export type ResultChipParts = {
+  /** "Result: Advanced" */
+  heading: string;
+  /** Named winners in payload order; empty exactly when formatResultChipLabel
+   * would render the heading alone. */
+  winners: { label: string; isMyPick: boolean }[];
+  /** "My pick won ✓" / "My pick advanced ✓" when a winner is the viewer's
+   * pick; null otherwise. A pick that lost gets silence, not a red marker —
+   * the card announces the payoff, it doesn't rub in the loss. */
+  myPickMarker: string | null;
+};
+
+/**
+ * Structured form of formatResultChipLabel, for surfaces that decorate
+ * individual winner names — the ballot card renders "My pick won ✓" inline
+ * after the viewer's candidate. Pick matching is by candidate id only (the
+ * same conservatism as deriveCandidateResultBadges): a name coincidence must
+ * never claim a win. Only decisive outcomes name winners at all, so the
+ * marker cannot appear on a too_close row's recorded leader.
+ */
+export function buildResultChipParts(
+  outcome: string,
+  winners: readonly { candidate_id?: string; candidate_name?: string; party?: string }[],
+  myPickCandidateIds?: ReadonlySet<string>
+): ResultChipParts {
+  const named = NAMED_RESULT_OUTCOMES.has(outcome)
+    ? winners.flatMap((winner) => {
+        const label = formatWinnerName(winner);
+        if (label === null) {
+          return [];
+        }
+        return [
+          {
+            label,
+            isMyPick:
+              winner.candidate_id !== undefined && (myPickCandidateIds?.has(winner.candidate_id) ?? false),
+          },
+        ];
+      })
+    : [];
+  return {
+    heading: `Result: ${formatOutcome(outcome)}`,
+    winners: named,
+    // "won" claims the seat; "advanced" and "runoff" only move the pick to
+    // the next round, so both read "advanced".
+    //
+    // Derived from the NAMED winners, not the raw list, deliberately: the
+    // marker renders inline after the matched winner's name, so a nameless
+    // winner gives it no anchor. The id-with-no-name shape is also
+    // unproducible — candidate_id is only ever written by the result
+    // matcher's toMatchedWinner, which backfills the roster display name in
+    // the same assignment — and if it ever appeared anyway, skipping the
+    // personal claim is the conservative failure mode used throughout.
+    myPickMarker: named.some((winner) => winner.isMyPick)
+      ? outcome === "won"
+        ? "My pick won ✓"
+        : "My pick advanced ✓"
+      : null,
+  };
 }
 
 export type ResultChipTone = "positive" | "negative" | "neutral";

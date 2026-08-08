@@ -421,6 +421,13 @@ export type ElectionChoice = {
    * candidacy_status. Optional to tolerate a pre-field backend (deploy
    * skew): absent renders as "no result yet". */
   measure_result?: string | null;
+  /** Same contract as ElectionSummary.current_result_outcome/_winners,
+   * attached on the list read only — picks history outlives the ballot's
+   * just-finished window, and these keep an election-night call visible
+   * there until certification flips candidacy_status. Optional for deploy
+   * skew and absent on the post-write read-back. */
+  current_result_outcome?: string | null;
+  current_result_winners?: ElectionResultWinner[];
   updated_at: string;
 };
 
@@ -442,6 +449,12 @@ export type PickCardEntry = {
   measure_position: "yes" | "no" | null;
   /** Same contract as ElectionChoice.measure_result. */
   measure_result?: string | null;
+  /** Same contract as ElectionSummary.current_result_outcome/_winners: the
+   * election's canonical result, so the card can flag a pick that
+   * won/advanced before certification flips candidacy_status. Optional to
+   * tolerate a pre-field backend (deploy skew). */
+  current_result_outcome?: string | null;
+  current_result_winners?: ElectionResultWinner[];
 };
 
 export type PickCard = {

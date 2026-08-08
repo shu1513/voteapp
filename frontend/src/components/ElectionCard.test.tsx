@@ -647,6 +647,76 @@ describe("ElectionCard result chip", () => {
     expect(screen.getByText("Result: Too close")).toBeInTheDocument();
   });
 
+  it("marks the viewer's pick inline after their winner's name — even on a past race", () => {
+    // 2026-07-04 is past under the frozen clock, so the "My pick: …" chip is
+    // hidden (a choice is history) — but the marker is that choice's payoff,
+    // so it renders anyway, right after the pick's name in the winner list.
+    renderCard(
+      electionSummary({
+        election_date: "2026-07-04",
+        has_results: true,
+        current_result_outcome: "advanced",
+        current_result_winners: [
+          { candidate_id: "c-1", candidate_name: "Jocelyn Benson", party: "Democratic" },
+          { candidate_id: "c-2", candidate_name: "John James", party: "Republican" },
+        ],
+      }),
+      undefined,
+      new Map([
+        [
+          "e-1",
+          electionChoice({
+            election_date: "2026-07-04",
+            picks: [{ candidate_id: "c-1", display_name: "Jocelyn Benson", candidacy_status: "declared" }],
+          }),
+        ],
+      ])
+    );
+    expect(screen.queryByText(/My picks?:/)).not.toBeInTheDocument();
+    const marker = screen.getByText("My pick advanced ✓");
+    expect(marker.className).toContain("bg-green-700");
+    // The marker sits inside the chip, between the pick's name and the rest
+    // of the roll call — separated by a real space, so copied/accessible
+    // text doesn't run the name into the marker.
+    expect(marker.parentElement).toHaveTextContent(
+      "Result: Advanced — Jocelyn Benson (Democratic) My pick advanced ✓, John James (Republican)"
+    );
+  });
+
+  it('says "My pick won ✓" when the outcome claims the seat', () => {
+    renderCard(
+      electionSummary({
+        election_date: "2026-07-04",
+        has_results: true,
+        current_result_outcome: "won",
+        current_result_winners: [
+          { candidate_id: "c-1", candidate_name: "Jane Smith", party: "Nonpartisan" },
+        ],
+      }),
+      undefined,
+      new Map([["e-1", electionChoice({ election_date: "2026-07-04" })]])
+    );
+    expect(screen.getByText("My pick won ✓")).toBeInTheDocument();
+  });
+
+  it("shows no marker when the viewer's pick lost", () => {
+    renderCard(
+      electionSummary({
+        election_date: "2026-07-04",
+        has_results: true,
+        current_result_outcome: "advanced",
+        current_result_winners: [
+          { candidate_id: "c-2", candidate_name: "John James", party: "Republican" },
+        ],
+      }),
+      undefined,
+      // The fixture pick is c-1, who is not among the winners.
+      new Map([["e-1", electionChoice({ election_date: "2026-07-04" })]])
+    );
+    expect(screen.queryByText(/My pick/)).not.toBeInTheDocument();
+    expect(screen.getByText("Result: Advanced — John James (Republican)")).toBeInTheDocument();
+  });
+
   it("falls back to the outcome alone when no winner is named", () => {
     // Ballot measures (Passed/Failed already says everything) and office rows
     // whose winners are all nameless both take this path.

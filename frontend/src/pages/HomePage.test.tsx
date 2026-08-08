@@ -38,7 +38,12 @@ function stubResolveFetch() {
     json: async () =>
       path === "/api/address/resolve"
         ? { matched_address: "123 Main St", address_match_count: 1, districts: [] }
-        : { user: null },
+        : // The autocomplete suggest call races these tests on a real 275ms
+          // debounce timer; it must get a well-formed (empty) response, not
+          // the fallthrough body, whenever it happens to fire in time.
+          path === "/api/address/autocomplete"
+          ? { suggestions: [] }
+          : { user: null },
   }));
   vi.stubGlobal("fetch", fetchMock);
   return fetchMock;

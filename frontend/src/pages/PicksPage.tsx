@@ -25,16 +25,40 @@ const PICKS_NAV_STATE: ElectionNavState = {
 };
 
 // One race row on a date card. "Pick chips" per candidate so a multi-seat
-// race reads name-by-name, with won/lost/withdrawn carried per candidacy.
+// race reads name-by-name, with the outcome carried per candidacy. The
+// certified writer projects advanced/runoff onto winners (everyone else
+// becomes lost), so all five terminal statuses need a chip — a certified
+// "advanced" with no chip would read as no outcome at all once the race
+// leaves the carded window and the result fallback with it. Labels match
+// the election page's badges (Won / Advanced / In runoff / Lost). Each chip
+// leads with a real space: margin is only visual, and without the space the
+// copy/accessible text runs the name into the label ("Jane SmithWon").
 function pickStatusChip(status: string) {
-  if (status === "won") {
-    return <span className="ml-1 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">Won</span>;
+  if (status === "won" || status === "advanced" || status === "runoff") {
+    return (
+      <>
+        {" "}
+        <span className="rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+          {status === "won" ? "Won" : status === "advanced" ? "Advanced" : "In runoff"}
+        </span>
+      </>
+    );
   }
   if (status === "lost") {
-    return <span className="ml-1 rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">Lost</span>;
+    return (
+      <>
+        {" "}
+        <span className="rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">Lost</span>
+      </>
+    );
   }
   if (status === "withdrawn") {
-    return <span className="ml-1 text-xs text-ink-soft">(withdrew)</span>;
+    return (
+      <>
+        {" "}
+        <span className="text-xs text-ink-soft">(withdrew)</span>
+      </>
+    );
   }
   return null;
 }
@@ -52,19 +76,62 @@ function measureOutcomeChip(position: "yes" | "no", result: string | null | unde
   }
   const matchedPick = (result === "passed") === (position === "yes");
   const label = result === "passed" ? "Passed" : "Failed";
-  return matchedPick ? (
-    <span className="ml-1 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">{label}</span>
-  ) : (
-    <span className="ml-1 rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">{label}</span>
+  return (
+    <>
+      {" "}
+      {matchedPick ? (
+        <span className="rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">{label}</span>
+      ) : (
+        <span className="rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">{label}</span>
+      )}
+    </>
   );
 }
 
-function PickedLine({ choice }: { choice: ElectionChoice }) {
+// Result-derived chip for a pick the candidacy pipeline hasn't labeled yet:
+// election-night calls arrive as result rows (outcome + winner ids) long
+// before candidate_elections.status flips to won/lost. Id-only matching and
+// decisive outcomes only, the same conservatism as the ballot card's
+// "My pick won ✓" marker — and the same silence when the pick isn't among
+// the winners: the card announces the payoff, it doesn't rub in the loss.
+function pickResultChip(
+  outcome: string | null | undefined,
+  winners: readonly { candidate_id?: string }[] | undefined,
+  candidateId: string
+) {
+  if (outcome !== "won" && outcome !== "advanced" && outcome !== "runoff") {
+    return null;
+  }
+  if (!(winners ?? []).some((winner) => winner.candidate_id === candidateId)) {
+    return null;
+  }
+  // Same vocabulary as the election page's badges and pickStatusChip: a
+  // runoff berth is its own state, not a generic "Advanced".
+  return (
+    <>
+      {" "}
+      <span className="rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+        {outcome === "won" ? "Won" : outcome === "advanced" ? "Advanced" : "In runoff"}
+      </span>
+    </>
+  );
+}
+
+function PickedLine({ choice, election }: { choice: ElectionChoice; election?: ElectionSummary }) {
+  // The canonical result reaches this line two ways: via the ballot summary
+  // while the race is still carded, and via the choice itself afterwards
+  // (attached on the choices list read) — so PastPicks keeps showing an
+  // election-night call during the weeks before certification.
+  const resultOutcome = election?.current_result_outcome ?? choice.current_result_outcome;
+  const resultWinners = election?.current_result_winners ?? choice.current_result_winners;
   if (choice.measure_position !== null) {
     return (
       <span className={choice.measure_position === "yes" ? "font-semibold text-green-900" : "font-semibold text-red-900"}>
         {choice.measure_position === "yes" ? "Yes" : "No"}
-        {measureOutcomeChip(choice.measure_position, choice.measure_result)}
+        {/* Certified measure result first; before it lands, the canonical
+            result row's election-night passed/failed fills in. Anything
+            else (too_close, unknown) renders nothing, as the chip demands. */}
+        {measureOutcomeChip(choice.measure_position, choice.measure_result ?? resultOutcome)}
       </span>
     );
   }
@@ -74,7 +141,10 @@ function PickedLine({ choice }: { choice: ElectionChoice }) {
         <span key={pick.candidate_id}>
           {index > 0 ? ", " : null}
           {pick.display_name}
-          {pickStatusChip(pick.candidacy_status)}
+          {/* candidacy_status (certified won/lost, withdrawn) outranks the
+              result-derived chip — never both. */}
+          {pickStatusChip(pick.candidacy_status) ??
+            pickResultChip(resultOutcome, resultWinners, pick.candidate_id)}
         </span>
       ))}
     </span>
@@ -166,6 +236,10 @@ function PickDateCard({
   const pickedCount = elections.filter((election) =>
     hasRenderablePick(choiceByElectionId?.get(election.id))
   ).length;
+  // Cards outlive their election day (the ballot keeps finished races for a
+  // few days so results can land on them); once the date passes, "no pick
+  // yet" would invite an action that's no longer possible.
+  const isPast = date < usLatestLocalDate();
   return (
     <section className="rounded-xl border border-line bg-white p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -189,7 +263,7 @@ function PickDateCard({
                     {election.official_ballot_title}
                   </Link>
                   <span className="text-ink-soft"> — </span>
-                  <PickedLine choice={choice} />
+                  <PickedLine choice={choice} election={election} />
                 </>
               ) : (
                 // Undecided: the whole line is the quiet call to action —
@@ -199,7 +273,7 @@ function PickDateCard({
                   state={PICKS_NAV_STATE}
                   className="text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink"
                 >
-                  {election.official_ballot_title} — no pick yet
+                  {election.official_ballot_title} — {isPast ? "no pick" : "no pick yet"}
                 </Link>
               )}
             </li>
@@ -212,10 +286,20 @@ function PickDateCard({
 
 // Past picks come from the choices payload alone (it carries title + date),
 // not the ballot: the saved ballot only keeps recently finished elections,
-// while picks history should survive indefinitely.
-function PastPicks({ choices, today }: { choices: ElectionChoice[]; today: string }) {
+// while picks history should survive indefinitely. Races still carded above
+// (the ballot's just-finished window) are excluded — their picks are already
+// on display, with results; they fall in here when the ballot drops them.
+function PastPicks({
+  choices,
+  today,
+  cardedElectionIds,
+}: {
+  choices: ElectionChoice[];
+  today: string;
+  cardedElectionIds: Set<string>;
+}) {
   const past = choices
-    .filter((choice) => choice.election_date < today)
+    .filter((choice) => choice.election_date < today && !cardedElectionIds.has(choice.election_id))
     .filter((choice) => choice.picks.length > 0 || choice.measure_position !== null)
     .sort((a, b) => (a.election_date < b.election_date ? 1 : a.election_date > b.election_date ? -1 : 0));
   if (past.length === 0) {
@@ -286,17 +370,18 @@ export function PicksPage() {
   const today = usLatestLocalDate();
   // Strict date grouping regardless of the ballot's saved sort: cards are
   // "everything you face on this day", so an issue- or impact-based order
-  // must not interleave dates here.
+  // must not interleave dates here. No date filter of our own: the ballot
+  // payload already keeps just-finished elections for a few days
+  // (BALLOT_PAST_ELECTION_VISIBILITY_DAYS), and the card should live exactly
+  // as long — results land right on it before it retires to Past elections.
   const byDate = new Map<string, ElectionSummary[]>();
   for (const election of ballot.data?.elections ?? []) {
-    if (election.election_date < today) {
-      continue;
-    }
     const group = byDate.get(election.election_date) ?? [];
     group.push(election);
     byDate.set(election.election_date, group);
   }
   const dates = [...byDate.keys()].sort();
+  const cardedElectionIds = new Set((ballot.data?.elections ?? []).map((election) => election.id));
 
   // Cards are meaningless without the choices: rendering them from an
   // unloaded map claims "no pick yet" on races the user already decided
@@ -356,7 +441,7 @@ export function PicksPage() {
                 />
               ))}
             </div>
-            <PastPicks choices={choices ?? []} today={today} />
+            <PastPicks choices={choices ?? []} today={today} cardedElectionIds={cardedElectionIds} />
           </>
         ) : null}
       </section>

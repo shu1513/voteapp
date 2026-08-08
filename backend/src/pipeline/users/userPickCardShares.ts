@@ -3,6 +3,8 @@ import { randomBytes } from "node:crypto";
 import type { Pool, PoolClient } from "pg";
 
 import { isUuid } from "../../utils/uuid.js";
+import { loadCanonicalElectionResults } from "../electionResults/canonicalElectionResults.js";
+import type { CanonicalElectionResultWinner } from "../electionResults/canonicalElectionResults.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type TransactionalDb = Pick<Pool, "connect">;
@@ -12,6 +14,8 @@ export type UserPickCardShare = {
   token: string;
   election_date: string;
 };
+
+export type PublicPickCardWinner = CanonicalElectionResultWinner;
 
 export type PublicPickCardEntry = {
   election_id: string;
@@ -24,6 +28,12 @@ export type PublicPickCardEntry = {
    * results land, null before) — the measure counterpart of the won/lost
    * candidacy_status on picks. */
   measure_result: string | null;
+  /** The election's canonical result (same precedence as the ballot summary:
+   * certified over election_night, then freshest), so the card can flag a
+   * pick that won/advanced on election night — candidacy_status only flips
+   * at certification. null / empty when no decisive result is recorded. */
+  current_result_outcome: string | null;
+  current_result_winners: PublicPickCardWinner[];
 };
 
 /** The public payload behind /picks/<token>. Everything here is public
@@ -299,6 +309,8 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
         picks: [],
         measure_position: null,
         measure_result: row.measure_result,
+        current_result_outcome: null,
+        current_result_winners: [],
       };
       byElection.set(row.election_id, entry);
     }
@@ -312,11 +324,29 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
       });
     }
   }
+  const entries = [...byElection.values()].filter(
+    (entry) => entry.picks.length > 0 || entry.measure_position !== null
+  );
+
+  if (entries.length > 0) {
+    // One canonical result per election, so the public card can flag a pick
+    // that won/advanced before certification flips candidacy_status.
+    const canonical = await loadCanonicalElectionResults(
+      db,
+      entries.map((entry) => entry.election_id)
+    );
+    for (const entry of entries) {
+      const canonicalResult = canonical.get(entry.election_id);
+      if (canonicalResult) {
+        entry.current_result_outcome = canonicalResult.outcome;
+        entry.current_result_winners = canonicalResult.winners;
+      }
+    }
+  }
+
   return {
     first_name: result.rows[0].first_name,
     election_date: result.rows[0].election_date,
-    entries: [...byElection.values()].filter(
-      (entry) => entry.picks.length > 0 || entry.measure_position !== null
-    ),
+    entries,
   };
 }

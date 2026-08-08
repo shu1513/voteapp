@@ -60,7 +60,11 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
         signal: controller.signal,
       });
       if (seq === requestSeqRef.current) {
-        setSuggestions(response.suggestions);
+        // Defensive: the contract above says autocomplete failing must never
+        // block the form — that includes a malformed 200 whose body lacks a
+        // suggestions array, which would otherwise crash the page at
+        // suggestions.length.
+        setSuggestions(Array.isArray(response.suggestions) ? response.suggestions : []);
       }
     } catch (error) {
       if (seq !== requestSeqRef.current) {
