@@ -236,8 +236,14 @@ function stripJurisdictionPrefixes(value: string, input: { districtName: string;
     // Attorney, blocking the prosecutor contest in every Indiana county). The
     // civic word is required here — without it the phrase is an ordinary
     // "of <place>" suffix whose bare-office handling below is already correct.
+    // The lookahead keeps the phrase whenever it modifies a governing body that
+    // follows it ("Member of Cook County Board of Commissioners"): there the
+    // county word belongs to the body's name, and taking it left
+    // "member board of commissioners", which mis-scored into County Board of
+    // Review Member — a confidently wrong match the writer would then persist
+    // as an alias.
     const ofCorePattern = new RegExp(
-      `\\bof ${escapeRegExp(core)} (?:${GENERIC_DISTRICT_SUFFIX_PATTERN})\\b`,
+      `\\bof ${escapeRegExp(core)} (?:${GENERIC_DISTRICT_SUFFIX_PATTERN})\\b(?! (?:board|commission|council|court))`,
       "g"
     );
     next = next.replace(ofCorePattern, " ");

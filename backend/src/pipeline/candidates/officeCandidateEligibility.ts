@@ -37,7 +37,8 @@ const ELIGIBILITY_SELECT_SQL = `
       d.district_type,
       e.official_ballot_title_key,
       e.election_date,
-      e.race_type
+      e.race_type,
+      e.office_id
     FROM public.elections AS e
     LEFT JOIN public.districts AS d
       ON d.id = e.district_id
@@ -86,7 +87,11 @@ const ELIGIBILITY_SELECT_SQL = `
   SELECT
     b.id AS election_id,
     CASE
-      WHEN b.race_type <> 'office' OR b.district_id IS NULL OR b.district_type IS NULL THEN 'not_office_or_missing'
+      -- An office-less shell (the elections writer's record of a ballot title
+      -- the office matcher could not place) has nothing for the candidate
+      -- records stage to work from, so it is not roster-eligible until
+      -- manual:elections:repair-office-ids backfills office_id.
+      WHEN b.race_type <> 'office' OR b.district_id IS NULL OR b.district_type IS NULL OR b.office_id IS NULL THEN 'not_office_or_missing'
       WHEN b.election_date < $2::date THEN 'not_upcoming'
       WHEN rw.ingest_key IS NOT NULL THEN 'already_written'
       WHEN nu.nearest_date IS DISTINCT FROM b.election_date THEN 'not_nearest_in_track'
@@ -154,7 +159,8 @@ const ELIGIBILITY_SELECT_UPCOMING_OFFICES_SQL = `
       d.district_type,
       e.official_ballot_title_key,
       e.election_date,
-      e.race_type
+      e.race_type,
+      e.office_id
     FROM public.elections AS e
     JOIN public.districts AS d
       ON d.id = e.district_id
@@ -202,6 +208,9 @@ const ELIGIBILITY_SELECT_UPCOMING_OFFICES_SQL = `
   SELECT
     b.id AS election_id,
     CASE
+      -- Same rule as the by-ids variant: the daily rollover must not pick up an
+      -- office-less shell the elections writer deliberately held back.
+      WHEN b.office_id IS NULL THEN 'not_office_or_missing'
       WHEN rw.ingest_key IS NOT NULL THEN 'already_written'
       WHEN nu.nearest_date IS DISTINCT FROM b.election_date THEN 'not_nearest_in_track'
       WHEN ps.prior_election_date IS NOT NULL

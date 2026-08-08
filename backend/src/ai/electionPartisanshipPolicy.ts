@@ -36,6 +36,25 @@ const PARTISAN_JUDICIAL_STATES = new Set([
   "TN",
   "TX",
 ]);
+// A state's partisan judicial rule can stop short of some scopes. Arizona's
+// partisan judicial elections are county offices; its city courts are creatures
+// of the city charter and run on the same nonpartisan ballot as the mayor
+// ("Presiding Municipal Judge, City of Yuma", live), and its appellate benches
+// are merit-selected retention questions. This is Arizona's rule, not a general
+// one — Indiana, New York and Pennsylvania all elect municipal judges on a
+// party ballot — so states absent from this map keep every scope.
+const PARTISAN_JUDICIAL_SCOPES_BY_STATE = new Map<string, ReadonlySet<string>>([
+  ["AZ", new Set(["county"])],
+]);
+
+function isPartisanJudicialContest(input: { state: string; districtType: string }): boolean {
+  const state = normalizeState(input.state);
+  if (!PARTISAN_JUDICIAL_STATES.has(state)) {
+    return false;
+  }
+  const partisanScopes = PARTISAN_JUDICIAL_SCOPES_BY_STATE.get(state);
+  return !partisanScopes || partisanScopes.has(input.districtType);
+}
 
 function isWashingtonStateLegislativeContest(input: {
   districtType: string;
@@ -140,7 +159,10 @@ function getPartisanshipModeForContest(args: {
     if (isJudicialRetentionTitle(args.officialBallotTitle)) {
       return "force_false";
     }
-    return PARTISAN_JUDICIAL_STATES.has(normalizeState(args.draft.state))
+    return isPartisanJudicialContest({
+      state: args.draft.state,
+      districtType: args.draft.district_type,
+    })
       ? "force_true"
       : "force_false";
   }
@@ -172,7 +194,7 @@ function getPartisanshipModeForOfficeScope(input: {
     if (isJudicialRetentionTitle(input.officialBallotTitle)) {
       return "force_false";
     }
-    return PARTISAN_JUDICIAL_STATES.has(normalizeState(input.state)) ? "force_true" : "force_false";
+    return isPartisanJudicialContest(input) ? "force_true" : "force_false";
   }
 
   return "ask_ai";

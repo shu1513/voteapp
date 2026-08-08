@@ -1947,6 +1947,7 @@ describe("OfficeMatcher", () => {
           { id: "office-district-attorney", canonical_name: "District Attorney" },
           { id: "office-county-level-judge", canonical_name: "County Level Judge" },
           { id: "office-clerk-of-court", canonical_name: "Clerk of Court" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
         ],
       },
     });
@@ -1986,6 +1987,19 @@ describe("OfficeMatcher", () => {
       discoveryContestFamily: "non_judicial_office",
     });
     expect(clerkOfCircuitCourt.officeId).toBe("office-clerk-of-court");
+
+    // The jurisdiction strip must not fire when the county phrase names the
+    // governing body that follows it: taking "of Cook County" here left
+    // "member board of commissioners", which mis-scored into a different
+    // county board office.
+    const bodyForm = await matcher.resolve({
+      scope: "county",
+      districtName: "Cook County, Illinois",
+      state: "IL",
+      officialBallotTitle: "Member of Cook County Board of Commissioners",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(bodyForm.officeId).toBe("office-county-commissioner");
 
     // A judge OF that circuit is still a judgeship.
     const circuitJudge = await matcher.resolve({

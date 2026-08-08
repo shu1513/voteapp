@@ -286,6 +286,28 @@ describe("electionPartisanshipPolicy", () => {
     }
   });
 
+  it("keeps Arizona municipal judgeships nonpartisan", () => {
+    // Arizona city offices run on a nonpartisan ballot under the city charter,
+    // so the county-level partisan rule must not reach place scope.
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "place",
+        state: "AZ",
+        officialBallotTitle: "Presiding Municipal Judge, City of Yuma",
+      })
+    ).toBe(false);
+
+    // Other partisan-judicial states do elect municipal judges on a party
+    // ballot, so the scope limit is Arizona's alone.
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "place",
+        state: "IN",
+        officialBallotTitle: "Judge of the City Court",
+      })
+    ).toBe(true);
+  });
+
   it("keeps Arizona merit-selection retention questions nonpartisan", () => {
     expect(
       resolveCandidateContestPartisanshipByPolicy({
