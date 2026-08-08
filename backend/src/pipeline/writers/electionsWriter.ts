@@ -68,6 +68,34 @@ class UnresolvedOfficeMatchError extends Error {
   }
 }
 
+/**
+ * Census lists some governments twice: Richmond, Virginia is a county-equivalent
+ * row (51760) and a place row (5167000) for the one city with one mayor and one
+ * council. `districts.canonical_district_id` names the row that owns such a
+ * government's contests; writing under the other row would duplicate every
+ * election and candidate across two districts.
+ *
+ * Like an unresolved office match this is a permanent fault in the payload, not
+ * a transient one, so the writer parks the staging item instead of retrying it
+ * forever. Re-run the research against the district id named in the message.
+ */
+class SuppressedDistrictWriteError extends Error {
+  constructor(input: {
+    districtId: string;
+    districtName: string;
+    canonicalDistrictId: string;
+    canonicalDistrictName: string;
+  }) {
+    super(
+      `writer refused duplicate district: district_id=${input.districtId} ` +
+        `name=${JSON.stringify(input.districtName)} is a duplicate Census row; ` +
+        `contests belong to canonical_district_id=${input.canonicalDistrictId} ` +
+        `name=${JSON.stringify(input.canonicalDistrictName)}`
+    );
+    this.name = "SuppressedDistrictWriteError";
+  }
+}
+
 // Writing elections + downstream publish can take time; only reclaim clearly stale pending entries.
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
@@ -307,6 +335,31 @@ async function writeElectionsForDistrict(
   familySeedUrls: Partial<Record<ElectionContestScope, string[]>>,
   runId: string | null
 ): Promise<WriteResult> {
+  // Checked before the transaction opens so the payload parks as failed rather
+  // than half-writing a district that no reader will ever reach.
+  const canonicalCheck = await client.query<{
+    name: string;
+    canonical_district_id: string | null;
+    canonical_name: string | null;
+  }>(
+    `
+      SELECT d.name, d.canonical_district_id, owner.name AS canonical_name
+      FROM public.districts AS d
+      LEFT JOIN public.districts AS owner ON owner.id = d.canonical_district_id
+      WHERE d.id = $1
+    `,
+    [payload.district_id]
+  );
+  const canonicalRow = canonicalCheck.rows[0];
+  if (canonicalRow?.canonical_district_id) {
+    throw new SuppressedDistrictWriteError({
+      districtId: payload.district_id,
+      districtName: canonicalRow.name,
+      canonicalDistrictId: canonicalRow.canonical_district_id,
+      canonicalDistrictName: canonicalRow.canonical_name ?? "unknown",
+    });
+  }
+
   await client.query("BEGIN");
   try {
     const nextStatus = payload.entries.length === 0 ? "no_results" : "written";
@@ -771,7 +824,10 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
           await ack(entry.id);
         } catch (error) {
           const reason = toReason(error);
-          if (error instanceof UnresolvedOfficeMatchError) {
+          if (
+            error instanceof UnresolvedOfficeMatchError ||
+            error instanceof SuppressedDistrictWriteError
+          ) {
             await pool.query(
               `
                 UPDATE staging_items

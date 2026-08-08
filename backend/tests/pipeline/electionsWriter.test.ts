@@ -114,7 +114,10 @@ describe("runElectionsWriter", () => {
       })
       .mockResolvedValue({ rowCount: 1, rows: [] });
 
-    clientQueryMock.mockResolvedValue({ rowCount: 1 });
+    // `rows` must be present: the writer reads rows[0] on the duplicate-district
+    // check before it opens the transaction, and an empty result means this
+    // district is canonical.
+    clientQueryMock.mockResolvedValue({ rowCount: 1, rows: [] });
 
     await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
 
@@ -149,6 +152,76 @@ describe("runElectionsWriter", () => {
         item_type: STAGING_ITEM_TYPE_ELECTION,
       })
     );
+  });
+
+  it("parks the payload instead of writing under a duplicate Census district row", async () => {
+    // Richmond, Virginia exists as county-equivalent 51760 and place 5167000 for
+    // one city government. Writing under the suppressed row would duplicate
+    // every election and candidate across two districts, so the writer refuses
+    // and the staging item parks as failed rather than retrying forever.
+    const payload = {
+      district_id: "richmond-county-row",
+      district_name: "Richmond city, Virginia",
+      district_type: "county",
+      state: "VA",
+      entries: [
+        {
+          official_ballot_title: "Mayor",
+          election_date: "2099-11-03",
+          race_type: "office",
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:writer",
+            payload,
+            status: "validated",
+            run_id: "run_1",
+          },
+        ],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("canonical_district_id")) {
+        return {
+          rowCount: 1,
+          rows: [
+            {
+              name: "Richmond city, Virginia",
+              canonical_district_id: "richmond-place-row",
+              canonical_name: "Richmond city, Virginia",
+            },
+          ],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    // No transaction opened, so nothing was written and the district stamp is untouched.
+    expect(
+      clientQueryMock.mock.calls.some((call) => String(call[0]).includes("BEGIN"))
+    ).toBe(false);
+    expect(
+      clientQueryMock.mock.calls.some((call) => String(call[0]).includes("UPDATE public.districts"))
+    ).toBe(false);
+
+    // Terminal, not transient: the item is marked failed and acked, naming the owner.
+    const failCall = poolQueryMock.mock.calls.find(
+      (call) => String(call[0]).includes("status = 'failed'")
+    );
+    expect(failCall).toBeTruthy();
+    expect(String(failCall?.[1]?.[1])).toContain("richmond-place-row");
+    expect(redisXAckMock).toHaveBeenCalled();
   });
 
   it("uses upsert path for non-empty entries and never deletes district rows", async () => {

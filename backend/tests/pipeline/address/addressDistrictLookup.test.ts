@@ -25,6 +25,8 @@ describe("lookupAddressDistricts", () => {
           state_fips: "06",
           population: 39287377,
           representation_power_score: "42.50",
+          requested_district_type: "statewide",
+          requested_geoid_compact: "06",
         },
         {
           id: "district-la",
@@ -35,6 +37,8 @@ describe("lookupAddressDistricts", () => {
           state_fips: "06",
           population: 9876482,
           representation_power_score: null,
+          requested_district_type: "county",
+          requested_geoid_compact: "06037",
         },
       ],
     });
@@ -90,6 +94,8 @@ describe("lookupAddressDistricts", () => {
           state_fips: "06",
           population: 9876482,
           representation_power_score: 10,
+          requested_district_type: "county",
+          requested_geoid_compact: "06037",
         },
       ],
     });
@@ -122,6 +128,8 @@ describe("lookupAddressDistricts", () => {
           state_fips: "06",
           population: 761000,
           representation_power_score: "73.20",
+          requested_district_type: "us_house",
+          requested_geoid_compact: "0631",
         },
       ],
     });
@@ -148,6 +156,63 @@ describe("lookupAddressDistricts", () => {
         representation_power_score: 73.2,
       },
     ]);
+  });
+
+  it("collapses a duplicated government onto its canonical row", async () => {
+    // A Richmond, Virginia address geocodes into both the county-equivalent
+    // layer (51760) and the incorporated-places layer (5167000). Both rows
+    // describe the one city government, so the query resolves the suppressed
+    // county row to its owner and the caller must see the city once.
+    const query = vi.fn().mockResolvedValueOnce({
+      rows: [
+        {
+          id: "richmond-place",
+          district_type: "place",
+          geoid_compact: "5167000",
+          name: "Richmond city, Virginia",
+          state: "VA",
+          state_fips: "51",
+          population: 229359,
+          representation_power_score: null,
+          requested_district_type: "county",
+          requested_geoid_compact: "51760",
+        },
+        {
+          id: "richmond-place",
+          district_type: "place",
+          geoid_compact: "5167000",
+          name: "Richmond city, Virginia",
+          state: "VA",
+          state_fips: "51",
+          population: 229359,
+          representation_power_score: null,
+          requested_district_type: "place",
+          requested_geoid_compact: "5167000",
+        },
+      ],
+    });
+
+    const result = await lookupAddressDistricts({ query }, [
+      { district_type: "county", geoid_compact: "51760" },
+      { district_type: "place", geoid_compact: "5167000" },
+    ]);
+
+    expect(query.mock.calls[0]?.[0]).toContain("LEFT JOIN public.districts AS owner");
+    expect(result.districts).toEqual([
+      {
+        id: "richmond-place",
+        district_type: "place",
+        geoid_compact: "5167000",
+        name: "Richmond city, Virginia",
+        state: "VA",
+        state_fips: "51",
+        population: 229359,
+        representation_power_score: null,
+      },
+    ]);
+    // The county key resolved to a row; it is not missing just because the row
+    // handed back carries the place identity.
+    expect(result.missing_district_keys).toEqual([]);
   });
 
   it("skips blank geoid keys before querying", async () => {

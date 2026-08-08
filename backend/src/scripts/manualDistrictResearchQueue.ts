@@ -209,7 +209,20 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
     case "seed": {
       const districtId = requireFlag(flags, "district-id");
       const districtRow = await pool.query(
-        `SELECT id, name, district_type, state, last_elections_searched_at FROM public.districts WHERE id = $1`,
+        `
+          SELECT
+            d.id,
+            d.name,
+            d.district_type,
+            d.state,
+            d.last_elections_searched_at,
+            d.canonical_district_id,
+            owner.name AS canonical_name,
+            owner.district_type AS canonical_district_type
+          FROM public.districts AS d
+          LEFT JOIN public.districts AS owner ON owner.id = d.canonical_district_id
+          WHERE d.id = $1
+        `,
         [districtId]
       );
       if (districtRow.rows.length === 0) {
@@ -221,7 +234,19 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
         district_type: string;
         state: string;
         last_elections_searched_at: string | null;
+        canonical_district_id: string | null;
+        canonical_name: string | null;
+        canonical_district_type: string | null;
       };
+      // Census lists some governments twice (a county-equivalent row and a
+      // place row for the same city). Seeding the suppressed row would research
+      // the same city a second time, so point the operator at the owner.
+      if (district.canonical_district_id !== null) {
+        throw new Error(
+          `District ${districtId} (${district.name}, ${district.district_type}) is a duplicate Census row. ` +
+            `Seed ${district.canonical_district_id} (${district.canonical_name}, ${district.canonical_district_type}) instead.`
+        );
+      }
       const seeded = await pool.query(
         `
           INSERT INTO public.manual_district_research_requests

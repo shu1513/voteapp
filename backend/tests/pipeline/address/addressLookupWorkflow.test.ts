@@ -45,6 +45,8 @@ describe("address lookup workflow", () => {
           state_fips: "06",
           population: 39287377,
           representation_power_score: null,
+          requested_district_type: "statewide",
+          requested_geoid_compact: "06",
         },
         {
           id: "district-house-31",
@@ -55,6 +57,8 @@ describe("address lookup workflow", () => {
           state_fips: "06",
           population: 760000,
           representation_power_score: "72.10",
+          requested_district_type: "us_house",
+          requested_geoid_compact: "0631",
         },
         {
           id: "district-senate-22",
@@ -65,6 +69,8 @@ describe("address lookup workflow", () => {
           state_fips: "06",
           population: 988000,
           representation_power_score: null,
+          requested_district_type: "state_upper",
+          requested_geoid_compact: "06022",
         },
         {
           id: "district-assembly-48",
@@ -75,6 +81,8 @@ describe("address lookup workflow", () => {
           state_fips: "06",
           population: 494000,
           representation_power_score: null,
+          requested_district_type: "state_lower",
+          requested_geoid_compact: "06048",
         },
         {
           id: "district-la-county",
@@ -85,6 +93,8 @@ describe("address lookup workflow", () => {
           state_fips: "06",
           population: 9876482,
           representation_power_score: "12.30",
+          requested_district_type: "county",
+          requested_geoid_compact: "06037",
         },
         {
           id: "district-baldwin-park",
@@ -95,6 +105,8 @@ describe("address lookup workflow", () => {
           state_fips: "06",
           population: 70000,
           representation_power_score: null,
+          requested_district_type: "place",
+          requested_geoid_compact: "0603666",
         },
       ],
     });
