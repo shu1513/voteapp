@@ -8,4 +8,5 @@ export * from "./georgiaDirectContributionAggregator.js";
 export * from "./georgiaEthicsClient.js";
 export * from "./georgiaFilerIdentityMap.js";
 export * from "./georgiaFinanceEligibleOffices.js";
+export * from "./georgiaOutsideSpendingAggregator.js";
 export * from "./georgiaFinanceWriter.js";

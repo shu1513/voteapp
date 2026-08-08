@@ -11,12 +11,18 @@ import {
   syncGeorgiaCandidateFinance,
   type GeorgiaCandidateFinanceSyncResult,
 } from "./georgiaCandidateFinanceSync.js";
-import { createGeorgiaEthicsTransport, type GeorgiaEthicsTransport } from "./georgiaEthicsClient.js";
+import {
+  createGeorgiaEthicsTransport,
+  fetchGeorgiaIndependentExpenditureRows,
+  type GeorgiaEthicsTransport,
+  type GeorgiaIndependentExpenditureRow,
+} from "./georgiaEthicsClient.js";
 
-// Batch layer for Georgia direct finance (georgia_plan.md PR 4, tennessee
-// shape): auto-link missing links first (fail-open — a broken auto-link must
-// not block syncing already-linked candidates), then run the due list
-// stalest-first and sync each candidate independently.
+// Batch layer for Georgia candidate finance (georgia_plan.md PR 4/PR 5,
+// tennessee shape): auto-link missing links first (fail-open — a broken
+// auto-link must not block syncing already-linked candidates), fetch the
+// shared PeachFile IE store once, then run the due list stalest-first and
+// sync each candidate independently.
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -39,7 +45,9 @@ export type GeorgiaCandidateFinanceBatchSyncInput = {
   maxPasses?: number;
   reconciliationRelativeTolerance?: number;
   reconciliationAbsoluteToleranceFloor?: number;
+  maxOutsideGroups?: number;
   syncGeorgiaCandidateFinanceFn?: typeof syncGeorgiaCandidateFinance;
+  fetchIndependentExpenditureRowsFn?: typeof fetchGeorgiaIndependentExpenditureRows;
   resolveCandidateCommittee?: GeorgiaCandidateCommitteeResolver;
 };
 
@@ -154,6 +162,14 @@ export async function syncDueGeorgiaCandidateFinance(
     electionLookaheadDays,
   });
 
+  // The PeachFile IE store (F5) is candidate-independent, so one paced pull
+  // serves every candidate in the run instead of one per candidate.
+  let independentExpenditureRows: readonly GeorgiaIndependentExpenditureRow[] | undefined;
+  if (due.rows.length > 0) {
+    const fetchIeFn = input.fetchIndependentExpenditureRowsFn ?? fetchGeorgiaIndependentExpenditureRows;
+    independentExpenditureRows = (await fetchIeFn(transport, "peachfile", { maxPasses: input.maxPasses })).rows;
+  }
+
   const results: GeorgiaCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
     try {
@@ -178,6 +194,8 @@ export async function syncDueGeorgiaCandidateFinance(
         maxPasses: input.maxPasses,
         reconciliationRelativeTolerance: input.reconciliationRelativeTolerance,
         reconciliationAbsoluteToleranceFloor: input.reconciliationAbsoluteToleranceFloor,
+        maxOutsideGroups: input.maxOutsideGroups,
+        independentExpenditureRows,
       });
       results.push({
         candidateId: row.candidateId,

@@ -249,6 +249,45 @@ export function buildGeorgiaTransactionRequestBody(
   });
 }
 
+// Sort direction pinned per host from the spike-verified IE store pulls
+// (PeachFile 6 pages ascending, 551/551 unique ids; archive descending). The
+// sortBy value stays "Transaction Date" — the A4 rule that any other value
+// silently returns zero rows was proven on the transaction endpoint and the
+// IE grid shares the store's sort contract.
+export const GEORGIA_IE_SORT_TYPE_BY_HOST = {
+  peachfile: "asc",
+  efile_archive: "desc",
+} as const satisfies Record<GeorgiaEthicsHost, string>;
+
+export function buildGeorgiaIndependentExpenditureRequestBody(host: GeorgiaEthicsHost, pageNumber: number): string {
+  // Pinned byte-for-byte from the spike's full-store pulls: every filter null
+  // (the IE stores are small — 551 PeachFile / 3,679 archive rows at probe —
+  // so the production sync fetches the whole store and joins targets by
+  // registration guid in memory; no filter field's semantics were verified).
+  return JSON.stringify({
+    filerName: null,
+    candidateMeasure: null,
+    stance: null,
+    disclosureReport: null,
+    payeeName: null,
+    officeSought: null,
+    purpose: null,
+    electionType: null,
+    electionYear: null,
+    filerType: null,
+    toDate: null,
+    fromDate: null,
+    districtTypeId: null,
+    jurisdictionTypeId: null,
+    jurisdictionId: null,
+    transactionType: null,
+    pageNumber: requirePageNumber(pageNumber),
+    pageSize: GEORGIA_ETHICS_PAGE_SIZE,
+    sortBy: "Transaction Date",
+    sortType: GEORGIA_IE_SORT_TYPE_BY_HOST[host],
+  });
+}
+
 // --- Transport -------------------------------------------------------------
 
 export type GeorgiaEthicsHttpResponse = {
@@ -449,6 +488,36 @@ export type GeorgiaTransactionRow = {
   electionYear: number | null;
 };
 
+// Independent-expenditure rows (F5). NOTE: IE rows carry NO filerEntityId —
+// the spender's identity is the registration guid. Targets ride in
+// candidateMeasures[]; no per-target amount exists anywhere (F6). Archive
+// targets carry neither a registration guid nor a reasonTypeCode (spike
+// bytes: 0 of 103 probed targets had either), so archive IE rows can never
+// satisfy the D6 attribution gates — the production IE leg is
+// PeachFile-only and the archive gap is disclosed in the coverage note.
+export type GeorgiaIndependentExpenditureTarget = {
+  candidateMeasureTitle: string | null;
+  stance: string | null;
+  reasonTypeCode: string | null;
+  filerRegistrationGuid: string | null;
+};
+
+export type GeorgiaIndependentExpenditureRow = {
+  guid: string;
+  transactionId: number;
+  amountApplied: number;
+  filerRegistrationGuid: string | null;
+  filerName: string | null;
+  filerReportGuid: string | null;
+  timedFiledReportGuid: string | null;
+  filerReportVersionId: number | null;
+  transactionDate: string | null;
+  transactionStatusCode: string | null;
+  transactionTypeCode: string | null;
+  electionYear: number | null;
+  candidateMeasures: GeorgiaIndependentExpenditureTarget[];
+};
+
 function asOptionalString(value: unknown): string | null {
   return typeof value === "string" && value.trim() !== "" ? value : null;
 }
@@ -548,6 +617,37 @@ function parseTransactionRow(url: string, raw: unknown): GeorgiaTransactionRow {
     transactionStatusCode: asOptionalString(row.transactionStatusCode),
     reportName: asOptionalString(row.reportName),
     electionYear: asOptionalNumber(row.electionYear),
+  };
+}
+
+function parseIndependentExpenditureRow(url: string, raw: unknown): GeorgiaIndependentExpenditureRow {
+  const row = raw as Record<string, unknown>;
+  const measures = Array.isArray(row.candidateMeasures) ? row.candidateMeasures : [];
+  return {
+    guid: requireRowString(url, row.guid, "guid"),
+    transactionId: requireRowNumber(url, row.transactionId, "transactionId"),
+    amountApplied: requireRowNumber(url, row.amountApplied, "amountApplied"),
+    // Spender identity — kept optional at parse time; the aggregator
+    // quarantines candidate-referencing rows that lack it (a malformed
+    // foreign row must not brick the whole store fetch).
+    filerRegistrationGuid: asOptionalString(row.filerRegistrationGuid),
+    filerName: asOptionalString(row.filerName),
+    filerReportGuid: asOptionalString(row.filerReportGuid),
+    timedFiledReportGuid: asOptionalString(row.timedFiledReportGuid),
+    filerReportVersionId: asOptionalNumber(row.filerReportVersionId),
+    transactionDate: asOptionalString(row.transactionDate),
+    transactionStatusCode: asOptionalString(row.transactionStatusCode),
+    transactionTypeCode: asOptionalString(row.transactionTypeCode),
+    electionYear: asOptionalNumber(row.electionYear),
+    candidateMeasures: measures.map((item) => {
+      const target = item as Record<string, unknown>;
+      return {
+        candidateMeasureTitle: asOptionalString(target.candidateMeasureTitle),
+        stance: asOptionalString(target.stance),
+        reasonTypeCode: asOptionalString(target.reasonTypeCode),
+        filerRegistrationGuid: asOptionalString(target.filerRegistrationGuid),
+      };
+    }),
   };
 }
 
@@ -882,6 +982,68 @@ export async function fetchGeorgiaTransactionRowsWindowed(
     sweepOnlyRowCount,
     sweepMissedRowCount,
   };
+}
+
+// --- Independent-expenditure store fetch (F5) ------------------------------
+
+export type GeorgiaIndependentExpenditureFetchResult = {
+  rows: GeorgiaIndependentExpenditureRow[];
+  fetchedRowCount: number;
+  duplicateRowCount: number;
+  passCount: number;
+};
+
+// Full-store IE pull (the only spike-verified request shape — no filter
+// field's semantics were probed, and the stores are small enough that the
+// sync joins targets to candidates in memory). Same offset-paging hazards as
+// the transaction endpoint (A4), so the pull dedups by transactionId and
+// re-pulls until the unique id set is identical across two consecutive
+// passes, failing closed when it never stabilizes.
+export async function fetchGeorgiaIndependentExpenditureRows(
+  transport: GeorgiaEthicsTransport,
+  host: GeorgiaEthicsHost,
+  input: { maxPasses?: number } = {}
+): Promise<GeorgiaIndependentExpenditureFetchResult> {
+  const maxPasses = input.maxPasses ?? 4;
+  if (!Number.isInteger(maxPasses) || maxPasses < 2) {
+    throw new GeorgiaEthicsClientError("invalid_request", `Georgia stability passes must be at least 2: ${maxPasses}`);
+  }
+  const url = endpointUrl(host, "/api/PublicIndependentExpenditureDetails/GetIndependentExpenditureDetails");
+
+  let previousIds: Set<number> | null = null;
+  let lastUniqueRowCount = 0;
+  let lastDuplicateRowCount = 0;
+  for (let pass = 1; pass <= maxPasses; pass += 1) {
+    const fetched = await fetchAllPages(
+      transport,
+      url,
+      (pageNumber) => buildGeorgiaIndependentExpenditureRequestBody(host, pageNumber),
+      parseIndependentExpenditureRow
+    );
+    const rowsById = new Map<number, GeorgiaIndependentExpenditureRow>();
+    for (const row of fetched) {
+      if (!rowsById.has(row.transactionId)) {
+        rowsById.set(row.transactionId, row);
+      }
+    }
+    const ids = new Set(rowsById.keys());
+    if (previousIds && ids.size === previousIds.size && [...ids].every((id) => previousIds!.has(id))) {
+      return {
+        rows: [...rowsById.values()],
+        fetchedRowCount: fetched.length,
+        duplicateRowCount: fetched.length - rowsById.size,
+        passCount: pass,
+      };
+    }
+    previousIds = ids;
+    lastUniqueRowCount = rowsById.size;
+    lastDuplicateRowCount = fetched.length - rowsById.size;
+  }
+  throw new GeorgiaEthicsClientError(
+    "unstable_result",
+    `Georgia ${host} independent-expenditure fetch did not stabilize in ${maxPasses} passes ` +
+      `(last pass: ${lastUniqueRowCount} unique rows, ${lastDuplicateRowCount} duplicates)`
+  );
 }
 
 // --- Timed-report grouping (D8) -------------------------------------------

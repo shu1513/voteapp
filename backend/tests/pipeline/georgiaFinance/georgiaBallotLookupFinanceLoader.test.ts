@@ -23,11 +23,13 @@ describe("georgiaBallotLookupFinanceLoader", () => {
     // georgia_plan.md D6/D12: no per-target amount exists on Georgia
     // independent expenditures, so any multi-target expenditure — several
     // candidates, or a candidate plus a ballot measure — stays out of the
-    // per-candidate totals. Pinned so the disclosure cannot quietly
-    // disappear while the gap remains.
+    // per-candidate totals; the retired pre-July-2025 system's filings carry
+    // no target ids at all (D12b), so the note also names the current-system
+    // boundary. Pinned so the disclosure cannot quietly disappear while the
+    // gaps remain.
     outsideCoverageNote:
       "Covers independent expenditures that name a single candidate, as reported to the Georgia Government " +
-      "Transparency and Campaign Finance Commission. Spending reported for more than one candidate or measure " +
-      "in a single expenditure is not included yet.",
+      "Transparency and Campaign Finance Commission's current filing system (July 2025 onward). Spending " +
+      "reported for more than one candidate or measure in a single expenditure is not included yet.",
   });
 });

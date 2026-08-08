@@ -682,3 +682,34 @@ shape) and lands first; only the D3 map table waits for the spike.
   exactly one surviving row. (3) null official totals fail closed instead
   of `?? 0` — no-money filers report 0.0, never null, and the summary
   policy is "replace", so a null would overwrite stored values.
+- 2026-08-08: **PR 5 implemented** — outside spending (F5/F6/D6/D12).
+  Client: `fetchGeorgiaIndependentExpenditureRows` — full-store pull, the
+  only spike-verified request shape (body pinned byte-for-byte from the
+  spike transcript: every filter null, sortBy "Transaction Date", sortType
+  per host as verified — PeachFile asc, archive desc); pages until short
+  page, dedups by transactionId, and requires two consecutive equal id-set
+  passes (A4 offset-drift discipline), failing closed otherwise. IE rows
+  carry NO filerEntityId — the spender's identity is its registration guid
+  (probed store: 40 spenders, one guid each), which becomes the
+  outside-group committee_id. `georgiaOutsideSpendingAggregator`: pure ID
+  join — a target's filerRegistrationGuid against the candidate's PeachFile
+  registration guid, never a name match; D6 allocation (exactly one target
+  of ANY kind → full amountApplied; candidate+ballot still unallocatable);
+  quarantined-as-dollars diagnostics for multi-target, malformed
+  single-target (non-CAN reason, missing stance, missing spender identity,
+  non-positive amount — the schema requires amount >= 0), and
+  unrecognized-status rows; stance STRING is authoritative (the
+  supportOppose "True"/"False" mirror falls under the D8 broken-booleans
+  rule). **Archive IE is excluded by design**: spike bytes show archive
+  targets carry neither a registration guid nor a reasonTypeCode (0 of 103
+  probed), so no archive row can ever satisfy the D6 gates — for v1's
+  2026-cycle candidates that money is pre-cycle, and the coverage note now
+  names the current-system boundary ("current filing system (July 2025
+  onward)"). Sync: IE leg runs after the reconciliation guard (a failed
+  direct pull never costs the store fetch); summary gains
+  outsideSupportTotal/outsideOpposeTotal and outsideGroups is written even
+  when empty (truthful zero — the leg ran); outside-group BREAKDOWNS stay
+  undefined (funders are PR 6). Batch: the candidate-independent PeachFile
+  IE store is pulled once per run and shared across every candidate;
+  skipped entirely when nothing is due. 118 GA tests; full suite 6,743
+  green.

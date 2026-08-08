@@ -24,10 +24,16 @@ const GENERIC_GEORGIA_ETHICS_SOURCE_URL = "https://ethics.ga.gov/records-search-
 // (Malformed rows D6 also quarantines — duplicate or missing targets,
 // conflicting stances — are data-quality diagnostics, not a systematic
 // gap, and deliberately stay out of this user-facing sentence.)
+//
+// The second gap (D12b, pinned at the spike): expenditures disclosed only to
+// the retired pre-July-2025 filing system carry no target registration id at
+// all, so they can never attribute — the IE leg reads the current system
+// only. For the 2026-cycle candidates in v1 scope that money is pre-cycle,
+// but the note states the boundary honestly.
 const GEORGIA_OUTSIDE_COVERAGE_NOTE =
   "Covers independent expenditures that name a single candidate, as reported to the Georgia Government " +
-  "Transparency and Campaign Finance Commission. Spending reported for more than one candidate or measure " +
-  "in a single expenditure is not included yet.";
+  "Transparency and Campaign Finance Commission's current filing system (July 2025 onward). Spending " +
+  "reported for more than one candidate or measure in a single expenditure is not included yet.";
 
 export async function loadGeorgiaCandidateFinanceSummariesByCandidateElection(
   db: Queryable,

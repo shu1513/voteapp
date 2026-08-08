@@ -15,6 +15,7 @@ import {
   type GeorgiaEthicsHost,
   type GeorgiaEthicsTransport,
   type GeorgiaFiledReportRow,
+  type GeorgiaIndependentExpenditureRow,
   type GeorgiaTransactionRow,
   type GeorgiaWindowedTransactionFetchResult,
 } from "../../../src/pipeline/georgiaFinance/georgiaEthicsClient.js";
@@ -137,6 +138,32 @@ function windowedResult(rows: GeorgiaTransactionRow[]): GeorgiaWindowedTransacti
     sweepPassCount: 2,
     sweepOnlyRowCount: 0,
     sweepMissedRowCount: 0,
+  };
+}
+
+function ieRow(overrides: Partial<GeorgiaIndependentExpenditureRow> = {}): GeorgiaIndependentExpenditureRow {
+  return {
+    guid: `ie-${overrides.transactionId ?? 1}`,
+    transactionId: 1,
+    amountApplied: 1500,
+    filerRegistrationGuid: "spender-a-guid",
+    filerName: "Example PAC",
+    filerReportGuid: "ie-r1",
+    timedFiledReportGuid: null,
+    filerReportVersionId: 1,
+    transactionDate: "2026-02-01T00:00:00",
+    transactionStatusCode: "TFIL",
+    transactionTypeCode: "TIE",
+    electionYear: 2026,
+    candidateMeasures: [
+      {
+        candidateMeasureTitle: "Carr for Georgia, Inc.",
+        stance: "Support",
+        reasonTypeCode: "CAN",
+        filerRegistrationGuid: PF_REGISTRATION_GUID,
+      },
+    ],
+    ...overrides,
   };
 }
 
@@ -279,6 +306,62 @@ function carrFetchers() {
     fetchTransactionRowsWindowed: vi.fn(async (_transport: GeorgiaEthicsTransport, host: GeorgiaEthicsHost) =>
       windowedResult(host === "peachfile" ? peachfileTransactions : archiveTransactions)
     ),
+    fetchIndependentExpenditureRows: vi.fn(async () => ({
+      rows: [
+        // Attributable: supporting IE from spender A.
+        ieRow({ transactionId: 101, amountApplied: 1500 }),
+        // Attributable: opposing IE from spender B.
+        ieRow({
+          transactionId: 102,
+          amountApplied: 200,
+          filerRegistrationGuid: "spender-b-guid",
+          filerName: "Opposing PAC",
+          candidateMeasures: [
+            {
+              candidateMeasureTitle: "Carr for Georgia, Inc.",
+              stance: "Oppose",
+              reasonTypeCode: "CAN",
+              filerRegistrationGuid: PF_REGISTRATION_GUID,
+            },
+          ],
+        }),
+        // Multi-target row referencing Carr — quarantined dollars (D6).
+        ieRow({
+          transactionId: 103,
+          amountApplied: 5000,
+          candidateMeasures: [
+            {
+              candidateMeasureTitle: "Carr for Georgia, Inc.",
+              stance: "Support",
+              reasonTypeCode: "CAN",
+              filerRegistrationGuid: PF_REGISTRATION_GUID,
+            },
+            {
+              candidateMeasureTitle: "Someone Else for Georgia",
+              stance: "Support",
+              reasonTypeCode: "CAN",
+              filerRegistrationGuid: "someone-else-guid",
+            },
+          ],
+        }),
+        // Another candidate's IE — invisible to Carr's aggregation.
+        ieRow({
+          transactionId: 104,
+          amountApplied: 9999,
+          candidateMeasures: [
+            {
+              candidateMeasureTitle: "Someone Else for Georgia",
+              stance: "Support",
+              reasonTypeCode: "CAN",
+              filerRegistrationGuid: "someone-else-guid",
+            },
+          ],
+        }),
+      ],
+      fetchedRowCount: 4,
+      duplicateRowCount: 0,
+      passCount: 2,
+    })),
   };
 }
 
@@ -390,6 +473,24 @@ describe("syncGeorgiaCandidateFinance", () => {
     expect(result.archive).toMatchObject({ includedRowCount: 1, supersededRowCount: 1, unassignedRowCount: 0 });
     expect(result.linkWritten).toBe(true);
     expect(result.directBreakdownsWritten).toBeGreaterThan(0);
+    // Outside leg (PR 5): support 1500 + oppose 200 attributed; the $5,000
+    // multi-target row referencing Carr is quarantined as excluded dollars.
+    expect(result.outsideSupportTotal).toBe(1500);
+    expect(result.outsideOpposeTotal).toBe(200);
+    expect(result.outsideGroupsWritten).toBe(2);
+    expect(result.outsideSpending).toMatchObject({
+      storeRowCount: 4,
+      candidateTargetRowCount: 3,
+      attributedRowCount: 2,
+      attributedAmount: 1700,
+      multiTargetRowCount: 1,
+      multiTargetAmount: 5000,
+      malformedRowCount: 0,
+      unrecognizedStatusRowCount: 0,
+    });
+    expect(fetchers.fetchIndependentExpenditureRows).toHaveBeenCalledWith(dummyTransport, "peachfile", {
+      maxPasses: undefined,
+    });
     expect(db.connect).toHaveBeenCalled();
 
     // The archive pull was keyed by the archive person display name.
@@ -575,6 +676,37 @@ describe("syncGeorgiaCandidateFinance", () => {
     expect(db.connect).not.toHaveBeenCalled();
   });
 
+  it("uses pre-fetched IE store rows without calling the IE fetcher", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    const result = await syncGeorgiaCandidateFinance(
+      baseInput(db, fetchers, {
+        independentExpenditureRows: [ieRow({ transactionId: 201, amountApplied: 750 })],
+      })
+    );
+    expect(result.outsideSupportTotal).toBe(750);
+    expect(result.outsideOpposeTotal).toBe(0);
+    expect(result.outsideGroupsWritten).toBe(1);
+    expect(fetchers.fetchIndependentExpenditureRows).not.toHaveBeenCalled();
+  });
+
+  it("writes a truthful zero outside leg when no IE targets the candidate", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    fetchers.fetchIndependentExpenditureRows.mockImplementation(async () => ({
+      rows: [],
+      fetchedRowCount: 0,
+      duplicateRowCount: 0,
+      passCount: 2,
+    }));
+    const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
+    expect(result.outsideSupportTotal).toBe(0);
+    expect(result.outsideOpposeTotal).toBe(0);
+    expect(result.outsideGroupsWritten).toBe(0);
+    expect(result.outsideSpending.storeRowCount).toBe(0);
+    expect(db.connect).toHaveBeenCalled();
+  });
+
   it("dry run aggregates and reconciles without writing", async () => {
     const db = createMockDb();
     const fetchers = carrFetchers();
@@ -583,6 +715,8 @@ describe("syncGeorgiaCandidateFinance", () => {
     expect(result.linkWritten).toBe(false);
     expect(result.summaryWritten).toBe(false);
     expect(result.directBreakdownsWritten).toBe(0);
+    expect(result.outsideGroupsWritten).toBe(0);
+    expect(result.outsideSupportTotal).toBe(1500);
     expect(result.syncedRowSum).toBe(3500);
     expect(db.connect).not.toHaveBeenCalled();
   });
