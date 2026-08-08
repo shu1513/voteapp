@@ -201,6 +201,20 @@ export type SanFranciscoSummaryRow = {
   formType: string;
   periodStart: string | null;
   periodEnd: string | null;
+  /**
+   * Form 460 line 1 column A — monetary contributions for the period, cents.
+   * Phase 4 gate identity (proven to the cent on three committees): this
+   * equals the non-memo Schedule A rows plus the F460ALine2 unitemized
+   * pseudo-rows for the same filings.
+   */
+  monetaryContributionsCents: number | null;
+  /**
+   * Form 460 line 2 column A, cents. Empirically NOT the Schedule B loan
+   * principal (a committee with $200,000 of B1 loans shows $29.38 here);
+   * carried so the line-5 identity closes exactly:
+   * line 5 = line 1 + line 2 + line 4.
+   */
+  line2Cents: number | null;
   /** Form 460 line 5 column A — total contributions for the period, cents. */
   contributionsCents: number | null;
   /** Form 460 line 11 column A — total expenditures for the period, cents. */
@@ -248,6 +262,8 @@ export async function getSanFranciscoCommitteeSummaryRows(
       formType: stringValue(row, "form_type"),
       periodStart: stringValue(row, "start_date") || null,
       periodEnd: stringValue(row, "end_date") || null,
+      monetaryContributionsCents: moneyStringToCents(row["line_1_col_a"]),
+      line2Cents: moneyStringToCents(row["line_2_col_a"]),
       contributionsCents: moneyStringToCents(row["line_5_col_a"]),
       expendituresCents: moneyStringToCents(row["line_11_col_a"]),
     });
@@ -525,6 +541,13 @@ export async function getSanFranciscoCommitteeItemizedTransactions(
     formTypes: string[];
     transactionDateFrom: string;
     transactionDateTo: string;
+    /**
+     * Also return rows with NO transaction_date. Schedule B1 loan rows are
+     * undated (verified live), so a strict date window silently excludes
+     * the whole schedule; SF committees are per-election, which keeps
+     * undated rows inside one contest.
+     */
+    includeUndatedTransactions?: boolean;
   },
   options: SanFranciscoOpenDataClientOptions = {},
 ): Promise<SanFranciscoItemizedTransactionRow[]> {
@@ -535,19 +558,26 @@ export async function getSanFranciscoCommitteeItemizedTransactions(
     throw new Error(
       "San Francisco itemized-transaction query needs at least one form type",
     );
+  // Form-type values are matched exactly: Socrata string equality is
+  // case-sensitive and the dataset mixes cases ("A", "F497P1", but the
+  // summary pseudo-rows are "F460ALine2"), so folding case here would
+  // silently match nothing.
   const formTypes = input.formTypes.map((formType) => {
-    const trimmed = formType.trim().toUpperCase();
-    if (!/^[A-Z0-9]{1,8}$/.test(trimmed))
+    const trimmed = formType.trim();
+    if (!/^[A-Za-z0-9]{1,16}$/.test(trimmed))
       throw new Error(`Invalid San Francisco form type: ${formType}`);
     return trimmed;
   });
+  const dateConditions = transactionDateConditions(
+    input.transactionDateFrom,
+    input.transactionDateTo,
+  );
   const conditions = [
     `fppc_id=${soqlString(fppcId)}`,
     `form_type in (${formTypes.map(soqlString).join(",")})`,
-    ...transactionDateConditions(
-      input.transactionDateFrom,
-      input.transactionDateTo,
-    ),
+    input.includeUndatedTransactions
+      ? `(transaction_date IS NULL OR (${dateConditions.join(" AND ")}))`
+      : dateConditions.join(" AND "),
   ];
   const rows = await fetchAllPages(
     SAN_FRANCISCO_TRANSACTIONS_DATASET_ID,
