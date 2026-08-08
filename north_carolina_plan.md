@@ -694,7 +694,19 @@ The acquisition spike is the gate before parser/aggregator work.
   quarantines (reconciliation mismatch, null IEAmount) stay diagnostics; the
   decision-3 inverse-miss cross-check is wired here — IE-typed regular-report
   rows with no aggregated IE-inventory report for that filer flag
-  `ieInverseMissSuspected` for the PR 9 audit). The sync needs NO OrgGroupID
+  `ieInverseMissSuspected` for the PR 9 audit). **Review round (2 accepted)**:
+  (1) the outside target universe is the year's FULL NC candidate-election
+  set, not just active links — IE targets match by NAME, so a same-name
+  candidate with no link, an out-of-scope office, or a withdrawn candidacy
+  still makes that name ambiguous, and a link-only universe would silently
+  hand their money to whoever happens to be linked; extra targets only fail
+  closed (absorb nothing or force a quarantine), and written rows stay
+  limited to the due page. (2) the outside target key gained the normalized
+  district (and swapped free-text office name for office SCOPE) — one person
+  contesting the same office in two districts in one cycle must not share
+  one slice across both races; district-less rows alias into the person's
+  district-bearing canonical target so a manual link without a district
+  never makes a person ambiguous with themselves. The sync needs NO OrgGroupID
   (inventories are cached by SBoEID alone) — the PR 5 SBoEID→OGID derivation
   note lands on the acquisition side, where the portal URL is built.
   Scheduler: `northCarolinaCandidateFinanceSyncScheduler.ts` (ohio clone;

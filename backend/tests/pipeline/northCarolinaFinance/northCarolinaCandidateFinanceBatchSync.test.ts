@@ -532,6 +532,88 @@ describe("syncDueNorthCarolinaCandidateFinance", () => {
     expect(syncFn.mock.calls[0]![0].outsideFinance).toBeNull();
   });
 
+  it("quarantines outside money when a same-name unlinked candidate exists in the universe", async () => {
+    const cacheDir = await makeCacheDir();
+    await installCommitteeArtifacts(cacheDir);
+    await installIeArtifacts(cacheDir);
+    // The universe query surfaces a DIFFERENT person with the same name in
+    // the same chamber and district — an eligible candidate_elections row
+    // with no finance link. Every "DOE JANE" IE row is now ambiguous.
+    const db = createDb([dueRow()]);
+    db.query
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: "99999999-9999-4999-8999-999999999999",
+            candidate_name: "Jane Doe",
+            office_scope: "state_lower",
+            district: "27",
+          },
+        ],
+      });
+    const syncFn = vi.fn().mockResolvedValue({ ok: true });
+
+    const result = await syncDueNorthCarolinaCandidateFinance({
+      db,
+      now: new Date("2026-08-07T09:00:00.000Z"),
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: cacheDir,
+      syncNorthCarolinaCandidateFinanceFn: syncFn as never,
+    });
+
+    expect(result.outsideAggregationByYear[0]).toMatchObject({
+      available: true,
+      ambiguousTargetCount: 1,
+      attributedRowCount: 0,
+    });
+    // The due candidate gets zeros, never the ambiguous money.
+    expect(syncFn.mock.calls[0]![0].outsideFinance).toMatchObject({
+      supportTotal: 0,
+      opposeTotal: 0,
+      groups: [],
+    });
+  });
+
+  it("keeps attribution on the district the rows confirm when one person contests two districts", async () => {
+    const cacheDir = await makeCacheDir();
+    await installCommitteeArtifacts(cacheDir);
+    await installIeArtifacts(cacheDir);
+    // Same person, same office scope, a second race in district 3: the
+    // district-bearing "NC HOUSE 27" rows must confirm exactly the district
+    // 27 target — never both, never the wrong one.
+    const db = createDb([dueRow()]);
+    db.query
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: "11111111-1111-4111-8111-111111111111",
+            candidate_name: "Jane Doe",
+            office_scope: "state_lower",
+            district: "3",
+          },
+        ],
+      });
+    const syncFn = vi.fn().mockResolvedValue({ ok: true });
+
+    const result = await syncDueNorthCarolinaCandidateFinance({
+      db,
+      now: new Date("2026-08-07T09:00:00.000Z"),
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: cacheDir,
+      syncNorthCarolinaCandidateFinanceFn: syncFn as never,
+    });
+
+    expect(result.outsideAggregationByYear[0]).toMatchObject({
+      available: true,
+      ambiguousTargetCount: 0,
+      attributedRowCount: 2,
+    });
+    expect(syncFn.mock.calls[0]![0].outsideFinance).toMatchObject({
+      supportTotal: 150,
+      opposeTotal: 100,
+    });
+  });
+
   it("passes dryRun through and skips auto-link on dry runs", async () => {
     const cacheDir = await makeCacheDir();
     await installCommitteeArtifacts(cacheDir);

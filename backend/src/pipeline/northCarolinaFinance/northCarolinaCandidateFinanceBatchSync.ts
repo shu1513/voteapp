@@ -350,21 +350,36 @@ function officialExpenditureTotalCents(cover: ReturnType<typeof parseNcsbeReport
   return section ? section.periodCents : null;
 }
 
-// Keyed by candidateId + office so one PERSON due for several elections
-// (primary + general) shares a single target, while two DIFFERENT people who
-// happen to share a name stay separate targets — the aggregator then
-// quarantines rows aimed at that shared name as ambiguous instead of paying
-// the same money to both (decision 5 fail-closed).
+// Digits lose their leading zeros ("027" and "27" are one district); anything
+// else is compared trimmed and case-folded. Empty means "district unknown".
+function normalizeTargetDistrict(value: string | null | undefined): string {
+  const trimmed = (value ?? "").trim().toUpperCase();
+  if (/^\d+$/.test(trimmed)) {
+    return String(Number(trimmed));
+  }
+  return trimmed;
+}
+
+// Keyed by candidateId + office scope + normalized district (review round):
+// one PERSON due for several elections of the same race (primary + general)
+// shares a single target, while two DIFFERENT people who happen to share a
+// name stay separate targets — the aggregator quarantines rows aimed at that
+// shared name as ambiguous instead of paying the same money to both
+// (decision 5 fail-closed). District is in the key because one person can
+// contest the same office in two districts in one cycle (NC's redistricting
+// churn makes that real): without it both elections would share one target
+// and district-27 money would publish on the district-30 row. Office SCOPE,
+// not the free-text office name, so a manually-typed office label can never
+// split one person into two self-ambiguating targets.
 function outsideTargetKey(
-  row: Pick<NorthCarolinaCandidateFinanceDueRow, "candidateId" | "officeName">
+  row: Pick<NorthCarolinaCandidateFinanceDueRow, "candidateId" | "officeScope" | "district">
 ): string {
-  return `${row.candidateId}\u0000${row.officeName}`;
+  return `${row.candidateId}\u0000${row.officeScope}\u0000${normalizeTargetDistrict(row.district)}`;
 }
 
 type NorthCarolinaOutsideTargetCandidateRow = {
   candidateId: string;
   candidateName: string;
-  officeName: string;
   officeScope: string;
   district: string | null;
 };
@@ -373,8 +388,14 @@ type NorthCarolinaOutsideTargetCandidateRow = {
 // against just the current due page (stale-filtered and capped at
 // maxCandidates) would let a same-name candidate look unique whenever their
 // double is not due in the same run, and attribution would then depend on
-// sync timing. The universe is every ACTIVE link of the election year —
-// written rows stay limited to the due page (ohio pattern).
+// sync timing. The universe is every NC candidate election of the year
+// (review round — active links alone are NOT enough: IE targets are matched
+// by NAME, so a same-name candidate with no committee link, an out-of-scope
+// office, or a withdrawn candidacy still makes that name ambiguous; a
+// link-only universe would silently hand their money to whoever happens to
+// be linked). Extra targets can only fail closed — a universe-only target
+// either absorbs nothing that was ours or forces a quarantine — and written
+// rows stay limited to the due page.
 async function listNorthCarolinaOutsideTargetCandidatesForYear(
   db: Queryable,
   electionYear: number
@@ -382,7 +403,6 @@ async function listNorthCarolinaOutsideTargetCandidatesForYear(
   const result = await db.query<{
     candidate_id: string;
     candidate_name: string | null;
-    office_name: string;
     office_scope: string | null;
     district: string | null;
   }>(
@@ -391,22 +411,34 @@ async function listNorthCarolinaOutsideTargetCandidatesForYear(
         candidate.id::text AS candidate_id,
         COALESCE(
           NULLIF(trim(candidate.display_name), ''),
-          NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), ''),
-          link.candidate_name_normalized
+          NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')
         ) AS candidate_name,
-        link.office_name,
         office.scope AS office_scope,
-        link.district
-      FROM public.nc_candidate_finance_links AS link
+        CASE
+          WHEN district.district_type IN ('state_upper', 'state_lower') THEN
+            NULLIF(
+              regexp_replace(
+                substring(district.geoid_compact from char_length(district.state_fips) + 1),
+                '^0+',
+                ''
+              ),
+              ''
+            )
+          ELSE NULL
+        END AS district
+      FROM public.candidate_elections AS candidate_election
       JOIN public.candidates AS candidate
-        ON candidate.id = link.candidate_id
+        ON candidate.id = candidate_election.candidate_id
       JOIN public.elections AS election
-        ON election.id = link.election_id
+        ON election.id = candidate_election.election_id
+      JOIN public.districts AS district
+        ON district.id = election.district_id
       LEFT JOIN public.offices AS office
         ON office.id = election.office_id
-      WHERE link.link_status = 'active'
-        AND link.election_year = $1::int
-        AND candidate.deleted_at IS NULL
+      WHERE candidate.deleted_at IS NULL
+        AND district.state = 'NC'
+        AND election.race_type = 'office'
+        AND extract(year from election.election_date)::int = $1::int
     `,
     [electionYear]
   );
@@ -415,10 +447,66 @@ async function listNorthCarolinaOutsideTargetCandidatesForYear(
     .map((row) => ({
       candidateId: row.candidate_id,
       candidateName: row.candidate_name!,
-      officeName: row.office_name,
       officeScope: row.office_scope ?? "",
       district: row.district,
     }));
+}
+
+type OutsideTargetSet = {
+  // Canonical targets handed to the aggregator, keyed by candidateKey.
+  targetsByKey: Map<string, NorthCarolinaOutsideCandidateTarget>;
+  // Every key ever computed for a row -> its canonical target's key. A
+  // district-less row (e.g. a manual link that never recorded one) aliases
+  // into the same person's district-bearing target instead of becoming a
+  // second target that would make the person ambiguous with themselves.
+  canonicalKeyByAlias: Map<string, string>;
+};
+
+function buildOutsideTargetSet(
+  rows: ReadonlyArray<
+    Pick<NorthCarolinaCandidateFinanceDueRow, "candidateId" | "candidateName" | "officeScope" | "district">
+  >
+): OutsideTargetSet {
+  const targetsByKey = new Map<string, NorthCarolinaOutsideCandidateTarget>();
+  const canonicalKeyByAlias = new Map<string, string>();
+  const entriesByPersonScope = new Map<string, Array<{ canonicalKey: string; district: string }>>();
+
+  for (const row of rows) {
+    const key = outsideTargetKey(row);
+    if (canonicalKeyByAlias.has(key)) {
+      continue;
+    }
+    const personScope = `${row.candidateId}\u0000${row.officeScope}`;
+    const district = normalizeTargetDistrict(row.district);
+    const entries = entriesByPersonScope.get(personScope) ?? [];
+    // Compatible = same district, or one side unknown. Two distinct known
+    // districts stay separate targets (the genuinely-two-races case).
+    const compatible = entries.find(
+      (entry) => entry.district === district || entry.district === "" || district === ""
+    );
+    if (compatible) {
+      canonicalKeyByAlias.set(key, compatible.canonicalKey);
+      // A known district upgrades a district-less canonical target so
+      // contradicting-district rows are excluded instead of matched.
+      if (compatible.district === "" && district !== "") {
+        const target = targetsByKey.get(compatible.canonicalKey)!;
+        targetsByKey.set(compatible.canonicalKey, { ...target, district: row.district });
+        compatible.district = district;
+      }
+      continue;
+    }
+    targetsByKey.set(key, {
+      candidateKey: key,
+      candidateName: row.candidateName,
+      officeScope: row.officeScope,
+      district: row.district,
+    });
+    canonicalKeyByAlias.set(key, key);
+    entries.push({ canonicalKey: key, district });
+    entriesByPersonScope.set(personScope, entries);
+  }
+
+  return { targetsByKey, canonicalKeyByAlias };
 }
 
 type OutsideAggregationForYear = {
@@ -494,21 +582,11 @@ async function aggregateOutsideForYear(input: {
     }
 
     // Due rows first (their result slices are the ones written), then the
-    // year's full active-link universe so same-name doubles are visible to
-    // the ambiguity guard even when they are not due this run.
+    // year's full candidate-election universe so same-name doubles are
+    // visible to the ambiguity guard even when they are not due this run
+    // (or were never linked at all).
     const universeRows = await listNorthCarolinaOutsideTargetCandidatesForYear(input.db, input.electionYear);
-    const targetsByKey = new Map<string, NorthCarolinaOutsideCandidateTarget>();
-    for (const row of [...input.dueRows, ...universeRows]) {
-      const key = outsideTargetKey(row);
-      if (!targetsByKey.has(key)) {
-        targetsByKey.set(key, {
-          candidateKey: key,
-          candidateName: row.candidateName,
-          officeScope: row.officeScope,
-          district: row.district,
-        });
-      }
-    }
+    const { targetsByKey, canonicalKeyByAlias } = buildOutsideTargetSet([...input.dueRows, ...universeRows]);
 
     const aggregation = aggregateNorthCarolinaOutsideSpending({
       ieInventoryRows,
@@ -540,6 +618,14 @@ async function aggregateOutsideForYear(input: {
         opposeTotal: candidate.opposeTotal,
         groups: candidate.groups,
       });
+    }
+    // Aliased keys (a district-less row folded into its person's canonical
+    // target) resolve to the canonical slice, so every due row finds its
+    // money under its own key.
+    for (const [alias, canonicalKey] of canonicalKeyByAlias) {
+      if (alias !== canonicalKey) {
+        byTargetKey.set(alias, byTargetKey.get(canonicalKey)!);
+      }
     }
 
     const aggregatedIeFilerKeys = new Set<string>();
