@@ -87,8 +87,25 @@ describe("georgiaCandidateNameMatchesRowNames (middle-name evidence)", () => {
     expect(georgiaCandidateNameMatchesRowNames("John A. Smith", ["Smith, John B.", "John Smith"])).toBe(false);
   });
 
+  it("rejects a conflict past the first middle token", () => {
+    // The MICHAEL agreement must not short-circuit before ANDREW-vs-BERNARD
+    // is compared — every shared middle position carries evidence.
+    expect(
+      georgiaCandidateNameMatchesRowNames("John Michael Andrew Smith", ["SMITH, JOHN MICHAEL BERNARD"])
+    ).toBe(false);
+    expect(georgiaCandidateNameMatchesRowNames("John Michael Andrew Smith", ["SMITH, JOHN MICHAEL A."])).toBe(
+      true
+    );
+  });
+
   it("still matches multi-word surnames across name orders", () => {
     expect(georgiaCandidateNameMatchesRowNames("Mary Van Dyke", ["Van Dyke, Mary A."])).toBe(true);
+  });
+
+  it("judges middle evidence only at the longest aligned surname", () => {
+    // Space-form "MARY B VAN DYKE" also emits a bogus DYKE-surname split that
+    // reads VAN-vs-B as a middle conflict; the real VAN DYKE alignment wins.
+    expect(georgiaCandidateNameMatchesRowNames("Mary Van Dyke", ["MARY B VAN DYKE"])).toBe(true);
   });
 });
 
