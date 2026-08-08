@@ -122,6 +122,28 @@ describe("coloradoCandidateCommitteeResolver", () => {
     ).toEqual({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("rejects a fallback row whose second middle name contradicts the candidate", () => {
+    expect(
+      resolveColoradoCandidateCommittee({
+        candidateName: "John Michael Andrew Smith",
+        electionYear: 2026,
+        contributionRows: [contribution({ CandidateName: "Smith, John Michael Bernard" })],
+      })
+    ).toEqual({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("recovers a compound-surname row despite the shorter-split parse", () => {
+    // The wrong "DYKE" split would read VAN as a middle and manufacture a
+    // conflict; the longest aligned surname ("VAN DYKE") is weak and matches.
+    expect(
+      resolveColoradoCandidateCommittee({
+        candidateName: "Mary Van Dyke",
+        electionYear: 2026,
+        contributionRows: [contribution({ CandidateName: "Mary B Van Dyke" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "202650001" });
+  });
+
   it("returns unmatched when there is no candidate committee match", () => {
     expect(
       resolveColoradoCandidateCommittee({

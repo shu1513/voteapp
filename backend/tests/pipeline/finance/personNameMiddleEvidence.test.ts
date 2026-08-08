@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  committeeNameMiddleEvidenceRowNames,
   hasMiddleNameConflict,
   middleNameEvidence,
   parsePersonNameCandidates,
@@ -145,6 +146,13 @@ describe("hasMiddleNameConflict", () => {
     expect(conflict("Mary A. Van Dyke", ["Van Dyke, Mary B."])).toBe(true);
   });
 
+  it("does not let a shorter surname split manufacture a conflict", () => {
+    // The true alignment is "VAN DYKE" (weak: only the row carries a middle).
+    // The alternate "DYKE" split would read VAN as a candidate middle and
+    // manufacture VAN-vs-B; only the longest aligned surname carries evidence.
+    expect(conflict("Mary Van Dyke", ["Mary B Van Dyke"])).toBe(false);
+  });
+
   it("ignores generational suffixes stripped by the normalizer", () => {
     expect(conflict("John Smith Jr.", ["Smith, John"])).toBe(false);
   });
@@ -207,5 +215,23 @@ describe("personNamesMatchWithMiddleEvidence", () => {
 
   it("lets a conflict on one row name veto a weak alignment on another", () => {
     expect(matches("John A. Smith", ["John Smith", "Smith, John B."])).toBe(false);
+  });
+
+  it("rejects a contradiction hidden past a matching first middle", () => {
+    expect(matches("John Michael Andrew Smith", ["Smith, John Michael Bernard"])).toBe(false);
+  });
+
+  it("recovers a compound-surname alignment despite the shorter-split parse", () => {
+    expect(matches("Mary Van Dyke", ["Mary B Van Dyke"])).toBe(true);
+  });
+});
+
+describe("committeeNameMiddleEvidenceRowNames", () => {
+  it("expands year and for-delimited designator text around the person name", () => {
+    expect(committeeNameMiddleEvidenceRowNames("Citizens for Jane B Doe for Governor")).toEqual(
+      expect.arrayContaining(["Citizens for Jane B Doe for Governor", "Citizens", "Jane B Doe", "Governor"])
+    );
+    expect(committeeNameMiddleEvidenceRowNames("Jane B Doe 2026")).toContain("Jane B Doe");
+    expect(committeeNameMiddleEvidenceRowNames("   ")).toEqual([]);
   });
 });

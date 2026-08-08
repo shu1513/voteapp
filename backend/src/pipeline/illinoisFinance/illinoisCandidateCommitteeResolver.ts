@@ -6,7 +6,10 @@ import {
   toIllinoisSbeOfficeSearchInput,
 } from "./illinoisFinanceEligibleOffices.js";
 import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
-import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
+import {
+  committeeNameMiddleEvidenceRowNames,
+  hasMiddleNameConflict,
+} from "../finance/personNameMiddleEvidence.js";
 import { normalizeIllinoisCommitteeKey } from "./illinoisFinanceAggregators.js";
 import {
   fetchIllinoisSbeCandidateContributionRecords,
@@ -530,13 +533,14 @@ export function resolveIllinoisCandidateCommittee(
     // The token-subset test accepts "Citizens for John B Smith" for candidate
     // "John A. Smith" — another Smith's committee. normalizePersonName strips
     // the committee wrappers (FRIENDS/OF/FOR/...), so the remaining text
-    // parses as a person name and the middle gate applies. Names that keep
-    // trailing office tokens ("John Smith for Attorney General") never align
-    // on the surname, produce no evidence, and pass through unchanged.
+    // parses as a person name and the middle gate applies. The expansion also
+    // evaluates year-stripped and "for"-delimited segments, so trailing
+    // office/year text ("Jane B Doe for Governor", "Jane B Doe 2026") cannot
+    // hide the contradicting middle by blocking surname alignment.
     if (
       illinoisCandidateNameMiddleConflicts({
         candidateName: input.candidateName,
-        rowNames: [committeeName],
+        rowNames: committeeNameMiddleEvidenceRowNames(committeeName),
       })
     ) {
       continue;
