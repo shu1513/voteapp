@@ -6,6 +6,7 @@ import { Pool } from "pg";
 import { loadProjectEnv } from "../config/env.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
+import { isLegacyDuplicateMigrationSet } from "./legacyDuplicateMigrations.js";
 type RequiredColumn = {
   table: string;
   column: string;
@@ -111,34 +112,6 @@ const REQUIRED_UNIQUE_OBJECTS: RequiredUniqueObject[] = [
   { table: "ballot_measures", name: "uq_ballot_measures_election_id", columns: ["election_id"] },
 ];
 
-const LEGACY_DUPLICATE_MIGRATION_FILES_BY_PREFIX = new Map<string, string[]>([
-  [
-    "075",
-    ["075_add_judge_mapping_research_areas.sql", "075_consolidate_judicial_offices_by_scope.sql"],
-  ],
-  [
-    "125",
-    ["125_add_tennessee_campaign_finance_tables.sql", "125_add_user_research_area_preferences.sql"],
-  ],
-  [
-    "127",
-    [
-      "127_add_florida_campaign_finance_tables.sql",
-      "127_add_maryland_campaign_finance_tables.sql",
-      "127_add_pennsylvania_campaign_finance_tables.sql",
-      "127_add_utah_campaign_finance_tables.sql",
-    ],
-  ],
-  [
-    "128",
-    [
-      "128_add_florida_outside_group_support_links.sql",
-      "128_add_oregon_campaign_finance_tables.sql",
-      "128_add_utah_supporting_committee_finance_tables.sql",
-    ],
-  ],
-]);
-
 function resolveMigrationsDir(): string {
   const candidates = [
     resolve(process.cwd(), "db/migrations"),
@@ -180,15 +153,6 @@ function duplicateMigrationNumbers(files: readonly string[]): Record<string, str
     }
   }
   return duplicates;
-}
-
-function isLegacyAllowedDuplicate(prefix: string, filenames: readonly string[]): boolean {
-  const allowed = LEGACY_DUPLICATE_MIGRATION_FILES_BY_PREFIX.get(prefix);
-  if (!allowed || allowed.length !== filenames.length) {
-    return false;
-  }
-  const allowedSet = new Set(allowed);
-  return filenames.every((filename) => allowedSet.has(filename));
 }
 
 async function loadExistingColumns(pool: Pool): Promise<Set<string>> {
@@ -309,7 +273,7 @@ async function main(): Promise<void> {
   const migrationNumberDuplicates = duplicateMigrationNumbers(migrationFiles);
   const unallowedMigrationNumberDuplicates = Object.fromEntries(
     Object.entries(migrationNumberDuplicates).filter(
-      ([prefix, filenames]) => !isLegacyAllowedDuplicate(prefix, filenames)
+      ([prefix, filenames]) => !isLegacyDuplicateMigrationSet(prefix, filenames)
     )
   );
 
