@@ -1,5 +1,8 @@
 import { firstNamesConflict } from "../finance/personFirstNameNicknames.js";
-import { normalizeTexasCandidateNameKeys } from "./texasCandidateCommitteeResolver.js";
+import {
+  normalizeTexasCandidateNameKeys,
+  texasCandidateNameMiddleConflicts,
+} from "./texasCandidateCommitteeResolver.js";
 import {
   isTexasFinanceEligibleOffice,
   mapTexasTecOfficeCode,
@@ -277,10 +280,13 @@ function matchedRowsSpanConflictingFirstNames(rows: readonly TexasTecCandidateRo
   return false;
 }
 
+function candidateRowPersonName(row: TexasTecCandidateRow): string {
+  return [row.candidateNameFirst, row.candidateNameLast].filter(Boolean).join(" ");
+}
+
 function candidateRowNameKeys(row: TexasTecCandidateRow): Set<string> {
   const keys = new Set<string>();
-  const structuredName = [row.candidateNameFirst, row.candidateNameLast].filter(Boolean).join(" ");
-  for (const key of normalizeTexasCandidateNameKeys(structuredName)) {
+  for (const key of normalizeTexasCandidateNameKeys(candidateRowPersonName(row))) {
     keys.add(key);
   }
   for (const key of normalizeTexasCandidateNameKeys(row.candidateNameOrganization)) {
@@ -291,6 +297,7 @@ function candidateRowNameKeys(row: TexasTecCandidateRow): Set<string> {
 
 function candidateRowMatchesTarget(input: {
   row: TexasTecCandidateRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
   officeScope: TexasFinanceOfficeScope;
   officeCanonicalName: string;
@@ -304,6 +311,17 @@ function candidateRowMatchesTarget(input: {
     }
   }
   if (!nameMatches) {
+    return false;
+  }
+  // TEC has no middle-name column, but filers routinely type one into the
+  // first-name field ("MARY LOU"), and the key set collapses to first+last.
+  // A contradicting middle name rejects the row.
+  if (
+    texasCandidateNameMiddleConflicts({
+      candidateName: input.candidateName,
+      rowNames: [candidateRowPersonName(input.row)],
+    })
+  ) {
     return false;
   }
   return rowOfficeMatches({
@@ -457,6 +475,7 @@ export function aggregateTexasOutsideSpending(
   const matchedRows = input.candidateRows.filter((row) =>
     candidateRowMatchesTarget({
       row,
+      candidateName: input.candidateName,
       candidateNameKeys,
       officeScope,
       officeCanonicalName,

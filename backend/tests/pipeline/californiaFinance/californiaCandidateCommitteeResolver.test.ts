@@ -61,6 +61,42 @@ describe("californiaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a same-race cover row whose middle name contradicts the candidate", () => {
+    // Same office and election date — only the middle evidence differs.
+    // Without the middle gate this row linked as an "exact" match and attached
+    // the other John Smith's committee.
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow({ CAND_NAML: "SMITH", CAND_NAMF: "JOHN B." })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_office_year_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow({ CAND_NAML: "SMITH", CAND_NAMF: "JOHN ANDREW" })],
+      })
+    ).toMatchObject({ status: "matched", controlledCommitteeId: "1456045" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "John Smith",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow({ CAND_NAML: "SMITH", CAND_NAMF: "JOHN B." })],
+      })
+    ).toMatchObject({ status: "matched", controlledCommitteeId: "1456045" });
+  });
+
   it("matches app canonical office names to California office labels", () => {
     expect(
       resolveCaliforniaCandidateCommittee({

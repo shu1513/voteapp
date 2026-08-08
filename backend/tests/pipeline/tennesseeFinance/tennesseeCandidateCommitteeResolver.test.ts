@@ -81,6 +81,70 @@ describe("tennesseeCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "missing_legislative_district" });
   });
 
+  it("rejects a same-race record whose middle name contradicts the candidate", () => {
+    // Same office and year — only the middle evidence differs. Without the
+    // middle gate this record linked as an "exact" match and attached the
+    // other John Smith's finance records.
+    expect(
+      resolveTennesseeCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRecords: [
+          record({ campCandidateId: "9", ownerName: "SMITH, JOHN B.", name: "SMITH, JOHN B.", electionYear: 2026 }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveTennesseeCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRecords: [
+          record({
+            campCandidateId: "9",
+            ownerName: "SMITH, JOHN ANDREW",
+            name: "SMITH, JOHN ANDREW",
+            electionYear: 2026,
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", campCandidateId: "9" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveTennesseeCandidateCommittee({
+        candidateName: "John Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRecords: [
+          record({ campCandidateId: "9", ownerName: "SMITH, JOHN B.", name: "SMITH, JOHN B.", electionYear: 2026 }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", campCandidateId: "9" });
+  });
+
+  it("lets a middle conflict veto a middle-less sibling name on the same record", () => {
+    expect(
+      resolveTennesseeCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRecords: [
+          record({ campCandidateId: "9", ownerName: "SMITH, JOHN B.", name: "JOHN SMITH", electionYear: 2026 }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("does not guess when multiple CAMP candidates match", () => {
     expect(
       resolveTennesseeCandidateCommittee({

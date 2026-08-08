@@ -383,6 +383,78 @@ describe("texasCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("rejects a same-race filer whose middle name contradicts the candidate", () => {
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Greg W. Abbott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filer({ filerName: "ABBOTT, GREG R", filerNameFirst: "GREG", filerNameLast: "ABBOTT" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Greg W. Abbott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filer({ filerName: "ABBOTT, GREG WAYNE", filerNameFirst: "GREG", filerNameLast: "ABBOTT" })],
+      })
+    ).toMatchObject({ status: "matched", committeeName: "ABBOTT, GREG WAYNE" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Greg Abbott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filer({ filerName: "ABBOTT, GREG R", filerNameFirst: "GREG", filerNameLast: "ABBOTT" })],
+      })
+    ).toMatchObject({ status: "matched", committeeName: "ABBOTT, GREG R" });
+  });
+
+  it("lets a middle conflict veto a middle-less sibling name on the same filer row", () => {
+    // The structured first/last pair carries no middle and would match on its
+    // own; the free-text filer name on the same row still rejects it.
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Greg W. Abbott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filer({ filerName: "ABBOTT, GREG R", filerNameFirst: "GREG", filerNameLast: "ABBOTT" })],
+      })
+    ).toMatchObject({ status: "unmatched" });
+  });
+
+  it("reads middle-name evidence through one-sided nickname expansion", () => {
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Mike A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filer({ filerName: "SMITH, MICHAEL B", filerNameFirst: "MICHAEL", filerNameLast: "SMITH" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Mike Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filer({ filerName: "SMITH, MICHAEL B", filerNameFirst: "MICHAEL", filerNameLast: "SMITH" })],
+      })
+    ).toMatchObject({ status: "matched", committeeName: "SMITH, MICHAEL B" });
+  });
+
   it("rejects invalid election years", () => {
     expect(() =>
       resolveTexasCandidateCommittee({

@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   searchNewJerseyElecEntities,
   type NewJerseyElecClientOptions,
@@ -146,6 +147,7 @@ function newJerseyOfficeNameFromEntityOffice(value: string | null | undefined): 
 
 function entityMatchesCandidateName(input: {
   entity: NewJerseyElecEntity;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   const values = [
@@ -153,14 +155,30 @@ function entityMatchesCandidateName(input: {
     [input.entity.firstName, input.entity.lastName].filter(Boolean).join(" "),
     [input.entity.lastName, input.entity.firstName].filter(Boolean).join(", "),
   ];
+  let keyMatched = false;
   for (const value of values) {
     for (const key of normalizeNewJerseyCandidateNameKeys(value)) {
       if (input.candidateNameKeys.has(key)) {
-        return true;
+        keyMatched = true;
+        break;
       }
     }
+    if (keyMatched) {
+      break;
+    }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, which would link
+  // "John A. Smith" to the entity "SMITH, JOHN B" as an "exact" match once the
+  // office, election type, and year agree. A contradicting middle name rejects
+  // the entity (georgia pattern).
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: values,
+    normalizePersonName,
+  });
 }
 
 function entityMatchesOffice(input: { entity: NewJerseyElecEntity; officeName: string }): boolean {
@@ -264,7 +282,7 @@ export function resolveNewJerseyCandidateCommittee(
     if (entity.electionYear !== electionYear) {
       continue;
     }
-    if (!entityMatchesCandidateName({ entity, candidateNameKeys })) {
+    if (!entityMatchesCandidateName({ entity, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
     if (!entityMatchesOffice({ entity, officeName: input.officeName })) {

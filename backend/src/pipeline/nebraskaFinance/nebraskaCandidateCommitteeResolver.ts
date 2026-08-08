@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { NebraskaNadcContributionRow } from "./nebraskaNadcArtifactReader.js";
 import {
   isNebraskaFinanceEligibleOffice,
@@ -183,14 +184,28 @@ function isCandidateCommittee(row: NebraskaNadcContributionRow): boolean {
 
 function rowMatchesCandidateName(input: {
   row: NebraskaNadcContributionRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
-  for (const key of normalizeNebraskaCandidateNameKeys(input.row["Candidate Name"])) {
+  const rowCandidateName = input.row["Candidate Name"];
+  let keyMatched = false;
+  for (const key of normalizeNebraskaCandidateNameKeys(rowCandidateName)) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, which would attach
+  // "VEST, RICK J."'s committee to a "Rick T. Vest" in the same race. A
+  // contradicting middle name rejects the row (georgia pattern).
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [rowCandidateName],
+    normalizePersonName,
+  });
 }
 
 function rowMatchesExpectedOfficeDistrict(input: {
@@ -284,7 +299,7 @@ export function resolveNebraskaCandidateCommittee(
     if (!isElectionCycleContribution(row, electionYear)) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
     if (

@@ -215,6 +215,60 @@ describe("kentuckyOutsideSpendingAggregator", () => {
     expect(result.summary?.supportTotal).toBe(1000);
   });
 
+  it("rejects a same-race expenditure whose middle name contradicts the candidate", () => {
+    // Same office and election date — only the middle evidence differs.
+    // Without the middle gate the first+last key credited the other John
+    // Smith's independent expenditures to this candidate.
+    const result = aggregateKentuckyOutsideSpending({
+      candidateName: "John A. Smith",
+      electionDate: "11/7/2023",
+      officeOrBallotMeasure: "Governor",
+      expenditureRecords: [expenditure({ candidateName: "Smith, John B.", amount: 9000 })],
+    });
+
+    expect(result.matchedExpenditureRowCount).toBe(0);
+    expect(result.summary).toBeNull();
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    const result = aggregateKentuckyOutsideSpending({
+      candidateName: "John A. Smith",
+      electionDate: "11/7/2023",
+      officeOrBallotMeasure: "Governor",
+      expenditureRecords: [expenditure({ candidateName: "Smith, John Andrew", amount: 2500 })],
+    });
+
+    expect(result.matchedExpenditureRowCount).toBe(1);
+    expect(result.summary?.supportTotal).toBe(2500);
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    const result = aggregateKentuckyOutsideSpending({
+      candidateName: "John Smith",
+      electionDate: "11/7/2023",
+      officeOrBallotMeasure: "Governor",
+      expenditureRecords: [expenditure({ candidateName: "Smith, John B.", amount: 2500 })],
+    });
+
+    expect(result.matchedExpenditureRowCount).toBe(1);
+    expect(result.summary?.supportTotal).toBe(2500);
+  });
+
+  it("keeps the candidate's own outside spending while vetoing the conflicting sibling's rows", () => {
+    const result = aggregateKentuckyOutsideSpending({
+      candidateName: "John A. Smith",
+      electionDate: "11/7/2023",
+      officeOrBallotMeasure: "Governor",
+      expenditureRecords: [
+        expenditure({ candidateName: "Smith, John B.", amount: 9000 }),
+        expenditure({ candidateName: "Smith, John A.", amount: 2500 }),
+      ],
+    });
+
+    expect(result.matchedExpenditureRowCount).toBe(1);
+    expect(result.summary?.supportTotal).toBe(2500);
+  });
+
   it("handles empty candidate names and validates required inputs", () => {
     expect(
       aggregateKentuckyOutsideSpending({

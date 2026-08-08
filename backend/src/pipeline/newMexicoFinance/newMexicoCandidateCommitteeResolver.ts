@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { NewMexicoCfisContributionRow } from "./newMexicoCfisArtifactReader.js";
 import { isNewMexicoFinanceEligibleOffice } from "./newMexicoFinanceEligibleOffices.js";
 
@@ -199,16 +200,30 @@ function candidateNameFromContributionRow(row: NewMexicoCfisContributionRow): st
     .join(" ");
 }
 
+// Shared middle-name evidence gate: the key set collapses names to first+last,
+// which would hand "John A. Smith" the committee of "John B. Smith" whenever
+// the cycle and office agree. A contradicting middle name rejects the pair.
+export function newMexicoCandidateNameMiddleConflict(candidateName: string, rowName: string): boolean {
+  return hasMiddleNameConflict({ candidateName, rowNames: [rowName], normalizePersonName });
+}
+
 function rowMatchesCandidateName(input: {
   row: NewMexicoCfisContributionRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
-  for (const key of normalizeNewMexicoCandidateNameKeys(candidateNameFromContributionRow(input.row))) {
+  const rowName = candidateNameFromContributionRow(input.row);
+  let keyMatched = false;
+  for (const key of normalizeNewMexicoCandidateNameKeys(rowName)) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  return !newMexicoCandidateNameMiddleConflict(input.candidateName, rowName);
 }
 
 function toCommitteeMatch(input: {
@@ -281,7 +296,7 @@ export function resolveNewMexicoCandidateCommittee(
     if (!isElectionCycleContribution(row, electionYear)) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

@@ -84,6 +84,63 @@ describe("districtOfColumbiaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a same-race record whose middle name contradicts the candidate", () => {
+    // Same office and cycle — only the middle evidence differs. Without the
+    // middle gate this record linked as an "exact" match and attached the
+    // other John Smith's contributions.
+    expect(
+      resolveDistrictOfColumbiaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2026,
+        contributionRecords: [
+          record({
+            candidateName: "John B. Smith",
+            committeeName: "Smith For DC",
+            committeeKey: "SMITH FOR DC",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveDistrictOfColumbiaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2026,
+        contributionRecords: [
+          record({
+            candidateName: "Smith, John Andrew",
+            committeeName: "Smith For DC",
+            committeeKey: "SMITH FOR DC",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeKey: "SMITH FOR DC" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveDistrictOfColumbiaCandidateCommittee({
+        candidateName: "John Smith",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2026,
+        contributionRecords: [
+          record({
+            candidateName: "John B. Smith",
+            committeeName: "Smith For DC",
+            committeeKey: "SMITH FOR DC",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeKey: "SMITH FOR DC" });
+  });
+
   it("requires and enforces D.C. ward or at-large seats for seat-scoped offices", () => {
     expect(
       resolveDistrictOfColumbiaCandidateCommittee({

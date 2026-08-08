@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   normalizeHawaiiCscPersonNameKeys,
   searchHawaiiCscCandidateCommittees,
@@ -107,14 +108,28 @@ function candidateNameNormalized(value: string): string {
 
 function summaryMatchesCandidateName(input: {
   summary: HawaiiCscCandidateCommitteeSummary;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
+  let keyMatched = false;
   for (const key of normalizeHawaiiCandidateNameKeys(input.summary.candidateName)) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, which would link
+  // "John A. Smith" to a summary naming "John B. Smith" as an "exact" match
+  // whenever the office, district, and election period agree. A contradicting
+  // middle name rejects the row (georgia pattern).
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [input.summary.candidateName],
+    normalizePersonName,
+  });
 }
 
 function summaryMatchesExpectedOffice(input: {
@@ -204,7 +219,7 @@ export function resolveHawaiiCandidateCommittee(
     ) {
       continue;
     }
-    if (!summaryMatchesCandidateName({ summary, candidateNameKeys })) {
+    if (!summaryMatchesCandidateName({ summary, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

@@ -263,6 +263,44 @@ describe("illinoisSbeArtifactDataSource", () => {
     expect(patrickData.outsideExpenditureRecords).toEqual([]);
   });
 
+  it("rejects an outside expenditure whose middle name contradicts the candidate", () => {
+    const makeExpenditure = (candidateName: string) => ({
+      payeeName: "Mailer",
+      payeeAddress: null,
+      amount: 100,
+      expendedDate: "10/1/2022",
+      reportReceivedDate: null,
+      expenditureType: "Independent Expenditures",
+      expendingCommitteeName: `PAC for ${candidateName}`,
+      purpose: "Mail",
+      candidateName,
+      officeDistrict: "Governor",
+      supportOppose: "support" as const,
+      sourceUrl: EXPENDITURES_URL,
+    });
+    const artifacts = {
+      contributionRecords: [],
+      contributionSourceUrl: CONTRIBUTIONS_URL,
+      expenditureRecords: [makeExpenditure("Smith, John B")],
+      expenditureSourceUrl: EXPENDITURES_URL,
+    };
+
+    expect(
+      loadIllinoisFinanceDataForDueRowFromArtifacts({
+        row: dueRow({ candidateName: "John A. Smith" }),
+        artifacts,
+      }).outsideExpenditureRecords
+    ).toEqual([]);
+
+    // A candidate with no middle of its own still falls back to first+last.
+    expect(
+      loadIllinoisFinanceDataForDueRowFromArtifacts({
+        row: dueRow({ candidateName: "John Smith" }),
+        artifacts,
+      }).outsideExpenditureRecords?.map((record) => record.candidateName)
+    ).toEqual(["Smith, John B"]);
+  });
+
   it("matches local outside expenditures to the exact municipality", () => {
     const makeExpenditure = (officeDistrict: string) => ({
       payeeName: "Mailer",

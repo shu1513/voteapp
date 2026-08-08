@@ -50,6 +50,69 @@ describe("virginiaCandidateCommitteeResolver", () => {
     ]);
   });
 
+  it("rejects a same-race committee whose middle name contradicts the candidate", () => {
+    // Same eligible office and year — only the middle evidence differs.
+    // Without the middle gate this committee linked as an "exact" match and
+    // attached the other Spanberger's finance records.
+    expect(
+      resolveVirginiaCandidateCommittee({
+        candidateName: "Abigail A. Spanberger",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        committeeResults: [
+          committee({
+            committeeId: "other",
+            candidateName: "Spanberger, Abigail B.",
+            committeeName: "Spanberger for Governor",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveVirginiaCandidateCommittee({
+        candidateName: "Abigail B. Spanberger",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        committeeResults: [committee({ committeeId: "other", candidateName: "Spanberger, Abigail Bernice" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "other" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveVirginiaCandidateCommittee({
+        candidateName: "Abigail Spanberger",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        committeeResults: [committee({ committeeId: "other", candidateName: "Spanberger, Abigail B." })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "other" });
+  });
+
+  it("lets a middle conflict veto a middle-less sibling name on the same result", () => {
+    expect(
+      resolveVirginiaCandidateCommittee({
+        candidateName: "Abigail A. Spanberger",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        committeeResults: [
+          committee({
+            committeeId: "other",
+            candidateName: "Spanberger, Abigail B.",
+            committeeName: "Abigail Spanberger",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("matches exactly one Virginia candidate committee by name and eligible office", () => {
     expect(
       resolveVirginiaCandidateCommittee({

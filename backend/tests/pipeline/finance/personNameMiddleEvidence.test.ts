@@ -1,0 +1,137 @@
+import { describe, expect, it } from "vitest";
+
+import {
+  hasMiddleNameConflict,
+  middleNameEvidence,
+  parsePersonNameCandidates,
+  personNameParseVariants,
+} from "../../../src/pipeline/finance/personNameMiddleEvidence.js";
+
+// A representative state normalizer (the tennessee-pattern one): uppercase,
+// strip punctuation and generational suffixes.
+function normalizePersonName(value: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[̀-ͯ]/g, "")
+    .toUpperCase()
+    .replace(/&/g, " AND ")
+    .replace(/[^A-Z0-9]+/g, " ")
+    .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+describe("parsePersonNameCandidates", () => {
+  it("parses comma form into a single unambiguous split", () => {
+    expect(parsePersonNameCandidates("Carr, Christopher M.", normalizePersonName)).toEqual([
+      { first: "CHRISTOPHER", middles: ["M"], last: "CARR" },
+    ]);
+  });
+
+  it("emits every surname split for space forms", () => {
+    expect(parsePersonNameCandidates("Mary Van Dyke", normalizePersonName)).toEqual([
+      { first: "MARY", middles: [], last: "VAN DYKE" },
+      { first: "MARY", middles: ["VAN"], last: "DYKE" },
+    ]);
+  });
+
+  it("treats a single token as first and last", () => {
+    expect(parsePersonNameCandidates("Cher", normalizePersonName)).toEqual([
+      { first: "CHER", middles: [], last: "CHER" },
+    ]);
+  });
+
+  it("returns no parses for empty or comma-degenerate input", () => {
+    expect(parsePersonNameCandidates("  ", normalizePersonName)).toEqual([]);
+    expect(parsePersonNameCandidates("Smith,", normalizePersonName)).toEqual([]);
+  });
+});
+
+describe("personNameParseVariants", () => {
+  it("parses the outer name and each parenthetical alias", () => {
+    const variants = personNameParseVariants("LEE, Bill (Bill Lee)", normalizePersonName);
+    expect(variants).toContainEqual({ first: "BILL", middles: [], last: "LEE" });
+    expect(variants.length).toBeGreaterThan(1);
+  });
+});
+
+describe("middleNameEvidence", () => {
+  it("is weak when either side lacks middles", () => {
+    expect(middleNameEvidence([], [])).toBe("weak");
+    expect(middleNameEvidence(["A"], [])).toBe("weak");
+    expect(middleNameEvidence([], ["ANDREW"])).toBe("weak");
+  });
+
+  it("is strong on equal middles or a corroborating initial", () => {
+    expect(middleNameEvidence(["ANDREW"], ["ANDREW"])).toBe("strong");
+    expect(middleNameEvidence(["A"], ["ANDREW"])).toBe("strong");
+    expect(middleNameEvidence(["ANDREW"], ["A"])).toBe("strong");
+  });
+
+  it("is conflict on contradicting middles", () => {
+    expect(middleNameEvidence(["A"], ["B"])).toBe("conflict");
+    expect(middleNameEvidence(["ANDREW"], ["BERNARD"])).toBe("conflict");
+    expect(middleNameEvidence(["ANDREW"], ["ANN"])).toBe("conflict");
+  });
+});
+
+describe("hasMiddleNameConflict", () => {
+  function conflict(candidateName: string, rowNames: string[]): boolean {
+    return hasMiddleNameConflict({ candidateName, rowNames, normalizePersonName });
+  }
+
+  it("vetoes conflicting middle initials even when first and last agree", () => {
+    expect(conflict("John A. Smith", ["Smith, John B."])).toBe(true);
+    expect(conflict("John Andrew Smith", ["Smith, John Bernard"])).toBe(true);
+  });
+
+  it("does not veto an initial that corroborates the full middle name", () => {
+    expect(conflict("John A. Smith", ["Smith, John Andrew"])).toBe(false);
+    expect(conflict("John Andrew Smith", ["Smith, John A."])).toBe(false);
+  });
+
+  it("does not veto the first+last fallback when a side lacks middle info", () => {
+    expect(conflict("John Smith", ["Smith, John B."])).toBe(false);
+    expect(conflict("John A. Smith", ["Smith, John"])).toBe(false);
+  });
+
+  it("lets a middle conflict veto a middle-less variant of the same row", () => {
+    // One row name lacks the middle, but a sibling name carries a
+    // contradicting one: the conflict wins over the weak fallback.
+    expect(conflict("John A. Smith", ["John Smith", "Smith, John B."])).toBe(true);
+  });
+
+  it("lets corroboration on any row name clear a conflict on another", () => {
+    expect(conflict("John A. Smith", ["Smith, John B.", "John Andrew Smith"])).toBe(false);
+  });
+
+  it("stays out of the way when no variant pair aligns on first+last", () => {
+    expect(conflict("John A. Smith", ["Jones, Mary B."])).toBe(false);
+    expect(conflict("John A. Smith", ["Friends Of Somebody Else"])).toBe(false);
+    expect(conflict("John A. Smith", [])).toBe(false);
+  });
+
+  it("keeps multi-word surnames aligned across name orders", () => {
+    expect(conflict("Mary Van Dyke", ["Van Dyke, Mary"])).toBe(false);
+    expect(conflict("Mary A. Van Dyke", ["Van Dyke, Mary B."])).toBe(true);
+  });
+
+  it("ignores generational suffixes stripped by the normalizer", () => {
+    expect(conflict("John Smith Jr.", ["Smith, John"])).toBe(false);
+  });
+
+  it("honors a caller-supplied first-name equivalence for nickname states", () => {
+    const nicknameEquivalent = (candidateFirst: string, rowFirst: string) =>
+      candidateFirst === rowFirst || (candidateFirst === "MIKE" && rowFirst === "MICHAEL");
+    expect(
+      hasMiddleNameConflict({
+        candidateName: "Mike A. Smith",
+        rowNames: ["SMITH, MICHAEL B"],
+        normalizePersonName,
+        firstNamesEquivalent: nicknameEquivalent,
+      })
+    ).toBe(true);
+    // Without the equivalence the pair never aligns, so no veto.
+    expect(conflict("Mike A. Smith", ["SMITH, MICHAEL B"])).toBe(false);
+  });
+});

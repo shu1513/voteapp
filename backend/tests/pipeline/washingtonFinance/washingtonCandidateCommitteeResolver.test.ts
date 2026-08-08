@@ -38,6 +38,63 @@ describe("washingtonCandidateCommitteeResolver", () => {
     ]);
   });
 
+  it("rejects a same-race summary whose middle name contradicts the candidate", () => {
+    // Same office and election year — only the middle evidence differs.
+    // Without the middle gate this summary linked as an "exact" match and
+    // attached the other Ferguson's finance records.
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Robert W. Ferguson",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        summaries: [summary({ filerId: "FERGB--024", committeeId: "36704", filerName: "Robert B. Ferguson" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Robert W. Ferguson",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        summaries: [summary({ filerId: "FERGB--024", committeeId: "36704", filerName: "Robert Wayne Ferguson" })],
+      })
+    ).toMatchObject({ status: "matched", filerId: "FERGB--024" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Robert Ferguson",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        summaries: [summary({ filerId: "FERGB--024", committeeId: "36704", filerName: "Robert B. Ferguson" })],
+      })
+    ).toMatchObject({ status: "matched", filerId: "FERGB--024" });
+  });
+
+  it("lets a middle conflict veto a middle-less parenthetical alias on the same summary", () => {
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Robert W. Ferguson",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        summaries: [
+          summary({
+            filerId: "FERGB--024",
+            committeeId: "36704",
+            filerName: "Robert B. Ferguson (Robert Ferguson)",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("matches exactly one active Washington candidate committee by public parenthetical name", () => {
     expect(
       resolveWashingtonCandidateCommittee({

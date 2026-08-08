@@ -238,6 +238,45 @@ describe("newMexicoCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a same-race row whose middle name contradicts the candidate", () => {
+    // Same office and cycle — only the middle evidence differs. Without the
+    // middle gate this row linked as an "exact" match and attached the other
+    // Jane Doe's committee.
+    expect(
+      resolveNewMexicoCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Middle Name": "B" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveNewMexicoCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Middle Name": "Ann" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "1001" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveNewMexicoCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Middle Name": "B" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "1001" });
+  });
+
   it("rejects invalid election years", () => {
     expect(() =>
       resolveNewMexicoCandidateCommittee({

@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   DISTRICT_OF_COLUMBIA_OCF_FILER_TYPES,
   buildDistrictOfColumbiaOcfDataDownloadUrl,
@@ -126,12 +127,22 @@ function candidateNameNormalized(value: string): string {
 
 function recordNameMatchesCandidate(input: {
   record: DistrictOfColumbiaOcfContributionRecord;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
-  if (input.record.candidateName) {
-    for (const key of normalizeDistrictOfColumbiaCandidateNameKeys(input.record.candidateName)) {
+  const recordCandidateName = input.record.candidateName;
+  if (recordCandidateName) {
+    for (const key of normalizeDistrictOfColumbiaCandidateNameKeys(recordCandidateName)) {
       if (input.candidateNameKeys.has(key)) {
-        return true;
+        // Key overlap collapses names to first+last, which would link
+        // "John A. Smith" to a row naming "John B. Smith" as an "exact" match
+        // whenever the office and cycle agree. A contradicting middle name
+        // rejects the row (georgia pattern).
+        return !hasMiddleNameConflict({
+          candidateName: input.candidateName,
+          rowNames: [recordCandidateName],
+          normalizePersonName,
+        });
       }
     }
     return false;
@@ -276,7 +287,7 @@ export function resolveDistrictOfColumbiaCandidateCommittee(
     ) {
       continue;
     }
-    if (!recordNameMatchesCandidate({ record, candidateNameKeys })) {
+    if (!recordNameMatchesCandidate({ record, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

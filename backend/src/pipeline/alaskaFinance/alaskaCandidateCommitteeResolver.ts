@@ -1,4 +1,5 @@
 import { firstNamesConflict, firstNameVariants } from "../finance/personFirstNameNicknames.js";
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { AlaskaApocCampaignIncomeRow } from "./alaskaApocClient.js";
 import { parseAlaskaApocDateYear } from "./alaskaApocClient.js";
 
@@ -212,6 +213,35 @@ export function alaskaNicknameFamilyConflictsWithFiler(input: {
   return firstNamesConflict(filerGiven, input.familyGivenName);
 }
 
+function normalizePersonName(value: string): string {
+  return normalizeTextKey(value)
+    .split(" ")
+    .filter((token) => token.length > 0 && !NAME_SUFFIX_PATTERN.test(token))
+    .join(" ");
+}
+
+/**
+ * Middle-name evidence gate for APOC person names. Two Alaska-specific
+ * shapes have to be respected: nickname expansion is one-sided (see
+ * normalizeAlaskaCandidateNameKeys), so the first-name comparison expands the
+ * VoteApp side only; and a roster call name is quoted rather than
+ * parenthesized (Glenn M. "Mike" Prax), so it is rewritten into the
+ * parenthetical alias form the evidence parser already understands instead of
+ * being read as a middle name.
+ */
+export function alaskaCandidateNameMiddleConflicts(input: {
+  candidateName: string;
+  rowNames: readonly string[];
+}): boolean {
+  return hasMiddleNameConflict({
+    candidateName: input.candidateName.replace(/["“”]([^"“”]+)["“”]/g, "($1)"),
+    rowNames: input.rowNames,
+    normalizePersonName,
+    firstNamesEquivalent: (candidateFirst, rowFirst) =>
+      candidateFirst === rowFirst || firstNameVariants(candidateFirst).includes(rowFirst),
+  });
+}
+
 function rowYear(row: AlaskaApocCampaignIncomeRow): number | null {
   return row.reportYear ?? parseAlaskaApocDateYear(row.date);
 }
@@ -370,6 +400,18 @@ export function resolveAlaskaCandidateCommittee(input: {
     }
     const matchedKeys = rowMatchedCandidateKeys({ row, candidateNameKeys });
     if (matchedKeys.length === 0) {
+      continue;
+    }
+    // Keys collapse to first+last and match as an ordered token subsequence,
+    // which would link "John A. Smith" to filer "John B. Smith" whenever the
+    // office class and cycle agree. A contradicting middle name rejects the
+    // row.
+    if (
+      alaskaCandidateNameMiddleConflicts({
+        candidateName: input.candidateName,
+        rowNames: [row.filerName, row.name],
+      })
+    ) {
       continue;
     }
     const rowOfficeClass = officeClassOfApocOffice(row.office);

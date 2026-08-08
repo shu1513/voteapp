@@ -104,6 +104,64 @@ describe("Minnesota candidate committee resolver", () => {
     });
   });
 
+  it("rejects a same-race row whose middle name contradicts the candidate", () => {
+    // Same office and year — only the middle evidence differs. Without the
+    // middle gate this row linked as an "exact" match and attached the other
+    // Jane Doe's committee.
+    expect(
+      resolveMinnesotaCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRows: [record({ Candidate: "Jane B. Doe" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("rejects a PCC recipient whose middle name contradicts the candidate", () => {
+    expect(
+      resolveMinnesotaCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRows: [
+          {
+            "Recipient reg num": "1001",
+            Recipient: "Doe, Jane B Gov Committee",
+            "Recipient type": "PCC",
+            Year: "2026",
+          },
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveMinnesotaCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRows: [record({ Candidate: "Jane Ann Doe" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "1001" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveMinnesotaCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRows: [record({ Candidate: "Jane B. Doe" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "1001" });
+  });
+
   it.each([
     ["Demuth, Lisa Gov Committee", "Lisa Demuth", "Governor", "1001"],
     ["Ellison, Keith Atty Gen Committee", "Keith Ellison", "Attorney General", "1002"],

@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   searchVirginiaCandidateCommittees,
   type VirginiaCampaignFinanceClientOptions,
@@ -122,17 +123,36 @@ function candidateNameNormalized(value: string): string {
 
 function candidateResultMatchesName(input: {
   result: VirginiaCommitteeSearchResult;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
-  const values = [input.result.candidateName, input.result.committeeName];
+  const values = [input.result.candidateName, input.result.committeeName].filter(
+    (value): value is string => typeof value === "string" && value.trim().length > 0
+  );
+  let keyMatched = false;
   for (const value of values) {
-    for (const key of normalizeVirginiaCandidateNameKeys(value ?? "")) {
+    for (const key of normalizeVirginiaCandidateNameKeys(value)) {
       if (input.candidateNameKeys.has(key)) {
-        return true;
+        keyMatched = true;
+        break;
       }
     }
+    if (keyMatched) {
+      break;
+    }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, so committee candidate
+  // "Smith, John B." would match candidate "John A. Smith" as an "exact"
+  // committee whenever the office is eligible. A contradicting middle name
+  // rejects the result.
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: values,
+    normalizePersonName,
+  });
 }
 
 function virginiaOfficeNameFromReportOfficeSought(value: string | null | undefined): string | null {
@@ -232,7 +252,7 @@ export function resolveVirginiaCandidateCommittee(
     if (normalizeTextKey(result.committeeType) !== "CANDIDATE CAMPAIGN COMMITTEE") {
       continue;
     }
-    if (!candidateResultMatchesName({ result, candidateNameKeys })) {
+    if (!candidateResultMatchesName({ result, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

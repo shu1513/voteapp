@@ -76,6 +76,81 @@ describe("vermontCandidateCommitteeResolver", () => {
     expect(buildVermontCandidateSearchPhrases("Phil Scott")).toEqual(["Phil Scott", "SCOTT", "SCOTT, PHIL"]);
   });
 
+  it("rejects a same-race row whose middle name contradicts the candidate", () => {
+    // Same office and election year — only the middle evidence differs.
+    // Without the middle gate this row linked as an "exact" match and attached
+    // the other Phil Scott's finance records.
+    expect(
+      resolveVermontCandidateCommittee({
+        candidateName: "Phil A. Scott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        transactionRows: [
+          transactionRow({
+            filerRegistrationGuid: "other-guid",
+            filerName: "SCOTT, PHIL B",
+            candidateMiddleName: "B",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveVermontCandidateCommittee({
+        candidateName: "Phil B. Scott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        transactionRows: [
+          transactionRow({
+            filerRegistrationGuid: "other-guid",
+            filerName: "SCOTT, PHIL BRIAN",
+            candidateMiddleName: "BRIAN",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", filerRegistrationGuid: "other-guid" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveVermontCandidateCommittee({
+        candidateName: "Phil Scott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        transactionRows: [
+          transactionRow({
+            filerRegistrationGuid: "other-guid",
+            filerName: "SCOTT, PHIL B",
+            candidateMiddleName: "B",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", filerRegistrationGuid: "other-guid" });
+  });
+
+  it("lets a middle conflict veto a middle-less sibling name on the same row", () => {
+    expect(
+      resolveVermontCandidateCommittee({
+        candidateName: "Phil A. Scott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        transactionRows: [
+          transactionRow({
+            filerRegistrationGuid: "other-guid",
+            filerName: "PHIL SCOTT",
+            candidateMiddleName: "B",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("matches exactly one Vermont candidate filer by candidate name, office, and election year", () => {
     expect(
       resolveVermontCandidateCommittee({

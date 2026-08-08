@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import { normalizePennsylvaniaCampaignFinanceExportYear } from "./pennsylvaniaCampaignFinanceArtifactCache.js";
 import type { PennsylvaniaCampaignFinanceFilerRow } from "./pennsylvaniaCampaignFinanceReader.js";
 import {
@@ -141,11 +142,14 @@ function stripFilerWrapper(value: string): string {
     .trim();
 }
 
+function filerNameVariants(row: PennsylvaniaCampaignFinanceFilerRow): string[] {
+  const raw = row.FILERNAME.trim();
+  return [raw, stripFilerWrapper(raw)];
+}
+
 function filerNameKeys(row: PennsylvaniaCampaignFinanceFilerRow): Set<string> {
   const keys = new Set<string>();
-  const raw = row.FILERNAME.trim();
-  const stripped = stripFilerWrapper(raw);
-  for (const candidate of [raw, stripped]) {
+  for (const candidate of filerNameVariants(row)) {
     for (const key of normalizePennsylvaniaCandidateNameKeys(candidate)) {
       keys.add(key);
     }
@@ -180,15 +184,36 @@ function tokensContainCandidateName(input: {
 
 function rowMatchesCandidateName(input: {
   row: PennsylvaniaCampaignFinanceFilerRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   const keys = filerNameKeys(input.row);
+  let keyMatched = false;
   for (const key of keys) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return tokensContainCandidateName({ candidateNameKeys: input.candidateNameKeys, filerKeys: keys });
+  if (!keyMatched) {
+    keyMatched = tokensContainCandidateName({
+      candidateNameKeys: input.candidateNameKeys,
+      filerKeys: keys,
+    });
+  }
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, so "SMITH, JOHN B." would match
+  // candidate "John A. Smith" as an "exact" filer whenever office, district,
+  // and year agree. A contradicting middle name rejects the row. Committee-name
+  // keys carry a wrapper token first ("FRIENDS OF ...") and never align on
+  // first+last, so the committee path is untouched.
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: filerNameVariants(input.row),
+    normalizePersonName,
+  });
 }
 
 function isLikelyCandidateFiler(row: PennsylvaniaCampaignFinanceFilerRow): boolean {
@@ -319,7 +344,7 @@ export function resolvePennsylvaniaCandidateCommittee(
     if (!rowMatchesOfficeContext({ row, officeSearchInput })) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 
@@ -424,7 +449,7 @@ export function resolvePennsylvaniaCandidateCommittee(
       if (!isLikelyCandidateFiler(row)) {
         continue;
       }
-      if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+      if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
         continue;
       }
       const rowZip = zip5(row.ZIPCODE);

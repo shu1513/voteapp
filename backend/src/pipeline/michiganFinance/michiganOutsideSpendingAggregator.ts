@@ -1,4 +1,5 @@
-import { normalizeMichiganCandidateNameKeys } from "./michiganCandidateCommitteeResolver.js";
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
+import { normalizeMichiganCandidateNameKeys, normalizePersonName } from "./michiganCandidateCommitteeResolver.js";
 import { type MichiganMitnOfficeSearchInput, toMichiganMitnOfficeSearchInput } from "./michiganFinanceEligibleOffices.js";
 import { normalizeMichiganMitnLegacyArchiveYear } from "./michiganMitnLegacyRowTypes.js";
 import type { MichiganMitnLegacyExpenditureRow } from "./michiganMitnLegacyRowTypes.js";
@@ -123,18 +124,31 @@ export function supportOpposeFromMichiganSuppOpp(value: string): MichiganSupport
 
 function targetMatchesCandidate(input: {
   canOrBallot: string;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   const targetKeys = normalizeMichiganCandidateNameKeys(input.canOrBallot);
   if (targetKeys.size === 0) {
     return false;
   }
+  let keyMatched = false;
   for (const key of targetKeys) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses the expenditure target to first+last, so spending
+  // aimed at "WHITMER, GRETCHEN B" would be credited to a "Gretchen A.
+  // Whitmer" in the same race. A contradicting middle name rejects the row.
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [input.canOrBallot],
+    normalizePersonName,
+  });
 }
 
 function targetOfficeText(row: MichiganMitnLegacyExpenditureRow): string {
@@ -246,7 +260,7 @@ export function aggregateMichiganOutsideSpending(
   let skippedExpenditureRowCount = 0;
 
   for (const row of input.expenditureRows) {
-    if (!targetMatchesCandidate({ canOrBallot: row.can_or_ballot, candidateNameKeys })) {
+    if (!targetMatchesCandidate({ canOrBallot: row.can_or_ballot, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
     matchedExpenditureRowCount += 1;

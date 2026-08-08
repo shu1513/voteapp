@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { OklahomaGuardianContributionRow } from "./oklahomaGuardianContributionReader.js";
 import { isOklahomaFinanceEligibleOffice } from "./oklahomaFinanceEligibleOffices.js";
 
@@ -206,13 +207,22 @@ function isCandidateCommittee(row: OklahomaGuardianContributionRow): boolean {
   return normalizeTextKey(row["Committee Type"]).includes("CANDIDATE");
 }
 
+// Shared middle-name evidence gate: the key set collapses names to first+last,
+// which would hand "John A. Smith" the committee of "SMITH, JOHN B." whenever
+// the cycle and office agree. A contradicting middle name rejects the pair.
+export function oklahomaCandidateNameMiddleConflict(candidateName: string, rowName: string): boolean {
+  return hasMiddleNameConflict({ candidateName, rowNames: [rowName], normalizePersonName });
+}
+
 function rowMatchesCandidateName(input: {
   row: OklahomaGuardianContributionRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
-  for (const key of normalizeOklahomaCandidateNameKeys(input.row["Candidate Name"])) {
+  const rowName = input.row["Candidate Name"];
+  for (const key of normalizeOklahomaCandidateNameKeys(rowName)) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      return !oklahomaCandidateNameMiddleConflict(input.candidateName, rowName);
     }
   }
   return false;
@@ -291,7 +301,7 @@ export function resolveOklahomaCandidateCommittee(
     if (!isElectionCycleContribution(row, electionYear)) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

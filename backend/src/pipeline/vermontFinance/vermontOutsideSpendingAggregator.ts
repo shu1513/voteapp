@@ -1,5 +1,9 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { VermontExpenditureRow } from "./vermontCampaignFinanceClient.js";
-import { normalizeVermontCandidateNameKeys } from "./vermontCandidateCommitteeResolver.js";
+import {
+  normalizeVermontCandidateNameKeys,
+  normalizeVermontPersonName,
+} from "./vermontCandidateCommitteeResolver.js";
 
 export type VermontSupportOppose = "support" | "oppose";
 
@@ -120,20 +124,37 @@ function rowPayeeCandidateNames(row: VermontExpenditureRow): string[] {
 
 function rowMatchesTargetCandidate(input: {
   row: VermontExpenditureRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
   candidateEntityId: number | null;
 }): boolean {
   if (input.candidateEntityId !== null && input.row.entityId === input.candidateEntityId) {
     return true;
   }
-  for (const name of rowPayeeCandidateNames(input.row)) {
+  const names = rowPayeeCandidateNames(input.row);
+  let keyMatched = false;
+  for (const name of names) {
     for (const key of normalizeVermontCandidateNameKeys(name)) {
       if (input.candidateNameKeys.has(key)) {
-        return true;
+        keyMatched = true;
+        break;
       }
     }
+    if (keyMatched) {
+      break;
+    }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, so a payee row carrying
+  // candidateMiddleName "B" would attribute another John Smith's PAC money to
+  // candidate "John A. Smith". A contradicting middle name rejects the row.
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: names,
+    normalizePersonName: normalizeVermontPersonName,
+  });
 }
 
 function groupKey(input: { filerRegistrationGuid: string; supportOppose: VermontSupportOppose }): string {
@@ -176,7 +197,7 @@ export function aggregateVermontOutsideSpending(
   let skippedExpenditureRowCount = 0;
 
   for (const row of input.expenditureRows) {
-    if (!rowMatchesTargetCandidate({ row, candidateNameKeys, candidateEntityId })) {
+    if (!rowMatchesTargetCandidate({ row, candidateName: input.candidateName, candidateNameKeys, candidateEntityId })) {
       continue;
     }
     matchedExpenditureRowCount += 1;

@@ -312,6 +312,87 @@ describe("alaskaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", candidateFilerId: "4001" });
   });
 
+  it("rejects a same-cycle filer whose middle name contradicts the candidate", () => {
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Doe, Jane B", name: "Doe, Jane B" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Doe, Jane Ann", name: "Doe, Jane Ann" })],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "1001" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Doe, Jane B", name: "Doe, Jane B" })],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "1001" });
+  });
+
+  it("lets a middle conflict veto a middle-less sibling name on the same row", () => {
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Doe, Jane B", name: "Doe, Jane" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+  });
+
+  it("reads middle-name evidence through one-sided nickname expansion", () => {
+    const rows = [
+      income({
+        filerId: "5001",
+        filerName: "Smith, Michael B",
+        name: "Smith, Michael B",
+        office: "Senate",
+      }),
+    ];
+
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Mike A. Smith",
+        electionYear: 2026,
+        officeName: "State Senator",
+        incomeRows: rows,
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Mike Smith",
+        electionYear: 2026,
+        officeName: "State Senator",
+        incomeRows: rows,
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "5001" });
+  });
+
+  it("keeps a quoted call name out of the middle-name evidence", () => {
+    // Alaska rosters spell call names in quotes (Glenn M. "Mike" Prax); the
+    // call name sits where a middle name would and must not read as one.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: 'John "Jack" Smith',
+        electionYear: 2026,
+        incomeRows: [income({ filerId: "6001", filerName: "Smith, John B", name: "Smith, John B" })],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "6001" });
+  });
+
   it("ignores out-of-cycle rows", () => {
     expect(
       resolveAlaskaCandidateCommittee({

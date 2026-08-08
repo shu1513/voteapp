@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   getVermontContributionDetails,
   getVermontExpenditureDetails,
@@ -116,6 +117,10 @@ function normalizePersonName(value: string | null | undefined): string {
     .trim();
 }
 
+// Shared with vermontOutsideSpendingAggregator so its middle-name gate uses the
+// same normalizer as normalizeVermontCandidateNameKeys.
+export { normalizePersonName as normalizeVermontPersonName };
+
 export function normalizeVermontCandidateNameKeys(value: string): Set<string> {
   const trimmed = value.trim();
   const keys = new Set<string>();
@@ -197,19 +202,36 @@ function candidateFullName(row: VermontCandidateCommitteeTransactionRow): string
 
 function rowMatchesCandidateName(input: {
   row: VermontCandidateCommitteeTransactionRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   const names = [candidateFullName(input.row), input.row.filerName].filter(
     (name): name is string => typeof name === "string" && name.trim().length > 0
   );
+  let keyMatched = false;
   for (const name of names) {
     for (const key of normalizeVermontCandidateNameKeys(name)) {
       if (input.candidateNameKeys.has(key)) {
-        return true;
+        keyMatched = true;
+        break;
       }
     }
+    if (keyMatched) {
+      break;
+    }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, so a row carrying
+  // candidateMiddleName "B" would match candidate "John A. Smith" as an
+  // "exact" filer whenever office and election year agree. A contradicting
+  // middle name rejects the row.
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: names,
+    normalizePersonName,
+  });
 }
 
 function isCandidateFiler(row: VermontCandidateCommitteeTransactionRow): boolean {
@@ -301,7 +323,7 @@ export function resolveVermontCandidateCommittee(
     if (!mappedOffice || mappedOffice.officeId !== officeSearchInput.officeId) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

@@ -1,4 +1,5 @@
 import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { TexasTecFilerRow } from "./texasTecCsvDatabaseReader.js";
 import {
   isTexasFinanceEligibleOffice,
@@ -151,6 +152,26 @@ export function normalizeTexasCandidateNameKeys(
   return keys;
 }
 
+/**
+ * Middle-name evidence gate for TEC person names. Nickname expansion is
+ * one-sided (see normalizeTexasCandidateNameKeys), so the first-name
+ * comparison expands the VoteApp side only - otherwise "Mike A. Smith" would
+ * never line up with "SMITH, MICHAEL B" and the contradicting middle would go
+ * unseen.
+ */
+export function texasCandidateNameMiddleConflicts(input: {
+  candidateName: string;
+  rowNames: readonly string[];
+}): boolean {
+  return hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: input.rowNames,
+    normalizePersonName,
+    firstNamesEquivalent: (candidateFirst, rowFirst) =>
+      candidateFirst === rowFirst || firstNameVariants(candidateFirst).includes(rowFirst),
+  });
+}
+
 function normalizeOfficeScope(value: string): TexasFinanceOfficeScope | null {
   const normalized = value.trim();
   return normalized === "statewide" || normalized === "state_upper" || normalized === "state_lower"
@@ -210,28 +231,42 @@ function normalizeDistrict(value: string | null | undefined): string {
   return normalizeTextKey(trimmed);
 }
 
+function filerRowPersonNames(row: TexasTecFilerRow): string[] {
+  return [[row.filerNameFirst, row.filerNameLast].filter(Boolean).join(" "), row.filerName].filter(Boolean);
+}
+
 function candidateNameKeysFromFilerRow(row: TexasTecFilerRow): Set<string> {
   const keys = new Set<string>();
-  const structuredName = [row.filerNameFirst, row.filerNameLast].filter(Boolean).join(" ");
-  for (const key of normalizeTexasCandidateNameKeys(structuredName)) {
-    keys.add(key);
-  }
-  for (const key of normalizeTexasCandidateNameKeys(row.filerName)) {
-    keys.add(key);
+  for (const name of filerRowPersonNames(row)) {
+    for (const key of normalizeTexasCandidateNameKeys(name)) {
+      keys.add(key);
+    }
   }
   return keys;
 }
 
 function rowMatchesCandidateName(input: {
   row: TexasTecFilerRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
+  let keyMatched = false;
   for (const key of candidateNameKeysFromFilerRow(input.row)) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, which would link
+  // "Greg W. Abbott" to "ABBOTT, GREG R" as an "exact" match whenever office,
+  // district, and year agree. A contradicting middle name rejects the row.
+  return !texasCandidateNameMiddleConflicts({
+    candidateName: input.candidateName,
+    rowNames: filerRowPersonNames(input.row),
+  });
 }
 
 function rowOfficeCanonicalName(row: TexasTecFilerRow): string | null {
@@ -430,7 +465,7 @@ export function resolveTexasCandidateCommittee(
     if (!isCandidateOfficeholderFiler(row)) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
     if (

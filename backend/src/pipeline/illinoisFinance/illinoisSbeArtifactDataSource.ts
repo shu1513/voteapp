@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 
 import {
+  illinoisCandidateNameMiddleConflicts,
   normalizeIllinoisCandidateNameKeys,
   resolveIllinoisCandidateCommittee,
   resolveIllinoisCandidateCommitteesFromRelations,
@@ -227,12 +228,23 @@ function candidateNameMatches(input: {
   // nickname key.
   const rowKeys = normalizeIllinoisCandidateNameKeys(input.row.candidateName, { expandNicknames: true });
   const recordKeys = normalizeIllinoisCandidateNameKeys(recordName);
+  let keyMatched = false;
   for (const key of recordKeys) {
     if (rowKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, so an IE naming
+  // "Smith, John B" would count toward "John A. Smith". A contradicting
+  // middle name rejects the record.
+  return !illinoisCandidateNameMiddleConflicts({
+    candidateName: input.row.candidateName,
+    rowNames: [recordName],
+  });
 }
 
 function officeDistrictMatches(input: {

@@ -78,6 +78,45 @@ describe("hawaiiCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a same-race summary whose middle name contradicts the candidate", () => {
+    // Same office and election period — only the middle evidence differs.
+    // Without the middle gate this summary linked as an "exact" match and
+    // attached the other John Smith's contributions.
+    expect(
+      resolveHawaiiCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2022,
+        summaries: [summary({ candidateName: "John B. Smith", committeeId: "CC30001" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveHawaiiCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2022,
+        summaries: [summary({ candidateName: "John Andrew Smith", committeeId: "CC30001" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "CC30001" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveHawaiiCandidateCommittee({
+        candidateName: "John Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2022,
+        summaries: [summary({ candidateName: "John B. Smith", committeeId: "CC30001" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "CC30001" });
+  });
+
   it("requires districts for legislative offices", () => {
     expect(
       resolveHawaiiCandidateCommittee({

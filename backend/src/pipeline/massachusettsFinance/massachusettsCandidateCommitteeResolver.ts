@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import {
   searchMassachusettsOcpfCandidateFilers,
   type MassachusettsOcpfCandidateFiler,
@@ -135,19 +136,36 @@ function candidateNameNormalized(value: string): string {
 
 function filerMatchesCandidateName(input: {
   filer: MassachusettsOcpfCandidateFiler;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   const names = [input.filer.filerName, input.filer.filerNameReverse, input.filer.committeeName].filter(
     (name): name is string => typeof name === "string" && name.trim().length > 0
   );
+  let keyMatched = false;
   for (const name of names) {
     for (const key of normalizeMassachusettsCandidateNameKeys(name)) {
       if (input.candidateNameKeys.has(key)) {
-        return true;
+        keyMatched = true;
+        break;
       }
     }
+    if (keyMatched) {
+      break;
+    }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, which would link
+  // "John A. Smith" to "Smith, John B." as an "exact" match whenever the
+  // office and district agree. A contradicting middle name rejects the filer
+  // (georgia pattern).
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: names,
+    normalizePersonName,
+  });
 }
 
 function statusText(value: string | undefined): string {
@@ -249,7 +267,7 @@ export function resolveMassachusettsCandidateCommittee(
     ) {
       continue;
     }
-    if (!filerMatchesCandidateName({ filer, candidateNameKeys })) {
+    if (!filerMatchesCandidateName({ filer, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

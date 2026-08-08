@@ -1,4 +1,7 @@
-import { normalizeTexasCandidateNameKeys } from "../texasFinance/texasCandidateCommitteeResolver.js";
+import {
+  normalizeTexasCandidateNameKeys,
+  texasCandidateNameMiddleConflicts,
+} from "../texasFinance/texasCandidateCommitteeResolver.js";
 import type {
   TexasTecCandidateRow,
   TexasTecExpenditureRow,
@@ -73,11 +76,30 @@ function purposeCandidateKeys(row: TexasTecPurposeRow): Set<string> {
   return normalizeTexasCandidateNameKeys(row.commActivityName);
 }
 
+// Key overlap collapses names to first+last, which would attribute a GPAC's
+// spending on "ABBOTT, GREG R" to "Greg W. Abbott" whenever office and year
+// agree. A contradicting middle name rejects the row (georgia pattern).
+function purposeRowNameConflicts(input: { candidateName: string; row: TexasTecPurposeRow }): boolean {
+  return texasCandidateNameMiddleConflicts({
+    candidateName: input.candidateName,
+    rowNames: [input.row.commActivityName],
+  });
+}
+
+function candidateRowPersonName(row: TexasTecCandidateRow): string {
+  return [row.candidateNameFirst, row.candidateNameLast].filter(Boolean).join(" ");
+}
+
+function candidateRowNameConflicts(input: { candidateName: string; row: TexasTecCandidateRow }): boolean {
+  // candidateNameOrganization is excluded: it is not a person name.
+  return texasCandidateNameMiddleConflicts({
+    candidateName: input.candidateName,
+    rowNames: [candidateRowPersonName(input.row)],
+  });
+}
+
 function candidateKeys(row: TexasTecCandidateRow): Set<string> {
-  const values = [
-    [row.candidateNameFirst, row.candidateNameLast].filter(Boolean).join(" "),
-    row.candidateNameOrganization,
-  ];
+  const values = [candidateRowPersonName(row), row.candidateNameOrganization];
   return new Set(values.flatMap((value) => [...normalizeTexasCandidateNameKeys(value)]));
 }
 
@@ -129,6 +151,7 @@ export function aggregateHoustonTexasGpacOutsideSpending(input: {
       !["GPAC", "MPAC"].includes(key(row.filerTypeCd)) ||
       key(row.subjectCategoryCd) !== "CANDIDATE" ||
       !namesIntersect(targetNames, purposeCandidateKeys(row)) ||
+      purposeRowNameConflicts({ candidateName: input.candidateName, row }) ||
       !isTexasTecHoustonOfficeDescription(officeDescription({
         place: row.activitySeekOfficePlace,
         description: row.activitySeekOfficeDescr,
@@ -158,6 +181,7 @@ export function aggregateHoustonTexasGpacOutsideSpending(input: {
     if (
       isInfoOnly(row.infoOnlyFlag) ||
       !namesIntersect(targetNames, candidateKeys(row)) ||
+      candidateRowNameConflicts({ candidateName: input.candidateName, row }) ||
       !isTexasTecHoustonOfficeDescription(officeDescription({
         place: row.candidateSeekOfficePlace,
         description: row.candidateSeekOfficeDescr,

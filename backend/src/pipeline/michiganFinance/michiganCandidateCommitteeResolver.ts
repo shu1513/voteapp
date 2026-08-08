@@ -73,7 +73,9 @@ function normalizeTextKey(value: string | null | undefined): string {
     .trim();
 }
 
-function normalizePersonName(value: string | null | undefined): string {
+// Exported so the outside-spending aggregator, which runs its own candidate
+// name match against expenditure targets, can share this normalization.
+export function normalizePersonName(value: string | null | undefined): string {
   return normalizeTextKey(value)
     .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
     .replace(/\s+/g, " ")
