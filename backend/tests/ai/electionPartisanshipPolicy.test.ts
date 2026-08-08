@@ -231,13 +231,55 @@ describe("electionPartisanshipPolicy", () => {
     expect(includeParty).toBe(false);
   });
 
-  it("forces Arizona county judicial contests to partisan", () => {
-    // Yuma County's official candidate listing carries a REP/DEM party column
-    // for these offices, and its July 2026 primary results head the contests
-    // "REP Judge of Superior Court Div. 2" / "DEM Justice of the Peace Prec. 2".
+  it("forces Arizona Justice of the Peace contests to partisan", () => {
+    // The JP is a precinct office in section one of the ballot, printed with
+    // the party in bold-faced letters (A.R.S. § 16-502(C)(5)). Yuma County's
+    // 2026 listing shows Precinct 2 as a REP-vs-DEM contest.
+    const title = "Justice of the Peace, Precinct 1";
+
+    expect(
+      resolveElectionIsPartisan({
+        draft: {
+          district_id: "d-az",
+          district_name: "Yuma County, Arizona",
+          district_type: "county",
+          state: "AZ",
+        },
+        contestFamily: "judicial_office",
+        raceType: "office",
+        officialBallotTitle: title,
+        aiValue: false,
+      })
+    ).toBe(true);
+
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "county",
+        state: "AZ",
+        officialBallotTitle: title,
+      })
+    ).toBe(true);
+
+    expect(
+      shouldIncludeCandidatePartyByPolicy({
+        districtType: "county",
+        state: "AZ",
+        officialBallotTitle: title,
+      })
+    ).toBe(true);
+  });
+
+  it("keeps elected Arizona Superior Court judges nonpartisan", () => {
+    // Counties under 250,000 elect their Superior Court judges instead of
+    // retaining them, and those candidates are nominated in a party primary —
+    // but Ariz. Const. art. 6 § 12(A) puts their names on the general ballot
+    // "without partisan or other designation except the division and title of
+    // the office", and A.R.S. § 16-502(J) files them in the nonpartisan
+    // section. A party column on a county candidate listing is the primary
+    // nomination, not the November ballot classification.
     for (const title of [
       "Judge of Superior Court, Division 2",
-      "Justice of the Peace, Precinct 1",
+      "Judge of the Superior Court, Division 5",
     ]) {
       expect(
         resolveElectionIsPartisan({
@@ -250,17 +292,9 @@ describe("electionPartisanshipPolicy", () => {
           contestFamily: "judicial_office",
           raceType: "office",
           officialBallotTitle: title,
-          aiValue: false,
+          aiValue: true,
         })
-      ).toBe(true);
-
-      expect(
-        resolveCandidateContestPartisanshipByPolicy({
-          districtType: "county",
-          state: "AZ",
-          officialBallotTitle: title,
-        })
-      ).toBe(true);
+      ).toBe(false);
 
       expect(
         shouldIncludeCandidatePartyByPolicy({
@@ -268,7 +302,7 @@ describe("electionPartisanshipPolicy", () => {
           state: "AZ",
           officialBallotTitle: title,
         })
-      ).toBe(true);
+      ).toBe(false);
     }
   });
 
@@ -315,10 +349,9 @@ describe("electionPartisanshipPolicy", () => {
   });
 
   it("does not force Arizona municipal judges partisan", () => {
-    // City magistrates are nonpartisan, and their titles carry no retention
-    // wording, so the partisan-judicial rule stays scoped to counties. A live
-    // row already holds this contest as nonpartisan; a statewide AZ entry in
-    // the partisan list would have flipped it to partisan and broken rewrites.
+    // City magistrates are nonpartisan and their titles carry no retention
+    // wording, so only the Justice of the Peace exception may fire in Arizona.
+    // A live row already holds this contest as nonpartisan.
     expect(
       resolveCandidateContestPartisanshipByPolicy({
         districtType: "place",

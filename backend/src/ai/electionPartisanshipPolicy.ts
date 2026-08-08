@@ -15,7 +15,6 @@ const SCHOOL_MIXED_STATES = new Set(["GA", "NC", "RI", "SC", "TN"]);
 // Policy lists are based on election-law summaries (e.g., Ballotpedia/NCSC); update as laws evolve.
 const PARTISAN_JUDICIAL_STATES = new Set([
   "AL",
-  "AZ",
   "IL",
   "IN",
   "KS",
@@ -31,26 +30,27 @@ const PARTISAN_JUDICIAL_STATES = new Set([
   "TX",
 ]);
 
-// Most states above put every judicial scope on a party ballot. Arizona only
-// does it at the county scope: Superior Court judges in the counties that never
-// adopted merit selection, plus Justices of the Peace, are nominated in party
-// primaries and carry a party into the general (Yuma County's official 2026
-// candidate listing shows REP/DEM for "Judge of Superior Court, Division 5" and
-// "Justice of the Peace, Precinct 2"). The other two Arizona scopes are not
-// partisan: city magistrates are nonpartisan, and the appellate courts — plus
-// Superior Court in Maricopa/Pima/Pinal — appear only as retention questions,
-// which the retention guard below already forces nonpartisan.
-const PARTISAN_JUDICIAL_STATE_SCOPES = new Map<string, ReadonlySet<string>>([
-  ["AZ", new Set(["county"])],
+// A state can be nonpartisan for the bench as a whole and still run one
+// judicial office on the party ballot. Arizona is the live case: the Justice of
+// the Peace is a precinct office printed in section one of the general ballot
+// with the party in bold-faced letters (A.R.S. § 16-502(C)(5)), so those
+// contests are partisan even though every other elected Arizona judge is
+// printed "without partisan or other designation" — Superior Court judges in
+// the counties that elect rather than retain them are nonpartisan on the
+// general ballot by constitutional command (Ariz. Const. art. 6 § 12(A)) and
+// sit in section two with the appellate courts (A.R.S. § 16-502(J)), whatever
+// party nominated them in the primary.
+const PARTISAN_JUDICIAL_TITLE_EXCEPTIONS = new Map<string, RegExp>([
+  ["AZ", /\bjustice of the peace\b/i],
 ]);
 
-function isPartisanJudicialContest(input: { state: string; districtType: string }): boolean {
+function isPartisanJudicialContest(input: { state: string; officialBallotTitle: string }): boolean {
   const state = normalizeState(input.state);
-  if (!PARTISAN_JUDICIAL_STATES.has(state)) {
-    return false;
+  const partisanTitle = PARTISAN_JUDICIAL_TITLE_EXCEPTIONS.get(state);
+  if (partisanTitle?.test(input.officialBallotTitle)) {
+    return true;
   }
-  const scopes = PARTISAN_JUDICIAL_STATE_SCOPES.get(state);
-  return scopes === undefined || scopes.has(input.districtType);
+  return PARTISAN_JUDICIAL_STATES.has(state);
 }
 
 function isWashingtonStateLegislativeContest(input: {
@@ -154,7 +154,7 @@ function getPartisanshipModeForContest(args: {
     }
     return isPartisanJudicialContest({
       state: args.draft.state,
-      districtType: args.draft.district_type,
+      officialBallotTitle: args.officialBallotTitle,
     })
       ? "force_true"
       : "force_false";
