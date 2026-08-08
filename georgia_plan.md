@@ -667,3 +667,18 @@ shape) and lands first; only the D3 map table waits for the spike.
   candidates/run — Georgia candidates cost hundreds of paced requests);
   `syncDueGeorgiaCandidateFinance` script + `georgia-candidates:finance:sync-due`
   npm script gated on the sync flag.
+- 2026-08-07: **PR 4 review round** (external, all three findings verified
+  against the code before acting): (1) reconciliation floor cut $2,500 →
+  $100 — the relative share is the real absorber (drift scales with the
+  money) and the old floor dominated the tolerance for every filer under
+  $125k, exactly the small campaigns it endangered — plus an explicit
+  zero-coverage guard: a nonzero index total with zero selected rows is
+  PROOF of a broken pull (the index is the exact sum of the store's rows,
+  A6), so no tolerance may excuse it and the stored breakdowns are never
+  deleted on a dead pull's say-so. (2) index-row selection now applies the
+  election-cycle gate that created the link (entity id alone is
+  API-order-dependent once a committee re-registers for a later cycle — the
+  archive's filer 2750 shows the two-rows-one-entity shape) and requires
+  exactly one surviving row. (3) null official totals fail closed instead
+  of `?? 0` — no-money filers report 0.0, never null, and the summary
+  policy is "replace", so a null would overwrite stored values.

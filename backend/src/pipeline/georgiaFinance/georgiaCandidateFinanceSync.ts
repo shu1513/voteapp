@@ -146,7 +146,13 @@ export class GeorgiaFinanceReconciliationError extends Error {
 }
 
 const DEFAULT_RECONCILIATION_RELATIVE_TOLERANCE = 0.02;
-const DEFAULT_RECONCILIATION_ABSOLUTE_TOLERANCE_FLOOR = 2_500;
+// The relative share is the real absorber (migration drift scales with the
+// money — Carr measured 0.40%); the absolute floor only exists so cent-level
+// noise cannot fail a near-zero filer, and it must stay SMALL: the floor
+// dominates the tolerance for every filer under floor/relative dollars, and a
+// large floor would let a small campaign lose most of its rows and still
+// "reconcile".
+const DEFAULT_RECONCILIATION_ABSOLUTE_TOLERANCE_FLOOR = 100;
 // Fallback range start when a chain has no dated reports at all: Georgia
 // statewide cycles run four years, so the floor is generous by construction;
 // out-of-range rows are the sweep's job either way (A4).
@@ -337,15 +343,35 @@ export async function syncGeorgiaCandidateFinance(
   const peachfileIndexRows = await fetchers.fetchCandidateIndexRows(input.transport, "peachfile", {
     filerName: lastNameToken,
   });
-  const indexRow = peachfileIndexRows.find((row) => row.filerEntityId === committeeEntityId);
-  if (!indexRow) {
+  // Index rows are per REGISTRATION, and one filerEntityId gains a new
+  // registration row per cycle (the archive shows the shape: filer 2750 has
+  // one 2022-cycle and one 2026-cycle row). Matching on the entity id alone
+  // would be API-order-dependent once a committee re-registers, so the
+  // election-cycle gate that created the link (resolver rule) re-applies
+  // here, and anything but exactly one surviving row fails closed.
+  const indexRowCandidates = peachfileIndexRows.filter(
+    (row) => row.filerEntityId === committeeEntityId && rowMatchesElectionYear(row, electionYear)
+  );
+  if (indexRowCandidates.length !== 1) {
     throw new Error(
-      `Georgia PeachFile candidate index has no row for filerEntityId ${committeeId} ` +
-        `(search token ${JSON.stringify(lastNameToken)}) — cannot anchor summary or reconciliation`
+      `Georgia PeachFile candidate index has ${indexRowCandidates.length} rows for filerEntityId ${committeeId} ` +
+        `in the ${electionYear} cycle (search token ${JSON.stringify(lastNameToken)}) — ` +
+        "cannot anchor summary or reconciliation"
     );
   }
+  const indexRow = indexRowCandidates[0]!;
   const peachfileRegistrationGuid = indexRow.guid.trim().toLowerCase();
-  const indexTotalContributions = indexRow.totalContributions ?? 0;
+  // The official totals are the reconciliation anchor and overwrite the
+  // stored summary (replace policy), so a null is an upstream anomaly that
+  // must fail closed — no-money filers report 0.0, never null.
+  if (indexRow.totalContributions === null || indexRow.totalExpenditures === null || indexRow.cashOnHand === null) {
+    throw new Error(
+      `Georgia PeachFile candidate index row for filerEntityId ${committeeId} is missing official totals ` +
+        `(totalContributions ${indexRow.totalContributions}, totalExpenditures ${indexRow.totalExpenditures}, ` +
+        `cashOnHand ${indexRow.cashOnHand}) — refusing to overwrite the stored summary`
+    );
+  }
+  const indexTotalContributions = indexRow.totalContributions;
 
   // 2. Archive side of the registration chain: identity map first, discovery
   //    otherwise. Map rows marked include_in_candidate_totals=false are
@@ -503,6 +529,26 @@ export async function syncGeorgiaCandidateFinance(
   });
   const difference = centsRound(Math.abs(directFinance.syncedRowSum - indexTotalContributions));
   const tolerance = centsRound(Math.max(absoluteToleranceFloor, relativeTolerance * Math.abs(indexTotalContributions)));
+  // Zero-coverage guard: the index total is the exact sum of the store's
+  // rows (spike A6), so a nonzero total with NO selected rows proves the
+  // pull or the report selection is broken — no tolerance can excuse it.
+  // Writing through would replace the stored breakdowns with [] (the writer
+  // deletes on empty arrays) on the say-so of a failed pull.
+  if (taggedRows.length === 0 && indexTotalContributions !== 0) {
+    throw new GeorgiaFinanceReconciliationError(
+      `Georgia finance reconciliation failed for committee ${committeeId}: the official index total is ` +
+        `$${indexTotalContributions.toFixed(2)} but the pull selected zero transaction rows; previous snapshot ` +
+        `kept — review the registration chain (archive side: ${archiveRegistrationGuids.join(", ") || "none"})`,
+      {
+        committeeId,
+        indexTotalContributions,
+        syncedRowSum: 0,
+        difference,
+        tolerance,
+        archiveRegistrationGuids,
+      }
+    );
+  }
   if (difference > tolerance) {
     throw new GeorgiaFinanceReconciliationError(
       `Georgia finance reconciliation failed for committee ${committeeId}: synced rows sum to ` +

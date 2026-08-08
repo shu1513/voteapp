@@ -498,12 +498,79 @@ describe("syncGeorgiaCandidateFinance", () => {
     expect(result.syncedRowSum).toBe(1000);
   });
 
+  it("selects the linked committee's registration by entity id AND cycle, failing on ambiguity", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    // A future-cycle re-registration of the same entity sorts FIRST in API
+    // order — entity-id-only matching would pick it and reconcile the 2026
+    // rows against the fresh cycle's zero totals.
+    const futureCycleRow = indexRow({
+      guid: "dddddddd-4444-4444-8444-dddddddddddd",
+      filingCycleName: "2028 Candidate/Committee Filing Cycle",
+      electionCycleName: "2028 Georgia State Election",
+      totalContributions: 0,
+      totalExpenditures: 0,
+      cashOnHand: 0,
+    });
+    fetchers.fetchCandidateIndexRows.mockImplementation(async (_transport, host) =>
+      host === "peachfile"
+        ? [futureCycleRow, indexRow()]
+        : [archiveIndexRow()]
+    );
+    const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
+    expect(result.totalReceipts).toBe(3500);
+    expect(result.syncedRowSum).toBe(3500);
+
+    // Two registrations inside the SAME cycle is ambiguous — fail closed.
+    fetchers.fetchCandidateIndexRows.mockImplementation(async (_transport, host) =>
+      host === "peachfile"
+        ? [indexRow(), indexRow({ guid: "eeeeeeee-5555-4555-8555-eeeeeeeeeeee" })]
+        : [archiveIndexRow()]
+    );
+    await expect(syncGeorgiaCandidateFinance(baseInput(db, fetchers))).rejects.toThrow(/2 rows for filerEntityId/);
+  });
+
+  it("fails closed when the index row is missing official totals instead of treating them as zero", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    fetchers.fetchCandidateIndexRows.mockImplementation(async (_transport, host) =>
+      host === "peachfile" ? [indexRow({ totalContributions: null })] : [archiveIndexRow()]
+    );
+    await expect(syncGeorgiaCandidateFinance(baseInput(db, fetchers))).rejects.toThrow(/missing official totals/);
+    expect(db.connect).not.toHaveBeenCalled();
+  });
+
+  it("fails a nonzero index total with zero selected rows even inside the absolute tolerance floor", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    // $80 official total sits under the $100 floor; a dead pull (zero rows
+    // everywhere) must still fail rather than deleting stored breakdowns.
+    fetchers.fetchCandidateIndexRows.mockImplementation(async (_transport, host) =>
+      host === "peachfile" ? [indexRow({ totalContributions: 80 })] : []
+    );
+    fetchers.fetchTransactionRowsWindowed.mockImplementation(async () => windowedResult([]));
+    await expect(syncGeorgiaCandidateFinance(baseInput(db, fetchers))).rejects.toBeInstanceOf(
+      GeorgiaFinanceReconciliationError
+    );
+    expect(db.connect).not.toHaveBeenCalled();
+
+    // A true zero — official total 0, no rows — still syncs and writes the
+    // (correctly empty) snapshot.
+    fetchers.fetchCandidateIndexRows.mockImplementation(async (_transport, host) =>
+      host === "peachfile" ? [indexRow({ totalContributions: 0, totalExpenditures: 0, cashOnHand: 0 })] : []
+    );
+    const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
+    expect(result.syncedRowSum).toBe(0);
+    expect(result.totalReceipts).toBe(0);
+    expect(db.connect).toHaveBeenCalled();
+  });
+
   it("fails when the PeachFile index has no row for the linked committee", async () => {
     const db = createMockDb();
     const fetchers = carrFetchers();
     fetchers.fetchCandidateIndexRows.mockImplementation(async () => []);
     await expect(syncGeorgiaCandidateFinance(baseInput(db, fetchers))).rejects.toThrow(
-      /no row for filerEntityId 100035/
+      /0 rows for filerEntityId 100035/
     );
     expect(db.connect).not.toHaveBeenCalled();
   });
