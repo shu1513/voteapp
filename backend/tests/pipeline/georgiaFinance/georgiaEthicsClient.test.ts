@@ -1,0 +1,461 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { describe, expect, it } from "vitest";
+
+import {
+  buildGeorgiaCandidateIndexRequestBody,
+  buildGeorgiaFilerReportRequestBody,
+  buildGeorgiaTransactionRequestBody,
+  buildGeorgiaReportInventory,
+  createGeorgiaEthicsTransport,
+  fetchGeorgiaCandidateIndexRows,
+  fetchGeorgiaFiledReportRows,
+  fetchGeorgiaTransactionRows,
+  fetchGeorgiaTransactionRowsStable,
+  formatGeorgiaFilterDate,
+  georgiaTransactionReportGroupGuid,
+  GeorgiaEthicsClientError,
+  GEORGIA_ETHICS_PAGE_SIZE,
+  GEORGIA_ZERO_GUID,
+  isGeorgiaRecognizedTransactionStatus,
+  normalizeGeorgiaReportFamily,
+  type GeorgiaEthicsTransport,
+  type GeorgiaFiledReportRow,
+} from "../../../src/pipeline/georgiaFinance/georgiaEthicsClient.js";
+
+const FIXTURES_DIR = join(dirname(fileURLToPath(import.meta.url)), "../../fixtures/georgiaFinance");
+
+function fixture(name: string): string {
+  return readFileSync(join(FIXTURES_DIR, name), "utf-8");
+}
+
+function transportFromResponses(
+  responses: Array<{ status?: number; body: string }>,
+  calls: Array<{ url: string; body: string }> = []
+): GeorgiaEthicsTransport {
+  let index = 0;
+  return createGeorgiaEthicsTransport({
+    sleep: async () => {},
+    fetch: async (url, body) => {
+      calls.push({ url, body });
+      const response = responses[Math.min(index, responses.length - 1)]!;
+      index += 1;
+      return { status: response.status ?? 200, body: response.body };
+    },
+  });
+}
+
+function pageBody(items: unknown[]): string {
+  return JSON.stringify({ data: { items }, succeeded: true, error: null });
+}
+
+function transactionItem(overrides: Record<string, unknown> = {}): Record<string, unknown> {
+  return {
+    guid: "d67d1da2-5d3e-476d-a022-0c8deace85bf",
+    transactionId: 10284,
+    transactionAmount: 2800.0,
+    filerEntityId: 100035,
+    filerRegistrationGuid: "d973ab3b-54c2-416e-81ce-f5b1ee9a6f57",
+    filerReportGuid: "7d5e2ef2-e1b5-4bc9-a555-13f6392f4199",
+    timedFiledReportGuid: null,
+    filerReportId: 37,
+    filerReportVersionId: 1,
+    transactionDate: "11/22/2024",
+    sourceName: "Paul Thomas Kim",
+    payeeOccupation: "Other",
+    payeeEmployer: "Securities and Exchange Comm",
+    transactionTypeCode: "TCON",
+    transactionSubTypeCode: "ITMY",
+    transactionSubTypeDesc: "Itemized Contribution",
+    transactionSourceTypeCode: "TBSN",
+    transactionStatusCode: "TFIL",
+    reportName: "Campaign Contribution Disclosure Report",
+    electionYear: 2026,
+    ...overrides,
+  };
+}
+
+describe("request bodies", () => {
+  it("pins the candidate-index body to the spike-verified shape", () => {
+    const body = JSON.parse(buildGeorgiaCandidateIndexRequestBody({ filerName: "Carr", pageNumber: 1 }));
+    expect(body).toMatchObject({
+      pageNumber: 1,
+      pageSize: GEORGIA_ETHICS_PAGE_SIZE,
+      filerTypeCode: "RC",
+      filerName: "Carr",
+      politicalPartyCode: null,
+      OfficeSought: null,
+      jurisdictionIsStateOrIsCounty: null,
+    });
+    expect(Object.keys(body)).toHaveLength(22);
+  });
+
+  it("pins the filed-report body to the spike-verified shape", () => {
+    const body = JSON.parse(buildGeorgiaFilerReportRequestBody({ filerName: "Carr, Christopher", pageNumber: 2 }));
+    expect(body).toMatchObject({
+      pageNumber: 2,
+      pageSize: GEORGIA_ETHICS_PAGE_SIZE,
+      filerTypeCode: "",
+      filerName: "Carr, Christopher",
+      reportStatus: null,
+      reportVersion: "",
+    });
+    expect(Object.keys(body)).toHaveLength(21);
+  });
+
+  it("pins the transaction body: sortBy Transaction Date, TCON, host-dialect dates", () => {
+    const peachfile = JSON.parse(
+      buildGeorgiaTransactionRequestBody(
+        "peachfile",
+        { filerName: "Carr for Georgia", fromDate: "2025-07-01", toDate: "2026-01-31" },
+        3
+      )
+    );
+    expect(peachfile).toMatchObject({
+      pageNumber: 3,
+      pageSize: GEORGIA_ETHICS_PAGE_SIZE,
+      sortBy: "Transaction Date",
+      sortType: "desc",
+      transactionTypeCode: "TCON",
+      filerName: "Carr for Georgia",
+      fromDate: "07/01/2025",
+      toDate: "01/31/2026",
+      electionYear: "",
+    });
+    expect(Object.keys(peachfile)).toHaveLength(17);
+
+    const archive = JSON.parse(
+      buildGeorgiaTransactionRequestBody(
+        "efile_archive",
+        { filerName: "Carr, Christopher Michael", fromDate: "2024-07-02", toDate: null },
+        1
+      )
+    );
+    expect(archive.fromDate).toBe("2024-07-02");
+    expect(archive.toDate).toBeNull();
+  });
+
+  it("rejects empty filer names and bad dates", () => {
+    expect(() => buildGeorgiaCandidateIndexRequestBody({ filerName: "  ", pageNumber: 1 })).toThrow(
+      GeorgiaEthicsClientError
+    );
+    expect(() => formatGeorgiaFilterDate("peachfile", "07/01/2025")).toThrow(GeorgiaEthicsClientError);
+  });
+});
+
+describe("transport", () => {
+  it("runs one request at a time with spacing before every request after the first", async () => {
+    const sleeps: number[] = [];
+    const transport = createGeorgiaEthicsTransport({
+      sleep: async (ms) => {
+        sleeps.push(ms);
+      },
+      fetch: async () => ({ status: 200, body: pageBody([]) }),
+    });
+    await transport.postJson("https://example.test/a", "{}");
+    await transport.postJson("https://example.test/b", "{}");
+    expect(sleeps).toEqual([2_000]);
+  });
+
+  it("retries 5xx and 429 with backoff, fails other statuses immediately", async () => {
+    const calls: Array<{ url: string; body: string }> = [];
+    const transport = transportFromResponses(
+      [{ status: 500, body: "boom" }, { status: 429, body: "slow" }, { body: pageBody([]) }],
+      calls
+    );
+    await expect(transport.postJson("https://example.test/x", "{}")).resolves.toEqual({ items: [] });
+    expect(calls).toHaveLength(3);
+
+    const notFound = transportFromResponses([{ status: 404, body: "missing" }]);
+    await expect(notFound.postJson("https://example.test/x", "{}")).rejects.toMatchObject({
+      code: "http_error",
+      status: 404,
+    });
+  });
+
+  it("fails closed on the WAF harmful-payload message, envelope errors, and non-JSON", async () => {
+    const waf = transportFromResponses([{ body: JSON.stringify({ message: "Potentially harmful payload detected!" }) }]);
+    await expect(waf.postJson("https://example.test/x", "{}")).rejects.toMatchObject({ code: "bad_response" });
+
+    const failed = transportFromResponses([{ body: JSON.stringify({ data: null, succeeded: false, error: null }) }]);
+    await expect(failed.postJson("https://example.test/x", "{}")).rejects.toMatchObject({ code: "bad_response" });
+
+    const html = transportFromResponses([{ body: "<html>error</html>" }]);
+    await expect(html.postJson("https://example.test/x", "{}")).rejects.toMatchObject({ code: "bad_response" });
+  });
+});
+
+describe("fetchGeorgiaCandidateIndexRows", () => {
+  it("parses the PeachFile Carr fixture", async () => {
+    const transport = transportFromResponses([{ body: fixture("peachfile_candidate_index_carr.json") }]);
+    const rows = await fetchGeorgiaCandidateIndexRows(transport, "peachfile", { filerName: "Carr" });
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      filerEntityId: 100035,
+      guid: "d973ab3b-54c2-416e-81ce-f5b1ee9a6f57",
+      filerName: "Carr, Christopher M.",
+      committeeName: "Carr for Georgia, Inc.",
+      office: "Governor",
+      filerStatusCode: "FACT",
+      totalContributions: 5374711.06,
+      cashOnHand: 1167791.24,
+    });
+  });
+
+  it("parses the archive Carr fixture including the terminated legacy registration", async () => {
+    const transport = transportFromResponses([{ body: fixture("archive_candidate_index_carr.json") }]);
+    const rows = await fetchGeorgiaCandidateIndexRows(transport, "efile_archive", { filerName: "Carr" });
+    expect(rows).toHaveLength(3);
+    const legacy = rows.find((row) => row.filerStatusCode === "T");
+    // The termination signal is the string status code — the isTerminated
+    // boolean is false on this very registration (D8 boolean-flag ban).
+    expect(legacy).toMatchObject({ filerEntityId: 2750, committeeName: "Friends of Chris Carr, Inc." });
+  });
+});
+
+describe("fetchGeorgiaFiledReportRows", () => {
+  it("parses PeachFile reports with amendment childResults version chains", async () => {
+    const transport = transportFromResponses([{ body: fixture("peachfile_filed_reports_carr.json") }]);
+    const rows = await fetchGeorgiaFiledReportRows(transport, "peachfile", { filerName: "Carr, Christopher" });
+    expect(rows).toHaveLength(4);
+    const amended = rows.find((row) => row.filerReportId === 38)!;
+    expect(amended.reportStatus).toBe("Amended");
+    expect(amended.reportTypeCode).toBe("FPCFDR");
+    expect(amended.childVersions).toHaveLength(2);
+    expect(amended.childVersions[0]).toMatchObject({ filerReportVersionId: 2, reportStatus: "Version 2" });
+    const original = rows.find((row) => row.filerReportId === 37)!;
+    expect(original.hasChild).toBe(false);
+    expect(original.childVersions).toEqual([]);
+  });
+});
+
+describe("fetchGeorgiaTransactionRows", () => {
+  it("pages until a short page, dedups by transactionId, and drops foreign rows", async () => {
+    const fullPage = Array.from({ length: GEORGIA_ETHICS_PAGE_SIZE }, (_, i) => transactionItem({ transactionId: i + 1 }));
+    const secondPage = [
+      transactionItem({ transactionId: 100 }), // offset-drift duplicate
+      transactionItem({ transactionId: 200 }),
+      transactionItem({ transactionId: 300, filerEntityId: 999 }), // foreign filer
+    ];
+    const calls: Array<{ url: string; body: string }> = [];
+    const transport = transportFromResponses([{ body: pageBody(fullPage) }, { body: pageBody(secondPage) }], calls);
+    const result = await fetchGeorgiaTransactionRows(
+      transport,
+      "peachfile",
+      { filerName: "Carr for Georgia" },
+      { expectedFilerEntityIds: [100035] }
+    );
+    expect(calls).toHaveLength(2);
+    expect(JSON.parse(calls[1]!.body).pageNumber).toBe(2);
+    expect(result.fetchedRowCount).toBe(103);
+    expect(result.rows).toHaveLength(101);
+    expect(result.duplicateRowCount).toBe(1);
+    expect(result.foreignRowCount).toBe(1);
+  });
+
+  it("treats a result that matched only foreign filers as a hard error", async () => {
+    const transport = transportFromResponses([
+      { body: pageBody([transactionItem({ filerEntityId: 999 }), transactionItem({ transactionId: 2, filerEntityId: 998 })]) },
+    ]);
+    await expect(
+      fetchGeorgiaTransactionRows(
+        transport,
+        "peachfile",
+        { filerName: "Carr for Georgia" },
+        { expectedFilerEntityIds: [100035] }
+      )
+    ).rejects.toMatchObject({ code: "filter_ineffective" });
+  });
+
+  it("returns empty without error when the store has no rows at all", async () => {
+    const transport = transportFromResponses([{ body: pageBody([]) }]);
+    const result = await fetchGeorgiaTransactionRows(
+      transport,
+      "efile_archive",
+      { filerName: "Nobody" },
+      { expectedFilerEntityIds: [1] }
+    );
+    expect(result.rows).toEqual([]);
+    expect(result.foreignRowCount).toBe(0);
+  });
+});
+
+describe("fetchGeorgiaTransactionRowsStable", () => {
+  it("returns once two consecutive passes agree on the unique id set", async () => {
+    const passA = [transactionItem({ transactionId: 1 }), transactionItem({ transactionId: 2 })];
+    const passB = [transactionItem({ transactionId: 2 }), transactionItem({ transactionId: 3 })];
+    const responses = [pageBody(passA), pageBody(passB), pageBody(passB)];
+    let call = 0;
+    const transport = createGeorgiaEthicsTransport({
+      sleep: async () => {},
+      fetch: async () => ({ status: 200, body: responses[Math.min(call++, responses.length - 1)]! }),
+    });
+    const result = await fetchGeorgiaTransactionRowsStable(
+      transport,
+      "peachfile",
+      { filerName: "Carr for Georgia" },
+      { expectedFilerEntityIds: [100035] }
+    );
+    expect(result.passCount).toBe(3);
+    expect(result.rows.map((row) => row.transactionId).sort()).toEqual([2, 3]);
+  });
+
+  it("fails closed when the id set never stabilizes", async () => {
+    let call = 0;
+    const transport = createGeorgiaEthicsTransport({
+      sleep: async () => {},
+      fetch: async () => ({
+        status: 200,
+        body: pageBody([transactionItem({ transactionId: (call += 1) })]),
+      }),
+    });
+    await expect(
+      fetchGeorgiaTransactionRowsStable(
+        transport,
+        "peachfile",
+        { filerName: "Carr for Georgia" },
+        { expectedFilerEntityIds: [100035], maxPasses: 3 }
+      )
+    ).rejects.toMatchObject({ code: "unstable_result" });
+  });
+});
+
+describe("per-host vocabularies", () => {
+  it("recognizes each host's own status codes and rejects the other host's", () => {
+    expect(isGeorgiaRecognizedTransactionStatus("peachfile", "TFIL")).toBe(true);
+    expect(isGeorgiaRecognizedTransactionStatus("peachfile", "TPEN")).toBe(true);
+    expect(isGeorgiaRecognizedTransactionStatus("peachfile", "F")).toBe(false);
+    expect(isGeorgiaRecognizedTransactionStatus("efile_archive", "F")).toBe(true);
+    expect(isGeorgiaRecognizedTransactionStatus("efile_archive", "A")).toBe(true);
+    expect(isGeorgiaRecognizedTransactionStatus("efile_archive", "TFIL")).toBe(false);
+    expect(isGeorgiaRecognizedTransactionStatus("peachfile", null)).toBe(false);
+  });
+
+  it("normalizes report families per host and fails closed on unknown codes", () => {
+    expect(normalizeGeorgiaReportFamily("peachfile", "FPCFDR")).toBe("ccdr");
+    expect(normalizeGeorgiaReportFamily("efile_archive", "103")).toBe("ccdr");
+    expect(normalizeGeorgiaReportFamily("peachfile", "FPTBDR")).toBe("two_business_day");
+    expect(normalizeGeorgiaReportFamily("efile_archive", "104")).toBe("two_business_day");
+    expect(normalizeGeorgiaReportFamily("peachfile", "FPICTBDR")).toBe("independent_committee_two_business_day");
+    expect(normalizeGeorgiaReportFamily("efile_archive", "107")).toBe("independent_committee_two_business_day");
+    // Raw codes never cross hosts (D8): each host's codes are unknown on the other.
+    expect(() => normalizeGeorgiaReportFamily("peachfile", "103")).toThrow(GeorgiaEthicsClientError);
+    expect(() => normalizeGeorgiaReportFamily("efile_archive", "FPCFDR")).toThrow(GeorgiaEthicsClientError);
+  });
+});
+
+describe("georgiaTransactionReportGroupGuid", () => {
+  it("groups timed-pending rows by timedFiledReportGuid for both null and zero-GUID encodings", () => {
+    // TCON endpoint encodes "no CCDR yet" as the zero GUID (fixture row).
+    expect(
+      georgiaTransactionReportGroupGuid({
+        filerReportGuid: GEORGIA_ZERO_GUID,
+        timedFiledReportGuid: "5c00b4f9-7baa-4d77-8870-3413cd0ed090",
+      })
+    ).toBe("5c00b4f9-7baa-4d77-8870-3413cd0ed090");
+    // IE endpoint encodes it as null.
+    expect(
+      georgiaTransactionReportGroupGuid({
+        filerReportGuid: null,
+        timedFiledReportGuid: "5C00B4F9-7BAA-4D77-8870-3413CD0ED090",
+      })
+    ).toBe("5c00b4f9-7baa-4d77-8870-3413cd0ed090");
+    expect(
+      georgiaTransactionReportGroupGuid({
+        filerReportGuid: "7d5e2ef2-e1b5-4bc9-a555-13f6392f4199",
+        timedFiledReportGuid: null,
+      })
+    ).toBe("7d5e2ef2-e1b5-4bc9-a555-13f6392f4199");
+    expect(georgiaTransactionReportGroupGuid({ filerReportGuid: null, timedFiledReportGuid: null })).toBeNull();
+  });
+});
+
+describe("buildGeorgiaReportInventory", () => {
+  async function loadFixtureReports(): Promise<{
+    peachfile: GeorgiaFiledReportRow[];
+    archive: GeorgiaFiledReportRow[];
+  }> {
+    const pfTransport = transportFromResponses([{ body: fixture("peachfile_filed_reports_carr.json") }]);
+    const arTransport = transportFromResponses([{ body: fixture("archive_filed_reports_carr.json") }]);
+    return {
+      peachfile: await fetchGeorgiaFiledReportRows(pfTransport, "peachfile", { filerName: "Carr, Christopher" }),
+      archive: await fetchGeorgiaFiledReportRows(arTransport, "efile_archive", { filerName: "Carr, Christopher" }),
+    };
+  }
+
+  it("unions the Carr fixtures: PeachFile wins migrated reports, archive-only reports stay", async () => {
+    const { peachfile, archive } = await loadFixtureReports();
+    // Scope the archive rows to the candidate registration chain (the 2022
+    // legacy-committee reports belong to a different registration — D3).
+    const archiveChain = archive.filter((row) => row.filerEntityId === 757274);
+    const inventory = buildGeorgiaReportInventory({ peachfileReports: peachfile, archiveReports: archiveChain });
+
+    expect(inventory).toHaveLength(4);
+    // Migrated pre-cutover reports: both hosts hold them, PeachFile wins.
+    const jun2025 = inventory.find((entry) => entry.periodEnd === "2025-06-30")!;
+    expect(jun2025.source).toBe("peachfile");
+    expect(jun2025.report.filerReportId).toBe(38);
+    expect(jun2025.supersededArchiveReport?.filerReportId).toBe(84109);
+    const jan2025 = inventory.find((entry) => entry.periodEnd === "2025-01-31")!;
+    expect(jan2025.source).toBe("peachfile");
+    expect(jan2025.report.filerReportId).toBe(37);
+    expect(jan2025.supersededArchiveReport?.filerReportId).toBe(69996);
+    // PeachFile-era reports have no archive copy.
+    const jan2026 = inventory.find((entry) => entry.periodEnd === "2026-01-31")!;
+    expect(jan2026.source).toBe("peachfile");
+    expect(jan2026.supersededArchiveReport).toBeUndefined();
+  });
+
+  it("keeps archive-only reports from the archive source", async () => {
+    const { archive } = await loadFixtureReports();
+    const legacyReports = archive.filter((row) => row.filerEntityId === 2750);
+    const inventory = buildGeorgiaReportInventory({ peachfileReports: [], archiveReports: legacyReports });
+    expect(inventory).toHaveLength(2);
+    expect(inventory.every((entry) => entry.source === "efile_archive")).toBe(true);
+  });
+
+  it("matches by normalized family and period, never raw reportTypeCode or status", async () => {
+    const { peachfile, archive } = await loadFixtureReports();
+    // The matched June-2025 pair has disjoint raw codes (FPCFDR vs 103) and
+    // different statuses (Amended vs Original) — identity must still match.
+    const pf = peachfile.find((row) => row.filerReportId === 38)!;
+    const ar = archive.find((row) => row.filerReportId === 84109)!;
+    expect(pf.reportTypeCode).not.toBe(ar.reportTypeCode);
+    expect(pf.reportStatus).not.toBe(ar.reportStatus);
+    const inventory = buildGeorgiaReportInventory({ peachfileReports: [pf], archiveReports: [ar] });
+    expect(inventory).toHaveLength(1);
+    expect(inventory[0]!.source).toBe("peachfile");
+  });
+
+  it("treats null-period reports as standalone entries that never merge", async () => {
+    const { archive } = await loadFixtureReports();
+    const base = archive.find((row) => row.filerReportId === 84109)!;
+    const nullPeriodA: GeorgiaFiledReportRow = { ...base, filerReportGuid: "guid-a", startDate: null, endDate: null };
+    const nullPeriodB: GeorgiaFiledReportRow = { ...base, filerReportGuid: "guid-b", startDate: null, endDate: null };
+    const inventory = buildGeorgiaReportInventory({
+      peachfileReports: [],
+      archiveReports: [nullPeriodA, nullPeriodB],
+    });
+    expect(inventory).toHaveLength(2);
+    expect(inventory.every((entry) => entry.periodStart === null)).toBe(true);
+  });
+
+  it("fails closed when one host holds two reports with the same identity key", async () => {
+    const { archive } = await loadFixtureReports();
+    const base = archive.find((row) => row.filerReportId === 84109)!;
+    const duplicate: GeorgiaFiledReportRow = { ...base, filerReportGuid: "another-guid" };
+    expect(() =>
+      buildGeorgiaReportInventory({ peachfileReports: [], archiveReports: [base, duplicate] })
+    ).toThrow(GeorgiaEthicsClientError);
+  });
+
+  it("fails closed on unknown report type codes", async () => {
+    const { peachfile } = await loadFixtureReports();
+    const unknown: GeorgiaFiledReportRow = { ...peachfile[0]!, reportTypeCode: "FPXYZ" };
+    expect(() => buildGeorgiaReportInventory({ peachfileReports: [unknown], archiveReports: [] })).toThrow(
+      /Unknown Georgia peachfile reportTypeCode/
+    );
+  });
+});

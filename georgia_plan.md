@@ -595,3 +595,20 @@ shape) and lands first; only the D3 map table waits for the spike.
   (D5), pagination/fail-closed rules pinned (A4), fixtures + data keys
   committed. Schema and factory config unchanged — migration 213 stands.
   Next: PR 3 (map migration + client + resolver + auto-link).
+- 2026-08-07: **PR 3 implemented** — migration 214
+  (`ga_finance_filer_identity_map`: per-host filerEntityId + registration
+  guid + per-host name forms, explicit `include_in_candidate_totals`,
+  outside spenders unrepresentable inside candidate totals) + map access
+  module; `georgiaEthicsClient` (paced single-flight transport, pinned
+  request bodies, per-host status/taxonomy/report-family vocabularies,
+  A4 paging: pinned sortBy + short-page loop + id-dedup +
+  filter-effectiveness hard error + bounded-retry stability loop, D8
+  report-inventory union with PeachFile-wins and standalone null-period
+  archive rows — a fixture-checked case: 2022-era archive inventory rows
+  can carry no period); PeachFile candidate-index resolver (office labels
+  pinned from spike bytes — Agriculture/Labor never appeared in the probed
+  sample, so both orderings are listed and a wrong alias can only fail
+  closed); auto-link (tennessee pattern; ambiguous is report-only — the
+  links status vocabulary is active/inactive); due-list config on the
+  shared factory. Fixture-driven tests throughout (the Carr union test
+  proves cross-host identity matching on disjoint raw codes and statuses).
