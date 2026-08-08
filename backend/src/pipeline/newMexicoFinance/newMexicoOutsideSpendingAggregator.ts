@@ -1,5 +1,8 @@
 import type { NewMexicoCfisExpenditureRow } from "./newMexicoCfisArtifactReader.js";
-import { normalizeNewMexicoCandidateNameKeys } from "./newMexicoCandidateCommitteeResolver.js";
+import {
+  newMexicoCandidateNameMiddleConflict,
+  normalizeNewMexicoCandidateNameKeys,
+} from "./newMexicoCandidateCommitteeResolver.js";
 
 export type NewMexicoSupportOppose = "support" | "oppose";
 
@@ -131,6 +134,7 @@ function supportOpposeFromStance(value: string): NewMexicoSupportOppose | null {
 
 function targetMatchesCandidate(input: {
   reason: string;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   const reasonKeys = normalizeNewMexicoCandidateNameKeys(input.reason);
@@ -139,7 +143,7 @@ function targetMatchesCandidate(input: {
   }
   for (const key of reasonKeys) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      return !newMexicoCandidateNameMiddleConflict(input.candidateName, input.reason);
     }
   }
   return false;
@@ -194,7 +198,7 @@ export function aggregateNewMexicoOutsideSpending(
   let skippedExpenditureRowCount = 0;
 
   for (const row of input.expenditureRows) {
-    if (!targetMatchesCandidate({ reason: row.Reason, candidateNameKeys })) {
+    if (!targetMatchesCandidate({ reason: row.Reason, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
     matchedExpenditureRowCount += 1;

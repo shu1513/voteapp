@@ -6,6 +6,7 @@ import {
   toIllinoisSbeOfficeSearchInput,
 } from "./illinoisFinanceEligibleOffices.js";
 import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import { normalizeIllinoisCommitteeKey } from "./illinoisFinanceAggregators.js";
 import {
   fetchIllinoisSbeCandidateContributionRecords,
@@ -178,6 +179,26 @@ export function normalizeIllinoisCandidateNameKeys(
   return keys;
 }
 
+/**
+ * Middle-name evidence gate for SBE person names. Nickname expansion is
+ * one-sided (see normalizeIllinoisCandidateNameKeys), so the first-name
+ * comparison expands the VoteApp side only - otherwise "Mike A. Smith" would
+ * never line up with "Smith, Michael B" and the contradicting middle would go
+ * unseen.
+ */
+export function illinoisCandidateNameMiddleConflicts(input: {
+  candidateName: string;
+  rowNames: readonly string[];
+}): boolean {
+  return hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: input.rowNames,
+    normalizePersonName: (value) => normalizePersonName(value),
+    firstNamesEquivalent: (candidateFirst, rowFirst) =>
+      candidateFirst === rowFirst || firstNameVariants(candidateFirst).includes(rowFirst),
+  });
+}
+
 function candidateNameNormalized(value: string): string {
   return [...normalizeIllinoisCandidateNameKeys(value)][0] ?? normalizePersonName(value);
 }
@@ -298,14 +319,27 @@ export function splitIllinoisCandidateNameForSearch(
 
 function relationCandidateNameMatches(
   relation: IllinoisSbeCandidateCommitteeRelation,
+  candidateName: string,
   candidateNameKeys: ReadonlySet<string>
 ): boolean {
+  let keyMatched = false;
   for (const key of normalizeIllinoisCandidateNameKeys(relation.candidateName)) {
     if (candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, which would attach
+  // "Smith, John B"'s official committee to "John A. Smith" whenever office,
+  // district, and year agree. A contradicting middle name rejects the
+  // relation.
+  return !illinoisCandidateNameMiddleConflicts({
+    candidateName,
+    rowNames: [relation.candidateName],
+  });
 }
 
 function relationJurisdictionMatches(input: {
@@ -361,7 +395,8 @@ export function resolveIllinoisCandidateCommitteesFromRelations(
 
   const namedRelations = input.relations.filter(
     (relation) =>
-      relation.electionYear === electionYear && relationCandidateNameMatches(relation, candidateNameKeys)
+      relation.electionYear === electionYear &&
+      relationCandidateNameMatches(relation, input.candidateName, candidateNameKeys)
   );
   if (namedRelations.length === 0) {
     return {

@@ -153,6 +153,70 @@ describe("floridaCandidateFinanceAutoLink", () => {
     ).toMatchObject({ status: "matched" });
   });
 
+  it("rejects a same-cycle recipient whose middle name contradicts the candidate", () => {
+    // Same cycle and surname — only the middle evidence differs. Without the
+    // middle gate the short reversed key ("DOE JANE") matched the other Jane
+    // Doe's committee and linked her contributions.
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        electionYear: 2026,
+        contributionRows: [
+          contribution({ contributionDate: "01/15/2026", recipientName: "DOE, JANE B. (DEM)(GOV)" }),
+        ],
+      })
+    ).toEqual({
+      status: "unmatched",
+      reason: "no_matching_committee",
+    });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        electionYear: 2026,
+        contributionRows: [
+          contribution({ contributionDate: "01/15/2026", recipientName: "DOE, JANE ANDREA (DEM)(GOV)" }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      committeeName: "DOE, JANE ANDREA (DEM)(GOV)",
+    });
+  });
+
+  it("still falls back to first+last when the candidate side lacks middle info", () => {
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        contributionRows: [
+          contribution({ contributionDate: "01/15/2026", recipientName: "DOE, JANE B. (DEM)(GOV)" }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      committeeName: "DOE, JANE B. (DEM)(GOV)",
+    });
+  });
+
+  it("lets a middle conflict pick the right committee out of two rival Jane Does", () => {
+    expect(
+      resolveFloridaCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        electionYear: 2026,
+        contributionRows: [
+          contribution({ contributionDate: "01/15/2026", recipientName: "DOE, JANE B. (DEM)(GOV)" }),
+          contribution({ contributionDate: "02/15/2026", recipientName: "DOE, JANE A. (DEM)(GOV)" }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      committeeId: "DOE_JANE_A_DEM_GOV",
+    });
+  });
+
   it("does not resolve when more than one recipient name matches the candidate", () => {
     expect(
       resolveFloridaCandidateCommittee({

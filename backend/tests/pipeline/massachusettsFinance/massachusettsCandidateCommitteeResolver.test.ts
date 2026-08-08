@@ -73,6 +73,85 @@ describe("massachusettsCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", candidateCpfId: "15710" });
   });
 
+  it("rejects a same-race filer whose middle name contradicts the candidate", () => {
+    // Same office and account type — only the middle evidence differs. Without
+    // the middle gate this filer linked as an "exact" match and attached the
+    // other John Smith's OCPF reports.
+    expect(
+      resolveMassachusettsCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filers: [
+          filer({
+            cpfId: "30001",
+            filerName: "John B. Smith",
+            filerNameReverse: "Smith, John B.",
+            committeeName: "Smith Committee",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveMassachusettsCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filers: [
+          filer({
+            cpfId: "30001",
+            filerName: "John Andrew Smith",
+            filerNameReverse: "Smith, John Andrew",
+            committeeName: "Smith Committee",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", candidateCpfId: "30001" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveMassachusettsCandidateCommittee({
+        candidateName: "John Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filers: [
+          filer({
+            cpfId: "30001",
+            filerName: "John B. Smith",
+            filerNameReverse: "Smith, John B.",
+            committeeName: "Smith Committee",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", candidateCpfId: "30001" });
+  });
+
+  it("lets a middle conflict veto a middle-less sibling name on the same filer", () => {
+    expect(
+      resolveMassachusettsCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filers: [
+          filer({
+            cpfId: "30001",
+            filerName: "John Smith",
+            filerNameReverse: "Smith, John B.",
+            committeeName: "Smith Committee",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("matches legislative filers only when expected district matches", () => {
     expect(
       resolveMassachusettsCandidateCommittee({

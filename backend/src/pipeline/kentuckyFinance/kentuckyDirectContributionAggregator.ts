@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { KentuckyKrefContributionRecord } from "./kentuckyKrefClient.js";
 
 export type KentuckyDirectContributionAggregationInput = {
@@ -139,13 +140,29 @@ function candidateNameKeys(value: string): Set<string> {
   return keys;
 }
 
-function candidateNamesMatch(expected: ReadonlySet<string>, actual: string | undefined): boolean {
-  for (const key of candidateNameKeys(actual ?? "")) {
-    if (expected.has(key)) {
-      return true;
+function candidateNamesMatch(input: {
+  candidateName: string;
+  expectedKeys: ReadonlySet<string>;
+  actualName: string | undefined;
+}): boolean {
+  let keyMatched = false;
+  for (const key of candidateNameKeys(input.actualName ?? "")) {
+    if (input.expectedKeys.has(key)) {
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, so "John A. Smith" would take
+  // every contribution filed for "Smith, John B." in the same race. A
+  // contradicting middle name rejects the row (georgia pattern).
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [input.actualName ?? ""],
+    normalizePersonName,
+  });
 }
 
 function parseDateKey(value: string | undefined): string | null {
@@ -206,12 +223,19 @@ export function kentuckyElectionDateMatchesCycle(input: {
 
 function recordMatchesTarget(input: {
   record: KentuckyKrefContributionRecord;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
   electionDateKey: string;
   officeKeys: ReadonlySet<string>;
   locationKeys: ReadonlySet<string> | null;
 }): boolean {
-  if (!candidateNamesMatch(input.candidateNameKeys, input.record.candidateName)) {
+  if (
+    !candidateNamesMatch({
+      candidateName: input.candidateName,
+      expectedKeys: input.candidateNameKeys,
+      actualName: input.record.candidateName,
+    })
+  ) {
     return false;
   }
   if (
@@ -257,7 +281,13 @@ export function filterKentuckyContributionRecordsForCandidateCycle(input: {
     throw new Error("Kentucky election date must use MM/DD/YYYY or YYYY-MM-DD format");
   }
   return input.contributionRecords.filter((record) => {
-    if (!candidateNamesMatch(keys, record.candidateName)) {
+    if (
+      !candidateNamesMatch({
+        candidateName: input.candidateName,
+        expectedKeys: keys,
+        actualName: record.candidateName,
+      })
+    ) {
       return false;
     }
     if (
@@ -399,7 +429,16 @@ export function aggregateKentuckyDirectContributions(
   let directContributionTotalCents = 0;
 
   for (const record of input.contributionRecords) {
-    if (!recordMatchesTarget({ record, candidateNameKeys: keys, electionDateKey, officeKeys, locationKeys: targetLocationKeys })) {
+    if (
+      !recordMatchesTarget({
+        record,
+        candidateName: input.candidateName,
+        candidateNameKeys: keys,
+        electionDateKey,
+        officeKeys,
+        locationKeys: targetLocationKeys,
+      })
+    ) {
       continue;
     }
     matchedContributionRowCount += 1;

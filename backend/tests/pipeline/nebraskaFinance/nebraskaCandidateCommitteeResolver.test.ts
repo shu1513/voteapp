@@ -73,6 +73,48 @@ describe("nebraskaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a same-race row whose middle name contradicts the candidate", () => {
+    // Same office, district, and cycle — only the middle evidence differs.
+    // Without the middle gate this row linked as an "exact" match and attached
+    // the other Vest's committee.
+    expect(
+      resolveNebraskaCandidateCommittee({
+        candidateName: "Rick A. Vest",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "30",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Name": "VEST, RICK J." })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveNebraskaCandidateCommittee({
+        candidateName: "Rick A. Vest",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "30",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Name": "VEST, RICK ALLEN" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "1001" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveNebraskaCandidateCommittee({
+        candidateName: "Rick Vest",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "30",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Name": "VEST, RICK J." })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "1001" });
+  });
+
   it("matches safe statewide offices", () => {
     expect(
       resolveNebraskaCandidateCommittee({

@@ -84,6 +84,105 @@ describe("districtOfColumbiaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a committee-name fallback naming a middle-conflicting namesake", () => {
+    // When the row carries no candidateName, matching falls back to
+    // committee-name token containment — which accepted "Committee to Elect
+    // John B. Smith" for candidate "John A. Smith". The stripped committee
+    // text parses as a person name, so the middle gate applies there too.
+    expect(
+      resolveDistrictOfColumbiaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2026,
+        contributionRecords: [
+          record({
+            candidateName: undefined,
+            office: undefined,
+            committeeName: "Committee to Elect John B. Smith",
+            committeeKey: "COMMITTEE TO ELECT JOHN B SMITH",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("keeps a committee-name fallback whose middle corroborates the candidate", () => {
+    expect(
+      resolveDistrictOfColumbiaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2026,
+        contributionRecords: [
+          record({
+            candidateName: undefined,
+            office: undefined,
+            committeeName: "Committee to Elect John Andrew Smith",
+            committeeKey: "COMMITTEE TO ELECT JOHN ANDREW SMITH",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeKey: "COMMITTEE TO ELECT JOHN ANDREW SMITH" });
+  });
+
+  it("rejects a same-race record whose middle name contradicts the candidate", () => {
+    // Same office and cycle — only the middle evidence differs. Without the
+    // middle gate this record linked as an "exact" match and attached the
+    // other John Smith's contributions.
+    expect(
+      resolveDistrictOfColumbiaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2026,
+        contributionRecords: [
+          record({
+            candidateName: "John B. Smith",
+            committeeName: "Smith For DC",
+            committeeKey: "SMITH FOR DC",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveDistrictOfColumbiaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2026,
+        contributionRecords: [
+          record({
+            candidateName: "Smith, John Andrew",
+            committeeName: "Smith For DC",
+            committeeKey: "SMITH FOR DC",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeKey: "SMITH FOR DC" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveDistrictOfColumbiaCandidateCommittee({
+        candidateName: "John Smith",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2026,
+        contributionRecords: [
+          record({
+            candidateName: "John B. Smith",
+            committeeName: "Smith For DC",
+            committeeKey: "SMITH FOR DC",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", committeeKey: "SMITH FOR DC" });
+  });
+
   it("requires and enforces D.C. ward or at-large seats for seat-scoped offices", () => {
     expect(
       resolveDistrictOfColumbiaCandidateCommittee({

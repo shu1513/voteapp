@@ -191,6 +191,70 @@ describe("kentuckyDirectContributionAggregator", () => {
     );
   });
 
+  it("rejects a same-race contribution whose middle name contradicts the candidate", () => {
+    // Same office, location, and election date — only the middle evidence
+    // differs. Without the middle gate the first+last key attached the other
+    // John Smith's contributions.
+    const result = aggregateKentuckyDirectContributions({
+      candidateName: "John A. Smith",
+      electionDate: "11/7/2023",
+      officeName: "Governor",
+      location: "Statewide",
+      contributionRecords: [
+        contribution({ candidateName: "Smith, John B.", recipientName: "Smith, John B.", amount: 9000 }),
+      ],
+    });
+
+    expect(result.matchedContributionRowCount).toBe(0);
+    expect(result.summary.totalReceipts).toBe(0);
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    const result = aggregateKentuckyDirectContributions({
+      candidateName: "John A. Smith",
+      electionDate: "11/7/2023",
+      officeName: "Governor",
+      location: "Statewide",
+      contributionRecords: [
+        contribution({ candidateName: "Smith, John Andrew", recipientName: "Smith, John Andrew", amount: 250 }),
+      ],
+    });
+
+    expect(result.matchedContributionRowCount).toBe(1);
+    expect(result.summary.directContributionTotal).toBe(250);
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    const result = aggregateKentuckyDirectContributions({
+      candidateName: "John Smith",
+      electionDate: "11/7/2023",
+      officeName: "Governor",
+      location: "Statewide",
+      contributionRecords: [
+        contribution({ candidateName: "Smith, John B.", recipientName: "Smith, John B.", amount: 250 }),
+      ],
+    });
+
+    expect(result.matchedContributionRowCount).toBe(1);
+    expect(result.summary.directContributionTotal).toBe(250);
+  });
+
+  it("keeps the candidate's own money while vetoing the conflicting sibling's rows", () => {
+    const result = aggregateKentuckyDirectContributions({
+      candidateName: "John A. Smith",
+      electionDate: "11/7/2023",
+      officeName: "Governor",
+      location: "Statewide",
+      contributionRecords: [
+        contribution({ candidateName: "Smith, John B.", recipientName: "Smith, John B.", amount: 9000 }),
+        contribution({ candidateName: "Smith, John A.", recipientName: "Smith, John A.", amount: 250 }),
+      ],
+    });
+
+    expect(result.matchedContributionRowCount).toBe(1);
+    expect(result.summary.directContributionTotal).toBe(250);
+  });
+
   it("validates required inputs", () => {
     expect(() =>
       aggregateKentuckyDirectContributions({

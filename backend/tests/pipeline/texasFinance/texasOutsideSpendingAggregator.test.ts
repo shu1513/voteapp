@@ -171,6 +171,50 @@ describe("texasOutsideSpendingAggregator", () => {
     });
   });
 
+  it("rejects a candidate row whose middle name contradicts the candidate", () => {
+    // TEC has no middle-name column, so a middle typed into the first-name
+    // field is the only evidence there is; the first+last key collapses it
+    // away and would attribute another Abbott's outside money.
+    const conflicting = aggregateTexasOutsideSpending({
+      candidateName: "Greg W. Abbott",
+      candidateCommitteeId: "00012345",
+      officeScope: "statewide",
+      officeName: "Governor",
+      electionYear: 2026,
+      spacRows: [spac()],
+      expenditureRows: [expenditure()],
+      candidateRows: [candidate({ candidateNameFirst: "GREG R" })],
+    });
+    expect(conflicting).toMatchObject({ summary: null, matchedCandidateExpenditureRowCount: 0 });
+
+    // A candidate with no middle of its own still falls back to first+last.
+    const middleless = aggregateTexasOutsideSpending({
+      candidateName: "Greg Abbott",
+      candidateCommitteeId: "00012345",
+      officeScope: "statewide",
+      officeName: "Governor",
+      electionYear: 2026,
+      spacRows: [spac()],
+      expenditureRows: [expenditure()],
+      candidateRows: [candidate({ candidateNameFirst: "GREG R" })],
+    });
+    expect(middleless.matchedCandidateExpenditureRowCount).toBe(1);
+    expect(middleless.summary?.supportTotal).toBe(70000);
+
+    // An initial corroborating the full middle keeps matching.
+    const corroborating = aggregateTexasOutsideSpending({
+      candidateName: "Greg W. Abbott",
+      candidateCommitteeId: "00012345",
+      officeScope: "statewide",
+      officeName: "Governor",
+      electionYear: 2026,
+      spacRows: [spac()],
+      expenditureRows: [expenditure()],
+      candidateRows: [candidate({ candidateNameFirst: "GREG WAYNE" })],
+    });
+    expect(corroborating.summary?.supportTotal).toBe(70000);
+  });
+
   it("matches nickname purpose rows but only counts spenders related to the linked committee", () => {
     // "Pat Smith" expands to PATRICK SMITH and PATRICIA SMITH on the VoteApp
     // side. The unrelated spender's PATRICIA row name-matches but cannot

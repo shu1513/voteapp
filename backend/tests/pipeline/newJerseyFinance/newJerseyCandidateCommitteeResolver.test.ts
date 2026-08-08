@@ -82,6 +82,63 @@ describe("newJerseyCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a same-race entity whose middle name contradicts the candidate", () => {
+    // Same office, election type, and year — only the middle evidence differs.
+    // Without the middle gate this entity linked as an "exact" match and
+    // attached the other John Smith's ELEC filings.
+    expect(
+      resolveNewJerseyCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        entityRows: [
+          entity({ entityS: 500001, entityName: "SMITH, JOHN B", firstName: "John B", lastName: "Smith" }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_entity_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveNewJerseyCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        entityRows: [
+          entity({ entityS: 500001, entityName: "SMITH, JOHN ANDREW", firstName: "John Andrew", lastName: "Smith" }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", entityS: 500001 });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveNewJerseyCandidateCommittee({
+        candidateName: "John Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        entityRows: [
+          entity({ entityS: 500001, entityName: "SMITH, JOHN B", firstName: "John B", lastName: "Smith" }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", entityS: 500001 });
+  });
+
+  it("lets a middle conflict veto a middle-less sibling name on the same entity", () => {
+    expect(
+      resolveNewJerseyCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        entityRows: [entity({ entityS: 500001, entityName: "SMITH, JOHN B", firstName: "John", lastName: "Smith" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_entity_match" });
+  });
+
   it("does not guess when primary and general entities both match", () => {
     expect(
       resolveNewJerseyCandidateCommittee({

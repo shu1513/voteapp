@@ -28,6 +28,30 @@ describe("newYorkCityCandidateResolver", () => {
     })).toEqual({ status: "unmatched", reason: "no_exact_match" });
   });
 
+  it("rejects a same-race row whose middle name contradicts the candidate", () => {
+    // Same office, borough, and year — only the middle evidence differs.
+    // Without the middle gate this row linked as an exact match and attached
+    // the other Jane Doe's CFB filings.
+    expect(resolveNewYorkCityCandidate({
+      candidateName: "Jane Q. Doe", electionYear: 2025, officeScope: "place", officeCanonicalName: "Mayor",
+      districtGeoid: "3651000", analysisRows: [row({ candidateName: "DOE, JANE R." })],
+    })).toEqual({ status: "unmatched", reason: "no_exact_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(resolveNewYorkCityCandidate({
+      candidateName: "Jane Q. Doe", electionYear: 2025, officeScope: "place", officeCanonicalName: "Mayor",
+      districtGeoid: "3651000", analysisRows: [row({ candidateName: "DOE, JANE QUINN" })],
+    }).status).toBe("matched");
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(resolveNewYorkCityCandidate({
+      candidateName: "Jane Doe", electionYear: 2025, officeScope: "place", officeCanonicalName: "Mayor",
+      districtGeoid: "3651000", analysisRows: [row({ candidateName: "DOE, JANE R." })],
+    }).status).toBe("matched");
+  });
+
   it("refuses ambiguous candidate IDs", () => {
     const result = resolveNewYorkCityCandidate({
       candidateName: "Jane Doe", electionYear: 2025, officeScope: "place", officeCanonicalName: "Mayor",

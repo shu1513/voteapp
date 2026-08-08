@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import { parseMarylandCfsMoney, type MarylandCfsExpenditureRow } from "./marylandCfsArtifactReader.js";
 import { normalizeMarylandCandidateNameKeys } from "./marylandCandidateCommitteeResolver.js";
 import type { MarylandFinanceOutsideGroupInput, MarylandFinanceSupportOppose } from "./marylandFinanceWriter.js";
@@ -61,6 +62,13 @@ function normalizeTextKey(value: string | null | undefined): string {
     .replace(/&/g, " AND ")
     .replace(/[^A-Z0-9]+/g, " ")
     .replace(/\b(THE|OF|FOR|TO|ELECT|COMMITTEE|FRIENDS|CITIZENS)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizePersonName(value: string | null | undefined): string {
+  return normalizeTextKey(value)
+    .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -152,18 +160,30 @@ function officeMatches(input: { rowOfficeName: string; officeName: string }): bo
 
 function targetMatchesCandidate(input: {
   candidateBallotIssue: string;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   const targetKeys = normalizeMarylandCandidateNameKeys(input.candidateBallotIssue);
   if (targetKeys.size === 0) {
     return false;
   }
+  let keyMatched = false;
   for (const key of targetKeys) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, so outside spending targeting
+  // "John B. Smith" would be attributed to "John A. Smith" in the same race.
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [input.candidateBallotIssue],
+    normalizePersonName,
+  });
 }
 
 function supportOpposeFromPosition(value: string): MarylandFinanceSupportOppose | null {
@@ -248,6 +268,7 @@ export function aggregateMarylandOutsideSpending(
     if (
       !targetMatchesCandidate({
         candidateBallotIssue: row["Candidate/Ballot Issue"],
+        candidateName: input.candidateName,
         candidateNameKeys,
       }) ||
       !officeMatches({ rowOfficeName: row["Office Sought"], officeName: input.officeName })

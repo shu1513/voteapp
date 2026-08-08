@@ -121,6 +121,24 @@ describe("marylandOutsideSpendingAggregator", () => {
     expect(result.skippedExpenditureRowCount).toBe(0);
   });
 
+  it("rejects same-race expenditure targets whose middle name contradicts the candidate", () => {
+    // Same office and cycle — only the middle evidence differs. Without the
+    // middle gate the other Justin Gallucci's outside spending was counted
+    // against this candidate.
+    const result = aggregateMarylandOutsideSpending({
+      candidateName: "Justin L. Gallucci",
+      officeName: "State Senator",
+      electionYear: 2026,
+      expenditureRows: [
+        expenditure({ "Candidate/Ballot Issue": "Gallucci, Justin M." }),
+        expenditure({ "Candidate/Ballot Issue": "Gallucci, Justin Lee" }),
+        expenditure({ "Candidate/Ballot Issue": "Gallucci, Justin" }),
+      ],
+    });
+
+    expect(result.matchedExpenditureRowCount).toBe(2);
+  });
+
   it("requires matching office sought", () => {
     const result = aggregateMarylandOutsideSpending({
       candidateName: "Justin Gallucci",

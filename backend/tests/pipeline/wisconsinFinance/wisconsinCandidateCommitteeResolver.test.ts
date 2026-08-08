@@ -39,6 +39,57 @@ describe("wisconsinCandidateCommitteeResolver", () => {
     ]);
   });
 
+  it("rejects a same-race committee whose middle name contradicts the candidate", () => {
+    // Same office and election year — only the middle evidence differs.
+    // Without the middle gate this committee linked as an "exact" match and
+    // attached the other Thomas Tiffany's finance records.
+    expect(
+      resolveWisconsinCandidateCommittee({
+        candidateName: "Thomas P. Tiffany",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committees: [committee({ candidateNames: ["Tiffany, Thomas J."] })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveWisconsinCandidateCommittee({
+        candidateName: "Thomas J. Tiffany",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committees: [committee({ candidateNames: ["Tiffany, Thomas James"] })],
+      })
+    ).toMatchObject({ status: "matched", entityId: "16621" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveWisconsinCandidateCommittee({
+        candidateName: "Thomas Tiffany",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committees: [committee({ candidateNames: ["Tiffany, Thomas J."] })],
+      })
+    ).toMatchObject({ status: "matched", entityId: "16621" });
+  });
+
+  it("lets a middle conflict veto a middle-less sibling name on the same committee", () => {
+    expect(
+      resolveWisconsinCandidateCommittee({
+        candidateName: "Thomas P. Tiffany",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committees: [committee({ candidateNames: ["Tiffany, Thomas J.", "Thomas Tiffany"] })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("matches exactly one active Wisconsin state candidate committee by candidate connection name", () => {
     expect(
       resolveWisconsinCandidateCommittee({

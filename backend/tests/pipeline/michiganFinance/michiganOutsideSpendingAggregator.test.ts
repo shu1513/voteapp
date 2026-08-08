@@ -179,6 +179,44 @@ describe("michiganOutsideSpendingAggregator", () => {
     expect(result.includedExpenditureRowCount).toBe(1);
   });
 
+  it("rejects an expenditure target whose middle name contradicts the candidate", () => {
+    // Same office and cycle — only the middle evidence differs. Without the
+    // middle gate this row was credited to the wrong Whitmer.
+    expect(
+      aggregateMichiganOutsideSpending({
+        candidateName: "Gretchen A. Whitmer",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2022,
+        expenditureRows: [expenditure({ can_or_ballot: "WHITMER, GRETCHEN B" })],
+      })
+    ).toMatchObject({ summary: null, matchedExpenditureRowCount: 0 });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      aggregateMichiganOutsideSpending({
+        candidateName: "Gretchen A. Whitmer",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2022,
+        expenditureRows: [expenditure({ can_or_ballot: "WHITMER, GRETCHEN ANN" })],
+      })
+    ).toMatchObject({ matchedExpenditureRowCount: 1, includedExpenditureRowCount: 1 });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      aggregateMichiganOutsideSpending({
+        candidateName: "Gretchen Whitmer",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2022,
+        expenditureRows: [expenditure({ can_or_ballot: "WHITMER, GRETCHEN B" })],
+      })
+    ).toMatchObject({ matchedExpenditureRowCount: 1, includedExpenditureRowCount: 1 });
+  });
+
   it("skips same-name outside spending for a different office", () => {
     const result = aggregateMichiganOutsideSpending({
       candidateName: "Gretchen Whitmer",

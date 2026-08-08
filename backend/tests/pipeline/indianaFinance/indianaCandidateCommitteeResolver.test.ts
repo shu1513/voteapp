@@ -70,6 +70,48 @@ describe("indianaCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a same-race row whose middle name contradicts the candidate", () => {
+    // Same office, district, and cycle — only the middle evidence differs.
+    // Without the middle gate this row linked as an "exact" match and attached
+    // the other John Smith's contributions.
+    expect(
+      resolveIndianaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "30",
+        electionYear: 2026,
+        contributionRows: [contribution({ FileNumber: "500", CandidateName: "John B. Smith" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveIndianaCandidateCommittee({
+        candidateName: "John A. Smith",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "30",
+        electionYear: 2026,
+        contributionRows: [contribution({ FileNumber: "500", CandidateName: "Smith, John Andrew" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "500" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveIndianaCandidateCommittee({
+        candidateName: "John Smith",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "30",
+        electionYear: 2026,
+        contributionRows: [contribution({ FileNumber: "500", CandidateName: "John B. Smith" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "500" });
+  });
+
   it("requires districts for Indiana legislative offices because contribution rows do not prove district", () => {
     expect(
       resolveIndianaCandidateCommittee({

@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import { kentuckyElectionDateMatchesCycle } from "./kentuckyDirectContributionAggregator.js";
 import type { KentuckyKrefIndependentExpenditureRecord } from "./kentuckyKrefClient.js";
 
@@ -132,13 +133,29 @@ export function normalizeKentuckyCandidateNameKeys(value: string): Set<string> {
   return keys;
 }
 
-function candidateNamesMatch(input: { expectedKeys: ReadonlySet<string>; actualName: string | undefined }): boolean {
+function candidateNamesMatch(input: {
+  candidateName: string;
+  expectedKeys: ReadonlySet<string>;
+  actualName: string | undefined;
+}): boolean {
+  let keyMatched = false;
   for (const key of normalizeKentuckyCandidateNameKeys(input.actualName ?? "")) {
     if (input.expectedKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, so "John A. Smith" would absorb
+  // the independent expenditures aimed at "Smith, John B." in the same race. A
+  // contradicting middle name rejects the row (georgia pattern).
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [input.actualName ?? ""],
+    normalizePersonName,
+  });
 }
 
 function parseDateKey(value: string | undefined): string | null {
@@ -180,12 +197,17 @@ function groupKey(input: { committeeKey: string; supportOppose: KentuckySupportO
 
 function recordMatchesTarget(input: {
   record: KentuckyKrefIndependentExpenditureRecord;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
   electionDateKey: string;
   officeOrBallotMeasureKeys: ReadonlySet<string>;
 }): boolean {
   return (
-    candidateNamesMatch({ expectedKeys: input.candidateNameKeys, actualName: input.record.candidateName }) &&
+    candidateNamesMatch({
+      candidateName: input.candidateName,
+      expectedKeys: input.candidateNameKeys,
+      actualName: input.record.candidateName,
+    }) &&
     // Shared cycle rule (see kentuckyElectionDateMatchesCycle): IE records
     // carry no electionType, so same-year specials cannot be screened here —
     // acceptable because legislative IEs are skipped entirely upstream and
@@ -252,7 +274,15 @@ export function aggregateKentuckyOutsideSpending(
   let skippedExpenditureRowCount = 0;
 
   for (const record of input.expenditureRecords) {
-    if (!recordMatchesTarget({ record, candidateNameKeys, electionDateKey, officeOrBallotMeasureKeys })) {
+    if (
+      !recordMatchesTarget({
+        record,
+        candidateName: input.candidateName,
+        candidateNameKeys,
+        electionDateKey,
+        officeOrBallotMeasureKeys,
+      })
+    ) {
       continue;
     }
     matchedExpenditureRowCount += 1;

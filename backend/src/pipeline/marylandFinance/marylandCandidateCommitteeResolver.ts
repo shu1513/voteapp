@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { MarylandCfsCommitteeRow } from "./marylandCfsArtifactReader.js";
 import { isMarylandFinanceEligibleOffice } from "./marylandFinanceEligibleOffices.js";
 
@@ -254,7 +255,7 @@ function candidateNameFromCommitteeRow(row: MarylandCfsCommitteeRow): string {
     .join(" ");
 }
 
-function rowMatchesCandidateName(input: {
+function rowKeyMatchesCandidateName(input: {
   row: MarylandCfsCommitteeRow;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
@@ -275,6 +276,26 @@ function rowMatchesCandidateName(input: {
     }
   }
   return false;
+}
+
+function rowMatchesCandidateName(input: {
+  row: MarylandCfsCommitteeRow;
+  candidateName: string;
+  candidateNameKeys: ReadonlySet<string>;
+}): boolean {
+  if (!rowKeyMatchesCandidateName(input)) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, which would link
+  // "John A. Smith" to a committee whose candidate fields say "John B. Smith"
+  // as an "exact" match whenever the office and election year agree. The row's
+  // own candidate name settles it even when the committee-name fallback is
+  // what matched.
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [candidateNameFromCommitteeRow(input.row)],
+    normalizePersonName,
+  });
 }
 
 function sourceJurisdictionIsStateLevel(row: MarylandCfsCommitteeRow): boolean {
@@ -363,7 +384,7 @@ export function resolveMarylandCandidateCommittee(
     if (!rowMatchesOffice({ row, officeCanonicalName })) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

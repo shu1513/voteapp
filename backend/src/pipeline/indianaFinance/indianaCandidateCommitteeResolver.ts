@@ -1,3 +1,4 @@
+import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
 import type { IndianaCampaignFinanceContributionRow } from "./indianaCampaignFinanceReader.js";
 import { isIndianaFinanceEligibleOffice } from "./indianaFinanceEligibleOffices.js";
 
@@ -196,14 +197,28 @@ function isCandidateCommittee(row: IndianaCampaignFinanceContributionRow): boole
 
 function rowMatchesCandidateName(input: {
   row: IndianaCampaignFinanceContributionRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
+  let keyMatched = false;
   for (const key of normalizeIndianaCandidateNameKeys(input.row.CandidateName)) {
     if (input.candidateNameKeys.has(key)) {
-      return true;
+      keyMatched = true;
+      break;
     }
   }
-  return false;
+  if (!keyMatched) {
+    return false;
+  }
+  // Key overlap collapses names to first+last, which would link
+  // "John A. Smith" to a row naming "John B. Smith" as an "exact" match
+  // whenever the office, district, and cycle agree. A contradicting middle
+  // name rejects the row (georgia pattern).
+  return !hasMiddleNameConflict({
+    candidateName: input.candidateName,
+    rowNames: [input.row.CandidateName],
+    normalizePersonName,
+  });
 }
 
 function toCommitteeMatch(input: {
@@ -273,7 +288,7 @@ export function resolveIndianaCandidateCommittee(
     if (!isElectionCycleContribution(row, electionYear)) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
 

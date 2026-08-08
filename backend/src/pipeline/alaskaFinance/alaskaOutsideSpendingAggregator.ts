@@ -2,6 +2,7 @@ import { firstNamesConflict } from "../finance/personFirstNameNicknames.js";
 import type { AlaskaApocIndependentExpenditureRow } from "./alaskaApocClient.js";
 import { parseAlaskaApocDateYear } from "./alaskaApocClient.js";
 import {
+  alaskaCandidateNameMiddleConflicts,
   alaskaCandidateNicknameKeyFamilies,
   alaskaNicknameFamilyConflictsWithFiler,
   normalizeAlaskaCandidateNameKeys,
@@ -295,6 +296,19 @@ export function aggregateAlaskaOutsideSpending(
   for (const row of input.expenditureRows) {
     const matchedKeys = rowMatchedKeys({ row, candidateNameKeys });
     if (matchedKeys.length === 0) {
+      continue;
+    }
+    // The Candidate/Proposition column is the row's one person-name field, so
+    // it is the only place middle-name evidence can be read; a reversed key
+    // ("SMITH JOHN") otherwise matches "Smith, John B" and pulls in another
+    // candidate's IE money. The prose fields stay out: they match keys
+    // contiguously, so a middle name in them already blocks the match.
+    if (
+      alaskaCandidateNameMiddleConflicts({
+        candidateName,
+        rowNames: [row.candidateProposition],
+      })
+    ) {
       continue;
     }
     matchedExpenditureRowCount += 1;

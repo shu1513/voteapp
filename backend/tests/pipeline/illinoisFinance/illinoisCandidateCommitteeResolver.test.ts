@@ -197,6 +197,72 @@ describe("illinoisCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "ambiguous", reason: "multiple_official_candidates" });
   });
 
+  it("applies middle-name evidence to official candidate relations", () => {
+    const smithRelation = {
+      candidateId: "701",
+      candidateName: "Smith, John B",
+      electionYear: 2026,
+      districtType: "statewide",
+      district: "Illinois",
+      office: "Governor",
+      isAtLarge: false,
+      committeeId: "801",
+      committeeName: "Citizens for John Smith",
+      committeeStatus: "active" as const,
+      sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/DownloadCDDataFiles.aspx",
+    };
+    const resolve = (candidateName: string, candidateName2?: string) =>
+      resolveIllinoisCandidateCommitteesFromRelations({
+        candidateName,
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        relations: [
+          candidateName2 ? { ...smithRelation, candidateName: candidateName2 } : smithRelation,
+        ],
+      });
+
+    // A contradicting middle name rejects the relation.
+    expect(resolve("John A. Smith")).toMatchObject({
+      status: "unmatched",
+      reason: "no_official_candidate_relation",
+    });
+    // An initial corroborating the full middle still matches.
+    expect(resolve("John A. Smith", "Smith, John Andrew")).toMatchObject({ status: "matched" });
+    // First+last still matches when a side lacks middle info.
+    expect(resolve("John Smith")).toMatchObject({ status: "matched" });
+  });
+
+  it("reads middle-name evidence through one-sided nickname expansion", () => {
+    const relation = {
+      candidateId: "901",
+      candidateName: "Smith, Michael B",
+      electionYear: 2026,
+      districtType: "statewide",
+      district: "Illinois",
+      office: "Governor",
+      isAtLarge: false,
+      committeeId: "1001",
+      committeeName: "Citizens for Michael Smith",
+      committeeStatus: "active" as const,
+      sourceUrl: "https://www.elections.il.gov/CampaignDisclosure/DownloadCDDataFiles.aspx",
+    };
+    const resolve = (candidateName: string) =>
+      resolveIllinoisCandidateCommitteesFromRelations({
+        candidateName,
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        relations: [relation],
+      });
+
+    expect(resolve("Mike A. Smith")).toMatchObject({
+      status: "unmatched",
+      reason: "no_official_candidate_relation",
+    });
+    expect(resolve("Mike Smith")).toMatchObject({ status: "matched" });
+  });
+
   it("splits search names around suffix-only comma segments", () => {
     expect(splitIllinoisCandidateNameForSearch("Curtis J Tarver, II")).toEqual({
       firstName: "Curtis J",

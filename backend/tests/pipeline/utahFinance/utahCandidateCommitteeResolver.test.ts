@@ -27,6 +27,49 @@ describe("utahCandidateCommitteeResolver", () => {
     expect(normalizeUtahCandidateNameKeys("Jane Doe (Janet Doe)").has("JANET DOE")).toBe(true);
   });
 
+  it("rejects a same-year folder whose middle name contradicts the candidate", () => {
+    // Same report year and no office conflict — only the middle evidence
+    // differs. Without the middle gate this folder linked as an "exact" match
+    // and attached the other Jane Doe's finance records.
+    expect(
+      resolveUtahCandidateCommittee({
+        candidateName: "Jane R. Doe",
+        electionYear: 2024,
+        entityRows: [entityRow({ folderId: "33333", entityName: "Doe, Jane Q.", reportYears: [2024] })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(
+      resolveUtahCandidateCommittee({
+        candidateName: "Jane Q. Doe",
+        electionYear: 2024,
+        entityRows: [entityRow({ folderId: "33333", entityName: "Doe, Jane Quinn", reportYears: [2024] })],
+      })
+    ).toMatchObject({ status: "matched", folderId: "33333" });
+  });
+
+  it("still falls back to first+last when a side lacks middle info", () => {
+    expect(
+      resolveUtahCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2024,
+        entityRows: [entityRow({ folderId: "33333", entityName: "Doe, Jane Q.", reportYears: [2024] })],
+      })
+    ).toMatchObject({ status: "matched", folderId: "33333" });
+  });
+
+  it("lets a middle conflict veto a middle-less parenthetical alias on the same folder", () => {
+    expect(
+      resolveUtahCandidateCommittee({
+        candidateName: "Jane R. Doe",
+        electionYear: 2024,
+        entityRows: [entityRow({ folderId: "33333", entityName: "Doe, Jane Q. (Jane Doe)", reportYears: [2024] })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("matches exactly one Utah candidate folder by candidate name and report year", () => {
     expect(
       resolveUtahCandidateCommittee({

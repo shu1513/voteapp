@@ -43,6 +43,30 @@ function expenditure(overrides: Partial<VermontExpenditureRow> = {}): VermontExp
 }
 
 describe("vermontOutsideSpendingAggregator", () => {
+  it("rejects a payee row whose middle name contradicts the target candidate", () => {
+    // No entity id to fall back on, so the name is the only evidence. Without
+    // the middle gate this PAC money was attributed to the wrong Phil Scott.
+    const result = aggregateVermontOutsideSpending({
+      candidateName: "Phil A. Scott",
+      electionYear: 2024,
+      expenditureRows: [expenditure({ sourceName: "SCOTT, PHIL B", candidateMiddleName: "B" })],
+    });
+
+    expect(result.matchedExpenditureRowCount).toBe(0);
+    expect(result.summary.groups).toEqual([]);
+  });
+
+  it("still attributes a payee row when a side lacks middle info", () => {
+    const result = aggregateVermontOutsideSpending({
+      candidateName: "Phil Scott",
+      electionYear: 2024,
+      expenditureRows: [expenditure({ sourceName: "SCOTT, PHIL B", candidateMiddleName: "B" })],
+    });
+
+    expect(result.matchedExpenditureRowCount).toBe(1);
+    expect(result.includedExpenditureRowCount).toBe(1);
+  });
+
   it("groups PAC contributions to a candidate registrant as supporting PAC support", () => {
     const result = aggregateVermontOutsideSpending({
       candidateName: "Phil Scott",
