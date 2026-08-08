@@ -620,7 +620,12 @@ The acquisition spike is the gate before parser/aggregator work.
   full-window walk over `nc_candidate_finance_links`, with a per-candidate
   `loadCandidateSearchRows` seam — NCSBE is searched per candidate, so the
   PR 7 sync owns pacing/caching and this module never fetches; loader
-  returns rows + the search URL as link provenance)
+  returns rows + the search URL as link provenance). OGID is deliberately
+  NOT persisted on the link row: manual links are keyed by SBoEID alone
+  (decision 5), so the PR 7 sync must derive SBoEID→OGID for every link
+  kind — exact-SBoEID filter over the per-cycle committee-search artifact
+  ("Required artifacts per cycle Y") — while same-run auto-link results
+  carry `orgGroupId` so a fresh resolution skips that lookup
 - [ ] PR 6 aggregators
 - [ ] PR 7 sync + batchSync + scripts
 - [ ] PR 8 outside-group funders/industries (#3)

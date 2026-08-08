@@ -204,6 +204,13 @@ export async function autoLinkNorthCarolinaCandidateFinanceForCandidateElection(
     };
   }
 
+  // The link row deliberately stores only the SBoEID (+ name): OGID is a
+  // portal-internal id and manual links are keyed by SBoEID alone (decision
+  // 5), so the sync must derive SBoEID -> OGID for every link kind anyway —
+  // by exact-SBoEID filter over the per-cycle committee-search artifact the
+  // plan already requires ("Required artifacts per cycle Y"). Persisting it
+  // would add a migration for an optimization no manual link could use.
+  // Same-run callers get orgGroupId on the linked result below.
   await upsertNorthCarolinaFinanceLink({
     db: input.db,
     link: {
