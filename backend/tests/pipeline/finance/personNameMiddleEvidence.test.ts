@@ -5,6 +5,7 @@ import {
   middleNameEvidence,
   parsePersonNameCandidates,
   personNameParseVariants,
+  personNamesMatchWithMiddleEvidence,
 } from "../../../src/pipeline/finance/personNameMiddleEvidence.js";
 
 // A representative state normalizer (the tennessee-pattern one): uppercase,
@@ -148,6 +149,22 @@ describe("hasMiddleNameConflict", () => {
     expect(conflict("John Smith Jr.", ["Smith, John"])).toBe(false);
   });
 
+  it("agrees with personNamesMatchWithMiddleEvidence on every shared case", () => {
+    // Wherever parses align, the veto and the full matcher are complements.
+    const cases: Array<[string, string[]]> = [
+      ["John A. Smith", ["Smith, John B."]],
+      ["John A. Smith", ["Smith, John Andrew"]],
+      ["John Smith", ["Smith, John B."]],
+      ["John A. Smith", ["John Smith", "Smith, John B."]],
+      ["Mary A. Van Dyke", ["Van Dyke, Mary B."]],
+    ];
+    for (const [candidateName, rowNames] of cases) {
+      expect(personNamesMatchWithMiddleEvidence({ candidateName, rowNames, normalizePersonName })).toBe(
+        !hasMiddleNameConflict({ candidateName, rowNames, normalizePersonName })
+      );
+    }
+  });
+
   it("honors a caller-supplied first-name equivalence for nickname states", () => {
     const nicknameEquivalent = (candidateFirst: string, rowFirst: string) =>
       candidateFirst === rowFirst || (candidateFirst === "MIKE" && rowFirst === "MICHAEL");
@@ -161,5 +178,34 @@ describe("hasMiddleNameConflict", () => {
     ).toBe(true);
     // Without the equivalence the pair never aligns, so no veto.
     expect(conflict("Mike A. Smith", ["SMITH, MICHAEL B"])).toBe(false);
+  });
+});
+
+describe("personNamesMatchWithMiddleEvidence", () => {
+  function matches(candidateName: string, rowNames: string[]): boolean {
+    return personNamesMatchWithMiddleEvidence({ candidateName, rowNames, normalizePersonName });
+  }
+
+  it("recovers first+last alignments the exact-key states miss", () => {
+    // The colorado-pattern recall gap: full-string keys never overlap when
+    // only one side carries a middle.
+    expect(matches("John A. Smith", ["Smith, John"])).toBe(true);
+    expect(matches("John Smith", ["Smith, John A."])).toBe(true);
+    expect(matches("John Smith", ["John Smith"])).toBe(true);
+  });
+
+  it("matches on corroborating middles and rejects contradicting ones", () => {
+    expect(matches("John A. Smith", ["Smith, John Andrew"])).toBe(true);
+    expect(matches("John A. Smith", ["Smith, John B."])).toBe(false);
+  });
+
+  it("requires an actual first+last alignment", () => {
+    expect(matches("John Smith", ["Jones, Mary"])).toBe(false);
+    expect(matches("John Smith", [])).toBe(false);
+    expect(matches("John Smith", ["Smithers, John"])).toBe(false);
+  });
+
+  it("lets a conflict on one row name veto a weak alignment on another", () => {
+    expect(matches("John A. Smith", ["John Smith", "Smith, John B."])).toBe(false);
   });
 });

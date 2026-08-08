@@ -90,6 +90,38 @@ describe("coloradoCandidateCommitteeResolver", () => {
     });
   });
 
+  it("recovers a row when only the candidate side carries a middle", () => {
+    // Full-string keys never overlap here ("JANE Q DOE" vs "JANE DOE"), which
+    // silently stranded the link before the middle-evidence fallback.
+    expect(
+      resolveColoradoCandidateCommittee({
+        candidateName: "Jane Q. Doe",
+        electionYear: 2026,
+        contributionRows: [contribution()],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "202650001" });
+  });
+
+  it("recovers a row when only the TRACER side carries a middle", () => {
+    expect(
+      resolveColoradoCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        contributionRows: [contribution({ CandidateName: "Doe, Jane Q." })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "202650001" });
+  });
+
+  it("still refuses a row whose middle name contradicts the candidate", () => {
+    expect(
+      resolveColoradoCandidateCommittee({
+        candidateName: "Jane Q. Doe",
+        electionYear: 2026,
+        contributionRows: [contribution({ CandidateName: "Doe, Jane R." })],
+      })
+    ).toEqual({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("returns unmatched when there is no candidate committee match", () => {
     expect(
       resolveColoradoCandidateCommittee({

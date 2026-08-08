@@ -527,6 +527,20 @@ export function resolveIllinoisCandidateCommittee(
     if (!committeeNameLikelyMatchesCandidate({ committeeName, candidateNameKeys })) {
       continue;
     }
+    // The token-subset test accepts "Citizens for John B Smith" for candidate
+    // "John A. Smith" — another Smith's committee. normalizePersonName strips
+    // the committee wrappers (FRIENDS/OF/FOR/...), so the remaining text
+    // parses as a person name and the middle gate applies. Names that keep
+    // trailing office tokens ("John Smith for Attorney General") never align
+    // on the surname, produce no evidence, and pass through unchanged.
+    if (
+      illinoisCandidateNameMiddleConflicts({
+        candidateName: input.candidateName,
+        rowNames: [committeeName],
+      })
+    ) {
+      continue;
+    }
 
     const accumulator = rowsByCommittee.get(committeeKey) ?? {
       committeeKey,

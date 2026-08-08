@@ -137,6 +137,43 @@ export type MiddleNameConflictInput = {
   firstNamesEquivalent?: (candidateFirst: string, rowFirst: string) => boolean;
 };
 
+// Aggregated middle evidence across every aligned candidate/row variant pair.
+// sawStrong short-circuits: both consumers resolve immediately once any pair
+// corroborates the middle.
+function collectMiddleEvidence(input: MiddleNameConflictInput): {
+  sawStrong: boolean;
+  sawWeak: boolean;
+  sawConflict: boolean;
+} {
+  const firstNamesEquivalent =
+    input.firstNamesEquivalent ?? ((candidateFirst: string, rowFirst: string) => candidateFirst === rowFirst);
+  const candidateVariants = personNameParseVariants(input.candidateName, input.normalizePersonName);
+  let sawWeak = false;
+  let sawConflict = false;
+  for (const rowName of input.rowNames) {
+    for (const rowVariant of personNameParseVariants(rowName, input.normalizePersonName)) {
+      for (const candidateVariant of candidateVariants) {
+        if (candidateVariant.last !== rowVariant.last) {
+          continue;
+        }
+        if (!firstNamesEquivalent(candidateVariant.first, rowVariant.first)) {
+          continue;
+        }
+        const evidence = middleNameEvidence(candidateVariant.middles, rowVariant.middles);
+        if (evidence === "strong") {
+          return { sawStrong: true, sawWeak, sawConflict };
+        }
+        if (evidence === "conflict") {
+          sawConflict = true;
+        } else {
+          sawWeak = true;
+        }
+      }
+    }
+  }
+  return { sawStrong: false, sawWeak, sawConflict };
+}
+
 // True when the candidate and row names align on first+last, at least one
 // aligned pair carries contradicting middle names, and no aligned pair
 // corroborates the middle. Callers apply this AFTER their existing key-overlap
@@ -150,28 +187,19 @@ export type MiddleNameConflictInput = {
 // caller did not surface here) there is no middle evidence either way and the
 // state's key-overlap verdict stands.
 export function hasMiddleNameConflict(input: MiddleNameConflictInput): boolean {
-  const firstNamesEquivalent =
-    input.firstNamesEquivalent ?? ((candidateFirst: string, rowFirst: string) => candidateFirst === rowFirst);
-  const candidateVariants = personNameParseVariants(input.candidateName, input.normalizePersonName);
-  let sawConflict = false;
-  for (const rowName of input.rowNames) {
-    for (const rowVariant of personNameParseVariants(rowName, input.normalizePersonName)) {
-      for (const candidateVariant of candidateVariants) {
-        if (candidateVariant.last !== rowVariant.last) {
-          continue;
-        }
-        if (!firstNamesEquivalent(candidateVariant.first, rowVariant.first)) {
-          continue;
-        }
-        const evidence = middleNameEvidence(candidateVariant.middles, rowVariant.middles);
-        if (evidence === "strong") {
-          return false;
-        }
-        if (evidence === "conflict") {
-          sawConflict = true;
-        }
-      }
-    }
-  }
-  return sawConflict;
+  const evidence = collectMiddleEvidence(input);
+  return !evidence.sawStrong && evidence.sawConflict;
+}
+
+// Full match verdict (the georgia aggregation), for states whose key sets
+// carry NO first+last collapse (colorado pattern: full-string and comma-flip
+// keys only). Those states have the opposite problem — "John A. Smith" never
+// matches "Smith, John" at all — so they call this as a RECALL fallback after
+// their exact-key match misses: any strong pair matches; otherwise any middle
+// conflict rejects; otherwise a first+last alignment with middle information
+// missing on a side matches. No alignment at all is no match — this function
+// never widens beyond first+last agreement.
+export function personNamesMatchWithMiddleEvidence(input: MiddleNameConflictInput): boolean {
+  const evidence = collectMiddleEvidence(input);
+  return evidence.sawStrong || (evidence.sawWeak && !evidence.sawConflict);
 }
