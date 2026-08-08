@@ -254,10 +254,37 @@ describe("Louisiana candidate committee resolver", () => {
     });
   });
 
-  it("does not treat first-and-last-only collisions as exact matches", () => {
+  it("matches a first+last alignment when the middle evidence does not contradict", () => {
+    // Previously any first+last-only collision failed closed, stranding the
+    // link whenever one side dropped the middle. The middle-evidence gate is
+    // the precise replacement: weak alignment matches, contradiction refuses.
     expect(
       resolveLouisianaCandidateCommittee({
         candidateName: "John Edwards",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2027,
+        candidateRows: [candidateRow()],
+      })
+    ).toMatchObject({ status: "matched", filerNumber: "12345" });
+  });
+
+  it("accepts an initial that corroborates the filer's full middle name", () => {
+    expect(
+      resolveLouisianaCandidateCommittee({
+        candidateName: "John B. Edwards",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2027,
+        candidateRows: [candidateRow()],
+      })
+    ).toMatchObject({ status: "matched", filerNumber: "12345" });
+  });
+
+  it("still refuses a filer whose middle name contradicts the candidate", () => {
+    expect(
+      resolveLouisianaCandidateCommittee({
+        candidateName: "John Paul Edwards",
         officeScope: "statewide",
         officeName: "Governor",
         electionYear: 2027,

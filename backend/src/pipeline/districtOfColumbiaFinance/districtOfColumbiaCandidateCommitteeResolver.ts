@@ -1,4 +1,7 @@
-import { hasMiddleNameConflict } from "../finance/personNameMiddleEvidence.js";
+import {
+  committeeNameMiddleEvidenceRowNames,
+  hasMiddleNameConflict,
+} from "../finance/personNameMiddleEvidence.js";
 import {
   DISTRICT_OF_COLUMBIA_OCF_FILER_TYPES,
   buildDistrictOfColumbiaOcfDataDownloadUrl,
@@ -159,11 +162,12 @@ function recordNameMatchesCandidate(input: {
       // for candidate "John A. Smith" — another Smith's committee.
       // normalizePersonName strips the committee wrappers (TO/ELECT/...), so
       // the remaining text parses as a person name and the middle gate
-      // applies here too. Names that keep trailing office tokens never align
-      // on the surname, produce no evidence, and pass through unchanged.
+      // applies here too. The expansion also evaluates year-stripped and
+      // "for"-delimited segments, so trailing office/year text cannot hide
+      // the contradicting middle by blocking surname alignment.
       return !hasMiddleNameConflict({
         candidateName: input.candidateName,
-        rowNames: [input.record.committeeName ?? ""],
+        rowNames: committeeNameMiddleEvidenceRowNames(input.record.committeeName ?? ""),
         normalizePersonName,
       });
     }

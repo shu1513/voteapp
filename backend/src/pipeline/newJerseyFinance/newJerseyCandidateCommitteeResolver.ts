@@ -152,7 +152,10 @@ function entityMatchesCandidateName(input: {
 }): boolean {
   const values = [
     input.entity.entityName,
-    [input.entity.firstName, input.entity.lastName].filter(Boolean).join(" "),
+    // The structured middleInitial rides along so the middle-name gate below
+    // sees it even when entityName omits the middle ("SMITH, JOHN" + "B").
+    // Recall is unchanged: the key builder still emits the first+last key.
+    [input.entity.firstName, input.entity.middleInitial, input.entity.lastName].filter(Boolean).join(" "),
     [input.entity.lastName, input.entity.firstName].filter(Boolean).join(", "),
   ];
   let keyMatched = false;

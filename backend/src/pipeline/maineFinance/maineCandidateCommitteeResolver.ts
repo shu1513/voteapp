@@ -1,3 +1,4 @@
+import { personNamesMatchWithMiddleEvidence } from "../finance/personNameMiddleEvidence.js";
 import type { MaineCfisContributionRow } from "./maineCfisArtifactReader.js";
 import { isMaineFinanceEligibleOffice } from "./maineFinanceEligibleOffices.js";
 
@@ -207,6 +208,7 @@ function isCandidateCommittee(row: MaineCfisContributionRow): boolean {
 
 function rowMatchesCandidateName(input: {
   row: MaineCfisContributionRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   for (const key of normalizeMaineCandidateNameKeys(input.row["Candidate Name"])) {
@@ -214,7 +216,16 @@ function rowMatchesCandidateName(input: {
       return true;
     }
   }
-  return false;
+  // The key set carries only full-string and comma-flip keys, so a name that
+  // differs in middle content on one side ("John A. Smith" vs "Smith, John")
+  // never overlaps and the link silently strands. Recover it through the
+  // middle-evidence gate: first+last alignment matches unless the middles
+  // contradict.
+  return personNamesMatchWithMiddleEvidence({
+    candidateName: input.candidateName,
+    rowNames: [input.row["Candidate Name"]],
+    normalizePersonName,
+  });
 }
 
 function rowMatchesOffice(input: {
@@ -298,7 +309,7 @@ export function resolveMaineCandidateCommittee(
     if (!isElectionCycleContribution(row, electionYear)) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
     if (!rowMatchesOffice({ row, officeCanonicalName })) {

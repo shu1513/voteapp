@@ -188,7 +188,11 @@ describe("maineCandidateCommitteeResolver", () => {
     });
   });
 
-  it("does not treat first-and-last-only collisions as exact committee matches", () => {
+  it("matches a first+last alignment when the middle evidence does not contradict", () => {
+    // Previously any first+last-only collision failed closed, which stranded
+    // this real committee whenever the roster name dropped the middle. The
+    // middle-evidence gate is the precise replacement: weak alignment
+    // matches, contradiction refuses.
     expect(
       resolveMaineCandidateCommittee({
         candidateName: "Reagan Paul",
@@ -198,10 +202,23 @@ describe("maineCandidateCommitteeResolver", () => {
         electionYear: 2024,
         contributionRows: [contribution({ "Candidate Name": "Reagan LeeAnn Paul" })],
       })
+    ).toMatchObject({ status: "matched", committeeId: "1001" });
+  });
+
+  it("still refuses a committee whose candidate middle name contradicts", () => {
+    expect(
+      resolveMaineCandidateCommittee({
+        candidateName: "Reagan Marie Paul",
+        officeScope: "state_lower",
+        officeName: "Representative",
+        district: "37",
+        electionYear: 2024,
+        contributionRows: [contribution({ "Candidate Name": "Reagan LeeAnn Paul" })],
+      })
     ).toEqual({
       status: "unmatched",
       reason: "no_candidate_committee_match",
-      candidateNameNormalized: "REAGAN PAUL",
+      candidateNameNormalized: "REAGAN MARIE PAUL",
       officeNameNormalized: "State Lower Chamber Legislator",
     });
   });

@@ -88,6 +88,106 @@ describe("illinoisCandidateCommitteeResolver", () => {
     });
   });
 
+  it("rejects a committee named for a middle-conflicting namesake", () => {
+    // The token-subset test alone accepted this: candidate key "JANE DOE" is
+    // a subset of {JANE, B, DOE}. The stripped committee text parses as a
+    // person name, so the middle gate now rejects the other Jane Doe.
+    expect(
+      resolveIllinoisCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        contributionRecords: [contribution({ recipientCommitteeName: "Citizens for Jane B Doe" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("keeps a committee whose name corroborates the candidate's middle initial", () => {
+    expect(
+      resolveIllinoisCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        contributionRecords: [contribution({ recipientCommitteeName: "Friends of Jane Andrea Doe" })],
+      })
+    ).toMatchObject({
+      status: "matched",
+      matches: [{ committeeKey: "FRIENDS OF JANE ANDREA DOE" }],
+    });
+  });
+
+  it("still falls back to first+last when the committee name lacks a middle", () => {
+    expect(
+      resolveIllinoisCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        contributionRecords: [contribution({ recipientCommitteeName: "Friends of Jane Doe" })],
+      })
+    ).toMatchObject({ status: "matched", matches: [{ committeeKey: "FRIENDS OF JANE DOE" }] });
+  });
+
+  it("keeps a middle-less committee name with trailing office tokens", () => {
+    // The "Jane Doe" segment aligns weakly (no middle on the committee side),
+    // so the token-subset verdict stands.
+    expect(
+      resolveIllinoisCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        contributionRecords: [contribution({ recipientCommitteeName: "Jane Doe for Attorney General" })],
+      })
+    ).toMatchObject({ status: "matched", matches: [{ committeeKey: "JANE DOE FOR ATTORNEY GENERAL" }] });
+  });
+
+  it("rejects middle-conflicting names hidden behind office or year designators", () => {
+    // Trailing text used to block surname alignment, hiding the conflict
+    // entirely; the designator expansion now isolates the person-name segment.
+    for (const committeeName of [
+      "Citizens for Jane B Doe for Governor",
+      "Jane B Doe 2026",
+      "Jane B Doe for Attorney General",
+    ]) {
+      expect(
+        resolveIllinoisCandidateCommittee({
+          candidateName: "Jane A. Doe",
+          officeScope: "statewide",
+          officeName: "Governor",
+          electionYear: 2026,
+          contributionRecords: [contribution({ recipientCommitteeName: committeeName })],
+        })
+      ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+    }
+  });
+
+  it("lets a corroborating middle survive the designator expansion", () => {
+    expect(
+      resolveIllinoisCandidateCommittee({
+        candidateName: "Jane A. Doe",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        contributionRecords: [contribution({ recipientCommitteeName: "Jane Andrea Doe for Governor" })],
+      })
+    ).toMatchObject({ status: "matched", matches: [{ committeeKey: "JANE ANDREA DOE FOR GOVERNOR" }] });
+  });
+
+  it("reads committee-name middle evidence through one-sided nickname expansion", () => {
+    expect(
+      resolveIllinoisCandidateCommittee({
+        candidateName: "Mike A. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        contributionRecords: [contribution({ recipientCommitteeName: "Citizens for Michael B Smith" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("requires a valid district for legislative office resolution", () => {
     expect(
       resolveIllinoisCandidateCommittee({
