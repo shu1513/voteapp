@@ -442,6 +442,12 @@ export type PickCardEntry = {
   measure_position: "yes" | "no" | null;
   /** Same contract as ElectionChoice.measure_result. */
   measure_result?: string | null;
+  /** Same contract as ElectionSummary.current_result_outcome/_winners: the
+   * election's canonical result, so the card can flag a pick that
+   * won/advanced before certification flips candidacy_status. Optional to
+   * tolerate a pre-field backend (deploy skew). */
+  current_result_outcome?: string | null;
+  current_result_winners?: ElectionResultWinner[];
 };
 
 export type PickCard = {

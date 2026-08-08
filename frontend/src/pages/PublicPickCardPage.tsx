@@ -1,7 +1,7 @@
 import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import { APP_NAME, formatElectionDate } from "@voteapp/api-client";
-import type { PickCard } from "@voteapp/api-client";
+import type { PickCard, PickCardEntry } from "@voteapp/api-client";
 import type { BackTo } from "../lib/detailNavContext";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
@@ -81,6 +81,26 @@ function measureOutcomeChip(position: "yes" | "no", result: string | null | unde
   );
 }
 
+// Result-derived chip for a pick the candidacy pipeline hasn't labeled yet —
+// same rules as the owner's card (PicksPage): election-night calls arrive as
+// result rows (outcome + winner ids) long before candidate_elections.status
+// flips to won/lost. Id-only matching, decisive outcomes only, and silence
+// when the pick isn't among the winners.
+function pickResultChip(entry: PickCardEntry, candidateId: string) {
+  const outcome = entry.current_result_outcome;
+  if (outcome !== "won" && outcome !== "advanced" && outcome !== "runoff") {
+    return null;
+  }
+  if (!(entry.current_result_winners ?? []).some((winner) => winner.candidate_id === candidateId)) {
+    return null;
+  }
+  return (
+    <span className="ml-1 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+      {outcome === "won" ? "Won" : "Advanced"}
+    </span>
+  );
+}
+
 export function PublicPickCardPage() {
   const card = useLoaderData<typeof loader>();
   // The anonymous card is still a real origin: detail pages reached from it
@@ -119,7 +139,13 @@ export function PublicPickCardPage() {
                       }
                     >
                       {entry.measure_position === "yes" ? "Yes" : "No"} on this measure
-                      {measureOutcomeChip(entry.measure_position, entry.measure_result)}
+                      {/* Certified measure result first; before it lands, the
+                          canonical result row's election-night passed/failed
+                          fills in — same fallback as the owner's card. */}
+                      {measureOutcomeChip(
+                        entry.measure_position,
+                        entry.measure_result ?? entry.current_result_outcome
+                      )}
                     </span>
                   ) : (
                     <span className="font-semibold text-green-900">
@@ -146,7 +172,11 @@ export function PublicPickCardPage() {
                             // recipient must not read a withdrawn candidate
                             // as still running.
                             <span className="ml-1 text-xs text-ink-soft">(withdrew)</span>
-                          ) : null}
+                          ) : (
+                            // candidacy_status has nothing to say yet —
+                            // fall back to the canonical result row.
+                            pickResultChip(entry, pick.candidate_id)
+                          )}
                         </span>
                       ))}
                     </span>

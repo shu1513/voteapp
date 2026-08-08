@@ -88,6 +88,71 @@ describe("PublicPickCardPage", () => {
     expect(screen.queryByText("Passed")).not.toBeInTheDocument();
     expect(screen.queryByText("Failed")).not.toBeInTheDocument();
   });
+
+  it("flags a pick among the canonical result's winners before certification", async () => {
+    // Election-night calls land as result rows long before candidacy_status
+    // flips — the recipient should see "Advanced" the same day the owner
+    // shares the card.
+    renderCard(
+      pickCard({
+        entries: [
+          officeEntry({
+            current_result_outcome: "advanced",
+            current_result_winners: [
+              { candidate_id: "c-1", candidate_name: "Jane Smith", party: "Democratic" },
+              { candidate_id: "c-2", candidate_name: "John James", party: "Republican" },
+            ],
+          }),
+        ],
+      })
+    );
+    expect(await screen.findByText("Advanced")).toBeInTheDocument();
+    expect(screen.getByText("Advanced").className).toContain("bg-green-700");
+  });
+
+  it("stays silent on a pick that missed the winners", async () => {
+    renderCard(
+      pickCard({
+        entries: [
+          officeEntry({
+            current_result_outcome: "advanced",
+            current_result_winners: [{ candidate_id: "c-2", candidate_name: "John James" }],
+          }),
+        ],
+      })
+    );
+    expect(await screen.findByText("Jane Smith")).toBeInTheDocument();
+    expect(screen.queryByText("Advanced")).not.toBeInTheDocument();
+    expect(screen.queryByText("Lost")).not.toBeInTheDocument();
+  });
+
+  it("never doubles a certified candidacy chip with the result-derived one", async () => {
+    renderCard(
+      pickCard({
+        entries: [
+          officeEntry({
+            picks: [{ candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "won" }],
+            current_result_outcome: "won",
+            current_result_winners: [{ candidate_id: "c-1", candidate_name: "Jane Smith" }],
+          }),
+        ],
+      })
+    );
+    expect(await screen.findByText("Jane Smith")).toBeInTheDocument();
+    expect(screen.getAllByText("Won")).toHaveLength(1);
+  });
+
+  it("marks a measure pick from the canonical result before the certified field lands", async () => {
+    renderCard(
+      pickCard({
+        entries: [
+          measureEntry({ measure_position: "yes", measure_result: null, current_result_outcome: "passed" }),
+        ],
+      })
+    );
+    expect(await screen.findByText("Passed")).toBeInTheDocument();
+    expect(screen.getByText("Passed").className).toContain("bg-green-700");
+  });
 });
 
 describe("PublicPickCardPage nav context", () => {
@@ -115,6 +180,19 @@ describe("PublicPickCardPage nav context", () => {
     expect(router.state.location.state).toEqual(SHARED_STATE);
   });
 });
+
+function officeEntry(overrides: Partial<PickCardEntry> = {}): PickCardEntry {
+  return {
+    election_id: "e-1",
+    official_ballot_title: "Governor",
+    race_type: "office",
+    district_name: "Springfield",
+    picks: [{ candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "declared" }],
+    measure_position: null,
+    measure_result: null,
+    ...overrides,
+  };
+}
 
 function measureEntry(overrides: Partial<PickCardEntry> = {}): PickCardEntry {
   return {

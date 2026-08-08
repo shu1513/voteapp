@@ -13,6 +13,12 @@ export type UserPickCardShare = {
   election_date: string;
 };
 
+export type PublicPickCardWinner = {
+  candidate_id?: string;
+  candidate_name?: string;
+  party?: string;
+};
+
 export type PublicPickCardEntry = {
   election_id: string;
   official_ballot_title: string;
@@ -24,6 +30,12 @@ export type PublicPickCardEntry = {
    * results land, null before) — the measure counterpart of the won/lost
    * candidacy_status on picks. */
   measure_result: string | null;
+  /** The election's canonical result (same precedence as the ballot summary:
+   * certified over election_night, then freshest), so the card can flag a
+   * pick that won/advanced on election night — candidacy_status only flips
+   * at certification. null / empty when no decisive result is recorded. */
+  current_result_outcome: string | null;
+  current_result_winners: PublicPickCardWinner[];
 };
 
 /** The public payload behind /picks/<token>. Everything here is public
@@ -190,6 +202,35 @@ export async function getOrCreateUserPickCardShare(
   }
 }
 
+// Mirrors ballotLookup's parseWinners, minus candidate_election_id: this is
+// a public payload, and the card only needs id (pick matching), name, and
+// party. Malformed entries drop out rather than failing the whole card.
+function parsePublicWinners(raw: unknown): PublicPickCardWinner[] {
+  if (!Array.isArray(raw)) {
+    return [];
+  }
+  return raw.flatMap((item): PublicPickCardWinner[] => {
+    if (typeof item !== "object" || item === null || Array.isArray(item)) {
+      return [];
+    }
+    const row = item as Record<string, unknown>;
+    const winner: PublicPickCardWinner = {};
+    for (const key of ["candidate_id", "candidate_name", "party"] as const) {
+      const value = row[key];
+      if (typeof value === "string" && value.trim().length > 0) {
+        winner[key] = value.trim();
+      }
+    }
+    return Object.keys(winner).length > 0 ? [winner] : [];
+  });
+}
+
+type CanonicalResultRow = {
+  election_id: string;
+  outcome: string;
+  winners: unknown;
+};
+
 type PickCardRow = {
   first_name: string | null;
   election_date: string;
@@ -299,6 +340,8 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
         picks: [],
         measure_position: null,
         measure_result: row.measure_result,
+        current_result_outcome: null,
+        current_result_winners: [],
       };
       byElection.set(row.election_id, entry);
     }
@@ -312,11 +355,81 @@ export async function lookupPublicPickCard(db: Queryable, token: string): Promis
       });
     }
   }
+  const entries = [...byElection.values()].filter(
+    (entry) => entry.picks.length > 0 || entry.measure_position !== null
+  );
+
+  if (entries.length > 0) {
+    // One canonical result per election, so the public card can flag a pick
+    // that won/advanced before certification flips candidacy_status. Same
+    // ranking as the ballot summary's resultSummaryResult (ballotLookup.ts):
+    // certified beats election_night, freshest retrieved_at wins, and
+    // outcome = 'unknown' rows (not_found / not_final_yet sweeps) are
+    // filtered out — a later unknown row must not shadow a decisive call.
+    const canonical = await db.query<CanonicalResultRow>(
+      `
+        WITH all_results AS (
+          SELECT
+            er.election_id,
+            er.outcome,
+            er.winners,
+            er.pass_type,
+            er.retrieved_at
+          FROM public.election_results AS er
+          WHERE er.election_id = ANY($1::uuid[])
+            AND er.outcome <> 'unknown'
+
+          UNION ALL
+
+          SELECT
+            bm.election_id,
+            bmr.outcome,
+            '[]'::jsonb AS winners,
+            bmr.pass_type,
+            bmr.retrieved_at
+          FROM public.ballot_measure_results AS bmr
+          JOIN public.ballot_measures AS bm
+            ON bm.id = bmr.ballot_measure_id
+          WHERE bm.election_id = ANY($1::uuid[])
+            AND bmr.outcome <> 'unknown'
+        ),
+        ranked AS (
+          SELECT
+            election_id,
+            outcome,
+            winners,
+            row_number() OVER (
+              PARTITION BY election_id
+              ORDER BY
+                CASE pass_type
+                  WHEN 'certified' THEN 1
+                  WHEN 'election_night' THEN 2
+                  ELSE 3
+                END,
+                retrieved_at DESC,
+                outcome ASC
+            ) AS rn
+          FROM all_results
+        )
+        SELECT election_id::text AS election_id, outcome, winners
+        FROM ranked
+        WHERE rn = 1
+      `,
+      [entries.map((entry) => entry.election_id)]
+    );
+    const byResultElection = new Map(canonical.rows.map((row) => [row.election_id, row]));
+    for (const entry of entries) {
+      const resultRow = byResultElection.get(entry.election_id);
+      if (resultRow) {
+        entry.current_result_outcome = resultRow.outcome;
+        entry.current_result_winners = parsePublicWinners(resultRow.winners);
+      }
+    }
+  }
+
   return {
     first_name: result.rows[0].first_name,
     election_date: result.rows[0].election_date,
-    entries: [...byElection.values()].filter(
-      (entry) => entry.picks.length > 0 || entry.measure_position !== null
-    ),
+    entries,
   };
 }
