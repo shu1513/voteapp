@@ -1,3 +1,5 @@
+import { pathToFileURL } from "node:url";
+
 import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
@@ -20,10 +22,13 @@ function usage(): string {
     "Usage: npm run manual:deferral:<command> -- [flags]",
     "",
     "Commands:",
-    "  record   Record (or re-record, bumping date/reason) a deferral.",
+    "  record   Record a deferral. Refuses to overwrite an existing open row unless --replace.",
     "           --district-id <id> --stage <stage> --reason <text> --blocked-until <YYYY-MM-DD>",
-    "           [--election-id <id>] [--source-url <url>]",
+    "           [--election-id <id>] [--blocker-key <slug>] [--source-url <url>] [--replace]",
     `           Stages: ${DEFERRAL_STAGES.join(", ")}`,
+    "           One open row per (election|district) + stage + blocker-key. Use --election-id",
+    "           for a per-election blocker, --blocker-key for a second district-wide blocker",
+    "           on the same stage, and --replace only to rewrite the row you already have.",
     "  due      List deferred rows whose blocked_until has passed. [--limit <n>] [--all] [--district-id <id>]",
     "           (--all lists every open deferral regardless of date, uncapped unless --limit is given)",
     "  resolve  Close a deferral after the deferred unit was completed. --deferral-id <id> [--note <text>]",
@@ -40,7 +45,7 @@ function requireEnv(name: string): string {
   return value;
 }
 
-function parseFlags(argv: readonly string[]): Map<string, string> {
+export function parseFlags(argv: readonly string[]): Map<string, string> {
   const flags = new Map<string, string>();
   for (let i = 0; i < argv.length; i += 1) {
     const token = argv[i];
@@ -84,6 +89,35 @@ function print(payload: unknown): void {
   console.log(JSON.stringify(payload, null, 2));
 }
 
+// The discriminator must be a STABLE machine key: it is part of the open-row
+// unique key, so free text ("waiting on the county clerk") would mint a fresh
+// row on every retry instead of updating the one already recorded. Mirrors
+// chk_manual_research_deferrals_blocker_key so the failure is a clear CLI
+// message rather than a raw constraint violation.
+const BLOCKER_KEY_PATTERN = /^[a-z0-9][a-z0-9_-]{0,39}$/;
+
+export function parseBlockerKey(raw: string | null): string | null {
+  if (raw === null) {
+    return null;
+  }
+  if (!BLOCKER_KEY_PATTERN.test(raw)) {
+    throw new Error(
+      `Invalid --blocker-key: ${raw}. Expected a short lowercase slug ` +
+        `(letters, digits, _ or -, max 40 chars), e.g. ballot_measure_family.`
+    );
+  }
+  return raw;
+}
+
+// Narrow surface so tests can drive `record` against a fake instead of a live
+// pool (same pattern as the other manual script CLIs).
+export type DeferralClient = {
+  query<T = Record<string, unknown>>(
+    text: string,
+    values?: unknown[]
+  ): Promise<{ rows: T[] }>;
+};
+
 // Date.parse accepts overflow dates and silently normalizes them
 // ("2026-02-30" -> Mar 2). Round-trip the parsed parts so only real calendar
 // days are accepted.
@@ -104,7 +138,11 @@ function parseBlockedUntil(raw: string): string {
   return raw;
 }
 
-async function runCommand(pool: Pool, command: string, flags: Map<string, string>): Promise<void> {
+export async function runCommand(
+  pool: DeferralClient,
+  command: string,
+  flags: Map<string, string>
+): Promise<void> {
   switch (command) {
     case "record": {
       const districtId = requireFlag(flags, "district-id");
@@ -116,6 +154,8 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
       const blockedUntil = parseBlockedUntil(requireFlag(flags, "blocked-until"));
       const electionId = optionalValueFlag(flags, "election-id");
       const sourceUrl = optionalValueFlag(flags, "source-url");
+      const blockerKey = parseBlockerKey(optionalValueFlag(flags, "blocker-key"));
+      const replace = flags.get("replace") === "true";
 
       const districtRow = await pool.query(`SELECT name FROM public.districts WHERE id = $1`, [
         districtId,
@@ -135,34 +175,87 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
         }
       }
 
-      // Manual upsert: two partial unique indexes (election-scoped and
-      // district-wide) cannot share one ON CONFLICT target.
-      const updated = await pool.query(
+      // Look before writing. The previous version went straight to an UPDATE
+      // and treated a hit as success, so a second blocker recorded on the same
+      // key silently replaced the first one's reason and date and the lost work
+      // never came back on the due list (2026-07-10: a judicial-retention
+      // deferral clobbered a runoff-generals one). A collision is now an error
+      // that names the row and the three ways out.
+      //
+      // Two partial unique indexes (election-scoped and district-wide) cannot
+      // share one ON CONFLICT target, so the match is spelled out here.
+      const existing = await pool.query<{
+        id: string;
+        reason: string;
+        blocked_until: string;
+      }>(
         `
-          UPDATE public.manual_research_deferrals
-          SET reason = $1, blocked_until = $2, source_url = $3, updated_at = now()
+          SELECT id, reason, blocked_until::text AS blocked_until
+          FROM public.manual_research_deferrals
           WHERE status = 'deferred'
-            AND district_id = $4
-            AND stage = $5
-            AND election_id IS NOT DISTINCT FROM $6
-          RETURNING id
+            AND district_id = $1
+            AND stage = $2
+            AND election_id IS NOT DISTINCT FROM $3
+            AND blocker_key IS NOT DISTINCT FROM $4
         `,
-        [reason, blockedUntil, sourceUrl, districtId, stage, electionId]
+        [districtId, stage, electionId, blockerKey]
       );
-      if (updated.rows.length > 0) {
-        print({ deferral_id: updated.rows[0].id, district_name: districtName, updated: true });
+
+      if (existing.rows.length > 0 && !replace) {
+        const row = existing.rows[0];
+        const scope = electionId ? `election ${electionId}` : `district ${districtId} (district-wide)`;
+        throw new Error(
+          [
+            `An open ${stage} deferral already exists for ${scope}` +
+              `${blockerKey ? ` with blocker-key ${blockerKey}` : ""}.`,
+            `  id:            ${row.id}`,
+            `  blocked_until: ${row.blocked_until}`,
+            `  reason:        ${row.reason.slice(0, 200)}${row.reason.length > 200 ? "…" : ""}`,
+            "",
+            "Refusing to overwrite it. Pick the one that matches your intent:",
+            "  --election-id <id>    this blocker belongs to one specific election",
+            "  --blocker-key <slug>  this is a SEPARATE district-wide blocker on the same",
+            "                        stage (e.g. ballot_measure_family, office_matcher)",
+            "  --replace             you mean to rewrite the row above with a new reason/date",
+          ].join("\n")
+        );
+      }
+
+      if (existing.rows.length > 0) {
+        const updated = await pool.query<{ id: string }>(
+          `
+            UPDATE public.manual_research_deferrals
+            SET reason = $1, blocked_until = $2, source_url = $3, updated_at = now()
+            WHERE id = $4
+            RETURNING id
+          `,
+          [reason, blockedUntil, sourceUrl, existing.rows[0].id]
+        );
+        print({
+          deferral_id: updated.rows[0].id,
+          district_name: districtName,
+          blocker_key: blockerKey,
+          replaced: true,
+        });
         return;
       }
-      const inserted = await pool.query(
+
+      const inserted = await pool.query<{ id: string }>(
         `
           INSERT INTO public.manual_research_deferrals
-            (district_id, election_id, stage, reason, blocked_until, source_url, district_name_snapshot)
-          VALUES ($1, $2, $3, $4, $5, $6, $7)
+            (district_id, election_id, stage, reason, blocked_until, source_url,
+             district_name_snapshot, blocker_key)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
           RETURNING id
         `,
-        [districtId, electionId, stage, reason, blockedUntil, sourceUrl, districtName]
+        [districtId, electionId, stage, reason, blockedUntil, sourceUrl, districtName, blockerKey]
       );
-      print({ deferral_id: inserted.rows[0].id, district_name: districtName, recorded: true });
+      print({
+        deferral_id: inserted.rows[0].id,
+        district_name: districtName,
+        blocker_key: blockerKey,
+        recorded: true,
+      });
       return;
     }
 
@@ -193,8 +286,8 @@ async function runCommand(pool: Pool, command: string, flags: Map<string, string
       }
       const rows = await pool.query(
         `
-          SELECT id, district_id, election_id, stage, reason, blocked_until::text, source_url,
-                 district_name_snapshot, created_at
+          SELECT id, district_id, election_id, stage, blocker_key, reason, blocked_until::text,
+                 source_url, district_name_snapshot, created_at
           FROM public.manual_research_deferrals
           WHERE status = 'deferred'
             ${all ? "" : "AND blocked_until <= CURRENT_DATE"}
@@ -283,10 +376,12 @@ const COMMAND_FLAG_SPECS: Record<string, readonly CliFlagSpec[]> = {
   record: [
     { name: "--district-id", value: "space" },
     { name: "--election-id", value: "space" },
+    { name: "--blocker-key", value: "space" },
     { name: "--stage", value: "space" },
     { name: "--reason", value: "space" },
     { name: "--blocked-until", value: "space" },
     { name: "--source-url", value: "space" },
+    { name: "--replace", value: "none" },
   ],
   due: [
     { name: "--limit", value: "space" },
@@ -326,7 +421,12 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((error: unknown) => {
-  console.error(error instanceof Error ? error.message : error);
-  process.exitCode = 1;
-});
+// Guarded so tests can import runCommand without the CLI firing on load
+// (same entrypoint check as the other testable manual scripts).
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  void main().catch((error: unknown) => {
+    console.error(error instanceof Error ? error.message : error);
+    process.exitCode = 1;
+  });
+}
