@@ -676,9 +676,10 @@ describe("ElectionCard result chip", () => {
     const marker = screen.getByText("My pick advanced ✓");
     expect(marker.className).toContain("bg-green-700");
     // The marker sits inside the chip, between the pick's name and the rest
-    // of the roll call.
+    // of the roll call — separated by a real space, so copied/accessible
+    // text doesn't run the name into the marker.
     expect(marker.parentElement).toHaveTextContent(
-      "Result: Advanced — Jocelyn Benson (Democratic)My pick advanced ✓, John James (Republican)"
+      "Result: Advanced — Jocelyn Benson (Democratic) My pick advanced ✓, John James (Republican)"
     );
   });
 

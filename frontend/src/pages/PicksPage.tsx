@@ -25,16 +25,40 @@ const PICKS_NAV_STATE: ElectionNavState = {
 };
 
 // One race row on a date card. "Pick chips" per candidate so a multi-seat
-// race reads name-by-name, with won/lost/withdrawn carried per candidacy.
+// race reads name-by-name, with the outcome carried per candidacy. The
+// certified writer projects advanced/runoff onto winners (everyone else
+// becomes lost), so all five terminal statuses need a chip — a certified
+// "advanced" with no chip would read as no outcome at all once the race
+// leaves the carded window and the result fallback with it. Labels match
+// the election page's badges (Won / Advanced / In runoff / Lost). Each chip
+// leads with a real space: margin is only visual, and without the space the
+// copy/accessible text runs the name into the label ("Jane SmithWon").
 function pickStatusChip(status: string) {
-  if (status === "won") {
-    return <span className="ml-1 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">Won</span>;
+  if (status === "won" || status === "advanced" || status === "runoff") {
+    return (
+      <>
+        {" "}
+        <span className="rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+          {status === "won" ? "Won" : status === "advanced" ? "Advanced" : "In runoff"}
+        </span>
+      </>
+    );
   }
   if (status === "lost") {
-    return <span className="ml-1 rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">Lost</span>;
+    return (
+      <>
+        {" "}
+        <span className="rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">Lost</span>
+      </>
+    );
   }
   if (status === "withdrawn") {
-    return <span className="ml-1 text-xs text-ink-soft">(withdrew)</span>;
+    return (
+      <>
+        {" "}
+        <span className="text-xs text-ink-soft">(withdrew)</span>
+      </>
+    );
   }
   return null;
 }
@@ -52,10 +76,15 @@ function measureOutcomeChip(position: "yes" | "no", result: string | null | unde
   }
   const matchedPick = (result === "passed") === (position === "yes");
   const label = result === "passed" ? "Passed" : "Failed";
-  return matchedPick ? (
-    <span className="ml-1 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">{label}</span>
-  ) : (
-    <span className="ml-1 rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">{label}</span>
+  return (
+    <>
+      {" "}
+      {matchedPick ? (
+        <span className="rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">{label}</span>
+      ) : (
+        <span className="rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">{label}</span>
+      )}
+    </>
   );
 }
 
@@ -76,10 +105,15 @@ function pickResultChip(election: ElectionSummary | undefined, candidateId: stri
   if (!(election.current_result_winners ?? []).some((winner) => winner.candidate_id === candidateId)) {
     return null;
   }
+  // Same vocabulary as the election page's badges and pickStatusChip: a
+  // runoff berth is its own state, not a generic "Advanced".
   return (
-    <span className="ml-1 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">
-      {outcome === "won" ? "Won" : "Advanced"}
-    </span>
+    <>
+      {" "}
+      <span className="rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+        {outcome === "won" ? "Won" : outcome === "advanced" ? "Advanced" : "In runoff"}
+      </span>
+    </>
   );
 }
 

@@ -324,6 +324,18 @@ describe("PicksPage", () => {
                 election_date: "2024-11-05",
                 picks: [{ candidate_id: "c-9", display_name: "Pat Winner", candidacy_status: "won" }],
               }),
+              // Certified primaries project advanced/runoff onto winners'
+              // candidacy_status; past picks have no result-row fallback, so
+              // the chip must come from the status alone.
+              electionChoice({
+                election_id: "e-old-2",
+                official_ballot_title: "Judge",
+                election_date: "2024-08-06",
+                picks: [
+                  { candidate_id: "c-10", display_name: "Ada Advancer", candidacy_status: "advanced" },
+                  { candidate_id: "c-11", display_name: "Rae Runoff", candidacy_status: "runoff" },
+                ],
+              }),
             ],
           },
         },
@@ -332,11 +344,13 @@ describe("PicksPage", () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderPicks();
 
-    const summary = await screen.findByText("Past elections (1)");
+    const summary = await screen.findByText("Past elections (2)");
     await user.click(summary);
 
     expect(screen.getByText("Pat Winner")).toBeInTheDocument();
     expect(screen.getByText("Won")).toBeInTheDocument();
+    expect(screen.getByText("Advanced")).toBeInTheDocument();
+    expect(screen.getByText("In runoff")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sheriff" })).toHaveAttribute("href", "/elections/e-old");
   });
 });

@@ -126,6 +126,25 @@ describe("PublicPickCardPage", () => {
     expect(screen.queryByText("Lost")).not.toBeInTheDocument();
   });
 
+  it("shows a certified advanced/runoff candidacy without needing a result row", async () => {
+    // The certified writer projects advanced/runoff onto candidacy_status;
+    // the chip must not depend on the result-row fallback.
+    renderCard(
+      pickCard({
+        entries: [
+          officeEntry({
+            picks: [
+              { candidate_id: "c-1", display_name: "Ada Advancer", candidacy_status: "advanced" },
+              { candidate_id: "c-3", display_name: "Rae Runoff", candidacy_status: "runoff" },
+            ],
+          }),
+        ],
+      })
+    );
+    expect(await screen.findByText("Advanced")).toBeInTheDocument();
+    expect(screen.getByText("In runoff")).toBeInTheDocument();
+  });
+
   it("never doubles a certified candidacy chip with the result-derived one", async () => {
     renderCard(
       pickCard({

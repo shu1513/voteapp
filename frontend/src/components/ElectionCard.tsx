@@ -347,10 +347,16 @@ function ElectionCard({
                               // personal payoff outshines the surrounding
                               // roll call. Winner-name matching is id-only,
                               // and a losing pick renders nothing (see
-                              // buildResultChipParts).
-                              <span className="ml-1 whitespace-nowrap rounded bg-green-700 px-1.5 font-semibold text-white">
-                                {parts.myPickMarker}
-                              </span>
+                              // buildResultChipParts). Leading space:
+                              // margin is only visual, and without it the
+                              // copy/accessible text runs the name into the
+                              // marker ("(Democratic)My pick advanced ✓").
+                              <>
+                                {" "}
+                                <span className="whitespace-nowrap rounded bg-green-700 px-1.5 font-semibold text-white">
+                                  {parts.myPickMarker}
+                                </span>
+                              </>
                             ) : null}
                             {index < parts.winners.length - 1 ? ", " : null}
                           </Fragment>

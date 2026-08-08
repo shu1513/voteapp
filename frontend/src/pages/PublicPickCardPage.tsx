@@ -74,11 +74,53 @@ function measureOutcomeChip(position: "yes" | "no", result: string | null | unde
   }
   const matchedPick = (result === "passed") === (position === "yes");
   const label = result === "passed" ? "Passed" : "Failed";
-  return matchedPick ? (
-    <span className="ml-1 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">{label}</span>
-  ) : (
-    <span className="ml-1 rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">{label}</span>
+  // Leading space: margin is only visual, and without it the copy/accessible
+  // text runs the pick into the label ("YesPassed").
+  return (
+    <>
+      {" "}
+      {matchedPick ? (
+        <span className="rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">{label}</span>
+      ) : (
+        <span className="rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">{label}</span>
+      )}
+    </>
   );
+}
+
+// Candidacy-status chip — same rules, styling, and vocabulary as the owner's
+// card (PicksPage.pickStatusChip). All five terminal statuses render: the
+// certified writer projects advanced/runoff onto winners, and a recipient
+// must not read a certified "advanced" as no outcome. The withdrawn flag
+// keeps a dropped-out candidate from reading as still running.
+function pickStatusChip(status: string) {
+  if (status === "won" || status === "advanced" || status === "runoff") {
+    return (
+      <>
+        {" "}
+        <span className="rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+          {status === "won" ? "Won" : status === "advanced" ? "Advanced" : "In runoff"}
+        </span>
+      </>
+    );
+  }
+  if (status === "lost") {
+    return (
+      <>
+        {" "}
+        <span className="rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">Lost</span>
+      </>
+    );
+  }
+  if (status === "withdrawn") {
+    return (
+      <>
+        {" "}
+        <span className="text-xs text-ink-soft">(withdrew)</span>
+      </>
+    );
+  }
+  return null;
 }
 
 // Result-derived chip for a pick the candidacy pipeline hasn't labeled yet —
@@ -94,10 +136,16 @@ function pickResultChip(entry: PickCardEntry, candidateId: string) {
   if (!(entry.current_result_winners ?? []).some((winner) => winner.candidate_id === candidateId)) {
     return null;
   }
+  // Same vocabulary as the election page's badges: a runoff berth is its
+  // own state, not a generic "Advanced". Leading space keeps the copy/
+  // accessible text from running the name into the label.
   return (
-    <span className="ml-1 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">
-      {outcome === "won" ? "Won" : "Advanced"}
-    </span>
+    <>
+      {" "}
+      <span className="rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+        {outcome === "won" ? "Won" : outcome === "advanced" ? "Advanced" : "In runoff"}
+      </span>
+    </>
   );
 }
 
@@ -159,24 +207,10 @@ export function PublicPickCardPage() {
                           >
                             {pick.display_name}
                           </Link>
-                          {pick.candidacy_status === "won" ? (
-                            <span className="ml-1 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">
-                              Won
-                            </span>
-                          ) : pick.candidacy_status === "lost" ? (
-                            <span className="ml-1 rounded bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft">
-                              Lost
-                            </span>
-                          ) : pick.candidacy_status === "withdrawn" ? (
-                            // Same flag the owner's private card shows — a
-                            // recipient must not read a withdrawn candidate
-                            // as still running.
-                            <span className="ml-1 text-xs text-ink-soft">(withdrew)</span>
-                          ) : (
+                          {pickStatusChip(pick.candidacy_status) ??
                             // candidacy_status has nothing to say yet —
                             // fall back to the canonical result row.
-                            pickResultChip(entry, pick.candidate_id)
-                          )}
+                            pickResultChip(entry, pick.candidate_id)}
                         </span>
                       ))}
                     </span>
