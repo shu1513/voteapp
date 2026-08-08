@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   isJudicialOfficeTitle,
   isJudicialRetentionTitle,
+  resolveCandidateContestPartisanshipByPolicy,
   resolveElectionIsPartisan,
   shouldIncludeCandidatePartyByPolicy,
   shouldAskIsPartisanInPrompt,
@@ -267,5 +268,61 @@ describe("electionPartisanshipPolicy", () => {
         })
       ).toBe(true);
     }
+  });
+
+  it("treats elected Arizona county judgeships as partisan", () => {
+    for (const officialBallotTitle of [
+      "Judge of Superior Court, Division 2",
+      "Justice of the Peace, Precinct 2",
+    ]) {
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "county",
+          state: "AZ",
+          officialBallotTitle,
+        }),
+        officialBallotTitle
+      ).toBe(true);
+    }
+  });
+
+  it("keeps Arizona merit-selection retention questions nonpartisan", () => {
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "county",
+        state: "AZ",
+        officialBallotTitle: "Judge of the Superior Court, Division 4 (Retention)",
+      })
+    ).toBe(false);
+  });
+
+  it("does not treat court clerks and prosecutors as judicial offices", () => {
+    for (const officialBallotTitle of [
+      "Clerk of Superior Court",
+      "Elkhart County Circuit Court Clerk",
+      "Prosecuting Attorney of Elkhart County, 34th Judicial Circuit",
+      "State Attorney, 4th Judicial Circuit",
+      "Constable, Justice Precinct 2",
+    ]) {
+      expect(isJudicialOfficeTitle(officialBallotTitle), officialBallotTitle).toBe(false);
+    }
+
+    // The judicial rule forced these either way (false in Arizona, true in
+    // North Carolina); with the office off the judicial path the payload's own
+    // researched value decides.
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "county",
+        state: "AZ",
+        officialBallotTitle: "Clerk of Superior Court",
+      })
+    ).toBeUndefined();
+    expect(
+      shouldIncludeCandidatePartyByPolicy({
+        districtType: "county",
+        state: "AZ",
+        officialBallotTitle: "Clerk of Superior Court",
+      })
+    ).toBe(true);
   });
 });

@@ -208,12 +208,17 @@ function districtNameCore(rawDistrictName: string): string {
   return tokens.join(" ");
 }
 
+const GENERIC_DISTRICT_SUFFIX_PATTERN = [...GENERIC_DISTRICT_SUFFIX_TOKENS].join("|");
+
 function stripJurisdictionPrefixes(value: string, input: { districtName: string; state: string }): string {
   let next = value;
 
   const districtName = normalizeMatcherText(input.districtName);
   if (districtName.length > 0) {
-    const districtPattern = new RegExp(`\\b${escapeRegExp(districtName)}\\b`, "g");
+    // The leading "of" belongs to the jurisdiction phrase, not the office
+    // ("Prosecuting Attorney of Elkhart County"); leaving it behind produces a
+    // dangling connector that misses the alias table.
+    const districtPattern = new RegExp(`\\b(?:of )?${escapeRegExp(districtName)}\\b`, "g");
     next = next.replace(districtPattern, " ");
   }
 
@@ -224,6 +229,19 @@ function stripJurisdictionPrefixes(value: string, input: { districtName: string;
   // still matches catalog names/aliases keyed on the bare office title.
   const core = districtNameCore(input.districtName);
   if (core.length >= 2) {
+    // "<office> of <Core> County" is the one form where the generic civic word
+    // is part of the jurisdiction phrase rather than a modifier on the office,
+    // so it goes with the core ("Prosecuting Attorney of Elkhart County, 34th
+    // Judicial Circuit", IN live: kept "county" and scored 0.25 into District
+    // Attorney, blocking the prosecutor contest in every Indiana county). The
+    // civic word is required here — without it the phrase is an ordinary
+    // "of <place>" suffix whose bare-office handling below is already correct.
+    const ofCorePattern = new RegExp(
+      `\\bof ${escapeRegExp(core)} (?:${GENERIC_DISTRICT_SUFFIX_PATTERN})\\b`,
+      "g"
+    );
+    next = next.replace(ofCorePattern, " ");
+
     const corePattern = new RegExp(`\\b${escapeRegExp(core)}\\b`, "g");
     next = next.replace(corePattern, " ");
   }
@@ -304,6 +322,19 @@ function singularizeCommissionerBodyForms(value: string): string {
 
 function stripSeatSuffixes(value: string): string {
   return singularizeCommissionerBodyForms(value)
+    // A numbered judicial circuit/district is the seat's jurisdiction, not part
+    // of the office name: "Prosecuting Attorney of Elkhart County, 34th
+    // Judicial Circuit" (IN live) and "State Attorney, 4th Judicial Circuit"
+    // (FL) are the ordinary county prosecutor. Single instances were previously
+    // papered over with per-number aliases ("prosecuting attorney 60th judicial
+    // circuit", "district attorney 22nd judicial district court"), which cannot
+    // scale to every circuit number in every state. Runs before the generic
+    // ordinal-district rule so "4th Judicial District" is not half-stripped.
+    .replace(
+      /\b(?:\d+(?:st|nd|rd|th)|[ivxl]+)\s+judicial\s+(?:circuit|district)(?: court)?\b/g,
+      " "
+    )
+    .replace(/\bjudicial\s+(?:circuit|district)(?: court)?\s+(?:no )?\d+[a-z]?\b/g, " ")
     .replace(/\boffice (?:no )?\d+\b/g, " ")
     .replace(/\bposition (?:no )?\d+\b/g, " ")
     // "Council District No. 5" (Seattle live) titles the council-member SEAT

@@ -147,7 +147,7 @@ describe("runElectionsWriter candidate roster eligibility gate", () => {
     });
 
     let upsertCounter = 0;
-    clientQueryMock.mockImplementation(async (sql: string) => {
+    clientQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
       if (sql.includes("FROM public.office_title_aliases")) {
         return { rowCount: 0, rows: [] };
       }
@@ -172,7 +172,13 @@ describe("runElectionsWriter candidate roster eligibility gate", () => {
         upsertCounter += 1;
         return {
           rowCount: 1,
-          rows: [{ id: `00000000-0000-0000-0000-00000000010${upsertCounter}`, race_type: "office" }],
+          rows: [
+            {
+              id: `00000000-0000-0000-0000-00000000010${upsertCounter}`,
+              race_type: "office",
+              office_id: params?.[9] ?? null,
+            },
+          ],
         };
       }
       return { rowCount: 1, rows: [] };
@@ -311,7 +317,7 @@ describe("runElectionsWriter candidate roster eligibility gate", () => {
     });
 
     let upsertCounter = 0;
-    clientQueryMock.mockImplementation(async (sql: string) => {
+    clientQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
       if (sql.includes("FROM public.office_title_aliases")) {
         return { rowCount: 0, rows: [] };
       }
@@ -336,7 +342,13 @@ describe("runElectionsWriter candidate roster eligibility gate", () => {
         upsertCounter += 1;
         return {
           rowCount: 1,
-          rows: [{ id: `00000000-0000-0000-0000-00000000010${upsertCounter}`, race_type: "office" }],
+          rows: [
+            {
+              id: `00000000-0000-0000-0000-00000000010${upsertCounter}`,
+              race_type: "office",
+              office_id: params?.[9] ?? null,
+            },
+          ],
         };
       }
       return { rowCount: 1, rows: [] };

@@ -15,6 +15,13 @@ const SCHOOL_MIXED_STATES = new Set(["GA", "NC", "RI", "SC", "TN"]);
 // Policy lists are based on election-law summaries (e.g., Ballotpedia/NCSC); update as laws evolve.
 const PARTISAN_JUDICIAL_STATES = new Set([
   "AL",
+  // Arizona counties under the merit-selection threshold elect Superior Court
+  // judges and justices of the peace through partisan primaries: the certified
+  // 2026 primary canvass prints "REP Judge of Superior Court Div. 2" and "DEM
+  // Justice of the Peace Prec. 2" (Yuma County). The merit-selection counties
+  // (Maricopa, Pima, Pinal) put their judges on the ballot as retention
+  // questions instead, which the retention rule below already forces false.
+  "AZ",
   "IL",
   "IN",
   "KS",
@@ -57,7 +64,21 @@ function getSchoolPartisanshipMode(state: string): SchoolPartisanshipMode {
   return "nonpartisan";
 }
 
+// Offices that administer or prosecute before a court name that court in their
+// own title without being judgeships: "Clerk of Superior Court" (every Arizona
+// and North Carolina county), "Elkhart County Circuit Court Clerk" (Indiana),
+// "Prosecuting Attorney ... 34th Judicial Circuit", "State Attorney, 4th
+// Judicial Circuit" (Florida), "Constable, Justice Precinct 2" (Texas). Their
+// partisanship follows the state's rule for ordinary county offices, not its
+// judicial rule, so classifying them as judicial forced the wrong answer in
+// both directions. Mirrors the office matcher's own non-judicial markers.
+const NON_JUDICIAL_OFFICE_TITLE_MARKERS =
+  /\b(clerk|prosecut(?:or|ing attorney)|district attorney|state'?s? attorney|county attorney|attorney general|solicitor|constable|sheriff|marshal|recorder|coroner)\b/i;
+
 export function isJudicialOfficeTitle(title: string): boolean {
+  if (NON_JUDICIAL_OFFICE_TITLE_MARKERS.test(title)) {
+    return false;
+  }
   return /\b(judge|justice|judicial|superior court|court of appeal(s)?|supreme court|retention|magistrate)\b/i.test(
     title
   );
