@@ -389,6 +389,7 @@ export type GeorgiaCandidateIndexRow = {
   filerName: string;
   committeeName: string | null;
   candidateFirstName: string | null;
+  candidateMiddleName: string | null;
   candidateLastName: string | null;
   ballotFullName: string | null;
   office: string | null;
@@ -479,6 +480,7 @@ function parseCandidateIndexRow(url: string, raw: unknown): GeorgiaCandidateInde
     filerName: requireRowString(url, row.filerName, "filerName"),
     committeeName: asOptionalString(row.committeeName),
     candidateFirstName: asOptionalString(row.candidateFirstName),
+    candidateMiddleName: asOptionalString(row.candidateMiddleName),
     candidateLastName: asOptionalString(row.candidateLastName),
     ballotFullName: asOptionalString(row.ballotFullName),
     office: asOptionalString(row.office),
@@ -688,6 +690,14 @@ export type GeorgiaStableTransactionFetchResult = GeorgiaTransactionFetchResult 
 // rows rides on dedup alone. Re-pull until the unique transaction-id set is
 // identical across two consecutive passes; a window that never stabilizes
 // fails closed rather than caching a row set that silently lost rows.
+//
+// LIMITATION — stability proves reproducibility, not completeness: if the
+// portal's tie-ordering drops the SAME rows on every pass, the equal id sets
+// still miss them. That is why (a) windowed pulls always union with the
+// unbounded sweep (fetchGeorgiaTransactionRowsWindowed below), which changes
+// the offset geometry and can surface rows a dated query reproducibly loses,
+// and (b) the sync layer (PR 4) must reconcile per-report counts/sums against
+// the report inventory and official index totals before trusting any pull.
 export async function fetchGeorgiaTransactionRowsStable(
   transport: GeorgiaEthicsTransport,
   host: GeorgiaEthicsHost,
@@ -715,6 +725,131 @@ export async function fetchGeorgiaTransactionRowsStable(
     `Georgia ${host} transaction fetch for ${JSON.stringify(filter.filerName)} did not stabilize in ${maxPasses} passes ` +
       `(last pass: ${lastResult?.rows.length ?? 0} unique rows, ${lastResult?.duplicateRowCount ?? 0} duplicates)`
   );
+}
+
+function addGeorgiaDays(isoDate: string, days: number): string {
+  const [year, month, day] = isoDate.split("-").map(Number);
+  return new Date(Date.UTC(year!, month! - 1, day! + days)).toISOString().slice(0, 10);
+}
+
+export type GeorgiaTransactionWindowResult = {
+  fromDate: string;
+  toDate: string;
+  uniqueRowCount: number;
+  passCount: number;
+};
+
+export type GeorgiaWindowedTransactionFetchResult = {
+  rows: GeorgiaTransactionRow[];
+  windows: GeorgiaTransactionWindowResult[];
+  sweepPassCount: number;
+  // Rows only the unbounded sweep surfaced — out-of-window dates (the store
+  // holds garbage dates on valid rows) or rows the dated queries reproducibly
+  // dropped. A nonzero count is the concrete proof that per-window stability
+  // alone cannot establish completeness.
+  sweepOnlyRowCount: number;
+  // Rows the windows caught that the sweep pass missed (sweep-side drift).
+  sweepMissedRowCount: number;
+};
+
+// Date-window slicing (A4): windowed stable pulls bound pagination drift by
+// shrinking each offset sequence, and consecutive windows deliberately share
+// their boundary day so a row on the boundary survives either inclusive or
+// exclusive server-side bounds (dedup absorbs the overlap). Every call ends
+// with the MANDATORY unbounded sweep pass whose job is to catch rows the
+// date windows can never see — garbage transaction dates on valid rows, and
+// rows a dated query reproducibly drops — and the result is the union.
+// Windows must derive from nothing narrower than the filer's full plausible
+// range; report membership still comes from report GUIDs, never from the
+// transaction date.
+export async function fetchGeorgiaTransactionRowsWindowed(
+  transport: GeorgiaEthicsTransport,
+  host: GeorgiaEthicsHost,
+  input: {
+    filerName: string;
+    fromDate: string;
+    toDate: string;
+    windowDays?: number;
+    expectedFilerEntityIds: readonly number[];
+    maxPasses?: number;
+  }
+): Promise<GeorgiaWindowedTransactionFetchResult> {
+  const windowDays = input.windowDays ?? 92;
+  if (!Number.isInteger(windowDays) || windowDays < 1) {
+    throw new GeorgiaEthicsClientError("invalid_request", `Invalid Georgia window size: ${windowDays}`);
+  }
+  // formatGeorgiaFilterDate validates the ISO shape for both bounds.
+  formatGeorgiaFilterDate(host, input.fromDate);
+  formatGeorgiaFilterDate(host, input.toDate);
+  if (input.fromDate > input.toDate) {
+    throw new GeorgiaEthicsClientError(
+      "invalid_request",
+      `Georgia window range is inverted: ${input.fromDate} > ${input.toDate}`
+    );
+  }
+
+  const windowBounds: Array<{ fromDate: string; toDate: string }> = [];
+  for (let cursor = input.fromDate; ; ) {
+    const end = addGeorgiaDays(cursor, windowDays);
+    if (end >= input.toDate) {
+      windowBounds.push({ fromDate: cursor, toDate: input.toDate });
+      break;
+    }
+    windowBounds.push({ fromDate: cursor, toDate: end });
+    cursor = end;
+  }
+
+  const rowsById = new Map<number, GeorgiaTransactionRow>();
+  const windows: GeorgiaTransactionWindowResult[] = [];
+  for (const bounds of windowBounds) {
+    const result = await fetchGeorgiaTransactionRowsStable(
+      transport,
+      host,
+      { filerName: input.filerName, fromDate: bounds.fromDate, toDate: bounds.toDate },
+      { expectedFilerEntityIds: input.expectedFilerEntityIds, maxPasses: input.maxPasses }
+    );
+    for (const row of result.rows) {
+      if (!rowsById.has(row.transactionId)) {
+        rowsById.set(row.transactionId, row);
+      }
+    }
+    windows.push({
+      fromDate: bounds.fromDate,
+      toDate: bounds.toDate,
+      uniqueRowCount: result.rows.length,
+      passCount: result.passCount,
+    });
+  }
+
+  const sweep = await fetchGeorgiaTransactionRowsStable(
+    transport,
+    host,
+    { filerName: input.filerName },
+    { expectedFilerEntityIds: input.expectedFilerEntityIds, maxPasses: input.maxPasses }
+  );
+  const windowedIds = new Set(rowsById.keys());
+  let sweepOnlyRowCount = 0;
+  for (const row of sweep.rows) {
+    if (!rowsById.has(row.transactionId)) {
+      sweepOnlyRowCount += 1;
+      rowsById.set(row.transactionId, row);
+    }
+  }
+  const sweepIds = new Set(sweep.rows.map((row) => row.transactionId));
+  let sweepMissedRowCount = 0;
+  for (const id of windowedIds) {
+    if (!sweepIds.has(id)) {
+      sweepMissedRowCount += 1;
+    }
+  }
+
+  return {
+    rows: [...rowsById.values()],
+    windows,
+    sweepPassCount: sweep.passCount,
+    sweepOnlyRowCount,
+    sweepMissedRowCount,
+  };
 }
 
 // --- Timed-report grouping (D8) -------------------------------------------

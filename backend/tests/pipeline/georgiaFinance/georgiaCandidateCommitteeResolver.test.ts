@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 import {
+  georgiaCandidateNameMatchesRowNames,
   georgiaLastNameSearchToken,
   normalizeGeorgiaCandidateNameForStorage,
   normalizeGeorgiaCandidateNameKeys,
@@ -26,6 +27,7 @@ const CARR_ROW: GeorgiaCandidateIndexRow = {
   filerName: "Carr, Christopher M.",
   committeeName: "Carr for Georgia, Inc.",
   candidateFirstName: "Christopher",
+  candidateMiddleName: "Michael",
   candidateLastName: "Carr",
   ballotFullName: null,
   office: "Governor",
@@ -63,7 +65,60 @@ describe("name normalization", () => {
   });
 });
 
+describe("georgiaCandidateNameMatchesRowNames (middle-name evidence)", () => {
+  it("rejects conflicting middle initials even when first and last agree", () => {
+    expect(georgiaCandidateNameMatchesRowNames("John A. Smith", ["Smith, John B."])).toBe(false);
+    expect(georgiaCandidateNameMatchesRowNames("John Anthony Smith", ["Smith, John B."])).toBe(false);
+  });
+
+  it("accepts an initial that corroborates the full middle name", () => {
+    expect(georgiaCandidateNameMatchesRowNames("John Anthony Smith", ["Smith, John A."])).toBe(true);
+    expect(georgiaCandidateNameMatchesRowNames("Christopher Michael Carr", ["Carr, Christopher M."])).toBe(true);
+  });
+
+  it("falls back to first+last only when a side lacks middle information", () => {
+    expect(georgiaCandidateNameMatchesRowNames("John Smith", ["Smith, John B."])).toBe(true);
+    expect(georgiaCandidateNameMatchesRowNames("John A. Smith", ["Smith, John"])).toBe(true);
+  });
+
+  it("lets a middle conflict veto a middle-less variant of the same row", () => {
+    // The row's ballot name lacks the middle, but its filerName carries a
+    // conflicting one — the evidence must win over the weaker variant.
+    expect(georgiaCandidateNameMatchesRowNames("John A. Smith", ["Smith, John B.", "John Smith"])).toBe(false);
+  });
+
+  it("still matches multi-word surnames across name orders", () => {
+    expect(georgiaCandidateNameMatchesRowNames("Mary Van Dyke", ["Van Dyke, Mary A."])).toBe(true);
+  });
+});
+
 describe("resolveGeorgiaCandidateCommittee", () => {
+  it("rejects a same-race row whose middle name contradicts the candidate", () => {
+    // Same office, cycle, and district — only the middle evidence differs.
+    // Without the middle gate this row would link as an "exact" match and
+    // attach another person's money.
+    const wrongPerson: GeorgiaCandidateIndexRow = {
+      ...CARR_ROW,
+      filerName: "Carr, Christopher B.",
+      candidateMiddleName: "Bernard",
+    };
+    const resolution = resolveGeorgiaCandidateCommittee({
+      ...GOVERNOR_INPUT,
+      candidateName: "Christopher Michael Carr",
+      candidateIndexRows: [wrongPerson],
+    });
+    expect(resolution).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("uses the structured middle name even when the app name has no middle", () => {
+    const resolution = resolveGeorgiaCandidateCommittee({
+      ...GOVERNOR_INPUT,
+      candidateName: "Christopher Carr",
+      candidateIndexRows: [CARR_ROW],
+    });
+    expect(resolution).toMatchObject({ status: "matched", filerEntityId: "100035" });
+  });
+
   it("matches Carr to the PeachFile registration on the fixture row", () => {
     const resolution = resolveGeorgiaCandidateCommittee({
       ...GOVERNOR_INPUT,

@@ -14,6 +14,7 @@ import {
   fetchGeorgiaFiledReportRows,
   fetchGeorgiaTransactionRows,
   fetchGeorgiaTransactionRowsStable,
+  fetchGeorgiaTransactionRowsWindowed,
   formatGeorgiaFilterDate,
   georgiaTransactionReportGroupGuid,
   GeorgiaEthicsClientError,
@@ -319,6 +320,96 @@ describe("fetchGeorgiaTransactionRowsStable", () => {
         { expectedFilerEntityIds: [100035], maxPasses: 3 }
       )
     ).rejects.toMatchObject({ code: "unstable_result" });
+  });
+});
+
+describe("fetchGeorgiaTransactionRowsWindowed", () => {
+  // Deterministic fake store: dated queries filter on the row date and
+  // REPRODUCIBLY drop transaction 42 (every pass, identical id sets — each
+  // window is "stable" yet incomplete); the unbounded sweep returns
+  // everything, including a garbage-dated row no window can ever cover.
+  const STORE = [
+    transactionItem({ transactionId: 1, transactionDate: "2026-01-05" }),
+    transactionItem({ transactionId: 5, transactionDate: "2026-01-11" }), // shared boundary day
+    transactionItem({ transactionId: 2, transactionDate: "2026-01-15" }),
+    transactionItem({ transactionId: 42, transactionDate: "2026-01-08" }), // dropped by dated queries
+    transactionItem({ transactionId: 7, transactionDate: "2001-04-27" }), // garbage date, sweep-only
+  ];
+
+  function windowedFakeTransport(calls: Array<{ fromDate: string | null; toDate: string | null }> = []) {
+    return createGeorgiaEthicsTransport({
+      sleep: async () => {},
+      fetch: async (_url, rawBody) => {
+        const body = JSON.parse(rawBody) as { fromDate: string | null; toDate: string | null; pageNumber: number };
+        if (body.pageNumber === 1) {
+          calls.push({ fromDate: body.fromDate, toDate: body.toDate });
+        }
+        const items = STORE.filter((row) => {
+          if (body.fromDate === null && body.toDate === null) {
+            return true;
+          }
+          if (row.transactionId === 42) {
+            return false;
+          }
+          const date = row.transactionDate as string;
+          return date >= (body.fromDate ?? "0000") && date <= (body.toDate ?? "9999");
+        });
+        return { status: 200, body: pageBody(items) };
+      },
+    });
+  }
+
+  it("unions stable windows with the mandatory unbounded sweep — equal id sets alone never prove completeness", async () => {
+    const calls: Array<{ fromDate: string | null; toDate: string | null }> = [];
+    const result = await fetchGeorgiaTransactionRowsWindowed(windowedFakeTransport(calls), "efile_archive", {
+      filerName: "Carr, Christopher Michael",
+      fromDate: "2026-01-01",
+      toDate: "2026-01-25",
+      windowDays: 10,
+      expectedFilerEntityIds: [100035],
+    });
+
+    // Three windows sharing boundary days, then the unbounded sweep.
+    expect(calls).toEqual([
+      { fromDate: "2026-01-01", toDate: "2026-01-11" },
+      { fromDate: "2026-01-01", toDate: "2026-01-11" },
+      { fromDate: "2026-01-11", toDate: "2026-01-21" },
+      { fromDate: "2026-01-11", toDate: "2026-01-21" },
+      { fromDate: "2026-01-21", toDate: "2026-01-25" },
+      { fromDate: "2026-01-21", toDate: "2026-01-25" },
+      { fromDate: null, toDate: null },
+      { fromDate: null, toDate: null },
+    ]);
+    expect(result.windows).toHaveLength(3);
+    expect(result.windows.every((window) => window.passCount === 2)).toBe(true);
+
+    // Every window was stable (identical id sets across passes) and yet the
+    // dated queries never surfaced 42, and 7's garbage date is outside every
+    // window — only the sweep union recovers them.
+    expect(result.rows.map((row) => row.transactionId).sort((a, b) => a - b)).toEqual([1, 2, 5, 7, 42]);
+    expect(result.sweepOnlyRowCount).toBe(2);
+    expect(result.sweepMissedRowCount).toBe(0);
+  });
+
+  it("rejects inverted ranges and invalid window sizes", async () => {
+    const transport = windowedFakeTransport();
+    await expect(
+      fetchGeorgiaTransactionRowsWindowed(transport, "efile_archive", {
+        filerName: "X",
+        fromDate: "2026-02-01",
+        toDate: "2026-01-01",
+        expectedFilerEntityIds: [1],
+      })
+    ).rejects.toMatchObject({ code: "invalid_request" });
+    await expect(
+      fetchGeorgiaTransactionRowsWindowed(transport, "efile_archive", {
+        filerName: "X",
+        fromDate: "2026-01-01",
+        toDate: "2026-01-02",
+        windowDays: 0,
+        expectedFilerEntityIds: [1],
+      })
+    ).rejects.toMatchObject({ code: "invalid_request" });
   });
 });
 

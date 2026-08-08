@@ -176,20 +176,121 @@ function normalizeGeorgiaDistrict(value: string | null | undefined): string | nu
   return digits || null;
 }
 
-function rowMatchesCandidateName(row: GeorgiaCandidateIndexRow, candidateNameKeys: ReadonlySet<string>): boolean {
-  const names = [
-    row.filerName,
-    row.ballotFullName,
-    [row.candidateFirstName, row.candidateLastName].filter(Boolean).join(" "),
-  ].filter((name): name is string => Boolean(name && name.trim()));
-  for (const name of names) {
-    for (const key of normalizeGeorgiaCandidateNameKeys(name)) {
-      if (candidateNameKeys.has(key)) {
-        return true;
+type GeorgiaParsedPersonName = { first: string; middles: string[]; last: string };
+
+// Parses a raw display name into (first, middles, last). Comma forms
+// ("Carr, Christopher M.") are unambiguous and yield one parse. Space forms
+// are ambiguous about where the surname starts ("Mary Van Dyke"), so every
+// split is emitted and the pair comparison tries them all — a wrong split can
+// only fail to match, never manufacture agreement.
+function parseGeorgiaPersonName(raw: string): GeorgiaParsedPersonName[] {
+  const commaIndex = raw.indexOf(",");
+  if (commaIndex > 0) {
+    const last = normalizePersonName(raw.slice(0, commaIndex));
+    const restTokens = normalizePersonName(raw.slice(commaIndex + 1)).split(" ").filter(Boolean);
+    if (!last || restTokens.length === 0) {
+      return [];
+    }
+    return [{ first: restTokens[0]!, middles: restTokens.slice(1), last }];
+  }
+  const tokens = normalizePersonName(raw).split(" ").filter(Boolean);
+  if (tokens.length === 0) {
+    return [];
+  }
+  if (tokens.length === 1) {
+    return [{ first: tokens[0]!, middles: [], last: tokens[0]! }];
+  }
+  const parses: GeorgiaParsedPersonName[] = [];
+  for (let lastStart = 1; lastStart < tokens.length; lastStart += 1) {
+    parses.push({
+      first: tokens[0]!,
+      middles: tokens.slice(1, lastStart),
+      last: tokens.slice(lastStart).join(" "),
+    });
+  }
+  return parses;
+}
+
+function georgiaPersonNameVariants(value: string): GeorgiaParsedPersonName[] {
+  const variants: GeorgiaParsedPersonName[] = [];
+  variants.push(...parseGeorgiaPersonName(value.replace(/\([^()]+\)/g, " ")));
+  for (const match of value.matchAll(/\(([^()]+)\)/g)) {
+    if (match[1]) {
+      variants.push(...parseGeorgiaPersonName(match[1]));
+    }
+  }
+  return variants;
+}
+
+// Middle-name evidence between two parses whose first and last already agree:
+// "strong" when the middles corroborate (equal, or an initial matching the
+// full form), "conflict" when both sides carry middles that disagree, "weak"
+// when at least one side has no middle information.
+function georgiaMiddleNameEvidence(a: string[], b: string[]): "strong" | "weak" | "conflict" {
+  if (a.length === 0 || b.length === 0) {
+    return "weak";
+  }
+  const tokenA = a[0]!;
+  const tokenB = b[0]!;
+  if (tokenA === tokenB) {
+    return "strong";
+  }
+  if (tokenA.length === 1 && tokenB.startsWith(tokenA)) {
+    return "strong";
+  }
+  if (tokenB.length === 1 && tokenA.startsWith(tokenB)) {
+    return "strong";
+  }
+  return "conflict";
+}
+
+// Name matching preserves middle-name evidence instead of collapsing every
+// name to a first+last key: "John A. Smith" must NOT match "Smith, John B."
+// even when office, district, and cycle agree — that would attach another
+// person's money. Aggregation rule across all variant pairs: any strong pair
+// matches; otherwise any middle conflict rejects (the first+last fallback is
+// only trusted when NO pair carried contradicting middle evidence); otherwise
+// a first+last agreement with middle information missing on a side matches.
+export function georgiaCandidateNameMatchesRowNames(
+  candidateName: string,
+  rowNames: readonly string[]
+): boolean {
+  const appVariants = georgiaPersonNameVariants(candidateName);
+  let sawWeak = false;
+  let sawConflict = false;
+  for (const rowName of rowNames) {
+    for (const rowVariant of georgiaPersonNameVariants(rowName)) {
+      for (const appVariant of appVariants) {
+        if (appVariant.first !== rowVariant.first || appVariant.last !== rowVariant.last) {
+          continue;
+        }
+        const evidence = georgiaMiddleNameEvidence(appVariant.middles, rowVariant.middles);
+        if (evidence === "strong") {
+          return true;
+        }
+        if (evidence === "conflict") {
+          sawConflict = true;
+        } else {
+          sawWeak = true;
+        }
       }
     }
   }
-  return false;
+  return sawWeak && !sawConflict;
+}
+
+function rowMatchesCandidateName(row: GeorgiaCandidateIndexRow, candidateName: string): boolean {
+  // The structured name fields carry the FULL middle name where filerName
+  // only shows an initial — include them so middle evidence is as rich as
+  // the index provides.
+  const structuredName =
+    row.candidateFirstName && row.candidateLastName
+      ? [row.candidateFirstName, row.candidateMiddleName, row.candidateLastName].filter(Boolean).join(" ")
+      : null;
+  const names = [row.filerName, row.ballotFullName, structuredName].filter(
+    (name): name is string => Boolean(name && name.trim())
+  );
+  return georgiaCandidateNameMatchesRowNames(candidateName, names);
 }
 
 // A PeachFile registration belongs to the requested election cycle when
@@ -258,7 +359,7 @@ export function resolveGeorgiaCandidateCommittee(
     if (expectedDistrict !== null && normalizeGeorgiaDistrict(row.districtName) !== expectedDistrict) {
       continue;
     }
-    if (!rowMatchesCandidateName(row, candidateNameKeys)) {
+    if (!rowMatchesCandidateName(row, input.candidateName)) {
       continue;
     }
     const registrationGuid = row.guid.trim().toLowerCase();
