@@ -1,3 +1,4 @@
+import { personNamesMatchWithMiddleEvidence } from "../finance/personNameMiddleEvidence.js";
 import type { ColoradoTracerContributionRow } from "./coloradoTracerContributionReader.js";
 
 export type ColoradoCandidateCommitteeResolution =
@@ -72,8 +73,16 @@ function isCandidateCommittee(row: ColoradoTracerContributionRow): boolean {
   return normalizeTextKey(row.CommitteeType).includes("CANDIDATE");
 }
 
+function normalizePersonName(value: string): string {
+  return normalizeTextKey(value)
+    .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function rowMatchesCandidateName(input: {
   row: ColoradoTracerContributionRow;
+  candidateName: string;
   candidateNameKeys: ReadonlySet<string>;
 }): boolean {
   for (const key of normalizeColoradoCandidateNameKeys(input.row.CandidateName)) {
@@ -81,7 +90,16 @@ function rowMatchesCandidateName(input: {
       return true;
     }
   }
-  return false;
+  // The key set carries only full-string and comma-flip keys, so a name that
+  // differs in middle content on one side ("John A. Smith" vs "Smith, John")
+  // never overlaps and the link silently strands. Recover it through the
+  // middle-evidence gate: first+last alignment matches unless the middles
+  // contradict.
+  return personNamesMatchWithMiddleEvidence({
+    candidateName: input.candidateName,
+    rowNames: [input.row.CandidateName],
+    normalizePersonName,
+  });
 }
 
 export function resolveColoradoCandidateCommittee(input: {
@@ -109,7 +127,7 @@ export function resolveColoradoCandidateCommittee(input: {
     if (!isCandidateCommittee(row) || !isElectionCycleContribution(row, input.electionYear)) {
       continue;
     }
-    if (!rowMatchesCandidateName({ row, candidateNameKeys })) {
+    if (!rowMatchesCandidateName({ row, candidateName: input.candidateName, candidateNameKeys })) {
       continue;
     }
     matches.set(committeeId, {
