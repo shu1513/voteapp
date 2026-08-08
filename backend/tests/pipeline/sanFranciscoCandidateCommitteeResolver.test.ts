@@ -91,6 +91,30 @@ describe("sanFranciscoCandidateNameMatches", () => {
       sanFranciscoCandidateNameMatches("Mary C. Van Dyke", "MARY B VAN DYKE"),
     ).toBe(false);
   });
+
+  it("never lets an ambiguous space-form split override a comma-form conflict", () => {
+    // The comma form pins the surname, so its A-vs-B conflict is
+    // authoritative and rejects outright.
+    expect(
+      sanFranciscoCandidateNameMatches("John A. Smith", "SMITH, JOHN B. A."),
+    ).toBe(false);
+    // With both forms in one manifest string, the space-form variant
+    // re-splitting as surname "A SMITH" lands weak evidence in a longer
+    // bucket — it must not resurrect the match the comma form rejected.
+    expect(
+      sanFranciscoCandidateNameMatches(
+        "John A. Smith",
+        "JOHN B A SMITH (SMITH, JOHN B. A.)",
+      ),
+    ).toBe(false);
+    // The space-form-only pair stays a match: without a pinned boundary,
+    // "A SMITH" is a legitimate compound-surname reading (apostrophe
+    // stripping produces real ones — "MARIA C D ANGELO" for Maria D'Angelo),
+    // and the longest alignment is only weak, never conflicting.
+    expect(
+      sanFranciscoCandidateNameMatches("John A. Smith", "JOHN B A SMITH"),
+    ).toBe(true);
+  });
 });
 
 describe("normalizeSanFranciscoCandidateNameForStorage", () => {

@@ -26,20 +26,26 @@ function normalizePersonName(value: string): string {
 describe("parsePersonNameCandidates", () => {
   it("parses comma form into a single unambiguous split", () => {
     expect(parsePersonNameCandidates("Carr, Christopher M.", normalizePersonName)).toEqual([
-      { first: "CHRISTOPHER", middles: ["M"], last: "CARR" },
+      { first: "CHRISTOPHER", middles: ["M"], last: "CARR", exact: true },
     ]);
   });
 
   it("emits every surname split for space forms", () => {
     expect(parsePersonNameCandidates("Mary Van Dyke", normalizePersonName)).toEqual([
-      { first: "MARY", middles: [], last: "VAN DYKE" },
-      { first: "MARY", middles: ["VAN"], last: "DYKE" },
+      { first: "MARY", middles: [], last: "VAN DYKE", exact: false },
+      { first: "MARY", middles: ["VAN"], last: "DYKE", exact: false },
     ]);
   });
 
   it("treats a single token as first and last", () => {
     expect(parsePersonNameCandidates("Cher", normalizePersonName)).toEqual([
-      { first: "CHER", middles: [], last: "CHER" },
+      { first: "CHER", middles: [], last: "CHER", exact: true },
+    ]);
+  });
+
+  it("marks a two-token name exact — its surname boundary is unambiguous", () => {
+    expect(parsePersonNameCandidates("Bill Lee", normalizePersonName)).toEqual([
+      { first: "BILL", middles: [], last: "LEE", exact: true },
     ]);
   });
 
@@ -52,7 +58,7 @@ describe("parsePersonNameCandidates", () => {
 describe("personNameParseVariants", () => {
   it("parses the outer name and each parenthetical alias", () => {
     const variants = personNameParseVariants("LEE, Bill (Bill Lee)", normalizePersonName);
-    expect(variants).toContainEqual({ first: "BILL", middles: [], last: "LEE" });
+    expect(variants).toContainEqual({ first: "BILL", middles: [], last: "LEE", exact: true });
     expect(variants.length).toBeGreaterThan(1);
   });
 });
@@ -157,6 +163,19 @@ describe("hasMiddleNameConflict", () => {
     expect(conflict("John Smith Jr.", ["Smith, John"])).toBe(false);
   });
 
+  it("never lets an ambiguous space-form split override a comma-form conflict", () => {
+    // The comma form pins the surname, so its A-vs-B conflict is
+    // authoritative; the space-form sibling row re-splitting as surname
+    // "A SMITH" must not resurrect the match through the longest-surname
+    // preference.
+    expect(conflict("John A. Smith", ["Smith, John B. A.", "John B A Smith"])).toBe(true);
+    // Without a pinned boundary the space-form row alone stays clear:
+    // "A SMITH" is a legitimate compound-surname reading (apostrophe
+    // stripping produces real ones — "MARIA C D ANGELO" for Maria
+    // D'Angelo), and the longest alignment carries only weak evidence.
+    expect(conflict("John A. Smith", ["John B A Smith"])).toBe(false);
+  });
+
   it("agrees with personNamesMatchWithMiddleEvidence on every shared case", () => {
     // Wherever parses align, the veto and the full matcher are complements.
     const cases: Array<[string, string[]]> = [
@@ -223,6 +242,12 @@ describe("personNamesMatchWithMiddleEvidence", () => {
 
   it("recovers a compound-surname alignment despite the shorter-split parse", () => {
     expect(matches("Mary Van Dyke", ["Mary B Van Dyke"])).toBe(true);
+  });
+
+  it("rejects when a comma-form conflict coexists with a space-form sibling", () => {
+    expect(matches("John A. Smith", ["Smith, John B. A.", "John B A Smith"])).toBe(false);
+    // The space-form row alone is a genuine ambiguity and still matches.
+    expect(matches("John A. Smith", ["John B A Smith"])).toBe(true);
   });
 });
 

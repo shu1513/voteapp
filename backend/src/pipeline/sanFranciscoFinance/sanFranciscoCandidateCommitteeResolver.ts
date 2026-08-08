@@ -52,7 +52,14 @@ function stripSuffixComma(value: string): string {
   return value.replace(/,\s*(?:JR|SR|II|III|IV|V)\.?\s*$/i, " ");
 }
 
-type ParsedPersonName = { first: string; middles: string[]; last: string };
+// `exact` marks parses whose surname boundary is explicit (comma form,
+// single token, two tokens) rather than guessed from a space-form split.
+type ParsedPersonName = {
+  first: string;
+  middles: string[];
+  last: string;
+  exact: boolean;
+};
 
 // Comma forms ("Last, First M.") are unambiguous and yield one parse. Space
 // forms are ambiguous about where the surname starts, so every split is
@@ -66,18 +73,21 @@ function parsePersonName(raw: string): ParsedPersonName[] {
       .split(" ")
       .filter(Boolean);
     if (!last || restTokens.length === 0) return [];
-    return [{ first: restTokens[0]!, middles: restTokens.slice(1), last }];
+    return [
+      { first: restTokens[0]!, middles: restTokens.slice(1), last, exact: true },
+    ];
   }
   const tokens = normalizePersonName(raw).split(" ").filter(Boolean);
   if (tokens.length === 0) return [];
   if (tokens.length === 1)
-    return [{ first: tokens[0]!, middles: [], last: tokens[0]! }];
+    return [{ first: tokens[0]!, middles: [], last: tokens[0]!, exact: true }];
   const parses: ParsedPersonName[] = [];
   for (let lastStart = 1; lastStart < tokens.length; lastStart += 1) {
     parses.push({
       first: tokens[0]!,
       middles: tokens.slice(1, lastStart),
       last: tokens.slice(lastStart).join(" "),
+      exact: tokens.length === 2,
     });
   }
   return parses;
@@ -119,13 +129,18 @@ function middleNameEvidence(
   return "strong";
 }
 
-// Aggregation across all variant pairs: any strong pair matches. Otherwise
-// weak/conflict evidence is judged only at the LONGEST aligned surname —
-// a compound surname emits bogus shorter splits ("Mary Van Dyke" vs
-// "MARY B VAN DYKE" aligns correctly on "VAN DYKE" but the "DYKE"-surname
-// split reads VAN-vs-B as a middle conflict), and the longest alignment is
-// the real one. At that length, any conflict rejects; otherwise a first+last
-// agreement with middle information missing on a side matches.
+// Aggregation across all variant pairs: any strong pair matches. A conflict
+// on an EXACT pair — one whose surname boundary is explicit (comma form)
+// rather than guessed, which pins the aligned parse on the other side too —
+// is authoritative and rejects outright: an ambiguous space-form split
+// elsewhere must never override it ("SMITH, JOHN B. A." conflicts with
+// "John A. Smith" no matter how a space-form sibling variant re-splits).
+// Purely ambiguous weak/conflict evidence is judged only at the LONGEST
+// aligned surname — a compound surname emits bogus shorter splits ("Mary Van
+// Dyke" vs "MARY B VAN DYKE" aligns correctly on "VAN DYKE" but the
+// "DYKE"-surname split reads VAN-vs-B as a middle conflict), and the longest
+// alignment is the real one. At that length, any conflict rejects; otherwise
+// a first+last agreement with middle information missing on a side matches.
 export function sanFranciscoCandidateNameMatches(
   appCandidateName: string,
   manifestCandidateName: string,
@@ -135,6 +150,8 @@ export function sanFranciscoCandidateNameMatches(
     number,
     { weak: boolean; conflict: boolean }
   >();
+  let sawStrong = false;
+  let sawExactConflict = false;
   for (const manifestVariant of personNameVariants(manifestCandidateName)) {
     for (const appVariant of appVariants) {
       if (
@@ -146,7 +163,17 @@ export function sanFranciscoCandidateNameMatches(
         appVariant.middles,
         manifestVariant.middles,
       );
-      if (evidence === "strong") return true;
+      if (evidence === "strong") {
+        sawStrong = true;
+        continue;
+      }
+      if (
+        evidence === "conflict" &&
+        (appVariant.exact || manifestVariant.exact)
+      ) {
+        sawExactConflict = true;
+        continue;
+      }
       const surnameLength = appVariant.last.split(" ").length;
       const bucket = evidenceBySurnameLength.get(surnameLength) ?? {
         weak: false,
@@ -156,6 +183,8 @@ export function sanFranciscoCandidateNameMatches(
       evidenceBySurnameLength.set(surnameLength, bucket);
     }
   }
+  if (sawStrong) return true;
+  if (sawExactConflict) return false;
   if (evidenceBySurnameLength.size === 0) return false;
   const longest = Math.max(...evidenceBySurnameLength.keys());
   const decisive = evidenceBySurnameLength.get(longest)!;
