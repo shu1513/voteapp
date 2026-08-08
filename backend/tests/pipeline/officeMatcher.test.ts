@@ -77,6 +77,128 @@ describe("OfficeMatcher", () => {
     expect(result.shouldPersistAlias).toBe(false);
   });
 
+  const COURT_CLERK_TITLE_CASES = [
+    // Nebraska: every county words the seat this way.
+    { title: "Sarpy County Clerk of the District Court", districtName: "Sarpy County, Nebraska", state: "NE" },
+    // Wisconsin: both official wordings, in counties that elect the clerk.
+    {
+      title: "Milwaukee County Clerk of Circuit Court",
+      districtName: "Milwaukee County, Wisconsin",
+      state: "WI",
+    },
+    { title: "Waukesha County Clerk of Courts", districtName: "Waukesha County, Wisconsin", state: "WI" },
+    {
+      title: "Mecklenburg County Clerk of Superior Court",
+      districtName: "Mecklenburg County, North Carolina",
+      state: "NC",
+    },
+    {
+      title: "Marion County Clerk of the Circuit Court",
+      districtName: "Marion County, Indiana",
+      state: "IN",
+    },
+  ];
+
+  for (const testCase of COURT_CLERK_TITLE_CASES) {
+    it(`routes "${testCase.title}" to Clerk of Court, not the county's own clerk`, async () => {
+      const client = createMatcherDataClient({
+        aliasesByScope: { county: [] },
+        officesByScope: {
+          county: [
+            { id: "office-clerk-of-court", canonical_name: "Clerk of Court" },
+            { id: "office-county-clerk", canonical_name: "County Clerk" },
+          ],
+        },
+      });
+      const matcher = new OfficeMatcher(client as never);
+
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: testCase.districtName,
+        state: testCase.state,
+        officialBallotTitle: testCase.title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBe("office-clerk-of-court");
+      expect(result.method).toBe("deterministic_fallback");
+      expect(result.shouldPersistAlias).toBe(false);
+    });
+  }
+
+  it("ignores an already-learned county-clerk alias for a court-clerk title", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          // The mis-scored alias this defect persisted across live runs.
+          { office_id: "office-county-clerk", normalized_alias: "county clerk of the district court" },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-clerk-of-court", canonical_name: "Clerk of Court" },
+          { id: "office-county-clerk", canonical_name: "County Clerk" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Douglas County, Nebraska",
+      state: "NE",
+      officialBallotTitle: "Douglas County Clerk of the District Court",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-clerk-of-court");
+    expect(result.method).toBe("deterministic_fallback");
+  });
+
+  it("leaves Nebraska's Clerk Register of Deeds with the County Clerk", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-clerk-of-court", canonical_name: "Clerk of Court" },
+          { id: "office-county-clerk", canonical_name: "County Clerk" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Sarpy County, Nebraska",
+      state: "NE",
+      officialBallotTitle: "Sarpy County Clerk Register of Deeds",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBe("office-county-clerk");
+  });
+
+  it("declines a court-clerk title when no Clerk of Court office is in scope", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [{ id: "office-county-clerk", canonical_name: "County Clerk" }],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Sarpy County, Nebraska",
+      state: "NE",
+      officialBallotTitle: "Sarpy County Clerk of the District Court",
+      discoveryContestFamily: "non_judicial_office",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.shouldPersistAlias).toBe(false);
+  });
+
   it("resolves County Register through the seeded County Recorder alias", async () => {
     expect(normalizeElectionTitleKey("County Register")).toBe("county register");
     const client = createMatcherDataClient({
