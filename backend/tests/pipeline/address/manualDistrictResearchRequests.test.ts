@@ -175,16 +175,16 @@ describe("enqueueManualDistrictResearchRequestsForStaleDistricts", () => {
 });
 
 describe("enqueueManualDistrictResearchRequestsForStaleDistricts duplicate districts", () => {
-  it("never enqueues a district whose contests another row owns", async () => {
-    // The staleness query filters the suppressed row out, so it is not in the
-    // stale set and no upsert follows. Callers coming through
+  it("never enqueues a row whose contests another district owns", async () => {
+    // The staleness query filters the non-government row out, so it is not in
+    // the stale set and no upsert follows. Callers coming through
     // lookupAddressDistricts are already collapsed; this is the backstop.
     const query = vi.fn().mockResolvedValueOnce({ rows: [] });
 
     const result = await enqueueManualDistrictResearchRequestsForStaleDistricts(
       { query },
       {
-        districts: [makeDistrict({ district_type: "county", geoid_compact: "51760" })],
+        districts: [makeDistrict({ district_type: "place", geoid_compact: "5103000" })],
         triggerSource: "address_resolve",
         cooldownDays: 180,
       }
@@ -232,12 +232,11 @@ describe("claimNextManualDistrictResearchRequest", () => {
     expect(query.mock.calls[2]?.[1]).toEqual(["claude-session", "claude", 180]);
   });
 
-  it("retires duplicate-Census rows and never claims them", async () => {
-    // Virginia's independent cities exist twice in `districts` (Richmond is
-    // county-equivalent 51760 and place 5167000 for one city government), and
-    // the bulk_backfill sweep seeded both before that was understood. The
-    // suppressed row has no work of its own: its queued requests retire and it
-    // can never be claimed again.
+  it("retires non-government rows and never claims them", async () => {
+    // Arlington CDP is a Census statistical geography with no government, but it
+    // is coextensive with and named like Arlington County, so the bulk_backfill
+    // sweep seeded it as if it were a district. It has no work of its own: its
+    // queued requests retire and it can never be claimed again.
     const query = vi
       .fn()
       .mockResolvedValueOnce({ rowCount: 47, rows: [] })

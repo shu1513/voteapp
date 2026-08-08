@@ -69,17 +69,17 @@ class UnresolvedOfficeMatchError extends Error {
 }
 
 /**
- * Census lists some governments twice: Richmond, Virginia is a county-equivalent
- * row (51760) and a place row (5167000) for the one city with one mayor and one
- * council. `districts.canonical_district_id` names the row that owns such a
- * government's contests; writing under the other row would duplicate every
- * election and candidate across two districts.
+ * Some `districts` rows are not governments at all: `Arlington CDP, Virginia`
+ * is a Census statistical geography coextensive with, and named like, Arlington
+ * County, which is the row that actually holds the elections.
+ * `districts.canonical_district_id` names that owner, and contests written
+ * under the alias would sit where no ballot reader reaches them.
  *
  * Like an unresolved office match this is a permanent fault in the payload, not
  * a transient one, so the writer parks the staging item instead of retrying it
  * forever. Re-run the research against the district id named in the message.
  */
-class SuppressedDistrictWriteError extends Error {
+class NonGovernmentDistrictWriteError extends Error {
   constructor(input: {
     districtId: string;
     districtName: string;
@@ -87,12 +87,12 @@ class SuppressedDistrictWriteError extends Error {
     canonicalDistrictName: string;
   }) {
     super(
-      `writer refused duplicate district: district_id=${input.districtId} ` +
-        `name=${JSON.stringify(input.districtName)} is a duplicate Census row; ` +
+      `writer refused non-government district: district_id=${input.districtId} ` +
+        `name=${JSON.stringify(input.districtName)} is a Census statistical row, not a district; ` +
         `contests belong to canonical_district_id=${input.canonicalDistrictId} ` +
         `name=${JSON.stringify(input.canonicalDistrictName)}`
     );
-    this.name = "SuppressedDistrictWriteError";
+    this.name = "NonGovernmentDistrictWriteError";
   }
 }
 
@@ -352,7 +352,7 @@ async function writeElectionsForDistrict(
   );
   const canonicalRow = canonicalCheck.rows[0];
   if (canonicalRow?.canonical_district_id) {
-    throw new SuppressedDistrictWriteError({
+    throw new NonGovernmentDistrictWriteError({
       districtId: payload.district_id,
       districtName: canonicalRow.name,
       canonicalDistrictId: canonicalRow.canonical_district_id,
@@ -826,7 +826,7 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
           const reason = toReason(error);
           if (
             error instanceof UnresolvedOfficeMatchError ||
-            error instanceof SuppressedDistrictWriteError
+            error instanceof NonGovernmentDistrictWriteError
           ) {
             await pool.query(
               `

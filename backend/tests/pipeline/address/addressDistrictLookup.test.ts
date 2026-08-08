@@ -158,60 +158,60 @@ describe("lookupAddressDistricts", () => {
     ]);
   });
 
-  it("collapses a duplicated government onto its canonical row", async () => {
-    // A Richmond, Virginia address geocodes into both the county-equivalent
-    // layer (51760) and the incorporated-places layer (5167000). Both rows
-    // describe the one city government, so the query resolves the suppressed
-    // county row to its owner and the caller must see the city once.
+  it("collapses a non-government row onto the district that holds the elections", async () => {
+    // An Arlington, Virginia address geocodes into both the counties layer
+    // (51013) and the incorporated-places layer (Arlington CDP, 5103000). The
+    // CDP is a Census statistical geography with no government, so the query
+    // resolves it to Arlington County and the caller must see the county once.
     const query = vi.fn().mockResolvedValueOnce({
       rows: [
         {
-          id: "richmond-place",
-          district_type: "place",
-          geoid_compact: "5167000",
-          name: "Richmond city, Virginia",
+          id: "arlington-county",
+          district_type: "county",
+          geoid_compact: "51013",
+          name: "Arlington County, Virginia",
           state: "VA",
           state_fips: "51",
-          population: 229359,
+          population: 236254,
           representation_power_score: null,
           requested_district_type: "county",
-          requested_geoid_compact: "51760",
+          requested_geoid_compact: "51013",
         },
         {
-          id: "richmond-place",
-          district_type: "place",
-          geoid_compact: "5167000",
-          name: "Richmond city, Virginia",
+          id: "arlington-county",
+          district_type: "county",
+          geoid_compact: "51013",
+          name: "Arlington County, Virginia",
           state: "VA",
           state_fips: "51",
-          population: 229359,
+          population: 236254,
           representation_power_score: null,
           requested_district_type: "place",
-          requested_geoid_compact: "5167000",
+          requested_geoid_compact: "5103000",
         },
       ],
     });
 
     const result = await lookupAddressDistricts({ query }, [
-      { district_type: "county", geoid_compact: "51760" },
-      { district_type: "place", geoid_compact: "5167000" },
+      { district_type: "county", geoid_compact: "51013" },
+      { district_type: "place", geoid_compact: "5103000" },
     ]);
 
     expect(query.mock.calls[0]?.[0]).toContain("LEFT JOIN public.districts AS owner");
     expect(result.districts).toEqual([
       {
-        id: "richmond-place",
-        district_type: "place",
-        geoid_compact: "5167000",
-        name: "Richmond city, Virginia",
+        id: "arlington-county",
+        district_type: "county",
+        geoid_compact: "51013",
+        name: "Arlington County, Virginia",
         state: "VA",
         state_fips: "51",
-        population: 229359,
+        population: 236254,
         representation_power_score: null,
       },
     ]);
-    // The county key resolved to a row; it is not missing just because the row
-    // handed back carries the place identity.
+    // The CDP key resolved to a row; it is not missing just because the row
+    // handed back carries the county identity.
     expect(result.missing_district_keys).toEqual([]);
   });
 

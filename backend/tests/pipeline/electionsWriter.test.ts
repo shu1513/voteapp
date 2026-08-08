@@ -154,15 +154,15 @@ describe("runElectionsWriter", () => {
     );
   });
 
-  it("parks the payload instead of writing under a duplicate Census district row", async () => {
-    // Richmond, Virginia exists as county-equivalent 51760 and place 5167000 for
-    // one city government. Writing under the suppressed row would duplicate
-    // every election and candidate across two districts, so the writer refuses
-    // and the staging item parks as failed rather than retrying forever.
+  it("parks the payload instead of writing under a non-government district row", async () => {
+    // Arlington CDP is a Census statistical geography with no government;
+    // Arlington County holds the elections. Contests written under the CDP
+    // would sit where no ballot reader reaches them, so the writer refuses and
+    // the staging item parks as failed rather than retrying forever.
     const payload = {
-      district_id: "richmond-county-row",
-      district_name: "Richmond city, Virginia",
-      district_type: "county",
+      district_id: "arlington-cdp-row",
+      district_name: "Arlington CDP, Virginia",
+      district_type: "place",
       state: "VA",
       entries: [
         {
@@ -194,9 +194,9 @@ describe("runElectionsWriter", () => {
           rowCount: 1,
           rows: [
             {
-              name: "Richmond city, Virginia",
-              canonical_district_id: "richmond-place-row",
-              canonical_name: "Richmond city, Virginia",
+              name: "Arlington CDP, Virginia",
+              canonical_district_id: "arlington-county-row",
+              canonical_name: "Arlington County, Virginia",
             },
           ],
         };
@@ -220,7 +220,7 @@ describe("runElectionsWriter", () => {
       (call) => String(call[0]).includes("status = 'failed'")
     );
     expect(failCall).toBeTruthy();
-    expect(String(failCall?.[1]?.[1])).toContain("richmond-place-row");
+    expect(String(failCall?.[1]?.[1])).toContain("arlington-county-row");
     expect(redisXAckMock).toHaveBeenCalled();
   });
 

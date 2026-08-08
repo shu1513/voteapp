@@ -3,35 +3,40 @@ import { Pool } from "pg";
 import { loadProjectEnv } from "../config/env.js";
 
 /**
- * Reports districts rows that describe a government another row already
- * describes.
+ * Reports `districts` rows where Census describes one place twice.
  *
- * Census assigns some governments two FIPS codes, so `districts` holds two rows
- * for one city: Richmond, Virginia is county-equivalent 51760 and place 5167000,
- * both population 229,359, for one mayor and one council. Migration 216 marked
- * the known pairs via districts.canonical_district_id. This script re-derives
- * the pairs from the data so a later district load cannot introduce an unmarked
- * one silently, and reports the pairs deliberately left unmarked because
- * contests already exist on both sides.
+ * Two different shapes share that description, and only one of them is a fault:
+ *
+ *   1. A CDP coextensive with, and named like, a real county-equivalent
+ *      (Arlington CDP / Arlington County). A Census Designated Place has no
+ *      government, so the CDP row is not a district at all. These are marked
+ *      via districts.canonical_district_id by migration 216; an UNMARKED one is
+ *      a fault this script exits non-zero on.
+ *
+ *   2. One real government holding both a county-equivalent FIPS and a place
+ *      FIPS (Virginia's 38 independent cities, consolidated city-counties).
+ *      Both rows are legitimate and both stay researchable: offices are scoped
+ *      and county/place scopes do not overlap, so `Mayor` can only ever be
+ *      written under the place row and `Sheriff` only under the county row.
+ *      These are listed for orientation, NOT flagged.
  *
  * Read-only. Run: npm run districts:canonical-pairs
  */
 
 type PairRow = {
   state: string;
-  county_id: string;
   county_geoid: string;
   county_name: string;
   county_elections: number;
-  place_id: string;
   place_geoid: string;
   place_name: string;
   place_elections: number;
-  marked: string | null;
+  place_is_cdp: boolean;
+  marked: boolean;
 };
 
-// Coextensive pairs share a population exactly, so that is the primary signal;
-// a name check removes the coincidences it produces among small counties (King
+// Coextensive rows share a population exactly, so that is the primary signal; a
+// name check removes the coincidences it produces among small counties (King
 // County, Texas has 211 residents, and so does Blackwell city).
 const COEXTENSIVE_PAIRS_SQL = `
   WITH normalized AS (
@@ -91,19 +96,14 @@ async function loadPairs(pool: Pool): Promise<PairRow[]> {
       )
       SELECT
         c.state,
-        c.id AS county_id,
         c.geoid_compact AS county_geoid,
         c.name AS county_name,
         (SELECT count(*)::int FROM public.elections e WHERE e.district_id = c.id) AS county_elections,
-        p.id AS place_id,
         p.geoid_compact AS place_geoid,
         p.name AS place_name,
         (SELECT count(*)::int FROM public.elections e WHERE e.district_id = p.id) AS place_elections,
-        CASE
-          WHEN c.canonical_district_id = p.id THEN 'place'
-          WHEN p.canonical_district_id = c.id THEN 'county'
-          ELSE NULL
-        END AS marked
+        (p.name LIKE '%CDP%') AS place_is_cdp,
+        (c.canonical_district_id IS NOT NULL OR p.canonical_district_id IS NOT NULL) AS marked
       FROM pairs
       JOIN public.districts AS c ON c.id = pairs.county_id
       JOIN public.districts AS p ON p.id = pairs.place_id
@@ -125,19 +125,23 @@ async function main(): Promise<void> {
   try {
     const pairs = await loadPairs(pool);
 
-    // A pair holding contests on both sides cannot be collapsed by marking
-    // alone: one side's elections would stop being reachable. Moving them is a
-    // guarded data change, so these stay unmarked and keep getting reported.
-    const split = pairs.filter(
-      (pair) => pair.marked === null && pair.county_elections > 0 && pair.place_elections > 0
-    );
-    const unmarked = pairs.filter(
-      (pair) => pair.marked === null && !(pair.county_elections > 0 && pair.place_elections > 0)
-    );
+    // A CDP has no government. One that impersonates a county-equivalent this
+    // closely will be claimed and researched as if it were one, so it must be
+    // marked. A district reload could introduce a new one.
+    const unmarkedNonGovernmentRows = pairs.filter((pair) => pair.place_is_cdp && !pair.marked);
 
-    // Marking a row that already holds contests would hide them from every
-    // reader. Migration 216 asserts this is empty; a later hand-edit could
-    // break it.
+    // Both rows are real governments with non-overlapping office scopes. Listed
+    // so the shape is visible; nothing to do about them.
+    const twoRowGovernments = pairs
+      .filter((pair) => !pair.place_is_cdp)
+      .map((pair) => ({
+        state: pair.state,
+        county: `${pair.county_geoid} ${pair.county_name} (${pair.county_elections} elections)`,
+        place: `${pair.place_geoid} ${pair.place_name} (${pair.place_elections} elections)`,
+      }));
+
+    // Marking a row that holds contests would hide them from every reader.
+    // Migration 216 asserts this is empty; a later hand-edit could break it.
     const strandedResult = await pool.query<{
       district_id: string;
       name: string;
@@ -154,23 +158,19 @@ async function main(): Promise<void> {
       `
     );
 
-    // Research finished against a row before it was marked. The work is done
-    // for that government, but the owner still looks untouched, so the queue
-    // will offer it again and an agent will redo the pass. Transferring the
-    // stamp or the deferral is a data change, so it is reported, not applied.
+    // Research finished against a row before it was marked. The work is done for
+    // that government, but the owner still looks untouched, so the queue will
+    // offer it again and an agent will redo the pass. Transferring a stamp or a
+    // deferral is a data change, so it is reported, not applied.
     const strandedStateResult = await pool.query<{
-      state: string;
       alias: string;
-      owner_district_id: string;
       owner: string;
       stranded: string;
       detail: string;
     }>(
       `
         SELECT
-          a.state,
-          a.district_type || ' ' || a.geoid_compact AS alias,
-          o.id AS owner_district_id,
+          a.district_type || ' ' || a.geoid_compact || ' ' || a.name AS alias,
           o.district_type || ' ' || o.geoid_compact || ' ' || o.name AS owner,
           'elections_searched_stamp' AS stranded,
           a.last_elections_searched_at::text AS detail
@@ -182,9 +182,7 @@ async function main(): Promise<void> {
         UNION ALL
 
         SELECT
-          a.state,
-          a.district_type || ' ' || a.geoid_compact AS alias,
-          o.id AS owner_district_id,
+          a.district_type || ' ' || a.geoid_compact || ' ' || a.name AS alias,
           o.district_type || ' ' || o.geoid_compact || ' ' || o.name AS owner,
           'active_deferral' AS stranded,
           md.stage || ' until ' || md.blocked_until::text AS detail
@@ -200,7 +198,7 @@ async function main(): Promise<void> {
               AND m2.status = 'deferred'
               AND m2.blocked_until > CURRENT_DATE
           )
-        ORDER BY 1, 2
+        ORDER BY 1, 3
       `
     );
 
@@ -217,22 +215,24 @@ async function main(): Promise<void> {
     console.log(
       JSON.stringify(
         {
-          pairs_total: pairs.length,
-          marked_total: pairs.filter((pair) => pair.marked !== null).length,
-          unmarked_pairs: unmarked,
-          split_pairs_needing_a_decision: split,
+          unmarked_non_government_rows: unmarkedNonGovernmentRows,
           suppressed_districts_holding_elections: strandedResult.rows,
           research_state_stranded_on_suppressed_rows: strandedStateResult.rows,
           open_queue_requests_on_suppressed_districts: openQueueResult.rows[0]?.count ?? 0,
+          two_row_governments_not_a_fault: {
+            count: twoRowGovernments.length,
+            note:
+              "One government, two Census rows. Both stay researchable: county and place office " +
+              "scopes do not overlap, so each row can only hold its own half of the ballot.",
+            pairs: twoRowGovernments,
+          },
         },
         null,
         2
       )
     );
 
-    // Exit non-zero on states an operator has to act on, so this can gate CI or
-    // a scheduled check without anyone reading the JSON.
-    if (unmarked.length > 0 || strandedResult.rows.length > 0) {
+    if (unmarkedNonGovernmentRows.length > 0 || strandedResult.rows.length > 0) {
       process.exitCode = 1;
     }
   } finally {

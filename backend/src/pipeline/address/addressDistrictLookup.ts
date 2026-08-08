@@ -132,10 +132,11 @@ export async function lookupAddressDistricts(
     [districtTypes, geoidCompacts]
   );
 
-  // A Census address sits inside both rows of a duplicated government (Richmond
-  // is county 51760 and place 5167000), so collapsing onto the canonical row
-  // yields the same district twice. Keep the first occurrence: `requested.ord`
-  // preserves the caller's ordering, which the ballot relies on.
+  // An Arlington, Virginia address geocodes into both the counties layer (51013)
+  // and the places layer (Arlington CDP, 5103000), and the CDP is not a
+  // government — it collapses onto the county, yielding the same district twice.
+  // Keep the first occurrence: `requested.ord` preserves the caller's ordering,
+  // which the ballot relies on.
   const districts: AddressResolvedDistrict[] = [];
   const seenDistrictIds = new Set<string>();
   for (const row of result.rows) {
