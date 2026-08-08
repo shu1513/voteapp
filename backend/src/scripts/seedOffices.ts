@@ -445,6 +445,16 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
+    canonicalName: "Justice of the Peace",
+    summary: [
+      "Hearing small-claims cases and disputes between neighbors, landlords, and tenants",
+      "Deciding eviction cases in many states",
+      "Handling traffic and minor criminal citations where state law allows it",
+      "Performing marriages and signing routine legal papers such as affidavits",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
     canonicalName: "Constable",
     summary: [
       "Serving court papers, such as evictions, subpoenas, and court orders",
@@ -1796,6 +1806,36 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   {
     scope: "county",
     officeCanonicalName: "Constable",
+    aliasText: "Constable",
+  },
+  {
+    // Caddo Parish LA titles the constable seat by the justice court it serves
+    // ("Constable Justice of the Peace Ward 7"); the ward number is a seat
+    // suffix, so the stripped key keeps the court words.
+    scope: "county",
+    officeCanonicalName: "Constable",
+    aliasText: "Constable Justice of the Peace",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Justice of the Peace",
+    aliasText: "Justice of the Peace",
+  },
+  {
+    // The LA SOS emits the office name twice ("Justice of the Peace Justice of
+    // the Peace Ward 1", Caddo Parish live). The matcher collapses the repeat,
+    // but the raw title is looked up first, so key the source form too.
+    scope: "county",
+    officeCanonicalName: "Justice of the Peace",
+    aliasText: "Justice of the Peace Justice of the Peace",
+  },
+  {
+    // Orleans Parish's constable serves the First City Court — a MUNICIPAL
+    // court, so that seat belongs to the New Orleans place district, where the
+    // catalog office is Municipal Constable. The seat strip reduces "Constable
+    // 1st City Court" to the bare office word.
+    scope: "place",
+    officeCanonicalName: "Municipal Constable",
     aliasText: "Constable",
   },
   {
