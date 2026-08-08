@@ -558,6 +558,19 @@ const SEED_OFFICES: SeedOffice[] = [
     ].join("\n"),
   },
   {
+    // Grand Rapids MI and many Michigan/Midwest cities elect their public
+    // library's governing board citywide, on its own ballot heading
+    // ("Library Board 6 Year Term", Kent County live).
+    scope: "place",
+    canonicalName: "Library Board Member",
+    summary: [
+      "Setting policy for the public library and its branches",
+      "Approving the library's budget and how its millage money is spent",
+      "Hiring and overseeing the library director",
+      "Deciding library hours, services, and building projects",
+    ].join("\n"),
+  },
+  {
     scope: "place",
     canonicalName: "City Clerk",
     summary: [
@@ -1792,6 +1805,33 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "place",
     officeCanonicalName: "City Council Member",
     aliasText: "Louisville Metro Council Member",
+  },
+  {
+    // "Library Board 6 Year Term" (Grand Rapids MI live) — the bare body name
+    // is the ballot heading; the member office is what a voter elects.
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Library Board",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Public Library Board",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Library Trustee",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Library Board of Trustees",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Board of Library Trustees",
   },
   {
     scope: "county",

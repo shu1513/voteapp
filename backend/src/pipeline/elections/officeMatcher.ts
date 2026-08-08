@@ -329,6 +329,19 @@ function stripSeatSuffixes(value: string): string {
     // both previously survived the strip and produced zero-overlap keys.
     .replace(/\b(?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g, " ")
     .replace(/\b\d+(st|nd|rd|th)\s+district\b/g, " ")
+    // Ordinal-FIRST numbering of the seat designators below ("City Commissioner
+    // 1st Ward", Grand Rapids MI live: the ordinal-last rule alone left
+    // "city commissioner 1st ward", which matched no alias, so the writer threw
+    // UnresolvedOfficeMatchError and aborted the whole payload). Mirrors the
+    // ordinal-first district rule above; common in Michigan and other Midwest
+    // city charters. MUST run before the ordinal-last rule: on a title that
+    // also carries a term suffix ("City Commissioner 1st Ward 4 Year Term")
+    // the ordinal-last pattern would otherwise consume "Ward 4" and strand the
+    // leading "1st".
+    .replace(
+      /\b\d+(?:st|nd|rd|th) (?:ward|zone|seat|part|(?:justice )?(?:precinct|prec))\b/g,
+      " "
+    )
     // Ward/Zone/Seat/Part and (justice) precinct forms are the same numbered
     // seat suffix as District/Position, all hit live: Florida city commissions
     // ("City Commission Ward 1" / "Zone 3" / "Seat 4"), Carson City NV wards,
@@ -352,7 +365,10 @@ function stripSeatSuffixes(value: string): string {
     .replace(/\bseat\b/g, " ")
     // Vacancy descriptors qualify the term being filled, never the office
     // ("(UNEXPIRED)" NC commission seats, "Chancellor ... Unexpired Term" TN).
-    .replace(/\b(?:unexpired|vacancy)(?: term)?\b/g, " ")
+    // Michigan spells the same thing "Partial Term Ending 12/31/2028" and
+    // prints the end date in the heading (Grand Rapids Library Board and
+    // Lansing School Board, both live), so the trailing date goes with it.
+    .replace(/\b(?:unexpired|vacancy|partial)(?: term)?(?: ending(?: \d+)+)?\b/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     // Ballot-heading form "For <office>" ("For Member of County Council",
