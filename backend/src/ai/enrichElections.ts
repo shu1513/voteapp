@@ -10,7 +10,7 @@ import {
   ELECTION_ENRICHMENT_SCHEMA_VERSION,
 } from "../contracts/electionEnrichmentContract.js";
 import { parseAiElectionEntriesPayload } from "../contracts/electionPayloadContract.js";
-import { resolveElectionIsPartisan } from "./electionPartisanshipPolicy.js";
+import { isJudicialOfficeTitle, resolveElectionIsPartisan } from "./electionPartisanshipPolicy.js";
 import type { AiProvider } from "./types.js";
 import type {
   ElectionContestFamily,
@@ -364,9 +364,13 @@ function resolveUsSenateEntries(
   return { entries: resolved, shouldRetry: false, notes };
 }
 
+// Shares the partisanship classifier instead of keeping a second copy of the
+// same keyword list. The copy drifted: it still counted every "<X> Judicial
+// Circuit" prosecutor as judicial, so a non-judicial pass holding only a
+// district attorney was rejected as "fully judicial" while the judicial pass
+// accepted the same row.
 function containsJudicialMarker(entry: ElectionEntryPayload): boolean {
-  const text = entry.official_ballot_title.toLowerCase();
-  return /\b(judge|justice|judicial|superior court|court of appeals|supreme court|retention)\b/.test(text);
+  return isJudicialOfficeTitle(entry.official_ballot_title);
 }
 
 function containsBallotMeasureMarker(entry: ElectionEntryPayload): boolean {
