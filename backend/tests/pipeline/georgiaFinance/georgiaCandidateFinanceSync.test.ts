@@ -845,8 +845,9 @@ describe("syncGeorgiaCandidateFinance", () => {
         ]);
       }
       // The opposing PAC is a treasury spender that never disclosed a
-      // contribution — its name substring matches only foreign filers.
-      throw new GeorgiaEthicsClientError("filter_ineffective", "only foreign rows for Opposing PAC");
+      // contribution — its full-name query returns zero rows total, a clean
+      // honest empty (no foreign matches, so no filter_ineffective error).
+      return stableResult([]);
     });
 
     const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
@@ -997,19 +998,35 @@ describe("fetchGeorgiaSpenderContributionRows", () => {
     );
   });
 
-  it("treats filter_ineffective as an honest empty (treasury spender)", async () => {
-    const fetchers = spenderFetchers({
+  it("treats a clean zero-row result as an honest empty, but filter_ineffective as failed", async () => {
+    // Treasury spender: full-name query returns zero rows TOTAL — clean empty.
+    const empty = spenderFetchers({ stable: async () => stableResult([]) });
+    await expect(
+      fetchGeorgiaSpenderContributionRows({
+        transport: dummyTransport,
+        spenderRegistrationGuid: "spender-a-guid",
+        spenderName: "Example PAC",
+        fetchers: empty,
+      })
+    ).resolves.toEqual({ status: "ok", rows: [], otherRegistrationRowCount: 0 });
+
+    // filter_ineffective (foreign rows present, own rows absent) is
+    // ambiguous — the filter may have been ignored or matched the wrong
+    // filer — and the funders leg has no reconciliation arbiter, so it must
+    // fail closed instead of erasing stored donor rows with a false zero.
+    const ambiguous = spenderFetchers({
       stable: async () => {
         throw new GeorgiaEthicsClientError("filter_ineffective", "only foreign rows");
       },
     });
-    const outcome = await fetchGeorgiaSpenderContributionRows({
-      transport: dummyTransport,
-      spenderRegistrationGuid: "spender-a-guid",
-      spenderName: "Example PAC",
-      fetchers,
-    });
-    expect(outcome).toEqual({ status: "ok", rows: [], otherRegistrationRowCount: 0 });
+    await expect(
+      fetchGeorgiaSpenderContributionRows({
+        transport: dummyTransport,
+        spenderRegistrationGuid: "spender-a-guid",
+        spenderName: "Example PAC",
+        fetchers: ambiguous,
+      })
+    ).resolves.toMatchObject({ status: "failed", reason: expect.stringContaining("only foreign rows") });
   });
 
   it("returns unresolved when no filed report matches the registration guid", async () => {

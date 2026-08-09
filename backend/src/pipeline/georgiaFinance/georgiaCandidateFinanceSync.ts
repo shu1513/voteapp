@@ -91,7 +91,12 @@ export type GeorgiaCandidateFinanceSyncFetchers = {
 //   an IE filer spending treasury money legitimately has no TCON rows).
 // - "unresolved": the spender's PeachFile filerEntityId could not be derived
 //   from its filed reports (name-form mismatch or ambiguous entity) — the
-//   spender contributes no donor rows and is counted in a diagnostic.
+//   spender contributes no donor rows and is counted in a diagnostic. This
+//   stays per-spender (unlike a "failed" pull) because resolution is an ID
+//   join over immutable filed reports — a spender that resolved once keeps
+//   resolving, so an unresolved spender has no stored donor rows to lose —
+//   and a permanently odd spender name must not disable the funders leg for
+//   every candidate.
 // - "failed": a client-level fetch failure — the WHOLE funders leg degrades
 //   for any candidate referencing this spender (a partial breakdown array
 //   would delete the failed spender's stored donor rows on write).
@@ -437,23 +442,22 @@ export async function fetchGeorgiaSpenderContributionRows(input: {
       };
     }
 
-    let fetched;
-    try {
-      fetched = await input.fetchers.fetchTransactionRowsStable(
-        input.transport,
-        "peachfile",
-        { filerName: input.spenderName },
-        { expectedFilerEntityIds: [entityIds[0]!], maxPasses: input.maxPasses }
-      );
-    } catch (error) {
-      // Zero own rows while the name substring matched only foreign filers is
-      // the expected shape of an IE filer that never disclosed a contribution
-      // (a treasury spender) — an honest empty, not a broken pull.
-      if (error instanceof GeorgiaEthicsClientError && error.code === "filter_ineffective") {
-        return { status: "ok", rows: [], otherRegistrationRowCount: 0 };
-      }
-      throw error;
-    }
+    // NOTE: filter_ineffective is NOT tolerated here, unlike the direct
+    // leg's whole-pull tolerance. That error's two readings (the filter was
+    // ignored / it matched the wrong filer) cannot be told apart, and the
+    // funders leg has no arbiter — the direct leg tolerates the shape only
+    // because the index-total reconciliation guard proves whether money went
+    // missing. Writing an empty result through on this ambiguity would
+    // delete the spender's stored donor rows. The honest treasury-spender
+    // case is unaffected: a full-committee-name query for a filer with no
+    // TCON disclosures normally returns zero rows TOTAL (no foreign
+    // matches), which is a clean empty result, not an error.
+    const fetched = await input.fetchers.fetchTransactionRowsStable(
+      input.transport,
+      "peachfile",
+      { filerName: input.spenderName },
+      { expectedFilerEntityIds: [entityIds[0]!], maxPasses: input.maxPasses }
+    );
 
     const rows: GeorgiaTransactionRow[] = [];
     let otherRegistrationRowCount = 0;
@@ -520,7 +524,7 @@ async function enrichGeorgiaOutsideGroupIndustryBreakdowns(input: {
     classifications,
   });
   for (const row of industryBreakdowns.outsideIndustryBreakdowns) {
-    const key = `${row.committeeId} ${row.supportOppose} ${row.categoryName}`;
+    const key = `${row.committeeId}\u0000${row.supportOppose}\u0000${row.categoryName}`;
     const existing = industryRows.get(key);
     if (!existing) {
       industryRows.set(key, { ...row });
@@ -540,7 +544,7 @@ async function enrichGeorgiaOutsideGroupIndustryBreakdowns(input: {
   // industry rows above.
   const donorsByGroup = new Map<string, GeorgiaFinanceOutsideGroupBreakdownInput[]>();
   for (const donor of donorRows) {
-    const key = `${donor.committeeId} ${donor.supportOppose}`;
+    const key = `${donor.committeeId}\u0000${donor.supportOppose}`;
     const list = donorsByGroup.get(key) ?? [];
     list.push(donor);
     donorsByGroup.set(key, list);

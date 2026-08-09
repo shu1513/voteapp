@@ -768,3 +768,24 @@ shape) and lands first; only the D3 map table waits for the spike.
   pull is never retried per candidate. Breakdowns pair only with the capped
   group list actually written (writer pairing validation). 138 GA tests,
   suite 7,081 green.
+- 2026-08-08: **PR 6 review round** (external, both findings verified against
+  the code before acting, both adopted): (1) `filter_ineffective` on a
+  spender TCON pull no longer converts to a confirmed-zero result — the
+  error's two readings (filter ignored / matched the wrong filer) cannot be
+  told apart, and the funders leg has no arbiter (the direct leg tolerates
+  the whole-pull shape only because the index-total reconciliation guard
+  proves whether money went missing), so writing empty through would delete
+  the spender's stored donor rows on an unresolvable ambiguity. It now
+  returns "failed" and the whole funders leg degrades (stored breakdowns
+  preserved). The honest treasury-spender case is unaffected: a
+  full-committee-name query for a filer with no TCON disclosures returns
+  zero rows TOTAL — a clean empty result, no error. "unresolved" deliberately
+  stays per-spender: resolution is an ID join over immutable filed reports
+  (a spender that resolved once keeps resolving, so an unresolved spender
+  has no stored rows to lose), and a permanently odd spender name must not
+  disable the funders leg for every candidate. (2) the sync file carried
+  three literal NUL bytes (0x00) as key separators — the file read as
+  binary to `rg`/`file` and hid from search tooling; replaced with textual
+  `\u0000` escapes (same defect class was already fixed in the aggregator
+  file; a byte-scan now covers every Georgia file). 138 GA tests, suite
+  7,081 green.
