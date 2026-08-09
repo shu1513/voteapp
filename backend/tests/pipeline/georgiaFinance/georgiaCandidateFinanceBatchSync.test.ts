@@ -147,6 +147,18 @@ function syncResult(overrides: Partial<GeorgiaCandidateFinanceSyncResult> = {}):
       unrecognizedStatusAmount: 0,
     },
     outsideSpendingSkippedReason: null,
+    outsideGroupBreakdownsWritten: 2,
+    outsideFunders: {
+      spenderCount: 1,
+      unresolvedSpenderCount: 0,
+      otherRegistrationRowCount: 0,
+      matchedContributionRowCount: 1,
+      includedContributionRowCount: 1,
+      skippedContributionRowCount: 0,
+      donorBreakdownCount: 1,
+      industryBreakdownCount: 1,
+    },
+    outsideFundersSkippedReason: null,
     ...overrides,
   };
 }
@@ -190,6 +202,13 @@ describe("syncDueGeorgiaCandidateFinance", () => {
     for (const call of syncFn.mock.calls) {
       expect((call as unknown[])[0]).toMatchObject({ independentExpenditureRows: IE_STORE_ROWS });
     }
+    // Every sync call shares ONE spender-contribution cache, so a PAC funding
+    // several candidates is pulled once per run.
+    const caches = syncFn.mock.calls.map(
+      (call) => ((call as unknown[])[0] as { spenderContributionCache?: unknown }).spenderContributionCache
+    );
+    expect(caches[0]).toBeInstanceOf(Map);
+    expect(new Set(caches).size).toBe(1);
   });
 
   it("degrades to direct-only when the IE store pull fails with a client error, and rethrows bugs", async () => {

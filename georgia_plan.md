@@ -734,3 +734,37 @@ shape) and lands first; only the D3 map table waits for the spike.
   bugs and still throw everywhere. The two guards compose: empty store →
   client throws → sync degrades → stored outside data preserved. 122 GA
   tests, suite 6,747 green.
+- 2026-08-08: **PR 6 implemented** — outside-group funders/industries
+  (maryland/ohio donor+industry pattern; the schema's outside categories are
+  donor + industry only, so ORGANIZATION contributors are the only donors
+  surfaced). Spender identity: IE rows carry no filerEntityId, so each
+  spender's entity id is resolved from its PeachFile `GetFilerReport` rows
+  (name search, scoped by the registration guid = the group identity), then
+  its TCON store rides the existing entity-id-filtered stable fetch and the
+  rows are re-scoped to the registration guid (other-registration rows
+  counted) — zero new client code, only proven mechanisms.
+  `georgiaOutsideGroupContributionAggregator`: pure aggregation over
+  pre-scoped rows; gates = pinned PeachFile status set, positive amount
+  (returns excluded, A5/A9), ITMY/INKIND subtypes only (unitemized/anonymous
+  carry no donor identity; in-kind is genuine funding, maryland parity),
+  cycle window Y-1..Y (transaction-date year, electionYear fallback), org
+  test via the structured source-type code first (TIND individual / TBSN
+  business, A8) with a name-shape fallback for null codes. Donor rows
+  UNCAPPED in the aggregator; the sync rule-classifies every donor at floor
+  0, lets cached DB rows (manual verdicts) override, rebuilds industry rows
+  from the merged classification state, and only then caps persisted donors
+  (50/group). **No AI classifier exists on this path** — unresolved donors
+  persist as 'unknown' classification rows for the manual industry-label
+  queue via the writer. Failure semantics: an UNRESOLVED spender identity
+  (name-form mismatch / ambiguous entity) only costs that spender's donor
+  rows (counted + warned); `filter_ineffective` on the TCON pull is an
+  honest empty (a treasury IE filer that never disclosed a contribution); a
+  client-level pull failure degrades the WHOLE funders leg to undefined —
+  a partial breakdown array would delete the failed spender's stored donor
+  rows on write — while groups and totals still refresh (group upsert does
+  not cascade surviving groups' stored breakdowns); non-client errors throw.
+  Batch: one spender-contribution cache per run shared across candidates
+  (the same PAC funds several statewide races), failures cached so a dead
+  pull is never retried per candidate. Breakdowns pair only with the capped
+  group list actually written (writer pairing validation). 138 GA tests,
+  suite 7,081 green.

@@ -10,6 +10,7 @@ import { listDueGeorgiaCandidateFinanceSyncRows } from "./georgiaCandidateFinanc
 import {
   syncGeorgiaCandidateFinance,
   type GeorgiaCandidateFinanceSyncResult,
+  type GeorgiaSpenderContributionCache,
 } from "./georgiaCandidateFinanceSync.js";
 import {
   createGeorgiaEthicsTransport,
@@ -47,6 +48,7 @@ export type GeorgiaCandidateFinanceBatchSyncInput = {
   reconciliationRelativeTolerance?: number;
   reconciliationAbsoluteToleranceFloor?: number;
   maxOutsideGroups?: number;
+  maxOutsideDonorBreakdownsPerGroup?: number;
   syncGeorgiaCandidateFinanceFn?: typeof syncGeorgiaCandidateFinance;
   fetchIndependentExpenditureRowsFn?: typeof fetchGeorgiaIndependentExpenditureRows;
   resolveCandidateCommittee?: GeorgiaCandidateCommitteeResolver;
@@ -192,6 +194,11 @@ export async function syncDueGeorgiaCandidateFinance(
     }
   }
 
+  // One spender-contribution cache per run: the same PAC funds several
+  // statewide candidates, so its filed-report + TCON pull happens once, and a
+  // failed pull is remembered instead of retried per candidate.
+  const spenderContributionCache: GeorgiaSpenderContributionCache = new Map();
+
   const results: GeorgiaCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
     try {
@@ -217,7 +224,9 @@ export async function syncDueGeorgiaCandidateFinance(
         reconciliationRelativeTolerance: input.reconciliationRelativeTolerance,
         reconciliationAbsoluteToleranceFloor: input.reconciliationAbsoluteToleranceFloor,
         maxOutsideGroups: input.maxOutsideGroups,
+        maxOutsideDonorBreakdownsPerGroup: input.maxOutsideDonorBreakdownsPerGroup,
         independentExpenditureRows,
+        spenderContributionCache,
       });
       results.push({
         candidateId: row.candidateId,
