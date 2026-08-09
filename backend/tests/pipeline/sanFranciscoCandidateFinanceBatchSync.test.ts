@@ -238,12 +238,13 @@ describe("syncDueSanFranciscoCandidateFinance", () => {
       (text as string).includes("WITH due"),
     )! as [string, unknown[]];
     // The proof that a daily run cannot silently pull unbounded history:
-    // both window bounds and the withdrawn/lost exclusion are always present
-    // without explicit election targeting.
+    // window bounds, the withdrawn/lost exclusion, and the staleness filter
+    // are always present without explicit election targeting.
     expect(sql).toContain("election.election_date>=");
     expect(sql).toContain("election.election_date<=");
     expect(sql).toContain("ce.status NOT IN ('withdrawn','lost')");
-    expect(sql).not.toContain("election.id=$4::uuid");
+    expect(sql).toContain("summary.last_synced_at<");
+    expect(sql).not.toContain("election.id=$1::uuid");
     expect(params).toEqual([NOW.toISOString(), 1, 25, 45, 730]);
   });
 
@@ -259,11 +260,14 @@ describe("syncDueSanFranciscoCandidateFinance", () => {
     const [sql, params] = db.query.mock.calls.find(([text]) =>
       (text as string).includes("WITH due"),
     )! as [string, unknown[]];
-    expect(sql).toContain("election.id=$4::uuid");
+    expect(sql).toContain("election.id=$1::uuid");
     expect(sql).not.toContain("election.election_date>=");
     // Backfill includes a decided election's losers.
     expect(sql).not.toContain("ce.status NOT IN");
-    expect(params).toEqual([NOW.toISOString(), 1, 25, electionId]);
+    // A targeted rerun must select the election even when its summaries were
+    // synced minutes ago — no staleness filter in targeted mode.
+    expect(sql).not.toContain("summary.last_synced_at<");
+    expect(params).toEqual([electionId, 25]);
     // Targeted runs do no unrelated daily maintenance.
     expect(
       listSanFranciscoCandidateElectionsMissingFinanceLinks,

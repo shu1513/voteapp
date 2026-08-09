@@ -135,8 +135,10 @@ export async function syncDueSanFranciscoCandidateFinance(input: {
    * Historical-backfill targeting (Phase 7): sync ONLY this election's active
    * links. Replaces the election-date window (a 2024 election is outside any
    * sane daily window), drops the withdrawn/lost exclusion (in a decided
-   * election the losers are the point of the backfill), and skips both
-   * pre-sync legs — backfill requires the links to exist already, and a
+   * election the losers are the point of the backfill), drops the staleness
+   * filter (an explicitly targeted rerun must select the election even right
+   * after a previous run — nothing else can override that filter), and skips
+   * both pre-sync legs — backfill requires the links to exist already, and a
    * targeted run must not do unrelated daily maintenance work.
    */
   electionId?: string;
@@ -242,19 +244,31 @@ export async function syncDueSanFranciscoCandidateFinance(input: {
   }
 
   // --- Candidate loop: stalest first. ---
-  // Ordinary runs are ALWAYS bounded by the election-date window — history
-  // is reachable only through explicit electionId targeting, which swaps the
-  // window for an id match and drops the withdrawn/lost exclusion (a decided
-  // election's losers are exactly what a backfill is for).
-  const scopePredicate =
+  // Ordinary runs are ALWAYS bounded by the election-date window and the
+  // staleness filter — history is reachable only through explicit electionId
+  // targeting. Targeting swaps the window for an id match, drops the
+  // withdrawn/lost exclusion (a decided election's losers are exactly what a
+  // backfill is for), and drops the staleness filter too: "sync this
+  // election" must select it even minutes after the last run (a rerun after
+  // a code fix would otherwise silently pick zero candidates, and nothing —
+  // force bypasses only flags, staleAfterDays floors at one day — could
+  // override that). Reruns still resume partial failures first because the
+  // NULLS FIRST ordering puts never-synced links ahead of synced ones.
+  const dueScope =
     electionId === undefined
-      ? `election.election_date>=(($1::timestamptz AT TIME ZONE 'UTC')::date-make_interval(days=>$4::int)) AND election.election_date<=(($1::timestamptz AT TIME ZONE 'UTC')::date+make_interval(days=>$5::int)) AND ce.status NOT IN ('withdrawn','lost')`
-      : `election.id=$4::uuid`;
-  const scopeParams =
-    electionId === undefined ? [lookback, lookahead] : [electionId];
+      ? {
+          where: `election.election_date>=(($1::timestamptz AT TIME ZONE 'UTC')::date-make_interval(days=>$4::int)) AND election.election_date<=(($1::timestamptz AT TIME ZONE 'UTC')::date+make_interval(days=>$5::int)) AND ce.status NOT IN ('withdrawn','lost') AND (summary.last_synced_at IS NULL OR summary.last_synced_at<($1::timestamptz-make_interval(days=>$2::int)))`,
+          limit: "$3::int",
+          params: [now.toISOString(), stale, max, lookback, lookahead],
+        }
+      : {
+          where: `election.id=$1::uuid`,
+          limit: "$2::int",
+          params: [electionId, max],
+        };
   const due = await input.db.query<DueRow>(
-    `WITH due AS (SELECT link.candidate_id::text candidate_id,link.election_id::text election_id,link.election_year,election.election_date::text election_date,link.contest_code,link.fppc_id,summary.last_synced_at::text last_synced_at,count(*) OVER() total_due_rows FROM public.sfc_candidate_finance_links link JOIN public.candidates candidate ON candidate.id=link.candidate_id JOIN public.candidate_elections ce ON ce.candidate_id=link.candidate_id AND ce.election_id=link.election_id JOIN public.elections election ON election.id=link.election_id JOIN public.districts district ON district.id=election.district_id LEFT JOIN public.sfc_candidate_finance_summaries summary ON summary.link_id=link.id AND summary.election_year=link.election_year WHERE link.link_status='active' AND candidate.deleted_at IS NULL AND ${SF_DISTRICT_PREDICATE} AND ${scopePredicate} AND (summary.last_synced_at IS NULL OR summary.last_synced_at<($1::timestamptz-make_interval(days=>$2::int))) ORDER BY summary.last_synced_at NULLS FIRST,election.election_date,link.candidate_name_normalized LIMIT $3::int) SELECT * FROM due`,
-    [now.toISOString(), stale, max, ...scopeParams],
+    `WITH due AS (SELECT link.candidate_id::text candidate_id,link.election_id::text election_id,link.election_year,election.election_date::text election_date,link.contest_code,link.fppc_id,summary.last_synced_at::text last_synced_at,count(*) OVER() total_due_rows FROM public.sfc_candidate_finance_links link JOIN public.candidates candidate ON candidate.id=link.candidate_id JOIN public.candidate_elections ce ON ce.candidate_id=link.candidate_id AND ce.election_id=link.election_id JOIN public.elections election ON election.id=link.election_id JOIN public.districts district ON district.id=election.district_id LEFT JOIN public.sfc_candidate_finance_summaries summary ON summary.link_id=link.id AND summary.election_year=link.election_year WHERE link.link_status='active' AND candidate.deleted_at IS NULL AND ${SF_DISTRICT_PREDICATE} AND ${dueScope.where} ORDER BY summary.last_synced_at NULLS FIRST,election.election_date,link.candidate_name_normalized LIMIT ${dueScope.limit}) SELECT * FROM due`,
+    dueScope.params,
   );
   const results: SanFranciscoCandidateFinanceBatchSyncResult["results"] = [];
   let sourceFreshness: SanFranciscoSourceFreshness | null = null;
