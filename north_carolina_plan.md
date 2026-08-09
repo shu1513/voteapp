@@ -792,7 +792,57 @@ The acquisition spike is the gate before parser/aggregator work.
   new aggregator's template keys made git treat the source as binary —
   replaced with escaped sequences (identical runtime strings), plus the same
   one-byte fix to the PR 6 outside aggregator that had shipped with it.
-- [ ] PR 9 live run (+ later: PDF path, own flag)
+- [x] PR 9 live run — 2026-08-09, user-authorized portal access; full report
+  in `~/.claude/projects/-Users-shu-voteApp/nc-pr9-live-run/RUN-REPORT.md`.
+  First the owed acquisition-side work shipped: `--roster` mode on the
+  refresh script + `northCarolinaNcsbeAcquisitionDiscovery.ts` (roster read
+  from the DB before any portal request, pool closed for the paced run; one
+  cached committee search per roster candidate under the SAME key the sync's
+  auto-link loader reads — unlinked candidates refresh every run, linked
+  reuse the cache; active links' OGIDs by exact-SBoEID filter over those
+  searches with a committee-name-search fallback and a fail-closed skip when
+  no search answers; resolver-matched committees pre-pulled so the first
+  sync can aggregate; registered IE spenders discovered from the cached IE
+  doc-type inventories and their inventories + reports acquired for the
+  PR 8 funder leg, per-spender failure isolation). **Live results**: 312
+  roster candidate elections, 312 searches, 167 auto-linked (53.5%, the rest
+  fail-closed unregistered), 186 inventories, 770 report artifact sets
+  (107 MB), 108 IE reports + 45 image-only, 19 spenders, zero fetch failures
+  at the end. Sync wrote 167/167 with 0 failures: $12,870,748.95 receipts,
+  $8,608,523.77 disbursements, $1,937,021.84 outside support, $90,000
+  oppose, 3,937 direct breakdown rows (3,358 occupation), 33 outside groups
+  / 66 funder rows; 39 honest nulls, every one with a portal reason (32
+  image-only current filings, 7 contradictory lineages); 0 quarantined
+  breakdowns, 0 inverse-miss flags. **Spot audit** (portal advanced
+  transaction search vs pipeline, three committees): receipts match to the
+  row and the cent on two (Hall 10,354 / $1,889,785.22; Lee 438 /
+  $1,297,989.76); the third differs only by loan rows — `LOAN`/`OTLN`/`FRLN`
+  the receipts endpoint never serves, and the same $300k Outstanding Loan is
+  restated on all four reports, so an itemized sum would quadruple-count it.
+  That is decision 11's cover-authoritative rule confirmed against live
+  bytes. In-kind rows explain the expenditure deltas. **Eight defects found
+  and fixed**, each from live bytes: (1) null `BoeID` on ~40% of covers;
+  (2) 48-Hour Notices have no cover totals and their money rides the
+  covering report — pinned as no-total, never fetched, never aggregated;
+  (3) undated 1989–1994 filings now dated by `ReportYear` instead of being
+  fetched and then failing a spender's whole funder leg; (4) covers paired
+  by their own `rptID` (correct on all 770) instead of by period dates
+  (wrong on 17 of 697, and the portal serves begin-after-end pairs) — eight
+  candidates had been withheld as "mispaired"; (5) Independent Expenditure
+  Reports are `DocumentType: "Disclosure Report"`, so they reached the
+  direct leg — refuting PR 8's premise, killing the funder leg statewide,
+  and leaving a latent IE double-count; now the outside leg's alone;
+  (6) an amendment with no ImageReceiptDate sorted older than its original,
+  quarantining six lineages; (7) six reviewed non-individual receipt codes
+  (`OUTS`/`RFND`/`NFPC`/`GEN `/`CNRE`/`INT `) were quarantining 52 of 167
+  candidates' occupations; (8) `OUTS` + `NFPC`, the largest funder money in
+  the state ($12.7M), admitted as donor codes while `RFND` is pinned
+  non-donor. Deferred with reasons: the `NC-OGID:` upgrade (the
+  `NC-IE-FILER:` hash already carries identity and totals do not depend on
+  it) and the PDF/image path (45 image-only IE filings plus the periods
+  behind the 32 honest nulls; the coverage note already says so).
+- [ ] Later, separately gated: PDF/image fallback (remove the coverage note
+  when it ships); own feature flag for the NC raw refresh in `render.yaml`
 
 Update the checklist + any changed decision here as PRs land; also update the
 north-carolina memory at campaign end.
