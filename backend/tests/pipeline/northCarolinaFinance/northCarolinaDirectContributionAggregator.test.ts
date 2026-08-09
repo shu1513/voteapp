@@ -395,6 +395,38 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
     expect(result.unknownReceiptTypeCodes).toEqual([{ code: "LOAN", rowCount: 1, amountCents: 5_000 }]);
   });
 
+  it("keeps occupations when a report carries the live-reviewed non-individual codes", () => {
+    // PR 9 vocabulary review: these six are entity money (Outside Source,
+    // refunds, nonprofit and general contributions, reimbursements, bank
+    // interest), so they must not withhold a candidate's occupation and
+    // size buckets — 52 of 167 live candidates lost theirs this way.
+    const result = aggregateNorthCarolinaDirectFinance({
+      electionYear: 2026,
+      inventoryRows: [GADSON_Q1_ROW],
+      reports: [
+        {
+          reportId: "229931",
+          cover: GADSON_COVER,
+          receiptRows: [
+            ...GADSON_RECEIPTS,
+            makeReceipt({ receiptTypeCode: "OUTS", orgName: "GOOGLE ACCTIVERIFY US", amountCents: 16 }),
+            makeReceipt({ receiptTypeCode: "RFND", orgName: "WIX.COM", amountCents: 45_24 }),
+            makeReceipt({ receiptTypeCode: "NFPC", orgName: "A NONPROFIT", amountCents: 15_000_00 }),
+            makeReceipt({ receiptTypeCode: "GEN ", orgName: "ANOTHER COMMITTEE", amountCents: 500_00 }),
+            makeReceipt({ receiptTypeCode: "CNRE", orgName: "Postmaster", amountCents: 125_00 }),
+            makeReceipt({ receiptTypeCode: "INT ", orgName: "STATE EMPLOYEES CREDIT UNION", amountCents: 3 }),
+          ],
+        },
+      ],
+    });
+    expect(result.status).toBe("ok");
+    expect(result.derivedBreakdownsQuarantined).toBe(false);
+    expect(result.unknownReceiptTypeCodes).toEqual([]);
+    expect(result.directBreakdowns.some((b) => b.categoryType === "occupation")).toBe(true);
+    // Cover-authoritative totals are untouched by the extra rows.
+    expect(result.summary.totalReceipts).toBe(6073.24);
+  });
+
   it("counts IE-typed regular-report rows as the single-source cross-check, ignoring junk IE columns", () => {
     const result = aggregateNorthCarolinaDirectFinance({
       electionYear: 2026,

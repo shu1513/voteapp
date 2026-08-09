@@ -171,8 +171,32 @@ const SECTION_48_HOUR_SUM = 109;
 // known non-individual money. Anything else — including the IE-receipt
 // "DON " code, never observed on a candidate committee — fails closed into
 // the derived-breakdown quarantine.
+//
+// The PR 9 live run quarantined 52 of 167 candidates — 31% of the state lost
+// occupations, NC's flagship finance feature — on six codes the two-committee
+// spike had never produced. Each was read from its own rows before being
+// admitted here, and every one is entity money, never a person:
+//   "OUTS" Outside Source (26 rows / $79.6k over 19 committees)
+//   "RFND" Refund/Reimbursement to the Committee (77 / $38.1k over 36)
+//   "NFPC" Not for Profit Contribution (2 / $13.6k)
+//   "GEN " General Contribution (5 / $9.9k, e.g. another candidate committee)
+//   "CNRE" Contribution to be Reimbursed (1 / $529.46, the Postmaster)
+//   "INT " Interest Earned (18 / $3.94, credit-union interest)
+// Admitting them changes no published total — totals are cover-authoritative
+// — it only stops those candidates' occupation and size buckets from being
+// withheld over money that was never individual to begin with. A code still
+// outside this vocabulary fails closed exactly as before.
 const INDIVIDUAL_RECEIPT_TYPE_CODE = "IND ";
-const KNOWN_NON_INDIVIDUAL_RECEIPT_TYPE_CODES = new Set(["CPCM", "PPTY"]);
+const KNOWN_NON_INDIVIDUAL_RECEIPT_TYPE_CODES = new Set([
+  "CPCM",
+  "PPTY",
+  "OUTS",
+  "RFND",
+  "NFPC",
+  "GEN ",
+  "CNRE",
+  "INT ",
+]);
 
 // Occupation placeholder vocabulary (spike results item 3), matched
 // case-insensitively; `United States` is observed junk, not an occupation.
