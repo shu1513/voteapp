@@ -4,6 +4,7 @@ export const SAN_FRANCISCO_SUMMARY_TOTALS_DATASET_ID = "9ggq-m8hp";
 export const SAN_FRANCISCO_TRANSACTIONS_DATASET_ID = "pitq-e56w";
 export const SAN_FRANCISCO_PUBLIC_FUNDS_DATASET_ID = "dbak-p2fq";
 export const SAN_FRANCISCO_FILERS_DATASET_ID = "4c8t-ngau";
+export const SAN_FRANCISCO_FILINGS_DATASET_ID = "qizs-bwft";
 
 const DEFAULT_TIMEOUT_MS = 30_000;
 const DEFAULT_PAGE_LIMIT = 1_000;
@@ -230,6 +231,13 @@ export type SanFranciscoSummaryRow = {
    * 1467508 sums to the $200,000 the Phase 4 gate found on Schedule B1).
    */
   loansReceivedCents: number | null;
+  /**
+   * True when the filing's itemized transactions are synced into the
+   * transactions dataset. Null only on pre-2008 legacy rows upstream
+   * (verified live: 129 null rows, all 2002-2007 filings) — the Phase 6
+   * source-health gate requires true on every row of a synced committee.
+   */
+  syncFlag: boolean | null;
 };
 
 /**
@@ -280,9 +288,98 @@ export async function getSanFranciscoCommitteeSummaryRows(
       endingCashCents: moneyStringToCents(row["line_16_col_a"]),
       outstandingDebtsCents: moneyStringToCents(row["line_19_col_a"]),
       loansReceivedCents: moneyStringToCents(row["scheduleb1_line_1"]),
+      syncFlag: nullableBoolean(row, "sync_flag"),
     });
   }
   return results;
+}
+
+export type SanFranciscoDatasetFreshness = {
+  /** Latest data_as_of across the dataset (raw timestamp string). */
+  dataAsOf: string | null;
+  /** Latest data_loaded_at across the dataset (raw timestamp string). */
+  dataLoadedAt: string | null;
+};
+
+/**
+ * Dataset-level freshness metadata via a single server-side aggregate. Every
+ * campaign-finance dataset carries per-row data_as_of / data_loaded_at
+ * columns stamped by DataSF's nightly pipeline; the maxima describe the last
+ * completed refresh. Phase 6 source health compares these across datasets —
+ * a summary batch newer than the transactions batch means the nightly
+ * refresh is mid-flight or wedged, and cross-dataset sums would mix as-ofs.
+ */
+export async function getSanFranciscoDatasetFreshness(
+  datasetId: string,
+  options: SanFranciscoOpenDataClientOptions = {},
+): Promise<SanFranciscoDatasetFreshness> {
+  if (!/^[a-z0-9]{4}-[a-z0-9]{4}$/.test(datasetId))
+    throw new Error(`Invalid San Francisco dataset id: ${datasetId}`);
+  const rows = await fetchAllPages(
+    datasetId,
+    {
+      $select:
+        "max(data_as_of) AS data_as_of,max(data_loaded_at) AS data_loaded_at",
+    },
+    options,
+  );
+  const row = rows[0] ?? {};
+  return {
+    dataAsOf: stringValue(row, "data_as_of") || null,
+    dataLoadedAt: stringValue(row, "data_loaded_at") || null,
+  };
+}
+
+export type SanFranciscoFilingIndexRow = {
+  filingNid: string;
+  /** Raw filing_date timestamp string ("2024-08-01T00:00:00.000"). */
+  filingDate: string | null;
+};
+
+/**
+ * The filings-received index's CURRENT Form 460 filings for one committee:
+ * one row per filing chain (amendments share the original's filing_nid),
+ * keeping only versions marked "Most Recent", not rejected, and e-filed.
+ * Paper filings (has_efile_content=false) never reach the summary/
+ * transactions datasets, so they are excluded from the coverage contract.
+ * Verified live (committee 1467508): this set's filing_nids exactly equal
+ * the summary dataset's — the identity the Phase 6 source-health coverage
+ * check relies on.
+ */
+export async function getSanFranciscoCommitteeCurrentForm460Filings(
+  input: { fppcId: string },
+  options: SanFranciscoOpenDataClientOptions = {},
+): Promise<SanFranciscoFilingIndexRow[]> {
+  const fppcId = input.fppcId.trim();
+  if (!/^\d{4,12}$/.test(fppcId))
+    throw new Error(`Invalid San Francisco FPPC id: ${input.fppcId}`);
+  const rows = await fetchAllPages(
+    SAN_FRANCISCO_FILINGS_DATASET_ID,
+    {
+      $select: "filing_nid,filing_date",
+      $where: [
+        `fppc_id=${soqlString(fppcId)}`,
+        `form_type='FPPC460'`,
+        `current_status like 'Most Recent%'`,
+        `rejected=false`,
+        `has_efile_content=true`,
+      ].join(" AND "),
+      $order: "filing_nid,:id",
+    },
+    options,
+  );
+  // Defensive dedupe: one chain should have exactly one Most Recent version,
+  // but a duplicate here must not double-report a missing-coverage nid.
+  const byNid = new Map<string, SanFranciscoFilingIndexRow>();
+  for (const row of rows) {
+    const filingNid = stringValue(row, "filing_nid");
+    if (!filingNid || byNid.has(filingNid)) continue;
+    byNid.set(filingNid, {
+      filingNid,
+      filingDate: stringValue(row, "filing_date") || null,
+    });
+  }
+  return [...byNid.values()];
 }
 
 export type SanFranciscoTargetedSpendingRow = {
