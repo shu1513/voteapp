@@ -153,6 +153,7 @@
     "manual:records:backfill-identity-transitions": "tsx src/scripts/backfillRecordIdentityTransitions.ts",
     "research:promote:dedupe": "tsx src/scripts/dedupePromotedRecords.ts",
     "research:promote:dedupe:apply": "tsx src/scripts/dedupePromotedRecords.ts --apply",
+    "districts:canonical-pairs": "tsx src/scripts/reportDistrictCanonicalPairs.ts",
     "db:migrate": "tsx src/scripts/dbMigrate.ts",
     "db:migrate:status": "tsx src/scripts/dbMigrate.ts --status",
     "db:migrate:check-files": "tsx src/scripts/dbMigrate.ts --check-files",
