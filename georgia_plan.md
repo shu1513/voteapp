@@ -789,3 +789,21 @@ shape) and lands first; only the D3 map table waits for the spike.
   `\u0000` escapes (same defect class was already fixed in the aggregator
   file; a byte-scan now covers every Georgia file). 138 GA tests, suite
   7,081 green.
+- 2026-08-09: **PR 7 scheduler wiring implemented** (North Carolina
+  scheduler as the template — the newest sibling): BullMQ scheduler module
+  (`georgiaCandidateFinanceSyncScheduler.ts`) with daily job-scheduler
+  upsert (removed when the master flag is off), manual enqueue (sync flag
+  gated, force bypasses only the sync flag — never the master flag),
+  reserved-jobId guard, and a concurrency-1 worker; upsert/worker/trigger
+  scripts with the strict NC-style CLI parsers (unknown-flag, boolean=value,
+  repeated-flag, and non-positive-integer rejection) minus `--raw-cache-dir`
+  (the Georgia batch sync is transport-based, no raw cache dir); npm scripts
+  `georgia-candidates:finance:scheduler:{upsert,worker,trigger}`. The
+  disabled no-op result matches the Georgia batch result shape
+  (autoLinkAttemptedCount/autoLinkLinkedCount/independentExpenditureStoreError,
+  no outsideAggregationByYear). Cron default "55 10 * * *" UTC — offset from
+  Ohio's 09:55 and North Carolina's 10:25 so state syncs never stack on one
+  worker host. Scheduler queue/cron/tz env vars have code defaults and stay
+  out of `.env.example` (Ohio/NC precedent). 19 new tests (7 scheduler + 12
+  CLI args); suite 7,120 green. The PR 7 live run remains a separate,
+  user-authorized step.
