@@ -1390,6 +1390,7 @@ async function loadFullElectionDetails(
     sub_district_seat: extractSubDistrictSeat(row.official_ballot_title, row.office_canonical_name, {
       state: row.state,
       districtName: row.district_name,
+      electionStage: row.election_stage,
     }),
     election_date: row.election_date,
     election_stage: row.election_stage,
@@ -1644,6 +1645,7 @@ export async function lookupBallotSummariesByDistrictIds(
       sub_district_seat: extractSubDistrictSeat(row.official_ballot_title, row.office_canonical_name, {
         state: row.state,
         districtName: row.district_name,
+        electionStage: row.election_stage,
       }),
       election_date: row.election_date,
       election_stage: row.election_stage,

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { extractSubDistrictSeat } from "../../src/pipeline/elections/subDistrictSeat.js";
+import { toJurisdictionKey } from "../../src/pipeline/elections/atLargeBoardSeats.js";
 
 describe("extractSubDistrictSeat", () => {
   it("extracts the ward from Louisiana justice-of-the-peace and constable titles", () => {
@@ -138,6 +139,64 @@ describe("extractSubDistrictSeat", () => {
       expect(extractSubDistrictSeat("County Commissioner, District 6", "County Commissioner", fl("Pinellas"))).toBe(
         "District 6"
       );
+    });
+
+    it("follows Orange County NC's electorate between the primary and the general", () => {
+      // NCACC: its districted seats run "purely by district" in the primary and
+      // "by district at large" in the general, so the same seat flips.
+      const orange = { state: "NC", districtName: "Orange County, North Carolina" };
+      const title = "ORANGE COUNTY BOARD OF COMMISSIONERS DISTRICT 01";
+      expect(extractSubDistrictSeat(title, "County Commissioner", { ...orange, electionStage: "primary" })).toBe(
+        "District 01"
+      );
+      expect(
+        extractSubDistrictSeat(title, "County Commissioner", { ...orange, electionStage: "general" })
+      ).toBeNull();
+      // Unknown stage stays silent: a wrong warning is worse than a missing one.
+      expect(extractSubDistrictSeat(title, "County Commissioner", orange)).toBeNull();
+    });
+
+    it("stays silent for cities that elect their districts citywide", () => {
+      // Cape Coral council members qualify by district but are elected at
+      // large; Crestview's charter puts all three precinct seats on every
+      // city voter's ballot.
+      expect(
+        extractSubDistrictSeat("Cape Coral City Council District 1", "City Council Member", {
+          state: "FL",
+          districtName: "Cape Coral city, Florida",
+        })
+      ).toBeNull();
+      expect(
+        extractSubDistrictSeat("Crestview City Council Precinct 1", "City Council Member", {
+          state: "FL",
+          districtName: "Crestview city, Florida",
+        })
+      ).toBeNull();
+    });
+
+    it("still flags cities whose districts are real", () => {
+      expect(
+        extractSubDistrictSeat("Council Member for District 10", "City Council Member", {
+          state: "TX",
+          districtName: "Fort Worth city, Texas",
+        })
+      ).toBe("District 10");
+      // Same state as Cape Coral, different city — the rule is per city.
+      expect(
+        extractSubDistrictSeat("Gainesville City Commission District 2", "City Council Member", {
+          state: "FL",
+          districtName: "Gainesville city, Florida",
+        })
+      ).toBe("District 2");
+    });
+
+    it("does not eat a city whose name ends in the type word", () => {
+      // Census writes the place type in lower case ("Kansas City city"), so a
+      // case-insensitive strip would reduce this to "Kansas".
+      expect(toJurisdictionKey("Kansas City city, Missouri")).toBe("Kansas City");
+      expect(toJurisdictionKey("Cape Coral city, Florida")).toBe("Cape Coral");
+      expect(toJurisdictionKey("Anson County, North Carolina")).toBe("Anson");
+      expect(toJurisdictionKey("St. Tammany Parish, Louisiana")).toBe("St. Tammany");
     });
 
     it("leaves non-board offices in those same counties alone", () => {

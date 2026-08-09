@@ -13,7 +13,7 @@
 // It is read-path only. The office matcher's stripSeatSuffixes still collapses
 // every seat onto one catalog office — that is by design and is untouched here.
 
-import { isCountywideBoardSeat } from "./countywideBoardSeats.js";
+import { isAtLargeBoardSeat } from "./atLargeBoardSeats.js";
 
 // Offices whose numbered seat denotes a DISTINCT ELECTORATE inside the
 // jurisdiction. The allowlist is positive on purpose: a denylist would badge
@@ -111,12 +111,14 @@ function toDisplaySeat(rawMatch: string): string {
  * `jurisdiction` is what separates a real sub-electorate from a residency
  * district — pass it wherever the caller knows the state and district row, or
  * the flag will fire on the ~82 NC/FL county-board rows (plus every ID and IN
- * commissioner row) whose district is residency-only. See countywideBoardSeats.
+ * commissioner row) whose district is residency-only. Include electionStage
+ * where it is known: one county in the corpus elects the same seat by district
+ * in the primary and county-wide in the general. See atLargeBoardSeats.
  */
 export function extractSubDistrictSeat(
   officialBallotTitle: string,
   officeCanonicalName: string | null | undefined,
-  jurisdiction?: { state?: string | null; districtName?: string | null }
+  jurisdiction?: { state?: string | null; districtName?: string | null; electionStage?: string | null }
 ): string | null {
   if (typeof officeCanonicalName !== "string" || !SUB_JURISDICTION_SEAT_OFFICES.has(officeCanonicalName)) {
     return null;
@@ -152,13 +154,14 @@ export function extractSubDistrictSeat(
 
   if (
     jurisdiction &&
-    isCountywideBoardSeat({
+    isAtLargeBoardSeat({
       officeCanonicalName,
       state: jurisdiction.state,
       districtName: jurisdiction.districtName,
-      // The first designator is the seat's own number; a split-board county
-      // keys its countywide seats off exactly that.
+      // The first designator is the seat's own number; a split board keys its
+      // at-large seats off exactly that.
       seatNumber: /(\d+)/.exec(ordered[0]?.label ?? "")?.[1] ?? null,
+      electionStage: jurisdiction.electionStage,
     })
   ) {
     return null;
