@@ -204,6 +204,7 @@ function serializeAcquiredCommittees(
     selected_report_count: committee.selectedReportCount,
     unusable_period_row_count: committee.unusablePeriodRowCount,
     excluded_no_total_report_row_count: committee.excludedNoTotalReportRowCount,
+    excluded_undated_out_of_cycle_row_count: committee.excludedUndatedOutOfCycleRowCount,
     fetched_report_count: committee.fetched.length,
     skipped_report_ids: committee.skippedReportIds,
     failures: committee.failures.map((failure) => ({

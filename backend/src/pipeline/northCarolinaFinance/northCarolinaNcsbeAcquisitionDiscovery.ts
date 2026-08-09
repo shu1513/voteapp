@@ -547,7 +547,10 @@ export type NcsbeRosterAcquisitionResult = {
 // Full roster-driven cycle pull: searches -> committee list -> committee +
 // IE artifacts -> registered-spender artifacts. `extraCommittees` (explicit
 // --committee args) union with the discovered set; the spender phase runs
-// after IE so it reads inventories this run just stored.
+// after IE so it reads inventories this run just stored. Skipping IE skips
+// the spender phase with it — spenders only exist because of IE filings, and
+// a skip must neither pull spender reports off stale cached inventories nor
+// report a "failure" for a phase the caller asked not to run.
 export async function acquireNcsbeRosterCycleArtifacts(input: {
   transport: NcsbeTransport;
   cacheDir: string;
@@ -589,24 +592,26 @@ export async function acquireNcsbeRosterCycleArtifacts(input: {
 
   let spenders: NcsbeSpenderAcquisitionResult | null = null;
   let spenderDiscoveryFailure: { message: string } | null = null;
-  try {
-    const discoveredSpenders = await discoverNcsbeRegisteredSpenders({
-      cacheDir: input.cacheDir,
-      cycleYear: input.cycleYear,
-    });
-    spenders = await acquireNcsbeSpenderArtifacts({
-      transport: input.transport,
-      cacheDir: input.cacheDir,
-      cycleYear: input.cycleYear,
-      spenders: discoveredSpenders.spenders,
-      alreadyAcquiredSboeIds: new Set(committeesBySboeId.keys()),
-      force: input.force,
-      retrievedAt: input.retrievedAt,
-      log: input.log,
-    });
-  } catch (error) {
-    spenderDiscoveryFailure = { message: error instanceof Error ? error.message : String(error) };
-    input.log?.(`Spender discovery: FAILED — ${spenderDiscoveryFailure.message}`);
+  if (input.includeIe ?? true) {
+    try {
+      const discoveredSpenders = await discoverNcsbeRegisteredSpenders({
+        cacheDir: input.cacheDir,
+        cycleYear: input.cycleYear,
+      });
+      spenders = await acquireNcsbeSpenderArtifacts({
+        transport: input.transport,
+        cacheDir: input.cacheDir,
+        cycleYear: input.cycleYear,
+        spenders: discoveredSpenders.spenders,
+        alreadyAcquiredSboeIds: new Set(committeesBySboeId.keys()),
+        force: input.force,
+        retrievedAt: input.retrievedAt,
+        log: input.log,
+      });
+    } catch (error) {
+      spenderDiscoveryFailure = { message: error instanceof Error ? error.message : String(error) };
+      input.log?.(`Spender discovery: FAILED — ${spenderDiscoveryFailure.message}`);
+    }
   }
 
   return { discovery, acquisition, spenders, spenderDiscoveryFailure };

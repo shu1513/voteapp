@@ -793,7 +793,9 @@ The acquisition spike is the gate before parser/aggregator work.
   replaced with escaped sequences (identical runtime strings), plus the same
   one-byte fix to the PR 6 outside aggregator that had shipped with it.
 - [x] PR 9 live run — 2026-08-09, user-authorized portal access; full report
-  in `~/.claude/projects/-Users-shu-voteApp/nc-pr9-live-run/RUN-REPORT.md`.
+  in "PR 9 live run results" below (operator logs and raw sync JSON stay in
+  `~/.claude/projects/-Users-shu-voteApp/nc-pr9-live-run/` on the run
+  machine).
   First the owed acquisition-side work shipped: `--roster` mode on the
   refresh script + `northCarolinaNcsbeAcquisitionDiscovery.ts` (roster read
   from the DB before any portal request, pool closed for the paced run; one
@@ -846,3 +848,52 @@ The acquisition spike is the gate before parser/aggregator work.
 
 Update the checklist + any changed decision here as PRs land; also update the
 north-carolina memory at campaign end.
+
+## PR 9 live run results (run 2026-08-09, user-authorized)
+
+Portal data current as of 2026-08-08 (NCSBE footer). Cycle 2026 (Y−1..Y =
+2025–2026). Zero AI calls; all writes local.
+
+Acquisition (roster-driven, one paced 2 s pass, resumed once): 312 roster
+candidate elections; 312 committee searches fetched + cached (0 failures);
+167 committees discovered + 19 registered IE spenders; 770 report artifact
+sets; 186 document inventories; IE inventories 2025 (51 filings) + 2026
+(102); 108 structured IE reports fetched, 45 image-only never fetched;
+107 MB cache; zero fetch failures after the fixes below.
+
+Match rate: 167 of 312 auto-linked (53.5%). The 145 unmatched are the
+resolver's fail-closed cases — no active non-exempt STA-prefixed candidate
+committee matched the name exactly; none were mislinked.
+
+Sync: 167/167 written, 0 failures. $12,870,748.95 total receipts,
+$8,608,523.77 disbursements, $1,937,021.84 outside support, $90,000 oppose;
+3,937 direct breakdown rows (3,358 occupation); 33 outside groups / 66
+funder rows. 128 summaries carry money, 39 are honest nulls, every one with
+a portal reason: 32 committees have ≥1 period whose current filing is
+image-only (11×1, 9×2, 6×3, 6×4 periods), 7 have genuinely contradictory
+lineages (4 multiple originals, 2 ambiguous chronology, 1 original later
+than its amendment on both dates). Outside leg available: 108 IE reports
+read, 9 portal-reason quarantines, 37 coverage-gap rows, 0 missing
+artifacts, 65 unmatched targets (out-of-scope or non-unique names), 0
+ambiguous. Funder leg available: 269 spender receipt rows, no unknown codes
+left, 0 quarantined breakdowns, 0 inverse-miss flags. Year attribution was
+$2,805,434.67 over 244 rows; money attributed to candidates without an
+active link stays unpublished by design.
+
+Advanced-transaction-search spot audit (portal search 01/01/2025–12/31/2026
+vs the pipeline's selected reports):
+
+| Committee | Portal receipts | Pipeline receipts | Verdict |
+| --- | --- | --- | --- |
+| CITIZENS FOR DESTIN HALL | 10,354 rows / $1,889,785.22 | 10,354 / $1,889,785.22 | exact |
+| COMM TO ELECT MICHAEL LEE | 438 rows / $1,297,989.76 | 438 / $1,297,989.76 | exact |
+| STACIE MCGINN FOR NC SENATE | 282 rows / $1,963,385.46 | 270 / $123,385.46 | explained |
+
+No report the inventories missed, on any of the three. The two differences
+are explained and are not defects: (1) expenditure deltas are in-kind rows
+the report schedule lists but the transaction search does not count as EXP
+(Hall: one $1,810.50 in-kind); (2) McGinn's $1.84M receipt gap is loan
+activity — `LOAN`/`OTLN`/`FRLN` rows the report receipts endpoint never
+serves, with the same $300,000 Outstanding Loan restated on all four of her
+reports, so an itemized transaction sum counts it four times. That is
+decision 11's cover-authoritative rule confirmed against live bytes.

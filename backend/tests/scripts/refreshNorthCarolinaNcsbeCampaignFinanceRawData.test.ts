@@ -164,6 +164,13 @@ describe("runRefreshNorthCarolinaNcsbeRawDataScript", () => {
       if ("ie_failure" in output) {
         expect(output.ie_failure?.message).toMatch(/IE inventory unreachable/);
         expect(output.committees).toHaveLength(1);
+        // Every exclusion counter the acquisition computes must reach the
+        // CLI output — a silent drop would read as full coverage.
+        expect(output.committees[0]).toMatchObject({
+          excluded_no_total_report_row_count: 0,
+          excluded_undated_out_of_cycle_row_count: 0,
+          unusable_period_row_count: 0,
+        });
       }
     } finally {
       await rm(cacheDir, { recursive: true, force: true });

@@ -417,4 +417,25 @@ describe("acquireNcsbeRosterCycleArtifacts", () => {
     expect(result.spenders!.committees).toEqual([]);
     expect(result.spenders!.failures).toHaveLength(result.spenders!.discoveredSpenderCount);
   });
+
+  it("skips the spender phase entirely when IE is skipped", () => {
+    // --skip-ie must not pull spender reports off stale cached inventories,
+    // and must not report a discovery "failure" for a phase the caller asked
+    // not to run (with nothing cached, discovery would otherwise throw).
+    const state = { requests: [] as string[] };
+    const transport = fakeTransport(state, { "Marcus Gadson": fixture("committee-search-gadson.html") });
+    return acquireNcsbeRosterCycleArtifacts({
+      transport,
+      cacheDir,
+      cycleYear: 2026,
+      roster: [rosterRow({})],
+      includeIe: false,
+      retrievedAt: NOW,
+    }).then((result) => {
+      expect(result.acquisition.ie).toBeNull();
+      expect(result.spenders).toBeNull();
+      expect(result.spenderDiscoveryFailure).toBeNull();
+      expect(state.requests.some((url) => url.includes("/CFDocLkup/"))).toBe(false);
+    });
+  });
 });
