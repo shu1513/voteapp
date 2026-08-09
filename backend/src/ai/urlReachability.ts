@@ -655,11 +655,31 @@ export async function verifyHttpUrlReachability(
   }
 
   try {
-    const initialResult = await fetchWithValidatedRedirects(
-      normalizedInputUrl,
-      initialMethod,
-      timeoutMs
-    );
+    // Tracks the method the current `response` actually came from: the
+    // transport-level fallback below already switches to GET, and the
+    // status-based GET confirmation further down must not run again after it
+    // (a second identical GET doubles traffic and can trip rate limits).
+    let effectiveMethod = initialMethod;
+    let initialResult: Awaited<ReturnType<typeof fetchWithValidatedRedirects>>;
+    try {
+      initialResult = await fetchWithValidatedRedirects(normalizedInputUrl, initialMethod, timeoutMs);
+    } catch (error) {
+      // Some hosts kill HEAD at the transport level while serving GET fine
+      // (live: oregonvotes.gov resets every HEAD). The status-based GET
+      // fallback below never runs for a thrown transport error, so the URL
+      // could never be cited. Retry with GET before failing. Timeouts are
+      // excluded: a host too slow for HEAD is too slow for GET, and the
+      // doubled wait would blow the advertised budget.
+      const message = error instanceof Error ? error.message : String(error);
+      if (initialMethod !== "HEAD" || message.toLowerCase().includes("aborted")) {
+        throw error;
+      }
+      initialResult = await fetchWithValidatedRedirects(normalizedInputUrl, "GET", timeoutMs);
+      effectiveMethod = "GET";
+      if (inputHostname) {
+        recordGetPreferredHost(inputHostname);
+      }
+    }
     if ("failure" in initialResult) {
       return initialResult.failure;
     }
@@ -681,7 +701,7 @@ export async function verifyHttpUrlReachability(
     // GET-preferred, so the post-cooldown retry tests the resource with GET
     // directly — covering limiters that throttle HEAD but serve GET.
     if (
-      initialMethod === "HEAD" &&
+      effectiveMethod === "HEAD" &&
       !response.ok &&
       response.status !== 429 &&
       !allowStatusCodes.has(response.status)
