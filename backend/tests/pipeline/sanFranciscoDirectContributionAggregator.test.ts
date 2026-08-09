@@ -176,6 +176,32 @@ describe("aggregateSanFranciscoDirectContributions", () => {
     expect(result.itemizedCents).toBe(30_000);
   });
 
+  it("consumes each amount/date twin once, so duplicate late rows only pair against distinct Schedule A rows", () => {
+    const late = {
+      formType: "F497P1",
+      contributorLastName: "DOE",
+      calculatedAmountCents: 25_000,
+      transactionDate: "2024-10-20T00:00:00.000",
+    } as const;
+    const result = aggregateSanFranciscoDirectContributions({
+      rows: [
+        row({
+          formType: "A",
+          contributorLastName: "Doe",
+          calculatedAmountCents: 25_000,
+          transactionDate: "2024-10-20T00:00:00.000",
+        }),
+        row(late),
+        row(late),
+      ],
+      publicFundsApprovalCents: [],
+    });
+    expect(result.diagnostics.latePairedByAmountDate).toBe(1);
+    expect(result.diagnostics.unpairedLateRows).toBe(1);
+    // One late row is the re-reported twin; the other is real money.
+    expect(result.itemizedCents).toBe(50_000);
+  });
+
   it("keeps refunds in the sums and out of size buckets", () => {
     const result = aggregateSanFranciscoDirectContributions({
       rows: [

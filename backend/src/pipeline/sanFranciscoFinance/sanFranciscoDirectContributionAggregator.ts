@@ -43,6 +43,11 @@ export type SanFranciscoDirectBreakdown = {
   categoryType: "occupation" | "employer" | "industry" | "contribution_size";
   categoryName: string;
   amountCents: number;
+  /**
+   * Positive contribution rows in this category, not distinct people —
+   * repeat donors count once per contribution (the LA aggregator's
+   * semantics, which the shared summary card already displays).
+   */
   contributorCount: number;
 };
 
@@ -150,6 +155,7 @@ export function aggregateSanFranciscoDirectContributions(input: {
       .filter((id): id is string => id !== null),
   );
   const publicFundsApprovalSet = new Set(input.publicFundsApprovalCents);
+  const usedAmountDateTwins = new Set<SanFranciscoItemizedTransactionRow>();
   const unpairedLateRows: SanFranciscoItemizedTransactionRow[] = [];
   let latePairedById = 0;
   let latePairedByIdAmountMismatch = 0;
@@ -197,16 +203,21 @@ export function aggregateSanFranciscoDirectContributions(input: {
       continue;
     }
     // No-id fallback; names compare case-insensitively because one live
-    // twin pair differs only by casing ("Lurie" vs "LURIE").
-    const amountDateTwin = scheduleA.some(
+    // twin pair differs only by casing ("Lurie" vs "LURIE"). Each Schedule A
+    // row is consumed by at most one late row, so two identical late
+    // contributions of which only one was re-reported drop only one.
+    const amountDateTwin = scheduleA.find(
       (row) =>
+        !usedAmountDateTwins.has(row) &&
         row.calculatedAmountCents === lateRow.calculatedAmountCents &&
         row.transactionDate === lateRow.transactionDate &&
         (row.contributorLastName ?? "").toUpperCase() ===
           (lateRow.contributorLastName ?? "").toUpperCase(),
     );
-    if (amountDateTwin) latePairedByAmountDate += 1;
-    else unpairedLateRows.push(lateRow);
+    if (amountDateTwin) {
+      usedAmountDateTwins.add(amountDateTwin);
+      latePairedByAmountDate += 1;
+    } else unpairedLateRows.push(lateRow);
   }
 
   const includedRows = [...scheduleA, ...scheduleC, ...unpairedLateRows];

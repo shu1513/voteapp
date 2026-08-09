@@ -4,6 +4,16 @@
 // filings. The no-duplicate-filing_nid source guarantee these sums rely on
 // is asserted where the rows are fetched (getSanFranciscoCommitteeSummaryRows
 // throws on a duplicate), so a broken guarantee can never reach this math.
+//
+// Deliberately NOT election-windowed: SF committees are strictly
+// per-election — the same candidates running in both the June and November
+// 2026 D4 races appear in the SFEC manifests with DIFFERENT committee FPPC
+// ids (Gee 1484806/1490199, Wong 1485709/1489126, verified 2026-08-08) — so
+// one committee's full filing history IS one election. Post-election
+// filings are that campaign's wind-down, and cutting them with a date
+// window would report stale balances: the gate committee's final filing
+// (period end 2025-01-08, two months after election day) is the one that
+// carries the real ending cash ($0) and the $199,970.62 loan forgiveness.
 import type { SanFranciscoSummaryRow } from "./sanFranciscoOpenDataClient.js";
 
 export type SanFranciscoBalanceAggregate = {
