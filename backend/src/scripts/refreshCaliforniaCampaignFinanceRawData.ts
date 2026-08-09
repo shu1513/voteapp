@@ -14,6 +14,7 @@ import {
   validateCalAccessRawDataManifest,
 } from "../pipeline/californiaFinance/calAccessRawDataManifest.js";
 import { probeCalAccessRawDataZip } from "../pipeline/californiaFinance/calAccessRawDataProbe.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export { DEFAULT_CAL_ACCESS_RAW_DATA_CACHE_DIR };
 
@@ -74,9 +75,13 @@ function parseLocalPath(value: string | undefined, fallback: string, flagName: s
   return resolve(normalized);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force", "--manifest"]);
+const KNOWN_VALUE_FLAGS = new Set(["--cache-dir", "--timeout-ms", "--url"]);
+
 export function parseRefreshCaliforniaCampaignFinanceRawDataScriptArgs(
   args: readonly string[]
 ): RefreshCaliforniaCampaignFinanceRawDataScriptOptions {
+  assertKnownCliFlags(args, "California campaign finance raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     url: parseCalAccessHttpsUrl(readValueFlag(args, "--url")?.trim() || CAL_ACCESS_RAW_DATA_ZIP_URL, "--url"),
     cacheDir: parseLocalPath(readValueFlag(args, "--cache-dir"), DEFAULT_CAL_ACCESS_RAW_DATA_CACHE_DIR, "--cache-dir"),

@@ -8,6 +8,7 @@ import {
   syncDueCaliforniaCandidateFinance,
   type CaliforniaCandidateFinanceBatchSyncResult,
 } from "../pipeline/californiaFinance/californiaCandidateFinanceBatchSync.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncDueCaliforniaCandidateFinanceScriptOptions = {
   dryRun: boolean;
@@ -51,9 +52,13 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(value);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--skip-outside"]);
+const KNOWN_VALUE_FLAGS = new Set(["--lookahead-days", "--lookback-days", "--max-candidates", "--raw-cache-dir", "--raw-zip", "--stale-after-days", "--timeout-ms"]);
+
 export function parseSyncDueCaliforniaCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDueCaliforniaCandidateFinanceScriptOptions {
+  assertKnownCliFlags(args, "California candidate finance due sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     dryRun: args.includes("--dry-run"),
     includeOutside: !args.includes("--skip-outside"),

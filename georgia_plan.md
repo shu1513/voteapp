@@ -824,3 +824,19 @@ shape) and lands first; only the D3 map table waits for the spike.
   original string. Same two defects exist in the Ohio and North Carolina
   scheduler parsers/asserts (this code's templates) — out of scope here,
   flagged for a follow-up. 24 GA scheduler-round tests; suite 7,125 green.
+- 2026-08-09: **follow-up CLOSED fleet-wide**: the two PR 7 review-round
+  defects were ported to every sibling. PR #620 fixed the 13 CLIs sharing
+  the `validateKnownFlags` template (Ohio, North Carolina, Maine, the
+  Maryland sync-due) plus `Number.isSafeInteger` in all 44 schedulers
+  matching the assertPositiveInteger grep; its review round added Los
+  Angeles (no template code at all), the Alaska/Florida
+  assertNonNegativeInteger variants the `value <= 0` grep missed, and this
+  file's own sync-due parser. PR #622 closed New York City (hand-rolled
+  parsing, also invisible to the grep). A concept-level sweep — every
+  finance CLI arg parse reaching a write, not the template pattern — then
+  found the remaining 78 pre-template CLIs (trigger/upsert/sync-due and
+  raw-data refresh across ~25 states, 62 of them write-by-default) with no
+  unknown-flag or positional rejection at all; all now call a shared
+  `assertKnownCliFlags` (financeCliFlagGuard.ts) with per-script flag
+  sets. Lesson recorded: the grep that finds the port cohort also defines
+  its blind spot — sweep for the concept, then diff against the grep hits.

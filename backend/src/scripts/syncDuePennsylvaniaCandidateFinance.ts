@@ -8,6 +8,7 @@ import {
   syncDuePennsylvaniaCandidateFinance,
   type PennsylvaniaCandidateFinanceBatchSyncResult,
 } from "../pipeline/pennsylvaniaFinance/pennsylvaniaCandidateFinanceBatchSync.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncDuePennsylvaniaCandidateFinanceScriptOptions = {
   dryRun: boolean;
@@ -61,9 +62,13 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--lookahead-days", "--lookback-days", "--max-candidates", "--raw-cache-dir", "--raw-extracted-dir", "--stale-after-days"]);
+
 export function parseSyncDuePennsylvaniaCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDuePennsylvaniaCandidateFinanceScriptOptions {
+  assertKnownCliFlags(args, "Pennsylvania candidate finance due sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

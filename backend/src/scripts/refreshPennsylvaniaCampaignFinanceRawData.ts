@@ -12,6 +12,7 @@ import {
   parsePennsylvaniaCampaignFinanceHttpsUrl,
   refreshPennsylvaniaCampaignFinanceExportCache,
 } from "../pipeline/pennsylvaniaFinance/pennsylvaniaCampaignFinanceArtifactCache.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export { DEFAULT_PENNSYLVANIA_CAMPAIGN_FINANCE_EXPORT_CACHE_DIR };
 
@@ -83,9 +84,13 @@ export function defaultPennsylvaniaCampaignFinanceRawDataRefreshYear(now = new D
   return now.getUTCFullYear();
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--cache-dir", "--timeout-ms", "--url", "--year"]);
+
 export function parseRefreshPennsylvaniaCampaignFinanceRawDataScriptArgs(
   args: readonly string[]
 ): RefreshPennsylvaniaCampaignFinanceRawDataScriptOptions {
+  assertKnownCliFlags(args, "Pennsylvania campaign finance raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   const year = normalizePennsylvaniaCampaignFinanceExportYear(
     parsePositiveInteger(
       readValueFlag(args, "--year"),

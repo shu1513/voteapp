@@ -14,6 +14,7 @@ import {
   createOpenFecRateLimiter,
   readOpenFecApiKeysFromEnv,
 } from "../pipeline/presidential/openFecClient.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 const MILLISECONDS_PER_HOUR = 60 * 60 * 1000;
 const OPEN_FEC_PERSONAL_KEY_REQUESTS_PER_HOUR = 1000;
@@ -72,9 +73,13 @@ function parseIntegerFlag(args: readonly string[], name: string, minimum: number
   return parsed;
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--include-outside"]);
+const KNOWN_VALUE_FLAGS = new Set(["--lookahead-days", "--lookback-days", "--max-candidates", "--per-page", "--request-interval-ms", "--stale-after-days", "--timeout-ms", "--top-groups"]);
+
 export function parseSyncDueCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDueCandidateFinanceScriptOptions {
+  assertKnownCliFlags(args, "candidate finance due sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     dryRun: args.includes("--dry-run"),
     includeOutside: args.includes("--include-outside"),

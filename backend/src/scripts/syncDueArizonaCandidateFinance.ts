@@ -8,6 +8,7 @@ import {
   syncDueArizonaCandidateFinance,
   type ArizonaCandidateFinanceBatchSyncResult,
 } from "../pipeline/arizonaFinance/arizonaCandidateFinanceBatchSync.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncDueArizonaCandidateFinanceScriptOptions = {
   dryRun: boolean;
@@ -76,9 +77,13 @@ function parseNonNegativeNumberFlag(args: readonly string[], name: string): numb
   return Number(raw);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--direct-max-breakdowns", "--ie-limit", "--income-limit", "--lookahead-days", "--lookback-days", "--max-candidates", "--min-industry-amount", "--outside-income-limit", "--outside-max-breakdowns", "--outside-max-groups", "--stale-after-days", "--timeout-ms"]);
+
 export function parseSyncDueArizonaCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDueArizonaCandidateFinanceScriptOptions {
+  assertKnownCliFlags(args, "Arizona candidate finance due sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

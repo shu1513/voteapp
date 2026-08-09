@@ -10,6 +10,7 @@ import {
   parseTexasTecHttpsUrl,
   refreshTexasTecCsvDatabaseArtifactCache,
 } from "../pipeline/texasFinance/texasTecCsvDatabaseArtifactCache.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export { DEFAULT_TEXAS_TEC_CSV_DATABASE_CACHE_DIR };
 
@@ -73,9 +74,13 @@ function parseLocalPath(value: string | undefined, fallback: string, flagName: s
   return resolve(normalized);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--cache-dir", "--timeout-ms", "--url"]);
+
 export function parseRefreshTexasTecRawDataScriptArgs(
   args: readonly string[]
 ): RefreshTexasTecRawDataScriptOptions {
+  assertKnownCliFlags(args, "Texas TEC raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     url: parseTexasTecHttpsUrl(readValueFlag(args, "--url")?.trim() || TEXAS_TEC_CSV_DATABASE_URL, "--url"),
     cacheDir: parseLocalPath(

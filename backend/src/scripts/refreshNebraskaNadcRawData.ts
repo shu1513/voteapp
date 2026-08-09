@@ -11,6 +11,7 @@ import {
   refreshNebraskaNadcArtifactCache,
   type NebraskaNadcArtifactKind,
 } from "../pipeline/nebraskaFinance/nebraskaNadcArtifactCache.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export { DEFAULT_NEBRASKA_NADC_CACHE_DIR };
 
@@ -88,9 +89,13 @@ function parseArtifactKind(value: string | undefined): NebraskaNadcArtifactKind 
   throw new Error(`Invalid --artifact-kind value: ${value ?? ""}`);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--artifact-kind", "--cache-dir", "--timeout-ms", "--url", "--year"]);
+
 export function parseRefreshNebraskaNadcRawDataScriptArgs(
   args: readonly string[]
 ): RefreshNebraskaNadcRawDataScriptOptions {
+  assertKnownCliFlags(args, "Nebraska NADC raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   const year = parseYear(readValueFlag(args, "--year"));
   const artifactKind = parseArtifactKind(readValueFlag(args, "--artifact-kind"));
   return {

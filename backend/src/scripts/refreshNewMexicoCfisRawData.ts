@@ -11,6 +11,7 @@ import {
   refreshNewMexicoCfisArtifactCache,
   type NewMexicoCfisArtifactKind,
 } from "../pipeline/newMexicoFinance/newMexicoCfisArtifactCache.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export { DEFAULT_NEW_MEXICO_CFIS_CACHE_DIR };
 
@@ -88,9 +89,13 @@ function parseArtifactKind(value: string | undefined): NewMexicoCfisArtifactKind
   throw new Error(`Invalid --artifact-kind value: ${value ?? ""}`);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--artifact-kind", "--cache-dir", "--timeout-ms", "--url", "--year"]);
+
 export function parseRefreshNewMexicoCfisRawDataScriptArgs(
   args: readonly string[]
 ): RefreshNewMexicoCfisRawDataScriptOptions {
+  assertKnownCliFlags(args, "New Mexico CFIS raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   const year = parseYear(readValueFlag(args, "--year"));
   const artifactKind = parseArtifactKind(readValueFlag(args, "--artifact-kind"));
   return {

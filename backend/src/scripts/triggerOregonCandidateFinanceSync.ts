@@ -5,6 +5,7 @@ import {
   enqueueManualOregonCandidateFinanceSyncJob,
   type OregonCandidateFinanceSyncJobData,
 } from "../scheduler/oregonCandidateFinanceSyncScheduler.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -47,7 +48,11 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--direct-max-breakdowns", "--lookahead-days", "--lookback-days", "--max-candidates", "--min-industry-amount", "--outside-max-breakdowns", "--outside-max-groups", "--stale-after-days"]);
+
 export function parseOregonCandidateFinanceSyncTriggerArgs(args: readonly string[]): OregonCandidateFinanceSyncJobData {
+  assertKnownCliFlags(args, "Oregon candidate finance sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

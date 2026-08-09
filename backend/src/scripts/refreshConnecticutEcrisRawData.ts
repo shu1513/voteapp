@@ -13,6 +13,7 @@ import {
   type ConnecticutEcrisArtifactPeriod,
   type ConnecticutEcrisArtifactTransactionType,
 } from "../pipeline/connecticutFinance/connecticutEcrisArtifactCache.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export { DEFAULT_CONNECTICUT_ECRIS_CACHE_DIR };
 
@@ -93,9 +94,13 @@ function parseYear(value: string | undefined): number {
   return parsePositiveInteger(value, new Date().getUTCFullYear(), "--year");
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--cache-dir", "--committee-type", "--format", "--period", "--timeout-ms", "--transaction-type", "--url", "--year"]);
+
 export function parseRefreshConnecticutEcrisRawDataScriptArgs(
   args: readonly string[]
 ): RefreshConnecticutEcrisRawDataScriptOptions {
+  assertKnownCliFlags(args, "Connecticut eCRIS raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   const year = parseYear(readValueFlag(args, "--year"));
   const transactionType = parseEnum<ConnecticutEcrisArtifactTransactionType>(
     readValueFlag(args, "--transaction-type"),
