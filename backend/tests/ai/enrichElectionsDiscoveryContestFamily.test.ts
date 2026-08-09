@@ -189,6 +189,58 @@ describe("enrichElections discovery contest family provenance", () => {
     }
   });
 
+  it("keeps a prosecutor in the non-judicial family and leaves its partisanship alone", async () => {
+    // Every Georgia DA's ballot title names the circuit, and O.C.G.A. 15-6-1
+    // names all 50+ circuits "<X> Judicial Circuit". The family validator's own
+    // copy of the judicial keyword list counted that as judicial, so a pass
+    // holding only the district attorney was rejected as "fully judicial".
+    callResearchProviderMock.mockImplementation(async (_candidate, prompt: string) => {
+      if (prompt.includes("Contest family for this call: non_judicial_office")) {
+        return {
+          ok: true,
+          parsed: {
+            entries: [
+              {
+                ...buildEntry("District Attorney - Paulding Judicial Circuit"),
+                is_partisan: true,
+              },
+            ],
+          },
+          rawText: "{}",
+          debugMeta: {},
+        };
+      }
+      return buildEmptyResult();
+    });
+
+    const { enrichElections } = await import("../../src/ai/enrichElections.ts");
+    const result = await enrichElections(
+      {
+        ingestKey: "test:family:prosecutor",
+        draft: {
+          district_id: "1dca234a-876f-4957-812c-3fedf8e0a7cb",
+          district_name: "Paulding County, Georgia",
+          district_type: "county",
+          state: "GA",
+        },
+        promptVersion: "elections_v2",
+        softRetryCount: 0,
+        reviewFeedback: [],
+      },
+      { timeoutMs: 1000, openAiApiKey: "test-key" },
+      [{ provider: "openai", model: "gpt-5.4-mini" }]
+    );
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.entries).toHaveLength(1);
+      expect(result.payload.entries[0].discovery_contest_family).toBe("non_judicial_office");
+      // Georgia is nonpartisan for judges; its DAs are nominated in party
+      // primaries and printed with a party, so the researched value stands.
+      expect(result.payload.entries[0].is_partisan).toBe(true);
+    }
+  });
+
   it("retries when non-judicial family results contain only presidential entries", async () => {
     let nonJudicialCalls = 0;
     callResearchProviderMock.mockImplementation(async (_candidate, prompt: string) => {

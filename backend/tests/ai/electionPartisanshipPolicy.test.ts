@@ -411,6 +411,9 @@ describe("electionPartisanshipPolicy", () => {
     expect(isJudicialOfficeTitle("Solicitor, 1st Judicial Circuit")).toBe(false);
     expect(isJudicialOfficeTitle("Public Defender, 20th Judicial Circuit")).toBe(false);
     expect(isJudicialOfficeTitle("State's Attorney, 9th Judicial Circuit")).toBe(false);
+    // Florida's circuit prosecutor carries no possessive; Illinois' and
+    // Maryland's does. Both are the same office.
+    expect(isJudicialOfficeTitle("State Attorney (20th Judicial Circuit)")).toBe(false);
     expect(isJudicialOfficeTitle("Commonwealth's Attorney")).toBe(false);
     expect(isJudicialOfficeTitle("Prosecuting Attorney")).toBe(false);
     expect(isJudicialOfficeTitle("County Attorney")).toBe(false);
@@ -449,6 +452,31 @@ describe("electionPartisanshipPolicy", () => {
         aiValue: true,
       })
     ).toBe(true);
+
+    // The contest family must not outrank the office. A judicial pass that
+    // returns the circuit's prosecutor would otherwise stamp it nonpartisan,
+    // and the contract checks the title alone, so nothing downstream catches
+    // it.
+    for (const title of [
+      "District Attorney - Paulding Judicial Circuit",
+      "Solicitor-General, State Court of Paulding County",
+      "Clerk of Superior Court, Paulding County",
+    ]) {
+      expect(
+        resolveElectionIsPartisan({
+          draft: {
+            district_id: "1dca234a-876f-4957-812c-3fedf8e0a7cb",
+            district_name: "Paulding County, Georgia",
+            district_type: "county",
+            state: "GA",
+          },
+          contestFamily: "judicial_office",
+          raceType: "office",
+          officialBallotTitle: title,
+          aiValue: true,
+        })
+      ).toBe(true);
+    }
 
     // Same construction in the other "Judicial Circuit" states.
     for (const state of ["AL", "FL", "MS", "SC"]) {

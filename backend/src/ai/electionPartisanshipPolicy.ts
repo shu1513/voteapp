@@ -236,14 +236,25 @@ const COURT_CLERK_TITLE_PATTERN = /\bclerks?\b/i;
 // "<X> Judicial Circuit" construction would also drop the real judges whose
 // titles name only the circuit, so the prosecutors and defenders leave judicial
 // policy the way the clerks above do.
+//
+// `state(?:'?s)?` is deliberate: Illinois and Maryland elect a "State's
+// Attorney", Florida elects a "State Attorney" with no possessive (its live
+// 2026 title is "State Attorney (20th Judicial Circuit)"), and both are the
+// circuit prosecutor.
 const PROSECUTOR_OR_DEFENDER_TITLE_PATTERN =
-  /\b(?:district|state'?s|commonwealth'?s|prosecuting|county|city)\s+attorneys?\b|\bprosecutors?\b|\bsolicitors?(?:[-\s]general)?\b|\bpublic\s+defenders?\b/i;
+  /\b(?:district|state(?:'?s)?|commonwealth'?s|prosecuting|county|city)\s+attorneys?\b|\bprosecutors?\b|\bsolicitors?(?:[-\s]general)?\b|\bpublic\s+defenders?\b/i;
+
+// Court staff and courtroom lawyers, as opposed to the bench itself. Exported
+// because the contest FAMILY must not outrank it: a pass labelled
+// judicial_office can still carry one of these offices, and the office is the
+// thing partisanship policy is about.
+export function isNonJudicialCourtOfficeTitle(title: string): boolean {
+  return COURT_CLERK_TITLE_PATTERN.test(title) ||
+    PROSECUTOR_OR_DEFENDER_TITLE_PATTERN.test(title);
+}
 
 export function isJudicialOfficeTitle(title: string): boolean {
-  if (COURT_CLERK_TITLE_PATTERN.test(title)) {
-    return false;
-  }
-  if (PROSECUTOR_OR_DEFENDER_TITLE_PATTERN.test(title)) {
+  if (isNonJudicialCourtOfficeTitle(title)) {
     return false;
   }
   return /\b(judge|justice|judicial|superior court|court of appeal(s)?|supreme court|retention|magistrate)\b/i.test(
@@ -261,6 +272,16 @@ function isJudicialContest(
   officialBallotTitle: string
 ): boolean {
   if (raceType !== "office") {
+    return false;
+  }
+  // Ordered ahead of the family shortcut on purpose. The family is a coarse
+  // routing label chosen before the titles come back, so a research pass sent
+  // out as judicial_office can return the circuit's prosecutor alongside its
+  // judges — and the title is the office, while the family is only where the
+  // question was asked. Without this, a Georgia DA that slipped into the
+  // judicial pass would be stamped nonpartisan with no contract error to catch
+  // it, because the contract checks the title alone.
+  if (isNonJudicialCourtOfficeTitle(officialBallotTitle)) {
     return false;
   }
   if (contestFamily === "judicial_office") {
