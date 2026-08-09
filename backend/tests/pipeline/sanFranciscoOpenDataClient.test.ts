@@ -47,6 +47,8 @@ describe("getSanFranciscoCommitteeSummaryRows", () => {
     form_type: "FPPC460",
     start_date: "2024-01-01T00:00:00.000",
     end_date: "2024-06-30T00:00:00.000",
+    line_1_col_a: "896598.68",
+    line_2_col_a: "29.38",
     line_5_col_a: "896998.68",
     line_11_col_a: "1107012.93",
     ...overrides,
@@ -65,6 +67,8 @@ describe("getSanFranciscoCommitteeSummaryRows", () => {
         formType: "FPPC460",
         periodStart: "2024-01-01T00:00:00.000",
         periodEnd: "2024-06-30T00:00:00.000",
+        monetaryContributionsCents: 89659868,
+        line2Cents: 2938,
         contributionsCents: 89699868,
         expendituresCents: 110701293,
       },
@@ -357,7 +361,9 @@ describe("getSanFranciscoCommitteeItemizedTransactions", () => {
     await getSanFranciscoCommitteeItemizedTransactions(
       {
         fppcId: "1463099",
-        formTypes: ["a", "F496"],
+        // Exact-case values: Socrata equality is case-sensitive, and the
+        // dataset's summary pseudo-rows are mixed-case ("F460ALine2").
+        formTypes: ["A", "F496", "F460ALine2"],
         transactionDateFrom: "2023-01-01",
         transactionDateTo: "2024-12-05",
       },
@@ -365,11 +371,32 @@ describe("getSanFranciscoCommitteeItemizedTransactions", () => {
     );
     const params = new URL(requestedUrls[0]!).searchParams;
     expect(params.get("$where")).toBe(
-      "fppc_id='1463099' AND form_type in ('A','F496') AND transaction_date>='2023-01-01T00:00:00.000' AND transaction_date<'2024-12-05T00:00:00.000'",
+      "fppc_id='1463099' AND form_type in ('A','F496','F460ALine2') AND transaction_date>='2023-01-01T00:00:00.000' AND transaction_date<'2024-12-05T00:00:00.000'",
     );
     expect(params.get("$order")).toBe("transaction_date,transaction_id,:id");
     expect(params.get("$select")).toContain("calculated_amount");
     expect(params.get("$select")).toContain("transaction_occupation");
+  });
+
+  it("widens the window to undated rows only when asked", async () => {
+    const requestedUrls: string[] = [];
+    const fetchImpl: typeof fetch = async (input) => {
+      requestedUrls.push(String(input));
+      return new Response("[]", { status: 200 });
+    };
+    await getSanFranciscoCommitteeItemizedTransactions(
+      {
+        fppcId: "1467508",
+        formTypes: ["B1"],
+        transactionDateFrom: "2023-01-01",
+        transactionDateTo: "2024-12-05",
+        includeUndatedTransactions: true,
+      },
+      { fetchImpl },
+    );
+    expect(new URL(requestedUrls[0]!).searchParams.get("$where")).toBe(
+      "fppc_id='1467508' AND form_type in ('B1') AND (transaction_date IS NULL OR (transaction_date>='2023-01-01T00:00:00.000' AND transaction_date<'2024-12-05T00:00:00.000'))",
+    );
   });
 
   it("rejects empty and malformed form types", async () => {
