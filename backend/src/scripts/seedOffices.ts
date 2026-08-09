@@ -578,6 +578,37 @@ const SEED_OFFICES: SeedOffice[] = [
       "Approving contracts, staffing levels, and equipment purchases for the district",
     ].join("\n"),
   },
+  {
+    // A Florida community development district is a special-purpose local
+    // government created under Fla. Stat. ch. 190 to finance and maintain a
+    // development's infrastructure. Its board is five members, and s.
+    // 190.006(4) states the office name outright: "Members of the board shall
+    // be known as supervisors."
+    //
+    // Only the qualified-elector elections reach a public ballot. A new
+    // district's supervisors are chosen at a landowners' meeting by acre-
+    // weighted vote (s. 190.006(2)); once the district passes the thresholds
+    // in s. 190.006(3)(a)2, seats transfer to the qualified electors and are
+    // elected at the November general election, nonpartisan, with candidates
+    // qualifying for individual seats under s. 99.061. The county supervisor
+    // of elections prepares the ballot and the county canvassing board
+    // certifies the result (s. 190.006(3)(b)-(d)) — which is why this is filed
+    // at county scope, the same as Fire Control District Commissioner.
+    //
+    // Same caveat as that office, and it bites harder here: a CDD's boundaries
+    // are SUB-county — often a single subdivision — and there is no districts
+    // row for one, so an election attached to the county district shows to
+    // every voter in the county rather than only the few hundred inside the
+    // district. Weigh that before publishing a roster.
+    scope: "county",
+    canonicalName: "Community Development District Supervisor",
+    summary: [
+      "Setting the district's budget and the assessments property owners inside it pay",
+      "Overseeing infrastructure the district financed or maintains, such as roads, drainage, and water and sewer lines",
+      "Managing shared amenities like parks, ponds, pools, and clubhouses",
+      "Approving contracts with the district's manager, engineers, and vendors",
+    ].join("\n"),
+  },
   // The four offices below reached long-lived databases through a version of
   // this seed that was edited afterwards, so no current file reproduced them.
   // Definitions recovered verbatim from the local catalog.
@@ -2164,6 +2195,32 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   // fire-district body form onto this canonical key; the self-alias below is
   // what that folded key lands on. The remaining rows cover the bare
   // district-flavor forms a ballot may print without a district name.
+  // A CDD ballot title names the district, not the office: Bay County's live
+  // form is "Lake Powell Residential Golf Community Development District, Seat
+  // 2". officeMatcher strips the district's proper name (the seat's
+  // jurisdiction) down to the bare civic phrase, so the aliases below cover
+  // what survives that strip plus the spelled-out and abbreviated forms a
+  // ballot may print directly.
+  {
+    scope: "county",
+    officeCanonicalName: "Community Development District Supervisor",
+    aliasText: "Community Development District Supervisor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Community Development District Supervisor",
+    aliasText: "Community Development District",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Community Development District Supervisor",
+    aliasText: "CDD Supervisor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Community Development District Supervisor",
+    aliasText: "Community Development District Board of Supervisors",
+  },
   {
     scope: "county",
     officeCanonicalName: "Fire Control District Commissioner",

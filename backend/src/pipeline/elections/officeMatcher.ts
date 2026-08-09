@@ -429,6 +429,34 @@ function stripSeatSuffixes(value: string): string {
       " "
     )
     .replace(/\bjudicial\s+(?:circuit|district)(?: court)?\s+(?:no )?\d+[a-z]?\b/g, " ")
+    // A Florida community development district (Fla. Stat. ch. 190) is named
+    // after the development it serves, and the ballot title is the district
+    // name plus the seat: "Lake Powell Residential Golf Community Development
+    // District, Seat 2" (Bay County live — two contested seats, four qualified
+    // candidates, all stranded at method=none). The proper name is the seat's
+    // jurisdiction, not part of the office, and it cannot be removed by the
+    // jurisdiction strip: that keys on the districts row, which is the COUNTY
+    // (Bay), while the title names the CDD. Reduce it to the bare civic phrase
+    // the catalog holds. Candidate lists abbreviate the phrase ("Lake Powell
+    // Residential Golf CDD, Seat 2"), so the bare token folds the same way.
+    //
+    // The consumed prefix must be the district's proper name ONLY. §190.006(4)
+    // makes supervisor the sole elected CDD office, but a title such as
+    // "Treasurer, Lake Powell ... Community Development District" names a
+    // DIFFERENT job, and deleting its function noun here would hand it the
+    // supervisor office at full confidence — the same silent-wrong-match class
+    // as the marshal-to-judge bug, and invisible to the function-noun veto
+    // because the noun is gone before matching starts. A role word in the
+    // prefix leaves the title untouched, which falls through to the honest
+    // low-confidence fallback. "Supervisor" itself stays strippable: that IS
+    // this office, so "Supervisor, <name> CDD, Seat 2" should resolve.
+    .replace(/^(.*?)\b(?:community development district|cdd)\b/, (match, prefix: string) =>
+      /\b(?:assessor|attorney|auditor|chair(?:man|person)?|clerk|collector|commissioner|constable|coroner|council|director|judge|justice|marshal|mayor|member|president|secretary|sheriff|treasurer|trustee)\b/.test(
+        prefix
+      )
+        ? match
+        : "community development district"
+    )
     // Louisiana numbers its justice-of-the-peace COURTS and titles both the JP
     // seat and its constable seat by the court ("Justice of the Peace 2nd
     // Justice Court" / "Constable 2nd Justice Court", Jefferson Parish live:

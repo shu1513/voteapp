@@ -2259,6 +2259,144 @@ describe("OfficeMatcher", () => {
       return new OfficeMatcher(client as never);
     }
 
+    it("strips a Florida CDD's proper name so the live Bay County seat titles resolve", async () => {
+      // "Lake Powell Residential Golf Community Development District, Seat 2"
+      // (Bay County live) returned method=none at 0.222 and stranded four
+      // qualified candidates across two contested seats. The CDD's proper name
+      // is the seat's jurisdiction, and the ordinary jurisdiction strip cannot
+      // remove it: that keys on the districts row, which is the COUNTY.
+      const createCddMatcher = () =>
+        new OfficeMatcher(
+          createMatcherDataClient({
+            aliasesByScope: {
+              county: [
+                {
+                  office_id: "office-cdd-supervisor",
+                  normalized_alias: "community development district",
+                },
+              ],
+            },
+            officesByScope: { county: louisianaCountyOffices },
+          }) as never
+        );
+
+      for (const title of [
+        "Lake Powell Residential Golf Community Development District, Seat 2",
+        "Lake Powell Residential Golf Community Development District, Seat 5",
+      ]) {
+        const result = await createCddMatcher().resolve({
+          scope: "county",
+          districtName: "Bay County, Florida",
+          state: "FL",
+          officialBallotTitle: title,
+          discoveryContestFamily: "non_judicial_office",
+        });
+
+        expect(result).toMatchObject({
+          officeId: "office-cdd-supervisor",
+          method: "alias_exact",
+          confidence: 1,
+        });
+      }
+    });
+
+    it("folds the abbreviated CDD form to the same civic phrase", async () => {
+      // County candidate lists abbreviate the phrase; the strip folds the
+      // bare token so the same alias wins.
+      const result = await new OfficeMatcher(
+        createMatcherDataClient({
+          aliasesByScope: {
+            county: [
+              {
+                office_id: "office-cdd-supervisor",
+                normalized_alias: "community development district",
+              },
+            ],
+          },
+          officesByScope: { county: louisianaCountyOffices },
+        }) as never
+      ).resolve({
+        scope: "county",
+        districtName: "Bay County, Florida",
+        state: "FL",
+        officialBallotTitle: "Lake Powell Residential Golf CDD, Seat 2",
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result).toMatchObject({
+        officeId: "office-cdd-supervisor",
+        method: "alias_exact",
+        confidence: 1,
+      });
+    });
+
+    it("refuses to strip a CDD prefix that carries a different function noun", async () => {
+      // "Treasurer, <name> Community Development District" names a DIFFERENT
+      // job. Deleting the prefix would hand it the supervisor office at full
+      // confidence — the silent-wrong-match class again. The role word blocks
+      // the strip, and the untouched title must NOT land on the CDD office.
+      const matcher = () =>
+        new OfficeMatcher(
+          createMatcherDataClient({
+            aliasesByScope: {
+              county: [
+                {
+                  office_id: "office-cdd-supervisor",
+                  normalized_alias: "community development district",
+                },
+              ],
+            },
+            officesByScope: { county: louisianaCountyOffices },
+          }) as never
+        );
+
+      for (const title of [
+        "Treasurer, Lake Powell Residential Golf Community Development District",
+        "Director of Lake Powell Residential Golf Community Development District, Seat 2",
+      ]) {
+        const result = await matcher().resolve({
+          scope: "county",
+          districtName: "Bay County, Florida",
+          state: "FL",
+          officialBallotTitle: title,
+          discoveryContestFamily: "non_judicial_office",
+        });
+
+        expect(result.officeId).not.toBe("office-cdd-supervisor");
+      }
+
+      // "Supervisor" IS this office, so a supervisor-led form still strips.
+      const supervisorLed = await matcher().resolve({
+        scope: "county",
+        districtName: "Bay County, Florida",
+        state: "FL",
+        officialBallotTitle:
+          "Supervisor, Lake Powell Residential Golf Community Development District, Seat 2",
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(supervisorLed).toMatchObject({
+        officeId: "office-cdd-supervisor",
+        method: "alias_exact",
+        confidence: 1,
+      });
+    });
+
+    it("leaves a title alone when it names no community development district", async () => {
+      // The strip is anchored on the civic phrase, so an ordinary county
+      // contest keeps its own jurisdiction handling.
+      const result = await createLouisianaMatcher([
+        { office_id: "office-constable", normalized_alias: "constable" },
+      ]).resolve({
+        scope: "county",
+        districtName: "Jefferson Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Constable 2nd Justice Court",
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result).toMatchObject({ officeId: "office-constable", confidence: 1 });
+    });
+
     it("resolves the doubled SOS justice-of-the-peace title to the JP office, not the trial court", async () => {
       const result = await createLouisianaMatcher().resolve({
         scope: "county",
