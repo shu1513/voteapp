@@ -10,7 +10,7 @@ import { loadProjectEnv } from "../config/env.js";
  *   1. A CDP coextensive with, and named like, a real county-equivalent
  *      (Arlington CDP / Arlington County). A Census Designated Place has no
  *      government, so the CDP row is not a district at all. These are marked
- *      via districts.canonical_district_id by migration 216; an UNMARKED one is
+ *      via districts.canonical_district_id by migration 226; an UNMARKED one is
  *      a fault this script exits non-zero on.
  *
  *   2. One real government holding both a county-equivalent FIPS and a place
@@ -141,7 +141,7 @@ async function main(): Promise<void> {
       }));
 
     // Marking a row that holds contests would hide them from every reader.
-    // Migration 216 asserts this is empty; a later hand-edit could break it.
+    // Migration 226 asserts this is empty; a later hand-edit could break it.
     const strandedResult = await pool.query<{
       district_id: string;
       name: string;

@@ -310,7 +310,7 @@ describe("runElectionsWriter", () => {
     expect(districtTimestampUpdateCall?.[1]?.[0]).toBe("d-1");
   });
 
-  it("fails the whole write before inserts when an office match is ambiguous", async () => {
+  it("writes the resolvable entries and an office-less shell when an office match is ambiguous", async () => {
     const payload = {
       district_id: "d-oregon",
       district_name: "Example County, Oregon",
@@ -319,6 +319,13 @@ describe("runElectionsWriter", () => {
       entries: [
         {
           official_ballot_title: "Clerk",
+          election_date: "2099-11-03",
+          race_type: "office",
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "County Clerk",
           election_date: "2099-11-03",
           race_type: "office",
           discovery_contest_family: "non_judicial_office",
@@ -340,7 +347,7 @@ describe("runElectionsWriter", () => {
       })
       .mockResolvedValue({ rowCount: 1, rows: [] });
 
-    clientQueryMock.mockImplementation(async (sql: string) => {
+    clientQueryMock.mockImplementation(async (sql: string, params?: unknown[]) => {
       if (sql.includes("FROM public.office_title_aliases")) {
         return { rowCount: 0, rows: [] };
       }
@@ -353,36 +360,74 @@ describe("runElectionsWriter", () => {
           ],
         };
       }
+      if (sql.includes("INSERT INTO public.elections")) {
+        const electionId =
+          params?.[1] === "Clerk"
+            ? "11111111-1111-4111-8111-111111111111"
+            : "22222222-2222-4222-8222-222222222222";
+        return {
+          rowCount: 1,
+          rows: [
+            {
+              id: electionId,
+              race_type: "office",
+              office_id: params?.[9] ?? null,
+              inserted: true,
+            },
+          ],
+        };
+      }
       return { rowCount: 1, rows: [] };
     });
 
     await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
 
-    expect(clientQueryMock).toHaveBeenCalledWith("ROLLBACK");
-    expect(
-      clientQueryMock.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.elections"))
-    ).toBe(false);
+    expect(clientQueryMock).not.toHaveBeenCalledWith("ROLLBACK");
 
-    const failedUpdate = poolQueryMock.mock.calls.find((call) =>
-      String(call[0]).includes("SET status = 'failed'")
+    // The unmatched title becomes an office-less shell; the rest of the payload
+    // is written normally.
+    const electionInserts = clientQueryMock.mock.calls.filter((call) =>
+      String(call[0]).includes("INSERT INTO public.elections")
     );
-    const failureReason = String(failedUpdate?.[1]?.[1]);
-    expect(failureReason).toContain(
-      "writer office match failed: district_id=d-oregon scope=county method=ambiguous"
+    expect(electionInserts).toHaveLength(2);
+    expect(electionInserts[0]?.[1]?.[1]).toBe("Clerk");
+    expect(electionInserts[0]?.[1]?.[9]).toBeNull();
+    expect(electionInserts[1]?.[1]?.[1]).toBe("County Clerk");
+    expect(electionInserts[1]?.[1]?.[9]).toBe("00000000-0000-0000-0000-000000000022");
+
+    const statusUpdateCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = $3")
     );
-    expect(failureReason).toMatch(/confidence=\d+\.\d{3}/);
-    expect(failureReason).toContain('title="Clerk" normalized_alias="clerk"');
+    expect(statusUpdateCall?.[1]?.[2]).toBe("written");
+
+    const reasonUpdateCall = clientQueryMock.mock.calls.find(
+      (call) => String(call[0]).includes("SET reason = $2") && !String(call[0]).includes("status")
+    );
+    const reason = String(reasonUpdateCall?.[1]?.[1]);
+    expect(reason).toContain(
+      "writer office match unresolved: district_id=d-oregon scope=county unresolved=1"
+    );
+    expect(reason).toContain("method=ambiguous");
+    expect(reason).toMatch(/confidence=\d+\.\d{3}/);
+    expect(reason).toContain('title="Clerk" normalized_alias="clerk"');
+
+    // Only the resolved election is handed to the candidate-roster stage: a
+    // shell with no office_id would block the records stage downstream.
+    const rosterEnqueueCall = clientQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("'candidate_roster:' || office_id::text")
+    );
+    expect(rosterEnqueueCall?.[1]?.[2]).toEqual(["22222222-2222-4222-8222-222222222222"]);
+
     expect(redisXAckMock).toHaveBeenCalledWith(
       STAGING_VALIDATED_STREAM,
       STAGING_ELECTIONS_WRITER_GROUP,
       "1-0"
     );
-    expect(redisXAddMock).not.toHaveBeenCalledWith(
+    expect(redisXAddMock).toHaveBeenCalledWith(
       STAGING_WRITTEN_STREAM,
       "*",
       expect.anything()
     );
-    expect(redisSendCommandMock).not.toHaveBeenCalled();
   });
 
   it("enqueues ballot-measure and candidate-roster drafts via Lua sendCommand", async () => {
@@ -435,7 +480,16 @@ describe("runElectionsWriter", () => {
       if (sql.includes("INSERT INTO public.elections")) {
         const raceType = String(params?.[4] ?? "");
         if (raceType === "office") {
-          return { rowCount: 1, rows: [{ id: "00000000-0000-0000-0000-000000000101", race_type: "office" }] };
+          return {
+            rowCount: 1,
+            rows: [
+              {
+                id: "00000000-0000-0000-0000-000000000101",
+                race_type: "office",
+                office_id: params?.[9] ?? null,
+              },
+            ],
+          };
         }
         if (raceType === "ballot_measure") {
           return {
