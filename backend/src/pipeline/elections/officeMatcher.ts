@@ -302,8 +302,45 @@ function singularizeCommissionerBodyForms(value: string): string {
   );
 }
 
+// An independent fire district titles each board seat by the district's own
+// name ("Holley-Navarre Fire District Seat 3", "Navarre Beach Fire Rescue
+// District, Seat 5" — Santa Rosa County FL live, 13 seats across five
+// districts on the Nov 2026 ballot). The district is its own taxing body, not
+// the county, so the jurisdiction strip never removes its proper noun: the
+// name both dilutes the token overlap against the catalog office (Fire
+// Control District Commissioner) and differs per district, so no fixed alias
+// can cover the family. The live titles scored 0.40-0.57 against the 0.56
+// floor and stranded NULL-office shells. Map the named body form onto the
+// office it elects, consuming the name (up to four tokens — "Avalon
+// Beach-Mulat" is the longest live one) so what remains is the catalog's own
+// key. Applied to canonical names too, where it is a no-op by construction.
+//
+// A fire district elects more than its board, so the fold has to be exact. New
+// York's Town Law §174 seats an elected district treasurer alongside the board
+// of fire commissioners, and the district phrase is common to both. The fold
+// therefore runs LAST — after the seat strip — and is anchored to the WHOLE
+// remaining key, so a title that still names another role cannot match it. An
+// unanchored substring fold scored "Smithtown Fire District Treasurer" 1.009
+// into this office and persisted the alias.
+const FIRE_DISTRICT_SEAT_KEY_PATTERN =
+  /^(?:[a-z0-9]+ ){0,4}fire (?:(?:control|rescue|protection|suppression|and rescue) )?district(?: (?:board member|board|commission|commissioner))?$/;
+const FIRE_DISTRICT_OFFICE_KEY = "fire control district commissioner";
+// Roles a fire district elects or appoints that are NOT its board seat. The
+// anchor above already excludes them when they trail the district phrase; this
+// also covers the comma form ("Treasurer, Smithtown Fire District"), whose
+// leading role word the anchor's name prefix would otherwise absorb.
+const FIRE_DISTRICT_NON_BOARD_ROLE_PATTERN =
+  /\b(?:treasurer|secretary|clerk|chief|marshal|collector|assessor|auditor|attorney)\b/;
+
+function mapFireDistrictBodyForms(value: string): string {
+  if (FIRE_DISTRICT_NON_BOARD_ROLE_PATTERN.test(value)) {
+    return value;
+  }
+  return FIRE_DISTRICT_SEAT_KEY_PATTERN.test(value) ? FIRE_DISTRICT_OFFICE_KEY : value;
+}
+
 function stripSeatSuffixes(value: string): string {
-  return singularizeCommissionerBodyForms(value)
+  const withoutSeat = singularizeCommissionerBodyForms(value)
     .replace(/\boffice (?:no )?\d+\b/g, " ")
     .replace(/\bposition (?:no )?\d+\b/g, " ")
     // "Council District No. 5" (Seattle live) titles the council-member SEAT
@@ -359,6 +396,7 @@ function stripSeatSuffixes(value: string): string {
     // Howard County MD live) — leading connector only, so office names that
     // merely contain "for" are untouched.
     .replace(/^for /, "");
+  return mapFireDistrictBodyForms(withoutSeat);
 }
 
 // The jurisdiction strip deliberately keeps the generic civic word so
@@ -509,6 +547,18 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
   // office and persists that as a learned alias. No-match is the honest
   // outcome there.
   if (isCourtClerkTitle(titleMatcherKey) && isNonCourtClerkOfficeKey(office.canonicalMatcherKey)) {
+    return 0;
+  }
+
+  // The fold above refuses to rewrite a non-board fire-district role, but bare
+  // token overlap can still carry one in on its own: "Fire District Clerk"
+  // shares two of three tokens with this office and scores 0.571, just over the
+  // floor. A district's treasurer/clerk/secretary is a different job, and the
+  // catalog has no office for it — no match is the honest answer.
+  if (
+    office.canonicalMatcherKey === FIRE_DISTRICT_OFFICE_KEY &&
+    FIRE_DISTRICT_NON_BOARD_ROLE_PATTERN.test(titleMatcherKey)
+  ) {
     return 0;
   }
 
