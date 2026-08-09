@@ -83,7 +83,7 @@ BEGIN
       AND tgenabled <> 'D'
   ) THEN
     RAISE EXCEPTION
-      'migration 219 would leave trg_prevent_office_title_alias_reassignment disabled';
+      'migration 225 would leave trg_prevent_office_title_alias_reassignment disabled';
   END IF;
 END
 $$;
@@ -120,7 +120,7 @@ ON CONFLICT (scope, normalized_alias) DO NOTHING;
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM public.research_areas) THEN
-    RAISE NOTICE 'migration 219: research_areas is empty (fresh install); Solicitor General research areas will come from the seed layer';
+    RAISE NOTICE 'migration 225: research_areas is empty (fresh install); Solicitor General research areas will come from the seed layer';
   END IF;
 END
 $$;

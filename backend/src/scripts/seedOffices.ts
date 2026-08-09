@@ -1703,7 +1703,7 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   },
   {
     // Georgia misdemeanor prosecutor ("Gwinnett County Solicitor General").
-    // Held by District Attorney until migration 219 split the offices apart;
+    // Held by District Attorney until migration 225 split the offices apart;
     // that migration also moves the stored alias, because upsertOfficeAlias
     // below refuses to remap an alias whose stored office disagrees with this
     // list rather than silently re-pointing it.

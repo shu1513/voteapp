@@ -3177,7 +3177,7 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     -- fraud (corporate_accountability) are felonies this office cannot bring.
     -- gun_control stays: Georgia's weapons misdemeanors — carrying in a
     -- prohibited location, possession by a minor, pointing a firearm at
-    -- another — are State Court cases. See db/migrations/219.
+    -- another — are State Court cases. See db/migrations/225.
     ('county', 'Solicitor General', ARRAY['anti_corruption', 'civil_rights', 'gun_control', 'public_safety_and_crime_control']::text[]),
     ('county', 'Sheriff', ARRAY['civil_rights', 'data_privacy', 'gun_control', 'immigration', 'public_safety_and_crime_control']::text[]),
     ('county', 'Soil and Water Conservation District Supervisor', ARRAY['environment_and_public_health', 'government_efficiency', 'public_infrastructure']::text[]),
