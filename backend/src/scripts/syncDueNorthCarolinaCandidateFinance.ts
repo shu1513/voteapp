@@ -31,8 +31,17 @@ const KNOWN_VALUE_FLAGS = new Set([
 // Strict flag validation (ohio pattern): an unknown flag (e.g. the typo
 // --dryrun) must fail loudly instead of silently running a real sync.
 function validateKnownFlags(args: readonly string[]): void {
-  for (const arg of args) {
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index]!;
     if (!arg.startsWith("--")) {
+      // A bare token is only legal as the value of the immediately
+      // preceding space-form value flag. Anything else is a positional typo
+      // (e.g. "dry-run" after npm's own "--" separator) that would
+      // otherwise be ignored and run a REAL sync.
+      const previous = index > 0 ? args[index - 1]! : undefined;
+      if (previous === undefined || !KNOWN_VALUE_FLAGS.has(previous)) {
+        throw new Error(`Unexpected positional argument: ${arg}`);
+      }
       continue;
     }
     const name = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
@@ -83,7 +92,7 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   if (raw === null) {
     return undefined;
   }
-  if (!/^[1-9]\d*$/.test(raw)) {
+  if (!/^[1-9]\d*$/.test(raw) || !Number.isSafeInteger(Number(raw))) {
     throw new Error(`Invalid ${name} value: ${raw}`);
   }
   return Number(raw);
