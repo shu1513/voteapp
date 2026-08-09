@@ -17,12 +17,27 @@
 -- confident wrong office. This migration supplies the office those titles land
 -- on once it has.
 --
--- The aliases cover the Louisiana city-court forms only. A town or village
--- marshal (Indiana, Colorado) is a different job — the municipality's chief
--- police officer, not an officer of the court — and the summary below, which
--- renders to voters as "City Marshal is responsible for:", would misdescribe
--- it. Those titles keep returning no-match, which stays honest until someone
--- catalogs that office on its own evidence.
+-- The aliases cover the Louisiana city-court forms only, and every one of them
+-- names the city or the court. A town or village marshal (Indiana, Colorado) is
+-- a different job — the municipality's chief police officer, not an officer of
+-- the court — and the summary below, which renders to voters as "City Marshal
+-- is responsible for:", would misdescribe it. Those titles keep returning
+-- no-match, which stays honest until someone catalogs that office on its own
+-- evidence. For the same reason there is no bare "Marshal" alias: that is the
+-- exact word Indiana uses for the other office, so the matcher requires a
+-- marshal title to name a city or a court before this office can win it.
+--
+-- The repair at the end is the other half. The judge fast path persisted what
+-- it matched, so any city-marshal contest written before this fix left a
+-- learned alias pointing at a judge office — and an exact alias hit returns
+-- ahead of every guard added here, so the code fix alone cannot dislodge it.
+-- The office-id repair script only revisits rows where office_id IS NULL, so
+-- rows already written keep their wrong office too. Same repair shape as
+-- migration 218, and idempotent for the same reason: after a successful run
+-- neither predicate matches anything. On this database both statements touch
+-- zero rows — no marshal contest was ever written, which is what stranded the
+-- Shreveport qualifiers in the first place — so this carries the fix to any
+-- database where one WAS.
 --
 -- The summary is byte-identical to backend/src/scripts/seedOffices.ts so the
 -- migration and seed layers cannot fight over the text, and the research-area
@@ -55,7 +70,6 @@ SELECT o.id, 'place', v.alias_text, v.normalized_alias
 FROM public.offices o,
      (VALUES
         ('City Marshal', 'city marshal'),
-        ('Marshal', 'marshal'),
         ('City Court Marshal', 'city court marshal'),
         ('Marshal of the City Court', 'marshal of the city court')
      ) AS v(alias_text, normalized_alias)
@@ -86,5 +100,35 @@ JOIN public.research_areas ra
 WHERE o.scope = 'place'
   AND o.canonical_name = 'City Marshal'
 ON CONFLICT DO NOTHING;
+
+-- Repoint place contests whose ballot title names a marshal of a court but
+-- whose office is a judge. The court-word predicate mirrors the matcher's own
+-- judicial allow-markers — the only route by which a marshal title could reach
+-- a judge office — so a town marshal, which names no court, is untouched: it
+-- never reached a judge office and must not be handed this one.
+UPDATE public.elections e
+SET office_id = target.id,
+    updated_at = now()
+FROM public.districts d,
+     public.offices current_office,
+     public.offices target
+WHERE d.id = e.district_id
+  AND current_office.id = e.office_id
+  AND target.scope = 'place'
+  AND target.canonical_name = 'City Marshal'
+  AND d.district_type = 'place'
+  AND e.official_ballot_title ~* '\mmarshal\M'
+  AND e.official_ballot_title ~* '\m(court|judicial|justice|magistrate)\M'
+  AND current_office.canonical_name IN ('Place Level Judge', 'County Level Judge', 'State Level Judge');
+
+-- Drop the learned aliases that cemented the mis-match, at every scope. A
+-- trigger blocks reassigning an alias's office_id, and the titles now resolve
+-- through this office's own aliases and the token scorer, so deletion is the
+-- whole repair. A marshal title pointing at a judge office is never right.
+DELETE FROM public.office_title_aliases a
+USING public.offices o
+WHERE o.id = a.office_id
+  AND a.normalized_alias ~ '\mmarshal\M'
+  AND o.canonical_name IN ('Place Level Judge', 'County Level Judge', 'State Level Judge');
 
 COMMIT;

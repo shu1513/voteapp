@@ -2429,6 +2429,38 @@ describe("OfficeMatcher", () => {
     expect(judge.officeId).toBe("office-place-judge");
   });
 
+  it("refuses a marshal title that names neither a city nor a court", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        place: [
+          { office_id: "office-city-marshal", normalized_alias: normalizeElectionTitleKey("City Marshal") },
+        ],
+      },
+      officesByScope: {
+        place: [
+          { id: "office-city-marshal", canonical_name: "City Marshal" },
+          { id: "office-place-judge", canonical_name: "Place Level Judge" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // Indiana and Colorado call the town's chief police officer a "Marshal" —
+    // a different job, which this office's voter-facing summary would
+    // misdescribe. There is deliberately no bare "Marshal" alias either.
+    for (const title of ["Marshal", "Town Marshal", "Village Marshal"]) {
+      const result = await matcher.resolve({
+        scope: "place",
+        districtName: "Zionsville, Indiana",
+        state: "IN",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, title).toBeNull();
+      expect(result.shouldPersistAlias, title).toBe(false);
+    }
+  });
+
   it("refuses the judge fast path for a marshal title when no marshal office exists", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { place: [] },
@@ -2516,6 +2548,33 @@ describe("OfficeMatcher", () => {
       discoveryContestFamily: "non_judicial_office",
     });
     expect(commissioner.officeId).toBe("office-county-commissioner");
+  });
+
+  it("keeps a combined office in the running when it covers one of the title's function nouns", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+          { id: "office-coroner", canonical_name: "County Coroner" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // California counties elect a combined "Sheriff-Coroner". A covers-ALL test
+    // vetoed both halves and returned no match; the veto is meant for an office
+    // the catalog is MISSING, not one it has, so covering one noun is enough.
+    for (const title of ["Sheriff-Coroner", "Sheriff/Coroner"]) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: "Riverside County, California",
+        state: "CA",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, title).toBe("office-sheriff");
+    }
   });
 
   it("keeps offices whose state synonym differs from the title's wording", async () => {

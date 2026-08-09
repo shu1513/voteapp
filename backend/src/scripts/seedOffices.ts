@@ -692,7 +692,7 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     // A Louisiana city marshal is the elected law-enforcement officer of the
-    // city court (La. R.S. 13:1879 et seq.), NOT a judge — see migration 223.
+    // city court (La. R.S. 13:1879 et seq.), NOT a judge — see migration 224.
     scope: "place",
     canonicalName: "City Marshal",
     summary: [
@@ -1606,19 +1606,17 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     officeCanonicalName: "Municipal Constable",
     aliasText: "Village Constable",
   },
-  // Louisiana city-court marshal forms only. A town or village marshal
-  // (Indiana, Colorado) is the municipality's chief police officer rather than
-  // an officer of the court, so it stays uncatalogued and keeps returning
-  // no-match instead of inheriting this office's duties — see migration 223.
+  // Louisiana city-court marshal forms only, and each one names the city or the
+  // court. A town or village marshal (Indiana, Colorado) is the municipality's
+  // chief police officer rather than an officer of the court, so it stays
+  // uncatalogued and keeps returning no-match instead of inheriting this
+  // office's duties. There is deliberately NO bare "Marshal" alias: that is the
+  // exact word Indiana uses for the other office, and an alias would hand it
+  // over at confidence 1.000 — see migration 224.
   {
     scope: "place",
     officeCanonicalName: "City Marshal",
     aliasText: "City Marshal",
-  },
-  {
-    scope: "place",
-    officeCanonicalName: "City Marshal",
-    aliasText: "Marshal",
   },
   {
     scope: "place",

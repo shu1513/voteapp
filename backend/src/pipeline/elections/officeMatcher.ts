@@ -641,8 +641,18 @@ function hasPhrase(text: string, phrase: string): boolean {
 // successfully and hands the contest another office's research areas, which
 // every later stage (roster, profile, records, labels) then inherits.
 //
-// So: a function noun present in the title and absent from the matched office's
-// canonical key vetoes that office. The list is deliberately short and holds
+// So: an office that carries NONE of the title's function nouns is vetoed. The
+// test is "covers none", not "covers all", because a combined office names more
+// than one job and only one of them can be the catalog's: California counties
+// elect a "Sheriff-Coroner", which under a covers-all test vetoed Sheriff (no
+// "coroner") AND County Coroner (no "sheriff") and returned no match at all —
+// the loud failure is meant for an office the catalog is MISSING, not for one
+// it has. Covering one noun is enough to stay in the running; the token scorer
+// and the margin then decide between the halves (Sheriff 0.667 over County
+// Coroner 0.500 there, which is the right half — the coroner duty is annexed to
+// the sheriff's office, not the reverse).
+//
+// The list is deliberately short and holds
 // only nouns whose absence is decisive. Words that legitimately differ across a
 // state's synonym for the SAME job stay out of it — "prosecuting"/"prosecutor"
 // (District Attorney), "auditor"/"recorder" (Idaho and Utah fold them into the
@@ -660,6 +670,7 @@ function hasPhrase(text: string, phrase: string): boolean {
 // Seeded aliases outrank this: an alias hit returns before any scoring, so a
 // state's own wording for a catalogued office is still expressed the same way
 // it always was, by adding the alias.
+const CITY_MARSHAL_OFFICE_KEY = "city marshal";
 const DISTINCT_FUNCTION_NOUNS = [
   "marshal",
   "coroner",
@@ -674,10 +685,12 @@ const DISTINCT_FUNCTION_NOUNS = [
   "superintendent",
 ];
 
-function hasUncoveredFunctionNoun(titleMatcherKey: string, office: OfficeCandidate): boolean {
-  return DISTINCT_FUNCTION_NOUNS.some(
-    (noun) => hasPhrase(titleMatcherKey, noun) && !hasPhrase(office.canonicalMatcherKey, noun)
-  );
+function coversNoFunctionNounOfTitle(titleMatcherKey: string, office: OfficeCandidate): boolean {
+  const titleNouns = DISTINCT_FUNCTION_NOUNS.filter((noun) => hasPhrase(titleMatcherKey, noun));
+  if (titleNouns.length === 0) {
+    return false;
+  }
+  return !titleNouns.some((noun) => hasPhrase(office.canonicalMatcherKey, noun));
 }
 
 function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office: OfficeCandidate): number {
@@ -712,7 +725,21 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
     return 0;
   }
 
-  if (hasUncoveredFunctionNoun(titleMatcherKey, office)) {
+  if (coversNoFunctionNounOfTitle(titleMatcherKey, office)) {
+    return 0;
+  }
+
+  // The catalogued marshal is the CITY COURT's marshal (Louisiana). A place
+  // title that names neither a city nor a court is not evidence of that office:
+  // Indiana and Colorado call the town's chief police officer a "Marshal", a
+  // different job, and handing it this office would describe a police chief to
+  // voters as an officer of the court. "City Marshal" and "Marshal, City Court
+  // of Shreveport" both qualify on their own words; a bare "Marshal" fails
+  // loudly instead, which is the recoverable outcome.
+  if (
+    office.canonicalMatcherKey === CITY_MARSHAL_OFFICE_KEY &&
+    !/\b(?:city|court)\b/.test(titleMatcherKey)
+  ) {
     return 0;
   }
 
