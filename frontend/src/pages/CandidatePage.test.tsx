@@ -98,6 +98,69 @@ describe("CandidatePage", () => {
     expect(screen.getAllByText("· 1 record")).toHaveLength(4);
   });
 
+  it("tallies each collapsed group's support/oppose split for that group's own area", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const record = (
+      id: string,
+      tags: { areaId: string; slug: string; name: string; stance: "for" | "against" | null }[]
+    ) => ({
+      id,
+      description: `Did a thing (${id}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: tags.map((tag) => ({
+        research_area_id: tag.areaId,
+        slug: tag.slug,
+        name: tag.name,
+        stance: tag.stance,
+      })),
+    });
+    const gun = (stance: "for" | "against" | null) => ({
+      areaId: "a-gun",
+      slug: "gun_control",
+      name: "Gun Control",
+      stance,
+    });
+    const gunRecord = (id: string, stance: "for" | "against" | null) => record(id, [gun(stance)]);
+    renderCandidate(() =>
+      candidateDetail({
+        records: [
+          gunRecord("r-1", "for"),
+          gunRecord("r-2", "for"),
+          gunRecord("r-3", "against"),
+          // Neutral counts toward neither side, so the split need not sum to
+          // the record count.
+          gunRecord("r-4", null),
+          // A record can lean the other way in a second area — that stance
+          // belongs to the housing group, not the gun-control tally.
+          record("r-5", [
+            gun("for"),
+            { areaId: "a-hou", slug: "housing_affordability", name: "Housing Affordability", stance: "against" },
+          ]),
+          // Judicial evaluative areas grade the evidence, so they read
+          // favorable/unfavorable, matching the cards inside.
+          record("r-6", [
+            { areaId: "a-imp", slug: "impartiality", name: "Impartiality", stance: "against" },
+          ]),
+        ],
+      })
+    );
+
+    const summaryText = (name: string) =>
+      (screen.getByText(name).closest("details") as HTMLDetailsElement).querySelector("summary")
+        ?.textContent;
+    expect(await screen.findByText("Gun Control")).toBeInTheDocument();
+    // r-4 is neutral, so the split (3/1) sums to less than the 5 records.
+    expect(summaryText("Gun Control")).toContain("· 5 records");
+    expect(summaryText("Gun Control")).toContain("· 3 support");
+    expect(summaryText("Gun Control")).toContain("· 1 oppose");
+    // Housing has no supporting record; a "0 support" would be pure noise.
+    expect(summaryText("Housing Affordability")).toContain("· 1 oppose");
+    expect(summaryText("Housing Affordability")).not.toContain("support");
+    expect(summaryText("Impartiality")).toContain("· 1 unfavorable");
+  });
+
   it("orders issue groups by public salience with untagged records last", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const record = (id: string, tags: { areaId: string; slug: string; name: string }[]) => ({
