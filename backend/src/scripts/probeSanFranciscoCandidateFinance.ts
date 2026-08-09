@@ -198,7 +198,11 @@ async function proveContributorFormula(input: {
   ];
 
   // Late-filing dedupe. transaction_id is filer-assigned and unique only
-  // within a filing, so an id hit is confirmed by amount before it counts.
+  // within a filing, so any Schedule A row sharing the id counts as the twin
+  // and the late row is dropped; the amount only decides which counter it
+  // lands in (paired_by_id vs paired_by_id_amount_mismatch). A cross-filing
+  // id collision would therefore drop a real late contribution, so the
+  // mismatch counter is reported to keep that case visible.
   const scheduleAById = new Map<string, SanFranciscoItemizedTransactionRow[]>();
   for (const row of scheduleA) {
     if (row.transactionId === null) continue;
