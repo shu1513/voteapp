@@ -327,6 +327,22 @@ const SEED_OFFICES: SeedOffice[] = [
     ].join("\n"),
   },
   {
+    // Georgia's county misdemeanor prosecutor, elected separately from the
+    // District Attorney: the DA takes felonies to superior court for a
+    // multi-county judicial circuit, the solicitor-general takes misdemeanors
+    // to the county's State Court, and a county can hold both contests in the
+    // same cycle. NOT South Carolina's "Solicitor", which IS that state's
+    // felony circuit prosecutor (a District Attorney by another name).
+    scope: "county",
+    canonicalName: "Solicitor General",
+    summary: [
+      "Prosecuting misdemeanor cases in the county's state court, such as DUI, theft, and family-violence charges",
+      "Deciding who gets charged with those crimes and which cases are diverted or dropped",
+      "Deciding plea deals and what sentences to ask for",
+      "Representing the state at misdemeanor trials and appeals",
+    ].join("\n"),
+  },
+  {
     scope: "county",
     canonicalName: "County Clerk",
     summary: [
@@ -494,6 +510,16 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
+    canonicalName: "Justice of the Peace",
+    summary: [
+      "Hearing small-claims cases and disputes between neighbors, landlords, and tenants",
+      "Deciding eviction cases in many states",
+      "Handling traffic and minor criminal citations where state law allows it",
+      "Performing marriages and signing routine legal papers such as affidavits",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
     canonicalName: "Constable",
     summary: [
       "Serving court papers, such as evictions, subpoenas, and court orders",
@@ -628,6 +654,19 @@ const SEED_OFFICES: SeedOffice[] = [
       "Approving the city budget",
       "Overseeing city departments and services",
       "Representing residents' concerns at city hall",
+    ].join("\n"),
+  },
+  {
+    // Grand Rapids MI and many Michigan/Midwest cities elect their public
+    // library's governing board citywide, on its own ballot heading
+    // ("Library Board 6 Year Term", Kent County live).
+    scope: "place",
+    canonicalName: "Library Board Member",
+    summary: [
+      "Setting policy for the public library and its branches",
+      "Approving the library's budget and how its millage money is spent",
+      "Hiring and overseeing the library director",
+      "Deciding library hours, services, and building projects",
     ].join("\n"),
   },
   {
@@ -1713,9 +1752,20 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   },
   {
     // Georgia misdemeanor prosecutor ("Gwinnett County Solicitor General").
+    // Held by District Attorney until migration 225 split the offices apart;
+    // that migration also moves the stored alias, because upsertOfficeAlias
+    // below refuses to remap an alias whose stored office disagrees with this
+    // list rather than silently re-pointing it.
     scope: "county",
-    officeCanonicalName: "District Attorney",
+    officeCanonicalName: "Solicitor General",
     aliasText: "County Solicitor General",
+  },
+  {
+    // Ballots that title the office without the county word, and the
+    // hyphenated "Solicitor-General" (punctuation normalizes to a space).
+    scope: "county",
+    officeCanonicalName: "Solicitor General",
+    aliasText: "Solicitor General",
   },
   {
     // Minnesota/Kentucky chief county prosecutor title.
@@ -1963,8 +2013,65 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     aliasText: "Louisville Metro Council Member",
   },
   {
+    // "Library Board 6 Year Term" (Grand Rapids MI live) — the bare body name
+    // is the ballot heading; the member office is what a voter elects.
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Library Board",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Public Library Board",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Library Trustee",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Library Board of Trustees",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Board of Library Trustees",
+  },
+  {
     scope: "county",
     officeCanonicalName: "Constable",
+    aliasText: "Constable",
+  },
+  {
+    // Caddo Parish LA titles the constable seat by the justice court it serves
+    // ("Constable Justice of the Peace Ward 7"); the ward number is a seat
+    // suffix, so the stripped key keeps the court words.
+    scope: "county",
+    officeCanonicalName: "Constable",
+    aliasText: "Constable Justice of the Peace",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Justice of the Peace",
+    aliasText: "Justice of the Peace",
+  },
+  {
+    // The LA SOS emits the office name twice ("Justice of the Peace Justice of
+    // the Peace Ward 1", Caddo Parish live). The matcher collapses the repeat,
+    // but the raw title is looked up first, so key the source form too.
+    scope: "county",
+    officeCanonicalName: "Justice of the Peace",
+    aliasText: "Justice of the Peace Justice of the Peace",
+  },
+  {
+    // Orleans Parish's constable serves the First City Court — a MUNICIPAL
+    // court, so that seat belongs to the New Orleans place district, where the
+    // catalog office is Municipal Constable. The seat strip reduces "Constable
+    // 1st City Court" to the bare office word.
+    scope: "place",
+    officeCanonicalName: "Municipal Constable",
     aliasText: "Constable",
   },
   {

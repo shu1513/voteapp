@@ -25,6 +25,8 @@ describe("lookupAddressDistricts", () => {
           state_fips: "06",
           population: 39287377,
           representation_power_score: "42.50",
+          requested_district_type: "statewide",
+          requested_geoid_compact: "06",
         },
         {
           id: "district-la",
@@ -35,6 +37,8 @@ describe("lookupAddressDistricts", () => {
           state_fips: "06",
           population: 9876482,
           representation_power_score: null,
+          requested_district_type: "county",
+          requested_geoid_compact: "06037",
         },
       ],
     });
@@ -90,6 +94,8 @@ describe("lookupAddressDistricts", () => {
           state_fips: "06",
           population: 9876482,
           representation_power_score: 10,
+          requested_district_type: "county",
+          requested_geoid_compact: "06037",
         },
       ],
     });
@@ -122,6 +128,8 @@ describe("lookupAddressDistricts", () => {
           state_fips: "06",
           population: 761000,
           representation_power_score: "73.20",
+          requested_district_type: "us_house",
+          requested_geoid_compact: "0631",
         },
       ],
     });
@@ -148,6 +156,63 @@ describe("lookupAddressDistricts", () => {
         representation_power_score: 73.2,
       },
     ]);
+  });
+
+  it("collapses a non-government row onto the district that holds the elections", async () => {
+    // An Arlington, Virginia address geocodes into both the counties layer
+    // (51013) and the incorporated-places layer (Arlington CDP, 5103000). The
+    // CDP is a Census statistical geography with no government, so the query
+    // resolves it to Arlington County and the caller must see the county once.
+    const query = vi.fn().mockResolvedValueOnce({
+      rows: [
+        {
+          id: "arlington-county",
+          district_type: "county",
+          geoid_compact: "51013",
+          name: "Arlington County, Virginia",
+          state: "VA",
+          state_fips: "51",
+          population: 236254,
+          representation_power_score: null,
+          requested_district_type: "county",
+          requested_geoid_compact: "51013",
+        },
+        {
+          id: "arlington-county",
+          district_type: "county",
+          geoid_compact: "51013",
+          name: "Arlington County, Virginia",
+          state: "VA",
+          state_fips: "51",
+          population: 236254,
+          representation_power_score: null,
+          requested_district_type: "place",
+          requested_geoid_compact: "5103000",
+        },
+      ],
+    });
+
+    const result = await lookupAddressDistricts({ query }, [
+      { district_type: "county", geoid_compact: "51013" },
+      { district_type: "place", geoid_compact: "5103000" },
+    ]);
+
+    expect(query.mock.calls[0]?.[0]).toContain("LEFT JOIN public.districts AS owner");
+    expect(result.districts).toEqual([
+      {
+        id: "arlington-county",
+        district_type: "county",
+        geoid_compact: "51013",
+        name: "Arlington County, Virginia",
+        state: "VA",
+        state_fips: "51",
+        population: 236254,
+        representation_power_score: null,
+      },
+    ]);
+    // The CDP key resolved to a row; it is not missing just because the row
+    // handed back carries the county identity.
+    expect(result.missing_district_keys).toEqual([]);
   });
 
   it("skips blank geoid keys before querying", async () => {

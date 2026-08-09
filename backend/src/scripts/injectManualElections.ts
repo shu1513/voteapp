@@ -13,7 +13,10 @@ import {
   ELECTION_ENRICHMENT_SCHEMA_VERSION,
   ELECTION_PROMPT_VERSION,
 } from "../contracts/electionEnrichmentContract.js";
-import { parseCanonicalElectionPayload } from "../contracts/electionPayloadContract.js";
+import {
+  parseCanonicalElectionPayload,
+  parseFamilySourceUrls,
+} from "../contracts/electionPayloadContract.js";
 
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 function readFlag(name: string): string | null {
@@ -124,41 +127,15 @@ export function resolveHistoricalImportDebugJson(
   });
 }
 
-function extractFamilySourceUrls(payload: unknown): Record<string, string[]> | null {
+export function extractFamilySourceUrls(payload: unknown): Record<string, string[]> | null {
   if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
     return null;
   }
-  const raw = (payload as Record<string, unknown>).family_source_urls;
-  if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
-    return null;
+  const parsed = parseFamilySourceUrls((payload as Record<string, unknown>).family_source_urls);
+  if (!parsed.ok) {
+    throw new Error(`Election payload failed validation: ${parsed.reason}\n${usage()}`);
   }
-
-  const allowedFamilies = new Set([
-    "all",
-    "non_judicial_office",
-    "judicial_office",
-    "ballot_measure",
-    "us_senate",
-  ]);
-  const normalized: Record<string, string[]> = {};
-  for (const [family, urls] of Object.entries(raw as Record<string, unknown>)) {
-    if (!allowedFamilies.has(family) || !Array.isArray(urls)) {
-      continue;
-    }
-    const cleanUrls = [
-      ...new Set(
-        urls
-          .filter((url): url is string => typeof url === "string")
-          .map((url) => url.trim())
-          .filter((url) => url.length > 0)
-      ),
-    ];
-    if (cleanUrls.length > 0) {
-      normalized[family] = cleanUrls;
-    }
-  }
-
-  return Object.keys(normalized).length > 0 ? normalized : null;
+  return parsed.familySourceUrls ?? null;
 }
 
 function defaultIngestKey(districtId: string): string {

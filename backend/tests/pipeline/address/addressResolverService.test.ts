@@ -25,6 +25,8 @@ describe("resolveAddressToDistricts", () => {
           state_fips: "06",
           population: 9876482,
           representation_power_score: "12.30",
+          requested_district_type: "county",
+          requested_geoid_compact: "06037",
         },
       ],
     });
@@ -144,6 +146,8 @@ describe("resolveAddressToDistricts", () => {
           state_fips: "06",
           population: 9876482,
           representation_power_score: "12.30",
+          requested_district_type: "county",
+          requested_geoid_compact: "06037",
         },
       ],
     });

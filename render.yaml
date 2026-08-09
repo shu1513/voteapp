@@ -317,9 +317,28 @@ services:
 databases:
   - name: voteapp-db
     region: ohio
-    # FREE PLAN EXPIRES ~30 days after creation (instance deleted). Upgrade
-    # to basic-256mb or larger before expiry once billing is set up.
-    plan: free
+    # Upgraded off the free plan 2026-08-08, one day before the free
+    # instance's 30-day expiry. Expiry does not delete on the spot: it makes
+    # the database INACCESSIBLE (production down), and Render deletes it with
+    # all its data only after a further 14-day grace period.
+    # Sized by working set, not storage: the database holds ~290 MB, so
+    # basic-256mb would have had less RAM than the data it serves and would
+    # have gone to disk for the batch pipelines (backfills, record sweeps,
+    # per-state finance syncs). basic-1gb keeps the hot set cached and gives
+    # 0.5 CPU instead of 0.1. Storage is not part of the tier on paid plans —
+    # it expands at $0.30/GB.
+    plan: basic-1gb
+    # Matches the live instance (autoscaling enabled 2026-08-08). Omitting
+    # this would not drift THIS database — the blueprint spec retains the
+    # current value for an existing database — but one created fresh from
+    # this file defaults to false, so say it out loud.
+    #
+    # diskSizeGB is deliberately NOT pinned here. Autoscaling permanently
+    # raises storage (1 GB -> 5 GB on the first trigger) and Render never
+    # shrinks a volume, so a pinned size would sooner or later be asking for
+    # a decrease. The trade-off is that a from-scratch create takes the Basic
+    # default of 15 GB rather than 1 GB — set it deliberately at that point.
+    storageAutoscalingEnabled: true
 
 envVarGroups:
   - name: voteapp-shared

@@ -78,6 +78,12 @@ function toReason(error: unknown): string {
  * Mirror of createAutoDistrictResearchTrigger's contract: never throws, and is
  * meant to be called fire-and-forget from the address API so it can never
  * affect the address response.
+ *
+ * Districts carrying a canonical_district_id are duplicate Census rows for a
+ * government another row already owns; they are never enqueued, so one city
+ * cannot be researched twice. Callers going through lookupAddressDistricts
+ * have already been collapsed onto the owner, so this is the backstop for
+ * callers holding district ids from elsewhere.
  */
 export async function enqueueManualDistrictResearchRequestsForStaleDistricts(
   db: Queryable,
@@ -99,6 +105,7 @@ export async function enqueueManualDistrictResearchRequestsForStaleDistricts(
         SELECT id, last_elections_searched_at
         FROM public.districts
         WHERE id = ANY($1::uuid[])
+          AND canonical_district_id IS NULL
           AND (
             last_elections_searched_at IS NULL
             OR last_elections_searched_at < now() - make_interval(days => $2::int)
@@ -207,6 +214,25 @@ export async function claimNextManualDistrictResearchRequest(
 ): Promise<ClaimedManualDistrictResearchRequest | null> {
   const { claimedBy, agentKind, cooldownDays } = input;
 
+  // Rows for a duplicate Census district retire unconditionally, including
+  // manual_seed ones: the government is real but another districts row owns it,
+  // so there is no research to do here and re-seeding the alias is an error
+  // rather than an override. The bulk_backfill sweep seeded these before the
+  // duplicate was understood, so the queue still holds them.
+  await db.query(
+    `
+      UPDATE public.manual_district_research_requests AS r
+      SET status = 'skipped',
+          finished_at = now(),
+          summary = 'duplicate Census row; research belongs to the canonical district',
+          updated_at = now()
+      FROM public.districts AS d
+      WHERE d.id = r.district_id
+        AND r.status = 'queued'
+        AND d.canonical_district_id IS NOT NULL
+    `
+  );
+
   // manual_seed requests are an operator override ("re-check this district
   // early") and bypass the automatic freshness and deferral gates.
   await db.query(
@@ -240,6 +266,7 @@ export async function claimNextManualDistrictResearchRequest(
         FROM public.manual_district_research_requests AS r2
         JOIN public.districts AS d ON d.id = r2.district_id
         WHERE r2.status = 'queued'
+          AND d.canonical_district_id IS NULL
           AND (
             r2.trigger_source = 'manual_seed'
             OR d.last_elections_searched_at IS NULL

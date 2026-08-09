@@ -52,10 +52,15 @@ const STATE_LEVEL_JUDGE_CANONICAL_NAME = "State Level Judge";
 const COUNTY_LEVEL_JUDGE_CANONICAL_NAME = "County Level Judge";
 const PLACE_LEVEL_JUDGE_CANONICAL_NAME = "Place Level Judge";
 const CLERK_OF_COURT_CANONICAL_NAME = "Clerk of Court";
+const JUSTICE_OF_THE_PEACE_CANONICAL_NAME = "Justice of the Peace";
 const JUDGE_CANONICAL_NAMES = new Set([
   STATE_LEVEL_JUDGE_CANONICAL_NAME,
   COUNTY_LEVEL_JUDGE_CANONICAL_NAME,
   PLACE_LEVEL_JUDGE_CANONICAL_NAME,
+  // A justice of the peace is an elected judicial officer, so the entry's own
+  // contest family governs it exactly as it governs the trial-court offices:
+  // a non-judicial entry never matches into it, by alias or by score.
+  JUSTICE_OF_THE_PEACE_CANONICAL_NAME,
 ]);
 
 export function isJudicialOfficeCanonicalName(canonicalName: string): boolean {
@@ -108,6 +113,12 @@ const JUDICIAL_TITLE_ALLOW_MARKERS = [
   /\bretain(?:ed|ing)?\b/,
 ];
 const NON_JUDICIAL_TITLE_MARKERS = [
+  // A constable is the justice court's law-enforcement officer, not one of its
+  // judges, and Louisiana titles the seat by the court it serves ("Constable
+  // 2nd Justice Court", "Constable Justice of the Peace Ward 7") — every one of
+  // those court words is a judicial allow-marker. Without this the judge
+  // fallback would hand a judicial-family constable entry to a judge office.
+  /\bconstable\b/,
   /\bdistrict attorney\b/,
   /\bcounty district attorney\b/,
   /\bprosecuting attorney\b/,
@@ -179,9 +190,25 @@ function normalizeMatcherText(value: string): string {
     // combined office; the compound form scores 1-of-3 token overlap against
     // "County Treasurer" and misses the confidence floor.
     .replace(/\btreasurer\s*[/-]\s*tax collector\b/g, "treasurer")
+    // "(s)" is an optional-plural marker on the office word, never a word of
+    // its own: St. Tammany Parish LA titles 19 live seats "Constable(s) Justice
+    // of the Peace Ward N" and "Justice(s) of the Peace ...". The generic
+    // punctuation fold below would leave a stray "s" token mid-phrase, which
+    // both breaks the office phrase and costs a token of precision — the
+    // constable form failed at exactly 0.520, the same way Jefferson's did.
+    // Dropped before that fold so the phrase survives intact.
+    .replace(/\(s\)/g, "")
     .replace(/[^a-z0-9\s]/g, " ")
     .replace(/\s+/g, " ")
-    .trim();
+    .trim()
+    // Louisiana's SOS concatenates the office name onto the ballot title, so
+    // every justice-of-the-peace contest reads "Justice of the Peace Justice
+    // of the Peace Ward N" (Caddo Parish live; the same source doubles
+    // "Magistrate Magistrate Section"). Collapse the repeat so the key names
+    // the office once and every parish's JP seats share one alias key. Runs
+    // after punctuation folding so a separator between the two copies does
+    // not hide the repeat.
+    .replace(/\bjustice of the peace (?=justice of the peace\b)/g, "");
 }
 
 function escapeRegExp(value: string): string {
@@ -208,12 +235,17 @@ function districtNameCore(rawDistrictName: string): string {
   return tokens.join(" ");
 }
 
+const GENERIC_DISTRICT_SUFFIX_PATTERN = [...GENERIC_DISTRICT_SUFFIX_TOKENS].join("|");
+
 function stripJurisdictionPrefixes(value: string, input: { districtName: string; state: string }): string {
   let next = value;
 
   const districtName = normalizeMatcherText(input.districtName);
   if (districtName.length > 0) {
-    const districtPattern = new RegExp(`\\b${escapeRegExp(districtName)}\\b`, "g");
+    // The leading "of" belongs to the jurisdiction phrase, not the office
+    // ("Prosecuting Attorney of Elkhart County"); leaving it behind produces a
+    // dangling connector that misses the alias table.
+    const districtPattern = new RegExp(`\\b(?:of )?${escapeRegExp(districtName)}\\b`, "g");
     next = next.replace(districtPattern, " ");
   }
 
@@ -224,6 +256,25 @@ function stripJurisdictionPrefixes(value: string, input: { districtName: string;
   // still matches catalog names/aliases keyed on the bare office title.
   const core = districtNameCore(input.districtName);
   if (core.length >= 2) {
+    // "<office> of <Core> County" is the one form where the generic civic word
+    // is part of the jurisdiction phrase rather than a modifier on the office,
+    // so it goes with the core ("Prosecuting Attorney of Elkhart County, 34th
+    // Judicial Circuit", IN live: kept "county" and scored 0.25 into District
+    // Attorney, blocking the prosecutor contest in every Indiana county). The
+    // civic word is required here — without it the phrase is an ordinary
+    // "of <place>" suffix whose bare-office handling below is already correct.
+    // The lookahead keeps the phrase whenever it modifies a governing body that
+    // follows it ("Member of Cook County Board of Commissioners"): there the
+    // county word belongs to the body's name, and taking it left
+    // "member board of commissioners", which mis-scored into County Board of
+    // Review Member — a confidently wrong match the writer would then persist
+    // as an alias.
+    const ofCorePattern = new RegExp(
+      `\\bof ${escapeRegExp(core)} (?:${GENERIC_DISTRICT_SUFFIX_PATTERN})\\b(?! (?:board|commission|council|court))`,
+      "g"
+    );
+    next = next.replace(ofCorePattern, " ");
+
     const corePattern = new RegExp(`\\b${escapeRegExp(core)}\\b`, "g");
     next = next.replace(corePattern, " ");
   }
@@ -341,6 +392,38 @@ function mapFireDistrictBodyForms(value: string): string {
 
 function stripSeatSuffixes(value: string): string {
   const withoutSeat = singularizeCommissionerBodyForms(value)
+    // A numbered judicial circuit/district is the seat's jurisdiction, not part
+    // of the office name: "Prosecuting Attorney of Elkhart County, 34th
+    // Judicial Circuit" (IN live) and "State Attorney, 4th Judicial Circuit"
+    // (FL) are the ordinary county prosecutor. Single instances were previously
+    // papered over with per-number aliases ("prosecuting attorney 60th judicial
+    // circuit", "district attorney 22nd judicial district court"), which cannot
+    // scale to every circuit number in every state. Runs before the generic
+    // ordinal-district rule so "4th Judicial District" is not half-stripped,
+    // and before Louisiana's justice-court rules, which key on "justice court"
+    // rather than on "judicial".
+    .replace(
+      /\b(?:\d+(?:st|nd|rd|th)|[ivxl]+)\s+judicial\s+(?:circuit|district)(?: court)?\b/g,
+      " "
+    )
+    .replace(/\bjudicial\s+(?:circuit|district)(?: court)?\s+(?:no )?\d+[a-z]?\b/g, " ")
+    // Louisiana numbers its justice-of-the-peace COURTS and titles both the JP
+    // seat and its constable seat by the court ("Justice of the Peace 2nd
+    // Justice Court" / "Constable 2nd Justice Court", Jefferson Parish live:
+    // the constable form failed the matcher outright at 0.520 and took the
+    // whole payload down). The numbered court is the seat; the office is the
+    // bare justice of the peace or constable.
+    .replace(/\b(?:\d+[a-z]{0,2}|[ivxl]+) justice court\b/g, " ")
+    // Orleans Parish titles its constable seat by the municipal court it serves
+    // ("Constable 1st City Court"). Anchored on the constable word so a JUDGE
+    // title keeps its court words — there the court names the office, not the
+    // seat.
+    .replace(/(?<=\bconstable )(?:\d+[a-z]{0,2}|[ivxl]+) (?:city|parish) court\b/g, " ")
+    // Caddo Parish names the constable's seat by the JP court's ward
+    // ("Constable Justice of the Peace Ward 7"). The court phrase is the seat
+    // designator on a LAW-ENFORCEMENT office; only the leading constable word
+    // names it. The ward number goes with the generic ward rule below.
+    .replace(/(?<=\bconstable )justice of the peace\b/g, " ")
     .replace(/\boffice (?:no )?\d+\b/g, " ")
     .replace(/\bposition (?:no )?\d+\b/g, " ")
     // "Council District No. 5" (Seattle live) titles the council-member SEAT
@@ -366,6 +449,32 @@ function stripSeatSuffixes(value: string): string {
     // both previously survived the strip and produced zero-overlap keys.
     .replace(/\b(?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g, " ")
     .replace(/\b\d+(st|nd|rd|th)\s+district\b/g, " ")
+    // Caddo Parish LA subdivides a ward's JP court and names the piece after
+    // the community it covers ("Justice of the Peace Ward 2, Vivian Dist.",
+    // "... Ward 2, Oil City Dist."). The community name is part of the seat, so
+    // it has to go with the ward number — left behind it would sit in the
+    // learned alias key as if it were an office word. Bounded to the one or two
+    // words a community name takes, and anchored on both the ward number in
+    // front and the "dist(rict)" marker behind, so no office word can be caught.
+    .replace(
+      /\bward (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+) [a-z]+(?: [a-z]+)? dist(?:rict)?\b/g,
+      " "
+    )
+    // Ordinal-FIRST numbering of the seat designators below ("City Commissioner
+    // 1st Ward", Grand Rapids MI live: the ordinal-last rule alone left
+    // "city commissioner 1st ward", which matched no alias, so the writer threw
+    // UnresolvedOfficeMatchError and aborted the whole payload). Mirrors the
+    // ordinal-first district rule above; common in Michigan and other Midwest
+    // city charters. MUST run before the ordinal-last rule: on a title that
+    // also carries a term suffix ("City Commissioner 1st Ward 4 Year Term")
+    // the ordinal-last pattern would otherwise consume "Ward 4" and strand the
+    // leading "1st". Independent of the Caddo rule above — that one needs a
+    // ward NUMBER followed by a "dist" marker, this one needs an ordinal in
+    // front of the ward word, so neither can consume the other's target.
+    .replace(
+      /\b\d+(?:st|nd|rd|th) (?:ward|zone|seat|part|(?:justice )?(?:precinct|prec))\b/g,
+      " "
+    )
     // Ward/Zone/Seat/Part and (justice) precinct forms are the same numbered
     // seat suffix as District/Position, all hit live: Florida city commissions
     // ("City Commission Ward 1" / "Zone 3" / "Seat 4"), Carson City NV wards,
@@ -389,7 +498,10 @@ function stripSeatSuffixes(value: string): string {
     .replace(/\bseat\b/g, " ")
     // Vacancy descriptors qualify the term being filled, never the office
     // ("(UNEXPIRED)" NC commission seats, "Chancellor ... Unexpired Term" TN).
-    .replace(/\b(?:unexpired|vacancy)(?: term)?\b/g, " ")
+    // Michigan spells the same thing "Partial Term Ending 12/31/2028" and
+    // prints the end date in the heading (Grand Rapids Library Board and
+    // Lansing School Board, both live), so the trailing date goes with it.
+    .replace(/\b(?:unexpired|vacancy|partial)(?: term)?(?: ending(?: \d+)+)?\b/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     // Ballot-heading form "For <office>" ("For Member of County Council",
@@ -478,6 +590,27 @@ function isJudicialCompatibleTitle(titleMatcherKey: string): boolean {
     return false;
   }
   return !NON_JUDICIAL_TITLE_MARKERS.some((pattern) => pattern.test(titleMatcherKey));
+}
+
+// A justice of the peace is its own elected office, not a seat on the county
+// trial court: JP courts hear small claims, evictions, and (state by state)
+// traffic and Class C misdemeanors. Two things would otherwise bury it. The
+// judicial-family fallback below hands EVERY judicial county title to the
+// generic County Level Judge before scoring runs, and the token scorer cannot
+// reach the JP office on its own — "justice"/"peace" share no token with
+// "county level judge", and "of"/"the" are stopwords. So the JP office needs
+// its own branch ahead of the fallback.
+//
+// Constable titles are excluded: Louisiana names a constable's seat after the
+// JP court it serves ("Constable Justice of the Peace Ward 7", Caddo Parish
+// live), and that is a law-enforcement office. The seat strip already reduces
+// those to the bare constable word; this is the belt-and-braces check for a
+// form the strip has not seen.
+function isJusticeOfThePeaceTitle(titleMatcherKey: string): boolean {
+  if (/\bconstable\b/.test(titleMatcherKey)) {
+    return false;
+  }
+  return hasPhrase(titleMatcherKey, "justice of the peace");
 }
 
 function judgeCanonicalNameForScope(scope: ElectionDistrictType): string | null {
@@ -589,6 +722,25 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
   if (
     office.canonicalMatcherKey === COUNTY_COMMISSIONER_OFFICE_KEY &&
     QUALIFIED_COMMISSIONER_TITLE_PATTERN.test(titleMatcherKey)
+  ) {
+    return 0;
+  }
+
+  // South Carolina's circuit "Solicitor" is that state's chief FELONY
+  // prosecutor — a District Attorney by another name — while Georgia's county
+  // "Solicitor General" is the State Court's misdemeanor prosecutor, a
+  // different elected office. "general" is a STOPWORD above (it strips
+  // "General Election"), so this office tokenizes to ["solicitor"] alone and a
+  // bare "Solicitor" title is token-identical to it: a perfect f1, confidence
+  // 1.0, with nothing else in range. No confidence floor or margin could
+  // separate the two, because after tokenization there is nothing left to tell
+  // apart — but the raw matcher key still carries "general", so a phrase test
+  // can. The bare title then stays unmatched, exactly as it was before this
+  // office existed, instead of silently filing a felony prosecutor under the
+  // misdemeanor office.
+  if (
+    office.canonicalMatcherKey === "solicitor general" &&
+    !hasPhrase(titleMatcherKey, "solicitor general")
   ) {
     return 0;
   }
@@ -904,6 +1056,26 @@ export class OfficeMatcher {
           aliasMemoryKey: titleMatcherKey,
           shouldPersistAlias: false,
         };
+      }
+    }
+
+    // Ahead of the generic judge fallback: a justice-of-the-peace seat is the
+    // JP office, not the county trial court. Gated on the entry's contest
+    // family the same way every other judge-office route is — a non-judicial
+    // entry falls through to scoring, where the JP office is filtered out and
+    // the title honestly fails to match rather than being guessed.
+    if (
+      input.scope === "county" &&
+      input.discoveryContestFamily !== "non_judicial_office" &&
+      isJusticeOfThePeaceTitle(titleMatcherKey)
+    ) {
+      const match = toSingleScopeOfficeMatch(
+        findSingleScopeOffice(offices, JUSTICE_OF_THE_PEACE_CANONICAL_NAME),
+        normalizedAlias,
+        titleMatcherKey
+      );
+      if (match) {
+        return match;
       }
     }
 

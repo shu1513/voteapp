@@ -70,6 +70,9 @@ export async function runElectionsProducer(options: ProducerOptions = {}): Promi
       `
         SELECT id, name, district_type, state
         FROM public.districts
+        -- Not a government (see districts.canonical_district_id): the writer
+        -- refuses these payloads, so drafting them only burns research.
+        WHERE canonical_district_id IS NULL
         ORDER BY district_type, state_fips, geoid_compact
       `
     );
