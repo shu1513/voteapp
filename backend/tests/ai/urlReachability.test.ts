@@ -167,6 +167,37 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     expect(calls.map((call) => call.method)).toEqual(["HEAD", "GET", "GET"]);
   });
 
+  it("does not repeat GET when the transport-level fallback GET fails by status", async () => {
+    resetCitationHostCooldownsForTests();
+    const calls: string[] = [];
+    vi.stubGlobal(
+      "fetch",
+      async (url: string, init?: { method?: string }) => {
+        const method = init?.method ?? "GET";
+        calls.push(method);
+        if (method === "HEAD") {
+          throw Object.assign(new TypeError("fetch failed"), {
+            cause: Object.assign(new Error("read ECONNRESET"), { code: "ECONNRESET" }),
+          });
+        }
+        return {
+          ok: false,
+          status: 404,
+          url,
+          headers: { get: () => null },
+          body: null,
+        } as unknown as Response;
+      }
+    );
+
+    const result = await verifyHttpUrlReachability("https://resets-head.example/missing");
+
+    expect(result).toEqual({ ok: false, reason: "citation fetch returned status 404" });
+    // The fallback GET is already the authoritative method; a second
+    // status-confirmation GET must not run.
+    expect(calls).toEqual(["HEAD", "GET"]);
+  });
+
   it("does not fall back to GET when the HEAD attempt times out", async () => {
     resetCitationHostCooldownsForTests();
     const calls: string[] = [];
