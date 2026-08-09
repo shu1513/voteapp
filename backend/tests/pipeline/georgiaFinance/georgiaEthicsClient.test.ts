@@ -7,11 +7,13 @@ import { describe, expect, it } from "vitest";
 import {
   buildGeorgiaCandidateIndexRequestBody,
   buildGeorgiaFilerReportRequestBody,
+  buildGeorgiaIndependentExpenditureRequestBody,
   buildGeorgiaTransactionRequestBody,
   buildGeorgiaReportInventory,
   createGeorgiaEthicsTransport,
   fetchGeorgiaCandidateIndexRows,
   fetchGeorgiaFiledReportRows,
+  fetchGeorgiaIndependentExpenditureRows,
   fetchGeorgiaTransactionRows,
   fetchGeorgiaTransactionRowsStable,
   fetchGeorgiaTransactionRowsWindowed,
@@ -462,6 +464,137 @@ describe("fetchGeorgiaTransactionRowsWindowed", () => {
         expectedFilerEntityIds: [1],
       })
     ).rejects.toMatchObject({ code: "invalid_request" });
+  });
+});
+
+describe("independent expenditures", () => {
+  function ieItem(overrides: Record<string, unknown> = {}): Record<string, unknown> {
+    return {
+      guid: "15f89f57-bce7-4d1b-bc54-2a376b36e19a",
+      transactionId: 257851,
+      amountApplied: 5093.25,
+      filerRegistrationGuid: "639d6189-d718-40b3-ba3f-d4d7544a3451",
+      filerName: "Georgia REALTORS IE Committee",
+      filerReportGuid: "3c02a2fd-25bf-4f15-a9d7-3dd06822dc9d",
+      timedFiledReportGuid: null,
+      filerReportVersionId: 1,
+      transactionDate: "2026-01-15T00:00:00",
+      transactionStatusCode: "TFIL",
+      transactionTypeCode: "TIE",
+      electionYear: 2026,
+      candidateMeasures: [
+        {
+          candidateMeasureTitle: "LeMario Brown for Georgia",
+          stance: "Support",
+          reasonTypeCode: "CAN",
+          filerRegistrationGuid: "d627fc6e-f324-4077-82f5-bec26f54aac7",
+        },
+      ],
+      ...overrides,
+    };
+  }
+
+  it("pins the IE body to the spike-verified shape with the per-host sort direction", () => {
+    const peachfile = JSON.parse(buildGeorgiaIndependentExpenditureRequestBody("peachfile", 2));
+    expect(peachfile).toMatchObject({
+      filerName: null,
+      candidateMeasure: null,
+      stance: null,
+      disclosureReport: null,
+      payeeName: null,
+      officeSought: null,
+      transactionType: null,
+      pageNumber: 2,
+      pageSize: GEORGIA_ETHICS_PAGE_SIZE,
+      sortBy: "Transaction Date",
+      sortType: "asc",
+    });
+    expect(Object.keys(peachfile)).toHaveLength(20);
+    const archive = JSON.parse(buildGeorgiaIndependentExpenditureRequestBody("efile_archive", 1));
+    expect(archive.sortType).toBe("desc");
+  });
+
+  it("parses both hosts' fixture rows, including targets and the timed-pending null report guid", async () => {
+    const peachfileTransport = transportFromResponses([{ body: fixture("peachfile_ie_rows_sample.json") }]);
+    const peachfile = await fetchGeorgiaIndependentExpenditureRows(peachfileTransport, "peachfile");
+    expect(peachfile.rows).toHaveLength(3);
+    expect(peachfile.passCount).toBe(2);
+    const [single, timed, multi] = peachfile.rows;
+    // Unregistered local target: no registration guid.
+    expect(single).toMatchObject({ transactionId: 257851, amountApplied: 5093.25 });
+    expect(single!.candidateMeasures).toEqual([
+      { candidateMeasureTitle: "Engel, Gary", stance: "Support", reasonTypeCode: "CAN", filerRegistrationGuid: null },
+    ]);
+    // Timed-pending IE rows encode the missing report as null (D8).
+    expect(timed).toMatchObject({
+      transactionStatusCode: "TPEN",
+      filerReportGuid: null,
+      timedFiledReportGuid: "459fb7c2-0ef4-437f-a02d-e21319528437",
+    });
+    // The 65-target transaction survives parsing whole.
+    expect(multi!.candidateMeasures).toHaveLength(65);
+    expect(multi!.candidateMeasures.at(-1)).toMatchObject({ stance: "Oppose", reasonTypeCode: "CAN" });
+
+    // Archive targets carry neither a registration guid nor a reason code —
+    // the pinned fact behind the PeachFile-only IE leg.
+    const archiveTransport = transportFromResponses([{ body: fixture("archive_ie_rows_sample.json") }]);
+    const archive = await fetchGeorgiaIndependentExpenditureRows(archiveTransport, "efile_archive");
+    expect(archive.rows).toHaveLength(2);
+    expect(archive.rows[0]!.candidateMeasures).toEqual([
+      {
+        candidateMeasureTitle: "Fincher, William W (Bill Fincher for Cherokee)",
+        stance: "Support",
+        reasonTypeCode: null,
+        filerRegistrationGuid: null,
+      },
+    ]);
+  });
+
+  it("pages until a short page, dedups by transactionId, and requires two stable passes", async () => {
+    const fullPage = Array.from({ length: GEORGIA_ETHICS_PAGE_SIZE }, (_, index) =>
+      ieItem({ transactionId: index + 1, guid: `guid-${index + 1}` })
+    );
+    // Offset drift: the second page re-lists id 100 before the new id 101.
+    const secondPage = [ieItem({ transactionId: 100 }), ieItem({ transactionId: 101 })];
+    const calls: Array<{ url: string; body: string }> = [];
+    const transport = transportFromResponses(
+      [
+        { body: pageBody(fullPage) },
+        { body: pageBody(secondPage) },
+        { body: pageBody(fullPage) },
+        { body: pageBody(secondPage) },
+      ],
+      calls
+    );
+    const result = await fetchGeorgiaIndependentExpenditureRows(transport, "peachfile");
+    expect(result.rows).toHaveLength(101);
+    expect(result.duplicateRowCount).toBe(1);
+    expect(result.passCount).toBe(2);
+    expect(calls).toHaveLength(4);
+    expect(calls.every((call) => call.url.endsWith("/GetIndependentExpenditureDetails"))).toBe(true);
+  });
+
+  it("fails closed when the store never stabilizes", async () => {
+    let call = 0;
+    const transport = createGeorgiaEthicsTransport({
+      sleep: async () => {},
+      fetch: async () => ({ status: 200, body: pageBody([ieItem({ transactionId: (call += 1) })]) }),
+    });
+    await expect(fetchGeorgiaIndependentExpenditureRows(transport, "peachfile", { maxPasses: 3 })).rejects.toMatchObject(
+      {
+        code: "unstable_result",
+      }
+    );
+  });
+
+  it("fails closed on a stable EMPTY store — the IE stores are known nonempty", async () => {
+    // A dead endpoint answering [] every pass is perfectly "stable"; writing
+    // it through would delete every stored outside group.
+    const transport = transportFromResponses([{ body: pageBody([]) }]);
+    await expect(fetchGeorgiaIndependentExpenditureRows(transport, "peachfile")).rejects.toMatchObject({
+      code: "bad_response",
+      message: expect.stringContaining("stable EMPTY store"),
+    });
   });
 });
 

@@ -2,7 +2,11 @@ import { describe, expect, it, vi } from "vitest";
 
 import { syncDueGeorgiaCandidateFinance } from "../../../src/pipeline/georgiaFinance/georgiaCandidateFinanceBatchSync.js";
 import type { GeorgiaCandidateFinanceSyncResult } from "../../../src/pipeline/georgiaFinance/georgiaCandidateFinanceSync.js";
-import type { GeorgiaEthicsTransport } from "../../../src/pipeline/georgiaFinance/georgiaEthicsClient.js";
+import {
+  GeorgiaEthicsClientError,
+  type GeorgiaEthicsTransport,
+  type GeorgiaIndependentExpenditureRow,
+} from "../../../src/pipeline/georgiaFinance/georgiaEthicsClient.js";
 
 const NOW = new Date("2026-08-07T12:00:00Z");
 
@@ -11,6 +15,33 @@ const dummyTransport: GeorgiaEthicsTransport = {
     throw new Error("test must not touch the network");
   },
 };
+
+const IE_STORE_ROWS: GeorgiaIndependentExpenditureRow[] = [
+  {
+    guid: "ie-1",
+    transactionId: 101,
+    amountApplied: 1500,
+    filerRegistrationGuid: "spender-a-guid",
+    filerName: "Example PAC",
+    filerReportGuid: "ie-r1",
+    timedFiledReportGuid: null,
+    filerReportVersionId: 1,
+    transactionDate: "2026-02-01T00:00:00",
+    transactionStatusCode: "TFIL",
+    transactionTypeCode: "TIE",
+    electionYear: 2026,
+    candidateMeasures: [],
+  },
+];
+
+function ieStoreFetcher() {
+  return vi.fn(async () => ({
+    rows: IE_STORE_ROWS,
+    fetchedRowCount: IE_STORE_ROWS.length,
+    duplicateRowCount: 0,
+    passCount: 2,
+  }));
+}
 
 function dueQueryRow(overrides: Record<string, unknown> = {}): Record<string, unknown> {
   return {
@@ -53,6 +84,9 @@ function syncResult(overrides: Partial<GeorgiaCandidateFinanceSyncResult> = {}):
     linkWritten: true,
     summaryWritten: true,
     directBreakdownsWritten: 3,
+    outsideGroupsWritten: 1,
+    outsideSupportTotal: 1500,
+    outsideOpposeTotal: 0,
     totalReceipts: 3500,
     totalDisbursements: 1200,
     cashOnHand: 2300,
@@ -98,6 +132,21 @@ function syncResult(overrides: Partial<GeorgiaCandidateFinanceSyncResult> = {}):
       unrecognizedStatusRowCount: 0,
       unrecognizedStatusAmount: 0,
     },
+    outsideSpending: {
+      supportTotal: 1500,
+      opposeTotal: 0,
+      storeRowCount: 1,
+      candidateTargetRowCount: 1,
+      attributedRowCount: 1,
+      attributedAmount: 1500,
+      multiTargetRowCount: 0,
+      multiTargetAmount: 0,
+      malformedRowCount: 0,
+      malformedAmount: 0,
+      unrecognizedStatusRowCount: 0,
+      unrecognizedStatusAmount: 0,
+    },
+    outsideSpendingSkippedReason: null,
     ...overrides,
   };
 }
@@ -107,11 +156,13 @@ describe("syncDueGeorgiaCandidateFinance", () => {
     const dueRows = [dueQueryRow(), dueQueryRow({ candidate_id: "candidate-2", committee_id: "100200", link_source: "manual" })];
     const db = createMockDb(dueRows);
     const syncFn = vi.fn(async () => syncResult());
+    const fetchIeFn = ieStoreFetcher();
     const result = await syncDueGeorgiaCandidateFinance({
       db,
       transport: dummyTransport,
       now: NOW,
       syncGeorgiaCandidateFinanceFn: syncFn,
+      fetchIndependentExpenditureRowsFn: fetchIeFn,
     });
 
     expect(result.dueCandidateCount).toBe(2);
@@ -133,6 +184,72 @@ describe("syncDueGeorgiaCandidateFinance", () => {
         committee: expect.objectContaining({ committeeId: "100200", linkSource: "manual" }),
       })
     );
+    // The PeachFile IE store was pulled ONCE and shared with every sync call.
+    expect(fetchIeFn).toHaveBeenCalledTimes(1);
+    expect(fetchIeFn).toHaveBeenCalledWith(dummyTransport, "peachfile", { maxPasses: undefined });
+    for (const call of syncFn.mock.calls) {
+      expect((call as unknown[])[0]).toMatchObject({ independentExpenditureRows: IE_STORE_ROWS });
+    }
+  });
+
+  it("degrades to direct-only when the IE store pull fails with a client error, and rethrows bugs", async () => {
+    const dueRows = [dueQueryRow(), dueQueryRow({ candidate_id: "candidate-2", committee_id: "100200" })];
+    const db = createMockDb(dueRows);
+    const syncFn = vi.fn(async () => syncResult({ outsideSpendingSkippedReason: "IE store unavailable" }));
+    const failingFetch = vi.fn(async () => {
+      throw new GeorgiaEthicsClientError("bad_response", "stable EMPTY store");
+    });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const result = await syncDueGeorgiaCandidateFinance({
+        db,
+        transport: dummyTransport,
+        now: NOW,
+        syncGeorgiaCandidateFinanceFn: syncFn,
+        fetchIndependentExpenditureRowsFn: failingFetch,
+      });
+      // Every candidate still synced, with the null sentinel so nobody
+      // retries the dead fetch.
+      expect(result.syncedCandidateCount).toBe(2);
+      expect(result.independentExpenditureStoreError).toContain("stable EMPTY store");
+      expect(failingFetch).toHaveBeenCalledTimes(1);
+      for (const call of syncFn.mock.calls) {
+        expect((call as unknown[])[0]).toMatchObject({ independentExpenditureRows: null });
+      }
+    } finally {
+      warn.mockRestore();
+    }
+
+    // A non-client error is a bug and fails the batch.
+    const buggyFetch = vi.fn(async () => {
+      throw new TypeError("boom");
+    });
+    await expect(
+      syncDueGeorgiaCandidateFinance({
+        db: createMockDb(dueRows),
+        transport: dummyTransport,
+        now: NOW,
+        syncGeorgiaCandidateFinanceFn: syncFn,
+        fetchIndependentExpenditureRowsFn: buggyFetch,
+      })
+    ).rejects.toThrow("boom");
+  });
+
+  it("skips the IE store pull when nothing is due", async () => {
+    const db = createMockDb([]);
+    const syncFn = vi.fn(async () => syncResult());
+    const fetchIeFn = ieStoreFetcher();
+    const result = await syncDueGeorgiaCandidateFinance({
+      db,
+      transport: dummyTransport,
+      now: NOW,
+      dryRun: true,
+      syncGeorgiaCandidateFinanceFn: syncFn,
+      fetchIndependentExpenditureRowsFn: fetchIeFn,
+    });
+    expect(result.selectedCandidateCount).toBe(0);
+    expect(fetchIeFn).not.toHaveBeenCalled();
+    expect(syncFn).not.toHaveBeenCalled();
   });
 
   it("isolates per-candidate failures and keeps going", async () => {
@@ -148,6 +265,7 @@ describe("syncDueGeorgiaCandidateFinance", () => {
         transport: dummyTransport,
         now: NOW,
         syncGeorgiaCandidateFinanceFn: syncFn,
+        fetchIndependentExpenditureRowsFn: ieStoreFetcher(),
       });
       expect(result.syncedCandidateCount).toBe(1);
       expect(result.failedCandidateCount).toBe(1);
@@ -167,6 +285,7 @@ describe("syncDueGeorgiaCandidateFinance", () => {
       now: NOW,
       dryRun: true,
       syncGeorgiaCandidateFinanceFn: syncFn,
+      fetchIndependentExpenditureRowsFn: ieStoreFetcher(),
     });
     expect(result.dryRun).toBe(true);
     expect(result.autoLinkAttemptedCount).toBe(0);

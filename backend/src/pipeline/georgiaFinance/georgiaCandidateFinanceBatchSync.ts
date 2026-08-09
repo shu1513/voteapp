@@ -11,12 +11,19 @@ import {
   syncGeorgiaCandidateFinance,
   type GeorgiaCandidateFinanceSyncResult,
 } from "./georgiaCandidateFinanceSync.js";
-import { createGeorgiaEthicsTransport, type GeorgiaEthicsTransport } from "./georgiaEthicsClient.js";
+import {
+  createGeorgiaEthicsTransport,
+  fetchGeorgiaIndependentExpenditureRows,
+  GeorgiaEthicsClientError,
+  type GeorgiaEthicsTransport,
+  type GeorgiaIndependentExpenditureRow,
+} from "./georgiaEthicsClient.js";
 
-// Batch layer for Georgia direct finance (georgia_plan.md PR 4, tennessee
-// shape): auto-link missing links first (fail-open — a broken auto-link must
-// not block syncing already-linked candidates), then run the due list
-// stalest-first and sync each candidate independently.
+// Batch layer for Georgia candidate finance (georgia_plan.md PR 4/PR 5,
+// tennessee shape): auto-link missing links first (fail-open — a broken
+// auto-link must not block syncing already-linked candidates), fetch the
+// shared PeachFile IE store once, then run the due list stalest-first and
+// sync each candidate independently.
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & {
@@ -39,7 +46,9 @@ export type GeorgiaCandidateFinanceBatchSyncInput = {
   maxPasses?: number;
   reconciliationRelativeTolerance?: number;
   reconciliationAbsoluteToleranceFloor?: number;
+  maxOutsideGroups?: number;
   syncGeorgiaCandidateFinanceFn?: typeof syncGeorgiaCandidateFinance;
+  fetchIndependentExpenditureRowsFn?: typeof fetchGeorgiaIndependentExpenditureRows;
   resolveCandidateCommittee?: GeorgiaCandidateCommitteeResolver;
 };
 
@@ -64,6 +73,9 @@ export type GeorgiaCandidateFinanceBatchSyncResult = {
   failedCandidateCount: number;
   autoLinkAttemptedCount: number;
   autoLinkLinkedCount: number;
+  // Set when the shared IE store pull failed and every candidate ran
+  // direct-only (stored outside data preserved).
+  independentExpenditureStoreError: string | null;
   results: GeorgiaCandidateFinanceBatchSyncItemResult[];
 };
 
@@ -154,6 +166,32 @@ export async function syncDueGeorgiaCandidateFinance(
     electionLookaheadDays,
   });
 
+  // The PeachFile IE store (F5) is candidate-independent, so one paced pull
+  // serves every candidate in the run instead of one per candidate. A client
+  // failure here (network, WAF, unstable paging, the empty-store guard) must
+  // not block the direct-finance refreshes: the run degrades to direct-only
+  // with the NULL sentinel — the syncs skip the outside leg and preserve
+  // stored outside data instead of each retrying a known-dead fetch.
+  // Anything that is not a client error is a bug and still throws.
+  let independentExpenditureRows: readonly GeorgiaIndependentExpenditureRow[] | null | undefined;
+  let independentExpenditureStoreError: string | null = null;
+  if (due.rows.length > 0) {
+    const fetchIeFn = input.fetchIndependentExpenditureRowsFn ?? fetchGeorgiaIndependentExpenditureRows;
+    try {
+      independentExpenditureRows = (await fetchIeFn(transport, "peachfile", { maxPasses: input.maxPasses })).rows;
+    } catch (error) {
+      if (!(error instanceof GeorgiaEthicsClientError)) {
+        throw error;
+      }
+      independentExpenditureStoreError = error.message;
+      independentExpenditureRows = null;
+      console.warn(
+        "Georgia IE store fetch failed; syncing direct-only and preserving stored outside data:",
+        error.message
+      );
+    }
+  }
+
   const results: GeorgiaCandidateFinanceBatchSyncItemResult[] = [];
   for (const row of due.rows) {
     try {
@@ -178,6 +216,8 @@ export async function syncDueGeorgiaCandidateFinance(
         maxPasses: input.maxPasses,
         reconciliationRelativeTolerance: input.reconciliationRelativeTolerance,
         reconciliationAbsoluteToleranceFloor: input.reconciliationAbsoluteToleranceFloor,
+        maxOutsideGroups: input.maxOutsideGroups,
+        independentExpenditureRows,
       });
       results.push({
         candidateId: row.candidateId,
@@ -217,6 +257,7 @@ export async function syncDueGeorgiaCandidateFinance(
     failedCandidateCount: results.filter((result) => !result.ok).length,
     autoLinkAttemptedCount,
     autoLinkLinkedCount,
+    independentExpenditureStoreError,
     results,
   };
 }

@@ -4,6 +4,7 @@ import {
   buildGeorgiaReportInventory,
   fetchGeorgiaCandidateIndexRows,
   fetchGeorgiaFiledReportRows,
+  fetchGeorgiaIndependentExpenditureRows,
   fetchGeorgiaTransactionRowsWindowed,
   georgiaTransactionReportGroupGuid,
   GeorgiaEthicsClientError,
@@ -12,9 +13,14 @@ import {
   type GeorgiaEthicsHost,
   type GeorgiaEthicsTransport,
   type GeorgiaFiledReportRow,
+  type GeorgiaIndependentExpenditureRow,
   type GeorgiaReportInventoryEntry,
   type GeorgiaWindowedTransactionFetchResult,
 } from "./georgiaEthicsClient.js";
+import {
+  aggregateGeorgiaOutsideSpending,
+  type GeorgiaOutsideSpendingAggregationResult,
+} from "./georgiaOutsideSpendingAggregator.js";
 import {
   georgiaCandidateNameMatchesRowNames,
   georgiaLastNameSearchToken,
@@ -32,11 +38,12 @@ import {
   type GeorgiaFinanceLinkSource,
 } from "./georgiaFinanceWriter.js";
 
-// Per-candidate direct-finance sync for Georgia (georgia_plan.md PR 4):
-// per-filer TCON pull across both systems with D8 report-source selection,
-// D5 aggregation, the official candidate-index summary (D4), and the
-// reconciliation guard that keeps the previous good snapshot when the synced
-// rows do not explain the official total.
+// Per-candidate finance sync for Georgia (georgia_plan.md PR 4 direct leg,
+// PR 5 outside leg): per-filer TCON pull across both systems with D8
+// report-source selection, D5 aggregation, the official candidate-index
+// summary (D4), the reconciliation guard that keeps the previous good
+// snapshot when the synced rows do not explain the official total, and the
+// PeachFile IE leg with D6 single-target allocation.
 //
 // Registration-chain scope:
 // - The PeachFile side is always the linked committee (committee_id =
@@ -60,6 +67,7 @@ export type GeorgiaCandidateFinanceSyncFetchers = {
   fetchCandidateIndexRows: typeof fetchGeorgiaCandidateIndexRows;
   fetchFiledReportRows: typeof fetchGeorgiaFiledReportRows;
   fetchTransactionRowsWindowed: typeof fetchGeorgiaTransactionRowsWindowed;
+  fetchIndependentExpenditureRows: typeof fetchGeorgiaIndependentExpenditureRows;
 };
 
 export type GeorgiaCandidateFinanceSyncInput = {
@@ -91,6 +99,14 @@ export type GeorgiaCandidateFinanceSyncInput = {
   // registration or a double-counted report.
   reconciliationRelativeTolerance?: number;
   reconciliationAbsoluteToleranceFloor?: number;
+  maxOutsideGroups?: number;
+  // Pre-fetched PeachFile IE store rows (F5) — the batch layer pulls the
+  // store once per run and shares it across candidates; when undefined the
+  // sync fetches it itself. NULL is the explicit "store unavailable"
+  // sentinel: the caller already tried and failed, so the outside leg is
+  // skipped (stored outside data preserved via the partial-snapshot
+  // contract) instead of every candidate retrying a known-dead fetch.
+  independentExpenditureRows?: readonly GeorgiaIndependentExpenditureRow[] | null;
   fetchers?: Partial<GeorgiaCandidateFinanceSyncFetchers>;
 };
 
@@ -114,6 +130,11 @@ export type GeorgiaCandidateFinanceSyncResult = {
   linkWritten: boolean;
   summaryWritten: boolean;
   directBreakdownsWritten: number;
+  outsideGroupsWritten: number;
+  // Null when the outside leg was skipped (IE store unavailable) — stored
+  // outside totals and groups were preserved, not zeroed.
+  outsideSupportTotal: number | null;
+  outsideOpposeTotal: number | null;
   totalReceipts: number;
   totalDisbursements: number | null;
   cashOnHand: number | null;
@@ -126,6 +147,9 @@ export type GeorgiaCandidateFinanceSyncResult = {
   peachfile: GeorgiaCandidateFinanceHostPullDiagnostics;
   archive: GeorgiaCandidateFinanceHostPullDiagnostics;
   aggregation: Omit<GeorgiaDirectContributionAggregationResult, "directBreakdowns">;
+  // Null when the outside leg was skipped; the reason says why.
+  outsideSpending: Omit<GeorgiaOutsideSpendingAggregationResult, "outsideGroups"> | null;
+  outsideSpendingSkippedReason: string | null;
 };
 
 export class GeorgiaFinanceReconciliationError extends Error {
@@ -330,6 +354,8 @@ export async function syncGeorgiaCandidateFinance(
     fetchCandidateIndexRows: input.fetchers?.fetchCandidateIndexRows ?? fetchGeorgiaCandidateIndexRows,
     fetchFiledReportRows: input.fetchers?.fetchFiledReportRows ?? fetchGeorgiaFiledReportRows,
     fetchTransactionRowsWindowed: input.fetchers?.fetchTransactionRowsWindowed ?? fetchGeorgiaTransactionRowsWindowed,
+    fetchIndependentExpenditureRows:
+      input.fetchers?.fetchIndependentExpenditureRows ?? fetchGeorgiaIndependentExpenditureRows,
   };
   const committeeEntityId = Number(committeeId);
   if (!Number.isInteger(committeeEntityId) || committeeEntityId <= 0) {
@@ -567,10 +593,55 @@ export async function syncGeorgiaCandidateFinance(
     );
   }
 
-  // 6. Snapshot write: official index totals as the summary (D4;
+  // 6. Outside spending (F5/D6): the IE leg runs AFTER the reconciliation
+  //    guard so a failed direct pull never costs the store fetch. The
+  //    PeachFile IE store is fetched whole (or arrives pre-fetched from the
+  //    batch layer) and targets join to the candidate by registration guid —
+  //    an ID join, no name matching. Archive IE rows are excluded by design:
+  //    their targets carry neither a registration guid nor a reasonTypeCode
+  //    (spike bytes), so no archive row can ever satisfy the D6 gates, and
+  //    the coverage note discloses the gap (D12).
+  //
+  //    The IE leg is the LAST fetch — by now the direct leg's hundreds of
+  //    paced requests have succeeded and reconciled — so an IE-side client
+  //    failure (network, WAF, unstable paging, the empty-store guard)
+  //    degrades to a direct-only sync instead of discarding that work: the
+  //    outside leg is skipped and the stored outside totals and groups are
+  //    preserved via the partial-snapshot contract (undefined, never []).
+  //    Anything that is not a client error is a bug and still throws.
+  let independentExpenditureRows = input.independentExpenditureRows;
+  let outsideSpendingSkippedReason: string | null = null;
+  if (independentExpenditureRows === null) {
+    outsideSpendingSkippedReason = "IE store unavailable (batch-level fetch failed)";
+  } else if (independentExpenditureRows === undefined) {
+    try {
+      independentExpenditureRows = (
+        await fetchers.fetchIndependentExpenditureRows(input.transport, "peachfile", { maxPasses: input.maxPasses })
+      ).rows;
+    } catch (error) {
+      if (!(error instanceof GeorgiaEthicsClientError)) {
+        throw error;
+      }
+      outsideSpendingSkippedReason = error.message;
+    }
+  }
+  const outsideSpending =
+    independentExpenditureRows === null || independentExpenditureRows === undefined
+      ? null
+      : aggregateGeorgiaOutsideSpending({
+          host: "peachfile",
+          rows: independentExpenditureRows,
+          candidateRegistrationGuid: peachfileRegistrationGuid,
+          sourceUrl,
+          maxGroups: input.maxOutsideGroups,
+        });
+
+  // 7. Snapshot write: official index totals as the summary (D4;
   //    direct_contribution_total stays NULL so the shared loader falls
-  //    through to total_receipts), direct breakdowns, outside legs untouched
-  //    (undefined, never [] — partial-snapshot contract).
+  //    through to total_receipts), direct breakdowns, outside totals and
+  //    groups from the IE leg (an empty group list is a truthful zero — the
+  //    leg ran), outside-group BREAKDOWNS untouched (undefined, never [] —
+  //    partial-snapshot contract; the funders leg is PR 6).
   const link: GeorgiaFinanceLinkInput = {
     candidateId,
     electionId,
@@ -596,13 +667,22 @@ export async function syncGeorgiaCandidateFinance(
         directContributionTotal: null,
         totalDisbursements: indexRow.totalExpenditures,
         cashOnHand: indexRow.cashOnHand,
+        // Null when the leg was skipped — the preserveWhenNull policy keeps
+        // the stored values.
+        outsideSupportTotal: outsideSpending ? outsideSpending.supportTotal : null,
+        outsideOpposeTotal: outsideSpending ? outsideSpending.opposeTotal : null,
         sourceUrl,
       },
       directBreakdowns: directFinance.directBreakdowns,
+      // Undefined when the leg was skipped — stored groups stay untouched.
+      outsideGroups: outsideSpending ? outsideSpending.outsideGroups : undefined,
     });
   }
 
   const { directBreakdowns, ...aggregation } = directFinance;
+  const outsideSpendingDiagnostics = outsideSpending
+    ? (({ outsideGroups: _outsideGroups, ...diagnostics }) => diagnostics)(outsideSpending)
+    : null;
   return {
     candidateId,
     electionId,
@@ -612,6 +692,9 @@ export async function syncGeorgiaCandidateFinance(
     linkWritten: !dryRun,
     summaryWritten: !dryRun,
     directBreakdownsWritten: dryRun ? 0 : directBreakdowns.length,
+    outsideGroupsWritten: dryRun || !outsideSpending ? 0 : outsideSpending.outsideGroups.length,
+    outsideSupportTotal: outsideSpending ? outsideSpending.supportTotal : null,
+    outsideOpposeTotal: outsideSpending ? outsideSpending.opposeTotal : null,
     totalReceipts: indexTotalContributions,
     totalDisbursements: indexRow.totalExpenditures,
     cashOnHand: indexRow.cashOnHand,
@@ -624,5 +707,7 @@ export async function syncGeorgiaCandidateFinance(
     peachfile: peachfileDiagnostics,
     archive: archiveDiagnostics,
     aggregation,
+    outsideSpending: outsideSpendingDiagnostics,
+    outsideSpendingSkippedReason,
   };
 }
