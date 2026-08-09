@@ -2183,4 +2183,116 @@ describe("OfficeMatcher", () => {
     });
     expect(commissioner.officeId).toBe("office-county-commissioner");
   });
+
+  const ALABAMA_TAX_OFFICE_ALIASES = [
+    { office_id: "office-revenue-commissioner", alias: "Revenue Commissioner" },
+    { office_id: "office-revenue-commissioner", alias: "County Revenue Commissioner" },
+    { office_id: "office-county-assessor", alias: "Tax Assessor" },
+    { office_id: "office-county-assessor", alias: "County Tax Assessor" },
+    { office_id: "office-collector-of-revenue", alias: "Tax Collector" },
+    { office_id: "office-collector-of-revenue", alias: "County Tax Collector" },
+    { office_id: "office-license-collector", alias: "License Commissioner" },
+    { office_id: "office-license-collector", alias: "County License Commissioner" },
+  ];
+
+  function createAlabamaTaxOfficeClient(input: { withAliases: boolean }) {
+    return createMatcherDataClient({
+      aliasesByScope: {
+        county: input.withAliases
+          ? ALABAMA_TAX_OFFICE_ALIASES.map((entry) => ({
+              office_id: entry.office_id,
+              normalized_alias: normalizeElectionTitleKey(entry.alias),
+            }))
+          : [],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-assessor", canonical_name: "County Assessor" },
+          { id: "office-collector-of-revenue", canonical_name: "Collector of Revenue" },
+          { id: "office-license-collector", canonical_name: "License Collector" },
+          ...(input.withAliases
+            ? [{ id: "office-revenue-commissioner", canonical_name: "Revenue Commissioner" }]
+            : []),
+        ],
+      },
+    });
+  }
+
+  const ALABAMA_TAX_OFFICE_CASES = [
+    { district: "Lee County, Alabama", title: "Lee County Revenue Commissioner", expected: "office-revenue-commissioner" },
+    { district: "Lee County, Alabama", title: "Revenue Commissioner", expected: "office-revenue-commissioner" },
+    { district: "Jefferson County, Alabama", title: "Jefferson County Tax Assessor", expected: "office-county-assessor" },
+    { district: "Jefferson County, Alabama", title: "Tax Assessor", expected: "office-county-assessor" },
+    { district: "Jefferson County, Alabama", title: "Jefferson County Tax Collector", expected: "office-collector-of-revenue" },
+    { district: "Jefferson County, Alabama", title: "Tax Collector", expected: "office-collector-of-revenue" },
+    { district: "Tuscaloosa County, Alabama", title: "Tuscaloosa County License Commissioner", expected: "office-license-collector" },
+  ];
+
+  it.each(ALABAMA_TAX_OFFICE_CASES)(
+    "resolves the Alabama county tax office title $title to its own office",
+    async ({ district, title, expected }) => {
+      const matcher = new OfficeMatcher(createAlabamaTaxOfficeClient({ withAliases: true }) as never);
+
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: district,
+        state: "AL",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBe(expected);
+      expect(result.method).toBe("alias_exact");
+    }
+  );
+
+  it("never scores a revenue/tax/license commissioner title into County Commissioner", async () => {
+    // The jurisdiction strip keeps the generic civic word, so "Lee County
+    // Revenue Commissioner" reached the scorer as "county revenue
+    // commissioner": two of its three tokens are County Commissioner's whole
+    // name, which scored 0.800 — over the floor, over the margin, and
+    // persisted as a learned alias onto the county's LEGISLATIVE body.
+    const matcher = new OfficeMatcher(createAlabamaTaxOfficeClient({ withAliases: false }) as never);
+
+    for (const { district, title, state } of [
+      { district: "Lee County, Alabama", title: "Lee County Revenue Commissioner", state: "AL" },
+      { district: "Tuscaloosa County, Alabama", title: "Tuscaloosa County License Commissioner", state: "AL" },
+      // Georgia's county tax office has no catalog entry; no-match is the
+      // honest outcome there, not a confident wrong one.
+      { district: "Fulton County, Georgia", title: "Fulton County Tax Commissioner", state: "GA" },
+    ]) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: district,
+        state,
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBeNull();
+      expect(result.method).toBe("none");
+      expect(result.shouldPersistAlias).toBe(false);
+    }
+  });
+
+  it("keeps ordinary county commission seats on County Commissioner", async () => {
+    const matcher = new OfficeMatcher(createAlabamaTaxOfficeClient({ withAliases: true }) as never);
+
+    for (const title of [
+      "Member, Lee County Commission, District No. 2",
+      "Lee County Commissioner",
+      "Lee County Board of Commissioners District 4",
+    ]) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: "Lee County, Alabama",
+        state: "AL",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBe("office-county-commissioner");
+    }
+  });
 });

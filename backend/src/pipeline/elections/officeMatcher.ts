@@ -518,6 +518,22 @@ function isNonCourtClerkOfficeKey(canonicalMatcherKey: string): boolean {
   return /\bclerk\b/.test(canonicalMatcherKey) && !/\bcourts?\b/.test(canonicalMatcherKey);
 }
 
+// A county's tax office is titled "<County> Revenue Commissioner" (Alabama's
+// merged assessor+collector), "<County> Tax Commissioner" (Georgia, 159
+// counties) or "<County> License Commissioner" (Alabama's split arrangement).
+// The jurisdiction strip deliberately keeps the generic civic word, so the
+// scorer sees "county revenue commissioner": three tokens, two of which are
+// the WHOLE name of County Commissioner — the county's legislative body. That
+// scores 0.800, clears the floor with margin, and persists itself as a learned
+// alias, so a tax office silently inherits the county commission's research
+// areas and every downstream stage runs on the wrong policy context (live: Lee
+// County AL, Nov 2026). The qualifier is what names the office, so a qualified
+// commissioner title must never land on the bare member seat: with the catalog
+// entry present it matches that instead, and without one no-match is the
+// honest outcome.
+const QUALIFIED_COMMISSIONER_TITLE_PATTERN = /\b(?:revenue|tax|license) commissioner\b/;
+const COUNTY_COMMISSIONER_OFFICE_KEY = "county commissioner";
+
 function isWashingtonState(state: string): boolean {
   const normalized = state.trim().toLowerCase();
   return normalized === "wa" || normalized === "washington";
@@ -558,6 +574,13 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
   if (
     office.canonicalMatcherKey === FIRE_DISTRICT_OFFICE_KEY &&
     FIRE_DISTRICT_NON_BOARD_ROLE_PATTERN.test(titleMatcherKey)
+  ) {
+    return 0;
+  }
+
+  if (
+    office.canonicalMatcherKey === COUNTY_COMMISSIONER_OFFICE_KEY &&
+    QUALIFIED_COMMISSIONER_TITLE_PATTERN.test(titleMatcherKey)
   ) {
     return 0;
   }

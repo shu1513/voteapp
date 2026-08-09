@@ -363,6 +363,24 @@ const SEED_OFFICES: SeedOffice[] = [
     ].join("\n"),
   },
   {
+    // Alabama counties elect ONE of two arrangements for property tax: a
+    // separate Tax Assessor and Tax Collector (Jefferson, Madison, Tuscaloosa
+    // — all on the Nov 2026 ballot), or this merged office, created county by
+    // county under Title 40 of the Code of Alabama. Lee County is a merged
+    // county. The two halves already have catalog homes (County Assessor and
+    // Collector of Revenue, aliased below); the merged office needs its own
+    // row, exactly as County Assessor-Recorder does for the combined
+    // assess-and-record office.
+    scope: "county",
+    canonicalName: "Revenue Commissioner",
+    summary: [
+      "Estimating what each property in the county is worth, which sets how much property tax each owner pays",
+      "Collecting property taxes and the taxes owed on vehicles, boats, and manufactured homes",
+      "Keeping property maps, ownership records, and assessment records",
+      "Handling tax exemptions, such as homeowner or over-65 discounts",
+    ].join("\n"),
+  },
+  {
     scope: "county",
     canonicalName: "Public Defender",
     summary: [
@@ -1770,6 +1788,65 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Level Judge",
     aliasText: "Chancellor",
+  },
+  {
+    // Alabama's merged property-tax office. The bare form also catches the
+    // "<County> Revenue Commissioner" ballot title through the matcher's
+    // civic-word-free alias lookup; the qualified form below is seeded anyway
+    // so the live title lands on an exact alias rather than on a scored match.
+    scope: "county",
+    officeCanonicalName: "Revenue Commissioner",
+    aliasText: "Revenue Commissioner",
+  },
+  {
+    // "Lee County Revenue Commissioner" after the jurisdiction strip. Without
+    // it the residual "county" token made County Commissioner — the county's
+    // LEGISLATIVE body — score 0.800, a confident wrong match onto a tax
+    // office (live: Lee County AL, Nov 2026).
+    scope: "county",
+    officeCanonicalName: "Revenue Commissioner",
+    aliasText: "County Revenue Commissioner",
+  },
+  {
+    // The assessing half of the Alabama arrangement, and the Florida/Georgia
+    // spelling of the same job. Resolved by token score alone before, which
+    // meant the bare title ("Tax Assessor", 0.500) fell under the floor while
+    // only the county-qualified form matched.
+    scope: "county",
+    officeCanonicalName: "County Assessor",
+    aliasText: "Tax Assessor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Assessor",
+    aliasText: "County Tax Assessor",
+  },
+  {
+    // The collecting half. Matched NOTHING before (0.400): the catalog's
+    // collector offices are worded "Collector of Revenue" / "License
+    // Collector", which share one token with the title. Florida's 67 elected
+    // tax collectors use this exact title too.
+    scope: "county",
+    officeCanonicalName: "Collector of Revenue",
+    aliasText: "Tax Collector",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Collector of Revenue",
+    aliasText: "County Tax Collector",
+  },
+  {
+    // Alabama counties that kept the split arrangement often elect a separate
+    // license commissioner for tags and business licenses (Tuscaloosa live).
+    // Same 0.800 mis-match into County Commissioner as the revenue title.
+    scope: "county",
+    officeCanonicalName: "License Collector",
+    aliasText: "License Commissioner",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "License Collector",
+    aliasText: "County License Commissioner",
   },
   {
     // North Dakota's elected revenue commissioner; the catalog's statewide
