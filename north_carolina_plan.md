@@ -660,7 +660,8 @@ The acquisition spike is the gate before parser/aggregator work.
   reading layered on the resolver matcher; federal/`SPECIFIC NON CANDIDATE`/
   County-Municipal rows filtered with money counted; office+district
   confirm-only filters; group keys `SBoEID` else `NC-IE-FILER:<sha256>`
-  — the `NC-OGID:` variant needs a portal entity search and joins at PR 8;
+  — the `NC-OGID:` variant needs a portal entity search; PR 8 deferred it
+  into the pre-PR 9 acquisition work (the hash key already carries identity);
   overlapping-report duplicate-looking rows surfaced, never deduped;
   image-only/quarantined filings emitted as coverage-gap rows). Live-run
   watch item for PR 9: unregistered IE filers' report covers have never been
@@ -737,7 +738,44 @@ The acquisition spike is the gate before parser/aggregator work.
   active links, OGID derived from the cached searches) must be added to the
   acquisition side, else auto-link has no cached searches to resolve against
   and every committee must be typed by hand.
-- [ ] PR 8 outside-group funders/industries (#3)
+- [x] PR 8 outside-group funders/industries (#3) — 2026-08-08, fixture-driven
+  (no portal hits), tennessee/ohio pattern:
+  `northCarolinaOutsideGroupContributionAggregator.ts` (pure aggregator: one
+  candidate's outside groups + per-spender receipt rows keyed by group
+  committeeId → uncapped donor rows + static-rule industry rows; pinned
+  entity donor codes `CPCM`/`PPTY`/`"DON "` per decision 12 — `"IND "`
+  individuals, `IsAggregated` roll-ups, blank names, non-positive amounts,
+  and unknown codes each fail closed into counters, unknown codes listed).
+  Spender receipt sources split per the plan: a REGISTERED spender (SBoEID)
+  is read through its document inventory + the decision-8 selector's
+  "Disclosure Report" rows (receipts only — IE informationals are not
+  Disclosure Report rows, so IE money is never re-read); an UNREGISTERED
+  filer (`NC-IE-FILER:` key) has no regular filings, so its disclosed
+  funders are the `Donation` rows on its own selected non-quarantined IE
+  reports (decision 6 — the selector's `NAME:` filer keys are re-derived
+  through the same decision-6 id function to join the group ids exactly).
+  Batch funder leg: spenders read once per year AFTER the outside leg
+  succeeds; ANY spender read failure fails the WHOLE year's funder leg
+  closed (funders null → writer preserves stored breakdown rows — a partial
+  picture would publish "no disclosed funders" as a silent undercount),
+  outside totals unaffected; summary gains
+  `fundersAvailable`/`fundersError`/`funderReceiptRowCount`. Sync: ohio's
+  enrichment verbatim — donor rows re-classified through rules + cached DB
+  rows + manual verdicts (`resolveFinanceIndustryClassifications`), static
+  industry rows discarded and rebuilt, every unresolved donor persists an
+  'unknown' `finance_label_classifications` row (the manual industry-label
+  queue), donor display rows capped per (committee, direction) only at
+  persist (default 50) so classification always sees every donor; no AI
+  classifier constructed (rule/cached-only, aiCallGuard untouched).
+  Committee-label queue needs no new code — the
+  `manual:finance-committee-labels:due` script enumerates the merged
+  ballot-lookup read path, which PR 2's `FINANCE_SUMMARY_SOURCES` entry
+  already covers. Deliberately deferred WITH the pre-PR 9 acquisition work:
+  the `NC-OGID:` identity upgrade (needs a portal entity search) and
+  registered-spender acquisition discovery — the acquisition script must
+  also pull IE-inventory-discovered registered spenders' document
+  inventories + receipts (today they'd need explicit `--committee` args),
+  else live funder legs for registered spenders stay honestly unavailable.
 - [ ] PR 9 live run (+ later: PDF path, own flag)
 
 Update the checklist + any changed decision here as PRs land; also update the

@@ -28,16 +28,20 @@ import {
 } from "./northCarolinaNcsbeArtifactCache.js";
 import { NCSBE_TRANSACTION_PAGE_SIZE } from "./northCarolinaNcsbeClient.js";
 import {
+  NORTH_CAROLINA_SBOEID_PATTERN,
   parseNcsbeCommitteeSearchPage,
   parseNcsbeDocumentListPage,
   parseNcsbeExpendituresPage,
   parseNcsbeReceiptsPage,
   parseNcsbeReportDetailPage,
   type NcsbeDocumentRow,
+  type NcsbeReceiptRow,
   type NcsbeTransactionPage,
 } from "./northCarolinaNcsbeParsers.js";
+import { aggregateNorthCarolinaOutsideGroupContributions } from "./northCarolinaOutsideGroupContributionAggregator.js";
 import {
   aggregateNorthCarolinaOutsideSpending,
+  northCarolinaOutsideGroupCommitteeId,
   type NorthCarolinaOutsideCandidateTarget,
   type NorthCarolinaOutsideReportInput,
 } from "./northCarolinaOutsideSpendingAggregator.js";
@@ -127,6 +131,11 @@ export type NorthCarolinaOutsideAggregationYearSummary = {
   ambiguousTargetCount?: number;
   attributedRowCount?: number;
   attributedCents?: number;
+  // Funder leg (PR 8): false when spender receipt artifacts were unavailable
+  // and the writer preserved the stored funder breakdowns.
+  fundersAvailable?: boolean;
+  fundersError?: string;
+  funderReceiptRowCount?: number;
 };
 
 export type NorthCarolinaCandidateFinanceBatchSyncResult = {
@@ -348,6 +357,61 @@ const SECTION_TOTAL_EXPENDITURES = 90;
 function officialExpenditureTotalCents(cover: ReturnType<typeof parseNcsbeReportDetailPage>): number | null {
   const section = cover.summarySections.find((row) => row.sequence === SECTION_TOTAL_EXPENDITURES);
   return section ? section.periodCents : null;
+}
+
+// One spender's receipt rows from cache (funder leg, PR 8 #3). A registered
+// spender (SBoEID) is funded through its REGULAR disclosure reports — its
+// document inventory plus the same decision-8 selection the direct leg uses
+// (IE informational filings are not "Disclosure Report" rows, so this never
+// re-reads IE money), receipts only. An unregistered filer (`NC-IE-FILER:`
+// key) has no regular filings; its disclosed funders are the Donation rows
+// on its own selected, non-quarantined IE reports (decision 6) — never
+// presented as full funding, never backfilled from older cycles.
+async function collectSpenderReceiptRows(input: {
+  cacheDir: string;
+  electionYear: number;
+  committeeId: string;
+  ieReportIds: readonly string[];
+}): Promise<NcsbeReceiptRow[]> {
+  const rows: NcsbeReceiptRow[] = [];
+  if (NORTH_CAROLINA_SBOEID_PATTERN.test(input.committeeId)) {
+    const inventory = await readArtifactOrExplain({
+      cacheDir: input.cacheDir,
+      key: { type: "document_inventory", sboeId: input.committeeId },
+    });
+    const { selected } = selectNcsbeCycleReportRows({
+      rows: parseNcsbeDocumentListPage(inventory.body),
+      cycleYear: input.electionYear,
+    });
+    const seenReportIds = new Set<string>();
+    for (const row of selected) {
+      const reportId = row.dataLink;
+      if (reportId === null || seenReportIds.has(reportId)) {
+        continue;
+      }
+      seenReportIds.add(reportId);
+      rows.push(
+        ...(await readTransactionRows({
+          cacheDir: input.cacheDir,
+          reportId,
+          kind: "receipts",
+          parse: parseNcsbeReceiptsPage,
+        }))
+      );
+    }
+    return rows;
+  }
+  for (const reportId of input.ieReportIds) {
+    rows.push(
+      ...(await readTransactionRows({
+        cacheDir: input.cacheDir,
+        reportId,
+        kind: "receipts",
+        parse: parseNcsbeReceiptsPage,
+      }))
+    );
+  }
+  return rows;
 }
 
 // Digits lose their leading zeros ("027" and "27" are one district); anything
@@ -660,6 +724,82 @@ async function aggregateOutsideForYear(input: {
         groups: candidate.groups,
       });
     }
+
+    // Funder leg (PR 8, #3): each spender committee behind the year's
+    // attributed groups is read from cache exactly once. ANY read failure
+    // fails the WHOLE year's funder leg closed (funders null → the writer
+    // keeps stored breakdown rows): a partial picture would publish "no
+    // disclosed funders" for the unreadable spender — a silent undercount.
+    // The outside totals above are unaffected; funders are enrichment.
+    const spenderCommitteeIds = new Set<string>();
+    for (const candidate of aggregation.candidates) {
+      for (const group of candidate.groups) {
+        spenderCommitteeIds.add(group.committeeId);
+      }
+    }
+    // Selected non-quarantined IE reports per group id — the unregistered
+    // filers' receipt source. The selector keys filers as SBoEID or
+    // `NAME:<key>`; recomputing the group id through the same decision-6
+    // function keeps both sides exact.
+    const ieReportIdsByGroupCommitteeId = new Map<string, string[]>();
+    for (const report of aggregation.reports) {
+      if (report.quarantined) {
+        continue;
+      }
+      const groupCommitteeId = report.filerKey.startsWith("NAME:")
+        ? northCarolinaOutsideGroupCommitteeId({ sboeId: null, committeeName: report.committeeName })
+        : report.filerKey;
+      const list = ieReportIdsByGroupCommitteeId.get(groupCommitteeId) ?? [];
+      list.push(report.reportId);
+      ieReportIdsByGroupCommitteeId.set(groupCommitteeId, list);
+    }
+    let funderRowsByCommitteeId: Map<string, readonly NcsbeReceiptRow[]> | null = new Map();
+    let fundersError: string | undefined;
+    let funderReceiptRowCount = 0;
+    for (const committeeId of spenderCommitteeIds) {
+      try {
+        const receiptRows = await collectSpenderReceiptRows({
+          cacheDir: input.cacheDir,
+          electionYear: input.electionYear,
+          committeeId,
+          ieReportIds: ieReportIdsByGroupCommitteeId.get(committeeId) ?? [],
+        });
+        funderRowsByCommitteeId.set(committeeId, receiptRows);
+        funderReceiptRowCount += receiptRows.length;
+      } catch (error) {
+        funderRowsByCommitteeId = null;
+        fundersError = `spender ${committeeId}: ${errorMessage(error)}`;
+        console.warn(
+          `North Carolina spender receipt artifacts unavailable for ${input.electionYear}; ` +
+            "syncing outside totals and preserving stored funder breakdowns:",
+          fundersError
+        );
+        break;
+      }
+    }
+    // Enriched BEFORE the alias loop below so aliased keys share the same
+    // funder-carrying slice objects.
+    for (const [key, slice] of byTargetKey) {
+      if (funderRowsByCommitteeId === null) {
+        byTargetKey.set(key, { ...slice, funders: null });
+        continue;
+      }
+      const funderAggregation = aggregateNorthCarolinaOutsideGroupContributions({
+        electionYear: input.electionYear,
+        outsideGroups: slice.groups,
+        receiptRowsByCommitteeId: funderRowsByCommitteeId,
+        sourceUrl,
+      });
+      byTargetKey.set(key, {
+        ...slice,
+        funders: {
+          breakdowns: funderAggregation.outsideGroupBreakdowns,
+          matchedReceiptRowCount: funderAggregation.matchedReceiptRowCount,
+          includedReceiptRowCount: funderAggregation.includedReceiptRowCount,
+          skippedReceiptRowCount: funderAggregation.skippedReceiptRowCount,
+        },
+      });
+    }
     // Aliased keys (a district-less row folded into its person's canonical
     // target) resolve to the canonical slice, so every due row finds its
     // money under its own key.
@@ -691,6 +831,9 @@ async function aggregateOutsideForYear(input: {
         ambiguousTargetCount: aggregation.ambiguousTargets.length,
         attributedRowCount: aggregation.attributedRowCount,
         attributedCents: aggregation.attributedCents,
+        fundersAvailable: funderRowsByCommitteeId !== null,
+        ...(fundersError === undefined ? {} : { fundersError }),
+        ...(funderRowsByCommitteeId === null ? {} : { funderReceiptRowCount }),
       },
     };
   } catch (error) {

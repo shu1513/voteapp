@@ -10,5 +10,6 @@ export * from "./northCarolinaNcsbeArtifactAcquisition.js";
 export * from "./northCarolinaNcsbeArtifactCache.js";
 export * from "./northCarolinaNcsbeClient.js";
 export * from "./northCarolinaNcsbeParsers.js";
+export * from "./northCarolinaOutsideGroupContributionAggregator.js";
 export * from "./northCarolinaOutsideSpendingAggregator.js";
 export * from "./northCarolinaReportSelector.js";

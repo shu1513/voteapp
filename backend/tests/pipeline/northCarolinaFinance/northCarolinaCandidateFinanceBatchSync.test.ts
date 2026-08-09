@@ -253,7 +253,10 @@ async function installCommitteeArtifacts(cacheDir: string): Promise<void> {
   );
 }
 
-async function installIeArtifacts(cacheDir: string): Promise<void> {
+async function installIeArtifacts(
+  cacheDir: string,
+  options: { withReceipts?: boolean } = {}
+): Promise<void> {
   await install(cacheDir, { type: "ie_doc_type_inventory", year: 2025 }, makeInventoryHtml([]));
   await install(
     cacheDir,
@@ -304,6 +307,24 @@ async function installIeArtifacts(cacheDir: string): Promise<void> {
       },
     ])
   );
+  if (options.withReceipts !== false) {
+    // The unregistered filer's disclosed-funder rows live on its own IE
+    // report's receipts (decision 6).
+    await install(
+      cacheDir,
+      { type: "report_transactions", reportId: "400001", kind: "receipts", page: 0 },
+      makeReceiptsJson([
+        {
+          OrgName: "ROLLING SEA FUND",
+          IsOrg: true,
+          Amount: 24_506,
+          SumToDate: 24_506,
+          ReceiptTypeDesc: "Donation",
+          ReceiptTypeCode: "DON ",
+        },
+      ])
+    );
+  }
 }
 
 function dueRow(
@@ -431,6 +452,181 @@ describe("syncDueNorthCarolinaCandidateFinance", () => {
       expect(group.committeeId).toMatch(/^NC-IE-FILER:[0-9a-f]{64}$/);
       expect(group.committeeName).toBe("ADVANCE CAROLINA ACTION");
     }
+    // Funder leg (PR 8): the unregistered filer's own IE-report Donation row
+    // becomes a disclosed-funder donor on BOTH directions' groups.
+    expect(result.outsideAggregationByYear[0]).toMatchObject({
+      fundersAvailable: true,
+      funderReceiptRowCount: 1,
+    });
+    expect(syncInput.outsideFinance.funders).toMatchObject({
+      matchedReceiptRowCount: 1,
+      includedReceiptRowCount: 1,
+      skippedReceiptRowCount: 0,
+    });
+    const donorRows = syncInput.outsideFinance.funders.breakdowns.filter(
+      (row: { categoryType: string }) => row.categoryType === "donor"
+    );
+    expect(donorRows).toHaveLength(2);
+    expect(new Set(donorRows.map((row: { supportOppose: string }) => row.supportOppose))).toEqual(
+      new Set(["support", "oppose"])
+    );
+    for (const row of donorRows) {
+      expect(row).toMatchObject({ categoryName: "ROLLING SEA FUND", amount: 24_506, contributorCount: 1 });
+    }
+  });
+
+  it("reads a registered spender's funders from its regular-report receipts", async () => {
+    const cacheDir = await makeCacheDir();
+    await installCommitteeArtifacts(cacheDir);
+    await installIeArtifacts(cacheDir);
+    // A REGISTERED IE filer: its IE report carries the outside money
+    // (registered form — Amount holds the single-target value), while its
+    // funders come from its regular disclosure report's receipts.
+    await install(
+      cacheDir,
+      { type: "ie_doc_type_inventory", year: 2026 },
+      makeInventoryHtml([
+        {
+          committeeName: "ADVANCE CAROLINA ACTION",
+          sboeId: null,
+          documentType: "Informational Report",
+          reportType: "Independent Expenditure Report",
+          imageReceiptDate: "03/01/2026",
+          dataImportDate: "03/01/2026",
+          periodStartDate: "02/01/2026",
+          periodEndDate: "02/28/2026",
+          dataLink: "400001",
+        },
+        {
+          committeeName: "CAROLINA GROWTH PAC",
+          sboeId: "STA-PC99XX-C-005",
+          documentType: "Informational Report",
+          reportType: "Independent Expenditure for Registered Committees",
+          imageReceiptDate: "04/01/2026",
+          dataImportDate: "04/01/2026",
+          periodStartDate: "03/01/2026",
+          periodEndDate: "03/31/2026",
+          dataLink: "500001",
+        },
+      ])
+    );
+    await install(
+      cacheDir,
+      { type: "report_cover", reportId: "500001" },
+      makeCoverHtml({
+        beginDate: "03/01/2026",
+        endDate: "03/31/2026",
+        filedDate: "04/01/2026",
+        sections: { 90: [75, 75] },
+      })
+    );
+    await install(
+      cacheDir,
+      { type: "report_transactions", reportId: "500001", kind: "expenditures", page: 0 },
+      makeExpendituresJson([
+        {
+          Amount: 75,
+          IEAmount: null,
+          ExpenditureTypeDesc: "Independent Expenditure",
+          Candidate: "DOE JANE",
+          OfficeSought: "NC HOUSE 27",
+          Declaration: "Support",
+        },
+      ])
+    );
+    await install(
+      cacheDir,
+      { type: "document_inventory", sboeId: "STA-PC99XX-C-005" },
+      makeInventoryHtml([
+        {
+          committeeName: "CAROLINA GROWTH PAC",
+          sboeId: "STA-PC99XX-C-005",
+          reportType: "First Quarter",
+          dataLink: "500100",
+        },
+      ])
+    );
+    await install(
+      cacheDir,
+      { type: "report_transactions", reportId: "500100", kind: "receipts", page: 0 },
+      makeReceiptsJson([
+        {
+          OrgName: "Carolina Realty PAC",
+          IsOrg: true,
+          Amount: 1000,
+          SumToDate: 1000,
+          ReceiptTypeDesc: "Other Political Committee Contribution",
+          ReceiptTypeCode: "CPCM",
+        },
+      ])
+    );
+    const db = createDb([dueRow()]);
+    const syncFn = vi.fn().mockResolvedValue({ ok: true });
+
+    const result = await syncDueNorthCarolinaCandidateFinance({
+      db,
+      now: new Date("2026-08-07T09:00:00.000Z"),
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: cacheDir,
+      syncNorthCarolinaCandidateFinanceFn: syncFn as never,
+    });
+
+    expect(result.outsideAggregationByYear[0]).toMatchObject({ available: true, fundersAvailable: true });
+    const syncInput = syncFn.mock.calls[0]![0];
+    expect(syncInput.outsideFinance).toMatchObject({ supportTotal: 225, opposeTotal: 100 });
+    const donorRows = syncInput.outsideFinance.funders.breakdowns.filter(
+      (row: { categoryType: string }) => row.categoryType === "donor"
+    );
+    expect(donorRows).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          committeeId: "STA-PC99XX-C-005",
+          supportOppose: "support",
+          categoryName: "Carolina Realty PAC",
+          amount: 1000,
+        }),
+        expect.objectContaining({ categoryName: "ROLLING SEA FUND", supportOppose: "support" }),
+        expect.objectContaining({ categoryName: "ROLLING SEA FUND", supportOppose: "oppose" }),
+      ])
+    );
+    // The registered spender's donor classifies by rule into an industry row.
+    expect(syncInput.outsideFinance.funders.breakdowns).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          committeeId: "STA-PC99XX-C-005",
+          categoryType: "industry",
+          categoryName: "real_estate",
+          amount: 1000,
+        }),
+      ])
+    );
+  });
+
+  it("fails the year's funder leg closed when a spender's receipts are not cached", async () => {
+    const cacheDir = await makeCacheDir();
+    await installCommitteeArtifacts(cacheDir);
+    await installIeArtifacts(cacheDir, { withReceipts: false });
+    const db = createDb([dueRow()]);
+    const syncFn = vi.fn().mockResolvedValue({ ok: true });
+
+    const result = await syncDueNorthCarolinaCandidateFinance({
+      db,
+      now: new Date("2026-08-07T09:00:00.000Z"),
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: cacheDir,
+      syncNorthCarolinaCandidateFinanceFn: syncFn as never,
+    });
+
+    // Outside totals still sync; only the funder enrichment is withheld so
+    // the writer preserves stored breakdown rows.
+    expect(result.outsideAggregationByYear[0]).toMatchObject({
+      available: true,
+      fundersAvailable: false,
+      fundersError: expect.stringContaining("north-carolina-candidates:finance:raw:refresh"),
+    });
+    const syncInput = syncFn.mock.calls[0]![0];
+    expect(syncInput.outsideFinance).toMatchObject({ supportTotal: 150, opposeTotal: 100 });
+    expect(syncInput.outsideFinance.funders).toBeNull();
   });
 
   it("fails the candidate without writing when a selected report's artifacts are missing", async () => {
