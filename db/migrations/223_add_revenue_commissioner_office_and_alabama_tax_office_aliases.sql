@@ -15,11 +15,17 @@
 -- same shape. Same defect class as the NE/WI court-clerk bug repaired in
 -- migration 218.
 --
+-- The "commissioner of X" word order is worse still: there "county
+-- commissioner" sits inside the stripped title as a CONTIGUOUS PHRASE and
+-- takes the phrase-containment boost, so "<County> Commissioner of Licenses"
+-- (Calhoun AL) and "<County> Commissioner of the Revenue" (Virginia)
+-- mis-matched at 0.920, not 0.800.
+--
 -- Alabama counties elect ONE of two arrangements under Title 40 of the Code of
 -- Alabama: a merged Revenue Commissioner (Lee and most counties), or a
 -- separate Tax Assessor and Tax Collector (Jefferson, Madison and Tuscaloosa —
--- all four of those seats are on the Nov 3 2026 ballot). Sources: the ALDOR
--- county office directory
+-- all four of those seats are on the Nov 3 2026 ballot), typically alongside an
+-- elected License Commissioner. Sources: the ALDOR county office directory
 -- (https://www.revenue.alabama.gov/property-tax/county-offices-appraisal-assessment-records/),
 -- which lists Lee County under "Revenue Commissioner" and Jefferson/Madison/
 -- Tuscaloosa under "Tax Assessor" + "Tax Collector", and Clarke County's own
@@ -33,10 +39,38 @@
 -- NOTHING at county scope (0.400), which also left Florida's 67 elected tax
 -- collectors uncatalogued.
 --
+-- Two more offices need their own rows rather than aliases:
+--
+--   * LICENSE COMMISSIONER is not the St. Louis-style License Collector
+--     already in the catalog. That office issues business licences; Alabama's
+--     is the county TAG office — motor-vehicle titles and tags, manufactured
+--     homes, driver-licence renewals, conservation permits and the sales/use
+--     tax on vehicle and boat sales, with business licences one line of the
+--     job. Mobile County's license commission raises roughly 57% of that
+--     county's general-fund revenue
+--     (https://www.mobilecountylc.gov/about-us/about-the-commissioner/, which
+--     also confirms the office is elected to a four-year term). Aliasing it
+--     onto License Collector would print an office name the ballot does not
+--     use and a duty list missing the office's largest function.
+--
+--   * COMMISSIONER OF THE REVENUE is Virginia's chief local tax ASSESSING
+--     officer, one of the five constitutional officers every county and
+--     independent city elects to a four-year term under Art. VII Sec. 4. It
+--     assesses personal-property, business-licence, machinery-and-tools and
+--     meals taxes but does NOT collect — that is the elected Treasurer's job —
+--     so it is neither Alabama's merged Revenue Commissioner nor a plain
+--     County Assessor. Without its own row the bare title scored 1.000 into
+--     Revenue Commissioner once that office existed, so adding the Alabama
+--     office alone would have created a NEW confident wrong match.
+--
 -- A code-layer backstop ships alongside: officeMatcher.ts now scores any
--- "<revenue|tax|license> commissioner" title to zero against County
--- Commissioner, so on a database that has not run this migration the honest
--- method=none returns instead of a confident wrong match. The seed layer
+-- qualified commissioner title ("<revenue|tax|license> commissioner" or
+-- "commissioner of (the) licenses|revenue") to zero against County
+-- Commissioner, AND ignores a stored alias of that shape that points at County
+-- Commissioner — an exact alias hit returns before the scorer runs, so the
+-- score guard alone would not fail safe on a database that had already learned
+-- one. Together they mean a database that has not run this migration returns
+-- the honest method=none instead of a confident wrong match. The seed layer
 -- carries the same office, aliases and curated research areas for fresh
 -- installs (seedOffices.ts + db/seeds/office_research_areas_v1.sql); the
 -- summary text below is byte-identical to the seed's so the two layers do not
@@ -68,7 +102,10 @@ DELETE FROM public.office_title_aliases a
 USING public.offices o
 WHERE o.id = a.office_id
   AND a.scope = 'county'
-  AND a.normalized_alias ~ '\m(revenue|tax|license) commissioner\M'
+  AND (
+    a.normalized_alias ~ '\m(revenue|tax|license) commissioner\M'
+    OR a.normalized_alias ~ '\mcommissioner of (the )?(licen[cs]es?|revenue)\M'
+  )
   AND o.canonical_name = 'County Commissioner';
 
 INSERT INTO public.offices (scope, canonical_name, summary)
@@ -124,23 +161,63 @@ WHERE o.scope = 'county'
   AND o.canonical_name = 'Collector of Revenue'
 ON CONFLICT (scope, normalized_alias) DO NOTHING;
 
--- Counties that kept the split arrangement often elect a separate license
--- commissioner for tags and business licenses (Tuscaloosa live).
+-- Alabama's county tag office, distinct from the St. Louis-style License
+-- Collector already in the catalog (see the header note).
+INSERT INTO public.offices (scope, canonical_name, summary)
+VALUES (
+  'county',
+  'License Commissioner',
+  'Issuing motor vehicle tags and titles, and registering boats and manufactured homes
+Collecting the taxes and fees owed when a vehicle or boat is bought, registered, or renewed
+Issuing business licenses and hunting and fishing licenses, and renewing driver licenses in many counties
+Keeping the county''s vehicle, license, and ownership records'
+)
+ON CONFLICT (scope, canonical_name) DO NOTHING;
+
+-- "Commissioner of Licenses" is Calhoun County's spelling of the same office.
 INSERT INTO public.office_title_aliases (office_id, scope, alias_text, normalized_alias)
 SELECT o.id, 'county', v.alias_text, v.normalized_alias
 FROM public.offices o,
      (VALUES
         ('License Commissioner', 'license commissioner'),
-        ('County License Commissioner', 'county license commissioner')
+        ('County License Commissioner', 'county license commissioner'),
+        ('Commissioner of Licenses', 'commissioner of licenses'),
+        ('County Commissioner of Licenses', 'county commissioner of licenses')
      ) AS v(alias_text, normalized_alias)
 WHERE o.scope = 'county'
-  AND o.canonical_name = 'License Collector'
+  AND o.canonical_name = 'License Commissioner'
+ON CONFLICT (scope, normalized_alias) DO NOTHING;
+
+-- Virginia's constitutional tax-assessing officer. Both the "of the" and bare
+-- "of" spellings are live across localities.
+INSERT INTO public.offices (scope, canonical_name, summary)
+VALUES (
+  'county',
+  'Commissioner of the Revenue',
+  'Deciding what local taxes each resident and business owes, such as the tax on cars and business property
+Running the local business license system and setting each business''s license tax
+Keeping local tax records and reviewing appeals when a taxpayer disputes an assessment
+Helping residents file their state income tax returns in most localities'
+)
+ON CONFLICT (scope, canonical_name) DO NOTHING;
+
+INSERT INTO public.office_title_aliases (office_id, scope, alias_text, normalized_alias)
+SELECT o.id, 'county', v.alias_text, v.normalized_alias
+FROM public.offices o,
+     (VALUES
+        ('Commissioner of the Revenue', 'commissioner of the revenue'),
+        ('Commissioner of Revenue', 'commissioner of revenue'),
+        ('County Commissioner of the Revenue', 'county commissioner of the revenue'),
+        ('County Commissioner of Revenue', 'county commissioner of revenue')
+     ) AS v(alias_text, normalized_alias)
+WHERE o.scope = 'county'
+  AND o.canonical_name = 'Commissioner of the Revenue'
 ON CONFLICT (scope, normalized_alias) DO NOTHING;
 
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM public.research_areas) THEN
-    RAISE NOTICE 'migration 223: research_areas is empty (fresh install); Revenue Commissioner research areas will come from the seed layer';
+    RAISE NOTICE 'migration 223: research_areas is empty (fresh install); the new offices'' research areas will come from the seed layer';
   END IF;
 END
 $$;
@@ -163,6 +240,38 @@ WHERE o.scope = 'county'
   AND o.canonical_name = 'Revenue Commissioner'
 ON CONFLICT DO NOTHING;
 
+-- License Collector's set (this office issues business licences too) plus
+-- data_privacy, because it holds the county's vehicle-ownership and
+-- driver-licence records.
+INSERT INTO public.office_research_areas (office_id, research_area_id)
+SELECT o.id, ra.id
+FROM public.offices o
+JOIN public.research_areas ra
+  ON ra.slug = ANY (ARRAY[
+       'anti_corruption',
+       'corporate_accountability',
+       'data_privacy',
+       'government_efficiency'
+     ]::text[])
+WHERE o.scope = 'county'
+  AND o.canonical_name = 'License Commissioner'
+ON CONFLICT DO NOTHING;
+
+-- The County Assessor set: the assessing job without the collection half.
+INSERT INTO public.office_research_areas (office_id, research_area_id)
+SELECT o.id, ra.id
+FROM public.offices o
+JOIN public.research_areas ra
+  ON ra.slug = ANY (ARRAY[
+       'anti_corruption',
+       'corporate_accountability',
+       'government_efficiency',
+       'housing_affordability'
+     ]::text[])
+WHERE o.scope = 'county'
+  AND o.canonical_name = 'Commissioner of the Revenue'
+ON CONFLICT DO NOTHING;
+
 -- Repoint county contests the defect already attached to County Commissioner.
 -- Only titles with a catalogued target are moved: a "<County> Tax
 -- Commissioner" row (Georgia) is deliberately left alone, because this catalog
@@ -182,7 +291,8 @@ WHERE d.id = e.district_id
   AND target.scope = 'county'
   AND (
     (e.official_ballot_title ~* '\mrevenue commissioner\M' AND target.canonical_name = 'Revenue Commissioner')
-    OR (e.official_ballot_title ~* '\mlicense commissioner\M' AND target.canonical_name = 'License Collector')
+    OR (e.official_ballot_title ~* '\m(license commissioner|commissioner of licen[cs]es)\M' AND target.canonical_name = 'License Commissioner')
+    OR (e.official_ballot_title ~* '\mcommissioner of (the )?revenue\M' AND target.canonical_name = 'Commissioner of the Revenue')
   );
 
 COMMIT;

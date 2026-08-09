@@ -520,18 +520,26 @@ function isNonCourtClerkOfficeKey(canonicalMatcherKey: string): boolean {
 
 // A county's tax office is titled "<County> Revenue Commissioner" (Alabama's
 // merged assessor+collector), "<County> Tax Commissioner" (Georgia, 159
-// counties) or "<County> License Commissioner" (Alabama's split arrangement).
+// counties), "<County> License Commissioner" (Alabama's tag office), or with
+// the words the other way round — "<County> Commissioner of Licenses"
+// (Calhoun AL) and "<County> Commissioner of the Revenue" (Virginia's
+// constitutional tax assessor, every county and independent city).
+//
 // The jurisdiction strip deliberately keeps the generic civic word, so the
 // scorer sees "county revenue commissioner": three tokens, two of which are
 // the WHOLE name of County Commissioner — the county's legislative body. That
 // scores 0.800, clears the floor with margin, and persists itself as a learned
 // alias, so a tax office silently inherits the county commission's research
 // areas and every downstream stage runs on the wrong policy context (live: Lee
-// County AL, Nov 2026). The qualifier is what names the office, so a qualified
-// commissioner title must never land on the bare member seat: with the catalog
-// entry present it matches that instead, and without one no-match is the
-// honest outcome.
-const QUALIFIED_COMMISSIONER_TITLE_PATTERN = /\b(?:revenue|tax|license) commissioner\b/;
+// County AL, Nov 2026). The "commissioner of X" word order is worse still:
+// "county commissioner" sits inside it as a contiguous phrase and takes the
+// containment boost, scoring 0.920.
+//
+// The qualifier is what names the office, so a qualified commissioner title
+// must never land on the bare member seat: with the catalog entry present it
+// matches that instead, and without one no-match is the honest outcome.
+const QUALIFIED_COMMISSIONER_TITLE_PATTERN =
+  /\b(?:(?:revenue|tax|license) commissioner|commissioner of (?:the )?(?:licen[cs]es?|revenue))\b/;
 const COUNTY_COMMISSIONER_OFFICE_KEY = "county commissioner";
 
 function isWashingtonState(state: string): boolean {
@@ -762,6 +770,18 @@ export class OfficeMatcher {
       // authoritative over a stored clerk office that names none.
       const aliasTarget = (await this.loadOffices(input.scope)).find((office) => office.id === exactOfficeId);
       if (aliasTarget && isNonCourtClerkOfficeKey(aliasTarget.canonicalMatcherKey)) {
+        exactOfficeId = undefined;
+      }
+    }
+    if (exactOfficeId && QUALIFIED_COMMISSIONER_TITLE_PATTERN.test(titleMatcherKey)) {
+      // Same reason as the court-clerk case above: runs before the score guard
+      // landed already learned "county revenue commissioner" -> County
+      // Commissioner, and an exact alias hit returns before scoreOfficeMatch
+      // ever runs, so the guard alone does not fail safe on a database
+      // carrying one. The qualifier names a tax office; the county's
+      // legislative body is never what such a title elects.
+      const aliasTarget = (await this.loadOffices(input.scope)).find((office) => office.id === exactOfficeId);
+      if (aliasTarget && aliasTarget.canonicalMatcherKey === COUNTY_COMMISSIONER_OFFICE_KEY) {
         exactOfficeId = undefined;
       }
     }

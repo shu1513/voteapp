@@ -3116,6 +3116,11 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('county', 'Collector of Revenue', ARRAY['anti_corruption', 'government_efficiency', 'government_spending_reduction', 'housing_affordability']::text[]),
     -- Same civil-process set as Municipal Constable (housing_affordability
     -- because constables serve evictions).
+    -- Virginia's constitutional tax assessor: the County Assessor set, since
+    -- it is the assessing job without the collection half (the elected
+    -- Treasurer collects), and corporate_accountability carries extra weight
+    -- because it also runs the local business-license tax.
+    ('county', 'Commissioner of the Revenue', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'housing_affordability']::text[]),
     ('county', 'Constable', ARRAY['civil_rights', 'housing_affordability', 'public_safety_and_crime_control']::text[]),
     ('county', 'County Assessor', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'housing_affordability']::text[]),
     -- Combined office (e.g. San Francisco): union of the County Assessor and
@@ -3149,6 +3154,10 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     -- Business licensing and fee collection (St. Louis): recorder-class
     -- records set with corporate_accountability for the licensing power.
     ('county', 'License Collector', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency']::text[]),
+    -- Alabama's county tag office. License Collector's set (it issues business
+    -- licenses too) plus data_privacy, because this office holds the county's
+    -- vehicle-ownership and driver-licence records.
+    ('county', 'License Commissioner', ARRAY['anti_corruption', 'corporate_accountability', 'data_privacy', 'government_efficiency']::text[]),
     ('county', 'County Superintendent of Schools', ARRAY['civil_rights', 'government_efficiency', 'government_spending_reduction', 'public_education_quality']::text[]),
     ('county', 'County Supervisor', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     -- Boundary records and plats: recorder-adjacent land administration.
