@@ -245,12 +245,17 @@ function districtNameCore(rawDistrictName: string): string {
   return tokens.join(" ");
 }
 
+const GENERIC_DISTRICT_SUFFIX_PATTERN = [...GENERIC_DISTRICT_SUFFIX_TOKENS].join("|");
+
 function stripJurisdictionPrefixes(value: string, input: { districtName: string; state: string }): string {
   let next = value;
 
   const districtName = normalizeMatcherText(input.districtName);
   if (districtName.length > 0) {
-    const districtPattern = new RegExp(`\\b${escapeRegExp(districtName)}\\b`, "g");
+    // The leading "of" belongs to the jurisdiction phrase, not the office
+    // ("Prosecuting Attorney of Elkhart County"); leaving it behind produces a
+    // dangling connector that misses the alias table.
+    const districtPattern = new RegExp(`\\b(?:of )?${escapeRegExp(districtName)}\\b`, "g");
     next = next.replace(districtPattern, " ");
   }
 
@@ -261,6 +266,25 @@ function stripJurisdictionPrefixes(value: string, input: { districtName: string;
   // still matches catalog names/aliases keyed on the bare office title.
   const core = districtNameCore(input.districtName);
   if (core.length >= 2) {
+    // "<office> of <Core> County" is the one form where the generic civic word
+    // is part of the jurisdiction phrase rather than a modifier on the office,
+    // so it goes with the core ("Prosecuting Attorney of Elkhart County, 34th
+    // Judicial Circuit", IN live: kept "county" and scored 0.25 into District
+    // Attorney, blocking the prosecutor contest in every Indiana county). The
+    // civic word is required here — without it the phrase is an ordinary
+    // "of <place>" suffix whose bare-office handling below is already correct.
+    // The lookahead keeps the phrase whenever it modifies a governing body that
+    // follows it ("Member of Cook County Board of Commissioners"): there the
+    // county word belongs to the body's name, and taking it left
+    // "member board of commissioners", which mis-scored into County Board of
+    // Review Member — a confidently wrong match the writer would then persist
+    // as an alias.
+    const ofCorePattern = new RegExp(
+      `\\bof ${escapeRegExp(core)} (?:${GENERIC_DISTRICT_SUFFIX_PATTERN})\\b(?! (?:board|commission|council|court))`,
+      "g"
+    );
+    next = next.replace(ofCorePattern, " ");
+
     const corePattern = new RegExp(`\\b${escapeRegExp(core)}\\b`, "g");
     next = next.replace(corePattern, " ");
   }
@@ -390,6 +414,21 @@ const SEAT_DESIGNATOR = String.raw`(?:\d+[a-z]{0,2}|[ivxl]+|[a-z])`;
 
 function stripSeatSuffixes(value: string): string {
   const withoutSeat = singularizeCommissionerBodyForms(value)
+    // A numbered judicial circuit/district is the seat's jurisdiction, not part
+    // of the office name: "Prosecuting Attorney of Elkhart County, 34th
+    // Judicial Circuit" (IN live) and "State Attorney, 4th Judicial Circuit"
+    // (FL) are the ordinary county prosecutor. Single instances were previously
+    // papered over with per-number aliases ("prosecuting attorney 60th judicial
+    // circuit", "district attorney 22nd judicial district court"), which cannot
+    // scale to every circuit number in every state. Runs before the generic
+    // ordinal-district rule so "4th Judicial District" is not half-stripped,
+    // and before Louisiana's justice-court rules, which key on "justice court"
+    // rather than on "judicial".
+    .replace(
+      /\b(?:\d+(?:st|nd|rd|th)|[ivxl]+)\s+judicial\s+(?:circuit|district)(?: court)?\b/g,
+      " "
+    )
+    .replace(/\bjudicial\s+(?:circuit|district)(?: court)?\s+(?:no )?\d+[a-z]?\b/g, " ")
     // Louisiana numbers its justice-of-the-peace COURTS and titles both the JP
     // seat and its constable seat by the court ("Justice of the Peace 2nd
     // Justice Court" / "Constable 2nd Justice Court", Jefferson Parish live:
@@ -443,6 +482,21 @@ function stripSeatSuffixes(value: string): string {
       /\bward (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+) [a-z]+(?: [a-z]+)? dist(?:rict)?\b/g,
       " "
     )
+    // Ordinal-FIRST numbering of the seat designators below ("City Commissioner
+    // 1st Ward", Grand Rapids MI live: the ordinal-last rule alone left
+    // "city commissioner 1st ward", which matched no alias, so the writer threw
+    // UnresolvedOfficeMatchError and aborted the whole payload). Mirrors the
+    // ordinal-first district rule above; common in Michigan and other Midwest
+    // city charters. MUST run before the ordinal-last rule: on a title that
+    // also carries a term suffix ("City Commissioner 1st Ward 4 Year Term")
+    // the ordinal-last pattern would otherwise consume "Ward 4" and strand the
+    // leading "1st". Independent of the Caddo rule above — that one needs a
+    // ward NUMBER followed by a "dist" marker, this one needs an ordinal in
+    // front of the ward word, so neither can consume the other's target.
+    .replace(
+      /\b\d+(?:st|nd|rd|th) (?:ward|zone|seat|part|(?:justice )?(?:precinct|prec))\b/g,
+      " "
+    )
     // Ward/Zone/Seat/Part and (justice) precinct forms are the same numbered
     // seat suffix as District/Position, all hit live: Florida city commissions
     // ("City Commission Ward 1" / "Zone 3" / "Seat 4"), Carson City NV wards,
@@ -468,7 +522,10 @@ function stripSeatSuffixes(value: string): string {
     .replace(/\bseat\b/g, " ")
     // Vacancy descriptors qualify the term being filled, never the office
     // ("(UNEXPIRED)" NC commission seats, "Chancellor ... Unexpired Term" TN).
-    .replace(/\b(?:unexpired|vacancy)(?: term)?\b/g, " ")
+    // Michigan spells the same thing "Partial Term Ending 12/31/2028" and
+    // prints the end date in the heading (Grand Rapids Library Board and
+    // Lansing School Board, both live), so the trailing date goes with it.
+    .replace(/\b(?:unexpired|vacancy|partial)(?: term)?(?: ending(?: \d+)+)?\b/g, " ")
     .replace(/\s+/g, " ")
     .trim()
     // Ballot-heading form "For <office>" ("For Member of County Council",
@@ -739,6 +796,25 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
   if (
     office.canonicalMatcherKey === CITY_MARSHAL_OFFICE_KEY &&
     !/\b(?:city|court)\b/.test(titleMatcherKey)
+  ) {
+    return 0;
+  }
+
+  // South Carolina's circuit "Solicitor" is that state's chief FELONY
+  // prosecutor — a District Attorney by another name — while Georgia's county
+  // "Solicitor General" is the State Court's misdemeanor prosecutor, a
+  // different elected office. "general" is a STOPWORD above (it strips
+  // "General Election"), so this office tokenizes to ["solicitor"] alone and a
+  // bare "Solicitor" title is token-identical to it: a perfect f1, confidence
+  // 1.0, with nothing else in range. No confidence floor or margin could
+  // separate the two, because after tokenization there is nothing left to tell
+  // apart — but the raw matcher key still carries "general", so a phrase test
+  // can. The bare title then stays unmatched, exactly as it was before this
+  // office existed, instead of silently filing a felony prosecutor under the
+  // misdemeanor office.
+  if (
+    office.canonicalMatcherKey === "solicitor general" &&
+    !hasPhrase(titleMatcherKey, "solicitor general")
   ) {
     return 0;
   }

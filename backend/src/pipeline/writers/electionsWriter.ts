@@ -49,23 +49,30 @@ type WriteResult = {
   officeElectionIds: string[];
 };
 
-class UnresolvedOfficeMatchError extends Error {
-  constructor(input: {
-    districtId: string;
-    scope: string;
-    method: OfficeMatchResult["method"];
-    confidence: number;
-    officialBallotTitle: string;
-    normalizedAlias: string;
-  }) {
-    super(
-      `writer office match failed: district_id=${input.districtId} scope=${input.scope} ` +
-        `method=${input.method} confidence=${input.confidence.toFixed(3)} ` +
-        `title=${JSON.stringify(input.officialBallotTitle)} ` +
-        `normalized_alias=${JSON.stringify(input.normalizedAlias)}`
-    );
-    this.name = "UnresolvedOfficeMatchError";
-  }
+type UnresolvedOfficeEntry = {
+  method: OfficeMatchResult["method"];
+  confidence: number;
+  officialBallotTitle: string;
+  normalizedAlias: string;
+};
+
+function describeUnresolvedOffices(input: {
+  districtId: string;
+  scope: string;
+  unresolved: readonly UnresolvedOfficeEntry[];
+}): string {
+  const entries = input.unresolved
+    .map(
+      (entry) =>
+        `method=${entry.method} confidence=${entry.confidence.toFixed(3)} ` +
+        `title=${JSON.stringify(entry.officialBallotTitle)} ` +
+        `normalized_alias=${JSON.stringify(entry.normalizedAlias)}`
+    )
+    .join("; ");
+  return (
+    `writer office match unresolved: district_id=${input.districtId} scope=${input.scope} ` +
+    `unresolved=${input.unresolved.length} ${entries}`
+  );
 }
 
 // Writing elections + downstream publish can take time; only reclaim clearly stale pending entries.
@@ -245,6 +252,10 @@ async function resolveOfficeElectionIds(
        AND e.election_date = o.election_date
       WHERE e.district_id = $1
         AND e.race_type = 'office'
+        -- Same rule as the fresh-write handoff: an office-less shell has no
+        -- office for the candidate-records stage to work from, so the replay
+        -- and recovery paths must not enqueue rosters for one either.
+        AND e.office_id IS NOT NULL
     `,
     [payload.district_id, titleKeys, dates]
   );
@@ -358,11 +369,19 @@ async function writeElectionsForDistrict(
     }> = [];
     const insertedElectionIds: string[] = [];
     const matchedOfficeIds: Array<string | null> = [];
+    const unresolvedOffices: UnresolvedOfficeEntry[] = [];
+    const officeLessShellElectionIds: string[] = [];
 
-    // Resolve every office before inserting any election. One unresolved
-    // office makes the district payload incomplete, so fail the whole write
-    // instead of committing a shell that downstream candidate-record stages
-    // cannot use.
+    // Resolve every office before inserting any election. An entry the matcher
+    // cannot place is written as an office-less shell and reported, not thrown:
+    // aborting the payload took down every other contest in the district (one
+    // Indiana prosecutor title killed a 15-entry Elkhart County payload) while
+    // producing no protection — the operator's only recovery was to delete the
+    // entry and re-inject, which lands the same partial write by hand and loses
+    // the record of what went missing. The shell keeps the contest visible,
+    // `manual:elections:repair-office-ids` backfills office_id once a matcher
+    // or catalog fix lands, and the roster handoff below skips these ids so no
+    // downstream stage starts work it cannot finish.
     for (const entry of payload.entries) {
       if (entry.race_type !== "office") {
         matchedOfficeIds.push(null);
@@ -376,25 +395,19 @@ async function writeElectionsForDistrict(
         officialBallotTitle: entry.official_ballot_title,
         discoveryContestFamily: entry.discovery_contest_family,
       });
-      if (officeMatch.method === "none" || officeMatch.method === "ambiguous") {
-        throw new UnresolvedOfficeMatchError({
-          districtId: payload.district_id,
-          scope: payload.district_type,
+      if (
+        officeMatch.method === "none" ||
+        officeMatch.method === "ambiguous" ||
+        !officeMatch.officeId
+      ) {
+        unresolvedOffices.push({
           method: officeMatch.method,
           confidence: officeMatch.confidence,
           officialBallotTitle: entry.official_ballot_title,
           normalizedAlias: officeMatch.normalizedAlias,
         });
-      }
-      if (!officeMatch.officeId) {
-        throw new UnresolvedOfficeMatchError({
-          districtId: payload.district_id,
-          scope: payload.district_type,
-          method: officeMatch.method,
-          confidence: officeMatch.confidence,
-          officialBallotTitle: entry.official_ballot_title,
-          normalizedAlias: officeMatch.normalizedAlias,
-        });
+        matchedOfficeIds.push(null);
+        continue;
       }
       officeMatchCounts[officeMatch.method] += 1;
       matchedOfficeIds.push(officeMatch.officeId);
@@ -415,7 +428,12 @@ async function writeElectionsForDistrict(
 
     for (const [entryIndex, entry] of payload.entries.entries()) {
       const matchedOfficeId = matchedOfficeIds[entryIndex] ?? null;
-      const upsertResult = await client.query<{ id: string; race_type: string; inserted: boolean }>(
+      const upsertResult = await client.query<{
+        id: string;
+        race_type: string;
+        office_id: string | null;
+        inserted: boolean;
+      }>(
         `
           INSERT INTO public.elections (
             district_id,
@@ -458,7 +476,7 @@ async function writeElectionsForDistrict(
             END,
             sources = EXCLUDED.sources,
             updated_at = now()
-          RETURNING id, race_type, (xmax = 0) AS inserted
+          RETURNING id, race_type, office_id, (xmax = 0) AS inserted
         `,
         [
           payload.district_id,
@@ -481,7 +499,16 @@ async function writeElectionsForDistrict(
       if (row?.race_type === "ballot_measure") {
         ballotMeasureElectionIds.push(row.id);
       } else if (row?.race_type === "office") {
-        officeElectionIds.push(row.id);
+        // An office-less shell is held back from the roster handoff: the
+        // candidate-records stage is hard-blocked without an office_id, so
+        // enqueueing it would only queue work that cannot complete. The upsert
+        // COALESCEs office_id, so a shell whose office was resolved by an
+        // earlier write still hands off normally.
+        if (row.office_id) {
+          officeElectionIds.push(row.id);
+        } else {
+          officeLessShellElectionIds.push(row.id);
+        }
         if (entry.discovery_contest_family === "us_senate" || isUsSenateOfficeTitle(entry.official_ballot_title)) {
           senateMetadataRows.push({
             election_id: row.id,
@@ -503,6 +530,34 @@ async function writeElectionsForDistrict(
             `new_elections=${insertedElectionIds.length} events_created=${notification.createdCount}`
         );
       }
+    }
+
+    // The staging row stays `written` — the district was researched and its
+    // resolvable contests are in — but the reason field carries every title the
+    // matcher could not place, so a partial write is never silently complete.
+    if (unresolvedOffices.length > 0) {
+      const reason = toReason(
+        describeUnresolvedOffices({
+          districtId: payload.district_id,
+          scope: payload.district_type,
+          unresolved: unresolvedOffices,
+        })
+      );
+      await client.query(
+        `
+          UPDATE staging_items
+          SET reason = $2,
+              updated_at = now()
+          WHERE ingest_key = $1
+            AND item_type = $3
+        `,
+        [ingestKey, reason, STAGING_ITEM_TYPE_ELECTION]
+      );
+      console.warn(
+        `elections writer wrote office-less shells ingest_key=${ingestKey} ` +
+          `shells=${officeLessShellElectionIds.length} ` +
+          `(repair with: npm run manual:elections:repair-office-ids): ${reason}`
+      );
     }
 
     if (officeMatchCounts.alias_exact + officeMatchCounts.deterministic_fallback > 0) {
@@ -771,23 +826,6 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
           await ack(entry.id);
         } catch (error) {
           const reason = toReason(error);
-          if (error instanceof UnresolvedOfficeMatchError) {
-            await pool.query(
-              `
-                UPDATE staging_items
-                SET status = 'failed',
-                    reason = $2,
-                    updated_at = now()
-                WHERE ingest_key = $1
-                  AND item_type = $3
-                  AND status = 'validated'
-              `,
-              [ingestKey, reason, STAGING_ITEM_TYPE_ELECTION]
-            );
-            console.error(`elections writer failed ingest_key=${ingestKey}: ${reason}`);
-            await ack(entry.id);
-            continue;
-          }
           if (ingestKey) {
             console.warn(`elections writer retrying ingest_key=${ingestKey}: ${reason}`);
           } else {

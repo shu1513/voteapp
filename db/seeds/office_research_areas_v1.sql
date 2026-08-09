@@ -3170,11 +3170,33 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('county', 'Public Defender', ARRAY['civil_rights', 'immigration', 'legal_competence', 'public_safety_and_crime_control']::text[]),
     -- Same job as County Recorder under its Missouri/Pennsylvania name.
     ('county', 'Recorder of Deeds', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
+    -- Georgia's county misdemeanor prosecutor (State Court), a separate
+    -- elected office from the District Attorney: the DA set MINUS the two
+    -- slugs that track felony-only charging discretion, since in Georgia
+    -- abortion-law violations (womens_reproductive_rights) and white-collar
+    -- fraud (corporate_accountability) are felonies this office cannot bring.
+    -- gun_control stays: Georgia's weapons misdemeanors — carrying in a
+    -- prohibited location, possession by a minor, pointing a firearm at
+    -- another — are State Court cases. See db/migrations/225.
+    ('county', 'Solicitor General', ARRAY['anti_corruption', 'civil_rights', 'gun_control', 'public_safety_and_crime_control']::text[]),
     ('county', 'Sheriff', ARRAY['civil_rights', 'data_privacy', 'gun_control', 'immigration', 'public_safety_and_crime_control']::text[]),
     ('county', 'Soil and Water Conservation District Supervisor', ARRAY['environment_and_public_health', 'government_efficiency', 'public_infrastructure']::text[]),
     ('place', 'Alderman', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('place', 'City Clerk', ARRAY['anti_corruption', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),
     ('place', 'City Council Member', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
+    -- Elected public-library board. civil_rights is the board's most contested
+    -- lever (challenges to materials, who may access them); data_privacy is
+    -- the library-specific one, since patron borrowing records are
+    -- confidential by statute in most states. The two spending slugs are the
+    -- operating and levy decisions — Michigan library boards administer their
+    -- own millage — and public_infrastructure is branches and capital
+    -- projects. public_education_quality is shared with School Board Member
+    -- rather than exclusive to it: the literacy, homework-help, and adult-
+    -- education programming a library board sets belongs somewhere, and
+    -- omitting it would push those records into neighboring areas. No
+    -- public_safety_and_crime_control — branch security is the director's
+    -- administrative problem, not a lever the board is elected on.
+    ('place', 'Library Board Member', ARRAY['civil_rights', 'data_privacy', 'government_efficiency', 'government_spending_reduction', 'public_education_quality', 'public_infrastructure']::text[]),
     ('place', 'Comptroller', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'government_spending_reduction']::text[]),
     ('place', 'City Treasurer', ARRAY['anti_corruption', 'government_efficiency', 'government_spending_reduction']::text[]),
     ('place', 'Mayor', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
