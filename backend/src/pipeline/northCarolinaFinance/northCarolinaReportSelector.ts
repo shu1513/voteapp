@@ -175,9 +175,18 @@ function buildFilings(
 // with filing time, so two filings tying on this whole key are ambiguous
 // (quarantined below), never id-ordered.
 function chronologyKey(filing: NcsbeFiling): [string, string, string] {
+  const importIso = maxIso(filing.rows.map((row) => row.dataImportDate.iso));
   return [
-    filing.filedDateIso ?? "",
-    maxIso(filing.rows.map((row) => row.dataImportDate.iso)) ?? "",
+    // A filing with no ImageReceiptDate falls back to its DataImportDate
+    // rather than sorting as the oldest thing in the group. Absence of an
+    // image date is absence of evidence, not evidence of age: the live run
+    // found seven committees whose amendment carried no image date yet
+    // (STA-N4ETL0-C-001's Second Quarter amendment: no image, imported
+    // 07/22/2026, against an original imaged 07/17 and imported 07/10).
+    // Ranking those amendments below their own originals quarantined the
+    // lineage and cost each candidate their entire direct snapshot.
+    filing.filedDateIso ?? importIso ?? "",
+    importIso ?? "",
     filing.isAmendment ? "1" : "0",
   ];
 }
