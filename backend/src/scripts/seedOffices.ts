@@ -1355,6 +1355,37 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     aliasText: "Parish Police Juror",
   },
   {
+    // The Police Jury is the governing body of most Louisiana parishes; the
+    // seat strip reduces the live ballot form ("Police Juror District 3") to
+    // this bare title, which the Parish-qualified alias above cannot catch.
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Police Juror",
+  },
+  {
+    // An Alaska borough assembly is the borough's legislative body — the
+    // county-board analogue. Safe at county scope: a state-assembly title on
+    // a county row is hard-rejected by the elections validator in every state
+    // with a real state assembly (Alaska's legislature is a House + Senate).
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Borough Assembly Member",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Supervisor",
+    aliasText: "Assembly Member",
+  },
+  {
+    // The Alaska borough mayor is the county-equivalent executive, the same
+    // office "County Mayor" aliases below. A bare "Mayor" alias is
+    // deliberately absent: a mis-scoped city mayor row must keep failing to
+    // resolve.
+    scope: "county",
+    officeCanonicalName: "County Executive",
+    aliasText: "Borough Mayor",
+  },
+  {
     scope: "county",
     officeCanonicalName: "County Supervisor",
     aliasText: "Fiscal Court Member",
