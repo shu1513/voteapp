@@ -317,9 +317,15 @@ services:
 databases:
   - name: voteapp-db
     region: ohio
-    # FREE PLAN EXPIRES ~30 days after creation (instance deleted). Upgrade
-    # to basic-256mb or larger before expiry once billing is set up.
-    plan: free
+    # Upgraded off the free plan 2026-08-08, one day before the free
+    # instance's 30-day expiry would have DELETED it and the data with it.
+    # Sized by working set, not storage: the database holds ~290 MB, so
+    # basic-256mb would have had less RAM than the data it serves and would
+    # have gone to disk for the batch pipelines (backfills, record sweeps,
+    # per-state finance syncs). basic-1gb keeps the hot set cached and gives
+    # 0.5 CPU instead of 0.1. Storage is not part of the tier on paid plans —
+    # it expands at $0.30/GB.
+    plan: basic-1gb
 
 envVarGroups:
   - name: voteapp-shared
