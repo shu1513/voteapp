@@ -185,6 +185,7 @@ describe("replaceSanFranciscoOutsideCommitteeLinks", () => {
 
 const SUMMARY = {
   totalRaisedCents: 123_456,
+  directContributionCents: 90_000,
   totalSpentCents: 100_000,
   cashOnHandCents: 5,
   debtsOwedCents: null,
@@ -255,6 +256,7 @@ describe("replaceSanFranciscoCandidateFinanceSnapshot", () => {
       "link-1",
       2026,
       "1234.56",
+      "900.00",
       "1000.00",
       "0.05",
       null,

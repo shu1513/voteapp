@@ -46,7 +46,15 @@ export type SanFranciscoOutsideCommitteeLinkInput = {
 // All snapshot amounts arrive as integer cents (the aggregators' unit) and
 // are converted to exact dollar strings at the database boundary.
 export type SanFranciscoFinanceSummaryInput = {
+  /** Manifest funds figure — INCLUDES public-financing money (gate identity). */
   totalRaisedCents: number | null;
+  /**
+   * Donor contributions only (no loans, no public funds). The read path
+   * prefers this for total_raised so "Raised" and "Public funds" stay
+   * disjoint stats on the card; totalRaisedCents stays the reconciliation
+   * figure matching the SFEC dashboard headline.
+   */
+  directContributionCents: number | null;
   totalSpentCents: number | null;
   cashOnHandCents: number | null;
   debtsOwedCents: number | null;
@@ -231,11 +239,15 @@ export async function replaceSanFranciscoCandidateFinanceSnapshot(input: {
     });
     const year = input.link.electionYear;
     await client.query(
-      `INSERT INTO public.sfc_candidate_finance_summaries (link_id,election_year,total_receipts,total_disbursements,cash_on_hand,debts_owed,loans_received,public_funds_received,outside_support_total,outside_oppose_total,methodology_version,source_url,reported_through,last_synced_at) VALUES ($1::uuid,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::date,$14::timestamptz) ON CONFLICT (link_id,election_year) DO UPDATE SET total_receipts=EXCLUDED.total_receipts,total_disbursements=EXCLUDED.total_disbursements,cash_on_hand=EXCLUDED.cash_on_hand,debts_owed=EXCLUDED.debts_owed,loans_received=EXCLUDED.loans_received,public_funds_received=EXCLUDED.public_funds_received,outside_support_total=EXCLUDED.outside_support_total,outside_oppose_total=EXCLUDED.outside_oppose_total,methodology_version=EXCLUDED.methodology_version,source_url=EXCLUDED.source_url,reported_through=EXCLUDED.reported_through,last_synced_at=EXCLUDED.last_synced_at`,
+      `INSERT INTO public.sfc_candidate_finance_summaries (link_id,election_year,total_receipts,direct_contribution_total,total_disbursements,cash_on_hand,debts_owed,loans_received,public_funds_received,outside_support_total,outside_oppose_total,methodology_version,source_url,reported_through,last_synced_at) VALUES ($1::uuid,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14::date,$15::timestamptz) ON CONFLICT (link_id,election_year) DO UPDATE SET total_receipts=EXCLUDED.total_receipts,direct_contribution_total=EXCLUDED.direct_contribution_total,total_disbursements=EXCLUDED.total_disbursements,cash_on_hand=EXCLUDED.cash_on_hand,debts_owed=EXCLUDED.debts_owed,loans_received=EXCLUDED.loans_received,public_funds_received=EXCLUDED.public_funds_received,outside_support_total=EXCLUDED.outside_support_total,outside_oppose_total=EXCLUDED.outside_oppose_total,methodology_version=EXCLUDED.methodology_version,source_url=EXCLUDED.source_url,reported_through=EXCLUDED.reported_through,last_synced_at=EXCLUDED.last_synced_at`,
       [
         linkId,
         year,
         centsToDollars(input.summary.totalRaisedCents, "total raised"),
+        centsToDollars(
+          input.summary.directContributionCents,
+          "direct contributions",
+        ),
         centsToDollars(input.summary.totalSpentCents, "total spent"),
         centsToDollars(input.summary.cashOnHandCents, "cash on hand"),
         centsToDollars(input.summary.debtsOwedCents, "debts owed"),

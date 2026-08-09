@@ -13,8 +13,13 @@ CREATE TABLE public.sfc_candidate_finance_summaries (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   link_id uuid NOT NULL,
   election_year integer NOT NULL CHECK (election_year BETWEEN 2000 AND 2100),
-  -- Manifest headline figures (funds / expenses), dollars.
+  -- Manifest headline figures (funds / expenses), dollars. The manifest funds
+  -- figure INCLUDES public-financing disbursements (Phase 4 gate identity), so
+  -- it is kept for reconciliation while direct_contribution_total carries
+  -- donor money only — the value the read path prefers for total_raised, so
+  -- "Raised" and "Public funds" stay disjoint on the card (NC pattern).
   total_receipts numeric(16,2),
+  direct_contribution_total numeric(16,2),
   total_disbursements numeric(16,2),
   -- Latest Form 460: line 16 / line 19; Schedule B1 line 1 summed across
   -- filings. Loans are NEVER part of total_receipts (Phase 4 gate result).
@@ -32,6 +37,7 @@ CREATE TABLE public.sfc_candidate_finance_summaries (
   updated_at timestamptz NOT NULL DEFAULT now(),
   CHECK (
     (total_receipts IS NULL OR total_receipts >= 0)
+    AND (direct_contribution_total IS NULL OR direct_contribution_total >= 0)
     AND (total_disbursements IS NULL OR total_disbursements >= 0)
     AND (cash_on_hand IS NULL OR cash_on_hand >= 0)
     AND (debts_owed IS NULL OR debts_owed >= 0)
