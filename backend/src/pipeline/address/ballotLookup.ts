@@ -61,6 +61,7 @@ import { loadConnecticutCandidateFinanceSummariesByCandidateElection } from "../
 import { loadColoradoCandidateFinanceSummariesByCandidateElection } from "../coloradoFinance/coloradoBallotLookupFinanceLoader.js";
 import { loadCaliforniaCandidateFinanceSummariesByCandidateElection } from "../californiaFinance/californiaBallotLookupFinanceLoader.js";
 import { loadLosAngelesCandidateFinanceSummariesByCandidateElection } from "../losAngelesCityFinance/losAngelesBallotLookupFinanceLoader.js";
+import { loadSanFranciscoCandidateFinanceSummariesByCandidateElection } from "../sanFranciscoFinance/sanFranciscoBallotLookupFinanceLoader.js";
 import {
 } from "../../config/featureFlags.js";
 
@@ -879,6 +880,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "CO", load: loadColoradoCandidateFinanceSummariesByCandidateElection },
   { state: "CA", load: loadCaliforniaCandidateFinanceSummariesByCandidateElection },
   { state: "CA", load: loadLosAngelesCandidateFinanceSummariesByCandidateElection },
+  { state: "CA", load: loadSanFranciscoCandidateFinanceSummariesByCandidateElection },
   { state: "OH", load: loadOhioCandidateFinanceSummariesByCandidateElection },
   { state: "NC", load: loadNorthCarolinaCandidateFinanceSummariesByCandidateElection },
   { state: "GA", load: loadGeorgiaCandidateFinanceSummariesByCandidateElection },
@@ -908,11 +910,11 @@ export async function loadCandidateFinanceSummariesByCandidateElection(
   // Sequential on purpose: parallelizing changes query interleaving for no
   // practical win and would break the ordered query mocks across the test
   // suite. At most one adapter is non-empty per election, but the two states
-  // with two adapters get there differently: TX excludes the overlap in code
-  // (Texas skips Houston's offices at read time), while CA does not gate its
-  // reads — its state and LA adapters stay disjoint only because their link
-  // tables hold different candidate/elections; on the (in-practice unreached)
-  // overlap the later adapter, LA, wins.
+  // with multiple adapters get there differently: TX excludes the overlap in
+  // code (Texas skips Houston's offices at read time), while CA does not gate
+  // its reads — its state, LA, and SF adapters stay disjoint only because
+  // their link tables hold different candidate/elections; on the (in-practice
+  // unreached) overlap the latest-registered adapter wins.
   //
   // Each source is fault-isolated: finance summaries enrich the ballot
   // lookup, so a broken finance module must degrade to "no summaries from
