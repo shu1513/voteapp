@@ -72,6 +72,7 @@ const REQUIRED_COLUMNS: RequiredColumn[] = [
   { table: "manual_research_deferrals", column: "district_id" },
   { table: "manual_research_deferrals", column: "election_id" },
   { table: "manual_research_deferrals", column: "stage" },
+  { table: "manual_research_deferrals", column: "blocker_key" },
   { table: "manual_research_deferrals", column: "reason" },
   { table: "manual_research_deferrals", column: "blocked_until" },
   { table: "manual_research_deferrals", column: "source_url" },
