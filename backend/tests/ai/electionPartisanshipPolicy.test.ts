@@ -402,6 +402,271 @@ describe("electionPartisanshipPolicy", () => {
     ).toBeUndefined();
   });
 
+  it("keeps Ohio common pleas, municipal, and county court judges nonpartisan", () => {
+    // ORC 3505.04 puts "judges of a municipal court, county court, or court of
+    // common pleas" on the nonpartisan ballot, which may print no party
+    // designation — they are nominated at a party primary and reach November
+    // with no label. Live 2026-08-08: identical common pleas titles were stored
+    // as both t and f because policy forced the whole Ohio bench partisan.
+    const nonpartisanTitles = [
+      "For Judge of the Court of Common Pleas (General Division) (Full Term Commencing 1/2/2027)",
+      "Judge of the Court of Common Pleas (Probate Division) - Full Term Commencing 02/09/2027",
+      "Judge of Common Pleas Court (Domestic Relations) 1/2/2027",
+      // County boards abbreviate the court; this exact title is live.
+      "Judge Ct. of Com Pleas - Probate - FT Commencing 2/9/2027",
+      "Judge of the Municipal Court (Full term commencing 1/1/2027)",
+      "Judge of the County Court, Eastern District",
+      // The probate and juvenile courts are divisions of the court of common
+      // pleas (ORC 2101.01), and boards title them without ever naming that
+      // court — Ross County files this exact form. Enumerating lower courts
+      // would force these partisan; naming the two partisan courts does not.
+      "PROBATE COURT JUDGE, JUVENILE DIVISION",
+      "Judge of the Probate Court",
+      "Juvenile Court Judge",
+      "Domestic Relations Judge",
+    ];
+
+    for (const title of nonpartisanTitles) {
+      expect(
+        resolveElectionIsPartisan({
+          draft: {
+            district_id: "d-oh",
+            district_name: "Franklin County, Ohio",
+            district_type: "county",
+            state: "OH",
+          },
+          contestFamily: "judicial_office",
+          raceType: "office",
+          officialBallotTitle: title,
+          aiValue: true,
+        })
+      ).toBe(false);
+
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "county",
+          state: "OH",
+          officialBallotTitle: title,
+        })
+      ).toBe(false);
+
+      expect(
+        shouldIncludeCandidatePartyByPolicy({
+          districtType: "county",
+          state: "OH",
+          officialBallotTitle: title,
+        })
+      ).toBe(false);
+    }
+  });
+
+  it("keeps Ohio supreme court and court of appeals judges partisan", () => {
+    // H.B. 149 / S.B. 80 (134th G.A.) added these two courts to the office-type
+    // ballot, where ORC 3505.03 prints the nominating party under the name.
+    const partisanTitles = [
+      "Justice of the Supreme Court of Ohio (Full term commencing 01/01/2027)",
+      "Chief Justice of the Supreme Court",
+      "Judge of the Court of Appeals, 10th District (Full term commencing 2/9/2027)",
+    ];
+
+    for (const title of partisanTitles) {
+      expect(
+        resolveElectionIsPartisan({
+          draft: {
+            district_id: "d-oh",
+            district_name: "Ohio",
+            district_type: "statewide",
+            state: "OH",
+          },
+          contestFamily: "judicial_office",
+          raceType: "office",
+          officialBallotTitle: title,
+          aiValue: false,
+        })
+      ).toBe(true);
+
+      expect(
+        shouldIncludeCandidatePartyByPolicy({
+          districtType: "statewide",
+          state: "OH",
+          officialBallotTitle: title,
+        })
+      ).toBe(true);
+    }
+  });
+
+  it("does not force Ohio judicial retention or non-judicial county offices", () => {
+    // "County Judge" is a non-judicial executive in some states; Ohio has no
+    // such office, but the nonpartisan rule must key on "county court", not on
+    // the bare word "county".
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "county",
+        state: "OH",
+        officialBallotTitle: "Clerk of the Court of Common Pleas",
+      })
+    ).toBeUndefined();
+  });
+
+  it("leaves Tennessee judicial contests to the researched value", () => {
+    // Every Tennessee trial level is decided by the county, not the title:
+    // Shelby runs its circuit, criminal, chancery, and general sessions judges
+    // nonpartisan while Knox, Davidson, Hamilton, and Montgomery print a party
+    // on the same titles (live 2026-08-06 ballots).
+    const titles = [
+      "Circuit Court Judge Division III, District 30, Unexpired Term",
+      "General Sessions Judge Division IV (Unexpired Term)",
+      "Chancellor Part II - 19th Judicial Dist",
+      "Municipal Judge, Division 1, City of Bartlett",
+    ];
+
+    for (const title of titles) {
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "county",
+          state: "TN",
+          officialBallotTitle: title,
+        })
+      ).toBeUndefined();
+
+      for (const aiValue of [true, false]) {
+        expect(
+          resolveElectionIsPartisan({
+            draft: {
+              district_id: "d-tn",
+              district_name: "Shelby County, Tennessee",
+              district_type: "county",
+              state: "TN",
+            },
+            contestFamily: "judicial_office",
+            raceType: "office",
+            officialBallotTitle: title,
+            aiValue,
+          })
+        ).toBe(aiValue);
+      }
+    }
+
+    // With nothing forced, the prompt has to ask for the value.
+    expect(
+      shouldAskIsPartisanInPrompt({
+        draft: {
+          district_id: "d-tn",
+          district_name: "Shelby County, Tennessee",
+          district_type: "county",
+          state: "TN",
+        },
+        contestFamily: "judicial_office",
+      })
+    ).toBe(true);
+  });
+
+  it("keeps Indiana trial judges partisan except the nonpartisan counties", () => {
+    // Ind. Code 33-33-82-31 lists Vanderburgh circuit and superior judges
+    // "without party designation"; Allen County's superior judges are
+    // nonpartisan too, while its circuit judge stays partisan.
+    for (const title of [
+      "Judge of the Vanderburgh Superior Court, No. 3",
+      "Judge, Vanderburgh Circuit Court",
+      "Judge of the Allen Superior Court, No. 2",
+      "Judge of the Superior Court, Allen County",
+    ]) {
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "county",
+          state: "IN",
+          officialBallotTitle: title,
+        })
+      ).toBe(false);
+    }
+
+    for (const title of [
+      "Judge of the Elkhart Superior Court, No. 1",
+      "Judge, Tippecanoe Superior Court No. 2",
+      "Judge, Allen Circuit Court",
+    ]) {
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "county",
+          state: "IN",
+          officialBallotTitle: title,
+        })
+      ).toBe(true);
+    }
+  });
+
+  it("keeps Indiana city and town courts partisan inside the nonpartisan counties", () => {
+    // A city or town court sits inside a county without being one of its
+    // courts. IC 33-35-1-1 elects those judges at the municipal election with
+    // a party label in every county, so the county-wide Vanderburgh and Allen
+    // carve-outs must not swallow them.
+    for (const title of [
+      "Judge of the Darmstadt Town Court, Vanderburgh County",
+      "Vanderburgh County - Judge of the City Court",
+      "Judge, New Haven City Court, Allen County",
+    ]) {
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "place",
+          state: "IN",
+          officialBallotTitle: title,
+        })
+      ).toBe(true);
+    }
+
+    // The carve-out still has to survive a title that names no court level,
+    // which is why the county patterns stay broad rather than being narrowed
+    // to "circuit"/"superior".
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "county",
+        state: "IN",
+        officialBallotTitle: "Vanderburgh County Judge",
+      })
+    ).toBe(false);
+  });
+
+  it("keeps the remaining partisan-judicial states forcing partisan", () => {
+    // Audited 2026-08-08 against per-court-level ballot rules. These states
+    // print the party at every level that reaches a ballot; where they do not
+    // (Illinois/Pennsylvania/New Mexico/Missouri/Kansas later terms, Indiana
+    // merit counties), the contest arrives as a retention question and the
+    // retention rule catches it first.
+    const cases: ReadonlyArray<[string, string]> = [
+      ["AL", "Circuit Court Judge, 28th Judicial Circuit, Place No. 7"],
+      ["IL", "Judge of the Circuit Court, 1st Subcircuit"],
+      ["KS", "District Court Judge, 18th Judicial District, Division 5"],
+      ["LA", "District Judge 22nd Judicial District Court, Division A"],
+      ["MO", "Circuit Judge, 44th Judicial Circuit"],
+      ["NM", "Bernalillo County Metropolitan Court Judge - Division 19"],
+      ["NY", "Supreme Court Justice - 10th Judicial District"],
+      ["NC", "NC District Court Judge District 26 Seat 13"],
+      ["PA", "Judge of the Court of Common Pleas"],
+      ["SC", "Probate Judge"],
+      ["TX", "Justice, Supreme Court of Texas, Place 2"],
+    ];
+
+    for (const [state, title] of cases) {
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "county",
+          state,
+          officialBallotTitle: title,
+        })
+      ).toBe(true);
+    }
+
+    // Pennsylvania's own court of common pleas is partisan — the nonpartisan
+    // common pleas rule is Ohio's alone.
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "county",
+        state: "PA",
+        officialBallotTitle: "Judge of the Court of Common Pleas",
+      })
+    ).toBe(true);
+  });
+
   it("forces Washington state-legislative contests to partisan", () => {
     for (const districtType of ["state_upper", "state_lower"] as const) {
       expect(
