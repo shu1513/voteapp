@@ -252,6 +252,12 @@ function collectMiddleEvidence(input: MiddleNameConflictInput): {
 // for the SAME generation and real filings conflate them; treating that pair
 // as a contradiction would reject genuine links. Only a true generation gap
 // (SR vs II, SR vs JR, II vs III) is evidence of two different people.
+// A distinct "John Smith II" who is not "John Smith Jr." does exist as a
+// naming convention (a namesake who is not the son), but a cross-link needs
+// both of them ALIVE AND RUNNING for the same office, district, and year —
+// the caller gates on those before this veto runs — while Jr/II styling
+// variance for one person across a roster and a state file is routine.
+// Equating them trades a near-nonexistent collision for the common case.
 //
 // Bare "V" and "I" are deliberately absent: as a trailing token they are far
 // more often a middle initial ("Smith, John V") than a fifth generation, and
@@ -264,34 +270,59 @@ const GENERATIONAL_SUFFIX_RANK = new Map<string, number>([
   ["IV", 4],
 ]);
 
-// A raw name split into its trailing generational suffix (or null) and the
-// remainder with the suffix and its separators removed. Read from the RAW
-// string on purpose: every state's normalizePersonName strips suffixes before
-// the parse functions above ever see them, so by the time middle evidence is
-// collected this information is already gone.
-//
-// Only the final token counts. A suffix is a trailing marker ("Bailey, Javier
-// II", "Lester L. Wilks Jr."); the same token earlier in the string belongs to
-// the name itself and must not be read as a generation. The base is returned
-// because the comma-suffix form ("Javier Bailey, II") parses to NOTHING as
-// written — the comma reads as a surname boundary whose remainder is empty
-// once the normalizer strips "II" — so the alignment check below must run on
-// the suffix-stripped base, not the raw string.
-function splitGenerationalSuffix(raw: string): { suffix: string | null; base: string } {
-  const trimmed = raw.replace(/[^A-Za-z0-9]+$/, "");
+// The trailing generational suffix of a plain string (no parentheticals),
+// split off from its remainder. { suffix: null } when the final token is not
+// a suffix or nothing would remain — a bare "II" is not a person name
+// carrying a suffix.
+function splitTrailingSuffix(value: string): { suffix: string | null; base: string } {
+  const trimmed = value.replace(/[^A-Za-z0-9]+$/, "");
   const match = /(?:^|[^A-Za-z0-9])([A-Za-z0-9]+)$/.exec(trimmed);
   const lastToken = match?.[1]?.toUpperCase();
   if (!match || !lastToken || !GENERATIONAL_SUFFIX_RANK.has(lastToken)) {
-    return { suffix: null, base: raw };
+    return { suffix: null, base: value };
   }
   const base = trimmed
     .slice(0, trimmed.length - match[1]!.length)
-    .replace(/[^A-Za-z0-9)]+$/, "");
+    .replace(/[^A-Za-z0-9]+$/, "");
   if (!base) {
-    // A bare "II" is not a person name carrying a suffix.
-    return { suffix: null, base: raw };
+    return { suffix: null, base: value };
   }
   return { suffix: lastToken, base };
+}
+
+// A raw name split into its generational suffix (or null) and the remainder
+// with the suffix and its separators removed. Read from the RAW string on
+// purpose: every state's normalizePersonName strips suffixes before the parse
+// functions above ever see them, so by the time middle evidence is collected
+// this information is already gone.
+//
+// A suffix rides in one of two positions, mirroring where real files put it:
+// the end of the string ("Lester L. Wilks Jr.", "Bailey, Javier II") or the
+// end of the surname segment in a comma form ("SMITH JR, JOHN"). The same
+// token anywhere else belongs to the name itself and must not be read as a
+// generation. Parenthetical metadata is dropped first — a party marker or
+// call-name alias ("John Smith Jr. (R)", "John Smith Jr. (Johnny Smith)")
+// would otherwise hide a genuinely trailing suffix — matching how
+// personNameParseVariants treats parentheticals for parsing.
+//
+// The base is returned because the comma-suffix form ("Javier Bailey, II")
+// parses to NOTHING as written — the comma reads as a surname boundary whose
+// remainder is empty once the normalizer strips "II" — so the alignment check
+// below must run on the suffix-stripped base, not the raw string.
+function splitGenerationalSuffix(raw: string): { suffix: string | null; base: string } {
+  const withoutParens = raw.replace(/\([^()]*\)/g, " ").replace(/\s+/g, " ").trim();
+  const trailing = splitTrailingSuffix(withoutParens);
+  if (trailing.suffix) {
+    return trailing;
+  }
+  const commaIndex = withoutParens.indexOf(",");
+  if (commaIndex > 0) {
+    const head = splitTrailingSuffix(withoutParens.slice(0, commaIndex));
+    if (head.suffix) {
+      return { suffix: head.suffix, base: head.base + withoutParens.slice(commaIndex) };
+    }
+  }
+  return { suffix: null, base: raw };
 }
 
 // The generational suffix carried by a raw name, or null.

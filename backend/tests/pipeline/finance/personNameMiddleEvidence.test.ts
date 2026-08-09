@@ -301,6 +301,21 @@ describe("generational suffix conflict", () => {
     expect(generationalSuffix("Javier Bailey")).toBeNull();
   });
 
+  it("finds the suffix under trailing parentheticals and in the surname segment", () => {
+    // Party markers and call-name aliases trail the suffix in roster names;
+    // surname-first files attach it to the surname segment instead.
+    expect(generationalSuffix("John Smith Jr. (R)")).toBe("JR");
+    expect(generationalSuffix("John Smith Jr. (Johnny Smith)")).toBe("JR");
+    expect(generationalSuffix("SMITH JR, JOHN")).toBe("JR");
+    expect(conflict("John Smith Sr.", ["SMITH JR, JOHN"])).toBe(true);
+    expect(conflict("John Smith Jr. (R)", ["SMITH, JOHN SR"])).toBe(true);
+    expect(conflict("John Smith Jr. (Johnny Smith)", ["SMITH, JOHN SR"])).toBe(true);
+    // A bare parenthetical numeral is a marker, not a generation, and the
+    // surname-segment rule must not read a lone pre-comma token as a suffix.
+    expect(generationalSuffix("John Smith (II)")).toBeNull();
+    expect(generationalSuffix("JR, JOHN")).toBeNull();
+  });
+
   it("rejects a row naming a different generation", () => {
     expect(conflict("Javier Bailey, II", ["BAILEY, JAVIER SR"])).toBe(true);
     expect(conflict("Jerry Jones, Jr.", ["JONES, JERRY SR"])).toBe(true);
