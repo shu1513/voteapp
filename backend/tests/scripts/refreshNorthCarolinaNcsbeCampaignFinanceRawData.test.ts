@@ -72,6 +72,16 @@ describe("parseRefreshNorthCarolinaNcsbeRawDataScriptArgs", () => {
     const options = parseRefreshNorthCarolinaNcsbeRawDataScriptArgs(["--cycle-year=2026"]);
     expect(options.committees).toEqual([]);
     expect(options.includeIe).toBe(true);
+    expect(options.roster).toBe(false);
+  });
+
+  it("accepts a roster run, including with --skip-ie", () => {
+    expect(parseRefreshNorthCarolinaNcsbeRawDataScriptArgs(["--cycle-year=2026", "--roster"]).roster).toBe(
+      true
+    );
+    expect(
+      parseRefreshNorthCarolinaNcsbeRawDataScriptArgs(["--cycle-year=2026", "--roster", "--skip-ie"]).roster
+    ).toBe(true);
   });
 
   it("refuses --cycle-year and --year together", () => {
@@ -158,6 +168,39 @@ describe("runRefreshNorthCarolinaNcsbeRawDataScript", () => {
     } finally {
       await rm(cacheDir, { recursive: true, force: true });
     }
+  });
+
+  it("refuses a roster run whose roster rows were never queried", async () => {
+    const options = parseRefreshNorthCarolinaNcsbeRawDataScriptArgs(["--cycle-year=2026", "--roster"]);
+    await expect(
+      runRefreshNorthCarolinaNcsbeRawDataScript({ options, now: new Date("2026-08-08T17:00:00Z") })
+    ).rejects.toThrow(/roster rows queried before the portal run/);
+  });
+
+  it("dry run reports the roster row count without any portal request", async () => {
+    const options = parseRefreshNorthCarolinaNcsbeRawDataScriptArgs([
+      "--cycle-year=2026",
+      "--roster",
+      "--dry-run",
+    ]);
+    const output = await runRefreshNorthCarolinaNcsbeRawDataScript({
+      options,
+      rosterRows: [
+        {
+          candidateId: "cand-1",
+          electionId: "elec-1",
+          candidateName: "Marcus Gadson",
+          electionYear: 2026,
+          officeScope: "state_upper",
+          officeName: "State Senator",
+          district: "28",
+          linkedCommitteeId: null,
+          linkedCommitteeName: null,
+        },
+      ],
+      now: new Date("2026-08-08T17:00:00Z"),
+    });
+    expect(output).toMatchObject({ dry_run: true, roster: true, roster_row_count: 1 });
   });
 
   it("dry run reports the plan without any portal request", async () => {
