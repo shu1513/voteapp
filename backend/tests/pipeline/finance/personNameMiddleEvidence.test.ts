@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   committeeNameMiddleEvidenceRowNames,
+  generationalSuffix,
   hasMiddleNameConflict,
   middleNameEvidence,
   parsePersonNameCandidates,
@@ -276,5 +277,105 @@ describe("committeeNameMiddleEvidenceRowNames", () => {
     );
     expect(committeeNameMiddleEvidenceRowNames("Jane B Doe 2026")).toContain("Jane B Doe");
     expect(committeeNameMiddleEvidenceRowNames("   ")).toEqual([]);
+  });
+});
+
+// A parent/child pair shares first, middle and last name by construction, so
+// middle evidence is structurally blind to it: middleNameEvidence downgrades
+// to "weak" the moment either side omits a middle, and when both carry the
+// SAME middle it reports "strong" — actively arguing they are one person. The
+// generational suffix is the only discriminator, and every state normalizer
+// strips it before the parse ever runs.
+describe("generational suffix conflict", () => {
+  function conflict(candidateName: string, rowNames: string[]): boolean {
+    return hasMiddleNameConflict({ candidateName, rowNames, normalizePersonName });
+  }
+  function matches(candidateName: string, rowNames: string[]): boolean {
+    return personNamesMatchWithMiddleEvidence({ candidateName, rowNames, normalizePersonName });
+  }
+
+  it("reads the trailing suffix off the raw name", () => {
+    expect(generationalSuffix("Javier Bailey, II")).toBe("II");
+    expect(generationalSuffix("Lester L. Wilks Jr.")).toBe("JR");
+    expect(generationalSuffix("BAILEY, JAVIER SR")).toBe("SR");
+    expect(generationalSuffix("Javier Bailey")).toBeNull();
+  });
+
+  it("rejects a row naming a different generation", () => {
+    expect(conflict("Javier Bailey, II", ["BAILEY, JAVIER SR"])).toBe(true);
+    expect(conflict("Jerry Jones, Jr.", ["JONES, JERRY SR"])).toBe(true);
+    expect(conflict("John Smith II", ["SMITH, JOHN III"])).toBe(true);
+  });
+
+  it("treats a missing suffix as missing information, not a contradiction", () => {
+    // State files omit "Jr" constantly; vetoing here would reject real links.
+    expect(conflict("Javier Bailey", ["BAILEY, JAVIER II"])).toBe(false);
+    expect(conflict("Javier Bailey, II", ["BAILEY, JAVIER"])).toBe(false);
+  });
+
+  it("treats JR and II as the same generation", () => {
+    // Different conventions for the same person; real filings conflate them.
+    expect(conflict("Javier Bailey Jr", ["BAILEY, JAVIER II"])).toBe(false);
+  });
+
+  it("does not read a trailing middle initial as a fifth generation", () => {
+    // "V" and "I" are excluded from the suffix set for exactly this reason.
+    expect(conflict("Smith, John V", ["SMITH, JOHN"])).toBe(false);
+    expect(conflict("John V Smith", ["SMITH, JOHN IV"])).toBe(false);
+  });
+
+  it("outranks strong middle corroboration", () => {
+    // The father/son trap: the shared middle name is precisely what makes
+    // middle evidence "strong", so the suffix veto must sit outside it.
+    expect(conflict("Javier Michael Bailey II", ["BAILEY, JAVIER MICHAEL SR"])).toBe(true);
+    expect(matches("Javier Michael Bailey II", ["BAILEY, JAVIER MICHAEL SR"])).toBe(false);
+  });
+
+  it("applies to the recall fallback too", () => {
+    expect(matches("Javier Bailey, II", ["BAILEY, JAVIER SR"])).toBe(false);
+    expect(matches("Javier Bailey II", ["BAILEY, JAVIER II"])).toBe(true);
+  });
+
+  it("survives the comma-before-suffix parse gap", () => {
+    // "Javier Bailey, II" is a comma-SUFFIX form, not a comma-SURNAME form,
+    // but parsePersonNameCandidates reads the comma as a surname boundary and
+    // then finds nothing after it once the normalizer strips "II" — so the
+    // name yields no parse variants and middle evidence can never align.
+    // Pre-existing, and exactly the display_name shape rosters produce.
+    expect(parsePersonNameCandidates("Javier Bailey, II", normalizePersonName)).toEqual([]);
+    // The suffix veto is unaffected: it aligns on the suffix-STRIPPED base
+    // ("Javier Bailey"), which parses fine once the trailing ", II" is gone.
+    expect(conflict("Javier Bailey, II", ["BAILEY, JAVIER SR"])).toBe(true);
+  });
+
+  it("requires the suffix-stripped names to align as the same person", () => {
+    // IL/DC pass raw committee names, whose trailing roman numerals are
+    // seats, not generations. "WARD"-suffixed parses never align with SMITH,
+    // so the positional numeral cannot veto the candidate's own committee...
+    expect(conflict("John Smith Jr.", ["JOHN SMITH FOR WARD III"])).toBe(false);
+    expect(
+      conflict("John Smith Jr.", committeeNameMiddleEvidenceRowNames("John Smith for Ward III"))
+    ).toBe(false);
+    // ...while a genuine generational segment still aligns and rejects.
+    expect(
+      conflict(
+        "John Smith Jr.",
+        committeeNameMiddleEvidenceRowNames("Citizens for John Smith III for Governor")
+      )
+    ).toBe(true);
+    // A different person entirely carries no alignment and no veto.
+    expect(conflict("John Smith Jr.", ["DOE, JANE III"])).toBe(false);
+  });
+
+  it("honors the caller's nickname equivalence during alignment", () => {
+    expect(
+      hasMiddleNameConflict({
+        candidateName: "Mike Smith Jr",
+        rowNames: ["SMITH, MICHAEL III"],
+        normalizePersonName,
+        firstNamesEquivalent: (candidateFirst, rowFirst) =>
+          candidateFirst === rowFirst || (candidateFirst === "MIKE" && rowFirst === "MICHAEL"),
+      })
+    ).toBe(true);
   });
 });

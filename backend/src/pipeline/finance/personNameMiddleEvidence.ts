@@ -243,19 +243,133 @@ function collectMiddleEvidence(input: MiddleNameConflictInput): {
   return { sawStrong, sawWeak, sawConflict, sawExactConflict };
 }
 
+// Generational suffixes, ranked by generation. A parent/child pair shares
+// first, middle AND last name by construction, so middle evidence can never
+// separate them (middleNameEvidence returns "weak" the moment either side
+// omits a middle) — the suffix is the only discriminator there is.
+//
+// Ranked rather than compared as strings because JR and II are conventions
+// for the SAME generation and real filings conflate them; treating that pair
+// as a contradiction would reject genuine links. Only a true generation gap
+// (SR vs II, SR vs JR, II vs III) is evidence of two different people.
+//
+// Bare "V" and "I" are deliberately absent: as a trailing token they are far
+// more often a middle initial ("Smith, John V") than a fifth generation, and
+// a false suffix conflict rejects a real committee.
+const GENERATIONAL_SUFFIX_RANK = new Map<string, number>([
+  ["SR", 1],
+  ["JR", 2],
+  ["II", 2],
+  ["III", 3],
+  ["IV", 4],
+]);
+
+// A raw name split into its trailing generational suffix (or null) and the
+// remainder with the suffix and its separators removed. Read from the RAW
+// string on purpose: every state's normalizePersonName strips suffixes before
+// the parse functions above ever see them, so by the time middle evidence is
+// collected this information is already gone.
+//
+// Only the final token counts. A suffix is a trailing marker ("Bailey, Javier
+// II", "Lester L. Wilks Jr."); the same token earlier in the string belongs to
+// the name itself and must not be read as a generation. The base is returned
+// because the comma-suffix form ("Javier Bailey, II") parses to NOTHING as
+// written — the comma reads as a surname boundary whose remainder is empty
+// once the normalizer strips "II" — so the alignment check below must run on
+// the suffix-stripped base, not the raw string.
+function splitGenerationalSuffix(raw: string): { suffix: string | null; base: string } {
+  const trimmed = raw.replace(/[^A-Za-z0-9]+$/, "");
+  const match = /(?:^|[^A-Za-z0-9])([A-Za-z0-9]+)$/.exec(trimmed);
+  const lastToken = match?.[1]?.toUpperCase();
+  if (!match || !lastToken || !GENERATIONAL_SUFFIX_RANK.has(lastToken)) {
+    return { suffix: null, base: raw };
+  }
+  const base = trimmed
+    .slice(0, trimmed.length - match[1]!.length)
+    .replace(/[^A-Za-z0-9)]+$/, "");
+  if (!base) {
+    // A bare "II" is not a person name carrying a suffix.
+    return { suffix: null, base: raw };
+  }
+  return { suffix: lastToken, base };
+}
+
+// The generational suffix carried by a raw name, or null.
+export function generationalSuffix(raw: string): string | null {
+  return splitGenerationalSuffix(raw).suffix;
+}
+
+// True when the candidate and a row name BOTH carry a generational suffix,
+// those suffixes name different generations, and the suffix-stripped names
+// align on first+last — i.e. the row is the same name, one generation over.
+//
+// The alignment requirement is load-bearing, not decoration. IL and DC pass
+// raw COMMITTEE names through committeeNameMiddleEvidenceRowNames, and
+// committee names can end in positional roman numerals ("Smith for Judge
+// Division III", "Friends of John Doe Ward II") that are seats, not
+// generations. Without alignment, "John Smith Jr." would veto his own
+// "John Smith for Ward III" committee. With it, that string's parses
+// ("SMITH WARD" / "WARD" surnames) never align with SMITH, so no veto —
+// while a genuine "Citizens for John Smith III" segment aligns and still
+// rejects. A wrong split can fail to align but never manufacture alignment
+// (the module invariant), and any aligned pair is decisive here because the
+// suffix came from the raw string, unaffected by how the base was split.
+//
+// One side lacking a suffix is MISSING INFORMATION, not a contradiction —
+// state files omit "Jr" constantly — so it stays weak, the same rule
+// middleNameEvidence applies to absent middles.
+export function hasGenerationalSuffixConflict(input: MiddleNameConflictInput): boolean {
+  const candidate = splitGenerationalSuffix(input.candidateName);
+  if (!candidate.suffix) {
+    return false;
+  }
+  const candidateRank = GENERATIONAL_SUFFIX_RANK.get(candidate.suffix)!;
+  const firstNamesEquivalent =
+    input.firstNamesEquivalent ?? ((candidateFirst: string, rowFirst: string) => candidateFirst === rowFirst);
+  const candidateVariants = personNameParseVariants(candidate.base, input.normalizePersonName);
+  return input.rowNames.some((rowName) => {
+    const row = splitGenerationalSuffix(rowName);
+    if (!row.suffix || GENERATIONAL_SUFFIX_RANK.get(row.suffix)! === candidateRank) {
+      return false;
+    }
+    for (const rowVariant of personNameParseVariants(row.base, input.normalizePersonName)) {
+      for (const candidateVariant of candidateVariants) {
+        if (
+          candidateVariant.last === rowVariant.last &&
+          firstNamesEquivalent(candidateVariant.first, rowVariant.first)
+        ) {
+          return true;
+        }
+      }
+    }
+    return false;
+  });
+}
+
 // True when the candidate and row names align on first+last, at least one
 // aligned pair carries contradicting middle names, and no aligned pair
-// corroborates the middle. Callers apply this AFTER their existing key-overlap
-// match, as a rejection gate:
+// corroborates the middle — or when the two names name different generations.
+// Callers apply this AFTER their existing key-overlap match, as a rejection
+// gate:
 //
 //   "John A. Smith" vs "Smith, John B."  -> true  (reject the row)
 //   "John A. Smith" vs "Smith, John Andrew" -> false (initial corroborates)
 //   "John Smith"    vs "Smith, John B."  -> false (a side lacks middle info)
+//   "Javier Bailey, II" vs "BAILEY, JAVIER SR" -> true (different generations)
+//   "Javier Bailey" vs "BAILEY, JAVIER II" -> false (a side lacks a suffix)
+//
+// The suffix veto sits OUTSIDE the sawStrong guard on purpose. Strong middle
+// corroboration is exactly what a father/son pair produces — they share the
+// middle name — so letting it override the suffix would re-open the one case
+// the suffix exists to catch.
 //
 // When no variant pair aligns at all (committee-name keys, nickname keys the
 // caller did not surface here) there is no middle evidence either way and the
 // state's key-overlap verdict stands.
 export function hasMiddleNameConflict(input: MiddleNameConflictInput): boolean {
+  if (hasGenerationalSuffixConflict(input)) {
+    return true;
+  }
   const evidence = collectMiddleEvidence(input);
   return !evidence.sawStrong && (evidence.sawConflict || evidence.sawExactConflict);
 }
@@ -269,6 +383,12 @@ export function hasMiddleNameConflict(input: MiddleNameConflictInput): boolean {
 // missing on a side matches. No alignment at all is no match — this function
 // never widens beyond first+last agreement.
 export function personNamesMatchWithMiddleEvidence(input: MiddleNameConflictInput): boolean {
+  // Checked first, and ahead of sawStrong, for the same reason the veto in
+  // hasMiddleNameConflict is: a father/son pair corroborates on the middle,
+  // so only the generational suffix separates them.
+  if (hasGenerationalSuffixConflict(input)) {
+    return false;
+  }
   const evidence = collectMiddleEvidence(input);
   return (
     evidence.sawStrong ||
