@@ -706,7 +706,24 @@ The acquisition spike is the gate before parser/aggregator work.
   contesting the same office in two districts in one cycle must not share
   one slice across both races; district-less rows alias into the person's
   district-bearing canonical target so a manual link without a district
-  never makes a person ambiguous with themselves. The sync needs NO OrgGroupID
+  never makes a person ambiguous with themselves. **Review round 2 (CodeRabbit,
+  1 major + 3 nitpicks, all accepted)**: (a) the district-less alias is now a
+  deterministic two-pass fold — pass 1 collects every known district per
+  person+scope, pass 2 aliases a district-less row only when exactly ONE
+  known district exists; with two or more, the key goes to
+  `ambiguousDistrictlessKeys` and that due row's outside slice becomes null
+  at write (writer preserves stored data) — no alias (arbitrary district's
+  money), no district-less target (would quarantine even well-discriminated
+  rows), no zeros (false zero). The reviewer's exactly-one guard alone was
+  still order-dependent (due rows process first, so the district-less row
+  became the canonical target and got upgraded by whichever universe
+  district arrived first); the two-pass shape removes the order dependence
+  entirely. (b) universe query year predicate is a sargable half-open date
+  range instead of `extract(year …)`. (c) the outside leg's fail-closed
+  unavailable message now names each missing IE report's read failure
+  (matching the direct path's `reportReadFailures`). (d) test added: person
+  with two known districts + district-less due row → slice null, direct
+  still syncs, attribution stays on district 27. The sync needs NO OrgGroupID
   (inventories are cached by SBoEID alone) — the PR 5 SBoEID→OGID derivation
   note lands on the acquisition side, where the portal URL is built.
   Scheduler: `northCarolinaCandidateFinanceSyncScheduler.ts` (ohio clone;

@@ -438,7 +438,8 @@ async function listNorthCarolinaOutsideTargetCandidatesForYear(
       WHERE candidate.deleted_at IS NULL
         AND district.state = 'NC'
         AND election.race_type = 'office'
-        AND extract(year from election.election_date)::int = $1::int
+        AND election.election_date >= make_date($1::int, 1, 1)
+        AND election.election_date < make_date($1::int + 1, 1, 1)
     `,
     [electionYear]
   );
@@ -457,9 +458,16 @@ type OutsideTargetSet = {
   targetsByKey: Map<string, NorthCarolinaOutsideCandidateTarget>;
   // Every key ever computed for a row -> its canonical target's key. A
   // district-less row (e.g. a manual link that never recorded one) aliases
-  // into the same person's district-bearing target instead of becoming a
-  // second target that would make the person ambiguous with themselves.
+  // into the same person's single district-bearing target instead of
+  // becoming a second target that would make the person ambiguous with
+  // themselves.
   canonicalKeyByAlias: Map<string, string>;
+  // Keys of district-less rows whose person has two or more known districts
+  // (review round): no alias can be picked without arbitrarily inheriting
+  // one district's money, and a district-less TARGET would match every row
+  // either district target matches — quarantining even well-discriminated
+  // rows — so these keys resolve to "outside data unavailable" at write.
+  ambiguousDistrictlessKeys: Set<string>;
 };
 
 function buildOutsideTargetSet(
@@ -469,44 +477,62 @@ function buildOutsideTargetSet(
 ): OutsideTargetSet {
   const targetsByKey = new Map<string, NorthCarolinaOutsideCandidateTarget>();
   const canonicalKeyByAlias = new Map<string, string>();
-  const entriesByPersonScope = new Map<string, Array<{ canonicalKey: string; district: string }>>();
+  const ambiguousDistrictlessKeys = new Set<string>();
 
+  // Pass 1: every known district per person + office scope (normalized ->
+  // first raw spelling), so pass 2 is order-independent. The earlier
+  // single-pass fold aliased a district-less row to whichever district
+  // happened to be inserted first (review round).
+  const knownDistricts = new Map<string, Map<string, string | null>>();
   for (const row of rows) {
-    const key = outsideTargetKey(row);
-    if (canonicalKeyByAlias.has(key)) {
+    const district = normalizeTargetDistrict(row.district);
+    if (district === "") {
       continue;
     }
     const personScope = `${row.candidateId}\u0000${row.officeScope}`;
-    const district = normalizeTargetDistrict(row.district);
-    const entries = entriesByPersonScope.get(personScope) ?? [];
-    // Compatible = same district, or one side unknown. Two distinct known
-    // districts stay separate targets (the genuinely-two-races case).
-    const compatible = entries.find(
-      (entry) => entry.district === district || entry.district === "" || district === ""
-    );
-    if (compatible) {
-      canonicalKeyByAlias.set(key, compatible.canonicalKey);
-      // A known district upgrades a district-less canonical target so
-      // contradicting-district rows are excluded instead of matched.
-      if (compatible.district === "" && district !== "") {
-        const target = targetsByKey.get(compatible.canonicalKey)!;
-        targetsByKey.set(compatible.canonicalKey, { ...target, district: row.district });
-        compatible.district = district;
-      }
-      continue;
+    const known = knownDistricts.get(personScope) ?? new Map<string, string | null>();
+    if (!known.has(district)) {
+      known.set(district, row.district);
     }
-    targetsByKey.set(key, {
-      candidateKey: key,
-      candidateName: row.candidateName,
-      officeScope: row.officeScope,
-      district: row.district,
-    });
-    canonicalKeyByAlias.set(key, key);
-    entries.push({ canonicalKey: key, district });
-    entriesByPersonScope.set(personScope, entries);
+    knownDistricts.set(personScope, known);
   }
 
-  return { targetsByKey, canonicalKeyByAlias };
+  // Pass 2: district-bearing rows key their own target (two distinct known
+  // districts stay separate targets — the genuinely-two-races case); a
+  // district-less row folds into the person's known district only when
+  // exactly one exists.
+  for (const row of rows) {
+    const key = outsideTargetKey(row);
+    if (canonicalKeyByAlias.has(key) || ambiguousDistrictlessKeys.has(key)) {
+      continue;
+    }
+    let district = normalizeTargetDistrict(row.district);
+    let rawDistrict = row.district;
+    if (district === "") {
+      const known = knownDistricts.get(`${row.candidateId}\u0000${row.officeScope}`);
+      if (known !== undefined && known.size > 1) {
+        ambiguousDistrictlessKeys.add(key);
+        continue;
+      }
+      const sole = known === undefined ? undefined : [...known.entries()][0];
+      if (sole !== undefined) {
+        district = sole[0];
+        rawDistrict = sole[1];
+      }
+    }
+    const canonicalKey = `${row.candidateId}\u0000${row.officeScope}\u0000${district}`;
+    if (!targetsByKey.has(canonicalKey)) {
+      targetsByKey.set(canonicalKey, {
+        candidateKey: canonicalKey,
+        candidateName: row.candidateName,
+        officeScope: row.officeScope,
+        district: rawDistrict,
+      });
+    }
+    canonicalKeyByAlias.set(key, canonicalKey);
+  }
+
+  return { targetsByKey, canonicalKeyByAlias, ambiguousDistrictlessKeys };
 }
 
 type OutsideAggregationForYear = {
@@ -515,6 +541,11 @@ type OutsideAggregationForYear = {
   // Filer keys (SBoEID / NC-IE-FILER hash) whose IE reports were aggregated
   // (not quarantined) — the inverse-miss cross-check's evidence set.
   aggregatedIeFilerKeys: Set<string>;
+  // Due-row keys whose outside slice is undecidable (district-less row for a
+  // person with two known districts) — resolved to null at write time so the
+  // writer preserves stored outside data instead of publishing a false zero
+  // or an arbitrary district's money.
+  ambiguousDistrictlessKeys: Set<string>;
   summary: NorthCarolinaOutsideAggregationYearSummary;
 };
 
@@ -532,6 +563,7 @@ async function aggregateOutsideForYear(input: {
     return {
       byTargetKey: null,
       aggregatedIeFilerKeys: new Set(),
+      ambiguousDistrictlessKeys: new Set(),
       summary: { electionYear: input.electionYear, available: false, error: message },
     };
   };
@@ -554,6 +586,7 @@ async function aggregateOutsideForYear(input: {
     // missing report fails the year closed below.
     const reports: NorthCarolinaOutsideReportInput[] = [];
     const seenReportIds = new Set<string>();
+    const reportReadFailures = new Map<string, string>();
     for (const row of ieInventoryRows) {
       const reportId = row.dataLink;
       if (reportId === null || seenReportIds.has(reportId)) {
@@ -575,9 +608,11 @@ async function aggregateOutsideForYear(input: {
             parse: parseNcsbeExpendituresPage,
           }),
         });
-      } catch {
+      } catch (error) {
         // Left unsupplied — the aggregator's missing-report accounting (and
-        // the fail-closed gate below) owns the consequence.
+        // the fail-closed gate below) owns the consequence; the reason is
+        // kept so the unavailable message can name it (review round).
+        reportReadFailures.set(reportId, errorMessage(error));
       }
     }
 
@@ -586,7 +621,10 @@ async function aggregateOutsideForYear(input: {
     // visible to the ambiguity guard even when they are not due this run
     // (or were never linked at all).
     const universeRows = await listNorthCarolinaOutsideTargetCandidatesForYear(input.db, input.electionYear);
-    const { targetsByKey, canonicalKeyByAlias } = buildOutsideTargetSet([...input.dueRows, ...universeRows]);
+    const { targetsByKey, canonicalKeyByAlias, ambiguousDistrictlessKeys } = buildOutsideTargetSet([
+      ...input.dueRows,
+      ...universeRows,
+    ]);
 
     const aggregation = aggregateNorthCarolinaOutsideSpending({
       ieInventoryRows,
@@ -602,7 +640,10 @@ async function aggregateOutsideForYear(input: {
     if (aggregation.missingReportIds.length > 0) {
       return unavailable(
         `${aggregation.missingReportIds.length} selected IE report(s) have no readable cached artifacts ` +
-          `(run north-carolina-candidates:finance:raw:refresh): ${aggregation.missingReportIds.join(", ")}`
+          `(run north-carolina-candidates:finance:raw:refresh): ` +
+          aggregation.missingReportIds
+            .map((reportId) => `${reportId}: ${reportReadFailures.get(reportId) ?? "not cached"}`)
+            .join("; ")
       );
     }
 
@@ -638,6 +679,7 @@ async function aggregateOutsideForYear(input: {
     return {
       byTargetKey,
       aggregatedIeFilerKeys,
+      ambiguousDistrictlessKeys,
       summary: {
         electionYear: input.electionYear,
         available: true,
@@ -803,9 +845,23 @@ export async function syncDueNorthCarolinaCandidateFinance(
     }
 
     const outside = outsideByYear.get(row.electionYear);
-    const outsideFinance =
-      outside?.byTargetKey?.get(outsideTargetKey(row)) ??
-      (outside?.byTargetKey ? { supportTotal: 0, opposeTotal: 0, groups: [] } : null);
+    const rowTargetKey = outsideTargetKey(row);
+    // A district-less due row for a person with two known districts cannot
+    // name its race, so its outside slice is unavailable (the writer
+    // preserves stored outside data) instead of a false zero or an
+    // arbitrarily inherited district's money (review round).
+    const districtlessAmbiguous = outside?.ambiguousDistrictlessKeys.has(rowTargetKey) === true;
+    if (districtlessAmbiguous) {
+      console.warn(
+        "North Carolina outside slice undecidable for district-less due row (person has two known " +
+          "districts); preserving stored outside totals:",
+        { candidateId: row.candidateId, electionId: row.electionId, electionYear: row.electionYear }
+      );
+    }
+    const outsideFinance = districtlessAmbiguous
+      ? null
+      : (outside?.byTargetKey?.get(rowTargetKey) ??
+        (outside?.byTargetKey ? { supportTotal: 0, opposeTotal: 0, groups: [] } : null));
     const ieInverseMissSuspected =
       direct.result.ieTypedRegularReportRowCount > 0 &&
       outside?.byTargetKey != null &&

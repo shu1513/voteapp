@@ -614,6 +614,52 @@ describe("syncDueNorthCarolinaCandidateFinance", () => {
     });
   });
 
+  it("marks a district-less due row's outside slice unavailable when the person has two known districts", async () => {
+    const cacheDir = await makeCacheDir();
+    await installCommitteeArtifacts(cacheDir);
+    await installIeArtifacts(cacheDir);
+    // The due row's manual link never recorded a district, but the universe
+    // shows the same person contesting districts 27 and 3. Neither district
+    // may claim the row, and a district-less target would make even the
+    // clearly-district-27 IE rows ambiguous — so the row's outside slice is
+    // null (writer preserves) while attribution stays on district 27.
+    const db = createDb([dueRow({ district: null })]);
+    db.query.mockResolvedValueOnce({
+      rows: [
+        {
+          candidate_id: "11111111-1111-4111-8111-111111111111",
+          candidate_name: "Jane Doe",
+          office_scope: "state_lower",
+          district: "27",
+        },
+        {
+          candidate_id: "11111111-1111-4111-8111-111111111111",
+          candidate_name: "Jane Doe",
+          office_scope: "state_lower",
+          district: "3",
+        },
+      ],
+    });
+    const syncFn = vi.fn().mockResolvedValue({ ok: true });
+
+    const result = await syncDueNorthCarolinaCandidateFinance({
+      db,
+      now: new Date("2026-08-07T09:00:00.000Z"),
+      autoLinkMissingLinks: false,
+      rawDataCacheDir: cacheDir,
+      syncNorthCarolinaCandidateFinanceFn: syncFn as never,
+    });
+
+    expect(result.outsideAggregationByYear[0]).toMatchObject({
+      available: true,
+      ambiguousTargetCount: 0,
+      attributedRowCount: 2,
+    });
+    // Direct finance still syncs; only the outside slice is withheld.
+    expect(result).toMatchObject({ syncedCandidateCount: 1, failedCandidateCount: 0 });
+    expect(syncFn.mock.calls[0]![0].outsideFinance).toBeNull();
+  });
+
   it("passes dryRun through and skips auto-link on dry runs", async () => {
     const cacheDir = await makeCacheDir();
     await installCommitteeArtifacts(cacheDir);
