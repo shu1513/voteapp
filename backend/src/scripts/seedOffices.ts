@@ -769,6 +769,18 @@ const SEED_OFFICES: SeedOffice[] = [
     ].join("\n"),
   },
   {
+    // A Louisiana city marshal is the elected law-enforcement officer of the
+    // city court (La. R.S. 13:1879 et seq.), NOT a judge — see migration 224.
+    scope: "place",
+    canonicalName: "City Marshal",
+    summary: [
+      "Carrying out the city court's orders, such as warrants, evictions, and seizures of property",
+      "Serving court papers, including subpoenas and legal notices",
+      "Keeping order and providing security in the courtroom",
+      "Enforcing the law within the court's area, as state law allows",
+    ].join("\n"),
+  },
+  {
     scope: "school_elementary",
     canonicalName: "School Board Member",
     summary: [
@@ -1671,6 +1683,28 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "place",
     officeCanonicalName: "Municipal Constable",
     aliasText: "Village Constable",
+  },
+  // Louisiana city-court marshal forms only, and each one names the city or the
+  // court. A town or village marshal (Indiana, Colorado) is the municipality's
+  // chief police officer rather than an officer of the court, so it stays
+  // uncatalogued and keeps returning no-match instead of inheriting this
+  // office's duties. There is deliberately NO bare "Marshal" alias: that is the
+  // exact word Indiana uses for the other office, and an alias would hand it
+  // over at confidence 1.000 — see migration 224.
+  {
+    scope: "place",
+    officeCanonicalName: "City Marshal",
+    aliasText: "City Marshal",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Marshal",
+    aliasText: "City Court Marshal",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Marshal",
+    aliasText: "Marshal of the City Court",
   },
   {
     scope: "place",

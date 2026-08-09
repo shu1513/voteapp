@@ -113,6 +113,16 @@ const JUDICIAL_TITLE_ALLOW_MARKERS = [
   /\bretain(?:ed|ing)?\b/,
 ];
 const NON_JUDICIAL_TITLE_MARKERS = [
+  // A city marshal is the city court's law-enforcement officer, on the same
+  // footing as the constable below: a Louisiana city marshal is elected under
+  // La. R.S. 13:1879 et seq. and the title names the court it serves ("City
+  // Marshal, City Court of Shreveport"), whose court words are judicial
+  // allow-markers. Without this the judge fast path returned Place Level Judge
+  // at confidence 1.000 — a silent, fully confident mis-file (Shreveport live,
+  // three qualifiers). The office is catalogued in its own right (migration
+  // 224), so a stamped-judicial marshal title still resolves through the alias
+  // table and the token scorer.
+  /\bmarshal\b/,
   // A constable is the justice court's law-enforcement officer, not one of its
   // judges, and Louisiana titles the seat by the court it serves ("Constable
   // 2nd Justice Court", "Constable Justice of the Peace Ward 7") — every one of
@@ -390,6 +400,18 @@ function mapFireDistrictBodyForms(value: string): string {
   return FIRE_DISTRICT_SEAT_KEY_PATTERN.test(value) ? FIRE_DISTRICT_OFFICE_KEY : value;
 }
 
+// What a numbered/lettered seat designator can look like once normalized:
+// "5", "5a", "II", "A". Letter-only seats are as common as numbers on live
+// ballots — New Orleans and Shreveport council districts run A-E, Utah
+// commission seats A-D — and before this alternation carried a bare letter the
+// letter survived the strip: "Council Member, District A" kept a stray "a"
+// token and scored 0.571 (ambiguous, no office) where "District 1" resolved at
+// 1.000. The Roman-numeral alternative already accepted i/v/x/l as bare
+// letters, so accepting the rest is the consistent reading, not a widening of
+// what counts as a seat: a single letter standing alone after ward/district/
+// seat/zone/part/precinct is never an office word.
+const SEAT_DESIGNATOR = String.raw`(?:\d+[a-z]{0,2}|[ivxl]+|[a-z])`;
+
 function stripSeatSuffixes(value: string): string {
   const withoutSeat = singularizeCommissionerBodyForms(value)
     // A numbered judicial circuit/district is the seat's jurisdiction, not part
@@ -436,18 +458,18 @@ function stripSeatSuffixes(value: string): string {
     // duplicate it ("member of county council member"); the generic district
     // strip below handles that seat form.
     .replace(
-      /(?<!\bmember of (?:[a-z]+ )?)\bcouncil (?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g,
+      new RegExp(String.raw`(?<!\bmember of (?:[a-z]+ )?)\bcouncil (?:district|dist) (?:no )?${SEAT_DESIGNATOR}\b`, "g"),
       "council member"
     )
     // "for" is removed with the seat it introduces: "Council Member for
     // District 2" (Fort Worth, live) must reduce to "council member", not
     // "council member for" — the dangling connector misses the alias table
     // and left ten council elections office-less.
-    .replace(/\bfor (?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g, " ")
+    .replace(new RegExp(String.raw`\bfor (?:district|dist) (?:no )?${SEAT_DESIGNATOR}\b`, "g"), " ")
     // Interposed "No." ("District No. 5", San Diego/Seattle live) and
     // Honolulu's abbreviated Roman form ("Dist II") are the same seat suffix;
     // both previously survived the strip and produced zero-overlap keys.
-    .replace(/\b(?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g, " ")
+    .replace(new RegExp(String.raw`\b(?:district|dist) (?:no )?${SEAT_DESIGNATOR}\b`, "g"), " ")
     .replace(/\b\d+(st|nd|rd|th)\s+district\b/g, " ")
     // Caddo Parish LA subdivides a ward's JP court and names the piece after
     // the community it covers ("Justice of the Peace Ward 2, Vivian Dist.",
@@ -483,10 +505,12 @@ function stripSeatSuffixes(value: string): string {
     // precinct, so the "justice" that introduces it goes with the number;
     // "Justice of the Peace, Prec. 2" keeps its office words because there
     // the number follows bare "prec"). Lettered seats ("Commission Seat A",
-    // Utah live) are the same designator; [a-h] keeps single-letter coverage
-    // beyond what the Roman-numeral alternative already accepts.
+    // Utah live) are the same designator.
     .replace(
-      /\b(?:ward|zone|seat|part|(?:justice )?(?:precinct|prec)) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+|[a-h])\b/g,
+      new RegExp(
+        String.raw`\b(?:ward|zone|seat|part|(?:justice )?(?:precinct|prec)) (?:no )?${SEAT_DESIGNATOR}\b`,
+        "g"
+      ),
       " "
     )
     // At-large is a seat designator, not an office word ("County Council At
@@ -687,6 +711,69 @@ function hasPhrase(text: string, phrase: string): boolean {
   return new RegExp(`\\b${escapeRegExp(phrase)}\\b`).test(text);
 }
 
+// Nouns that NAME THE JOB rather than describe it. The token scorer treats
+// every token alike, so a title whose function noun the catalog does not carry
+// still lands on whatever office shares its generic words, at a confidence high
+// enough to look authoritative and to be persisted as a learned alias:
+// "County Revenue Commissioner" (Alabama's combined tax assessor and collector,
+// uncatalogued) scored 0.800 into County Commissioner on two of three tokens.
+// That is the worst outcome in the pipeline — `method: none` aborts the payload
+// loudly and the researcher defers, while a confident wrong match writes
+// successfully and hands the contest another office's research areas, which
+// every later stage (roster, profile, records, labels) then inherits.
+//
+// So: an office that carries NONE of the title's function nouns is vetoed. The
+// test is "covers none", not "covers all", because a combined office names more
+// than one job and only one of them can be the catalog's: California counties
+// elect a "Sheriff-Coroner", which under a covers-all test vetoed Sheriff (no
+// "coroner") AND County Coroner (no "sheriff") and returned no match at all —
+// the loud failure is meant for an office the catalog is MISSING, not for one
+// it has. Covering one noun is enough to stay in the running; the token scorer
+// and the margin then decide between the halves (Sheriff 0.667 over County
+// Coroner 0.500 there, which is the right half — the coroner duty is annexed to
+// the sheriff's office, not the reverse).
+//
+// The list is deliberately short and holds
+// only nouns whose absence is decisive. Words that legitimately differ across a
+// state's synonym for the SAME job stay out of it — "prosecuting"/"prosecutor"
+// (District Attorney), "auditor"/"recorder" (Idaho and Utah fold them into the
+// county clerk's office, "Clerk, Auditor and Recorder" -> County Clerk and
+// Recorder at 0.667), "register" ("Clerk Register of Deeds"), "judge" and
+// "justice" (the contest-family filters already decide those) — because vetoing
+// them would turn correct matches into no-matches. Each candidate noun was
+// A/B-run over every distinct stored ballot title before being kept, and two
+// were dropped on the evidence: "constable" (Louisiana's combined
+// "Constable(s) Justice of the Peace Ward N" rows, which name both offices,
+// fell from Justice of the Peace to no-match) and "treasurer" (a combined
+// "County Auditor-Treasurer" merely FLIPPED to the other half of its own
+// office — a coin-flip, not the silent mis-file this guards against).
+//
+// Seeded aliases outrank this: an alias hit returns before any scoring, so a
+// state's own wording for a catalogued office is still expressed the same way
+// it always was, by adding the alias.
+const CITY_MARSHAL_OFFICE_KEY = "city marshal";
+const DISTINCT_FUNCTION_NOUNS = [
+  "marshal",
+  "coroner",
+  "sheriff",
+  "surveyor",
+  "assessor",
+  "engineer",
+  "revenue",
+  "moderator",
+  "defender",
+  "mayor",
+  "superintendent",
+];
+
+function coversNoFunctionNounOfTitle(titleMatcherKey: string, office: OfficeCandidate): boolean {
+  const titleNouns = DISTINCT_FUNCTION_NOUNS.filter((noun) => hasPhrase(titleMatcherKey, noun));
+  if (titleNouns.length === 0) {
+    return false;
+  }
+  return !titleNouns.some((noun) => hasPhrase(office.canonicalMatcherKey, noun));
+}
+
 function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office: OfficeCandidate): number {
   if (titleTokens.length === 0 || office.canonicalTokens.length === 0) {
     return 0;
@@ -715,6 +802,24 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
   if (
     office.canonicalMatcherKey === FIRE_DISTRICT_OFFICE_KEY &&
     FIRE_DISTRICT_NON_BOARD_ROLE_PATTERN.test(titleMatcherKey)
+  ) {
+    return 0;
+  }
+
+  if (coversNoFunctionNounOfTitle(titleMatcherKey, office)) {
+    return 0;
+  }
+
+  // The catalogued marshal is the CITY COURT's marshal (Louisiana). A place
+  // title that names neither a city nor a court is not evidence of that office:
+  // Indiana and Colorado call the town's chief police officer a "Marshal", a
+  // different job, and handing it this office would describe a police chief to
+  // voters as an officer of the court. "City Marshal" and "Marshal, City Court
+  // of Shreveport" both qualify on their own words; a bare "Marshal" fails
+  // loudly instead, which is the recoverable outcome.
+  if (
+    office.canonicalMatcherKey === CITY_MARSHAL_OFFICE_KEY &&
+    !/\b(?:city|court)\b/.test(titleMatcherKey)
   ) {
     return 0;
   }
