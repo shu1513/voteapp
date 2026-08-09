@@ -329,8 +329,45 @@ function singularizeCommissionerBodyForms(value: string): string {
   );
 }
 
+// An independent fire district titles each board seat by the district's own
+// name ("Holley-Navarre Fire District Seat 3", "Navarre Beach Fire Rescue
+// District, Seat 5" — Santa Rosa County FL live, 13 seats across five
+// districts on the Nov 2026 ballot). The district is its own taxing body, not
+// the county, so the jurisdiction strip never removes its proper noun: the
+// name both dilutes the token overlap against the catalog office (Fire
+// Control District Commissioner) and differs per district, so no fixed alias
+// can cover the family. The live titles scored 0.40-0.57 against the 0.56
+// floor and stranded NULL-office shells. Map the named body form onto the
+// office it elects, consuming the name (up to four tokens — "Avalon
+// Beach-Mulat" is the longest live one) so what remains is the catalog's own
+// key. Applied to canonical names too, where it is a no-op by construction.
+//
+// A fire district elects more than its board, so the fold has to be exact. New
+// York's Town Law §174 seats an elected district treasurer alongside the board
+// of fire commissioners, and the district phrase is common to both. The fold
+// therefore runs LAST — after the seat strip — and is anchored to the WHOLE
+// remaining key, so a title that still names another role cannot match it. An
+// unanchored substring fold scored "Smithtown Fire District Treasurer" 1.009
+// into this office and persisted the alias.
+const FIRE_DISTRICT_SEAT_KEY_PATTERN =
+  /^(?:[a-z0-9]+ ){0,4}fire (?:(?:control|rescue|protection|suppression|and rescue) )?district(?: (?:board member|board|commission|commissioner))?$/;
+const FIRE_DISTRICT_OFFICE_KEY = "fire control district commissioner";
+// Roles a fire district elects or appoints that are NOT its board seat. The
+// anchor above already excludes them when they trail the district phrase; this
+// also covers the comma form ("Treasurer, Smithtown Fire District"), whose
+// leading role word the anchor's name prefix would otherwise absorb.
+const FIRE_DISTRICT_NON_BOARD_ROLE_PATTERN =
+  /\b(?:treasurer|secretary|clerk|chief|marshal|collector|assessor|auditor|attorney)\b/;
+
+function mapFireDistrictBodyForms(value: string): string {
+  if (FIRE_DISTRICT_NON_BOARD_ROLE_PATTERN.test(value)) {
+    return value;
+  }
+  return FIRE_DISTRICT_SEAT_KEY_PATTERN.test(value) ? FIRE_DISTRICT_OFFICE_KEY : value;
+}
+
 function stripSeatSuffixes(value: string): string {
-  return singularizeCommissionerBodyForms(value)
+  const withoutSeat = singularizeCommissionerBodyForms(value)
     // Louisiana numbers its justice-of-the-peace COURTS and titles both the JP
     // seat and its constable seat by the court ("Justice of the Peace 2nd
     // Justice Court" / "Constable 2nd Justice Court", Jefferson Parish live:
@@ -414,6 +451,7 @@ function stripSeatSuffixes(value: string): string {
     // Howard County MD live) — leading connector only, so office names that
     // merely contain "for" are untouched.
     .replace(/^for /, "");
+  return mapFireDistrictBodyForms(withoutSeat);
 }
 
 // The jurisdiction strip deliberately keeps the generic civic word so
@@ -531,6 +569,31 @@ function judgeCanonicalNameForScope(scope: ElectionDistrictType): string | null 
   return null;
 }
 
+// "<County> Clerk of the District Court" (Nebraska) and "<County> Clerk of
+// Circuit Court" / "Clerk of Courts" (Wisconsin) elect the clerk of court, a
+// distinct office from the county's own clerk. Those titles put the county
+// name FIRST, so the jurisdiction strip leaves "county clerk of ... court":
+// the short generic "county clerk" key sits inside it as a prefix and takes
+// the phrase-containment boost, while the specific "clerk of court" key —
+// split apart by the interposed court name, or pluralized to "courts" —
+// scores lower and loses. Every Wisconsin county with an elected clerk of
+// circuit court and every Nebraska county uses this title form, so the wrong
+// office was systemic rather than one-off. Naming a COURT is what marks the
+// seat: Nebraska's own county-clerk title ("Clerk Register of Deeds") names
+// none and stays with County Clerk.
+const COURT_CLERK_TITLE_PATTERNS = [/\bclerk of (?:the )?(?:[a-z]+ )?courts?\b/, /\bcourts? clerk\b/];
+
+function isCourtClerkTitle(titleMatcherKey: string): boolean {
+  return COURT_CLERK_TITLE_PATTERNS.some((pattern) => pattern.test(titleMatcherKey));
+}
+
+// The clerk offices that name no court of their own — County Clerk, County
+// Clerk and Recorder, City Clerk — are exactly the wrong targets for such a
+// title.
+function isNonCourtClerkOfficeKey(canonicalMatcherKey: string): boolean {
+  return /\bclerk\b/.test(canonicalMatcherKey) && !/\bcourts?\b/.test(canonicalMatcherKey);
+}
+
 function isWashingtonState(state: string): boolean {
   const normalized = state.trim().toLowerCase();
   return normalized === "wa" || normalized === "washington";
@@ -551,6 +614,26 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
   if (
     hasPhrase(titleMatcherKey, "township supervisor") &&
     office.canonicalMatcherKey === "county supervisor"
+  ) {
+    return 0;
+  }
+
+  // Backstop for a catalog with no Clerk of Court office in scope: without it
+  // the containment boost still hands a court-clerk title to the plain clerk
+  // office and persists that as a learned alias. No-match is the honest
+  // outcome there.
+  if (isCourtClerkTitle(titleMatcherKey) && isNonCourtClerkOfficeKey(office.canonicalMatcherKey)) {
+    return 0;
+  }
+
+  // The fold above refuses to rewrite a non-board fire-district role, but bare
+  // token overlap can still carry one in on its own: "Fire District Clerk"
+  // shares two of three tokens with this office and scores 0.571, just over the
+  // floor. A district's treasurer/clerk/secretary is a different job, and the
+  // catalog has no office for it — no match is the honest answer.
+  if (
+    office.canonicalMatcherKey === FIRE_DISTRICT_OFFICE_KEY &&
+    FIRE_DISTRICT_NON_BOARD_ROLE_PATTERN.test(titleMatcherKey)
   ) {
     return 0;
   }
@@ -725,6 +808,16 @@ export class OfficeMatcher {
         exactOfficeId = undefined;
       }
     }
+    if (exactOfficeId && isCourtClerkTitle(titleMatcherKey)) {
+      // Runs already learned the mis-scored alias ("county clerk of the
+      // district court" -> County Clerk), and an exact alias hit outranks the
+      // deterministic rule below. The title names the court itself, so it is
+      // authoritative over a stored clerk office that names none.
+      const aliasTarget = (await this.loadOffices(input.scope)).find((office) => office.id === exactOfficeId);
+      if (aliasTarget && isNonCourtClerkOfficeKey(aliasTarget.canonicalMatcherKey)) {
+        exactOfficeId = undefined;
+      }
+    }
     if (exactOfficeId) {
       return {
         officeId: exactOfficeId,
@@ -816,6 +909,24 @@ export class OfficeMatcher {
       isWashingtonState(input.state) &&
       titleMatcherKey === "clerk"
     ) {
+      const office = findSingleScopeOffice(offices, CLERK_OF_COURT_CANONICAL_NAME);
+      if (office) {
+        return {
+          officeId: office.id,
+          method: "deterministic_fallback",
+          confidence: 1,
+          normalizedAlias,
+          aliasMemoryKey: titleMatcherKey,
+          shouldPersistAlias: false,
+        };
+      }
+    }
+
+    // A county title that names a court's clerk is that court's clerk, however
+    // the state words it ("Clerk of the District Court", "Clerk of Circuit
+    // Court", "Clerk of Courts", "Circuit Court Clerk"). The token scorer
+    // cannot see past the generic county-clerk prefix, so decide it here.
+    if (input.scope === "county" && isCourtClerkTitle(titleMatcherKey)) {
       const office = findSingleScopeOffice(offices, CLERK_OF_COURT_CANONICAL_NAME);
       if (office) {
         return {

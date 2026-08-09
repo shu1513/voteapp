@@ -6,6 +6,7 @@ import { createHash } from "node:crypto";
 import { Pool, type PoolClient } from "pg";
 
 import { getPipelineEnv } from "../config/env.js";
+import { isLegacyDuplicateMigrationSet } from "./legacyDuplicateMigrations.js";
 
 type AppliedMigrationRow = {
   filename: string;
@@ -21,47 +22,6 @@ type MigrationPrefixDuplicate = {
 
 const MIGRATION_FILE_RE = /^\d+_.+\.sql$/;
 const LOCK_KEY = 780_001_001;
-// These exact duplicate sets were merged before duplicate-prefix enforcement existed.
-// Keep the filenames stable so applied databases do not replay renamed migrations.
-const LEGACY_DUPLICATE_MIGRATION_FILES_BY_PREFIX = new Map<string, string[]>([
-  [
-    "075",
-    ["075_add_judge_mapping_research_areas.sql", "075_consolidate_judicial_offices_by_scope.sql"],
-  ],
-  [
-    "125",
-    ["125_add_tennessee_campaign_finance_tables.sql", "125_add_user_research_area_preferences.sql"],
-  ],
-  [
-    "127",
-    [
-      "127_add_florida_campaign_finance_tables.sql",
-      "127_add_maryland_campaign_finance_tables.sql",
-      "127_add_pennsylvania_campaign_finance_tables.sql",
-      "127_add_utah_campaign_finance_tables.sql",
-    ],
-  ],
-  [
-    "128",
-    [
-      "128_add_florida_outside_group_support_links.sql",
-      "128_add_oregon_campaign_finance_tables.sql",
-      "128_add_utah_supporting_committee_finance_tables.sql",
-    ],
-  ],
-  // PRs #582 and #583 merged the same day, each claiming 215; both files were
-  // already applied by filename to local databases before the collision was
-  // noticed, so renumbering would replay one of them. The two migrations
-  // touch unrelated objects (SF link tables vs. a district-research check
-  // constraint), so filename-order application is safe.
-  [
-    "215",
-    [
-      "215_add_san_francisco_campaign_finance_link_tables.sql",
-      "215_widen_manual_district_research_trigger_source.sql",
-    ],
-  ],
-]);
 
 function toReason(error: unknown): string {
   const message = error instanceof Error ? error.message : String(error);
@@ -132,16 +92,6 @@ async function listMigrationFiles(): Promise<string[]> {
 
 function getMigrationPrefix(filename: string): string {
   return filename.split("_", 1)[0] ?? "";
-}
-
-function isLegacyDuplicateMigrationSet(prefix: string, filenames: string[]): boolean {
-  const legacyFilenames = LEGACY_DUPLICATE_MIGRATION_FILES_BY_PREFIX.get(prefix);
-  if (!legacyFilenames || legacyFilenames.length !== filenames.length) {
-    return false;
-  }
-
-  const legacyFilenameSet = new Set(legacyFilenames);
-  return filenames.every((filename) => legacyFilenameSet.has(filename));
 }
 
 function findMigrationPrefixDuplicates(filenames: string[]): MigrationPrefixDuplicate[] {
