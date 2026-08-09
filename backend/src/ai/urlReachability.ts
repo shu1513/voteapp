@@ -655,11 +655,25 @@ export async function verifyHttpUrlReachability(
   }
 
   try {
-    const initialResult = await fetchWithValidatedRedirects(
-      normalizedInputUrl,
-      initialMethod,
-      timeoutMs
-    );
+    let initialResult: Awaited<ReturnType<typeof fetchWithValidatedRedirects>>;
+    try {
+      initialResult = await fetchWithValidatedRedirects(normalizedInputUrl, initialMethod, timeoutMs);
+    } catch (error) {
+      // Some hosts kill HEAD at the transport level while serving GET fine
+      // (live: oregonvotes.gov resets every HEAD). The status-based GET
+      // fallback below never runs for a thrown transport error, so the URL
+      // could never be cited. Retry with GET before failing. Timeouts are
+      // excluded: a host too slow for HEAD is too slow for GET, and the
+      // doubled wait would blow the advertised budget.
+      const message = error instanceof Error ? error.message : String(error);
+      if (initialMethod !== "HEAD" || message.toLowerCase().includes("aborted")) {
+        throw error;
+      }
+      initialResult = await fetchWithValidatedRedirects(normalizedInputUrl, "GET", timeoutMs);
+      if (inputHostname) {
+        recordGetPreferredHost(inputHostname);
+      }
+    }
     if ("failure" in initialResult) {
       return initialResult.failure;
     }

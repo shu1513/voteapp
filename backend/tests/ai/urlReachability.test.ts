@@ -133,6 +133,57 @@ describe("verifyHttpUrlReachability HEAD->GET fallback", () => {
     return { calls, dispatchers, signals };
   }
 
+  it("falls back to GET when HEAD fails at the transport level and marks the host GET-preferred", async () => {
+    resetCitationHostCooldownsForTests();
+    const calls: { method: string; url: string }[] = [];
+    vi.stubGlobal(
+      "fetch",
+      async (url: string, init?: { method?: string }) => {
+        const method = init?.method ?? "GET";
+        calls.push({ method, url });
+        if (method === "HEAD") {
+          throw Object.assign(new TypeError("fetch failed"), {
+            cause: Object.assign(new Error("read ECONNRESET"), { code: "ECONNRESET" }),
+          });
+        }
+        return {
+          ok: true,
+          status: 200,
+          url,
+          headers: { get: () => null },
+          body: null,
+        } as unknown as Response;
+      }
+    );
+
+    const result = await verifyHttpUrlReachability("https://oregonvotes.example/filing");
+
+    expect(result.ok).toBe(true);
+    expect(calls.map((call) => call.method)).toEqual(["HEAD", "GET"]);
+
+    // Host is now GET-preferred: the next verification skips HEAD entirely.
+    const second = await verifyHttpUrlReachability("https://oregonvotes.example/other");
+    expect(second.ok).toBe(true);
+    expect(calls.map((call) => call.method)).toEqual(["HEAD", "GET", "GET"]);
+  });
+
+  it("does not fall back to GET when the HEAD attempt times out", async () => {
+    resetCitationHostCooldownsForTests();
+    const calls: string[] = [];
+    vi.stubGlobal(
+      "fetch",
+      async (_url: string, init?: { method?: string; signal?: AbortSignal }) => {
+        calls.push(init?.method ?? "GET");
+        throw Object.assign(new Error("This operation was aborted"), { name: "AbortError" });
+      }
+    );
+
+    const result = await verifyHttpUrlReachability("https://slow.example/page");
+
+    expect(result).toEqual({ ok: false, reason: "citation URL fetch timed out" });
+    expect(calls).toEqual(["HEAD"]);
+  });
+
   it("blocks an IPv4-mapped IPv6 loopback literal before fetch", async () => {
     const { calls } = stubFetch(() => ({ status: 200 }));
 
