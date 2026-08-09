@@ -240,6 +240,18 @@ export function parseNcsbeCommitteeSearchPage(html: string): NcsbeCommitteeSearc
 // no-total form must keep failing closed until it is verified and added.
 export const NCSBE_NO_TOTAL_REPORT_TYPES: ReadonlySet<string> = new Set(["48-Hour Notice"]);
 
+// Report types the OUTSIDE leg owns (decision 3's single-source rule). PR 8
+// assumed IE informationals were not Disclosure Report rows and so could
+// never reach a direct read; the live run refuted that — an IE filing is
+// `DocumentType: "Disclosure Report"` with this ReportType, and the outside
+// leg already reads it from the IE doc-type inventory. Reading it again on
+// the direct side would double-count IE money into a committee's own totals,
+// and an image-only one (5 of the 15 live rows) makes a registered spender
+// look superseded-unavailable, which fails the whole funder leg closed.
+export const NCSBE_OUTSIDE_LEG_REPORT_TYPES: ReadonlySet<string> = new Set([
+  "Independent Expenditure Report",
+]);
+
 // Window fallback for an inventory row whose period bounds are missing or
 // implausible: the row's own `ReportYear` decides whether it can touch the
 // Y−1..Y cycle. One function so the acquisition's fetch selection and the

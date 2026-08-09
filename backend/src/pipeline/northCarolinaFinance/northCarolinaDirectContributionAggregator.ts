@@ -6,6 +6,7 @@ import {
 import {
   isNcsbeReportYearInCycle,
   NCSBE_NO_TOTAL_REPORT_TYPES,
+  NCSBE_OUTSIDE_LEG_REPORT_TYPES,
   type NcsbeDocumentRow,
   type NcsbeExpenditureRow,
   type NcsbeReceiptRow,
@@ -105,6 +106,9 @@ export type NorthCarolinaDirectAggregationResult = {
   // Pinned no-total forms (48-Hour Notice) dropped before selection —
   // counted so a dropped filing is visible, never silent.
   excludedNoTotalReportRowCount: number;
+  // IE filings the outside leg owns (decision 3), dropped before selection
+  // and counted so the single-source split stays visible.
+  excludedOutsideLegReportRowCount: number;
   // Undated rows whose ReportYear puts them outside the cycle (a long-lived
   // committee's 1990s filings) — dropped before selection and counted.
   excludedUndatedOutOfCycleRowCount: number;
@@ -270,6 +274,7 @@ export function selectNorthCarolinaDirectCycleReportRows(input: {
   rows: NcsbeDocumentRow[];
   unusablePeriodRowCount: number;
   excludedNoTotalReportRowCount: number;
+  excludedOutsideLegReportRowCount: number;
   excludedUndatedOutOfCycleRowCount: number;
 } {
   const cycleStartIso = `${input.electionYear - 1}-01-01`;
@@ -277,6 +282,7 @@ export function selectNorthCarolinaDirectCycleReportRows(input: {
   const rows: NcsbeDocumentRow[] = [];
   let unusablePeriodRowCount = 0;
   let excludedNoTotalReportRowCount = 0;
+  let excludedOutsideLegReportRowCount = 0;
   let excludedUndatedOutOfCycleRowCount = 0;
   for (const row of input.rows) {
     if (row.documentType !== "Disclosure Report") {
@@ -289,6 +295,13 @@ export function selectNorthCarolinaDirectCycleReportRows(input: {
     // double-count the money and its occupation row.
     if (row.reportType !== null && NCSBE_NO_TOTAL_REPORT_TYPES.has(row.reportType)) {
       excludedNoTotalReportRowCount += 1;
+      continue;
+    }
+    // Decision 3: IE filings are the outside leg's, single-source. Reading
+    // one here would double-count IE money, and an image-only one would fail
+    // the reader closed over a report the direct side never wanted.
+    if (row.reportType !== null && NCSBE_OUTSIDE_LEG_REPORT_TYPES.has(row.reportType)) {
+      excludedOutsideLegReportRowCount += 1;
       continue;
     }
     const startIso = row.periodStartDate.iso;
@@ -311,7 +324,13 @@ export function selectNorthCarolinaDirectCycleReportRows(input: {
       rows.push(row);
     }
   }
-  return { rows, unusablePeriodRowCount, excludedNoTotalReportRowCount, excludedUndatedOutOfCycleRowCount };
+  return {
+    rows,
+    unusablePeriodRowCount,
+    excludedNoTotalReportRowCount,
+    excludedOutsideLegReportRowCount,
+    excludedUndatedOutOfCycleRowCount,
+  };
 }
 
 type OccupationAggregate = {
@@ -354,6 +373,7 @@ export function aggregateNorthCarolinaDirectFinance(
     rows: cycleRows,
     unusablePeriodRowCount,
     excludedNoTotalReportRowCount,
+    excludedOutsideLegReportRowCount,
     excludedUndatedOutOfCycleRowCount,
   } = selectNorthCarolinaDirectCycleReportRows({
     rows: input.inventoryRows,
@@ -413,6 +433,7 @@ export function aggregateNorthCarolinaDirectFinance(
     missingReportIds,
     unusablePeriodRowCount,
     excludedNoTotalReportRowCount,
+    excludedOutsideLegReportRowCount,
     excludedUndatedOutOfCycleRowCount,
     itemizedReceiptsCents: 0,
     coverTotalReceiptsCents: null,
@@ -646,6 +667,7 @@ export function aggregateNorthCarolinaDirectFinance(
     missingReportIds,
     unusablePeriodRowCount,
     excludedNoTotalReportRowCount,
+    excludedOutsideLegReportRowCount,
     excludedUndatedOutOfCycleRowCount,
     itemizedReceiptsCents,
     coverTotalReceiptsCents: totalReceiptsCents,

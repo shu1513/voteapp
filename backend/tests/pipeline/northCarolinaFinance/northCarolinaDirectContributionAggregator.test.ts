@@ -197,6 +197,30 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
     expect(result.summary.totalReceipts).toBe(6073.24);
   });
 
+  it("leaves an Independent Expenditure Report to the outside leg, image-only or not", () => {
+    // Live PR 9 finding: an IE filing is DocumentType "Disclosure Report"
+    // with this ReportType, so it reached the direct reader. Summing it would
+    // double-count IE money against decision 3, and the image-only ones read
+    // as superseded-unavailable — which is what killed the funder leg.
+    const ieImageOnly = makeInventoryRow({
+      reportType: "Independent Expenditure Report",
+      periodStartDate: parseNcsbeDate("02/15/2026"),
+      periodEndDate: parseNcsbeDate("06/30/2026"),
+      dataLink: null,
+      imageLink: "ie.pdf",
+    });
+    const result = aggregateNorthCarolinaDirectFinance({
+      electionYear: 2026,
+      inventoryRows: [GADSON_Q1_ROW, ieImageOnly],
+      reports: [{ reportId: "229931", cover: GADSON_COVER, receiptRows: GADSON_RECEIPTS }],
+      sourceUrl: SOURCE_URL,
+    });
+    expect(result.status).toBe("ok");
+    expect(result.excludedOutsideLegReportRowCount).toBe(1);
+    expect(result.supersededUnavailablePeriods).toEqual([]);
+    expect(result.summary.totalReceipts).toBe(6073.24);
+  });
+
   it("drops an undated 1990s filing instead of failing the candidate on a report nobody fetched", () => {
     // The acquisition never fetches these rows, so letting selection demand
     // their artifacts would mark every such committee incomplete forever.
