@@ -51,6 +51,9 @@ describe("getSanFranciscoCommitteeSummaryRows", () => {
     line_2_col_a: "29.38",
     line_5_col_a: "896998.68",
     line_11_col_a: "1107012.93",
+    line_16_col_a: "66969.88",
+    line_19_col_a: "29.38",
+    scheduleb1_line_1: "100000.0",
     ...overrides,
   });
 
@@ -71,6 +74,9 @@ describe("getSanFranciscoCommitteeSummaryRows", () => {
         line2Cents: 2938,
         contributionsCents: 89699868,
         expendituresCents: 110701293,
+        endingCashCents: 6696988,
+        outstandingDebtsCents: 2938,
+        loansReceivedCents: 10000000,
       },
     ]);
   });

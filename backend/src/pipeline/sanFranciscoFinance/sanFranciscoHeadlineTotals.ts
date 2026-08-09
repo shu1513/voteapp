@@ -1,0 +1,85 @@
+// Headline totals from the SFEC dashboard manifest (plan Phase 4): the
+// manifest's reconciled figures ARE the headline — total_raised = funds and
+// total_spent = expenses per candidate (both verified against the rendered
+// dashboards to the cent in Phase 0), and the outside support/oppose totals
+// are the sums of the candidate's manifest relations by direction. The raw
+// DataSF path never reproduces expenses or outside tagging (Phase 0 result),
+// so nothing here consults it.
+import type {
+  SanFranciscoContestManifest,
+  SanFranciscoManifestCandidate,
+} from "./sanFranciscoDashboardManifestClient.js";
+import {
+  sanFranciscoCandidateNameMatches,
+  sanFranciscoSyntheticSpenderId,
+} from "./sanFranciscoCandidateCommitteeResolver.js";
+
+export type SanFranciscoOutsideGroup = {
+  /** Real FPPC id, or the synthetic "name:…" identity for id-less spenders. */
+  spenderId: string;
+  spenderName: string;
+  supportOppose: "support" | "oppose";
+  amountCents: number;
+  sourceUrl: string;
+};
+
+export type SanFranciscoHeadlineTotals = {
+  totalRaisedCents: number;
+  totalSpentCents: number;
+  outsideSupportCents: number;
+  outsideOpposeCents: number;
+  groups: SanFranciscoOutsideGroup[];
+};
+
+export function aggregateSanFranciscoHeadlineTotals(input: {
+  manifest: SanFranciscoContestManifest;
+  candidate: SanFranciscoManifestCandidate;
+}): SanFranciscoHeadlineTotals {
+  // A relation targets this candidate by controlled-committee FPPC id when
+  // the manifest carries one, by name otherwise — the same order the Phase 3
+  // auto-link uses. An id that names a DIFFERENT committee is decisive; the
+  // name fallback never overrides it.
+  const targeted = input.manifest.outsideRelations.filter((relation) =>
+    relation.candidateFppcId !== null
+      ? relation.candidateFppcId === input.candidate.fppcId
+      : sanFranciscoCandidateNameMatches(
+          relation.candidateName,
+          input.candidate.candidateName,
+        ),
+  );
+  // One committee may legitimately support one candidate and oppose another,
+  // so grouping is per (spender, direction). Duplicate manifest rows for the
+  // same pair sum rather than shadow.
+  const groups = new Map<string, SanFranciscoOutsideGroup>();
+  for (const relation of targeted) {
+    const spenderId =
+      relation.spenderFppcId ??
+      sanFranciscoSyntheticSpenderId(relation.spenderName);
+    const key = `${spenderId}\u0000${relation.position}`;
+    const current = groups.get(key) ?? {
+      spenderId,
+      spenderName: relation.spenderName,
+      supportOppose: relation.position,
+      amountCents: 0,
+      sourceUrl: input.manifest.sourceUrl,
+    };
+    current.amountCents += relation.amountCents;
+    groups.set(key, current);
+  }
+  const sorted = [...groups.values()].sort(
+    (a, b) =>
+      b.amountCents - a.amountCents ||
+      a.spenderName.localeCompare(b.spenderName),
+  );
+  return {
+    totalRaisedCents: input.candidate.fundsCents,
+    totalSpentCents: input.candidate.expensesCents,
+    outsideSupportCents: sorted
+      .filter((group) => group.supportOppose === "support")
+      .reduce((sum, group) => sum + group.amountCents, 0),
+    outsideOpposeCents: sorted
+      .filter((group) => group.supportOppose === "oppose")
+      .reduce((sum, group) => sum + group.amountCents, 0),
+    groups: sorted,
+  };
+}
