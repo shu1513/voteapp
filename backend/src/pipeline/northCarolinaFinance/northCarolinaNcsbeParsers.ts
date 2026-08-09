@@ -337,7 +337,12 @@ export type NcsbeCoverSummarySection = {
 };
 
 export type NcsbeReportCover = {
-  boeId: string;
+  // Null on live covers (PR 9 run: ~40% of committee reports, e.g. RID 231912
+  // "COMMITTEE TO ELECT ELMA HAIRSTON") — the spike's fixtures all carried a
+  // string, so this was pinned as required and failed those reports closed.
+  // Nothing downstream reads it: committee identity comes from the inventory
+  // row's SBoEID, never from the cover.
+  boeId: string | null;
   orgName: string;
   entityTypeDesc: string | null;
   fullReportName: string | null;
@@ -462,7 +467,7 @@ export function parseNcsbeReportDetailPage(html: string): NcsbeReportDetail {
 
   return {
     cover: {
-      boeId: requireString(coverRaw.BoeID, "report cover BoeID"),
+      boeId: normalizeNcsbeText(requireStringOrNull(coverRaw.BoeID, "report cover BoeID")),
       orgName: requireString(coverRaw.OrgName, "report cover OrgName"),
       entityTypeDesc: normalizeNcsbeText(requireStringOrNull(coverRaw.EntityTypeDesc, "report cover EntityTypeDesc")),
       fullReportName: normalizeNcsbeText(

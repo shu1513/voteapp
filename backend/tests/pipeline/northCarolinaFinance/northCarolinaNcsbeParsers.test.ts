@@ -205,6 +205,16 @@ describe("parseNcsbeReportDetailPage", () => {
     expect(bySection.get("Aggregated Contributions from Individuals")?.periodCents).toBe(11000);
   });
 
+  it("accepts a live cover whose BoeID is null", () => {
+    // PR 9's live run: ~40% of committee reports serve "BoeID":null, which the
+    // spike's fixtures never showed. Nothing downstream reads it — committee
+    // identity comes from the inventory row — so the report must still parse.
+    const detail = parseNcsbeReportDetailPage(fixture("report-cover-hairston-231912-null-boeid.html"));
+    expect(detail.cover.boeId).toBeNull();
+    expect(detail.cover.orgName).toBe("COMMITTEE TO ELECT ELMA HAIRSTON");
+    expect(detail.summarySections).toHaveLength(34);
+  });
+
   it("pins all 34 section strings", () => {
     const detail = parseNcsbeReportDetailPage(fixture("report-cover-gadson-229931.html"));
     for (const row of detail.summarySections) {
