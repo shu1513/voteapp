@@ -109,6 +109,55 @@ export function parseBlockerKey(raw: string | null): string | null {
   return raw;
 }
 
+// Postgres unique_violation. The open-row indexes are the real guarantee that
+// two concurrent writers cannot both land a row on one key; this lets the CLI
+// recognise that outcome and explain it instead of leaking the driver error.
+function isUniqueViolation(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    (error as { code?: unknown }).code === "23505"
+  );
+}
+
+type OpenDeferralRow = { id: string; reason: string; blocked_until: string };
+
+// One message for both ways a collision is discovered — the pre-write probe and
+// the concurrent-insert catch — so the two paths cannot drift apart.
+function collisionError(
+  row: OpenDeferralRow,
+  stage: string,
+  scope: string,
+  keySuffix: string,
+  options: { concurrent?: boolean; replace?: boolean } = {}
+): Error {
+  const lead = options.concurrent
+    ? `Another session recorded an open ${stage} deferral for ${scope}${keySuffix} while this command was running.`
+    : `An open ${stage} deferral already exists for ${scope}${keySuffix}.`;
+  // Re-offering --replace to someone who already passed it is noise; what they
+  // need is to re-run now that a row exists to replace.
+  const guidance =
+    options.concurrent && options.replace
+      ? ["Nothing was written. Re-run the same command to apply your --replace to the row above."]
+      : [
+          "Refusing to overwrite it. Pick the one that matches your intent:",
+          "  --election-id <id>    this blocker belongs to one specific election",
+          "  --blocker-key <slug>  this is a SEPARATE district-wide blocker on the same",
+          "                        stage (e.g. ballot_measure_family, office_matcher)",
+          "  --replace             you mean to rewrite the row above with a new reason/date",
+        ];
+  return new Error(
+    [
+      lead,
+      `  id:            ${row.id}`,
+      `  blocked_until: ${row.blocked_until}`,
+      `  reason:        ${row.reason.slice(0, 200)}${row.reason.length > 200 ? "…" : ""}`,
+      "",
+      ...guidance,
+    ].join("\n")
+  );
+}
+
 // Narrow surface so tests can drive `record` against a fake instead of a live
 // pool (same pattern as the other manual script CLIs).
 export type DeferralClient = {
@@ -201,24 +250,11 @@ export async function runCommand(
         [districtId, stage, electionId, blockerKey]
       );
 
+      const scope = electionId ? `election ${electionId}` : `district ${districtId} (district-wide)`;
+      const keySuffix = blockerKey ? ` with blocker-key ${blockerKey}` : "";
+
       if (existing.rows.length > 0 && !replace) {
-        const row = existing.rows[0];
-        const scope = electionId ? `election ${electionId}` : `district ${districtId} (district-wide)`;
-        throw new Error(
-          [
-            `An open ${stage} deferral already exists for ${scope}` +
-              `${blockerKey ? ` with blocker-key ${blockerKey}` : ""}.`,
-            `  id:            ${row.id}`,
-            `  blocked_until: ${row.blocked_until}`,
-            `  reason:        ${row.reason.slice(0, 200)}${row.reason.length > 200 ? "…" : ""}`,
-            "",
-            "Refusing to overwrite it. Pick the one that matches your intent:",
-            "  --election-id <id>    this blocker belongs to one specific election",
-            "  --blocker-key <slug>  this is a SEPARATE district-wide blocker on the same",
-            "                        stage (e.g. ballot_measure_family, office_matcher)",
-            "  --replace             you mean to rewrite the row above with a new reason/date",
-          ].join("\n")
-        );
+        throw collisionError(existing.rows[0], stage, scope, keySuffix);
       }
 
       if (existing.rows.length > 0) {
@@ -227,10 +263,20 @@ export async function runCommand(
             UPDATE public.manual_research_deferrals
             SET reason = $1, blocked_until = $2, source_url = $3, updated_at = now()
             WHERE id = $4
+              AND status = 'deferred'
             RETURNING id
           `,
           [reason, blockedUntil, sourceUrl, existing.rows[0].id]
         );
+        // The status guard matters: without it a row that another session
+        // resolved between the probe and this write would have its reason and
+        // date rewritten while staying closed, and we would report success.
+        if (updated.rows.length === 0) {
+          throw new Error(
+            `Deferral ${existing.rows[0].id} was resolved or cancelled by another session ` +
+              `after this command read it. Nothing was written — re-run to record a fresh deferral.`
+          );
+        }
         print({
           deferral_id: updated.rows[0].id,
           district_name: districtName,
@@ -240,16 +286,50 @@ export async function runCommand(
         return;
       }
 
-      const inserted = await pool.query<{ id: string }>(
-        `
-          INSERT INTO public.manual_research_deferrals
-            (district_id, election_id, stage, reason, blocked_until, source_url,
-             district_name_snapshot, blocker_key)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-          RETURNING id
-        `,
-        [districtId, electionId, stage, reason, blockedUntil, sourceUrl, districtName, blockerKey]
-      );
+      // The probe above is a read, so two sessions recording the same key at
+      // once can both find nothing and both try to insert. The unique index
+      // still holds — the loser writes nothing and no work is lost — but it
+      // would surface as a raw 23505 dump instead of the actionable message
+      // this command promises. Translate it back.
+      let inserted: { rows: { id: string }[] };
+      try {
+        inserted = await pool.query<{ id: string }>(
+          `
+            INSERT INTO public.manual_research_deferrals
+              (district_id, election_id, stage, reason, blocked_until, source_url,
+               district_name_snapshot, blocker_key)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            RETURNING id
+          `,
+          [districtId, electionId, stage, reason, blockedUntil, sourceUrl, districtName, blockerKey]
+        );
+      } catch (error: unknown) {
+        if (!isUniqueViolation(error)) {
+          throw error;
+        }
+        const raced = await pool.query<{
+          id: string;
+          reason: string;
+          blocked_until: string;
+        }>(
+          `
+            SELECT id, reason, blocked_until::text AS blocked_until
+            FROM public.manual_research_deferrals
+            WHERE status = 'deferred'
+              AND district_id = $1
+              AND stage = $2
+              AND election_id IS NOT DISTINCT FROM $3
+              AND blocker_key IS NOT DISTINCT FROM $4
+          `,
+          [districtId, stage, electionId, blockerKey]
+        );
+        // Nothing to point at (the winner closed its row again in the gap):
+        // the raw error is more honest than a fabricated explanation.
+        if (raced.rows.length === 0) {
+          throw error;
+        }
+        throw collisionError(raced.rows[0], stage, scope, keySuffix, { concurrent: true, replace });
+      }
       print({
         deferral_id: inserted.rows[0].id,
         district_name: districtName,

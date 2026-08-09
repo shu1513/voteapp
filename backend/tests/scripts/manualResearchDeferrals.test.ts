@@ -17,11 +17,21 @@ type Statement = { text: string; values?: unknown[] };
 // Answers the district lookup, the election lookup, and the open-row probe
 // (with `existing` or nothing), and records every statement so assertions can
 // pin which write path ran.
-function fakeClient(input: { existing?: { reason: string; blocked_until: string } } = {}): {
+function fakeClient(
+  input: {
+    existing?: { reason: string; blocked_until: string };
+    // Simulates a row that appears only AFTER the pre-write probe ran: the
+    // probe misses, the INSERT hits the unique index, the re-read finds it.
+    racedIn?: { reason: string; blocked_until: string };
+    // Simulates the --replace target being resolved between probe and UPDATE.
+    updateMatchesNothing?: boolean;
+  } = {}
+): {
   client: DeferralClient;
   statements: Statement[];
 } {
   const statements: Statement[] = [];
+  let probes = 0;
   const client: DeferralClient = {
     async query<T>(text: string, values?: unknown[]): Promise<{ rows: T[] }> {
       statements.push({ text, values });
@@ -32,16 +42,22 @@ function fakeClient(input: { existing?: { reason: string; blocked_until: string 
         return { rows: [{ id: ELECTION_ID }] as T[] };
       }
       if (text.includes("SELECT id, reason, blocked_until")) {
-        return {
-          rows: (input.existing
-            ? [{ id: EXISTING_ID, ...input.existing }]
-            : []) as T[],
-        };
+        probes += 1;
+        // First call is the pre-write probe; a second call is the post-23505
+        // re-read, which is where `racedIn` becomes visible.
+        const row = probes === 1 ? input.existing : (input.racedIn ?? input.existing);
+        return { rows: (row ? [{ id: EXISTING_ID, ...row }] : []) as T[] };
       }
       if (text.includes("UPDATE public.manual_research_deferrals")) {
-        return { rows: [{ id: EXISTING_ID }] as T[] };
+        return { rows: (input.updateMatchesNothing ? [] : [{ id: EXISTING_ID }]) as T[] };
       }
       if (text.includes("INSERT INTO public.manual_research_deferrals")) {
+        if (input.racedIn) {
+          throw Object.assign(
+            new Error('duplicate key value violates unique constraint "uq_..."'),
+            { code: "23505" }
+          );
+        }
         return { rows: [{ id: NEW_ID }] as T[] };
       }
       return { rows: [] as T[] };
@@ -156,6 +172,68 @@ describe("manual:deferral record", () => {
     expect(probe?.text).toContain("blocker_key IS NOT DISTINCT FROM");
     expect(probe?.values).toEqual([DISTRICT_ID, "elections", ELECTION_ID, "office-matcher"]);
     expect(statements.some((s) => s.text.includes("INSERT INTO"))).toBe(true);
+  });
+
+  // The probe is a read, so two sessions can both miss and both insert. The
+  // index stops the second write; this turns the raw 23505 into the same
+  // actionable message the probe path produces.
+  it("translates a concurrent-insert unique violation into the collision message", async () => {
+    const { client } = fakeClient({
+      racedIn: { reason: "recorded by the other session", blocked_until: "2026-11-02" },
+    });
+    const error = await runCommand(client, "record", recordFlags()).catch((e: Error) => e);
+
+    expect(error).toBeInstanceOf(Error);
+    expect((error as Error).message).toMatch(/while this command was running/);
+    expect((error as Error).message).toMatch(/recorded by the other session/);
+    expect((error as Error).message).toMatch(/2026-11-02/);
+    expect((error as Error).message).toMatch(/--blocker-key/);
+    expect((error as Error).message).not.toMatch(/23505|duplicate key/);
+  });
+
+  it("tells a racing --replace caller to re-run rather than re-offering --replace", async () => {
+    const { client } = fakeClient({
+      racedIn: { reason: "recorded by the other session", blocked_until: "2026-11-02" },
+    });
+    const error = await runCommand(client, "record", recordFlags(["--replace"])).catch(
+      (e: Error) => e
+    );
+
+    expect((error as Error).message).toMatch(/Re-run the same command to apply your --replace/);
+    expect((error as Error).message).not.toMatch(/Pick the one that matches your intent/);
+  });
+
+  it("rethrows a non-unique-violation insert failure untouched", async () => {
+    const boom = new Error("connection terminated");
+    const client: DeferralClient = {
+      async query<T>(text: string): Promise<{ rows: T[] }> {
+        if (text.includes("FROM public.districts")) {
+          return { rows: [{ name: "Testville, Ohio" }] as T[] };
+        }
+        if (text.includes("INSERT INTO")) {
+          throw boom;
+        }
+        return { rows: [] as T[] };
+      },
+    };
+    await expect(runCommand(client, "record", recordFlags())).rejects.toThrow(boom);
+  });
+
+  // Regression: the UPDATE must carry its own status guard, or a row another
+  // session resolved in the gap gets its reason and date rewritten while
+  // staying closed -- and we would print `replaced: true` over it.
+  it("guards the --replace update on status and reports when the row was closed underneath it", async () => {
+    const { client, statements } = fakeClient({
+      existing: { reason: "old reason", blocked_until: "2026-10-05" },
+      updateMatchesNothing: true,
+    });
+
+    await expect(runCommand(client, "record", recordFlags(["--replace"]))).rejects.toThrow(
+      /resolved or cancelled by another session/
+    );
+
+    const update = statements.find((s) => s.text.includes("UPDATE public.manual_research_deferrals"));
+    expect(update?.text).toContain("status = 'deferred'");
   });
 
   it("rejects an invalid blocker key before touching the ledger", async () => {
