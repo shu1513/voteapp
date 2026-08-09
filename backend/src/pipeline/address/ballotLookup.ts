@@ -28,6 +28,7 @@ import { loadAlaskaCandidateFinanceSummariesByCandidateElection } from "../alask
 import { loadArizonaCandidateFinanceSummariesByCandidateElection } from "../arizonaFinance/arizonaFinanceBallotLookup.js";
 import { loadFloridaCandidateFinanceSummariesByCandidateElection } from "../floridaFinance/floridaFinanceBallotSummary.js";
 import { loadLouisianaCandidateFinanceSummariesByCandidateElection } from "../louisianaFinance/louisianaBallotLookupFinanceLoader.js";
+import { extractSubDistrictSeat } from "../elections/subDistrictSeat.js";
 import { loadPennsylvaniaCandidateFinanceSummariesByCandidateElection } from "../pennsylvaniaFinance/pennsylvaniaBallotLookupFinance.js";
 import { loadUtahCandidateFinanceSummariesByCandidateElection } from "../utahFinance/utahBallotLookupFinanceLoader.js";
 import { loadVermontCandidateFinanceSummariesByCandidateElection } from "../vermontFinance/vermontBallotLookupFinanceLoader.js";
@@ -229,6 +230,12 @@ export type BallotLookupElection = {
   district: BallotLookupDistrict;
   race_type: ElectionRaceType;
   official_ballot_title: string;
+  // The seat's own ward/district designator when the office is one whose seats
+  // have SEPARATE electorates ("Ward 3", "District 06"), else null. The ballot
+  // is assembled per district row, so a county's ward-level seats all reach
+  // every county resident; this is the signal that lets the card say the seat
+  // may not be the reader's. It is not a filter — see subDistrictSeat.ts.
+  sub_district_seat: string | null;
   election_date: string;
   election_stage: ElectionStage | null;
   is_partisan: boolean | null;
@@ -262,6 +269,9 @@ export type BallotLookupElectionSummary = {
   district: BallotLookupDistrict;
   race_type: ElectionRaceType;
   official_ballot_title: string;
+  // Mirrors BallotLookupElection.sub_district_seat: the ballot list is where a
+  // ward-level seat is most likely to be mistaken for a countywide one.
+  sub_district_seat: string | null;
   election_date: string;
   election_stage: ElectionStage | null;
   is_partisan: boolean | null;
@@ -1377,6 +1387,10 @@ async function loadFullElectionDetails(
     district: toDistrict(row),
     race_type: row.race_type,
     official_ballot_title: row.official_ballot_title,
+    sub_district_seat: extractSubDistrictSeat(row.official_ballot_title, row.office_canonical_name, {
+      state: row.state,
+      districtName: row.district_name,
+    }),
     election_date: row.election_date,
     election_stage: row.election_stage,
     is_partisan: row.is_partisan,
@@ -1627,6 +1641,10 @@ export async function lookupBallotSummariesByDistrictIds(
       district,
       race_type: row.race_type,
       official_ballot_title: row.official_ballot_title,
+      sub_district_seat: extractSubDistrictSeat(row.official_ballot_title, row.office_canonical_name, {
+        state: row.state,
+        districtName: row.district_name,
+      }),
       election_date: row.election_date,
       election_stage: row.election_stage,
       is_partisan: row.is_partisan,

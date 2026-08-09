@@ -291,6 +291,20 @@ function ElectionCard({
         {formatDistrictName(election.district.name)}
         {showDate ? <> · {formatElectionDate(election.election_date)}</> : null}
       </p>
+      {/* A ballot is built from district rows, and the county row carries every
+          seat attached to it — so a ward- or district-level seat reaches every
+          county resident, including those who cannot vote in it. The address
+          lookup has no ward/precinct membership, so the honest move is to name
+          the seat's own area and admit we cannot match it, rather than imply
+          the ballot was filtered. Deliberately understated ("may not"): in
+          several states the seat is a residency district voted countywide, so
+          the reader may well be eligible. */}
+      {election.sub_district_seat ? (
+        <p className="mt-1 text-xs text-ink-soft">
+          <span className="rounded bg-surface px-1.5 py-0.5 font-medium">{election.sub_district_seat}</span>{" "}
+          <span>— may not cover your address</span>
+        </p>
+      ) : null}
       {hasSignalChips ? (
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
           {choiceLabel ? (
