@@ -194,6 +194,25 @@ function recordStanceTag(record: CandidateRecord, areaId: string) {
   return tag?.stance === "for" || tag?.stance === "against" ? { ...tag, stance: tag.stance } : null;
 }
 
+// Collapsed-group stance tally: how many of the group's records are for /
+// against THIS group's area (a record can lean differently per area, so the
+// count must come from the group's own tag, same rule as recordStanceTag).
+// Neutral-tagged records count toward neither, so the two numbers need not
+// sum to the record count. The "Other records" group has no area and gets
+// zeros.
+function groupStanceCounts(group: RecordGroup): { forCount: number; againstCount: number } {
+  let forCount = 0;
+  let againstCount = 0;
+  if (group.areaId != null) {
+    for (const record of group.records) {
+      const stance = recordStanceTag(record, group.areaId)?.stance;
+      if (stance === "for") forCount += 1;
+      else if (stance === "against") againstCount += 1;
+    }
+  }
+  return { forCount, againstCount };
+}
+
 // Judicial evaluative areas, where a for/against tag grades the EVIDENCE
 // (favorable/unfavorable), not the candidate's advocacy — the label contract
 // requires a stance on every non-neutral area, these two included. Advocacy
@@ -618,32 +637,64 @@ export function CandidatePage() {
               ) : null}
             </>
           ) : (
-            recordGroups.map((group) => (
-              // Every group starts collapsed; with no `open` prop React
-              // never re-applies a default, so a reader's toggles survive a
-              // view switch that reorders the groups.
-              <details key={group.areaId ?? "other"} className="mt-4">
-                <summary className="cursor-pointer select-none">
-                  <h3 className="inline text-sm font-semibold uppercase tracking-wide text-ink-soft">
-                    {group.areaName}
-                  </h3>{" "}
-                  <span className="text-xs text-ink-soft">
-                    · {group.records.length} record{group.records.length === 1 ? "" : "s"}
-                  </span>
-                </summary>
-                <ul className="mt-2 space-y-3">
-                  {group.records.map((record) => (
-                    <RecordItem
-                      key={`${group.areaId ?? "other"}-${record.id}`}
-                      record={record}
-                      showTags={false}
-                      reporterEmail={me?.email}
-                      stanceAreaId={group.areaId}
-                    />
-                  ))}
-                </ul>
-              </details>
-            ))
+            recordGroups.map((group) => {
+              // Stance tally shown while collapsed, so the split is readable
+              // without opening the group. Evaluative areas keep their
+              // evidence wording (favorable/unfavorable), matching the cards
+              // inside; zero-count sides stay hidden to avoid "0 oppose"
+              // noise. Same colored-text-only treatment as StanceChip.
+              const { forCount, againstCount } = groupStanceCounts(group);
+              const evaluative = group.areaSlug != null && EVALUATIVE_AREA_SLUGS.has(group.areaSlug);
+              return (
+                <div key={group.areaId ?? "other"} className="mt-4">
+                  {/* The heading lives OUTSIDE the summary, sr-only — same
+                      rule as the finance disclosure above: <summary> maps to
+                      a button, and a heading inside it can drop out of
+                      screen-reader heading navigation. "Track record — "
+                      prefixes the area so the heading reads meaningfully
+                      when jumped to on its own, and keeps its text distinct
+                      from the visible summary line (which repeats the bare
+                      area name). */}
+                  <h3 className="sr-only">{`Track record — ${group.areaName}`}</h3>
+                  {/* Every group starts collapsed; with no `open` prop React
+                      never re-applies a default, so a reader's toggles
+                      survive a view switch that reorders the groups. */}
+                  <details>
+                    <summary className="cursor-pointer select-none">
+                      <span className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+                        {group.areaName}
+                      </span>{" "}
+                      <span className="text-xs text-ink-soft">
+                        · {group.records.length} record{group.records.length === 1 ? "" : "s"}
+                      </span>
+                      {forCount > 0 ? (
+                        <span className="text-xs font-medium text-green-900">
+                          {" "}
+                          · {forCount} {evaluative ? "favorable" : "support"}
+                        </span>
+                      ) : null}
+                      {againstCount > 0 ? (
+                        <span className="text-xs font-medium text-red-900">
+                          {" "}
+                          · {againstCount} {evaluative ? "unfavorable" : "oppose"}
+                        </span>
+                      ) : null}
+                    </summary>
+                    <ul className="mt-2 space-y-3">
+                      {group.records.map((record) => (
+                        <RecordItem
+                          key={`${group.areaId ?? "other"}-${record.id}`}
+                          record={record}
+                          showTags={false}
+                          reporterEmail={me?.email}
+                          stanceAreaId={group.areaId}
+                        />
+                      ))}
+                    </ul>
+                  </details>
+                </div>
+              );
+            })
           )}
         </section>
       ) : (
