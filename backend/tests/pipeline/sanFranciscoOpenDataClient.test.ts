@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   getSanFranciscoCandidateTargetedSpending,
+  getSanFranciscoCommitteeCurrentForm460Filings,
   getSanFranciscoCommitteeItemizedTransactions,
   getSanFranciscoCommitteeSummaryRows,
+  getSanFranciscoDatasetFreshness,
   getSanFranciscoFilers,
   getSanFranciscoPublicFundsApproved,
   moneyStringToCents,
@@ -54,6 +56,7 @@ describe("getSanFranciscoCommitteeSummaryRows", () => {
     line_16_col_a: "66969.88",
     line_19_col_a: "29.38",
     scheduleb1_line_1: "100000.0",
+    sync_flag: true,
     ...overrides,
   });
 
@@ -77,6 +80,7 @@ describe("getSanFranciscoCommitteeSummaryRows", () => {
         endingCashCents: 6696988,
         outstandingDebtsCents: 2938,
         loansReceivedCents: 10000000,
+        syncFlag: true,
       },
     ]);
   });
@@ -98,6 +102,83 @@ describe("getSanFranciscoCommitteeSummaryRows", () => {
   it("rejects malformed FPPC ids", async () => {
     await expect(
       getSanFranciscoCommitteeSummaryRows(
+        { fppcId: "abc" },
+        { fetchImpl: jsonFetch([]) },
+      ),
+    ).rejects.toThrow(/Invalid San Francisco FPPC id/);
+  });
+});
+
+describe("getSanFranciscoDatasetFreshness", () => {
+  it("returns the aggregate maxima and validates the dataset id", async () => {
+    let requestedUrl = "";
+    const freshness = await getSanFranciscoDatasetFreshness("9ggq-m8hp", {
+      fetchImpl: async (url) => {
+        requestedUrl = String(url);
+        return new Response(
+          JSON.stringify([
+            {
+              data_as_of: "2026-08-07T00:00:00.000",
+              data_loaded_at: "2026-08-08T00:00:00.000",
+            },
+          ]),
+          { status: 200 },
+        );
+      },
+    });
+    expect(freshness).toEqual({
+      dataAsOf: "2026-08-07T00:00:00.000",
+      dataLoadedAt: "2026-08-08T00:00:00.000",
+    });
+    expect(requestedUrl).toContain("9ggq-m8hp.json");
+    expect(decodeURIComponent(requestedUrl)).toContain("max(data_as_of)");
+    await expect(
+      getSanFranciscoDatasetFreshness("not a dataset", {
+        fetchImpl: jsonFetch([]),
+      }),
+    ).rejects.toThrow(/Invalid San Francisco dataset id/);
+  });
+
+  it("maps an empty aggregate to nulls", async () => {
+    expect(
+      await getSanFranciscoDatasetFreshness("9ggq-m8hp", {
+        fetchImpl: jsonFetch([{}]),
+      }),
+    ).toEqual({ dataAsOf: null, dataLoadedAt: null });
+  });
+});
+
+describe("getSanFranciscoCommitteeCurrentForm460Filings", () => {
+  it("filters to current e-filed 460 chains and dedupes filing_nid", async () => {
+    let requestedUrl = "";
+    const rows = await getSanFranciscoCommitteeCurrentForm460Filings(
+      { fppcId: "1467508" },
+      {
+        fetchImpl: async (url) => {
+          requestedUrl = String(url);
+          return new Response(
+            JSON.stringify([
+              { filing_nid: "nid-1", filing_date: "2024-08-01T00:00:00.000" },
+              { filing_nid: "nid-1", filing_date: "2024-08-01T00:00:00.000" },
+              { filing_nid: "nid-2", filing_date: "2025-01-10T00:00:00.000" },
+              { filing_date: "2025-01-11T00:00:00.000" },
+            ]),
+            { status: 200 },
+          );
+        },
+      },
+    );
+    expect(rows).toEqual([
+      { filingNid: "nid-1", filingDate: "2024-08-01T00:00:00.000" },
+      { filingNid: "nid-2", filingDate: "2025-01-10T00:00:00.000" },
+    ]);
+    const where = decodeURIComponent(requestedUrl);
+    expect(where).toContain("form_type='FPPC460'");
+    expect(where).toContain("current_status+like+'Most+Recent%'");
+    expect(where).toContain("rejected=false");
+    expect(where).toContain("has_efile_content=true");
+    await expect(
+      getSanFranciscoCommitteeCurrentForm460Filings(
         { fppcId: "abc" },
         { fetchImpl: jsonFetch([]) },
       ),
