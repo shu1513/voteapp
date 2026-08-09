@@ -2187,6 +2187,207 @@ describe("OfficeMatcher", () => {
     }
   });
 
+  describe("Louisiana justice-of-the-peace and constable seat forms", () => {
+    const louisianaCountyOffices = [
+      { id: "office-justice-of-the-peace", canonical_name: "Justice of the Peace" },
+      { id: "office-constable", canonical_name: "Constable" },
+      { id: "office-county-level-judge", canonical_name: "County Level Judge" },
+      { id: "office-district-attorney", canonical_name: "District Attorney" },
+    ];
+
+    function createLouisianaMatcher(
+      aliases: Array<{ office_id: string; normalized_alias: string }> = []
+    ) {
+      const client = createMatcherDataClient({
+        aliasesByScope: { county: aliases },
+        officesByScope: { county: louisianaCountyOffices },
+      });
+      return new OfficeMatcher(client as never);
+    }
+
+    it("resolves the doubled SOS justice-of-the-peace title to the JP office, not the trial court", async () => {
+      const result = await createLouisianaMatcher().resolve({
+        scope: "county",
+        districtName: "Caddo Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Justice of the Peace Justice of the Peace Ward 1",
+        discoveryContestFamily: "judicial_office",
+      });
+
+      expect(result).toMatchObject({
+        officeId: "office-justice-of-the-peace",
+        method: "deterministic_fallback",
+        confidence: 1,
+        aliasMemoryKey: "justice of the peace",
+      });
+    });
+
+    it("strips Caddo's named ward sub-district from the justice-of-the-peace seat key", async () => {
+      const result = await createLouisianaMatcher().resolve({
+        scope: "county",
+        districtName: "Caddo Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Justice of the Peace Justice of the Peace Ward 2, Vivian Dist.",
+        discoveryContestFamily: "judicial_office",
+      });
+
+      expect(result).toMatchObject({
+        officeId: "office-justice-of-the-peace",
+        aliasMemoryKey: "justice of the peace",
+      });
+    });
+
+    it("resolves Jefferson's numbered-justice-court JP seat form", async () => {
+      const result = await createLouisianaMatcher().resolve({
+        scope: "county",
+        districtName: "Jefferson Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Justice of the Peace 2nd Justice Court",
+        discoveryContestFamily: "judicial_office",
+      });
+
+      expect(result).toMatchObject({
+        officeId: "office-justice-of-the-peace",
+        aliasMemoryKey: "justice of the peace",
+      });
+    });
+
+    it("resolves Jefferson's 'Constable 2nd Justice Court', which scored 0.520 and failed the writer", async () => {
+      const result = await createLouisianaMatcher([
+        { office_id: "office-constable", normalized_alias: "constable" },
+      ]).resolve({
+        scope: "county",
+        districtName: "Jefferson Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Constable 2nd Justice Court",
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result).toMatchObject({
+        officeId: "office-constable",
+        method: "alias_exact",
+        confidence: 1,
+      });
+    });
+
+    it("folds the '(s)' optional-plural marker on both St. Tammany seat forms", async () => {
+      // 19 live St. Tammany rows title the seat "Constable(s) Justice of the
+      // Peace Ward N" / "Justice(s) of the Peace ...". Punctuation folding alone
+      // leaves a stray "s" token mid-phrase, which broke the constable form at
+      // exactly 0.520 — the same failure as Jefferson's.
+      const matcher = createLouisianaMatcher([
+        { office_id: "office-constable", normalized_alias: "constable" },
+        { office_id: "office-justice-of-the-peace", normalized_alias: "justice of the peace" },
+      ]);
+
+      const constable = await matcher.resolve({
+        scope: "county",
+        districtName: "St. Tammany Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Constable(s) Justice of the Peace Ward 10",
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(constable).toMatchObject({ officeId: "office-constable", method: "alias_exact" });
+
+      const justiceOfThePeace = await matcher.resolve({
+        scope: "county",
+        districtName: "St. Tammany Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Justice(s) of the Peace Justice of the Peace Ward 1",
+        discoveryContestFamily: "judicial_office",
+      });
+      expect(justiceOfThePeace).toMatchObject({
+        officeId: "office-justice-of-the-peace",
+        method: "alias_exact",
+      });
+    });
+
+    it("resolves Caddo's 'Constable Justice of the Peace Ward N' to Constable, not the JP office", async () => {
+      const result = await createLouisianaMatcher([
+        { office_id: "office-constable", normalized_alias: "constable" },
+      ]).resolve({
+        scope: "county",
+        districtName: "Caddo Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Constable Justice of the Peace Ward 7",
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBe("office-constable");
+    });
+
+    it("keeps a judicial-family constable seat out of the judge fallback", async () => {
+      // Every word of "Constable 1st City Court" past the office name is a
+      // judicial allow-marker; a mis-tagged family must not hand the seat to a
+      // judge office. Deliberately no constable alias here: the point is that
+      // the judge fallback does not fire.
+      const result = await createLouisianaMatcher().resolve({
+        scope: "county",
+        districtName: "Orleans Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Constable 1st City Court",
+        discoveryContestFamily: "judicial_office",
+      });
+
+      expect(result.officeId).toBe("office-constable");
+      expect(result.officeId).not.toBe("office-county-level-judge");
+    });
+
+    it("routes Orleans' municipal constable seat to Municipal Constable in place scope", async () => {
+      const client = createMatcherDataClient({
+        aliasesByScope: {
+          place: [{ office_id: "office-municipal-constable", normalized_alias: "constable" }],
+        },
+        officesByScope: {
+          place: [
+            { id: "office-municipal-constable", canonical_name: "Municipal Constable" },
+            { id: "office-place-level-judge", canonical_name: "Place Level Judge" },
+            { id: "office-city-council-member", canonical_name: "City Council Member" },
+          ],
+        },
+      });
+      const matcher = new OfficeMatcher(client as never);
+
+      const result = await matcher.resolve({
+        scope: "place",
+        districtName: "New Orleans city, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Constable 1st City Court",
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result).toMatchObject({
+        officeId: "office-municipal-constable",
+        method: "alias_exact",
+      });
+    });
+
+    it("leaves a judge title's own court words alone", async () => {
+      const result = await createLouisianaMatcher().resolve({
+        scope: "county",
+        districtName: "Jefferson Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Judge 1st Parish Court, Division A",
+        discoveryContestFamily: "judicial_office",
+      });
+
+      expect(result.officeId).toBe("office-county-level-judge");
+    });
+
+    it("does not guess a JP office for a non-judicial-family entry", async () => {
+      const result = await createLouisianaMatcher().resolve({
+        scope: "county",
+        districtName: "Caddo Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Justice of the Peace Ward 5",
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBeNull();
+      expect(result.method).toBe("none");
+    });
+  });
+
   it("folds district-named Florida fire-district seat titles onto the fire-district office", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { county: [] },
