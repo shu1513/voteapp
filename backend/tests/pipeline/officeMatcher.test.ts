@@ -1054,6 +1054,60 @@ describe("OfficeMatcher", () => {
     expect(result.method).toBe("none");
   });
 
+  it("does not match South Carolina's bare circuit Solicitor to Solicitor General", async () => {
+    // SC's Solicitor is the chief FELONY prosecutor (a District Attorney by
+    // another name), not Georgia's misdemeanor State Court solicitor-general.
+    // "general" is a stopword, so the office tokenizes to ["solicitor"] and
+    // this title is token-identical to it: without the phrase guard it matches
+    // at a perfect 1.0, unopposed.
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-solicitor-general", canonical_name: "Solicitor General" },
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Richland County",
+      state: "SC",
+      // Bare, because the circuit is the district: the jurisdiction strip
+      // takes "5th Judicial Circuit" off "Solicitor, 5th Judicial Circuit"
+      // and leaves the one word, which is the shape the guard exists for.
+      officialBallotTitle: "Solicitor",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("none");
+  });
+
+  it("matches a Georgia county Solicitor General title to the Solicitor General office", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-solicitor-general", canonical_name: "Solicitor General" },
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Hall County, Georgia",
+      state: "GA",
+      officialBallotTitle: "Hall County Solicitor General",
+    });
+
+    expect(result.officeId).toBe("office-solicitor-general");
+    expect(result.method).toBe("deterministic_fallback");
+  });
+
   it("ignores election-stage words when matching office titles", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { statewide: [] },
