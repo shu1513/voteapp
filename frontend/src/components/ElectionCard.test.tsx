@@ -743,4 +743,25 @@ describe("ElectionCard result chip", () => {
     );
     expect(screen.getByText("Result: Won")).toBeInTheDocument();
   });
+
+  it("flags a seat whose electorate is smaller than the district row", () => {
+    renderCard(
+      electionSummary({
+        official_ballot_title: "Justice of the Peace Justice of the Peace Ward 3",
+        sub_district_seat: "Ward 3",
+      })
+    );
+    expect(screen.getByText("Ward 3")).toBeInTheDocument();
+    // The wording must not promise a filter the address lookup cannot do.
+    expect(screen.getByText("— may not cover your address")).toBeInTheDocument();
+  });
+
+  it("leaves ordinary races unflagged, including on a backend that predates the field", () => {
+    renderCard(electionSummary({ sub_district_seat: null }));
+    expect(screen.queryByText("— may not cover your address")).not.toBeInTheDocument();
+
+    // Deploy skew: a backend that predates the field omits it entirely.
+    renderCard(electionSummary({ id: "e-2" }));
+    expect(screen.queryByText("— may not cover your address")).not.toBeInTheDocument();
+  });
 });

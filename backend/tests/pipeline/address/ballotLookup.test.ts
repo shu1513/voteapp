@@ -174,6 +174,8 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           },
           race_type: "office",
           official_ballot_title: "Sheriff",
+          // Countywide office with no seat designator, so nothing to flag.
+          sub_district_seat: null,
           election_date: "2026-06-02",
           election_stage: "primary",
           is_partisan: false,
@@ -226,6 +228,8 @@ describe("lookupBallotSummariesByDistrictIds", () => {
           },
           race_type: "ballot_measure",
           official_ballot_title: "Measure H",
+          // Measures have no office, so the seat gate never applies.
+          sub_district_seat: null,
           election_date: "2026-06-02",
           election_stage: null,
           is_partisan: null,

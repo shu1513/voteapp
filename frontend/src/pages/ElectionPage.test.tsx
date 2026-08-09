@@ -123,6 +123,24 @@ describe("ElectionPage", () => {
     expect(screen.queryByText(/seats/)).not.toBeInTheDocument();
   });
 
+  it("explains a seat whose electorate is smaller than the district, without claiming to filter", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail({ sub_district_seat: "Ward 3" }));
+
+    expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
+    expect(screen.getByText(/This seat represents/)).toBeInTheDocument();
+    expect(screen.getByText("Ward 3")).toBeInTheDocument();
+    expect(screen.getByText(/may not be on your ballot/)).toBeInTheDocument();
+  });
+
+  it("shows no seat-area note for an ordinary race", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() => electionDetail());
+
+    expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
+    expect(screen.queryByText(/This seat represents/)).not.toBeInTheDocument();
+  });
+
   it("hides the party filter when the roster spans a single bucket", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     // Default fixture: two Independent candidates — one "other" bucket.

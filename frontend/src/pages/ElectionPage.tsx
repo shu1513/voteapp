@@ -263,6 +263,16 @@ export function ElectionPage() {
         {data.election_stage ? <> · {data.election_stage}</> : null}
         {data.seats_to_fill != null && data.seats_to_fill > 1 ? <> · {data.seats_to_fill} seats</> : null}
       </p>
+      {/* The detail page has room for the whole caveat, where the ballot card
+          only has room to flag it. Same rule as ElectionCard: name the seat's
+          area, say plainly that we cannot match an address to it, and never
+          imply the race was filtered in or out. */}
+      {data.sub_district_seat ? (
+        <p className="mt-2 rounded-lg border border-line bg-surface/50 px-3 py-2 text-sm text-ink-soft">
+          This seat represents <span className="font-medium text-ink">{data.sub_district_seat}</span>, not the whole
+          district above. We can&rsquo;t match an address to an area this small, so this race may not be on your ballot.
+        </p>
+      ) : null}
       <div className="mt-2 flex flex-wrap gap-2 text-xs">
         {data.vote_power.label !== "unknown" ? (
           <span className={`font-medium ${votePowerBadgeClass(data.vote_power.label)}`}>

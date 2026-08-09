@@ -114,6 +114,15 @@ export type ElectionSummary = {
   district: BallotDistrict;
   race_type: string;
   official_ballot_title: string;
+  /**
+   * The seat's own ward/district designator ("Ward 3", "District 06") when the
+   * office is one whose seats have separate electorates, else null. A ballot is
+   * assembled from district rows, and a county row carries every seat attached
+   * to it — so ward-level races reach every county resident. This flags that;
+   * it does NOT mean the seat was filtered to the reader. `?? null` on read: a
+   * not-yet-redeployed backend omits the field.
+   */
+  sub_district_seat?: string | null;
   election_date: string;
   election_stage: string | null;
   is_partisan: boolean | null;
@@ -345,6 +354,9 @@ export type ElectionDetail = {
   district: BallotDistrict;
   race_type: string;
   official_ballot_title: string;
+  /** Same meaning as ElectionSummary.sub_district_seat: the seat's own
+   * ward/district, flagged because the ballot cannot filter to it. */
+  sub_district_seat?: string | null;
   election_date: string;
   election_stage: string | null;
   is_partisan: boolean | null;
