@@ -3135,9 +3135,21 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     -- government_spending_reduction in place of the surveyor's land-records
     -- housing slug — the engineer's public exposure is the capital budget.
     ('county', 'County Engineer', ARRAY['government_efficiency', 'government_spending_reduction', 'public_infrastructure']::text[]),
+    -- Independent fire district board: the emergency-response slugs the office
+    -- actually controls (fire and EMS coverage, stations and apparatus), plus
+    -- the two spending slugs every self-taxing special district owns — the
+    -- board sets its own levy or assessment. No housing_affordability: unlike
+    -- the assessor-class offices, the district's charge lands on the tax bill
+    -- but the board does not value or administer property.
+    ('county', 'Fire Control District Commissioner', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'public_infrastructure', 'public_safety_and_crime_control']::text[]),
     ('county', 'County Executive', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('county', 'Borough President', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('county', 'County Level Judge', ARRAY['civil_rights', 'housing_affordability', 'impartiality', 'legal_competence', 'public_safety_and_crime_control']::text[]),
+    -- The limited-jurisdiction tier of the same judiciary, so the County Level
+    -- Judge set applies unchanged: JP courts are the eviction and small-claims
+    -- forum (housing_affordability, civil_rights) and, in states such as Texas,
+    -- the Class C misdemeanor and traffic court (public_safety_and_crime_control).
+    ('county', 'Justice of the Peace', ARRAY['civil_rights', 'housing_affordability', 'impartiality', 'legal_competence', 'public_safety_and_crime_control']::text[]),
     ('county', 'County Recorder', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
     -- Business licensing and fee collection (St. Louis): recorder-class
     -- records set with corporate_accountability for the licensing power.
@@ -3172,6 +3184,19 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('place', 'Alderman', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('place', 'City Clerk', ARRAY['anti_corruption', 'data_privacy', 'election_integrity', 'government_efficiency']::text[]),
     ('place', 'City Council Member', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
+    -- Elected public-library board. civil_rights is the board's most contested
+    -- lever (challenges to materials, who may access them); data_privacy is
+    -- the library-specific one, since patron borrowing records are
+    -- confidential by statute in most states. The two spending slugs are the
+    -- operating and levy decisions — Michigan library boards administer their
+    -- own millage — and public_infrastructure is branches and capital
+    -- projects. public_education_quality is shared with School Board Member
+    -- rather than exclusive to it: the literacy, homework-help, and adult-
+    -- education programming a library board sets belongs somewhere, and
+    -- omitting it would push those records into neighboring areas. No
+    -- public_safety_and_crime_control — branch security is the director's
+    -- administrative problem, not a lever the board is elected on.
+    ('place', 'Library Board Member', ARRAY['civil_rights', 'data_privacy', 'government_efficiency', 'government_spending_reduction', 'public_education_quality', 'public_infrastructure']::text[]),
     ('place', 'Comptroller', ARRAY['anti_corruption', 'corporate_accountability', 'government_efficiency', 'government_spending_reduction']::text[]),
     ('place', 'City Treasurer', ARRAY['anti_corruption', 'government_efficiency', 'government_spending_reduction']::text[]),
     ('place', 'Mayor', ARRAY['civil_rights', 'environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
