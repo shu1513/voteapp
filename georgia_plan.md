@@ -854,3 +854,30 @@ shape) and lands first; only the D3 map table waits for the spike.
   flat-set guards, and the Ohio/NC/Georgia templates. Lesson recorded
   twice now: the grep that finds the port cohort also defines its blind
   spot — sweep for the concept, then diff against the grep hits.
+- 2026-08-09: **LIVE RUN round 1 + archive-leg fix.** First 50 candidates:
+  auto-link solid (link accuracy spot-checked clean), every synced
+  candidate reconciled to $0.00, but 23/50 breached reconciliation and the
+  archive diagnostics showed **zero archive rows ever included** — the
+  archive leg had never worked live (fixture stubs masked both defects).
+  Root causes, live-verified: (1) archive report/transaction fetches
+  searched by the index display name ("Elizabeth Anne Camp"), but the
+  archive report + transaction endpoints store "Surname, Firstname" forms
+  — the space-form name matches zero rows there; fetches now use the
+  surname token and the registration-guid / entity-id filters do the
+  scoping. (2) discovery's cycle gate required a "2026 " archive index
+  row, but the archive FROZE July 2025 — a 2026-cycle candidate's archive
+  money often sits under a registration whose newest index row says
+  2022/2024 (re-registration happened in PeachFile); gate removed. Key new
+  fact: **official PeachFile index totals are registration-chain-cumulative
+  (career)** — Dunn's pre-fix gap $64,594.00 equalled his entire archive
+  store to the cent, and Mitchell's official total requires archive
+  filings back to 2021 — so including every report of a discovered
+  registration is correct and the reconciliation guard stays the arbiter
+  (over-inclusion breaches and fails closed). Post-fix Dunn syncs
+  $240,790.24, reconciliationDifference 0, 119 archive rows. Remaining
+  open classes after the fix: nickname/legal-name discovery misses (Beth
+  Camp = "Elizabeth Anne Camp", Betsy Holland = "Elizabeth Stuart
+  Holland", Al Williams, Buddy DeLoach — need identity-map rows or a
+  user-approved nickname rule), PF store gaps (Shaikh's Jan-31 CCDR has
+  zero TCON rows in the store), and PF pull instability (4 candidates,
+  retryable). 138 GA tests, suite 7,224 green.
