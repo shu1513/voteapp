@@ -3145,6 +3145,11 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     ('county', 'County Executive', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('county', 'Borough President', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('county', 'County Level Judge', ARRAY['civil_rights', 'housing_affordability', 'impartiality', 'legal_competence', 'public_safety_and_crime_control']::text[]),
+    -- The limited-jurisdiction tier of the same judiciary, so the County Level
+    -- Judge set applies unchanged: JP courts are the eviction and small-claims
+    -- forum (housing_affordability, civil_rights) and, in states such as Texas,
+    -- the Class C misdemeanor and traffic court (public_safety_and_crime_control).
+    ('county', 'Justice of the Peace', ARRAY['civil_rights', 'housing_affordability', 'impartiality', 'legal_competence', 'public_safety_and_crime_control']::text[]),
     ('county', 'County Recorder', ARRAY['anti_corruption', 'data_privacy', 'government_efficiency']::text[]),
     -- Business licensing and fee collection (St. Louis): recorder-class
     -- records set with corporate_accountability for the licensing power.
