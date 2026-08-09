@@ -126,7 +126,7 @@ export type NorthCarolinaDirectAggregationResult = {
   // A cover whose own declared rptID is not the report it was cached for —
   // provably another report's bytes. Nonempty forces
   // status "incomplete_artifacts": suspect bytes never become writable money.
-  coverPeriodMismatchReportIds: string[];
+  coverIdentityMismatchReportIds: string[];
   // Advisory: the cover's begin/end dates disagree with the inventory period
   // of the same filing. Live PR 9 evidence says this is portal sloppiness,
   // not mispairing — 17 of 697 covers disagree, including begin-after-end
@@ -422,7 +422,7 @@ export function aggregateNorthCarolinaDirectFinance(
   // inventory row on dates alone while the identity matched, so a strict
   // date check withheld eight real candidates' money. Those disagreements
   // stay as an advisory diagnostic.
-  const coverPeriodMismatchReportIds: string[] = [];
+  const coverIdentityMismatchReportIds: string[] = [];
   const coverPeriodDisagreementReportIds: string[] = [];
   for (const filing of selectedFilings) {
     const report = reportsById.get(filing.reportId!);
@@ -430,7 +430,7 @@ export function aggregateNorthCarolinaDirectFinance(
       continue;
     }
     if (report.cover.cover.reportId !== filing.reportId) {
-      coverPeriodMismatchReportIds.push(filing.reportId!);
+      coverIdentityMismatchReportIds.push(filing.reportId!);
       continue;
     }
     const coverBegin = report.cover.cover.beginDate.iso;
@@ -464,7 +464,7 @@ export function aggregateNorthCarolinaDirectFinance(
     itemizedIndividualCents: 0,
     coverIndividualContributionCents: null,
     cycleChainMismatches: [],
-    coverPeriodMismatchReportIds,
+    coverIdentityMismatchReportIds,
     coverPeriodDisagreementReportIds,
     derivedBreakdownsQuarantined: false,
     unknownReceiptTypeCodes: [],
@@ -494,7 +494,7 @@ export function aggregateNorthCarolinaDirectFinance(
   // Missing cached artifacts and mispaired covers are cache/acquisition
   // problems, not portal evidence — the sync keeps the previous snapshot
   // and re-acquires.
-  if (missingReportIds.length > 0 || coverPeriodMismatchReportIds.length > 0) {
+  if (missingReportIds.length > 0 || coverIdentityMismatchReportIds.length > 0) {
     return {
       status: "incomplete_artifacts",
       summary: nullSummary,
@@ -698,7 +698,7 @@ export function aggregateNorthCarolinaDirectFinance(
     itemizedIndividualCents,
     coverIndividualContributionCents: coverIndividualCents,
     cycleChainMismatches,
-    coverPeriodMismatchReportIds,
+    coverIdentityMismatchReportIds,
     coverPeriodDisagreementReportIds,
     derivedBreakdownsQuarantined,
     unknownReceiptTypeCodes: [...unknownReceiptTypeCodes.values()].sort((left, right) =>

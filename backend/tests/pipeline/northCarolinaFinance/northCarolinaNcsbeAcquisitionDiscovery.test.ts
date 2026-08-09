@@ -262,6 +262,73 @@ describe("discoverNcsbeAcquisitionCommittees", () => {
     ]);
   });
 
+  it("skips the committee and records the disagreement when two searches return different OGIDs", async () => {
+    // The conflict can only arise across two candidate-name searches (the
+    // committee-name fallback runs only when nothing resolved the OGID yet),
+    // so two roster rows linked to the same SBoEID drive it.
+    const state = { requests: [] as string[] };
+    const transport = fakeTransport(state, {
+      "Jane Doe": searchPage([GADSON_ROW]),
+      "John Roe": searchPage([{ ...GADSON_ROW, OrgGroupID: 99999 }]),
+    });
+    const result = await discoverNcsbeAcquisitionCommittees({
+      transport,
+      cacheDir,
+      roster: [
+        rosterRow({
+          candidateId: "cand-1",
+          candidateName: "Jane Doe",
+          linkedCommitteeId: "STA-JV516O-C-001",
+          linkedCommitteeName: "GADSON FOR NORTH CAROLINA (GADSON, MARCUS)",
+        }),
+        rosterRow({
+          candidateId: "cand-2",
+          electionId: "elec-2",
+          candidateName: "John Roe",
+          linkedCommitteeId: "STA-JV516O-C-001",
+          linkedCommitteeName: "GADSON FOR NORTH CAROLINA (GADSON, MARCUS)",
+        }),
+      ],
+      retrievedAt: NOW,
+    });
+    expect(result.committees).toEqual([]);
+    expect(result.linkedOgidResolvedCount).toBe(0);
+    expect(result.ogidFailures).toEqual([
+      { sboeId: "STA-JV516O-C-001", message: expect.stringMatching(/disagree/) },
+    ]);
+  });
+
+  it("falls back to the cached search when the refresh fetch fails, recording the failure", async () => {
+    // An unlinked candidate refreshes every run; when the portal is down the
+    // cached evidence must still resolve the committee, with the fetch
+    // failure surfaced instead of swallowed.
+    await storeNcsbeArtifact({
+      cacheDir,
+      key: { type: "committee_search", query: "Marcus Gadson" },
+      url: ncsbeCommitteeSearchUrl("Marcus Gadson"),
+      body: fixture("committee-search-gadson.html"),
+      retrievedAt: NOW,
+    });
+    const transport: NcsbeTransport = {
+      fetchText: async () => {
+        throw new Error("portal unreachable");
+      },
+    };
+    const result = await discoverNcsbeAcquisitionCommittees({
+      transport,
+      cacheDir,
+      roster: [rosterRow({})],
+      retrievedAt: NOW,
+    });
+    expect(result.searchesFromCache).toBe(1);
+    expect(result.searchesFetched).toBe(0);
+    expect(result.searchFailures).toEqual([
+      { query: "Marcus Gadson", message: expect.stringMatching(/portal unreachable/) },
+    ]);
+    expect(result.resolverMatchedCount).toBe(1);
+    expect(result.committees).toEqual([{ sboeId: "STA-JV516O-C-001", orgGroupId: 57190 }]);
+  });
+
   it("records a search failure and keeps going when a candidate search cannot be fetched", async () => {
     const transport: NcsbeTransport = {
       fetchText: async () => {

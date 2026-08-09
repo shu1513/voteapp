@@ -12,6 +12,67 @@ import {
   runRefreshNorthCarolinaNcsbeRawDataScript,
   DEFAULT_NCSBE_CACHE_DIR,
 } from "../../src/scripts/refreshNorthCarolinaNcsbeCampaignFinanceRawData.js";
+import { storeNcsbeArtifact } from "../../src/pipeline/northCarolinaFinance/northCarolinaNcsbeArtifactCache.js";
+import {
+  ncsbeCommitteeSearchUrl,
+  ncsbeIeDocTypeInventoryUrl,
+} from "../../src/pipeline/northCarolinaFinance/northCarolinaNcsbeClient.js";
+
+function fixture(name: string): string {
+  return readFileSync(
+    fileURLToPath(new URL(`../fixtures/northCarolinaFinance/${name}`, import.meta.url)),
+    "utf8"
+  );
+}
+
+const ROSTER_ROW = {
+  candidateId: "cand-1",
+  electionId: "elec-1",
+  candidateName: "Marcus Gadson",
+  electionYear: 2026,
+  officeScope: "state_upper",
+  officeName: "State Senator",
+  district: "28",
+  linkedCommitteeId: null,
+  linkedCommitteeName: null,
+};
+
+// Fake portal for roster-mode runs: the Gadson candidate search resolves, all
+// other committee searches (the spender phase) answer empty, and everything
+// else serves the Gadson fixtures.
+function rosterTransport(overrides: Record<string, () => string> = {}) {
+  return {
+    fetchText: async (url: string) => {
+      for (const [prefix, body] of Object.entries(overrides)) {
+        if (url.startsWith(prefix)) {
+          return body();
+        }
+      }
+      if (url === ncsbeCommitteeSearchUrl("Marcus Gadson")) {
+        return fixture("committee-search-gadson.html");
+      }
+      if (url.includes("/CommitteeGeneralResult/")) {
+        return "<html><script>var data = [];</script></html>";
+      }
+      if (url.includes("/DocumentGeneralResult/")) {
+        return fixture("document-inventory-gadson.html");
+      }
+      if (url.includes("/ReportDetail/")) {
+        return fixture("report-cover-gadson-229931.html");
+      }
+      if (url.includes("GetReceipts")) {
+        return fixture("receipts-gadson-229931-p0.json");
+      }
+      if (url.includes("GetExpenditures")) {
+        return fixture("ie-expenditures-carolina-federation-p0.json");
+      }
+      if (url.includes("/CFDocLkup/DocumentResult/")) {
+        return fixture("ie-doc-type-inventory-2026.html");
+      }
+      throw new Error(`Unexpected URL: ${url}`);
+    },
+  };
+}
 
 describe("parseNcsbeCommitteeArg", () => {
   it("parses <SBoEID>:<OrgGroupID> and upper-cases the id", () => {
@@ -171,6 +232,115 @@ describe("runRefreshNorthCarolinaNcsbeRawDataScript", () => {
           excluded_undated_out_of_cycle_row_count: 0,
           unusable_period_row_count: 0,
         });
+      }
+    } finally {
+      await rm(cacheDir, { recursive: true, force: true });
+    }
+  });
+
+  it("serializes the roster_discovery and spenders payload on a non-dry roster run", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "ncsbe-roster-run-"));
+    try {
+      const options = parseRefreshNorthCarolinaNcsbeRawDataScriptArgs([
+        "--cycle-year=2026",
+        "--roster",
+        `--cache-dir=${cacheDir}`,
+      ]);
+      const output = await runRefreshNorthCarolinaNcsbeRawDataScript({
+        options,
+        rosterRows: [ROSTER_ROW],
+        transport: rosterTransport(),
+        log: () => {},
+        now: new Date("2026-08-09T17:00:00Z"),
+      });
+      // The CLI payload is a consumed contract: every snake_case field must
+      // survive a rename or a dropped mapping.
+      expect(output).toMatchObject({
+        dry_run: false,
+        total_failure: false,
+        roster_discovery: {
+          roster_row_count: 1,
+          search_query_count: 1,
+          searches_fetched: 1,
+          searches_from_cache: 0,
+          search_failures: [],
+          resolver_matched_count: 1,
+          resolver_unmatched_count: 0,
+          resolver_ambiguous_count: 0,
+          linked_ogid_resolved_count: 0,
+          ogid_failures: [],
+          discovered_committee_count: 1,
+        },
+        spender_discovery_failure: null,
+      });
+      if ("spenders" in output && output.spenders !== null) {
+        expect(output.spenders.committees).toEqual([]);
+        // Every discovered spender fails closed on the empty search pages.
+        expect(output.spenders.failures.length).toBe(output.spenders.discovered_spender_count);
+      } else {
+        throw new Error("expected a spenders payload on a roster run");
+      }
+      expect(output.committees).toHaveLength(1);
+    } finally {
+      await rm(cacheDir, { recursive: true, force: true });
+    }
+  });
+
+  it("does not flag total_failure when only the spender phase acquired artifacts", async () => {
+    // The reviewer's scenario, adjusted for the gated spender phase: IE is
+    // requested but its live inventory fetch fails, no committee resolves,
+    // and spender discovery succeeds off cached inventories. The run DID
+    // acquire artifacts, so automation must not see exit code 1.
+    const cacheDir = await mkdtemp(join(tmpdir(), "ncsbe-spender-only-"));
+    try {
+      for (const year of [2025, 2026]) {
+        await storeNcsbeArtifact({
+          cacheDir,
+          key: { type: "ie_doc_type_inventory", year },
+          url: ncsbeIeDocTypeInventoryUrl(year),
+          body: fixture("ie-doc-type-inventory-2026.html"),
+          retrievedAt: new Date("2026-08-09T00:00:00Z"),
+        });
+      }
+      const spenderSearch =
+        "<html><script>var data = " +
+        JSON.stringify([
+          {
+            OrgName: "CAROLINA FEDERATION FREEDOM PAC",
+            SBoEID: "STA-98J33C-C-001",
+            OldID: null,
+            CandName: null,
+            StatusDesc: "ACTIVE (NON-EXEMPT)",
+            OrgGroupID: 61234,
+            Link: null,
+          },
+        ]) +
+        ";</script></html>";
+      const transport = rosterTransport({
+        [ncsbeIeDocTypeInventoryUrl(2025).slice(0, 60)]: () => {
+          throw new Error("IE inventory unreachable");
+        },
+        [ncsbeCommitteeSearchUrl("CAROLINA FEDERATION FREEDOM PAC")]: () => spenderSearch,
+      });
+      const options = parseRefreshNorthCarolinaNcsbeRawDataScriptArgs([
+        "--cycle-year=2026",
+        "--roster",
+        `--cache-dir=${cacheDir}`,
+      ]);
+      const output = await runRefreshNorthCarolinaNcsbeRawDataScript({
+        options,
+        rosterRows: [],
+        transport,
+        log: () => {},
+        now: new Date("2026-08-09T17:00:00Z"),
+      });
+      expect(output).toMatchObject({ dry_run: false, ie: null });
+      if ("spenders" in output && output.spenders !== null) {
+        expect(output.spenders.committees).toHaveLength(1);
+        expect(output.committees).toHaveLength(0);
+        expect(output.total_failure).toBe(false);
+      } else {
+        throw new Error("expected a spenders payload");
       }
     } finally {
       await rm(cacheDir, { recursive: true, force: true });

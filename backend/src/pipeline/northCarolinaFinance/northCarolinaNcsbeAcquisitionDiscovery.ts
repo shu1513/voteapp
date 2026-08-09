@@ -168,13 +168,18 @@ async function loadOrFetchCommitteeSearch(input: {
 }): Promise<CommitteeSearchLoad & { fetchFailure: string | null }> {
   const key = { type: "committee_search", query: input.query } as const;
   const cached = await getNcsbeArtifactStatus({ cacheDir: input.cacheDir, key });
-  const cachedLoad: CommitteeSearchLoad | null =
+  // Parsed lazily, only when the cached copy is actually used: a cached body
+  // the CURRENT parser rejects (the hazard is a parser change without a
+  // version bump) must not prevent the refresh fetch that would replace it.
+  const cachedBytes =
     cached.status === "ready" && cached.body !== null && cached.manifest !== null
-      ? { rows: parseNcsbeCommitteeSearchPage(cached.body), url: cached.manifest.url, fetched: false }
+      ? { body: cached.body, url: cached.manifest.url }
       : null;
+  const parseCached = (): CommitteeSearchLoad =>
+    ({ rows: parseNcsbeCommitteeSearchPage(cachedBytes!.body), url: cachedBytes!.url, fetched: false });
 
-  if (!input.refresh && cachedLoad !== null) {
-    return { ...cachedLoad, fetchFailure: null };
+  if (!input.refresh && cachedBytes !== null) {
+    return { ...parseCached(), fetchFailure: null };
   }
 
   try {
@@ -188,9 +193,14 @@ async function loadOrFetchCommitteeSearch(input: {
     });
     return { rows: fetched.parsed, url: fetched.url, fetched: true, fetchFailure: null };
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    if (cachedLoad !== null) {
-      return { ...cachedLoad, fetchFailure: message };
+    if (cachedBytes !== null) {
+      // An unparseable cached copy is no fallback — surface the fetch error.
+      try {
+        const fallback = parseCached();
+        return { ...fallback, fetchFailure: error instanceof Error ? error.message : String(error) };
+      } catch {
+        throw error;
+      }
     }
     throw error;
   }
@@ -302,7 +312,10 @@ export async function discoverNcsbeAcquisitionCommittees(input: {
   };
 
   const discovered = new Map<string, NcsbeAcquisitionCommittee>();
-  const addCommittee = (sboeId: string, orgGroupId: number): void => {
+  // Normalized HERE so no caller can split one committee into two entries by
+  // casing (the linked path uppercases, the resolver path passes through).
+  const addCommittee = (rawSboeId: string, orgGroupId: number): void => {
+    const sboeId = rawSboeId.trim().toUpperCase();
     if (!discovered.has(sboeId)) {
       discovered.set(sboeId, { sboeId, orgGroupId });
     }
@@ -333,6 +346,14 @@ export async function discoverNcsbeAcquisitionCommittees(input: {
     }
     const nameQuery = committeeName?.trim() ?? "";
     if (nameQuery.length === 0) {
+      continue;
+    }
+    // A committee name that coincides with a query this run already loaded
+    // (however unlikely) must not burn a second paced request or double the
+    // fetched/cached counters.
+    const alreadyLoaded = searchByQuery.get(nameQuery);
+    if (alreadyLoaded !== undefined) {
+      lookupOgidInRows(alreadyLoaded.rows, sboeId);
       continue;
     }
     try {

@@ -168,7 +168,7 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
     expect(buckets.get("$1-$99")).toMatchObject({ amount: 213.24, contributorCount: 4 });
 
     expect(result.cycleChainMismatches).toEqual([]);
-    expect(result.coverPeriodMismatchReportIds).toEqual([]);
+    expect(result.coverIdentityMismatchReportIds).toEqual([]);
     expect(result.negativeCashOnHand).toBe(false);
     expect(result.fortyEightHourNoticeSumCents).toBe(0);
   });
@@ -468,7 +468,7 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
       reports: [{ reportId: "229931", cover: wrongCover, receiptRows: [] }],
     });
     expect(result.status).toBe("incomplete_artifacts");
-    expect(result.coverPeriodMismatchReportIds).toEqual(["229931"]);
+    expect(result.coverIdentityMismatchReportIds).toEqual(["229931"]);
     expect(result.summary.totalReceipts).toBeNull();
     expect(result.directBreakdowns).toEqual([]);
   });
@@ -488,7 +488,7 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
       reports: [{ reportId: "229931", cover: sloppyDates, receiptRows: [] }],
     });
     expect(result.status).toBe("ok");
-    expect(result.coverPeriodMismatchReportIds).toEqual([]);
+    expect(result.coverIdentityMismatchReportIds).toEqual([]);
     expect(result.coverPeriodDisagreementReportIds).toEqual(["229931"]);
     expect(result.summary.totalReceipts).toBe(500);
   });

@@ -341,12 +341,18 @@ export async function runRefreshNorthCarolinaNcsbeRawDataScript(input: {
             failures: rosterResult.spenders.failures,
           },
     spender_discovery_failure: rosterResult === null ? null : rosterResult.spenderDiscoveryFailure,
-    // True when NO requested scope succeeded — every committee failed and
-    // the IE pass (if requested) failed too. Partial results keep exit code
-    // 0 (failures ride in the payload and the next run's skip logic makes
+    // True when NO requested scope succeeded — every committee failed, the
+    // IE pass (if requested) failed too, and (roster mode) no spender was
+    // acquired either: the spender phase can succeed off cached inventories
+    // even when the live IE pull failed, and a run that acquired those
+    // artifacts must not alert as empty. Partial results keep exit code 0
+    // (failures ride in the payload and the next run's skip logic makes
     // retries cheap), but a run that acquired nothing must fail loudly so
     // automation can alert and retry instead of trusting an empty success.
-    total_failure: acquisition.committees.length === 0 && acquisition.ie === null,
+    total_failure:
+      acquisition.committees.length === 0 &&
+      acquisition.ie === null &&
+      (rosterResult?.spenders?.committees.length ?? 0) === 0,
   };
 }
 
