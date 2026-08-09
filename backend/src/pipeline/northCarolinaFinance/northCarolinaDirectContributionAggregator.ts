@@ -249,7 +249,10 @@ function requireSection(sections: Map<number, SectionValues>, sequence: number, 
 // committee's hypothetical IE Disclosure Report would enter the sums here —
 // its cover money is that committee's own official spending, and the
 // decision-3 single-source rule governs only OUTSIDE totals.
-function selectDirectCycleRows(input: {
+// Exported for the batch funder leg (PR 8): a registered spender's receipts
+// go through this same cycle filter + the current-filing selector, so its
+// donor money can never be summed off a superseded original.
+export function selectNorthCarolinaDirectCycleReportRows(input: {
   rows: readonly NcsbeDocumentRow[];
   electionYear: number;
 }): { rows: NcsbeDocumentRow[]; unusablePeriodRowCount: number } {
@@ -311,7 +314,7 @@ export function aggregateNorthCarolinaDirectFinance(
   );
   const sourceUrl = input.sourceUrl ?? null;
 
-  const { rows: cycleRows, unusablePeriodRowCount } = selectDirectCycleRows({
+  const { rows: cycleRows, unusablePeriodRowCount } = selectNorthCarolinaDirectCycleReportRows({
     rows: input.inventoryRows,
     electionYear,
   });

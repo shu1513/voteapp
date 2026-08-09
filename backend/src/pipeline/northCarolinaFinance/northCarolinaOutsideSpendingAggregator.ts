@@ -541,7 +541,7 @@ export function aggregateNorthCarolinaOutsideSpending(input: {
       } else {
         accumulator.opposeCents += amount;
       }
-      const groupKey = `${committeeId} ${direction}`;
+      const groupKey = `${committeeId}\u0000${direction}`;
       const group = accumulator.groups.get(groupKey);
       if (group) {
         group.amountCents += amount;
