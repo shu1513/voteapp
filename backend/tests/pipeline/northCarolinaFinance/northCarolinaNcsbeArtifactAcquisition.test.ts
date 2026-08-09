@@ -61,12 +61,16 @@ describe("selectNcsbeCycleReportRows", () => {
     });
     const imageOnly = documentRow({ dataLink: null });
     const correspondence = documentRow({ dataLink: "13", documentType: "Committee Correspondence - Incoming" });
-    const { selected, unusablePeriodRowCount } = selectNcsbeCycleReportRows({
-      rows: [inWindow, priorCycle, straddling, imageOnly, correspondence],
+    // Live PR 9 finding: the 48-hour form carries no totals and its money is
+    // re-reported on the covering regular report — never fetched.
+    const fortyEightHour = documentRow({ dataLink: "14", reportType: "48-Hour Notice" });
+    const { selected, unusablePeriodRowCount, excludedNoTotalReportRowCount } = selectNcsbeCycleReportRows({
+      rows: [inWindow, priorCycle, straddling, imageOnly, correspondence, fortyEightHour],
       cycleYear: 2026,
     });
     expect(selected.map((row) => row.dataLink)).toEqual(["10", "12"]);
     expect(unusablePeriodRowCount).toBe(0);
+    expect(excludedNoTotalReportRowCount).toBe(1);
   });
 
   it("includes and counts rows whose period bounds are missing or implausible", () => {

@@ -13,7 +13,7 @@ import {
   type NcsbeArtifactKey,
   type NcsbeSourceDocumentMetadata,
 } from "./northCarolinaNcsbeArtifactCache.js";
-import type { NcsbeDocumentRow } from "./northCarolinaNcsbeParsers.js";
+import { NCSBE_NO_TOTAL_REPORT_TYPES, type NcsbeDocumentRow } from "./northCarolinaNcsbeParsers.js";
 
 // Acquisition for NCSBE portal artifacts (north_carolina_plan.md "Required
 // artifacts per cycle Y"). Retrieval only: report ids are discovered from the
@@ -40,13 +40,21 @@ export type NcsbeAcquisitionCommittee = {
 export function selectNcsbeCycleReportRows(input: {
   rows: readonly NcsbeDocumentRow[];
   cycleYear: number;
-}): { selected: NcsbeDocumentRow[]; unusablePeriodRowCount: number } {
+}): { selected: NcsbeDocumentRow[]; unusablePeriodRowCount: number; excludedNoTotalReportRowCount: number } {
   const cycleStartIso = `${input.cycleYear - 1}-01-01`;
   const cycleEndIso = `${input.cycleYear}-12-31`;
   const selected: NcsbeDocumentRow[] = [];
   let unusablePeriodRowCount = 0;
+  let excludedNoTotalReportRowCount = 0;
   for (const row of input.rows) {
     if (row.documentType !== "Disclosure Report" || row.dataLink === null) {
+      continue;
+    }
+    // Pinned no-total forms (48-Hour Notice): nothing on them is usable —
+    // no cover totals, and their receipts re-appear on the covering regular
+    // report — so fetching them only burns requests and fails the cover pin.
+    if (row.reportType !== null && NCSBE_NO_TOTAL_REPORT_TYPES.has(row.reportType)) {
+      excludedNoTotalReportRowCount += 1;
       continue;
     }
     const startIso = row.periodStartDate.iso;
@@ -60,7 +68,7 @@ export function selectNcsbeCycleReportRows(input: {
       selected.push(row);
     }
   }
-  return { selected, unusablePeriodRowCount };
+  return { selected, unusablePeriodRowCount, excludedNoTotalReportRowCount };
 }
 
 export function ncsbeSourceDocumentMetadata(row: NcsbeDocumentRow): NcsbeSourceDocumentMetadata {
@@ -209,6 +217,7 @@ export type NcsbeCommitteeAcquisitionResult = {
   inventoryRowCount: number;
   selectedReportCount: number;
   unusablePeriodRowCount: number;
+  excludedNoTotalReportRowCount: number;
   fetched: NcsbeReportFetchSummary[];
   skippedReportIds: string[];
   failures: Array<{ reportId: string; message: string }>;
@@ -312,7 +321,7 @@ export async function acquireNcsbeCommitteeArtifacts(input: {
     retrievedAt: input.retrievedAt,
   });
 
-  const { selected, unusablePeriodRowCount } = selectNcsbeCycleReportRows({
+  const { selected, unusablePeriodRowCount, excludedNoTotalReportRowCount } = selectNcsbeCycleReportRows({
     rows: inventory.parsed,
     cycleYear: input.cycleYear,
   });
@@ -332,6 +341,7 @@ export async function acquireNcsbeCommitteeArtifacts(input: {
     inventoryRowCount: inventory.parsed.length,
     selectedReportCount: selected.length,
     unusablePeriodRowCount,
+    excludedNoTotalReportRowCount,
     ...reportSet,
   };
 }

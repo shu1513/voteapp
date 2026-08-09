@@ -3,11 +3,12 @@ import {
   type NcsbeFiling,
   type NcsbeQuarantinedGroup,
 } from "./northCarolinaReportSelector.js";
-import type {
-  NcsbeDocumentRow,
-  NcsbeExpenditureRow,
-  NcsbeReceiptRow,
-  NcsbeReportDetail,
+import {
+  NCSBE_NO_TOTAL_REPORT_TYPES,
+  type NcsbeDocumentRow,
+  type NcsbeExpenditureRow,
+  type NcsbeReceiptRow,
+  type NcsbeReportDetail,
 } from "./northCarolinaNcsbeParsers.js";
 
 // Direct-money aggregation for one linked NC candidate committee over one
@@ -102,6 +103,9 @@ export type NorthCarolinaDirectAggregationResult = {
   // Inventory rows whose period bounds are missing/implausible — included in
   // selection (a typo must widen the window, never narrow it) and counted.
   unusablePeriodRowCount: number;
+  // Pinned no-total forms (48-Hour Notice) dropped before selection —
+  // counted so a dropped filing is visible, never silent.
+  excludedNoTotalReportRowCount: number;
   // Advisory reconciliation (decision 11): itemized receipt-row sums vs the
   // authoritative cover values. In-kind timing and non-itemized income make
   // modest gaps normal; a large gap means artifact damage.
@@ -255,13 +259,23 @@ function requireSection(sections: Map<number, SectionValues>, sequence: number, 
 export function selectNorthCarolinaDirectCycleReportRows(input: {
   rows: readonly NcsbeDocumentRow[];
   electionYear: number;
-}): { rows: NcsbeDocumentRow[]; unusablePeriodRowCount: number } {
+}): { rows: NcsbeDocumentRow[]; unusablePeriodRowCount: number; excludedNoTotalReportRowCount: number } {
   const cycleStartIso = `${input.electionYear - 1}-01-01`;
   const cycleEndIso = `${input.electionYear}-12-31`;
   const rows: NcsbeDocumentRow[] = [];
   let unusablePeriodRowCount = 0;
+  let excludedNoTotalReportRowCount = 0;
   for (const row of input.rows) {
     if (row.documentType !== "Disclosure Report") {
+      continue;
+    }
+    // Pinned no-total forms (48-Hour Notice, verified live): the cover has
+    // no totals and the receipts re-appear on the covering regular report,
+    // so including one would fail the candidate on a missing artifact the
+    // acquisition deliberately never fetches — and aggregating it would
+    // double-count the money and its occupation row.
+    if (row.reportType !== null && NCSBE_NO_TOTAL_REPORT_TYPES.has(row.reportType)) {
+      excludedNoTotalReportRowCount += 1;
       continue;
     }
     const startIso = row.periodStartDate.iso;
@@ -275,7 +289,7 @@ export function selectNorthCarolinaDirectCycleReportRows(input: {
       rows.push(row);
     }
   }
-  return { rows, unusablePeriodRowCount };
+  return { rows, unusablePeriodRowCount, excludedNoTotalReportRowCount };
 }
 
 type OccupationAggregate = {
@@ -314,10 +328,11 @@ export function aggregateNorthCarolinaDirectFinance(
   );
   const sourceUrl = input.sourceUrl ?? null;
 
-  const { rows: cycleRows, unusablePeriodRowCount } = selectNorthCarolinaDirectCycleReportRows({
-    rows: input.inventoryRows,
-    electionYear,
-  });
+  const { rows: cycleRows, unusablePeriodRowCount, excludedNoTotalReportRowCount } =
+    selectNorthCarolinaDirectCycleReportRows({
+      rows: input.inventoryRows,
+      electionYear,
+    });
   const selection = selectNcsbeCurrentFilings({ rows: cycleRows });
   const selectedFilings = [...selection.selected].sort(comparePeriodOrder);
   const selectedReportIds = selectedFilings.map((filing) => filing.reportId!);
@@ -364,6 +379,7 @@ export function aggregateNorthCarolinaDirectFinance(
     quarantinedGroups: selection.quarantinedGroups,
     missingReportIds,
     unusablePeriodRowCount,
+    excludedNoTotalReportRowCount,
     itemizedReceiptsCents: 0,
     coverTotalReceiptsCents: null,
     itemizedIndividualCents: 0,
@@ -594,6 +610,7 @@ export function aggregateNorthCarolinaDirectFinance(
     quarantinedGroups: selection.quarantinedGroups,
     missingReportIds,
     unusablePeriodRowCount,
+    excludedNoTotalReportRowCount,
     itemizedReceiptsCents,
     coverTotalReceiptsCents: totalReceiptsCents,
     itemizedIndividualCents,

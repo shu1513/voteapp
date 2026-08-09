@@ -171,6 +171,30 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
     expect(result.fortyEightHourNoticeSumCents).toBe(0);
   });
 
+  it("excludes a 48-Hour Notice without failing the candidate — its money rides the covering report", () => {
+    // Live PR 9 finding (RID 230343): the 48-hour form has a 3-heading
+    // all-zero cover and its receipt reappears on the regular report, so the
+    // acquisition never fetches it. Without the pinned exclusion this row
+    // would surface as a missing artifact and fail the whole candidate.
+    const fortyEightHour = makeInventoryRow({
+      reportType: "48-Hour Notice",
+      periodStartDate: parseNcsbeDate("02/26/2026"),
+      periodEndDate: parseNcsbeDate("03/03/2026"),
+      dataLink: "230343",
+    });
+    const result = aggregateNorthCarolinaDirectFinance({
+      electionYear: 2026,
+      inventoryRows: [GADSON_Q1_ROW, fortyEightHour],
+      reports: [{ reportId: "229931", cover: GADSON_COVER, receiptRows: GADSON_RECEIPTS }],
+      sourceUrl: SOURCE_URL,
+    });
+    expect(result.status).toBe("ok");
+    expect(result.excludedNoTotalReportRowCount).toBe(1);
+    expect(result.selectedReportIds).toEqual(["229931"]);
+    expect(result.missingReportIds).toEqual([]);
+    expect(result.summary.totalReceipts).toBe(6073.24);
+  });
+
   it("sums covers across reports, checks the Cycle chain, and takes cash from the latest report", () => {
     const organizational = makeInventoryRow({
       reportType: "Organizational",

@@ -228,6 +228,18 @@ export function parseNcsbeCommitteeSearchPage(html: string): NcsbeCommitteeSearc
 // and the statewide doc-type inventory (/CFDocLkup/DocumentResult/) — both
 // embed the same row schema.
 
+// Disclosure-report types that carry NO cover totals and whose money is
+// re-reported on the covering regular report, verified live in the PR 9 run:
+// RID 230343 ("2026 48-Hour Notice", STA-E1V050-C-001) has a 3-heading
+// all-zero summary grid, and its single $2,500 receipt reappears on the
+// committee's Second Quarter report (GroupID 22554243). Both inventory
+// readers — the acquisition's fetch selection and the direct cycle filter —
+// exclude these rows: fetching one fails the 34-section cover pin, and
+// aggregating one would double-count both the dollars and the occupation
+// row. Exclusion is by THIS pinned set only, never by pattern — an unknown
+// no-total form must keep failing closed until it is verified and added.
+export const NCSBE_NO_TOTAL_REPORT_TYPES: ReadonlySet<string> = new Set(["48-Hour Notice"]);
+
 export type NcsbeDocumentRow = {
   committeeName: string;
   // Null when the filer is unregistered (`No Id`) — decision 6.
