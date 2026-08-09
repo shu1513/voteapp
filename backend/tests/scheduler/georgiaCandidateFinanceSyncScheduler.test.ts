@@ -70,6 +70,22 @@ describe("georgiaCandidateFinanceSyncScheduler", () => {
     expect(Pool).not.toHaveBeenCalled();
   });
 
+  it("rejects unsafe integer job options that Number() rounding could smuggle in", async () => {
+    process.env.GEORGIA_CAMPAIGN_FINANCE_ENABLED = "true";
+    process.env.GEORGIA_CAMPAIGN_FINANCE_SYNC_ENABLED = "true";
+    const Pool = vi.fn();
+    vi.doMock("pg", () => ({ Pool }));
+
+    const { runGeorgiaCandidateFinanceSyncJob } = await import(
+      "../../src/scheduler/georgiaCandidateFinanceSyncScheduler.js"
+    );
+
+    await expect(
+      runGeorgiaCandidateFinanceSyncJob({ triggeredBy: "manual", maxCandidates: 2 ** 53 })
+    ).rejects.toThrow("Invalid Georgia finance sync scheduler maxCandidates");
+    expect(Pool).not.toHaveBeenCalled();
+  });
+
   it("does not let force bypass the master Georgia finance flag", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-08-01T00:00:00.000Z"));

@@ -57,4 +57,22 @@ describe.each(PARSERS)("Georgia finance scheduler CLI args (%s)", (_label, parse
     expect(() => parse(["--max-candidates"])).toThrow(/Missing --max-candidates value/);
     expect(() => parse(["--lookback-days="])).toThrow(/Missing --lookback-days value/);
   });
+
+  it("rejects positional tokens that are not value-flag values", () => {
+    // npm eats the first "--" separator, so a dash-less typo arrives as a
+    // bare positional — it must fail loudly, never silently enqueue a
+    // real sync.
+    expect(() => parse(["dry-run"])).toThrow(/Unexpected positional argument: dry-run/);
+    expect(() => parse(["--dry-run", "force"])).toThrow(/Unexpected positional argument: force/);
+    // An extra token after a consumed value is a stray positional too.
+    expect(() => parse(["--max-candidates", "5", "7"])).toThrow(/Unexpected positional argument: 7/);
+    // The inline "=" form consumes no following token.
+    expect(() => parse(["--lookback-days=14", "7"])).toThrow(/Unexpected positional argument: 7/);
+  });
+
+  it("rejects an unsafe integer that Number() would silently round", () => {
+    expect(() => parse(["--max-candidates", "9007199254740993"])).toThrow(
+      /Invalid --max-candidates value: 9007199254740993/
+    );
+  });
 });

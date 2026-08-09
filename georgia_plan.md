@@ -807,3 +807,20 @@ shape) and lands first; only the D3 map table waits for the spike.
   out of `.env.example` (Ohio/NC precedent). 19 new tests (7 scheduler + 12
   CLI args); suite 7,120 green. The PR 7 live run remains a separate,
   user-authorized step.
+- 2026-08-09: **PR 7 review round** (external, both findings verified
+  against runtime behavior before acting, both adopted): (1) positional
+  typos bypassed dry-run protection — both new parsers skipped every token
+  not starting with `--`, so `npm run …:trigger -- dry-run` (npm eats the
+  first `--`) silently enqueued a REAL sync, and the upsert variant would
+  persist a real daily-write scheduler; the existing sync-due parser
+  already rejected such input, making the new "strict" parsers strictly
+  weaker than the parser they cite. A bare token is now legal only as the
+  value of the immediately preceding space-form value flag; anything else
+  throws `Unexpected positional argument`. (2) `Number.isInteger` accepts
+  silently-rounded unsafe values (`Number("9007199254740993")` → 2^53) —
+  the scheduler's assertPositiveInteger (guarding every path: upsert,
+  enqueue, worker run) now uses `Number.isSafeInteger`, and both CLI
+  parsers reject at parse time so the error carries the operator's
+  original string. Same two defects exist in the Ohio and North Carolina
+  scheduler parsers/asserts (this code's templates) — out of scope here,
+  flagged for a follow-up. 24 GA scheduler-round tests; suite 7,125 green.
