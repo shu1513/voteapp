@@ -1809,6 +1809,36 @@ describe("OfficeMatcher", () => {
       ["Davidson County, Tennessee", "TN", "Chancellor Part II, District 30, Unexpired Term", "chancellor"],
       ["Maricopa County, Arizona", "AZ", "Constable, Justice Prec. 2", "constable"],
       ["Maricopa County, Arizona", "AZ", "Justice of the Peace, Prec. 2", "justice of the peace"],
+      // Ordinal-FIRST ward numbering (Grand Rapids MI live): the ordinal-last
+      // rule alone left "city commissioner 1st ward", which matched nothing
+      // and aborted the whole payload.
+      ["Grand Rapids city, Michigan", "MI", "City Commissioner 1st Ward", "city commissioner"],
+      ["Grand Rapids city, Michigan", "MI", "City Commissioner 2nd Ward", "city commissioner"],
+      ["Grand Rapids city, Michigan", "MI", "City Commissioner 3rd Ward", "city commissioner"],
+      ["Detroit city, Michigan", "MI", "City Council Member 4th District", "city council member"],
+      // Ordinal-first must win over the ordinal-last rule when a term suffix
+      // follows: matching "Ward 4" out of "1st Ward 4 Year Term" would strand
+      // the leading "1st". The residual "4 year term" is a SEPARATE, unfixed
+      // gap — see the term-suffix test below for what it still costs.
+      [
+        "Grand Rapids city, Michigan",
+        "MI",
+        "City Commissioner 1st Ward 4 Year Term",
+        "city commissioner 4 year term",
+      ],
+      // Michigan's spelling of the vacancy descriptor, end date included.
+      [
+        "Grand Rapids city, Michigan",
+        "MI",
+        "Library Board Partial Term Ending 12/31/2028",
+        "library board",
+      ],
+      [
+        "Lansing city, Michigan",
+        "MI",
+        "Lansing School Board Member, Partial Term Ending 12/31/2030",
+        "school board member",
+      ],
     ];
     for (const [districtName, state, officialBallotTitle, expectedKey] of cases) {
       const result = await matcher.resolve({
@@ -2053,6 +2083,107 @@ describe("OfficeMatcher", () => {
         discoveryContestFamily: testCase.family ?? "non_judicial_office",
       });
       expect(result.officeId, testCase.title).toBe(testCase.expected);
+    }
+  });
+
+  it("resolves the Grand Rapids ordinal-first ward and library board titles", async () => {
+    // Grand Rapids MI ballots number the commission seat ordinal-FIRST ("City
+    // Commissioner 1st Ward"). Only the ordinal-LAST form ("Ward 1") was
+    // stripped, so these three Nov-3-2026 contests resolved to no office and
+    // electionsWriter aborted the ENTIRE payload on the first one — taking the
+    // two Library Board contests (migration 220's office) down with them.
+    const aliasRow = (officeId: string, aliasText: string) => ({
+      office_id: officeId,
+      normalized_alias: normalizeElectionTitleKey(aliasText),
+    });
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        place: [
+          aliasRow("office-city-council-member", "City Commissioner"),
+          aliasRow("office-city-council-member", "City Commission"),
+          aliasRow("office-library-board-member", "Library Board"),
+        ],
+      },
+      officesByScope: {
+        place: [
+          { id: "office-city-council-member", canonical_name: "City Council Member" },
+          { id: "office-library-board-member", canonical_name: "Library Board Member" },
+          { id: "office-mayor", canonical_name: "Mayor" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const cases: Array<[title: string, expected: string]> = [
+      ["City Commissioner 1st Ward", "office-city-council-member"],
+      ["City Commissioner 2nd Ward", "office-city-council-member"],
+      ["City Commissioner 3rd Ward", "office-city-council-member"],
+      // The ordinal-last form the fix must leave green.
+      ["City Commissioner Ward 1", "office-city-council-member"],
+      // The other two contests the same payload abort took down.
+      ["Library Board", "office-library-board-member"],
+      ["Library Board Partial Term Ending 12/31/2028", "office-library-board-member"],
+    ];
+    for (const [officialBallotTitle, expected] of cases) {
+      const result = await matcher.resolve({
+        scope: "place",
+        districtName: "Grand Rapids city, Michigan",
+        state: "MI",
+        officialBallotTitle,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, officialBallotTitle).toBe(expected);
+      expect(result.method, officialBallotTitle).toBe("alias_exact");
+    }
+  });
+
+  it("pins the unfixed 'N Year Term' suffix gap", async () => {
+    // Kent County prints the term length on the heading line ("City
+    // Commissioner 1st Ward 4 Year Term"). Nothing strips "N Year Term", so
+    // the residual key misses the alias table and the token scorer falls
+    // under its floor. This is NOT ward-specific — plain "City Comptroller
+    // 4 Year Term" fails the same way — so it is deliberately out of scope
+    // for the ordinal-first fix and pinned here instead of hidden.
+    //
+    // The district's written rows follow the corpus convention and drop the
+    // term boilerplate ("City Comptroller"), so the live data path is
+    // unaffected. When the suffix strip lands, this test flips to expecting
+    // a match.
+    const aliasRow = (officeId: string, aliasText: string) => ({
+      office_id: officeId,
+      normalized_alias: normalizeElectionTitleKey(aliasText),
+    });
+    const matcher = new OfficeMatcher(
+      createMatcherDataClient({
+        aliasesByScope: {
+          place: [
+            aliasRow("office-city-council-member", "City Commissioner"),
+            aliasRow("office-comptroller", "City Comptroller"),
+          ],
+        },
+        officesByScope: {
+          place: [
+            { id: "office-city-council-member", canonical_name: "City Council Member" },
+            { id: "office-comptroller", canonical_name: "Comptroller" },
+            { id: "office-mayor", canonical_name: "Mayor" },
+          ],
+        },
+      }) as never
+    );
+
+    for (const officialBallotTitle of [
+      "City Commissioner 1st Ward 4 Year Term",
+      "City Comptroller 4 Year Term",
+    ]) {
+      const result = await matcher.resolve({
+        scope: "place",
+        districtName: "Grand Rapids city, Michigan",
+        state: "MI",
+        officialBallotTitle,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, officialBallotTitle).toBeNull();
+      expect(result.method, officialBallotTitle).toBe("none");
     }
   });
 
