@@ -809,6 +809,395 @@ describe("runElectionsValidator", () => {
     expect(updateValidatedCall).toBeUndefined();
   });
 
+  it("accepts Louisiana parish-scope titles like 'Justice of the Peace 2nd Justice Court' without a review pass", async () => {
+    // Louisiana calls its counties parishes, so no Louisiana ballot title ever
+    // contains the word "county", and the verbatim SOS form is what folds at
+    // 1.000 in the office matcher.
+    const payload = {
+      district_id: "d-jefferson-la",
+      district_name: "Jefferson Parish, Louisiana",
+      district_type: "county",
+      state: "LA",
+      entries: [
+        {
+          official_ballot_title: "Justice of the Peace 2nd Justice Court",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Constable 4th Justice Court",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Judge Civil District Court, Division F",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: true,
+          discovery_contest_family: "judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Assessor, Orleans Parish",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Police Juror District 3",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:jefferson-la",
+            payload,
+            status: "pending",
+            run_id: "run_jefferson_la",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
+  it("still hard-rejects a New Orleans city-court contest filed on the parish row", async () => {
+    // "Constable 1st City Court" is a city-court contest covering part of the
+    // parish; it belongs on the "New Orleans city" place row, so the Louisiana
+    // parish markers must not rescue it.
+    const payload = {
+      district_id: "d-orleans-la",
+      district_name: "Orleans Parish, Louisiana",
+      district_type: "county",
+      state: "LA",
+      entries: [
+        {
+          official_ballot_title: "Constable 1st City Court",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:orleans-city-court",
+            payload,
+            status: "pending",
+            run_id: "run_orleans_city_court",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const hardFailCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").includes("county scope contains clearly non-county race")
+    );
+    expect(hardFailCall).toBeTruthy();
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeUndefined();
+  });
+
+  it("still soft-fails a city Home Rule Charter amendment filed on the parish row", async () => {
+    // A parishwide vote does not make a City of New Orleans charter amendment a
+    // parish question, and a ballot measure never reaches the office-only hard
+    // city check.
+    const payload = {
+      district_id: "d-orleans-la",
+      district_name: "Orleans Parish, Louisiana",
+      district_type: "county",
+      state: "LA",
+      entries: [
+        {
+          official_ballot_title: "City of New Orleans Home Rule Charter Amendment, Orleans Parish",
+          election_date: "2099-11-03",
+          race_type: "ballot_measure",
+          discovery_contest_family: "ballot_measure",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:orleans-hrc",
+            payload,
+            status: "pending",
+            run_id: "run_orleans_hrc",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeTruthy();
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeUndefined();
+  });
+
+  it("accepts Alaska borough and census-area county-equivalent titles without a review pass", async () => {
+    // Alaska has no counties either: boroughs and, in the unorganized borough,
+    // census areas are the county-equivalents. "City and Borough of Juneau" is
+    // a consolidated borough, not a city race.
+    const payload = {
+      district_id: "d-ak-borough",
+      district_name: "Fairbanks North Star Borough, Alaska",
+      district_type: "county",
+      state: "AK",
+      entries: [
+        {
+          official_ballot_title: "Assembly Member, Fairbanks North Star Borough",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: false,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Assembly Member, City and Borough of Juneau, Areawide Seat B",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: false,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Mayor, City and Borough of Juneau",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: false,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+        {
+          official_ballot_title: "Hoonah-Angoon Census Area Proposition 1",
+          election_date: "2099-11-03",
+          race_type: "ballot_measure",
+          discovery_contest_family: "ballot_measure",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:ak-borough",
+            payload,
+            status: "pending",
+            run_id: "run_ak_borough",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
+  it("still hard-rejects an Alaska city mayor title in county scope", async () => {
+    // A city inside a borough ("Mayor, City of Fairbanks") is a municipal
+    // race; the borough-mayor carve-out must not rescue it, because the bare
+    // "city" token (without "and borough") still marks it city-like.
+    const payload = {
+      district_id: "d-ak-borough",
+      district_name: "Fairbanks North Star Borough, Alaska",
+      district_type: "county",
+      state: "AK",
+      entries: [
+        {
+          official_ballot_title: "Mayor, City of Fairbanks",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: false,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:ak-city-mayor",
+            payload,
+            status: "pending",
+            run_id: "run_ak_city_mayor",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const hardFailCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").includes("county scope contains clearly non-county race")
+    );
+    expect(hardFailCall).toBeTruthy();
+  });
+
+  it("still hard-rejects a New York state assembly title in county scope", async () => {
+    // The Alaska carve-out above is state-gated: everywhere with a real state
+    // assembly, an assembly title on a county row is still a mis-scoped race.
+    const payload = {
+      district_id: "d-erie-ny",
+      district_name: "Erie County, New York",
+      district_type: "county",
+      state: "NY",
+      entries: [
+        {
+          official_ballot_title: "Member of the Assembly, District 142",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:erie-assembly",
+            payload,
+            status: "pending",
+            run_id: "run_erie_assembly",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const hardFailCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[1]?.[1] ?? "").includes("county scope contains clearly non-county race")
+    );
+    expect(hardFailCall).toBeTruthy();
+  });
+
+  it("soft-fails a New Jersey borough council title in county scope, where a borough is a municipality", async () => {
+    const payload = {
+      district_id: "d-bergen-nj",
+      district_name: "Bergen County, New Jersey",
+      district_type: "county",
+      state: "NJ",
+      entries: [
+        {
+          official_ballot_title: "Borough Council",
+          election_date: "2099-11-03",
+          race_type: "office",
+          election_stage: "general",
+          is_partisan: true,
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:bergen-nj",
+            payload,
+            status: "pending",
+            run_id: "run_bergen_nj",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeTruthy();
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeUndefined();
+  });
+
   it("accepts 'US House of Representatives District 1' without hard-rejecting it as a state-house race", async () => {
     const payload = {
       district_id: "d-nc",

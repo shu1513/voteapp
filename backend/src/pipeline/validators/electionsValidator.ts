@@ -178,9 +178,14 @@ function utcDateYmdDaysAgo(daysAgo: number): string {
   return shifted.toISOString().slice(0, 10);
 }
 
-function isHardScopeMismatch(districtType: ElectionDistrictType, entry: ElectionEntryPayload): string | null {
+function isHardScopeMismatch(
+  districtType: ElectionDistrictType,
+  entry: ElectionEntryPayload,
+  state: string
+): string | null {
   const titleText = normalize(entry.official_ballot_title);
   const scopeText = titleText;
+  const stateCode = state.trim().toUpperCase();
 
   const usSenate = isUsSenateOfficeTitle(entry.official_ballot_title);
   const usHouse =
@@ -191,8 +196,14 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
     /\brepresentative to congress\b/.test(scopeText) ||
     /\brepresentative to the (?:\d+(?:st|nd|rd|th) )?united states congress\b/.test(scopeText) ||
     /\bcongressional district\b/.test(scopeText);
+  // Alaska's legislature is a House and a Senate — it has no assembly. There,
+  // "Assembly Member" is always the BOROUGH (county-equivalent) or municipal
+  // governing body, so the state-assembly markers must not hard-reject it off
+  // an Alaska county row. An explicit "State Assembly" still fails.
+  const alaskaLocalAssembly =
+    stateCode === "AK" && /\bassembly\b/.test(scopeText) && !/\bstate assembly\b/.test(scopeText);
   const stateSenate = !usSenate && hasAny(scopeText, STATE_UPPER_STRICT_MARKERS);
-  const stateHouse = !usHouse && hasAny(scopeText, STATE_LOWER_STRICT_MARKERS);
+  const stateHouse = !usHouse && !alaskaLocalAssembly && hasAny(scopeText, STATE_LOWER_STRICT_MARKERS);
   const hasFederalMarker =
     usSenate ||
     usHouse ||
@@ -215,9 +226,22 @@ function isHardScopeMismatch(districtType: ElectionDistrictType, entry: Election
   // is a county office, not a city one. Every other scope branch that uses
   // cityLike to reject a mis-scoped "County Mayor" also checks countyLike
   // (the "county" token), so no protection is lost.
+  // "(?! and borough\b)" — Alaska's consolidated county-equivalents are titled
+  // "City and Borough of Juneau/Sitka/Wrangell/Yakutat". That phrase names a
+  // borough (a county-equivalent), not a city race, so it must not hard-reject
+  // an Alaska county row.
+  //
+  // The mayor exclusion parallels the "County Mayor" lookbehind above: an
+  // Alaska mayor title that names a borough or census area ("Mayor, City and
+  // Borough of Juneau", "Borough Mayor") is the county-equivalent executive.
+  // A city mayor inside a borough still says "City of <X>" without "and
+  // borough", so the bare "city" token keeps rejecting it.
+  const alaskaBoroughMayor =
+    stateCode === "AK" && /\bborough\b|\bcensus area\b/.test(scopeText);
   const cityLike =
     entry.race_type === "office" &&
-    /\bcity\b|(?<!\bcounty )\bmayor\b|\bcity council\b|\balderman\b/.test(scopeText);
+    (/\bcity\b(?! and borough\b)|\bcity council\b|\balderman\b/.test(scopeText) ||
+      (!alaskaBoroughMayor && /(?<!\bcounty )\bmayor\b/.test(scopeText)));
   const schoolLike =
     entry.race_type === "office" &&
     /\bschool board\b|\bschool district\b|\bboard of education\b/.test(scopeText);
@@ -339,10 +363,48 @@ function isSoftScopeAmbiguous(
     if (!/\b(town|village|township|borough|municipal)\b/.test(text)) {
       countyMarkers.push(/\bassessor\b/);
     }
+    const stateCode = state.trim().toUpperCase();
     // Superior courts are county trial courts in the states that elect their judges,
     // except Pennsylvania, where the Superior Court is a statewide appellate court.
-    if (state.trim().toUpperCase() !== "PA") {
+    if (stateCode !== "PA") {
       countyMarkers.push(/\bsuperior court\b/);
+    }
+    // Louisiana has no counties: the county-equivalent is the PARISH, and no
+    // Louisiana ballot title ever contains the word "county". Appending the
+    // jurisdiction cannot rescue these titles either — the office matcher folds
+    // the verbatim SOS form ("Justice of the Peace 1st Justice Court") at 1.000
+    // and drops to 0.52 once the parish is spliced in — so the parish-scope
+    // offices carry their own markers instead.
+    //
+    // Any title naming a CITY is excluded from these markers: a New Orleans
+    // city-court contest ("Constable 1st City Court") and a City of New Orleans
+    // Home Rule Charter amendment belong on the "New Orleans city" place row
+    // even when the voting geography is parishwide, and a ballot measure never
+    // reaches the office-only hard city check above.
+    if (stateCode === "LA" && !/\bcity\b/.test(text)) {
+      countyMarkers.push(
+        /\bparish\b/,
+        // The Police Jury is the governing body of most Louisiana parishes;
+        // its member titles ("Police Juror District 3") carry no "parish"
+        // token of their own.
+        /\bpolice jur(?:y|or)\b/,
+        /\bjustice of the peace\b/,
+        /\bjustice court\b/,
+        /\bconstable\b/,
+        // Orleans' Civil/Criminal District Courts and the numbered judicial
+        // district courts elsewhere are parish trial courts, consolidated by
+        // geographic discovery scope for the same reason as circuit judges
+        // above. The multi-parish Courts of Appeal are deliberately absent.
+        /\bdistrict court\b/,
+        /\bclerk of court\b/
+      );
+    }
+    // Alaska has no counties either: its county-equivalents are boroughs and,
+    // in the unorganized borough, census areas. "borough" counts only in
+    // Alaska — in New Jersey, Pennsylvania and Connecticut a borough is a
+    // municipality, which must keep soft-failing on a county row.
+    if (stateCode === "AK") {
+      countyMarkers.push(/\bborough\b/, /\bcensus area\b/);
     }
     if (!hasAny(text, countyMarkers)) {
       return "county entry lacks clear county markers";
@@ -416,7 +478,7 @@ function validateScope(payload: ElectionEnrichedPayload, allowHistoricalDate: bo
       };
     }
 
-    const hardReason = isHardScopeMismatch(payload.district_type, entry);
+    const hardReason = isHardScopeMismatch(payload.district_type, entry, payload.state);
     if (hardReason) {
       return {
         severity: "hard_fail",
