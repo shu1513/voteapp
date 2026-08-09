@@ -108,6 +108,17 @@ const JUDICIAL_TITLE_ALLOW_MARKERS = [
   /\bretain(?:ed|ing)?\b/,
 ];
 const NON_JUDICIAL_TITLE_MARKERS = [
+  // A marshal or constable is an officer OF a court, not a judicial officer:
+  // a Louisiana city marshal is the elected law-enforcement officer of the
+  // city court (La. R.S. 13:1879 et seq.). Their titles name the court they
+  // serve ("City Marshal, City Court of Shreveport"), which trips the
+  // judicial allow-markers below, and the judge fast path then returns the
+  // scope's judge office at confidence 1.000 — a silent, fully confident
+  // mis-file (Shreveport live, three qualifiers). Both offices are
+  // catalogued in their own right, so a stamped-judicial title still
+  // resolves through the alias table and the token scorer.
+  /\bmarshal\b/,
+  /\bconstable\b/,
   /\bdistrict attorney\b/,
   /\bcounty district attorney\b/,
   /\bprosecuting attorney\b/,
@@ -339,6 +350,18 @@ function mapFireDistrictBodyForms(value: string): string {
   return FIRE_DISTRICT_SEAT_KEY_PATTERN.test(value) ? FIRE_DISTRICT_OFFICE_KEY : value;
 }
 
+// What a numbered/lettered seat designator can look like once normalized:
+// "5", "5a", "II", "A". Letter-only seats are as common as numbers on live
+// ballots — New Orleans and Shreveport council districts run A-E, Utah
+// commission seats A-D — and before this alternation carried a bare letter the
+// letter survived the strip: "Council Member, District A" kept a stray "a"
+// token and scored 0.571 (ambiguous, no office) where "District 1" resolved at
+// 1.000. The Roman-numeral alternative already accepted i/v/x/l as bare
+// letters, so accepting the rest is the consistent reading, not a widening of
+// what counts as a seat: a single letter standing alone after ward/district/
+// seat/zone/part/precinct is never an office word.
+const SEAT_DESIGNATOR = String.raw`(?:\d+[a-z]{0,2}|[ivxl]+|[a-z])`;
+
 function stripSeatSuffixes(value: string): string {
   const withoutSeat = singularizeCommissionerBodyForms(value)
     .replace(/\boffice (?:no )?\d+\b/g, " ")
@@ -353,18 +376,18 @@ function stripSeatSuffixes(value: string): string {
     // duplicate it ("member of county council member"); the generic district
     // strip below handles that seat form.
     .replace(
-      /(?<!\bmember of (?:[a-z]+ )?)\bcouncil (?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g,
+      new RegExp(String.raw`(?<!\bmember of (?:[a-z]+ )?)\bcouncil (?:district|dist) (?:no )?${SEAT_DESIGNATOR}\b`, "g"),
       "council member"
     )
     // "for" is removed with the seat it introduces: "Council Member for
     // District 2" (Fort Worth, live) must reduce to "council member", not
     // "council member for" — the dangling connector misses the alias table
     // and left ten council elections office-less.
-    .replace(/\bfor (?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g, " ")
+    .replace(new RegExp(String.raw`\bfor (?:district|dist) (?:no )?${SEAT_DESIGNATOR}\b`, "g"), " ")
     // Interposed "No." ("District No. 5", San Diego/Seattle live) and
     // Honolulu's abbreviated Roman form ("Dist II") are the same seat suffix;
     // both previously survived the strip and produced zero-overlap keys.
-    .replace(/\b(?:district|dist) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+)\b/g, " ")
+    .replace(new RegExp(String.raw`\b(?:district|dist) (?:no )?${SEAT_DESIGNATOR}\b`, "g"), " ")
     .replace(/\b\d+(st|nd|rd|th)\s+district\b/g, " ")
     // Ward/Zone/Seat/Part and (justice) precinct forms are the same numbered
     // seat suffix as District/Position, all hit live: Florida city commissions
@@ -374,10 +397,12 @@ function stripSeatSuffixes(value: string): string {
     // precinct, so the "justice" that introduces it goes with the number;
     // "Justice of the Peace, Prec. 2" keeps its office words because there
     // the number follows bare "prec"). Lettered seats ("Commission Seat A",
-    // Utah live) are the same designator; [a-h] keeps single-letter coverage
-    // beyond what the Roman-numeral alternative already accepts.
+    // Utah live) are the same designator.
     .replace(
-      /\b(?:ward|zone|seat|part|(?:justice )?(?:precinct|prec)) (?:no )?(?:\d+[a-z]{0,2}|[ivxl]+|[a-h])\b/g,
+      new RegExp(
+        String.raw`\b(?:ward|zone|seat|part|(?:justice )?(?:precinct|prec)) (?:no )?${SEAT_DESIGNATOR}\b`,
+        "g"
+      ),
       " "
     )
     // At-large is a seat designator, not an office word ("County Council At
@@ -530,6 +555,56 @@ function hasPhrase(text: string, phrase: string): boolean {
   return new RegExp(`\\b${escapeRegExp(phrase)}\\b`).test(text);
 }
 
+// Nouns that NAME THE JOB rather than describe it. The token scorer treats
+// every token alike, so a title whose function noun the catalog does not carry
+// still lands on whatever office shares its generic words, at a confidence high
+// enough to look authoritative and to be persisted as a learned alias:
+// "County Revenue Commissioner" (Alabama's combined tax assessor and collector,
+// uncatalogued) scored 0.800 into County Commissioner on two of three tokens.
+// That is the worst outcome in the pipeline — `method: none` aborts the payload
+// loudly and the researcher defers, while a confident wrong match writes
+// successfully and hands the contest another office's research areas, which
+// every later stage (roster, profile, records, labels) then inherits.
+//
+// So: a function noun present in the title and absent from the matched office's
+// canonical key vetoes that office. The list is deliberately short and holds
+// only nouns whose absence is decisive. Words that legitimately differ across a
+// state's synonym for the SAME job stay out of it — "prosecuting"/"prosecutor"
+// (District Attorney), "auditor"/"recorder" (Idaho and Utah fold them into the
+// county clerk's office, "Clerk, Auditor and Recorder" -> County Clerk and
+// Recorder at 0.667), "register" ("Clerk Register of Deeds"), "judge" and
+// "justice" (the contest-family filters already decide those) — because vetoing
+// them would turn correct matches into no-matches. Each candidate noun was
+// A/B-run over every distinct stored ballot title before being kept, and two
+// were dropped on the evidence: "constable" (Louisiana's combined
+// "Constable(s) Justice of the Peace Ward N" rows, which name both offices,
+// fell from Justice of the Peace to no-match) and "treasurer" (a combined
+// "County Auditor-Treasurer" merely FLIPPED to the other half of its own
+// office — a coin-flip, not the silent mis-file this guards against).
+//
+// Seeded aliases outrank this: an alias hit returns before any scoring, so a
+// state's own wording for a catalogued office is still expressed the same way
+// it always was, by adding the alias.
+const DISTINCT_FUNCTION_NOUNS = [
+  "marshal",
+  "coroner",
+  "sheriff",
+  "surveyor",
+  "assessor",
+  "engineer",
+  "revenue",
+  "moderator",
+  "defender",
+  "mayor",
+  "superintendent",
+];
+
+function hasUncoveredFunctionNoun(titleMatcherKey: string, office: OfficeCandidate): boolean {
+  return DISTINCT_FUNCTION_NOUNS.some(
+    (noun) => hasPhrase(titleMatcherKey, noun) && !hasPhrase(office.canonicalMatcherKey, noun)
+  );
+}
+
 function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office: OfficeCandidate): number {
   if (titleTokens.length === 0 || office.canonicalTokens.length === 0) {
     return 0;
@@ -559,6 +634,10 @@ function scoreOfficeMatch(titleMatcherKey: string, titleTokens: string[], office
     office.canonicalMatcherKey === FIRE_DISTRICT_OFFICE_KEY &&
     FIRE_DISTRICT_NON_BOARD_ROLE_PATTERN.test(titleMatcherKey)
   ) {
+    return 0;
+  }
+
+  if (hasUncoveredFunctionNoun(titleMatcherKey, office)) {
     return 0;
   }
 
