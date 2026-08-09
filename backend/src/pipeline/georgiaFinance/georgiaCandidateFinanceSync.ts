@@ -5,6 +5,7 @@ import {
   fetchGeorgiaCandidateIndexRows,
   fetchGeorgiaFiledReportRows,
   fetchGeorgiaIndependentExpenditureRows,
+  fetchGeorgiaTransactionRowsStable,
   fetchGeorgiaTransactionRowsWindowed,
   georgiaTransactionReportGroupGuid,
   GeorgiaEthicsClientError,
@@ -15,12 +16,24 @@ import {
   type GeorgiaFiledReportRow,
   type GeorgiaIndependentExpenditureRow,
   type GeorgiaReportInventoryEntry,
+  type GeorgiaTransactionRow,
   type GeorgiaWindowedTransactionFetchResult,
 } from "./georgiaEthicsClient.js";
 import {
   aggregateGeorgiaOutsideSpending,
   type GeorgiaOutsideSpendingAggregationResult,
+  type GeorgiaOutsideSpendingGroup,
 } from "./georgiaOutsideSpendingAggregator.js";
+import {
+  aggregateGeorgiaOutsideGroupContributions,
+  type GeorgiaOutsideGroupContributionAggregationResult,
+} from "./georgiaOutsideGroupContributionAggregator.js";
+import { classifyFinanceLabel, type FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
+import {
+  buildFinanceIndustryBreakdownsFromClassifications,
+  mergeFinanceLabelClassification,
+  resolveFinanceIndustryClassifications,
+} from "../finance/financeIndustryClassificationService.js";
 import {
   georgiaCandidateNameMatchesRowNames,
   georgiaLastNameSearchToken,
@@ -36,6 +49,7 @@ import {
   replaceGeorgiaCandidateFinanceSnapshot,
   type GeorgiaFinanceLinkInput,
   type GeorgiaFinanceLinkSource,
+  type GeorgiaFinanceOutsideGroupBreakdownInput,
 } from "./georgiaFinanceWriter.js";
 
 // Per-candidate finance sync for Georgia (georgia_plan.md PR 4 direct leg,
@@ -68,7 +82,30 @@ export type GeorgiaCandidateFinanceSyncFetchers = {
   fetchFiledReportRows: typeof fetchGeorgiaFiledReportRows;
   fetchTransactionRowsWindowed: typeof fetchGeorgiaTransactionRowsWindowed;
   fetchIndependentExpenditureRows: typeof fetchGeorgiaIndependentExpenditureRows;
+  fetchTransactionRowsStable: typeof fetchGeorgiaTransactionRowsStable;
 };
+
+// Per-spender contribution pull outcome, cacheable across candidates in a
+// batch run (the same PAC funds several statewide candidates):
+// - "ok": rows scoped to the spender's registration guid (possibly empty —
+//   an IE filer spending treasury money legitimately has no TCON rows).
+// - "unresolved": the spender's PeachFile filerEntityId could not be derived
+//   from its filed reports (name-form mismatch or ambiguous entity) — the
+//   spender contributes no donor rows and is counted in a diagnostic. This
+//   stays per-spender (unlike a "failed" pull) because resolution is an ID
+//   join over immutable filed reports — a spender that resolved once keeps
+//   resolving, so an unresolved spender has no stored donor rows to lose —
+//   and a permanently odd spender name must not disable the funders leg for
+//   every candidate.
+// - "failed": a client-level fetch failure — the WHOLE funders leg degrades
+//   for any candidate referencing this spender (a partial breakdown array
+//   would delete the failed spender's stored donor rows on write).
+export type GeorgiaSpenderContributionFetchOutcome =
+  | { status: "ok"; rows: GeorgiaTransactionRow[]; otherRegistrationRowCount: number }
+  | { status: "unresolved"; reason: string }
+  | { status: "failed"; reason: string };
+
+export type GeorgiaSpenderContributionCache = Map<string, GeorgiaSpenderContributionFetchOutcome>;
 
 export type GeorgiaCandidateFinanceSyncInput = {
   db: ConnectableQueryable;
@@ -107,6 +144,13 @@ export type GeorgiaCandidateFinanceSyncInput = {
   // skipped (stored outside data preserved via the partial-snapshot
   // contract) instead of every candidate retrying a known-dead fetch.
   independentExpenditureRows?: readonly GeorgiaIndependentExpenditureRow[] | null;
+  // Display cap on PERSISTED donor rows per (group, direction), applied AFTER
+  // classification (ohio pattern).
+  maxOutsideDonorBreakdownsPerGroup?: number;
+  // Shared per-run spender pull cache (batch layer) — consulted before any
+  // spender fetch and populated after, so a spender is pulled once per run
+  // and a failed pull is never retried per candidate.
+  spenderContributionCache?: GeorgiaSpenderContributionCache;
   fetchers?: Partial<GeorgiaCandidateFinanceSyncFetchers>;
 };
 
@@ -150,6 +194,24 @@ export type GeorgiaCandidateFinanceSyncResult = {
   // Null when the outside leg was skipped; the reason says why.
   outsideSpending: Omit<GeorgiaOutsideSpendingAggregationResult, "outsideGroups"> | null;
   outsideSpendingSkippedReason: string | null;
+  outsideGroupBreakdownsWritten: number;
+  // Null when the funders leg was skipped; the reason says why. The leg is
+  // also (vacuously) null whenever the outside leg itself was skipped.
+  outsideFunders: GeorgiaOutsideFundersDiagnostics | null;
+  outsideFundersSkippedReason: string | null;
+};
+
+export type GeorgiaOutsideFundersDiagnostics = Omit<
+  GeorgiaOutsideGroupContributionAggregationResult,
+  "outsideGroupBreakdowns"
+> & {
+  spenderCount: number;
+  unresolvedSpenderCount: number;
+  // Spender rows excluded because they belong to another registration of the
+  // same filer entity (a different cycle's ledger).
+  otherRegistrationRowCount: number;
+  donorBreakdownCount: number;
+  industryBreakdownCount: number;
 };
 
 export class GeorgiaFinanceReconciliationError extends Error {
@@ -328,6 +390,188 @@ function transactionRangeStart(inventory: readonly GeorgiaReportInventoryEntry[]
   return earliest ?? `${electionYear - FALLBACK_RANGE_YEARS_BEFORE_ELECTION}-01-01`;
 }
 
+// Every donor is rule-classified regardless of size (maryland/ohio parity);
+// no AI classifier exists on this path — the sync never calls AI, and every
+// unresolved donor persists an 'unknown' classification row for the manual
+// industry-label queue.
+const STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT = 0;
+// Display cap on PERSISTED donor rows per (group, direction), applied AFTER
+// classification so a >cap-donor group still gets industry totals built from
+// every donor. Industry rows are naturally bounded by the slug set.
+const DEFAULT_MAX_OUTSIDE_DONOR_BREAKDOWNS_PER_GROUP = 50;
+
+function normalizeMaxOutsideDonorBreakdowns(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_MAX_OUTSIDE_DONOR_BREAKDOWNS_PER_GROUP;
+  if (!Number.isInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Georgia finance maxOutsideDonorBreakdownsPerGroup: ${value}`);
+  }
+  return normalized;
+}
+
+// Resolves the spender's PeachFile filerEntityId from its filed reports (IE
+// rows carry no entity id — spike bytes; the registration guid is the only
+// identity they carry), then pulls its TCON store through the proven
+// entity-id-filtered stable fetch and re-scopes the rows to the registration
+// guid that spent — the outside-group identity. Client-level failures return
+// a "failed" outcome for the caller to degrade on; non-client errors are
+// bugs and throw.
+export async function fetchGeorgiaSpenderContributionRows(input: {
+  transport: GeorgiaEthicsTransport;
+  spenderRegistrationGuid: string;
+  spenderName: string;
+  maxPasses?: number;
+  fetchers: Pick<GeorgiaCandidateFinanceSyncFetchers, "fetchFiledReportRows" | "fetchTransactionRowsStable">;
+}): Promise<GeorgiaSpenderContributionFetchOutcome> {
+  const spenderGuid = input.spenderRegistrationGuid.trim().toLowerCase();
+  try {
+    const reports = await input.fetchers.fetchFiledReportRows(input.transport, "peachfile", {
+      filerName: input.spenderName,
+    });
+    const ownReports = reports.filter((report) => report.filerRegistrationGuid.trim().toLowerCase() === spenderGuid);
+    const entityIds = [...new Set(ownReports.map((report) => report.filerEntityId))];
+    if (entityIds.length !== 1) {
+      // Zero matching reports (a name-form mismatch between the IE row's
+      // filerName and the report search) or an ambiguous entity — either way
+      // there is no safe identity to pull, so the spender contributes no
+      // donor rows and the caller counts it.
+      return {
+        status: "unresolved",
+        reason:
+          `Georgia spender ${JSON.stringify(input.spenderName)} (registration ${spenderGuid}) resolved to ` +
+          `${entityIds.length} PeachFile filer entities across ${reports.length} filed-report rows`,
+      };
+    }
+
+    // NOTE: filter_ineffective is NOT tolerated here, unlike the direct
+    // leg's whole-pull tolerance. That error's two readings (the filter was
+    // ignored / it matched the wrong filer) cannot be told apart, and the
+    // funders leg has no arbiter — the direct leg tolerates the shape only
+    // because the index-total reconciliation guard proves whether money went
+    // missing. Writing an empty result through on this ambiguity would
+    // delete the spender's stored donor rows. The honest treasury-spender
+    // case is unaffected: a full-committee-name query for a filer with no
+    // TCON disclosures normally returns zero rows TOTAL (no foreign
+    // matches), which is a clean empty result, not an error.
+    const fetched = await input.fetchers.fetchTransactionRowsStable(
+      input.transport,
+      "peachfile",
+      { filerName: input.spenderName },
+      { expectedFilerEntityIds: [entityIds[0]!], maxPasses: input.maxPasses }
+    );
+
+    const rows: GeorgiaTransactionRow[] = [];
+    let otherRegistrationRowCount = 0;
+    for (const row of fetched.rows) {
+      if (row.filerRegistrationGuid?.trim().toLowerCase() === spenderGuid) {
+        rows.push(row);
+      } else {
+        otherRegistrationRowCount += 1;
+      }
+    }
+    return { status: "ok", rows, otherRegistrationRowCount };
+  } catch (error) {
+    if (error instanceof GeorgiaEthicsClientError) {
+      return { status: "failed", reason: error.message };
+    }
+    throw error;
+  }
+}
+
+// Ohio/maryland pattern: rule-classify every donor at the state floor, let
+// cached DB rows (manual verdicts included) override, rebuild the industry
+// rows from the merged classification state, and only then cap the persisted
+// donor display rows. classifier stays undefined — the sync never calls AI;
+// unresolved donors persist as 'unknown' classification rows for the manual
+// queue via the writer's classifications pass-through.
+async function enrichGeorgiaOutsideGroupIndustryBreakdowns(input: {
+  db: Queryable;
+  outsideGroupBreakdowns: readonly GeorgiaFinanceOutsideGroupBreakdownInput[];
+  maxDonorBreakdownsPerGroup: number;
+  dryRun: boolean;
+}): Promise<{
+  outsideGroupBreakdowns: GeorgiaFinanceOutsideGroupBreakdownInput[];
+  classifications: FinanceLabelClassification[];
+}> {
+  // The aggregator emits donor rows only; industry rows are built here.
+  const donorRows = input.outsideGroupBreakdowns.filter((breakdown) => breakdown.categoryType === "donor");
+
+  const classifications = new Map<string, FinanceLabelClassification>();
+  for (const donor of donorRows) {
+    if (donor.amount < STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT) {
+      continue;
+    }
+    mergeFinanceLabelClassification(
+      classifications,
+      classifyFinanceLabel({ rawLabel: donor.categoryName, labelType: "donor" })
+    );
+  }
+  await resolveFinanceIndustryClassifications({
+    db: input.db,
+    directBreakdowns: [],
+    outsideBreakdowns: donorRows,
+    classifications,
+    classifier: undefined,
+    minAmount: STATE_MIN_OUTSIDE_INDUSTRY_AMOUNT,
+    dryRun: input.dryRun,
+  });
+
+  // One industry row per (group, direction, slug): the shared builder emits
+  // one row per classified donor, so same-slug rows merge here.
+  const industryRows = new Map<string, GeorgiaFinanceOutsideGroupBreakdownInput>();
+  const industryBreakdowns = buildFinanceIndustryBreakdownsFromClassifications({
+    directBreakdowns: [],
+    outsideBreakdowns: donorRows,
+    classifications,
+  });
+  for (const row of industryBreakdowns.outsideIndustryBreakdowns) {
+    const key = `${row.committeeId}\u0000${row.supportOppose}\u0000${row.categoryName}`;
+    const existing = industryRows.get(key);
+    if (!existing) {
+      industryRows.set(key, { ...row });
+      continue;
+    }
+    industryRows.set(key, {
+      ...existing,
+      amount: Math.round((existing.amount + row.amount) * 100) / 100,
+      contributorCount:
+        existing.contributorCount === null || existing.contributorCount === undefined
+          ? row.contributorCount
+          : existing.contributorCount + (row.contributorCount ?? 0),
+    });
+  }
+
+  // Cap only HERE, after every donor fed the classifications and the rebuilt
+  // industry rows above.
+  const donorsByGroup = new Map<string, GeorgiaFinanceOutsideGroupBreakdownInput[]>();
+  for (const donor of donorRows) {
+    const key = `${donor.committeeId}\u0000${donor.supportOppose}`;
+    const list = donorsByGroup.get(key) ?? [];
+    list.push(donor);
+    donorsByGroup.set(key, list);
+  }
+  const cappedDonors: GeorgiaFinanceOutsideGroupBreakdownInput[] = [];
+  for (const list of donorsByGroup.values()) {
+    cappedDonors.push(
+      ...list
+        .sort((left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName))
+        .slice(0, input.maxDonorBreakdownsPerGroup)
+    );
+  }
+
+  const sortedIndustryRows = [...industryRows.values()].sort(
+    (left, right) =>
+      left.committeeId.localeCompare(right.committeeId) ||
+      left.supportOppose.localeCompare(right.supportOppose) ||
+      right.amount - left.amount ||
+      left.categoryName.localeCompare(right.categoryName)
+  );
+
+  return {
+    outsideGroupBreakdowns: [...cappedDonors, ...sortedIndustryRows],
+    classifications: [...classifications.values()],
+  };
+}
+
 export async function syncGeorgiaCandidateFinance(
   input: GeorgiaCandidateFinanceSyncInput
 ): Promise<GeorgiaCandidateFinanceSyncResult> {
@@ -356,7 +600,11 @@ export async function syncGeorgiaCandidateFinance(
     fetchTransactionRowsWindowed: input.fetchers?.fetchTransactionRowsWindowed ?? fetchGeorgiaTransactionRowsWindowed,
     fetchIndependentExpenditureRows:
       input.fetchers?.fetchIndependentExpenditureRows ?? fetchGeorgiaIndependentExpenditureRows,
+    fetchTransactionRowsStable: input.fetchers?.fetchTransactionRowsStable ?? fetchGeorgiaTransactionRowsStable,
   };
+  const maxOutsideDonorBreakdownsPerGroup = normalizeMaxOutsideDonorBreakdowns(
+    input.maxOutsideDonorBreakdownsPerGroup
+  );
   const committeeEntityId = Number(committeeId);
   if (!Number.isInteger(committeeEntityId) || committeeEntityId <= 0) {
     throw new Error(`Invalid Georgia committee id (want the PeachFile filerEntityId): ${JSON.stringify(committeeId)}`);
@@ -636,12 +884,92 @@ export async function syncGeorgiaCandidateFinance(
           maxGroups: input.maxOutsideGroups,
         });
 
+  // 6b. Funders of the outside spenders (PR 6, maryland/ohio donor+industry
+  //     pattern): each written group's spender is an ordinary PeachFile filer
+  //     whose itemized contributions come from the same TCON search. Pulls
+  //     are cached per spender across the batch run. An unresolved spender
+  //     identity only costs that spender's donor rows (counted); a
+  //     client-level pull failure degrades the WHOLE funders leg to
+  //     undefined — a partial breakdown array would delete the failed
+  //     spender's stored donor rows on write — while the groups and totals
+  //     still refresh (surviving groups keep their stored breakdown rows).
+  //     Non-client errors are bugs and throw.
+  let outsideGroupBreakdowns: GeorgiaFinanceOutsideGroupBreakdownInput[] | undefined;
+  let classifications: FinanceLabelClassification[] | undefined;
+  let outsideFunders: GeorgiaOutsideFundersDiagnostics | null = null;
+  let outsideFundersSkippedReason: string | null = null;
+  if (outsideSpending === null) {
+    outsideFundersSkippedReason = `outside leg skipped (${outsideSpendingSkippedReason})`;
+  } else {
+    const spenderCache: GeorgiaSpenderContributionCache = input.spenderContributionCache ?? new Map();
+    const spendersByGuid = new Map<string, GeorgiaOutsideSpendingGroup>();
+    for (const outsideGroup of outsideSpending.outsideGroups) {
+      if (!spendersByGuid.has(outsideGroup.committeeId)) {
+        spendersByGuid.set(outsideGroup.committeeId, outsideGroup);
+      }
+    }
+    const contributionRowsBySpender = new Map<string, readonly GeorgiaTransactionRow[]>();
+    let unresolvedSpenderCount = 0;
+    let otherRegistrationRowCount = 0;
+    for (const [spenderGuid, spenderGroup] of spendersByGuid) {
+      let outcome = spenderCache.get(spenderGuid);
+      if (outcome === undefined) {
+        outcome = await fetchGeorgiaSpenderContributionRows({
+          transport: input.transport,
+          spenderRegistrationGuid: spenderGuid,
+          spenderName: spenderGroup.committeeName,
+          maxPasses: input.maxPasses,
+          fetchers,
+        });
+        spenderCache.set(spenderGuid, outcome);
+      }
+      if (outcome.status === "failed") {
+        outsideFundersSkippedReason = outcome.reason;
+        break;
+      }
+      if (outcome.status === "unresolved") {
+        unresolvedSpenderCount += 1;
+        console.warn("Georgia outside-spender identity unresolved; no funder rows for it:", outcome.reason);
+        continue;
+      }
+      contributionRowsBySpender.set(spenderGuid, outcome.rows);
+      otherRegistrationRowCount += outcome.otherRegistrationRowCount;
+    }
+    if (outsideFundersSkippedReason === null) {
+      const funders = aggregateGeorgiaOutsideGroupContributions({
+        electionYear,
+        outsideGroups: outsideSpending.outsideGroups,
+        contributionRowsBySpender,
+        sourceUrl,
+      });
+      const enriched = await enrichGeorgiaOutsideGroupIndustryBreakdowns({
+        db: input.db,
+        outsideGroupBreakdowns: funders.outsideGroupBreakdowns,
+        maxDonorBreakdownsPerGroup: maxOutsideDonorBreakdownsPerGroup,
+        dryRun,
+      });
+      outsideGroupBreakdowns = enriched.outsideGroupBreakdowns;
+      classifications = enriched.classifications;
+      const { outsideGroupBreakdowns: _funderRows, ...funderCounters } = funders;
+      outsideFunders = {
+        ...funderCounters,
+        spenderCount: spendersByGuid.size,
+        unresolvedSpenderCount,
+        otherRegistrationRowCount,
+        donorBreakdownCount: enriched.outsideGroupBreakdowns.filter((row) => row.categoryType === "donor").length,
+        industryBreakdownCount: enriched.outsideGroupBreakdowns.filter((row) => row.categoryType === "industry")
+          .length,
+      };
+    }
+  }
+
   // 7. Snapshot write: official index totals as the summary (D4;
   //    direct_contribution_total stays NULL so the shared loader falls
   //    through to total_receipts), direct breakdowns, outside totals and
   //    groups from the IE leg (an empty group list is a truthful zero — the
-  //    leg ran), outside-group BREAKDOWNS untouched (undefined, never [] —
-  //    partial-snapshot contract; the funders leg is PR 6).
+  //    leg ran), outside-group breakdowns + classifications from the funders
+  //    leg (undefined, never [], when either outside leg was skipped —
+  //    partial-snapshot contract).
   const link: GeorgiaFinanceLinkInput = {
     candidateId,
     electionId,
@@ -676,6 +1004,8 @@ export async function syncGeorgiaCandidateFinance(
       directBreakdowns: directFinance.directBreakdowns,
       // Undefined when the leg was skipped — stored groups stay untouched.
       outsideGroups: outsideSpending ? outsideSpending.outsideGroups : undefined,
+      outsideGroupBreakdowns,
+      classifications,
     });
   }
 
@@ -709,5 +1039,8 @@ export async function syncGeorgiaCandidateFinance(
     aggregation,
     outsideSpending: outsideSpendingDiagnostics,
     outsideSpendingSkippedReason,
+    outsideGroupBreakdownsWritten: dryRun || !outsideGroupBreakdowns ? 0 : outsideGroupBreakdowns.length,
+    outsideFunders,
+    outsideFundersSkippedReason,
   };
 }

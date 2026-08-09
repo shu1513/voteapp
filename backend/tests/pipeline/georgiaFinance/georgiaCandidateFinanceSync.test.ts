@@ -3,9 +3,11 @@ import { describe, expect, it, vi } from "vitest";
 import {
   buildGeorgiaSelectedReportGuids,
   discoverGeorgiaArchiveRegistrations,
+  fetchGeorgiaSpenderContributionRows,
   GeorgiaFinanceReconciliationError,
   syncGeorgiaCandidateFinance,
   type GeorgiaCandidateFinanceSyncInput,
+  type GeorgiaSpenderContributionCache,
 } from "../../../src/pipeline/georgiaFinance/georgiaCandidateFinanceSync.js";
 import {
   buildGeorgiaReportInventory,
@@ -362,7 +364,42 @@ function carrFetchers() {
       duplicateRowCount: 0,
       passCount: 2,
     })),
+    // Spender contribution pulls (funders leg) are stubbed per test; the
+    // default fetchers leave the spenders UNRESOLVED (their names match no
+    // filed-report row above), so the leg runs with zero spender rows.
+    fetchTransactionRowsStable: vi.fn(async (): Promise<ReturnType<typeof stableResult>> => {
+      throw new Error("spender stable fetch not stubbed in this test");
+    }),
   };
+}
+
+function stableResult(rows: GeorgiaTransactionRow[]) {
+  return { rows, fetchedRowCount: rows.length, duplicateRowCount: 0, foreignRowCount: 0, passCount: 2 };
+}
+
+function spenderReport(registrationGuid: string, filerEntityId: number): GeorgiaFiledReportRow {
+  return report({
+    filerReportId: filerEntityId,
+    filerReportGuid: `sp-${filerEntityId}-r1`,
+    filerRegistrationGuid: registrationGuid,
+    filerEntityId,
+  });
+}
+
+function spenderTconRow(
+  registrationGuid: string,
+  filerEntityId: number,
+  overrides: Partial<GeorgiaTransactionRow> = {}
+): GeorgiaTransactionRow {
+  return transactionRow({
+    filerEntityId,
+    filerRegistrationGuid: registrationGuid,
+    filerReportGuid: `sp-${filerEntityId}-r1`,
+    sourceName: "First Bank of Georgia",
+    transactionSourceTypeCode: "TBSN",
+    transactionDate: "2026-01-15T00:00:00",
+    ...overrides,
+  });
 }
 
 function baseInput(
@@ -769,8 +806,268 @@ describe("syncGeorgiaCandidateFinance", () => {
     expect(result.summaryWritten).toBe(false);
     expect(result.directBreakdownsWritten).toBe(0);
     expect(result.outsideGroupsWritten).toBe(0);
+    expect(result.outsideGroupBreakdownsWritten).toBe(0);
     expect(result.outsideSupportTotal).toBe(1500);
     expect(result.syncedRowSum).toBe(3500);
     expect(db.connect).not.toHaveBeenCalled();
+  });
+
+  it("pulls each spender once and writes donor + industry funder breakdowns with classifications", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    const candidateReports = fetchers.fetchFiledReportRows.getMockImplementation()!;
+    fetchers.fetchFiledReportRows.mockImplementation(async (transport, host, input) => {
+      if (host === "peachfile" && input?.filerName === "Example PAC") {
+        return [spenderReport("spender-a-guid", 200001)];
+      }
+      if (host === "peachfile" && input?.filerName === "Opposing PAC") {
+        return [spenderReport("spender-b-guid", 200002)];
+      }
+      return candidateReports(transport, host, input);
+    });
+    fetchers.fetchTransactionRowsStable.mockImplementation(async (_transport, _host, filter, options) => {
+      if (filter.filerName === "Example PAC") {
+        expect(options.expectedFilerEntityIds).toEqual([200001]);
+        return stableResult([
+          spenderTconRow("spender-a-guid", 200001, { transactionId: 501, transactionAmount: 1000 }),
+          spenderTconRow("spender-a-guid", 200001, {
+            transactionId: 502,
+            transactionAmount: 250,
+            sourceName: "Acme Corp",
+          }),
+          // Another registration of the same entity (a different cycle's
+          // ledger) — excluded from the spender's rows and counted.
+          spenderTconRow("spender-a-old-guid", 200001, {
+            transactionId: 503,
+            transactionAmount: 400,
+            sourceName: "Old Cycle Donor Inc",
+          }),
+        ]);
+      }
+      // The opposing PAC is a treasury spender that never disclosed a
+      // contribution — its full-name query returns zero rows total, a clean
+      // honest empty (no foreign matches, so no filter_ineffective error).
+      return stableResult([]);
+    });
+
+    const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
+
+    expect(result.outsideFundersSkippedReason).toBeNull();
+    expect(result.outsideFunders).toEqual({
+      spenderCount: 2,
+      unresolvedSpenderCount: 0,
+      otherRegistrationRowCount: 1,
+      matchedContributionRowCount: 2,
+      includedContributionRowCount: 2,
+      skippedContributionRowCount: 0,
+      donorBreakdownCount: 2,
+      // "First Bank of Georgia" rule-classifies to finance_investment;
+      // "Acme Corp" stays unknown and feeds the manual queue instead.
+      industryBreakdownCount: 1,
+    });
+    expect(result.outsideGroupBreakdownsWritten).toBe(3);
+    // One filed-report pull and one stable TCON pull per spender.
+    const spenderReportCalls = fetchers.fetchFiledReportRows.mock.calls.filter(
+      (call) => (call[2] as { filerName: string }).filerName === "Example PAC"
+    );
+    expect(spenderReportCalls).toHaveLength(1);
+    expect(fetchers.fetchTransactionRowsStable).toHaveBeenCalledTimes(2);
+
+    const sqls = db.query.mock.calls.map((call) => String(call[0]));
+    expect(sqls.some((sql) => sql.includes("ga_candidate_finance_outside_group_breakdowns"))).toBe(true);
+    // Both donor labels persist a classification row (one rule-resolved, one
+    // 'unknown' for the manual industry-label queue).
+    expect(sqls.filter((sql) => sql.includes("INSERT INTO public.finance_label_classifications"))).toHaveLength(2);
+  });
+
+  it("degrades the funders leg to undefined when a spender pull fails with a client error, keeping groups", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    const candidateReports = fetchers.fetchFiledReportRows.getMockImplementation()!;
+    fetchers.fetchFiledReportRows.mockImplementation(async (transport, host, input) => {
+      if (host === "peachfile" && (input?.filerName === "Example PAC" || input?.filerName === "Opposing PAC")) {
+        return [
+          spenderReport(input.filerName === "Example PAC" ? "spender-a-guid" : "spender-b-guid", 200001),
+        ];
+      }
+      return candidateReports(transport, host, input);
+    });
+    fetchers.fetchTransactionRowsStable.mockImplementation(async () => {
+      throw new GeorgiaEthicsClientError("unstable_result", "did not stabilize in 4 passes");
+    });
+
+    const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
+
+    // Groups and totals still refresh; the breakdown table is never touched
+    // (undefined, not []), so surviving groups keep their stored donor rows.
+    expect(result.outsideGroupsWritten).toBe(2);
+    expect(result.outsideGroupBreakdownsWritten).toBe(0);
+    expect(result.outsideFunders).toBeNull();
+    expect(result.outsideFundersSkippedReason).toContain("did not stabilize");
+    const sqls = db.query.mock.calls.map((call) => String(call[0]));
+    expect(sqls.every((sql) => !sql.includes("ga_candidate_finance_outside_group_breakdowns"))).toBe(true);
+
+    // A non-client error is a bug and still fails the sync.
+    fetchers.fetchTransactionRowsStable.mockImplementation(async () => {
+      throw new TypeError("boom");
+    });
+    await expect(syncGeorgiaCandidateFinance(baseInput(createMockDb(), fetchers))).rejects.toThrow("boom");
+  });
+
+  it("consults the shared spender cache instead of re-fetching, including cached failures", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    const cache: GeorgiaSpenderContributionCache = new Map([
+      [
+        "spender-a-guid",
+        {
+          status: "ok",
+          rows: [spenderTconRow("spender-a-guid", 200001, { transactionId: 601, transactionAmount: 5000 })],
+          otherRegistrationRowCount: 0,
+        },
+      ],
+      ["spender-b-guid", { status: "unresolved", reason: "cached unresolved" }],
+    ]);
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers, { spenderContributionCache: cache }));
+      expect(result.outsideFunders).toMatchObject({
+        spenderCount: 2,
+        unresolvedSpenderCount: 1,
+        donorBreakdownCount: 1,
+        industryBreakdownCount: 1,
+      });
+      expect(result.outsideGroupBreakdownsWritten).toBe(2);
+      // No spender fetches at all — both outcomes came from the cache.
+      expect(fetchers.fetchTransactionRowsStable).not.toHaveBeenCalled();
+      const spenderReportCalls = fetchers.fetchFiledReportRows.mock.calls.filter((call) =>
+        ["Example PAC", "Opposing PAC"].includes((call[2] as { filerName: string }).filerName)
+      );
+      expect(spenderReportCalls).toHaveLength(0);
+    } finally {
+      warn.mockRestore();
+    }
+  });
+
+  it("skips the funders leg vacuously when the outside leg is skipped", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers, { independentExpenditureRows: null }));
+    expect(result.outsideFunders).toBeNull();
+    expect(result.outsideFundersSkippedReason).toContain("outside leg skipped");
+    expect(result.outsideGroupBreakdownsWritten).toBe(0);
+  });
+});
+
+describe("fetchGeorgiaSpenderContributionRows", () => {
+  const spenderFetchers = (overrides: {
+    reports?: GeorgiaFiledReportRow[];
+    stable?: () => Promise<ReturnType<typeof stableResult>>;
+  }) => ({
+    fetchFiledReportRows: vi.fn(async () => overrides.reports ?? [spenderReport("spender-a-guid", 200001)]),
+    fetchTransactionRowsStable: vi.fn(
+      overrides.stable ?? (async () => stableResult([spenderTconRow("spender-a-guid", 200001)]))
+    ),
+  });
+
+  it("resolves the entity id from filed reports and scopes rows to the registration guid", async () => {
+    const fetchers = spenderFetchers({
+      stable: async () =>
+        stableResult([
+          spenderTconRow("spender-a-guid", 200001, { transactionId: 1 }),
+          spenderTconRow("spender-a-old-guid", 200001, { transactionId: 2 }),
+          spenderTconRow(null as unknown as string, 200001, {
+            transactionId: 3,
+            filerRegistrationGuid: null,
+          }),
+        ]),
+    });
+    const outcome = await fetchGeorgiaSpenderContributionRows({
+      transport: dummyTransport,
+      spenderRegistrationGuid: "SPENDER-A-GUID",
+      spenderName: "Example PAC",
+      fetchers,
+    });
+    expect(outcome).toMatchObject({ status: "ok", otherRegistrationRowCount: 2 });
+    expect((outcome as { rows: GeorgiaTransactionRow[] }).rows.map((row) => row.transactionId)).toEqual([1]);
+    expect(fetchers.fetchTransactionRowsStable).toHaveBeenCalledWith(
+      dummyTransport,
+      "peachfile",
+      { filerName: "Example PAC" },
+      { expectedFilerEntityIds: [200001], maxPasses: undefined }
+    );
+  });
+
+  it("treats a clean zero-row result as an honest empty, but filter_ineffective as failed", async () => {
+    // Treasury spender: full-name query returns zero rows TOTAL — clean empty.
+    const empty = spenderFetchers({ stable: async () => stableResult([]) });
+    await expect(
+      fetchGeorgiaSpenderContributionRows({
+        transport: dummyTransport,
+        spenderRegistrationGuid: "spender-a-guid",
+        spenderName: "Example PAC",
+        fetchers: empty,
+      })
+    ).resolves.toEqual({ status: "ok", rows: [], otherRegistrationRowCount: 0 });
+
+    // filter_ineffective (foreign rows present, own rows absent) is
+    // ambiguous — the filter may have been ignored or matched the wrong
+    // filer — and the funders leg has no reconciliation arbiter, so it must
+    // fail closed instead of erasing stored donor rows with a false zero.
+    const ambiguous = spenderFetchers({
+      stable: async () => {
+        throw new GeorgiaEthicsClientError("filter_ineffective", "only foreign rows");
+      },
+    });
+    await expect(
+      fetchGeorgiaSpenderContributionRows({
+        transport: dummyTransport,
+        spenderRegistrationGuid: "spender-a-guid",
+        spenderName: "Example PAC",
+        fetchers: ambiguous,
+      })
+    ).resolves.toMatchObject({ status: "failed", reason: expect.stringContaining("only foreign rows") });
+  });
+
+  it("returns unresolved when no filed report matches the registration guid", async () => {
+    const fetchers = spenderFetchers({ reports: [spenderReport("some-other-guid", 300001)] });
+    const outcome = await fetchGeorgiaSpenderContributionRows({
+      transport: dummyTransport,
+      spenderRegistrationGuid: "spender-a-guid",
+      spenderName: "Example PAC",
+      fetchers,
+    });
+    expect(outcome).toMatchObject({ status: "unresolved" });
+    expect(fetchers.fetchTransactionRowsStable).not.toHaveBeenCalled();
+  });
+
+  it("returns failed on client errors and throws on bugs", async () => {
+    const failing = spenderFetchers({
+      stable: async () => {
+        throw new GeorgiaEthicsClientError("http_error", "WAF said no");
+      },
+    });
+    await expect(
+      fetchGeorgiaSpenderContributionRows({
+        transport: dummyTransport,
+        spenderRegistrationGuid: "spender-a-guid",
+        spenderName: "Example PAC",
+        fetchers: failing,
+      })
+    ).resolves.toMatchObject({ status: "failed", reason: expect.stringContaining("WAF said no") });
+
+    const buggy = spenderFetchers({
+      stable: async () => {
+        throw new TypeError("boom");
+      },
+    });
+    await expect(
+      fetchGeorgiaSpenderContributionRows({
+        transport: dummyTransport,
+        spenderRegistrationGuid: "spender-a-guid",
+        spenderName: "Example PAC",
+        fetchers: buggy,
+      })
+    ).rejects.toThrow("boom");
   });
 });
