@@ -96,6 +96,11 @@ describe("CandidatePage", () => {
     // Collapsed groups still state their size, so the closed profile reads
     // as an index of which issues carry a record.
     expect(screen.getAllByText("· 1 record")).toHaveLength(4);
+    // The group heading sits OUTSIDE the disclosure (a heading inside
+    // <summary> can drop out of screen-reader heading navigation), same
+    // pattern as the campaign-finance section.
+    const heading = screen.getByRole("heading", { level: 3, name: "Track record — Civil Rights" });
+    expect(heading.closest("details")).toBeNull();
   });
 
   it("tallies each collapsed group's support/oppose split for that group's own area", async () => {
@@ -194,10 +199,10 @@ describe("CandidatePage", () => {
       .getAllByRole("heading", { level: 3 })
       .map((heading) => heading.textContent);
     expect(headings).toEqual([
-      "Environment and Public Health",
-      "Gun Control",
-      "Civil Rights",
-      "Other records",
+      "Track record — Environment and Public Health",
+      "Track record — Gun Control",
+      "Track record — Civil Rights",
+      "Track record — Other records",
     ]);
   });
 
@@ -239,7 +244,10 @@ describe("CandidatePage", () => {
     const headings = screen
       .getAllByRole("heading", { level: 3 })
       .map((heading) => heading.textContent);
-    expect(headings).toEqual(["Gun Control", "Environment and Public Health"]);
+    expect(headings).toEqual([
+      "Track record — Gun Control",
+      "Track record — Environment and Public Health",
+    ]);
   });
 
   it("keeps a group the reader opened open across a view switch that reorders groups", async () => {

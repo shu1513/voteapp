@@ -646,42 +646,53 @@ export function CandidatePage() {
               const { forCount, againstCount } = groupStanceCounts(group);
               const evaluative = group.areaSlug != null && EVALUATIVE_AREA_SLUGS.has(group.areaSlug);
               return (
-                // Every group starts collapsed; with no `open` prop React
-                // never re-applies a default, so a reader's toggles survive a
-                // view switch that reorders the groups.
-                <details key={group.areaId ?? "other"} className="mt-4">
-                  <summary className="cursor-pointer select-none">
-                    <h3 className="inline text-sm font-semibold uppercase tracking-wide text-ink-soft">
-                      {group.areaName}
-                    </h3>{" "}
-                    <span className="text-xs text-ink-soft">
-                      · {group.records.length} record{group.records.length === 1 ? "" : "s"}
-                    </span>
-                    {forCount > 0 ? (
-                      <span className="text-xs font-medium text-green-900">
-                        {" "}
-                        · {forCount} {evaluative ? "favorable" : "support"}
+                <div key={group.areaId ?? "other"} className="mt-4">
+                  {/* The heading lives OUTSIDE the summary, sr-only — same
+                      rule as the finance disclosure above: <summary> maps to
+                      a button, and a heading inside it can drop out of
+                      screen-reader heading navigation. "Track record — "
+                      prefixes the area so the heading reads meaningfully
+                      when jumped to on its own, and keeps its text distinct
+                      from the visible summary line (which repeats the bare
+                      area name). */}
+                  <h3 className="sr-only">{`Track record — ${group.areaName}`}</h3>
+                  {/* Every group starts collapsed; with no `open` prop React
+                      never re-applies a default, so a reader's toggles
+                      survive a view switch that reorders the groups. */}
+                  <details>
+                    <summary className="cursor-pointer select-none">
+                      <span className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+                        {group.areaName}
+                      </span>{" "}
+                      <span className="text-xs text-ink-soft">
+                        · {group.records.length} record{group.records.length === 1 ? "" : "s"}
                       </span>
-                    ) : null}
-                    {againstCount > 0 ? (
-                      <span className="text-xs font-medium text-red-900">
-                        {" "}
-                        · {againstCount} {evaluative ? "unfavorable" : "oppose"}
-                      </span>
-                    ) : null}
-                  </summary>
-                  <ul className="mt-2 space-y-3">
-                    {group.records.map((record) => (
-                      <RecordItem
-                        key={`${group.areaId ?? "other"}-${record.id}`}
-                        record={record}
-                        showTags={false}
-                        reporterEmail={me?.email}
-                        stanceAreaId={group.areaId}
-                      />
-                    ))}
-                  </ul>
-                </details>
+                      {forCount > 0 ? (
+                        <span className="text-xs font-medium text-green-900">
+                          {" "}
+                          · {forCount} {evaluative ? "favorable" : "support"}
+                        </span>
+                      ) : null}
+                      {againstCount > 0 ? (
+                        <span className="text-xs font-medium text-red-900">
+                          {" "}
+                          · {againstCount} {evaluative ? "unfavorable" : "oppose"}
+                        </span>
+                      ) : null}
+                    </summary>
+                    <ul className="mt-2 space-y-3">
+                      {group.records.map((record) => (
+                        <RecordItem
+                          key={`${group.areaId ?? "other"}-${record.id}`}
+                          record={record}
+                          showTags={false}
+                          reporterEmail={me?.email}
+                          stanceAreaId={group.areaId}
+                        />
+                      ))}
+                    </ul>
+                  </details>
+                </div>
               );
             })
           )}
