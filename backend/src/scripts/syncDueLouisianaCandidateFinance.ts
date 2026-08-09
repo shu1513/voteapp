@@ -4,6 +4,7 @@ import { Pool } from "pg";
 
 import { loadProjectEnv } from "../config/env.js";
 import { isLouisianaCampaignFinanceSyncEnabled } from "../config/featureFlags.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 const LOUISIANA_CANDIDATE_FINANCE_BATCH_SYNC_MODULE =
   "../pipeline/louisianaFinance/louisianaCandidateFinanceBatchSync.js";
@@ -90,26 +91,11 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
-const LOUISIANA_FINANCE_KNOWN_FLAGS = new Set([
-  "--dry-run",
-  "--force",
-  "--max-candidates",
-  "--stale-after-days",
-  "--lookback-days",
-  "--lookahead-days",
-  "--raw-cache-dir",
-]);
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--lookahead-days", "--lookback-days", "--max-candidates", "--raw-cache-dir", "--stale-after-days"]);
 
 function assertNoUnknownLouisianaFinanceArgs(args: readonly string[]): void {
-  for (const arg of args) {
-    if (!arg.startsWith("--")) {
-      continue;
-    }
-    const isKnown = [...LOUISIANA_FINANCE_KNOWN_FLAGS].some((flag) => arg === flag || arg.startsWith(`${flag}=`));
-    if (!isKnown) {
-      throw new Error(`Unknown argument: ${arg}`);
-    }
-  }
+  assertKnownCliFlags(args, "Louisiana candidate finance due sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
 }
 
 export function parseSyncDueLouisianaCandidateFinanceScriptArgs(

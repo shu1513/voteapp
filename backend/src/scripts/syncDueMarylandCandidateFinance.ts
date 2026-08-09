@@ -8,6 +8,7 @@ import {
   syncDueMarylandCandidateFinance,
   type MarylandCandidateFinanceBatchSyncResult,
 } from "../pipeline/marylandFinance/marylandCandidateFinanceBatchSync.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncDueMarylandCandidateFinanceScriptOptions = {
   dryRun: boolean;
@@ -29,24 +30,7 @@ const KNOWN_VALUE_FLAGS = new Set([
 ]);
 
 function validateKnownFlags(args: readonly string[]): void {
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index]!;
-    if (!arg.startsWith("--")) {
-      // A bare token is only legal as the value of the immediately
-      // preceding space-form value flag. Anything else is a positional typo
-      // (e.g. "dry-run" after npm's own "--" separator) that would
-      // otherwise be ignored and run a REAL sync.
-      const previous = index > 0 ? args[index - 1]! : undefined;
-      if (previous === undefined || !KNOWN_VALUE_FLAGS.has(previous)) {
-        throw new Error(`Unexpected positional argument: ${arg}`);
-      }
-      continue;
-    }
-    const name = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
-    if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
-      throw new Error(`Unknown Maryland candidate finance due sync flag: ${name}`);
-    }
-  }
+  assertKnownCliFlags(args, "Maryland candidate finance due sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
 }
 
 function parseFlagValue(args: readonly string[], name: string): string | null {

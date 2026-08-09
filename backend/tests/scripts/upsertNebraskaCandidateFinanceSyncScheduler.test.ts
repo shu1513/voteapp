@@ -30,16 +30,16 @@ describe("upsertNebraskaCandidateFinanceSyncScheduler script", () => {
 
   it("rejects unknown flags instead of silently ignoring typos", () => {
     expect(() => parseUpsertNebraskaCandidateFinanceSyncSchedulerArgs(["--max-canddates=5"])).toThrow(
-      "Unknown Nebraska candidate finance scheduler upsert flag: --max-canddates"
+      "Unknown Nebraska candidate finance sync scheduler flag: --max-canddates"
     );
   });
 
   it("rejects boolean flags with explicit values", () => {
     expect(() => parseUpsertNebraskaCandidateFinanceSyncSchedulerArgs(["--dry-run=true"])).toThrow(
-      "Boolean flag must not include a value: --dry-run"
+      "Boolean flag does not accept a value: --dry-run"
     );
     expect(() => parseUpsertNebraskaCandidateFinanceSyncSchedulerArgs(["--force=false"])).toThrow(
-      "Boolean flag must not include a value: --force"
+      "Boolean flag does not accept a value: --force"
     );
   });
 });

@@ -6,6 +6,7 @@ import {
   upsertRecurringTexasTecRawDataRefreshJobs,
   type TexasTecRawDataRefreshJobData,
 } from "../scheduler/texasTecRawDataRefreshScheduler.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -41,9 +42,13 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--cache-dir", "--timeout-ms", "--url"]);
+
 export function parseUpsertTexasTecRawDataRefreshSchedulerArgs(
   args: readonly string[]
 ): TexasTecRawDataRefreshJobData {
+  assertKnownCliFlags(args, "Texas TEC raw data refresh scheduler", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     force: args.includes("--force"),
     url: parseFlagValue(args, "--url") || undefined,

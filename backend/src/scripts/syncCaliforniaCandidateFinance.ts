@@ -12,6 +12,7 @@ import {
   syncCaliforniaCandidateFinance,
   type CaliforniaCandidateFinanceSyncResult,
 } from "../pipeline/californiaFinance/californiaCandidateFinanceSync.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncCaliforniaCandidateFinanceScriptOptions = {
   candidateId: string;
@@ -96,9 +97,13 @@ function parseElectionYear(args: readonly string[]): number {
   return year;
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--skip-outside"]);
+const KNOWN_VALUE_FLAGS = new Set(["--candidate-id", "--candidate-name", "--committee-id", "--committee-name", "--election-id", "--office", "--raw-cache-dir", "--raw-zip", "--source-url", "--timeout-ms", "--year"]);
+
 export function parseSyncCaliforniaCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncCaliforniaCandidateFinanceScriptOptions {
+  assertKnownCliFlags(args, "California candidate finance sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     candidateId: parseUuidFlag(args, "--candidate-id"),
     electionId: parseUuidFlag(args, "--election-id"),

@@ -14,6 +14,7 @@ import {
   parseMaineCfisHttpsUrl,
   type MaineCfisArtifactKind,
 } from "../pipeline/maineFinance/maineCfisClient.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export { DEFAULT_MAINE_CFIS_CACHE_DIR };
 
@@ -30,24 +31,7 @@ const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
 const KNOWN_VALUE_FLAGS = new Set(["--filing-year", "--year", "--artifact-kind", "--url", "--cache-dir", "--timeout-ms"]);
 
 function validateKnownFlags(args: readonly string[]): void {
-  for (let index = 0; index < args.length; index += 1) {
-    const arg = args[index]!;
-    if (!arg.startsWith("--")) {
-      // A bare token is only legal as the value of the immediately
-      // preceding space-form value flag. Anything else is a positional typo
-      // (e.g. "force" after npm's own "--" separator) that would
-      // otherwise be silently ignored.
-      const previous = index > 0 ? args[index - 1]! : undefined;
-      if (previous === undefined || !KNOWN_VALUE_FLAGS.has(previous)) {
-        throw new Error(`Unexpected positional argument: ${arg}`);
-      }
-      continue;
-    }
-    const name = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
-    if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
-      throw new Error(`Unknown Maine CFIS raw data refresh flag: ${name}`);
-    }
-  }
+  assertKnownCliFlags(args, "Maine CFIS raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
 }
 
 function readValueFlags(args: readonly string[], name: string): string[] {

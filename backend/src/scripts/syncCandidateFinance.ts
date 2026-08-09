@@ -6,6 +6,7 @@ import { loadProjectEnv } from "../config/env.js";
 import { isCandidateFinanceEnabled } from "../config/featureFlags.js";
 import { syncCandidateFinance, type CandidateFinanceSyncResult } from "../pipeline/finance/candidateFinanceSync.js";
 import { DEFAULT_OPEN_FEC_TIMEOUT_MS, readOpenFecApiKeysFromEnv } from "../pipeline/presidential/openFecClient.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncCandidateFinanceScriptOptions = {
   fecCandidateId: string;
@@ -78,7 +79,11 @@ function parseFecCandidateId(args: readonly string[]): string {
   return value;
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--include-outside"]);
+const KNOWN_VALUE_FLAGS = new Set(["--fec-id", "--per-page", "--timeout-ms", "--top-groups", "--year"]);
+
 export function parseSyncCandidateFinanceScriptArgs(args: readonly string[]): SyncCandidateFinanceScriptOptions {
+  assertKnownCliFlags(args, "candidate finance sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     fecCandidateId: parseFecCandidateId(args),
     electionYear: parseElectionYear(args),

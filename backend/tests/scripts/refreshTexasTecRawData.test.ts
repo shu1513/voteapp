@@ -53,9 +53,9 @@ describe("refreshTexasTecRawData script", () => {
   });
 
   it("rejects missing or duplicate values", () => {
-    expect(() => parseArgs(["--url"])).toThrow("Missing value for --url");
-    expect(() => parseArgs(["--url="])).toThrow("Missing value for --url");
-    expect(() => parseArgs(["--cache-dir", "   "])).toThrow("Missing value for --cache-dir");
+    expect(() => parseArgs(["--url"])).toThrow("Missing --url value");
+    expect(() => parseArgs(["--url="])).toThrow("Missing --url value");
+    expect(() => parseArgs(["--cache-dir", "   "])).toThrow("Missing --cache-dir value");
     expect(() => parseArgs(["--url=https://example.test/a.zip", "--url=https://example.test/b.zip"])).toThrow(
       "Provide --url at most once"
     );

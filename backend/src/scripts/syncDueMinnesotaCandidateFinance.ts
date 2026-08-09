@@ -8,6 +8,7 @@ import {
   syncDueMinnesotaCandidateFinance,
   type MinnesotaCandidateFinanceBatchSyncResult,
 } from "../pipeline/minnesotaFinance/minnesotaCandidateFinanceBatchSync.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncDueMinnesotaCandidateFinanceScriptOptions = {
   dryRun: boolean;
@@ -60,18 +61,11 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
-const MINNESOTA_FINANCE_KNOWN_FLAGS = new Set(['--dry-run', '--force', '--max-candidates', '--stale-after-days', '--lookback-days', '--lookahead-days', '--raw-cache-dir']);
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--lookahead-days", "--lookback-days", "--max-candidates", "--raw-cache-dir", "--stale-after-days"]);
 
 function assertNoUnknownMinnesotaFinanceArgs(args: readonly string[]): void {
-  for (const arg of args) {
-    if (!arg.startsWith("--")) {
-      continue;
-    }
-    const isKnown = [...MINNESOTA_FINANCE_KNOWN_FLAGS].some((flag) => arg === flag || arg.startsWith(`${flag}=`));
-    if (!isKnown) {
-      throw new Error(`Unknown argument: ${arg}`);
-    }
-  }
+  assertKnownCliFlags(args, "Minnesota candidate finance due sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
 }
 
 export function parseSyncDueMinnesotaCandidateFinanceScriptArgs(

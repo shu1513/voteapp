@@ -838,5 +838,19 @@ shape) and lands first; only the D3 map table waits for the spike.
   raw-data refresh across ~25 states, 62 of them write-by-default) with no
   unknown-flag or positional rejection at all; all now call a shared
   `assertKnownCliFlags` (financeCliFlagGuard.ts) with per-script flag
-  sets. Lesson recorded: the grep that finds the port cohort also defines
-  its blind spot — sweep for the concept, then diff against the grep hits.
+  sets. The review round then caught what that sweep's own globs missed:
+  the guard never required a value flag's value (a bare `--candidate-id`
+  silently ran an untargeted full batch — the guard now rejects missing
+  and empty values in both forms and consumes space-form values), the 5
+  direct-write `sync*CandidateFinance` CLIs (glob only matched syncDue),
+  8 Tracer/eCRIS/CFIS/TEC raw trigger/upsert CLIs (glob required
+  "Finance" in the name), and 27 partially-guarded CLIs across
+  DC/FL/IL/KY/LA/MN/NE/CO/Maine/MD whose five bespoke validator shapes
+  skipped positionals or inline boolean values — every bespoke validator
+  now delegates to the shared guard, and the per-state error strings were
+  canonicalized to the guard's wording. Verified complete and left alone:
+  NCSBE/Ohio-SoS/Minnesota refresh loops, the NJ/Indiana/Tennessee
+  CliArgs helper modules, Georgia's own sync-due loop, the LA/NYC
+  flat-set guards, and the Ohio/NC/Georgia templates. Lesson recorded
+  twice now: the grep that finds the port cohort also defines its blind
+  spot — sweep for the concept, then diff against the grep hits.

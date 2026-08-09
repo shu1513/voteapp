@@ -63,7 +63,7 @@ describe("refreshCaliforniaCampaignFinanceRawData script", () => {
       "Invalid --timeout-ms value: 10abc"
     );
     expect(() => parseRefreshCaliforniaCampaignFinanceRawDataScriptArgs(["--url", "--force"])).toThrow(
-      "Missing value for --url"
+      "Missing --url value"
     );
   });
 

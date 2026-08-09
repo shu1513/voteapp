@@ -6,6 +6,7 @@ import {
   type IllinoisCandidateFinanceSyncJobData,
 } from "../scheduler/illinoisCandidateFinanceSyncScheduler.js";
 import { parseFlagValue, parseFlagValues } from "./illinoisCandidateFinanceScriptArgs.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parsePositiveIntegerFlag(args: readonly string[], name: string): number | undefined {
   const raw = parseFlagValue(args, name);
@@ -16,19 +17,6 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
     throw new Error(`Invalid ${name} value: ${raw}`);
   }
   return Number(raw);
-}
-
-function assertNoUnknownFlags(args: readonly string[], allowedFlags: readonly string[]): void {
-  const allowed = new Set(allowedFlags);
-  for (const arg of args) {
-    if (!arg.startsWith("--")) {
-      continue;
-    }
-    const flag = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
-    if (!allowed.has(flag)) {
-      throw new Error(`Unknown option: ${flag}`);
-    }
-  }
 }
 
 function assertBareBooleanFlags(args: readonly string[], booleanFlags: readonly string[]): void {
@@ -49,22 +37,13 @@ function assertBareBooleanFlags(args: readonly string[], booleanFlags: readonly 
   }
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--contributions-csv", "--contributions-url", "--expenditures-csv", "--expenditures-url", "--lookahead-days", "--lookback-days", "--max-candidates", "--normalized-artifact", "--stale-after-days"]);
+
 export function parseIllinoisCandidateFinanceSyncTriggerArgs(
   args: readonly string[]
 ): IllinoisCandidateFinanceSyncJobData {
-  assertNoUnknownFlags(args, [
-    "--dry-run",
-    "--force",
-    "--max-candidates",
-    "--stale-after-days",
-    "--lookback-days",
-    "--lookahead-days",
-    "--contributions-csv",
-    "--expenditures-csv",
-    "--contributions-url",
-    "--expenditures-url",
-    "--normalized-artifact",
-  ]);
+  assertKnownCliFlags(args, "Illinois candidate finance sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   assertBareBooleanFlags(args, ["--dry-run", "--force"]);
   const contributionCsvPaths = parseFlagValues(args, "--contributions-csv");
   const expenditureCsvPaths = parseFlagValues(args, "--expenditures-csv");

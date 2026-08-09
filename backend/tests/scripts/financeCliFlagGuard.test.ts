@@ -37,6 +37,15 @@ describe("assertKnownCliFlags", () => {
   it("rejects a boolean flag with an inline value", () => {
     expect(() => check(["--dry-run=true"])).toThrow(/Boolean flag does not accept a value/);
   });
+
+  it("rejects a value flag without a value", () => {
+    // A silently-missing value made parsers that return null instead of
+    // throwing run an untargeted full batch (e.g. --candidate-id alone).
+    expect(() => check(["--max-candidates"])).toThrow(/Missing --max-candidates value/);
+    expect(() => check(["--max-candidates", "--dry-run"])).toThrow(/Missing --max-candidates value/);
+    expect(() => check(["--max-candidates="])).toThrow(/Missing --max-candidates value/);
+    expect(() => check(["--cache-dir", "  "])).toThrow(/Missing --cache-dir value/);
+  });
 });
 
 // Representative integration through the three ported shapes: a state
@@ -69,6 +78,51 @@ describe("ported finance CLI parsers reject silent typos", () => {
     );
     expect(() => parseRefreshTexasTecRawDataScriptArgs(["--froce"])).toThrow(
       /Unknown Texas TEC raw data refresh flag: --froce/
+    );
+  });
+});
+
+// Review-round coverage: the groups the first sweep missed.
+describe("second-sweep finance CLI parsers reject silent typos", () => {
+  it("federal direct sync (write CLI) rejects typos and bare value flags", async () => {
+    const { parseSyncCandidateFinanceScriptArgs } = await import(
+      "../../src/scripts/syncCandidateFinance.js"
+    );
+    expect(() => parseSyncCandidateFinanceScriptArgs(["dry-run"])).toThrow(
+      /Unexpected positional argument: dry-run/
+    );
+    expect(() => parseSyncCandidateFinanceScriptArgs(["--dry-run=true"])).toThrow(
+      /Boolean flag does not accept a value/
+    );
+    expect(() => parseSyncCandidateFinanceScriptArgs(["--fec-id"])).toThrow(
+      /Missing --fec-id value/
+    );
+  });
+
+  it("Colorado TRACER raw trigger rejects typos", async () => {
+    const { parseColoradoTracerRawDataRefreshTriggerArgs } = await import(
+      "../../src/scripts/triggerColoradoTracerRawDataRefresh.js"
+    );
+    expect(() => parseColoradoTracerRawDataRefreshTriggerArgs(["force"])).toThrow(
+      /Unexpected positional argument: force/
+    );
+    expect(() => parseColoradoTracerRawDataRefreshTriggerArgs(["--froce"])).toThrow(
+      /Unknown Colorado TRACER raw data refresh flag: --froce/
+    );
+  });
+
+  it("converted partial guards reject positionals and inline boolean values", async () => {
+    const { parseIllinoisCandidateFinanceSyncTriggerArgs } = await import(
+      "../../src/scripts/triggerIllinoisCandidateFinanceSync.js"
+    );
+    expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["dry-run"])).toThrow(
+      /Unexpected positional argument: dry-run/
+    );
+    const { parseMaineCandidateFinanceSyncTriggerArgs } = await import(
+      "../../src/scripts/triggerMaineCandidateFinanceSync.js"
+    );
+    expect(() => parseMaineCandidateFinanceSyncTriggerArgs(["--dry-run=true"])).toThrow(
+      /Boolean flag does not accept a value/
     );
   });
 });

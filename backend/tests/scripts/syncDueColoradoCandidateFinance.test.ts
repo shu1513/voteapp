@@ -39,10 +39,10 @@ describe("syncDueColoradoCandidateFinance script", () => {
 
   it("rejects boolean flags with explicit values", () => {
     expect(() => parseSyncDueColoradoCandidateFinanceScriptArgs(["--dry-run=true"])).toThrow(
-      "Boolean flag must not include a value: --dry-run"
+      "Boolean flag does not accept a value: --dry-run"
     );
     expect(() => parseSyncDueColoradoCandidateFinanceScriptArgs(["--force=false"])).toThrow(
-      "Boolean flag must not include a value: --force"
+      "Boolean flag does not accept a value: --force"
     );
   });
 
