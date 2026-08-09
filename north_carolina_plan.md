@@ -776,6 +776,22 @@ The acquisition spike is the gate before parser/aggregator work.
   also pull IE-inventory-discovered registered spenders' document
   inventories + receipts (today they'd need explicit `--committee` args),
   else live funder legs for registered spenders stay honestly unavailable.
+  **Review round (P1+P2+P3, all accepted)**: (P1) the registered-spender
+  receipts path originally read EVERY cycle inventory row (the acquisition
+  fetch-set) — original + amendment both summed. Now it pipes through the
+  exported `selectNorthCarolinaDirectCycleReportRows` filter + the
+  decision-8 `selectNcsbeCurrentFilings` selector, exactly like the direct
+  money leg, and a superseded-unavailable period or quarantined lineage
+  throws (the direct leg's honest-null analogue → funders-unavailable, never
+  a stale-original fallback). (P2) an unknown receipt-type code no longer
+  ships a partial funder picture: decision 12 semantics — the affected
+  CANDIDATE's funder slice is withheld (writer preserves stored breakdowns;
+  precise because the aggregator only counts codes on that candidate's own
+  spenders), and the codes surface on the year summary as
+  `funderUnknownReceiptTypeCodes`. (P3) literal NUL separator bytes in the
+  new aggregator's template keys made git treat the source as binary —
+  replaced with escaped sequences (identical runtime strings), plus the same
+  one-byte fix to the PR 6 outside aggregator that had shipped with it.
 - [ ] PR 9 live run (+ later: PDF path, own flag)
 
 Update the checklist + any changed decision here as PRs land; also update the

@@ -15,6 +15,7 @@ import {
 } from "./northCarolinaCandidateFinanceSync.js";
 import {
   aggregateNorthCarolinaDirectFinance,
+  selectNorthCarolinaDirectCycleReportRows,
   type NorthCarolinaDirectAggregationResult,
   type NorthCarolinaDirectReportInput,
 } from "./northCarolinaDirectContributionAggregator.js";
@@ -39,6 +40,7 @@ import {
   type NcsbeTransactionPage,
 } from "./northCarolinaNcsbeParsers.js";
 import { aggregateNorthCarolinaOutsideGroupContributions } from "./northCarolinaOutsideGroupContributionAggregator.js";
+import { selectNcsbeCurrentFilings } from "./northCarolinaReportSelector.js";
 import {
   aggregateNorthCarolinaOutsideSpending,
   northCarolinaOutsideGroupCommitteeId,
@@ -136,6 +138,11 @@ export type NorthCarolinaOutsideAggregationYearSummary = {
   fundersAvailable?: boolean;
   fundersError?: string;
   funderReceiptRowCount?: number;
+  // Receipt-type codes outside the pinned donor vocabulary (decision 12):
+  // every candidate whose groups carry such a code had its funder slice
+  // withheld (stored breakdowns preserved) — new portal vocabulary is
+  // reviewed, never published as a partial funder picture.
+  funderUnknownReceiptTypeCodes?: string[];
 };
 
 export type NorthCarolinaCandidateFinanceBatchSyncResult = {
@@ -361,12 +368,18 @@ function officialExpenditureTotalCents(cover: ReturnType<typeof parseNcsbeReport
 
 // One spender's receipt rows from cache (funder leg, PR 8 #3). A registered
 // spender (SBoEID) is funded through its REGULAR disclosure reports — its
-// document inventory plus the same decision-8 selection the direct leg uses
-// (IE informational filings are not "Disclosure Report" rows, so this never
-// re-reads IE money), receipts only. An unregistered filer (`NC-IE-FILER:`
-// key) has no regular filings; its disclosed funders are the Donation rows
-// on its own selected, non-quarantined IE reports (decision 6) — never
-// presented as full funding, never backfilled from older cycles.
+// document inventory piped through the SAME selection the direct money leg
+// uses (the cycle-window "Disclosure Report" filter, so IE informational
+// filings never re-read IE money, then the decision-8 CURRENT-filing
+// selector, so an amended report's original can never be summed alongside —
+// or instead of — its amendment; review round), receipts only. A
+// superseded-unavailable period (image-only current filing) or a
+// quarantined lineage makes the spender's funder picture provably partial,
+// so it throws — the direct leg's honest-null analogue, landing as
+// funders-unavailable. An unregistered filer (`NC-IE-FILER:` key) has no
+// regular filings; its disclosed funders are the Donation rows on its own
+// selected, non-quarantined IE reports (decision 6) — never presented as
+// full funding, never backfilled from older cycles.
 async function collectSpenderReceiptRows(input: {
   cacheDir: string;
   electionYear: number;
@@ -379,21 +392,24 @@ async function collectSpenderReceiptRows(input: {
       cacheDir: input.cacheDir,
       key: { type: "document_inventory", sboeId: input.committeeId },
     });
-    const { selected } = selectNcsbeCycleReportRows({
+    const { rows: cycleRows } = selectNorthCarolinaDirectCycleReportRows({
       rows: parseNcsbeDocumentListPage(inventory.body),
-      cycleYear: input.electionYear,
+      electionYear: input.electionYear,
     });
-    const seenReportIds = new Set<string>();
-    for (const row of selected) {
-      const reportId = row.dataLink;
-      if (reportId === null || seenReportIds.has(reportId)) {
-        continue;
-      }
-      seenReportIds.add(reportId);
+    const selection = selectNcsbeCurrentFilings({ rows: cycleRows });
+    if (selection.supersededUnavailable.length > 0 || selection.quarantinedGroups.length > 0) {
+      throw new Error(
+        `NCSBE spender committee ${input.committeeId} has ` +
+          `${selection.supersededUnavailable.length} superseded-unavailable period(s) and ` +
+          `${selection.quarantinedGroups.length} quarantined filing lineage(s) — ` +
+          "its funder picture would be partial"
+      );
+    }
+    for (const filing of selection.selected) {
       rows.push(
         ...(await readTransactionRows({
           cacheDir: input.cacheDir,
-          reportId,
+          reportId: filing.reportId!,
           kind: "receipts",
           parse: parseNcsbeReceiptsPage,
         }))
@@ -779,6 +795,7 @@ async function aggregateOutsideForYear(input: {
     }
     // Enriched BEFORE the alias loop below so aliased keys share the same
     // funder-carrying slice objects.
+    const funderUnknownReceiptTypeCodes = new Set<string>();
     for (const [key, slice] of byTargetKey) {
       if (funderRowsByCommitteeId === null) {
         byTargetKey.set(key, { ...slice, funders: null });
@@ -790,6 +807,24 @@ async function aggregateOutsideForYear(input: {
         receiptRowsByCommitteeId: funderRowsByCommitteeId,
         sourceUrl,
       });
+      // Decision 12 (review round): a receipt code outside the pinned donor
+      // vocabulary has unknown semantics — it could be entity donor money —
+      // so this candidate's funder slice is withheld (writer preserves
+      // stored breakdowns) instead of publishing a possibly-partial
+      // picture. Precise by construction: the aggregator only counts codes
+      // on spenders inside THIS candidate's groups.
+      if (funderAggregation.unknownReceiptTypeCodeRowCount > 0) {
+        for (const code of funderAggregation.unknownReceiptTypeCodes) {
+          funderUnknownReceiptTypeCodes.add(code);
+        }
+        console.warn(
+          `North Carolina funder receipts carry unknown receipt-type code(s) for ${input.electionYear}; ` +
+            "withholding this candidate's funder slice and preserving stored breakdowns:",
+          { candidateKey: key, codes: funderAggregation.unknownReceiptTypeCodes }
+        );
+        byTargetKey.set(key, { ...slice, funders: null });
+        continue;
+      }
       byTargetKey.set(key, {
         ...slice,
         funders: {
@@ -834,6 +869,9 @@ async function aggregateOutsideForYear(input: {
         fundersAvailable: funderRowsByCommitteeId !== null,
         ...(fundersError === undefined ? {} : { fundersError }),
         ...(funderRowsByCommitteeId === null ? {} : { funderReceiptRowCount }),
+        ...(funderUnknownReceiptTypeCodes.size === 0
+          ? {}
+          : { funderUnknownReceiptTypeCodes: [...funderUnknownReceiptTypeCodes].sort() }),
       },
     };
   } catch (error) {
