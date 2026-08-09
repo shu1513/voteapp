@@ -218,10 +218,25 @@ function getSchoolPartisanshipMode(state: string): SchoolPartisanshipMode {
 // office "Clerk of Court", but the bare "superior court" token below swallowed
 // them and handed the whole office to judicial policy (live 2026-08-08: Yuma
 // County's partisan Clerk of Superior Court contest was rejected as a judge).
-const COURT_CLERK_TITLE_PATTERN = /\bclerks?\b/i;
+//
+// The clerk is one case of a family: offices that administer or prosecute
+// before a court name that court in their own title without being judgeships.
+// Each one below was forced to the wrong answer by a judicial rule that has no
+// business classifying it — "Constable, Justice Prec. 2" (Yuma County's
+// constables are section-one partisan offices like the JP, and are stored that
+// way, but the bare "justice" token routed them to Arizona's nonpartisan
+// judicial fallback), "State Attorney, 4th Judicial Circuit" (Florida is not in
+// the map above, so the unmapped-state default forced its partisan prosecutor
+// nonpartisan), "Elkhart County Circuit Court Clerk", "Prosecuting Attorney of
+// Elkhart County, 34th Judicial Circuit". Their partisanship follows the
+// state's rule for ordinary county offices. Mirrors the office matcher's own
+// non-judicial markers, which already carve constables out of the judge
+// fallback for the same reason.
+const NON_JUDICIAL_OFFICE_TITLE_MARKERS =
+  /\b(clerks?|prosecut(?:or|ing attorney)|district attorney|state'?s? attorney|county attorney|attorney general|solicitor|constables?|sheriff|marshal|recorder|coroner)\b/i;
 
 export function isJudicialOfficeTitle(title: string): boolean {
-  if (COURT_CLERK_TITLE_PATTERN.test(title)) {
+  if (NON_JUDICIAL_OFFICE_TITLE_MARKERS.test(title)) {
     return false;
   }
   return /\b(judge|justice|judicial|superior court|court of appeal(s)?|supreme court|retention|magistrate)\b/i.test(

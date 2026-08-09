@@ -5,6 +5,7 @@ import {
   defaultOfficeCandidateEligibilityConfig,
   evaluateOfficeCandidateEligibilityByElectionIds,
   getOfficeCandidateEligibilityForElectionId,
+  listOfficeCandidateEligibilityForUpcomingOffices,
   summarizeOfficeCandidateEligibilityReasons,
   type OfficeCandidateEligibilityRow,
 } from "../../src/pipeline/candidates/officeCandidateEligibility.js";
@@ -46,6 +47,23 @@ describe("officeCandidateEligibility", () => {
     // manual:candidate-roster:due + manual:candidate-roster:inject.
     expect(sql).toContain("s.status IN ('written', 'no_results')");
     expect(sql).not.toContain("s.status = 'written'");
+  });
+
+  it("rules out office-less shells in both the by-ids and daily-rollover selectors", async () => {
+    const query = vi.fn(async () => ({ rows: [] }));
+    const pool = { query } as unknown as Pool;
+    const config = defaultOfficeCandidateEligibilityConfig();
+
+    // The elections writer holds office-less shells back from its own handoff;
+    // the daily rollover would otherwise pick the same shell up the next day
+    // and enqueue a roster the records stage cannot finish.
+    await evaluateOfficeCandidateEligibilityByElectionIds(pool, ["id-1"], config);
+    const [byIdsSql] = query.mock.calls[0]!;
+    expect(byIdsSql).toContain("b.office_id IS NULL THEN 'not_office_or_missing'");
+
+    await listOfficeCandidateEligibilityForUpcomingOffices(pool, config);
+    const [upcomingSql] = query.mock.calls[1]!;
+    expect(upcomingSql).toContain("WHEN b.office_id IS NULL THEN 'not_office_or_missing'");
   });
 
   it("returns not_office_or_missing fallback when selector has no row", async () => {

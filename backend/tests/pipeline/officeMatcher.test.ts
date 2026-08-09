@@ -2515,4 +2515,82 @@ describe("OfficeMatcher", () => {
     });
     expect(commissioner.officeId).toBe("office-county-commissioner");
   });
+
+  it("resolves prosecutor titles carrying an 'of <County> County' phrase and a numbered judicial circuit", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          { office_id: "office-district-attorney", normalized_alias: "prosecuting attorney" },
+          { office_id: "office-district-attorney", normalized_alias: "district attorney" },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+          { id: "office-county-level-judge", canonical_name: "County Level Judge" },
+          { id: "office-clerk-of-court", canonical_name: "Clerk of Court" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // Indiana titles every county prosecutor this way; the "of <County> County"
+    // phrase plus the ordinal circuit previously scored 0.250 and blocked the
+    // contest in every Indiana county.
+    const indiana = await matcher.resolve({
+      scope: "county",
+      districtName: "Elkhart County, Indiana",
+      state: "IN",
+      officialBallotTitle: "Prosecuting Attorney of Elkhart County, 34th Judicial Circuit",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(indiana).toMatchObject({
+      officeId: "office-district-attorney",
+      method: "alias_exact",
+    });
+
+    const withCourtSuffix = await matcher.resolve({
+      scope: "county",
+      districtName: "Caddo Parish, Louisiana",
+      state: "LA",
+      officialBallotTitle: "District Attorney, 1st Judicial District Court",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(withCourtSuffix.officeId).toBe("office-district-attorney");
+
+    // The "of <jurisdiction>" strip must not swallow an office's own words:
+    // this title keeps "Clerk of the Circuit Court" and only loses the county.
+    const clerkOfCircuitCourt = await matcher.resolve({
+      scope: "county",
+      districtName: "Cook County, Illinois",
+      state: "IL",
+      officialBallotTitle: "Clerk of the Circuit Court of Cook County",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(clerkOfCircuitCourt.officeId).toBe("office-clerk-of-court");
+
+    // The jurisdiction strip must not fire when the county phrase names the
+    // governing body that follows it: taking "of Cook County" here left
+    // "member board of commissioners", which mis-scored into a different
+    // county board office.
+    const bodyForm = await matcher.resolve({
+      scope: "county",
+      districtName: "Cook County, Illinois",
+      state: "IL",
+      officialBallotTitle: "Member of Cook County Board of Commissioners",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(bodyForm.officeId).toBe("office-county-commissioner");
+
+    // A judge OF that circuit is still a judgeship.
+    const circuitJudge = await matcher.resolve({
+      scope: "county",
+      districtName: "Elkhart County, Indiana",
+      state: "IN",
+      officialBallotTitle: "Judge of the 34th Judicial Circuit",
+      discoveryContestFamily: "judicial_office",
+    });
+    expect(circuitJudge.officeId).toBe("office-county-level-judge");
+  });
 });
