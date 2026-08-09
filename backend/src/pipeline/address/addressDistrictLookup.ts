@@ -34,6 +34,10 @@ type DistrictRow = {
   state_fips: string;
   population: number;
   representation_power_score: string | number | null;
+  // The key the caller asked for, which is not the row we return when the
+  // requested row is a suppressed duplicate of another government's row.
+  requested_district_type: AddressDistrictType;
+  requested_geoid_compact: string;
 };
 
 function normalizeLookupKeys(keys: readonly (AddressDistrictKey | AddressDistrictLookupKey)[]): AddressDistrictLookupKey[] {
@@ -107,25 +111,47 @@ export async function lookupAddressDistricts(
         FROM unnest($1::text[], $2::text[]) WITH ORDINALITY AS keys(district_type, geoid_compact, ord)
       )
       SELECT
-        d.id,
-        d.district_type,
-        d.geoid_compact,
-        d.name,
-        d.state,
-        d.state_fips,
-        d.population,
-        d.representation_power_score
+        COALESCE(owner.id, d.id) AS id,
+        COALESCE(owner.district_type, d.district_type) AS district_type,
+        COALESCE(owner.geoid_compact, d.geoid_compact) AS geoid_compact,
+        COALESCE(owner.name, d.name) AS name,
+        COALESCE(owner.state, d.state) AS state,
+        COALESCE(owner.state_fips, d.state_fips) AS state_fips,
+        COALESCE(owner.population, d.population) AS population,
+        COALESCE(owner.representation_power_score, d.representation_power_score) AS representation_power_score,
+        d.district_type AS requested_district_type,
+        d.geoid_compact AS requested_geoid_compact
       FROM requested
       JOIN public.districts AS d
         ON d.district_type = requested.district_type
        AND d.geoid_compact = requested.geoid_compact
+      LEFT JOIN public.districts AS owner
+        ON owner.id = d.canonical_district_id
       ORDER BY requested.ord ASC
     `,
     [districtTypes, geoidCompacts]
   );
 
-  const districts = result.rows.map(toResolvedDistrict);
-  const foundKeys = new Set(districts.map((district) => `${district.district_type}::${district.geoid_compact}`));
+  // An Arlington, Virginia address geocodes into both the counties layer (51013)
+  // and the places layer (Arlington CDP, 5103000), and the CDP is not a
+  // government — it collapses onto the county, yielding the same district twice.
+  // Keep the first occurrence: `requested.ord` preserves the caller's ordering,
+  // which the ballot relies on.
+  const districts: AddressResolvedDistrict[] = [];
+  const seenDistrictIds = new Set<string>();
+  for (const row of result.rows) {
+    if (seenDistrictIds.has(row.id)) {
+      continue;
+    }
+    seenDistrictIds.add(row.id);
+    districts.push(toResolvedDistrict(row));
+  }
+
+  // Resolution is judged on the key the caller asked for. A key that matched a
+  // suppressed row was found, even though the row handed back is its owner.
+  const foundKeys = new Set(
+    result.rows.map((row) => `${row.requested_district_type}::${row.requested_geoid_compact}`)
+  );
   const missingDistrictKeys = normalizedKeys.filter(
     (key) => !foundKeys.has(`${key.district_type}::${key.geoid_compact}`)
   );

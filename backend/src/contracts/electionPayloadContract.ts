@@ -1,10 +1,15 @@
 import type {
   ElectionContestFamily,
+  ElectionContestScope,
   ElectionDistrictType,
   ElectionEnrichedPayload,
   ElectionEntryPayload,
 } from "../types/election.js";
-import { ELECTION_CONTEST_FAMILIES, districtTypeRequiresContestFamily } from "../types/election.js";
+import {
+  ELECTION_CONTEST_FAMILIES,
+  ELECTION_CONTEST_SCOPES,
+  districtTypeRequiresContestFamily,
+} from "../types/election.js";
 import {
   ELECTION_ALLOWED_DISTRICT_TYPES,
   ELECTION_RACE_TYPES,
@@ -126,6 +131,80 @@ function normalizeSources(value: unknown): string[] | null {
   }
 
   return normalized.length > 0 ? normalized : null;
+}
+
+export type ParseFamilySourceUrlsResult =
+  | { ok: true; familySourceUrls: Partial<Record<ElectionContestScope, string[]>> | null }
+  | { ok: false; reason: string };
+
+// The seed URLs a discovery pass reused, keyed by contest family. This map is
+// carried on the payload but not on the canonical entries: the writer lifts it
+// out of ai_raw_debug into election_seed_urls, so a shape the writer cannot
+// read is dropped after the payload has already been accepted. That silent drop
+// shipped districts with zero seed URLs (single string instead of an array is
+// the easy mistake), so every deviation fails here instead.
+export function parseFamilySourceUrls(value: unknown): ParseFamilySourceUrlsResult {
+  if (value === undefined || value === null) {
+    return { ok: true, familySourceUrls: null };
+  }
+  if (typeof value !== "object" || Array.isArray(value)) {
+    return {
+      ok: false,
+      reason: "payload.family_source_urls must be an object keyed by contest family",
+    };
+  }
+
+  const familySourceUrls: Partial<Record<ElectionContestScope, string[]>> = {};
+  for (const [family, urls] of Object.entries(value as Record<string, unknown>)) {
+    if (!ELECTION_CONTEST_SCOPES.includes(family as ElectionContestScope)) {
+      return {
+        ok: false,
+        reason: `payload.family_source_urls.${family} is not a known contest family (${ELECTION_CONTEST_SCOPES.join("|")})`,
+      };
+    }
+    if (!Array.isArray(urls)) {
+      return {
+        ok: false,
+        reason: `payload.family_source_urls.${family} must be an array of URL strings`,
+      };
+    }
+    if (urls.length === 0) {
+      return {
+        ok: false,
+        reason: `payload.family_source_urls.${family} must contain at least one URL string`,
+      };
+    }
+
+    const normalized: string[] = [];
+    const seen = new Set<string>();
+    for (const item of urls) {
+      if (typeof item !== "string") {
+        return {
+          ok: false,
+          reason: `payload.family_source_urls.${family} must be an array of URL strings`,
+        };
+      }
+      // normalizeHttpUrl is what the writer applies before insert, so anything
+      // it rejects would be dropped there just as silently.
+      const url = normalizeHttpUrl(item);
+      if (!url) {
+        return {
+          ok: false,
+          reason: `payload.family_source_urls.${family} contains a URL that is not a valid http(s) URL: ${item}`,
+        };
+      }
+      if (!seen.has(url)) {
+        seen.add(url);
+        normalized.push(url);
+      }
+    }
+    familySourceUrls[family as ElectionContestScope] = normalized;
+  }
+
+  return {
+    ok: true,
+    familySourceUrls: Object.keys(familySourceUrls).length > 0 ? familySourceUrls : null,
+  };
 }
 
 function parseEntry(value: unknown): ElectionEntryPayload | null {
@@ -327,6 +406,11 @@ export function parseCanonicalElectionPayload(payload: unknown): ParseResult {
 
   if (!Array.isArray(input.entries)) {
     return { ok: false, reason: "payload.entries must be array" };
+  }
+
+  const familySourceUrls = parseFamilySourceUrls(input.family_source_urls);
+  if (!familySourceUrls.ok) {
+    return { ok: false, reason: familySourceUrls.reason };
   }
 
   const entries: ElectionEntryPayload[] = [];

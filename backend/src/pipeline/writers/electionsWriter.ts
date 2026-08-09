@@ -75,6 +75,34 @@ function describeUnresolvedOffices(input: {
   );
 }
 
+/**
+ * Some `districts` rows are not governments at all: `Arlington CDP, Virginia`
+ * is a Census statistical geography coextensive with, and named like, Arlington
+ * County, which is the row that actually holds the elections.
+ * `districts.canonical_district_id` names that owner, and contests written
+ * under the alias would sit where no ballot reader reaches them.
+ *
+ * Like an unresolved office match this is a permanent fault in the payload, not
+ * a transient one, so the writer parks the staging item instead of retrying it
+ * forever. Re-run the research against the district id named in the message.
+ */
+class NonGovernmentDistrictWriteError extends Error {
+  constructor(input: {
+    districtId: string;
+    districtName: string;
+    canonicalDistrictId: string;
+    canonicalDistrictName: string;
+  }) {
+    super(
+      `writer refused non-government district: district_id=${input.districtId} ` +
+        `name=${JSON.stringify(input.districtName)} is a Census statistical row, not a district; ` +
+        `contests belong to canonical_district_id=${input.canonicalDistrictId} ` +
+        `name=${JSON.stringify(input.canonicalDistrictName)}`
+    );
+    this.name = "NonGovernmentDistrictWriteError";
+  }
+}
+
 // Writing elections + downstream publish can take time; only reclaim clearly stale pending entries.
 const RECLAIM_MIN_IDLE_MS = 240_000;
 const RECLAIM_MAX_BATCHES = 20;
@@ -184,7 +212,18 @@ function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionCont
 
   for (const family of families) {
     const list = sourceRecord[family];
+    if (list === undefined || list === null) {
+      continue;
+    }
+    // The contract rejects these shapes on the way in, but rows staged before
+    // that check exist: warn instead of dropping the family in silence, which
+    // is how districts reached election_seed_urls with nothing at all.
     if (!Array.isArray(list) || list.length === 0) {
+      console.warn(
+        `elections writer ignoring family_source_urls.${family}: expected a non-empty array of URL strings, got ${
+          Array.isArray(list) ? "an empty array" : typeof list
+        }`
+      );
       continue;
     }
     const urls = [
@@ -195,9 +234,13 @@ function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionCont
           .filter((item): item is string => Boolean(item))
       ),
     ];
-    if (urls.length > 0) {
-      result[family] = urls;
+    if (urls.length === 0) {
+      console.warn(
+        `elections writer ignoring family_source_urls.${family}: no entry normalized to an http(s) URL`
+      );
+      continue;
     }
+    result[family] = urls;
   }
 
   return result;
@@ -318,6 +361,31 @@ async function writeElectionsForDistrict(
   familySeedUrls: Partial<Record<ElectionContestScope, string[]>>,
   runId: string | null
 ): Promise<WriteResult> {
+  // Checked before the transaction opens so the payload parks as failed rather
+  // than half-writing a district that no reader will ever reach.
+  const canonicalCheck = await client.query<{
+    name: string;
+    canonical_district_id: string | null;
+    canonical_name: string | null;
+  }>(
+    `
+      SELECT d.name, d.canonical_district_id, owner.name AS canonical_name
+      FROM public.districts AS d
+      LEFT JOIN public.districts AS owner ON owner.id = d.canonical_district_id
+      WHERE d.id = $1
+    `,
+    [payload.district_id]
+  );
+  const canonicalRow = canonicalCheck.rows[0];
+  if (canonicalRow?.canonical_district_id) {
+    throw new NonGovernmentDistrictWriteError({
+      districtId: payload.district_id,
+      districtName: canonicalRow.name,
+      canonicalDistrictId: canonicalRow.canonical_district_id,
+      canonicalDistrictName: canonicalRow.canonical_name ?? "unknown",
+    });
+  }
+
   await client.query("BEGIN");
   try {
     const nextStatus = payload.entries.length === 0 ? "no_results" : "written";
@@ -826,6 +894,28 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
           await ack(entry.id);
         } catch (error) {
           const reason = toReason(error);
+          // An unresolved office no longer aborts — it writes an office-less
+          // shell, because the rest of the district's contests are still good.
+          // A non-government district row is the opposite case: there is no
+          // salvageable part, since every entry targets a row no reader
+          // reaches. Park it like a parse error rather than retrying forever.
+          if (error instanceof NonGovernmentDistrictWriteError) {
+            await pool.query(
+              `
+                UPDATE staging_items
+                SET status = 'failed',
+                    reason = $2,
+                    updated_at = now()
+                WHERE ingest_key = $1
+                  AND item_type = $3
+                  AND status = 'validated'
+              `,
+              [ingestKey, reason, STAGING_ITEM_TYPE_ELECTION]
+            );
+            console.error(`elections writer failed ingest_key=${ingestKey}: ${reason}`);
+            await ack(entry.id);
+            continue;
+          }
           if (ingestKey) {
             console.warn(`elections writer retrying ingest_key=${ingestKey}: ${reason}`);
           } else {

@@ -114,7 +114,10 @@ describe("runElectionsWriter", () => {
       })
       .mockResolvedValue({ rowCount: 1, rows: [] });
 
-    clientQueryMock.mockResolvedValue({ rowCount: 1 });
+    // `rows` must be present: the writer reads rows[0] on the duplicate-district
+    // check before it opens the transaction, and an empty result means this
+    // district is canonical.
+    clientQueryMock.mockResolvedValue({ rowCount: 1, rows: [] });
 
     await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
 
@@ -149,6 +152,76 @@ describe("runElectionsWriter", () => {
         item_type: STAGING_ITEM_TYPE_ELECTION,
       })
     );
+  });
+
+  it("parks the payload instead of writing under a non-government district row", async () => {
+    // Arlington CDP is a Census statistical geography with no government;
+    // Arlington County holds the elections. Contests written under the CDP
+    // would sit where no ballot reader reaches them, so the writer refuses and
+    // the staging item parks as failed rather than retrying forever.
+    const payload = {
+      district_id: "arlington-cdp-row",
+      district_name: "Arlington CDP, Virginia",
+      district_type: "place",
+      state: "VA",
+      entries: [
+        {
+          official_ballot_title: "Mayor",
+          election_date: "2099-11-03",
+          race_type: "office",
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:writer",
+            payload,
+            status: "validated",
+            run_id: "run_1",
+          },
+        ],
+      })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    clientQueryMock.mockImplementation(async (sql: string) => {
+      if (sql.includes("canonical_district_id")) {
+        return {
+          rowCount: 1,
+          rows: [
+            {
+              name: "Arlington CDP, Virginia",
+              canonical_district_id: "arlington-county-row",
+              canonical_name: "Arlington County, Virginia",
+            },
+          ],
+        };
+      }
+      return { rowCount: 1, rows: [] };
+    });
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    await runElectionsWriter({ once: true, batchSize: 5, blockMs: 10 });
+
+    // No transaction opened, so nothing was written and the district stamp is untouched.
+    expect(
+      clientQueryMock.mock.calls.some((call) => String(call[0]).includes("BEGIN"))
+    ).toBe(false);
+    expect(
+      clientQueryMock.mock.calls.some((call) => String(call[0]).includes("UPDATE public.districts"))
+    ).toBe(false);
+
+    // Terminal, not transient: the item is marked failed and acked, naming the owner.
+    const failCall = poolQueryMock.mock.calls.find(
+      (call) => String(call[0]).includes("status = 'failed'")
+    );
+    expect(failCall).toBeTruthy();
+    expect(String(failCall?.[1]?.[1])).toContain("arlington-county-row");
+    expect(redisXAckMock).toHaveBeenCalled();
   });
 
   it("uses upsert path for non-empty entries and never deletes district rows", async () => {

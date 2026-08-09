@@ -1,11 +1,40 @@
 import { describe, expect, it, vi } from "vitest";
 
 import {
+  extractFamilySourceUrls,
   historicalDefaultIngestKey,
   resolveHistoricalImportDebugJson,
   resolveReviewApproveFailureDebugJson,
   stageManualElectionPayload,
 } from "../../src/scripts/injectManualElections.js";
+
+describe("extractFamilySourceUrls", () => {
+  it("normalizes and dedupes array values", () => {
+    expect(
+      extractFamilySourceUrls({
+        family_source_urls: {
+          judicial_office: ["https://example.gov/courts", "https://example.gov/courts"],
+        },
+      })
+    ).toEqual({ judicial_office: ["https://example.gov/courts"] });
+  });
+
+  it("throws on a bare string instead of dropping the family silently", () => {
+    expect(() =>
+      extractFamilySourceUrls({ family_source_urls: { judicial_office: "https://example.gov/courts" } })
+    ).toThrow(/family_source_urls\.judicial_office must be an array of URL strings/);
+  });
+
+  it("throws on an unknown contest family", () => {
+    expect(() =>
+      extractFamilySourceUrls({ family_source_urls: { school_board: ["https://example.gov/board"] } })
+    ).toThrow(/family_source_urls\.school_board is not a known contest family/);
+  });
+
+  it("returns null when the payload carries no family_source_urls", () => {
+    expect(extractFamilySourceUrls({ entries: [] })).toBeNull();
+  });
+});
 
 describe("resolveReviewApproveFailureDebugJson", () => {
   it("returns null when review approval is not requested", () => {

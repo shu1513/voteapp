@@ -2570,6 +2570,176 @@ describe("OfficeMatcher", () => {
     expect(commissioner.officeId).toBe("office-county-commissioner");
   });
 
+  const ALABAMA_TAX_OFFICE_ALIASES = [
+    { office_id: "office-revenue-commissioner", alias: "Revenue Commissioner" },
+    { office_id: "office-revenue-commissioner", alias: "County Revenue Commissioner" },
+    { office_id: "office-county-assessor", alias: "Tax Assessor" },
+    { office_id: "office-county-assessor", alias: "County Tax Assessor" },
+    { office_id: "office-collector-of-revenue", alias: "Tax Collector" },
+    { office_id: "office-collector-of-revenue", alias: "County Tax Collector" },
+    { office_id: "office-license-commissioner", alias: "License Commissioner" },
+    { office_id: "office-license-commissioner", alias: "County License Commissioner" },
+    { office_id: "office-license-commissioner", alias: "Commissioner of Licenses" },
+    { office_id: "office-license-commissioner", alias: "County Commissioner of Licenses" },
+    { office_id: "office-commissioner-of-revenue", alias: "Commissioner of the Revenue" },
+    { office_id: "office-commissioner-of-revenue", alias: "Commissioner of Revenue" },
+    { office_id: "office-commissioner-of-revenue", alias: "County Commissioner of the Revenue" },
+    { office_id: "office-commissioner-of-revenue", alias: "County Commissioner of Revenue" },
+  ];
+
+  function createAlabamaTaxOfficeClient(input: { withAliases: boolean }) {
+    return createMatcherDataClient({
+      aliasesByScope: {
+        county: input.withAliases
+          ? ALABAMA_TAX_OFFICE_ALIASES.map((entry) => ({
+              office_id: entry.office_id,
+              normalized_alias: normalizeElectionTitleKey(entry.alias),
+            }))
+          : [],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-assessor", canonical_name: "County Assessor" },
+          { id: "office-collector-of-revenue", canonical_name: "Collector of Revenue" },
+          { id: "office-license-collector", canonical_name: "License Collector" },
+          ...(input.withAliases
+            ? [
+                { id: "office-revenue-commissioner", canonical_name: "Revenue Commissioner" },
+                { id: "office-license-commissioner", canonical_name: "License Commissioner" },
+                { id: "office-commissioner-of-revenue", canonical_name: "Commissioner of the Revenue" },
+              ]
+            : []),
+        ],
+      },
+    });
+  }
+
+  const ALABAMA_TAX_OFFICE_CASES = [
+    { district: "Lee County, Alabama", title: "Lee County Revenue Commissioner", expected: "office-revenue-commissioner" },
+    { district: "Lee County, Alabama", title: "Revenue Commissioner", expected: "office-revenue-commissioner" },
+    { district: "Jefferson County, Alabama", title: "Jefferson County Tax Assessor", expected: "office-county-assessor" },
+    { district: "Jefferson County, Alabama", title: "Tax Assessor", expected: "office-county-assessor" },
+    { district: "Jefferson County, Alabama", title: "Jefferson County Tax Collector", expected: "office-collector-of-revenue" },
+    { district: "Jefferson County, Alabama", title: "Tax Collector", expected: "office-collector-of-revenue" },
+    { district: "Tuscaloosa County, Alabama", title: "Tuscaloosa County License Commissioner", expected: "office-license-commissioner" },
+    { district: "Calhoun County, Alabama", title: "Calhoun County Commissioner of Licenses", expected: "office-license-commissioner" },
+    { district: "Chesterfield County, Virginia", title: "Chesterfield County Commissioner of the Revenue", expected: "office-commissioner-of-revenue" },
+    // Virginia's office must not land on Alabama's merged Revenue
+    // Commissioner: "commissioner of the revenue" tokenizes identically to
+    // "revenue commissioner", so adding the Alabama office alone scored the
+    // bare Virginia title 1.000 into it.
+    { district: "Chesterfield County, Virginia", title: "Commissioner of the Revenue", expected: "office-commissioner-of-revenue" },
+  ];
+
+  it.each(ALABAMA_TAX_OFFICE_CASES)(
+    "resolves the county tax office title $title to its own office",
+    async ({ district, title, expected }) => {
+      const matcher = new OfficeMatcher(createAlabamaTaxOfficeClient({ withAliases: true }) as never);
+
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: district,
+        state: district.endsWith("Virginia") ? "VA" : "AL",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBe(expected);
+      expect(result.method).toBe("alias_exact");
+    }
+  );
+
+  const QUALIFIED_COMMISSIONER_TITLES = [
+    { district: "Lee County, Alabama", title: "Lee County Revenue Commissioner", state: "AL" },
+    { district: "Tuscaloosa County, Alabama", title: "Tuscaloosa County License Commissioner", state: "AL" },
+    // The "commissioner of X" word order scored 0.920, not 0.800: "county
+    // commissioner" sits inside it contiguously and takes the containment boost.
+    { district: "Calhoun County, Alabama", title: "Calhoun County Commissioner of Licenses", state: "AL" },
+    { district: "Chesterfield County, Virginia", title: "Chesterfield County Commissioner of the Revenue", state: "VA" },
+    // Georgia's county tax office has no catalog entry; no-match is the
+    // honest outcome there, not a confident wrong one.
+    { district: "Fulton County, Georgia", title: "Fulton County Tax Commissioner", state: "GA" },
+  ];
+
+  it("never scores a qualified commissioner title into County Commissioner", async () => {
+    // The jurisdiction strip keeps the generic civic word, so "Lee County
+    // Revenue Commissioner" reached the scorer as "county revenue
+    // commissioner": two of its three tokens are County Commissioner's whole
+    // name, which scored 0.800 — over the floor, over the margin, and
+    // persisted as a learned alias onto the county's LEGISLATIVE body.
+    const matcher = new OfficeMatcher(createAlabamaTaxOfficeClient({ withAliases: false }) as never);
+
+    for (const { district, title, state } of QUALIFIED_COMMISSIONER_TITLES) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: district,
+        state,
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBeNull();
+      expect(result.method).toBe("none");
+      expect(result.shouldPersistAlias).toBe(false);
+    }
+  });
+
+  it("ignores a stored County Commissioner alias for a qualified commissioner title", async () => {
+    // An exact alias hit returns before scoreOfficeMatch runs, so the score
+    // guard alone does not fail safe on a database that already learned the
+    // mis-match. Same shape as the court-clerk alias guard.
+    for (const { district, title, state } of QUALIFIED_COMMISSIONER_TITLES) {
+      const learned = new OfficeMatcher(
+        createMatcherDataClient({
+          aliasesByScope: {
+            county: [
+              { office_id: "office-county-commissioner", normalized_alias: normalizeElectionTitleKey(title) },
+              {
+                office_id: "office-county-commissioner",
+                normalized_alias: normalizeElectionTitleKey(title.replace(/^[A-Za-z]+ /, "")),
+              },
+            ],
+          },
+          officesByScope: {
+            county: [{ id: "office-county-commissioner", canonical_name: "County Commissioner" }],
+          },
+        }) as never
+      );
+
+      const result = await learned.resolve({
+        scope: "county",
+        districtName: district,
+        state,
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBeNull();
+      expect(result.method).toBe("none");
+    }
+  });
+
+  it("keeps ordinary county commission seats on County Commissioner", async () => {
+    const matcher = new OfficeMatcher(createAlabamaTaxOfficeClient({ withAliases: true }) as never);
+
+    for (const title of [
+      "Member, Lee County Commission, District No. 2",
+      "Lee County Commissioner",
+      "Lee County Board of Commissioners District 4",
+    ]) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: "Lee County, Alabama",
+        state: "AL",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBe("office-county-commissioner");
+    }
+  });
+
   it("resolves prosecutor titles carrying an 'of <County> County' phrase and a numbered judicial circuit", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: {
@@ -2648,6 +2818,63 @@ describe("OfficeMatcher", () => {
     expect(circuitJudge.officeId).toBe("office-county-level-judge");
   });
 
+  it("resolves Florida's 'State Attorney' circuit title to District Attorney", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          // Migration 219 adds "state attorney"; "state s attorney" (migration
+          // 184, Maryland/Illinois) is a different normalized key and does not
+          // cover Florida's non-possessive form.
+          { office_id: "office-district-attorney", normalized_alias: "state attorney" },
+          { office_id: "office-district-attorney", normalized_alias: "state s attorney" },
+          { office_id: "office-district-attorney", normalized_alias: "district attorney" },
+          { office_id: "office-public-defender", normalized_alias: "public defender" },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+          { id: "office-public-defender", canonical_name: "Public Defender" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // Florida elects its felony prosecutor by judicial circuit, so one circuit
+    // spans several counties (the 4th covers Duval, Clay and Nassau). The
+    // circuit strip reduces the title to "state attorney", which scores 0.500
+    // against "District Attorney" — under the floor — so the alias is what
+    // carries it.
+    const stateAttorney = await matcher.resolve({
+      scope: "county",
+      districtName: "Duval County, Florida",
+      state: "FL",
+      officialBallotTitle: "State Attorney, 4th Judicial Circuit",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(stateAttorney).toMatchObject({
+      officeId: "office-district-attorney",
+      method: "alias_exact",
+      aliasMemoryKey: "state attorney",
+    });
+
+    // Florida elects a Public Defender on the same circuits; it was checked for
+    // the same catalog gap and does not have one. Asserted here so the new
+    // prosecutor alias cannot pull the defense-side office onto District
+    // Attorney, which carries a research-area set the defender must not get.
+    const publicDefender = await matcher.resolve({
+      scope: "county",
+      districtName: "Duval County, Florida",
+      state: "FL",
+      officialBallotTitle: "Public Defender, 4th Judicial Circuit",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(publicDefender).toMatchObject({
+      officeId: "office-public-defender",
+      method: "alias_exact",
+      aliasMemoryKey: "public defender",
+    });
+  });
 
   it("routes a Louisiana city marshal to its own office instead of the place judge", async () => {
     const client = createMatcherDataClient({

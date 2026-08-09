@@ -23,6 +23,10 @@ export type DistrictElectionSearchEligibilityRow = DistrictElectionSearchFacts &
   reason: ElectionsSearchEligibilityReason;
 };
 
+// Rows carrying a canonical_district_id are not governments, so they never have
+// elections and never get a search stamp. Without this filter they classify as
+// never_searched forever: the rollover enqueues them, the writer refuses the
+// payload, and the next rollover tries again.
 const DISTRICT_ELECTION_FACTS_SQL = `
   SELECT
     d.id AS district_id,
@@ -35,6 +39,7 @@ const DISTRICT_ELECTION_FACTS_SQL = `
   FROM public.districts AS d
   LEFT JOIN public.elections AS e
     ON e.district_id = d.id
+  WHERE d.canonical_district_id IS NULL
   GROUP BY d.id, d.name, d.district_type, d.state, d.last_elections_searched_at
   ORDER BY d.last_elections_searched_at NULLS FIRST, d.id
 `;
