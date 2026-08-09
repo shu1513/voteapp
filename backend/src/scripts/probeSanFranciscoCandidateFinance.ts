@@ -16,10 +16,13 @@ import {
   getSanFranciscoCommitteeItemizedTransactions,
   getSanFranciscoCommitteeSummaryRows,
   getSanFranciscoPublicFundsApproved,
-  type SanFranciscoItemizedTransactionRow,
   type SanFranciscoOpenDataClientOptions,
   type SanFranciscoSummaryRow,
 } from "../pipeline/sanFranciscoFinance/sanFranciscoOpenDataClient.js";
+import {
+  aggregateSanFranciscoDirectContributions,
+  SAN_FRANCISCO_DIRECT_CONTRIBUTION_FORM_TYPES,
+} from "../pipeline/sanFranciscoFinance/sanFranciscoDirectContributionAggregator.js";
 
 type ContestTarget = { electionDate: string; contestCode: string };
 
@@ -110,42 +113,13 @@ function shiftDate(isoDate: string, days: number): string {
   return new Date(time + days * 86_400_000).toISOString().slice(0, 10);
 }
 
-function sumCents(rows: SanFranciscoItemizedTransactionRow[]): number {
-  return rows.reduce((sum, row) => sum + row.calculatedAmountCents, 0);
-}
-
 // Phase 4 entry gate: prove the itemized contributor formula against the
-// committee's own Form 460 summary lines, to the cent. Everything below was
-// first established by live exploration (2026-08-08) and is re-derived here
-// on every run:
-//   - form_type "A"/"C" rows are the itemized Schedule A/C contributions;
-//     memo rows carry real amounts but are EXCLUDED from the official line
-//     totals (proven: line 1 = non-memo A + F460ALine2 on committees that
-//     do file memo rows).
-//   - form_type "F460ALine2" pseudo-rows are the per-filing unitemized
-//     (<$100) totals, dated at period end.
-//   - Form 460 line 1 = non-memo Schedule A + F460ALine2 pseudo-rows, and
-//     line 5 = line 1 + line 2 + line 4, where line 4 = non-memo Schedule C
-//     + F460CLine2 pseudo-rows. Schedule B loan principal is NOT in line 5
-//     (proven: a committee with $200,000 of B1 loans shows line 2 = $29.38),
-//     so the dashboard funds figure never includes loans.
-//   - F497P1 late contributions are re-reported on the next Form 460
-//     Schedule A under the SAME filer-assigned transaction_id (proven on
-//     the 2024 Lurie committee: all 13 ids reappear on Schedule A with
-//     identical amounts — one re-reported with different name casing,
-//     "Lurie" vs "LURIE", which is why the no-id fallback below compares
-//     names case-insensitively). The formula therefore takes A as
-//     canonical and adds only UNPAIRED F497P1 rows.
-//   - Two classes of F497P1 rows are late-reported money that is NOT a
-//     direct contribution and must be excluded rather than added: late
-//     LOANS, whose Schedule twin is B1 instead of A (same reused
-//     transaction_id, proven live), and PUBLIC-FINANCING disbursements,
-//     which one filer reported as a $60,000 F497P1 row from "City and
-//     Council of San Francisco" [sic] that exactly matches a funds_approved
-//     row — counting it would double the public-funds figure.
-//   - F496 plays no role in a controlled committee's direct contributions
-//     (zero F496 rows on both canonical committees).
-//   - Refunds are negative Schedule A rows; they stay in the sum.
+// committee's own Form 460 summary lines, to the cent, on every run. The
+// formula itself (composition, memo exclusion, F497P1 dedupe and its two
+// exclusion classes, refund handling) lives in — and is documented on —
+// sanFranciscoDirectContributionAggregator.ts; this probe calls it and
+// checks the aggregate against the line identities and the manifest, so the
+// production formula and the gate can never drift apart.
 async function proveContributorFormula(input: {
   fppcId: string;
   summaryRows: SanFranciscoSummaryRow[];
@@ -168,111 +142,36 @@ async function proveContributorFormula(input: {
   const rows = await getSanFranciscoCommitteeItemizedTransactions(
     {
       fppcId: input.fppcId,
-      formTypes: ["A", "C", "B1", "F497P1", "F460ALine2", "F460CLine2"],
+      formTypes: [...SAN_FRANCISCO_DIRECT_CONTRIBUTION_FORM_TYPES],
       transactionDateFrom: shiftDate(periodDates[0]!, -31),
       transactionDateTo: shiftDate(periodDates[periodDates.length - 1]!, 31),
       // Schedule B1 loan rows carry no transaction_date; without this the
       // window would silently drop the whole loan schedule and the
-      // late-loan exclusion below would never fire.
+      // aggregator's late-loan exclusion would never fire.
       includeUndatedTransactions: true,
     },
     input.sodaOptions,
   );
-  const byForm = (formType: string) =>
-    rows.filter((row) => row.formType === formType);
-  const nonMemo = (formRows: SanFranciscoItemizedTransactionRow[]) =>
-    formRows.filter((row) => row.memoCode !== true);
-  const memoOnly = (formRows: SanFranciscoItemizedTransactionRow[]) =>
-    formRows.filter((row) => row.memoCode === true);
+  const aggregate = aggregateSanFranciscoDirectContributions({
+    rows,
+    publicFundsApprovalCents: input.publicFundsApprovalCents,
+  });
+  const {
+    scheduleACents,
+    scheduleCCents,
+    unitemizedCents,
+    unitemizedNonmonetaryCents,
+    itemizedCents,
+    unpairedLateCents,
+    diagnostics,
+  } = aggregate;
 
-  const scheduleA = nonMemo(byForm("A"));
-  const scheduleC = nonMemo(byForm("C"));
-  const scheduleB1 = byForm("B1");
-  const lateRows = nonMemo(byForm("F497P1"));
-  const unitemizedCents = sumCents(byForm("F460ALine2"));
-  const unitemizedNonmonetaryCents = sumCents(byForm("F460CLine2"));
-  const memoRows = [
-    ...memoOnly(byForm("A")),
-    ...memoOnly(byForm("C")),
-    ...memoOnly(byForm("F497P1")),
-  ];
-
-  // Late-filing dedupe. transaction_id is filer-assigned and unique only
-  // within a filing, so any Schedule A row sharing the id counts as the twin
-  // and the late row is dropped; the amount only decides which counter it
-  // lands in (paired_by_id vs paired_by_id_amount_mismatch). A cross-filing
-  // id collision would therefore drop a real late contribution, so the
-  // mismatch counter is reported to keep that case visible.
-  const scheduleAById = new Map<string, SanFranciscoItemizedTransactionRow[]>();
-  for (const row of scheduleA) {
-    if (row.transactionId === null) continue;
-    const bucket = scheduleAById.get(row.transactionId) ?? [];
-    bucket.push(row);
-    scheduleAById.set(row.transactionId, bucket);
-  }
-  const loanIds = new Set(
-    scheduleB1
-      .map((row) => row.transactionId)
-      .filter((id): id is string => id !== null),
+  // Disclosure census, not formula: entity-code composition and
+  // occupation/employer coverage over the same non-memo Schedule A rows the
+  // aggregator counts.
+  const scheduleA = rows.filter(
+    (row) => row.formType === "A" && row.memoCode !== true,
   );
-  const publicFundsApprovalSet = new Set(input.publicFundsApprovalCents);
-  const unpairedLateRows: SanFranciscoItemizedTransactionRow[] = [];
-  let pairedById = 0;
-  let pairedByIdAmountMismatch = 0;
-  let pairedByAmountDate = 0;
-  let loanRowsExcluded = 0;
-  let loanCentsExcluded = 0;
-  let publicFundsRowsExcluded = 0;
-  let publicFundsCentsExcluded = 0;
-  for (const lateRow of lateRows) {
-    const idTwins =
-      lateRow.transactionId === null
-        ? []
-        : (scheduleAById.get(lateRow.transactionId) ?? []);
-    if (idTwins.length > 0) {
-      if (
-        idTwins.some(
-          (twin) => twin.calculatedAmountCents === lateRow.calculatedAmountCents,
-        )
-      )
-        pairedById += 1;
-      // Same id, different amount: almost certainly an amendment of the
-      // same contribution — still reported on Schedule A, so still a
-      // duplicate — but counted separately so drift is visible.
-      else pairedByIdAmountMismatch += 1;
-      continue;
-    }
-    // Late-reported loan: the Schedule twin is B1, not A (same reused
-    // transaction_id). Loans are excluded from direct contributions.
-    if (lateRow.transactionId !== null && loanIds.has(lateRow.transactionId)) {
-      loanRowsExcluded += 1;
-      loanCentsExcluded += lateRow.calculatedAmountCents;
-      continue;
-    }
-    // Public-financing disbursement reported as a late contribution from
-    // the city; already counted in the public-funds figure.
-    if (
-      (lateRow.contributorLastName ?? "")
-        .toUpperCase()
-        .includes("CITY AND COUN") &&
-      publicFundsApprovalSet.has(lateRow.calculatedAmountCents)
-    ) {
-      publicFundsRowsExcluded += 1;
-      publicFundsCentsExcluded += lateRow.calculatedAmountCents;
-      continue;
-    }
-    const amountDateTwin = scheduleA.some(
-      (row) =>
-        row.calculatedAmountCents === lateRow.calculatedAmountCents &&
-        row.transactionDate === lateRow.transactionDate &&
-        (row.contributorLastName ?? "").toUpperCase() ===
-          (lateRow.contributorLastName ?? "").toUpperCase(),
-    );
-    if (amountDateTwin) pairedByAmountDate += 1;
-    else unpairedLateRows.push(lateRow);
-  }
-
-  const refundRows = scheduleA.filter((row) => row.calculatedAmountCents < 0);
   const entityCentsByCode = new Map<string, { rows: number; cents: number }>();
   for (const row of scheduleA) {
     const code = row.entityCode ?? "(none)";
@@ -289,10 +188,6 @@ async function proveContributorFormula(input: {
   );
   const individualRows = scheduleA.filter((row) => row.entityCode === "IND");
 
-  const scheduleACents = sumCents(scheduleA);
-  const scheduleCCents = sumCents(scheduleC);
-  const unpairedLateCents = sumCents(unpairedLateRows);
-  const itemizedCents = scheduleACents + scheduleCCents + unpairedLateCents;
   const line1Cents = input.summaryRows.reduce(
     (sum, row) => sum + (row.monetaryContributionsCents ?? 0),
     0,
@@ -319,31 +214,36 @@ async function proveContributorFormula(input: {
       to: shiftDate(periodDates[periodDates.length - 1]!, 31),
     },
     schedule_a: {
-      rows: scheduleA.length,
+      rows: diagnostics.scheduleARows,
       amount: centsToMoney(scheduleACents),
-      refund_rows: refundRows.length,
-      refund_amount: centsToMoney(sumCents(refundRows)),
+      refund_rows: diagnostics.refundRows,
+      refund_amount: centsToMoney(diagnostics.refundCents),
     },
-    schedule_c: { rows: scheduleC.length, amount: centsToMoney(scheduleCCents) },
+    schedule_c: {
+      rows: diagnostics.scheduleCRows,
+      amount: centsToMoney(scheduleCCents),
+    },
     unitemized_line_amount: centsToMoney(unitemizedCents),
     unitemized_nonmonetary_line_amount: centsToMoney(
       unitemizedNonmonetaryCents,
     ),
     memo_rows_excluded: {
-      rows: memoRows.length,
-      amount: centsToMoney(sumCents(memoRows)),
+      rows: diagnostics.memoRowsExcluded,
+      amount: centsToMoney(diagnostics.memoCentsExcluded),
     },
     late_f497p1: {
-      rows: lateRows.length,
-      amount: centsToMoney(sumCents(lateRows)),
-      paired_with_schedule_a_by_id: pairedById,
-      paired_by_id_amount_mismatch: pairedByIdAmountMismatch,
-      paired_by_amount_date: pairedByAmountDate,
-      loan_rows_excluded: loanRowsExcluded,
-      loan_amount_excluded: centsToMoney(loanCentsExcluded),
-      public_funds_rows_excluded: publicFundsRowsExcluded,
-      public_funds_amount_excluded: centsToMoney(publicFundsCentsExcluded),
-      unpaired_rows: unpairedLateRows.length,
+      rows: diagnostics.lateRows,
+      amount: centsToMoney(diagnostics.lateCents),
+      paired_with_schedule_a_by_id: diagnostics.latePairedById,
+      paired_by_id_amount_mismatch: diagnostics.latePairedByIdAmountMismatch,
+      paired_by_amount_date: diagnostics.latePairedByAmountDate,
+      loan_rows_excluded: diagnostics.lateLoanRowsExcluded,
+      loan_amount_excluded: centsToMoney(diagnostics.lateLoanCentsExcluded),
+      public_funds_rows_excluded: diagnostics.latePublicFundsRowsExcluded,
+      public_funds_amount_excluded: centsToMoney(
+        diagnostics.latePublicFundsCentsExcluded,
+      ),
+      unpaired_rows: diagnostics.unpairedLateRows,
       unpaired_amount: centsToMoney(unpairedLateCents),
     },
     itemized_total: centsToMoney(itemizedCents),

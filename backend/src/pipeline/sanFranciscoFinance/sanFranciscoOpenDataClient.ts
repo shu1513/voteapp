@@ -219,6 +219,17 @@ export type SanFranciscoSummaryRow = {
   contributionsCents: number | null;
   /** Form 460 line 11 column A — total expenditures for the period, cents. */
   expendituresCents: number | null;
+  /** Form 460 line 16 — ending cash balance at period end, cents. */
+  endingCashCents: number | null;
+  /** Form 460 line 19 — outstanding debts at period end, cents. */
+  outstandingDebtsCents: number | null;
+  /**
+   * Schedule B1 line 1 — new loans received this period, cents. Gross new
+   * borrowing only; repayments/forgiveness live on B1 line 2, so summing
+   * this across filings gives total loans received (verified live: committee
+   * 1467508 sums to the $200,000 the Phase 4 gate found on Schedule B1).
+   */
+  loansReceivedCents: number | null;
 };
 
 /**
@@ -266,6 +277,9 @@ export async function getSanFranciscoCommitteeSummaryRows(
       line2Cents: moneyStringToCents(row["line_2_col_a"]),
       contributionsCents: moneyStringToCents(row["line_5_col_a"]),
       expendituresCents: moneyStringToCents(row["line_11_col_a"]),
+      endingCashCents: moneyStringToCents(row["line_16_col_a"]),
+      outstandingDebtsCents: moneyStringToCents(row["line_19_col_a"]),
+      loansReceivedCents: moneyStringToCents(row["scheduleb1_line_1"]),
     });
   }
   return results;
