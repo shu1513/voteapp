@@ -231,6 +231,65 @@ describe("syncDueSanFranciscoCandidateFinance", () => {
     ).toBe(true);
   });
 
+  it("bounds the ordinary due query by the election-date window", async () => {
+    const db = fakeDb({ dueRows: [dueRow("1")] });
+    await syncDueSanFranciscoCandidateFinance({ db, now: NOW });
+    const [sql, params] = db.query.mock.calls.find(([text]) =>
+      (text as string).includes("WITH due"),
+    )! as [string, unknown[]];
+    // The proof that a daily run cannot silently pull unbounded history:
+    // window bounds, the withdrawn/lost exclusion, and the staleness filter
+    // are always present without explicit election targeting.
+    expect(sql).toContain("election.election_date>=");
+    expect(sql).toContain("election.election_date<=");
+    expect(sql).toContain("ce.status NOT IN ('withdrawn','lost')");
+    expect(sql).toContain("summary.last_synced_at<");
+    expect(sql).not.toContain("election.id=$1::uuid");
+    expect(params).toEqual([NOW.toISOString(), 1, 25, 45, 730]);
+  });
+
+  it("election targeting swaps the window for an id match and skips both legs", async () => {
+    const electionId = "8b1f5a2c-9d3e-4f10-8a2b-6c5d4e3f2a1b";
+    const db = fakeDb({ dueRows: [dueRow("1")] });
+    const result = await syncDueSanFranciscoCandidateFinance({
+      db,
+      now: NOW,
+      electionId,
+    });
+    expect(result.syncedCandidateCount).toBe(1);
+    const [sql, params] = db.query.mock.calls.find(([text]) =>
+      (text as string).includes("WITH due"),
+    )! as [string, unknown[]];
+    expect(sql).toContain("election.id=$1::uuid");
+    expect(sql).not.toContain("election.election_date>=");
+    // Backfill includes a decided election's losers.
+    expect(sql).not.toContain("ce.status NOT IN");
+    // A targeted rerun must select the election even when its summaries were
+    // synced minutes ago — no staleness filter in targeted mode.
+    expect(sql).not.toContain("summary.last_synced_at<");
+    expect(params).toEqual([electionId, 25]);
+    // Targeted runs do no unrelated daily maintenance.
+    expect(
+      listSanFranciscoCandidateElectionsMissingFinanceLinks,
+    ).not.toHaveBeenCalled();
+    expect(
+      autoLinkMissingSanFranciscoCandidateFinanceLinks,
+    ).not.toHaveBeenCalled();
+    expect(result.staleElectionRefreshCount).toBe(0);
+  });
+
+  it("rejects a malformed electionId before any work", async () => {
+    const db = fakeDb({});
+    await expect(
+      syncDueSanFranciscoCandidateFinance({
+        db,
+        now: NOW,
+        electionId: "not-a-uuid",
+      }),
+    ).rejects.toThrow(/Invalid San Francisco finance electionId: not-a-uuid/);
+    expect(db.query).not.toHaveBeenCalled();
+  });
+
   it("rejects invalid batch options loudly", async () => {
     const db = fakeDb({});
     await expect(
