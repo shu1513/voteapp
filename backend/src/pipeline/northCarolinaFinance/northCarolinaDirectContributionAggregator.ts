@@ -61,12 +61,10 @@ export type NorthCarolinaDirectAggregationInput = {
 //   preserve-when-null policy keeps outside totals). Never leave stale money
 //   visible.
 // - "incomplete_artifacts": a selected report's cached artifacts were not
-//   supplied, or a supplied cover's own period contradicts the inventory
-//   filing it was cached for (a mispaired artifact — possibly another
-//   report's bytes). Either way the cache, not the portal, is suspect: do
-//   NOT write; keep the previous valid snapshot and re-acquire. A mismatch
-//   that survives a forced refetch is a portal typo and stays unwritten
-//   until reviewed.
+//   supplied, or a supplied cover declares a different rptID than the report
+//   it was cached for (provably another report's bytes). Either way the
+//   cache, not the portal, is suspect: do NOT write; keep the previous valid
+//   snapshot and re-acquire.
 export type NorthCarolinaDirectAggregationStatus = "ok" | "honest_null" | "incomplete_artifacts";
 
 export type NorthCarolinaDirectFinanceSummary = {
@@ -121,11 +119,16 @@ export type NorthCarolinaDirectAggregationResult = {
   // reports must satisfy Cycle_n = Cycle_{n−1} + Period_n; a mismatch means
   // a missing filing between them or portal damage.
   cycleChainMismatches: NorthCarolinaCycleChainMismatch[];
-  // Cover begin/end dates disagreeing with the inventory period of the
-  // selected filing — a mispaired cached artifact. Nonempty forces
-  // status "incomplete_artifacts": provably-suspect bytes never become
-  // writable money.
+  // A cover whose own declared rptID is not the report it was cached for —
+  // provably another report's bytes. Nonempty forces
+  // status "incomplete_artifacts": suspect bytes never become writable money.
   coverPeriodMismatchReportIds: string[];
+  // Advisory: the cover's begin/end dates disagree with the inventory period
+  // of the same filing. Live PR 9 evidence says this is portal sloppiness,
+  // not mispairing — 17 of 697 covers disagree, including begin-after-end
+  // pairs (RID 233220: 07/01/2026 -> 06/30/2026) — so it is surfaced and
+  // counted, never a reason to withhold a candidate's money.
+  coverPeriodDisagreementReportIds: string[];
   // Derived-breakdown quarantine (decision 7): a ReceiptTypeCode outside the
   // pinned vocabulary empties occupations + size buckets for this candidate.
   derivedBreakdownsQuarantined: boolean;
@@ -368,15 +371,22 @@ export function aggregateNorthCarolinaDirectFinance(
   const reportsById = new Map(input.reports.map((report) => [report.reportId, report]));
   const missingReportIds = selectedReportIds.filter((reportId) => !reportsById.has(reportId));
 
-  // Mispaired-artifact guard: a supplied cover whose own period contradicts
-  // the inventory filing it was cached for may be another report's bytes —
-  // checked BEFORE any summing so it can never become writable money. Only
-  // usable dates on both sides can conflict (the live year-3026 inventory
-  // typo parses to a null ISO and stays out of this check).
+  // Mispaired-artifact guard: the cover declares its own rptID, so bytes
+  // cached for another report are provable — checked BEFORE any summing so
+  // they can never become writable money. Period dates are NOT evidence of
+  // mispairing: the live run found 17 of 697 covers disagreeing with their
+  // inventory row on dates alone while the identity matched, so a strict
+  // date check withheld eight real candidates' money. Those disagreements
+  // stay as an advisory diagnostic.
   const coverPeriodMismatchReportIds: string[] = [];
+  const coverPeriodDisagreementReportIds: string[] = [];
   for (const filing of selectedFilings) {
     const report = reportsById.get(filing.reportId!);
     if (!report) {
+      continue;
+    }
+    if (report.cover.cover.reportId !== filing.reportId) {
+      coverPeriodMismatchReportIds.push(filing.reportId!);
       continue;
     }
     const coverBegin = report.cover.cover.beginDate.iso;
@@ -385,7 +395,7 @@ export function aggregateNorthCarolinaDirectFinance(
       (coverBegin !== null && filing.periodStartIso !== null && coverBegin !== filing.periodStartIso) ||
       (coverEnd !== null && filing.periodEndIso !== null && coverEnd !== filing.periodEndIso)
     ) {
-      coverPeriodMismatchReportIds.push(filing.reportId!);
+      coverPeriodDisagreementReportIds.push(filing.reportId!);
     }
   }
 
@@ -410,6 +420,7 @@ export function aggregateNorthCarolinaDirectFinance(
     coverIndividualContributionCents: null,
     cycleChainMismatches: [],
     coverPeriodMismatchReportIds,
+    coverPeriodDisagreementReportIds,
     derivedBreakdownsQuarantined: false,
     unknownReceiptTypeCodes: [],
     includedIndividualRowCount: 0,
@@ -642,6 +653,7 @@ export function aggregateNorthCarolinaDirectFinance(
     coverIndividualContributionCents: coverIndividualCents,
     cycleChainMismatches,
     coverPeriodMismatchReportIds,
+    coverPeriodDisagreementReportIds,
     derivedBreakdownsQuarantined,
     unknownReceiptTypeCodes: [...unknownReceiptTypeCodes.values()].sort((left, right) =>
       left.code.localeCompare(right.code)

@@ -36,10 +36,12 @@ function makeCover(input: {
   beginDate: string;
   endDate: string;
   filedDate?: string;
+  reportId?: string;
   values: Record<number, [number, number]>;
 }): NcsbeReportDetail {
   return {
     cover: {
+      reportId: input.reportId ?? "229931",
       boeId: "STA-JV516O-C-001",
       orgName: "Gadson for North Carolina",
       entityTypeDesc: null,
@@ -226,11 +228,13 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
     });
     const yearEnd = makeInventoryRow();
     const coverOrganizational = makeCover({
+      reportId: "226297",
       beginDate: "10/31/2025",
       endDate: "11/10/2025",
       values: { 20: [1000, 1000], 60: [1000, 1000], 90: [100, 100], 95: [900, 900] },
     });
     const coverYearEnd = makeCover({
+      reportId: "227042",
       beginDate: "07/01/2025",
       endDate: "12/31/2025",
       // Chain-exact: Cycle = 1000 + 5000 and 100 + 400.
@@ -272,6 +276,7 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
         {
           reportId: "226297",
           cover: makeCover({
+            reportId: "226297",
             beginDate: "10/31/2025",
             endDate: "11/10/2025",
             values: { 60: [1000, 1000], 90: [0, 0], 95: [1000, 1000] },
@@ -281,6 +286,7 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
         {
           reportId: "227042",
           cover: makeCover({
+            reportId: "227042",
             beginDate: "07/01/2025",
             endDate: "12/31/2025",
             // Cycle claims 8000 but 1000 + 5000 = 6000: a filing is missing.
@@ -391,12 +397,13 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
     expect(result.ieTypedRegularReportCents).toBe(1_050_000);
   });
 
-  it("refuses to aggregate a cover whose period disagrees with the inventory filing", () => {
-    // A mispaired cached artifact may be another report's bytes: never
-    // writable money — do not write, reacquire.
+  it("refuses to aggregate a cover that declares a different report id", () => {
+    // The cover names itself; bytes cached for another report are provably
+    // mispaired and never writable money — do not write, reacquire.
     const wrongCover = makeCover({
+      reportId: "999999",
       beginDate: "01/01/2026",
-      endDate: "03/31/2026",
+      endDate: "02/14/2026",
       values: { 60: [1, 1], 90: [0, 0], 95: [1, 1] },
     });
     const result = aggregateNorthCarolinaDirectFinance({
@@ -408,5 +415,25 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
     expect(result.coverPeriodMismatchReportIds).toEqual(["229931"]);
     expect(result.summary.totalReceipts).toBeNull();
     expect(result.directBreakdowns).toEqual([]);
+  });
+
+  it("still aggregates when only the cover's dates disagree, recording the disagreement", () => {
+    // Live PR 9 evidence: the portal serves begin-after-end and off-by-days
+    // covers for the right report (RID 233220: 07/01/2026 -> 06/30/2026).
+    // Eight real candidates were withheld by treating that as mispairing.
+    const sloppyDates = makeCover({
+      beginDate: "12/31/2025",
+      endDate: "03/31/2026",
+      values: { 20: [500, 500], 60: [500, 500], 90: [100, 100], 95: [400, 400] },
+    });
+    const result = aggregateNorthCarolinaDirectFinance({
+      electionYear: 2026,
+      inventoryRows: [GADSON_Q1_ROW],
+      reports: [{ reportId: "229931", cover: sloppyDates, receiptRows: [] }],
+    });
+    expect(result.status).toBe("ok");
+    expect(result.coverPeriodMismatchReportIds).toEqual([]);
+    expect(result.coverPeriodDisagreementReportIds).toEqual(["229931"]);
+    expect(result.summary.totalReceipts).toBe(500);
   });
 });

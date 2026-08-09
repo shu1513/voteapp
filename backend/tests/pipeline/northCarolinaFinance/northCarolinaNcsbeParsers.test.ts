@@ -185,6 +185,9 @@ describe("parseNcsbeReportDetailPage", () => {
   it("parses the cover and exactly one 34-section summary grid", () => {
     const detail = parseNcsbeReportDetailPage(fixture("report-cover-gadson-229931.html"));
     expect(detail.cover).toMatchObject({
+      // The page names itself — the only field that reliably answers "are
+      // these the bytes I asked for?" (present on all 770 live-run covers).
+      reportId: "229931",
       boeId: "STA-JV516O-C-001",
       orgName: "Gadson for North Carolina",
       entityTypeDesc: "Candidate Committee",

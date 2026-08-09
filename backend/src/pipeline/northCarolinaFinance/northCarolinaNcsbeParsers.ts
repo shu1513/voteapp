@@ -357,6 +357,14 @@ export type NcsbeCoverSummarySection = {
 };
 
 export type NcsbeReportCover = {
+  // The report's OWN id, declared by the page as `var rptID = <n>;`. Present
+  // and correct on all 770 covers of the PR 9 live pull, which makes it the
+  // only decisive answer to "are these the bytes I asked for?" — every other
+  // candidate field disagrees with the inventory somewhere in real data
+  // (period dates on 17, committee name on 110, report name on 14, and even
+  // SBoEID on 35 via O/0 and S/5 glyph confusions like STA-A52Z95 vs
+  // STA-A52Z9S).
+  reportId: string;
   // Null on live covers (PR 9 run: ~40% of committee reports, e.g. RID 231912
   // "COMMITTEE TO ELECT ELMA HAIRSTON") — the spike's fixtures all carried a
   // string, so this was pinned as required and failed those reports closed.
@@ -485,8 +493,14 @@ export function parseNcsbeReportDetailPage(html: string): NcsbeReportDetail {
     );
   }
 
+  const reportIdMatch = /var\s+rptID\s*=\s*(\d+)\s*;/.exec(html);
+  if (!reportIdMatch) {
+    throw new Error("NCSBE report cover does not declare its own rptID");
+  }
+
   return {
     cover: {
+      reportId: reportIdMatch[1]!,
       boeId: normalizeNcsbeText(requireStringOrNull(coverRaw.BoeID, "report cover BoeID")),
       orgName: requireString(coverRaw.OrgName, "report cover OrgName"),
       entityTypeDesc: normalizeNcsbeText(requireStringOrNull(coverRaw.EntityTypeDesc, "report cover EntityTypeDesc")),
