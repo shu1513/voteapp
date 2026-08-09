@@ -3135,6 +3135,13 @@ INSERT INTO curated_office_core_areas (scope, canonical_name, slugs) VALUES
     -- government_spending_reduction in place of the surveyor's land-records
     -- housing slug — the engineer's public exposure is the capital budget.
     ('county', 'County Engineer', ARRAY['government_efficiency', 'government_spending_reduction', 'public_infrastructure']::text[]),
+    -- Independent fire district board: the emergency-response slugs the office
+    -- actually controls (fire and EMS coverage, stations and apparatus), plus
+    -- the two spending slugs every self-taxing special district owns — the
+    -- board sets its own levy or assessment. No housing_affordability: unlike
+    -- the assessor-class offices, the district's charge lands on the tax bill
+    -- but the board does not value or administer property.
+    ('county', 'Fire Control District Commissioner', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'public_infrastructure', 'public_safety_and_crime_control']::text[]),
     ('county', 'County Executive', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('county', 'Borough President', ARRAY['environment_and_public_health', 'government_efficiency', 'government_spending_reduction', 'healthcare_affordability', 'housing_affordability', 'public_infrastructure', 'public_safety_and_crime_control', 'social_programs_and_welfare']::text[]),
     ('county', 'County Level Judge', ARRAY['civil_rights', 'housing_affordability', 'impartiality', 'legal_competence', 'public_safety_and_crime_control']::text[]),
