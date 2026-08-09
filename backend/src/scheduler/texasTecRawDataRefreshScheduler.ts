@@ -53,7 +53,9 @@ function readSchedulerRuntimeConfig(): RawDataRefreshSchedulerRuntimeConfig {
 }
 
 function assertPositiveInteger(value: number | undefined, label: string): void {
-  if (value !== undefined && (!Number.isInteger(value) || value <= 0)) {
+  // isSafeInteger, not isInteger: Number("9007199254740993") silently rounds
+  // to 2^53 and still passes isInteger.
+  if (value !== undefined && (!Number.isSafeInteger(value) || value <= 0)) {
     throw new Error(`Invalid Texas TEC raw data refresh scheduler ${label}: ${value}`);
   }
 }

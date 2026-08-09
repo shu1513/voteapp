@@ -1,19 +1,19 @@
 import { describe, expect, it } from "vitest";
 
-import { parseSyncDueOhioCandidateFinanceScriptArgs } from "../../src/scripts/syncDueOhioCandidateFinance.js";
-import { parseOhioCandidateFinanceSyncTriggerArgs } from "../../src/scripts/triggerOhioCandidateFinanceSync.js";
-import { parseUpsertOhioCandidateFinanceSyncSchedulerArgs } from "../../src/scripts/upsertOhioCandidateFinanceSyncScheduler.js";
+import { parseSyncDueNorthCarolinaCandidateFinanceScriptArgs } from "../../src/scripts/syncDueNorthCarolinaCandidateFinance.js";
+import { parseNorthCarolinaCandidateFinanceSyncTriggerArgs } from "../../src/scripts/triggerNorthCarolinaCandidateFinanceSync.js";
+import { parseUpsertNorthCarolinaCandidateFinanceSyncSchedulerArgs } from "../../src/scripts/upsertNorthCarolinaCandidateFinanceSyncScheduler.js";
 
-// All three Ohio finance CLI parsers share the same strict contract: an
-// operator typo must fail loudly, never silently enqueue or run a REAL
-// sync in place of the intended dry run.
+// All three North Carolina finance CLI parsers share the same strict
+// contract: an operator typo must fail loudly, never silently enqueue or
+// run a REAL sync in place of the intended dry run.
 const PARSERS = [
-  ["sync-due", parseSyncDueOhioCandidateFinanceScriptArgs],
-  ["trigger", parseOhioCandidateFinanceSyncTriggerArgs],
-  ["scheduler-upsert", parseUpsertOhioCandidateFinanceSyncSchedulerArgs],
+  ["sync-due", parseSyncDueNorthCarolinaCandidateFinanceScriptArgs],
+  ["trigger", parseNorthCarolinaCandidateFinanceSyncTriggerArgs],
+  ["scheduler-upsert", parseUpsertNorthCarolinaCandidateFinanceSyncSchedulerArgs],
 ] as const;
 
-describe.each(PARSERS)("Ohio finance CLI args (%s)", (_label, parse) => {
+describe.each(PARSERS)("North Carolina finance CLI args (%s)", (_label, parse) => {
   it("parses the full flag set", () => {
     const options = parse([
       "--dry-run",
@@ -21,18 +21,22 @@ describe.each(PARSERS)("Ohio finance CLI args (%s)", (_label, parse) => {
       "--max-candidates=5",
       "--stale-after-days",
       "3",
-      "--raw-cache-dir=/tmp/cache",
+      "--lookback-days=14",
+      "--lookahead-days",
+      "365",
     ]);
     expect(options).toMatchObject({
       dryRun: true,
       force: true,
       maxCandidates: 5,
       staleAfterDays: 3,
+      electionLookbackDays: 14,
+      electionLookaheadDays: 365,
     });
   });
 
   it("rejects an unknown flag such as the --dryrun typo", () => {
-    expect(() => parse(["--dryrun"])).toThrow(/Unknown Ohio candidate finance/);
+    expect(() => parse(["--dryrun"])).toThrow(/Unknown North Carolina candidate finance/);
   });
 
   it("rejects a boolean flag with an inline value", () => {
@@ -48,6 +52,12 @@ describe.each(PARSERS)("Ohio finance CLI args (%s)", (_label, parse) => {
 
   it("rejects a non-positive-integer value", () => {
     expect(() => parse(["--max-candidates=0"])).toThrow(/Invalid --max-candidates value/);
+    expect(() => parse(["--stale-after-days", "x"])).toThrow(/Invalid --stale-after-days value/);
+  });
+
+  it("rejects a missing value", () => {
+    expect(() => parse(["--max-candidates"])).toThrow(/Missing --max-candidates value/);
+    expect(() => parse(["--lookback-days="])).toThrow(/Missing --lookback-days value/);
   });
 
   it("rejects positional tokens that are not value-flag values", () => {

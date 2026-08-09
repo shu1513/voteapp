@@ -51,6 +51,8 @@ const opts = (): JobsOptions => ({
   attempts: 3,
   backoff: { type: "exponential", delay: 5_000 },
 });
+// isSafeInteger, not isInteger: Number("9007199254740993") silently rounds
+// to 2^53 and still passes isInteger.
 const validate = (data: LosAngelesCityFinanceJobData): void => {
   for (const [key, value] of Object.entries(data))
     if (
@@ -61,7 +63,7 @@ const validate = (data: LosAngelesCityFinanceJobData): void => {
         "electionLookaheadDays",
       ].includes(key) &&
       value !== undefined &&
-      (!Number.isInteger(value) || Number(value) <= 0)
+      (!Number.isSafeInteger(value) || Number(value) <= 0)
     )
       throw new Error(`Invalid Los Angeles finance scheduler ${key}: ${value}`);
 };

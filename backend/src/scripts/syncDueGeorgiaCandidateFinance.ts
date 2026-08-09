@@ -28,7 +28,9 @@ function parsePositiveIntegerFlag(args: readonly string[], flag: string): number
   }
   const raw = args[index + 1];
   const parsed = Number(raw);
-  if (!Number.isInteger(parsed) || parsed <= 0) {
+  // isSafeInteger, not isInteger: Number("9007199254740993") silently rounds
+  // to 2^53 and still passes isInteger.
+  if (!Number.isSafeInteger(parsed) || parsed <= 0) {
     throw new Error(`${flag} requires a positive integer, got: ${raw}`);
   }
   return parsed;
