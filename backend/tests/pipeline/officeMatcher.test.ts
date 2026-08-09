@@ -1054,6 +1054,60 @@ describe("OfficeMatcher", () => {
     expect(result.method).toBe("none");
   });
 
+  it("does not match South Carolina's bare circuit Solicitor to Solicitor General", async () => {
+    // SC's Solicitor is the chief FELONY prosecutor (a District Attorney by
+    // another name), not Georgia's misdemeanor State Court solicitor-general.
+    // "general" is a stopword, so the office tokenizes to ["solicitor"] and
+    // this title is token-identical to it: without the phrase guard it matches
+    // at a perfect 1.0, unopposed.
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-solicitor-general", canonical_name: "Solicitor General" },
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Richland County",
+      state: "SC",
+      // Bare, because the circuit is the district: the jurisdiction strip
+      // takes "5th Judicial Circuit" off "Solicitor, 5th Judicial Circuit"
+      // and leaves the one word, which is the shape the guard exists for.
+      officialBallotTitle: "Solicitor",
+    });
+
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("none");
+  });
+
+  it("matches a Georgia county Solicitor General title to the Solicitor General office", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-solicitor-general", canonical_name: "Solicitor General" },
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+        ],
+      },
+    });
+
+    const matcher = new OfficeMatcher(client as never);
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Hall County, Georgia",
+      state: "GA",
+      officialBallotTitle: "Hall County Solicitor General",
+    });
+
+    expect(result.officeId).toBe("office-solicitor-general");
+    expect(result.method).toBe("deterministic_fallback");
+  });
+
   it("ignores election-stage words when matching office titles", async () => {
     const client = createMatcherDataClient({
       aliasesByScope: { statewide: [] },
@@ -2514,5 +2568,562 @@ describe("OfficeMatcher", () => {
       discoveryContestFamily: "non_judicial_office",
     });
     expect(commissioner.officeId).toBe("office-county-commissioner");
+  });
+
+  const ALABAMA_TAX_OFFICE_ALIASES = [
+    { office_id: "office-revenue-commissioner", alias: "Revenue Commissioner" },
+    { office_id: "office-revenue-commissioner", alias: "County Revenue Commissioner" },
+    { office_id: "office-county-assessor", alias: "Tax Assessor" },
+    { office_id: "office-county-assessor", alias: "County Tax Assessor" },
+    { office_id: "office-collector-of-revenue", alias: "Tax Collector" },
+    { office_id: "office-collector-of-revenue", alias: "County Tax Collector" },
+    { office_id: "office-license-commissioner", alias: "License Commissioner" },
+    { office_id: "office-license-commissioner", alias: "County License Commissioner" },
+    { office_id: "office-license-commissioner", alias: "Commissioner of Licenses" },
+    { office_id: "office-license-commissioner", alias: "County Commissioner of Licenses" },
+    { office_id: "office-commissioner-of-revenue", alias: "Commissioner of the Revenue" },
+    { office_id: "office-commissioner-of-revenue", alias: "Commissioner of Revenue" },
+    { office_id: "office-commissioner-of-revenue", alias: "County Commissioner of the Revenue" },
+    { office_id: "office-commissioner-of-revenue", alias: "County Commissioner of Revenue" },
+  ];
+
+  function createAlabamaTaxOfficeClient(input: { withAliases: boolean }) {
+    return createMatcherDataClient({
+      aliasesByScope: {
+        county: input.withAliases
+          ? ALABAMA_TAX_OFFICE_ALIASES.map((entry) => ({
+              office_id: entry.office_id,
+              normalized_alias: normalizeElectionTitleKey(entry.alias),
+            }))
+          : [],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-assessor", canonical_name: "County Assessor" },
+          { id: "office-collector-of-revenue", canonical_name: "Collector of Revenue" },
+          { id: "office-license-collector", canonical_name: "License Collector" },
+          ...(input.withAliases
+            ? [
+                { id: "office-revenue-commissioner", canonical_name: "Revenue Commissioner" },
+                { id: "office-license-commissioner", canonical_name: "License Commissioner" },
+                { id: "office-commissioner-of-revenue", canonical_name: "Commissioner of the Revenue" },
+              ]
+            : []),
+        ],
+      },
+    });
+  }
+
+  const ALABAMA_TAX_OFFICE_CASES = [
+    { district: "Lee County, Alabama", title: "Lee County Revenue Commissioner", expected: "office-revenue-commissioner" },
+    { district: "Lee County, Alabama", title: "Revenue Commissioner", expected: "office-revenue-commissioner" },
+    { district: "Jefferson County, Alabama", title: "Jefferson County Tax Assessor", expected: "office-county-assessor" },
+    { district: "Jefferson County, Alabama", title: "Tax Assessor", expected: "office-county-assessor" },
+    { district: "Jefferson County, Alabama", title: "Jefferson County Tax Collector", expected: "office-collector-of-revenue" },
+    { district: "Jefferson County, Alabama", title: "Tax Collector", expected: "office-collector-of-revenue" },
+    { district: "Tuscaloosa County, Alabama", title: "Tuscaloosa County License Commissioner", expected: "office-license-commissioner" },
+    { district: "Calhoun County, Alabama", title: "Calhoun County Commissioner of Licenses", expected: "office-license-commissioner" },
+    { district: "Chesterfield County, Virginia", title: "Chesterfield County Commissioner of the Revenue", expected: "office-commissioner-of-revenue" },
+    // Virginia's office must not land on Alabama's merged Revenue
+    // Commissioner: "commissioner of the revenue" tokenizes identically to
+    // "revenue commissioner", so adding the Alabama office alone scored the
+    // bare Virginia title 1.000 into it.
+    { district: "Chesterfield County, Virginia", title: "Commissioner of the Revenue", expected: "office-commissioner-of-revenue" },
+  ];
+
+  it.each(ALABAMA_TAX_OFFICE_CASES)(
+    "resolves the county tax office title $title to its own office",
+    async ({ district, title, expected }) => {
+      const matcher = new OfficeMatcher(createAlabamaTaxOfficeClient({ withAliases: true }) as never);
+
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: district,
+        state: district.endsWith("Virginia") ? "VA" : "AL",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBe(expected);
+      expect(result.method).toBe("alias_exact");
+    }
+  );
+
+  const QUALIFIED_COMMISSIONER_TITLES = [
+    { district: "Lee County, Alabama", title: "Lee County Revenue Commissioner", state: "AL" },
+    { district: "Tuscaloosa County, Alabama", title: "Tuscaloosa County License Commissioner", state: "AL" },
+    // The "commissioner of X" word order scored 0.920, not 0.800: "county
+    // commissioner" sits inside it contiguously and takes the containment boost.
+    { district: "Calhoun County, Alabama", title: "Calhoun County Commissioner of Licenses", state: "AL" },
+    { district: "Chesterfield County, Virginia", title: "Chesterfield County Commissioner of the Revenue", state: "VA" },
+    // Georgia's county tax office has no catalog entry; no-match is the
+    // honest outcome there, not a confident wrong one.
+    { district: "Fulton County, Georgia", title: "Fulton County Tax Commissioner", state: "GA" },
+  ];
+
+  it("never scores a qualified commissioner title into County Commissioner", async () => {
+    // The jurisdiction strip keeps the generic civic word, so "Lee County
+    // Revenue Commissioner" reached the scorer as "county revenue
+    // commissioner": two of its three tokens are County Commissioner's whole
+    // name, which scored 0.800 — over the floor, over the margin, and
+    // persisted as a learned alias onto the county's LEGISLATIVE body.
+    const matcher = new OfficeMatcher(createAlabamaTaxOfficeClient({ withAliases: false }) as never);
+
+    for (const { district, title, state } of QUALIFIED_COMMISSIONER_TITLES) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: district,
+        state,
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBeNull();
+      expect(result.method).toBe("none");
+      expect(result.shouldPersistAlias).toBe(false);
+    }
+  });
+
+  it("ignores a stored County Commissioner alias for a qualified commissioner title", async () => {
+    // An exact alias hit returns before scoreOfficeMatch runs, so the score
+    // guard alone does not fail safe on a database that already learned the
+    // mis-match. Same shape as the court-clerk alias guard.
+    for (const { district, title, state } of QUALIFIED_COMMISSIONER_TITLES) {
+      const learned = new OfficeMatcher(
+        createMatcherDataClient({
+          aliasesByScope: {
+            county: [
+              { office_id: "office-county-commissioner", normalized_alias: normalizeElectionTitleKey(title) },
+              {
+                office_id: "office-county-commissioner",
+                normalized_alias: normalizeElectionTitleKey(title.replace(/^[A-Za-z]+ /, "")),
+              },
+            ],
+          },
+          officesByScope: {
+            county: [{ id: "office-county-commissioner", canonical_name: "County Commissioner" }],
+          },
+        }) as never
+      );
+
+      const result = await learned.resolve({
+        scope: "county",
+        districtName: district,
+        state,
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBeNull();
+      expect(result.method).toBe("none");
+    }
+  });
+
+  it("keeps ordinary county commission seats on County Commissioner", async () => {
+    const matcher = new OfficeMatcher(createAlabamaTaxOfficeClient({ withAliases: true }) as never);
+
+    for (const title of [
+      "Member, Lee County Commission, District No. 2",
+      "Lee County Commissioner",
+      "Lee County Board of Commissioners District 4",
+    ]) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: "Lee County, Alabama",
+        state: "AL",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result.officeId).toBe("office-county-commissioner");
+    }
+  });
+
+  it("resolves prosecutor titles carrying an 'of <County> County' phrase and a numbered judicial circuit", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          { office_id: "office-district-attorney", normalized_alias: "prosecuting attorney" },
+          { office_id: "office-district-attorney", normalized_alias: "district attorney" },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+          { id: "office-county-level-judge", canonical_name: "County Level Judge" },
+          { id: "office-clerk-of-court", canonical_name: "Clerk of Court" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // Indiana titles every county prosecutor this way; the "of <County> County"
+    // phrase plus the ordinal circuit previously scored 0.250 and blocked the
+    // contest in every Indiana county.
+    const indiana = await matcher.resolve({
+      scope: "county",
+      districtName: "Elkhart County, Indiana",
+      state: "IN",
+      officialBallotTitle: "Prosecuting Attorney of Elkhart County, 34th Judicial Circuit",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(indiana).toMatchObject({
+      officeId: "office-district-attorney",
+      method: "alias_exact",
+    });
+
+    const withCourtSuffix = await matcher.resolve({
+      scope: "county",
+      districtName: "Caddo Parish, Louisiana",
+      state: "LA",
+      officialBallotTitle: "District Attorney, 1st Judicial District Court",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(withCourtSuffix.officeId).toBe("office-district-attorney");
+
+    // The "of <jurisdiction>" strip must not swallow an office's own words:
+    // this title keeps "Clerk of the Circuit Court" and only loses the county.
+    const clerkOfCircuitCourt = await matcher.resolve({
+      scope: "county",
+      districtName: "Cook County, Illinois",
+      state: "IL",
+      officialBallotTitle: "Clerk of the Circuit Court of Cook County",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(clerkOfCircuitCourt.officeId).toBe("office-clerk-of-court");
+
+    // The jurisdiction strip must not fire when the county phrase names the
+    // governing body that follows it: taking "of Cook County" here left
+    // "member board of commissioners", which mis-scored into a different
+    // county board office.
+    const bodyForm = await matcher.resolve({
+      scope: "county",
+      districtName: "Cook County, Illinois",
+      state: "IL",
+      officialBallotTitle: "Member of Cook County Board of Commissioners",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(bodyForm.officeId).toBe("office-county-commissioner");
+
+    // A judge OF that circuit is still a judgeship.
+    const circuitJudge = await matcher.resolve({
+      scope: "county",
+      districtName: "Elkhart County, Indiana",
+      state: "IN",
+      officialBallotTitle: "Judge of the 34th Judicial Circuit",
+      discoveryContestFamily: "judicial_office",
+    });
+    expect(circuitJudge.officeId).toBe("office-county-level-judge");
+  });
+
+  it("resolves Florida's 'State Attorney' circuit title to District Attorney", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          // Migration 219 adds "state attorney"; "state s attorney" (migration
+          // 184, Maryland/Illinois) is a different normalized key and does not
+          // cover Florida's non-possessive form.
+          { office_id: "office-district-attorney", normalized_alias: "state attorney" },
+          { office_id: "office-district-attorney", normalized_alias: "state s attorney" },
+          { office_id: "office-district-attorney", normalized_alias: "district attorney" },
+          { office_id: "office-public-defender", normalized_alias: "public defender" },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+          { id: "office-public-defender", canonical_name: "Public Defender" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // Florida elects its felony prosecutor by judicial circuit, so one circuit
+    // spans several counties (the 4th covers Duval, Clay and Nassau). The
+    // circuit strip reduces the title to "state attorney", which scores 0.500
+    // against "District Attorney" — under the floor — so the alias is what
+    // carries it.
+    const stateAttorney = await matcher.resolve({
+      scope: "county",
+      districtName: "Duval County, Florida",
+      state: "FL",
+      officialBallotTitle: "State Attorney, 4th Judicial Circuit",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(stateAttorney).toMatchObject({
+      officeId: "office-district-attorney",
+      method: "alias_exact",
+      aliasMemoryKey: "state attorney",
+    });
+
+    // Florida elects a Public Defender on the same circuits; it was checked for
+    // the same catalog gap and does not have one. Asserted here so the new
+    // prosecutor alias cannot pull the defense-side office onto District
+    // Attorney, which carries a research-area set the defender must not get.
+    const publicDefender = await matcher.resolve({
+      scope: "county",
+      districtName: "Duval County, Florida",
+      state: "FL",
+      officialBallotTitle: "Public Defender, 4th Judicial Circuit",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(publicDefender).toMatchObject({
+      officeId: "office-public-defender",
+      method: "alias_exact",
+      aliasMemoryKey: "public defender",
+    });
+  });
+
+  it("routes a Louisiana city marshal to its own office instead of the place judge", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        place: [
+          { office_id: "office-city-marshal", normalized_alias: normalizeElectionTitleKey("City Marshal") },
+          { office_id: "office-place-judge", normalized_alias: normalizeElectionTitleKey("Municipal Judge") },
+        ],
+      },
+      officesByScope: {
+        place: [
+          { id: "office-city-marshal", canonical_name: "City Marshal" },
+          { id: "office-place-judge", canonical_name: "Place Level Judge" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // The title names the court the marshal serves, which is what used to
+    // trip the judicial fast path into Place Level Judge at confidence 1.
+    for (const title of [
+      "City Marshal, City Court of Shreveport",
+      "Marshal, City Court of Shreveport",
+    ]) {
+      const result = await matcher.resolve({
+        scope: "place",
+        districtName: "Shreveport, Louisiana",
+        state: "LA",
+        officialBallotTitle: title,
+        discoveryContestFamily: "judicial_office",
+      });
+      expect(result.officeId, title).toBe("office-city-marshal");
+    }
+
+    // The judge seat on the same court is untouched.
+    const judge = await matcher.resolve({
+      scope: "place",
+      districtName: "Shreveport, Louisiana",
+      state: "LA",
+      officialBallotTitle: "City Judge, Shreveport City Court",
+      discoveryContestFamily: "judicial_office",
+    });
+    expect(judge.officeId).toBe("office-place-judge");
+  });
+
+  it("refuses a marshal title that names neither a city nor a court", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        place: [
+          { office_id: "office-city-marshal", normalized_alias: normalizeElectionTitleKey("City Marshal") },
+        ],
+      },
+      officesByScope: {
+        place: [
+          { id: "office-city-marshal", canonical_name: "City Marshal" },
+          { id: "office-place-judge", canonical_name: "Place Level Judge" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // Indiana and Colorado call the town's chief police officer a "Marshal" —
+    // a different job, which this office's voter-facing summary would
+    // misdescribe. There is deliberately no bare "Marshal" alias either.
+    for (const title of ["Marshal", "Town Marshal", "Village Marshal"]) {
+      const result = await matcher.resolve({
+        scope: "place",
+        districtName: "Zionsville, Indiana",
+        state: "IN",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, title).toBeNull();
+      expect(result.shouldPersistAlias, title).toBe(false);
+    }
+  });
+
+  it("refuses the judge fast path for a marshal title when no marshal office exists", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { place: [] },
+      officesByScope: {
+        place: [{ id: "office-place-judge", canonical_name: "Place Level Judge" }],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const result = await matcher.resolve({
+      scope: "place",
+      districtName: "Shreveport, Louisiana",
+      state: "LA",
+      officialBallotTitle: "City Marshal, City Court of Shreveport",
+      discoveryContestFamily: "judicial_office",
+    });
+
+    // A loud no-match is recoverable — the researcher excludes and defers.
+    // A confident wrong office writes and mis-files every later stage.
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("none");
+    expect(result.shouldPersistAlias).toBe(false);
+  });
+
+  it("refuses an office whose canonical name lacks the title's own function noun", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+          { id: "office-county-assessor", canonical_name: "County Assessor" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // Alabama's consolidated assessor/collector: two of three tokens shared
+    // with County Commissioner scored 0.800 before the guard.
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Baldwin County, Alabama",
+      state: "AL",
+      officialBallotTitle: "County Revenue Commissioner",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(result.officeId).toBeNull();
+    expect(result.method).toBe("none");
+    expect(result.shouldPersistAlias).toBe(false);
+  });
+
+  it("matches the revenue commissioner office once the catalog carries it", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          {
+            office_id: "office-revenue-commissioner",
+            normalized_alias: normalizeElectionTitleKey("Revenue Commissioner"),
+          },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-revenue-commissioner", canonical_name: "Revenue Commissioner" },
+          { id: "office-county-commissioner", canonical_name: "County Commissioner" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    const revenue = await matcher.resolve({
+      scope: "county",
+      districtName: "Baldwin County, Alabama",
+      state: "AL",
+      officialBallotTitle: "Revenue Commissioner, Baldwin County, Alabama",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(revenue.officeId).toBe("office-revenue-commissioner");
+
+    // The office it used to collide with still resolves.
+    const commissioner = await matcher.resolve({
+      scope: "county",
+      districtName: "Baldwin County, Alabama",
+      state: "AL",
+      officialBallotTitle: "County Commissioner District 2",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(commissioner.officeId).toBe("office-county-commissioner");
+  });
+
+  it("keeps a combined office in the running when it covers one of the title's function nouns", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-sheriff", canonical_name: "Sheriff" },
+          { id: "office-coroner", canonical_name: "County Coroner" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // California counties elect a combined "Sheriff-Coroner". A covers-ALL test
+    // vetoed both halves and returned no match; the veto is meant for an office
+    // the catalog is MISSING, not one it has, so covering one noun is enough.
+    for (const title of ["Sheriff-Coroner", "Sheriff/Coroner"]) {
+      const result = await matcher.resolve({
+        scope: "county",
+        districtName: "Riverside County, California",
+        state: "CA",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, title).toBe("office-sheriff");
+    }
+  });
+
+  it("keeps offices whose state synonym differs from the title's wording", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { county: [] },
+      officesByScope: {
+        county: [
+          { id: "office-clerk-and-recorder", canonical_name: "County Clerk and Recorder" },
+          { id: "office-county-clerk", canonical_name: "County Clerk" },
+          { id: "office-county-auditor", canonical_name: "County Auditor" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // Idaho and Utah fold the auditor and recorder into the clerk's office;
+    // "auditor" and "recorder" are therefore NOT function nouns that veto.
+    const result = await matcher.resolve({
+      scope: "county",
+      districtName: "Ada County, Idaho",
+      state: "ID",
+      officialBallotTitle: "Clerk, Auditor and Recorder",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(result.officeId).toBe("office-clerk-and-recorder");
+  });
+
+  it("strips a letter-designated seat the same way it strips a numbered one", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: { place: [] },
+      officesByScope: {
+        place: [
+          { id: "office-city-council", canonical_name: "City Council Member" },
+          { id: "office-mayor", canonical_name: "Mayor" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // New Orleans and Shreveport run council districts A-E; before the letter
+    // was consumed the stray token dropped these to no-match while the
+    // numbered form resolved.
+    for (const title of [
+      "Council Member, District A",
+      "Councilmember District B",
+      "Council Member for District D",
+      "City Council District E",
+      "City Council Seat C",
+      "City Council Ward B",
+    ]) {
+      const result = await matcher.resolve({
+        scope: "place",
+        districtName: "New Orleans, Louisiana",
+        state: "LA",
+        officialBallotTitle: title,
+        discoveryContestFamily: "non_judicial_office",
+      });
+      expect(result.officeId, title).toBe("office-city-council");
+    }
   });
 });

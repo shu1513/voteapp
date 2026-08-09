@@ -410,12 +410,10 @@ describe("electionPartisanshipPolicy", () => {
     expect(isJudicialOfficeTitle("Solicitor-General, State Court of Paulding County")).toBe(false);
     expect(isJudicialOfficeTitle("Solicitor, 1st Judicial Circuit")).toBe(false);
     expect(isJudicialOfficeTitle("Public Defender, 20th Judicial Circuit")).toBe(false);
+    // Illinois and Maryland use the possessive; Florida's circuit prosecutor
+    // does not. Same office either way.
     expect(isJudicialOfficeTitle("State's Attorney, 9th Judicial Circuit")).toBe(false);
-    // Florida's circuit prosecutor carries no possessive; Illinois' and
-    // Maryland's does. Both are the same office.
-    expect(isJudicialOfficeTitle("State Attorney (20th Judicial Circuit)")).toBe(false);
     expect(isJudicialOfficeTitle("Commonwealth's Attorney")).toBe(false);
-    expect(isJudicialOfficeTitle("Prosecuting Attorney")).toBe(false);
     expect(isJudicialOfficeTitle("County Attorney")).toBe(false);
     expect(isJudicialOfficeTitle("District Attorney General, 19th Judicial District")).toBe(false);
     // The judges of the same circuits stay judicial.
@@ -790,6 +788,45 @@ describe("electionPartisanshipPolicy", () => {
           state: "WA",
           officialBallotTitle: "State Representative Position 1",
         })
+      ).toBe(true);
+    }
+  });
+
+  it("does not treat court clerks and prosecutors as judicial offices", () => {
+    for (const officialBallotTitle of [
+      "Clerk of Superior Court",
+      "Elkhart County Circuit Court Clerk",
+      "Prosecuting Attorney of Elkhart County, 34th Judicial Circuit",
+      "State Attorney, 4th Judicial Circuit",
+      "Constable, Justice Precinct 2",
+    ]) {
+      expect(isJudicialOfficeTitle(officialBallotTitle), officialBallotTitle).toBe(false);
+    }
+
+    // Each of these is stored partisan and would be forced nonpartisan by a
+    // judicial rule: Arizona's judicial fallback (clerk, constable) and the
+    // unmapped-state default (Florida's state attorney). Off the judicial path
+    // the researched ballot-facing value decides instead.
+    for (const [state, officialBallotTitle] of [
+      ["AZ", "Clerk of Superior Court"],
+      ["AZ", "Constable, Justice Prec. 2"],
+      ["FL", "State Attorney, 4th Judicial Circuit"],
+    ] as const) {
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "county",
+          state,
+          officialBallotTitle,
+        }),
+        officialBallotTitle
+      ).toBeUndefined();
+      expect(
+        shouldIncludeCandidatePartyByPolicy({
+          districtType: "county",
+          state,
+          officialBallotTitle,
+        }),
+        officialBallotTitle
       ).toBe(true);
     }
   });

@@ -174,10 +174,35 @@ describe("enqueueManualDistrictResearchRequestsForStaleDistricts", () => {
   });
 });
 
+describe("enqueueManualDistrictResearchRequestsForStaleDistricts duplicate districts", () => {
+  it("never enqueues a row whose contests another district owns", async () => {
+    // The staleness query filters the non-government row out, so it is not in
+    // the stale set and no upsert follows. Callers coming through
+    // lookupAddressDistricts are already collapsed; this is the backstop.
+    const query = vi.fn().mockResolvedValueOnce({ rows: [] });
+
+    const result = await enqueueManualDistrictResearchRequestsForStaleDistricts(
+      { query },
+      {
+        districts: [makeDistrict({ district_type: "place", geoid_compact: "5103000" })],
+        triggerSource: "address_resolve",
+        cooldownDays: 180,
+      }
+    );
+
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(query.mock.calls[0]?.[0]).toContain("canonical_district_id IS NULL");
+    expect(result.enqueued).toEqual([]);
+    expect(result.bumped).toEqual([]);
+    expect(result.skipped_fresh).toBe(1);
+  });
+});
+
 describe("claimNextManualDistrictResearchRequest", () => {
   it("retires fresh queued rows first, then returns null when nothing is claimable", async () => {
     const query = vi
       .fn()
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
       .mockResolvedValueOnce({ rowCount: 2, rows: [] })
       .mockResolvedValueOnce({ rows: [] });
 
@@ -187,29 +212,58 @@ describe("claimNextManualDistrictResearchRequest", () => {
     );
 
     expect(claimed).toBeNull();
-    expect(query).toHaveBeenCalledTimes(2);
+    expect(query).toHaveBeenCalledTimes(3);
 
-    // First statement bulk-retires queued rows whose district is now fresh,
+    // Second statement bulk-retires queued rows whose district is now fresh,
     // using the cooldown — but never manual_seed rows, which are an operator
     // override and bypass the freshness gates.
-    const retireSql = query.mock.calls[0]?.[0] as string;
+    const retireSql = query.mock.calls[1]?.[0] as string;
     expect(retireSql).toContain("'skipped'");
     expect(retireSql).toContain("last_elections_searched_at");
     expect(retireSql).toContain("trigger_source <> 'manual_seed'");
-    expect(query.mock.calls[0]?.[1]).toEqual([180]);
+    expect(query.mock.calls[1]?.[1]).toEqual([180]);
 
-    // Second statement is the claim; staleness is part of its WHERE, with the
+    // Third statement is the claim; staleness is part of its WHERE, with the
     // manual_seed override making seeded requests claimable regardless.
-    const claimSql = query.mock.calls[1]?.[0] as string;
+    const claimSql = query.mock.calls[2]?.[0] as string;
     expect(claimSql).toContain("FOR UPDATE OF r2 SKIP LOCKED");
     expect(claimSql).toContain("r2.trigger_source = 'manual_seed'");
     expect(claimSql).toContain("last_elections_searched_at IS NULL");
-    expect(query.mock.calls[1]?.[1]).toEqual(["claude-session", "claude", 180]);
+    expect(query.mock.calls[2]?.[1]).toEqual(["claude-session", "claude", 180]);
+  });
+
+  it("retires non-government rows and never claims them", async () => {
+    // Arlington CDP is a Census statistical geography with no government, but it
+    // is coextensive with and named like Arlington County, so the bulk_backfill
+    // sweep seeded it as if it were a district. It has no work of its own: its
+    // queued requests retire and it can never be claimed again.
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rowCount: 47, rows: [] })
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    await claimNextManualDistrictResearchRequest(
+      { query },
+      { claimedBy: "claude-session", agentKind: "claude", cooldownDays: 180 }
+    );
+
+    const duplicateRetireSql = query.mock.calls[0]?.[0] as string;
+    expect(duplicateRetireSql).toContain("'skipped'");
+    expect(duplicateRetireSql).toContain("d.canonical_district_id IS NOT NULL");
+    // Unlike the freshness sweep this carries no cooldown parameter, and it
+    // deliberately has no manual_seed exemption: an alias row is never work.
+    expect(query.mock.calls[0]?.[1]).toBeUndefined();
+    expect(duplicateRetireSql).not.toContain("manual_seed");
+
+    const claimSql = query.mock.calls[2]?.[0] as string;
+    expect(claimSql).toContain("d.canonical_district_id IS NULL");
   });
 
   it("returns the claimed request for a still-stale district", async () => {
     const query = vi
       .fn()
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
       .mockResolvedValueOnce({ rowCount: 0, rows: [] })
       .mockResolvedValueOnce({ rows: [makeClaimRow()] });
 
@@ -234,6 +288,7 @@ describe("claimNextManualDistrictResearchRequest", () => {
     const query = vi
       .fn()
       .mockResolvedValueOnce({ rowCount: 0, rows: [] })
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
       .mockResolvedValueOnce({ rows: [makeClaimRow({ district_id: OTHER_DISTRICT_ID })] });
 
     await claimNextManualDistrictResearchRequest(
@@ -241,13 +296,14 @@ describe("claimNextManualDistrictResearchRequest", () => {
       { claimedBy: "codex-session", agentKind: "codex", cooldownDays: 180 }
     );
 
-    const claimSql = query.mock.calls[1]?.[0] as string;
+    const claimSql = query.mock.calls[2]?.[0] as string;
     expect(claimSql).toContain("ORDER BY r2.request_count DESC, r2.requested_at ASC");
   });
 
   it("includes the active-future-deferral gate and manual-seed override in the claim SQL", async () => {
     const query = vi
       .fn()
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
       .mockResolvedValueOnce({ rowCount: 0, rows: [] })
       .mockResolvedValueOnce({ rows: [] });
 
@@ -256,7 +312,7 @@ describe("claimNextManualDistrictResearchRequest", () => {
       { claimedBy: "codex-session", agentKind: "codex", cooldownDays: 180 }
     );
 
-    const claimSql = query.mock.calls[1]?.[0] as string;
+    const claimSql = query.mock.calls[2]?.[0] as string;
     expect(claimSql).toContain("FROM public.manual_research_deferrals AS md");
     expect(claimSql).toContain("md.district_id = r2.district_id");
     expect(claimSql).toContain("md.status = 'deferred'");
@@ -496,6 +552,7 @@ describe("status transitions", () => {
     const query = vi
       .fn()
       .mockResolvedValueOnce({ rowCount: 0, rows: [] })
+      .mockResolvedValueOnce({ rowCount: 0, rows: [] })
       .mockResolvedValueOnce({ rows: [makeClaimRow()] });
 
     await claimNextManualDistrictResearchRequest(
@@ -503,7 +560,7 @@ describe("status transitions", () => {
       { claimedBy: "claude-session", agentKind: "claude", cooldownDays: 180 }
     );
 
-    const claimSql = query.mock.calls[1]?.[0] as string;
+    const claimSql = query.mock.calls[2]?.[0] as string;
     expect(claimSql).toContain("attempt_count = r.attempt_count + 1");
   });
 

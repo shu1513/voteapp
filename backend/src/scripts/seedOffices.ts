@@ -327,6 +327,22 @@ const SEED_OFFICES: SeedOffice[] = [
     ].join("\n"),
   },
   {
+    // Georgia's county misdemeanor prosecutor, elected separately from the
+    // District Attorney: the DA takes felonies to superior court for a
+    // multi-county judicial circuit, the solicitor-general takes misdemeanors
+    // to the county's State Court, and a county can hold both contests in the
+    // same cycle. NOT South Carolina's "Solicitor", which IS that state's
+    // felony circuit prosecutor (a District Attorney by another name).
+    scope: "county",
+    canonicalName: "Solicitor General",
+    summary: [
+      "Prosecuting misdemeanor cases in the county's state court, such as DUI, theft, and family-violence charges",
+      "Deciding who gets charged with those crimes and which cases are diverted or dropped",
+      "Deciding plea deals and what sentences to ask for",
+      "Representing the state at misdemeanor trials and appeals",
+    ].join("\n"),
+  },
+  {
     scope: "county",
     canonicalName: "County Clerk",
     summary: [
@@ -360,6 +376,55 @@ const SEED_OFFICES: SeedOffice[] = [
       "Estimating property values, which set how much property tax each owner pays",
       "Recording deeds, liens, and other official land documents",
       "Keeping property and ownership records open to the public",
+    ].join("\n"),
+  },
+  {
+    // Alabama counties elect ONE of two arrangements for property tax: a
+    // separate Tax Assessor and Tax Collector (Jefferson, Madison, Tuscaloosa
+    // — all on the Nov 2026 ballot), or this merged office, created county by
+    // county under Title 40 of the Code of Alabama. Lee County is a merged
+    // county. The two halves already have catalog homes (County Assessor and
+    // Collector of Revenue, aliased below); the merged office needs its own
+    // row, exactly as County Assessor-Recorder does for the combined
+    // assess-and-record office.
+    scope: "county",
+    canonicalName: "Revenue Commissioner",
+    summary: [
+      "Estimating what each property in the county is worth, which sets how much property tax each owner pays",
+      "Collecting property taxes and the taxes owed on vehicles, boats, and manufactured homes",
+      "Keeping property maps, ownership records, and assessment records",
+      "Handling tax exemptions, such as homeowner or over-65 discounts",
+    ].join("\n"),
+  },
+  {
+    // The other elected office in Alabama's split arrangement, and NOT the
+    // St. Louis-style License Collector below: the county tag office. Business
+    // licences are one line of the job — the bulk is motor-vehicle titles and
+    // tags, manufactured homes, driver-licence renewals, conservation permits
+    // and the sales/use tax on vehicle and boat sales. Mobile County's license
+    // commission raises roughly 57% of that county's general-fund revenue.
+    scope: "county",
+    canonicalName: "License Commissioner",
+    summary: [
+      "Issuing motor vehicle tags and titles, and registering boats and manufactured homes",
+      "Collecting the taxes and fees owed when a vehicle or boat is bought, registered, or renewed",
+      "Issuing business licenses and hunting and fishing licenses, and renewing driver licenses in many counties",
+      "Keeping the county's vehicle, license, and ownership records",
+    ].join("\n"),
+  },
+  {
+    // Virginia's chief local tax ASSESSING officer — one of the five
+    // constitutional officers every county and independent city elects under
+    // Art. VII Sec. 4, to a four-year term. Distinct from both offices above:
+    // it assesses personal-property, business-license, machinery-and-tools and
+    // meals taxes but does NOT collect, which is the elected Treasurer's job.
+    scope: "county",
+    canonicalName: "Commissioner of the Revenue",
+    summary: [
+      "Deciding what local taxes each resident and business owes, such as the tax on cars and business property",
+      "Running the local business license system and setting each business's license tax",
+      "Keeping local tax records and reviewing appeals when a taxpayer disputes an assessment",
+      "Helping residents file their state income tax returns in most localities",
     ].join("\n"),
   },
   {
@@ -701,6 +766,18 @@ const SEED_OFFICES: SeedOffice[] = [
       "Serving court papers and local legal notices",
       "Enforcing certain local laws",
       "Performing public safety duties the town or state assigns",
+    ].join("\n"),
+  },
+  {
+    // A Louisiana city marshal is the elected law-enforcement officer of the
+    // city court (La. R.S. 13:1879 et seq.), NOT a judge — see migration 224.
+    scope: "place",
+    canonicalName: "City Marshal",
+    summary: [
+      "Carrying out the city court's orders, such as warrants, evictions, and seizures of property",
+      "Serving court papers, including subpoenas and legal notices",
+      "Keeping order and providing security in the courtroom",
+      "Enforcing the law within the court's area, as state law allows",
     ].join("\n"),
   },
   {
@@ -1607,6 +1684,28 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     officeCanonicalName: "Municipal Constable",
     aliasText: "Village Constable",
   },
+  // Louisiana city-court marshal forms only, and each one names the city or the
+  // court. A town or village marshal (Indiana, Colorado) is the municipality's
+  // chief police officer rather than an officer of the court, so it stays
+  // uncatalogued and keeps returning no-match instead of inheriting this
+  // office's duties. There is deliberately NO bare "Marshal" alias: that is the
+  // exact word Indiana uses for the other office, and an alias would hand it
+  // over at confidence 1.000 — see migration 224.
+  {
+    scope: "place",
+    officeCanonicalName: "City Marshal",
+    aliasText: "City Marshal",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Marshal",
+    aliasText: "City Court Marshal",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "City Marshal",
+    aliasText: "Marshal of the City Court",
+  },
   {
     scope: "place",
     officeCanonicalName: "Place Level Judge",
@@ -1687,9 +1786,20 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
   },
   {
     // Georgia misdemeanor prosecutor ("Gwinnett County Solicitor General").
+    // Held by District Attorney until migration 225 split the offices apart;
+    // that migration also moves the stored alias, because upsertOfficeAlias
+    // below refuses to remap an alias whose stored office disagrees with this
+    // list rather than silently re-pointing it.
     scope: "county",
-    officeCanonicalName: "District Attorney",
+    officeCanonicalName: "Solicitor General",
     aliasText: "County Solicitor General",
+  },
+  {
+    // Ballots that title the office without the county word, and the
+    // hyphenated "Solicitor-General" (punctuation normalizes to a space).
+    scope: "county",
+    officeCanonicalName: "Solicitor General",
+    aliasText: "Solicitor General",
   },
   {
     // Minnesota/Kentucky chief county prosecutor title.
@@ -1793,6 +1903,102 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Level Judge",
     aliasText: "Chancellor",
+  },
+  {
+    // Alabama's merged property-tax office. The bare form also catches the
+    // "<County> Revenue Commissioner" ballot title through the matcher's
+    // civic-word-free alias lookup; the qualified form below is seeded anyway
+    // so the live title lands on an exact alias rather than on a scored match.
+    scope: "county",
+    officeCanonicalName: "Revenue Commissioner",
+    aliasText: "Revenue Commissioner",
+  },
+  {
+    // "Lee County Revenue Commissioner" after the jurisdiction strip. Without
+    // it the residual "county" token made County Commissioner — the county's
+    // LEGISLATIVE body — score 0.800, a confident wrong match onto a tax
+    // office (live: Lee County AL, Nov 2026).
+    scope: "county",
+    officeCanonicalName: "Revenue Commissioner",
+    aliasText: "County Revenue Commissioner",
+  },
+  {
+    // The assessing half of the Alabama arrangement, and the Florida/Georgia
+    // spelling of the same job. Resolved by token score alone before, which
+    // meant the bare title ("Tax Assessor", 0.500) fell under the floor while
+    // only the county-qualified form matched.
+    scope: "county",
+    officeCanonicalName: "County Assessor",
+    aliasText: "Tax Assessor",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "County Assessor",
+    aliasText: "County Tax Assessor",
+  },
+  {
+    // The collecting half. Matched NOTHING before (0.400): the catalog's
+    // collector offices are worded "Collector of Revenue" / "License
+    // Collector", which share one token with the title. Florida's 67 elected
+    // tax collectors use this exact title too.
+    scope: "county",
+    officeCanonicalName: "Collector of Revenue",
+    aliasText: "Tax Collector",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Collector of Revenue",
+    aliasText: "County Tax Collector",
+  },
+  {
+    // Alabama counties that kept the split arrangement elect a separate
+    // license commissioner (Tuscaloosa, Mobile, Limestone, Lauderdale live).
+    // Same 0.800 mis-match into County Commissioner as the revenue title.
+    scope: "county",
+    officeCanonicalName: "License Commissioner",
+    aliasText: "License Commissioner",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "License Commissioner",
+    aliasText: "County License Commissioner",
+  },
+  {
+    // Calhoun County's spelling of the same office. The "commissioner of X"
+    // word order is worse than the qualifier-first one: "county commissioner"
+    // sits inside it as a contiguous phrase and takes the containment boost,
+    // so this scored 0.920 into County Commissioner rather than 0.800.
+    scope: "county",
+    officeCanonicalName: "License Commissioner",
+    aliasText: "Commissioner of Licenses",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "License Commissioner",
+    aliasText: "County Commissioner of Licenses",
+  },
+  {
+    // Virginia's constitutional tax-assessing officer. Same 0.920 containment
+    // trap as the Calhoun form. The "of the" and bare "of" spellings are both
+    // live across localities.
+    scope: "county",
+    officeCanonicalName: "Commissioner of the Revenue",
+    aliasText: "Commissioner of the Revenue",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Commissioner of the Revenue",
+    aliasText: "Commissioner of Revenue",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Commissioner of the Revenue",
+    aliasText: "County Commissioner of the Revenue",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Commissioner of the Revenue",
+    aliasText: "County Commissioner of Revenue",
   },
   {
     // North Dakota's elected revenue commissioner; the catalog's statewide

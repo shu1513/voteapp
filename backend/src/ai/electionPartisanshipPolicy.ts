@@ -218,43 +218,42 @@ function getSchoolPartisanshipMode(state: string): SchoolPartisanshipMode {
 // office "Clerk of Court", but the bare "superior court" token below swallowed
 // them and handed the whole office to judicial policy (live 2026-08-08: Yuma
 // County's partisan Clerk of Superior Court contest was rejected as a judge).
-const COURT_CLERK_TITLE_PATTERN = /\bclerks?\b/i;
-
-// A prosecutor argues cases; they do not decide them, and neither does a public
-// defender. Both are nonetheless titled by the CIRCUIT they serve, and the
-// states that elect them name those circuits "<X> Judicial Circuit" by statute
-// (O.C.G.A. 15-6-1 for all 50+ Georgia circuits, and the same construction in
-// AL, FL, MS, and SC). The bare `judicial` token below therefore swallowed the
-// whole office and handed it to judicial policy: Georgia is nonpartisan for
-// judges, so every "District Attorney - <X> Judicial Circuit" row was forced
-// false and hard-failed the payload contract (live 2026-08-08, Paulding
-// County — whose own May 19 2026 certified results carry "District Attorney -
-// Paulding Judicial Circuit - Rep", i.e. nominated in a party primary and
-// printed with a party).
 //
-// The fix is the office, not the circuit name: narrowing `judicial` to skip the
-// "<X> Judicial Circuit" construction would also drop the real judges whose
-// titles name only the circuit, so the prosecutors and defenders leave judicial
-// policy the way the clerks above do.
+// The clerk is one case of a family: offices that administer or prosecute
+// before a court name that court in their own title without being judgeships.
+// Each one below was forced to the wrong answer by a judicial rule that has no
+// business classifying it — "Constable, Justice Prec. 2" (Yuma County's
+// constables are section-one partisan offices like the JP, and are stored that
+// way, but the bare "justice" token routed them to Arizona's nonpartisan
+// judicial fallback), "State Attorney, 4th Judicial Circuit" (Florida is not in
+// the map above, so the unmapped-state default forced its partisan prosecutor
+// nonpartisan), "Elkhart County Circuit Court Clerk", "Prosecuting Attorney of
+// Elkhart County, 34th Judicial Circuit". Their partisanship follows the
+// state's rule for ordinary county offices. Mirrors the office matcher's own
+// non-judicial markers, which already carve constables out of the judge
+// fallback for the same reason.
 //
-// `state(?:'?s)?` is deliberate: Illinois and Maryland elect a "State's
-// Attorney", Florida elects a "State Attorney" with no possessive (its live
-// 2026 title is "State Attorney (20th Judicial Circuit)"), and both are the
-// circuit prosecutor.
-const PROSECUTOR_OR_DEFENDER_TITLE_PATTERN =
-  /\b(?:district|state(?:'?s)?|commonwealth'?s|prosecuting|county|city)\s+attorneys?\b|\bprosecutors?\b|\bsolicitors?(?:[-\s]general)?\b|\bpublic\s+defenders?\b/i;
+// Three more of the same shape. Virginia and Kentucky call the prosecutor a
+// "Commonwealth's Attorney", the public defender is the other courtroom lawyer
+// titled by the circuit (Florida elects one per circuit: "Public Defender, 20th
+// Judicial Circuit"), and "City Attorney" completes the attorney set. Live
+// 2026-08-08: Paulding County, Georgia hard-failed the payload contract on
+// "District Attorney - Paulding Judicial Circuit", because O.C.G.A. 15-6-1
+// names all 50+ Georgia circuits "<X> Judicial Circuit" while Georgia's bench
+// is nonpartisan — its DAs are nominated in party primaries and printed with a
+// party ("... - Rep" in the county's May 19 2026 certified results).
+const NON_JUDICIAL_OFFICE_TITLE_MARKERS =
+  /\b(clerks?|prosecut(?:or|ing attorney)|district attorney|state'?s? attorney|commonwealth'?s? attorney|county attorney|city attorney|attorney general|solicitor|public defenders?|constables?|sheriff|marshal|recorder|coroner)\b/i;
 
-// Court staff and courtroom lawyers, as opposed to the bench itself. Exported
-// because the contest FAMILY must not outrank it: a pass labelled
+// Exported because the contest FAMILY must not outrank it: a pass labelled
 // judicial_office can still carry one of these offices, and the office is the
 // thing partisanship policy is about.
-export function isNonJudicialCourtOfficeTitle(title: string): boolean {
-  return COURT_CLERK_TITLE_PATTERN.test(title) ||
-    PROSECUTOR_OR_DEFENDER_TITLE_PATTERN.test(title);
+export function isNonJudicialOfficeTitle(title: string): boolean {
+  return NON_JUDICIAL_OFFICE_TITLE_MARKERS.test(title);
 }
 
 export function isJudicialOfficeTitle(title: string): boolean {
-  if (isNonJudicialCourtOfficeTitle(title)) {
+  if (isNonJudicialOfficeTitle(title)) {
     return false;
   }
   return /\b(judge|justice|judicial|superior court|court of appeal(s)?|supreme court|retention|magistrate)\b/i.test(
@@ -281,7 +280,7 @@ function isJudicialContest(
   // question was asked. Without this, a Georgia DA that slipped into the
   // judicial pass would be stamped nonpartisan with no contract error to catch
   // it, because the contract checks the title alone.
-  if (isNonJudicialCourtOfficeTitle(officialBallotTitle)) {
+  if (isNonJudicialOfficeTitle(officialBallotTitle)) {
     return false;
   }
   if (contestFamily === "judicial_office") {

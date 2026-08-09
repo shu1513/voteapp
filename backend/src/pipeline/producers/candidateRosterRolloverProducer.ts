@@ -23,6 +23,11 @@ export type CandidateRosterRolloverProducerResult = {
   emittedRows: number;
   markerSkippedRows: number;
   alreadyWrittenRows: number;
+  // Office-less shells: written by the elections writer for ballot titles the
+  // office matcher could not place, and not roster-eligible until
+  // manual:elections:repair-office-ids backfills office_id. Reported rather
+  // than silently skipped so a growing count is visible.
+  missingOfficeRows: number;
   bufferBlockedRows: number;
   notNearestRows: number;
   tooFarFutureRows: number;
@@ -46,6 +51,7 @@ export async function runCandidateRosterRolloverProducer(
       emittedRows: 0,
       markerSkippedRows: 0,
       alreadyWrittenRows: 0,
+      missingOfficeRows: 0,
       bufferBlockedRows: 0,
       notNearestRows: 0,
       tooFarFutureRows: 0,
@@ -74,6 +80,7 @@ export async function runCandidateRosterRolloverProducer(
       emittedRows: enqueue.emittedCount,
       markerSkippedRows: enqueue.skippedCount,
       alreadyWrittenRows: counts.already_written,
+      missingOfficeRows: counts.not_office_or_missing,
       bufferBlockedRows: counts.buffer_not_elapsed,
       notNearestRows: counts.not_nearest_in_track,
       tooFarFutureRows: counts.too_far_in_future,

@@ -49,22 +49,57 @@ type WriteResult = {
   officeElectionIds: string[];
 };
 
-class UnresolvedOfficeMatchError extends Error {
+type UnresolvedOfficeEntry = {
+  method: OfficeMatchResult["method"];
+  confidence: number;
+  officialBallotTitle: string;
+  normalizedAlias: string;
+};
+
+function describeUnresolvedOffices(input: {
+  districtId: string;
+  scope: string;
+  unresolved: readonly UnresolvedOfficeEntry[];
+}): string {
+  const entries = input.unresolved
+    .map(
+      (entry) =>
+        `method=${entry.method} confidence=${entry.confidence.toFixed(3)} ` +
+        `title=${JSON.stringify(entry.officialBallotTitle)} ` +
+        `normalized_alias=${JSON.stringify(entry.normalizedAlias)}`
+    )
+    .join("; ");
+  return (
+    `writer office match unresolved: district_id=${input.districtId} scope=${input.scope} ` +
+    `unresolved=${input.unresolved.length} ${entries}`
+  );
+}
+
+/**
+ * Some `districts` rows are not governments at all: `Arlington CDP, Virginia`
+ * is a Census statistical geography coextensive with, and named like, Arlington
+ * County, which is the row that actually holds the elections.
+ * `districts.canonical_district_id` names that owner, and contests written
+ * under the alias would sit where no ballot reader reaches them.
+ *
+ * Like an unresolved office match this is a permanent fault in the payload, not
+ * a transient one, so the writer parks the staging item instead of retrying it
+ * forever. Re-run the research against the district id named in the message.
+ */
+class NonGovernmentDistrictWriteError extends Error {
   constructor(input: {
     districtId: string;
-    scope: string;
-    method: OfficeMatchResult["method"];
-    confidence: number;
-    officialBallotTitle: string;
-    normalizedAlias: string;
+    districtName: string;
+    canonicalDistrictId: string;
+    canonicalDistrictName: string;
   }) {
     super(
-      `writer office match failed: district_id=${input.districtId} scope=${input.scope} ` +
-        `method=${input.method} confidence=${input.confidence.toFixed(3)} ` +
-        `title=${JSON.stringify(input.officialBallotTitle)} ` +
-        `normalized_alias=${JSON.stringify(input.normalizedAlias)}`
+      `writer refused non-government district: district_id=${input.districtId} ` +
+        `name=${JSON.stringify(input.districtName)} is a Census statistical row, not a district; ` +
+        `contests belong to canonical_district_id=${input.canonicalDistrictId} ` +
+        `name=${JSON.stringify(input.canonicalDistrictName)}`
     );
-    this.name = "UnresolvedOfficeMatchError";
+    this.name = "NonGovernmentDistrictWriteError";
   }
 }
 
@@ -177,7 +212,18 @@ function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionCont
 
   for (const family of families) {
     const list = sourceRecord[family];
+    if (list === undefined || list === null) {
+      continue;
+    }
+    // The contract rejects these shapes on the way in, but rows staged before
+    // that check exist: warn instead of dropping the family in silence, which
+    // is how districts reached election_seed_urls with nothing at all.
     if (!Array.isArray(list) || list.length === 0) {
+      console.warn(
+        `elections writer ignoring family_source_urls.${family}: expected a non-empty array of URL strings, got ${
+          Array.isArray(list) ? "an empty array" : typeof list
+        }`
+      );
       continue;
     }
     const urls = [
@@ -188,9 +234,13 @@ function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionCont
           .filter((item): item is string => Boolean(item))
       ),
     ];
-    if (urls.length > 0) {
-      result[family] = urls;
+    if (urls.length === 0) {
+      console.warn(
+        `elections writer ignoring family_source_urls.${family}: no entry normalized to an http(s) URL`
+      );
+      continue;
     }
+    result[family] = urls;
   }
 
   return result;
@@ -245,6 +295,10 @@ async function resolveOfficeElectionIds(
        AND e.election_date = o.election_date
       WHERE e.district_id = $1
         AND e.race_type = 'office'
+        -- Same rule as the fresh-write handoff: an office-less shell has no
+        -- office for the candidate-records stage to work from, so the replay
+        -- and recovery paths must not enqueue rosters for one either.
+        AND e.office_id IS NOT NULL
     `,
     [payload.district_id, titleKeys, dates]
   );
@@ -307,6 +361,31 @@ async function writeElectionsForDistrict(
   familySeedUrls: Partial<Record<ElectionContestScope, string[]>>,
   runId: string | null
 ): Promise<WriteResult> {
+  // Checked before the transaction opens so the payload parks as failed rather
+  // than half-writing a district that no reader will ever reach.
+  const canonicalCheck = await client.query<{
+    name: string;
+    canonical_district_id: string | null;
+    canonical_name: string | null;
+  }>(
+    `
+      SELECT d.name, d.canonical_district_id, owner.name AS canonical_name
+      FROM public.districts AS d
+      LEFT JOIN public.districts AS owner ON owner.id = d.canonical_district_id
+      WHERE d.id = $1
+    `,
+    [payload.district_id]
+  );
+  const canonicalRow = canonicalCheck.rows[0];
+  if (canonicalRow?.canonical_district_id) {
+    throw new NonGovernmentDistrictWriteError({
+      districtId: payload.district_id,
+      districtName: canonicalRow.name,
+      canonicalDistrictId: canonicalRow.canonical_district_id,
+      canonicalDistrictName: canonicalRow.canonical_name ?? "unknown",
+    });
+  }
+
   await client.query("BEGIN");
   try {
     const nextStatus = payload.entries.length === 0 ? "no_results" : "written";
@@ -358,11 +437,19 @@ async function writeElectionsForDistrict(
     }> = [];
     const insertedElectionIds: string[] = [];
     const matchedOfficeIds: Array<string | null> = [];
+    const unresolvedOffices: UnresolvedOfficeEntry[] = [];
+    const officeLessShellElectionIds: string[] = [];
 
-    // Resolve every office before inserting any election. One unresolved
-    // office makes the district payload incomplete, so fail the whole write
-    // instead of committing a shell that downstream candidate-record stages
-    // cannot use.
+    // Resolve every office before inserting any election. An entry the matcher
+    // cannot place is written as an office-less shell and reported, not thrown:
+    // aborting the payload took down every other contest in the district (one
+    // Indiana prosecutor title killed a 15-entry Elkhart County payload) while
+    // producing no protection — the operator's only recovery was to delete the
+    // entry and re-inject, which lands the same partial write by hand and loses
+    // the record of what went missing. The shell keeps the contest visible,
+    // `manual:elections:repair-office-ids` backfills office_id once a matcher
+    // or catalog fix lands, and the roster handoff below skips these ids so no
+    // downstream stage starts work it cannot finish.
     for (const entry of payload.entries) {
       if (entry.race_type !== "office") {
         matchedOfficeIds.push(null);
@@ -376,25 +463,19 @@ async function writeElectionsForDistrict(
         officialBallotTitle: entry.official_ballot_title,
         discoveryContestFamily: entry.discovery_contest_family,
       });
-      if (officeMatch.method === "none" || officeMatch.method === "ambiguous") {
-        throw new UnresolvedOfficeMatchError({
-          districtId: payload.district_id,
-          scope: payload.district_type,
+      if (
+        officeMatch.method === "none" ||
+        officeMatch.method === "ambiguous" ||
+        !officeMatch.officeId
+      ) {
+        unresolvedOffices.push({
           method: officeMatch.method,
           confidence: officeMatch.confidence,
           officialBallotTitle: entry.official_ballot_title,
           normalizedAlias: officeMatch.normalizedAlias,
         });
-      }
-      if (!officeMatch.officeId) {
-        throw new UnresolvedOfficeMatchError({
-          districtId: payload.district_id,
-          scope: payload.district_type,
-          method: officeMatch.method,
-          confidence: officeMatch.confidence,
-          officialBallotTitle: entry.official_ballot_title,
-          normalizedAlias: officeMatch.normalizedAlias,
-        });
+        matchedOfficeIds.push(null);
+        continue;
       }
       officeMatchCounts[officeMatch.method] += 1;
       matchedOfficeIds.push(officeMatch.officeId);
@@ -415,7 +496,12 @@ async function writeElectionsForDistrict(
 
     for (const [entryIndex, entry] of payload.entries.entries()) {
       const matchedOfficeId = matchedOfficeIds[entryIndex] ?? null;
-      const upsertResult = await client.query<{ id: string; race_type: string; inserted: boolean }>(
+      const upsertResult = await client.query<{
+        id: string;
+        race_type: string;
+        office_id: string | null;
+        inserted: boolean;
+      }>(
         `
           INSERT INTO public.elections (
             district_id,
@@ -458,7 +544,7 @@ async function writeElectionsForDistrict(
             END,
             sources = EXCLUDED.sources,
             updated_at = now()
-          RETURNING id, race_type, (xmax = 0) AS inserted
+          RETURNING id, race_type, office_id, (xmax = 0) AS inserted
         `,
         [
           payload.district_id,
@@ -481,7 +567,16 @@ async function writeElectionsForDistrict(
       if (row?.race_type === "ballot_measure") {
         ballotMeasureElectionIds.push(row.id);
       } else if (row?.race_type === "office") {
-        officeElectionIds.push(row.id);
+        // An office-less shell is held back from the roster handoff: the
+        // candidate-records stage is hard-blocked without an office_id, so
+        // enqueueing it would only queue work that cannot complete. The upsert
+        // COALESCEs office_id, so a shell whose office was resolved by an
+        // earlier write still hands off normally.
+        if (row.office_id) {
+          officeElectionIds.push(row.id);
+        } else {
+          officeLessShellElectionIds.push(row.id);
+        }
         if (entry.discovery_contest_family === "us_senate" || isUsSenateOfficeTitle(entry.official_ballot_title)) {
           senateMetadataRows.push({
             election_id: row.id,
@@ -503,6 +598,34 @@ async function writeElectionsForDistrict(
             `new_elections=${insertedElectionIds.length} events_created=${notification.createdCount}`
         );
       }
+    }
+
+    // The staging row stays `written` — the district was researched and its
+    // resolvable contests are in — but the reason field carries every title the
+    // matcher could not place, so a partial write is never silently complete.
+    if (unresolvedOffices.length > 0) {
+      const reason = toReason(
+        describeUnresolvedOffices({
+          districtId: payload.district_id,
+          scope: payload.district_type,
+          unresolved: unresolvedOffices,
+        })
+      );
+      await client.query(
+        `
+          UPDATE staging_items
+          SET reason = $2,
+              updated_at = now()
+          WHERE ingest_key = $1
+            AND item_type = $3
+        `,
+        [ingestKey, reason, STAGING_ITEM_TYPE_ELECTION]
+      );
+      console.warn(
+        `elections writer wrote office-less shells ingest_key=${ingestKey} ` +
+          `shells=${officeLessShellElectionIds.length} ` +
+          `(repair with: npm run manual:elections:repair-office-ids): ${reason}`
+      );
     }
 
     if (officeMatchCounts.alias_exact + officeMatchCounts.deterministic_fallback > 0) {
@@ -771,7 +894,12 @@ export async function runElectionsWriter(options: WriterOptions = {}): Promise<v
           await ack(entry.id);
         } catch (error) {
           const reason = toReason(error);
-          if (error instanceof UnresolvedOfficeMatchError) {
+          // An unresolved office no longer aborts — it writes an office-less
+          // shell, because the rest of the district's contests are still good.
+          // A non-government district row is the opposite case: there is no
+          // salvageable part, since every entry targets a row no reader
+          // reaches. Park it like a parse error rather than retrying forever.
+          if (error instanceof NonGovernmentDistrictWriteError) {
             await pool.query(
               `
                 UPDATE staging_items
