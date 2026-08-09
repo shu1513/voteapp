@@ -428,10 +428,9 @@ function baseInput(
 }
 
 describe("discoverGeorgiaArchiveRegistrations", () => {
-  it("keeps same-person same-cycle registrations and drops terminated and foreign ones", () => {
+  it("keeps same-person registrations across cycles and drops terminated and foreign ones", () => {
     const discovered = discoverGeorgiaArchiveRegistrations({
       candidateName: "Christopher Carr",
-      electionYear: 2026,
       archiveIndexRows: [
         archiveIndexRow(),
         archiveIndexRow({ filerEntityId: 2750, guid: AR_LEGACY_REGISTRATION_GUID, filerStatusCode: "T" }),
@@ -443,7 +442,10 @@ describe("discoverGeorgiaArchiveRegistrations", () => {
           candidateMiddleName: null,
           candidateLastName: "Smith",
         }),
-        // Prior-cycle registration of the same person.
+        // Prior-cycle registration of the same person — KEPT: the archive
+        // froze July 2025, so a 2026-cycle candidate's archive money often
+        // sits under a registration whose newest index row says 2022/2024,
+        // and the official index totals are registration-chain-cumulative.
         archiveIndexRow({
           guid: "cccccccc-3333-4333-8333-cccccccccccc",
           filingCycleName: "2022 State/Statewide Election Cycle for Candidates (January and June)",
@@ -451,13 +453,15 @@ describe("discoverGeorgiaArchiveRegistrations", () => {
         }),
       ],
     });
-    expect(discovered.map((row) => row.filerEntityId)).toEqual([757274]);
+    expect(discovered.map((row) => row.guid)).toEqual([
+      AR_REGISTRATION_GUID,
+      "cccccccc-3333-4333-8333-cccccccccccc",
+    ]);
   });
 
-  it("lets a middle-name conflict veto a same-cycle row", () => {
+  it("lets a middle-name conflict veto a row", () => {
     const discovered = discoverGeorgiaArchiveRegistrations({
       candidateName: "Christopher Alan Carr",
-      electionYear: 2026,
       archiveIndexRows: [archiveIndexRow()],
     });
     expect(discovered).toEqual([]);
@@ -530,12 +534,17 @@ describe("syncGeorgiaCandidateFinance", () => {
     });
     expect(db.connect).toHaveBeenCalled();
 
-    // The archive pull was keyed by the archive person display name.
+    // The archive pull was keyed by the SURNAME token, not the index display
+    // name — the archive report/transaction endpoints store "Surname, First"
+    // forms that the space-form index name never matches.
     expect(fetchers.fetchTransactionRowsWindowed).toHaveBeenCalledWith(
       dummyTransport,
       "efile_archive",
-      expect.objectContaining({ filerName: "Christopher Michael Carr", expectedFilerEntityIds: [757274] })
+      expect.objectContaining({ filerName: "CARR", expectedFilerEntityIds: [757274] })
     );
+    expect(fetchers.fetchFiledReportRows).toHaveBeenCalledWith(dummyTransport, "efile_archive", {
+      filerName: "CARR",
+    });
     // Window range derives from the earliest inventory period start.
     expect(fetchers.fetchTransactionRowsWindowed).toHaveBeenCalledWith(
       dummyTransport,
@@ -578,6 +587,11 @@ describe("syncGeorgiaCandidateFinance", () => {
     const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
     expect(result.archiveRegistrationSource).toBe("identity_map");
     expect(result.syncedRowSum).toBe(3500);
+    // Map-path archive fetches are surname-tokenized too — a map row stored
+    // with a space-form name must still match the archive's comma forms.
+    expect(fetchers.fetchFiledReportRows).toHaveBeenCalledWith(dummyTransport, "efile_archive", {
+      filerName: "CARR",
+    });
     // Only the PeachFile index was fetched — no archive discovery call.
     expect(fetchers.fetchCandidateIndexRows).toHaveBeenCalledTimes(1);
     expect(fetchers.fetchCandidateIndexRows).toHaveBeenCalledWith(
