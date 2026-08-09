@@ -19,6 +19,11 @@ export type ParsedPersonName = {
   first: string;
   middles: string[];
   last: string;
+  // Marks parses whose surname boundary is explicit (comma form, single
+  // token, two tokens) rather than guessed from a space-form split. A middle
+  // conflict on a pair with an exact side is authoritative — see
+  // collectMiddleEvidence.
+  exact: boolean;
 };
 
 // States pass their own person-name normalizer so per-state stop-word and
@@ -44,14 +49,14 @@ export function parsePersonNameCandidates(
     if (!last || restTokens.length === 0) {
       return [];
     }
-    return [{ first: restTokens[0]!, middles: restTokens.slice(1), last }];
+    return [{ first: restTokens[0]!, middles: restTokens.slice(1), last, exact: true }];
   }
   const tokens = normalizePersonName(raw).split(" ").filter(Boolean);
   if (tokens.length === 0) {
     return [];
   }
   if (tokens.length === 1) {
-    return [{ first: tokens[0]!, middles: [], last: tokens[0]! }];
+    return [{ first: tokens[0]!, middles: [], last: tokens[0]!, exact: true }];
   }
   const parses: ParsedPersonName[] = [];
   for (let lastStart = 1; lastStart < tokens.length; lastStart += 1) {
@@ -59,6 +64,7 @@ export function parsePersonNameCandidates(
       first: tokens[0]!,
       middles: tokens.slice(1, lastStart),
       last: tokens.slice(lastStart).join(" "),
+      exact: tokens.length === 2,
     });
   }
   return parses;
@@ -89,7 +95,7 @@ export function personNameParseVariants(
     if (callName) {
       for (const outer of outerParses) {
         if (callName !== outer.first) {
-          variants.push({ first: callName, middles: outer.middles, last: outer.last });
+          variants.push({ first: callName, middles: outer.middles, last: outer.last, exact: outer.exact });
         }
       }
     }
@@ -169,17 +175,27 @@ export type MiddleNameConflictInput = {
 };
 
 // Aggregated middle evidence across aligned candidate/row variant pairs.
-// Only pairs aligned on the LONGEST matching surname interpretation carry
-// evidence: a shorter split misreads part of a compound surname as a middle
-// name and can manufacture a conflict ("Mary [VAN] DYKE" vs
-// "Mary [B VAN] DYKE" conflicts, while the true "VAN DYKE" alignment is a
-// clean weak fallback). The wrong split still can never manufacture
-// AGREEMENT — first and last must align token-for-token — so preferring the
-// most-specific alignment only discards manufactured contradictions.
+// Strong corroboration and exact-pair conflicts are both collected GLOBALLY,
+// outside the longest-surname preference (the georgia aggregation order:
+// any strong pair wins, then an exact conflict rejects, then the ambiguous
+// remainder is arbitrated). An EXACT pair is one whose surname boundary is
+// explicit (comma form) rather than guessed, which pins the aligned parse
+// on the other side too — its conflict is authoritative, and an ambiguous
+// space-form split elsewhere must never override it ("Smith, John B. A."
+// conflicts with "John A. Smith" no matter how a sibling "John B A Smith"
+// row re-splits). Only ambiguous weak/conflict evidence is judged at the
+// LONGEST matching surname interpretation: a shorter split misreads part of
+// a compound surname as a middle name and can manufacture a conflict
+// ("Mary [VAN] DYKE" vs "Mary [B VAN] DYKE" conflicts, while the true
+// "VAN DYKE" alignment is a clean weak fallback). The wrong split still can
+// never manufacture AGREEMENT — first and last must align token-for-token —
+// so preferring the most-specific alignment only discards manufactured
+// contradictions.
 function collectMiddleEvidence(input: MiddleNameConflictInput): {
   sawStrong: boolean;
   sawWeak: boolean;
   sawConflict: boolean;
+  sawExactConflict: boolean;
 } {
   const firstNamesEquivalent =
     input.firstNamesEquivalent ?? ((candidateFirst: string, rowFirst: string) => candidateFirst === rowFirst);
@@ -188,6 +204,7 @@ function collectMiddleEvidence(input: MiddleNameConflictInput): {
   let sawStrong = false;
   let sawWeak = false;
   let sawConflict = false;
+  let sawExactConflict = false;
   for (const rowName of input.rowNames) {
     for (const rowVariant of personNameParseVariants(rowName, input.normalizePersonName)) {
       for (const candidateVariant of candidateVariants) {
@@ -197,20 +214,25 @@ function collectMiddleEvidence(input: MiddleNameConflictInput): {
         if (!firstNamesEquivalent(candidateVariant.first, rowVariant.first)) {
           continue;
         }
+        const evidence = middleNameEvidence(candidateVariant.middles, rowVariant.middles);
+        if (evidence === "strong") {
+          sawStrong = true;
+          continue;
+        }
+        if (evidence === "conflict" && (candidateVariant.exact || rowVariant.exact)) {
+          sawExactConflict = true;
+          continue;
+        }
         const pairSurnameTokenCount = rowVariant.last.split(" ").length;
         if (pairSurnameTokenCount < surnameTokenCount) {
           continue;
         }
         if (pairSurnameTokenCount > surnameTokenCount) {
           surnameTokenCount = pairSurnameTokenCount;
-          sawStrong = false;
           sawWeak = false;
           sawConflict = false;
         }
-        const evidence = middleNameEvidence(candidateVariant.middles, rowVariant.middles);
-        if (evidence === "strong") {
-          sawStrong = true;
-        } else if (evidence === "conflict") {
+        if (evidence === "conflict") {
           sawConflict = true;
         } else {
           sawWeak = true;
@@ -218,7 +240,7 @@ function collectMiddleEvidence(input: MiddleNameConflictInput): {
       }
     }
   }
-  return { sawStrong, sawWeak, sawConflict };
+  return { sawStrong, sawWeak, sawConflict, sawExactConflict };
 }
 
 // True when the candidate and row names align on first+last, at least one
@@ -235,7 +257,7 @@ function collectMiddleEvidence(input: MiddleNameConflictInput): {
 // state's key-overlap verdict stands.
 export function hasMiddleNameConflict(input: MiddleNameConflictInput): boolean {
   const evidence = collectMiddleEvidence(input);
-  return !evidence.sawStrong && evidence.sawConflict;
+  return !evidence.sawStrong && (evidence.sawConflict || evidence.sawExactConflict);
 }
 
 // Full match verdict (the georgia aggregation), for states whose key sets
@@ -248,5 +270,8 @@ export function hasMiddleNameConflict(input: MiddleNameConflictInput): boolean {
 // never widens beyond first+last agreement.
 export function personNamesMatchWithMiddleEvidence(input: MiddleNameConflictInput): boolean {
   const evidence = collectMiddleEvidence(input);
-  return evidence.sawStrong || (evidence.sawWeak && !evidence.sawConflict);
+  return (
+    evidence.sawStrong ||
+    (evidence.sawWeak && !evidence.sawConflict && !evidence.sawExactConflict)
+  );
 }
