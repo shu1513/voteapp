@@ -32,6 +32,28 @@ describe("upsertSanFranciscoFinanceLink", () => {
     expect(db.query).toHaveBeenCalledTimes(1);
   });
 
+  it("advances a matching manual link's last_verified_at when one is given", async () => {
+    const verifiedAt = new Date("2026-08-09T12:00:00.000Z");
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [{ id: "manual-1", fppc_id: "1489126" }],
+        })
+        .mockResolvedValueOnce({ rows: [] }),
+    };
+    const result = await upsertSanFranciscoFinanceLink({
+      db,
+      link: { ...LINK, lastVerifiedAt: verifiedAt },
+    });
+    expect(result.linkId).toBe("manual-1");
+    expect(db.query).toHaveBeenCalledTimes(2);
+    const [updateSql, updateParams] = db.query.mock.calls[1]!;
+    expect(updateSql).toContain("SET last_verified_at=");
+    expect(updateSql).not.toContain("link_source");
+    expect(updateParams).toEqual(["manual-1", verifiedAt.toISOString()]);
+  });
+
   it("refuses to override a manual link with a different committee", async () => {
     const db = {
       query: vi

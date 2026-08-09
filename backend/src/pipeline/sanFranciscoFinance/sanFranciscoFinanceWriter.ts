@@ -123,7 +123,19 @@ export async function upsertSanFranciscoFinanceLink(input: {
       [link.candidateId, link.electionId],
     );
     if (manual.rows.length) {
-      if (manual.rows[0]!.fppc_id === link.fppcId) return { linkId: manual.rows[0]!.id };
+      if (manual.rows[0]!.fppc_id === link.fppcId) {
+        // An exact committee match IS a manifest verification of the manual
+        // link, so advance last_verified_at (and nothing else — the row
+        // stays the operator's). Without this the batch's stale-election
+        // selector, which drives off active links' last_verified_at, would
+        // treat the election as stale on every run forever.
+        if (link.lastVerifiedAt)
+          await input.db.query(
+            `UPDATE public.sfc_candidate_finance_links SET last_verified_at=$2::timestamptz WHERE id=$1::uuid`,
+            [manual.rows[0]!.id, link.lastVerifiedAt.toISOString()],
+          );
+        return { linkId: manual.rows[0]!.id };
+      }
       throw new Error(
         "San Francisco automatic finance link conflicts with protected manual link",
       );

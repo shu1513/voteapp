@@ -243,11 +243,12 @@ export async function syncSanFranciscoCandidateFinance(input: {
     now.toISOString(),
     -FILING_INDEX_GRACE_DAYS,
   );
+  // An uncovered chain with no filing_date cannot be grace-evaluated, so it
+  // counts as missing — tolerating it would be a fail-open hole in this gate.
   const missingFilings = indexRows.filter(
     (row) =>
       !summaryFilingNids.has(row.filingNid) &&
-      row.filingDate !== null &&
-      row.filingDate.slice(0, 10) < coverageCutoff,
+      (row.filingDate === null || row.filingDate.slice(0, 10) < coverageCutoff),
   );
   if (missingFilings.length > 0)
     throw new Error(
@@ -341,43 +342,58 @@ export async function syncSanFranciscoCandidateFinance(input: {
   const reportedThrough = balances.latestFilingPeriodEnd?.slice(0, 10) ?? null;
 
   // --- Previous-vs-new anomaly bounds. ---
-  if (!input.bypassAnomalyCheck) {
-    const stored = await input.db.query<{
-      direct_contribution_total: string | null;
-      reported_through: string | null;
-    }>(
-      `SELECT summary.direct_contribution_total::text,summary.reported_through::text reported_through FROM public.sfc_candidate_finance_summaries summary JOIN public.sfc_candidate_finance_links link ON link.id=summary.link_id WHERE link.candidate_id=$1::uuid AND link.election_id=$2::uuid AND summary.election_year=$3`,
-      [input.candidateId, input.electionId, input.electionYear],
-    );
-    const storedRow = stored.rows[0];
-    const storedReportedThrough = storedRow?.reported_through ?? null;
-    if (storedReportedThrough !== null) {
-      // Filing history never shrinks: a snapshot reported through a LATER
-      // date than today's latest filing means the summary dataset lost
-      // filings (or the wrong committee answered) — abort.
-      if (reportedThrough === null || reportedThrough < storedReportedThrough)
-        throw new Error(
-          `San Francisco filing history went backwards for committee ${input.fppcId}: stored through ${storedReportedThrough}, now ${reportedThrough ?? "no filings"}`,
-        );
-      const storedDirectCents = moneyStringToCents(
-        storedRow?.direct_contribution_total,
+  // Baseline = the snapshot previously written for THIS committee's active
+  // link only: deactivated links from an earlier relink keep their summary
+  // rows, and comparing against another committee's totals would both
+  // false-abort valid syncs and mask real collapses. A relink therefore
+  // starts with no baseline, which is correct — different committee,
+  // legitimately different totals.
+  const stored = await input.db.query<{
+    direct_contribution_total: string | null;
+    reported_through: string | null;
+  }>(
+    `SELECT summary.direct_contribution_total::text,summary.reported_through::text reported_through FROM public.sfc_candidate_finance_summaries summary JOIN public.sfc_candidate_finance_links link ON link.id=summary.link_id WHERE link.candidate_id=$1::uuid AND link.election_id=$2::uuid AND summary.election_year=$3 AND link.link_status='active' AND link.fppc_id=$4`,
+    [input.candidateId, input.electionId, input.electionYear, input.fppcId],
+  );
+  const storedRow = stored.rows[0];
+  const storedReportedThrough = storedRow?.reported_through ?? null;
+  if (storedReportedThrough !== null) {
+    // Filing history never shrinks: a snapshot reported through a LATER
+    // date than today's latest filing means the summary dataset lost
+    // filings — abort. Deliberately NOT overridable by bypassAnomalyCheck:
+    // that flag covers the drop bound only, and a true regression is a
+    // source catastrophe no sync should write through.
+    if (reportedThrough === null || reportedThrough < storedReportedThrough)
+      throw new Error(
+        `San Francisco filing history went backwards for committee ${input.fppcId}: stored through ${storedReportedThrough}, now ${reportedThrough ?? "no filings"}`,
       );
-      if (
-        storedDirectCents !== null &&
-        storedDirectCents >= ANOMALY_MIN_STORED_CENTS &&
-        reportedThrough === storedReportedThrough &&
-        directContributionCents < storedDirectCents / ANOMALY_DROP_FACTOR
-      )
-        throw new Error(
-          `San Francisco direct-contribution total collapsed on an unchanged filing set for committee ${input.fppcId}: ${storedDirectCents} -> ${directContributionCents} cents (pass bypassAnomalyCheck to override)`,
-        );
-    }
+    const storedDirectCents = moneyStringToCents(
+      storedRow?.direct_contribution_total,
+    );
+    if (
+      !input.bypassAnomalyCheck &&
+      storedDirectCents !== null &&
+      storedDirectCents >= ANOMALY_MIN_STORED_CENTS &&
+      reportedThrough === storedReportedThrough &&
+      directContributionCents < storedDirectCents / ANOMALY_DROP_FACTOR
+    )
+      throw new Error(
+        `San Francisco direct-contribution total collapsed on an unchanged filing set for committee ${input.fppcId}: ${storedDirectCents} -> ${directContributionCents} cents (pass bypassAnomalyCheck to override)`,
+      );
   }
 
   // --- Deterministic + cached-manual industry classification only. ---
   // No classifier parameter exists on purpose: SF finance sync makes zero
   // AI calls. Unknown results persist through the snapshot write and form
   // the manual industry-label due queue.
+  //
+  // Industries derive from the aggregator's TOP-20 employer rows — the Los
+  // Angeles semantics, kept identical on purpose. The resulting industry
+  // rows are stored-only enrichment in this card path (direct industries
+  // are deliberately not displayed, see the Phase 8 plan note), and the
+  // top-20 bound keeps the manual-classification queue focused on labels
+  // big enough to matter; widening to the full employer map is a product
+  // decision to take for LA and SF together, not an SF-only divergence.
   const classifications = new Map<string, FinanceLabelClassification>();
   const employerRows = direct.breakdowns.filter(
     (row) => row.categoryType === "employer",

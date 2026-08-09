@@ -229,6 +229,8 @@ beforeEach(() => {
     linkId: "link-1",
   });
   vi.mocked(resolveFinanceIndustryClassifications).mockClear();
+  // Reset so a test's queued once-values can never leak into the next one.
+  vi.mocked(getSanFranciscoDatasetFreshness).mockReset();
 });
 
 describe("syncSanFranciscoCandidateFinance", () => {
@@ -344,6 +346,16 @@ describe("syncSanFranciscoCandidateFinance", () => {
     ).rejects.toThrow(/missing current Form 460 filings .*: f3/);
   });
 
+  it("fails closed on an uncovered filing with no filing date", async () => {
+    vi.mocked(getSanFranciscoCommitteeCurrentForm460Filings).mockResolvedValue([
+      ...INDEX_ROWS,
+      { filingNid: "f3", filingDate: null },
+    ]);
+    await expect(
+      syncSanFranciscoCandidateFinance(baseInput(fakeDb())),
+    ).rejects.toThrow(/missing current Form 460 filings .*: f3/);
+  });
+
   it("tolerates an uncovered filing inside the nightly-lag grace window", async () => {
     vi.mocked(getSanFranciscoCommitteeCurrentForm460Filings).mockResolvedValue([
       ...INDEX_ROWS,
@@ -393,6 +405,12 @@ describe("syncSanFranciscoCandidateFinance", () => {
       syncSanFranciscoCandidateFinance(baseInput(db)),
     ).rejects.toThrow(/collapsed on an unchanged filing set/);
     expect(replaceSanFranciscoCandidateFinanceSnapshot).not.toHaveBeenCalled();
+    // The baseline is scoped to THIS committee's active link — summaries
+    // left behind by a deactivated earlier link must not feed the bound.
+    const [anomalySql, anomalyParams] = db.query.mock.calls[0]!;
+    expect(anomalySql).toContain("link.link_status='active'");
+    expect(anomalySql).toContain("link.fppc_id=$4");
+    expect(anomalyParams).toEqual(["cand-1", "elec-1", 2026, "1490199"]);
     const bypassDb = fakeDb([
       { direct_contribution_total: "1300000.00", reported_through: "2026-09-30" },
     ]);
@@ -417,6 +435,21 @@ describe("syncSanFranciscoCandidateFinance", () => {
     ]);
     await expect(
       syncSanFranciscoCandidateFinance(baseInput(db)),
+    ).rejects.toThrow(/filing history went backwards/);
+    // bypassAnomalyCheck covers the drop bound only — a regression still
+    // aborts under the override.
+    await expect(
+      syncSanFranciscoCandidateFinance({
+        ...baseInput(
+          fakeDb([
+            {
+              direct_contribution_total: "1000.00",
+              reported_through: "2026-12-31",
+            },
+          ]),
+        ),
+        bypassAnomalyCheck: true,
+      }),
     ).rejects.toThrow(/filing history went backwards/);
   });
 
@@ -468,8 +501,7 @@ describe("checkSanFranciscoSourceFreshness", () => {
       .mockResolvedValueOnce({
         dataAsOf: "2026-08-05T00:00:00.000",
         dataLoadedAt: "2026-08-09T00:00:00.000",
-      })
-      .mockResolvedValueOnce(HEALTHY_FRESHNESS.summary);
+      });
     await expect(
       checkSanFranciscoSourceFreshness({ now: NOW }),
     ).rejects.toThrow(/disagree on data_as_of/);
