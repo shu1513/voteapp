@@ -23,6 +23,10 @@ import {
   aggregateSanFranciscoDirectContributions,
   SAN_FRANCISCO_DIRECT_CONTRIBUTION_FORM_TYPES,
 } from "../pipeline/sanFranciscoFinance/sanFranciscoDirectContributionAggregator.js";
+import {
+  matchSanFranciscoPublicFunds,
+  sanFranciscoPublicFundsDistrictForContest,
+} from "../pipeline/sanFranciscoFinance/sanFranciscoPublicFundsMatcher.js";
 
 type ContestTarget = { electionDate: string; contestCode: string };
 
@@ -69,12 +73,6 @@ function centsToMoney(cents: number | null): string | null {
   return cents === null ? null : (cents / 100).toFixed(2);
 }
 
-// One key derivation for every name comparison in this probe, so map
-// construction and lookup can never disagree.
-function nameKey(name: string): string {
-  return name.trim().replace(/\s+/g, " ").toUpperCase();
-}
-
 // Manifest names are "FIRST LAST"; split into the DataSF name-field filters.
 // First AND last are both sent to the transactions query — last name alone
 // mixes candidates who share a surname (verified live: David Lee's Schedule D
@@ -89,22 +87,6 @@ function splitCandidateName(candidateName: string): {
     firstName: parts[0] ?? candidateName,
     lastName: parts[parts.length - 1] ?? candidateName,
   };
-}
-
-// Public-funds rows disclose "Last, First"; the manifest uses "FIRST LAST".
-function normalizeCommaName(name: string): string {
-  const [last, first] = name.split(",", 2);
-  return nameKey(`${(first ?? "").trim()} ${(last ?? "").trim()}`);
-}
-
-// The public-financing program covers Mayor and Supervisor races only, and
-// its rows carry a district ("Mayor" or a bare district number). Scope the
-// lookup to this contest's district so a same-surname candidate in another
-// contest on the same ballot can never be summed in.
-function publicFundsDistrictFor(contestCode: string): string | null {
-  if (contestCode === "myr") return "Mayor";
-  const supervisorMatch = /^bos(\d{2})$/.exec(contestCode);
-  return supervisorMatch ? String(Number(supervisorMatch[1])) : null;
 }
 
 function shiftDate(isoDate: string, days: number): string {
@@ -304,26 +286,15 @@ async function probeContest(
   // Public financing explains the gap between raw Form 460 contribution
   // sums and the dashboard "funds" figure (verified to the cent for the
   // 2024 Mayor and June 2026 D4 races): funds = line-5 sum + public funds.
-  const publicFundsDistrict = publicFundsDistrictFor(target.contestCode);
+  const publicFundsDistrict = sanFranciscoPublicFundsDistrictForContest(
+    target.contestCode,
+  );
   const publicFundsRows = publicFundsDistrict
     ? await getSanFranciscoPublicFundsApproved(
         { electionDate: target.electionDate },
         sodaOptions,
       )
     : [];
-  const publicFundsCentsByCandidate = new Map<string, number>();
-  const publicFundsApprovalsByCandidate = new Map<string, number[]>();
-  for (const row of publicFundsRows) {
-    if (row.district !== publicFundsDistrict) continue;
-    const key = normalizeCommaName(row.candidateName);
-    publicFundsCentsByCandidate.set(
-      key,
-      (publicFundsCentsByCandidate.get(key) ?? 0) + row.fundsApprovedCents,
-    );
-    const approvals = publicFundsApprovalsByCandidate.get(key) ?? [];
-    approvals.push(row.fundsApprovedCents);
-    publicFundsApprovalsByCandidate.set(key, approvals);
-  }
   let errorCount = 0;
   const candidates = [];
   for (const candidate of manifest.candidates) {
@@ -338,8 +309,14 @@ async function probeContest(
       // approved plus the sum of Form 460 line-5 periods up to some cutoff
       // filing. Walk period prefixes and report where — or whether — the
       // manifest total is reproduced exactly.
-      const publicFundsCents =
-        publicFundsCentsByCandidate.get(nameKey(candidate.candidateName)) ?? 0;
+      const publicFundsMatch = publicFundsDistrict
+        ? matchSanFranciscoPublicFunds({
+            rows: publicFundsRows,
+            candidateName: candidate.candidateName,
+            district: publicFundsDistrict,
+          })
+        : null;
+      const publicFundsCents = publicFundsMatch?.publicFundsCents ?? 0;
       let runningContributions = publicFundsCents;
       let runningExpenditures = 0;
       let matchedCutoff: {
@@ -368,10 +345,7 @@ async function probeContest(
         fppcId: candidate.fppcId,
         summaryRows,
         publicFundsCents,
-        publicFundsApprovalCents:
-          publicFundsApprovalsByCandidate.get(
-            nameKey(candidate.candidateName),
-          ) ?? [],
+        publicFundsApprovalCents: publicFundsMatch?.approvalCents ?? [],
         manifestFundsCents: candidate.fundsCents,
         sodaOptions,
       });
@@ -424,6 +398,7 @@ async function probeContest(
         manifest_funds: centsToMoney(candidate.fundsCents),
         manifest_expenses: centsToMoney(candidate.expensesCents),
         public_funds_approved: centsToMoney(publicFundsCents),
+        public_funds_match_status: publicFundsMatch?.status ?? null,
         summary_filings: summaryRows.length,
         raw_contributions_all_periods: centsToMoney(runningContributions),
         raw_expenditures_all_periods: centsToMoney(runningExpenditures),
