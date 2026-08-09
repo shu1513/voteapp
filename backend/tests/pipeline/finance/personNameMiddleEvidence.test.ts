@@ -176,6 +176,16 @@ describe("hasMiddleNameConflict", () => {
     expect(conflict("John A. Smith", ["John B A Smith"])).toBe(false);
   });
 
+  it("lets strong corroboration survive a longer ambiguous alignment", () => {
+    // Strong evidence is global, like an exact conflict: the "A SMITH"
+    // split's longer weak alignment must not erase the exact "John A."
+    // corroboration while the exact "John B." conflict stays counted —
+    // any strong pair clears the veto (georgia aggregation).
+    expect(
+      conflict("John A. Smith", ["Smith, John B.", "Smith, John A.", "John B A Smith"])
+    ).toBe(false);
+  });
+
   it("agrees with personNamesMatchWithMiddleEvidence on every shared case", () => {
     // Wherever parses align, the veto and the full matcher are complements.
     const cases: Array<[string, string[]]> = [
@@ -248,6 +258,14 @@ describe("personNamesMatchWithMiddleEvidence", () => {
     expect(matches("John A. Smith", ["Smith, John B. A.", "John B A Smith"])).toBe(false);
     // The space-form row alone is a genuine ambiguity and still matches.
     expect(matches("John A. Smith", ["John B A Smith"])).toBe(true);
+  });
+
+  it("matches when strong corroboration outweighs an exact conflict", () => {
+    // Strong is global: neither the exact "John B." conflict nor the longer
+    // ambiguous "A SMITH" alignment erases the exact "John A." agreement.
+    expect(
+      matches("John A. Smith", ["Smith, John B.", "Smith, John A.", "John B A Smith"])
+    ).toBe(true);
   });
 });
 

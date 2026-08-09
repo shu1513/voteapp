@@ -175,19 +175,22 @@ export type MiddleNameConflictInput = {
 };
 
 // Aggregated middle evidence across aligned candidate/row variant pairs.
-// A conflict on an EXACT pair — one whose surname boundary is explicit
-// (comma form) rather than guessed, which pins the aligned parse on the
-// other side too — is authoritative and is collected regardless of surname
-// length: an ambiguous space-form split elsewhere must never override it
-// ("Smith, John B. A." conflicts with "John A. Smith" no matter how a
-// sibling "John B A Smith" row re-splits). Otherwise only pairs aligned on
-// the LONGEST matching surname interpretation carry evidence: a shorter
-// split misreads part of a compound surname as a middle name and can
-// manufacture a conflict ("Mary [VAN] DYKE" vs "Mary [B VAN] DYKE"
-// conflicts, while the true "VAN DYKE" alignment is a clean weak fallback).
-// The wrong split still can never manufacture AGREEMENT — first and last
-// must align token-for-token — so preferring the most-specific alignment
-// only discards manufactured contradictions.
+// Strong corroboration and exact-pair conflicts are both collected GLOBALLY,
+// outside the longest-surname preference (the georgia aggregation order:
+// any strong pair wins, then an exact conflict rejects, then the ambiguous
+// remainder is arbitrated). An EXACT pair is one whose surname boundary is
+// explicit (comma form) rather than guessed, which pins the aligned parse
+// on the other side too — its conflict is authoritative, and an ambiguous
+// space-form split elsewhere must never override it ("Smith, John B. A."
+// conflicts with "John A. Smith" no matter how a sibling "John B A Smith"
+// row re-splits). Only ambiguous weak/conflict evidence is judged at the
+// LONGEST matching surname interpretation: a shorter split misreads part of
+// a compound surname as a middle name and can manufacture a conflict
+// ("Mary [VAN] DYKE" vs "Mary [B VAN] DYKE" conflicts, while the true
+// "VAN DYKE" alignment is a clean weak fallback). The wrong split still can
+// never manufacture AGREEMENT — first and last must align token-for-token —
+// so preferring the most-specific alignment only discards manufactured
+// contradictions.
 function collectMiddleEvidence(input: MiddleNameConflictInput): {
   sawStrong: boolean;
   sawWeak: boolean;
@@ -212,6 +215,10 @@ function collectMiddleEvidence(input: MiddleNameConflictInput): {
           continue;
         }
         const evidence = middleNameEvidence(candidateVariant.middles, rowVariant.middles);
+        if (evidence === "strong") {
+          sawStrong = true;
+          continue;
+        }
         if (evidence === "conflict" && (candidateVariant.exact || rowVariant.exact)) {
           sawExactConflict = true;
           continue;
@@ -222,13 +229,10 @@ function collectMiddleEvidence(input: MiddleNameConflictInput): {
         }
         if (pairSurnameTokenCount > surnameTokenCount) {
           surnameTokenCount = pairSurnameTokenCount;
-          sawStrong = false;
           sawWeak = false;
           sawConflict = false;
         }
-        if (evidence === "strong") {
-          sawStrong = true;
-        } else if (evidence === "conflict") {
+        if (evidence === "conflict") {
           sawConflict = true;
         } else {
           sawWeak = true;
