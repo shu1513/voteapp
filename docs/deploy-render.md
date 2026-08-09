@@ -160,12 +160,24 @@ Notes:
 
 ## Free-tier launch state (2026-07-10)
 
-The first deploy went out with no card on file, so render.yaml pins free
+The first deploy went out with no card on file, so render.yaml pinned free
 plans. Consequences, in order of urgency:
 
-1. **Free Postgres expires ~30 days after creation** — the instance (and
-   data) is deleted unless upgraded. Add a card and upgrade the DB plan
-   well before expiry.
+1. ~~**Free Postgres expires ~30 days after creation**~~ — RESOLVED
+   2026-08-08, one day before the deadline: a card was added and
+   `voteapp-db` moved to `basic-1gb`. Expiry would not have deleted it on
+   the spot — an expired free database goes *inaccessible* (production
+   down), and Render deletes it and its data after a further 14-day grace
+   period. Storage is now expandable ($0.30/GB) and point-in-time recovery
+   is active (3-day window on the Hobby workspace).
+
+   Storage autoscaling was enabled the same day. It is a safety net, not a
+   guarantee: at 90% full Render raises storage by 50%, rounded up to the
+   nearest 5 GB, so this database's first trigger jumps it from 1 GB
+   straight to 5 GB. That increase is PERMANENT — Render never shrinks a
+   volume — so a runaway backfill leaves a standing bill rather than just a
+   scare, and a load that grows faster than autoscaling reacts can still
+   fill the disk. Check the storage figure after bulk loads.
 2. Free web services spin down after ~15 idle minutes; the next request
    pays a cold start (tens of seconds). Upgrade `voteapp-api` /
    `voteapp-ssr` to `starter` for always-on.

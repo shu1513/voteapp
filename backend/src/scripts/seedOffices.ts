@@ -445,6 +445,16 @@ const SEED_OFFICES: SeedOffice[] = [
   },
   {
     scope: "county",
+    canonicalName: "Justice of the Peace",
+    summary: [
+      "Hearing small-claims cases and disputes between neighbors, landlords, and tenants",
+      "Deciding eviction cases in many states",
+      "Handling traffic and minor criminal citations where state law allows it",
+      "Performing marriages and signing routine legal papers such as affidavits",
+    ].join("\n"),
+  },
+  {
+    scope: "county",
     canonicalName: "Constable",
     summary: [
       "Serving court papers, such as evictions, subpoenas, and court orders",
@@ -477,6 +487,30 @@ const SEED_OFFICES: SeedOffice[] = [
       "Guiding local programs that protect soil, farmland, and water",
       "Helping landowners with drainage, erosion, and watershed projects",
       "Directing conservation funding and priorities in the district",
+    ].join("\n"),
+  },
+  {
+    // Independent fire districts are their own elected taxing bodies, separate
+    // from county or city government (Florida alone puts dozens of these
+    // boards on the ballot). Filed at county scope because the district sits
+    // inside one county and its seats appear on that county's ballot.
+    //
+    // Caveat for whoever imports these contests: a fire district's boundaries
+    // are SUB-county and there is no districts row for them, so an election
+    // attached to the county district shows to every voter in the county, not
+    // only the ones inside that fire district. That is the same limitation
+    // county-scope seat elections already carry (County Commissioner District
+    // 2 and friends, ~600 live rows) and it needs address-resolved special
+    // districts to fix properly — but it bites harder here, because a fire
+    // district is a separate jurisdiction rather than one seat on a body that
+    // governs the whole county. Weigh that before publishing a roster.
+    scope: "county",
+    canonicalName: "Fire Control District Commissioner",
+    summary: [
+      "Setting the budget for an independent fire district and the taxes or assessments that pay for it",
+      "Overseeing the district's fire stations, trucks, and emergency medical service",
+      "Hiring and supervising the fire chief",
+      "Approving contracts, staffing levels, and equipment purchases for the district",
     ].join("\n"),
   },
   // The four offices below reached long-lived databases through a version of
@@ -555,6 +589,19 @@ const SEED_OFFICES: SeedOffice[] = [
       "Approving the city budget",
       "Overseeing city departments and services",
       "Representing residents' concerns at city hall",
+    ].join("\n"),
+  },
+  {
+    // Grand Rapids MI and many Michigan/Midwest cities elect their public
+    // library's governing board citywide, on its own ballot heading
+    // ("Library Board 6 Year Term", Kent County live).
+    scope: "place",
+    canonicalName: "Library Board Member",
+    summary: [
+      "Setting policy for the public library and its branches",
+      "Approving the library's budget and how its millage money is spent",
+      "Hiring and overseeing the library director",
+      "Deciding library hours, services, and building projects",
     ].join("\n"),
   },
   {
@@ -1794,8 +1841,65 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     aliasText: "Louisville Metro Council Member",
   },
   {
+    // "Library Board 6 Year Term" (Grand Rapids MI live) — the bare body name
+    // is the ballot heading; the member office is what a voter elects.
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Library Board",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Public Library Board",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Library Trustee",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Library Board of Trustees",
+  },
+  {
+    scope: "place",
+    officeCanonicalName: "Library Board Member",
+    aliasText: "Board of Library Trustees",
+  },
+  {
     scope: "county",
     officeCanonicalName: "Constable",
+    aliasText: "Constable",
+  },
+  {
+    // Caddo Parish LA titles the constable seat by the justice court it serves
+    // ("Constable Justice of the Peace Ward 7"); the ward number is a seat
+    // suffix, so the stripped key keeps the court words.
+    scope: "county",
+    officeCanonicalName: "Constable",
+    aliasText: "Constable Justice of the Peace",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Justice of the Peace",
+    aliasText: "Justice of the Peace",
+  },
+  {
+    // The LA SOS emits the office name twice ("Justice of the Peace Justice of
+    // the Peace Ward 1", Caddo Parish live). The matcher collapses the repeat,
+    // but the raw title is looked up first, so key the source form too.
+    scope: "county",
+    officeCanonicalName: "Justice of the Peace",
+    aliasText: "Justice of the Peace Justice of the Peace",
+  },
+  {
+    // Orleans Parish's constable serves the First City Court — a MUNICIPAL
+    // court, so that seat belongs to the New Orleans place district, where the
+    // catalog office is Municipal Constable. The seat strip reduces "Constable
+    // 1st City Court" to the bare office word.
+    scope: "place",
+    officeCanonicalName: "Municipal Constable",
     aliasText: "Constable",
   },
   {
@@ -1845,6 +1949,39 @@ const SEED_OFFICE_ALIASES: SeedOfficeAlias[] = [
     scope: "county",
     officeCanonicalName: "County Board of Review Member",
     aliasText: "County Board of Review",
+  },
+  // Florida's Notice of General Election titles these seats by the district's
+  // own name and a seat number ("Holley-Navarre Fire District Seat 3",
+  // "Navarre Beach Fire Rescue District, Seat 5", "Avalon Beach-Mulat Fire
+  // Protection District Seat 1" — Santa Rosa County, Nov 2026). The proper
+  // noun cannot be enumerated as an alias, so the matcher folds every named
+  // fire-district body form onto this canonical key; the self-alias below is
+  // what that folded key lands on. The remaining rows cover the bare
+  // district-flavor forms a ballot may print without a district name.
+  {
+    scope: "county",
+    officeCanonicalName: "Fire Control District Commissioner",
+    aliasText: "Fire Control District Commissioner",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Fire Control District Commissioner",
+    aliasText: "Fire District Commissioner",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Fire Control District Commissioner",
+    aliasText: "Fire Rescue District Commissioner",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Fire Control District Commissioner",
+    aliasText: "Fire Protection District Commissioner",
+  },
+  {
+    scope: "county",
+    officeCanonicalName: "Fire Control District Commissioner",
+    aliasText: "Fire Commissioner",
   },
 ];
 
