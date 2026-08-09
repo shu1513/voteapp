@@ -73,16 +73,34 @@ describe("selectNcsbeCycleReportRows", () => {
     expect(excludedNoTotalReportRowCount).toBe(1);
   });
 
-  it("includes and counts rows whose period bounds are missing or implausible", () => {
+  it("includes and counts undated rows whose ReportYear is in the cycle", () => {
     const missing = documentRow({ dataLink: "20", periodStartDate: parseNcsbeDate("") });
     // The live year-3026 landmine: a typo must widen the fetch, not narrow it.
     const landmine = documentRow({ dataLink: "21", periodEndDate: parseNcsbeDate("06/01/3026") });
-    const { selected, unusablePeriodRowCount } = selectNcsbeCycleReportRows({
-      rows: [missing, landmine],
-      cycleYear: 2026,
-    });
+    const { selected, unusablePeriodRowCount, excludedUndatedOutOfCycleRowCount } =
+      selectNcsbeCycleReportRows({ rows: [missing, landmine], cycleYear: 2026 });
     expect(selected.map((row) => row.dataLink)).toEqual(["20", "21"]);
     expect(unusablePeriodRowCount).toBe(2);
+    expect(excludedUndatedOutOfCycleRowCount).toBe(0);
+  });
+
+  it("drops an undated row whose ReportYear is decades outside the cycle", () => {
+    // Live PR 9 finding: SURRY REC's 1989-1994 filings carry blank period
+    // bounds, and their pre-2007 covers fail the 34-section pin. ReportYear
+    // is the only trustworthy window evidence such a row has.
+    const legacy = documentRow({
+      dataLink: "27160",
+      reportYear: 1994,
+      reportType: "Annual",
+      periodStartDate: parseNcsbeDate(""),
+      periodEndDate: parseNcsbeDate(""),
+    });
+    const current = documentRow({ dataLink: "22", reportYear: 2025, periodStartDate: parseNcsbeDate("") });
+    const { selected, unusablePeriodRowCount, excludedUndatedOutOfCycleRowCount } =
+      selectNcsbeCycleReportRows({ rows: [legacy, current], cycleYear: 2026 });
+    expect(selected.map((row) => row.dataLink)).toEqual(["22"]);
+    expect(unusablePeriodRowCount).toBe(2);
+    expect(excludedUndatedOutOfCycleRowCount).toBe(1);
   });
 });
 

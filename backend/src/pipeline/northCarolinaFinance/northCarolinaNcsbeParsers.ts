@@ -240,6 +240,14 @@ export function parseNcsbeCommitteeSearchPage(html: string): NcsbeCommitteeSearc
 // no-total form must keep failing closed until it is verified and added.
 export const NCSBE_NO_TOTAL_REPORT_TYPES: ReadonlySet<string> = new Set(["48-Hour Notice"]);
 
+// Window fallback for an inventory row whose period bounds are missing or
+// implausible: the row's own `ReportYear` decides whether it can touch the
+// Y−1..Y cycle. One function so the acquisition's fetch selection and the
+// sync's cycle filter can never disagree about which undated rows exist.
+export function isNcsbeReportYearInCycle(reportYear: number, cycleYear: number): boolean {
+  return reportYear >= cycleYear - 1 && reportYear <= cycleYear;
+}
+
 export type NcsbeDocumentRow = {
   committeeName: string;
   // Null when the filer is unregistered (`No Id`) — decision 6.

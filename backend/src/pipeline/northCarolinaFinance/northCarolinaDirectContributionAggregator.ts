@@ -4,6 +4,7 @@ import {
   type NcsbeQuarantinedGroup,
 } from "./northCarolinaReportSelector.js";
 import {
+  isNcsbeReportYearInCycle,
   NCSBE_NO_TOTAL_REPORT_TYPES,
   type NcsbeDocumentRow,
   type NcsbeExpenditureRow,
@@ -106,6 +107,9 @@ export type NorthCarolinaDirectAggregationResult = {
   // Pinned no-total forms (48-Hour Notice) dropped before selection —
   // counted so a dropped filing is visible, never silent.
   excludedNoTotalReportRowCount: number;
+  // Undated rows whose ReportYear puts them outside the cycle (a long-lived
+  // committee's 1990s filings) — dropped before selection and counted.
+  excludedUndatedOutOfCycleRowCount: number;
   // Advisory reconciliation (decision 11): itemized receipt-row sums vs the
   // authoritative cover values. In-kind timing and non-itemized income make
   // modest gaps normal; a large gap means artifact damage.
@@ -259,12 +263,18 @@ function requireSection(sections: Map<number, SectionValues>, sequence: number, 
 export function selectNorthCarolinaDirectCycleReportRows(input: {
   rows: readonly NcsbeDocumentRow[];
   electionYear: number;
-}): { rows: NcsbeDocumentRow[]; unusablePeriodRowCount: number; excludedNoTotalReportRowCount: number } {
+}): {
+  rows: NcsbeDocumentRow[];
+  unusablePeriodRowCount: number;
+  excludedNoTotalReportRowCount: number;
+  excludedUndatedOutOfCycleRowCount: number;
+} {
   const cycleStartIso = `${input.electionYear - 1}-01-01`;
   const cycleEndIso = `${input.electionYear}-12-31`;
   const rows: NcsbeDocumentRow[] = [];
   let unusablePeriodRowCount = 0;
   let excludedNoTotalReportRowCount = 0;
+  let excludedUndatedOutOfCycleRowCount = 0;
   for (const row of input.rows) {
     if (row.documentType !== "Disclosure Report") {
       continue;
@@ -282,14 +292,23 @@ export function selectNorthCarolinaDirectCycleReportRows(input: {
     const endIso = row.periodEndDate.iso;
     if (startIso === null || endIso === null) {
       unusablePeriodRowCount += 1;
-      rows.push(row);
+      // Undated rows fall back to ReportYear (same rule the acquisition
+      // fetches by). A long-lived committee's undated 1990s filings must not
+      // enter selection: the acquisition never fetched them, so they would
+      // surface as permanently missing artifacts and fail the candidate — or,
+      // on a spender, the whole year's funder leg.
+      if (isNcsbeReportYearInCycle(row.reportYear, input.electionYear)) {
+        rows.push(row);
+      } else {
+        excludedUndatedOutOfCycleRowCount += 1;
+      }
       continue;
     }
     if (startIso <= cycleEndIso && endIso >= cycleStartIso) {
       rows.push(row);
     }
   }
-  return { rows, unusablePeriodRowCount, excludedNoTotalReportRowCount };
+  return { rows, unusablePeriodRowCount, excludedNoTotalReportRowCount, excludedUndatedOutOfCycleRowCount };
 }
 
 type OccupationAggregate = {
@@ -328,11 +347,15 @@ export function aggregateNorthCarolinaDirectFinance(
   );
   const sourceUrl = input.sourceUrl ?? null;
 
-  const { rows: cycleRows, unusablePeriodRowCount, excludedNoTotalReportRowCount } =
-    selectNorthCarolinaDirectCycleReportRows({
-      rows: input.inventoryRows,
-      electionYear,
-    });
+  const {
+    rows: cycleRows,
+    unusablePeriodRowCount,
+    excludedNoTotalReportRowCount,
+    excludedUndatedOutOfCycleRowCount,
+  } = selectNorthCarolinaDirectCycleReportRows({
+    rows: input.inventoryRows,
+    electionYear,
+  });
   const selection = selectNcsbeCurrentFilings({ rows: cycleRows });
   const selectedFilings = [...selection.selected].sort(comparePeriodOrder);
   const selectedReportIds = selectedFilings.map((filing) => filing.reportId!);
@@ -380,6 +403,7 @@ export function aggregateNorthCarolinaDirectFinance(
     missingReportIds,
     unusablePeriodRowCount,
     excludedNoTotalReportRowCount,
+    excludedUndatedOutOfCycleRowCount,
     itemizedReceiptsCents: 0,
     coverTotalReceiptsCents: null,
     itemizedIndividualCents: 0,
@@ -611,6 +635,7 @@ export function aggregateNorthCarolinaDirectFinance(
     missingReportIds,
     unusablePeriodRowCount,
     excludedNoTotalReportRowCount,
+    excludedUndatedOutOfCycleRowCount,
     itemizedReceiptsCents,
     coverTotalReceiptsCents: totalReceiptsCents,
     itemizedIndividualCents,

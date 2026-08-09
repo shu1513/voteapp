@@ -13,7 +13,11 @@ import {
   type NcsbeArtifactKey,
   type NcsbeSourceDocumentMetadata,
 } from "./northCarolinaNcsbeArtifactCache.js";
-import { NCSBE_NO_TOTAL_REPORT_TYPES, type NcsbeDocumentRow } from "./northCarolinaNcsbeParsers.js";
+import {
+  isNcsbeReportYearInCycle,
+  NCSBE_NO_TOTAL_REPORT_TYPES,
+  type NcsbeDocumentRow,
+} from "./northCarolinaNcsbeParsers.js";
 
 // Acquisition for NCSBE portal artifacts (north_carolina_plan.md "Required
 // artifacts per cycle Y"). Retrieval only: report ids are discovered from the
@@ -35,17 +39,28 @@ export type NcsbeAcquisitionCommittee = {
 // report; period overlap with the Y−1..Y window decides inclusion (extra
 // spike finding: match by period, not a report-type whitelist). Rows whose
 // period bounds are missing or implausible — the portal holds a live year-
-// 3026 date — are INCLUDED and counted: a data-entry typo must widen the
-// fetch, never silently narrow it.
+// 3026 date — fall back to `ReportYear`: inside the window they are INCLUDED
+// and counted (a data-entry typo must widen the fetch, never silently narrow
+// it), outside it they are excluded and counted separately. Without that
+// fallback a long-lived committee's undated 1990s filings are all fetched
+// (PR 9 run: SURRY REC's twelve 1989–1994 rows), and they use a pre-2007
+// cover vocabulary that fails the 34-section pin — which would then fail the
+// whole spender's funder leg on artifacts that can never exist.
 export function selectNcsbeCycleReportRows(input: {
   rows: readonly NcsbeDocumentRow[];
   cycleYear: number;
-}): { selected: NcsbeDocumentRow[]; unusablePeriodRowCount: number; excludedNoTotalReportRowCount: number } {
+}): {
+  selected: NcsbeDocumentRow[];
+  unusablePeriodRowCount: number;
+  excludedNoTotalReportRowCount: number;
+  excludedUndatedOutOfCycleRowCount: number;
+} {
   const cycleStartIso = `${input.cycleYear - 1}-01-01`;
   const cycleEndIso = `${input.cycleYear}-12-31`;
   const selected: NcsbeDocumentRow[] = [];
   let unusablePeriodRowCount = 0;
   let excludedNoTotalReportRowCount = 0;
+  let excludedUndatedOutOfCycleRowCount = 0;
   for (const row of input.rows) {
     if (row.documentType !== "Disclosure Report" || row.dataLink === null) {
       continue;
@@ -61,14 +76,23 @@ export function selectNcsbeCycleReportRows(input: {
     const endIso = row.periodEndDate.iso;
     if (startIso === null || endIso === null) {
       unusablePeriodRowCount += 1;
-      selected.push(row);
+      if (isNcsbeReportYearInCycle(row.reportYear, input.cycleYear)) {
+        selected.push(row);
+      } else {
+        excludedUndatedOutOfCycleRowCount += 1;
+      }
       continue;
     }
     if (startIso <= cycleEndIso && endIso >= cycleStartIso) {
       selected.push(row);
     }
   }
-  return { selected, unusablePeriodRowCount, excludedNoTotalReportRowCount };
+  return {
+    selected,
+    unusablePeriodRowCount,
+    excludedNoTotalReportRowCount,
+    excludedUndatedOutOfCycleRowCount,
+  };
 }
 
 export function ncsbeSourceDocumentMetadata(row: NcsbeDocumentRow): NcsbeSourceDocumentMetadata {
@@ -218,6 +242,7 @@ export type NcsbeCommitteeAcquisitionResult = {
   selectedReportCount: number;
   unusablePeriodRowCount: number;
   excludedNoTotalReportRowCount: number;
+  excludedUndatedOutOfCycleRowCount: number;
   fetched: NcsbeReportFetchSummary[];
   skippedReportIds: string[];
   failures: Array<{ reportId: string; message: string }>;
@@ -321,7 +346,12 @@ export async function acquireNcsbeCommitteeArtifacts(input: {
     retrievedAt: input.retrievedAt,
   });
 
-  const { selected, unusablePeriodRowCount, excludedNoTotalReportRowCount } = selectNcsbeCycleReportRows({
+  const {
+    selected,
+    unusablePeriodRowCount,
+    excludedNoTotalReportRowCount,
+    excludedUndatedOutOfCycleRowCount,
+  } = selectNcsbeCycleReportRows({
     rows: inventory.parsed,
     cycleYear: input.cycleYear,
   });
@@ -342,6 +372,7 @@ export async function acquireNcsbeCommitteeArtifacts(input: {
     selectedReportCount: selected.length,
     unusablePeriodRowCount,
     excludedNoTotalReportRowCount,
+    excludedUndatedOutOfCycleRowCount,
     ...reportSet,
   };
 }

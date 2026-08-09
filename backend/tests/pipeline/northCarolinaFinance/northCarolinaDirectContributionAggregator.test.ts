@@ -195,6 +195,28 @@ describe("aggregateNorthCarolinaDirectFinance", () => {
     expect(result.summary.totalReceipts).toBe(6073.24);
   });
 
+  it("drops an undated 1990s filing instead of failing the candidate on a report nobody fetched", () => {
+    // The acquisition never fetches these rows, so letting selection demand
+    // their artifacts would mark every such committee incomplete forever.
+    const legacy = makeInventoryRow({
+      reportType: "Annual",
+      reportYear: 1994,
+      periodStartDate: parseNcsbeDate(""),
+      periodEndDate: parseNcsbeDate(""),
+      dataLink: "27160",
+    });
+    const result = aggregateNorthCarolinaDirectFinance({
+      electionYear: 2026,
+      inventoryRows: [GADSON_Q1_ROW, legacy],
+      reports: [{ reportId: "229931", cover: GADSON_COVER, receiptRows: GADSON_RECEIPTS }],
+      sourceUrl: SOURCE_URL,
+    });
+    expect(result.status).toBe("ok");
+    expect(result.excludedUndatedOutOfCycleRowCount).toBe(1);
+    expect(result.selectedReportIds).toEqual(["229931"]);
+    expect(result.missingReportIds).toEqual([]);
+  });
+
   it("sums covers across reports, checks the Cycle chain, and takes cash from the latest report", () => {
     const organizational = makeInventoryRow({
       reportType: "Organizational",
