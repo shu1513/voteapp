@@ -220,8 +220,30 @@ function getSchoolPartisanshipMode(state: string): SchoolPartisanshipMode {
 // County's partisan Clerk of Superior Court contest was rejected as a judge).
 const COURT_CLERK_TITLE_PATTERN = /\bclerks?\b/i;
 
+// A prosecutor argues cases; they do not decide them, and neither does a public
+// defender. Both are nonetheless titled by the CIRCUIT they serve, and the
+// states that elect them name those circuits "<X> Judicial Circuit" by statute
+// (O.C.G.A. 15-6-1 for all 50+ Georgia circuits, and the same construction in
+// AL, FL, MS, and SC). The bare `judicial` token below therefore swallowed the
+// whole office and handed it to judicial policy: Georgia is nonpartisan for
+// judges, so every "District Attorney - <X> Judicial Circuit" row was forced
+// false and hard-failed the payload contract (live 2026-08-08, Paulding
+// County — whose own May 19 2026 certified results carry "District Attorney -
+// Paulding Judicial Circuit - Rep", i.e. nominated in a party primary and
+// printed with a party).
+//
+// The fix is the office, not the circuit name: narrowing `judicial` to skip the
+// "<X> Judicial Circuit" construction would also drop the real judges whose
+// titles name only the circuit, so the prosecutors and defenders leave judicial
+// policy the way the clerks above do.
+const PROSECUTOR_OR_DEFENDER_TITLE_PATTERN =
+  /\b(?:district|state'?s|commonwealth'?s|prosecuting|county|city)\s+attorneys?\b|\bprosecutors?\b|\bsolicitors?(?:[-\s]general)?\b|\bpublic\s+defenders?\b/i;
+
 export function isJudicialOfficeTitle(title: string): boolean {
   if (COURT_CLERK_TITLE_PATTERN.test(title)) {
+    return false;
+  }
+  if (PROSECUTOR_OR_DEFENDER_TITLE_PATTERN.test(title)) {
     return false;
   }
   return /\b(judge|justice|judicial|superior court|court of appeal(s)?|supreme court|retention|magistrate)\b/i.test(

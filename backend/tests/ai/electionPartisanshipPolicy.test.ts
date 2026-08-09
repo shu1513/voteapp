@@ -402,6 +402,66 @@ describe("electionPartisanshipPolicy", () => {
     ).toBeUndefined();
   });
 
+  it("treats prosecutors and public defenders as non-judicial offices", () => {
+    // Every Georgia DA's ballot title names the circuit, and O.C.G.A. 15-6-1
+    // names all 50+ circuits "<X> Judicial Circuit" — the bare `judicial` token
+    // pulled the office into judicial policy, which is nonpartisan in Georgia.
+    expect(isJudicialOfficeTitle("District Attorney - Paulding Judicial Circuit")).toBe(false);
+    expect(isJudicialOfficeTitle("Solicitor-General, State Court of Paulding County")).toBe(false);
+    expect(isJudicialOfficeTitle("Solicitor, 1st Judicial Circuit")).toBe(false);
+    expect(isJudicialOfficeTitle("Public Defender, 20th Judicial Circuit")).toBe(false);
+    expect(isJudicialOfficeTitle("State's Attorney, 9th Judicial Circuit")).toBe(false);
+    expect(isJudicialOfficeTitle("Commonwealth's Attorney")).toBe(false);
+    expect(isJudicialOfficeTitle("Prosecuting Attorney")).toBe(false);
+    expect(isJudicialOfficeTitle("County Attorney")).toBe(false);
+    expect(isJudicialOfficeTitle("District Attorney General, 19th Judicial District")).toBe(false);
+    // The judges of the same circuits stay judicial.
+    expect(isJudicialOfficeTitle("Judge, Superior Courts, Paulding Judicial Circuit")).toBe(true);
+
+    // Georgia DAs are nominated in party primaries and printed with a party
+    // (Paulding County's May 19 2026 certified results: "... - Rep"), so policy
+    // must leave the researched value alone instead of forcing it false.
+    expect(
+      resolveCandidateContestPartisanshipByPolicy({
+        districtType: "county",
+        state: "GA",
+        officialBallotTitle: "District Attorney - Paulding Judicial Circuit",
+      })
+    ).toBeUndefined();
+    expect(
+      shouldIncludeCandidatePartyByPolicy({
+        districtType: "county",
+        state: "GA",
+        officialBallotTitle: "District Attorney - Paulding Judicial Circuit",
+      })
+    ).toBe(true);
+    expect(
+      resolveElectionIsPartisan({
+        draft: {
+          district_id: "1dca234a-876f-4957-812c-3fedf8e0a7cb",
+          district_name: "Paulding County, Georgia",
+          district_type: "county",
+          state: "GA",
+        },
+        contestFamily: "non_judicial_office",
+        raceType: "office",
+        officialBallotTitle: "District Attorney - Paulding Judicial Circuit",
+        aiValue: true,
+      })
+    ).toBe(true);
+
+    // Same construction in the other "Judicial Circuit" states.
+    for (const state of ["AL", "FL", "MS", "SC"]) {
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "county",
+          state,
+          officialBallotTitle: "District Attorney, 4th Judicial Circuit",
+        })
+      ).toBeUndefined();
+    }
+  });
+
   it("keeps Ohio common pleas, municipal, and county court judges nonpartisan", () => {
     // ORC 3505.04 puts "judges of a municipal court, county court, or court of
     // common pleas" on the nonpartisan ballot, which may print no party
