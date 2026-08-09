@@ -1,6 +1,84 @@
 import { describe, expect, it } from "vitest";
 
-import { parseAiElectionEntriesPayload, parseCanonicalElectionPayload } from "../../src/contracts/electionPayloadContract.js";
+import {
+  parseAiElectionEntriesPayload,
+  parseCanonicalElectionPayload,
+  parseFamilySourceUrls,
+} from "../../src/contracts/electionPayloadContract.js";
+
+describe("parseFamilySourceUrls", () => {
+  it("accepts a missing map", () => {
+    expect(parseFamilySourceUrls(undefined)).toEqual({ ok: true, familySourceUrls: null });
+    expect(parseFamilySourceUrls(null)).toEqual({ ok: true, familySourceUrls: null });
+  });
+
+  it("normalizes, dedupes, and keeps every known family", () => {
+    const result = parseFamilySourceUrls({
+      all: ["https://example.gov/a", "https://example.gov/a"],
+      judicial_office: ["https://example.gov/courts"],
+    });
+
+    expect(result).toEqual({
+      ok: true,
+      familySourceUrls: {
+        all: ["https://example.gov/a"],
+        judicial_office: ["https://example.gov/courts"],
+      },
+    });
+  });
+
+  it("rejects a bare string value", () => {
+    const result = parseFamilySourceUrls({ judicial_office: "https://example.gov/courts" });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe(
+        "payload.family_source_urls.judicial_office must be an array of URL strings"
+      );
+    }
+  });
+
+  it("rejects non-string array members", () => {
+    const result = parseFamilySourceUrls({ all: ["https://example.gov/a", 42] });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe("payload.family_source_urls.all must be an array of URL strings");
+    }
+  });
+
+  it("rejects an empty array", () => {
+    const result = parseFamilySourceUrls({ all: [] });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain("must contain at least one URL string");
+    }
+  });
+
+  it("rejects a URL that is not http(s)", () => {
+    const result = parseFamilySourceUrls({ all: ["not-a-url"] });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain("is not a valid http(s) URL");
+    }
+  });
+
+  it("rejects an unknown contest family", () => {
+    const result = parseFamilySourceUrls({ school_board: ["https://example.gov/board"] });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain("is not a known contest family");
+    }
+  });
+
+  it("rejects a non-object map", () => {
+    expect(parseFamilySourceUrls("https://example.gov/a").ok).toBe(false);
+    expect(parseFamilySourceUrls(["https://example.gov/a"]).ok).toBe(false);
+  });
+});
 
 describe("parseCanonicalElectionPayload", () => {
   it("parses valid payload", () => {
@@ -27,6 +105,32 @@ describe("parseCanonicalElectionPayload", () => {
       expect(result.payload.entries).toHaveLength(1);
       expect(result.payload.entries[0].race_type).toBe("office");
       expect(result.payload.entries[0].discovery_contest_family).toBe("non_judicial_office");
+    }
+  });
+
+  it("rejects a non-array family_source_urls value instead of dropping it", () => {
+    const result = parseCanonicalElectionPayload({
+      district_id: "d1",
+      district_name: "California",
+      district_type: "statewide",
+      state: "CA",
+      family_source_urls: { judicial_office: "https://example.gov/courts" },
+      entries: [
+        {
+          official_ballot_title: "Governor",
+          election_date: "2026-11-03",
+          race_type: "office",
+          discovery_contest_family: "non_judicial_office",
+          sources: ["https://example.gov/elections/governor"],
+        },
+      ],
+    });
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe(
+        "payload.family_source_urls.judicial_office must be an array of URL strings"
+      );
     }
   });
 

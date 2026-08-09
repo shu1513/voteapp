@@ -212,7 +212,18 @@ function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionCont
 
   for (const family of families) {
     const list = sourceRecord[family];
+    if (list === undefined || list === null) {
+      continue;
+    }
+    // The contract rejects these shapes on the way in, but rows staged before
+    // that check exist: warn instead of dropping the family in silence, which
+    // is how districts reached election_seed_urls with nothing at all.
     if (!Array.isArray(list) || list.length === 0) {
+      console.warn(
+        `elections writer ignoring family_source_urls.${family}: expected a non-empty array of URL strings, got ${
+          Array.isArray(list) ? "an empty array" : typeof list
+        }`
+      );
       continue;
     }
     const urls = [
@@ -223,9 +234,13 @@ function extractFamilySeedUrls(aiRawDebug: unknown): Partial<Record<ElectionCont
           .filter((item): item is string => Boolean(item))
       ),
     ];
-    if (urls.length > 0) {
-      result[family] = urls;
+    if (urls.length === 0) {
+      console.warn(
+        `elections writer ignoring family_source_urls.${family}: no entry normalized to an http(s) URL`
+      );
+      continue;
     }
+    result[family] = urls;
   }
 
   return result;
