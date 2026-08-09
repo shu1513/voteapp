@@ -429,6 +429,18 @@ function stripSeatSuffixes(value: string): string {
       " "
     )
     .replace(/\bjudicial\s+(?:circuit|district)(?: court)?\s+(?:no )?\d+[a-z]?\b/g, " ")
+    // A Florida community development district (Fla. Stat. ch. 190) is named
+    // after the development it serves, and the ballot title is the district
+    // name plus the seat: "Lake Powell Residential Golf Community Development
+    // District, Seat 2" (Bay County live — two contested seats, four qualified
+    // candidates, all stranded at method=none). The proper name is the seat's
+    // jurisdiction, not part of the office, and it cannot be removed by the
+    // jurisdiction strip: that keys on the districts row, which is the COUNTY
+    // (Bay), while the title names the CDD. Reduce it to the bare civic phrase
+    // the catalog holds. Anchored at the start and non-greedy so it only
+    // consumes the leading proper name, and it fires only when the phrase is
+    // present.
+    .replace(/^.*?\bcommunity development district\b/, "community development district")
     // Louisiana numbers its justice-of-the-peace COURTS and titles both the JP
     // seat and its constable seat by the court ("Justice of the Peace 2nd
     // Justice Court" / "Constable 2nd Justice Court", Jefferson Parish live:

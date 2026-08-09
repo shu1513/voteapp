@@ -2259,6 +2259,63 @@ describe("OfficeMatcher", () => {
       return new OfficeMatcher(client as never);
     }
 
+    it("strips a Florida CDD's proper name so the live Bay County seat titles resolve", async () => {
+      // "Lake Powell Residential Golf Community Development District, Seat 2"
+      // (Bay County live) returned method=none at 0.222 and stranded four
+      // qualified candidates across two contested seats. The CDD's proper name
+      // is the seat's jurisdiction, and the ordinary jurisdiction strip cannot
+      // remove it: that keys on the districts row, which is the COUNTY.
+      const createCddMatcher = () =>
+        new OfficeMatcher(
+          createMatcherDataClient({
+            aliasesByScope: {
+              county: [
+                {
+                  office_id: "office-cdd-supervisor",
+                  normalized_alias: "community development district",
+                },
+              ],
+            },
+            officesByScope: { county: louisianaCountyOffices },
+          }) as never
+        );
+
+      for (const title of [
+        "Lake Powell Residential Golf Community Development District, Seat 2",
+        "Lake Powell Residential Golf Community Development District, Seat 5",
+      ]) {
+        const result = await createCddMatcher().resolve({
+          scope: "county",
+          districtName: "Bay County, Florida",
+          state: "FL",
+          officialBallotTitle: title,
+          discoveryContestFamily: "non_judicial_office",
+        });
+
+        expect(result).toMatchObject({
+          officeId: "office-cdd-supervisor",
+          method: "alias_exact",
+          confidence: 1,
+        });
+      }
+    });
+
+    it("leaves a title alone when it names no community development district", async () => {
+      // The strip is anchored on the civic phrase, so an ordinary county
+      // contest keeps its own jurisdiction handling.
+      const result = await createLouisianaMatcher([
+        { office_id: "office-constable", normalized_alias: "constable" },
+      ]).resolve({
+        scope: "county",
+        districtName: "Jefferson Parish, Louisiana",
+        state: "LA",
+        officialBallotTitle: "Constable 2nd Justice Court",
+        discoveryContestFamily: "non_judicial_office",
+      });
+
+      expect(result).toMatchObject({ officeId: "office-constable", confidence: 1 });
+    });
+
     it("resolves the doubled SOS justice-of-the-peace title to the JP office, not the trial court", async () => {
       const result = await createLouisianaMatcher().resolve({
         scope: "county",
