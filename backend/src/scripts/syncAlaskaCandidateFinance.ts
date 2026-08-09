@@ -17,6 +17,7 @@ import {
   syncAlaskaCandidateFinance,
   type AlaskaCandidateFinanceSyncResult,
 } from "../pipeline/alaskaFinance/alaskaCandidateFinanceSync.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncAlaskaCandidateFinanceScriptOptions = {
   candidateId: string;
@@ -103,9 +104,13 @@ function parseElectionYear(args: readonly string[]): number {
   return year;
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--write"]);
+const KNOWN_VALUE_FLAGS = new Set(["--candidate-filer-id", "--candidate-filer-name", "--candidate-id", "--candidate-name", "--district", "--election-id", "--ie-contributions-csv", "--ie-expenditures-csv", "--income-csv", "--office", "--source-url", "--year"]);
+
 export function parseSyncAlaskaCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncAlaskaCandidateFinanceScriptOptions {
+  assertKnownCliFlags(args, "Alaska candidate finance sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   const dryRunFlag = args.includes("--dry-run");
   const writeFlag = args.includes("--write");
   if (dryRunFlag && writeFlag) {

@@ -60,9 +60,9 @@ describe("refreshPennsylvaniaCampaignFinanceRawData script", () => {
   });
 
   it("rejects missing or duplicate values", () => {
-    expect(() => parseArgs(["--url"])).toThrow("Missing value for --url");
-    expect(() => parseArgs(["--url="])).toThrow("Missing value for --url");
-    expect(() => parseArgs(["--cache-dir", "   "])).toThrow("Missing value for --cache-dir");
+    expect(() => parseArgs(["--url"])).toThrow("Missing --url value");
+    expect(() => parseArgs(["--url="])).toThrow("Missing --url value");
+    expect(() => parseArgs(["--cache-dir", "   "])).toThrow("Missing --cache-dir value");
     expect(() => parseArgs(["--year=2022", "--year=2024"])).toThrow("Provide --year at most once");
   });
 

@@ -5,6 +5,7 @@ import {
   enqueueManualColoradoTracerRawDataRefreshJob,
   type ColoradoTracerRawDataRefreshJobData,
 } from "../scheduler/coloradoTracerRawDataRefreshScheduler.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -40,9 +41,13 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--cache-dir", "--timeout-ms", "--url", "--year"]);
+
 export function parseColoradoTracerRawDataRefreshTriggerArgs(
   args: readonly string[]
 ): ColoradoTracerRawDataRefreshJobData {
+  assertKnownCliFlags(args, "Colorado TRACER raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     force: args.includes("--force"),
     year: parsePositiveIntegerFlag(args, "--year"),

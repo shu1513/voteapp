@@ -5,6 +5,7 @@ import {
   type CandidateFinanceSyncJobData,
 } from "../scheduler/candidateFinanceSyncScheduler.js";
 import { loadProjectEnv } from "../config/env.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -40,7 +41,11 @@ function parseOptionalStringFlag(args: readonly string[], name: string): string 
   return value && value.length > 0 ? value : undefined;
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--include-outside"]);
+const KNOWN_VALUE_FLAGS = new Set(["--candidate-id", "--fec-id", "--lookahead-days", "--lookback-days", "--max-candidates", "--per-page", "--stale-after-days", "--timeout-ms", "--top-groups", "--year"]);
+
 export function parseCandidateFinanceSyncTriggerArgs(args: readonly string[]): CandidateFinanceSyncJobData {
+  assertKnownCliFlags(args, "candidate finance sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

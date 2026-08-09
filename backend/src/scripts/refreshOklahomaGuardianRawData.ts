@@ -10,6 +10,7 @@ import {
   parseOklahomaGuardianHttpsUrl,
   refreshOklahomaGuardianContributionArtifactCache,
 } from "../pipeline/oklahomaFinance/oklahomaGuardianContributionArtifactCache.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export { DEFAULT_OKLAHOMA_GUARDIAN_CONTRIBUTION_CACHE_DIR };
 
@@ -78,9 +79,13 @@ function parseLocalPath(value: string | undefined, fallback: string, flagName: s
   return resolve(normalized);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--cache-dir", "--timeout-ms", "--url", "--year"]);
+
 export function parseRefreshOklahomaGuardianRawDataScriptArgs(
   args: readonly string[]
 ): RefreshOklahomaGuardianRawDataScriptOptions {
+  assertKnownCliFlags(args, "Oklahoma Guardian raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   const year = parseYear(readValueFlag(args, "--year"));
   return {
     year,

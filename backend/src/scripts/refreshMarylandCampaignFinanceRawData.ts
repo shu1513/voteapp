@@ -14,6 +14,7 @@ import {
   parseMarylandCfsHttpsUrl,
   type MarylandCfsArtifactKind,
 } from "../pipeline/marylandFinance/marylandCfsClient.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export { DEFAULT_MARYLAND_CFS_CACHE_DIR };
 
@@ -95,9 +96,13 @@ function parseArtifactKind(value: string | undefined): MarylandCfsArtifactKind {
   return normalizeMarylandCfsArtifactKind(value?.trim() || "contributions");
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--artifact-kind", "--cache-dir", "--filing-year", "--timeout-ms", "--url", "--year"]);
+
 export function parseRefreshMarylandCampaignFinanceRawDataScriptArgs(
   args: readonly string[]
 ): RefreshMarylandCampaignFinanceRawDataScriptOptions {
+  assertKnownCliFlags(args, "Maryland campaign finance raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   const filingYear = parseFilingYear(readFilingYearFlag(args));
   return {
     filingYear,

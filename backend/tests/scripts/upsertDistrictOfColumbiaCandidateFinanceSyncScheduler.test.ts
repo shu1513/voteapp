@@ -41,7 +41,7 @@ describe("upsertDistrictOfColumbiaCandidateFinanceSyncScheduler script", () => {
 
   it("rejects unknown flags", () => {
     expect(() => parseUpsertDistrictOfColumbiaCandidateFinanceSyncSchedulerArgs(["--dry-runn"])).toThrow(
-      "Unknown option: --dry-runn"
+      "Unknown District of Columbia candidate finance sync scheduler flag: --dry-runn"
     );
   });
 });

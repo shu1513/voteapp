@@ -6,6 +6,7 @@ import {
   upsertRecurringArizonaCandidateFinanceSyncJobs,
   type ArizonaCandidateFinanceSyncJobData,
 } from "../scheduler/arizonaCandidateFinanceSyncScheduler.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -57,9 +58,13 @@ function parseNonNegativeNumberFlag(args: readonly string[], name: string): numb
   return Number(raw);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--direct-max-breakdowns", "--ie-limit", "--income-limit", "--lookahead-days", "--lookback-days", "--max-candidates", "--min-industry-amount", "--outside-income-limit", "--outside-max-breakdowns", "--outside-max-groups", "--stale-after-days", "--timeout-ms"]);
+
 export function parseUpsertArizonaCandidateFinanceSyncSchedulerArgs(
   args: readonly string[]
 ): ArizonaCandidateFinanceSyncJobData {
+  assertKnownCliFlags(args, "Arizona candidate finance sync scheduler", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

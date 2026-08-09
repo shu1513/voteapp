@@ -5,6 +5,7 @@ import {
   enqueueManualConnecticutEcrisRawDataRefreshJob,
   type ConnecticutEcrisRawDataRefreshJobData,
 } from "../scheduler/connecticutEcrisRawDataRefreshScheduler.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -55,9 +56,13 @@ function parseEnumFlag<T extends string>(
   return raw as T;
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--cache-dir", "--committee-type", "--format", "--period", "--timeout-ms", "--transaction-type", "--url", "--year"]);
+
 export function parseConnecticutEcrisRawDataRefreshTriggerArgs(
   args: readonly string[]
 ): ConnecticutEcrisRawDataRefreshJobData {
+  assertKnownCliFlags(args, "Connecticut eCRIS raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     force: args.includes("--force"),
     year: parsePositiveIntegerFlag(args, "--year"),

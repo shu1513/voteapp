@@ -13,6 +13,7 @@ import {
   syncDueAlaskaCandidateFinance,
   type AlaskaCandidateFinanceBatchSyncResult,
 } from "../pipeline/alaskaFinance/alaskaCandidateFinanceBatchSync.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncDueAlaskaCandidateFinanceScriptOptions = {
   dryRun: boolean;
@@ -108,9 +109,13 @@ function parseDataSourceMode(args: readonly string[]): AlaskaApocDataSourceMode 
   return liveFlag ? "live" : "csv";
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--auto-link", "--csv", "--dry-run", "--force", "--live", "--no-auto-link", "--write"]);
+const KNOWN_VALUE_FLAGS = new Set(["--data-source", "--export-timeout-ms", "--ie-contributions-csv", "--ie-contributions-url", "--ie-expenditures-csv", "--ie-expenditures-url", "--income-csv", "--income-url", "--lookahead-days", "--lookback-days", "--max-candidates", "--report-year", "--request-spacing-ms", "--retry-count", "--retry-delay-ms", "--stale-after-days", "--timeout-ms"]);
+
 export function parseSyncDueAlaskaCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncDueAlaskaCandidateFinanceScriptOptions {
+  assertKnownCliFlags(args, "Alaska candidate finance due sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   const dryRunFlag = args.includes("--dry-run");
   const writeFlag = args.includes("--write");
   if (dryRunFlag && writeFlag) {

@@ -9,6 +9,7 @@ import {
   upsertRecurringNebraskaCandidateFinanceSyncJobs,
   type NebraskaCandidateFinanceSyncJobData,
 } from "../scheduler/nebraskaCandidateFinanceSyncScheduler.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
 const KNOWN_VALUE_FLAGS = new Set([
@@ -21,18 +22,7 @@ const KNOWN_VALUE_FLAGS = new Set([
 ]);
 
 function assertNoUnknownNebraskaFinanceSchedulerArgs(args: readonly string[]): void {
-  for (const arg of args) {
-    if (!arg.startsWith("--")) {
-      continue;
-    }
-    const name = arg.split("=", 1)[0] ?? arg;
-    if (arg.includes("=") && KNOWN_BOOLEAN_FLAGS.has(name)) {
-      throw new Error(`Boolean flag must not include a value: ${name}`);
-    }
-    if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
-      throw new Error(`Unknown Nebraska candidate finance scheduler upsert flag: ${name}`);
-    }
-  }
+  assertKnownCliFlags(args, "Nebraska candidate finance sync scheduler", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
 }
 
 function parseFlagValue(args: readonly string[], name: string): string | null {

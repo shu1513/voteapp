@@ -16,6 +16,7 @@ import {
   syncColoradoCandidateFinance,
   type ColoradoCandidateFinanceSyncResult,
 } from "../pipeline/coloradoFinance/coloradoCandidateFinanceSync.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncColoradoCandidateFinanceScriptOptions = {
   candidateId: string;
@@ -101,9 +102,13 @@ function parseElectionYear(args: readonly string[]): number {
   return year;
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--candidate-id", "--candidate-name", "--committee-id", "--committee-name", "--contribution-source-url", "--election-id", "--max-breakdowns", "--office", "--raw-cache-dir", "--raw-zip", "--source-url", "--tracer-candidate-id", "--year"]);
+
 export function parseSyncColoradoCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncColoradoCandidateFinanceScriptOptions {
+  assertKnownCliFlags(args, "Colorado candidate finance sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     candidateId: parseUuidFlag(args, "--candidate-id"),
     electionId: parseUuidFlag(args, "--election-id"),

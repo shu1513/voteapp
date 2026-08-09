@@ -6,6 +6,7 @@ import {
   upsertRecurringCaliforniaCandidateFinanceSyncJobs,
   type CaliforniaCandidateFinanceSyncJobData,
 } from "../scheduler/californiaCandidateFinanceSyncScheduler.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -41,9 +42,13 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(value);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--skip-outside"]);
+const KNOWN_VALUE_FLAGS = new Set(["--lookahead-days", "--lookback-days", "--max-candidates", "--raw-cache-dir", "--raw-zip", "--stale-after-days", "--timeout-ms"]);
+
 export function parseUpsertCaliforniaCandidateFinanceSyncSchedulerArgs(
   args: readonly string[]
 ): CaliforniaCandidateFinanceSyncJobData {
+  assertKnownCliFlags(args, "California candidate finance sync scheduler", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

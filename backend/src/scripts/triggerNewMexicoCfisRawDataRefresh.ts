@@ -6,6 +6,7 @@ import {
   type NewMexicoCfisRawDataRefreshJobData,
 } from "../scheduler/newMexicoCfisRawDataRefreshScheduler.js";
 import type { NewMexicoCfisArtifactKind } from "../pipeline/newMexicoFinance/newMexicoCfisArtifactCache.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -52,9 +53,13 @@ function parseArtifactKindFlag(args: readonly string[]): NewMexicoCfisArtifactKi
   return raw;
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--artifact-kind", "--cache-dir", "--timeout-ms", "--url", "--year"]);
+
 export function parseNewMexicoCfisRawDataRefreshTriggerArgs(
   args: readonly string[]
 ): NewMexicoCfisRawDataRefreshJobData {
+  assertKnownCliFlags(args, "New Mexico CFIS raw data refresh", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     force: args.includes("--force"),
     year: parsePositiveIntegerFlag(args, "--year"),

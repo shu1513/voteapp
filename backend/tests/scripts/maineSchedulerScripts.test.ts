@@ -17,10 +17,10 @@ describe("Maine scheduler scripts", () => {
 
   it("rejects unknown flags for candidate sync trigger and scheduler upsert", () => {
     expect(() => parseMaineCandidateFinanceSyncTriggerArgs(["--stale-days=7"])).toThrow(
-      "Unknown Maine campaign finance sync trigger flag: --stale-days"
+      "Unknown Maine candidate finance sync flag: --stale-days"
     );
     expect(() => parseUpsertMaineCandidateFinanceSyncSchedulerArgs(["--max-canddates=10"])).toThrow(
-      "Unknown Maine campaign finance scheduler upsert flag: --max-canddates"
+      "Unknown Maine candidate finance sync scheduler flag: --max-canddates"
     );
   });
 
@@ -35,10 +35,10 @@ describe("Maine scheduler scripts", () => {
 
   it("rejects unknown flags for raw refresh trigger and scheduler upsert", () => {
     expect(() => parseMaineCfisRawDataRefreshTriggerArgs(["--artifact-knd=expenditures"])).toThrow(
-      "Unknown Maine CFIS raw data refresh trigger flag: --artifact-knd"
+      "Unknown Maine CFIS raw data refresh flag: --artifact-knd"
     );
     expect(() => parseUpsertMaineCfisRawDataRefreshSchedulerArgs(["--cache-directory=/tmp/cfis"])).toThrow(
-      "Unknown Maine CFIS raw data refresh scheduler upsert flag: --cache-directory"
+      "Unknown Maine CFIS raw data refresh scheduler flag: --cache-directory"
     );
   });
 });

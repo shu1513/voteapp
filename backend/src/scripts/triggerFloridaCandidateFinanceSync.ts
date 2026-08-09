@@ -5,6 +5,7 @@ import {
   enqueueManualFloridaCandidateFinanceSyncJob,
   type FloridaCandidateFinanceSyncJobData,
 } from "../scheduler/floridaCandidateFinanceSyncScheduler.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force", "--refresh-export-artifacts"]);
 const KNOWN_VALUE_FLAGS = new Set([
@@ -18,18 +19,7 @@ const KNOWN_VALUE_FLAGS = new Set([
 ]);
 
 function assertNoUnknownFloridaFinanceTriggerArgs(args: readonly string[]): void {
-  for (const arg of args) {
-    if (!arg.startsWith("--")) {
-      continue;
-    }
-    const name = arg.split("=", 1)[0] ?? arg;
-    if (arg.includes("=") && KNOWN_BOOLEAN_FLAGS.has(name)) {
-      throw new Error(`Boolean flag must not include a value: ${name}`);
-    }
-    if (!KNOWN_BOOLEAN_FLAGS.has(name) && !KNOWN_VALUE_FLAGS.has(name)) {
-      throw new Error(`Unknown Florida candidate finance sync trigger flag: ${name}`);
-    }
-  }
+  assertKnownCliFlags(args, "Florida candidate finance sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
 }
 
 function parseFlagValue(args: readonly string[], name: string): string | null {

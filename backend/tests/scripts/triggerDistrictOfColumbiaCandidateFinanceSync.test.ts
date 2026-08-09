@@ -41,7 +41,7 @@ describe("triggerDistrictOfColumbiaCandidateFinanceSync script", () => {
 
   it("rejects unknown flags", () => {
     expect(() => parseDistrictOfColumbiaCandidateFinanceSyncTriggerArgs(["--dry-runn"])).toThrow(
-      "Unknown option: --dry-runn"
+      "Unknown District of Columbia candidate finance sync flag: --dry-runn"
     );
   });
 

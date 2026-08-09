@@ -36,7 +36,7 @@ describe("triggerIllinoisCandidateFinanceSync script", () => {
   });
 
   it("rejects unknown flags", () => {
-    expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["--unknown"])).toThrow("Unknown option: --unknown");
+    expect(() => parseIllinoisCandidateFinanceSyncTriggerArgs(["--unknown"])).toThrow("Unknown Illinois candidate finance sync flag: --unknown");
   });
 
   it("requires contribution artifacts when artifact source flags are provided", () => {

@@ -6,6 +6,7 @@ import {
   buildArizonaCandidateFinanceSnapshot,
   type ArizonaCandidateFinanceSnapshot,
 } from "../pipeline/arizonaFinance/arizonaCandidateFinanceSnapshot.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 export type SyncArizonaCandidateFinanceScriptOptions = {
   candidateName: string;
@@ -113,9 +114,13 @@ function parseElectionYear(args: readonly string[]): number {
   return year;
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force", "--no-outside", "--skip-outside"]);
+const KNOWN_VALUE_FLAGS = new Set(["--candidate-filer-id", "--candidate-name", "--committee-id", "--direct-limit", "--direct-max-breakdowns", "--ie-limit", "--income-limit", "--min-industry-amount", "--outside-income-limit", "--outside-max-breakdowns", "--outside-max-groups", "--timeout-ms", "--year"]);
+
 export function parseSyncArizonaCandidateFinanceScriptArgs(
   args: readonly string[]
 ): SyncArizonaCandidateFinanceScriptOptions {
+  assertKnownCliFlags(args, "Arizona candidate finance sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     candidateName: parseRequiredStringFlag(args, "--candidate-name"),
     candidateCommitteeId: parseRequiredStringFlag(args, "--committee-id"),

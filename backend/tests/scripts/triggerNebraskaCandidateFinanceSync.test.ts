@@ -30,22 +30,22 @@ describe("triggerNebraskaCandidateFinanceSync script", () => {
 
   it("rejects unknown flags instead of silently ignoring typos", () => {
     expect(() => parseNebraskaCandidateFinanceSyncTriggerArgs(["--dryrun"])).toThrow(
-      "Unknown Nebraska candidate finance sync trigger flag: --dryrun"
+      "Unknown Nebraska candidate finance sync flag: --dryrun"
     );
   });
 
   it("rejects boolean flags with explicit values", () => {
     expect(() => parseNebraskaCandidateFinanceSyncTriggerArgs(["--dry-run=true"])).toThrow(
-      "Boolean flag must not include a value: --dry-run"
+      "Boolean flag does not accept a value: --dry-run"
     );
     expect(() => parseNebraskaCandidateFinanceSyncTriggerArgs(["--dry-run", "true"])).toThrow(
-      "Boolean flag must not include a value: --dry-run"
+      "Unexpected positional argument: true"
     );
     expect(() => parseNebraskaCandidateFinanceSyncTriggerArgs(["--force=false"])).toThrow(
-      "Boolean flag must not include a value: --force"
+      "Boolean flag does not accept a value: --force"
     );
     expect(() => parseNebraskaCandidateFinanceSyncTriggerArgs(["--force", "false"])).toThrow(
-      "Boolean flag must not include a value: --force"
+      "Unexpected positional argument: false"
     );
   });
 });

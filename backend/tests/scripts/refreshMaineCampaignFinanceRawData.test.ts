@@ -49,7 +49,7 @@ describe("refreshMaineCampaignFinanceRawData script", () => {
   });
 
   it("rejects missing or duplicate values", () => {
-    expect(() => parseArgs(["--url"])).toThrow("Missing value for --url");
+    expect(() => parseArgs(["--url"])).toThrow("Missing --url value");
     expect(() => parseArgs(["--year=2026", "--filing-year=2025"])).toThrow("Provide --filing-year at most once");
   });
 

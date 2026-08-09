@@ -5,6 +5,7 @@ import {
   enqueueManualPennsylvaniaCandidateFinanceSyncJob,
   type PennsylvaniaCandidateFinanceSyncJobData,
 } from "../scheduler/pennsylvaniaCandidateFinanceSyncScheduler.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -44,9 +45,13 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(value);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--lookahead-days", "--lookback-days", "--max-candidates", "--raw-cache-dir", "--raw-extracted-dir", "--stale-after-days"]);
+
 export function parsePennsylvaniaCandidateFinanceSyncTriggerArgs(
   args: readonly string[]
 ): PennsylvaniaCandidateFinanceSyncJobData {
+  assertKnownCliFlags(args, "Pennsylvania candidate finance sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

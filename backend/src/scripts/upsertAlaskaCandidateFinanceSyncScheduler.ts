@@ -7,6 +7,7 @@ import {
   type AlaskaCandidateFinanceSyncJobData,
 } from "../scheduler/alaskaCandidateFinanceSyncScheduler.js";
 import type { AlaskaApocDataSourceMode } from "../pipeline/alaskaFinance/alaskaApocDataSource.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -97,9 +98,13 @@ function parseAutoLink(args: readonly string[]): boolean {
   return autoLinkFlag;
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--auto-link", "--csv", "--dry-run", "--force", "--live", "--no-auto-link", "--write"]);
+const KNOWN_VALUE_FLAGS = new Set(["--data-source", "--ie-contributions-csv", "--ie-contributions-url", "--ie-expenditures-csv", "--ie-expenditures-url", "--income-csv", "--income-url", "--lookahead-days", "--lookback-days", "--max-candidates", "--request-spacing-ms", "--retry-count", "--retry-delay-ms", "--stale-after-days", "--timeout-ms"]);
+
 export function parseUpsertAlaskaCandidateFinanceSyncSchedulerArgs(
   args: readonly string[]
 ): AlaskaCandidateFinanceSyncJobData {
+  assertKnownCliFlags(args, "Alaska candidate finance sync scheduler", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   const dataSourceMode = parseDataSourceMode(args);
   const incomeCsvPath = parseFlagValue(args, "--income-csv") || undefined;
   const independentExpendituresCsvPath = parseFlagValue(args, "--ie-expenditures-csv") || undefined;

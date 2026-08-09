@@ -5,6 +5,7 @@ import {
   enqueueManualDistrictOfColumbiaCandidateFinanceSyncJob,
   type DistrictOfColumbiaCandidateFinanceSyncJobData,
 } from "../scheduler/districtOfColumbiaCandidateFinanceSyncScheduler.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -47,30 +48,13 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
-function assertNoUnknownFlags(args: readonly string[], allowedFlags: readonly string[]): void {
-  const allowed = new Set(allowedFlags);
-  for (const arg of args) {
-    if (!arg.startsWith("--")) {
-      continue;
-    }
-    const flag = arg.includes("=") ? arg.slice(0, arg.indexOf("=")) : arg;
-    if (!allowed.has(flag)) {
-      throw new Error(`Unknown option: ${flag}`);
-    }
-  }
-}
+const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--lookahead-days", "--lookback-days", "--max-candidates", "--stale-after-days"]);
 
 export function parseDistrictOfColumbiaCandidateFinanceSyncTriggerArgs(
   args: readonly string[]
 ): DistrictOfColumbiaCandidateFinanceSyncJobData {
-  assertNoUnknownFlags(args, [
-    "--dry-run",
-    "--force",
-    "--max-candidates",
-    "--stale-after-days",
-    "--lookback-days",
-    "--lookahead-days",
-  ]);
+  assertKnownCliFlags(args, "District of Columbia candidate finance sync", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     dryRun: args.includes("--dry-run"),
     force: args.includes("--force"),

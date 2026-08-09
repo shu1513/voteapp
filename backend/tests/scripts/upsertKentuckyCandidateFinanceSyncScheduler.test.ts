@@ -55,7 +55,7 @@ describe("upsertKentuckyCandidateFinanceSyncScheduler script", () => {
 
   it("rejects unknown flags instead of silently ignoring typos", () => {
     expect(() => parseUpsertKentuckyCandidateFinanceSyncSchedulerArgs(["--dryrun"])).toThrow(
-      "Unknown Kentucky candidate finance scheduler upsert flag: --dryrun"
+      "Unknown Kentucky candidate finance sync scheduler flag: --dryrun"
     );
   });
 });

@@ -79,7 +79,7 @@ describe("syncDueIllinoisCandidateFinance script", () => {
   });
 
   it("rejects unknown flags", () => {
-    expect(() => parseSyncDueIllinoisCandidateFinanceScriptArgs(["--dryrun"])).toThrow("Unknown option: --dryrun");
+    expect(() => parseSyncDueIllinoisCandidateFinanceScriptArgs(["--dryrun"])).toThrow("Unknown Illinois candidate finance due sync flag: --dryrun");
   });
 
   it("requires a contribution artifact when artifact source flags are provided", () => {

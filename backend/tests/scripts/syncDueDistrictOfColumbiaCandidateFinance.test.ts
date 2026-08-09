@@ -60,7 +60,7 @@ describe("syncDueDistrictOfColumbiaCandidateFinance script", () => {
 
   it("rejects unknown flags", () => {
     expect(() => parseSyncDueDistrictOfColumbiaCandidateFinanceScriptArgs(["--dryrun"])).toThrow(
-      "Unknown option: --dryrun"
+      "Unknown District of Columbia candidate finance due sync flag: --dryrun"
     );
   });
 

@@ -6,6 +6,7 @@ import {
   upsertRecurringPennsylvaniaCampaignFinanceRawDataRefreshJobs,
   type PennsylvaniaCampaignFinanceRawDataRefreshJobData,
 } from "../scheduler/pennsylvaniaCampaignFinanceRawDataRefreshScheduler.js";
+import { assertKnownCliFlags } from "./financeCliFlagGuard.js";
 
 function parseFlagValue(args: readonly string[], name: string): string | null {
   const inlinePrefix = `${name}=`;
@@ -42,9 +43,13 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(value);
 }
 
+const KNOWN_BOOLEAN_FLAGS = new Set(["--force"]);
+const KNOWN_VALUE_FLAGS = new Set(["--cache-dir", "--timeout-ms", "--url", "--year"]);
+
 export function parseUpsertPennsylvaniaCampaignFinanceRawDataRefreshSchedulerArgs(
   args: readonly string[]
 ): PennsylvaniaCampaignFinanceRawDataRefreshJobData {
+  assertKnownCliFlags(args, "Pennsylvania campaign finance raw data refresh scheduler", KNOWN_BOOLEAN_FLAGS, KNOWN_VALUE_FLAGS);
   return {
     year: parsePositiveIntegerFlag(args, "--year"),
     force: args.includes("--force"),
