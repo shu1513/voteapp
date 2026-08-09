@@ -1,13 +1,24 @@
-// Phase 3 writer: candidate-committee links and outside-spending relation
-// rows only. The Phase 5 snapshot writer (summaries, breakdowns, outside
-// group amounts) extends this file later. Upsert semantics mirror the Los
-// Angeles writer: one active link per (candidate, election); a manual active
-// link is protected — a matching automatic link reuses it, a conflicting one
-// errors; an active upsert deactivates other automatic links first.
+// Link/relation writes (Phase 3) and the all-or-nothing snapshot writer
+// (Phase 5). Upsert semantics mirror the Los Angeles writer: one active link
+// per (candidate, election); a manual active link is protected — a matching
+// automatic link reuses it, a conflicting one errors; an active upsert
+// deactivates other automatic links first.
+//
+// Snapshot semantics (plan Phase 5): the caller stages every component and
+// calls replaceSanFranciscoCandidateFinanceSnapshot only when all of them
+// passed source-health checks — the write is one transaction, so a summary
+// can never coexist with breakdowns or outside groups from a different
+// as-of. Source unavailable → the caller does not call this at all and the
+// prior snapshot survives untouched; source affirmatively reports no
+// qualifying data → the caller passes zero totals and empty arrays and the
+// delete-and-insert clears the stale detail rows.
 
 import type { Pool, PoolClient } from "pg";
+import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
+import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
+type PoolLike = Queryable & { connect: () => Promise<PoolClient> };
 
 export type SanFranciscoFinanceLinkInput = {
   candidateId: string;
@@ -32,6 +43,48 @@ export type SanFranciscoOutsideCommitteeLinkInput = {
   sourceUrl?: string | null;
 };
 
+// All snapshot amounts arrive as integer cents (the aggregators' unit) and
+// are converted to exact dollar strings at the database boundary.
+export type SanFranciscoFinanceSummaryInput = {
+  /** Manifest funds figure — INCLUDES public-financing money (gate identity). */
+  totalRaisedCents: number | null;
+  /**
+   * Donor contributions only (no loans, no public funds). The read path
+   * prefers this for total_raised so "Raised" and "Public funds" stay
+   * disjoint stats on the card; totalRaisedCents stays the reconciliation
+   * figure matching the SFEC dashboard headline.
+   */
+  directContributionCents: number | null;
+  totalSpentCents: number | null;
+  cashOnHandCents: number | null;
+  debtsOwedCents: number | null;
+  loansReceivedCents: number | null;
+  publicFundsReceivedCents: number | null;
+  outsideSupportCents: number | null;
+  outsideOpposeCents: number | null;
+  methodologyVersion: string;
+  sourceUrl: string | null;
+  /** ISO date the balances are reported through (latest 460 period end). */
+  reportedThrough: string | null;
+};
+
+export type SanFranciscoDirectBreakdownInput = {
+  categoryType: "occupation" | "employer" | "industry" | "contribution_size";
+  categoryName: string;
+  amountCents: number;
+  contributorCount: number | null;
+  sourceUrl?: string | null;
+};
+
+export type SanFranciscoOutsideGroupInput = {
+  /** Real FPPC id, or the resolver's synthetic "name:…" identity. */
+  spenderFppcId: string;
+  spenderName: string;
+  supportOppose: "support" | "oppose";
+  amountCents: number;
+  sourceUrl?: string | null;
+};
+
 const text = (value: string, label: string): string => {
   const result = value.trim();
   if (!result) throw new Error(`${label} is required`);
@@ -39,6 +92,20 @@ const text = (value: string, label: string): string => {
 };
 const optional = (value: string | null | undefined): string | null =>
   value?.trim() || null;
+// Exact cents → "dollars.cc" string; string arithmetic, never binary floats.
+// Negative amounts throw: every stored figure is a nonnegative total (refunds
+// are already netted inside the aggregates), and throwing aborts the snapshot
+// transaction so the prior snapshot survives.
+const centsToDollars = (
+  cents: number | null,
+  label: string,
+): string | null => {
+  if (cents === null) return null;
+  if (!Number.isSafeInteger(cents))
+    throw new Error(`${label} must be integer cents`);
+  if (cents < 0) throw new Error(`${label} must be nonnegative`);
+  return `${Math.trunc(cents / 100)}.${String(cents % 100).padStart(2, "0")}`;
+};
 
 export async function upsertSanFranciscoFinanceLink(input: {
   db: Queryable;
@@ -142,4 +209,107 @@ export async function replaceSanFranciscoOutsideCommitteeLinks(input: {
         input.lastVerifiedAt.toISOString(),
       ],
     );
+}
+
+/**
+ * Writes one candidate's complete finance snapshot — link, summary, direct
+ * breakdowns, outside group amounts, and any industry-label classifications —
+ * in a single transaction. See the header comment for the staging contract;
+ * any validation failure (negative amount, blank name) rolls the whole
+ * snapshot back.
+ */
+export async function replaceSanFranciscoCandidateFinanceSnapshot(input: {
+  db: PoolLike;
+  link: SanFranciscoFinanceLinkInput;
+  summary: SanFranciscoFinanceSummaryInput;
+  directBreakdowns: readonly SanFranciscoDirectBreakdownInput[];
+  outsideGroups: readonly SanFranciscoOutsideGroupInput[];
+  classifications?: readonly FinanceLabelClassification[];
+  syncedAt?: Date;
+}): Promise<{ linkId: string }> {
+  if (typeof input.db.connect !== "function")
+    throw new Error("San Francisco finance snapshot writes require a Pool");
+  const syncedAt = (input.syncedAt ?? new Date()).toISOString();
+  const client = await input.db.connect();
+  try {
+    await client.query("BEGIN");
+    const { linkId } = await upsertSanFranciscoFinanceLink({
+      db: client,
+      link: input.link,
+    });
+    const year = input.link.electionYear;
+    await client.query(
+      `INSERT INTO public.sfc_candidate_finance_summaries (link_id,election_year,total_receipts,direct_contribution_total,total_disbursements,cash_on_hand,debts_owed,loans_received,public_funds_received,outside_support_total,outside_oppose_total,methodology_version,source_url,reported_through,last_synced_at) VALUES ($1::uuid,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14::date,$15::timestamptz) ON CONFLICT (link_id,election_year) DO UPDATE SET total_receipts=EXCLUDED.total_receipts,direct_contribution_total=EXCLUDED.direct_contribution_total,total_disbursements=EXCLUDED.total_disbursements,cash_on_hand=EXCLUDED.cash_on_hand,debts_owed=EXCLUDED.debts_owed,loans_received=EXCLUDED.loans_received,public_funds_received=EXCLUDED.public_funds_received,outside_support_total=EXCLUDED.outside_support_total,outside_oppose_total=EXCLUDED.outside_oppose_total,methodology_version=EXCLUDED.methodology_version,source_url=EXCLUDED.source_url,reported_through=EXCLUDED.reported_through,last_synced_at=EXCLUDED.last_synced_at`,
+      [
+        linkId,
+        year,
+        centsToDollars(input.summary.totalRaisedCents, "total raised"),
+        centsToDollars(
+          input.summary.directContributionCents,
+          "direct contributions",
+        ),
+        centsToDollars(input.summary.totalSpentCents, "total spent"),
+        centsToDollars(input.summary.cashOnHandCents, "cash on hand"),
+        centsToDollars(input.summary.debtsOwedCents, "debts owed"),
+        centsToDollars(input.summary.loansReceivedCents, "loans received"),
+        centsToDollars(input.summary.publicFundsReceivedCents, "public funds"),
+        centsToDollars(input.summary.outsideSupportCents, "outside support"),
+        centsToDollars(input.summary.outsideOpposeCents, "outside oppose"),
+        text(input.summary.methodologyVersion, "methodology version"),
+        optional(input.summary.sourceUrl),
+        input.summary.reportedThrough,
+        syncedAt,
+      ],
+    );
+    await client.query(
+      `DELETE FROM public.sfc_candidate_finance_direct_breakdowns WHERE link_id=$1::uuid AND election_year=$2`,
+      [linkId, year],
+    );
+    for (const row of input.directBreakdowns)
+      await client.query(
+        `INSERT INTO public.sfc_candidate_finance_direct_breakdowns (link_id,election_year,category_type,category_name,amount,contributor_count,source_url,last_synced_at) VALUES ($1::uuid,$2,$3,$4,$5,$6,$7,$8::timestamptz)`,
+        [
+          linkId,
+          year,
+          row.categoryType,
+          text(row.categoryName, "category name"),
+          centsToDollars(row.amountCents, "breakdown amount"),
+          row.contributorCount,
+          optional(row.sourceUrl),
+          syncedAt,
+        ],
+      );
+    await client.query(
+      `DELETE FROM public.sfc_candidate_finance_outside_groups WHERE link_id=$1::uuid AND election_year=$2`,
+      [linkId, year],
+    );
+    // Plain inserts: the headline aggregator already groups per
+    // (spender, direction), so a unique-key collision here is a caller bug
+    // and should abort the snapshot, not be papered over.
+    for (const group of input.outsideGroups)
+      await client.query(
+        `INSERT INTO public.sfc_candidate_finance_outside_groups (link_id,election_year,spender_fppc_id,spender_name,support_oppose,amount,source_url,last_synced_at) VALUES ($1::uuid,$2,$3,$4,$5,$6,$7,$8::timestamptz)`,
+        [
+          linkId,
+          year,
+          text(group.spenderFppcId, "spender FPPC id"),
+          text(group.spenderName, "spender name"),
+          group.supportOppose,
+          centsToDollars(group.amountCents, "outside amount"),
+          optional(group.sourceUrl),
+          syncedAt,
+        ],
+      );
+    for (const classification of input.classifications ?? [])
+      await upsertFinanceLabelClassification({ db: client, classification });
+    await client.query("COMMIT");
+    return { linkId };
+  } catch (error) {
+    try {
+      await client.query("ROLLBACK");
+    } catch {}
+    throw error;
+  } finally {
+    client.release();
+  }
 }
