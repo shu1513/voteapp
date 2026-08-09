@@ -789,3 +789,38 @@ shape) and lands first; only the D3 map table waits for the spike.
   `\u0000` escapes (same defect class was already fixed in the aggregator
   file; a byte-scan now covers every Georgia file). 138 GA tests, suite
   7,081 green.
+- 2026-08-09: **PR 7 scheduler wiring implemented** (North Carolina
+  scheduler as the template — the newest sibling): BullMQ scheduler module
+  (`georgiaCandidateFinanceSyncScheduler.ts`) with daily job-scheduler
+  upsert (removed when the master flag is off), manual enqueue (sync flag
+  gated, force bypasses only the sync flag — never the master flag),
+  reserved-jobId guard, and a concurrency-1 worker; upsert/worker/trigger
+  scripts with the strict NC-style CLI parsers (unknown-flag, boolean=value,
+  repeated-flag, and non-positive-integer rejection) minus `--raw-cache-dir`
+  (the Georgia batch sync is transport-based, no raw cache dir); npm scripts
+  `georgia-candidates:finance:scheduler:{upsert,worker,trigger}`. The
+  disabled no-op result matches the Georgia batch result shape
+  (autoLinkAttemptedCount/autoLinkLinkedCount/independentExpenditureStoreError,
+  no outsideAggregationByYear). Cron default "55 10 * * *" UTC — offset from
+  Ohio's 09:55 and North Carolina's 10:25 so state syncs never stack on one
+  worker host. Scheduler queue/cron/tz env vars have code defaults and stay
+  out of `.env.example` (Ohio/NC precedent). 19 new tests (7 scheduler + 12
+  CLI args); suite 7,120 green. The PR 7 live run remains a separate,
+  user-authorized step.
+- 2026-08-09: **PR 7 review round** (external, both findings verified
+  against runtime behavior before acting, both adopted): (1) positional
+  typos bypassed dry-run protection — both new parsers skipped every token
+  not starting with `--`, so `npm run …:trigger -- dry-run` (npm eats the
+  first `--`) silently enqueued a REAL sync, and the upsert variant would
+  persist a real daily-write scheduler; the existing sync-due parser
+  already rejected such input, making the new "strict" parsers strictly
+  weaker than the parser they cite. A bare token is now legal only as the
+  value of the immediately preceding space-form value flag; anything else
+  throws `Unexpected positional argument`. (2) `Number.isInteger` accepts
+  silently-rounded unsafe values (`Number("9007199254740993")` → 2^53) —
+  the scheduler's assertPositiveInteger (guarding every path: upsert,
+  enqueue, worker run) now uses `Number.isSafeInteger`, and both CLI
+  parsers reject at parse time so the error carries the operator's
+  original string. Same two defects exist in the Ohio and North Carolina
+  scheduler parsers/asserts (this code's templates) — out of scope here,
+  flagged for a follow-up. 24 GA scheduler-round tests; suite 7,125 green.
