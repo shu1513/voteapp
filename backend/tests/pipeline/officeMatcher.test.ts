@@ -2647,4 +2647,62 @@ describe("OfficeMatcher", () => {
     });
     expect(circuitJudge.officeId).toBe("office-county-level-judge");
   });
+
+  it("resolves Florida's 'State Attorney' circuit title to District Attorney", async () => {
+    const client = createMatcherDataClient({
+      aliasesByScope: {
+        county: [
+          // Migration 219 adds "state attorney"; "state s attorney" (migration
+          // 184, Maryland/Illinois) is a different normalized key and does not
+          // cover Florida's non-possessive form.
+          { office_id: "office-district-attorney", normalized_alias: "state attorney" },
+          { office_id: "office-district-attorney", normalized_alias: "state s attorney" },
+          { office_id: "office-district-attorney", normalized_alias: "district attorney" },
+          { office_id: "office-public-defender", normalized_alias: "public defender" },
+        ],
+      },
+      officesByScope: {
+        county: [
+          { id: "office-district-attorney", canonical_name: "District Attorney" },
+          { id: "office-public-defender", canonical_name: "Public Defender" },
+        ],
+      },
+    });
+    const matcher = new OfficeMatcher(client as never);
+
+    // Florida elects its felony prosecutor by judicial circuit, so one circuit
+    // spans several counties (the 4th covers Duval, Clay and Nassau). The
+    // circuit strip reduces the title to "state attorney", which scores 0.500
+    // against "District Attorney" — under the floor — so the alias is what
+    // carries it.
+    const stateAttorney = await matcher.resolve({
+      scope: "county",
+      districtName: "Duval County, Florida",
+      state: "FL",
+      officialBallotTitle: "State Attorney, 4th Judicial Circuit",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(stateAttorney).toMatchObject({
+      officeId: "office-district-attorney",
+      method: "alias_exact",
+      aliasMemoryKey: "state attorney",
+    });
+
+    // Florida elects a Public Defender on the same circuits; it was checked for
+    // the same catalog gap and does not have one. Asserted here so the new
+    // prosecutor alias cannot pull the defense-side office onto District
+    // Attorney, which carries a research-area set the defender must not get.
+    const publicDefender = await matcher.resolve({
+      scope: "county",
+      districtName: "Duval County, Florida",
+      state: "FL",
+      officialBallotTitle: "Public Defender, 4th Judicial Circuit",
+      discoveryContestFamily: "non_judicial_office",
+    });
+    expect(publicDefender).toMatchObject({
+      officeId: "office-public-defender",
+      method: "alias_exact",
+      aliasMemoryKey: "public defender",
+    });
+  });
 });
