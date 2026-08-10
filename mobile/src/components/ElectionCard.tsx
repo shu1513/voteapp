@@ -65,7 +65,7 @@ export function ElectionCard({
         )}
         {election.vote_power.label !== "unknown" ? (
           <Text className="rounded bg-rausch/10 px-2 py-0.5 text-xs text-rausch-dark">
-            Vote impact: {formatVotePowerLabel(election.vote_power.label)}
+            My vote impact: {formatVotePowerLabel(election.vote_power.label)}
           </Text>
         ) : null}
         {election.historical_competitiveness ? (

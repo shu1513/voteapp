@@ -41,7 +41,7 @@ function matchesImpact(election: ElectionSummary, threshold: VoteImpactThreshold
  *   covers a shared ?issues=mine link opened anonymously. While the saved
  *   areas are still LOADING the web pages withhold the list instead of
  *   calling this (see useMyResearchAreas().isLoading).
- * - Vote impact: keep = elections at or above the requested threshold
+ * - My vote impact: keep = elections at or above the requested threshold
  *   ("High or above" / "Average or above"). One threshold at a time — they
  *   nest, so combining them is meaningless and the UI auto-swaps. No data
  *   gate — vote_power ships on every summary, anonymous included — so an

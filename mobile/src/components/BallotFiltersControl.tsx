@@ -93,7 +93,7 @@ export function BallotFiltersControl({
               ) : null}
               {showImpactGroup ? (
                 <View className="gap-2">
-                  <Text className="text-xs text-ink-soft">Vote impact</Text>
+                  <Text className="text-xs text-ink-soft">My vote impact</Text>
                   {showImpactHigh ? (
                     <Checkbox
                       label="High or above"

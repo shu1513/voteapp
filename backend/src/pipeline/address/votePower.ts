@@ -339,7 +339,7 @@ function factorsFor(input: {
 // the 45/55 weighted score is a sorting signal only and never shown on the
 // detail page, so surfacing its formula here would misattribute the rating.
 const HOW_CALCULATED =
-  "Vote impact = representation (how much weight one vote carries here, the smaller the district's population, the higher the representation) + decisiveness (how likely this race is to be close, based on past results and number of candidates).";
+  "My vote impact = representation (how much weight one vote carries here, the smaller the district's population, the higher the representation) + decisiveness (how likely this race is to be close, based on past results and number of candidates).";
 
 function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -614,7 +614,7 @@ function explanationResultFor(result: VotePowerResult, boostApplied: boolean, sk
     pieces.push("a ballot-measure boost");
   }
 
-  return `${capitalize(pieces.join(" + "))} → ${capitalize(RESULT_LABEL_TEXT[result.label])} vote impact.`;
+  return `${capitalize(pieces.join(" + "))} → My vote impact: ${capitalize(RESULT_LABEL_TEXT[result.label])}.`;
 }
 
 // Display words for the rating in the result line. "low" reads as a verdict

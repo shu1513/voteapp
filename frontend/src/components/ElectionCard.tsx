@@ -270,7 +270,7 @@ function ElectionCard({
             <span
               className={`whitespace-nowrap text-xs font-medium ${votePowerBadgeClass(election.vote_power.label)}`}
             >
-              Vote impact: {formatVotePowerLabel(election.vote_power.label)}
+              My vote impact: {formatVotePowerLabel(election.vote_power.label)}
             </span>
           ) : null}
           {election.race_type === "ballot_measure" ? (
