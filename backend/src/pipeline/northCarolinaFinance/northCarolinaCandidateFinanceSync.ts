@@ -343,7 +343,7 @@ export async function syncNorthCarolinaCandidateFinance(
   if (directFinance.status === "incomplete_artifacts") {
     const suspects = [
       ...directFinance.missingReportIds.map((reportId) => `missing report ${reportId}`),
-      ...directFinance.coverPeriodMismatchReportIds.map((reportId) => `mispaired cover for report ${reportId}`),
+      ...directFinance.coverIdentityMismatchReportIds.map((reportId) => `mispaired cover for report ${reportId}`),
     ];
     throw new Error(
       "North Carolina finance artifacts are incomplete for this candidate; keeping the previous snapshot " +

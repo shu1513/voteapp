@@ -88,6 +88,54 @@ describe("selectNcsbeCurrentFilings", () => {
     });
   });
 
+  it("selects an amendment that has no ImageReceiptDate yet but a later DataImportDate", () => {
+    // Live PR 9 shape (STA-N4ETL0-C-001 Second Quarter): the amendment's
+    // image has not been posted, so only its import date dates it. Treating
+    // the blank as "oldest" ranked the original above its own amendment and
+    // quarantined the lineage, costing the candidate every direct number.
+    const original = documentRow({
+      reportType: "Second Quarter",
+      periodStartDate: parseNcsbeDate("02/15/2026"),
+      periodEndDate: parseNcsbeDate("06/30/2026"),
+      imageReceiptDate: parseNcsbeDate("07/17/2026"),
+      dataImportDate: parseNcsbeDate("07/10/2026"),
+      dataLink: "232610",
+    });
+    const amendment = documentRow({
+      ...original,
+      isAmendment: true,
+      imageReceiptDate: parseNcsbeDate(""),
+      dataImportDate: parseNcsbeDate("07/22/2026"),
+      dataLink: "232885",
+    });
+    const result = selectNcsbeCurrentFilings({ rows: [original, amendment] });
+    expect(result.quarantinedGroups).toEqual([]);
+    expect(result.selected).toHaveLength(1);
+    expect(result.selected[0]).toMatchObject({ reportId: "232885", isAmendment: true });
+  });
+
+  it("still quarantines when the original is genuinely later on the dates it has", () => {
+    // The other live shape (STA-CBH6SF-C-001): the original is newer on BOTH
+    // image and import date, so the lineage really is contradictory.
+    const original = documentRow({
+      reportType: "Year End Semi-Annual",
+      imageReceiptDate: parseNcsbeDate("01/24/2026"),
+      dataImportDate: parseNcsbeDate("01/26/2026"),
+      dataLink: "227100",
+    });
+    const amendment = documentRow({
+      ...original,
+      isAmendment: true,
+      imageReceiptDate: parseNcsbeDate("01/13/2026"),
+      dataImportDate: parseNcsbeDate("01/11/2026"),
+      dataLink: "227101",
+    });
+    const result = selectNcsbeCurrentFilings({ rows: [original, amendment] });
+    expect(result.selected).toEqual([]);
+    expect(result.quarantinedGroups).toHaveLength(1);
+    expect(result.quarantinedGroups[0]).toMatchObject({ reason: "original_newer_than_amendment" });
+  });
+
   it("selects the image-only amendment over the image-only original (Conservation Votes shape)", () => {
     const original = documentRow({
       committeeName: "CONSERVATION VOTES PAC",

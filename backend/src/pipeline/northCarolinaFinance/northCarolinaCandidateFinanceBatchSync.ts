@@ -1013,7 +1013,7 @@ export async function syncDueNorthCarolinaCandidateFinance(
           const failure = direct.reportReadFailures.find((entry) => entry.reportId === reportId);
           return failure ? `report ${reportId}: ${failure.message}` : `report ${reportId}: not cached`;
         }),
-        ...direct.result.coverPeriodMismatchReportIds.map((reportId) => `report ${reportId}: mispaired cover`),
+        ...direct.result.coverIdentityMismatchReportIds.map((reportId) => `report ${reportId}: mispaired cover`),
       ];
       results.push({
         ...base,

@@ -3,11 +3,14 @@ import {
   type NcsbeFiling,
   type NcsbeQuarantinedGroup,
 } from "./northCarolinaReportSelector.js";
-import type {
-  NcsbeDocumentRow,
-  NcsbeExpenditureRow,
-  NcsbeReceiptRow,
-  NcsbeReportDetail,
+import {
+  isNcsbeReportYearInCycle,
+  NCSBE_NO_TOTAL_REPORT_TYPES,
+  NCSBE_OUTSIDE_LEG_REPORT_TYPES,
+  type NcsbeDocumentRow,
+  type NcsbeExpenditureRow,
+  type NcsbeReceiptRow,
+  type NcsbeReportDetail,
 } from "./northCarolinaNcsbeParsers.js";
 
 // Direct-money aggregation for one linked NC candidate committee over one
@@ -59,12 +62,10 @@ export type NorthCarolinaDirectAggregationInput = {
 //   preserve-when-null policy keeps outside totals). Never leave stale money
 //   visible.
 // - "incomplete_artifacts": a selected report's cached artifacts were not
-//   supplied, or a supplied cover's own period contradicts the inventory
-//   filing it was cached for (a mispaired artifact — possibly another
-//   report's bytes). Either way the cache, not the portal, is suspect: do
-//   NOT write; keep the previous valid snapshot and re-acquire. A mismatch
-//   that survives a forced refetch is a portal typo and stays unwritten
-//   until reviewed.
+//   supplied, or a supplied cover declares a different rptID than the report
+//   it was cached for (provably another report's bytes). Either way the
+//   cache, not the portal, is suspect: do NOT write; keep the previous valid
+//   snapshot and re-acquire.
 export type NorthCarolinaDirectAggregationStatus = "ok" | "honest_null" | "incomplete_artifacts";
 
 export type NorthCarolinaDirectFinanceSummary = {
@@ -102,6 +103,15 @@ export type NorthCarolinaDirectAggregationResult = {
   // Inventory rows whose period bounds are missing/implausible — included in
   // selection (a typo must widen the window, never narrow it) and counted.
   unusablePeriodRowCount: number;
+  // Pinned no-total forms (48-Hour Notice) dropped before selection —
+  // counted so a dropped filing is visible, never silent.
+  excludedNoTotalReportRowCount: number;
+  // IE filings the outside leg owns (decision 3), dropped before selection
+  // and counted so the single-source split stays visible.
+  excludedOutsideLegReportRowCount: number;
+  // Undated rows whose ReportYear puts them outside the cycle (a long-lived
+  // committee's 1990s filings) — dropped before selection and counted.
+  excludedUndatedOutOfCycleRowCount: number;
   // Advisory reconciliation (decision 11): itemized receipt-row sums vs the
   // authoritative cover values. In-kind timing and non-itemized income make
   // modest gaps normal; a large gap means artifact damage.
@@ -113,11 +123,16 @@ export type NorthCarolinaDirectAggregationResult = {
   // reports must satisfy Cycle_n = Cycle_{n−1} + Period_n; a mismatch means
   // a missing filing between them or portal damage.
   cycleChainMismatches: NorthCarolinaCycleChainMismatch[];
-  // Cover begin/end dates disagreeing with the inventory period of the
-  // selected filing — a mispaired cached artifact. Nonempty forces
-  // status "incomplete_artifacts": provably-suspect bytes never become
-  // writable money.
-  coverPeriodMismatchReportIds: string[];
+  // A cover whose own declared rptID is not the report it was cached for —
+  // provably another report's bytes. Nonempty forces
+  // status "incomplete_artifacts": suspect bytes never become writable money.
+  coverIdentityMismatchReportIds: string[];
+  // Advisory: the cover's begin/end dates disagree with the inventory period
+  // of the same filing. Live PR 9 evidence says this is portal sloppiness,
+  // not mispairing — 17 of 697 covers disagree, including begin-after-end
+  // pairs (RID 233220: 07/01/2026 -> 06/30/2026) — so it is surfaced and
+  // counted, never a reason to withhold a candidate's money.
+  coverPeriodDisagreementReportIds: string[];
   // Derived-breakdown quarantine (decision 7): a ReceiptTypeCode outside the
   // pinned vocabulary empties occupations + size buckets for this candidate.
   derivedBreakdownsQuarantined: boolean;
@@ -156,8 +171,32 @@ const SECTION_48_HOUR_SUM = 109;
 // known non-individual money. Anything else — including the IE-receipt
 // "DON " code, never observed on a candidate committee — fails closed into
 // the derived-breakdown quarantine.
+//
+// The PR 9 live run quarantined 52 of 167 candidates — 31% of the state lost
+// occupations, NC's flagship finance feature — on six codes the two-committee
+// spike had never produced. Each was read from its own rows before being
+// admitted here, and every one is entity money, never a person:
+//   "OUTS" Outside Source (26 rows / $79.6k over 19 committees)
+//   "RFND" Refund/Reimbursement to the Committee (77 / $38.1k over 36)
+//   "NFPC" Not for Profit Contribution (2 / $13.6k)
+//   "GEN " General Contribution (5 / $9.9k, e.g. another candidate committee)
+//   "CNRE" Contribution to be Reimbursed (1 / $529.46, the Postmaster)
+//   "INT " Interest Earned (18 / $3.94, credit-union interest)
+// Admitting them changes no published total — totals are cover-authoritative
+// — it only stops those candidates' occupation and size buckets from being
+// withheld over money that was never individual to begin with. A code still
+// outside this vocabulary fails closed exactly as before.
 const INDIVIDUAL_RECEIPT_TYPE_CODE = "IND ";
-const KNOWN_NON_INDIVIDUAL_RECEIPT_TYPE_CODES = new Set(["CPCM", "PPTY"]);
+const KNOWN_NON_INDIVIDUAL_RECEIPT_TYPE_CODES = new Set([
+  "CPCM",
+  "PPTY",
+  "OUTS",
+  "RFND",
+  "NFPC",
+  "GEN ",
+  "CNRE",
+  "INT ",
+]);
 
 // Occupation placeholder vocabulary (spike results item 3), matched
 // case-insensitively; `United States` is observed junk, not an occupation.
@@ -255,27 +294,67 @@ function requireSection(sections: Map<number, SectionValues>, sequence: number, 
 export function selectNorthCarolinaDirectCycleReportRows(input: {
   rows: readonly NcsbeDocumentRow[];
   electionYear: number;
-}): { rows: NcsbeDocumentRow[]; unusablePeriodRowCount: number } {
+}): {
+  rows: NcsbeDocumentRow[];
+  unusablePeriodRowCount: number;
+  excludedNoTotalReportRowCount: number;
+  excludedOutsideLegReportRowCount: number;
+  excludedUndatedOutOfCycleRowCount: number;
+} {
   const cycleStartIso = `${input.electionYear - 1}-01-01`;
   const cycleEndIso = `${input.electionYear}-12-31`;
   const rows: NcsbeDocumentRow[] = [];
   let unusablePeriodRowCount = 0;
+  let excludedNoTotalReportRowCount = 0;
+  let excludedOutsideLegReportRowCount = 0;
+  let excludedUndatedOutOfCycleRowCount = 0;
   for (const row of input.rows) {
     if (row.documentType !== "Disclosure Report") {
+      continue;
+    }
+    // Pinned no-total forms (48-Hour Notice, verified live): the cover has
+    // no totals and the receipts re-appear on the covering regular report,
+    // so including one would fail the candidate on a missing artifact the
+    // acquisition deliberately never fetches — and aggregating it would
+    // double-count the money and its occupation row.
+    if (row.reportType !== null && NCSBE_NO_TOTAL_REPORT_TYPES.has(row.reportType)) {
+      excludedNoTotalReportRowCount += 1;
+      continue;
+    }
+    // Decision 3: IE filings are the outside leg's, single-source. Reading
+    // one here would double-count IE money, and an image-only one would fail
+    // the reader closed over a report the direct side never wanted.
+    if (row.reportType !== null && NCSBE_OUTSIDE_LEG_REPORT_TYPES.has(row.reportType)) {
+      excludedOutsideLegReportRowCount += 1;
       continue;
     }
     const startIso = row.periodStartDate.iso;
     const endIso = row.periodEndDate.iso;
     if (startIso === null || endIso === null) {
       unusablePeriodRowCount += 1;
-      rows.push(row);
+      // Undated rows fall back to ReportYear (same rule the acquisition
+      // fetches by). A long-lived committee's undated 1990s filings must not
+      // enter selection: the acquisition never fetched them, so they would
+      // surface as permanently missing artifacts and fail the candidate — or,
+      // on a spender, the whole year's funder leg.
+      if (isNcsbeReportYearInCycle(row.reportYear, input.electionYear)) {
+        rows.push(row);
+      } else {
+        excludedUndatedOutOfCycleRowCount += 1;
+      }
       continue;
     }
     if (startIso <= cycleEndIso && endIso >= cycleStartIso) {
       rows.push(row);
     }
   }
-  return { rows, unusablePeriodRowCount };
+  return {
+    rows,
+    unusablePeriodRowCount,
+    excludedNoTotalReportRowCount,
+    excludedOutsideLegReportRowCount,
+    excludedUndatedOutOfCycleRowCount,
+  };
 }
 
 type OccupationAggregate = {
@@ -314,7 +393,13 @@ export function aggregateNorthCarolinaDirectFinance(
   );
   const sourceUrl = input.sourceUrl ?? null;
 
-  const { rows: cycleRows, unusablePeriodRowCount } = selectNorthCarolinaDirectCycleReportRows({
+  const {
+    rows: cycleRows,
+    unusablePeriodRowCount,
+    excludedNoTotalReportRowCount,
+    excludedOutsideLegReportRowCount,
+    excludedUndatedOutOfCycleRowCount,
+  } = selectNorthCarolinaDirectCycleReportRows({
     rows: input.inventoryRows,
     electionYear,
   });
@@ -330,15 +415,22 @@ export function aggregateNorthCarolinaDirectFinance(
   const reportsById = new Map(input.reports.map((report) => [report.reportId, report]));
   const missingReportIds = selectedReportIds.filter((reportId) => !reportsById.has(reportId));
 
-  // Mispaired-artifact guard: a supplied cover whose own period contradicts
-  // the inventory filing it was cached for may be another report's bytes —
-  // checked BEFORE any summing so it can never become writable money. Only
-  // usable dates on both sides can conflict (the live year-3026 inventory
-  // typo parses to a null ISO and stays out of this check).
-  const coverPeriodMismatchReportIds: string[] = [];
+  // Mispaired-artifact guard: the cover declares its own rptID, so bytes
+  // cached for another report are provable — checked BEFORE any summing so
+  // they can never become writable money. Period dates are NOT evidence of
+  // mispairing: the live run found 17 of 697 covers disagreeing with their
+  // inventory row on dates alone while the identity matched, so a strict
+  // date check withheld eight real candidates' money. Those disagreements
+  // stay as an advisory diagnostic.
+  const coverIdentityMismatchReportIds: string[] = [];
+  const coverPeriodDisagreementReportIds: string[] = [];
   for (const filing of selectedFilings) {
     const report = reportsById.get(filing.reportId!);
     if (!report) {
+      continue;
+    }
+    if (report.cover.cover.reportId !== filing.reportId) {
+      coverIdentityMismatchReportIds.push(filing.reportId!);
       continue;
     }
     const coverBegin = report.cover.cover.beginDate.iso;
@@ -347,7 +439,7 @@ export function aggregateNorthCarolinaDirectFinance(
       (coverBegin !== null && filing.periodStartIso !== null && coverBegin !== filing.periodStartIso) ||
       (coverEnd !== null && filing.periodEndIso !== null && coverEnd !== filing.periodEndIso)
     ) {
-      coverPeriodMismatchReportIds.push(filing.reportId!);
+      coverPeriodDisagreementReportIds.push(filing.reportId!);
     }
   }
 
@@ -364,12 +456,16 @@ export function aggregateNorthCarolinaDirectFinance(
     quarantinedGroups: selection.quarantinedGroups,
     missingReportIds,
     unusablePeriodRowCount,
+    excludedNoTotalReportRowCount,
+    excludedOutsideLegReportRowCount,
+    excludedUndatedOutOfCycleRowCount,
     itemizedReceiptsCents: 0,
     coverTotalReceiptsCents: null,
     itemizedIndividualCents: 0,
     coverIndividualContributionCents: null,
     cycleChainMismatches: [],
-    coverPeriodMismatchReportIds,
+    coverIdentityMismatchReportIds,
+    coverPeriodDisagreementReportIds,
     derivedBreakdownsQuarantined: false,
     unknownReceiptTypeCodes: [],
     includedIndividualRowCount: 0,
@@ -398,7 +494,7 @@ export function aggregateNorthCarolinaDirectFinance(
   // Missing cached artifacts and mispaired covers are cache/acquisition
   // problems, not portal evidence — the sync keeps the previous snapshot
   // and re-acquires.
-  if (missingReportIds.length > 0 || coverPeriodMismatchReportIds.length > 0) {
+  if (missingReportIds.length > 0 || coverIdentityMismatchReportIds.length > 0) {
     return {
       status: "incomplete_artifacts",
       summary: nullSummary,
@@ -594,12 +690,16 @@ export function aggregateNorthCarolinaDirectFinance(
     quarantinedGroups: selection.quarantinedGroups,
     missingReportIds,
     unusablePeriodRowCount,
+    excludedNoTotalReportRowCount,
+    excludedOutsideLegReportRowCount,
+    excludedUndatedOutOfCycleRowCount,
     itemizedReceiptsCents,
     coverTotalReceiptsCents: totalReceiptsCents,
     itemizedIndividualCents,
     coverIndividualContributionCents: coverIndividualCents,
     cycleChainMismatches,
-    coverPeriodMismatchReportIds,
+    coverIdentityMismatchReportIds,
+    coverPeriodDisagreementReportIds,
     derivedBreakdownsQuarantined,
     unknownReceiptTypeCodes: [...unknownReceiptTypeCodes.values()].sort((left, right) =>
       left.code.localeCompare(right.code)

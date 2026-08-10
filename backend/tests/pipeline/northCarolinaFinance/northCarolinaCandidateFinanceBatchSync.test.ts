@@ -87,6 +87,9 @@ function makeInventoryHtml(rows: InventoryRowSpec[]): string {
 // Full 34-section cover page (the parser rejects anything else); section
 // values default to zero and are overridden as [periodDollars, cycleDollars].
 function makeCoverHtml(input: {
+  // The cover declares its own report id; the aggregator's mispaired-artifact
+  // guard compares it against the report the artifact was cached for.
+  reportId: string;
   beginDate: string;
   endDate: string;
   filedDate: string;
@@ -108,6 +111,7 @@ function makeCoverHtml(input: {
   });
   return (
     "<html><body><script>\n" +
+    `var rptID = ${input.reportId};\n` +
     `var dataCover = ${JSON.stringify(cover)};\n` +
     `SetupGrid(${JSON.stringify(grid)}, "summary");\n` +
     "</script></body></html>"
@@ -194,6 +198,7 @@ async function installCommitteeArtifacts(cacheDir: string): Promise<void> {
     cacheDir,
     { type: "report_cover", reportId: "300001" },
     makeCoverHtml({
+      reportId: "300001",
       beginDate: "07/01/2025",
       endDate: "12/31/2025",
       filedDate: "01/20/2026",
@@ -223,6 +228,7 @@ async function installCommitteeArtifacts(cacheDir: string): Promise<void> {
     cacheDir,
     { type: "report_cover", reportId: "300002" },
     makeCoverHtml({
+      reportId: "300002",
       beginDate: "01/01/2026",
       endDate: "02/14/2026",
       filedDate: "02/24/2026",
@@ -279,6 +285,7 @@ async function installIeArtifacts(
     cacheDir,
     { type: "report_cover", reportId: "400001" },
     makeCoverHtml({
+      reportId: "400001",
       beginDate: "02/01/2026",
       endDate: "02/28/2026",
       filedDate: "03/01/2026",
@@ -514,6 +521,7 @@ describe("syncDueNorthCarolinaCandidateFinance", () => {
       cacheDir,
       { type: "report_cover", reportId: "500001" },
       makeCoverHtml({
+        reportId: "500001",
         beginDate: "03/01/2026",
         endDate: "03/31/2026",
         filedDate: "04/01/2026",
@@ -685,6 +693,7 @@ describe("syncDueNorthCarolinaCandidateFinance", () => {
       cacheDir,
       { type: "report_cover", reportId: "500001" },
       makeCoverHtml({
+        reportId: "500001",
         beginDate: "03/01/2026",
         endDate: "03/31/2026",
         filedDate: "04/01/2026",

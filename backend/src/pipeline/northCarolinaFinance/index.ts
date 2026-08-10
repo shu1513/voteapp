@@ -6,6 +6,7 @@ export * from "./northCarolinaCandidateFinanceSync.js";
 export * from "./northCarolinaDirectContributionAggregator.js";
 export * from "./northCarolinaFinanceEligibleOffices.js";
 export * from "./northCarolinaFinanceWriter.js";
+export * from "./northCarolinaNcsbeAcquisitionDiscovery.js";
 export * from "./northCarolinaNcsbeArtifactAcquisition.js";
 export * from "./northCarolinaNcsbeArtifactCache.js";
 export * from "./northCarolinaNcsbeClient.js";

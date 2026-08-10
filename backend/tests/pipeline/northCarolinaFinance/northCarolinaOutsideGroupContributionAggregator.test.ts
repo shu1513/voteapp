@@ -123,6 +123,42 @@ describe("aggregateNorthCarolinaOutsideGroupContributions", () => {
     expect(result.outsideGroupBreakdowns).toEqual([]);
   });
 
+  it("counts the live-reviewed entity codes as funders and refunds as non-donor money", () => {
+    // PR 9 vocabulary review: "OUTS" (Outside Source) and "NFPC" (Not for
+    // Profit Contribution) carry the largest real funder money in NC, while
+    // "RFND" is a vendor refund flowing back to the committee — known, so it
+    // must skip quietly instead of withholding the candidate's whole slice.
+    const result = aggregateNorthCarolinaOutsideGroupContributions({
+      electionYear: 2026,
+      outsideGroups: [group()],
+      receiptRowsByCommitteeId: new Map([
+        [
+          SPENDER_SBOE_ID,
+          [
+            receipt({ orgName: "GOOD GOVERMENT COALITION INC", receiptTypeCode: "OUTS", amountCents: 1_250_000_00 }),
+            receipt({ orgName: "HEALTHY DEVELOPMENT FUND", receiptTypeCode: "NFPC", amountCents: 15_000_00 }),
+            receipt({ orgName: "WIX.COM", receiptTypeCode: "RFND", amountCents: 45_24 }),
+          ],
+        ],
+      ]),
+    });
+
+    expect(result).toMatchObject({
+      matchedReceiptRowCount: 3,
+      includedReceiptRowCount: 2,
+      skippedReceiptRowCount: 1,
+      nonDonorRowCount: 1,
+      unknownReceiptTypeCodeRowCount: 0,
+      unknownReceiptTypeCodes: [],
+    });
+    const donors = result.outsideGroupBreakdowns.filter((row) => row.categoryType === "donor");
+    expect(donors.map((row) => [row.categoryName, row.amount])).toEqual([
+      ["GOOD GOVERMENT COALITION INC", 1_250_000],
+      ["HEALTHY DEVELOPMENT FUND", 15_000],
+    ]);
+    expect(donors.map((row) => row.categoryName)).not.toContain("WIX.COM");
+  });
+
   it("ignores receipt rows for committees outside the candidate's groups", () => {
     const result = aggregateNorthCarolinaOutsideGroupContributions({
       electionYear: 2026,

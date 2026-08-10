@@ -185,6 +185,9 @@ describe("parseNcsbeReportDetailPage", () => {
   it("parses the cover and exactly one 34-section summary grid", () => {
     const detail = parseNcsbeReportDetailPage(fixture("report-cover-gadson-229931.html"));
     expect(detail.cover).toMatchObject({
+      // The page names itself — the only field that reliably answers "are
+      // these the bytes I asked for?" (present on all 770 live-run covers).
+      reportId: "229931",
       boeId: "STA-JV516O-C-001",
       orgName: "Gadson for North Carolina",
       entityTypeDesc: "Candidate Committee",
@@ -203,6 +206,16 @@ describe("parseNcsbeReportDetailPage", () => {
     expect(bySection.get("Cash on Hand at End of Reporting Period")?.periodCents).toBe(1315856);
     expect(bySection.get("Contributions from Individuals")?.periodCents).toBe(546324);
     expect(bySection.get("Aggregated Contributions from Individuals")?.periodCents).toBe(11000);
+  });
+
+  it("accepts a live cover whose BoeID is null", () => {
+    // PR 9's live run: ~40% of committee reports serve "BoeID":null, which the
+    // spike's fixtures never showed. Nothing downstream reads it — committee
+    // identity comes from the inventory row — so the report must still parse.
+    const detail = parseNcsbeReportDetailPage(fixture("report-cover-hairston-231912-null-boeid.html"));
+    expect(detail.cover.boeId).toBeNull();
+    expect(detail.cover.orgName).toBe("COMMITTEE TO ELECT ELMA HAIRSTON");
+    expect(detail.summarySections).toHaveLength(34);
   });
 
   it("pins all 34 section strings", () => {

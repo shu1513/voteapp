@@ -43,11 +43,14 @@ export type NorthCarolinaOutsideGroupContributionAggregationResult = {
   matchedReceiptRowCount: number;
   // Matched rows that became donor money.
   includedReceiptRowCount: number;
-  // Matched rows that did not: matched = included + skipped, and the five
+  // Matched rows that did not: matched = included + skipped, and the six
   // reason counters below partition skipped.
   skippedReceiptRowCount: number;
   // `"IND "` individual contributions — real receipts, never donor labels.
   individualRowCount: number;
+  // Pinned non-donor entity money (refunds/reimbursements back to the
+  // committee) — known, so it never trips the unknown-code withholding.
+  nonDonorRowCount: number;
   // IsAggregated roll-up rows (OrgName is the placeholder "Aggregated
   // Individual Contribution", not an entity).
   aggregatedRowCount: number;
@@ -84,8 +87,21 @@ const DEFAULT_MIN_INDUSTRY_AMOUNT_CENTS = 0;
 // the IE-form donation code that carries unregistered filers' disclosed
 // funders (Rolling Sea Fund's $24,506 row). `"IND "` is the only individual
 // code and is skipped by name below.
+//
+// The PR 9 live run added two after reviewing their bytes, and they carry
+// most of the money the feature exists to show: "OUTS" (Outside Source, 87
+// rows / $9.73M, including GOOD GOVERMENT COALITION INC's $1.25M and $1M
+// gifts to IE committees) and "NFPC" (Not for Profit Contribution, 36 rows /
+// $3.00M). Both are entity money into an outside group — exactly a funder.
 const INDIVIDUAL_RECEIPT_TYPE_CODE = "IND ";
-const DONOR_RECEIPT_TYPE_CODES = new Set(["CPCM", "PPTY", "DON "]);
+const DONOR_RECEIPT_TYPE_CODES = new Set(["CPCM", "PPTY", "DON ", "OUTS", "NFPC"]);
+
+// Known codes that are NOT anyone funding the group, so they are skipped
+// without tripping the unknown-code withholding: "RFND" is a
+// refund/reimbursement flowing BACK to the committee (98 live rows / $160k,
+// e.g. a $45.24 WIX.COM refund) — counting it would invent a donor out of a
+// vendor.
+const NON_DONOR_RECEIPT_TYPE_CODES = new Set(["RFND"]);
 
 function normalizeElectionYear(value: number): number {
   if (!Number.isInteger(value) || value < 2000 || value > 2100) {
@@ -213,6 +229,7 @@ export function aggregateNorthCarolinaOutsideGroupContributions(
   let includedReceiptRowCount = 0;
   let skippedReceiptRowCount = 0;
   let individualRowCount = 0;
+  let nonDonorRowCount = 0;
   let aggregatedRowCount = 0;
   let blankDonorNameRowCount = 0;
   let unusableRowCount = 0;
@@ -243,6 +260,11 @@ export function aggregateNorthCarolinaOutsideGroupContributions(
       const code = row.receiptTypeCode ?? "";
       if (code === INDIVIDUAL_RECEIPT_TYPE_CODE) {
         individualRowCount += 1;
+        skippedReceiptRowCount += 1;
+        continue;
+      }
+      if (NON_DONOR_RECEIPT_TYPE_CODES.has(code)) {
+        nonDonorRowCount += 1;
         skippedReceiptRowCount += 1;
         continue;
       }
@@ -325,6 +347,7 @@ export function aggregateNorthCarolinaOutsideGroupContributions(
     includedReceiptRowCount,
     skippedReceiptRowCount,
     individualRowCount,
+    nonDonorRowCount,
     aggregatedRowCount,
     blankDonorNameRowCount,
     unusableRowCount,

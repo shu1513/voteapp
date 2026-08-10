@@ -228,6 +228,38 @@ export function parseNcsbeCommitteeSearchPage(html: string): NcsbeCommitteeSearc
 // and the statewide doc-type inventory (/CFDocLkup/DocumentResult/) — both
 // embed the same row schema.
 
+// Disclosure-report types that carry NO cover totals and whose money is
+// re-reported on the covering regular report, verified live in the PR 9 run:
+// RID 230343 ("2026 48-Hour Notice", STA-E1V050-C-001) has a 3-heading
+// all-zero summary grid, and its single $2,500 receipt reappears on the
+// committee's Second Quarter report (GroupID 22554243). Both inventory
+// readers — the acquisition's fetch selection and the direct cycle filter —
+// exclude these rows: fetching one fails the 34-section cover pin, and
+// aggregating one would double-count both the dollars and the occupation
+// row. Exclusion is by THIS pinned set only, never by pattern — an unknown
+// no-total form must keep failing closed until it is verified and added.
+export const NCSBE_NO_TOTAL_REPORT_TYPES: ReadonlySet<string> = new Set(["48-Hour Notice"]);
+
+// Report types the OUTSIDE leg owns (decision 3's single-source rule). PR 8
+// assumed IE informationals were not Disclosure Report rows and so could
+// never reach a direct read; the live run refuted that — an IE filing is
+// `DocumentType: "Disclosure Report"` with this ReportType, and the outside
+// leg already reads it from the IE doc-type inventory. Reading it again on
+// the direct side would double-count IE money into a committee's own totals,
+// and an image-only one (5 of the 15 live rows) makes a registered spender
+// look superseded-unavailable, which fails the whole funder leg closed.
+export const NCSBE_OUTSIDE_LEG_REPORT_TYPES: ReadonlySet<string> = new Set([
+  "Independent Expenditure Report",
+]);
+
+// Window fallback for an inventory row whose period bounds are missing or
+// implausible: the row's own `ReportYear` decides whether it can touch the
+// Y−1..Y cycle. One function so the acquisition's fetch selection and the
+// sync's cycle filter can never disagree about which undated rows exist.
+export function isNcsbeReportYearInCycle(reportYear: number, cycleYear: number): boolean {
+  return reportYear >= cycleYear - 1 && reportYear <= cycleYear;
+}
+
 export type NcsbeDocumentRow = {
   committeeName: string;
   // Null when the filer is unregistered (`No Id`) — decision 6.
@@ -337,7 +369,20 @@ export type NcsbeCoverSummarySection = {
 };
 
 export type NcsbeReportCover = {
-  boeId: string;
+  // The report's OWN id, declared by the page as `var rptID = <n>;`. Present
+  // and correct on all 770 covers of the PR 9 live pull, which makes it the
+  // only decisive answer to "are these the bytes I asked for?" — every other
+  // candidate field disagrees with the inventory somewhere in real data
+  // (period dates on 17, committee name on 110, report name on 14, and even
+  // SBoEID on 35 via O/0 and S/5 glyph confusions like STA-A52Z95 vs
+  // STA-A52Z9S).
+  reportId: string;
+  // Null on live covers (PR 9 run: ~40% of committee reports, e.g. RID 231912
+  // "COMMITTEE TO ELECT ELMA HAIRSTON") — the spike's fixtures all carried a
+  // string, so this was pinned as required and failed those reports closed.
+  // Nothing downstream reads it: committee identity comes from the inventory
+  // row's SBoEID, never from the cover.
+  boeId: string | null;
   orgName: string;
   entityTypeDesc: string | null;
   fullReportName: string | null;
@@ -460,9 +505,15 @@ export function parseNcsbeReportDetailPage(html: string): NcsbeReportDetail {
     );
   }
 
+  const reportIdMatch = /var\s+rptID\s*=\s*(\d+)\s*;/.exec(html);
+  if (!reportIdMatch) {
+    throw new Error("NCSBE report cover does not declare its own rptID");
+  }
+
   return {
     cover: {
-      boeId: requireString(coverRaw.BoeID, "report cover BoeID"),
+      reportId: reportIdMatch[1]!,
+      boeId: normalizeNcsbeText(requireStringOrNull(coverRaw.BoeID, "report cover BoeID")),
       orgName: requireString(coverRaw.OrgName, "report cover OrgName"),
       entityTypeDesc: normalizeNcsbeText(requireStringOrNull(coverRaw.EntityTypeDesc, "report cover EntityTypeDesc")),
       fullReportName: normalizeNcsbeText(

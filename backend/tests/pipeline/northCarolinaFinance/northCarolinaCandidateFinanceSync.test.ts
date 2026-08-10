@@ -59,7 +59,7 @@ function directFinance(
     itemizedIndividualCents: 110_000,
     coverIndividualContributionCents: 120_000,
     cycleChainMismatches: [],
-    coverPeriodMismatchReportIds: [],
+    coverIdentityMismatchReportIds: [],
     derivedBreakdownsQuarantined: false,
     unknownReceiptTypeCodes: [],
     includedIndividualRowCount: 2,
@@ -366,7 +366,7 @@ describe("syncNorthCarolinaCandidateFinance", () => {
         directFinance: directFinance({
           status: "incomplete_artifacts",
           missingReportIds: ["300002"],
-          coverPeriodMismatchReportIds: ["300001"],
+          coverIdentityMismatchReportIds: ["300001"],
         }),
       })
     ).rejects.toThrow(/missing report 300002.*mispaired cover for report 300001/);
