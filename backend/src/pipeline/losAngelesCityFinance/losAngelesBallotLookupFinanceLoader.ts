@@ -170,6 +170,7 @@ export async function loadLosAngelesCandidateFinanceSummariesByCandidateElection
       SELECT candidate_id,election_id,spender_id,spender_name,support_oppose,amount,expenditure_count,source_url
       FROM ranked
       WHERE rn<=5
+      ORDER BY candidate_id,election_id,support_oppose,amount DESC,spender_name
     `,
     [JSON.stringify(selected)],
   );
