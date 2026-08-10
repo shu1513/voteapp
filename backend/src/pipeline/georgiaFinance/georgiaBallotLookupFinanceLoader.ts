@@ -35,6 +35,18 @@ const GEORGIA_OUTSIDE_COVERAGE_NOTE =
   "Transparency and Campaign Finance Commission's current filing system (July 2025 onward). Spending " +
   "reported for more than one candidate or measure in a single expenditure is not included yet.";
 
+// Georgia's official totals are the commission's cumulative report-cover
+// figures, which count money (pre-July-2025 filings, loans, carried
+// balances) that the current system's transaction store does not itemize —
+// so the occupation/size breakdowns can legitimately explain less than the
+// official total (live-verified 2026-08-09; see georgia_plan.md). Without
+// this sentence a reader reasonably assumes the breakdowns cover all the
+// money.
+const GEORGIA_DIRECT_COVERAGE_NOTE =
+  "Donor breakdowns reflect itemized contributions reported to Georgia's current filing system " +
+  "(July 2025 onward). Official totals are cumulative and can include earlier or non-itemized money " +
+  "not shown in the breakdowns.";
+
 export async function loadGeorgiaCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly StateFinanceRequestCandidateRow[],
@@ -51,6 +63,7 @@ export async function loadGeorgiaCandidateFinanceSummariesByCandidateElection(
     isEligibleElection: (row) => isGeorgiaFinanceEligibleOffice(officeInputFromElectionRow(row)),
     evidenceLabelTypes: ["donor"],
     outsideCoverageNote: GEORGIA_OUTSIDE_COVERAGE_NOTE,
+    directCoverageNote: GEORGIA_DIRECT_COVERAGE_NOTE,
     tables: {
       links: "ga_candidate_finance_links",
       summaries: "ga_candidate_finance_summaries",

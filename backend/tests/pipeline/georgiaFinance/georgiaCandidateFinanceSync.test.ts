@@ -522,6 +522,24 @@ describe("syncGeorgiaCandidateFinance", () => {
     expect(db.connect).not.toHaveBeenCalled();
   });
 
+  it("fails closed when every selected row carries an unrecognized status", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    // Rows exist, but a new upstream status code makes every one
+    // unrecognized: the aggregator excludes them from the recognized sum,
+    // so writing through would delete stored breakdowns on the say-so of
+    // rows the pipeline cannot vouch for.
+    fetchers.fetchTransactionRowsWindowed.mockImplementation(async () =>
+      windowedResult([
+        transactionRow({ transactionId: 1, transactionAmount: 1000, filerReportGuid: "pf-r1-v2", transactionStatusCode: "TNEW" }),
+      ])
+    );
+    await expect(syncGeorgiaCandidateFinance(baseInput(db, fetchers))).rejects.toThrow(
+      /zero recognized-status dollars/
+    );
+    expect(db.connect).not.toHaveBeenCalled();
+  });
+
   it("accepts under-coverage and reports it instead of failing", async () => {
     const db = createMockDb();
     const fetchers = carrFetchers();

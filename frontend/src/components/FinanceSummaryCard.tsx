@@ -341,6 +341,14 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
         </p>
       ) : null}
 
+      {/* Same rule as the outside note: stated with the breakdowns it
+          qualifies, only for sources with a known gap, and only when there
+          are breakdowns to qualify — under totals alone the card asserts
+          nothing about itemization. */}
+      {direct.direct_coverage_note &&
+      (direct.top_occupations.length > 0 || (direct.contribution_size_buckets ?? []).length > 0) ? (
+        <p className="mt-1 text-xs text-ink-soft">{direct.direct_coverage_note}</p>
+      ) : null}
       <BreakdownList
         heading="Top disclosed occupations of direct donors"
         rows={direct.top_occupations}

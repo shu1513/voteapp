@@ -56,6 +56,7 @@ export type StateFinanceLoaderCharacterizationSpec = {
    * such caveat — those payloads must not gain the field at all.
    */
   outsideCoverageNote?: string;
+  directCoverageNote?: string;
 };
 
 const CANDIDATE_A = "11111111-1111-4111-8111-111111111111";
@@ -284,6 +285,11 @@ function buildExpected(spec: StateFinanceLoaderCharacterizationSpec): Map<string
           top_employers: [],
           top_industries: [],
           contribution_size_buckets: bucketsA,
+          // Absent (not null) for states with no disclosed gap, so this pins
+          // both that the state sends it and that nobody else gained it.
+          ...(spec.directCoverageNote === undefined
+            ? {}
+            : { direct_coverage_note: spec.directCoverageNote }),
         },
         outside_spending: {
           support_total: 900,
@@ -345,6 +351,9 @@ function buildExpected(spec: StateFinanceLoaderCharacterizationSpec): Map<string
           top_employers: [],
           top_industries: [],
           contribution_size_buckets: [],
+          ...(spec.directCoverageNote === undefined
+            ? {}
+            : { direct_coverage_note: spec.directCoverageNote }),
         },
         outside_spending: {
           support_total: null,

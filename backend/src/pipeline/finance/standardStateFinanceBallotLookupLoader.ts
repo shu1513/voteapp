@@ -154,6 +154,12 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
    * source has a known, systematic gap.
    */
   outsideCoverageNote?: string;
+  /**
+   * One sentence naming what this source's direct breakdowns do not cover
+   * (see BallotLookupFinanceSummary.direct_campaign). Omit unless the
+   * official totals include money the transaction store does not itemize.
+   */
+  directCoverageNote?: string;
 }
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
   if (!input.enabled()) {
@@ -655,6 +661,11 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
             top_employers: [],
             top_industries: [],
             contribution_size_buckets: contributionSizeBuckets,
+            // Omitted entirely (not null) when the source has no known gap,
+            // so every other state's payload is byte-identical to before.
+            ...(input.directCoverageNote === undefined
+              ? {}
+              : { direct_coverage_note: input.directCoverageNote }),
           },
           outside_spending: {
             support_total: parseFinanceAmount(row.outside_support_total),

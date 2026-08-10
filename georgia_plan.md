@@ -203,18 +203,19 @@ Numbered like Ohio's decisions; **F** = fact probed from real bytes.
    difference (beyond nightly-extract timing) → keep previous good
    snapshot. Occupation and size breakdowns are unaffected. (Do not add a
    loader preference variant for this — zero new factory capability.)
-   **Index semantics proven at the spike** (results item 6): the index total
-   is the exact sum of every transaction row the commission holds for the
-   candidate's current registration chain — archive-store rows for
-   pre-cutover reports + PeachFile-era rows **including in-kind, unitemized,
-   and timed-report-pending (`TPEN`) money** — verified to the cent on Carr
-   ($3,468,940.96 + $1,802,135.40 + $103,634.70 = $5,374,711.06). CCDR cover
-   Line 6 EXCLUDES in-kind (tracked in a parallel column), so covers and the
-   index legitimately differ by in-kind-to-date. The reconciliation guard
-   compares our synced row sums against the index with a small tolerance:
-   PeachFile's migrated copies of pre-cutover reports can drift from the
-   archive originals the index reflects (Carr report 37: −$21,675.00 on
-   identical row count, including donor re-attributions) — ~0.4% on Carr.
+   **Index semantics — REVISED 2026-08-09 (supersedes the spike's item 6;
+   see the ROOT CAUSE Status entry):** the index total is PeachFile's
+   cumulative **report-cover accumulator**
+   (`GetFinancialSummaryDetails.monetaryContributionsCumulative`), seeded
+   per-filer at migration — NOT a transaction sum. The spike's
+   to-the-cent Carr decomposition held only because Carr's full history was
+   migrated, making the two models coincide; for legislators the official
+   total routinely counts cover money whose transactions never entered the
+   PeachFile store, and NEVER counts unmigrated archive ledgers. The guard
+   therefore does not require rows to equal the index: it fails closed on
+   zero recognized dollars against a nonzero total, and on rows EXCEEDING
+   the total (foreign ledger); under-coverage is expected and disclosed
+   (`uncoveredOfficialAmount` + the D12 direct coverage note).
 5. **D5 — occupation rules**: individuals only; filed value only; blanks and
    placeholders (`N/A`, `Unknown`, `Information Requested`, empty) → unknown
    bucket; keep `Retired`/`Student`/`Homemaker`/`Self-employed` as-is;
@@ -336,7 +337,12 @@ Numbered like Ohio's decisions; **F** = fact probed from real bytes.
 12. **D12 — coverage notes**: outside note must disclose (a) multi-target IE
     quarantine (D6) and (b) any archive-side gaps found at spike. Direct
     occupation coverage = occupation-covered itemized individual dollars over
-    all direct dollars; unitemized stays out of `Unknown`.
+    all direct dollars; unitemized stays out of `Unknown`. **Direct note
+    (added 2026-08-09 with the cover-arithmetic revision of D4):** the
+    breakdowns explain only PeachFile-store transactions while the official
+    totals are cumulative cover figures, so the loader sends a static
+    `direct_coverage_note` naming that boundary; it renders with the
+    occupation/size breakdowns whenever any exist.
 
 ## Acquisition spike results (run 2026-08-07, user-authorized)
 

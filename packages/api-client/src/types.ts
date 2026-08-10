@@ -240,6 +240,7 @@ export type FinanceSummary = {
     top_employers?: FinanceBreakdown[];
     top_industries: FinanceBreakdown[];
     contribution_size_buckets?: FinanceBreakdown[];
+    direct_coverage_note?: string | null;
   };
   outside_spending: {
     support_total: number | null;

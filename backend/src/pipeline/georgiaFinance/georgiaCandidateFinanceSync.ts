@@ -696,17 +696,22 @@ export async function syncGeorgiaCandidateFinance(
   // never entered the PeachFile store (pre-cutover filings). Diagnostic, not
   // an error — the official total still displays, breakdowns cover the rest.
   const uncoveredOfficialAmount = Math.max(0, centsRound(indexTotalContributions - directFinance.syncedRowSum));
-  // Zero-coverage guard: a nonzero official total with NO selected rows is
-  // indistinguishable from a broken pull, and writing through would replace
-  // the stored breakdowns with [] (the writer deletes on empty arrays) on
-  // the say-so of a failed pull. A filer whose money is ENTIRELY
-  // pre-cutover would also land here; that candidate stays unsynced rather
-  // than risking every genuinely-broken pull being mistaken for one.
-  if (taggedRows.length === 0 && indexTotalContributions !== 0) {
+  // Zero-coverage guard: a nonzero official total with NO recognized-status
+  // dollars is indistinguishable from a broken pull, and writing through
+  // would replace the stored breakdowns with [] (the writer deletes on
+  // empty arrays) on the say-so of a failed pull. Keyed on the RECOGNIZED
+  // row sum, not taggedRows.length — unrecognized-status rows are excluded
+  // from the sum by the aggregator, so a pull whose every row carries an
+  // unknown status (a new upstream code) must fail here rather than write
+  // empty breakdowns through. A filer whose money is ENTIRELY pre-cutover
+  // also lands here; that candidate stays unsynced rather than risking
+  // every genuinely-broken pull being mistaken for one.
+  if (directFinance.syncedRowSum === 0 && indexTotalContributions !== 0) {
     throw new GeorgiaFinanceReconciliationError(
       `Georgia finance reconciliation failed for committee ${committeeId}: the official index total is ` +
-        `$${indexTotalContributions.toFixed(2)} but the pull selected zero transaction rows; previous snapshot ` +
-        `kept — review the PeachFile registration`,
+        `$${indexTotalContributions.toFixed(2)} but the pull yielded zero recognized-status dollars ` +
+        `(${taggedRows.length} selected rows, ${directFinance.unrecognizedStatusRowCount} unrecognized); ` +
+        "previous snapshot kept — review the PeachFile registration",
       {
         committeeId,
         indexTotalContributions,

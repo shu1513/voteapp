@@ -114,6 +114,14 @@ export type BallotLookupFinanceSummary = {
     top_employers?: BallotLookupFinanceBreakdown[];
     top_industries: BallotLookupFinanceBreakdown[];
     contribution_size_buckets?: BallotLookupFinanceBreakdown[];
+    /**
+     * One sentence naming what this source's direct breakdowns do NOT
+     * cover, shown with the occupations/size buckets. Set only by loaders
+     * whose official totals include money the transaction store does not
+     * itemize (e.g. Georgia's pre-cutover report-cover money). Without it a
+     * reader reasonably assumes the breakdowns explain the whole total.
+     */
+    direct_coverage_note?: string | null;
   };
   outside_spending: {
     support_total: number | null;
