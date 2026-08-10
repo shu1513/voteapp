@@ -3,13 +3,17 @@ import { describe, expect, it } from "vitest";
 import {
   BASE_TABLES,
   baseInsertSql,
+  CONSOLE_SKIPPED_ROWS_LIMIT,
+  consoleReportView,
   findPresentIds,
   idProjectionSql,
   insertPlannedRows,
   planTableInserts,
   rowProjectionSql,
+  targetIdProjectionSql,
   toBaseIdRow,
   type BaseIdRow,
+  type BasePromotionReport,
   type BaseTableSpec,
 } from "../../src/scripts/promoteBaseData.js";
 
@@ -48,6 +52,21 @@ describe("BASE_TABLES", () => {
         if (fk.kind === "external") {
           expect(promoted.has(fk.parentTable), `${spec.table}.${fk.column}`).toBe(false);
         }
+      }
+    }
+  });
+
+  it("candidates carry the usability predicate — a retired candidate must not adopt new children", () => {
+    // promoteResearchData.findUnresolvableCandidates enforces the same rule
+    // (absent OR soft-deleted OR merged away) for record parents; dropping
+    // either clause here would silently attach candidate_elections to an
+    // identity the target retired.
+    const candidates = BASE_TABLES.find((spec) => spec.table === "candidates")!;
+    expect(candidates.targetUnusableWhenSql).toContain("deleted_at IS NOT NULL");
+    expect(candidates.targetUnusableWhenSql).toContain("merged_into_candidate_id IS NOT NULL");
+    for (const spec of BASE_TABLES) {
+      if (spec.table !== "candidates") {
+        expect(spec.targetUnusableWhenSql, spec.table).toBeUndefined();
       }
     }
   });
@@ -97,6 +116,15 @@ describe("projections", () => {
     const sql = rowProjectionSql("candidates");
     expect(sql).toContain("to_jsonb(t) AS row");
     expect(sql).toContain("t.id = ANY($1::uuid[])");
+  });
+
+  it("the target id projection carries the usability flag only where a predicate exists", () => {
+    const candidates = BASE_TABLES.find((spec) => spec.table === "candidates")!;
+    const elections = BASE_TABLES.find((spec) => spec.table === "elections")!;
+    expect(targetIdProjectionSql(candidates)).toContain(
+      "(deleted_at IS NOT NULL OR merged_into_candidate_id IS NOT NULL) AS unusable"
+    );
+    expect(targetIdProjectionSql(elections)).toBe("SELECT id::text AS id FROM public.elections");
   });
 
   it("toBaseIdRow maps absent and null FK values to null", () => {
@@ -163,7 +191,9 @@ describe("planTableInserts", () => {
       plannedParentIds: new Map(),
     });
     expect(plan.insertIds).toEqual(["e2"]);
-    expect(plan.skipped).toEqual([{ id: "e1", column: "district_id", parentId: "d-missing" }]);
+    expect(plan.skipped).toEqual([
+      { id: "e1", column: "district_id", parentId: "d-missing", reason: "absent_on_target" },
+    ]);
   });
 
   it("a null FK always passes — office_id is nullable", () => {
@@ -197,7 +227,34 @@ describe("planTableInserts", () => {
     expect(plan.insertIds).toEqual(["ce1"]);
     // The cascade: an election skipped upstream is not in the planned set,
     // so its children skip here rather than failing the FK at insert time.
-    expect(plan.skipped).toEqual([{ id: "ce2", column: "candidate_id", parentId: "c-absent" }]);
+    expect(plan.skipped).toEqual([
+      { id: "ce2", column: "candidate_id", parentId: "c-absent", reason: "absent_on_target" },
+    ]);
+  });
+
+  it("a soft-deleted or merged-away target parent does not adopt children, and the skip says why", () => {
+    // The parent's id EXISTS on the target — a bare id-presence check would
+    // wave this through and file new election links under a retired identity.
+    // The caller keeps retired ids out of targetParentIds and hands them over
+    // as unusableParentIds so the skip reason distinguishes the repair:
+    // divergence to resolve by hand, not a parent to promote first.
+    const plan = planTableInserts({
+      spec: candidateElectionsSpec,
+      sourceRows: [
+        row("ce1", { candidate_id: "c-retired", election_id: "e-on-target", running_mate_candidate_id: null }),
+      ],
+      targetIds: new Set(),
+      targetParentIds: new Map([
+        ["candidates", new Set()],
+        ["elections", new Set(["e-on-target"])],
+      ]),
+      plannedParentIds: new Map([["candidates", new Set()], ["elections", new Set()]]),
+      unusableParentIds: new Map([["candidates", new Set(["c-retired"])]]),
+    });
+    expect(plan.insertIds).toEqual([]);
+    expect(plan.skipped).toEqual([
+      { id: "ce1", column: "candidate_id", parentId: "c-retired", reason: "deleted_or_merged_on_target" },
+    ]);
   });
 
   it("admits a self-FK merge chain in dependency order, survivor first", () => {
@@ -246,6 +303,52 @@ describe("planTableInserts", () => {
     });
     expect(plan.insertIds).toEqual(["c-fine"]);
     expect(plan.skipped.map((skip) => skip.id).sort()).toEqual(["c-a", "c-b", "c-orphan"]);
+  });
+});
+
+describe("consoleReportView", () => {
+  const skippedRow = (index: number) => ({
+    id: `row-${index}`,
+    column: "district_id",
+    parentId: `d-${index}`,
+    reason: "absent_on_target" as const,
+  });
+
+  const reportWith = (skipCount: number): BasePromotionReport => ({
+    mode: "dry_run",
+    source: "src",
+    target: "tgt",
+    tables: {
+      elections: {
+        inserts: 0,
+        alreadyOnTarget: 0,
+        targetOnly: 0,
+        skipped: skipCount,
+        skippedRows: Array.from({ length: skipCount }, (_, i) => skippedRow(i)),
+      },
+    },
+  });
+
+  it("truncates long skip lists and says exactly how many rows it withheld", () => {
+    const report = reportWith(CONSOLE_SKIPPED_ROWS_LIMIT + 5);
+    const view = consoleReportView(report);
+    expect(view.tables.elections!.skippedRows).toHaveLength(CONSOLE_SKIPPED_ROWS_LIMIT);
+    expect(view.tables.elections!.skippedRowsOmitted).toBe(5);
+    // The count survives truncation — the operator always sees the true total.
+    expect(view.tables.elections!.skipped).toBe(CONSOLE_SKIPPED_ROWS_LIMIT + 5);
+  });
+
+  it("never mutates the report — the full version is what lands in --report-file", () => {
+    const report = reportWith(CONSOLE_SKIPPED_ROWS_LIMIT + 5);
+    consoleReportView(report);
+    expect(report.tables.elections!.skippedRows).toHaveLength(CONSOLE_SKIPPED_ROWS_LIMIT + 5);
+    expect(report.tables.elections!.skippedRowsOmitted).toBeUndefined();
+  });
+
+  it("leaves short skip lists untouched, with no omitted marker", () => {
+    const view = consoleReportView(reportWith(2));
+    expect(view.tables.elections!.skippedRows).toHaveLength(2);
+    expect(view.tables.elections!.skippedRowsOmitted).toBeUndefined();
   });
 });
 

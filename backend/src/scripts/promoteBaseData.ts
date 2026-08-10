@@ -61,6 +61,17 @@ export type FkSpec = {
 export type BaseTableSpec = {
   table: string;
   fks: FkSpec[];
+  /**
+   * SQL predicate over a target row that makes it UNUSABLE as a parent for
+   * newly promoted children while still occupying its id. A soft-deleted or
+   * merged-away candidate is the live case: its id must never be re-inserted
+   * (insert-only means never resurrecting it either), but attaching new
+   * candidate_elections to it would file activity under an identity the
+   * target has retired. promoteResearchData's findUnresolvableCandidates
+   * enforces the same rule for records by aborting; here it is a skip,
+   * consistent with how this tool treats absent parents.
+   */
+  targetUnusableWhenSql?: string;
 };
 
 export const BASE_TABLES: readonly BaseTableSpec[] = [
@@ -77,6 +88,7 @@ export const BASE_TABLES: readonly BaseTableSpec[] = [
     // iterates to a fixpoint so a whole merge chain can land in one run, in
     // an order where every survivor precedes the rows that point at it.
     fks: [{ column: "merged_into_candidate_id", parentTable: "candidates", kind: "promoted" }],
+    targetUnusableWhenSql: "deleted_at IS NOT NULL OR merged_into_candidate_id IS NOT NULL",
   },
   {
     table: "candidate_elections",
@@ -124,6 +136,19 @@ export function toBaseIdRow(spec: BaseTableSpec, raw: Record<string, unknown>): 
 }
 
 /**
+ * Target-side id projection. For a table with a usability predicate the
+ * projection also reports whether each row can adopt NEW children — the id
+ * itself still counts as occupied either way, which is what keeps insert-only
+ * from resurrecting a retired row.
+ */
+export function targetIdProjectionSql(spec: BaseTableSpec): string {
+  const unusable = spec.targetUnusableWhenSql
+    ? `, (${spec.targetUnusableWhenSql}) AS unusable`
+    : "";
+  return `SELECT id::text AS id${unusable} FROM public.${spec.table}`;
+}
+
+/**
  * Full rows travel as to_jsonb(t), matched back by NAME with
  * jsonb_populate_record on the target — never positionally, so a dropped
  * column or historical column-order difference between the two databases
@@ -141,12 +166,20 @@ export function rowProjectionSql(table: string): string {
 // FK-closure planning
 // ---------------------------------------------------------------------------
 
+export type SkipReason =
+  /** The parent id does not exist on the target and is not being inserted by this run. */
+  | "absent_on_target"
+  /** The parent id EXISTS on the target but is soft-deleted or merged away — a retired identity must not gain new children. */
+  | "deleted_or_merged_on_target";
+
 export type SkippedRow = {
   id: string;
   /** The FK column that failed closure. */
   column: string;
   /** The parent id that could not be resolved. */
   parentId: string;
+  /** Why — the repair differs: absent means promote/repair the parent; retired means resolve the divergence by hand. */
+  reason: SkipReason;
 };
 
 export type TablePlan = {
@@ -178,10 +211,17 @@ export function planTableInserts(input: {
   spec: BaseTableSpec;
   sourceRows: readonly BaseIdRow[];
   targetIds: ReadonlySet<string>;
-  /** Per parent table: ids present on the target (external parents: only the referenced ones need be present in the set). */
+  /**
+   * Per parent table: ids USABLE as parents on the target (external parents:
+   * only the referenced ones need be present in the set). For a parent table
+   * with a usability predicate, the caller passes the filtered set — a
+   * retired row's id belongs in targetIds (occupied) but not here.
+   */
   targetParentIds: ReadonlyMap<string, ReadonlySet<string>>;
   /** Per parent table promoted earlier this run: ids planned for insert. */
   plannedParentIds: ReadonlyMap<string, ReadonlySet<string>>;
+  /** Per parent table: target ids excluded from targetParentIds by the usability predicate. Distinguishes the skip reason. */
+  unusableParentIds?: ReadonlyMap<string, ReadonlySet<string>>;
 }): TablePlan {
   const { spec, sourceRows, targetIds } = input;
 
@@ -229,7 +269,11 @@ export function planTableInserts(input: {
 
   const skipped: SkippedRow[] = pending.map((row) => {
     const fk = blockingFk(row)!;
-    return { id: row.id, column: fk.column, parentId: row.fks[fk.column]! };
+    const parentId = row.fks[fk.column]!;
+    const reason: SkipReason = input.unusableParentIds?.get(fk.parentTable)?.has(parentId)
+      ? "deleted_or_merged_on_target"
+      : "absent_on_target";
+    return { id: row.id, column: fk.column, parentId, reason };
   });
 
   return { insertIds, skipped, alreadyOnTargetCount, targetOnlyCount };
@@ -371,12 +415,47 @@ export type BasePromotionReport = {
       alreadyOnTarget: number;
       targetOnly: number;
       skipped: number;
-      /** First few skipped rows, so the operator can see WHICH parent is missing without a query. */
-      skippedSample: SkippedRow[];
+      /**
+       * EVERY skipped row, never a sample: apply mode permits skips and
+       * commits, so this list is the operator's only record of what still
+       * needs repair. The console prints a truncated copy (consoleReportView);
+       * the --report-file copy is always complete.
+       */
+      skippedRows: SkippedRow[];
+      /** Set only on the console copy: how many skippedRows were withheld from this printout. */
+      skippedRowsOmitted?: number;
       written?: number;
     }
   >;
 };
+
+export const CONSOLE_SKIPPED_ROWS_LIMIT = 10;
+
+/**
+ * The console copy of the report. A pathological run (a whole missing
+ * district tree) can skip thousands of rows; flooding the terminal with them
+ * helps nobody, but silently truncating would misrepresent the run — so the
+ * console copy caps skippedRows and says exactly how many it withheld. The
+ * report object itself is never mutated: the full version is what lands in
+ * --report-file.
+ */
+export function consoleReportView(report: BasePromotionReport): BasePromotionReport {
+  return {
+    ...report,
+    tables: Object.fromEntries(
+      Object.entries(report.tables).map(([table, stats]) => [
+        table,
+        stats.skippedRows.length > CONSOLE_SKIPPED_ROWS_LIMIT
+          ? {
+              ...stats,
+              skippedRows: stats.skippedRows.slice(0, CONSOLE_SKIPPED_ROWS_LIMIT),
+              skippedRowsOmitted: stats.skippedRows.length - CONSOLE_SKIPPED_ROWS_LIMIT,
+            }
+          : stats,
+      ])
+    ),
+  };
+}
 
 async function main(): Promise<void> {
   const argv = process.argv.slice(2);
@@ -433,17 +512,33 @@ async function main(): Promise<void> {
     // check of every later table (and, for candidates, its own).
     const plans = new Map<string, TablePlan>();
     const plannedParentIds = new Map<string, ReadonlySet<string>>();
-    // Target id sets per promoted table, captured as each table is planned so
-    // later tables can resolve promoted parents that already live on the
-    // target without re-querying.
-    const targetIdSets = new Map<string, ReadonlySet<string>>();
+    // Per promoted table, captured as each table is planned so later tables
+    // can resolve promoted parents without re-querying: ids USABLE as parents
+    // on the target, and the retired ids the usability predicate excluded.
+    const usableTargetIdSets = new Map<string, ReadonlySet<string>>();
+    const unusableTargetIdSets = new Map<string, ReadonlySet<string>>();
     for (const spec of BASE_TABLES) {
       const [sourceRaw, targetRaw] = await Promise.all([
         source.query(idProjectionSql(spec)),
-        target.query(`SELECT id::text AS id FROM public.${spec.table}`),
+        target.query(targetIdProjectionSql(spec)),
       ]);
       const sourceRows = (sourceRaw.rows as Record<string, unknown>[]).map((raw) => toBaseIdRow(spec, raw));
-      const targetIds = new Set((targetRaw.rows as { id: string }[]).map((row) => row.id));
+      // targetIds answers "is this id occupied" (insert-only never touches an
+      // occupied id, retired or not); usableTargetIds answers "may a child
+      // attach to it". A soft-deleted or merged-away candidate is in the
+      // first set and not the second.
+      const targetIds = new Set<string>();
+      const unusableTargetIds = new Set<string>();
+      for (const row of targetRaw.rows as { id: string; unusable?: boolean }[]) {
+        targetIds.add(row.id);
+        if (row.unusable === true) {
+          unusableTargetIds.add(row.id);
+        }
+      }
+      const usableTargetIds =
+        unusableTargetIds.size === 0
+          ? targetIds
+          : new Set([...targetIds].filter((id) => !unusableTargetIds.has(id)));
 
       // External parents (districts, offices): prove presence of exactly the
       // referenced ids on the target, not the whole table.
@@ -462,22 +557,36 @@ async function main(): Promise<void> {
         ];
         targetParentIds.set(fk.parentTable, await findPresentIds(target, fk.parentTable, referenced));
       }
-      // Promoted parents already on the target: reuse the id sets loaded when
-      // that table was planned (self-FKs use this table's own target ids).
+      // Promoted parents already on the target: reuse the USABLE id sets
+      // captured when that table was planned (self-FKs use this table's own).
+      const unusableParentIds = new Map<string, ReadonlySet<string>>();
       for (const fk of spec.fks) {
         if (fk.kind !== "promoted" || targetParentIds.has(fk.parentTable)) {
           continue;
         }
+        const isSelf = fk.parentTable === spec.table;
         targetParentIds.set(
           fk.parentTable,
-          fk.parentTable === spec.table ? targetIds : targetIdSets.get(fk.parentTable) ?? new Set()
+          isSelf ? usableTargetIds : usableTargetIdSets.get(fk.parentTable) ?? new Set()
+        );
+        unusableParentIds.set(
+          fk.parentTable,
+          isSelf ? unusableTargetIds : unusableTargetIdSets.get(fk.parentTable) ?? new Set()
         );
       }
 
-      const plan = planTableInserts({ spec, sourceRows, targetIds, targetParentIds, plannedParentIds });
+      const plan = planTableInserts({
+        spec,
+        sourceRows,
+        targetIds,
+        targetParentIds,
+        plannedParentIds,
+        unusableParentIds,
+      });
       plans.set(spec.table, plan);
       plannedParentIds.set(spec.table, new Set(plan.insertIds));
-      targetIdSets.set(spec.table, targetIds);
+      usableTargetIdSets.set(spec.table, usableTargetIds);
+      unusableTargetIdSets.set(spec.table, unusableTargetIds);
     }
 
     const report: BasePromotionReport = {
@@ -494,7 +603,7 @@ async function main(): Promise<void> {
               alreadyOnTarget: plan.alreadyOnTargetCount,
               targetOnly: plan.targetOnlyCount,
               skipped: plan.skipped.length,
-              skippedSample: plan.skipped.slice(0, 10),
+              skippedRows: plan.skipped,
             },
           ];
         })
@@ -502,10 +611,21 @@ async function main(): Promise<void> {
     };
 
     for (const spec of BASE_TABLES) {
-      for (const skip of plans.get(spec.table)!.skipped.slice(0, 10)) {
+      const skippedRows = plans.get(spec.table)!.skipped;
+      for (const skip of skippedRows.slice(0, CONSOLE_SKIPPED_ROWS_LIMIT)) {
         console.warn(
-          `WARNING: skipping ${spec.table} ${skip.id} — ${skip.column} references ${skip.parentId}, ` +
-            "which is absent on the target and not being inserted by this run."
+          skip.reason === "deleted_or_merged_on_target"
+            ? `WARNING: skipping ${spec.table} ${skip.id} — ${skip.column} references ${skip.parentId}, ` +
+                "which exists on the target but is soft-deleted or merged away; a retired identity " +
+                "must not gain new children. Resolve the divergence by hand."
+            : `WARNING: skipping ${spec.table} ${skip.id} — ${skip.column} references ${skip.parentId}, ` +
+                "which is absent on the target and not being inserted by this run."
+        );
+      }
+      if (skippedRows.length > CONSOLE_SKIPPED_ROWS_LIMIT) {
+        console.warn(
+          `WARNING: ${spec.table}: ${skippedRows.length - CONSOLE_SKIPPED_ROWS_LIMIT} more skipped ` +
+            "row(s) not shown here; pass --report-file to capture the complete list."
         );
       }
     }
@@ -550,9 +670,11 @@ async function main(): Promise<void> {
 
     const reportFile = readFlagValue(argv, "--report-file");
     if (reportFile) {
+      // The file gets the FULL report — every skipped row. Only the console
+      // copy is truncated.
       await writeFile(reportFile, `${JSON.stringify(report, null, 2)}\n`, "utf8");
     }
-    console.log(JSON.stringify(report, null, 2));
+    console.log(JSON.stringify(consoleReportView(report), null, 2));
     if (!apply) {
       console.log(
         "\nDry run only — nothing was written. Re-run with:\n" +

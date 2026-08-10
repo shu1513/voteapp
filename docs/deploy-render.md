@@ -108,9 +108,13 @@ column and parent id, and left behind — one missing district must not abort
 promoting thousands of unrelated rows. Skips cascade in FK order: a skipped
 election disqualifies its `candidate_elections` and `ballot_measures` too, so
 the graph on the target is never left half-wired. `districts` and `offices` are
-read-only dependencies; this tool never invents one. Read the `skipped` counts
-in the dry run before applying — a non-zero count means the target is missing
-something upstream that probably wants promoting first.
+read-only dependencies; this tool never invents one. A candidate that exists on
+the target but is soft-deleted or merged away is treated the same way — a
+retired identity must not gain new children — and the skip's `reason` field
+says which case it is, because the repair differs: an absent parent wants
+promoting first, a retired one is a divergence to resolve by hand. Read the
+`skipped` counts in the dry run before applying; the console shows the first
+ten skips, and `--report-file` captures the complete list.
 
 ### Promoting researched data into a populated database
 
