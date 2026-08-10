@@ -125,7 +125,12 @@ describe("San Francisco ballot finance loader", () => {
     // The five largest outside groups must also arrive largest-first — the
     // card renders them in row order without re-sorting.
     expect(String(query.mock.calls[2]?.[0])).toContain(
-      "ORDER BY candidate_id,election_id,support_oppose,amount DESC,spender_name",
+      "ORDER BY candidate_id,election_id,support_oppose,amount DESC,spender_name,spender_fppc_id",
+    );
+    // The window ORDER BY decides which tied group survives the rank-5
+    // cutoff — spender_name alone is not unique, spender_fppc_id is.
+    expect(String(query.mock.calls[2]?.[0])).toContain(
+      "ORDER BY g.amount DESC,g.spender_name,g.spender_fppc_id) rn",
     );
   });
 
