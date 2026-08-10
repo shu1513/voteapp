@@ -162,8 +162,12 @@ describe("washingtonCandidateFinanceSync", () => {
       totalReceipts: 11962407.92,
       directContributionTotal: 11962407.92,
       totalDisbursements: 8000000,
+      // Resolution carries no summary IE fields here, so the headline falls
+      // back to the fetched group sums.
       outsideSupportTotal: 2457.26,
       outsideOpposeTotal: 0,
+      outsideSupportGroupTotal: 2457.26,
+      outsideOpposeGroupTotal: 0,
       directOccupationRowCount: 2,
       directContributionSizeRowCount: 1,
       outsideGroupCount: 1,
@@ -181,7 +185,13 @@ describe("washingtonCandidateFinanceSync", () => {
       undefined
     );
     expect(pdcClient.getIndependentExpenditureGroups).toHaveBeenCalledWith(
-      expect.objectContaining({ candidateName: "Bob Ferguson", office: "GOVERNOR", electionYear: 2024 }),
+      expect.objectContaining({
+        candidateName: "Bob Ferguson",
+        office: "GOVERNOR",
+        electionYear: 2024,
+        candidateFilerId: "FERGR *115",
+        candidateCommitteeId: "32311",
+      }),
       undefined
     );
 
@@ -276,6 +286,47 @@ describe("washingtonCandidateFinanceSync", () => {
       "environmental_group",
       "medium",
       "rule",
+    ]);
+  });
+
+  it("takes headline outside totals from the summary IE fields, not the group sums", async () => {
+    const db = createMockDb();
+    const pdcClient = createPdcClient({
+      resolution: matchedResolution({
+        // PDC's own Wilson 2025 totals; the single fetched group below is a
+        // deliberately incomplete explanation.
+        independentExpendituresForAmount: 273026.25,
+        independentExpendituresAgainstAmount: 1232834.74,
+      }),
+    });
+
+    const result = await syncWashingtonCandidateFinance({
+      db,
+      ...baseInput(),
+      pdcClient,
+    });
+
+    expect(result).toMatchObject({
+      outsideSupportTotal: 273026.25,
+      outsideOpposeTotal: 1232834.74,
+      outsideSupportGroupTotal: 2457.26,
+      outsideOpposeGroupTotal: 0,
+    });
+
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.wa_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2024,
+      11962407.92,
+      11962407.92,
+      8000000,
+      null,
+      273026.25,
+      1232834.74,
+      PDC_SOURCE_URL,
+      "2024-02-03T04:05:06.000Z",
     ]);
   });
 

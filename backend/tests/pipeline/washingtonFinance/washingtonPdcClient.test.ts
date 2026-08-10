@@ -126,7 +126,12 @@ describe("washingtonPdcClient", () => {
     expect(url.origin + url.pathname).toBe("https://data.wa.gov/resource/kv7h-kjye.json");
     expect(url.searchParams.get("$where")).toContain("filer_id = 'FERGR *115'");
     expect(url.searchParams.get("$where")).toContain("contributor_category = 'Individual'");
-    expect(url.searchParams.get("$group")).toBe("contributor_occupation");
+    // Case/whitespace normalization happens server-side; blank occupations are
+    // excluded instead of becoming an "UNKNOWN" category.
+    expect(url.searchParams.get("$select")).toContain("upper(trim(contributor_occupation)) as category_name");
+    expect(url.searchParams.get("$group")).toBe("category_name");
+    expect(url.searchParams.get("$where")).toContain("contributor_occupation IS NOT NULL");
+    expect(url.searchParams.get("$where")).toContain("trim(contributor_occupation) != ''");
 
     const fetchImpl = vi.fn().mockResolvedValue(
       jsonResponse([
@@ -140,10 +145,7 @@ describe("washingtonPdcClient", () => {
         { filerId: "FERGR *115", electionYear: 2024, limit: 5 },
         { fetchImpl, timeoutMs: 1000 }
       )
-    ).resolves.toEqual([
-      { categoryName: "ATTORNEY - LAWYER", amount: 719187.76, count: 25 },
-      { categoryName: "UNKNOWN", amount: 100, count: 1 },
-    ]);
+    ).resolves.toEqual([{ categoryName: "ATTORNEY - LAWYER", amount: 719187.76, count: 25 }]);
   });
 
   it("builds and parses contribution size aggregates", async () => {
@@ -182,7 +184,10 @@ describe("washingtonPdcClient", () => {
     );
     expect(url.origin + url.pathname).toBe("https://data.wa.gov/resource/67cp-h962.json");
     expect(url.searchParams.get("$where")).toContain("for_or_against in('For','Against')");
-    expect(url.searchParams.get("$where")).toContain("report_type = 'Independent Expenditure'");
+    expect(url.searchParams.get("$where")).toContain(
+      "report_type in('Independent Expenditure','Independent Expenditure Ad','Electioneering Communication')"
+    );
+    expect(url.searchParams.get("$where")).toContain("lower(candidate_name) like");
 
     const fetchImpl = vi
       .fn()
@@ -252,6 +257,118 @@ describe("washingtonPdcClient", () => {
       },
     ]);
     expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
+  it("filters by hard candidate IDs and keeps name-casing variants (Wilson 2025 characterization)", async () => {
+    const url = new URL(
+      buildWashingtonPdcIndependentExpenditureGroupsUrl({
+        candidateName: "Katie Wilson",
+        electionYear: 2025,
+        office: "Mayor",
+        candidateFilerId: "WILSK--949",
+        candidateCommitteeId: "37672",
+      })
+    );
+    expect(url.searchParams.get("$where")).toContain("candidate_filer_id = 'WILSK--949'");
+    expect(url.searchParams.get("$where")).toContain("candidate_committee_id = '37672'");
+    // Hard-ID mode must not constrain by name or office text.
+    expect(url.searchParams.get("$where")).not.toContain("candidate_name");
+    expect(url.searchParams.get("$where")).not.toContain("candidate_office");
+
+    // PDC's own summary totals for Wilson 2025: 273,026.25 for / 1,232,834.74
+    // against — the sum of all three C6 report types, including rows whose
+    // candidate_name casing differs from the search name.
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([
+          {
+            candidate_name: "Katie Wilson",
+            sponsor_id: "SPONA  101",
+            sponsor_name: "SUPPORT SPONSOR",
+            for_or_against: "For",
+            report_type: "Electioneering Communication",
+            portion_of_amount: "260691.67",
+          },
+          {
+            candidate_name: "Katie Wilson",
+            sponsor_id: "SPONA  101",
+            sponsor_name: "SUPPORT SPONSOR",
+            for_or_against: "For",
+            report_type: "Independent Expenditure",
+            portion_of_amount: "113.99",
+          },
+          {
+            candidate_name: "Katie Wilson",
+            sponsor_id: "SPONA  101",
+            sponsor_name: "SUPPORT SPONSOR",
+            for_or_against: "For",
+            report_type: "Independent Expenditure Ad",
+            portion_of_amount: "12220.59",
+          },
+          {
+            candidate_name: "Katie Wilson",
+            sponsor_id: "FUTUB--916",
+            sponsor_name: "BRUCE HARRELL FOR SEATTLE'S FUTURE",
+            for_or_against: "Against",
+            report_type: "Independent Expenditure",
+            portion_of_amount: "683855.00",
+          },
+          {
+            candidate_name: "Katie Wilson",
+            sponsor_id: "FUTUB--916",
+            sponsor_name: "BRUCE HARRELL FOR SEATTLE'S FUTURE",
+            for_or_against: "Against",
+            report_type: "Independent Expenditure Ad",
+            portion_of_amount: "480979.74",
+          },
+          {
+            candidate_name: "KATIE WILSON",
+            sponsor_id: "FUTUB--916",
+            sponsor_name: "BRUCE HARRELL FOR SEATTLE'S FUTURE",
+            for_or_against: "Against",
+            report_type: "Independent Expenditure",
+            portion_of_amount: "34000.00",
+          },
+          {
+            candidate_name: "KATIE WILSON",
+            sponsor_id: "FUTUB--916",
+            sponsor_name: "BRUCE HARRELL FOR SEATTLE'S FUTURE",
+            for_or_against: "Against",
+            report_type: "Independent Expenditure Ad",
+            portion_of_amount: "34000.00",
+          },
+        ])
+      )
+      .mockResolvedValueOnce(jsonResponse([])) as unknown as typeof fetch;
+
+    await expect(
+      getWashingtonPdcIndependentExpenditureGroups(
+        {
+          candidateName: "Katie Wilson",
+          electionYear: 2025,
+          candidateFilerId: "WILSK--949",
+          candidateCommitteeId: "37672",
+          limit: 10,
+        },
+        { fetchImpl, timeoutMs: 1000, pageLimit: 10 }
+      )
+    ).resolves.toEqual([
+      {
+        sponsorId: "FUTUB--916",
+        sponsorName: "BRUCE HARRELL FOR SEATTLE'S FUTURE",
+        supportOppose: "oppose",
+        amount: 1232834.74,
+        expenditureCount: 4,
+      },
+      {
+        sponsorId: "SPONA  101",
+        sponsorName: "SUPPORT SPONSOR",
+        supportOppose: "support",
+        amount: 273026.25,
+        expenditureCount: 3,
+      },
+    ]);
   });
 
   it("caps paged reads defensively", async () => {

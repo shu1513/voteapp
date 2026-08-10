@@ -65,6 +65,8 @@ type WashingtonPdcDataClient = {
       electionYear: number;
       office?: string | null;
       legislativeDistrict?: string | null;
+      candidateFilerId?: string | null;
+      candidateCommitteeId?: string | null;
       limit?: number;
     },
     options?: WashingtonPdcClientOptions
@@ -127,6 +129,11 @@ export type WashingtonCandidateFinanceSyncResult = {
   totalDisbursements: number | null;
   outsideSupportTotal: number | null;
   outsideOpposeTotal: number | null;
+  // Sum of the fetched C6 groups per direction. Drift against the headline
+  // outside totals (which come from PDC's summary fields) is expected filing
+  // skew; large drift means the group explanation is incomplete.
+  outsideSupportGroupTotal: number | null;
+  outsideOpposeGroupTotal: number | null;
   directOccupationRowCount: number;
   directContributionSizeRowCount: number;
   outsideGroupCount: number;
@@ -285,6 +292,12 @@ async function hydrateTrustedCommitteeTotals(input: {
         ...input.trustedResolution,
         ...(resolved.contributionsAmount !== undefined ? { contributionsAmount: resolved.contributionsAmount } : {}),
         ...(resolved.expendituresAmount !== undefined ? { expendituresAmount: resolved.expendituresAmount } : {}),
+        ...(resolved.independentExpendituresForAmount !== undefined
+          ? { independentExpendituresForAmount: resolved.independentExpendituresForAmount }
+          : {}),
+        ...(resolved.independentExpendituresAgainstAmount !== undefined
+          ? { independentExpendituresAgainstAmount: resolved.independentExpendituresAgainstAmount }
+          : {}),
       };
     }
   } catch {
@@ -570,8 +583,12 @@ function toSummary(input: {
     totalReceipts,
     directContributionTotal: totalReceipts,
     totalDisbursements: input.resolution.expendituresAmount ?? null,
-    outsideSupportTotal: sumGroups(input.outsideGroups, "support"),
-    outsideOpposeTotal: sumGroups(input.outsideGroups, "oppose"),
+    // The summary dataset's per-candidate IE fields are PDC's own totals and
+    // the authority for the headline numbers; summing the fetched top-N C6
+    // groups undercounts. Group sums remain only as a fallback when the
+    // summary row carried no IE fields (e.g. trusted-link hydration failed).
+    outsideSupportTotal: input.resolution.independentExpendituresForAmount ?? sumGroups(input.outsideGroups, "support"),
+    outsideOpposeTotal: input.resolution.independentExpendituresAgainstAmount ?? sumGroups(input.outsideGroups, "oppose"),
     sourceUrl: input.resolution.sourceUrl ?? input.fallbackSourceUrl ?? null,
   };
 }
@@ -599,6 +616,8 @@ function emptyResult(input: {
     totalDisbursements: null,
     outsideSupportTotal: null,
     outsideOpposeTotal: null,
+    outsideSupportGroupTotal: null,
+    outsideOpposeGroupTotal: null,
     directOccupationRowCount: 0,
     directContributionSizeRowCount: 0,
     outsideGroupCount: 0,
@@ -682,6 +701,10 @@ export async function syncWashingtonCandidateFinance(
         electionYear,
         office: officeSearch?.pdcOffice ?? null,
         legislativeDistrict: officeSearch?.legislativeDistrict ?? null,
+        // Hard IDs from the matched committee filter the C6 rows exactly;
+        // the name/office inputs above only serve the unlinked fallback.
+        candidateFilerId: resolution.filerId,
+        candidateCommitteeId: resolution.committeeId,
         limit: input.outsideMaxGroups ?? DEFAULT_OUTSIDE_MAX_GROUPS,
       },
       input.pdcClientOptions
@@ -746,6 +769,8 @@ export async function syncWashingtonCandidateFinance(
     totalDisbursements: summary.totalDisbursements ?? null,
     outsideSupportTotal: summary.outsideSupportTotal ?? null,
     outsideOpposeTotal: summary.outsideOpposeTotal ?? null,
+    outsideSupportGroupTotal: sumGroups(outsideGroups, "support"),
+    outsideOpposeGroupTotal: sumGroups(outsideGroups, "oppose"),
     directOccupationRowCount: occupations.length,
     directContributionSizeRowCount: contributionSizes.length,
     outsideGroupCount: outsideGroups.length,

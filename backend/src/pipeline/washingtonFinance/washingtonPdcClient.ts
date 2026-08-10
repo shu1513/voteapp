@@ -86,6 +86,12 @@ export type WashingtonPdcIndependentSpendingGroupInput = {
   electionYear: number;
   office?: string | null;
   legislativeDistrict?: string | null;
+  // Hard candidate identity from the campaign-finance summary dataset. When
+  // present the C6 rows are filtered by these IDs and the name/office
+  // predicates are skipped entirely; name matching is only the fallback for
+  // unlinked lookups.
+  candidateFilerId?: string | null;
+  candidateCommitteeId?: string | null;
   limit?: number;
 };
 
@@ -454,11 +460,11 @@ function committeeWhere(input: WashingtonPdcCommitteeInput): string {
   return `election_year = ${soqlString(String(electionYear))} AND amount > 0 AND (${idPredicate})`;
 }
 
-function aggregateFromRow(row: unknown, defaultCategoryName?: string): WashingtonPdcAggregate | null {
+function aggregateFromRow(row: unknown): WashingtonPdcAggregate | null {
   if (!isRecord(row)) {
     return null;
   }
-  const categoryName = getString(row, "category_name", "donor_name") ?? defaultCategoryName;
+  const categoryName = getString(row, "category_name", "donor_name");
   const amount = getNumber(row, "amount", "total_amount");
   if (!categoryName || amount === undefined || amount <= 0) {
     return null;
@@ -473,10 +479,15 @@ function aggregateFromRow(row: unknown, defaultCategoryName?: string): Washingto
 
 export function buildWashingtonPdcDirectOccupationAggregatesUrl(input: WashingtonPdcCommitteeInput): string {
   const limit = normalizeLimit(input.limit, 20);
+  // Occupations are free-text: normalize case/whitespace server-side so
+  // "Retired"/"RETIRED"/"retired" aggregate as one category, and exclude
+  // blank/NULL rows entirely (occupation is only disclosed above the $250
+  // aggregate threshold — missing is expected, not a category). total_count
+  // counts contribution rows, not distinct donors.
   return buildWashingtonPdcDatasetUrl(WASHINGTON_PDC_CONTRIBUTIONS_DATASET, {
-    $select: "contributor_occupation as category_name,sum(amount) as total_amount,count(*) as total_count",
-    $where: `${committeeWhere(input)} AND contributor_category = 'Individual'`,
-    $group: "contributor_occupation",
+    $select: "upper(trim(contributor_occupation)) as category_name,sum(amount) as total_amount,count(*) as total_count",
+    $where: `${committeeWhere(input)} AND contributor_category = 'Individual' AND contributor_occupation IS NOT NULL AND trim(contributor_occupation) != ''`,
+    $group: "category_name",
     $order: "total_amount DESC, category_name ASC",
     $limit: limit,
   });
@@ -492,7 +503,9 @@ export async function getWashingtonPdcDirectOccupationAggregates(
     Object.fromEntries(url.searchParams.entries()),
     options
   );
-  return rows.map((row) => aggregateFromRow(row, "UNKNOWN")).filter((row): row is WashingtonPdcAggregate => row !== null);
+  // No default category: a row without a name (blank occupation) is dropped
+  // rather than surfacing as an "UNKNOWN" bucket.
+  return rows.map((row) => aggregateFromRow(row)).filter((row): row is WashingtonPdcAggregate => row !== null);
 }
 
 export function buildWashingtonPdcContributionSizeRowsUrl(input: WashingtonPdcCommitteeInput): string {
@@ -560,6 +573,12 @@ export async function getWashingtonPdcContributionSizeAggregates(
   return aggregateContributionSizeRows(rows, normalizeLimit(input.limit, 10));
 }
 
+// All three C6 report types are additive components of PDC's own per-candidate
+// IE totals (verified against the summary dataset's
+// independent_expenditures_for_amount/_against_amount, Wilson/Harrell 2025).
+const WASHINGTON_PDC_INDEPENDENT_EXPENDITURE_REPORT_TYPES =
+  "report_type in('Independent Expenditure','Independent Expenditure Ad','Electioneering Communication')";
+
 export function buildWashingtonPdcIndependentExpenditureGroupsUrl(
   input: WashingtonPdcIndependentSpendingGroupInput
 ): string {
@@ -567,18 +586,27 @@ export function buildWashingtonPdcIndependentExpenditureGroupsUrl(
   const electionYear = normalizeElectionYear(input.electionYear);
   const where = [
     `election_year = ${soqlString(String(electionYear))}`,
-    whereLikeText("candidate_name", candidateName),
     "portion_of_amount > 0",
     "for_or_against in('For','Against')",
-    "report_type = 'Independent Expenditure'",
+    WASHINGTON_PDC_INDEPENDENT_EXPENDITURE_REPORT_TYPES,
   ];
-  const office = optionalString(input.office);
-  const legislativeDistrict = optionalString(input.legislativeDistrict);
-  if (office) {
-    where.push(whereEqualText("candidate_office", office));
-  }
-  if (legislativeDistrict) {
-    where.push(whereEqualText("candidate_jurisdiction", legislativeDistrict));
+  const candidateFilerId = optionalIdentifier(input.candidateFilerId);
+  const candidateCommitteeId = optionalIdentifier(input.candidateCommitteeId);
+  if (candidateFilerId) {
+    where.push(`candidate_filer_id = ${soqlString(candidateFilerId)}`);
+    if (candidateCommitteeId) {
+      where.push(`candidate_committee_id = ${soqlString(candidateCommitteeId)}`);
+    }
+  } else {
+    where.push(whereLikeText("candidate_name", candidateName));
+    const office = optionalString(input.office);
+    const legislativeDistrict = optionalString(input.legislativeDistrict);
+    if (office) {
+      where.push(whereEqualText("candidate_office", office));
+    }
+    if (legislativeDistrict) {
+      where.push(whereEqualText("candidate_jurisdiction", legislativeDistrict));
+    }
   }
 
   return buildWashingtonPdcDatasetUrl(WASHINGTON_PDC_INDEPENDENT_EXPENDITURES_DATASET, {
@@ -592,15 +620,20 @@ export function buildWashingtonPdcIndependentExpenditureGroupsUrl(
 function aggregateIndependentSpendingRows(
   rows: unknown[],
   limit: number,
-  candidateName: string
+  // null = rows were already filtered by hard candidate IDs; casing variants of
+  // the candidate name in C6 filings must not drop rows in that mode.
+  candidateName: string | null
 ): WashingtonPdcIndependentSpendingGroup[] {
   const groups = new Map<string, WashingtonPdcIndependentSpendingGroup>();
-  const expectedCandidateName = normalizePdcPersonName(candidateName);
+  const expectedCandidateName = candidateName === null ? null : normalizePdcPersonName(candidateName);
   for (const row of rows) {
     if (!isRecord(row)) {
       continue;
     }
-    if (normalizePdcPersonName(getString(row, "candidate_name")) !== expectedCandidateName) {
+    if (
+      expectedCandidateName !== null &&
+      normalizePdcPersonName(getString(row, "candidate_name")) !== expectedCandidateName
+    ) {
       continue;
     }
     const sponsorId = getString(row, "sponsor_id");
@@ -643,7 +676,8 @@ export async function getWashingtonPdcIndependentExpenditureGroups(
     Object.fromEntries(url.searchParams.entries()),
     options
   );
-  return aggregateIndependentSpendingRows(rows, normalizeLimit(input.limit, 20), input.candidateName);
+  const hardIdMode = optionalIdentifier(input.candidateFilerId) !== undefined;
+  return aggregateIndependentSpendingRows(rows, normalizeLimit(input.limit, 20), hardIdMode ? null : input.candidateName);
 }
 
 export function buildWashingtonPdcSponsorSummarySearchUrl(input: WashingtonPdcSponsorSummaryInput): string {
