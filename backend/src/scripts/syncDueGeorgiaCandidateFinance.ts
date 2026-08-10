@@ -16,10 +16,11 @@ export type SyncDueGeorgiaCandidateFinanceScriptOptions = {
   staleAfterDays?: number;
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
+  maxPasses?: number;
 };
 
 const KNOWN_BOOLEAN_FLAGS = new Set(["--dry-run", "--force"]);
-const KNOWN_VALUE_FLAGS = new Set(["--max-candidates", "--stale-after-days", "--lookback-days", "--lookahead-days"]);
+const KNOWN_VALUE_FLAGS = new Set(["--max-candidates", "--stale-after-days", "--lookback-days", "--lookahead-days", "--max-passes"]);
 
 function parsePositiveIntegerFlag(args: readonly string[], flag: string): number | undefined {
   const index = args.indexOf(flag);
@@ -57,6 +58,10 @@ export function parseSyncDueGeorgiaCandidateFinanceScriptArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
+    // Stability passes for the windowed transaction pulls: large committees
+    // with churn between passes can need more than the default 4 to produce
+    // two consecutive equal id-sets (live: 8 candidates stuck at 4).
+    maxPasses: parsePositiveIntegerFlag(args, "--max-passes"),
   };
 }
 
@@ -103,6 +108,7 @@ async function main(): Promise<void> {
       staleAfterDays: options.staleAfterDays,
       electionLookbackDays: options.electionLookbackDays,
       electionLookaheadDays: options.electionLookaheadDays,
+      maxPasses: options.maxPasses,
     });
 
     console.log(JSON.stringify(toSyncDueGeorgiaCandidateFinanceScriptOutput({ startedAt, options, result }), null, 2));
