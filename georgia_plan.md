@@ -911,3 +911,34 @@ shape) and lands first; only the D3 map table waits for the spike.
   Both failure directions fail closed (the reconciliation guard writes
   nothing either way), so no wrong money was ever written. 138 GA tests,
   suite 7,224 green.
+- 2026-08-09: **ROOT CAUSE FOUND AND FIXED — official totals are report-cover
+  arithmetic, not transaction sums.** Proven from PeachFile's own systems
+  (profile UI + `POST /api/PublicFilerDetails/GetFinancialSummaryDetails`
+  with `{filerRegistrationGuid}`, discovered by driving the UI in a browser
+  and reading the app bundles): the endpoint returns the official
+  accumulator (`monetaryContributionsCumulative` = the index total exactly,
+  plus startBalance/endBalance/loansReceivedCumulative), maintained over
+  the registration's FILED REPORT COVERS and seeded per-filer at migration.
+  Consequences, all verified live: (a) the official total counts money from
+  covers whose transactions never entered the PeachFile transaction store
+  (Cox: official $186,121.55; PeachFile's own profile pies show itemized
+  transactions of exactly $77,275.20 — Georgia itself displays both without
+  reconciling them); (b) unmigrated archive ledgers are NEVER counted
+  (Erwin and Payne: official == PeachFile-only rows to the cent while their
+  archive registrations hold five-figure sums); (c) migrated transactions,
+  when carried at all, are already in the PeachFile store under re-keyed
+  ids (Carr). Every reconciliation failure and every failed archive
+  hypothesis followed from anchoring a TRANSACTION sum to a COVER
+  accumulator. **Fix (this entry's PR): the direct leg reads the PeachFile
+  store only** — archive discovery, archive report fetch, and archive TCON
+  pull removed from the direct path (the archive host now serves nothing on
+  this leg); the guard becomes (1) the unchanged zero-coverage guard and
+  (2) an OVER-count guard (rows exceeding the official total prove a
+  foreign ledger — fail closed); under-coverage is a new
+  `uncoveredOfficialAmount` result field (cover-counted pre-cutover money),
+  disclosed rather than failed. A user-facing coverage note on direct
+  breakdowns is a follow-up (needs the shared read-side contract). The
+  identity map table stays (outside-spender use) but the sync no longer
+  consults it. PeachFile report rows DO carry per-version PDF filePaths,
+  but the download endpoint still 500s server-side (re-confirmed live);
+  nothing in this design needs it. 135 GA tests, suite 7,323 green.
