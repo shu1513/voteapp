@@ -943,8 +943,10 @@ shape) and lands first; only the D3 map table waits for the spike.
   foreign ledger — fail closed); under-coverage is a new
   `uncoveredOfficialAmount` result field (cover-counted pre-cutover money),
   disclosed rather than failed. A user-facing coverage note on direct
-  breakdowns is a follow-up (needs the shared read-side contract). The
+  breakdowns ships with this change set's review round through the shared
+  read-side contract (`direct_coverage_note`: loader option -> api-client
+  type -> FinanceSummaryCard, outside-note pattern). The
   identity map table stays (outside-spender use) but the sync no longer
   consults it. PeachFile report rows DO carry per-version PDF filePaths,
   but the download endpoint still 500s server-side (re-confirmed live);
-  nothing in this design needs it. 135 GA tests, suite 7,323 green.
+  nothing in this design needs it. 136 GA sync-file tests after the review round; backend suite 7,324 green, frontend 515.

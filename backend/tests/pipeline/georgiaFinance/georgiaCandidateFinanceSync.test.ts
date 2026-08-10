@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   buildGeorgiaSelectedReportGuids,
-  discoverGeorgiaArchiveRegistrations,
   fetchGeorgiaSpenderContributionRows,
   GeorgiaFinanceReconciliationError,
   syncGeorgiaCandidateFinance,
