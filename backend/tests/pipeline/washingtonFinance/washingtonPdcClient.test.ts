@@ -136,6 +136,10 @@ describe("washingtonPdcClient", () => {
     const fetchImpl = vi.fn().mockResolvedValue(
       jsonResponse([
         { category_name: "ATTORNEY - LAWYER", total_amount: "719187.76", total_count: "25" },
+        // SoQL trim() leaves internal whitespace runs: these two are separate
+        // server-side buckets and must merge client-side.
+        { category_name: "NOT EMPLOYED", total_amount: "300", total_count: "3" },
+        { category_name: "NOT  EMPLOYED", total_amount: "200", total_count: "2" },
         { total_amount: "100", total_count: "1" },
       ])
     ) as unknown as typeof fetch;
@@ -145,7 +149,10 @@ describe("washingtonPdcClient", () => {
         { filerId: "FERGR *115", electionYear: 2024, limit: 5 },
         { fetchImpl, timeoutMs: 1000 }
       )
-    ).resolves.toEqual([{ categoryName: "ATTORNEY - LAWYER", amount: 719187.76, count: 25 }]);
+    ).resolves.toEqual([
+      { categoryName: "ATTORNEY - LAWYER", amount: 719187.76, count: 25 },
+      { categoryName: "NOT EMPLOYED", amount: 500, count: 5 },
+    ]);
   });
 
   it("builds and parses contribution size aggregates", async () => {
@@ -274,6 +281,21 @@ describe("washingtonPdcClient", () => {
     // Hard-ID mode must not constrain by name or office text.
     expect(url.searchParams.get("$where")).not.toContain("candidate_name");
     expect(url.searchParams.get("$where")).not.toContain("candidate_office");
+
+    // A filer ID alone must NOT enter hard-ID mode: one filer can run two
+    // races in the same year under different committees, so the query keeps
+    // the name/office race filters instead.
+    const filerOnlyUrl = new URL(
+      buildWashingtonPdcIndependentExpenditureGroupsUrl({
+        candidateName: "Katie Wilson",
+        electionYear: 2025,
+        office: "Mayor",
+        candidateFilerId: "WILSK--949",
+      })
+    );
+    expect(filerOnlyUrl.searchParams.get("$where")).not.toContain("candidate_filer_id");
+    expect(filerOnlyUrl.searchParams.get("$where")).toContain("lower(candidate_name) like");
+    expect(filerOnlyUrl.searchParams.get("$where")).toContain("upper(candidate_office)");
 
     // PDC's own summary totals for Wilson 2025: 273,026.25 for / 1,232,834.74
     // against — the sum of all three C6 report types, including rows whose

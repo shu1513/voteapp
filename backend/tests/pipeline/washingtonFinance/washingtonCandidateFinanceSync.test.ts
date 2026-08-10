@@ -330,6 +330,56 @@ describe("washingtonCandidateFinanceSync", () => {
     ]);
   });
 
+  it("hydrates summary IE totals for trusted links via the resolver search", async () => {
+    const db = createMockDb();
+    const pdcClient = createPdcClient({
+      resolution: matchedResolution({
+        independentExpendituresForAmount: 273026.25,
+        independentExpendituresAgainstAmount: 1232834.74,
+      }),
+    });
+
+    const result = await syncWashingtonCandidateFinance({
+      db,
+      ...baseInput(),
+      pdcClient,
+      trustedCommittee: {
+        filerId: "FERGR *115",
+        committeeId: "32311",
+        committeeName: "Robert W. Ferguson (Bob Ferguson)",
+        candidacyId: "689556",
+        sourceUrl: PDC_SOURCE_URL,
+      },
+    });
+
+    expect(pdcClient.searchAndResolveCandidateCommittee).toHaveBeenCalledTimes(1);
+    expect(result).toMatchObject({
+      totalReceipts: 11962407.92,
+      outsideSupportTotal: 273026.25,
+      outsideOpposeTotal: 1232834.74,
+    });
+  });
+
+  it("fails the trusted-link sync when summary hydration fails instead of writing fallback totals", async () => {
+    const db = createMockDb();
+    const pdcClient = createPdcClient();
+    pdcClient.searchAndResolveCandidateCommittee.mockRejectedValueOnce(new Error("PDC unavailable"));
+
+    await expect(
+      syncWashingtonCandidateFinance({
+        db,
+        ...baseInput(),
+        pdcClient,
+        trustedCommittee: {
+          filerId: "FERGR *115",
+          committeeId: "32311",
+          committeeName: "Robert W. Ferguson (Bob Ferguson)",
+        },
+      })
+    ).rejects.toThrow("PDC unavailable");
+    expect(db.query).not.toHaveBeenCalled();
+  });
+
   it("aggregates but does not write in dry-run mode", async () => {
     const db = createMockDb();
     const pdcClient = createPdcClient();

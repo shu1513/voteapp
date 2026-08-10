@@ -268,42 +268,42 @@ async function hydrateTrustedCommitteeTotals(input: {
   electionYear: number;
   legislativeDistrict?: string | null;
 }): Promise<MatchedWashingtonCommitteeResolution> {
-  if (input.trustedResolution.contributionsAmount !== undefined || input.trustedResolution.expendituresAmount !== undefined) {
-    return input.trustedResolution;
+  // Always hydrate: the trusted-committee input cannot carry the summary IE
+  // fields, and the headline outside totals read them. A search failure here
+  // propagates and fails the sync (the batch retries the row later) — the old
+  // swallow-and-continue path let the group-sum fallback overwrite PDC's own
+  // outside totals whenever the summary lookup blipped.
+  const resolved = await input.pdcClient.searchAndResolveCandidateCommittee(
+    {
+      candidateName: input.candidateName,
+      officeScope: input.officeScope,
+      officeName: input.officeName,
+      electionYear: input.electionYear,
+      legislativeDistrict: input.legislativeDistrict,
+    },
+    input.pdcClientOptions
+  );
+  if (
+    resolved.status === "matched" &&
+    resolved.filerId.trim().toUpperCase() === input.trustedResolution.filerId.trim().toUpperCase() &&
+    resolved.committeeId.trim().toUpperCase() === input.trustedResolution.committeeId.trim().toUpperCase()
+  ) {
+    return {
+      ...input.trustedResolution,
+      ...(resolved.contributionsAmount !== undefined ? { contributionsAmount: resolved.contributionsAmount } : {}),
+      ...(resolved.expendituresAmount !== undefined ? { expendituresAmount: resolved.expendituresAmount } : {}),
+      ...(resolved.independentExpendituresForAmount !== undefined
+        ? { independentExpendituresForAmount: resolved.independentExpendituresForAmount }
+        : {}),
+      ...(resolved.independentExpendituresAgainstAmount !== undefined
+        ? { independentExpendituresAgainstAmount: resolved.independentExpendituresAgainstAmount }
+        : {}),
+    };
   }
 
-  try {
-    const resolved = await input.pdcClient.searchAndResolveCandidateCommittee(
-      {
-        candidateName: input.candidateName,
-        officeScope: input.officeScope,
-        officeName: input.officeName,
-        electionYear: input.electionYear,
-        legislativeDistrict: input.legislativeDistrict,
-      },
-      input.pdcClientOptions
-    );
-    if (
-      resolved.status === "matched" &&
-      resolved.filerId.trim().toUpperCase() === input.trustedResolution.filerId.trim().toUpperCase() &&
-      resolved.committeeId.trim().toUpperCase() === input.trustedResolution.committeeId.trim().toUpperCase()
-    ) {
-      return {
-        ...input.trustedResolution,
-        ...(resolved.contributionsAmount !== undefined ? { contributionsAmount: resolved.contributionsAmount } : {}),
-        ...(resolved.expendituresAmount !== undefined ? { expendituresAmount: resolved.expendituresAmount } : {}),
-        ...(resolved.independentExpendituresForAmount !== undefined
-          ? { independentExpendituresForAmount: resolved.independentExpendituresForAmount }
-          : {}),
-        ...(resolved.independentExpendituresAgainstAmount !== undefined
-          ? { independentExpendituresAgainstAmount: resolved.independentExpendituresAgainstAmount }
-          : {}),
-      };
-    }
-  } catch {
-    // Totals are helpful but not required; keep the trusted link path resilient.
-  }
-
+  // Resolution landed elsewhere or nowhere (withdrawn candidate, renamed
+  // committee): proceed with the trusted link and no summary totals — the
+  // headline then falls back to the hard-ID C6 group sums.
   return input.trustedResolution;
 }
 

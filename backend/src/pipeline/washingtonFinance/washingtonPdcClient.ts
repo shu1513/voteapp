@@ -86,10 +86,12 @@ export type WashingtonPdcIndependentSpendingGroupInput = {
   electionYear: number;
   office?: string | null;
   legislativeDistrict?: string | null;
-  // Hard candidate identity from the campaign-finance summary dataset. When
-  // present the C6 rows are filtered by these IDs and the name/office
-  // predicates are skipped entirely; name matching is only the fallback for
-  // unlinked lookups.
+  // Hard candidate identity from the campaign-finance summary dataset. Hard-ID
+  // mode needs BOTH: a filer can run two races in one year under different
+  // committees (filer EWINS  258 in 2025), so a filer-only filter would mix
+  // races. With both present the C6 rows are filtered by the IDs and the
+  // name/office predicates are skipped entirely; otherwise name matching is
+  // the unlinked fallback.
   candidateFilerId?: string | null;
   candidateCommitteeId?: string | null;
   limit?: number;
@@ -504,8 +506,26 @@ export async function getWashingtonPdcDirectOccupationAggregates(
     options
   );
   // No default category: a row without a name (blank occupation) is dropped
-  // rather than surfacing as an "UNKNOWN" bucket.
-  return rows.map((row) => aggregateFromRow(row)).filter((row): row is WashingtonPdcAggregate => row !== null);
+  // rather than surfacing as an "UNKNOWN" bucket. SoQL trim() only strips
+  // surrounding whitespace, so internal runs ("NOT  EMPLOYED") come back as
+  // separate server-side buckets — collapse and merge them here.
+  const merged = new Map<string, WashingtonPdcAggregate>();
+  for (const row of rows.map((raw) => aggregateFromRow(raw))) {
+    if (!row) {
+      continue;
+    }
+    const categoryName = row.categoryName.replace(/\s+/g, " ");
+    const existing = merged.get(categoryName);
+    if (!existing) {
+      merged.set(categoryName, { ...row, categoryName });
+      continue;
+    }
+    existing.amount = roundCurrency(existing.amount + row.amount);
+    existing.count += row.count;
+  }
+  return [...merged.values()].sort(
+    (left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName)
+  );
 }
 
 export function buildWashingtonPdcContributionSizeRowsUrl(input: WashingtonPdcCommitteeInput): string {
@@ -592,11 +612,9 @@ export function buildWashingtonPdcIndependentExpenditureGroupsUrl(
   ];
   const candidateFilerId = optionalIdentifier(input.candidateFilerId);
   const candidateCommitteeId = optionalIdentifier(input.candidateCommitteeId);
-  if (candidateFilerId) {
+  if (candidateFilerId && candidateCommitteeId) {
     where.push(`candidate_filer_id = ${soqlString(candidateFilerId)}`);
-    if (candidateCommitteeId) {
-      where.push(`candidate_committee_id = ${soqlString(candidateCommitteeId)}`);
-    }
+    where.push(`candidate_committee_id = ${soqlString(candidateCommitteeId)}`);
   } else {
     where.push(whereLikeText("candidate_name", candidateName));
     const office = optionalString(input.office);
@@ -676,7 +694,9 @@ export async function getWashingtonPdcIndependentExpenditureGroups(
     Object.fromEntries(url.searchParams.entries()),
     options
   );
-  const hardIdMode = optionalIdentifier(input.candidateFilerId) !== undefined;
+  const hardIdMode =
+    optionalIdentifier(input.candidateFilerId) !== undefined &&
+    optionalIdentifier(input.candidateCommitteeId) !== undefined;
   return aggregateIndependentSpendingRows(rows, normalizeLimit(input.limit, 20), hardIdMode ? null : input.candidateName);
 }
 
