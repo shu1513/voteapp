@@ -176,6 +176,52 @@ function normalizeGeorgiaDistrict(value: string | null | undefined): string | nu
   return digits || null;
 }
 
+// First-name token of a display name (comma forms flip: "Washburn, Dale" ->
+// DALE). Used only by the committee-name evidence fallback below.
+function georgiaFirstNameSearchToken(candidateName: string): string {
+  const trimmed = candidateName.replace(/\([^()]+\)/g, " ").trim();
+  const commaIndex = trimmed.indexOf(",");
+  const source = commaIndex > 0 ? trimmed.slice(commaIndex + 1) : trimmed;
+  return normalizePersonName(source).split(/\s+/).filter(Boolean)[0] ?? "";
+}
+
+// Committee-name evidence fallback (live-derived 2026-08-09): the PeachFile
+// index registers LEGAL person names ("Washburn, Roy D.") while Georgians
+// campaign — and appear on our rosters — under everyday names ("Dale
+// Washburn"), so the person-name gate alone strands real incumbents. The
+// self-chosen COMMITTEE name routinely carries the campaign name ("Dale
+// Washburn for State House", "Billy Hickman for State Senate, Inc.",
+// "Friends for Fitz PSC"), which is Georgia's own evidence of the everyday
+// name — no nickname inference involved. Requirements: the row's structured
+// surname equals the roster surname, and the roster FIRST-name token appears
+// as a whole word in the committee name. Applied only when the row's first
+// name DIFFERS from the roster's (the nickname shape): when first names
+// agree, the person-name gate already had its say — including the
+// middle-evidence veto, which this fallback must never override. Office,
+// district, and cycle gates still apply, ambiguity still fails closed, and
+// the sync's over-count guard backstops a wrong link with money evidence.
+function rowMatchesCommitteeNameEvidence(row: GeorgiaCandidateIndexRow, candidateName: string): boolean {
+  const committeeKey = normalizeTextKey(row.committeeName);
+  if (!committeeKey) {
+    return false;
+  }
+  const firstToken = georgiaFirstNameSearchToken(candidateName);
+  // One- and two-letter tokens (initials) match far too loosely.
+  if (firstToken.length < 3) {
+    return false;
+  }
+  const surnameToken = georgiaLastNameSearchToken(candidateName);
+  const rowSurname = normalizePersonName(row.candidateLastName);
+  if (!surnameToken || !rowSurname || rowSurname !== surnameToken) {
+    return false;
+  }
+  const rowFirst = normalizePersonName(row.candidateFirstName).split(/\s+/).filter(Boolean)[0] ?? "";
+  if (rowFirst === firstToken) {
+    return false;
+  }
+  return committeeKey.split(" ").includes(firstToken);
+}
+
 // `exact` marks parses whose surname boundary is explicit (comma form,
 // single token) rather than guessed from a space-form split.
 type GeorgiaParsedPersonName = { first: string; middles: string[]; last: string; exact: boolean };
@@ -396,7 +442,7 @@ export function resolveGeorgiaCandidateCommittee(
     if (expectedDistrict !== null && normalizeGeorgiaDistrict(row.districtName) !== expectedDistrict) {
       continue;
     }
-    if (!rowMatchesCandidateName(row, input.candidateName)) {
+    if (!rowMatchesCandidateName(row, input.candidateName) && !rowMatchesCommitteeNameEvidence(row, input.candidateName)) {
       continue;
     }
     const registrationGuid = row.guid.trim().toLowerCase();
