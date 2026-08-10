@@ -41,7 +41,21 @@ describe("San Francisco ballot finance loader", () => {
           },
         ],
       })
-      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: "c",
+            election_id: "e",
+            category_type: "occupation",
+            category_name: "Attorney",
+            amount: "500",
+            contributor_count: "3",
+            // SF breakdown rows carry no per-row URL — the summary URL must
+            // ride along or the card footer loses its source link.
+            source_url: null,
+          },
+        ],
+      })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -72,6 +86,14 @@ describe("San Francisco ballot finance loader", () => {
         debts_owed: 500,
         loans_received: 5000,
         public_funds_received: 155304,
+        top_occupations: [
+          {
+            category_name: "Attorney",
+            amount: 500,
+            contributor_count: 3,
+            source_url: "https://sfethics.org",
+          },
+        ],
       },
       outside_spending: {
         support_total: 3,
@@ -100,6 +122,11 @@ describe("San Francisco ballot finance loader", () => {
     ]) {
       expect(sql).toContain(column);
     }
+    // The five largest outside groups must also arrive largest-first — the
+    // card renders them in row order without re-sorting.
+    expect(String(query.mock.calls[2]?.[0])).toContain(
+      "ORDER BY candidate_id,election_id,support_oppose,amount DESC,spender_name",
+    );
   });
 
   it("falls back to manifest funds when no donor total is stored", async () => {

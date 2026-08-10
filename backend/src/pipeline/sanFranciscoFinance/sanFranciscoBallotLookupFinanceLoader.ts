@@ -175,15 +175,26 @@ export async function loadSanFranciscoCandidateFinanceSummariesByCandidateElecti
       SELECT candidate_id,election_id,spender_fppc_id,spender_name,support_oppose,amount,source_url
       FROM ranked
       WHERE rn<=5
+      ORDER BY candidate_id,election_id,support_oppose,amount DESC,spender_name
     `,
     [JSON.stringify(selected)],
+  );
+  // SF stores the source URL on the summary row only (the breakdown rows are
+  // derived aggregates with no per-row URL, unlike LA's), and the card's
+  // footer link is built exclusively from breakdown/group rows — without this
+  // fallback every SF card would name the source with no clickable link.
+  const summarySourceUrlByKey = new Map(
+    summaries.rows.map((row) => [
+      candidateElectionKey(row.candidate_id, row.election_id),
+      row.source_url,
+    ]),
   );
   const maps = new Map<string, Map<string, BallotLookupFinanceBreakdown[]>>();
   for (const row of direct.rows) {
     const key = candidateElectionKey(row.candidate_id, row.election_id);
     const byType = maps.get(key) ?? new Map();
     const list = byType.get(row.category_type) ?? [];
-    list.push(mapFinanceBreakdown(row));
+    list.push(mapFinanceBreakdown(row, summarySourceUrlByKey.get(key) ?? null));
     byType.set(row.category_type, list);
     maps.set(key, byType);
   }
