@@ -157,7 +157,7 @@ export async function loadLosAngelesCandidateFinanceSummariesByCandidateElection
           g.amount,
           g.expenditure_count,
           g.source_url,
-          row_number() OVER(PARTITION BY selected.candidate_id,selected.election_id,g.support_oppose ORDER BY g.amount DESC,g.spender_name) rn
+          row_number() OVER(PARTITION BY selected.candidate_id,selected.election_id,g.support_oppose ORDER BY g.amount DESC,g.spender_name,g.spender_id) rn
         FROM selected
         JOIN public.lacity_candidate_finance_links l
           ON l.candidate_id=selected.candidate_id
@@ -170,7 +170,7 @@ export async function loadLosAngelesCandidateFinanceSummariesByCandidateElection
       SELECT candidate_id,election_id,spender_id,spender_name,support_oppose,amount,expenditure_count,source_url
       FROM ranked
       WHERE rn<=5
-      ORDER BY candidate_id,election_id,support_oppose,amount DESC,spender_name
+      ORDER BY candidate_id,election_id,support_oppose,amount DESC,spender_name,spender_id
     `,
     [JSON.stringify(selected)],
   );
