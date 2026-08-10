@@ -718,6 +718,25 @@ describe("buildGeorgiaReportInventory", () => {
     expect(inventory.every((entry) => entry.periodStart === null)).toBe(true);
   });
 
+  it("keeps same-day Two Business Day reports as standalone entries", async () => {
+    // A filer can legally file several TBD reports on the same day (live-hit
+    // 2026-06-02): the family|period key is not an identity for the
+    // per-event family, so each stands alone instead of failing closed.
+    const { peachfile } = await loadFixtureReports();
+    const base = peachfile[0]!;
+    const tbdA: GeorgiaFiledReportRow = {
+      ...base,
+      filerReportGuid: "tbd-a",
+      reportTypeCode: "FPTBDR",
+      startDate: "2026-06-02T00:00:00",
+      endDate: "2026-06-02T00:00:00",
+    };
+    const tbdB: GeorgiaFiledReportRow = { ...tbdA, filerReportGuid: "tbd-b" };
+    const inventory = buildGeorgiaReportInventory({ peachfileReports: [tbdA, tbdB], archiveReports: [] });
+    expect(inventory).toHaveLength(2);
+    expect(inventory.map((entry) => entry.report.filerReportGuid).sort()).toEqual(["tbd-a", "tbd-b"]);
+  });
+
   it("fails closed when one host holds two reports with the same identity key", async () => {
     const { archive } = await loadFixtureReports();
     const base = archive.find((row) => row.filerReportId === 84109)!;

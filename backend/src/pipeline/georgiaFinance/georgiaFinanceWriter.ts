@@ -56,6 +56,9 @@ const writer = createStandardStateFinanceSnapshotWriter({
   // validation shape is pinned from acquisition-spike bytes; until then the
   // factory's nonempty check is the only structural validation.
   minElectionYear: 2026,
+  // Migration 231 relaxed the amounts CHECK: cash on hand is a signed
+  // balance and indebted Georgia campaigns report it negative.
+  allowNegativeCashOnHand: true,
   // Georgia replaces every summary column except the outside totals, which
   // keep the stored value when the incoming value is NULL so a direct-only
   // refresh without IE report data does not wipe them (preserveWhenNull
