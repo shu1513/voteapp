@@ -304,21 +304,24 @@ function indexRowNames(row: GeorgiaCandidateIndexRow): string[] {
 }
 
 // Discovers the archive side of the registration chain (D3): every archive
-// candidate-index row for the same person and cycle whose registration is not
-// terminated. Office match is corroboration, never a discovery filter — a
-// legacy committee registered for a prior race's office can carry
-// current-cycle rows, and the terminated-status gate plus the reconciliation
-// guard are what keep separate ledgers out.
+// candidate-index row for the same person whose registration is not
+// terminated — deliberately NOT cycle-gated. The archive froze in July 2025,
+// so a 2026-cycle candidate's archive registration often shows only
+// 2022/2024 cycle rows (their 2026 re-registration happened in PeachFile),
+// yet the frozen store still holds their money, and the official PeachFile
+// index totals are registration-chain-cumulative (live-verified: one
+// candidate's gap equalled their entire archive store to the cent, another's
+// official total required archive filings back to 2021). Office and cycle
+// are corroboration, never discovery filters — the name-evidence gate, the
+// terminated-status gate, and the reconciliation guard are what keep
+// separate ledgers out; over-inclusion breaches reconciliation and fails
+// closed rather than writing wrong data.
 export function discoverGeorgiaArchiveRegistrations(input: {
   candidateName: string;
-  electionYear: number;
   archiveIndexRows: readonly GeorgiaCandidateIndexRow[];
 }): GeorgiaCandidateIndexRow[] {
   const byRegistration = new Map<string, GeorgiaCandidateIndexRow>();
   for (const row of input.archiveIndexRows) {
-    if (!rowMatchesElectionYear(row, input.electionYear)) {
-      continue;
-    }
     if (row.filerStatusCode?.trim().toUpperCase() === "T") {
       continue;
     }
@@ -676,7 +679,6 @@ export async function syncGeorgiaCandidateFinance(
     });
     const discovered = discoverGeorgiaArchiveRegistrations({
       candidateName,
-      electionYear,
       archiveIndexRows,
     });
     archiveRegistrationSource = discovered.length > 0 ? "discovered" : "none";
@@ -695,7 +697,16 @@ export async function syncGeorgiaCandidateFinance(
   ).filter((report) => report.filerRegistrationGuid.trim().toLowerCase() === peachfileRegistrationGuid);
 
   const archiveGuidSet = new Set(archiveRegistrationGuids);
-  const archiveSearchNames = [...new Set(archiveFilers.map((filer) => filer.searchName.trim()).filter(Boolean))];
+  // Archive fetches search by SURNAME token, never the index display name:
+  // the archive index renders space-form names ("Elizabeth Anne Camp") while
+  // the archive report and transaction endpoints store "Surname, Firstname"
+  // — the index form matches zero rows there (live-proven; the pre-fix sync
+  // never retrieved a single archive row). The surname substring matches
+  // both forms, and the registration-guid / entity-id filters below do the
+  // actual scoping.
+  const archiveSearchNames = [
+    ...new Set(archiveFilers.map((filer) => georgiaLastNameSearchToken(filer.searchName)).filter(Boolean)),
+  ];
   const archiveReports: GeorgiaFiledReportRow[] = [];
   {
     const seenReportGuids = new Set<string>();
