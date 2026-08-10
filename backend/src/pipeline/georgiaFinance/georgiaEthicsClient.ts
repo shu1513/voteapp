@@ -1126,6 +1126,14 @@ export function buildGeorgiaReportInventory(input: {
         standalone.push({ source, family, periodStart, periodEnd, report });
         continue;
       }
+      // Two-Business-Day reports are per-EVENT, not per-period: a filer can
+      // legally file several on the same day (live-hit 2026-06-02, two TBD
+      // reports sharing one period), so the family|period key is not an
+      // identity for them. Each stands alone under its own report guid.
+      if (family === "two_business_day" || family === "independent_committee_two_business_day") {
+        standalone.push({ source, family, periodStart, periodEnd, report });
+        continue;
+      }
       const key = `${family}|${periodStart}|${periodEnd}`;
       const existing = entries.get(key);
       if (!existing) {

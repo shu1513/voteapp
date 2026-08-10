@@ -75,6 +75,30 @@ describe("createStandardStateFinanceSnapshotWriter config options", () => {
     );
   });
 
+  it("accepts negative cash on hand (a signed balance) while rejecting negative flows", async () => {
+    const { db } = poolWithClient();
+    // An indebted campaign legitimately reports negative cash (live-hit on
+    // Georgia 2026 candidates); receipts stay nonnegative.
+    await expect(
+      makeWriter().replaceSnapshot({
+        db,
+        link: linkInput(),
+        syncedAt: NOW,
+        summary: { totalReceipts: 100, cashOnHand: -2500.75 },
+      })
+    ).resolves.toBeDefined();
+
+    const { db: db2 } = poolWithClient();
+    await expect(
+      makeWriter().replaceSnapshot({
+        db: db2,
+        link: linkInput(),
+        syncedAt: NOW,
+        summary: { totalReceipts: -100 },
+      })
+    ).rejects.toThrow("total receipts must be a nonnegative number");
+  });
+
   it("COALESCEs every summary column by default", async () => {
     const { db, client } = poolWithClient();
 
