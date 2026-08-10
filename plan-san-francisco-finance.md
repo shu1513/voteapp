@@ -203,8 +203,8 @@ Shipped exactly as specified below: `SAN_FRANCISCO_ETHICS` source union member +
 
 Coverage audit found the checklist already covered by the phase 1–8 suites
 (146 SF tests across 15 files) with one gap: SODA client retry. Four retry
-tests were added (5xx retry-then-success, network-failure retry, no retry on
-4xx, terminal status after exhaustion — the standalone "exhausted retries"
+tests were added (5xx and 429 retry-then-success, network-failure retry, no
+retry on other 4xx, terminal status after exhaustion — the standalone "exhausted retries"
 throw is unreachable because the final attempt always rethrows). Loader
 registration has no unit test on purpose: the adapter registry is not
 exported, and the live 13/13 read path already proves registration

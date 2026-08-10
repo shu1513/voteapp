@@ -147,7 +147,17 @@ describe("Open Data request retry", () => {
     expect(callCount()).toBe(2);
   });
 
-  it("never retries a client error", async () => {
+  it("retries 429 Too Many Requests, the one retryable client error", async () => {
+    const { fetchImpl, callCount } = failThenSucceed([
+      new Response("slow down", { status: 429 }),
+    ]);
+    await expect(
+      getSanFranciscoCommitteeSummaryRows({ fppcId: "1463099" }, { fetchImpl }),
+    ).resolves.toEqual([]);
+    expect(callCount()).toBe(2);
+  });
+
+  it("does not retry non-429 client errors", async () => {
     const { fetchImpl, callCount } = failThenSucceed([
       new Response("gone", { status: 404, statusText: "Not Found" }),
     ]);
