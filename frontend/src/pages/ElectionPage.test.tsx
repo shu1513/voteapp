@@ -68,10 +68,10 @@ describe("ElectionPage", () => {
     renderElection(() => electionDetail({ vote_power: VOTE_POWER_WITH_EXPLANATION }));
 
     await screen.findByRole("heading", { name: "Governor" });
-    expect(screen.getByText("How do we calculate vote impact?")).toBeInTheDocument();
+    expect(screen.getByText("How do we calculate my vote impact?")).toBeInTheDocument();
     // Native <details> keeps content in the DOM while collapsed; the backend
     // copy must arrive verbatim.
-    expect(screen.getByText("Vote impact = representation + decisiveness.")).toBeInTheDocument();
+    expect(screen.getByText("My vote impact = representation + decisiveness.")).toBeInTheDocument();
     // Each part renders formula-style: title, grade, stat, then the detail.
     expect(screen.getByText("Representation:")).toBeInTheDocument();
     expect(screen.getByText("· 50 out of 100")).toBeInTheDocument();
@@ -79,7 +79,7 @@ describe("ElectionPage", () => {
     expect(
       screen.getByText("Past results here were very close — a small number of votes could decide the winner.")
     ).toBeInTheDocument();
-    expect(screen.getByText("Average representation + high decisiveness → High vote impact.")).toBeInTheDocument();
+    expect(screen.getByText("Average representation + high decisiveness → My vote impact: High.")).toBeInTheDocument();
     expect(screen.getByText("Some data is missing.")).toBeInTheDocument();
     // The exact formula renders when the backend provides one; the null
     // formula on the other part must not render an empty line.
@@ -91,7 +91,7 @@ describe("ElectionPage", () => {
     renderElection(() => electionDetail());
 
     await screen.findByRole("heading", { name: "Governor" });
-    expect(screen.queryByText("How do we calculate vote impact?")).not.toBeInTheDocument();
+    expect(screen.queryByText("How do we calculate my vote impact?")).not.toBeInTheDocument();
   });
 
   it("hides the vote power explanation entirely for an unknown label", async () => {
@@ -103,8 +103,8 @@ describe("ElectionPage", () => {
     );
 
     await screen.findByRole("heading", { name: "Governor" });
-    expect(screen.queryByText(/Vote impact:/)).not.toBeInTheDocument();
-    expect(screen.queryByText("How do we calculate vote impact?")).not.toBeInTheDocument();
+    expect(screen.queryByText(/My vote impact:/)).not.toBeInTheDocument();
+    expect(screen.queryByText("How do we calculate my vote impact?")).not.toBeInTheDocument();
   });
 
   it("shows the seat count for multi-seat contests and hides it otherwise", async () => {

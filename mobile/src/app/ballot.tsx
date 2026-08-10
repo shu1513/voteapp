@@ -172,7 +172,7 @@ export default function BallotScreen() {
           <Collapsible summary="What do these labels mean?">
             <View className="mt-2 gap-2 rounded-lg border border-line bg-surface p-3">
               <Text className="text-xs text-ink-soft">
-                <Text className="font-bold text-ink">Vote impact</Text> estimates how much weight one vote
+                <Text className="font-bold text-ink">My vote impact</Text> estimates how much weight one vote
                 carries in an election, based on district population and how decisive the contest is expected
                 to be. It is an estimate for comparing elections — it does not measure the value, importance,
                 or likely effect of your individual vote.

@@ -276,7 +276,7 @@ export function ElectionPage() {
       <div className="mt-2 flex flex-wrap gap-2 text-xs">
         {data.vote_power.label !== "unknown" ? (
           <span className={`font-medium ${votePowerBadgeClass(data.vote_power.label)}`}>
-            Vote impact: {formatVotePowerLabel(data.vote_power.label)}
+            My vote impact: {formatVotePowerLabel(data.vote_power.label)}
           </span>
         ) : null}
         {data.historical_competitiveness ? (
@@ -288,7 +288,7 @@ export function ElectionPage() {
       {data.vote_power.label !== "unknown" && data.vote_power.explanation ? (
         <details className="mt-2 text-sm">
           <summary className="cursor-pointer text-xs font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
-            How do we calculate vote impact?
+            How do we calculate my vote impact?
           </summary>
           <div className="mt-2 rounded-xl border border-line bg-white p-4">
             <p className="text-ink">{data.vote_power.explanation.how}</p>
