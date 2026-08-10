@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from "vitest";
 
 import {
   buildGeorgiaSelectedReportGuids,
-  discoverGeorgiaArchiveRegistrations,
   fetchGeorgiaSpenderContributionRows,
   GeorgiaFinanceReconciliationError,
   syncGeorgiaCandidateFinance,
@@ -427,47 +426,6 @@ function baseInput(
   };
 }
 
-describe("discoverGeorgiaArchiveRegistrations", () => {
-  it("keeps same-person same-cycle registrations and drops terminated, foreign, and prior-cycle ones", () => {
-    const discovered = discoverGeorgiaArchiveRegistrations({
-      candidateName: "Christopher Carr",
-      electionYear: 2026,
-      archiveIndexRows: [
-        archiveIndexRow(),
-        archiveIndexRow({ filerEntityId: 2750, guid: AR_LEGACY_REGISTRATION_GUID, filerStatusCode: "T" }),
-        archiveIndexRow({
-          filerEntityId: 9999,
-          guid: "bbbbbbbb-2222-4222-8222-bbbbbbbbbbbb",
-          filerName: "Carrie Smith",
-          candidateFirstName: "Carrie",
-          candidateMiddleName: null,
-          candidateLastName: "Smith",
-        }),
-        // Prior-cycle registration of the same person — DROPPED. The archive
-        // issues one registration guid per cycle under a single filer
-        // entity, and prior-cycle registrations hold money the official
-        // PeachFile index total does not count (removing this gate made 10+
-        // candidates in one live batch oversum, one by $218,243.33).
-        archiveIndexRow({
-          guid: "cccccccc-3333-4333-8333-cccccccccccc",
-          filingCycleName: "2022 State/Statewide Election Cycle for Candidates (January and June)",
-          electionCycleName: "2022 State/Statewide Election Cycle for Candidates (January and June)",
-        }),
-      ],
-    });
-    expect(discovered.map((row) => row.guid)).toEqual([AR_REGISTRATION_GUID]);
-  });
-
-  it("lets a middle-name conflict veto a same-cycle row", () => {
-    const discovered = discoverGeorgiaArchiveRegistrations({
-      candidateName: "Christopher Alan Carr",
-      electionYear: 2026,
-      archiveIndexRows: [archiveIndexRow()],
-    });
-    expect(discovered).toEqual([]);
-  });
-});
-
 describe("buildGeorgiaSelectedReportGuids", () => {
   it("selects winner guids (including child versions) per host and tracks superseded archive copies", () => {
     const inventory = buildGeorgiaReportInventory({
@@ -495,23 +453,23 @@ describe("buildGeorgiaSelectedReportGuids", () => {
 });
 
 describe("syncGeorgiaCandidateFinance", () => {
-  it("syncs across both hosts with D8 source selection and writes the index-anchored snapshot", async () => {
+  it("syncs the PeachFile store with D8 row selection and discloses uncovered official money", async () => {
     const db = createMockDb();
     const fetchers = carrFetchers();
     const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
 
-    // Included: pf 1000 (child-version guid) + pf 500 (timed) + ar 2000
-    // (archive-only report). Excluded: pf 250 (unassigned), ar 300
-    // (superseded copy).
-    expect(result.syncedRowSum).toBe(3500);
+    // Included: pf 1000 (child-version guid) + pf 500 (timed). Excluded:
+    // pf 250 (unassigned). The official total (3500) also counts money whose
+    // transactions never entered the PeachFile store — cover-counted
+    // pre-cutover filings — surfaced as uncoveredOfficialAmount, never as a
+    // failure.
+    expect(result.syncedRowSum).toBe(1500);
+    expect(result.uncoveredOfficialAmount).toBe(2000);
     expect(result.reconciliationDifference).toBe(0);
     expect(result.totalReceipts).toBe(3500);
     expect(result.totalDisbursements).toBe(1200);
     expect(result.cashOnHand).toBe(2300);
-    expect(result.archiveRegistrationSource).toBe("discovered");
-    expect(result.archiveRegistrationGuids).toEqual([AR_REGISTRATION_GUID]);
     expect(result.peachfile).toMatchObject({ includedRowCount: 2, unassignedRowCount: 1, supersededRowCount: 0 });
-    expect(result.archive).toMatchObject({ includedRowCount: 1, supersededRowCount: 1, unassignedRowCount: 0 });
     expect(result.linkWritten).toBe(true);
     expect(result.directBreakdownsWritten).toBeGreaterThan(0);
     // Outside leg (PR 5): support 1500 + oppose 200 attributed; the $5,000
@@ -534,120 +492,73 @@ describe("syncGeorgiaCandidateFinance", () => {
     });
     expect(db.connect).toHaveBeenCalled();
 
-    // The archive pull was keyed by the SURNAME token, not the index display
-    // name — the archive report/transaction endpoints store "Surname, First"
-    // forms that the space-form index name never matches.
-    expect(fetchers.fetchTransactionRowsWindowed).toHaveBeenCalledWith(
-      dummyTransport,
-      "efile_archive",
-      expect.objectContaining({ filerName: "CARR", expectedFilerEntityIds: [757274] })
-    );
-    expect(fetchers.fetchFiledReportRows).toHaveBeenCalledWith(dummyTransport, "efile_archive", {
-      filerName: "CARR",
-    });
-    // Window range derives from the earliest inventory period start.
+    // The archive host is never touched on the direct leg: the official
+    // total is PeachFile cover arithmetic, and unmigrated archive ledgers
+    // are not part of it.
+    const archiveCalls = [
+      ...fetchers.fetchCandidateIndexRows.mock.calls,
+      ...fetchers.fetchFiledReportRows.mock.calls,
+      ...fetchers.fetchTransactionRowsWindowed.mock.calls,
+    ].filter(([, host]) => host === "efile_archive");
+    expect(archiveCalls).toHaveLength(0);
+    // Window range derives from the earliest PeachFile inventory period.
     expect(fetchers.fetchTransactionRowsWindowed).toHaveBeenCalledWith(
       dummyTransport,
       "peachfile",
-      expect.objectContaining({ fromDate: "2024-07-01", toDate: "2026-08-07" })
+      expect.objectContaining({ fromDate: "2025-02-01", toDate: "2026-08-07" })
     );
   });
 
-  it("fails the sync and keeps the previous snapshot when reconciliation breaches tolerance", async () => {
+  it("fails closed when synced rows EXCEED the official total (foreign-ledger guard)", async () => {
     const db = createMockDb();
     const fetchers = carrFetchers();
-    fetchers.fetchCandidateIndexRows.mockImplementation(async (_transport, host) =>
-      host === "peachfile" ? [indexRow({ totalContributions: 999_999 })] : []
-    );
+    // Official total far below the store rows: the pull must have captured
+    // another ledger's rows — never write.
+    fetchers.fetchCandidateIndexRows.mockImplementation(async () => [indexRow({ totalContributions: 100 })]);
     await expect(syncGeorgiaCandidateFinance(baseInput(db, fetchers))).rejects.toBeInstanceOf(
       GeorgiaFinanceReconciliationError
     );
     expect(db.connect).not.toHaveBeenCalled();
   });
 
-  it("uses identity-map rows verbatim when present and skips archive discovery", async () => {
-    const db = createMockDb([
-      {
-        canonical_committee_id: "100035",
-        canonical_committee_name: "Carr for Georgia, Inc.",
-        entity_role: "candidate_committee",
-        source_system: "efile_archive",
-        source_filer_entity_id: "757274",
-        source_registration_guid: AR_REGISTRATION_GUID,
-        source_filer_name: "Christopher Michael Carr",
-        source_committee_name: "Carr for Georgia, Inc.",
-        source_filing_cycle_name: null,
-        include_in_candidate_totals: true,
-        map_provenance: "manual",
-        notes: null,
-        last_verified_at: new Date("2026-08-01T00:00:00Z"),
-      },
-    ]);
-    const fetchers = carrFetchers();
-    const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
-    expect(result.archiveRegistrationSource).toBe("identity_map");
-    expect(result.syncedRowSum).toBe(3500);
-    // Map-path archive fetches are surname-tokenized too — a map row stored
-    // with a space-form name must still match the archive's comma forms.
-    expect(fetchers.fetchFiledReportRows).toHaveBeenCalledWith(dummyTransport, "efile_archive", {
-      filerName: "CARR",
-    });
-    // Only the PeachFile index was fetched — no archive discovery call.
-    expect(fetchers.fetchCandidateIndexRows).toHaveBeenCalledTimes(1);
-    expect(fetchers.fetchCandidateIndexRows).toHaveBeenCalledWith(
-      dummyTransport,
-      "peachfile",
-      expect.objectContaining({ filerName: "CARR" })
-    );
-  });
-
-  it("treats a lone exclusion map row as authoritative — no discovery, no archive pull", async () => {
-    const db = createMockDb([
-      {
-        canonical_committee_id: "100035",
-        canonical_committee_name: "Carr for Georgia, Inc.",
-        entity_role: "candidate_committee",
-        source_system: "efile_archive",
-        source_filer_entity_id: "2750",
-        source_registration_guid: AR_LEGACY_REGISTRATION_GUID,
-        source_filer_name: "Christopher Michael Carr",
-        source_committee_name: "Friends of Chris Carr, Inc.",
-        source_filing_cycle_name: null,
-        include_in_candidate_totals: false,
-        map_provenance: "manual",
-        notes: "separate terminated ledger",
-        last_verified_at: new Date("2026-08-01T00:00:00Z"),
-      },
-    ]);
-    const fetchers = carrFetchers();
-    // Without the archive leg only the PeachFile rows remain (1000 + 500).
-    fetchers.fetchCandidateIndexRows.mockImplementation(async () => [indexRow({ totalContributions: 1500 })]);
-    const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
-    expect(result.archiveRegistrationSource).toBe("identity_map");
-    expect(result.archiveRegistrationGuids).toEqual([]);
-    expect(result.syncedRowSum).toBe(1500);
-    const archiveTransactionCalls = fetchers.fetchTransactionRowsWindowed.mock.calls.filter(
-      ([, host]) => host === "efile_archive"
-    );
-    expect(archiveTransactionCalls).toHaveLength(0);
-  });
-
-  it("treats a whole-pull filter_ineffective on a leg as zero rows and lets reconciliation arbitrate", async () => {
+  it("fails closed when every selected row carries an unrecognized status", async () => {
     const db = createMockDb();
     const fetchers = carrFetchers();
-    fetchers.fetchTransactionRowsWindowed.mockImplementation(async (_transport, host) => {
-      if (host === "efile_archive") {
-        throw new GeorgiaEthicsClientError("filter_ineffective", "only foreign rows");
-      }
-      return windowedResult([transactionRow({ transactionId: 1, transactionAmount: 1000 })]);
-    });
-    fetchers.fetchCandidateIndexRows.mockImplementation(async (_transport, host) =>
-      host === "peachfile" ? [indexRow({ totalContributions: 1000 })] : [archiveIndexRow()]
+    // Rows exist, but a new upstream status code makes every one
+    // unrecognized: the aggregator excludes them from the recognized sum,
+    // so writing through would delete stored breakdowns on the say-so of
+    // rows the pipeline cannot vouch for.
+    fetchers.fetchTransactionRowsWindowed.mockImplementation(async () =>
+      windowedResult([
+        transactionRow({ transactionId: 1, transactionAmount: 1000, filerReportGuid: "pf-r1-v2", transactionStatusCode: "TNEW" }),
+      ])
     );
+    await expect(syncGeorgiaCandidateFinance(baseInput(db, fetchers))).rejects.toThrow(
+      /zero recognized-status dollars/
+    );
+    expect(db.connect).not.toHaveBeenCalled();
+  });
+
+  it("accepts under-coverage and reports it instead of failing", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    fetchers.fetchCandidateIndexRows.mockImplementation(async () => [indexRow({ totalContributions: 999_999 })]);
     const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
-    expect(result.archive.filterIneffective).toBe(true);
-    expect(result.archive.includedRowCount).toBe(0);
-    expect(result.syncedRowSum).toBe(1000);
+    expect(result.syncedRowSum).toBe(1500);
+    expect(result.uncoveredOfficialAmount).toBe(998_499);
+    expect(result.summaryWritten).toBe(true);
+  });
+
+  it("fails closed when the whole PeachFile pull is filter-ineffective and money should exist", async () => {
+    const db = createMockDb();
+    const fetchers = carrFetchers();
+    fetchers.fetchTransactionRowsWindowed.mockImplementation(async () => {
+      throw new GeorgiaEthicsClientError("filter_ineffective", "only foreign rows");
+    });
+    await expect(syncGeorgiaCandidateFinance(baseInput(db, fetchers))).rejects.toBeInstanceOf(
+      GeorgiaFinanceReconciliationError
+    );
+    expect(db.connect).not.toHaveBeenCalled();
   });
 
   it("selects the linked committee's registration by entity id AND cycle, failing on ambiguity", async () => {
@@ -671,7 +582,7 @@ describe("syncGeorgiaCandidateFinance", () => {
     );
     const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
     expect(result.totalReceipts).toBe(3500);
-    expect(result.syncedRowSum).toBe(3500);
+    expect(result.syncedRowSum).toBe(1500);
 
     // Two registrations inside the SAME cycle is ambiguous — fail closed.
     fetchers.fetchCandidateIndexRows.mockImplementation(async (_transport, host) =>
@@ -781,7 +692,7 @@ describe("syncGeorgiaCandidateFinance", () => {
     });
     const result = await syncGeorgiaCandidateFinance(baseInput(db, fetchers));
     // Direct leg still written in full.
-    expect(result.syncedRowSum).toBe(3500);
+    expect(result.syncedRowSum).toBe(1500);
     expect(result.directBreakdownsWritten).toBeGreaterThan(0);
     expect(db.connect).toHaveBeenCalled();
     // Outside leg skipped: null totals (preserveWhenNull keeps stored
@@ -807,7 +718,7 @@ describe("syncGeorgiaCandidateFinance", () => {
     expect(result.outsideSpending).toBeNull();
     expect(result.outsideSupportTotal).toBeNull();
     expect(result.outsideSpendingSkippedReason).toContain("IE store unavailable");
-    expect(result.syncedRowSum).toBe(3500);
+    expect(result.syncedRowSum).toBe(1500);
     expect(db.connect).toHaveBeenCalled();
   });
 
@@ -822,7 +733,7 @@ describe("syncGeorgiaCandidateFinance", () => {
     expect(result.outsideGroupsWritten).toBe(0);
     expect(result.outsideGroupBreakdownsWritten).toBe(0);
     expect(result.outsideSupportTotal).toBe(1500);
-    expect(result.syncedRowSum).toBe(3500);
+    expect(result.syncedRowSum).toBe(1500);
     expect(db.connect).not.toHaveBeenCalled();
   });
 

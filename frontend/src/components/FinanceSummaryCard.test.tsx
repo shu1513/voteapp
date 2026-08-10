@@ -160,6 +160,29 @@ describe("FinanceSummaryCard", () => {
     expect(screen.queryByText(/Groups that spend without registering/)).not.toBeInTheDocument();
   });
 
+  it("shows the direct coverage note only with breakdowns to qualify", () => {
+    // No note by default: most sources itemize everything the totals count.
+    const { rerender } = render(<FinanceSummaryCard summary={financeSummary()} />);
+    expect(screen.queryByText(/not shown in the breakdowns/)).not.toBeInTheDocument();
+
+    const summary = financeSummary();
+    summary.direct_campaign.direct_coverage_note =
+      "Donor breakdowns reflect itemized contributions reported to Georgia's current filing system " +
+      "(July 2025 onward). Official totals are cumulative and can include earlier or non-itemized money " +
+      "not shown in the breakdowns.";
+    rerender(<FinanceSummaryCard summary={summary} />);
+    expect(screen.getByText(/not shown in the breakdowns/)).toBeInTheDocument();
+
+    // The note qualifies the BREAKDOWNS. A summary with totals but no
+    // occupation/size rows shows no note: under totals alone the card
+    // asserts nothing about itemization.
+    const noteOnly = emptyFinanceSummary();
+    noteOnly.direct_campaign.total_raised = 100;
+    noteOnly.direct_campaign.direct_coverage_note = summary.direct_campaign.direct_coverage_note;
+    rerender(<FinanceSummaryCard summary={noteOnly} />);
+    expect(screen.queryByText(/not shown in the breakdowns/)).not.toBeInTheDocument();
+  });
+
   it("color-codes outside support green and opposition red", () => {
     const summary = financeSummary();
     const { container } = render(<FinanceSummaryCard summary={summary} />);

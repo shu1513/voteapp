@@ -31,5 +31,12 @@ describe("georgiaBallotLookupFinanceLoader", () => {
       "Covers independent expenditures that name a single candidate, as reported to the Georgia Government " +
       "Transparency and Campaign Finance Commission's current filing system (July 2025 onward). Spending " +
       "reported for more than one candidate or measure in a single expenditure is not included yet.",
+    // D4 revision (cover-arithmetic official totals): breakdowns explain
+    // only PeachFile-store transactions, so the boundary is stated with
+    // them. Pinned so the disclosure cannot quietly disappear.
+    directCoverageNote:
+      "Donor breakdowns reflect itemized contributions reported to Georgia's current filing system " +
+      "(July 2025 onward). Official totals are cumulative and can include earlier or non-itemized money " +
+      "not shown in the breakdowns.",
   });
 });
