@@ -28,16 +28,27 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 //     (manual:deferral:record) and manual:deferral:due owns it from there;
 //   - the primary itself was bad data and gets superseded/corrected.
 //
-// November primaries are NOT gaps: Louisiana's jungle primary IS the
+// Louisiana November primaries are NOT gaps: the jungle primary IS the
 // November election, and its next round (a December runoff) exists only when
 // no candidate clears 50%. Those rows are reported in a separate bucket so
-// the operator can see them without them drowning the real gaps.
+// the operator can see them without them drowning the real gaps. The
+// carve-out is Louisiana-only and the two queries are exact complements —
+// a November or December primary anywhere else still expects a later round
+// and stays gap-eligible, and no primary can fall between the buckets.
 //
-// Contest matching prefers office_id (99%+ populated on primaries) and falls
-// back to official_ballot_title_key so an office-less general row still
-// clears the gap. Any later same-contest election counts — general, runoff,
-// or unstaged — because the report's question is "does the next round exist
-// at all", not "is its stage labeled correctly".
+// Contest matching: office_id vouches for a later row only when this
+// district+office holds a single primary that day — seat-per-title races
+// (city council districts, judicial positions) share one office_id, and one
+// seat's general must not clear the other seats' gaps (verified live: Cape
+// Coral council districts, WA Supreme Court positions). When sibling
+// primaries exist, or office_id is absent, official_ballot_title_key
+// identity decides — unless both rows carry offices that disagree, which
+// marks different contests sharing a title. Residual: a multi-seat contest
+// whose OTHER seats' primaries were never imported has no sibling to betray
+// it, so a different seat's general can still clear it; importing the full
+// primary set is what closes that hole. Any later same-contest election
+// counts — general, runoff, or unstaged — because the report's question is
+// "does the next round exist at all", not "is its stage labeled correctly".
 
 type Queryable = Pick<Pool, "query">;
 
@@ -97,10 +108,12 @@ const MISSING_GENERALS_SQL = `
     AND e.election_date >= ($1::date - make_interval(days => $2::int))
     AND e.election_date <= ($1::date + make_interval(days => $3::int))
     AND ($5::text IS NULL OR d.state = $5::text)
-    -- November primaries are terminal-stage (Louisiana jungle primaries):
-    -- the general IS this race and a runoff exists only when required.
-    -- They are reported separately, never as gaps.
-    AND EXTRACT(MONTH FROM e.election_date) < 11
+    -- Louisiana's fall jungle primaries are terminal-stage: the November
+    -- race IS the general and a runoff exists only when required. Only that
+    -- verified jurisdiction is excluded — a November or December primary
+    -- anywhere else still expects a later round. Exact complement of
+    -- listTerminalStagePrimaries, so no primary falls between the buckets.
+    AND NOT (d.state = 'LA' AND EXTRACT(MONTH FROM e.election_date) >= 11)
     -- The gap itself: no later same-contest election in this district
     -- within the horizon. Stage is deliberately ignored on the later row —
     -- the question is whether the next round exists at all.
@@ -112,8 +125,29 @@ const MISSING_GENERALS_SQL = `
         AND g.election_date > e.election_date
         AND (g.election_date - e.election_date)::int <= $4::int
         AND (
-          (e.office_id IS NOT NULL AND g.office_id = e.office_id)
-          OR g.official_ballot_title_key = e.official_ballot_title_key
+          -- office_id vouches only when this district+office holds a single
+          -- primary that day: seat-per-title races (city council districts,
+          -- judicial positions) share one office_id, and one seat's general
+          -- must not clear the other seats' gaps.
+          (
+            e.office_id IS NOT NULL
+            AND g.office_id = e.office_id
+            AND NOT EXISTS (
+              SELECT 1
+              FROM public.elections AS sibling
+              WHERE sibling.district_id = e.district_id
+                AND sibling.office_id = e.office_id
+                AND sibling.election_stage = 'primary'
+                AND sibling.election_date = e.election_date
+                AND sibling.id <> e.id
+            )
+          )
+          -- Title-key identity vouches unless both rows carry offices that
+          -- disagree — different contests sharing a title.
+          OR (
+            g.official_ballot_title_key = e.official_ballot_title_key
+            AND (e.office_id IS NULL OR g.office_id IS NULL OR g.office_id = e.office_id)
+          )
         )
     )
     -- An open elections-stage deferral proves research already established
@@ -156,10 +190,12 @@ export type TerminalStagePrimaryRow = {
 };
 
 /**
- * November (jungle) primaries in the same window, for visibility only: their
- * next round is a conditional runoff, so "no later election" is their normal
- * state, not a gap. Reported so the operator knows they were considered and
- * excluded rather than missed.
+ * Louisiana fall (jungle) primaries in the same window, for visibility only:
+ * their next round is a conditional runoff, so "no later election" is their
+ * normal state, not a gap. Louisiana-only — this is the exact complement of
+ * the gap query's carve-out, so no primary falls between the buckets.
+ * Reported so the operator knows they were considered and excluded rather
+ * than missed.
  */
 export async function listTerminalStagePrimaries(
   db: Queryable,
@@ -182,6 +218,7 @@ export async function listTerminalStagePrimaries(
         AND e.election_date >= ($1::date - make_interval(days => $2::int))
         AND e.election_date <= ($1::date + make_interval(days => $3::int))
         AND ($4::text IS NULL OR d.state = $4::text)
+        AND d.state = 'LA'
         AND EXTRACT(MONTH FROM e.election_date) >= 11
       ORDER BY d.state ASC NULLS LAST, e.election_date ASC, d.name ASC, e.official_ballot_title ASC, e.id ASC
     `,
@@ -252,7 +289,7 @@ async function main(): Promise<void> {
           queueSemantics: {
             gaps: "primaries with no later same-contest election — research and import the general (manual:elections:inject), or record an elections-stage deferral (manual:deferral:record) when the primary legitimately ends the contest",
             terminalStagePrimaries:
-              "November (jungle) primaries: the general IS this race and a runoff exists only when required — listed for visibility, never as gaps",
+              "Louisiana fall (jungle) primaries: the general IS this race and a runoff exists only when required — listed for visibility, never as gaps",
           },
           gapCount: gaps.length,
           gapCountByState: Object.fromEntries([...gapsByState.entries()].sort()),

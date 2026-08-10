@@ -38,14 +38,26 @@ describe("listMissingGeneralElections", () => {
     expect(params).toEqual(["2026-08-09", 180, 365, 365, null]);
     expect(sql).toContain("e.race_type = 'office'");
     expect(sql).toContain("e.election_stage = 'primary'");
-    // The gap probe: any later same-contest election clears the row, with
-    // office_id preferred and the title key as fallback.
+    // The gap probe: any later same-contest election clears the row.
     expect(sql).toContain("g.district_id = e.district_id");
     expect(sql).toContain("g.election_date > e.election_date");
-    expect(sql).toContain("(e.office_id IS NOT NULL AND g.office_id = e.office_id)");
+    // office_id vouches only when unambiguous: sibling primaries (same
+    // district+office+day, seat-per-title races like Cape Coral council
+    // districts or WA Supreme Court positions) disable it, so one seat's
+    // general cannot clear the other seats' gaps.
+    expect(sql).toContain("g.office_id = e.office_id");
+    expect(sql).toContain("sibling.district_id = e.district_id");
+    expect(sql).toContain("sibling.office_id = e.office_id");
+    expect(sql).toContain("sibling.election_date = e.election_date");
+    expect(sql).toContain("sibling.id <> e.id");
+    // Title-key identity vouches unless both rows carry offices that
+    // disagree — different contests sharing a title.
     expect(sql).toContain("g.official_ballot_title_key = e.official_ballot_title_key");
-    // Louisiana jungle primaries are terminal-stage, never gaps.
-    expect(sql).toContain("EXTRACT(MONTH FROM e.election_date) < 11");
+    expect(sql).toContain("e.office_id IS NULL OR g.office_id IS NULL OR g.office_id = e.office_id");
+    // Only Louisiana fall jungle primaries are terminal-stage — the exact
+    // complement of listTerminalStagePrimaries, so a November or December
+    // primary in any other state stays gap-eligible.
+    expect(sql).toContain("NOT (d.state = 'LA' AND EXTRACT(MONTH FROM e.election_date) >= 11)");
     // Deferral-covered primaries belong to manual:deferral:due.
     expect(sql).toContain("mrd.status = 'deferred'");
     expect(sql).toContain("mrd.stage = 'elections'");
@@ -75,7 +87,7 @@ describe("listMissingGeneralElections", () => {
 });
 
 describe("listTerminalStagePrimaries", () => {
-  it("lists November primaries in the window as visibility rows, not gaps", async () => {
+  it("lists Louisiana fall jungle primaries as visibility rows, not gaps", async () => {
     const row = {
       election_id: "e-la",
       state: "LA",
@@ -96,6 +108,9 @@ describe("listTerminalStagePrimaries", () => {
     expect(result).toEqual([row]);
     const [sql, params] = db.query.mock.calls[0]!;
     expect(params).toEqual(["2026-08-09", 180, 365, null]);
+    // Louisiana-only: a November primary anywhere else is a gap candidate,
+    // not a jungle primary.
+    expect(sql).toContain("d.state = 'LA'");
     expect(sql).toContain("EXTRACT(MONTH FROM e.election_date) >= 11");
     expect(sql).toContain("e.election_stage = 'primary'");
   });
