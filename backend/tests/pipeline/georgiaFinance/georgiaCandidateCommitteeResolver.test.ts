@@ -137,6 +137,151 @@ describe("resolveGeorgiaCandidateCommittee", () => {
     expect(resolution).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("matches a legal-name registration through committee-name evidence (nickname shape)", () => {
+    // The index registers the LEGAL name while the roster carries the
+    // campaign name — Georgia's own committee title supplies the everyday
+    // name ("Dale Washburn for State House" under "Washburn, Roy D.",
+    // live-verified 2026-08-09). Surname must match structurally and the
+    // roster first name must appear as a whole word in the committee name.
+    const legalNameRow: GeorgiaCandidateIndexRow = {
+      ...CARR_ROW,
+      filerName: "Washburn, Roy D.",
+      candidateFirstName: "Roy",
+      candidateMiddleName: "D.",
+      candidateLastName: "Washburn",
+      committeeName: "Dale Washburn for State House",
+      office: "State Representative",
+      districtName: "144",
+    };
+    const resolution = resolveGeorgiaCandidateCommittee({
+      candidateName: "Dale Washburn",
+      officeScope: "state_lower",
+      officeName: "State Lower Chamber Legislator",
+      electionYear: 2026,
+      district: "144",
+      candidateIndexRows: [legalNameRow],
+    });
+    expect(resolution).toMatchObject({ status: "matched", committeeName: "Dale Washburn for State House" });
+  });
+
+  it("committee-name evidence works without the surname in the title (Friends for Fitz shape)", () => {
+    const fitzRow: GeorgiaCandidateIndexRow = {
+      ...CARR_ROW,
+      filerName: "Johnson, Terrell F.",
+      candidateFirstName: "Terrell",
+      candidateMiddleName: "F.",
+      candidateLastName: "Johnson",
+      committeeName: "Friends for Fitz PSC",
+      office: "Public Service Commissioner",
+      districtName: "3",
+    };
+    const resolution = resolveGeorgiaCandidateCommittee({
+      candidateName: "Fitz Johnson",
+      officeScope: "statewide",
+      officeName: "Public Service Commissioner",
+      electionYear: 2026,
+      district: null,
+      candidateIndexRows: [fitzRow],
+    });
+    expect(resolution).toMatchObject({ status: "matched", committeeName: "Friends for Fitz PSC" });
+  });
+
+  it("marks committee-title matches with their own confidence, person-name matches as exact", () => {
+    const legalNameRow: GeorgiaCandidateIndexRow = {
+      ...CARR_ROW,
+      filerName: "Washburn, Roy D.",
+      candidateFirstName: "Roy",
+      candidateMiddleName: "D.",
+      candidateLastName: "Washburn",
+      committeeName: "Dale Washburn for State House",
+      office: "State Representative",
+      districtName: "144",
+    };
+    const viaTitle = resolveGeorgiaCandidateCommittee({
+      candidateName: "Dale Washburn",
+      officeScope: "state_lower",
+      officeName: "State Lower Chamber Legislator",
+      electionYear: 2026,
+      district: "144",
+      candidateIndexRows: [legalNameRow],
+    });
+    expect(viaTitle).toMatchObject({ status: "matched", confidence: "committee_title" });
+
+    const viaPerson = resolveGeorgiaCandidateCommittee({
+      ...GOVERNOR_INPUT,
+      candidateIndexRows: [CARR_ROW],
+    });
+    expect(viaPerson).toMatchObject({ status: "matched", confidence: "exact" });
+  });
+
+  it("committee-name evidence accepts a compound registered surname for a space-form roster name", () => {
+    // Space-form parsing reduces the roster surname to its last token
+    // (Mary Van Dyke -> DYKE) while the registration keeps the compound
+    // form; ballots routinely drop particles, so the word-boundary suffix
+    // must carry it.
+    const compoundRow: GeorgiaCandidateIndexRow = {
+      ...CARR_ROW,
+      filerName: "Van Dyke, Machteld",
+      candidateFirstName: "Machteld",
+      candidateMiddleName: null,
+      candidateLastName: "Van Dyke",
+      committeeName: "Mary Van Dyke for State House",
+      office: "State Representative",
+      districtName: "60",
+    };
+    const resolution = resolveGeorgiaCandidateCommittee({
+      candidateName: "Mary Van Dyke",
+      officeScope: "state_lower",
+      officeName: "State Lower Chamber Legislator",
+      electionYear: 2026,
+      district: "60",
+      candidateIndexRows: [compoundRow],
+    });
+    expect(resolution).toMatchObject({ status: "matched", confidence: "committee_title" });
+  });
+
+  it("committee-name evidence never overrides the middle-name veto", () => {
+    // First names AGREE and middles conflict: the person-name gate vetoed
+    // this row, and a committee title echoing the roster name must not
+    // resurrect it.
+    const vetoedRow: GeorgiaCandidateIndexRow = {
+      ...CARR_ROW,
+      filerName: "Carr, Christopher B.",
+      candidateMiddleName: "Bernard",
+      committeeName: "Christopher Carr for Georgia",
+    };
+    const resolution = resolveGeorgiaCandidateCommittee({
+      ...GOVERNOR_INPUT,
+      candidateName: "Christopher Michael Carr",
+      candidateIndexRows: [vetoedRow],
+    });
+    expect(resolution).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("committee-name evidence requires the surname to match structurally", () => {
+    // A committee title that happens to contain the roster first name is
+    // not enough when the registered person has a different surname.
+    const foreignRow: GeorgiaCandidateIndexRow = {
+      ...CARR_ROW,
+      filerName: "Smith, Roy D.",
+      candidateFirstName: "Roy",
+      candidateMiddleName: null,
+      candidateLastName: "Smith",
+      committeeName: "Dale for Georgia",
+      office: "State Representative",
+      districtName: "144",
+    };
+    const resolution = resolveGeorgiaCandidateCommittee({
+      candidateName: "Dale Washburn",
+      officeScope: "state_lower",
+      officeName: "State Lower Chamber Legislator",
+      electionYear: 2026,
+      district: "144",
+      candidateIndexRows: [foreignRow],
+    });
+    expect(resolution).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("uses the structured middle name even when the app name has no middle", () => {
     const resolution = resolveGeorgiaCandidateCommittee({
       ...GOVERNOR_INPUT,
