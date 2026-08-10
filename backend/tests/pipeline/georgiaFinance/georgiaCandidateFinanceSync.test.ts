@@ -447,7 +447,7 @@ describe("discoverGeorgiaArchiveRegistrations", () => {
         // issues one registration guid per cycle under a single filer
         // entity, and prior-cycle registrations hold money the official
         // PeachFile index total does not count (removing this gate made 10+
-        // candidates in one live batch oversum, one by $218,233.33).
+        // candidates in one live batch oversum, one by $218,243.33).
         archiveIndexRow({
           guid: "cccccccc-3333-4333-8333-cccccccccccc",
           filingCycleName: "2022 State/Statewide Election Cycle for Candidates (January and June)",
