@@ -1058,7 +1058,7 @@ function usage(): string {
   ].join("\n");
 }
 
-function readFlagValue(argv: readonly string[], name: string): string | null {
+export function readFlagValue(argv: readonly string[], name: string): string | null {
   const index = argv.indexOf(name);
   if (index < 0) {
     return null;
@@ -1067,7 +1067,7 @@ function readFlagValue(argv: readonly string[], name: string): string | null {
   return value !== undefined && !value.startsWith("--") ? value : null;
 }
 
-async function listMigrationFilenames(): Promise<string[]> {
+export async function listMigrationFilenames(): Promise<string[]> {
   const dir = resolve(dirname(fileURLToPath(import.meta.url)), "../../../db/migrations");
   const names = await readdir(dir);
   return names.filter((name) => name.endsWith(".sql")).sort();

@@ -154,6 +154,8 @@
     "content:backfill-plain-language": "tsx src/scripts/backfillPlainLanguage.ts",
     "research:promote": "tsx src/scripts/promoteResearchData.ts",
     "research:promote:apply": "tsx src/scripts/promoteResearchData.ts --apply",
+    "research:promote:base": "tsx src/scripts/promoteBaseData.ts",
+    "research:promote:base:apply": "tsx src/scripts/promoteBaseData.ts --apply",
     "manual:records:backfill-identity-transitions": "tsx src/scripts/backfillRecordIdentityTransitions.ts",
     "research:promote:dedupe": "tsx src/scripts/dedupePromotedRecords.ts",
     "research:promote:dedupe:apply": "tsx src/scripts/dedupePromotedRecords.ts --apply",

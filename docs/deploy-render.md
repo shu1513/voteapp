@@ -80,6 +80,38 @@ links to preserve.)
      candidate names in raw HTML,
    - register with a personal (SES-verified) address end-to-end.
 
+### Promoting base rows into a populated database
+
+`npm run research:promote:base` copies base rows — `elections`, `candidates`,
+`candidate_elections`, `ballot_measures` — from the local database to another
+database, in foreign-key order. Run it *before* `research:promote` when the
+target is missing parents; the `pg_dump | psql` restore above only works
+against an empty target, and this is the tool for a populated one.
+
+```bash
+cd backend
+export PROMOTION_TARGET_DATABASE_URL='postgres://…'   # env only, never a flag
+npm run research:promote:base                          # dry run: reports, writes nothing
+npm run research:promote:base:apply -- --confirm-target <host>:<port>/<database>
+```
+
+**Insert-only, unlike the research promoter.** A row whose id already exists on
+the target is left completely untouched — no update, no `updated_at` touch. That
+asymmetry is deliberate: pipelines write these tables on both sides, so "local
+differs from production" does not mean "local is right", and reconciling a
+diverged base row is a human decision rather than something a promotion should
+silently make. It never deletes; production may be a superset.
+
+**Missing parents are skipped, not fatal.** A row whose parent is absent on the
+target and not being inserted by the same run is reported with the failing
+column and parent id, and left behind — one missing district must not abort
+promoting thousands of unrelated rows. Skips cascade in FK order: a skipped
+election disqualifies its `candidate_elections` and `ballot_measures` too, so
+the graph on the target is never left half-wired. `districts` and `offices` are
+read-only dependencies; this tool never invents one. Read the `skipped` counts
+in the dry run before applying — a non-zero count means the target is missing
+something upstream that probably wants promoting first.
+
 ### Promoting researched data into a populated database
 
 `npm run research:promote` copies researched rows from the local database to
@@ -111,7 +143,9 @@ Covers `candidate_records`, `candidate_record_area_tags` and
 `finance_committee_labels`. `candidates` and `research_areas` are read-only
 dependencies: a record whose candidate is missing on the target, or a tag whose
 research-area slug is missing, aborts the run rather than being skipped, so a
-half-populated graph can never be reported as success.
+half-populated graph can never be reported as success. When that abort names
+missing candidates, run `research:promote:base` above first and then re-run
+this — that is what it is for.
 
 **Re-keyed rows.** `record_identity_key` hashes (description, url, date), so a
 sanctioned local edit — a plain-language rewrite, an event-date or source-URL
