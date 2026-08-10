@@ -34,7 +34,10 @@ export type GeorgiaCandidateCommitteeMatch = {
   office: string | null;
   districtName: string | null;
   filerStatusCode: string | null;
-  confidence: "exact";
+  // "exact": the person-name evidence gate matched. "committee_title": the
+  // committee-name evidence fallback matched (legal-vs-campaign first name);
+  // auto-link accepts both, but the record says which evidence carried it.
+  confidence: "exact" | "committee_title";
   source: "peachfile_candidate_index";
   sourceUrl: string;
   matchedRowCount: number;
@@ -198,8 +201,16 @@ function georgiaFirstNameSearchToken(candidateName: string): string {
 // name DIFFERS from the roster's (the nickname shape): when first names
 // agree, the person-name gate already had its say — including the
 // middle-evidence veto, which this fallback must never override. Office,
-// district, and cycle gates still apply, ambiguity still fails closed, and
-// the sync's over-count guard backstops a wrong link with money evidence.
+// district, and cycle gates still apply and ambiguity still fails closed.
+// NOTE the honest risk shape: sync reconciliation is committee-INTERNAL
+// (the linked committee's own totals vs its own rows), so it cannot detect
+// wrong ownership — the safety argument is evidential, not arithmetic. The
+// index fetch serves candidate ("RC") filers only, so within the same
+// seat+cycle a committee title naming a first name that differs from its
+// registrant's is overwhelmingly the campaign identity of the person it
+// names (including treasurer/family registrations, which still route that
+// campaign's money); an adversarial title ("Defeat X") would be a
+// non-candidate committee and never appears in this index.
 function rowMatchesCommitteeNameEvidence(row: GeorgiaCandidateIndexRow, candidateName: string): boolean {
   const committeeKey = normalizeTextKey(row.committeeName);
   if (!committeeKey) {
@@ -212,7 +223,12 @@ function rowMatchesCommitteeNameEvidence(row: GeorgiaCandidateIndexRow, candidat
   }
   const surnameToken = georgiaLastNameSearchToken(candidateName);
   const rowSurname = normalizePersonName(row.candidateLastName);
-  if (!surnameToken || !rowSurname || rowSurname !== surnameToken) {
+  // Word-boundary suffix, not bare equality: space-form parsing reduces a
+  // compound roster surname to its last token ("Mary Van Dyke" -> DYKE),
+  // and ballots routinely drop particles, so the registered "VAN DYKE" must
+  // still count as the same surname family. A suffix without the boundary
+  // ("SMITHSON" vs SON) stays excluded.
+  if (!surnameToken || !rowSurname || (rowSurname !== surnameToken && !rowSurname.endsWith(" " + surnameToken))) {
     return false;
   }
   const rowFirst = normalizePersonName(row.candidateFirstName).split(/\s+/).filter(Boolean)[0] ?? "";
@@ -389,6 +405,9 @@ function rowMatchesElectionYear(row: GeorgiaCandidateIndexRow, electionYear: num
 type RegistrationAccumulator = {
   row: GeorgiaCandidateIndexRow;
   rowCount: number;
+  // True when ANY row of this registration passed the person-name gate —
+  // committee-title evidence only carries the match when every row needed it.
+  personNameMatch: boolean;
 };
 
 export function resolveGeorgiaCandidateCommittee(
@@ -442,15 +461,17 @@ export function resolveGeorgiaCandidateCommittee(
     if (expectedDistrict !== null && normalizeGeorgiaDistrict(row.districtName) !== expectedDistrict) {
       continue;
     }
-    if (!rowMatchesCandidateName(row, input.candidateName) && !rowMatchesCommitteeNameEvidence(row, input.candidateName)) {
+    const personNameMatch = rowMatchesCandidateName(row, input.candidateName);
+    if (!personNameMatch && !rowMatchesCommitteeNameEvidence(row, input.candidateName)) {
       continue;
     }
     const registrationGuid = row.guid.trim().toLowerCase();
     const existing = matchesByRegistration.get(registrationGuid);
     if (existing) {
       existing.rowCount += 1;
+      existing.personNameMatch = existing.personNameMatch || personNameMatch;
     } else {
-      matchesByRegistration.set(registrationGuid, { row, rowCount: 1 });
+      matchesByRegistration.set(registrationGuid, { row, rowCount: 1, personNameMatch });
     }
   }
 
@@ -471,7 +492,7 @@ export function resolveGeorgiaCandidateCommittee(
     office: accumulator.row.office,
     districtName: accumulator.row.districtName,
     filerStatusCode: accumulator.row.filerStatusCode,
-    confidence: "exact" as const,
+    confidence: accumulator.personNameMatch ? ("exact" as const) : ("committee_title" as const),
     source: "peachfile_candidate_index" as const,
     sourceUrl: GEORGIA_ETHICS_RECORDS_SEARCH_URL,
     matchedRowCount: accumulator.rowCount,
