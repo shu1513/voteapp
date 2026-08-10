@@ -60,6 +60,12 @@ describe("Los Angeles ballot finance loader", () => {
     // were silently dropped from the read path once before.
     expect(String(query.mock.calls[0]?.[0])).toContain("summary.membership_support_total");
     expect(String(query.mock.calls[0]?.[0])).toContain("summary.membership_oppose_total");
+    // The five largest outside groups must also arrive largest-first — the
+    // card renders them in row order without re-sorting. spender_id is the
+    // final tiebreaker because spender_name is not unique in the table.
+    expect(String(query.mock.calls[2]?.[0])).toContain(
+      "ORDER BY candidate_id,election_id,support_oppose,amount DESC,spender_name,spender_id",
+    );
   });
   it("does no DB work for another California city", async () => {
     vi.stubEnv("LOS_ANGELES_CITY_CAMPAIGN_FINANCE_ENABLED", "true");
