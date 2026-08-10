@@ -428,9 +428,10 @@ function baseInput(
 }
 
 describe("discoverGeorgiaArchiveRegistrations", () => {
-  it("keeps same-person registrations across cycles and drops terminated and foreign ones", () => {
+  it("keeps same-person same-cycle registrations and drops terminated, foreign, and prior-cycle ones", () => {
     const discovered = discoverGeorgiaArchiveRegistrations({
       candidateName: "Christopher Carr",
+      electionYear: 2026,
       archiveIndexRows: [
         archiveIndexRow(),
         archiveIndexRow({ filerEntityId: 2750, guid: AR_LEGACY_REGISTRATION_GUID, filerStatusCode: "T" }),
@@ -442,10 +443,11 @@ describe("discoverGeorgiaArchiveRegistrations", () => {
           candidateMiddleName: null,
           candidateLastName: "Smith",
         }),
-        // Prior-cycle registration of the same person — KEPT: the archive
-        // froze July 2025, so a 2026-cycle candidate's archive money often
-        // sits under a registration whose newest index row says 2022/2024,
-        // and the official index totals are registration-chain-cumulative.
+        // Prior-cycle registration of the same person — DROPPED. The archive
+        // issues one registration guid per cycle under a single filer
+        // entity, and prior-cycle registrations hold money the official
+        // PeachFile index total does not count (removing this gate made 10+
+        // candidates in one live batch oversum, one by $218,233.33).
         archiveIndexRow({
           guid: "cccccccc-3333-4333-8333-cccccccccccc",
           filingCycleName: "2022 State/Statewide Election Cycle for Candidates (January and June)",
@@ -453,15 +455,13 @@ describe("discoverGeorgiaArchiveRegistrations", () => {
         }),
       ],
     });
-    expect(discovered.map((row) => row.guid)).toEqual([
-      AR_REGISTRATION_GUID,
-      "cccccccc-3333-4333-8333-cccccccccccc",
-    ]);
+    expect(discovered.map((row) => row.guid)).toEqual([AR_REGISTRATION_GUID]);
   });
 
-  it("lets a middle-name conflict veto a row", () => {
+  it("lets a middle-name conflict veto a same-cycle row", () => {
     const discovered = discoverGeorgiaArchiveRegistrations({
       candidateName: "Christopher Alan Carr",
+      electionYear: 2026,
       archiveIndexRows: [archiveIndexRow()],
     });
     expect(discovered).toEqual([]);

@@ -881,3 +881,33 @@ shape) and lands first; only the D3 map table waits for the spike.
   user-approved nickname rule), PF store gaps (Shaikh's Jan-31 CCDR has
   zero TCON rows in the store), and PF pull instability (4 candidates,
   retryable). 138 GA tests, suite 7,224 green.
+- 2026-08-09: **CORRECTION — the cycle-gate removal above was WRONG and is
+  reverted (the surname-token fetch fix stands).** The next two live
+  batches regressed: a new OVER-inclusion class appeared (batch 4: 10 of 19
+  breaches oversummed, worst +$218,243.33 on a $55,140.20 official total).
+  Root of the mistake: "official index totals are
+  registration-chain-cumulative" was generalized from two candidates. Dunn
+  fit only because all 119 of his archive rows sat in ONE report period
+  inside the current cycle — equally consistent with a cycle-scoped rule —
+  and Mitchell actively contradicted it (still $21,974.58 SHORT even with
+  his entire archive included) but was filed as an unexplained residual
+  instead of treated as falsifying evidence. **Structural fact learned:**
+  the archive issues one registration guid PER CYCLE under a single filer
+  entity (Summers entity 5467 → 2022/2024/2026 guids at $200,211.28 /
+  $204,588.00 / $28,700.00), so the cycle gate is selecting among a
+  candidate's own per-cycle ledgers, not filtering foreign filers.
+  **The scope rule remains UNRESOLVED — do not guess again.** Measured
+  against Summers, the required archive amount matches no subset of his
+  registration guids AND no report-period cutoff (cumulative jumps
+  $248,038.00 → $301,968.53 straight past the needed $255,343.01). The
+  baseline arithmetic is itself unreliable because the PeachFile
+  contribution SHIFTS once archive reports enter the D8 inventory union
+  (Summers: PF-only $103,850.00 pre-fix vs $75,150.00 post-fix — exactly
+  the $28,700.00 2026-archive guid moved hosts). Settling this needs the
+  instrument the spike already identified: **archive CCDR PDFs download by
+  filerReportGuid and their Summary Report pages are machine-readable text
+  (Lines 2–6)** — the official per-report decomposition, which can be
+  compared against the index total directly instead of inferred from sums.
+  Both failure directions fail closed (the reconciliation guard writes
+  nothing either way), so no wrong money was ever written. 138 GA tests,
+  suite 7,224 green.
