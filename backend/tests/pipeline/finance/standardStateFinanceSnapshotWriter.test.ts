@@ -75,23 +75,38 @@ describe("createStandardStateFinanceSnapshotWriter config options", () => {
     );
   });
 
-  it("accepts negative cash on hand (a signed balance) while rejecting negative flows", async () => {
-    const { db } = poolWithClient();
-    // An indebted campaign legitimately reports negative cash (live-hit on
-    // Georgia 2026 candidates); receipts stay nonnegative.
+  it("accepts negative cash on hand only when the state opts in, and persists it unchanged", async () => {
+    // Signed cash is per-state opt-in: each state's summaries table carries
+    // its own amounts CHECK, and a state still pinning cash_on_hand >= 0
+    // must keep the writer's clear error instead of a constraint rollback.
+    const { db, client } = poolWithClient();
     await expect(
-      makeWriter().replaceSnapshot({
+      makeWriter({ allowNegativeCashOnHand: true }).replaceSnapshot({
         db,
         link: linkInput(),
         syncedAt: NOW,
         summary: { totalReceipts: 100, cashOnHand: -2500.75 },
       })
     ).resolves.toBeDefined();
+    // The signed value reaches the summary INSERT unchanged — a regression
+    // that nulls or clamps it would otherwise still pass.
+    const summaryCall = client.query.mock.calls.find((call) => String(call[0]).includes("cash_on_hand"));
+    expect(summaryCall?.[1]).toContain(-2500.75);
 
     const { db: db2 } = poolWithClient();
     await expect(
       makeWriter().replaceSnapshot({
         db: db2,
+        link: linkInput(),
+        syncedAt: NOW,
+        summary: { totalReceipts: 100, cashOnHand: -1 },
+      })
+    ).rejects.toThrow("cash on hand must be a nonnegative number");
+
+    const { db: db3 } = poolWithClient();
+    await expect(
+      makeWriter({ allowNegativeCashOnHand: true }).replaceSnapshot({
+        db: db3,
         link: linkInput(),
         syncedAt: NOW,
         summary: { totalReceipts: -100 },

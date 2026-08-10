@@ -150,9 +150,12 @@ function normalizeNullableAmount(value: number | null | undefined, fieldName: st
 }
 
 // Cash on hand is a signed BALANCE, not a flow: an indebted campaign
-// legitimately reports negative cash (live-hit on Georgia 2026 candidates),
-// so only non-finite values are rejected. Receipts and disbursements stay
-// nonnegative — negative flows still indicate corrupted source data.
+// legitimately reports negative cash (live-hit on Georgia 2026 candidates).
+// Signed acceptance is OPT-IN per state because each state's summaries table
+// carries its own amounts CHECK — a state whose schema still pins
+// cash_on_hand >= 0 must keep failing in the writer with a clear message
+// instead of surfacing a constraint rollback (Georgia enables this together
+// with migration 231).
 function normalizeNullableSignedAmount(value: number | null | undefined, fieldName: string): number | null {
   if (value === undefined || value === null) {
     return null;
@@ -190,6 +193,12 @@ export function createStandardStateFinanceSnapshotWriter(config: {
    * "replace" always overwrites, including with NULL.
    */
   summaryUpdatePolicy?: Partial<Record<StandardStateFinanceSummaryColumn, StandardStateFinanceSummaryUpdateMode>>;
+  /**
+   * Accept negative cashOnHand (a signed balance — campaign debt). Enable
+   * only for states whose summaries-table amounts CHECK allows it; the
+   * default keeps the writer's clear validation error for everyone else.
+   */
+  allowNegativeCashOnHand?: boolean;
   /**
    * How outside-group breakdowns must relate to outside groups in the same
    * snapshot. "presence" requires at least one group when breakdowns are
@@ -448,7 +457,9 @@ export function createStandardStateFinanceSnapshotWriter(config: {
         normalizeNullableAmount(input.summary.totalReceipts, "total receipts"),
         normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
         normalizeNullableAmount(input.summary.totalDisbursements, "total disbursements"),
-        normalizeNullableSignedAmount(input.summary.cashOnHand, "cash on hand"),
+        config.allowNegativeCashOnHand
+          ? normalizeNullableSignedAmount(input.summary.cashOnHand, "cash on hand")
+          : normalizeNullableAmount(input.summary.cashOnHand, "cash on hand"),
         normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),
         normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),
         normalizeOptionalText(input.summary.sourceUrl),

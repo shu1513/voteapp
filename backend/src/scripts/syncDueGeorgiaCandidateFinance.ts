@@ -60,9 +60,19 @@ export function parseSyncDueGeorgiaCandidateFinanceScriptArgs(
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
     // Stability passes for the windowed transaction pulls: large committees
     // with churn between passes can need more than the default 4 to produce
-    // two consecutive equal id-sets (live: 8 candidates stuck at 4).
-    maxPasses: parsePositiveIntegerFlag(args, "--max-passes"),
+    // two consecutive equal id-sets (live: 8 candidates stuck at 4). 1 can
+    // never converge (stability = two consecutive equal passes), so the
+    // floor is 2.
+    maxPasses: parseMaxPassesFlag(args),
   };
+}
+
+function parseMaxPassesFlag(args: readonly string[]): number | undefined {
+  const value = parsePositiveIntegerFlag(args, "--max-passes");
+  if (value !== undefined && value < 2) {
+    throw new Error(`Invalid --max-passes value: ${value} (stability needs at least 2)`);
+  }
+  return value;
 }
 
 function getDatabaseUrl(): string {

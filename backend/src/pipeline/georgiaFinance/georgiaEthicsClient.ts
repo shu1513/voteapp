@@ -1116,6 +1116,7 @@ export function buildGeorgiaReportInventory(input: {
 }): GeorgiaReportInventoryEntry[] {
   const entries = new Map<string, GeorgiaReportInventoryEntry>();
   const standalone: GeorgiaReportInventoryEntry[] = [];
+  const seenStandaloneKeys = new Set<string>();
 
   function addReports(source: GeorgiaEthicsHost, reports: readonly GeorgiaFiledReportRow[]): void {
     for (const report of reports) {
@@ -1129,9 +1130,19 @@ export function buildGeorgiaReportInventory(input: {
       // Two-Business-Day reports are per-EVENT, not per-period: a filer can
       // legally file several on the same day (live-hit 2026-06-02, two TBD
       // reports sharing one period), so the family|period key is not an
-      // identity for them. Each stands alone under its own report guid.
+      // identity for them. Each stands alone under its own report guid,
+      // deduplicated per (source, guid) so a re-fetched page cannot list a
+      // report twice. NOTE: standalone entries skip the cross-host
+      // PeachFile-wins merge — irrelevant while the direct leg passes
+      // archiveReports: [] (guids are re-keyed between hosts anyway, so a
+      // migrated twin never shares a guid), but if archive inventories are
+      // ever reintroduced, TBD twins need their own pairing rule first.
       if (family === "two_business_day" || family === "independent_committee_two_business_day") {
-        standalone.push({ source, family, periodStart, periodEnd, report });
+        const standaloneKey = `${source}|${report.filerReportGuid.trim().toLowerCase()}`;
+        if (!seenStandaloneKeys.has(standaloneKey)) {
+          seenStandaloneKeys.add(standaloneKey);
+          standalone.push({ source, family, periodStart, periodEnd, report });
+        }
         continue;
       }
       const key = `${family}|${periodStart}|${periodEnd}`;
