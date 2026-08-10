@@ -327,10 +327,27 @@ export function baseInsertSql(table: string): string {
   `;
 }
 
+// Table names reach SQL by interpolation, so the two functions that EXECUTE
+// queries refuse anything outside the literal catalog. Every call site passes
+// a catalog constant today; the guards keep the exported surface safe by
+// construction rather than by convention. The pure SQL-string builders above
+// stay unguarded — building a string executes nothing.
+const PROMOTED_TABLE_NAMES: ReadonlySet<string> = new Set(BASE_TABLES.map((spec) => spec.table));
+const EXTERNAL_PARENT_TABLE_NAMES: ReadonlySet<string> = new Set(
+  BASE_TABLES.flatMap((spec) =>
+    spec.fks.filter((fk) => fk.kind === "external").map((fk) => fk.parentTable)
+  )
+);
+
 /**
  * Fetches full rows for the planned ids and inserts them, preserving the
- * plan's id order (ANY() returns rows in table order, and the self-FK order
- * matters — see TablePlan.insertIds). Returns rows actually written.
+ * plan's id order (the self-FK order matters — see TablePlan.insertIds).
+ * One id-batch at a time, fetch then insert: chunk preserves plan order, so
+ * the ordering guarantee holds across batches while resident memory stays
+ * bounded to one batch even on a first promotion into an empty target. A
+ * vanished row throws mid-stream; the caller's transaction (apply wraps every
+ * table in one) unwinds whatever earlier batches inserted. Returns rows
+ * actually written.
  */
 export async function insertPlannedRows(input: {
   source: PromotionClient;
@@ -338,29 +355,29 @@ export async function insertPlannedRows(input: {
   table: string;
   insertIds: readonly string[];
 }): Promise<number> {
-  const rowById = new Map<string, unknown>();
+  if (!PROMOTED_TABLE_NAMES.has(input.table)) {
+    throw new Error(`insertPlannedRows: refusing to write to unknown table "${input.table}"`);
+  }
+  const sql = baseInsertSql(input.table);
+  let written = 0;
   for (const idBatch of chunk(input.insertIds)) {
     const result = await input.source.query(rowProjectionSql(input.table), [idBatch]);
+    const rowById = new Map<string, unknown>();
     for (const raw of result.rows as { row: Record<string, unknown> }[]) {
       rowById.set(String(raw.row.id), raw.row);
     }
-  }
-  const orderedRows = input.insertIds.map((id) => {
-    const row = rowById.get(id);
-    if (row === undefined) {
-      throw new Error(
-        `Refusing to continue: planned ${input.table} row ${id} vanished from the source between ` +
-          "planning and fetch. The source changed under us; re-run."
-      );
-    }
-    return row;
-  });
-
-  let written = 0;
-  const sql = baseInsertSql(input.table);
-  for (const batch of chunk(orderedRows)) {
-    const result = await input.target.query(sql, [JSON.stringify(batch)]);
-    written += result.rowCount ?? 0;
+    const orderedRows = idBatch.map((id) => {
+      const row = rowById.get(id);
+      if (row === undefined) {
+        throw new Error(
+          `Refusing to continue: planned ${input.table} row ${id} vanished from the source between ` +
+            "planning and fetch. The source changed under us; re-run."
+        );
+      }
+      return row;
+    });
+    const inserted = await input.target.query(sql, [JSON.stringify(orderedRows)]);
+    written += inserted.rowCount ?? 0;
   }
   return written;
 }
@@ -371,6 +388,9 @@ export async function findPresentIds(
   table: string,
   ids: readonly string[]
 ): Promise<Set<string>> {
+  if (!EXTERNAL_PARENT_TABLE_NAMES.has(table)) {
+    throw new Error(`findPresentIds: refusing to query unknown table "${table}"`);
+  }
   const present = new Set<string>();
   for (const batch of chunk(ids)) {
     const result = await target.query(
@@ -479,10 +499,18 @@ async function main(): Promise<void> {
   console.log(`target: ${describeEndpoint(endpoints.target)}`);
   console.log(`mode:   ${apply ? "APPLY (writes)" : "dry run (writes nothing)"}`);
 
-  const sourcePool = new Pool({ connectionString: process.env.DATABASE_URL });
-  // Bounded timeouts, same rationale as promoteResearchData: the apply path
-  // holds one transaction across every table's batched inserts, and a hung
-  // remote must fail predictably instead of holding locks indefinitely.
+  // Bounded timeouts on BOTH pools. The target for the same reason as
+  // promoteResearchData: the apply path holds one transaction across every
+  // table's batched inserts, and a hung remote must fail predictably instead
+  // of holding locks indefinitely. The source because — unlike the research
+  // promoter, which pre-loads everything — insertPlannedRows reads it from
+  // INSIDE that open transaction, so a hung local query (say, a migration
+  // holding a lock on candidates) would hold the target's locks just as long.
+  const sourcePool = new Pool({
+    connectionString: process.env.DATABASE_URL,
+    connectionTimeoutMillis: 30_000,
+    statement_timeout: 300_000,
+  });
   const targetPool = new Pool({
     connectionString: process.env.PROMOTION_TARGET_DATABASE_URL,
     connectionTimeoutMillis: 30_000,

@@ -91,9 +91,12 @@ against an empty target, and this is the tool for a populated one.
 ```bash
 cd backend
 export PROMOTION_TARGET_DATABASE_URL='postgres://…'   # env only, never a flag
-npm run research:promote:base                          # dry run: reports, writes nothing
-npm run research:promote:base:apply -- --confirm-target <host>:<port>/<database>
+npm run research:promote:base -- --report-file /tmp/base-promotion.json       # dry run: reports, writes nothing
+npm run research:promote:base:apply -- --confirm-target <host>:<port>/<database> --report-file /tmp/base-promotion.json
 ```
+
+Keep `--report-file` on: the console truncates long skip lists, and the file is
+the only complete record of what a run skipped.
 
 **Insert-only, unlike the research promoter.** A row whose id already exists on
 the target is left completely untouched — no update, no `updated_at` touch. That

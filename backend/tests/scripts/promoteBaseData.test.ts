@@ -429,6 +429,53 @@ describe("insertPlannedRows", () => {
     expect(source.fetches).toHaveLength(0);
     expect(target.inserts).toHaveLength(0);
   });
+
+  it("reports the target's actual row counts, so a conflict shortfall reaches the caller", async () => {
+    const source = fakeSource({ a: { id: "a" }, b: { id: "b" } });
+    // The target already gained "b" after planning: ON CONFLICT (id) DO
+    // NOTHING absorbs it, and the shortfall is what main() compares against
+    // the plan length to refuse the commit.
+    const target = fakeTarget((batch) => batch.length - 1);
+    const written = await insertPlannedRows({
+      source: source.client,
+      target: target.client,
+      table: "candidates",
+      insertIds: ["a", "b"],
+    });
+    expect(written).toBe(1);
+  });
+
+  it("preserves plan order across the 500-row batch boundary", async () => {
+    // The self-FK ordering guarantee (TablePlan.insertIds) must survive the
+    // split into statements, not just hold within one batch.
+    const ids = Array.from({ length: 501 }, (_, i) => `c-${500 - i}`);
+    const source = fakeSource(Object.fromEntries(ids.map((id) => [id, { id }])));
+    const target = fakeTarget((batch) => batch.length);
+    expect(
+      await insertPlannedRows({
+        source: source.client,
+        target: target.client,
+        table: "candidates",
+        insertIds: ids,
+      })
+    ).toBe(501);
+    expect(target.inserts).toHaveLength(2);
+    expect(target.inserts.flat().map((row) => (row as { id: string }).id)).toEqual(ids);
+  });
+
+  it("refuses a table outside the promoted catalog rather than interpolating it into SQL", async () => {
+    const source = fakeSource({});
+    const target = fakeTarget(() => 0);
+    await expect(
+      insertPlannedRows({
+        source: source.client,
+        target: target.client,
+        table: "users",
+        insertIds: ["a"],
+      })
+    ).rejects.toThrow(/unknown table "users"/);
+    expect(source.fetches).toHaveLength(0);
+  });
 });
 
 describe("findPresentIds", () => {
@@ -458,5 +505,17 @@ describe("findPresentIds", () => {
     };
     expect(await findPresentIds(client, "offices", [])).toEqual(new Set());
     expect(called).toBe(false);
+  });
+
+  it("refuses tables outside the external-parent catalog — even promoted ones", async () => {
+    // Precision matters: findPresentIds exists for external parents only;
+    // promoted parents resolve through the id sets captured during planning.
+    const client = {
+      query: async () => ({ rows: [], rowCount: null }),
+    };
+    await expect(findPresentIds(client, "candidates", ["x"])).rejects.toThrow(/unknown table/);
+    await expect(findPresentIds(client, "users; DROP TABLE users", ["x"])).rejects.toThrow(
+      /unknown table/
+    );
   });
 });
