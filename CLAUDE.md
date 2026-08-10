@@ -26,4 +26,6 @@ Local services: Postgres `postgresql://localhost:5432/voteapp`, Redis `redis://l
 - Prefer Grep/Read/Glob tools over `bash grep/sed/cat`; use absolute paths instead of `cd` chains.
 - Trim output at the source: `LIMIT` on psql queries, `| tail` on test runs, `curl -o file` then grep the file. Never dump full test/build logs.
 - Browser verification: use `read_page` / console / network tools first; screenshot only as final proof (images are expensive to keep in context).
-- Long research runs: keep run state in scratchpad files and prefer a fresh session per task over one giant session.
+- Long research runs: keep run state in scratchpad files and prefer a fresh session per task over one giant session. Checkpoint progress to the state file every batch; once context passes ~300k tokens, stop and tell the user to continue from the checkpoint in a fresh session (a near-full context makes every remaining turn slower and more expensive).
+- Never poll with foreground `sleep`/`until` loops. Run the long command with `run_in_background` and let the task notification wake you.
+- Fan wide reads out to subagents: raw pages, logs, and file dumps should land in a subagent's context, not the main session's.
