@@ -304,24 +304,31 @@ function indexRowNames(row: GeorgiaCandidateIndexRow): string[] {
 }
 
 // Discovers the archive side of the registration chain (D3): every archive
-// candidate-index row for the same person whose registration is not
-// terminated — deliberately NOT cycle-gated. The archive froze in July 2025,
-// so a 2026-cycle candidate's archive registration often shows only
-// 2022/2024 cycle rows (their 2026 re-registration happened in PeachFile),
-// yet the frozen store still holds their money, and the official PeachFile
-// index totals are registration-chain-cumulative (live-verified: one
-// candidate's gap equalled their entire archive store to the cent, another's
-// official total required archive filings back to 2021). Office and cycle
-// are corroboration, never discovery filters — the name-evidence gate, the
-// terminated-status gate, and the reconciliation guard are what keep
-// separate ledgers out; over-inclusion breaches reconciliation and fails
-// closed rather than writing wrong data.
+// candidate-index row for the same person and cycle whose registration is not
+// terminated. Office match is corroboration, never a discovery filter — a
+// legacy committee registered for a prior race's office can carry
+// current-cycle rows, and the terminated-status gate plus the reconciliation
+// guard are what keep separate ledgers out.
+//
+// The cycle gate is REQUIRED and was briefly removed in error (see the plan's
+// 2026-08-09 entries). The archive issues one registration guid PER CYCLE
+// under a single filer entity, and a candidate's prior-cycle registrations
+// hold money the official PeachFile index total does NOT count: dropping the
+// gate made 10+ candidates in one batch oversum, one by $218,243.33. What the
+// official total actually spans across the archive's per-cycle registrations
+// is still unresolved — neither "current cycle only" nor "whole chain" nor
+// any report-period cutoff reproduces it — so this keeps the pinned,
+// spike-derived behavior until a dedicated spike settles the scope rule.
 export function discoverGeorgiaArchiveRegistrations(input: {
   candidateName: string;
+  electionYear: number;
   archiveIndexRows: readonly GeorgiaCandidateIndexRow[];
 }): GeorgiaCandidateIndexRow[] {
   const byRegistration = new Map<string, GeorgiaCandidateIndexRow>();
   for (const row of input.archiveIndexRows) {
+    if (!rowMatchesElectionYear(row, input.electionYear)) {
+      continue;
+    }
     if (row.filerStatusCode?.trim().toUpperCase() === "T") {
       continue;
     }
@@ -679,6 +686,7 @@ export async function syncGeorgiaCandidateFinance(
     });
     const discovered = discoverGeorgiaArchiveRegistrations({
       candidateName,
+      electionYear,
       archiveIndexRows,
     });
     archiveRegistrationSource = discovered.length > 0 ? "discovered" : "none";
