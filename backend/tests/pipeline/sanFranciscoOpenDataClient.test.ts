@@ -109,6 +109,69 @@ describe("getSanFranciscoCommitteeSummaryRows", () => {
   });
 });
 
+describe("Open Data request retry", () => {
+  // Retry lives in the shared fetch path, so one entry point covers all of
+  // the dataset getters.
+  const failThenSucceed = (failures: Response[] | Error[]) => {
+    let calls = 0;
+    const fetchImpl = (async () => {
+      const failure = failures[calls];
+      calls += 1;
+      if (failure instanceof Error) throw failure;
+      if (failure) return failure;
+      return new Response("[]", {
+        status: 200,
+        headers: { "content-type": "application/json" },
+      });
+    }) as typeof fetch;
+    return { fetchImpl, callCount: () => calls };
+  };
+
+  it("retries a 503 and then succeeds", async () => {
+    const { fetchImpl, callCount } = failThenSucceed([
+      new Response("busy", { status: 503 }),
+    ]);
+    await expect(
+      getSanFranciscoCommitteeSummaryRows({ fppcId: "1463099" }, { fetchImpl }),
+    ).resolves.toEqual([]);
+    expect(callCount()).toBe(2);
+  });
+
+  it("retries a network failure and then succeeds", async () => {
+    const { fetchImpl, callCount } = failThenSucceed([
+      new TypeError("fetch failed"),
+    ]);
+    await expect(
+      getSanFranciscoCommitteeSummaryRows({ fppcId: "1463099" }, { fetchImpl }),
+    ).resolves.toEqual([]);
+    expect(callCount()).toBe(2);
+  });
+
+  it("never retries a client error", async () => {
+    const { fetchImpl, callCount } = failThenSucceed([
+      new Response("gone", { status: 404, statusText: "Not Found" }),
+    ]);
+    await expect(
+      getSanFranciscoCommitteeSummaryRows({ fppcId: "1463099" }, { fetchImpl }),
+    ).rejects.toThrow(/request failed: 404/);
+    expect(callCount()).toBe(1);
+  });
+
+  it("throws the terminal status once retries run out", async () => {
+    const { fetchImpl, callCount } = failThenSucceed([
+      new Response("busy", { status: 503, statusText: "Unavailable" }),
+      new Response("busy", { status: 503, statusText: "Unavailable" }),
+    ]);
+    await expect(
+      getSanFranciscoCommitteeSummaryRows(
+        { fppcId: "1463099" },
+        { fetchImpl, retryCount: 1 },
+      ),
+    ).rejects.toThrow(/request failed: 503/);
+    expect(callCount()).toBe(2);
+  });
+});
+
 describe("getSanFranciscoDatasetFreshness", () => {
   it("returns the aggregate maxima and validates the dataset id", async () => {
     let requestedUrl = "";

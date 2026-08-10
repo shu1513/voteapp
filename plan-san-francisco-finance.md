@@ -199,7 +199,24 @@ Shipped exactly as specified below: `SAN_FRANCISCO_ETHICS` source union member +
 - UI reality, stated precisely: **no UI changes are required** for raised/spent, occupations, size buckets, cash/debt/loans/public funds, or outside groups — the existing profile card renders those. Employer and direct-industry breakdowns are **stored but deliberately not displayed** (existing product decision documented in `FinanceSummaryCard.tsx`); showing employers would be a separate product decision, not part of this adapter.
 - Set `outside_coverage_note` only if Phase 0 identifies a systematic gap in the manifest's outside coverage; otherwise leave unset.
 
-## Phase 9: tests and validation
+## Phase 9: tests and validation — COMPLETE (2026-08-09)
+
+Coverage audit found the checklist already covered by the phase 1–8 suites
+(146 SF tests across 15 files) with one gap: SODA client retry. Four retry
+tests were added (5xx retry-then-success, network-failure retry, no retry on
+4xx, terminal status after exhaustion — the standalone "exhausted retries"
+throw is unreachable because the final attempt always rethrows). Loader
+registration has no unit test on purpose: the adapter registry is not
+exported, and the live 13/13 read path already proves registration
+end-to-end. Validation gates all passed: backend typecheck clean; SF tests
+146/146; full suite 7,322 passed; empty-database migration run applied every
+migration through 230; api-client 136/136; live Lurie + June-2026-D4 probe
+reconciled with every dashboard reference check true and the same three
+known residuals (−733,000.00 Lurie 497-only money, −29.38, −620.86); live
+targeted 2026-cycle run re-synced all 13 linked candidates with the
+public-funds identity exact on every funded committee; candidate-profile API
+(`GET /api/elections/:election_id/candidates/:candidate_id/finance`) served
+the fresh SAN_FRANCISCO_ETHICS summary with breakdown fallback URLs.
 
 Fixtures are compact captured rows/frontmatter, not dataset dumps.
 
