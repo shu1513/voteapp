@@ -163,6 +163,27 @@ describe("efileCalBulkClient", () => {
     ).rejects.toThrow("is not in the allowlist");
   });
 
+  it("times out a download whose body stream stalls after the headers arrive", async () => {
+    const stalledFetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
+      const signal = init?.signal;
+      const body = new ReadableStream<Uint8Array>({
+        pull() {
+          // Never produce a chunk; reject only when the client aborts.
+          return new Promise((_resolve, reject) => {
+            signal?.addEventListener("abort", () => reject(new DOMException("aborted", "AbortError")), {
+              once: true,
+            });
+          });
+        },
+      });
+      return new Response(body, { status: 200, headers: { "content-type": "binary/octet-stream" } });
+    }) as unknown as typeof fetch;
+
+    await expect(
+      downloadEfileCalWorkbook(EXPORT_URL, CONFIG, { fetchImpl: stalledFetch, timeoutMs: 50 })
+    ).rejects.toThrow("timed out after 50ms");
+  });
+
   it("downloads on first refresh, skips when remote metadata is unchanged, and re-downloads on change or force", async () => {
     const cacheDir = await tempDir();
     const workbook = buildEfileCalExportWorkbook();

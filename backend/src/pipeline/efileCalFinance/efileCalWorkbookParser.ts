@@ -232,9 +232,15 @@ function toIsoDate(value: unknown, key: string, ctx: RowContext, options?: { len
     ctx.fail(`${key} is not a YYYYMMDD date: ${JSON.stringify(value)}`);
   }
   const [, year, month, day] = match;
+  const yearNum = Number(year);
   const monthNum = Number(month);
   const dayNum = Number(day);
-  if (monthNum < 1 || monthNum > 12 || dayNum < 1 || dayNum > 31) {
+  const roundTrip = new Date(Date.UTC(yearNum, monthNum - 1, dayNum));
+  const isRealDate =
+    roundTrip.getUTCFullYear() === yearNum &&
+    roundTrip.getUTCMonth() === monthNum - 1 &&
+    roundTrip.getUTCDate() === dayNum;
+  if (!isRealDate) {
     if (options?.lenient) return null;
     ctx.fail(`${key} is not a calendar date: ${JSON.stringify(value)}`);
   }
@@ -284,10 +290,10 @@ const BASE_COLUMNS = [
 ] as const;
 
 export const EFILE_CAL_REQUIRED_COLUMNS_BY_SHEET: Readonly<Record<string, readonly string[]>> = {
-  [EFILE_CAL_SUMMARY_SHEET]: [...BASE_COLUMNS, "Line_Item", "Amount_A", "Amount_B"],
+  [EFILE_CAL_SUMMARY_SHEET]: [...BASE_COLUMNS, "Line_Item", "Amount_A", "Amount_B", "Amount_C"],
   [EFILE_CAL_SCHEDULE_A_SHEET]: [...BASE_COLUMNS, "Tran_ID", "Entity_Cd", "Ctrib_NamL", "Ctrib_NamF", "Ctrib_Occ", "Ctrib_Emp", "Ctrib_Self", "Amount", "Cum_YTD", "Rcpt_Date", "Memo_Code"],
   [EFILE_CAL_SCHEDULE_C_SHEET]: [...BASE_COLUMNS, "Tran_ID", "Entity_Cd", "Ctrib_NamL", "Ctrib_NamF", "Ctrib_Occ", "Ctrib_Emp", "Ctrib_Self", "Amount", "Cum_YTD", "Rcpt_Date", "Memo_Code"],
-  [EFILE_CAL_SCHEDULE_B1_SHEET]: [...BASE_COLUMNS, "Tran_ID", "Entity_Cd", "Lndr_NamL", "Lndr_NamF", "Loan_OCC", "Loan_EMP", "Loan_Amt1", "Loan_Amt2", "Loan_Amt3", "Loan_Amt4", "Memo_Code"],
+  [EFILE_CAL_SCHEDULE_B1_SHEET]: [...BASE_COLUMNS, "Tran_ID", "Entity_Cd", "Lndr_NamL", "Lndr_NamF", "Loan_OCC", "Loan_EMP", "Loan_Amt1", "Loan_Amt2", "Loan_Amt3", "Loan_Amt4", "Loan_Amt5", "Loan_Amt6", "Loan_Amt7", "Loan_Amt8", "Memo_Code"],
   [EFILE_CAL_SCHEDULE_D_SHEET]: [...BASE_COLUMNS, "Tran_ID", "Entity_Cd", "Payee_NamL", "Expn_Code", "Expn_Date", "Amount", "Cand_NamL", "Cand_NamF", "Office_Cd", "Office_Dscr", "Juris_Cd", "Juris_Dscr", "Dist_No", "Supp_Opp_Cd", "Memo_Code"],
   [EFILE_CAL_S496_SHEET]: [...BASE_COLUMNS, "Tran_ID", "Amount", "Exp_Date", "Cand_NamL", "Cand_NamF", "Office_Cd", "Office_Dscr", "Juris_Cd", "Juris_Dscr", "Dist_No", "Supp_Opp_Cd", "Memo_Code"],
   [EFILE_CAL_S497_SHEET]: [...BASE_COLUMNS, "Tran_ID", "Entity_Cd", "Enty_NamL", "Enty_NamF", "Amount", "Ctrib_Date", "Cand_NamL", "Cand_NamF", "Office_Cd", "Office_Dscr", "Dist_No", "Memo_Code"],
@@ -295,14 +301,16 @@ export const EFILE_CAL_REQUIRED_COLUMNS_BY_SHEET: Readonly<Record<string, readon
 
 function sheetRows(workbookSheets: WorkBook["Sheets"], sheetName: string): { row: RawRow; ctx: RowContext }[] {
   const sheet = workbookSheets[sheetName]!;
-  const rows = xlsxUtils.sheet_to_json<RawRow>(sheet, { raw: true, defval: null });
-  if (rows.length > 0) {
-    const headers = new Set(Object.keys(rows[0]!));
-    const missing = (EFILE_CAL_REQUIRED_COLUMNS_BY_SHEET[sheetName] ?? []).filter((column) => !headers.has(column));
-    if (missing.length > 0) {
-      throw new Error(`efile CAL workbook sheet ${sheetName} is missing required columns: ${missing.join(", ")}`);
-    }
+  // Validate the header row directly so header-only (and blank) sheets still
+  // fail closed when required columns are absent.
+  const headerRow =
+    xlsxUtils.sheet_to_json<unknown[]>(sheet, { header: 1, raw: true, blankrows: false })[0] ?? [];
+  const headers = new Set(headerRow.filter((cell): cell is string => typeof cell === "string"));
+  const missing = (EFILE_CAL_REQUIRED_COLUMNS_BY_SHEET[sheetName] ?? []).filter((column) => !headers.has(column));
+  if (missing.length > 0) {
+    throw new Error(`efile CAL workbook sheet ${sheetName} is missing required columns: ${missing.join(", ")}`);
   }
+  const rows = xlsxUtils.sheet_to_json<RawRow>(sheet, { raw: true, defval: null });
   // Header row is row 1, first data row is row 2.
   return rows.map((row, index) => ({ row, ctx: new RowContext(sheetName, index + 2) }));
 }

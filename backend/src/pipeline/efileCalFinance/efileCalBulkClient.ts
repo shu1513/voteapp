@@ -95,12 +95,25 @@ function isAbortError(error: unknown): boolean {
   );
 }
 
-async function fetchWithTimeout(url: string, init: RequestInit, options: FetchOptions): Promise<Response> {
+/**
+ * Runs a fetch and the full consumption of its response under one deadline:
+ * `use` must read everything it needs from the response before returning,
+ * so a stalled body stream still trips the timeout. The controller is
+ * aborted in `finally`, which is a no-op after full consumption but closes
+ * the socket on every error path (size cap, bad magic, non-OK status).
+ */
+async function withTimedFetch<T>(
+  url: string,
+  init: RequestInit,
+  options: FetchOptions,
+  use: (response: Response) => Promise<T>
+): Promise<T> {
   const timeoutMs = options.timeoutMs ?? EFILE_CAL_FETCH_TIMEOUT_MS;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    return await (options.fetchImpl ?? fetch)(url, { ...init, signal: controller.signal });
+    const response = await (options.fetchImpl ?? fetch)(url, { ...init, signal: controller.signal });
+    return await use(response);
   } catch (error) {
     if (isAbortError(error)) {
       throw new Error(`efile CAL request timed out after ${timeoutMs}ms for ${url}`);
@@ -108,6 +121,7 @@ async function fetchWithTimeout(url: string, init: RequestInit, options: FetchOp
     throw error;
   } finally {
     clearTimeout(timeout);
+    controller.abort();
   }
 }
 
@@ -124,16 +138,24 @@ export async function fetchEfileCalBulkExportUrl(
   endpoint.searchParams.set("year", String(input.year));
   endpoint.searchParams.set("most_recent_only", String(input.mostRecentOnly));
 
-  const response = await fetchWithTimeout(endpoint.toString(), { method: "GET", headers: { accept: "application/json" } }, options);
-  if (!response.ok) {
-    throw new Error(`efile CAL ${config.agencyKey} bulk-export-url request failed: ${response.status} ${response.statusText}`);
-  }
-  let body: unknown;
-  try {
-    body = await response.json();
-  } catch {
-    throw new Error(`efile CAL ${config.agencyKey} bulk-export-url response is not JSON`);
-  }
+  const body = await withTimedFetch(
+    endpoint.toString(),
+    { method: "GET", headers: { accept: "application/json" } },
+    options,
+    async (response): Promise<unknown> => {
+      if (!response.ok) {
+        throw new Error(
+          `efile CAL ${config.agencyKey} bulk-export-url request failed: ${response.status} ${response.statusText}`
+        );
+      }
+      try {
+        return await response.json();
+      } catch (error) {
+        if (isAbortError(error)) throw error;
+        throw new Error(`efile CAL ${config.agencyKey} bulk-export-url response is not JSON`);
+      }
+    }
+  );
   const record = body as { success?: unknown; data?: unknown };
   if (record?.success !== true || typeof record.data !== "string") {
     throw new Error(`efile CAL ${config.agencyKey} bulk-export-url response is malformed: ${JSON.stringify(body).slice(0, 200)}`);
@@ -159,11 +181,12 @@ export async function fetchEfileCalWorkbookMetadata(
   options: FetchOptions = {}
 ): Promise<EfileCalRemoteWorkbookMetadata> {
   const allowed = assertAllowedExportUrl(url, config);
-  const response = await fetchWithTimeout(allowed, { method: "HEAD" }, options);
-  if (!response.ok) {
-    throw new Error(`efile CAL ${config.agencyKey} workbook HEAD failed: ${response.status} ${response.statusText}`);
-  }
-  return metadataFromResponse(allowed, response);
+  return withTimedFetch(allowed, { method: "HEAD" }, options, async (response) => {
+    if (!response.ok) {
+      throw new Error(`efile CAL ${config.agencyKey} workbook HEAD failed: ${response.status} ${response.statusText}`);
+    }
+    return metadataFromResponse(allowed, response);
+  });
 }
 
 export async function downloadEfileCalWorkbook(
@@ -173,44 +196,48 @@ export async function downloadEfileCalWorkbook(
 ): Promise<{ data: Uint8Array; remote: EfileCalRemoteWorkbookMetadata }> {
   const allowed = assertAllowedExportUrl(url, config);
   const maxBytes = options.maxBytes ?? EFILE_CAL_MAX_WORKBOOK_BYTES;
-  const response = await fetchWithTimeout(
+  return withTimedFetch(
     allowed,
     { method: "GET", headers: { accept: "application/octet-stream,*/*;q=0.5" } },
-    { ...options, timeoutMs: options.timeoutMs ?? EFILE_CAL_DOWNLOAD_TIMEOUT_MS }
-  );
-  if (!response.ok) {
-    throw new Error(`efile CAL ${config.agencyKey} workbook download failed: ${response.status} ${response.statusText}`);
-  }
-  const remote = metadataFromResponse(allowed, response);
-  if (remote.contentLength !== null && remote.contentLength > maxBytes) {
-    throw new Error(
-      `efile CAL ${config.agencyKey} workbook is ${remote.contentLength} bytes, over the ${maxBytes}-byte cap`
-    );
-  }
-  if (!response.body) {
-    throw new Error(`efile CAL ${config.agencyKey} workbook response did not include a body`);
-  }
+    { ...options, timeoutMs: options.timeoutMs ?? EFILE_CAL_DOWNLOAD_TIMEOUT_MS },
+    async (response) => {
+      if (!response.ok) {
+        throw new Error(
+          `efile CAL ${config.agencyKey} workbook download failed: ${response.status} ${response.statusText}`
+        );
+      }
+      const remote = metadataFromResponse(allowed, response);
+      if (remote.contentLength !== null && remote.contentLength > maxBytes) {
+        throw new Error(
+          `efile CAL ${config.agencyKey} workbook is ${remote.contentLength} bytes, over the ${maxBytes}-byte cap`
+        );
+      }
+      if (!response.body) {
+        throw new Error(`efile CAL ${config.agencyKey} workbook response did not include a body`);
+      }
 
-  const chunks: Uint8Array[] = [];
-  let total = 0;
-  for await (const chunk of response.body as AsyncIterable<Uint8Array>) {
-    total += chunk.byteLength;
-    if (total > maxBytes) {
-      throw new Error(`efile CAL ${config.agencyKey} workbook exceeded the ${maxBytes}-byte cap while streaming`);
+      const chunks: Uint8Array[] = [];
+      let total = 0;
+      for await (const chunk of response.body as AsyncIterable<Uint8Array>) {
+        total += chunk.byteLength;
+        if (total > maxBytes) {
+          throw new Error(`efile CAL ${config.agencyKey} workbook exceeded the ${maxBytes}-byte cap while streaming`);
+        }
+        chunks.push(chunk);
+      }
+      const data = new Uint8Array(total);
+      let offset = 0;
+      for (const chunk of chunks) {
+        data.set(chunk, offset);
+        offset += chunk.byteLength;
+      }
+
+      if (!isEfileCalWorkbookData(data)) {
+        throw new Error(`efile CAL ${config.agencyKey} workbook download is not an XLSX file; refusing to cache it`);
+      }
+      return { data, remote };
     }
-    chunks.push(chunk);
-  }
-  const data = new Uint8Array(total);
-  let offset = 0;
-  for (const chunk of chunks) {
-    data.set(chunk, offset);
-    offset += chunk.byteLength;
-  }
-
-  if (!isEfileCalWorkbookData(data)) {
-    throw new Error(`efile CAL ${config.agencyKey} workbook download is not an XLSX file; refusing to cache it`);
-  }
-  return { data, remote };
+  );
 }
 
 export function getEfileCalWorkbookArtifactCachePaths(input: {

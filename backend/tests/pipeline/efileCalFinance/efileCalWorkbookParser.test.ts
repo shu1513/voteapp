@@ -257,6 +257,45 @@ describe("efileCalWorkbookParser", () => {
       },
     });
     expect(() => parseEfileCalWorkbook(badThru)).toThrow("Thru_Date is not a calendar date");
+
+    // Well-formed but impossible dates (Feb 30) must also fail strict fields
+    // and null out lenient ones.
+    const impossibleThru = buildEfileCalExportWorkbook({
+      rowsBySheet: {
+        [EFILE_CAL_SUMMARY_SHEET]: [
+          { ...EFILE_CAL_FIXTURE_BASE, Thru_Date: "20260230", Form_Type: "F460", Line_Item: "1", Amount_A: "1.00", Amount_B: "1.00" },
+        ],
+      },
+    });
+    expect(() => parseEfileCalWorkbook(impossibleThru)).toThrow("Thru_Date is not a calendar date");
+
+    const impossibleElect = buildEfileCalExportWorkbook({
+      rowsBySheet: {
+        [EFILE_CAL_SUMMARY_SHEET]: [
+          { ...EFILE_CAL_FIXTURE_BASE, Elect_Date: "20260230", Form_Type: "F460", Line_Item: "1", Amount_A: "1.00", Amount_B: "1.00" },
+        ],
+      },
+    });
+    expect(parseEfileCalWorkbook(impossibleElect).summary[0]!.electDate).toBeNull();
+
+    // Leap-day sanity: Feb 29 valid in 2024, impossible in 2026.
+    const leapOk = buildEfileCalExportWorkbook({
+      rowsBySheet: {
+        [EFILE_CAL_SUMMARY_SHEET]: [
+          { ...EFILE_CAL_FIXTURE_BASE, Thru_Date: "20240229", Form_Type: "F460", Line_Item: "1", Amount_A: "1.00", Amount_B: "1.00" },
+        ],
+      },
+    });
+    expect(parseEfileCalWorkbook(leapOk).summary[0]!.thruDate).toBe("2024-02-29");
+
+    const leapBad = buildEfileCalExportWorkbook({
+      rowsBySheet: {
+        [EFILE_CAL_SUMMARY_SHEET]: [
+          { ...EFILE_CAL_FIXTURE_BASE, Thru_Date: "20260229", Form_Type: "F460", Line_Item: "1", Amount_A: "1.00", Amount_B: "1.00" },
+        ],
+      },
+    });
+    expect(() => parseEfileCalWorkbook(leapBad)).toThrow("Thru_Date is not a calendar date");
   });
 
   it("normalizes flag cells from booleans and CAL 'X' text, failing closed otherwise", () => {
@@ -298,6 +337,14 @@ describe("efileCalWorkbookParser", () => {
       },
     });
     expect(() => parseEfileCalWorkbook(missingColumn)).toThrow(/F460-Summary is missing required columns/);
+
+    // Header validation must not depend on data rows being present.
+    const headerOnlyMissingColumn = buildEfileCalExportWorkbook({
+      headersBySheet: { [EFILE_CAL_SUMMARY_SHEET]: ["Filer_ID", "Form_Type", "Line_Item"] },
+    });
+    expect(() => parseEfileCalWorkbook(headerOnlyMissingColumn)).toThrow(
+      /F460-Summary is missing required columns/
+    );
 
     const missingTranId = buildEfileCalExportWorkbook({
       rowsBySheet: {

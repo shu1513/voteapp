@@ -159,7 +159,9 @@ semantics, formulas, dedup, and a full resolver dry-run against the live
 roster cohort audited 2026-08-10 with the 2025 + 2026 `most_recent_only`
 files. Roster prerequisite is also met: the three Nov-3-2026 runoff races
 (D5/7/9) exist with 2 candidates each, and all 6 map to a `Cmtte_Type=C`
-committee in the export.
+committee in the export. That 6-candidate mapping is **provisional** — the
+city finalizes its candidate list August 13, 2026; re-run the resolver
+dry-run against the final roster before enabling sync.
 
 ### Phase 1: shared vendor module + parser — DONE (2026-08-10)
 
