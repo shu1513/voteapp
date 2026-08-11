@@ -13,6 +13,26 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 
 const GENERIC_MASSACHUSETTS_OCPF_SOURCE_URL = "https://www.ocpf.us/";
 
+// The outside leg reads OCPF's IEPAC report feed only. Independent spending
+// disclosed by other filer types (the separate "ordinary" IE report feed) and
+// electioneering communications are not read yet. That is a systematic gap,
+// not a rounding error, so it is stated with the totals until those paths
+// ship — at which point this note is removed.
+const MASSACHUSETTS_OUTSIDE_COVERAGE_NOTE =
+  "Covers independent expenditures reported by independent expenditure PACs (IEPACs) to the Massachusetts " +
+  "Office of Campaign and Political Finance. Independent spending by other filer types and electioneering " +
+  "communications are not included yet.";
+
+// Official raised/spent totals are OCPF bank-report year-to-date cover
+// figures; the breakdowns come from itemized receipts, whose sum differs
+// from the cover figures (refunds, timing, prior-year and unitemized money).
+// Without this sentence a reader reasonably assumes the breakdowns explain
+// the whole total.
+const MASSACHUSETTS_DIRECT_COVERAGE_NOTE =
+  "Donor breakdowns reflect itemized receipts reported to the Massachusetts Office of Campaign and Political " +
+  "Finance. Official totals are bank-report year-to-date figures and can include refunds, timing differences, " +
+  "and unitemized money not shown in the breakdowns.";
+
 export async function loadMassachusettsCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly StateFinanceRequestCandidateRow[],
@@ -33,6 +53,8 @@ export async function loadMassachusettsCandidateFinanceSummariesByCandidateElect
     linkIdentityColumn: "candidate_cpf_id",
     outsideGroupIdentityColumns: { id: "iepac_cpf_id", name: "iepac_name" },
     evidenceLabelTypes: ["donor"],
+    outsideCoverageNote: MASSACHUSETTS_OUTSIDE_COVERAGE_NOTE,
+    directCoverageNote: MASSACHUSETTS_DIRECT_COVERAGE_NOTE,
     tables: {
       links: "ma_candidate_finance_links",
       summaries: "ma_candidate_finance_summaries",

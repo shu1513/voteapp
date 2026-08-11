@@ -5714,10 +5714,18 @@ describe("lookupElectionDetailById", () => {
             source_url: "https://www.ocpf.us/",
           },
         ],
+        direct_coverage_note:
+          "Donor breakdowns reflect itemized receipts reported to the Massachusetts Office of Campaign and Political " +
+          "Finance. Official totals are bank-report year-to-date figures and can include refunds, timing differences, " +
+          "and unitemized money not shown in the breakdowns.",
       },
       outside_spending: {
         support_total: 70000,
         oppose_total: 3000,
+        outside_coverage_note:
+          "Covers independent expenditures reported by independent expenditure PACs (IEPACs) to the Massachusetts " +
+          "Office of Campaign and Political Finance. Independent spending by other filer types and electioneering " +
+          "communications are not included yet.",
         top_supporting_groups: [
           {
             committee_id: "81068",
