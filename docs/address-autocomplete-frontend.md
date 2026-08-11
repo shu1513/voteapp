@@ -79,7 +79,9 @@ Place Details Essentials request is also billed. Each SKU has its own monthly
 free tier (~10k). A normal debounced address entry fires well under 12 requests,
 so in practice you pay for each suggest request plus one retrieve — the
 autocomplete free tier is the binding limit (~1–2k completed entries/month
-before charges), not Place Details.
+before charges), not Place Details. An abandoned entry (the user never picks
+a suggestion, so no retrieve terminates the session) gets no cap at all:
+every suggest request in it is billed per-request.
 
 Still send a session token: without one, autocomplete requests bill the same way
 but you forfeit the 13+-free tier and the correct session accounting, and reused
@@ -97,9 +99,12 @@ large cost saver at our volume.
 
 - Minimum 3 characters. Leading-edge fire: the first suggest of an entry (no
   live session token — also covers pasting) goes out immediately; subsequent
-  keystrokes debounce ~125 ms after the last keystroke. (Google's own widget
-  fires per keystroke with ~100 ms debounce; the first-12-billed session cap
-  bounds the extra cost.)
+  keystrokes debounce ~125 ms after the last keystroke, matching the latency
+  Google's own widget targets. Cost note: at average typing speed this fires
+  roughly one suggest per keystroke, and every fired suggest is billable —
+  the 12-request cap applies only to completed sessions (see above), and
+  aborting the browser request does not stop a backend→Google call already
+  in flight. Watch the Autocomplete Requests SKU after changing the debounce.
 - On input focus, fire one throwaway invalid suggest request (empty `input`).
   The server 400s it before touching Google, so it costs nothing, but it warms
   the TLS connection, the CORS preflight cache, and the backend before the

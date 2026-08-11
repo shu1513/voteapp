@@ -70,6 +70,46 @@ describe("useAddressSuggestions", () => {
     expect(secondToken).toBe(firstToken);
   });
 
+  it("renders a response for older input while newer input is still debouncing (intended)", async () => {
+    // Deliberate design, same as Google's own widget: a keystroke schedules
+    // the next request but does NOT abort the in-flight one, so during
+    // continuous typing the dropdown shows the latest response that has
+    // landed (trailing the input by <= one debounce) instead of staying
+    // blank until the user pauses. The seq guard only prevents OLDER
+    // responses from overwriting newer ones. Suggestions display their full
+    // address text, so acting on one that trails the input is harmless —
+    // retrieve uses the clicked suggestion's place_id.
+    let resolveFirst!: (value: unknown) => void;
+    apiRequestMock.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          resolveFirst = resolve;
+        })
+    );
+    const { result } = renderHook(() => useAddressSuggestions());
+
+    // Leading-edge request for "200 N" goes out and hangs.
+    act(() => {
+      result.current.onInputChanged("200 N");
+    });
+    // User keeps typing; the new request is debouncing, the old one is live.
+    act(() => {
+      result.current.onInputChanged("200 N Spring");
+    });
+    await act(async () => {
+      resolveFirst({ suggestions: [SUGGESTION] });
+    });
+    expect(result.current.suggestions).toEqual([SUGGESTION]);
+
+    // The debounced request for the newer text still fires and supersedes.
+    apiRequestMock.mockResolvedValueOnce({ suggestions: [] });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
+    });
+    expect(apiRequestMock).toHaveBeenCalledTimes(2);
+    expect(result.current.suggestions).toEqual([]);
+  });
+
   it("warmup fires one throwaway request, dedupes, and never creates a session token", async () => {
     apiRequestMock.mockRejectedValue(new ApiError(400, "invalid_request", "input too short"));
     const { result } = renderHook(() => useAddressSuggestions());

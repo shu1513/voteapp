@@ -30,6 +30,28 @@ describe("createInMemoryAddressApiRateLimiter", () => {
     expect(limiter(request("203.0.113.10"))).toEqual({ allowed: true });
   });
 
+  it("gives autocomplete its own per-IP bucket so keystrokes cannot starve resolve", () => {
+    let now = 1_000;
+    const limiter = createInMemoryAddressApiRateLimiter({
+      windowMs: 60_000,
+      maxRequests: 2,
+      now: () => now,
+    });
+    const suggest = { clientIp: "203.0.113.10", method: "POST", pathname: "/api/address/autocomplete" };
+    const retrieve = { clientIp: "203.0.113.10", method: "POST", pathname: "/api/address/autocomplete/retrieve" };
+
+    // Suggest + retrieve share one bucket and exhaust it...
+    expect(limiter(suggest)).toEqual({ allowed: true });
+    expect(limiter(retrieve)).toEqual({ allowed: true });
+    expect(limiter(suggest)).toEqual({ allowed: false, retryAfterSeconds: 60 });
+
+    // ...while the same IP's resolve budget is untouched, and vice versa.
+    expect(limiter(request("203.0.113.10"))).toEqual({ allowed: true });
+    expect(limiter(request("203.0.113.10"))).toEqual({ allowed: true });
+    expect(limiter(request("203.0.113.10"))).toEqual({ allowed: false, retryAfterSeconds: 60 });
+    expect(limiter(retrieve)).toEqual({ allowed: false, retryAfterSeconds: 60 });
+  });
+
   it("sweeps expired buckets lazily", () => {
     let now = 1_000;
     const limiter = createInMemoryAddressApiRateLimiter({
