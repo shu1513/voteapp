@@ -16,7 +16,8 @@ type AddressAutocompleteProps = {
 };
 
 export function AddressAutocomplete({ value, onChange, inputId, placeholder }: AddressAutocompleteProps) {
-  const { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions } = useAddressSuggestions();
+  const { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions, warmup } =
+    useAddressSuggestions();
 
   // The landing page is prerendered: text typed before hydration exists only
   // in the DOM. Adopt it the same way a keystroke would land — into the
@@ -59,6 +60,7 @@ export function AddressAutocomplete({ value, onChange, inputId, placeholder }: A
             onChange(event.target.value);
             onInputChanged(event.target.value);
           }}
+          onFocus={() => warmup()}
           onBlur={() => clearSuggestions()}
         />
         {enabled && suggestions.length > 0 ? (

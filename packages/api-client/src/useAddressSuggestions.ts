@@ -6,12 +6,17 @@ import type { AddressAutocompleteResponse, AddressRetrieveResponse, AddressSugge
 // - fresh crypto.randomUUID() session token at the first keystroke that
 //   triggers a suggest call; the SAME token on every suggest and the final
 //   retrieve; token dies after a retrieve or when the entry is abandoned.
-// - 275ms debounce, 3-char minimum, in-flight requests aborted when a new
-//   one fires, out-of-order responses ignored.
+// - leading-edge fire: the first suggest of an entry (no live session token)
+//   goes out immediately; subsequent keystrokes debounce. 3-char minimum,
+//   in-flight requests aborted when a new one fires, out-of-order responses
+//   ignored.
+// - warmup(): call on input focus; fires one throwaway invalid request so the
+//   TLS handshake, CORS preflight cache, and backend are warm before the
+//   first real keystroke. The server 400s it before touching Google.
 // - Any failure hides the dropdown and never blocks manual entry; the
 //   "not configured" 500 disables autocomplete for the session.
 
-export const SUGGEST_DEBOUNCE_MS = 275;
+export const SUGGEST_DEBOUNCE_MS = 125;
 export const SUGGEST_MIN_CHARS = 3;
 
 export type UseAddressSuggestionsResult = {
@@ -22,6 +27,8 @@ export type UseAddressSuggestionsResult = {
   /** Resolves to the full address string, or null when retrieve failed. */
   selectSuggestion: (suggestion: AddressSuggestion) => Promise<string | null>;
   clearSuggestions: () => void;
+  /** Call on input focus: warms connections before the first keystroke. */
+  warmup: () => void;
 };
 
 export function useAddressSuggestions(): UseAddressSuggestionsResult {
@@ -99,12 +106,42 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
         setSuggestions([]);
         return;
       }
+      if (sessionTokenRef.current === null) {
+        // Leading edge: the first suggest of an entry fires immediately (also
+        // covers pasting a full address). fireSuggest sets the session token
+        // synchronously, so the next keystroke takes the debounced path.
+        void fireSuggest(trimmed);
+        return;
+      }
       debounceRef.current = setTimeout(() => {
         void fireSuggest(trimmed);
       }, SUGGEST_DEBOUNCE_MS);
     },
     [fireSuggest]
   );
+
+  const warmupFiredRef = useRef(false);
+  const warmup = useCallback(() => {
+    if (warmupFiredRef.current || !enabledRef.current) {
+      return;
+    }
+    warmupFiredRef.current = true;
+    // Fire-and-forget throwaway request: the empty input fails validation, so
+    // the server 400s before touching Google — no billable call, no session
+    // token. What it buys: the TLS handshake, the CORS preflight cache entry
+    // for this URL, and a warm backend, all before the first real suggest.
+    // The not-configured 500 arrives before body validation, so this also
+    // disables the dropdown for the session one focus earlier.
+    void apiRequest("/api/address/autocomplete", {
+      method: "POST",
+      body: { input: "", session_token: "" },
+    }).catch((error: unknown) => {
+      if (error instanceof ApiError && error.status === 500) {
+        enabledRef.current = false;
+        setEnabled(false);
+      }
+    });
+  }, []);
 
   const selectSuggestion = useCallback(async (suggestion: AddressSuggestion): Promise<string | null> => {
     if (debounceRef.current) {
@@ -140,5 +177,5 @@ export function useAddressSuggestions(): UseAddressSuggestionsResult {
     setSuggestions([]);
   }, []);
 
-  return { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions };
+  return { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions, warmup };
 }
