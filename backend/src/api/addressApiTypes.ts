@@ -33,6 +33,7 @@ import type {
   UserResearchAreaPreferenceInput,
   UserResearchAreaPreferencesResult,
 } from "../pipeline/users/userResearchAreaPreferences.js";
+import type { AskResponse } from "../chatbot/askService.js";
 import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
 import type { EmailUnsubscribePreference } from "./apiValidation.js";
 import type { AddressResolutionDiagnostics } from "./addressApiResponses.js";
@@ -104,6 +105,10 @@ export type AddressApiServerOptions = {
    * one candidate's finance summary without the full election payload.
    * null = election or candidate/election pairing not found (404). */
   lookupCandidateElectionFinance?: (electionId: string, candidateId: string) => Promise<CandidateElectionFinanceResult | null>;
+  /** POST /api/chatbot/ask — retrieval-only "Ask" pipeline
+   * (docs/plans/chatbot-rag.md). Wired only when CHATBOT_ENABLED; the
+   * endpoint 404s when absent so the kill switch fully hides the feature. */
+  askChatbot?: (question: string, previousQuestion?: string | null) => Promise<AskResponse>;
   listResearchAreas?: () => Promise<ResearchAreaCatalogResult>;
   /** GET /api/state-resources?state=CA — public official how-to-vote links
    * for one state. null = state not in state_resources (404). */

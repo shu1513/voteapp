@@ -33,6 +33,9 @@ import {
   DEFAULT_CONTENT_REPORT_RATE_LIMIT_MAX_REQUESTS,
   DEFAULT_CONTENT_REPORT_RATE_LIMIT_WINDOW_MS,
 } from "../api/contentReportRateLimiter.js";
+import { createAskService } from "../chatbot/askService.js";
+import { readChatbotConfigFromEnv } from "../chatbot/chatbotConfig.js";
+import { createEmbeddingsClient } from "../chatbot/embeddingsClient.js";
 import { loadProjectEnv } from "../config/env.js";
 import { captureError, describeError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
 import {
@@ -523,9 +526,32 @@ async function main(): Promise<void> {
       }
     : null;
 
+  // Chatbot "Ask" (docs/plans/chatbot-rag.md): flag-guarded — when
+  // CHATBOT_ENABLED is false (the default) askChatbot stays unset and
+  // /api/chatbot/ask 404s like any unknown path. Embeddings are optional:
+  // without CHATBOT_EMBEDDINGS_URL retrieval runs keyword-only (degraded).
+  const chatbotConfig = readChatbotConfigFromEnv();
+  const askChatbot = chatbotConfig.enabled
+    ? createAskService({
+        db: pool,
+        embeddings: chatbotConfig.embeddingsUrl
+          ? createEmbeddingsClient({
+              baseUrl: chatbotConfig.embeddingsUrl,
+              timeoutMs: chatbotConfig.embeddingsTimeoutMs,
+            })
+          : null,
+      }).ask
+    : undefined;
+  if (chatbotConfig.enabled) {
+    console.log(
+      `chatbot ask enabled (embeddings: ${chatbotConfig.embeddingsUrl ? "configured" : "NOT configured — keyword-only retrieval"})`
+    );
+  }
+
   const app = createApiApp({
     allowedOrigins,
     authService,
+    ...(askChatbot ? { askChatbot } : {}),
     captureUnexpectedError: (error, context) =>
       captureError(error, {
         request_id: context.requestId,

@@ -147,6 +147,14 @@ export function App() {
           {/* shrink-0: without it a long greeting squeezes the nav and wraps
               the Menu button's label onto two lines. */}
           <nav className="flex shrink-0 items-center gap-4 text-sm">
+            {/* Flag-guarded chatbot entry (docs/plans/chatbot-rag.md): the
+                page route always exists, but the nav only advertises it when
+                the build enables the feature. */}
+            {import.meta.env.VITE_CHATBOT_ENABLED === "true" && (
+              <Link to="/ask" className="text-ink-soft hover:text-ink">
+                Ask
+              </Link>
+            )}
             <AccountNav />
           </nav>
         </div>

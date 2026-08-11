@@ -35,6 +35,10 @@ export const AUTH_VERIFY_EMAIL_PATH = "/api/auth/verify-email";
 export const AUTH_VERIFY_EMAIL_CHANGE_PATH = "/api/auth/verify-email-change";
 export const AUTH_LOGOUT_ALL_PATH = "/api/auth/logout-all";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
+// Chatbot "Ask" (docs/plans/chatbot-rag.md). The path is always known;
+// whether it answers depends on CHATBOT_ENABLED wiring (404 when unwired,
+// mirroring the sitemap's not-configured behavior).
+export const CHATBOT_ASK_PATH = "/api/chatbot/ask";
 export const CONTENT_REPORTS_PATH = "/api/content-reports";
 export const CANDIDATE_DETAIL_PATH_PREFIX = "/api/candidates/";
 // Shares the candidate-detail prefix, so the router must test this path
@@ -350,6 +354,34 @@ function parseOptionalStringField(record: Record<string, unknown>, fieldName: st
   }
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : null;
+}
+
+export type ChatbotAskPayload = {
+  question: string;
+  /** Previous user turn, for deterministic follow-up scope carry-over. */
+  previousQuestion: string | null;
+};
+
+export const MAX_CHATBOT_QUESTION_LENGTH = 500;
+
+export function parseChatbotAskBodyValue(parsed: unknown): ChatbotAskPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+  const record = parsed as Record<string, unknown>;
+  assertNoUnknownFields(record, ["question", "previous_question"]);
+
+  const question = parseStringField(parsed, "question");
+  if (question.length > MAX_CHATBOT_QUESTION_LENGTH) {
+    throw new TypeError(`question must be at most ${MAX_CHATBOT_QUESTION_LENGTH} characters`);
+  }
+
+  const previousQuestion = parseOptionalStringField(record, "previous_question");
+  if (previousQuestion !== null && previousQuestion.length > MAX_CHATBOT_QUESTION_LENGTH) {
+    throw new TypeError(`previous_question must be at most ${MAX_CHATBOT_QUESTION_LENGTH} characters`);
+  }
+
+  return { question, previousQuestion };
 }
 
 export function parseContentReportBodyValue(parsed: unknown): ContentReportPayload {
