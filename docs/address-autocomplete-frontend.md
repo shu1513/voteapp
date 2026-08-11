@@ -95,7 +95,16 @@ large cost saver at our volume.
 
 ## Input behavior
 
-- Debounce 250–300 ms after the last keystroke; minimum 3 characters.
+- Minimum 3 characters. Leading-edge fire: the first suggest of an entry (no
+  live session token — also covers pasting) goes out immediately; subsequent
+  keystrokes debounce ~125 ms after the last keystroke. (Google's own widget
+  fires per keystroke with ~100 ms debounce; the first-12-billed session cap
+  bounds the extra cost.)
+- On input focus, fire one throwaway invalid suggest request (empty `input`).
+  The server 400s it before touching Google, so it costs nothing, but it warms
+  the TLS connection, the CORS preflight cache, and the backend before the
+  first real keystroke. A not-configured 500 on the warmup disables the
+  dropdown for the session early.
 - Cancel in-flight requests when a new one fires (`AbortController`) and
   ignore out-of-order responses.
 - Selecting a suggestion: call retrieve, put the returned `address` string

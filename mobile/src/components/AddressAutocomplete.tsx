@@ -24,7 +24,8 @@ export function AddressAutocomplete({
   placeholder,
   accessibilityLabel = "Your address",
 }: AddressAutocompleteProps) {
-  const { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions } = useAddressSuggestions();
+  const { suggestions, enabled, onInputChanged, selectSuggestion, clearSuggestions, warmup } =
+    useAddressSuggestions();
 
   async function onSelect(suggestion: AddressSuggestion) {
     // Optimistically show the picked description, then upgrade to the full
@@ -50,6 +51,7 @@ export function AddressAutocomplete({
           onChange(text);
           onInputChanged(text);
         }}
+        onFocus={() => warmup()}
       />
       {enabled && suggestions.length > 0 ? (
         <View className="mt-1 overflow-hidden rounded-xl border border-line bg-white">

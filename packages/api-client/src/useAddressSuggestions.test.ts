@@ -30,7 +30,7 @@ afterEach(() => {
 });
 
 describe("useAddressSuggestions", () => {
-  it("debounces, requires 3 chars, and reuses one session token per entry", async () => {
+  it("requires 3 chars, fires the first suggest immediately, debounces the rest, one token per entry", async () => {
     apiRequestMock.mockResolvedValue({ suggestions: [SUGGESTION] });
     const { result } = renderHook(() => useAddressSuggestions());
 
@@ -42,32 +42,91 @@ describe("useAddressSuggestions", () => {
     });
     expect(apiRequestMock).not.toHaveBeenCalled();
 
+    // Leading edge: the first eligible keystroke fires with no timer advance.
     act(() => {
       result.current.onInputChanged("200 N");
     });
+    expect(apiRequestMock).toHaveBeenCalledTimes(1);
+    const firstToken = (apiRequestMock.mock.calls[0][1] as { body: { session_token: string } }).body
+      .session_token;
+    expect(firstToken.length).toBeGreaterThan(8);
+
+    // Subsequent keystrokes: two keystrokes, one debounced request.
+    act(() => {
+      result.current.onInputChanged("200 N Sp");
+    });
+    act(() => {
+      result.current.onInputChanged("200 N Spring");
+    });
+    expect(apiRequestMock).toHaveBeenCalledTimes(1);
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
+    });
+    expect(apiRequestMock).toHaveBeenCalledTimes(2);
+    expect(result.current.suggestions).toEqual([SUGGESTION]);
+    const secondToken = (apiRequestMock.mock.calls[1][1] as { body: { session_token: string } }).body
+      .session_token;
+    // Same entry session: token must not change between keystrokes.
+    expect(secondToken).toBe(firstToken);
+  });
+
+  it("warmup fires one throwaway request, dedupes, and never creates a session token", async () => {
+    apiRequestMock.mockRejectedValue(new ApiError(400, "invalid_request", "input too short"));
+    const { result } = renderHook(() => useAddressSuggestions());
+
+    act(() => {
+      result.current.warmup();
+    });
+    act(() => {
+      result.current.warmup();
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(10);
+    });
+    // One request despite two focuses; the 400 is swallowed.
+    expect(apiRequestMock).toHaveBeenCalledTimes(1);
+    expect(apiRequestMock.mock.calls[0][0]).toBe("/api/address/autocomplete");
+    expect((apiRequestMock.mock.calls[0][1] as { body: unknown }).body).toEqual({
+      input: "",
+      session_token: "",
+    });
+    expect(result.current.enabled).toBe(true);
+
+    // A real entry after warmup still starts its own fresh session.
+    apiRequestMock.mockResolvedValue({ suggestions: [SUGGESTION] });
+    act(() => {
+      result.current.onInputChanged("200 N Spring");
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(10);
+    });
+    const token = (apiRequestMock.mock.calls[1][1] as { body: { session_token: string } }).body
+      .session_token;
+    expect(token.length).toBeGreaterThan(8);
+  });
+
+  it("warmup hitting the not-configured 500 disables autocomplete before any keystroke", async () => {
+    apiRequestMock.mockRejectedValueOnce(
+      new ApiError(500, "internal_error", "Address autocomplete is not configured")
+    );
+    const { result } = renderHook(() => useAddressSuggestions());
+
+    act(() => {
+      result.current.warmup();
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(10);
+    });
+    expect(result.current.enabled).toBe(false);
+
     act(() => {
       result.current.onInputChanged("200 N Spring");
     });
     await act(async () => {
       await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
     });
-    // Two keystrokes, one debounced request.
+    // No suggest request once disabled.
     expect(apiRequestMock).toHaveBeenCalledTimes(1);
-    const firstToken = (apiRequestMock.mock.calls[0][1] as { body: { session_token: string } }).body
-      .session_token;
-    expect(firstToken.length).toBeGreaterThan(8);
-    expect(result.current.suggestions).toEqual([SUGGESTION]);
-
-    act(() => {
-      result.current.onInputChanged("200 N Spring St");
-    });
-    await act(async () => {
-      await vi.advanceTimersByTimeAsync(SUGGEST_DEBOUNCE_MS + 10);
-    });
-    const secondToken = (apiRequestMock.mock.calls[1][1] as { body: { session_token: string } }).body
-      .session_token;
-    // Same entry session: token must not change between keystrokes.
-    expect(secondToken).toBe(firstToken);
   });
 
   it("treats a malformed 200 (no suggestions array) as no suggestions, never undefined", async () => {
