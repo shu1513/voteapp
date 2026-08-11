@@ -4,14 +4,18 @@ import {
   MassachusettsOcpfClientError,
   buildMassachusettsOcpfApiUrl,
   buildMassachusettsOcpfCandidateFilerSearchUrl,
+  buildMassachusettsOcpfCityCouncilReportsUrl,
   buildMassachusettsOcpfContributionItemsUrl,
   buildMassachusettsOcpfIepacReportSummariesUrl,
   buildMassachusettsOcpfLegislativeReportsUrl,
+  buildMassachusettsOcpfMayoralReportsUrl,
   buildMassachusettsOcpfReportDetailUrl,
   buildMassachusettsOcpfStatewideReportsUrl,
+  getMassachusettsOcpfCityCouncilCandidateReports,
   getMassachusettsOcpfContributionItems,
   getMassachusettsOcpfIepacReportSummaries,
   getMassachusettsOcpfLegislativeCandidateReports,
+  getMassachusettsOcpfMayoralCandidateReports,
   getMassachusettsOcpfReportDetail,
   getMassachusettsOcpfStatewideCandidateReports,
   searchMassachusettsOcpfCandidateFilers,
@@ -120,24 +124,27 @@ describe("massachusettsOcpfClient", () => {
     ]);
   });
 
-  it("builds and parses legislative candidate report rows", async () => {
+  it("builds and parses legislative candidate report rows from the reports wrapper", async () => {
     expect(buildMassachusettsOcpfLegislativeReportsUrl({ electionYear: 2022 })).toBe(
-      "https://api.ocpf.us/reports/legislative/2022"
+      "https://api.ocpf.us/reports/legislative/depository/ytd/2022"
     );
 
     const fetchImpl = vi.fn().mockResolvedValue(
-      jsonResponse([
-        {
-          cpfId: "12345",
-          filerName: "Example Candidate",
-          officeSought: "Senate, 2nd Middlesex",
-          receiptsYtdNumeric: "2500",
-          expendituresYtdNumeric: "$1,000.50",
-          bankReportId: "777",
-          isWinner: "false",
-        },
-        { cpfId: "missing name" },
-      ])
+      jsonResponse({
+        reports: [
+          {
+            cpfId: "12345",
+            filerName: "Example Candidate",
+            officeSought: "Senate, 2nd Middlesex",
+            receiptsYtdNumeric: "2500",
+            expendituresYtdNumeric: "$1,000.50",
+            bankReportId: "777",
+            isWinner: "false",
+          },
+          { cpfId: "missing name" },
+        ],
+        summary: { count: 0 },
+      })
     ) as unknown as typeof fetch;
 
     await expect(
@@ -151,6 +158,84 @@ describe("massachusettsOcpfClient", () => {
         expendituresYtd: 1000.5,
         bankReportId: 777,
         isWinner: false,
+        sourceUrl: undefined,
+      },
+    ]);
+  });
+
+  it("builds and parses mayoral depository report rows with cash on hand", async () => {
+    expect(buildMassachusettsOcpfMayoralReportsUrl({ electionYear: 2025 })).toBe(
+      "https://api.ocpf.us/reports/mayoral/depository/2025"
+    );
+
+    const fetchImpl = vi.fn().mockResolvedValue(
+      jsonResponse([
+        {
+          cpfId: 15563,
+          filerName: "Wu, Michelle",
+          officeSought: "Mayoral, Boston",
+          receiptsYtd: "$2,236,403.35",
+          receiptsYtdNumeric: 2236403.35,
+          expendituresYtdNumeric: 1833012.33,
+          currentCashOnHandNumeric: 1076729.13,
+          bankReportId: "912345",
+          isWinner: false,
+        },
+        { filerName: "missing cpf" },
+      ])
+    ) as unknown as typeof fetch;
+
+    await expect(
+      getMassachusettsOcpfMayoralCandidateReports({ electionYear: 2025 }, { fetchImpl, timeoutMs: 1000 })
+    ).resolves.toEqual([
+      {
+        cpfId: "15563",
+        filerName: "Wu, Michelle",
+        officeSought: "Mayoral, Boston",
+        receiptsYtd: 2236403.35,
+        expendituresYtd: 1833012.33,
+        cashOnHand: 1076729.13,
+        bankReportId: 912345,
+        isWinner: false,
+        sourceUrl: undefined,
+      },
+    ]);
+  });
+
+  it("builds and parses city council YTD report rows from the reports wrapper", async () => {
+    expect(buildMassachusettsOcpfCityCouncilReportsUrl({ electionYear: 2025 })).toBe(
+      "https://api.ocpf.us/reports/cc/ytd/2025"
+    );
+
+    const fetchImpl = vi.fn().mockResolvedValue(
+      jsonResponse({
+        reports: [
+          {
+            cpfId: "17669",
+            filerName: "Louijeune, Ruthzee",
+            officeSought: "City Councilor, Boston",
+            receiptsYtdNumeric: "150000",
+            expendituresYtdNumeric: "$120,000.00",
+            currentCashOnHandNumeric: "-25.50",
+            isWinner: "true",
+          },
+        ],
+        summary: { count: 0, total: 0 },
+      })
+    ) as unknown as typeof fetch;
+
+    await expect(
+      getMassachusettsOcpfCityCouncilCandidateReports({ electionYear: 2025 }, { fetchImpl, timeoutMs: 1000 })
+    ).resolves.toEqual([
+      {
+        cpfId: "17669",
+        filerName: "Louijeune, Ruthzee",
+        officeSought: "City Councilor, Boston",
+        receiptsYtd: 150000,
+        expendituresYtd: 120000,
+        cashOnHand: -25.5,
+        bankReportId: undefined,
+        isWinner: true,
         sourceUrl: undefined,
       },
     ]);

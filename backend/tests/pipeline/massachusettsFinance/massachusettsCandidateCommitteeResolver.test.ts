@@ -348,4 +348,119 @@ describe("massachusettsCandidateCommitteeResolver", () => {
     expect(requestUrl.origin + requestUrl.pathname).toBe("https://api.ocpf.us/filers/listings/A");
     expect(requestUrl.searchParams.get("searchPhrase")).toBe("Maura Healey");
   });
+
+  // Fixtures mirror the live OCPF filer-search rows for "wu" (2026-08-10):
+  // municipal committees carry "Mayoral, {City}" / "City Councilor, {City}"
+  // labels and the "Depository Candidate" account type; inaugural funds are
+  // inactive "Segregated Accounts" rows with "N/A, N/A" offices.
+  it("resolves a Boston mayoral depository committee by name + city", () => {
+    expect(
+      resolveMassachusettsCandidateCommittee({
+        candidateName: "Michelle Wu",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2025,
+        district: "BOSTON",
+        filers: [
+          filer({
+            cpfId: "15563",
+            filerName: "Wu, Michelle",
+            filerNameReverse: "Wu, Michelle",
+            committeeName: "Wu Committee",
+            officeSought: "Mayoral, Boston",
+          }),
+          filer({
+            cpfId: "50089",
+            filerName: "Boston Inaugural Fund 2026 Michelle Wu",
+            filerNameReverse: undefined,
+            committeeName: "Boston Inaugural Fund 2026 Michelle Wu",
+            officeSought: "N/A, N/A",
+            accountTypeCode: undefined,
+            accountTypeDescription: "Segregated Accounts",
+            isCandidate: false,
+            isActive: false,
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      candidateCpfId: "15563",
+      committeeName: "Wu Committee",
+      officeSought: "Mayoral, Boston",
+    });
+  });
+
+  it("rejects a same-class mayoral filer from a different city", () => {
+    expect(
+      resolveMassachusettsCandidateCommittee({
+        candidateName: "William Sarkodieh",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2025,
+        district: "BOSTON",
+        filers: [
+          filer({
+            cpfId: "17125",
+            filerName: "Sarkodieh, William",
+            filerNameReverse: undefined,
+            committeeName: "Sarkodieh Committee",
+            officeSought: "Mayoral, Worcester",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
+  it("refuses municipal cities outside the allowlist as unsupported offices", () => {
+    expect(
+      resolveMassachusettsCandidateCommittee({
+        candidateName: "William Sarkodieh",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2025,
+        district: "WORCESTER",
+        filers: [
+          filer({
+            cpfId: "17125",
+            filerName: "Sarkodieh, William",
+            filerNameReverse: undefined,
+            committeeName: "Sarkodieh Committee",
+            officeSought: "Mayoral, Worcester",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "unsupported_office" });
+  });
+
+  it("resolves a Boston city councilor and ignores mayoral filers for council races", () => {
+    expect(
+      resolveMassachusettsCandidateCommittee({
+        candidateName: "Ruthzee Louijeune",
+        officeScope: "place",
+        officeName: "City Council Member",
+        electionYear: 2025,
+        district: "BOSTON",
+        filers: [
+          filer({
+            cpfId: "17669",
+            filerName: "Louijeune, Ruthzee",
+            filerNameReverse: undefined,
+            committeeName: "Louijeune Committee",
+            officeSought: "City Councilor, Boston",
+          }),
+          filer({
+            cpfId: "15563",
+            filerName: "Wu, Michelle",
+            filerNameReverse: undefined,
+            committeeName: "Wu Committee",
+            officeSought: "Mayoral, Boston",
+          }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      candidateCpfId: "17669",
+      committeeName: "Louijeune Committee",
+    });
+  });
 });

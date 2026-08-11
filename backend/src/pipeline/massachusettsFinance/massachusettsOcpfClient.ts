@@ -50,6 +50,7 @@ export type MassachusettsOcpfCandidateReport = {
   officeSought?: string;
   receiptsYtd?: number;
   expendituresYtd?: number;
+  cashOnHand?: number;
   bankReportId?: number;
   isWinner: boolean | null;
   sourceUrl?: string;
@@ -62,6 +63,10 @@ export type MassachusettsOcpfStatewideReportsInput = {
 };
 
 export type MassachusettsOcpfLegislativeReportsInput = {
+  electionYear: number;
+};
+
+export type MassachusettsOcpfMunicipalReportsInput = {
   electionYear: number;
 };
 
@@ -278,8 +283,18 @@ function extractSourceUrl(row: Record<string, unknown>): string | undefined {
   );
 }
 
+// OCPF is inconsistent about wrappers: filer search and the mayoral feed are
+// flat arrays, while the statewide, legislative-depository, and city-council
+// YTD feeds wrap rows as {reports: [...], summary: {...}} (verified live
+// 2026-08-10).
 function arrayPayload(payload: unknown, context: string): Record<string, unknown>[] {
-  const maybeArray = Array.isArray(payload) ? payload : isRecord(payload) && Array.isArray(payload.items) ? payload.items : null;
+  const maybeArray = Array.isArray(payload)
+    ? payload
+    : isRecord(payload) && Array.isArray(payload.items)
+      ? payload.items
+      : isRecord(payload) && Array.isArray(payload.reports)
+        ? payload.reports
+        : null;
   if (!maybeArray) {
     throw new MassachusettsOcpfClientError("bad_response", `Massachusetts OCPF ${context} response was not an array`);
   }
@@ -368,7 +383,17 @@ export function buildMassachusettsOcpfStatewideReportsUrl(input: MassachusettsOc
 }
 
 export function buildMassachusettsOcpfLegislativeReportsUrl(input: MassachusettsOcpfLegislativeReportsInput): string {
-  return buildMassachusettsOcpfApiUrl(`/reports/legislative/${normalizeElectionYear(input.electionYear)}`);
+  // /reports/legislative/{year} always answers 200 with an empty array (the
+  // API's catch-all shape); the depository YTD path is the real feed.
+  return buildMassachusettsOcpfApiUrl(`/reports/legislative/depository/ytd/${normalizeElectionYear(input.electionYear)}`);
+}
+
+export function buildMassachusettsOcpfMayoralReportsUrl(input: MassachusettsOcpfMunicipalReportsInput): string {
+  return buildMassachusettsOcpfApiUrl(`/reports/mayoral/depository/${normalizeElectionYear(input.electionYear)}`);
+}
+
+export function buildMassachusettsOcpfCityCouncilReportsUrl(input: MassachusettsOcpfMunicipalReportsInput): string {
+  return buildMassachusettsOcpfApiUrl(`/reports/cc/ytd/${normalizeElectionYear(input.electionYear)}`);
 }
 
 export function buildMassachusettsOcpfContributionItemsUrl(input: MassachusettsOcpfContributionItemsInput): string {
@@ -433,6 +458,7 @@ function parseCandidateReport(row: Record<string, unknown>): MassachusettsOcpfCa
       "expendituresYtd",
       "expenditures_ytd"
     ),
+    cashOnHand: getNumber(row, "currentCashOnHandNumeric", "current_cash_on_hand_numeric", "currentCashOnHand", "current_cash_on_hand"),
     bankReportId: getInteger(row, "bankReportId", "bank_report_id"),
     isWinner: getBoolean(row, "isWinner", "is_winner"),
     sourceUrl: extractSourceUrl(row),
@@ -556,6 +582,22 @@ export async function getMassachusettsOcpfLegislativeCandidateReports(
 ): Promise<MassachusettsOcpfCandidateReport[]> {
   const payload = await fetchMassachusettsOcpfJson(buildMassachusettsOcpfLegislativeReportsUrl(input), options);
   return arrayPayload(payload, "legislative candidate reports").map(parseCandidateReport).filter((row) => row !== null);
+}
+
+export async function getMassachusettsOcpfMayoralCandidateReports(
+  input: MassachusettsOcpfMunicipalReportsInput,
+  options: MassachusettsOcpfClientOptions = {}
+): Promise<MassachusettsOcpfCandidateReport[]> {
+  const payload = await fetchMassachusettsOcpfJson(buildMassachusettsOcpfMayoralReportsUrl(input), options);
+  return arrayPayload(payload, "mayoral candidate reports").map(parseCandidateReport).filter((row) => row !== null);
+}
+
+export async function getMassachusettsOcpfCityCouncilCandidateReports(
+  input: MassachusettsOcpfMunicipalReportsInput,
+  options: MassachusettsOcpfClientOptions = {}
+): Promise<MassachusettsOcpfCandidateReport[]> {
+  const payload = await fetchMassachusettsOcpfJson(buildMassachusettsOcpfCityCouncilReportsUrl(input), options);
+  return arrayPayload(payload, "city council candidate reports").map(parseCandidateReport).filter((row) => row !== null);
 }
 
 export async function getMassachusettsOcpfContributionItems(

@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 
 import {
   MASSACHUSETTS_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  isMassachusettsFinanceEligibleElectionRow,
   isMassachusettsFinanceEligibleOffice,
   mapMassachusettsOcpfOffice,
+  massachusettsMunicipalFinanceCityForGeoid,
   normalizeMassachusettsOcpfDistrict,
   normalizeMassachusettsOcpfOfficeLabel,
   toMassachusettsFinanceOfficeKey,
@@ -21,6 +23,8 @@ describe("massachusettsFinanceEligibleOffices", () => {
       "statewide::State Auditor",
       "state_upper::State Senator",
       "state_lower::State Lower Chamber Legislator",
+      "place::Mayor",
+      "place::City Council Member",
     ]);
   });
 
@@ -150,6 +154,92 @@ describe("massachusettsFinanceEligibleOffices", () => {
         district: "3rd Suffolk",
       })
     ).toEqual({ ocpfOffice: "House", district: "3RD SUFFOLK" });
+  });
+
+  it("maps municipal OCPF labels for enabled cities with the city in the district slot", () => {
+    expect(mapMassachusettsOcpfOffice({ officeSought: "Mayoral, Boston" })).toEqual({
+      officeScope: "place",
+      officeCanonicalName: "Mayor",
+      officeKey: "place::Mayor",
+      ocpfOffice: "Mayoral",
+      requiresDistrict: true,
+      district: "BOSTON",
+    });
+    expect(mapMassachusettsOcpfOffice({ officeSought: "City Councilor, Boston" })).toEqual({
+      officeScope: "place",
+      officeCanonicalName: "City Council Member",
+      officeKey: "place::City Council Member",
+      ocpfOffice: "City Councilor",
+      requiresDistrict: true,
+      district: "BOSTON",
+    });
+    // Parsing keeps every city; the search-input side enforces the allowlist,
+    // so a Worcester filer can never equal a Boston expected district.
+    expect(mapMassachusettsOcpfOffice({ officeSought: "Mayoral, Worcester" })).toMatchObject({
+      district: "WORCESTER",
+    });
+    expect(mapMassachusettsOcpfOffice({ officeSought: "Mayoral,   " })).toBeNull();
+  });
+
+  it("builds municipal search inputs only for allowlisted cities", () => {
+    expect(
+      toMassachusettsOcpfOfficeSearchInput({
+        officeScope: "place",
+        officeCanonicalName: "Mayor",
+        district: "Boston",
+      })
+    ).toEqual({ ocpfOffice: "Mayoral", district: "BOSTON" });
+    expect(
+      toMassachusettsOcpfOfficeSearchInput({
+        officeScope: "place",
+        officeCanonicalName: "City Council Member",
+        district: "BOSTON",
+      })
+    ).toEqual({ ocpfOffice: "City Councilor", district: "BOSTON" });
+    expect(
+      toMassachusettsOcpfOfficeSearchInput({
+        officeScope: "place",
+        officeCanonicalName: "Mayor",
+        district: "Worcester",
+      })
+    ).toBeNull();
+    expect(
+      toMassachusettsOcpfOfficeSearchInput({
+        officeScope: "place",
+        officeCanonicalName: "Mayor",
+      })
+    ).toBeNull();
+  });
+
+  it("gates municipal election rows by place district GEOID", () => {
+    expect(massachusettsMunicipalFinanceCityForGeoid("2507000")).toBe("BOSTON");
+    expect(massachusettsMunicipalFinanceCityForGeoid("0667000")).toBeNull();
+
+    const bostonMayorRow = {
+      district_type: "place",
+      geoid_compact: "2507000",
+      office_scope: "place",
+      office_canonical_name: "Mayor",
+    };
+    expect(isMassachusettsFinanceEligibleElectionRow(bostonMayorRow)).toBe(true);
+    expect(
+      isMassachusettsFinanceEligibleElectionRow({ ...bostonMayorRow, geoid_compact: "2582000" })
+    ).toBe(false);
+    expect(
+      isMassachusettsFinanceEligibleElectionRow({ ...bostonMayorRow, district_type: "county" })
+    ).toBe(false);
+    expect(
+      isMassachusettsFinanceEligibleElectionRow({ ...bostonMayorRow, office_canonical_name: "Town Council Member" })
+    ).toBe(false);
+    // Non-place offices keep the pure office-key behavior with no GEOID input.
+    expect(
+      isMassachusettsFinanceEligibleElectionRow({
+        district_type: "state",
+        geoid_compact: "25",
+        office_scope: "statewide",
+        office_canonical_name: "Governor",
+      })
+    ).toBe(true);
   });
 
   it("rejects unsafe OCPF labels and incomplete app search inputs", () => {

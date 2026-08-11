@@ -92,6 +92,9 @@ describe("massachusettsCandidateFinanceAutoLink", () => {
     expect(sql).toContain("election.race_type = 'office'");
     expect(sql).toContain("candidate_election.status NOT IN ('withdrawn', 'lost')");
     expect(sql).toContain("(office.scope || '::' || office.canonical_name) = ANY($5::text[])");
+    // Municipal offices are gated to place districts in the enabled-city
+    // GEOID allowlist; non-place offices are unaffected.
+    expect(sql).toContain("district.district_type = 'place' AND district.geoid_compact = ANY($6::text[])");
     expect(sql).toContain("FROM public.ma_candidate_finance_links AS link");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       "2026-06-01T00:00:00.000Z",
@@ -104,9 +107,46 @@ describe("massachusettsCandidateFinanceAutoLink", () => {
         "statewide::Attorney General",
         "state_upper::State Senator",
         "state_lower::State Lower Chamber Legislator",
+        "place::Mayor",
+        "place::City Council Member",
       ]),
+      ["2507000"],
     ]);
-    expect(db.query.mock.calls[0]?.[1]?.[4]).not.toContain("place::Mayor");
+  });
+
+  it("maps place rows to the OCPF city token from the GEOID allowlist", async () => {
+    const db = createMockDb([
+      {
+        candidate_id: CANDIDATE_ID,
+        election_id: ELECTION_ID,
+        candidate_name: "Michelle Wu",
+        election_year: 2025,
+        office_scope: "place",
+        office_name: "Mayor",
+        district: null,
+        district_type: "place",
+        geoid_compact: "2507000",
+      },
+    ]);
+
+    await expect(
+      listMassachusettsCandidateElectionsMissingFinanceLinks(db, {
+        now: NOW,
+        maxCandidates: 25,
+        electionLookbackDays: 1,
+        electionLookaheadDays: 730,
+      })
+    ).resolves.toEqual([
+      {
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        candidateName: "Michelle Wu",
+        electionYear: 2025,
+        officeScope: "place",
+        officeName: "Mayor",
+        district: "BOSTON",
+      },
+    ]);
   });
 
   it("links a matched candidate election to the resolved OCPF candidate CPF", async () => {

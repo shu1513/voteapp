@@ -3,7 +3,9 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { normalizeFinanceLabel, type FinanceLabelClassification } from "../../../src/pipeline/finance/financeLabelClassifier.js";
 import { syncMassachusettsCandidateFinance } from "../../../src/pipeline/massachusettsFinance/massachusettsCandidateFinanceSync.js";
 import type { MassachusettsCandidateCommitteeResolution } from "../../../src/pipeline/massachusettsFinance/massachusettsCandidateCommitteeResolver.js";
+import { massachusettsOcpfYtdOfficeClass } from "../../../src/pipeline/massachusettsFinance/massachusettsCandidateFinanceSync.js";
 import type {
+  MassachusettsOcpfCandidateReport,
   MassachusettsOcpfContributionItem,
   MassachusettsOcpfIepacReportSummary,
   MassachusettsOcpfReportDetail,
@@ -125,6 +127,7 @@ function createOcpfClient(input: {
   contributions?: MassachusettsOcpfContributionItem[];
   reports?: MassachusettsOcpfIepacReportSummary[];
   details?: MassachusettsOcpfReportDetail[];
+  ytdReports?: MassachusettsOcpfCandidateReport[];
 } = {}) {
   const details = input.details ?? [reportDetail()];
   return {
@@ -138,6 +141,7 @@ function createOcpfClient(input: {
     ),
     getIepacReportSummaries: vi.fn(async () => input.reports ?? [reportSummary()]),
     getReportDetail: vi.fn(async ({ reportId }: { reportId: number }) => details.find((detail) => detail.reportId === reportId) ?? details[0]),
+    getCandidateYtdReports: vi.fn(async () => input.ytdReports ?? []),
   };
 }
 
@@ -277,6 +281,187 @@ describe("massachusettsCandidateFinanceSync", () => {
     expect(
       db.query.mock.calls.filter((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))
     ).toHaveLength(2);
+  });
+
+  it("maps office scopes to OCPF YTD office classes", () => {
+    expect(massachusettsOcpfYtdOfficeClass({ officeScope: "statewide", officeName: "Governor" })).toBe("statewide");
+    expect(massachusettsOcpfYtdOfficeClass({ officeScope: "state_upper", officeName: "State Senator" })).toBe(
+      "legislative"
+    );
+    expect(
+      massachusettsOcpfYtdOfficeClass({ officeScope: "state_lower", officeName: "State Lower Chamber Legislator" })
+    ).toBe("legislative");
+    expect(massachusettsOcpfYtdOfficeClass({ officeScope: "place", officeName: "Mayor" })).toBe("mayoral");
+    expect(massachusettsOcpfYtdOfficeClass({ officeScope: "place", officeName: "City Council Member" })).toBe(
+      "city_council"
+    );
+    expect(massachusettsOcpfYtdOfficeClass({ officeScope: "place", officeName: "Town Council Member" })).toBeNull();
+    expect(massachusettsOcpfYtdOfficeClass({ officeScope: "county", officeName: "Sheriff" })).toBeNull();
+  });
+
+  it("prefers bank-report YTD totals over itemized sums and writes spent + cash", async () => {
+    const db = createMockDb();
+    const ocpfClient = createOcpfClient({
+      ytdReports: [
+        {
+          cpfId: "15710",
+          filerName: "Healey, Maura T.",
+          officeSought: "Statewide, Governor",
+          receiptsYtd: 1_700.25,
+          expendituresYtd: 1_200.5,
+          cashOnHand: 499.75,
+          isWinner: null,
+        },
+        {
+          cpfId: "99999",
+          filerName: "Other, Candidate",
+          officeSought: "Statewide, Governor",
+          receiptsYtd: 5,
+          expendituresYtd: 5,
+          isWinner: null,
+        },
+      ],
+    });
+
+    const result = await syncMassachusettsCandidateFinance({
+      db,
+      ...baseInput(),
+      ocpfClient,
+    });
+
+    // Itemized sum is 1750; the bank YTD cover number wins for raised.
+    expect(result).toMatchObject({
+      totalReceipts: 1700.25,
+      totalDisbursements: 1200.5,
+      directContributionTotal: 750,
+      ytdReportMatched: true,
+    });
+    expect(ocpfClient.getCandidateYtdReports).toHaveBeenCalledWith(
+      { officeClass: "statewide", electionYear: 2022 },
+      undefined
+    );
+
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ma_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2022,
+      1700.25,
+      750,
+      1200.5,
+      499.75,
+      32420,
+      0,
+      expect.stringContaining("https://api.ocpf.us/search/items"),
+      "2026-06-02T03:04:05.000Z",
+    ]);
+  });
+
+  it("syncs a Boston mayoral candidate through the mayoral YTD feed", async () => {
+    const db = createMockDb();
+    const ocpfClient = createOcpfClient({
+      resolution: matchedResolution({
+        candidateCpfId: "15563",
+        filerName: "Wu, Michelle",
+        committeeName: "Wu Committee",
+        officeSought: "Mayoral, Boston",
+      }),
+      contributions: [
+        contribution({ itemId: "1", cpfId: "15563", filerName: "Wu, Michelle", amount: 250, date: "10/01/2025" }),
+      ],
+      reports: [],
+      details: [],
+      ytdReports: [
+        {
+          cpfId: "15563",
+          filerName: "Wu, Michelle",
+          officeSought: "Mayoral, Boston",
+          receiptsYtd: 2_236_403.35,
+          expendituresYtd: 1_833_012.33,
+          cashOnHand: 1_076_729.13,
+          isWinner: null,
+        },
+      ],
+    });
+
+    const result = await syncMassachusettsCandidateFinance({
+      db,
+      ...baseInput(),
+      candidateName: "Michelle Wu",
+      electionYear: 2025,
+      officeScope: "place",
+      officeName: "Mayor",
+      district: "BOSTON",
+      ocpfClient,
+    });
+
+    expect(result).toMatchObject({
+      totalReceipts: 2_236_403.35,
+      totalDisbursements: 1_833_012.33,
+      ytdReportMatched: true,
+    });
+    expect(ocpfClient.getCandidateYtdReports).toHaveBeenCalledWith(
+      { officeClass: "mayoral", electionYear: 2025 },
+      undefined
+    );
+  });
+
+  it("nulls negative YTD values instead of failing the writer", async () => {
+    const db = createMockDb();
+    const ocpfClient = createOcpfClient({
+      ytdReports: [
+        {
+          cpfId: "15710",
+          filerName: "Healey, Maura T.",
+          officeSought: "Statewide, Governor",
+          receiptsYtd: 1_700.25,
+          expendituresYtd: 1_200.5,
+          cashOnHand: -25.5,
+          isWinner: null,
+        },
+      ],
+    });
+
+    const result = await syncMassachusettsCandidateFinance({
+      db,
+      ...baseInput(),
+      ocpfClient,
+    });
+
+    expect(result).toMatchObject({ totalReceipts: 1700.25, totalDisbursements: 1200.5, ytdReportMatched: true });
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ma_candidate_finance_summaries")
+    );
+    // cash_on_hand slot stays null for the overdrawn bank row.
+    expect(summaryCall?.[1]?.[5]).toBeNull();
+  });
+
+  it("falls back to itemized totals when the YTD feed fails or has no row", async () => {
+    const db = createMockDb();
+    const ocpfClient = createOcpfClient();
+    ocpfClient.getCandidateYtdReports.mockRejectedValueOnce(new Error("ytd feed down"));
+
+    const failed = await syncMassachusettsCandidateFinance({
+      db,
+      ...baseInput(),
+      ocpfClient,
+    });
+    expect(failed).toMatchObject({
+      totalReceipts: 1750,
+      totalDisbursements: null,
+      ytdReportMatched: false,
+      summaryWritten: true,
+    });
+
+    const missingDb = createMockDb();
+    const missingRowClient = createOcpfClient({ ytdReports: [] });
+    const missing = await syncMassachusettsCandidateFinance({
+      db: missingDb,
+      ...baseInput(),
+      ocpfClient: missingRowClient,
+    });
+    expect(missing).toMatchObject({ totalReceipts: 1750, totalDisbursements: null, ytdReportMatched: false });
   });
 
   it("classifies every donor but caps the persisted donor rows per IE PAC", async () => {
