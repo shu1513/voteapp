@@ -591,6 +591,11 @@ function toSummary(input: {
 }): WashingtonFinanceSummaryInput {
   // PDC candidate summaries expose one contribution total; they do not split
   // total receipts from direct donor receipts in this API path.
+  // "Raised" here means PDC-reported contributions: cash plus in-kind
+  // (including candidate self-funding and batched small contributions, where
+  // democracy vouchers land). Loans are NOT included — PDC reports them in a
+  // separate loans_amount field this sync does not read. contributions_amount
+  // reconciles cent-exact against the itemized contributions dataset.
   const totalReceipts = input.resolution.contributionsAmount ?? null;
   return {
     totalReceipts,
