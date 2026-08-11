@@ -1,8 +1,9 @@
 # San José Local Campaign Finance Plan
 
-Status: Phases 1–3 built (shared `efileCalFinance/` client + parser, the San
-José eligibility + resolver adapter, then the direct/outside aggregators; all
-live-verified 2026-08-10); Phases 4+ not started. Feasibility + export semantics verified against live
+Status: Phases 1–4 built (shared `efileCalFinance/` client + parser, the San
+José eligibility + resolver adapter, the direct/outside aggregators — all
+live-verified 2026-08-10 — then migration 233 + flags + source enum + snapshot
+writer); Phases 5+ not started. Feasibility + export semantics verified against live
 data 2026-08-10 (portal probed, 2025+2026 workbooks downloaded and audited).
 
 ## Goal and v1 scope
@@ -252,18 +253,35 @@ dry-run against the final roster before enabling sync.
   the UI never implies sync time = data recency (field emitted; persisted in
   Phase 4).
 
-### Phase 4: schema, flags, writer
+### Phase 4: schema, flags, writer — DONE
 
-- Isolated tables + snapshot writer per SF/LA pattern; next free migration
-  number at build time (identifiers ≤63 chars).
-- Flags per launch checklist, **three** of them (repo-standard):
-  `SAN_JOSE_CAMPAIGN_FINANCE_ENABLED`,
+- Migration `233_add_san_jose_campaign_finance_tables.sql`: four `sjc_`
+  tables modeled on SF (215 + 229) with SJ's differences — committee
+  identity = FPPC id alone (no contest code / filer nid; `fppc_id` CHECK
+  rejects the literal `Pending`); one donor-money `total_raised` (no
+  headline/direct split, no public-funds column); `cash_on_hand` signed
+  from day one (the GA/MA 231/232 lesson); `direct_coverage_note` column
+  on summaries (per-candidate disclosure, e.g. Altwer's uncovered 2025);
+  outside groups carry `expenditure_count` and include `spender_name` in
+  the unique key so two id-less Pending spenders never collide. Validated
+  on a scratch DB (constraints exercised: Pending rejected, negative cash
+  accepted, negative flow rejected).
+- Flags shipped (defaults false in code): `SAN_JOSE_CAMPAIGN_FINANCE_ENABLED`,
   `SAN_JOSE_CAMPAIGN_FINANCE_SYNC_ENABLED`,
-  `SAN_JOSE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED` (artifact refresh and
-  DB sync stay separately gated). Defaults false in code; all added `=true`
-  to `backend/.env`; read flag to `render.yaml`.
-- Source enum `SAN_JOSE_CITY_CLERK` in `ballotLookupFinanceShared.ts`; label
-  in `FINANCE_SOURCE_LABELS` + `financeSourceLabel` test.
+  `SAN_JOSE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED`; all three `=true`
+  in local `backend/.env`; read flag added to `render.yaml`.
+- Source enum `SAN_JOSE_CITY_CLERK` in `ballotLookupFinanceShared.ts`
+  (+ runtime `FINANCE_SUMMARY_SOURCES` mirror); label "City of San José
+  Office of the City Clerk" in `FINANCE_SOURCE_LABELS`
+  (`packages/api-client/src/format.ts`, shared by web + mobile) +
+  `financeSourceLabel` test.
+- `sanJoseFinanceWriter.ts`: `upsertSanJoseFinanceLink` (manual-link
+  protection incl. last_verified_at advance on exact FPPC match, automatic
+  conflict errors, active upsert deactivates other automatic links) +
+  `replaceSanJoseCandidateFinanceSnapshot` (one transaction: link, summary,
+  breakdowns, outside groups, optional industry classifications; integer
+  cents → exact dollar strings; negative flows abort, signed cash passes).
+  8 writer tests; module 58, full backend suite green.
 
 ### Phase 5: sync, loader, scripts
 
