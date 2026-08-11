@@ -68,11 +68,13 @@ function createPdcClient(input: {
   occupations?: WashingtonPdcAggregate[];
   contributionSizes?: WashingtonPdcAggregate[];
   outsideGroups?: WashingtonPdcIndependentSpendingGroup[];
+  committeeSummaries?: WashingtonPdcCandidateSummary[];
   sponsorSummaries?: WashingtonPdcCandidateSummary[];
   sponsorFunders?: WashingtonPdcAggregate[];
 } = {}) {
   return {
     searchAndResolveCandidateCommittee: vi.fn(async () => input.resolution ?? matchedResolution()),
+    getCandidateSummariesByCommittee: vi.fn(async () => input.committeeSummaries ?? []),
     getDirectOccupationAggregates: vi.fn(async () =>
       input.occupations ?? [
         {
@@ -330,13 +332,24 @@ describe("washingtonCandidateFinanceSync", () => {
     ]);
   });
 
-  it("hydrates summary IE totals for trusted links via the resolver search", async () => {
+  it("hydrates summary IE totals for trusted links via the hard-ID committee lookup", async () => {
     const db = createMockDb();
     const pdcClient = createPdcClient({
-      resolution: matchedResolution({
-        independentExpendituresForAmount: 273026.25,
-        independentExpendituresAgainstAmount: 1232834.74,
-      }),
+      committeeSummaries: [
+        {
+          filerId: "FERGR *115",
+          committeeId: "32311",
+          filerName: "Robert W. Ferguson (Bob Ferguson)",
+          activeCandidate: true,
+          hasReports: true,
+          electionYear: 2024,
+          contributionsAmount: 11962407.92,
+          expendituresAmount: 8000000,
+          independentExpendituresForAmount: 273026.25,
+          independentExpendituresAgainstAmount: 1232834.74,
+          sourceUrl: PDC_SOURCE_URL,
+        },
+      ],
     });
 
     const result = await syncWashingtonCandidateFinance({
@@ -352,7 +365,13 @@ describe("washingtonCandidateFinanceSync", () => {
       },
     });
 
-    expect(pdcClient.searchAndResolveCandidateCommittee).toHaveBeenCalledTimes(1);
+    // Hydration goes straight to the linked committee's summary row — the
+    // name-based resolver search is never involved for trusted links.
+    expect(pdcClient.getCandidateSummariesByCommittee).toHaveBeenCalledWith(
+      { filerId: "FERGR *115", committeeId: "32311", electionYear: 2024 },
+      undefined
+    );
+    expect(pdcClient.searchAndResolveCandidateCommittee).not.toHaveBeenCalled();
     expect(result).toMatchObject({
       totalReceipts: 11962407.92,
       outsideSupportTotal: 273026.25,
@@ -363,7 +382,7 @@ describe("washingtonCandidateFinanceSync", () => {
   it("fails the trusted-link sync when summary hydration fails instead of writing fallback totals", async () => {
     const db = createMockDb();
     const pdcClient = createPdcClient();
-    pdcClient.searchAndResolveCandidateCommittee.mockRejectedValueOnce(new Error("PDC unavailable"));
+    pdcClient.getCandidateSummariesByCommittee.mockRejectedValueOnce(new Error("PDC unavailable"));
 
     await expect(
       syncWashingtonCandidateFinance({

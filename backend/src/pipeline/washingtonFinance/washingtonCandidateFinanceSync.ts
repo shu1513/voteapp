@@ -26,6 +26,7 @@ import {
   type WashingtonFinanceSummaryInput,
 } from "./washingtonFinanceWriter.js";
 import {
+  getWashingtonPdcCandidateSummariesByCommittee,
   getWashingtonPdcContributionSizeAggregates,
   getWashingtonPdcDirectOccupationAggregates,
   getWashingtonPdcIndependentExpenditureGroups,
@@ -71,6 +72,10 @@ type WashingtonPdcDataClient = {
     },
     options?: WashingtonPdcClientOptions
   ) => Promise<WashingtonPdcIndependentSpendingGroup[]>;
+  getCandidateSummariesByCommittee: (
+    input: { filerId?: string | null; committeeId?: string | null; electionYear: number; limit?: number },
+    options?: WashingtonPdcClientOptions
+  ) => Promise<WashingtonPdcCandidateSummary[]>;
   getSponsorSummaryByName: (
     input: { sponsorName: string; electionYear: number; limit?: number },
     options?: WashingtonPdcClientOptions
@@ -154,6 +159,7 @@ const DEFAULT_PDC_CLIENT: WashingtonPdcDataClient = {
   getDirectOccupationAggregates: getWashingtonPdcDirectOccupationAggregates,
   getContributionSizeAggregates: getWashingtonPdcContributionSizeAggregates,
   getIndependentExpenditureGroups: getWashingtonPdcIndependentExpenditureGroups,
+  getCandidateSummariesByCommittee: getWashingtonPdcCandidateSummariesByCommittee,
   getSponsorSummaryByName: getWashingtonPdcSponsorSummaryByName,
   getSponsorOrganizationFunders: getWashingtonPdcSponsorOrganizationFunders,
 };
@@ -262,47 +268,47 @@ async function hydrateTrustedCommitteeTotals(input: {
   pdcClient: WashingtonPdcDataClient;
   pdcClientOptions?: WashingtonPdcClientOptions;
   trustedResolution: MatchedWashingtonCommitteeResolution;
-  candidateName: string;
-  officeScope: string;
-  officeName: string;
   electionYear: number;
-  legislativeDistrict?: string | null;
 }): Promise<MatchedWashingtonCommitteeResolution> {
   // Always hydrate: the trusted-committee input cannot carry the summary IE
-  // fields, and the headline outside totals read them. A search failure here
-  // propagates and fails the sync (the batch retries the row later) — the old
-  // swallow-and-continue path let the group-sum fallback overwrite PDC's own
-  // outside totals whenever the summary lookup blipped.
-  const resolved = await input.pdcClient.searchAndResolveCandidateCommittee(
+  // fields, and the headline outside totals read them. The lookup is by the
+  // link's own filer/committee IDs — no name or office matching — so it also
+  // resolves withdrawn candidates and renamed committees, where a name search
+  // would fall through and let the group-sum fallback overwrite PDC's own
+  // totals. A lookup failure propagates and fails the sync (the batch retries
+  // the row later).
+  const summaries = await input.pdcClient.getCandidateSummariesByCommittee(
     {
-      candidateName: input.candidateName,
-      officeScope: input.officeScope,
-      officeName: input.officeName,
+      filerId: input.trustedResolution.filerId,
+      committeeId: input.trustedResolution.committeeId,
       electionYear: input.electionYear,
-      legislativeDistrict: input.legislativeDistrict,
     },
     input.pdcClientOptions
   );
-  if (
-    resolved.status === "matched" &&
-    resolved.filerId.trim().toUpperCase() === input.trustedResolution.filerId.trim().toUpperCase() &&
-    resolved.committeeId.trim().toUpperCase() === input.trustedResolution.committeeId.trim().toUpperCase()
-  ) {
+  const summary =
+    summaries.find(
+      (row) =>
+        row.contributionsAmount !== undefined ||
+        row.expendituresAmount !== undefined ||
+        row.independentExpendituresForAmount !== undefined ||
+        row.independentExpendituresAgainstAmount !== undefined
+    ) ?? summaries[0];
+  if (summary) {
     return {
       ...input.trustedResolution,
-      ...(resolved.contributionsAmount !== undefined ? { contributionsAmount: resolved.contributionsAmount } : {}),
-      ...(resolved.expendituresAmount !== undefined ? { expendituresAmount: resolved.expendituresAmount } : {}),
-      ...(resolved.independentExpendituresForAmount !== undefined
-        ? { independentExpendituresForAmount: resolved.independentExpendituresForAmount }
+      ...(summary.contributionsAmount !== undefined ? { contributionsAmount: summary.contributionsAmount } : {}),
+      ...(summary.expendituresAmount !== undefined ? { expendituresAmount: summary.expendituresAmount } : {}),
+      ...(summary.independentExpendituresForAmount !== undefined
+        ? { independentExpendituresForAmount: summary.independentExpendituresForAmount }
         : {}),
-      ...(resolved.independentExpendituresAgainstAmount !== undefined
-        ? { independentExpendituresAgainstAmount: resolved.independentExpendituresAgainstAmount }
+      ...(summary.independentExpendituresAgainstAmount !== undefined
+        ? { independentExpendituresAgainstAmount: summary.independentExpendituresAgainstAmount }
         : {}),
     };
   }
 
-  // Resolution landed elsewhere or nowhere (withdrawn candidate, renamed
-  // committee): proceed with the trusted link and no summary totals — the
+  // No summary row for the linked committee-year at all (PDC reorganized the
+  // registration): proceed with the trusted link and no summary totals — the
   // headline then falls back to the hard-ID C6 group sums.
   return input.trustedResolution;
 }
@@ -664,11 +670,7 @@ export async function syncWashingtonCandidateFinance(
           pdcClient,
           pdcClientOptions: input.pdcClientOptions,
           trustedResolution: initialResolution,
-          candidateName,
-          officeScope,
-          officeName,
           electionYear,
-          legislativeDistrict: input.legislativeDistrict,
         })
       : initialResolution;
 

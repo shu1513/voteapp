@@ -445,6 +445,37 @@ export async function searchWashingtonPdcCandidateSummaries(
   return payloadRows.map(candidateSummaryFromRow).filter((row): row is WashingtonPdcCandidateSummary => row !== null);
 }
 
+// Exact summary-row lookup for an already-linked committee: no name/office
+// matching involved, so it works for withdrawn candidates and renamed
+// committees where the name search would miss.
+export function buildWashingtonPdcCandidateSummaryByCommitteeUrl(input: WashingtonPdcCommitteeInput): string {
+  const electionYear = normalizeElectionYear(input.electionYear);
+  const filerId = optionalIdentifier(input.filerId);
+  const committeeId = optionalIdentifier(input.committeeId);
+  if (!filerId || !committeeId) {
+    throw new WashingtonPdcClientError(
+      "invalid_request",
+      "Washington PDC filerId and committeeId are both required for a committee summary lookup"
+    );
+  }
+  return buildWashingtonPdcDatasetUrl(WASHINGTON_PDC_CAMPAIGN_FINANCE_SUMMARY_DATASET, {
+    $select:
+      "filer_id,committee_id,candidacy_id,filer_name,committee_category,political_committee_type,candidate_committee_status,active_candidate,has_reports,office,legislative_district,jurisdiction,jurisdiction_type,election_year,contributions_amount,expenditures_amount,independent_expenditures_for_amount,independent_expenditures_against_amount,url",
+    $where: `election_year = ${soqlString(String(electionYear))} AND filer_id = ${soqlString(filerId)} AND committee_id = ${soqlString(committeeId)}`,
+    $limit: normalizeLimit(input.limit, 5),
+  });
+}
+
+export async function getWashingtonPdcCandidateSummariesByCommittee(
+  input: WashingtonPdcCommitteeInput,
+  options: WashingtonPdcClientOptions = {}
+): Promise<WashingtonPdcCandidateSummary[]> {
+  const url = new URL(buildWashingtonPdcCandidateSummaryByCommitteeUrl(input));
+  const params = Object.fromEntries(url.searchParams.entries());
+  const payloadRows = await fetchWashingtonPdcRows(WASHINGTON_PDC_CAMPAIGN_FINANCE_SUMMARY_DATASET, params, options);
+  return payloadRows.map(candidateSummaryFromRow).filter((row): row is WashingtonPdcCandidateSummary => row !== null);
+}
+
 function committeeWhere(input: WashingtonPdcCommitteeInput): string {
   const electionYear = normalizeElectionYear(input.electionYear);
   const filerId = optionalIdentifier(input.filerId);
@@ -479,6 +510,13 @@ function aggregateFromRow(row: unknown): WashingtonPdcAggregate | null {
   };
 }
 
+// Grouped occupation rows fetched per committee before the client-side
+// whitespace merge. Must exceed any display limit: internal-whitespace
+// variants ("NOT  EMPLOYED") merge after the fetch, and slicing to the display
+// limit server-side would let a merged variant crowd out a real category
+// (verified live: Franz 2024 top-20 lost PHYSICIAN).
+export const WASHINGTON_PDC_OCCUPATION_GROUP_FETCH_LIMIT = 500;
+
 export function buildWashingtonPdcDirectOccupationAggregatesUrl(input: WashingtonPdcCommitteeInput): string {
   const limit = normalizeLimit(input.limit, 20);
   // Occupations are free-text: normalize case/whitespace server-side so
@@ -491,7 +529,7 @@ export function buildWashingtonPdcDirectOccupationAggregatesUrl(input: Washingto
     $where: `${committeeWhere(input)} AND contributor_category = 'Individual' AND contributor_occupation IS NOT NULL AND trim(contributor_occupation) != ''`,
     $group: "category_name",
     $order: "total_amount DESC, category_name ASC",
-    $limit: limit,
+    $limit: Math.max(WASHINGTON_PDC_OCCUPATION_GROUP_FETCH_LIMIT, limit),
   });
 }
 
@@ -523,9 +561,9 @@ export async function getWashingtonPdcDirectOccupationAggregates(
     existing.amount = roundCurrency(existing.amount + row.amount);
     existing.count += row.count;
   }
-  return [...merged.values()].sort(
-    (left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName)
-  );
+  return [...merged.values()]
+    .sort((left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName))
+    .slice(0, normalizeLimit(input.limit, 20));
 }
 
 export function buildWashingtonPdcContributionSizeRowsUrl(input: WashingtonPdcCommitteeInput): string {

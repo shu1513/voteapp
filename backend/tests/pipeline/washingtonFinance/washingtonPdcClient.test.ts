@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   WashingtonPdcClientError,
+  buildWashingtonPdcCandidateSummaryByCommitteeUrl,
   buildWashingtonPdcCandidateSummarySearchUrl,
   buildWashingtonPdcContributionSizeAggregatesUrl,
   buildWashingtonPdcDatasetUrl,
@@ -132,6 +133,10 @@ describe("washingtonPdcClient", () => {
     expect(url.searchParams.get("$group")).toBe("category_name");
     expect(url.searchParams.get("$where")).toContain("contributor_occupation IS NOT NULL");
     expect(url.searchParams.get("$where")).toContain("trim(contributor_occupation) != ''");
+    // Over-fetch grouped rows: the whitespace merge happens client-side, so
+    // slicing to the display limit server-side would let a merged variant
+    // crowd out a real category (Franz 2024 top-20 lost PHYSICIAN).
+    expect(url.searchParams.get("$limit")).toBe("500");
 
     const fetchImpl = vi.fn().mockResolvedValue(
       jsonResponse([
@@ -153,6 +158,38 @@ describe("washingtonPdcClient", () => {
       { categoryName: "ATTORNEY - LAWYER", amount: 719187.76, count: 25 },
       { categoryName: "NOT EMPLOYED", amount: 500, count: 5 },
     ]);
+
+    // Display limit applies AFTER the merge: with limit 2, the merged
+    // whitespace variant must not crowd out the next real category.
+    const limitedFetch = vi.fn().mockResolvedValue(
+      jsonResponse([
+        { category_name: "NOT EMPLOYED", total_amount: "300", total_count: "3" },
+        { category_name: "NOT  EMPLOYED", total_amount: "200", total_count: "2" },
+        { category_name: "PHYSICIAN", total_amount: "150", total_count: "1" },
+      ])
+    ) as unknown as typeof fetch;
+    await expect(
+      getWashingtonPdcDirectOccupationAggregates(
+        { filerId: "FERGR *115", electionYear: 2024, limit: 2 },
+        { fetchImpl: limitedFetch, timeoutMs: 1000 }
+      )
+    ).resolves.toEqual([
+      { categoryName: "NOT EMPLOYED", amount: 500, count: 5 },
+      { categoryName: "PHYSICIAN", amount: 150, count: 1 },
+    ]);
+  });
+
+  it("builds hard-ID committee summary lookups", () => {
+    const url = new URL(
+      buildWashingtonPdcCandidateSummaryByCommitteeUrl({ filerId: "FERGR *115", committeeId: "32311", electionYear: 2024 })
+    );
+    expect(url.origin + url.pathname).toBe("https://data.wa.gov/resource/3h9x-7bvm.json");
+    expect(url.searchParams.get("$where")).toBe(
+      "election_year = '2024' AND filer_id = 'FERGR *115' AND committee_id = '32311'"
+    );
+    expect(() =>
+      buildWashingtonPdcCandidateSummaryByCommitteeUrl({ filerId: "FERGR *115", electionYear: 2024 })
+    ).toThrow("filerId and committeeId are both required");
   });
 
   it("builds and parses contribution size aggregates", async () => {
