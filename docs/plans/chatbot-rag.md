@@ -86,7 +86,12 @@ CREATE TABLE chatbot.chunks (
   embedding halfvec(384),
   UNIQUE (generation_id, source_type, chunk_key)
 );
-CREATE INDEX ON chatbot.chunks USING hnsw (embedding halfvec_cosine_ops);
+-- NO HNSW index in v1 — deliberate. The shared index would be mutated by every
+-- generation build (inserts) and retirement (deletes + vacuum), exactly the
+-- paths the 0.8.2–0.8.4 corruption fixes cover, and Render is on 0.8.1. Exact
+-- scan is fine at tens of thousands of chunks (a few ms with halfvec). Add
+-- `CREATE INDEX ... USING hnsw (embedding halfvec_cosine_ops)` only when the
+-- corpus outgrows exact scan AND Render ships pgvector >= 0.8.4.
 CREATE INDEX ON chatbot.chunks USING gin (content_tsv);
 CREATE INDEX ON chatbot.chunks USING gin (title gin_trgm_ops);
 CREATE INDEX ON chatbot.chunks (generation_id);
@@ -124,19 +129,20 @@ DO $$
 BEGIN
   IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'voteapp_api') THEN
     GRANT USAGE ON SCHEMA chatbot TO voteapp_api;
-    -- Read the corpus; write only the two tables the request path writes.
-    GRANT SELECT ON ALL TABLES IN SCHEMA chatbot TO voteapp_api;
+    -- Least privilege, per table. Deliberately NOT "SELECT ON ALL TABLES" and
+    -- no ALTER DEFAULT PRIVILEGES: the API must not read the question log
+    -- (privacy: insert-only from the request path) or question_stats, and any
+    -- future table gets an explicit grant in its own migration.
+    GRANT SELECT ON chatbot.index_generations, chatbot.chunks TO voteapp_api;
     GRANT INSERT ON chatbot.questions TO voteapp_api;
-    GRANT INSERT, UPDATE ON chatbot.daily_budget TO voteapp_api;
-    GRANT USAGE ON ALL SEQUENCES IN SCHEMA chatbot TO voteapp_api;
+    GRANT SELECT, INSERT, UPDATE ON chatbot.daily_budget TO voteapp_api;
+    GRANT USAGE ON ALL SEQUENCES IN SCHEMA chatbot TO voteapp_api;  -- bigserial inserts
     -- Indexer + reporting scripts run as the owner role, not voteapp_api.
-    ALTER DEFAULT PRIVILEGES IN SCHEMA chatbot GRANT SELECT ON TABLES TO voteapp_api;
-    ALTER DEFAULT PRIVILEGES IN SCHEMA chatbot GRANT USAGE ON SEQUENCES TO voteapp_api;
   END IF;
 END $$;
 ```
 
-Notes: at tens of thousands of chunks, exact (non-indexed) vector scan is also fine — if HNSW misbehaves, dropping the index is an acceptable fallback. `question_norm` is redacted before insert (strip emails, phone numbers, street-address patterns, long digit runs).
+Notes: `question_norm` is redacted before insert (strip emails, phone numbers, street-address patterns, long digit runs).
 
 ### 2. Embeddings service
 
@@ -153,10 +159,10 @@ Retrieval and cache keys always carry the active generation id, so a flip instan
 
 ### 4. Retrieval (`retrieval.ts`)
 
-Inside one transaction: `SET LOCAL hnsw.iterative_scan = relaxed_order;` then hybrid query over the **active generation**:
+Hybrid query over the **active generation** (v1 vector branch is an exact scan — no HNSW, so no `hnsw.iterative_scan` setting; add both together if the index is ever added):
 - Entity resolution first: trgm match of the question against candidate/office names via existing canonical readers; resolves scope (election/district) and boosts. **Same-name candidates → return a clarification question, never silently pick.**
 - Branch A: `content_tsv @@ websearch_to_tsquery(...)`, `ts_rank_cd` (title weighted A, body B).
-- Branch B: cosine over `embedding` (top 20), scope-filtered when known; relaxed-order results re-sorted through a materialized CTE.
+- Branch B: cosine over `embedding` (top 20), scope-filtered when known.
 - Merge with RRF for **ranking**; keep raw lexical + cosine + entity scores separately, because the **answerability gate thresholds on raw scores, not RRF rank** (RRF rank is relative, not absolute relevance).
 - Source-aware filters: exclude retired records, withdrawn candidacies, merged candidates.
 - Return top 3–5 chunks.
@@ -177,7 +183,7 @@ Deterministic templates + deep links, zero AI: ballot lookup, who's running for 
 
 - **Access tiers:** anonymous → retrieval-only (intents + search results). **LLM answers require a signed-in, verified account** at launch. Per-IP burst limiting reuses the existing limiter pattern.
 - **Per-user daily cap:** Redis `INCR` with TTL, key from an HMAC of the user id used **only** here (transient, never logged). Redis is the free ephemeral instance — losing these counters on restart is harmless.
-- **Global budget (durable, atomic):** single-row-per-day in `chatbot.daily_budget`: `UPDATE ... SET tokens_reserved = tokens_reserved + $est WHERE day = $today AND tokens_reserved + $est <= $cap RETURNING ...` — reserve an estimated max **before** the call, reconcile with actual usage after. Concurrent requests cannot overshoot, and the counter survives restarts (the free Key Value store does not). Budget exhausted → retrieval-only for the rest of the day. Backstop: OpenAI project spend limit.
+- **Global budget (durable, atomic):** single-row-per-day in `chatbot.daily_budget`. Two statements in one transaction — first `INSERT INTO chatbot.daily_budget (day) VALUES ($today) ON CONFLICT (day) DO NOTHING;` (a plain UPDATE alone would match no row on a fresh day and wrongly report "budget exhausted"), then `UPDATE ... SET tokens_reserved = tokens_reserved + $est WHERE day = $today AND tokens_reserved + $est <= $cap RETURNING ...` — reserve an estimated max **before** the call, reconcile with actual usage after. Concurrent requests cannot overshoot, and the counter survives restarts (the free Key Value store does not). Budget exhausted → retrieval-only for the rest of the day. Backstop: OpenAI project spend limit.
 - **Exact answer cache:** Redis, TTL 24h, key = sha256(question_norm + scope_key + **generation_id + model + prompt_version**). Scope in the key means Seattle and Boston never share an entry; generation in the key means reindex = instant invalidation. Time-sensitive intents never reach this cache (they're deterministic). Concurrent-miss coalescing: deferred to Phase 4 (nice-to-have, not v1).
 
 ### 8. API + frontend
@@ -187,7 +193,7 @@ Deterministic templates + deep links, zero AI: ballot lookup, who's running for 
 ### 9. Question log + learning loop
 
 - Fire-and-forget insert (redacted, anonymous) on every ask.
-- `npm run chatbot:report`: rolls up into `chatbot.question_stats` (suppress aggregates with count < 5 so rare unique questions can't be reconstructed), lists top questions + refusals + cache hit rate + spend; deletes `question_norm` older than 90 days. Output drives intent promotion and content gaps.
+- `npm run chatbot:report`: rolls up into `chatbot.question_stats` with **write-time suppression** — a (week, question_norm) aggregate is only ever written when its weekly count is ≥ 5, so rare/unique question text never persists durably and can't be reconstructed after the 90-day purge; what survives is common, redacted, inherently non-identifying question text (that's the point: it's the candidate list for intent promotion). Lists top questions + refusals + cache hit rate + spend; deletes `question_norm` older than 90 days. Output drives intent promotion and content gaps.
 - Privacy alignment (existing policy: civic activity is private; account deletion removes account data): the questions table holds **no user identifier**, so nothing links questions to accounts and account deletion is unaffected. UI note near the input: don't enter personal information.
 
 ## Behavior policy (prompt + intents + tests enforce)
@@ -216,5 +222,5 @@ Self-hosted LLM (GPU $117+/mo; loses to APIs below ~1M queries/mo) · CPU infere
 - **Cost runaway:** four layers — user cap, durable atomic budget, retrieval-only fallback, provider spend limit.
 - **Prompt injection via indexed content:** model output is data (structured schema, escaped rendering, no model-authored URLs); adversarial cases in the golden set.
 - **Embeddings down:** keyword-only degradation.
-- **pgvector version:** verified 2026-08-11 — Render offers **0.8.1** (PG 18.4), local Postgres.app has 0.8.2; upstream is 0.8.6. Both below the ideal ≥0.8.4 (0.8.2–0.8.4 fixed HNSW build/vacuum corruption). Accepted because the snapshot-generation design neutralizes the bug class: each generation's chunks are write-once (no per-row updates/deletes while an index is live), retirement deletes whole generations, and any suspected corruption is fixed by building a fresh generation. Re-check `SELECT default_version FROM pg_available_extensions WHERE name='vector'` on Render occasionally; run `ALTER EXTENSION vector UPDATE` when they ship ≥0.8.4.
+- **pgvector version:** verified 2026-08-11 — Render offers **0.8.1** (PG 18.4), local Postgres.app has 0.8.2; upstream is 0.8.6. Both below the ideal ≥0.8.4 (0.8.2–0.8.4 fixed HNSW build/vacuum corruption). Resolved by **not creating an HNSW index in v1** (external review correctly noted that a shared index across generations is still mutated by generation builds and retirement deletes + vacuum — "write-once rows" does not avoid those paths). Exact scan is accurate by definition and fast at our corpus size. Re-check `SELECT default_version FROM pg_available_extensions WHERE name='vector'` on Render occasionally; adopt HNSW (plus `hnsw.iterative_scan = relaxed_order`) only when corpus growth demands it and Render ships ≥0.8.4.
 - **Privacy:** anonymous logs, redaction, 90-day purge, low-count suppression, policy update before LLM launch.

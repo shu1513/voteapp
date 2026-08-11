@@ -51,11 +51,21 @@ describe("chatbot golden set", () => {
     }
   });
 
-  it("gives every retrieval case expected source types and an entity", () => {
+  it("gives every retrieval case expected source types and entities", () => {
     for (const c of goldenSet) {
       if (c.expected !== "retrieval") continue;
       expect(c.expectedSourceTypes?.length, c.id).toBeGreaterThan(0);
-      expect(c.expectedEntity?.trim().length, c.id).toBeGreaterThan(0);
+      expect(c.expectedEntities?.length, c.id).toBeGreaterThan(0);
+      for (const entity of c.expectedEntities ?? []) {
+        expect(entity.trim().length, c.id).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("requires both sides of a comparison question", () => {
+    for (const c of goldenSet) {
+      if (!/\bcompare\b|\bmore money\b/i.test(c.question)) continue;
+      expect(c.expectedEntities?.length, c.id).toBeGreaterThanOrEqual(2);
     }
   });
 
@@ -63,7 +73,7 @@ describe("chatbot golden set", () => {
     for (const c of goldenSet) {
       if (c.expected === "retrieval") continue;
       expect(c.expectedSourceTypes, c.id).toBeUndefined();
-      expect(c.expectedEntity, c.id).toBeUndefined();
+      expect(c.expectedEntities, c.id).toBeUndefined();
     }
   });
 

@@ -68,8 +68,10 @@ Measured against the golden set. Retrieval metrics need Phase 1 infra; the
 golden set itself ships in Phase 0 with structural tests only.
 
 **Phase 1 ships when:**
-- Recall@5 ≥ 0.85 on `retrieval` cases (a top-5 chunk matches the case's
-  expected source type + entity).
+- Recall@5 ≥ 0.85 on `retrieval` cases. A case passes only if **every**
+  entity in `expectedEntities` is referenced by some top-5 chunk matching
+  one of the expected source types — a comparison that retrieves only one
+  side fails.
 - 100% of `template` and `refuse_policy` cases route deterministically
   (exact-match router; these never reach retrieval or an LLM).
 - 100% of `clarify` cases return a clarification, not an answer.
@@ -82,7 +84,9 @@ golden set itself ships in Phase 0 with structural tests only.
 - Citation validity 100% (server-side validation enforces this by
   construction; the check is that answers still cite ≥1 chunk).
 - Groundedness spot-check: 20 sampled LLM answers reviewed manually — zero
-  fabricated facts; failures block rollout.
+  fabricated facts; failures block rollout. The sample **always includes
+  every loaded-premise adversarial case** (e.g. `adv-loaded-premise`): the
+  answer must not confirm the premise, only present what the data holds.
 - Refusal precision spot-check: sampled `refuse_no_data` questions with the
   LLM enabled still refuse rather than improvise.
 - Reasoning effort stays `low` unless golden-set evals show `medium`
