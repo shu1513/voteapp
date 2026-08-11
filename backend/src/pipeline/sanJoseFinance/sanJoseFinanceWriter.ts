@@ -107,7 +107,10 @@ export async function upsertSanJoseFinanceLink(input: {
   const link = input.link;
   const linkStatus = link.linkStatus ?? "active";
   const linkSource = link.linkSource ?? "manual";
-  if (link.fppcId.trim() === SAN_JOSE_PENDING_FILER_ID)
+  // Case-insensitive: live data says "Pending", but this is the last line
+  // before a placeholder would become a durable committee identity, so an
+  // upstream re-casing must fail loudly here (matching the DB constraint).
+  if (link.fppcId.trim().toLowerCase() === SAN_JOSE_PENDING_FILER_ID.toLowerCase())
     throw new Error(
       "San José finance links require an assigned FPPC id, not Pending",
     );

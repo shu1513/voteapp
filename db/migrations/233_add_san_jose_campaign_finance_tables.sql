@@ -22,8 +22,10 @@ CREATE TABLE public.sjc_candidate_finance_links (
   candidate_name_normalized text NOT NULL CHECK (btrim(candidate_name_normalized) <> ''),
   -- Filer_ID is free text upstream and may be the literal "Pending" (an
   -- FPPC id not yet assigned). The resolver never links Pending committees;
-  -- the constraint makes that unrepresentable here too.
-  fppc_id text NOT NULL CHECK (btrim(fppc_id) <> '' AND fppc_id <> 'Pending'),
+  -- the constraint makes that unrepresentable here too — case-insensitively,
+  -- so an upstream re-casing ("PENDING") surfaces as a loud write failure
+  -- instead of a placeholder stored as a durable committee identity.
+  fppc_id text NOT NULL CHECK (btrim(fppc_id) <> '' AND lower(btrim(fppc_id)) <> 'pending'),
   committee_name text NOT NULL CHECK (btrim(committee_name) <> ''),
   link_status text NOT NULL DEFAULT 'active' CHECK (link_status IN ('active', 'needs_review', 'inactive')),
   link_source text NOT NULL DEFAULT 'manual' CHECK (link_source IN ('manual', 'efile_export')),

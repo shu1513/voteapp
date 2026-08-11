@@ -146,13 +146,17 @@ describe("San José finance writer", () => {
     ).rejects.toThrow(/total spent must be integer cents/);
   });
 
-  it('never links the literal "Pending" filer id', async () => {
-    await expect(
-      upsertSanJoseFinanceLink({
-        db: { query: queryMock() } as never,
-        link: { ...link, fppcId: "Pending" },
-      }),
-    ).rejects.toThrow(/assigned FPPC id, not Pending/);
+  it('never links the "Pending" placeholder filer id, in any casing', async () => {
+    // Live data says "Pending", but an upstream re-casing must still fail
+    // loudly here rather than store a placeholder as a durable identity.
+    for (const fppcId of ["Pending", "PENDING", "pending", " Pending "]) {
+      await expect(
+        upsertSanJoseFinanceLink({
+          db: { query: queryMock() } as never,
+          link: { ...link, fppcId },
+        }),
+      ).rejects.toThrow(/assigned FPPC id, not Pending/);
+    }
   });
 
   it("reuses a matching protected manual link and advances last_verified_at", async () => {
