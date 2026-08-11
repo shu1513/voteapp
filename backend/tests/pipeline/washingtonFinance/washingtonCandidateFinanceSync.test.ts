@@ -68,11 +68,13 @@ function createPdcClient(input: {
   occupations?: WashingtonPdcAggregate[];
   contributionSizes?: WashingtonPdcAggregate[];
   outsideGroups?: WashingtonPdcIndependentSpendingGroup[];
+  committeeSummaries?: WashingtonPdcCandidateSummary[];
   sponsorSummaries?: WashingtonPdcCandidateSummary[];
   sponsorFunders?: WashingtonPdcAggregate[];
 } = {}) {
   return {
     searchAndResolveCandidateCommittee: vi.fn(async () => input.resolution ?? matchedResolution()),
+    getCandidateSummariesByCommittee: vi.fn(async () => input.committeeSummaries ?? []),
     getDirectOccupationAggregates: vi.fn(async () =>
       input.occupations ?? [
         {
@@ -162,8 +164,12 @@ describe("washingtonCandidateFinanceSync", () => {
       totalReceipts: 11962407.92,
       directContributionTotal: 11962407.92,
       totalDisbursements: 8000000,
+      // Resolution carries no summary IE fields here, so the headline falls
+      // back to the fetched group sums.
       outsideSupportTotal: 2457.26,
       outsideOpposeTotal: 0,
+      outsideSupportGroupTotal: 2457.26,
+      outsideOpposeGroupTotal: 0,
       directOccupationRowCount: 2,
       directContributionSizeRowCount: 1,
       outsideGroupCount: 1,
@@ -181,7 +187,13 @@ describe("washingtonCandidateFinanceSync", () => {
       undefined
     );
     expect(pdcClient.getIndependentExpenditureGroups).toHaveBeenCalledWith(
-      expect.objectContaining({ candidateName: "Bob Ferguson", office: "GOVERNOR", electionYear: 2024 }),
+      expect.objectContaining({
+        candidateName: "Bob Ferguson",
+        office: "GOVERNOR",
+        electionYear: 2024,
+        candidateFilerId: "FERGR *115",
+        candidateCommitteeId: "32311",
+      }),
       undefined
     );
 
@@ -277,6 +289,114 @@ describe("washingtonCandidateFinanceSync", () => {
       "medium",
       "rule",
     ]);
+  });
+
+  it("takes headline outside totals from the summary IE fields, not the group sums", async () => {
+    const db = createMockDb();
+    const pdcClient = createPdcClient({
+      resolution: matchedResolution({
+        // PDC's own Wilson 2025 totals; the single fetched group below is a
+        // deliberately incomplete explanation.
+        independentExpendituresForAmount: 273026.25,
+        independentExpendituresAgainstAmount: 1232834.74,
+      }),
+    });
+
+    const result = await syncWashingtonCandidateFinance({
+      db,
+      ...baseInput(),
+      pdcClient,
+    });
+
+    expect(result).toMatchObject({
+      outsideSupportTotal: 273026.25,
+      outsideOpposeTotal: 1232834.74,
+      outsideSupportGroupTotal: 2457.26,
+      outsideOpposeGroupTotal: 0,
+    });
+
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.wa_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual([
+      LINK_ID,
+      2024,
+      11962407.92,
+      11962407.92,
+      8000000,
+      null,
+      273026.25,
+      1232834.74,
+      PDC_SOURCE_URL,
+      "2024-02-03T04:05:06.000Z",
+    ]);
+  });
+
+  it("hydrates summary IE totals for trusted links via the hard-ID committee lookup", async () => {
+    const db = createMockDb();
+    const pdcClient = createPdcClient({
+      committeeSummaries: [
+        {
+          filerId: "FERGR *115",
+          committeeId: "32311",
+          filerName: "Robert W. Ferguson (Bob Ferguson)",
+          activeCandidate: true,
+          hasReports: true,
+          electionYear: 2024,
+          contributionsAmount: 11962407.92,
+          expendituresAmount: 8000000,
+          independentExpendituresForAmount: 273026.25,
+          independentExpendituresAgainstAmount: 1232834.74,
+          sourceUrl: PDC_SOURCE_URL,
+        },
+      ],
+    });
+
+    const result = await syncWashingtonCandidateFinance({
+      db,
+      ...baseInput(),
+      pdcClient,
+      trustedCommittee: {
+        filerId: "FERGR *115",
+        committeeId: "32311",
+        committeeName: "Robert W. Ferguson (Bob Ferguson)",
+        candidacyId: "689556",
+        sourceUrl: PDC_SOURCE_URL,
+      },
+    });
+
+    // Hydration goes straight to the linked committee's summary row — the
+    // name-based resolver search is never involved for trusted links.
+    expect(pdcClient.getCandidateSummariesByCommittee).toHaveBeenCalledWith(
+      { filerId: "FERGR *115", committeeId: "32311", electionYear: 2024 },
+      undefined
+    );
+    expect(pdcClient.searchAndResolveCandidateCommittee).not.toHaveBeenCalled();
+    expect(result).toMatchObject({
+      totalReceipts: 11962407.92,
+      outsideSupportTotal: 273026.25,
+      outsideOpposeTotal: 1232834.74,
+    });
+  });
+
+  it("fails the trusted-link sync when summary hydration fails instead of writing fallback totals", async () => {
+    const db = createMockDb();
+    const pdcClient = createPdcClient();
+    pdcClient.getCandidateSummariesByCommittee.mockRejectedValueOnce(new Error("PDC unavailable"));
+
+    await expect(
+      syncWashingtonCandidateFinance({
+        db,
+        ...baseInput(),
+        pdcClient,
+        trustedCommittee: {
+          filerId: "FERGR *115",
+          committeeId: "32311",
+          committeeName: "Robert W. Ferguson (Bob Ferguson)",
+        },
+      })
+    ).rejects.toThrow("PDC unavailable");
+    expect(db.query).not.toHaveBeenCalled();
   });
 
   it("aggregates but does not write in dry-run mode", async () => {
