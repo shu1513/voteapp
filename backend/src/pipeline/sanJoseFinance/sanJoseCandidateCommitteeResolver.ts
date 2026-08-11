@@ -53,7 +53,7 @@ export function collectSanJoseExportCommittees(
   for (const row of rows) {
     const key =
       row.filerId === SAN_JOSE_PENDING_FILER_ID
-        ? `${SAN_JOSE_PENDING_FILER_ID}::${normalizeTextKey(row.filerName)}`
+        ? `${SAN_JOSE_PENDING_FILER_ID}::${normalizeSanJoseTextKey(row.filerName)}`
         : row.filerId;
     const group = byKey.get(key) ?? { filerId: row.filerId, names: new Set(), types: new Set() };
     group.names.add(row.filerName);
@@ -89,7 +89,7 @@ export type SanJoseCandidateCommitteeResolution = {
   | { status: "ambiguous"; reason: string }
 );
 
-function normalizeTextKey(value: string | null | undefined): string {
+export function normalizeSanJoseTextKey(value: string | null | undefined): string {
   return (value ?? "")
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -101,7 +101,7 @@ function normalizeTextKey(value: string | null | undefined): string {
 }
 
 function normalizeSanJosePersonName(value: string): string {
-  return normalizeTextKey(value)
+  return normalizeSanJoseTextKey(value)
     .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -120,6 +120,25 @@ function committeeNameMatchesCandidate(committeeName: string, candidateDisplayNa
   return personNamesMatchWithMiddleEvidence({
     candidateName: candidateDisplayName.replace(/"([^"]+)"/g, " ($1) "),
     rowNames: committeeNameMiddleEvidenceRowNames(committeeName),
+    normalizePersonName: normalizeSanJosePersonName,
+    firstNamesEquivalent,
+  });
+}
+
+/**
+ * Plain person-name comparison against a roster display name, under the same
+ * San José normalization, nickname expansion, middle-evidence, and suffix
+ * gates the committee resolver uses. The outside-spending aggregator matches
+ * S496/Schedule-D target names ("Peter Ortiz", "BIEN DOAN", "Ortiz, Peter")
+ * with this — token-based, never substring.
+ */
+export function sanJosePersonNameMatchesCandidate(
+  rowPersonName: string,
+  candidateDisplayName: string,
+): boolean {
+  return personNamesMatchWithMiddleEvidence({
+    candidateName: candidateDisplayName.replace(/"([^"]+)"/g, " ($1) "),
+    rowNames: [rowPersonName],
     normalizePersonName: normalizeSanJosePersonName,
     firstNamesEquivalent,
   });
@@ -154,7 +173,7 @@ const FOREIGN_OFFICE_WORD =
   /\b(?:SENATE|SENATOR|ASSEMBLY[A-Z]*|SUPERVISORS?|CONGRESS[A-Z]*|GOVERNOR|JUDGE|SHERIFF|ASSESSOR|TREASURER|SCHOOL|COLLEGE|TRUSTEE|BART)\b/;
 
 function committeeNameEvidence(committeeName: string): CommitteeNameEvidence {
-  const normalized = normalizeTextKey(committeeName);
+  const normalized = normalizeSanJoseTextKey(committeeName);
   const districts = new Set<number>();
   for (const match of normalized.matchAll(/\bDISTRICT (?:NO )?(\d{1,2})\b/g)) {
     districts.add(Number(match[1]));
