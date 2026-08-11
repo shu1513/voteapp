@@ -109,3 +109,9 @@ API falls back to `DATABASE_URL` (owner) on the next restart.
 When a migration adds a table the **API** must write (not just read), the
 migration must include the `GRANT INSERT, UPDATE, DELETE ... TO voteapp_api`
 itself. Read-only tables need nothing — the default privileges cover SELECT.
+
+Both the grants and the default privileges above are scoped to schema
+`public`. A migration that creates a **new schema** must grant everything the
+API needs there explicitly — `GRANT USAGE ON SCHEMA <name>` first, or the API
+cannot even read it — and set its own `ALTER DEFAULT PRIVILEGES IN SCHEMA
+<name>` for tables added later.
