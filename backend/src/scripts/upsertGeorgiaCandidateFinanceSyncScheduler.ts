@@ -13,6 +13,7 @@ const KNOWN_VALUE_FLAGS = new Set([
   "--stale-after-days",
   "--lookback-days",
   "--lookahead-days",
+  "--max-passes",
 ]);
 
 // Strict like syncDueGeorgiaCandidateFinance: an unknown flag (e.g. the
@@ -86,6 +87,16 @@ function parsePositiveIntegerFlag(args: readonly string[], name: string): number
   return Number(raw);
 }
 
+// Stability needs two consecutive equal id-set passes, so 1 can never
+// converge — reject it before any work starts.
+function parseMaxPassesFlag(args: readonly string[]): number | undefined {
+  const value = parsePositiveIntegerFlag(args, "--max-passes");
+  if (value !== undefined && value < 2) {
+    throw new Error(`Invalid --max-passes value: ${value} (stability needs at least 2)`);
+  }
+  return value;
+}
+
 export function parseUpsertGeorgiaCandidateFinanceSyncSchedulerArgs(
   args: readonly string[]
 ): GeorgiaCandidateFinanceSyncJobData {
@@ -97,6 +108,7 @@ export function parseUpsertGeorgiaCandidateFinanceSyncSchedulerArgs(
     staleAfterDays: parsePositiveIntegerFlag(args, "--stale-after-days"),
     electionLookbackDays: parsePositiveIntegerFlag(args, "--lookback-days"),
     electionLookaheadDays: parsePositiveIntegerFlag(args, "--lookahead-days"),
+    maxPasses: parseMaxPassesFlag(args),
   };
 }
 

@@ -83,6 +83,10 @@ describe("georgiaCandidateFinanceSyncScheduler", () => {
     await expect(
       runGeorgiaCandidateFinanceSyncJob({ triggeredBy: "manual", maxCandidates: 2 ** 53 })
     ).rejects.toThrow("Invalid Georgia finance sync scheduler maxCandidates");
+    // Stability needs two consecutive equal passes — 1 can never converge.
+    await expect(
+      runGeorgiaCandidateFinanceSyncJob({ triggeredBy: "manual", maxPasses: 1 })
+    ).rejects.toThrow("stability needs at least 2");
     expect(Pool).not.toHaveBeenCalled();
   });
 
@@ -194,6 +198,7 @@ describe("georgiaCandidateFinanceSyncScheduler", () => {
 
     await upsertRecurringGeorgiaCandidateFinanceSyncJobs({
       maxCandidates: 5,
+      maxPasses: 7,
     });
 
     expect(queueInstance.upsertJobScheduler).toHaveBeenCalledWith(
@@ -206,6 +211,7 @@ describe("georgiaCandidateFinanceSyncScheduler", () => {
         name: "georgia_candidate_finance_sync_due",
         data: expect.objectContaining({
           maxCandidates: 5,
+          maxPasses: 7,
           triggeredBy: "daily",
         }),
       })

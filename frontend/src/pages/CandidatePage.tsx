@@ -171,6 +171,7 @@ function OngoingElectionFinance({ election, summary }: { election: CandidateElec
       <h2 className="sr-only">{`Campaign Finance Information — ${election.official_ballot_title}`}</h2>
       <details>
         <summary className="cursor-pointer select-none">
+          <span className="text-lg font-semibold text-green-600" aria-hidden="true">$ </span>
           <span className="text-lg font-semibold">Campaign Finance Information</span>{" "}
           <span className="text-sm text-ink-soft">
             · {election.official_ballot_title} · {formatElectionDate(election.election_date)}

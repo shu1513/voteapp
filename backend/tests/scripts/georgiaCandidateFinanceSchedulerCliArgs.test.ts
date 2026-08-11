@@ -22,6 +22,7 @@ describe.each(PARSERS)("Georgia finance scheduler CLI args (%s)", (_label, parse
       "--lookback-days=14",
       "--lookahead-days",
       "365",
+      "--max-passes=7",
     ]);
     expect(options).toMatchObject({
       dryRun: true,
@@ -30,6 +31,7 @@ describe.each(PARSERS)("Georgia finance scheduler CLI args (%s)", (_label, parse
       staleAfterDays: 3,
       electionLookbackDays: 14,
       electionLookaheadDays: 365,
+      maxPasses: 7,
     });
   });
 
@@ -46,6 +48,13 @@ describe.each(PARSERS)("Georgia finance scheduler CLI args (%s)", (_label, parse
 
   it("rejects a repeated value flag", () => {
     expect(() => parse(["--max-candidates=5", "--max-candidates=9"])).toThrow(/at most once/);
+  });
+
+  it("rejects --max-passes below the stability minimum of 2", () => {
+    // Stability = two consecutive equal id-set passes; 1 can never converge
+    // and would fail every candidate after a full pull.
+    expect(() => parse(["--max-passes", "1"])).toThrow(/stability needs at least 2/);
+    expect(() => parse(["--max-passes=2"])).not.toThrow();
   });
 
   it("rejects a non-positive-integer value", () => {

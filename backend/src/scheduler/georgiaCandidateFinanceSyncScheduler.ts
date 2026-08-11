@@ -23,6 +23,9 @@ export type GeorgiaCandidateFinanceSyncJobData = {
   staleAfterDays?: number;
   electionLookbackDays?: number;
   electionLookaheadDays?: number;
+  // Stability passes for the windowed transaction pulls (client minimum 2 —
+  // stability means two consecutive equal id-sets).
+  maxPasses?: number;
   triggeredBy?: "daily" | "manual" | "unknown";
   requestedAt?: string;
 };
@@ -105,6 +108,10 @@ function assertValidJobOptions(data: GeorgiaCandidateFinanceSyncJobData): void {
   assertPositiveInteger(data.staleAfterDays, "staleAfterDays");
   assertPositiveInteger(data.electionLookbackDays, "electionLookbackDays");
   assertPositiveInteger(data.electionLookaheadDays, "electionLookaheadDays");
+  assertPositiveInteger(data.maxPasses, "maxPasses");
+  if (data.maxPasses !== undefined && data.maxPasses < 2) {
+    throw new Error(`Invalid Georgia finance sync scheduler maxPasses: ${data.maxPasses} (stability needs at least 2)`);
+  }
 }
 
 export function createGeorgiaCandidateFinanceSyncSchedulerQueue(): Queue<GeorgiaCandidateFinanceSyncJobData> {
@@ -147,6 +154,7 @@ export async function upsertRecurringGeorgiaCandidateFinanceSyncJobs(
           staleAfterDays: jobData.staleAfterDays,
           electionLookbackDays: jobData.electionLookbackDays,
           electionLookaheadDays: jobData.electionLookaheadDays,
+          maxPasses: jobData.maxPasses,
           triggeredBy: "daily",
         },
         opts: defaultJobOptions(),
@@ -178,6 +186,7 @@ export async function enqueueManualGeorgiaCandidateFinanceSyncJob(
         staleAfterDays: jobData.staleAfterDays,
         electionLookbackDays: jobData.electionLookbackDays,
         electionLookaheadDays: jobData.electionLookaheadDays,
+        maxPasses: jobData.maxPasses,
         triggeredBy: "manual",
         requestedAt: new Date().toISOString(),
       },
@@ -234,6 +243,7 @@ export async function runGeorgiaCandidateFinanceSyncJob(
       staleAfterDays: data.staleAfterDays,
       electionLookbackDays: data.electionLookbackDays,
       electionLookaheadDays: data.electionLookaheadDays,
+      maxPasses: data.maxPasses,
     });
 
     return {
