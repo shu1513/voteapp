@@ -12,6 +12,17 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 
 const GENERIC_WASHINGTON_PDC_SOURCE_URL = "https://www.pdc.wa.gov/political-disclosure-reporting-data/browse-search-data";
 
+// Washington requires occupation/employer disclosure only for donors whose
+// contributions exceed $250 in aggregate per campaign, and batched small
+// contributions (including Seattle democracy-voucher redemptions) carry no
+// donor detail at all — so the occupation breakdowns legitimately explain
+// less than the official totals (Seattle 2025 live probe: 63% of itemized
+// individual dollars carried an occupation).
+const WASHINGTON_DIRECT_COVERAGE_NOTE =
+  "Occupation breakdowns reflect donors whose contributions exceed $250 in aggregate, the threshold above " +
+  "which Washington requires occupation disclosure. Smaller and batched contributions are included in the " +
+  "official totals but carry no donor detail.";
+
 export async function loadWashingtonCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
   candidateRows: readonly StateFinanceRequestCandidateRow[],
@@ -30,6 +41,7 @@ export async function loadWashingtonCandidateFinanceSummariesByCandidateElection
     // per-relation descriptor exists for. Evidence uses both label types (the
     // shared default).
     outsideGroupIdentityColumns: { id: "sponsor_id", name: "sponsor_name" },
+    directCoverageNote: WASHINGTON_DIRECT_COVERAGE_NOTE,
     tables: {
       links: "wa_candidate_finance_links",
       summaries: "wa_candidate_finance_summaries",

@@ -304,6 +304,8 @@ describe("washingtonCandidateFinanceBatchSync", () => {
         officeName: "Governor",
         electionYear: 2024,
         legislativeDistrict: null,
+        jurisdiction: null,
+        position: null,
       },
       undefined
     );

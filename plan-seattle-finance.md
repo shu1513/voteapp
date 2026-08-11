@@ -32,7 +32,7 @@ Written 2026-08-10; revised same day after a second verification round (summary-
 - Count semantics: `count(*)` counts contribution rows, not distinct donors. The UI deliberately does not render `contributor_count` today, so this is latent; keep the count but document it as row count (or drop it) — do not label it "contributors" if it ever renders.
 - Disclosure note: occupations reflect donors above the $250 aggregate threshold — carry this in the direct coverage note (see Phase 3).
 
-## Phase 3: Seattle (and WA-city) eligibility + resolution
+## Phase 3: Seattle (and WA-city) eligibility + resolution (SHIPPED)
 
 Extend `washingtonFinanceEligibleOffices.ts` following the Illinois municipal precedent (`illinoisMunicipalityMatches` — generic name matching, no hardcoded city constants):
 
@@ -44,6 +44,7 @@ Extend `washingtonFinanceEligibleOffices.ts` following the Illinois municipal pr
 - Client model: surface `position`, `jurisdiction`, `reporting_option`, `filing_type` on `WashingtonPdcCandidateSummary` (jurisdiction/has_reports already parsed; add the rest).
 - Persist `filer_id` / `committee_id` / `candidacy_id` on links — columns already exist.
 - Coverage state, minimal version: derive a per-candidate note from `reporting_option` / `filing_type` / `has_reports` / link status (mini-reporting, paper filing, no reports yet, unlinked) and emit it through the existing loader coverage-note fields (`directCoverageNote` / `outsideCoverageNote` — the Georgia pattern, `GEORGIA_DIRECT_COVERAGE_NOTE` precedent). No new UI contract; "unlinked" and "mini" must not render as $0.
+- Shipped scope note: the coverage note landed as a static per-state `directCoverageNote` (the $250 occupation-disclosure threshold + batched small contributions), because the loader's note fields are per-state config and the summaries table has no per-candidate note column. "Unlinked" and "mini" already cannot render as $0 (no link row → no summary; missing totals stay null). A per-candidate reporting-state note would need a summaries-table column + writer/loader plumbing — deliberately deferred; `reporting_option`/`filing_type` are now parsed on `WashingtonPdcCandidateSummary` when that lands.
 
 ## Phase 4: rollout
 

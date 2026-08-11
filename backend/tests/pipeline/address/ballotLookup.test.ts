@@ -4740,6 +4740,10 @@ describe("lookupElectionDetailById", () => {
             source_url: "https://data.wa.gov/resource/3h9x-7bvm.json",
           },
         ],
+        direct_coverage_note:
+          "Occupation breakdowns reflect donors whose contributions exceed $250 in aggregate, the threshold above " +
+          "which Washington requires occupation disclosure. Smaller and batched contributions are included in the " +
+          "official totals but carry no donor detail.",
       },
       outside_spending: {
         support_total: 70000,
