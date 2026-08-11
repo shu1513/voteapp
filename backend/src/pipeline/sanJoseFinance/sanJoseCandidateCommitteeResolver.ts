@@ -212,10 +212,20 @@ export function resolveSanJoseCandidateCommittees(input: {
       };
     }
 
+    // state_filing_ids lives on the candidate PERSON row and accumulates
+    // across every race the person runs (roster research and other finance
+    // modules append there), so a stored id is not race-scoped authority: a
+    // council candidate can carry their own state-senate committee's FPPC id,
+    // and that committee files copies with the city. Contradictory name
+    // evidence therefore knocks a committee out of the id tier — falling
+    // through to the fully-gated name tier — while a committee whose name
+    // carries no evidence (legal-name registrations, the id tier's purpose)
+    // still links.
     const idMatches = input.committees.filter(
       (committee) =>
         committee.filerId !== SAN_JOSE_PENDING_FILER_ID &&
-        candidate.stateFilingIds.includes(committee.filerId),
+        candidate.stateFilingIds.includes(committee.filerId) &&
+        !committeeConflictsWithCandidate(committee, candidate),
     );
     if (idMatches.length > 1) {
       return {

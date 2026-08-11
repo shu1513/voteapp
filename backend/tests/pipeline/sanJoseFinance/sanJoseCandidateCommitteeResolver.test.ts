@@ -247,6 +247,48 @@ describe("resolveSanJoseCandidateCommittees", () => {
     expect(resolution).toMatchObject({ status: "matched", filerId: "1480385", matchedBy: "fppc_id" });
   });
 
+  it("a stored FPPC id never overrides contradictory name evidence (Cohen Senate case)", () => {
+    // state_filing_ids accumulates across the person's races: a council
+    // candidate can carry their own state-senate committee's id, and that
+    // committee files copies with the city. The id tier must not book
+    // Senate money to the council race.
+    const senateCommittee = committee({
+      filerId: "8000001",
+      committeeNames: ["David Cohen for California Senate District 10 2026"],
+    });
+    const cohen = candidate({
+      displayName: "David Cohen",
+      seatNumber: 10,
+      stateFilingIds: ["8000001"],
+    });
+    expect(resolveOne(cohen, [senateCommittee]).status).toBe("unmatched");
+    // The vetoed id falls through to the name tier, which still links the
+    // real council committee.
+    const resolution = resolveOne(cohen, [
+      senateCommittee,
+      committee({ filerId: "8100001", committeeNames: ["David Cohen for San Jose City Council District 10 2026"] }),
+    ]);
+    expect(resolution).toMatchObject({ status: "matched", filerId: "8100001", matchedBy: "name" });
+  });
+
+  it("a stored FPPC id never overrides a conflicting district, office, or year", () => {
+    expect(
+      resolveOne(candidate({ displayName: "Gordon Chester", seatNumber: 9, stateFilingIds: ["6000001"] }), [
+        committee({ filerId: "6000001", committeeNames: ["Gordon Chester for San Jose City Council District 5 2026"] }),
+      ]).status,
+    ).toBe("unmatched");
+    expect(
+      resolveOne(candidate({ displayName: "Sam Liccardo", seatNumber: 3, stateFilingIds: ["8000003"] }), [
+        committee({ filerId: "8000003", committeeNames: ["Sam Liccardo for Mayor 2026"] }),
+      ]).status,
+    ).toBe("unmatched");
+    expect(
+      resolveOne(candidate({ displayName: "Bien Doan", seatNumber: 7, stateFilingIds: ["7000001"] }), [
+        committee({ filerId: "7000001", committeeNames: ["Bien Doan for San Jose City Council D7 2024"] }),
+      ]).status,
+    ).toBe("unmatched");
+  });
+
   it("an FPPC id pointing at a non-C committee fails closed", () => {
     const resolution = resolveOne(candidate({ stateFilingIds: ["1487316"] }), [
       committee({

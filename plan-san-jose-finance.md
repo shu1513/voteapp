@@ -191,7 +191,10 @@ dry-run against the final roster before enabling sync.
   codes fail closed; person match via the shared `personNameMiddleEvidence`
   gates + `personFirstNameNicknames` VoteApp-side expansion; district / year /
   cross-office / foreign-office name evidence as vetoes; FPPC-id tier off
-  `state_filing_ids`; ambiguity fails closed in both directions and a blocked
+  `state_filing_ids`, with the same vetoes applied — `state_filing_ids` is
+  candidate-global across races, so a stored id contradicted by the
+  committee's own name evidence falls through to the name tier instead of
+  linking; ambiguity fails closed in both directions and a blocked
   name-match also blocks its linkable sibling).
 - Tests (26): the full Phase 6 resolver list (Ortiz `P` committee, Campos /
   Van Le district-less names, "Le" substring safety, Nora-vs-Pamela, accent
