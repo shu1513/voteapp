@@ -193,7 +193,9 @@ describe("massachusettsCandidateFinanceSync", () => {
       outsideGroupsWritten: 1,
       outsideGroupBreakdownsWritten: 4,
       totalReceipts: 1750,
-      directContributionTotal: 750,
+      // Always null (Georgia pattern): the shared loader must fall through to
+      // total_receipts; itemized rows feed breakdowns only.
+      directContributionTotal: null,
       outsideSupportTotal: 32420,
       outsideOpposeTotal: 0,
       matchedContributionRowCount: 3,
@@ -260,7 +262,7 @@ describe("massachusettsCandidateFinanceSync", () => {
       LINK_ID,
       2022,
       1750,
-      750,
+      null,
       null,
       null,
       32420,
@@ -333,7 +335,7 @@ describe("massachusettsCandidateFinanceSync", () => {
     expect(result).toMatchObject({
       totalReceipts: 1700.25,
       totalDisbursements: 1200.5,
-      directContributionTotal: 750,
+      directContributionTotal: null,
       ytdReportMatched: true,
     });
     expect(ocpfClient.getCandidateYtdReports).toHaveBeenCalledWith(
@@ -348,7 +350,7 @@ describe("massachusettsCandidateFinanceSync", () => {
       LINK_ID,
       2022,
       1700.25,
-      750,
+      null,
       1200.5,
       499.75,
       32420,
@@ -596,7 +598,7 @@ describe("massachusettsCandidateFinanceSync", () => {
       outsideGroupsWritten: 0,
       outsideGroupBreakdownsWritten: 0,
       totalReceipts: 1750,
-      directContributionTotal: 750,
+      directContributionTotal: null,
       outsideSupportTotal: 32420,
     });
     expect(db.query).not.toHaveBeenCalled();

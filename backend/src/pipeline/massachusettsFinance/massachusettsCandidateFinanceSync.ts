@@ -555,11 +555,18 @@ function toSummary(input: {
   // this candidate (pre-YTD behavior); a matched row with an invalid raised
   // value stays null rather than silently switching to the itemized sum.
   // Spent and cash are never derived from items.
+  //
+  // direct_contribution_total stays NULL (Georgia pattern) so the shared
+  // ballot-lookup loader's total_raised falls through to total_receipts —
+  // otherwise it would prefer the itemized sum, which differs from the
+  // official YTD figure (refunds, timing, prior-year money). Itemized rows
+  // feed the breakdowns only; the boundary is disclosed via the loader's
+  // direct coverage note.
   return {
     totalReceipts: input.ytdReport
       ? nonNegativeYtdAmount(input.ytdReport.receiptsYtd)
       : input.directSummary.totalReceipts,
-    directContributionTotal: input.directSummary.directContributionTotal,
+    directContributionTotal: null,
     totalDisbursements: nonNegativeYtdAmount(input.ytdReport?.expendituresYtd),
     cashOnHand: signedYtdAmount(input.ytdReport?.cashOnHand),
     outsideSupportTotal: input.outsideSummary?.supportTotal ?? 0,
