@@ -513,7 +513,7 @@ function nonNegativeYtdAmount(value: number | undefined): number | null {
 }
 
 // Cash on hand is signed: OCPF bank rows report legitimately overdrawn
-// balances and the schema accepts them (migration 231).
+// balances and the schema accepts them (migration 232).
 function signedYtdAmount(value: number | undefined): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
 }

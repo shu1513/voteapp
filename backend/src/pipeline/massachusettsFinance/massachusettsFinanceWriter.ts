@@ -136,7 +136,7 @@ function normalizeNullableAmount(value: number | null | undefined, fieldName: st
 }
 
 // Cash on hand is the one signed summary amount: OCPF bank rows report
-// legitimately negative (overdrawn) balances (migration 231).
+// legitimately negative (overdrawn) balances (migration 232).
 function normalizeNullableSignedAmount(value: number | null | undefined, fieldName: string): number | null {
   if (value === undefined || value === null) {
     return null;
