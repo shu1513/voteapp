@@ -130,7 +130,7 @@ import { isNewYorkFinanceEligibleOffice } from "../newYorkFinance/newYorkFinance
 import { isKentuckyFinanceEligibleOffice } from "../kentuckyFinance/kentuckyFinanceEligibleOffices.js";
 import { isVirginiaFinanceEligibleOffice } from "../virginiaFinance/virginiaFinanceEligibleOffices.js";
 import { isWisconsinFinanceEligibleOffice } from "../wisconsinFinance/wisconsinFinanceEligibleOffices.js";
-import { isMassachusettsFinanceEligibleOffice } from "../massachusettsFinance/massachusettsFinanceEligibleOffices.js";
+import { isMassachusettsFinanceEligibleElectionRow } from "../massachusettsFinance/massachusettsFinanceEligibleOffices.js";
 import { isMichiganFinanceEligibleOffice } from "../michiganFinance/michiganFinanceEligibleOffices.js";
 
 type EnricherOptions = {
@@ -930,9 +930,14 @@ async function enqueueMassachusettsFinanceSyncForLinkedElection(input: {
 }): Promise<void> {
   if (
     input.context.state !== "MA" ||
-    !isMassachusettsFinanceEligibleOffice({
-      officeScope: input.context.officeScope,
-      officeCanonicalName: input.context.officeCanonicalName,
+    // Row-aware predicate: place offices are eligible only in allowlisted
+    // municipal GEOIDs, so e.g. Worcester mayors don't enqueue sync jobs
+    // that auto-link would reject anyway.
+    !isMassachusettsFinanceEligibleElectionRow({
+      district_type: input.context.districtType,
+      geoid_compact: input.context.geoidCompact,
+      office_scope: input.context.officeScope,
+      office_canonical_name: input.context.officeCanonicalName,
     })
   ) {
     return;

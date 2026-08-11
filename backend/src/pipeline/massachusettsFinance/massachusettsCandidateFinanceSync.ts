@@ -506,13 +506,22 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   };
 }
 
-// The writer rejects negative amounts, and OCPF bank rows do go negative live
-// (overdrawn cash on hand); negative or malformed YTD values become null
-// rather than failing the whole sync.
+// Flow totals (raised/spent) must be nonnegative; malformed or negative
+// values in a matched bank row become null rather than failing the writer.
 function nonNegativeYtdAmount(value: number | undefined): number | null {
   return typeof value === "number" && Number.isFinite(value) && value >= 0 ? value : null;
 }
 
+// Cash on hand is signed: OCPF bank rows report legitimately overdrawn
+// balances and the schema accepts them (migration 231).
+function signedYtdAmount(value: number | undefined): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+// A YTD feed request failure throws so the whole candidate sync fails and the
+// previous snapshot stays intact (stalest-first ordering retries it next
+// run). Only a fetched feed with no row for this CPF returns null — that is
+// the one case where OCPF genuinely publishes no cover totals.
 async function fetchMatchingYtdReport(input: {
   ocpfClient: MassachusettsOcpfDataClient;
   ocpfClientOptions?: MassachusettsOcpfClientOptions;
@@ -528,20 +537,10 @@ async function fetchMatchingYtdReport(input: {
   if (!officeClass) {
     return null;
   }
-  let reports: MassachusettsOcpfCandidateReport[];
-  try {
-    reports = await input.ocpfClient.getCandidateYtdReports(
-      { officeClass, electionYear: input.electionYear },
-      input.ocpfClientOptions
-    );
-  } catch (error) {
-    // Totals fall back to itemized sums when the YTD feed is unavailable;
-    // breakdowns are unaffected either way.
-    console.warn(
-      `Massachusetts finance sync could not load ${officeClass} YTD reports for ${input.electionYear}: ${toFailureReason(error)}`
-    );
-    return null;
-  }
+  const reports = await input.ocpfClient.getCandidateYtdReports(
+    { officeClass, electionYear: input.electionYear },
+    input.ocpfClientOptions
+  );
   return reports.find((report) => report.cpfId.trim() === input.candidateCpfId) ?? null;
 }
 
@@ -551,16 +550,18 @@ function toSummary(input: {
   fallbackSourceUrl?: string | null;
   ytdReport: MassachusettsOcpfCandidateReport | null;
 }): MassachusettsFinanceSummaryInput {
-  // Raised/spent/cash prefer the OCPF bank-report YTD cover numbers; the
-  // itemized receipt sum is only a fallback for raised when no YTD row
-  // exists, matching the pre-YTD behavior. Spent and cash are never derived
-  // from items.
-  const ytdReceipts = nonNegativeYtdAmount(input.ytdReport?.receiptsYtd);
+  // Raised/spent/cash come from the OCPF bank-report YTD cover numbers. The
+  // itemized receipt sum backfills raised ONLY when the feed has no row for
+  // this candidate (pre-YTD behavior); a matched row with an invalid raised
+  // value stays null rather than silently switching to the itemized sum.
+  // Spent and cash are never derived from items.
   return {
-    totalReceipts: ytdReceipts ?? input.directSummary.totalReceipts,
+    totalReceipts: input.ytdReport
+      ? nonNegativeYtdAmount(input.ytdReport.receiptsYtd)
+      : input.directSummary.totalReceipts,
     directContributionTotal: input.directSummary.directContributionTotal,
     totalDisbursements: nonNegativeYtdAmount(input.ytdReport?.expendituresYtd),
-    cashOnHand: nonNegativeYtdAmount(input.ytdReport?.cashOnHand),
+    cashOnHand: signedYtdAmount(input.ytdReport?.cashOnHand),
     outsideSupportTotal: input.outsideSummary?.supportTotal ?? 0,
     outsideOpposeTotal: input.outsideSummary?.opposeTotal ?? 0,
     sourceUrl: input.directSummary.sourceUrl ?? input.outsideSummary?.sourceUrl ?? input.fallbackSourceUrl ?? null,

@@ -407,7 +407,7 @@ describe("massachusettsCandidateFinanceSync", () => {
     );
   });
 
-  it("nulls negative YTD values instead of failing the writer", async () => {
+  it("writes signed overdrawn cash and nulls negative flow totals from a matched bank row", async () => {
     const db = createMockDb();
     const ocpfClient = createOcpfClient({
       ytdReports: [
@@ -416,8 +416,8 @@ describe("massachusettsCandidateFinanceSync", () => {
           filerName: "Healey, Maura T.",
           officeSought: "Statewide, Governor",
           receiptsYtd: 1_700.25,
-          expendituresYtd: 1_200.5,
-          cashOnHand: -25.5,
+          expendituresYtd: -1,
+          cashOnHand: -786.78,
           isWinner: null,
         },
       ],
@@ -429,30 +429,54 @@ describe("massachusettsCandidateFinanceSync", () => {
       ocpfClient,
     });
 
-    expect(result).toMatchObject({ totalReceipts: 1700.25, totalDisbursements: 1200.5, ytdReportMatched: true });
+    expect(result).toMatchObject({ totalReceipts: 1700.25, totalDisbursements: null, ytdReportMatched: true });
     const summaryCall = db.query.mock.calls.find((call) =>
       String(call[0]).includes("INSERT INTO public.ma_candidate_finance_summaries")
     );
-    // cash_on_hand slot stays null for the overdrawn bank row.
-    expect(summaryCall?.[1]?.[5]).toBeNull();
+    // Overdrawn cash is preserved signed; the malformed negative spent is null.
+    expect(summaryCall?.[1]?.[4]).toBeNull();
+    expect(summaryCall?.[1]?.[5]).toBe(-786.78);
   });
 
-  it("falls back to itemized totals when the YTD feed fails or has no row", async () => {
+  it("keeps raised null when a matched bank row has an invalid raised value", async () => {
     const db = createMockDb();
-    const ocpfClient = createOcpfClient();
-    ocpfClient.getCandidateYtdReports.mockRejectedValueOnce(new Error("ytd feed down"));
+    const ocpfClient = createOcpfClient({
+      ytdReports: [
+        {
+          cpfId: "15710",
+          filerName: "Healey, Maura T.",
+          officeSought: "Statewide, Governor",
+          receiptsYtd: -5,
+          expendituresYtd: 1_200.5,
+          isWinner: null,
+        },
+      ],
+    });
 
-    const failed = await syncMassachusettsCandidateFinance({
+    const result = await syncMassachusettsCandidateFinance({
       db,
       ...baseInput(),
       ocpfClient,
     });
-    expect(failed).toMatchObject({
-      totalReceipts: 1750,
-      totalDisbursements: null,
-      ytdReportMatched: false,
-      summaryWritten: true,
-    });
+
+    // Never substitute the itemized sum for a matched-but-invalid cover value.
+    expect(result).toMatchObject({ totalReceipts: null, totalDisbursements: 1200.5, ytdReportMatched: true });
+  });
+
+  it("fails the sync on a YTD feed error but falls back to itemized raised when the feed has no row", async () => {
+    const db = createMockDb();
+    const ocpfClient = createOcpfClient();
+    ocpfClient.getCandidateYtdReports.mockRejectedValueOnce(new Error("ytd feed down"));
+
+    // Request failure aborts the candidate sync so the prior snapshot stays
+    // intact; the batch marks it failed and retries stalest-first.
+    await expect(
+      syncMassachusettsCandidateFinance({
+        db,
+        ...baseInput(),
+        ocpfClient,
+      })
+    ).rejects.toThrow("ytd feed down");
 
     const missingDb = createMockDb();
     const missingRowClient = createOcpfClient({ ytdReports: [] });
@@ -461,7 +485,12 @@ describe("massachusettsCandidateFinanceSync", () => {
       ...baseInput(),
       ocpfClient: missingRowClient,
     });
-    expect(missing).toMatchObject({ totalReceipts: 1750, totalDisbursements: null, ytdReportMatched: false });
+    expect(missing).toMatchObject({
+      totalReceipts: 1750,
+      totalDisbursements: null,
+      ytdReportMatched: false,
+      summaryWritten: true,
+    });
   });
 
   it("classifies every donor but caps the persisted donor rows per IE PAC", async () => {
