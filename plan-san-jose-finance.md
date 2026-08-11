@@ -1,8 +1,8 @@
 # San José Local Campaign Finance Plan
 
-Status: Phases 1–2 built (shared `efileCalFinance/` client + parser, then the
-San José eligibility + resolver adapter; both live-verified 2026-08-10);
-Phases 3+ not started. Feasibility + export semantics verified against live
+Status: Phases 1–3 built (shared `efileCalFinance/` client + parser, the San
+José eligibility + resolver adapter, then the direct/outside aggregators; all
+live-verified 2026-08-10); Phases 4+ not started. Feasibility + export semantics verified against live
 data 2026-08-10 (portal probed, 2025+2026 workbooks downloaded and audited).
 
 ## Goal and v1 scope
@@ -206,16 +206,51 @@ dry-run against the final roster before enabling sync.
   still provisional until the city's final candidate list (Aug 13) — re-run
   before enabling sync.
 
-### Phase 3: aggregation
+### Phase 3: aggregation — DONE (2026-08-10)
 
-- `sanJoseDirectFinanceAggregator.ts`: cycle formulas + invariants above;
-  occupations/employers/size buckets from A + C sheets (`Entity_Cd=IND`,
-  memo rows excluded); industry classification via
-  `financeIndustryClassificationService`.
-- `sanJoseOutsideSpendingAggregator.ts`: S496 ∪ Schedule D IND dedup;
-  committee labels via `financeLabelClassifier`.
+- Built: `sanJoseDirectFinanceAggregator.ts` (cycle formulas above off
+  Amount_A only; canonical-filing selection — the live `most_recent_only`
+  export carries committees with TWO current filings for one period,
+  including two independent amendment chains for Van Le with their Schedule
+  A rows duplicated, so one filing per period wins by latest Rpt_Date and the
+  transaction sheets are filtered to the winners; occupations/employers/size
+  buckets from canonical A + C rows, `Entity_Cd=IND`, memo excluded, refunds
+  never bucketed; `reportedThrough`/`coverageStart` emitted) and
+  `sanJoseOutsideSpendingAggregator.ts` (S496 ∪ Schedule D IND by
+  (Filer_ID, Tran_ID); duplicate 496 REPORTS of one expenditure collapse to
+  the latest report while same-key rows naming different targets are kept;
+  token-based target-name matching via the resolver's shared person gates
+  with office/jurisdiction/district as fail-closed vetoes on name-matched
+  rows; direction only from literal SUPPORT/OPPOSE; measure rows excluded;
+  Pending spenders group by normalized name). Industry/label classification
+  stays at sync time (SF pattern) — aggregators emit raw names only.
+- Invariants are a typed `violations` list, never a silent gate: line 3=1+2 /
+  5=3+4 on both columns, period gap/overlap, duplicate-period filings,
+  cash-chain (line 12 vs prior 16), nonzero opening cash
+  (`prior_activity_uncovered`), rows-vs-cover reconciliation (Schedule A +
+  A|2 = line 1, C + C|2 = line 4, B1 Loan_Amt1 = B1 summary line 1). Sync
+  (Phase 5) decides quarantine and `direct_coverage_note` wording.
+- Tests (19): formulas, Van Le duplicate chains, Bien Doan Amount_B error,
+  Ortiz overlap/cash restatements, Altwer opening cash, missing core line vs
+  legitimately absent A|2/B1 blocks, reconciliation drift, breakdown
+  semantics, 496 duplicate report, multi-candidate mailers, D-IND union +
+  MON/IKD exclusion, dirty target names, office/juris/district/direction
+  vetoes, Pending spender grouping, mayor district veto.
+- Live-verified (dry-run on the cached 2025+2026 workbooks): all six runoff
+  candidates reconcile cent-exact to the Phase 0 manual audit (Bien Doan
+  117,125.37 / 108,905.71 / 32,668.66 / loans 20,000); violations fire
+  exactly on the known live defects — Doan's $20,000 YTD line-3 error, Van
+  Le's duplicate chains (and her two other broken YTD line-3 filings), Ortiz
+  beginning-cash restatements ($50/$500) + one-day overlap, Doan one-day gap
+  + $4,449 year-boundary cash restatement, Altwer's uncovered 2025 activity
+  ($47,353.73 opening cash — her 2025 filings are absent from the export;
+  disclose via `direct_coverage_note` at sync). Outside: Ortiz support
+  281,447.58 (dedup removed the double-reported $374.02), Campos oppose
+  5,270.18, Doan 101,249.54, Altwer 118,723.85, Chester 1,255.68, Le 0; the
+  10 candidate-less rows ($35,191.60) are ballot-measure spending, excluded.
 - Store `reported_through` (latest covered `Thru_Date`) alongside totals so
-  the UI never implies sync time = data recency.
+  the UI never implies sync time = data recency (field emitted; persisted in
+  Phase 4).
 
 ### Phase 4: schema, flags, writer
 
