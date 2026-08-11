@@ -193,15 +193,22 @@ describe("washingtonFinanceEligibleOffices", () => {
     expect(normalizeWashingtonPdcPosition("5")).toBe("5");
     expect(normalizeWashingtonPdcPosition("05")).toBe("5");
     expect(normalizeWashingtonPdcPosition("Position 7")).toBe("7");
-    // Free-text positions on non-city offices must not fabricate a seat.
-    expect(normalizeWashingtonPdcPosition("Charter Review Commissioner District 7, Position 1")).toBeNull();
+    // Composite seats (live 2025/26: Spokane, Puyallup, Camas, Chehalis, Deer
+    // Park) keep every coordinate so District 1 Position 2 can never match
+    // District 3 Position 2.
+    expect(normalizeWashingtonPdcPosition("City Council Member District 3, Position 2")).toBe("3-2");
+    expect(normalizeWashingtonPdcPosition("City Council Member District 1, Position 2 ")).toBe("1-2");
+    expect(normalizeWashingtonPdcPosition("City Council Member Ward 3, Position 2")).toBe("3-2");
+    expect(normalizeWashingtonPdcPosition("City Council Member At-Large Position 2")).toBe("2");
+    expect(normalizeWashingtonPdcPosition("CITY COUNCIL MEMBER Position 6")).toBe("6");
+    // No numbered seat token at all: seat requirement is disabled, not failed.
+    expect(normalizeWashingtonPdcPosition("City Council Member At-Large Position")).toBeNull();
     expect(normalizeWashingtonPdcPosition("")).toBeNull();
 
     expect(parseWashingtonPositionFromBallotTitle("City of Seattle Council District No. 5")).toBe("5");
     expect(parseWashingtonPositionFromBallotTitle("Seattle Municipal Court Judge Position No. 5")).toBe("5");
     expect(parseWashingtonPositionFromBallotTitle("Council Position 9")).toBe("9");
-    // The last numbered token is the seat identifier.
-    expect(parseWashingtonPositionFromBallotTitle("District 3 Council Position 2")).toBe("2");
+    expect(parseWashingtonPositionFromBallotTitle("Council District No. 3, Position No. 2")).toBe("3-2");
     expect(parseWashingtonPositionFromBallotTitle("Mayor")).toBeNull();
     expect(parseWashingtonPositionFromBallotTitle(null)).toBeNull();
   });

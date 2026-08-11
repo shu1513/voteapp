@@ -216,6 +216,48 @@ describe("washingtonCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", filerId: "JENKN--778", committeeId: "40861" });
   });
 
+  it("rejects a composite-seat committee registered for a different seat", () => {
+    // Live PDC pattern (Spokane/Puyallup 2025): position is a composite label,
+    // not a bare number. A committee registered for District 3 Position 2 must
+    // not link to our District 1 election even though name, city, year, and
+    // office all agree.
+    const compositeSummary = summary({
+      filerId: "DOEJ--300",
+      committeeId: "5001",
+      filerName: "Jane Doe",
+      office: "CITY COUNCIL MEMBER",
+      jurisdiction: "CITY OF SPOKANE",
+      jurisdictionType: "Local",
+      position: "City Council Member District 3, Position 2",
+      electionYear: 2025,
+    });
+
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "place",
+        officeName: "City Council Member",
+        electionYear: 2025,
+        jurisdiction: "Spokane city, Washington",
+        position: "1",
+        summaries: [compositeSummary],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    // Same composite seat on both sides still matches.
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "place",
+        officeName: "City Council Member",
+        electionYear: 2025,
+        jurisdiction: "Spokane city, Washington",
+        position: "3-2",
+        summaries: [compositeSummary],
+      })
+    ).toMatchObject({ status: "matched", filerId: "DOEJ--300" });
+  });
+
   it("matches municipal-court judges through the court jurisdiction spelling", () => {
     expect(
       resolveWashingtonCandidateCommittee({

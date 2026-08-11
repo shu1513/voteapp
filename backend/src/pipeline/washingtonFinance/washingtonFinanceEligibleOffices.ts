@@ -282,29 +282,41 @@ export function normalizeWashingtonPdcJurisdiction(value: string | null | undefi
   return stripped.length > 0 ? stripped : null;
 }
 
-// PDC's position column for council seats and municipal-court judgeships is a
-// bare seat number. Free-text positions on other office types (e.g. county
-// charter review "District 7, Position 1") normalize to null, which simply
-// disables the position-agreement requirement for that row.
-export function normalizeWashingtonPdcPosition(value: string | null | undefined): string | null {
+// Canonical seat key shared by both sides of the comparison. Seattle-style
+// seats are a bare number ("5"). Smaller cities file composite seats — live
+// 2025/26 examples: "City Council Member District 3, Position 2" (Spokane),
+// "Ward 3, Position 2" (Camas), "At-Large Position 2" (Chehalis) — so every
+// numbered seat token (district/ward/position) joins the key in order
+// ("3-2"): comparing only one coordinate would let District 1 Position 2
+// match District 3 Position 2. Text with no numbered seat token ("At-Large
+// Position", "Mayor") returns null, which disables the seat-agreement
+// requirement for that row rather than rejecting it — current-cycle PDC rows
+// legitimately file without a position.
+function washingtonSeatKeyFromText(value: string | null | undefined): string | null {
   const normalized = value?.trim().replace(/\s+/g, " ").toUpperCase();
   if (!normalized) {
     return null;
   }
-  const match = normalized.match(/^(?:POS(?:ITION)?|DIST(?:RICT)?|SEAT)?\.?\s*(?:NO\.?\s*)?0*([1-9][0-9]{0,2})$/);
-  return match?.[1] ?? null;
+  const bare = normalized.match(/^(?:POS(?:ITION)?|DIST(?:RICT)?|WARD|SEAT)?\.?\s*(?:NO\.?\s*)?0*([1-9][0-9]{0,2})$/);
+  if (bare?.[1]) {
+    return bare[1];
+  }
+  const numbers = [
+    ...normalized.matchAll(/\b(?:POS(?:ITION)?|DIST(?:RICT)?|WARD|SEAT)\.?\s*(?:NO\.?\s*)?0*([1-9][0-9]{0,2})\b/g),
+  ].map((match) => match[1]);
+  return numbers.length > 0 ? numbers.join("-") : null;
+}
+
+// PDC's position column: bare seat number or composite label (see above).
+export function normalizeWashingtonPdcPosition(value: string | null | undefined): string | null {
+  return washingtonSeatKeyFromText(value);
 }
 
 // VoteApp ballot titles carry the seat as "Council District No. 5" or
-// "Municipal Court Judge Position No. 5". The last numbered token wins so a
-// title with both a district and a position keeps the seat identifier.
+// "Municipal Court Judge Position No. 5"; composite-seat cities name both
+// coordinates ("Council District 3, Position 2").
 export function parseWashingtonPositionFromBallotTitle(value: string | null | undefined): string | null {
-  const normalized = value?.trim().replace(/\s+/g, " ").toUpperCase();
-  if (!normalized) {
-    return null;
-  }
-  const matches = [...normalized.matchAll(/\b(?:POSITION|DISTRICT|SEAT|POS|DIST)\.?\s*(?:NO\.?\s*)?0*([1-9][0-9]{0,2})\b/g)];
-  return matches[matches.length - 1]?.[1] ?? null;
+  return washingtonSeatKeyFromText(value);
 }
 
 export function mapWashingtonPdcOffice(input: {
