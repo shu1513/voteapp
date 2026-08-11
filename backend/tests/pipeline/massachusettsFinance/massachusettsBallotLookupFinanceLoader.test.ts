@@ -24,12 +24,13 @@ describe("massachusettsBallotLookupFinanceLoader", () => {
       "Covers independent expenditures reported by independent expenditure PACs (IEPACs) to the Massachusetts " +
       "Office of Campaign and Political Finance. Independent spending by other filer types and electioneering " +
       "communications are not included yet.",
-    // Official totals are bank-report YTD cover figures; breakdowns come from
-    // itemized receipts whose sum differs (refunds, timing, unitemized money).
+    // Official totals are bank-report YTD cover figures where available; the
+    // no-YTD-row fallback stores the itemized-receipt sum, so the note says
+    // "where available" rather than promising a bank figure for everyone.
     // Pinned so the disclosure cannot quietly disappear.
     directCoverageNote:
       "Donor breakdowns reflect itemized receipts reported to the Massachusetts Office of Campaign and Political " +
-      "Finance. Official totals are bank-report year-to-date figures and can include refunds, timing differences, " +
-      "and unitemized money not shown in the breakdowns.",
+      "Finance. Totals are official bank-report year-to-date figures where available (otherwise sums of itemized " +
+      "receipts) and can include money not shown in the breakdowns.",
   });
 });

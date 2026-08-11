@@ -26,12 +26,15 @@ const MASSACHUSETTS_OUTSIDE_COVERAGE_NOTE =
 // Official raised/spent totals are OCPF bank-report year-to-date cover
 // figures; the breakdowns come from itemized receipts, whose sum differs
 // from the cover figures (refunds, timing, prior-year and unitemized money).
-// Without this sentence a reader reasonably assumes the breakdowns explain
-// the whole total.
+// "Where available" is load-bearing: when the YTD feed has no row for a
+// candidate the sync stores the itemized-receipt sum as raised, so the note
+// must not promise a bank-report figure for every candidate. Without this
+// sentence a reader reasonably assumes the breakdowns explain the whole
+// total.
 const MASSACHUSETTS_DIRECT_COVERAGE_NOTE =
   "Donor breakdowns reflect itemized receipts reported to the Massachusetts Office of Campaign and Political " +
-  "Finance. Official totals are bank-report year-to-date figures and can include refunds, timing differences, " +
-  "and unitemized money not shown in the breakdowns.";
+  "Finance. Totals are official bank-report year-to-date figures where available (otherwise sums of itemized " +
+  "receipts) and can include money not shown in the breakdowns.";
 
 export async function loadMassachusettsCandidateFinanceSummariesByCandidateElection(
   db: Queryable,

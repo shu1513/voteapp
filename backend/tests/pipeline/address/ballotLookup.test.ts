@@ -5716,8 +5716,8 @@ describe("lookupElectionDetailById", () => {
         ],
         direct_coverage_note:
           "Donor breakdowns reflect itemized receipts reported to the Massachusetts Office of Campaign and Political " +
-          "Finance. Official totals are bank-report year-to-date figures and can include refunds, timing differences, " +
-          "and unitemized money not shown in the breakdowns.",
+          "Finance. Totals are official bank-report year-to-date figures where available (otherwise sums of itemized " +
+          "receipts) and can include money not shown in the breakdowns.",
       },
       outside_spending: {
         support_total: 70000,
