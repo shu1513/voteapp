@@ -262,6 +262,13 @@ export function normalizeWashingtonPdcLegislativeDistrict(value: string | null |
 // "SEATTLE MUNICIPAL COURT", "CITY OF AUBURN *") and VoteApp's place district
 // names ("Seattle city, Washington") to one bare city key ("SEATTLE"). Generic
 // on purpose: any WA city works the moment its roster exists.
+//
+// The VoteApp jurisdiction-type word is stripped only together with the state
+// name ("... city, Washington"), never as a bare trailing token: place names
+// can legitimately end in CITY/TOWN (Electric City, Coulee City), and a bare
+// trailing strip would also make the function non-idempotent \u2014 the auto-link
+// path normalizes the district name once and the resolver normalizes that
+// result again.
 export function normalizeWashingtonPdcJurisdiction(value: string | null | undefined): string | null {
   const normalized = value
     ?.normalize("NFKD")
@@ -274,10 +281,10 @@ export function normalizeWashingtonPdcJurisdiction(value: string | null | undefi
     return null;
   }
   const stripped = normalized
+    .replace(/\s+(?:CITY|TOWN)\s+(?:WASHINGTON|WA)$/, "")
     .replace(/\s+(?:WASHINGTON|WA)$/, "")
     .replace(/^(?:CITY|TOWN) OF\s+/, "")
     .replace(/\s+MUNICIPAL COURT$/, "")
-    .replace(/\s+(?:CITY|TOWN)$/, "")
     .trim();
   return stripped.length > 0 ? stripped : null;
 }

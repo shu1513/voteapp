@@ -17,11 +17,15 @@ const GENERIC_WASHINGTON_PDC_SOURCE_URL = "https://www.pdc.wa.gov/political-disc
 // contributions (including Seattle democracy-voucher redemptions) carry no
 // donor detail at all — so the occupation breakdowns legitimately explain
 // less than the official totals (Seattle 2025 live probe: 63% of itemized
-// individual dollars carried an occupation).
+// individual dollars carried an occupation). Mini-reporting campaigns
+// (roughly a $7,000 ceiling) file no itemized contribution reports with the
+// PDC at all; the note covers that case too because the reporting option is
+// not propagated per candidate.
 const WASHINGTON_DIRECT_COVERAGE_NOTE =
   "Occupation breakdowns reflect donors whose contributions exceed $250 in aggregate, the threshold above " +
   "which Washington requires occupation disclosure. Smaller and batched contributions are included in the " +
-  "official totals but carry no donor detail.";
+  "official totals but carry no donor detail, and campaigns using Washington's mini-reporting option file " +
+  "no itemized contribution reports at all.";
 
 export async function loadWashingtonCandidateFinanceSummariesByCandidateElection(
   db: Queryable,

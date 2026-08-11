@@ -189,6 +189,24 @@ describe("washingtonFinanceEligibleOffices", () => {
     expect(normalizeWashingtonPdcJurisdiction(null)).toBeNull();
   });
 
+  it("preserves place names that legitimately end in City or Town", () => {
+    // Electric City and Coulee City are real WA municipalities: the
+    // jurisdiction-type word may only be stripped alongside the state name,
+    // never as a bare trailing token.
+    expect(normalizeWashingtonPdcJurisdiction("CITY OF ELECTRIC CITY")).toBe("ELECTRIC CITY");
+    expect(normalizeWashingtonPdcJurisdiction("Electric City city, Washington")).toBe("ELECTRIC CITY");
+    expect(normalizeWashingtonPdcJurisdiction("ELECTRIC CITY MUNICIPAL COURT")).toBe("ELECTRIC CITY");
+    expect(normalizeWashingtonPdcJurisdiction("TOWN OF COULEE CITY")).toBe("COULEE CITY");
+    expect(normalizeWashingtonPdcJurisdiction("Coulee City town, Washington")).toBe("COULEE CITY");
+
+    // Idempotent: the auto-link path normalizes once and the resolver
+    // normalizes that result again.
+    for (const raw of ["CITY OF ELECTRIC CITY", "Electric City city, Washington", "Seattle city, Washington"]) {
+      const once = normalizeWashingtonPdcJurisdiction(raw);
+      expect(normalizeWashingtonPdcJurisdiction(once)).toBe(once);
+    }
+  });
+
   it("normalizes PDC seat positions and parses ballot-title seats", () => {
     expect(normalizeWashingtonPdcPosition("5")).toBe("5");
     expect(normalizeWashingtonPdcPosition("05")).toBe("5");
