@@ -1,9 +1,9 @@
 # San José Local Campaign Finance Plan
 
-Status: Phase 1 built (shared `efileCalFinance/` client + parser, live-verified
-2026-08-10); Phases 2+ not started. Feasibility + export semantics verified
-against live data 2026-08-10 (portal probed, 2025+2026 workbooks downloaded
-and audited).
+Status: Phases 1–2 built (shared `efileCalFinance/` client + parser, then the
+San José eligibility + resolver adapter; both live-verified 2026-08-10);
+Phases 3+ not started. Feasibility + export semantics verified against live
+data 2026-08-10 (portal probed, 2025+2026 workbooks downloaded and audited).
 
 ## Goal and v1 scope
 
@@ -181,12 +181,30 @@ dry-run against the final roster before enabling sync.
   cash 32,668.66 / net loans 20,000); real portal refresh → `downloaded`
   then `unchanged` on the ETag.
 
-### Phase 2: San José agency adapter — eligibility + resolution
+### Phase 2: San José agency adapter — eligibility + resolution — DONE (2026-08-10)
 
-- `sanJoseFinance/sanJoseFinanceEligibleOffices.ts` modeled on
-  `losAngelesCityFinanceEligibleOffices.ts`: GEOID `0668000`, keys
-  `place::Mayor`, `place::City Council Member`, D1–D10 seat parse.
-- `sanJoseCandidateCommitteeResolver.ts` per "Committee resolution" above.
+- Built: `sanJoseFinance/sanJoseFinanceEligibleOffices.ts` (GEOID `0668000`,
+  keys `place::Mayor` + `place::City Council Member`, seat parse covering the
+  catalog's actual "Member, City Council, District N" title, D1–D10) and
+  `sanJoseCandidateCommitteeResolver.ts` (committee grouping by `Filer_ID`
+  with Pending rows keyed by name; type gate = lone `C`, unknown/conflicting
+  codes fail closed; person match via the shared `personNameMiddleEvidence`
+  gates + `personFirstNameNicknames` VoteApp-side expansion; district / year /
+  cross-office / foreign-office name evidence as vetoes; FPPC-id tier off
+  `state_filing_ids`, with the same vetoes applied — `state_filing_ids` is
+  candidate-global across races, so a stored id contradicted by the
+  committee's own name evidence falls through to the name tier instead of
+  linking; ambiguity fails closed in both directions and a blocked
+  name-match also blocks its linkable sibling).
+- Tests (26): the full Phase 6 resolver list (Ortiz `P` committee, Campos /
+  Van Le district-less names, "Le" substring safety, Nora-vs-Pamela, accent
+  variants, Pending, unknown types, suffix veto, nickname, quoted call names,
+  both ambiguity directions) plus seat-parse and eligibility gates.
+- Live-verified: resolver run against the real 2025+2026 workbooks (21,913
+  rows → 35 committees) resolves all 6 D5/7/9 runoff candidates to 6 unique
+  `C` committees by name, matching the Phase 0 manual dry-run. Roster is
+  still provisional until the city's final candidate list (Aug 13) — re-run
+  before enabling sync.
 
 ### Phase 3: aggregation
 
