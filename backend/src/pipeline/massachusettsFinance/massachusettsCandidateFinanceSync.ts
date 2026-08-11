@@ -19,11 +19,16 @@ import {
 } from "./massachusettsCandidateCommitteeResolver.js";
 import { aggregateMassachusettsDirectContributions } from "./massachusettsDirectContributionAggregator.js";
 import {
+  getMassachusettsOcpfCityCouncilCandidateReports,
   getMassachusettsOcpfContributionItems,
   getMassachusettsOcpfIepacReportSummaries,
+  getMassachusettsOcpfLegislativeCandidateReports,
+  getMassachusettsOcpfMayoralCandidateReports,
   getMassachusettsOcpfReportDetail,
+  getMassachusettsOcpfStatewideCandidateReports,
   buildMassachusettsOcpfContributionItemsUrl,
   buildMassachusettsOcpfIepacReportSummariesUrl,
+  type MassachusettsOcpfCandidateReport,
   type MassachusettsOcpfClientOptions,
   type MassachusettsOcpfContributionItem,
   type MassachusettsOcpfIepacReportSummary,
@@ -42,6 +47,56 @@ import {
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & Pick<Pool, "connect">;
+
+// OCPF office class for the bank-report YTD feeds; totals (raised/spent/cash)
+// come from these report-cover numbers, never from itemized sums (Georgia
+// lesson: transaction sums diverge from official totals — Wu 2025 items ran
+// +3.6% over the bank YTD).
+export type MassachusettsOcpfYtdOfficeClass = "statewide" | "legislative" | "mayoral" | "city_council";
+
+export function massachusettsOcpfYtdOfficeClass(input: {
+  officeScope: string;
+  officeName: string;
+}): MassachusettsOcpfYtdOfficeClass | null {
+  const officeScope = input.officeScope.trim();
+  if (officeScope === "statewide") {
+    return "statewide";
+  }
+  if (officeScope === "state_upper" || officeScope === "state_lower") {
+    return "legislative";
+  }
+  if (officeScope === "place") {
+    const officeName = input.officeName.trim();
+    if (officeName === "Mayor") {
+      return "mayoral";
+    }
+    if (officeName === "City Council Member") {
+      return "city_council";
+    }
+  }
+  return null;
+}
+
+async function defaultGetCandidateYtdReports(
+  input: { officeClass: MassachusettsOcpfYtdOfficeClass; electionYear: number },
+  options?: MassachusettsOcpfClientOptions
+): Promise<MassachusettsOcpfCandidateReport[]> {
+  switch (input.officeClass) {
+    case "statewide":
+      // onBallot=false returns every statewide filer; the caller matches the
+      // already-resolved CPF ID, so the broader list only improves coverage.
+      return getMassachusettsOcpfStatewideCandidateReports(
+        { electionYear: input.electionYear, onBallot: false },
+        options
+      );
+    case "legislative":
+      return getMassachusettsOcpfLegislativeCandidateReports({ electionYear: input.electionYear }, options);
+    case "mayoral":
+      return getMassachusettsOcpfMayoralCandidateReports({ electionYear: input.electionYear }, options);
+    case "city_council":
+      return getMassachusettsOcpfCityCouncilCandidateReports({ electionYear: input.electionYear }, options);
+  }
+}
 
 type MassachusettsOcpfDataClient = {
   searchAndResolveCandidateCommittee: (
@@ -66,6 +121,10 @@ type MassachusettsOcpfDataClient = {
     input: { reportId: number },
     options?: MassachusettsOcpfClientOptions
   ) => Promise<MassachusettsOcpfReportDetail>;
+  getCandidateYtdReports: (
+    input: { officeClass: MassachusettsOcpfYtdOfficeClass; electionYear: number },
+    options?: MassachusettsOcpfClientOptions
+  ) => Promise<MassachusettsOcpfCandidateReport[]>;
 };
 
 export type MassachusettsCandidateFinanceSyncInput = {
@@ -116,8 +175,10 @@ export type MassachusettsCandidateFinanceSyncResult = {
   outsideGroupBreakdownsWritten: number;
   totalReceipts: number | null;
   directContributionTotal: number | null;
+  totalDisbursements: number | null;
   outsideSupportTotal: number | null;
   outsideOpposeTotal: number | null;
+  ytdReportMatched: boolean;
   matchedContributionRowCount: number;
   includedContributionRowCount: number;
   skippedContributionRowCount: number;
@@ -141,6 +202,7 @@ const DEFAULT_OCPF_CLIENT: MassachusettsOcpfDataClient = {
   getContributionItems: getMassachusettsOcpfContributionItems,
   getIepacReportSummaries: getMassachusettsOcpfIepacReportSummaries,
   getReportDetail: getMassachusettsOcpfReportDetail,
+  getCandidateYtdReports: defaultGetCandidateYtdReports,
 };
 
 type MatchedMassachusettsCommitteeResolution = Extract<MassachusettsCandidateFinanceSyncResolution, { status: "matched" }>;
@@ -444,14 +506,62 @@ async function enrichOutsideGroupIndustryBreakdowns(input: {
   };
 }
 
+// Flow totals (raised/spent) must be nonnegative; malformed or negative
+// values in a matched bank row become null rather than failing the writer.
+function nonNegativeYtdAmount(value: number | undefined): number | null {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0 ? value : null;
+}
+
+// Cash on hand is signed: OCPF bank rows report legitimately overdrawn
+// balances and the schema accepts them (migration 232).
+function signedYtdAmount(value: number | undefined): number | null {
+  return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+// A YTD feed request failure throws so the whole candidate sync fails and the
+// previous snapshot stays intact (stalest-first ordering retries it next
+// run). Only a fetched feed with no row for this CPF returns null — that is
+// the one case where OCPF genuinely publishes no cover totals.
+async function fetchMatchingYtdReport(input: {
+  ocpfClient: MassachusettsOcpfDataClient;
+  ocpfClientOptions?: MassachusettsOcpfClientOptions;
+  officeScope: string;
+  officeName: string;
+  electionYear: number;
+  candidateCpfId: string;
+}): Promise<MassachusettsOcpfCandidateReport | null> {
+  const officeClass = massachusettsOcpfYtdOfficeClass({
+    officeScope: input.officeScope,
+    officeName: input.officeName,
+  });
+  if (!officeClass) {
+    return null;
+  }
+  const reports = await input.ocpfClient.getCandidateYtdReports(
+    { officeClass, electionYear: input.electionYear },
+    input.ocpfClientOptions
+  );
+  return reports.find((report) => report.cpfId.trim() === input.candidateCpfId) ?? null;
+}
+
 function toSummary(input: {
   directSummary: { totalReceipts: number; directContributionTotal: number; sourceUrl: string | null };
   outsideSummary: { supportTotal: number; opposeTotal: number; sourceUrl: string | null } | null;
   fallbackSourceUrl?: string | null;
+  ytdReport: MassachusettsOcpfCandidateReport | null;
 }): MassachusettsFinanceSummaryInput {
+  // Raised/spent/cash come from the OCPF bank-report YTD cover numbers. The
+  // itemized receipt sum backfills raised ONLY when the feed has no row for
+  // this candidate (pre-YTD behavior); a matched row with an invalid raised
+  // value stays null rather than silently switching to the itemized sum.
+  // Spent and cash are never derived from items.
   return {
-    totalReceipts: input.directSummary.totalReceipts,
+    totalReceipts: input.ytdReport
+      ? nonNegativeYtdAmount(input.ytdReport.receiptsYtd)
+      : input.directSummary.totalReceipts,
     directContributionTotal: input.directSummary.directContributionTotal,
+    totalDisbursements: nonNegativeYtdAmount(input.ytdReport?.expendituresYtd),
+    cashOnHand: signedYtdAmount(input.ytdReport?.cashOnHand),
     outsideSupportTotal: input.outsideSummary?.supportTotal ?? 0,
     outsideOpposeTotal: input.outsideSummary?.opposeTotal ?? 0,
     sourceUrl: input.directSummary.sourceUrl ?? input.outsideSummary?.sourceUrl ?? input.fallbackSourceUrl ?? null,
@@ -478,8 +588,10 @@ function emptyResult(input: {
     outsideGroupBreakdownsWritten: 0,
     totalReceipts: null,
     directContributionTotal: null,
+    totalDisbursements: null,
     outsideSupportTotal: null,
     outsideOpposeTotal: null,
+    ytdReportMatched: false,
     matchedContributionRowCount: 0,
     includedContributionRowCount: 0,
     skippedContributionRowCount: 0,
@@ -532,12 +644,20 @@ export async function syncMassachusettsCandidateFinance(
     limit: input.contributionItemLimit,
   });
   const iepacSourceUrl = buildMassachusettsOcpfIepacReportSummariesUrl(electionYear);
-  const [contributionItems, iepacReports] = await Promise.all([
+  const [contributionItems, iepacReports, ytdReport] = await Promise.all([
     ocpfClient.getContributionItems(
       { candidateCpfId: resolution.candidateCpfId, electionYear, limit: input.contributionItemLimit },
       input.ocpfClientOptions
     ),
     ocpfClient.getIepacReportSummaries(electionYear, input.ocpfClientOptions),
+    fetchMatchingYtdReport({
+      ocpfClient,
+      ocpfClientOptions: input.ocpfClientOptions,
+      officeScope,
+      officeName,
+      electionYear,
+      candidateCpfId: resolution.candidateCpfId,
+    }),
   ]);
 
   const boundedIepacReports = iepacReports.slice(0, iepacReportLimit);
@@ -584,6 +704,7 @@ export async function syncMassachusettsCandidateFinance(
     directSummary: directFinance.summary,
     outsideSummary: outsideFinance.summary,
     fallbackSourceUrl: input.sourceUrl,
+    ytdReport,
   });
   const directBreakdowns = toDirectBreakdowns(directFinance.directBreakdowns);
   const outsideGroups = toOutsideGroups(outsideFinance.summary?.groups ?? []);
@@ -625,8 +746,10 @@ export async function syncMassachusettsCandidateFinance(
     outsideGroupBreakdownsWritten: dryRun ? 0 : outsideIndustryFinance.outsideGroupBreakdowns?.length ?? 0,
     totalReceipts: summary.totalReceipts ?? null,
     directContributionTotal: summary.directContributionTotal ?? null,
+    totalDisbursements: summary.totalDisbursements ?? null,
     outsideSupportTotal: summary.outsideSupportTotal ?? null,
     outsideOpposeTotal: summary.outsideOpposeTotal ?? null,
+    ytdReportMatched: ytdReport !== null,
     matchedContributionRowCount: directFinance.matchedContributionRowCount,
     includedContributionRowCount: directFinance.includedContributionRowCount,
     skippedContributionRowCount: directFinance.skippedContributionRowCount,

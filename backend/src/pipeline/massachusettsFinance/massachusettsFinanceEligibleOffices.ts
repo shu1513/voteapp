@@ -1,6 +1,22 @@
 export type MassachusettsFinanceEligibleOfficeKey = `${string}::${string}`;
 
-export type MassachusettsFinanceOfficeScope = "statewide" | "state_upper" | "state_lower";
+export type MassachusettsFinanceOfficeScope = "statewide" | "state_upper" | "state_lower" | "place";
+
+// OCPF's depository system covers municipal candidates statewide (45 cities in
+// the 2025 mayoral feed), but VoteApp enables cities one at a time. The value
+// is the city token OCPF prints after the office class in officeSought
+// ("Mayoral, Boston" / "City Councilor, Boston"), pre-normalized with
+// normalizeMassachusettsOcpfDistrict so it compares directly against parsed
+// filer rows.
+export const MASSACHUSETTS_MUNICIPAL_FINANCE_CITY_BY_GEOID = new Map<string, string>([
+  ["2507000", "BOSTON"],
+]);
+
+const MASSACHUSETTS_MUNICIPAL_FINANCE_CITY_SET = new Set(MASSACHUSETTS_MUNICIPAL_FINANCE_CITY_BY_GEOID.values());
+
+export function massachusettsMunicipalFinanceCityForGeoid(geoid: string | null | undefined): string | null {
+  return MASSACHUSETTS_MUNICIPAL_FINANCE_CITY_BY_GEOID.get(geoid?.trim() ?? "") ?? null;
+}
 
 export type MassachusettsOcpfOfficeMapping = {
   officeScope: MassachusettsFinanceOfficeScope;
@@ -25,6 +41,8 @@ export const MASSACHUSETTS_FINANCE_ELIGIBLE_OFFICE_KEYS = [
   "statewide::State Auditor",
   "state_upper::State Senator",
   "state_lower::State Lower Chamber Legislator",
+  "place::Mayor",
+  "place::City Council Member",
 ] as const satisfies readonly MassachusettsFinanceEligibleOfficeKey[];
 
 const MASSACHUSETTS_FINANCE_ELIGIBLE_OFFICE_KEY_SET = new Set<string>(
@@ -203,6 +221,22 @@ const MASSACHUSETTS_OCPF_STATEWIDE_OFFICE_DEFINITIONS = new Map<string, Massachu
   ],
 ]);
 
+// Municipal definitions use the district slot for the OCPF city token, so the
+// resolver's existing office+district comparison doubles as the city match.
+const MASSACHUSETTS_MUNICIPAL_MAYOR_DEFINITION: MassachusettsOcpfOfficeDefinition = {
+  officeScope: "place",
+  officeCanonicalName: "Mayor",
+  ocpfOffice: "Mayoral",
+  requiresDistrict: true,
+};
+
+const MASSACHUSETTS_MUNICIPAL_COUNCIL_DEFINITION: MassachusettsOcpfOfficeDefinition = {
+  officeScope: "place",
+  officeCanonicalName: "City Council Member",
+  ocpfOffice: "City Councilor",
+  requiresDistrict: true,
+};
+
 const MASSACHUSETTS_APP_OFFICE_DEFINITIONS: readonly MassachusettsOcpfOfficeDefinition[] = [
   ...MASSACHUSETTS_OCPF_STATEWIDE_OFFICE_DEFINITIONS.values(),
   {
@@ -217,6 +251,8 @@ const MASSACHUSETTS_APP_OFFICE_DEFINITIONS: readonly MassachusettsOcpfOfficeDefi
     ocpfOffice: "House",
     requiresDistrict: true,
   },
+  MASSACHUSETTS_MUNICIPAL_MAYOR_DEFINITION,
+  MASSACHUSETTS_MUNICIPAL_COUNCIL_DEFINITION,
 ];
 
 const MASSACHUSETTS_APP_OFFICE_TO_OCPF = new Map<string, MassachusettsOcpfOfficeDefinition>(
@@ -285,9 +321,46 @@ function splitOcpfLegislativeOfficeLabel(value: string | null | undefined): {
   };
 }
 
+// Exact observed OCPF municipal formats: "Mayoral, Boston",
+// "City Councilor, Boston". Council district vs at-large is not encoded by
+// OCPF, so the city is the only municipal identity OCPF contributes.
+function splitOcpfMunicipalOfficeLabel(value: string | null | undefined): {
+  definition: MassachusettsOcpfOfficeDefinition;
+  city: string | null;
+} | null {
+  const trimmed = value?.trim().replace(/\s+/g, " ");
+  if (!trimmed) {
+    return null;
+  }
+  const match = /^(Mayoral|City Councilor)\s*,\s*(.+)$/i.exec(trimmed);
+  if (!match?.[1]) {
+    return null;
+  }
+  return {
+    definition:
+      match[1].toLowerCase() === "mayoral"
+        ? MASSACHUSETTS_MUNICIPAL_MAYOR_DEFINITION
+        : MASSACHUSETTS_MUNICIPAL_COUNCIL_DEFINITION,
+    city: normalizeMassachusettsOcpfDistrict(match[2]),
+  };
+}
+
 export function mapMassachusettsOcpfOffice(input: {
   officeSought: string | null | undefined;
 }): MassachusettsOcpfOfficeMapping | null {
+  const municipal = splitOcpfMunicipalOfficeLabel(input.officeSought);
+  if (municipal) {
+    const officeKey = toMassachusettsFinanceOfficeKey(municipal.definition);
+    if (!officeKey || !MASSACHUSETTS_FINANCE_ELIGIBLE_OFFICE_KEY_SET.has(officeKey) || !municipal.city) {
+      return null;
+    }
+    return {
+      ...municipal.definition,
+      officeKey,
+      district: municipal.city,
+    };
+  }
+
   const legislative = splitOcpfLegislativeOfficeLabel(input.officeSought);
   if (legislative) {
     const definition: MassachusettsOcpfOfficeDefinition = legislative.ocpfOffice === "Senate"
@@ -350,8 +423,37 @@ export function toMassachusettsOcpfOfficeSearchInput(input: {
   if (definition.requiresDistrict && !district) {
     return null;
   }
+  // Municipal search inputs carry the city in the district slot; refuse cities
+  // outside the enabled allowlist so nothing links or syncs for them.
+  if (definition.officeScope === "place" && (!district || !MASSACHUSETTS_MUNICIPAL_FINANCE_CITY_SET.has(district))) {
+    return null;
+  }
   return {
     ocpfOffice: definition.ocpfOffice,
     district,
   };
+}
+
+/**
+ * Election-row eligibility for the ballot-lookup loader: statewide and
+ * legislative offices keep the office-key check; place offices additionally
+ * require a place district row whose GEOID is in the enabled municipal city
+ * allowlist.
+ */
+export function isMassachusettsFinanceEligibleElectionRow(row: {
+  district_type?: string | null;
+  geoid_compact?: string | null;
+  office_scope?: string | null;
+  office_canonical_name?: string | null;
+}): boolean {
+  const input = { officeScope: row.office_scope, officeCanonicalName: row.office_canonical_name };
+  if (!isMassachusettsFinanceEligibleOffice(input)) {
+    return false;
+  }
+  if (row.office_scope?.trim() !== "place") {
+    return true;
+  }
+  return (
+    row.district_type?.trim() === "place" && massachusettsMunicipalFinanceCityForGeoid(row.geoid_compact) !== null
+  );
 }

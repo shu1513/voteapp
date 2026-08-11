@@ -43,6 +43,30 @@ function baseLink() {
 }
 
 describe("massachusettsFinanceWriter", () => {
+  it("accepts signed cash on hand but rejects negative flow totals", async () => {
+    const db = createTransactionalMockDb();
+
+    await replaceMassachusettsCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      syncedAt: new Date("2026-06-01T00:00:00.000Z"),
+      summary: { totalReceipts: 100, totalDisbursements: 50, cashOnHand: -786.78 },
+    });
+    const summaryCall = db.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.ma_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]?.[5]).toBe(-786.78);
+
+    await expect(
+      replaceMassachusettsCandidateFinanceSnapshot({
+        db: createTransactionalMockDb(),
+        link: baseLink(),
+        syncedAt: new Date("2026-06-01T00:00:00.000Z"),
+        summary: { totalReceipts: -1 },
+      })
+    ).rejects.toThrow("total receipts must be a nonnegative number");
+  });
+
   it("upserts Massachusetts finance links and returns the link id", async () => {
     const db = createMockDb();
 

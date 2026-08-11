@@ -135,6 +135,18 @@ function normalizeNullableAmount(value: number | null | undefined, fieldName: st
   return normalizeAmount(value, fieldName);
 }
 
+// Cash on hand is the one signed summary amount: OCPF bank rows report
+// legitimately negative (overdrawn) balances (migration 232).
+function normalizeNullableSignedAmount(value: number | null | undefined, fieldName: string): number | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  if (!Number.isFinite(value)) {
+    throw new Error(`${fieldName} must be a finite number`);
+  }
+  return value;
+}
+
 function normalizeNullableCount(value: number | null | undefined): number | null {
   if (value === undefined || value === null) {
     return null;
@@ -304,7 +316,7 @@ async function upsertSummary(input: {
       normalizeNullableAmount(input.summary.totalReceipts, "total receipts"),
       normalizeNullableAmount(input.summary.directContributionTotal, "direct contribution total"),
       normalizeNullableAmount(input.summary.totalDisbursements, "total disbursements"),
-      normalizeNullableAmount(input.summary.cashOnHand, "cash on hand"),
+      normalizeNullableSignedAmount(input.summary.cashOnHand, "cash on hand"),
       normalizeNullableAmount(input.summary.outsideSupportTotal, "outside support total"),
       normalizeNullableAmount(input.summary.outsideOpposeTotal, "outside oppose total"),
       normalizeOptionalText(input.summary.sourceUrl),

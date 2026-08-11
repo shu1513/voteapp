@@ -7,6 +7,8 @@ import {
 } from "./massachusettsCandidateCommitteeResolver.js";
 import {
   MASSACHUSETTS_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  MASSACHUSETTS_MUNICIPAL_FINANCE_CITY_BY_GEOID,
+  massachusettsMunicipalFinanceCityForGeoid,
   normalizeMassachusettsOcpfDistrict,
 } from "./massachusettsFinanceEligibleOffices.js";
 import { upsertMassachusettsFinanceLink } from "./massachusettsFinanceWriter.js";
@@ -48,6 +50,8 @@ type CandidateElectionQueryRow = {
   office_scope: string;
   office_name: string;
   district: string | null;
+  district_type: string | null;
+  geoid_compact: string | null;
 };
 
 export type MassachusettsCandidateCommitteeResolver = (
@@ -67,6 +71,12 @@ function normalizeCandidateNameForStorage(value: string): string {
 }
 
 function mapCandidateElectionRow(row: CandidateElectionQueryRow): MassachusettsFinanceAutoLinkCandidateElection {
+  // Municipal rows carry the OCPF city token in the district slot; the SQL
+  // gate already restricted place rows to allowlisted GEOIDs.
+  const district =
+    row.office_scope === "place"
+      ? massachusettsMunicipalFinanceCityForGeoid(row.geoid_compact)
+      : normalizeMassachusettsOcpfDistrict(row.district);
   return {
     candidateId: row.candidate_id,
     electionId: row.election_id,
@@ -74,7 +84,7 @@ function mapCandidateElectionRow(row: CandidateElectionQueryRow): MassachusettsF
     electionYear: row.election_year,
     officeScope: row.office_scope,
     officeName: row.office_name,
-    district: normalizeMassachusettsOcpfDistrict(row.district),
+    district,
   };
 }
 
@@ -110,7 +120,9 @@ export async function listMassachusettsCandidateElectionsMissingFinanceLinks(
               ''
             )
           ELSE NULL
-        END AS district
+        END AS district,
+        district.district_type AS district_type,
+        district.geoid_compact AS geoid_compact
       FROM public.candidate_elections AS candidate_election
       JOIN public.candidates AS candidate
         ON candidate.id = candidate_election.candidate_id
@@ -127,6 +139,10 @@ export async function listMassachusettsCandidateElectionsMissingFinanceLinks(
         AND election.election_date <= ($1::date + make_interval(days => $4::int))
         AND candidate_election.status NOT IN ('withdrawn', 'lost')
         AND (office.scope || '::' || office.canonical_name) = ANY($5::text[])
+        AND (
+          office.scope <> 'place'
+          OR (district.district_type = 'place' AND district.geoid_compact = ANY($6::text[]))
+        )
         AND COALESCE(NULLIF(trim(candidate.display_name), ''), NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')) IS NOT NULL
         AND NOT EXISTS (
           SELECT 1
@@ -144,6 +160,7 @@ export async function listMassachusettsCandidateElectionsMissingFinanceLinks(
       input.electionLookbackDays,
       input.electionLookaheadDays,
       [...MASSACHUSETTS_FINANCE_ELIGIBLE_OFFICE_KEYS],
+      [...MASSACHUSETTS_MUNICIPAL_FINANCE_CITY_BY_GEOID.keys()],
     ]
   );
 
