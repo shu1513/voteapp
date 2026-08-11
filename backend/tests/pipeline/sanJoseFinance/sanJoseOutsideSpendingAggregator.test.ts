@@ -99,6 +99,72 @@ describe("aggregateSanJoseOutsideSpending", () => {
     expect(result.diagnostics.duplicateReportRowsExcluded).toBe(1);
   });
 
+  it("a correcting re-report replaces the original — amount, direction, and name-layout corrections never add", () => {
+    // A later report of the same (spender, Tran_ID, canonical target) wins
+    // regardless of the mutable fields: $100 corrected to $120 must total
+    // $120, not $220; same for a SUPPORT→OPPOSE fix and a whole-name row
+    // re-reported with the name split across NamL/NamF.
+    const amountFix = aggregate({
+      s496: [
+        s496({ eFilingId: "1", rptDate: "2026-04-01", tranId: "C1", amountCents: 100_00 }),
+        s496({ eFilingId: "2", rptDate: "2026-05-01", tranId: "C1", amountCents: 120_00 }),
+      ],
+    });
+    expect(amountFix.supportTotalCents).toBe(120_00);
+    expect(amountFix.diagnostics.duplicateReportRowsExcluded).toBe(1);
+    const directionFix = aggregate({
+      s496: [
+        s496({ eFilingId: "1", rptDate: "2026-04-01", tranId: "C2", suppOppCd: "SUPPORT" }),
+        s496({ eFilingId: "2", rptDate: "2026-05-01", tranId: "C2", suppOppCd: "OPPOSE" }),
+      ],
+    });
+    expect(directionFix.supportTotalCents).toBe(0);
+    expect(directionFix.opposeTotalCents).toBe(100_00);
+    const layoutFix = aggregate({
+      s496: [
+        s496({ eFilingId: "1", rptDate: "2026-04-01", tranId: "C3", candidateLastName: "Peter Ortiz" }),
+        s496({
+          eFilingId: "2",
+          rptDate: "2026-05-01",
+          tranId: "C3",
+          candidateLastName: "Ortiz",
+          candidateFirstName: "Peter",
+        }),
+      ],
+    });
+    expect(layoutFix.supportTotalCents).toBe(100_00);
+    expect(layoutFix.diagnostics.duplicateReportRowsExcluded).toBe(1);
+  });
+
+  it("two Pending committees sharing a Tran_ID are different spenders, never deduped against each other", () => {
+    // Tran_IDs are committee-local; "Pending" is not an identity. Two ID-less
+    // spenders both using T1 for a $100 Ortiz mailer must both count.
+    const result = aggregate({
+      s496: [
+        s496({ eFilingId: "1", tranId: "T1", filerId: "Pending", filerName: "First Pending Committee" }),
+        s496({ eFilingId: "2", tranId: "T1", filerId: "Pending", filerName: "Second Pending Committee" }),
+      ],
+    });
+    expect(result.supportTotalCents).toBe(200_00);
+    expect(result.diagnostics.duplicateReportRowsExcluded).toBe(0);
+  });
+
+  it("dedupes Schedule-D-only rows against each other (re-reported 460 filings)", () => {
+    // The export re-reports whole 460 filings (duplicate-period chains), so a
+    // 460-only IE can appear under two e-filings. One expenditure, once.
+    const result = aggregate({
+      scheduleD: [
+        dRow({ eFilingId: "1", rptDate: "2026-04-01", tranId: "D1", amountCents: 100_00 }),
+        dRow({ eFilingId: "2", rptDate: "2026-05-01", tranId: "D1", amountCents: 100_00 }),
+      ],
+    });
+    expect(result.supportTotalCents).toBe(100_00);
+    expect(result.diagnostics).toMatchObject({
+      duplicateReportRowsExcluded: 1,
+      scheduleDRowsAdded: 1,
+    });
+  });
+
   it("keeps same-Tran_ID rows that name different targets, and counts multi-candidate mailer rows once each", () => {
     // Multi-candidate mailers were verified to carry DISTINCT Tran_IDs per
     // candidate; a same-key row naming a DIFFERENT candidate is information,
