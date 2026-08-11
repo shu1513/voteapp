@@ -44,7 +44,12 @@ async function main(): Promise<void> {
         WHERE q.question_norm IS NOT NULL
         GROUP BY 1, 2, 3
         ON CONFLICT (week, question_norm, outcome)
-          DO UPDATE SET count = EXCLUDED.count
+          -- GREATEST, not overwrite: once the 90-day purge nulls part of a
+          -- week's rows, that week recomputes SMALLER from the survivors — a
+          -- plain overwrite would permanently shrink the durable aggregate
+          -- the purge exists to preserve. Counts only grow while rows live,
+          -- so the stored peak is the true weekly count.
+          DO UPDATE SET count = GREATEST(chatbot.question_stats.count, EXCLUDED.count)
       `,
       [SUPPRESSION_MIN_WEEKLY_COUNT]
     );

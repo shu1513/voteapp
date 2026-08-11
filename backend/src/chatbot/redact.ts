@@ -24,7 +24,10 @@ export function redactQuestion(question: string): string {
 
 /** Redacted + normalized form stored as chatbot.questions.question_norm and
  * aggregated by the report script: lowercase, collapsed whitespace, trailing
- * punctuation dropped so trivial variants count as one question. */
+ * punctuation dropped so trivial variants count as one question. The 500-unit
+ * cap is also a storage bound: question_norm is part of question_stats'
+ * btree primary key, and 500 UTF-16 units is at most 2000 UTF-8 bytes —
+ * safely under the ~2704-byte btree tuple limit. */
 export function normalizeQuestion(question: string): string {
   return redactQuestion(question)
     .toLowerCase()

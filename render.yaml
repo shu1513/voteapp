@@ -343,8 +343,11 @@ services:
   #      (use fromService name: voteapp-embeddings, type: pserv,
   #      property: hostport — private-network reachable because pserv can
   #      RECEIVE private traffic even from free web services).
-  #   3. On voteapp-ssr, add VITE_CHATBOT_ENABLED=true (nav entry) and
-  #      redeploy so the flag bakes into the bundle.
+  #   3. On voteapp-ssr, add VITE_CHATBOT_ENABLED referencing the API's flag
+  #      (fromService name: voteapp-api, type: web, envVarKey: CHATBOT_ENABLED)
+  #      so the two services cannot drift, then redeploy so the flag bakes
+  #      into the bundle. Note the coupling is loose by design: a mismatch
+  #      degrades gracefully (nav hidden, or page shows "not available").
   #   4. Run `npm run chatbot:reindex` against the prod DB (needs the TEI
   #      URL) to build the first index generation.
   # Verify the container port at enable time: the TEI cpu image listens on 80

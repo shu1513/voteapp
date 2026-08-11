@@ -15,6 +15,7 @@ export type IntentKind =
   | "ballot_lookup"        // "what's on my ballot" → deep link
   | "where_to_vote"        // polling place → state link or deep link
   | "election_date"        // "when is the 2026 general election"
+  | "other_election_date"  // primary/runoff/special date with a state named
   | "voter_registration"   // how/deadline to register
   | "voter_id"             // ID requirements
   | "mail_voting"          // vote by mail / absentee
@@ -47,10 +48,13 @@ const KNOWN_ABBREVIATIONS = new Set(Object.values(STATE_ABBREVIATIONS));
 
 /**
  * Two-letter state from the question, or null. Full names win over
- * abbreviations; abbreviations must be standalone uppercase tokens and are
- * skipped right before city-ish words ("LA mayor" is Los Angeles, not
- * Louisiana). "Washington" alone means the state here — the corpus is
- * elections, where DC races say "District of Columbia".
+ * abbreviations. Abbreviations must be standalone uppercase tokens AND carry
+ * place context — preceded by "in/for/from/near", a comma, or a capitalized
+ * word ("Atlanta GA") — because many are ordinary words in caps: "voter ID"
+ * is not Idaho, "OK, who is running?" is not Oklahoma. Tokens right before
+ * city-ish words are skipped too ("LA mayor" is Los Angeles, not Louisiana).
+ * "Washington" alone means the state here — the corpus is elections, where
+ * DC races say "District of Columbia".
  */
 export function detectStateInQuestion(question: string): string | null {
   const lower = question.toLowerCase();
@@ -64,7 +68,13 @@ export function detectStateInQuestion(question: string): string | null {
   const abbrevMatches = question.matchAll(/\b([A-Z]{2})\b(?!\s+(?:mayor|city|county|metro|unified))/g);
   for (const match of abbrevMatches) {
     const abbrev = match[1] as string;
-    if (KNOWN_ABBREVIATIONS.has(abbrev)) {
+    if (!KNOWN_ABBREVIATIONS.has(abbrev)) {
+      continue;
+    }
+    const before = question.slice(0, match.index).trimEnd();
+    const hasPlaceContext =
+      /(?:\b(?:in|for|from|near)|,|\b[A-Z][a-z]+)$/.test(before);
+    if (hasPlaceContext) {
       return abbrev;
     }
   }
@@ -118,16 +128,19 @@ export function detectIntent(question: string): IntentMatch | null {
   if (/\b(?:where\s+(?:do|can)\s+i\s+vote|polling\s+(?:place|location)|vote\s+in\s+person)\b/i.test(q)) {
     return { kind: "where_to_vote", state };
   }
+  // Primary/runoff/special date asks must NEVER receive the fixed general-
+  // election date ("When is the Texas primary?" ≠ November 3) — checked
+  // before the general date frame because both match "when is … election".
+  // With a state → template pointing at official resources, no invented
+  // date; without one → clarify (rule 7 + rule 6: time-sensitive, never
+  // guessed).
+  if (/\bwhen\s+(?:is|are)\b.{0,60}\b(?:runoff|primar(?:y|ies)|special\s+election)\b/i.test(q)) {
+    return state ? { kind: "other_election_date", state } : { kind: "needs_scope", state };
+  }
   // Deliberately requires the "when is" frame: a bare "election day" mention
   // ("what will the weather be on election day?") is not a date question.
   if (/\bwhen\s+is\b.{0,40}\belection\b/i.test(q)) {
     return { kind: "election_date", state };
-  }
-  // Runoff/primary dates differ by place; without a state (or any longer
-  // context for retrieval to scope on) the only honest deterministic answer
-  // is a clarifying question (rule 7 + rule 6: time-sensitive, never guessed).
-  if (!state && /\bwhen\s+is\s+(?:the\s+)?(?:runoff|primary)\b/i.test(q)) {
-    return { kind: "needs_scope", state };
   }
   if (/\bregister(?:ing|ed)?\s+to\s+vote\b|\bvoter\s+registration\b|\bregistration\s+deadline\b/i.test(q)) {
     return { kind: "voter_registration", state };

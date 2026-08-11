@@ -250,6 +250,27 @@ async function renderIntentAnswer(db: Pool, intent: IntentMatch): Promise<AskRes
     return { outcome: "template", answer: GENERAL_ELECTION_DATE_ANSWER, results: [BALLOT_CARD], data_current_as_of: null };
   }
 
+  // Primary/runoff/special dates vary by race and are not in the Nov-2026
+  // corpus — never serve the general-election date for them (rule 6).
+  if (intent.kind === "other_election_date") {
+    const stateName = resources?.state_name ?? "your state";
+    return {
+      outcome: "template",
+      answer: `Primary, runoff, and special election dates vary by state and race, and our data covers the November 2026 general election. Check ${stateName}'s official election resources for those dates.`,
+      results: resources
+        ? [
+            {
+              title: `${resources.state_name} official voting information`,
+              url: resources.voter_registration_url,
+              snippet: "Official state resource.",
+              source_type: "official_state_resource",
+            },
+          ]
+        : [BALLOT_CARD],
+      data_current_as_of: null,
+    };
+  }
+
   if (intent.kind === "where_to_vote") {
     if (resources) {
       return {

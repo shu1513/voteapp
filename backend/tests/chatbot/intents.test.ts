@@ -49,6 +49,22 @@ describe("chatbot intent router vs the golden set", () => {
   });
 });
 
+describe("primary/runoff date questions never get the general-election date", () => {
+  it("routes state-scoped primary/runoff date asks to other_election_date", () => {
+    expect(detectIntent("When is the Texas primary election?")).toEqual({ kind: "other_election_date", state: "TX" });
+    expect(detectIntent("When is the runoff in Georgia?")).toEqual({ kind: "other_election_date", state: "GA" });
+  });
+
+  it("routes scopeless primary/runoff date asks to needs_scope (clarify)", () => {
+    expect(detectIntent("When is the primary?")).toEqual({ kind: "needs_scope", state: null });
+    expect(detectIntent("When is the runoff?")).toEqual({ kind: "needs_scope", state: null });
+  });
+
+  it("keeps plain general-election date asks on the fixed-date template", () => {
+    expect(detectIntent("When is the 2026 general election?")?.kind).toBe("election_date");
+  });
+});
+
 describe("detectStateInQuestion", () => {
   it("prefers full state names and handles multi-word names", () => {
     expect(detectStateInQuestion("register to vote in North Carolina")).toBe("NC");
@@ -56,10 +72,18 @@ describe("detectStateInQuestion", () => {
     expect(detectStateInQuestion("what about virginia?")).toBe("VA");
   });
 
-  it("accepts standalone uppercase abbreviations but not city-ish LA", () => {
+  it("accepts abbreviations only with place context, never city-ish LA", () => {
     expect(detectStateInQuestion("Atlanta GA 30303")).toBe("GA");
+    expect(detectStateInQuestion("who is running in GA?")).toBe("GA");
     expect(detectStateInQuestion("the LA mayor race")).toBeNull();
     expect(detectStateInQuestion("who is running in ga?")).toBeNull();
+  });
+
+  it("does not read caps-words as states without place context", () => {
+    // "voter ID" is not Idaho; "OK," is not Oklahoma; "HI" greeting is not Hawaii.
+    expect(detectStateInQuestion("Do I need voter ID to vote?")).toBeNull();
+    expect(detectStateInQuestion("OK, who is running for sheriff?")).toBeNull();
+    expect(detectStateInQuestion("HI there, when is the election?")).toBeNull();
   });
 
   it("returns null when no state is named", () => {

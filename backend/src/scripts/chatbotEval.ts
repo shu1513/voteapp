@@ -61,11 +61,28 @@ async function main(): Promise<void> {
       list.push(result);
       byExpected.set(result.expected, list);
     }
-    const rate = (list: CaseResult[] | undefined): string => {
-      if (!list || list.length === 0) return "n/a";
-      const passed = list.filter((r) => r.pass).length;
-      return `${passed}/${list.length} (${((passed / list.length) * 100).toFixed(0)}%)`;
+    // Exit code follows the BEHAVIOR.md thresholds, not perfection: 94%
+    // recall PASSES the >=0.85 gate and must exit 0, or a CI wiring of this
+    // script would fail every passing run. Individual failures still print
+    // for diagnosis.
+    const GATE_THRESHOLDS: Record<string, number> = {
+      retrieval: 0.85,
+      template: 1,
+      refuse_policy: 1,
+      clarify: 1,
+      refuse_no_data: 0.9,
     };
+    const gateReport: Record<string, string> = {};
+    let allGatesPass = true;
+    for (const [expected, threshold] of Object.entries(GATE_THRESHOLDS)) {
+      const list = byExpected.get(expected) ?? [];
+      const passed = list.filter((r) => r.pass).length;
+      const ratio = list.length === 0 ? 1 : passed / list.length;
+      const ok = ratio >= threshold;
+      allGatesPass &&= ok;
+      gateReport[`${expected} (>=${threshold})`] =
+        list.length === 0 ? "n/a" : `${passed}/${list.length} (${(ratio * 100).toFixed(0)}%) ${ok ? "PASS" : "FAIL"}`;
+    }
 
     const failures = results.filter((result) => !result.pass);
     console.log(
@@ -73,20 +90,15 @@ async function main(): Promise<void> {
         {
           generation_id: generation.id,
           vector_branch: embeddings ? "hybrid" : "KEYWORD-ONLY",
-          gates: {
-            "recall@5 retrieval (>=0.85)": rate(byExpected.get("retrieval")),
-            "template routing (=1.00)": rate(byExpected.get("template")),
-            "refuse_policy routing (=1.00)": rate(byExpected.get("refuse_policy")),
-            "clarify (=1.00)": rate(byExpected.get("clarify")),
-            "refuse_no_data (>=0.90)": rate(byExpected.get("refuse_no_data")),
-          },
+          gates: gateReport,
+          gates_pass: allGatesPass,
           failures: failures.map((f) => ({ id: f.id, expected: f.expected, actual: f.actual, detail: f.detail })),
         },
         null,
         2
       )
     );
-    if (failures.length > 0) {
+    if (!allGatesPass) {
       process.exitCode = 1;
     }
   } finally {

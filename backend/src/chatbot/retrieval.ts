@@ -122,8 +122,16 @@ type EntityRow = {
 
 /** Fuzzy candidate-name resolution: word_similarity finds the best-matching
  * span of the question for each name, so "how much has jon ossoff raised"
- * scores Jon Ossoff highly. Seq scan over ~9k candidates, a few ms. */
-export async function resolveCandidateEntities(db: Pool, question: string): Promise<CandidateEntityMatch[]> {
+ * scores Jon Ossoff highly. Restricted to candidates the ACTIVE GENERATION
+ * actually indexed: a name that exists only outside the corpus (old race,
+ * out-of-cohort) must not pass the entity gate — the gate would then serve
+ * nearest-neighbor chunks about someone else. Hash join over ~30k chunk
+ * rows + ~9k candidates, a few ms. */
+export async function resolveCandidateEntities(
+  db: Pool,
+  generationId: string,
+  question: string
+): Promise<CandidateEntityMatch[]> {
   const result = await db.query<EntityRow>(
     `
       SELECT
@@ -143,6 +151,13 @@ export async function resolveCandidateEntities(db: Pool, question: string): Prom
           $1
         )::float8 AS similarity
       FROM public.candidates AS candidate
+      JOIN (
+        SELECT DISTINCT source_id
+        FROM chatbot.chunks
+        WHERE generation_id = $3::uuid
+          AND source_type = 'candidate_profile'
+      ) AS indexed
+        ON indexed.source_id = candidate.id
       WHERE candidate.deleted_at IS NULL
         AND candidate.merged_into_candidate_id IS NULL
         AND word_similarity(
@@ -155,7 +170,7 @@ export async function resolveCandidateEntities(db: Pool, question: string): Prom
       ORDER BY similarity DESC, display_name ASC
       LIMIT 10
     `,
-    [question, ENTITY_MATCH_MIN_SIMILARITY]
+    [question, ENTITY_MATCH_MIN_SIMILARITY, generationId]
   );
   return result.rows.map((row) => ({
     candidateId: row.candidate_id,
@@ -185,16 +200,23 @@ function firstLastKey(displayName: string): string {
  * 2+ candidates sharing its first+last name ("Michael Smith" in GA,
  * "Michael L. Smith" in OH, "Michael A. Smith" in IL) is ambiguous. A unique
  * strong match ("Mike Collins" = 1.0) is not, even when unrelated "Mike
- * Conway"s tie each other lower down. */
-export function findAmbiguousEntities(matches: readonly CandidateEntityMatch[]): CandidateEntityMatch[] {
+ * Conway"s tie each other lower down. A known scope state disambiguates
+ * first: "Michael Smith in Georgia" names exactly one of them. */
+export function findAmbiguousEntities(
+  matches: readonly CandidateEntityMatch[],
+  scopeState: string | null = null
+): CandidateEntityMatch[] {
   const best = matches[0];
   if (!best || best.similarity < GATE_MIN_ENTITY_SIMILARITY) {
     return [];
   }
   const bestKey = firstLastKey(best.displayName);
-  const sameName = matches.filter(
+  let sameName = matches.filter(
     (match) => match.similarity >= ENTITY_SAME_NAME_MIN_SIMILARITY && firstLastKey(match.displayName) === bestKey
   );
+  if (scopeState && sameName.some((match) => match.state === scopeState)) {
+    sameName = sameName.filter((match) => match.state === scopeState);
+  }
   return sameName.length >= 2 ? sameName : [];
 }
 
@@ -246,8 +268,8 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   const { db, embeddings, generationId, question } = options;
   const scopeState = options.scopeState ?? null;
 
-  const entityMatches = await resolveCandidateEntities(db, question);
-  const ambiguousEntities = findAmbiguousEntities(entityMatches);
+  const entityMatches = await resolveCandidateEntities(db, generationId, question);
+  const ambiguousEntities = findAmbiguousEntities(entityMatches, scopeState);
   const bestEntitySimilarity = entityMatches[0]?.similarity ?? 0;
 
   // Branch A: lexical. plainto_tsquery sanitizes arbitrary user text; its

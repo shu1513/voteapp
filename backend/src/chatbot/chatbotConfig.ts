@@ -27,8 +27,10 @@ export function readChatbotConfigFromEnv(env: NodeJS.ProcessEnv = process.env): 
   const timeoutRaw = env.CHATBOT_EMBEDDINGS_TIMEOUT_MS?.trim();
   let embeddingsTimeoutMs = DEFAULT_CHATBOT_EMBEDDINGS_TIMEOUT_MS;
   if (timeoutRaw) {
-    const parsed = Number.parseInt(timeoutRaw, 10);
-    if (!Number.isInteger(parsed) || parsed <= 0) {
+    // Digits-only before conversion: parseInt would accept "250ms" as 250
+    // and "1.5" as 1, silently masking a config typo.
+    const parsed = /^\d+$/.test(timeoutRaw) ? Number(timeoutRaw) : Number.NaN;
+    if (!Number.isSafeInteger(parsed) || parsed <= 0) {
       throw new Error(`Invalid CHATBOT_EMBEDDINGS_TIMEOUT_MS: ${timeoutRaw}`);
     }
     embeddingsTimeoutMs = parsed;

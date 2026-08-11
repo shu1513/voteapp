@@ -17,6 +17,12 @@ import { toVectorLiteral, type EmbeddingsClient } from "./embeddingsClient.js";
 const EMBED_BATCH_SIZE = 32;
 const INSERT_BATCH_SIZE = 200;
 
+// Advisory lock so two reindex runs cannot interleave: without it, run B's
+// carcass cleanup deletes run A's 'building' generation and A's flip then
+// "activates" a deleted row — retiring the active generation and activating
+// nothing. Arbitrary app-unique key (dbMigrate uses 780_001_001).
+const REINDEX_LOCK_KEY = 780_001_002;
+
 export type ReindexProgress = {
   phase: "extract" | "embed" | "insert" | "flip" | "cleanup";
   done: number;
@@ -71,27 +77,65 @@ export async function reindexChatbotCorpus(options: ReindexOptions): Promise<Rei
     throw new ReindexValidationError("no elections selected; refusing to build an empty generation");
   }
 
+  // Serialize runs: try-lock fails fast instead of queueing a second 20-min
+  // build behind the first. Held on a dedicated connection for the whole run
+  // (advisory locks are session-scoped).
+  const lockClient = await db.connect();
+  try {
+    const lock = await lockClient.query<{ locked: boolean }>(`SELECT pg_try_advisory_lock($1) AS locked`, [
+      REINDEX_LOCK_KEY,
+    ]);
+    if (!lock.rows[0]?.locked) {
+      throw new ReindexValidationError("another chatbot reindex is already running (advisory lock held)");
+    }
+    return await runReindex(options);
+  } finally {
+    try {
+      await lockClient.query(`SELECT pg_advisory_unlock($1)`, [REINDEX_LOCK_KEY]);
+    } catch {
+      // best-effort; releasing the connection drops the lock anyway
+    }
+    lockClient.release();
+  }
+}
+
+async function runReindex(options: ReindexOptions): Promise<ReindexResult> {
+  const { db, embeddings, electionIds, onProgress } = options;
+
   // 1. Extract chunks through the canonical election detail reader (same
   // filters as the public API: withdrawn candidacies and deleted/merged
   // candidates never appear).
   const drafts: ChunkDraft[] = [];
+  const missingElectionIds: string[] = [];
   let processed = 0;
   for (const electionId of electionIds) {
     const detail = await lookupElectionDetailById(db, electionId);
     if (detail) {
       drafts.push(...extractChunksFromElection(detail));
+    } else {
+      missingElectionIds.push(electionId);
     }
     processed += 1;
     if (processed % 200 === 0 || processed === electionIds.length) {
       onProgress?.({ phase: "extract", done: processed, total: electionIds.length });
     }
   }
-  const chunks = dedupeChunkDrafts(drafts);
-  if (chunks.length < electionIds.length) {
-    // Every election produces at least its own election chunk, so fewer
-    // chunks than elections means the extract loop lost data.
+  // Every selected election must load: a null here means the reader lost an
+  // election the cohort query saw moments ago, and a total-chunk comparison
+  // could not catch it (other elections' profile/record/finance chunks mask
+  // a missing one).
+  if (missingElectionIds.length > 0) {
     throw new ReindexValidationError(
-      `extracted only ${chunks.length} chunks from ${electionIds.length} elections`
+      `${missingElectionIds.length} of ${electionIds.length} elections failed to load: ${missingElectionIds
+        .slice(0, 10)
+        .join(", ")}${missingElectionIds.length > 10 ? ", …" : ""}`
+    );
+  }
+  const chunks = dedupeChunkDrafts(drafts);
+  const electionChunkCount = chunks.filter((chunk) => chunk.sourceType === "election").length;
+  if (electionChunkCount !== electionIds.length) {
+    throw new ReindexValidationError(
+      `extracted ${electionChunkCount} election chunks for ${electionIds.length} elections`
     );
   }
 
@@ -173,10 +217,16 @@ export async function reindexChatbotCorpus(options: ReindexOptions): Promise<Rei
       `UPDATE chatbot.index_generations SET status = 'retired' WHERE status = 'active' RETURNING id::text AS id`
     );
     justRetiredId = retired.rows[0]?.id ?? null;
-    await client.query(
+    const activated = await client.query(
       `UPDATE chatbot.index_generations SET status = 'active', activated_at = now() WHERE id = $1::uuid`,
       [generationId]
     );
+    // Zero rows = our generation vanished (it would take a concurrent run
+    // past the advisory lock, or manual deletion); committing would retire
+    // the active generation and activate nothing.
+    if (activated.rowCount !== 1) {
+      throw new ReindexValidationError(`generation ${generationId} disappeared before activation`);
+    }
     await client.query("COMMIT");
   } catch (error) {
     try {

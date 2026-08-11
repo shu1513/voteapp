@@ -589,6 +589,13 @@ async function dispatchApiRequest(
   }
 
   if (url.pathname === CHATBOT_ASK_PATH) {
+    // 404 (not 500, and BEFORE the method check so no 405 leaks either) when
+    // unwired: CHATBOT_ENABLED=false must hide the feature exactly like an
+    // unknown path, per the isolation contract.
+    if (!options.askChatbot) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Not found", corsHeaders));
+      return;
+    }
     if (request.method !== "POST") {
       sendApiResponse(
         response,
@@ -597,12 +604,6 @@ async function dispatchApiRequest(
           allow: "POST",
         })
       );
-      return;
-    }
-    // 404 (not 500) when unwired: CHATBOT_ENABLED=false must hide the
-    // feature exactly like an unknown path, per the isolation contract.
-    if (!options.askChatbot) {
-      sendApiResponse(response, toErrorResponse(404, "not_found", "Not found", corsHeaders));
       return;
     }
 
