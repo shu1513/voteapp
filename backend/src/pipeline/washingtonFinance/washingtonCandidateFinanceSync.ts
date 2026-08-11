@@ -49,6 +49,8 @@ type WashingtonPdcDataClient = {
       officeName: string;
       electionYear: number;
       legislativeDistrict?: string | null;
+      jurisdiction?: string | null;
+      position?: string | null;
     },
     options?: WashingtonPdcClientOptions
   ) => Promise<WashingtonCandidateCommitteeResolution>;
@@ -95,6 +97,11 @@ export type WashingtonCandidateFinanceSyncInput = {
   officeScope: string;
   officeName: string;
   legislativeDistrict?: string | null;
+  // Place-scope (city) resolution inputs: the VoteApp district name and the
+  // seat parsed from the ballot title. Unused when a trustedCommittee is
+  // supplied (hard IDs carry identity).
+  jurisdiction?: string | null;
+  position?: string | null;
   sourceUrl?: string | null;
   pdcClientOptions?: WashingtonPdcClientOptions;
   pdcClient?: Partial<WashingtonPdcDataClient>;
@@ -649,6 +656,8 @@ export async function syncWashingtonCandidateFinance(
     officeScope,
     officeCanonicalName: officeName,
     legislativeDistrict: input.legislativeDistrict,
+    jurisdiction: input.jurisdiction,
+    position: input.position,
   });
 
   const initialResolution = input.trustedCommittee
@@ -660,6 +669,8 @@ export async function syncWashingtonCandidateFinance(
           officeName,
           electionYear,
           legislativeDistrict: input.legislativeDistrict,
+          jurisdiction: input.jurisdiction,
+          position: input.position,
         },
         input.pdcClientOptions
       );
@@ -736,7 +747,9 @@ export async function syncWashingtonCandidateFinance(
     candidateName,
     electionYear,
     officeName,
-    legislativeDistrict: input.legislativeDistrict,
+    // Legislative links store the LD number; place links store the normalized
+    // city (matches the auto-link writer).
+    legislativeDistrict: input.legislativeDistrict ?? officeSearch?.jurisdiction ?? null,
     resolution,
     sourceUrl: input.sourceUrl,
     verifiedAt: syncedAt,

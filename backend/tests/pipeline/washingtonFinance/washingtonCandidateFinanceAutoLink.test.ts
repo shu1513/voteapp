@@ -44,6 +44,8 @@ describe("washingtonCandidateFinanceAutoLink", () => {
         office_scope: "statewide",
         office_name: "Governor",
         legislative_district: null,
+        district_name: "Washington",
+        ballot_title: "Governor",
       },
       {
         candidate_id: "33333333-3333-4333-8333-333333333333",
@@ -53,6 +55,19 @@ describe("washingtonCandidateFinanceAutoLink", () => {
         office_scope: "state_lower",
         office_name: "State Lower Chamber Legislator",
         legislative_district: "9",
+        district_name: "Legislative District 9, Washington",
+        ballot_title: "State Representative Pos. 1, Legislative District No. 9",
+      },
+      {
+        candidate_id: "55555555-5555-4555-8555-555555555555",
+        election_id: "66666666-6666-4666-8666-666666666666",
+        candidate_name: "Nilu Jenks",
+        election_year: 2026,
+        office_scope: "place",
+        office_name: "City Council Member",
+        legislative_district: null,
+        district_name: "Seattle city, Washington",
+        ballot_title: "City of Seattle Council District No. 5",
       },
     ]);
 
@@ -72,6 +87,8 @@ describe("washingtonCandidateFinanceAutoLink", () => {
         officeScope: "statewide",
         officeName: "Governor",
         legislativeDistrict: null,
+        jurisdiction: null,
+        position: null,
       },
       {
         candidateId: "33333333-3333-4333-8333-333333333333",
@@ -81,6 +98,19 @@ describe("washingtonCandidateFinanceAutoLink", () => {
         officeScope: "state_lower",
         officeName: "State Lower Chamber Legislator",
         legislativeDistrict: "09",
+        jurisdiction: null,
+        position: null,
+      },
+      {
+        candidateId: "55555555-5555-4555-8555-555555555555",
+        electionId: "66666666-6666-4666-8666-666666666666",
+        candidateName: "Nilu Jenks",
+        electionYear: 2026,
+        officeScope: "place",
+        officeName: "City Council Member",
+        legislativeDistrict: null,
+        jurisdiction: "SEATTLE",
+        position: "5",
       },
     ]);
 
@@ -102,6 +132,10 @@ describe("washingtonCandidateFinanceAutoLink", () => {
         "statewide::Attorney General",
         "state_upper::State Senator",
         "state_lower::State Lower Chamber Legislator",
+        "place::Mayor",
+        "place::City Council Member",
+        "place::Municipal Attorney",
+        "place::Place Level Judge",
       ]),
     ]);
     expect(db.query.mock.calls[0]?.[1]?.[4]).not.toContain("statewide::United States Senator");
@@ -124,6 +158,8 @@ describe("washingtonCandidateFinanceAutoLink", () => {
           officeScope: "statewide",
           officeName: "Governor",
           legislativeDistrict: null,
+          jurisdiction: null,
+          position: null,
         },
       })
     ).resolves.toEqual({
@@ -141,6 +177,8 @@ describe("washingtonCandidateFinanceAutoLink", () => {
         officeName: "Governor",
         electionYear: 2024,
         legislativeDistrict: null,
+        jurisdiction: null,
+        position: null,
       },
       undefined
     );
@@ -157,6 +195,72 @@ describe("washingtonCandidateFinanceAutoLink", () => {
       "32311",
       "Robert W. Ferguson (Bob Ferguson)",
       "689556",
+      "active",
+      "pdc_api",
+      SOURCE_URL,
+      "2026-06-01T00:00:00.000Z",
+    ]);
+  });
+
+  it("links a place-scope candidate election with the city stored as the link district", async () => {
+    const db = createMockDb([{ id: "link-1" }]);
+    const resolveCandidateCommittee = vi.fn(async () =>
+      matchedResolution({
+        filerId: "JENKN--778",
+        committeeId: "40861",
+        committeeName: "Neeloofar Jenks (Nilu Jenks)",
+        candidacyId: "712345",
+      })
+    );
+
+    await expect(
+      autoLinkWashingtonCandidateFinanceForCandidateElection({
+        db,
+        now: NOW,
+        resolveCandidateCommittee,
+        candidateElection: {
+          candidateId: CANDIDATE_ID,
+          electionId: ELECTION_ID,
+          candidateName: "Nilu Jenks",
+          electionYear: 2026,
+          officeScope: "place",
+          officeName: "City Council Member",
+          legislativeDistrict: null,
+          jurisdiction: "SEATTLE",
+          position: "5",
+        },
+      })
+    ).resolves.toEqual({
+      candidateId: CANDIDATE_ID,
+      electionId: ELECTION_ID,
+      status: "linked",
+      filerId: "JENKN--778",
+      committeeId: "40861",
+    });
+
+    expect(resolveCandidateCommittee).toHaveBeenCalledWith(
+      {
+        candidateName: "Nilu Jenks",
+        officeScope: "place",
+        officeName: "City Council Member",
+        electionYear: 2026,
+        legislativeDistrict: null,
+        jurisdiction: "SEATTLE",
+        position: "5",
+      },
+      undefined
+    );
+    expect(db.query.mock.calls[0]?.[1]).toEqual([
+      CANDIDATE_ID,
+      ELECTION_ID,
+      2026,
+      "NILU JENKS",
+      "City Council Member",
+      "SEATTLE",
+      "JENKN--778",
+      "40861",
+      "Neeloofar Jenks (Nilu Jenks)",
+      "712345",
       "active",
       "pdc_api",
       SOURCE_URL,
@@ -187,6 +291,8 @@ describe("washingtonCandidateFinanceAutoLink", () => {
           officeScope: "statewide",
           officeName: "Governor",
           legislativeDistrict: null,
+          jurisdiction: null,
+          position: null,
         },
       })
     ).resolves.toEqual({
@@ -219,6 +325,8 @@ describe("washingtonCandidateFinanceAutoLink", () => {
             officeScope: "statewide",
             officeName: "Governor",
             legislativeDistrict: null,
+            jurisdiction: null,
+            position: null,
           },
         ],
         resolveCandidateCommittee,
@@ -264,6 +372,8 @@ describe("washingtonCandidateFinanceAutoLink", () => {
               officeScope: "statewide",
               officeName: "Governor",
               legislativeDistrict: null,
+              jurisdiction: null,
+              position: null,
             },
             {
               candidateId: "33333333-3333-4333-8333-333333333333",
@@ -273,6 +383,8 @@ describe("washingtonCandidateFinanceAutoLink", () => {
               officeScope: "statewide",
               officeName: "Governor",
               legislativeDistrict: null,
+              jurisdiction: null,
+              position: null,
             },
           ],
           resolveCandidateCommittee,

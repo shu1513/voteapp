@@ -5,9 +5,12 @@ import {
   type WashingtonPdcClientOptions,
 } from "./washingtonPdcClient.js";
 import {
+  isWashingtonFinanceEligibleOffice,
+  normalizeWashingtonPdcJurisdiction,
   normalizeWashingtonPdcLegislativeDistrict,
   mapWashingtonPdcOffice,
   toWashingtonPdcOfficeSearchInput,
+  type WashingtonPdcOfficeSearchInput,
 } from "./washingtonFinanceEligibleOffices.js";
 
 export type WashingtonCandidateCommitteeResolverInput = {
@@ -16,6 +19,12 @@ export type WashingtonCandidateCommitteeResolverInput = {
   officeName: string;
   electionYear: number;
   legislativeDistrict?: string | null;
+  // Place-scope (city) offices: the VoteApp district name ("Seattle city,
+  // Washington") and the seat parsed from the ballot title. Never an election
+  // date — PDC candidacy rows carry the general date, so a primary-election
+  // row must still match.
+  jurisdiction?: string | null;
+  position?: string | null;
   summaries: readonly WashingtonPdcCandidateSummary[];
 };
 
@@ -44,6 +53,7 @@ export type WashingtonCandidateCommitteeResolution =
         | "missing_candidate_name"
         | "unsupported_office"
         | "missing_legislative_district"
+        | "missing_jurisdiction"
         | "no_candidate_committee_match";
       candidateNameNormalized: string;
       officeNameNormalized: string;
@@ -179,18 +189,30 @@ function isWithdrawnOrInactiveCandidate(summary: WashingtonPdcCandidateSummary):
 
 function summaryMatchesExpectedOffice(input: {
   summary: WashingtonPdcCandidateSummary;
-  expectedPdcOffice: string;
-  expectedLegislativeDistrict: string | null;
+  officeSearch: WashingtonPdcOfficeSearchInput;
 }): boolean {
   const mappedOffice = mapWashingtonPdcOffice({
     office: input.summary.office,
     legislativeDistrict: input.summary.legislativeDistrict,
+    jurisdiction: input.summary.jurisdiction,
+    position: input.summary.position,
   });
-  if (!mappedOffice || mappedOffice.pdcOffice !== input.expectedPdcOffice) {
+  if (!mappedOffice || mappedOffice.pdcOffice !== input.officeSearch.pdcOffice) {
     return false;
   }
-  if (input.expectedLegislativeDistrict !== null) {
-    return mappedOffice.legislativeDistrict === input.expectedLegislativeDistrict;
+  if (input.officeSearch.legislativeDistrict !== null) {
+    return mappedOffice.legislativeDistrict === input.officeSearch.legislativeDistrict;
+  }
+  if (input.officeSearch.requiresJurisdiction) {
+    if (mappedOffice.jurisdiction !== input.officeSearch.jurisdiction) {
+      return false;
+    }
+    // Seat agreement is required only when both sides carry one: PDC's
+    // position column is authoritative for council and municipal-court seats,
+    // while mayor and city attorney have no position at all.
+    if (input.officeSearch.position !== null && mappedOffice.position !== null) {
+      return mappedOffice.position === input.officeSearch.position;
+    }
   }
   return true;
 }
@@ -253,6 +275,8 @@ export function resolveWashingtonCandidateCommittee(
     officeScope: input.officeScope,
     officeCanonicalName: input.officeName,
     legislativeDistrict: input.legislativeDistrict,
+    jurisdiction: input.jurisdiction,
+    position: input.position,
   });
   const officeNameNormalized = officeSearchInput?.pdcOffice ?? normalizeTextKey(input.officeName);
 
@@ -269,9 +293,18 @@ export function resolveWashingtonCandidateCommittee(
       (input.officeScope === "state_upper" && input.officeName.trim() === "State Senator") ||
       (input.officeScope === "state_lower" && input.officeName.trim() === "State Lower Chamber Legislator");
     const hasDistrict = normalizeWashingtonPdcLegislativeDistrict(input.legislativeDistrict) !== null;
+    const isPlaceOffice =
+      input.officeScope.trim() === "place" &&
+      isWashingtonFinanceEligibleOffice({ officeScope: input.officeScope, officeCanonicalName: input.officeName });
+    const hasJurisdiction = normalizeWashingtonPdcJurisdiction(input.jurisdiction) !== null;
     return {
       status: "unmatched",
-      reason: isLegislativeOffice && !hasDistrict ? "missing_legislative_district" : "unsupported_office",
+      reason:
+        isLegislativeOffice && !hasDistrict
+          ? "missing_legislative_district"
+          : isPlaceOffice && !hasJurisdiction
+            ? "missing_jurisdiction"
+            : "unsupported_office",
       candidateNameNormalized: candidateNameKey,
       officeNameNormalized,
     };
@@ -291,13 +324,7 @@ export function resolveWashingtonCandidateCommittee(
     if (!isCandidateSummaryUsable(summary)) {
       continue;
     }
-    if (
-      !summaryMatchesExpectedOffice({
-        summary,
-        expectedPdcOffice: officeSearchInput.pdcOffice,
-        expectedLegislativeDistrict: officeSearchInput.legislativeDistrict,
-      })
-    ) {
+    if (!summaryMatchesExpectedOffice({ summary, officeSearch: officeSearchInput })) {
       continue;
     }
     if (!candidateSummaryMatchesName({ summary, candidateName: input.candidateName, candidateNameKeys })) {
@@ -354,6 +381,8 @@ export async function searchAndResolveWashingtonCandidateCommittee(
     officeScope: input.officeScope,
     officeCanonicalName: input.officeName,
     legislativeDistrict: input.legislativeDistrict,
+    jurisdiction: input.jurisdiction,
+    position: input.position,
   });
   if (!officeSearchInput) {
     return resolveWashingtonCandidateCommittee({ ...input, summaries: [] });

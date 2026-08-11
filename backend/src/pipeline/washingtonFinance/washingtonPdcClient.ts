@@ -42,6 +42,9 @@ export type WashingtonPdcCandidateSummary = {
   legislativeDistrict?: string;
   jurisdiction?: string;
   jurisdictionType?: string;
+  position?: string;
+  reportingOption?: string;
+  filingType?: string;
   electionYear: number;
   contributionsAmount?: number;
   expendituresAmount?: number;
@@ -395,6 +398,9 @@ function candidateSummaryFromRow(row: unknown): WashingtonPdcCandidateSummary | 
     ...(getString(row, "legislative_district") ? { legislativeDistrict: getString(row, "legislative_district") } : {}),
     ...(getString(row, "jurisdiction") ? { jurisdiction: getString(row, "jurisdiction") } : {}),
     ...(getString(row, "jurisdiction_type") ? { jurisdictionType: getString(row, "jurisdiction_type") } : {}),
+    ...(getString(row, "position") ? { position: getString(row, "position") } : {}),
+    ...(getString(row, "reporting_option") ? { reportingOption: getString(row, "reporting_option") } : {}),
+    ...(getString(row, "filing_type") ? { filingType: getString(row, "filing_type") } : {}),
     electionYear: normalizedElectionYear,
     ...(getNumber(row, "contributions_amount") !== undefined
       ? { contributionsAmount: getNumber(row, "contributions_amount") }
@@ -412,6 +418,9 @@ function candidateSummaryFromRow(row: unknown): WashingtonPdcCandidateSummary | 
   };
 }
 
+const WASHINGTON_PDC_CANDIDATE_SUMMARY_SELECT =
+  "filer_id,committee_id,candidacy_id,filer_name,committee_category,political_committee_type,candidate_committee_status,active_candidate,has_reports,office,legislative_district,jurisdiction,jurisdiction_type,position,reporting_option,filing_type,election_year,contributions_amount,expenditures_amount,independent_expenditures_for_amount,independent_expenditures_against_amount,url";
+
 export function buildWashingtonPdcCandidateSummarySearchUrl(input: WashingtonPdcCandidateSummarySearchInput): string {
   const candidateName = normalizeNonEmptyString(input.candidateName, "Washington PDC candidate name");
   const electionYear = normalizeElectionYear(input.electionYear);
@@ -427,8 +436,7 @@ export function buildWashingtonPdcCandidateSummarySearchUrl(input: WashingtonPdc
   }
 
   return buildWashingtonPdcDatasetUrl(WASHINGTON_PDC_CAMPAIGN_FINANCE_SUMMARY_DATASET, {
-    $select:
-      "filer_id,committee_id,candidacy_id,filer_name,committee_category,political_committee_type,candidate_committee_status,active_candidate,has_reports,office,legislative_district,jurisdiction,jurisdiction_type,election_year,contributions_amount,expenditures_amount,independent_expenditures_for_amount,independent_expenditures_against_amount,url",
+    $select: WASHINGTON_PDC_CANDIDATE_SUMMARY_SELECT,
     $where: where.join(" AND "),
     $order: "contributions_amount DESC, filer_name ASC",
     $limit: limit,
@@ -459,8 +467,7 @@ export function buildWashingtonPdcCandidateSummaryByCommitteeUrl(input: Washingt
     );
   }
   return buildWashingtonPdcDatasetUrl(WASHINGTON_PDC_CAMPAIGN_FINANCE_SUMMARY_DATASET, {
-    $select:
-      "filer_id,committee_id,candidacy_id,filer_name,committee_category,political_committee_type,candidate_committee_status,active_candidate,has_reports,office,legislative_district,jurisdiction,jurisdiction_type,election_year,contributions_amount,expenditures_amount,independent_expenditures_for_amount,independent_expenditures_against_amount,url",
+    $select: WASHINGTON_PDC_CANDIDATE_SUMMARY_SELECT,
     $where: `election_year = ${soqlString(String(electionYear))} AND filer_id = ${soqlString(filerId)} AND committee_id = ${soqlString(committeeId)}`,
     $limit: normalizeLimit(input.limit, 5),
   });
@@ -742,8 +749,7 @@ export function buildWashingtonPdcSponsorSummarySearchUrl(input: WashingtonPdcSp
   const sponsorName = normalizeNonEmptyString(input.sponsorName, "Washington PDC sponsor name");
   const electionYear = normalizeElectionYear(input.electionYear);
   return buildWashingtonPdcDatasetUrl(WASHINGTON_PDC_CAMPAIGN_FINANCE_SUMMARY_DATASET, {
-    $select:
-      "filer_id,committee_id,candidacy_id,filer_name,committee_category,political_committee_type,candidate_committee_status,active_candidate,has_reports,office,legislative_district,jurisdiction,jurisdiction_type,election_year,contributions_amount,expenditures_amount,independent_expenditures_for_amount,independent_expenditures_against_amount,url",
+    $select: WASHINGTON_PDC_CANDIDATE_SUMMARY_SELECT,
     $where: `election_year = ${soqlString(String(electionYear))} AND ${whereEqualText("filer_name", sponsorName)}`,
     $order: "contributions_amount DESC, filer_name ASC",
     $limit: normalizeLimit(input.limit, 20),

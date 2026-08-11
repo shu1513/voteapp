@@ -178,6 +178,149 @@ describe("washingtonCandidateCommitteeResolver", () => {
     });
   });
 
+  it("matches city-council committees only on jurisdiction and seat agreement", () => {
+    const councilSummary = (overrides: Partial<WashingtonPdcCandidateSummary>) =>
+      summary({
+        filerName: "Neeloofar Jenks (Nilu Jenks)",
+        office: "CITY COUNCIL MEMBER",
+        jurisdiction: "CITY OF SEATTLE",
+        jurisdictionType: "Local",
+        position: "5",
+        electionYear: 2026,
+        ...overrides,
+      });
+
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Nilu Jenks",
+        officeScope: "place",
+        officeName: "City Council Member",
+        electionYear: 2026,
+        jurisdiction: "Seattle city, Washington",
+        position: "5",
+        summaries: [
+          councilSummary({ filerId: "JENKN--778", committeeId: "40861" }),
+          // Same name, same office, wrong seat: must not match.
+          councilSummary({ filerId: "JENKN--779", committeeId: "40900", position: "2" }),
+          // Same name and seat but a different city: must not match.
+          councilSummary({ filerId: "JENKN--780", committeeId: "40901", jurisdiction: "CITY OF KENT" }),
+          // The PAC trap ("Katie Wilson for an Affordable Seattle" pattern):
+          // non-Candidate committee categories never link as candidate money.
+          councilSummary({
+            filerId: "SEATN--108",
+            committeeId: "40950",
+            committeeCategory: "Single Election Committee",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", filerId: "JENKN--778", committeeId: "40861" });
+  });
+
+  it("rejects a composite-seat committee registered for a different seat", () => {
+    // Live PDC pattern (Spokane/Puyallup 2025): position is a composite label,
+    // not a bare number. A committee registered for District 3 Position 2 must
+    // not link to our District 1 election even though name, city, year, and
+    // office all agree.
+    const compositeSummary = summary({
+      filerId: "DOEJ--300",
+      committeeId: "5001",
+      filerName: "Jane Doe",
+      office: "CITY COUNCIL MEMBER",
+      jurisdiction: "CITY OF SPOKANE",
+      jurisdictionType: "Local",
+      position: "City Council Member District 3, Position 2",
+      electionYear: 2025,
+    });
+
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "place",
+        officeName: "City Council Member",
+        electionYear: 2025,
+        jurisdiction: "Spokane city, Washington",
+        position: "1",
+        summaries: [compositeSummary],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    // Same composite seat on both sides still matches.
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "place",
+        officeName: "City Council Member",
+        electionYear: 2025,
+        jurisdiction: "Spokane city, Washington",
+        position: "3-2",
+        summaries: [compositeSummary],
+      })
+    ).toMatchObject({ status: "matched", filerId: "DOEJ--300" });
+  });
+
+  it("matches municipal-court judges through the court jurisdiction spelling", () => {
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Garmon Newsom",
+        officeScope: "place",
+        officeName: "Place Level Judge",
+        electionYear: 2026,
+        jurisdiction: "Seattle city, Washington",
+        position: "5",
+        summaries: [
+          summary({
+            filerId: "NEWSG--159",
+            committeeId: "41631",
+            filerName: "Garmon Newsom II (Garmon Newsom)",
+            office: "MUNICIPAL COURT JUDGE",
+            jurisdiction: "SEATTLE MUNICIPAL COURT",
+            jurisdictionType: "Judicial",
+            position: "5",
+            electionYear: 2026,
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", filerId: "NEWSG--159", committeeId: "41631" });
+  });
+
+  it("matches a mayor without any seat and requires the jurisdiction input", () => {
+    const mayorSummary = summary({
+      filerId: "WILSK--949",
+      committeeId: "39876",
+      filerName: "Katie Wilson",
+      office: "MAYOR",
+      jurisdiction: "CITY OF SEATTLE",
+      jurisdictionType: "Local",
+      electionYear: 2025,
+    });
+
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Katie Wilson",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2025,
+        jurisdiction: "Seattle city, Washington",
+        summaries: [mayorSummary],
+      })
+    ).toMatchObject({ status: "matched", filerId: "WILSK--949" });
+
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Katie Wilson",
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2025,
+        summaries: [mayorSummary],
+      })
+    ).toEqual({
+      status: "unmatched",
+      reason: "missing_jurisdiction",
+      candidateNameNormalized: "KATIE WILSON",
+      officeNameNormalized: "MAYOR",
+    });
+  });
+
   it("does not guess when multiple active committees match", () => {
     expect(
       resolveWashingtonCandidateCommittee({

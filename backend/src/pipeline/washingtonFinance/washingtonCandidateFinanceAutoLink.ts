@@ -6,7 +6,9 @@ import {
   type WashingtonCandidateCommitteeResolution,
 } from "./washingtonCandidateCommitteeResolver.js";
 import {
+  normalizeWashingtonPdcJurisdiction,
   normalizeWashingtonPdcLegislativeDistrict,
+  parseWashingtonPositionFromBallotTitle,
   WASHINGTON_FINANCE_ELIGIBLE_OFFICE_KEYS,
 } from "./washingtonFinanceEligibleOffices.js";
 import { upsertWashingtonFinanceLink } from "./washingtonFinanceWriter.js";
@@ -22,6 +24,10 @@ export type WashingtonFinanceAutoLinkCandidateElection = {
   officeScope: string;
   officeName: string;
   legislativeDistrict: string | null;
+  // Place-scope resolution inputs: the city from the district name and the
+  // seat parsed from the ballot title. Both null for state-level offices.
+  jurisdiction: string | null;
+  position: string | null;
 };
 
 export type WashingtonFinanceAutoLinkResult =
@@ -49,6 +55,8 @@ type CandidateElectionQueryRow = {
   office_scope: string;
   office_name: string;
   legislative_district: string | null;
+  district_name: string | null;
+  ballot_title: string | null;
 };
 
 export type WashingtonCandidateCommitteeResolver = (
@@ -58,6 +66,8 @@ export type WashingtonCandidateCommitteeResolver = (
     officeName: string;
     electionYear: number;
     legislativeDistrict?: string | null;
+    jurisdiction?: string | null;
+    position?: string | null;
   },
   options?: WashingtonPdcClientOptions
 ) => Promise<WashingtonCandidateCommitteeResolution>;
@@ -68,6 +78,7 @@ function normalizeCandidateNameForStorage(value: string): string {
 }
 
 function mapCandidateElectionRow(row: CandidateElectionQueryRow): WashingtonFinanceAutoLinkCandidateElection {
+  const isPlaceScope = row.office_scope === "place";
   return {
     candidateId: row.candidate_id,
     electionId: row.election_id,
@@ -76,6 +87,8 @@ function mapCandidateElectionRow(row: CandidateElectionQueryRow): WashingtonFina
     officeScope: row.office_scope,
     officeName: row.office_name,
     legislativeDistrict: normalizeWashingtonPdcLegislativeDistrict(row.legislative_district),
+    jurisdiction: isPlaceScope ? normalizeWashingtonPdcJurisdiction(row.district_name) : null,
+    position: isPlaceScope ? parseWashingtonPositionFromBallotTitle(row.ballot_title) : null,
   };
 }
 
@@ -111,7 +124,9 @@ export async function listWashingtonCandidateElectionsMissingFinanceLinks(
               ''
             )
           ELSE NULL
-        END AS legislative_district
+        END AS legislative_district,
+        district.name AS district_name,
+        election.official_ballot_title AS ballot_title
       FROM public.candidate_elections AS candidate_election
       JOIN public.candidates AS candidate
         ON candidate.id = candidate_election.candidate_id
@@ -166,6 +181,8 @@ export async function autoLinkWashingtonCandidateFinanceForCandidateElection(inp
       officeName: input.candidateElection.officeName,
       electionYear: input.candidateElection.electionYear,
       legislativeDistrict: input.candidateElection.legislativeDistrict,
+      jurisdiction: input.candidateElection.jurisdiction,
+      position: input.candidateElection.position,
     },
     input.pdcClientOptions
   );
@@ -187,7 +204,9 @@ export async function autoLinkWashingtonCandidateFinanceForCandidateElection(inp
       electionYear: input.candidateElection.electionYear,
       candidateNameNormalized: normalizeCandidateNameForStorage(input.candidateElection.candidateName),
       officeName: input.candidateElection.officeName,
-      district: input.candidateElection.legislativeDistrict,
+      // Legislative offices store the LD number; place offices store the
+      // normalized city so the link row stays self-describing.
+      district: input.candidateElection.legislativeDistrict ?? input.candidateElection.jurisdiction,
       filerId: resolution.filerId,
       committeeId: resolution.committeeId,
       committeeName: resolution.committeeName,
