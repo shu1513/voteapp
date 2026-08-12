@@ -360,7 +360,10 @@ export function createStandardStateFinanceSnapshotWriter(config: {
 
   // A 'manual' link_source marks an operator-curated row; machine syncs and
   // auto-linkers hitting the same (candidate, election, identity) triple must
-  // not reclassify it to a state source. Manual stays sticky once set.
+  // not reclassify it or flip its status (auto-link selects on "no active
+  // link", so without the status guard it would resurrect an operator-disabled
+  // row). Same semantics as the bespoke writers' manual-link protection (`M`
+  // in docs/finance-module-capability-matrix.md).
   async function upsertLink(input: {
     db: Queryable;
     link: StandardStateFinanceLinkInput;
@@ -391,7 +394,10 @@ export function createStandardStateFinanceSnapshotWriter(config: {
         office_name = EXCLUDED.office_name,
         district = EXCLUDED.district,
         ${linkNameColumn} = EXCLUDED.${linkNameColumn},
-        link_status = EXCLUDED.link_status,
+        link_status = CASE
+          WHEN ${tables.links}.link_source = 'manual' THEN ${tables.links}.link_status
+          ELSE EXCLUDED.link_status
+        END,
         link_source = CASE
           WHEN ${tables.links}.link_source = 'manual' THEN ${tables.links}.link_source
           ELSE EXCLUDED.link_source
