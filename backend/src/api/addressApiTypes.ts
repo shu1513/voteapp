@@ -114,7 +114,8 @@ export type AddressApiServerOptions = {
   askChatbot?: (
     question: string,
     previousQuestion?: string | null,
-    context?: ChatbotAskContext | null
+    context?: ChatbotAskContext | null,
+    userId?: string | null
   ) => Promise<AskResponse>;
   listResearchAreas?: () => Promise<ResearchAreaCatalogResult>;
   /** GET /api/state-resources?state=CA — public official how-to-vote links

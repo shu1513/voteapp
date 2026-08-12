@@ -8,7 +8,9 @@ import {
   CHATBOT_PRIVACY_NOTE,
   useMe,
 } from "@voteapp/api-client";
-import type { ChatbotAskContext, ChatbotAskResponse, ChatbotResultCard } from "@voteapp/api-client";
+import type { ChatbotAskContext, ChatbotAskResponse, ChatbotResultCard, ContentReportEntityType } from "@voteapp/api-client";
+
+import { ReportContentButton } from "../ReportContentButton";
 
 // Floating "Ask" widget (docs/plans/chatbot-rag.md Phase 1): a minimized
 // bubble in the lower-right on most pages, expanding to a small chat box.
@@ -96,7 +98,27 @@ function formatDataCurrentAsOf(timestamp: string): string {
 
 type Turn = { question: string; response: ChatbotAskResponse };
 
-function TurnView({ turn }: { turn: Turn }) {
+/** The entity behind an AI answer's first cited source — what a content
+ * report about the answer should attach to. URLs are server-constructed
+ * (/candidates/<id> or /elections/<id>), so parsing them is safe here. */
+export function reportTargetFromResults(
+  results: readonly ChatbotResultCard[]
+): { entityType: ContentReportEntityType; entityId: string } | null {
+  for (const card of results) {
+    const match = /^\/(candidates|elections)\/([0-9a-f-]{36})$/i.exec(card.url);
+    if (match) {
+      return {
+        entityType: match[1] === "candidates" ? "candidate" : "election",
+        entityId: match[2] as string,
+      };
+    }
+  }
+  return null;
+}
+
+function TurnView({ turn, reporterEmail }: { turn: Turn; reporterEmail: string | null }) {
+  const isAi = turn.response.ai_generated === true;
+  const reportTarget = isAi ? reportTargetFromResults(turn.response.results) : null;
   return (
     <div>
       <p className="ml-8 rounded-xl bg-surface px-3 py-2 text-sm text-ink">{turn.question}</p>
@@ -113,10 +135,31 @@ function TurnView({ turn }: { turn: Turn }) {
           ))}
         </ul>
       )}
-      {turn.response.data_current_as_of && (
-        <p className="mt-1.5 text-xs text-ink-soft">
-          Data current as of {formatDataCurrentAsOf(turn.response.data_current_as_of)}. Verify with official sources.
-        </p>
+      {isAi ? (
+        // BEHAVIOR.md rule 9: every AI answer is labeled, dated, and
+        // reportable. The report attaches to the first cited entity — the
+        // data behind the answer lives on that page.
+        <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+          <p className="text-xs text-ink-soft">
+            AI-generated from our election data — may contain mistakes.
+            {turn.response.data_current_as_of &&
+              ` Data current as of ${formatDataCurrentAsOf(turn.response.data_current_as_of)}.`}
+          </p>
+          {reportTarget && (
+            <ReportContentButton
+              entityType={reportTarget.entityType}
+              entityId={reportTarget.entityId}
+              contextLabel="this AI answer"
+              reporterEmail={reporterEmail}
+            />
+          )}
+        </div>
+      ) : (
+        turn.response.data_current_as_of && (
+          <p className="mt-1.5 text-xs text-ink-soft">
+            Data current as of {formatDataCurrentAsOf(turn.response.data_current_as_of)}. Verify with official sources.
+          </p>
+        )
       )}
     </div>
   );
@@ -285,7 +328,7 @@ export function ChatWidget() {
             )}
             <div className="space-y-4">
               {turns.map((turn, index) => (
-                <TurnView key={index} turn={turn} />
+                <TurnView key={index} turn={turn} reporterEmail={me?.email ?? null} />
               ))}
             </div>
             {ask.isPending && <p className="mt-3 text-sm text-ink-soft">Looking that up…</p>}

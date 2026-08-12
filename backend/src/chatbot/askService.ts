@@ -1,14 +1,16 @@
-// The "Ask" pipeline (Phase 1, no LLM): intent router → hybrid retrieval →
-// answerability gate → template answer or result cards — docs/plans/chatbot-rag.md.
+// The "Ask" pipeline: intent router → answer cache → hybrid retrieval →
+// answerability gate → LLM answer (flag/cap/budget permitting) or template
+// answer / result cards — docs/plans/chatbot-rag.md.
 //
 // Every outcome logs one anonymous, redacted row to chatbot.questions
 // (fire-and-forget; a failed insert never fails the answer).
 
 import type { Pool } from "pg";
 
+import { answerWithLlm, buildScopeKey, getCachedAskResponse, type LlmAnswering } from "./answer.js";
 import { suggestClosestCandidates } from "./didYouMean.js";
 import { detectIntent, detectStateInQuestion, type IntentMatch } from "./intents.js";
-import { normalizeQuestion } from "./redact.js";
+import { normalizeQuestion, normalizeQuestionForCacheKey } from "./redact.js";
 import {
   getActiveGeneration,
   isAnswerable,
@@ -18,18 +20,12 @@ import {
   type RetrievalResult,
   type RetrievedChunk,
 } from "./retrieval.js";
+import { REFUSAL_NO_DATA_ANSWER, toResultCards, type AskResultCard } from "./shared.js";
 import type { EmbeddingsClient } from "./embeddingsClient.js";
 
 export type AskOutcome = "template" | "retrieval" | "clarify" | "refuse_no_data" | "refuse_policy";
 
-export type AskResultCard = {
-  title: string;
-  /** Server-constructed, site-relative page URL — never model- or
-   * content-authored (BEHAVIOR.md rule 9). */
-  url: string;
-  snippet: string;
-  source_type: string;
-};
+export type { AskResultCard } from "./shared.js";
 
 export type AskResponse = {
   outcome: AskOutcome;
@@ -38,6 +34,10 @@ export type AskResponse = {
   /** Active generation activation time for retrieval answers; null for
    * deterministic templates (they are live, not indexed). */
   data_current_as_of: string | null;
+  /** True only for model-generated prose (Phase 2). Absent/false everywhere
+   * else — the widget uses it for the AI label + report control
+   * (BEHAVIOR.md rule 9). */
+  ai_generated?: boolean;
 };
 
 export type AskContext =
@@ -45,7 +45,15 @@ export type AskContext =
   | { kind: "election"; id: string };
 
 export type AskService = {
-  ask: (question: string, previousQuestion?: string | null, context?: AskContext | null) => Promise<AskResponse>;
+  /** userId enables the Phase 2 LLM path (per-user cap + provider abuse
+   * identifier). The endpoint is verified-accounts-only, so the API always
+   * has one; operator scripts (eval) may omit it — they stay retrieval-only. */
+  ask: (
+    question: string,
+    previousQuestion?: string | null,
+    context?: AskContext | null,
+    userId?: string | null
+  ) => Promise<AskResponse>;
 };
 
 // Context only applies to questions that point at it: "tell me more about
@@ -78,9 +86,6 @@ async function resolveContext(db: Pool, generationId: string, context: AskContex
   const row = result.rows[0];
   return row ? { kind: context.kind, id: context.id, state: row.state } : null;
 }
-
-const REFUSAL_NO_DATA_ANSWER =
-  "I don't have that in my data. I can answer questions about the November 2026 elections we cover: candidates, their records, campaign finance, elections, and ballot measures.";
 
 const POLICY_REFUSAL_ANSWER =
   "I can't recommend how to vote — no endorsements, ever. I can share neutral information from our data instead: who is running, their backgrounds and records, and campaign finance.";
@@ -177,50 +182,6 @@ const BALLOT_CARD: AskResultCard = {
   snippet: "Enter your address to see every election and candidate on your ballot.",
   source_type: "page",
 };
-
-function chunkPageUrl(chunk: RetrievedChunk): string | null {
-  if (
-    chunk.sourceType === "candidate_profile" ||
-    chunk.sourceType === "candidate_record" ||
-    chunk.sourceType === "finance_summary"
-  ) {
-    return chunk.sourceId ? `/candidates/${chunk.sourceId}` : null;
-  }
-  if (chunk.sourceType === "election") {
-    return chunk.sourceId ? `/elections/${chunk.sourceId}` : null;
-  }
-  if (chunk.sourceType === "ballot_measure") {
-    return chunk.electionId ? `/elections/${chunk.electionId}` : null;
-  }
-  return null;
-}
-
-function toResultCards(chunks: readonly RetrievedChunk[]): AskResultCard[] {
-  const cards: AskResultCard[] = [];
-  const seenKeys = new Set<string>();
-  for (const chunk of chunks) {
-    const url = chunkPageUrl(chunk);
-    if (!url) {
-      continue;
-    }
-    // Dedupe per (page, chunk kind), and never across a candidate's records:
-    // one candidate's profile, finance, and each record all share the same
-    // page URL but answer different parts of the question — collapsing them
-    // to one card hid everything but the profile.
-    const key = chunk.sourceType === "candidate_record" ? `record:${chunk.id}` : `${chunk.sourceType}:${url}`;
-    if (seenKeys.has(key)) {
-      continue;
-    }
-    seenKeys.add(key);
-    cards.push({
-      title: chunk.title,
-      url,
-      snippet: chunk.content.length > 240 ? `${chunk.content.slice(0, 239).trimEnd()}…` : chunk.content,
-      source_type: chunk.sourceType,
-    });
-  }
-  return cards;
-}
 
 function describeEntityOption(match: CandidateEntityMatch): string {
   const officePart = match.currentOffice ? `, ${match.currentOffice}` : "";
@@ -526,6 +487,10 @@ type QuestionLogRow = {
   scopeKey: string | null;
   matchedChunkIds: string[];
   latencyMs: number;
+  /** Actual billed tokens for LLM-answered asks; null everywhere else
+   * (cache hits, templates, cards). */
+  tokensIn: number | null;
+  tokensOut: number | null;
 };
 
 function logQuestion(db: Pool, row: QuestionLogRow): void {
@@ -533,10 +498,10 @@ function logQuestion(db: Pool, row: QuestionLogRow): void {
   void db
     .query(
       `
-        INSERT INTO chatbot.questions (question_norm, answered_by, scope_key, matched_chunk_ids, latency_ms)
-        VALUES ($1, $2, $3, $4::bigint[], $5)
+        INSERT INTO chatbot.questions (question_norm, answered_by, scope_key, matched_chunk_ids, latency_ms, tokens_in, tokens_out)
+        VALUES ($1, $2, $3, $4::bigint[], $5, $6, $7)
       `,
-      [row.questionNorm, row.answeredBy, row.scopeKey, row.matchedChunkIds, row.latencyMs]
+      [row.questionNorm, row.answeredBy, row.scopeKey, row.matchedChunkIds, row.latencyMs, row.tokensIn, row.tokensOut]
     )
     .catch((error: unknown) => {
       console.warn(
@@ -549,20 +514,31 @@ function logQuestion(db: Pool, row: QuestionLogRow): void {
 export type CreateAskServiceOptions = {
   db: Pool;
   embeddings: EmbeddingsClient | null;
+  /** Phase 2 LLM answering (adapter client + limits Redis + config). Absent
+   * → Phase 1 behavior exactly: retrieval cards, no cache, no model. */
+  llm?: LlmAnswering | null;
 };
 
 export function createAskService(options: CreateAskServiceOptions): AskService {
   const { db, embeddings } = options;
+  const llm = options.llm ?? null;
 
   return {
-    async ask(question: string, previousQuestion?: string | null, context?: AskContext | null): Promise<AskResponse> {
+    async ask(
+      question: string,
+      previousQuestion?: string | null,
+      context?: AskContext | null,
+      userId?: string | null
+    ): Promise<AskResponse> {
       const startedAt = Date.now();
       const questionNorm = normalizeQuestion(question);
       const finish = (
         response: AskResponse,
         answeredBy: string,
         scopeKey: string | null = null,
-        matchedChunkIds: string[] = []
+        matchedChunkIds: string[] = [],
+        tokensIn: number | null = null,
+        tokensOut: number | null = null
       ): AskResponse => {
         logQuestion(db, {
           questionNorm,
@@ -570,6 +546,8 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
           scopeKey,
           matchedChunkIds,
           latencyMs: Date.now() - startedAt,
+          tokensIn,
+          tokensOut,
         });
         return response;
       };
@@ -615,6 +593,32 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
       }
       if (!scopeState && resolvedContext) {
         scopeState = resolvedContext.state;
+      }
+
+      // Phase 2 exact-answer cache, checked BEFORE retrieval is paid for (a
+      // hit skips the query embedding too). The key text is the normalized
+      // FULL retrieval text — a carried-over previous turn changes the
+      // answer, so it must change the key. Un-redacted, un-truncated cache
+      // normalizer on purpose (see normalizeQuestionForCacheKey): the log
+      // normalizer would collide distinct questions onto one key. Only
+      // questions that passed the gate ever get cached, and never
+      // time-sensitive ones (those returned from the intent router above;
+      // BEHAVIOR.md rule 6).
+      const carriedPrevious = retrievalText === question ? null : (previousQuestion ?? null);
+      const cacheQuestionNorm = normalizeQuestionForCacheKey(retrievalText);
+      const scopeKey = buildScopeKey(
+        scopeState,
+        resolvedContext ? { kind: resolvedContext.kind, id: resolvedContext.id } : null
+      );
+      if (llm && userId) {
+        const cached = await getCachedAskResponse(llm, {
+          questionNorm: cacheQuestionNorm,
+          scopeKey,
+          generationId: generation.id,
+        });
+        if (cached) {
+          return finish(cached, "cache", scopeState);
+        }
       }
 
       const retrieval = await retrieveChunks({
@@ -686,6 +690,39 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
         );
       }
 
+      // 6. LLM answer over the gated chunks (Phase 2), when configured and
+      // the ask is user-attributed. Every guard trip or failure inside falls
+      // back to the Phase 1 cards below — the LLM can only ADD an answer.
+      const matchedChunkIds = retrieval.chunks.map((chunk) => chunk.id);
+      // Fallbacks log their REASON as answered_by (rate_limited /
+      // budget_exhausted / llm_failed / invalid_output) plus any tokens the
+      // failed call still billed — llm_failed and invalid_output rates are
+      // the primary canary signals for the Phase 2 rollout, and the spend
+      // must stay attributable per question.
+      let cardsAnsweredBy = "retrieval";
+      let cardsTokensIn: number | null = null;
+      let cardsTokensOut: number | null = null;
+      if (llm && userId) {
+        const step = await answerWithLlm({
+          db,
+          llm,
+          userId,
+          question,
+          previousQuestion: carriedPrevious,
+          questionNorm: cacheQuestionNorm,
+          scopeKey,
+          generationId: generation.id,
+          generationActivatedAt: generation.activatedAt,
+          chunks: retrieval.chunks,
+        });
+        if (step.kind === "answered") {
+          return finish(step.response, "llm", scopeState, matchedChunkIds, step.tokensIn, step.tokensOut);
+        }
+        cardsAnsweredBy = step.reason;
+        cardsTokensIn = step.tokensIn;
+        cardsTokensOut = step.tokensOut;
+      }
+
       const cards = toResultCards(retrieval.chunks);
       return finish(
         {
@@ -695,9 +732,11 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
           results: cards,
           data_current_as_of: generation.activatedAt,
         },
-        "retrieval",
+        cardsAnsweredBy,
         scopeState,
-        retrieval.chunks.map((chunk) => chunk.id)
+        matchedChunkIds,
+        cardsTokensIn,
+        cardsTokensOut
       );
     },
   };

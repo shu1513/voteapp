@@ -23,6 +23,10 @@ export type ChatbotAskResponse = {
   /** When the answer came from the search index: its build time. Null for
    * deterministic template answers. */
   data_current_as_of: string | null;
+  /** True when the answer prose is model-generated (Phase 2). The widget
+   * shows the AI label + report control for these. Absent on template,
+   * clarify, refusal, and result-card answers. */
+  ai_generated?: boolean;
 };
 
 export const CHATBOT_MAX_QUESTION_LENGTH = 500;

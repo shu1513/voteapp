@@ -6,12 +6,18 @@ with them. The contact mailbox (contact@electionssimplified.com) must exist and
 be monitored before launch. Analytics disclosure added 2026-07-05 ahead of
 adoption; once a specific analytics provider is chosen, name it in Section 3
 and confirm the "no advertising use" configuration claims hold for it.
+Ask/OpenAI disclosure added 2026-08-12 (chatbot Phase 2): this version must be
+LIVE before CHATBOT_LLM_ENABLED is ever turned on in production
+(docs/plans/chatbot-rag.md). The Ask question-log description matches
+backend/src/chatbot/ (anonymous, redacted, 90-day purge, low-count
+suppression); the OpenAI description matches the adapter (store:false, no
+raw identifiers).
 -->
 
 # Elections Simplified Privacy Policy
 
-**Last updated:** July 16, 2026
-**Version:** 1.0
+**Last updated:** August 12, 2026
+**Version:** 1.1
 
 This Privacy Policy describes how impactperdollar, the operator of the Elections Simplified service ("Elections Simplified," "we," "us"), collects, uses, and shares information when you use the Elections Simplified website and services (the "Service").
 
@@ -22,6 +28,8 @@ This Privacy Policy describes how impactperdollar, the operator of the Elections
 **Account information.** If you create an account: your email address, first name, and a cryptographic hash of your password (we never store the password itself). We also record which version of our terms you accepted and when.
 
 **Preferences and activity.** Settings you choose: candidates you follow, research-area interests, ballot ordering preferences, and email notification opt-ins. Because the Service is about elections, these choices may reflect your civic or political interests; we treat them as your private account data and never sell them or disclose them to third parties for advertising. We use them to provide the features you chose and to select relevant civic updates, information, and recommendations (occasionally including clearly labeled sponsored or promotional content) for the notification emails you control in settings; every such email includes a working unsubscribe link, and the underlying data never leaves us.
+
+**Ask (chat) questions.** If you use the Ask feature, the questions you type are processed to find an answer in our own election database. Questions are logged **anonymously**: before a question is stored, email addresses, phone numbers, street addresses, and long digit sequences are removed, and the stored question is never linked to your account. Stored question text is deleted after 90 days; only aggregate statistics about commonly asked questions (never rare or unique ones) are kept longer. Please don't include personal information in your questions.
 
 **Content reports.** If you report inaccurate or outdated content, we store the report message, the content item you identified, any optional source URL, any optional contact email you provide, and if you are signed in, your account identifier, so we can investigate and improve accuracy. Do not include sensitive personal information in content reports.
 
@@ -41,6 +49,7 @@ We share information only with the processors needed to run the Service:
 - **Google Places (autocomplete)** — receives the address text you type when address suggestions are enabled; requests are proxied through our servers so Google does not receive your IP address from your browser.
 - **Amazon Web Services (SES)** — receives your email address to deliver account and notification emails.
 - **Analytics provider** — when analytics is enabled, receives the usage information described in Section 1 ("Usage analytics") to help us understand and improve how the Service is used. We configure analytics so that this data is not used for the provider's own advertising purposes, and we will name the provider here before or when analytics is enabled.
+- **OpenAI (AI answers in Ask)** — when AI-generated answers are enabled for the Ask feature, receives the text of your chat question and the snippets of our own election data used to answer it, together with a pseudonymous account identifier (a cryptographic hash used only for abuse prevention — never your email address, name, or address). We send requests with storage disabled, and under OpenAI's API terms this content is not used to train OpenAI's models. AI answers are labeled as AI-generated in the Service.
 - **Sentry (error monitoring)** — when error monitoring is enabled, receives reports about application errors (error type, stack trace, browser and device type, and the page path with its query string removed) so we can find and fix failures. We configure these reports to exclude your IP address, email address, address text, and the contents of your requests.
 - **Infrastructure providers** — hosting, database, and cache providers that store Service data on our behalf.
 

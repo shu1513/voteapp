@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ChatWidget, contextFromPathname, isChatWidgetHidden, starterQuestions } from "./ChatWidget";
+import { ChatWidget, contextFromPathname, isChatWidgetHidden, reportTargetFromResults, starterQuestions } from "./ChatWidget";
 import { renderRoutes } from "../../test/render";
 import { ME_UNVERIFIED, ME_VERIFIED } from "../../test/fixtures";
 import { apiError, stubApiRoutes, type ApiRoute } from "../../test/mockApi";
@@ -66,6 +66,22 @@ describe("contextFromPathname", () => {
     });
     expect(contextFromPathname("/ballot")).toBeNull();
     expect(contextFromPathname("/candidates/not-a-uuid")).toBeNull();
+  });
+});
+
+describe("reportTargetFromResults", () => {
+  it("maps the first candidate/election source card to a report entity", () => {
+    expect(reportTargetFromResults(RETRIEVAL_RESPONSE.results)).toEqual({
+      entityType: "candidate",
+      entityId: "44444444-4444-4444-a444-444444444444",
+    });
+    expect(
+      reportTargetFromResults([
+        { title: "E", url: "/elections/11111111-1111-4111-9111-111111111111", snippet: "", source_type: "election" },
+      ])
+    ).toEqual({ entityType: "election", entityId: "11111111-1111-4111-9111-111111111111" });
+    expect(reportTargetFromResults([{ title: "B", url: "/ballot", snippet: "", source_type: "page" }])).toBeNull();
+    expect(reportTargetFromResults([])).toBeNull();
   });
 });
 
@@ -177,6 +193,39 @@ describe("ChatWidget", () => {
     await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     expect(await screen.findByRole("button", { name: "What can you do?" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Tell me more about this candidate" })).not.toBeInTheDocument();
+  });
+
+  it("labels AI answers, dates them, and offers the report control (BEHAVIOR rule 9)", async () => {
+    const user = userEvent.setup();
+    const aiResponse: ChatbotAskResponse = {
+      ...RETRIEVAL_RESPONSE,
+      answer: "Jon Ossoff is the incumbent US Senator from Georgia.",
+      ai_generated: true,
+    };
+    renderWidgetAt("/ballot", { body: aiResponse });
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+
+    expect(await screen.findByText("Jon Ossoff is the incumbent US Senator from Georgia.")).toBeInTheDocument();
+    // One combined label line; the exact date rendering is timezone-local.
+    expect(screen.getByText(/AI-generated from our election data/)).toHaveTextContent(/Data current as of/);
+    // Report control attaches to the first cited entity.
+    expect(screen.getByRole("button", { name: /report an issue with this ai answer/i })).toBeInTheDocument();
+    // Sources still render as cards.
+    expect(screen.getByRole("link", { name: /Jon Ossoff/ })).toBeInTheDocument();
+  });
+
+  it("shows no AI label or report control on plain retrieval-card answers", async () => {
+    const user = userEvent.setup();
+    renderWidgetAt("/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    expect(await screen.findByText("Here's what our data has on that.")).toBeInTheDocument();
+    expect(screen.queryByText(/AI-generated/)).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /report an issue/i })).not.toBeInTheDocument();
+    expect(screen.getByText(/Data current as of/)).toBeInTheDocument();
   });
 
   it("shows the register wall when the server answers 401 mid-session", async () => {

@@ -36,3 +36,17 @@ export function normalizeQuestion(question: string): string {
     .trim()
     .slice(0, 500);
 }
+
+/** Normalized form for the ANSWER-CACHE key: same trivial-variant collapsing,
+ * but NO redaction and NO truncation — redaction would give "ballot in
+ * 30303" and "ballot in 30305" the same key (one user would receive the
+ * other question's cached answer), and the 500-unit cap would collide long
+ * follow-up texts on their shared prefix. Safe because the key is a sha256
+ * digest (limits.ts): the text itself is never stored. */
+export function normalizeQuestionForCacheKey(question: string): string {
+  return question
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .replace(/[\s?!.]+$/g, "")
+    .trim();
+}
