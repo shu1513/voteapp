@@ -14,6 +14,7 @@ const IDENTITY = {
   first_name: "Val",
   email_verified: true,
   accepted_terms_version: "1.1",
+  has_password: true,
 };
 
 describe("userIdentity", () => {
@@ -23,6 +24,8 @@ describe("userIdentity", () => {
     await expect(getUserIdentity({ query } as never, USER_ID)).resolves.toEqual(IDENTITY);
     expect(String(query.mock.calls[0][0])).toContain("deleted_at IS NULL");
     expect(String(query.mock.calls[0][0])).toContain("accepted_terms_version");
+    // Google-created accounts have no password; Settings reads this flag.
+    expect(String(query.mock.calls[0][0])).toContain("(password_hash IS NOT NULL) AS has_password");
     expect(query.mock.calls[0][1]).toEqual([USER_ID]);
   });
 

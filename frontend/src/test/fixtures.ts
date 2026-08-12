@@ -14,11 +14,34 @@ import type {
 } from "@voteapp/api-client";
 
 export const ME_VERIFIED = {
-  user: { email: "voter@example.com", first_name: "Sam", email_verified: true, accepted_terms_version: TERMS_VERSION },
+  user: {
+    email: "voter@example.com",
+    first_name: "Sam",
+    email_verified: true,
+    accepted_terms_version: TERMS_VERSION,
+    has_password: true,
+  },
 };
 
 export const ME_UNVERIFIED = {
-  user: { email: "voter@example.com", first_name: "Sam", email_verified: false, accepted_terms_version: TERMS_VERSION },
+  user: {
+    email: "voter@example.com",
+    first_name: "Sam",
+    email_verified: false,
+    accepted_terms_version: TERMS_VERSION,
+    has_password: true,
+  },
+};
+
+/** A Google-created account: verified at birth, no password yet. */
+export const ME_GOOGLE_NO_PASSWORD = {
+  user: {
+    email: "voter@gmail.com",
+    first_name: "Sam",
+    email_verified: true,
+    accepted_terms_version: TERMS_VERSION,
+    has_password: false,
+  },
 };
 
 export const VOTE_POWER: VotePower = {

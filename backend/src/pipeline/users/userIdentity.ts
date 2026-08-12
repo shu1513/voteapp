@@ -13,6 +13,9 @@ export type UserIdentity = {
   first_name: string;
   email_verified: boolean;
   accepted_terms_version: string | null;
+  /** False on Google-created accounts that never set a password: Settings
+   * swaps its password-gated forms for an "add a password" hint. */
+  has_password: boolean;
 };
 
 export type UserIdentityErrorCode = "invalid_user_id" | "user_not_found";
@@ -55,7 +58,8 @@ export async function setUserFirstName(db: Queryable, userId: string, firstName:
           updated_at = now()
       WHERE id = $1::uuid
         AND deleted_at IS NULL
-      RETURNING email, first_name, email_verified, accepted_terms_version
+      RETURNING email, first_name, email_verified, accepted_terms_version,
+        (password_hash IS NOT NULL) AS has_password
     `,
     [normalizedUserId, normalizedFirstName]
   );
@@ -69,6 +73,7 @@ export async function setUserFirstName(db: Queryable, userId: string, firstName:
     first_name: row.first_name,
     email_verified: row.email_verified,
     accepted_terms_version: row.accepted_terms_version,
+    has_password: row.has_password,
   };
 }
 
@@ -100,13 +105,14 @@ export async function acceptUserTerms(db: Queryable, userId: string, termsVersio
             updated_at = now()
         WHERE id = $1::uuid
           AND deleted_at IS NULL
-        RETURNING id, email, first_name, email_verified, accepted_terms_version, accepted_terms_at
+        RETURNING id, email, first_name, email_verified, accepted_terms_version, accepted_terms_at,
+          (password_hash IS NOT NULL) AS has_password
       ), logged AS (
         INSERT INTO public.user_terms_acceptances (user_id, terms_version, context, accepted_at)
         SELECT id, accepted_terms_version, 'renewal', accepted_terms_at
         FROM accepted
       )
-      SELECT email, first_name, email_verified, accepted_terms_version
+      SELECT email, first_name, email_verified, accepted_terms_version, has_password
       FROM accepted
     `,
     [normalizedUserId, normalizedVersion]
@@ -121,6 +127,7 @@ export async function acceptUserTerms(db: Queryable, userId: string, termsVersio
     first_name: row.first_name,
     email_verified: row.email_verified,
     accepted_terms_version: row.accepted_terms_version,
+    has_password: row.has_password,
   };
 }
 
@@ -129,7 +136,8 @@ export async function getUserIdentity(db: Queryable, userId: string): Promise<Us
 
   const result = await db.query<UserIdentity>(
     `
-      SELECT email, first_name, email_verified, accepted_terms_version
+      SELECT email, first_name, email_verified, accepted_terms_version,
+        (password_hash IS NOT NULL) AS has_password
       FROM public.users
       WHERE id = $1::uuid
         AND deleted_at IS NULL
@@ -146,5 +154,6 @@ export async function getUserIdentity(db: Queryable, userId: string): Promise<Us
     first_name: row.first_name,
     email_verified: row.email_verified,
     accepted_terms_version: row.accepted_terms_version,
+    has_password: row.has_password,
   };
 }

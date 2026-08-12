@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { SettingsPage } from "./SettingsPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
-import { ballotSummary, ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
+import { ballotSummary, ME_GOOGLE_NO_PASSWORD, ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
 
 const EMAIL_PREFERENCES = {
   email_digest: true,
@@ -57,6 +57,40 @@ describe("SettingsPage", () => {
 
     expect(await screen.findByRole("heading", { name: "Email notifications" })).toBeInTheDocument();
     expect(screen.queryByText("My most important issues")).not.toBeInTheDocument();
+  });
+
+  it("swaps password-gated sections for the add-a-password hint on Google-only accounts", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_GOOGLE_NO_PASSWORD },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/research-areas": { body: { research_areas: [] } },
+      "/api/me/research-area-preferences": { body: { preferences: [] } },
+    });
+    renderSettings();
+
+    expect(await screen.findByRole("heading", { name: "Add a password" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Add a password" })).toHaveAttribute("href", "/forgot-password");
+    // The three password-gated forms are replaced, not left to fail.
+    expect(screen.queryByRole("heading", { name: "Change password" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Change email" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Delete account" })).not.toBeInTheDocument();
+    // Sessions need no password and stay.
+    expect(screen.getByRole("heading", { name: "Sessions" })).toBeInTheDocument();
+  });
+
+  it("keeps the password-gated sections for accounts with a password", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/research-areas": { body: { research_areas: [] } },
+      "/api/me/research-area-preferences": { body: { preferences: [] } },
+    });
+    renderSettings();
+
+    expect(await screen.findByRole("heading", { name: "Change password" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Change email" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Delete account" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Add a password" })).not.toBeInTheDocument();
   });
 
   it("confirms a saved first name, then clears the confirmation", async () => {

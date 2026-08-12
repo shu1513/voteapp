@@ -81,11 +81,14 @@ export function createInMemoryAuthApiRateLimiter(
     const now = nowMs();
     sweepExpiredBuckets(now);
 
-    const normalizedEmail = normalizeEmail(input.email);
+    // null = no per-identity credential behind the endpoint (see
+    // AuthApiRateLimitInput): only the per-IP bucket applies, so the
+    // (stricter) per-email quota never silently governs it.
+    const normalizedEmail = input.email === null ? null : normalizeEmail(input.email);
     const ipKey = buildBucketKey("ip", input.clientIp || "unknown");
-    const emailKey = buildBucketKey("email", normalizedEmail);
+    const emailKey = normalizedEmail === null ? null : buildBucketKey("email", normalizedEmail);
     const existingIpBucket = buckets.get(ipKey);
-    const existingEmailBucket = buckets.get(emailKey);
+    const existingEmailBucket = emailKey === null ? undefined : buckets.get(emailKey);
 
     const ipIsActive = existingIpBucket !== undefined && now - existingIpBucket.windowStartedAt < options.windowMs;
     const emailIsActive =
@@ -104,7 +107,7 @@ export function createInMemoryAuthApiRateLimiter(
       };
     }
 
-    const missingSlotCount = Number(!existingIpBucket) + Number(!existingEmailBucket);
+    const missingSlotCount = Number(!existingIpBucket) + Number(emailKey !== null && !existingEmailBucket);
     if (missingSlotCount > 0) {
       evictOldestUntilUnderCap(missingSlotCount);
     }
@@ -113,14 +116,7 @@ export function createInMemoryAuthApiRateLimiter(
       existingIpBucket && now - existingIpBucket.windowStartedAt < options.windowMs
         ? existingIpBucket
         : createBucket(now);
-    const refreshedEmailBucket =
-      existingEmailBucket && now - existingEmailBucket.windowStartedAt < options.windowMs
-        ? existingEmailBucket
-        : createBucket(now);
-
     refreshedIpBucket.count += existingIpBucket && now - existingIpBucket.windowStartedAt < options.windowMs ? 1 : 0;
-    refreshedEmailBucket.count +=
-      existingEmailBucket && now - existingEmailBucket.windowStartedAt < options.windowMs ? 1 : 0;
 
     // Delete-then-set keeps Map iteration order LRU-ish: without it, a
     // continuously refreshed (hottest) bucket stays at its original position
@@ -128,8 +124,17 @@ export function createInMemoryAuthApiRateLimiter(
     // counters an attacker is filling.
     buckets.delete(ipKey);
     buckets.set(ipKey, refreshedIpBucket);
-    buckets.delete(emailKey);
-    buckets.set(emailKey, refreshedEmailBucket);
+
+    if (emailKey !== null) {
+      const refreshedEmailBucket =
+        existingEmailBucket && now - existingEmailBucket.windowStartedAt < options.windowMs
+          ? existingEmailBucket
+          : createBucket(now);
+      refreshedEmailBucket.count +=
+        existingEmailBucket && now - existingEmailBucket.windowStartedAt < options.windowMs ? 1 : 0;
+      buckets.delete(emailKey);
+      buckets.set(emailKey, refreshedEmailBucket);
+    }
 
     return { allowed: true };
   }) as InMemoryAuthApiRateLimiter;

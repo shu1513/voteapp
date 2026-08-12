@@ -476,6 +476,190 @@ describe("public auth API endpoints", () => {
   });
 });
 
+describe("POST /api/auth/google", () => {
+  function googleBody(overrides: Record<string, unknown> = {}): string {
+    return JSON.stringify({
+      credential: "google-id-token",
+      intent: "login",
+      ...overrides,
+    });
+  }
+
+  it("rejects non-POST methods", async () => {
+    const authService = createAuthServiceMock({ loginWithGoogle: vi.fn() });
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn(), authService }), {
+      method: "GET",
+      path: "/api/auth/google",
+    });
+    expect(response.statusCode).toBe(405);
+  });
+
+  it("returns 500 not-configured when the service has no loginWithGoogle", async () => {
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), authService: createAuthServiceMock() }),
+      {
+        method: "POST",
+        path: "/api/auth/google",
+        body: googleBody(),
+        headers: { "content-type": "application/json" },
+      }
+    );
+    expect(response.statusCode).toBe(500);
+    expect((response.body as { error: { message: string } }).error.message).toBe(
+      "Google sign-in is not configured"
+    );
+  });
+
+  it("requires the JSON content type (CSRF guard)", async () => {
+    const authService = createAuthServiceMock({ loginWithGoogle: vi.fn() });
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn(), authService }), {
+      method: "POST",
+      path: "/api/auth/google",
+      body: "credential=x&intent=login",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+    });
+    expect(response.statusCode).toBe(415);
+    expect(authService.loginWithGoogle).not.toHaveBeenCalled();
+  });
+
+  it("rejects an unknown intent", async () => {
+    const authService = createAuthServiceMock({ loginWithGoogle: vi.fn() });
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn(), authService }), {
+      method: "POST",
+      path: "/api/auth/google",
+      body: googleBody({ intent: "link" }),
+      headers: { "content-type": "application/json" },
+    });
+    expect(response.statusCode).toBe(400);
+    expect(authService.loginWithGoogle).not.toHaveBeenCalled();
+  });
+
+  it("rejects signup with a stale or missing terms version before calling the service", async () => {
+    const authService = createAuthServiceMock({ loginWithGoogle: vi.fn() });
+    const app = createApiApp({ resolveAddress: vi.fn(), authService });
+
+    for (const body of [
+      googleBody({ intent: "signup" }),
+      googleBody({ intent: "signup", accepted_terms_version: "0.9" }),
+    ]) {
+      const response = await invokeExpressApp(app, {
+        method: "POST",
+        path: "/api/auth/google",
+        body,
+        headers: { "content-type": "application/json" },
+      });
+      expect(response.statusCode).toBe(400);
+      expect(String((response.body as { error: { message: string } }).error.message)).toContain(
+        CURRENT_TERMS_VERSION
+      );
+    }
+    expect(authService.loginWithGoogle).not.toHaveBeenCalled();
+  });
+
+  it("logs in on the web transport with a session cookie only", async () => {
+    const loginWithGoogle = vi.fn().mockResolvedValue({ sessionId: "session-google" });
+    const authService = createAuthServiceMock({ loginWithGoogle });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn(), authService }), {
+      method: "POST",
+      path: "/api/auth/google",
+      body: googleBody(),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "ok" });
+    expect(response.headers["set-cookie"]).toContain(`${AUTH_SESSION_COOKIE_NAME}=session-google`);
+    expect(response.headers["set-cookie"]).toContain("HttpOnly");
+    expect(loginWithGoogle).toHaveBeenCalledWith({
+      idToken: "google-id-token",
+      intent: "login",
+      currentSessionId: null,
+    });
+  });
+
+  it("passes the signup intent and terms version through", async () => {
+    const loginWithGoogle = vi.fn().mockResolvedValue({ sessionId: "session-google" });
+    const authService = createAuthServiceMock({ loginWithGoogle });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn(), authService }), {
+      method: "POST",
+      path: "/api/auth/google",
+      body: googleBody({ intent: "signup", accepted_terms_version: CURRENT_TERMS_VERSION }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(loginWithGoogle).toHaveBeenCalledWith({
+      idToken: "google-id-token",
+      intent: "signup",
+      acceptedTermsVersion: CURRENT_TERMS_VERSION,
+      currentSessionId: null,
+    });
+  });
+
+  it("returns the session id in the body for the mobile transport", async () => {
+    const loginWithGoogle = vi.fn().mockResolvedValue({ sessionId: "session-google" });
+    const authService = createAuthServiceMock({ loginWithGoogle });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn(), authService }), {
+      method: "POST",
+      path: "/api/auth/google",
+      body: googleBody(),
+      headers: { "content-type": "application/json", "x-voteapp-client": "mobile" },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "ok", session_id: "session-google" });
+    expect(response.headers["set-cookie"]).toBeUndefined();
+  });
+
+  it("maps the needs_signup service error to its distinct code", async () => {
+    const { AuthGoogleSignInError } = await import("../../src/auth/authService.js");
+    const loginWithGoogle = vi
+      .fn()
+      .mockRejectedValue(new AuthGoogleSignInError("needs_signup", "No account uses this Google account yet."));
+    const authService = createAuthServiceMock({ loginWithGoogle });
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn(), authService }), {
+      method: "POST",
+      path: "/api/auth/google",
+      body: googleBody(),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(400);
+    expect((response.body as { error: { code: string } }).error.code).toBe("needs_signup");
+  });
+
+  it("rate limits per client IP through the shared auth limiter", async () => {
+    const loginWithGoogle = vi.fn();
+    const authService = createAuthServiceMock({ loginWithGoogle });
+    const authRateLimit = vi.fn().mockReturnValue({ allowed: false, retryAfterSeconds: 9 });
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress: vi.fn(), authService, authRateLimit }),
+      {
+        method: "POST",
+        path: "/api/auth/google",
+        body: googleBody(),
+        headers: { "content-type": "application/json" },
+      }
+    );
+
+    expect(response.statusCode).toBe(429);
+    expect(authRateLimit).toHaveBeenCalledWith({
+      clientIp: expect.any(String),
+      // No password to brute-force behind this endpoint: null skips the
+      // (stricter) per-identity bucket so only the per-IP quota governs.
+      email: null,
+      method: "POST",
+      pathname: "/api/auth/google",
+    });
+    expect(loginWithGoogle).not.toHaveBeenCalled();
+  });
+});
+
 describe("account management endpoints", () => {
   it("changes the password and sets the rotated session cookie", async () => {
     const authService = createAuthServiceMock();
@@ -600,7 +784,7 @@ describe("account management endpoints", () => {
 
   it("updates first_name via PUT /api/me", async () => {
     const resolveAuthenticatedUserId = vi.fn().mockReturnValue(SESSION_USER_ID);
-    const identity = { email: "user@example.com", first_name: "Nova", email_verified: true };
+    const identity = { email: "user@example.com", first_name: "Nova", email_verified: true, has_password: true };
     const updateAuthenticatedUserFirstName = vi.fn().mockResolvedValue(identity);
 
     const response = await invokeExpressApp(

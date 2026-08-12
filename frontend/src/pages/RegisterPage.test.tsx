@@ -15,6 +15,7 @@ function renderRegister(search = "") {
       { path: "/terms", element: <p /> },
       { path: "/privacy", element: <p /> },
       { path: "/disclaimer", element: <p /> },
+      { path: "/me/ballot", element: <p>Saved ballot placeholder</p> },
     ],
     { initialEntries: [`/${search}`] }
   );
@@ -27,7 +28,24 @@ function renderRegister(search = "") {
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
 });
+
+// jsdom never loads the GIS script; a stubbed window.google lets the page
+// render the button and the test drive its captured credential callback.
+function stubGis() {
+  const initialize = vi.fn();
+  vi.stubGlobal("google", { accounts: { id: { initialize, renderButton: vi.fn() } } });
+  return {
+    initialize,
+    fireCredential(credential: string) {
+      const config = initialize.mock.calls.at(-1)?.[0] as
+        | { callback: (response: { credential?: string }) => void }
+        | undefined;
+      config?.callback({ credential });
+    },
+  };
+}
 
 describe("RegisterPage clickwrap", () => {
   it("keeps Create account disabled until the signup box is checked", async () => {
@@ -100,6 +118,42 @@ describe("RegisterPage clickwrap", () => {
       password: "correct horse battery staple",
       accepted_terms_version: TERMS_VERSION,
       first_name: "Val",
+    });
+  });
+
+  it("ignores the Google credential until the signup box is checked, then signs up with terms", async () => {
+    vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "test-client-id");
+    const gis = stubGis();
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      headers: new Headers(),
+      json: async () => ({ status: "ok" }),
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const user = userEvent.setup();
+    renderRegister();
+    await waitFor(() => expect(gis.initialize).toHaveBeenCalled());
+
+    // Same clickwrap gate as the submit button: an unchecked box means the
+    // credential is dropped, and the wrapper is marked disabled.
+    expect(screen.getByTestId("google-signin-button").parentElement).toHaveAttribute(
+      "aria-disabled",
+      "true"
+    );
+    gis.fireCredential("google-jwt");
+    expect(fetchMock).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("checkbox"));
+    gis.fireCredential("google-jwt");
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+    const [path, init] = fetchMock.mock.calls[0] as [string, { body: string }];
+    expect(path).toBe("/api/auth/google");
+    expect(JSON.parse(init.body)).toEqual({
+      credential: "google-jwt",
+      intent: "signup",
+      accepted_terms_version: TERMS_VERSION,
     });
   });
 

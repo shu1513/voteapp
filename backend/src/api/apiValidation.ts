@@ -26,6 +26,10 @@ export const ADDRESS_AUTOCOMPLETE_PATH = "/api/address/autocomplete";
 export const ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH = "/api/address/autocomplete/retrieve";
 export const ADDRESS_RESOLVE_PATH = "/api/address/resolve";
 export const AUTH_FORGOT_PASSWORD_PATH = "/api/auth/forgot-password";
+// Sign in with Google (docs/plans/google-sign-in.md): exchanges a verified
+// Google ID token for a session. Configured-if-present, like the Places
+// proxy — 500 not-configured without GOOGLE_OAUTH_CLIENT_ID.
+export const AUTH_GOOGLE_PATH = "/api/auth/google";
 export const AUTH_LOGIN_PATH = "/api/auth/login";
 export const AUTH_LOGOUT_PATH = "/api/auth/logout";
 export const AUTH_REGISTER_PATH = "/api/auth/register";
@@ -156,6 +160,15 @@ export type AuthRegisterPayload = {
 export type AuthLoginPayload = {
   email: string;
   password: string;
+};
+
+export type AuthGooglePayload = {
+  /** The GIS credential response: a Google-signed ID-token JWT. */
+  credential: string;
+  /** Which page the button sat on; only "signup" may create an account. */
+  intent: "login" | "signup";
+  /** Clickwrap record, required for intent "signup". */
+  accepted_terms_version?: string;
 };
 
 export type AuthForgotPasswordPayload = {
@@ -514,6 +527,31 @@ export function parseAuthLoginBodyValue(parsed: unknown): AuthLoginPayload {
   return {
     email: parseEmailField(parsed, "email"),
     password: parseStringField(parsed, "password"),
+  };
+}
+
+export function parseAuthGoogleBodyValue(parsed: unknown): AuthGooglePayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  const credential = parseStringField(parsed, "credential");
+  const intent = (parsed as { intent?: unknown }).intent;
+  if (intent !== "login" && intent !== "signup") {
+    throw new TypeError('intent must be "login" or "signup"');
+  }
+  const acceptedTermsVersion = (parsed as { accepted_terms_version?: unknown }).accepted_terms_version;
+  if (
+    acceptedTermsVersion !== undefined &&
+    (typeof acceptedTermsVersion !== "string" || acceptedTermsVersion.trim().length === 0)
+  ) {
+    throw new TypeError("accepted_terms_version must be a non-empty string when provided");
+  }
+
+  return {
+    credential,
+    intent,
+    ...(acceptedTermsVersion === undefined ? {} : { accepted_terms_version: acceptedTermsVersion.trim() }),
   };
 }
 

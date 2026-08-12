@@ -14,6 +14,7 @@ import { UserBallotPreferencesError } from "../pipeline/users/userBallotPreferen
 import { UserEmailPreferencesError } from "../pipeline/users/userEmailPreferences.js";
 import { UserPushTokensError } from "../pipeline/users/userPushTokens.js";
 import { UserIdentityError } from "../pipeline/users/userIdentity.js";
+import { AuthGoogleSignInError } from "../auth/authService.js";
 import type { ApiErrorCode } from "./apiResponses.js";
 
 export type MappedApiError = {
@@ -28,6 +29,11 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
   }
   if (error instanceof TypeError) {
     return { statusCode: 400, code: "invalid_request", message: error.message };
+  }
+  // Distinct code (not a generic 400) so the login page can route the user
+  // to the register page instead of showing a dead-end error.
+  if (error instanceof AuthGoogleSignInError) {
+    return { statusCode: 400, code: "needs_signup", message: error.message };
   }
   if (error instanceof CensusAddressGeocoderError) {
     if (error.code === "invalid_address") {

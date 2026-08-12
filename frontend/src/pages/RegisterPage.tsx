@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { Link, useSearchParams } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import type { MetaFunction } from "react-router";
-import { useMutation } from "@tanstack/react-query";
-import { APP_NAME, apiRequest } from "@voteapp/api-client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { APP_NAME, apiRequest, purgeAccountScopedQueries } from "@voteapp/api-client";
 import { LegalGate } from "../components/LegalGate";
 import { ErrorNotice } from "../components/Status";
+import { GoogleSignInButton } from "../components/GoogleSignInButton";
 import { SIGNUP_CHECKBOX_LABEL, TERMS_VERSION } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { safeInternalPath } from "../lib/safeInternalPath";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { postLoginDestination } from "../lib/postLoginDestination";
 
 export const meta: MetaFunction = () => [{ title: `Create your account · ${APP_NAME}` }];
 
@@ -35,6 +37,8 @@ export function RegisterPage() {
   const [searchParams] = useSearchParams();
   const next = safeInternalPath(searchParams.get("next"));
   const loginHref = next ? `/login?next=${encodeURIComponent(next)}` : "/login";
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const register = useMutation({
     mutationFn: () =>
@@ -59,16 +63,36 @@ export function RegisterPage() {
       }),
   });
 
+  // Google signup skips the email-verification round-trip entirely: the
+  // account is created verified and logged in, so this follows the login
+  // page's success path instead of the "check your email" screen.
+  const googleSignup = useMutation({
+    mutationFn: (credential: string) =>
+      apiRequest<{ status: string }>("/api/auth/google", {
+        method: "POST",
+        body: { credential, intent: "signup", accepted_terms_version: TERMS_VERSION },
+      }),
+    onSuccess: async () => {
+      purgeAccountScopedQueries(queryClient);
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      navigate(next ?? (await postLoginDestination(queryClient)));
+    },
+  });
+
   // The mismatch message waits until both fields have input — flagging a
   // half-typed confirmation as wrong would nag on every keystroke.
   const passwordsMismatch =
     password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;
+  // One flag across both signup paths: a password registration and a Google
+  // signup racing each other could create/log in different accounts with the
+  // outcome decided by response order.
+  const authPending = register.isPending || googleSignup.isPending;
   const canSubmit =
     accepted &&
     email.trim().length > 0 &&
     password.length > 0 &&
     password === confirmPassword &&
-    !register.isPending;
+    !authPending;
 
   if (register.isSuccess) {
     return (
@@ -202,9 +226,28 @@ export function RegisterPage() {
         </button>
       </form>
 
+      {/* Gated by the same LegalGate checkbox as the submit button above:
+          the Google signup records the identical clickwrap acceptance. */}
+      <div className="mt-4">
+        <GoogleSignInButton
+          text="signup_with"
+          disabled={!accepted || authPending}
+          onCredential={(credential) => {
+            if (accepted && !authPending) {
+              googleSignup.mutate(credential);
+            }
+          }}
+        />
+      </div>
+
       {register.isError ? (
         <div className="mt-4">
           <ErrorNotice error={register.error} />
+        </div>
+      ) : null}
+      {googleSignup.isError ? (
+        <div className="mt-4">
+          <ErrorNotice error={googleSignup.error} />
         </div>
       ) : null}
 

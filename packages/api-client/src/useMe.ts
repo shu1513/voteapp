@@ -19,6 +19,9 @@ export type Me = {
   first_name: string;
   email_verified: boolean;
   accepted_terms_version: string | null;
+  /** False on Google-created accounts that never set a password: Settings
+   * swaps its password-gated forms for an "add a password" hint. */
+  has_password: boolean;
 };
 
 /**
