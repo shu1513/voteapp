@@ -96,7 +96,7 @@ Today ([authService.ts:516](../../backend/src/auth/authService.ts)): `const pass
 - Known-paths allowlist + method guard + "not configured" 500, copying the register block's shape.
 - **Add the path to the JSON-parser allowlist** ([apiServer.ts:441](../../backend/src/api/apiServer.ts)) — this list is also half the CSRF story.
 - Body parse in `apiValidation.ts`: `{ credential: string, intent: "login" | "signup", accepted_terms_version?: string }`; terms-version currency re-checked at API layer for signup (same dual-layer pattern as register).
-- Rate limit: reuse `enforceAuthRateLimit` keyed on the **verified** token email (verify first — CPU-cheap against cached keys — then rate-limit, then DB work).
+- Rate limit: reuse `enforceAuthRateLimit` with `email: null` — **per-IP bucket only, before verification**. There is no password to brute-force behind this endpoint (credentials are Google-signed tokens), so a per-identity bucket adds nothing, and keying it would either couple Google sign-in to the stricter per-email quota (the bug the review round fixed) or require verifying before rate-limiting, inverting the limiter's cost-capping purpose. Do NOT restore token-email keying.
 - Response: web → 200 + session cookie; mobile-transport requests → `session_id` in body (identical branch to login). Distinct 4xx error code for "needs signup" so the login page can route the user to register.
 
 ### Wiring (runAddressApiServer.ts)

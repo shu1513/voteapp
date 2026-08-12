@@ -68,7 +68,19 @@ export function GoogleSignInButton({ text, disabled = false, onCredential }: Goo
   // ref so it always calls the latest handler without re-initializing.
   const onCredentialRef = useRef(onCredential);
   onCredentialRef.current = onCredential;
+  // initialize()'s global callback outlives this component: a user can open
+  // the Google account chooser, navigate away (unmount), and complete the
+  // sign-in — the credential must then be dropped, not fed to a handler
+  // whose page (and clickwrap state) is gone.
+  const mountedRef = useRef(true);
   const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (!clientId) {
@@ -87,7 +99,7 @@ export function GoogleSignInButton({ text, disabled = false, onCredential }: Goo
         accountsId.initialize({
           client_id: clientId,
           callback: (response) => {
-            if (response?.credential) {
+            if (mountedRef.current && response?.credential) {
               onCredentialRef.current(response.credential);
             }
           },

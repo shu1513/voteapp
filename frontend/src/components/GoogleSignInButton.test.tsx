@@ -62,6 +62,19 @@ describe("GoogleSignInButton", () => {
     expect(onCredential).toHaveBeenCalledTimes(1);
   });
 
+  it("drops credentials delivered after unmount (stale global GIS callback)", async () => {
+    vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "test-client-id");
+    const gis = stubGis();
+    const onCredential = vi.fn();
+    const { unmount } = render(<GoogleSignInButton text="signin_with" onCredential={onCredential} />);
+    await waitFor(() => expect(gis.initialize).toHaveBeenCalled());
+
+    unmount();
+    gis.fireCredential("late-jwt");
+
+    expect(onCredential).not.toHaveBeenCalled();
+  });
+
   it("blocks pointer events while disabled (clickwrap gate)", async () => {
     vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "test-client-id");
     const gis = stubGis();
