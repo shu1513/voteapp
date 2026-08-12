@@ -96,7 +96,8 @@ export type BallotLookupFinanceSummary = {
     | "DISTRICT_OF_COLUMBIA_OCF"
     | "OHIO_SOS"
     | "NORTH_CAROLINA_SBE"
-    | "GEORGIA_ETHICS";
+    | "GEORGIA_ETHICS"
+    | "RHODE_ISLAND_ERTS";
   cycle: number;
   fec_candidate_id: string | null;
   controlled_committee_id?: string | null;
@@ -198,6 +199,7 @@ export const FINANCE_SUMMARY_SOURCES = [
   "OHIO_SOS",
   "NORTH_CAROLINA_SBE",
   "GEORGIA_ETHICS",
+  "RHODE_ISLAND_ERTS",
 ] as const satisfies readonly BallotLookupFinanceSummary["source"][];
 
 // Compile-time exhaustiveness: never = a union member is missing above.

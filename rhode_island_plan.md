@@ -439,7 +439,11 @@ selectors, not the migration.
   local DB — `State Treasurer` canonical confirmed — but no
   state_upper/state_lower RI 2026 election rows exist yet; the General
   Assembly roster remains a prerequisite for sync coverage, not for this PR)
-- [ ] PR 2 loader + wiring + source registration
+- [x] PR 2 loader + wiring + source registration (shared-loader wrapper with
+  contribution_size-only narrowing + both coverage notes; characterization
+  pin incl. flag gate and migration-236 column check; `RHODE_ISLAND_ERTS`
+  in the source union + `FINANCE_SUMMARY_SOURCES` + `FINANCE_SOURCE_LABELS`;
+  RI adapter registered in `ballotLookup.ts`)
 - [ ] PR 3 acquisition spike (needs user authorization)
 - [ ] PR 4 artifact cache + parsers + acquisition script
 - [ ] PR 5 resolver + auto-link
