@@ -162,7 +162,7 @@ describe("reserveDailyBudget / reconcileDailyBudget", () => {
       }),
     } as unknown as Pool;
     await reconcileDailyBudget(pool, { day: "2026-08-12", estimatedTokens: 5_000 }, 1_200);
-    expect(queries[0]?.text).toContain("GREATEST(0, tokens_reserved + ($3 - $2))");
+    expect(queries[0]?.text).toContain("GREATEST(0, tokens_reserved + ($3::bigint - $2::bigint))");
     expect(queries[0]?.values).toEqual(["2026-08-12", 5_000, 1_200]);
   });
 });

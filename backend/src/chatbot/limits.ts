@@ -140,7 +140,7 @@ export async function reconcileDailyBudget(
     await db.query(
       `
         UPDATE chatbot.daily_budget
-        SET tokens_reserved = GREATEST(0, tokens_reserved + ($3 - $2))
+        SET tokens_reserved = GREATEST(0, tokens_reserved + ($3::bigint - $2::bigint))
         WHERE day = $1::date
       `,
       [reservation.day, reservation.estimatedTokens, actualTokens]
