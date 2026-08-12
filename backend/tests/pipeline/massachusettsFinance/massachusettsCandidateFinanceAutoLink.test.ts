@@ -54,7 +54,7 @@ describe("massachusettsCandidateFinanceAutoLink", () => {
         election_year: 2026,
         office_scope: "state_lower",
         office_name: "State Lower Chamber Legislator",
-        district: "9",
+        district: "9th Norfolk District (2024); Massachusetts",
       },
     ]);
 
@@ -82,7 +82,8 @@ describe("massachusettsCandidateFinanceAutoLink", () => {
         electionYear: 2026,
         officeScope: "state_lower",
         officeName: "State Lower Chamber Legislator",
-        district: "9",
+        // Catalog name canonicalized to OCPF's bare-number county form.
+        district: "9 NORFOLK",
       },
     ]);
 
@@ -95,6 +96,10 @@ describe("massachusettsCandidateFinanceAutoLink", () => {
     // Municipal offices are gated to place districts in the enabled-city
     // GEOID allowlist; non-place offices are unaffected.
     expect(sql).toContain("district.district_type = 'place' AND district.geoid_compact = ANY($6::text[])");
+    // Legislative rows select the district NAME — OCPF matches districts by
+    // county-list name, never by GEOID-derived ordinal tokens.
+    expect(sql).toContain("NULLIF(trim(district.name), '')");
+    expect(sql).not.toContain("geoid_compact from char_length");
     expect(sql).toContain("FROM public.ma_candidate_finance_links AS link");
     expect(db.query.mock.calls[0]?.[1]).toEqual([
       "2026-06-01T00:00:00.000Z",

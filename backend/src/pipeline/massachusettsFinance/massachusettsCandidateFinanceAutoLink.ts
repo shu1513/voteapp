@@ -72,7 +72,10 @@ function normalizeCandidateNameForStorage(value: string): string {
 
 function mapCandidateElectionRow(row: CandidateElectionQueryRow): MassachusettsFinanceAutoLinkCandidateElection {
   // Municipal rows carry the OCPF city token in the district slot; the SQL
-  // gate already restricted place rows to allowlisted GEOIDs.
+  // gate already restricted place rows to allowlisted GEOIDs. Legislative
+  // rows carry the catalog district NAME — OCPF identifies legislative
+  // districts by county-list name ("Senate, Middlesex and Norfolk"), so a
+  // GEOID-derived token could never match a filer's office label.
   const district =
     row.office_scope === "place"
       ? massachusettsMunicipalFinanceCityForGeoid(row.geoid_compact)
@@ -111,14 +114,7 @@ export async function listMassachusettsCandidateElectionsMissingFinanceLinks(
         COALESCE(NULLIF(trim(office.canonical_name), ''), election.official_ballot_title) AS office_name,
         CASE
           WHEN district.district_type IN ('state_upper', 'state_lower') THEN
-            NULLIF(
-              regexp_replace(
-                substring(district.geoid_compact from char_length(district.state_fips) + 1),
-                '^0+',
-                ''
-              ),
-              ''
-            )
+            NULLIF(trim(district.name), '')
           ELSE NULL
         END AS district,
         district.district_type AS district_type,

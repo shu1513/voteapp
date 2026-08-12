@@ -180,7 +180,9 @@ function isCandidateFilerUsable(filer: MassachusettsOcpfCandidateFiler): boolean
     return false;
   }
   const accountType = statusText(`${filer.accountTypeCode ?? ""} ${filer.accountTypeDescription ?? ""}`);
-  if (accountType && !/\b(CANDIDATE|DEPOSITORY)\b/.test(accountType)) {
+  // Statewide filers are "Depository Candidate"; legislative filers are
+  // "Legislative Candidates" (plural — \bCANDIDATE\b alone rejects them all).
+  if (accountType && !/\b(CANDIDATE|CANDIDATES|DEPOSITORY)\b/.test(accountType)) {
     return false;
   }
   return true;
@@ -311,6 +313,23 @@ export function resolveMassachusettsCandidateCommittee(
   };
 }
 
+// Last-name search token: OCPF's filer search requires every phrase token to
+// match, so a roster middle initial OCPF does not store ("Karen E. Spilka")
+// returns zero rows while "Spilka" finds the filer. The surname alone recalls
+// every relevant row; the strict name-key match (with the middle-name veto)
+// and office/district gates then decide, and ambiguity still fails closed —
+// same recall-vs-precision split as Georgia's surname-token fetch.
+export function massachusettsLastNameSearchToken(candidateName: string): string | null {
+  const trimmed = candidateName.trim();
+  if (trimmed.includes(",")) {
+    const commaSurname = normalizePersonName(trimmed.split(",", 1)[0]);
+    if (commaSurname) {
+      return commaSurname;
+    }
+  }
+  return normalizePersonName(trimmed).split(/\s+/).filter(Boolean).at(-1) ?? null;
+}
+
 export async function searchAndResolveMassachusettsCandidateCommittee(
   input: MassachusettsCandidateCommitteeSearchInput,
   options: MassachusettsOcpfClientOptions = {}
@@ -330,5 +349,19 @@ export async function searchAndResolveMassachusettsCandidateCommittee(
     },
     options
   );
-  return resolveMassachusettsCandidateCommittee({ ...input, filers });
+  const resolution = resolveMassachusettsCandidateCommittee({ ...input, filers });
+  // Retry with the surname only when the full-name pass produced no usable
+  // committee at all — zero rows, or rows that all failed the strict gates
+  // (inactive accounts, PACs, wrong offices). An ambiguous first pass means
+  // real evidence existed and must stay fail-closed, never be washed out by
+  // broader recall.
+  if (resolution.status !== "unmatched" || resolution.reason !== "no_candidate_committee_match") {
+    return resolution;
+  }
+  const surnameToken = massachusettsLastNameSearchToken(input.candidateName);
+  if (!surnameToken || surnameToken === input.candidateName.trim().toUpperCase()) {
+    return resolution;
+  }
+  const surnameFilers = await searchMassachusettsOcpfCandidateFilers({ searchPhrase: surnameToken }, options);
+  return resolveMassachusettsCandidateCommittee({ ...input, filers: surnameFilers });
 }
