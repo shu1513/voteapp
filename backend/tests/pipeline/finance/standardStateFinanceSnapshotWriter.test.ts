@@ -342,6 +342,27 @@ describe("createStandardStateFinanceSnapshotWriter config options", () => {
     ).resolves.toMatchObject({ outsideGroupsWritten: 1, outsideGroupBreakdownsWritten: 1 });
   });
 
+  it("keeps an existing manual link's status and source instead of overwriting them from a sync", async () => {
+    const db = { query: vi.fn().mockResolvedValue({ rows: [{ id: "link-1" }], rowCount: 1 }) };
+
+    await makeWriter().upsertLink({ db, link: { ...linkInput(), linkSource: "state_bulk" } });
+
+    const linkSql = String(db.query.mock.calls[0]?.[0]);
+    expect(linkSql).toContain(
+      `WHEN ${TABLES.links}.link_source = 'manual' THEN ${TABLES.links}.link_source`
+    );
+    expect(linkSql).toContain("ELSE EXCLUDED.link_source");
+    expect(linkSql).not.toContain("link_source = EXCLUDED.link_source");
+    // Status is guarded too: auto-link selects on "no active link exists", so
+    // an unguarded status would let automation reactivate an operator-disabled
+    // manual row.
+    expect(linkSql).toContain(
+      `WHEN ${TABLES.links}.link_source = 'manual' THEN ${TABLES.links}.link_status`
+    );
+    expect(linkSql).toContain("ELSE EXCLUDED.link_status");
+    expect(linkSql).not.toContain("link_status = EXCLUDED.link_status");
+  });
+
   it("deactivates superseded same-source links inside the snapshot transaction", async () => {
     const { db, client } = poolWithClient();
     const writer = makeWriter({ supersededLinkSource: "bulk_import" });
