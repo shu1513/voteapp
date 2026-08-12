@@ -4,8 +4,9 @@ Status: Phases 1–5 built (shared `efileCalFinance/` client + parser, the San
 José eligibility + resolver adapter, the direct/outside aggregators — all
 live-verified 2026-08-10 — then migration 233 + flags + source enum + snapshot
 writer, then the Phase 5 sync/auto-link/batch/loader/CLI, dry-run verified
-live 2026-08-11); Phase 6 live validation (real writes + portal-PDF
-reconciliation) remains, after the city's final candidate list (Aug 13).
+live 2026-08-11); Phase 6 live validation done locally 2026-08-12 (real writes,
+all six candidates reconciled cent-exact against every filed 460 PDF), to be
+re-run after the city's final candidate list (Aug 13) before production.
 Feasibility + export semantics verified against live
 data 2026-08-10 (portal probed, 2025+2026 workbooks downloaded and audited).
 
@@ -356,10 +357,76 @@ dry-run against the final roster before enabling sync.
   direction; verify quarantine fires on the known malformed filing if still
   uncorrected.
 
+**Live validation run, local DB, 2026-08-12 (all four checks passed):**
+
+- Real writes: `npm run san-jose-candidates:finance:sync-due` auto-linked and
+  wrote all 6 roster candidates, 0 failures, workbooks served from cache.
+  (The CLI's `--dry-run` is a no-op on a cold database by design: the auto-link
+  leg is skipped when dry, so nothing is ever due. Rehearse with the scratch
+  driver, not with `--dry-run`.)
+- PDF reconciliation: every one of the 30 Form 460 filings the export carries
+  for these committees was downloaded from the portal
+  (`/api/v1/public/document?doc_id=Ext_<filing_id>`, which returns a signed S3
+  URL) and its whole summary page — lines 1–19, both columns — compared to the
+  export. **30/30 cent-exact, zero mismatches.** Recomputing the published
+  totals from the PDF numbers alone reproduces all four figures for all six
+  candidates exactly. Column B (calendar YTD) is confirmed unreliable in the
+  filings themselves (Ortiz's own B column drifts $710 off its own column A
+  chain) — another reason the app sums column A.
+- IE direction: the Government Attorneys' PAC 496 against Nora Campos is
+  marked OPPOSE on the filed form and is stored as `oppose`; the committees
+  stored as `support` are self-described supporting committees. Direction maps
+  correctly both ways.
+- Quarantine: fires as designed and blocks nothing — Doan's $20,000 line-3
+  error, Le's three broken column-B lines and duplicate 2025 period, Ortiz's
+  two cash-chain restatements and one period overlap, Altwer's and Le's
+  prior-activity notes. All diagnostics; no committee was withheld.
+
+**Defect found by this run (FIXED 2026-08-12, see below) — outside spending
+misses paper filings.**
+The bulk export carries e-filed data only. Santa Clara County Government
+Attorneys' Association PAC filed *two* 496s opposing Nora Campos: `24950`
+(e-filed, $5,270.18, in the export) and `24823` (paper/scanned, $5,270.27,
+filed 05/12/2026 via netfile.com, **absent from the export**). The e-filed
+form's own "cumulative to date" line — $10,540.45 — proves the pair. So
+Campos's published oppose total is roughly half the real figure, with no
+disclosure. Scope citywide for 2026: 4 paper 496/497 filings total, of which
+these 2 are 496s; **no candidate committee among the six has a paper 460**, so
+the direct-money side is unaffected. Attribution is the hard part — the portal
+search index exposes the *spender*, never the target, and a scanned 496 has no
+text layer, so a cross-check could only say "N paper IE filings exist
+citywide", which would tag all six candidates for one candidate's gap. Options,
+in order of preference: (a) leave the totals alone and treat paper IEs as
+manual research; (b) add an outside-coverage note driven by an operator-curated
+list; (c) OCR the scans.
+
+**Fix shipped 2026-08-12: curated paper-496 supplements.**
+`sanJosePaperFilingSupplements.ts` holds operator-verified transcriptions of
+paper 496 expenditure lines (spender, target as printed, office/district,
+direction, amount, portal e_filing_id, source note). Automated attribution was
+confirmed impossible first: the raw S496 sheet has no `Cum_YTD` column (only
+Schedules A/C carry one) — the cumulative printed on the 496 PDF is
+vendor-rendered from data the XLSX never carries — and the search index names
+the spender, never the target. Supplements are validated at module load (fail
+loud: blank fields, nonpositive amounts, non-ISO dates, duplicate
+filing+target), keyed by `electionYear` (sync applies only the matching
+cycle), and fed through the aggregator's normal target-match and veto pipeline
+as synthetic rows in a `paper-496-` Tran_ID namespace, so they can never
+collide with export rows and a mistyped target simply matches nobody.
+Maintenance contract in the module header: add an entry only after reading the
+scan AND confirming the expenditure is absent from the export; re-verify when
+re-auditing a cycle (a later e-filed amendment re-reporting the expenditure
+would double-count). One entry shipped: the anti-Campos paper 496
+(e_filing_id 24823, $5,270.27). Live re-sync confirms Campos oppose =
+$10,540.45 — exactly the PAC's own sworn cumulative — with every other
+candidate unchanged.
+
 ## Limitations and risk register
 
-- Export covers e-filed statements only. San José now mandates e-filing, so
-  this bites only migrated/historical or exception records — if a qualifying
+- Export covers e-filed statements only. Confirmed live 2026-08-12: paper
+  filings exist and are invisible to the export (see the Phase 6 Campos 496
+  case above). Candidate committees all e-file, so the direct side is safe;
+  outside spending is not. If a qualifying
   candidate has such a gap, disclose via `direct_coverage_note`
   (field exists in `ballotLookupFinanceShared.ts`; Georgia uses it).
 - Filing lag: totals are as of `reported_through`, surfaced in UI.

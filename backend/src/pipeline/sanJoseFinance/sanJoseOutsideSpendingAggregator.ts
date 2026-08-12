@@ -44,6 +44,10 @@ import {
   normalizeSanJoseTextKey,
   sanJosePersonNameMatchesCandidate,
 } from "./sanJoseCandidateCommitteeResolver.js";
+import {
+  validateSanJosePaper496Supplements,
+  type SanJosePaper496Supplement,
+} from "./sanJosePaperFilingSupplements.js";
 
 export type SanJoseOutsideTargetCandidate = {
   displayName: string;
@@ -87,6 +91,10 @@ export type SanJoseOutsideSpendingAggregate = {
     /** Supp_Opp_Cd was not SUPPORT/OPPOSE — direction never guessed. */
     unknownDirectionRows: number;
     unknownDirectionCents: number;
+    /** Curated paper-496 entries fed in (pre-filter; most target OTHER candidates). */
+    paperSupplementRows: number;
+    /** Supplements dropped because their filing entered the export (stale entry). */
+    paperSupplementRowsSuppressed: number;
   };
 };
 
@@ -191,6 +199,11 @@ export function aggregateSanJoseOutsideSpending(input: {
   /** Concatenated rows from every calendar-year workbook the cycle spans. */
   s496: readonly EfileCalS496Row[];
   scheduleD: readonly EfileCalScheduleDRow[];
+  /**
+   * Curated paper-496 entries for THIS cycle (sync filters by election year).
+   * They run through the same target-match and veto pipeline as export rows.
+   */
+  paperSupplements?: readonly SanJosePaper496Supplement[];
 }): SanJoseOutsideSpendingAggregate {
   const { candidate } = input;
   if (candidate.officeName === "City Council Member" && candidate.seatNumber === null) {
@@ -241,6 +254,47 @@ export function aggregateSanJoseOutsideSpending(input: {
     .filter((row) => !s496Keys.has(rowKey(row)));
   const dedupedAdded = dedupeLatestReports(dOnlyRows);
 
+  // --- Curated paper filings: synthetic rows with a "paper-496-" Tran_ID
+  // namespace, so they can never collide with (or be deduped against) export
+  // rows; validation already rejected duplicates within the list itself.
+  //
+  // Double-count backstop: portal e_filing_ids are one global sequence
+  // (paper 24823 sits between e-filed neighbors), so an export row carrying a
+  // supplement's id — directly or as its amendment chain's origin — can only
+  // mean that filing entered the export. The export row is then authoritative
+  // and the stale supplement is suppressed (counted, never added). A FRESH
+  // e-filed re-report under a new id is undetectable by any id check — that
+  // path stays on the module's manual re-verification contract.
+  const exportFilingIds = new Set<string>();
+  for (const row of input.s496) {
+    exportFilingIds.add(row.eFilingId);
+    exportFilingIds.add(row.origEFilingId);
+  }
+  for (const row of input.scheduleD) {
+    exportFilingIds.add(row.eFilingId);
+    exportFilingIds.add(row.origEFilingId);
+  }
+  const paperSupplements = input.paperSupplements ?? [];
+  validateSanJosePaper496Supplements(paperSupplements);
+  const livePaperSupplements = paperSupplements.filter(
+    (entry) => !exportFilingIds.has(entry.eFilingId),
+  );
+  const supplementRows: OutsideRow[] = livePaperSupplements.map((entry) => ({
+    filerId: entry.spenderFilerId,
+    filerName: entry.spenderName,
+    tranId: `paper-496-${entry.eFilingId}`,
+    eFilingId: entry.eFilingId,
+    rptDate: entry.expenditureDate,
+    amountCents: entry.amountCents,
+    candidateLastName: entry.candidateLastName,
+    candidateFirstName: entry.candidateFirstName,
+    officeCd: entry.officeCd,
+    jurisDscr: entry.jurisDscr,
+    distNo: entry.distNo,
+    suppOppCd: entry.direction,
+    memo: false,
+  }));
+
   // --- Per-candidate filter: name match first, then fail-closed vetoes. ---
   const diagnostics = {
     s496Rows: s496Rows.length,
@@ -258,9 +312,12 @@ export function aggregateSanJoseOutsideSpending(input: {
     districtGateExcludedRows: 0,
     unknownDirectionRows: 0,
     unknownDirectionCents: 0,
+    paperSupplementRows: supplementRows.length,
+    paperSupplementRowsSuppressed:
+      paperSupplements.length - livePaperSupplements.length,
   };
   const included: { row: OutsideRow; direction: "support" | "oppose" }[] = [];
-  for (const row of [...dedupedS496.rows, ...dedupedAdded.rows]) {
+  for (const row of [...dedupedS496.rows, ...dedupedAdded.rows, ...supplementRows]) {
     if (row.memo) {
       diagnostics.memoRowsExcluded += 1;
       continue;
