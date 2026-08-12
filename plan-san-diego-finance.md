@@ -1,0 +1,137 @@
+# San Diego City Campaign Finance Plan
+
+Written 2026-08-10 after live probing of the City of San Diego eFile system (bulk XLSX downloaded and parsed, JSON endpoints exercised, local DB and codebase audited). Revised the same day after an external review round; the accounting-model corrections below were each re-verified against the live workbooks before adoption. Verdict: **GO — Phase 0 first.** Schema and any published numbers wait until the Phase 0 gates (amendment canonicalization, loan exclusion, cross-year spend, outside-spending union) all reconcile to the cent.
+
+## Phase 0 status — COMPLETE (2026-08-12, this branch)
+
+`npm run san-diego-candidates:finance:probe` (`backend/src/scripts/probeSanDiegoCandidateFinance.ts`) ran live against the csd 2025+2026 `most_recent` workbooks. **All five gates pass**; all 8 November candidates resolve (5 by committee-name evidence, 3 by the clerk-log tier). Verified totals (cycle, through 2026-06-30): Bailey $277,022.92/$130,132.11 raised/spent, Crosby $72,863.68/$69,028.86, Foster $112,142.94/$28,968.08, Abraham $45,122.49/$38,836.59, Lee $115,957.00/$13,307.41, Powell $63,368.38/$59,697.28, Martinez $97,670.34/$121,576.79 (the hand-derived cross-year fixture, exact), Ramirez $68,794.00/$78,406.22 + $20,000 loans (excluded from raised, exact).
+
+Live findings the build phases must carry:
+
+1. **Variant decision changed: use `most_recent_only=true` + our canonicalization** (the shipped SJ pattern), not the `false` variant this plan originally specified. The `true` variant is smaller and canonical selection is load-bearing either way — the probe proved it live: Ramirez's duplicate chains collapse to rpt 002 winners (`300071809`, `300071810`).
+2. **SD workbooks contain row-scoped garbage SJ never had**: Major Donor filing blocks with blank `Form_Type` (Marriott 2025; more in 2026) and rows with blank `Filer_ID`. Fixes shipped in the shared layer, SJ behavior unchanged: `parseEfileCalWorkbook(data, { collectUnusableRows: true })` skips and reports row-scoped failures (default still throws), and a blank `Filer_ID` normalizes to the literal `"Pending"` (SD's spelling of SJ's Pending state — the same committee carries its real FPPC id on later rows). The Pending fix recovered real money: a $22,165 oppose-Bailey S496 row. **Phase 1 sync policy: any unusable row belonging to a linked committee blocks that committee's write.**
+3. **Resolver needs the clerk-log tier** (as planned): "Re-Elect Kent Lee…" / "Re-Elect Henry Foster III…" defeat name-token extraction (leading campaign verb) and "POWELL FOR CITY COUNCIL 2026" has no given name — all three correctly fail closed on name evidence. The clerk log's per-candidate link carries a **vendor filer GUID** (`/public/search/campaign/filings/<guid>?type=coe`, filing list at `/api/v1/public/campaign-search/coe/filing/list/<guid>?type=coe`) that names the committee; GUIDs for the three are pinned in the probe.
+4. **Office codes: council rows carry `CCM` AND `COU`** (both observed live) — the SD office gate accepts both; SJ's accepts only CCM.
+5. **Jurisdiction veto string is per-city** ("SAN DIEGO"); the SJ outside aggregator cannot be reused as-is (its veto would exclude every SD row) — the probe's SD-gated tally is the Phase 3 aggregator spec.
+6. **Fail-closed vetoes are catching real dirt**: California Working Families Party filed 7 S496 rows supporting *Nicole Crosby* (D2) with `Dist_No=6` — $8,194.67 excluded by the district veto. Verify against the PDFs during the live-run sweep; if the money is real, it is a curated-supplement/manual case, never a veto loosening.
+7. **Outside groups can split identities**: Working Families Opposing Bailey appears under FPPC id `1491013` (most rows) and as Pending/blank-id (3 rows) — two groups with one name. Phase 3 decides whether to merge Pending groups into a same-normalized-name id'd committee; until then both rows display.
+8. Martinez trips `prior_activity_uncovered` (opens 2025-01-01 with $33,813.84 cash) — the SJ coverage-note path handles it verbatim.
+
+Sibling module: San José (`plan-san-jose-finance.md`) runs the **identical vendor portal** (efile.systems: `efile.sanjoseca.gov` / `efile.sandiego.gov`, same Bulk Export UI and API shape). **SJ shipped first** (Phases 1–6 merged by 2026-08-12, live-validated cent-exact) — San Diego consumes its shared `efileCalFinance` client/parser and copy-adapts its aggregators and resolver; see the reuse inventory under Architecture. This makes SD mostly adaptation work, not new design.
+
+Follow the launch checklist in the `voteapp-new-state-finance-checklist` memory (flags in `.env` + `render.yaml`, source label in `packages/api-client/src/format.ts`, this plan doc's naming).
+
+## Verified sources (probed live 2026-08-10)
+
+### Primary: eFile-SD bulk export (CAL 2.20 XLSX)
+
+The City Clerk's electronic filing system (`https://efile.sandiego.gov`) publishes per-year bulk exports of every e-filed campaign statement:
+
+- Download URL resolved via `GET /api/v1/public/campaign-bulk-export-url?year=YYYY&most_recent_only={true|false}` → returns an S3 URL, e.g. `https://efs-efile-campaign-exports.s3.amazonaws.com/csd/export/City_of_San_Diego_CAL_2026_all.xlsx`. Available years listed by `GET /api/v1/public/campaign-bulk-export-info` (2018–2026 today, both variants).
+- No auth, no app token. 2026 "all" file is 982 KB, 2025 "all" is 5.3 MB. Three most recent years refreshed **hourly**, older years nightly (stated on the export page).
+- **Amendment supersession must be ours — the `most_recent_only=true` variant is buggy.** Verified live: chain `300071267` (Gerardo Ramirez) retains BOTH amendments `001` and `002` in the "most recent" file (only the `000` original is dropped); 2 of 119 chains in the 2026 file are affected, and the versions carry different totals (line 11B `41882.55` vs `42456.55`). Resolution (Phase 0, matching shipped SJ practice): download the `true` variant anyway and rely on the canonical per-period selection (latest `Rpt_Date`, then `Report_Num`, then `e_filing_id`) that the direct aggregator performs — proven live on the Ramirez chains. Duplicate-period losers surface as `duplicate_period_filings` violations.
+- 15 worksheets, CAL 2.20 column names (same vocabulary as CAL-ACCESS/DataSF): `F460-Summary`, `F460-A-Contribs`, `F460-C-Contribs`, `F460-I-MiscCashIncs`, `F460-B1-Loans`, `F460-B2-LoanGuarantees`, `F460-H-LoansMade`, `F460-D-ContribIndepExpn`, `F460-E-Expenditures`, `F460-F-UnpaidBills`, `F460-G-AgentPayments`, `F496-P3-Contribs`, `S496`, `S497`, `TEXT`.
+
+### Secondary: eFile JSON search API (undocumented — treat as fragile)
+
+`GET /api/v1/public/campaign-search?...` returns filing metadata as JSON: `filing_id` (GUID), `e_filing_id`, `filing_type`, `committee_type` (e.g. `Candidate or Officeholder`), `state_id` (FPPC ID, may be null for new committees), `entity_name`, period, amendment chain. Used for: committee-type classification, freshness checks, and PDF links (`doc_public` id) as human-verifiable source URLs. Filter vocabulary confirmed via `/api/v1/public/campaign-search/form-types` and `/api/v1/public/campaign/committee-types`. It is undocumented: responses are cached as artifacts, the parser contract-tests the shape and fails closed on drift (bulk XLSX remains the load-bearing source).
+
+Fetch hygiene (both sources): allowlist exactly `efile.sandiego.gov` and the `efs-efile-campaign-exports.s3.amazonaws.com/csd/` prefix, HTTPS only; validate the XLSX ZIP signature, cap download size and per-sheet row counts, allowlist expected columns, and record content checksum + fetch timestamp with each artifact (matching the CAL-ACCESS artifact-cache pattern).
+
+### Explicitly rejected sources
+
+- **City open-data portal** (`data.sandiego.gov` "Financial Support for Candidates and Ballot Measures"): files stop at 2021, last updated 2023. Historical-only; not used (November-2026 scope).
+- **PDF/scanned paper filings**: not parsed in v1 (see coverage gap below).
+
+## What the 2026 sample file proved
+
+Parsed `City_of_San_Diego_CAL_2026_all.xlsx` (all worksheets):
+
+| Requirement | Sheet / fields | Evidence from sample |
+|---|---|---|
+| Total raised | `F460-Summary` lines 1 + 4, `Amount_B` (see accounting rules below — NOT line 5) | Martinez council committee 2026: `13191.00 + 660.09` |
+| Total spent | `F460-Summary` line 11 **`Amount_A` summed over canonical periods** (NOT Σ of yearly 11B) | Martinez cycle: `121576.79`, not the naive `146419.75` |
+| Cash on hand / debts | lines 16 / 19, `Amount_A` of latest filing | `11315.22` / `1407.83` |
+| Loans received | `F460-B1-Loans` gross inflows; summary line 2 is display-only | Ramirez semi-annual: line 2B `20000.00` |
+| Donor occupation + employer | `F460-A-Contribs` `Ctrib_Occ`, `Ctrib_Emp`, `Ctrib_Self`, `Entity_Cd` | 2,631 rows; 2,424 `IND`; 174 missing occupation (6.6%) |
+| Outside spending w/ direction | `S496` `Supp_Opp_Cd` + `Cand_NamL` + `Office_Cd`/`Dist_No` | 158 rows: 144 SUPPORT / 13 OPPOSE; targets concentrated in council districts 2, 8, 6, 4 |
+| Outside reconciliation | `F460-D-ContribIndepExpn` (spenders' Schedule D) | 136 SUPPORT / 19 OPPOSE — validation only, overlaps S496 (SF lesson) |
+
+Summary sheet carries full line arithmetic (19 F460 lines plus per-schedule subtotal blocks A/B1/E/F), so every headline number is reconcilable to the cent against schedule sums — reuse the Georgia lesson: **official totals are report-cover arithmetic**; the summary lines are authoritative, schedule sums are the cross-check.
+
+## Hard facts that shape the design
+
+1. **Cycle accounting: sum Column A over canonical, non-overlapping filings; Column B is a per-year check, never a cycle input.** `Amount_A` = period, `Amount_B` = calendar YTD, `Amount_C` always empty in the export. Two traps, both verified live on Antonio Martinez (FPPC `1460125`, 2025+2026 files):
+   - **Column B carries balance-type lines (2, 7, 9) across calendar years** (FPPC Form 460 rule). Naive "sum each year's final line 11B" gives `45187.64 + 101232.11 = 146419.75`; the correct cycle spend is `Σ line 11A = 121576.79`. The difference is exactly 2025's ending accrued debt (`24842.96`) counted twice. Per-year cross-check: final 11B − opening carried 7B − opening carried 9B = Σ 11A for that year (verified: `101232.11 − 0 − 24842.96 = 76389.15`).
+   - **Line 5 includes loans; the VoteApp contract excludes them.** `total_raised` is donor money only (`ballotLookupFinanceShared.ts` — `loans_received` is deliberately separate). Verified live: Ramirez semi-annual has line 1B `33750`, line 2B `20000`, line 5B `53750`. Formula: `total_raised = Σ (line 1A + line 4A)` over canonical filings; `loans_received` from Schedule B1 gross inflows (line 2B carries outstanding balances across years — display cross-check only). `cash_on_hand`/`debts_owed` = lines 16/19 `Amount_A` of the latest filing.
+   Integer cents throughout (`moneyStringToCents` pattern from `sanFranciscoOpenDataClient.ts`). Period non-overlap must be asserted per committee (filings tile the cycle; overlapping-period chains quarantine the committee for review).
+2. **The export has no candidate name or office for candidate committees.** Only `Filer_ID` (FPPC ID) + `Filer_NamL` (committee name, e.g. "Antonio Martinez for City Council 2026"). A committee→candidate resolver is the largest new piece (Georgia-resolver class of work). Evidence sources, in trust order: (a) **the City Clerk's official candidate log** (`sandiego.gov/city-clerk/elections/city/electioninfo`) — it links every qualified candidate directly to their eFile disclosures, giving an official candidate→committee mapping (verified live for all 8 November candidates); (b) CAL-ACCESS registration data already in `backend/src/pipeline/californiaFinance/` (`calAccessRawData*`) — FPPC ID → registered candidate/office; (c) committee-name evidence (the Georgia committee-name approach, PR #640 — names follow "X for City Council YYYY" conventions), never sufficient alone for an auto-link. New committees can have a null FPPC ID (pre-ID window) — link identity is FPPC ID when present, otherwise committee name + type held at `pending` until the ID appears; Phase 0 checks whether the search API exposes a stable per-filer vendor id usable as a stronger fallback key. Surname collisions are real: the 2026 file has multiple unrelated "Ramirez" committees, including a `$200k` primarily-formed one.
+3. **IE target fields are dirty.** `Cand_NamL` holds the whole name ("Rafael Perez") in the last-name column; `Juris_Cd`/`Juris_Dscr` inconsistent (`OTH` vs `CIT`, mixed case). Match on normalized full-name + `Office_Cd` (`CCM` = council, `COU` variant seen) + `Dist_No`, against the *linked roster*, not free-floating.
+4. **Coverage gap: the $10k paper threshold.** Committees raising ≥ $10,000 must e-file (SDMC §27.29xx; city fact sheet). Below that, paper is allowed and paper filings are absent from the export. Consequences: absence of filings ≠ $0. Writer must not emit a zero-dollar summary for a linked candidate with no e-filings; UI already renders the no-data state. Every written summary carries a coverage note (Georgia `direct_coverage_note` pattern): "electronic filings only; sub-$10k committees may file on paper."
+   San José's Phase 6 (PR #661, merged) proved this gap bites in practice and that **the export gives no signal money is missing**: the S496 sheet has no `Cum_YTD` column, so a paper-filed 496 is invisible except by reading the portal's filing list. The shipped fix transfers: copy-adapt `sanJosePaperFilingSupplements.ts` → `sanDiegoPaperFilingSupplements.ts` — operator-curated transcriptions of paper filings as synthetic rows in a reserved Tran_ID namespace, fail-loud validation, cycle-keyed, flowing through the aggregator's normal target/office/district/direction vetoes. The live-run phase must include a **manual paper-filing sweep**: list every non-e-filed 460/496/497 on the portal for the cycle, read the scans that touch rostered candidates, and curate supplements for real misses (SJ's citywide 2026 count was 4; SD's may be higher given the sub-$10k paper allowance covers whole committees, not just stray 496s — if a rostered candidate's entire committee turns out to be paper-only, that stays a coverage-note case, not a supplement transcription of a full 460).
+5. **Outside spending = deduplicated union of S496 and Schedule D — neither alone is complete.** Verified live on the canonicalized 2026 file: S496 `$1,399,473.90` (146 rows) vs Schedule D `$1,459,153.68` (146 rows); on a spender+target+amount match each side holds ~`$310–370k` the other lacks (S496 misses spending reported only on periodic 460s; D lags the most recent weeks and misses sub-threshold-in-90-days activity). The same logical transaction can even disagree: `Tran_ID PDT1`, "Working Families Opposing Richard Bailey", is `$45,000` on S496 and `$50,000` on Schedule D. Rules: canonicalize amendments on both sheets first; dedup on spender `Filer_ID` + normalized target + date + lineage ids (`Tran_ID`, `BakRef_TID`, `Memo_RefNo`), description fingerprint as fallback; on conflict the newest canonical filing wins; ambiguous matches go to a quarantine list for manual review, never a guessed merge; drop `Memo_Code` rows before summing. GP-committee `F460-E` rows with `Expn_Code='IND'` duplicate Schedule D — excluded. `outside_coverage_note` discloses the dedup basis.
+6. **F497/F496-P3 contributions are early disclosures of money that later appears on Schedule A** — direct-contribution aggregation uses `F460-A-Contribs` (+ `F460-C` nonmonetary) only, excluding `Memo_Code` rows. No late-report merging in v1.
+7. **San Diego candidate committees may only take individual contributions** (city ECCO rule) — occupation/employer breakdowns are unusually meaningful; `Entity_Cd='IND'` filter plus the standard occupation + contribution-size buckets. Money below the $100 itemization line surfaces as an explicit "Unitemized" bucket (itemized Σ vs summary line delta), so buckets reconcile to `total_raised`. Contributor street addresses are parsed but never persisted.
+
+## Prerequisites
+
+1. **Rosters.** Local DB has **zero** San Diego city elections (the only Nov-2026 SD rows are county: Supervisor D5, Treasurer/Tax Collector). LA-pattern modeling confirmed: city seats are elections on the place district (`San Diego city, California`, GEOID `0666000`, district id `681d9d5b-ce95-433f-9cdf-196a2ca53199`) with the seat in the ballot title. The November field is verified from the Clerk's candidate log (2026-08-10): D2 Bailey/Crosby, D4 Foster III/Abraham, D6 Lee/Powell, D8 Martinez/Ramirez — but the election and candidate rows still must be created via the `voteapp-manual-research` skill before finance links can land.
+2. **Office scope.** `place::Mayor`, `place::Municipal Attorney` (City Attorney), `place::City Council Member` — city offices, all on the place row (unlike SF, where supervisors are county). No Mayor/City Attorney contest in Nov 2026; council only.
+3. **CAL-ACCESS state module untouched.** `californiaFinanceEligibleOffices.ts` intentionally excludes city offices; San Diego gets its own module and does not widen state eligibility.
+
+## Architecture
+
+New module `backend/src/pipeline/sanDiegoCityFinance/`, tables prefixed `sdcity_` (mirrors `lacity_`; avoids the `sd_` South Dakota collision; longest name `sdcity_candidate_finance_outside_group_breakdowns` = 50 chars, under the 63 limit). Standard five-table shape via `createStandardStateFinanceSnapshotWriter` (pairing validation `G`, min election year 2024, replace-merge). Source enum `SAN_DIEGO_CITY_CLERK` (see flags section). Table shape and writer config mirror the shipped `sjc_` set (migration 233) — new migration number for `sdcity_`.
+
+**San José shipped first (Phases 1–6 merged by 2026-08-12), so San Diego consumes its code.** Audited on `main` 2026-08-12 — the SJ module already implements this plan's entire corrected accounting model, live-validated cent-exact against 30/30 sampled PDFs. Reuse inventory:
+
+Reuse **as-is** (import, no changes):
+
+- `backend/src/pipeline/efileCalFinance/efileCalBulkClient.ts` — already agency-configurable (`EfileCalAgencyConfig`: `agencyKey`/`portalBaseUrl`/`allowedExportHosts`) and its header names San Diego as the verified second tenant. SD is one config literal (`agencyKey: "csd"`, portal `https://efile.sandiego.gov`). ETag/Last-Modified artifact cache, HTTPS + host allowlist, 64 MB cap all built in — this plan's "fetch hygiene" section is already implemented.
+- `backend/src/pipeline/efileCalFinance/efileCalWorkbookParser.ts` — sheet/column contracts, typed rows, ZIP signature check. Same workbook layout verified on both portals.
+- Shared name gates (`personNameMiddleEvidence`, `personFirstNameNicknames`, suffix veto) and the standard writer factory.
+
+**Copy-adapt** from `backend/src/pipeline/sanJoseFinance/` (SJ-specific parts are offices and target semantics, not the math):
+
+- `sanJoseDirectFinanceAggregator.ts` → `sanDiegoDirectFinanceAggregator.ts` — already does Σ Amount_A over canonical filings, line 5 never used, B1 gross loans, amendment canonicalization, and violation checks this plan wants (summary arithmetic, period overlap/gap, cash chain line 12 = prior line 16, Schedule A/B1 cross-checks). Swap the eligible-office/seat model (SD: Council districts, place-scoped) and add the unitemized bucket if SJ lacks it.
+- `sanJoseOutsideSpendingAggregator.ts` → SD version — already S496 ∪ Schedule-D-`IND` deduped by `(Filer_ID, Tran_ID)` with **latest-report-wins** (exactly resolves SD's observed `PDT1` $45k/$50k conflict), fail-closed direction, token-based target matching with office/district vetoes. Keep SD's quarantine list for ambiguous matches.
+- `sanJoseCandidateCommitteeResolver.ts` → SD version — `Cmtte_Type=C` gate, literal `"Pending"` Filer_ID handling (answers this plan's null-FPPC-ID question: Pending is not an identity; group by normalized name, never auto-link), fail-closed ambiguity. SD **adds** the Clerk candidate-log links as top evidence (SJ resolves from committee names alone).
+- `sanJosePaperFilingSupplements.ts` → `sanDiegoPaperFilingSupplements.ts` (PR #661) — curated paper-496 transcription mechanism; ships empty until the live-run paper sweep finds real misses.
+- Writer (`sjc_` → `sdcity_` tables), sync/batch/auto-link/ballot-lookup loader, scripts, scheduler — mechanical renames of the SJ set (not the SF skeleton).
+
+Do NOT extract the aggregators/resolver into `efileCalFinance` yet — two cities is copy territory; lift shared pieces only when a third efile.systems tenant materializes. SJ caveats that transfer: the export re-reports whole 460s (duplicate current filings for one period — SD's duplicate-period flag stays), and the cycle window is NOT clipped to the November election date (documented SJ decision — keep the same semantics for consistency).
+
+### Phases (small; single-source module)
+
+- **Phase 0 — probe (no schema, no publication).** Client + parser + `probeSanDiegoCandidateFinance` npm script. Hard gates, each reconciled to the cent against the live workbooks and sampled eFile PDFs, using all 8 November candidates:
+  1. Amendment canonicalization fixtures pass (chain `300071267` collapses to `002`; one survivor per chain; duplicate-period chains flagged).
+  2. Loan exclusion: `total_raised` = Σ(1A+4A) excludes the Ramirez `$20,000` loan; loans reconcile via Schedule B1.
+  3. Cross-year spend: Martinez cycle spend = `121576.79` via Σ11A; naive 11B sum rejected by a fixture.
+  4. Outside union: S496 ∪ Schedule D dedup reproduces sampled PDF filings; `PDT1` conflict resolves to the newest canonical version; quarantine list is empty or explained.
+  5. Every November candidate maps to a committee via the Clerk log, or carries an explicit unresolved reason.
+- **Phase 1 — schema + writer.** Migration (next free number; never renumber) for the five `sdcity_` tables; writer via the standard factory; writer tests.
+- **Phase 2 — resolver + links.** Clerk-log + CAL-ACCESS + name-evidence resolver, auto-link, manual-link protection.
+- **Phase 3 — aggregators + sync.** Direct/outside/balance aggregation, `direct_coverage_note` + `outside_coverage_note` (both already in the shared contract and API types — no frontend changes expected, verify rendering at the end of the phase), sync + due-list + scheduler, flags, source label, ballot-lookup loader.
+- **Phase 4 — live run + UI check.** Full 2025+2026 ingest locally; **paper-filing sweep** (portal filing list minus e-filed set, read scans touching rostered candidates, curate supplements per the PR #661 contract — add an entry only after reading the scan AND confirming absence from the export); FinanceSummaryCard renders raised/spent/cash/debts/loans/occupations/outside S-O, then the standard prod checklist. Note prod scheduling: all finance crons in `render.yaml` are commented out pending Render billing — prod sync remains manual-trigger until that unblocks (repo-wide state, not SD-specific).
+
+### Flags & labels (checklist items, do not skip)
+
+- `SAN_DIEGO_CAMPAIGN_FINANCE_ENABLED` + `SAN_DIEGO_CAMPAIGN_FINANCE_SYNC_ENABLED` + `SAN_DIEGO_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED` (exact mirror of the shipped `SAN_JOSE_*` trio in `featureFlags.ts`): code defaults `false`, set `true` in `backend/.env` (alphabetical), read flag added to `render.yaml`.
+- Source enum `SAN_DIEGO_CITY_CLERK` (mirrors shipped `SAN_JOSE_CITY_CLERK`; the City Clerk is the filing officer) in `ballotLookupFinanceShared.ts`; display label "City of San Diego Office of the City Clerk" in `FINANCE_SOURCE_LABELS` (`packages/api-client/src/format.ts`, alphabetical) + `format.test.ts` case.
+
+## Out of scope (v1)
+
+- PDF/paper-filing parsing (coverage note instead — revisit only if a rostered runoff candidate is invisible electronically).
+- Pre-2024 elections, historical open-data CSVs, ballot-measure committees, F497 late-report merging into direct contributions, per-donor industry classification (runs later via the existing shared classifier).
+
+## Reuse beyond San Diego
+
+What SD/SJ add that is genuinely portable is a **CAL 2.20 transaction-workbook parser core** (summary-line arithmetic, Sched A occupation extraction, S496 target semantics) plus the shared **efile.systems client** (fetch layer, agency-configurable).
+
+- **San José** — same portal, plan already written (`plan-san-jose-finance.md`): Council D1/3/5/7/9 in Nov 2026. Build order between SJ and SD is the user's call; second one is cheap.
+- **Other efile.systems tenants** — the S3 bucket (`efs-efile-campaign-exports`, tenant prefix `/csd/`) is multi-tenant but listing is denied; as the vendor signs more CA agencies (San José migrated from SouthTech 2025-12), each new tenant is near-zero marginal client work. Worth a periodic check.
+- **NetFile agencies (largest separate pool).** NetFile is the other dominant CA local e-filing vendor; its portals advertise per-year Excel export of e-filed FPPC forms (460/496/497/461/465) — same CAL vocabulary, so the parser core transfers. Confirmed agencies: Oakland (`COAK`), Santa Clara County (`SCC`), Ventura County (`VCO`); dozens more CA cities/counties. **Unverified**: export URL shape/column layout on the new NetFile portal — needs a Phase-0-style probe before promising anything.
+- **San Diego County** (Supervisor D5 + county offices are already rostered for Nov 2026): County ROV uses a different vendor ("EFDS"); separate probe, not covered by this module.
+- **Not applicable**: LA City (aggregate ethics-site scraper, already shipped), SF (Socrata + dashboard manifest, already shipped), non-CA states (no CAL format).
+
+Decision: build the eFile cities with the parser-core/fetch split but **do not** build the NetFile client until a concrete next city is chosen — that keeps v1 lean while leaving the door open.

@@ -161,6 +161,13 @@ export type EfileCalWorkbook = {
   scheduleD: EfileCalScheduleDRow[];
   s496: EfileCalS496Row[];
   s497: EfileCalS497Row[];
+  /**
+   * Rows skipped under `collectUnusableRows` (San Diego's live 2025 export
+   * carries a Major Donor filing block with blank Form_Type). Absent in the
+   * default throw mode. Callers that collect MUST surface these — a linked
+   * committee's row landing here means its totals are incomplete.
+   */
+  unusableRows?: EfileCalUnusableRow[];
 };
 
 const XLSX_ZIP_MAGIC = [0x50, 0x4b, 0x03, 0x04] as const;
@@ -171,6 +178,25 @@ export function isEfileCalWorkbookData(data: Uint8Array): boolean {
 
 type RawRow = Record<string, unknown>;
 
+/**
+ * A single row failed validation. Distinct from generic errors so collect
+ * mode (below) can skip exactly these and never mask a real drift signal
+ * (missing sheets/columns, unreadable workbook) — those still throw plain
+ * Errors regardless of mode.
+ */
+export class EfileCalUnusableRowError extends Error {
+  constructor(
+    readonly sheet: string,
+    readonly rowNumber: number,
+    readonly reason: string
+  ) {
+    super(`efile CAL workbook sheet ${sheet} row ${rowNumber} is unusable: ${reason}`);
+    this.name = "EfileCalUnusableRowError";
+  }
+}
+
+export type EfileCalUnusableRow = { sheet: string; rowNumber: number; reason: string };
+
 class RowContext {
   constructor(
     private readonly sheet: string,
@@ -178,7 +204,7 @@ class RowContext {
   ) {}
 
   fail(reason: string): never {
-    throw new Error(`efile CAL workbook sheet ${this.sheet} row ${this.rowNumber} is unusable: ${reason}`);
+    throw new EfileCalUnusableRowError(this.sheet, this.rowNumber, reason);
   }
 }
 
@@ -261,7 +287,11 @@ function toFlag(value: unknown, key: string, ctx: RowContext): boolean {
 
 function parseBase(row: RawRow, ctx: RowContext): EfileCalFilingRowBase {
   return {
-    filerId: requiredText(row, "Filer_ID", ctx),
+    // San José writes the literal "Pending" for committees without an FPPC
+    // id; San Diego's tenant leaves the cell blank for the same state (the
+    // same committee carries its real id on later rows). Both normalize to
+    // "Pending" so the downstream no-durable-identity machinery applies.
+    filerId: toText(row["Filer_ID"]) ?? "Pending",
     filerName: requiredText(row, "Filer_NamL", ctx),
     reportNum: requiredText(row, "Report_Num", ctx),
     eFilingId: requiredText(row, "e_filing_id", ctx),
@@ -332,10 +362,33 @@ function parseContributionRow({ row, ctx }: { row: RawRow; ctx: RowContext }): E
   };
 }
 
-export function parseEfileCalWorkbook(data: Uint8Array): EfileCalWorkbook {
+export function parseEfileCalWorkbook(
+  data: Uint8Array,
+  options: { collectUnusableRows?: boolean } = {}
+): EfileCalWorkbook {
   if (!isEfileCalWorkbookData(data)) {
     throw new Error("efile CAL bulk export is not an XLSX workbook; refusing to parse");
   }
+  const unusableRows: EfileCalUnusableRow[] | null = options.collectUnusableRows ? [] : null;
+  // Row-scoped validation failures either throw (default — the San José
+  // posture) or are skipped and recorded (collect mode); anything that is not
+  // an EfileCalUnusableRowError always propagates.
+  const mapRows = <T>(entries: { row: RawRow; ctx: RowContext }[], parse: (entry: { row: RawRow; ctx: RowContext }) => T): T[] => {
+    if (unusableRows === null) return entries.map(parse);
+    const parsed: T[] = [];
+    for (const entry of entries) {
+      try {
+        parsed.push(parse(entry));
+      } catch (error) {
+        if (error instanceof EfileCalUnusableRowError) {
+          unusableRows.push({ sheet: error.sheet, rowNumber: error.rowNumber, reason: error.reason });
+          continue;
+        }
+        throw error;
+      }
+    }
+    return parsed;
+  };
 
   let sheets: WorkBook["Sheets"];
   let sheetNames: string[];
@@ -355,7 +408,7 @@ export function parseEfileCalWorkbook(data: Uint8Array): EfileCalWorkbook {
     throw new Error(`efile CAL bulk export workbook is missing required sheets: ${missingSheets.join(", ")}`);
   }
 
-  const summary = sheetRows(sheets, EFILE_CAL_SUMMARY_SHEET).map(({ row, ctx }): EfileCalSummaryRow => {
+  const summary = mapRows(sheetRows(sheets, EFILE_CAL_SUMMARY_SHEET), ({ row, ctx }): EfileCalSummaryRow => {
     return {
       ...parseBase(row, ctx),
       lineItem: requiredText(row, "Line_Item", ctx),
@@ -365,10 +418,10 @@ export function parseEfileCalWorkbook(data: Uint8Array): EfileCalWorkbook {
     };
   });
 
-  const scheduleA = sheetRows(sheets, EFILE_CAL_SCHEDULE_A_SHEET).map(parseContributionRow);
-  const scheduleC = sheetRows(sheets, EFILE_CAL_SCHEDULE_C_SHEET).map(parseContributionRow);
+  const scheduleA = mapRows(sheetRows(sheets, EFILE_CAL_SCHEDULE_A_SHEET), parseContributionRow);
+  const scheduleC = mapRows(sheetRows(sheets, EFILE_CAL_SCHEDULE_C_SHEET), parseContributionRow);
 
-  const scheduleB1 = sheetRows(sheets, EFILE_CAL_SCHEDULE_B1_SHEET).map(({ row, ctx }): EfileCalLoanRow => {
+  const scheduleB1 = mapRows(sheetRows(sheets, EFILE_CAL_SCHEDULE_B1_SHEET), ({ row, ctx }): EfileCalLoanRow => {
     return {
       ...parseBase(row, ctx),
       tranId: requiredText(row, "Tran_ID", ctx),
@@ -389,7 +442,7 @@ export function parseEfileCalWorkbook(data: Uint8Array): EfileCalWorkbook {
     };
   });
 
-  const scheduleD = sheetRows(sheets, EFILE_CAL_SCHEDULE_D_SHEET).map(({ row, ctx }): EfileCalScheduleDRow => {
+  const scheduleD = mapRows(sheetRows(sheets, EFILE_CAL_SCHEDULE_D_SHEET), ({ row, ctx }): EfileCalScheduleDRow => {
     return {
       ...parseBase(row, ctx),
       tranId: requiredText(row, "Tran_ID", ctx),
@@ -410,7 +463,7 @@ export function parseEfileCalWorkbook(data: Uint8Array): EfileCalWorkbook {
     };
   });
 
-  const s496 = sheetRows(sheets, EFILE_CAL_S496_SHEET).map(({ row, ctx }): EfileCalS496Row => {
+  const s496 = mapRows(sheetRows(sheets, EFILE_CAL_S496_SHEET), ({ row, ctx }): EfileCalS496Row => {
     return {
       ...parseBase(row, ctx),
       tranId: requiredText(row, "Tran_ID", ctx),
@@ -428,7 +481,7 @@ export function parseEfileCalWorkbook(data: Uint8Array): EfileCalWorkbook {
     };
   });
 
-  const s497 = sheetRows(sheets, EFILE_CAL_S497_SHEET).map(({ row, ctx }): EfileCalS497Row => {
+  const s497 = mapRows(sheetRows(sheets, EFILE_CAL_S497_SHEET), ({ row, ctx }): EfileCalS497Row => {
     return {
       ...parseBase(row, ctx),
       tranId: requiredText(row, "Tran_ID", ctx),
@@ -446,5 +499,14 @@ export function parseEfileCalWorkbook(data: Uint8Array): EfileCalWorkbook {
     };
   });
 
-  return { summary, scheduleA, scheduleC, scheduleB1, scheduleD, s496, s497 };
+  return {
+    summary,
+    scheduleA,
+    scheduleC,
+    scheduleB1,
+    scheduleD,
+    s496,
+    s497,
+    ...(unusableRows !== null ? { unusableRows } : {}),
+  };
 }
