@@ -36,6 +36,8 @@ import {
 import { createAskService } from "../chatbot/askService.js";
 import { readChatbotConfigFromEnv } from "../chatbot/chatbotConfig.js";
 import { createEmbeddingsClient } from "../chatbot/embeddingsClient.js";
+import { createOpenAiResponsesClient } from "../chatbot/llm/openaiResponses.js";
+import type { LlmAnswering } from "../chatbot/answer.js";
 import { loadProjectEnv } from "../config/env.js";
 import { captureError, describeError, flushSentry, initSentryFromEnv } from "../observability/sentry.js";
 import {
@@ -346,8 +348,12 @@ async function main(): Promise<void> {
       ? DEFAULT_ELECTIONS_SEARCH_COOLDOWN_DAYS
       : readElectionsSearchCooldownDaysFromEnv();
   const autoDistrictResearchNeedsRedis = autoDistrictResearchMode === "ai";
+  // Read once, up here, because the Phase 2 LLM path needs Redis too (per-
+  // user cap + answer cache); the ask wiring further down reuses this value.
+  const chatbotConfig = readChatbotConfigFromEnv();
+  const chatbotNeedsRedis = chatbotConfig.enabled && chatbotConfig.llm !== null;
   const redis =
-    addressCacheEnabled || authConfigured || autoDistrictResearchNeedsRedis
+    addressCacheEnabled || authConfigured || autoDistrictResearchNeedsRedis || chatbotNeedsRedis
       ? createClient({ url: readEnv("REDIS_URL", "redis://localhost:6379") })
       : null;
   const buildAddressResolverOptions = () => ({
@@ -530,7 +536,28 @@ async function main(): Promise<void> {
   // CHATBOT_ENABLED is false (the default) askChatbot stays unset and
   // /api/chatbot/ask 404s like any unknown path. Embeddings are optional:
   // without CHATBOT_EMBEDDINGS_URL retrieval runs keyword-only (degraded).
-  const chatbotConfig = readChatbotConfigFromEnv();
+  // Phase 2 LLM answers additionally need CHATBOT_LLM_ENABLED + key (money
+  // off by default) AND the Redis client (per-user cap + answer cache);
+  // anything missing → Phase 1 retrieval-card behavior, unchanged.
+  // (chatbotConfig was read up by the Redis wiring.)
+  let chatbotLlm: LlmAnswering | null = null;
+  if (chatbotConfig.enabled && chatbotConfig.llm) {
+    if (redis) {
+      chatbotLlm = {
+        config: chatbotConfig.llm,
+        client: createOpenAiResponsesClient({
+          baseUrl: chatbotConfig.llm.baseUrl,
+          apiKey: chatbotConfig.llm.apiKey,
+          model: chatbotConfig.llm.model,
+          reasoningEffort: chatbotConfig.llm.reasoningEffort,
+          timeoutMs: chatbotConfig.llm.timeoutMs,
+        }),
+        redis,
+      };
+    } else {
+      console.warn("chatbot LLM configured but Redis is not; LLM answers stay off (retrieval-only)");
+    }
+  }
   const askChatbot = chatbotConfig.enabled
     ? createAskService({
         db: pool,
@@ -540,11 +567,12 @@ async function main(): Promise<void> {
               timeoutMs: chatbotConfig.embeddingsTimeoutMs,
             })
           : null,
+        llm: chatbotLlm,
       }).ask
     : undefined;
   if (chatbotConfig.enabled) {
     console.log(
-      `chatbot ask enabled (embeddings: ${chatbotConfig.embeddingsUrl ? "configured" : "NOT configured — keyword-only retrieval"})`
+      `chatbot ask enabled (embeddings: ${chatbotConfig.embeddingsUrl ? "configured" : "NOT configured — keyword-only retrieval"}; LLM: ${chatbotLlm ? `${chatbotConfig.llm?.model} (effort ${chatbotConfig.llm?.reasoningEffort})` : "off — retrieval-only"})`
     );
   }
 

@@ -625,7 +625,10 @@ async function dispatchApiRequest(
     }
 
     const payload = parseChatbotAskBodyValue(request.body);
-    const askResult = await options.askChatbot(payload.question, payload.previousQuestion, payload.context);
+    // The user id rides along for the Phase 2 LLM guards only (per-user cap
+    // + hashed provider abuse identifier); it is never logged with the
+    // question (chatbot.questions stays anonymous).
+    const askResult = await options.askChatbot(payload.question, payload.previousQuestion, payload.context, chatbotUserId);
     sendApiResponse(response, toJsonResponse(200, askResult, corsHeaders));
     return;
   }
