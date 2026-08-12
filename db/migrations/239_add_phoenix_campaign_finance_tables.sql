@@ -68,6 +68,11 @@ CREATE TABLE public.phx_candidate_finance_summaries (
   -- over canonical reports; total_spent = Schedule B line 16 cash;
   -- cash_on_hand = latest cover (d) closing balance — a signed BALANCE
   -- (see header); every flow column stays nonnegative.
+  -- Line 13 total receipts (1(m) + loans + other receipts = cover (b)) is
+  -- deliberately NOT stored: the read contract publishes one donor-money
+  -- total_raised with loans excluded (ballotLookupFinanceShared.ts), same
+  -- as the shipped SJ/SD city shape, and line 13 is the aggregator's
+  -- sync-time reconciliation equation, recomputed from parsed covers.
   total_raised numeric(16,2),
   total_spent numeric(16,2),
   cash_on_hand numeric(16,2),

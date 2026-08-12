@@ -94,6 +94,12 @@ const text = (value: string, label: string): string => {
 };
 const optional = (value: string | null | undefined): string | null =>
   value?.trim() || null;
+const isoDate = (value: string, label: string): string => {
+  const result = text(value, label);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(result))
+    throw new Error(`${label} must be an ISO date (YYYY-MM-DD)`);
+  return result;
+};
 // Exact cents → "dollars.cc" string; string arithmetic, never binary floats.
 // Flows must be nonnegative (refunds are already netted inside the
 // aggregates) and throwing aborts the snapshot transaction so the prior
@@ -127,6 +133,28 @@ export async function upsertPhoenixFinanceLink(input: {
   // the manual row through ON CONFLICT (the DB CHECK enforces uppercase on
   // stored rows).
   const copId = text(link.copId, "COP id").toUpperCase();
+  // Every INSERT parameter is validated and normalized BEFORE any statement
+  // runs: callers hand this a plain Queryable (the auto-link passes a Pool,
+  // where each statement autocommits), so a validation throw between the
+  // deactivation UPDATE and the INSERT would leave the candidate with no
+  // active link until the next run. The two cycle dates are shape-checked
+  // here for the same reason — a bad string must not become a DB cast error
+  // after the deactivation already committed.
+  const insertParams = [
+    text(link.candidateId, "candidate id"),
+    text(link.electionId, "election id"),
+    link.electionYear,
+    text(link.candidateNameNormalized, "candidate name"),
+    copId,
+    text(link.committeeName, "committee name"),
+    text(link.portalCycleName, "portal cycle name"),
+    isoDate(link.portalCycleStart, "portal cycle start"),
+    isoDate(link.portalCycleEnd, "portal cycle end"),
+    linkStatus,
+    linkSource,
+    optional(link.sourceUrl),
+    link.lastVerifiedAt?.toISOString() ?? null,
+  ];
   // Manual protection applies to EVERY automatic write, not only active
   // upserts, and probes manual rows of ANY status: an operator-disabled
   // (inactive/needs_review) manual link with this cop_id is the
@@ -180,21 +208,7 @@ export async function upsertPhoenixFinanceLink(input: {
   // comes back empty, and the throw below aborts the write.
   const result = await input.db.query<{ id: string }>(
     `INSERT INTO public.phx_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,cop_id,committee_name,portal_cycle_name,portal_cycle_start,portal_cycle_end,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8::date,$9::date,$10,$11,$12,$13::timestamptz) ON CONFLICT (candidate_id,election_id,cop_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,committee_name=EXCLUDED.committee_name,portal_cycle_name=EXCLUDED.portal_cycle_name,portal_cycle_start=EXCLUDED.portal_cycle_start,portal_cycle_end=EXCLUDED.portal_cycle_end,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at WHERE phx_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual' RETURNING id::text`,
-    [
-      text(link.candidateId, "candidate id"),
-      text(link.electionId, "election id"),
-      link.electionYear,
-      text(link.candidateNameNormalized, "candidate name"),
-      copId,
-      text(link.committeeName, "committee name"),
-      text(link.portalCycleName, "portal cycle name"),
-      text(link.portalCycleStart, "portal cycle start"),
-      text(link.portalCycleEnd, "portal cycle end"),
-      linkStatus,
-      linkSource,
-      optional(link.sourceUrl),
-      link.lastVerifiedAt?.toISOString() ?? null,
-    ],
+    insertParams,
   );
   if (!result.rows[0]?.id)
     throw new Error(

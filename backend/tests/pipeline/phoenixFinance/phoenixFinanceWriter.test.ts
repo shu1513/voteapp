@@ -331,6 +331,30 @@ describe("Phoenix finance writer", () => {
     expect(sql.some((s) => s.startsWith("INSERT INTO"))).toBe(false);
   });
 
+  it("validates every link field before any statement runs", async () => {
+    // Callers hand the upsert a plain Pool where each statement
+    // autocommits — a validation throw after the deactivation UPDATE would
+    // leave the candidate with no active link. Blank fields and malformed
+    // cycle dates must all fail before the first query.
+    const cases: [Record<string, string>, RegExp][] = [
+      [{ committeeName: " " }, /committee name is required/],
+      [{ candidateNameNormalized: "" }, /candidate name is required/],
+      [{ portalCycleName: " " }, /portal cycle name is required/],
+      [{ portalCycleStart: "04/01/2025" }, /portal cycle start must be an ISO date/],
+      [{ portalCycleEnd: "2027-3-31" }, /portal cycle end must be an ISO date/],
+    ];
+    for (const [patch, message] of cases) {
+      const query = queryMock();
+      await expect(
+        upsertPhoenixFinanceLink({
+          db: { query } as never,
+          link: { ...link, ...patch },
+        }),
+      ).rejects.toThrow(message);
+      expect(query).not.toHaveBeenCalled();
+    }
+  });
+
   it("refuses to rewrite a manual row that appeared between the probe and the upsert", async () => {
     // The DO UPDATE's WHERE guard makes the write update nothing when the
     // conflict target turned manual after the probe — empty RETURNING must
