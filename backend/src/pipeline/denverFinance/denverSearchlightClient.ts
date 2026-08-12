@@ -366,6 +366,58 @@ export async function getDenverElectionCyclesByFiler(
   });
 }
 
+/** committeeTypeId observed for candidate-controlled committees ("Candidate Committee"). */
+export const DENVER_SEARCHLIGHT_CANDIDATE_COMMITTEE_TYPE_ID = 1;
+
+/**
+ * The candidate page's committee-detail record. CAUTION (verified live
+ * 2026-08-12): the response reflects the committee's LATEST registration —
+ * querying Johnston (filer 658) with electionCycleId=26 answers
+ * electionCycleId 33. Callers must require the response's electionCycleId to
+ * echo the requested cycle before trusting committeeName/office for that
+ * cycle. Raw rows carry the treasurer's name and address fields — excluded
+ * here per the PII allowlist rule.
+ */
+export type DenverCommitteeDetails = {
+  filerId: number;
+  committeeId: number;
+  committeeName: string | null;
+  committeeTypeId: number | null;
+  committeeType: string | null;
+  candidateName: string | null;
+  office: string | null;
+  officeId: number | null;
+  electionCycleId: number;
+  electionDate: string | null;
+};
+
+export async function getDenverCommitteeDetailsByFiler(
+  filerId: number,
+  electionCycleId: number,
+  options: DenverSearchlightClientOptions = {}
+): Promise<DenverCommitteeDetails> {
+  requirePositiveInteger(filerId, "filer id");
+  requirePositiveInteger(electionCycleId, "election cycle id");
+  const payload = await fetchSearchlightJson(
+    `/api/Committee/GetCommitteeDetailsByFiler?filerId=${filerId}&electionCycleId=${electionCycleId}`,
+    { method: "GET" },
+    options
+  );
+  const row = requireRecord(payload, "committee details");
+  return {
+    filerId: requireInteger(row.filerId, "committee details filerId"),
+    committeeId: requireInteger(row.committeeId, "committee details committeeId"),
+    committeeName: optionalTrimmedString(row.committeeName),
+    committeeTypeId: optionalInteger(row.committeeTypeId),
+    committeeType: optionalTrimmedString(row.committeeType),
+    candidateName: optionalTrimmedString(row.candidateName),
+    office: optionalTrimmedString(row.office),
+    officeId: optionalInteger(row.officeId),
+    electionCycleId: requireInteger(row.electionCycleId, "committee details electionCycleId"),
+    electionDate: optionalTrimmedString(row.electionDate),
+  };
+}
+
 // ---------------------------------------------------------------------------
 // Committee totals + overview
 // ---------------------------------------------------------------------------
