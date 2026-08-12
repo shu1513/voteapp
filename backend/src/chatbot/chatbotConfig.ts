@@ -59,15 +59,36 @@ export type ChatbotEmbeddingsConfig = {
   timeoutMs: number;
 };
 
+export const DEFAULT_CHATBOT_EMBEDDINGS_PORT = 8080;
+
 /** Embeddings settings alone, independent of CHATBOT_ENABLED: the operator
  * scripts (reindex/eval) use the TEI service regardless of whether the API
- * surface is switched on. */
+ * surface is switched on.
+ *
+ * Two ways to point at the service:
+ *   - CHATBOT_EMBEDDINGS_URL — full URL (local dev, non-Render hosts). A
+ *     scheme-less host:port is accepted (http assumed). Wins when both set.
+ *   - CHATBOT_EMBEDDINGS_HOST [+ CHATBOT_EMBEDDINGS_PORT, default 8080] —
+ *     Render deploys: the blueprint injects the GENERATED private hostname
+ *     (fromService property: host — hardcoding it would break on service
+ *     recreation), while the port is ours to pin: the same render.yaml sets
+ *     it in dockerCommand. hostport is deliberately not used — observed
+ *     2026-08-12 resolving a stale reserved :10000 while the app listened
+ *     on 8080. */
 export function readChatbotEmbeddingsFromEnv(env: NodeJS.ProcessEnv = process.env): ChatbotEmbeddingsConfig {
   let rawUrl = env.CHATBOT_EMBEDDINGS_URL?.trim() || null;
-  // Render blueprints inject the private address as bare host:port
-  // (fromService property: hostport — the generated hostname can't be
-  // hardcoded and the property carries no scheme). Private-network traffic
-  // is plain HTTP, so a scheme-less value means http.
+  if (!rawUrl) {
+    const host = env.CHATBOT_EMBEDDINGS_HOST?.trim();
+    if (host) {
+      const port = readPositiveInteger(
+        env.CHATBOT_EMBEDDINGS_PORT,
+        "CHATBOT_EMBEDDINGS_PORT",
+        DEFAULT_CHATBOT_EMBEDDINGS_PORT
+      );
+      rawUrl = `${host}:${port}`;
+    }
+  }
+  // Private-network traffic is plain HTTP; a scheme-less value means http.
   if (rawUrl && !/^https?:\/\//i.test(rawUrl)) {
     rawUrl = `http://${rawUrl}`;
   }
