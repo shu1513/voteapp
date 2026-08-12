@@ -102,8 +102,10 @@ const PINNED_DOCUMENTS = [
   },
   {
     filename: "privacy-policy.md",
-    version: "1.0",
-    sha256: "50e7ac79b9b5ee9f17280aa960566cd06bf1142d648832b051a9dd5227ce31b9",
+    // 1.0 → 1.1 (2026-08-12): Ask question-log disclosure + OpenAI processor
+    // entry, required BEFORE CHATBOT_LLM_ENABLED in prod (chatbot Phase 2).
+    version: "1.1",
+    sha256: "70bea72a68b1b631a1d519ff14696c36f86f119be6ed92458859f13a169d6e5f",
   },
   {
     filename: "disclaimer.md",
