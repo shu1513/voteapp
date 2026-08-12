@@ -140,7 +140,11 @@ money columns `IS NULL OR >= 0`.
    empty). Rhode Island therefore ships **contribution-size buckets only** on
    the direct side, with `direct_coverage_note`: "Rhode Island discloses a
    direct contributor's employer, not occupation, so donor-occupation
-   breakdowns are not available for this state." Employer strings are
+   breakdowns are not available for this state; size buckets reflect
+   itemized contributions only." (The second clause matters: `Aggregate - *`
+   rows are lawful for donors at or under $200/year and are in the direct
+   total but not the buckets — decision 13 — so buckets never reconcile to
+   the total and the note must say why.) Employer strings are
    **never** written as `occupation` rows. A direct employer/industry chart
    would require a cross-state standard-layer extension (new CHECK, loader
    routing, UI section) — out of scope here; if ever wanted, it is its own
@@ -210,9 +214,15 @@ money columns `IS NULL OR >= 0`.
    removed** GUIDs — any diff surfaces in sync diagnostics until a human
    resolves it. Set `outsideCoverageNote`: "Outside-spending filings in
    Rhode Island are scanned documents; totals include manually verified
-   filings only, and only spenders' donors of $1,000+ are disclosed by the
-   state." Revisit only if volume grows past what a human can transcribe
-   per cycle.
+   filings with a clear per-candidate amount — filings naming several
+   candidates without a stated split are excluded — and the state requires
+   spenders to disclose only donors above $1,000 per cycle, with statutory
+   exceptions." (The exclusion clause keeps the note consistent with
+   decision 7's quarantine — the verified $53,090 multi-target filing is
+   excluded even though a human transcribed it. The "statutory exceptions"
+   phrase covers § 17-25.3-1's written-restriction / separate-account
+   carve-outs without enumerating them in UI text.) Revisit only if volume
+   grows past what a human can transcribe per cycle.
 6. **Filing-type gates.** Only INDEPENDENT EXPENDITURE filings can produce
    support/oppose rows. ELECTIONEERING COMMUNICATION (`Not Applicable`
    stance), COVERED TRANSFER, BALLOT QUESTION ADVOCACY, and REFERENDUM
@@ -246,7 +256,14 @@ money columns `IS NULL OR >= 0`.
 9. **Eligible offices v1** (DB-ground the exact canonical names at PR 1
    against Rhode Island 2026 election rows): Governor, Lieutenant Governor
    (elected separately in RI, unlike Ohio), Secretary of State, Attorney
-   General, General Treasurer, state_upper + state_lower legislators.
+   General, General Treasurer (RI's official title — **VoteApp canonical
+   office name is `State Treasurer`**, per `seedOffices.ts`; verified in the
+   local DB 2026-08-12: the RI 2026 statewide row is `State Treasurer`, so
+   the eligible list must use the canonical name or the race is silently
+   omitted), state_upper + state_lower legislators. DB check 2026-08-12
+   also found **no RI state_upper/state_lower 2026 election rows locally**
+   — the General Assembly roster is a real prerequisite, not a formality
+   (PR 1 preflight).
    Municipal offices excluded from v1: smaller committees may lawfully file
    on paper (electronic filing is mandatory only for general-office
    candidates and committees over the activity thresholds), so electronic
@@ -297,6 +314,15 @@ money columns `IS NULL OR >= 0`.
     `contributionSizeBucket` exactly ($1–99, $100–249, $250–499, $500–999,
     $1,000–4,999, $5,000+) with `contributorCount` = unique normalized
     contributors, not rows (georgia `contributorKeys.size` pattern).
+    **Known shared-loader defect (release-gating for buckets, fleet-wide):**
+    `standardStateFinanceBallotLookupLoader.ts` ranks direct breakdowns
+    `rn <= 5` per category type, so a candidate with all six buckets
+    populated silently loses the smallest-amount bucket — this already
+    bites every 6-bucket state (georgia, ohio, north carolina, maryland,
+    …). The fix (exempt `contribution_size` from the cap, or raise it to 6
+    for that category) is a shared-loader change and lands in its own PR
+    per the plan.md working rules, before or alongside RI PR 2 — it is not
+    an RI-module workaround.
 14. **Manual candidate-finance links are unsupported in v1.** The factory
     link upsert overwrites `link_source` on conflict
     (`standardStateFinanceSnapshotWriter.ts` upsert `DO UPDATE SET
