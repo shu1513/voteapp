@@ -43,6 +43,7 @@ import {
   parseEfileCalWorkbook,
   type EfileCalS496Row,
   type EfileCalScheduleDRow,
+  type EfileCalUnusableRow,
   type EfileCalWorkbook,
 } from "../pipeline/efileCalFinance/efileCalWorkbookParser.js";
 import { aggregateSanJoseDirectFinance } from "../pipeline/sanJoseFinance/sanJoseDirectFinanceAggregator.js";
@@ -127,7 +128,7 @@ function usd(cents: number): string {
 async function loadCycleWorkbook(input: {
   refresh: boolean;
   force: boolean;
-}): Promise<EfileCalWorkbook> {
+}): Promise<{ workbook: EfileCalWorkbook; unusableRows: EfileCalUnusableRow[] }> {
   const workbook: EfileCalWorkbook = {
     summary: [],
     scheduleA: [],
@@ -137,6 +138,7 @@ async function loadCycleWorkbook(input: {
     s496: [],
     s497: [],
   };
+  const unusableRows: EfileCalUnusableRow[] = [];
   for (const year of CYCLE_YEARS) {
     const paths = getEfileCalWorkbookArtifactCachePaths({
       cacheDir: SAN_DIEGO_FINANCE_PROBE_CACHE_DIR,
@@ -169,8 +171,10 @@ async function loadCycleWorkbook(input: {
     // committee's write.
     const parsed = parseEfileCalWorkbook(bytes, { collectUnusableRows: true });
     for (const unusable of parsed.unusableRows ?? []) {
+      unusableRows.push(unusable);
       console.log(
-        `  unusable row ${year} ${unusable.sheet} row ${unusable.rowNumber}: ${unusable.reason}`,
+        `  unusable row ${year} ${unusable.sheet} row ${unusable.rowNumber}: ${unusable.reason}` +
+          ` (filer ${unusable.filerId ?? "?"} "${unusable.filerName ?? "?"}")`,
       );
     }
     workbook.summary.push(...parsed.summary);
@@ -181,7 +185,7 @@ async function loadCycleWorkbook(input: {
     workbook.s496.push(...parsed.s496);
     workbook.s497.push(...parsed.s497);
   }
-  return workbook;
+  return { workbook, unusableRows };
 }
 
 // ---------------------------------------------------------------------------
@@ -212,33 +216,67 @@ function targetName(row: OutsideRow): string | null {
   return `${row.candidateFirstName} ${row.candidateLastName}`;
 }
 
+/** SJ's spender display identity: real FPPC id, else Pending-by-name. */
 function spenderIdentity(row: OutsideRow): string {
   return row.filerId === SAN_JOSE_PENDING_FILER_ID
     ? `${SAN_JOSE_PENDING_FILER_ID}::${normalizeSanJoseTextKey(row.filerName)}`
     : row.filerId;
 }
 
-function rowKey(row: OutsideRow): string {
-  return JSON.stringify([spenderIdentity(row), row.tranId]);
-}
-
+/**
+ * One pool across BOTH sources, deduped per (Tran_ID, target): rows in that
+ * bucket are the same expenditure when they share a real FPPC id OR a
+ * normalized spender name — NEITHER alone suffices on the live data:
+ * - id-only splits Working Families Opposing Bailey's EDT2, reported as a
+ *   blank-Filer_ID 496 row and an id-carrying Schedule D row ($22,165
+ *   double-count);
+ * - name-only splits Working Families Supporting Ramirez (id 1490398),
+ *   whose 496 rows use a 68-char short spelling and whose Schedule D rows
+ *   use the 179-char sponsored spelling ($146k double-count).
+ * Within a cluster the latest Rpt_Date wins regardless of source sheet — an
+ * amended 496 outranks an older 460 Schedule D row (live: WFOB PDT1 is
+ * $50,000 on the 05-20 460 but amended to $45,000 on the 07-06 496). Ties
+ * break to the higher e_filing_id (one global ascending sequence).
+ */
 function dedupeLatestReports(rows: readonly OutsideRow[]): OutsideRow[] {
-  const byKey = new Map<string, OutsideRow[]>();
+  const byTransaction = new Map<string, OutsideRow[]>();
   for (const row of rows) {
-    const key = `${rowKey(row)}|${normalizeSanJoseTextKey(targetName(row))}`;
-    const group = byKey.get(key) ?? [];
-    group.push(row);
-    byKey.set(key, group);
+    const key = JSON.stringify([row.tranId, normalizeSanJoseTextKey(targetName(row))]);
+    const bucket = byTransaction.get(key) ?? [];
+    bucket.push(row);
+    byTransaction.set(key, bucket);
   }
   const deduped: OutsideRow[] = [];
-  for (const group of byKey.values()) {
-    group.sort(
-      (a, b) =>
-        (b.rptDate ?? "").localeCompare(a.rptDate ?? "") ||
-        b.eFilingId.length - a.eFilingId.length ||
-        b.eFilingId.localeCompare(a.eFilingId),
-    );
-    deduped.push(group[0]!);
+  for (const bucket of byTransaction.values()) {
+    // Connected components over shared-real-id / shared-name edges (buckets
+    // are tiny — a handful of rows — so quadratic scanning is fine).
+    const components: OutsideRow[][] = [];
+    for (const row of bucket) {
+      const rowName = normalizeSanJoseTextKey(row.filerName);
+      const linked = components.filter((component) =>
+        component.some(
+          (other) =>
+            (row.filerId !== SAN_JOSE_PENDING_FILER_ID && other.filerId === row.filerId) ||
+            normalizeSanJoseTextKey(other.filerName) === rowName,
+        ),
+      );
+      if (linked.length === 0) {
+        components.push([row]);
+        continue;
+      }
+      const merged = [...linked.flat(), row];
+      for (const component of linked) components.splice(components.indexOf(component), 1);
+      components.push(merged);
+    }
+    for (const component of components) {
+      component.sort(
+        (a, b) =>
+          (b.rptDate ?? "").localeCompare(a.rptDate ?? "") ||
+          b.eFilingId.length - a.eFilingId.length ||
+          b.eFilingId.localeCompare(a.eFilingId),
+      );
+      deduped.push(component[0]!);
+    }
   }
   return deduped;
 }
@@ -272,8 +310,7 @@ function tallySanDiegoOutside(input: {
     memo: row.memo,
     source: "s496",
   }));
-  const s496Keys = new Set(s496Rows.map(rowKey));
-  const dOnlyRows: OutsideRow[] = input.scheduleD
+  const dRows: OutsideRow[] = input.scheduleD
     .filter((row) => row.expnCode === "IND")
     .map(
       (row): OutsideRow => ({
@@ -292,9 +329,8 @@ function tallySanDiegoOutside(input: {
         memo: row.memo,
         source: "scheduleD",
       }),
-    )
-    .filter((row) => !s496Keys.has(rowKey(row)));
-  const union = [...dedupeLatestReports(s496Rows), ...dedupeLatestReports(dOnlyRows)];
+    );
+  const union = dedupeLatestReports([...s496Rows, ...dRows]);
 
   const tally: OutsideTally = {
     supportCents: 0,
@@ -366,7 +402,7 @@ async function main(): Promise<void> {
   const refresh = args.includes("--refresh");
   const force = args.includes("--force");
 
-  const workbook = await loadCycleWorkbook({ refresh, force });
+  const { workbook, unusableRows } = await loadCycleWorkbook({ refresh, force });
   console.log(
     `rows: summary=${workbook.summary.length} A=${workbook.scheduleA.length} C=${workbook.scheduleC.length} B1=${workbook.scheduleB1.length} D=${workbook.scheduleD.length} s496=${workbook.s496.length} s497=${workbook.s497.length}`,
   );
@@ -499,6 +535,11 @@ async function main(): Promise<void> {
     pass: false,
     detail: "Bailey tally missing",
   };
+  let ramirezOutsideGate: Gate = {
+    name: "Ramirez Working Families support = exactly $195,934.71 x11, one group",
+    pass: false,
+    detail: "Ramirez tally missing",
+  };
   for (const candidate of NOVEMBER_2026_CANDIDATES) {
     const tally = tallySanDiegoOutside({
       candidate,
@@ -512,21 +553,85 @@ async function main(): Promise<void> {
       console.log(`    ${group.direction} ${usd(group.cents)} (${group.count}) ${group.spenderName}`);
     }
     if (candidate.displayName === "Richard Bailey") {
-      const wfob = tally.groups.find(
+      const wfobGroups = tally.groups.filter(
         (group) =>
           group.direction === "oppose" &&
           normalizeSanJoseTextKey(group.spenderName).includes("WORKING FAMILIES"),
       );
+      const wfob = wfobGroups[0];
+      // Exact, hand-derived from the raw filings (2026-08-12): EDT1 $32,197
+      // (496 amended 07-06) + EDT2 $22,165 (blank-id 496 = id'd D twin,
+      // counted ONCE) + EDT3 $22,165 + EDT19 $19,037.19 + PDT1 $45,000 (496
+      // amendment outranks the older 460's $50,000) = $140,564.19 across 5
+      // expenditures, in ONE group despite the blank/real Filer_ID split.
+      // Any double-count, $50,000 selection, or group split breaks this.
       baileyGate = {
-        name: "Bailey oppose includes Working Families PDT1 counted once",
-        pass: wfob !== undefined && wfob.cents >= 4_500_000,
-        detail: wfob
-          ? `${wfob.spenderName}: ${usd(wfob.cents)} across ${wfob.count} expenditures`
-          : "no Working Families oppose group found",
+        name: "Bailey Working Families oppose = exactly $140,564.19 x5, one group",
+        pass:
+          wfobGroups.length === 1 &&
+          wfob !== undefined &&
+          wfob.cents === 14_056_419 &&
+          wfob.count === 5,
+        detail:
+          wfobGroups.length === 0
+            ? "no Working Families oppose group found"
+            : wfobGroups
+                .map((group) => `${usd(group.cents)} across ${group.count} (${group.spenderName})`)
+                .join(" | "),
+      };
+    }
+    if (candidate.displayName === "Gerardo Ramirez") {
+      const wfGroups = tally.groups.filter(
+        (group) =>
+          group.direction === "support" &&
+          normalizeSanJoseTextKey(group.spenderName).includes("WORKING FAMILIES"),
+      );
+      const wf = wfGroups[0];
+      // Hand-derived (2026-08-12): committee 1490398 reports 11 distinct
+      // expenditures, its 496 rows under a short spelling and its Schedule D
+      // rows under the long sponsored spelling — name-split or id-split
+      // dedup double-counts ($146k / $22k regressions caught live).
+      ramirezOutsideGate = {
+        name: "Ramirez Working Families support = exactly $195,934.71 x11, one group",
+        pass:
+          wfGroups.length === 1 &&
+          wf !== undefined &&
+          wf.cents === 19_593_471 &&
+          wf.count === 11,
+        detail:
+          wfGroups.length === 0
+            ? "no Working Families support group found"
+            : wfGroups
+                .map((group) => `${usd(group.cents)} across ${group.count} (${group.spenderName.slice(0, 60)})`)
+                .join(" | "),
       };
     }
   }
   gates.push(baileyGate);
+  gates.push(ramirezOutsideGate);
+
+  // --- Gate 6: no skipped (unusable) row belongs to a matched committee —
+  // otherwise that committee's totals are silently incomplete. Ties by
+  // FPPC id or by normalized committee name (blank-id rows carry the name).
+  const matchedIds = new Set([...matched.values()].map((link) => link.filerId));
+  const matchedNames = new Set(
+    [...matched.values()].map((link) => normalizeSanJoseTextKey(link.committeeName)),
+  );
+  const contaminating = unusableRows.filter(
+    (row) =>
+      (row.filerId !== null && matchedIds.has(row.filerId)) ||
+      (row.filerName !== null && matchedNames.has(normalizeSanJoseTextKey(row.filerName))),
+  );
+  gates.push({
+    name: "no unusable row belongs to a matched committee",
+    pass: contaminating.length === 0,
+    detail:
+      contaminating.length === 0
+        ? `${unusableRows.length} unusable rows, none from matched committees`
+        : contaminating
+            .map((row) => `${row.sheet} row ${row.rowNumber} (${row.filerName ?? row.filerId})`)
+            .join("; "),
+  });
 
   // --- Summary. ---
   console.log("\n=== Phase 0 gates ===");

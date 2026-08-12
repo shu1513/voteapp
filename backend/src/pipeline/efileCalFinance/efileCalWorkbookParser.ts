@@ -195,7 +195,19 @@ export class EfileCalUnusableRowError extends Error {
   }
 }
 
-export type EfileCalUnusableRow = { sheet: string; rowNumber: number; reason: string };
+/**
+ * Identity of a skipped row, so callers can tie it back to a committee and
+ * fail closed when a linked committee's data is incomplete. Fields are read
+ * leniently from the raw cells (the row already failed validation).
+ */
+export type EfileCalUnusableRow = {
+  sheet: string;
+  rowNumber: number;
+  reason: string;
+  filerId: string | null;
+  filerName: string | null;
+  eFilingId: string | null;
+};
 
 class RowContext {
   constructor(
@@ -286,12 +298,18 @@ function toFlag(value: unknown, key: string, ctx: RowContext): boolean {
 }
 
 function parseBase(row: RawRow, ctx: RowContext): EfileCalFilingRowBase {
+  // San José writes the literal "Pending" for committees without an FPPC id;
+  // San Diego's tenant leaves the cell blank for the same state (the same
+  // committee carries its real id on later rows). Both normalize to
+  // "Pending" so the downstream no-durable-identity machinery applies.
+  // Only genuine blanks qualify: a non-string cell (vendor drift to numeric
+  // Filer_ID cells) must fail loud, not silently erase committee identity.
+  const filerIdRaw = row["Filer_ID"];
+  if (filerIdRaw !== null && filerIdRaw !== undefined && typeof filerIdRaw !== "string") {
+    ctx.fail(`Filer_ID is not a text cell: ${JSON.stringify(filerIdRaw)}`);
+  }
   return {
-    // San José writes the literal "Pending" for committees without an FPPC
-    // id; San Diego's tenant leaves the cell blank for the same state (the
-    // same committee carries its real id on later rows). Both normalize to
-    // "Pending" so the downstream no-durable-identity machinery applies.
-    filerId: toText(row["Filer_ID"]) ?? "Pending",
+    filerId: toText(filerIdRaw) ?? "Pending",
     filerName: requiredText(row, "Filer_NamL", ctx),
     reportNum: requiredText(row, "Report_Num", ctx),
     eFilingId: requiredText(row, "e_filing_id", ctx),
@@ -381,7 +399,14 @@ export function parseEfileCalWorkbook(
         parsed.push(parse(entry));
       } catch (error) {
         if (error instanceof EfileCalUnusableRowError) {
-          unusableRows.push({ sheet: error.sheet, rowNumber: error.rowNumber, reason: error.reason });
+          unusableRows.push({
+            sheet: error.sheet,
+            rowNumber: error.rowNumber,
+            reason: error.reason,
+            filerId: toText(entry.row["Filer_ID"]),
+            filerName: toText(entry.row["Filer_NamL"]),
+            eFilingId: toText(entry.row["e_filing_id"]),
+          });
           continue;
         }
         throw error;

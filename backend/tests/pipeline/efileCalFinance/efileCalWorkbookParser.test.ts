@@ -376,6 +376,16 @@ describe("efileCalWorkbookParser", () => {
       },
     });
     expect(parseEfileCalWorkbook(workbook).s496[0]!.filerId).toBe("Pending");
+
+    // Only genuine blanks default: numeric cells are vendor drift, fail loud.
+    const numericId = buildEfileCalExportWorkbook({
+      rowsBySheet: {
+        [EFILE_CAL_SUMMARY_SHEET]: [
+          { ...EFILE_CAL_FIXTURE_BASE, Filer_ID: 1480385, Form_Type: "F460", Line_Item: "1", Amount_A: "1.00", Amount_B: "1.00" },
+        ],
+      },
+    });
+    expect(() => parseEfileCalWorkbook(numericId)).toThrow("Filer_ID is not a text cell");
   });
 
   it("collectUnusableRows skips row-scoped failures and records them; default mode still throws", () => {
@@ -396,8 +406,17 @@ describe("efileCalWorkbookParser", () => {
     const parsed = parseEfileCalWorkbook(workbook, { collectUnusableRows: true });
     expect(parsed.summary).toHaveLength(1);
     expect(parsed.summary[0]!.amountACents).toBe(638500);
+    // Identity fields let callers tie the skip back to a committee and fail
+    // closed when a linked committee's data is incomplete.
     expect(parsed.unusableRows).toEqual([
-      { sheet: EFILE_CAL_SUMMARY_SHEET, rowNumber: 2, reason: "missing Form_Type" },
+      {
+        sheet: EFILE_CAL_SUMMARY_SHEET,
+        rowNumber: 2,
+        reason: "missing Form_Type",
+        filerId: "1480385",
+        filerName: "Test Committee for City Council 2026",
+        eFilingId: "24690",
+      },
     ]);
 
     // Structural drift (missing sheets/columns) is never collectable.
