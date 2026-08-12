@@ -93,6 +93,8 @@ export type SanJoseOutsideSpendingAggregate = {
     unknownDirectionCents: number;
     /** Curated paper-496 entries fed in (pre-filter; most target OTHER candidates). */
     paperSupplementRows: number;
+    /** Supplements dropped because their filing entered the export (stale entry). */
+    paperSupplementRowsSuppressed: number;
   };
 };
 
@@ -255,9 +257,29 @@ export function aggregateSanJoseOutsideSpending(input: {
   // --- Curated paper filings: synthetic rows with a "paper-496-" Tran_ID
   // namespace, so they can never collide with (or be deduped against) export
   // rows; validation already rejected duplicates within the list itself.
+  //
+  // Double-count backstop: portal e_filing_ids are one global sequence
+  // (paper 24823 sits between e-filed neighbors), so an export row carrying a
+  // supplement's id — directly or as its amendment chain's origin — can only
+  // mean that filing entered the export. The export row is then authoritative
+  // and the stale supplement is suppressed (counted, never added). A FRESH
+  // e-filed re-report under a new id is undetectable by any id check — that
+  // path stays on the module's manual re-verification contract.
+  const exportFilingIds = new Set<string>();
+  for (const row of input.s496) {
+    exportFilingIds.add(row.eFilingId);
+    exportFilingIds.add(row.origEFilingId);
+  }
+  for (const row of input.scheduleD) {
+    exportFilingIds.add(row.eFilingId);
+    exportFilingIds.add(row.origEFilingId);
+  }
   const paperSupplements = input.paperSupplements ?? [];
   validateSanJosePaper496Supplements(paperSupplements);
-  const supplementRows: OutsideRow[] = paperSupplements.map((entry) => ({
+  const livePaperSupplements = paperSupplements.filter(
+    (entry) => !exportFilingIds.has(entry.eFilingId),
+  );
+  const supplementRows: OutsideRow[] = livePaperSupplements.map((entry) => ({
     filerId: entry.spenderFilerId,
     filerName: entry.spenderName,
     tranId: `paper-496-${entry.eFilingId}`,
@@ -291,6 +313,8 @@ export function aggregateSanJoseOutsideSpending(input: {
     unknownDirectionRows: 0,
     unknownDirectionCents: 0,
     paperSupplementRows: supplementRows.length,
+    paperSupplementRowsSuppressed:
+      paperSupplements.length - livePaperSupplements.length,
   };
   const included: { row: OutsideRow; direction: "support" | "oppose" }[] = [];
   for (const row of [...dedupedS496.rows, ...dedupedAdded.rows, ...supplementRows]) {

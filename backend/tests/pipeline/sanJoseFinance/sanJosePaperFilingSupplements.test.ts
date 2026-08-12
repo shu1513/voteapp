@@ -59,6 +59,12 @@ describe("validateSanJosePaper496Supplements", () => {
         entry({ expenditureDate: "05/11/2026" }),
       ]),
     ).toThrow(/ISO date/);
+    // Shape-valid but calendar-invalid must fail too.
+    expect(() =>
+      validateSanJosePaper496Supplements([
+        entry({ expenditureDate: "2026-02-29" }),
+      ]),
+    ).toThrow(/calendar date/);
   });
 
   it("rejects the same candidate twice on one filing, allows two candidates", () => {

@@ -72,6 +72,16 @@ export function validateSanJosePaper496Supplements(
       throw new Error(`${label}: amountCents must be a positive integer`);
     if (!ISO_DATE_PATTERN.test(entry.expenditureDate))
       throw new Error(`${label}: expenditureDate is not an ISO date`);
+    // Round-trip through UTC so calendar-invalid dates (2026-02-29) fail
+    // too — same standard the workbook parser holds export dates to.
+    const [year, month, day] = entry.expenditureDate.split("-").map(Number);
+    const roundTrip = new Date(Date.UTC(year!, month! - 1, day!));
+    if (
+      roundTrip.getUTCFullYear() !== year ||
+      roundTrip.getUTCMonth() !== month! - 1 ||
+      roundTrip.getUTCDate() !== day
+    )
+      throw new Error(`${label}: expenditureDate is not a calendar date`);
     // One paper filing may name several candidates, but never the same
     // candidate twice — a duplicate is an operator copy-paste error.
     const key = JSON.stringify([

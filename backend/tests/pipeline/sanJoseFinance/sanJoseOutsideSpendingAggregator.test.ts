@@ -402,4 +402,36 @@ describe("aggregateSanJoseOutsideSpending", () => {
       aggregate({ paperSupplements: [paperEntry({ amountCents: -1 })] }),
     ).toThrow(/positive integer/);
   });
+
+  it("suppresses a supplement whose filing entered the export (no double count)", () => {
+    // If the paper filing is later e-filed — directly or as the origin of an
+    // amendment chain — the export row is authoritative and the stale
+    // supplement must NOT add on top of it.
+    const exported = s496({
+      filerId: "941786",
+      filerName: "Santa Clara County Government Attorneys' Association PAC",
+      tranId: "E9",
+      eFilingId: "25600",
+      origEFilingId: "24823",
+      candidateLastName: "Nora Campos",
+      suppOppCd: "OPPOSE",
+      amountCents: 5270_27,
+    });
+    const result = aggregate({
+      candidate: CAMPOS,
+      s496: [exported],
+      paperSupplements: [paperEntry()],
+    });
+    expect(result.opposeTotalCents).toBe(5270_27);
+    expect(result.diagnostics.paperSupplementRows).toBe(0);
+    expect(result.diagnostics.paperSupplementRowsSuppressed).toBe(1);
+    // Direct id match (the filing itself re-exported) suppresses too.
+    const direct = aggregate({
+      candidate: CAMPOS,
+      s496: [s496({ ...exported, eFilingId: "24823", origEFilingId: "24823" })],
+      paperSupplements: [paperEntry()],
+    });
+    expect(direct.opposeTotalCents).toBe(5270_27);
+    expect(direct.diagnostics.paperSupplementRowsSuppressed).toBe(1);
+  });
 });
