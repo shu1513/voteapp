@@ -58,6 +58,11 @@ const KNOWN_ABBREVIATIONS = new Set(Object.values(STATE_ABBREVIATIONS));
  */
 export function detectStateInQuestion(question: string): string | null {
   const lower = question.toLowerCase();
+  // DC aliases BEFORE the state-name loop: "Washington, DC" contains
+  // "washington" and would otherwise resolve to Washington state.
+  if (/\bwashington,?\s+d\.?\s?c\.?\b/.test(lower)) {
+    return "DC";
+  }
   // Longest names first so "west virginia" is not read as "virginia".
   const names = Object.keys(STATE_ABBREVIATIONS).sort((a, b) => b.length - a.length);
   for (const name of names) {
@@ -131,10 +136,15 @@ export function detectIntent(question: string): IntentMatch | null {
   // Primary/runoff/special date asks must NEVER receive the fixed general-
   // election date ("When is the Texas primary?" ≠ November 3) — checked
   // before the general date frame because both match "when is … election".
-  // With a state → template pointing at official resources, no invented
-  // date; without one → clarify (rule 7 + rule 6: time-sensitive, never
-  // guessed).
-  if (/\bwhen\s+(?:is|are)\b.{0,60}\b(?:runoff|primar(?:y|ies)|special\s+election)\b/i.test(q)) {
+  // Covers the common phrasings, not just "when is": "What date is the
+  // Texas primary?", "Texas primary date?". With a state → template pointing
+  // at official resources, no invented date; without one → clarify (rule 7 +
+  // rule 6: time-sensitive, never guessed).
+  const OTHER_RACE = "(?:runoff|primar(?:y|ies)|special\\s+election)";
+  if (
+    new RegExp(`\\b(?:when|what\\s+(?:date|day)|date|day)\\b.{0,60}\\b${OTHER_RACE}\\b`, "i").test(q) ||
+    new RegExp(`\\b${OTHER_RACE}\\b.{0,40}\\b(?:date|day|when|schedule)\\b`, "i").test(q)
+  ) {
     return state ? { kind: "other_election_date", state } : { kind: "needs_scope", state };
   }
   // Deliberately requires the "when is" frame: a bare "election day" mention

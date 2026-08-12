@@ -90,8 +90,11 @@ function TurnView({ turn }: { turn: Turn }) {
       <p className="mt-2 whitespace-pre-line text-sm text-ink">{turn.response.answer}</p>
       {turn.response.results.length > 0 && (
         <ul className="mt-2 space-y-2">
-          {turn.response.results.map((card) => (
-            <li key={card.url}>
+          {/* URL alone is NOT unique: a candidate's profile/finance/record
+              cards deliberately share one page URL. Static list, so the
+              index disambiguates safely. */}
+          {turn.response.results.map((card, index) => (
+            <li key={`${index}:${card.source_type}:${card.url}`}>
               <ResultCardLink card={card} />
             </li>
           ))}

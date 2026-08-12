@@ -609,6 +609,16 @@ async function dispatchApiRequest(
 
     // Registered + verified accounts only: the widget maps 401 to a
     // register/login prompt and 403 to a verify-your-email prompt.
+    // Fail closed on missing verification wiring: the shared helper lets
+    // legacy trusted-header deployments (no authService) through unverified,
+    // but this endpoint's contract is strict — no lookup, no answers.
+    if (!options.lookupAuthenticatedUserEmailVerified) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Email verification lookup is not configured", corsHeaders)
+      );
+      return;
+    }
     const chatbotUserId = await requireVerifiedAuthenticatedUser(options, request, response);
     if (!chatbotUserId) {
       return;

@@ -102,6 +102,11 @@ type StateLogisticsRow = {
   mail_voting_available: boolean;
   mail_ballot_request_url: string | null;
   mail_ballot_request_deadline_rule: string | null;
+  /** First research-evidence URL behind id_requirements / the mail fields
+   * (state_resources.sources is a field→[urls] map). May be third-party
+   * (NCSL), so cards label these as sources, never as official. */
+  id_requirements_source_url: string | null;
+  mail_voting_source_url: string | null;
 };
 
 // Chatbot-local read of the manually researched official links (BEHAVIOR.md
@@ -123,7 +128,9 @@ async function loadStateLogistics(db: Pool, stateAbbreviation: string): Promise<
         same_day_registration_available,
         mail_voting_available,
         mail_ballot_request_url,
-        mail_ballot_request_deadline_rule
+        mail_ballot_request_deadline_rule,
+        sources->'id_requirements'->>0 AS id_requirements_source_url,
+        sources->'mail_voting_available'->>0 AS mail_voting_source_url
       FROM public.state_resources
       WHERE state_abbreviation = $1
     `,
@@ -294,22 +301,15 @@ async function renderIntentAnswer(db: Pool, intent: IntentMatch): Promise<AskRes
   }
 
   // Primary/runoff/special dates vary by race and are not in the Nov-2026
-  // corpus — never serve the general-election date for them (rule 6).
+  // corpus — never serve the general-election date for them (rule 6). No
+  // card either: state_resources has no election-calendar URL, and a
+  // registration link would not support a date claim.
   if (intent.kind === "other_election_date") {
     const stateName = resources?.state_name ?? "your state";
     return {
       outcome: "template",
-      answer: `Primary, runoff, and special election dates vary by state and race, and our data covers the November 2026 general election. Check ${stateName}'s official election resources for those dates.`,
-      results: resources
-        ? [
-            {
-              title: `${resources.state_name} official voting information`,
-              url: resources.voter_registration_url,
-              snippet: "Official state resource.",
-              source_type: "official_state_resource",
-            },
-          ]
-        : [BALLOT_CARD],
+      answer: `Primary, runoff, and special election dates vary by state and race, and our data covers the November 2026 general election. Check ${stateName}'s official election website (usually the Secretary of State) for those dates.`,
+      results: [],
       data_current_as_of: null,
     };
   }
@@ -375,17 +375,23 @@ async function renderIntentAnswer(db: Pool, intent: IntentMatch): Promise<AskRes
 
   if (intent.kind === "voter_id") {
     if (resources) {
+      // The ID rules are our researched data; the card links the research
+      // source behind them (possibly third-party, labeled as a source — a
+      // registration portal would not support an ID claim). No source
+      // recorded → answer text stands alone.
       return {
         outcome: "template",
         answer: `${resources.state_name} ID rules: ${resources.id_requirements}`,
-        results: [
-          {
-            title: `${resources.state_name} official voter registration and ID information`,
-            url: resources.voter_registration_url,
-            snippet: "Official state resource.",
-            source_type: "official_state_resource",
-          },
-        ],
+        results: resources.id_requirements_source_url
+          ? [
+              {
+                title: `Source for ${resources.state_name}'s voter ID rules`,
+                url: resources.id_requirements_source_url,
+                snippet: "Where this answer's ID information comes from.",
+                source_type: "source_link",
+              },
+            ]
+          : [],
         data_current_as_of: null,
       };
     }
@@ -397,20 +403,35 @@ async function renderIntentAnswer(db: Pool, intent: IntentMatch): Promise<AskRes
     };
   }
 
-  // mail_voting
+  // mail_voting. The dedicated request URL is the official destination; when
+  // a state has none, fall back to the research source behind the mail
+  // fields (labeled as a source, never as official — a registration or
+  // polling link would not support a mail-voting claim).
   if (resources) {
+    const mailCard: AskResultCard[] = resources.mail_ballot_request_url
+      ? [
+          {
+            title: `${resources.state_name} official mail ballot information`,
+            url: resources.mail_ballot_request_url,
+            snippet: "Official state resource.",
+            source_type: "official_state_resource",
+          },
+        ]
+      : resources.mail_voting_source_url
+        ? [
+            {
+              title: `Source for ${resources.state_name}'s mail voting rules`,
+              url: resources.mail_voting_source_url,
+              snippet: "Where this answer's mail voting information comes from.",
+              source_type: "source_link",
+            },
+          ]
+        : [];
     if (!resources.mail_voting_available) {
       return {
         outcome: "template",
         answer: `${resources.state_name} does not offer general mail voting according to its official resources. Check the official site for absentee eligibility rules.`,
-        results: [
-          {
-            title: `${resources.state_name} official voting information`,
-            url: resources.voter_registration_url,
-            snippet: "Official state resource.",
-            source_type: "official_state_resource",
-          },
-        ],
+        results: mailCard,
         data_current_as_of: null,
       };
     }
@@ -419,15 +440,8 @@ async function renderIntentAnswer(db: Pool, intent: IntentMatch): Promise<AskRes
       : "";
     return {
       outcome: "template",
-      answer: `${resources.state_name} offers voting by mail.${deadline} Use the official state resource to request or learn about your mail ballot.`,
-      results: [
-        {
-          title: `${resources.state_name} official mail ballot information`,
-          url: resources.mail_ballot_request_url ?? resources.polling_place_url,
-          snippet: "Official state resource.",
-          source_type: "official_state_resource",
-        },
-      ],
+      answer: `${resources.state_name} offers voting by mail.${deadline}`,
+      results: mailCard,
       data_current_as_of: null,
     };
   }

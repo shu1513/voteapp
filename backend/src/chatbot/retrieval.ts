@@ -279,7 +279,14 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   const contextCandidateId = options.contextCandidateId ?? null;
   const contextElectionId = options.contextElectionId ?? null;
 
-  const entityMatches = await resolveCandidateEntities(db, generationId, question);
+  let entityMatches = await resolveCandidateEntities(db, generationId, question);
+  // A named scope state narrows the ENTIRE match list, not just ambiguity:
+  // "Michael Smith in Georgia" must not put Ohio's Michael L. Smith into the
+  // entity branch or the gate score. Only when some match is in that state —
+  // a mistaken state must not silently zero a strong name match.
+  if (scopeState && entityMatches.some((match) => match.state === scopeState)) {
+    entityMatches = entityMatches.filter((match) => match.state === scopeState);
+  }
   const ambiguousEntities = findAmbiguousEntities(entityMatches, scopeState);
   const bestEntitySimilarity = entityMatches[0]?.similarity ?? 0;
 

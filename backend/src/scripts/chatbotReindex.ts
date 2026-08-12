@@ -10,7 +10,7 @@
 
 import { Pool } from "pg";
 
-import { readChatbotConfigFromEnv } from "../chatbot/chatbotConfig.js";
+import { readChatbotEmbeddingsFromEnv } from "../chatbot/chatbotConfig.js";
 import { createEmbeddingsClient } from "../chatbot/embeddingsClient.js";
 import { reindexChatbotCorpus } from "../chatbot/indexer.js";
 import { loadProjectEnv } from "../config/env.js";
@@ -22,15 +22,17 @@ const COHORT_END = "2026-11-30";
 
 async function main(): Promise<void> {
   loadProjectEnv();
-  const config = readChatbotConfigFromEnv();
-  if (!config.embeddingsUrl) {
+  // Deliberately NOT gated on CHATBOT_ENABLED: operators build the index
+  // regardless of whether the API surface is switched on.
+  const embeddingsConfig = readChatbotEmbeddingsFromEnv();
+  if (!embeddingsConfig.url) {
     throw new Error(
       "CHATBOT_EMBEDDINGS_URL is required for reindexing (a generation without embeddings would silently disable vector search)"
     );
   }
   const embeddings = createEmbeddingsClient({
-    baseUrl: config.embeddingsUrl,
-    timeoutMs: config.embeddingsTimeoutMs,
+    baseUrl: embeddingsConfig.url,
+    timeoutMs: embeddingsConfig.timeoutMs,
   });
 
   const pool = new Pool({

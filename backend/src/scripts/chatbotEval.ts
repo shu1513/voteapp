@@ -11,7 +11,7 @@
 import { Pool } from "pg";
 
 import { createAskService } from "../chatbot/askService.js";
-import { readChatbotConfigFromEnv } from "../chatbot/chatbotConfig.js";
+import { readChatbotEmbeddingsFromEnv } from "../chatbot/chatbotConfig.js";
 import { createEmbeddingsClient } from "../chatbot/embeddingsClient.js";
 import { goldenSet, type GoldenCase } from "../chatbot/golden/goldenSet.js";
 import { detectIntent, detectStateInQuestion } from "../chatbot/intents.js";
@@ -33,9 +33,11 @@ function chunkReferencesEntity(chunk: RetrievedChunk, entity: string): boolean {
 
 async function main(): Promise<void> {
   loadProjectEnv();
-  const config = readChatbotConfigFromEnv();
-  const embeddings = config.embeddingsUrl
-    ? createEmbeddingsClient({ baseUrl: config.embeddingsUrl, timeoutMs: config.embeddingsTimeoutMs })
+  // Deliberately NOT gated on CHATBOT_ENABLED: the eval measures retrieval
+  // quality whether or not the API surface is switched on.
+  const embeddingsConfig = readChatbotEmbeddingsFromEnv();
+  const embeddings = embeddingsConfig.url
+    ? createEmbeddingsClient({ baseUrl: embeddingsConfig.url, timeoutMs: embeddingsConfig.timeoutMs })
     : null;
   if (!embeddings) {
     console.warn("CHATBOT_EMBEDDINGS_URL unset: evaluating KEYWORD-ONLY retrieval (deployment runs hybrid)");

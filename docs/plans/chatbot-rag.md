@@ -29,7 +29,7 @@ Honest list of every touchpoint outside the module (all small, all enumerated so
 4. `backend/package.json`: `chatbot:reindex`, `chatbot:report` scripts.
 5. Migration (next free number; currently 232): schema + extensions + grants for the API DB role (see `docs/postgres-api-role.md`).
 6. Privacy policy: chat section (required **before** enabling the LLM in prod — names OpenAI as a processor).
-7. Tests in `backend/tests/chatbot/` (vitest only picks up `tests/**/*.test.ts`) + `frontend/src/pages/AskPage.test.tsx` + one module `packages/api-client/src/chatbot.ts` (one export line in its index).
+7. Tests in `backend/tests/chatbot/` (vitest only picks up `tests/**/*.test.ts`) + `frontend/src/components/chatbot/ChatWidget.test.tsx` + one module `packages/api-client/src/chatbot.ts` (one export line in its index).
 8. `.claude/launch.json`: chatbot env on the worktree dev-server entries (local dev only).
 
 ## Flags (money = off by default)
@@ -189,7 +189,7 @@ Deterministic templates + deep links, zero AI: ballot lookup, who's running for 
 
 ### 8. API + frontend
 
-`POST /api/chatbot/ask` → `{answer, sources: [{title, url}], answeredBy, dataCurrentAsOf}`; paths added to `isKnownApiPath`; validated/rate-limited like existing endpoints; mounted only when `CHATBOT_ENABLED`. Frontend: one `ChatPage.tsx` + route + flag-guarded nav entry; single-turn Q&A UI at launch (no conversational promises). **Follow-up handling v1 is deterministic:** carry the previous turn's resolved candidate/election scope forward ("what about her voting record?" reuses the resolved candidate) — no LLM rewrite call in the MVP.
+`POST /api/chatbot/ask` → `{answer, sources: [{title, url}], answeredBy, dataCurrentAsOf}`; paths added to `isKnownApiPath`; validated/rate-limited like existing endpoints; mounted only when `CHATBOT_ENABLED`. Frontend: one floating `ChatWidget.tsx` mounted in `App.tsx` (flag-guarded; no route, no nav entry); short session transcript, no conversational promises. **Follow-up handling v1 is deterministic:** carry the previous turn's resolved candidate/election scope forward ("what about her voting record?" reuses the resolved candidate) — no LLM rewrite call in the MVP.
 
 ### 9. Question log + learning loop
 

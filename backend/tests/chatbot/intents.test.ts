@@ -53,6 +53,9 @@ describe("primary/runoff date questions never get the general-election date", ()
   it("routes state-scoped primary/runoff date asks to other_election_date", () => {
     expect(detectIntent("When is the Texas primary election?")).toEqual({ kind: "other_election_date", state: "TX" });
     expect(detectIntent("When is the runoff in Georgia?")).toEqual({ kind: "other_election_date", state: "GA" });
+    // Common phrasings beyond the "when is" frame.
+    expect(detectIntent("What date is the Texas primary?")).toEqual({ kind: "other_election_date", state: "TX" });
+    expect(detectIntent("Texas primary date?")).toEqual({ kind: "other_election_date", state: "TX" });
   });
 
   it("routes scopeless primary/runoff date asks to needs_scope (clarify)", () => {
@@ -70,6 +73,13 @@ describe("detectStateInQuestion", () => {
     expect(detectStateInQuestion("register to vote in North Carolina")).toBe("NC");
     expect(detectStateInQuestion("deadline in west virginia please")).toBe("WV");
     expect(detectStateInQuestion("what about virginia?")).toBe("VA");
+  });
+
+  it("resolves Washington, DC to DC, not Washington state", () => {
+    expect(detectStateInQuestion("Where do I vote in Washington, DC?")).toBe("DC");
+    expect(detectStateInQuestion("register in washington d.c. please")).toBe("DC");
+    expect(detectStateInQuestion("Where do I vote in Washington DC?")).toBe("DC");
+    expect(detectStateInQuestion("how do I vote in Washington state?")).toBe("WA");
   });
 
   it("accepts abbreviations only with place context, never city-ish LA", () => {
