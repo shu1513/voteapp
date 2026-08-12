@@ -634,3 +634,21 @@ export function isOregonCampaignFinanceSyncEnabled(force = false): boolean {
     (force || readBooleanEnv("OREGON_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
   );
 }
+
+export function isRhodeIslandCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("RHODE_ISLAND_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isRhodeIslandCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isRhodeIslandCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("RHODE_ISLAND_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isRhodeIslandErtsRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isRhodeIslandCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("RHODE_ISLAND_ERTS_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}

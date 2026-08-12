@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import {
-  autoLinkMissingSanJoseCandidateFinanceLinks,
-  listSanJoseCandidateElectionsMissingFinanceLinks,
-  type SanJoseFinanceAutoLinkCandidate,
-} from "../../../src/pipeline/sanJoseFinance/sanJoseCandidateFinanceAutoLink.js";
+  autoLinkMissingSanDiegoCityCandidateFinanceLinks,
+  listSanDiegoCityCandidateElectionsMissingFinanceLinks,
+  type SanDiegoCityFinanceAutoLinkCandidate,
+} from "../../../src/pipeline/sanDiegoCityFinance/sanDiegoCityCandidateFinanceAutoLink.js";
 import type { EfileCalWorkbook } from "../../../src/pipeline/efileCalFinance/efileCalWorkbookParser.js";
 
 const emptyWorkbook: EfileCalWorkbook = {
@@ -19,42 +19,42 @@ const emptyWorkbook: EfileCalWorkbook = {
 function linkWriterQueryMock() {
   return vi.fn().mockImplementation((sql: unknown) => {
     const s = String(sql);
-    if (s.startsWith("INSERT INTO public.sjc_candidate_finance_links"))
+    if (s.startsWith("INSERT INTO public.sdcity_candidate_finance_links"))
       return Promise.resolve({ rows: [{ id: "link-1" }] });
     return Promise.resolve({ rows: [] });
   });
 }
 
-const doeCandidate: SanJoseFinanceAutoLinkCandidate = {
+const martinezCandidate: SanDiegoCityFinanceAutoLinkCandidate = {
   candidateId: "c1",
   electionId: "e1",
-  candidateName: "Jane Doe",
+  candidateName: "Antonio Martinez",
   electionYear: 2026,
   officeName: "City Council Member",
-  seatNumber: 5,
+  seatNumber: 8,
   stateFilingIds: [],
 };
 
-const doeCommittee = {
-  filerId: "1234567",
-  committeeNames: ["Jane Doe for City Council District 5 2026"],
+const martinezCommittee = {
+  filerId: "1460125",
+  committeeNames: ["Antonio Martinez for City Council 2026"],
   committeeTypes: ["C"],
 };
 
-describe("listSanJoseCandidateElectionsMissingFinanceLinks", () => {
+describe("listSanDiegoCityCandidateElectionsMissingFinanceLinks", () => {
   it("applies the office-level gate in TS and derives seat numbers", async () => {
     const row = {
       candidate_id: "c1",
       election_id: "e1",
-      candidate_name: "Jane Doe",
+      candidate_name: "Antonio Martinez",
       election_date: "2026-11-03",
       state: "CA",
       district_type: "place",
-      geoid_compact: "0668000",
+      geoid_compact: "0666000",
       office_scope: "place",
       office_name: "City Council Member",
-      official_ballot_title: "Member, City Council, District 5",
-      state_filing_ids: ["1234567", 42],
+      official_ballot_title: "Member of the City Council, District 8",
+      state_filing_ids: ["1460125", 42],
     };
     const query = vi.fn().mockResolvedValue({
       rows: [
@@ -72,15 +72,15 @@ describe("listSanJoseCandidateElectionsMissingFinanceLinks", () => {
         {
           ...row,
           candidate_id: "c3",
-          office_name: "City Clerk",
-          official_ballot_title: "City Clerk",
+          office_name: "Municipal Attorney",
+          official_ballot_title: "City Attorney",
         },
       ],
     });
-    const rows = await listSanJoseCandidateElectionsMissingFinanceLinks(
+    const rows = await listSanDiegoCityCandidateElectionsMissingFinanceLinks(
       { query } as never,
       {
-        now: new Date("2026-08-11T00:00:00Z"),
+        now: new Date("2026-08-12T00:00:00Z"),
         maxCandidates: 25,
         electionLookbackDays: 45,
         electionLookaheadDays: 730,
@@ -90,17 +90,17 @@ describe("listSanJoseCandidateElectionsMissingFinanceLinks", () => {
       {
         candidateId: "c1",
         electionId: "e1",
-        candidateName: "Jane Doe",
+        candidateName: "Antonio Martinez",
         electionYear: 2026,
         officeName: "City Council Member",
-        seatNumber: 5,
+        seatNumber: 8,
         // Non-string entries never survive into the id tier.
-        stateFilingIds: ["1234567"],
+        stateFilingIds: ["1460125"],
       },
       {
         candidateId: "c2",
         electionId: "e1",
-        candidateName: "Jane Doe",
+        candidateName: "Antonio Martinez",
         electionYear: 2026,
         officeName: "Mayor",
         seatNumber: null,
@@ -108,9 +108,9 @@ describe("listSanJoseCandidateElectionsMissingFinanceLinks", () => {
       },
     ]);
     const sql = String(query.mock.calls[0]?.[0]);
-    expect(sql).toContain("geoid_compact='0668000'");
+    expect(sql).toContain("geoid_compact='0666000'");
     expect(sql).toContain(
-      "NOT EXISTS (SELECT 1 FROM public.sjc_candidate_finance_links",
+      "NOT EXISTS (SELECT 1 FROM public.sdcity_candidate_finance_links",
     );
     expect(sql).toContain("NOT IN ('withdrawn','lost')");
     // A row whose every name column is blank resolves to a NULL name; the
@@ -119,47 +119,83 @@ describe("listSanJoseCandidateElectionsMissingFinanceLinks", () => {
   });
 });
 
-describe("autoLinkMissingSanJoseCandidateFinanceLinks", () => {
+describe("autoLinkMissingSanDiegoCityCandidateFinanceLinks", () => {
   it("links a resolved candidate with an active efile_export link", async () => {
     const query = linkWriterQueryMock();
-    const results = await autoLinkMissingSanJoseCandidateFinanceLinks({
+    const results = await autoLinkMissingSanDiegoCityCandidateFinanceLinks({
       db: { query } as never,
-      now: new Date("2026-08-11T00:00:00Z"),
-      candidates: [doeCandidate],
+      now: new Date("2026-08-12T00:00:00Z"),
+      candidates: [martinezCandidate],
       workbook: emptyWorkbook,
-      committees: [doeCommittee],
+      committees: [martinezCommittee],
     });
     expect(results).toEqual([
       { candidateId: "c1", electionId: "e1", status: "linked" },
     ]);
     const insert = query.mock.calls.find((call) =>
       String(call[0]).startsWith(
-        "INSERT INTO public.sjc_candidate_finance_links",
+        "INSERT INTO public.sdcity_candidate_finance_links",
       ),
     );
     expect(insert?.[1]).toEqual(
       expect.arrayContaining([
-        "JANE DOE",
-        "1234567",
-        "Jane Doe for City Council District 5 2026",
+        "ANTONIO MARTINEZ",
+        "1460125",
+        "Antonio Martinez for City Council 2026",
         "active",
         "efile_export",
+        "https://efile.sandiego.gov",
       ]),
+    );
+  });
+
+  it("links a clerk-log candidate the name tier cannot resolve (Powell)", async () => {
+    const query = linkWriterQueryMock();
+    const results = await autoLinkMissingSanDiegoCityCandidateFinanceLinks({
+      db: { query } as never,
+      now: new Date("2026-08-12T00:00:00Z"),
+      candidates: [
+        {
+          ...martinezCandidate,
+          candidateId: "c9",
+          candidateName: "Mark Powell",
+          seatNumber: 6,
+        },
+      ],
+      workbook: emptyWorkbook,
+      committees: [
+        {
+          filerId: "1485884",
+          committeeNames: ["POWELL FOR CITY COUNCIL 2026"],
+          committeeTypes: ["C"],
+        },
+      ],
+    });
+    expect(results).toEqual([
+      { candidateId: "c9", electionId: "e1", status: "linked" },
+    ]);
+    const insert = query.mock.calls.find((call) =>
+      String(call[0]).startsWith(
+        "INSERT INTO public.sdcity_candidate_finance_links",
+      ),
+    );
+    expect(insert?.[1]).toEqual(
+      expect.arrayContaining(["1485884", "POWELL FOR CITY COUNCIL 2026"]),
     );
   });
 
   it("collects committees from every workbook sheet when none are provided", async () => {
     const query = linkWriterQueryMock();
-    const results = await autoLinkMissingSanJoseCandidateFinanceLinks({
+    const results = await autoLinkMissingSanDiegoCityCandidateFinanceLinks({
       db: { query } as never,
-      now: new Date("2026-08-11T00:00:00Z"),
-      candidates: [doeCandidate],
+      now: new Date("2026-08-12T00:00:00Z"),
+      candidates: [martinezCandidate],
       workbook: {
         ...emptyWorkbook,
         summary: [
           {
-            filerId: "1234567",
-            filerName: "Jane Doe for City Council District 5 2026",
+            filerId: "1460125",
+            filerName: "Antonio Martinez for City Council 2026",
             reportNum: "000",
             eFilingId: "100",
             origEFilingId: "100",
@@ -182,16 +218,16 @@ describe("autoLinkMissingSanJoseCandidateFinanceLinks", () => {
 
   it("reports ambiguity as needs_review and writes nothing", async () => {
     const query = linkWriterQueryMock();
-    const results = await autoLinkMissingSanJoseCandidateFinanceLinks({
+    const results = await autoLinkMissingSanDiegoCityCandidateFinanceLinks({
       db: { query } as never,
-      now: new Date("2026-08-11T00:00:00Z"),
-      candidates: [doeCandidate],
+      now: new Date("2026-08-12T00:00:00Z"),
+      candidates: [martinezCandidate],
       workbook: emptyWorkbook,
       committees: [
-        doeCommittee,
+        martinezCommittee,
         {
           filerId: "7654321",
-          committeeNames: ["Jane Doe for San Jose City Council 2026"],
+          committeeNames: ["Antonio Martinez for San Diego City Council 2026"],
           committeeTypes: ["C"],
         },
       ],
@@ -210,10 +246,10 @@ describe("autoLinkMissingSanJoseCandidateFinanceLinks", () => {
 
   it("reports no committee without writing", async () => {
     const query = linkWriterQueryMock();
-    const results = await autoLinkMissingSanJoseCandidateFinanceLinks({
+    const results = await autoLinkMissingSanDiegoCityCandidateFinanceLinks({
       db: { query } as never,
-      now: new Date("2026-08-11T00:00:00Z"),
-      candidates: [doeCandidate],
+      now: new Date("2026-08-12T00:00:00Z"),
+      candidates: [martinezCandidate],
       workbook: emptyWorkbook,
       committees: [],
     });
@@ -238,26 +274,26 @@ describe("autoLinkMissingSanJoseCandidateFinanceLinks", () => {
           rows: [
             {
               candidate_id: "cA",
-              candidate_name: "Jane Doe",
+              candidate_name: "Antonio Martinez",
               state_filing_ids: [],
             },
             {
               candidate_id: "cB",
-              candidate_name: "Jane Doe",
+              candidate_name: "Antonio Martinez",
               state_filing_ids: [],
             },
           ],
         });
-      if (s.startsWith("INSERT INTO public.sjc_candidate_finance_links"))
+      if (s.startsWith("INSERT INTO public.sdcity_candidate_finance_links"))
         return Promise.resolve({ rows: [{ id: "link-1" }] });
       return Promise.resolve({ rows: [] });
     });
-    const results = await autoLinkMissingSanJoseCandidateFinanceLinks({
+    const results = await autoLinkMissingSanDiegoCityCandidateFinanceLinks({
       db: { query } as never,
-      now: new Date("2026-08-11T00:00:00Z"),
-      candidates: [{ ...doeCandidate, candidateId: "cB" }],
+      now: new Date("2026-08-12T00:00:00Z"),
+      candidates: [{ ...martinezCandidate, candidateId: "cB" }],
       workbook: emptyWorkbook,
-      committees: [doeCommittee],
+      committees: [martinezCommittee],
     });
     // Only the input candidate is reported; the roster-only sibling shaped
     // the duplicate check but got no result row.
@@ -272,7 +308,7 @@ describe("autoLinkMissingSanJoseCandidateFinanceLinks", () => {
     expect(
       query.mock.calls.some((call) =>
         String(call[0]).startsWith(
-          "INSERT INTO public.sjc_candidate_finance_links",
+          "INSERT INTO public.sdcity_candidate_finance_links",
         ),
       ),
     ).toBe(false);
@@ -283,16 +319,16 @@ describe("autoLinkMissingSanJoseCandidateFinanceLinks", () => {
       const s = String(sql);
       if (s.startsWith("SELECT id::text,fppc_id"))
         return Promise.resolve({
-          rows: [{ id: "manual-1", fppc_id: "1480385", link_status: "active" }],
+          rows: [{ id: "manual-1", fppc_id: "1489999" }],
         });
       return Promise.resolve({ rows: [] });
     });
-    const results = await autoLinkMissingSanJoseCandidateFinanceLinks({
+    const results = await autoLinkMissingSanDiegoCityCandidateFinanceLinks({
       db: { query } as never,
-      now: new Date("2026-08-11T00:00:00Z"),
-      candidates: [doeCandidate],
+      now: new Date("2026-08-12T00:00:00Z"),
+      candidates: [martinezCandidate],
       workbook: emptyWorkbook,
-      committees: [doeCommittee],
+      committees: [martinezCommittee],
     });
     expect(results[0]).toMatchObject({
       status: "error",

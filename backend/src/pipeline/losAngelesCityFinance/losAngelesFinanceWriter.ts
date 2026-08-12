@@ -97,41 +97,84 @@ async function upsertLink(
 ): Promise<string> {
   const officeName = text(link.officeName, "office name");
   const normalizedSeatNumber = seatNumber(link.seatNumber, officeName);
-  if (
-    (link.linkSource ?? "manual") === "lacity_ethics" &&
-    (link.linkStatus ?? "active") === "active"
-  ) {
-    const manual = await db.query<{ id: string; fppc_committee_id: string }>(
-      `SELECT id::text,fppc_committee_id FROM public.lacity_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_status='active' AND link_source='manual' LIMIT 1`,
-      [link.candidateId, link.electionId],
+  // Every text field is validated and normalized BEFORE any statement below:
+  // this function also runs standalone on a bare Pool (auto-link), where a
+  // mid-flight validation throw after the deactivate UPDATE would leave the
+  // candidate with no active link. The trimmed committee id is the single
+  // value used for the manual-link comparison, the deactivation predicate,
+  // and the INSERT — a padded input must match a stored id, never slip past
+  // the probe and reach the stored row through ON CONFLICT.
+  const candidateId = text(link.candidateId, "candidate id");
+  const electionId = text(link.electionId, "election id");
+  const candidateNameNormalized = text(
+    link.candidateNameNormalized,
+    "candidate name",
+  );
+  const ethicsElectionId = text(link.ethicsElectionId, "Ethics election id");
+  const ethicsCandidatePersonId = text(
+    link.ethicsCandidatePersonId,
+    "Ethics candidate person id",
+  );
+  const ethicsSeatCandidateId = text(
+    link.ethicsSeatCandidateId,
+    "Ethics seat candidate id",
+  );
+  const fppcCommitteeId = text(link.fppcCommitteeId, "FPPC committee id");
+  const committeeName = text(link.committeeName, "committee name");
+  // Manual protection applies to EVERY automatic write, not only active
+  // upserts, and probes manual rows of ANY status: an operator-disabled
+  // (inactive/needs_review) manual link with this committee id is the
+  // ON CONFLICT target row, and the upsert would otherwise silently
+  // rewrite it to lacity_ethics.
+  if ((link.linkSource ?? "manual") === "lacity_ethics") {
+    const manual = await db.query<{
+      id: string;
+      fppc_committee_id: string;
+      link_status: string;
+    }>(
+      `SELECT id::text,fppc_committee_id,link_status FROM public.lacity_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_source='manual'`,
+      [candidateId, electionId],
     );
-    if (manual.rows.length) {
-      if (manual.rows[0]!.fppc_committee_id === link.fppcCommitteeId)
-        return manual.rows[0]!.id;
+    const sameCommittee = manual.rows.find(
+      (row) => row.fppc_committee_id === fppcCommitteeId,
+    );
+    if (sameCommittee) {
+      if (sameCommittee.link_status !== "active")
+        throw new Error(
+          "Los Angeles automatic finance link matches an operator-disabled manual link",
+        );
+      return sameCommittee.id;
+    }
+    // A disabled manual link with a DIFFERENT committee id does not block a
+    // new automatic identity — the operator disabled that association, not
+    // the candidate. Only an active manual link conflicts.
+    if (manual.rows.some((row) => row.link_status === "active"))
       throw new Error(
         "Los Angeles automatic finance link conflicts with protected manual link",
       );
-    }
   }
   if ((link.linkStatus ?? "active") === "active")
     await db.query(
       `UPDATE public.lacity_candidate_finance_links SET link_status='inactive' WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND fppc_committee_id<>$3 AND link_status='active' AND link_source<>'manual'`,
-      [link.candidateId, link.electionId, link.fppcCommitteeId],
+      [candidateId, electionId, fppcCommitteeId],
     );
+  // The conflict guard is the race backstop: a row an operator flips to
+  // manual between the probe and this statement blocks the update (no id
+  // returned, the throw below aborts) instead of being rewritten.
   const result = await db.query<{ id: string }>(
-    `INSERT INTO public.lacity_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,office_name,seat_number,ethics_election_id,ethics_candidate_person_id,ethics_seat_candidate_id,fppc_committee_id,committee_name,internal_committee_person_id,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16::timestamptz) ON CONFLICT (candidate_id,election_id,fppc_committee_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,office_name=EXCLUDED.office_name,seat_number=EXCLUDED.seat_number,ethics_election_id=EXCLUDED.ethics_election_id,ethics_candidate_person_id=EXCLUDED.ethics_candidate_person_id,ethics_seat_candidate_id=EXCLUDED.ethics_seat_candidate_id,committee_name=EXCLUDED.committee_name,internal_committee_person_id=EXCLUDED.internal_committee_person_id,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at RETURNING id::text`,
+    `INSERT INTO public.lacity_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,office_name,seat_number,ethics_election_id,ethics_candidate_person_id,ethics_seat_candidate_id,fppc_committee_id,committee_name,internal_committee_person_id,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16::timestamptz) ON CONFLICT (candidate_id,election_id,fppc_committee_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,office_name=EXCLUDED.office_name,seat_number=EXCLUDED.seat_number,ethics_election_id=EXCLUDED.ethics_election_id,ethics_candidate_person_id=EXCLUDED.ethics_candidate_person_id,ethics_seat_candidate_id=EXCLUDED.ethics_seat_candidate_id,committee_name=EXCLUDED.committee_name,internal_committee_person_id=EXCLUDED.internal_committee_person_id,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at WHERE lacity_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual' RETURNING id::text`,
     [
-      text(link.candidateId, "candidate id"),
-      text(link.electionId, "election id"),
+      candidateId,
+      electionId,
       link.electionYear,
-      text(link.candidateNameNormalized, "candidate name"),
+      candidateNameNormalized,
       officeName,
       normalizedSeatNumber,
-      text(link.ethicsElectionId, "Ethics election id"),
-      text(link.ethicsCandidatePersonId, "Ethics candidate person id"),
-      text(link.ethicsSeatCandidateId, "Ethics seat candidate id"),
-      text(link.fppcCommitteeId, "FPPC committee id"),
-      text(link.committeeName, "committee name"),
+      ethicsElectionId,
+      ethicsCandidatePersonId,
+      ethicsSeatCandidateId,
+      fppcCommitteeId,
+      committeeName,
       optional(link.internalCommitteePersonId),
       link.linkStatus ?? "active",
       link.linkSource ?? "manual",
@@ -140,7 +183,9 @@ async function upsertLink(
     ],
   );
   if (!result.rows[0]?.id)
-    throw new Error("Los Angeles finance link upsert returned no id");
+    throw new Error(
+      "Los Angeles finance link upsert wrote no row — blocked by a concurrent protected manual link",
+    );
   return result.rows[0].id;
 }
 

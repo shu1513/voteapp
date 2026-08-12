@@ -9,7 +9,7 @@ import { ANSWER_JSON_SCHEMA, SYSTEM_PROMPT, buildUserMessage } from "../../src/c
 const CLIENT_OPTIONS = {
   baseUrl: "https://api.example.test/v1",
   apiKey: "test-key",
-  model: "gpt-5.6-luna",
+  model: "test-model",
   reasoningEffort: "low",
   timeoutMs: 5_000,
 };
@@ -71,7 +71,7 @@ describe("createOpenAiResponsesClient", () => {
     expect(url).toBe("https://api.example.test/v1/responses");
     const body = JSON.parse(init.body as string);
     expect(body.store).toBe(false);
-    expect(body.model).toBe("gpt-5.6-luna");
+    expect(body.model).toBe("test-model");
     expect(body.reasoning).toEqual({ effort: "low" });
     expect(body.max_output_tokens).toBe(MAX_OUTPUT_TOKENS);
     expect(body.safety_identifier).toBe("hashed-user");

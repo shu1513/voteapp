@@ -199,7 +199,7 @@ describe("answer cache", () => {
     questionNorm: "who is jon ossoff",
     scopeKey: "GA|",
     generationId: "9b3a0d8e-0000-4000-8000-000000000001",
-    model: "gpt-5.6-luna",
+    model: "test-model",
     promptVersion: "p1",
   };
 
