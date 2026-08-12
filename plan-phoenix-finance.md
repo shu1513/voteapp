@@ -2,7 +2,7 @@
 
 Written 2026-08-12 after live probing of the City of Phoenix Campaign Finance eFiling system (search grids exercised in a real browser, JSON responses captured, a 2026 candidate report PDF downloaded and text-extracted, codebase and local DB audited). Revised the same day after an external review round; every correction below was re-verified against live data or code before adoption. Verdict: **GO — Phase 0 first.** Schema and any published numbers wait until the Phase 0 gates reconcile to the cent.
 
-Follow the launch checklist in the `voteapp-new-state-finance-checklist` memory (flags in `.env` + `render.yaml`, source label in `packages/api-client/src/format.ts`, this plan doc's naming).
+The standard new-module launch checklist is inlined in full under "Flags & labels" below — this plan is self-contained; no external checklist is required.
 
 ## Why a new module (not an extension)
 
@@ -84,14 +84,14 @@ Phase 0 runs a census across all four channels for the current cycle. v1 impleme
 
 ## Architecture
 
-New module `backend/src/pipeline/phoenixFinance/`, tables prefixed `phx_` (no collisions; longest name `phx_candidate_finance_outside_group_breakdowns` = 46 chars, under the 63 limit). Migration takes the next free number at build time (never renumber).
+New module `backend/src/pipeline/phoenixFinance/`, tables prefixed `phx_` (no collisions). **Four tables, matching the shipped San José shape (migration 233)**: `phx_candidate_finance_{links,summaries,direct_breakdowns,outside_groups}` — no `outside_group_breakdowns` table. Outside-group *funder* backtrace (who funded each spender PAC → `top_supporting_industries`/`top_opposing_industries`) is **out of scope for v1**, exactly as San José shipped it: the SJ loader returns those arrays empty by design (`sanJoseBallotLookupFinanceLoader.ts:256`), and Phoenix funder backtrace would mean parsing each spender's own report PDFs — a full extra leg. The Phase 0 outside census records, per spender, whether its funding sources are visible in the portal, so a later funder leg is a data-informed follow-up, not a v1 gate. Migration takes the next free number at build time (never renumber).
 
 **Writer/loader/due-list: SJ-pattern bespoke, not the shared factories as-is.** Audited 2026-08-12:
 - the factory writer's direct categories are `occupation | contribution_size` only (no employer), and it lacks manual-link protection — `upsertLink` overwrites `link_source` on conflict (`standardStateFinanceSnapshotWriter.ts:392`; capability matrix line 17 lists manual protection as "still missing");
 - the shared loader hard-codes direct `top_employers: []` (`standardStateFinanceBallotLookupLoader.ts:661`);
 - the shared due-list query scopes by `districts.state` + office key only (`standardStateFinanceDueListQuery.ts:166,171`) — in AZ that would sweep every city's `place::City Council Member`, so Phoenix scoping must pin GEOID `0455000`.
 
-So: copy-adapt `sanJoseFinanceWriter.ts` (manual-link protection at `sanJoseFinanceWriter.ts:120-143`; direct categories include `employer` at `:59`), `sanJoseBallotLookupFinanceLoader.ts` (routes employer breakdowns at `:242`), and SJ's GEOID-scoped selection queries — auto-link `sanJoseCandidateFinanceAutoLink.ts:46` and the due query embedded in `sanJoseCandidateFinanceBatchSync.ts:30,226` (SJ has no standalone due-list module) — to `phx_` tables. Do NOT extend the shared factories for this — per the capability-matrix policy, factory features are added only when a migrating cohort needs them. Outside-group writes keep the SJ pairing-validation semantics.
+So: copy-adapt `sanJoseFinanceWriter.ts` (manual-link protection at `sanJoseFinanceWriter.ts:120-143`; direct categories include `employer` at `:59`), `sanJoseBallotLookupFinanceLoader.ts` (routes employer breakdowns at `:242`), and SJ's GEOID-scoped selection queries — auto-link `sanJoseCandidateFinanceAutoLink.ts:46` and the due query embedded in `sanJoseCandidateFinanceBatchSync.ts:30,226` (SJ has no standalone due-list module) — to `phx_` tables. Do NOT extend the shared factories for this — per the capability-matrix policy, factory features are added only when a migrating cohort needs them. Outside-group writes keep SJ's actual semantics: per-snapshot delete + plain inserts of pre-grouped (spender identity, direction) rows, where a unique-key collision is a caller bug that aborts the snapshot (`sanJoseFinanceWriter.ts:235-256`).
 
 Reuse as-is: shared name gates (`personNameMiddleEvidence`, `personFirstNameNicknames`, suffix veto), `financeLabelClassifier` + industry classification, `BallotLookupFinanceSummary` contract (top_occupations/top_employers, outside support/oppose, coverage notes — no frontend changes expected).
 
@@ -110,12 +110,12 @@ Genuinely new (Phase 0/1 work):
   3. Cover + Schedule A/B parse: the full equation chain (1(k)→1(m)→13→(b); 16→(c); (a)+(b)−(c)=(d)) reproduced to the cent for ≥3 committees, including at least one with loans, refunds, or non-contribution receipts; period chain continuity ((a) = prior (d); cycle-to-date (b)/(c) = Σ canonical periods) — deviations become typed violations.
   4. Report-amendment canonicalization pinned on a real amended modern report: one canonical report per period.
   5. Occupation/employer extraction from A(1)(a) + A(1)(c) for ≥2 committees; itemized + A(1)(b) aggregate reconcile to the cover receipts lines to the cent.
-  6. Outside census across all four channels for the 2025–27 cycle: portal PACs with actual IE filings (pin the IE schedule's candidate + support/oppose format on ≥1 real filing, falling back to the most recent prior cycle if this one is empty), standing-PAC detection (`IsStandingCommittee`) + whether Spotlight exposes their city-race IE detail, the IE-entity report list, and the EFD dark-money list. Output: per-channel volume + the v1 systematic-vs-curated decision + the null-vs-zero publishing matrix.
+  6. Outside census across all four channels for the 2025–27 cycle: portal PACs with actual IE filings (pin the IE schedule's candidate + support/oppose format on ≥1 real filing, falling back to the most recent prior cycle if this one is empty), standing-PAC detection (`IsStandingCommittee`) + whether Spotlight exposes their city-race IE detail, the IE-entity report list, and the EFD dark-money list. Output: per-channel volume + the v1 systematic-vs-curated decision + the null-vs-zero publishing matrix + per-spender note on whether its funding sources are visible in the portal (informs the deferred funder-backtrace leg, not a v1 gate).
   7. Resolver dry-run: all 16 certified candidates map to canonical committees via the evidence chain, or carry an explicit unresolved reason.
-- **Phase 1 — schema + writer.** Five `phx_` tables; SJ-pattern bespoke writer (manual-link protection, employer category, portal-cycle columns); writer tests including manual-protection and employer-routing cases.
+- **Phase 1 — schema + writer.** Four `phx_` tables (SJ shape); SJ-pattern bespoke writer (manual-link protection, employer category, portal-cycle columns); writer tests including manual-protection and employer-routing cases.
 - **Phase 2 — resolver + links.** Evidence-chain resolver, auto-link scoped to GEOID `0455000`, manual-link protection end-to-end.
 - **Phase 3 — aggregators + sync.** Direct (cover-based totals + A(1)(a)/A(1)(c) breakdowns, no size buckets), outside per the Phase 0 channel decision, coverage notes, sync + due list (GEOID-scoped), flags, source enum, ballot-lookup loader registry entry.
-- **Phase 4 — live run + UI check.** Full-cycle ingest locally for all 16 candidates; PDF-reconciliation sweep (every written summary cent-exact vs live report covers); IE-entity/EFD sweep with curated supplements for real misses; FinanceSummaryCard renders raised/spent/cash/occupations/employers/outside S-O. Prod scheduling stays manual-trigger (render.yaml finance crons still commented out pending Render billing — repo-wide state).
+- **Phase 4 — live run + UI check.** Full-cycle ingest locally for all 16 candidates; PDF-reconciliation sweep (every written summary cent-exact vs live report covers); IE-entity/EFD sweep with curated supplements for real misses; FinanceSummaryCard renders raised/spent/cash/occupations/outside S-O — **employers are stored and API-exposed but deliberately not rendered by the card** (repo-wide product decision, test-enforced at `FinanceSummaryCard.test.tsx:26`; no frontend change in this plan). Prod scheduling stays manual-trigger (render.yaml finance crons still commented out pending Render billing — repo-wide state).
 
 ## Flags & labels (checklist items, do not skip)
 
@@ -128,4 +128,5 @@ Genuinely new (Phase 0/1 work):
 - Pre-2017 legacy report format; pre-2024 elections; the pre-2013 / Nov-2016–May-2017 records gap (separate archive system).
 - Ballot-measure and recall committees; the "Notice of Large Contribution"/10K notification feeds (useful later for freshness, not load-bearing).
 - `contribution_size_buckets` (A(1)(b) aggregate makes exact buckets impossible — see above).
+- Outside-group funder backtrace (`top_supporting_industries`/`top_opposing_industries` stay empty, as in shipped San José) — revisit with the Phase 0 census's funder-visibility notes if the outside legs prove material.
 - OCR of scanned IE-entity/EFD filings (curated supplements only).
