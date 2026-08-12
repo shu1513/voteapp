@@ -8,6 +8,11 @@
 // never reach retrieval, a cache, or an LLM).
 
 export type IntentKind =
+  | "greeting"             // whole-message "hi"/"hello" → welcome, no retrieval
+  | "thanks"               // whole-message "thank you" → acknowledgement
+  | "goodbye"              // whole-message "bye" → sign-off
+  | "help"                 // whole-message "help"/"what can you do" → capabilities
+  | "election_countdown"   // "how many days until the election" → date math
   | "policy_refusal"       // endorsement/recommendation ask → neutral refusal
   | "untracked_data"       // social-media posts etc. — data we never index
   | "out_of_cycle"         // election ask about a year outside the covered cycle
@@ -86,6 +91,32 @@ export function detectStateInQuestion(question: string): string | null {
   return null;
 }
 
+// Smalltalk — matched against the WHOLE message only (anchored both ends), so
+// "hi, who is running in GA?" never routes here. Zero data: greetings must
+// not reach retrieval, where "hi" only matches noise.
+const SMALLTALK_PATTERNS: ReadonlyArray<{ kind: IntentKind; pattern: RegExp }> = [
+  {
+    kind: "greeting",
+    pattern:
+      /^(?:hi|hiya|hello|hey|heya|howdy|yo|sup|what'?s\s+up|good\s+(?:morning|afternoon|evening)|(?:hi|hello|hey)\s+there)[\s!.,?]*$/i,
+  },
+  {
+    kind: "thanks",
+    pattern:
+      /^(?:thanks|thank\s+you|thanks\s+(?:a\s+lot|so\s+much|again)|thank\s+you\s+(?:so|very)\s+much|thx|ty|tysm|much\s+appreciated|appreciate\s+it)[\s!.,?]*$/i,
+  },
+  {
+    kind: "goodbye",
+    pattern:
+      /^(?:bye|goodbye|bye\s*bye|see\s+(?:you|ya)(?:\s+later)?|good\s*night|take\s+care|later)[\s!.,?]*$/i,
+  },
+  {
+    kind: "help",
+    pattern:
+      /^(?:help|help\s+me|what\s+can\s+(?:you|this)\s+do|what\s+can\s+i\s+ask(?:\s+you)?|what\s+do\s+you\s+do|how\s+do(?:es)?\s+(?:this|it|you)\s+work|what\s+is\s+this|who\s+are\s+you|what\s+are\s+you)[\s!.,?]*$/i,
+  },
+];
+
 const POLICY_PATTERNS: RegExp[] = [
   /\bwho\s+(?:should|do|would)\s+(?:i|you|we)\s+(?:vote|pick|choose|support)\b/i,
   /\bshould\s+(?:i|we)\s+vote\b/i,
@@ -105,6 +136,13 @@ export function detectIntent(question: string): IntentMatch | null {
   const state = detectStateInQuestion(question);
   const q = question.trim();
 
+  // Whole-message smalltalk first: cheapest check, and "HI there" must not
+  // fall through to state detection or retrieval.
+  for (const { kind, pattern } of SMALLTALK_PATTERNS) {
+    if (pattern.test(q)) {
+      return { kind, state: null };
+    }
+  }
   if (POLICY_PATTERNS.some((pattern) => pattern.test(q))) {
     return { kind: "policy_refusal", state };
   }
@@ -142,10 +180,19 @@ export function detectIntent(question: string): IntentMatch | null {
   // rule 6: time-sensitive, never guessed).
   const OTHER_RACE = "(?:runoff|primar(?:y|ies)|special\\s+election)";
   if (
-    new RegExp(`\\b(?:when|what\\s+(?:date|day)|date|day)\\b.{0,60}\\b${OTHER_RACE}\\b`, "i").test(q) ||
+    new RegExp(
+      `\\b(?:when|what\\s+(?:date|day)|date|day|how\\s+(?:many\\s+days|long)|days\\s+(?:left|remaining|until|till))\\b.{0,60}\\b${OTHER_RACE}\\b`,
+      "i"
+    ).test(q) ||
     new RegExp(`\\b${OTHER_RACE}\\b.{0,40}\\b(?:date|day|when|schedule)\\b`, "i").test(q)
   ) {
     return state ? { kind: "other_election_date", state } : { kind: "needs_scope", state };
+  }
+  // Countdown before the general date frame: "how many days until the
+  // election" carries no "when is". Primary/runoff countdowns were already
+  // caught above — this only ever means the fixed general-election date.
+  if (/\b(?:how\s+(?:many\s+days|long)|days\s+(?:left|remaining|until|till))\b.{0,40}\b(?:election|voting|vote)\b/i.test(q)) {
+    return { kind: "election_countdown", state };
   }
   // Deliberately requires the "when is" frame: a bare "election day" mention
   // ("what will the weather be on election day?") is not a date question.

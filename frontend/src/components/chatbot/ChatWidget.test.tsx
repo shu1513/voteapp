@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ChatWidget, contextFromPathname, isChatWidgetHidden } from "./ChatWidget";
+import { ChatWidget, contextFromPathname, isChatWidgetHidden, starterQuestions } from "./ChatWidget";
 import { renderRoutes } from "../../test/render";
 import { ME_UNVERIFIED, ME_VERIFIED } from "../../test/fixtures";
 import { apiError, stubApiRoutes, type ApiRoute } from "../../test/mockApi";
@@ -66,6 +66,14 @@ describe("contextFromPathname", () => {
     });
     expect(contextFromPathname("/ballot")).toBeNull();
     expect(contextFromPathname("/candidates/not-a-uuid")).toBeNull();
+  });
+});
+
+describe("starterQuestions", () => {
+  it("tunes suggestions to the page being viewed", () => {
+    expect(starterQuestions({ kind: "candidate", id: "x" })).toContain("Tell me more about this candidate");
+    expect(starterQuestions({ kind: "election", id: "x" })).toContain("Who is running in this election?");
+    expect(starterQuestions(null)).toContain("What can you do?");
   });
 });
 
@@ -141,6 +149,34 @@ describe("ChatWidget", () => {
     // Both turns stay on screen.
     expect(screen.getByText("Tell me about Jesse Petrea.")).toBeInTheDocument();
     expect(screen.getByText("What about their voting record?")).toBeInTheDocument();
+  });
+
+  it("sends a starter chip as a question on click, then hides the chips", async () => {
+    const user = userEvent.setup();
+    const { fetchMock } = renderWidgetAt("/candidates/44444444-4444-4444-a444-444444444444");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.click(screen.getByRole("button", { name: "Tell me more about this candidate" }));
+
+    expect(await screen.findByText("Here's what our data has on that.")).toBeInTheDocument();
+    const askCall = fetchMock.mock.calls.find(([input]) => String(input).includes("/api/chatbot/ask"));
+    const body = JSON.parse((askCall as unknown as [string, RequestInit])[1].body as string);
+    expect(body).toEqual({
+      question: "Tell me more about this candidate",
+      context: { candidate_id: "44444444-4444-4444-a444-444444444444" },
+    });
+    // Chips only seed an empty chat.
+    expect(screen.queryByRole("button", { name: "Tell me more about this candidate" })).not.toBeInTheDocument();
+  });
+
+  it("bases chips on the CURRENT page even when an older context is remembered", async () => {
+    const user = userEvent.setup();
+    const { router } = renderWidgetAt("/candidates/44444444-4444-4444-a444-444444444444");
+    // Leave the candidate page; the remembered context stays for typed
+    // follow-ups, but chips must describe what the user sees NOW.
+    await router.navigate("/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    expect(await screen.findByRole("button", { name: "What can you do?" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Tell me more about this candidate" })).not.toBeInTheDocument();
   });
 
   it("shows the register wall when the server answers 401 mid-session", async () => {

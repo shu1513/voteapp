@@ -45,6 +45,7 @@ describe("chatbot golden set", () => {
       out_of_scope: 5,
       adversarial: 5,
       followup: 2,
+      smalltalk: 3,
     };
     for (const [category, min] of Object.entries(minimums)) {
       expect(byCategory.get(category)?.length ?? 0, category).toBeGreaterThanOrEqual(min);
@@ -102,9 +103,9 @@ describe("chatbot golden set", () => {
     }
   });
 
-  it("keeps logistics and results deterministic (template only)", () => {
+  it("keeps logistics, results, and smalltalk deterministic (template only)", () => {
     for (const c of goldenSet) {
-      if (c.category === "logistics" || c.category === "results") {
+      if (c.category === "logistics" || c.category === "results" || c.category === "smalltalk") {
         expect(c.expected, c.id).toBe("template");
       }
     }

@@ -39,7 +39,8 @@ export type GoldenCategory =
   | "ambiguous"
   | "out_of_scope"
   | "adversarial"
-  | "followup";
+  | "followup"
+  | "smalltalk";
 
 export interface GoldenCase {
   /** Stable id; never renumber (results are tracked against it over time). */
@@ -629,5 +630,46 @@ export const goldenSet: readonly GoldenCase[] = [
     scopeState: "NC",
     notes:
       "Same-district scope carry-over (Camden County hosts the sheriff race directly); contrast with ambiguous-sheriff-no-scope (no prior turn → clarify). Deliberately NOT an LA mayor→sheriff pair: that would need city→containing-county resolution, which v1 scope carry-over does not do.",
+  },
+
+  // ── Smalltalk → fixed friendly line, never retrieval ──────────────────
+  {
+    id: "smalltalk-hi",
+    category: "smalltalk",
+    question: "Hi",
+    expected: "template",
+    notes: "Bare greeting must not reach retrieval (it only matches noise).",
+  },
+  {
+    id: "smalltalk-hello-there",
+    category: "smalltalk",
+    question: "hello there!",
+    expected: "template",
+  },
+  {
+    id: "smalltalk-thanks",
+    category: "smalltalk",
+    question: "Thank you so much!",
+    expected: "template",
+  },
+  {
+    id: "smalltalk-bye",
+    category: "smalltalk",
+    question: "bye",
+    expected: "template",
+  },
+  {
+    id: "smalltalk-help",
+    category: "smalltalk",
+    question: "What can you do?",
+    expected: "template",
+    notes: "Capabilities template; also the generic starter chip in the widget.",
+  },
+  {
+    id: "logistics-countdown",
+    category: "logistics",
+    question: "How many days until the election?",
+    expected: "template",
+    notes: "Deterministic date math to the fixed Nov 3, 2026 date; primary/runoff countdowns route to other_election_date instead.",
   },
 ] as const;

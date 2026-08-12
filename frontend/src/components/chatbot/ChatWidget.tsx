@@ -31,6 +31,19 @@ export function contextFromPathname(pathname: string): ChatbotAskContext | null 
   return { kind: match[1] === "candidates" ? "candidate" : "election", id: match[2] as string };
 }
 
+/** Tappable starter questions for an empty chat, tuned to the page being
+ * viewed. Deictic phrasings on detail pages exercise the server's page
+ * context ("this candidate" resolves to the profile being read). */
+export function starterQuestions(context: ChatbotAskContext | null): string[] {
+  if (context?.kind === "candidate") {
+    return ["Tell me more about this candidate", "What is their voting record?", "Who is funding their campaign?"];
+  }
+  if (context?.kind === "election") {
+    return ["Tell me more about this election", "Who is running in this election?"];
+  }
+  return ["What can you do?", "When is the 2026 general election?", "How do I register to vote?"];
+}
+
 /**
  * Where the widget stays hidden: the logged-out home page (first-visit
  * pitch), the public pick-card share page (a friend's shared link, not a
@@ -179,9 +192,8 @@ export function ChatWidget() {
     return null;
   }
 
-  function submit(event: React.FormEvent) {
-    event.preventDefault();
-    const trimmed = question.trim();
+  function sendQuestion(text: string) {
+    const trimmed = text.trim();
     if (trimmed.length === 0 || ask.isPending) {
       return;
     }
@@ -191,6 +203,11 @@ export function ChatWidget() {
       context,
     });
     setQuestion("");
+  }
+
+  function submit(event: React.FormEvent) {
+    event.preventDefault();
+    sendQuestion(question);
   }
 
   if (!open) {
@@ -241,10 +258,30 @@ export function ChatWidget() {
         <>
           <div ref={transcriptRef} className="min-h-[8rem] flex-1 overflow-y-auto px-3 py-3">
             {turns.length === 0 && !ask.isPending && (
-              <p className="text-sm text-ink-soft">
-                Ask about the November 2026 elections we cover: candidates, records, campaign finance, elections, and
-                ballot measures. Answers come only from our data — never opinions or endorsements.
-              </p>
+              <div>
+                <p className="text-sm text-ink-soft">
+                  Ask about the November 2026 elections we cover: candidates, records, campaign finance, elections, and
+                  ballot measures. Answers come only from our data — never opinions or endorsements.
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {/* Chips describe the CURRENT page, not the remembered
+                      context: after navigating away, "this candidate" would
+                      point at a page the user can no longer see. The
+                      remembered context still rides along for typed deictic
+                      follow-ups; generic chips are non-deictic, so the
+                      server ignores it for them. */}
+                  {starterQuestions(contextFromPathname(location.pathname)).map((starter) => (
+                    <button
+                      key={starter}
+                      type="button"
+                      onClick={() => sendQuestion(starter)}
+                      className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition hover:border-ink-soft hover:bg-surface"
+                    >
+                      {starter}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
             <div className="space-y-4">
               {turns.map((turn, index) => (

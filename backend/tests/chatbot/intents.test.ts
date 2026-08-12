@@ -66,6 +66,53 @@ describe("primary/runoff date questions never get the general-election date", ()
   it("keeps plain general-election date asks on the fixed-date template", () => {
     expect(detectIntent("When is the 2026 general election?")?.kind).toBe("election_date");
   });
+
+  it("routes countdown asks to election_countdown, but primary countdowns to the runoff path", () => {
+    expect(detectIntent("How many days until the election?")?.kind).toBe("election_countdown");
+    expect(detectIntent("how long until election day?")?.kind).toBe("election_countdown");
+    expect(detectIntent("days left until the election")?.kind).toBe("election_countdown");
+    // Primary/runoff countdowns must never get the general-election math.
+    expect(detectIntent("How many days until the Texas primary?")).toEqual({
+      kind: "other_election_date",
+      state: "TX",
+    });
+    expect(detectIntent("how many days until the runoff?")?.kind).toBe("needs_scope");
+    // Out-of-cycle years still refuse first.
+    expect(detectIntent("how many days until the 2028 election?")?.kind).toBe("out_of_cycle");
+  });
+});
+
+describe("smalltalk routes deterministically, whole message only", () => {
+  it("greets on bare greetings", () => {
+    for (const q of ["Hi", "hi!", "Hello", "hey there", "HI there", "Good morning", "what's up?", "yo"]) {
+      expect(detectIntent(q), q).toEqual({ kind: "greeting", state: null });
+    }
+  });
+
+  it("acknowledges thanks and goodbyes", () => {
+    for (const q of ["Thanks", "thank you so much!", "thx", "appreciate it"]) {
+      expect(detectIntent(q), q).toEqual({ kind: "thanks", state: null });
+    }
+    for (const q of ["Bye", "goodbye!", "see you later", "take care"]) {
+      expect(detectIntent(q), q).toEqual({ kind: "goodbye", state: null });
+    }
+  });
+
+  it("routes whole-message help asks to the capabilities template", () => {
+    for (const q of ["help", "Help!", "what can you do?", "What can I ask?", "how does this work?", "who are you?"]) {
+      expect(detectIntent(q), q).toEqual({ kind: "help", state: null });
+    }
+    // Embedded "help" is a real question, not a help ask.
+    expect(detectIntent("help me find my polling place")?.kind).toBe("where_to_vote");
+  });
+
+  it("never eats a real question that starts with a greeting", () => {
+    expect(detectIntent("hi, who is running in GA?")).toBeNull();
+    expect(detectIntent("HI there, when is the election?")?.kind).toBe("election_date");
+    expect(detectIntent("hello, do I need voter ID to vote?")?.kind).toBe("voter_id");
+    // "thanks for nothing, when is the runoff?" still time-sensitive.
+    expect(detectIntent("thanks, when is the runoff?")?.kind).toBe("needs_scope");
+  });
 });
 
 describe("detectStateInQuestion", () => {

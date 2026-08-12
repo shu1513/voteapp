@@ -6,6 +6,7 @@
 
 import type { Pool } from "pg";
 
+import { suggestClosestCandidates } from "./didYouMean.js";
 import { detectIntent, detectStateInQuestion, type IntentMatch } from "./intents.js";
 import { normalizeQuestion } from "./redact.js";
 import {
@@ -88,6 +89,31 @@ const POLICY_REFUSAL_ANSWER =
 // cohorts. Deterministic on purpose (BEHAVIOR.md rule 6).
 const GENERAL_ELECTION_DATE_ANSWER =
   "The November 2026 general election is on Tuesday, November 3, 2026. Some places also have earlier primaries, runoffs, or special elections — check the election pages for exact dates.";
+
+// Countdown to the same fixed date — pure date math, no data. Election day is
+// a LOCAL calendar date and the server (or its clock) can sit in any
+// timezone, so "today" is anchored to US Eastern (UTC-5; DST has ended by
+// election week): without the client's timezone that is the least-wrong
+// boundary — exact for the earliest US clocks, off only for a few
+// late-evening hours further west. Uses only UTC accessors so the answer
+// never depends on the server's own timezone.
+const ELECTION_DAY_UTC = Date.UTC(2026, 10, 3);
+const EASTERN_UTC_OFFSET_MS = 5 * 3_600_000;
+export function electionCountdownAnswer(now: Date = new Date()): string {
+  const eastern = new Date(now.getTime() - EASTERN_UTC_OFFSET_MS);
+  const todayUtc = Date.UTC(eastern.getUTCFullYear(), eastern.getUTCMonth(), eastern.getUTCDate());
+  const days = Math.round((ELECTION_DAY_UTC - todayUtc) / 86_400_000);
+  if (days > 1) {
+    return `The November 2026 general election is on Tuesday, November 3, 2026 — ${days} days from today.`;
+  }
+  if (days === 1) {
+    return "The November 2026 general election is tomorrow: Tuesday, November 3, 2026.";
+  }
+  if (days === 0) {
+    return "The November 2026 general election is today, Tuesday, November 3, 2026!";
+  }
+  return "The November 2026 general election was on Tuesday, November 3, 2026.";
+}
 
 type StateLogisticsRow = {
   state_abbreviation: string;
@@ -240,6 +266,46 @@ function needsScopeClarification(question: string, retrieval: RetrievalResult, s
 }
 
 async function renderIntentAnswer(db: Pool, intent: IntentMatch): Promise<AskResponse> {
+  // Smalltalk: friendly fixed lines, no data, no cards (BEHAVIOR-neutral —
+  // nothing here asserts a fact). Checked before the state-resources fetch.
+  if (intent.kind === "greeting") {
+    return {
+      outcome: "template",
+      answer:
+        "Hi! Ask me about the November 2026 elections we cover — candidates, their records, campaign finance, elections, and ballot measures.",
+      results: [],
+      data_current_as_of: null,
+    };
+  }
+  if (intent.kind === "thanks") {
+    return { outcome: "template", answer: "My pleasure — ask any time.", results: [], data_current_as_of: null };
+  }
+  if (intent.kind === "goodbye") {
+    return {
+      outcome: "template",
+      answer: "Goodbye! Come back whenever you have election questions.",
+      results: [],
+      data_current_as_of: null,
+    };
+  }
+  if (intent.kind === "help") {
+    return {
+      outcome: "template",
+      answer:
+        'I answer questions from our November 2026 election data: who\'s running, candidates\' backgrounds and records, campaign finance, elections, and ballot measures. I can also link your state\'s official pages for registering and voting. Try: "Who is running for US Senate in Georgia?"',
+      results: [BALLOT_CARD],
+      data_current_as_of: null,
+    };
+  }
+  if (intent.kind === "election_countdown") {
+    return {
+      outcome: "template",
+      answer: electionCountdownAnswer(),
+      results: [BALLOT_CARD],
+      data_current_as_of: null,
+    };
+  }
+
   const resources = intent.state ? await loadStateLogistics(db, intent.state) : null;
 
   if (intent.kind === "policy_refusal") {
@@ -594,6 +660,25 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
       // 5. Answerability gate on raw scores; a deictic question about the
       // viewed page is answerable on the page's own chunks.
       if (!isAnswerable(retrieval) && !retrieval.contextMatched) {
+        // Before flatly refusing: a question span close to a matched
+        // candidate's WHOLE name is a probable typo ("Jon Osoff") — offer
+        // the closest names instead (didYouMean.ts filters the surname-only
+        // noise that must keep refusing).
+        const suggestions = suggestClosestCandidates(retrievalText, retrieval.entityMatches);
+        if (suggestions.length > 0) {
+          return finish(
+            {
+              outcome: "clarify",
+              answer: `I couldn't find that exact name. Did you mean: ${suggestions
+                .map(describeEntityOption)
+                .join("; ")}?`,
+              results: [],
+              data_current_as_of: generation.activatedAt,
+            },
+            "clarify",
+            scopeState
+          );
+        }
         return finish(
           { outcome: "refuse_no_data", answer: REFUSAL_NO_DATA_ANSWER, results: [], data_current_as_of: null },
           "refused",
