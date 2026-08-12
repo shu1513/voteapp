@@ -139,34 +139,47 @@ export async function upsertDenverFinanceLink(input: {
   const linkSource = link.linkSource ?? "manual";
   const filerId = filerIdText(link.filerId);
   const committeeEntityIds = entityIds(link.committeeEntityIds);
-  // Manual protection applies to EVERY automatic write, not only active ones:
-  // a needs_review upsert with the manual link's filer_id would otherwise hit
-  // ON CONFLICT and rewrite the operator's row to searchlight/needs_review.
+  // Manual protection applies to EVERY automatic write, not only active
+  // upserts, and probes manual rows of ANY status: an operator-disabled
+  // (inactive/needs_review) manual link with this filer id is the
+  // ON CONFLICT target row, and the upsert would otherwise silently
+  // resurrect it as active/searchlight.
   if (linkSource === "searchlight") {
-    const manual = await input.db.query<{ id: string; filer_id: string }>(
-      `SELECT id::text,filer_id FROM public.denver_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_status='active' AND link_source='manual' LIMIT 1`,
+    const manual = await input.db.query<{
+      id: string;
+      filer_id: string;
+      link_status: string;
+    }>(
+      `SELECT id::text,filer_id,link_status FROM public.denver_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_source='manual'`,
       [link.candidateId, link.electionId],
     );
-    if (manual.rows.length) {
-      if (manual.rows[0]!.filer_id === filerId) {
-        // An exact filer match IS a SearchLight verification of the manual
-        // link: refresh the mutable entity ids (API facts the row filter
-        // depends on) and advance last_verified_at — and nothing else, the
-        // row stays the operator's.
-        await input.db.query(
-          `UPDATE public.denver_candidate_finance_links SET committee_entity_ids=$2::int[],last_verified_at=COALESCE($3::timestamptz,last_verified_at) WHERE id=$1::uuid`,
-          [
-            manual.rows[0]!.id,
-            committeeEntityIds,
-            link.lastVerifiedAt?.toISOString() ?? null,
-          ],
+    const sameFiler = manual.rows.find((row) => row.filer_id === filerId);
+    if (sameFiler) {
+      if (sameFiler.link_status !== "active")
+        throw new Error(
+          "Denver automatic finance link matches an operator-disabled manual link",
         );
-        return { linkId: manual.rows[0]!.id };
-      }
+      // An exact filer match IS a SearchLight verification of the manual
+      // link: refresh the mutable entity ids (API facts the row filter
+      // depends on) and advance last_verified_at — and nothing else, the
+      // row stays the operator's.
+      await input.db.query(
+        `UPDATE public.denver_candidate_finance_links SET committee_entity_ids=$2::int[],last_verified_at=COALESCE($3::timestamptz,last_verified_at) WHERE id=$1::uuid`,
+        [
+          sameFiler.id,
+          committeeEntityIds,
+          link.lastVerifiedAt?.toISOString() ?? null,
+        ],
+      );
+      return { linkId: sameFiler.id };
+    }
+    // A disabled manual link with a DIFFERENT filer id does not block a new
+    // automatic identity — the operator disabled that association, not the
+    // candidate. Only an active manual link conflicts.
+    if (manual.rows.some((row) => row.link_status === "active"))
       throw new Error(
         "Denver automatic finance link conflicts with protected manual link",
       );
-    }
   }
   if (linkStatus === "active")
     await input.db.query(

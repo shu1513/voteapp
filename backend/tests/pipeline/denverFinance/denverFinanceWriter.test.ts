@@ -200,7 +200,7 @@ describe("Denver finance writer", () => {
   it("reuses a matching protected manual link, refreshing entity ids and last_verified_at", async () => {
     const query = queryMock((sql) =>
       sql.startsWith("SELECT id::text,filer_id")
-        ? { rows: [{ id: "manual-1", filer_id: "658" }] }
+        ? { rows: [{ id: "manual-1", filer_id: "658", link_status: "active" }] }
         : null,
     );
     const verifiedAt = new Date("2026-08-12T00:00:00Z");
@@ -226,7 +226,7 @@ describe("Denver finance writer", () => {
   it("errors when an automatic link conflicts with a protected manual link", async () => {
     const query = queryMock((sql) =>
       sql.startsWith("SELECT id::text,filer_id")
-        ? { rows: [{ id: "manual-1", filer_id: "517" }] }
+        ? { rows: [{ id: "manual-1", filer_id: "517", link_status: "active" }] }
         : null,
     );
     await expect(
@@ -235,6 +235,58 @@ describe("Denver finance writer", () => {
         link: { ...link, linkSource: "searchlight" },
       }),
     ).rejects.toThrow(/conflicts with protected manual link/);
+  });
+
+  it("never resurrects an operator-disabled manual link with the same filer id", async () => {
+    // The disabled manual row is the ON CONFLICT target — without the
+    // any-status probe the upsert would silently flip it back to
+    // active/searchlight.
+    for (const linkStatus of ["inactive", "needs_review"]) {
+      const query = queryMock((sql) =>
+        sql.startsWith("SELECT id::text,filer_id")
+          ? {
+              rows: [
+                { id: "manual-1", filer_id: "658", link_status: linkStatus },
+              ],
+            }
+          : null,
+      );
+      await expect(
+        upsertDenverFinanceLink({
+          db: { query } as never,
+          link: { ...link, linkSource: "searchlight" },
+        }),
+      ).rejects.toThrow(/matches an operator-disabled manual link/);
+      const sql = query.mock.calls.map((call) => String(call[0]));
+      expect(sql.some((s) => s.startsWith("INSERT INTO"))).toBe(false);
+      expect(sql.some((s) => s.includes("SET committee_entity_ids"))).toBe(
+        false,
+      );
+    }
+  });
+
+  it("allows a new automatic identity past a disabled manual link with a different filer id", async () => {
+    // The operator disabled that association, not the candidate.
+    const query = queryMock((sql) =>
+      sql.startsWith("SELECT id::text,filer_id")
+        ? {
+            rows: [
+              { id: "manual-1", filer_id: "517", link_status: "inactive" },
+            ],
+          }
+        : null,
+    );
+    const result = await upsertDenverFinanceLink({
+      db: { query } as never,
+      link: { ...link, linkSource: "searchlight" },
+    });
+    expect(result.linkId).toBe("link-1");
+    const sql = query.mock.calls.map((call) => String(call[0]));
+    expect(
+      sql.some((s) =>
+        s.startsWith("INSERT INTO public.denver_candidate_finance_links"),
+      ),
+    ).toBe(true);
   });
 
   it("deactivates other automatic links before an active upsert", async () => {
