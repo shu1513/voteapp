@@ -186,8 +186,15 @@ export async function upsertDenverFinanceLink(input: {
       `UPDATE public.denver_candidate_finance_links SET link_status='inactive' WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND filer_id<>$3 AND link_status='active' AND link_source<>'manual'`,
       [link.candidateId, link.electionId, filerId],
     );
+  // The DO UPDATE's WHERE is the DB-enforced backstop for the probe above:
+  // the probe and this upsert are separate statements, so a manual row
+  // created or disabled in between would otherwise be rewritten by an
+  // unconditional DO UPDATE. Manual writes may update manual rows; an
+  // automatic write against a manual target updates nothing, RETURNING
+  // comes back empty, and the throw below aborts the write (same guard the
+  // San José/San Diego writers carry).
   const result = await input.db.query<{ id: string }>(
-    `INSERT INTO public.denver_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,office_name,district,filer_id,committee_entity_ids,committee_name,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8::int[],$9,$10,$11,$12,$13::timestamptz) ON CONFLICT (candidate_id,election_id,filer_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,office_name=EXCLUDED.office_name,district=EXCLUDED.district,committee_entity_ids=EXCLUDED.committee_entity_ids,committee_name=EXCLUDED.committee_name,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at RETURNING id::text`,
+    `INSERT INTO public.denver_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,office_name,district,filer_id,committee_entity_ids,committee_name,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8::int[],$9,$10,$11,$12,$13::timestamptz) ON CONFLICT (candidate_id,election_id,filer_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,office_name=EXCLUDED.office_name,district=EXCLUDED.district,committee_entity_ids=EXCLUDED.committee_entity_ids,committee_name=EXCLUDED.committee_name,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at WHERE denver_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual' RETURNING id::text`,
     [
       text(link.candidateId, "candidate id"),
       text(link.electionId, "election id"),
@@ -205,7 +212,9 @@ export async function upsertDenverFinanceLink(input: {
     ],
   );
   if (!result.rows[0]?.id)
-    throw new Error("Denver finance link upsert returned no id");
+    throw new Error(
+      "Denver finance link upsert wrote no row — blocked by a concurrent protected manual link",
+    );
   return { linkId: result.rows[0].id };
 }
 

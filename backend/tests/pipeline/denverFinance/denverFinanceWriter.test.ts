@@ -104,7 +104,29 @@ describe("Denver finance writer", () => {
     );
     expect(linkCall?.[1]).toEqual(expect.arrayContaining(["658"]));
     expect(linkCall?.[1]).toEqual(expect.arrayContaining([[641, 807]]));
+    // The DB-enforced race backstop: an automatic write must never rewrite a
+    // manual row the pre-probe did not see.
+    expect(String(linkCall?.[0])).toContain(
+      "WHERE denver_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual'",
+    );
     expect(release).toHaveBeenCalled();
+  });
+
+  it("throws when the guarded upsert writes no row (concurrent manual link)", async () => {
+    // A manual link created between the probe and the INSERT makes the
+    // DO UPDATE's WHERE fail: RETURNING is empty and the write must abort
+    // instead of silently converting the operator's row.
+    const query = queryMock((sql) =>
+      sql.startsWith("INSERT INTO public.denver_candidate_finance_links")
+        ? { rows: [] }
+        : null,
+    );
+    await expect(
+      upsertDenverFinanceLink({
+        db: { query } as never,
+        link: { ...link, linkSource: "searchlight" },
+      }),
+    ).rejects.toThrow(/blocked by a concurrent protected manual link/);
   });
 
   it("rejects a negative flow and rolls the snapshot back", async () => {

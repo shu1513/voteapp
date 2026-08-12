@@ -20,6 +20,7 @@ import {
   isDenverFinanceEligibleElection,
   parseDenverAtLargeSeatLetter,
   DENVER_CITY_GEOID,
+  DENVER_FINANCE_ELIGIBLE_OFFICE_NAMES,
 } from "./denverFinanceEligibleOffices.js";
 import {
   normalizeDenverTextKey,
@@ -45,13 +46,18 @@ export type DenverFinanceAutoLinkCandidate = {
   candidateId: string;
   electionId: string;
   candidateName: string;
+  /** ISO election date ("2026-11-03") — auto-link binds it to the cycle. */
+  electionDate: string;
   electionYear: number;
   officeName: string;
   /** At-large seat letter from the ballot title; null fails closed. */
   atLargeSeatLetter: string | null;
 };
 
-const DENVER_ELECTION_PREDICATE = `district.state='CO' AND district.district_type='place' AND district.geoid_compact='${DENVER_CITY_GEOID}' AND office.scope='place'`;
+// The office-name narrowing lives in SQL so ineligible Denver place races
+// (Mayor, Clerk & Recorder, district council seats…) cannot consume the
+// LIMIT before the exact TS gate runs; the seat-letter rule stays in TS.
+const DENVER_ELECTION_PREDICATE = `district.state='CO' AND district.district_type='place' AND district.geoid_compact='${DENVER_CITY_GEOID}' AND office.scope='place' AND office.canonical_name IN (${DENVER_FINANCE_ELIGIBLE_OFFICE_NAMES.map((name) => `'${name}'`).join(",")})`;
 
 export async function listDenverCandidateElectionsMissingFinanceLinks(
   db: Queryable,
@@ -105,6 +111,7 @@ export async function listDenverCandidateElectionsMissingFinanceLinks(
       candidateId: row.candidate_id,
       electionId: row.election_id,
       candidateName: row.candidate_name,
+      electionDate: row.election_date.slice(0, 10),
       electionYear: Number(row.election_date.slice(0, 4)),
       officeName: row.office_name.trim(),
       atLargeSeatLetter: parseDenverAtLargeSeatLetter(row.official_ballot_title),
@@ -178,16 +185,39 @@ async function listElectionRosterCandidates(
  * filer's committee entity ids); ambiguity surfaces as needs_review and
  * no-match as no_committee — neither writes anything, so the candidate stays
  * in the manual-review queue.
+ *
+ * electionDate binds the SearchLight cycle to its election: eligibility is
+ * structural (any Denver at-large council contest), so without the date a
+ * repeat candidate on a future at-large election would resolve against this
+ * cycle's registrants and inherit the wrong cycle's committee. Candidates on
+ * a different date are skipped (no result row — they are another cycle's
+ * work), and a registrant record whose committee details date the cycle
+ * differently fails the whole run: that is a wrong cycle-id/date pairing,
+ * not a per-candidate condition.
  */
 export async function autoLinkMissingDenverCandidateFinanceLinks(input: {
   db: Queryable;
   now: Date;
   electionCycleId: number;
+  /** ISO date of the cycle's election, e.g. DENVER_2026_VACANCY_ELECTION_DATE. */
+  electionDate: string;
   candidates: readonly DenverFinanceAutoLinkCandidate[];
   registrants: readonly DenverRegistrantRecord[];
 }): Promise<DenverFinanceAutoLinkResult[]> {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(input.electionDate))
+    throw new Error(
+      `Denver auto-link election date must be an ISO date, got "${input.electionDate}"`,
+    );
+  for (const record of input.registrants) {
+    const detailsDate = record.details.electionDate;
+    if (detailsDate && !detailsDate.startsWith(input.electionDate))
+      throw new Error(
+        `Denver cycle ${input.electionCycleId} registrant filer ${record.registrant.filerId} dates the election ${detailsDate}, not ${input.electionDate} — wrong cycle/date pairing`,
+      );
+  }
   const byElection = new Map<string, DenverFinanceAutoLinkCandidate[]>();
   for (const candidate of input.candidates) {
+    if (candidate.electionDate !== input.electionDate) continue;
     const group = byElection.get(candidate.electionId) ?? [];
     group.push(candidate);
     byElection.set(candidate.electionId, group);

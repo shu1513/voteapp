@@ -16,6 +16,15 @@ export const DENVER_CITY_GEOID = "0820000";
 /** SearchLight cycle 36 = 2026 City Council Vacancy Election (2026-11-03). */
 export const DENVER_2026_VACANCY_ELECTION_CYCLE_ID = 36;
 
+/**
+ * The cycle-36 election date. Auto-link binds a SearchLight cycle to its
+ * election date: eligibility alone would accept any Denver at-large council
+ * election (a future 2027 at-large contest included), and resolving one
+ * against another cycle's registrants would hand a repeat candidate the
+ * wrong cycle's committee.
+ */
+export const DENVER_2026_VACANCY_ELECTION_DATE = "2026-11-03";
+
 export const DENVER_FINANCE_ELIGIBLE_OFFICE_NAMES = [
   "City Council Member",
 ] as const;

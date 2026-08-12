@@ -63,6 +63,7 @@ const browne: DenverFinanceAutoLinkCandidate = {
   candidateId: "c1",
   electionId: "e1",
   candidateName: "Jake Browne",
+  electionDate: "2026-11-03",
   electionYear: 2026,
   officeName: "City Council Member",
   atLargeSeatLetter: "B",
@@ -117,6 +118,7 @@ describe("listDenverCandidateElectionsMissingFinanceLinks", () => {
         candidateId: "c1",
         electionId: "e1",
         candidateName: "Jake Browne",
+        electionDate: "2026-11-03",
         electionYear: 2026,
         officeName: "City Council Member",
         atLargeSeatLetter: "B",
@@ -125,6 +127,9 @@ describe("listDenverCandidateElectionsMissingFinanceLinks", () => {
     const sql = String(query.mock.calls[0]?.[0]);
     expect(sql).toContain("geoid_compact='0820000'");
     expect(sql).toContain("district.state='CO'");
+    // Office narrowing in SQL: ineligible Denver place races (Mayor, Clerk,
+    // district seats…) must not consume the LIMIT before the TS gate runs.
+    expect(sql).toContain("office.canonical_name IN ('City Council Member')");
     expect(sql).toContain(
       "NOT EXISTS (SELECT 1 FROM public.denver_candidate_finance_links",
     );
@@ -144,6 +149,7 @@ describe("autoLinkMissingDenverCandidateFinanceLinks", () => {
       db: { query } as never,
       now: new Date("2026-08-12T00:00:00Z"),
       electionCycleId: CYCLE,
+      electionDate: "2026-11-03",
       candidates: [browne],
       registrants: [browneRecord],
     });
@@ -169,12 +175,58 @@ describe("autoLinkMissingDenverCandidateFinanceLinks", () => {
     );
   });
 
+  it("skips candidates whose election date is not the cycle's (cross-cycle guard)", async () => {
+    // A hypothetical 2027 at-large election passes structural eligibility;
+    // resolving it against cycle-36 registrants would hand a repeat candidate
+    // the 2026 committee. Such candidates are another cycle's work: no
+    // result row, no write.
+    const query = linkWriterQueryMock();
+    const results = await autoLinkMissingDenverCandidateFinanceLinks({
+      db: { query } as never,
+      now: new Date("2026-08-12T00:00:00Z"),
+      electionCycleId: CYCLE,
+      electionDate: "2026-11-03",
+      candidates: [
+        { ...browne, candidateId: "c2027", electionId: "e2027", electionDate: "2027-04-06", electionYear: 2027 },
+        browne,
+      ],
+      registrants: [browneRecord],
+    });
+    expect(results).toEqual([
+      { candidateId: "c1", electionId: "e1", status: "linked" },
+    ]);
+    const inserts = query.mock.calls.filter((call) =>
+      String(call[0]).startsWith("INSERT INTO"),
+    );
+    expect(inserts).toHaveLength(1);
+  });
+
+  it("fails the run when a registrant record dates the cycle differently", async () => {
+    // A wrong cycle-id/date pairing is a caller bug, not a per-candidate
+    // condition — the whole run aborts before any resolution.
+    const wrongDate = {
+      ...browneRecord,
+      details: { ...browneRecord.details, electionDate: "2027-04-06T06:00:00" },
+    };
+    await expect(
+      autoLinkMissingDenverCandidateFinanceLinks({
+        db: { query: linkWriterQueryMock() } as never,
+        now: new Date("2026-08-12T00:00:00Z"),
+        electionCycleId: CYCLE,
+        electionDate: "2026-11-03",
+        candidates: [browne],
+        registrants: [wrongDate],
+      }),
+    ).rejects.toThrow(/wrong cycle\/date pairing/);
+  });
+
   it("reports ambiguity as needs_review and writes nothing (duplicate names)", async () => {
     const query = linkWriterQueryMock();
     const results = await autoLinkMissingDenverCandidateFinanceLinks({
       db: { query } as never,
       now: new Date("2026-08-12T00:00:00Z"),
       electionCycleId: CYCLE,
+      electionDate: "2026-11-03",
       candidates: [{ ...browne, candidateName: "Monica Martinez" }],
       registrants: [
         registrantRecord("Monica Martinez", 1322, 806, "Martinez for Denver"),
@@ -196,6 +248,7 @@ describe("autoLinkMissingDenverCandidateFinanceLinks", () => {
       db: { query } as never,
       now: new Date("2026-08-12T00:00:00Z"),
       electionCycleId: CYCLE,
+      electionDate: "2026-11-03",
       candidates: [browne],
       registrants: [],
     });
@@ -227,6 +280,7 @@ describe("autoLinkMissingDenverCandidateFinanceLinks", () => {
       db: { query } as never,
       now: new Date("2026-08-12T00:00:00Z"),
       electionCycleId: CYCLE,
+      electionDate: "2026-11-03",
       candidates: [{ ...browne, candidateId: "cB" }],
       registrants: [browneRecord],
     });
@@ -262,6 +316,7 @@ describe("autoLinkMissingDenverCandidateFinanceLinks", () => {
       db: { query } as never,
       now: new Date("2026-08-12T00:00:00Z"),
       electionCycleId: CYCLE,
+      electionDate: "2026-11-03",
       candidates: [browne],
       registrants: [browneRecord],
     });
