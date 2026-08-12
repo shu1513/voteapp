@@ -18,17 +18,17 @@ Either way, retrieval and parsing stay separate: every fetched body lands in an 
 
 ### Primary: Contributions & Expenditures search (`CF12_ContrExpend.aspx`)
 
-ASP.NET WebForms, `__VIEWSTATE` postbacks. Year floor **2002**. Results are **session-bound**: the search POST response emits `window.open('CF12_ContrExpendResults.aspx','_blank')` and the results page must be fetched in the same session. Verified live (Year=2026, last name "Smith"): 833 full-disclosure rows + 4 separate 48-hour (>$5,000) rows — counts are point-in-time observations, never asserted contracts. Columns:
+ASP.NET WebForms, `__VIEWSTATE` postbacks. Year floor **2002**. Results are **session-bound**: the search POST response emits `window.open('CF12_ContrExpendResults.aspx','_blank')` and the results page must be fetched in the same session. Verified live (Year=2026, last name "Smith"): 833 full-disclosure rows + 4 separate 48-hour (>$5,000) rows — counts are point-in-time observations, never asserted contracts. The on-screen grid merges some fields for display; **the Excel export is the authoritative shape (downloaded and pinned by the Phase 0 probe, 2026-08-12)** — an HTML `<table>` served as `.xls` (`application/vnd.ms-excel`, `Contribution_Search.xls`), 18 columns:
 
 ```text
-MECID | Committee Name | Report | Contributor Name/Address | Employer/Occupation | Contribution Date | Contribution Amount | Monetary/In-Kind | Committee (Y/N flag)
+MECID | Committee | Report | Contributor-Committee | Contributor-Company | Contributor-Last Name | Contributor-First Name | Address1 | Address2 | City | State | Zip | Employer | Occupation | Contribution Date | Contribution Amount | Monetary/In-Kind | Committee (Y/N flag)
 ```
 
 - `MECID` on every row — stable committee identity (e.g. `A222073`), the join key for everything.
-- `Employer/Occupation` is **one combined display field**, formatting filer-dependent: `Retired/Retired`, `Self Employed/Farmer`, bare `Director`, `Unknown`, reversed `Real estate/Win real estate team LLC`. Store verbatim; never auto-split on `/`. (MEC's electronic-filing import spec has separate employer and occupation columns, so the Excel export may split them — Phase 0 decides; see hard fact 1.)
+- **`Employer` and `Occupation` are SEPARATE export columns** (the portal grid shows a combined `Employer/Occupation` display value, but parsers read the export, never the grid). They populate independently — the 2026 sample has 169 employer-only and 21 occupation-only rows. Settles hard fact 1: publish the occupation column. Store both verbatim; never derive one from the other.
 - `AMENDED <report name>` rows coexist with original-report rows in the same result set — naive summing double-counts.
 - Sub-$100 rows appear (aggregate-triggered or voluntary itemization) — never filter by transaction size.
-- **Export Results to Excel** button present (`ctl00$ContentPlaceHolder$btnExport`). Not yet downloaded; Phase 0 inspects the actual bytes (real XLSX vs CSV vs HTML-disguised-as-`.xls` — common with WebForms exports) before any parser is written.
+- **Export Results to Excel** button = `ctl00$ContentPlaceHolder$btnExport` (results-popup control prefix). Export rows matched the Full Disclosure tab count exactly at 833 (2026), 2,197 (2024), and 96 (2002) — no silent cap observed through ~2,200 rows; larger sizes are enforced by per-committee report-cover reconciliation, not the probe.
 
 ### Primary: Committee Expenditures for Candidates search (`CF_SearchDirExp.aspx`)
 
@@ -39,8 +39,8 @@ Candidate Name and Address | Office Sought | Support/Oppose | Date | Amount | Re
 ```
 
 - Explicit `Support`/`Oppose` stance per row (statutory basis § 130.041.1(7)); observed both stances across state senate, house, county, municipal, and school-board targets, including 24 Hour Expenditure Report rows (Show Me Promise, ABC PAC, Taxpayers Unlimited).
-- The visible grid does not show the spender's MECID, but the grid's Reporting Committee sort control is internally named `lbtnMECID` (server sorts by it) and the committee-name link resolves the profile — the Excel export very likely carries MECID; Phase 0 confirms.
-- **Export Results to Excel** button present.
+- **The Excel export carries NO MECID column (probe-confirmed 2026-08-12)** — 7 columns exactly as above, `Reporting Committee` is a name string. Spender identity is resolved deterministically instead: the grid's committee-name link postback (`__EVENTTARGET=…grvExpenditures$ctlNN$lbtnCommittee`) answers **`302 → CommInfo.aspx?mecid=A######`** — the Location header IS the MECID, no name matching. Export rows matched "1718 records found" exactly.
+- **Export Results to Excel** button present (search-page control prefix, same HTML-as-`.xls` format).
 
 ### Committee Info page (committee profile — resolves everything)
 
@@ -103,7 +103,7 @@ Direct breakdowns: `contribution_size` always; `occupation` per hard fact 1's de
 
 - **Phase 0 — probe (no schema, no publication).** `npm run missouri-candidates:finance:probe` (`probeMissouriCandidateFinance.ts`) on the `missouriMecClient` session layer. **Acquisition gates 1, 2, 6, 7 PASS live 2026-08-12 (14/14 checks green); the report-cover semantic gates 3–5 remain.** Hard gates:
   1. **DONE.** Acquisition proven end-to-end on `www.mec.mo.gov` with the plain client: contribution search POST → session popup → results → Excel export, outside-spending search + export, the committee-link `302 → CommInfo.aspx?mecid=…` spender-identity resolution, and the election-search office cascade. WAF finding: Incapsula injects a `_Incapsula_Resource` telemetry script into *every* real page, so challenge detection is shape-based (tiny stub lacking `__VIEWSTATE`, or an "Incapsula incident" block page) — unit-tested in `missouriMecClient.test.ts`, not probed live against the bare host (one bare-host hit flags the IP for the next www request). CDP fallback stays a contingency, unused.
-  2. **DONE.** Export bytes + schema pinned: both exports are HTML-`<table>`-as-`.xls` (`application/vnd.ms-excel`). Contribution export = 18 columns with **SEPARATE `Employer` and `Occupation`** (settles hard fact 1 → publish occupation). Outside export = 7 columns, **no MECID** (resolver must use the committee-link postback). Row counts matched the grid exactly for a large (2026: 833) and small (2002: 96) contribution query and the outside query (1,718) — no silent cap.
+  2. **DONE.** Export bytes + schema pinned: both exports are HTML-`<table>`-as-`.xls` (`application/vnd.ms-excel`). Contribution export = 18 columns with **SEPARATE `Employer` and `Occupation`** (settles hard fact 1 → publish occupation). Outside export = 7 columns, **no MECID** (resolver must use the committee-link postback). Row counts matched the grid exactly for the 2026 (833), 2024 (2,197 — past the common 1,000/2,000 caps), and 2002 (96) contribution queries and the outside query (1,718) — no silent cap observed through ~2,200 rows; larger sizes are enforced by per-committee report-cover reconciliation (gates 3–5 / Phase 3).
   3. **REMAINING.** Report-inventory semantics: postback `lbtnReports` on CommInfo yields the report list + scanned `DMS/DOC/V/{id}` covers. Prove amendment replace-vs-delta, Limited Activity → next-Full-Disclosure carry-forward, and one committee's transaction rows reconciling to its report-cover totals to the cent.
   4. **REMAINING.** Timely-filing taxonomy pinned (fact 3), including whether a late-contribution/loan 24-hour variant exists, using Show Me Promise's 24-hour rows vs its July Quarterly.
   5. **REMAINING.** Totals mapping (fact 4) written down field-by-field against two real report covers (one statewide/legislative, one local).

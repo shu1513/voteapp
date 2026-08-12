@@ -108,10 +108,17 @@ const HTML_ENTITY_MAP: Record<string, string> = {
 
 function decodeHtmlAttribute(value: string): string {
   // WebForms attribute-encodes state values (base64 '+' arrives as &#43;).
-  return value
-    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex: string) => String.fromCodePoint(Number.parseInt(hex, 16)))
-    .replace(/&#(\d+);/g, (_, code: string) => String.fromCodePoint(Number.parseInt(code, 10)))
-    .replace(/&(?:amp|lt|gt|quot);/g, (entity) => HTML_ENTITY_MAP[entity] ?? entity);
+  // Single pass: chained replaces would double-decode (&#38;lt; must yield
+  // the literal &lt;, not <) and the echoed field would then be wrong.
+  return value.replace(/&(?:#x([0-9a-fA-F]+)|#(\d+)|amp|lt|gt|quot);/g, (entity, hex?: string, decimal?: string) => {
+    if (hex !== undefined) {
+      return String.fromCodePoint(Number.parseInt(hex, 16));
+    }
+    if (decimal !== undefined) {
+      return String.fromCodePoint(Number.parseInt(decimal, 10));
+    }
+    return HTML_ENTITY_MAP[entity] ?? entity;
+  });
 }
 
 /**
@@ -250,6 +257,19 @@ export function createMissouriMecSession(options: MissouriMecSessionOptions = {}
       if (cookie !== null) {
         cookies.set(cookie.name, cookie.value);
       }
+    }
+
+    // Reject a declared oversize before buffering; the post-read check below
+    // still covers responses without a Content-Length. (Streaming with a
+    // running count is deliberately skipped — this is a single-flight client
+    // against one known host, and the limit is drift detection, not DoS
+    // defense.)
+    const declaredLength = Number.parseInt(response.headers.get("content-length") ?? "", 10);
+    if (Number.isSafeInteger(declaredLength) && declaredLength > maxResponseBytes) {
+      throw new MissouriMecClientError(
+        "bad_response",
+        `MEC response declares ${declaredLength} bytes, over the ${maxResponseBytes} limit: ${url}`
+      );
     }
 
     let bytes: ArrayBuffer;

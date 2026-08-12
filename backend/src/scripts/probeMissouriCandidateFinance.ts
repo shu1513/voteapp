@@ -6,20 +6,29 @@
 // changed — re-verify by hand before building on top of it.
 //
 // Gates:
-//   1. WAF pin: the bare host (mec.mo.gov) still serves the Incapsula
-//      challenge to plain HTTP and the client fails closed on it, while the
-//      www host serves full pages. A FAIL on the bare side means the WAF
-//      posture changed — re-verify both hosts before trusting either.
+//   1. WAF pin: the www host serves full pages to the plain client. The
+//      probe deliberately never requests the bare host live (one bare-host
+//      hit flags the IP and the next www request gets challenged);
+//      challenge-stub detection is fixture-tested in
+//      missouriMecClient.test.ts against the captured bare-host response.
 //   2. Contribution acquisition: search POST answers with the
 //      window.open('CF12_ContrExpendResults.aspx') popup signal and the
 //      session-bound results page renders with both report tabs.
 //   3. Contribution export: HTML-table-as-.xls with the pinned 18-column
-//      header; SEPARATE Employer and Occupation columns (hard fact 1 lands
-//      on publishing the occupation column — a FAIL here reopens the
-//      suppression decision); every row's MECID and amount parse.
+//      header; SEPARATE Employer and Occupation columns that demonstrably
+//      populate independently — rows with employer-but-no-occupation AND
+//      rows with occupation-but-no-employer must both exist in the current
+//      cycle (hard fact 1 lands on publishing the occupation column — a
+//      FAIL here reopens the suppression decision); every row's MECID and
+//      amount parse.
 //   4. No silent export cap: export data rows equal the Full Disclosure tab
-//      count for a large query (2026) and a second, historical query (2002,
-//      year floor — stable data). Counts are observations, never contracts.
+//      count for the current cycle (2026), a larger multi-thousand-row
+//      query (2024 — 2,197 rows live, past the common 1,000/2,000 caps),
+//      and a historical query (2002, year floor — stable data). Counts are
+//      observations, never contracts. Caps above ~2,200 rows stay unproven
+//      here; the per-committee cent reconciliation against report covers
+//      (Phase 0 gates 3-5 / Phase 3) is the enforcement that catches any
+//      truncation on the queries production actually runs.
 //   5. Outside-spending acquisition: inline results with a records-found
 //      count, export rows equal it exactly, stance values are only
 //      Support/Oppose, and the export still has NO MECID column (a FAIL
@@ -31,8 +40,9 @@
 //      the closed Political Office list (captured verbatim for
 //      missouriFinanceEligibleOffices.ts in a later phase).
 //   8. Committee Info gold set: each pinned committee page echoes its MECID
-//      and yields parseable Election History rows (election date + office +
-//      subdivision) — the auto-link backbone.
+//      and yields parseable Election History rows — date, election type,
+//      office, and political subdivision must all parse with one value per
+//      row (the auto-link backbone; the resolver keys on all four).
 //
 // Artifacts: set MISSOURI_MEC_PROBE_ARTIFACT_DIR to save every fetched body
 // for the report-inventory / totals-mapping analysis (plan gates 3-5).
@@ -40,7 +50,7 @@
 // artifact dir must stay out of git, and this script prints only aggregates,
 // headers, MECIDs, and committee names, never contributor rows.
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -203,10 +213,15 @@ function createArtifactSink(): ArtifactSink {
   if (dir === undefined || dir === "") {
     return () => {};
   }
-  mkdirSync(dir, { recursive: true });
+  // Owner-only modes: artifacts carry contributor street addresses. chmod
+  // as well, since mkdir/write modes only apply when the path is created.
+  mkdirSync(dir, { recursive: true, mode: 0o700 });
+  chmodSync(dir, 0o700);
   console.log(`artifacts -> ${dir} (contains contributor street addresses — keep out of git)`);
   return (name, body) => {
-    writeFileSync(join(dir, name), body);
+    const artifactPath = join(dir, name);
+    writeFileSync(artifactPath, body, { mode: 0o600 });
+    chmodSync(artifactPath, 0o600);
   };
 }
 
@@ -245,7 +260,17 @@ function checkContributionExport(
   exportResponse: MissouriMecResponse,
   fullDisclosureCount: number | null,
   label: string,
-  gates: Gate[]
+  gates: Gate[],
+  options: {
+    /**
+     * Require rows where only Employer is filled AND rows where only
+     * Occupation is filled — proof the columns populate independently, not
+     * just that both headers exist. Demanded of the current-cycle query;
+     * the 2002 sample has zero such rows (early e-filings mirrored one
+     * value into both), so historical queries check row-count fidelity only.
+     */
+    requireIndependentEmployerOccupation: boolean;
+  }
 ): void {
   const body = exportResponse.text();
   const rows = parseHtmlTableRows(body);
@@ -269,14 +294,17 @@ function checkContributionExport(
       `employer-only ${employerOnly}, occupation-only ${occupationOnly}`
   );
 
+  const independencePasses =
+    !options.requireIndependentEmployerOccupation || (employerOnly > 0 && occupationOnly > 0);
   gates.push({
-    name: `${label}: HTML-table .xls with the pinned 18-column header, separate Employer/Occupation`,
+    name: `${label}: HTML-table .xls with the pinned 18-column header, separate Employer/Occupation${options.requireIndependentEmployerOccupation ? " (independently populated)" : ""}`,
     pass:
       (exportResponse.contentType ?? "").includes("application/vnd.ms-excel") &&
       (exportResponse.contentDisposition ?? "").includes("Contribution_Search.xls") &&
       body.trimStart().startsWith("<table") &&
-      header.join("|") === CONTRIBUTION_EXPORT_HEADER.join("|"),
-    detail: `disposition=${exportResponse.contentDisposition}, header ${header.length} cols`,
+      header.join("|") === CONTRIBUTION_EXPORT_HEADER.join("|") &&
+      independencePasses,
+    detail: `disposition=${exportResponse.contentDisposition}, header ${header.length} cols, employer-only ${employerOnly}, occupation-only ${occupationOnly}`,
   });
   gates.push({
     name: `${label}: every row parses (18 cells, MECID shape, currency amount)`,
@@ -333,18 +361,35 @@ async function main(): Promise<void> {
     detail: `popup signal ${large.postBody.includes("window.open('CF12_ContrExpendResults.aspx'") ? "present" : "MISSING"}, tabs (${fullDisclosure2026 ?? "?"} / ${fortyEightHour2026 ?? "?"})`,
   });
 
-  // --- Gates 3+4a: 2026 export schema + cap check. ---
-  checkContributionExport(large.exportResponse, fullDisclosure2026, "contribution export 2026", gates);
+  // --- Gates 3+4a: 2026 export schema + cap check + column independence. ---
+  checkContributionExport(large.exportResponse, fullDisclosure2026, "contribution export 2026", gates, {
+    requireIndependentEmployerOccupation: true,
+  });
 
-  // --- Gate 4b: historical query (2002 = year floor, stable data). ---
-  const small = await runContributionSearch(session, large.postBody, "2002");
+  // --- Gate 4b: multi-thousand-row query (2024 — 2,197 rows live 2026-08-12,
+  // past the common 1,000/2,000 export caps; caps beyond this size are
+  // covered by per-committee report-cover reconciliation, not this probe). ---
+  const bigger = await runContributionSearch(session, large.postBody, "2024");
+  saveArtifact("contribution_results_2024.html", bigger.resultsHtml);
+  saveArtifact("contribution_export_2024.xls.html", bigger.exportResponse.body);
+  checkContributionExport(
+    bigger.exportResponse,
+    parseLabeledCount(bigger.resultsHtml, "Full Disclosure Reports"),
+    "contribution export 2024",
+    gates,
+    { requireIndependentEmployerOccupation: false }
+  );
+
+  // --- Gate 4c: historical query (2002 = year floor, stable data). ---
+  const small = await runContributionSearch(session, bigger.postBody, "2002");
   saveArtifact("contribution_results_2002.html", small.resultsHtml);
   saveArtifact("contribution_export_2002.xls.html", small.exportResponse.body);
   checkContributionExport(
     small.exportResponse,
     parseLabeledCount(small.resultsHtml, "Full Disclosure Reports"),
     "contribution export 2002",
-    gates
+    gates,
+    { requireIndependentEmployerOccupation: false }
   );
 
   // --- Gate 5: outside-spending search + export. ---
@@ -479,13 +524,15 @@ async function main(): Promise<void> {
       );
     }
     gates.push({
-      name: `CommInfo ${gold.mecid}: MECID echoed, election history parses`,
+      name: `CommInfo ${gold.mecid}: MECID echoed, election history parses (date/type/office/subdivision per row)`,
       pass:
         echo === gold.mecid &&
         dates.length > 0 &&
         dates.length === offices.length &&
+        dates.length === types.length &&
+        dates.length === subdivisions.length &&
         dates.every((date) => /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date)),
-      detail: `echo=${echo || "?"}, ${dates.length} election-history rows`,
+      detail: `echo=${echo || "?"}, ${dates.length} rows (types ${types.length}, offices ${offices.length}, subdivisions ${subdivisions.length})`,
     });
   }
 

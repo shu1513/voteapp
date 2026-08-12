@@ -84,6 +84,12 @@ describe("missouriMecClient", () => {
       __VIEWSTATEGENERATOR: "ABCD1234",
       __EVENTVALIDATION: `a"b&c'd`,
     });
+    // Single-pass decoding: &#38;lt; is the literal text "&lt;", not "<" —
+    // a chained decode would double-decode it and corrupt the echoed field.
+    const doubleEncoded = parseMissouriMecHiddenFields(
+      '<input type="hidden" name="__EVENTVALIDATION" value="x&#38;lt;y&#x26;amp;z" />'
+    );
+    expect(doubleEncoded.__EVENTVALIDATION).toBe("x&lt;y&amp;z");
   });
 
   it("builds campaign-finance URLs with optional query", () => {
@@ -195,6 +201,22 @@ describe("missouriMecClient", () => {
     });
     await expect(
       session.get(buildMissouriMecUrl(MISSOURI_MEC_PAGES.contributionSearch))
+    ).rejects.toMatchObject({ code: "bad_response" });
+
+    // A declared Content-Length over the limit is rejected before the body
+    // is buffered at all.
+    const declared = new Response("tiny", {
+      status: 200,
+      headers: { "Content-Type": "text/html", "Content-Length": "999999" },
+    });
+    const declaredFetch = recordingFetch([declared]);
+    const session3 = createMissouriMecSession({
+      fetchImpl: declaredFetch.fetchImpl,
+      sleep: noSleep,
+      maxResponseBytes: 1_000,
+    });
+    await expect(
+      session3.get(buildMissouriMecUrl(MISSOURI_MEC_PAGES.contributionSearch))
     ).rejects.toMatchObject({ code: "bad_response" });
   });
 
