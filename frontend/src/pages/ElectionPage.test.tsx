@@ -1081,7 +1081,7 @@ describe("ElectionPage", () => {
       })
     );
 
-    const measureLink = await screen.findByRole("link", { name: "Read the official measure text (PDF)" });
+    const measureLink = await screen.findByRole("link", { name: "Read the official ballot measure (PDF)" });
     expect(measureLink).toHaveAttribute("href", "https://sos.example.gov/measures/measure-1.pdf");
     // The official URL renders only as the prominent link, not a second source line.
     expect(screen.getByRole("link", { name: "sos.example.gov" })).toHaveAttribute(
@@ -1114,7 +1114,7 @@ describe("ElectionPage", () => {
     // A third-party page must not be presented as the official measure text.
     const link = await screen.findByRole("link", { name: "More about this measure" });
     expect(link).toHaveAttribute("href", "https://ballotpedia.org/Example_Measure_(2026)");
-    expect(screen.queryByRole("link", { name: /official measure text/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /official ballot measure/ })).not.toBeInTheDocument();
   });
 
   it("lists every measure source when there is no official measure URL", async () => {
@@ -1142,7 +1142,7 @@ describe("ElectionPage", () => {
     // gets its own provenance line (the old UI capped this at one).
     expect(await screen.findByRole("link", { name: "sos.example.gov" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "news.example.org" })).toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: /official measure text/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /official ballot measure/ })).not.toBeInTheDocument();
   });
 });
 

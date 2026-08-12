@@ -424,6 +424,20 @@ export function ElectionPage() {
             </div>
           ) : null}
           {measure.summary ? <p className="mt-2 text-sm text-ink">{measure.summary}</p> : null}
+          {measure.official_measure_url ? (
+            <p className="mt-2 text-sm">
+              <a
+                href={measure.official_measure_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-ink underline underline-offset-2 hover:text-ink-soft"
+              >
+                {isGovernmentUrl(measure.official_measure_url)
+                  ? `Read the official ballot measure${isPdfUrl(measure.official_measure_url) ? " (PDF)" : ""}`
+                  : "More about this measure"}
+              </a>
+            </p>
+          ) : null}
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <div className="rounded border border-green-200 bg-green-50 p-3">
               <h3 className="text-sm font-semibold text-green-900">A YES vote means</h3>
@@ -466,20 +480,6 @@ export function ElectionPage() {
             // result predates the per-pass results rows.
             <p className="mt-3 text-sm font-medium">
               Result: <span className={measure.result === "passed" ? "text-green-700" : "text-red-700"}>{measure.result}</span>
-            </p>
-          ) : null}
-          {measure.official_measure_url ? (
-            <p className="mt-3 text-sm">
-              <a
-                href={measure.official_measure_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-rausch-dark underline hover:text-rausch"
-              >
-                {isGovernmentUrl(measure.official_measure_url)
-                  ? `Read the official measure text${isPdfUrl(measure.official_measure_url) ? " (PDF)" : ""}`
-                  : "More about this measure"}
-              </a>
             </p>
           ) : null}
           {[...new Set(measure.source_urls)]
