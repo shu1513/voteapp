@@ -61,6 +61,7 @@ import { loadConnecticutCandidateFinanceSummariesByCandidateElection } from "../
 import { loadColoradoCandidateFinanceSummariesByCandidateElection } from "../coloradoFinance/coloradoBallotLookupFinanceLoader.js";
 import { loadCaliforniaCandidateFinanceSummariesByCandidateElection } from "../californiaFinance/californiaBallotLookupFinanceLoader.js";
 import { loadLosAngelesCandidateFinanceSummariesByCandidateElection } from "../losAngelesCityFinance/losAngelesBallotLookupFinanceLoader.js";
+import { loadSanDiegoCityCandidateFinanceSummariesByCandidateElection } from "../sanDiegoCityFinance/sanDiegoCityBallotLookupFinanceLoader.js";
 import { loadSanFranciscoCandidateFinanceSummariesByCandidateElection } from "../sanFranciscoFinance/sanFranciscoBallotLookupFinanceLoader.js";
 import { loadSanJoseCandidateFinanceSummariesByCandidateElection } from "../sanJoseFinance/sanJoseBallotLookupFinanceLoader.js";
 import {
@@ -881,6 +882,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "CO", load: loadColoradoCandidateFinanceSummariesByCandidateElection },
   { state: "CA", load: loadCaliforniaCandidateFinanceSummariesByCandidateElection },
   { state: "CA", load: loadLosAngelesCandidateFinanceSummariesByCandidateElection },
+  { state: "CA", load: loadSanDiegoCityCandidateFinanceSummariesByCandidateElection },
   { state: "CA", load: loadSanFranciscoCandidateFinanceSummariesByCandidateElection },
   { state: "CA", load: loadSanJoseCandidateFinanceSummariesByCandidateElection },
   { state: "OH", load: loadOhioCandidateFinanceSummariesByCandidateElection },

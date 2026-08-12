@@ -125,6 +125,7 @@
     "san-francisco-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertSanFranciscoCandidateFinanceSyncScheduler.ts",
     "san-francisco-candidates:finance:scheduler:worker": "tsx src/scripts/runSanFranciscoCandidateFinanceSyncSchedulerWorker.ts",
     "san-francisco-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerSanFranciscoCandidateFinanceSync.ts",
+    "san-diego-candidates:finance:sync-due": "tsx src/scripts/syncDueSanDiegoCityCandidateFinance.ts",
     "san-jose-candidates:finance:sync-due": "tsx src/scripts/syncDueSanJoseCandidateFinance.ts",
     "los-angeles-city-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertLosAngelesCityCandidateFinanceSyncScheduler.ts",
     "los-angeles-city-candidates:finance:scheduler:worker": "tsx src/scripts/runLosAngelesCityCandidateFinanceSyncSchedulerWorker.ts",

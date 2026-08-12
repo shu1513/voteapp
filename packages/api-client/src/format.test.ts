@@ -151,6 +151,7 @@ describe("financeSourceLabel", () => {
     expect(financeSourceLabel("NORTH_CAROLINA_SBE")).toBe("North Carolina State Board of Elections");
     expect(financeSourceLabel("GEORGIA_ETHICS")).toBe("Georgia Ethics Commission");
     expect(financeSourceLabel("SAN_FRANCISCO_ETHICS")).toBe("San Francisco Ethics Commission");
+    expect(financeSourceLabel("SAN_DIEGO_CITY_CLERK")).toBe("City of San Diego Office of the City Clerk");
     expect(financeSourceLabel("SAN_JOSE_CITY_CLERK")).toBe("City of San José Office of the City Clerk");
     expect(financeSourceLabel("HOUSTON_CAMPAIGN_FINANCE")).toBe("City of Houston / Texas Ethics Commission");
   });

@@ -193,6 +193,8 @@ services:
         value: "true"
       - key: RHODE_ISLAND_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: SAN_DIEGO_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
       - key: SAN_FRANCISCO_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: SAN_JOSE_CAMPAIGN_FINANCE_ENABLED

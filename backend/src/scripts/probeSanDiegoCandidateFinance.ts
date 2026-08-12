@@ -37,8 +37,11 @@ import { pathToFileURL } from "node:url";
 import {
   getEfileCalWorkbookArtifactCachePaths,
   refreshEfileCalWorkbookArtifactCache,
-  type EfileCalAgencyConfig,
 } from "../pipeline/efileCalFinance/efileCalBulkClient.js";
+import {
+  DEFAULT_SAN_DIEGO_CITY_FINANCE_CACHE_DIR,
+  SAN_DIEGO_CITY_EFILE_AGENCY_CONFIG,
+} from "../pipeline/sanDiegoCityFinance/sanDiegoCityCandidateFinanceSync.js";
 import {
   parseEfileCalWorkbook,
   type EfileCalS496Row,
@@ -56,17 +59,10 @@ import {
   type SanJoseAppCandidate,
 } from "../pipeline/sanJoseFinance/sanJoseCandidateCommitteeResolver.js";
 
-// Phase 1 moves this into the pipeline module; the probe pins it first.
-export const SAN_DIEGO_EFILE_AGENCY_CONFIG: EfileCalAgencyConfig = {
-  agencyKey: "csd",
-  portalBaseUrl: "https://efile.sandiego.gov",
-  // Same S3 host as San José — one vendor bucket, per-agency prefixes
-  // (verified live 2026-08-10).
-  allowedExportHosts: ["efs-efile-campaign-exports.s3.amazonaws.com"],
-};
-
-export const SAN_DIEGO_FINANCE_PROBE_CACHE_DIR =
-  "scratch/san-diego-campaign-finance/efile";
+// The pipeline module owns the pinned vendor config now (Phase 3); the probe
+// reads the same cache directory the sync uses.
+const SAN_DIEGO_EFILE_AGENCY_CONFIG = SAN_DIEGO_CITY_EFILE_AGENCY_CONFIG;
+const SAN_DIEGO_FINANCE_PROBE_CACHE_DIR = DEFAULT_SAN_DIEGO_CITY_FINANCE_CACHE_DIR;
 
 /** November 2026 runoff field, from the City Clerk's official candidate log
  * (sandiego.gov/city-clerk/elections/city/electioninfo, read 2026-08-10). */

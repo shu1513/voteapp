@@ -438,6 +438,24 @@ export function isSanFranciscoCampaignFinanceSyncEnabled(force = false): boolean
   );
 }
 
+export function isSanDiegoCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("SAN_DIEGO_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isSanDiegoCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isSanDiegoCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("SAN_DIEGO_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isSanDiegoCampaignFinanceRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isSanDiegoCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("SAN_DIEGO_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isSanJoseCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("SAN_JOSE_CAMPAIGN_FINANCE_ENABLED", false);
 }
