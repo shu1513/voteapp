@@ -11,6 +11,15 @@
 -- unique key so two id-less "Pending" spenders never collide (live: Working
 -- Families Opposing Richard Bailey files under FPPC id 1491013 AND as
 -- Pending). Prefix sdcity_ avoids the sd_ South Dakota collision.
+--
+-- Two deliberate divergences from 233: outside_coverage_note is a column
+-- from day one (San Diego's outside gaps are per-candidate — vetoed
+-- mislabeled 496 rows, dual-identity quarantines, curated paper-496
+-- supplements — and the shared read contract already carries the field),
+-- and the summaries table has no extra lookup index (the UNIQUE constraint
+-- already indexes the same columns; btree scans satisfy the DESC order).
+-- Constraints whose generated names would exceed Postgres's 63-character
+-- identifier limit are named explicitly.
 
 BEGIN;
 
@@ -35,7 +44,8 @@ CREATE TABLE public.sdcity_candidate_finance_links (
   last_verified_at timestamptz,
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
-  UNIQUE (candidate_id, election_id, fppc_id),
+  CONSTRAINT sdcity_candidate_finance_links_candidate_election_fppc_key
+    UNIQUE (candidate_id, election_id, fppc_id),
   UNIQUE (id, election_year)
 );
 CREATE UNIQUE INDEX sdcity_candidate_finance_links_active_candidate_election_idx
@@ -66,6 +76,10 @@ CREATE TABLE public.sdcity_candidate_finance_summaries (
   -- One sentence naming what the direct totals do NOT cover (shared read
   -- contract direct_coverage_note); null when coverage is complete.
   direct_coverage_note text CHECK (direct_coverage_note IS NULL OR btrim(direct_coverage_note) <> ''),
+  -- Same disclosure for the outside totals (shared read contract
+  -- outside_coverage_note): e-filed S496 ∪ Schedule D only, plus any
+  -- per-candidate veto/quarantine the Phase 3 aggregator reports.
+  outside_coverage_note text CHECK (outside_coverage_note IS NULL OR btrim(outside_coverage_note) <> ''),
   methodology_version text NOT NULL CHECK (btrim(methodology_version) <> ''),
   source_url text CHECK (source_url IS NULL OR btrim(source_url) <> ''),
   reported_through date,
@@ -85,8 +99,6 @@ CREATE TABLE public.sdcity_candidate_finance_summaries (
     ON DELETE CASCADE ON UPDATE CASCADE,
   UNIQUE (link_id, election_year)
 );
-CREATE INDEX sdcity_candidate_finance_summaries_lookup_idx
-  ON public.sdcity_candidate_finance_summaries (link_id, election_year DESC);
 CREATE TRIGGER sdcity_candidate_finance_summaries_set_updated_at
   BEFORE UPDATE ON public.sdcity_candidate_finance_summaries
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
@@ -99,15 +111,19 @@ CREATE TABLE public.sdcity_candidate_finance_direct_breakdowns (
     CHECK (category_type IN ('occupation', 'employer', 'industry', 'contribution_size')),
   category_name text NOT NULL CHECK (btrim(category_name) <> ''),
   amount numeric(16,2) NOT NULL CHECK (amount >= 0),
-  contributor_count integer CHECK (contributor_count IS NULL OR contributor_count >= 0),
+  contributor_count integer
+    CONSTRAINT sdcity_finance_direct_breakdowns_contributor_count_check
+    CHECK (contributor_count IS NULL OR contributor_count >= 0),
   source_url text CHECK (source_url IS NULL OR btrim(source_url) <> ''),
   last_synced_at timestamptz NOT NULL,
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
-  FOREIGN KEY (link_id, election_year)
+  CONSTRAINT sdcity_finance_direct_breakdowns_link_year_fkey
+    FOREIGN KEY (link_id, election_year)
     REFERENCES public.sdcity_candidate_finance_links(id, election_year)
     ON DELETE CASCADE ON UPDATE CASCADE,
-  UNIQUE (link_id, election_year, category_type, category_name)
+  CONSTRAINT sdcity_finance_direct_breakdowns_category_key
+    UNIQUE (link_id, election_year, category_type, category_name)
 );
 CREATE INDEX sdcity_candidate_finance_direct_breakdowns_lookup_idx
   ON public.sdcity_candidate_finance_direct_breakdowns (link_id, election_year DESC, category_type, amount DESC);
@@ -132,10 +148,12 @@ CREATE TABLE public.sdcity_candidate_finance_outside_groups (
   last_synced_at timestamptz NOT NULL,
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now(),
-  FOREIGN KEY (link_id, election_year)
+  CONSTRAINT sdcity_finance_outside_groups_link_year_fkey
+    FOREIGN KEY (link_id, election_year)
     REFERENCES public.sdcity_candidate_finance_links(id, election_year)
     ON DELETE CASCADE ON UPDATE CASCADE,
-  UNIQUE (link_id, election_year, spender_filer_id, spender_name, support_oppose)
+  CONSTRAINT sdcity_finance_outside_groups_spender_key
+    UNIQUE (link_id, election_year, spender_filer_id, spender_name, support_oppose)
 );
 CREATE INDEX sdcity_candidate_finance_outside_groups_lookup_idx
   ON public.sdcity_candidate_finance_outside_groups (link_id, election_year DESC, support_oppose, amount DESC);

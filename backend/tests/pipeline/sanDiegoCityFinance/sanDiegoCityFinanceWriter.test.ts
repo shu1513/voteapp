@@ -40,6 +40,8 @@ const summary = {
   outsideOpposeCents: 0,
   directCoverageNote:
     "Committee activity before 2025 is not covered by the electronic filings.",
+  outsideCoverageNote:
+    "Outside spending combines e-filed Form 496 and Schedule D reports; paper filings are not included.",
   methodologyVersion: "sd-cal-v1",
   sourceUrl: "https://efile.sandiego.gov",
   reportedThrough: "2026-06-30",
@@ -92,6 +94,13 @@ describe("San Diego city finance writer", () => {
     // Cents → exact dollar strings, never floats: raised, spent, cash, debts.
     expect(summaryCall?.[1]).toEqual(
       expect.arrayContaining(["97670.34", "121576.79", "11315.22", "1407.83"]),
+    );
+    // Both coverage notes persist on the summary row.
+    expect(summaryCall?.[1]).toEqual(
+      expect.arrayContaining([
+        summary.directCoverageNote,
+        summary.outsideCoverageNote,
+      ]),
     );
     const outsideCall = query.mock.calls.find((call) =>
       String(call[0]).includes(
@@ -191,6 +200,35 @@ describe("San Diego city finance writer", () => {
       String(call[0]).includes("SET last_verified_at"),
     );
     expect(touch?.[1]).toEqual(["manual-1", verifiedAt.toISOString()]);
+  });
+
+  it("matches a protected manual link on a whitespace-padded FPPC id", async () => {
+    // The trimmed id must drive the manual comparison — a padded input that
+    // matches the stored id is a reuse, never a false conflict.
+    const query = queryMock((sql) =>
+      sql.startsWith("SELECT id::text,fppc_id")
+        ? { rows: [{ id: "manual-1", fppc_id: "1460125" }] }
+        : null,
+    );
+    const result = await upsertSanDiegoCityFinanceLink({
+      db: { query } as never,
+      link: { ...link, fppcId: " 1460125 ", linkSource: "efile_export" },
+    });
+    expect(result.linkId).toBe("manual-1");
+  });
+
+  it("validates inputs before deactivating any existing link", async () => {
+    // Standalone (bare Pool) callers get no transaction: a validation throw
+    // must happen before the deactivate UPDATE, or a bad payload would leave
+    // the candidate with no active link.
+    const query = queryMock();
+    await expect(
+      upsertSanDiegoCityFinanceLink({
+        db: { query } as never,
+        link: { ...link, committeeName: "   " },
+      }),
+    ).rejects.toThrow(/committee name is required/);
+    expect(query).not.toHaveBeenCalled();
   });
 
   it("errors when an automatic link conflicts with a protected manual link", async () => {

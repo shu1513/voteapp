@@ -56,6 +56,9 @@ export type SanDiegoCityFinanceSummaryInput = {
   outsideOpposeCents: number | null;
   /** One sentence naming what the direct totals do NOT cover; null = complete. */
   directCoverageNote: string | null;
+  /** Same disclosure for the outside totals (e-filed S496 ∪ Schedule D only,
+   * plus any per-candidate veto/quarantine); null = complete. */
+  outsideCoverageNote: string | null;
   methodologyVersion: string;
   sourceUrl: string | null;
   /** ISO date the balances are reported through (latest covered Thru_Date). */
@@ -114,13 +117,24 @@ export async function upsertSanDiegoCityFinanceLink(input: {
   const link = input.link;
   const linkStatus = link.linkStatus ?? "active";
   const linkSource = link.linkSource ?? "manual";
+  // Every text field is validated and normalized BEFORE any mutation below:
+  // this function also runs standalone on a bare Pool (auto-link), where a
+  // mid-flight validation throw after the deactivate UPDATE would leave the
+  // candidate with no active link. The trimmed fppcId is the single value
+  // used for the manual-link comparison, the deactivation predicate, and
+  // the INSERT — a padded input must match a stored id, not false-conflict.
+  const candidateId = text(link.candidateId, "candidate id");
+  const electionId = text(link.electionId, "election id");
+  const candidateNameNormalized = text(
+    link.candidateNameNormalized,
+    "candidate name",
+  );
+  const fppcId = text(link.fppcId, "FPPC id");
+  const committeeName = text(link.committeeName, "committee name");
   // Case-insensitive: live data says "Pending", but this is the last line
   // before a placeholder would become a durable committee identity, so an
   // upstream re-casing must fail loudly here (matching the DB constraint).
-  if (
-    link.fppcId.trim().toLowerCase() ===
-    SAN_DIEGO_PENDING_FILER_ID.toLowerCase()
-  )
+  if (fppcId.toLowerCase() === SAN_DIEGO_PENDING_FILER_ID.toLowerCase())
     throw new Error(
       "San Diego finance links require an assigned FPPC id, not Pending",
     );
@@ -130,10 +144,10 @@ export async function upsertSanDiegoCityFinanceLink(input: {
   if (linkSource === "efile_export") {
     const manual = await input.db.query<{ id: string; fppc_id: string }>(
       `SELECT id::text,fppc_id FROM public.sdcity_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_status='active' AND link_source='manual' LIMIT 1`,
-      [link.candidateId, link.electionId],
+      [candidateId, electionId],
     );
     if (manual.rows.length) {
-      if (manual.rows[0]!.fppc_id === link.fppcId) {
+      if (manual.rows[0]!.fppc_id === fppcId) {
         // An exact committee match IS an export verification of the manual
         // link, so advance last_verified_at (and nothing else — the row
         // stays the operator's). Without this a stale-election selector
@@ -154,17 +168,17 @@ export async function upsertSanDiegoCityFinanceLink(input: {
   if (linkStatus === "active")
     await input.db.query(
       `UPDATE public.sdcity_candidate_finance_links SET link_status='inactive' WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND fppc_id<>$3 AND link_status='active' AND link_source<>'manual'`,
-      [link.candidateId, link.electionId, link.fppcId],
+      [candidateId, electionId, fppcId],
     );
   const result = await input.db.query<{ id: string }>(
     `INSERT INTO public.sdcity_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,fppc_id,committee_name,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8,$9,$10::timestamptz) ON CONFLICT (candidate_id,election_id,fppc_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,committee_name=EXCLUDED.committee_name,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at RETURNING id::text`,
     [
-      text(link.candidateId, "candidate id"),
-      text(link.electionId, "election id"),
+      candidateId,
+      electionId,
       link.electionYear,
-      text(link.candidateNameNormalized, "candidate name"),
-      text(link.fppcId, "FPPC id"),
-      text(link.committeeName, "committee name"),
+      candidateNameNormalized,
+      fppcId,
+      committeeName,
       linkStatus,
       linkSource,
       optional(link.sourceUrl),
@@ -204,7 +218,7 @@ export async function replaceSanDiegoCityCandidateFinanceSnapshot(input: {
     });
     const year = input.link.electionYear;
     await client.query(
-      `INSERT INTO public.sdcity_candidate_finance_summaries (link_id,election_year,total_raised,total_spent,cash_on_hand,debts_owed,loans_received,outside_support_total,outside_oppose_total,direct_coverage_note,methodology_version,source_url,reported_through,last_synced_at) VALUES ($1::uuid,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::date,$14::timestamptz) ON CONFLICT (link_id,election_year) DO UPDATE SET total_raised=EXCLUDED.total_raised,total_spent=EXCLUDED.total_spent,cash_on_hand=EXCLUDED.cash_on_hand,debts_owed=EXCLUDED.debts_owed,loans_received=EXCLUDED.loans_received,outside_support_total=EXCLUDED.outside_support_total,outside_oppose_total=EXCLUDED.outside_oppose_total,direct_coverage_note=EXCLUDED.direct_coverage_note,methodology_version=EXCLUDED.methodology_version,source_url=EXCLUDED.source_url,reported_through=EXCLUDED.reported_through,last_synced_at=EXCLUDED.last_synced_at`,
+      `INSERT INTO public.sdcity_candidate_finance_summaries (link_id,election_year,total_raised,total_spent,cash_on_hand,debts_owed,loans_received,outside_support_total,outside_oppose_total,direct_coverage_note,outside_coverage_note,methodology_version,source_url,reported_through,last_synced_at) VALUES ($1::uuid,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14::date,$15::timestamptz) ON CONFLICT (link_id,election_year) DO UPDATE SET total_raised=EXCLUDED.total_raised,total_spent=EXCLUDED.total_spent,cash_on_hand=EXCLUDED.cash_on_hand,debts_owed=EXCLUDED.debts_owed,loans_received=EXCLUDED.loans_received,outside_support_total=EXCLUDED.outside_support_total,outside_oppose_total=EXCLUDED.outside_oppose_total,direct_coverage_note=EXCLUDED.direct_coverage_note,outside_coverage_note=EXCLUDED.outside_coverage_note,methodology_version=EXCLUDED.methodology_version,source_url=EXCLUDED.source_url,reported_through=EXCLUDED.reported_through,last_synced_at=EXCLUDED.last_synced_at`,
       [
         linkId,
         year,
@@ -218,6 +232,7 @@ export async function replaceSanDiegoCityCandidateFinanceSnapshot(input: {
         centsToDollars(input.summary.outsideSupportCents, "outside support"),
         centsToDollars(input.summary.outsideOpposeCents, "outside oppose"),
         optional(input.summary.directCoverageNote),
+        optional(input.summary.outsideCoverageNote),
         text(input.summary.methodologyVersion, "methodology version"),
         optional(input.summary.sourceUrl),
         input.summary.reportedThrough,

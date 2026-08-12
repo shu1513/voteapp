@@ -82,7 +82,7 @@ Summary sheet carries full line arithmetic (19 F460 lines plus per-schedule subt
 
 ## Architecture
 
-New module `backend/src/pipeline/sanDiegoCityFinance/`, tables prefixed `sdcity_` (mirrors `lacity_`; avoids the `sd_` South Dakota collision). Table shape and writer mirror the shipped `sjc_` set exactly: **four tables** (links / summaries / direct_breakdowns / outside_groups — migration 233's shape, not the older five-table `createStandardStateFinanceSnapshotWriter` skeleton this plan originally named; SJ shipped a hand-written transactional writer and SD copies it). Source enum `SAN_DIEGO_CITY_CLERK` (see flags section). New migration number for `sdcity_`.
+New module `backend/src/pipeline/sanDiegoCityFinance/`, tables prefixed `sdcity_` (mirrors `lacity_`; avoids the `sd_` South Dakota collision). Table shape and writer mirror the shipped `sjc_` set exactly: **four tables** (links / summaries / direct_breakdowns / outside_groups — migration 233's shape, not the older five-table `createStandardStateFinanceSnapshotWriter` skeleton this plan originally named; SJ shipped a hand-written transactional writer and SD copies it). Source enum `SAN_DIEGO_CITY_CLERK` (see flags section). The `sdcity_` tables land in migration 235.
 
 **San José shipped first (Phases 1–6 merged by 2026-08-12), so San Diego consumes its code.** Audited on `main` 2026-08-12 — the SJ module already implements this plan's entire corrected accounting model, live-validated cent-exact against 30/30 sampled PDFs. Reuse inventory:
 
