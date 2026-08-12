@@ -183,8 +183,11 @@ export async function upsertSanDiegoCityFinanceLink(input: {
       `UPDATE public.sdcity_candidate_finance_links SET link_status='inactive' WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND fppc_id<>$3 AND link_status='active' AND link_source<>'manual'`,
       [candidateId, electionId, fppcId],
     );
+  // The conflict guard is the race backstop: a row an operator flips to
+  // manual between the probe and this statement blocks the update (no id
+  // returned, the throw below aborts) instead of being rewritten.
   const result = await input.db.query<{ id: string }>(
-    `INSERT INTO public.sdcity_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,fppc_id,committee_name,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8,$9,$10::timestamptz) ON CONFLICT (candidate_id,election_id,fppc_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,committee_name=EXCLUDED.committee_name,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at RETURNING id::text`,
+    `INSERT INTO public.sdcity_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,fppc_id,committee_name,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8,$9,$10::timestamptz) ON CONFLICT (candidate_id,election_id,fppc_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,committee_name=EXCLUDED.committee_name,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at WHERE sdcity_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual' RETURNING id::text`,
     [
       candidateId,
       electionId,

@@ -107,10 +107,14 @@ export async function upsertSanJoseFinanceLink(input: {
   const link = input.link;
   const linkStatus = link.linkStatus ?? "active";
   const linkSource = link.linkSource ?? "manual";
+  // The trimmed fppcId drives the manual-link comparison, the deactivation
+  // predicate, and the INSERT alike — a padded input must match a stored id,
+  // never slip past the probe and reach the stored row through ON CONFLICT.
+  const fppcId = text(link.fppcId, "FPPC id");
   // Case-insensitive: live data says "Pending", but this is the last line
   // before a placeholder would become a durable committee identity, so an
   // upstream re-casing must fail loudly here (matching the DB constraint).
-  if (link.fppcId.trim().toLowerCase() === SAN_JOSE_PENDING_FILER_ID.toLowerCase())
+  if (fppcId.toLowerCase() === SAN_JOSE_PENDING_FILER_ID.toLowerCase())
     throw new Error(
       "San José finance links require an assigned FPPC id, not Pending",
     );
@@ -128,9 +132,7 @@ export async function upsertSanJoseFinanceLink(input: {
       `SELECT id::text,fppc_id,link_status FROM public.sjc_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_source='manual'`,
       [link.candidateId, link.electionId],
     );
-    const sameCommittee = manual.rows.find(
-      (row) => row.fppc_id === link.fppcId,
-    );
+    const sameCommittee = manual.rows.find((row) => row.fppc_id === fppcId);
     if (sameCommittee) {
       if (sameCommittee.link_status !== "active")
         throw new Error(
@@ -159,16 +161,19 @@ export async function upsertSanJoseFinanceLink(input: {
   if (linkStatus === "active")
     await input.db.query(
       `UPDATE public.sjc_candidate_finance_links SET link_status='inactive' WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND fppc_id<>$3 AND link_status='active' AND link_source<>'manual'`,
-      [link.candidateId, link.electionId, link.fppcId],
+      [link.candidateId, link.electionId, fppcId],
     );
+  // The conflict guard is the race backstop: a row an operator flips to
+  // manual between the probe and this statement blocks the update (no id
+  // returned, the throw below aborts) instead of being rewritten.
   const result = await input.db.query<{ id: string }>(
-    `INSERT INTO public.sjc_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,fppc_id,committee_name,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8,$9,$10::timestamptz) ON CONFLICT (candidate_id,election_id,fppc_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,committee_name=EXCLUDED.committee_name,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at RETURNING id::text`,
+    `INSERT INTO public.sjc_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,fppc_id,committee_name,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8,$9,$10::timestamptz) ON CONFLICT (candidate_id,election_id,fppc_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,committee_name=EXCLUDED.committee_name,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at WHERE sjc_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual' RETURNING id::text`,
     [
       text(link.candidateId, "candidate id"),
       text(link.electionId, "election id"),
       link.electionYear,
       text(link.candidateNameNormalized, "candidate name"),
-      text(link.fppcId, "FPPC id"),
+      fppcId,
       text(link.committeeName, "committee name"),
       linkStatus,
       linkSource,

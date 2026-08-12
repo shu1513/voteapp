@@ -185,6 +185,26 @@ describe("San José finance writer", () => {
     expect(touch?.[1]).toEqual(["manual-1", verifiedAt.toISOString()]);
   });
 
+  it("matches a protected manual link on a whitespace-padded FPPC id", async () => {
+    // The trimmed id must drive the manual comparison — a padded input that
+    // matches the stored id is a reuse, never a probe miss that reaches the
+    // stored row through ON CONFLICT.
+    const query = queryMock((sql) =>
+      sql.startsWith("SELECT id::text,fppc_id")
+        ? {
+            rows: [
+              { id: "manual-1", fppc_id: "1484291", link_status: "active" },
+            ],
+          }
+        : null,
+    );
+    const result = await upsertSanJoseFinanceLink({
+      db: { query } as never,
+      link: { ...link, fppcId: " 1484291 ", linkSource: "efile_export" },
+    });
+    expect(result.linkId).toBe("manual-1");
+  });
+
   it("errors when an automatic link conflicts with a protected manual link", async () => {
     const query = queryMock((sql) =>
       sql.startsWith("SELECT id::text,fppc_id")
@@ -265,5 +285,15 @@ describe("San José finance writer", () => {
     );
     expect(String(deactivate?.[0])).toContain("link_source<>'manual'");
     expect(deactivate?.[1]).toEqual(["c", "e", "1484291"]);
+    // The in-statement race backstop: a row concurrently flipped to manual
+    // must block the update instead of being rewritten.
+    const insert = query.mock.calls.find((call) =>
+      String(call[0]).startsWith(
+        "INSERT INTO public.sjc_candidate_finance_links",
+      ),
+    );
+    expect(String(insert?.[0])).toContain(
+      "WHERE sjc_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual'",
+    );
   });
 });

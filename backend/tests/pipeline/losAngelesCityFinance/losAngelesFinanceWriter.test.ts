@@ -81,6 +81,30 @@ describe("upsertLosAngelesFinanceLink manual protection", () => {
     expect(sql.some((s) => s.startsWith("INSERT INTO"))).toBe(false);
   });
 
+  it("matches a protected manual link on a whitespace-padded committee id", async () => {
+    // The trimmed id must drive the manual comparison — a padded input that
+    // matches the stored id is a reuse, never a probe miss that reaches the
+    // stored row through ON CONFLICT.
+    const query = queryMock((sql) =>
+      sql.startsWith("SELECT id::text,fppc_committee_id")
+        ? {
+            rows: [
+              {
+                id: "manual-1",
+                fppc_committee_id: "1471359",
+                link_status: "active",
+              },
+            ],
+          }
+        : null,
+    );
+    const result = await upsertLosAngelesFinanceLink({
+      db: { query } as never,
+      link: { ...AUTOMATIC_LINK, fppcCommitteeId: " 1471359 " },
+    });
+    expect(result.linkId).toBe("manual-1");
+  });
+
   it("errors when an automatic link conflicts with a protected manual link", async () => {
     const query = queryMock((sql) =>
       sql.startsWith("SELECT id::text,fppc_committee_id")
@@ -153,11 +177,15 @@ describe("upsertLosAngelesFinanceLink manual protection", () => {
     });
     expect(result.linkId).toBe("link-1");
     const sql = query.mock.calls.map((call) => String(call[0]));
-    expect(
-      sql.some((s) =>
-        s.startsWith("INSERT INTO public.lacity_candidate_finance_links"),
-      ),
-    ).toBe(true);
+    const insert = sql.find((s) =>
+      s.startsWith("INSERT INTO public.lacity_candidate_finance_links"),
+    );
+    expect(insert).toBeDefined();
+    // The in-statement race backstop: a row concurrently flipped to manual
+    // must block the update instead of being rewritten.
+    expect(insert).toContain(
+      "WHERE lacity_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual'",
+    );
   });
 });
 

@@ -319,5 +319,15 @@ describe("San Diego city finance writer", () => {
     );
     expect(String(deactivate?.[0])).toContain("link_source<>'manual'");
     expect(deactivate?.[1]).toEqual(["c", "e", "1460125"]);
+    // The in-statement race backstop: a row concurrently flipped to manual
+    // must block the update instead of being rewritten.
+    const insert = query.mock.calls.find((call) =>
+      String(call[0]).startsWith(
+        "INSERT INTO public.sdcity_candidate_finance_links",
+      ),
+    );
+    expect(String(insert?.[0])).toContain(
+      "WHERE sdcity_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual'",
+    );
   });
 });

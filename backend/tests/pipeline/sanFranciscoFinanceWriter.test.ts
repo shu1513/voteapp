@@ -54,6 +54,23 @@ describe("upsertSanFranciscoFinanceLink", () => {
     expect(updateParams).toEqual(["manual-1", verifiedAt.toISOString()]);
   });
 
+  it("matches a protected manual link on a whitespace-padded FPPC id", async () => {
+    // The trimmed id must drive the manual comparison — a padded input that
+    // matches the stored id is a reuse, never a probe miss that reaches the
+    // stored row through ON CONFLICT.
+    const db = {
+      query: vi.fn().mockResolvedValueOnce({
+        rows: [{ id: "manual-1", fppc_id: "1489126", link_status: "active" }],
+      }),
+    };
+    const result = await upsertSanFranciscoFinanceLink({
+      db,
+      link: { ...LINK, fppcId: " 1489126 " },
+    });
+    expect(result.linkId).toBe("manual-1");
+    expect(db.query).toHaveBeenCalledTimes(1);
+  });
+
   it("refuses to override a manual link with a different committee", async () => {
     const db = {
       query: vi
@@ -82,6 +99,11 @@ describe("upsertSanFranciscoFinanceLink", () => {
     expect(deactivateSql).toContain("link_source<>'manual'");
     const [insertSql, insertParams] = db.query.mock.calls[2]!;
     expect(insertSql).toContain("ON CONFLICT (candidate_id,election_id,fppc_id)");
+    // The in-statement race backstop: a row concurrently flipped to manual
+    // must block the update instead of being rewritten.
+    expect(insertSql).toContain(
+      "WHERE sfc_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual'",
+    );
     expect(insertParams).toEqual([
       "cand-1",
       "elec-1",
