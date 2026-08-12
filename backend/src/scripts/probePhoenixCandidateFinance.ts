@@ -175,7 +175,12 @@ async function gridAll(
   for (let page = 1; page <= MAX_GRID_PAGES; page += 1) {
     const envelope = await gridPage(path, filters, page, GRID_PAGE_SIZE);
     rows.push(...envelope.Data);
-    if (rows.length >= envelope.Total || envelope.Data.length === 0) return rows;
+    if (rows.length >= envelope.Total) return rows;
+    if (envelope.Data.length === 0) {
+      throw new Error(
+        `Phoenix grid ${path} exhausted at ${rows.length}/${envelope.Total} rows — incomplete pagination`,
+      );
+    }
   }
   throw new Error(`Phoenix grid ${path} exceeded ${MAX_GRID_PAGES} pages`);
 }
@@ -706,9 +711,13 @@ async function main(): Promise<void> {
       console.log(`  unresolved D${candidate.district} ${candidate.displayName}: registration name "${canonical.candidateName}" does not match`);
       continue;
     }
+    if (canonical.terminated) {
+      console.log(`  unresolved D${candidate.district} ${candidate.displayName}: canonical registration ${candidate.copId} is terminated`);
+      continue;
+    }
     resolved += 1;
     console.log(
-      `  matched   D${candidate.district} ${candidate.displayName} -> ${candidate.copId} "${canonical.committeeName}"${canonical.terminated ? " [TERMINATED]" : ""} (${canonical.electionCycle})`,
+      `  matched   D${candidate.district} ${candidate.displayName} -> ${candidate.copId} "${canonical.committeeName}" (${canonical.electionCycle})`,
     );
   }
   gates.push({
@@ -723,12 +732,7 @@ async function main(): Promise<void> {
   type ReportRef = { reportPackageId: string; reportName: string; submittedDateMs: number };
   const reportsByCommittee = new Map<string, Map<string, ReportRef>>();
   const contributionCounts = new Map<string, number>();
-  for (const candidate of NOVEMBER_2026_CANDIDATES) {
-    const rows = await gridAll("/CampaignFinance/Search/_SearchContributors", {
-      COPID: candidate.copId,
-    });
-    contributionCounts.set(candidate.copId, rows.length);
-    const reports = new Map<string, ReportRef>();
+  const collectRefs = (reports: Map<string, ReportRef>, rows: Record<string, unknown>[]): void => {
     for (const row of rows) {
       const id = String(row.ReportPackageId ?? "");
       if (!/^[0-9a-f-]{36}$/i.test(id)) continue;
@@ -739,6 +743,21 @@ async function main(): Promise<void> {
         submittedDateMs: submitted ? Number(submitted[1]) : 0,
       });
     }
+  };
+  for (const candidate of NOVEMBER_2026_CANDIDATES) {
+    // Contribution rows alone miss expenditure-only and no-activity reports,
+    // so package discovery reads both transaction grids (loan rows are folded
+    // in below from the portal-wide loans fetch).
+    const contributionRows = await gridAll("/CampaignFinance/Search/_SearchContributors", {
+      COPID: candidate.copId,
+    });
+    contributionCounts.set(candidate.copId, contributionRows.length);
+    const reports = new Map<string, ReportRef>();
+    collectRefs(reports, contributionRows);
+    collectRefs(
+      reports,
+      await gridAll("/CampaignFinance/Search/_SearchExpenditures", { COPID: candidate.copId }),
+    );
     reportsByCommittee.set(candidate.copId, reports);
   }
   const loanRows = await gridAll("/CampaignFinance/Search/_SearchLoans", {});
@@ -750,6 +769,11 @@ async function main(): Promise<void> {
         .filter((copId) => cohortIds.has(copId)),
     ),
   ];
+  for (const row of loanRows) {
+    const copId = String(row.COPID ?? "");
+    const reports = reportsByCommittee.get(copId);
+    if (reports !== undefined) collectRefs(reports, [row]);
+  }
   console.log(
     `\nloan rows portal-wide: ${loanRows.length}; cohort committees with loans: ${cohortLoanCopIds.join(", ") || "(none)"}`,
   );
@@ -763,8 +787,14 @@ async function main(): Promise<void> {
     equationCommittees.add(copId);
   }
 
-  // --- Gate 4: amendment characterization across the cohort's reports. ---
+  // --- Gate 4: amendment canonicalization across the cohort's reports.
+  // Duplicate (committee, report name) packages are superseded versions; the
+  // latest SubmittedDate wins and the losers are DROPPED from every
+  // downstream parse. The parsed covers then prove "one canonical report per
+  // period" directly: reporting periods must not overlap (asserted below,
+  // feeding this gate through periodOverlapFailures).
   let duplicatePeriods = 0;
+  let supersededDropped = 0;
   for (const [copId, reports] of reportsByCommittee) {
     const byName = new Map<string, ReportRef[]>();
     for (const report of reports.values()) {
@@ -778,28 +808,29 @@ async function main(): Promise<void> {
         const winner = bucket.reduce((best, entry) =>
           entry.submittedDateMs > best.submittedDateMs ? entry : best,
         );
+        for (const loser of bucket) {
+          if (loser.reportPackageId !== winner.reportPackageId) {
+            reports.delete(loser.reportPackageId);
+            supersededDropped += 1;
+          }
+        }
         console.log(
-          `amendment candidate ${copId} "${reportName}": ${bucket.length} packages, latest-submitted wins ${winner.reportPackageId}`,
+          `amendment ${copId} "${reportName}": ${bucket.length} packages, latest-submitted wins ${winner.reportPackageId}`,
         );
       }
     }
   }
-  gates.push({
-    name: "amendment scan: duplicate report periods resolve deterministically",
-    pass: true,
-    detail:
-      duplicatePeriods === 0
-        ? "no duplicate (committee, report name) packages in the cohort yet — canonical rule pinned as latest SubmittedDate"
-        : `${duplicatePeriods} duplicate period group(s), each resolved to latest SubmittedDate`,
-  });
+  const periodOverlapFailures: string[] = [];
 
   // --- Gates 3 + 5: parse reports, check equations + occupation reconciliation. ---
   let equationReports = 0;
-  let equationFailures: string[] = [];
+  const equationFailures: string[] = [];
   let hermesFixturePass = false;
-  let occupationDetail: string[] = [];
+  const occupationDetail: string[] = [];
   let occupationPass = true;
-  let parsedCommitteesWithSchedules = 0;
+  const equationCommitteesParsed = new Set<string>();
+  const scheduleCommittees = new Set<string>();
+  const coverCorroboration: string[] = [];
 
   for (const copId of equationCommittees) {
     const reports = [...(reportsByCommittee.get(copId)?.values() ?? [])].sort(
@@ -837,8 +868,21 @@ async function main(): Promise<void> {
         ],
       ];
       equationReports += 1;
+      equationCommitteesParsed.add(copId);
       for (const [label, ok] of checks) {
         if (!ok) equationFailures.push(`${copId} ${report.reportName}: ${label}`);
+      }
+      const candidateForCommittee = NOVEMBER_2026_CANDIDATES.find(
+        (entry) => entry.copId === copId,
+      );
+      if (candidateForCommittee !== undefined && cover.officeSought !== null) {
+        const districtMatch = /Council Member District (\d+)/.exec(cover.officeSought);
+        const ok =
+          districtMatch !== null &&
+          Number(districtMatch[1]) === candidateForCommittee.district;
+        coverCorroboration.push(
+          `${copId} "${cover.officeSought}" vs D${candidateForCommittee.district} ${ok ? "ok" : "MISMATCH"}`,
+        );
       }
       console.log(
         `  ${cover.reportName} ${cover.periodFrom}..${cover.periodTo}: (a)=${usd(cover.beginCents)} (b)=${usd(cover.receiptsPeriodCents)}${cover.receiptsCycleCents !== null ? `/${usd(cover.receiptsCycleCents)}` : ""} (c)=${usd(cover.disbursementsPeriodCents)} (d)=${usd(cover.closeCents)} checks=${checks.every(([, ok]) => ok) ? "ok" : "FAIL"}`,
@@ -857,7 +901,7 @@ async function main(): Promise<void> {
 
       // Occupation reconciliation on reports that carry itemized schedules.
       if (parsed.a1aEntries.length > 0 || parsed.a1cEntries.length > 0) {
-        parsedCommitteesWithSchedules += 1;
+        scheduleCommittees.add(copId);
         const a1aSum = parsed.a1aEntries.reduce((sum, entry) => sum + entry.amountCents, 0);
         const a1cSum = parsed.a1cEntries.reduce((sum, entry) => sum + entry.amountCents, 0);
         const a1aOk = a1aSum === receipts.line1.a;
@@ -888,6 +932,11 @@ async function main(): Promise<void> {
     for (let index = 1; index < parsedReports.length; index += 1) {
       const previous = parsedReports[index - 1]!.cover;
       const current = parsedReports[index]!.cover;
+      if (coverDate(current.periodFrom) <= coverDate(previous.periodTo)) {
+        periodOverlapFailures.push(
+          `${copId}: ${current.reportName} (${current.periodFrom}) overlaps ${previous.reportName} (..${previous.periodTo})`,
+        );
+      }
       if (current.beginCents !== previous.closeCents) {
         const detail = `${copId} violation cash_chain_break: (a) of ${current.reportName} ${usd(current.beginCents)} != prior (d) ${usd(previous.closeCents)}`;
         console.log(`  ${detail}`);
@@ -908,15 +957,41 @@ async function main(): Promise<void> {
           `  ${copId} violation cycle_column_discrepancy: (b) cycle of ${current.reportName} is ${usd(current.receiptsCycleCents)}, prior cycle + period = ${usd(previous.receiptsCycleCents + current.receiptsPeriodCents)} (expected when an earlier report was amended)`,
         );
       }
+      if (
+        sameCycle &&
+        previous.disbursementsCycleCents !== null &&
+        current.disbursementsCycleCents !== null &&
+        current.disbursementsCycleCents !==
+          previous.disbursementsCycleCents + current.disbursementsPeriodCents
+      ) {
+        console.log(
+          `  ${copId} violation cycle_column_discrepancy: (c) cycle of ${current.reportName} is ${usd(current.disbursementsCycleCents)}, prior cycle + period = ${usd(previous.disbursementsCycleCents + current.disbursementsPeriodCents)} (expected when an earlier report was amended)`,
+        );
+      }
     }
   }
   gates.push({
-    name: "report equations cent-exact on every parsed report",
-    pass: equationReports >= 3 && equationFailures.length === 0,
+    name: "amendment canonicalization: superseded packages dropped, periods disjoint",
+    pass: periodOverlapFailures.length === 0,
+    detail:
+      periodOverlapFailures.length === 0
+        ? `${duplicatePeriods} duplicate period group(s), ${supersededDropped} superseded package(s) dropped, parsed periods disjoint`
+        : periodOverlapFailures.join("; "),
+  });
+  gates.push({
+    name: "report equations cent-exact on every parsed report (>=3 committees)",
+    pass: equationCommitteesParsed.size >= 3 && equationFailures.length === 0,
     detail:
       equationFailures.length === 0
-        ? `${equationReports} report(s) parsed across ${equationCommittees.size} committee(s), all equations hold`
+        ? `${equationReports} report(s) parsed across ${equationCommitteesParsed.size} committee(s), all equations hold`
         : equationFailures.join("; "),
+  });
+  gates.push({
+    name: "parsed covers corroborate the candidate's office + district",
+    pass:
+      coverCorroboration.length > 0 &&
+      coverCorroboration.every((entry) => entry.endsWith("ok")),
+    detail: [...new Set(coverCorroboration)].join("; ") || "no covers corroborated",
   });
   gates.push({
     name: "Hermes Q1-2026 hard fixture (receipts, refunds, close, office)",
@@ -924,8 +999,8 @@ async function main(): Promise<void> {
     detail: hermesFixturePass ? "all hand-derived values reproduced" : "fixture mismatch — re-derive by hand",
   });
   gates.push({
-    name: "occupation/employer extraction reconciles to lines 1(a)/1(c)",
-    pass: occupationPass && parsedCommitteesWithSchedules >= 2,
+    name: "occupation/employer extraction reconciles to lines 1(a)/1(c) (>=2 committees)",
+    pass: occupationPass && scheduleCommittees.size >= 2,
     detail: occupationDetail.join(" | ") || "no itemized schedules parsed",
   });
 
@@ -944,7 +1019,13 @@ async function main(): Promise<void> {
   let ieActive = 0;
   let ieStanding = 0;
   let ieTestExcluded = 0;
-  const ieCityFilers: { copId: string; name: string; expenditureRows: number }[] = [];
+  const ieCityFilers: {
+    copId: string;
+    name: string;
+    expenditureRows: number;
+    currentCycleRows: number;
+    b6Package: string | null;
+  }[] = [];
   for (const [copId, rows] of ieByCopId) {
     const canonical = canonicalRegistration(rows);
     if (canonical === null) continue;
@@ -958,32 +1039,82 @@ async function main(): Promise<void> {
       ieStanding += 1;
       continue; // standing PACs file finance reports only with the AZ SOS
     }
-    const expenditures = await gridPage(
+    const expenditureRows = await gridAll("/CampaignFinance/Search/_SearchExpenditures", {
+      COPID: copId,
+    });
+    const currentCycle = await gridPage(
       "/CampaignFinance/Search/_SearchExpenditures",
-      { COPID: copId },
+      { COPID: copId, DLOW: "04/01/2025" },
       1,
       1,
+    );
+    const b6Row = expenditureRows.find((row) =>
+      /B\(6\)/.test(String(row.ReportScheduleName ?? "")),
     );
     ieCityFilers.push({
       copId,
       name: canonical.committeeName,
-      expenditureRows: expenditures.Total,
+      expenditureRows: expenditureRows.length,
+      currentCycleRows: currentCycle.Total,
+      b6Package: b6Row ? String(b6Row.ReportPackageId) : null,
     });
+  }
+
+  // Pin the IE itemization schedule (B(6)) on a real filing: the page must
+  // carry the supported/opposed candidate blocks and an Office Sought field.
+  // Live finding (PAC-22-14, 2024 Q3): the candidate NAME cell can be BLANK
+  // while the % and office fields are filled — Phase 3 target matching must
+  // fail closed on empty names, never infer.
+  let ieSchedulePinned = false;
+  let ieScheduleDetail = "no city-filing IE PAC exposes a Schedule B(6) filing";
+  const b6Filer = ieCityFilers.find((filer) => filer.b6Package !== null);
+  if (b6Filer !== undefined) {
+    const pages = await extractPdfPages(await fetchReportPdf(b6Filer.b6Package!));
+    const b6Page = pages.find((page) =>
+      page.lines.some((line) => /INDEPENDENT EXPENDITURES MADE: SCHEDULE B\(6\)/.test(line.text)),
+    );
+    if (b6Page !== undefined) {
+      const text = b6Page.lines.map((line) => line.text).join("\n");
+      const hasSupported = /Candidate\(s\) Supported \(including % Supported\)/.test(text);
+      const hasOpposed = /Candidate\(s\) Opposed \(including % opposed\)/i.test(text);
+      const officeLine = b6Page.lines.find((line) => /Election Month\/Year Office Sought/.test(line.text));
+      const officeIndex = officeLine === undefined ? -1 : b6Page.lines.indexOf(officeLine);
+      const officeValues = officeIndex >= 0 ? b6Page.lines[officeIndex + 1]?.text ?? "" : "";
+      ieSchedulePinned = hasSupported && hasOpposed && officeValues.length > 0;
+      ieScheduleDetail = `B(6) pinned on ${b6Filer.copId} package ${b6Filer.b6Package}: supported/opposed blocks=${hasSupported && hasOpposed}, election+office values "${officeValues}"`;
+      const supportedIndex = b6Page.lines.findIndex((line) =>
+        /Candidate\(s\) Supported/.test(line.text),
+      );
+      if (supportedIndex >= 0) {
+        console.log(
+          `  B(6) raw candidate cells: "${b6Page.lines[supportedIndex + 1]?.text ?? "(blank)"}" — blank names occur live; fail closed`,
+        );
+      }
+    }
   }
   console.log("\noutside census (candidate-IE authorized PACs):");
   console.log(
     `  registrations=${ieByCopId.size} distinct committees; active=${ieActive}; standing (SOS-filing)=${ieStanding}; test-excluded=${ieTestExcluded}`,
   );
   for (const filer of ieCityFilers.sort((a, b) => b.expenditureRows - a.expenditureRows)) {
-    console.log(`  city-filing ${filer.copId} "${filer.name}": ${filer.expenditureRows} expenditure rows`);
+    console.log(
+      `  city-filing ${filer.copId} "${filer.name}": ${filer.expenditureRows} expenditure rows (${filer.currentCycleRows} in the 2025-2027 cycle)${filer.b6Package ? ` B(6) in ${filer.b6Package}` : ""}`,
+    );
   }
+  console.log(`  ${ieScheduleDetail}`);
   console.log(
-    "  curated channels (not grid-accessible; publish NULL, never zero, until measured): IE-entity fillable reports; Election Funding Disclosure (dark money) filings",
+    "  unmeasured channels (publish NULL, never zero, until measured): standing-PAC Spotlight exposure UNVERIFIED (required before the Phase 3 outside leg); IE-entity fillable reports; Election Funding Disclosure (dark money) filings",
   );
   gates.push({
-    name: "outside census enumerates IE-authorized PACs and channel split",
-    pass: ieByCopId.size > 0 && ieActive >= 0 && ieTestExcluded >= 1,
-    detail: `${ieByCopId.size} committees (${ieActive} active, ${ieStanding} standing, ${ieTestExcluded} test-excluded), ${ieCityFilers.length} city-filing`,
+    name: "outside census: channel split + IE schedule format pinned on a real filing",
+    pass:
+      ieByCopId.size > 0 &&
+      ieActive >= 1 &&
+      ieStanding >= 1 &&
+      ieTestExcluded >= 1 &&
+      ieCityFilers.length >= 1 &&
+      ieSchedulePinned,
+    detail: `${ieByCopId.size} committees (${ieActive} active, ${ieStanding} standing, ${ieTestExcluded} test-excluded), ${ieCityFilers.length} city-filing; ${ieScheduleDetail}`,
   });
 
   // --- Summary. ---
