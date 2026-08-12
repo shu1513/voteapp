@@ -38,7 +38,7 @@ Honest list of every touchpoint outside the module (all small, all enumerated so
 |---|---|---|
 | `CHATBOT_ENABLED` | `false` | Master switch |
 | `CHATBOT_LLM_ENABLED` | `false` | LLM calls allowed; off = retrieval-only answers |
-| `CHATBOT_MODEL` | — | REQUIRED when LLM on; deployment config only (the repo never names the production model) |
+| `CHATBOT_MODEL_TIER_FREE` | — | REQUIRED when LLM on; deployment config only (the repo never names the production model). Tier-suffixed: all accounts use it today; a paid tier adds its own variable + routing later |
 | `CHATBOT_LLM_BASE_URL` | OpenAI | |
 | `CHATBOT_LLM_API_KEY` | — | Separate key, in its own OpenAI **project** with a dashboard spend limit |
 | `CHATBOT_REASONING_EFFORT` | `low` | Start low; raise to medium only if the golden set shows it helps |

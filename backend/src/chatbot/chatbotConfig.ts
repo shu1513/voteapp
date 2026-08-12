@@ -140,9 +140,11 @@ function readChatbotLlmFromEnv(env: NodeJS.ProcessEnv): ChatbotLlmConfig | null 
   // No in-repo default ON PURPOSE: the model choice is deployment
   // configuration (env/dashboard only), so the codebase never reveals which
   // model runs in production and swapping it is a config change, not a PR.
-  const model = env.CHATBOT_MODEL?.trim();
+  // TIER_FREE because every account answers on the free-tier model today; a
+  // future paid tier adds its own variable alongside (plus routing code).
+  const model = env.CHATBOT_MODEL_TIER_FREE?.trim();
   if (!model) {
-    console.warn("CHATBOT_LLM_ENABLED is set but CHATBOT_MODEL is missing; LLM answers stay off");
+    console.warn("CHATBOT_LLM_ENABLED is set but CHATBOT_MODEL_TIER_FREE is missing; LLM answers stay off");
     return null;
   }
   const effortRaw = env.CHATBOT_REASONING_EFFORT?.trim().toLowerCase() || DEFAULT_CHATBOT_REASONING_EFFORT;
