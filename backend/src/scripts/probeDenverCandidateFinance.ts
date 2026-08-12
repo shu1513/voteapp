@@ -25,12 +25,16 @@
 //      entity id belongs to the filer's committeeIds set.
 //   9. Pagination stability: two full sweeps are identical, no duplicate
 //      transaction ids, first page unchanged after the final page.
-//  10. Filed-report chains: amendment versions flatten and select cleanly;
-//      per-filing summaries fetch; balance chain and composition printed for
-//      reconciliation (pinned after first observation).
-//  11. Registration anomalies (cycle 36): every anomaly is in the documented
-//      allowlist — nothing new appeared silently.
-//  12. PII allowlist: typed transaction rows carry exactly the declared keys
+//  10. contributionsToIds pinned broken: the server-side id filter returns
+//      zero rows; a FAIL means the vendor fixed it — revisit the filter
+//      choice before trusting either behavior.
+//  11. Filed-report chains: filer-scoped set equality, version selection,
+//      per-filing cash identity, balance chain, and cent-exact
+//      reconciliation of raised (net of refunds) and spend.
+//  12. Registration identity (cycle 36): filer-id echo, committee-on-filer
+//      membership, termination status, and exact anomaly identities (a
+//      third same-name registration fails; allowlists are id-keyed).
+//  13. PII allowlist: typed transaction rows carry exactly the declared keys
 //      (no address/zip fields can reach logs or fixtures).
 
 import { pathToFileURL } from "node:url";
@@ -83,10 +87,18 @@ const FIX = {
 
 // --- November 2026 vacancy cycle (live registration data — allowlists, not counts). ---
 const VACANCY_CYCLE_ID = 36;
-/** Verified live 2026-08-12: two non-terminated "Monica Martinez" filer records. */
-const DOCUMENTED_DUPLICATE_NAMES = new Set(["MONICA MARTINEZ"]);
+/**
+ * Verified live 2026-08-12: two non-terminated "Monica Martinez" filer
+ * records. Keyed to the exact filer-id set — a THIRD registration under the
+ * same name (new filer id) must fail the gate, not slide under the name.
+ */
+const DOCUMENTED_DUPLICATE_NAMES: ReadonlyMap<string, string> = new Map([
+  ["MONICA MARTINEZ", "1322,1328"],
+]);
 /** Verified live 2026-08-12: listed in cycle 36 but getElectionCyclesByFiler returns []. */
 const DOCUMENTED_EMPTY_CYCLE_FILER_IDS = new Set([1329, 1330]);
+/** No cycle-36 registrant is terminated today; a termination is registration news. */
+const DOCUMENTED_TERMINATED_FILER_IDS = new Set<number>();
 
 const CONTRIBUTION_ROW_KEYS = [
   "transactionId",
@@ -363,6 +375,23 @@ async function main(): Promise<void> {
     detail: `${ids1.length} rows x2, ${new Set(ids1).size} distinct ids, first page recheck ${firstPageIds.length} rows`,
   });
 
+  // Gate: contributionsToIds is pinned BROKEN — the server returns zero rows
+  // for both the filer id and the committee entity id (verified live
+  // 2026-08-12), which is why production filtering is candidateName + hard
+  // entity-id row checks. A FAIL here means the vendor fixed the filter:
+  // revisit the Phase 3 filter choice before trusting either behavior.
+  const idFilterPage = await searchDenverContributionTransactions({
+    contributionsToIds: [JOHNSTON.filerId, ...JOHNSTON_COMMITTEE_ENTITY_IDS],
+    electionCycleIds: [JOHNSTON.electionCycleId],
+    pageNum: 1,
+    pageSize: 10,
+  });
+  gates.push({
+    name: "contributionsToIds filter still returns zero rows (vendor bug pinned)",
+    pass: idFilterPage.totalContributionCount === 0 && idFilterPage.rows.length === 0,
+    detail: `id filter returned ${idFilterPage.totalContributionCount} records`,
+  });
+
   // Gate 10a: the filings endpoint is FILER-scoped — querying either committee
   // entity id returns the same filing set (verified live; querying both and
   // summing would double-count).
@@ -454,14 +483,17 @@ async function main(): Promise<void> {
   // Gate 11: registration anomalies (cycle 36, live data — allowlist check).
   const registrants = await getDenverCandidatesByElectionCycle(VACANCY_CYCLE_ID);
   console.log(`\ncycle ${VACANCY_CYCLE_ID} registrants: ${registrants.length}`);
-  const namesSeen = new Map<string, number>();
+  const filersByName = new Map<string, number[]>();
   for (const registrant of registrants) {
-    namesSeen.set(normalizeName(registrant.fullName), (namesSeen.get(normalizeName(registrant.fullName)) ?? 0) + 1);
+    const key = normalizeName(registrant.fullName);
+    filersByName.set(key, [...(filersByName.get(key) ?? []), registrant.filerId]);
   }
   const anomalies: string[] = [];
-  for (const [name, count] of namesSeen) {
-    if (count > 1 && !DOCUMENTED_DUPLICATE_NAMES.has(name)) {
-      anomalies.push(`undocumented duplicate name: ${name} x${count}`);
+  for (const [name, filerIds] of filersByName) {
+    if (filerIds.length === 1) continue;
+    const idSet = [...filerIds].sort((a, b) => a - b).join(",");
+    if (DOCUMENTED_DUPLICATE_NAMES.get(name) !== idSet) {
+      anomalies.push(`undocumented duplicate name: ${name} filers [${idSet}]`);
     }
   }
   for (const registrant of registrants) {
@@ -471,6 +503,17 @@ async function main(): Promise<void> {
     console.log(
       `  ${registrant.fullName} (filer ${registrant.filerId}, committee ${registrant.committeeId}, ${registrantFiler.filerStatusName ?? "?"}${registrantFiler.isTerminated ? ", TERMINATED" : ""}): cycles [${cycles.map((cycle) => cycle.electionCycleId).join(", ")}]`
     );
+    if (registrantFiler.filerId !== registrant.filerId) {
+      anomalies.push(`filer id echo mismatch: requested ${registrant.filerId}, got ${registrantFiler.filerId}`);
+    }
+    if (!registrantFiler.committeeIds.includes(registrant.committeeId)) {
+      anomalies.push(
+        `committee not on filer: ${registrant.fullName} committee ${registrant.committeeId} not in filer ${registrant.filerId}'s [${registrantFiler.committeeIds.join(", ")}]`
+      );
+    }
+    if (registrantFiler.isTerminated && !DOCUMENTED_TERMINATED_FILER_IDS.has(registrant.filerId)) {
+      anomalies.push(`undocumented termination: ${registrant.fullName} filer ${registrant.filerId}`);
+    }
     if (!inCycle && !DOCUMENTED_EMPTY_CYCLE_FILER_IDS.has(registrant.filerId)) {
       anomalies.push(`undocumented cycle-list gap: ${registrant.fullName} filer ${registrant.filerId}`);
     }

@@ -89,7 +89,13 @@ describe("denverSearchlightClient", () => {
       pageNum: 2,
       pageSize: 500,
     });
-    expect(buildDenverTransactionSearchBody({ pageNum: 1, pageSize: 10 }).candidateName).toBeNull();
+    const defaults = buildDenverTransactionSearchBody({ pageNum: 1, pageSize: 10 });
+    expect(defaults.candidateName).toBeNull();
+    expect(defaults.contributionsToIds).toBeNull();
+    expect(
+      buildDenverTransactionSearchBody({ contributionsToIds: [658, 807], pageNum: 1, pageSize: 10 })
+        .contributionsToIds
+    ).toEqual([658, 807]);
     expect(() =>
       buildDenverTransactionSearchBody({ pageNum: 1, pageSize: DENVER_SEARCHLIGHT_MAX_PAGE_SIZE + 1 })
     ).toThrow(DenverSearchlightClientError);
@@ -204,6 +210,16 @@ describe("denverSearchlightClient", () => {
     await expect(getDenverFiler(658, { fetchImpl: badJson })).rejects.toMatchObject({ code: "bad_response" });
   });
 
+  it("rejects a response that declares a body over the size cap", async () => {
+    const oversized = vi.fn().mockResolvedValue(
+      new Response("{}", {
+        status: 200,
+        headers: { "content-length": String(33 * 1024 * 1024) },
+      })
+    );
+    await expect(getDenverFiler(658, { fetchImpl: oversized })).rejects.toMatchObject({ code: "bad_response" });
+  });
+
   it("maps the filer identity record", async () => {
     const fetchImpl = vi.fn().mockResolvedValue(
       jsonResponse({
@@ -288,13 +304,11 @@ describe("denverSearchlightClient", () => {
       { code: "bad_response" }
     );
 
-    const endless = vi
-      .fn()
-      .mockResolvedValue(
-        jsonResponse(
-          contributionResponse([rawContributionRow({ transactionId: 9 }), rawContributionRow({ transactionId: 10 })], 999, 999)
-        )
-      );
+    const endless = vi.fn().mockImplementation(async () =>
+      jsonResponse(
+        contributionResponse([rawContributionRow({ transactionId: 9 }), rawContributionRow({ transactionId: 10 })], 999, 999)
+      )
+    );
     await expect(
       sweepDenverContributionTransactions({}, { fetchImpl: endless, pageSize: 2, maxPages: 3 })
     ).rejects.toMatchObject({ code: "bad_response" });

@@ -6,7 +6,7 @@ Follow the launch checklist in the `voteapp-new-state-finance-checklist` memory 
 
 ## Phase 0 status — COMPLETE (2026-08-12, this branch)
 
-`npm run denver-candidates:finance:probe` (`backend/src/scripts/probeDenverCandidateFinance.ts`, client in `backend/src/pipeline/denverFinance/denverSearchlightClient.ts`) ran live against SearchLight. **All 13 gates pass**: the six pinned fixtures reproduce cent-exact through the typed client, all outside spenders resolve to type-3 ids, identity/pagination/PII gates hold, and the filed-report reconciliation is exact. Live findings the build phases must carry:
+`npm run denver-candidates:finance:probe` (`backend/src/scripts/probeDenverCandidateFinance.ts`, client in `backend/src/pipeline/denverFinance/denverSearchlightClient.ts`) ran live against SearchLight. **All 14 gates pass**: the six pinned fixtures reproduce cent-exact through the typed client, all outside spenders resolve to type-3 ids, identity/pagination/PII gates hold, the broken `contributionsToIds` filter is pinned (a FAIL means the vendor fixed it — revisit the filter choice), and the filed-report reconciliation is exact. The client keeps its timeout armed through the body read and caps response size at 32 MB (headers + decoded length). The registration gate is id-keyed: filer-id echo, committee-on-filer membership, termination status, and exact anomaly identities (a third same-name registration fails the gate). Live findings the build phases must carry:
 
 1. **The filings endpoint is filer-scoped, not entity-scoped.** `GetCampaignFilingByCommittee?committeeId=641` and `?committeeId=807` return the identical filing set for filer 658. Query once per filer; summing across entity-id queries double-counts (the probe pins set-equality as a gate).
 2. **`filingTypeId=5` also returns event-based "Major Contributions Report" rows with `filingPeriodId: null`.** They are early disclosures of money that also appears on period reports — excluded from reconciliation (San Diego's F497 rule). `selectLatestDenverFilings` rejects null-period input; callers filter first.
@@ -119,7 +119,7 @@ Copy-adapt templates:
   5. Filed-report reconciliation: 2–3 report summaries (latest version per period) reconcile against API totals; cash-on-hand source decided here.
   6. Registration mapping: every cycle-36 registrant maps to exactly one committee **or** carries an explicit documented anomaly (the Monica Martinez duplicate and the 1329/1330 empty-cycle filers must surface).
   7. PII redaction: sanitizer strips street addresses from artifacts/fixtures; a test proves no persisted probe output contains `address1` content.
-  8. `SearchExpenditureTransactions` body + `contributionsToIds` behavior pinned.
+  8. `SearchExpenditureTransactions` body pinned; `contributionsToIds` pinned as returning zero rows (vendor bug) so a vendor fix fails the probe loudly.
 - **Phase 1 — schema + writer.** Migration for the five `denver_` tables; SJ-pattern writer (manual-link protection) + writer tests.
 - **Phase 2 — resolver + links.** Cycle-candidate mapping resolver, auto-link, anomaly fail-closed rules.
 - **Phase 3 — aggregation + sync.** Totals per the semantics section, occupation/size buckets, outside groups with id resolution, `direct_coverage_note` (FEF disclosure), sync + due-list + scheduler, flags, source label, ballot-lookup loader.

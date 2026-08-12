@@ -16,6 +16,8 @@
 
 export const DENVER_SEARCHLIGHT_BASE_URL = "https://denver.maplight.com";
 export const DENVER_SEARCHLIGHT_DEFAULT_TIMEOUT_MS = 30_000;
+// An 8,000-row transaction page is ~6 MB; anything past this is drift, not data.
+export const DENVER_SEARCHLIGHT_MAX_RESPONSE_BYTES = 32 * 1024 * 1024;
 export const DENVER_SEARCHLIGHT_DEFAULT_PAGE_SIZE = 1_000;
 // Verified live 2026-08-12: a 7,978-row cycle returns in one page at 8,000.
 export const DENVER_SEARCHLIGHT_MAX_PAGE_SIZE = 8_000;
@@ -154,47 +156,81 @@ async function fetchSearchlightJson(
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
-  let response: Response;
+  // The timeout stays armed through the BODY read, not just the headers — a
+  // stalled body would otherwise hang the caller with no clock running.
   try {
-    response = await (options.fetchImpl ?? fetch)(url, {
-      method: init.method,
-      headers:
-        init.method === "POST"
-          ? { accept: "application/json", "content-type": "application/json" }
-          : { accept: "application/json" },
-      ...(init.method === "POST" ? { body: JSON.stringify(init.body) } : {}),
-      signal: controller.signal,
-    });
-  } catch (error) {
-    if (isAbortError(error)) {
+    let response: Response;
+    try {
+      response = await (options.fetchImpl ?? fetch)(url, {
+        method: init.method,
+        headers:
+          init.method === "POST"
+            ? { accept: "application/json", "content-type": "application/json" }
+            : { accept: "application/json" },
+        ...(init.method === "POST" ? { body: JSON.stringify(init.body) } : {}),
+        signal: controller.signal,
+      });
+    } catch (error) {
+      if (isAbortError(error)) {
+        throw new DenverSearchlightClientError(
+          "network_error",
+          `Denver SearchLight request timed out after ${timeoutMs}ms for ${url}`
+        );
+      }
       throw new DenverSearchlightClientError(
         "network_error",
-        `Denver SearchLight request timed out after ${timeoutMs}ms for ${url}`
+        `Denver SearchLight request failed for ${url}: ${error instanceof Error ? error.message : String(error)}`
       );
     }
-    throw new DenverSearchlightClientError(
-      "network_error",
-      `Denver SearchLight request failed for ${url}: ${error instanceof Error ? error.message : String(error)}`
-    );
+
+    if (!response.ok) {
+      throw new DenverSearchlightClientError(
+        "http_error",
+        `Denver SearchLight request failed for ${url}: ${response.status} ${response.statusText}`,
+        response.status
+      );
+    }
+
+    const declaredLength = Number(response.headers.get("content-length") ?? "0");
+    if (Number.isFinite(declaredLength) && declaredLength > DENVER_SEARCHLIGHT_MAX_RESPONSE_BYTES) {
+      throw new DenverSearchlightClientError(
+        "bad_response",
+        `Denver SearchLight response for ${url} declares ${declaredLength} bytes, over the ${DENVER_SEARCHLIGHT_MAX_RESPONSE_BYTES} cap`
+      );
+    }
+
+    let text: string;
+    try {
+      text = await response.text();
+    } catch (error) {
+      if (isAbortError(error)) {
+        throw new DenverSearchlightClientError(
+          "network_error",
+          `Denver SearchLight body read timed out after ${timeoutMs}ms for ${url}`
+        );
+      }
+      throw new DenverSearchlightClientError(
+        "network_error",
+        `Denver SearchLight body read failed for ${url}: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+    if (text.length > DENVER_SEARCHLIGHT_MAX_RESPONSE_BYTES) {
+      throw new DenverSearchlightClientError(
+        "bad_response",
+        `Denver SearchLight response for ${url} is ${text.length} characters, over the ${DENVER_SEARCHLIGHT_MAX_RESPONSE_BYTES} cap`
+      );
+    }
+
+    try {
+      return JSON.parse(text) as unknown;
+    } catch (error) {
+      throw new DenverSearchlightClientError(
+        "bad_response",
+        `Denver SearchLight response was not valid JSON for ${url}: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
   } finally {
     clearTimeout(timeout);
-  }
-
-  if (!response.ok) {
-    throw new DenverSearchlightClientError(
-      "http_error",
-      `Denver SearchLight request failed for ${url}: ${response.status} ${response.statusText}`,
-      response.status
-    );
-  }
-
-  try {
-    return await response.json();
-  } catch (error) {
-    throw new DenverSearchlightClientError(
-      "bad_response",
-      `Denver SearchLight response was not valid JSON for ${url}: ${error instanceof Error ? error.message : String(error)}`
-    );
   }
 }
 
@@ -673,6 +709,13 @@ export async function getDenverFilingSummary(
 export type DenverTransactionSearchFilter = {
   candidateName?: string | null;
   electionCycleIds?: readonly number[] | null;
+  /**
+   * Recipient id filter. Verified live 2026-08-12: the server returns ZERO
+   * rows for both filer ids and committee entity ids — the filter is broken
+   * vendor-side. Exposed so the probe can pin that behavior; production
+   * filtering uses candidateName + hard entity-id row checks instead.
+   */
+  contributionsToIds?: readonly number[] | null;
   pageNum: number;
   pageSize: number;
 };
@@ -694,6 +737,10 @@ export function buildDenverTransactionSearchBody(
     filter.electionCycleIds && filter.electionCycleIds.length > 0
       ? filter.electionCycleIds.map((id) => requirePositiveInteger(id, "search electionCycleIds entry"))
       : null;
+  const contributionsToIds =
+    filter.contributionsToIds && filter.contributionsToIds.length > 0
+      ? filter.contributionsToIds.map((id) => requirePositiveInteger(id, "search contributionsToIds entry"))
+      : null;
   return {
     ballotIssue: null,
     candidateName,
@@ -701,7 +748,7 @@ export function buildDenverTransactionSearchBody(
     committeePosition: null,
     contributionsFrom: null,
     contributionsFromCityStateCode: null,
-    contributionsToIds: null,
+    contributionsToIds,
     electionCycleIds,
     isBallotIssue: false,
     isCandidate: false,
