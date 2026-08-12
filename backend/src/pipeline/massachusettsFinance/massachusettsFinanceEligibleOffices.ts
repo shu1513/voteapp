@@ -292,14 +292,82 @@ export function normalizeMassachusettsOcpfOfficeLabel(value: string | null | und
   return normalized ? normalized : null;
 }
 
+// Word-ordinal lookup for canonicalizing district names. Our catalog names
+// Senate districts with word ordinals ("Third Suffolk District (2024);
+// Massachusetts") while OCPF filer labels use numeric ordinals and ampersands
+// ("Senate, 3rd Suffolk", "Senate, 1st Essex & Middlesex"). Both sides reduce
+// to the same bare-number county-list form ("3 SUFFOLK", "1 ESSEX MIDDLESEX").
+// Validated against the full inventory (2026): all 200 MA legislative
+// districts canonicalize uniquely per chamber, and every current-district
+// OCPF label maps onto exactly one catalog row (the only misses are filers
+// still carrying pre-2021-redistricting office labels, which name districts
+// that no longer exist).
+const MASSACHUSETTS_WORD_ORDINALS = new Map<string, string>([
+  ["FIRST", "1"],
+  ["SECOND", "2"],
+  ["THIRD", "3"],
+  ["FOURTH", "4"],
+  ["FIFTH", "5"],
+  ["SIXTH", "6"],
+  ["SEVENTH", "7"],
+  ["EIGHTH", "8"],
+  ["NINTH", "9"],
+  ["TENTH", "10"],
+  ["ELEVENTH", "11"],
+  ["TWELFTH", "12"],
+  ["THIRTEENTH", "13"],
+  ["FOURTEENTH", "14"],
+  ["FIFTEENTH", "15"],
+  ["SIXTEENTH", "16"],
+  ["SEVENTEENTH", "17"],
+  ["EIGHTEENTH", "18"],
+  ["NINETEENTH", "19"],
+  ["TWENTIETH", "20"],
+]);
+
+const MASSACHUSETTS_WORD_ORDINAL_TENS = new Map<string, number>([
+  ["TWENTY", 20],
+  ["THIRTY", 30],
+]);
+
+const SIMPLE_WORD_ORDINAL_PATTERN = [...MASSACHUSETTS_WORD_ORDINALS.keys()].join("|");
+const WORD_ORDINAL_TENS_PATTERN = [...MASSACHUSETTS_WORD_ORDINAL_TENS.keys()].join("|");
+
 export function normalizeMassachusettsOcpfDistrict(value: string | null | undefined): string | null {
+  if (!value) {
+    return null;
+  }
   const normalized = value
-    ?.trim()
-    .replace(/[.,]/g, " ")
-    .replace(/\b(?:DISTRICT|DIST)\b/gi, " ")
+    .toUpperCase()
+    // "(2024)" catalog vintage markers.
+    .replace(/\([^)]*\)/g, " ")
+    // Catalog names end "; Massachusetts" — everything after the first
+    // semicolon is state suffix, never district identity.
+    .split(";")[0]!
+    // Punctuation, ampersands, and hyphens all join county lists; spaces
+    // make the list-joiner style irrelevant.
+    .replace(/[.,&/-]/g, " ")
+    .replace(/\b(?:DISTRICT|DIST)\b/g, " ")
+    // "AND" is a pure list joiner too ("Middlesex and Norfolk" ==
+    // "Middlesex & Norfolk"); it never distinguishes two districts.
+    .replace(/\bAND\b/g, " ")
     .replace(/\s+/g, " ")
     .trim()
-    .toUpperCase();
+    // Compound word ordinals first ("TWENTY FIRST" -> "21")...
+    .replace(
+      new RegExp(`\\b(${WORD_ORDINAL_TENS_PATTERN}) (${SIMPLE_WORD_ORDINAL_PATTERN})\\b`, "g"),
+      (_match, tens: string, ones: string) =>
+        String(MASSACHUSETTS_WORD_ORDINAL_TENS.get(tens)! + Number(MASSACHUSETTS_WORD_ORDINALS.get(ones)!))
+    )
+    // ...then simple ones ("THIRD" -> "3")...
+    .replace(
+      new RegExp(`\\b(${SIMPLE_WORD_ORDINAL_PATTERN})\\b`, "g"),
+      (match) => MASSACHUSETTS_WORD_ORDINALS.get(match)!
+    )
+    // ...and numeric ordinal suffixes ("3RD" -> "3") so both styles agree.
+    .replace(/\b(\d+)(?:ST|ND|RD|TH)\b/g, "$1")
+    .replace(/\s+/g, " ")
+    .trim();
   return normalized ? normalized : null;
 }
 

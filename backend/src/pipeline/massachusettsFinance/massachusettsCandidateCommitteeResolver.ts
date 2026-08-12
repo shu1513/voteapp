@@ -180,7 +180,9 @@ function isCandidateFilerUsable(filer: MassachusettsOcpfCandidateFiler): boolean
     return false;
   }
   const accountType = statusText(`${filer.accountTypeCode ?? ""} ${filer.accountTypeDescription ?? ""}`);
-  if (accountType && !/\b(CANDIDATE|DEPOSITORY)\b/.test(accountType)) {
+  // Statewide filers are "Depository Candidate"; legislative filers are
+  // "Legislative Candidates" (plural — \bCANDIDATE\b alone rejects them all).
+  if (accountType && !/\b(CANDIDATE|CANDIDATES|DEPOSITORY)\b/.test(accountType)) {
     return false;
   }
   return true;
@@ -311,6 +313,23 @@ export function resolveMassachusettsCandidateCommittee(
   };
 }
 
+// Last-name search token: OCPF's filer search requires every phrase token to
+// match, so a roster middle initial OCPF does not store ("Karen E. Spilka")
+// returns zero rows while "Spilka" finds the filer. The surname alone recalls
+// every relevant row; the strict name-key match (with the middle-name veto)
+// and office/district gates then decide, and ambiguity still fails closed —
+// same recall-vs-precision split as Georgia's surname-token fetch.
+export function massachusettsLastNameSearchToken(candidateName: string): string | null {
+  const trimmed = candidateName.trim();
+  if (trimmed.includes(",")) {
+    const commaSurname = normalizePersonName(trimmed.split(",", 1)[0]);
+    if (commaSurname) {
+      return commaSurname;
+    }
+  }
+  return normalizePersonName(trimmed).split(/\s+/).filter(Boolean).at(-1) ?? null;
+}
+
 export async function searchAndResolveMassachusettsCandidateCommittee(
   input: MassachusettsCandidateCommitteeSearchInput,
   options: MassachusettsOcpfClientOptions = {}
@@ -324,11 +343,17 @@ export async function searchAndResolveMassachusettsCandidateCommittee(
     return resolveMassachusettsCandidateCommittee({ ...input, filers: [] });
   }
 
-  const filers = await searchMassachusettsOcpfCandidateFilers(
+  let filers = await searchMassachusettsOcpfCandidateFilers(
     {
       searchPhrase: input.candidateName,
     },
     options
   );
+  if (filers.length === 0) {
+    const surnameToken = massachusettsLastNameSearchToken(input.candidateName);
+    if (surnameToken && surnameToken !== input.candidateName.trim().toUpperCase()) {
+      filers = await searchMassachusettsOcpfCandidateFilers({ searchPhrase: surnameToken }, options);
+    }
+  }
   return resolveMassachusettsCandidateCommittee({ ...input, filers });
 }

@@ -184,6 +184,73 @@ describe("massachusettsCandidateCommitteeResolver", () => {
     });
   });
 
+  it("matches legislative filers from catalog district names (auto-link shape)", () => {
+    // Auto-link passes the catalog district NAME ("Middlesex and Norfolk
+    // District (2024); Massachusetts"); OCPF labels the same district
+    // "Senate, Middlesex and Norfolk". Word-ordinal catalog names must also
+    // meet numeric OCPF labels ("Third Suffolk" vs "3rd Suffolk").
+    expect(
+      resolveMassachusettsCandidateCommittee({
+        candidateName: "Karen Spilka",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        electionYear: 2026,
+        district: "Middlesex and Norfolk District (2024); Massachusetts",
+        filers: [
+          filer({
+            cpfId: "13758",
+            filerName: "Karen Spilka",
+            filerNameReverse: "Spilka, Karen",
+            committeeName: "Spilka Committee",
+            officeSought: "Senate, Middlesex and Norfolk",
+            // Live legislative account type (plural — regression guard for
+            // the \bCANDIDATE\b filter that rejected every legislative filer).
+            accountTypeCode: undefined,
+            accountTypeDescription: "Legislative Candidates",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", candidateCpfId: "13758" });
+    expect(
+      resolveMassachusettsCandidateCommittee({
+        candidateName: "Aaron Michlewitz",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        electionYear: 2026,
+        district: "Third Suffolk District (2024); Massachusetts",
+        filers: [
+          filer({
+            cpfId: "14100",
+            filerName: "Aaron Michlewitz",
+            filerNameReverse: "Michlewitz, Aaron",
+            committeeName: "Michlewitz Committee",
+            officeSought: "House, 3rd Suffolk",
+            accountTypeCode: undefined,
+            accountTypeDescription: "Legislative Candidates",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", candidateCpfId: "14100" });
+    // A filer still carrying a pre-redistricting district label stays
+    // unmatched rather than guessing.
+    expect(
+      resolveMassachusettsCandidateCommittee({
+        candidateName: "Jane Doe",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        electionYear: 2026,
+        district: "Norfolk-Plymouth-Bristol District (2024); Massachusetts",
+        filers: [
+          filer({
+            cpfId: "20003",
+            filerName: "Doe, Jane",
+            officeSought: "Senate, Norfolk, Bristol & Middlesex",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+  });
+
   it("requires districts for legislative offices", () => {
     expect(
       resolveMassachusettsCandidateCommittee({
@@ -347,6 +414,50 @@ describe("massachusettsCandidateCommitteeResolver", () => {
     const requestUrl = new URL(String(vi.mocked(fetchImpl).mock.calls[0]?.[0]));
     expect(requestUrl.origin + requestUrl.pathname).toBe("https://api.ocpf.us/filers/listings/A");
     expect(requestUrl.searchParams.get("searchPhrase")).toBe("Maura Healey");
+  });
+
+  it("falls back to a surname search when the full-name phrase returns nothing", async () => {
+    // OCPF requires every phrase token to match: "Karen E. Spilka" (roster
+    // middle initial) returns zero rows, "Spilka" finds the filer. The strict
+    // name-key/office/district gates still decide after the broad recall.
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse([]))
+      .mockResolvedValueOnce(
+        jsonResponse([
+          {
+            cpfId: 13758,
+            filerName: "Karen Spilka",
+            filerNameReverse: "Spilka, Karen",
+            committeeName: "Spilka Committee",
+            officeSought: "Senate, Middlesex and Norfolk",
+            accountTypeDescription: "Legislative Candidates",
+            isCandidate: true,
+            isActive: true,
+          },
+        ])
+      ) as unknown as typeof fetch;
+
+    await expect(
+      searchAndResolveMassachusettsCandidateCommittee(
+        {
+          candidateName: "Karen E. Spilka",
+          officeScope: "state_upper",
+          officeName: "State Senator",
+          electionYear: 2026,
+          district: "Middlesex and Norfolk District (2024); Massachusetts",
+        },
+        { fetchImpl, timeoutMs: 1000 }
+      )
+    ).resolves.toMatchObject({
+      status: "matched",
+      candidateCpfId: "13758",
+    });
+
+    const calls = vi.mocked(fetchImpl).mock.calls;
+    expect(calls).toHaveLength(2);
+    expect(new URL(String(calls[0]?.[0])).searchParams.get("searchPhrase")).toBe("Karen E. Spilka");
+    expect(new URL(String(calls[1]?.[0])).searchParams.get("searchPhrase")).toBe("SPILKA");
   });
 
   // Fixtures mirror the live OCPF filer-search rows for "wu" (2026-08-10):

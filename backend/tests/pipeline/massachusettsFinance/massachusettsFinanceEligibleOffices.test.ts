@@ -75,9 +75,30 @@ describe("massachusettsFinanceEligibleOffices", () => {
     expect(normalizeMassachusettsOcpfOfficeLabel(" Statewide,   Governor ")).toBe("STATEWIDE GOVERNOR");
     expect(normalizeMassachusettsOcpfOfficeLabel("Statewide, Lt. Governor.")).toBe("STATEWIDE LT GOVERNOR");
     expect(normalizeMassachusettsOcpfOfficeLabel("   ")).toBeNull();
-    expect(normalizeMassachusettsOcpfDistrict(" 3rd   Suffolk District ")).toBe("3RD SUFFOLK");
-    expect(normalizeMassachusettsOcpfDistrict("2nd Bristol & Plymouth")).toBe("2ND BRISTOL & PLYMOUTH");
+    expect(normalizeMassachusettsOcpfDistrict(" 3rd   Suffolk District ")).toBe("3 SUFFOLK");
+    expect(normalizeMassachusettsOcpfDistrict("2nd Bristol & Plymouth")).toBe("2 BRISTOL PLYMOUTH");
     expect(normalizeMassachusettsOcpfDistrict("   ")).toBeNull();
+    // Catalog district names and OCPF filer labels canonicalize to the same
+    // bare-number county-list form — this equality is what auto-link relies
+    // on for every legislative candidate.
+    expect(normalizeMassachusettsOcpfDistrict("Third Suffolk District (2024); Massachusetts")).toBe(
+      normalizeMassachusettsOcpfDistrict("3rd Suffolk")
+    );
+    expect(normalizeMassachusettsOcpfDistrict("First Essex and Middlesex District (2024); Massachusetts")).toBe(
+      normalizeMassachusettsOcpfDistrict("1st Essex & Middlesex")
+    );
+    expect(normalizeMassachusettsOcpfDistrict("Middlesex and Norfolk District (2024); Massachusetts")).toBe(
+      normalizeMassachusettsOcpfDistrict("Middlesex and Norfolk")
+    );
+    // Hyphenated catalog names equal OCPF comma/ampersand county lists.
+    expect(normalizeMassachusettsOcpfDistrict("Berkshire-Hampden-Franklin-Hampshire District (2024); Massachusetts")).toBe(
+      normalizeMassachusettsOcpfDistrict("Berkshire, Hampden, Franklin & Hampshire")
+    );
+    expect(normalizeMassachusettsOcpfDistrict("Thirty-Seventh Middlesex")).toBe("37 MIDDLESEX");
+    // Distinct districts stay distinct.
+    expect(normalizeMassachusettsOcpfDistrict("First Suffolk")).not.toBe(
+      normalizeMassachusettsOcpfDistrict("Second Suffolk")
+    );
   });
 
   it("maps safe OCPF statewide office labels to canonical app offices", () => {
@@ -112,7 +133,7 @@ describe("massachusettsFinanceEligibleOffices", () => {
       officeKey: "state_upper::State Senator",
       ocpfOffice: "Senate",
       requiresDistrict: true,
-      district: "2ND BRISTOL & PLYMOUTH",
+      district: "2 BRISTOL PLYMOUTH",
     });
     expect(mapMassachusettsOcpfOffice({ officeSought: "House, 3rd Suffolk" })).toEqual({
       officeScope: "state_lower",
@@ -120,7 +141,7 @@ describe("massachusettsFinanceEligibleOffices", () => {
       officeKey: "state_lower::State Lower Chamber Legislator",
       ocpfOffice: "House",
       requiresDistrict: true,
-      district: "3RD SUFFOLK",
+      district: "3 SUFFOLK",
     });
 
     expect(mapMassachusettsOcpfOffice({ officeSought: "Senate" })).toBeNull();
@@ -146,14 +167,14 @@ describe("massachusettsFinanceEligibleOffices", () => {
         officeCanonicalName: "State Senator",
         district: "2nd Bristol & Plymouth District",
       })
-    ).toEqual({ ocpfOffice: "Senate", district: "2ND BRISTOL & PLYMOUTH" });
+    ).toEqual({ ocpfOffice: "Senate", district: "2 BRISTOL PLYMOUTH" });
     expect(
       toMassachusettsOcpfOfficeSearchInput({
         officeScope: "state_lower",
         officeCanonicalName: "State Lower Chamber Legislator",
         district: "3rd Suffolk",
       })
-    ).toEqual({ ocpfOffice: "House", district: "3RD SUFFOLK" });
+    ).toEqual({ ocpfOffice: "House", district: "3 SUFFOLK" });
   });
 
   it("maps municipal OCPF labels for enabled cities with the city in the district slot", () => {
