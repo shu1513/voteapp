@@ -149,6 +149,68 @@ describe("standardStateFinanceBallotLookupLoader identity descriptor", () => {
     );
   });
 
+  it("exempts contribution_size from the direct-breakdown top-5 cap, and only there", async () => {
+    const queries = await captureQueries({});
+    const [, direct, ...rest] = queries as [string, string, string, string, string];
+
+    // All six size buckets must survive ranking; occupation keeps top-5.
+    expect(direct).toContain("WHERE rn <= 5 OR category_type = 'contribution_size'");
+    // The outside-spending queries are genuine top-N lists — no exemption.
+    for (const sql of rest) {
+      expect(sql).not.toContain("OR category_type = 'contribution_size'");
+    }
+  });
+
+  it("returns all six contribution-size buckets when a candidate populates every one", async () => {
+    // The Georgia-derived bucket scheme every shared-loader state clones —
+    // six buckets, so a top-5 cap would silently drop the smallest one.
+    // Rows arrive in the query's amount-DESC order.
+    const bucketRows = [
+      { category_name: "$5,000+", amount: "60000" },
+      { category_name: "$1,000-$4,999", amount: "25000" },
+      { category_name: "$500-$999", amount: "9000" },
+      { category_name: "$250-$499", amount: "4000" },
+      { category_name: "$100-$249", amount: "1500" },
+      { category_name: "$1-$99", amount: "300" },
+    ];
+    let calls = 0;
+    const query = vi.fn(async () => {
+      calls += 1;
+      if (calls === 1) {
+        return { rows: [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID, election_year: 2026 }] };
+      }
+      if (calls === 2) {
+        return {
+          rows: bucketRows.map((row) => ({
+            candidate_id: CANDIDATE_ID,
+            election_id: ELECTION_ID,
+            category_type: "contribution_size",
+            contributor_count: null,
+            source_url: null,
+            ...row,
+          })),
+        };
+      }
+      return { rows: [] };
+    });
+
+    const result = await loadStandardStateFinanceSummariesByCandidateElection({
+      db: { query },
+      candidateRows: [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID }],
+      electionRows: [{ election_id: ELECTION_ID, state: "WA" }],
+      state: "WA",
+      source: "WASHINGTON_PDC" as never,
+      sourceUrl: "https://www.pdc.wa.gov/",
+      enabled: () => true,
+      tables: TABLES,
+    });
+
+    const summary = result.get(`${CANDIDATE_ID}\u0000${ELECTION_ID}`);
+    expect(summary?.direct_campaign.contribution_size_buckets.map((bucket) => bucket.category_name)).toEqual(
+      bucketRows.map((row) => row.category_name)
+    );
+  });
+
   it.each([
     [undefined, "independent spending supporting this candidate"],
     ["PAC contributions supporting this candidate", "PAC contributions supporting this candidate"],
