@@ -211,6 +211,29 @@ describe("aggregateSanDiegoCityOutsideSpending dual-identity dedup", () => {
     });
   });
 
+  it("punctuation-only spender names never form a name edge (empty key proves nothing)", () => {
+    // The parser rejects blank Filer_NamL, but "!!!" survives it and
+    // normalizes to "" — two distinct spenders whose names both normalize
+    // empty must NOT merge (a false merge drops one expenditure).
+    const result = aggregate({
+      s496: [
+        s496({ eFilingId: "1", tranId: "T1", filerId: "9000001", filerName: "!!!", amountCents: 10_00 }),
+        s496({ eFilingId: "2", tranId: "T1", filerId: "9000002", filerName: "---", amountCents: 5_00 }),
+      ],
+    });
+    expect(result.opposeTotalCents).toBe(15_00);
+    expect(result.diagnostics.duplicateReportRowsExcluded).toBe(0);
+    // Same real id still merges even when both names normalize empty.
+    const sameId = aggregate({
+      s496: [
+        s496({ eFilingId: "1", rptDate: "2026-04-01", tranId: "T2", filerId: "9000003", filerName: "!!!", amountCents: 10_00 }),
+        s496({ eFilingId: "2", rptDate: "2026-05-01", tranId: "T2", filerId: "9000003", filerName: "---", amountCents: 12_00 }),
+      ],
+    });
+    expect(sameId.opposeTotalCents).toBe(12_00);
+    expect(sameId.diagnostics.duplicateReportRowsExcluded).toBe(1);
+  });
+
   it("two Pending committees sharing a Tran_ID are different spenders, never deduped against each other", () => {
     // Tran_IDs are committee-local; "Pending" is not an identity, and blank
     // ids never form an id edge.

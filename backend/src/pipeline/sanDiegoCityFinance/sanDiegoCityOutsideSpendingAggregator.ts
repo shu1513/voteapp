@@ -189,12 +189,16 @@ function dedupeLatestReports(rows: readonly OutsideRow[]): {
     // are a handful of rows, so quadratic scanning is fine).
     const components: OutsideRow[][] = [];
     for (const row of bucket) {
+      // A name edge needs an actual name: the parser rejects blank
+      // Filer_NamL but a punctuation-only value normalizes to "" — an empty
+      // key proves nothing shared, and matching on it would merge two
+      // distinct spenders and drop one expenditure.
       const rowName = normalizeSanDiegoCityTextKey(row.filerName);
       const linked = components.filter((component) =>
         component.some(
           (other) =>
             (row.filerId !== SAN_DIEGO_PENDING_FILER_ID && other.filerId === row.filerId) ||
-            normalizeSanDiegoCityTextKey(other.filerName) === rowName,
+            (rowName !== "" && normalizeSanDiegoCityTextKey(other.filerName) === rowName),
         ),
       );
       if (linked.length === 0) {
