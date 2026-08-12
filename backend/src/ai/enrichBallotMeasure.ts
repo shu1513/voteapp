@@ -7,7 +7,11 @@ import {
 } from "./researchProviderClient.js";
 import { normalizeHttpUrl } from "../utils/normalizeHttpUrl.js";
 import type { AiProvider } from "./types.js";
-import { buildBallotMeasuresPrompt } from "./providers/ballotMeasuresPrompt.js";
+import {
+  BALLOT_MEASURE_SUMMARY_MAX_LENGTH,
+  BALLOT_MEASURE_YES_NO_MAX_LENGTH,
+  buildBallotMeasuresPrompt,
+} from "./providers/ballotMeasuresPrompt.js";
 import {
   isTlsCertificateReachabilityFailure,
   verifyHttpUrlReachability,
@@ -183,6 +187,24 @@ export function parseBallotMeasureAiPayload(payload: unknown, allowedResearchAre
   const whatNoMeans = input.what_no_means.trim();
   if (summary.length === 0 || whatYesMeans.length === 0 || whatNoMeans.length === 0) {
     return { ok: false, reason: "summary/what_yes_means/what_no_means must be non-empty" };
+  }
+  if (summary.length > BALLOT_MEASURE_SUMMARY_MAX_LENGTH) {
+    return {
+      ok: false,
+      reason: `summary is ${summary.length} characters (max ${BALLOT_MEASURE_SUMMARY_MAX_LENGTH}) — voters skim it. Rewrite as at most 3-4 short plain sentences: the main change first, then key amounts and cost; cut everything else.`,
+    };
+  }
+  if (whatYesMeans.length > BALLOT_MEASURE_YES_NO_MAX_LENGTH) {
+    return {
+      ok: false,
+      reason: `what_yes_means is ${whatYesMeans.length} characters (max ${BALLOT_MEASURE_YES_NO_MAX_LENGTH}) — rewrite as 1-2 short plain sentences stating what concretely changes if YES wins.`,
+    };
+  }
+  if (whatNoMeans.length > BALLOT_MEASURE_YES_NO_MAX_LENGTH) {
+    return {
+      ok: false,
+      reason: `what_no_means is ${whatNoMeans.length} characters (max ${BALLOT_MEASURE_YES_NO_MAX_LENGTH}) — rewrite as 1-2 short plain sentences stating what concretely stays or changes if NO wins.`,
+    };
   }
 
   const sources: string[] = [];

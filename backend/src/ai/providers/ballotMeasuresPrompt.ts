@@ -1,5 +1,12 @@
 import { PLAIN_LANGUAGE_STYLE_RULES } from "./promptWritingStyle.js";
 
+// Length caps enforced by parseBallotMeasureAiPayload (enrichBallotMeasure.ts).
+// Defined here (not there) because that module imports this one. Voters skim
+// measure text on the contest page: summary gets 3-4 short sentences for the
+// main change plus amounts/costs; yes/no meanings get 1-2 sentences each.
+export const BALLOT_MEASURE_SUMMARY_MAX_LENGTH = 500;
+export const BALLOT_MEASURE_YES_NO_MAX_LENGTH = 250;
+
 export type BallotMeasurePromptInput = {
   districtName: string;
   districtType: string;
@@ -53,7 +60,9 @@ export function buildBallotMeasuresPrompt(input: BallotMeasurePromptInput): stri
     "- Actively search the public web for this measure.",
     "- official_measure_url must point to the source where a reader can view the full official measure text in its entirety (for example, the election authority's official measure page or official PDF text).",
     "- summary must be a neutral, concise plain-language summary of the measure’s real-world policy impact if enacted — open with one short sentence stating the main change in everyday words, then give the specifics (amounts, rates, durations, who is affected), not just the topic.",
+    `- summary must be at most 3-4 short sentences and at most ${BALLOT_MEASURE_SUMMARY_MAX_LENGTH} characters — voters skim it; cut anything beyond the main change, key amounts, and cost.`,
     "- what_yes_means and what_no_means must be concrete and neutral: state what actually changes in the real world (who pays or gets what, which rule takes effect), never a restatement like 'adopts the measure' or 'the changes described'.",
+    `- what_yes_means and what_no_means must each be at most 1-2 short sentences and at most ${BALLOT_MEASURE_YES_NO_MAX_LENGTH} characters.`,
     "- If the measure has a cost, include the money in the summary: what it costs the government to do (for example, total bond amount or project cost) and what it costs taxpayers (for example, tax rate change or estimated cost per household per year). Use the official fiscal estimate when one exists, and include only figures your sources state — never derive or estimate a missing figure yourself.",
     "- research_area_tags describes the likely policy effect if YES wins / the measure passes.",
     '- For research_area_tags, "for" means the YES outcome advances that research area’s goal.',

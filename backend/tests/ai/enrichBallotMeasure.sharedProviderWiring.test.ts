@@ -246,6 +246,103 @@ describe("enrichBallotMeasure shared provider wiring", () => {
     });
   });
 
+  it("rejects over-cap summary and yes/no meanings with rewrite guidance", async () => {
+    const { validateBallotMeasureAiPayload } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const base = {
+      official_measure_url: "https://example.org/measure-er.pdf",
+      summary: "County measure to increase sales tax for public health services.",
+      what_yes_means: "Approves a county sales tax increase for health services.",
+      what_no_means: "Keeps current tax rates and funding levels.",
+      research_area_tags: [{ research_area_slug: "healthcare_affordability", stance: "for" }],
+      sources: ["https://example.org/measure-er.pdf"],
+    };
+
+    const longSummary = await validateBallotMeasureAiPayload(
+      { ...base, summary: "x".repeat(501) },
+      1000,
+      new Set(["healthcare_affordability"])
+    );
+    expect(longSummary.ok).toBe(false);
+    if (!longSummary.ok) {
+      expect(longSummary.reason).toContain("summary is 501 characters (max 500)");
+      expect(longSummary.reason).toContain("3-4 short plain sentences");
+    }
+
+    const longYes = await validateBallotMeasureAiPayload(
+      { ...base, what_yes_means: "y".repeat(251) },
+      1000,
+      new Set(["healthcare_affordability"])
+    );
+    expect(longYes.ok).toBe(false);
+    if (!longYes.ok) {
+      expect(longYes.reason).toContain("what_yes_means is 251 characters (max 250)");
+    }
+
+    const longNo = await validateBallotMeasureAiPayload(
+      { ...base, what_no_means: "n".repeat(251) },
+      1000,
+      new Set(["healthcare_affordability"])
+    );
+    expect(longNo.ok).toBe(false);
+    if (!longNo.ok) {
+      expect(longNo.reason).toContain("what_no_means is 251 characters (max 250)");
+    }
+  });
+
+  it("feeds the length-cap failure back to the model on retry", async () => {
+    callResearchProviderMock
+      .mockResolvedValueOnce({
+        ok: true,
+        parsed: {
+          official_measure_url: "https://example.org/measure-er.pdf",
+          summary: "x".repeat(501),
+          what_yes_means: "Approves a county sales tax increase for health services.",
+          what_no_means: "Keeps current tax rates and funding levels.",
+          research_area_tags: [{ research_area_slug: "healthcare_affordability", stance: "for" }],
+          sources: ["https://example.org/measure-er.pdf"],
+        },
+        rawText: "{}",
+        debugMeta: {},
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        parsed: {
+          official_measure_url: "https://example.org/measure-er.pdf",
+          summary: "County measure to increase sales tax for public health services.",
+          what_yes_means: "Approves a county sales tax increase for health services.",
+          what_no_means: "Keeps current tax rates and funding levels.",
+          research_area_tags: [{ research_area_slug: "healthcare_affordability", stance: "for" }],
+          sources: ["https://example.org/measure-er.pdf"],
+        },
+        rawText: "{}",
+        debugMeta: {},
+      });
+
+    const { enrichBallotMeasure } = await import("../../src/ai/enrichBallotMeasure.ts");
+    const result = await enrichBallotMeasure(
+      {
+        districtName: "Los Angeles County, California",
+        districtType: "county",
+        state: "CA",
+        electionDate: "2026-06-02",
+        officialBallotTitle: "Measure ER",
+        seedUrls: [],
+        allowedResearchAreaSlugs: ["healthcare_affordability"],
+      },
+      {
+        timeoutMs: 1000,
+        openAiApiKey: "test-openai-key",
+      },
+      [{ provider: "openai", model: "gpt-5.4-mini" }]
+    );
+
+    expect(callResearchProviderMock).toHaveBeenCalledTimes(2);
+    expect(callResearchProviderMock.mock.calls[1]?.[1]).toContain(
+      "Fix this validation issue: summary is 501 characters (max 500)"
+    );
+    expect(result.ok).toBe(true);
+  });
+
   it("rejects manual ballot-measure payloads with unknown research-area slugs", async () => {
     const { validateBallotMeasureAiPayload } = await import("../../src/ai/enrichBallotMeasure.ts");
     const result = await validateBallotMeasureAiPayload(
