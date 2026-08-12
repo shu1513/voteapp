@@ -360,4 +360,38 @@ describe("San José candidate finance sync", () => {
     expect(result.totalRaisedCents).toBe(50_000);
     expect(connect).not.toHaveBeenCalled();
   });
+
+  it("applies only this election's paper-496 supplements to outside totals", async () => {
+    const { db } = makeDb();
+    const supplement = {
+      electionYear: 2026,
+      spenderFilerId: "941786",
+      spenderName: "Some Paper PAC",
+      candidateLastName: "Doe",
+      candidateFirstName: "Jane",
+      officeCd: "CCM" as const,
+      jurisDscr: "City of San Jose",
+      distNo: "5",
+      direction: "OPPOSE" as const,
+      amountCents: 5270_27,
+      expenditureDate: "2026-05-11",
+      eFilingId: "24823",
+      sourceNote: "test",
+    };
+    const result = await syncSanJoseCandidateFinance({
+      db: db as never,
+      ...syncInput,
+      workbook: healthyWorkbook(),
+      dryRun: true,
+      paperSupplements: [
+        supplement,
+        // A different cycle's entry must never leak into 2026 totals.
+        { ...supplement, electionYear: 2028, eFilingId: "99999" },
+      ],
+    });
+    expect(result.outsideOpposeCents).toBe(5270_27);
+    // The e-filed support row from healthyWorkbook is untouched.
+    expect(result.outsideSupportCents).toBe(12_345);
+    expect(result.outsideGroupCount).toBe(2);
+  });
 });

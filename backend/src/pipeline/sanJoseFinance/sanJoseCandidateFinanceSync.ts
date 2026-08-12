@@ -56,6 +56,10 @@ import {
 } from "./sanJoseOutsideSpendingAggregator.js";
 import { normalizeSanJoseTextKey } from "./sanJoseCandidateCommitteeResolver.js";
 import {
+  SAN_JOSE_PAPER_496_SUPPLEMENTS,
+  type SanJosePaper496Supplement,
+} from "./sanJosePaperFilingSupplements.js";
+import {
   replaceSanJoseCandidateFinanceSnapshot,
   type SanJoseDirectBreakdownInput,
 } from "./sanJoseFinanceWriter.js";
@@ -257,6 +261,8 @@ export async function syncSanJoseCandidateFinance(input: {
   workbook: EfileCalWorkbook;
   /** Operator override for the previous-vs-new anomaly bound only. */
   bypassAnomalyCheck?: boolean;
+  /** Test seam; defaults to the shipped curated list. */
+  paperSupplements?: readonly SanJosePaper496Supplement[];
   dryRun?: boolean;
   now?: Date;
 }): Promise<SanJoseCandidateFinanceSyncResult> {
@@ -348,7 +354,8 @@ export async function syncSanJoseCandidateFinance(input: {
       "it began that period with money from earlier activity that is not in the city's e-filing export.";
   }
 
-  // --- Outside spending. ---
+  // --- Outside spending. Paper 496s are invisible to the bulk export, so
+  // curated supplements for THIS election's cycle join the export rows here.
   const outside = aggregateSanJoseOutsideSpending({
     candidate: {
       displayName: input.candidateDisplayName,
@@ -357,6 +364,9 @@ export async function syncSanJoseCandidateFinance(input: {
     },
     s496: workbook.s496,
     scheduleD: workbook.scheduleD,
+    paperSupplements: (
+      input.paperSupplements ?? SAN_JOSE_PAPER_496_SUPPLEMENTS
+    ).filter((entry) => entry.electionYear === input.electionYear),
   });
 
   // --- Previous-vs-new anomaly bounds (baseline = THIS committee's active

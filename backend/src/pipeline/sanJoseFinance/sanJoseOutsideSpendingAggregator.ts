@@ -44,6 +44,10 @@ import {
   normalizeSanJoseTextKey,
   sanJosePersonNameMatchesCandidate,
 } from "./sanJoseCandidateCommitteeResolver.js";
+import {
+  validateSanJosePaper496Supplements,
+  type SanJosePaper496Supplement,
+} from "./sanJosePaperFilingSupplements.js";
 
 export type SanJoseOutsideTargetCandidate = {
   displayName: string;
@@ -87,6 +91,8 @@ export type SanJoseOutsideSpendingAggregate = {
     /** Supp_Opp_Cd was not SUPPORT/OPPOSE — direction never guessed. */
     unknownDirectionRows: number;
     unknownDirectionCents: number;
+    /** Curated paper-496 entries fed in (pre-filter; most target OTHER candidates). */
+    paperSupplementRows: number;
   };
 };
 
@@ -191,6 +197,11 @@ export function aggregateSanJoseOutsideSpending(input: {
   /** Concatenated rows from every calendar-year workbook the cycle spans. */
   s496: readonly EfileCalS496Row[];
   scheduleD: readonly EfileCalScheduleDRow[];
+  /**
+   * Curated paper-496 entries for THIS cycle (sync filters by election year).
+   * They run through the same target-match and veto pipeline as export rows.
+   */
+  paperSupplements?: readonly SanJosePaper496Supplement[];
 }): SanJoseOutsideSpendingAggregate {
   const { candidate } = input;
   if (candidate.officeName === "City Council Member" && candidate.seatNumber === null) {
@@ -241,6 +252,27 @@ export function aggregateSanJoseOutsideSpending(input: {
     .filter((row) => !s496Keys.has(rowKey(row)));
   const dedupedAdded = dedupeLatestReports(dOnlyRows);
 
+  // --- Curated paper filings: synthetic rows with a "paper-496-" Tran_ID
+  // namespace, so they can never collide with (or be deduped against) export
+  // rows; validation already rejected duplicates within the list itself.
+  const paperSupplements = input.paperSupplements ?? [];
+  validateSanJosePaper496Supplements(paperSupplements);
+  const supplementRows: OutsideRow[] = paperSupplements.map((entry) => ({
+    filerId: entry.spenderFilerId,
+    filerName: entry.spenderName,
+    tranId: `paper-496-${entry.eFilingId}`,
+    eFilingId: entry.eFilingId,
+    rptDate: entry.expenditureDate,
+    amountCents: entry.amountCents,
+    candidateLastName: entry.candidateLastName,
+    candidateFirstName: entry.candidateFirstName,
+    officeCd: entry.officeCd,
+    jurisDscr: entry.jurisDscr,
+    distNo: entry.distNo,
+    suppOppCd: entry.direction,
+    memo: false,
+  }));
+
   // --- Per-candidate filter: name match first, then fail-closed vetoes. ---
   const diagnostics = {
     s496Rows: s496Rows.length,
@@ -258,9 +290,10 @@ export function aggregateSanJoseOutsideSpending(input: {
     districtGateExcludedRows: 0,
     unknownDirectionRows: 0,
     unknownDirectionCents: 0,
+    paperSupplementRows: supplementRows.length,
   };
   const included: { row: OutsideRow; direction: "support" | "oppose" }[] = [];
-  for (const row of [...dedupedS496.rows, ...dedupedAdded.rows]) {
+  for (const row of [...dedupedS496.rows, ...dedupedAdded.rows, ...supplementRows]) {
     if (row.memo) {
       diagnostics.memoRowsExcluded += 1;
       continue;

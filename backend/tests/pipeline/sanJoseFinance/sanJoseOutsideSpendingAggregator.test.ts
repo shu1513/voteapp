@@ -5,6 +5,7 @@ import type {
   EfileCalScheduleDRow,
 } from "../../../src/pipeline/efileCalFinance/efileCalWorkbookParser.js";
 import { aggregateSanJoseOutsideSpending } from "../../../src/pipeline/sanJoseFinance/sanJoseOutsideSpendingAggregator.js";
+import type { SanJosePaper496Supplement } from "../../../src/pipeline/sanJoseFinance/sanJosePaperFilingSupplements.js";
 
 // Every scenario reproduces the live 2025+2026 export (plan "Outside
 // spending" + the Phase 3 dry-run 2026-08-10): dirty target identity, a
@@ -78,13 +79,43 @@ function aggregate(input: {
   candidate?: typeof ORTIZ;
   s496?: EfileCalS496Row[];
   scheduleD?: EfileCalScheduleDRow[];
+  paperSupplements?: SanJosePaper496Supplement[];
 }) {
   return aggregateSanJoseOutsideSpending({
     candidate: input.candidate ?? ORTIZ,
     s496: input.s496 ?? [],
     scheduleD: input.scheduleD ?? [],
+    paperSupplements: input.paperSupplements,
   });
 }
+
+// The live paper anti-Campos 496 (e_filing_id 24823), as curated.
+function paperEntry(
+  overrides: Partial<SanJosePaper496Supplement> = {},
+): SanJosePaper496Supplement {
+  return {
+    electionYear: 2026,
+    spenderFilerId: "941786",
+    spenderName: "Santa Clara County Government Attorneys' Association PAC",
+    candidateLastName: "Campos",
+    candidateFirstName: "Nora",
+    officeCd: "CCM",
+    jurisDscr: "City of San Jose",
+    distNo: "5",
+    direction: "OPPOSE",
+    amountCents: 5270_27,
+    expenditureDate: "2026-05-11",
+    eFilingId: "24823",
+    sourceNote: "test",
+    ...overrides,
+  };
+}
+
+const CAMPOS = {
+  displayName: "Nora Campos",
+  officeName: "City Council Member" as const,
+  seatNumber: 5,
+};
 
 describe("aggregateSanJoseOutsideSpending", () => {
   it("collapses a duplicate 496 report of one expenditure to the latest report (spender 744711 case)", () => {
@@ -316,5 +347,59 @@ describe("aggregateSanJoseOutsideSpending", () => {
     });
     expect(mayor.supportTotalCents).toBe(100_00);
     expect(mayor.diagnostics.districtGateExcludedRows).toBe(1);
+  });
+
+  it("merges a paper-496 supplement into the same spender's e-filed group (live Campos case)", () => {
+    // Live: the PAC's e-filed 496 ($5,270.18) plus its paper twin ($5,270.27)
+    // must reproduce the form's own cumulative-to-date, $10,540.45.
+    const result = aggregate({
+      candidate: CAMPOS,
+      s496: [
+        s496({
+          filerId: "941786",
+          filerName: "Santa Clara County Government Attorneys' Association PAC",
+          tranId: "E1",
+          eFilingId: "24950",
+          candidateLastName: "Nora Campos",
+          suppOppCd: "OPPOSE",
+          amountCents: 5270_18,
+        }),
+      ],
+      paperSupplements: [paperEntry()],
+    });
+    expect(result.opposeTotalCents).toBe(10540_45);
+    expect(result.groups).toHaveLength(1);
+    expect(result.groups[0]).toMatchObject({
+      spenderFilerId: "941786",
+      direction: "oppose",
+      amountCents: 10540_45,
+      expenditureCount: 2,
+    });
+    expect(result.diagnostics.paperSupplementRows).toBe(1);
+  });
+
+  it("runs supplements through the normal target and veto gates", () => {
+    // Another candidate's supplement (the paper Karen Martinez 496) books
+    // nothing for Campos; a wrong-district entry is vetoed, never guessed.
+    const otherCandidate = aggregate({
+      candidate: CAMPOS,
+      paperSupplements: [
+        paperEntry({ candidateLastName: "Martinez", candidateFirstName: "Karen", eFilingId: "24824" }),
+      ],
+    });
+    expect(otherCandidate.opposeTotalCents).toBe(0);
+    expect(otherCandidate.diagnostics.otherCandidateRows).toBe(1);
+    const wrongDistrict = aggregate({
+      candidate: CAMPOS,
+      paperSupplements: [paperEntry({ distNo: "7" })],
+    });
+    expect(wrongDistrict.opposeTotalCents).toBe(0);
+    expect(wrongDistrict.diagnostics.districtGateExcludedRows).toBe(1);
+  });
+
+  it("rejects an invalid supplement list at aggregation time", () => {
+    expect(() =>
+      aggregate({ paperSupplements: [paperEntry({ amountCents: -1 })] }),
+    ).toThrow(/positive integer/);
   });
 });
