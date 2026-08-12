@@ -114,32 +114,47 @@ export async function upsertSanFranciscoFinanceLink(input: {
   const link = input.link;
   const linkStatus = link.linkStatus ?? "active";
   const linkSource = link.linkSource ?? "manual";
-  // Manual protection applies to EVERY automatic write, not only active ones:
-  // a needs_review upsert with the manual link's fppc_id would otherwise hit
-  // ON CONFLICT and rewrite the operator's row to sfec_dashboard/needs_review.
+  // Manual protection applies to EVERY automatic write, not only active
+  // upserts, and probes manual rows of ANY status: an operator-disabled
+  // (inactive/needs_review) manual link with this fppc_id is the
+  // ON CONFLICT target row, and the upsert would otherwise silently
+  // rewrite it to sfec_dashboard.
   if (linkSource === "sfec_dashboard") {
-    const manual = await input.db.query<{ id: string; fppc_id: string }>(
-      `SELECT id::text,fppc_id FROM public.sfc_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_status='active' AND link_source='manual' LIMIT 1`,
+    const manual = await input.db.query<{
+      id: string;
+      fppc_id: string;
+      link_status: string;
+    }>(
+      `SELECT id::text,fppc_id,link_status FROM public.sfc_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_source='manual'`,
       [link.candidateId, link.electionId],
     );
-    if (manual.rows.length) {
-      if (manual.rows[0]!.fppc_id === link.fppcId) {
-        // An exact committee match IS a manifest verification of the manual
-        // link, so advance last_verified_at (and nothing else — the row
-        // stays the operator's). Without this the batch's stale-election
-        // selector, which drives off active links' last_verified_at, would
-        // treat the election as stale on every run forever.
-        if (link.lastVerifiedAt)
-          await input.db.query(
-            `UPDATE public.sfc_candidate_finance_links SET last_verified_at=$2::timestamptz WHERE id=$1::uuid`,
-            [manual.rows[0]!.id, link.lastVerifiedAt.toISOString()],
-          );
-        return { linkId: manual.rows[0]!.id };
-      }
+    const sameCommittee = manual.rows.find(
+      (row) => row.fppc_id === link.fppcId,
+    );
+    if (sameCommittee) {
+      if (sameCommittee.link_status !== "active")
+        throw new Error(
+          "San Francisco automatic finance link matches an operator-disabled manual link",
+        );
+      // An exact committee match IS a manifest verification of the manual
+      // link, so advance last_verified_at (and nothing else — the row
+      // stays the operator's). Without this the batch's stale-election
+      // selector, which drives off active links' last_verified_at, would
+      // treat the election as stale on every run forever.
+      if (link.lastVerifiedAt)
+        await input.db.query(
+          `UPDATE public.sfc_candidate_finance_links SET last_verified_at=$2::timestamptz WHERE id=$1::uuid`,
+          [sameCommittee.id, link.lastVerifiedAt.toISOString()],
+        );
+      return { linkId: sameCommittee.id };
+    }
+    // A disabled manual link with a DIFFERENT fppc_id does not block a new
+    // automatic identity — the operator disabled that association, not the
+    // candidate. Only an active manual link conflicts.
+    if (manual.rows.some((row) => row.link_status === "active"))
       throw new Error(
         "San Francisco automatic finance link conflicts with protected manual link",
       );
-    }
   }
   if (linkStatus === "active")
     await input.db.query(

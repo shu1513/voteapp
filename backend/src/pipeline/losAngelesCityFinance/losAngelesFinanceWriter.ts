@@ -97,21 +97,37 @@ async function upsertLink(
 ): Promise<string> {
   const officeName = text(link.officeName, "office name");
   const normalizedSeatNumber = seatNumber(link.seatNumber, officeName);
-  if (
-    (link.linkSource ?? "manual") === "lacity_ethics" &&
-    (link.linkStatus ?? "active") === "active"
-  ) {
-    const manual = await db.query<{ id: string; fppc_committee_id: string }>(
-      `SELECT id::text,fppc_committee_id FROM public.lacity_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_status='active' AND link_source='manual' LIMIT 1`,
+  // Manual protection applies to EVERY automatic write, not only active
+  // upserts, and probes manual rows of ANY status: an operator-disabled
+  // (inactive/needs_review) manual link with this committee id is the
+  // ON CONFLICT target row, and the upsert would otherwise silently
+  // rewrite it to lacity_ethics.
+  if ((link.linkSource ?? "manual") === "lacity_ethics") {
+    const manual = await db.query<{
+      id: string;
+      fppc_committee_id: string;
+      link_status: string;
+    }>(
+      `SELECT id::text,fppc_committee_id,link_status FROM public.lacity_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_source='manual'`,
       [link.candidateId, link.electionId],
     );
-    if (manual.rows.length) {
-      if (manual.rows[0]!.fppc_committee_id === link.fppcCommitteeId)
-        return manual.rows[0]!.id;
+    const sameCommittee = manual.rows.find(
+      (row) => row.fppc_committee_id === link.fppcCommitteeId,
+    );
+    if (sameCommittee) {
+      if (sameCommittee.link_status !== "active")
+        throw new Error(
+          "Los Angeles automatic finance link matches an operator-disabled manual link",
+        );
+      return sameCommittee.id;
+    }
+    // A disabled manual link with a DIFFERENT committee id does not block a
+    // new automatic identity — the operator disabled that association, not
+    // the candidate. Only an active manual link conflicts.
+    if (manual.rows.some((row) => row.link_status === "active"))
       throw new Error(
         "Los Angeles automatic finance link conflicts with protected manual link",
       );
-    }
   }
   if ((link.linkStatus ?? "active") === "active")
     await db.query(

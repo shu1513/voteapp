@@ -24,7 +24,7 @@ describe("upsertSanFranciscoFinanceLink", () => {
       query: vi
         .fn()
         .mockResolvedValueOnce({
-          rows: [{ id: "manual-1", fppc_id: "1489126" }],
+          rows: [{ id: "manual-1", fppc_id: "1489126", link_status: "active" }],
         }),
     };
     const result = await upsertSanFranciscoFinanceLink({ db, link: LINK });
@@ -38,7 +38,7 @@ describe("upsertSanFranciscoFinanceLink", () => {
       query: vi
         .fn()
         .mockResolvedValueOnce({
-          rows: [{ id: "manual-1", fppc_id: "1489126" }],
+          rows: [{ id: "manual-1", fppc_id: "1489126", link_status: "active" }],
         })
         .mockResolvedValueOnce({ rows: [] }),
     };
@@ -59,7 +59,7 @@ describe("upsertSanFranciscoFinanceLink", () => {
       query: vi
         .fn()
         .mockResolvedValueOnce({
-          rows: [{ id: "manual-1", fppc_id: "9999999" }],
+          rows: [{ id: "manual-1", fppc_id: "9999999", link_status: "active" }],
         }),
     };
     await expect(
@@ -121,7 +121,7 @@ describe("upsertSanFranciscoFinanceLink", () => {
       query: vi
         .fn()
         .mockResolvedValueOnce({
-          rows: [{ id: "manual-1", fppc_id: "1489126" }],
+          rows: [{ id: "manual-1", fppc_id: "1489126", link_status: "active" }],
         }),
     };
     const result = await upsertSanFranciscoFinanceLink({
@@ -130,6 +130,49 @@ describe("upsertSanFranciscoFinanceLink", () => {
     });
     expect(result.linkId).toBe("manual-1");
     expect(db.query).toHaveBeenCalledTimes(1);
+  });
+
+  it("never resurrects an operator-disabled manual link", async () => {
+    // The disabled manual row is the ON CONFLICT target — without the
+    // any-status probe the upsert would silently flip it back to
+    // active/sfec_dashboard.
+    for (const linkStatus of ["inactive", "needs_review"]) {
+      const db = {
+        query: vi.fn().mockResolvedValueOnce({
+          rows: [
+            { id: "manual-1", fppc_id: "1489126", link_status: linkStatus },
+          ],
+        }),
+      };
+      await expect(
+        upsertSanFranciscoFinanceLink({
+          db,
+          link: { ...LINK, lastVerifiedAt: new Date("2026-08-12T00:00:00Z") },
+        }),
+      ).rejects.toThrow(/matches an operator-disabled manual link/);
+      // Only the probe ran — never the last_verified_at touch or the INSERT.
+      expect(db.query).toHaveBeenCalledTimes(1);
+    }
+  });
+
+  it("allows a new automatic identity past a disabled manual link with a different committee", async () => {
+    // The operator disabled that association, not the candidate.
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [
+            { id: "manual-1", fppc_id: "9999999", link_status: "inactive" },
+          ],
+        }) // manual-link probe
+        .mockResolvedValueOnce({ rows: [] }) // deactivation
+        .mockResolvedValueOnce({ rows: [{ id: "link-1" }] }),
+    };
+    const result = await upsertSanFranciscoFinanceLink({ db, link: LINK });
+    expect(result.linkId).toBe("link-1");
+    expect(db.query.mock.calls[2]![0]).toContain(
+      "INSERT INTO public.sfc_candidate_finance_links",
+    );
   });
 });
 

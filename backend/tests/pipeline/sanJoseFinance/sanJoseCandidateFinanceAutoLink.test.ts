@@ -283,7 +283,7 @@ describe("autoLinkMissingSanJoseCandidateFinanceLinks", () => {
       const s = String(sql);
       if (s.startsWith("SELECT id::text,fppc_id"))
         return Promise.resolve({
-          rows: [{ id: "manual-1", fppc_id: "1480385" }],
+          rows: [{ id: "manual-1", fppc_id: "1480385", link_status: "active" }],
         });
       return Promise.resolve({ rows: [] });
     });

@@ -183,7 +183,11 @@ describe("San Diego city finance writer", () => {
   it("reuses a matching protected manual link and advances last_verified_at", async () => {
     const query = queryMock((sql) =>
       sql.startsWith("SELECT id::text,fppc_id")
-        ? { rows: [{ id: "manual-1", fppc_id: "1460125" }] }
+        ? {
+            rows: [
+              { id: "manual-1", fppc_id: "1460125", link_status: "active" },
+            ],
+          }
         : null,
     );
     const verifiedAt = new Date("2026-08-12T00:00:00Z");
@@ -207,7 +211,11 @@ describe("San Diego city finance writer", () => {
     // matches the stored id is a reuse, never a false conflict.
     const query = queryMock((sql) =>
       sql.startsWith("SELECT id::text,fppc_id")
-        ? { rows: [{ id: "manual-1", fppc_id: "1460125" }] }
+        ? {
+            rows: [
+              { id: "manual-1", fppc_id: "1460125", link_status: "active" },
+            ],
+          }
         : null,
     );
     const result = await upsertSanDiegoCityFinanceLink({
@@ -234,7 +242,11 @@ describe("San Diego city finance writer", () => {
   it("errors when an automatic link conflicts with a protected manual link", async () => {
     const query = queryMock((sql) =>
       sql.startsWith("SELECT id::text,fppc_id")
-        ? { rows: [{ id: "manual-1", fppc_id: "1481166" }] }
+        ? {
+            rows: [
+              { id: "manual-1", fppc_id: "1481166", link_status: "active" },
+            ],
+          }
         : null,
     );
     await expect(
@@ -243,6 +255,60 @@ describe("San Diego city finance writer", () => {
         link: { ...link, linkSource: "efile_export" },
       }),
     ).rejects.toThrow(/conflicts with protected manual link/);
+  });
+
+  it("never resurrects an operator-disabled manual link", async () => {
+    // The disabled manual row is the ON CONFLICT target — without the
+    // any-status probe the upsert would silently flip it back to
+    // active/efile_export.
+    for (const linkStatus of ["inactive", "needs_review"]) {
+      const query = queryMock((sql) =>
+        sql.startsWith("SELECT id::text,fppc_id")
+          ? {
+              rows: [
+                { id: "manual-1", fppc_id: "1460125", link_status: linkStatus },
+              ],
+            }
+          : null,
+      );
+      await expect(
+        upsertSanDiegoCityFinanceLink({
+          db: { query } as never,
+          link: {
+            ...link,
+            linkSource: "efile_export",
+            lastVerifiedAt: new Date("2026-08-12T00:00:00Z"),
+          },
+        }),
+      ).rejects.toThrow(/matches an operator-disabled manual link/);
+      const sql = query.mock.calls.map((call) => String(call[0]));
+      expect(sql.some((s) => s.startsWith("INSERT INTO"))).toBe(false);
+      expect(sql.some((s) => s.includes("SET last_verified_at"))).toBe(false);
+    }
+  });
+
+  it("allows a new automatic identity past a disabled manual link with a different fppc id", async () => {
+    // The operator disabled that association, not the candidate.
+    const query = queryMock((sql) =>
+      sql.startsWith("SELECT id::text,fppc_id")
+        ? {
+            rows: [
+              { id: "manual-1", fppc_id: "1481166", link_status: "inactive" },
+            ],
+          }
+        : null,
+    );
+    const result = await upsertSanDiegoCityFinanceLink({
+      db: { query } as never,
+      link: { ...link, linkSource: "efile_export" },
+    });
+    expect(result.linkId).toBe("link-1");
+    const sql = query.mock.calls.map((call) => String(call[0]));
+    expect(
+      sql.some((s) =>
+        s.startsWith("INSERT INTO public.sdcity_candidate_finance_links"),
+      ),
+    ).toBe(true);
   });
 
   it("deactivates other automatic links before an active upsert", async () => {
