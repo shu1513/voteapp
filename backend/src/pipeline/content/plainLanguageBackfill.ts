@@ -12,6 +12,11 @@ import type {
 } from "../../ai/providers/plainLanguageRewritePrompt.js";
 import type { PlainLanguageRewriteVerifyPromptInput } from "../../ai/providers/plainLanguageRewriteVerifyPrompt.js";
 import { buildCandidateRecordIdentityKey } from "../candidates/candidateRecordStore.js";
+import {
+  BALLOT_MEASURE_SUMMARY_MAX_LENGTH,
+  BALLOT_MEASURE_YES_NO_MAX_LENGTH,
+} from "../../ai/providers/ballotMeasuresPrompt.js";
+import { CANDIDATE_PROFILE_SUMMARY_MAX_LENGTH } from "../../contracts/candidateProfilePayloadContract.js";
 
 export type PlainLanguageBackfillTarget = {
   targetTable: "candidates" | "ballot_measures" | "candidate_records";
@@ -101,6 +106,18 @@ const LENGTH_LOWER_BOUND: Record<PlainLanguageRewriteKind, number> = {
 // in-line ("subpoena — a court order to appear"), which adds absolute words.
 const LENGTH_UPPER_BOUND = 1.7;
 const LENGTH_UPPER_ALLOWANCE_CHARS = 120;
+
+// The research-time validators cap these columns absolutely; a rewrite must
+// not launder text past a cap the generation path enforces (the relative
+// bounds above alone would let a 500-char summary inflate to ~970).
+// record_description has no generation-time cap.
+const LENGTH_ABSOLUTE_CAP: Record<PlainLanguageRewriteKind, number | null> = {
+  candidate_summary: CANDIDATE_PROFILE_SUMMARY_MAX_LENGTH,
+  measure_summary: BALLOT_MEASURE_SUMMARY_MAX_LENGTH,
+  measure_what_yes_means: BALLOT_MEASURE_YES_NO_MAX_LENGTH,
+  measure_what_no_means: BALLOT_MEASURE_YES_NO_MAX_LENGTH,
+  record_description: null,
+};
 
 function extractUrls(text: string): Set<string> {
   return new Set((text.match(/https?:\/\/\S+/gi) ?? []).map((url) => url.replace(/[).,;]+$/, "")));
@@ -280,6 +297,10 @@ export function mechanicalCheckFailure(
   }
   if (rewrittenText.length > originalText.length * LENGTH_UPPER_BOUND + LENGTH_UPPER_ALLOWANCE_CHARS) {
     return `rewrite too long (${Math.round(ratio * 100)}% of original)`;
+  }
+  const absoluteCap = LENGTH_ABSOLUTE_CAP[kind];
+  if (absoluteCap !== null && rewrittenText.length > absoluteCap) {
+    return `rewrite is ${rewrittenText.length} characters (absolute max ${absoluteCap} for ${kind})`;
   }
 
   const originalUrls = extractUrls(originalText);
@@ -519,7 +540,16 @@ export async function loadPlainLanguageBackfillTargets(
     }
   }
 
-  return targets;
+  // Originals already over their absolute cap are re-research work, not
+  // backfill work: this is a wording-only rewrite ("keep every sentence's
+  // content", "about as long as the original"), so the result would land over
+  // the cap and flag — burning a rewrite call per row and pushing the
+  // flag-rate halt gate toward a false "tune the prompt" halt. Leave them
+  // unprocessed (no audit row) so the length-cap repair sweep still sees them.
+  return targets.filter((target) => {
+    const absoluteCap = LENGTH_ABSOLUTE_CAP[target.kind];
+    return absoluteCap === null || target.originalText.length <= absoluteCap;
+  });
 }
 
 export async function runPlainLanguageBackfill(
