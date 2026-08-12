@@ -358,6 +358,9 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     }
   }
 
+  // A 'manual' link_source marks an operator-curated row; machine syncs and
+  // auto-linkers hitting the same (candidate, election, identity) triple must
+  // not reclassify it to a state source. Manual stays sticky once set.
   async function upsertLink(input: {
     db: Queryable;
     link: StandardStateFinanceLinkInput;
@@ -389,7 +392,10 @@ export function createStandardStateFinanceSnapshotWriter(config: {
         district = EXCLUDED.district,
         ${linkNameColumn} = EXCLUDED.${linkNameColumn},
         link_status = EXCLUDED.link_status,
-        link_source = EXCLUDED.link_source,
+        link_source = CASE
+          WHEN ${tables.links}.link_source = 'manual' THEN ${tables.links}.link_source
+          ELSE EXCLUDED.link_source
+        END,
         source_url = EXCLUDED.source_url,
         last_verified_at = EXCLUDED.last_verified_at
       RETURNING id
