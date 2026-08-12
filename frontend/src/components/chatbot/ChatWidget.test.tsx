@@ -167,6 +167,22 @@ describe("ChatWidget", () => {
     expect(screen.getByText("What about their voting record?")).toBeInTheDocument();
   });
 
+  it("New chat clears the transcript back to the start screen", async () => {
+    const user = userEvent.setup();
+    renderWidgetAt("/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    expect(screen.queryByRole("button", { name: "New chat" })).not.toBeInTheDocument();
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+
+    await user.click(screen.getByRole("button", { name: "New chat" }));
+    expect(screen.queryByText("Here's what our data has on that.")).not.toBeInTheDocument();
+    // The start screen (starter chips included) returns.
+    expect(screen.getByRole("button", { name: "What can you do?" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "New chat" })).not.toBeInTheDocument();
+  });
+
   it("sends a starter chip as a question on click, then hides the chips", async () => {
     const user = userEvent.setup();
     const { fetchMock } = renderWidgetAt("/candidates/44444444-4444-4444-a444-444444444444");

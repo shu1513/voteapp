@@ -43,7 +43,7 @@ export function starterQuestions(context: ChatbotAskContext | null): string[] {
   if (context?.kind === "election") {
     return ["Tell me more about this election", "Who is running in this election?"];
   }
-  return ["What can you do?", "When is the 2026 general election?", "How do I register to vote?"];
+  return ["What can you do?", "What's on my ballot?", "How do I register to vote?"];
 }
 
 /**
@@ -285,14 +285,34 @@ export function ChatWidget() {
     >
       <div className="flex items-center justify-between rounded-t-2xl border-b border-line bg-surface px-3 py-2">
         <p className="text-sm font-bold text-ink">Ask</p>
-        <button
-          type="button"
-          onClick={() => setOpen(false)}
-          aria-label="Minimize Ask"
-          className="rounded px-2 py-0.5 text-ink-soft hover:text-ink"
-        >
-          —
-        </button>
+        <div className="flex items-center gap-1">
+          {/* Back to the empty-chat start screen (starter chips included) —
+              without this, the only way out of a conversation was a page
+              reload. */}
+          {turns.length > 0 && (
+            <button
+              type="button"
+              onClick={() => {
+                if (ask.isPending) {
+                  return;
+                }
+                setTurns([]);
+                ask.reset();
+              }}
+              className="rounded px-2 py-0.5 text-xs text-ink-soft hover:text-ink"
+            >
+              New chat
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            aria-label="Minimize Ask"
+            className="rounded px-2 py-0.5 text-ink-soft hover:text-ink"
+          >
+            —
+          </button>
+        </div>
       </div>
 
       {accessKind ?? errorAccessKind ? (
