@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { ChatWidget } from "./components/chatbot/ChatWidget";
 import { RouteError } from "./components/RouteError";
 import { TermsRenewalGate } from "./components/TermsRenewalGate";
 import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, useLogout, useMe } from "@voteapp/api-client";
@@ -155,6 +156,10 @@ export function App() {
         <Outlet />
       </main>
       <TermsRenewalGate />
+      {/* Flag-guarded chatbot widget (docs/plans/chatbot-rag.md): floating
+          lower-right bubble on most pages; the component owns its own
+          per-route visibility and auth-wall rules. */}
+      {import.meta.env.VITE_CHATBOT_ENABLED === "true" && <ChatWidget />}
       <ScrollRestoration />
       {/* The old footer repeated the home page's pitch line and buried the
           Disclaimer inside it. The pitch now sits in the hero where it is

@@ -54,6 +54,9 @@
       "runtimeExecutable": "env",
       "runtimeArgs": [
         "ADDRESS_API_PORT=3101",
+        "AUTH_MAILER=console",
+        "CHATBOT_ENABLED=true",
+        "CHATBOT_EMBEDDINGS_URL=http://localhost:8080",
         "npm",
         "run",
         "address:api",
@@ -68,6 +71,7 @@
       "runtimeArgs": [
         "ADDRESS_API_PROXY_TARGET=http://127.0.0.1:3101",
         "API_INTERNAL_URL=http://127.0.0.1:3101",
+        "VITE_CHATBOT_ENABLED=true",
         "npm",
         "run",
         "dev",

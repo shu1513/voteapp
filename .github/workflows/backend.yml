@@ -52,7 +52,9 @@ jobs:
 
     services:
       postgres:
-        image: postgres:16
+        # pgvector-enabled build of the official postgres image: migration 234
+        # runs CREATE EXTENSION vector, which plain postgres:16 does not ship.
+        image: pgvector/pgvector:pg16
         env:
           POSTGRES_USER: voteapp
           POSTGRES_PASSWORD: voteapp

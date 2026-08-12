@@ -24,12 +24,13 @@ Everything removable without harming the rest of the app:
 
 Honest list of every touchpoint outside the module (all small, all enumerated so deletion is a checklist):
 1. `apiServer.ts`: add chatbot paths to `isKnownApiPath` allowlist + mount handler + DI wiring (flag-guarded).
-2. `frontend/src/routes.ts`: one route entry; `App.tsx`: one nav entry (flag-guarded); one API-client function.
+2. `App.tsx`: one flag-guarded `<ChatWidget />` mount (the widget owns its own per-route visibility); one API-client module.
 3. `render.yaml`: TEI embeddings service + env vars.
 4. `backend/package.json`: `chatbot:reindex`, `chatbot:report` scripts.
 5. Migration (next free number; currently 232): schema + extensions + grants for the API DB role (see `docs/postgres-api-role.md`).
 6. Privacy policy: chat section (required **before** enabling the LLM in prod — names OpenAI as a processor).
-7. Tests in `backend/tests/chatbot/` (vitest only picks up `tests/**/*.test.ts`).
+7. Tests in `backend/tests/chatbot/` (vitest only picks up `tests/**/*.test.ts`) + `frontend/src/components/chatbot/ChatWidget.test.tsx` + one module `packages/api-client/src/chatbot.ts` (one export line in its index).
+8. `.claude/launch.json`: chatbot env on the worktree dev-server entries (local dev only).
 
 ## Flags (money = off by default)
 
@@ -188,7 +189,7 @@ Deterministic templates + deep links, zero AI: ballot lookup, who's running for 
 
 ### 8. API + frontend
 
-`POST /api/chatbot/ask` → `{answer, sources: [{title, url}], answeredBy, dataCurrentAsOf}`; paths added to `isKnownApiPath`; validated/rate-limited like existing endpoints; mounted only when `CHATBOT_ENABLED`. Frontend: one `ChatPage.tsx` + route + flag-guarded nav entry; single-turn Q&A UI at launch (no conversational promises). **Follow-up handling v1 is deterministic:** carry the previous turn's resolved candidate/election scope forward ("what about her voting record?" reuses the resolved candidate) — no LLM rewrite call in the MVP.
+`POST /api/chatbot/ask` → `{answer, sources: [{title, url}], answeredBy, dataCurrentAsOf}`; paths added to `isKnownApiPath`; validated/rate-limited like existing endpoints; mounted only when `CHATBOT_ENABLED`. Frontend: one floating `ChatWidget.tsx` mounted in `App.tsx` (flag-guarded; no route, no nav entry); short session transcript, no conversational promises. **Follow-up handling v1 is deterministic:** carry the previous turn's resolved candidate/election scope forward ("what about her voting record?" reuses the resolved candidate) — no LLM rewrite call in the MVP.
 
 ### 9. Question log + learning loop
 
@@ -204,7 +205,7 @@ No endorsements or vote recommendations · comparisons only across equivalent da
 
 **Phase 0 — contract + golden set (small, no infra). DONE 2026-08-11:** `backend/src/chatbot/BEHAVIOR.md` (12-rule contract + release gates), `backend/src/chatbot/golden/goldenSet.ts` (66 cases across 12 categories, real Nov-2026 entities verified against local DB, incl. refusal/ambiguity/adversarial/follow-up), structural tests in `backend/tests/chatbot/goldenSet.test.ts`.
 
-**Phase 1 — "Ask" (free, no LLM).** Migration, TEI service, generation-based indexer, hybrid retrieval, intent router, `/ask` returning template answers + search-result cards (no generated prose), frontend page, anonymous question logging + report script. Ships standalone value at ~$7–25/mo.
+**Phase 1 — "Ask" (free, no LLM). BUILT 2026-08-11:** migration 234 (schema `chatbot`, halfvec chunks, exact scan — no HNSW), `backend/src/chatbot/` (chatbotConfig, embeddingsClient, chunker, indexer, retrieval, intents, redact, askService), scripts `chatbot:reindex` / `chatbot:report` / `chatbot:eval`, `POST /api/chatbot/ask` (404 when `CHATBOT_ENABLED=false`; **verified accounts only** — 401 unregistered / 403 unverified), TEI service documented (commented out) in render.yaml. Frontend surface (revised 2026-08-11): a floating **ChatWidget** (lower-right, minimized by default) mounted once in `App.tsx` behind `VITE_CHATBOT_ENABLED` — hidden on the logged-out home page, `/picks/:token` share pages, and auth flows; logged-out visitors get a register prompt on open, unverified accounts a verify prompt. The widget tracks the current/most recent candidate or election page and sends it as `context`; the server applies it only to deictic questions ("tell me more about THIS candidate") — context chunks (profile + finance + records) rank first and non-context filler must earn its slot (entity match or gate-strength cosine). A non-deictic off-topic question still refuses even with context present. Retrieval = 4 RRF branches (OR-lexical for ranking, exact-scan cosine, candidate-entity via `word_similarity`, election-title trgm); the answerability gate thresholds on RAW scores (strict AND-lexical, cosine 0.71, entity 0.75 — measured 2026-08-11 on the live local index). Deterministic extras that fell out of eval tuning: `untracked_data` (social posts) and `out_of_cycle` (non-2026 election years) refusal intents, `needs_scope` clarify intent, place-aware scope-ambiguity check. Indexer note: the reindex environment must load `backend/.env` finance read flags or the generation silently builds with ZERO finance chunks (bit us once). **Release gates measured 2026-08-11** (local index, 30,149 chunks / 6,315 elections / 2,368 finance summaries, hybrid): recall@5 **94%** (33/35; gate ≥85%), template routing 100%, refuse_policy 100%, clarify 100%, refuse_no_data 100%. The two recall misses are phrase-indirection cases (`finance-senate-most` — "the Georgia Senate race" outranks US Senate with State Senate districts; `followup-senate-republican-raised` — "the Republican candidate" has no name for the entity branch).
 
 **Phase 2 — LLM answers (canary).** Adapter + Responses impl, structured citations + server validation, gate tuning on the golden set, exact cache, caps + durable budget, verified-users-only, small-percentage rollout, privacy-policy update **before** enabling. Effort starts low; medium only if golden-set evals show it helps.
 

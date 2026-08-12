@@ -332,6 +332,36 @@ services:
   #         name: voteapp-db
   #         property: connectionString
 
+  # ------------------------------------------------------- chatbot (Ask) ----
+  # COMMENTED OUT: the TEI embeddings service is a PAID private service
+  # (~$7-25/mo) and the chatbot ships dark (CHATBOT_ENABLED defaults false in
+  # code; docs/plans/chatbot-rag.md). To enable the "Ask" feature in prod:
+  #   1. Uncomment this service and sync the blueprint.
+  #   2. On voteapp-api, add env vars:
+  #        CHATBOT_ENABLED=true
+  #        CHATBOT_EMBEDDINGS_URL=http://<voteapp-embeddings hostport>
+  #      (use fromService name: voteapp-embeddings, type: pserv,
+  #      property: hostport — private-network reachable because pserv can
+  #      RECEIVE private traffic even from free web services).
+  #   3. On voteapp-ssr, add VITE_CHATBOT_ENABLED referencing the API's flag
+  #      (fromService name: voteapp-api, type: web, envVarKey: CHATBOT_ENABLED)
+  #      so the two services cannot drift, then redeploy so the flag bakes
+  #      into the bundle. Note the coupling is loose by design: a mismatch
+  #      degrades gracefully (nav hidden, or page shows "not available").
+  #   4. Run `npm run chatbot:reindex` against the prod DB (needs the TEI
+  #      URL) to build the first index generation.
+  # Verify the container port at enable time: the TEI cpu image listens on 80
+  # by default; --port pins it explicitly.
+  # - name: voteapp-embeddings
+  #   type: pserv
+  #   runtime: image
+  #   region: ohio
+  #   plan: starter
+  #   image:
+  #     url: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9
+  #   dockerCommand: text-embeddings-router --model-id BAAI/bge-small-en-v1.5 --port 10000
+  #   autoDeploy: false
+
   # ------------------------------------------------------------- key value ----
   - name: voteapp-redis
     type: keyvalue

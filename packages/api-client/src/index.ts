@@ -8,6 +8,7 @@
 export * from "./types";
 export * from "./ballotFilters";
 export * from "./brand";
+export * from "./chatbot";
 export * from "./client";
 export * from "./finance";
 export * from "./format";

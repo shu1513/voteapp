@@ -30,6 +30,8 @@ import {
   ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH,
   ADDRESS_RESOLVE_PATH,
   BALLOT_LOOKUP_PATH,
+  CHATBOT_ASK_PATH,
+  parseChatbotAskBodyValue,
   CONTENT_REPORTS_PATH,
   CANDIDATE_DETAIL_PATH_PREFIX,
   CANDIDATE_SEARCH_PATH,
@@ -126,6 +128,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH ||
     pathname === ADDRESS_RESOLVE_PATH ||
     pathname === BALLOT_LOOKUP_PATH ||
+    pathname === CHATBOT_ASK_PATH ||
     pathname === CONTENT_REPORTS_PATH ||
     pathname === AUTH_FORGOT_PASSWORD_PATH ||
     pathname === AUTH_LOGIN_PATH ||
@@ -440,6 +443,7 @@ function createJsonBodyParser() {
         (request.path === ADDRESS_AUTOCOMPLETE_PATH ||
           request.path === ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH ||
           request.path === ADDRESS_RESOLVE_PATH ||
+          request.path === CHATBOT_ASK_PATH ||
           request.path === CONTENT_REPORTS_PATH ||
           request.path === ME_DISTRICTS_INITIALIZE_PATH ||
           request.path === AUTH_FORGOT_PASSWORD_PATH ||
@@ -581,6 +585,48 @@ async function dispatchApiRequest(
       response,
       toJsonResponse(200, result, { ...corsHeaders, "cache-control": STATE_RESOURCES_CACHE_CONTROL })
     );
+    return;
+  }
+
+  if (url.pathname === CHATBOT_ASK_PATH) {
+    // 404 (not 500, and BEFORE the method check so no 405 leaks either) when
+    // unwired: CHATBOT_ENABLED=false must hide the feature exactly like an
+    // unknown path, per the isolation contract.
+    if (!options.askChatbot) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Not found", corsHeaders));
+      return;
+    }
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/chatbot/ask", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+
+    // Registered + verified accounts only: the widget maps 401 to a
+    // register/login prompt and 403 to a verify-your-email prompt.
+    // Fail closed on missing verification wiring: the shared helper lets
+    // legacy trusted-header deployments (no authService) through unverified,
+    // but this endpoint's contract is strict — no lookup, no answers.
+    if (!options.lookupAuthenticatedUserEmailVerified) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Email verification lookup is not configured", corsHeaders)
+      );
+      return;
+    }
+    const chatbotUserId = await requireVerifiedAuthenticatedUser(options, request, response);
+    if (!chatbotUserId) {
+      return;
+    }
+
+    const payload = parseChatbotAskBodyValue(request.body);
+    const askResult = await options.askChatbot(payload.question, payload.previousQuestion, payload.context);
+    sendApiResponse(response, toJsonResponse(200, askResult, corsHeaders));
     return;
   }
 

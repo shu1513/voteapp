@@ -35,6 +35,10 @@ export const AUTH_VERIFY_EMAIL_PATH = "/api/auth/verify-email";
 export const AUTH_VERIFY_EMAIL_CHANGE_PATH = "/api/auth/verify-email-change";
 export const AUTH_LOGOUT_ALL_PATH = "/api/auth/logout-all";
 export const BALLOT_LOOKUP_PATH = "/api/ballot";
+// Chatbot "Ask" (docs/plans/chatbot-rag.md). The path is always known;
+// whether it answers depends on CHATBOT_ENABLED wiring (404 when unwired,
+// mirroring the sitemap's not-configured behavior).
+export const CHATBOT_ASK_PATH = "/api/chatbot/ask";
 export const CONTENT_REPORTS_PATH = "/api/content-reports";
 export const CANDIDATE_DETAIL_PATH_PREFIX = "/api/candidates/";
 // Shares the candidate-detail prefix, so the router must test this path
@@ -350,6 +354,65 @@ function parseOptionalStringField(record: Record<string, unknown>, fieldName: st
   }
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : null;
+}
+
+/** What the user is (or was last) looking at — the chat widget sends the
+ * current or most recent candidate/election page so deictic questions
+ * ("tell me more about this candidate") resolve deterministically. */
+export type ChatbotAskContext =
+  | { kind: "candidate"; id: string }
+  | { kind: "election"; id: string };
+
+export type ChatbotAskPayload = {
+  question: string;
+  /** Previous user turn, for deterministic follow-up scope carry-over. */
+  previousQuestion: string | null;
+  context: ChatbotAskContext | null;
+};
+
+export const MAX_CHATBOT_QUESTION_LENGTH = 500;
+
+function parseChatbotAskContext(value: unknown): ChatbotAskContext | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  if (typeof value !== "object" || Array.isArray(value)) {
+    throw new TypeError("context must be an object when provided");
+  }
+  const record = value as Record<string, unknown>;
+  assertNoUnknownFields(record, ["candidate_id", "election_id"]);
+  const candidateId = record.candidate_id;
+  const electionId = record.election_id;
+  if ((candidateId === undefined) === (electionId === undefined)) {
+    throw new TypeError("context must include exactly one of candidate_id or election_id");
+  }
+  const raw = candidateId ?? electionId;
+  if (typeof raw !== "string" || !isUuid(raw.trim())) {
+    throw new TypeError("context id must be a valid UUID");
+  }
+  return candidateId !== undefined
+    ? { kind: "candidate", id: raw.trim() }
+    : { kind: "election", id: raw.trim() };
+}
+
+export function parseChatbotAskBodyValue(parsed: unknown): ChatbotAskPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+  const record = parsed as Record<string, unknown>;
+  assertNoUnknownFields(record, ["question", "previous_question", "context"]);
+
+  const question = parseStringField(parsed, "question");
+  if (question.length > MAX_CHATBOT_QUESTION_LENGTH) {
+    throw new TypeError(`question must be at most ${MAX_CHATBOT_QUESTION_LENGTH} characters`);
+  }
+
+  const previousQuestion = parseOptionalStringField(record, "previous_question");
+  if (previousQuestion !== null && previousQuestion.length > MAX_CHATBOT_QUESTION_LENGTH) {
+    throw new TypeError(`previous_question must be at most ${MAX_CHATBOT_QUESTION_LENGTH} characters`);
+  }
+
+  return { question, previousQuestion, context: parseChatbotAskContext(record.context) };
 }
 
 export function parseContentReportBodyValue(parsed: unknown): ContentReportPayload {
