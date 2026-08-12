@@ -3796,7 +3796,7 @@ describe("createApiApp", () => {
 
 describe("GET /api/me", () => {
   const userId = "99999999-9999-4999-8999-999999999999";
-  const identity = { email: "voter@example.com", first_name: "Val", email_verified: false };
+  const identity = { email: "voter@example.com", first_name: "Val", email_verified: false, has_password: true };
 
   it("returns the session holder's identity", async () => {
     const resolveAuthenticatedUserId = vi.fn().mockReturnValue(userId);
@@ -3899,6 +3899,7 @@ describe("POST /api/me/terms-acceptance", () => {
     first_name: "Val",
     email_verified: false,
     accepted_terms_version: CURRENT_TERMS_VERSION,
+    has_password: true,
   };
 
   it("records acceptance of the current version and returns the identity", async () => {

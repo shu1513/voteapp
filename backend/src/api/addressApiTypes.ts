@@ -72,7 +72,11 @@ export type AddressApiRateLimitResult = {
 
 export type AuthApiRateLimitInput = {
   clientIp: string;
-  email: string;
+  /** Per-identity bucket key (an email, or a userId for logged-in
+   * password-verifying endpoints). null = no per-identity credential behind
+   * the endpoint (Google sign-in verifies signed tokens, not guessable
+   * secrets), so only the per-IP bucket applies. */
+  email: string | null;
   method: string;
   pathname: string;
 };

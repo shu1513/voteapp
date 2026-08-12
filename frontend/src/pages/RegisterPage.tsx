@@ -83,12 +83,16 @@ export function RegisterPage() {
   // half-typed confirmation as wrong would nag on every keystroke.
   const passwordsMismatch =
     password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;
+  // One flag across both signup paths: a password registration and a Google
+  // signup racing each other could create/log in different accounts with the
+  // outcome decided by response order.
+  const authPending = register.isPending || googleSignup.isPending;
   const canSubmit =
     accepted &&
     email.trim().length > 0 &&
     password.length > 0 &&
     password === confirmPassword &&
-    !register.isPending;
+    !authPending;
 
   if (register.isSuccess) {
     return (
@@ -227,9 +231,9 @@ export function RegisterPage() {
       <div className="mt-4">
         <GoogleSignInButton
           text="signup_with"
-          disabled={!accepted || googleSignup.isPending}
+          disabled={!accepted || authPending}
           onCredential={(credential) => {
-            if (accepted && !googleSignup.isPending) {
+            if (accepted && !authPending) {
               googleSignup.mutate(credential);
             }
           }}

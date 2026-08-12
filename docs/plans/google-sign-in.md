@@ -1,6 +1,6 @@
 # Google Sign-In — build plan
 
-Status: PLAN v2 (2026-08-12, revised after external review). Nothing built yet.
+Status: IMPLEMENTED in PR #683 (2026-08-12) — migration 238, backend, frontend, CSP, privacy policy 1.2 all in that PR; migration applied locally. Remaining work = the rollout steps below (prod migration, env vars, worker deploy, smoke).
 
 ## Goal
 
@@ -42,7 +42,7 @@ JS-callback mode, not `login_uri` redirect mode → Google's `g_csrf_token` cook
 | Unlink / "disconnect Google" UI | Skip in v1 | Setting a password (below) is the escape hatch. |
 | Enable switch | Configured-if-present: `GOOGLE_OAUTH_CLIENT_ID` unset → endpoint 500s "not configured", frontend hides button when its build-time ID is absent | Same pattern as `authService` itself and the Places proxy. Free feature, no money flag. |
 
-## Migration 238 (next free — 236 reserved by Rhode Island finance, 237 taken by Denver PR #675; NEVER renumber)
+## Migration 238 (shipped in PR #683 — 236/237 belong to RI/Denver finance; NEVER renumber)
 
 ```sql
 BEGIN;
@@ -176,4 +176,5 @@ Roll-forward only after step 4 may have created NULL-password users (see rollbac
 
 - **Google outage** = Google button down, password login unaffected.
 - Non-authoritative Google addresses (non-Gmail, non-Workspace) are turned away in v1 — measure how often before building the SES-verification fallback.
+- **Workspace email rename + password-less account**: login keeps working (keyed on `sub`), but our stored email points at the old address, so the "add a password" reset email is undeliverable — and email-change/delete need that password. Known v1 gap, accepted: affected users can still use the account and can recover via support; the fix is the deferred Google-reauthenticated account-management path, built if this ever actually occurs.
 - Not doing in v1: One Tap / FedCM opt-ins, unlink UI, nonce, Apple/other providers, admin tooling, mobile. Phase 2 mobile: `@react-native-google-signin/google-signin` + dev build (`serverClientId` = the same Web client ID) — and shipping any third-party login on iOS triggers App Store guideline 4.8, so assess Sign in with Apple then.

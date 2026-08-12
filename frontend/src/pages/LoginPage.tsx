@@ -66,7 +66,11 @@ export function LoginPage() {
   const googleNeedsSignup =
     googleLogin.error instanceof ApiError && googleLogin.error.code === "needs_signup";
 
-  const canSubmit = email.trim().length > 0 && password.length > 0 && !login.isPending;
+  // One flag across both auth paths: a password login and a Google login
+  // racing each other would both purge caches and navigate, with the outcome
+  // decided by response order.
+  const authPending = login.isPending || googleLogin.isPending;
+  const canSubmit = email.trim().length > 0 && password.length > 0 && !authPending;
 
   return (
     <div className="mx-auto max-w-md px-4 py-10">
@@ -127,9 +131,9 @@ export function LoginPage() {
       <div className="mt-6">
         <GoogleSignInButton
           text="signin_with"
-          disabled={googleLogin.isPending}
+          disabled={authPending}
           onCredential={(credential) => {
-            if (!googleLogin.isPending) {
+            if (!authPending) {
               googleLogin.mutate(credential);
             }
           }}

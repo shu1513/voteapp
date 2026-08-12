@@ -182,7 +182,7 @@ async function enforceAuthRateLimit(
   options: AddressApiServerOptions,
   request: Request,
   response: Response<unknown, ApiResponseLocals>,
-  email: string
+  email: string | null
 ): Promise<boolean> {
   if (!options.authRateLimit) {
     return true;
@@ -863,12 +863,12 @@ async function dispatchApiRequest(
       );
       return;
     }
-    // Per-IP throttle (the client IP doubles as the per-"email" bucket key):
+    // Per-IP throttle only (email: null skips the per-identity bucket):
     // there is no password to brute-force behind this endpoint — a credential
     // is a Google-signed token — so the limiter's job here is only to cap
     // verification/DB work per caller, and the IP is the only stable key
     // available before verification.
-    if (!(await enforceAuthRateLimit(options, request, response, response.locals.clientIp ?? "unknown"))) {
+    if (!(await enforceAuthRateLimit(options, request, response, null))) {
       return;
     }
     const currentSessionId = getAuthSessionId(request);

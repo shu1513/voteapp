@@ -132,6 +132,26 @@ describe("createAuthService loginWithGoogle", () => {
     expect(redis.setEx).toHaveBeenCalledWith(expect.any(String), expect.any(Number), `${USER_ID}:1`);
   });
 
+  it("signup accepts a legacy googlemail.com alias address", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [] }) // sub lookup
+      .mockResolvedValueOnce({ rows: [] }) // email lookup
+      .mockResolvedValueOnce({ rows: [{ id: USER_ID, session_epoch: 1 }] }) // INSERT
+      .mockResolvedValueOnce({ rows: [] }) // terms
+      .mockResolvedValueOnce({ rows: [] }) // last_logged_in
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const { service } = createService({
+      client,
+      payload: googlePayload({ email: "person@googlemail.com" }),
+    });
+
+    await expect(
+      service.loginWithGoogle!({ idToken: "token", intent: "signup", acceptedTermsVersion: CURRENT_TERMS_VERSION })
+    ).resolves.toEqual({ sessionId: expect.any(String) });
+  });
+
   it("signup accepts a Workspace (hd) address that is not gmail", async () => {
     const client = createDbClientMock();
     client.query

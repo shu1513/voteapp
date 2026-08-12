@@ -53,6 +53,30 @@ describe("createInMemoryAuthApiRateLimiter", () => {
     });
   });
 
+  it("applies only the per-IP quota when email is null (no per-identity credential)", () => {
+    const limiter = createInMemoryAuthApiRateLimiter({
+      windowMs: 60_000,
+      maxRequestsPerIp: 4,
+      maxRequestsPerEmail: 2,
+      now: () => 1_000,
+    });
+
+    // Four null-identity requests from one IP: the stricter per-email quota
+    // (2) must not govern — only the per-IP quota (4) does.
+    for (let i = 0; i < 4; i += 1) {
+      expect(
+        limiter({ clientIp: "203.0.113.10", email: null, method: "POST", pathname: "/api/auth/google" })
+      ).toEqual({ allowed: true });
+    }
+    expect(
+      limiter({ clientIp: "203.0.113.10", email: null, method: "POST", pathname: "/api/auth/google" })
+    ).toEqual({ allowed: false, retryAfterSeconds: 60 });
+    // Another IP is unaffected.
+    expect(
+      limiter({ clientIp: "203.0.113.11", email: null, method: "POST", pathname: "/api/auth/google" })
+    ).toEqual({ allowed: true });
+  });
+
   it("shares one bucket across all auth routes so spreading endpoints cannot multiply quota", () => {
     const limiter = createInMemoryAuthApiRateLimiter({
       windowMs: 60_000,

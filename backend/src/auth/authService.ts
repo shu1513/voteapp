@@ -437,10 +437,13 @@ function validateGoogleClaims(payload: {
   }
   const hd = typeof payload.hd === "string" && payload.hd.trim().length > 0 ? payload.hd.trim() : null;
   // Google's own guidance on when its email claim is authoritative: gmail.com
-  // addresses, or Workspace accounts (hd set). For anything else the address
-  // may have changed hands while email_verified stays true, so auto-linking
-  // could hand an old Google-account holder someone else's VoteApp account.
-  if (!email.toLowerCase().endsWith("@gmail.com") && hd === null) {
+  // addresses (including the legacy googlemail.com alias domain Google issued
+  // in the UK/Germany — same inbox, Google-controlled), or Workspace accounts
+  // (hd set). For anything else the address may have changed hands while
+  // email_verified stays true, so auto-linking could hand an old
+  // Google-account holder someone else's VoteApp account.
+  const lowerEmail = email.toLowerCase();
+  if (!lowerEmail.endsWith("@gmail.com") && !lowerEmail.endsWith("@googlemail.com") && hd === null) {
     throw new TypeError(
       "Google sign-in is only available for Gmail and Google Workspace addresses. Use email signup or login instead."
     );

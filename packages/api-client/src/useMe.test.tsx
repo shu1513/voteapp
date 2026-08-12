@@ -21,7 +21,12 @@ describe("useLogout", () => {
     );
     const queryClient = new QueryClient();
     // Simulate a logged-in session with cached account data.
-    queryClient.setQueryData(["me"], { email: "a@example.com", first_name: "A", email_verified: true });
+    queryClient.setQueryData(["me"], {
+      email: "a@example.com",
+      first_name: "A",
+      email_verified: true,
+      has_password: true,
+    });
     queryClient.setQueryData(["me", "ballot"], { districts: [{ id: "d1" }], elections: [] });
     queryClient.setQueryData(["election", "e1"], { id: "e1" });
 

@@ -650,9 +650,9 @@ describe("POST /api/auth/google", () => {
     expect(response.statusCode).toBe(429);
     expect(authRateLimit).toHaveBeenCalledWith({
       clientIp: expect.any(String),
-      // No password to brute-force behind this endpoint, so the IP doubles
-      // as the per-email bucket key.
-      email: expect.any(String),
+      // No password to brute-force behind this endpoint: null skips the
+      // (stricter) per-identity bucket so only the per-IP quota governs.
+      email: null,
       method: "POST",
       pathname: "/api/auth/google",
     });
@@ -784,7 +784,7 @@ describe("account management endpoints", () => {
 
   it("updates first_name via PUT /api/me", async () => {
     const resolveAuthenticatedUserId = vi.fn().mockReturnValue(SESSION_USER_ID);
-    const identity = { email: "user@example.com", first_name: "Nova", email_verified: true };
+    const identity = { email: "user@example.com", first_name: "Nova", email_verified: true, has_password: true };
     const updateAuthenticatedUserFirstName = vi.fn().mockResolvedValue(identity);
 
     const response = await invokeExpressApp(
