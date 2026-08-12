@@ -68,6 +68,31 @@ describe("primary/runoff date questions never get the general-election date", ()
   });
 });
 
+describe("smalltalk routes deterministically, whole message only", () => {
+  it("greets on bare greetings", () => {
+    for (const q of ["Hi", "hi!", "Hello", "hey there", "HI there", "Good morning", "what's up?", "yo"]) {
+      expect(detectIntent(q), q).toEqual({ kind: "greeting", state: null });
+    }
+  });
+
+  it("acknowledges thanks and goodbyes", () => {
+    for (const q of ["Thanks", "thank you so much!", "thx", "appreciate it"]) {
+      expect(detectIntent(q), q).toEqual({ kind: "thanks", state: null });
+    }
+    for (const q of ["Bye", "goodbye!", "see you later", "take care"]) {
+      expect(detectIntent(q), q).toEqual({ kind: "goodbye", state: null });
+    }
+  });
+
+  it("never eats a real question that starts with a greeting", () => {
+    expect(detectIntent("hi, who is running in GA?")).toBeNull();
+    expect(detectIntent("HI there, when is the election?")?.kind).toBe("election_date");
+    expect(detectIntent("hello, do I need voter ID to vote?")?.kind).toBe("voter_id");
+    // "thanks for nothing, when is the runoff?" still time-sensitive.
+    expect(detectIntent("thanks, when is the runoff?")?.kind).toBe("needs_scope");
+  });
+});
+
 describe("detectStateInQuestion", () => {
   it("prefers full state names and handles multi-word names", () => {
     expect(detectStateInQuestion("register to vote in North Carolina")).toBe("NC");

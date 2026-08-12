@@ -8,6 +8,9 @@
 // never reach retrieval, a cache, or an LLM).
 
 export type IntentKind =
+  | "greeting"             // whole-message "hi"/"hello" → welcome, no retrieval
+  | "thanks"               // whole-message "thank you" → acknowledgement
+  | "goodbye"              // whole-message "bye" → sign-off
   | "policy_refusal"       // endorsement/recommendation ask → neutral refusal
   | "untracked_data"       // social-media posts etc. — data we never index
   | "out_of_cycle"         // election ask about a year outside the covered cycle
@@ -86,6 +89,27 @@ export function detectStateInQuestion(question: string): string | null {
   return null;
 }
 
+// Smalltalk — matched against the WHOLE message only (anchored both ends), so
+// "hi, who is running in GA?" never routes here. Zero data: greetings must
+// not reach retrieval, where "hi" only matches noise.
+const SMALLTALK_PATTERNS: ReadonlyArray<{ kind: IntentKind; pattern: RegExp }> = [
+  {
+    kind: "greeting",
+    pattern:
+      /^(?:hi|hiya|hello|hey|heya|howdy|yo|sup|what'?s\s+up|good\s+(?:morning|afternoon|evening)|(?:hi|hello|hey)\s+there)[\s!.,?]*$/i,
+  },
+  {
+    kind: "thanks",
+    pattern:
+      /^(?:thanks|thank\s+you|thanks\s+(?:a\s+lot|so\s+much|again)|thank\s+you\s+(?:so|very)\s+much|thx|ty|tysm|much\s+appreciated|appreciate\s+it)[\s!.,?]*$/i,
+  },
+  {
+    kind: "goodbye",
+    pattern:
+      /^(?:bye|goodbye|bye\s*bye|see\s+(?:you|ya)(?:\s+later)?|good\s*night|take\s+care|later)[\s!.,?]*$/i,
+  },
+];
+
 const POLICY_PATTERNS: RegExp[] = [
   /\bwho\s+(?:should|do|would)\s+(?:i|you|we)\s+(?:vote|pick|choose|support)\b/i,
   /\bshould\s+(?:i|we)\s+vote\b/i,
@@ -105,6 +129,13 @@ export function detectIntent(question: string): IntentMatch | null {
   const state = detectStateInQuestion(question);
   const q = question.trim();
 
+  // Whole-message smalltalk first: cheapest check, and "HI there" must not
+  // fall through to state detection or retrieval.
+  for (const { kind, pattern } of SMALLTALK_PATTERNS) {
+    if (pattern.test(q)) {
+      return { kind, state: null };
+    }
+  }
   if (POLICY_PATTERNS.some((pattern) => pattern.test(q))) {
     return { kind: "policy_refusal", state };
   }

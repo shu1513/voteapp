@@ -240,6 +240,29 @@ function needsScopeClarification(question: string, retrieval: RetrievalResult, s
 }
 
 async function renderIntentAnswer(db: Pool, intent: IntentMatch): Promise<AskResponse> {
+  // Smalltalk: friendly fixed lines, no data, no cards (BEHAVIOR-neutral —
+  // nothing here asserts a fact). Checked before the state-resources fetch.
+  if (intent.kind === "greeting") {
+    return {
+      outcome: "template",
+      answer:
+        "Hi! Ask me about the November 2026 elections we cover — candidates, their records, campaign finance, elections, and ballot measures.",
+      results: [],
+      data_current_as_of: null,
+    };
+  }
+  if (intent.kind === "thanks") {
+    return { outcome: "template", answer: "My pleasure — ask any time.", results: [], data_current_as_of: null };
+  }
+  if (intent.kind === "goodbye") {
+    return {
+      outcome: "template",
+      answer: "Goodbye! Come back whenever you have election questions.",
+      results: [],
+      data_current_as_of: null,
+    };
+  }
+
   const resources = intent.state ? await loadStateLogistics(db, intent.state) : null;
 
   if (intent.kind === "policy_refusal") {
