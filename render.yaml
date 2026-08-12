@@ -369,7 +369,9 @@ services:
   # The MONEY side stays dashboard-only on voteapp-api, off by default —
   # ALL THREE required to turn AI answers on:
   #   CHATBOT_LLM_ENABLED=true, CHATBOT_LLM_API_KEY=<spend-limited key>,
-  #   CHATBOT_MODEL=<model id — deployment config only, never in the repo>
+  #   CHATBOT_MODEL_TIER_FREE=<model id — deployment config only, never in
+  #                            the repo; every account uses it today, a paid
+  #                            tier would add its own variable>
   #   (optional overrides: CHATBOT_REASONING_EFFORT,
   #   CHATBOT_USER_DAILY_LIMIT, CHATBOT_DAILY_TOKEN_BUDGET,
   #   CHATBOT_LLM_BASE_URL, CHATBOT_LLM_TIMEOUT_MS). LLM off or
