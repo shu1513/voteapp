@@ -73,6 +73,20 @@ describe("upsertLosAngelesFinanceLink manual protection", () => {
     ).rejects.toThrow(/blocked by a concurrent protected manual link/);
   });
 
+  it("validates every field before issuing any statement", async () => {
+    // The writer runs standalone on a bare Pool (auto-link) — a validation
+    // throw after the deactivate UPDATE would strand a candidate with no
+    // active link, so every field must fail before the first query.
+    const query = queryMock();
+    await expect(
+      upsertLosAngelesFinanceLink({
+        db: { query } as never,
+        link: { ...AUTOMATIC_LINK, committeeName: "  " },
+      }),
+    ).rejects.toThrow(/committee name is required/);
+    expect(query).not.toHaveBeenCalled();
+  });
+
   it("protects a manual link from a needs_review automatic write too", async () => {
     // Without status-independent protection, this upsert would hit
     // ON CONFLICT on the manual row and rewrite it to lacity_ethics.
