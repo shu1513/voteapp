@@ -4,6 +4,7 @@ import {
   DENVER_SEARCHLIGHT_MAX_PAGE_SIZE,
   DenverSearchlightClientError,
   buildDenverTransactionSearchBody,
+  getDenverCommitteeDetailsByFiler,
   getDenverFiler,
   getDenverFilingSummary,
   getDenverOutsideSpenders,
@@ -197,6 +198,50 @@ describe("denverSearchlightClient", () => {
     expect(row.independentExpnFlag).toBe(false);
     expect(Object.keys(row)).not.toContain("address1");
     expect(JSON.stringify(page)).not.toContain("Colfax");
+  });
+
+  it("maps committee details through the PII allowlist", async () => {
+    // Raw response as observed live 2026-08-12 (filer 1326, cycle 36) — the
+    // treasurer's name and address fields must never survive the mapping.
+    const fetchImpl = vi.fn().mockResolvedValue(
+      jsonResponse({
+        entityName: "Browne for Denver",
+        entityType: "Candidate Committee",
+        candidateName: "Jake Browne",
+        treasurerName: "Samantha Sandt",
+        address1: "123 Main St",
+        address2: "Unit 4",
+        electionDate: "2026-11-03T07:00:00",
+        committeeId: 797,
+        committeeName: "Browne for Denver",
+        committeeType: "Candidate Committee",
+        committeeTypeId: 1,
+        district: null,
+        office: "City Council At-Large Seat B",
+        officeId: 10,
+        filerId: 1326,
+        entityId: 797,
+        electionCycle: "2026 City Council Vacancy Election",
+        electionCycleId: 36,
+      })
+    );
+    const details = await getDenverCommitteeDetailsByFiler(1326, 36, { fetchImpl });
+    expect(details).toEqual({
+      filerId: 1326,
+      committeeId: 797,
+      committeeName: "Browne for Denver",
+      committeeTypeId: 1,
+      committeeType: "Candidate Committee",
+      candidateName: "Jake Browne",
+      office: "City Council At-Large Seat B",
+      officeId: 10,
+      electionCycleId: 36,
+      electionDate: "2026-11-03T07:00:00",
+    });
+    expect(JSON.stringify(details)).not.toContain("Sandt");
+    expect(JSON.stringify(details)).not.toContain("Main St");
+    const url = String(fetchImpl.mock.calls[0]?.[0]);
+    expect(url).toContain("GetCommitteeDetailsByFiler?filerId=1326&electionCycleId=36");
   });
 
   it("surfaces HTTP and JSON failures with typed error codes", async () => {
