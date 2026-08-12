@@ -1,9 +1,12 @@
 # San José Local Campaign Finance Plan
 
-Status: Phases 1–4 built (shared `efileCalFinance/` client + parser, the San
+Status: Phases 1–5 built (shared `efileCalFinance/` client + parser, the San
 José eligibility + resolver adapter, the direct/outside aggregators — all
 live-verified 2026-08-10 — then migration 233 + flags + source enum + snapshot
-writer); Phases 5+ not started. Feasibility + export semantics verified against live
+writer, then the Phase 5 sync/auto-link/batch/loader/CLI, dry-run verified
+live 2026-08-11); Phase 6 live validation (real writes + portal-PDF
+reconciliation) remains, after the city's final candidate list (Aug 13).
+Feasibility + export semantics verified against live
 data 2026-08-10 (portal probed, 2025+2026 workbooks downloaded and audited).
 
 ## Goal and v1 scope
@@ -283,10 +286,51 @@ dry-run against the final roster before enabling sync.
   cents → exact dollar strings; negative flows abort, signed cash passes).
   8 writer tests; module 58, full backend suite green.
 
-### Phase 5: sync, loader, scripts
+### Phase 5: sync, loader, scripts — DONE (2026-08-11)
 
-- Sync / auto-link / batch mirroring the SF module; ballot-lookup loader
-  gated by eligible-office check; npm scripts wired like other city modules.
+- Built: `sanJoseCandidateFinanceSync.ts` (per-candidate sync: committee
+  presence check fails closed when a linked committee leaves the export;
+  quarantine policy — blocking = filing_unusable / duplicate_summary_line /
+  missing_summary_line / contribution_reconciliation / loan_cross_check,
+  prior_activity_uncovered publishes WITH a per-candidate
+  `direct_coverage_note`, the rest are diagnostics only since all six live
+  committees trip them and still reconcile cent-exact; SF anomaly gates —
+  reported_through regression never bypassable, 10× raised collapse on an
+  unchanged filing set bypassable; employer-label classification
+  deterministic + cached-manual only, zero AI; `loadSanJoseCycleWorkbookData`
+  fetches the [year-1, year] workbook pair through the Phase 1 artifact
+  cache, network-off unless the raw-data flag allows), plus the agency
+  config (`csj`, S3 host allowlist) and methodology version `sj-2026.1`.
+- `sanJoseCandidateFinanceAutoLink.ts`: SF-style missing-links selector
+  (SJ place predicate + TS office gate + seat parse), resolution PER
+  ELECTION via the Phase 2 resolver; matched → active `efile_export` link,
+  ambiguous → needs_review, unmatched → no_committee; manual-link
+  protection lives in the writer and surfaces as a per-candidate error.
+- `sanJoseCandidateFinanceBatchSync.ts`: workbooks loaded once per election
+  year (failures cached so the portal is hit once), auto-link leg
+  warn-and-continue, stalest-first due loop, `electionId` backfill
+  targeting. No SF-style stale-election leg: no relations table exists, and
+  every snapshot rewrite advances `last_verified_at`.
+- `sanJoseBallotLookupFinanceLoader.ts` registered in `ballotLookup.ts`
+  (source `SAN_JOSE_CITY_CLERK`): loans surfaced, per-candidate
+  `direct_coverage_note` threaded (omitted when null), real
+  `expenditure_count` on outside groups, summary-URL fallback.
+- Script `syncDueSanJoseCandidateFinance.ts` (`npm run
+  san-jose-candidates:finance:sync-due`; strict flags, `--force`,
+  `--bypass-anomaly-check`, `--election-id`); raw refresh gated by
+  `SAN_JOSE_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED`. Scheduler scripts
+  deferred until San José gets an automated cadence.
+- Tests: 27 new (sync 9, auto-link 6, batch 7, loader 5); module 85/85,
+  full backend suite green.
+- Live-verified 2026-08-11 (dry-run, no DB writes; fresh 2025+2026
+  downloads): all 6 runoff candidates resolve 6 unique committees; Doan
+  cent-exact vs the Phase 0 audit (117,125.37 / 108,905.71 / 32,668.66 /
+  loans 20,000 / outside 101,249.54); Altwer 118,723.85 / Campos oppose
+  5,270.18 / Chester 1,255.68 / Le 0 match Phase 3; Ortiz support
+  281,447.58 → 292,697.58 (new IE filings since Aug 10). Coverage notes
+  fire for Altwer AND Van Le (her export history opens 2025-07-01 with
+  prior cash — new observation); zero blocking violations. Dry-run driver
+  kept at `backend/scratch/sjPhase5DryRun.ts` for the post-Aug-13 re-run.
 
 ### Phase 6: tests and live validation
 
