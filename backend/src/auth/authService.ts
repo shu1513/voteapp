@@ -7,6 +7,7 @@ import type { AuthMailer } from "./authMailer.js";
 import { isUuid } from "../utils/uuid.js";
 import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
 import { recordTermsAcceptance } from "../pipeline/users/userTermsAcceptances.js";
+import type { VerifyGoogleIdToken } from "./googleIdToken.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type TransactionalDb = Pick<Pool, "connect" | "query">;
@@ -26,6 +27,10 @@ export type AuthServiceOptions = {
   emailVerificationTtlSeconds?: number;
   passwordResetTtlSeconds?: number;
   emailChangeTtlSeconds?: number;
+  /** Present only when GOOGLE_OAUTH_CLIENT_ID is configured; its presence is
+   * what enables loginWithGoogle on the returned service. Injected (rather
+   * than constructed here) so tests stub it — no network in vitest. */
+  verifyGoogleIdToken?: VerifyGoogleIdToken;
 };
 
 export type AuthRegisterInput = {
@@ -59,6 +64,28 @@ export type AuthLoginResult = {
   sessionId: string;
 };
 
+export type AuthGoogleLoginInput = {
+  idToken: string;
+  /** Which page the button sat on. Only "signup" (the register page, behind
+   * the LegalGate checkbox) may create or take over an account; the login
+   * page's button can only sign in to accounts that already exist. */
+  intent: "login" | "signup";
+  /** Required for intent "signup" (clickwrap record, like register). */
+  acceptedTermsVersion?: string;
+  currentSessionId?: string | null;
+};
+
+/** Google sign-in outcomes the frontend routes on (vs. generic 400s). */
+export class AuthGoogleSignInError extends Error {
+  constructor(
+    readonly code: "needs_signup",
+    message: string
+  ) {
+    super(message);
+    this.name = "AuthGoogleSignInError";
+  }
+}
+
 export type AuthChangePasswordInput = {
   userId: string;
   currentPassword: string;
@@ -91,6 +118,8 @@ export type AuthService = {
   resetPassword(input: AuthResetPasswordInput): Promise<void>;
   /** Logged-in password change; rotates every session, returns the fresh one. */
   changePassword(input: AuthChangePasswordInput): Promise<AuthLoginResult>;
+  /** Present only when the service was created with verifyGoogleIdToken. */
+  loginWithGoogle?(input: AuthGoogleLoginInput): Promise<AuthLoginResult>;
   requestEmailChange(input: AuthRequestEmailChangeInput): Promise<void>;
   verifyEmailChange(input: { token: string }): Promise<void>;
   deleteAccount(input: AuthDeleteAccountInput): Promise<void>;
@@ -100,7 +129,8 @@ type AuthUserRow = {
   id: string;
   email: string;
   first_name: string;
-  password_hash: string;
+  /** NULL on Google-created accounts that never set a password. */
+  password_hash: string | null;
   email_verified: boolean;
   session_epoch: number;
 };
@@ -360,6 +390,311 @@ async function createOrRefreshAuthUser(
   return row;
 }
 
+type GoogleAuthUserRow = AuthUserRow & { google_sub: string | null };
+
+const GOOGLE_AUTH_USER_COLUMNS = `
+  id::text AS id,
+  email::text AS email,
+  first_name,
+  password_hash,
+  google_sub,
+  email_verified,
+  session_epoch
+`;
+
+/** Validated identity claims from a verified Google ID token. */
+type GoogleIdentity = {
+  sub: string;
+  email: string;
+  hd: string | null;
+  givenName: string | null;
+};
+
+/** Strictly validates the claims loginWithGoogle relies on. Every rejection
+ * is the same generic TypeError (→ 400): claim-level detail would only help
+ * someone probing the endpoint with forged tokens. */
+function validateGoogleClaims(payload: {
+  sub?: string;
+  email?: string;
+  email_verified?: boolean;
+  hd?: string;
+  given_name?: string;
+}): GoogleIdentity {
+  const invalid = () => new TypeError("Google sign-in failed: invalid credential");
+  const sub = typeof payload.sub === "string" ? payload.sub.trim() : "";
+  if (sub.length === 0) {
+    throw invalid();
+  }
+  let email: string;
+  try {
+    email = normalizeEmail(payload.email ?? "");
+  } catch {
+    throw invalid();
+  }
+  // Matches the API layer's cap on registration emails (RFC 5321 path limit).
+  if (email.length > 254 || payload.email_verified !== true) {
+    throw invalid();
+  }
+  const hd = typeof payload.hd === "string" && payload.hd.trim().length > 0 ? payload.hd.trim() : null;
+  // Google's own guidance on when its email claim is authoritative: gmail.com
+  // addresses, or Workspace accounts (hd set). For anything else the address
+  // may have changed hands while email_verified stays true, so auto-linking
+  // could hand an old Google-account holder someone else's VoteApp account.
+  if (!email.toLowerCase().endsWith("@gmail.com") && hd === null) {
+    throw new TypeError(
+      "Google sign-in is only available for Gmail and Google Workspace addresses. Use email signup or login instead."
+    );
+  }
+  const givenName =
+    typeof payload.given_name === "string" && payload.given_name.trim().length > 0
+      ? payload.given_name.trim().slice(0, 80)
+      : null;
+  return { sub, email, hd, givenName };
+}
+
+function createLoginWithGoogle(deps: {
+  verifyGoogleIdToken: VerifyGoogleIdToken;
+  db: TransactionalDb;
+  redis: AuthSessionRedisClient;
+  sessionTtlSeconds: number;
+}): (input: AuthGoogleLoginInput) => Promise<AuthLoginResult> {
+  async function findActiveUserByGoogleSubForUpdate(
+    client: Queryable,
+    sub: string
+  ): Promise<GoogleAuthUserRow | null> {
+    const result = await client.query<GoogleAuthUserRow>(
+      `
+        SELECT ${GOOGLE_AUTH_USER_COLUMNS}
+        FROM public.users
+        WHERE google_sub = $1
+          AND deleted_at IS NULL
+        FOR UPDATE
+      `,
+      [sub]
+    );
+    return result.rows[0] ?? null;
+  }
+
+  async function findActiveGoogleUserByEmailForUpdate(
+    client: Queryable,
+    email: string
+  ): Promise<GoogleAuthUserRow | null> {
+    const result = await client.query<GoogleAuthUserRow>(
+      `
+        SELECT ${GOOGLE_AUTH_USER_COLUMNS}
+        FROM public.users
+        WHERE email = $1::citext
+          AND deleted_at IS NULL
+        FOR UPDATE
+      `,
+      [email]
+    );
+    return result.rows[0] ?? null;
+  }
+
+  /** One transaction: resolve the Google identity to a user row (creating,
+   * linking, or taking over per the decision table in
+   * docs/plans/google-sign-in.md) and return the id + epoch the session is
+   * created under. Throws with the transaction rolled back on any rejection. */
+  async function resolveUserOnce(
+    identity: GoogleIdentity,
+    input: AuthGoogleLoginInput
+  ): Promise<{ userId: string; sessionEpoch: number }> {
+    const client = await deps.db.connect();
+    try {
+      await client.query("BEGIN");
+
+      // Sub match = returning Google user: plain login under either intent.
+      // The stored email/name/terms are deliberately not touched — our email
+      // is the contact channel and follows our email-change flow, not
+      // Google's.
+      const bySub = await findActiveUserByGoogleSubForUpdate(client, identity.sub);
+      if (bySub) {
+        await updateLastLoggedIn(client, bySub.id);
+        await client.query("COMMIT");
+        return { userId: bySub.id, sessionEpoch: bySub.session_epoch };
+      }
+
+      const byEmail = await findActiveGoogleUserByEmailForUpdate(client, identity.email);
+      if (byEmail) {
+        if (byEmail.google_sub !== null) {
+          // The row is linked to a DIFFERENT Google account (a matching sub
+          // would have been found above). Never overwrite the link: the
+          // stored email deliberately does not follow Google email changes,
+          // so an overwrite here would let a token holding a recycled email
+          // steal the account. Generic message — detail only helps probing.
+          throw new TypeError("Google sign-in failed: this email cannot be linked to this Google account");
+        }
+        if (byEmail.email_verified) {
+          // Both sides verified + authoritative: link (either intent).
+          await client.query(
+            `
+              UPDATE public.users
+              SET google_sub = $2,
+                  updated_at = now()
+              WHERE id = $1::uuid
+                AND deleted_at IS NULL
+                AND google_sub IS NULL
+            `,
+            [byEmail.id, identity.sub]
+          );
+          await updateLastLoggedIn(client, byEmail.id);
+          await client.query("COMMIT");
+          return { userId: byEmail.id, sessionEpoch: byEmail.session_epoch };
+        }
+        // Unverified row. Google login proves inbox control (the token's
+        // verified email), so a SIGNUP takes the row over — mirroring the
+        // password flow's re-register-unverified semantics, with the same
+        // defenses against whoever pre-registered the address:
+        //   - password_hash = NULL kills the pre-registrant's password,
+        //   - the epoch bump kills their sessions,
+        //   - terms fields are replaced and a fresh acceptance is recorded
+        //     (the old acceptance may be the attacker's, so it must not be
+        //     inherited).
+        if (input.intent !== "signup") {
+          throw new AuthGoogleSignInError(
+            "needs_signup",
+            "No account uses this Google account yet. Create your account from the signup page."
+          );
+        }
+        const takeover = await client.query<{ session_epoch: number }>(
+          `
+            UPDATE public.users
+            SET google_sub = $2,
+                email_verified = true,
+                password_hash = NULL,
+                first_name = $3,
+                accepted_terms_version = $4,
+                accepted_terms_at = now(),
+                session_epoch = session_epoch + 1,
+                updated_at = now()
+            WHERE id = $1::uuid
+              AND deleted_at IS NULL
+            RETURNING session_epoch
+          `,
+          [byEmail.id, identity.sub, identity.givenName ?? deriveFirstName(identity.email, null), CURRENT_TERMS_VERSION]
+        );
+        const takeoverEpoch = takeover.rows[0]?.session_epoch;
+        if (typeof takeoverEpoch !== "number") {
+          throw new Error("Failed to link Google account");
+        }
+        await recordTermsAcceptance(client, {
+          userId: byEmail.id,
+          termsVersion: CURRENT_TERMS_VERSION,
+          context: "registration",
+        });
+        await updateLastLoggedIn(client, byEmail.id);
+        await client.query("COMMIT");
+        return { userId: byEmail.id, sessionEpoch: takeoverEpoch };
+      }
+
+      // No row at all: only a signup may create one.
+      if (input.intent !== "signup") {
+        throw new AuthGoogleSignInError(
+          "needs_signup",
+          "No account uses this Google account yet. Create your account from the signup page."
+        );
+      }
+      const inserted = await client.query<{ id: string; session_epoch: number }>(
+        `
+          INSERT INTO public.users (
+            first_name,
+            email,
+            password_hash,
+            email_verified,
+            google_sub,
+            accepted_terms_version,
+            accepted_terms_at
+          )
+          VALUES ($1, $2::citext, NULL, true, $3, $4, now())
+          RETURNING id::text AS id, session_epoch
+        `,
+        [identity.givenName ?? deriveFirstName(identity.email, null), identity.email, identity.sub, CURRENT_TERMS_VERSION]
+      );
+      const row = inserted.rows[0];
+      if (!row) {
+        throw new Error("Failed to create auth user");
+      }
+      await recordTermsAcceptance(client, {
+        userId: row.id,
+        termsVersion: CURRENT_TERMS_VERSION,
+        context: "registration",
+      });
+      await updateLastLoggedIn(client, row.id);
+      await client.query("COMMIT");
+      return { userId: row.id, sessionEpoch: row.session_epoch };
+    } catch (error) {
+      await rollbackQuietly(client);
+      throw error;
+    } finally {
+      client.release();
+    }
+  }
+
+  return async function loginWithGoogle(input) {
+    if (typeof input.idToken !== "string" || input.idToken.trim().length === 0) {
+      throw new TypeError("idToken must be a non-empty string");
+    }
+    if (input.intent !== "login" && input.intent !== "signup") {
+      throw new TypeError('intent must be "login" or "signup"');
+    }
+    if (input.intent === "signup") {
+      const acceptedTermsVersion =
+        typeof input.acceptedTermsVersion === "string" ? input.acceptedTermsVersion.trim() : "";
+      // Same dual-layer rule as register: no caller may persist acceptance
+      // of anything but the current terms version.
+      if (acceptedTermsVersion !== CURRENT_TERMS_VERSION) {
+        throw new TypeError(
+          `acceptedTermsVersion must be the current terms version (${CURRENT_TERMS_VERSION})`
+        );
+      }
+    }
+
+    let payload;
+    try {
+      payload = await deps.verifyGoogleIdToken(input.idToken);
+    } catch {
+      // Library errors (bad signature, wrong audience, expired, malformed)
+      // must all surface as one generic 400, never a 500.
+      throw new TypeError("Google sign-in failed: invalid credential");
+    }
+    const identity = validateGoogleClaims(payload);
+
+    let resolved: { userId: string; sessionEpoch: number };
+    try {
+      resolved = await resolveUserOnce(identity, input);
+    } catch (error) {
+      // Concurrent first sign-in for the same person can race the INSERT (or
+      // the link UPDATE) into a unique-index violation; the loser retries
+      // once in a fresh transaction and finds the committed row by sub/email.
+      if ((error as { code?: string }).code === "23505") {
+        resolved = await resolveUserOnce(identity, input);
+      } else {
+        throw error;
+      }
+    }
+
+    // Same post-commit sequence as password login: best-effort fixation
+    // cleanup of the presented session, then a fresh session under the epoch
+    // read in the transaction (a concurrent bump makes the stale-epoch
+    // session fail per-request validation — see login()).
+    const currentSessionId = normalizeSessionId(input.currentSessionId);
+    if (currentSessionId) {
+      try {
+        await destroyAuthSession(deps.redis, currentSessionId);
+      } catch {
+        // Best-effort fixation cleanup. The fresh session below is the source of truth.
+      }
+    }
+    const session = await createAuthSession(deps.redis, {
+      userId: resolved.userId,
+      ttlSeconds: deps.sessionTtlSeconds,
+      sessionEpoch: resolved.sessionEpoch,
+    });
+    return { sessionId: session.sessionId };
+  };
+}
+
 async function issueEmailVerificationToken(
   client: Queryable,
   input: {
@@ -383,8 +718,19 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
   const emailVerificationTtlSeconds = options.emailVerificationTtlSeconds ?? DEFAULT_AUTH_EMAIL_VERIFICATION_TTL_SECONDS;
   const passwordResetTtlSeconds = options.passwordResetTtlSeconds ?? DEFAULT_AUTH_PASSWORD_RESET_TTL_SECONDS;
   const emailChangeTtlSeconds = options.emailChangeTtlSeconds ?? DEFAULT_AUTH_EMAIL_CHANGE_TTL_SECONDS;
+  // Configured-if-present: without a verifier the method itself is absent,
+  // and the API layer answers "Google sign-in is not configured".
+  const loginWithGoogle = options.verifyGoogleIdToken
+    ? createLoginWithGoogle({
+        verifyGoogleIdToken: options.verifyGoogleIdToken,
+        db: options.db,
+        redis: options.redis,
+        sessionTtlSeconds,
+      })
+    : undefined;
 
   return {
+    ...(loginWithGoogle ? { loginWithGoogle } : {}),
     async register(input) {
       const email = normalizeEmail(input.email);
       const firstName = deriveFirstName(email, normalizeOptionalFirstName(input.firstName));
@@ -513,9 +859,14 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
     async login(input) {
       const email = normalizeEmail(input.email);
       const user = await findActiveUserByEmail(options.db, email);
+      // A NULL hash (Google-only account) still verifies against the dummy
+      // hash for constant-time behavior, but must NEVER authenticate: the
+      // dummy is a real Argon2 hash of a fixed literal, so without the
+      // explicit NULL check below, typing that literal would log into any
+      // password-less account.
       const passwordHash = user?.password_hash ?? (await DUMMY_PASSWORD_HASH_PROMISE);
       const passwordMatches = await verifyPassword(passwordHash, input.password);
-      if (!user || !passwordMatches) {
+      if (!user || user.password_hash === null || !passwordMatches) {
         throw new TypeError("Invalid email or password");
       }
 
@@ -691,7 +1042,9 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       try {
         await client.query("BEGIN");
         const user = await findActiveUserByIdForUpdate(client, userId);
-        if (!user || !(await verifyPassword(user.password_hash, input.currentPassword))) {
+        // NULL hash (Google-only account) never matches: Settings points
+        // those users at the password-reset flow to add a password first.
+        if (!user || user.password_hash === null || !(await verifyPassword(user.password_hash, input.currentPassword))) {
           // Same message for missing user and wrong password, like login.
           throw new TypeError("Current password is incorrect");
         }
@@ -760,7 +1113,8 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         // FOR UPDATE lock serializes token issuance per user (see
         // issueUserAuthToken's void-then-insert invariant).
         const user = await findActiveUserByIdForUpdate(client, userId);
-        if (!user || !(await verifyPassword(user.password_hash, input.password))) {
+        // NULL hash (Google-only account) never matches — add a password first.
+        if (!user || user.password_hash === null || !(await verifyPassword(user.password_hash, input.password))) {
           throw new TypeError("Password is incorrect");
         }
         if (user.email.toLowerCase() === newEmail.toLowerCase()) {
@@ -880,7 +1234,8 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       try {
         await client.query("BEGIN");
         const user = await findActiveUserByIdForUpdate(client, userId);
-        if (!user || !(await verifyPassword(user.password_hash, input.password))) {
+        // NULL hash (Google-only account) never matches — add a password first.
+        if (!user || user.password_hash === null || !(await verifyPassword(user.password_hash, input.password))) {
           throw new TypeError("Password is incorrect");
         }
 

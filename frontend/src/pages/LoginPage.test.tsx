@@ -108,6 +108,76 @@ describe("LoginPage first-login onboarding redirect", () => {
   });
 });
 
+// jsdom never loads the GIS script; a stubbed window.google lets the page
+// render the button and the test drive its captured credential callback.
+function stubGis() {
+  const initialize = vi.fn();
+  vi.stubGlobal("google", { accounts: { id: { initialize, renderButton: vi.fn() } } });
+  return {
+    initialize,
+    fireCredential(credential: string) {
+      const config = initialize.mock.calls.at(-1)?.[0] as
+        | { callback: (response: { credential?: string }) => void }
+        | undefined;
+      config?.callback({ credential });
+    },
+  };
+}
+
+describe("LoginPage Google sign-in", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("logs in with a Google credential using the login intent", async () => {
+    vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "test-client-id");
+    const gis = stubGis();
+    let loggedIn = false;
+    const fetchMock = stubApiRoutes({
+      "/api/auth/google": () => {
+        loggedIn = true;
+        return { body: { status: "ok" } };
+      },
+      "/api/me": () => (loggedIn ? { body: ME_VERIFIED } : apiError(401, "unauthorized", "Not logged in")),
+      "/api/me/research-area-preferences": { body: { preferences: [SAVED_PREFERENCE] } },
+    });
+    renderLogin();
+    await screen.findByLabelText("Email");
+    await vi.waitFor(() => expect(gis.initialize).toHaveBeenCalled());
+
+    gis.fireCredential("google-jwt");
+
+    expect(await screen.findByText("Saved ballot placeholder")).toBeInTheDocument();
+    const googleCall = fetchMock.mock.calls.find(([path]) => String(path) === "/api/auth/google");
+    expect(googleCall).toBeDefined();
+    const init = googleCall![1] as { body: string };
+    expect(JSON.parse(init.body)).toEqual({
+      credential: "google-jwt",
+      intent: "login",
+    });
+  });
+
+  it("routes needs_signup to the register page with the next path preserved", async () => {
+    vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "test-client-id");
+    const gis = stubGis();
+    stubApiRoutes({
+      "/api/auth/google": apiError(400, "needs_signup", "No account uses this Google account yet."),
+      "/api/me": apiError(401, "unauthorized", "Not logged in"),
+    });
+    renderLogin("?next=/candidates/c-1");
+    await screen.findByLabelText("Email");
+    await vi.waitFor(() => expect(gis.initialize).toHaveBeenCalled());
+
+    gis.fireCredential("google-jwt");
+
+    expect(await screen.findByText(/No account uses that Google account yet/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Create your account" })).toHaveAttribute(
+      "href",
+      "/register?next=%2Fcandidates%2Fc-1"
+    );
+  });
+});
+
 describe("LoginPage next-path return", () => {
   it("returns to the internal next path after login, skipping the welcome step", async () => {
     // Preferences endpoint deliberately unmocked: an explicit return path

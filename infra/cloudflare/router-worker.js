@@ -71,9 +71,15 @@ export const CLIENT_IP_HEADER = "X-Voteapp-Client-IP";
 // attributes. Browsers ignore frame-ancestors in Report-Only mode; it's
 // staged here for the enforced policy, and X-Frame-Options DENY covers
 // framing today.
+// The accounts.google.com sources are Sign in with Google (GIS): the button
+// script, its styles, the credential iframe, and its status requests —
+// Google's documented CSP set for the web sign-in flow.
 const CSP_POLICY =
-  "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; " +
-  "img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.sentry.io; " +
+  "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client; " +
+  "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; " +
+  "img-src 'self' data:; font-src 'self'; " +
+  "connect-src 'self' https://*.sentry.io https://accounts.google.com/gsi/; " +
+  "frame-src https://accounts.google.com/gsi/; " +
   "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
 
 const SECURITY_HEADERS = {

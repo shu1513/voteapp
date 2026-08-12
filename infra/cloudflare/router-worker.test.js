@@ -397,8 +397,11 @@ describe("security headers", () => {
     "referrer-policy": "strict-origin-when-cross-origin",
     "permissions-policy": "camera=(), microphone=(), geolocation=()",
     "content-security-policy-report-only":
-      "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; " +
-      "img-src 'self' data:; font-src 'self'; connect-src 'self' https://*.sentry.io; " +
+      "default-src 'self'; script-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/client; " +
+      "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; " +
+      "img-src 'self' data:; font-src 'self'; " +
+      "connect-src 'self' https://*.sentry.io https://accounts.google.com/gsi/; " +
+      "frame-src https://accounts.google.com/gsi/; " +
       "object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
   };
 

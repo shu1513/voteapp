@@ -237,6 +237,31 @@ function EmailSection({ me }: { me: Me }) {
   );
 }
 
+// Google-created accounts have no password, and password change, email
+// change, and account deletion all demand one. Instead of letting those
+// forms fail with "password is incorrect", point at the existing
+// forgot-password flow: the account's email is verified, so the reset link
+// works today and doubles as "add a password".
+function AddPasswordSection({ me }: { me: Me }) {
+  return (
+    <Section title="Add a password">
+      <p className="mt-1 text-sm text-ink-soft">
+        You signed in with Google, so this account has no password yet. Changing your email or deleting
+        your account requires one.
+      </p>
+      <p className="mt-2 text-sm text-ink-soft">
+        We&apos;ll email a link to <strong className="text-ink">{me.email}</strong> that lets you set one.
+      </p>
+      <Link
+        to="/forgot-password"
+        className="mt-3 inline-block rounded-lg border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-rausch"
+      >
+        Add a password
+      </Link>
+    </Section>
+  );
+}
+
 function HomeAddressSection() {
   return (
     <Section title="Your address">
@@ -499,10 +524,16 @@ export function SettingsPage() {
           Verify your email to manage your address and notifications.
         </p>
       )}
-      <PasswordSection />
-      <EmailSection me={me} />
+      {me.has_password ? (
+        <>
+          <PasswordSection />
+          <EmailSection me={me} />
+        </>
+      ) : (
+        <AddPasswordSection me={me} />
+      )}
       <SessionsSection />
-      <DangerSection />
+      {me.has_password ? <DangerSection /> : null}
     </div>
   );
 }

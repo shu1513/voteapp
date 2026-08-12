@@ -7,6 +7,8 @@ export type ApiErrorCode =
   | "invalid_request"
   | "unsupported_media_type"
   | "rate_limited"
+  // Google login intent found no account: the frontend routes to signup.
+  | "needs_signup"
   | "follow_limit_reached"
   | "address_not_found"
   | "districts_unavailable"

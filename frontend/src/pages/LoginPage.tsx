@@ -1,39 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router";
 import type { MetaFunction } from "react-router";
-import { useMutation, useQueryClient, type QueryClient } from "@tanstack/react-query";
-import { APP_NAME, apiRequest } from "@voteapp/api-client";
-import type { Me, ResearchAreaPreferencesResult } from "@voteapp/api-client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { APP_NAME, ApiError, apiRequest } from "@voteapp/api-client";
 import { ErrorNotice } from "../components/Status";
+import { GoogleSignInButton } from "../components/GoogleSignInButton";
 import { purgeAccountScopedQueries } from "@voteapp/api-client";
 import { useAdoptPreHydrationValue } from "../lib/preHydrationInput";
 import { safeInternalPath } from "../lib/safeInternalPath";
-import { hasSeenWelcome } from "../lib/welcomeSeen";
+import { postLoginDestination } from "../lib/postLoginDestination";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
-
-// First-login onboarding hook-in: a verified user with no saved research
-// areas who hasn't been through the welcome step gets routed there instead
-// of the ballot. Any lookup failure falls back to the ballot — login must
-// never strand the user on an error because an optional step couldn't be
-// checked.
-async function postLoginDestination(queryClient: QueryClient): Promise<string> {
-  const me = queryClient.getQueryData<Me | null>(["me"]);
-  if (!me?.email_verified || hasSeenWelcome(me.email)) {
-    return "/me/ballot";
-  }
-  try {
-    // fetchQuery, not a bare request: it seeds the cache the welcome page
-    // and settings editor read from.
-    const prefs = await queryClient.fetchQuery({
-      queryKey: ["me", "research-area-preferences"],
-      queryFn: () => apiRequest<ResearchAreaPreferencesResult>("/api/me/research-area-preferences"),
-      staleTime: 60_000,
-    });
-    return prefs.preferences.length === 0 ? "/me/welcome" : "/me/ballot";
-  } catch {
-    return "/me/ballot";
-  }
-}
 
 export const meta: MetaFunction = () => [{ title: `Log in · ${APP_NAME}` }];
 
@@ -71,6 +47,24 @@ export function LoginPage() {
       navigate(next ?? (await postLoginDestination(queryClient)));
     },
   });
+
+  // Same success path as password login. This button never creates an
+  // account (intent: "login"): a Google user without one is routed to the
+  // register page, where the clickwrap checkbox gates the signup.
+  const googleLogin = useMutation({
+    mutationFn: (credential: string) =>
+      apiRequest<{ status: string }>("/api/auth/google", {
+        method: "POST",
+        body: { credential, intent: "login" },
+      }),
+    onSuccess: async () => {
+      purgeAccountScopedQueries(queryClient);
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      navigate(next ?? (await postLoginDestination(queryClient)));
+    },
+  });
+  const googleNeedsSignup =
+    googleLogin.error instanceof ApiError && googleLogin.error.code === "needs_signup";
 
   const canSubmit = email.trim().length > 0 && password.length > 0 && !login.isPending;
 
@@ -129,6 +123,36 @@ export function LoginPage() {
           <ErrorNotice error={login.error} />
         </div>
       ) : null}
+
+      <div className="mt-6">
+        <GoogleSignInButton
+          text="signin_with"
+          disabled={googleLogin.isPending}
+          onCredential={(credential) => {
+            if (!googleLogin.isPending) {
+              googleLogin.mutate(credential);
+            }
+          }}
+        />
+        {googleLogin.isError ? (
+          <div className="mt-3">
+            {googleNeedsSignup ? (
+              <p className="rounded-lg border border-line bg-surface p-3 text-sm text-ink">
+                No account uses that Google account yet.{" "}
+                <Link
+                  to={next ? `/register?next=${encodeURIComponent(next)}` : "/register"}
+                  className="font-semibold underline hover:text-rausch"
+                >
+                  Create your account
+                </Link>{" "}
+                to get started.
+              </p>
+            ) : (
+              <ErrorNotice error={googleLogin.error} />
+            )}
+          </div>
+        ) : null}
+      </div>
 
       <div className="mt-6 space-y-1 text-sm text-ink-soft">
         <p>

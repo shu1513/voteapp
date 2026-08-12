@@ -1,6 +1,7 @@
 import express, { type Express, type NextFunction, type Request, type Response } from "express";
 import {
   AUTH_FORGOT_PASSWORD_PATH,
+  AUTH_GOOGLE_PATH,
   AUTH_LOGIN_PATH,
   AUTH_LOGOUT_PATH,
   AUTH_REGISTER_PATH,
@@ -10,6 +11,7 @@ import {
   AUTH_VERIFY_EMAIL_CHANGE_PATH,
   AUTH_LOGOUT_ALL_PATH,
   parseAuthForgotPasswordBodyValue,
+  parseAuthGoogleBodyValue,
   parseAuthLoginBodyValue,
   parseAuthRegisterBodyValue,
   parseAuthResetPasswordBodyValue,
@@ -131,6 +133,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === CHATBOT_ASK_PATH ||
     pathname === CONTENT_REPORTS_PATH ||
     pathname === AUTH_FORGOT_PASSWORD_PATH ||
+    pathname === AUTH_GOOGLE_PATH ||
     pathname === AUTH_LOGIN_PATH ||
     pathname === AUTH_LOGOUT_PATH ||
     pathname === AUTH_REGISTER_PATH ||
@@ -447,6 +450,9 @@ function createJsonBodyParser() {
           request.path === CONTENT_REPORTS_PATH ||
           request.path === ME_DISTRICTS_INITIALIZE_PATH ||
           request.path === AUTH_FORGOT_PASSWORD_PATH ||
+          // Half the CSRF story for the Google endpoint: requiring
+          // application/json means no HTML form can produce the request.
+          request.path === AUTH_GOOGLE_PATH ||
           request.path === AUTH_LOGIN_PATH ||
           // Logout has no meaningful body, but requiring the JSON content
           // type blocks plain cross-site form POSTs from logging users out
@@ -817,6 +823,82 @@ async function dispatchApiRequest(
       email: payload.email,
     });
     sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === AUTH_GOOGLE_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/auth/google", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    // Configured-if-present: the method only exists on the service when
+    // GOOGLE_OAUTH_CLIENT_ID was wired at boot.
+    const loginWithGoogle = options.authService?.loginWithGoogle?.bind(options.authService);
+    if (!loginWithGoogle) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Google sign-in is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const payload = parseAuthGoogleBodyValue(request.body);
+    // Same dual-layer clickwrap rule as register: a stale frontend must be
+    // refused before any token verification or DB work.
+    if (payload.intent === "signup" && payload.accepted_terms_version !== CURRENT_TERMS_VERSION) {
+      sendApiResponse(
+        response,
+        toErrorResponse(
+          400,
+          "invalid_request",
+          `accepted_terms_version must be the current terms version (${CURRENT_TERMS_VERSION})`,
+          corsHeaders
+        )
+      );
+      return;
+    }
+    // Per-IP throttle (the client IP doubles as the per-"email" bucket key):
+    // there is no password to brute-force behind this endpoint — a credential
+    // is a Google-signed token — so the limiter's job here is only to cap
+    // verification/DB work per caller, and the IP is the only stable key
+    // available before verification.
+    if (!(await enforceAuthRateLimit(options, request, response, response.locals.clientIp ?? "unknown"))) {
+      return;
+    }
+    const currentSessionId = getAuthSessionId(request);
+    const result = await loginWithGoogle({
+      idToken: payload.credential,
+      intent: payload.intent,
+      ...(payload.accepted_terms_version === undefined
+        ? {}
+        : { acceptedTermsVersion: payload.accepted_terms_version }),
+      currentSessionId,
+    });
+    // Identical transport branch to password login: mobile gets the id in
+    // the body (Bearer use), web stays cookie-only.
+    const googleMobileClient = isMobileClientRequest(request);
+    sendApiResponse(response, {
+      ...toJsonResponse(200, { status: "ok" }, corsHeaders),
+      headers: {
+        ...corsHeaders,
+        "content-type": "application/json; charset=utf-8",
+        ...(googleMobileClient
+          ? {}
+          : {
+              "set-cookie": serializeAuthSessionCookie(result.sessionId, {
+                ...options.authSessionCookieOptions,
+              }),
+            }),
+      },
+      body: googleMobileClient ? { status: "ok", session_id: result.sessionId } : { status: "ok" },
+      statusCode: 200,
+    });
     return;
   }
 

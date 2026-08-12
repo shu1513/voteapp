@@ -18,6 +18,7 @@ import {
   DEFAULT_AUTH_PASSWORD_RESET_TTL_SECONDS,
   DEFAULT_AUTH_SESSION_TTL_SECONDS,
 } from "../auth/authService.js";
+import { createGoogleIdTokenVerifier } from "../auth/googleIdToken.js";
 import {
   assertTrustedUserIdHeaderConfigIsSafe,
   createSessionAwareTrustedUserIdResolver,
@@ -458,6 +459,10 @@ async function main(): Promise<void> {
             ...(authReplyToEmailAddress ? { replyToEmailAddress: authReplyToEmailAddress } : {}),
           })
         : null;
+  // Sign in with Google (docs/plans/google-sign-in.md): configured-if-present.
+  // Without the client ID the service method is absent and POST
+  // /api/auth/google answers 500 not-configured; everything else is unchanged.
+  const googleOauthClientId = readOptionalEnv("GOOGLE_OAUTH_CLIENT_ID");
   const authService =
     authPublicBaseUrl && authMailer && redis?.isOpen
       ? createAuthService({
@@ -468,8 +473,14 @@ async function main(): Promise<void> {
           sessionTtlSeconds: DEFAULT_AUTH_SESSION_TTL_SECONDS,
           emailVerificationTtlSeconds: DEFAULT_AUTH_EMAIL_VERIFICATION_TTL_SECONDS,
           passwordResetTtlSeconds: DEFAULT_AUTH_PASSWORD_RESET_TTL_SECONDS,
+          ...(googleOauthClientId
+            ? { verifyGoogleIdToken: createGoogleIdTokenVerifier(googleOauthClientId) }
+            : {}),
         })
       : undefined;
+  if (googleOauthClientId && !authService) {
+    console.warn("GOOGLE_OAUTH_CLIENT_ID is set but authentication is not fully configured; Google sign-in stays off");
+  }
   if (!authService && (authPublicBaseUrl || authFromEmailAddress || authSesRegion || authMailerKind === "console")) {
     console.warn(
       "authentication is partially configured but missing required settings or Redis; auth endpoints will return 500 until AUTH_PUBLIC_BASE_URL, Redis, and either AUTH_MAILER=console or AUTH_FROM_EMAIL + AUTH_SES_REGION/AWS_REGION are set"

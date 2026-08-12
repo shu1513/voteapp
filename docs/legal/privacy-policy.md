@@ -12,12 +12,20 @@ LIVE before CHATBOT_LLM_ENABLED is ever turned on in production
 backend/src/chatbot/ (anonymous, redacted, 90-day purge, low-count
 suppression); the OpenAI description matches the adapter (store:false, no
 raw identifiers).
+Google Sign-In disclosure added 2026-08-12 (1.1 → 1.2,
+docs/plans/google-sign-in.md): this version must be LIVE before
+GOOGLE_OAUTH_CLIENT_ID is ever set in production. The description matches
+backend/src/auth/googleIdToken.ts + loginWithGoogle: ID-token only (sub,
+email, verified/hosted-domain status, optional first name), no Google
+access/refresh tokens, no Google API calls, google_sub deleted with the
+account. 1.2 is a clarifying addition for an OPTIONAL sign-in method —
+CURRENT_TERMS_VERSION deliberately stays 1.1 (no forced re-acceptance).
 -->
 
 # Elections Simplified Privacy Policy
 
 **Last updated:** August 12, 2026
-**Version:** 1.1
+**Version:** 1.2
 
 This Privacy Policy describes how impactperdollar, the operator of the Elections Simplified service ("Elections Simplified," "we," "us"), collects, uses, and shares information when you use the Elections Simplified website and services (the "Service").
 
@@ -26,6 +34,8 @@ This Privacy Policy describes how impactperdollar, the operator of the Elections
 **Address and search input.** When you enter an address, we process it to determine your voting districts. The address is sent to geocoding services (see Section 3) and may be held in a server-side cache for up to 14 days to speed up repeat lookups; this cache is not linked to your account. What we store on your account is the resulting **list of districts** — not your street address. We do not maintain a saved-address book.
 
 **Account information.** If you create an account: your email address, first name, and a cryptographic hash of your password (we never store the password itself). We also record which version of our terms you accepted and when.
+
+**Sign in with Google (optional).** If you choose to sign up or sign in with your Google account, we receive from Google a signed identity token containing your stable Google account identifier, your Google account email address and its verification status (including whether it belongs to a Google Workspace organization), and optionally your first name. We store the identifier to recognize your sign-in and the email address and first name as your account information above. We receive **no** Google access or refresh tokens, cannot access your Google data (mail, contacts, files), and make no ongoing requests to your Google account. An account created with Google has no password until you set one (see Section 6).
 
 **Preferences and activity.** Settings you choose: candidates you follow, research-area interests, ballot ordering preferences, and email notification opt-ins. Because the Service is about elections, these choices may reflect your civic or political interests; we treat them as your private account data and never sell them or disclose them to third parties for advertising. We use them to provide the features you chose and to select relevant civic updates, information, and recommendations (occasionally including clearly labeled sponsored or promotional content) for the notification emails you control in settings; every such email includes a working unsubscribe link, and the underlying data never leaves us.
 
@@ -47,6 +57,7 @@ We share information only with the processors needed to run the Service:
 
 - **U.S. Census Bureau geocoder** — receives the address text you enter, to locate your districts.
 - **Google Places (autocomplete)** — receives the address text you type when address suggestions are enabled; requests are proxied through our servers so Google does not receive your IP address from your browser.
+- **Google (Sign in with Google)** — when you choose to sign in with Google, your browser interacts with Google directly to complete the sign-in (Google's own privacy policy applies to that interaction), and we receive the identity token described in Section 1. We send Google nothing about your activity in the Service.
 - **Amazon Web Services (SES)** — receives your email address to deliver account and notification emails.
 - **Analytics provider** — when analytics is enabled, receives the usage information described in Section 1 ("Usage analytics") to help us understand and improve how the Service is used. We configure analytics so that this data is not used for the provider's own advertising purposes, and we will name the provider here before or when analytics is enabled.
 - **OpenAI (AI answers in Ask)** — when AI-generated answers are enabled for the Ask feature, receives the text of your chat question and the snippets of our own election data used to answer it, together with a pseudonymous account identifier (a cryptographic hash used only for abuse prevention — never your email address, name, or address). We send requests with storage disabled, and under OpenAI's API terms this content is not used to train OpenAI's models. AI answers are labeled as AI-generated in the Service.
@@ -59,7 +70,7 @@ We may also disclose information if we believe in good faith that disclosure is 
 
 ## 4. Retention and deletion
 
-Account data is kept while your account is active. If you delete your account, your account record and its associated data — email address, name, saved districts, follows, preferences, and notification history — are deleted immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration. Content reports you submitted while signed in are kept for moderation purposes with your account identifier and contact email removed. Residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics data is kept only as long as needed for the improvement purposes described above.
+Account data is kept while your account is active. If you delete your account, your account record and its associated data — email address, name, the Google account identifier if you signed in with Google, saved districts, follows, preferences, and notification history — are deleted immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration. Content reports you submitted while signed in are kept for moderation purposes with your account identifier and contact email removed. Residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics data is kept only as long as needed for the improvement purposes described above.
 
 ## 5. Your choices
 
@@ -67,7 +78,7 @@ You can view and update your name, email address, password, districts, follows, 
 
 ## 6. Security
 
-Passwords are stored using a modern memory-hard hashing algorithm; sessions use httpOnly cookies; email-verification, password-reset, and email-change links are single-use and expire; and account-sensitive actions require your password and are rate limited. No system is perfectly secure — use a unique password.
+Passwords are stored using a modern memory-hard hashing algorithm; sessions use httpOnly cookies; email-verification, password-reset, and email-change links are single-use and expire; and account-sensitive actions require your password and are rate limited. An account created with Sign in with Google has no password until you set one; changing your email or deleting your account then requires setting a password first (account settings link to the emailed set-a-password flow). No system is perfectly secure — use a unique password.
 
 ## 7. Children
 
