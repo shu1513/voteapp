@@ -62,6 +62,19 @@ describe("missouriMecClient", () => {
     expect(isMissouriMecChallengeBody(INCAPSULA_CHALLENGE_STUB)).toBe(true);
     expect(isMissouriMecChallengeBody("Request unsuccessful. Incapsula incident ID: 92000-1")).toBe(true);
     expect(isMissouriMecChallengeBody(SEARCH_PAGE_HTML)).toBe(false);
+    // A full WebForms page that merely embeds the telemetry script (as every
+    // real MEC page does) is NOT a challenge — the discriminator is size +
+    // absence of __VIEWSTATE, not the marker substring.
+    const realPageWithTelemetry =
+      SEARCH_PAGE_HTML +
+      '<script src="/_Incapsula_Resource?SWJIYLWA=719d34d3&ns=10&cb=1162649131"></script>' +
+      "x".repeat(60_000);
+    expect(isMissouriMecChallengeBody(realPageWithTelemetry)).toBe(false);
+    // A small body carrying the marker but with __VIEWSTATE is still treated
+    // as a real (if truncated) page, not a challenge.
+    expect(isMissouriMecChallengeBody('<input name="__VIEWSTATE"><script src="/_Incapsula_Resource?x"></script>')).toBe(
+      false
+    );
   });
 
   it("parses WebForms hidden fields with entity decoding", () => {

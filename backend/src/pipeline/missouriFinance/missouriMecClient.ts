@@ -71,14 +71,32 @@ export class MissouriMecClientError extends Error {
   }
 }
 
+// Incapsula injects a `_Incapsula_Resource` telemetry script into EVERY
+// legitimate MEC page (verified live 2026-08-12: the 60 KB search page, the
+// 358 KB results page, and the POST responses all carry it), so the marker
+// alone does not indicate a challenge. A real challenge is a tiny bootstrap
+// stub (~212 bytes captured from the bare host) whose whole body is that
+// script and which carries no page content — no __VIEWSTATE. Detection is
+// therefore shape-based, and real pages far exceed this bound.
+export const MISSOURI_MEC_CHALLENGE_MAX_BYTES = 4_096;
+
 /**
  * True when a body is the Imperva/Incapsula WAF challenge or block page.
- * The challenge stub captured live from the bare host is a ~212-byte page
- * whose only script is /_Incapsula_Resource; block pages carry an
- * "Incapsula incident ID". Fail closed on either marker.
+ * Fail closed on: an "Incapsula incident" block page (any size), or the tiny
+ * JS-challenge stub — a small body that references `_Incapsula_Resource` yet
+ * has none of the WebForms page content (__VIEWSTATE) every real page
+ * carries. A full page that merely embeds the telemetry script is NOT a
+ * challenge.
  */
 export function isMissouriMecChallengeBody(body: string): boolean {
-  return body.includes("_Incapsula_Resource") || /incapsula incident/i.test(body);
+  if (/incapsula incident/i.test(body)) {
+    return true;
+  }
+  return (
+    body.length < MISSOURI_MEC_CHALLENGE_MAX_BYTES &&
+    body.includes("_Incapsula_Resource") &&
+    !body.includes("__VIEWSTATE")
+  );
 }
 
 const HTML_ENTITY_MAP: Record<string, string> = {
