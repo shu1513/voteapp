@@ -292,6 +292,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   PENNSYLVANIA_DOS: "Pennsylvania Department of State",
   DISTRICT_OF_COLUMBIA_OCF: "DC Office of Campaign Finance",
   NEW_YORK_CITY_CFB: "NYC Campaign Finance Board",
+  RHODE_ISLAND_ERTS: "Rhode Island Board of Elections",
 };
 
 // Copy for the "why is the candidate list empty" statuses (see
