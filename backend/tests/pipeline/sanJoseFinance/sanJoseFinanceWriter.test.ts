@@ -262,4 +262,52 @@ describe("San José finance writer", () => {
     expect(String(deactivate?.[0])).toContain("link_source<>'manual'");
     expect(deactivate?.[1]).toEqual(["c", "e", "1484291"]);
   });
+
+  it("normalizes the fppc id before the manual probe, not only before the INSERT", async () => {
+    // A padded id must still hit the disabled manual row in the probe —
+    // otherwise it slips past, trims at the INSERT, and reaches the manual
+    // row through ON CONFLICT.
+    const query = queryMock((sql) =>
+      sql.startsWith("SELECT id::text,fppc_id")
+        ? {
+            rows: [
+              { id: "manual-1", fppc_id: "1484291", link_status: "inactive" },
+            ],
+          }
+        : null,
+    );
+    await expect(
+      upsertSanJoseFinanceLink({
+        db: { query } as never,
+        link: { ...link, fppcId: " 1484291 ", linkSource: "efile_export" },
+      }),
+    ).rejects.toThrow(/matches an operator-disabled manual link/);
+    const sql = query.mock.calls.map((call) => String(call[0]));
+    expect(sql.some((s) => s.startsWith("INSERT INTO"))).toBe(false);
+  });
+
+  it("refuses to rewrite a manual row that appeared between the probe and the upsert", async () => {
+    // The DO UPDATE's WHERE guard makes the write update nothing when the
+    // conflict target turned manual after the probe — empty RETURNING must
+    // throw, never silently resurrect.
+    const query = queryMock((sql) =>
+      sql.startsWith("INSERT INTO public.sjc_candidate_finance_links")
+        ? { rows: [] }
+        : null,
+    );
+    await expect(
+      upsertSanJoseFinanceLink({
+        db: { query } as never,
+        link: { ...link, linkSource: "efile_export" },
+      }),
+    ).rejects.toThrow(/blocked by a concurrent protected manual link/);
+    const insert = query.mock.calls.find((call) =>
+      String(call[0]).startsWith(
+        "INSERT INTO public.sjc_candidate_finance_links",
+      ),
+    );
+    expect(String(insert?.[0])).toContain(
+      "WHERE sjc_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual'",
+    );
+  });
 });

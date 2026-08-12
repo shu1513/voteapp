@@ -316,4 +316,29 @@ describe("San Diego city finance writer", () => {
     expect(String(deactivate?.[0])).toContain("link_source<>'manual'");
     expect(deactivate?.[1]).toEqual(["c", "e", "1460125"]);
   });
+
+  it("refuses to rewrite a manual row that appeared between the probe and the upsert", async () => {
+    // The DO UPDATE's WHERE guard makes the write update nothing when the
+    // conflict target turned manual after the probe — empty RETURNING must
+    // throw, never silently resurrect.
+    const query = queryMock((sql) =>
+      sql.startsWith("INSERT INTO public.sdcity_candidate_finance_links")
+        ? { rows: [] }
+        : null,
+    );
+    await expect(
+      upsertSanDiegoCityFinanceLink({
+        db: { query } as never,
+        link: { ...link, linkSource: "efile_export" },
+      }),
+    ).rejects.toThrow(/blocked by a concurrent protected manual link/);
+    const insert = query.mock.calls.find((call) =>
+      String(call[0]).startsWith(
+        "INSERT INTO public.sdcity_candidate_finance_links",
+      ),
+    );
+    expect(String(insert?.[0])).toContain(
+      "WHERE sdcity_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual'",
+    );
+  });
 });
