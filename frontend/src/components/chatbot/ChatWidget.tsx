@@ -264,7 +264,13 @@ export function ChatWidget() {
                   ballot measures. Answers come only from our data — never opinions or endorsements.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                  {starterQuestions(context).map((starter) => (
+                  {/* Chips describe the CURRENT page, not the remembered
+                      context: after navigating away, "this candidate" would
+                      point at a page the user can no longer see. The
+                      remembered context still rides along for typed deictic
+                      follow-ups; generic chips are non-deictic, so the
+                      server ignores it for them. */}
+                  {starterQuestions(contextFromPathname(location.pathname)).map((starter) => (
                     <button
                       key={starter}
                       type="button"

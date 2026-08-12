@@ -72,21 +72,41 @@ describe("suggestClosestCandidates", () => {
     ).toEqual([]);
   });
 
-  it("dedupes same-person name variants and caps at three", () => {
-    const suggestions = suggestClosestCandidates("Tell me about Micheal Smith", [
-      match("Michael Smith", 0.7, { candidateId: "00000000-0000-4000-a000-000000000003" }),
-      match("Michael L. Smith", 0.65, { candidateId: "00000000-0000-4000-a000-000000000004" }),
-      match("Micheal Smyth", 0.6, { candidateId: "00000000-0000-4000-a000-000000000005" }),
-      match("Michele Smith", 0.6, { candidateId: "00000000-0000-4000-a000-000000000006" }),
-      match("Mitchell Smith", 0.55, { candidateId: "00000000-0000-4000-a000-000000000007" }),
+  it("keeps same-name candidates distinct (rule 7) and caps at three", () => {
+    // Distinct candidates who share a name must ALL be offered — hiding one
+    // would silently pick. The cap keeps the list short; state/office in the
+    // rendered option is what tells them apart.
+    const georgia = match("Michael Smith", 0.7, { candidateId: "00000000-0000-4000-a000-000000000003", state: "GA" });
+    const ohio = match("Michael Smith", 0.7, { candidateId: "00000000-0000-4000-a000-000000000004", state: "OH" });
+    const illinois = match("Michael L. Smith", 0.65, {
+      candidateId: "00000000-0000-4000-a000-000000000005",
+      state: "IL",
+    });
+    const suggestions = suggestClosestCandidates("Tell me about Micheal Smith", [georgia, ohio, illinois]);
+    expect(suggestions.map((s) => s.candidateId)).toEqual([
+      georgia.candidateId,
+      ohio.candidateId,
+      illinois.candidateId,
     ]);
-    // "Micheal Smyth" is literally closest to the typo (exact "micheal");
-    // "Michael Smith" and "Michael L. Smith" collapse to one first+last key.
-    const names = suggestions.map((s) => s.displayName);
-    expect(names[0]).toBe("Micheal Smyth");
-    expect(names).toContain("Michael Smith");
-    expect(names).not.toContain("Michael L. Smith");
-    expect(suggestions.length).toBeLessThanOrEqual(3);
+
+    const capped = suggestClosestCandidates("Tell me about Micheal Smith", [
+      georgia,
+      ohio,
+      illinois,
+      match("Micheal Smyth", 0.6, { candidateId: "00000000-0000-4000-a000-000000000006" }),
+      match("Michele Smith", 0.6, { candidateId: "00000000-0000-4000-a000-000000000007" }),
+    ]);
+    expect(capped.length).toBe(3);
+    // Best whole-name similarity first: "Micheal Smyth" shares the exact
+    // typo'd "micheal".
+    expect(capped[0]?.displayName).toBe("Micheal Smyth");
+  });
+
+  it("matches accented names typed without accents", () => {
+    const suggestions = suggestClosestCandidates("Tell me about Jose Munos", [
+      match("José Muñoz", 0.6, { candidateId: "00000000-0000-4000-a000-000000000008" }),
+    ]);
+    expect(suggestions.map((s) => s.displayName)).toEqual(["José Muñoz"]);
   });
 
   it("returns nothing when there are no entity matches", () => {

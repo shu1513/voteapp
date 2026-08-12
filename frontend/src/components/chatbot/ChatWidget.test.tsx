@@ -168,6 +168,17 @@ describe("ChatWidget", () => {
     expect(screen.queryByRole("button", { name: "Tell me more about this candidate" })).not.toBeInTheDocument();
   });
 
+  it("bases chips on the CURRENT page even when an older context is remembered", async () => {
+    const user = userEvent.setup();
+    const { router } = renderWidgetAt("/candidates/44444444-4444-4444-a444-444444444444");
+    // Leave the candidate page; the remembered context stays for typed
+    // follow-ups, but chips must describe what the user sees NOW.
+    await router.navigate("/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    expect(await screen.findByRole("button", { name: "What can you do?" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Tell me more about this candidate" })).not.toBeInTheDocument();
+  });
+
   it("shows the register wall when the server answers 401 mid-session", async () => {
     const user = userEvent.setup();
     renderWidgetAt("/ballot", apiError(401, "unauthorized", "Authentication is required"));

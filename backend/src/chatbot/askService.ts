@@ -90,11 +90,18 @@ const POLICY_REFUSAL_ANSWER =
 const GENERAL_ELECTION_DATE_ANSWER =
   "The November 2026 general election is on Tuesday, November 3, 2026. Some places also have earlier primaries, runoffs, or special elections — check the election pages for exact dates.";
 
-// Countdown to the same fixed date — pure date math, no data. Calendar-day
-// difference in UTC so partial days never round a "tomorrow" into "today".
+// Countdown to the same fixed date — pure date math, no data. Election day is
+// a LOCAL calendar date and the server (or its clock) can sit in any
+// timezone, so "today" is anchored to US Eastern (UTC-5; DST has ended by
+// election week): without the client's timezone that is the least-wrong
+// boundary — exact for the earliest US clocks, off only for a few
+// late-evening hours further west. Uses only UTC accessors so the answer
+// never depends on the server's own timezone.
 const ELECTION_DAY_UTC = Date.UTC(2026, 10, 3);
+const EASTERN_UTC_OFFSET_MS = 5 * 3_600_000;
 export function electionCountdownAnswer(now: Date = new Date()): string {
-  const todayUtc = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  const eastern = new Date(now.getTime() - EASTERN_UTC_OFFSET_MS);
+  const todayUtc = Date.UTC(eastern.getUTCFullYear(), eastern.getUTCMonth(), eastern.getUTCDate());
   const days = Math.round((ELECTION_DAY_UTC - todayUtc) / 86_400_000);
   if (days > 1) {
     return `The November 2026 general election is on Tuesday, November 3, 2026 — ${days} days from today.`;

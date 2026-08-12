@@ -35,9 +35,23 @@ const STOPWORDS = new Set([
   "s", "d", "t", "m", "ll", "re", "ve",
 ]);
 
+/** Shared tokenizer: diacritics stripped (NFD), lowercased, Unicode letters/
+ * digits kept whole — "José Muñoz" tokenizes as ["jose", "munoz"], not the
+ * ASCII shrapnel ["jos", "mu", "oz"], so unaccented typing still matches
+ * accented names. */
+function tokensOf(text: string): string[] {
+  return (
+    text
+      .normalize("NFD")
+      .replace(/\p{M}+/gu, "")
+      .toLowerCase()
+      .match(/[\p{L}\p{N}]+/gu) ?? []
+  );
+}
+
 function trigramsOf(text: string): Set<string> {
   const trigrams = new Set<string>();
-  const words = text.toLowerCase().match(/[a-z0-9]+/g) ?? [];
+  const words = tokensOf(text);
   for (const word of words) {
     const padded = `  ${word} `;
     for (let i = 0; i + 3 <= padded.length; i += 1) {
@@ -67,7 +81,7 @@ export function trigramSimilarity(a: string, b: string): number {
  * tokens. Single tokens are excluded on purpose — one matching surname is
  * exactly the word_similarity noise this module exists to filter out. */
 function nameSpans(question: string): string[] {
-  const tokens = question.toLowerCase().match(/[a-z0-9]+/g) ?? [];
+  const tokens = tokensOf(question);
   const runs: string[][] = [];
   let current: string[] = [];
   for (const token of tokens) {
@@ -114,28 +128,20 @@ export function bestNameSimilarity(question: string, displayName: string): numbe
 /**
  * Near-miss candidates worth offering as "did you mean". Call on the refusal
  * path only (the gate already failed, so every match is below
- * GATE_MIN_ENTITY_SIMILARITY). Deduped by first+last name, best first.
+ * GATE_MIN_ENTITY_SIMILARITY). Best first, capped, and NOT deduped by name:
+ * every match is a distinct candidate (distinct id), and same-name people in
+ * different states must all be offered — collapsing them would silently pick
+ * one, the thing rule 7 forbids. The rendered option shows state and office,
+ * which is what tells them apart.
  */
 export function suggestClosestCandidates(
   question: string,
   matches: readonly CandidateEntityMatch[]
 ): CandidateEntityMatch[] {
-  const scored = matches
+  return matches
     .map((match) => ({ match, nameSimilarity: bestNameSimilarity(question, match.displayName) }))
     .filter((entry) => entry.nameSimilarity >= SUGGESTION_MIN_SIMILARITY)
-    .sort((a, b) => b.nameSimilarity - a.nameSimilarity || b.match.similarity - a.match.similarity);
-  const suggestions: CandidateEntityMatch[] = [];
-  const seenNames = new Set<string>();
-  for (const { match } of scored) {
-    const key = firstLastKey(match.displayName);
-    if (seenNames.has(key)) {
-      continue;
-    }
-    seenNames.add(key);
-    suggestions.push(match);
-    if (suggestions.length >= MAX_SUGGESTIONS) {
-      break;
-    }
-  }
-  return suggestions;
+    .sort((a, b) => b.nameSimilarity - a.nameSimilarity || b.match.similarity - a.match.similarity)
+    .slice(0, MAX_SUGGESTIONS)
+    .map((entry) => entry.match);
 }
