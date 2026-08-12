@@ -13,16 +13,15 @@ export const CHATBOT_EMBEDDING_DIMS = 384;
 
 export const DEFAULT_CHATBOT_EMBEDDINGS_TIMEOUT_MS = 10_000;
 
-export const DEFAULT_CHATBOT_MODEL = "gpt-5.6-luna";
 export const DEFAULT_CHATBOT_LLM_BASE_URL = "https://api.openai.com/v1";
 export const DEFAULT_CHATBOT_REASONING_EFFORT = "low";
 export const DEFAULT_CHATBOT_LLM_TIMEOUT_MS = 30_000;
 export const DEFAULT_CHATBOT_USER_DAILY_LIMIT = 20;
 export const DEFAULT_CHATBOT_DAILY_TOKEN_BUDGET = 5_000_000;
 
-// gpt-5.6-luna's documented set is none/low/medium/high/xhigh/max ("minimal"
-// is NOT supported — it would pass local validation and then fail at the
-// provider on every request, silently draining the daily budget through
+// Current OpenAI reasoning models document none/low/medium/high/xhigh/max
+// ("minimal" is legacy — it would pass local validation and then fail at
+// the provider on every request, silently draining the daily budget through
 // kept unknown-usage reservations). xhigh/max are deliberately excluded
 // here as a cost ceiling: raising past high is a conscious code change,
 // and a locally rejected value fails LOUD at boot instead.
@@ -64,7 +63,14 @@ export type ChatbotEmbeddingsConfig = {
  * scripts (reindex/eval) use the TEI service regardless of whether the API
  * surface is switched on. */
 export function readChatbotEmbeddingsFromEnv(env: NodeJS.ProcessEnv = process.env): ChatbotEmbeddingsConfig {
-  const rawUrl = env.CHATBOT_EMBEDDINGS_URL?.trim() || null;
+  let rawUrl = env.CHATBOT_EMBEDDINGS_URL?.trim() || null;
+  // Render blueprints inject the private address as bare host:port
+  // (fromService property: hostport — the generated hostname can't be
+  // hardcoded and the property carries no scheme). Private-network traffic
+  // is plain HTTP, so a scheme-less value means http.
+  if (rawUrl && !/^https?:\/\//i.test(rawUrl)) {
+    rawUrl = `http://${rawUrl}`;
+  }
   const timeoutRaw = env.CHATBOT_EMBEDDINGS_TIMEOUT_MS?.trim();
   let timeoutMs = DEFAULT_CHATBOT_EMBEDDINGS_TIMEOUT_MS;
   if (timeoutRaw) {
@@ -110,12 +116,20 @@ function readChatbotLlmFromEnv(env: NodeJS.ProcessEnv): ChatbotLlmConfig | null 
     console.warn("CHATBOT_LLM_ENABLED is set but CHATBOT_LLM_API_KEY is missing; LLM answers stay off");
     return null;
   }
+  // No in-repo default ON PURPOSE: the model choice is deployment
+  // configuration (env/dashboard only), so the codebase never reveals which
+  // model runs in production and swapping it is a config change, not a PR.
+  const model = env.CHATBOT_MODEL?.trim();
+  if (!model) {
+    console.warn("CHATBOT_LLM_ENABLED is set but CHATBOT_MODEL is missing; LLM answers stay off");
+    return null;
+  }
   const effortRaw = env.CHATBOT_REASONING_EFFORT?.trim().toLowerCase() || DEFAULT_CHATBOT_REASONING_EFFORT;
   if (!REASONING_EFFORTS.includes(effortRaw as ChatbotReasoningEffort)) {
     throw new Error(`Invalid CHATBOT_REASONING_EFFORT: ${effortRaw} (expected one of ${REASONING_EFFORTS.join(", ")})`);
   }
   return {
-    model: env.CHATBOT_MODEL?.trim() || DEFAULT_CHATBOT_MODEL,
+    model,
     baseUrl: (env.CHATBOT_LLM_BASE_URL?.trim() || DEFAULT_CHATBOT_LLM_BASE_URL).replace(/\/+$/, ""),
     apiKey,
     reasoningEffort: effortRaw as ChatbotReasoningEffort,

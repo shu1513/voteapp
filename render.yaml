@@ -20,11 +20,12 @@
 # creation — ones added later must be entered manually on the service
 # (docs/deploy-render.md "Direct onrender.com access" has the sequence).
 #
-# PLANS: everything below is on free plans so the first deploy needs no card
-# on file. Free web services spin down after ~15 idle minutes (cold start on
-# the next request) and the free Postgres instance EXPIRES ~30 DAYS after
-# creation unless upgraded — upgrade the DB plan (and the web services, and
-# uncomment the worker + cron sections) once billing is set up.
+# PLANS: no longer all-free — billing is set up. Paid today: the Postgres
+# instance (upgraded 2026-08-08 off the expiring free plan) and the
+# voteapp-embeddings private service (starter, ~$7/mo; added 2026-08-12 for
+# the chatbot). The web services are still free: they spin down after ~15
+# idle minutes and cold-start on the next request — upgrade them (and
+# uncomment the worker + cron sections) when that matters.
 
 services:
   # ---------------------------------------------------------------- API ----
@@ -100,6 +101,19 @@ services:
       # by a sync — enter the value manually on the voteapp-api service.
       - key: GOOGLE_PLACES_API_KEY
         sync: false
+      # --- Chatbot "Ask" (free read side; docs/plans/chatbot-rag.md) ----
+      # Retrieval-only until the dashboard-only LLM vars are set (see the
+      # voteapp-embeddings comment). hostport (host:port, NO scheme — Render
+      # generates the private hostname with a suffix, so it cannot be
+      # hardcoded); readChatbotEmbeddingsFromEnv prepends http:// when the
+      # scheme is missing.
+      - key: CHATBOT_ENABLED
+        value: "true"
+      - key: CHATBOT_EMBEDDINGS_URL
+        fromService:
+          name: voteapp-embeddings
+          type: pserv
+          property: hostport
       # --- Finance read flags -------------------------------------------
       # Display-only switches: they gate whether stored finance data is
       # returned to the cards, and cost nothing. Without them production
@@ -253,6 +267,14 @@ services:
           name: voteapp-api
           type: web
           envVarKey: EDGE_SHARED_SECRET
+      # Chatbot widget flag, baked into the bundle at build time. References
+      # the API's flag so the two services cannot drift; a mismatch degrades
+      # gracefully (widget hidden, or open shows "not available").
+      - key: VITE_CHATBOT_ENABLED
+        fromService:
+          name: voteapp-api
+          type: web
+          envVarKey: CHATBOT_ENABLED
 
   # ------------------------------------------------------------- workers ----
   # One process runs all three notification scheduler workers and re-asserts
@@ -333,45 +355,34 @@ services:
   #         property: connectionString
 
   # ------------------------------------------------------- chatbot (Ask) ----
-  # COMMENTED OUT: the TEI embeddings service is a PAID private service
-  # (~$7-25/mo) and the chatbot ships dark (CHATBOT_ENABLED defaults false in
-  # code; docs/plans/chatbot-rag.md). To enable the "Ask" feature in prod:
-  #   1. Uncomment this service and sync the blueprint.
-  #   2. On voteapp-api, add env vars:
-  #        CHATBOT_ENABLED=true
-  #        CHATBOT_EMBEDDINGS_URL=http://<voteapp-embeddings hostport>
-  #      (use fromService name: voteapp-embeddings, type: pserv,
-  #      property: hostport — private-network reachable because pserv can
-  #      RECEIVE private traffic even from free web services).
-  #   2b. (Phase 2, OPTIONAL, costs money — see docs/plans/chatbot-rag.md)
-  #      LLM answers. REQUIRED FIRST: privacy policy names OpenAI as a
-  #      processor. Then on voteapp-api:
-  #        CHATBOT_LLM_ENABLED=true
-  #        CHATBOT_LLM_API_KEY=<key from a DEDICATED OpenAI project with a
-  #                             dashboard spend limit — never a pipeline key>
-  #      Optional overrides (defaults in code): CHATBOT_MODEL=gpt-5.6-luna,
-  #      CHATBOT_REASONING_EFFORT=low, CHATBOT_USER_DAILY_LIMIT=20,
-  #      CHATBOT_DAILY_TOKEN_BUDGET=5000000, CHATBOT_LLM_BASE_URL,
-  #      CHATBOT_LLM_TIMEOUT_MS. LLM off or misconfigured → retrieval-only
-  #      answers, unchanged.
-  #   3. On voteapp-ssr, add VITE_CHATBOT_ENABLED referencing the API's flag
-  #      (fromService name: voteapp-api, type: web, envVarKey: CHATBOT_ENABLED)
-  #      so the two services cannot drift, then redeploy so the flag bakes
-  #      into the bundle. Note the coupling is loose by design: a mismatch
-  #      degrades gracefully (nav hidden, or page shows "not available").
-  #   4. Run `npm run chatbot:reindex` against the prod DB (needs the TEI
-  #      URL) to build the first index generation.
-  # Verify the container port at enable time: the TEI cpu image listens on 80
-  # by default; --port pins it explicitly.
-  # - name: voteapp-embeddings
-  #   type: pserv
-  #   runtime: image
-  #   region: ohio
-  #   plan: starter
-  #   image:
-  #     url: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9
-  #   dockerCommand: text-embeddings-router --model-id BAAI/bge-small-en-v1.5 --port 10000
-  #   autoDeploy: false
+  # ENABLED 2026-08-12 (docs/plans/chatbot-rag.md; spot-check passed): the TEI
+  # embeddings service is a PAID private service (~$7/mo starter). The
+  # blueprint carries only the FREE read side (CHATBOT_ENABLED + the
+  # embeddings URL on voteapp-api, VITE_CHATBOT_ENABLED on voteapp-ssr).
+  # The MONEY side stays dashboard-only on voteapp-api, off by default —
+  # ALL THREE required to turn AI answers on:
+  #   CHATBOT_LLM_ENABLED=true, CHATBOT_LLM_API_KEY=<spend-limited key>,
+  #   CHATBOT_MODEL=<model id — deployment config only, never in the repo>
+  #   (optional overrides: CHATBOT_REASONING_EFFORT,
+  #   CHATBOT_USER_DAILY_LIMIT, CHATBOT_DAILY_TOKEN_BUDGET,
+  #   CHATBOT_LLM_BASE_URL, CHATBOT_LLM_TIMEOUT_MS). LLM off or
+  #   misconfigured → retrieval-only answers, unchanged.
+  # After first deploy: run `npm run chatbot:reindex` against the prod DB to
+  # build the first index generation (until then the widget refuses cleanly).
+  # dockerCommand is ARGUMENTS ONLY: Render's dockerCommand overrides the
+  # image's CMD, not its ENTRYPOINT (which is already text-embeddings-router
+  # — naming the binary here would pass it to itself as an argument and
+  # crash). --port 8080 because the TEI image defaults to 80 and Render
+  # RESERVES port 10000 (it cannot carry private-network traffic).
+  - name: voteapp-embeddings
+    type: pserv
+    runtime: image
+    region: ohio
+    plan: starter
+    image:
+      url: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9
+    dockerCommand: --model-id BAAI/bge-small-en-v1.5 --port 8080
+    autoDeploy: false
 
   # ------------------------------------------------------------- key value ----
   - name: voteapp-redis

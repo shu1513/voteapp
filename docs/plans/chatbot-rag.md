@@ -9,10 +9,10 @@ An "Ask" feature where users ask questions about elections/candidates and get an
 ```
 question → intent router (free templates) → answer cache (free) →
 hybrid retrieval (pgvector + tsvector + pg_trgm) → answerability gate →
-LLM (capped, swappable; default gpt-5.6-luna) → answer with citations → question log
+LLM (capped, swappable; the model is deployment config only — never named in the repo) → answer with citations → question log
 ```
 
-Cost target: ~$30/mo order of magnitude at ~1,000 model-answered messages/day (e.g. 30k calls × ~2k in + ~500 out tokens ≈ $30 at Luna's $0.20/$1.20 per M). Treat as an estimate to verify with measured token usage, not a promise. The router + cache absorb most traffic for free.
+Cost target: ~$30/mo order of magnitude at ~1,000 model-answered messages/day (e.g. 30k calls × ~2k in + ~500 out tokens ≈ $30 at the configured model's $0.20/$1.20 per M — provider pricing re-verified 2026-08-12). Treat as an estimate to verify with measured token usage, not a promise. The router + cache absorb most traffic for free.
 
 ## Isolation contract
 
@@ -38,7 +38,7 @@ Honest list of every touchpoint outside the module (all small, all enumerated so
 |---|---|---|
 | `CHATBOT_ENABLED` | `false` | Master switch |
 | `CHATBOT_LLM_ENABLED` | `false` | LLM calls allowed; off = retrieval-only answers |
-| `CHATBOT_MODEL` | `gpt-5.6-luna` | |
+| `CHATBOT_MODEL` | — | REQUIRED when LLM on; deployment config only (the repo never names the production model) |
 | `CHATBOT_LLM_BASE_URL` | OpenAI | |
 | `CHATBOT_LLM_API_KEY` | — | Separate key, in its own OpenAI **project** with a dashboard spend limit |
 | `CHATBOT_REASONING_EFFORT` | `low` | Start low; raise to medium only if the golden set shows it helps |

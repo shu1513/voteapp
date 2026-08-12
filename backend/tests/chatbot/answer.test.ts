@@ -20,7 +20,7 @@ import type { RetrievedChunk } from "../../src/chatbot/retrieval.js";
 // network, database, or spend.
 
 const CONFIG: ChatbotLlmConfig = {
-  model: "gpt-5.6-luna",
+  model: "test-model",
   baseUrl: "https://api.example.test/v1",
   apiKey: "test-key",
   reasoningEffort: "low",
