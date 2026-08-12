@@ -25,6 +25,7 @@ import {
 import { LlmError, type LlmClient, type LlmUsage } from "./llm/adapter.js";
 import { MAX_OUTPUT_TOKENS } from "./llm/openaiResponses.js";
 import { CHATBOT_PROMPT_VERSION, SYSTEM_PROMPT, buildUserMessage } from "./llm/prompt.js";
+import { redactQuestion } from "./redact.js";
 import { REFUSAL_NO_DATA_ANSWER, chunkPageUrl, type AskResultCard } from "./shared.js";
 import type { ChatbotLlmConfig } from "./chatbotConfig.js";
 import type { RetrievedChunk } from "./retrieval.js";
@@ -194,10 +195,16 @@ export async function answerWithLlm(options: AnswerWithLlmOptions): Promise<LlmS
   let rawCitations: string[];
   let refusalReason: string | null;
   try {
+    // BEHAVIOR.md rule 11: no user PII in PROMPTS either, not just logs —
+    // emails/phones/street addresses/long digit runs are stripped before the
+    // text leaves the server. Retrieval already ran on the raw text
+    // (local-only), and the cache key is a digest of it, so redacting here
+    // costs nothing but the PII.
+    const promptQuestion = redactQuestion(options.question);
     const result = await llm.client.generateAnswer({
       question: options.previousQuestion
-        ? `${options.question}\n(Previous question, for pronoun context only: ${options.previousQuestion})`
-        : options.question,
+        ? `${promptQuestion}\n(Previous question, for pronoun context only: ${redactQuestion(options.previousQuestion)})`
+        : promptQuestion,
       chunks: chunks.map((chunk) => ({ id: chunk.id, title: chunk.title, content: chunk.content })),
       safetyIdentifier: hashedUserId,
     });

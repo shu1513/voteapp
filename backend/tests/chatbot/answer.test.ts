@@ -251,6 +251,21 @@ describe("answerWithLlm", () => {
     expect(reconciles[0]?.[2]).toBe(1900); // actual tokens replace the estimate
   });
 
+  it("redacts PII from the question (and carried previous question) before it reaches the model", async () => {
+    const options = makeOptions({
+      question: "I'm jane@example.com — who is Jon Ossoff?",
+      previousQuestion: "Ballot for 123 Main Street, Atlanta?",
+    });
+    await answerWithLlm(options);
+    const sent = (options.llm.client.generateAnswer as ReturnType<typeof vi.fn>).mock.calls[0]?.[0] as {
+      question: string;
+    };
+    expect(sent.question).not.toContain("jane@example.com");
+    expect(sent.question).not.toContain("123 Main Street");
+    expect(sent.question).toContain("who is Jon Ossoff?");
+    expect(sent.question).toContain("[redacted]");
+  });
+
   it("keeps the pessimistic reservation when a failure has UNKNOWN usage (timeout may still have billed)", async () => {
     const { pool, reconciles } = fakePool();
     const options = makeOptions({ db: pool });

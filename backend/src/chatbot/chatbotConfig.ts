@@ -20,7 +20,13 @@ export const DEFAULT_CHATBOT_LLM_TIMEOUT_MS = 30_000;
 export const DEFAULT_CHATBOT_USER_DAILY_LIMIT = 20;
 export const DEFAULT_CHATBOT_DAILY_TOKEN_BUDGET = 5_000_000;
 
-const REASONING_EFFORTS = ["minimal", "low", "medium", "high"] as const;
+// gpt-5.6-luna's documented set is none/low/medium/high/xhigh/max ("minimal"
+// is NOT supported — it would pass local validation and then fail at the
+// provider on every request, silently draining the daily budget through
+// kept unknown-usage reservations). xhigh/max are deliberately excluded
+// here as a cost ceiling: raising past high is a conscious code change,
+// and a locally rejected value fails LOUD at boot instead.
+const REASONING_EFFORTS = ["none", "low", "medium", "high"] as const;
 export type ChatbotReasoningEffort = (typeof REASONING_EFFORTS)[number];
 
 export type ChatbotLlmConfig = {
