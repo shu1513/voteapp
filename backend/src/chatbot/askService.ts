@@ -10,7 +10,7 @@ import type { Pool } from "pg";
 import { answerWithLlm, buildScopeKey, getCachedAskResponse, type LlmAnswering } from "./answer.js";
 import { suggestClosestCandidates } from "./didYouMean.js";
 import { detectIntent, detectStateInQuestion, type IntentMatch } from "./intents.js";
-import { normalizeQuestion } from "./redact.js";
+import { normalizeQuestion, normalizeQuestionForCacheKey } from "./redact.js";
 import {
   getActiveGeneration,
   isAnswerable,
@@ -598,11 +598,14 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
       // Phase 2 exact-answer cache, checked BEFORE retrieval is paid for (a
       // hit skips the query embedding too). The key text is the normalized
       // FULL retrieval text — a carried-over previous turn changes the
-      // answer, so it must change the key. Only questions that passed the
-      // gate ever get cached, and never time-sensitive ones (those returned
-      // from the intent router above; BEHAVIOR.md rule 6).
+      // answer, so it must change the key. Un-redacted, un-truncated cache
+      // normalizer on purpose (see normalizeQuestionForCacheKey): the log
+      // normalizer would collide distinct questions onto one key. Only
+      // questions that passed the gate ever get cached, and never
+      // time-sensitive ones (those returned from the intent router above;
+      // BEHAVIOR.md rule 6).
       const carriedPrevious = retrievalText === question ? null : (previousQuestion ?? null);
-      const cacheQuestionNorm = normalizeQuestion(retrievalText);
+      const cacheQuestionNorm = normalizeQuestionForCacheKey(retrievalText);
       const scopeKey = buildScopeKey(
         scopeState,
         resolvedContext ? { kind: resolvedContext.kind, id: resolvedContext.id } : null
@@ -691,7 +694,14 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
       // the ask is user-attributed. Every guard trip or failure inside falls
       // back to the Phase 1 cards below — the LLM can only ADD an answer.
       const matchedChunkIds = retrieval.chunks.map((chunk) => chunk.id);
+      // Fallbacks log their REASON as answered_by (rate_limited /
+      // budget_exhausted / llm_failed / invalid_output) plus any tokens the
+      // failed call still billed — llm_failed and invalid_output rates are
+      // the primary canary signals for the Phase 2 rollout, and the spend
+      // must stay attributable per question.
       let cardsAnsweredBy = "retrieval";
+      let cardsTokensIn: number | null = null;
+      let cardsTokensOut: number | null = null;
       if (llm && userId) {
         const step = await answerWithLlm({
           db,
@@ -708,9 +718,9 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
         if (step.kind === "answered") {
           return finish(step.response, "llm", scopeState, matchedChunkIds, step.tokensIn, step.tokensOut);
         }
-        if (step.reason === "rate_limited") {
-          cardsAnsweredBy = "rate_limited";
-        }
+        cardsAnsweredBy = step.reason;
+        cardsTokensIn = step.tokensIn;
+        cardsTokensOut = step.tokensOut;
       }
 
       const cards = toResultCards(retrieval.chunks);
@@ -724,7 +734,9 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
         },
         cardsAnsweredBy,
         scopeState,
-        matchedChunkIds
+        matchedChunkIds,
+        cardsTokensIn,
+        cardsTokensOut
       );
     },
   };

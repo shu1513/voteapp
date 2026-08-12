@@ -105,6 +105,23 @@ describe("consumeUserDailyAllowance", () => {
     expect(redis.ttls.get("chatbot:usercap:2026-08-12:user-a")).toBeGreaterThan(0);
   });
 
+  it("still allows the ask when only the best-effort expire call fails", async () => {
+    const counters = new Map<string, number>();
+    const redis: LimitsRedis = {
+      incr: async (key) => {
+        const next = (counters.get(key) ?? 0) + 1;
+        counters.set(key, next);
+        return next;
+      },
+      expire: async () => {
+        throw new Error("expire failed");
+      },
+      get: async () => null,
+      set: async () => "OK",
+    };
+    expect(await consumeUserDailyAllowance(redis, "hash", 5)).toBe(true);
+  });
+
   it("fails CLOSED (false) when Redis errors", async () => {
     const redis: LimitsRedis = {
       incr: async () => {
@@ -136,6 +153,16 @@ describe("reserveDailyBudget / reconcileDailyBudget", () => {
     const { pool, released } = fakePool(0);
     expect(await reserveDailyBudget(pool, 5_000, 1_000)).toBeNull();
     expect(released()).toBe(true);
+  });
+
+  it("fails CLOSED (null) when acquiring the connection itself rejects", async () => {
+    const pool = {
+      connect: async () => {
+        throw new Error("pool exhausted");
+      },
+    } as unknown as Pool;
+    // Must resolve null, never throw — answerWithLlm relies on it.
+    expect(await reserveDailyBudget(pool, 5_000, 1_000_000)).toBeNull();
   });
 
   it("fails CLOSED (null) on a database error", async () => {

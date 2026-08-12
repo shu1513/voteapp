@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { normalizeQuestion, redactQuestion, REDACTED_TOKEN } from "../../src/chatbot/redact.js";
+import {
+  normalizeQuestion,
+  normalizeQuestionForCacheKey,
+  redactQuestion,
+  REDACTED_TOKEN,
+} from "../../src/chatbot/redact.js";
 
 describe("redactQuestion (BEHAVIOR.md rule 11)", () => {
   it("strips emails", () => {
@@ -39,5 +44,27 @@ describe("normalizeQuestion", () => {
 
   it("caps length at 500", () => {
     expect(normalizeQuestion("a".repeat(600)).length).toBeLessThanOrEqual(500);
+  });
+});
+
+describe("normalizeQuestionForCacheKey", () => {
+  it("collapses trivial variants like the log normalizer", () => {
+    expect(normalizeQuestionForCacheKey("  Who is   Jon Ossoff??  ")).toBe("who is jon ossoff");
+  });
+
+  it("does NOT redact — distinct digit/address questions must get distinct keys", () => {
+    // The log normalizer maps both of these to the same "[redacted]" text; a
+    // shared cache key would serve one question's answer for the other.
+    const a = normalizeQuestionForCacheKey("who is on the ballot in 30303");
+    const b = normalizeQuestionForCacheKey("who is on the ballot in 30305");
+    expect(a).not.toBe(b);
+    expect(normalizeQuestion("who is on the ballot in 30303")).toBe(
+      normalizeQuestion("who is on the ballot in 30305")
+    );
+  });
+
+  it("does NOT truncate — long carried-over texts must not collide on a shared prefix", () => {
+    const shared = "x".repeat(600);
+    expect(normalizeQuestionForCacheKey(`${shared} alpha`)).not.toBe(normalizeQuestionForCacheKey(`${shared} beta`));
   });
 });

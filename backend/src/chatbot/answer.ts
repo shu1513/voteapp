@@ -206,10 +206,14 @@ export async function answerWithLlm(options: AnswerWithLlmOptions): Promise<LlmS
     rawCitations = result.citations;
     refusalReason = result.refusalReason;
   } catch (error) {
-    // Reconcile to whatever the provider actually billed (0 when unknown) so
-    // failures do not eat the day's budget.
+    // Reconcile only when the provider reported what it actually billed. On
+    // an UNKNOWN-usage failure (timeout, network) the request may still have
+    // reached the provider and cost real tokens — keep the pessimistic
+    // reservation so repeated timeouts can never spend past the budget.
     const failedUsage = error instanceof LlmError ? error.usage : null;
-    await reconcileDailyBudget(db, reservation, (failedUsage?.inputTokens ?? 0) + (failedUsage?.outputTokens ?? 0));
+    if (failedUsage) {
+      await reconcileDailyBudget(db, reservation, failedUsage.inputTokens + failedUsage.outputTokens);
+    }
     console.warn(
       "chatbot LLM call failed; serving retrieval cards:",
       error instanceof Error ? error.message : String(error)

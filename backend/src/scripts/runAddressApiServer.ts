@@ -542,7 +542,11 @@ async function main(): Promise<void> {
   // (chatbotConfig was read up by the Redis wiring.)
   let chatbotLlm: LlmAnswering | null = null;
   if (chatbotConfig.enabled && chatbotConfig.llm) {
-    if (redis) {
+    // isOpen like every other Redis consumer in this file: today connect()
+    // either succeeded or the boot failed, but a future connect-policy change
+    // must degrade this to retrieval-only, not hand a closed client to the
+    // cap/cache path.
+    if (redis?.isOpen) {
       chatbotLlm = {
         config: chatbotConfig.llm,
         client: createOpenAiResponsesClient({

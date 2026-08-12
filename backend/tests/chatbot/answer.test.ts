@@ -251,6 +251,17 @@ describe("answerWithLlm", () => {
     expect(reconciles[0]?.[2]).toBe(1900); // actual tokens replace the estimate
   });
 
+  it("keeps the pessimistic reservation when a failure has UNKNOWN usage (timeout may still have billed)", async () => {
+    const { pool, reconciles } = fakePool();
+    const options = makeOptions({ db: pool });
+    options.llm.client = llmReturning(new LlmError("LLM service unreachable: timeout"));
+    const step = await answerWithLlm(options);
+    expect(step).toMatchObject({ kind: "fallback", reason: "llm_failed", tokensIn: null, tokensOut: null });
+    // No reconcile: releasing the reservation on repeated timeouts would let
+    // real provider spend exceed the internal daily budget.
+    expect(reconciles).toHaveLength(0);
+  });
+
   it("reconciles the reservation down to actual usage on success", async () => {
     const { pool, reconciles } = fakePool();
     const options = makeOptions({ db: pool });

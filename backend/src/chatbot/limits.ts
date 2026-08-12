@@ -8,7 +8,7 @@
 //   4. provider dashboard spend limit (outside this codebase)
 
 import { createHash, createHmac } from "node:crypto";
-import type { Pool } from "pg";
+import type { Pool, PoolClient } from "pg";
 
 // ── User identity hashing ────────────────────────────────────────────────
 // The HMAC of the user id is used ONLY for the Redis cap key and the
@@ -56,7 +56,9 @@ export async function consumeUserDailyAllowance(
     const key = `chatbot:usercap:${utcDay(now)}:${hashedUserId}`;
     const count = await redis.incr(key);
     if (count === 1) {
-      await redis.expire(key, USER_CAP_TTL_SECONDS);
+      // Best-effort GC: the day in the key is the real boundary, so a failed
+      // TTL must not deny an ask that is under the cap.
+      await redis.expire(key, USER_CAP_TTL_SECONDS).catch(() => undefined);
     }
     return count <= limit;
   } catch (error) {
@@ -94,8 +96,12 @@ export async function reserveDailyBudget(
   now: Date = new Date()
 ): Promise<BudgetReservation | null> {
   const day = utcDay(now);
-  const client = await db.connect();
+  // connect() INSIDE the guard: a pool exhausted or DB down must produce the
+  // same fail-closed null as any other reservation failure, never an
+  // exception escaping into the (non-throwing) answer step.
+  let client: PoolClient | null = null;
   try {
+    client = await db.connect();
     await client.query("BEGIN");
     await client.query(
       `INSERT INTO chatbot.daily_budget (day) VALUES ($1::date) ON CONFLICT (day) DO NOTHING`,
@@ -114,14 +120,14 @@ export async function reserveDailyBudget(
     await client.query("COMMIT");
     return update.rowCount === 1 ? { day, estimatedTokens } : null;
   } catch (error) {
-    await client.query("ROLLBACK").catch(() => undefined);
+    await client?.query("ROLLBACK").catch(() => undefined);
     console.warn(
       "chatbot budget reservation failed; falling back to retrieval-only:",
       error instanceof Error ? error.message : String(error)
     );
     return null;
   } finally {
-    client.release();
+    client?.release();
   }
 }
 
