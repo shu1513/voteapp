@@ -282,6 +282,21 @@ describe("San José candidate finance sync", () => {
     expect(summaryCall?.[1]).toEqual(expect.arrayContaining(["0.00"]));
   });
 
+  it("aborts on Form 460 child rows with no usable summary (export inconsistency)", async () => {
+    const { db, connect } = makeDb();
+    // Schedule A rows prove a 460 was filed; missing summary rows are a
+    // broken export, never affirmative zero activity.
+    const workbook = healthyWorkbook({
+      summary: [],
+      scheduleA: [contributionRow()],
+      s496: [],
+    });
+    await expect(
+      syncSanJoseCandidateFinance({ db: db as never, ...syncInput, workbook }),
+    ).rejects.toThrow(/child-sheet rows but no usable Form 460 summary/);
+    expect(connect).not.toHaveBeenCalled();
+  });
+
   it("refuses to overwrite when the linked committee left the export entirely", async () => {
     const { db, connect } = makeDb();
     const workbook = healthyWorkbook({

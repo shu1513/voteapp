@@ -66,7 +66,7 @@ const integer = (
 ): number => {
   const result = value ?? fallback;
   if (!Number.isSafeInteger(result) || result <= 0)
-    throw new Error(`Invalid San José finance ${label}: ${value}`);
+    throw new Error(`Invalid San José finance ${label}: ${result}`);
   return result;
 };
 
@@ -219,8 +219,11 @@ export async function syncDueSanJoseCandidateFinance(input: {
           limit: "$2::int",
           params: [electionId, max],
         };
+  // The outer ORDER BY repeats the CTE's keys on purpose: Postgres happens
+  // to preserve CTE order for this shape, but the standard does not
+  // guarantee it, and the stalest-first contract must not rest on luck.
   const due = await input.db.query<DueRow>(
-    `WITH due AS (SELECT link.candidate_id::text candidate_id,link.election_id::text election_id,link.election_year,COALESCE(NULLIF(trim(candidate.display_name),''),link.candidate_name_normalized) candidate_name,office.canonical_name office_name,election.official_ballot_title,link.fppc_id,summary.last_synced_at::text last_synced_at,count(*) OVER() total_due_rows FROM public.sjc_candidate_finance_links link JOIN public.candidates candidate ON candidate.id=link.candidate_id JOIN public.candidate_elections ce ON ce.candidate_id=link.candidate_id AND ce.election_id=link.election_id JOIN public.elections election ON election.id=link.election_id JOIN public.districts district ON district.id=election.district_id JOIN public.offices office ON office.id=election.office_id LEFT JOIN public.sjc_candidate_finance_summaries summary ON summary.link_id=link.id AND summary.election_year=link.election_year WHERE link.link_status='active' AND candidate.deleted_at IS NULL AND ${SAN_JOSE_DISTRICT_PREDICATE} AND ${dueScope.where} ORDER BY summary.last_synced_at NULLS FIRST,election.election_date,link.candidate_name_normalized LIMIT ${dueScope.limit}) SELECT * FROM due`,
+    `WITH due AS (SELECT link.candidate_id::text candidate_id,link.election_id::text election_id,link.election_year,COALESCE(NULLIF(trim(candidate.display_name),''),link.candidate_name_normalized) candidate_name,office.canonical_name office_name,election.official_ballot_title,link.fppc_id,link.candidate_name_normalized,election.election_date,summary.last_synced_at last_synced_at_ts,summary.last_synced_at::text last_synced_at,count(*) OVER() total_due_rows FROM public.sjc_candidate_finance_links link JOIN public.candidates candidate ON candidate.id=link.candidate_id JOIN public.candidate_elections ce ON ce.candidate_id=link.candidate_id AND ce.election_id=link.election_id JOIN public.elections election ON election.id=link.election_id JOIN public.districts district ON district.id=election.district_id JOIN public.offices office ON office.id=election.office_id LEFT JOIN public.sjc_candidate_finance_summaries summary ON summary.link_id=link.id AND summary.election_year=link.election_year WHERE link.link_status='active' AND candidate.deleted_at IS NULL AND ${SAN_JOSE_DISTRICT_PREDICATE} AND ${dueScope.where} ORDER BY summary.last_synced_at NULLS FIRST,election.election_date,link.candidate_name_normalized LIMIT ${dueScope.limit}) SELECT * FROM due ORDER BY last_synced_at_ts NULLS FIRST,election_date,candidate_name_normalized`,
     dueScope.params,
   );
   const results: SanJoseCandidateFinanceBatchSyncResult["results"] = [];

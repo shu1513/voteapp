@@ -105,6 +105,16 @@ const BLOCKING_VIOLATION_TYPES: ReadonlySet<SanJoseDirectViolationType> =
  * election year and the year before it. Earlier committee activity, when it
  * exists, is caught by the prior_activity_uncovered invariant and disclosed
  * via direct_coverage_note rather than silently missed.
+ *
+ * Deliberately NOT clipped to the municipal contribution period: that date
+ * bounds when candidates may solicit under the city's limits, not what the
+ * campaign's money is. Committees here are per-race ("… for City Council
+ * District 5 2026" — the resolver's year veto enforces it), so everything
+ * the committee reports is this race's activity, and live filings straddle
+ * the period-start anyway (Van Le's covers 2025-07-01..12-31) — F460 cover
+ * totals cannot be split mid-period without abandoning the proven
+ * rows-vs-cover reconciliation. Totals are committee-coverage totals, with
+ * reported_through and the coverage note saying exactly what they span.
  */
 export function sanJoseCycleYears(electionYear: number): number[] {
   if (
@@ -304,9 +314,30 @@ export async function syncSanJoseCandidateFinance(input: {
     (violation) => violation.type === "prior_activity_uncovered",
   );
   if (direct.filings.length === 0) {
-    // Affirmative no-data: the committee is in the export (registered,
-    // filed a 497, …) but has no usable Form 460 yet — a zero snapshot
-    // with this note, not an abort.
+    // Schedule A/C/B1/D are Form 460 CHILD sheets: rows there prove a 460
+    // was filed, so "no canonical filing but child rows exist" is export
+    // inconsistency (summary rows lost), never affirmative zero activity —
+    // abort and keep the prior snapshot. (Summary rows that exist but are
+    // all unusable already threw as blocking filing_unusable above.)
+    const orphanedChildRows = (
+      [
+        workbook.scheduleA,
+        workbook.scheduleC,
+        workbook.scheduleB1,
+        workbook.scheduleD,
+      ] as const
+    ).reduce(
+      (count, rows) =>
+        count + rows.filter((row) => row.filerId === fppcId).length,
+      0,
+    );
+    if (orphanedChildRows > 0)
+      throw new Error(
+        `San José committee ${fppcId} has ${orphanedChildRows} Form 460 child-sheet rows but no usable Form 460 summary; the export is inconsistent`,
+      );
+    // Affirmative no-data: the committee is in the export only through
+    // standalone forms (496/497) or registration — no Form 460 yet. A zero
+    // snapshot with this note, not an abort.
     directCoverageNote =
       "The committee has not filed a Form 460 disclosure statement in the city's e-filing system yet.";
   } else if (priorActivity) {
@@ -339,6 +370,10 @@ export async function syncSanJoseCandidateFinance(input: {
   );
   const storedRow = stored.rows[0];
   const storedReportedThrough = storedRow?.reported_through ?? null;
+  // A null stored reported_through means the prior snapshot was the zero
+  // "no Form 460 yet" case — nothing to regress against, and its stored
+  // total_raised of 0 sits under the collapse floor, so skipping both
+  // gates loses nothing.
   if (storedReportedThrough !== null) {
     // Filing history never shrinks: a snapshot reported through a LATER date
     // than today's latest filing means the export lost filings — abort.

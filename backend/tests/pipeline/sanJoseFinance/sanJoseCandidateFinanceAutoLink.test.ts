@@ -113,6 +113,9 @@ describe("listSanJoseCandidateElectionsMissingFinanceLinks", () => {
       "NOT EXISTS (SELECT 1 FROM public.sjc_candidate_finance_links",
     );
     expect(sql).toContain("NOT IN ('withdrawn','lost')");
+    // A row whose every name column is blank resolves to a NULL name; the
+    // resolver would throw on it, so the SQL must exclude such rows.
+    expect(sql).toMatch(/COALESCE\(NULLIF\(trim\(candidate\.display_name\),''\),NULLIF\(trim\(candidate\.first_name\|\|' '\|\|candidate\.last_name\),''\)\) IS NOT NULL/);
   });
 });
 
@@ -197,7 +200,12 @@ describe("autoLinkMissingSanJoseCandidateFinanceLinks", () => {
       status: "needs_review",
       reason: expect.stringContaining("2 candidate-controlled committees"),
     });
-    expect(query).not.toHaveBeenCalled();
+    // The roster read runs, but nothing is written.
+    expect(
+      query.mock.calls.some((call) =>
+        String(call[0]).startsWith("INSERT INTO"),
+      ),
+    ).toBe(false);
   });
 
   it("reports no committee without writing", async () => {
@@ -210,7 +218,64 @@ describe("autoLinkMissingSanJoseCandidateFinanceLinks", () => {
       committees: [],
     });
     expect(results[0]).toMatchObject({ status: "no_committee" });
-    expect(query).not.toHaveBeenCalled();
+    // The roster read runs, but nothing is written.
+    expect(
+      query.mock.calls.some((call) =>
+        String(call[0]).startsWith("INSERT INTO"),
+      ),
+    ).toBe(false);
+  });
+
+  it("resolves against the full election roster, not only the unlinked slice", async () => {
+    // Candidate A linked on an earlier run (or fell past maxCandidates), so
+    // only B arrives here — but the committee matches BOTH roster entries.
+    // Resolving just the input slice would link B and duplicate the money;
+    // the full-roster resolution must fail B closed instead.
+    const query = vi.fn().mockImplementation((sql: unknown) => {
+      const s = String(sql);
+      if (s.startsWith("SELECT candidate.id::text candidate_id,COALESCE"))
+        return Promise.resolve({
+          rows: [
+            {
+              candidate_id: "cA",
+              candidate_name: "Jane Doe",
+              state_filing_ids: [],
+            },
+            {
+              candidate_id: "cB",
+              candidate_name: "Jane Doe",
+              state_filing_ids: [],
+            },
+          ],
+        });
+      if (s.startsWith("INSERT INTO public.sjc_candidate_finance_links"))
+        return Promise.resolve({ rows: [{ id: "link-1" }] });
+      return Promise.resolve({ rows: [] });
+    });
+    const results = await autoLinkMissingSanJoseCandidateFinanceLinks({
+      db: { query } as never,
+      now: new Date("2026-08-11T00:00:00Z"),
+      candidates: [{ ...doeCandidate, candidateId: "cB" }],
+      workbook: emptyWorkbook,
+      committees: [doeCommittee],
+    });
+    // Only the input candidate is reported; the roster-only sibling shaped
+    // the duplicate check but got no result row.
+    expect(results).toEqual([
+      {
+        candidateId: "cB",
+        electionId: "e1",
+        status: "needs_review",
+        reason: expect.stringContaining("multiple roster candidates"),
+      },
+    ]);
+    expect(
+      query.mock.calls.some((call) =>
+        String(call[0]).startsWith(
+          "INSERT INTO public.sjc_candidate_finance_links",
+        ),
+      ),
+    ).toBe(false);
   });
 
   it("surfaces a protected-manual-link conflict as a per-candidate error", async () => {

@@ -30,13 +30,20 @@ function dueRow(over: Record<string, unknown> = {}) {
   };
 }
 
-function makeDb(input: { missingLinkRows?: unknown[]; dueRows: unknown[] }) {
+function makeDb(input: {
+  missingLinkRows?: unknown[];
+  rosterRows?: unknown[];
+  dueRows: unknown[];
+}) {
   const query = vi.fn().mockImplementation((sql: unknown) => {
     const s = String(sql);
     if (s.startsWith("WITH due AS"))
       return Promise.resolve({ rows: input.dueRows });
-    if (s.startsWith("SELECT candidate.id::text"))
+    // Missing-links selector vs the auto-link's full-roster read.
+    if (s.includes("NOT EXISTS (SELECT 1 FROM public.sjc_candidate_finance_links"))
       return Promise.resolve({ rows: input.missingLinkRows ?? [] });
+    if (s.startsWith("SELECT candidate.id::text candidate_id,COALESCE"))
+      return Promise.resolve({ rows: input.rosterRows ?? [] });
     if (s.startsWith("INSERT INTO public.sjc_candidate_finance_links"))
       return Promise.resolve({ rows: [{ id: "link-1" }] });
     return Promise.resolve({ rows: [] });
@@ -113,6 +120,13 @@ describe("syncDueSanJoseCandidateFinance", () => {
           office_scope: "place",
           office_name: "City Council Member",
           official_ballot_title: "Member, City Council, District 5",
+          state_filing_ids: [],
+        },
+      ],
+      rosterRows: [
+        {
+          candidate_id: "c1",
+          candidate_name: "Jane Doe",
           state_filing_ids: [],
         },
       ],

@@ -39,6 +39,15 @@ const KNOWN_VALUE_FLAGS = new Set([
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+// A repeated value flag silently taking the first occurrence would defeat
+// the fail-loudly goal below — the operator's second value is probably the
+// intended one, and neither should win quietly.
+function rejectRepeatedFlag(args: readonly string[], flag: string): void {
+  if (args.indexOf(flag) !== args.lastIndexOf(flag)) {
+    throw new Error(`${flag} was passed more than once`);
+  }
+}
+
 function parsePositiveIntegerFlag(
   args: readonly string[],
   flag: string,
@@ -47,6 +56,7 @@ function parsePositiveIntegerFlag(
   if (index === -1) {
     return undefined;
   }
+  rejectRepeatedFlag(args, flag);
   const raw = args[index + 1];
   const parsed = Number(raw);
   // isSafeInteger, not isInteger: Number("9007199254740993") silently rounds
@@ -62,6 +72,7 @@ function parseElectionIdFlag(args: readonly string[]): string | undefined {
   if (index === -1) {
     return undefined;
   }
+  rejectRepeatedFlag(args, "--election-id");
   const raw = args[index + 1];
   if (!raw || !UUID_PATTERN.test(raw)) {
     throw new Error(`--election-id requires an election UUID, got: ${raw}`);

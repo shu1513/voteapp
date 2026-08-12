@@ -329,8 +329,14 @@ dry-run against the final roster before enabling sync.
   5,270.18 / Chester 1,255.68 / Le 0 match Phase 3; Ortiz support
   281,447.58 → 292,697.58 (new IE filings since Aug 10). Coverage notes
   fire for Altwer AND Van Le (her export history opens 2025-07-01 with
-  prior cash — new observation); zero blocking violations. Dry-run driver
-  kept at `backend/scratch/sjPhase5DryRun.ts` for the post-Aug-13 re-run.
+  prior cash — new observation); zero blocking violations. The dry-run
+  driver is a local UNVERSIONED scratch file
+  (`backend/scratch/sjPhase5DryRun.ts`, gitignored); the post-Aug-13
+  re-run can use it where it exists, or equivalently: refresh the
+  workbooks via `loadSanJoseCycleWorkbookData`, list roster candidates
+  with `listSanJoseCandidateElectionsMissingFinanceLinks`, resolve with
+  `resolveSanJoseCandidateCommittees`, and run
+  `syncSanJoseCandidateFinance` with `dryRun: true` per match.
 
 ### Phase 6: tests and live validation
 

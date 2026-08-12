@@ -54,6 +54,10 @@ export async function listSanJoseCandidateElectionsMissingFinanceLinks(
     electionLookaheadDays: number;
   },
 ): Promise<SanJoseFinanceAutoLinkCandidate[]> {
+  // The name COALESCE below can be NULL when every name column is blank —
+  // a defective roster row. The resolver would throw on a null display name,
+  // and one bad row must not poison the whole auto-link leg, so such rows
+  // are excluded in SQL (they cannot be name-matched anyway).
   const result = await db.query<{
     candidate_id: string;
     election_id: string;
@@ -67,7 +71,7 @@ export async function listSanJoseCandidateElectionsMissingFinanceLinks(
     official_ballot_title: string | null;
     state_filing_ids: unknown;
   }>(
-    `SELECT candidate.id::text candidate_id,election.id::text election_id,COALESCE(NULLIF(trim(candidate.display_name),''),NULLIF(trim(candidate.first_name||' '||candidate.last_name),'')) candidate_name,election.election_date::text election_date,district.state,district.district_type,district.geoid_compact,office.scope office_scope,office.canonical_name office_name,election.official_ballot_title,candidate.state_filing_ids FROM public.candidate_elections candidate_election JOIN public.candidates candidate ON candidate.id=candidate_election.candidate_id JOIN public.elections election ON election.id=candidate_election.election_id JOIN public.districts district ON district.id=election.district_id JOIN public.offices office ON office.id=election.office_id WHERE candidate.deleted_at IS NULL AND ${SAN_JOSE_ELECTION_PREDICATE} AND election.race_type='office' AND election.election_date>=(($1::timestamptz AT TIME ZONE 'UTC')::date-make_interval(days=>$3::int)) AND election.election_date<=(($1::timestamptz AT TIME ZONE 'UTC')::date+make_interval(days=>$4::int)) AND candidate_election.status NOT IN ('withdrawn','lost') AND NOT EXISTS (SELECT 1 FROM public.sjc_candidate_finance_links link WHERE link.candidate_id=candidate.id AND link.election_id=election.id AND link.link_status='active') ORDER BY election.election_date,candidate.display_name NULLS LAST,candidate.id LIMIT $2::int`,
+    `SELECT candidate.id::text candidate_id,election.id::text election_id,COALESCE(NULLIF(trim(candidate.display_name),''),NULLIF(trim(candidate.first_name||' '||candidate.last_name),'')) candidate_name,election.election_date::text election_date,district.state,district.district_type,district.geoid_compact,office.scope office_scope,office.canonical_name office_name,election.official_ballot_title,candidate.state_filing_ids FROM public.candidate_elections candidate_election JOIN public.candidates candidate ON candidate.id=candidate_election.candidate_id JOIN public.elections election ON election.id=candidate_election.election_id JOIN public.districts district ON district.id=election.district_id JOIN public.offices office ON office.id=election.office_id WHERE candidate.deleted_at IS NULL AND ${SAN_JOSE_ELECTION_PREDICATE} AND election.race_type='office' AND election.election_date>=(($1::timestamptz AT TIME ZONE 'UTC')::date-make_interval(days=>$3::int)) AND election.election_date<=(($1::timestamptz AT TIME ZONE 'UTC')::date+make_interval(days=>$4::int)) AND candidate_election.status NOT IN ('withdrawn','lost') AND COALESCE(NULLIF(trim(candidate.display_name),''),NULLIF(trim(candidate.first_name||' '||candidate.last_name),'')) IS NOT NULL AND NOT EXISTS (SELECT 1 FROM public.sjc_candidate_finance_links link WHERE link.candidate_id=candidate.id AND link.election_id=election.id AND link.link_status='active') ORDER BY election.election_date,candidate.display_name NULLS LAST,candidate.id LIMIT $2::int`,
     [
       input.now.toISOString(),
       input.maxCandidates,
@@ -118,6 +122,38 @@ export type SanJoseFinanceAutoLinkResult = {
   reason?: string;
 };
 
+// The resolver's one-committee-two-candidates check only protects the group
+// it resolves, so resolution must always see the election's FULL roster —
+// resolving just the unlinked slice would let a committee link to candidate B
+// today when it already linked to candidate A yesterday (the selector never
+// returns linked candidates, and maxCandidates can split even one run).
+// Same status filter as the selector; the name COALESCE can be null for a
+// defective roster row, excluded here for the same reason as in the selector.
+async function listElectionRosterCandidates(
+  db: Queryable,
+  electionId: string,
+): Promise<
+  { candidateId: string; candidateName: string; stateFilingIds: string[] }[]
+> {
+  const result = await db.query<{
+    candidate_id: string;
+    candidate_name: string;
+    state_filing_ids: unknown;
+  }>(
+    `SELECT candidate.id::text candidate_id,COALESCE(NULLIF(trim(candidate.display_name),''),NULLIF(trim(candidate.first_name||' '||candidate.last_name),'')) candidate_name,candidate.state_filing_ids FROM public.candidate_elections candidate_election JOIN public.candidates candidate ON candidate.id=candidate_election.candidate_id WHERE candidate_election.election_id=$1::uuid AND candidate.deleted_at IS NULL AND candidate_election.status NOT IN ('withdrawn','lost') AND COALESCE(NULLIF(trim(candidate.display_name),''),NULLIF(trim(candidate.first_name||' '||candidate.last_name),'')) IS NOT NULL ORDER BY candidate.id`,
+    [electionId],
+  );
+  return result.rows.map((row) => ({
+    candidateId: row.candidate_id,
+    candidateName: row.candidate_name,
+    stateFilingIds: Array.isArray(row.state_filing_ids)
+      ? row.state_filing_ids.filter(
+          (value): value is string => typeof value === "string",
+        )
+      : [],
+  }));
+}
+
 /**
  * Resolves and links every input candidate against the export's committees.
  * Matched candidates get an active efile_export link; ambiguity surfaces as
@@ -154,19 +190,47 @@ export async function autoLinkMissingSanJoseCandidateFinanceLinks(input: {
   }
   const results: SanJoseFinanceAutoLinkResult[] = [];
   for (const [electionId, group] of byElection) {
-    const resolutions = resolveSanJoseCandidateCommittees({
-      candidates: group.map((candidate) => ({
-        candidateId: candidate.candidateId,
-        displayName: candidate.candidateName,
-        officeName: candidate.officeName,
-        seatNumber: candidate.seatNumber,
-        electionYear: candidate.electionYear,
-        stateFilingIds: candidate.stateFilingIds,
+    // Resolve against the FULL election roster (see listElectionRosterCandidates)
+    // so already-linked and beyond-the-limit candidates still participate in
+    // the duplicate-committee check; links are only written for the input
+    // slice. Office, seat, and year are election-level facts, shared by every
+    // roster candidate. An input candidate missing from the roster read (a
+    // status change between the two queries) falls back to its own row.
+    const first = group[0]!;
+    const roster = await listElectionRosterCandidates(input.db, electionId);
+    const rosterIds = new Set(roster.map((row) => row.candidateId));
+    const resolutionCandidates = [
+      ...roster.map((row) => ({
+        candidateId: row.candidateId,
+        displayName: row.candidateName,
+        officeName: first.officeName,
+        seatNumber: first.seatNumber,
+        electionYear: first.electionYear,
+        stateFilingIds: row.stateFilingIds,
       })),
+      ...group
+        .filter((candidate) => !rosterIds.has(candidate.candidateId))
+        .map((candidate) => ({
+          candidateId: candidate.candidateId,
+          displayName: candidate.candidateName,
+          officeName: candidate.officeName,
+          seatNumber: candidate.seatNumber,
+          electionYear: candidate.electionYear,
+          stateFilingIds: [...candidate.stateFilingIds],
+        })),
+    ];
+    const inputCandidateIds = new Set(
+      group.map((candidate) => candidate.candidateId),
+    );
+    const resolutions = resolveSanJoseCandidateCommittees({
+      candidates: resolutionCandidates,
       committees,
     });
     for (const resolution of resolutions) {
       const candidateId = resolution.candidate.candidateId;
+      // Roster-only participants shape the duplicate check but get no link
+      // write and no result row — they were not selected for linking.
+      if (!inputCandidateIds.has(candidateId)) continue;
       if (resolution.status === "ambiguous") {
         results.push({
           candidateId,
