@@ -103,17 +103,22 @@ services:
         sync: false
       # --- Chatbot "Ask" (free read side; docs/plans/chatbot-rag.md) ----
       # Retrieval-only until the dashboard-only LLM vars are set (see the
-      # voteapp-embeddings comment). LITERAL address on purpose (verified
-      # live 2026-08-12): this workspace's private hostname is the plain
-      # service slug (the service's own `url` field says so), while the
-      # fromService hostport property kept resolving the stale default
-      # :10000 — a port Render RESERVES for private traffic — even with the
-      # app listening on 8080. readChatbotEmbeddingsFromEnv still accepts a
-      # scheme-less host:port by prepending http://.
+      # voteapp-embeddings comment). Host and port are split on purpose:
+      # the HOST is Render's generated private hostname (fromService
+      # property: host — hardcoding it would break on service recreation),
+      # while the PORT is ours — the same file pins 8080 in dockerCommand.
+      # The hostport property is deliberately NOT used: observed 2026-08-12
+      # resolving a stale reserved :10000 while the app listened on 8080.
+      # readChatbotEmbeddingsFromEnv composes http://<host>:<port>.
       - key: CHATBOT_ENABLED
         value: "true"
-      - key: CHATBOT_EMBEDDINGS_URL
-        value: http://voteapp-embeddings:8080
+      - key: CHATBOT_EMBEDDINGS_HOST
+        fromService:
+          name: voteapp-embeddings
+          type: pserv
+          property: host
+      - key: CHATBOT_EMBEDDINGS_PORT
+        value: "8080"
       # --- Finance read flags -------------------------------------------
       # Display-only switches: they gate whether stored finance data is
       # returned to the cards, and cost nothing. Without them production
