@@ -354,9 +354,11 @@ services:
   # embeddings service is a PAID private service (~$7/mo starter). The
   # blueprint carries only the FREE read side (CHATBOT_ENABLED + the
   # embeddings URL on voteapp-api, VITE_CHATBOT_ENABLED on voteapp-ssr).
-  # The MONEY side stays dashboard-only on voteapp-api, off by default:
-  #   CHATBOT_LLM_ENABLED=true and CHATBOT_LLM_API_KEY=<spend-limited key>
-  #   (optional overrides: CHATBOT_MODEL, CHATBOT_REASONING_EFFORT,
+  # The MONEY side stays dashboard-only on voteapp-api, off by default —
+  # ALL THREE required to turn AI answers on:
+  #   CHATBOT_LLM_ENABLED=true, CHATBOT_LLM_API_KEY=<spend-limited key>,
+  #   CHATBOT_MODEL=<model id — deployment config only, never in the repo>
+  #   (optional overrides: CHATBOT_REASONING_EFFORT,
   #   CHATBOT_USER_DAILY_LIMIT, CHATBOT_DAILY_TOKEN_BUDGET,
   #   CHATBOT_LLM_BASE_URL, CHATBOT_LLM_TIMEOUT_MS). LLM off or
   #   misconfigured → retrieval-only answers, unchanged.
