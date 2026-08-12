@@ -164,7 +164,9 @@ async function upsertLink(
     ],
   );
   if (!result.rows[0]?.id)
-    throw new Error("Los Angeles finance link upsert returned no id");
+    throw new Error(
+      "Los Angeles finance link upsert wrote no row — blocked by a concurrent protected manual link",
+    );
   return result.rows[0].id;
 }
 

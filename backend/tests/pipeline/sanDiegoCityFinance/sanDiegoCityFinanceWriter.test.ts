@@ -257,7 +257,7 @@ describe("San Diego city finance writer", () => {
     ).rejects.toThrow(/conflicts with protected manual link/);
   });
 
-  it("never resurrects an operator-disabled manual link", async () => {
+  it("never resurrects an operator-disabled manual link with the same filer id", async () => {
     // The disabled manual row is the ON CONFLICT target — without the
     // any-status probe the upsert would silently flip it back to
     // active/efile_export.
@@ -274,11 +274,7 @@ describe("San Diego city finance writer", () => {
       await expect(
         upsertSanDiegoCityFinanceLink({
           db: { query } as never,
-          link: {
-            ...link,
-            linkSource: "efile_export",
-            lastVerifiedAt: new Date("2026-08-12T00:00:00Z"),
-          },
+          link: { ...link, linkSource: "efile_export" },
         }),
       ).rejects.toThrow(/matches an operator-disabled manual link/);
       const sql = query.mock.calls.map((call) => String(call[0]));
@@ -319,8 +315,23 @@ describe("San Diego city finance writer", () => {
     );
     expect(String(deactivate?.[0])).toContain("link_source<>'manual'");
     expect(deactivate?.[1]).toEqual(["c", "e", "1460125"]);
-    // The in-statement race backstop: a row concurrently flipped to manual
-    // must block the update instead of being rewritten.
+  });
+
+  it("refuses to rewrite a manual row that appeared between the probe and the upsert", async () => {
+    // The DO UPDATE's WHERE guard makes the write update nothing when the
+    // conflict target turned manual after the probe — empty RETURNING must
+    // throw, never silently resurrect.
+    const query = queryMock((sql) =>
+      sql.startsWith("INSERT INTO public.sdcity_candidate_finance_links")
+        ? { rows: [] }
+        : null,
+    );
+    await expect(
+      upsertSanDiegoCityFinanceLink({
+        db: { query } as never,
+        link: { ...link, linkSource: "efile_export" },
+      }),
+    ).rejects.toThrow(/blocked by a concurrent protected manual link/);
     const insert = query.mock.calls.find((call) =>
       String(call[0]).startsWith(
         "INSERT INTO public.sdcity_candidate_finance_links",

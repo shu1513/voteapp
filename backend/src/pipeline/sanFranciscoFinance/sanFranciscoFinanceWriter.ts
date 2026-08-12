@@ -184,7 +184,9 @@ export async function upsertSanFranciscoFinanceLink(input: {
     ],
   );
   if (!result.rows[0]?.id)
-    throw new Error("San Francisco finance link upsert returned no id");
+    throw new Error(
+      "San Francisco finance link upsert wrote no row — blocked by a concurrent protected manual link",
+    );
   return { linkId: result.rows[0].id };
 }
 

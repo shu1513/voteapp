@@ -196,6 +196,22 @@ describe("upsertSanFranciscoFinanceLink", () => {
       "INSERT INTO public.sfc_candidate_finance_links",
     );
   });
+
+  it("refuses to rewrite a manual row that appeared between the probe and the upsert", async () => {
+    // The DO UPDATE's WHERE guard makes the write update nothing when the
+    // conflict target turned manual after the probe — empty RETURNING must
+    // throw, never silently resurrect.
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [] }) // manual-link probe
+        .mockResolvedValueOnce({ rows: [] }) // deactivation
+        .mockResolvedValueOnce({ rows: [] }), // guarded INSERT wrote no row
+    };
+    await expect(
+      upsertSanFranciscoFinanceLink({ db, link: LINK }),
+    ).rejects.toThrow(/blocked by a concurrent protected manual link/);
+  });
 });
 
 describe("flagSanFranciscoFinanceLinksMissingFromManifest", () => {

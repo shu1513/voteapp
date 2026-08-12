@@ -226,11 +226,58 @@ describe("autoLinkMissingSanFranciscoCandidateFinanceLinks", () => {
     expect(wong?.reason).toMatch(/General Purpose/);
   });
 
-  it("skips only the disabled-manual candidate; the rest of the election still commits", async () => {
-    // A disabled manual row with the manifest's committee must become a
-    // per-candidate error at planning time — if it reached the writer, the
-    // protection throw would roll back the whole election refresh on every
-    // run until an operator intervened.
+  it("never resurrects an operator-disabled manual link with the same filer id", async () => {
+    // The disabled manual row would be the planned upsert's ON CONFLICT
+    // target — the plan must be vetoed per-candidate, before the
+    // transaction, so the rest of the election still commits.
+    for (const linkStatus of ["inactive", "needs_review"]) {
+      const { db, calls } = fakeDb({
+        onSql: (sql) =>
+          sql.startsWith("SELECT candidate_id::text")
+            ? {
+                rows: [
+                  {
+                    candidate_id: "cand-wong",
+                    fppc_id: "1489126",
+                    link_status: linkStatus,
+                  },
+                ],
+              }
+            : undefined,
+      });
+      const { results } =
+        await autoLinkMissingSanFranciscoCandidateFinanceLinks({
+          db,
+          now: new Date("2026-08-07T00:00:00Z"),
+          candidates: INPUT_CANDIDATES,
+          manifestClientOptions: { fetchImpl: manifestFetch, retryCount: 0 },
+          openDataClientOptions: {
+            fetchImpl: filerRegistryFetch("Candidate or Officeholder"),
+            retryCount: 0,
+          },
+        });
+      const byCandidate = new Map(results.map((r) => [r.candidateId, r]));
+      expect(byCandidate.get("cand-wong")).toMatchObject({
+        status: "error",
+        reason: expect.stringContaining("operator-disabled manual link"),
+      });
+      expect(byCandidate.get("cand-greco")).toMatchObject({
+        status: "linked",
+      });
+      expect(
+        calls.some(
+          (call) =>
+            call.sql.includes(
+              "INSERT INTO public.sfc_candidate_finance_links",
+            ) && call.params[0] === "cand-wong",
+        ),
+      ).toBe(false);
+      expect(calls.map((call) => call.sql)).toContain("COMMIT");
+    }
+  });
+
+  it("allows a new automatic identity past a disabled manual link with a different fppc id", async () => {
+    // The operator disabled that association, not the candidate.
     const { db, calls } = fakeDb({
       onSql: (sql) =>
         sql.startsWith("SELECT candidate_id::text")
@@ -238,7 +285,7 @@ describe("autoLinkMissingSanFranciscoCandidateFinanceLinks", () => {
               rows: [
                 {
                   candidate_id: "cand-wong",
-                  fppc_id: "1489126",
+                  fppc_id: "7777777",
                   link_status: "inactive",
                 },
               ],
@@ -255,21 +302,16 @@ describe("autoLinkMissingSanFranciscoCandidateFinanceLinks", () => {
         retryCount: 0,
       },
     });
-    const byCandidate = new Map(results.map((r) => [r.candidateId, r]));
-    expect(byCandidate.get("cand-wong")).toMatchObject({
-      status: "error",
-      reason: expect.stringContaining("operator-disabled manual link"),
-    });
-    // Greco still linked and the election transaction committed.
-    expect(byCandidate.get("cand-greco")).toMatchObject({ status: "linked" });
-    expect(calls.some((call) => call.sql === "COMMIT")).toBe(true);
+    expect(
+      results.find((r) => r.candidateId === "cand-wong"),
+    ).toMatchObject({ status: "linked" });
     expect(
       calls.some(
         (call) =>
           call.sql.includes("INSERT INTO public.sfc_candidate_finance_links") &&
           call.params[0] === "cand-wong",
       ),
-    ).toBe(false);
+    ).toBe(true);
   });
 
   it("reports every input candidate as errored when the manifest fetch fails", async () => {

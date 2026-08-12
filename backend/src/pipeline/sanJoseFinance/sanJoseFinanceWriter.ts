@@ -107,9 +107,10 @@ export async function upsertSanJoseFinanceLink(input: {
   const link = input.link;
   const linkStatus = link.linkStatus ?? "active";
   const linkSource = link.linkSource ?? "manual";
-  // The trimmed fppcId drives the manual-link comparison, the deactivation
-  // predicate, and the INSERT alike — a padded input must match a stored id,
-  // never slip past the probe and reach the stored row through ON CONFLICT.
+  // Trimmed once, then the single value used for the Pending check, the
+  // manual-link comparison, the deactivation predicate, and the INSERT —
+  // a padded input must match a stored id, not slip past the probe and
+  // reach the manual row through ON CONFLICT.
   const fppcId = text(link.fppcId, "FPPC id");
   // Case-insensitive: live data says "Pending", but this is the last line
   // before a placeholder would become a durable committee identity, so an
@@ -122,7 +123,7 @@ export async function upsertSanJoseFinanceLink(input: {
   // upserts, and probes manual rows of ANY status: an operator-disabled
   // (inactive/needs_review) manual link with this fppc_id is the
   // ON CONFLICT target row, and the upsert would otherwise silently
-  // rewrite it to efile_export.
+  // resurrect it as active/efile_export.
   if (linkSource === "efile_export") {
     const manual = await input.db.query<{
       id: string;
@@ -132,9 +133,9 @@ export async function upsertSanJoseFinanceLink(input: {
       `SELECT id::text,fppc_id,link_status FROM public.sjc_candidate_finance_links WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_source='manual'`,
       [link.candidateId, link.electionId],
     );
-    const sameCommittee = manual.rows.find((row) => row.fppc_id === fppcId);
-    if (sameCommittee) {
-      if (sameCommittee.link_status !== "active")
+    const sameFppc = manual.rows.find((row) => row.fppc_id === fppcId);
+    if (sameFppc) {
+      if (sameFppc.link_status !== "active")
         throw new Error(
           "San José automatic finance link matches an operator-disabled manual link",
         );
@@ -146,9 +147,9 @@ export async function upsertSanJoseFinanceLink(input: {
       if (link.lastVerifiedAt)
         await input.db.query(
           `UPDATE public.sjc_candidate_finance_links SET last_verified_at=$2::timestamptz WHERE id=$1::uuid`,
-          [sameCommittee.id, link.lastVerifiedAt.toISOString()],
+          [sameFppc.id, link.lastVerifiedAt.toISOString()],
         );
-      return { linkId: sameCommittee.id };
+      return { linkId: sameFppc.id };
     }
     // A disabled manual link with a DIFFERENT fppc_id does not block a new
     // automatic identity — the operator disabled that association, not the
@@ -163,9 +164,12 @@ export async function upsertSanJoseFinanceLink(input: {
       `UPDATE public.sjc_candidate_finance_links SET link_status='inactive' WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND fppc_id<>$3 AND link_status='active' AND link_source<>'manual'`,
       [link.candidateId, link.electionId, fppcId],
     );
-  // The conflict guard is the race backstop: a row an operator flips to
-  // manual between the probe and this statement blocks the update (no id
-  // returned, the throw below aborts) instead of being rewritten.
+  // The DO UPDATE's WHERE is the DB-enforced backstop for the probe above:
+  // the probe and this upsert are separate statements, so a manual row
+  // created or disabled in between would otherwise be rewritten by an
+  // unconditional DO UPDATE. Manual writes may update manual rows; an
+  // automatic write against a manual target updates nothing, RETURNING
+  // comes back empty, and the throw below aborts the write.
   const result = await input.db.query<{ id: string }>(
     `INSERT INTO public.sjc_candidate_finance_links (candidate_id,election_id,election_year,candidate_name_normalized,fppc_id,committee_name,link_status,link_source,source_url,last_verified_at) VALUES ($1::uuid,$2::uuid,$3,$4,$5,$6,$7,$8,$9,$10::timestamptz) ON CONFLICT (candidate_id,election_id,fppc_id) DO UPDATE SET election_year=EXCLUDED.election_year,candidate_name_normalized=EXCLUDED.candidate_name_normalized,committee_name=EXCLUDED.committee_name,link_status=EXCLUDED.link_status,link_source=EXCLUDED.link_source,source_url=EXCLUDED.source_url,last_verified_at=EXCLUDED.last_verified_at WHERE sjc_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual' RETURNING id::text`,
     [
@@ -182,7 +186,9 @@ export async function upsertSanJoseFinanceLink(input: {
     ],
   );
   if (!result.rows[0]?.id)
-    throw new Error("San José finance link upsert returned no id");
+    throw new Error(
+      "San José finance link upsert wrote no row — blocked by a concurrent protected manual link",
+    );
   return { linkId: result.rows[0].id };
 }
 

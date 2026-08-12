@@ -175,10 +175,10 @@ async function listElectionAppCandidates(
   }));
 }
 
-// ANY status, not only active: a disabled manual row with the manifest's
-// fppc_id would otherwise become a link plan, and the writer's protection
-// throw inside the election-wide transaction would roll back — and keep
-// rolling back — every candidate's refresh until an operator intervened.
+// Manual rows of ANY status, not only active: an operator-disabled
+// (inactive/needs_review) manual link must veto a same-committee plan —
+// otherwise the planned upsert would either resurrect it (pre-writer-guard)
+// or throw inside the transaction and roll back the whole election.
 async function listElectionManualLinks(
   db: Queryable,
   electionId: string,
@@ -191,16 +191,13 @@ async function listElectionManualLinks(
     `SELECT candidate_id::text,fppc_id,link_status FROM public.sfc_candidate_finance_links WHERE election_id=$1::uuid AND link_source='manual'`,
     [electionId],
   );
-  const byCandidateId = new Map<
-    string,
-    Array<{ fppcId: string; linkStatus: string }>
-  >();
+  const links = new Map<string, Array<{ fppcId: string; linkStatus: string }>>();
   for (const row of result.rows) {
-    const rows = byCandidateId.get(row.candidate_id) ?? [];
+    const rows = links.get(row.candidate_id) ?? [];
     rows.push({ fppcId: row.fppc_id, linkStatus: row.link_status });
-    byCandidateId.set(row.candidate_id, rows);
+    links.set(row.candidate_id, rows);
   }
-  return byCandidateId;
+  return links;
 }
 
 // The manifest is the identity source; the filer registry is the cross-check
@@ -312,38 +309,35 @@ export async function autoLinkMissingSanFranciscoCandidateFinanceLinks(input: {
       }
       const manifestCandidate = resolution.manifestCandidate;
       candidateIdByFppcId.set(manifestCandidate.fppcId, resolution.candidateId);
-      // Manual links are decided before the transaction so a conflict — or
-      // an operator-disabled manual row — skips this candidate's plan
-      // instead of aborting the whole election.
-      const manualRows = manualLinksByCandidateId.get(resolution.candidateId);
-      if (manualRows?.length) {
-        const sameCommittee = manualRows.find(
-          (row) => row.fppcId === manifestCandidate.fppcId,
-        );
-        const activeRow = manualRows.find(
-          (row) => row.linkStatus === "active",
-        );
-        if (sameCommittee) {
-          statusByCandidateId.set(
-            resolution.candidateId,
-            sameCommittee.linkStatus === "active"
-              ? { status: "linked" }
-              : {
-                  status: "error",
-                  reason: `Manifest committee ${manifestCandidate.fppcId} matches an operator-disabled manual link`,
-                },
-          );
-          continue;
-        }
-        if (activeRow) {
+      // Manual links are decided before the transaction so a conflict skips
+      // this candidate's plan instead of aborting the whole election. Same
+      // decision table as the writer guard: a same-committee manual row is
+      // reused when active and vetoes when operator-disabled; a manual row
+      // with a different committee blocks only while active.
+      const manualRows =
+        manualLinksByCandidateId.get(resolution.candidateId) ?? [];
+      const sameFppc = manualRows.find(
+        (row) => row.fppcId === manifestCandidate.fppcId,
+      );
+      const activeManual = manualRows.find(
+        (row) => row.linkStatus === "active",
+      );
+      if (sameFppc) {
+        if (sameFppc.linkStatus === "active")
+          statusByCandidateId.set(resolution.candidateId, { status: "linked" });
+        else
           statusByCandidateId.set(resolution.candidateId, {
             status: "error",
-            reason: `Manifest committee ${manifestCandidate.fppcId} conflicts with protected manual link ${activeRow.fppcId}`,
+            reason: `Manifest committee ${manifestCandidate.fppcId} matches an operator-disabled manual link`,
           });
-          continue;
-        }
-        // Only disabled manual rows with different committees: the operator
-        // disabled those associations, not the candidate — plan normally.
+        continue;
+      }
+      if (activeManual) {
+        statusByCandidateId.set(resolution.candidateId, {
+          status: "error",
+          reason: `Manifest committee ${manifestCandidate.fppcId} conflicts with protected manual link ${activeManual.fppcId}`,
+        });
+        continue;
       }
       try {
         const crossCheck = await crossCheckFilerType(

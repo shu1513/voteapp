@@ -56,6 +56,23 @@ describe("upsertLosAngelesFinanceLink manual protection", () => {
     expect(sql.some((s) => s.startsWith("INSERT INTO"))).toBe(false);
   });
 
+  it("refuses to rewrite a manual row that appeared between the probe and the upsert", async () => {
+    // The DO UPDATE's WHERE guard makes the write update nothing when the
+    // conflict target turned manual after the probe — empty RETURNING must
+    // throw, never silently resurrect.
+    const query = queryMock((sql) =>
+      sql.startsWith("INSERT INTO public.lacity_candidate_finance_links")
+        ? { rows: [] }
+        : null,
+    );
+    await expect(
+      upsertLosAngelesFinanceLink({
+        db: { query } as never,
+        link: AUTOMATIC_LINK,
+      }),
+    ).rejects.toThrow(/blocked by a concurrent protected manual link/);
+  });
+
   it("protects a manual link from a needs_review automatic write too", async () => {
     // Without status-independent protection, this upsert would hit
     // ON CONFLICT on the manual row and rewrite it to lacity_ethics.
