@@ -162,7 +162,11 @@ describe("San José finance writer", () => {
   it("reuses a matching protected manual link and advances last_verified_at", async () => {
     const query = queryMock((sql) =>
       sql.startsWith("SELECT id::text,fppc_id")
-        ? { rows: [{ id: "manual-1", fppc_id: "1484291" }] }
+        ? {
+            rows: [
+              { id: "manual-1", fppc_id: "1484291", link_status: "active" },
+            ],
+          }
         : null,
     );
     const verifiedAt = new Date("2026-08-11T00:00:00Z");
@@ -184,7 +188,11 @@ describe("San José finance writer", () => {
   it("errors when an automatic link conflicts with a protected manual link", async () => {
     const query = queryMock((sql) =>
       sql.startsWith("SELECT id::text,fppc_id")
-        ? { rows: [{ id: "manual-1", fppc_id: "1480385" }] }
+        ? {
+            rows: [
+              { id: "manual-1", fppc_id: "1480385", link_status: "active" },
+            ],
+          }
         : null,
     );
     await expect(
@@ -195,6 +203,56 @@ describe("San José finance writer", () => {
     ).rejects.toThrow(/conflicts with protected manual link/);
   });
 
+  it("never resurrects an operator-disabled manual link with the same filer id", async () => {
+    // The disabled manual row is the ON CONFLICT target — without the
+    // any-status probe the upsert would silently flip it back to
+    // active/efile_export.
+    for (const linkStatus of ["inactive", "needs_review"]) {
+      const query = queryMock((sql) =>
+        sql.startsWith("SELECT id::text,fppc_id")
+          ? {
+              rows: [
+                { id: "manual-1", fppc_id: "1484291", link_status: linkStatus },
+              ],
+            }
+          : null,
+      );
+      await expect(
+        upsertSanJoseFinanceLink({
+          db: { query } as never,
+          link: { ...link, linkSource: "efile_export" },
+        }),
+      ).rejects.toThrow(/matches an operator-disabled manual link/);
+      const sql = query.mock.calls.map((call) => String(call[0]));
+      expect(sql.some((s) => s.startsWith("INSERT INTO"))).toBe(false);
+      expect(sql.some((s) => s.includes("SET last_verified_at"))).toBe(false);
+    }
+  });
+
+  it("allows a new automatic identity past a disabled manual link with a different fppc id", async () => {
+    // The operator disabled that association, not the candidate.
+    const query = queryMock((sql) =>
+      sql.startsWith("SELECT id::text,fppc_id")
+        ? {
+            rows: [
+              { id: "manual-1", fppc_id: "1480385", link_status: "inactive" },
+            ],
+          }
+        : null,
+    );
+    const result = await upsertSanJoseFinanceLink({
+      db: { query } as never,
+      link: { ...link, linkSource: "efile_export" },
+    });
+    expect(result.linkId).toBe("link-1");
+    const sql = query.mock.calls.map((call) => String(call[0]));
+    expect(
+      sql.some((s) =>
+        s.startsWith("INSERT INTO public.sjc_candidate_finance_links"),
+      ),
+    ).toBe(true);
+  });
+
   it("deactivates other automatic links before an active upsert", async () => {
     const query = queryMock();
     await upsertSanJoseFinanceLink({ db: { query } as never, link });
@@ -203,5 +261,53 @@ describe("San José finance writer", () => {
     );
     expect(String(deactivate?.[0])).toContain("link_source<>'manual'");
     expect(deactivate?.[1]).toEqual(["c", "e", "1484291"]);
+  });
+
+  it("normalizes the fppc id before the manual probe, not only before the INSERT", async () => {
+    // A padded id must still hit the disabled manual row in the probe —
+    // otherwise it slips past, trims at the INSERT, and reaches the manual
+    // row through ON CONFLICT.
+    const query = queryMock((sql) =>
+      sql.startsWith("SELECT id::text,fppc_id")
+        ? {
+            rows: [
+              { id: "manual-1", fppc_id: "1484291", link_status: "inactive" },
+            ],
+          }
+        : null,
+    );
+    await expect(
+      upsertSanJoseFinanceLink({
+        db: { query } as never,
+        link: { ...link, fppcId: " 1484291 ", linkSource: "efile_export" },
+      }),
+    ).rejects.toThrow(/matches an operator-disabled manual link/);
+    const sql = query.mock.calls.map((call) => String(call[0]));
+    expect(sql.some((s) => s.startsWith("INSERT INTO"))).toBe(false);
+  });
+
+  it("refuses to rewrite a manual row that appeared between the probe and the upsert", async () => {
+    // The DO UPDATE's WHERE guard makes the write update nothing when the
+    // conflict target turned manual after the probe — empty RETURNING must
+    // throw, never silently resurrect.
+    const query = queryMock((sql) =>
+      sql.startsWith("INSERT INTO public.sjc_candidate_finance_links")
+        ? { rows: [] }
+        : null,
+    );
+    await expect(
+      upsertSanJoseFinanceLink({
+        db: { query } as never,
+        link: { ...link, linkSource: "efile_export" },
+      }),
+    ).rejects.toThrow(/blocked by a concurrent protected manual link/);
+    const insert = query.mock.calls.find((call) =>
+      String(call[0]).startsWith(
+        "INSERT INTO public.sjc_candidate_finance_links",
+      ),
+    );
+    expect(String(insert?.[0])).toContain(
+      "WHERE sjc_candidate_finance_links.link_source<>'manual' OR EXCLUDED.link_source='manual'",
+    );
   });
 });
