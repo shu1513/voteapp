@@ -421,6 +421,7 @@ describe("aggregateSanDiegoCityOutsideSpending paper supplements", () => {
       expenditureCount: 2,
     });
     expect(result.diagnostics.paperSupplementRows).toBe(1);
+    expect(result.diagnostics.paperSupplementRowsIncluded).toBe(1);
   });
 
   it("runs supplements through the normal target and veto gates, including the COU code", () => {
@@ -431,6 +432,9 @@ describe("aggregateSanDiegoCityOutsideSpending paper supplements", () => {
     });
     expect(otherCandidate.opposeTotalCents).toBe(0);
     expect(otherCandidate.diagnostics.otherCandidateRows).toBe(1);
+    // Pool entry, but never in THIS candidate's totals.
+    expect(otherCandidate.diagnostics.paperSupplementRows).toBe(1);
+    expect(otherCandidate.diagnostics.paperSupplementRowsIncluded).toBe(0);
     const wrongDistrict = aggregate({
       paperSupplements: [paperEntry({ distNo: "7" })],
     });

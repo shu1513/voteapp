@@ -44,6 +44,8 @@ import {
   type EfileCalAgencyConfig,
 } from "../efileCalFinance/efileCalBulkClient.js";
 import {
+  EFILE_CAL_S496_SHEET,
+  EFILE_CAL_SCHEDULE_D_SHEET,
   parseEfileCalWorkbook,
   type EfileCalUnusableRow,
   type EfileCalWorkbook,
@@ -252,8 +254,11 @@ function usd(cents: number): string {
 // committees to file entirely on paper, invisible to the export).
 const DIRECT_BASELINE_NOTE =
   "Totals cover the committee's filings in the city's e-filing system; committees raising under $10,000 may file on paper, which is not included.";
-const OUTSIDE_BASELINE_NOTE =
-  "Outside spending totals cover e-filed Form 496 and Form 460 Schedule D disclosures; paper filings are not included.";
+// Completed per candidate: when curated paper supplements actually landed in
+// this candidate's totals, "paper filings are not included" would be false —
+// the sentence flips to say what WAS included (review finding on PR #688).
+const OUTSIDE_BASELINE_NOTE_START =
+  "Outside spending totals cover e-filed Form 496 and Form 460 Schedule D disclosures";
 
 export type SanDiegoCityCandidateFinanceSyncResult = {
   linkWritten: boolean;
@@ -327,15 +332,35 @@ export async function syncSanDiegoCityCandidateFinance(input: {
     (a, b) => b.length - a.length || a.localeCompare(b),
   )[0]!;
 
-  // --- Unusable-row quarantine (Phase 0 gate 6 as a sync-time policy): a
-  // row the parser could not type, belonging to THIS committee by FPPC id or
-  // by normalized committee name (blank-id rows carry the name), means the
-  // aggregates below would silently omit part of its filings — abort and
-  // keep the prior snapshot. Other committees' unusable rows are irrelevant.
+  // --- Unusable-row quarantine (Phase 0 gate 6 as a sync-time policy),
+  // scoped by which totals a dropped row could touch:
+  //
+  // - An S496 / Schedule D row is some OUTSIDE spender's expenditure about
+  //   somebody — and it is unattributable precisely because it did not
+  //   parse, so ANY unusable row on those two sheets makes every outside
+  //   total suspect. Fail closed for the whole run (the strictness the SJ
+  //   sync gets for free by parsing without collect mode).
+  // - Every other sheet feeds direct totals, which filter by the linked
+  //   committee's filer id — so only a row tied to THIS committee by FPPC
+  //   id or normalized committee name (blank-id rows carry the name) can
+  //   make its totals incomplete. The live blank-Form_Type Major Donor
+  //   block stays a non-event for everyone but its own filer.
+  const unusableRows = input.unusableRows ?? [];
+  const outsideUnusable = unusableRows.filter(
+    (row) =>
+      row.sheet === EFILE_CAL_S496_SHEET ||
+      row.sheet === EFILE_CAL_SCHEDULE_D_SHEET,
+  );
+  if (outsideUnusable.length > 0)
+    throw new Error(
+      `San Diego cycle export has ${outsideUnusable.length} unusable outside-spending row${outsideUnusable.length === 1 ? "" : "s"} (${outsideUnusable
+        .map((row) => `${row.sheet} row ${row.rowNumber}: ${row.reason}`)
+        .join("; ")}); outside totals cannot be attributed — refusing to write`,
+    );
   const normalizedCommitteeNames = new Set(
     [...committeeNames].map((name) => normalizeSanDiegoCityTextKey(name)),
   );
-  const contaminating = (input.unusableRows ?? []).filter(
+  const contaminating = unusableRows.filter(
     (row) =>
       (row.filerId !== null && row.filerId === fppcId) ||
       (row.filerName !== null &&
@@ -434,7 +459,12 @@ export async function syncSanDiegoCityCandidateFinance(input: {
     outside.diagnostics.jurisdictionGateExcludedRows +
     outside.diagnostics.districtGateExcludedRows +
     outside.diagnostics.unknownDirectionRows;
-  const outsideNotes = [OUTSIDE_BASELINE_NOTE];
+  const paperIncluded = outside.diagnostics.paperSupplementRowsIncluded;
+  const outsideNotes = [
+    paperIncluded > 0
+      ? `${OUTSIDE_BASELINE_NOTE_START}, plus ${paperIncluded} individually reviewed paper Form 496 expenditure${paperIncluded === 1 ? "" : "s"}; other paper filings are not included.`
+      : `${OUTSIDE_BASELINE_NOTE_START}; paper filings are not included.`,
+  ];
   if (vetoedRows > 0)
     outsideNotes.push(
       `${vetoedRows} expenditure${vetoedRows === 1 ? "" : "s"} naming this candidate ${vetoedRows === 1 ? "was" : "were"} excluded because the disclosed office, jurisdiction, district, or support/oppose direction did not match this contest.`,

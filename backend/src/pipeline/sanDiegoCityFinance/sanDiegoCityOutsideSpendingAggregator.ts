@@ -89,6 +89,9 @@ export type SanDiegoCityOutsideSpendingAggregate = {
     unknownDirectionCents: number;
     /** Curated paper-496 entries fed in (pre-filter; most target OTHER candidates). */
     paperSupplementRows: number;
+    /** Supplement rows that survived the target/veto gates INTO this
+     * candidate's totals — the count the coverage note must speak about. */
+    paperSupplementRowsIncluded: number;
     /** Supplements dropped because their filing entered the export (stale entry). */
     paperSupplementRowsSuppressed: number;
   };
@@ -319,6 +322,7 @@ export function aggregateSanDiegoCityOutsideSpending(input: {
     unknownDirectionRows: 0,
     unknownDirectionCents: 0,
     paperSupplementRows: supplementRows.length,
+    paperSupplementRowsIncluded: 0,
     paperSupplementRowsSuppressed:
       paperSupplements.length - livePaperSupplements.length,
   };
@@ -379,6 +383,10 @@ export function aggregateSanDiegoCityOutsideSpending(input: {
       diagnostics.unknownDirectionCents += row.amountCents;
       continue;
     }
+    // Supplement rows live in the reserved "paper-496-" Tran_ID namespace,
+    // so a surviving one is recognizable here.
+    if (row.tranId.startsWith("paper-496-"))
+      diagnostics.paperSupplementRowsIncluded += 1;
     included.push({
       ...entry,
       direction: direction === "SUPPORT" ? "support" : "oppose",

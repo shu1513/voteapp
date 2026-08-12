@@ -251,10 +251,11 @@ describe("San Diego candidate finance sync", () => {
     );
   });
 
-  it("quarantines a committee with an unusable export row; other committees' rows are irrelevant", async () => {
+  it("quarantines a committee with an unusable export row on a direct-side sheet; other committees' direct rows are irrelevant", async () => {
     // The live 2025 csd file carries a blank-Form_Type Major Donor block the
-    // parser cannot type. Ties by FPPC id or by normalized committee name
-    // (blank-id rows carry the name); anything else is someone else's filing.
+    // parser cannot type. Direct totals filter by the linked filer id, so a
+    // direct-side unusable row matters only when it ties to THIS committee
+    // by FPPC id or normalized committee name (blank-id rows carry the name).
     const { db, connect } = makeDb();
     const mine = {
       sheet: "F460-Summary",
@@ -285,6 +286,33 @@ describe("San Diego candidate finance sync", () => {
         ],
       }),
     ).resolves.toMatchObject({ linkWritten: true });
+  });
+
+  it("quarantines EVERY candidate on an unusable S496 or Schedule D row (unattributable outside spending)", async () => {
+    // An outside-sheet row belongs to some spender's expenditure about
+    // somebody — unattributable precisely because it did not parse. Any
+    // other committee's Filer_ID must NOT exempt it.
+    for (const sheet of ["S496", "F460-D-ContribIndepExpn"]) {
+      const { db, connect } = makeDb();
+      await expect(
+        syncSanDiegoCityCandidateFinance({
+          db: db as never,
+          ...syncInput,
+          workbook: healthyWorkbook(),
+          unusableRows: [
+            {
+              sheet,
+              rowNumber: 42,
+              reason: "missing Tran_ID",
+              filerId: "999",
+              filerName: "SOMEBODY ELSES PAC",
+              eFilingId: null,
+            },
+          ],
+        }),
+      ).rejects.toThrow(/unusable outside-spending row.*missing Tran_ID/);
+      expect(connect).not.toHaveBeenCalled();
+    }
   });
 
   it("quarantines a committee with a blocking violation before any write", async () => {
@@ -459,5 +487,45 @@ describe("San Diego candidate finance sync", () => {
     // The e-filed support row from healthyWorkbook is untouched.
     expect(result.outsideSupportCents).toBe(12_345);
     expect(result.outsideGroupCount).toBe(2);
+    // With paper money in the totals, "paper filings are not included" would
+    // be false — the note says what was included instead.
+    expect(result.outsideCoverageNote).toContain(
+      "plus 1 individually reviewed paper Form 496 expenditure;",
+    );
+    expect(result.outsideCoverageNote).not.toContain(
+      "; paper filings are not included",
+    );
+  });
+
+  it("keeps the paper-exclusion sentence when a supplement targets another candidate", async () => {
+    // A pool entry that never entered THIS candidate's totals must not make
+    // the note claim paper coverage for them.
+    const { db } = makeDb();
+    const result = await syncSanDiegoCityCandidateFinance({
+      db: db as never,
+      ...syncInput,
+      workbook: healthyWorkbook(),
+      dryRun: true,
+      paperSupplements: [
+        {
+          electionYear: 2026,
+          spenderFilerId: "941786",
+          spenderName: "Some Paper PAC",
+          candidateLastName: "Somebody",
+          candidateFirstName: "Else",
+          officeCd: "CCM" as const,
+          jurisDscr: "City of San Diego",
+          distNo: "5",
+          direction: "OPPOSE" as const,
+          amountCents: 5270_27,
+          expenditureDate: "2026-05-11",
+          eFilingId: "24823",
+          sourceNote: "test",
+        },
+      ],
+    });
+    expect(result.outsideOpposeCents).toBe(0);
+    expect(result.outsideCoverageNote).toContain("paper filings are not included");
+    expect(result.outsideCoverageNote).not.toContain("individually reviewed");
   });
 });
