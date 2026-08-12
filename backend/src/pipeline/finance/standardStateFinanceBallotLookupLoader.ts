@@ -315,7 +315,10 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
       )
       SELECT candidate_id, election_id, category_type, category_name, amount, contributor_count, source_url
       FROM ranked
-      WHERE rn <= 5
+      -- Size buckets are a fixed scheme the aggregators emit in full (up to
+      -- six), so a top-5 cap would silently drop the smallest bucket rather
+      -- than trim a long tail; only open-ended categories (occupation) rank.
+      WHERE rn <= 5 OR category_type = 'contribution_size'
       ORDER BY candidate_id, election_id, category_type, amount DESC, category_name ASC
     `,
     [JSON.stringify(selectedRequests)]
