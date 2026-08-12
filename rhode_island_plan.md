@@ -431,7 +431,11 @@ selectors, not the migration.
 
 ## Status
 
-- [ ] PR 1 schema + writer + eligible offices + flags
+- [x] PR 1 schema + writer + eligible offices + flags (migration 236;
+  preflight 2026-08-12: five statewide 2026 races + rosters verified in the
+  local DB — `State Treasurer` canonical confirmed — but no
+  state_upper/state_lower RI 2026 election rows exist yet; the General
+  Assembly roster remains a prerequisite for sync coverage, not for this PR)
 - [ ] PR 2 loader + wiring + source registration
 - [ ] PR 3 acquisition spike (needs user authorization)
 - [ ] PR 4 artifact cache + parsers + acquisition script
