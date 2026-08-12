@@ -323,15 +323,18 @@ money columns `IS NULL OR >= 0`.
     for that category) is a shared-loader change and lands in its own PR
     per the plan.md working rules, before or alongside RI PR 2 — it is not
     an RI-module workaround.
-14. **Manual candidate-finance links are unsupported in v1.** The factory
-    link upsert overwrites `link_source` on conflict
-    (`standardStateFinanceSnapshotWriter.ts` upsert `DO UPDATE SET
-    link_source = EXCLUDED.link_source`), so a sync rewriting a
-    manually-linked (candidate, election, committee) triple would silently
-    relabel it — every factory state shares this behavior; it is not worth
-    a bespoke carve-out for RI. Corrections go into the resolver/alias
-    layer, not manual link rows. (Fleet-wide manual-link preservation is
-    flagged separately as its own investigation.)
+14. **Manual candidate-finance links carry the standard fleet semantics —
+    no RI carve-out.** The factory link upsert preserves both
+    `link_status` and `link_source` when the existing row's `link_source`
+    is `'manual'` (built into `standardStateFinanceSnapshotWriter.ts`
+    since PR #667, always-on), and `erts_portal` supersession deactivates
+    only `erts_portal` rows — so a sync can never relabel or deactivate an
+    operator-curated link. Preferred correction path remains the
+    resolver/alias layer; a manual link row is the escape hatch when a
+    committee genuinely cannot be resolved. (An earlier revision declared
+    manual links unsupported because the factory then overwrote
+    `link_source` on conflict — true when written, fixed fleet-wide by
+    #667; kept here so the stale claim is not reintroduced.)
 
 ## Required artifacts per sync
 
@@ -431,7 +434,11 @@ selectors, not the migration.
 
 ## Status
 
-- [ ] PR 1 schema + writer + eligible offices + flags
+- [x] PR 1 schema + writer + eligible offices + flags (migration 236;
+  preflight 2026-08-12: five statewide 2026 races + rosters verified in the
+  local DB — `State Treasurer` canonical confirmed — but no
+  state_upper/state_lower RI 2026 election rows exist yet; the General
+  Assembly roster remains a prerequisite for sync coverage, not for this PR)
 - [ ] PR 2 loader + wiring + source registration
 - [ ] PR 3 acquisition spike (needs user authorization)
 - [ ] PR 4 artifact cache + parsers + acquisition script
