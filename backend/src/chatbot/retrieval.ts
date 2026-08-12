@@ -188,7 +188,7 @@ export async function resolveCandidateEntities(
 
 /** Normalized "first last" (middle names/initials dropped): the identity key
  * a question like "Michael Smith" actually names. */
-function firstLastKey(displayName: string): string {
+export function firstLastKey(displayName: string): string {
   const tokens = displayName
     .toLowerCase()
     .replace(/["'.()]/g, "")

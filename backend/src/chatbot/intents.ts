@@ -11,6 +11,8 @@ export type IntentKind =
   | "greeting"             // whole-message "hi"/"hello" → welcome, no retrieval
   | "thanks"               // whole-message "thank you" → acknowledgement
   | "goodbye"              // whole-message "bye" → sign-off
+  | "help"                 // whole-message "help"/"what can you do" → capabilities
+  | "election_countdown"   // "how many days until the election" → date math
   | "policy_refusal"       // endorsement/recommendation ask → neutral refusal
   | "untracked_data"       // social-media posts etc. — data we never index
   | "out_of_cycle"         // election ask about a year outside the covered cycle
@@ -108,6 +110,11 @@ const SMALLTALK_PATTERNS: ReadonlyArray<{ kind: IntentKind; pattern: RegExp }> =
     pattern:
       /^(?:bye|goodbye|bye\s*bye|see\s+(?:you|ya)(?:\s+later)?|good\s*night|take\s+care|later)[\s!.,?]*$/i,
   },
+  {
+    kind: "help",
+    pattern:
+      /^(?:help|help\s+me|what\s+can\s+(?:you|this)\s+do|what\s+can\s+i\s+ask(?:\s+you)?|what\s+do\s+you\s+do|how\s+do(?:es)?\s+(?:this|it|you)\s+work|what\s+is\s+this|who\s+are\s+you|what\s+are\s+you)[\s!.,?]*$/i,
+  },
 ];
 
 const POLICY_PATTERNS: RegExp[] = [
@@ -173,10 +180,19 @@ export function detectIntent(question: string): IntentMatch | null {
   // rule 6: time-sensitive, never guessed).
   const OTHER_RACE = "(?:runoff|primar(?:y|ies)|special\\s+election)";
   if (
-    new RegExp(`\\b(?:when|what\\s+(?:date|day)|date|day)\\b.{0,60}\\b${OTHER_RACE}\\b`, "i").test(q) ||
+    new RegExp(
+      `\\b(?:when|what\\s+(?:date|day)|date|day|how\\s+(?:many\\s+days|long)|days\\s+(?:left|remaining|until|till))\\b.{0,60}\\b${OTHER_RACE}\\b`,
+      "i"
+    ).test(q) ||
     new RegExp(`\\b${OTHER_RACE}\\b.{0,40}\\b(?:date|day|when|schedule)\\b`, "i").test(q)
   ) {
     return state ? { kind: "other_election_date", state } : { kind: "needs_scope", state };
+  }
+  // Countdown before the general date frame: "how many days until the
+  // election" carries no "when is". Primary/runoff countdowns were already
+  // caught above — this only ever means the fixed general-election date.
+  if (/\b(?:how\s+(?:many\s+days|long)|days\s+(?:left|remaining|until|till))\b.{0,40}\b(?:election|voting|vote)\b/i.test(q)) {
+    return { kind: "election_countdown", state };
   }
   // Deliberately requires the "when is" frame: a bare "election day" mention
   // ("what will the weather be on election day?") is not a date question.

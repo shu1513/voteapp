@@ -658,4 +658,18 @@ export const goldenSet: readonly GoldenCase[] = [
     question: "bye",
     expected: "template",
   },
+  {
+    id: "smalltalk-help",
+    category: "smalltalk",
+    question: "What can you do?",
+    expected: "template",
+    notes: "Capabilities template; also the generic starter chip in the widget.",
+  },
+  {
+    id: "logistics-countdown",
+    category: "logistics",
+    question: "How many days until the election?",
+    expected: "template",
+    notes: "Deterministic date math to the fixed Nov 3, 2026 date; primary/runoff countdowns route to other_election_date instead.",
+  },
 ] as const;
