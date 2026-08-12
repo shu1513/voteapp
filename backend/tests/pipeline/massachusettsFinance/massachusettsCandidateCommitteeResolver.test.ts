@@ -460,6 +460,101 @@ describe("massachusettsCandidateCommitteeResolver", () => {
     expect(new URL(String(calls[1]?.[0])).searchParams.get("searchPhrase")).toBe("SPILKA");
   });
 
+  it("falls back to a surname search when the full-name rows all fail the strict gates", async () => {
+    // The full-name search can return rows (an inactive re-registered
+    // committee) that the usability filters reject; the surname retry must
+    // still fire on that no_candidate_committee_match, not only on zero rows.
+    const fetchImpl = vi
+      .fn()
+      .mockResolvedValueOnce(
+        jsonResponse([
+          {
+            cpfId: 20009,
+            filerName: "Karen E. Spilka",
+            filerNameReverse: "Spilka, Karen E.",
+            committeeName: "Old Spilka Committee",
+            officeSought: "Senate, Middlesex and Norfolk",
+            accountTypeDescription: "Legislative Candidates",
+            isCandidate: true,
+            isActive: false,
+          },
+        ])
+      )
+      .mockResolvedValueOnce(
+        jsonResponse([
+          {
+            cpfId: 13758,
+            filerName: "Karen Spilka",
+            filerNameReverse: "Spilka, Karen",
+            committeeName: "Spilka Committee",
+            officeSought: "Senate, Middlesex and Norfolk",
+            accountTypeDescription: "Legislative Candidates",
+            isCandidate: true,
+            isActive: true,
+          },
+        ])
+      ) as unknown as typeof fetch;
+
+    await expect(
+      searchAndResolveMassachusettsCandidateCommittee(
+        {
+          candidateName: "Karen E. Spilka",
+          officeScope: "state_upper",
+          officeName: "State Senator",
+          electionYear: 2026,
+          district: "Middlesex and Norfolk District (2024); Massachusetts",
+        },
+        { fetchImpl, timeoutMs: 1000 }
+      )
+    ).resolves.toMatchObject({
+      status: "matched",
+      candidateCpfId: "13758",
+    });
+    expect(vi.mocked(fetchImpl).mock.calls).toHaveLength(2);
+  });
+
+  it("does not widen the search after an ambiguous full-name pass", async () => {
+    // Two usable same-name filers for the same seat = real ambiguity; the
+    // surname retry must not run, and the result stays fail-closed.
+    const ambiguousRows = [
+      {
+        cpfId: 20010,
+        filerName: "Jane Doe",
+        filerNameReverse: "Doe, Jane",
+        committeeName: "Jane Doe Committee",
+        officeSought: "Senate, Middlesex and Norfolk",
+        accountTypeDescription: "Legislative Candidates",
+        isCandidate: true,
+        isActive: true,
+      },
+      {
+        cpfId: 20011,
+        filerName: "Jane Doe",
+        filerNameReverse: "Doe, Jane",
+        committeeName: "Committee to Elect Jane Doe",
+        officeSought: "Senate, Middlesex and Norfolk",
+        accountTypeDescription: "Legislative Candidates",
+        isCandidate: true,
+        isActive: true,
+      },
+    ];
+    const fetchImpl = vi.fn().mockResolvedValueOnce(jsonResponse(ambiguousRows)) as unknown as typeof fetch;
+
+    await expect(
+      searchAndResolveMassachusettsCandidateCommittee(
+        {
+          candidateName: "Jane Doe",
+          officeScope: "state_upper",
+          officeName: "State Senator",
+          electionYear: 2026,
+          district: "Middlesex and Norfolk District (2024); Massachusetts",
+        },
+        { fetchImpl, timeoutMs: 1000 }
+      )
+    ).resolves.toMatchObject({ status: "ambiguous" });
+    expect(vi.mocked(fetchImpl).mock.calls).toHaveLength(1);
+  });
+
   // Fixtures mirror the live OCPF filer-search rows for "wu" (2026-08-10):
   // municipal committees carry "Mayoral, {City}" / "City Councilor, {City}"
   // labels and the "Depository Candidate" account type; inaugural funds are

@@ -343,17 +343,25 @@ export async function searchAndResolveMassachusettsCandidateCommittee(
     return resolveMassachusettsCandidateCommittee({ ...input, filers: [] });
   }
 
-  let filers = await searchMassachusettsOcpfCandidateFilers(
+  const filers = await searchMassachusettsOcpfCandidateFilers(
     {
       searchPhrase: input.candidateName,
     },
     options
   );
-  if (filers.length === 0) {
-    const surnameToken = massachusettsLastNameSearchToken(input.candidateName);
-    if (surnameToken && surnameToken !== input.candidateName.trim().toUpperCase()) {
-      filers = await searchMassachusettsOcpfCandidateFilers({ searchPhrase: surnameToken }, options);
-    }
+  const resolution = resolveMassachusettsCandidateCommittee({ ...input, filers });
+  // Retry with the surname only when the full-name pass produced no usable
+  // committee at all — zero rows, or rows that all failed the strict gates
+  // (inactive accounts, PACs, wrong offices). An ambiguous first pass means
+  // real evidence existed and must stay fail-closed, never be washed out by
+  // broader recall.
+  if (resolution.status !== "unmatched" || resolution.reason !== "no_candidate_committee_match") {
+    return resolution;
   }
-  return resolveMassachusettsCandidateCommittee({ ...input, filers });
+  const surnameToken = massachusettsLastNameSearchToken(input.candidateName);
+  if (!surnameToken || surnameToken === input.candidateName.trim().toUpperCase()) {
+    return resolution;
+  }
+  const surnameFilers = await searchMassachusettsOcpfCandidateFilers({ searchPhrase: surnameToken }, options);
+  return resolveMassachusettsCandidateCommittee({ ...input, filers: surnameFilers });
 }
