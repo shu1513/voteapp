@@ -63,7 +63,14 @@ export type ChatbotEmbeddingsConfig = {
  * scripts (reindex/eval) use the TEI service regardless of whether the API
  * surface is switched on. */
 export function readChatbotEmbeddingsFromEnv(env: NodeJS.ProcessEnv = process.env): ChatbotEmbeddingsConfig {
-  const rawUrl = env.CHATBOT_EMBEDDINGS_URL?.trim() || null;
+  let rawUrl = env.CHATBOT_EMBEDDINGS_URL?.trim() || null;
+  // Render blueprints inject the private address as bare host:port
+  // (fromService property: hostport — the generated hostname can't be
+  // hardcoded and the property carries no scheme). Private-network traffic
+  // is plain HTTP, so a scheme-less value means http.
+  if (rawUrl && !/^https?:\/\//i.test(rawUrl)) {
+    rawUrl = `http://${rawUrl}`;
+  }
   const timeoutRaw = env.CHATBOT_EMBEDDINGS_TIMEOUT_MS?.trim();
   let timeoutMs = DEFAULT_CHATBOT_EMBEDDINGS_TIMEOUT_MS;
   if (timeoutRaw) {

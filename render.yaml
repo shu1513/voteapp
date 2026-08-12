@@ -20,11 +20,12 @@
 # creation — ones added later must be entered manually on the service
 # (docs/deploy-render.md "Direct onrender.com access" has the sequence).
 #
-# PLANS: everything below is on free plans so the first deploy needs no card
-# on file. Free web services spin down after ~15 idle minutes (cold start on
-# the next request) and the free Postgres instance EXPIRES ~30 DAYS after
-# creation unless upgraded — upgrade the DB plan (and the web services, and
-# uncomment the worker + cron sections) once billing is set up.
+# PLANS: no longer all-free — billing is set up. Paid today: the Postgres
+# instance (upgraded 2026-08-08 off the expiring free plan) and the
+# voteapp-embeddings private service (starter, ~$7/mo; added 2026-08-12 for
+# the chatbot). The web services are still free: they spin down after ~15
+# idle minutes and cold-start on the next request — upgrade them (and
+# uncomment the worker + cron sections) when that matters.
 
 services:
   # ---------------------------------------------------------------- API ----
@@ -102,13 +103,17 @@ services:
         sync: false
       # --- Chatbot "Ask" (free read side; docs/plans/chatbot-rag.md) ----
       # Retrieval-only until the dashboard-only LLM vars are set (see the
-      # voteapp-embeddings comment). Hardcoded private URL on purpose:
-      # fromService hostport has no scheme, and the name + --port 10000 are
-      # both pinned in this file.
+      # voteapp-embeddings comment). hostport (host:port, NO scheme — Render
+      # generates the private hostname with a suffix, so it cannot be
+      # hardcoded); readChatbotEmbeddingsFromEnv prepends http:// when the
+      # scheme is missing.
       - key: CHATBOT_ENABLED
         value: "true"
       - key: CHATBOT_EMBEDDINGS_URL
-        value: http://voteapp-embeddings:10000
+        fromService:
+          name: voteapp-embeddings
+          type: pserv
+          property: hostport
       # --- Finance read flags -------------------------------------------
       # Display-only switches: they gate whether stored finance data is
       # returned to the cards, and cost nothing. Without them production
@@ -364,7 +369,11 @@ services:
   #   misconfigured → retrieval-only answers, unchanged.
   # After first deploy: run `npm run chatbot:reindex` against the prod DB to
   # build the first index generation (until then the widget refuses cleanly).
-  # The TEI cpu image listens on 80 by default; --port pins it explicitly.
+  # dockerCommand is ARGUMENTS ONLY: Render's dockerCommand overrides the
+  # image's CMD, not its ENTRYPOINT (which is already text-embeddings-router
+  # — naming the binary here would pass it to itself as an argument and
+  # crash). --port 8080 because the TEI image defaults to 80 and Render
+  # RESERVES port 10000 (it cannot carry private-network traffic).
   - name: voteapp-embeddings
     type: pserv
     runtime: image
@@ -372,7 +381,7 @@ services:
     plan: starter
     image:
       url: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9
-    dockerCommand: text-embeddings-router --model-id BAAI/bge-small-en-v1.5 --port 10000
+    dockerCommand: --model-id BAAI/bge-small-en-v1.5 --port 8080
     autoDeploy: false
 
   # ------------------------------------------------------------- key value ----
