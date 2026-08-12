@@ -103,17 +103,17 @@ services:
         sync: false
       # --- Chatbot "Ask" (free read side; docs/plans/chatbot-rag.md) ----
       # Retrieval-only until the dashboard-only LLM vars are set (see the
-      # voteapp-embeddings comment). hostport (host:port, NO scheme — Render
-      # generates the private hostname with a suffix, so it cannot be
-      # hardcoded); readChatbotEmbeddingsFromEnv prepends http:// when the
-      # scheme is missing.
+      # voteapp-embeddings comment). LITERAL address on purpose (verified
+      # live 2026-08-12): this workspace's private hostname is the plain
+      # service slug (the service's own `url` field says so), while the
+      # fromService hostport property kept resolving the stale default
+      # :10000 — a port Render RESERVES for private traffic — even with the
+      # app listening on 8080. readChatbotEmbeddingsFromEnv still accepts a
+      # scheme-less host:port by prepending http://.
       - key: CHATBOT_ENABLED
         value: "true"
       - key: CHATBOT_EMBEDDINGS_URL
-        fromService:
-          name: voteapp-embeddings
-          type: pserv
-          property: hostport
+        value: http://voteapp-embeddings:8080
       # --- Finance read flags -------------------------------------------
       # Display-only switches: they gate whether stored finance data is
       # returned to the cards, and cost nothing. Without them production
@@ -369,11 +369,14 @@ services:
   #   misconfigured → retrieval-only answers, unchanged.
   # After first deploy: run `npm run chatbot:reindex` against the prod DB to
   # build the first index generation (until then the widget refuses cleanly).
-  # dockerCommand is ARGUMENTS ONLY: Render's dockerCommand overrides the
-  # image's CMD, not its ENTRYPOINT (which is already text-embeddings-router
-  # — naming the binary here would pass it to itself as an argument and
-  # crash). --port 8080 because the TEI image defaults to 80 and Render
-  # RESERVES port 10000 (it cannot carry private-network traffic).
+  # dockerCommand is the FULL command including the binary — verified live
+  # 2026-08-12: Render executes it through a shell, REPLACING the image's
+  # ENTRYPOINT (args-only died instantly with zero output because the shell
+  # tried to run "--model-id" itself; the full command deploys live). Do not
+  # "fix" this back to arguments-only on classic Docker CMD reasoning.
+  # --port 8080 because the TEI image defaults to 80 and Render RESERVES
+  # port 10000 (it cannot carry private-network traffic). PORT matches so
+  # Render's port detection agrees with where the app listens.
   - name: voteapp-embeddings
     type: pserv
     runtime: image
@@ -381,8 +384,11 @@ services:
     plan: starter
     image:
       url: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9
-    dockerCommand: --model-id BAAI/bge-small-en-v1.5 --port 8080
+    dockerCommand: text-embeddings-router --model-id BAAI/bge-small-en-v1.5 --port 8080
     autoDeploy: false
+    envVars:
+      - key: PORT
+        value: "8080"
 
   # ------------------------------------------------------------- key value ----
   - name: voteapp-redis
