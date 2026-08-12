@@ -358,6 +358,76 @@ describe("efileCalWorkbookParser", () => {
     );
   });
 
+  it("normalizes a blank Filer_ID to the literal 'Pending' (San Diego writes empty cells for the same state)", () => {
+    const workbook = buildEfileCalExportWorkbook({
+      rowsBySheet: {
+        [EFILE_CAL_S496_SHEET]: [
+          {
+            ...EFILE_CAL_FIXTURE_BASE,
+            Filer_ID: "",
+            Form_Type: "F496",
+            Tran_ID: "PDT1",
+            Amount: "22165.00",
+            Cand_NamL: "Richard Bailey",
+            Supp_Opp_Cd: "OPPOSE",
+            Memo_Code: false,
+          },
+        ],
+      },
+    });
+    expect(parseEfileCalWorkbook(workbook).s496[0]!.filerId).toBe("Pending");
+
+    // Only genuine blanks default: numeric cells are vendor drift, fail loud.
+    const numericId = buildEfileCalExportWorkbook({
+      rowsBySheet: {
+        [EFILE_CAL_SUMMARY_SHEET]: [
+          { ...EFILE_CAL_FIXTURE_BASE, Filer_ID: 1480385, Form_Type: "F460", Line_Item: "1", Amount_A: "1.00", Amount_B: "1.00" },
+        ],
+      },
+    });
+    expect(() => parseEfileCalWorkbook(numericId)).toThrow("Filer_ID is not a text cell");
+  });
+
+  it("collectUnusableRows skips row-scoped failures and records them; default mode still throws", () => {
+    // San Diego's live exports carry Major Donor filing blocks with blank
+    // Form_Type; one bad row must not poison the workbook in collect mode.
+    const workbook = buildEfileCalExportWorkbook({
+      rowsBySheet: {
+        [EFILE_CAL_SUMMARY_SHEET]: [
+          { ...EFILE_CAL_FIXTURE_BASE, Form_Type: "", Line_Item: "1", Amount_A: "136600.00" },
+          { ...EFILE_CAL_FIXTURE_BASE, Form_Type: "F460", Line_Item: "1", Amount_A: "6385.00", Amount_B: "6385.00" },
+        ],
+      },
+    });
+    expect(() => parseEfileCalWorkbook(workbook)).toThrow(
+      "sheet F460-Summary row 2 is unusable: missing Form_Type"
+    );
+
+    const parsed = parseEfileCalWorkbook(workbook, { collectUnusableRows: true });
+    expect(parsed.summary).toHaveLength(1);
+    expect(parsed.summary[0]!.amountACents).toBe(638500);
+    // Identity fields let callers tie the skip back to a committee and fail
+    // closed when a linked committee's data is incomplete.
+    expect(parsed.unusableRows).toEqual([
+      {
+        sheet: EFILE_CAL_SUMMARY_SHEET,
+        rowNumber: 2,
+        reason: "missing Form_Type",
+        filerId: "1480385",
+        filerName: "Test Committee for City Council 2026",
+        eFilingId: "24690",
+      },
+    ]);
+
+    // Structural drift (missing sheets/columns) is never collectable.
+    const missingColumn = buildEfileCalExportWorkbook({
+      headersBySheet: { [EFILE_CAL_SUMMARY_SHEET]: ["Filer_ID", "Form_Type", "Line_Item"] },
+    });
+    expect(() => parseEfileCalWorkbook(missingColumn, { collectUnusableRows: true })).toThrow(
+      /F460-Summary is missing required columns/
+    );
+  });
+
   it("parses a workbook whose sheets are header-only to empty row sets", () => {
     const parsed = parseEfileCalWorkbook(buildEfileCalExportWorkbook());
     expect(parsed).toEqual({

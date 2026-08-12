@@ -117,6 +117,7 @@
     "california-candidates:finance:scheduler:trigger": "tsx src/scripts/triggerCaliforniaCandidateFinanceSync.ts",
     "los-angeles-city-candidates:finance:sync-due": "tsx src/scripts/syncDueLosAngelesCityCandidateFinance.ts",
     "los-angeles-city-candidates:finance:probe": "tsx src/scripts/probeLosAngelesCityCampaignFinance.ts",
+    "san-diego-candidates:finance:probe": "tsx src/scripts/probeSanDiegoCandidateFinance.ts",
     "san-francisco-candidates:finance:probe": "tsx src/scripts/probeSanFranciscoCandidateFinance.ts",
     "san-francisco-candidates:finance:sync-due": "tsx src/scripts/syncDueSanFranciscoCandidateFinance.ts",
     "san-francisco-candidates:finance:scheduler:upsert": "tsx src/scripts/upsertSanFranciscoCandidateFinanceSyncScheduler.ts",
