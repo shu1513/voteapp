@@ -42,6 +42,17 @@ describe("mechanicalCheckFailure", () => {
     expect(mechanicalCheckFailure("record_description", "Short claim.", "x".repeat(200))).toContain("too long");
   });
 
+  it("rejects a rewrite over the absolute cap even when the relative bounds pass", () => {
+    const longOriginal = `The measure ${"details ".repeat(75)}ends.`; // ~620 chars
+    const stillLongRewrite = `Plainly, ${"words ".repeat(85)}done.`; // ~520 chars, ~84% of original
+    // measure_summary carries the generation-time cap (500)...
+    expect(mechanicalCheckFailure("measure_summary", longOriginal, stillLongRewrite)).toContain(
+      "absolute max 500 for measure_summary"
+    );
+    // ...record_description has none, so the same lengths pass.
+    expect(mechanicalCheckFailure("record_description", longOriginal, stillLongRewrite)).toBeNull();
+  });
+
   it("rejects an introduced URL but allows kept URLs", () => {
     const withUrl = "See https://example.com/report for details.";
     expect(mechanicalCheckFailure("record_description", withUrl, "Read https://example.com/report for details.")).toBeNull();
@@ -369,6 +380,31 @@ describe("loadPlainLanguageBackfillTargets filtering", () => {
     const calls = (pool.query as unknown as { mock: { calls: [string, unknown[]?][] } }).mock.calls;
     const recordCall = calls.find((call) => call[0].includes("FROM public.candidate_records cr"));
     expect(recordCall?.[1]).toEqual([null, null]);
+  });
+
+  it("defers originals already over their absolute cap to the re-research sweep", async () => {
+    const { pool } = makeFakePool({
+      candidateRows: [{ id: "c1", summary: "x".repeat(301) }],
+      measureRows: [
+        {
+          id: "m1",
+          summary: "y".repeat(501),
+          what_yes_means: "Approves the bond.",
+          what_no_means: "z".repeat(251),
+        },
+      ],
+      recordRows: [{ ...recordRow("r1"), description: "w".repeat(600) }],
+    });
+
+    const targets = await loadPlainLanguageBackfillTargets(pool);
+
+    // Over-cap candidate summary, measure summary, and no-meaning are all
+    // deferred; the within-cap yes-meaning stays, and record descriptions
+    // have no cap so length never defers them.
+    expect(targets.map((target) => `${target.targetTable}:${target.targetColumn}`)).toEqual([
+      "ballot_measures:what_yes_means",
+      "candidate_records:description",
+    ]);
   });
 
   it("restricts to recordIds so an operator work list cannot pull in uncovered rows", async () => {

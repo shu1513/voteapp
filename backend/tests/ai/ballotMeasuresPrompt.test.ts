@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { buildBallotMeasuresPrompt } from "../../src/ai/providers/ballotMeasuresPrompt.js";
+import {
+  BALLOT_MEASURE_SUMMARY_MAX_LENGTH,
+  BALLOT_MEASURE_YES_NO_MAX_LENGTH,
+  buildBallotMeasuresPrompt,
+} from "../../src/ai/providers/ballotMeasuresPrompt.js";
 import { PLAIN_LANGUAGE_STYLE_RULES } from "../../src/ai/providers/promptWritingStyle.js";
 
 describe("buildBallotMeasuresPrompt", () => {
@@ -36,6 +40,25 @@ describe("buildBallotMeasuresPrompt", () => {
     expect(prompt).toContain("give the specifics (amounts, rates, durations, who is affected), not just the topic");
     expect(prompt).toContain(
       "never a restatement like 'adopts the measure' or 'the changes described'"
+    );
+  });
+
+  it("states the length caps enforced by the validator", () => {
+    const prompt = buildBallotMeasuresPrompt({
+      districtName: "Los Angeles County, California",
+      districtType: "county",
+      state: "CA",
+      electionDate: "2026-06-02",
+      officialBallotTitle: "Measure H",
+      seedUrls: [],
+      allowedResearchAreaSlugs: ["healthcare_affordability"],
+    });
+
+    expect(prompt).toContain(
+      `summary must be at most 3-4 short sentences and at most ${BALLOT_MEASURE_SUMMARY_MAX_LENGTH} characters`
+    );
+    expect(prompt).toContain(
+      `what_yes_means and what_no_means must each be at most 1-2 short sentences and at most ${BALLOT_MEASURE_YES_NO_MAX_LENGTH} characters`
     );
   });
 
