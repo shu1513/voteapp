@@ -607,8 +607,15 @@ async function dispatchApiRequest(
       return;
     }
 
+    // Registered + verified accounts only: the widget maps 401 to a
+    // register/login prompt and 403 to a verify-your-email prompt.
+    const chatbotUserId = await requireVerifiedAuthenticatedUser(options, request, response);
+    if (!chatbotUserId) {
+      return;
+    }
+
     const payload = parseChatbotAskBodyValue(request.body);
-    const askResult = await options.askChatbot(payload.question, payload.previousQuestion);
+    const askResult = await options.askChatbot(payload.question, payload.previousQuestion, payload.context);
     sendApiResponse(response, toJsonResponse(200, askResult, corsHeaders));
     return;
   }

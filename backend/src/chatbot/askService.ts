@@ -39,9 +39,44 @@ export type AskResponse = {
   data_current_as_of: string | null;
 };
 
+export type AskContext =
+  | { kind: "candidate"; id: string }
+  | { kind: "election"; id: string };
+
 export type AskService = {
-  ask: (question: string, previousQuestion?: string | null) => Promise<AskResponse>;
+  ask: (question: string, previousQuestion?: string | null, context?: AskContext | null) => Promise<AskResponse>;
 };
+
+// Context only applies to questions that point at it: "tell me more about
+// THIS candidate", "what's THEIR voting record". A non-deictic question on a
+// candidate page ("what will the weather be on election day?") must still be
+// judged on its own evidence, or every off-topic question asked from a
+// candidate page would pass the gate on the page's chunks.
+const DEICTIC_RE = /\b(?:this|that|these|those|his|her|hers|their|theirs|its|he|she|they|him|them|it)\b/i;
+
+type ResolvedContext = {
+  kind: "candidate" | "election";
+  id: string;
+  state: string | null;
+};
+
+/** Validates the page context against the ACTIVE generation (a stale or
+ * out-of-corpus id resolves to null and the question stands on its own). */
+async function resolveContext(db: Pool, generationId: string, context: AskContext): Promise<ResolvedContext | null> {
+  const result = await db.query<{ state: string | null }>(
+    `
+      SELECT state
+      FROM chatbot.chunks
+      WHERE generation_id = $1::uuid
+        AND source_type = $2
+        AND source_id = $3::uuid
+      LIMIT 1
+    `,
+    [generationId, context.kind === "candidate" ? "candidate_profile" : "election", context.id]
+  );
+  const row = result.rows[0];
+  return row ? { kind: context.kind, id: context.id, state: row.state } : null;
+}
 
 const REFUSAL_NO_DATA_ANSWER =
   "I don't have that in my data. I can answer questions about the November 2026 elections we cover: candidates, their records, campaign finance, elections, and ballot measures.";
@@ -129,13 +164,21 @@ function chunkPageUrl(chunk: RetrievedChunk): string | null {
 
 function toResultCards(chunks: readonly RetrievedChunk[]): AskResultCard[] {
   const cards: AskResultCard[] = [];
-  const seenUrls = new Set<string>();
+  const seenKeys = new Set<string>();
   for (const chunk of chunks) {
     const url = chunkPageUrl(chunk);
-    if (!url || seenUrls.has(url)) {
+    if (!url) {
       continue;
     }
-    seenUrls.add(url);
+    // Dedupe per (page, chunk kind), and never across a candidate's records:
+    // one candidate's profile, finance, and each record all share the same
+    // page URL but answer different parts of the question — collapsing them
+    // to one card hid everything but the profile.
+    const key = chunk.sourceType === "candidate_record" ? `record:${chunk.id}` : `${chunk.sourceType}:${url}`;
+    if (seenKeys.has(key)) {
+      continue;
+    }
+    seenKeys.add(key);
     cards.push({
       title: chunk.title,
       url,
@@ -432,7 +475,7 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
   const { db, embeddings } = options;
 
   return {
-    async ask(question: string, previousQuestion?: string | null): Promise<AskResponse> {
+    async ask(question: string, previousQuestion?: string | null, context?: AskContext | null): Promise<AskResponse> {
       const startedAt = Date.now();
       const questionNorm = normalizeQuestion(question);
       const finish = (
@@ -475,15 +518,23 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
         );
       }
 
+      // Page context: applied only when the question points at it (deictic)
+      // and the id still exists in the active generation.
+      const resolvedContext =
+        context && DEICTIC_RE.test(question) ? await resolveContext(db, generation.id, context) : null;
+
       // Deterministic follow-up scope carry-over (no LLM rewrite in v1): a
       // scopeless follow-up appends the previous turn's text so its district/
       // candidate tokens participate in matching — append-only, so nothing
       // from the current question can be dropped.
       let scopeState = detectStateInQuestion(question);
       let retrievalText = question;
-      if (previousQuestion && !scopeState) {
+      if (previousQuestion && !scopeState && !resolvedContext) {
         scopeState = detectStateInQuestion(previousQuestion);
         retrievalText = `${question} ${previousQuestion}`;
+      }
+      if (!scopeState && resolvedContext) {
+        scopeState = resolvedContext.state;
       }
 
       const retrieval = await retrieveChunks({
@@ -492,6 +543,8 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
         generationId: generation.id,
         question: retrievalText,
         scopeState,
+        contextCandidateId: resolvedContext?.kind === "candidate" ? resolvedContext.id : null,
+        contextElectionId: resolvedContext?.kind === "election" ? resolvedContext.id : null,
       });
 
       // 3. Same-name candidates → clarify, never silently pick (rule 7).
@@ -524,8 +577,9 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
         );
       }
 
-      // 5. Answerability gate on raw scores.
-      if (!isAnswerable(retrieval)) {
+      // 5. Answerability gate on raw scores; a deictic question about the
+      // viewed page is answerable on the page's own chunks.
+      if (!isAnswerable(retrieval) && !retrieval.contextMatched) {
         return finish(
           { outcome: "refuse_no_data", answer: REFUSAL_NO_DATA_ANSWER, results: [], data_current_as_of: null },
           "refused",

@@ -95,6 +95,10 @@ export type RetrievalResult = {
   bestLexicalScore: number;
   bestCosineSimilarity: number;
   bestEntitySimilarity: number;
+  /** True when page context (candidate/election) contributed chunks — a
+   * deictic question about the viewed page is answerable on that evidence
+   * even when its own text matches nothing. */
+  contextMatched: boolean;
   degradedToKeywordOnly: boolean;
 };
 
@@ -262,15 +266,61 @@ export type RetrieveOptions = {
   /** Restrict the vector branch when the scope is known (e.g. a resolved
    * candidate's state, or a state named in the question). */
   scopeState?: string | null;
+  /** Page context, already deictic-gated by the caller: the candidate or
+   * election the user is looking at. Its chunks join the merge at top rank
+   * and count as answerability evidence. */
+  contextCandidateId?: string | null;
+  contextElectionId?: string | null;
 };
 
 export async function retrieveChunks(options: RetrieveOptions): Promise<RetrievalResult> {
   const { db, embeddings, generationId, question } = options;
   const scopeState = options.scopeState ?? null;
+  const contextCandidateId = options.contextCandidateId ?? null;
+  const contextElectionId = options.contextElectionId ?? null;
 
   const entityMatches = await resolveCandidateEntities(db, generationId, question);
   const ambiguousEntities = findAmbiguousEntities(entityMatches, scopeState);
   const bestEntitySimilarity = entityMatches[0]?.similarity ?? 0;
+
+  // Context branch: the viewed page's chunks. Candidate context reuses the
+  // per-candidate chunk shape; election context pulls everything belonging
+  // to that election (its listing, measure, candidates, finance).
+  let contextRows: ChunkRow[] = [];
+  if (contextCandidateId || contextElectionId) {
+    const contextResult = await db.query<ChunkRow>(
+      `
+        SELECT
+          chunk.id::text AS id,
+          chunk.source_type,
+          chunk.source_id::text AS source_id,
+          chunk.election_id::text AS election_id,
+          chunk.state,
+          chunk.title,
+          chunk.content,
+          chunk.evidence_urls,
+          0::float8 AS score
+        FROM chatbot.chunks AS chunk
+        WHERE chunk.generation_id = $1::uuid
+          AND (
+            ($2::uuid IS NOT NULL AND chunk.source_id = $2::uuid)
+            OR ($3::uuid IS NOT NULL AND chunk.election_id = $3::uuid)
+          )
+        ORDER BY
+          CASE chunk.source_type
+            WHEN 'election' THEN 0
+            WHEN 'ballot_measure' THEN 1
+            WHEN 'candidate_profile' THEN 2
+            WHEN 'finance_summary' THEN 3
+            ELSE 4
+          END ASC,
+          chunk.id ASC
+        LIMIT $4
+      `,
+      [generationId, contextCandidateId, contextElectionId, BRANCH_LIMIT]
+    );
+    contextRows = contextResult.rows;
+  }
 
   // Branch A: lexical. plainto_tsquery sanitizes arbitrary user text; its
   // AND semantics are then relaxed to OR because natural questions carry
@@ -448,15 +498,21 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
     lexicalScore: number;
     cosineSimilarity: number;
     rrfScore: number;
+    /** Position in the context branch, Infinity otherwise: a deictic
+     * question is ABOUT the viewed page, so its chunks outrank everything
+     * the generic phrasing ("tell me more about this candidate") happens to
+     * co-match elsewhere. */
+    contextRank: number;
   };
   const merged = new Map<string, Merged>();
-  const fold = (rows: readonly ChunkRow[], kind: "lexical" | "vector" | "entity" | "title"): void => {
+  const fold = (rows: readonly ChunkRow[], kind: "lexical" | "vector" | "entity" | "title" | "context"): void => {
     rows.forEach((row, index) => {
       const existing = merged.get(row.id) ?? {
         base: toBaseChunk(row),
         lexicalScore: 0,
         cosineSimilarity: 0,
         rrfScore: 0,
+        contextRank: Number.POSITIVE_INFINITY,
       };
       existing.rrfScore += 1 / (RRF_K + index + 1);
       if (kind === "lexical") {
@@ -465,6 +521,9 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
       if (kind === "vector") {
         existing.cosineSimilarity = Math.max(existing.cosineSimilarity, row.score);
       }
+      if (kind === "context") {
+        existing.contextRank = Math.min(existing.contextRank, index);
+      }
       merged.set(row.id, existing);
     });
   };
@@ -472,9 +531,25 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   fold(vectorRows, "vector");
   fold(entityRows, "entity");
   fold(titleResult.rows, "title");
+  fold(contextRows, "context");
 
-  const chunks = [...merged.values()]
-    .sort((a, b) => b.rrfScore - a.rrfScore || a.base.id.localeCompare(b.base.id))
+  // With page context in play, filler must EARN its slot: a generic deictic
+  // phrase ("tell me more about this candidate") weakly co-matches random
+  // profiles, and those read as non-sequiturs next to the page's own chunks.
+  // Non-context chunks survive only on real evidence — a matched entity's
+  // chunk or a gate-strength cosine hit.
+  const entityIdSet = new Set(entityIds);
+  const contenders = [...merged.values()].filter(
+    (entry) =>
+      contextRows.length === 0 ||
+      entry.contextRank !== Number.POSITIVE_INFINITY ||
+      (entry.base.sourceId !== null && entityIdSet.has(entry.base.sourceId)) ||
+      entry.cosineSimilarity >= GATE_MIN_COSINE
+  );
+  const chunks = contenders
+    .sort(
+      (a, b) => a.contextRank - b.contextRank || b.rrfScore - a.rrfScore || a.base.id.localeCompare(b.base.id)
+    )
     .slice(0, RETRIEVAL_TOP_K)
     .map((entry) => ({
       ...entry.base,
@@ -498,6 +573,7 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
     bestLexicalScore,
     bestCosineSimilarity,
     bestEntitySimilarity,
+    contextMatched: contextRows.length > 0,
     degradedToKeywordOnly,
   };
 }

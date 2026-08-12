@@ -4,7 +4,6 @@ export default [
   layout("App.tsx", [
     index("pages/HomePage.tsx"),
     route("ballot", "pages/BallotPage.tsx"),
-    route("ask", "pages/AskPage.tsx"),
     route("elections/:electionId", "pages/ElectionPage.tsx"),
     route("candidates/:candidateId", "pages/CandidatePage.tsx"),
     route("disclaimer", "routes/disclaimer.tsx"),

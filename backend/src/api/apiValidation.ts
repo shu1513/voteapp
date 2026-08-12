@@ -356,20 +356,51 @@ function parseOptionalStringField(record: Record<string, unknown>, fieldName: st
   return trimmed.length > 0 ? trimmed : null;
 }
 
+/** What the user is (or was last) looking at — the chat widget sends the
+ * current or most recent candidate/election page so deictic questions
+ * ("tell me more about this candidate") resolve deterministically. */
+export type ChatbotAskContext =
+  | { kind: "candidate"; id: string }
+  | { kind: "election"; id: string };
+
 export type ChatbotAskPayload = {
   question: string;
   /** Previous user turn, for deterministic follow-up scope carry-over. */
   previousQuestion: string | null;
+  context: ChatbotAskContext | null;
 };
 
 export const MAX_CHATBOT_QUESTION_LENGTH = 500;
+
+function parseChatbotAskContext(value: unknown): ChatbotAskContext | null {
+  if (value === undefined || value === null) {
+    return null;
+  }
+  if (typeof value !== "object" || Array.isArray(value)) {
+    throw new TypeError("context must be an object when provided");
+  }
+  const record = value as Record<string, unknown>;
+  assertNoUnknownFields(record, ["candidate_id", "election_id"]);
+  const candidateId = record.candidate_id;
+  const electionId = record.election_id;
+  if ((candidateId === undefined) === (electionId === undefined)) {
+    throw new TypeError("context must include exactly one of candidate_id or election_id");
+  }
+  const raw = candidateId ?? electionId;
+  if (typeof raw !== "string" || !isUuid(raw.trim())) {
+    throw new TypeError("context id must be a valid UUID");
+  }
+  return candidateId !== undefined
+    ? { kind: "candidate", id: raw.trim() }
+    : { kind: "election", id: raw.trim() };
+}
 
 export function parseChatbotAskBodyValue(parsed: unknown): ChatbotAskPayload {
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
     throw new TypeError("Request body must be a JSON object");
   }
   const record = parsed as Record<string, unknown>;
-  assertNoUnknownFields(record, ["question", "previous_question"]);
+  assertNoUnknownFields(record, ["question", "previous_question", "context"]);
 
   const question = parseStringField(parsed, "question");
   if (question.length > MAX_CHATBOT_QUESTION_LENGTH) {
@@ -381,7 +412,7 @@ export function parseChatbotAskBodyValue(parsed: unknown): ChatbotAskPayload {
     throw new TypeError(`previous_question must be at most ${MAX_CHATBOT_QUESTION_LENGTH} characters`);
   }
 
-  return { question, previousQuestion };
+  return { question, previousQuestion, context: parseChatbotAskContext(record.context) };
 }
 
 export function parseContentReportBodyValue(parsed: unknown): ContentReportPayload {
