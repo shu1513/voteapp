@@ -343,6 +343,17 @@ services:
   #      (use fromService name: voteapp-embeddings, type: pserv,
   #      property: hostport — private-network reachable because pserv can
   #      RECEIVE private traffic even from free web services).
+  #   2b. (Phase 2, OPTIONAL, costs money — see docs/plans/chatbot-rag.md)
+  #      LLM answers. REQUIRED FIRST: privacy policy names OpenAI as a
+  #      processor. Then on voteapp-api:
+  #        CHATBOT_LLM_ENABLED=true
+  #        CHATBOT_LLM_API_KEY=<key from a DEDICATED OpenAI project with a
+  #                             dashboard spend limit — never a pipeline key>
+  #      Optional overrides (defaults in code): CHATBOT_MODEL=gpt-5.6-luna,
+  #      CHATBOT_REASONING_EFFORT=low, CHATBOT_USER_DAILY_LIMIT=20,
+  #      CHATBOT_DAILY_TOKEN_BUDGET=5000000, CHATBOT_LLM_BASE_URL,
+  #      CHATBOT_LLM_TIMEOUT_MS. LLM off or misconfigured → retrieval-only
+  #      answers, unchanged.
   #   3. On voteapp-ssr, add VITE_CHATBOT_ENABLED referencing the API's flag
   #      (fromService name: voteapp-api, type: web, envVarKey: CHATBOT_ENABLED)
   #      so the two services cannot drift, then redeploy so the flag bakes
