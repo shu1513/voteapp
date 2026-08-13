@@ -19,10 +19,13 @@
 // as a coverage gap in every 2026 candidate's note. An entry then books to
 // this candidate only when, for the direction block in question:
 //   - the block discloses a name and it matches under the shared Phoenix
-//     person-name gates (token-based, never substring),
+//     person-name gates (token-based, never substring; the shared parser
+//     accepts the "Last, First" comma form, so a comma alone is not a
+//     multi-candidate marker),
 //   - the block names ONE candidate at 100% (a blank % reads as 100 for a
 //     single name; any partial % or multi-candidate split is excluded and
-//     disclosed — v1 never pro-rates),
+//     disclosed — v1 never pro-rates, and only for candidates the split
+//     actually names),
 //   - the disclosed Office Sought agrees with the candidate's office (the
 //     pinned live format is "City Council" — no district — so a district
 //     veto applies only when the field carries digits),
@@ -204,16 +207,40 @@ export function aggregatePhoenixOutsideSpending(input: {
     }
     for (const block of blocks) {
       if (block.names.length === 0) continue;
-      // Cell fragments of ONE name join into a single string; an explicit
-      // separator means a multi-candidate split — excluded, never pro-rated.
-      const joined = block.names.join(" ").replace(/\s+/g, " ").trim();
-      const multiCandidate = /(?:,|&|\band\b|;)/i.test(joined);
-      if (!multiCandidate && !phoenixPersonNameMatchesCandidate(joined, candidate.displayName)) {
-        diagnostics.otherCandidateRows += 1;
+      // Cell fragments of ONE name join into a single string. The whole
+      // string is matched FIRST: the shared parser reads a comma as a
+      // "Last, First" surname boundary, so a filer's "Hermes, Ed" matches
+      // Ed Hermes — a separator alone must not veto a single inverted name.
+      // A genuine multi-candidate string cannot fully match (the extra
+      // name's tokens block the parser's first+last alignment), so it falls
+      // to the split below: it books to nobody (never pro-rated, v1), and it
+      // counts as partial attribution only for a candidate actually named in
+      // one of its segments — for everyone else it is just another
+      // candidate's row, not a gap in THIS candidate's coverage.
+      const joined = block.names
+        .join(" ")
+        .replace(/\s+/g, " ")
+        // Leading/trailing separators are cell punctuation, not a split —
+        // "Ed Hermes," must parse as one name, not "Last, <empty>".
+        .replace(/^[,;&\s]+|[,;&\s]+$/g, "");
+      if (!phoenixPersonNameMatchesCandidate(joined, candidate.displayName)) {
+        const segments = joined
+          .split(/,|&|;|\band\b/i)
+          .map((segment) => segment.trim())
+          .filter((segment) => segment.length > 0);
+        const namesThisCandidate =
+          segments.length > 1 &&
+          segments.some((segment) =>
+            phoenixPersonNameMatchesCandidate(segment, candidate.displayName),
+          );
+        if (namesThisCandidate) {
+          diagnostics.partialAttributionRows += 1;
+        } else {
+          diagnostics.otherCandidateRows += 1;
+        }
         continue;
       }
       if (
-        multiCandidate ||
         block.percents.length > 1 ||
         (block.percents.length === 1 && block.percents[0] !== 100)
       ) {

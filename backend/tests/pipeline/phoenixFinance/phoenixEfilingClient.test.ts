@@ -7,7 +7,9 @@ import {
   fetchPhoenixReportPdf,
   parsePhoenixGridEnvelope,
   phoenixCandidateCycleForDate,
+  phoenixFilesystemPdfCache,
   phoenixGridAll,
+  phoenixSubmittedDateMs,
   toPhoenixRegistrationRow,
 } from "../../../src/pipeline/phoenixFinance/phoenixEfilingClient.js";
 
@@ -197,6 +199,22 @@ describe("toPhoenixRegistrationRow / canonicalPhoenixRegistration", () => {
   });
 });
 
+describe("phoenixSubmittedDateMs", () => {
+  it("parses the pinned live form and the signed-offset form", () => {
+    expect(phoenixSubmittedDateMs("/Date(1755000000000)/", "t")).toBe(1_755_000_000_000);
+    expect(phoenixSubmittedDateMs("/Date(1755000000000-0700)/", "t")).toBe(1_755_000_000_000);
+    expect(phoenixSubmittedDateMs("/Date(1755000000000+0100)/", "t")).toBe(1_755_000_000_000);
+  });
+
+  it("keeps the empty fallback but throws on garbage — 0 would let an older amendment win", () => {
+    expect(phoenixSubmittedDateMs("", "t")).toBe(0);
+    expect(phoenixSubmittedDateMs(null, "t")).toBe(0);
+    expect(() => phoenixSubmittedDateMs("08/12/2026", "package x")).toThrow(
+      /Unparseable Phoenix SubmittedDate "08\/12\/2026" for package x/,
+    );
+  });
+});
+
 describe("report discovery + PDF fetch", () => {
   it("canonicalPhoenixReportRefs keeps the latest-submitted package per report name", () => {
     const { refs, supersededDropped } = canonicalPhoenixReportRefs([
@@ -270,6 +288,29 @@ describe("report discovery + PDF fetch", () => {
     await expect(
       fetchPhoenixReportPdf({ reportPackageId: guid.replace("1", "3"), fetchImpl: failImpl }),
     ).rejects.toThrow(/HTTP 500/);
+    // Strict 8-4-4-4-12: the loose 36-char class accepted a run of dashes.
+    await expect(
+      fetchPhoenixReportPdf({ reportPackageId: "-".repeat(36), fetchImpl }),
+    ).rejects.toThrow(/Not a report package GUID/);
+  });
+
+  it("phoenixFilesystemPdfCache survives a truncated file and writes atomically", async () => {
+    const { mkdtemp, readdir, writeFile } = await import("node:fs/promises");
+    const { tmpdir } = await import("node:os");
+    const { join } = await import("node:path");
+    const dir = await mkdtemp(join(tmpdir(), "phx-pdf-cache-"));
+    const cache = phoenixFilesystemPdfCache(dir);
+    const id = "12345678-1234-1234-1234-123456789abc";
+
+    // A file without the %PDF signature (interrupted write) is a MISS, not a
+    // permanently poisoned hit.
+    await writeFile(join(dir, `${id}.pdf`), "%PD");
+    expect(await cache.read(id)).toBeNull();
+
+    await cache.write(id, new TextEncoder().encode("%PDF-1.7 fake"));
+    expect(new TextDecoder().decode((await cache.read(id))!)).toContain("%PDF");
+    // The temp file never survives a completed write.
+    expect(await readdir(dir)).toEqual([`${id}.pdf`]);
   });
 });
 

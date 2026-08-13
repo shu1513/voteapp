@@ -284,7 +284,11 @@ export type PhoenixPdfCache = {
 };
 
 /** Filesystem PDF cache under cacheDir (the probe's layout:
- * `<cacheDir>/<packageId>.pdf`). Read errors mean cache miss. */
+ * `<cacheDir>/<packageId>.pdf`). Read errors mean cache miss, and so does a
+ * file without the %PDF signature — an interrupted write leaves truncated
+ * bytes, and returning them would poison every later sync for that package
+ * until an operator deleted the file by hand. Writes go through a temp file
+ * + rename so a crash mid-write never lands on the final path. */
 export function phoenixFilesystemPdfCache(cacheDir: string): PhoenixPdfCache {
   return {
     read: async (reportPackageId) => {
@@ -292,6 +296,9 @@ export function phoenixFilesystemPdfCache(cacheDir: string): PhoenixPdfCache {
         const { readFile } = await import("node:fs/promises");
         const { join } = await import("node:path");
         const cached = await readFile(join(cacheDir, `${reportPackageId}.pdf`));
+        if (cached.length < 4 || cached.toString("latin1", 0, 4) !== "%PDF") {
+          return null;
+        }
         // pdfjs rejects Node Buffers — hand back a plain Uint8Array view.
         return new Uint8Array(cached.buffer, cached.byteOffset, cached.byteLength);
       } catch {
@@ -299,10 +306,13 @@ export function phoenixFilesystemPdfCache(cacheDir: string): PhoenixPdfCache {
       }
     },
     write: async (reportPackageId, bytes) => {
-      const { mkdir, writeFile } = await import("node:fs/promises");
+      const { mkdir, rename, writeFile } = await import("node:fs/promises");
       const { join } = await import("node:path");
       await mkdir(cacheDir, { recursive: true });
-      await writeFile(join(cacheDir, `${reportPackageId}.pdf`), bytes);
+      const target = join(cacheDir, `${reportPackageId}.pdf`);
+      const temporary = `${target}.${process.pid}.tmp`;
+      await writeFile(temporary, bytes);
+      await rename(temporary, target);
     },
   };
 }
@@ -311,7 +321,8 @@ export function phoenixFilesystemPdfCache(cacheDir: string): PhoenixPdfCache {
  * Fetches one report PDF (`/CampaignFinance/Reports/PrintReport/<guid>`),
  * validating the %PDF signature — the WAF maintenance page comes back HTML
  * with HTTP 200 here too. Reports are immutable per package id (amendments
- * get NEW ids), so a cache hit never revalidates.
+ * get NEW ids), so a cache hit never refetches; the cache itself rejects
+ * bytes without the %PDF signature (truncated write) as a miss.
  */
 export async function fetchPhoenixReportPdf(input: {
   reportPackageId: string;
@@ -320,7 +331,7 @@ export async function fetchPhoenixReportPdf(input: {
   fetchImpl?: PdfFetchLike;
 }): Promise<Uint8Array> {
   const id = input.reportPackageId;
-  if (!/^[0-9a-f-]{36}$/i.test(id)) {
+  if (!PHOENIX_REPORT_PACKAGE_GUID.test(id)) {
     throw new Error(`Not a report package GUID: "${id}"`);
   }
   const cached = await input.cache?.read(id);
@@ -382,7 +393,29 @@ export type PhoenixReportRef = {
   submittedDateMs: number;
 };
 
-const REPORT_PACKAGE_GUID = /^[0-9a-f-]{36}$/i;
+/** Strict 8-4-4-4-12 form — the loose `[0-9a-f-]{36}` it replaces accepted
+ * junk like a string of 36 dashes. */
+export const PHOENIX_REPORT_PACKAGE_GUID =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * ASP.NET AJAX `SubmittedDate` → epoch ms. The pinned live form is
+ * `/Date(1755000000000)/`; the serializer can also emit a signed zone offset
+ * (`/Date(1755000000000-0700)/`), which is display metadata — the number is
+ * already UTC ms. Amendment canonicalization picks winners by this value, so
+ * a non-empty value that fails to parse THROWS rather than falling back to 0
+ * (a 0 would silently let an older amendment stay canonical). Empty/absent
+ * stays 0: no date disclosed at all is missing information, not garbage.
+ */
+export function phoenixSubmittedDateMs(raw: unknown, context: string): number {
+  const text = String(raw ?? "").trim();
+  if (text === "") return 0;
+  const match = /^\/Date\((-?\d+)(?:[+-]\d{4})?\)\/$/.exec(text);
+  if (!match) {
+    throw new Error(`Unparseable Phoenix SubmittedDate "${text}" for ${context}`);
+  }
+  return Number(match[1]);
+}
 
 function collectPhoenixReportRefs(
   refs: Map<string, PhoenixReportRef>,
@@ -390,12 +423,11 @@ function collectPhoenixReportRefs(
 ): void {
   for (const row of rows) {
     const id = String(row.ReportPackageId ?? "");
-    if (!REPORT_PACKAGE_GUID.test(id)) continue;
-    const submitted = /\/Date\((\d+)\)\//.exec(String(row.SubmittedDate ?? ""));
+    if (!PHOENIX_REPORT_PACKAGE_GUID.test(id)) continue;
     refs.set(id, {
       reportPackageId: id,
       reportName: String(row.ReportName ?? ""),
-      submittedDateMs: submitted ? Number(submitted[1]) : 0,
+      submittedDateMs: phoenixSubmittedDateMs(row.SubmittedDate, `report package ${id}`),
     });
   }
 }

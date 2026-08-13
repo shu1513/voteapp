@@ -312,4 +312,47 @@ describe("aggregatePhoenixDirectFinance", () => {
       }),
     ).toThrow(/span two portal cycles/);
   });
+
+  it("rejects an invalid breakdown limit", () => {
+    expect(() =>
+      aggregatePhoenixDirectFinance({
+        copId: "CAN-25-4",
+        reports: [],
+        ...CYCLE,
+        maxBreakdownsPerCategory: 0,
+      }),
+    ).toThrow(/Invalid Phoenix direct breakdown limit: 0/);
+  });
+
+  it("truncates breakdown rows to the per-category limit, largest first", () => {
+    const result = aggregatePhoenixDirectFinance({
+      copId: "CAN-25-4",
+      reports: [
+        report({
+          name: "Q1",
+          from: "2026-04-01",
+          to: "2026-06-30",
+          begin: 0,
+          a: 60_00,
+          a1aEntries: [
+            entry(10_00, "Small Shop"),
+            entry(30_00, "Big Shop"),
+            entry(20_00, "Mid Shop"),
+          ],
+        }),
+      ],
+      ...CYCLE,
+      maxBreakdownsPerCategory: 1,
+    });
+    expect(
+      result.breakdowns.filter((row) => row.categoryType === "employer"),
+    ).toEqual([
+      {
+        categoryType: "employer",
+        categoryName: "Big Shop",
+        amountCents: 30_00,
+        contributorCount: 1,
+      },
+    ]);
+  });
 });

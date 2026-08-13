@@ -130,6 +130,33 @@ describe("aggregatePhoenixOutsideSpending", () => {
     expect(result.diagnostics.partialAttributionRows).toBe(2);
   });
 
+  it("books a 'Last, First' inverted single name — a comma alone is not a split", () => {
+    const result = aggregatePhoenixOutsideSpending({
+      candidate: hermes,
+      pool: [
+        poolEntry({ supportedNames: ["Hermes, Ed"] }),
+        // Trailing separator from cell fragmentation is punctuation, not a split.
+        poolEntry({ supportedNames: ["Ed Hermes,"] }),
+      ],
+    });
+    expect(result.supportTotalCents).toBe(1_300_000);
+    expect(result.diagnostics.partialAttributionRows).toBe(0);
+  });
+
+  it("counts a multi-candidate split as another candidate's row when this candidate is not named", () => {
+    const result = aggregatePhoenixOutsideSpending({
+      candidate: hermes,
+      pool: [
+        poolEntry({ supportedNames: ["Ashley Harder & Sam Stone"], supportedPercents: [] }),
+      ],
+    });
+    expect(result.supportTotalCents).toBe(0);
+    // Hermes is not in the split, so his coverage note must not disclose it
+    // as partial attribution.
+    expect(result.diagnostics.partialAttributionRows).toBe(0);
+    expect(result.diagnostics.otherCandidateRows).toBe(1);
+  });
+
   it("vetoes office, district digits, and cycle mismatches on name-matched rows", () => {
     const result = aggregatePhoenixOutsideSpending({
       candidate: hermes,

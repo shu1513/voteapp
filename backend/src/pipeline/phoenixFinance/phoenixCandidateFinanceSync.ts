@@ -56,16 +56,20 @@ import {
 } from "../finance/financeIndustryClassificationService.js";
 import {
   canonicalPhoenixRegistration,
+  canonicalPhoenixReportRefs,
   discoverPhoenixCanonicalReportRefs,
   fetchPhoenixCanonicalRegistrations,
   fetchPhoenixReportPdf,
   phoenixFilesystemPdfCache,
   phoenixGridAll,
+  phoenixSubmittedDateMs,
   toPhoenixRegistrationRow,
   PHOENIX_CANDIDATE_IE_FUNCTION_ID,
+  PHOENIX_REPORT_PACKAGE_GUID,
   PHOENIX_TEST_COMMITTEE_PATTERN,
   type PhoenixPdfCache,
   type PhoenixRegistrationRow,
+  type PhoenixReportRef,
 } from "./phoenixEfilingClient.js";
 import {
   extractPhoenixPdfPages,
@@ -211,7 +215,12 @@ export async function loadPhoenixFinanceRunContext(
     const canonical = canonicalPhoenixRegistration(rows);
     if (canonical === null) continue;
     if (PHOENIX_TEST_COMMITTEE_PATTERN.test(canonical.committeeName)) continue;
-    if (canonical.terminated) continue;
+    // Terminated PACs stay IN the pool: termination ends future filing, not
+    // the filings already made. A PAC that spent on this cycle and then
+    // terminated would otherwise vanish from the pool on the next run, and
+    // the snapshot rewrite would silently shrink every affected candidate's
+    // outside totals. The aggregator's per-entry cycle gate already keeps a
+    // dead PAC's prior-cycle spending out.
     if (canonical.isStandingCommittee) {
       // Standing PACs file finance reports only with the AZ SOS — the
       // curated channel (see the outside aggregator's header).
@@ -235,40 +244,37 @@ export async function loadPhoenixFinanceRunContext(
     );
     if (b6Rows.length === 0) continue;
     // Amendment canonicalization over the B(6)-bearing packages: duplicate
-    // report names are superseded versions, latest SubmittedDate wins.
-    const refsByPackage = new Map<
-      string,
-      { reportPackageId: string; reportName: string; submittedDateMs: number }
-    >();
+    // report names are superseded versions, latest SubmittedDate wins
+    // (canonicalPhoenixReportRefs — the same rule report discovery uses).
+    // Unlike discovery, a row WITHOUT a package id throws here: the pool
+    // reconciles grid rows against parsed schedules, so an unfetchable row
+    // makes every candidate's outside totals suspect.
+    const refsByPackage = new Map<string, PhoenixReportRef>();
     const gridByPackage = new Map<string, { count: number; cents: number }>();
     for (const row of b6Rows) {
       const id = String(row.ReportPackageId ?? "");
-      if (!/^[0-9a-f-]{36}$/i.test(id)) {
+      if (!PHOENIX_REPORT_PACKAGE_GUID.test(id)) {
         throw new Error(
           `Phoenix IE PAC ${pac.copId} has a B(6) grid row without a report package id`,
         );
       }
-      const submitted = /\/Date\((\d+)\)\//.exec(String(row.SubmittedDate ?? ""));
       refsByPackage.set(id, {
         reportPackageId: id,
         reportName: String(row.ReportName ?? ""),
-        submittedDateMs: submitted ? Number(submitted[1]) : 0,
+        submittedDateMs: phoenixSubmittedDateMs(
+          row.SubmittedDate,
+          `${pac.copId} package ${id}`,
+        ),
       });
       const tally = gridByPackage.get(id) ?? { count: 0, cents: 0 };
       tally.count += 1;
       tally.cents += gridAmountToCents(row.Amount, `${pac.copId} package ${id}`);
       gridByPackage.set(id, tally);
     }
-    const byName = new Map<string, { reportPackageId: string; submittedDateMs: number }[]>();
-    for (const ref of refsByPackage.values()) {
-      const bucket = byName.get(ref.reportName) ?? [];
-      bucket.push(ref);
-      byName.set(ref.reportName, bucket);
-    }
-    for (const bucket of byName.values()) {
-      const winner = bucket.reduce((best, ref) =>
-        ref.submittedDateMs > best.submittedDateMs ? ref : best,
-      );
+    const { refs: canonicalRefs } = canonicalPhoenixReportRefs([
+      ...refsByPackage.values(),
+    ]);
+    for (const winner of canonicalRefs) {
       b6Packages += 1;
       const bytes = await fetchPhoenixReportPdf({
         reportPackageId: winner.reportPackageId,
