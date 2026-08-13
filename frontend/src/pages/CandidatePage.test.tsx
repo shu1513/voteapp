@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CandidatePage, ErrorBoundary, loader } from "./CandidatePage";
+import { clearBallotDraft, readBallotDraft } from "../lib/ballotDraft";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import {
@@ -552,29 +553,26 @@ describe("CandidatePage", () => {
     expect(await screen.findByRole("button", { name: "Unfollow" })).toBeInTheDocument();
   });
 
-  it("shows logged-out visitors a pick row that prompts them to register", async () => {
+  it("lets logged-out visitors pick from the row straight into the local ballot draft", async () => {
+    clearBallotDraft();
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
+    // The row only renders once the 401 settles (no-flash rule), so its
+    // presence proves the guest fork.
     const row = await screen.findByRole("button", {
       name: "Make Jordan Voter my pick for Governor · November 3, 2099",
     });
     await userEvent.click(row);
 
+    // The pick lands in the localStorage draft (no API write) and the row
+    // flips to its picked sentence, same as the signed-in flow.
     expect(
-      await screen.findByText(
-        "Save Jordan Voter as your election pick and keep your whole ballot in one place. Signing up is free."
-      )
+      await screen.findByRole("button", {
+        name: "✓ Jordan Voter is my pick for Governor · November 3, 2099",
+      })
     ).toBeInTheDocument();
-    // Both links carry the candidate page as the post-auth return path.
-    expect(screen.getByRole("link", { name: "Sign up" })).toHaveAttribute(
-      "href",
-      "/register?next=%2Fcandidates%2Fc-1"
-    );
-    expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute(
-      "href",
-      "/login?next=%2Fcandidates%2Fc-1"
-    );
+    expect(readBallotDraft().choices["e-1"].picks.map((pick) => pick.candidate_id)).toEqual(["c-1"]);
   });
 
   it("shows logged-out visitors no pick row for withdrawn or past candidacies", async () => {

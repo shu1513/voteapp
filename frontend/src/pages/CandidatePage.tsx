@@ -18,7 +18,7 @@ import { FollowButton } from "../components/FollowButton";
 import { RegisterToFollowButton } from "../components/RegisterToFollowButton";
 import { ShareButton } from "../components/ShareButton";
 import { CandidatePickRow } from "../components/ElectionChoiceControls";
-import { RegisterToPickRow } from "../components/RegisterToPickControls";
+import { draftChoicesByElectionId, useBallotDraft } from "../lib/ballotDraft";
 import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
@@ -446,14 +446,19 @@ export function CandidatePage() {
   // candidacies get a button. Rendered only once the choices list is loaded
   // (no-flash rule, like the follow button).
   const { choiceByElectionId, canChoose } = useElectionChoices();
+  const draft = useBallotDraft();
   const officeCandidacies = ongoingElections.filter(
     (election) => election.race_type === "office" && election.status !== "withdrawn" && election.status !== "lost"
   );
-  const pickableElections = canChoose && choiceByElectionId !== undefined ? officeCandidacies : [];
-  // Logged-out visitors see the same rows, but clicking prompts them to
-  // register (mirrors RegisterToFollowButton). me is undefined while the
-  // session loads — render nothing then to avoid a flash of the wrong row.
-  const registerToPickElections = me === null ? officeCandidacies : [];
+  // Guests get the same rows writing to the local ballot draft
+  // (lib/ballotDraft.ts) instead of the account endpoint. me is undefined
+  // while the session loads — render nothing then to avoid a flash of the
+  // wrong row (same no-flash rule as the follow button).
+  const isGuest = me === null;
+  const pickableElections =
+    isGuest || (canChoose && choiceByElectionId !== undefined) ? officeCandidacies : [];
+  const choiceForElection = (electionId: string) =>
+    isGuest ? draftChoicesByElectionId(draft).get(electionId) : choiceByElectionId?.get(electionId);
   const location = useLocation();
   const navState = readCandidateNavState(location.state);
   // Every election link on this page (the back-link fallback and the
@@ -570,19 +575,9 @@ export function CandidatePage() {
               candidateName={candidate.display_name}
               raceName={election.official_ballot_title}
               dateLabel={formatElectionDate(election.election_date)}
-              choice={choiceByElectionId?.get(election.election_id)}
+              electionDate={election.election_date}
+              choice={choiceForElection(election.election_id)}
               seatsToFill={election.seats_to_fill ?? null}
-            />
-          ))}
-        </div>
-      ) : registerToPickElections.length > 0 ? (
-        <div className="mt-4 space-y-2">
-          {registerToPickElections.map((election) => (
-            <RegisterToPickRow
-              key={election.candidate_election_id}
-              candidateName={candidate.display_name}
-              raceName={election.official_ballot_title}
-              dateLabel={formatElectionDate(election.election_date)}
             />
           ))}
         </div>

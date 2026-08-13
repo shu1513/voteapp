@@ -5,6 +5,8 @@ import { ChatWidget } from "./components/chatbot/ChatWidget";
 import { RouteError } from "./components/RouteError";
 import { TermsRenewalGate } from "./components/TermsRenewalGate";
 import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, useLogout, useMe } from "@voteapp/api-client";
+import { useFlushBallotDraft } from "./lib/useFlushBallotDraft";
+import { useGuestDraftNav, useMyPicksProgress } from "./lib/usePickProgress";
 
 /**
  * The greeting lives beside the logo, not in the nav: sitting between
@@ -27,6 +29,14 @@ function AccountNav() {
   const { me } = useMe();
   const logout = useLogout();
   const navigate = useNavigate();
+  // Header collection mechanic, both sides of the session: guests get a
+  // "My Ballot Draft 4/13" badge (localStorage draft), signed-in users get
+  // the same counter on the My Picks link. Both flip to a ✓ when every race
+  // on the nearest election day is decided. The guest hook renders null on
+  // the SSR pass (server snapshot is an empty draft), so the cached
+  // anonymous document stays draft-free and the badge appears on hydration.
+  const guestDraftNav = useGuestDraftNav();
+  const picksProgress = useMyPicksProgress();
 
   // While /api/me is unresolved (SSR, or a cold-started API taking tens of
   // seconds), default to the logged-out links rather than an empty header —
@@ -35,6 +45,18 @@ function AccountNav() {
   if (!me) {
     return (
       <span className="flex items-center gap-4">
+        {guestDraftNav ? (
+          <Link
+            to={guestDraftNav.to}
+            className={
+              guestDraftNav.complete
+                ? "whitespace-nowrap font-semibold text-green-800 hover:text-green-900"
+                : "whitespace-nowrap font-medium text-ink-soft hover:text-ink"
+            }
+          >
+            {guestDraftNav.label}
+          </Link>
+        ) : null}
         <Link to="/login" className="text-ink-soft hover:text-ink">
           Log in
         </Link>
@@ -47,6 +69,15 @@ function AccountNav() {
       </span>
     );
   }
+
+  // Plain "My Picks" until the progress is known (no upcoming races, or the
+  // queries haven't settled) — a counter that flashes in later is fine, a
+  // wrong one is not.
+  const myPicksLabel = picksProgress
+    ? picksProgress.complete
+      ? "My Picks ✓"
+      : `My Picks ${picksProgress.picked}/${picksProgress.total}`
+    : "My Picks";
 
   function signOut() {
     logout.mutate(undefined, {
@@ -64,8 +95,8 @@ function AccountNav() {
         <Link to="/me/ballot" className="text-ink-soft hover:text-ink">
           My Elections
         </Link>
-        <Link to="/me/picks" className="text-ink-soft hover:text-ink">
-          My Picks
+        <Link to="/me/picks" className="whitespace-nowrap text-ink-soft hover:text-ink">
+          {myPicksLabel}
         </Link>
         <Link to="/me/settings" className="text-ink-soft hover:text-ink">
           Settings
@@ -86,7 +117,7 @@ function AccountNav() {
           </MenuItem>
           <MenuItem>
             <Link to="/me/picks" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
-              My Picks
+              {myPicksLabel}
             </Link>
           </MenuItem>
           <MenuItem>
@@ -113,6 +144,8 @@ export function App() {
   const location = useLocation();
   const mainRef = useRef<HTMLElement>(null);
   const lastPathname = useRef(location.pathname);
+  // Replays a guest ballot draft into the account on login/registration.
+  useFlushBallotDraft();
 
   // In-app navigation keeps focus wherever it was in the old page; move it
   // to the new page's content so keyboard and screen-reader users land where

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ElectionPage, ErrorBoundary } from "./ElectionPage";
+import { clearBallotDraft, readBallotDraft } from "../lib/ballotDraft";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { electionDetail, financeSummary, ME_VERIFIED, VOTE_POWER_WITH_EXPLANATION } from "../test/fixtures";
@@ -544,31 +545,24 @@ describe("ElectionPage", () => {
     expect(screen.queryByText(/State Lower Chamber Legislator is responsible/)).not.toBeInTheDocument();
   });
 
-  it("shows logged-out visitors pick buttons that prompt them to register", async () => {
+  it("lets logged-out visitors pick straight into the local ballot draft", async () => {
+    clearBallotDraft();
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() => electionDetail());
 
-    // One per active candidate, same placement as the real control — and each
-    // accessible name carries its candidate, so screen-reader button lists and
-    // voice control can tell the page's pick buttons apart.
+    // One per active candidate, same placement as the signed-in control — and
+    // each accessible name carries its candidate, so screen-reader button
+    // lists and voice control can tell the page's pick buttons apart. The
+    // buttons only render once the 401 settles (no-flash rule), so their
+    // presence proves the guest fork.
     const jordanPick = await screen.findByRole("button", { name: "Make my pick: Jordan Voter" });
     expect(screen.getByRole("button", { name: "Make my pick: Riley Runner" })).toBeInTheDocument();
     await userEvent.setup().click(jordanPick);
 
-    expect(
-      await screen.findByText(
-        "Save Jordan Voter as your election pick and keep your whole ballot in one place. Signing up is free."
-      )
-    ).toBeInTheDocument();
-    // Both links carry the election page as the post-auth return path.
-    expect(screen.getByRole("link", { name: "Sign up" })).toHaveAttribute(
-      "href",
-      "/register?next=%2Felections%2Fe-1"
-    );
-    expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute(
-      "href",
-      "/login?next=%2Felections%2Fe-1"
-    );
+    // The pick lands in the localStorage draft (no API write) and the button
+    // flips to picked, same as the signed-in flow.
+    expect(await screen.findByRole("button", { name: "✓ My pick: Jordan Voter" })).toBeInTheDocument();
+    expect(readBallotDraft().choices["e-1"].picks.map((pick) => pick.candidate_id)).toEqual(["c-1"]);
   });
 
   it("shows logged-out visitors no pick buttons on past elections", async () => {

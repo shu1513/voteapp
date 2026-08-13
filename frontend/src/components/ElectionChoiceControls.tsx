@@ -1,11 +1,17 @@
 import { useId } from "react";
-import { ApiError, useElectionChoiceSaving, useSetElectionChoice } from "@voteapp/api-client";
+import { ApiError, useElectionChoiceSaving, useMe, useSetElectionChoice } from "@voteapp/api-client";
 import type { ElectionChoice } from "@voteapp/api-client";
+import { setDraftCandidateChoice, setDraftMeasureChoice } from "../lib/ballotDraft";
 
-// "My choice" controls: a logged-in user's planned vote per election.
-// Callers gate rendering on useElectionChoices().canChoose AND a loaded
-// choices list (same no-flash rule as FollowButton), and only render for
-// upcoming elections — the backend rejects writes to past ones.
+// "My choice" controls: the viewer's planned vote per election. Signed-in
+// viewers write to /api/me/election-choices; guests write to the local
+// ballot draft (lib/ballotDraft.ts) — same buttons, different store, so
+// building a ballot needs no account. Callers gate rendering on a loaded
+// choices list for signed-in viewers (same no-flash rule as FollowButton),
+// and only render for upcoming elections — the backend rejects writes to
+// past ones. raceTitle/electionDate ride along on every control because the
+// draft rows must be self-describing (the draft has no server read to fill
+// in titles).
 
 // Backend rejections carry human-readable messages ("This election fills 2
 // seats; remove a pick before adding another"); transport failures don't
@@ -31,6 +37,10 @@ type CandidatePickButtonProps = {
   /** Carried in the accessible name so the page's N pick buttons stay
    * distinguishable in screen-reader button lists and voice control. */
   candidateName: string;
+  /** The election's official ballot title — stored on guest draft rows. */
+  raceTitle: string;
+  /** ISO election date (YYYY-MM-DD) — stored on guest draft rows. */
+  electionDate: string;
   /** The viewer's current choice state for this election, if any. */
   choice: ElectionChoice | undefined;
   /** elections.seats_to_fill — null renders as a single seat. */
@@ -48,10 +58,14 @@ export function CandidatePickButton({
   electionId,
   candidateId,
   candidateName,
+  raceTitle,
+  electionDate,
   choice,
   seatsToFill,
   size = "md",
 }: CandidatePickButtonProps) {
+  const { me } = useMe();
+  const isGuest = me === null;
   const setChoice = useSetElectionChoice();
   const saving = useElectionChoiceSaving();
   const picks = choice?.picks ?? [];
@@ -81,7 +95,17 @@ export function CandidatePickButton({
         aria-label={`${visibleLabel}: ${candidateName}`}
         title={atMultiSeatCap ? `This election fills ${seatCap} seats — remove a pick first` : undefined}
         onClick={() =>
-          setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: !isPicked })
+          isGuest
+            ? setDraftCandidateChoice({
+                electionId,
+                raceTitle,
+                electionDate,
+                seatsToFill,
+                candidateId,
+                candidateName,
+                chosen: !isPicked,
+              })
+            : setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: !isPicked })
         }
         className={
           isPicked
@@ -107,6 +131,8 @@ type CandidatePickRowProps = {
   raceName: string;
   /** Pre-formatted election date, e.g. "August 18, 2026". */
   dateLabel: string;
+  /** ISO election date (YYYY-MM-DD) — stored on guest draft rows. */
+  electionDate: string;
   /** The viewer's current choice state for this election, if any. */
   choice: ElectionChoice | undefined;
   /** elections.seats_to_fill — null renders as a single seat. */
@@ -128,9 +154,12 @@ export function CandidatePickRow({
   candidateName,
   raceName,
   dateLabel,
+  electionDate,
   choice,
   seatsToFill,
 }: CandidatePickRowProps) {
+  const { me } = useMe();
+  const isGuest = me === null;
   const setChoice = useSetElectionChoice();
   const saving = useElectionChoiceSaving();
   const capMessageId = useId();
@@ -149,7 +178,17 @@ export function CandidatePickRow({
         aria-pressed={isPicked}
         aria-describedby={atMultiSeatCap ? capMessageId : undefined}
         onClick={() =>
-          setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: !isPicked })
+          isGuest
+            ? setDraftCandidateChoice({
+                electionId,
+                raceTitle: raceName,
+                electionDate,
+                seatsToFill,
+                candidateId,
+                candidateName,
+                chosen: !isPicked,
+              })
+            : setChoice.mutate({ election_id: electionId, candidate_id: candidateId, chosen: !isPicked })
         }
         className={
           isPicked
@@ -185,6 +224,10 @@ export function CandidatePickRow({
 
 type MeasureChoiceButtonsProps = {
   electionId: string;
+  /** The measure's official ballot title — stored on guest draft rows. */
+  raceTitle: string;
+  /** ISO election date (YYYY-MM-DD) — stored on guest draft rows. */
+  electionDate: string;
   choice: ElectionChoice | undefined;
 };
 
@@ -192,11 +235,21 @@ type MeasureChoiceButtonsProps = {
  * Yes/No planned-vote pair for a ballot measure. Clicking the active side
  * clears the position (sends null).
  */
-export function MeasureChoiceButtons({ electionId, choice }: MeasureChoiceButtonsProps) {
+export function MeasureChoiceButtons({ electionId, raceTitle, electionDate, choice }: MeasureChoiceButtonsProps) {
+  const { me } = useMe();
+  const isGuest = me === null;
   const setChoice = useSetElectionChoice();
   const saving = useElectionChoiceSaving();
   const position = choice?.measure_position ?? null;
   const base = "rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
+
+  function setPosition(next: "yes" | "no" | null) {
+    if (isGuest) {
+      setDraftMeasureChoice({ electionId, raceTitle, electionDate, position: next });
+    } else {
+      setChoice.mutate({ election_id: electionId, measure_position: next });
+    }
+  }
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -205,9 +258,7 @@ export function MeasureChoiceButtons({ electionId, choice }: MeasureChoiceButton
         type="button"
         disabled={saving}
         aria-pressed={position === "yes"}
-        onClick={() =>
-          setChoice.mutate({ election_id: electionId, measure_position: position === "yes" ? null : "yes" })
-        }
+        onClick={() => setPosition(position === "yes" ? null : "yes")}
         className={
           position === "yes"
             ? `${base} bg-green-700 text-white hover:bg-green-800`
@@ -220,9 +271,7 @@ export function MeasureChoiceButtons({ electionId, choice }: MeasureChoiceButton
         type="button"
         disabled={saving}
         aria-pressed={position === "no"}
-        onClick={() =>
-          setChoice.mutate({ election_id: electionId, measure_position: position === "no" ? null : "no" })
-        }
+        onClick={() => setPosition(position === "no" ? null : "no")}
         className={
           position === "no"
             ? `${base} bg-red-700 text-white hover:bg-red-800`

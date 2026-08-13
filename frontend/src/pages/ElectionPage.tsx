@@ -24,7 +24,7 @@ import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { CandidatePickButton, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
-import { RegisterToPickButton } from "../components/RegisterToPickControls";
+import { draftChoicesByElectionId, useBallotDraft } from "../lib/ballotDraft";
 import { splitResearchAreasBySaved, useElectionChoices } from "@voteapp/api-client";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 import { APP_NAME } from "@voteapp/api-client";
@@ -169,17 +169,21 @@ export function ElectionPage() {
   const visibleCandidates = recordsFilterOn ? matchedOnMyIssues : partyFilteredCandidates;
   const hiddenByRecordsFilter = partyFilteredCandidates.length - matchedOnMyIssues.length;
   const measure = data.ballot_measure;
-  // "My choice" controls render only for logged-in viewers with a loaded
-  // choices list (no-flash rule, like FollowButton) on upcoming elections —
-  // the backend rejects choice writes to past ones.
+  // "My choice" controls on upcoming elections only (the backend rejects
+  // choice writes to past ones). Signed-in viewers need a loaded choices
+  // list first (no-flash rule, like FollowButton); guests pick straight
+  // into the local ballot draft, so the same buttons render with the draft
+  // as their choice source. me is undefined while the session loads —
+  // render nothing then to avoid a flash of the wrong state.
   const { choiceByElectionId, canChoose } = useElectionChoices();
-  const myChoice = choiceByElectionId?.get(data.id);
+  const draft = useBallotDraft();
+  const isGuest = me === null;
+  const myChoice = isGuest
+    ? draftChoicesByElectionId(draft).get(data.id)
+    : choiceByElectionId?.get(data.id);
   const showChoiceControls =
-    canChoose && choiceByElectionId !== undefined && data.election_date >= usLatestLocalDate();
-  // Logged-out visitors get the same pick buttons, but clicking prompts them
-  // to register (mirrors RegisterToFollowButton). me is undefined while the
-  // session loads — render nothing then to avoid a flash of the wrong button.
-  const showRegisterToPick = me === null && data.election_date >= usLatestLocalDate();
+    (isGuest || (canChoose && choiceByElectionId !== undefined)) &&
+    data.election_date >= usLatestLocalDate();
   // Per-candidate result badges (Won / Advanced / Lost / …); the matching and
   // completeness guards — roster-matched winners only, losers only where the
   // outcome's own signal proves the race decided — live in
@@ -450,7 +454,12 @@ export function ElectionPage() {
           </div>
           {showChoiceControls ? (
             <div className="mt-3">
-              <MeasureChoiceButtons electionId={data.id} choice={myChoice} />
+              <MeasureChoiceButtons
+                electionId={data.id}
+                raceTitle={data.official_ballot_title}
+                electionDate={data.election_date}
+                choice={myChoice}
+              />
             </div>
           ) : null}
           {measure.results.length > 0 ? (
@@ -627,24 +636,22 @@ export function ElectionPage() {
                         (ballotLookup filters them), but the writer also
                         rejects withdrawn/lost — don't render a button whose
                         only outcome is an error. */}
-                    {(showChoiceControls || showRegisterToPick) &&
+                    {showChoiceControls &&
                     candidate.status !== "withdrawn" &&
                     candidate.status !== "lost" ? (
                       // z-10 lifts the button above the card's stretched
                       // link so clicking it doesn't navigate.
                       <span className="relative z-10">
-                        {showChoiceControls ? (
-                          <CandidatePickButton
-                            electionId={data.id}
-                            candidateId={candidate.candidate_id}
-                            candidateName={candidate.display_name}
-                            choice={myChoice}
-                            seatsToFill={data.seats_to_fill ?? null}
-                            size="sm"
-                          />
-                        ) : (
-                          <RegisterToPickButton candidateName={candidate.display_name} size="sm" />
-                        )}
+                        <CandidatePickButton
+                          electionId={data.id}
+                          candidateId={candidate.candidate_id}
+                          candidateName={candidate.display_name}
+                          raceTitle={data.official_ballot_title}
+                          electionDate={data.election_date}
+                          choice={myChoice}
+                          seatsToFill={data.seats_to_fill ?? null}
+                          size="sm"
+                        />
                       </span>
                     ) : null}
                   </div>
