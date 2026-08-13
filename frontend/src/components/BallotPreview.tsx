@@ -32,6 +32,40 @@ function voteInstruction(seatsToFill: number | null): string {
   return seatsToFill !== null && seatsToFill > 1 ? `Vote for up to ${seatsToFill}` : "Vote for One";
 }
 
+// Judicial retention races are stored as race_type "office" with the judge as
+// the single candidate, but the paper ballot prints them as a Yes/No question
+// — an oval next to the judge's name would tell the voter to mark the wrong
+// shape. Mirrors the backend's isJudicialRetentionTitle
+// (backend/src/ai/electionPartisanshipPolicy.ts); keep the regexes in sync.
+function isRetentionTitle(title: string): boolean {
+  return /\b(retention|retain(?:ed|ing)?|be retained)\b/i.test(title);
+}
+
+function YesNoRows({ pickedPosition }: { pickedPosition: "yes" | "no" | null }) {
+  return (
+    <ul>
+      {(["yes", "no"] as const).map((position) => {
+        const picked = pickedPosition === position;
+        return (
+          <li key={position} className="flex items-start gap-2 border-t border-line px-3 py-1.5">
+            <BallotOval filled={picked} />
+            <span className="text-sm">
+              <span className={picked ? "font-bold text-ink" : "text-ink"}>
+                {position === "yes" ? "Yes" : "No"}
+              </span>
+              {picked ? (
+                <span className="ml-1.5 rounded bg-ink px-1.5 py-0.5 text-xs font-semibold text-white">
+                  Your pick
+                </span>
+              ) : null}
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
 function CandidateRow({ candidate, picked }: { candidate: ElectionPreviewCandidate; picked: boolean }) {
   const withdrawn = candidate.status === "withdrawn";
   return (
@@ -56,6 +90,10 @@ function ContestBox({ election, choice }: { election: ElectionSummary; choice: E
   const preview = election.preview;
   const pickedIds = new Set((choice?.picks ?? []).map((pick) => pick.candidate_id));
   const isMeasure = election.race_type === "ballot_measure";
+  const isRetention = !isMeasure && isRetentionTitle(election.official_ballot_title);
+  // Picking the judge in a retention race means voting to keep them — the app
+  // has no "vote no" mechanic, so No is never pre-filled.
+  const retentionJudge = isRetention && preview?.candidates.length === 1 ? preview.candidates[0] : null;
   return (
     <section className="break-inside-avoid border border-ink">
       <header className="border-b-2 border-ink bg-surface px-3 py-1.5">
@@ -70,7 +108,7 @@ function ContestBox({ election, choice }: { election: ElectionSummary; choice: E
           </p>
         ) : null}
         <p className="mt-0.5 text-xs font-semibold text-ink">
-          {isMeasure ? "Vote Yes or No" : voteInstruction(preview?.seats_to_fill ?? null)}
+          {isMeasure || isRetention ? "Vote Yes or No" : voteInstruction(preview?.seats_to_fill ?? null)}
         </p>
       </header>
       {isMeasure ? (
@@ -82,26 +120,14 @@ function ContestBox({ election, choice }: { election: ElectionSummary; choice: E
               VoteApp summary (not the printed ballot text): {preview.measure.summary}
             </p>
           ) : null}
-          <ul>
-            {(["yes", "no"] as const).map((position) => {
-              const picked = choice?.measure_position === position;
-              return (
-                <li key={position} className="flex items-start gap-2 border-t border-line px-3 py-1.5">
-                  <BallotOval filled={picked} />
-                  <span className="text-sm">
-                    <span className={picked ? "font-bold text-ink" : "text-ink"}>
-                      {position === "yes" ? "Yes" : "No"}
-                    </span>
-                    {picked ? (
-                      <span className="ml-1.5 rounded bg-ink px-1.5 py-0.5 text-xs font-semibold text-white">
-                        Your pick
-                      </span>
-                    ) : null}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
+          <YesNoRows pickedPosition={choice?.measure_position ?? null} />
+        </>
+      ) : isRetention ? (
+        <>
+          {retentionJudge ? (
+            <p className="border-t border-line px-3 py-1.5 text-sm text-ink">{retentionJudge.display_name}</p>
+          ) : null}
+          <YesNoRows pickedPosition={pickedIds.size > 0 ? "yes" : null} />
         </>
       ) : (preview?.candidates.length ?? 0) > 0 ? (
         <ul>
@@ -142,7 +168,8 @@ function BallotSheet({
       </div>
       <footer className="mt-3 border-t border-line pt-2 text-xs text-ink-soft">
         <p>
-          Races appear in the approximate order of your state's general ballot rules. This preview may include
+          Races appear in a typical ballot order — federal, then state, then local — which may not match your
+          state's exact rules. This preview may include
           nearby district races that aren't on your ballot, or miss local ones — and candidate order and
           instructions on your printed ballot may differ. Compare with your official sample ballot.
         </p>
@@ -179,7 +206,9 @@ export function BallotPreviewSheets({
     return <p className="mt-3 text-sm text-ink-soft">No upcoming elections to preview.</p>;
   }
   return (
-    <div className="mt-4 space-y-4">
+    // ballot-print-area scopes the @media print rules in index.css: "Print
+    // this preview" (or Ctrl+P in ballot view) prints only the sheets.
+    <div className="ballot-print-area mt-4 space-y-4">
       {dates.map((date) => (
         <BallotSheet key={date} date={date} elections={byDate.get(date) ?? []} choiceByElectionId={choiceByElectionId} />
       ))}

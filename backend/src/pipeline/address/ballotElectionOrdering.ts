@@ -77,6 +77,13 @@ export function isBallotSummarySort(value: unknown): value is BallotSummarySort 
   return typeof value === "string" && (BALLOT_SUMMARY_SORTS as readonly string[]).includes(value);
 }
 
+// The preferences store must use this, not isBallotSummarySort: a request-only
+// sort that reaches the INSERT surfaces as a CHECK-constraint failure instead
+// of invalid_preferences.
+export function isSaveableBallotPreferenceSort(value: unknown): value is BallotSummarySort {
+  return typeof value === "string" && (SAVEABLE_BALLOT_PREFERENCE_SORTS as readonly string[]).includes(value);
+}
+
 export type BallotSummaryOptions = {
   // When set, followed candidates are resolved for this user and attached to
   // each election. Anonymous lookups omit it and every election gets [].

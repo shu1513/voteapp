@@ -55,6 +55,18 @@ describe("parseBallotSummaryOptions", () => {
     ).toEqual({ includePreview: true, sort: "soonest", followedFirst: false });
   });
 
+  it("accepts a duplicated include=preview", () => {
+    expect(
+      parseBallotSummaryOptions(new URL("http://localhost/api/ballot?include=preview&include=preview"))
+    ).toEqual({ includePreview: true });
+  });
+
+  it("rejects an unknown value smuggled in as a duplicate include", () => {
+    expect(() =>
+      parseBallotSummaryOptions(new URL("http://localhost/api/ballot?include=preview&include=roster"))
+    ).toThrow(/include must be: preview/);
+  });
+
   it("rejects unknown include values", () => {
     expect(() => parseBallotSummaryOptions(new URL("http://localhost/api/ballot?include=roster"))).toThrow(
       /include must be: preview/

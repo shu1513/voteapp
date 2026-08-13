@@ -941,11 +941,12 @@ export function parseBallotSummaryOptions(
     options.followedFirst = value === "true";
   }
 
-  // `preview` is the only include today; reject anything else so a typo'd
-  // include fails loud instead of silently returning the slim payload.
-  const rawInclude = url.searchParams.get("include");
-  if (rawInclude !== null) {
-    if (rawInclude.trim() !== "preview") {
+  // `preview` is the only include today; reject anything else — including a
+  // duplicate ?include= carrying an unsupported value — so a typo'd include
+  // fails loud instead of silently returning the slim payload.
+  const rawIncludes = url.searchParams.getAll("include");
+  if (rawIncludes.length > 0) {
+    if (rawIncludes.some((value) => value.trim() !== "preview")) {
       throw new TypeError("Query parameter include must be: preview");
     }
     options.includePreview = true;
