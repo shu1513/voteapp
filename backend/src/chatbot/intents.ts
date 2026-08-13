@@ -247,11 +247,20 @@ export function detectIntent(question: string): IntentMatch | null {
   if (/\b(?:vote|voting|ballot)\s+by\s+mail\b|\bmail[- ]in\s+(?:ballot|voting)\b|\babsentee\b/i.test(q)) {
     return { kind: "mail_voting", state };
   }
-  // "My area" questions ("who is running in my area?", "races near me") LAST:
-  // the corpus has no idea where the asker lives, but the saved-ballot page
-  // does — deep-link it rather than refuse. Checked after every specific
-  // frame so "when is the runoff in my area" still clarifies as a date ask.
-  if (/\b(?:in|for|near|around)\s+my\s+(?:area|city|town|county|district|neighborhood|state)\b|\bnear\s+me\b/i.test(q)) {
+  // "My area" LISTING questions ("who is running in my area?", "what races
+  // are near me?") LAST: the corpus has no idea where the asker lives, but
+  // the saved-ballot page does — deep-link it rather than refuse. Checked
+  // after every specific frame so "when is the runoff in my area" still
+  // clarifies as a date ask. BOTH halves required: the location phrase alone
+  // must not hijack substantive questions that happen to mention "my state"
+  // ("What has Jon Ossoff done in my state?" is a retrieval question), and
+  // the listing half is a frame, not bare keywords — "which candidates
+  // support abortion rights in my state" is an issue question, not a roster
+  // ask, so bare "candidates" does not count.
+  const MY_PLACE_RE = /\b(?:in|for|near|around)\s+my\s+(?:area|city|town|county|district|neighborhood|state)\b|\bnear\s+me\b/i;
+  const LISTING_FRAME_RE =
+    /\brunning\b|\bon\s+(?:the|my)\s+ballot\b|\bwhat\s+(?:races?|elections?)\b|\bcandidates?\s+(?:for|in|near|around)\b/i;
+  if (MY_PLACE_RE.test(q) && LISTING_FRAME_RE.test(q)) {
     return { kind: "ballot_lookup", state };
   }
   return null;

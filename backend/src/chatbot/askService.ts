@@ -652,8 +652,11 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
       // from the current question can be dropped.
       // A bare-state reply is pure scope: it MUST carry the previous turn
       // (the question being scoped) even though it names a state itself —
-      // "California" alone matches nothing.
-      let scopeState = detectStateInQuestion(question);
+      // "California" alone matches nothing. The bareStateReply fallback
+      // covers bare abbreviations ("GA"): detectStateInQuestion deliberately
+      // requires place context around an abbreviation, so a lone "GA" is
+      // invisible to it and would leave retrieval unscoped.
+      let scopeState = detectStateInQuestion(question) ?? bareStateReply;
       let retrievalText = question;
       if (previousQuestion && !resolvedContext && (!scopeState || bareStateReply)) {
         scopeState = scopeState ?? detectStateInQuestion(previousQuestion);

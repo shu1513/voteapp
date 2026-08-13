@@ -129,6 +129,14 @@ describe("my-area questions route to the ballot lookup", () => {
     // Named places are not "my area".
     expect(detectIntent("who is running for sheriff?")).toBeNull();
   });
+
+  it("does not hijack substantive questions that merely mention 'my state/city'", () => {
+    // Entity and issue questions belong to retrieval — a location phrase
+    // alone is not a roster ask.
+    expect(detectIntent("What has Jon Ossoff done in my state?")).toBeNull();
+    expect(detectIntent("Which candidates support abortion rights in my state?")).toBeNull();
+    expect(detectIntent("What are candidates saying about housing in my city?")).toBeNull();
+  });
 });
 
 describe("detectBareStateReply", () => {

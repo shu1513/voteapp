@@ -288,7 +288,10 @@ export function ChatWidget() {
         <div className="flex items-center gap-1">
           {/* Back to the empty-chat start screen (starter chips included) —
               without this, the only way out of a conversation was a page
-              reload. */}
+              reload. A NEW chat must not inherit the old one's remembered
+              context either: after navigating away, "their record?" would
+              silently answer about a candidate no longer on screen. Reset to
+              the CURRENT page's context (null off detail pages). */}
           {turns.length > 0 && (
             <button
               type="button"
@@ -297,6 +300,8 @@ export function ChatWidget() {
                   return;
                 }
                 setTurns([]);
+                setQuestion("");
+                setContext(contextFromPathname(location.pathname));
                 ask.reset();
               }}
               className="rounded px-2 py-0.5 text-xs text-ink-soft hover:text-ink"
