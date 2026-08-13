@@ -18,6 +18,7 @@ export type IntentKind =
   | "out_of_cycle"         // election ask about a year outside the covered cycle
   | "needs_scope"          // scopeless time-sensitive ask ("when is the runoff?") → clarify
   | "ballot_lookup"        // "what's on my ballot" → deep link
+  | "my_issues_ballot"     // "which races affect issues I care about" → saved-areas × ballot match
   | "where_to_vote"        // polling place → state link or deep link
   | "election_date"        // "when is the 2026 general election"
   | "other_election_date"  // primary/runoff/special date with a state named
@@ -203,6 +204,22 @@ export function detectIntent(question: string): IntentMatch | null {
   }
   if (/\b(?:who\s+won|did\s+.{2,60}\s+win|been\s+decided|election\s+results?|results\s+of)\b/i.test(q)) {
     return { kind: "results", state };
+  }
+  // Personal-issues questions ("which of these elections affect issues I
+  // care about?") BEFORE the plain ballot deep link: the account's saved
+  // research areas × its saved ballot answer this concretely, which beats a
+  // bare "here's your ballot page" card. The frame is the PERSONAL-preference
+  // phrasing — "issues I care about", "matters to me", "my issues/priorities"
+  // — not issue words alone, so "which candidates support abortion rights"
+  // (a stance question) still goes to retrieval. Singular "my area" stays
+  // with the place frames below ("in my area" is location, not preference).
+  // The preference phrase must follow a preference NOUN ("issues/things/what
+  // I care about"), not stand alone: "I care about climate — who supports
+  // it?" is a stance question for retrieval, not a ballot-match ask.
+  const MY_ISSUES_RE =
+    /\b(?:issues?|areas?|topics?|things|what|races?|elections?)\b.{0,24}\b(?:i\s+care\s+about|matter(?:s)?\s+(?:most\s+)?to\s+me|important\s+to\s+me)\b|\bmy\s+(?:top\s+|key\s+|main\s+|saved\s+)?(?:issues?|priorit(?:y|ies)|research\s+areas)\b/i;
+  if (MY_ISSUES_RE.test(q)) {
+    return { kind: "my_issues_ballot", state };
   }
   if (/\b(?:my\s+ballot|on\s+the\s+ballot\s+at\s+my|ballot\s+lookup)\b/i.test(q)) {
     return { kind: "ballot_lookup", state };

@@ -4,8 +4,10 @@ import type { Pool } from "pg";
 import {
   createAskService,
   electionCountdownAnswer,
+  myIssuesBallotAnswer,
   nameTokens,
   questionNamesAnyOf,
+  type MyIssuesBallotElection,
 } from "../../src/chatbot/askService.js";
 
 // Pure pieces of the ask service; the full pipeline is exercised by
@@ -46,6 +48,99 @@ describe("questionNamesAnyOf", () => {
     expect(questionNamesAnyOf(["June Carter"], "when is the June primary?")).toBe(false);
     // The same candidates still match on their other tokens.
     expect(questionNamesAnyOf(["Will Smith"], "what about Smith?")).toBe(true);
+  });
+});
+
+describe("myIssuesBallotAnswer", () => {
+  const area = (id: string, name: string) => ({ id, slug: id, name, description: null });
+  const HOUSING = area("a-housing", "Housing");
+  const CLIMATE = area("a-climate", "Climate");
+  const COURTS = area("a-courts", "Courts");
+  /** Housing rank 1 (weight 7), Climate unranked (weight 1). */
+  const weights = new Map([
+    ["a-housing", { weight: 7, rank: 1 }],
+    ["a-climate", { weight: 1, rank: 8 }],
+  ]);
+  const election = (id: string, title: string, areas: (typeof HOUSING)[]): MyIssuesBallotElection => ({
+    id,
+    official_ballot_title: title,
+    election_date: "2026-11-03",
+    research_areas: areas,
+  });
+
+  it("names matched races ordered by the asker's area weights", () => {
+    const response = myIssuesBallotAnswer(weights, [
+      election("e1", "City Council District 2", [CLIMATE]),
+      election("e2", "Mayor", [HOUSING, CLIMATE]),
+      election("e3", "Judge, Seat 4", [COURTS]),
+    ]);
+    expect(response.outcome).toBe("template");
+    // Mayor (7+1) outranks the council race (1); the courts race matches
+    // nothing the user saved and is left out.
+    expect(response.answer).toBe(
+      "2 races on your ballot touch the issues you saved: Mayor (Housing, Climate); City Council District 2 (Climate)."
+    );
+    expect(response.results.map((card) => card.url)).toEqual(["/elections/e2", "/elections/e1"]);
+    expect(response.results[0]?.snippet).toBe("Touches your saved issues: Housing, Climate.");
+  });
+
+  it("caps the list and says how many matched in total", () => {
+    const many = Array.from({ length: 7 }, (_, i) => election(`e${i}`, `Race ${i}`, [HOUSING]));
+    const response = myIssuesBallotAnswer(weights, many);
+    expect(response.answer).toContain("7 races on your ballot touch the issues you saved — the closest 5 matches");
+    expect(response.results).toHaveLength(5);
+  });
+
+  it("is honest when nothing on the ballot matches", () => {
+    const response = myIssuesBallotAnswer(weights, [election("e3", "Judge, Seat 4", [COURTS])]);
+    expect(response.answer).toContain("None of the races on your ballot are tagged with the issues you saved");
+    expect(response.results.map((card) => card.url)).toEqual(["/me/ballot", "/me/settings"]);
+  });
+});
+
+describe("the my-issues intent resolves the asker's saved areas", () => {
+  /** Scripted pool: `areas` answers the preference-weights query, `districts`
+   * the saved-district-ids query. The ballot query itself is not scripted —
+   * these tests cover the guard paths that return before it. */
+  function myIssuesPool(areas: { research_area_id: string; rank: number | null }[], districts: string[]): Pool {
+    return {
+      query: async (text: string) => {
+        if (text.includes("FROM public.user_research_area_preferences")) {
+          return { rows: areas, rowCount: areas.length };
+        }
+        if (text.includes("public.user_districts")) {
+          // The reader LEFT JOINs from users: a district-less user is one row
+          // with a null district_id, never zero rows.
+          const rows =
+            districts.length > 0
+              ? districts.map((district_id) => ({ user_id: USER_ID, district_id }))
+              : [{ user_id: USER_ID, district_id: null }];
+          return { rows, rowCount: rows.length };
+        }
+        if (text.includes("INSERT INTO chatbot.questions")) {
+          return { rows: [], rowCount: 1 };
+        }
+        throw new Error(`unexpected query in my-issues path: ${text.slice(0, 80)}`);
+      },
+    } as unknown as Pool;
+  }
+
+  it("points at Settings when the account has no saved issues", async () => {
+    const service = createAskService({ db: myIssuesPool([], []), embeddings: null });
+    const response = await service.ask("which of these elections affect issues I care about?", null, null, USER_ID);
+    expect(response.outcome).toBe("template");
+    expect(response.answer).toContain("Pick your issues in Settings");
+    expect(response.results[0]?.url).toBe("/me/settings");
+  });
+
+  it("points at the ballot page when issues are saved but no districts are", async () => {
+    const service = createAskService({
+      db: myIssuesPool([{ research_area_id: "a-housing", rank: 1 }], []),
+      embeddings: null,
+    });
+    const response = await service.ask("which races matter to me?", null, null, USER_ID);
+    expect(response.answer).toContain("not where you vote");
+    expect(response.results[0]?.url).toBe("/me/ballot");
   });
 });
 
