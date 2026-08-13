@@ -124,8 +124,10 @@ five for-records makes the area Mixed, on purpose.
 
 ## Implementation
 
-1. Derivation helper in `CandidatePage.tsx` (module scope, exported for
-   tests): `classifyStanceSummary(records: CandidateRecord[]): {supports:
+1. Derivation helper in `CandidatePage.tsx` (module scope, not exported —
+   tests exercise it through page rendering, and exporting it would trip the
+   fast-refresh lint rule):
+   `classifyStanceSummary(records: CandidateRecord[]): {supports:
    AreaStance[]; opposes: AreaStance[]; mixed: AreaStance[]}` wrapping
    `aggregateRecordAreaStances` + evaluative filter + salience sort. Reuses
    the existing `EVALUATIVE_AREA_SLUGS` const already in the file.
