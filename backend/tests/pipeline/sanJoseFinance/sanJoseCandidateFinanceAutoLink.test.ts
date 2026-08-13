@@ -16,9 +16,22 @@ const emptyWorkbook: EfileCalWorkbook = {
   s497: [],
 };
 
-function linkWriterQueryMock() {
+// The roster re-read must return the input candidate (the auto-link skips
+// candidates absent from it instead of linking from a stale selector row),
+// so every mock serves a roster unless a test overrides it.
+const doeRosterRow = {
+  candidate_id: "c1",
+  candidate_name: "Jane Doe",
+  state_filing_ids: [],
+};
+
+function linkWriterQueryMock(
+  rosterRows: Record<string, unknown>[] = [doeRosterRow],
+) {
   return vi.fn().mockImplementation((sql: unknown) => {
     const s = String(sql);
+    if (s.startsWith("SELECT candidate.id::text candidate_id,COALESCE"))
+      return Promise.resolve({ rows: rosterRows });
     if (s.startsWith("INSERT INTO public.sjc_candidate_finance_links"))
       return Promise.resolve({ rows: [{ id: "link-1" }] });
     return Promise.resolve({ rows: [] });
@@ -278,9 +291,36 @@ describe("autoLinkMissingSanJoseCandidateFinanceLinks", () => {
     ).toBe(false);
   });
 
+  it("skips a candidate absent from the refreshed roster instead of linking from the stale selector row", async () => {
+    // The roster re-read reflects a mid-run status change (withdrawn,
+    // deleted, merged); the selector row is stale and must not produce a
+    // link. The next run's selector decides fresh.
+    const query = linkWriterQueryMock([]);
+    const results = await autoLinkMissingSanJoseCandidateFinanceLinks({
+      db: { query } as never,
+      now: new Date("2026-08-11T00:00:00Z"),
+      candidates: [doeCandidate],
+      workbook: emptyWorkbook,
+      committees: [doeCommittee],
+    });
+    expect(results).toEqual([
+      {
+        candidateId: "c1",
+        electionId: "e1",
+        status: "error",
+        reason: expect.stringContaining("left the election roster"),
+      },
+    ]);
+    expect(
+      query.mock.calls.some((call) => String(call[0]).startsWith("INSERT INTO")),
+    ).toBe(false);
+  });
+
   it("surfaces a protected-manual-link conflict as a per-candidate error", async () => {
     const query = vi.fn().mockImplementation((sql: unknown) => {
       const s = String(sql);
+      if (s.startsWith("SELECT candidate.id::text candidate_id,COALESCE"))
+        return Promise.resolve({ rows: [doeRosterRow] });
       if (s.startsWith("SELECT id::text,fppc_id"))
         return Promise.resolve({
           rows: [{ id: "manual-1", fppc_id: "1480385", link_status: "active" }],
