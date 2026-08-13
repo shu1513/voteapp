@@ -139,6 +139,42 @@ describe("my-area questions route to the ballot lookup", () => {
   });
 });
 
+describe("personal-issues questions route to the saved-areas ballot match", () => {
+  it("catches the preference frame in its common phrasings", () => {
+    for (const q of [
+      "which of these elections affect issues I care about?",
+      "which races matter to me?",
+      "what elections touch the topics that are important to me?",
+      "which races line up with my top issues?",
+      "does anything on the ballot match my priorities?",
+    ]) {
+      expect(detectIntent(q)?.kind, q).toBe("my_issues_ballot");
+    }
+  });
+
+  it("wins over the plain ballot deep link when both frames appear", () => {
+    expect(detectIntent("what's on my ballot that affects issues I care about?")?.kind).toBe("my_issues_ballot");
+  });
+
+  it("requires the election frame, not the preference phrase alone", () => {
+    // Candidate questions that mention personal issues belong to retrieval —
+    // the answer they want is about the candidate, not a race list.
+    expect(detectIntent("Does Jane Smith support my key issues?")).toBeNull();
+    expect(detectIntent("What has Jane Smith done on topics important to me?")).toBeNull();
+    // Not a race question at all.
+    expect(detectIntent("What issues do I care about?")).toBeNull();
+  });
+
+  it("leaves stance and location questions alone", () => {
+    // "I care about X" without a preference noun in front is a stance ask.
+    expect(detectIntent("I care about climate — which races does it affect?")).toBeNull();
+    // Singular "my area" is a place, not a preference.
+    expect(detectIntent("who is running in my area?")?.kind).toBe("ballot_lookup");
+    // Endorsement asks still refuse even when phrased through issues.
+    expect(detectIntent("based on the issues I care about, who should I vote for?")?.kind).toBe("policy_refusal");
+  });
+});
+
 describe("detectBareStateReply", () => {
   it("accepts a message that is only a state", () => {
     expect(detectBareStateReply("California")).toBe("CA");

@@ -28,6 +28,16 @@ import {
 } from "./retrieval.js";
 import { REFUSAL_NO_DATA_ANSWER, toResultCards, type AskResultCard } from "./shared.js";
 import type { EmbeddingsClient } from "./embeddingsClient.js";
+import {
+  lookupBallotSummariesByDistrictIds,
+  type BallotLookupElectionSummary,
+} from "../pipeline/address/ballotLookup.js";
+import { listUserDistrictIds, UserDistrictReaderError } from "../pipeline/users/userDistrictReader.js";
+import {
+  loadUserResearchAreaWeights,
+  scoreResearchAreaMatch,
+  type UserResearchAreaWeights,
+} from "../pipeline/users/userResearchAreaScoring.js";
 
 export type AskOutcome = "template" | "retrieval" | "clarify" | "refuse_no_data" | "refuse_policy";
 
@@ -306,6 +316,134 @@ const BALLOT_CARD: AskResultCard = {
   snippet: "See every election and candidate on your ballot.",
   source_type: "page",
 };
+
+const SETTINGS_ISSUES_CARD: AskResultCard = {
+  title: "Choose your issues",
+  url: "/me/settings",
+  snippet: "Pick and rank the issues you care about.",
+  source_type: "page",
+};
+
+/** How many matched races the answer names — the rest stay on the ballot
+ * page (the answer says how many matched in total). */
+const MY_ISSUES_MAX_RACES = 5;
+
+export type MyIssuesBallotElection = Pick<
+  BallotLookupElectionSummary,
+  "id" | "official_ballot_title" | "election_date" | "research_areas"
+>;
+
+/**
+ * Matches the asker's saved research areas against their ballot's elections
+ * (offices and ballot measures both carry research-area tags). Pure: the
+ * ask() wrapper loads the weights and ballot, this ranks and renders.
+ * Ranking reuses scoreResearchAreaMatch — the exact scorer behind the ballot
+ * page's my_areas sort — so the chat answer and the sorted ballot page agree
+ * on what "matters most" means. Races only, never candidates: pointing
+ * at a race that touches a saved issue is navigation; ranking candidates by
+ * issue alignment would edge into rule 1 territory.
+ */
+export function myIssuesBallotAnswer(
+  weights: UserResearchAreaWeights,
+  elections: readonly MyIssuesBallotElection[]
+): AskResponse {
+  const matched = elections
+    .map((election) => {
+      const areas = election.research_areas
+        .filter((area) => weights.has(area.id))
+        .sort(
+          (a, b) =>
+            (weights.get(a.id)?.rank ?? 0) - (weights.get(b.id)?.rank ?? 0) || a.name.localeCompare(b.name)
+        );
+      const match = scoreResearchAreaMatch(areas.map((area) => area.id), weights);
+      return { election, areas, match };
+    })
+    .filter((entry) => entry.areas.length > 0)
+    .sort(
+      // Same first two keys as the ballot page's my_areas sort (weight sum,
+      // then best matched rank — two weak matches must not outrank the
+      // user's #1 issue on a tie), then a deterministic date/title tail.
+      (a, b) =>
+        b.match.score - a.match.score ||
+        a.match.bestRank - b.match.bestRank ||
+        a.election.election_date.localeCompare(b.election.election_date) ||
+        a.election.official_ballot_title.localeCompare(b.election.official_ballot_title)
+    );
+
+  if (matched.length === 0) {
+    return {
+      outcome: "template",
+      answer:
+        "None of the races on your ballot are tagged with the issues you saved. You can still browse your full ballot, or adjust your issues in Settings.",
+      results: [BALLOT_CARD, SETTINGS_ISSUES_CARD],
+      data_current_as_of: null,
+    };
+  }
+
+  const top = matched.slice(0, MY_ISSUES_MAX_RACES);
+  const listed = top
+    .map((entry) => `${entry.election.official_ballot_title} (${entry.areas.map((area) => area.name).join(", ")})`)
+    .join("; ");
+  const lead =
+    matched.length === 1
+      ? "1 race on your ballot touches the issues you saved"
+      : `${matched.length} races on your ballot touch the issues you saved${
+          matched.length > MY_ISSUES_MAX_RACES ? ` — the closest ${MY_ISSUES_MAX_RACES} matches` : ""
+        }`;
+  return {
+    outcome: "template",
+    answer: `${lead}: ${listed}.`,
+    results: top.map((entry) => ({
+      title: entry.election.official_ballot_title,
+      url: `/elections/${entry.election.id}`,
+      snippet: `Touches your saved issues: ${entry.areas.map((area) => area.name).join(", ")}.`,
+      source_type: "election",
+    })),
+    data_current_as_of: null,
+  };
+}
+
+/**
+ * my_issues_ballot intent: personalized, so it must stay on this template
+ * path — never retrieval (the public corpus knows nothing about the asker)
+ * and never the shared answer cache or LLM (rule 11: account data stays out
+ * of prompts; the cache is keyed per-question, not per-user).
+ */
+async function renderMyIssuesBallotAnswer(db: Pool, userId: string | null): Promise<AskResponse> {
+  const weights: UserResearchAreaWeights = userId ? await loadUserResearchAreaWeights(db, userId) : new Map();
+  if (weights.size === 0) {
+    return {
+      outcome: "template",
+      answer:
+        "I don't know which issues you care about yet. Pick your issues in Settings, then ask again and I'll match them against your ballot.",
+      results: [SETTINGS_ISSUES_CARD],
+      data_current_as_of: null,
+    };
+  }
+  let districtIds: string[] = [];
+  if (userId) {
+    try {
+      districtIds = await listUserDistrictIds(db, userId);
+    } catch (error) {
+      // A vanished/deleted account mid-chat degrades to the setup prompt
+      // below rather than failing the whole ask.
+      if (!(error instanceof UserDistrictReaderError)) {
+        throw error;
+      }
+    }
+  }
+  if (districtIds.length === 0) {
+    return {
+      outcome: "template",
+      answer:
+        "I have your saved issues, but not where you vote. Set up your ballot page first — then I can point at the races that touch them.",
+      results: [BALLOT_CARD],
+      data_current_as_of: null,
+    };
+  }
+  const summary = await lookupBallotSummariesByDistrictIds(db, districtIds);
+  return myIssuesBallotAnswer(weights, summary.elections);
+}
 
 function describeEntityOption(match: CandidateEntityMatch): string {
   const officePart = match.currentOffice ? `, ${match.currentOffice}` : "";
@@ -708,6 +846,13 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
               state: userState,
             };
           }
+        }
+        // Account-scoped intent: needs the asker, not just the question text,
+        // so it renders here where userId is in hand (same pattern as the
+        // saved-state resolution above).
+        if (intent.kind === "my_issues_ballot") {
+          const response = await renderMyIssuesBallotAnswer(db, userId ?? null);
+          return finish(response, "intent:my_issues_ballot", intent.state);
         }
         const response = await renderIntentAnswer(db, intent);
         const answeredBy =

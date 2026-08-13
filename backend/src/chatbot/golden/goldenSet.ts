@@ -384,6 +384,13 @@ export const goldenSet: readonly GoldenCase[] = [
     expected: "template",
   },
   {
+    id: "logistics-my-issues-ballot",
+    category: "logistics",
+    question: "Which of these elections affect issues I care about?",
+    expected: "template",
+    notes: "Personalized: saved research areas × saved ballot. Template-only — account data never reaches retrieval, the cache, or the LLM.",
+  },
+  {
     id: "logistics-election-day",
     category: "logistics",
     question: "When is the 2026 general election?",
