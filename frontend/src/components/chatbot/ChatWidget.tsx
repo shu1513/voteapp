@@ -198,7 +198,32 @@ function AccessPrompt({ kind }: { kind: "register" | "verify" }) {
   );
 }
 
+/** Fresh auth identity → fresh widget. Remounting on login/logout/account
+ * switch resets EVERYTHING at once — open state (a panel opened before the
+ * login flow must not greet the new session already expanded), the
+ * transcript and remembered page context (on a shared browser the previous
+ * account's questions and viewed pages must not carry over — same reason
+ * purgeAccountScopedQueries exists), and any in-flight ask (a slow answer
+ * settling after the switch lands on the unmounted instance, a no-op,
+ * instead of the next account's chat). */
 export function ChatWidget() {
+  const { me } = useMe();
+  // The epoch bumps only when a RESOLVED identity CHANGES — never when the
+  // initial /api/me load settles (undefined → user), which must not snap
+  // shut a widget opened while that request was still in flight.
+  const resolved = me === undefined ? null : (me?.email ?? "anon");
+  const lastResolved = useRef<string | null>(null);
+  const epoch = useRef(0);
+  if (resolved !== null) {
+    if (lastResolved.current !== null && resolved !== lastResolved.current) {
+      epoch.current += 1;
+    }
+    lastResolved.current = resolved;
+  }
+  return <ChatWidgetSession key={epoch.current} />;
+}
+
+function ChatWidgetSession() {
   const location = useLocation();
   const { me } = useMe();
   const [open, setOpen] = useState(false);
@@ -230,24 +255,6 @@ export function ChatWidget() {
     // Optional-call: jsdom (tests) has no Element.scrollTo.
     transcriptRef.current?.scrollTo?.({ top: transcriptRef.current.scrollHeight });
   }, [turns, ask.isPending]);
-
-  // Auth identity changed (login, logout, account switch): collapse and clear
-  // the chat. The widget stays mounted across client-side navigation, so a
-  // panel opened before the login flow would otherwise greet the fresh
-  // session already expanded — and on a shared browser the previous
-  // account's questions must not carry over (same reason
-  // purgeAccountScopedQueries exists). `me` is undefined while loading, so
-  // key on the resolved email; the initial undefined→user transition is a
-  // no-op (the widget starts collapsed and empty anyway).
-  const meEmail = me?.email ?? null;
-  useEffect(() => {
-    setOpen(false);
-    setTurns([]);
-    setQuestion("");
-    ask.reset();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- `ask` is a new
-    // object every render; this must run only on identity change.
-  }, [meEmail]);
 
   if (isChatWidgetHidden(location.pathname, Boolean(me))) {
     return null;

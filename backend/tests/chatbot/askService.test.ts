@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 import type { Pool } from "pg";
 
-import { createAskService, electionCountdownAnswer, nameTokens } from "../../src/chatbot/askService.js";
+import {
+  createAskService,
+  electionCountdownAnswer,
+  nameTokens,
+  questionNamesAnyOf,
+} from "../../src/chatbot/askService.js";
 
 // Pure pieces of the ask service; the full pipeline is exercised by
 // `npm run chatbot:eval` against the live index.
@@ -13,11 +18,34 @@ describe("nameTokens", () => {
   it("lowercases, strips diacritics, and splits on punctuation", () => {
     expect(nameTokens("María O'Brien-Smith")).toEqual(["maria", "o", "brien", "smith"]);
   });
+});
 
-  it("tokenizes a question the same way, so page-candidate names match by word", () => {
-    // "Maria" in the question must equal the "María" token from the roster.
-    expect(nameTokens("what's the difference between Maria and Rhonda?")).toContain("maria");
-    expect(nameTokens("what's the difference between Maria and Rhonda?")).toContain("rhonda");
+describe("questionNamesAnyOf", () => {
+  const roster = ["Maria Ghobadi", "Rhonda A. Haymon"];
+
+  it("matches a page candidate named by first name only", () => {
+    expect(questionNamesAnyOf(roster, "what's the difference between Maria and Rhonda?")).toBe(true);
+  });
+
+  it("matches across diacritics (roster 'María' vs typed 'Maria')", () => {
+    expect(questionNamesAnyOf(["María López"], "who is Maria?")).toBe(true);
+  });
+
+  it("requires an exact whole word, not a fuzzy hit", () => {
+    expect(questionNamesAnyOf(roster, "how do I register in Georgia?")).toBe(false);
+    expect(questionNamesAnyOf(roster, "tell me about Marianne")).toBe(false);
+  });
+
+  it("ignores initials and other short tokens", () => {
+    // "A." must not match the article "a" in a question.
+    expect(questionNamesAnyOf(["Rhonda A. Haymon"], "a question about nothing")).toBe(false);
+  });
+
+  it("ignores name tokens that are question grammar (gate-bypass guard)", () => {
+    expect(questionNamesAnyOf(["Will Smith"], "Will there be a runoff?")).toBe(false);
+    expect(questionNamesAnyOf(["June Carter"], "when is the June primary?")).toBe(false);
+    // The same candidates still match on their other tokens.
+    expect(questionNamesAnyOf(["Will Smith"], "what about Smith?")).toBe(true);
   });
 });
 

@@ -86,14 +86,47 @@ export function nameTokens(text: string): string[] {
     .filter((token) => token.length > 0);
 }
 
+/** Name tokens that are also common question grammar: matching on these
+ * would hand page context — and its answerability-gate bypass — to
+ * unrelated questions asked on a page listing a candidate named Will, May,
+ * or June ("Will there be a runoff?", "When may I register?", "the June
+ * primary"). Such candidates stay reachable by their OTHER name tokens,
+ * deictic phrasing, or the entity branch. Auxiliaries/modals that are
+ * plausible names, name-plausible months, and "justice" (judicial-page
+ * questions say it constantly). */
+const NAME_TOKEN_STOPWORDS = new Set([
+  "will",
+  "bill",
+  "may",
+  "march",
+  "april",
+  "june",
+  "july",
+  "august",
+  "justice",
+]);
+
+/** Pure core of page-candidate name matching: does the question exactly
+ * contain a usable name token (3+ chars, so initials and stray "de"/"la"
+ * particles don't count; not question grammar per NAME_TOKEN_STOPWORDS) of
+ * any of these display names? Exact whole-word match on purpose: fuzzy
+ * matching here would re-attach off-topic questions to the page and bypass
+ * the answerability gate. */
+export function questionNamesAnyOf(displayNames: readonly string[], question: string): boolean {
+  const questionTokens = new Set(nameTokens(question));
+  return displayNames.some((name) =>
+    nameTokens(name).some(
+      (token) => token.length >= 3 && !NAME_TOKEN_STOPWORDS.has(token) && questionTokens.has(token)
+    )
+  );
+}
+
 /** Non-deictic questions can still point at the viewed page by NAME:
  * "what's the difference between Maria and Rhonda" asked on the election
- * page listing them both. True when any word of the question exactly matches
- * a name token (3+ chars, so initials and stray "de"/"la" particles don't
- * count) of a candidate in the contexted election — or, for candidate
- * context, in any of that candidate's races (so opponents count too).
- * Exact whole-word match on purpose: fuzzy matching here would re-attach
- * off-topic questions to the page and bypass the answerability gate. */
+ * page listing them both. True when the question names (per
+ * questionNamesAnyOf) a candidate in the contexted election — or, for
+ * candidate context, in any of that candidate's races (so opponents count
+ * too). */
 async function questionNamesPageCandidate(
   db: Pool,
   generationId: string,
@@ -123,12 +156,9 @@ async function questionNamesPageCandidate(
     `,
     [generationId, context.kind, context.id]
   );
-  if (result.rows.length === 0) {
-    return false;
-  }
-  const questionTokens = new Set(nameTokens(question));
-  return result.rows.some((row) =>
-    nameTokens(row.display_name).some((token) => token.length >= 3 && questionTokens.has(token))
+  return questionNamesAnyOf(
+    result.rows.map((row) => row.display_name),
+    question
   );
 }
 

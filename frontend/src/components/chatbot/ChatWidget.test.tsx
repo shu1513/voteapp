@@ -227,6 +227,32 @@ describe("ChatWidget", () => {
     expect(screen.getByText(/never opinions or endorsements/i)).toBeInTheDocument();
   });
 
+  it("discards an answer that was still in flight when the account switched", async () => {
+    const user = userEvent.setup();
+    let release!: (value: { body: unknown }) => void;
+    const held = new Promise<{ body: unknown }>((resolve) => {
+      release = resolve;
+    });
+    const { queryClient } = renderWidgetAt("/ballot", () => held);
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+
+    // Account B signs in while A's question is still in flight...
+    act(() => {
+      queryClient.setQueryData(["me"], { ...ME_VERIFIED.user, email: "someone-else@example.com" });
+    });
+    // ...then A's slow answer arrives. It must land nowhere: the remount
+    // discarded the widget instance the mutation would have appended to.
+    await act(async () => {
+      release({ body: RETRIEVAL_RESPONSE });
+      await new Promise((resolve) => setTimeout(resolve, 20));
+    });
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    expect(screen.queryByText("Who is Jon Ossoff?")).not.toBeInTheDocument();
+    expect(screen.queryByText("Here's what our data has on that.")).not.toBeInTheDocument();
+  });
+
   it("sends a starter chip as a question on click, then hides the chips", async () => {
     const user = userEvent.setup();
     const { fetchMock } = renderWidgetAt("/candidates/44444444-4444-4444-a444-444444444444");
