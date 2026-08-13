@@ -121,9 +121,24 @@ export function validatePhoenixOutsideSupplements(
   }
 }
 
-/** No curated filings yet: the Phase 0 census found zero IE-entity and EFD
- * filings for the 2025–2027 cycle, and no standing-PAC Phoenix-race IE has
- * been identified in Spotlight memos so far. */
+/**
+ * No curated filings. Re-swept for the 2025–2027 cycle on 2026-08-13 (plan
+ * Phase 4), channel by channel:
+ *
+ *   standing_pac — reverse Spotlight probe against all 16 certified
+ *     candidates returned 0 rows, and the 13 standing IE-authorized PACs
+ *     filed exactly ONE 2026 IE row between them (Rock PAC, $2,500,
+ *     2026-06-22) whose name field is the vendor and whose memo names only
+ *     legislative candidates. Nothing targets a Phoenix city race.
+ *   ie_entity — the Clerk publishes NO list of filed IE-entity reports; the
+ *     campaign-finance page offers only a blank fillable form and an email
+ *     address, so this channel cannot be swept remotely at all.
+ *   efd — the Clerk's published Election Funding Disclosure list ends at
+ *     11/5/2024, i.e. zero filings in this cycle.
+ *
+ * Re-run the sweep before each election; the outside coverage note tells
+ * readers these channels are not automatically included either way.
+ */
 export const PHOENIX_OUTSIDE_SUPPLEMENTS: readonly PhoenixOutsideSupplement[] = [];
 
 validatePhoenixOutsideSupplements(PHOENIX_OUTSIDE_SUPPLEMENTS);
