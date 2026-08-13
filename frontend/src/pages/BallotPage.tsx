@@ -1,18 +1,45 @@
+import { useEffect } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { apiRequest } from "@voteapp/api-client";
+import { apiRequest, useMe } from "@voteapp/api-client";
 import {
   PUBLIC_BALLOT_SORTS,
   type BallotSort,
   type BallotSummary,
+  type ElectionSummary,
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
+import { BallotDraftCard } from "../components/BallotDraftCard";
 import { BallotFiltersControl } from "../components/BallotFiltersControl";
 import { HowToVoteControl } from "../components/HowToVoteControl";
 import { deriveBallotFilters, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
+import { draftChoicesByElectionId, setDraftBallotContext, useBallotDraft } from "../lib/ballotDraft";
 import { useBallotFilterParams } from "../lib/useBallotFilterParams";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { usLatestLocalDate } from "../lib/usLatestLocalDate";
+
+// The draft's progress denominator: the nearest upcoming election day's
+// races (all of them, matching PickDateCard's "N of M races decided" count).
+// Computed from the FULL payload, not the filtered view — hiding races with
+// a filter must not shrink the goal.
+function nearestUpcomingTarget(
+  elections: ElectionSummary[]
+): { election_date: string; election_ids: string[] } | null {
+  const today = usLatestLocalDate();
+  const upcoming = elections.filter((election) => election.election_date >= today);
+  if (upcoming.length === 0) {
+    return null;
+  }
+  const date = upcoming.reduce(
+    (min, election) => (election.election_date < min ? election.election_date : min),
+    upcoming[0].election_date
+  );
+  return {
+    election_date: date,
+    election_ids: upcoming.filter((election) => election.election_date === date).map((election) => election.id),
+  };
+}
 
 // Public page: only the sorts the anonymous endpoint can honor. A my_areas
 // value (typed into the URL or copied from a signed-in session) falls back to
@@ -32,6 +59,11 @@ export function BallotPage() {
     isLoading: savedAreasLoading,
   } = useMyResearchAreas();
   const { choiceByElectionId } = useElectionChoices();
+  // Guests read their picks from the local ballot draft instead of the
+  // account endpoint — the same chips render from either source.
+  const { me } = useMe();
+  const isGuest = me === null;
+  const draft = useBallotDraft();
   // Set by the home page's post-search navigation so the visitor can confirm
   // the geocoder matched the right address. Router state only — the address is
   // personal data and must stay out of the URL; a refresh or shared link
@@ -63,6 +95,19 @@ export function BallotPage() {
       ),
     enabled: districtIds.length > 0,
   });
+
+  // Keep the guest draft's badge link and progress denominator tracking the
+  // ballot the guest actually looked at last. Signed-in visitors never touch
+  // the draft here — theirs lives in the account.
+  const ballotElections = ballot.data?.elections;
+  useEffect(() => {
+    if (!isGuest || !ballotElections) {
+      return;
+    }
+    setDraftBallotContext(districtIds, nearestUpcomingTarget(ballotElections));
+    // districtIds is rebuilt each render; its joined string is the stable key.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isGuest, ballotElections, districtIds.join(",")]);
 
   function onSortChange(nextSort: string) {
     setSearchParams(
@@ -183,6 +228,11 @@ export function BallotPage() {
 
       {ballot.isSuccess && !awaitingSavedAreas ? (
         <>
+          {/* Guest draft progress ("4 of 13 races decided" + signup CTA).
+              Client-only by construction: it renders behind ballot.isSuccess
+              (a client query), so the edge-cached anonymous SSR document
+              never contains draft state. */}
+          {isGuest ? <BallotDraftCard registerNext={location.pathname + location.search} /> : null}
           {ballot.data.elections.length === 0 ? (
             <EmptyNotice text="No upcoming elections found for these districts yet. Check back — new elections are added as they are announced." />
           ) : (
@@ -191,7 +241,7 @@ export function BallotPage() {
             <ElectionList
               elections={filtersView.visibleElections}
               savedAreaWeights={savedAreaWeights}
-              choicesByElectionId={choiceByElectionId}
+              choicesByElectionId={isGuest ? draftChoicesByElectionId(draft) : choiceByElectionId}
               // Full query string: the back link must return to this exact
               // list — same districts, sort, and filters.
               backTo={{ path: location.pathname + location.search, label: "All elections" }}

@@ -1,10 +1,37 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it, vi } from "vitest";
-import type { ElectionChoice } from "@voteapp/api-client";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import type { ElectionChoice, Me } from "@voteapp/api-client";
 import { CandidatePickButton, CandidatePickRow, MeasureChoiceButtons } from "./ElectionChoiceControls";
+import { clearBallotDraft, readBallotDraft } from "../lib/ballotDraft";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { renderRoutes } from "../test/render";
+
+// The controls fork on the session (signed-in → PUT, guest → local draft),
+// and renderRoutes builds its own QueryClient with nothing seeded — a real
+// useMe would leave `me` undefined (loading) for the whole test. Mocking it
+// pins the fork deterministically per test.
+const SIGNED_IN: Me = {
+  email: "voter@example.com",
+  first_name: "Vo",
+  email_verified: true,
+  accepted_terms_version: null,
+  has_password: true,
+};
+let mockMe: Me | null | undefined = SIGNED_IN;
+vi.mock("@voteapp/api-client", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@voteapp/api-client")>();
+  return {
+    ...actual,
+    useMe: () => ({ me: mockMe, isLoading: false, isError: false, refetch: vi.fn() }),
+  };
+});
+
+beforeEach(() => {
+  mockMe = SIGNED_IN;
+  window.localStorage.clear();
+  clearBallotDraft();
+});
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -53,7 +80,7 @@ describe("CandidatePickButton", () => {
     });
 
     renderControl(
-      <CandidatePickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} candidateName="Jane Doe" choice={undefined} seatsToFill={null} />
+      <CandidatePickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} candidateName="Jane Doe" raceTitle="Governor" electionDate="2026-11-03" choice={undefined} seatsToFill={null} />
     );
 
     await userEvent.setup().click(screen.getByRole("button", { name: "Make my pick: Jane Doe" }));
@@ -77,6 +104,8 @@ describe("CandidatePickButton", () => {
         electionId={ELECTION_ID}
         candidateId={CANDIDATE_ID}
         candidateName="Jane Doe"
+        raceTitle="Governor"
+        electionDate="2026-11-03"
         choice={choice({ picks: [pick(CANDIDATE_ID)] })}
         seatsToFill={null}
       />
@@ -95,6 +124,8 @@ describe("CandidatePickButton", () => {
         electionId={ELECTION_ID}
         candidateId={CANDIDATE_ID}
         candidateName="Jane Doe"
+        raceTitle="Governor"
+        electionDate="2026-11-03"
         choice={choice({ seats_to_fill: 2, picks: [pick(OTHER_CANDIDATE_ID), pick("55555555-5555-4555-8555-555555555555")] })}
         seatsToFill={2}
       />
@@ -112,6 +143,8 @@ describe("CandidatePickButton", () => {
         electionId={ELECTION_ID}
         candidateId={CANDIDATE_ID}
         candidateName="Jane Doe"
+        raceTitle="Governor"
+        electionDate="2026-11-03"
         choice={choice({ picks: [pick(OTHER_CANDIDATE_ID)] })}
         seatsToFill={null}
       />
@@ -130,7 +163,7 @@ describe("CandidatePickButton", () => {
     });
 
     renderControl(
-      <CandidatePickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} candidateName="Jane Doe" choice={undefined} seatsToFill={null} />
+      <CandidatePickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} candidateName="Jane Doe" raceTitle="Governor" electionDate="2026-11-03" choice={undefined} seatsToFill={null} />
     );
 
     await userEvent.setup().click(screen.getByRole("button", { name: "Make my pick: Jane Doe" }));
@@ -149,6 +182,7 @@ describe("CandidatePickRow", () => {
         candidateName="Jane Doe"
         raceName="Governor"
         dateLabel="November 3, 2026"
+        electionDate="2026-11-03"
         choice={rowChoice}
         seatsToFill={seatsToFill}
       />
@@ -264,7 +298,7 @@ describe("MeasureChoiceButtons", () => {
     });
 
     // First render: no position. Click "Yes" → PUT yes.
-    const { unmount } = renderControl(<MeasureChoiceButtons electionId={ELECTION_ID} choice={undefined} />);
+    const { unmount } = renderControl(<MeasureChoiceButtons electionId={ELECTION_ID} raceTitle="Prop A" electionDate="2026-11-03" choice={undefined} />);
     await userEvent.setup().click(screen.getByRole("button", { name: "Yes" }));
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
     unmount();
@@ -274,6 +308,8 @@ describe("MeasureChoiceButtons", () => {
     renderControl(
       <MeasureChoiceButtons
         electionId={ELECTION_ID}
+        raceTitle="Prop A"
+        electionDate="2026-11-03"
         choice={choice({ race_type: "ballot_measure", measure_position: "yes" })}
       />
     );
@@ -288,11 +324,41 @@ describe("MeasureChoiceButtons", () => {
     // exists to pass through.
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("Failed to fetch")));
 
-    renderControl(<MeasureChoiceButtons electionId={ELECTION_ID} choice={undefined} />);
+    renderControl(<MeasureChoiceButtons electionId={ELECTION_ID} raceTitle="Prop A" electionDate="2026-11-03" choice={undefined} />);
 
     await userEvent.setup().click(screen.getByRole("button", { name: "No" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(
       "Couldn't save — check your connection and try again."
     );
+  });
+});
+
+describe("guest mode (no session)", () => {
+  it("writes a candidate pick to the local draft with no API call", async () => {
+    mockMe = null;
+    const fetchMock = stubApiRoutes({});
+
+    renderControl(
+      <CandidatePickButton electionId={ELECTION_ID} candidateId={CANDIDATE_ID} candidateName="Jane Doe" raceTitle="Governor" electionDate="2026-11-03" choice={undefined} seatsToFill={null} />
+    );
+
+    await userEvent.setup().click(screen.getByRole("button", { name: "Make my pick: Jane Doe" }));
+    const row = readBallotDraft().choices[ELECTION_ID];
+    expect(row.picks).toEqual([
+      { candidate_id: CANDIDATE_ID, display_name: "Jane Doe", candidacy_status: "active" },
+    ]);
+    expect(row.official_ballot_title).toBe("Governor");
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("writes a measure position to the local draft with no API call", async () => {
+    mockMe = null;
+    const fetchMock = stubApiRoutes({});
+
+    renderControl(<MeasureChoiceButtons electionId={ELECTION_ID} raceTitle="Prop A" electionDate="2026-11-03" choice={undefined} />);
+
+    await userEvent.setup().click(screen.getByRole("button", { name: "No" }));
+    expect(readBallotDraft().choices[ELECTION_ID].measure_position).toBe("no");
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 });
