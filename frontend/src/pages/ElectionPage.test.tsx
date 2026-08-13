@@ -1474,3 +1474,68 @@ describe("ElectionPage ballot pager", () => {
     expect(within(pager).queryByRole("link", { name: /^(Previous|Next):/ })).not.toBeInTheDocument();
   });
 });
+
+// The desktop split-screen rail (aria-label "Ballot", vs the pager's "Ballot
+// navigation" — distinct names because both are in the DOM and CSS decides
+// which is visible per viewport). Same gate as prev/next: a validated
+// sequence containing the current election.
+describe("ElectionPage ballot rail", () => {
+  const CONTESTS = [
+    { id: "e-1", title: "Governor" },
+    { id: "e-2", title: "Mayor" },
+    { id: "e-3", title: "Sheriff" },
+  ];
+  const ARRIVAL = { backTo: { path: "/ballot?d=d-1", label: "All elections" }, contests: CONTESTS };
+  const perIdLoader = ({ params }: { params: { electionId?: string } }) =>
+    electionDetail({ id: params.electionId });
+
+  it("renders the ballot sequence with the current contest highlighted, not linked", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(perIdLoader, "e-2", ARRIVAL);
+
+    const rail = await screen.findByRole("navigation", { name: "Ballot" });
+    expect(within(rail).getByRole("link", { name: "Governor" })).toHaveAttribute("href", "/elections/e-1");
+    expect(within(rail).getByRole("link", { name: "Sheriff" })).toHaveAttribute("href", "/elections/e-3");
+    // The current contest is text with aria-current, not a link.
+    expect(within(rail).queryByRole("link", { name: "Mayor" })).not.toBeInTheDocument();
+    expect(within(rail).getByText("Mayor")).toHaveAttribute("aria-current", "page");
+    // The exit control: same destination and state contract as the pager's
+    // back slot.
+    expect(within(rail).getByRole("link", { name: "Back to All elections" })).toHaveAttribute(
+      "href",
+      "/ballot?d=d-1"
+    );
+  });
+
+  it("keeps the rail through a sibling walk, forwarding the arrival state verbatim", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const { router } = renderElection(perIdLoader, "e-2", ARRIVAL);
+
+    const rail = await screen.findByRole("navigation", { name: "Ballot" });
+    await user.click(within(rail).getByRole("link", { name: "Sheriff" }));
+
+    expect(router.state.location.pathname).toBe("/elections/e-3");
+    expect(router.state.location.state).toEqual(ARRIVAL);
+    // The next page re-renders the rail with the new current entry.
+    const nextRail = await screen.findByRole("navigation", { name: "Ballot" });
+    expect(within(nextRail).getByText("Sheriff")).toHaveAttribute("aria-current", "page");
+    expect(within(nextRail).getByRole("link", { name: "Mayor" })).toHaveAttribute("href", "/elections/e-2");
+  });
+
+  it("renders no rail on deep links or stale snapshots (pager rules apply)", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    // Deep link: no router state at all.
+    renderElection(perIdLoader, "e-1");
+    await screen.findByRole("heading", { name: "Governor" });
+    expect(screen.queryByRole("navigation", { name: "Ballot" })).not.toBeInTheDocument();
+
+    // Stale snapshot: current election missing from the sequence — the back
+    // bar survives (its own gate), the rail does not.
+    renderElection(perIdLoader, "e-9", { ...ARRIVAL });
+    await waitFor(() =>
+      expect(screen.getAllByRole("navigation", { name: "Ballot navigation" })).toHaveLength(1)
+    );
+    expect(screen.queryByRole("navigation", { name: "Ballot" })).not.toBeInTheDocument();
+  });
+});

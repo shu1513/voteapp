@@ -3,6 +3,7 @@ import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError }
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { ElectionDetail, PartyBucket } from "@voteapp/api-client";
 import { DetailPager } from "../components/DetailPager";
+import { DetailRail } from "../components/DetailRail";
 import { pagerNeighbors, readElectionNavState, type CandidateNavState } from "../lib/detailNavContext";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
@@ -207,6 +208,11 @@ export function ElectionPage() {
   // slot only) on single-contest lists or when this election fell out of
   // the snapshot.
   const contestNeighbors = pagerNeighbors(navState?.contests, data.id);
+  // Desktop rail: the same validated ballot sequence under the same guard as
+  // prev/next (pagerNeighbors is null unless the list has >= 2 entries and
+  // contains this election). navState is re-read only for the type system —
+  // non-null neighbors implies it.
+  const railContests = contestNeighbors !== null ? (navState?.contests ?? null) : null;
   // Computed once, before render: the roster links hand the candidate page
   // this exact displayed order (sort + party + records filters applied), so
   // the JSX and the state payload must come from the same array.
@@ -223,572 +229,604 @@ export function ElectionPage() {
     })),
   };
 
+  // The nav bar at the top: prev | back | next, each slot captioned.
+  // backToState: when the back destination is a candidate page, restore
+  // its own context (the mirror of the roster links' backState). With the
+  // rail on screen (lg+) the bar is redundant, so it drops to narrow
+  // screens only; rail-less arrivals keep it at every width.
+  const pagerBar = navState ? (
+    <DetailPager
+      ariaLabel="Ballot navigation"
+      prev={
+        contestNeighbors?.prev
+          ? { path: `/elections/${contestNeighbors.prev.id}`, label: contestNeighbors.prev.title }
+          : null
+      }
+      next={
+        contestNeighbors?.next
+          ? { path: `/elections/${contestNeighbors.next.id}`, label: contestNeighbors.next.title }
+          : null
+      }
+      backTo={navState.backTo}
+      backToState={navState.backState}
+      siblingState={navState}
+    />
+  ) : null;
+
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
-      {/* One nav bar at the top: prev | back | next, each slot captioned.
-          backToState: when the back destination is a candidate page, restore
-          its own context (the mirror of the roster links' backState). */}
-      {navState ? (
-        <DetailPager
-          ariaLabel="Ballot navigation"
-          prev={
-            contestNeighbors?.prev
-              ? { path: `/elections/${contestNeighbors.prev.id}`, label: contestNeighbors.prev.title }
-              : null
-          }
-          next={
-            contestNeighbors?.next
-              ? { path: `/elections/${contestNeighbors.next.id}`, label: contestNeighbors.next.title }
-              : null
-          }
+    // With rail context the page widens to a two-column grid on lg+ (rail |
+    // detail); without it — deep links, stale snapshots — the markup is the
+    // classic centered column at every width.
+    <div
+      className={
+        railContests !== null
+          ? "mx-auto max-w-3xl px-4 py-8 lg:grid lg:max-w-6xl lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-8"
+          : "mx-auto max-w-3xl px-4 py-8"
+      }
+    >
+      {railContests !== null && navState !== null ? (
+        <DetailRail
+          ariaLabel="Ballot"
+          entries={railContests.map((contest) => ({
+            id: contest.id,
+            label: contest.title,
+            path: `/elections/${contest.id}`,
+          }))}
+          currentId={data.id}
           backTo={navState.backTo}
           backToState={navState.backState}
           siblingState={navState}
         />
       ) : null}
-      <JsonLdScript
-        data={{
-          "@type": "Event",
-          name: data.official_ballot_title,
-          startDate: data.election_date,
-          location: { "@type": "AdministrativeArea", name: formatDistrictName(data.district.name) },
-        }}
-      />
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">{data.official_ballot_title}</h1>
-        <ShareButton
-          path={`/elections/${data.id}`}
-          shareText={`${data.official_ballot_title} — ${formatElectionDate(data.election_date)}`}
+      {/* min-w-0: the grid column must be allowed to shrink or long titles
+          blow the layout; lg:max-w-3xl keeps the reading measure of the
+          classic column even though the grid column is wider. */}
+      <div className="min-w-0 lg:max-w-3xl">
+        {railContests !== null ? <div className="lg:hidden">{pagerBar}</div> : pagerBar}
+        <JsonLdScript
+          data={{
+            "@type": "Event",
+            name: data.official_ballot_title,
+            startDate: data.election_date,
+            location: { "@type": "AdministrativeArea", name: formatDistrictName(data.district.name) },
+          }}
         />
-      </div>
-      <p className="mt-1 text-sm text-ink-soft">
-        {formatElectionDate(data.election_date)} · {formatDistrictName(data.district.name)} ·{" "}
-        {formatDistrictType(data.district.district_type)}
-        {data.election_stage ? <> · {data.election_stage}</> : null}
-        {data.seats_to_fill != null && data.seats_to_fill > 1 ? <> · {data.seats_to_fill} seats</> : null}
-      </p>
-      {/* The detail page has room for the whole caveat, where the ballot card
-          only has room to flag it. Same rule as ElectionCard: name the seat's
-          area, say plainly that we cannot match an address to it, and never
-          imply the race was filtered in or out. */}
-      {data.sub_district_seat ? (
-        <p className="mt-2 rounded-lg border border-line bg-surface/50 px-3 py-2 text-sm text-ink-soft">
-          This seat represents <span className="font-medium text-ink">{data.sub_district_seat}</span>, not the whole
-          district above. We can&rsquo;t match an address to an area this small, so this race may not be on your ballot.
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-2xl font-bold">{data.official_ballot_title}</h1>
+          <ShareButton
+            path={`/elections/${data.id}`}
+            shareText={`${data.official_ballot_title} — ${formatElectionDate(data.election_date)}`}
+          />
+        </div>
+        <p className="mt-1 text-sm text-ink-soft">
+          {formatElectionDate(data.election_date)} · {formatDistrictName(data.district.name)} ·{" "}
+          {formatDistrictType(data.district.district_type)}
+          {data.election_stage ? <> · {data.election_stage}</> : null}
+          {data.seats_to_fill != null && data.seats_to_fill > 1 ? <> · {data.seats_to_fill} seats</> : null}
         </p>
-      ) : null}
-      <div className="mt-2 flex flex-wrap gap-2 text-xs">
-        {data.vote_power.label !== "unknown" ? (
-          <span className={`font-medium ${votePowerBadgeClass(data.vote_power.label)}`}>
-            My vote impact: {formatVotePowerLabel(data.vote_power.label)}
-          </span>
+        {/* The detail page has room for the whole caveat, where the ballot card
+            only has room to flag it. Same rule as ElectionCard: name the seat's
+            area, say plainly that we cannot match an address to it, and never
+            imply the race was filtered in or out. */}
+        {data.sub_district_seat ? (
+          <p className="mt-2 rounded-lg border border-line bg-surface/50 px-3 py-2 text-sm text-ink-soft">
+            This seat represents <span className="font-medium text-ink">{data.sub_district_seat}</span>, not the whole
+            district above. We can&rsquo;t match an address to an area this small, so this race may not be on your ballot.
+          </p>
         ) : null}
-        {data.historical_competitiveness ? (
-          <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
-            {data.historical_competitiveness.display_label}
-          </span>
-        ) : null}
-      </div>
-      {data.vote_power.label !== "unknown" && data.vote_power.explanation ? (
-        <details className="mt-2 text-sm">
-          <summary className="cursor-pointer text-xs font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
-            How do we calculate my vote impact?
-          </summary>
-          <div className="mt-2 rounded-xl border border-line bg-white p-4">
-            <p className="text-ink">{data.vote_power.explanation.how}</p>
-            {/* One row per graded measure, formula-style: title, grade, this
-                election's actual numbers, then a one-line why. */}
-            <div className="mt-3 space-y-2">
-              {data.vote_power.explanation.parts.map((part) => (
-                <div key={part.title} className="rounded-lg bg-surface p-3">
-                  <p className="text-ink">
-                    <span className="font-semibold">{part.title}:</span>{" "}
-                    <span className="font-medium">{part.grade}</span>
-                    {part.stat ? <span className="text-ink-soft"> · {part.stat}</span> : null}
-                  </p>
-                  <p className="mt-1 text-xs text-ink-soft">{part.detail}</p>
-                  {part.formula ? (
-                    <p className="mt-1 break-words font-mono text-[11px] leading-relaxed text-ink-soft">
-                      {part.formula}
-                    </p>
-                  ) : null}
-                </div>
-              ))}
-            </div>
-            <p className="mt-3 font-medium text-ink">{data.vote_power.explanation.result}</p>
-            {data.vote_power.explanation.caveat ? (
-              <p className="mt-2 text-xs text-ink-soft">{data.vote_power.explanation.caveat}</p>
-            ) : null}
-          </div>
-        </details>
-      ) : null}
-
-      {showOfficeInfo ? (
-        // Description first, then what the election affects — what the office does,
-        // then which issues it touches.
-        <section className="mt-6 rounded-xl border border-line bg-white p-4">
-          <h2 className="text-lg font-semibold">
-            {office ? `${officeHeadingName(office.canonical_name)} is responsible for:` : "About this office"}
-          </h2>
-          {office ? (
-            // The summary is seeded as newline-separated duty bullets
-            // (seedOffices.ts); a legacy single-paragraph summary renders as
-            // one bullet until the seed is re-run.
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink">
-              {office.summary
-                .split("\n")
-                .filter((line) => line.trim() !== "")
-                .map((line, i) => (
-                  <li key={i}>{line}</li>
-                ))}
-            </ul>
+        <div className="mt-2 flex flex-wrap gap-2 text-xs">
+          {data.vote_power.label !== "unknown" ? (
+            <span className={`font-medium ${votePowerBadgeClass(data.vote_power.label)}`}>
+              My vote impact: {formatVotePowerLabel(data.vote_power.label)}
+            </span>
           ) : null}
-          {researchAreas.length > 0 ? (
-            // Same one-list, comma-separated presentation as the ballot
-            // cards: saved matches lead with a screen-reader-only "(saved)"
-            // cue, position is the only sighted distinction.
-            <p className="mt-3 text-xs">
-              {/* Same verb label as the ballot cards — see ElectionCard. */}
-              <span className="font-medium text-ink-soft">Affects:</span>{" "}
-              {/* Comma separators live outside the spans as plain text
-                  nodes, so each span's text stays exactly the area name. */}
-              {[...orderedAreas.saved, ...orderedAreas.others].map((area, index, all) => (
-                <Fragment key={area.id}>
-                  <span className={AREA_TEXT_CLASS}>
-                    {area.name}
-                    {orderedAreas.saved.includes(area) ? <span className="sr-only"> (saved)</span> : null}
-                  </span>
-                  {index < all.length - 1 ? ", " : null}
-                </Fragment>
-              ))}
-            </p>
+          {data.historical_competitiveness ? (
+            <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
+              {data.historical_competitiveness.display_label}
+            </span>
           ) : null}
-        </section>
-      ) : null}
-
-      {measure ? (
-        <section className="mt-6 rounded-xl border border-line bg-white p-4">
-          <h2 className="text-lg font-semibold text-dem-blue">Ballot Measure</h2>
-          {measure.research_area_tags.length > 0 ? (
-            // Comma-separated colored text, not boxed chips (boxes read as
-            // buttons). Tags group by stance under a leading verb
-            // ("Supports: X, Y" / "Opposes: Z") so the direction reads once
-            // per group instead of as a "(for)" suffix on every name. Color
-            // matches the YES/NO boxes below (green = supports, red =
-            // opposes), but the verb carries the meaning — color alone would
-            // be invisible to color-blind readers. Stanceless tags keep the
-            // ballot cards' "Affects:" label and saved/muted styling, and
-            // saved areas keep the sr-only cue used elsewhere.
-            <div className="mt-2 space-y-1 text-xs">
-              {(
-                [
-                  ["Supports:", "for", "font-medium text-green-900"],
-                  ["Opposes:", "against", "font-medium text-red-900"],
-                ] as const
-              ).map(([label, stance, tagClass]) => {
-                const tags = measure.research_area_tags.filter((tag) => tag.stance === stance);
-                if (tags.length === 0) {
-                  return null;
-                }
-                return (
-                  <p key={stance}>
-                    <span className="font-medium text-ink-soft">{label}</span>{" "}
-                    {tags.map((tag, index, all) => (
-                      <Fragment key={tag.research_area_id}>
-                        <span className={tagClass}>
-                          {tag.name}
-                          {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
-                        </span>
-                        {index < all.length - 1 ? ", " : null}
-                      </Fragment>
-                    ))}
-                  </p>
-                );
-              })}
-              {measure.research_area_tags.some((tag) => tag.stance !== "for" && tag.stance !== "against") ? (
-                <p>
-                  <span className="font-medium text-ink-soft">Affects:</span>{" "}
-                  {measure.research_area_tags
-                    .filter((tag) => tag.stance !== "for" && tag.stance !== "against")
-                    .map((tag, index, all) => (
-                      <Fragment key={tag.research_area_id}>
-                        <span
-                          className={
-                            savedAreaIds.has(tag.research_area_id) ? "font-medium text-green-900" : "text-ink-soft"
-                          }
-                        >
-                          {tag.name}
-                          {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
-                        </span>
-                        {index < all.length - 1 ? ", " : null}
-                      </Fragment>
-                    ))}
-                </p>
-              ) : null}
-            </div>
-          ) : null}
-          {measure.summary ? <p className="mt-2 text-sm text-ink">{measure.summary}</p> : null}
-          {measure.official_measure_url ? (
-            <p className="mt-2 text-sm">
-              <a
-                href={measure.official_measure_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-ink underline underline-offset-2 hover:text-ink-soft"
-              >
-                {isGovernmentUrl(measure.official_measure_url)
-                  ? `Read the official ballot measure${isPdfUrl(measure.official_measure_url) ? " (PDF)" : ""}`
-                  : "More about this measure"}
-              </a>
-            </p>
-          ) : null}
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
-            <div className="rounded border border-green-200 bg-green-50 p-3">
-              <h3 className="text-sm font-semibold text-green-900">A YES vote means</h3>
-              <p className="mt-1 text-sm text-green-900">{measure.what_yes_means}</p>
-            </div>
-            <div className="rounded border border-red-200 bg-red-50 p-3">
-              <h3 className="text-sm font-semibold text-red-900">A NO vote means</h3>
-              <p className="mt-1 text-sm text-red-900">{measure.what_no_means}</p>
-            </div>
-          </div>
-          {showChoiceControls ? (
-            <div className="mt-3">
-              <MeasureChoiceButtons
-                electionId={data.id}
-                raceTitle={data.official_ballot_title}
-                electionDate={data.election_date}
-                choice={myChoice}
-              />
-            </div>
-          ) : null}
-          {measure.results.length > 0 ? (
-            <div className="mt-3">
-              <h3 className="text-sm font-semibold">Results</h3>
-              {hasCertifiedRow(measure.results) ? null : (
-                <p className="mt-1 text-xs text-ink-soft">
-                  Unofficial until certified by the relevant election authority.
-                </p>
-              )}
-              <ul className="mt-2 space-y-3">
-                {measure.results.map((result) => (
-                  <li key={result.id} className="text-sm">
+        </div>
+        {data.vote_power.label !== "unknown" && data.vote_power.explanation ? (
+          <details className="mt-2 text-sm">
+            <summary className="cursor-pointer text-xs font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
+              How do we calculate my vote impact?
+            </summary>
+            <div className="mt-2 rounded-xl border border-line bg-white p-4">
+              <p className="text-ink">{data.vote_power.explanation.how}</p>
+              {/* One row per graded measure, formula-style: title, grade, this
+                  election's actual numbers, then a one-line why. */}
+              <div className="mt-3 space-y-2">
+                {data.vote_power.explanation.parts.map((part) => (
+                  <div key={part.title} className="rounded-lg bg-surface p-3">
                     <p className="text-ink">
-                      <span className="font-medium">{formatOutcome(result.outcome)}</span>
-                      {result.result_status ? (
-                        <span className="text-ink-soft"> · {formatOutcome(result.result_status)}</span>
-                      ) : null}
+                      <span className="font-semibold">{part.title}:</span>{" "}
+                      <span className="font-medium">{part.grade}</span>
+                      {part.stat ? <span className="text-ink-soft"> · {part.stat}</span> : null}
                     </p>
-                    <SourceLine url={result.source_url} researchedDate={result.retrieved_at.slice(0, 10)} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : measure.result ? (
-            // Legacy canonical outcome kept as a fallback for measures whose
-            // result predates the per-pass results rows.
-            <p className="mt-3 text-sm font-medium">
-              Result: <span className={measure.result === "passed" ? "text-green-700" : "text-red-700"}>{measure.result}</span>
-            </p>
-          ) : null}
-          {[...new Set(measure.source_urls)]
-            .filter((url) => url !== measure.official_measure_url)
-            .map((url) => (
-              <SourceLine key={url} url={url} />
-            ))}
-          <div className="mt-3">
-            <ReportContentButton
-              entityType="ballot_measure"
-              entityId={measure.id}
-              contextLabel="ballot measure"
-              reporterEmail={me?.email}
-            />
-          </div>
-        </section>
-      ) : null}
-
-      {data.candidates.length > 0 ? (
-        <section className="mt-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-lg font-semibold">Candidates</h2>
-            {showChoiceControls && data.seats_to_fill != null && data.seats_to_fill > 1 ? (
-              <span className="text-xs text-ink-soft">
-                This election fills {data.seats_to_fill} seats — pick up to {data.seats_to_fill} candidates.
-              </span>
-            ) : null}
-            {hasSaved && data.candidates.length > 1 ? (
-              <label className="flex items-center gap-2 text-sm text-ink-soft">
-                Sort by
-                <select
-                  value={candidateSort}
-                  onChange={(event) => setChosenSort(event.target.value as CandidateSort)}
-                  className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
-                >
-                  <option value="my_issues">My issues first</option>
-                  <option value="alphabetical">Alphabetical</option>
-                </select>
-              </label>
-            ) : null}
-          </div>
-          {showPartyFilter ? (
-            <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Filter candidates by party">
-              {[{ bucket: "all" as const, label: "All" }, ...presentPartyOptions].map((option) => (
-                <button
-                  key={option.bucket}
-                  type="button"
-                  onClick={() => setPartyPick({ electionId: data.id, bucket: option.bucket })}
-                  aria-pressed={partyFilter === option.bucket}
-                  className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
-                    partyFilter === option.bucket
-                      ? "border-ink bg-ink text-white"
-                      : "border-line bg-white text-ink hover:bg-surface"
-                  }`}
-                >
-                  {option.bucket === "all"
-                    ? `All (${data.candidates.length})`
-                    : `${option.label} (${partyCounts[option.bucket]})`}
-                </button>
-              ))}
-            </div>
-          ) : null}
-          {showRecordsFilter ? (
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setRecordsPick({ electionId: data.id, on: !recordsFilterOn })}
-                aria-pressed={recordsFilterOn}
-                className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
-                  recordsFilterOn
-                    ? "border-ink bg-ink text-white"
-                    : "border-line bg-white text-ink hover:bg-surface"
-                }`}
-              >
-                Has a record on my issues
-              </button>
-              {recordsFilterOn && hiddenByRecordsFilter > 0 ? (
-                // The hidden count is always visible while the filter hides
-                // anyone: no records ≠ no stances (rosters are unevenly
-                // researched), so the filtered list must never look like the
-                // full roster. At 0 hidden there is nothing concealed and
-                // the pressed chip alone carries the state.
-                <span className="text-xs text-ink-soft">
-                  {hiddenByRecordsFilter} candidate{hiddenByRecordsFilter === 1 ? "" : "s"} hidden ·{" "}
-                  <button
-                    type="button"
-                    onClick={() => setRecordsPick({ electionId: data.id, on: false })}
-                    className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink"
-                  >
-                    Show all
-                  </button>
-                </span>
-              ) : null}
-            </div>
-          ) : null}
-          <div className="mt-3 space-y-3">
-            {orderedCandidates.map(({ candidate, stances }) => (
-              // Whole-card click target via a stretched link: the name
-              // Link's ::after overlays the wrapper. Campaign finance is
-              // deliberately NOT rendered here — it lives on the candidate
-              // profile page only. Following also happens there.
-              <div
-                key={candidate.candidate_id}
-                // Faint tint at rest; hover matches the ballot cards — brand
-                // border plus the name taking the link color (group-hover).
-                className="group relative rounded-xl border border-line bg-surface/50 shadow-sm transition hover:border-rausch hover:shadow-md"
-              >
-                <div className="p-4">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    {/* The badge sits beside the heading, not inside it (an
-                        in-heading badge fuses into the accessible name —
-                        "Jordan VoterAdvanced"), and the wrapper is a div
-                        because a heading is flow content, invalid in a span. */}
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold">
-                        <Link
-                          to={`/candidates/${candidate.candidate_id}`}
-                          state={candidateNavState}
-                          // rausch-deep, not -dark: AA contrast on the tinted card
-                          // bg — see ElectionCard's title.
-                          className="transition after:absolute after:inset-0 group-hover:text-rausch-deep"
-                        >
-                          {candidate.display_name}
-                        </Link>
-                      </h3>
-                      {(() => {
-                        const badge = resultBadges.get(candidate.candidate_id);
-                        if (!badge) {
-                          return null;
-                        }
-                        return (
-                          <span
-                            className={
-                              badge.kind === "winner"
-                                ? "rounded border border-green-700 bg-green-50 px-2 py-0.5 text-xs font-medium text-green-900"
-                                : "rounded border border-red-700 bg-red-50 px-2 py-0.5 text-xs font-medium text-red-900"
-                            }
-                          >
-                            {badge.label}
-                          </span>
-                        );
-                      })()}
-                    </div>
-                    {/* Withdrawn candidacies never reach this payload
-                        (ballotLookup filters them), but the writer also
-                        rejects withdrawn/lost — don't render a button whose
-                        only outcome is an error. */}
-                    {showChoiceControls &&
-                    candidate.status !== "withdrawn" &&
-                    candidate.status !== "lost" ? (
-                      // z-10 lifts the button above the card's stretched
-                      // link so clicking it doesn't navigate.
-                      <span className="relative z-10">
-                        <CandidatePickButton
-                          electionId={data.id}
-                          candidateId={candidate.candidate_id}
-                          candidateName={candidate.display_name}
-                          raceTitle={data.official_ballot_title}
-                          electionDate={data.election_date}
-                          choice={myChoice}
-                          seatsToFill={data.seats_to_fill ?? null}
-                          size="sm"
-                        />
-                      </span>
+                    <p className="mt-1 text-xs text-ink-soft">{part.detail}</p>
+                    {part.formula ? (
+                      <p className="mt-1 break-words font-mono text-[11px] leading-relaxed text-ink-soft">
+                        {part.formula}
+                      </p>
                     ) : null}
                   </div>
-                  <p className="text-sm text-ink-soft">
-                    {candidate.party}
-                    {candidate.is_incumbent ? " · Incumbent" : ""}
-                    {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
-                  </p>
-                  {candidate.summary ? (
-                    <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>
-                  ) : null}
-                  {stances.length > 0 ? (
-                    // Comma-separated colored text, not boxed chips (boxes
-                    // read as buttons). Stance direction colors the name:
-                    // all-for green, all-against red, mixed amber —
-                    // replacing the saved-area green, which said nothing
-                    // about the candidate (saved areas keep their sr-only
-                    // cue). Counts compress to +N/-N; screen readers get the
-                    // spelled-out counts instead, since "-2" can be read as
-                    // just "2". Every stance has for_count + against_count
-                    // >= 1 — aggregateRecordAreaStances drops
-                    // neutral/untagged records — so "against == 0" can only
-                    // mean all-for.
-                    <p className="mt-2 text-xs">
-                      {/* Without a label the row was a bare "Housing
-                          Affordability +1" — an issue name and a number with
-                          nothing saying what was counted. "Records:" names
-                          the source, matching the "Affects:" row on
-                          the election cards. */}
-                      <span className="font-medium text-ink-soft">Records:</span>{" "}
-                      {stances.map((stance, index, all) => (
-                        <Fragment key={stance.research_area_id}>
-                          <span
-                            className={
-                              stance.against_count === 0
-                                ? "font-medium text-green-900"
-                                : stance.for_count === 0
-                                  ? "font-medium text-red-900"
-                                  : "font-medium text-amber-900"
-                            }
-                          >
-                          {stance.name}{" "}
-                          <span aria-hidden="true">
-                            {[
-                              stance.for_count > 0 ? `+${stance.for_count}` : null,
-                              stance.against_count > 0 ? `-${stance.against_count}` : null,
-                            ]
-                              .filter(Boolean)
-                              .join(" ")}
-                          </span>
-                          <span className="sr-only">
-                            {[
-                              stance.for_count > 0 ? `${stance.for_count} for` : null,
-                              stance.against_count > 0 ? `${stance.against_count} against` : null,
-                            ]
-                              .filter(Boolean)
-                              .join(", ")}
-                          </span>
-                            {savedAreaIds.has(stance.research_area_id) ? (
-                              <span className="sr-only"> (saved)</span>
-                            ) : null}
+                ))}
+              </div>
+              <p className="mt-3 font-medium text-ink">{data.vote_power.explanation.result}</p>
+              {data.vote_power.explanation.caveat ? (
+                <p className="mt-2 text-xs text-ink-soft">{data.vote_power.explanation.caveat}</p>
+              ) : null}
+            </div>
+          </details>
+        ) : null}
+
+        {showOfficeInfo ? (
+          // Description first, then what the election affects — what the office does,
+          // then which issues it touches.
+          <section className="mt-6 rounded-xl border border-line bg-white p-4">
+            <h2 className="text-lg font-semibold">
+              {office ? `${officeHeadingName(office.canonical_name)} is responsible for:` : "About this office"}
+            </h2>
+            {office ? (
+              // The summary is seeded as newline-separated duty bullets
+              // (seedOffices.ts); a legacy single-paragraph summary renders as
+              // one bullet until the seed is re-run.
+              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink">
+                {office.summary
+                  .split("\n")
+                  .filter((line) => line.trim() !== "")
+                  .map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+              </ul>
+            ) : null}
+            {researchAreas.length > 0 ? (
+              // Same one-list, comma-separated presentation as the ballot
+              // cards: saved matches lead with a screen-reader-only "(saved)"
+              // cue, position is the only sighted distinction.
+              <p className="mt-3 text-xs">
+                {/* Same verb label as the ballot cards — see ElectionCard. */}
+                <span className="font-medium text-ink-soft">Affects:</span>{" "}
+                {/* Comma separators live outside the spans as plain text
+                    nodes, so each span's text stays exactly the area name. */}
+                {[...orderedAreas.saved, ...orderedAreas.others].map((area, index, all) => (
+                  <Fragment key={area.id}>
+                    <span className={AREA_TEXT_CLASS}>
+                      {area.name}
+                      {orderedAreas.saved.includes(area) ? <span className="sr-only"> (saved)</span> : null}
+                    </span>
+                    {index < all.length - 1 ? ", " : null}
+                  </Fragment>
+                ))}
+              </p>
+            ) : null}
+          </section>
+        ) : null}
+
+        {measure ? (
+          <section className="mt-6 rounded-xl border border-line bg-white p-4">
+            <h2 className="text-lg font-semibold text-dem-blue">Ballot Measure</h2>
+            {measure.research_area_tags.length > 0 ? (
+              // Comma-separated colored text, not boxed chips (boxes read as
+              // buttons). Tags group by stance under a leading verb
+              // ("Supports: X, Y" / "Opposes: Z") so the direction reads once
+              // per group instead of as a "(for)" suffix on every name. Color
+              // matches the YES/NO boxes below (green = supports, red =
+              // opposes), but the verb carries the meaning — color alone would
+              // be invisible to color-blind readers. Stanceless tags keep the
+              // ballot cards' "Affects:" label and saved/muted styling, and
+              // saved areas keep the sr-only cue used elsewhere.
+              <div className="mt-2 space-y-1 text-xs">
+                {(
+                  [
+                    ["Supports:", "for", "font-medium text-green-900"],
+                    ["Opposes:", "against", "font-medium text-red-900"],
+                  ] as const
+                ).map(([label, stance, tagClass]) => {
+                  const tags = measure.research_area_tags.filter((tag) => tag.stance === stance);
+                  if (tags.length === 0) {
+                    return null;
+                  }
+                  return (
+                    <p key={stance}>
+                      <span className="font-medium text-ink-soft">{label}</span>{" "}
+                      {tags.map((tag, index, all) => (
+                        <Fragment key={tag.research_area_id}>
+                          <span className={tagClass}>
+                            {tag.name}
+                            {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
                           </span>
                           {index < all.length - 1 ? ", " : null}
                         </Fragment>
                       ))}
                     </p>
-                  ) : null}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : data.candidate_roster_status ? (
-        // Empty office roster: say WHY instead of hiding the section (roster
-        // awaiting certification, profiles being prepared, or unavailable).
-        <section className="mt-6">
-          <h2 className="text-lg font-semibold">Candidates</h2>
-          <p className="mt-3 rounded-xl border border-line bg-white p-4 text-sm text-ink-soft">
-            {formatRosterStatus(data.candidate_roster_status).long}
-          </p>
-        </section>
-      ) : null}
-
-      {data.results.length > 0 ? (
-        <section className="mt-6 rounded-xl border border-line bg-white p-4">
-          <h2 className="text-lg font-semibold">Results</h2>
-          {hasCertifiedRow(data.results) ? null : (
-            <p className="mt-1 text-xs text-ink-soft">
-              Unofficial until certified by the relevant election authority.
-            </p>
-          )}
-          <ul className="mt-2 space-y-3">
-            {data.results.map((result) => (
-              <li key={result.id} className="text-sm">
-                <p className="text-ink">
-                  <span className="font-medium">{formatOutcome(result.outcome)}</span>
-                  {result.result_status ? (
-                    <span className="text-ink-soft"> · {formatOutcome(result.result_status)}</span>
-                  ) : null}
-                </p>
-                {result.winners.length > 0 ? (
-                  <p className="text-ink-soft">
-                    Winner{result.winners.length === 1 ? "" : "s"}:{" "}
-                    {result.winners
-                      .map((winner) =>
-                        winner.party ? `${winner.candidate_name ?? "Unknown"} (${winner.party})` : winner.candidate_name ?? "Unknown"
-                      )
-                      .join(", ")}
+                  );
+                })}
+                {measure.research_area_tags.some((tag) => tag.stance !== "for" && tag.stance !== "against") ? (
+                  <p>
+                    <span className="font-medium text-ink-soft">Affects:</span>{" "}
+                    {measure.research_area_tags
+                      .filter((tag) => tag.stance !== "for" && tag.stance !== "against")
+                      .map((tag, index, all) => (
+                        <Fragment key={tag.research_area_id}>
+                          <span
+                            className={
+                              savedAreaIds.has(tag.research_area_id) ? "font-medium text-green-900" : "text-ink-soft"
+                            }
+                          >
+                            {tag.name}
+                            {savedAreaIds.has(tag.research_area_id) ? <span className="sr-only"> (saved)</span> : null}
+                          </span>
+                          {index < all.length - 1 ? ", " : null}
+                        </Fragment>
+                      ))}
                   </p>
                 ) : null}
-                <SourceLine url={result.source_url} researchedDate={result.retrieved_at.slice(0, 10)} />
-              </li>
+              </div>
+            ) : null}
+            {measure.summary ? <p className="mt-2 text-sm text-ink">{measure.summary}</p> : null}
+            {measure.official_measure_url ? (
+              <p className="mt-2 text-sm">
+                <a
+                  href={measure.official_measure_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-ink underline underline-offset-2 hover:text-ink-soft"
+                >
+                  {isGovernmentUrl(measure.official_measure_url)
+                    ? `Read the official ballot measure${isPdfUrl(measure.official_measure_url) ? " (PDF)" : ""}`
+                    : "More about this measure"}
+                </a>
+              </p>
+            ) : null}
+            <div className="mt-3 grid gap-3 sm:grid-cols-2">
+              <div className="rounded border border-green-200 bg-green-50 p-3">
+                <h3 className="text-sm font-semibold text-green-900">A YES vote means</h3>
+                <p className="mt-1 text-sm text-green-900">{measure.what_yes_means}</p>
+              </div>
+              <div className="rounded border border-red-200 bg-red-50 p-3">
+                <h3 className="text-sm font-semibold text-red-900">A NO vote means</h3>
+                <p className="mt-1 text-sm text-red-900">{measure.what_no_means}</p>
+              </div>
+            </div>
+            {showChoiceControls ? (
+              <div className="mt-3">
+                <MeasureChoiceButtons
+                  electionId={data.id}
+                  raceTitle={data.official_ballot_title}
+                  electionDate={data.election_date}
+                  choice={myChoice}
+                />
+              </div>
+            ) : null}
+            {measure.results.length > 0 ? (
+              <div className="mt-3">
+                <h3 className="text-sm font-semibold">Results</h3>
+                {hasCertifiedRow(measure.results) ? null : (
+                  <p className="mt-1 text-xs text-ink-soft">
+                    Unofficial until certified by the relevant election authority.
+                  </p>
+                )}
+                <ul className="mt-2 space-y-3">
+                  {measure.results.map((result) => (
+                    <li key={result.id} className="text-sm">
+                      <p className="text-ink">
+                        <span className="font-medium">{formatOutcome(result.outcome)}</span>
+                        {result.result_status ? (
+                          <span className="text-ink-soft"> · {formatOutcome(result.result_status)}</span>
+                        ) : null}
+                      </p>
+                      <SourceLine url={result.source_url} researchedDate={result.retrieved_at.slice(0, 10)} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : measure.result ? (
+              // Legacy canonical outcome kept as a fallback for measures whose
+              // result predates the per-pass results rows.
+              <p className="mt-3 text-sm font-medium">
+                Result: <span className={measure.result === "passed" ? "text-green-700" : "text-red-700"}>{measure.result}</span>
+              </p>
+            ) : null}
+            {[...new Set(measure.source_urls)]
+              .filter((url) => url !== measure.official_measure_url)
+              .map((url) => (
+                <SourceLine key={url} url={url} />
+              ))}
+            <div className="mt-3">
+              <ReportContentButton
+                entityType="ballot_measure"
+                entityId={measure.id}
+                contextLabel="ballot measure"
+                reporterEmail={me?.email}
+              />
+            </div>
+          </section>
+        ) : null}
+
+        {data.candidates.length > 0 ? (
+          <section className="mt-6">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <h2 className="text-lg font-semibold">Candidates</h2>
+              {showChoiceControls && data.seats_to_fill != null && data.seats_to_fill > 1 ? (
+                <span className="text-xs text-ink-soft">
+                  This election fills {data.seats_to_fill} seats — pick up to {data.seats_to_fill} candidates.
+                </span>
+              ) : null}
+              {hasSaved && data.candidates.length > 1 ? (
+                <label className="flex items-center gap-2 text-sm text-ink-soft">
+                  Sort by
+                  <select
+                    value={candidateSort}
+                    onChange={(event) => setChosenSort(event.target.value as CandidateSort)}
+                    className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
+                  >
+                    <option value="my_issues">My issues first</option>
+                    <option value="alphabetical">Alphabetical</option>
+                  </select>
+                </label>
+              ) : null}
+            </div>
+            {showPartyFilter ? (
+              <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Filter candidates by party">
+                {[{ bucket: "all" as const, label: "All" }, ...presentPartyOptions].map((option) => (
+                  <button
+                    key={option.bucket}
+                    type="button"
+                    onClick={() => setPartyPick({ electionId: data.id, bucket: option.bucket })}
+                    aria-pressed={partyFilter === option.bucket}
+                    className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
+                      partyFilter === option.bucket
+                        ? "border-ink bg-ink text-white"
+                        : "border-line bg-white text-ink hover:bg-surface"
+                    }`}
+                  >
+                    {option.bucket === "all"
+                      ? `All (${data.candidates.length})`
+                      : `${option.label} (${partyCounts[option.bucket]})`}
+                  </button>
+                ))}
+              </div>
+            ) : null}
+            {showRecordsFilter ? (
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setRecordsPick({ electionId: data.id, on: !recordsFilterOn })}
+                  aria-pressed={recordsFilterOn}
+                  className={`rounded-full border px-3 py-1 text-sm font-medium transition ${
+                    recordsFilterOn
+                      ? "border-ink bg-ink text-white"
+                      : "border-line bg-white text-ink hover:bg-surface"
+                  }`}
+                >
+                  Has a record on my issues
+                </button>
+                {recordsFilterOn && hiddenByRecordsFilter > 0 ? (
+                  // The hidden count is always visible while the filter hides
+                  // anyone: no records ≠ no stances (rosters are unevenly
+                  // researched), so the filtered list must never look like the
+                  // full roster. At 0 hidden there is nothing concealed and
+                  // the pressed chip alone carries the state.
+                  <span className="text-xs text-ink-soft">
+                    {hiddenByRecordsFilter} candidate{hiddenByRecordsFilter === 1 ? "" : "s"} hidden ·{" "}
+                    <button
+                      type="button"
+                      onClick={() => setRecordsPick({ electionId: data.id, on: false })}
+                      className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink"
+                    >
+                      Show all
+                    </button>
+                  </span>
+                ) : null}
+              </div>
+            ) : null}
+            <div className="mt-3 space-y-3">
+              {orderedCandidates.map(({ candidate, stances }) => (
+                // Whole-card click target via a stretched link: the name
+                // Link's ::after overlays the wrapper. Campaign finance is
+                // deliberately NOT rendered here — it lives on the candidate
+                // profile page only. Following also happens there.
+                <div
+                  key={candidate.candidate_id}
+                  // Faint tint at rest; hover matches the ballot cards — brand
+                  // border plus the name taking the link color (group-hover).
+                  className="group relative rounded-xl border border-line bg-surface/50 shadow-sm transition hover:border-rausch hover:shadow-md"
+                >
+                  <div className="p-4">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      {/* The badge sits beside the heading, not inside it (an
+                          in-heading badge fuses into the accessible name —
+                          "Jordan VoterAdvanced"), and the wrapper is a div
+                          because a heading is flow content, invalid in a span. */}
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold">
+                          <Link
+                            to={`/candidates/${candidate.candidate_id}`}
+                            state={candidateNavState}
+                            // rausch-deep, not -dark: AA contrast on the tinted card
+                            // bg — see ElectionCard's title.
+                            className="transition after:absolute after:inset-0 group-hover:text-rausch-deep"
+                          >
+                            {candidate.display_name}
+                          </Link>
+                        </h3>
+                        {(() => {
+                          const badge = resultBadges.get(candidate.candidate_id);
+                          if (!badge) {
+                            return null;
+                          }
+                          return (
+                            <span
+                              className={
+                                badge.kind === "winner"
+                                  ? "rounded border border-green-700 bg-green-50 px-2 py-0.5 text-xs font-medium text-green-900"
+                                  : "rounded border border-red-700 bg-red-50 px-2 py-0.5 text-xs font-medium text-red-900"
+                              }
+                            >
+                              {badge.label}
+                            </span>
+                          );
+                        })()}
+                      </div>
+                      {/* Withdrawn candidacies never reach this payload
+                          (ballotLookup filters them), but the writer also
+                          rejects withdrawn/lost — don't render a button whose
+                          only outcome is an error. */}
+                      {showChoiceControls &&
+                      candidate.status !== "withdrawn" &&
+                      candidate.status !== "lost" ? (
+                        // z-10 lifts the button above the card's stretched
+                        // link so clicking it doesn't navigate.
+                        <span className="relative z-10">
+                          <CandidatePickButton
+                            electionId={data.id}
+                            candidateId={candidate.candidate_id}
+                            candidateName={candidate.display_name}
+                            raceTitle={data.official_ballot_title}
+                            electionDate={data.election_date}
+                            choice={myChoice}
+                            seatsToFill={data.seats_to_fill ?? null}
+                            size="sm"
+                          />
+                        </span>
+                      ) : null}
+                    </div>
+                    <p className="text-sm text-ink-soft">
+                      {candidate.party}
+                      {candidate.is_incumbent ? " · Incumbent" : ""}
+                      {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
+                    </p>
+                    {candidate.summary ? (
+                      <p className="mt-2 line-clamp-3 text-sm text-ink">{candidate.summary}</p>
+                    ) : null}
+                    {stances.length > 0 ? (
+                      // Comma-separated colored text, not boxed chips (boxes
+                      // read as buttons). Stance direction colors the name:
+                      // all-for green, all-against red, mixed amber —
+                      // replacing the saved-area green, which said nothing
+                      // about the candidate (saved areas keep their sr-only
+                      // cue). Counts compress to +N/-N; screen readers get the
+                      // spelled-out counts instead, since "-2" can be read as
+                      // just "2". Every stance has for_count + against_count
+                      // >= 1 — aggregateRecordAreaStances drops
+                      // neutral/untagged records — so "against == 0" can only
+                      // mean all-for.
+                      <p className="mt-2 text-xs">
+                        {/* Without a label the row was a bare "Housing
+                            Affordability +1" — an issue name and a number with
+                            nothing saying what was counted. "Records:" names
+                            the source, matching the "Affects:" row on
+                            the election cards. */}
+                        <span className="font-medium text-ink-soft">Records:</span>{" "}
+                        {stances.map((stance, index, all) => (
+                          <Fragment key={stance.research_area_id}>
+                            <span
+                              className={
+                                stance.against_count === 0
+                                  ? "font-medium text-green-900"
+                                  : stance.for_count === 0
+                                    ? "font-medium text-red-900"
+                                    : "font-medium text-amber-900"
+                              }
+                            >
+                            {stance.name}{" "}
+                            <span aria-hidden="true">
+                              {[
+                                stance.for_count > 0 ? `+${stance.for_count}` : null,
+                                stance.against_count > 0 ? `-${stance.against_count}` : null,
+                              ]
+                                .filter(Boolean)
+                                .join(" ")}
+                            </span>
+                            <span className="sr-only">
+                              {[
+                                stance.for_count > 0 ? `${stance.for_count} for` : null,
+                                stance.against_count > 0 ? `${stance.against_count} against` : null,
+                              ]
+                                .filter(Boolean)
+                                .join(", ")}
+                            </span>
+                              {savedAreaIds.has(stance.research_area_id) ? (
+                                <span className="sr-only"> (saved)</span>
+                              ) : null}
+                            </span>
+                            {index < all.length - 1 ? ", " : null}
+                          </Fragment>
+                        ))}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : data.candidate_roster_status ? (
+          // Empty office roster: say WHY instead of hiding the section (roster
+          // awaiting certification, profiles being prepared, or unavailable).
+          <section className="mt-6">
+            <h2 className="text-lg font-semibold">Candidates</h2>
+            <p className="mt-3 rounded-xl border border-line bg-white p-4 text-sm text-ink-soft">
+              {formatRosterStatus(data.candidate_roster_status).long}
+            </p>
+          </section>
+        ) : null}
+
+        {data.results.length > 0 ? (
+          <section className="mt-6 rounded-xl border border-line bg-white p-4">
+            <h2 className="text-lg font-semibold">Results</h2>
+            {hasCertifiedRow(data.results) ? null : (
+              <p className="mt-1 text-xs text-ink-soft">
+                Unofficial until certified by the relevant election authority.
+              </p>
+            )}
+            <ul className="mt-2 space-y-3">
+              {data.results.map((result) => (
+                <li key={result.id} className="text-sm">
+                  <p className="text-ink">
+                    <span className="font-medium">{formatOutcome(result.outcome)}</span>
+                    {result.result_status ? (
+                      <span className="text-ink-soft"> · {formatOutcome(result.result_status)}</span>
+                    ) : null}
+                  </p>
+                  {result.winners.length > 0 ? (
+                    <p className="text-ink-soft">
+                      Winner{result.winners.length === 1 ? "" : "s"}:{" "}
+                      {result.winners
+                        .map((winner) =>
+                          winner.party ? `${winner.candidate_name ?? "Unknown"} (${winner.party})` : winner.candidate_name ?? "Unknown"
+                        )
+                        .join(", ")}
+                    </p>
+                  ) : null}
+                  <SourceLine url={result.source_url} researchedDate={result.retrieved_at.slice(0, 10)} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {data.sources.length > 0 ? (
+          <section className="mt-6">
+            <h2 className="text-sm font-semibold text-ink">Election sources</h2>
+            {/* Research passes can record the same source twice; showing the
+                repeat reads as a rendering bug. */}
+            {[...new Set(data.sources)].map((url) => (
+              <SourceLine key={url} url={url} />
             ))}
-          </ul>
-        </section>
-      ) : null}
+          </section>
+        ) : null}
 
-      {data.sources.length > 0 ? (
-        <section className="mt-6">
-          <h2 className="text-sm font-semibold text-ink">Election sources</h2>
-          {/* Research passes can record the same source twice; showing the
-              repeat reads as a rendering bug. */}
-          {[...new Set(data.sources)].map((url) => (
-            <SourceLine key={url} url={url} />
-          ))}
-        </section>
-      ) : null}
-
-      {/* Last on purpose: reporting is a reaction to reading the page, not a
-          headline action worth space above the candidates. */}
-      <div className="mt-6">
-        <ReportContentButton
-          entityType="election"
-          entityId={data.id}
-          contextLabel="election"
-          reporterEmail={me?.email}
-        />
+        {/* Last on purpose: reporting is a reaction to reading the page, not a
+            headline action worth space above the candidates. */}
+        <div className="mt-6">
+          <ReportContentButton
+            entityType="election"
+            entityId={data.id}
+            contextLabel="election"
+            reporterEmail={me?.email}
+          />
+        </div>
       </div>
     </div>
   );
