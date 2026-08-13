@@ -157,6 +157,38 @@ describe("RegisterPage clickwrap", () => {
     });
   });
 
+  it("explains the greyed-out Google button until the box is checked", async () => {
+    vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "test-client-id");
+    stubGis();
+    const user = userEvent.setup();
+    renderRegister();
+
+    // Visible without any interaction, so keyboard and mouse users alike see
+    // why the button is inactive.
+    expect(
+      screen.getByText("Check the box above to enable sign-up with Google.")
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole("checkbox"));
+    expect(
+      screen.queryByText("Check the box above to enable sign-up with Google.")
+    ).not.toBeInTheDocument();
+  });
+
+  it("hides the Google section and its divider when the client ID is not set", () => {
+    // Explicit empty: a developer's .env.local may set the real client ID,
+    // and Vite feeds it to vitest too.
+    vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "");
+    stubGis();
+    renderRegister();
+
+    expect(screen.queryByTestId("google-signin-button")).not.toBeInTheDocument();
+    expect(screen.queryByText("or")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Check the box above to enable sign-up with Google.")
+    ).not.toBeInTheDocument();
+  });
+
   it("forwards an internal next path to the login links", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 
 // "Sign in with Google" via Google Identity Services (GIS), JS-callback mode:
 // the rendered button hands the callback a Google-signed ID-token JWT, which
@@ -56,13 +57,22 @@ type GoogleSignInButtonProps = {
   /** GIS button label variant: register page vs login page. */
   text: "signup_with" | "signin_with";
   /** Blocks interaction (clickwrap gate / request in flight). The GIS button
-   * is an iframe with no disabled state, so the wrapper eats pointer events. */
+   * is an iframe with no disabled state, so the wrapper goes inert. */
   disabled?: boolean;
   onCredential: (credential: string) => void;
+  /** Rendered between the button and the trailing "or" divider (hints,
+   * errors) — and therefore hidden with them when Google is unavailable. */
+  children?: ReactNode;
 };
 
-export function GoogleSignInButton({ text, disabled = false, onCredential }: GoogleSignInButtonProps) {
+export function GoogleSignInButton({
+  text,
+  disabled = false,
+  onCredential,
+  children,
+}: GoogleSignInButtonProps) {
   const clientId = getClientId();
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   // The GIS callback is registered once per initialize(); route it through a
   // ref so it always calls the latest handler without re-initializing.
@@ -110,7 +120,10 @@ export function GoogleSignInButton({ text, disabled = false, onCredential }: Goo
           theme: "outline",
           size: "large",
           text,
-          width: 320,
+          // GIS treats width as a minimum and caps it at 400, so ask for the
+          // container's real width (narrow phones) up to that cap. Falls back
+          // to 400 when layout hasn't produced a width (e.g. jsdom).
+          width: Math.min(400, wrapperRef.current?.clientWidth || 400),
         });
       })
       .catch(() => {
@@ -128,8 +141,29 @@ export function GoogleSignInButton({ text, disabled = false, onCredential }: Goo
   }
 
   return (
-    <div aria-disabled={disabled} className={disabled ? "pointer-events-none opacity-50" : undefined}>
-      <div ref={containerRef} data-testid="google-signin-button" />
-    </div>
+    <>
+      {/* inert blocks keyboard focus into the GIS iframe as well as clicks —
+          pointer-events-none alone still let Tab+Enter run the Google flow
+          and silently drop the credential while the clickwrap is unchecked. */}
+      <div
+        ref={wrapperRef}
+        aria-disabled={disabled}
+        inert={disabled}
+        className={
+          disabled ? "pointer-events-none flex justify-center opacity-50" : "flex justify-center"
+        }
+      >
+        <div ref={containerRef} data-testid="google-signin-button" />
+      </div>
+      {children}
+      {/* The divider lives here, not in the pages: it separates Google from
+          the email form, so it must disappear with the button when the client
+          ID is unset or the GIS script fails (adblockers). */}
+      <div className="mt-6 flex items-center gap-3" aria-hidden="true">
+        <span className="h-px flex-1 bg-line" />
+        <span className="text-xs font-medium uppercase text-ink-soft">or</span>
+        <span className="h-px flex-1 bg-line" />
+      </div>
+    </>
   );
 }

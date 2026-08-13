@@ -76,6 +76,37 @@ export function LoginPage() {
     <div className="mx-auto max-w-md px-4 py-10">
       <h1 className="text-2xl font-bold">Log in</h1>
 
+      <div className="mt-6">
+        <GoogleSignInButton
+          text="signin_with"
+          disabled={authPending}
+          onCredential={(credential) => {
+            if (!authPending) {
+              googleLogin.mutate(credential);
+            }
+          }}
+        >
+          {googleLogin.isError ? (
+            <div className="mt-3">
+              {googleNeedsSignup ? (
+                <p className="rounded-lg border border-line bg-surface p-3 text-sm text-ink">
+                  No account uses that Google account yet.{" "}
+                  <Link
+                    to={next ? `/register?next=${encodeURIComponent(next)}` : "/register"}
+                    className="font-semibold underline hover:text-rausch"
+                  >
+                    Create your account
+                  </Link>{" "}
+                  to get started.
+                </p>
+              ) : (
+                <ErrorNotice error={googleLogin.error} />
+              )}
+            </div>
+          ) : null}
+        </GoogleSignInButton>
+      </div>
+
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -127,36 +158,6 @@ export function LoginPage() {
           <ErrorNotice error={login.error} />
         </div>
       ) : null}
-
-      <div className="mt-6">
-        <GoogleSignInButton
-          text="signin_with"
-          disabled={authPending}
-          onCredential={(credential) => {
-            if (!authPending) {
-              googleLogin.mutate(credential);
-            }
-          }}
-        />
-        {googleLogin.isError ? (
-          <div className="mt-3">
-            {googleNeedsSignup ? (
-              <p className="rounded-lg border border-line bg-surface p-3 text-sm text-ink">
-                No account uses that Google account yet.{" "}
-                <Link
-                  to={next ? `/register?next=${encodeURIComponent(next)}` : "/register"}
-                  className="font-semibold underline hover:text-rausch"
-                >
-                  Create your account
-                </Link>{" "}
-                to get started.
-              </p>
-            ) : (
-              <ErrorNotice error={googleLogin.error} />
-            )}
-          </div>
-        ) : null}
-      </div>
 
       <div className="mt-6 space-y-1 text-sm text-ink-soft">
         <p>
