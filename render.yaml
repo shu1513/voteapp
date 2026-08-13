@@ -191,6 +191,8 @@ services:
         value: "true"
       - key: PENNSYLVANIA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: PHOENIX_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
       - key: RHODE_ISLAND_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: SAN_DIEGO_CAMPAIGN_FINANCE_ENABLED

@@ -427,6 +427,17 @@ export function isLosAngelesCityCampaignFinanceSyncEnabled(force = false): boole
   );
 }
 
+export function isPhoenixCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("PHOENIX_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isPhoenixCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isPhoenixCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("PHOENIX_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isSanFranciscoCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("SAN_FRANCISCO_CAMPAIGN_FINANCE_ENABLED", false);
 }
