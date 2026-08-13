@@ -29,6 +29,25 @@ describe("App account nav", () => {
     renderApp();
     expect(await screen.findByRole("link", { name: "Log in" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sign up" })).toBeInTheDocument();
+    // A first-time visitor has no draft to link to — the nav stays clean
+    // until they've seen a ballot or made a pick.
+    expect(screen.queryByRole("link", { name: "My Ballot Draft" })).not.toBeInTheDocument();
+  });
+
+  it("shows the draft link once the guest has looked at a ballot", async () => {
+    stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
+    window.localStorage.setItem(
+      "voteapp_ballot_draft",
+      JSON.stringify({ v: 1, district_ids: ["d-1"], target: null, choices: {} })
+    );
+    window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
+    renderApp();
+    expect(await screen.findByRole("link", { name: "My Ballot Draft" })).toHaveAttribute(
+      "href",
+      "/draft"
+    );
+    window.localStorage.clear();
+    window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
   });
 
   it("renders inline links plus a small-screen menu with the same destinations", async () => {

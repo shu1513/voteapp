@@ -44,15 +44,17 @@ export function useMyPicksProgress(): PickProgress | null {
 }
 
 /**
- * The logged-out header's draft link: always present (the guest counterpart
- * of "My Picks"), pointing at /draft. The label stays a plain
- * "My Ballot Draft" until the first pick — a "0/20" on arrival reads as
- * homework, not collecting — then counts up and finally takes the earned
- * name, "My Election Picks ✓". The plain label is also what the SSR pass
- * renders (server snapshot is an empty draft), so the edge-cached anonymous
- * document stays draft-free and identical for every visitor.
+ * The logged-out header's draft link (the guest counterpart of "My Picks"),
+ * pointing at /draft. Null — no link at all — until the guest has looked at
+ * a ballot or made a pick: a first-time visitor on the address search has no
+ * draft to speak of, and a dead-end nav item there is noise. Null is also
+ * what the SSR pass returns (server snapshot is an empty draft), so the
+ * edge-cached anonymous document stays draft-free and identical for every
+ * visitor. Once live, the label stays a plain "My Ballot Draft" until the
+ * first pick — a "0/20" on arrival reads as homework, not collecting — then
+ * counts up and finally takes the earned name, "My Election Picks ✓".
  */
-export function useGuestDraftNav(): { to: string; label: string; complete: boolean } {
+export function useGuestDraftNav(): { to: string; label: string; complete: boolean } | null {
   const draft = useBallotDraft();
   const progress = draftProgress(draft);
   if (progress && progress.picked > 0) {
@@ -72,5 +74,9 @@ export function useGuestDraftNav(): { to: string; label: string; complete: boole
   if (pickCount > 0) {
     return { to: "/draft", label: `My Ballot Draft (${pickCount})`, complete: false };
   }
-  return { to: "/draft", label: "My Ballot Draft", complete: false };
+  // Ballot seen but nothing picked yet: plain label, no counter.
+  if (draft.district_ids.length > 0) {
+    return { to: "/draft", label: "My Ballot Draft", complete: false };
+  }
+  return null;
 }
