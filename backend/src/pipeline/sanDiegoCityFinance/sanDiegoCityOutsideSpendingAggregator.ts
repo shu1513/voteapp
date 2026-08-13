@@ -370,10 +370,14 @@ export function aggregateSanDiegoCityOutsideSpending(input: {
     // District veto when disclosed; blank passes (observed live on rows that
     // are unambiguously ours by name + office). Council seats must agree;
     // a mayor row disclosing any district is malformed and fails closed.
-    // Fail-closed casualty known at build time: California Working Families
-    // Party's 7 S496 rows supporting Nicole Crosby (D2) are tagged Dist_No=6
-    // upstream — $8,194.67 excluded here until the Phase 4 PDF check settles
-    // the correction (the veto is right; the data is wrong).
+    // Fail-closed casualty, settled by the Phase 4 PDF check (2026-08-12):
+    // California Working Families Party's 7 S496 rows supporting Nicole
+    // Crosby (D2) are tagged Dist_No=6, and the vendor-rendered PDFs of those
+    // e-filings print District 6 too — the filings themselves are misfiled
+    // (WFP's own PAPER 496 for the same campaign prints District 2). The
+    // $8,194.67 stays excluded: totals reflect what was filed, the sync note
+    // discloses the exclusion, and inventing a correction layer that
+    // contradicts the official record is out of contract.
     if (row.distNo !== null) {
       const district = /^\d{1,2}$/.test(row.distNo) ? Number(row.distNo) : null;
       if (candidate.seatNumber === null || district !== candidate.seatNumber) {

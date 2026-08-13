@@ -97,12 +97,39 @@ export function validateSanDiegoCityPaper496Supplements(
 
 export const SAN_DIEGO_CITY_PAPER_496_SUPPLEMENTS: readonly SanDiegoCityPaper496Supplement[] =
   [
-    // Ships empty (plan Phase 3). Entries are curated by the Phase 4 live-run
-    // paper-filing sweep: list every non-e-filed 460/496/497 on the portal
-    // for the cycle, read the scans that touch rostered candidates, and add
-    // an entry only per the maintenance contract above. San Diego's sub-$10k
-    // paper allowance means a WHOLE committee can be paper-only; that stays
-    // a coverage-note case, never a full-460 transcription.
+    // Phase 4 sweep 2026-08-12 (portal search API, 2025-01-01..2026-08-12):
+    // 4 paper 496s in the window. Three target no rostered candidate — NARF
+    // 300071489 (Rafael Perez, D8 primary), YIMBY Democrats 300070218 (Josh
+    // Coyne, D2 primary), Reform California 300070494 (Measure A, no
+    // candidate) — so only the entry below qualifies. The 8 roster
+    // committees' own paper filings are all FPPC 410/501 registration
+    // paperwork (no financial reports), and the one general-purpose paper-460
+    // filer (San Diego Voters' Voice, 1415823) reports no Schedule D at all.
+    {
+      electionYear: 2026,
+      spenderFilerId: "1438874",
+      spenderName: "California Working Families Party",
+      candidateLastName: "Crosby",
+      candidateFirstName: "Nicole",
+      // The scan prints "City Council", District 2 — the CORRECT district,
+      // unlike the same spender's e-filed rows (see the aggregator's district
+      // veto note on the $8,194.67 Dist_No=6 exclusion).
+      officeCd: "CCM",
+      jurisDscr: null,
+      distNo: "2",
+      direction: "SUPPORT",
+      amountCents: 2273_31,
+      expenditureDate: "2026-05-04",
+      eFilingId: "300071441",
+      sourceNote:
+        "Paper 496 received 2026-05-06 (portal e_filing_id 300071441, scanned " +
+        "image, absent from the bulk export): Mail, support Nicole Crosby, City " +
+        "Council District 2, $2,273.31, expenditure 2026-05-04. Distinct from " +
+        "the spender's e-filed 496 300071497, whose nearest line is a 2026-05-05 " +
+        "Mail expenditure of $2,272.54 (different date and amount; the vendor " +
+        "PDF prints no cumulative-to-date to reconcile against). Verified " +
+        "2026-08-12.",
+    },
   ];
 
 validateSanDiegoCityPaper496Supplements(SAN_DIEGO_CITY_PAPER_496_SUPPLEMENTS);

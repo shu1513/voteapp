@@ -32,9 +32,18 @@ describe("validateSanDiegoCityPaper496Supplements", () => {
     expect(() =>
       validateSanDiegoCityPaper496Supplements(SAN_DIEGO_CITY_PAPER_496_SUPPLEMENTS),
     ).not.toThrow();
-    // Ships empty until the Phase 4 live-run paper-filing sweep finds real
-    // misses (the maintenance contract in the module header).
-    expect(SAN_DIEGO_CITY_PAPER_496_SUPPLEMENTS).toHaveLength(0);
+    // Phase 4 sweep (2026-08-12) found exactly one qualifying paper 496:
+    // California Working Families Party's $2,273.31 mail piece supporting
+    // Nicole Crosby (D2). Pin its identity so an accidental edit fails here.
+    expect(SAN_DIEGO_CITY_PAPER_496_SUPPLEMENTS).toHaveLength(1);
+    expect(SAN_DIEGO_CITY_PAPER_496_SUPPLEMENTS[0]).toMatchObject({
+      eFilingId: "300071441",
+      spenderFilerId: "1438874",
+      candidateLastName: "Crosby",
+      distNo: "2",
+      direction: "SUPPORT",
+      amountCents: 227331,
+    });
   });
 
   it("rejects a nonpositive or fractional amount", () => {
