@@ -157,22 +157,33 @@ describe("RegisterPage clickwrap", () => {
     });
   });
 
-  it("explains the greyed-out Google button on click and clears the hint once agreed", async () => {
+  it("explains the greyed-out Google button until the box is checked", async () => {
     vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "test-client-id");
-    const gis = stubGis();
+    stubGis();
     const user = userEvent.setup();
     renderRegister();
-    await waitFor(() => expect(gis.initialize).toHaveBeenCalled());
 
-    // pointer-events-none on the disabled wrapper means a real click lands on
-    // the hint container; jsdom doesn't apply the class so the click bubbles
-    // up through it the same way.
-    await user.click(screen.getByTestId("google-signin-button"));
+    // Visible without any interaction, so keyboard and mouse users alike see
+    // why the button is inactive.
     expect(
       screen.getByText("Check the box above to enable sign-up with Google.")
     ).toBeInTheDocument();
 
     await user.click(screen.getByRole("checkbox"));
+    expect(
+      screen.queryByText("Check the box above to enable sign-up with Google.")
+    ).not.toBeInTheDocument();
+  });
+
+  it("hides the Google section and its divider when the client ID is not set", () => {
+    // Explicit empty: a developer's .env.local may set the real client ID,
+    // and Vite feeds it to vitest too.
+    vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "");
+    stubGis();
+    renderRegister();
+
+    expect(screen.queryByTestId("google-signin-button")).not.toBeInTheDocument();
+    expect(screen.queryByText("or")).not.toBeInTheDocument();
     expect(
       screen.queryByText("Check the box above to enable sign-up with Google.")
     ).not.toBeInTheDocument();

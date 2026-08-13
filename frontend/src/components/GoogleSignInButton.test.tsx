@@ -28,6 +28,9 @@ afterEach(() => {
 
 describe("GoogleSignInButton", () => {
   it("renders nothing when VITE_GOOGLE_OAUTH_CLIENT_ID is not set", () => {
+    // Explicit empty: a developer's .env.local may set the real client ID,
+    // and Vite feeds it to vitest too.
+    vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "");
     stubGis();
     const { container } = render(<GoogleSignInButton text="signin_with" onCredential={vi.fn()} />);
     expect(container).toBeEmptyDOMElement();
@@ -75,7 +78,7 @@ describe("GoogleSignInButton", () => {
     expect(onCredential).not.toHaveBeenCalled();
   });
 
-  it("blocks pointer events while disabled (clickwrap gate)", async () => {
+  it("blocks pointer and keyboard interaction while disabled (clickwrap gate)", async () => {
     vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "test-client-id");
     const gis = stubGis();
     render(<GoogleSignInButton text="signup_with" disabled onCredential={vi.fn()} />);
@@ -84,5 +87,36 @@ describe("GoogleSignInButton", () => {
     const wrapper = screen.getByTestId("google-signin-button").parentElement;
     expect(wrapper).toHaveAttribute("aria-disabled", "true");
     expect(wrapper?.className).toContain("pointer-events-none");
+    // inert is what keeps Tab from focusing the GIS iframe and running the
+    // Google flow behind the unchecked clickwrap.
+    expect(wrapper).toHaveAttribute("inert");
+  });
+
+  it("renders the trailing divider and children only alongside the button", async () => {
+    vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "test-client-id");
+    stubGis();
+    render(
+      <GoogleSignInButton text="signin_with" onCredential={vi.fn()}>
+        <p>hint child</p>
+      </GoogleSignInButton>
+    );
+    expect(screen.getByText("hint child")).toBeInTheDocument();
+    expect(screen.getByText("or")).toBeInTheDocument();
+  });
+
+  it("requests the container width when it is narrower than Google's 400px cap", async () => {
+    vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "test-client-id");
+    const gis = stubGis();
+    // jsdom does no layout; a 375px phone leaves ~343px of content width.
+    const clientWidth = vi
+      .spyOn(HTMLElement.prototype, "clientWidth", "get")
+      .mockReturnValue(343);
+    try {
+      render(<GoogleSignInButton text="signin_with" onCredential={vi.fn()} />);
+      await waitFor(() => expect(gis.renderButton).toHaveBeenCalled());
+      expect(gis.renderButton.mock.calls[0][1]).toMatchObject({ width: 343 });
+    } finally {
+      clientWidth.mockRestore();
+    }
   });
 });

@@ -85,31 +85,26 @@ export function LoginPage() {
               googleLogin.mutate(credential);
             }
           }}
-        />
-        {googleLogin.isError ? (
-          <div className="mt-3">
-            {googleNeedsSignup ? (
-              <p className="rounded-lg border border-line bg-surface p-3 text-sm text-ink">
-                No account uses that Google account yet.{" "}
-                <Link
-                  to={next ? `/register?next=${encodeURIComponent(next)}` : "/register"}
-                  className="font-semibold underline hover:text-rausch"
-                >
-                  Create your account
-                </Link>{" "}
-                to get started.
-              </p>
-            ) : (
-              <ErrorNotice error={googleLogin.error} />
-            )}
-          </div>
-        ) : null}
-      </div>
-
-      <div className="mt-6 flex items-center gap-3" aria-hidden="true">
-        <span className="h-px flex-1 bg-line" />
-        <span className="text-xs font-medium uppercase text-ink-soft">or</span>
-        <span className="h-px flex-1 bg-line" />
+        >
+          {googleLogin.isError ? (
+            <div className="mt-3">
+              {googleNeedsSignup ? (
+                <p className="rounded-lg border border-line bg-surface p-3 text-sm text-ink">
+                  No account uses that Google account yet.{" "}
+                  <Link
+                    to={next ? `/register?next=${encodeURIComponent(next)}` : "/register"}
+                    className="font-semibold underline hover:text-rausch"
+                  >
+                    Create your account
+                  </Link>{" "}
+                  to get started.
+                </p>
+              ) : (
+                <ErrorNotice error={googleLogin.error} />
+              )}
+            </div>
+          ) : null}
+        </GoogleSignInButton>
       </div>
 
       <form

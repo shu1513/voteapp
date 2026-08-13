@@ -24,9 +24,6 @@ export function RegisterPage() {
   // typed, and revealing only one of a pair defeats the comparison.
   const [showPassword, setShowPassword] = useState(false);
   const [accepted, setAccepted] = useState(false);
-  // Shown after a click on the disabled Google button; hidden again the
-  // moment the box is checked (render condition below).
-  const [showAgreeHint, setShowAgreeHint] = useState(false);
   // The page is prerendered: text entered (or autofilled) before hydration
   // exists only in the DOM. Fold it into state or the submit drops it.
   useAdoptPreHydrationValue("register-email", setEmail);
@@ -143,17 +140,7 @@ export function RegisterPage() {
         />
       </div>
 
-      {/* While unchecked the GIS iframe's wrapper is pointer-events-none, so
-          a click lands on this div — explain the greyed-out button instead
-          of leaving it a mystery. */}
-      <div
-        className="mt-4"
-        onClick={() => {
-          if (!accepted) {
-            setShowAgreeHint(true);
-          }
-        }}
-      >
+      <div className="mt-4">
         <GoogleSignInButton
           text="signup_with"
           disabled={!accepted || authPending}
@@ -162,23 +149,21 @@ export function RegisterPage() {
               googleSignup.mutate(credential);
             }
           }}
-        />
-        {showAgreeHint && !accepted ? (
-          <p className="mt-2 text-center text-sm text-ink-soft">
-            Check the box above to enable sign-up with Google.
-          </p>
-        ) : null}
-        {googleSignup.isError ? (
-          <div className="mt-3">
-            <ErrorNotice error={googleSignup.error} />
-          </div>
-        ) : null}
-      </div>
-
-      <div className="mt-6 flex items-center gap-3" aria-hidden="true">
-        <span className="h-px flex-1 bg-line" />
-        <span className="text-xs font-medium uppercase text-ink-soft">or</span>
-        <span className="h-px flex-1 bg-line" />
+        >
+          {/* Always explain the greyed-out button while unchecked — works
+              identically for keyboard and mouse users, no interaction
+              needed to discover why it's inactive. */}
+          {!accepted ? (
+            <p className="mt-2 text-center text-sm text-ink-soft">
+              Check the box above to enable sign-up with Google.
+            </p>
+          ) : null}
+          {googleSignup.isError ? (
+            <div className="mt-3">
+              <ErrorNotice error={googleSignup.error} />
+            </div>
+          ) : null}
+        </GoogleSignInButton>
       </div>
 
       <form
