@@ -290,9 +290,13 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   const ambiguousEntities = findAmbiguousEntities(entityMatches, scopeState);
   const bestEntitySimilarity = entityMatches[0]?.similarity ?? 0;
 
-  // Context branch: the viewed page's chunks. Candidate context reuses the
-  // per-candidate chunk shape; election context pulls everything belonging
-  // to that election (its listing, measure, candidates, finance).
+  // Context branch: the viewed page's chunks. Candidate context pulls the
+  // candidate's own chunks PLUS the election listing chunks of their races —
+  // the listing is the only chunk that names opponents, so "who is she
+  // running against" is unanswerable without it (listing only: the
+  // opponents' own profiles would drown out the viewed candidate under
+  // BRANCH_LIMIT). Election context pulls everything belonging to that
+  // election (its listing, measure, candidates, finance).
   let contextRows: ChunkRow[] = [];
   if (contextCandidateId || contextElectionId) {
     const contextResult = await db.query<ChunkRow>(
@@ -311,6 +315,13 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
         WHERE chunk.generation_id = $1::uuid
           AND (
             ($2::uuid IS NOT NULL AND chunk.source_id = $2::uuid)
+            OR ($2::uuid IS NOT NULL AND chunk.source_type = 'election' AND chunk.election_id IN (
+              SELECT own.election_id
+              FROM chatbot.chunks AS own
+              WHERE own.generation_id = $1::uuid
+                AND own.source_id = $2::uuid
+                AND own.election_id IS NOT NULL
+            ))
             OR ($3::uuid IS NOT NULL AND chunk.election_id = $3::uuid)
           )
         ORDER BY

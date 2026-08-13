@@ -6,9 +6,11 @@
 import type { LlmChunk } from "./adapter.js";
 
 /** Part of the exact-answer cache key: bump on ANY change to the prompt text
- * or output schema, so stale cached answers die with the old prompt
- * (docs/plans/chatbot-rag.md component 7). */
-export const CHATBOT_PROMPT_VERSION = "p1";
+ * or output schema — or to what evidence retrieval feeds it — so stale cached
+ * answers die with the old prompt (docs/plans/chatbot-rag.md component 7).
+ * p2: candidate page context now includes the election listing chunk
+ * (cached refusals for "who are they running against" must not outlive it). */
+export const CHATBOT_PROMPT_VERSION = "p2";
 
 /** Output contract for strict structured output. Strict mode requires
  * additionalProperties:false and every property required; the nullable
