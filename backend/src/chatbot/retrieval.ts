@@ -564,11 +564,20 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
       (entry.base.sourceId !== null && entityIdSet.has(entry.base.sourceId)) ||
       entry.cosineSimilarity >= GATE_MIN_COSINE
   );
+  // Candidate context: the race listing chunks ride OUTSIDE the top-K cap
+  // (they sort first, so widening the cap by their count keeps the same K
+  // slots of the candidate's own evidence a record/finance question had
+  // before rosters joined the branch). Bounded at 2 — nobody is on more than
+  // a couple of November ballots, and a runaway count must not grow the
+  // prompt unboundedly.
+  const rosterSlots = contextCandidateId
+    ? Math.min(contextRows.filter((row) => row.source_type === "election").length, 2)
+    : 0;
   const chunks = contenders
     .sort(
       (a, b) => a.contextRank - b.contextRank || b.rrfScore - a.rrfScore || a.base.id.localeCompare(b.base.id)
     )
-    .slice(0, RETRIEVAL_TOP_K)
+    .slice(0, RETRIEVAL_TOP_K + rosterSlots)
     .map((entry) => ({
       ...entry.base,
       lexicalScore: entry.lexicalScore,
