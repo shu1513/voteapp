@@ -36,6 +36,10 @@ const BROWSER_USER_AGENT =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
 const MAX_GRID_PAGES = 200;
 const GRID_PAGE_SIZE = 100;
+export const PHOENIX_PORTAL_DEFAULT_TIMEOUT_MS = 30_000;
+// Plan fetch hygiene: size caps on every portal response (a grid page is
+// ~100 rows of JSON; the cap only exists to bound a misbehaving response).
+const MAX_RESPONSE_BYTES = 32 * 1024 * 1024;
 
 // Production data contains explicit test registrations ("2021 New City of
 // Phoenix Test Committee", PAC-21-15) — excluded everywhere.
@@ -71,15 +75,25 @@ export function parsePhoenixGridEnvelope(
   return { Data: parsed.Data, Total: parsed.Total };
 }
 
-/** POST one Kendo grid page. */
+function isAbortError(error: unknown): boolean {
+  return error instanceof Error && error.name === "AbortError";
+}
+
+/** POST one Kendo grid page. Non-2xx statuses are rejected before the body
+ * is ever parsed, and the abort timeout stays armed through the BODY read,
+ * not just the headers — a stalled body would otherwise hang the caller
+ * with no clock running (the Denver SearchLight client pattern). */
 export async function phoenixGridPage(input: {
   path: string;
   filters: Readonly<Record<string, string>>;
   page: number;
   pageSize?: number;
+  timeoutMs?: number;
   fetchImpl?: FetchLike;
 }): Promise<PhoenixGridEnvelope> {
   const pageSize = input.pageSize ?? GRID_PAGE_SIZE;
+  const timeoutMs = input.timeoutMs ?? PHOENIX_PORTAL_DEFAULT_TIMEOUT_MS;
+  const context = `${input.path} page ${input.page}`;
   const body = new URLSearchParams({
     sort: "",
     page: String(input.page),
@@ -89,20 +103,57 @@ export async function phoenixGridPage(input: {
     ...input.filters,
   });
   const fetchImpl = input.fetchImpl ?? (fetch as FetchLike);
-  const response = await fetchImpl(`${PHOENIX_PORTAL_BASE_URL}${input.path}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-      "X-Requested-With": "XMLHttpRequest",
-      "User-Agent": BROWSER_USER_AGENT,
-    },
-    body: body.toString(),
-  });
-  const text = await response.text();
-  return parsePhoenixGridEnvelope(
-    text,
-    `${input.path} page ${input.page} (HTTP ${response.status})`,
-  );
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    let response: Awaited<ReturnType<FetchLike>>;
+    try {
+      response = await fetchImpl(`${PHOENIX_PORTAL_BASE_URL}${input.path}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+          "X-Requested-With": "XMLHttpRequest",
+          "User-Agent": BROWSER_USER_AGENT,
+        },
+        body: body.toString(),
+        signal: controller.signal,
+      });
+    } catch (error) {
+      if (isAbortError(error)) {
+        throw new Error(
+          `Phoenix grid request timed out after ${timeoutMs}ms for ${context}`,
+        );
+      }
+      throw error;
+    }
+    if (response.status < 200 || response.status >= 300) {
+      throw new Error(
+        `Phoenix grid request failed for ${context}: HTTP ${response.status}`,
+      );
+    }
+    let text: string;
+    try {
+      text = await response.text();
+    } catch (error) {
+      if (isAbortError(error)) {
+        throw new Error(
+          `Phoenix grid body read timed out after ${timeoutMs}ms for ${context}`,
+        );
+      }
+      throw error;
+    }
+    if (text.length > MAX_RESPONSE_BYTES) {
+      throw new Error(
+        `Phoenix grid response for ${context} is ${text.length} characters, over the ${MAX_RESPONSE_BYTES} cap`,
+      );
+    }
+    return parsePhoenixGridEnvelope(
+      text,
+      `${context} (HTTP ${response.status})`,
+    );
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 /** Pages through a grid until Total rows are collected; throws on premature
@@ -111,6 +162,7 @@ export async function phoenixGridPage(input: {
 export async function phoenixGridAll(input: {
   path: string;
   filters: Readonly<Record<string, string>>;
+  timeoutMs?: number;
   fetchImpl?: FetchLike;
 }): Promise<Record<string, unknown>[]> {
   const rows: Record<string, unknown>[] = [];
@@ -187,12 +239,14 @@ export function canonicalPhoenixRegistration(
  * vanishing from the universe.
  */
 export async function fetchPhoenixCanonicalRegistrations(input?: {
+  timeoutMs?: number;
   fetchImpl?: FetchLike;
 }): Promise<PhoenixRegistrationRow[]> {
   const rows = (
     await phoenixGridAll({
       path: "/CampaignFinance/Search/_SearchCommittees",
       filters: {},
+      timeoutMs: input?.timeoutMs,
       fetchImpl: input?.fetchImpl,
     })
   ).map(toPhoenixRegistrationRow);

@@ -54,6 +54,39 @@ describe("phoenixGridAll", () => {
     ).toBe("XMLHttpRequest");
   });
 
+  it("rejects a non-2xx status before parsing the body", async () => {
+    const fetchImpl = vi.fn().mockResolvedValue({
+      status: 500,
+      text: () => Promise.resolve('{"Data": [], "Total": 0}'),
+    });
+    await expect(
+      phoenixGridAll({
+        path: "/CampaignFinance/Search/_SearchCommittees",
+        filters: {},
+        fetchImpl,
+      }),
+    ).rejects.toThrow(/HTTP 500/);
+  });
+
+  it("aborts a stalled request via the timeout", async () => {
+    const fetchImpl = vi.fn().mockImplementation(
+      (_url: string, init?: RequestInit) =>
+        new Promise((_resolve, reject) => {
+          init?.signal?.addEventListener("abort", () =>
+            reject(new DOMException("aborted", "AbortError")),
+          );
+        }),
+    );
+    await expect(
+      phoenixGridAll({
+        path: "/CampaignFinance/Search/_SearchCommittees",
+        filters: {},
+        timeoutMs: 10,
+        fetchImpl,
+      }),
+    ).rejects.toThrow(/timed out after 10ms/);
+  });
+
   it("throws on premature pagination exhaustion instead of truncating", async () => {
     const fetchImpl = vi
       .fn()

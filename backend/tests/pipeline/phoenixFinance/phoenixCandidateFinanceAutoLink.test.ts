@@ -6,9 +6,22 @@ import {
 } from "../../../src/pipeline/phoenixFinance/phoenixCandidateFinanceAutoLink.js";
 import type { PhoenixRegistrationRow } from "../../../src/pipeline/phoenixFinance/phoenixEfilingClient.js";
 
-function linkWriterQueryMock() {
+// The roster re-read must return the input candidate (the auto-link skips
+// candidates absent from it instead of linking from a stale selector row),
+// so every mock serves a roster unless a test overrides it.
+const hermesRosterRow = {
+  candidate_id: "c1",
+  candidate_name: "Ed Hermes",
+  state_filing_ids: ["CAN-25-4"],
+};
+
+function linkWriterQueryMock(
+  rosterRows: Record<string, unknown>[] = [hermesRosterRow],
+) {
   return vi.fn().mockImplementation((sql: unknown) => {
     const s = String(sql);
+    if (s.startsWith("SELECT candidate.id::text candidate_id,COALESCE"))
+      return Promise.resolve({ rows: rosterRows });
     if (s.startsWith("INSERT INTO public.phx_candidate_finance_links"))
       return Promise.resolve({ rows: [{ id: "link-1" }] });
     return Promise.resolve({ rows: [] });
@@ -155,7 +168,9 @@ describe("autoLinkMissingPhoenixCandidateFinanceLinks", () => {
   });
 
   it("reports ambiguity as needs_review and writes nothing", async () => {
-    const query = linkWriterQueryMock();
+    const query = linkWriterQueryMock([
+      { ...hermesRosterRow, state_filing_ids: ["CAN-25-4", "CAN-24-1"] },
+    ]);
     const results = await autoLinkMissingPhoenixCandidateFinanceLinks({
       db: { query } as never,
       now: new Date("2026-08-12T00:00:00Z"),
@@ -241,9 +256,35 @@ describe("autoLinkMissingPhoenixCandidateFinanceLinks", () => {
     ).toBe(false);
   });
 
+  it("skips a candidate absent from the refreshed roster instead of linking from the stale selector row", async () => {
+    // The roster re-read reflects a mid-run status change (withdrawn,
+    // deleted, merged); the selector row is stale and must not produce a
+    // link. The next run's selector decides fresh.
+    const query = linkWriterQueryMock([]);
+    const results = await autoLinkMissingPhoenixCandidateFinanceLinks({
+      db: { query } as never,
+      now: new Date("2026-08-12T00:00:00Z"),
+      candidates: [hermesCandidate],
+      committees: [hermesRegistration],
+    });
+    expect(results).toEqual([
+      {
+        candidateId: "c1",
+        electionId: "e1",
+        status: "error",
+        reason: expect.stringContaining("left the election roster"),
+      },
+    ]);
+    expect(
+      query.mock.calls.some((call) => String(call[0]).startsWith("INSERT INTO")),
+    ).toBe(false);
+  });
+
   it("surfaces a protected-manual-link conflict as a per-candidate error", async () => {
     const query = vi.fn().mockImplementation((sql: unknown) => {
       const s = String(sql);
+      if (s.startsWith("SELECT candidate.id::text candidate_id,COALESCE"))
+        return Promise.resolve({ rows: [hermesRosterRow] });
       if (s.startsWith("SELECT id::text,cop_id,link_status"))
         return Promise.resolve({
           rows: [
@@ -267,6 +308,8 @@ describe("autoLinkMissingPhoenixCandidateFinanceLinks", () => {
   it("reuses a matching manual link instead of writing a new row", async () => {
     const query = vi.fn().mockImplementation((sql: unknown) => {
       const s = String(sql);
+      if (s.startsWith("SELECT candidate.id::text candidate_id,COALESCE"))
+        return Promise.resolve({ rows: [hermesRosterRow] });
       if (s.startsWith("SELECT id::text,cop_id,link_status"))
         return Promise.resolve({
           rows: [
