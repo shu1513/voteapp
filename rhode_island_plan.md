@@ -81,6 +81,106 @@ Verified directly against `ricampaignfinance.com` (ERTS, ASP.NET WebForms,
   type embedded in the file name, GUID-stable URLs. Cycle volume (~4 IEs)
   is what kills the OCR pipeline (decision 5).
 
+## Acquisition spike results (PR 3, 2026-08-13)
+
+Run with `npm run rhode-island-candidates:finance:probe` in `backend/`
+(`src/scripts/probeRhodeIslandCandidateFinance.ts`, no schema and no writes).
+All seven gates passed; the transport shapes below are what PR 4 lifts into
+`rhodeIslandErtsClient.ts`. Trimmed page captures are committed under
+`backend/tests/fixtures/rhodeIslandFinance/` (donor street addresses redacted);
+full artifacts stay in gitignored `backend/scratch/`.
+
+1. **Transaction reports are stateless GETs.**
+   `RIPublic/Reporting/TransactionReport.aspx?OrgID=…&BeginDate=…&EndDate=…
+   &ReportType=Contrib&…` and `Reporting/ExpenditureReport.aspx` (its own page,
+   its own parameter set) serve byte-identical results with no cookie, no
+   viewstate and no prior search. Only organization discovery needs a session.
+   This is much cheaper than the north-carolina-style stateful crawl the plan
+   assumed — per-organization is still required, but each pull is one GET.
+2. **Official totals come from the summary block, not the export.** The
+   report page renders a `dgrReport` ("Summary Groupings") grid of per-type
+   totals; the expenditure page renders `dgrExpenditureSummary`. McKee Q2 2026
+   reconciles cent-exact (Individual $241,264.29 + PAC $12,450.00 + Interest
+   $5,116.77 + Other Receipt $113.95 = $258,945.01 cash receipts, plus In-Kind
+   $3,508.00; expenditures $945,434.57). **The itemized export does not
+   reproduce it**: `Other Receipt $113.95` is in the summary while the itemized
+   search for that type (`ContType=17`) returns "No Contributions were found".
+   Decision 2 stands and hardens — totals are read from the summary/CF-2 side,
+   never summed from transactions (the georgia cover-arithmetic lesson).
+3. **The detail export is a three-hop round-trip**, all hops load-bearing:
+   `__doPostBack('lnkExport')` on the report page → a script carrying a
+   `Reporting/DownloadFile.aspx?path=…&file=<guid>.csv` URL → that page's
+   `__doPostBack('hypFileDownload')` → the CSV bytes. The `path=` value is a
+   server share path and is echoed verbatim, never constructed. Header (22
+   columns, pinned in the probe): `ContributionID, ContDesc, IncompleteDesc,
+   OrganizationName, ViewIncomplete, ReceiptDate, DepositDate, Amount,
+   ContribExplanation, MPFMatchAmount, FirstName, LastName, FullName, Address,
+   CityStZip, EmployerName, EmpAddress, EmpCityStZip, ReceiptDesc, BeginDate,
+   EndDate, TransType`. **Amounts print four decimals** ("250.0000") — sub-cent
+   precision is rejected, not rounded. No occupation column exists (decision 1
+   confirmed against real bytes). `ViewIncomplete`/`IncompleteDesc` flag rows
+   with missing employer/address detail — 20 of 442 in the fixture window; they
+   are real contributions and stay in the totals.
+4. **Organization discovery yields the Board key.** Five session-scoped
+   WebForms posts on `Contributions.aspx` (open panel → `txtOrgLastName`
+   search → select `dgdOrgSearchResults` row → dated `btnSearch`) end in a
+   redirect whose `OrgID` is the canonical numeric `committee_id`
+   (McKee = 2235). The selected organization then carries across the portal's
+   Filings/Expenditures tabs in the same session.
+5. **Amendment semantics — decision 4 is RESOLVED.** The org filing grid
+   (`grdSearchResults`) carries an `Amended` Yes/No column and, per amended
+   family, a link to
+   `secure.ricampaignfinance.com/…/FilingAmendmentSelect.aspx?X=T&FilingID=…`
+   (public, no login). That page lists every version with a stable generated
+   PDF at `ricampaignfinance.com/ExportDocs/<OrgID>-RICF2-<FilingID>-<guid>.pdf`.
+   Across **5 amended families** (2025 Q4, 2025 Q2, 2024 Q4, 2024 Q3, 2023 Q4;
+   2–3 versions each), the date-bounded transaction search reproduced the
+   **latest** version's CF-2 receipt lines every time, with zero disagreements
+   — **the public transaction data is current-ledger state**. Consequences:
+   the north-carolina-style report selector is *not* needed to keep the direct
+   leg from double-counting; version documents remain the evidence trail and
+   the totals source. Two further facts: the version PDFs are **text-layer**
+   (pdfjs reads them; no OCR), and an amendment's PDF **restates the CF-2
+   summary page in full but carries only the changed schedule rows** (the 2025
+   Q4 amendment is 4 pages against the original's 99) — so schedules are a
+   delta, summaries are not.
+6. **CF-2 page 1 is machine-readable.** Each amount sits on its label's text
+   baseline, to the right; the nearest amount on that baseline is the label's
+   value (a two-column form, so "nearest" is load-bearing). This pins the
+   decision-2 totals mapping for PR 6: `1. Beginning Cash Balance`,
+   `2. Individuals`, `3. Political Parties`, `4. Political Action Committees`,
+   `7. Interest Received`, `3. Total Cash`, `5. Ending Cash Balance`,
+   `6. Report of In-Kind Contributions`. Negative amounts print in parentheses
+   (McKee's `12. Other` = `(3,500.00)`), which is the `allowNegativeCashOnHand`
+   decision confirmed in the wild. The `Key#` printed on the form is the same
+   numeric org key as `OrgID`.
+7. **CF-8 index traversal works — but the pager lies.** The pager's control
+   ids are positional, not page numbers (page 2 is `ctl14$ctl01`), so following
+   ids in order walks backwards into an already-read page; the traversal must
+   advance by the rendered page label (`<span>` = current page, `"..."` = next
+   window of ten). Traversed live: 5 pages, 50 rows, dates descending, boundary
+   reached; **38 rows inside the 2025-01-01..2026-12-31 cycle, 18 of them
+   INDEPENDENT EXPENDITURE** (plus COVERED TRANSFER, BALLOT QUESTION ADVOCACY,
+   REFERENDUM). This is a large revision of the earlier "4 IEs per cycle" read:
+   a burst of `Stop The Wait RI` filings plus `LGBTQ Victory Fund Federal PAC
+   Rhode Island` and an amended `Collective Action for Education` landed on
+   2026-08-12. Decision 5 (curated supplements, no OCR) still holds at 18
+   filings per cycle, but the transcription budget is real and the "eligible
+   outside rows may be zero" note is now doubtful — re-check targets against
+   the roster at transcription time. Amended CF-8s are marked by an
+   `(amended)` suffix on the organization name, with a **new GUID**, which is
+   exactly what the index diff must catch.
+
+**Still open after the spike** (carried to the Board request, which the user
+sends to `campaign.finance@elections.ri.gov`; the build does not block on a
+reply): whether a recurring bulk extract is available; how filers correct a
+missing multi-target apportionment (decision 7); and whether ERTS ever
+rewrites transaction history without an amendment record. Not probed: whether
+a very large window's export is silently capped — the McKee Q2 export
+returned all 442 rows and every type reconciled, but no explicit record count
+is rendered anywhere, so the per-type summary comparison is the only available
+integrity control and PR 4 must use it as the gate.
+
 ## Shared-piece config (settled)
 
 - **Writer** — `createStandardStateFinanceSnapshotWriter` wrapper, maryland
@@ -185,7 +285,17 @@ money columns `IS NULL OR >= 0`.
    (c) the Other Filings grid (`dgdCF8FilingList`) is traversed by WebForms
    pager postbacks, validating dates descend page-over-page, until an
    entire page predates the cycle start.
-4. **Amendment semantics are unproven and release-gating.** ERTS marks
+4. **Amendment semantics — RESOLVED at the spike (2026-08-13): the public
+   transaction data is current-ledger state.** Five amended CF-2 families were
+   tested and the date-bounded transaction search reproduced the latest
+   version's receipt lines every time (spike result 5). The direct leg
+   therefore does not need a report selector to avoid double-counting;
+   totals still come from the authoritative CF-2 per period (decision 2), and
+   version PDFs remain the evidence trail. Quarantine ambiguous lineages
+   rather than guessing, as before. The original, now-answered statement is
+   kept below so the reasoning is not reintroduced.
+
+   ~~**Amendment semantics are unproven and release-gating.**~~ ERTS marks
    filings amended and versions them, but whether the public
    transaction export returns original rows, amended rows, or current-ledger
    state is undocumented. The spike must test ≥5 visibly amended report
@@ -421,8 +531,10 @@ selectors, not the migration.
 
 ## Principal risks
 
-1. **Amendment semantics** (decision 4) — the one open feasibility question;
-   the spike answers it before any aggregation code exists.
+1. ~~**Amendment semantics** (decision 4)~~ — closed by the 2026-08-13 spike
+   (current-ledger transaction data, 5/5 families). Residual risk: ERTS could
+   rewrite history without an amendment record, which the Board request asks
+   about and the per-period CF-2 reconciliation would catch.
 2. **Portal fragility** — stateful WebForms app; mitigated by fail-closed
    validation, pacing, cache-only sync, atomic installs (a bad download can
    never destroy a good artifact).
@@ -444,7 +556,11 @@ selectors, not the migration.
   pin incl. flag gate and migration-236 column check; `RHODE_ISLAND_ERTS`
   in the source union + `FINANCE_SUMMARY_SOURCES` + `FINANCE_SOURCE_LABELS`;
   RI adapter registered in `ballotLookup.ts`)
-- [ ] PR 3 acquisition spike (needs user authorization)
+- [x] PR 3 acquisition spike (authorized and run live 2026-08-13; 7/7 gates
+  passed — see "Acquisition spike results"; probe + redacted fixtures + unit
+  pins committed, no schema and no DB writes; decision 4 answered
+  = current-ledger, so PR 6's report selector is no longer load-bearing;
+  Board request still to send)
 - [ ] PR 4 artifact cache + parsers + acquisition script
 - [ ] PR 5 resolver + auto-link
 - [ ] PR 6 direct aggregator + report selector

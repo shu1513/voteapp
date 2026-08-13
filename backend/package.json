@@ -121,6 +121,7 @@
     "los-angeles-city-candidates:finance:probe": "tsx src/scripts/probeLosAngelesCityCampaignFinance.ts",
     "phoenix-candidates:finance:probe": "tsx src/scripts/probePhoenixCandidateFinance.ts",
     "phoenix-candidates:finance:sync-due": "tsx src/scripts/syncDuePhoenixCandidateFinance.ts",
+    "rhode-island-candidates:finance:probe": "tsx src/scripts/probeRhodeIslandCandidateFinance.ts",
     "san-diego-candidates:finance:probe": "tsx src/scripts/probeSanDiegoCandidateFinance.ts",
     "san-francisco-candidates:finance:probe": "tsx src/scripts/probeSanFranciscoCandidateFinance.ts",
     "san-francisco-candidates:finance:sync-due": "tsx src/scripts/syncDueSanFranciscoCandidateFinance.ts",
