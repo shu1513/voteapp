@@ -1,6 +1,6 @@
 # Plan: candidate stance summary (supports / opposes / mixed by issue)
 
-Status: planned, not implemented. Frontend-only; no backend, API, route, or
+Status: implemented (PR #709). Frontend-only; no backend, API, route, or
 migration changes. One PR.
 
 ## Goal
