@@ -258,6 +258,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   ARIZONA_SOS: "Arizona Secretary of State",
   CALIFORNIA_SOS: "California Secretary of State",
   COLORADO_TRACER: "Colorado TRACER",
+  DENVER_CLERK_RECORDER: "Denver Office of the Clerk and Recorder",
   CONNECTICUT_ECRIS: "Connecticut eCRIS",
   INDIANA_CAMPAIGN_FINANCE: "Indiana Campaign Finance",
   NEBRASKA_NADC: "Nebraska NADC",

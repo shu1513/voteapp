@@ -8,9 +8,17 @@ import type { DenverRegistrantRecord } from "../../../src/pipeline/denverFinance
 
 const CYCLE = 36;
 
-function linkWriterQueryMock() {
+// Post-#697 rule: only candidates present in the roster re-read resolve, so
+// every linking test must serve a roster row for its input candidate.
+function linkWriterQueryMock(
+  roster: Array<{ candidate_id: string; candidate_name: string }> = [
+    { candidate_id: "c1", candidate_name: "Jake Browne" },
+  ],
+) {
   return vi.fn().mockImplementation((sql: unknown) => {
     const s = String(sql);
+    if (s.startsWith("SELECT candidate.id::text candidate_id,COALESCE"))
+      return Promise.resolve({ rows: roster });
     if (s.startsWith("INSERT INTO public.denver_candidate_finance_links"))
       return Promise.resolve({ rows: [{ id: "link-1" }] });
     return Promise.resolve({ rows: [] });
@@ -221,7 +229,9 @@ describe("autoLinkMissingDenverCandidateFinanceLinks", () => {
   });
 
   it("reports ambiguity as needs_review and writes nothing (duplicate names)", async () => {
-    const query = linkWriterQueryMock();
+    const query = linkWriterQueryMock([
+      { candidate_id: "c1", candidate_name: "Monica Martinez" },
+    ]);
     const results = await autoLinkMissingDenverCandidateFinanceLinks({
       db: { query } as never,
       now: new Date("2026-08-12T00:00:00Z"),
@@ -303,9 +313,40 @@ describe("autoLinkMissingDenverCandidateFinanceLinks", () => {
     ).toBe(false);
   });
 
+  it("reports an error for a candidate that left the roster between queries", async () => {
+    // The selector saw the candidate; the roster re-read no longer does
+    // (withdrawn, deleted, or merged in between). Never link from the stale
+    // selector row — the #697 rule ported from SJ/SD/Phoenix.
+    const query = linkWriterQueryMock([]);
+    const results = await autoLinkMissingDenverCandidateFinanceLinks({
+      db: { query } as never,
+      now: new Date("2026-08-12T00:00:00Z"),
+      electionCycleId: CYCLE,
+      electionDate: "2026-11-03",
+      candidates: [browne],
+      registrants: [browneRecord],
+    });
+    expect(results).toEqual([
+      {
+        candidateId: "c1",
+        electionId: "e1",
+        status: "error",
+        reason:
+          "candidate left the election roster between selection and resolution; skipped",
+      },
+    ]);
+    expect(
+      query.mock.calls.some((call) => String(call[0]).startsWith("INSERT INTO")),
+    ).toBe(false);
+  });
+
   it("surfaces a protected-manual-link conflict as a per-candidate error", async () => {
     const query = vi.fn().mockImplementation((sql: unknown) => {
       const s = String(sql);
+      if (s.startsWith("SELECT candidate.id::text candidate_id,COALESCE"))
+        return Promise.resolve({
+          rows: [{ candidate_id: "c1", candidate_name: "Jake Browne" }],
+        });
       if (s.startsWith("SELECT id::text,filer_id"))
         return Promise.resolve({
           rows: [{ id: "manual-1", filer_id: "9999", link_status: "active" }],
