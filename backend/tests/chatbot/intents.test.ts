@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { goldenSet } from "../../src/chatbot/golden/goldenSet.js";
-import { detectIntent, detectStateInQuestion } from "../../src/chatbot/intents.js";
+import { detectBareStateReply, detectIntent, detectStateInQuestion } from "../../src/chatbot/intents.js";
 
 // The deterministic router IS two of the release gates (BEHAVIOR.md):
 //   - 100% of `template` and `refuse_policy` cases route deterministically
@@ -112,6 +112,51 @@ describe("smalltalk routes deterministically, whole message only", () => {
     expect(detectIntent("hello, do I need voter ID to vote?")?.kind).toBe("voter_id");
     // "thanks for nothing, when is the runoff?" still time-sensitive.
     expect(detectIntent("thanks, when is the runoff?")?.kind).toBe("needs_scope");
+  });
+});
+
+describe("my-area questions route to the ballot lookup", () => {
+  it("deep-links the saved ballot instead of refusing", () => {
+    expect(detectIntent("who is running in my area?")?.kind).toBe("ballot_lookup");
+    expect(detectIntent("what races are near me?")?.kind).toBe("ballot_lookup");
+    expect(detectIntent("candidates for my district")?.kind).toBe("ballot_lookup");
+  });
+
+  it("does not shadow more specific frames", () => {
+    // A date ask in "my area" is still a date ask (clarify, never a card).
+    expect(detectIntent("when is the runoff in my area?")?.kind).toBe("needs_scope");
+    expect(detectIntent("how do I register to vote in my state?")?.kind).toBe("voter_registration");
+    // Named places are not "my area".
+    expect(detectIntent("who is running for sheriff?")).toBeNull();
+  });
+
+  it("does not hijack substantive questions that merely mention 'my state/city'", () => {
+    // Entity and issue questions belong to retrieval — a location phrase
+    // alone is not a roster ask.
+    expect(detectIntent("What has Jon Ossoff done in my state?")).toBeNull();
+    expect(detectIntent("Which candidates support abortion rights in my state?")).toBeNull();
+    expect(detectIntent("What are candidates saying about housing in my city?")).toBeNull();
+  });
+});
+
+describe("detectBareStateReply", () => {
+  it("accepts a message that is only a state", () => {
+    expect(detectBareStateReply("California")).toBe("CA");
+    expect(detectBareStateReply("california.")).toBe("CA");
+    expect(detectBareStateReply("in California")).toBe("CA");
+    expect(detectBareStateReply("I vote in Georgia")).toBe("GA");
+    expect(detectBareStateReply("I live in north carolina")).toBe("NC");
+    expect(detectBareStateReply("GA")).toBe("GA");
+    expect(detectBareStateReply("Washington DC")).toBe("DC");
+  });
+
+  it("rejects anything with substance beyond the state", () => {
+    expect(detectBareStateReply("who is running in California?")).toBeNull();
+    expect(detectBareStateReply("California senate race")).toBeNull();
+    // Lowercase two-letter tokens are words, not states.
+    expect(detectBareStateReply("ok")).toBeNull();
+    expect(detectBareStateReply("hi")).toBeNull();
+    expect(detectBareStateReply("who is running for sheriff?")).toBeNull();
   });
 });
 

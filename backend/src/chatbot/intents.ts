@@ -51,6 +51,45 @@ const STATE_ABBREVIATIONS: Record<string, string> = {
 
 const KNOWN_ABBREVIATIONS = new Set(Object.values(STATE_ABBREVIATIONS));
 
+/** Intents whose template is parameterized by a state — the set a bare-state
+ * follow-up ("California") can complete, and the set worth resolving from the
+ * asker's saved districts when the question names no state. needs_scope is
+ * the state-less form of other_election_date, so it maps there. */
+export const STATE_TEMPLATE_INTENTS: ReadonlySet<IntentKind> = new Set([
+  "where_to_vote",
+  "voter_registration",
+  "voter_id",
+  "mail_voting",
+  "other_election_date",
+  "needs_scope",
+]);
+
+/**
+ * Two-letter state when the message is ONLY a state — "California",
+ * "in California", "I vote in GA" — the natural reply to "tell me which
+ * state you vote in". Anything with substance beyond the state (and a short
+ * lead-in) is not a bare reply and must stand on its own.
+ */
+export function detectBareStateReply(question: string): string | null {
+  const q = question.trim().replace(/[\s.!?,]+$/, "");
+  const core = q
+    .replace(/^(?:i\s+(?:vote|live)\s+in|i'?m\s+(?:in|from)|in|from|it'?s|my\s+state\s+is)\s+/i, "")
+    .trim();
+  if (/^washington,?\s+d\.?\s?c\.?$/i.test(core)) {
+    return "DC";
+  }
+  const byName = STATE_ABBREVIATIONS[core.toLowerCase()];
+  if (byName) {
+    return byName;
+  }
+  // Abbreviations must be typed in caps to count ("in" is not Indiana; "ok"
+  // alone is just okay) — same caution as detectStateInQuestion.
+  if (/^[A-Z]{2}$/.test(core) && KNOWN_ABBREVIATIONS.has(core)) {
+    return core;
+  }
+  return null;
+}
+
 /**
  * Two-letter state from the question, or null. Full names win over
  * abbreviations. Abbreviations must be standalone uppercase tokens AND carry
@@ -207,6 +246,22 @@ export function detectIntent(question: string): IntentMatch | null {
   }
   if (/\b(?:vote|voting|ballot)\s+by\s+mail\b|\bmail[- ]in\s+(?:ballot|voting)\b|\babsentee\b/i.test(q)) {
     return { kind: "mail_voting", state };
+  }
+  // "My area" LISTING questions ("who is running in my area?", "what races
+  // are near me?") LAST: the corpus has no idea where the asker lives, but
+  // the saved-ballot page does — deep-link it rather than refuse. Checked
+  // after every specific frame so "when is the runoff in my area" still
+  // clarifies as a date ask. BOTH halves required: the location phrase alone
+  // must not hijack substantive questions that happen to mention "my state"
+  // ("What has Jon Ossoff done in my state?" is a retrieval question), and
+  // the listing half is a frame, not bare keywords — "which candidates
+  // support abortion rights in my state" is an issue question, not a roster
+  // ask, so bare "candidates" does not count.
+  const MY_PLACE_RE = /\b(?:in|for|near|around)\s+my\s+(?:area|city|town|county|district|neighborhood|state)\b|\bnear\s+me\b/i;
+  const LISTING_FRAME_RE =
+    /\brunning\b|\bon\s+(?:the|my)\s+ballot\b|\bwhat\s+(?:races?|elections?)\b|\bcandidates?\s+(?:for|in|near|around)\b/i;
+  if (MY_PLACE_RE.test(q) && LISTING_FRAME_RE.test(q)) {
+    return { kind: "ballot_lookup", state };
   }
   return null;
 }

@@ -167,6 +167,45 @@ describe("ChatWidget", () => {
     expect(screen.getByText("What about their voting record?")).toBeInTheDocument();
   });
 
+  it("New chat clears the transcript back to the start screen", async () => {
+    const user = userEvent.setup();
+    renderWidgetAt("/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    expect(screen.queryByRole("button", { name: "New chat" })).not.toBeInTheDocument();
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+
+    await user.click(screen.getByRole("button", { name: "New chat" }));
+    expect(screen.queryByText("Here's what our data has on that.")).not.toBeInTheDocument();
+    // The start screen (starter chips included) returns.
+    expect(screen.getByRole("button", { name: "What can you do?" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "New chat" })).not.toBeInTheDocument();
+  });
+
+  it("New chat drops the remembered context from the old conversation", async () => {
+    const user = userEvent.setup();
+    const { fetchMock, router } = renderWidgetAt("/candidates/44444444-4444-4444-a444-444444444444");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Tell me more about this candidate.");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+
+    // Leave the candidate page, start over: the new chat must not inherit
+    // the old candidate as context — "their record?" would answer about a
+    // candidate no longer on screen.
+    await router.navigate("/ballot");
+    await user.click(screen.getByRole("button", { name: "New chat" }));
+    await user.type(screen.getByLabelText("Your question"), "What is their voting record?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await waitFor(() => {
+      const askCalls = fetchMock.mock.calls.filter(([request]) => String(request).includes("/api/chatbot/ask"));
+      expect(askCalls).toHaveLength(2);
+      const body = JSON.parse((askCalls[1] as unknown as [string, RequestInit])[1].body as string);
+      expect(body).toEqual({ question: "What is their voting record?" });
+    });
+  });
+
   it("sends a starter chip as a question on click, then hides the chips", async () => {
     const user = userEvent.setup();
     const { fetchMock } = renderWidgetAt("/candidates/44444444-4444-4444-a444-444444444444");

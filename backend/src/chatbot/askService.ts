@@ -9,7 +9,13 @@ import type { Pool } from "pg";
 
 import { answerWithLlm, buildScopeKey, getCachedAskResponse, type LlmAnswering } from "./answer.js";
 import { suggestClosestCandidates } from "./didYouMean.js";
-import { detectIntent, detectStateInQuestion, type IntentMatch } from "./intents.js";
+import {
+  detectBareStateReply,
+  detectIntent,
+  detectStateInQuestion,
+  STATE_TEMPLATE_INTENTS,
+  type IntentMatch,
+} from "./intents.js";
 import { normalizeQuestion, normalizeQuestionForCacheKey } from "./redact.js";
 import {
   getActiveGeneration,
@@ -176,10 +182,41 @@ function trimRule(rule: string): string {
   return rule.trim().replace(/\.+$/, "");
 }
 
+/** The asker's state from their saved districts — logged-in members should
+ * not be asked "which state do you vote in" when their account already says.
+ * Exactly one distinct state or null: multi-state saves (moved, researching
+ * elsewhere) fall back to asking. Failure → null: a template answer must
+ * degrade to the ask-which-state copy, never 500. */
+async function lookupUserState(db: Pool, userId: string): Promise<string | null> {
+  try {
+    const result = await db.query<{ state: string }>(
+      `
+        SELECT DISTINCT d.state
+        FROM public.user_districts AS ud
+        JOIN public.districts AS d ON d.id = ud.district_id
+        WHERE ud.user_id = $1::uuid
+        LIMIT 2
+      `,
+      [userId]
+    );
+    return result.rows.length === 1 ? (result.rows[0] as { state: string }).state : null;
+  } catch (error: unknown) {
+    console.warn(
+      "chatbot user-state lookup failed; falling back to state-less template:",
+      error instanceof Error ? error.message : String(error)
+    );
+    return null;
+  }
+}
+
+// /me/ballot, not /ballot: the ask endpoint is verified-accounts-only, so the
+// asker always has the saved-ballot page — it uses their saved districts and,
+// when none are saved yet, walks them through the address search itself. The
+// public /ballot page renders "No districts selected" without ?d= params.
 const BALLOT_CARD: AskResultCard = {
   title: "Look up your ballot",
-  url: "/ballot",
-  snippet: "Enter your address to see every election and candidate on your ballot.",
+  url: "/me/ballot",
+  snippet: "See every election and candidate on your ballot.",
   source_type: "page",
 };
 
@@ -317,7 +354,7 @@ async function renderIntentAnswer(db: Pool, intent: IntentMatch): Promise<AskRes
     return {
       outcome: "template",
       answer:
-        "Use the ballot page to enter your address and see everything on your ballot. Please don't share your address here in chat.",
+        "Your ballot page shows every election and candidate for where you vote. Please don't share your address here in chat — the ballot page handles it privately.",
       results: [BALLOT_CARD],
       data_current_as_of: null,
     };
@@ -553,8 +590,36 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
       };
 
       // 1. Deterministic intents (policy refusals, logistics, results).
-      const intent = detectIntent(question);
+      let intent = detectIntent(question);
+      // A bare-state reply ("California") to a logistics clarification
+      // completes the PREVIOUS turn's intent — on its own it has no intent
+      // and would fall through to retrieval, where a lone state name matches
+      // nothing and refuses.
+      const bareStateReply = detectBareStateReply(question);
+      if (!intent && bareStateReply && previousQuestion) {
+        const previousIntent = detectIntent(previousQuestion);
+        if (previousIntent && STATE_TEMPLATE_INTENTS.has(previousIntent.kind)) {
+          intent = {
+            // needs_scope is the state-less date ask; with a state it IS one.
+            kind: previousIntent.kind === "needs_scope" ? "other_election_date" : previousIntent.kind,
+            state: bareStateReply,
+          };
+        }
+      }
       if (intent) {
+        // State-parameterized logistics with no state named: the asker's
+        // saved districts usually say where they vote — answer for that
+        // state instead of asking (rule 5 still holds; only the state
+        // parameter comes from the account, coarse and non-identifying).
+        if (!intent.state && userId && STATE_TEMPLATE_INTENTS.has(intent.kind)) {
+          const userState = await lookupUserState(db, userId);
+          if (userState) {
+            intent = {
+              kind: intent.kind === "needs_scope" ? "other_election_date" : intent.kind,
+              state: userState,
+            };
+          }
+        }
         const response = await renderIntentAnswer(db, intent);
         const answeredBy =
           response.outcome === "refuse_policy"
@@ -585,10 +650,16 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
       // scopeless follow-up appends the previous turn's text so its district/
       // candidate tokens participate in matching — append-only, so nothing
       // from the current question can be dropped.
-      let scopeState = detectStateInQuestion(question);
+      // A bare-state reply is pure scope: it MUST carry the previous turn
+      // (the question being scoped) even though it names a state itself —
+      // "California" alone matches nothing. The bareStateReply fallback
+      // covers bare abbreviations ("GA"): detectStateInQuestion deliberately
+      // requires place context around an abbreviation, so a lone "GA" is
+      // invisible to it and would leave retrieval unscoped.
+      let scopeState = detectStateInQuestion(question) ?? bareStateReply;
       let retrievalText = question;
-      if (previousQuestion && !scopeState && !resolvedContext) {
-        scopeState = detectStateInQuestion(previousQuestion);
+      if (previousQuestion && !resolvedContext && (!scopeState || bareStateReply)) {
+        scopeState = scopeState ?? detectStateInQuestion(previousQuestion);
         retrievalText = `${question} ${previousQuestion}`;
       }
       if (!scopeState && resolvedContext) {
