@@ -9,6 +9,7 @@ import type {
   ResearchAreaPreference,
 } from "@voteapp/api-client";
 import { DetailPager } from "../components/DetailPager";
+import { DetailRail } from "../components/DetailRail";
 import { pagerNeighbors, readCandidateNavState, type ElectionNavState } from "../lib/detailNavContext";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
@@ -476,6 +477,11 @@ export function CandidatePage() {
   // snapshot. The nav bar exists only for in-app arrivals: no router state
   // (deep link) = no bar, by product choice.
   const rosterNeighbors = pagerNeighbors(navState?.candidates, candidate.candidate_id);
+  // Desktop rail: the arrival race's roster under the same guard as
+  // prev/next (pagerNeighbors is null unless the list has >= 2 entries and
+  // contains this candidate). navState is re-read only for the type system —
+  // non-null neighbors implies it.
+  const railCandidates = rosterNeighbors !== null ? (navState?.candidates ?? null) : null;
 
   // Display label for the back slot: when the destination is an election,
   // its official ballot title runs to legal-name length ("For United States
@@ -489,268 +495,303 @@ export function CandidatePage() {
       : navState.backTo
     : null;
 
+  // The nav bar at the top: prev | back | next, each slot captioned. The
+  // back slot restores the election page's own ballot sequence (backState).
+  // With the rail on screen (lg+) the bar is redundant, so it drops to
+  // narrow screens only; rail-less arrivals keep it at every width.
+  const pagerBar =
+    navState && pagerBackTo ? (
+      <DetailPager
+        ariaLabel="Candidate navigation"
+        prev={
+          rosterNeighbors?.prev
+            ? { path: `/candidates/${rosterNeighbors.prev.id}`, label: rosterNeighbors.prev.name }
+            : null
+        }
+        next={
+          rosterNeighbors?.next
+            ? { path: `/candidates/${rosterNeighbors.next.id}`, label: rosterNeighbors.next.name }
+            : null
+        }
+        backTo={pagerBackTo}
+        backToState={navState.backState}
+        siblingState={navState}
+      />
+    ) : null;
+
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8">
-      {navState && pagerBackTo ? (
-        // One nav bar at the top: prev | back | next, each slot captioned.
-        // The back slot restores the election page's own ballot sequence
-        // (backState).
-        <DetailPager
-          ariaLabel="Candidate navigation"
-          prev={
-            rosterNeighbors?.prev
-              ? { path: `/candidates/${rosterNeighbors.prev.id}`, label: rosterNeighbors.prev.name }
-              : null
-          }
-          next={
-            rosterNeighbors?.next
-              ? { path: `/candidates/${rosterNeighbors.next.id}`, label: rosterNeighbors.next.name }
-              : null
-          }
-          backTo={pagerBackTo}
+    // With rail context the page widens to a two-column grid on lg+ (rail |
+    // detail); without it — deep links, stale snapshots — the markup is the
+    // classic centered column at every width. Mirrors ElectionPage.
+    <div
+      className={
+        railCandidates !== null
+          ? "mx-auto max-w-3xl px-4 py-8 lg:grid lg:max-w-6xl lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-8"
+          : "mx-auto max-w-3xl px-4 py-8"
+      }
+    >
+      {railCandidates !== null && navState !== null ? (
+        // The rail's exit link keeps the full backTo label (the election's
+        // ballot title): rail rows truncate, so length is fine there, and
+        // the fuller name is clearer than the pager's generic "Election".
+        <DetailRail
+          ariaLabel="Candidates in this race"
+          entries={railCandidates.map((entry) => ({
+            id: entry.id,
+            label: entry.name,
+            path: `/candidates/${entry.id}`,
+          }))}
+          currentId={candidate.candidate_id}
+          backTo={navState.backTo}
           backToState={navState.backState}
           siblingState={navState}
         />
       ) : null}
-      <JsonLdScript
-        data={{
-          "@type": "Person",
-          name: candidate.display_name,
-          ...(candidate.current_office ? { jobTitle: candidate.current_office } : {}),
-          ...(candidate.official_website_url ? { url: candidate.official_website_url } : {}),
-        }}
-      />
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
-        <div className="flex items-center gap-2">
-          <ShareButton
-            path={`/candidates/${candidate.candidate_id}`}
-            shareText={candidateShareText(candidate)}
-          />
-          {canFollow && follows ? (
-            <FollowButton
-              // Remount on candidate change: the route element stays mounted
-              // across candidate-to-candidate navigation, and without the key
-              // a follow error from the previous candidate would linger under
-              // this one's button.
-              key={candidate.candidate_id}
-              candidateId={candidate.candidate_id}
-              isFollowing={isFollowing}
-            />
-          ) : me === null ? (
-            // Logged-out visitors get a Follow button that prompts them to
-            // register (me is undefined while the session is still loading —
-            // render nothing then to avoid a flash of the wrong button).
-            <RegisterToFollowButton candidateName={candidate.display_name} />
-          ) : null}
-        </div>
-      </div>
-      <p className="mt-1 text-sm text-ink-soft">
-        {candidate.party} · {candidate.state}
-        {candidate.current_office ? <> · {candidate.current_office}</> : null}
-      </p>
-      {candidate.official_website_url ? (
-        <p className="mt-1 text-sm">
-          <a
-            href={candidate.official_website_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-ink underline hover:text-rausch"
-          >
-            Official website
-          </a>
-        </p>
-      ) : null}
-      {candidate.summary ? <p className="mt-3 text-ink">{candidate.summary}</p> : null}
-
-      {pickableElections.length > 0 ? (
-        <div className="mt-4 space-y-2">
-          {pickableElections.map((election) => (
-            /* Always names the election: several concurrent races (and past
-               ones) exist, and the pick must land on the right one. */
-            <CandidatePickRow
-              key={election.candidate_election_id}
-              electionId={election.election_id}
-              candidateId={candidate.candidate_id}
-              candidateName={candidate.display_name}
-              raceName={election.official_ballot_title}
-              dateLabel={formatElectionDate(election.election_date)}
-              electionDate={election.election_date}
-              choice={choiceForElection(election.election_id)}
-              seatsToFill={election.seats_to_fill ?? null}
-            />
-          ))}
-        </div>
-      ) : null}
-
-      {ongoingElections.map((election) => (
-        <OngoingElectionFinance
-          key={election.candidate_election_id}
-          election={election}
-          summary={ongoingFinance[election.candidate_election_id] ?? null}
+      {/* min-w-0: the grid column must be allowed to shrink or long names
+          blow the layout; lg:max-w-3xl keeps the reading measure of the
+          classic column even though the grid column is wider. */}
+      <div className="min-w-0 lg:max-w-3xl">
+        {railCandidates !== null ? <div className="lg:hidden">{pagerBar}</div> : pagerBar}
+        <JsonLdScript
+          data={{
+            "@type": "Person",
+            name: candidate.display_name,
+            ...(candidate.current_office ? { jobTitle: candidate.current_office } : {}),
+            ...(candidate.official_website_url ? { url: candidate.official_website_url } : {}),
+          }}
         />
-      ))}
-
-      {recordGroups.length > 0 ? (
-        <section className="mt-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            {/* "Track record", not "Record"/"Records": bare "Record" read as
-                a typo next to a list of many items, and "Records" reads as
-                documents. This is the home-page promise ("who these
-                candidates really are by their records") paid off. */}
-            <h2 className="text-lg font-semibold">Track record</h2>
-            <label className="flex items-center gap-2 text-sm text-ink-soft">
-              View
-              <select
-                value={recordView}
-                onChange={(event) => setChosenRecordView(event.target.value as RecordView)}
-                className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
-              >
-                <option value="by_issue">By issue</option>
-                {hasSaved ? <option value="my_issues">My issues first</option> : null}
-                <option value="newest">Newest first</option>
-              </select>
-            </label>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
+          <div className="flex items-center gap-2">
+            <ShareButton
+              path={`/candidates/${candidate.candidate_id}`}
+              shareText={candidateShareText(candidate)}
+            />
+            {canFollow && follows ? (
+              <FollowButton
+                // Remount on candidate change: the route element stays mounted
+                // across candidate-to-candidate navigation, and without the key
+                // a follow error from the previous candidate would linger under
+                // this one's button.
+                key={candidate.candidate_id}
+                candidateId={candidate.candidate_id}
+                isFollowing={isFollowing}
+              />
+            ) : me === null ? (
+              // Logged-out visitors get a Follow button that prompts them to
+              // register (me is undefined while the session is still loading —
+              // render nothing then to avoid a flash of the wrong button).
+              <RegisterToFollowButton candidateName={candidate.display_name} />
+            ) : null}
           </div>
-          {recordView === "newest" ? (
-            // Flat chronological view; the payload already arrives newest-first.
-            <>
-              <ul className="mt-2 space-y-3">
-                {(showAllNewest ? candidate.records : candidate.records.slice(0, INITIAL_NEWEST_RECORDS)).map(
-                  (record) => (
-                    <RecordItem key={record.id} record={record} showTags reporterEmail={me?.email} />
-                  )
-                )}
-              </ul>
-              {!showAllNewest && candidate.records.length > INITIAL_NEWEST_RECORDS ? (
-                <button
-                  type="button"
-                  onClick={() => setNewestExpansion({ candidateId: candidate.candidate_id, on: true })}
-                  className="mt-3 rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink"
+        </div>
+        <p className="mt-1 text-sm text-ink-soft">
+          {candidate.party} · {candidate.state}
+          {candidate.current_office ? <> · {candidate.current_office}</> : null}
+        </p>
+        {candidate.official_website_url ? (
+          <p className="mt-1 text-sm">
+            <a
+              href={candidate.official_website_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-ink underline hover:text-rausch"
+            >
+              Official website
+            </a>
+          </p>
+        ) : null}
+        {candidate.summary ? <p className="mt-3 text-ink">{candidate.summary}</p> : null}
+
+        {pickableElections.length > 0 ? (
+          <div className="mt-4 space-y-2">
+            {pickableElections.map((election) => (
+              /* Always names the election: several concurrent races (and past
+                 ones) exist, and the pick must land on the right one. */
+              <CandidatePickRow
+                key={election.candidate_election_id}
+                electionId={election.election_id}
+                candidateId={candidate.candidate_id}
+                candidateName={candidate.display_name}
+                raceName={election.official_ballot_title}
+                dateLabel={formatElectionDate(election.election_date)}
+                electionDate={election.election_date}
+                choice={choiceForElection(election.election_id)}
+                seatsToFill={election.seats_to_fill ?? null}
+              />
+            ))}
+          </div>
+        ) : null}
+
+        {ongoingElections.map((election) => (
+          <OngoingElectionFinance
+            key={election.candidate_election_id}
+            election={election}
+            summary={ongoingFinance[election.candidate_election_id] ?? null}
+          />
+        ))}
+
+        {recordGroups.length > 0 ? (
+          <section className="mt-6">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              {/* "Track record", not "Record"/"Records": bare "Record" read as
+                  a typo next to a list of many items, and "Records" reads as
+                  documents. This is the home-page promise ("who these
+                  candidates really are by their records") paid off. */}
+              <h2 className="text-lg font-semibold">Track record</h2>
+              <label className="flex items-center gap-2 text-sm text-ink-soft">
+                View
+                <select
+                  value={recordView}
+                  onChange={(event) => setChosenRecordView(event.target.value as RecordView)}
+                  className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
                 >
-                  Show all {candidate.records.length} records
-                </button>
-              ) : null}
-            </>
-          ) : (
-            recordGroups.map((group) => {
-              // Stance tally shown while collapsed, so the split is readable
-              // without opening the group. Evaluative areas keep their
-              // evidence wording (favorable/unfavorable), matching the cards
-              // inside; zero-count sides stay hidden to avoid "0 oppose"
-              // noise. Same colored-text-only treatment as StanceChip.
-              const { forCount, againstCount } = groupStanceCounts(group);
-              const evaluative = group.areaSlug != null && EVALUATIVE_AREA_SLUGS.has(group.areaSlug);
-              return (
-                <div key={group.areaId ?? "other"} className="mt-4">
-                  {/* The heading lives OUTSIDE the summary, sr-only — same
-                      rule as the finance disclosure above: <summary> maps to
-                      a button, and a heading inside it can drop out of
-                      screen-reader heading navigation. "Track record — "
-                      prefixes the area so the heading reads meaningfully
-                      when jumped to on its own, and keeps its text distinct
-                      from the visible summary line (which repeats the bare
-                      area name). */}
-                  <h3 className="sr-only">{`Track record — ${group.areaName}`}</h3>
-                  {/* Every group starts collapsed; with no `open` prop React
-                      never re-applies a default, so a reader's toggles
-                      survive a view switch that reorders the groups. */}
-                  <details>
-                    <summary className="cursor-pointer select-none">
-                      <span className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
-                        {group.areaName}
-                      </span>{" "}
-                      <span className="text-xs text-ink-soft">
-                        · {group.records.length} record{group.records.length === 1 ? "" : "s"}
-                      </span>
-                      {forCount > 0 ? (
-                        <span className="text-xs font-medium text-green-900">
-                          {" "}
-                          · {forCount} {evaluative ? "favorable" : "support"}
+                  <option value="by_issue">By issue</option>
+                  {hasSaved ? <option value="my_issues">My issues first</option> : null}
+                  <option value="newest">Newest first</option>
+                </select>
+              </label>
+            </div>
+            {recordView === "newest" ? (
+              // Flat chronological view; the payload already arrives newest-first.
+              <>
+                <ul className="mt-2 space-y-3">
+                  {(showAllNewest ? candidate.records : candidate.records.slice(0, INITIAL_NEWEST_RECORDS)).map(
+                    (record) => (
+                      <RecordItem key={record.id} record={record} showTags reporterEmail={me?.email} />
+                    )
+                  )}
+                </ul>
+                {!showAllNewest && candidate.records.length > INITIAL_NEWEST_RECORDS ? (
+                  <button
+                    type="button"
+                    onClick={() => setNewestExpansion({ candidateId: candidate.candidate_id, on: true })}
+                    className="mt-3 rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink"
+                  >
+                    Show all {candidate.records.length} records
+                  </button>
+                ) : null}
+              </>
+            ) : (
+              recordGroups.map((group) => {
+                // Stance tally shown while collapsed, so the split is readable
+                // without opening the group. Evaluative areas keep their
+                // evidence wording (favorable/unfavorable), matching the cards
+                // inside; zero-count sides stay hidden to avoid "0 oppose"
+                // noise. Same colored-text-only treatment as StanceChip.
+                const { forCount, againstCount } = groupStanceCounts(group);
+                const evaluative = group.areaSlug != null && EVALUATIVE_AREA_SLUGS.has(group.areaSlug);
+                return (
+                  <div key={group.areaId ?? "other"} className="mt-4">
+                    {/* The heading lives OUTSIDE the summary, sr-only — same
+                        rule as the finance disclosure above: <summary> maps to
+                        a button, and a heading inside it can drop out of
+                        screen-reader heading navigation. "Track record — "
+                        prefixes the area so the heading reads meaningfully
+                        when jumped to on its own, and keeps its text distinct
+                        from the visible summary line (which repeats the bare
+                        area name). */}
+                    <h3 className="sr-only">{`Track record — ${group.areaName}`}</h3>
+                    {/* Every group starts collapsed; with no `open` prop React
+                        never re-applies a default, so a reader's toggles
+                        survive a view switch that reorders the groups. */}
+                    <details>
+                      <summary className="cursor-pointer select-none">
+                        <span className="text-sm font-semibold uppercase tracking-wide text-ink-soft">
+                          {group.areaName}
+                        </span>{" "}
+                        <span className="text-xs text-ink-soft">
+                          · {group.records.length} record{group.records.length === 1 ? "" : "s"}
                         </span>
-                      ) : null}
-                      {againstCount > 0 ? (
-                        <span className="text-xs font-medium text-red-900">
-                          {" "}
-                          · {againstCount} {evaluative ? "unfavorable" : "oppose"}
-                        </span>
-                      ) : null}
-                    </summary>
-                    <ul className="mt-2 space-y-3">
-                      {group.records.map((record) => (
-                        <RecordItem
-                          key={`${group.areaId ?? "other"}-${record.id}`}
-                          record={record}
-                          showTags={false}
-                          reporterEmail={me?.email}
-                          stanceAreaId={group.areaId}
-                        />
-                      ))}
-                    </ul>
-                  </details>
-                </div>
-              );
-            })
-          )}
-        </section>
-      ) : (
-        // An empty record list is ambiguous on its own: researched-and-none-
-        // found and not-researched-yet must read differently or absence looks
-        // like a completed (empty) record. "Verified", not "found": a search
-        // can finish with every discovered record dropped for permanently
-        // failing source checks, and the checkpoint still advances — the
-        // array only proves nothing verifiable was kept.
-        <p className="mt-6 text-sm text-ink-soft">
-          {candidate.records_researched_through
-            ? `No verified public records for this candidate — record history researched through ${formatElectionDate(candidate.records_researched_through)}.`
-            : "This candidate's record history has not been researched yet."}
-        </p>
-      )}
+                        {forCount > 0 ? (
+                          <span className="text-xs font-medium text-green-900">
+                            {" "}
+                            · {forCount} {evaluative ? "favorable" : "support"}
+                          </span>
+                        ) : null}
+                        {againstCount > 0 ? (
+                          <span className="text-xs font-medium text-red-900">
+                            {" "}
+                            · {againstCount} {evaluative ? "unfavorable" : "oppose"}
+                          </span>
+                        ) : null}
+                      </summary>
+                      <ul className="mt-2 space-y-3">
+                        {group.records.map((record) => (
+                          <RecordItem
+                            key={`${group.areaId ?? "other"}-${record.id}`}
+                            record={record}
+                            showTags={false}
+                            reporterEmail={me?.email}
+                            stanceAreaId={group.areaId}
+                          />
+                        ))}
+                      </ul>
+                    </details>
+                  </div>
+                );
+              })
+            )}
+          </section>
+        ) : (
+          // An empty record list is ambiguous on its own: researched-and-none-
+          // found and not-researched-yet must read differently or absence looks
+          // like a completed (empty) record. "Verified", not "found": a search
+          // can finish with every discovered record dropped for permanently
+          // failing source checks, and the checkpoint still advances — the
+          // array only proves nothing verifiable was kept.
+          <p className="mt-6 text-sm text-ink-soft">
+            {candidate.records_researched_through
+              ? `No verified public records for this candidate — record history researched through ${formatElectionDate(candidate.records_researched_through)}.`
+              : "This candidate's record history has not been researched yet."}
+          </p>
+        )}
 
-      {/* Not a bare "Elections": on a candidate page that reads as a generic
-          section of election news. Name the person and the relationship, and
-          split on the election date — "is in" would misread on a race that
-          finished years ago, and on a race the candidate withdrew from. */}
-      {activeOngoingElections.length > 0 ? (
-        <ElectionHistorySection
-          heading={`${activeOngoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is in:`}
-          elections={activeOngoingElections}
-          navState={electionNavState}
-        />
-      ) : null}
+        {/* Not a bare "Elections": on a candidate page that reads as a generic
+            section of election news. Name the person and the relationship, and
+            split on the election date — "is in" would misread on a race that
+            finished years ago, and on a race the candidate withdrew from. */}
+        {activeOngoingElections.length > 0 ? (
+          <ElectionHistorySection
+            heading={`${activeOngoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is in:`}
+            elections={activeOngoingElections}
+            navState={electionNavState}
+          />
+        ) : null}
 
-      {exitedOngoingElections.length > 0 ? (
-        <ElectionHistorySection
-          heading={`${exitedOngoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is no longer in:`}
-          elections={exitedOngoingElections}
-          navState={electionNavState}
-        />
-      ) : null}
+        {exitedOngoingElections.length > 0 ? (
+          <ElectionHistorySection
+            heading={`${exitedOngoingElections.length === 1 ? "Race" : "Races"} ${candidate.display_name} is no longer in:`}
+            elections={exitedOngoingElections}
+            navState={electionNavState}
+          />
+        ) : null}
 
-      {pastElections.length > 0 ? (
-        <ElectionHistorySection
-          heading={`Past ${pastElections.length === 1 ? "race" : "races"} ${candidate.display_name} ran in:`}
-          elections={pastElections}
-          navState={electionNavState}
-        />
-      ) : null}
+        {pastElections.length > 0 ? (
+          <ElectionHistorySection
+            heading={`Past ${pastElections.length === 1 ? "race" : "races"} ${candidate.display_name} ran in:`}
+            elections={pastElections}
+            navState={electionNavState}
+          />
+        ) : null}
 
-      {candidate.last_researched ? (
-        <p className="mt-6 text-xs text-ink-soft">
-          Profile last researched {formatElectionDate(candidate.last_researched.slice(0, 10))}.
-        </p>
-      ) : null}
+        {candidate.last_researched ? (
+          <p className="mt-6 text-xs text-ink-soft">
+            Profile last researched {formatElectionDate(candidate.last_researched.slice(0, 10))}.
+          </p>
+        ) : null}
 
-      {/* Last on purpose: reporting is a reaction to reading the profile, not
-          a headline action worth space above the record. Per-record report
-          buttons stay on their cards. */}
-      <div className="mt-6">
-        <ReportContentButton
-          entityType="candidate"
-          entityId={candidate.candidate_id}
-          contextLabel="candidate profile"
-          reporterEmail={me?.email}
-        />
+        {/* Last on purpose: reporting is a reaction to reading the profile, not
+            a headline action worth space above the record. Per-record report
+            buttons stay on their cards. */}
+        <div className="mt-6">
+          <ReportContentButton
+            entityType="candidate"
+            entityId={candidate.candidate_id}
+            contextLabel="candidate profile"
+            reporterEmail={me?.email}
+          />
+        </div>
       </div>
     </div>
   );
