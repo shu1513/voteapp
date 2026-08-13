@@ -35,6 +35,7 @@ import {
 import { listUserDistrictIds, UserDistrictReaderError } from "../pipeline/users/userDistrictReader.js";
 import {
   loadUserResearchAreaWeights,
+  scoreResearchAreaMatch,
   type UserResearchAreaWeights,
 } from "../pipeline/users/userResearchAreaScoring.js";
 
@@ -336,9 +337,9 @@ export type MyIssuesBallotElection = Pick<
  * Matches the asker's saved research areas against their ballot's elections
  * (offices and ballot measures both carry research-area tags). Pure: the
  * ask() wrapper loads the weights and ballot, this ranks and renders.
- * Ranking mirrors the ballot page's my_areas sort idea — weight sum from
- * researchAreaWeightForRank — so the chat answer and the sorted ballot page
- * agree on what "matters most" means. Races only, never candidates: pointing
+ * Ranking reuses scoreResearchAreaMatch — the exact scorer behind the ballot
+ * page's my_areas sort — so the chat answer and the sorted ballot page agree
+ * on what "matters most" means. Races only, never candidates: pointing
  * at a race that touches a saved issue is navigation; ranking candidates by
  * issue alignment would edge into rule 1 territory.
  */
@@ -354,13 +355,17 @@ export function myIssuesBallotAnswer(
           (a, b) =>
             (weights.get(a.id)?.rank ?? 0) - (weights.get(b.id)?.rank ?? 0) || a.name.localeCompare(b.name)
         );
-      const score = areas.reduce((sum, area) => sum + (weights.get(area.id)?.weight ?? 0), 0);
-      return { election, areas, score };
+      const match = scoreResearchAreaMatch(areas.map((area) => area.id), weights);
+      return { election, areas, match };
     })
     .filter((entry) => entry.areas.length > 0)
     .sort(
+      // Same first two keys as the ballot page's my_areas sort (weight sum,
+      // then best matched rank — two weak matches must not outrank the
+      // user's #1 issue on a tie), then a deterministic date/title tail.
       (a, b) =>
-        b.score - a.score ||
+        b.match.score - a.match.score ||
+        a.match.bestRank - b.match.bestRank ||
         a.election.election_date.localeCompare(b.election.election_date) ||
         a.election.official_ballot_title.localeCompare(b.election.official_ballot_title)
     );

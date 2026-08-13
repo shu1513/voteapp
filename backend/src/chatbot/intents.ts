@@ -208,17 +208,22 @@ export function detectIntent(question: string): IntentMatch | null {
   // Personal-issues questions ("which of these elections affect issues I
   // care about?") BEFORE the plain ballot deep link: the account's saved
   // research areas × its saved ballot answer this concretely, which beats a
-  // bare "here's your ballot page" card. The frame is the PERSONAL-preference
-  // phrasing — "issues I care about", "matters to me", "my issues/priorities"
-  // — not issue words alone, so "which candidates support abortion rights"
-  // (a stance question) still goes to retrieval. Singular "my area" stays
-  // with the place frames below ("in my area" is location, not preference).
-  // The preference phrase must follow a preference NOUN ("issues/things/what
-  // I care about"), not stand alone: "I care about climate — who supports
-  // it?" is a stance question for retrieval, not a ballot-match ask.
+  // bare "here's your ballot page" card. TWO frames required, both halves
+  // load-bearing:
+  // - The PERSONAL-preference phrase ("issues I care about", "matters to
+  //   me", "my issues/priorities"), and following a preference NOUN, not
+  //   standing alone — "I care about climate, who supports it?" is a stance
+  //   question for retrieval.
+  // - An ELECTION frame ("elections/races/ballot/measures"), because the
+  //   answer is a race list: without it the phrase hijacks questions that
+  //   retrieval answers better ("Does Jane Smith support my key issues?" is
+  //   a candidate question; "What issues do I care about?" isn't about races
+  //   at all). Singular "my area" stays with the place frames below ("in my
+  //   area" is location, not preference).
   const MY_ISSUES_RE =
     /\b(?:issues?|areas?|topics?|things|what|races?|elections?)\b.{0,24}\b(?:i\s+care\s+about|matter(?:s)?\s+(?:most\s+)?to\s+me|important\s+to\s+me)\b|\bmy\s+(?:top\s+|key\s+|main\s+|saved\s+)?(?:issues?|priorit(?:y|ies)|research\s+areas)\b/i;
-  if (MY_ISSUES_RE.test(q)) {
+  const ELECTION_FRAME_RE = /\b(?:elections?|races?|ballots?|measures?|running)\b/i;
+  if (MY_ISSUES_RE.test(q) && ELECTION_FRAME_RE.test(q)) {
     return { kind: "my_issues_ballot", state };
   }
   if (/\b(?:my\s+ballot|on\s+the\s+ballot\s+at\s+my|ballot\s+lookup)\b/i.test(q)) {

@@ -84,6 +84,23 @@ describe("myIssuesBallotAnswer", () => {
     expect(response.results[0]?.snippet).toBe("Touches your saved issues: Housing, Climate.");
   });
 
+  it("breaks score ties toward the user's best-ranked issue, like the ballot page", () => {
+    // Parks rank 2 (weight 6) + Climate unranked (weight 1) ties Housing
+    // rank 1 (weight 7) on score — the race touching the #1 issue must win,
+    // even though the other race's date is earlier.
+    const PARKS = area("a-parks", "Parks");
+    const tied = new Map([
+      ["a-housing", { weight: 7, rank: 1 }],
+      ["a-parks", { weight: 6, rank: 2 }],
+      ["a-climate", { weight: 1, rank: 8 }],
+    ]);
+    const response = myIssuesBallotAnswer(tied, [
+      { ...election("e1", "Two Weak Matches", [PARKS, CLIMATE]), election_date: "2026-11-02" },
+      election("e2", "Top Issue Match", [HOUSING]),
+    ]);
+    expect(response.results.map((card) => card.title)).toEqual(["Top Issue Match", "Two Weak Matches"]);
+  });
+
   it("caps the list and says how many matched in total", () => {
     const many = Array.from({ length: 7 }, (_, i) => election(`e${i}`, `Race ${i}`, [HOUSING]));
     const response = myIssuesBallotAnswer(weights, many);
