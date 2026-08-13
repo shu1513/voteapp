@@ -1,8 +1,9 @@
 # Plan: split-screen master–detail layout for election and candidate pages
 
-Status: phase 1 implemented (DetailRail + ElectionPage; verified live on the
-Maricopa ballot — enter/walk/exit). Frontend-only; no backend, API, route,
-or migration changes. Each phase is one PR; phase 2 depends on phase 1.
+Status: phase 1 shipped (PR #701 — DetailRail + ElectionPage); phase 2
+implemented (CandidatePage roster rail; verified live — election → candidate
+→ roster walk → exit restores the election's own ballot rail). Frontend-only;
+no backend, API, route, or migration changes. Each phase is one PR.
 
 ## Goal
 

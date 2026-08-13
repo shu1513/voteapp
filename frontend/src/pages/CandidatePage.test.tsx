@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { screen, within } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CandidatePage, ErrorBoundary, loader } from "./CandidatePage";
 import { clearBallotDraft, readBallotDraft } from "../lib/ballotDraft";
@@ -864,6 +864,92 @@ describe("CandidatePage roster pager", () => {
     const pager = screen.getByRole("navigation", { name: "Candidate navigation" });
     expect(within(pager).getByRole("link", { name: "Back to Election" })).toBeInTheDocument();
     expect(within(pager).queryByRole("link", { name: /^(Previous|Next):/ })).not.toBeInTheDocument();
+  });
+});
+
+// The desktop split-screen rail (aria-label "Candidates in this race", vs
+// the pager's "Candidate navigation" — distinct names because both are in
+// the DOM and CSS decides which is visible per viewport). Same gate as
+// prev/next: a validated roster containing the current candidate.
+describe("CandidatePage roster rail", () => {
+  const ROSTER_ARRIVAL = {
+    backTo: { path: "/elections/e-1", label: "Governor" },
+    backState: { backTo: { path: "/ballot?d=d-1", label: "All elections" } },
+    electionId: "e-1",
+    candidates: [
+      { id: "c-1", name: "Jordan Voter" },
+      { id: "c-2", name: "Riley Runner" },
+      { id: "c-3", name: "Casey Contender" },
+    ],
+  };
+  const perIdLoader = ({ params }: { params: { candidateId?: string } }) =>
+    candidateDetail({ candidate_id: params.candidateId });
+
+  it("renders the roster with the current candidate highlighted and the full back label", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(perIdLoader, "c-2", ROSTER_ARRIVAL);
+
+    const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    expect(within(rail).getByRole("link", { name: "Jordan Voter" })).toHaveAttribute("href", "/candidates/c-1");
+    expect(within(rail).getByRole("link", { name: "Casey Contender" })).toHaveAttribute(
+      "href",
+      "/candidates/c-3"
+    );
+    // The current candidate is text with aria-current, not a link.
+    expect(within(rail).queryByRole("link", { name: "Riley Runner" })).not.toBeInTheDocument();
+    expect(within(rail).getByText("Riley Runner")).toHaveAttribute("aria-current", "page");
+    // The exit link keeps the election's full title — unlike the pager's
+    // generic "Election" relabel.
+    expect(within(rail).getByRole("link", { name: "Back to Governor" })).toHaveAttribute(
+      "href",
+      "/elections/e-1"
+    );
+  });
+
+  it("keeps the rail through a roster walk, forwarding the arrival state verbatim", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const { router } = renderCandidate(perIdLoader, "c-1", ROSTER_ARRIVAL);
+
+    const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    await user.click(within(rail).getByRole("link", { name: "Casey Contender" }));
+
+    expect(router.state.location.pathname).toBe("/candidates/c-3");
+    expect(router.state.location.state).toEqual(ROSTER_ARRIVAL);
+    const nextRail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    expect(within(nextRail).getByText("Casey Contender")).toHaveAttribute("aria-current", "page");
+    expect(within(nextRail).getByRole("link", { name: "Jordan Voter" })).toHaveAttribute(
+      "href",
+      "/candidates/c-1"
+    );
+  });
+
+  it("delivers the ballot context through the rail's exit link", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    const { router } = renderCandidate(perIdLoader, "c-1", ROSTER_ARRIVAL);
+
+    const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    await user.click(within(rail).getByRole("link", { name: "Back to Governor" }));
+
+    expect(router.state.location.pathname).toBe("/elections/e-1");
+    expect(router.state.location.state).toEqual(ROSTER_ARRIVAL.backState);
+  });
+
+  it("renders no rail on deep links or stale snapshots (pager rules apply)", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    // Deep link: no router state at all.
+    renderCandidate(perIdLoader, "c-1");
+    await screen.findByRole("heading", { name: "Jordan Voter" });
+    expect(screen.queryByRole("navigation", { name: "Candidates in this race" })).not.toBeInTheDocument();
+
+    // Stale snapshot: current candidate missing from the roster — the back
+    // bar survives (its own gate), the rail does not.
+    renderCandidate(perIdLoader, "c-9", { ...ROSTER_ARRIVAL });
+    await waitFor(() =>
+      expect(screen.getAllByRole("navigation", { name: "Candidate navigation" })).toHaveLength(1)
+    );
+    expect(screen.queryByRole("navigation", { name: "Candidates in this race" })).not.toBeInTheDocument();
   });
 });
 
