@@ -157,6 +157,27 @@ describe("RegisterPage clickwrap", () => {
     });
   });
 
+  it("explains the greyed-out Google button on click and clears the hint once agreed", async () => {
+    vi.stubEnv("VITE_GOOGLE_OAUTH_CLIENT_ID", "test-client-id");
+    const gis = stubGis();
+    const user = userEvent.setup();
+    renderRegister();
+    await waitFor(() => expect(gis.initialize).toHaveBeenCalled());
+
+    // pointer-events-none on the disabled wrapper means a real click lands on
+    // the hint container; jsdom doesn't apply the class so the click bubbles
+    // up through it the same way.
+    await user.click(screen.getByTestId("google-signin-button"));
+    expect(
+      screen.getByText("Check the box above to enable sign-up with Google.")
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole("checkbox"));
+    expect(
+      screen.queryByText("Check the box above to enable sign-up with Google.")
+    ).not.toBeInTheDocument();
+  });
+
   it("forwards an internal next path to the login links", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,

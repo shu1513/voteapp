@@ -110,7 +110,9 @@ export function GoogleSignInButton({ text, disabled = false, onCredential }: Goo
           theme: "outline",
           size: "large",
           text,
-          width: 320,
+          // GIS caps the button at 400px; centering closes the small gap
+          // against the page's full-width (416px) inputs.
+          width: 400,
         });
       })
       .catch(() => {
@@ -128,7 +130,12 @@ export function GoogleSignInButton({ text, disabled = false, onCredential }: Goo
   }
 
   return (
-    <div aria-disabled={disabled} className={disabled ? "pointer-events-none opacity-50" : undefined}>
+    <div
+      aria-disabled={disabled}
+      className={
+        disabled ? "pointer-events-none flex justify-center opacity-50" : "flex justify-center"
+      }
+    >
       <div ref={containerRef} data-testid="google-signin-button" />
     </div>
   );

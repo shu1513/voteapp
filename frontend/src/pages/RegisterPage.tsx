@@ -24,6 +24,9 @@ export function RegisterPage() {
   // typed, and revealing only one of a pair defeats the comparison.
   const [showPassword, setShowPassword] = useState(false);
   const [accepted, setAccepted] = useState(false);
+  // Shown after a click on the disabled Google button; hidden again the
+  // moment the box is checked (render condition below).
+  const [showAgreeHint, setShowAgreeHint] = useState(false);
   // The page is prerendered: text entered (or autofilled) before hydration
   // exists only in the DOM. Fold it into state or the submit drops it.
   useAdoptPreHydrationValue("register-email", setEmail);
@@ -127,9 +130,56 @@ export function RegisterPage() {
   return (
     <div className="mx-auto max-w-md px-4 py-10">
       <h1 className="text-2xl font-bold">Create your account</h1>
-      <p className="mt-2 text-sm text-ink-soft">
-        Save your districts, follow candidates, and get alerts when new elections appear where you live.
-      </p>
+
+      {/* The clickwrap checkbox leads the page because it gates BOTH signup
+          paths below it — Google directly underneath and the email form
+          after the divider. */}
+      <div className="mt-6">
+        <LegalGate
+          inputId="signup-terms"
+          label={SIGNUP_CHECKBOX_LABEL}
+          checked={accepted}
+          onChange={setAccepted}
+        />
+      </div>
+
+      {/* While unchecked the GIS iframe's wrapper is pointer-events-none, so
+          a click lands on this div — explain the greyed-out button instead
+          of leaving it a mystery. */}
+      <div
+        className="mt-4"
+        onClick={() => {
+          if (!accepted) {
+            setShowAgreeHint(true);
+          }
+        }}
+      >
+        <GoogleSignInButton
+          text="signup_with"
+          disabled={!accepted || authPending}
+          onCredential={(credential) => {
+            if (accepted && !authPending) {
+              googleSignup.mutate(credential);
+            }
+          }}
+        />
+        {showAgreeHint && !accepted ? (
+          <p className="mt-2 text-center text-sm text-ink-soft">
+            Check the box above to enable sign-up with Google.
+          </p>
+        ) : null}
+        {googleSignup.isError ? (
+          <div className="mt-3">
+            <ErrorNotice error={googleSignup.error} />
+          </div>
+        ) : null}
+      </div>
+
+      <div className="mt-6 flex items-center gap-3" aria-hidden="true">
+        <span className="h-px flex-1 bg-line" />
+        <span className="text-xs font-medium uppercase text-ink-soft">or</span>
+        <span className="h-px flex-1 bg-line" />
+      </div>
 
       <form
         onSubmit={(event) => {
@@ -210,13 +260,6 @@ export function RegisterPage() {
           ) : null}
         </div>
 
-        <LegalGate
-          inputId="signup-terms"
-          label={SIGNUP_CHECKBOX_LABEL}
-          checked={accepted}
-          onChange={setAccepted}
-        />
-
         <button
           type="submit"
           disabled={!canSubmit}
@@ -226,28 +269,9 @@ export function RegisterPage() {
         </button>
       </form>
 
-      {/* Gated by the same LegalGate checkbox as the submit button above:
-          the Google signup records the identical clickwrap acceptance. */}
-      <div className="mt-4">
-        <GoogleSignInButton
-          text="signup_with"
-          disabled={!accepted || authPending}
-          onCredential={(credential) => {
-            if (accepted && !authPending) {
-              googleSignup.mutate(credential);
-            }
-          }}
-        />
-      </div>
-
       {register.isError ? (
         <div className="mt-4">
           <ErrorNotice error={register.error} />
-        </div>
-      ) : null}
-      {googleSignup.isError ? (
-        <div className="mt-4">
-          <ErrorNotice error={googleSignup.error} />
         </div>
       ) : null}
 
