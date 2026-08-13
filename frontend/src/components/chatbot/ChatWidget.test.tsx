@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ChatWidget, contextFromPathname, isChatWidgetHidden, reportTargetFromResults, starterQuestions } from "./ChatWidget";
 import { renderRoutes } from "../../test/render";
@@ -206,6 +206,51 @@ describe("ChatWidget", () => {
       const body = JSON.parse((askCalls[1] as unknown as [string, RequestInit])[1].body as string);
       expect(body).toEqual({ question: "What is their voting record?" });
     });
+  });
+
+  it("collapses and clears the chat when the signed-in account changes", async () => {
+    const user = userEvent.setup();
+    const { queryClient } = renderWidgetAt("/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+
+    // Another account signs in on the same tab (the widget never unmounts,
+    // so an open panel would otherwise survive the login round-trip): the
+    // panel collapses and the previous account's conversation is gone.
+    act(() => {
+      queryClient.setQueryData(["me"], { ...ME_VERIFIED.user, email: "someone-else@example.com" });
+    });
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    expect(screen.queryByText("Here's what our data has on that.")).not.toBeInTheDocument();
+    expect(screen.getByText(/never opinions or endorsements/i)).toBeInTheDocument();
+  });
+
+  it("discards an answer that was still in flight when the account switched", async () => {
+    const user = userEvent.setup();
+    let release!: (value: { body: unknown }) => void;
+    const held = new Promise<{ body: unknown }>((resolve) => {
+      release = resolve;
+    });
+    const { queryClient } = renderWidgetAt("/ballot", () => held);
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+
+    // Account B signs in while A's question is still in flight...
+    act(() => {
+      queryClient.setQueryData(["me"], { ...ME_VERIFIED.user, email: "someone-else@example.com" });
+    });
+    // ...then A's slow answer arrives. It must land nowhere: the remount
+    // discarded the widget instance the mutation would have appended to.
+    await act(async () => {
+      release({ body: RETRIEVAL_RESPONSE });
+      await new Promise((resolve) => setTimeout(resolve, 20));
+    });
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    expect(screen.queryByText("Who is Jon Ossoff?")).not.toBeInTheDocument();
+    expect(screen.queryByText("Here's what our data has on that.")).not.toBeInTheDocument();
   });
 
   it("sends a starter chip as a question on click, then hides the chips", async () => {
