@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest, useElectionChoices, useMe } from "@voteapp/api-client";
 import type { BallotSummary } from "@voteapp/api-client";
-import { draftProgress, isDecidedChoice, useBallotDraft } from "./ballotDraft";
+import { draftPickCount, draftProgress, isDecidedChoice, useBallotDraft } from "./ballotDraft";
 import { usLatestLocalDate } from "./usLatestLocalDate";
 
 export type PickProgress = { picked: number; total: number; complete: boolean };
@@ -45,20 +45,32 @@ export function useMyPicksProgress(): PickProgress | null {
 
 /**
  * The logged-out header's draft badge: label + destination for the guest's
- * ballot draft, or null when there is nothing to show (no draft target yet).
- * Complete drafts take the earned name — "My Election Picks ✓".
+ * ballot draft, or null when the draft is empty. Complete drafts take the
+ * earned name — "My Election Picks ✓".
  */
 export function useGuestDraftNav(): { to: string; label: string; complete: boolean } | null {
   const draft = useBallotDraft();
   const progress = draftProgress(draft);
-  if (!progress || draft.district_ids.length === 0) {
+  if (progress && draft.district_ids.length > 0) {
+    return {
+      to: `/ballot?d=${encodeURIComponent(draft.district_ids.join(","))}`,
+      label: progress.complete
+        ? "My Election Picks ✓"
+        : `My Ballot Draft ${progress.picked}/${progress.total}`,
+      complete: progress.complete,
+    };
+  }
+  // Deep-link entry: the guest picked on an election or candidate page
+  // (shares and search land there) without ever seeing /ballot, so no
+  // district list or race denominator exists. The badge still shows — a
+  // pick that appears nowhere in the header reads as lost — counting picks
+  // instead of progress, and routes to the address search, the only page
+  // that can build the real ballot around them. Deliberately NOT the
+  // election's own district: this app never implies a ballot it hasn't
+  // matched to an address (see the "may not cover your address" caveats).
+  const pickCount = draftPickCount(draft);
+  if (pickCount === 0) {
     return null;
   }
-  return {
-    to: `/ballot?d=${encodeURIComponent(draft.district_ids.join(","))}`,
-    label: progress.complete
-      ? "My Election Picks ✓"
-      : `My Ballot Draft ${progress.picked}/${progress.total}`,
-    complete: progress.complete,
-  };
+  return { to: "/", label: `My Ballot Draft (${pickCount})`, complete: false };
 }

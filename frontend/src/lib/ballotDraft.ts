@@ -32,24 +32,96 @@ const EMPTY_DRAFT: BallotDraft = { v: 1, district_ids: [], target: null, choices
 const listeners = new Set<() => void>();
 let cache: BallotDraft | null = null;
 
+// A pick row survives sanitization only with every field the readers touch.
+// Invalid picks are dropped individually; a row left with no picks and no
+// measure position is dropped whole (the same "decided" rule putRow keeps).
+function sanitizeChoiceRow(value: unknown): ElectionChoice | null {
+  if (typeof value !== "object" || value === null) {
+    return null;
+  }
+  const row = value as Record<string, unknown>;
+  if (
+    typeof row.election_id !== "string" ||
+    typeof row.official_ballot_title !== "string" ||
+    typeof row.election_date !== "string" ||
+    typeof row.updated_at !== "string" ||
+    (row.race_type !== "office" && row.race_type !== "ballot_measure") ||
+    !Array.isArray(row.picks)
+  ) {
+    return null;
+  }
+  const picks = row.picks.filter(
+    (pick): pick is ElectionChoice["picks"][number] =>
+      typeof pick === "object" &&
+      pick !== null &&
+      typeof (pick as { candidate_id?: unknown }).candidate_id === "string" &&
+      typeof (pick as { display_name?: unknown }).display_name === "string" &&
+      typeof (pick as { candidacy_status?: unknown }).candidacy_status === "string"
+  );
+  const measurePosition =
+    row.measure_position === "yes" || row.measure_position === "no" ? row.measure_position : null;
+  if (picks.length === 0 && measurePosition === null) {
+    return null;
+  }
+  return {
+    election_id: row.election_id,
+    race_type: row.race_type,
+    official_ballot_title: row.official_ballot_title,
+    election_date: row.election_date,
+    seats_to_fill: typeof row.seats_to_fill === "number" ? row.seats_to_fill : null,
+    picks,
+    measure_position: measurePosition,
+    updated_at: row.updated_at,
+  };
+}
+
+// Field-by-field sanitization, never a cast: this value renders in the
+// header on EVERY route (useGuestDraftNav), so a malformed draft — another
+// script on the origin, a devtools edit, a bug in an older build — that
+// merely parses as JSON would otherwise throw on .length/.picks in every
+// render and brick the app persistently, since the bad bytes survive
+// reloads. Anything salvageable is kept (a mangled row must not take twelve
+// good picks with it); anything malformed degrades to its empty value.
 function parseDraft(raw: string | null): BallotDraft {
   if (!raw) {
     return EMPTY_DRAFT;
   }
+  let parsed: unknown;
   try {
-    const parsed: unknown = JSON.parse(raw);
-    if (
-      typeof parsed !== "object" ||
-      parsed === null ||
-      (parsed as { v?: unknown }).v !== 1 ||
-      typeof (parsed as { choices?: unknown }).choices !== "object"
-    ) {
-      return EMPTY_DRAFT;
-    }
-    return parsed as BallotDraft;
+    parsed = JSON.parse(raw);
   } catch {
     return EMPTY_DRAFT;
   }
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    return EMPTY_DRAFT;
+  }
+  const draft = parsed as Record<string, unknown>;
+  if (draft.v !== 1) {
+    return EMPTY_DRAFT;
+  }
+  const districtIds = Array.isArray(draft.district_ids)
+    ? draft.district_ids.filter((id): id is string => typeof id === "string")
+    : [];
+  let target: BallotDraft["target"] = null;
+  if (typeof draft.target === "object" && draft.target !== null) {
+    const rawTarget = draft.target as Record<string, unknown>;
+    if (typeof rawTarget.election_date === "string" && Array.isArray(rawTarget.election_ids)) {
+      target = {
+        election_date: rawTarget.election_date,
+        election_ids: rawTarget.election_ids.filter((id): id is string => typeof id === "string"),
+      };
+    }
+  }
+  const choices: Record<string, ElectionChoice> = {};
+  if (typeof draft.choices === "object" && draft.choices !== null && !Array.isArray(draft.choices)) {
+    for (const value of Object.values(draft.choices)) {
+      const row = sanitizeChoiceRow(value);
+      if (row) {
+        choices[row.election_id] = row;
+      }
+    }
+  }
+  return { v: 1, district_ids: districtIds, target, choices };
 }
 
 function readStorage(): BallotDraft {
@@ -142,9 +214,15 @@ export function draftProgress(
   return { picked, total, complete: picked === total };
 }
 
+/** Decided races in the draft, counted with or without a target — the
+ * generic nav badge's number when no ballot context exists yet. */
+export function draftPickCount(draft: BallotDraft): number {
+  return Object.values(draft.choices).filter((choice) => isDecidedChoice(choice)).length;
+}
+
 /** True when the draft holds anything worth flushing into an account. */
 export function hasDraftPicks(draft: BallotDraft): boolean {
-  return Object.values(draft.choices).some((choice) => isDecidedChoice(choice));
+  return draftPickCount(draft) > 0;
 }
 
 /** Called by the guest ballot page on every successful load, so the badge's
@@ -231,14 +309,34 @@ export function setDraftMeasureChoice(
   putRow(draft, { ...row, measure_position: input.position });
 }
 
+// The server's verdict on ONE row, as opposed to a failure of the pass:
+// choice writes map business rejections (election closed since, candidate
+// withdrew, cap already reached on the account) to 400/404 — see
+// backend/src/api/apiErrors.ts. Retrying those can never succeed, so the
+// row is skipped and the pass continues. Everything else is not about the
+// row: 401/403 mean the session is the problem, 429 means the burst of
+// sequential PUTs got throttled, 5xx means the server failed — all retry-
+// able, so they abort the pass and the draft survives.
+function isPermanentRowRejection(error: unknown): boolean {
+  return (
+    error instanceof ApiError &&
+    error.status >= 400 &&
+    error.status < 500 &&
+    error.status !== 401 &&
+    error.status !== 403 &&
+    error.status !== 429
+  );
+}
+
 /**
  * Replays the guest draft into the signed-in account via the normal
  * PUT /api/me/election-choices writer, oldest row first so the newest intent
- * wins any single-seat replace. Business rejections (election closed since,
- * candidate withdrew, multi-seat cap already reached on the account) skip
- * that write and keep going — the server is the authority. A transport
- * failure aborts and KEEPS the draft so a later session can retry; the
- * draft clears only after a complete pass.
+ * wins any single-seat replace. Business rejections (400/404) skip that
+ * write and keep going — the server is the authority. Any other failure
+ * (transport, auth, throttling, 5xx) aborts and KEEPS the draft so a later
+ * session can retry; the draft clears only after a complete pass. A retry
+ * re-PUTs rows that already landed, which is safe: re-choosing a chosen
+ * candidate and re-setting a measure position are no-ops server-side.
  */
 export async function flushBallotDraftToAccount(): Promise<void> {
   const draft = currentDraft();
@@ -258,7 +356,7 @@ export async function flushBallotDraftToAccount(): Promise<void> {
       try {
         await apiRequest("/api/me/election-choices", { method: "PUT", body: update });
       } catch (error) {
-        if (!(error instanceof ApiError)) {
+        if (!isPermanentRowRejection(error)) {
           throw error;
         }
       }

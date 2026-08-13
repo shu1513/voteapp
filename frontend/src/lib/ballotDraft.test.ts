@@ -3,6 +3,7 @@ import { ApiError, apiRequest } from "@voteapp/api-client";
 import {
   clearBallotDraft,
   draftChoicesByElectionId,
+  draftPickCount,
   draftProgress,
   flushBallotDraftToAccount,
   hasDraftPicks,
@@ -20,6 +21,15 @@ vi.mock("@voteapp/api-client", async (importOriginal) => {
 const mockedApiRequest = vi.mocked(apiRequest);
 
 const RACE = { electionId: "e1", raceTitle: "Governor", electionDate: "2026-11-03" };
+
+// Writes raw bytes to storage and fires the cross-tab storage event so the
+// module drops its in-memory cache and actually re-parses — without the
+// event, readBallotDraft() serves the cached draft and a parse test passes
+// no matter what the bytes say.
+function seedStorage(value: string) {
+  window.localStorage.setItem("voteapp_ballot_draft", value);
+  window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
+}
 
 function pickJane(chosen = true, seatsToFill: number | null = null) {
   setDraftCandidateChoice({
@@ -77,14 +87,50 @@ describe("ballotDraft store", () => {
   });
 
   it("treats corrupt or foreign storage as an empty draft", () => {
-    window.localStorage.setItem("voteapp_ballot_draft", "{not json");
-    clearBallotDraft();
-    window.localStorage.setItem("voteapp_ballot_draft", "{not json");
+    seedStorage("{not json");
+    expect(readBallotDraft()).toEqual({ v: 1, district_ids: [], target: null, choices: {} });
+    seedStorage(JSON.stringify({ v: 99, choices: {} }));
     expect(readBallotDraft().choices).toEqual({});
-    window.localStorage.setItem("voteapp_ballot_draft", JSON.stringify({ v: 99, choices: {} }));
-    clearBallotDraft();
-    window.localStorage.setItem("voteapp_ballot_draft", JSON.stringify({ v: 99, choices: {} }));
+    seedStorage(JSON.stringify([{ v: 1 }]));
     expect(readBallotDraft().choices).toEqual({});
+  });
+
+  it("sanitizes malformed drafts field by field instead of crashing later readers", () => {
+    // choices: null passes a bare typeof-object check; district_ids missing
+    // would throw on .length in the header badge hook on every route.
+    seedStorage(JSON.stringify({ v: 1, choices: null }));
+    expect(readBallotDraft()).toEqual({ v: 1, district_ids: [], target: null, choices: {} });
+
+    const goodRow = {
+      election_id: "e1",
+      race_type: "office",
+      official_ballot_title: "Governor",
+      election_date: "2026-11-03",
+      seats_to_fill: null,
+      picks: [{ candidate_id: "c1", display_name: "Jane Doe", candidacy_status: "active" }],
+      measure_position: null,
+      updated_at: "2026-08-12T00:00:00.000Z",
+    };
+    seedStorage(
+      JSON.stringify({
+        v: 1,
+        district_ids: ["d1", 42, null],
+        target: { bogus: true },
+        choices: {
+          e1: goodRow,
+          bad1: { election_id: "bad1" }, // no picks array, no title
+          bad2: { ...goodRow, election_id: "bad2", picks: [{ candidate_id: 7 }], measure_position: "maybe" },
+        },
+      })
+    );
+    const draft = readBallotDraft();
+    expect(draft.district_ids).toEqual(["d1"]);
+    expect(draft.target).toBeNull();
+    // The mangled rows die alone; the good pick survives them.
+    expect(Object.keys(draft.choices)).toEqual(["e1"]);
+    expect(draft.choices.e1).toEqual(goodRow);
+    expect(draftPickCount(draft)).toBe(1);
+    expect(draftProgress(draft)).toBeNull();
   });
 
   it("computes progress against the stored target", () => {
@@ -133,7 +179,7 @@ describe("flushBallotDraftToAccount", () => {
     expect(hasDraftPicks(readBallotDraft())).toBe(false);
   });
 
-  it("skips business rejections (ApiError) but keeps flushing, then clears", async () => {
+  it("skips business rejections (400/404) but keeps flushing, then clears", async () => {
     pickJane();
     setDraftMeasureChoice({ electionId: "m1", raceTitle: "Prop A", electionDate: "2026-11-03", position: "yes" });
     mockedApiRequest
@@ -149,5 +195,23 @@ describe("flushBallotDraftToAccount", () => {
     mockedApiRequest.mockRejectedValue(new TypeError("Failed to fetch"));
     await expect(flushBallotDraftToAccount()).rejects.toThrow("Failed to fetch");
     expect(hasDraftPicks(readBallotDraft())).toBe(true);
+  });
+
+  it("aborts and keeps the draft on auth, throttling, and server errors", async () => {
+    // Only a 400/404 is the server's verdict on the row itself. 401 (session
+    // died), 429 (the sequential PUT burst got throttled), and 5xx are
+    // failures of the PASS — swallowing them and then clearing would delete
+    // picks that never landed anywhere.
+    pickJane();
+    for (const [status, code] of [
+      [401, "unauthorized"],
+      [429, "rate_limited"],
+      [500, "internal_error"],
+    ] as const) {
+      mockedApiRequest.mockReset();
+      mockedApiRequest.mockRejectedValue(new ApiError(status, code, code));
+      await expect(flushBallotDraftToAccount()).rejects.toThrow(code);
+      expect(hasDraftPicks(readBallotDraft())).toBe(true);
+    }
   });
 });
