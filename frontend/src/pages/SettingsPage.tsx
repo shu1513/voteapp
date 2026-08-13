@@ -4,15 +4,15 @@ import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/
 import { apiRequest } from "@voteapp/api-client";
 import type { EmailPreferences } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
+import { ResearchAreasSection } from "../components/ResearchAreasSection";
 import { SavedAddressForm } from "../components/SavedAddressForm";
 import { purgeAccountScopedQueries, useMe, type Me } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Account settings. Sections mirror the backend's gating: profile, password,
 // email change, sessions, and delete work for unverified users too (fixing a
-// typo or leaving must not require a verified inbox); email preferences are
-// verified-only and hidden until then. The research-area editor lives on My
-// Picks (ResearchAreasSection component).
+// typo or leaving must not require a verified inbox); email preferences and
+// the ranked issue editor are verified-only and hidden until then.
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -517,6 +517,7 @@ export function SettingsPage() {
       {me.email_verified ? (
         <>
           <HomeAddressSection />
+          <ResearchAreasSection />
           <EmailPreferencesSection />
         </>
       ) : (

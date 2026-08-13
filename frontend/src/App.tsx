@@ -68,14 +68,17 @@ function AccountNav() {
     );
   }
 
-  // Plain "My Picks" until the progress is known (no upcoming races, or the
-  // queries haven't settled) — a counter that flashes in later is fine, a
-  // wrong one is not.
-  const myPicksLabel = picksProgress
-    ? picksProgress.complete
-      ? "My Picks ✓"
-      : `My Picks ${picksProgress.picked}/${picksProgress.total}`
-    : "My Picks";
+  // "My Draft" mirrors the guest label rules: plain until the first pick
+  // (no homework-flavored "0/8", and no counter while the queries haven't
+  // settled — a counter that flashes in later is fine, a wrong one is not),
+  // then counting up, then the earned name "My Picks ✓" when every race on
+  // the nearest election day is decided.
+  const myDraftLabel =
+    picksProgress && picksProgress.picked > 0
+      ? picksProgress.complete
+        ? "My Picks ✓"
+        : `My Draft ${picksProgress.picked}/${picksProgress.total}`
+      : "My Draft";
 
   function signOut() {
     logout.mutate(undefined, {
@@ -94,7 +97,10 @@ function AccountNav() {
           My Elections
         </Link>
         <Link to="/me/picks" className="whitespace-nowrap text-ink-soft hover:text-ink">
-          {myPicksLabel}
+          {myDraftLabel}
+        </Link>
+        <Link to="/me/follows" className="whitespace-nowrap text-ink-soft hover:text-ink">
+          My Candidates
         </Link>
         <Link to="/me/settings" className="text-ink-soft hover:text-ink">
           Settings
@@ -115,7 +121,12 @@ function AccountNav() {
           </MenuItem>
           <MenuItem>
             <Link to="/me/picks" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
-              {myPicksLabel}
+              {myDraftLabel}
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link to="/me/follows" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
+              My Candidates
             </Link>
           </MenuItem>
           <MenuItem>
