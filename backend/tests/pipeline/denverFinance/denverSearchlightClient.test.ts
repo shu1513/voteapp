@@ -244,6 +244,25 @@ describe("denverSearchlightClient", () => {
     expect(url).toContain("GetCommitteeDetailsByFiler?filerId=1326&electionCycleId=36");
   });
 
+  it("returns null committee details on the live 204 no-content answer", async () => {
+    // Verified live 2026-08-13: filer 1328 has no detail record for cycle 36
+    // and the endpoint answers 204 with an empty body. That is source data,
+    // not a fault — throwing here aborted the whole auto-link leg.
+    const noContent = vi.fn().mockResolvedValue(new Response(null, { status: 204 }));
+    await expect(getDenverCommitteeDetailsByFiler(1328, 36, { fetchImpl: noContent })).resolves.toBeNull();
+
+    // A 200 with an empty body is the same answer from a different server.
+    const emptyBody = vi.fn().mockResolvedValue(new Response("  ", { status: 200 }));
+    await expect(getDenverCommitteeDetailsByFiler(1328, 36, { fetchImpl: emptyBody })).resolves.toBeNull();
+  });
+
+  it("still fails closed when another endpoint answers with no content", async () => {
+    // Only the details getter treats "no content" as data; an empty filer or
+    // transaction response is a broken answer and must not pass silently.
+    const noContent = vi.fn().mockResolvedValue(new Response(null, { status: 204 }));
+    await expect(getDenverFiler(658, { fetchImpl: noContent })).rejects.toMatchObject({ code: "bad_response" });
+  });
+
   it("surfaces HTTP and JSON failures with typed error codes", async () => {
     const httpError = vi.fn().mockResolvedValue(new Response("nope", { status: 500, statusText: "Server Error" }));
     await expect(getDenverFiler(658, { fetchImpl: httpError })).rejects.toMatchObject({

@@ -221,6 +221,16 @@ async function fetchSearchlightJson(
       );
     }
 
+    // "No content" is a real SearchLight answer, not a broken one: verified
+    // live 2026-08-13, GetCommitteeDetailsByFiler returns HTTP 204 with an
+    // empty body for a registered filer that has no detail record for the
+    // requested cycle (filer 1328, cycle 36). Returned as undefined so each
+    // caller decides; callers that require a record or an array still fail
+    // closed on it.
+    if (response.status === 204 || text.trim() === "") {
+      return undefined;
+    }
+
     try {
       return JSON.parse(text) as unknown;
     } catch (error) {
@@ -377,6 +387,13 @@ export const DENVER_SEARCHLIGHT_CANDIDATE_COMMITTEE_TYPE_ID = 1;
  * echo the requested cycle before trusting committeeName/office for that
  * cycle. Raw rows carry the treasurer's name and address fields — excluded
  * here per the PII allowlist rule.
+ *
+ * A registered filer can have NO detail record for a cycle: the endpoint
+ * answers HTTP 204 with an empty body (verified live 2026-08-13 for filer
+ * 1328 at cycle 36, while its duplicate-name sibling 1322 answers normally).
+ * That is source data, not a fault, so the getter returns null and the
+ * resolver blocks that registrant — it must never abort a whole run, or one
+ * detail-less registrant would stop every Denver link.
  */
 export type DenverCommitteeDetails = {
   filerId: number;
@@ -395,7 +412,7 @@ export async function getDenverCommitteeDetailsByFiler(
   filerId: number,
   electionCycleId: number,
   options: DenverSearchlightClientOptions = {}
-): Promise<DenverCommitteeDetails> {
+): Promise<DenverCommitteeDetails | null> {
   requirePositiveInteger(filerId, "filer id");
   requirePositiveInteger(electionCycleId, "election cycle id");
   const payload = await fetchSearchlightJson(
@@ -403,6 +420,7 @@ export async function getDenverCommitteeDetailsByFiler(
     { method: "GET" },
     options
   );
+  if (payload === undefined) return null;
   const row = requireRecord(payload, "committee details");
   return {
     filerId: requireInteger(row.filerId, "committee details filerId"),

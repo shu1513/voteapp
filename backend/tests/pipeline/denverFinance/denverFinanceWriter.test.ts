@@ -36,6 +36,8 @@ const summary = {
   directContributionTotalCents: 124_933_988,
   totalDisbursementsCents: 201_464_423,
   cashOnHandCents: -73_805,
+  loansReceivedCents: 0,
+  publicFundsReceivedCents: 76_692_375,
   outsideSupportCents: 500_995_460,
   outsideOpposeCents: 15_701_593,
   sourceUrl: "https://denver.maplight.com",

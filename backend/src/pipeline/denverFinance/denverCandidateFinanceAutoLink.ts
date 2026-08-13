@@ -209,7 +209,9 @@ export async function autoLinkMissingDenverCandidateFinanceLinks(input: {
       `Denver auto-link election date must be an ISO date, got "${input.electionDate}"`,
     );
   for (const record of input.registrants) {
-    const detailsDate = record.details.electionDate;
+    // A registrant with no details record (204) carries no election date to
+    // check; the resolver blocks it individually.
+    const detailsDate = record.details?.electionDate;
     if (detailsDate && !detailsDate.startsWith(input.electionDate))
       throw new Error(
         `Denver cycle ${input.electionCycleId} registrant filer ${record.registrant.filerId} dates the election ${detailsDate}, not ${input.electionDate} — wrong cycle/date pairing`,

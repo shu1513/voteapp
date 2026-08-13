@@ -18,6 +18,10 @@
 //   blocked, since its committeeName/office cannot be trusted for this cycle.
 // - Terminated filers, filer/committee echo mismatches, non-candidate
 //   committee types, and missing committee names: blocked.
+// - A registrant with NO details record at all (the endpoint answers HTTP 204
+//   for filer 1328 at cycle 36): blocked, and deliberately still counted in
+//   the duplicate-name check — dropping it would make its live sibling 1322
+//   look unique and auto-link the wrong committee.
 // A blocked registrant still blocks the candidate it name-matches (surfaced
 // in the reason) — never silently dropped.
 
@@ -45,7 +49,8 @@ export type DenverRegistrantRecord = {
   registrant: DenverCycleCandidate;
   filer: DenverFiler;
   cycles: readonly DenverFilerCycle[];
-  details: DenverCommitteeDetails;
+  /** null when SearchLight has no detail record for this filer/cycle (204). */
+  details: DenverCommitteeDetails | null;
 };
 
 export type DenverCandidateCommitteeResolution = {
@@ -121,6 +126,8 @@ function registrantBlockReason(
   if (filer.isTerminated) return `filer ${registrant.filerId} is terminated`;
   if (!cycles.some((cycle) => cycle.electionCycleId === electionCycleId))
     return `filer ${registrant.filerId}'s cycle list [${cycles.map((cycle) => cycle.electionCycleId).join(", ")}] omits cycle ${electionCycleId} — inconsistent registration`;
+  if (!details)
+    return `SearchLight has no committee details for filer ${registrant.filerId} in cycle ${electionCycleId}`;
   if (details.filerId !== registrant.filerId)
     return `committee details echo filer ${details.filerId} for registrant filer ${registrant.filerId}`;
   if (details.electionCycleId !== electionCycleId)
@@ -198,7 +205,9 @@ export function resolveDenverCandidateCommittees(input: {
         candidate,
         status: "matched",
         filerId: record.registrant.filerId,
-        committeeName: record.details.committeeName!,
+        // Non-null past registrantBlockReason: it blocks null details and a
+        // details record with no committee name.
+        committeeName: record.details!.committeeName!,
         committeeEntityIds: [...record.filer.committeeIds],
       };
     },

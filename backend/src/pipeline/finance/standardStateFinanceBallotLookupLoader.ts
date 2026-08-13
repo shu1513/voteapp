@@ -114,6 +114,23 @@ function assertEvidenceLabelTypes(
   return values;
 }
 
+/** Optional per-source summary money columns (see fundingColumns). */
+export type StandardStateFinanceFundingColumn = "loans_received" | "public_funds_received";
+
+const STANDARD_FUNDING_COLUMNS: readonly StandardStateFinanceFundingColumn[] = [
+  "loans_received",
+  "public_funds_received",
+];
+
+function assertFundingColumns(
+  values: readonly StandardStateFinanceFundingColumn[]
+): readonly StandardStateFinanceFundingColumn[] {
+  if (values.some((value) => !STANDARD_FUNDING_COLUMNS.includes(value))) {
+    throw new Error(`Invalid standard finance funding columns: ${values.join(", ")}`);
+  }
+  return values;
+}
+
 function assertDirectCategoryTypes(
   values: readonly StandardStateFinanceDirectCategoryType[]
 ): readonly StandardStateFinanceDirectCategoryType[] {
@@ -160,6 +177,17 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
    * official totals include money the transaction store does not itemize.
    */
   directCoverageNote?: string;
+  /**
+   * Extra summary money columns to select and publish, for sources whose
+   * table carries them (Denver: public matching from the Fair Elections
+   * Fund, plus candidate loans). Omit — the default — and the query and the
+   * payload are byte-identical to before, so a source whose summaries table
+   * lacks these columns is unaffected. The card renders each as its own
+   * stat, which is why they are separate from the raised/spent totals: both
+   * are money the campaign can spend that is deliberately NOT counted as
+   * money raised from donors.
+   */
+  fundingColumns?: readonly StandardStateFinanceFundingColumn[];
 }
 ): Promise<Map<string, BallotLookupFinanceSummary>> {
   if (!input.enabled()) {
@@ -225,6 +253,16 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
         CASE WHEN count(summary.total_disbursements) = 0 THEN NULL ELSE sum(summary.total_disbursements) END AS total_disbursements,
         CASE WHEN count(summary.cash_on_hand) = 0 THEN NULL ELSE sum(summary.cash_on_hand) END AS cash_on_hand,`;
 
+  // Same all-null-means-null rule as the totals above; appended only for the
+  // sources that opted in, so every other query string is unchanged.
+  const fundingColumns = assertFundingColumns(input.fundingColumns ?? []);
+  const fundingSelect = fundingColumns
+    .map(
+      (column) =>
+        `CASE WHEN count(summary.${column}) = 0 THEN NULL ELSE sum(summary.${column}) END AS ${column},`
+    )
+    .join("\n        ");
+
   const summaryResult = await input.db.query<StandardStateFinanceSummaryRow>(
     `
       WITH requested AS (
@@ -244,6 +282,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
           ELSE NULL
         END AS committee_id,
         max(summary.election_year) AS election_year,${summaryAggregateColumns}
+        ${fundingSelect}
         max(summary.outside_support_total) AS outside_support_total,
         max(summary.outside_oppose_total) AS outside_oppose_total,
         min(summary.source_url) FILTER (WHERE summary.source_url IS NOT NULL) AS source_url,
@@ -660,6 +699,14 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
             total_spent: parseFinanceAmount(row.total_disbursements),
             cash_on_hand: parseFinanceAmount(row.cash_on_hand),
             debts_owed: summaryVariant === "illinoisD2" ? parseFinanceAmount(row.debts_owed) : null,
+            // Omitted entirely (not null) unless the source opted in, so
+            // every other state's payload is byte-identical to before.
+            ...(fundingColumns.includes("loans_received")
+              ? { loans_received: parseFinanceAmount(row.loans_received) }
+              : {}),
+            ...(fundingColumns.includes("public_funds_received")
+              ? { public_funds_received: parseFinanceAmount(row.public_funds_received) }
+              : {}),
             top_occupations: topDirectDonorOccupations,
             top_employers: [],
             top_industries: [],

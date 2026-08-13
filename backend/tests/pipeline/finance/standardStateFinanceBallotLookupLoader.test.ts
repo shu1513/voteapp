@@ -122,6 +122,24 @@ describe("standardStateFinanceBallotLookupLoader identity descriptor", () => {
     );
   });
 
+  it("selects the funding columns only for a source that opts in", async () => {
+    const [optedOut] = (await captureQueries({})) as [string];
+    expect(optedOut).not.toContain("loans_received");
+    expect(optedOut).not.toContain("public_funds_received");
+
+    const [optedIn] = (await captureQueries({
+      fundingColumns: ["loans_received", "public_funds_received"],
+    })) as [string];
+    expect(optedIn).toContain("sum(summary.loans_received) END AS loans_received");
+    expect(optedIn).toContain("sum(summary.public_funds_received) END AS public_funds_received");
+  });
+
+  it("rejects a funding column that is not part of the contract", async () => {
+    await expect(
+      captureQueries({ fundingColumns: ["debts_owed" as never] })
+    ).rejects.toThrow(/Invalid standard finance funding columns: debts_owed/);
+  });
+
   it("narrows the direct-breakdown filter under directBreakdownCategoryTypes", async () => {
     const queries = await captureQueries({ directBreakdownCategoryTypes: ["contribution_size"] });
     const [, direct, ...rest] = queries as [string, string, string, string, string];

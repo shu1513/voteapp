@@ -349,6 +349,10 @@ describe("syncDenverCandidateFinance", () => {
       "150.00",
       "120.00",
       "-7.38",
+      // Loans and FEF matching are persisted as their own columns, not
+      // folded into the raised figure.
+      "0.00",
+      "50.00",
       "30.00",
       "10.00",
       "https://denver.maplight.com",

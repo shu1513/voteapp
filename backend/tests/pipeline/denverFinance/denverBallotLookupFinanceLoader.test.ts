@@ -26,6 +26,8 @@ function summaryRow(over: Record<string, unknown> = {}) {
     direct_contribution_total: "150.00",
     total_disbursements: "120.00",
     cash_on_hand: "-7.38",
+    loans_received: "5.00",
+    public_funds_received: "50.00",
     outside_support_total: "30.00",
     outside_oppose_total: "10.00",
     source_url: "https://denver.maplight.com",
@@ -35,6 +37,28 @@ function summaryRow(over: Record<string, unknown> = {}) {
 }
 
 describe("Denver ballot finance loader", () => {
+  it("publishes loans and Fair Elections Fund matching as their own stats", async () => {
+    vi.stubEnv("DENVER_CAMPAIGN_FINANCE_ENABLED", "true");
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [summaryRow()] })
+      .mockResolvedValue({ rows: [] });
+    const result = await loadDenverCandidateFinanceSummariesByCandidateElection(
+      { query } as never,
+      [{ candidate_id: "c", election_id: "e" }],
+      [DENVER_ATLARGE_ELECTION],
+    );
+    expect(result.get(KEY)?.direct_campaign).toMatchObject({
+      total_raised: 150,
+      loans_received: 5,
+      public_funds_received: 50,
+    });
+    // Both columns must be selected, or the payload silently reads null.
+    const summarySql = String(query.mock.calls[0]?.[0]);
+    expect(summarySql).toContain("AS loans_received");
+    expect(summarySql).toContain("AS public_funds_received");
+  });
+
   it("maps a snapshot with the filer identity and the always-on FEF note", async () => {
     vi.stubEnv("DENVER_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
