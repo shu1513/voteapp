@@ -257,7 +257,7 @@ function StanceChip({ stance, label }: { stance: "for" | "against"; label: strin
 // have no place in a supports/opposes box; null-stance areas (general,
 // integrity_and_ethics) never leave the aggregator. Salience order, matching
 // the record groups below.
-export function classifyStanceSummary(records: readonly CandidateRecord[]): {
+function classifyStanceSummary(records: readonly CandidateRecord[]): {
   supports: RecordAreaStance[];
   opposes: RecordAreaStance[];
   mixed: RecordAreaStance[];

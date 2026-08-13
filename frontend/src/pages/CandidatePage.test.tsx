@@ -167,6 +167,150 @@ describe("CandidatePage", () => {
     expect(summaryText("Impartiality")).toContain("· 1 unfavorable");
   });
 
+  describe("stance summary boxes", () => {
+    const record = (
+      id: string,
+      tags: { areaId: string; slug: string; name: string; stance: "for" | "against" | null }[]
+    ) => ({
+      id,
+      description: `Did a thing (${id}).`,
+      source_url: "https://example.gov/record",
+      event_date: "2026-05-01",
+      created_at: "2026-05-02T00:00:00.000Z",
+      research_area_tags: tags.map((tag) => ({
+        research_area_id: tag.areaId,
+        slug: tag.slug,
+        name: tag.name,
+        stance: tag.stance,
+      })),
+    });
+    // A box is its heading's enclosing div; textContent covers the area list.
+    const boxText = (heading: string) =>
+      screen.getByRole("heading", { name: heading }).closest("div")?.textContent;
+
+    it("classifies areas into supports, opposes, and mixed with their counts", async () => {
+      stubApiRoutes({ ...ANONYMOUS });
+      renderCandidate(() =>
+        candidateDetail({
+          records: [
+            record("r-1", [{ areaId: "a-hc", slug: "healthcare_affordability", name: "Healthcare Affordability", stance: "for" }]),
+            record("r-2", [{ areaId: "a-hc", slug: "healthcare_affordability", name: "Healthcare Affordability", stance: "for" }]),
+            record("r-3", [{ areaId: "a-env", slug: "environment_and_public_health", name: "Environment and Public Health", stance: "against" }]),
+            record("r-4", [{ areaId: "a-gun", slug: "gun_control", name: "Gun Control", stance: "for" }]),
+            record("r-5", [{ areaId: "a-gun", slug: "gun_control", name: "Gun Control", stance: "against" }]),
+          ],
+        })
+      );
+
+      await screen.findByRole("heading", { name: "Jordan Voter" });
+      // The section is reachable by heading navigation under the candidate's
+      // name; the visible lead-in stays aria-hidden (it repeats the heading).
+      expect(
+        screen.getByRole("heading", { level: 2, name: "Where Jordan Voter stands, based on their records" })
+      ).toBeInTheDocument();
+      expect(boxText("Supports")).toContain("Healthcare Affordability (2 records)");
+      expect(boxText("Opposes")).toContain("Environment and Public Health (1 record)");
+      // A split never majority-collapses — it lands in Mixed with both
+      // counts, in the record-group headers' phrasing.
+      expect(boxText("Mixed record")).toContain("Gun Control (1 support · 1 oppose)");
+      expect(boxText("Supports")).not.toContain("Gun Control");
+      expect(boxText("Opposes")).not.toContain("Gun Control");
+    });
+
+    it("orders areas within a box by public salience, not payload order", async () => {
+      stubApiRoutes({ ...ANONYMOUS });
+      renderCandidate(() =>
+        candidateDetail({
+          records: [
+            // Payload leads with the lower-salience area; the box must not.
+            record("r-1", [{ areaId: "a-gun", slug: "gun_control", name: "Gun Control", stance: "for" }]),
+            record("r-2", [{ areaId: "a-hc", slug: "healthcare_affordability", name: "Healthcare Affordability", stance: "for" }]),
+          ],
+        })
+      );
+
+      await screen.findByRole("heading", { name: "Jordan Voter" });
+      const text = boxText("Supports") ?? "";
+      expect(text.indexOf("Healthcare Affordability")).toBeGreaterThanOrEqual(0);
+      expect(text.indexOf("Healthcare Affordability")).toBeLessThan(text.indexOf("Gun Control"));
+    });
+
+    it("excludes evaluative areas even when they carry stances", async () => {
+      stubApiRoutes({ ...ANONYMOUS });
+      renderCandidate(() =>
+        candidateDetail({
+          records: [
+            record("r-1", [
+              { areaId: "a-comp", slug: "legal_competence", name: "Legal Competence", stance: "for" },
+              { areaId: "a-hou", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+            ]),
+            record("r-2", [{ areaId: "a-imp", slug: "impartiality", name: "Impartiality", stance: "against" }]),
+          ],
+        })
+      );
+
+      await screen.findByRole("heading", { name: "Jordan Voter" });
+      // "Supports Legal Competence" would state advocacy the evidence-grading
+      // stance never claimed; only the advocacy area surfaces.
+      expect(boxText("Supports")).toContain("Housing Affordability (1 record)");
+      expect(boxText("Supports")).not.toContain("Legal Competence");
+      expect(screen.queryByRole("heading", { name: "Opposes" })).not.toBeInTheDocument();
+    });
+
+    it("renders no summary at all without stance-bearing records", async () => {
+      stubApiRoutes({ ...ANONYMOUS });
+      renderCandidate(() =>
+        candidateDetail({
+          records: [
+            // Relevance-only tag (null stance) and an untagged record: no
+            // position is claimed anywhere, so no boxes and no lead-in.
+            record("r-1", [{ areaId: "a-ie", slug: "integrity_and_ethics", name: "Integrity and Ethics", stance: null }]),
+            record("r-2", []),
+          ],
+        })
+      );
+
+      await screen.findByRole("heading", { name: "Jordan Voter" });
+      expect(screen.queryByRole("heading", { name: "Supports" })).not.toBeInTheDocument();
+      expect(screen.queryByText("Where they stand, based on their records:")).not.toBeInTheDocument();
+    });
+
+    it("renders only the populated side, never an empty counterpart box", async () => {
+      stubApiRoutes({ ...ANONYMOUS });
+      renderCandidate(() =>
+        candidateDetail({
+          records: [record("r-1", [{ areaId: "a-gun", slug: "gun_control", name: "Gun Control", stance: "against" }])],
+        })
+      );
+
+      await screen.findByRole("heading", { name: "Jordan Voter" });
+      expect(boxText("Opposes")).toContain("Gun Control (1 record)");
+      expect(screen.queryByRole("heading", { name: "Supports" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("heading", { name: "Mixed record" })).not.toBeInTheDocument();
+    });
+
+    it("counts a record once per tagged area, each side from its own tag", async () => {
+      stubApiRoutes({ ...ANONYMOUS });
+      renderCandidate(() =>
+        candidateDetail({
+          records: [
+            // One record, for one area and against another — it lands in
+            // both boxes, once each (per-area tallies, like the group
+            // headers).
+            record("r-1", [
+              { areaId: "a-hou", slug: "housing_affordability", name: "Housing Affordability", stance: "for" },
+              { areaId: "a-env", slug: "environment_and_public_health", name: "Environment and Public Health", stance: "against" },
+            ]),
+          ],
+        })
+      );
+
+      await screen.findByRole("heading", { name: "Jordan Voter" });
+      expect(boxText("Supports")).toContain("Housing Affordability (1 record)");
+      expect(boxText("Opposes")).toContain("Environment and Public Health (1 record)");
+    });
+  });
+
   it("orders issue groups by public salience with untagged records last", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const record = (id: string, tags: { areaId: string; slug: string; name: string }[]) => ({
