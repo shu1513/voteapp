@@ -30,11 +30,12 @@ function AccountNav() {
   const logout = useLogout();
   const navigate = useNavigate();
   // Header collection mechanic, both sides of the session: guests get a
-  // "My Ballot Draft" link to /draft (counter appears with the first pick),
-  // signed-in users get the same counter on the My Picks link. Both flip to
-  // a ✓ when every race on the nearest election day is decided. On the SSR
-  // pass the guest label is the plain, pick-free one (server snapshot is an
-  // empty draft), so the cached anonymous document stays draft-free.
+  // "My Ballot Draft" link to /draft once they've seen a ballot or made a
+  // pick (null — no link — before that, so the address-search landing stays
+  // clean), signed-in users get the same counter on the My Picks link. Both
+  // flip to a ✓ when every race on the nearest election day is decided. On
+  // the SSR pass the guest link is absent (server snapshot is an empty
+  // draft), so the cached anonymous document stays draft-free.
   const guestDraftNav = useGuestDraftNav();
   const picksProgress = useMyPicksProgress();
 
@@ -45,16 +46,18 @@ function AccountNav() {
   if (!me) {
     return (
       <span className="flex items-center gap-4">
-        <Link
-          to={guestDraftNav.to}
-          className={
-            guestDraftNav.complete
-              ? "whitespace-nowrap font-semibold text-green-800 hover:text-green-900"
-              : "whitespace-nowrap font-medium text-ink-soft hover:text-ink"
-          }
-        >
-          {guestDraftNav.label}
-        </Link>
+        {guestDraftNav ? (
+          <Link
+            to={guestDraftNav.to}
+            className={
+              guestDraftNav.complete
+                ? "whitespace-nowrap font-semibold text-green-800 hover:text-green-900"
+                : "whitespace-nowrap font-medium text-ink-soft hover:text-ink"
+            }
+          >
+            {guestDraftNav.label}
+          </Link>
+        ) : null}
         <Link to="/login" className="text-ink-soft hover:text-ink">
           Log in
         </Link>
