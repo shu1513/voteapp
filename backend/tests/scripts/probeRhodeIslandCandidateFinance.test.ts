@@ -7,6 +7,7 @@ import {
   ERTS_CONTRIBUTION_EXPORT_COLUMNS,
   ERTS_CONTRIBUTION_TYPE_CODES,
   cf2SummaryValues,
+  classifyContributionSearchResult,
   ertsContributionReportUrl,
   ertsExpenditureReportUrl,
   ertsHiddenFields,
@@ -136,6 +137,20 @@ describe("parseCf8IndexPage", () => {
     // can ever produce candidate outside rows.
     expect(rows.some((row) => row.filingType === "INDEPENDENT EXPENDITURE")).toBe(true);
     expect(rows.every((row) => row.filedDate !== "" && row.organizationName !== "")).toBe(true);
+  });
+});
+
+describe("classifyContributionSearchResult", () => {
+  it("recognizes a result grid, the portal's no-rows message, and nothing else", () => {
+    expect(classifyContributionSearchResult('<table id="dgrContribution"><tr></tr></table>')).toBe("rows");
+    expect(
+      classifyContributionSearchResult("<p>No Contributions were found for the Search criteria you entered</p>")
+    ).toBe("no_rows");
+    // A Cloudflare challenge or error page must never read as "no rows" —
+    // that verdict is what lets gate 2 accept a type's absence from the
+    // export.
+    expect(classifyContributionSearchResult("<html><body>Checking your browser…</body></html>")).toBe("unreadable");
+    expect(classifyContributionSearchResult("")).toBe("unreadable");
   });
 });
 

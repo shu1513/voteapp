@@ -16,12 +16,15 @@
 //      and no prior search, and its summary groupings are cent-exact against
 //      the plan's reconciliation fixture.
 //   2. CSV export round-trip. `lnkExport` -> `DownloadFile.aspx` ->
-//      `hypFileDownload` yields the detail CSV, whose header is the pinned
-//      column list and whose per-type sums are cent-exact against the summary
-//      groupings for every itemized type.
+//      `hypFileDownload` yields the detail CSV with the pinned column list,
+//      and EVERY summary grouping is accounted for: either the export
+//      reproduces it cent-exact, or a typed search proves the portal holds no
+//      itemized rows for that type. An unexplained absence fails the gate —
+//      the portal renders no exported-row count, so this reconciliation is
+//      the only silent-truncation control.
 //   3. The summary groupings are NOT reproducible from the export. Q2 2026
 //      carries `Other Receipt $113.95` in the summary while the itemized search
-//      for that type returns no rows at all — so official totals must come from
+//      for that type confirms no rows exist — so official totals must come from
 //      the summary/CF-2 side, never from summing the export (the georgia
 //      cover-arithmetic lesson, decision 2).
 //   4. Organization discovery works and yields the numeric Board key: the
@@ -31,9 +34,12 @@
 //      `FilingAmendmentSelect.aspx` link per amended family, and every version
 //      is a generated (text-layer) PDF under `/ExportDocs/`.
 //   6. Amendment semantics (decision 4, the release-gating question): for >= 5
-//      amended CF-2 families, the date-bounded transaction search reproduces
-//      the LATEST version's CF-2 receipt lines, not the original's. The public
-//      transaction data is current-ledger state.
+//      CONCLUSIVE amended CF-2 families — both version PDFs parsed and at
+//      least one comparable receipt field changed between original and latest
+//      (identical totals match both versions and prove nothing) — the
+//      date-bounded transaction search reproduces the LATEST version's
+//      values, and therefore differs from the original's on the changed
+//      fields. The public transaction data is current-ledger state.
 //   7. The `dgdCF8FilingList` index paginates by WebForms pager postbacks with
 //      dates descending page over page, and can be traversed to the cycle
 //      boundary (decision 3c / decision 5's diff source).
@@ -408,6 +414,18 @@ export function parseSummaryGroupings(html: string, gridId: string): Map<string,
   return totals;
 }
 
+/**
+ * Classify a contribution search response. The portal never 404s: a search
+ * with no rows answers 200 with a redirect back to the search page carrying
+ * "No Contributions were found", and anything else (a Cloudflare challenge,
+ * an error page) must read as unreadable — never as "no rows".
+ */
+export function classifyContributionSearchResult(html: string): "rows" | "no_rows" | "unreadable" {
+  if (/<table[^>]*id="dgrContribution"/i.test(html)) return "rows";
+  if (/No Contributions were found for the Search criteria you entered/i.test(stripTags(html))) return "no_rows";
+  return "unreadable";
+}
+
 /** Minimal RFC-4180 reader — the export quotes any field containing a comma. */
 export function parseCsv(text: string): string[][] {
   const rows: string[][] = [];
@@ -520,20 +538,31 @@ async function discoverOrganization(
 
   const rowsHtml = gridRowHtml(resultsHtml, "dgdOrgSearchResults");
   const candidates: string[] = [];
-  let selectionTarget: string | null = null;
+  const exactMatches: string[] = [];
   for (const rowHtml of rowsHtml) {
     const target = /__doPostBack\('(dgdOrgSearchResults\$[^']+)'/.exec(rowHtml)?.[1];
     if (!target) continue;
     const name = stripTags(/<td\b[^>]*>([\s\S]*?)<\/td>/i.exec(rowHtml)?.[1] ?? "");
     candidates.push(name);
-    if (name.toUpperCase() === input.organizationName.toUpperCase()) selectionTarget = target;
+    if (name.toUpperCase() === input.organizationName.toUpperCase()) exactMatches.push(target);
   }
-  if (!selectionTarget) {
+  if (exactMatches.length === 0) {
     throw new Error(
       `ERTS organization search for ${JSON.stringify(input.lastName)} did not offer ` +
         `${JSON.stringify(input.organizationName)} (offered: ${candidates.join(", ") || "nothing"})`
     );
   }
+  // Two registrations can lawfully share a name (old vs new committee,
+  // terminated vs active). Row order carries no identity evidence, so an
+  // ambiguous name fails here; the production resolver disambiguates with
+  // real evidence (cycle, office, status), never by position.
+  if (exactMatches.length > 1) {
+    throw new Error(
+      `ERTS organization search offered ${exactMatches.length} organizations named ` +
+        `${JSON.stringify(input.organizationName)} — ambiguous, refusing to pick by row order`
+    );
+  }
+  const selectionTarget = exactMatches[0];
 
   const selectedHtml = decoder.decode(
     (await transport.fetch(searchUrl, postBody(resultsHtml, { __EVENTTARGET: selectionTarget, __EVENTARGUMENT: "" })))
@@ -847,40 +876,63 @@ async function main(): Promise<void> {
     if (cents === null) continue;
     exportTotals.set(row[typeIndex] ?? "", (exportTotals.get(row[typeIndex] ?? "") ?? 0) + cents);
   }
-  const exportDifferences = [...exportTotals].filter(([label, cents]) => summary.get(label) !== cents);
+  // Every summary grouping must be accounted for in one of two ways: the
+  // export reproduces it cent-exact, or a typed search proves the portal
+  // itself holds no itemized rows for it. A type absent from the export
+  // without that proof is evidence of silent truncation, not of a
+  // summary-only type — and the portal renders no exported-row count
+  // anywhere, so this reconciliation is the only truncation control.
+  const exportMismatches: string[] = [];
+  const confirmedSummaryOnly: string[] = [];
+  for (const [label, cents] of summary) {
+    const exported = exportTotals.get(label);
+    if (exported === cents) continue;
+    if (exported !== undefined) {
+      exportMismatches.push(`${label}: export ${formatCents(exported)} != summary ${formatCents(cents)}`);
+      continue;
+    }
+    const code = ERTS_CONTRIBUTION_TYPE_CODES[label];
+    if (code === undefined) {
+      exportMismatches.push(`${label}: absent from the export and not in the pinned type vocabulary`);
+      continue;
+    }
+    const typedHtml = decoder.decode(
+      (await transport.fetch(ertsContributionReportUrl({ orgId: MCKEE_ORG_ID, ...Q2_2026, contributionTypeCode: code })))
+        .body
+    );
+    const verdict = classifyContributionSearchResult(typedHtml);
+    if (verdict === "no_rows") {
+      confirmedSummaryOnly.push(label);
+    } else {
+      exportMismatches.push(
+        `${label}: absent from the export but the typed search ${verdict === "rows" ? "returned itemized rows — the export dropped them" : "was unreadable"}`
+      );
+    }
+  }
+  const exportOnlyTypes = [...exportTotals.keys()].filter((label) => !summary.has(label));
+  const gate2Failures = [
+    ...(headerMatches ? [] : [`export header changed: ${header.join(",")}`]),
+    ...exportMismatches,
+    ...exportOnlyTypes.map((label) => `${label}: in the export but missing from the summary groupings`),
+    ...(exportTotals.size > 0 ? [] : ["export contained no parseable rows"]),
+  ];
   gates.push({
-    name: "2. detail export round-trip agrees with the summary",
-    pass: headerMatches && exportDifferences.length === 0 && exportTotals.size > 0,
-    detail: headerMatches
-      ? exportDifferences.length === 0
-        ? `${csvRows.length - 1} rows, ${exportTotals.size} types, every type cent-exact`
-        : exportDifferences.map(([label, cents]) => `${label}: export ${formatCents(cents)}`).join("; ")
-      : `export header changed: ${header.join(",")}`,
+    name: "2. every summary grouping is accounted for by the export",
+    pass: gate2Failures.length === 0,
+    detail:
+      gate2Failures.length === 0
+        ? `${csvRows.length - 1} rows; ${exportTotals.size} types cent-exact; ${confirmedSummaryOnly.length} confirmed summary-only`
+        : gate2Failures.join("; "),
   });
 
   // --- Gate 3: summary-only receipt types (totals must not be summed). ---
-  const summaryOnlyTypes = [...summary.keys()].filter((label) => !exportTotals.has(label));
-  const summaryOnlyCents = summaryOnlyTypes.reduce((total, label) => total + (summary.get(label) ?? 0), 0);
-  let itemizedProbe = "not probed";
-  for (const label of summaryOnlyTypes) {
-    const code = ERTS_CONTRIBUTION_TYPE_CODES[label];
-    if (code === undefined) continue;
-    try {
-      const typedHtml = decoder.decode(
-        (await transport.fetch(ertsContributionReportUrl({ orgId: MCKEE_ORG_ID, ...Q2_2026, contributionTypeCode: code })))
-          .body
-      );
-      itemizedProbe = typedHtml.includes("dgrContribution") ? `${label}: itemized rows exist` : `${label}: no itemized rows`;
-    } catch (error) {
-      itemizedProbe = `${label}: ${(error as Error).message.slice(0, 80)}`;
-    }
-  }
+  const summaryOnlyCents = confirmedSummaryOnly.reduce((total, label) => total + (summary.get(label) ?? 0), 0);
   gates.push({
     name: "3. official totals are not the export sum",
-    pass: summaryOnlyTypes.length > 0,
+    pass: confirmedSummaryOnly.length > 0,
     detail:
-      summaryOnlyTypes.length > 0
-        ? `${summaryOnlyTypes.join(", ")} = ${formatCents(summaryOnlyCents)} in the summary but absent from the export (${itemizedProbe})`
+      confirmedSummaryOnly.length > 0
+        ? `${confirmedSummaryOnly.join(", ")} = ${formatCents(summaryOnlyCents)} in the summary; typed search confirms no itemized rows`
         : "every summary grouping was reproducible from the export — re-check decision 2 before trusting export sums",
   });
 
@@ -908,18 +960,60 @@ async function main(): Promise<void> {
   });
 
   // --- Gate 6: amendment semantics (decision 4). ---
+  // A family only counts as evidence when it can actually discriminate
+  // between the original and the latest version: both PDFs must parse, at
+  // least one comparable receipt field must have CHANGED between the two
+  // (identical totals match both versions and prove nothing), and the search
+  // must equal the latest value on every comparable field — which, for a
+  // changed field, also means it differs from the original. Extraction
+  // failures and identical-total families are skipped as inconclusive, never
+  // silently counted as agreement.
   const amendmentResults: string[] = [];
   let amendmentFailures = 0;
-  let familiesTested = 0;
+  let conclusiveFamilies = 0;
+  let inconclusiveFamilies = 0;
+  // Bound on portal traffic: each family costs 3-4 paced requests, and 5
+  // conclusive families out of 12 would itself be a finding worth reading.
+  const maxFamiliesFetched = 12;
+  let familiesFetched = 0;
+
+  // The CF-2 lines the transaction search can be held against. Each CF-2
+  // line aggregates a SET of search types: line 6 is every in-kind type
+  // (verified live on the 2022 window: In-Kind - Individual $3,049.67 +
+  // In-Kind - Party $5,927.90 = line 6's $8,977.57), and the itemized+
+  // aggregate pairs roll up the same way per decision 13's table.
+  const amendmentChecks: { cf2Label: string; searchLabel: string; matches: (label: string) => boolean }[] = [
+    {
+      cf2Label: "2. Individuals",
+      searchLabel: "Individual (+ Aggregate)",
+      matches: (label) => label === "Individual" || label === "Aggregate - Individual",
+    },
+    {
+      cf2Label: "4. Political Action Committees",
+      searchLabel: "PAC (+ Aggregate)",
+      matches: (label) => label === "PAC" || label === "Aggregate - PAC",
+    },
+    {
+      cf2Label: "7. Interest Received",
+      searchLabel: "Interest Received",
+      matches: (label) => label === "Interest Received",
+    },
+    {
+      cf2Label: "6. Report of In-Kind Contributions",
+      searchLabel: "all In-Kind types",
+      matches: (label) => /^In[- ]Kind/i.test(label),
+    },
+  ];
+
   for (const filing of amendedFilings) {
-    if (familiesTested >= AMENDMENT_FAMILY_TARGET) break;
+    if (conclusiveFamilies >= AMENDMENT_FAMILY_TARGET || familiesFetched >= maxFamiliesFetched) break;
     if (!/^\d{2}\/\d{2}\/\d{4}$/.test(filing.periodBegin) || !/^\d{2}\/\d{2}\/\d{4}$/.test(filing.periodEnd)) continue;
+    familiesFetched += 1;
     const versions = await fetchFilingVersions(transport, filing.filingId as string);
     if (versions.length < 2) continue;
-    familiesTested += 1;
 
     // `grdAmendments` lists a family oldest-first (original, then each
-    // amendment in filing order) — confirmed across all five families,
+    // amendment in filing order) — confirmed across the tested families,
     // including a three-version one: reading the last row as "latest" is what
     // makes the search comparison below agree.
     const latest = versions[versions.length - 1];
@@ -930,6 +1024,21 @@ async function main(): Promise<void> {
     const latestValues = cf2SummaryValues(await cf2PageItems(latestPdf), CF2_RECEIPT_LABELS);
     const originalValues = cf2SummaryValues(await cf2PageItems(originalPdf), CF2_RECEIPT_LABELS);
 
+    const comparable = amendmentChecks.filter(
+      (check) => latestValues.has(check.cf2Label) && originalValues.has(check.cf2Label)
+    );
+    const changed = comparable.filter(
+      (check) => latestValues.get(check.cf2Label) !== originalValues.get(check.cf2Label)
+    );
+    if (comparable.length === 0 || changed.length === 0) {
+      inconclusiveFamilies += 1;
+      amendmentResults.push(
+        `${filing.reportType} (${filing.periodBegin}-${filing.periodEnd}, ${versions.length} versions): INCONCLUSIVE — ` +
+          (comparable.length === 0 ? "CF-2 extraction yielded no comparable fields" : "versions identical on every comparable field")
+      );
+      continue;
+    }
+
     const periodHtml = decoder.decode(
       (
         await transport.fetch(
@@ -939,39 +1048,43 @@ async function main(): Promise<void> {
     );
     const periodSummary = parseSummaryGroupings(periodHtml, CONTRIBUTION_SUMMARY_GRID_ID);
 
-    // The CF-2 lines the transaction search can be held against.
-    const checks: [string, string][] = [
-      ["Individual", "2. Individuals"],
-      ["PAC", "4. Political Action Committees"],
-      ["Interest Received", "7. Interest Received"],
-      ["In-Kind - Individual", "6. Report of In-Kind Contributions"],
-    ];
-    const mismatches = checks.filter(([searchLabel, cf2Label]) => {
-      const cf2 = latestValues.get(cf2Label);
-      if (cf2 === undefined) return false;
-      return (periodSummary.get(searchLabel) ?? 0) !== cf2;
-    });
-    const versionsDiffer = CF2_RECEIPT_LABELS.some((label) => latestValues.get(label) !== originalValues.get(label));
+    const searchTotal = (check: (typeof amendmentChecks)[number]): number =>
+      [...periodSummary].reduce((total, [label, cents]) => (check.matches(label) ? total + cents : total), 0);
+    const mismatches = comparable.filter((check) => searchTotal(check) !== latestValues.get(check.cf2Label));
+    conclusiveFamilies += 1;
     if (mismatches.length > 0) amendmentFailures += 1;
     amendmentResults.push(
       `${filing.reportType} (${filing.periodBegin}-${filing.periodEnd}, ${versions.length} versions, ` +
-        `${versionsDiffer ? "versions differ" : "versions identical"}): ` +
+        `${changed.length}/${comparable.length} fields changed): ` +
         (mismatches.length === 0
-          ? "search matches latest version"
-          : mismatches.map(([searchLabel, cf2Label]) => `${searchLabel} ${formatCents(periodSummary.get(searchLabel) ?? 0)} vs ${cf2Label} ${formatCents(latestValues.get(cf2Label) ?? 0)}`).join("; "))
+          ? "search matches latest version (and so differs from the original on the changed fields)"
+          : mismatches
+              .map(
+                (check) =>
+                  `${check.searchLabel} ${formatCents(searchTotal(check))} vs ${check.cf2Label} ${formatCents(latestValues.get(check.cf2Label) ?? 0)}`
+              )
+              .join("; "))
     );
   }
   for (const line of amendmentResults) console.log(`  amendment: ${line}`);
   gates.push({
     name: "6. transaction search is current-ledger state",
-    pass: familiesTested >= AMENDMENT_FAMILY_TARGET && amendmentFailures === 0,
-    detail: `${familiesTested}/${AMENDMENT_FAMILY_TARGET} amended families tested, ${amendmentFailures} disagreed with the latest CF-2`,
+    pass: conclusiveFamilies >= AMENDMENT_FAMILY_TARGET && amendmentFailures === 0,
+    detail:
+      `${conclusiveFamilies}/${AMENDMENT_FAMILY_TARGET} conclusive families (${inconclusiveFamilies} inconclusive of ` +
+      `${familiesFetched} fetched), ${amendmentFailures} disagreed with the latest CF-2`,
   });
 
   // --- Gate 7: CF-8 index pagination to the cycle boundary. ---
   const cycleStart = Date.parse("2025-01-01T00:00:00Z");
+  // Inclusive upper bound: without it, a 2027 re-run of this probe would
+  // count next cycle's filings as this cycle's.
+  const cycleEnd = Date.parse("2026-12-31T00:00:00Z");
   const cf8 = await traverseCf8Index(transport, cycleStart);
-  const cycleRows = cf8.rows.filter((row) => parseFiledDate(row.filedDate) >= cycleStart);
+  const cycleRows = cf8.rows.filter((row) => {
+    const filed = parseFiledDate(row.filedDate);
+    return filed >= cycleStart && filed <= cycleEnd;
+  });
   const independentExpenditures = cycleRows.filter((row) => /INDEPENDENT EXPENDITURE/i.test(row.filingType));
   const filingTypes = [...new Set(cycleRows.map((row) => row.filingType))];
   console.log(

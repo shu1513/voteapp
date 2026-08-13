@@ -127,16 +127,26 @@ full artifacts stay in gitignored `backend/scratch/`.
    redirect whose `OrgID` is the canonical numeric `committee_id`
    (McKee = 2235). The selected organization then carries across the portal's
    Filings/Expenditures tabs in the same session.
-5. **Amendment semantics — decision 4 is RESOLVED.** The org filing grid
+5. **Amendment semantics — decision 4 is RESOLVED.** (Gate hardened in the
+   2026-08-13 review round: a family counts only when both version PDFs
+   parsed AND at least one comparable receipt field actually changed between
+   original and latest — identical totals match both versions and prove
+   nothing — so the pass now means five genuinely discriminating families,
+   with extraction failures and identical-total families skipped as
+   inconclusive rather than counted as agreement.) The org filing grid
    (`grdSearchResults`) carries an `Amended` Yes/No column and, per amended
    family, a link to
    `secure.ricampaignfinance.com/…/FilingAmendmentSelect.aspx?X=T&FilingID=…`
    (public, no login). That page lists every version with a stable generated
    PDF at `ricampaignfinance.com/ExportDocs/<OrgID>-RICF2-<FilingID>-<guid>.pdf`.
-   Across **5 amended families** (2025 Q4, 2025 Q2, 2024 Q4, 2024 Q3, 2023 Q4;
-   2–3 versions each), the date-bounded transaction search reproduced the
-   **latest** version's CF-2 receipt lines every time, with zero disagreements
-   — **the public transaction data is current-ledger state**. Consequences:
+   Across **5 conclusive amended families** (2025 Q4, 2024 Q4, 2024 Q3,
+   2023 Q4, 2022 pre-election; 2–3 versions each, each with at least one
+   receipt field that actually changed between original and latest — 2025 Q2
+   was skipped as inconclusive because its versions carry identical receipt
+   totals and so cannot discriminate), the date-bounded transaction search
+   reproduced the **latest** version's CF-2 receipt lines every time, and
+   therefore differed from the original's on the changed fields — **the
+   public transaction data is current-ledger state**. Consequences:
    the north-carolina-style report selector is *not* needed to keep the direct
    leg from double-counting; version documents remain the evidence trail and
    the totals source. Two further facts: the version PDFs are **text-layer**
@@ -144,7 +154,19 @@ full artifacts stay in gitignored `backend/scratch/`.
    summary page in full but carries only the changed schedule rows** (the 2025
    Q4 amendment is 4 pages against the original's 99) — so schedules are a
    delta, summaries are not.
-6. **CF-2 page 1 is machine-readable.** Each amount sits on its label's text
+5b. **CF-2 lines aggregate SETS of search types, and the summary-groupings
+   vocabulary is wider than the search form's.** Verified live on McKee's
+   2022 pre-election window: CF-2 line 6 "Report of In-Kind Contributions"
+   $8,977.57 = In-Kind - Individual $3,049.67 + In-Kind - Party $5,927.90 —
+   comparing line 6 against In-Kind - Individual alone produces a false
+   mismatch (the hardened gate 6 caught exactly this before the mapping was
+   corrected to label sets; itemized + Aggregate pairs roll up the same way
+   per decision 13). The same window also rendered **`NSF Check ($100.00)`
+   and `Refund of Contribution ($500.00)`** as summary groupings — labels
+   that do not exist in the search form's contribution-type list, printed as
+   parenthesized negatives. PR 6's reconciliation must treat the
+   summary-grouping vocabulary as open (unknown labels → diagnostic, never a
+   guessed bucket) and must map CF-2 lines to type sets, not single types.
    baseline, to the right; the nearest amount on that baseline is the label's
    value (a two-column form, so "nearest" is load-bearing). This pins the
    decision-2 totals mapping for PR 6: `1. Beginning Cash Balance`,
@@ -170,6 +192,20 @@ full artifacts stay in gitignored `backend/scratch/`.
    the roster at transcription time. Amended CF-8s are marked by an
    `(amended)` suffix on the organization name, with a **new GUID**, which is
    exactly what the index diff must catch.
+8. **Review-round hardening (2026-08-13, same day).** Four gate defects were
+   found in review and fixed, with the probe re-run live: (a) gate 6 now
+   requires discriminating evidence (see result 5) instead of counting
+   extraction failures and identical-total families as agreement; (b) gate 2
+   now accounts for EVERY summary grouping — cent-exact in the export, or
+   proven summary-only by a typed search whose "No Contributions were found"
+   message is required (a result grid means the export dropped rows; anything
+   else, e.g. a challenge page, is unreadable and fails) — since the portal
+   renders no exported-row count, this is the only silent-truncation control;
+   (c) the CF-8 cycle filter now has an inclusive upper bound so a 2027
+   re-run cannot count next cycle's filings; (d) organization discovery
+   fails on two exact same-name matches instead of silently taking the last
+   row — row order is not identity evidence (the production resolver
+   disambiguates with real evidence or not at all).
 
 **Still open after the spike** (carried to the Board request, which the user
 sends to `campaign.finance@elections.ri.gov`; the build does not block on a
