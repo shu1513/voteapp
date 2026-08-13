@@ -621,7 +621,19 @@ selectors, not the migration.
   (no new portal traffic): all 194 filed rows carry a
   `FilingAmendmentSelect.aspx` View link — unamended filings too — so
   unamended periods' CF-2 PDFs are reachable; PR 9's live run confirms the
-  page renders for them.)
+  page renders for them. Review round, same day: (1) the echoed
+  `DownloadFile.aspx` URL is pinned to the one portal route and session
+  cookies never attach to a non-portal host — an echoed URL can no longer
+  carry the session elsewhere; (2) the filing-versions parser throws on a
+  data row without an `/ExportDocs/` PDF link instead of skipping it — a
+  skipped LATEST row would silently promote an older filing to "in force";
+  (3) a rows-classified report page must carry ≥1 readable summary grouping,
+  enforced in the fetch phase (bundle discards cleanly) and again at cache
+  validation — the expenditure leg has no export reconciliation, so this is
+  its only zero-totals shield; (4) the filing-list and CF-8 parsers throw on
+  data-like rows that fail the pinned shape (only the pinned header/pager
+  rows may be skipped) — a silently dropped row is a dropped reporting
+  period or a missed outside filing.)
 - [ ] PR 5 resolver + auto-link
 - [ ] PR 6 direct aggregator + report selector
 - [ ] PR 7 sync + batchSync + scheduler

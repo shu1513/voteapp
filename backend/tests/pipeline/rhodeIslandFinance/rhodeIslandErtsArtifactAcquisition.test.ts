@@ -80,6 +80,8 @@ type FakePortalOptions = {
   // Serve a different filing list on the second Filings.aspx read (the
   // stability gate must then discard the bundle).
   filingsAfterHtml?: string;
+  // Replace the rows-classified expenditure page (summary-drift scenarios).
+  expenditureHtml?: string;
 };
 
 function makeFakePortal(options: FakePortalOptions = {}) {
@@ -134,7 +136,7 @@ function makeFakePortal(options: FakePortalOptions = {}) {
 
     if (parsed.pathname.endsWith("/ExpenditureReport.aspx")) {
       const begin = parsed.searchParams.get("BeginDate");
-      return html(begin === "07/01/2026" ? EXPENDITURE_REPORT_HTML : NO_ROWS_EXPENDITURES);
+      return html(begin === "07/01/2026" ? (options.expenditureHtml ?? EXPENDITURE_REPORT_HTML) : NO_ROWS_EXPENDITURES);
     }
 
     if (parsed.pathname.endsWith("/FilingAmendmentSelect.aspx")) {
@@ -360,6 +362,23 @@ describe("acquireErtsOrganizationArtifacts", () => {
     );
   });
 
+  it("fails the organization when an expenditure page has rows but no summary block", async () => {
+    // The expenditure leg has no export reconciliation behind it — this
+    // guard is its only shield against a zero-disbursements read.
+    const portal = makeFakePortal({ expenditureHtml: '<table id="dgrExpenditure"><tr><td>rows</td></tr></table>' });
+    await expect(
+      acquireErtsOrganizationArtifacts({
+        transport: makeTransport(portal),
+        cacheDir,
+        organization: MCKEE,
+        cycle: CYCLE,
+      })
+    ).rejects.toThrow(/itemized rows but no readable summary groupings/);
+    expect((await getErtsArtifactStatus({ cacheDir, key: { type: "organization_filings", orgId: "2235" } })).status).toBe(
+      "missing"
+    );
+  });
+
   it("discards the whole bundle when the filing list changes mid-fetch", async () => {
     // The after-snapshot drops the amended flag — the filed set changed.
     const changed = FILINGS_HTML.replace(
@@ -397,7 +416,7 @@ describe("acquireErtsCf8IndexArtifacts", () => {
       .join(" ");
     return (
       '<input type="hidden" name="__VIEWSTATE" value="vs" />' +
-      `<table id="dgdCF8FilingList"><tr><td>Filed</td><td></td><td>Type</td><td>Org</td></tr>` +
+      `<table id="dgdCF8FilingList"><tr><td>Filed Date</td><td></td><td>Type</td><td>Org</td></tr>` +
       rows.join("") +
       `<tr><td colspan="4"><span>${current}</span> ${links}</td></tr></table>`
     );

@@ -9,6 +9,8 @@ import {
   ertsPostBody,
   ertsSelectDefaults,
   fetchErtsFilingPdf,
+  isErtsPortalUrl,
+  requireErtsDownloadFileUrl,
   requireErtsPage,
   type ErtsHttpResponse,
 } from "../../../src/pipeline/rhodeIslandFinance/rhodeIslandErtsClient.js";
@@ -60,6 +62,30 @@ describe("report URLs", () => {
     );
     expect(() => ertsFilingVersionsUrl({ filingId: "abc", formName: "RICF2" })).toThrow(/Invalid ERTS filing id/);
     expect(() => ertsFilingVersionsUrl({ filingId: "1", formName: "../x" })).toThrow(/Invalid ERTS form name/);
+  });
+});
+
+describe("portal URL pinning", () => {
+  it("recognizes only https portal hosts — session cookies never leave them", () => {
+    expect(isErtsPortalUrl("https://www.ricampaignfinance.com/RIPublic/Contributions.aspx")).toBe(true);
+    expect(isErtsPortalUrl("https://secure.ricampaignfinance.com/RhodeIslandCF/x.aspx")).toBe(true);
+    expect(isErtsPortalUrl("https://ricampaignfinance.com/ExportDocs/x.pdf")).toBe(true);
+    expect(isErtsPortalUrl("http://www.ricampaignfinance.com/RIPublic/")).toBe(false);
+    expect(isErtsPortalUrl("https://evil.example/steal")).toBe(false);
+    expect(isErtsPortalUrl("https://ricampaignfinance.com.evil.example/")).toBe(false);
+    expect(isErtsPortalUrl("not a url")).toBe(false);
+  });
+
+  it("accepts only the pinned DownloadFile route for the echoed export URL", () => {
+    // The live portal prints http:; the upgrade is part of the pin.
+    expect(
+      requireErtsDownloadFileUrl("http://www.ricampaignfinance.com/RIPublic/Reporting/DownloadFile.aspx?path=x&file=y.csv")
+    ).toBe("https://www.ricampaignfinance.com/RIPublic/Reporting/DownloadFile.aspx?path=x&file=y.csv");
+    expect(() => requireErtsDownloadFileUrl("https://evil.example/steal")).toThrow(/outside the pinned portal route/);
+    expect(() =>
+      requireErtsDownloadFileUrl("https://www.ricampaignfinance.com/RIPublic/Reporting/Other.aspx?file=y.csv")
+    ).toThrow(/outside the pinned portal route/);
+    expect(() => requireErtsDownloadFileUrl("::::")).toThrow(/unparseable DownloadFile URL/);
   });
 });
 

@@ -22,6 +22,7 @@ import {
   parseErtsSummaryGroupings,
   ERTS_CONTRIBUTION_SUMMARY_GRID_ID,
   ERTS_CONTRIBUTION_TYPE_CODES,
+  ERTS_EXPENDITURE_SUMMARY_GRID_ID,
   type ErtsFilingRow,
 } from "./rhodeIslandErtsParsers.js";
 
@@ -326,11 +327,20 @@ export async function acquireErtsOrganizationArtifacts(input: {
     let exportRowCount: number | null = null;
     let confirmedSummaryOnlyLabels: string[] = [];
     if (contribution.classification === "rows") {
+      // The summary block is the totals source (decision 2): a result grid
+      // without readable groupings means the page drifted — fail the org
+      // here, before anything installs.
+      const summary = parseErtsSummaryGroupings(contribution.html, ERTS_CONTRIBUTION_SUMMARY_GRID_ID);
+      if (summary.size === 0) {
+        throw new Error(
+          `ERTS contribution report for OrgID ${organization.orgId} ${window.beginUs}-${window.endUs} has ` +
+            "itemized rows but no readable summary groupings"
+        );
+      }
       const exported = await fetchErtsTransactionExportCsv(transport, {
         reportUrl: contribution.url,
         reportHtml: contribution.html,
       });
-      const summary = parseErtsSummaryGroupings(contribution.html, ERTS_CONTRIBUTION_SUMMARY_GRID_ID);
       const reconciliation = await reconcileErtsContributionExport({
         transport,
         orgId: organization.orgId,
@@ -349,6 +359,18 @@ export async function acquireErtsOrganizationArtifacts(input: {
       begin: window.beginUs,
       end: window.endUs,
     });
+    // Same drift guard as the contribution side. The expenditure leg has no
+    // export reconciliation behind it, so this check is its only shield
+    // against caching a page a sync would read as zero disbursements.
+    if (
+      expenditure.classification === "rows" &&
+      parseErtsSummaryGroupings(expenditure.html, ERTS_EXPENDITURE_SUMMARY_GRID_ID).size === 0
+    ) {
+      throw new Error(
+        `ERTS expenditure report for OrgID ${organization.orgId} ${window.beginUs}-${window.endUs} has ` +
+          "itemized rows but no readable summary groupings"
+      );
+    }
     periodFetches.push({
       beginIso: window.beginIso,
       endIso: window.endIso,

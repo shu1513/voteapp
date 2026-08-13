@@ -158,6 +158,12 @@ describe("parseErtsFilingListPage", () => {
     expect(rows.filter((row) => row.formName === "RICF2")).toHaveLength(2);
     expect(rows.filter((row) => row.formName === "RIMPF2")).toHaveLength(1);
   });
+
+  it("throws on a data-like row whose period no longer parses", () => {
+    // A silently dropped filing would silently drop its reporting period.
+    const drifted = fixture("organization-filings.html").replace("10/01/2025", "Oct 1, 2025");
+    expect(() => parseErtsFilingListPage(drifted)).toThrow(/does not match the pinned shape/);
+  });
 });
 
 describe("parseErtsFilingVersionsPage", () => {
@@ -169,6 +175,16 @@ describe("parseErtsFilingVersionsPage", () => {
     expect(versions.every((version) => /\/ExportDocs\/2235-RICF2-230557-[0-9a-f-]+\.pdf$/.test(version.pdfUrl))).toBe(
       true
     );
+  });
+
+  it("throws on a data row without a PDF link instead of promoting an older version", () => {
+    // Dropping the LATEST row would make the previous filing read as
+    // "in force" — stale totals, silently.
+    const drifted = fixture("filing-amendments-230557.html").replace(
+      /href="[^"]*c3881961[^"]*"/,
+      'href="/broken/link"'
+    );
+    expect(() => parseErtsFilingVersionsPage(drifted)).toThrow(/no \/ExportDocs\/ PDF link/);
   });
 });
 
@@ -227,6 +243,12 @@ describe("parseErtsCf8IndexPage", () => {
     // can ever produce candidate outside rows.
     expect(rows.some((row) => row.filingType === "INDEPENDENT EXPENDITURE")).toBe(true);
     expect(rows.every((row) => row.filedDate !== "" && row.organizationName !== "")).toBe(true);
+  });
+
+  it("throws on a data-like row whose filed date no longer parses", () => {
+    // A silently dropped row is a silently missed outside-spending filing.
+    const drifted = fixture("cf8-index-page1.html").replace("Aug 12 2026", "08/12/2026");
+    expect(() => parseErtsCf8IndexPage(drifted)).toThrow(/does not match the pinned shape/);
   });
 });
 

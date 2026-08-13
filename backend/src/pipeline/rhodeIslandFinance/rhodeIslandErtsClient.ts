@@ -64,10 +64,26 @@ export type ErtsTransport = {
   fetch: (url: string, body?: URLSearchParams) => Promise<ErtsHttpResponse>;
 };
 
+/**
+ * The portal's session cookies belong to the portal only. Every URL this
+ * client fetches is either built here from pinned routes or echoed from
+ * portal HTML — and an echoed URL must never be able to carry the session
+ * to another host (or trigger a request to an internal one).
+ */
+export function isErtsPortalUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "https:" && /^(www\.|secure\.)?ricampaignfinance\.com$/i.test(parsed.hostname);
+  } catch {
+    return false;
+  }
+}
+
 function defaultErtsFetch(userAgent: string, timeoutMs: number): ErtsFetchFn {
   const cookies = new Map<string, string>();
   return async (url: string, body?: URLSearchParams) => {
-    const cookieHeader = [...cookies].map(([name, value]) => `${name}=${value}`).join("; ");
+    const sendCookies = isErtsPortalUrl(url);
+    const cookieHeader = sendCookies ? [...cookies].map(([name, value]) => `${name}=${value}`).join("; ") : "";
     const response = await fetch(url, {
       method: body ? "POST" : "GET",
       headers: {
@@ -80,10 +96,12 @@ function defaultErtsFetch(userAgent: string, timeoutMs: number): ErtsFetchFn {
       redirect: "follow",
       signal: AbortSignal.timeout(timeoutMs),
     });
-    for (const setCookie of response.headers.getSetCookie?.() ?? []) {
-      const pair = setCookie.split(";", 1)[0];
-      const separator = pair.indexOf("=");
-      if (separator > 0) cookies.set(pair.slice(0, separator).trim(), pair.slice(separator + 1).trim());
+    if (sendCookies) {
+      for (const setCookie of response.headers.getSetCookie?.() ?? []) {
+        const pair = setCookie.split(";", 1)[0];
+        const separator = pair.indexOf("=");
+        if (separator > 0) cookies.set(pair.slice(0, separator).trim(), pair.slice(separator + 1).trim());
+      }
     }
     return {
       status: response.status,
@@ -314,6 +332,26 @@ export function fetchErtsExpenditureReport(
 }
 
 /**
+ * The `txtPage` URL is echoed from portal HTML, so it is pinned to the one
+ * route the portal has ever served (the live URL prints `http:` and is
+ * upgraded) — an unexpected host or path throws instead of being fetched
+ * with the session attached.
+ */
+export function requireErtsDownloadFileUrl(rawUrl: string): string {
+  const upgraded = rawUrl.replace(/^http:/, "https:");
+  let parsed: URL;
+  try {
+    parsed = new URL(upgraded);
+  } catch {
+    throw new Error(`ERTS export returned an unparseable DownloadFile URL: ${rawUrl}`);
+  }
+  if (!isErtsPortalUrl(upgraded) || parsed.pathname !== "/RIPublic/Reporting/DownloadFile.aspx") {
+    throw new Error(`ERTS export returned a DownloadFile URL outside the pinned portal route: ${rawUrl}`);
+  }
+  return upgraded;
+}
+
+/**
  * The detail-export round-trip: three hops, all load-bearing (spike result 3).
  *   1. `lnkExport` postback on the report page generates a temp file and
  *      answers with a script carrying a `DownloadFile.aspx` URL;
@@ -333,7 +371,7 @@ export async function fetchErtsTransactionExportCsv(
   const exportHtml = decodeErtsBody(exportResponse.body);
   const downloadUrl = /txtPage\s*=\s*'([^']+)'/.exec(exportHtml)?.[1];
   if (!downloadUrl) throw new Error("ERTS export postback did not return a DownloadFile URL");
-  const secureDownloadUrl = downloadUrl.replace(/^http:/, "https:");
+  const secureDownloadUrl = requireErtsDownloadFileUrl(downloadUrl);
 
   const downloadHtml = requireErtsPage(
     decodeErtsBody((await transport.fetch(secureDownloadUrl)).body),

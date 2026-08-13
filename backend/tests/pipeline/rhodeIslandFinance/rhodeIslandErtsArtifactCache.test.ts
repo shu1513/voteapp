@@ -98,6 +98,23 @@ describe("validateErtsArtifactBody", () => {
     ).resolves.toBe(0);
   });
 
+  it("fails closed on a result page whose summary block drifted away", async () => {
+    // The summary, not the rows, is the totals source (decision 2) — a page
+    // with itemized rows and no groupings must never cache as zero totals.
+    await expect(
+      validateErtsArtifactBody(
+        { type: "contribution_report", orgId: "2235", beginIso: "2026-04-01", endIso: "2026-06-30" },
+        '<table id="dgrContribution"><tr><td>rows</td></tr></table>'
+      )
+    ).rejects.toThrow(/no readable summary groupings/);
+    await expect(
+      validateErtsArtifactBody(
+        { type: "expenditure_report", orgId: "2235", beginIso: "2026-04-01", endIso: "2026-06-30" },
+        '<table id="dgrExpenditure"><tr><td>rows</td></tr></table>'
+      )
+    ).rejects.toThrow(/no readable summary groupings/);
+  });
+
   it("fails closed on a body that lost its grid", async () => {
     await expect(
       validateErtsArtifactBody({ type: "organization_filings", orgId: "2235" }, "<html>login</html>")

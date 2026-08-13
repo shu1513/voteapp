@@ -356,16 +356,23 @@ export const ERTS_FILING_LIST_GRID_ID = "grdSearchResults";
 
 /**
  * The org filing grid (Filings.aspx, session-scoped). Column layout pinned
- * live 2026-08-13: report type, period begin, period end, due/filed date,
- * status, filed-at timestamp, Amended Yes/No, View link. Rows without a
- * period are skipped; unfiled rows are kept (empty `filedAt`) so a caller
- * can tell "not filed yet" from "absent".
+ * live 2026-08-13: report type, period begin, period end, due date, status,
+ * original-filed timestamp, Amended Yes/No, View link. Unfiled rows are kept
+ * (empty `filedAt`) so a caller can tell "not filed yet" from "absent".
+ * Fail-closed: only the pinned header row may be skipped — a data-like row
+ * whose period no longer parses throws, because a silently dropped filing
+ * would silently drop its reporting period from the totals.
  */
 export function parseErtsFilingListPage(html: string): ErtsFilingRow[] {
   const rows: ErtsFilingRow[] = [];
   for (const rowHtml of gridRowHtml(html, ERTS_FILING_LIST_GRID_ID)) {
     const cells = rowCells(rowHtml);
-    if (cells.length < 7 || !/^\d{2}\/\d{2}\/\d{4}$/.test(cells[1] ?? "")) continue;
+    if (cells.length === 0 || cells[0] === "Report Type") continue;
+    if (cells.length < 7 || !/^\d{2}\/\d{2}\/\d{4}$/.test(cells[1] ?? "") || !/^\d{2}\/\d{2}\/\d{4}$/.test(cells[2] ?? "")) {
+      throw new Error(
+        `ERTS filing list row does not match the pinned shape (cells: ${JSON.stringify(cells.slice(0, 4))}…)`
+      );
+    }
     const link = /href="([^"]*FilingAmendmentSelect\.aspx[^"]*)"/i.exec(decodeErtsHtml(rowHtml))?.[1] ?? null;
     rows.push({
       reportType: cells[0],
@@ -393,14 +400,22 @@ export const ERTS_FILING_VERSIONS_GRID_ID = "grdAmendments";
  * (original, then each amendment in filing order — confirmed across the
  * spike's families, including a three-version one), so the last row is the
  * in-force version. Every version links a stable generated text-layer PDF
- * under `/ExportDocs/`.
+ * under `/ExportDocs/`. Fail-closed: only the pinned header row may be
+ * skipped — a data row without a parseable PDF link throws, because
+ * silently dropping the LATEST row would silently promote an older filing
+ * to "in force" and publish stale totals.
  */
 export function parseErtsFilingVersionsPage(html: string): ErtsFilingVersion[] {
   const versions: ErtsFilingVersion[] = [];
   for (const rowHtml of gridRowHtml(html, ERTS_FILING_VERSIONS_GRID_ID)) {
-    const pdfUrl = /href="([^"]*\/ExportDocs\/[^"]+\.pdf)"/i.exec(decodeErtsHtml(rowHtml))?.[1];
-    if (!pdfUrl) continue;
     const cells = rowCells(rowHtml);
+    if (cells.length === 0 || cells[0] === "Amendment") continue;
+    const pdfUrl = /href="([^"]*\/ExportDocs\/[^"]+\.pdf)"/i.exec(decodeErtsHtml(rowHtml))?.[1];
+    if (!pdfUrl) {
+      throw new Error(
+        `ERTS filing-versions row carries no /ExportDocs/ PDF link (cells: ${JSON.stringify(cells.slice(0, 3))})`
+      );
+    }
     versions.push({ amendmentLabel: cells[0] ?? "", filedAt: cells[2] ?? "", pdfUrl });
   }
   return versions;
@@ -469,11 +484,21 @@ export type ErtsCf8IndexRow = {
   scannedUrl: string | null;
 };
 
+/**
+ * Fail-closed row reading: the pinned header row and the single-cell pager
+ * row are the only skips — a data-like row whose filed date no longer
+ * parses throws, because a silently dropped row is a silently missed
+ * outside-spending filing (the decision-5 diff source).
+ */
 export function parseErtsCf8IndexPage(html: string): ErtsCf8IndexRow[] {
   const rows: ErtsCf8IndexRow[] = [];
   for (const rowHtml of gridRowHtml(html, ERTS_CF8_INDEX_GRID_ID)) {
     const cells = rowCells(rowHtml);
-    if (cells.length < 4 || !/^[A-Z][a-z]{2} \d{1,2} \d{4}$/.test(cells[0])) continue;
+    // The pager renders as one full-width cell; blank spacer rows have none.
+    if (cells.length < 2 || cells[0] === "Filed Date") continue;
+    if (cells.length < 4 || !/^[A-Z][a-z]{2} \d{1,2} \d{4}$/.test(cells[0])) {
+      throw new Error(`ERTS CF-8 index row does not match the pinned shape (cells: ${JSON.stringify(cells.slice(0, 4))})`);
+    }
     const href = /href="([^"]*ReportsScanned\/[^"]+)"/i.exec(decodeErtsHtml(rowHtml))?.[1] ?? null;
     rows.push({
       filedDate: cells[0],

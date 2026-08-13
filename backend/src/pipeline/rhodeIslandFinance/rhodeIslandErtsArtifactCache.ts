@@ -223,7 +223,18 @@ export async function validateErtsArtifactBody(key: ErtsArtifactKey, body: strin
         throw new Error(`ERTS ${key.type} body is neither a result grid nor a no-rows page`);
       }
       // A no-rows window is a valid, cacheable state with zero groupings.
-      return classification === "no_rows" ? 0 : parseErtsSummaryGroupings(text, summaryGridId).size;
+      if (classification === "no_rows") {
+        return 0;
+      }
+      // A page with itemized rows must also carry the official summary block
+      // — the summary, not the rows, is the totals source (decision 2), so a
+      // drifted summary grid must fail here rather than cache a page a sync
+      // could read as zero totals.
+      const groupings = parseErtsSummaryGroupings(text, summaryGridId);
+      if (groupings.size === 0) {
+        throw new Error(`ERTS ${key.type} body has a result grid but no readable summary groupings`);
+      }
+      return groupings.size;
     }
     case "contribution_export":
       return parseErtsContributionExport(text).length;
