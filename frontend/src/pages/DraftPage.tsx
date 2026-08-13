@@ -1,7 +1,7 @@
 import { Link, Navigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useMe } from "@voteapp/api-client";
-import type { BallotSummary, ElectionSummary } from "@voteapp/api-client";
+import type { BallotSummary, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import type { ElectionNavState } from "../lib/detailNavContext";
 import { draftChoicesByElectionId, draftPickCount, useBallotDraft } from "../lib/ballotDraft";
@@ -18,6 +18,43 @@ import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 const DRAFT_NAV_STATE: ElectionNavState = {
   backTo: { path: "/draft", label: "My Ballot Draft" },
 };
+
+// Bare pick lines rendered straight from draft rows (date · race — choice),
+// for the picks no ballot card can carry: the no-ballot-context fallback,
+// and picks made off the stored ballot via a shared or searched link.
+function DraftChoiceRows({ rows }: { rows: ElectionChoice[] }) {
+  const sorted = [...rows].sort((a, b) =>
+    a.election_date < b.election_date ? -1 : a.election_date > b.election_date ? 1 : 0
+  );
+  return (
+    <ul className="mt-3 space-y-2">
+      {sorted.map((choice) => (
+        <li key={choice.election_id} className="text-sm">
+          <span className="text-ink-soft">{formatElectionDate(choice.election_date)} · </span>
+          <Link
+            to={`/elections/${choice.election_id}`}
+            state={DRAFT_NAV_STATE}
+            className="text-ink hover:text-rausch"
+          >
+            {choice.official_ballot_title}
+          </Link>
+          <span className="text-ink-soft"> — </span>
+          <span
+            className={
+              choice.measure_position === "no" ? "font-semibold text-red-900" : "font-semibold text-green-900"
+            }
+          >
+            {choice.measure_position !== null
+              ? choice.measure_position === "yes"
+                ? "Yes"
+                : "No"
+              : choice.picks.map((pick) => pick.display_name).join(", ")}
+          </span>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export function DraftPage() {
   useDocumentTitle("My Ballot Draft");
@@ -61,6 +98,12 @@ export function DraftPage() {
     byDate.set(election.election_date, group);
   }
   const dates = [...byDate.keys()].sort();
+  // Draft rows the date cards won't display, keyed off the ids actually
+  // rendered (not the raw payload): a pick on a just-finished race still in
+  // the ballot response would otherwise vanish from both the cards and this
+  // list.
+  const cardedIds = new Set([...byDate.values()].flat().map((election) => election.id));
+  const extraRows = [...choices.values()].filter((choice) => !cardedIds.has(choice.election_id));
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
@@ -83,38 +126,7 @@ export function DraftPage() {
           // point at the address search, the only page that can build the
           // real ballot around them.
           <>
-            <ul className="mt-4 space-y-2">
-              {[...choices.values()]
-                .sort((a, b) =>
-                  a.election_date < b.election_date ? -1 : a.election_date > b.election_date ? 1 : 0
-                )
-                .map((choice) => (
-                  <li key={choice.election_id} className="text-sm">
-                    <span className="text-ink-soft">{formatElectionDate(choice.election_date)} · </span>
-                    <Link
-                      to={`/elections/${choice.election_id}`}
-                      state={DRAFT_NAV_STATE}
-                      className="text-ink hover:text-rausch"
-                    >
-                      {choice.official_ballot_title}
-                    </Link>
-                    <span className="text-ink-soft"> — </span>
-                    <span
-                      className={
-                        choice.measure_position === "no"
-                          ? "font-semibold text-red-900"
-                          : "font-semibold text-green-900"
-                      }
-                    >
-                      {choice.measure_position !== null
-                        ? choice.measure_position === "yes"
-                          ? "Yes"
-                          : "No"
-                        : choice.picks.map((pick) => pick.display_name).join(", ")}
-                    </span>
-                  </li>
-                ))}
-            </ul>
+            <DraftChoiceRows rows={[...choices.values()]} />
             <p className="mt-3 text-sm text-ink-soft">
               <Link to="/" className="underline hover:text-ink">
                 Search your address
@@ -148,6 +160,22 @@ export function DraftPage() {
                 ))}
               </div>
             )
+          ) : null}
+          {/* Picks the cards above can't carry — made on races outside the
+              stored ballot (a shared or searched link) or on races the
+              upcoming cards no longer show. A saved pick must never be
+              invisible on this page: the header badge and the signup CTA
+              both count it, so hiding it here reads as lost. Only rendered
+              once the ballot settles — before that, "outside the cards" is
+              unknowable. */}
+          {ballot.isSuccess && extraRows.length > 0 ? (
+            <section className="mt-6">
+              <h2 className="text-lg font-semibold text-ink">Other saved picks</h2>
+              <p className="mt-0.5 text-xs text-ink-soft">
+                Races you picked from a direct link — not part of the ballot above.
+              </p>
+              <DraftChoiceRows rows={extraRows} />
+            </section>
           ) : null}
           <p className="mt-3 text-sm text-ink-soft">
             <Link

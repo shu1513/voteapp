@@ -1,0 +1,149 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { screen } from "@testing-library/react";
+import type { ElectionChoice } from "@voteapp/api-client";
+import { DraftPage } from "./DraftPage";
+import { renderRoutes } from "../test/render";
+import { apiError, stubApiRoutes } from "../test/mockApi";
+import { ballotSummary, electionSummary, ME_VERIFIED } from "../test/fixtures";
+
+function renderDraft() {
+  return renderRoutes(
+    [
+      { path: "/draft", element: <DraftPage /> },
+      { path: "/", element: <p>Home placeholder</p> },
+      { path: "/me/picks", element: <p>Picks placeholder</p> },
+      { path: "/elections/:electionId", element: <p>Election page</p> },
+    ],
+    "/draft"
+  );
+}
+
+function draftChoice(overrides: Partial<ElectionChoice> = {}): ElectionChoice {
+  return {
+    election_id: "e-1",
+    race_type: "office",
+    official_ballot_title: "Governor",
+    election_date: "2026-11-03",
+    seats_to_fill: null,
+    picks: [{ candidate_id: "c-1", display_name: "Jane Smith", candidacy_status: "active" }],
+    measure_position: null,
+    updated_at: "2026-08-01T00:00:00.000Z",
+    ...overrides,
+  };
+}
+
+// Seeds the localStorage draft and fires the storage event so the module
+// cache re-reads the bytes (same pattern as ballotDraft.test.ts).
+function seedDraft(draft: {
+  district_ids: string[];
+  target: { election_date: string; election_ids: string[] } | null;
+  choices: Record<string, ElectionChoice>;
+}) {
+  window.localStorage.setItem("voteapp_ballot_draft", JSON.stringify({ v: 1, ...draft }));
+  window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
+}
+
+// Frozen clock, same reason as PicksPage.test: the upcoming/past split runs
+// against the real date and the 2026-11-03 fixtures must stay upcoming.
+beforeEach(() => {
+  vi.useFakeTimers({ shouldAdvanceTime: true });
+  vi.setSystemTime(new Date("2026-08-01T12:00:00Z"));
+  window.localStorage.clear();
+  window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+  vi.unstubAllGlobals();
+});
+
+const GUEST = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
+
+describe("DraftPage", () => {
+  it("redirects signed-in visitors to My Picks", async () => {
+    stubApiRoutes({ "/api/me": { body: ME_VERIFIED } });
+    renderDraft();
+    expect(await screen.findByText("Picks placeholder")).toBeInTheDocument();
+  });
+
+  it("points an empty draft at the address search", async () => {
+    stubApiRoutes(GUEST);
+    renderDraft();
+    expect(await screen.findByText("Your ballot draft is empty.")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Start with your address" })).toHaveAttribute("href", "/");
+    // No CTA without a pick to save.
+    expect(screen.queryByRole("link", { name: "Sign up free to save your picks" })).not.toBeInTheDocument();
+  });
+
+  it("renders the ballot's date card from the draft, share-free, with the signup CTA", async () => {
+    seedDraft({
+      district_ids: ["d-1"],
+      target: { election_date: "2026-11-03", election_ids: ["e-1", "e-2"] },
+      choices: { "e-1": draftChoice() },
+    });
+    stubApiRoutes({
+      ...GUEST,
+      "/api/ballot": {
+        body: ballotSummary([
+          electionSummary(),
+          electionSummary({ id: "e-2", official_ballot_title: "Mayor" }),
+        ]),
+      },
+    });
+    renderDraft();
+
+    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Picks" })).toBeInTheDocument();
+    expect(screen.getByText("1 of 2 races decided")).toBeInTheDocument();
+    expect(screen.getByText("Jane Smith")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Mayor — no pick yet" })).toBeInTheDocument();
+    // Account-only machinery stays off the guest page.
+    expect(screen.queryByRole("button", { name: "Share my picks" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
+    // Every draft pick is on a card — no leftover section.
+    expect(screen.queryByText("Other saved picks")).not.toBeInTheDocument();
+  });
+
+  it("lists picks made outside the stored ballot under Other saved picks", async () => {
+    // Deep-link scenario: ballot A is stored, but the pick came from a
+    // shared link to election e-9 in some other district. The cards can't
+    // carry it; hiding it while the badge and CTA count it reads as lost.
+    seedDraft({
+      district_ids: ["d-1"],
+      target: { election_date: "2026-11-03", election_ids: ["e-1"] },
+      choices: {
+        "e-9": draftChoice({
+          election_id: "e-9",
+          official_ballot_title: "Springfield Mayor",
+          picks: [{ candidate_id: "c-9", display_name: "Pat Elsewhere", candidacy_status: "active" }],
+        }),
+      },
+    });
+    stubApiRoutes({
+      ...GUEST,
+      "/api/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    renderDraft();
+
+    expect(await screen.findByText("Other saved picks")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Springfield Mayor" })).toHaveAttribute("href", "/elections/e-9");
+    expect(screen.getByText("Pat Elsewhere")).toBeInTheDocument();
+    // The stored ballot's own card still renders alongside.
+    expect(screen.getByRole("link", { name: "Governor — no pick yet" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
+  });
+
+  it("lists picks without any ballot context and points at the address search", async () => {
+    seedDraft({
+      district_ids: [],
+      target: null,
+      choices: { "e-1": draftChoice() },
+    });
+    stubApiRoutes(GUEST);
+    renderDraft();
+
+    expect(await screen.findByText("Jane Smith")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Governor" })).toHaveAttribute("href", "/elections/e-1");
+    expect(screen.getByRole("link", { name: "Search your address" })).toHaveAttribute("href", "/");
+    expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
+  });
+});
