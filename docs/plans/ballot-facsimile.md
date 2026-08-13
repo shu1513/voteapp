@@ -97,9 +97,16 @@ an official ballot (see Guardrails).
    sent to third parties.
 4. **Don't promise in-booth phone use.** Copy: "Polling-place device rules vary —
    print this or check local rules." Print/download is a first-class action.
-5. **Graceful fallback**: ranked-choice, retention, fusion/multi-line states,
-   unresolved sub-district seats, and unsupported response types render as the
-   plain list row inside the preview, not a wrong facsimile.
+5. **Graceful fallback**: contest shapes the data model can identify — retention
+   questions (title match) and unresolved sub-district seats — render in their
+   true shape or with an explicit caveat, never a wrong facsimile. Ranked-choice
+   and fusion/multi-line ballots are **not detectable yet**: there is no
+   voting-method field on elections and no ballot-line model on candidacies (see
+   Out of scope), and jurisdiction hardcoding would be wrong at the edges (RCV
+   applies per office and stage, e.g. Maine federal generals but not state
+   generals). Until Phase 3 adds that data, the footer disclosure names
+   ranked-choice explicitly; the plain-list fallback rule applies the day a
+   shape becomes detectable.
 6. Free read-side feature → flags default ON per policy; nothing costs money.
 
 ## Phase 1 — Ballot-style preview + small API adds

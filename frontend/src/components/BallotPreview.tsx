@@ -171,7 +171,8 @@ function BallotSheet({
           Races appear in a typical ballot order — federal, then state, then local — which may not match your
           state's exact rules. This preview may include
           nearby district races that aren't on your ballot, or miss local ones — and candidate order and
-          instructions on your printed ballot may differ. Compare with your official sample ballot.
+          instructions on your printed ballot may differ (some places use ranked-choice ballots, which look
+          different). Compare with your official sample ballot.
         </p>
         <p className="mt-1">Polling-place device rules vary — print this page or check your local rules.</p>
       </footer>
