@@ -43,7 +43,7 @@ export function starterQuestions(context: ChatbotAskContext | null): string[] {
   if (context?.kind === "election") {
     return ["Tell me more about this election", "Who is running in this election?"];
   }
-  return ["What can you do?", "What's on my ballot?", "How do I register to vote?"];
+  return ["What can you do?", "How do I register to vote?"];
 }
 
 /**

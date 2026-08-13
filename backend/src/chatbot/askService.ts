@@ -291,7 +291,9 @@ async function renderIntentAnswer(db: Pool, intent: IntentMatch): Promise<AskRes
       outcome: "template",
       answer:
         'I answer questions from our November 2026 election data: who\'s running, candidates\' backgrounds and records, campaign finance, elections, and ballot measures. I can also link your state\'s official pages for registering and voting. Try: "Who is running for US Senate in Georgia?"',
-      results: [BALLOT_CARD],
+      // No ballot card: the capabilities text stands alone — a card here read
+      // as an answer to a question nobody asked.
+      results: [],
       data_current_as_of: null,
     };
   }
