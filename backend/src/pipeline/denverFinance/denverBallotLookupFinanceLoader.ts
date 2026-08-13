@@ -28,14 +28,15 @@ import {
 type Queryable = Pick<Pool | PoolClient, "query">;
 
 // The card's raised figure is direct_contribution_total — private donor money
-// only (the standard loader prefers it over total_receipts). Fair Elections
-// Fund public matching and candidate loans are real campaign money the
-// committee spends, so without this sentence "spent" visibly exceeding
-// "raised" reads as an error.
+// only (the standard loader prefers it over total_receipts). The other two
+// funding sources ride the funding columns instead of a sentence of prose:
+// the card renders "Public funds" and "Loans" as their own stats, explains
+// loans itself, and uses both when deciding whether spending really outran
+// the campaign's money. Only the FEF stat needs naming, since "Public funds"
+// alone does not say which program paid it.
 const DENVER_DIRECT_COVERAGE_NOTE =
-  "Raised counts private contributions to the candidate's committee only; candidate loans and public " +
-  "matching from Denver's Fair Elections Fund are not included in the raised figure but are available " +
-  "to the campaign, so spending can exceed the amount raised.";
+  "Raised counts private contributions to the candidate's committee only. Public funds are matching " +
+  "payments from Denver's Fair Elections Fund, which the campaign can spend but did not raise from donors.";
 
 export async function loadDenverCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
@@ -64,6 +65,7 @@ export async function loadDenverCandidateFinanceSummariesByCandidateElection(
     linkIdentityColumn: "filer_id",
     outsideGroupIdentityColumns: { id: "spender_id", name: "spender_name" },
     directCoverageNote: DENVER_DIRECT_COVERAGE_NOTE,
+    fundingColumns: ["loans_received", "public_funds_received"],
     tables: {
       links: "denver_candidate_finance_links",
       summaries: "denver_candidate_finance_summaries",

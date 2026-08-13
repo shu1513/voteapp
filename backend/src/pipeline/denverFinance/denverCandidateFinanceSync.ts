@@ -278,11 +278,13 @@ export async function syncDenverCandidateFinance(input: {
       },
       summary: {
         totalReceiptsCents,
-        // Donor money only: loans and FEF stay out of the published raised
-        // figure (the loader note discloses both).
+        // Donor money only: loans and FEF are published as their own stats
+        // rather than folded into raised.
         directContributionTotalCents: direct.directContributionCents,
         totalDisbursementsCents,
         cashOnHandCents,
+        loansReceivedCents: direct.loanCents,
+        publicFundsReceivedCents: overview.fairElectionsFundToCandidateCents,
         outsideSupportCents: outside.supportTotalCents,
         outsideOpposeCents: outside.opposeTotalCents,
         sourceUrl: DENVER_FINANCE_SOURCE_URL,

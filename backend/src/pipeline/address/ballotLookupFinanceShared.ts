@@ -458,6 +458,9 @@ export type StateFinanceSummaryRow = {
   cash_on_hand: string | number | null;
   debts_owed?: string | number | null;
   candidate_loan_total?: string | number | null;
+  /** Selected only by loaders that opt into the funding columns (Denver). */
+  loans_received?: string | number | null;
+  public_funds_received?: string | number | null;
   outside_support_total: string | number | null;
   outside_oppose_total: string | number | null;
   source_url: string | null;

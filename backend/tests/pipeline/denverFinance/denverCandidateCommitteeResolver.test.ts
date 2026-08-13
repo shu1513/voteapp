@@ -17,7 +17,8 @@ function record(
     officeSought?: string | null;
     filer?: Partial<DenverRegistrantRecord["filer"]>;
     cycles?: number[];
-    details?: Partial<DenverRegistrantRecord["details"]>;
+    /** null models the live 204 answer: registered filer, no detail record. */
+    details?: Partial<DenverRegistrantRecord["details"]> | null;
   } = {},
 ): DenverRegistrantRecord {
   const filerId = overrides.filerId ?? 1326;
@@ -52,7 +53,7 @@ function record(
       name: `cycle ${electionCycleId}`,
       electionDate: null,
     })),
-    details: {
+    details: overrides.details === null ? null : {
       filerId,
       committeeId,
       committeeName: "Browne for Denver",
@@ -139,6 +140,34 @@ describe("resolveDenverCandidateCommittees", () => {
       ],
     );
     expect(resolution).toMatchObject({
+      status: "ambiguous",
+      reason: expect.stringContaining("1322, 1328"),
+    });
+  });
+
+  it("blocks a registrant with no details record, and keeps it in the duplicate-name check", () => {
+    // Live cycle 36: filer 1328 answers 204 (no details) while its
+    // duplicate-name sibling 1322 answers normally. Dropping the detail-less
+    // registrant would make 1322 look unique and link the wrong committee.
+    const [alone] = resolve([candidate], [record({ details: null as never })]);
+    expect(alone).toMatchObject({
+      status: "unmatched",
+      reason: expect.stringContaining("no committee details for filer 1326"),
+    });
+
+    const [pair] = resolve(
+      [{ ...candidate, displayName: "Monica Martinez" }],
+      [
+        record({ fullName: "Monica Martinez", filerId: 1322, committeeId: 806 }),
+        record({
+          fullName: "Monica Martinez",
+          filerId: 1328,
+          committeeId: 799,
+          details: null as never,
+        }),
+      ],
+    );
+    expect(pair).toMatchObject({
       status: "ambiguous",
       reason: expect.stringContaining("1322, 1328"),
     });

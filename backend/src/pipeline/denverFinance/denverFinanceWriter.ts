@@ -48,14 +48,18 @@ export type DenverFinanceLinkInput = {
 // All snapshot amounts arrive as integer cents (the aggregators' unit) and
 // are converted to exact dollar strings at the database boundary.
 export type DenverFinanceSummaryInput = {
-  /** getContributionsTotalByCommittee: private donor money + FEF matching. */
+  /** All cycle receipts: donor money + candidate loans + FEF matching. */
   totalReceiptsCents: number | null;
-  /** Overview campaignContributionsToCandidate: private donor money only. */
+  /** Donor money only (Monetary + In-Kind) — the published raised figure. */
   directContributionTotalCents: number | null;
   /** getExpendituresTotalByCommittee — already includes FEF-funded spending. */
   totalDisbursementsCents: number | null;
   /** Signed balance — Johnston's 2023 year-end legitimately closes negative. */
   cashOnHandCents: number | null;
+  /** `Loan` subtype: candidate self-funding, inside receipts, outside raised. */
+  loansReceivedCents: number | null;
+  /** `Fair Elections Payments`: city matching, inside receipts, outside raised. */
+  publicFundsReceivedCents: number | null;
   outsideSupportCents: number | null;
   outsideOpposeCents: number | null;
   sourceUrl: string | null;
@@ -244,7 +248,7 @@ export async function replaceDenverCandidateFinanceSnapshot(input: {
     });
     const year = input.link.electionYear;
     await client.query(
-      `INSERT INTO public.denver_candidate_finance_summaries (link_id,election_year,total_receipts,direct_contribution_total,total_disbursements,cash_on_hand,outside_support_total,outside_oppose_total,source_url,last_synced_at) VALUES ($1::uuid,$2,$3,$4,$5,$6,$7,$8,$9,$10::timestamptz) ON CONFLICT (link_id,election_year) DO UPDATE SET total_receipts=EXCLUDED.total_receipts,direct_contribution_total=EXCLUDED.direct_contribution_total,total_disbursements=EXCLUDED.total_disbursements,cash_on_hand=EXCLUDED.cash_on_hand,outside_support_total=EXCLUDED.outside_support_total,outside_oppose_total=EXCLUDED.outside_oppose_total,source_url=EXCLUDED.source_url,last_synced_at=EXCLUDED.last_synced_at`,
+      `INSERT INTO public.denver_candidate_finance_summaries (link_id,election_year,total_receipts,direct_contribution_total,total_disbursements,cash_on_hand,loans_received,public_funds_received,outside_support_total,outside_oppose_total,source_url,last_synced_at) VALUES ($1::uuid,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12::timestamptz) ON CONFLICT (link_id,election_year) DO UPDATE SET total_receipts=EXCLUDED.total_receipts,direct_contribution_total=EXCLUDED.direct_contribution_total,total_disbursements=EXCLUDED.total_disbursements,cash_on_hand=EXCLUDED.cash_on_hand,loans_received=EXCLUDED.loans_received,public_funds_received=EXCLUDED.public_funds_received,outside_support_total=EXCLUDED.outside_support_total,outside_oppose_total=EXCLUDED.outside_oppose_total,source_url=EXCLUDED.source_url,last_synced_at=EXCLUDED.last_synced_at`,
       [
         linkId,
         year,
@@ -260,6 +264,15 @@ export async function replaceDenverCandidateFinanceSnapshot(input: {
         centsToDollars(input.summary.cashOnHandCents, "cash on hand", {
           allowNegative: true,
         }),
+        // Signed: a net-negative loan balance (repayments beyond draws in one
+        // cycle) is a real feed outcome, same rule as the aggregator's sums.
+        centsToDollars(input.summary.loansReceivedCents, "loans received", {
+          allowNegative: true,
+        }),
+        centsToDollars(
+          input.summary.publicFundsReceivedCents,
+          "public funds received",
+        ),
         centsToDollars(input.summary.outsideSupportCents, "outside support"),
         centsToDollars(input.summary.outsideOpposeCents, "outside oppose"),
         optional(input.summary.sourceUrl),
