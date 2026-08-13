@@ -1,10 +1,15 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   canonicalPhoenixRegistration,
+  canonicalPhoenixReportRefs,
+  discoverPhoenixCanonicalReportRefs,
   fetchPhoenixCanonicalRegistrations,
+  fetchPhoenixReportPdf,
   parsePhoenixGridEnvelope,
   phoenixCandidateCycleForDate,
+  phoenixFilesystemPdfCache,
   phoenixGridAll,
+  phoenixSubmittedDateMs,
   toPhoenixRegistrationRow,
 } from "../../../src/pipeline/phoenixFinance/phoenixEfilingClient.js";
 
@@ -191,6 +196,121 @@ describe("toPhoenixRegistrationRow / canonicalPhoenixRegistration", () => {
       ["CAN-21-16", "2026"],
       ["CAN-25-4", "2026"],
     ]);
+  });
+});
+
+describe("phoenixSubmittedDateMs", () => {
+  it("parses the pinned live form and the signed-offset form", () => {
+    expect(phoenixSubmittedDateMs("/Date(1755000000000)/", "t")).toBe(1_755_000_000_000);
+    expect(phoenixSubmittedDateMs("/Date(1755000000000-0700)/", "t")).toBe(1_755_000_000_000);
+    expect(phoenixSubmittedDateMs("/Date(1755000000000+0100)/", "t")).toBe(1_755_000_000_000);
+  });
+
+  it("keeps the empty fallback but throws on garbage — 0 would let an older amendment win", () => {
+    expect(phoenixSubmittedDateMs("", "t")).toBe(0);
+    expect(phoenixSubmittedDateMs(null, "t")).toBe(0);
+    expect(() => phoenixSubmittedDateMs("08/12/2026", "package x")).toThrow(
+      /Unparseable Phoenix SubmittedDate "08\/12\/2026" for package x/,
+    );
+  });
+});
+
+describe("report discovery + PDF fetch", () => {
+  it("canonicalPhoenixReportRefs keeps the latest-submitted package per report name", () => {
+    const { refs, supersededDropped } = canonicalPhoenixReportRefs([
+      { reportPackageId: "a".repeat(36), reportName: "Q1", submittedDateMs: 100 },
+      { reportPackageId: "b".repeat(36), reportName: "Q1", submittedDateMs: 200 },
+      { reportPackageId: "c".repeat(36), reportName: "Annual", submittedDateMs: 50 },
+    ]);
+    expect(refs.map((ref) => ref.reportPackageId[0])).toEqual(["c", "b"]);
+    expect(supersededDropped).toBe(1);
+  });
+
+  it("discoverPhoenixCanonicalReportRefs reads all three transaction grids", async () => {
+    const guid = (prefix: string) =>
+      `${prefix}${"0".repeat(8 - prefix.length)}-0000-0000-0000-000000000000`;
+    const fetchImpl = vi.fn().mockImplementation((url: string) => {
+      const row = (id: string, name: string) => ({
+        ReportPackageId: id,
+        ReportName: name,
+        SubmittedDate: "/Date(1000)/",
+      });
+      const data = /Contributors/.test(url)
+        ? [row(guid("aa"), "Q1")]
+        : /Expenditures/.test(url)
+          ? [row(guid("bb"), "Q2")]
+          : [row(guid("cc"), "Q3")];
+      return Promise.resolve(jsonResponse({ Data: data, Total: data.length }));
+    });
+    const { refs } = await discoverPhoenixCanonicalReportRefs({
+      copId: "CAN-25-4",
+      fetchImpl,
+    });
+    expect(fetchImpl).toHaveBeenCalledTimes(3);
+    expect(refs.map((ref) => ref.reportName).sort()).toEqual(["Q1", "Q2", "Q3"]);
+    for (const call of fetchImpl.mock.calls) {
+      expect(String(call[1]?.body)).toContain("COPID=CAN-25-4");
+    }
+  });
+
+  it("fetchPhoenixReportPdf validates the %PDF signature and uses the cache", async () => {
+    const pdfBytes = new TextEncoder().encode("%PDF-1.7 fake");
+    const guid = "12345678-1234-1234-1234-123456789abc";
+    const fetchImpl = vi.fn().mockResolvedValue({
+      status: 200,
+      arrayBuffer: () => Promise.resolve(pdfBytes.buffer.slice(0)),
+    });
+    const store = new Map<string, Uint8Array>();
+    const cache = {
+      read: async (id: string) => store.get(id) ?? null,
+      write: async (id: string, bytes: Uint8Array) => void store.set(id, bytes),
+    };
+    const first = await fetchPhoenixReportPdf({ reportPackageId: guid, cache, fetchImpl });
+    expect(new TextDecoder().decode(first)).toContain("%PDF");
+    await fetchPhoenixReportPdf({ reportPackageId: guid, cache, fetchImpl });
+    expect(fetchImpl).toHaveBeenCalledTimes(1); // second call served from cache
+
+    const htmlImpl = vi.fn().mockResolvedValue({
+      status: 200,
+      arrayBuffer: () =>
+        Promise.resolve(new TextEncoder().encode("<html>maintenance</html>").buffer.slice(0)),
+    });
+    await expect(
+      fetchPhoenixReportPdf({ reportPackageId: guid.replace("1", "2"), fetchImpl: htmlImpl }),
+    ).rejects.toThrow(/not a PDF/);
+    await expect(
+      fetchPhoenixReportPdf({ reportPackageId: "not-a-guid", fetchImpl }),
+    ).rejects.toThrow(/Not a report package GUID/);
+    const failImpl = vi.fn().mockResolvedValue({
+      status: 500,
+      arrayBuffer: () => Promise.resolve(new ArrayBuffer(0)),
+    });
+    await expect(
+      fetchPhoenixReportPdf({ reportPackageId: guid.replace("1", "3"), fetchImpl: failImpl }),
+    ).rejects.toThrow(/HTTP 500/);
+    // Strict 8-4-4-4-12: the loose 36-char class accepted a run of dashes.
+    await expect(
+      fetchPhoenixReportPdf({ reportPackageId: "-".repeat(36), fetchImpl }),
+    ).rejects.toThrow(/Not a report package GUID/);
+  });
+
+  it("phoenixFilesystemPdfCache survives a truncated file and writes atomically", async () => {
+    const { mkdtemp, readdir, writeFile } = await import("node:fs/promises");
+    const { tmpdir } = await import("node:os");
+    const { join } = await import("node:path");
+    const dir = await mkdtemp(join(tmpdir(), "phx-pdf-cache-"));
+    const cache = phoenixFilesystemPdfCache(dir);
+    const id = "12345678-1234-1234-1234-123456789abc";
+
+    // A file without the %PDF signature (interrupted write) is a MISS, not a
+    // permanently poisoned hit.
+    await writeFile(join(dir, `${id}.pdf`), "%PD");
+    expect(await cache.read(id)).toBeNull();
+
+    await cache.write(id, new TextEncoder().encode("%PDF-1.7 fake"));
+    expect(new TextDecoder().decode((await cache.read(id))!)).toContain("%PDF");
+    // The temp file never survives a completed write.
+    expect(await readdir(dir)).toEqual([`${id}.pdf`]);
   });
 });
 

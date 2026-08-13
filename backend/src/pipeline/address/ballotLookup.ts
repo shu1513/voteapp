@@ -62,6 +62,7 @@ import { loadConnecticutCandidateFinanceSummariesByCandidateElection } from "../
 import { loadColoradoCandidateFinanceSummariesByCandidateElection } from "../coloradoFinance/coloradoBallotLookupFinanceLoader.js";
 import { loadCaliforniaCandidateFinanceSummariesByCandidateElection } from "../californiaFinance/californiaBallotLookupFinanceLoader.js";
 import { loadLosAngelesCandidateFinanceSummariesByCandidateElection } from "../losAngelesCityFinance/losAngelesBallotLookupFinanceLoader.js";
+import { loadPhoenixCandidateFinanceSummariesByCandidateElection } from "../phoenixFinance/phoenixBallotLookupFinanceLoader.js";
 import { loadSanDiegoCityCandidateFinanceSummariesByCandidateElection } from "../sanDiegoCityFinance/sanDiegoCityBallotLookupFinanceLoader.js";
 import { loadSanFranciscoCandidateFinanceSummariesByCandidateElection } from "../sanFranciscoFinance/sanFranciscoBallotLookupFinanceLoader.js";
 import { loadSanJoseCandidateFinanceSummariesByCandidateElection } from "../sanJoseFinance/sanJoseBallotLookupFinanceLoader.js";
@@ -868,6 +869,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "TX", load: loadTexasCandidateFinanceSummariesByCandidateElection },
   { state: "TX", load: loadHoustonCandidateFinanceSummariesByCandidateElection },
   { state: "AZ", load: loadArizonaCandidateFinanceSummariesByCandidateElection },
+  { state: "AZ", load: loadPhoenixCandidateFinanceSummariesByCandidateElection },
   {
     state: "UT",
     load: (db, candidateRows, electionRows) =>

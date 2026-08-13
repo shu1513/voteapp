@@ -265,6 +265,232 @@ export async function fetchPhoenixCanonicalRegistrations(input?: {
   return canonical;
 }
 
+/** The Kendo grid's political-function GUID for "Candidate-Related
+ * Independent Expenditures" (read from the RegFilings page's
+ * POLITICALFUNCTION select, pinned by the Phase 0 probe). Filtering
+ * _SearchCommittees by CFUNC with this id returns every IE-authorized
+ * registration. */
+export const PHOENIX_CANDIDATE_IE_FUNCTION_ID =
+  "a182d408-b233-4b2b-b444-4d260375dc5f";
+
+type PdfFetchLike = (
+  input: string,
+  init?: RequestInit,
+) => Promise<{ status: number; arrayBuffer: () => Promise<ArrayBuffer> }>;
+
+export type PhoenixPdfCache = {
+  read: (reportPackageId: string) => Promise<Uint8Array | null>;
+  write: (reportPackageId: string, bytes: Uint8Array) => Promise<void>;
+};
+
+/** Filesystem PDF cache under cacheDir (the probe's layout:
+ * `<cacheDir>/<packageId>.pdf`). Read errors mean cache miss, and so does a
+ * file without the %PDF signature — an interrupted write leaves truncated
+ * bytes, and returning them would poison every later sync for that package
+ * until an operator deleted the file by hand. Writes go through a temp file
+ * + rename so a crash mid-write never lands on the final path. */
+export function phoenixFilesystemPdfCache(cacheDir: string): PhoenixPdfCache {
+  return {
+    read: async (reportPackageId) => {
+      try {
+        const { readFile } = await import("node:fs/promises");
+        const { join } = await import("node:path");
+        const cached = await readFile(join(cacheDir, `${reportPackageId}.pdf`));
+        if (cached.length < 4 || cached.toString("latin1", 0, 4) !== "%PDF") {
+          return null;
+        }
+        // pdfjs rejects Node Buffers — hand back a plain Uint8Array view.
+        return new Uint8Array(cached.buffer, cached.byteOffset, cached.byteLength);
+      } catch {
+        return null;
+      }
+    },
+    write: async (reportPackageId, bytes) => {
+      const { mkdir, rename, writeFile } = await import("node:fs/promises");
+      const { join } = await import("node:path");
+      await mkdir(cacheDir, { recursive: true });
+      const target = join(cacheDir, `${reportPackageId}.pdf`);
+      const temporary = `${target}.${process.pid}.tmp`;
+      await writeFile(temporary, bytes);
+      await rename(temporary, target);
+    },
+  };
+}
+
+/**
+ * Fetches one report PDF (`/CampaignFinance/Reports/PrintReport/<guid>`),
+ * validating the %PDF signature — the WAF maintenance page comes back HTML
+ * with HTTP 200 here too. Reports are immutable per package id (amendments
+ * get NEW ids), so a cache hit never refetches; the cache itself rejects
+ * bytes without the %PDF signature (truncated write) as a miss.
+ */
+export async function fetchPhoenixReportPdf(input: {
+  reportPackageId: string;
+  cache?: PhoenixPdfCache;
+  timeoutMs?: number;
+  fetchImpl?: PdfFetchLike;
+}): Promise<Uint8Array> {
+  const id = input.reportPackageId;
+  if (!PHOENIX_REPORT_PACKAGE_GUID.test(id)) {
+    throw new Error(`Not a report package GUID: "${id}"`);
+  }
+  const cached = await input.cache?.read(id);
+  if (cached) return cached;
+  const timeoutMs = input.timeoutMs ?? PHOENIX_PORTAL_DEFAULT_TIMEOUT_MS;
+  const fetchImpl = input.fetchImpl ?? (fetch as PdfFetchLike);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    let response: Awaited<ReturnType<PdfFetchLike>>;
+    try {
+      response = await fetchImpl(
+        `${PHOENIX_PORTAL_BASE_URL}/CampaignFinance/Reports/PrintReport/${id}`,
+        {
+          headers: { "User-Agent": BROWSER_USER_AGENT },
+          signal: controller.signal,
+        },
+      );
+    } catch (error) {
+      if (isAbortError(error)) {
+        throw new Error(
+          `Phoenix report PDF fetch timed out after ${timeoutMs}ms for ${id}`,
+        );
+      }
+      throw error;
+    }
+    if (response.status < 200 || response.status >= 300) {
+      throw new Error(`Phoenix report PDF fetch failed for ${id}: HTTP ${response.status}`);
+    }
+    let bytes: Uint8Array;
+    try {
+      bytes = new Uint8Array(await response.arrayBuffer());
+    } catch (error) {
+      if (isAbortError(error)) {
+        throw new Error(
+          `Phoenix report PDF body read timed out after ${timeoutMs}ms for ${id}`,
+        );
+      }
+      throw error;
+    }
+    if (bytes.length > MAX_RESPONSE_BYTES) {
+      throw new Error(
+        `Phoenix report PDF ${id} is ${bytes.length} bytes, over the ${MAX_RESPONSE_BYTES} cap`,
+      );
+    }
+    if (bytes.length < 4 || String.fromCharCode(...bytes.slice(0, 4)) !== "%PDF") {
+      throw new Error(`Phoenix report ${id} is not a PDF`);
+    }
+    await input.cache?.write(id, bytes);
+    return bytes;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+export type PhoenixReportRef = {
+  reportPackageId: string;
+  reportName: string;
+  submittedDateMs: number;
+};
+
+/** Strict 8-4-4-4-12 form — the loose `[0-9a-f-]{36}` it replaces accepted
+ * junk like a string of 36 dashes. */
+export const PHOENIX_REPORT_PACKAGE_GUID =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * ASP.NET AJAX `SubmittedDate` → epoch ms. The pinned live form is
+ * `/Date(1755000000000)/`; the serializer can also emit a signed zone offset
+ * (`/Date(1755000000000-0700)/`), which is display metadata — the number is
+ * already UTC ms. Amendment canonicalization picks winners by this value, so
+ * a non-empty value that fails to parse THROWS rather than falling back to 0
+ * (a 0 would silently let an older amendment stay canonical). Empty/absent
+ * stays 0: no date disclosed at all is missing information, not garbage.
+ */
+export function phoenixSubmittedDateMs(raw: unknown, context: string): number {
+  const text = String(raw ?? "").trim();
+  if (text === "") return 0;
+  const match = /^\/Date\((-?\d+)(?:[+-]\d{4})?\)\/$/.exec(text);
+  if (!match) {
+    throw new Error(`Unparseable Phoenix SubmittedDate "${text}" for ${context}`);
+  }
+  return Number(match[1]);
+}
+
+function collectPhoenixReportRefs(
+  refs: Map<string, PhoenixReportRef>,
+  rows: readonly Record<string, unknown>[],
+): void {
+  for (const row of rows) {
+    const id = String(row.ReportPackageId ?? "");
+    if (!PHOENIX_REPORT_PACKAGE_GUID.test(id)) continue;
+    refs.set(id, {
+      reportPackageId: id,
+      reportName: String(row.ReportName ?? ""),
+      submittedDateMs: phoenixSubmittedDateMs(row.SubmittedDate, `report package ${id}`),
+    });
+  }
+}
+
+/** Amendment canonicalization (Phase 0 gate 4): duplicate (report name)
+ * packages are superseded versions; the latest SubmittedDate wins and losers
+ * are dropped. Grids expose one package per period AFTER amendment, so the
+ * parsed periods must come out disjoint — the aggregator asserts that. */
+export function canonicalPhoenixReportRefs(
+  refs: readonly PhoenixReportRef[],
+): { refs: PhoenixReportRef[]; supersededDropped: number } {
+  const byName = new Map<string, PhoenixReportRef[]>();
+  for (const ref of refs) {
+    const bucket = byName.get(ref.reportName) ?? [];
+    bucket.push(ref);
+    byName.set(ref.reportName, bucket);
+  }
+  const canonical: PhoenixReportRef[] = [];
+  let supersededDropped = 0;
+  for (const bucket of byName.values()) {
+    const winner = bucket.reduce((best, ref) =>
+      ref.submittedDateMs > best.submittedDateMs ? ref : best,
+    );
+    canonical.push(winner);
+    supersededDropped += bucket.length - 1;
+  }
+  canonical.sort((a, b) => a.submittedDateMs - b.submittedDateMs);
+  return { refs: canonical, supersededDropped };
+}
+
+/**
+ * Discovers a committee's filed report packages via the three transaction
+ * grids. Contribution rows alone miss expenditure-only and loan-only
+ * reports, so all three are read. No-activity filings DO surface (verified
+ * live: CAN-22-10's cover-only post-election reports come back through the
+ * contributors grid, which carries an ISNOACTIVITY marker), so a report
+ * invisible to all three grids is an anomaly — the aggregator's
+ * coverage_hole check is what catches one that actually moved money.
+ */
+export async function discoverPhoenixCanonicalReportRefs(input: {
+  copId: string;
+  timeoutMs?: number;
+  fetchImpl?: FetchLike;
+}): Promise<{ refs: PhoenixReportRef[]; supersededDropped: number }> {
+  const refs = new Map<string, PhoenixReportRef>();
+  for (const path of [
+    "/CampaignFinance/Search/_SearchContributors",
+    "/CampaignFinance/Search/_SearchExpenditures",
+    "/CampaignFinance/Search/_SearchLoans",
+  ]) {
+    collectPhoenixReportRefs(
+      refs,
+      await phoenixGridAll({
+        path,
+        filters: { COPID: input.copId },
+        timeoutMs: input.timeoutMs,
+        fetchImpl: input.fetchImpl,
+      }),
+    );
+  }
+  return canonicalPhoenixReportRefs([...refs.values()]);
+}
+
 /** Phoenix candidate election cycles run April 1 of an odd year through
  * March 31 two years later (city cycles PDF, read 2026-08-12). The bounds are
  * derived from this documented rule and a date INSIDE the cycle — never from
