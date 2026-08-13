@@ -19,6 +19,8 @@ export function renderRoutes(
     </QueryClientProvider>
   );
   // The router rides along so tests can assert on navigation outcomes the
-  // DOM does not show (e.g. history state being cleared after use).
-  return Object.assign(result, { router });
+  // DOM does not show (e.g. history state being cleared after use); the
+  // query client so tests can simulate session changes (login/logout swap
+  // the ["me"] entry without a remount).
+  return Object.assign(result, { router, queryClient });
 }

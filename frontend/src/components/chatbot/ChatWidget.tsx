@@ -231,6 +231,24 @@ export function ChatWidget() {
     transcriptRef.current?.scrollTo?.({ top: transcriptRef.current.scrollHeight });
   }, [turns, ask.isPending]);
 
+  // Auth identity changed (login, logout, account switch): collapse and clear
+  // the chat. The widget stays mounted across client-side navigation, so a
+  // panel opened before the login flow would otherwise greet the fresh
+  // session already expanded — and on a shared browser the previous
+  // account's questions must not carry over (same reason
+  // purgeAccountScopedQueries exists). `me` is undefined while loading, so
+  // key on the resolved email; the initial undefined→user transition is a
+  // no-op (the widget starts collapsed and empty anyway).
+  const meEmail = me?.email ?? null;
+  useEffect(() => {
+    setOpen(false);
+    setTurns([]);
+    setQuestion("");
+    ask.reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `ask` is a new
+    // object every render; this must run only on identity change.
+  }, [meEmail]);
+
   if (isChatWidgetHidden(location.pathname, Boolean(me))) {
     return null;
   }

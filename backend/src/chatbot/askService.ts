@@ -75,6 +75,63 @@ type ResolvedContext = {
   state: string | null;
 };
 
+/** Lowercased, diacritic-stripped word tokens — the unit page-candidate name
+ * matching compares on. */
+export function nameTokens(text: string): string[] {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .split(/[^a-z0-9]+/)
+    .filter((token) => token.length > 0);
+}
+
+/** Non-deictic questions can still point at the viewed page by NAME:
+ * "what's the difference between Maria and Rhonda" asked on the election
+ * page listing them both. True when any word of the question exactly matches
+ * a name token (3+ chars, so initials and stray "de"/"la" particles don't
+ * count) of a candidate in the contexted election — or, for candidate
+ * context, in any of that candidate's races (so opponents count too).
+ * Exact whole-word match on purpose: fuzzy matching here would re-attach
+ * off-topic questions to the page and bypass the answerability gate. */
+async function questionNamesPageCandidate(
+  db: Pool,
+  generationId: string,
+  context: AskContext,
+  question: string
+): Promise<boolean> {
+  const result = await db.query<{ display_name: string }>(
+    `
+      SELECT DISTINCT COALESCE(
+        NULLIF(trim(candidate.display_name), ''),
+        trim(concat_ws(' ', candidate.first_name, candidate.last_name))
+      ) AS display_name
+      FROM chatbot.chunks AS chunk
+      JOIN public.candidates AS candidate ON candidate.id = chunk.source_id
+      WHERE chunk.generation_id = $1::uuid
+        AND chunk.source_type = 'candidate_profile'
+        AND chunk.election_id IN (
+          SELECT ctx.election_id
+          FROM chatbot.chunks AS ctx
+          WHERE ctx.generation_id = $1::uuid
+            AND ctx.election_id IS NOT NULL
+            AND (
+              ($2 = 'election' AND ctx.election_id = $3::uuid)
+              OR ($2 = 'candidate' AND ctx.source_id = $3::uuid)
+            )
+        )
+    `,
+    [generationId, context.kind, context.id]
+  );
+  if (result.rows.length === 0) {
+    return false;
+  }
+  const questionTokens = new Set(nameTokens(question));
+  return result.rows.some((row) =>
+    nameTokens(row.display_name).some((token) => token.length >= 3 && questionTokens.has(token))
+  );
+}
+
 /** Validates the page context against the ACTIVE generation (a stale or
  * out-of-corpus id resolves to null and the question stands on its own). */
 async function resolveContext(db: Pool, generationId: string, context: AskContext): Promise<ResolvedContext | null> {
@@ -643,10 +700,17 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
         );
       }
 
-      // Page context: applied only when the question points at it (deictic)
-      // and the id still exists in the active generation.
+      // Page context: applied only when the question points at it — a
+      // deictic word ("this", "their") or a page candidate named outright
+      // ("what's the difference between Maria and Rhonda" on the election
+      // page listing them) — and the id still exists in the active
+      // generation. A question doing neither ("what will the weather be on
+      // election day?") is judged on its own evidence.
       const resolvedContext =
-        context && DEICTIC_RE.test(question) ? await resolveContext(db, generation.id, context) : null;
+        context &&
+        (DEICTIC_RE.test(question) || (await questionNamesPageCandidate(db, generation.id, context, question)))
+          ? await resolveContext(db, generation.id, context)
+          : null;
 
       // Deterministic follow-up scope carry-over (no LLM rewrite in v1): a
       // scopeless follow-up appends the previous turn's text so its district/

@@ -1,13 +1,25 @@
 import { describe, expect, it } from "vitest";
 import type { Pool } from "pg";
 
-import { createAskService, electionCountdownAnswer } from "../../src/chatbot/askService.js";
+import { createAskService, electionCountdownAnswer, nameTokens } from "../../src/chatbot/askService.js";
 
 // Pure pieces of the ask service; the full pipeline is exercised by
 // `npm run chatbot:eval` against the live index.
 //
 // All instants are explicit UTC (Date.UTC) and the function itself only uses
 // UTC accessors, so these tests pass identically on any machine timezone.
+
+describe("nameTokens", () => {
+  it("lowercases, strips diacritics, and splits on punctuation", () => {
+    expect(nameTokens("María O'Brien-Smith")).toEqual(["maria", "o", "brien", "smith"]);
+  });
+
+  it("tokenizes a question the same way, so page-candidate names match by word", () => {
+    // "Maria" in the question must equal the "María" token from the roster.
+    expect(nameTokens("what's the difference between Maria and Rhonda?")).toContain("maria");
+    expect(nameTokens("what's the difference between Maria and Rhonda?")).toContain("rhonda");
+  });
+});
 
 describe("electionCountdownAnswer", () => {
   it("counts calendar days to November 3, 2026", () => {
