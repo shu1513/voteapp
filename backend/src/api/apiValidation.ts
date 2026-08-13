@@ -2,6 +2,7 @@ import { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
 // [ballot-personalized-ordering] see ballotElectionOrdering.ts for removal notes
 import {
   BALLOT_SUMMARY_SORTS,
+  SAVEABLE_BALLOT_PREFERENCE_SORTS,
   isBallotSummarySort,
   type BallotSummaryOptions,
   type BallotSummarySort,
@@ -675,9 +676,15 @@ export function parseBallotPreferencesBodyValue(parsed: unknown): UserBallotPref
     throw new TypeError("Request body must be a JSON object");
   }
 
+  // SAVEABLE list, not the full request list: state_baseline is request-only
+  // (the ballot preview passes it explicitly) and the user_ballot_preferences
+  // sort CHECK constraint would reject it with a 500 instead of this 400.
   const sort = (parsed as { sort?: unknown }).sort;
-  if (typeof sort !== "string" || !isBallotSummarySort(sort.trim())) {
-    throw new TypeError(`Body field sort must be one of: ${BALLOT_SUMMARY_SORTS.join(", ")}`);
+  if (
+    typeof sort !== "string" ||
+    !(SAVEABLE_BALLOT_PREFERENCE_SORTS as readonly string[]).includes(sort.trim())
+  ) {
+    throw new TypeError(`Body field sort must be one of: ${SAVEABLE_BALLOT_PREFERENCE_SORTS.join(", ")}`);
   }
 
   const followedFirst = (parsed as { followed_first?: unknown }).followed_first;
@@ -907,11 +914,14 @@ export function parsePushTokenDeleteBodyValue(parsed: unknown): { expoPushToken:
 }
 
 // [ballot-personalized-ordering]
-// Parses the optional `sort` and `followed_first` query parameters shared by
-// the ballot endpoints. Throws TypeError (mapped to HTTP 400) on invalid
-// values; omitted params leave the reader defaults in place.
-export function parseBallotSummaryOptions(url: URL): Pick<BallotSummaryOptions, "sort" | "followedFirst"> {
-  const options: Pick<BallotSummaryOptions, "sort" | "followedFirst"> = {};
+// Parses the optional `sort`, `followed_first`, and `include` query
+// parameters shared by the ballot endpoints. Throws TypeError (mapped to
+// HTTP 400) on invalid values; omitted params leave the reader defaults in
+// place.
+export function parseBallotSummaryOptions(
+  url: URL
+): Pick<BallotSummaryOptions, "sort" | "followedFirst" | "includePreview"> {
+  const options: Pick<BallotSummaryOptions, "sort" | "followedFirst" | "includePreview"> = {};
 
   const rawSort = url.searchParams.get("sort");
   if (rawSort !== null) {
@@ -929,6 +939,16 @@ export function parseBallotSummaryOptions(url: URL): Pick<BallotSummaryOptions, 
       throw new TypeError("Query parameter followed_first must be true or false");
     }
     options.followedFirst = value === "true";
+  }
+
+  // `preview` is the only include today; reject anything else so a typo'd
+  // include fails loud instead of silently returning the slim payload.
+  const rawInclude = url.searchParams.get("include");
+  if (rawInclude !== null) {
+    if (rawInclude.trim() !== "preview") {
+      throw new TypeError("Query parameter include must be: preview");
+    }
+    options.includePreview = true;
   }
 
   return options;

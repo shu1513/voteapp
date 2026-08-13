@@ -103,6 +103,57 @@ describe("DraftPage", () => {
     expect(screen.queryByText("Other saved picks")).not.toBeInTheDocument();
   });
 
+  it("gives guests the ballot view over the public preview endpoint", async () => {
+    seedDraft({
+      district_ids: ["d-1"],
+      target: { election_date: "2026-11-03", election_ids: ["e-1"] },
+      choices: { "e-1": draftChoice() },
+    });
+    const fetchMock = stubApiRoutes({
+      ...GUEST,
+      "/api/ballot": (url) =>
+        url.searchParams.get("include") === "preview"
+          ? {
+              body: ballotSummary([
+                electionSummary({
+                  preview: {
+                    seats_to_fill: null,
+                    candidates: [
+                      {
+                        candidate_election_id: "ce-1",
+                        candidate_id: "c-1",
+                        display_name: "Jane Smith",
+                        party: "Democratic",
+                        is_incumbent: false,
+                        status: "declared",
+                      },
+                    ],
+                    measure: null,
+                  },
+                }),
+              ]),
+            }
+          : { body: ballotSummary([electionSummary()]) },
+    });
+    const user = (await import("@testing-library/user-event")).default.setup({
+      advanceTimers: vi.advanceTimersByTime,
+    });
+    renderDraft();
+
+    await user.click(await screen.findByRole("button", { name: "Ballot view" }));
+
+    expect(await screen.findByRole("heading", { name: /Ballot preview — November 3, 2026/ })).toBeInTheDocument();
+    expect(screen.getByText("Not an official ballot")).toBeInTheDocument();
+    expect(screen.getByText("Your pick")).toBeInTheDocument();
+    // Guest preview rides the PUBLIC endpoint with the same ordering contract.
+    const previewCall = fetchMock.mock.calls.find(([input]) => String(input).includes("include=preview"));
+    expect(String(previewCall![0])).toContain("/api/ballot?");
+    expect(String(previewCall![0])).toContain("district_ids=d-1");
+    expect(String(previewCall![0])).toContain("sort=state_baseline");
+    // The signup CTA survives the view switch — the sheet IS the pitch.
+    expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
+  });
+
   it("lists picks made outside the stored ballot under Other saved picks", async () => {
     // Deep-link scenario: ballot A is stored, but the pick came from a
     // shared link to election e-9 in some other district. The cards can't

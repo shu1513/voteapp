@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link } from "react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useElectionChoices, useMe } from "@voteapp/api-client";
 import type { BallotSummary, ElectionChoice, ElectionSummary, PickCardShare } from "@voteapp/api-client";
+import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import type { ElectionNavState } from "../lib/detailNavContext";
 import { ShareButton } from "../components/ShareButton";
@@ -336,6 +338,7 @@ export function PicksPage() {
   useDocumentTitle("My Picks");
   const { me, isLoading } = useMe();
   const verified = me?.email_verified === true;
+  const [view, setView] = useState<"list" | "ballot">("list");
   const {
     choices,
     choiceByElectionId,
@@ -348,6 +351,17 @@ export function PicksPage() {
     queryKey: ["me", "ballot"],
     queryFn: () => apiRequest<BallotSummary>("/api/me/ballot"),
     enabled: verified,
+    retry: false,
+  });
+  // Ballot view payload, fetched lazily on first toggle: rosters + measure
+  // text (include=preview) in paper-ballot contest order. Explicit sort and
+  // followed_first — the user's saved list preferences must never reorder a
+  // ballot sheet.
+  const ballotPreview = useQuery({
+    queryKey: ["me", "ballot", "preview"],
+    queryFn: () =>
+      apiRequest<BallotSummary>("/api/me/ballot?include=preview&sort=state_baseline&followed_first=false"),
+    enabled: verified && view === "ballot",
     retry: false,
   });
 
@@ -429,16 +443,39 @@ export function PicksPage() {
         ) : null}
         {picksSettled ? (
           <>
-            <div className="mt-4 space-y-4">
-              {dates.map((date) => (
-                <PickDateCard
-                  key={date}
-                  date={date}
-                  elections={byDate.get(date) ?? []}
-                  choiceByElectionId={choiceByElectionId}
-                />
-              ))}
-            </div>
+            {dates.length > 0 ? (
+              <div className="mt-4">
+                <BallotViewToggle view={view} onChange={setView} />
+              </div>
+            ) : null}
+            {view === "ballot" ? (
+              <>
+                {ballotPreview.isPending ? <LoadingNotice text="Loading your ballot preview…" /> : null}
+                {ballotPreview.isError ? (
+                  <div className="mt-4">
+                    <ErrorNotice error={ballotPreview.error} />
+                  </div>
+                ) : null}
+                {ballotPreview.isSuccess ? (
+                  <BallotPreviewSheets
+                    elections={ballotPreview.data.elections}
+                    choiceByElectionId={choiceByElectionId}
+                    today={today}
+                  />
+                ) : null}
+              </>
+            ) : (
+              <div className="mt-4 space-y-4">
+                {dates.map((date) => (
+                  <PickDateCard
+                    key={date}
+                    date={date}
+                    elections={byDate.get(date) ?? []}
+                    choiceByElectionId={choiceByElectionId}
+                  />
+                ))}
+              </div>
+            )}
             <PastPicks choices={choices ?? []} today={today} cardedElectionIds={cardedElectionIds} />
           </>
         ) : null}

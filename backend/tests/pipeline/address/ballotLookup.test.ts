@@ -287,6 +287,171 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     expect(JSON.stringify(result)).not.toContain("what_yes_means");
   });
 
+  it("attaches the ballot-preview payload (roster incl. withdrawn, measure text, seats) when includePreview is set", async () => {
+    const withdrawnCandidateId = "88888888-8888-4888-8888-888888888888";
+    const withdrawnCandidateElectionId = "99999999-9999-4999-8999-999999999999";
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: districtId,
+            district_type: "county",
+            geoid_compact: "06037",
+            name: "Los Angeles County",
+            state: "CA",
+            state_fips: "06",
+            representation_power_score: "72.5",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            district_id: districtId,
+            district_type: "county",
+            geoid_compact: "06037",
+            district_name: "Los Angeles County",
+            state: "CA",
+            state_fips: "06",
+            representation_power_score: "72.5",
+            race_type: "office",
+            official_ballot_title: "County Supervisor",
+            election_date: "2026-11-03",
+            election_stage: "general",
+            is_partisan: false,
+            seats_to_fill: 2,
+            discovery_contest_family: "non_judicial_office",
+            sources: [],
+            office_id: null,
+            office_scope: null,
+            office_canonical_name: null,
+            office_summary: null,
+          },
+          {
+            election_id: measureElectionId,
+            district_id: districtId,
+            district_type: "county",
+            geoid_compact: "06037",
+            district_name: "Los Angeles County",
+            state: "CA",
+            state_fips: "06",
+            representation_power_score: "72.5",
+            race_type: "ballot_measure",
+            official_ballot_title: "Measure H",
+            election_date: "2026-11-03",
+            election_stage: null,
+            is_partisan: null,
+            seats_to_fill: null,
+            discovery_contest_family: "ballot_measure",
+            sources: [],
+            office_id: null,
+            office_scope: null,
+            office_canonical_name: null,
+            office_summary: null,
+          },
+        ],
+      })
+      // candidate counts (withdrawn excluded, matching the visible count)
+      .mockResolvedValueOnce({ rows: [{ election_id: officeElectionId, candidate_count: 1 }] })
+      // ballot measure ids
+      .mockResolvedValueOnce({ rows: [{ election_id: measureElectionId, ballot_measure_id: ballotMeasureId }] })
+      // measure research areas (office research areas + historical
+      // competitiveness + roster status all skip their queries here: no
+      // office ids, no supported office scopes, no zero-candidate office)
+      .mockResolvedValueOnce({ rows: [] })
+      // result summaries
+      .mockResolvedValueOnce({ rows: [] })
+      // preview candidates: withdrawn row comes back too
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: officeElectionId,
+            candidate_election_id: candidateElectionId,
+            candidate_id: candidateId,
+            display_name: "Alice Alvarez",
+            party: "Nonpartisan",
+            is_incumbent: true,
+            status: "declared",
+            running_mate_candidate_id: null,
+            running_mate_display_name: null,
+            running_mate_party: null,
+          },
+          {
+            election_id: officeElectionId,
+            candidate_election_id: withdrawnCandidateElectionId,
+            candidate_id: withdrawnCandidateId,
+            display_name: "Bob Breyer",
+            party: "Nonpartisan",
+            is_incumbent: false,
+            status: "withdrawn",
+            running_mate_candidate_id: null,
+            running_mate_display_name: null,
+            running_mate_party: null,
+          },
+        ],
+      })
+      // preview measures: full text fields
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: measureElectionId,
+            ballot_measure_id: ballotMeasureId,
+            official_ballot_title: "Measure H",
+            summary: "A VoteApp summary.",
+            what_yes_means: "Yes adopts the tax.",
+            what_no_means: "No keeps current law.",
+          },
+        ],
+      });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId], { includePreview: true });
+
+    expect(query).toHaveBeenCalledTimes(8);
+    // The preview candidate query must NOT exclude withdrawn candidacies —
+    // a late withdrawal can still be printed on the paper ballot.
+    expect(query.mock.calls[6]?.[0]).not.toContain("withdrawn");
+    const officeSummary = result.elections.find((election) => election.id === officeElectionId);
+    expect(officeSummary?.preview).toEqual({
+      seats_to_fill: 2,
+      candidates: [
+        {
+          candidate_election_id: candidateElectionId,
+          candidate_id: candidateId,
+          display_name: "Alice Alvarez",
+          party: "Nonpartisan",
+          is_incumbent: true,
+          status: "declared",
+        },
+        {
+          candidate_election_id: withdrawnCandidateElectionId,
+          candidate_id: withdrawnCandidateId,
+          display_name: "Bob Breyer",
+          party: "Nonpartisan",
+          is_incumbent: false,
+          status: "withdrawn",
+        },
+      ],
+      measure: null,
+    });
+    // The visible count keeps excluding withdrawn rows even though the
+    // preview roster carries them.
+    expect(officeSummary?.candidate_count).toBe(1);
+    const measureSummary = result.elections.find((election) => election.id === measureElectionId);
+    expect(measureSummary?.preview).toEqual({
+      seats_to_fill: null,
+      candidates: [],
+      measure: {
+        id: ballotMeasureId,
+        official_ballot_title: "Measure H",
+        summary: "A VoteApp summary.",
+        what_yes_means: "Yes adopts the tax.",
+        what_no_means: "No keeps current law.",
+      },
+    });
+  });
+
   it("attaches historical competitiveness to supported office summaries", async () => {
     const fetch = vi.fn().mockRejectedValue(new Error("runtime ballot lookup must not fetch historical data"));
     vi.stubGlobal("fetch", fetch);

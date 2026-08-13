@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Link, Navigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useMe } from "@voteapp/api-client";
 import type { BallotSummary, ElectionChoice, ElectionSummary } from "@voteapp/api-client";
+import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import type { ElectionNavState } from "../lib/detailNavContext";
 import { draftChoicesByElectionId, draftPickCount, useBallotDraft } from "../lib/ballotDraft";
@@ -61,6 +63,7 @@ export function DraftPage() {
   const { me } = useMe();
   const draft = useBallotDraft();
   const districtIds = draft.district_ids;
+  const [view, setView] = useState<"list" | "ballot">("list");
   // Same key as BallotPage's default-sort query so a guest arriving from
   // /ballot reuses the cached payload instead of refetching.
   const ballot = useQuery({
@@ -70,6 +73,17 @@ export function DraftPage() {
         `/api/ballot?district_ids=${encodeURIComponent(districtIds.join(","))}&sort=vote_power`
       ),
     enabled: me === null && districtIds.length > 0,
+  });
+  // Ballot view payload, fetched lazily on first toggle (separate query on
+  // purpose: widening the shared default query above would break its cache
+  // reuse with /ballot). Same contract as the signed-in preview fetch.
+  const ballotPreview = useQuery({
+    queryKey: ["ballot", districtIds.join(","), "preview"],
+    queryFn: () =>
+      apiRequest<BallotSummary>(
+        `/api/ballot?district_ids=${encodeURIComponent(districtIds.join(","))}&include=preview&sort=state_baseline&followed_first=false`
+      ),
+    enabled: me === null && districtIds.length > 0 && view === "ballot",
   });
 
   // No-flash rule: nothing until the session state is known.
@@ -147,18 +161,41 @@ export function DraftPage() {
             dates.length === 0 ? (
               <EmptyNotice text="No upcoming elections found for your districts yet. Check back — new elections are added as they are announced." />
             ) : (
-              <div className="mt-4 space-y-4">
-                {dates.map((date) => (
-                  <PickDateCard
-                    key={date}
-                    date={date}
-                    elections={byDate.get(date) ?? []}
-                    choiceByElectionId={choices}
-                    share={false}
-                    navState={DRAFT_NAV_STATE}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="mt-4">
+                  <BallotViewToggle view={view} onChange={setView} />
+                </div>
+                {view === "ballot" ? (
+                  <>
+                    {ballotPreview.isPending ? <LoadingNotice text="Loading your ballot preview…" /> : null}
+                    {ballotPreview.isError ? (
+                      <div className="mt-4">
+                        <ErrorNotice error={ballotPreview.error} />
+                      </div>
+                    ) : null}
+                    {ballotPreview.isSuccess ? (
+                      <BallotPreviewSheets
+                        elections={ballotPreview.data.elections}
+                        choiceByElectionId={choices}
+                        today={today}
+                      />
+                    ) : null}
+                  </>
+                ) : (
+                  <div className="mt-4 space-y-4">
+                    {dates.map((date) => (
+                      <PickDateCard
+                        key={date}
+                        date={date}
+                        elections={byDate.get(date) ?? []}
+                        choiceByElectionId={choices}
+                        share={false}
+                        navState={DRAFT_NAV_STATE}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
             )
           ) : null}
           {/* Picks the cards above can't carry — made on races outside the
