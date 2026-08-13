@@ -1,7 +1,7 @@
 import type { Pool, PoolClient } from "pg";
 
 import {
-  isBallotSummarySort,
+  isSaveableBallotPreferenceSort,
   type BallotSummarySort,
 } from "../address/ballotElectionOrdering.js";
 import { isUuid } from "../../utils/uuid.js";
@@ -82,7 +82,7 @@ export async function getUserBallotPreferences(db: Queryable, userId: string): P
   if (!row) {
     throw new UserBallotPreferencesError("user_not_found", "User not found");
   }
-  if (row.sort === null || row.followed_first === null || !isBallotSummarySort(row.sort)) {
+  if (row.sort === null || row.followed_first === null || !isSaveableBallotPreferenceSort(row.sort)) {
     return {
       ...DEFAULT_BALLOT_PREFERENCES,
       ...(row.has_research_areas ? { sort: "my_areas" as const } : {}),
@@ -97,7 +97,7 @@ export async function setUserBallotPreferences(
   preferences: UserBallotPreferences
 ): Promise<UserBallotPreferences> {
   const normalizedUserId = normalizeUserId(userId);
-  if (!isBallotSummarySort(preferences.sort) || typeof preferences.followed_first !== "boolean") {
+  if (!isSaveableBallotPreferenceSort(preferences.sort) || typeof preferences.followed_first !== "boolean") {
     throw new UserBallotPreferencesError(
       "invalid_preferences",
       "preferences must include a valid sort and a boolean followed_first"

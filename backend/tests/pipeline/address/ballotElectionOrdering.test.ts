@@ -21,6 +21,8 @@ type FakeElection = {
   race_type?: string;
   candidate_count?: number;
   has_results?: boolean;
+  office_scope?: string;
+  contest_family?: string;
 };
 
 function makeSummary(elections: FakeElection[]): BallotSummaryResult {
@@ -46,13 +48,15 @@ function makeSummary(elections: FakeElection[]): BallotSummaryResult {
         election_date: e.election_date ?? "2026-11-03",
         election_stage: "general",
         is_partisan: false,
-        discovery_contest_family: "non_judicial_office",
+        discovery_contest_family: e.contest_family ?? "non_judicial_office",
         sources: [],
         candidate_count: e.candidate_count ?? 2,
         ballot_measure_id: null,
         has_results: e.has_results ?? false,
         current_result_outcome: null,
-        office: null,
+        office: e.office_scope
+          ? { id: "12121212-1212-4212-8212-121212121212", scope: e.office_scope, canonical_name: "Office", summary: "" }
+          : null,
         research_areas: (e.research_area_ids ?? []).map((areaId) => ({
           id: areaId,
           slug: areaId,
@@ -258,6 +262,55 @@ describe("applyBallotElectionOrdering", () => {
 
     // Earliest date would normally lead; having nothing to read outranks it.
     expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
+  });
+
+  it("orders contests in paper-ballot order when sort=state_baseline", async () => {
+    const electionD = "dddddddd-4444-4444-8444-dddddddddddd";
+    const electionE = "eeeeeeee-5555-4555-8555-eeeeeeeeeeee";
+    const electionF = "ffffffff-6666-4666-8666-ffffffffffff";
+    const result = await applyBallotElectionOrdering(
+      { query: makeFollowsQuery([]) },
+      makeSummary([
+        // Deliberately shuffled input; vote power set to fight the ranking so
+        // the test fails if state_baseline ever degrades to the default sort.
+        { id: electionA, race_type: "ballot_measure", contest_family: "ballot_measure", vote_power_score: 100 },
+        { id: electionB, office_scope: "place", vote_power_score: 90 },
+        { id: electionC, office_scope: "county", vote_power_score: 80 },
+        { id: electionD, office_scope: "statewide", vote_power_score: 10 },
+        { id: electionE, office_scope: "statewide", contest_family: "us_senate", vote_power_score: 5 },
+        { id: electionF, office_scope: "us_house", vote_power_score: 1 },
+      ]),
+      { sort: "state_baseline" }
+    );
+
+    expect(result.elections.map((e) => e.id)).toEqual([
+      electionE, // US Senate — federal first
+      electionF, // US House
+      electionD, // statewide office
+      electionC, // county
+      electionB, // municipal
+      electionA, // ballot measure last
+    ]);
+  });
+
+  it("state_baseline is positional: no followed-first grouping, no empty-race sink", async () => {
+    const result = await applyBallotElectionOrdering(
+      { query: makeFollowsQuery([{ election_id: electionB, candidate_id: candidateId, display_name: "Fol Lowed" }]) },
+      makeSummary([
+        // Zero-candidate US House race would sink under every other sort.
+        { id: electionA, office_scope: "us_house", candidate_count: 0 },
+        // Followed municipal race would lead under followed-first grouping.
+        { id: electionB, office_scope: "place" },
+        { id: electionC, office_scope: "county" },
+      ]),
+      { userId, sort: "state_baseline", followedFirst: true }
+    );
+
+    expect(result.elections.map((e) => e.id)).toEqual([electionA, electionC, electionB]);
+    // Follow annotations still attach even though grouping is skipped.
+    expect(result.elections.find((e) => e.id === electionB)?.followed_candidates).toEqual([
+      { candidate_id: candidateId, display_name: "Fol Lowed" },
+    ]);
   });
 
   it("orders by summed saved-area weights when sort=my_areas, non-matching elections last", async () => {

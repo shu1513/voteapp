@@ -1,6 +1,7 @@
 import type { Pool, PoolClient } from "pg";
 
 import type { BallotLookupElectionSummary, BallotSummaryResult } from "./ballotLookup.js";
+import { stateBaselineContestRank } from "./ballotContestRank.js";
 import {
   loadUserResearchAreaWeights,
   scoreResearchAreaMatch,
@@ -39,11 +40,32 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 // research areas match the user's saved research-area preferences (summed
 // weights, see userResearchAreaScoring.ts) and degrades to `vote_power` for
 // anonymous callers and users with no saved areas.
-// Keep this list in sync with the user_ballot_preferences sort CHECK
-// constraint (db/migrations/152) and the frontend BALLOT_SORTS mirror.
-export type BallotSummarySort = "vote_power" | "soonest" | "district_size" | "district_size_smallest" | "my_areas";
+// `state_baseline` orders contests the way they appear on a US paper ballot
+// (see ballotContestRank.ts) for the ballot-preview render. It is a
+// POSITIONAL order: followed-first grouping and the empty-race sink are both
+// skipped under it, because moving a race breaks the copy-across promise.
+// Keep SAVEABLE_BALLOT_PREFERENCE_SORTS in sync with the
+// user_ballot_preferences sort CHECK constraint (db/migrations/152) and the
+// frontend BALLOT_SORTS mirror; state_baseline is deliberately request-only
+// (not saveable) — the preview always passes it explicitly.
+export type BallotSummarySort =
+  | "vote_power"
+  | "soonest"
+  | "district_size"
+  | "district_size_smallest"
+  | "my_areas"
+  | "state_baseline";
 
 export const BALLOT_SUMMARY_SORTS: readonly BallotSummarySort[] = [
+  "vote_power",
+  "soonest",
+  "district_size",
+  "district_size_smallest",
+  "my_areas",
+  "state_baseline",
+];
+
+export const SAVEABLE_BALLOT_PREFERENCE_SORTS: readonly BallotSummarySort[] = [
   "vote_power",
   "soonest",
   "district_size",
@@ -55,6 +77,13 @@ export function isBallotSummarySort(value: unknown): value is BallotSummarySort 
   return typeof value === "string" && (BALLOT_SUMMARY_SORTS as readonly string[]).includes(value);
 }
 
+// The preferences store must use this, not isBallotSummarySort: a request-only
+// sort that reaches the INSERT surfaces as a CHECK-constraint failure instead
+// of invalid_preferences.
+export function isSaveableBallotPreferenceSort(value: unknown): value is BallotSummarySort {
+  return typeof value === "string" && (SAVEABLE_BALLOT_PREFERENCE_SORTS as readonly string[]).includes(value);
+}
+
 export type BallotSummaryOptions = {
   // When set, followed candidates are resolved for this user and attached to
   // each election. Anonymous lookups omit it and every election gets [].
@@ -64,6 +93,12 @@ export type BallotSummaryOptions = {
   // candidate are grouped ahead of the rest, each group still ordered by
   // `sort`. A no-op for anonymous lookups, which never have follows.
   followedFirst?: boolean;
+  // include=preview: the READER consumes this (ballot-preview roster/measure
+  // payload per election); it rides on this shared options object so the API
+  // wiring hands one bag to both layers. This decorator ignores it — the
+  // spread in applyBallotElectionOrdering carries any attached preview
+  // through untouched.
+  includePreview?: boolean;
 };
 
 export type BallotFollowedCandidate = {
@@ -208,6 +243,15 @@ function sortBallotElections(
   followedFirst: boolean,
   areaScoresByElection: Map<string, ResearchAreaMatchScore> | null = null
 ): void {
+  // Positional ballot order: no followed-first grouping, no empty-race sink —
+  // a race's slot on the sheet is the whole point of this sort.
+  if (sort === "state_baseline") {
+    elections.sort((a, b) => {
+      const byRank = stateBaselineContestRank(a) - stateBaselineContestRank(b);
+      return byRank !== 0 ? byRank : compareBySort(a, b, "soonest");
+    });
+    return;
+  }
   elections.sort((a, b) => {
     if (followedFirst) {
       const aFollowed = a.followed_candidates.length > 0 ? 0 : 1;

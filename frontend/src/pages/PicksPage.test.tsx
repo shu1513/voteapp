@@ -305,6 +305,127 @@ describe("PicksPage", () => {
     expect(screen.getAllByText("Won")).toHaveLength(1);
   });
 
+  it("renders the ballot view on toggle: contest boxes in payload order, picks filled, withdrawn struck", async () => {
+    const fetchMock = stubApiRoutes(
+      verifiedRoutes({
+        // One pathname, two payloads: the list fetch and the preview fetch
+        // share /api/me/ballot and differ only in the query string.
+        "/api/me/ballot": (url: URL) =>
+          url.searchParams.get("include") === "preview"
+            ? {
+                body: ballotSummary([
+                  electionSummary({
+                    id: "e-2",
+                    official_ballot_title: "United States Senator",
+                    preview: {
+                      seats_to_fill: null,
+                      candidates: [
+                        {
+                          candidate_election_id: "ce-2",
+                          candidate_id: "c-2",
+                          display_name: "Sam Senate",
+                          party: "Republican",
+                          is_incumbent: false,
+                          status: "declared",
+                        },
+                      ],
+                      measure: null,
+                    },
+                  }),
+                  electionSummary({
+                    preview: {
+                      seats_to_fill: 2,
+                      candidates: [
+                        {
+                          candidate_election_id: "ce-1",
+                          candidate_id: "c-1",
+                          display_name: "Jane Smith",
+                          party: "Democratic",
+                          is_incumbent: true,
+                          status: "declared",
+                        },
+                        {
+                          candidate_election_id: "ce-3",
+                          candidate_id: "c-3",
+                          display_name: "Walt Withdrawn",
+                          party: "Independent",
+                          is_incumbent: false,
+                          status: "withdrawn",
+                        },
+                      ],
+                      measure: null,
+                    },
+                  }),
+                  electionSummary({
+                    id: "e-3",
+                    official_ballot_title: "Measure H",
+                    race_type: "ballot_measure",
+                    candidate_count: 0,
+                    preview: {
+                      seats_to_fill: null,
+                      candidates: [],
+                      measure: {
+                        id: "m-1",
+                        official_ballot_title: "Measure H",
+                        summary: "A parcel tax.",
+                        what_yes_means: "Adopts the tax.",
+                        what_no_means: "Keeps current law.",
+                      },
+                    },
+                  }),
+                ]),
+              }
+            : {
+                body: ballotSummary([
+                  electionSummary(),
+                  electionSummary({ id: "e-2", official_ballot_title: "United States Senator" }),
+                  electionSummary({ id: "e-3", official_ballot_title: "Measure H", race_type: "ballot_measure" }),
+                ]),
+              },
+        "/api/me/election-choices": {
+          body: { choices: [electionChoice(), electionChoice({ election_id: "e-3", race_type: "ballot_measure", picks: [], measure_position: "yes" })] },
+        },
+      })
+    );
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    renderPicks();
+
+    await user.click(await screen.findByRole("button", { name: "Ballot view" }));
+
+    // The preview fetch pins its own ordering contract — the user's saved
+    // list sort must never reorder a ballot sheet.
+    const previewCall = fetchMock.mock.calls.find(([input]) => String(input).includes("include=preview"));
+    expect(String(previewCall![0])).toContain("sort=state_baseline");
+    expect(String(previewCall![0])).toContain("followed_first=false");
+
+    // Sheet header + disclaimer.
+    expect(await screen.findByRole("heading", { name: /Ballot preview — November 3, 2026/ })).toBeInTheDocument();
+    expect(screen.getByText("Not an official ballot")).toBeInTheDocument();
+
+    // Contest boxes render in PAYLOAD order (Senator first), not list order.
+    const headings = screen.getAllByRole("heading", { level: 4 }).map((h) => h.textContent);
+    expect(headings).toEqual(["United States Senator", "Governor", "Measure H"]);
+
+    // Multi-seat instruction from seats_to_fill; single/null renders as one.
+    expect(screen.getByText("Vote for up to 2")).toBeInTheDocument();
+    expect(screen.getByText("Vote for One")).toBeInTheDocument();
+
+    // The pick: filled oval is visual; the textual chip is the contract.
+    expect(screen.getAllByText("Your pick").length).toBe(2); // Jane + measure Yes
+    expect(screen.getByText("Jane Smith").className).toContain("font-bold");
+
+    // Withdrawn candidacy stays visible, struck through, with the warning.
+    expect(screen.getByText("Walt Withdrawn").className).toContain("line-through");
+    expect(screen.getByText(/withdrew — votes may not count/)).toBeInTheDocument();
+
+    // Measure: VoteApp summary is labeled as ours, never as ballot text.
+    expect(screen.getByText(/VoteApp summary \(not the printed ballot text\): A parcel tax\./)).toBeInTheDocument();
+
+    // Toggling back restores the list cards.
+    await user.click(screen.getByRole("button", { name: "List" }));
+    expect(await screen.findByText(/races decided/)).toBeInTheDocument();
+  });
+
   it("lists past picks in a collapsible section with won/lost flags", async () => {
     stubApiRoutes(
       verifiedRoutes({

@@ -269,6 +269,43 @@ type BallotLookupElectionBase = Omit<
   "office" | "research_areas" | "historical_competitiveness" | "vote_power"
 >;
 
+// Ballot-preview roster row: the minimal facts a paper-ballot-style render
+// needs per candidate. Unlike the detail roster (BallotLookupCandidate) this
+// INCLUDES withdrawn candidacies — a late withdrawal may still be printed on
+// the paper ballot, and a preview that silently drops a printed name reads as
+// a missing race to the voter; `status` lets the UI strike it through instead.
+export type BallotLookupPreviewCandidate = {
+  candidate_election_id: string;
+  candidate_id: string;
+  display_name: string;
+  party: string;
+  is_incumbent: boolean;
+  status: CandidateElectionStatus;
+  running_mate?: BallotLookupRunningMate;
+};
+
+// The `summary`/what-yes/what-no fields are VoteApp explanations, NOT the
+// printed ballot question — the UI must label them as such, never render
+// them styled as ballot text.
+export type BallotLookupPreviewMeasure = {
+  id: string;
+  official_ballot_title: string;
+  summary: string | null;
+  what_yes_means: string;
+  what_no_means: string;
+};
+
+// Attached to each summary election only when the caller opts in
+// (include=preview): everything the ballot-preview render needs that the
+// plain list card does not.
+export type BallotLookupElectionPreview = {
+  // null = seat count never recorded; display treats null and 1 the same
+  // ("Vote for One").
+  seats_to_fill: number | null;
+  candidates: BallotLookupPreviewCandidate[];
+  measure: BallotLookupPreviewMeasure | null;
+};
+
 export type BallotLookupElectionSummary = {
   id: string;
   district_id: string;
@@ -296,6 +333,8 @@ export type BallotLookupElectionSummary = {
   research_areas: BallotLookupResearchAreaSummary[];
   historical_competitiveness: BallotLookupHistoricalCompetitiveness | null;
   vote_power: VotePowerResult;
+  // Present only when the lookup ran with includePreview (include=preview).
+  preview?: BallotLookupElectionPreview;
 };
 
 export type BallotSummaryResult = {
@@ -1432,7 +1471,11 @@ async function loadFullElectionDetails(
 
 export async function lookupBallotSummariesByDistrictIds(
   db: Queryable,
-  districtIds: readonly string[]
+  districtIds: readonly string[],
+  // includePreview attaches the ballot-preview roster/measure payload to each
+  // election. Issued as trailing queries so the ordered query mocks of every
+  // preview-less test keep their slots.
+  options: { includePreview?: boolean } = {}
 ): Promise<BallotSummaryResult> {
   const ids = normalizeIds(districtIds);
   if (ids.length === 0) {
@@ -1634,6 +1677,10 @@ export async function lookupBallotSummariesByDistrictIds(
       .map((row) => row.election_id)
   );
 
+  // Preview payload (roster + measure text) is opt-in and loaded last — after
+  // every unconditional query — so existing ordered mocks stay valid.
+  const previewByElection = options.includePreview ? await loadElectionPreviews(db, electionIds) : null;
+
   const elections: BallotLookupElectionSummary[] = electionResult.rows.map((row) => {
     const currentResultOutcome = resultOutcomeByElection.get(row.election_id) ?? null;
     // Office columns are nullable only because this is a LEFT JOIN; resolved office rows have non-empty fields.
@@ -1688,6 +1735,18 @@ export async function lookupBallotSummariesByDistrictIds(
         representationPowerScore: district.representation_power_score,
         competitivenessLabel: historicalCompetitiveness?.competitiveness_label,
       }),
+      // Conditional spread, not `preview: undefined`: preview-less responses
+      // must not grow a key that JSON.stringify would drop anyway but toEqual
+      // assertions and API snapshots would see.
+      ...(previewByElection
+        ? {
+            preview: {
+              seats_to_fill: row.seats_to_fill ?? null,
+              candidates: previewByElection.candidates.get(row.election_id) ?? [],
+              measure: previewByElection.measures.get(row.election_id) ?? null,
+            },
+          }
+        : {}),
     };
   });
 
@@ -1696,6 +1755,125 @@ export async function lookupBallotSummariesByDistrictIds(
     districts: districtResult.rows.map(toDistrict),
     elections,
   };
+}
+
+type PreviewCandidateRow = {
+  election_id: string;
+  candidate_election_id: string;
+  candidate_id: string;
+  display_name: string;
+  party: string;
+  is_incumbent: boolean;
+  status: CandidateElectionStatus;
+  running_mate_candidate_id: string | null;
+  running_mate_display_name: string | null;
+  running_mate_party: string | null;
+};
+
+type PreviewMeasureRow = {
+  election_id: string;
+  ballot_measure_id: string;
+  official_ballot_title: string;
+  summary: string | null;
+  what_yes_means: string;
+  what_no_means: string;
+};
+
+// Loads the opt-in ballot-preview payload for the summary lookup: per-race
+// roster (withdrawn INCLUDED — see BallotLookupPreviewCandidate) and measure
+// text. seats_to_fill is not loaded here — the summary's election row already
+// carries it. Candidate order is alphabetical, the reader's only honest
+// default: real ballots order candidates by state-specific rules (rotation,
+// random draw) this lookup cannot know.
+async function loadElectionPreviews(
+  db: Queryable,
+  electionIds: readonly string[]
+): Promise<{
+  candidates: Map<string, BallotLookupPreviewCandidate[]>;
+  measures: Map<string, BallotLookupPreviewMeasure>;
+}> {
+  const candidateResult = await db.query<PreviewCandidateRow>(
+    `
+      SELECT
+        ce.election_id,
+        ce.id AS candidate_election_id,
+        c.id AS candidate_id,
+        COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name)) AS display_name,
+        c.party,
+        ce.is_incumbent,
+        ce.status,
+        rm.id AS running_mate_candidate_id,
+        CASE
+          WHEN rm.id IS NULL THEN NULL
+          ELSE COALESCE(NULLIF(trim(rm.display_name), ''), trim(rm.first_name || ' ' || rm.last_name))
+        END AS running_mate_display_name,
+        rm.party AS running_mate_party
+      FROM public.candidate_elections AS ce
+      JOIN public.candidates AS c
+        ON c.id = ce.candidate_id
+      LEFT JOIN public.candidates AS rm
+        ON rm.id = ce.running_mate_candidate_id
+        AND rm.deleted_at IS NULL
+      WHERE ce.election_id = ANY($1::uuid[])
+        AND c.deleted_at IS NULL
+      ORDER BY
+        ce.election_id,
+        lower(COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name))),
+        ce.id
+    `,
+    [electionIds]
+  );
+  const measureResult = await db.query<PreviewMeasureRow>(
+    `
+      SELECT
+        bm.election_id,
+        bm.id AS ballot_measure_id,
+        bm.official_ballot_title,
+        bm.summary,
+        bm.what_yes_means,
+        bm.what_no_means
+      FROM public.ballot_measures AS bm
+      WHERE bm.election_id = ANY($1::uuid[])
+      ORDER BY bm.election_id, bm.id
+    `,
+    [electionIds]
+  );
+  const candidates = new Map<string, BallotLookupPreviewCandidate[]>();
+  for (const row of candidateResult.rows) {
+    const list = candidates.get(row.election_id) ?? [];
+    list.push({
+      candidate_election_id: row.candidate_election_id,
+      candidate_id: row.candidate_id,
+      display_name: row.display_name,
+      party: row.party,
+      is_incumbent: row.is_incumbent,
+      status: row.status,
+      ...(row.running_mate_candidate_id && row.running_mate_display_name
+        ? {
+            running_mate: {
+              candidate_id: row.running_mate_candidate_id,
+              display_name: row.running_mate_display_name,
+              party: row.running_mate_party ?? "",
+            },
+          }
+        : {}),
+    });
+    candidates.set(row.election_id, list);
+  }
+  const measures = new Map<string, BallotLookupPreviewMeasure>();
+  for (const row of measureResult.rows) {
+    // First row wins, mirroring the summary's ballot_measure_id pick.
+    if (!measures.has(row.election_id)) {
+      measures.set(row.election_id, {
+        id: row.ballot_measure_id,
+        official_ballot_title: row.official_ballot_title,
+        summary: row.summary,
+        what_yes_means: row.what_yes_means,
+        what_no_means: row.what_no_means,
+      });
+    }
+  }
+  return { candidates, measures };
 }
 
 // The single-election ElectionRow projection shared by the detail and

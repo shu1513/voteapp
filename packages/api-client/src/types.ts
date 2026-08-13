@@ -144,6 +144,44 @@ export type ElectionSummary = {
   vote_power: VotePower;
   /** Present on ordered results; non-empty when the viewer follows a candidate in this election. */
   followed_candidates?: { candidate_id: string; display_name: string }[];
+  /** Present only when the ballot was fetched with include=preview. */
+  preview?: ElectionPreview;
+};
+
+/**
+ * Ballot-preview roster row. Unlike the election page's roster this INCLUDES
+ * withdrawn candidacies (status "withdrawn") — a late withdrawal may still be
+ * printed on the paper ballot, so the preview strikes it through instead of
+ * hiding it.
+ */
+export type ElectionPreviewCandidate = {
+  candidate_election_id: string;
+  candidate_id: string;
+  display_name: string;
+  party: string;
+  is_incumbent: boolean;
+  status: string;
+  running_mate?: { candidate_id: string; display_name: string; party: string };
+};
+
+/**
+ * `summary`/what-yes/what-no are VoteApp explanations, NOT the printed ballot
+ * question — always label them as such, never style them as ballot text.
+ */
+export type ElectionPreviewMeasure = {
+  id: string;
+  official_ballot_title: string;
+  summary: string | null;
+  what_yes_means: string;
+  what_no_means: string;
+};
+
+/** Mirrors BallotLookupElectionPreview (backend ballotLookup.ts). */
+export type ElectionPreview = {
+  /** null = seat count never recorded; render as one seat ("Vote for One"). */
+  seats_to_fill: number | null;
+  candidates: ElectionPreviewCandidate[];
+  measure: ElectionPreviewMeasure | null;
 };
 
 export type BallotSummary = {

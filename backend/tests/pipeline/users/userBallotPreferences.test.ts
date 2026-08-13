@@ -97,6 +97,18 @@ describe("setUserBallotPreferences", () => {
     expect(query).not.toHaveBeenCalled();
   });
 
+  it("rejects the request-only state_baseline sort as invalid_preferences, not a DB error", async () => {
+    // state_baseline is a valid BallotSummarySort but not saveable — the
+    // user_ballot_preferences CHECK constraint (migration 152) predates it,
+    // so letting it through would surface as a constraint failure.
+    const query = vi.fn();
+
+    await expect(
+      setUserBallotPreferences({ query }, userId, { sort: "state_baseline", followed_first: true })
+    ).rejects.toMatchObject({ code: "invalid_preferences" });
+    expect(query).not.toHaveBeenCalled();
+  });
+
   it("throws user_not_found when the insert selects no user row", async () => {
     const query = vi.fn().mockResolvedValue({ rows: [] });
 

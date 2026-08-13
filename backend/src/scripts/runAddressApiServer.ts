@@ -621,13 +621,25 @@ async function main(): Promise<void> {
     // [ballot-personalized-ordering]: the plain reader is decorated with the
     // sort/followed-first ordering; on feature removal call the reader alone.
     lookupBallotSummaries: async (districtIds, summaryOptions) =>
-      applyBallotElectionOrdering(pool, await lookupBallotSummariesByDistrictIds(pool, districtIds), summaryOptions),
+      applyBallotElectionOrdering(
+        pool,
+        await lookupBallotSummariesByDistrictIds(pool, districtIds, {
+          includePreview: summaryOptions?.includePreview,
+        }),
+        summaryOptions
+      ),
     lookupAuthenticatedBallotSummaries: async (userId, summaryOptions) => {
       const districtIds = await listUserDistrictIds(pool, userId);
-      return applyBallotElectionOrdering(pool, await lookupBallotSummariesByDistrictIds(pool, districtIds), {
-        ...summaryOptions,
-        userId,
-      });
+      return applyBallotElectionOrdering(
+        pool,
+        await lookupBallotSummariesByDistrictIds(pool, districtIds, {
+          includePreview: summaryOptions?.includePreview,
+        }),
+        {
+          ...summaryOptions,
+          userId,
+        }
+      );
     },
     lookupAuthenticatedUserEmailVerified,
     lookupCandidateDetail: (candidateId, userId) => lookupCandidateDetailById(pool, { candidateId, userId }),

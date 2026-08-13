@@ -24,6 +24,8 @@ import {
   parseAuthResendVerificationBodyValue,
   parseAuthVerifyEmailBodyValue,
   parseAuthenticatedAddressBodyValue,
+  parseBallotPreferencesBodyValue,
+  parseBallotSummaryOptions,
   parseCandidateFollowBodyValue,
   parseCandidateId,
   parseElectionChoiceBodyValue,
@@ -33,6 +35,69 @@ import {
   parseResearchAreaPreferencesBodyValue,
   RESEARCH_AREAS_PATH,
 } from "../../src/api/apiValidation.js";
+
+describe("parseBallotSummaryOptions", () => {
+  it("returns an empty options object when no params are present", () => {
+    expect(parseBallotSummaryOptions(new URL("http://localhost/api/ballot"))).toEqual({});
+  });
+
+  it("parses include=preview into includePreview", () => {
+    expect(parseBallotSummaryOptions(new URL("http://localhost/api/ballot?include=preview"))).toEqual({
+      includePreview: true,
+    });
+  });
+
+  it("parses include=preview alongside sort and followed_first", () => {
+    expect(
+      parseBallotSummaryOptions(
+        new URL("http://localhost/api/ballot?include=preview&sort=soonest&followed_first=false")
+      )
+    ).toEqual({ includePreview: true, sort: "soonest", followedFirst: false });
+  });
+
+  it("accepts a duplicated include=preview", () => {
+    expect(
+      parseBallotSummaryOptions(new URL("http://localhost/api/ballot?include=preview&include=preview"))
+    ).toEqual({ includePreview: true });
+  });
+
+  it("rejects an unknown value smuggled in as a duplicate include", () => {
+    expect(() =>
+      parseBallotSummaryOptions(new URL("http://localhost/api/ballot?include=preview&include=roster"))
+    ).toThrow(/include must be: preview/);
+  });
+
+  it("rejects unknown include values", () => {
+    expect(() => parseBallotSummaryOptions(new URL("http://localhost/api/ballot?include=roster"))).toThrow(
+      /include must be: preview/
+    );
+  });
+
+  it("rejects unknown sort values", () => {
+    expect(() => parseBallotSummaryOptions(new URL("http://localhost/api/ballot?sort=nope"))).toThrow(
+      /sort must be one of/
+    );
+  });
+
+  it("accepts the request-only state_baseline sort", () => {
+    expect(parseBallotSummaryOptions(new URL("http://localhost/api/ballot?sort=state_baseline"))).toEqual({
+      sort: "state_baseline",
+    });
+  });
+
+  it("rejects state_baseline as a SAVED preference (the DB CHECK does not allow it)", () => {
+    expect(() =>
+      parseBallotPreferencesBodyValue({ sort: "state_baseline", followed_first: true })
+    ).toThrow(/sort must be one of/);
+  });
+
+  it("still accepts saveable sorts as preferences", () => {
+    expect(parseBallotPreferencesBodyValue({ sort: "my_areas", followed_first: false })).toEqual({
+      sort: "my_areas",
+      followed_first: false,
+    });
+  });
+});
 
 describe("candidate detail API contract constants", () => {
   it("defines and parses the public candidate detail path", () => {
