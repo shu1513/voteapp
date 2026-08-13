@@ -200,6 +200,9 @@ describe("CandidatePage", () => {
       .getAllByRole("heading", { level: 3 })
       .map((heading) => heading.textContent);
     expect(headings).toEqual([
+      // The stance summary's box heading renders above the record groups
+      // (all four stance-bearing records here are "for").
+      "Supports",
       "Track record — Environment and Public Health",
       "Track record — Gun Control",
       "Track record — Civil Rights",
@@ -246,6 +249,9 @@ describe("CandidatePage", () => {
       .getAllByRole("heading", { level: 3 })
       .map((heading) => heading.textContent);
     expect(headings).toEqual([
+      // "Supports" is the stance summary's box heading; the group reorder
+      // under test only concerns the Track record headings below it.
+      "Supports",
       "Track record — Gun Control",
       "Track record — Environment and Public Health",
     ]);

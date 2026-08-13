@@ -6,8 +6,10 @@ import type {
   CandidateElection,
   CandidateRecord,
   FinanceSummary,
+  RecordAreaStance,
   ResearchAreaPreference,
 } from "@voteapp/api-client";
+import { aggregateRecordAreaStances } from "@voteapp/api-client";
 import { DetailPager } from "../components/DetailPager";
 import { DetailRail } from "../components/DetailRail";
 import { pagerNeighbors, readCandidateNavState, type ElectionNavState } from "../lib/detailNavContext";
@@ -242,6 +244,116 @@ function StanceChip({ stance, label }: { stance: "for" | "against"; label: strin
     <span className={stance === "for" ? "font-medium text-green-900" : "font-medium text-red-900"}>
       {label}
     </span>
+  );
+}
+
+// Page-top stance summary: every area classifies on the same counts the
+// election roster rows color by (aggregateRecordAreaStances) — all-for is
+// Supports, all-against is Opposes, any split is Mixed. Deliberately no
+// majority rule: one against-record among five for-records makes the area
+// Mixed, because collapsing it to "Supports" would assert a position the
+// evidence doesn't hold. Evaluative areas are excluded — their for/against
+// grades the evidence, not advocacy (see EVALUATIVE_AREA_SLUGS), so they
+// have no place in a supports/opposes box; null-stance areas (general,
+// integrity_and_ethics) never leave the aggregator. Salience order, matching
+// the record groups below.
+export function classifyStanceSummary(records: readonly CandidateRecord[]): {
+  supports: RecordAreaStance[];
+  opposes: RecordAreaStance[];
+  mixed: RecordAreaStance[];
+} {
+  const areas = aggregateRecordAreaStances(records)
+    .filter((area) => !EVALUATIVE_AREA_SLUGS.has(area.slug))
+    .sort(compareByResearchAreaPriority);
+  return {
+    // Every aggregated area has for_count + against_count >= 1, so a zero on
+    // one side means the record is unanimous the other way.
+    supports: areas.filter((area) => area.against_count === 0),
+    opposes: areas.filter((area) => area.for_count === 0),
+    mixed: areas.filter((area) => area.for_count > 0 && area.against_count > 0),
+  };
+}
+
+// The candidate-page counterpart of the measure page's "A YES vote means" /
+// "A NO vote means" boxes: green what the record supports, red what it
+// opposes, amber where it splits (full width below the pair — a third
+// column would squeeze all three on desktop and mixed is the box that
+// needs its counts read). Renders nothing when no area classifies, so a
+// record-less or judicial-only profile gets no empty shell.
+function StanceSummary({ candidateName, records }: { candidateName: string; records: CandidateRecord[] }) {
+  const { supports, opposes, mixed } = classifyStanceSummary(records);
+  if (supports.length === 0 && opposes.length === 0 && mixed.length === 0) {
+    return null;
+  }
+  // Comma-separated text, not boxed chips (boxes read as buttons — same
+  // rule as the roster rows). Name and count stay one text node so an
+  // exact-match query for the bare area name still resolves to the record
+  // group heading, not this summary.
+  const areaWithCount = (area: RecordAreaStance) => {
+    const count = area.for_count + area.against_count;
+    return `${area.name} (${count} record${count === 1 ? "" : "s"})`;
+  };
+  const sideBox = (side: "supports" | "opposes", areas: RecordAreaStance[]) =>
+    areas.length === 0 ? null : (
+      <div
+        className={
+          side === "supports"
+            ? "rounded border border-green-200 bg-green-50 p-3"
+            : "rounded border border-red-200 bg-red-50 p-3"
+        }
+      >
+        <h3
+          className={
+            side === "supports"
+              ? "text-sm font-semibold text-green-900"
+              : "text-sm font-semibold text-red-900"
+          }
+        >
+          {side === "supports" ? "Supports" : "Opposes"}
+        </h3>
+        <p className={side === "supports" ? "mt-1 text-sm text-green-900" : "mt-1 text-sm text-red-900"}>
+          {areas.map((area, index) => (
+            <Fragment key={area.research_area_id}>
+              {index > 0 ? ", " : null}
+              {areaWithCount(area)}
+            </Fragment>
+          ))}
+        </p>
+      </div>
+    );
+  return (
+    <section className="mt-4">
+      {/* sr-only heading so the section lands in heading navigation; the
+          visible lead-in is aria-hidden because it says the same thing —
+          without the name, which a heading jumped to on its own needs. */}
+      <h2 className="sr-only">{`Where ${candidateName} stands, based on their records`}</h2>
+      <p className="text-sm text-ink-soft" aria-hidden="true">
+        Where they stand, based on their records:
+      </p>
+      {supports.length > 0 || opposes.length > 0 ? (
+        // Two columns only when both sides exist — one box alone spans the
+        // full row instead of leaving an empty half.
+        <div className={`mt-2 grid gap-3${supports.length > 0 && opposes.length > 0 ? " sm:grid-cols-2" : ""}`}>
+          {sideBox("supports", supports)}
+          {sideBox("opposes", opposes)}
+        </div>
+      ) : null}
+      {mixed.length > 0 ? (
+        <div className="mt-3 rounded border border-amber-200 bg-amber-50 p-3">
+          <h3 className="text-sm font-semibold text-amber-900">Mixed record</h3>
+          <p className="mt-1 text-sm text-amber-900">
+            {/* Same "N support · N oppose" phrasing as the record group
+                headers, so the two surfaces can't drift apart. */}
+            {mixed.map((area, index) => (
+              <Fragment key={area.research_area_id}>
+                {index > 0 ? ", " : null}
+                {`${area.name} (${area.for_count} support · ${area.against_count} oppose)`}
+              </Fragment>
+            ))}
+          </p>
+        </div>
+      ) : null}
+    </section>
   );
 }
 
@@ -602,6 +714,10 @@ export function CandidatePage() {
           </p>
         ) : null}
         {candidate.summary ? <p className="mt-3 text-ink">{candidate.summary}</p> : null}
+
+        {/* Directly after the summary, before the pick rows — the same order
+            as the measure page (explainer boxes, then choice buttons). */}
+        <StanceSummary candidateName={candidate.display_name} records={candidate.records} />
 
         {pickableElections.length > 0 ? (
           <div className="mt-4 space-y-2">
