@@ -4,6 +4,11 @@ export default [
   layout("App.tsx", [
     index("pages/HomePage.tsx"),
     route("ballot", "pages/BallotPage.tsx"),
+    // Guest ballot draft — the logged-out counterpart of /me/picks, rendered
+    // from localStorage. Deliberately NOT in the router-worker's edge-cache
+    // allowlist: the SSR document is draft-free, but there's nothing worth
+    // caching either.
+    route("draft", "pages/DraftPage.tsx"),
     route("elections/:electionId", "pages/ElectionPage.tsx"),
     route("candidates/:candidateId", "pages/CandidatePage.tsx"),
     route("disclaimer", "routes/disclaimer.tsx"),

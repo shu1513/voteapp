@@ -224,14 +224,22 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
   );
 }
 
-function PickDateCard({
+// Exported for the guest /draft page, which renders the same card from the
+// localStorage ballot draft: share off (the share API is account-only and
+// the card would leak a mintable URL promise it can't keep), and its own
+// back-link state so races return to /draft, not /me/picks.
+export function PickDateCard({
   date,
   elections,
   choiceByElectionId,
+  share = true,
+  navState = PICKS_NAV_STATE,
 }: {
   date: string;
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
+  share?: boolean;
+  navState?: ElectionNavState;
 }) {
   const pickedCount = elections.filter((election) =>
     hasRenderablePick(choiceByElectionId?.get(election.id))
@@ -247,7 +255,7 @@ function PickDateCard({
         {/* Mint-on-demand: no share row (and no live public URL) exists until
             the user asks for one. Hidden entirely while the card has zero
             picks — the backend refuses to mint for an empty card anyway. */}
-        {pickedCount > 0 ? <ShareCardControl electionDate={date} /> : null}
+        {share && pickedCount > 0 ? <ShareCardControl electionDate={date} /> : null}
       </div>
       <p className="mt-0.5 text-xs text-ink-soft">
         {pickedCount} of {elections.length} race{elections.length === 1 ? "" : "s"} decided
@@ -259,7 +267,7 @@ function PickDateCard({
             <li key={election.id} className="text-sm">
               {hasRenderablePick(choice) ? (
                 <>
-                  <Link to={`/elections/${election.id}`} state={PICKS_NAV_STATE} className="text-ink hover:text-rausch">
+                  <Link to={`/elections/${election.id}`} state={navState} className="text-ink hover:text-rausch">
                     {election.official_ballot_title}
                   </Link>
                   <span className="text-ink-soft"> — </span>
@@ -270,7 +278,7 @@ function PickDateCard({
                 // grey, clickable, straight to the race.
                 <Link
                   to={`/elections/${election.id}`}
-                  state={PICKS_NAV_STATE}
+                  state={navState}
                   className="text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink"
                 >
                   {election.official_ballot_title} — {isPast ? "no pick" : "no pick yet"}
