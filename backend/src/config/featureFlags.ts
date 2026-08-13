@@ -134,6 +134,19 @@ export function isColoradoTracerRawDataRefreshEnabled(force = false): boolean {
   );
 }
 
+// Denver municipal finance (SearchLight) is its own module — Denver filers
+// are not in state TRACER, so these are independent of the Colorado flags.
+export function isDenverCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("DENVER_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isDenverCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isDenverCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("DENVER_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isConnecticutCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("CONNECTICUT_CAMPAIGN_FINANCE_ENABLED", false);
 }

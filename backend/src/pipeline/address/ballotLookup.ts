@@ -60,6 +60,7 @@ import { loadOklahomaCandidateFinanceSummariesByCandidateElection } from "../okl
 import { loadNebraskaCandidateFinanceSummariesByCandidateElection } from "../nebraskaFinance/nebraskaBallotLookupFinanceLoader.js";
 import { loadConnecticutCandidateFinanceSummariesByCandidateElection } from "../connecticutFinance/connecticutBallotLookupFinanceLoader.js";
 import { loadColoradoCandidateFinanceSummariesByCandidateElection } from "../coloradoFinance/coloradoBallotLookupFinanceLoader.js";
+import { loadDenverCandidateFinanceSummariesByCandidateElection } from "../denverFinance/denverBallotLookupFinanceLoader.js";
 import { loadCaliforniaCandidateFinanceSummariesByCandidateElection } from "../californiaFinance/californiaBallotLookupFinanceLoader.js";
 import { loadLosAngelesCandidateFinanceSummariesByCandidateElection } from "../losAngelesCityFinance/losAngelesBallotLookupFinanceLoader.js";
 import { loadSanDiegoCityCandidateFinanceSummariesByCandidateElection } from "../sanDiegoCityFinance/sanDiegoCityBallotLookupFinanceLoader.js";
@@ -881,6 +882,10 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "NY", load: loadCombinedNewYorkCandidateFinanceSummariesByCandidateElection },
   { state: "CT", load: loadConnecticutCandidateFinanceSummariesByCandidateElection },
   { state: "CO", load: loadColoradoCandidateFinanceSummariesByCandidateElection },
+  // Denver municipal filers are not in TRACER, so the two CO adapters can
+  // never both return a summary for one candidate/election (the CA pattern,
+  // disjoint link tables); Denver registers later so it would win anyway.
+  { state: "CO", load: loadDenverCandidateFinanceSummariesByCandidateElection },
   { state: "CA", load: loadCaliforniaCandidateFinanceSummariesByCandidateElection },
   { state: "CA", load: loadLosAngelesCandidateFinanceSummariesByCandidateElection },
   { state: "CA", load: loadSanDiegoCityCandidateFinanceSummariesByCandidateElection },

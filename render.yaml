@@ -141,6 +141,8 @@ services:
         value: "true"
       - key: CONNECTICUT_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: DENVER_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
       - key: DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: FLORIDA_CAMPAIGN_FINANCE_ENABLED
