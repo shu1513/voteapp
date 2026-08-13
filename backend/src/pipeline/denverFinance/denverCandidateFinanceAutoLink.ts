@@ -228,27 +228,32 @@ export async function autoLinkMissingDenverCandidateFinanceLinks(input: {
     // already-linked and beyond-the-limit candidates still participate in the
     // one-registrant-two-candidates check; links are only written for the
     // input slice. Seat letter and year are election-level facts, shared by
-    // every roster candidate. An input candidate missing from the roster read
-    // (a status change between the two queries) falls back to its own row.
+    // every roster candidate.
     const first = group[0]!;
     const roster = await listElectionRosterCandidates(input.db, electionId);
     const rosterIds = new Set(roster.map((row) => row.candidateId));
-    const resolutionCandidates = [
-      ...roster.map((row) => ({
-        candidateId: row.candidateId,
-        displayName: row.candidateName,
-        electionYear: first.electionYear,
-        atLargeSeatLetter: first.atLargeSeatLetter,
-      })),
-      ...group
-        .filter((candidate) => !rosterIds.has(candidate.candidateId))
-        .map((candidate) => ({
-          candidateId: candidate.candidateId,
-          displayName: candidate.candidateName,
-          electionYear: candidate.electionYear,
-          atLargeSeatLetter: candidate.atLargeSeatLetter,
-        })),
-    ];
+    // Every selector condition on the candidate row (deleted_at, status,
+    // name) is re-checked by the roster query, so under unchanged data every
+    // input candidate is in the roster read. Absence means the row changed
+    // between the two queries (withdrawn, deleted, merged) — never link from
+    // the stale selector row; report it and let the next run's selector
+    // decide fresh (the SJ/SD/Phoenix #697 rule).
+    for (const candidate of group) {
+      if (rosterIds.has(candidate.candidateId)) continue;
+      results.push({
+        candidateId: candidate.candidateId,
+        electionId,
+        status: "error",
+        reason:
+          "candidate left the election roster between selection and resolution; skipped",
+      });
+    }
+    const resolutionCandidates = roster.map((row) => ({
+      candidateId: row.candidateId,
+      displayName: row.candidateName,
+      electionYear: first.electionYear,
+      atLargeSeatLetter: first.atLargeSeatLetter,
+    }));
     const inputCandidatesById = new Map(
       group.map((candidate) => [candidate.candidateId, candidate]),
     );

@@ -157,7 +157,10 @@ describe("syncDueDenverCandidateFinance", () => {
 
   it("runs the auto-link selector on real runs", async () => {
     const { db, sqlLog } = makeDb({ dueRows: [] });
-    await syncDueDenverCandidateFinance({ db });
+    const result = await syncDueDenverCandidateFinance({ db });
+    // Auto-link failures are swallowed into autoLinkError — assert the leg
+    // completed, not just that its selector SQL was issued.
+    expect(result.autoLinkError).toBeNull();
     expect(sqlLog.some((sql) => sql.includes(AUTO_LINK_SELECTOR_MARKER))).toBe(
       true,
     );

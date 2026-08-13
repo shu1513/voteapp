@@ -10,9 +10,15 @@
 //   - Fair Elections Fund city money = subtype "Fair Elections Payments",
 //     tracked separately for the receipts-composition check and NEVER
 //     bucketed (it is public matching, not donor money);
+//   - loans = subtype "Loan", tracked separately and NEVER bucketed
+//     (candidate self-funding, not donor money — verified live 2026-08-13:
+//     the overview's campaignContributionsToCandidate INCLUDES loans while
+//     getContributionsTotalByCommittee EXCLUDES them, e.g. Jeff Walker
+//     cycle 26: 98 Monetary rows $11,022.63 + 25 Loan rows $1,051.89 =
+//     overview private $12,074.52 vs endpoint total $11,022.63);
 //   - any other subtype fails the aggregation closed: the composition
-//     contract (direct + FEF = contributions endpoint) has only been proven
-//     over these three subtypes.
+//     contract (donor + loans = overview private; donor + FEF =
+//     contributions endpoint) has only been proven over these four subtypes.
 // Bucket semantics follow the LA precedent exactly
 // (losAngelesDirectContributionAggregator): occupation buckets net signed
 // amounts; size buckets describe GROSS POSITIVE receipts only (a refund has
@@ -24,6 +30,8 @@ import type { DenverContributionTransaction } from "./denverSearchlightClient.js
 import type { DenverDirectBreakdownInput } from "./denverFinanceWriter.js";
 
 export const DENVER_FEF_FUNDING_SUBTYPE = "Fair Elections Payments";
+
+export const DENVER_LOAN_SUBTYPE = "Loan";
 
 const DIRECT_SUBTYPES: ReadonlySet<string> = new Set(["Monetary", "In-Kind"]);
 
@@ -40,12 +48,15 @@ function contributionSizeBucket(cents: number): string {
 }
 
 export type DenverDirectAggregation = {
-  /** Monetary + In-Kind, signed net — must equal the overview's private figure. */
+  /** Monetary + In-Kind (donor money), signed net — plus loanCents must
+   * equal the overview's private figure. */
   directContributionCents: number;
   /** Fair Elections Payments rows — must equal the overview's FEF figure. */
   fefFundingCents: number;
+  /** "Loan" rows, signed net — candidate self-funding, never bucketed. */
+  loanCents: number;
   breakdowns: DenverDirectBreakdownInput[];
-  /** Rows counted into a total (direct + FEF). */
+  /** Rows counted into a total (direct + FEF + loan). */
   includedRowCount: number;
   /** Rows dropped because their entity id is outside the filer's set. */
   entityFilteredRowCount: number;
@@ -74,6 +85,7 @@ export function aggregateDenverDirectContributions(input: {
   const unknownSubtypes = new Set<string>();
   let directContributionCents = 0;
   let fefFundingCents = 0;
+  let loanCents = 0;
   let includedRowCount = 0;
   let entityFilteredRowCount = 0;
   for (const row of input.rows) {
@@ -83,6 +95,11 @@ export function aggregateDenverDirectContributions(input: {
     }
     if (row.transactionSubType === DENVER_FEF_FUNDING_SUBTYPE) {
       fefFundingCents += row.amountCents;
+      includedRowCount += 1;
+      continue;
+    }
+    if (row.transactionSubType === DENVER_LOAN_SUBTYPE) {
+      loanCents += row.amountCents;
       includedRowCount += 1;
       continue;
     }
@@ -142,6 +159,7 @@ export function aggregateDenverDirectContributions(input: {
   return {
     directContributionCents,
     fefFundingCents,
+    loanCents,
     breakdowns,
     includedRowCount,
     entityFilteredRowCount,

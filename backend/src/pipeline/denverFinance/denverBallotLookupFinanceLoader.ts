@@ -29,12 +29,13 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 
 // The card's raised figure is direct_contribution_total — private donor money
 // only (the standard loader prefers it over total_receipts). Fair Elections
-// Fund public matching is real campaign money the committee spends, so
-// without this sentence "spent" visibly exceeding "raised" reads as an error.
+// Fund public matching and candidate loans are real campaign money the
+// committee spends, so without this sentence "spent" visibly exceeding
+// "raised" reads as an error.
 const DENVER_DIRECT_COVERAGE_NOTE =
-  "Raised counts private contributions to the candidate's committee only; public matching from Denver's " +
-  "Fair Elections Fund is not included in the raised figure but is available to the campaign, so spending " +
-  "can exceed the amount raised.";
+  "Raised counts private contributions to the candidate's committee only; candidate loans and public " +
+  "matching from Denver's Fair Elections Fund are not included in the raised figure but are available " +
+  "to the campaign, so spending can exceed the amount raised.";
 
 export async function loadDenverCandidateFinanceSummariesByCandidateElection(
   db: Queryable,

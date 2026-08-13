@@ -15,9 +15,10 @@ const REGISTRANT: DenverCycleCandidate = {
   filerId: 658,
 };
 
+let nextTransactionId = 1;
 function contributionRow(over: Record<string, unknown> = {}): Record<string, unknown> {
   return {
-    transactionId: Math.floor(Math.random() * 1_000_000),
+    transactionId: nextTransactionId++,
     transactionSubType: "Monetary",
     recipientCommitteeId: 807,
     contributorOccupation: "Teacher",
@@ -175,6 +176,7 @@ describe("syncDenverCandidateFinance", () => {
       totalReceiptsCents: 20_000,
       directContributionCents: 15_000,
       fefFundingCents: 5_000,
+      loanCents: 0,
       totalDisbursementsCents: 12_000,
       cashOnHandCents: -738,
       outsideSupportCents: 3_000,
@@ -233,8 +235,50 @@ describe("syncDenverCandidateFinance", () => {
       ],
     };
     await expect(syncDenverCandidateFinance(baseInput(routes))).rejects.toThrow(
-      /direct-contribution feed sum \$90\.00 != overview private figure \$150\.00/,
+      /direct-contribution feed sum \$90\.00 \+ loans \$0\.00 != overview private figure \$150\.00/,
     );
+  });
+
+  it("reconciles a candidate with loan rows (Walker-shaped: loans inside the overview private figure, outside the contributions endpoint)", async () => {
+    const routes = defaultRoutes();
+    // Donor 150 + loan 25 = overview private 175; endpoint stays donor + FEF.
+    routes.getFinancialOverviewByCandCommittee = {
+      ...(routes.getFinancialOverviewByCandCommittee as Record<string, unknown>),
+      campaignContributionsToCandidate: 175.0,
+    };
+    routes.getContributionsTotalByCommittee = { total: 200.0 };
+    routes.SearchContributionTransactions = {
+      totalContributionAmount: 225.0,
+      totalRecords: 5,
+      searchContributionTransactions: [
+        contributionRow({ amount: 100.0 }),
+        contributionRow({
+          transactionSubType: "In-Kind",
+          amount: 60.0,
+          contributorOccupation: "Lawyer",
+        }),
+        contributionRow({ amount: -10.0, txnPurpose: "Overlimit" }),
+        contributionRow({
+          transactionSubType: "Loan",
+          amount: 25.0,
+          contributorOccupation: "Candidate",
+        }),
+        contributionRow({
+          transactionSubType: "Fair Elections Payments",
+          amount: 50.0,
+          contributorOccupation: null,
+        }),
+      ],
+    };
+    const result = await syncDenverCandidateFinance(baseInput(routes));
+    expect(result).toMatchObject({
+      totalReceiptsCents: 22_500, // private 175 (incl. loan) + FEF 50
+      directContributionCents: 15_000, // donor money only
+      fefFundingCents: 5_000,
+      loanCents: 2_500,
+    });
+    // The loan never lands in a breakdown (same count as the loan-free run).
+    expect(result.directBreakdownCount).toBe(4);
   });
 
   it("refuses to sync a filer that left the registration list", async () => {

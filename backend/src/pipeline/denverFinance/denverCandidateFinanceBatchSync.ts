@@ -196,9 +196,10 @@ export async function syncDueDenverCandidateFinance(input: {
   }
 
   const results: DenverCandidateFinanceBatchItemResult[] = [];
-  let cycleRegistrants:
-    | Awaited<ReturnType<typeof getDenverCandidatesByElectionCycle>>
-    | undefined;
+  const registrantsByCycle = new Map<
+    number,
+    Awaited<ReturnType<typeof getDenverCandidatesByElectionCycle>>
+  >();
   for (const row of due.rows) {
     const electionDate = electionDates.get(row.electionId);
     const electionCycleId =
@@ -215,12 +216,17 @@ export async function syncDueDenverCandidateFinance(input: {
       continue;
     }
     try {
-      // One registration-list fetch per run (v1 has a single cycle, so the
-      // first synced candidate's list serves the rest).
-      cycleRegistrants ??= await getDenverCandidatesByElectionCycle(
-        electionCycleId,
-        options,
-      );
+      // One registration-list fetch per cycle per run (keyed so a future
+      // multi-entry cycle map cannot validate one cycle's candidates
+      // against another cycle's list).
+      let cycleRegistrants = registrantsByCycle.get(electionCycleId);
+      if (cycleRegistrants === undefined) {
+        cycleRegistrants = await getDenverCandidatesByElectionCycle(
+          electionCycleId,
+          options,
+        );
+        registrantsByCycle.set(electionCycleId, cycleRegistrants);
+      }
       const result = await (input.syncFn ?? syncDenverCandidateFinance)({
         db: input.db,
         candidateId: row.candidateId,

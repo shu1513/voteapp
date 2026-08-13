@@ -9,12 +9,17 @@
 // right after qualification) writes a zero snapshot: "the source says
 // nothing" and "the source is broken" are different outcomes.
 //
-// Checks proven on every sync (all fixture-pinned in Phase 0):
-//   1. Receipts composition: contributions total = overview private + FEF.
-//   2. Feed reconciliation: the entity-filtered transaction sweep's
-//      Monetary + In-Kind sum equals the overview's private figure and its
-//      Fair Elections Payments sum equals the overview's FEF figure — cent
-//      exact, so the published receipts/direct split is transaction-proven.
+// Checks proven on every sync (fixture-pinned in Phase 0, loan identity
+// verified live 2026-08-13 on Walker/Padgett cycle 26 — the overview's
+// private figure INCLUDES candidate loans, getContributionsTotalByCommittee
+// EXCLUDES them):
+//   1. Feed reconciliation: the entity-filtered transaction sweep's
+//      Monetary + In-Kind sum plus its Loan sum equals the overview's
+//      private figure, and its Fair Elections Payments sum equals the
+//      overview's FEF figure — cent exact, so the published receipts/direct
+//      split is transaction-proven.
+//   2. Endpoint composition: getContributionsTotalByCommittee = the sweep's
+//      donor sum + FEF sum (the endpoint is loan-free on both sides).
 //   3. Outside lists sum to the overview IE figures (inside the aggregator).
 //   4. Identity: the registrant is still on the cycle list, the filer echoes
 //      its id, and the registration committee is still on the filer's set.
@@ -74,9 +79,13 @@ function usd(cents: number): string {
 
 export type DenverCandidateFinanceSyncResult = {
   written: boolean;
+  /** Full receipts: donor contributions + candidate loans + FEF. */
   totalReceiptsCents: number;
+  /** Donor money only (Monetary + In-Kind) — the published raised figure. */
   directContributionCents: number;
   fefFundingCents: number;
+  /** Candidate loans (signed net) — inside receipts, outside raised. */
+  loanCents: number;
   totalDisbursementsCents: number;
   cashOnHandCents: number | null;
   outsideSupportCents: number;
@@ -136,8 +145,11 @@ export async function syncDenverCandidateFinance(input: {
     );
   const committeeEntityIds = filer.committeeIds;
 
-  // --- Totals + composition check 1. ---
-  const totalReceiptsCents = await getDenverContributionsTotalCents(
+  // --- Totals. The contributions endpoint EXCLUDES loans, the overview's
+  // private figure INCLUDES them (verified live: Walker cycle 26), so full
+  // receipts = overview private + FEF, and the endpoint is reconciled
+  // loan-free against the feed below (check 2).
+  const contributionsEndpointCents = await getDenverContributionsTotalCents(
     { filerId, electionCycleId },
     options,
   );
@@ -149,15 +161,12 @@ export async function syncDenverCandidateFinance(input: {
     { filerId, electionCycleId },
     options,
   );
-  const composedReceipts =
+  const totalReceiptsCents =
     overview.campaignContributionsToCandidateCents +
     overview.fairElectionsFundToCandidateCents;
-  if (totalReceiptsCents !== composedReceipts)
-    throw new Error(
-      `Denver receipts composition failed for filer ${filerId}: contributions total ${usd(totalReceiptsCents)} != overview private ${usd(overview.campaignContributionsToCandidateCents)} + FEF ${usd(overview.fairElectionsFundToCandidateCents)}`,
-    );
 
-  // --- Transaction sweep + feed reconciliation (check 2). ---
+  // --- Transaction sweep + feed reconciliation (check 1) + endpoint
+  // composition (check 2). ---
   const sweep = await sweepDenverContributionTransactions(
     {
       candidateName: registrant.fullName,
@@ -170,15 +179,22 @@ export async function syncDenverCandidateFinance(input: {
     committeeEntityIds,
   });
   if (
-    direct.directContributionCents !==
+    direct.directContributionCents + direct.loanCents !==
     overview.campaignContributionsToCandidateCents
   )
     throw new Error(
-      `Denver direct-contribution feed sum ${usd(direct.directContributionCents)} != overview private figure ${usd(overview.campaignContributionsToCandidateCents)} for filer ${filerId}`,
+      `Denver direct-contribution feed sum ${usd(direct.directContributionCents)} + loans ${usd(direct.loanCents)} != overview private figure ${usd(overview.campaignContributionsToCandidateCents)} for filer ${filerId}`,
     );
   if (direct.fefFundingCents !== overview.fairElectionsFundToCandidateCents)
     throw new Error(
       `Denver FEF feed sum ${usd(direct.fefFundingCents)} != overview FEF figure ${usd(overview.fairElectionsFundToCandidateCents)} for filer ${filerId}`,
+    );
+  if (
+    contributionsEndpointCents !==
+    direct.directContributionCents + direct.fefFundingCents
+  )
+    throw new Error(
+      `Denver receipts composition failed for filer ${filerId}: contributions endpoint ${usd(contributionsEndpointCents)} != feed donor sum ${usd(direct.directContributionCents)} + FEF ${usd(direct.fefFundingCents)}`,
     );
 
   // --- Outside spending (check 3 inside). ---
@@ -262,8 +278,9 @@ export async function syncDenverCandidateFinance(input: {
       },
       summary: {
         totalReceiptsCents,
-        directContributionTotalCents:
-          overview.campaignContributionsToCandidateCents,
+        // Donor money only: loans and FEF stay out of the published raised
+        // figure (the loader note discloses both).
+        directContributionTotalCents: direct.directContributionCents,
         totalDisbursementsCents,
         cashOnHandCents,
         outsideSupportCents: outside.supportTotalCents,
@@ -278,8 +295,9 @@ export async function syncDenverCandidateFinance(input: {
   return {
     written: !input.dryRun,
     totalReceiptsCents,
-    directContributionCents: overview.campaignContributionsToCandidateCents,
+    directContributionCents: direct.directContributionCents,
     fefFundingCents: overview.fairElectionsFundToCandidateCents,
+    loanCents: direct.loanCents,
     totalDisbursementsCents,
     cashOnHandCents,
     outsideSupportCents: outside.supportTotalCents,

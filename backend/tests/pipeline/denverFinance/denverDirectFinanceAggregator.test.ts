@@ -162,6 +162,49 @@ describe("aggregateDenverDirectContributions", () => {
     ]);
   });
 
+  it("tracks Loan rows separately and never buckets them", () => {
+    const result = aggregateDenverDirectContributions({
+      rows: [
+        row({ amountCents: 10_000, contributorOccupation: "Teacher" }),
+        // Walker-shaped: candidate self-loan, occupation present — must not
+        // enter occupation or size buckets, only loanCents.
+        row({
+          transactionSubType: "Loan",
+          amountCents: 2_500,
+          contributorOccupation: "Candidate",
+        }),
+      ],
+      committeeEntityIds: ENTITY_IDS,
+    });
+    expect(result.directContributionCents).toBe(10_000);
+    expect(result.loanCents).toBe(2_500);
+    expect(result.includedRowCount).toBe(2);
+    expect(result.breakdowns).toEqual([
+      {
+        categoryType: "occupation",
+        categoryName: "Teacher",
+        amountCents: 10_000,
+        contributorCount: 1,
+      },
+      {
+        categoryType: "contribution_size",
+        categoryName: "$100-$249",
+        amountCents: 10_000,
+        contributorCount: 1,
+      },
+    ]);
+  });
+
+  it("rejects a non-positive occupation breakdown limit", () => {
+    expect(() =>
+      aggregateDenverDirectContributions({
+        rows: [],
+        committeeEntityIds: ENTITY_IDS,
+        maxOccupationBreakdowns: 0,
+      }),
+    ).toThrow(/Invalid Denver occupation breakdown limit: 0/);
+  });
+
   it("fails closed on an unproven transaction subtype", () => {
     expect(() =>
       aggregateDenverDirectContributions({
