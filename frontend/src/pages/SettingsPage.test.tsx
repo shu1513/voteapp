@@ -48,15 +48,17 @@ describe("SettingsPage", () => {
     expect(screen.getByRole("heading", { name: "Settings" })).toBeInTheDocument();
   });
 
-  it("keeps the issue editor off settings — it lives on My Picks", async () => {
+  it("renders the issue editor for verified users — back from its stint on My Picks", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
       "/api/me/email-preferences": { body: EMAIL_PREFERENCES },
+      "/api/research-areas": { body: { research_areas: [] } },
+      "/api/me/research-area-preferences": { body: { preferences: [] } },
     });
     renderSettings();
 
     expect(await screen.findByRole("heading", { name: "Email notifications" })).toBeInTheDocument();
-    expect(screen.queryByText("My most important issues")).not.toBeInTheDocument();
+    expect(screen.getByText("My most important issues")).toBeInTheDocument();
   });
 
   it("swaps password-gated sections for the add-a-password hint on Google-only accounts", async () => {

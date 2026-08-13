@@ -5,10 +5,9 @@ import type { ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteap
 import { ErrorNotice, LoadingNotice } from "./Status";
 import { ResearchAreaPicker } from "./ResearchAreaPicker";
 
-// The ranked "issues you care about" editor. Lived on SettingsPage until the
-// My Picks page became the home for everything vote-planning; extracted
-// unchanged. Callers gate on a verified session — the preferences endpoint
-// is verification-gated.
+// The ranked "issues you care about" editor, back on SettingsPage after a
+// stint on My Picks. Callers gate on a verified session — the preferences
+// endpoint is verification-gated.
 
 export function ResearchAreasSection() {
   const queryClient = useQueryClient();

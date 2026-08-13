@@ -1,18 +1,48 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
+import { useMe } from "@voteapp/api-client";
 import { LoadingNotice } from "../components/Status";
+import { VerifyPrompt } from "../components/VerifyPrompt";
+import { FollowedCandidatesSection } from "../components/FollowedCandidatesSection";
+import { useDocumentTitle } from "../lib/useDocumentTitle";
 
-// Retired: followed candidates moved into the My Picks page. The route stays
-// as a redirect so old bookmarks and links in already-sent notification
-// emails keep working. Client-side navigate (the house redirect pattern —
-// see HomePage/WelcomePage), replace so Back doesn't bounce.
+// My Candidates: the followed-candidates manager, back on its own page (it
+// spent a while embedded in My Picks; links in already-sent notification
+// emails point here, which is also why the route never went away). The
+// section renders its own "My Candidates" heading.
 
 export function FollowsPage() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    void navigate("/me/picks", { replace: true });
-  }, [navigate]);
-  return <LoadingNotice text="Loading…" />;
+  useDocumentTitle("My Candidates");
+  const { me, isLoading } = useMe();
+
+  if (isLoading || me === undefined) {
+    return <LoadingNotice text="Loading…" />;
+  }
+  if (me === null) {
+    return (
+      <div className="mx-auto max-w-md px-4 py-10 text-center">
+        <p className="text-ink-soft">Log in to manage the candidates you follow.</p>
+        <p className="mt-4">
+          <Link
+            to="/login"
+            className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark"
+          >
+            Log in
+          </Link>
+        </p>
+      </div>
+    );
+  }
+  // The follows endpoint is verification-gated (the section expects callers
+  // to enforce this).
+  if (!me.email_verified) {
+    return <VerifyPrompt email={me.email} />;
+  }
+
+  return (
+    <div className="mx-auto max-w-3xl px-4 py-8">
+      <FollowedCandidatesSection />
+    </div>
+  );
 }
 
 export default FollowsPage;

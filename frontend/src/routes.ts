@@ -4,6 +4,11 @@ export default [
   layout("App.tsx", [
     index("pages/HomePage.tsx"),
     route("ballot", "pages/BallotPage.tsx"),
+    // Guest ballot draft — the logged-out counterpart of /me/picks, rendered
+    // from localStorage. Deliberately NOT in the router-worker's edge-cache
+    // allowlist: the SSR document is draft-free, but there's nothing worth
+    // caching either.
+    route("draft", "pages/DraftPage.tsx"),
     route("elections/:electionId", "pages/ElectionPage.tsx"),
     route("candidates/:candidateId", "pages/CandidatePage.tsx"),
     route("disclaimer", "routes/disclaimer.tsx"),
@@ -18,8 +23,6 @@ export default [
     route("me/welcome", "pages/WelcomePage.tsx"),
     route("me/ballot", "pages/SavedBallotPage.tsx"),
     route("me/picks", "pages/PicksPage.tsx"),
-    // Retired page; kept as a redirect so old bookmarks and emailed links
-    // land on My Picks instead of a 404.
     route("me/follows", "pages/FollowsPage.tsx"),
     route("me/settings", "pages/SettingsPage.tsx"),
     // Public tokenized share page — the token is the authorization.

@@ -9,7 +9,6 @@ import {
   type ElectionSummary,
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
-import { BallotDraftCard } from "../components/BallotDraftCard";
 import { BallotFiltersControl } from "../components/BallotFiltersControl";
 import { HowToVoteControl } from "../components/HowToVoteControl";
 import { deriveBallotFilters, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
@@ -228,11 +227,6 @@ export function BallotPage() {
 
       {ballot.isSuccess && !awaitingSavedAreas ? (
         <>
-          {/* Guest draft progress ("4 of 13 races decided" + signup CTA).
-              Client-only by construction: it renders behind ballot.isSuccess
-              (a client query), so the edge-cached anonymous SSR document
-              never contains draft state. */}
-          {isGuest ? <BallotDraftCard registerNext={location.pathname + location.search} /> : null}
           {ballot.data.elections.length === 0 ? (
             <EmptyNotice text="No upcoming elections found for these districts yet. Check back — new elections are added as they are announced." />
           ) : (

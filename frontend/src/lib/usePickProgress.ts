@@ -44,33 +44,33 @@ export function useMyPicksProgress(): PickProgress | null {
 }
 
 /**
- * The logged-out header's draft badge: label + destination for the guest's
- * ballot draft, or null when the draft is empty. Complete drafts take the
- * earned name — "My Election Picks ✓".
+ * The logged-out header's draft link: always present (the guest counterpart
+ * of "My Picks"), pointing at /draft. The label stays a plain
+ * "My Ballot Draft" until the first pick — a "0/20" on arrival reads as
+ * homework, not collecting — then counts up and finally takes the earned
+ * name, "My Election Picks ✓". The plain label is also what the SSR pass
+ * renders (server snapshot is an empty draft), so the edge-cached anonymous
+ * document stays draft-free and identical for every visitor.
  */
-export function useGuestDraftNav(): { to: string; label: string; complete: boolean } | null {
+export function useGuestDraftNav(): { to: string; label: string; complete: boolean } {
   const draft = useBallotDraft();
   const progress = draftProgress(draft);
-  if (progress && draft.district_ids.length > 0) {
+  if (progress && progress.picked > 0) {
     return {
-      to: `/ballot?d=${encodeURIComponent(draft.district_ids.join(","))}`,
+      to: "/draft",
       label: progress.complete
         ? "My Election Picks ✓"
         : `My Ballot Draft ${progress.picked}/${progress.total}`,
       complete: progress.complete,
     };
   }
-  // Deep-link entry: the guest picked on an election or candidate page
-  // (shares and search land there) without ever seeing /ballot, so no
-  // district list or race denominator exists. The badge still shows — a
-  // pick that appears nowhere in the header reads as lost — counting picks
-  // instead of progress, and routes to the address search, the only page
-  // that can build the real ballot around them. Deliberately NOT the
-  // election's own district: this app never implies a ballot it hasn't
-  // matched to an address (see the "may not cover your address" caveats).
+  // Deep-link entry: picks made on an election or candidate page without
+  // ever seeing /ballot have no race denominator, so count picks instead of
+  // progress. /draft handles the missing district list with its own
+  // address-search fallback.
   const pickCount = draftPickCount(draft);
-  if (pickCount === 0) {
-    return null;
+  if (pickCount > 0) {
+    return { to: "/draft", label: `My Ballot Draft (${pickCount})`, complete: false };
   }
-  return { to: "/", label: `My Ballot Draft (${pickCount})`, complete: false };
+  return { to: "/draft", label: "My Ballot Draft", complete: false };
 }

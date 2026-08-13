@@ -4,19 +4,17 @@ import { apiRequest, formatElectionDate, useElectionChoices, useMe } from "@vote
 import type { BallotSummary, ElectionChoice, ElectionSummary, PickCardShare } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import type { ElectionNavState } from "../lib/detailNavContext";
-import { FollowedCandidatesSection } from "../components/FollowedCandidatesSection";
-import { ResearchAreasSection } from "../components/ResearchAreasSection";
 import { ShareButton } from "../components/ShareButton";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { SITE_ORIGIN } from "../lib/pageMeta";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 
-// My Picks: the voter's planning hub. Three sections — the pick cards
-// (fight-card view of each upcoming election day: what's on the ballot, who
-// I picked, what's still undecided), the ranked issue editor (moved here
-// from Settings), and the followed-candidates manager (moved from the
-// retired /me/follows page).
+// My Picks (the header calls it "My Draft" until the nearest election day is
+// fully decided): the pick cards — fight-card view of each upcoming election
+// day: what's on the ballot, who I picked, what's still undecided. Followed
+// candidates live on /me/follows and the ranked issue editor on Settings,
+// each restored to its own home after a stint on this page.
 
 // Election links on this page hand the election page its back destination.
 // No contest list: these cards are pick summaries, not a ballot sequence.
@@ -224,14 +222,22 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
   );
 }
 
-function PickDateCard({
+// Exported for the guest /draft page, which renders the same card from the
+// localStorage ballot draft: share off (the share API is account-only and
+// the card would leak a mintable URL promise it can't keep), and its own
+// back-link state so races return to /draft, not /me/picks.
+export function PickDateCard({
   date,
   elections,
   choiceByElectionId,
+  share = true,
+  navState = PICKS_NAV_STATE,
 }: {
   date: string;
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
+  share?: boolean;
+  navState?: ElectionNavState;
 }) {
   const pickedCount = elections.filter((election) =>
     hasRenderablePick(choiceByElectionId?.get(election.id))
@@ -247,7 +253,7 @@ function PickDateCard({
         {/* Mint-on-demand: no share row (and no live public URL) exists until
             the user asks for one. Hidden entirely while the card has zero
             picks — the backend refuses to mint for an empty card anyway. */}
-        {pickedCount > 0 ? <ShareCardControl electionDate={date} /> : null}
+        {share && pickedCount > 0 ? <ShareCardControl electionDate={date} /> : null}
       </div>
       <p className="mt-0.5 text-xs text-ink-soft">
         {pickedCount} of {elections.length} race{elections.length === 1 ? "" : "s"} decided
@@ -259,7 +265,7 @@ function PickDateCard({
             <li key={election.id} className="text-sm">
               {hasRenderablePick(choice) ? (
                 <>
-                  <Link to={`/elections/${election.id}`} state={PICKS_NAV_STATE} className="text-ink hover:text-rausch">
+                  <Link to={`/elections/${election.id}`} state={navState} className="text-ink hover:text-rausch">
                     {election.official_ballot_title}
                   </Link>
                   <span className="text-ink-soft"> — </span>
@@ -270,7 +276,7 @@ function PickDateCard({
                 // grey, clickable, straight to the race.
                 <Link
                   to={`/elections/${election.id}`}
-                  state={PICKS_NAV_STATE}
+                  state={navState}
                   className="text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink"
                 >
                   {election.official_ballot_title} — {isPast ? "no pick" : "no pick yet"}
@@ -393,15 +399,7 @@ export function PicksPage() {
   const picksSettled = ballot.isSuccess && choicesReady;
 
   return (
-    // One column on phones/tablets; from lg up the page widens and splits
-    // into two: pick cards (the main read) left, the two "my lists"
-    // (follows, issues) stacked right. space-y drives vertical rhythm in the
-    // stacked layout, gap drives it in the grid — lg:space-y-0 keeps the two
-    // systems from compounding.
-    // 1:1 columns on purpose: pick lines are the primary read and long
-    // ballot titles (judicial divisions) need ~480px to stay on one line,
-    // so the split stays even and the whole container widens at xl instead.
-    <div className="mx-auto max-w-3xl space-y-10 px-4 py-8 lg:grid lg:max-w-6xl lg:grid-cols-2 lg:items-start lg:gap-x-10 lg:space-y-0 xl:max-w-7xl xl:gap-x-14">
+    <div className="mx-auto max-w-3xl px-4 py-8">
       <section>
         <h1 className="text-2xl font-bold">My Election Picks</h1>
         {ballot.isPending || (choicesLoading && !choicesError) ? (
@@ -445,16 +443,6 @@ export function PicksPage() {
           </>
         ) : null}
       </section>
-
-      {/* Candidates before issue areas: both are "my" lists, but followed
-          candidates are people the voter actively picked — the closer read
-          after the pick cards. The wrapper is the grid's right column;
-          space-y-10 spaces the two sections at every width. */}
-      <div className="space-y-10">
-        <FollowedCandidatesSection />
-
-        <ResearchAreasSection />
-      </div>
     </div>
   );
 }

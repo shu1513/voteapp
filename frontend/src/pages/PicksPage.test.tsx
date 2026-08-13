@@ -5,7 +5,7 @@ import type { ElectionChoice } from "@voteapp/api-client";
 import { PicksPage } from "./PicksPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
-import { ballotSummary, candidateFollow, electionSummary, ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
+import { ballotSummary, electionSummary, ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
 
 function renderPicks() {
   return renderRoutes(
@@ -44,9 +44,6 @@ function verifiedRoutes(overrides: Record<string, unknown> = {}) {
       ]),
     },
     "/api/me/election-choices": { body: { choices: [electionChoice()] } },
-    "/api/me/candidate-follows": { body: { follows: [] } },
-    "/api/research-areas": { body: { research_areas: [] } },
-    "/api/me/research-area-preferences": { body: { preferences: [] } },
     ...overrides,
   } as Parameters<typeof stubApiRoutes>[0];
 }
@@ -119,7 +116,7 @@ describe("PicksPage", () => {
     expect(screen.getByText("Failed").className).toContain("bg-surface");
   });
 
-  it("renders a date card with picked and undecided races, and all three sections", async () => {
+  it("renders a date card with picked and undecided races", async () => {
     stubApiRoutes(verifiedRoutes());
     renderPicks();
 
@@ -135,13 +132,10 @@ describe("PicksPage", () => {
     const undecided = screen.getByRole("link", { name: "Mayor — no pick yet" });
     expect(undecided).toHaveAttribute("href", "/elections/e-2");
 
-    // The other two sections mounted below — followed candidates first
-    // (people the voter actively picked), then issue areas.
-    const followedHeading = screen.getByRole("heading", { name: "My Candidates" });
-    const areasHeading = screen.getByText("My most important issues");
-    expect(
-      followedHeading.compareDocumentPosition(areasHeading) & Node.DOCUMENT_POSITION_FOLLOWING
-    ).toBeTruthy();
+    // The follows manager and issue editor live on their own pages now
+    // (/me/follows and Settings) — not here.
+    expect(screen.queryByRole("heading", { name: "My Candidates" })).not.toBeInTheDocument();
+    expect(screen.queryByText("My most important issues")).not.toBeInTheDocument();
   });
 
   it("mints a share link on demand and swaps in the share menu", async () => {
@@ -380,43 +374,6 @@ describe("PicksPage", () => {
   });
 });
 
-describe("PicksPage followed-candidates sort", () => {
-  function followFixtures() {
-    return [
-      candidateFollow({
-        candidate_id: "c-1",
-        display_name: "Walter Late",
-        active_election: { election_id: "e-1", official_ballot_title: "Governor", election_date: "2026-11-03" },
-      }),
-      candidateFollow({
-        candidate_id: "c-2",
-        display_name: "Zoe Soon",
-        active_election: { election_id: "e-3", official_ballot_title: "Mayor", election_date: "2026-09-01" },
-      }),
-      candidateFollow({ candidate_id: "c-3", display_name: "Adam None", active_election: null }),
-    ];
-  }
-
-  function followedNames(): (string | null)[] {
-    return screen
-      .getAllByRole("link")
-      .filter((link) => link.getAttribute("href")?.startsWith("/candidates/"))
-      .map((link) => link.textContent);
-  }
-
-  it("defaults to next-election order with electionless follows last, and can switch to A–Z", async () => {
-    stubApiRoutes(verifiedRoutes({ "/api/me/candidate-follows": { body: { follows: followFixtures() } } }));
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-    renderPicks();
-
-    await screen.findByText("Zoe Soon");
-    expect(followedNames()).toEqual(["Zoe Soon", "Walter Late", "Adam None"]);
-
-    await user.selectOptions(screen.getByRole("combobox", { name: "Sort by:" }), "name");
-    expect(followedNames()).toEqual(["Adam None", "Walter Late", "Zoe Soon"]);
-  });
-});
-
 describe("PicksPage nav context", () => {
   const MY_PICKS_STATE = { backTo: { path: "/me/picks", label: "My Picks" } };
 
@@ -429,52 +386,5 @@ describe("PicksPage nav context", () => {
 
     expect(router.state.location.pathname).toBe("/elections/e-1");
     expect(router.state.location.state).toEqual(MY_PICKS_STATE);
-  });
-
-  it("hands followed-candidate links My Picks as their back destination", async () => {
-    const user = userEvent.setup();
-    stubApiRoutes(
-      verifiedRoutes({
-        "/api/me/candidate-follows": { body: { follows: [candidateFollow()] } },
-      })
-    );
-    const { router } = renderPicks();
-
-    await user.click(await screen.findByRole("link", { name: "Jordan Voter" }));
-
-    expect(router.state.location.pathname).toBe("/candidates/c-1");
-    expect(router.state.location.state).toEqual(MY_PICKS_STATE);
-  });
-});
-
-describe("PicksPage candidate search combobox", () => {
-  it("carries the My Picks context through a picked search suggestion", async () => {
-    stubApiRoutes(
-      verifiedRoutes({
-        "/api/candidates/search": {
-          body: {
-            candidates: [
-              {
-                candidate_id: "c-7",
-                display_name: "Sam Searcher",
-                party: "Independent",
-                state: "AK",
-                current_office: null,
-              },
-            ],
-          },
-        },
-      })
-    );
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
-    const { router } = renderPicks();
-
-    // Typing past the 2-char minimum fires the debounced search; the fake
-    // clock (shouldAdvanceTime) plus advanceTimers lets it elapse.
-    await user.type(await screen.findByRole("combobox", { name: "Search candidates:" }), "sam");
-    await user.click(await screen.findByRole("option", { name: /Sam Searcher/ }));
-
-    expect(router.state.location.pathname).toBe("/candidates/c-7");
-    expect(router.state.location.state).toEqual({ backTo: { path: "/me/picks", label: "My Picks" } });
   });
 });

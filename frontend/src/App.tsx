@@ -30,11 +30,11 @@ function AccountNav() {
   const logout = useLogout();
   const navigate = useNavigate();
   // Header collection mechanic, both sides of the session: guests get a
-  // "My Ballot Draft 4/13" badge (localStorage draft), signed-in users get
-  // the same counter on the My Picks link. Both flip to a ✓ when every race
-  // on the nearest election day is decided. The guest hook renders null on
-  // the SSR pass (server snapshot is an empty draft), so the cached
-  // anonymous document stays draft-free and the badge appears on hydration.
+  // "My Ballot Draft" link to /draft (counter appears with the first pick),
+  // signed-in users get the same counter on the My Picks link. Both flip to
+  // a ✓ when every race on the nearest election day is decided. On the SSR
+  // pass the guest label is the plain, pick-free one (server snapshot is an
+  // empty draft), so the cached anonymous document stays draft-free.
   const guestDraftNav = useGuestDraftNav();
   const picksProgress = useMyPicksProgress();
 
@@ -45,18 +45,16 @@ function AccountNav() {
   if (!me) {
     return (
       <span className="flex items-center gap-4">
-        {guestDraftNav ? (
-          <Link
-            to={guestDraftNav.to}
-            className={
-              guestDraftNav.complete
-                ? "whitespace-nowrap font-semibold text-green-800 hover:text-green-900"
-                : "whitespace-nowrap font-medium text-ink-soft hover:text-ink"
-            }
-          >
-            {guestDraftNav.label}
-          </Link>
-        ) : null}
+        <Link
+          to={guestDraftNav.to}
+          className={
+            guestDraftNav.complete
+              ? "whitespace-nowrap font-semibold text-green-800 hover:text-green-900"
+              : "whitespace-nowrap font-medium text-ink-soft hover:text-ink"
+          }
+        >
+          {guestDraftNav.label}
+        </Link>
         <Link to="/login" className="text-ink-soft hover:text-ink">
           Log in
         </Link>
@@ -70,14 +68,17 @@ function AccountNav() {
     );
   }
 
-  // Plain "My Picks" until the progress is known (no upcoming races, or the
-  // queries haven't settled) — a counter that flashes in later is fine, a
-  // wrong one is not.
-  const myPicksLabel = picksProgress
-    ? picksProgress.complete
-      ? "My Picks ✓"
-      : `My Picks ${picksProgress.picked}/${picksProgress.total}`
-    : "My Picks";
+  // "My Draft" mirrors the guest label rules: plain until the first pick
+  // (no homework-flavored "0/8", and no counter while the queries haven't
+  // settled — a counter that flashes in later is fine, a wrong one is not),
+  // then counting up, then the earned name "My Picks ✓" when every race on
+  // the nearest election day is decided.
+  const myDraftLabel =
+    picksProgress && picksProgress.picked > 0
+      ? picksProgress.complete
+        ? "My Picks ✓"
+        : `My Draft ${picksProgress.picked}/${picksProgress.total}`
+      : "My Draft";
 
   function signOut() {
     logout.mutate(undefined, {
@@ -96,7 +97,10 @@ function AccountNav() {
           My Elections
         </Link>
         <Link to="/me/picks" className="whitespace-nowrap text-ink-soft hover:text-ink">
-          {myPicksLabel}
+          {myDraftLabel}
+        </Link>
+        <Link to="/me/follows" className="whitespace-nowrap text-ink-soft hover:text-ink">
+          My Candidates
         </Link>
         <Link to="/me/settings" className="text-ink-soft hover:text-ink">
           Settings
@@ -117,7 +121,12 @@ function AccountNav() {
           </MenuItem>
           <MenuItem>
             <Link to="/me/picks" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
-              {myPicksLabel}
+              {myDraftLabel}
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <Link to="/me/follows" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
+              My Candidates
             </Link>
           </MenuItem>
           <MenuItem>

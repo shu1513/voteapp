@@ -7,12 +7,12 @@ import { EmptyNotice, ErrorNotice, LoadingNotice } from "./Status";
 import { formatElectionDate } from "@voteapp/api-client";
 import type { BackTo } from "../lib/detailNavContext";
 
-// This section lives on My Picks; detail pages reached from it (candidate
-// links, election links, the search combobox) link back there. The shape
-// satisfies both ElectionNavState and CandidateNavState — backTo is their
-// only required field.
-const PICKS_NAV_STATE: { backTo: BackTo } = {
-  backTo: { path: "/me/picks", label: "My Picks" },
+// This section lives on the My Candidates page; detail pages reached from it
+// (candidate links, election links, the search combobox) link back there.
+// The shape satisfies both ElectionNavState and CandidateNavState — backTo
+// is their only required field.
+const FOLLOWS_NAV_STATE: { backTo: BackTo } = {
+  backTo: { path: "/me/follows", label: "My Candidates" },
 };
 
 type FollowSort = "election" | "name";
@@ -35,12 +35,11 @@ function compareFollows(a: CandidateFollow, b: CandidateFollow, sort: FollowSort
   return a.display_name.localeCompare(b.display_name);
 }
 
-// The followed-candidates manager, moved off the retired /me/follows page
-// into My Picks. One deliberate difference from the old page: no
-// "Latest: <record>" preview line — on a page about planning votes it was
-// noise, and the full record lives one click away on the candidate page.
-// Callers gate on a verified session (the follows endpoint is
-// verification-gated).
+// The followed-candidates manager, back on /me/follows after a stint inside
+// My Picks. One deliberate difference from the original page: no
+// "Latest: <record>" preview line — it was noise, and the full record lives
+// one click away on the candidate page. Callers gate on a verified session
+// (the follows endpoint is verification-gated).
 
 function NotifyToggle({
   label,
@@ -103,7 +102,7 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
         <div>
           <Link
             to={`/candidates/${follow.candidate_id}`}
-            state={PICKS_NAV_STATE}
+            state={FOLLOWS_NAV_STATE}
             className="font-semibold text-ink hover:text-rausch"
           >
             {follow.display_name}
@@ -127,7 +126,7 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
           On the ballot:{" "}
           <Link
             to={`/elections/${follow.active_election.election_id}`}
-            state={PICKS_NAV_STATE}
+            state={FOLLOWS_NAV_STATE}
             className="underline hover:text-ink"
           >
             {follow.active_election.official_ballot_title}
@@ -189,7 +188,7 @@ export function FollowedCandidatesSection() {
             value={null}
             onChange={(match) => {
               if (match) {
-                void navigate(`/candidates/${match.candidate_id}`, { state: PICKS_NAV_STATE });
+                void navigate(`/candidates/${match.candidate_id}`, { state: FOLLOWS_NAV_STATE });
               }
             }}
             immediate={false}

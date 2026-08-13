@@ -37,7 +37,9 @@ describe("App account nav", () => {
 
     // Inline (sm+) links.
     expect(await screen.findByRole("link", { name: "My Elections" })).toHaveAttribute("href", "/me/ballot");
-    expect(screen.getByRole("link", { name: "My Picks" })).toHaveAttribute("href", "/me/picks");
+    // Plain "My Draft" (no counter) while no pick is made / progress unknown.
+    expect(screen.getByRole("link", { name: "My Draft" })).toHaveAttribute("href", "/me/picks");
+    expect(screen.getByRole("link", { name: "My Candidates" })).toHaveAttribute("href", "/me/follows");
     expect(screen.getByRole("link", { name: "Settings" })).toHaveAttribute("href", "/me/settings");
 
     // The greeting sits beside the logo as plain text, not a link or button.
@@ -52,7 +54,8 @@ describe("App account nav", () => {
     const items = screen.getAllByRole("menuitem");
     expect(items.map((item) => item.textContent)).toEqual([
       "My Elections",
-      "My Picks",
+      "My Draft",
+      "My Candidates",
       "Settings",
       "Log out",
     ]);
