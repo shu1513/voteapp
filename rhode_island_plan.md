@@ -597,7 +597,43 @@ selectors, not the migration.
   pins committed, no schema and no DB writes; decision 4 answered
   = current-ledger, so PR 6's report selector is no longer load-bearing;
   Board request still to send)
-- [ ] PR 4 artifact cache + parsers + acquisition script
+- [x] PR 4 artifact cache + parsers + acquisition script
+  (`rhodeIslandErts{Parsers,Client,ArtifactCache,ArtifactAcquisition}.ts` +
+  `refreshRhodeIslandErtsCampaignFinanceRawData.ts`, npm
+  `rhode-island-candidates:finance:raw:refresh`, flag-gated. Transport, URL
+  builders and parsers lifted out of the probe, which now consumes the
+  modules — no drift possible. Cache = NC validate→SHA-256→atomic-install+
+  manifest pattern, byte-based so CF-2 PDFs cache alongside HTML/CSV; PDF
+  validation requires a text layer. Acquisition is fetch-all-then-install per
+  org with three gates: (a) per-period export↔summary-groupings
+  reconciliation with typed-search proofs — fail-closed, including on summary
+  labels outside the search vocabulary (an `NSF Check` at a live run is a
+  finding to bring back here, not a row to guess about); (b) filing-list
+  before/after stability snapshot — note the grid shows the ORIGINAL filed
+  timestamp, so a re-amendment of an already-amended filing is invisible in
+  the list and version lists are therefore re-fetched every run; (c) CF-8
+  traversal must descend and reach the boundary before any page installs,
+  and every page manifest carries the run's page count so the sync reads one
+  vintage. Version PDFs are the only skip (immutable per GUID). Only CF-2
+  periods are exported; the expenditure CSV export was never probed and
+  itemized expenditures are not needed for v1 — the expenditure report page
+  (summary total) is cached instead. Verified from the PR 3 scratch capture
+  (no new portal traffic): all 194 filed rows carry a
+  `FilingAmendmentSelect.aspx` View link — unamended filings too — so
+  unamended periods' CF-2 PDFs are reachable; PR 9's live run confirms the
+  page renders for them. Review round, same day: (1) the echoed
+  `DownloadFile.aspx` URL is pinned to the one portal route and session
+  cookies never attach to a non-portal host — an echoed URL can no longer
+  carry the session elsewhere; (2) the filing-versions parser throws on a
+  data row without an `/ExportDocs/` PDF link instead of skipping it — a
+  skipped LATEST row would silently promote an older filing to "in force";
+  (3) a rows-classified report page must carry ≥1 readable summary grouping,
+  enforced in the fetch phase (bundle discards cleanly) and again at cache
+  validation — the expenditure leg has no export reconciliation, so this is
+  its only zero-totals shield; (4) the filing-list and CF-8 parsers throw on
+  data-like rows that fail the pinned shape (only the pinned header/pager
+  rows may be skipped) — a silently dropped row is a dropped reporting
+  period or a missed outside filing.)
 - [ ] PR 5 resolver + auto-link
 - [ ] PR 6 direct aggregator + report selector
 - [ ] PR 7 sync + batchSync + scheduler
