@@ -13,7 +13,7 @@ import {
   parseErtsFilingListPage,
   parseErtsFilingVersionsPage,
   parseErtsMoneyToCents,
-  parseErtsOrganizationSearchRows,
+  parseErtsOrganizationSearchPage,
   parseErtsSummaryGroupings,
   readErtsCf2SummaryValues,
   ERTS_CONTRIBUTION_EXPORT_COLUMNS,
@@ -188,17 +188,60 @@ describe("parseErtsFilingVersionsPage", () => {
   });
 });
 
-describe("parseErtsOrganizationSearchRows", () => {
-  it("reads names and postback targets from the search grid", () => {
+describe("parseErtsOrganizationSearchPage", () => {
+  // Live shape (contrib-orgresults capture, 2026-08-13): name select link
+  // ($lnkOrgID), address, city, state, status, then a full-width pager row.
+  function searchRow(target: string, name: string, status: string): string {
+    return (
+      `<tr class="GridItem"><td><span><a id="x" href="javascript:__doPostBack('${target}','')">${name}</a></span></td>` +
+      `<td>12 HILLSIDE ROAD</td><td>CUMBERLAND</td><td>RI</td><td>${status}</td></tr>`
+    );
+  }
+  const header = "<tr class=\"GridHeader\"><td>Organization Name</td><td>Address</td><td>City</td><td>State</td><td>Status</td></tr>";
+
+  it("reads name, postback target, and status; a bare pager means one page", () => {
     const html =
-      '<table id="dgdOrgSearchResults"><tr><td>Name</td></tr>' +
-      "<tr><td><a href=\"javascript:__doPostBack('dgdOrgSearchResults$ctl02$ctl00','')\">DANIEL J MCKEE</a></td></tr>" +
-      "<tr><td><a href=\"javascript:__doPostBack('dgdOrgSearchResults$ctl03$ctl00','')\">FRIENDS OF MCKEE</a></td></tr>" +
+      '<table id="dgdOrgSearchResults">' +
+      header +
+      searchRow("dgdOrgSearchResults$ctl03$lnkOrgID", "DANIEL J MCKEE", "Active") +
+      searchRow("dgdOrgSearchResults$ctl04$lnkOrgID", "TIMOTHY L MCKEE", "Inactive") +
+      '<tr align="right"><td colspan="5"><span>1</span></td></tr>' +
       "</table>";
-    expect(parseErtsOrganizationSearchRows(html)).toEqual([
-      { organizationName: "DANIEL J MCKEE", postbackTarget: "dgdOrgSearchResults$ctl02$ctl00" },
-      { organizationName: "FRIENDS OF MCKEE", postbackTarget: "dgdOrgSearchResults$ctl03$ctl00" },
-    ]);
+    expect(parseErtsOrganizationSearchPage(html)).toEqual({
+      rows: [
+        {
+          organizationName: "DANIEL J MCKEE",
+          postbackTarget: "dgdOrgSearchResults$ctl03$lnkOrgID",
+          status: "Active",
+        },
+        {
+          organizationName: "TIMOTHY L MCKEE",
+          postbackTarget: "dgdOrgSearchResults$ctl04$lnkOrgID",
+          status: "Inactive",
+        },
+      ],
+      hasMorePages: false,
+    });
+  });
+
+  it("flags a pager with page links as an incomplete slice", () => {
+    const html =
+      '<table id="dgdOrgSearchResults">' +
+      header +
+      searchRow("dgdOrgSearchResults$ctl03$lnkOrgID", "JOHN SMITH", "Active") +
+      "<tr align=\"right\"><td colspan=\"5\"><span>1</span>&nbsp;<a href=\"javascript:__doPostBack('dgdOrgSearchResults$ctl29$ctl01','')\">2</a></td></tr>" +
+      "</table>";
+    expect(parseErtsOrganizationSearchPage(html)).toMatchObject({ hasMorePages: true });
+  });
+
+  it("throws on a data-like row that fails the pinned shape", () => {
+    // A silently dropped row is a committee the resolver never sees.
+    const html =
+      '<table id="dgdOrgSearchResults">' +
+      header +
+      "<tr class=\"GridItem\"><td>DANIEL J MCKEE</td><td>12 HILLSIDE ROAD</td><td>CUMBERLAND</td><td>RI</td><td>Active</td></tr>" +
+      "</table>";
+    expect(() => parseErtsOrganizationSearchPage(html)).toThrow(/pinned shape/);
   });
 });
 

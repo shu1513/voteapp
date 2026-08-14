@@ -102,9 +102,10 @@ function makeFakePortal(options: FakePortalOptions = {}) {
       if (body.has("lnkSearchOrg")) return html('<input name="txtOrgLastName" /><input type="hidden" name="__VIEWSTATE" value="vs" />');
       if (body.has("lnkSubSearchOrg"))
         return html(
-          '<table id="dgdOrgSearchResults"><tr><td>Name</td></tr>' +
-            "<tr><td><a href=\"javascript:__doPostBack('dgdOrgSearchResults$ctl02$ctl00','')\">DANIEL J MCKEE</a></td></tr>" +
-            "<tr><td><a href=\"javascript:__doPostBack('dgdOrgSearchResults$ctl03$ctl00','')\">FRIENDS OF MCKEE</a></td></tr>" +
+          '<table id="dgdOrgSearchResults"><tr><td>Organization Name</td><td>Address</td><td>City</td><td>State</td><td>Status</td></tr>' +
+            "<tr><td><a href=\"javascript:__doPostBack('dgdOrgSearchResults$ctl02$lnkOrgID','')\">DANIEL J MCKEE</a></td><td>12 HILLSIDE ROAD</td><td>CUMBERLAND</td><td>RI</td><td>Active</td></tr>" +
+            "<tr><td><a href=\"javascript:__doPostBack('dgdOrgSearchResults$ctl03$lnkOrgID','')\">FRIENDS OF MCKEE</a></td><td>1 MAIN ST</td><td>PROVIDENCE</td><td>RI</td><td>Active</td></tr>" +
+            '<tr align="right"><td colspan="5"><span>1</span></td></tr>' +
             '</table><input type="hidden" name="__VIEWSTATE" value="vs" />'
         );
       if (body.get("__EVENTTARGET")?.startsWith("dgdOrgSearchResults"))

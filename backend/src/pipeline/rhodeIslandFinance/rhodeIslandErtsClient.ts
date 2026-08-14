@@ -10,11 +10,12 @@ import {
   parseErtsCf8FiledDate,
   parseErtsFilingListPage,
   parseErtsFilingVersionsPage,
-  parseErtsOrganizationSearchRows,
+  parseErtsOrganizationSearchPage,
   stripErtsTags,
   type ErtsCf8IndexRow,
   type ErtsFilingRow,
   type ErtsFilingVersion,
+  type ErtsOrganizationSearchRow,
 } from "./rhodeIslandErtsParsers.js";
 
 // HTTP client for the ERTS portal. Every route lives here and nowhere else so
@@ -390,32 +391,29 @@ export async function fetchErtsTransactionExportCsv(
 
 // --- Organization discovery (session-scoped WebForms) ------------------------
 
-export type ErtsOrganizationDiscovery = {
-  orgId: string;
-  organizationName: string;
-  // Every organization name the search offered — resolver evidence (PR 5).
-  candidates: string[];
-  // The dgdOrgSearchResults page, cacheable as the search snapshot.
-  searchResultsUrl: string;
-  searchResultsHtml: string;
+export type ErtsOrganizationSearch = {
+  url: string;
+  html: string;
+  rows: ErtsOrganizationSearchRow[];
+  // True when the result grid paginates; the rows are an incomplete slice.
+  hasMorePages: boolean;
 };
 
 /**
- * The only way to turn a name into the numeric Board key: run the portal's
- * own organization search, select the row, run a dated search, and read
- * `OrgID` off the redirect. Five requests per organization. As a side
- * effect the session now has this organization selected, which is what makes
- * the Filings tab reachable (`fetchErtsOrganizationFilings`).
+ * The portal's organization search (Contributions.aspx, session-scoped):
+ * entry page, search panel, then the last-name search — three requests. The
+ * result rows are the resolver's evidence (PR 5); selecting a row afterwards
+ * requires the SAME transport, whose session now holds this result grid.
  *
- * Two registrations can lawfully share a name (old vs new committee), and
- * row order carries no identity evidence — an ambiguous exact name fails
- * here; the production resolver disambiguates with real evidence or not at
- * all (spike review round, fix d).
+ * A page without the result grid fails closed: the portal's no-results shape
+ * was never captured live, so "no organizations" cannot yet be told apart
+ * from a drifted or challenge page (pin the marker at the PR 9 live run if
+ * it ever appears).
  */
-export async function discoverErtsOrganization(
+export async function searchErtsOrganizations(
   transport: ErtsTransport,
-  input: { lastName: string; organizationName: string; begin: string; end: string }
-): Promise<ErtsOrganizationDiscovery> {
+  input: { lastName: string }
+): Promise<ErtsOrganizationSearch> {
   const searchUrl = `${ERTS_PUBLIC_BASE_URL}Contributions.aspx`;
   const entry = decodeErtsBody((await transport.fetch(searchUrl)).body);
 
@@ -440,9 +438,74 @@ export async function discoverErtsOrganization(
     "ERTS organization search results"
   );
 
-  const searchRows = parseErtsOrganizationSearchRows(resultsHtml);
-  const candidates = searchRows.map((row) => row.organizationName);
-  const exactMatches = searchRows
+  const page = parseErtsOrganizationSearchPage(resultsHtml);
+  return { url: searchUrl, html: resultsHtml, rows: page.rows, hasMorePages: page.hasMorePages };
+}
+
+/**
+ * Select one search-result row and read the numeric Board key off the dated
+ * search's redirect — the only place the portal ever prints an OrgID. Two
+ * requests, valid only against the transport and results page of the
+ * `searchErtsOrganizations` call that produced the postback target. As a
+ * side effect the session now has this organization selected, which is what
+ * makes the Filings tab reachable (`fetchErtsOrganizationFilings`).
+ */
+export async function selectErtsOrganizationOrgId(
+  transport: ErtsTransport,
+  input: { searchResultsHtml: string; postbackTarget: string; begin: string; end: string }
+): Promise<string> {
+  const searchUrl = `${ERTS_PUBLIC_BASE_URL}Contributions.aspx`;
+  const selectedHtml = decodeErtsBody(
+    (
+      await transport.fetch(
+        searchUrl,
+        ertsPostBody(input.searchResultsHtml, { __EVENTTARGET: input.postbackTarget, __EVENTARGUMENT: "" })
+      )
+    ).body
+  );
+
+  const searchResponse = await transport.fetch(
+    searchUrl,
+    ertsPostBody(selectedHtml, { txtDateFrom: input.begin, txtDateTo: input.end, btnSearch: "Search" })
+  );
+  const orgId = new URL(searchResponse.finalUrl).searchParams.get("OrgID");
+  if (!orgId || !/^\d+$/.test(orgId)) {
+    throw new Error(`ERTS search redirect carried no numeric OrgID: ${searchResponse.finalUrl}`);
+  }
+  return orgId;
+}
+
+export type ErtsOrganizationDiscovery = {
+  orgId: string;
+  organizationName: string;
+  // Every organization name the search offered — resolver evidence (PR 5).
+  candidates: string[];
+  // The dgdOrgSearchResults page, cacheable as the search snapshot.
+  searchResultsUrl: string;
+  searchResultsHtml: string;
+};
+
+/**
+ * The exact-name path from a known organization name to its numeric Board
+ * key: search, select the exactly matching row, read `OrgID` off the dated
+ * search's redirect. Five requests per organization.
+ *
+ * Two registrations can lawfully share a name (old vs new committee), and
+ * row order carries no identity evidence — an ambiguous exact name fails
+ * here; the production resolver disambiguates with real evidence or not at
+ * all (spike review round, fix d). A paginated search is tolerated on
+ * purpose: the caller pins the expected OrgID (acquisition's identity gate),
+ * so a same-name row hiding on a later page cannot select the wrong
+ * organization — only first-time identity decisions (the resolver) must
+ * refuse pagination.
+ */
+export async function discoverErtsOrganization(
+  transport: ErtsTransport,
+  input: { lastName: string; organizationName: string; begin: string; end: string }
+): Promise<ErtsOrganizationDiscovery> {
+  const search = await searchErtsOrganizations(transport, { lastName: input.lastName });
+  const candidates = search.rows.map((row) => row.organizationName);
+  const exactMatches = search.rows
     .filter((row) => row.organizationName.toUpperCase() === input.organizationName.toUpperCase())
     .map((row) => row.postbackTarget);
   if (exactMatches.length === 0) {
@@ -458,25 +521,18 @@ export async function discoverErtsOrganization(
     );
   }
 
-  const selectedHtml = decodeErtsBody(
-    (await transport.fetch(searchUrl, ertsPostBody(resultsHtml, { __EVENTTARGET: exactMatches[0], __EVENTARGUMENT: "" })))
-      .body
-  );
-
-  const searchResponse = await transport.fetch(
-    searchUrl,
-    ertsPostBody(selectedHtml, { txtDateFrom: input.begin, txtDateTo: input.end, btnSearch: "Search" })
-  );
-  const orgId = new URL(searchResponse.finalUrl).searchParams.get("OrgID");
-  if (!orgId || !/^\d+$/.test(orgId)) {
-    throw new Error(`ERTS search redirect carried no numeric OrgID: ${searchResponse.finalUrl}`);
-  }
+  const orgId = await selectErtsOrganizationOrgId(transport, {
+    searchResultsHtml: search.html,
+    postbackTarget: exactMatches[0]!,
+    begin: input.begin,
+    end: input.end,
+  });
   return {
     orgId,
     organizationName: input.organizationName,
     candidates,
-    searchResultsUrl: searchUrl,
-    searchResultsHtml: resultsHtml,
+    searchResultsUrl: search.url,
+    searchResultsHtml: search.html,
   };
 }
 

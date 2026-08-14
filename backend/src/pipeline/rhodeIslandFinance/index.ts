@@ -1,4 +1,6 @@
 export * from "./rhodeIslandBallotLookupFinanceLoader.js";
+export * from "./rhodeIslandCandidateCommitteeResolver.js";
+export * from "./rhodeIslandCandidateFinanceAutoLink.js";
 export * from "./rhodeIslandErtsArtifactAcquisition.js";
 export * from "./rhodeIslandErtsArtifactCache.js";
 export * from "./rhodeIslandErtsClient.js";
