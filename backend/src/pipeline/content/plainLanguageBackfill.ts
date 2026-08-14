@@ -70,6 +70,13 @@ export type PlainLanguageBackfillDeps = {
    * verifier is what catches a dropped fact or a flipped stance.
    */
   manualAttestation?: boolean;
+  /**
+   * Repair-campaign mode: the operator re-verified each record against its
+   * SOURCE and the rewrite may add sourced facts (numbers, outcomes) and grow
+   * past the style-rewrite length cap. Requires manualAttestation — the run
+   * throws otherwise (a model rewrite gets no license to invent numbers).
+   */
+  allowSourcedFacts?: boolean;
   log?: (line: string) => void;
 };
 
@@ -281,12 +288,25 @@ function numberTokensLicensedByWords(text: string): Set<string> {
  * Catches obvious breakage before spending a verification call; everything
  * subtle (flipped stance, lost negation, changed name) is the verifier's job.
  * Returns null when the rewrite passes, otherwise the flag reason.
+ *
+ * allowSourcedFacts relaxes the two checks that assume a rewrite carries the
+ * SAME facts as the original: the upper length bound and the
+ * number-introduction check. Repair-campaign rewrites re-verify the record
+ * against its SOURCE and legitimately add facts the stored text lacked (a
+ * roll-call tally, an act number, a final outcome) — a 40-character jargon
+ * stub becomes a real explanation, tripping both checks by design (62 of 83
+ * rows in the 2026-08-13 pilot). Only valid on operator-attested runs: the
+ * operator's per-row source verification is the attestation for the new
+ * facts, exactly as it already substitutes for the model verifier. Every
+ * content-LOSS and URL check still applies.
  */
 export function mechanicalCheckFailure(
   kind: PlainLanguageRewriteKind,
   originalText: string,
-  rewrittenText: string
+  rewrittenText: string,
+  options?: { allowSourcedFacts?: boolean }
 ): string | null {
+  const allowSourcedFacts = options?.allowSourcedFacts === true;
   if (rewrittenText.trim().length === 0) {
     return "rewrite is empty";
   }
@@ -295,7 +315,10 @@ export function mechanicalCheckFailure(
   if (ratio < LENGTH_LOWER_BOUND[kind]) {
     return `rewrite too short (${Math.round(ratio * 100)}% of original)`;
   }
-  if (rewrittenText.length > originalText.length * LENGTH_UPPER_BOUND + LENGTH_UPPER_ALLOWANCE_CHARS) {
+  if (
+    !allowSourcedFacts &&
+    rewrittenText.length > originalText.length * LENGTH_UPPER_BOUND + LENGTH_UPPER_ALLOWANCE_CHARS
+  ) {
     return `rewrite too long (${Math.round(ratio * 100)}% of original)`;
   }
   const absoluteCap = LENGTH_ABSOLUTE_CAP[kind];
@@ -313,12 +336,14 @@ export function mechanicalCheckFailure(
   // Candidate summaries may legitimately DROP numbers (vote percentages go
   // with the horse-race clauses), so only invented numbers are checked; the
   // verifier owns dropped-content judgment for every kind.
-  const originalNumbers = extractNumberTokens(originalText);
-  const licensedByWords = numberTokensLicensedByWords(originalText);
-  const rewrittenForNumberCheck = stripDateExpressionsLicensedByOriginal(originalText, rewrittenText);
-  for (const token of extractNumberTokens(rewrittenForNumberCheck)) {
-    if (!originalNumbers.has(token) && !licensedByWords.has(token)) {
-      return `rewrite introduced a number not in the original: ${token}`;
+  if (!allowSourcedFacts) {
+    const originalNumbers = extractNumberTokens(originalText);
+    const licensedByWords = numberTokensLicensedByWords(originalText);
+    const rewrittenForNumberCheck = stripDateExpressionsLicensedByOriginal(originalText, rewrittenText);
+    for (const token of extractNumberTokens(rewrittenForNumberCheck)) {
+      if (!originalNumbers.has(token) && !licensedByWords.has(token)) {
+        return `rewrite introduced a number not in the original: ${token}`;
+      }
     }
   }
 
@@ -557,6 +582,11 @@ export async function runPlainLanguageBackfill(
   deps: PlainLanguageBackfillDeps
 ): Promise<PlainLanguageBackfillSummary> {
   const log = deps.log ?? console.log;
+  if (deps.allowSourcedFacts === true && deps.manualAttestation !== true) {
+    throw new Error(
+      "allowSourcedFacts requires manualAttestation: only an operator-attested run may add sourced facts to a rewrite"
+    );
+  }
   const allTargets = await loadPlainLanguageBackfillTargets(pool, deps.filter ?? {});
   const targets = deps.limit !== undefined ? allTargets.slice(0, deps.limit) : allTargets;
 
@@ -601,7 +631,9 @@ export async function runPlainLanguageBackfill(
       );
     }
 
-    let flagReason = mechanicalCheckFailure(target.kind, target.originalText, rewriteResult.rewrittenText);
+    let flagReason = mechanicalCheckFailure(target.kind, target.originalText, rewriteResult.rewrittenText, {
+      allowSourcedFacts: deps.allowSourcedFacts === true,
+    });
     let verifierMeta = "";
     // Operator-authored rewrites skip the model verifier because there is no
     // second model to be independent OF — the human who wrote the replacement

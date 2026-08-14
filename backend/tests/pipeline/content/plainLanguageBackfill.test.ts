@@ -53,6 +53,40 @@ describe("mechanicalCheckFailure", () => {
     expect(mechanicalCheckFailure("record_description", longOriginal, stillLongRewrite)).toBeNull();
   });
 
+  it("allowSourcedFacts relaxes only the same-facts checks (numbers, upper length)", () => {
+    const stub = "Sponsored HB 231 (2021 RS), enacted as Acts Ch. 155.";
+    const repaired =
+      "Sponsored the law creating a single accounting system for all state Treasury funds, replacing the separate ledgers each agency kept on its own. The House and Senate overrode the governor's veto to pass it, and it took effect that year (HB 231, 2021 Acts Chapter 155).";
+    // Adds no new number tokens beyond the original's, but ~5x the original length.
+    expect(mechanicalCheckFailure("record_description", stub, repaired)).toContain("too long");
+    expect(
+      mechanicalCheckFailure("record_description", stub, repaired, { allowSourcedFacts: true })
+    ).toBeNull();
+
+    const withTally = "Voted yes on the budget bill. It passed the House 84-41 (Senate Bill 4).";
+    expect(mechanicalCheckFailure("record_description", "Voted yes on the budget bill and Senate Bill 4.", withTally)).toContain(
+      "introduced a number"
+    );
+    expect(
+      mechanicalCheckFailure("record_description", "Voted yes on the budget bill and Senate Bill 4.", withTally, {
+        allowSourcedFacts: true,
+      })
+    ).toBeNull();
+
+    // Content-LOSS and URL checks stay armed in the relaxed mode.
+    expect(mechanicalCheckFailure("record_description", stub, "  ", { allowSourcedFacts: true })).toContain("empty");
+    expect(
+      mechanicalCheckFailure("record_description", "A long stored description of a completed legislative action here.", "Too little.", {
+        allowSourcedFacts: true,
+      })
+    ).toContain("too short");
+    expect(
+      mechanicalCheckFailure("record_description", "See the report for details on this.", "Read https://evil.example/x for details.", {
+        allowSourcedFacts: true,
+      })
+    ).toContain("introduced a URL");
+  });
+
   it("rejects an introduced URL but allows kept URLs", () => {
     const withUrl = "See https://example.com/report for details.";
     expect(mechanicalCheckFailure("record_description", withUrl, "Read https://example.com/report for details.")).toBeNull();
@@ -451,6 +485,38 @@ describe("operator-authored rewrites", () => {
     await expect(
       runPlainLanguageBackfill(pool, makeDeps({ rewrite: manualRewrite }))
     ).rejects.toThrow(/without manualAttestation/);
+  });
+
+  it("refuses allowSourcedFacts without manualAttestation", async () => {
+    const { pool } = makeFakePool({ recordRows: [recordRow("r1")] });
+
+    await expect(
+      runPlainLanguageBackfill(pool, makeDeps({ allowSourcedFacts: true }))
+    ).rejects.toThrow(/allowSourcedFacts requires manualAttestation/);
+  });
+
+  it("applies a sourced-facts operator rewrite that the strict checks would flag", async () => {
+    const { pool } = makeFakePool({ recordRows: [recordRow("r1")] });
+    const addsATally = vi.fn(async () => ({
+      ok: true as const,
+      provider: "manual" as const,
+      model: "manual-research",
+      rewrittenText: "Refused 47 subpoenas to appear before the county oversight commission during hearings.",
+    }));
+
+    const strict = await runPlainLanguageBackfill(
+      pool,
+      makeDeps({ rewrite: addsATally, manualAttestation: true })
+    );
+    expect(strict.flagged).toBe(1);
+
+    const { pool: pool2 } = makeFakePool({ recordRows: [recordRow("r1")] });
+    const relaxed = await runPlainLanguageBackfill(
+      pool2,
+      makeDeps({ rewrite: addsATally, manualAttestation: true, allowSourcedFacts: true })
+    );
+    expect(relaxed.applied).toBe(1);
+    expect(relaxed.flagged).toBe(0);
   });
 
   it("still applies every mechanical check to operator text", async () => {

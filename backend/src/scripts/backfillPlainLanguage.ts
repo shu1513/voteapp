@@ -196,6 +196,11 @@ async function main(): Promise<void> {
   }
 
   const dryRun = process.argv.includes("--dry-run");
+  // Repair-campaign mode: rewrites re-verified against the record's SOURCE may
+  // add facts (tallies, act numbers, outcomes) and outgrow the style-rewrite
+  // length cap. Only meaningful for operator rewrites, so it demands
+  // --rewrites-file; the library additionally requires manualAttestation.
+  const allowSourcedFacts = process.argv.includes("--allow-sourced-facts");
   const limit = readLimit();
   const onlyTable = readOnlyTable();
   const candidateIds = await readCandidateIds();
@@ -205,6 +210,9 @@ async function main(): Promise<void> {
   // would destroy flag records for ids the limited run never reprocesses.
   if (manualRewrites && limit !== undefined) {
     throw new Error("--limit cannot be combined with --rewrites-file; trim the rewrites file instead");
+  }
+  if (allowSourcedFacts && !manualRewrites) {
+    throw new Error("--allow-sourced-facts requires --rewrites-file: only operator rewrites may add sourced facts");
   }
   const filter: PlainLanguageBackfillFilter = {
     ...(onlyTable !== undefined ? { onlyTable } : {}),
@@ -267,6 +275,7 @@ async function main(): Promise<void> {
       dryRun,
       ...(limit !== undefined ? { limit } : {}),
       ...(manualRewrites ? { manualAttestation: true } : {}),
+      ...(allowSourcedFacts ? { allowSourcedFacts: true } : {}),
       filter,
     });
     console.log(JSON.stringify(summary, null, 2));
