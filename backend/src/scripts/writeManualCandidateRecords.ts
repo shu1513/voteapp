@@ -16,6 +16,7 @@ import {
   type CandidateRecordAreaLabelInput,
 } from "../pipeline/candidates/candidateRecordAreaTagging.js";
 import { loadCandidateElectionOfficeContext } from "../pipeline/candidates/candidateRecordOfficeContext.js";
+import { listPlainLanguageWarnings } from "../pipeline/candidates/candidateRecordPlainLanguageLint.js";
 import { markCandidateRecordsSearchCompleted } from "../pipeline/candidates/candidateRecordsSearchClaim.js";
 import { isNonStanceResearchAreaSlug } from "../pipeline/candidates/candidateRecordResearchAreaPolicy.js";
 import {
@@ -815,6 +816,11 @@ async function main(): Promise<void> {
       );
     }
 
+    // Warn-only: long sentences fail the plain-language gate's readability
+    // rule. Never blocks the write — operator policy is one rewrite bounce,
+    // then accept as-is (see candidateRecordPlainLanguageLint.ts).
+    const plainLanguageWarnings = listPlainLanguageWarnings(validatedRecords.records);
+
     if (dryRun) {
       console.log(
         JSON.stringify(
@@ -836,6 +842,7 @@ async function main(): Promise<void> {
               confirmedGaps: [...confirmedGapIds].sort(),
               gaps: qualityGaps,
             },
+            plainLanguageWarnings,
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
@@ -1015,6 +1022,7 @@ async function main(): Promise<void> {
               persisted: sweepEvidencePersisted,
               persistedHasHeldPublicOffice: persistHasHeldPublicOffice,
             },
+            plainLanguageWarnings,
             recordsSearchCompletedThrough: researchedThrough,
           },
           null,
