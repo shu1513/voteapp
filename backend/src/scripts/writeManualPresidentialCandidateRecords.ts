@@ -19,6 +19,7 @@ import {
   loadCandidatePresidentialCycleOfficeContext,
   type CandidateRecordPresidentialRole,
 } from "../pipeline/candidates/candidateRecordOfficeContext.js";
+import { listPlainLanguageWarnings } from "../pipeline/candidates/candidateRecordPlainLanguageLint.js";
 import {
   buildCandidateRecordIdentityKey,
   findWithinPayloadRecordCollisions,
@@ -580,6 +581,11 @@ async function main(): Promise<void> {
       );
     }
 
+    // Warn-only: long sentences fail the plain-language gate's readability
+    // rule. Never blocks the write — operator policy is one rewrite bounce,
+    // then accept as-is (see candidateRecordPlainLanguageLint.ts).
+    const plainLanguageWarnings = listPlainLanguageWarnings(validatedRecords.records);
+
     if (options.dryRun) {
       console.log(
         JSON.stringify(
@@ -602,6 +608,7 @@ async function main(): Promise<void> {
               confirmedGaps: [...options.confirmedGapIds].sort(),
               gaps: qualityGaps,
             },
+            plainLanguageWarnings,
             sweepEvidence: {
               required: evidenceIsRequired,
               entryCount: sweepEvidenceEntryCount,
@@ -735,6 +742,7 @@ async function main(): Promise<void> {
               persisted: sweepEvidencePersisted,
               persistedHasHeldPublicOffice: persistHasHeldPublicOffice,
             },
+            plainLanguageWarnings,
           },
           null,
           2
