@@ -266,6 +266,53 @@ describe("runElectionsValidator", () => {
     expect(softFailCall).toBeUndefined();
   });
 
+  it("accepts Rhode Island's 'SENATOR IN GENERAL ASSEMBLY' without the article, like the House form", async () => {
+    const payload = {
+      district_id: "d-ri-sd5",
+      district_name: "State Senate District 5 (2024); Rhode Island",
+      district_type: "state_upper",
+      state: "RI",
+      entries: [
+        {
+          // The RI Department of State candidate list drops "the" (live
+          // soft-fail); STATE_LOWER_MARKERS already carries both forms of the
+          // House equivalent.
+          official_ballot_title: "SENATOR IN GENERAL ASSEMBLY",
+          election_date: "2099-09-09",
+          race_type: "office",
+          election_stage: "primary",
+          is_partisan: true,
+          sources: ["https://example.org/election"],
+        },
+      ],
+    };
+
+    poolQueryMock
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            ingest_key: "elections:test:ri-sd5",
+            payload,
+            status: "pending",
+            run_id: "run_ri_sd5",
+            failure_debug: null,
+            schema_version: ELECTION_ENRICHMENT_SCHEMA_VERSION,
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rowCount: 1 })
+      .mockResolvedValue({ rowCount: 1, rows: [] });
+
+    await runElectionsValidator({ once: true, batchSize: 5, blockMs: 10 });
+
+    const updateValidatedCall = poolQueryMock.mock.calls.find((call) =>
+      String(call[0]).includes("SET status = 'validated'")
+    );
+    expect(updateValidatedCall).toBeTruthy();
+    const softFailCall = poolQueryMock.mock.calls.find((call) => String(call[1]?.[1] ?? "").includes("soft_fail"));
+    expect(softFailCall).toBeUndefined();
+  });
+
   it("accepts Illinois' ordinal-only '3RD SENATE' as a clear state_upper title without a review pass", async () => {
     const payload = {
       district_id: "d-il-sd3",
