@@ -44,7 +44,7 @@ export function RaceTypeTabs({
             type="button"
             aria-pressed={selected}
             onClick={() => onChange(tab.value)}
-            className={`rounded transition ${compact ? "px-2 py-0.5 text-xs" : "px-2.5 py-1 text-sm"} ${
+            className={`rounded transition ${compact ? "min-h-6 px-2 py-0.5 text-xs" : "px-2.5 py-1 text-sm"} ${
               selected ? "bg-ink font-medium text-white" : "text-ink-soft hover:bg-surface hover:text-ink"
             }`}
           >

@@ -64,13 +64,13 @@ function useBallotPreferences() {
 
   const current = pending ?? prefs.data ?? null;
 
-  function change(fields: Partial<BallotPreferences>) {
+  function change(fields: Partial<BallotPreferences>, onSaved?: () => void) {
     if (!current) {
       return;
     }
     const next = { ...current, ...fields };
     setPending(next);
-    update.mutate(next);
+    update.mutate(next, onSaved ? { onSuccess: onSaved } : undefined);
   }
 
   return { prefs, update, saving, current, change };
@@ -98,18 +98,28 @@ function BallotSortPreference({
         Sort by
         <select
           // The select must show the order the list is actually in — the
-          // override when one is engaged, the preference otherwise.
-          value={sortOverride ?? current.sort}
+          // override when one is engaged, the preference otherwise. While a
+          // save is in flight the just-chosen value (the pending overlay in
+          // `current`) wins: the override is cleared only on success, and
+          // showing it mid-save would snap the select back to the old
+          // value.
+          value={saving ? current.sort : (sortOverride ?? current.sort)}
           // Disabled while a save is in flight: the PUT replaces the FULL
           // object, so concurrent requests could commit out of order and
           // the earlier write would win.
           disabled={saving}
           onChange={(event) => {
-            // Choosing here always clears the override: the explicit URL
-            // param wins server-side, so leaving it in place would pin the
-            // list to the old order and make this select a no-op.
-            onClearOverride();
-            change({ sort: event.target.value as BallotPreferences["sort"] });
+            // Choosing here clears the override (the explicit URL param
+            // wins server-side, so left in place it would pin the list to
+            // the old order and make this select a no-op) — but only AFTER
+            // the PUT succeeds: clearing first would launch a ballot GET
+            // still under the OLD preference and race the save, and a
+            // failed save keeps the override describing the list on screen
+            // alongside the error notice.
+            change(
+              { sort: event.target.value as BallotPreferences["sort"] },
+              sortOverride ? onClearOverride : undefined
+            );
           }}
           className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none disabled:opacity-60"
         >

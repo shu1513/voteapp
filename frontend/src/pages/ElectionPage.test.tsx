@@ -1635,9 +1635,10 @@ describe("ElectionPage ballot rail race-type tabs", () => {
     await user.click(within(rail).getByRole("link", { name: "Governor" }));
 
     expect(router.state.location.pathname).toBe("/elections/e-1");
+    // Forwarded state: the switched tab, but the ORIGINAL back destination —
+    // the rewrite happens at render time so "All" can always restore it.
     expect(router.state.location.state).toEqual({
       ...ARRIVAL_ON_MEASURES,
-      backTo: { path: "/ballot?d=d-1&type=office", label: "All elections" },
       raceType: "office",
     });
     // The next page's rail keeps the switched tab.
@@ -1648,6 +1649,12 @@ describe("ElectionPage ballot rail race-type tabs", () => {
     );
     expect(within(nextRail).getByText("Governor").closest("li")).toHaveAttribute("aria-current", "page");
     expect(within(nextRail).queryByText("Measure B")).not.toBeInTheDocument();
+    // The rendered back link still lands on the switched tab — recomputed
+    // from the forwarded original, not baked into it.
+    expect(within(nextRail).getByRole("link", { name: "Back to All elections" })).toHaveAttribute(
+      "href",
+      "/ballot?d=d-1&type=office"
+    );
   });
 
   it("keeps the rail up when the current race is on the other tab", async () => {
@@ -1725,6 +1732,30 @@ describe("ElectionPage ballot rail sort and pick checks", () => {
     await user.selectOptions(within(rail).getByRole("combobox"), "alphabetical");
     expect(rows()).toEqual(["Governor", "Proposition 4", "Proposition 33"]);
     expect(within(rail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
+      "href",
+      "/me/ballot"
+    );
+  });
+
+  it("As listed after a sibling walk restores the arrival back URL", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const user = userEvent.setup();
+    renderElection(perIdLoader, "e-1", ARRIVAL);
+
+    // Engage a carried-over sort, walk to a sibling, then return to "As
+    // listed": the back link must drop the sort — the forwarded state
+    // carries the original destination, so the rewrite stays reversible.
+    const rail = await screen.findByRole("navigation", { name: "Ballot" });
+    await user.selectOptions(within(rail).getByRole("combobox"), "vote_power");
+    await user.click(within(rail).getByRole("link", { name: "Proposition 33" }));
+
+    const nextRail = await screen.findByRole("navigation", { name: "Ballot" });
+    expect(within(nextRail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
+      "href",
+      "/me/ballot?sort=vote_power"
+    );
+    await user.selectOptions(within(nextRail).getByRole("combobox"), "");
+    expect(within(nextRail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
       "href",
       "/me/ballot"
     );

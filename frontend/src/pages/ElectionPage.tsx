@@ -285,37 +285,47 @@ export function ElectionPage() {
   // election), not the slice — switching the rail to the other tab hides
   // the current row from the slice but must not tear the rail down.
   const railContests = pagerNeighbors(contests, data.id) !== null ? (displayedContests ?? null) : null;
-  // The context handed onward — sibling walks, the back link, and the
-  // candidate chain's back hop — carries the rail's CURRENT tab and sort,
-  // not the arrival values: leaving via any of those must land on the view
-  // the rail is showing, so the back link's params are rewritten to match.
-  const effectiveNavState: ElectionNavState | null = navState
-    ? railTabsAvailable || offeredRailSorts.length > 0
-      ? {
-          ...navState,
-          ...(railTab ? { raceType: railTab } : {}),
-          ...(railSort ? { railSort } : {}),
-          backTo: {
-            ...navState.backTo,
-            path: rewriteBackPath(
-              navState.backTo.path,
-              { available: railTabsAvailable, raceType: railTab },
-              railSort
-            ),
-          },
-        }
-      : navState
-    : null;
-  // Field removal only on the copy — the untouched branch must never mutate
-  // the state object other consumers (and history) share.
-  if (effectiveNavState !== null && effectiveNavState !== navState) {
-    if (!railTab) {
-      delete effectiveNavState.raceType;
-    }
-    if (!railSort) {
-      delete effectiveNavState.railSort;
-    }
-  }
+  // Two derived contexts, deliberately split:
+  // - `forwarded` (sibling walks, the candidate chain's back hop) carries
+  //   the rail's CURRENT tab and sort but the ORIGINAL back destination —
+  //   the ?type=/?sort= rewrite is recomputed from it at render time on
+  //   every page, so "As listed" and "All" can always restore the arrival
+  //   URL. Baking a rewritten path into forwarded state would make a
+  //   previously-engaged sort unremovable after a sibling walk.
+  // - `backTo` (this page's rendered back links only) IS the rewrite:
+  //   leaving the split view lands on the view the rail is showing.
+  const railNav =
+    navState === null
+      ? null
+      : (() => {
+          if (!railTabsAvailable && offeredRailSorts.length === 0) {
+            return { forwarded: navState, backTo: navState.backTo };
+          }
+          // Field removal only on this copy — the shared original must
+          // never be mutated.
+          const forwarded: ElectionNavState = { ...navState };
+          if (railTab) {
+            forwarded.raceType = railTab;
+          } else {
+            delete forwarded.raceType;
+          }
+          if (railSort) {
+            forwarded.railSort = railSort;
+          } else {
+            delete forwarded.railSort;
+          }
+          return {
+            forwarded,
+            backTo: {
+              ...navState.backTo,
+              path: rewriteBackPath(
+                navState.backTo.path,
+                { available: railTabsAvailable, raceType: railTab },
+                railSort
+              ),
+            },
+          };
+        })();
   // Computed once, before render: the roster links hand the candidate page
   // this exact displayed order (sort + party + records filters applied), so
   // the JSX and the state payload must come from the same array.
@@ -324,8 +334,8 @@ export function ElectionPage() {
     backTo: { path: `/elections/${data.id}`, label: data.official_ballot_title },
     // The election page's own incoming context rides along so the back hop
     // restores it (election → candidate → back keeps the ballot sequence,
-    // including the rail tab as switched).
-    ...(effectiveNavState ? { backState: effectiveNavState } : {}),
+    // including the rail tab and sort as switched).
+    ...(railNav ? { backState: railNav.forwarded } : {}),
     electionId: data.id,
     candidates: orderedCandidates.map(({ candidate }) => ({
       id: candidate.candidate_id,
@@ -338,7 +348,7 @@ export function ElectionPage() {
   // its own context (the mirror of the roster links' backState). With the
   // rail on screen (lg+) the bar is redundant, so it drops to narrow
   // screens only; rail-less arrivals keep it at every width.
-  const pagerBar = effectiveNavState ? (
+  const pagerBar = railNav ? (
     <DetailPager
       ariaLabel="Ballot navigation"
       prev={
@@ -351,9 +361,9 @@ export function ElectionPage() {
           ? { path: `/elections/${contestNeighbors.next.id}`, label: contestNeighbors.next.title }
           : null
       }
-      backTo={effectiveNavState.backTo}
-      backToState={effectiveNavState.backState}
-      siblingState={effectiveNavState}
+      backTo={railNav.backTo}
+      backToState={railNav.forwarded.backState}
+      siblingState={railNav.forwarded}
     />
   ) : null;
 
@@ -368,7 +378,7 @@ export function ElectionPage() {
           : "mx-auto max-w-3xl px-4 py-8"
       }
     >
-      {railContests !== null && effectiveNavState !== null ? (
+      {railContests !== null && railNav !== null ? (
         <DetailRail
           ariaLabel="Ballot"
           entries={railContests.map((contest) => ({
@@ -378,9 +388,9 @@ export function ElectionPage() {
             picked: isPickedContest(contest.id),
           }))}
           currentId={data.id}
-          backTo={effectiveNavState.backTo}
-          backToState={effectiveNavState.backState}
-          siblingState={effectiveNavState}
+          backTo={railNav.backTo}
+          backToState={railNav.forwarded.backState}
+          siblingState={railNav.forwarded}
           headerSlot={
             railTabsAvailable || offeredRailSorts.length > 0 ? (
               <div className="flex flex-col gap-2">
