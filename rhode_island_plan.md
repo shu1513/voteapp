@@ -690,7 +690,59 @@ selectors, not the migration.
   would break the legitimate primary+general same-year links; the
   duplicate-claim guard stays read-then-write like the rest of the fleet,
   with runs operator-serialized.)
-- [ ] PR 6 direct aggregator + report selector
+- [x] PR 6 direct aggregator + report selector
+  (`rhodeIslandCf2ReportSelector.ts` + `rhodeIslandDirectContributionAggregator.ts`,
+  cache-only — no portal traffic, no DB writes; PR 7's sync is the consumer.
+  **CF-2 page-1 semantics pinned against real spike PDFs** (McKee Q4 2025,
+  hand-verified 2026-08-14): the form's own arithmetic is
+  `3. Total Cash = 1. Beginning Cash Balance + cash receipts` (returned
+  contributions/checks print as parenthesized negatives inside receipts) and
+  `5. Ending Cash Balance = 3. Total Cash - cash disbursements`, so each
+  period's receipts and disbursements derive exactly from the three pinned
+  balance labels — no new label had to be pinned for disbursements.
+  Report selector (decision 4 baked in = current-ledger): in-force version of
+  every in-cycle CF-2 family is simply the LAST `grdAmendments` row; its
+  cached text-layer PDF yields the pinned labels; ALL 8 labels are required
+  (one ERTS generator, one layout — a missing label is drift and
+  quarantines). Cycle totals per decision 2: receipts/disbursements summed
+  across periods, cash_on_hand = latest period's ending balance (signed) with
+  the period end as as-of. Quarantines (org-level, totals withheld, reasons
+  reported): missing CF-2 label, duplicate period window (two families, same
+  window — ambiguous lineage), overlapping periods, and a period straddling
+  the cycle boundary (another cycle's money is never summed or apportioned).
+  Zero in-cycle CF-2 periods = decision 12's CF-5 deferral: valid link,
+  nothing published, NOT a defect.
+  Direct aggregator (decisions 1/10/13): `direct_contribution_total` is
+  summed from the report pages' summary groupings — never the export (the
+  georgia cover-arithmetic lesson; acquisition gate (a) makes the groupings
+  the complete official per-type totals) — over the 10 donor labels
+  (itemized + aggregate + in-kind); loans/interest/public funds/check-off/
+  Other Receipt stay in total_receipts only. Size buckets come from itemized
+  export rows only (georgia boundaries + unique-contributor counting via
+  normalized name+employer); `Aggregate - *` never buckets. The 21-type pin
+  is partitioned donor/non-donor/party-building with a module-load exactness
+  check, so a type added to the pin without a classification fails loudly.
+  Party Building money on a candidate org quarantines (decision 13). Unknown
+  summary labels (`NSF Check`, `Refund of Contribution`, …) are diagnostics
+  — excluded from the direct total, never guessed into a bucket — but DO
+  participate in the cash-receipts reconciliation, because the CF-2's own
+  arithmetic includes them.
+  Per-period reconciliation (fail-closed, any miss quarantines): search cash
+  receipts (all non-in-kind groupings) == TotalCash - Beginning; expenditure
+  summary total == TotalCash - Ending; and the spike-gate-6 line↔set mapping
+  — 2. Individuals == Individual + Aggregate-Individual, 4. PACs likewise,
+  7. Interest, 6. In-Kind == every in-kind label — plus the symmetric
+  3. Political Parties == Party + Aggregate-Party (unproven live only
+  because McKee's line is $0; a systematic mismatch at PR 9 is a finding,
+  and a false mismatch quarantines rather than corrupts).
+  Tests: end-to-end from a fabricated cache built with `storeErtsArtifact` —
+  the committed Q2 2026 fixtures reproduce the plan's reconciliation
+  arithmetic (1,355,115.78 + 258,945.01 - 945,434.57 = 668,626.22,
+  direct total 257,222.29, buckets from the fixture export) — plus real Q4
+  2025 CF-2 values as a synthesized text-layer PDF (donor pages never enter
+  the repo, so PDFs are synthesized with real hand-read values), in-force-
+  version selection, straddle/missing-label/mismatch/party-building
+  quarantines, the 2022 in-kind set-sum, and the CF-5 no-publish case.)
 - [ ] PR 7 sync + batchSync + scheduler
 - [ ] PR 8 CF-8 supplements + outside aggregators
 - [ ] PR 9 live run + reconciliation report
