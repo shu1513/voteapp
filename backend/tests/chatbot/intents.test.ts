@@ -183,11 +183,11 @@ describe("personal-issues questions route to the saved-areas ballot match", () =
   });
 });
 
-describe("hasPersonalIssuesPhrase (the gate's refusal fallback)", () => {
+describe("hasPersonalIssuesPhrase (the refusal's Settings pointer)", () => {
   it("detects the phrase even when the election frame is missing", () => {
     // No frame word → the router deliberately stays out (could be a candidate
-    // question), but if retrieval later comes up empty, the fallback serves
-    // the saved-areas match instead of a flat refusal.
+    // question, or not about races at all), but a no-data refusal on such a
+    // question gains a Settings pointer instead of dead-ending.
     expect(hasPersonalIssuesPhrase("what should I focus on given my priorities?")).toBe(true);
     expect(detectIntent("what should I focus on given my priorities?")).toBeNull();
   });

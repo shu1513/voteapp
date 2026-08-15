@@ -996,15 +996,23 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
             scopeState
           );
         }
-        // Personalized-issues fallback: the phrasing slipped past the intent
-        // router (a frame variant it doesn't know), but the question is still
-        // about the asker's own issues — the saved-areas ballot match beats
-        // the flat refusal that is the only other option at this point.
-        // Never cached, never sent to the LLM (rule 11 holds).
+        // A personal-issues phrase in an otherwise unanswerable question is a
+        // strong hint the asker wants their own saved data, which lives on
+        // the account pages, not in the corpus. Still a refusal — serving the
+        // race list here answered the wrong question for "What issues do I
+        // care about?" / "How do I change my saved issues?" (PR #715 review;
+        // the router's election-frame requirement exists precisely to block
+        // that hijack) — but one that points at the right place instead of
+        // dead-ending.
         if (hasPersonalIssuesPhrase(question)) {
           return finish(
-            await renderMyIssuesBallotAnswer(db, userId ?? null),
-            "intent:my_issues_ballot_fallback",
+            {
+              outcome: "refuse_no_data",
+              answer: `${REFUSAL_NO_DATA_ANSWER} If you're asking about your saved issues, they're in Settings — or try "Which races affect issues I care about?"`,
+              results: [SETTINGS_ISSUES_CARD],
+              data_current_as_of: null,
+            },
+            "refused_personal_hint",
             scopeState
           );
         }

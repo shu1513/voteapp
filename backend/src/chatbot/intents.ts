@@ -173,10 +173,10 @@ const POLICY_PATTERNS: RegExp[] = [
 // The personal-preference phrase: "issues/races … I care about / matter to
 // me / important to me", or a possessive "my … issues/priorities/research
 // areas" with up to two modifier words ("my most important issues", "my top
-// issues"). Exported for askService's refusal fallback — a question carrying
-// this phrase that slipped past the intent router (frame variant the router
-// doesn't know) still gets the saved-areas ballot match instead of a flat
-// refusal, since at that point a refusal is the only alternative.
+// issues"). Exported for askService's refusal path — a question carrying
+// this phrase that still ends in a no-data refusal gets a Settings pointer
+// appended (never the race list itself: without the election frame below,
+// the question may not be about races at all).
 const MY_ISSUES_RE =
   /\b(?:issues?|areas?|topics?|things|what|races?|elections?)\b.{0,24}\b(?:i\s+care\s+about|matter(?:s)?\s+(?:most\s+)?to\s+me|important\s+to\s+me)\b|\bmy\s+(?:\w+\s+){0,2}(?:issues?|priorit(?:y|ies)|research\s+areas)\b/i;
 const ELECTION_FRAME_RE = /\b(?:elections?|races?|ballots?|measures?|running)\b/i;
