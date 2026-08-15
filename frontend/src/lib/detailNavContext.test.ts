@@ -40,6 +40,39 @@ describe("readElectionNavState", () => {
     ).toEqual({ backTo: BACK_TO });
   });
 
+  it("round-trips contest race_type and the engaged raceType tab", () => {
+    const state = {
+      backTo: BACK_TO,
+      contests: [
+        { id: "e-1", title: "Governor", race_type: "office" },
+        { id: "q-1", title: "Measure A", race_type: "ballot_measure" },
+      ],
+      raceType: "ballot_measure",
+    };
+    expect(readElectionNavState(state)).toEqual(state);
+  });
+
+  it("drops an invalid race_type per entry and an invalid raceType alone", () => {
+    // An unknown race_type withholds only that entry's field (disabling the
+    // tabs, which need every entry typed) — never the entry or the list.
+    expect(
+      readElectionNavState({
+        backTo: BACK_TO,
+        contests: [
+          { id: "e-1", title: "Governor", race_type: "banana" },
+          { id: "q-1", title: "Measure A", race_type: "ballot_measure" },
+        ],
+        raceType: "banana",
+      })
+    ).toEqual({
+      backTo: BACK_TO,
+      contests: [
+        { id: "e-1", title: "Governor" },
+        { id: "q-1", title: "Measure A", race_type: "ballot_measure" },
+      ],
+    });
+  });
+
   it("treats whitespace-only contest ids and titles as malformed", () => {
     // A whitespace-only id would build a broken href; a whitespace-only
     // title would render an invisible pager link.

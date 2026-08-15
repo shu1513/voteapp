@@ -8,6 +8,8 @@
 // optional fields degrade independently: a broken sibling list must not
 // take the back link down with it.
 
+import type { BallotRaceType, RailSortKey } from "@voteapp/api-client";
+import { RAIL_SORTS } from "@voteapp/api-client";
 import { safeInternalPath } from "./safeInternalPath";
 
 /** A back-link destination. Purely where and what to call it — any state to
@@ -15,11 +17,28 @@ import { safeInternalPath } from "./safeInternalPath";
  * this type non-recursive. */
 export type BackTo = { path: string; label: string };
 
-export type NavContest = { id: string; title: string };
+/** race_type powers the rail's race-type tabs; the sort keys power its
+ * sort control (vote_power_score and election_date mirror the backend's
+ * sort inputs; research_area_ids feed the client-mirrored My-issues
+ * scoring; awaiting_candidates keeps the no-candidates tail sunk under
+ * every sort, as the backend does). All optional because an old history
+ * entry predates them — each control is simply not offered when its keys
+ * are missing. */
+export type NavContest = {
+  id: string;
+  title: string;
+  race_type?: BallotRaceType;
+  vote_power_score?: number | null;
+  election_date?: string;
+  research_area_ids?: string[];
+  awaiting_candidates?: boolean;
+};
 export type NavCandidate = { id: string; name: string };
 
 /** Handed to /elections/:id links. contests = the ballot in displayed
- * order (races + measures + the awaiting-candidates tail). backState
+ * order (races + measures + the awaiting-candidates tail) — the full
+ * pool, NOT sliced by the list's race-type tab, so the rail can re-slice;
+ * raceType records which tab was engaged at click time. backState
  * restores a candidate page's own context on the back hop (set when the
  * election was reached from a candidate page) — the mirror of
  * CandidateNavState.backState, so a My Picks → candidate → election →
@@ -28,6 +47,10 @@ export type ElectionNavState = {
   backTo: BackTo;
   backState?: CandidateNavState;
   contests?: NavContest[];
+  raceType?: BallotRaceType;
+  /** The rail's engaged sort, carried so sibling walks and candidate round
+   * trips keep it; absent = "As listed" (the arrival order). */
+  railSort?: RailSortKey;
 };
 
 /** Handed to /candidates/:id links. backState restores the election page's
@@ -107,7 +130,39 @@ export function readElectionNavState(state: unknown): ElectionNavState | null {
   }
   const contests = readIdLabelList(record.contests, "title");
   if (contests !== undefined) {
-    result.contests = contests;
+    // The optional per-entry fields degrade per entry, not per list: an
+    // invalid value only withholds the control that needs it (the rail
+    // requires every entry keyed), never the pager or the rail itself.
+    const rawContests = record.contests as unknown[];
+    result.contests = contests.map((contest, index) => {
+      const raw = rawContests[index] as Record<string, unknown>;
+      const entry: NavContest = { ...contest };
+      if (raw.race_type === "office" || raw.race_type === "ballot_measure") {
+        entry.race_type = raw.race_type;
+      }
+      if (raw.vote_power_score === null || typeof raw.vote_power_score === "number") {
+        entry.vote_power_score = raw.vote_power_score;
+      }
+      if (typeof raw.election_date === "string" && raw.election_date.trim() !== "") {
+        entry.election_date = raw.election_date;
+      }
+      if (
+        Array.isArray(raw.research_area_ids) &&
+        raw.research_area_ids.every((areaId) => typeof areaId === "string" && areaId.trim() !== "")
+      ) {
+        entry.research_area_ids = raw.research_area_ids;
+      }
+      if (raw.awaiting_candidates === true) {
+        entry.awaiting_candidates = true;
+      }
+      return entry;
+    });
+  }
+  if (record.raceType === "office" || record.raceType === "ballot_measure") {
+    result.raceType = record.raceType;
+  }
+  if (RAIL_SORTS.some((option) => option.value === record.railSort)) {
+    result.railSort = record.railSort as RailSortKey;
   }
   return result;
 }

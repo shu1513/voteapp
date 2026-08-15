@@ -1,9 +1,28 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { Link } from "react-router";
 import type { BackTo } from "../lib/detailNavContext";
 
-/** One rail row: the sibling's detail path plus the label the list showed. */
-export type RailEntry = { id: string; label: string; path: string };
+/** One rail row: the sibling's detail path plus the label the list showed.
+ * picked renders the green "decided" check before the label. */
+export type RailEntry = { id: string; label: string; path: string; picked?: boolean };
+
+// Filled green circle with a white check — the rail's "you decided this
+// race" marker. The sr-only text in the row carries it for screen readers.
+function PickedCheck() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 16 16" className="h-4 w-4 shrink-0 text-green-700">
+      <circle cx="8" cy="8" r="8" fill="currentColor" />
+      <path
+        d="M4.5 8.5 7 10.5l4.5-5"
+        fill="none"
+        stroke="white"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 /**
  * The desktop master–detail rail: the sibling list the visitor arrived with,
@@ -28,6 +47,7 @@ export function DetailRail({
   backTo,
   backToState,
   siblingState,
+  headerSlot,
 }: {
   ariaLabel: string;
   entries: RailEntry[];
@@ -35,6 +55,10 @@ export function DetailRail({
   backTo: BackTo;
   backToState?: unknown;
   siblingState?: unknown;
+  /** Rendered between the back link and the list — the election rail's
+   * race-type tabs live here. The rail stays presentation-only: whatever
+   * the slot controls re-slices `entries` in the caller. */
+  headerSlot?: ReactNode;
 }) {
   const currentRef = useRef<HTMLLIElement | null>(null);
   useEffect(() => {
@@ -65,6 +89,7 @@ export function DetailRail({
         <span aria-hidden="true">← </span>
         {backTo.label}
       </Link>
+      {headerSlot ? <div className="mt-3 px-3">{headerSlot}</div> : null}
       <ul className="mt-3 space-y-1 border-t border-line pt-3">
         {entries.map((entry) =>
           entry.id === currentId ? (
@@ -73,9 +98,16 @@ export function DetailRail({
               ref={currentRef}
               aria-current="page"
               title={entry.label}
-              className="truncate rounded-lg bg-surface px-3 py-1.5 text-sm font-medium text-ink"
+              className="flex items-center gap-1.5 rounded-lg bg-surface px-3 py-1.5 text-sm font-medium text-ink"
             >
-              {entry.label}
+              {entry.picked ? <PickedCheck /> : null}
+              <span className="truncate">
+                {entry.label}
+                {/* Suffix, not prefix: the label must stay the leading text
+                    of the accessible name so rows read (and match queries)
+                    by their race title first. */}
+                {entry.picked ? <span className="sr-only"> (decided)</span> : null}
+              </span>
             </li>
           ) : (
             <li key={entry.id}>
@@ -83,9 +115,13 @@ export function DetailRail({
                 to={entry.path}
                 state={siblingState}
                 title={entry.label}
-                className="block truncate rounded-lg px-3 py-1.5 text-sm text-ink-soft transition hover:bg-surface hover:text-ink"
+                className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-ink-soft transition hover:bg-surface hover:text-ink"
               >
-                {entry.label}
+                {entry.picked ? <PickedCheck /> : null}
+                <span className="truncate">
+                  {entry.label}
+                  {entry.picked ? <span className="sr-only"> (decided)</span> : null}
+                </span>
               </Link>
             </li>
           )

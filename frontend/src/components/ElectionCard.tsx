@@ -1,6 +1,12 @@
 import { Fragment } from "react";
 import { Link } from "react-router";
-import type { ElectionChoice, ElectionSummary, ResearchAreaWeight, ResultChipTone } from "@voteapp/api-client";
+import type {
+  BallotRaceType,
+  ElectionChoice,
+  ElectionSummary,
+  ResearchAreaWeight,
+  ResultChipTone,
+} from "@voteapp/api-client";
 import type { BackTo, ElectionNavState } from "../lib/detailNavContext";
 import {
   buildResultChipParts,
@@ -88,6 +94,8 @@ export function ElectionList({
   savedAreaWeights,
   choicesByElectionId,
   backTo,
+  contestsPool,
+  raceType,
 }: {
   elections: ElectionSummary[];
   /**
@@ -109,6 +117,16 @@ export function ElectionList({
    * plus the ballot's displayed contest order via router state.
    */
   backTo?: BackTo;
+  /**
+   * The nav snapshot's contest pool when it should be WIDER than the
+   * displayed list — the ballot pages pass their filter-visible but
+   * tab-UNsliced list so the detail rail's race-type tabs can reach races
+   * the list's engaged tab put aside. Defaults to `elections`.
+   */
+  contestsPool?: ElectionSummary[];
+  /** The list's engaged race-type tab, recorded in the nav snapshot so the
+   * detail rail's tabs start where the reader left the list. */
+  raceType?: BallotRaceType | null;
 }) {
   const awaitingCandidates = elections.filter(isAwaitingCandidates);
   const readable = elections.filter((election) => !isAwaitingCandidates(election));
@@ -121,16 +139,31 @@ export function ElectionList({
       groups.push({ date: election.election_date, elections: [election] });
     }
   }
-  // Contest order = exactly what this list renders: readable races (their
-  // grouping is presentational and keeps this order), then the awaiting
-  // tail. Built here, not by the pages, so it can never drift from the DOM.
+  // Contest order = what this list renders — readable races (their grouping
+  // is presentational and keeps this order), then the awaiting tail — but
+  // over the POOL, which restores any tab-sliced races in payload order so
+  // the rail can offer them. Built here, not by the pages, so it can never
+  // drift from the DOM.
+  const pool = contestsPool ?? elections;
   const navState: ElectionNavState | undefined = backTo
     ? {
         backTo,
-        contests: [...readable, ...awaitingCandidates].map((election) => ({
+        contests: [
+          ...pool.filter((election) => !isAwaitingCandidates(election)),
+          ...pool.filter(isAwaitingCandidates),
+        ].map((election) => ({
           id: election.id,
           title: election.official_ballot_title,
+          race_type: election.race_type === "ballot_measure" ? "ballot_measure" : "office",
+          // The rail's sort keys: score/date mirror the backend's sort
+          // inputs, the area ids feed the client My-issues scoring, and the
+          // awaiting flag keeps that tail sunk under every rail sort.
+          vote_power_score: election.vote_power.score,
+          election_date: election.election_date,
+          research_area_ids: election.research_areas.map((area) => area.id),
+          ...(isAwaitingCandidates(election) ? { awaiting_candidates: true } : {}),
         })),
+        ...(raceType ? { raceType } : {}),
       }
     : undefined;
   return (

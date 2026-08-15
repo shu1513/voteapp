@@ -253,6 +253,10 @@ export function BallotPage() {
               // Full query string: the back link must return to this exact
               // list — same districts, sort, and filters.
               backTo={{ path: location.pathname + location.search, label: "All elections" }}
+              // Tab-unsliced pool + the engaged tab: the detail rail's own
+              // race-type tabs start here and can reach the other tab's races.
+              contestsPool={filtersView.filteredElections}
+              raceType={filtersView.raceType}
             />
           )}
         </>

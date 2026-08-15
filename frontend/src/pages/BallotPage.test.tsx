@@ -668,10 +668,69 @@ describe("BallotPage nav context", () => {
     expect(router.state.location.pathname).toBe("/elections/e-1");
     expect(router.state.location.state).toEqual({
       backTo: { path: "/ballot?d=d-1&sort=soonest", label: "All elections" },
+      // race_type powers the detail rail's tabs, the sort keys its sort
+      // control; the awaiting flag keeps that tail sunk under rail sorts.
+      // No raceType field while the list is on the All tab.
       contests: [
-        { id: "e-1", title: "Governor" },
-        { id: "e-2", title: "Mayor" },
+        {
+          id: "e-1",
+          title: "Governor",
+          race_type: "office",
+          vote_power_score: 42,
+          election_date: "2026-11-03",
+          research_area_ids: [],
+        },
+        {
+          id: "e-2",
+          title: "Mayor",
+          race_type: "office",
+          vote_power_score: 42,
+          election_date: "2026-11-03",
+          research_area_ids: [],
+          awaiting_candidates: true,
+        },
       ],
+    });
+  });
+
+  it("snapshots the full pool plus the engaged tab when a race-type tab is active", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes({
+      ...ANONYMOUS,
+      "/api/ballot": {
+        body: ballotSummary([
+          electionSummary(),
+          electionSummary({ id: "q-1", race_type: "ballot_measure", official_ballot_title: "Measure A" }),
+        ]),
+      },
+    });
+    const { router } = renderBallot("/ballot?d=d-1&type=ballot_measure");
+
+    await user.click(await screen.findByRole("link", { name: /Measure A/ }));
+
+    // The pool is NOT sliced by the tab — the rail's own tabs must be able
+    // to reach the office races — and raceType records where to start.
+    expect(router.state.location.state).toEqual({
+      backTo: { path: "/ballot?d=d-1&type=ballot_measure", label: "All elections" },
+      contests: [
+        {
+          id: "e-1",
+          title: "Governor",
+          race_type: "office",
+          vote_power_score: 42,
+          election_date: "2026-11-03",
+          research_area_ids: [],
+        },
+        {
+          id: "q-1",
+          title: "Measure A",
+          race_type: "ballot_measure",
+          vote_power_score: 42,
+          election_date: "2026-11-03",
+          research_area_ids: [],
+        },
+      ],
+      raceType: "ballot_measure",
     });
   });
 });

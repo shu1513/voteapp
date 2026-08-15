@@ -1,10 +1,17 @@
 import { Fragment, useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
-import type { ElectionDetail, PartyBucket } from "@voteapp/api-client";
+import type { BallotRaceType, ElectionDetail, PartyBucket, RailSortKey } from "@voteapp/api-client";
+import { RAIL_SORTS, railSortsOffered, sortRailEntries } from "@voteapp/api-client";
 import { DetailPager } from "../components/DetailPager";
 import { DetailRail } from "../components/DetailRail";
-import { pagerNeighbors, readElectionNavState, type CandidateNavState } from "../lib/detailNavContext";
+import { RaceTypeTabs } from "../components/RaceTypeTabs";
+import {
+  pagerNeighbors,
+  readElectionNavState,
+  type CandidateNavState,
+  type ElectionNavState,
+} from "../lib/detailNavContext";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
@@ -25,7 +32,7 @@ import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { CandidatePickButton, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
-import { draftChoicesByElectionId, useBallotDraft } from "../lib/ballotDraft";
+import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
 import { splitResearchAreasBySaved, useElectionChoices } from "@voteapp/api-client";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 import { APP_NAME } from "@voteapp/api-client";
@@ -38,6 +45,37 @@ import { partyBucket } from "@voteapp/api-client";
 // display name (there is no true ballot-position data). "my_issues" is the
 // default for viewers with saved research areas.
 type CandidateSort = "alphabetical" | "my_issues";
+
+// Rewrites the back link's ?type= (and, where the list can honor it, ?sort=)
+// to the rail's current tab and sort, so leaving the split view lands on the
+// view the rail is showing rather than the one the reader arrived with.
+// Sort carry-over rules: vote_power/soonest are list sorts on both pages;
+// my_areas only reaches /me/ballot (the anonymous list endpoint would
+// silently degrade it); alphabetical is rail-only and "As listed" (null) IS
+// the arrival order — both leave the path's sort untouched. The base is a
+// throwaway for relative parsing only.
+function rewriteBackPath(
+  path: string,
+  tabs: { available: boolean; raceType: BallotRaceType | null },
+  railSort: RailSortKey | null
+): string {
+  const url = new URL(path, "http://internal");
+  if (tabs.available) {
+    if (tabs.raceType) {
+      url.searchParams.set("type", tabs.raceType);
+    } else {
+      url.searchParams.delete("type");
+    }
+  }
+  if (
+    railSort === "vote_power" ||
+    railSort === "soonest" ||
+    (railSort === "my_areas" && url.pathname === "/me/ballot")
+  ) {
+    url.searchParams.set("sort", railSort);
+  }
+  return url.pathname + url.search + url.hash;
+}
 
 // The party filter over the candidates list. Order fixes the chip row;
 // labels are plural because the chips answer "show me the …".
@@ -182,6 +220,12 @@ export function ElectionPage() {
   const myChoice = isGuest
     ? draftChoicesByElectionId(draft).get(data.id)
     : choiceByElectionId?.get(data.id);
+  // The rail's pick checks: same choice source as the ballot pages' cards
+  // (account choices signed-in, local draft as guest), same decided rule as
+  // the pick-progress counters — a choice row emptied of picks keeps no
+  // check.
+  const railChoices = isGuest ? draftChoicesByElectionId(draft) : choiceByElectionId;
+  const isPickedContest = (electionId: string): boolean => isDecidedChoice(railChoices?.get(electionId));
   const showChoiceControls =
     (isGuest || (canChoose && choiceByElectionId !== undefined)) &&
     data.election_date >= usLatestLocalDate();
@@ -204,15 +248,74 @@ export function ElectionPage() {
   // engines) have neither — they get no bar at all, by product choice.
   const location = useLocation();
   const navState = readElectionNavState(location.state);
-  // Prev/next over the ballot sequence the visitor arrived with; null (back
-  // slot only) on single-contest lists or when this election fell out of
-  // the snapshot.
-  const contestNeighbors = pagerNeighbors(navState?.contests, data.id);
-  // Desktop rail: the same validated ballot sequence under the same guard as
-  // prev/next (pagerNeighbors is null unless the list has >= 2 entries and
-  // contains this election). navState is re-read only for the type system —
-  // non-null neighbors implies it.
-  const railContests = contestNeighbors !== null ? (navState?.contests ?? null) : null;
+  // The rail's race-type tabs: offered only when the snapshot types every
+  // contest (an old history entry may not) and holds both types. The tab
+  // starts where the list's tab was (navState.raceType) and lives in
+  // component state — the route element stays mounted across sibling walks,
+  // which is exactly the persistence the choice needs; remounts (back out
+  // and in, candidate round trips) restore it from the nav state instead.
+  const contests = navState?.contests;
+  const railTabsAvailable =
+    contests !== undefined &&
+    contests.every((contest) => contest.race_type !== undefined) &&
+    contests.some((contest) => contest.race_type === "office") &&
+    contests.some((contest) => contest.race_type === "ballot_measure");
+  const [railTabState, setRailTabState] = useState<BallotRaceType | null>(navState?.raceType ?? null);
+  const railTab = railTabsAvailable ? railTabState : null;
+  // The rail's sort control: offered only for the sorts this snapshot can
+  // honor faithfully (railSortsOffered — an old unkeyed snapshot offers
+  // none). Same persistence story as the tab: component state across
+  // sibling walks, nav state across remounts. null = "As listed", the
+  // arrival order.
+  const offeredRailSorts = railSortsOffered(contests ?? [], hasSaved);
+  const [railSortState, setRailSortState] = useState<RailSortKey | null>(navState?.railSort ?? null);
+  const railSort = railSortState !== null && offeredRailSorts.includes(railSortState) ? railSortState : null;
+  // Prev/next walk exactly what the rail shows: the engaged tab's slice, in
+  // the engaged sort's order.
+  const slicedContests =
+    railTab !== null && contests !== undefined
+      ? contests.filter((contest) => contest.race_type === railTab)
+      : contests;
+  const displayedContests =
+    railSort !== null && slicedContests !== undefined
+      ? sortRailEntries(slicedContests, railSort, weights)
+      : slicedContests;
+  const contestNeighbors = pagerNeighbors(displayedContests, data.id);
+  // Desktop rail: gated on the FULL snapshot (>= 2 entries containing this
+  // election), not the slice — switching the rail to the other tab hides
+  // the current row from the slice but must not tear the rail down.
+  const railContests = pagerNeighbors(contests, data.id) !== null ? (displayedContests ?? null) : null;
+  // The context handed onward — sibling walks, the back link, and the
+  // candidate chain's back hop — carries the rail's CURRENT tab and sort,
+  // not the arrival values: leaving via any of those must land on the view
+  // the rail is showing, so the back link's params are rewritten to match.
+  const effectiveNavState: ElectionNavState | null = navState
+    ? railTabsAvailable || offeredRailSorts.length > 0
+      ? {
+          ...navState,
+          ...(railTab ? { raceType: railTab } : {}),
+          ...(railSort ? { railSort } : {}),
+          backTo: {
+            ...navState.backTo,
+            path: rewriteBackPath(
+              navState.backTo.path,
+              { available: railTabsAvailable, raceType: railTab },
+              railSort
+            ),
+          },
+        }
+      : navState
+    : null;
+  // Field removal only on the copy — the untouched branch must never mutate
+  // the state object other consumers (and history) share.
+  if (effectiveNavState !== null && effectiveNavState !== navState) {
+    if (!railTab) {
+      delete effectiveNavState.raceType;
+    }
+    if (!railSort) {
+      delete effectiveNavState.railSort;
+    }
+  }
   // Computed once, before render: the roster links hand the candidate page
   // this exact displayed order (sort + party + records filters applied), so
   // the JSX and the state payload must come from the same array.
@@ -220,8 +323,9 @@ export function ElectionPage() {
   const candidateNavState: CandidateNavState = {
     backTo: { path: `/elections/${data.id}`, label: data.official_ballot_title },
     // The election page's own incoming context rides along so the back hop
-    // restores it (election → candidate → back keeps the ballot sequence).
-    ...(navState ? { backState: navState } : {}),
+    // restores it (election → candidate → back keeps the ballot sequence,
+    // including the rail tab as switched).
+    ...(effectiveNavState ? { backState: effectiveNavState } : {}),
     electionId: data.id,
     candidates: orderedCandidates.map(({ candidate }) => ({
       id: candidate.candidate_id,
@@ -234,7 +338,7 @@ export function ElectionPage() {
   // its own context (the mirror of the roster links' backState). With the
   // rail on screen (lg+) the bar is redundant, so it drops to narrow
   // screens only; rail-less arrivals keep it at every width.
-  const pagerBar = navState ? (
+  const pagerBar = effectiveNavState ? (
     <DetailPager
       ariaLabel="Ballot navigation"
       prev={
@@ -247,9 +351,9 @@ export function ElectionPage() {
           ? { path: `/elections/${contestNeighbors.next.id}`, label: contestNeighbors.next.title }
           : null
       }
-      backTo={navState.backTo}
-      backToState={navState.backState}
-      siblingState={navState}
+      backTo={effectiveNavState.backTo}
+      backToState={effectiveNavState.backState}
+      siblingState={effectiveNavState}
     />
   ) : null;
 
@@ -264,18 +368,53 @@ export function ElectionPage() {
           : "mx-auto max-w-3xl px-4 py-8"
       }
     >
-      {railContests !== null && navState !== null ? (
+      {railContests !== null && effectiveNavState !== null ? (
         <DetailRail
           ariaLabel="Ballot"
           entries={railContests.map((contest) => ({
             id: contest.id,
             label: contest.title,
             path: `/elections/${contest.id}`,
+            picked: isPickedContest(contest.id),
           }))}
           currentId={data.id}
-          backTo={navState.backTo}
-          backToState={navState.backState}
-          siblingState={navState}
+          backTo={effectiveNavState.backTo}
+          backToState={effectiveNavState.backState}
+          siblingState={effectiveNavState}
+          headerSlot={
+            railTabsAvailable || offeredRailSorts.length > 0 ? (
+              <div className="flex flex-col gap-2">
+                {railTabsAvailable ? (
+                  <RaceTypeTabs raceType={railTab} onChange={setRailTabState} compact />
+                ) : null}
+                {offeredRailSorts.length > 0 ? (
+                  <label className="flex items-center gap-1.5 text-xs text-ink-soft">
+                    Sort
+                    <select
+                      value={railSort ?? ""}
+                      onChange={(event) =>
+                        setRailSortState(
+                          event.target.value === "" ? null : (event.target.value as RailSortKey)
+                        )
+                      }
+                      className="min-w-0 flex-1 rounded-md border border-line bg-white px-1.5 py-1 text-xs text-ink focus:border-ink focus:outline-none"
+                    >
+                      {/* "As listed" = the arrival order, whatever sort the
+                          list page was on. */}
+                      <option value="">As listed</option>
+                      {RAIL_SORTS.filter((option) => offeredRailSorts.includes(option.value)).map(
+                        (option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        )
+                      )}
+                    </select>
+                  </label>
+                ) : null}
+              </div>
+            ) : undefined
+          }
         />
       ) : null}
       {/* min-w-0: the grid column must be allowed to shrink or long titles

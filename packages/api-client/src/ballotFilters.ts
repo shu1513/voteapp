@@ -95,6 +95,9 @@ export function deriveBallotFilters({
   raceTypeRequested?: BallotRaceType | null;
 }): {
   visibleElections: ElectionSummary[];
+  /** Filters applied, tab NOT applied — the pool the detail pages' rail
+   * re-slices, so its tabs can reach races the list's tab put aside. */
+  filteredElections: ElectionSummary[];
   /** Offer the tab bar only when the full list contains both race types. */
   showRaceTypeTabs: boolean;
   /** The engaged tab; null = "All" (also when the request was ignored). */
@@ -122,17 +125,19 @@ export function deriveBallotFilters({
     elections.some((election) => election.race_type === "office") &&
     elections.some((election) => election.race_type === "ballot_measure");
   const raceType = showRaceTypeTabs ? raceTypeRequested : null;
-  // The tab slices first; the filters then apply within the slice, so the
-  // hidden count explains exactly what the filters removed from the view.
-  const tabElections = raceType
-    ? elections.filter((election) => election.race_type === raceType)
-    : elections;
-
-  const visibleElections = tabElections.filter(
+  const filteredElections = elections.filter(
     (election) =>
       (!issuesOn || matchesIssues(election, savedAreaIds)) &&
       (!impactLevel || matchesImpact(election, impactLevel))
   );
+  // The tab slices the filtered pool, so the hidden count (computed against
+  // the tab's slice) explains exactly what the filters removed from view.
+  const tabElections = raceType
+    ? elections.filter((election) => election.race_type === raceType)
+    : elections;
+  const visibleElections = raceType
+    ? filteredElections.filter((election) => election.race_type === raceType)
+    : filteredElections;
 
   const splits = (matched: ElectionSummary[]) =>
     matched.length > 0 && matched.length < elections.length;
@@ -145,6 +150,7 @@ export function deriveBallotFilters({
 
   return {
     visibleElections,
+    filteredElections,
     showRaceTypeTabs,
     raceType,
     issuesOn,

@@ -316,7 +316,16 @@ describe("SavedBallotPage nav context", () => {
     expect(router.state.location.pathname).toBe("/elections/e-1");
     expect(router.state.location.state).toEqual({
       backTo: { path: "/me/ballot?issues=mine", label: "My Elections" },
-      contests: [{ id: "e-1", title: "Governor" }],
+      contests: [
+        {
+          id: "e-1",
+          title: "Governor",
+          race_type: "office",
+          vote_power_score: 42,
+          election_date: "2026-11-03",
+          research_area_ids: [],
+        },
+      ],
     });
   });
 });

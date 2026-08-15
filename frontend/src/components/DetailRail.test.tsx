@@ -35,7 +35,7 @@ describe("DetailRail", () => {
     ]);
 
     const rail = screen.getByRole("navigation", { name: "Ballot" });
-    expect(within(rail).getByText("Mayor")).toHaveAttribute("aria-current", "page");
+    expect(within(rail).getByText("Mayor").closest("li")).toHaveAttribute("aria-current", "page");
     // Called on the current row, minimally ("nearest" scrolls the rail's own
     // container, not the page, when the row is off-screen).
     expect(scrollIntoView).toHaveBeenCalledWith({ block: "nearest" });
