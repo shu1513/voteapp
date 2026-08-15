@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
-import { Link, Outlet, ScrollRestoration, useLocation, useNavigate } from "react-router";
+import { Link, Outlet, ScrollRestoration, useLocation } from "react-router";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChatWidget } from "./components/chatbot/ChatWidget";
 import { RouteError } from "./components/RouteError";
 import { TermsRenewalGate } from "./components/TermsRenewalGate";
-import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, useLogout, useMe } from "@voteapp/api-client";
+import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, useMe } from "@voteapp/api-client";
 import { useFlushBallotDraft } from "./lib/useFlushBallotDraft";
 import { useGuestDraftNav, useMyPicksProgress } from "./lib/usePickProgress";
 
@@ -27,8 +27,6 @@ function Greeting() {
 
 function AccountNav() {
   const { me } = useMe();
-  const logout = useLogout();
-  const navigate = useNavigate();
   // Header collection mechanic, both sides of the session: guests get a
   // "My Ballot Draft" link to /draft once they've seen a ballot or made a
   // pick (null — no link — before that, so the address-search landing stays
@@ -83,15 +81,10 @@ function AccountNav() {
         : `My Draft ${picksProgress.picked}/${picksProgress.total}`
       : "My Draft";
 
-  function signOut() {
-    logout.mutate(undefined, {
-      onSuccess: () => {
-        navigate("/");
-      },
-    });
-  }
-
-  // Five inline items wrap into a broken two-line header on phones, so the
+  // Log out lives in Settings (Sessions section), not the header — it kept a
+  // rarely-used action in premium header space. "My Draft" sits last so the
+  // working document is the item nearest the reader's thumb.
+  // Inline items wrap into a broken two-line header on phones, so the
   // signed-in nav is inline links on sm+ and a menu below that breakpoint.
   return (
     <>
@@ -99,18 +92,15 @@ function AccountNav() {
         <Link to="/me/ballot" className="text-ink-soft hover:text-ink">
           My Elections
         </Link>
-        <Link to="/me/picks" className="whitespace-nowrap text-ink-soft hover:text-ink">
-          {myDraftLabel}
-        </Link>
         <Link to="/me/follows" className="whitespace-nowrap text-ink-soft hover:text-ink">
           My Candidates
         </Link>
         <Link to="/me/settings" className="text-ink-soft hover:text-ink">
           Settings
         </Link>
-        <button type="button" className="text-ink-soft hover:text-ink" onClick={signOut}>
-          Log out
-        </button>
+        <Link to="/me/picks" className="whitespace-nowrap text-ink-soft hover:text-ink">
+          {myDraftLabel}
+        </Link>
       </span>
       <Menu as="div" className="relative sm:hidden">
         <MenuButton className="rounded-lg border border-line px-3 py-1.5 font-medium text-ink">
@@ -120,11 +110,6 @@ function AccountNav() {
           <MenuItem>
             <Link to="/me/ballot" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
               My Elections
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link to="/me/picks" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
-              {myDraftLabel}
             </Link>
           </MenuItem>
           <MenuItem>
@@ -138,13 +123,9 @@ function AccountNav() {
             </Link>
           </MenuItem>
           <MenuItem>
-            <button
-              type="button"
-              onClick={signOut}
-              className="block w-full px-4 py-2 text-left text-ink data-[focus]:bg-surface"
-            >
-              Log out
-            </button>
+            <Link to="/me/picks" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
+              {myDraftLabel}
+            </Link>
           </MenuItem>
         </MenuItems>
       </Menu>

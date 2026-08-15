@@ -6,7 +6,7 @@ import type { EmailPreferences } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { ResearchAreasSection } from "../components/ResearchAreasSection";
 import { SavedAddressForm } from "../components/SavedAddressForm";
-import { purgeAccountScopedQueries, useMe, type Me } from "@voteapp/api-client";
+import { purgeAccountScopedQueries, useLogout, useMe, type Me } from "@voteapp/api-client";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 
 // Account settings. Sections mirror the backend's gating: profile, password,
@@ -377,6 +377,9 @@ function EmailPreferencesSection() {
 function SessionsSection() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  // Log out moved here from the header (freed a nav slot for My Draft):
+  // this-device logout and everywhere-logout now sit side by side.
+  const logout = useLogout();
   const logoutAll = useMutation({
     mutationFn: () => apiRequest<{ status: string }>("/api/auth/logout-all", { method: "POST", body: {} }),
     onSuccess: () => {
@@ -388,15 +391,38 @@ function SessionsSection() {
 
   return (
     <Section title="Sessions">
-      <p className="mt-1 text-sm text-ink-soft">Log out of every device, including this one.</p>
-      <button
-        type="button"
-        disabled={logoutAll.isPending}
-        onClick={() => logoutAll.mutate()}
-        className="mt-3 rounded-lg border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-rausch"
-      >
-        {logoutAll.isPending ? "Logging out…" : "Log out everywhere"}
-      </button>
+      <p className="mt-1 text-sm text-ink-soft">
+        Log out on this device, or on every device at once.
+      </p>
+      <div className="mt-3 flex flex-wrap gap-3">
+        <button
+          type="button"
+          disabled={logout.isPending || logoutAll.isPending}
+          onClick={() =>
+            logout.mutate(undefined, {
+              onSuccess: () => {
+                navigate("/");
+              },
+            })
+          }
+          className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-rausch"
+        >
+          {logout.isPending ? "Logging out…" : "Log out"}
+        </button>
+        <button
+          type="button"
+          disabled={logout.isPending || logoutAll.isPending}
+          onClick={() => logoutAll.mutate()}
+          className="rounded-lg border border-line bg-white px-4 py-2 text-sm font-semibold text-ink transition hover:border-rausch"
+        >
+          {logoutAll.isPending ? "Logging out…" : "Log out everywhere"}
+        </button>
+      </div>
+      {logout.isError ? (
+        <div className="mt-2">
+          <ErrorNotice error={logout.error} />
+        </div>
+      ) : null}
       {logoutAll.isError ? (
         <div className="mt-2">
           <ErrorNotice error={logoutAll.error} />
