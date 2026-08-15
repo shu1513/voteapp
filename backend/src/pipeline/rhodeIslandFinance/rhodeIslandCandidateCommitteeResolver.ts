@@ -1,4 +1,4 @@
-import { firstNameVariants } from "../finance/personFirstNameNicknames.js";
+import { firstNamesConflict, firstNameVariants } from "../finance/personFirstNameNicknames.js";
 import { personNamesMatchWithMiddleEvidence } from "../finance/personNameMiddleEvidence.js";
 import {
   searchErtsOrganizations,
@@ -46,6 +46,7 @@ export type RhodeIslandCandidateCommitteeUnmatchedReason =
   | "unsupported_office"
   | "paginated_search_results"
   | "no_organization_match"
+  | "unknown_registration_status"
   | "no_active_organization_match";
 
 export type RhodeIslandCandidateCommitteeRowResolution =
@@ -107,8 +108,29 @@ export function rhodeIslandLastNameSearchToken(candidateName: string): string {
 
 // Expand nicknames on the VoteApp side ONLY (the personFirstNameNicknames
 // design rule): two distinct registered names can never meet at a shared key.
+//
+// That module's shared-nickname tradeoff ("Pat Smith" may link the one
+// registered PATRICIA SMITH) leans on office/district/year agreement to break
+// ties — corroboration the ERTS grid does not carry. So a bridge that could
+// also reach a DIFFERENT formal family (PAT → PATRICK or PATRICIA, SAM →
+// SAMUEL or SAMANTHA, TED → EDWARD or THEODORE) is not usable evidence here
+// and refuses; the manual-link escape hatch covers the genuine cases.
+// Unambiguous bridges (MIKE → MICHAEL) and formal spelling variants of one
+// name (STEVE → STEPHEN/STEVEN) still match.
 function firstNamesEquivalent(candidateFirst: string, rowFirst: string): boolean {
-  return candidateFirst === rowFirst || firstNameVariants(candidateFirst).includes(rowFirst);
+  if (candidateFirst === rowFirst) {
+    return true;
+  }
+  if (!firstNameVariants(candidateFirst).includes(rowFirst)) {
+    return false;
+  }
+  // Checked from both ends: PAT → PATRICIA is vetoed because PAT also
+  // reaches PATRICK, and PATRICK → PAT is vetoed because the registered PAT
+  // could be a Patricia.
+  const bridgesConflictingFamily =
+    firstNameVariants(candidateFirst).some((variant) => firstNamesConflict(variant, rowFirst)) ||
+    firstNameVariants(rowFirst).some((variant) => firstNamesConflict(variant, candidateFirst));
+  return !bridgesConflictingFamily;
 }
 
 /**
@@ -131,6 +153,8 @@ export function rhodeIslandOrganizationNameMatchesCandidate(
 }
 
 const ACTIVE_STATUS = "ACTIVE";
+// The Board's full status vocabulary as proven live (2026-08-13 spike).
+const KNOWN_STATUSES = new Set([ACTIVE_STATUS, "INACTIVE"]);
 
 /** Pure resolution over one search page's rows; see the module header. */
 export function resolveRhodeIslandCandidateCommitteeRows(
@@ -164,8 +188,13 @@ export function resolveRhodeIslandCandidateCommitteeRows(
     postbackTarget: row.postbackTarget,
     status: row.status,
   });
-  // Unknown status vocabulary is treated as not-Active: linking needs the
-  // Board's positive signal, and a drifted status column must not widen it.
+  // A name-matching row with a status outside the pinned vocabulary refuses
+  // outright: a drifted column must neither widen the gate NOR narrow it —
+  // a renamed active status ("Current") silently dropped here could hide a
+  // second candidate that should have made the resolution ambiguous.
+  if (nameMatches.some((row) => !KNOWN_STATUSES.has(row.status.toUpperCase()))) {
+    return { status: "unmatched", reason: "unknown_registration_status", candidateNameNormalized };
+  }
   const activeMatches = nameMatches.filter((row) => row.status.toUpperCase() === ACTIVE_STATUS);
   if (activeMatches.length === 0) {
     return { status: "unmatched", reason: "no_active_organization_match", candidateNameNormalized };

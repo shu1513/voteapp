@@ -670,7 +670,26 @@ selectors, not the migration.
   zero-result search page shape was never captured, so a gridless results page
   is an error, not "no committee" — PR 9 pins the real no-results marker if it
   appears. No CLI and no scheduler in this PR (auto-link is invoked by PR 7's
-  sync path, the maryland/georgia wiring).)
+  sync path, the maryland/georgia wiring).
+  Review round (2026-08-14): (1) nickname bridges that reach two conflicting
+  formal families (PAT → PATRICK/PATRICIA, SAM, TED, CHRIS…) now refuse in
+  both directions — the shared nickname module's tradeoff leans on
+  office/district/year corroboration ERTS does not carry; unambiguous
+  bridges (MIKE → MICHAEL) and spelling variants (STEVE → STEPHEN/STEVEN)
+  still match. (2) A name-matching row with a status outside the pinned
+  Active/Inactive vocabulary refuses outright (`unknown_registration_status`)
+  — a renamed active status silently dropped could hide a second candidate.
+  (3) A manual+inactive row for the exact resolved pairing returns
+  `needs_review`/`manual_link_disabled` instead of writing — the writer's
+  anti-resurrection preserve would have made the upsert a silent no-op
+  falsely reported as linked. (4) `RHODE_ISLAND_ERTS_PARSER_VERSION` bumped
+  to 2 (org-search output fields changed in this PR). (5) Selector and
+  coverage counter share one eligible-population SQL fragment; pager
+  detection accumulates across pager rows. Considered and REJECTED: a
+  partial unique index on (committee_id, election_year) WHERE active — it
+  would break the legitimate primary+general same-year links; the
+  duplicate-claim guard stays read-then-write like the rest of the fleet,
+  with runs operator-serialized.)
 - [ ] PR 6 direct aggregator + report selector
 - [ ] PR 7 sync + batchSync + scheduler
 - [ ] PR 8 CF-8 supplements + outside aggregators

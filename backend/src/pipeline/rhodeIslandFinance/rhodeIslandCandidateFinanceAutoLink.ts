@@ -88,6 +88,30 @@ function mapCandidateElectionRow(row: CandidateElectionQueryRow): RhodeIslandFin
   };
 }
 
+// The eligible-population body shared VERBATIM by the selector and the
+// coverage counter, so "eligible" cannot drift between them (the completeness
+// report's whole premise). Placeholders: $1 = now, $2 = lookback days,
+// $3 = lookahead days, $4 = eligible office keys.
+const ELIGIBLE_CANDIDATE_ELECTIONS_SQL = `
+      FROM public.candidate_elections AS candidate_election
+      JOIN public.candidates AS candidate
+        ON candidate.id = candidate_election.candidate_id
+      JOIN public.elections AS election
+        ON election.id = candidate_election.election_id
+      JOIN public.districts AS district
+        ON district.id = election.district_id
+      LEFT JOIN public.offices AS office
+        ON office.id = election.office_id
+      WHERE candidate.deleted_at IS NULL
+        AND district.state = 'RI'
+        AND election.race_type = 'office'
+        AND election.election_date >= ($1::date - make_interval(days => $2::int))
+        AND election.election_date <= ($1::date + make_interval(days => $3::int))
+        AND candidate_election.status NOT IN ('withdrawn', 'lost')
+        AND (office.scope || '::' || office.canonical_name) = ANY($4::text[])
+        AND COALESCE(NULLIF(trim(candidate.display_name), ''), NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')) IS NOT NULL
+`;
+
 export async function listRhodeIslandCandidateElectionsMissingFinanceLinks(
   db: Queryable,
   input: {
@@ -121,23 +145,7 @@ export async function listRhodeIslandCandidateElectionsMissingFinanceLinks(
             )
           ELSE NULL
         END AS district
-      FROM public.candidate_elections AS candidate_election
-      JOIN public.candidates AS candidate
-        ON candidate.id = candidate_election.candidate_id
-      JOIN public.elections AS election
-        ON election.id = candidate_election.election_id
-      JOIN public.districts AS district
-        ON district.id = election.district_id
-      LEFT JOIN public.offices AS office
-        ON office.id = election.office_id
-      WHERE candidate.deleted_at IS NULL
-        AND district.state = 'RI'
-        AND election.race_type = 'office'
-        AND election.election_date >= ($1::date - make_interval(days => $3::int))
-        AND election.election_date <= ($1::date + make_interval(days => $4::int))
-        AND candidate_election.status NOT IN ('withdrawn', 'lost')
-        AND (office.scope || '::' || office.canonical_name) = ANY($5::text[])
-        AND COALESCE(NULLIF(trim(candidate.display_name), ''), NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')) IS NOT NULL
+      ${ELIGIBLE_CANDIDATE_ELECTIONS_SQL}
         AND NOT EXISTS (
           SELECT 1
           FROM public.ri_candidate_finance_links AS link
@@ -146,14 +154,14 @@ export async function listRhodeIslandCandidateElectionsMissingFinanceLinks(
             AND link.link_status = 'active'
         )
       ORDER BY election.election_date ASC, candidate.display_name ASC NULLS LAST, candidate.id ASC
-      LIMIT $2::int
+      LIMIT $5::int
     `,
     [
       input.now.toISOString(),
-      input.maxCandidates,
       input.electionLookbackDays,
       input.electionLookaheadDays,
       [...RHODE_ISLAND_FINANCE_ELIGIBLE_OFFICE_KEYS],
+      input.maxCandidates,
     ]
   );
 
@@ -161,6 +169,14 @@ export async function listRhodeIslandCandidateElectionsMissingFinanceLinks(
 }
 
 // The duplicate-claim guard's read; exported for the guard's own test.
+//
+// Read-then-write, like the rest of the auto-link fleet: the invariant ("one
+// distinct candidate per committee-year among active links") is not
+// expressible as a unique index — a candidate legitimately holds active links
+// for BOTH the September primary and November general election rows of one
+// cycle, same committee, same election_year. Concurrent runs are therefore
+// not serialized here; runs are operator-serialized (one scheduler, paced
+// portal requests), and an overlapping manual run is operator error.
 export async function findRhodeIslandCommitteeClaim(
   db: Queryable,
   input: { committeeId: string; electionYear: number; candidateId: string }
@@ -179,6 +195,27 @@ export async function findRhodeIslandCommitteeClaim(
   );
   const row = result.rows[0];
   return row ? { candidateId: row.candidate_id, electionId: row.election_id } : null;
+}
+
+// The manual-disabled guard's read; exported for the guard's own test.
+export async function findRhodeIslandDisabledManualLink(
+  db: Queryable,
+  input: { candidateId: string; electionId: string; committeeId: string }
+): Promise<boolean> {
+  const result = await db.query(
+    `
+      SELECT 1
+      FROM public.ri_candidate_finance_links AS link
+      WHERE link.candidate_id = $1::uuid
+        AND link.election_id = $2::uuid
+        AND link.committee_id = $3
+        AND link.link_source = 'manual'
+        AND link.link_status = 'inactive'
+      LIMIT 1
+    `,
+    [input.candidateId, input.electionId, input.committeeId]
+  );
+  return result.rows.length > 0;
 }
 
 export async function autoLinkRhodeIslandCandidateFinanceForCandidateElection(input: {
@@ -228,6 +265,26 @@ export async function autoLinkRhodeIslandCandidateFinanceForCandidateElection(in
       electionId: candidateElection.electionId,
       status: resolution.status,
       reason: resolution.reason,
+    };
+  }
+
+  // An operator-disabled manual row (manual + inactive) for this exact
+  // pairing means "reviewed and switched off". The shared writer preserves a
+  // manual row's status and source on upsert (the #667 anti-resurrection
+  // rule), so writing here would be a silent no-op reported as "linked".
+  // Surface it for review instead of writing.
+  const disabledManual = await findRhodeIslandDisabledManualLink(input.db, {
+    candidateId: candidateElection.candidateId,
+    electionId: candidateElection.electionId,
+    committeeId: resolution.orgId,
+  });
+  if (disabledManual) {
+    return {
+      candidateId: candidateElection.candidateId,
+      electionId: candidateElection.electionId,
+      status: "needs_review",
+      reason: "manual_link_disabled",
+      committeeId: resolution.orgId,
     };
   }
 
@@ -363,23 +420,7 @@ export async function countRhodeIslandFinanceLinkCoverage(
               AND link.link_status = 'active'
           )
         ) AS linked_count
-      FROM public.candidate_elections AS candidate_election
-      JOIN public.candidates AS candidate
-        ON candidate.id = candidate_election.candidate_id
-      JOIN public.elections AS election
-        ON election.id = candidate_election.election_id
-      JOIN public.districts AS district
-        ON district.id = election.district_id
-      LEFT JOIN public.offices AS office
-        ON office.id = election.office_id
-      WHERE candidate.deleted_at IS NULL
-        AND district.state = 'RI'
-        AND election.race_type = 'office'
-        AND election.election_date >= ($1::date - make_interval(days => $2::int))
-        AND election.election_date <= ($1::date + make_interval(days => $3::int))
-        AND candidate_election.status NOT IN ('withdrawn', 'lost')
-        AND (office.scope || '::' || office.canonical_name) = ANY($4::text[])
-        AND COALESCE(NULLIF(trim(candidate.display_name), ''), NULLIF(trim(candidate.first_name || ' ' || candidate.last_name), '')) IS NOT NULL
+      ${ELIGIBLE_CANDIDATE_ELECTIONS_SQL}
     `,
     [
       input.now.toISOString(),

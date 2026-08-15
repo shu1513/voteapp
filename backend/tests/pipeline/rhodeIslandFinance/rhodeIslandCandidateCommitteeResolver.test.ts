@@ -70,6 +70,21 @@ describe("rhodeIslandOrganizationNameMatchesCandidate", () => {
   it("never matches a committee-style name by substring", () => {
     expect(rhodeIslandOrganizationNameMatchesCandidate("FRIENDS OF DANIEL MCKEE", "Daniel McKee")).toBe(false);
   });
+
+  it("refuses a nickname that bridges two formal families — ERTS has no corroborating columns", () => {
+    // PAT reaches both PATRICK and PATRICIA; without office/district/year
+    // agreement the bridge is not evidence, in either direction.
+    expect(rhodeIslandOrganizationNameMatchesCandidate("PATRICIA MCKEE", "Pat McKee")).toBe(false);
+    expect(rhodeIslandOrganizationNameMatchesCandidate("PAT MCKEE", "Patrick McKee")).toBe(false);
+    expect(rhodeIslandOrganizationNameMatchesCandidate("SAMANTHA MCKEE", "Sam McKee")).toBe(false);
+    expect(rhodeIslandOrganizationNameMatchesCandidate("THEODORE MCKEE", "Ted McKee")).toBe(false);
+  });
+
+  it("still matches unambiguous nicknames and formal spelling variants", () => {
+    expect(rhodeIslandOrganizationNameMatchesCandidate("MICHAEL MCKEE", "Mike McKee")).toBe(true);
+    expect(rhodeIslandOrganizationNameMatchesCandidate("STEPHEN MCKEE", "Steve McKee")).toBe(true);
+    expect(rhodeIslandOrganizationNameMatchesCandidate("WILLIAM MCKEE", "Bill McKee")).toBe(true);
+  });
 });
 
 describe("resolveRhodeIslandCandidateCommitteeRows", () => {
@@ -113,10 +128,20 @@ describe("resolveRhodeIslandCandidateCommitteeRows", () => {
     });
   });
 
-  it("treats an unknown status as not-Active instead of widening the gate", () => {
+  it("refuses outright when a name-matching row carries an unknown status", () => {
+    // Neither widen nor narrow on drift: a renamed active status silently
+    // dropped could hide a second candidate that should read as ambiguous.
     expect(resolve({ searchRows: [row({ status: "Pending" })] })).toMatchObject({
       status: "unmatched",
-      reason: "no_active_organization_match",
+      reason: "unknown_registration_status",
+    });
+    expect(
+      resolve({
+        searchRows: [row(), row({ status: "Current", postbackTarget: "dgdOrgSearchResults$ctl04$lnkOrgID" })],
+      })
+    ).toMatchObject({
+      status: "unmatched",
+      reason: "unknown_registration_status",
     });
   });
 

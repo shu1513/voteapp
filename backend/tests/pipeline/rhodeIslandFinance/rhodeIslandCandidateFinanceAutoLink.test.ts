@@ -50,11 +50,16 @@ function matchedResolution(): RhodeIslandCandidateCommitteeResolution {
   };
 }
 
-// db.query stub covering both statements the linked path issues: the
-// duplicate-claim guard SELECT (no claim) and the writer's link upsert.
-function linkableDb(claimRows: Array<{ candidate_id: string; election_id: string }> = []) {
+// db.query stub covering the statements the linked path issues: the
+// manual-disabled guard SELECT, the duplicate-claim guard SELECT, and the
+// writer's link upsert.
+function linkableDb(
+  claimRows: Array<{ candidate_id: string; election_id: string }> = [],
+  disabledManualRows: Array<{ "?column?": number }> = []
+) {
   return {
     query: vi.fn().mockImplementation(async (sql: string) => {
+      if (sql.includes("link.link_source = 'manual'")) return { rows: disabledManualRows };
       if (sql.includes("link.committee_id = $1")) return { rows: claimRows };
       return { rows: [{ id: "link-1" }] };
     }),
@@ -74,7 +79,7 @@ describe("listRhodeIslandCandidateElectionsMissingFinanceLinks", () => {
     expect(sql).toContain("district.state = 'RI'");
     expect(sql).toContain("public.ri_candidate_finance_links");
     expect(sql).toContain("link.link_status = 'active'");
-    expect(params).toEqual([NOW.toISOString(), 25, 30, 730, [...RHODE_ISLAND_FINANCE_ELIGIBLE_OFFICE_KEYS]]);
+    expect(params).toEqual([NOW.toISOString(), 30, 730, [...RHODE_ISLAND_FINANCE_ELIGIBLE_OFFICE_KEYS], 25]);
   });
 });
 
@@ -152,6 +157,33 @@ describe("autoLinkMissingRhodeIslandCandidateFinanceLinks", () => {
     } finally {
       warn.mockRestore();
     }
+  });
+
+  it("refuses to re-write a pairing an operator manually disabled", async () => {
+    // The writer preserves a manual row's status (anti-resurrection), so an
+    // upsert here would be a silent no-op falsely reported as "linked".
+    const db = linkableDb([], [{ "?column?": 1 }]);
+    const results = await autoLinkMissingRhodeIslandCandidateFinanceLinks({
+      db,
+      transport: NOOP_TRANSPORT,
+      now: NOW,
+      maxCandidates: 10,
+      electionLookbackDays: 30,
+      electionLookaheadDays: 730,
+      candidateElections: [candidateElection()],
+      resolveCandidateCommittee: async () => matchedResolution(),
+    });
+    expect(results).toEqual([
+      {
+        candidateId: CANDIDATE_ID,
+        electionId: ELECTION_ID,
+        status: "needs_review",
+        reason: "manual_link_disabled",
+        committeeId: "2235",
+      },
+    ]);
+    const upsert = db.query.mock.calls.find(([sql]) => sql.includes("INSERT"));
+    expect(upsert).toBeUndefined();
   });
 
   it("reports ambiguous resolutions without writing anything", async () => {

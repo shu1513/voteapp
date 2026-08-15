@@ -13,7 +13,7 @@
 // Bumped whenever a pinned vocabulary or an output field changes, so cached
 // artifacts validated under an older version re-validate instead of being
 // trusted (north carolina cache discipline).
-export const RHODE_ISLAND_ERTS_PARSER_VERSION = 1;
+export const RHODE_ISLAND_ERTS_PARSER_VERSION = 2;
 
 // Base of every public portal route. Lives here (not the client) because the
 // CF-8 index parser must absolutize relative `/ReportsScanned/` links.
@@ -349,8 +349,10 @@ export function parseErtsOrganizationSearchPage(html: string): ErtsOrganizationS
     if (cells.length === 0 || cells[0] === "Organization Name") continue;
     if (/<td\b[^>]*colspan=/i.test(rowHtml)) {
       // The pager row (single full-width cell). One page renders a bare
-      // <span>1</span>; page links mean more results exist.
-      hasMorePages = /<a\b/i.test(rowHtml);
+      // <span>1</span>; page links mean more results exist. Accumulate: if
+      // the grid ever renders top AND bottom pagers, one link-bearing row
+      // must keep the page marked incomplete.
+      hasMorePages ||= /<a\b/i.test(rowHtml);
       continue;
     }
     const target = /__doPostBack\('(dgdOrgSearchResults\$[^']*\$lnkOrgID)'/.exec(rowHtml)?.[1];
