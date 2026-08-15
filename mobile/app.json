@@ -10,7 +10,9 @@
     "ios": {
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "com.impactperdollar.voteapp",
-      "associatedDomains": ["applinks:electionssimplified.com"]
+      "associatedDomains": [
+        "applinks:electionssimplified.com"
+      ]
     },
     "android": {
       "package": "com.impactperdollar.voteapp",
@@ -18,13 +20,36 @@
         {
           "action": "VIEW",
           "autoVerify": true,
-          "category": ["BROWSABLE", "DEFAULT"],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ],
           "data": [
-            { "scheme": "https", "host": "electionssimplified.com", "pathPrefix": "/verify-email" },
-            { "scheme": "https", "host": "electionssimplified.com", "pathPrefix": "/reset-password" },
-            { "scheme": "https", "host": "electionssimplified.com", "pathPrefix": "/ballot" },
-            { "scheme": "https", "host": "electionssimplified.com", "pathPrefix": "/elections/" },
-            { "scheme": "https", "host": "electionssimplified.com", "pathPrefix": "/candidates/" }
+            {
+              "scheme": "https",
+              "host": "electionssimplified.com",
+              "pathPrefix": "/verify-email"
+            },
+            {
+              "scheme": "https",
+              "host": "electionssimplified.com",
+              "pathPrefix": "/reset-password"
+            },
+            {
+              "scheme": "https",
+              "host": "electionssimplified.com",
+              "pathPrefix": "/ballot"
+            },
+            {
+              "scheme": "https",
+              "host": "electionssimplified.com",
+              "pathPrefix": "/elections/"
+            },
+            {
+              "scheme": "https",
+              "host": "electionssimplified.com",
+              "pathPrefix": "/candidates/"
+            }
           ]
         }
       ],
@@ -52,7 +77,8 @@
       ],
       "expo-secure-store",
       "expo-notifications",
-      "@sentry/react-native"
+      "@sentry/react-native",
+      "expo-image"
     ],
     "experiments": {
       "typedRoutes": true,

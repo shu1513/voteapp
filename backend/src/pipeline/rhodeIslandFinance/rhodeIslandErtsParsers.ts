@@ -13,7 +13,7 @@
 // Bumped whenever a pinned vocabulary or an output field changes, so cached
 // artifacts validated under an older version re-validate instead of being
 // trusted (north carolina cache discipline).
-export const RHODE_ISLAND_ERTS_PARSER_VERSION = 1;
+export const RHODE_ISLAND_ERTS_PARSER_VERSION = 2;
 
 // Base of every public portal route. Lives here (not the client) because the
 // CF-8 index parser must absolutize relative `/ReportsScanned/` links.
@@ -317,20 +317,62 @@ export type ErtsOrganizationSearchRow = {
   organizationName: string;
   // WebForms postback target that selects this row in the live session.
   postbackTarget: string;
+  // Board registration status column ("Active" / "Inactive") — the only
+  // non-name evidence the search grid offers, and what the resolver's
+  // active-registration gate reads.
+  status: string;
 };
 
-/** Rows of the session-scoped organization search grid (Contributions.aspx). */
-export function parseErtsOrganizationSearchRows(html: string): ErtsOrganizationSearchRow[] {
+export type ErtsOrganizationSearchPage = {
+  rows: ErtsOrganizationSearchRow[];
+  // True when the grid's pager row carries page links: the rows above are an
+  // incomplete slice, so nothing name-based can be proven complete from this
+  // page alone. The pager's postback mechanics were never probed (spike
+  // searches all fit one page), so callers deciding identity must refuse a
+  // paginated result rather than guess.
+  hasMorePages: boolean;
+};
+
+/**
+ * The session-scoped organization search grid (Contributions.aspx). Column
+ * layout pinned live 2026-08-13: name (a `$lnkOrgID` select link), address,
+ * city, state, status. Fail-closed like the filing-list parser: only the
+ * pinned header and pager rows may be skipped — a data-like row that fails
+ * the shape throws, because a silently dropped row here is a committee the
+ * resolver never sees.
+ */
+export function parseErtsOrganizationSearchPage(html: string): ErtsOrganizationSearchPage {
   const rows: ErtsOrganizationSearchRow[] = [];
+  let hasMorePages = false;
   for (const rowHtml of gridRowHtml(html, ERTS_ORG_SEARCH_GRID_ID)) {
-    const target = /__doPostBack\('(dgdOrgSearchResults\$[^']+)'/.exec(rowHtml)?.[1];
-    if (!target) continue;
+    const cells = rowCells(rowHtml);
+    if (cells.length === 0 || cells[0] === "Organization Name") continue;
+    if (/<td\b[^>]*colspan=/i.test(rowHtml)) {
+      // The pager row (single full-width cell). One page renders a bare
+      // <span>1</span>; page links mean more results exist. Accumulate: if
+      // the grid ever renders top AND bottom pagers, one link-bearing row
+      // must keep the page marked incomplete.
+      hasMorePages ||= /<a\b/i.test(rowHtml);
+      continue;
+    }
+    const target = /__doPostBack\('(dgdOrgSearchResults\$[^']*\$lnkOrgID)'/.exec(rowHtml)?.[1];
+    if (!target || cells.length < 5) {
+      throw new Error(
+        `ERTS organization search row does not match the pinned shape (cells: ${JSON.stringify(cells.slice(0, 3))}…)`
+      );
+    }
     rows.push({
-      organizationName: stripErtsTags(/<td\b[^>]*>([\s\S]*?)<\/td>/i.exec(rowHtml)?.[1] ?? ""),
+      organizationName: cells[0]!,
       postbackTarget: target,
+      status: cells[4]!,
     });
   }
-  return rows;
+  return { rows, hasMorePages };
+}
+
+/** Rows of the organization search grid; see parseErtsOrganizationSearchPage. */
+export function parseErtsOrganizationSearchRows(html: string): ErtsOrganizationSearchRow[] {
+  return parseErtsOrganizationSearchPage(html).rows;
 }
 
 // --- Organization filing list ------------------------------------------------

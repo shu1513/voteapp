@@ -634,7 +634,62 @@ selectors, not the migration.
   data-like rows that fail the pinned shape (only the pinned header/pager
   rows may be skipped) — a silently dropped row is a dropped reporting
   period or a missed outside filing.)
-- [ ] PR 5 resolver + auto-link
+- [x] PR 5 resolver + auto-link
+  (`rhodeIslandCandidateCommitteeResolver.ts` + `rhodeIslandCandidateFinanceAutoLink.ts`.
+  ERTS has no bulk registry, so the only committee evidence is the portal's
+  organization search grid: person-style organization name + Board
+  Active/Inactive status — no office, district, or year columns. Resolution is
+  the shared person-name match (denver pattern: normalization + one-sided
+  nickname expansion + middle-name and generational-suffix vetoes,
+  token-based, never substring — "FRIENDS OF DANIEL MCKEE" does not match)
+  gated to Active registrations, fail-closed: a paginated result grid refuses
+  (`paginated_search_results` — the pager was never probed and the rows are an
+  incomplete slice; if PR 9 shows common RI surnames paginating, pager
+  traversal becomes a follow-up with live verification), an Inactive-only
+  match refuses, two Active matches are ambiguous, and an unknown status is
+  treated as not-Active. The OrgID never appears in the grid, so the live
+  wrapper selects the matched row by its own postback target (no name-string
+  round trip) and reads the key off the dated search's redirect — 5 paced
+  requests per match, 3 per miss. Parser now pins the full search-row shape
+  (name link `$lnkOrgID`, address, city, state, status; data-like rows that
+  fail the shape throw) and detects pager links; the client's discovery is
+  split into `searchErtsOrganizations` + `selectErtsOrganizationOrgId` with
+  `discoverErtsOrganization` composing them unchanged (a paginated search is
+  tolerated there on purpose — acquisition pins the expected OrgID, so only
+  first-time identity decisions must refuse pagination). Auto-link is the
+  georgia per-candidate loop (selector query bound to eligible offices,
+  per-candidate error isolation, ambiguous/unmatched reported but never
+  written) plus a duplicate-claim guard: with name as the ONLY evidence, an
+  OrgID already actively linked to a different candidate in the same election
+  year goes to `needs_review` instead of double-linking — the backstop other
+  states get from office/district columns. Roster completeness report =
+  coverage counts over the selector's own population (eligible, actively
+  linked, linked percentage) + a pure run tally
+  (linked/ambiguous/needs_review/errors/unmatched-by-reason), consumed by the
+  PR 7 sync CLI and the PR 9 live-run report. Known deferred gap: the portal's
+  zero-result search page shape was never captured, so a gridless results page
+  is an error, not "no committee" — PR 9 pins the real no-results marker if it
+  appears. No CLI and no scheduler in this PR (auto-link is invoked by PR 7's
+  sync path, the maryland/georgia wiring).
+  Review round (2026-08-14): (1) nickname bridges that reach two conflicting
+  formal families (PAT → PATRICK/PATRICIA, SAM, TED, CHRIS…) now refuse in
+  both directions — the shared nickname module's tradeoff leans on
+  office/district/year corroboration ERTS does not carry; unambiguous
+  bridges (MIKE → MICHAEL) and spelling variants (STEVE → STEPHEN/STEVEN)
+  still match. (2) A name-matching row with a status outside the pinned
+  Active/Inactive vocabulary refuses outright (`unknown_registration_status`)
+  — a renamed active status silently dropped could hide a second candidate.
+  (3) A manual+inactive row for the exact resolved pairing returns
+  `needs_review`/`manual_link_disabled` instead of writing — the writer's
+  anti-resurrection preserve would have made the upsert a silent no-op
+  falsely reported as linked. (4) `RHODE_ISLAND_ERTS_PARSER_VERSION` bumped
+  to 2 (org-search output fields changed in this PR). (5) Selector and
+  coverage counter share one eligible-population SQL fragment; pager
+  detection accumulates across pager rows. Considered and REJECTED: a
+  partial unique index on (committee_id, election_year) WHERE active — it
+  would break the legitimate primary+general same-year links; the
+  duplicate-claim guard stays read-then-write like the rest of the fleet,
+  with runs operator-serialized.)
 - [ ] PR 6 direct aggregator + report selector
 - [ ] PR 7 sync + batchSync + scheduler
 - [ ] PR 8 CF-8 supplements + outside aggregators
