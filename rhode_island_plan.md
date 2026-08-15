@@ -742,7 +742,18 @@ selectors, not the migration.
   2025 CF-2 values as a synthesized text-layer PDF (donor pages never enter
   the repo, so PDFs are synthesized with real hand-read values), in-force-
   version selection, straddle/missing-label/mismatch/party-building
-  quarantines, the 2022 in-kind set-sum, and the CF-5 no-publish case.)
+  quarantines, the 2022 in-kind set-sum, and the CF-5 no-publish case.
+  Review round (2026-08-14), both findings real and fixed: (1) a filed CF-2
+  row whose period is regex-shaped but not a calendar date ("02/30/2026"
+  passes the filing-list digit pin, fails the round-trip) landed in
+  `unusablePeriodRowCount` and was silently dropped while surviving periods
+  published understated totals — now quarantines
+  (`unusable_period_window`); (2) the CF-2 arithmetic can net a cycle flow
+  negative (refund-heavy period), but the fleet schema signs only
+  cash_on_hand — the writer and the migration-236 CHECK reject negative
+  receipts/disbursements/direct totals, so a "publishable" negative flow
+  would just crash PR 7's sync at the writer every run — now quarantines
+  (`negative_cycle_flow`) before the summary is built.)
 - [ ] PR 7 sync + batchSync + scheduler
 - [ ] PR 8 CF-8 supplements + outside aggregators
 - [ ] PR 9 live run + reconciliation report

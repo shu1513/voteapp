@@ -192,6 +192,37 @@ describe("selectRhodeIslandCf2CyclePeriods", () => {
     expect(selection.cycleTotals).toBeNull();
   });
 
+  it("quarantines a filed CF-2 whose period is regex-shaped but not a calendar date", async () => {
+    // "02/30/2026" passes the filing-list parser's MM/DD/YYYY digit pin but
+    // fails the calendar round-trip, so the row lands in
+    // unusablePeriodRowCount — publishing the surviving periods would
+    // silently understate the cycle.
+    const filingsWithBadDate =
+      '<table id="grdSearchResults">' +
+      "<tr><td>Report Type</td><td>Begin</td><td>End</td><td>Due</td><td>Report Status</td><td>Original Filed</td><td>Amended</td><td>&nbsp;</td></tr>" +
+      "<tr><td>2026 On-Going Qrtly (1st)</td><td>02/30/2026</td><td>03/31/2026</td><td>04/30/2026</td>" +
+      "<td>Received by BOE</td><td>Apr 30 2026  9:00AM</td><td>No</td>" +
+      '<td><a href="https://secure.ricampaignfinance.com/RhodeIslandCF/Candidate/FilingAmendmentSelect.aspx?X=T&amp;FilingID=239999&amp;FormName=RICF2">View</a></td></tr>' +
+      "</table>";
+    await storeErtsArtifact({
+      cacheDir,
+      key: { type: "organization_filings", orgId: "2235" },
+      url: "https://www.ricampaignfinance.com/RIPublic/Filings.aspx",
+      body: filingsWithBadDate,
+    });
+    const selection = await selectRhodeIslandCf2CyclePeriods({
+      cacheDir,
+      orgId: "2235",
+      cycleBeginIso: "2025-01-01",
+      cycleEndIso: "2026-12-31",
+    });
+    expect(selection.filingSelection.unusablePeriodRowCount).toBe(1);
+    expect(selection.quarantineReasons).toEqual([
+      expect.objectContaining({ reason: "unusable_period_window", detail: expect.stringContaining("1 filed CF-2") }),
+    ]);
+    expect(selection.cycleTotals).toBeNull();
+  });
+
   it("throws on a missing cached artifact — the sync must never aggregate without the full bundle", async () => {
     await storeErtsArtifact({
       cacheDir,

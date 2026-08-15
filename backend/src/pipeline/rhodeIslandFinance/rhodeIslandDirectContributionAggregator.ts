@@ -357,8 +357,10 @@ export type RhodeIslandCycleQuarantineReason = {
     | "duplicate_period_window"
     | "overlapping_periods"
     | "period_outside_cycle"
+    | "unusable_period_window"
     | "cf2_reconciliation_mismatch"
-    | "party_building_receipts";
+    | "party_building_receipts"
+    | "negative_cycle_flow";
   detail: string;
 };
 
@@ -493,9 +495,30 @@ export async function aggregateRhodeIslandOrganizationCycleFinance(input: {
     });
   }
 
+  // The CF-2 arithmetic can legitimately net a flow negative (a refund-heavy
+  // period), but the fleet schema only signs cash_on_hand — the writer and
+  // the migration-236 CHECK reject negative receipts, disbursements and
+  // direct totals. A negative cycle flow therefore cannot be persisted:
+  // quarantine it for a human instead of handing PR 7's sync a summary that
+  // fails at the writer on every run.
+  const cycleTotals = cf2Selection.cycleTotals;
+  if (cycleTotals) {
+    const flows: Array<[string, number]> = [
+      ["total receipts", cycleTotals.totalReceiptsCents],
+      ["total disbursements", cycleTotals.totalDisbursementsCents],
+      ["direct contribution total", directContributionCents],
+    ];
+    const negativeFlows = flows.filter(([, cents]) => cents < 0);
+    if (negativeFlows.length > 0) {
+      quarantineReasons.push({
+        reason: "negative_cycle_flow",
+        detail: negativeFlows.map(([label, cents]) => `${label} ${formatCents(cents)}`).join("; "),
+      });
+    }
+  }
+
   const hasCf2Periods = cf2Selection.periods.length > 0;
   const publishable = hasCf2Periods && quarantineReasons.length === 0;
-  const cycleTotals = cf2Selection.cycleTotals;
   return {
     orgId: input.orgId,
     cycleBeginIso: cf2Selection.cycleBeginIso,

@@ -73,7 +73,8 @@ export type RhodeIslandCf2QuarantineReason = {
     | "missing_cf2_label"
     | "duplicate_period_window"
     | "overlapping_periods"
-    | "period_outside_cycle";
+    | "period_outside_cycle"
+    | "unusable_period_window";
   detail: string;
 };
 
@@ -205,6 +206,18 @@ export async function selectRhodeIslandCf2CyclePeriods(input: {
 
   const periods: RhodeIslandCf2PeriodValues[] = [];
   const quarantineReasons: RhodeIslandCf2QuarantineReason[] = [];
+  // A filed CF-2 row whose period is regex-shaped but not a real calendar
+  // date (the filing-list parser only pins MM/DD/YYYY digits) is a reporting
+  // period this selection cannot place — publishing the remaining periods
+  // would silently understate the cycle.
+  if (filingSelection.unusablePeriodRowCount > 0) {
+    quarantineReasons.push({
+      reason: "unusable_period_window",
+      detail:
+        `${filingSelection.unusablePeriodRowCount} filed CF-2 row(s) carry a period that does not parse as ` +
+        "a calendar date — the cycle's period set is incomplete",
+    });
+  }
   for (const row of filingSelection.selected) {
     const filingId = row.filingId as string;
     const versionsArtifact = await readErtsTextArtifact({

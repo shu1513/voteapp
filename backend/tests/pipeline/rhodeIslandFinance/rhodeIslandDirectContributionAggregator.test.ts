@@ -424,6 +424,34 @@ describe("aggregateRhodeIslandOrganizationCycleFinance", () => {
     expect(result).toMatchObject({ publishable: false, summary: null });
   });
 
+  it("quarantines a negative cycle flow — the schema signs only cash_on_hand, so it cannot be persisted", async () => {
+    await installPeriods([
+      {
+        filingId: "230888",
+        begin: "04/01/2026",
+        end: "06/30/2026",
+        beginIso: "2026-04-01",
+        endIso: "2026-06-30",
+        // A refund-only period: cash receipts net to -100.00, cent-exact
+        // against the CF-2's own arithmetic, so nothing else quarantines.
+        pdfValues: {
+          "1. Beginning Cash Balance": "1,050.00",
+          "3. Total Cash": "950.00",
+          "5. Ending Cash Balance": "950.00",
+        },
+        contributionReportHtml: groupingsReport({ "Refund of Contribution": "($100.00)" }),
+        exportCsvText: exportCsv([{ ContDesc: "Refund of Contribution", Amount: "-100.0000", FullName: "Doe, Jane" }]),
+        expenditureReportHtml: NO_ROWS_EXPENDITURES,
+      },
+    ]);
+    const result = await aggregateRhodeIslandOrganizationCycleFinance({ cacheDir, orgId: "2235", ...CYCLE });
+    expect(result.quarantineReasons).toEqual([
+      expect.objectContaining({ reason: "negative_cycle_flow", detail: expect.stringContaining("total receipts") }),
+    ]);
+    expect(result.cf2Selection.cycleTotals?.totalReceiptsCents).toBe(-10_000);
+    expect(result).toMatchObject({ publishable: false, summary: null });
+  });
+
   it("does not publish anything for a committee with no in-cycle CF-2 — a CF-5 deferral is not a zero", async () => {
     await storeErtsArtifact({
       cacheDir,
