@@ -478,6 +478,76 @@ describe("BallotPage", () => {
     });
   });
 
+  describe("race-type tabs", () => {
+    // A ballot mixing both race types — the only shape that offers the tabs.
+    const MIXED_BALLOT = {
+      body: ballotSummary([
+        electionSummary(),
+        electionSummary({ id: "q-1", race_type: "ballot_measure", official_ballot_title: "Measure A" }),
+      ]),
+    };
+
+    it("switches between All, Candidates, and Ballot Measures via the URL", async () => {
+      stubApiRoutes({ ...ANONYMOUS, "/api/ballot": MIXED_BALLOT });
+      const user = userEvent.setup();
+      const { router } = renderBallot("/ballot?d=d-1");
+
+      // Default: the All tab, nothing sliced.
+      expect(await screen.findByText("Governor")).toBeInTheDocument();
+      expect(screen.getByText("Measure A")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "All" })).toHaveAttribute("aria-pressed", "true");
+
+      await user.click(screen.getByRole("button", { name: "Ballot Measures" }));
+      expect(screen.getByText("Measure A")).toBeInTheDocument();
+      expect(screen.queryByText("Governor")).not.toBeInTheDocument();
+      // A view switch, not a filter: no hidden count, no Filters badge.
+      expect(screen.queryByText(/hidden/)).not.toBeInTheDocument();
+      // URL state like sort, so the tab survives navigating into a race.
+      expect(router.state.location.search).toContain("type=ballot_measure");
+
+      await user.click(screen.getByRole("button", { name: "Candidates" }));
+      expect(screen.getByText("Governor")).toBeInTheDocument();
+      expect(screen.queryByText("Measure A")).not.toBeInTheDocument();
+      expect(router.state.location.search).toContain("type=office");
+
+      await user.click(screen.getByRole("button", { name: "All" }));
+      expect(screen.getByText("Governor")).toBeInTheDocument();
+      expect(screen.getByText("Measure A")).toBeInTheDocument();
+      expect(router.state.location.search).not.toContain("type=");
+    });
+
+    it("offers no tabs on a single-type ballot and ignores a ?type= link there", async () => {
+      stubApiRoutes({
+        ...ANONYMOUS,
+        "/api/ballot": {
+          body: ballotSummary([
+            electionSummary(),
+            electionSummary({ id: "e-2", official_ballot_title: "State Senate" }),
+          ]),
+        },
+      });
+      renderBallot("/ballot?d=d-1&type=ballot_measure");
+
+      // All-office ballot: nothing to switch between, and the shared link
+      // must not empty the list with no tab bar on screen to explain it.
+      expect(await screen.findByText("Governor")).toBeInTheDocument();
+      expect(screen.getByText("State Senate")).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Ballot Measures" })).not.toBeInTheDocument();
+    });
+
+    it("arrives on the Ballot Measures tab from a shared ?type= link", async () => {
+      stubApiRoutes({ ...ANONYMOUS, "/api/ballot": MIXED_BALLOT });
+      renderBallot("/ballot?d=d-1&type=ballot_measure");
+
+      expect(await screen.findByText("Measure A")).toBeInTheDocument();
+      expect(screen.queryByText("Governor")).not.toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Ballot Measures" })).toHaveAttribute(
+        "aria-pressed",
+        "true"
+      );
+    });
+  });
+
   describe("how to vote resources", () => {
     const AK_RESOURCES = {
       state_abbreviation: "AK",

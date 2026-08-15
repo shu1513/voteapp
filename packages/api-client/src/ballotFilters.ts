@@ -11,6 +11,11 @@ export const LONG_BALLOT_THRESHOLD = 7;
  * the UI renders it as "Average" via formatVotePowerLabel. */
 export type VoteImpactThreshold = "high" | "medium";
 
+/** The two ElectionSummary.race_type values the tabs slice on. Wire words
+ * (matching the backend column and the URL param) even though the UI says
+ * "Candidates" / "Ballot Measures". */
+export type BallotRaceType = "office" | "ballot_measure";
+
 const IMPACT_LABELS: Record<VoteImpactThreshold, ReadonlySet<string>> = {
   high: new Set(["high", "very_high"]),
   medium: new Set(["medium", "high", "very_high"]),
@@ -33,6 +38,17 @@ function matchesImpact(election: ElectionSummary, threshold: VoteImpactThreshold
  * Ballot filter derivation, shared by all four ballot surfaces (each
  * platform keeps its own UI in its BallotFiltersControl component; the
  * policy lives here once, like partyBucket, so web and mobile cannot drift).
+ *
+ * A race-type tab plus two filters, AND-ed into one visible list:
+ * - Race-type tabs (All / offices / ballot measures): a view switch, not a
+ *   filter — the tab bar is offered only when the full list contains BOTH
+ *   race types (a single-type ballot has nothing to switch between), and a
+ *   requested type on a single-type ballot is ignored (a shared ?type= link
+ *   must never empty a ballot with no tab bar on screen to explain it).
+ *   Tab-hidden races are on the other, visibly-labeled tab, so they never
+ *   count into hiddenCount or activeFilterCount — those describe only the
+ *   filters, and hiddenCount is relative to the current tab's slice so
+ *   "Show all" (which clears filters, never the tab) zeroes it.
  *
  * Two filters, AND-ed into one visible list with one combined hidden count:
  * - "Affects my issues": keep = elections whose research areas intersect
@@ -68,14 +84,21 @@ export function deriveBallotFilters({
   hasSaved,
   issuesRequested,
   impactRequested,
+  raceTypeRequested = null,
 }: {
   elections: ElectionSummary[];
   savedAreaIds: Set<string>;
   hasSaved: boolean;
   issuesRequested: boolean;
   impactRequested: VoteImpactThreshold | null;
+  /** Optional so callers without a tab bar (mobile, for now) are unchanged. */
+  raceTypeRequested?: BallotRaceType | null;
 }): {
   visibleElections: ElectionSummary[];
+  /** Offer the tab bar only when the full list contains both race types. */
+  showRaceTypeTabs: boolean;
+  /** The engaged tab; null = "All" (also when the request was ignored). */
+  raceType: BallotRaceType | null;
   issuesOn: boolean;
   showIssuesFilter: boolean;
   /** The engaged threshold; null when the impact filter is off. */
@@ -85,7 +108,8 @@ export function deriveBallotFilters({
   /** Filters ON right now — the "Filters · N" badge; the impact filter
    * counts once whichever threshold is engaged. Ordering never counts. */
   activeFilterCount: number;
-  /** Relative to the full list; one count line covers both filters. */
+  /** Relative to the current tab's slice; one count line covers both
+   * filters. Tab-hidden races never count — they are on the other tab. */
   hiddenCount: number;
 } {
   const issuesMatched = elections.filter((election) => matchesIssues(election, savedAreaIds));
@@ -94,7 +118,17 @@ export function deriveBallotFilters({
   const issuesOn = hasSaved && issuesRequested;
   const impactLevel = impactRequested;
 
-  const visibleElections = elections.filter(
+  const showRaceTypeTabs =
+    elections.some((election) => election.race_type === "office") &&
+    elections.some((election) => election.race_type === "ballot_measure");
+  const raceType = showRaceTypeTabs ? raceTypeRequested : null;
+  // The tab slices first; the filters then apply within the slice, so the
+  // hidden count explains exactly what the filters removed from the view.
+  const tabElections = raceType
+    ? elections.filter((election) => election.race_type === raceType)
+    : elections;
+
+  const visibleElections = tabElections.filter(
     (election) =>
       (!issuesOn || matchesIssues(election, savedAreaIds)) &&
       (!impactLevel || matchesImpact(election, impactLevel))
@@ -111,12 +145,14 @@ export function deriveBallotFilters({
 
   return {
     visibleElections,
+    showRaceTypeTabs,
+    raceType,
     issuesOn,
     showIssuesFilter,
     impactLevel,
     showImpactHigh,
     showImpactMedium,
     activeFilterCount: (issuesOn ? 1 : 0) + (impactLevel ? 1 : 0),
-    hiddenCount: elections.length - visibleElections.length,
+    hiddenCount: tabElections.length - visibleElections.length,
   };
 }
