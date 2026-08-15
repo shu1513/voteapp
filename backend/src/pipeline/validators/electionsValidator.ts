@@ -101,7 +101,11 @@ const STATE_UPPER_STRICT_MARKERS = [
   /\bsenator,\s*district\b/,
   /\bmember of the senate\b/,
   /\bmember of the state senate\b/,
-  /\bsenator in the general assembly\b/,
+  // "the" is optional: Rhode Island's official ballot title drops it
+  // ("SENATOR IN GENERAL ASSEMBLY", RI Dept. of State candidate list, live) —
+  // matching the general-court marker below and both general-assembly forms
+  // already carried in STATE_LOWER_MARKERS.
+  /\bsenator in (?:the )?general assembly\b/,
   /\bsenator in (?:the )?general court\b/,
   /\bupper chamber\b/,
 ];
