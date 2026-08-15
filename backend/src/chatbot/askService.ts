@@ -13,6 +13,7 @@ import {
   detectBareStateReply,
   detectIntent,
   detectStateInQuestion,
+  hasPersonalIssuesPhrase,
   STATE_TEMPLATE_INTENTS,
   type IntentMatch,
 } from "./intents.js";
@@ -992,6 +993,18 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
               data_current_as_of: generation.activatedAt,
             },
             "clarify",
+            scopeState
+          );
+        }
+        // Personalized-issues fallback: the phrasing slipped past the intent
+        // router (a frame variant it doesn't know), but the question is still
+        // about the asker's own issues — the saved-areas ballot match beats
+        // the flat refusal that is the only other option at this point.
+        // Never cached, never sent to the LLM (rule 11 holds).
+        if (hasPersonalIssuesPhrase(question)) {
+          return finish(
+            await renderMyIssuesBallotAnswer(db, userId ?? null),
+            "intent:my_issues_ballot_fallback",
             scopeState
           );
         }

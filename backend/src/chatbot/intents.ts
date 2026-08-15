@@ -170,6 +170,21 @@ const POLICY_PATTERNS: RegExp[] = [
   /\bwho\s+to\s+vote\s+for\b/i,
 ];
 
+// The personal-preference phrase: "issues/races … I care about / matter to
+// me / important to me", or a possessive "my … issues/priorities/research
+// areas" with up to two modifier words ("my most important issues", "my top
+// issues"). Exported for askService's refusal fallback — a question carrying
+// this phrase that slipped past the intent router (frame variant the router
+// doesn't know) still gets the saved-areas ballot match instead of a flat
+// refusal, since at that point a refusal is the only alternative.
+const MY_ISSUES_RE =
+  /\b(?:issues?|areas?|topics?|things|what|races?|elections?)\b.{0,24}\b(?:i\s+care\s+about|matter(?:s)?\s+(?:most\s+)?to\s+me|important\s+to\s+me)\b|\bmy\s+(?:\w+\s+){0,2}(?:issues?|priorit(?:y|ies)|research\s+areas)\b/i;
+const ELECTION_FRAME_RE = /\b(?:elections?|races?|ballots?|measures?|running)\b/i;
+
+export function hasPersonalIssuesPhrase(question: string): boolean {
+  return MY_ISSUES_RE.test(question);
+}
+
 // Order matters: policy first (an endorsement ask phrased as logistics must
 // still refuse), then the most specific templates.
 export function detectIntent(question: string): IntentMatch | null {
@@ -220,10 +235,7 @@ export function detectIntent(question: string): IntentMatch | null {
   //   a candidate question; "What issues do I care about?" isn't about races
   //   at all). Singular "my area" stays with the place frames below ("in my
   //   area" is location, not preference).
-  const MY_ISSUES_RE =
-    /\b(?:issues?|areas?|topics?|things|what|races?|elections?)\b.{0,24}\b(?:i\s+care\s+about|matter(?:s)?\s+(?:most\s+)?to\s+me|important\s+to\s+me)\b|\bmy\s+(?:top\s+|key\s+|main\s+|saved\s+)?(?:issues?|priorit(?:y|ies)|research\s+areas)\b/i;
-  const ELECTION_FRAME_RE = /\b(?:elections?|races?|ballots?|measures?|running)\b/i;
-  if (MY_ISSUES_RE.test(q) && ELECTION_FRAME_RE.test(q)) {
+  if (hasPersonalIssuesPhrase(q) && ELECTION_FRAME_RE.test(q)) {
     return { kind: "my_issues_ballot", state };
   }
   if (/\b(?:my\s+ballot|on\s+the\s+ballot\s+at\s+my|ballot\s+lookup)\b/i.test(q)) {

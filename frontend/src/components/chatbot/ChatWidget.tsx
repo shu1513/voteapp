@@ -43,7 +43,9 @@ export function starterQuestions(context: ChatbotAskContext | null): string[] {
   if (context?.kind === "election") {
     return ["Tell me more about this election", "Who is running in this election?"];
   }
-  return ["What can you do?", "How do I register to vote?"];
+  // No register chip: the site header already links voter registration —
+  // the chip slot instead showcases the personalized saved-issues match.
+  return ["What can you do?", "Which races affect issues I care about?"];
 }
 
 /**
