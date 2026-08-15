@@ -391,6 +391,13 @@ export const goldenSet: readonly GoldenCase[] = [
     notes: "Personalized: saved research areas × saved ballot. Template-only — account data never reaches retrieval, the cache, or the LLM.",
   },
   {
+    id: "logistics-my-issues-most-important",
+    category: "logistics",
+    question: "Which race has most of my most important issues?",
+    expected: "template",
+    notes: "Round-5 live miss: graded modifiers ('my most important issues') must still hit the my_issues_ballot intent.",
+  },
+  {
     id: "logistics-election-day",
     category: "logistics",
     question: "When is the 2026 general election?",

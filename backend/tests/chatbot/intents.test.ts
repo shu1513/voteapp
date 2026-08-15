@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import { goldenSet } from "../../src/chatbot/golden/goldenSet.js";
-import { detectBareStateReply, detectIntent, detectStateInQuestion } from "../../src/chatbot/intents.js";
+import {
+  detectBareStateReply,
+  detectIntent,
+  detectStateInQuestion,
+  hasPersonalIssuesPhrase,
+} from "../../src/chatbot/intents.js";
 
 // The deterministic router IS two of the release gates (BEHAVIOR.md):
 //   - 100% of `template` and `refuse_policy` cases route deterministically
@@ -147,6 +152,9 @@ describe("personal-issues questions route to the saved-areas ballot match", () =
       "what elections touch the topics that are important to me?",
       "which races line up with my top issues?",
       "does anything on the ballot match my priorities?",
+      // Graded modifiers ("most important") — the round-5 live miss.
+      "which race has most of my most important issues?",
+      "what elections touch my biggest issues?",
     ]) {
       expect(detectIntent(q)?.kind, q).toBe("my_issues_ballot");
     }
@@ -172,6 +180,22 @@ describe("personal-issues questions route to the saved-areas ballot match", () =
     expect(detectIntent("who is running in my area?")?.kind).toBe("ballot_lookup");
     // Endorsement asks still refuse even when phrased through issues.
     expect(detectIntent("based on the issues I care about, who should I vote for?")?.kind).toBe("policy_refusal");
+  });
+});
+
+describe("hasPersonalIssuesPhrase (the refusal's Settings pointer)", () => {
+  it("detects the phrase even when the election frame is missing", () => {
+    // No frame word → the router deliberately stays out (could be a candidate
+    // question, or not about races at all), but a no-data refusal on such a
+    // question gains a Settings pointer instead of dead-ending.
+    expect(hasPersonalIssuesPhrase("what should I focus on given my priorities?")).toBe(true);
+    expect(detectIntent("what should I focus on given my priorities?")).toBeNull();
+  });
+
+  it("stays quiet on ordinary questions", () => {
+    expect(hasPersonalIssuesPhrase("who is running for sheriff?")).toBe(false);
+    expect(hasPersonalIssuesPhrase("what's on my ballot?")).toBe(false);
+    expect(hasPersonalIssuesPhrase("what has Jon Ossoff done in my state?")).toBe(false);
   });
 });
 

@@ -91,7 +91,7 @@ describe("starterQuestions", () => {
     expect(starterQuestions({ kind: "election", id: "x" })).toContain("Who is running in this election?");
     // Exact list on purpose: the generic chips are deliberate product copy
     // (the ballot and election-date chips were removed by request).
-    expect(starterQuestions(null)).toEqual(["What can you do?", "How do I register to vote?"]);
+    expect(starterQuestions(null)).toEqual(["What can you do?", "Which races affect issues I care about?"]);
   });
 });
 
