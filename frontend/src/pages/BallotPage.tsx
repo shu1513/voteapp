@@ -10,6 +10,7 @@ import {
 } from "@voteapp/api-client";
 import { ElectionList } from "../components/ElectionCard";
 import { BallotFiltersControl } from "../components/BallotFiltersControl";
+import { RaceTypeTabs } from "../components/RaceTypeTabs";
 import { HowToVoteControl } from "../components/HowToVoteControl";
 import { deriveBallotFilters, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
 import { draftChoicesByElectionId, setDraftBallotContext, useBallotDraft } from "../lib/ballotDraft";
@@ -83,8 +84,15 @@ export function BallotPage() {
     .filter((id) => id.length > 0);
   const rawSort = searchParams.get("sort") ?? "";
   const sort: BallotSort = SORT_VALUES.includes(rawSort) ? (rawSort as BallotSort) : "vote_power";
-  const { issuesRequested, impactRequested, onIssuesFilterChange, onImpactFilterChange, onShowAll } =
-    useBallotFilterParams();
+  const {
+    issuesRequested,
+    impactRequested,
+    raceTypeRequested,
+    onIssuesFilterChange,
+    onImpactFilterChange,
+    onRaceTypeChange,
+    onShowAll,
+  } = useBallotFilterParams();
 
   const ballot = useQuery({
     queryKey: ["ballot", districtIds.join(","), sort],
@@ -125,6 +133,7 @@ export function BallotPage() {
     hasSaved,
     issuesRequested,
     impactRequested,
+    raceTypeRequested,
   });
   // A ?issues=mine load must not flash the full ballot while the saved
   // areas are still unknown (the ballot is one request; the saved areas are
@@ -165,6 +174,11 @@ export function BallotPage() {
           because that's where its state abbreviation(s) come from. */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex flex-wrap items-start gap-3">
+          {/* Offered only when the ballot mixes candidate races and ballot
+              measures — a single-type ballot has nothing to switch between. */}
+          {filtersView.showRaceTypeTabs ? (
+            <RaceTypeTabs raceType={filtersView.raceType} onChange={onRaceTypeChange} />
+          ) : null}
           <BallotFiltersControl
             showIssues={filtersView.showIssuesFilter}
             issuesOn={filtersView.issuesOn}

@@ -4,14 +4,16 @@ import { deriveBallotFilters, LONG_BALLOT_THRESHOLD } from "./ballotFilters";
 import type { ElectionSummary, VotePower } from "./types";
 
 // Only the fields the derivation reads; the rest of ElectionSummary is
-// irrelevant to the two predicates.
+// irrelevant to the predicates.
 function election(
   id: string,
   areaIds: string[],
-  label: VotePower["label"] = "low"
+  label: VotePower["label"] = "low",
+  raceType: string = "office"
 ): ElectionSummary {
   return {
     id,
+    race_type: raceType,
     research_areas: areaIds.map((areaId) => ({
       id: areaId,
       slug: areaId,
@@ -184,6 +186,60 @@ describe("deriveBallotFilters — vote impact thresholds", () => {
     expect(view.showImpactHigh).toBe(true);
     expect(view.visibleElections).toEqual([HIGH]);
     expect(view.hiddenCount).toBe(1);
+  });
+});
+
+describe("deriveBallotFilters — race-type tabs", () => {
+  const OFFICE = election("o-1", []);
+  const OFFICE_2 = election("o-2", []);
+  const MEASURE = election("q-1", [], "low", "ballot_measure");
+
+  it("offers the tab bar only when both race types are present", () => {
+    expect(deriveBallotFilters({ ...OFF, elections: [OFFICE, MEASURE] }).showRaceTypeTabs).toBe(true);
+    expect(deriveBallotFilters({ ...OFF, elections: [OFFICE, OFFICE_2] }).showRaceTypeTabs).toBe(false);
+    expect(deriveBallotFilters({ ...OFF, elections: [MEASURE] }).showRaceTypeTabs).toBe(false);
+    expect(deriveBallotFilters({ ...OFF, elections: [] }).showRaceTypeTabs).toBe(false);
+  });
+
+  it("an engaged tab slices the list without touching the filter counters", () => {
+    const view = deriveBallotFilters({
+      ...OFF,
+      elections: [OFFICE, MEASURE, OFFICE_2],
+      raceTypeRequested: "ballot_measure",
+    });
+    expect(view.raceType).toBe("ballot_measure");
+    expect(view.visibleElections).toEqual([MEASURE]);
+    // Tab-hidden races are on the other, visibly-labeled tab — never
+    // "hidden" and never a filter.
+    expect(view.hiddenCount).toBe(0);
+    expect(view.activeFilterCount).toBe(0);
+  });
+
+  it("ignores the request on a single-type ballot", () => {
+    // A shared ?type= link must never empty a ballot that shows no tab bar.
+    const view = deriveBallotFilters({
+      ...OFF,
+      elections: [OFFICE, OFFICE_2],
+      raceTypeRequested: "ballot_measure",
+    });
+    expect(view.raceType).toBe(null);
+    expect(view.visibleElections).toEqual([OFFICE, OFFICE_2]);
+  });
+
+  it("filters apply within the tab slice and the hidden count is slice-relative", () => {
+    const matchedOffice = election("o-m", ["a-1"]);
+    const unmatchedOffice = election("o-u", []);
+    const unmatchedMeasure = election("q-u", [], "low", "ballot_measure");
+    const view = deriveBallotFilters({
+      ...OFF,
+      elections: [matchedOffice, unmatchedOffice, unmatchedMeasure],
+      issuesRequested: true,
+      raceTypeRequested: "office",
+    });
+    expect(view.visibleElections).toEqual([matchedOffice]);
+    // Only the filtered-out office counts; the measure is on the other tab.
+    expect(view.hiddenCount).toBe(1);
+    expect(view.activeFilterCount).toBe(1);
   });
 });
 

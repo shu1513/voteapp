@@ -11,6 +11,7 @@ import {
 } from "../components/SavedAddressForm";
 import { ElectionList } from "../components/ElectionCard";
 import { BallotFiltersControl } from "../components/BallotFiltersControl";
+import { RaceTypeTabs } from "../components/RaceTypeTabs";
 import { HowToVoteControl } from "../components/HowToVoteControl";
 import { deriveBallotFilters, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
 import { useBallotFilterParams } from "../lib/useBallotFilterParams";
@@ -163,8 +164,15 @@ export function SavedBallotPage() {
     hasSaved,
     isLoading: savedAreasLoading,
   } = useMyResearchAreas();
-  const { issuesRequested, impactRequested, onIssuesFilterChange, onImpactFilterChange, onShowAll } =
-    useBallotFilterParams();
+  const {
+    issuesRequested,
+    impactRequested,
+    raceTypeRequested,
+    onIssuesFilterChange,
+    onImpactFilterChange,
+    onRaceTypeChange,
+    onShowAll,
+  } = useBallotFilterParams();
   const { choiceByElectionId } = useElectionChoices();
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
@@ -310,6 +318,7 @@ export function SavedBallotPage() {
     hasSaved,
     issuesRequested,
     impactRequested,
+    raceTypeRequested,
   });
 
   if (data.districts.length === 0) {
@@ -349,6 +358,11 @@ export function SavedBallotPage() {
           reach signed-in voters too (their home page redirects here). */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex flex-wrap items-start gap-3">
+          {/* Offered only when the ballot mixes candidate races and ballot
+              measures — a single-type ballot has nothing to switch between. */}
+          {filtersView.showRaceTypeTabs ? (
+            <RaceTypeTabs raceType={filtersView.raceType} onChange={onRaceTypeChange} />
+          ) : null}
           {/* The Order section makes the disclosure always available here —
               signed-in viewers always have the followed-first preference even
               when no filter is offerable. */}
