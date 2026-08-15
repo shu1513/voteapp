@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useLocation } from "react-router";
-import { RENEWAL_CHECKBOX_LABEL, TERMS_VERSION, useAcceptTerms, useMe } from "@voteapp/api-client";
+import { useLocation, useNavigate } from "react-router";
+import { RENEWAL_CHECKBOX_LABEL, TERMS_VERSION, useAcceptTerms, useLogout, useMe } from "@voteapp/api-client";
 import { LegalGate } from "./LegalGate";
 
 // Routes the modal must not cover: the checkbox links to these documents,
@@ -16,7 +16,9 @@ const LEGAL_ROUTES = new Set(["/terms", "/privacy", "/disclaimer"]);
 export function TermsRenewalGate() {
   const { me } = useMe();
   const location = useLocation();
+  const navigate = useNavigate();
   const acceptTerms = useAcceptTerms();
+  const logout = useLogout();
   const [checked, setChecked] = useState(false);
 
   if (!me || me.accepted_terms_version === TERMS_VERSION) {
@@ -62,6 +64,27 @@ export function TermsRenewalGate() {
         >
           {acceptTerms.isPending ? "Saving…" : "Agree and continue"}
         </button>
+        {/* The exit for someone who declines. The modal covers every route
+            with a logout control (header logout moved to Settings, a gated
+            page), so without this the only way out of a stale-terms account
+            is accepting — which a clickwrap must not force. */}
+        <p className="mt-3 text-center text-sm text-ink-soft">
+          Don&apos;t agree?{" "}
+          <button
+            type="button"
+            disabled={logout.isPending}
+            onClick={() =>
+              logout.mutate(undefined, {
+                onSuccess: () => {
+                  navigate("/");
+                },
+              })
+            }
+            className="font-medium text-ink underline hover:text-rausch-dark"
+          >
+            {logout.isPending ? "Logging out…" : "Log out"}
+          </button>
+        </p>
       </div>
     </div>
   );

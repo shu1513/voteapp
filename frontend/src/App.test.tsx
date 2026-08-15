@@ -66,17 +66,17 @@ describe("App account nav", () => {
     expect(greeting.closest("a")).toBeNull();
     expect(greeting.closest("button")).toBeNull();
 
-    // The mobile menu opens and repeats the destinations plus log out
+    // The mobile menu opens and repeats the destinations — no Log out here,
+    // it lives in Settings → Sessions, and My Draft sits last
     // (Headless UI gives menu entries the menuitem role).
     const user = userEvent.setup();
     await user.click(screen.getByRole("button", { name: "Menu" }));
     const items = screen.getAllByRole("menuitem");
     expect(items.map((item) => item.textContent)).toEqual([
       "My Elections",
-      "My Draft",
       "My Candidates",
       "Settings",
-      "Log out",
+      "My Draft",
     ]);
     expect(screen.getByRole("menuitem", { name: "My Elections" })).toHaveAttribute("href", "/me/ballot");
   });
