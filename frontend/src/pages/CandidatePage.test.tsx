@@ -1047,7 +1047,7 @@ describe("CandidatePage roster rail", () => {
     );
     // The current candidate is text with aria-current, not a link.
     expect(within(rail).queryByRole("link", { name: "Riley Runner" })).not.toBeInTheDocument();
-    expect(within(rail).getByText("Riley Runner")).toHaveAttribute("aria-current", "page");
+    expect(within(rail).getByText("Riley Runner").closest("li")).toHaveAttribute("aria-current", "page");
     // The exit link keeps the election's full title — unlike the pager's
     // generic "Election" relabel.
     expect(within(rail).getByRole("link", { name: "Back to Governor" })).toHaveAttribute(
@@ -1067,7 +1067,7 @@ describe("CandidatePage roster rail", () => {
     expect(router.state.location.pathname).toBe("/candidates/c-3");
     expect(router.state.location.state).toEqual(ROSTER_ARRIVAL);
     const nextRail = await screen.findByRole("navigation", { name: "Candidates in this race" });
-    expect(within(nextRail).getByText("Casey Contender")).toHaveAttribute("aria-current", "page");
+    expect(within(nextRail).getByText("Casey Contender").closest("li")).toHaveAttribute("aria-current", "page");
     expect(within(nextRail).getByRole("link", { name: "Jordan Voter" })).toHaveAttribute(
       "href",
       "/candidates/c-1"

@@ -241,6 +241,22 @@ describe("deriveBallotFilters — race-type tabs", () => {
     expect(view.hiddenCount).toBe(1);
     expect(view.activeFilterCount).toBe(1);
   });
+
+  it("filteredElections is the filter-visible pool without the tab slice", () => {
+    // The detail rail re-slices this pool, so it must keep the other tab's
+    // races — but never filter-hidden ones.
+    const matchedOffice = election("o-m", ["a-1"]);
+    const unmatchedOffice = election("o-u", []);
+    const matchedMeasure = election("q-m", ["a-1"], "low", "ballot_measure");
+    const view = deriveBallotFilters({
+      ...OFF,
+      elections: [matchedOffice, unmatchedOffice, matchedMeasure],
+      issuesRequested: true,
+      raceTypeRequested: "ballot_measure",
+    });
+    expect(view.visibleElections).toEqual([matchedMeasure]);
+    expect(view.filteredElections).toEqual([matchedOffice, matchedMeasure]);
+  });
 });
 
 describe("deriveBallotFilters — composition", () => {

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, apiRequest } from "@voteapp/api-client";
-import { BALLOT_SORTS, type BallotPreferences, type BallotSummary } from "@voteapp/api-client";
+import { BALLOT_SORTS, type BallotPreferences, type BallotSort, type BallotSummary } from "@voteapp/api-client";
 import {
   AddressSavedNotice,
   SavedAddressForm,
@@ -64,19 +64,27 @@ function useBallotPreferences() {
 
   const current = pending ?? prefs.data ?? null;
 
-  function change(fields: Partial<BallotPreferences>) {
+  function change(fields: Partial<BallotPreferences>, onSaved?: () => void) {
     if (!current) {
       return;
     }
     const next = { ...current, ...fields };
     setPending(next);
-    update.mutate(next);
+    update.mutate(next, onSaved ? { onSuccess: onSaved } : undefined);
   }
 
   return { prefs, update, saving, current, change };
 }
 
-function BallotSortPreference() {
+function BallotSortPreference({
+  sortOverride,
+  onClearOverride,
+}: {
+  /** A ?sort= URL override (the rail's sort carry-over): session-scoped,
+   * wins over the saved preference server-side, never persisted. */
+  sortOverride: BallotSort | null;
+  onClearOverride: () => void;
+}) {
   const { prefs, update, saving, current, change } = useBallotPreferences();
   if (prefs.isError) {
     return <ErrorNotice error={prefs.error} />;
@@ -89,12 +97,30 @@ function BallotSortPreference() {
       <label className="flex items-center gap-2 text-sm text-ink-soft">
         Sort by
         <select
-          value={current.sort}
+          // The select must show the order the list is actually in — the
+          // override when one is engaged, the preference otherwise. While a
+          // save is in flight the just-chosen value (the pending overlay in
+          // `current`) wins: the override is cleared only on success, and
+          // showing it mid-save would snap the select back to the old
+          // value.
+          value={saving ? current.sort : (sortOverride ?? current.sort)}
           // Disabled while a save is in flight: the PUT replaces the FULL
           // object, so concurrent requests could commit out of order and
           // the earlier write would win.
           disabled={saving}
-          onChange={(event) => change({ sort: event.target.value as BallotPreferences["sort"] })}
+          onChange={(event) => {
+            // Choosing here clears the override (the explicit URL param
+            // wins server-side, so left in place it would pin the list to
+            // the old order and make this select a no-op) — but only AFTER
+            // the PUT succeeds: clearing first would launch a ballot GET
+            // still under the OLD preference and race the save, and a
+            // failed save keeps the override describing the list on screen
+            // alongside the error notice.
+            change(
+              { sort: event.target.value as BallotPreferences["sort"] },
+              sortOverride ? onClearOverride : undefined
+            );
+          }}
           className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none disabled:opacity-60"
         >
           {BALLOT_SORTS.map((option) => (
@@ -173,6 +199,25 @@ export function SavedBallotPage() {
     onRaceTypeChange,
     onShowAll,
   } = useBallotFilterParams();
+  // ?sort= — the rail's sort carry-over. Session-scoped like the filters:
+  // the explicit param wins over the saved preference server-side
+  // ([ballot-personalized-ordering] in apiServer.ts) without touching it.
+  // Unknown values read as "no override", like the other params.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const rawSortParam = searchParams.get("sort");
+  const sortOverride: BallotSort | null = BALLOT_SORTS.some((option) => option.value === rawSortParam)
+    ? (rawSortParam as BallotSort)
+    : null;
+  function clearSortOverride() {
+    setSearchParams(
+      (previous) => {
+        const next = new URLSearchParams(previous);
+        next.delete("sort");
+        return next;
+      },
+      { replace: true }
+    );
+  }
   const { choiceByElectionId } = useElectionChoices();
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
@@ -223,8 +268,13 @@ export function SavedBallotPage() {
   }
 
   const ballot = useQuery<SavedBallot>({
-    queryKey: ["me", "ballot"],
-    queryFn: () => apiRequest<SavedBallot>("/api/me/ballot"),
+    // The override is part of the key so switching (or clearing) it
+    // refetches; invalidations on the ["me", "ballot"] prefix still match.
+    queryKey: ["me", "ballot", sortOverride ?? ""],
+    queryFn: () =>
+      apiRequest<SavedBallot>(
+        sortOverride ? `/api/me/ballot?sort=${encodeURIComponent(sortOverride)}` : "/api/me/ballot"
+      ),
     enabled: verified && handoffState === "done",
     retry: false,
   });
@@ -379,7 +429,7 @@ export function SavedBallotPage() {
             onShowAll={onShowAll}
             orderSection={<FollowedFirstPreference />}
           />
-          <BallotSortPreference />
+          <BallotSortPreference sortOverride={sortOverride} onClearOverride={clearSortOverride} />
         </div>
         <HowToVoteControl states={data.districts.map((district) => district.state)} />
       </div>
@@ -396,6 +446,10 @@ export function SavedBallotPage() {
           // Full query string: the back link must return to this exact
           // list — the ?issues=/?impact= filters survive the round trip.
           backTo={{ path: location.pathname + location.search, label: "My Elections" }}
+          // Tab-unsliced pool + the engaged tab: the detail rail's own
+          // race-type tabs start here and can reach the other tab's races.
+          contestsPool={filtersView.filteredElections}
+          raceType={filtersView.raceType}
         />
       )}
 

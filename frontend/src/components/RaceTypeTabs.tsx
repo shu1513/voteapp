@@ -23,12 +23,19 @@ const TABS: { value: BallotRaceType | null; label: string }[] = [
 export function RaceTypeTabs({
   raceType,
   onChange,
+  compact = false,
 }: {
   raceType: BallotRaceType | null;
   onChange: (raceType: BallotRaceType | null) => void;
+  /** Tighter type and padding for narrow homes (the 18rem detail rail). */
+  compact?: boolean;
 }) {
   return (
-    <div role="group" aria-label="Race type" className="flex items-center gap-1 rounded-md border border-line bg-white p-1">
+    <div
+      role="group"
+      aria-label="Race type"
+      className="flex flex-wrap items-center gap-1 rounded-md border border-line bg-white p-1"
+    >
       {TABS.map((tab) => {
         const selected = raceType === tab.value;
         return (
@@ -37,7 +44,7 @@ export function RaceTypeTabs({
             type="button"
             aria-pressed={selected}
             onClick={() => onChange(tab.value)}
-            className={`rounded px-2.5 py-1 text-sm transition ${
+            className={`rounded transition ${compact ? "min-h-6 px-2 py-0.5 text-xs" : "px-2.5 py-1 text-sm"} ${
               selected ? "bg-ink font-medium text-white" : "text-ink-soft hover:bg-surface hover:text-ink"
             }`}
           >

@@ -302,6 +302,71 @@ describe("SavedBallotPage", () => {
   });
 });
 
+describe("SavedBallotPage sort override", () => {
+  it("applies ?sort= to the ballot request and clears it only after a saved change", async () => {
+    const putBodies: unknown[] = [];
+    const ballotUrls: string[] = [];
+    stubApiRoutes({
+      ...VERIFIED_BASE,
+      "/api/me/ballot": (url) => {
+        ballotUrls.push(String(url));
+        return { body: ballotSummary([electionSummary()]) };
+      },
+      "/api/me/ballot-preferences": (_url, init) => {
+        if (init?.method === "PUT") {
+          const body = JSON.parse(String(init.body));
+          putBodies.push(body);
+          return { body };
+        }
+        return { body: { sort: "vote_power", followed_first: true } };
+      },
+    });
+    const user = userEvent.setup();
+    const { router } = renderSavedBallot(undefined, "?sort=soonest");
+
+    await screen.findByText("Governor");
+    // The override reaches the API and the select shows the order the list
+    // is actually in — the override, not the saved preference.
+    expect(ballotUrls[0]).toContain("sort=soonest");
+    const select = await screen.findByRole("combobox");
+    expect(select).toHaveValue("soonest");
+
+    // Choosing a sort saves the preference FIRST; the override clears only
+    // after the PUT succeeds, so the refetch can only see the new order.
+    await user.selectOptions(select, "district_size");
+    expect(putBodies).toEqual([{ sort: "district_size", followed_first: true }]);
+    await waitFor(() => expect(router.state.location.search).not.toContain("sort="));
+    // The post-save fetch runs without the stale override.
+    await waitFor(() =>
+      expect(ballotUrls.some((url) => !url.includes("sort="))).toBe(true)
+    );
+  });
+
+  it("keeps the override and shows the error when the save fails", async () => {
+    stubApiRoutes({
+      ...VERIFIED_BASE,
+      "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
+      "/api/me/ballot-preferences": (_url, init) =>
+        init?.method === "PUT"
+          ? apiError(500, "internal_error", "boom")
+          : { body: { sort: "vote_power", followed_first: true } },
+    });
+    const user = userEvent.setup();
+    const { router } = renderSavedBallot(undefined, "?sort=soonest");
+
+    await screen.findByText("Governor");
+    await user.selectOptions(await screen.findByRole("combobox"), "district_size");
+
+    // Failed PUT: the override still describes the list on screen, and the
+    // select falls back to it beside the error notice.
+    expect(
+      await screen.findByText("The service is having trouble right now. Please try again shortly.")
+    ).toBeInTheDocument();
+    expect(router.state.location.search).toContain("sort=soonest");
+    expect(screen.getByRole("combobox")).toHaveValue("soonest");
+  });
+});
+
 describe("SavedBallotPage nav context", () => {
   it("hands election cards its own URL including active filter params", async () => {
     const user = userEvent.setup();
@@ -316,7 +381,16 @@ describe("SavedBallotPage nav context", () => {
     expect(router.state.location.pathname).toBe("/elections/e-1");
     expect(router.state.location.state).toEqual({
       backTo: { path: "/me/ballot?issues=mine", label: "My Elections" },
-      contests: [{ id: "e-1", title: "Governor" }],
+      contests: [
+        {
+          id: "e-1",
+          title: "Governor",
+          race_type: "office",
+          vote_power_score: 42,
+          election_date: "2026-11-03",
+          research_area_ids: [],
+        },
+      ],
     });
   });
 });
