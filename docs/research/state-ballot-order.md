@@ -1107,9 +1107,14 @@ measures last.
   — informational, never implemented. Unobserved on a real ballot: item
   (21) county officers (King = charter county, odd-year offices; Pierce
   County PDF 403-blocked) and item (25) District Court. Possible conflict
-  recorded, unresolved: pypdf extracted King's initiatives-to-legislature
-  as 2124 → 2117 → 2109 vs RCW 29A.72.290's serial-number order — likely a
-  multi-column extraction artifact, needs visual read or second county.
+  recorded, unresolved — and EXCLUDED from the grade-A scope: pypdf
+  extracted King's initiatives-to-legislature as 2124 → 2117 → 2109 vs RCW
+  29A.72.290's serial-number order — likely a multi-column extraction
+  artifact, needs visual read or second county; until then no override may
+  encode the WITHIN-group serial order of state measures (immaterial to
+  the ranker anyway — measures share one tier, sub-ordering individual
+  measures is below its granularity). The measures-BEFORE-offices
+  placement itself is unaffected (statute + ballot agree).
   Corroboration URL sits on a /current-election/202411/ path — expect rot.
 
 ### AZ — Arizona (FIPS 04) — GRADE A (scoped — see Notes)
@@ -1404,10 +1409,13 @@ measures last.
   vertical-row party arrangement, so cite it second. Statewide questions
   numbered 1..n; district public-policy questions (c.53 § 19) placed by the
   state secretary, no statutory sub-placement.
-- County discretion: NONE — c.54 § 40 "All ballots for use in elections of
-  state officers shall be prepared and furnished by the state secretary";
-  no county election administration exists. Only discretion = the STATE
-  secretary's, over the trailing block + question order. County govts
+- County discretion: NONE over state-ballot order — c.54 § 40 "All ballots
+  for use in elections of state officers shall be prepared and furnished
+  by the state secretary". Counties play no role in the cited statutes;
+  elections are administered by city/town clerks, whose ballot authority
+  covers only their own MUNICIPAL elections (outside this entry's scope).
+  Only order discretion on the state ballot = the STATE secretary's, over
+  the trailing block + question order. County govts
   abolished in Middlesex/Franklin/Hampden/Worcester/Hampshire/Essex/Suffolk
   (1997-2000) but every county still elects Register of Deeds, Register of
   Probate, Sheriff, DA (SOC: "All counties, even those with abolished
@@ -1529,9 +1537,12 @@ measures last.
   Clerk) → county offices (Auditor → Recorder → Treasurer → Sheriff →
   Coroner → Surveyor → Assessor → Commissioner → Council) → township
   (Assessor → Trustee → Board → Marion small-claims judge/constable) → city
-  (Mayor → Clerk → City Court judge → Council) → town → hoisted AT-LARGE
-  block (vote-for-N partisan offices) → School Board (at-large then
-  district) → JUDICIAL RETENTION QUESTIONS dead last. Statewide executives
+  (Mayor → Clerk → City Court judge → Council) → town → at-large partisan
+  offices, hoisted here CONDITIONALLY (IC 3-11-2-12.4; where a body has
+  both at-large and district seats on one ballot, the manual returns them
+  to normal § 12 position, at-large first — see Notes caveat) → School
+  Board (at-large then district) → JUDICIAL RETENTION QUESTIONS dead
+  last. Statewide executives
   ALL precede US House. Presidential years carry only Gov+Lt Gov and AG
   (SOS/Auditor/Treasurer are midterm-cycle).
 - Judicial: SPLIT. Elected trial courts (circuit/superior/St. Joseph
@@ -1624,8 +1635,8 @@ measures last.
   ballot"); (b) retention judges go on a SEPARATE ballot: Mo. Const. art.
   V, §25(c)(1) "on a separate judicial ballot, without party designation",
   https://revisor.mo.gov/main/OneSection.aspx?constit=y&section=V++25(c)(1).
-- Office order (OBSERVED, identical 4/4 jurisdictions — customary, not
-  statutory): President/VP → US Senator → GOVERNOR → Lt Gov → SOS →
+- Office order (OBSERVED, identical in all NINE jurisdictions read —
+  customary, not statutory): President/VP → US Senator → GOVERNOR → Lt Gov → SOS →
   Treasurer → AG → US Representative → State Senator → State Rep →
   county/city offices → [judicial block] → state measures → local measures.
   All statewide executives ABOVE US House, immediately below US Senate;
@@ -1840,13 +1851,20 @@ measures last.
   § 5.02(21) (spring election), § 5.64(2)(am)+(c) (referendum ballot),
   § 5.655 (consolidated ballot), § 7.08(1)(a) + § 7.10(1)(a) (WEC
   prescribes form, county clerk conforms "in substantially the same form").
-- Office order: President/VP (presidential years) OR Governor/Lt Governor
-  (gubernatorial years) FIRST, then § 5.62(3): "governor, lieutenant
-  governor, attorney general, secretary of state, state treasurer, U.S.
-  senator, U.S. representative in congress, state senator, representative
-  to the assembly, district attorney and the county offices". Statewide
-  executives ABOVE US Senate + US House. Gov + LtGov = one joint contest at
-  the general (§ 5.64(1)(f)). DA = own block between Assembly and county.
+- Office order: § 5.64(1)(d) hoists President/VP (presidential years) or
+  the joint Governor/Lt Governor contest (gubernatorial years) to the top,
+  "then the REMAINING offices in the order designated under s. 5.62(3)" —
+  so the two effective sequences are: presidential years President/VP →
+  [AG → SOS → Treasurer, if up] → US Senator → US Rep → State Senator →
+  Assembly → DA → county; gubernatorial years Gov/LtGov (once — hoisted,
+  not repeated from the list) → AG → SOS → Treasurer → US Senator → US Rep
+  → State Senator → Assembly → DA → county. § 5.62(3) list verbatim:
+  "governor, lieutenant governor, attorney general, secretary of state,
+  state treasurer, U.S. senator, U.S. representative in congress, state
+  senator, representative to the assembly, district attorney and the
+  county offices". Statewide executives ABOVE US Senate + US House. Gov +
+  LtGov = one joint contest at the general (§ 5.64(1)(f)). DA = own block
+  between Assembly and county.
 - Judicial: NONE in November — § 5.02(5) general election elects "state
   officers other than the state superintendent and judicial officers";
   § 5.02(21) puts judicial at the April spring election (§ 5.60 ballots).
