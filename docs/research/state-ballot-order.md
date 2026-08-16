@@ -100,7 +100,14 @@ measures last.
   2022 did exactly this with US Senate full+short). Pilot §13109.7
   self-repeals, but §13109.9 is permanent and DISCRETIONARY ("may use the
   alternate ballot order") — LA still used it Nov 2024; treat as standing
-  county-option, revertible without statutory change. Primaries: same list +
+  county-option, revertible without statutory change. IMPLEMENTATION SCOPE:
+  the planned override is keyed on state_fips only, so it cannot distinguish
+  LA from the rest of "06" — the CA override therefore encodes the §13109
+  statewide order ONLY, and LA is EXCLUDED from the first implementation
+  (accepted limitation: LA voters' printed ballots differ; being a
+  discretionary county option it could never be grade-A statewide anyway;
+  county-scoped placement is ballot-facsimile Phase 3's territory).
+  Primaries: same list +
   (b)/(h) blocks; §13109.5 committee move. Rotation (informational): §13112
   = the SOS randomized-alphabet drawing; the Assembly-district rotation
   itself is §13111 ("the name appearing first in the last preceding Assembly
@@ -236,9 +243,12 @@ measures last.
   school-below-judicial. No statute-vs-sample conflict.
 - Baseline delta: REAL — (1) whole nonpartisan judicial section (retention +
   trial) prints BEFORE school board and nonpartisan municipal (baseline has
-  school 80 before judicial 82–90); (2) partisan municipal precedes
-  district/special-district offices. Federal→state→county spine, Governor
-  after US House, supreme→appeals→trial, measures-last all match baseline.
+  school 80 before judicial 82–90); (2) School Board itself precedes
+  nonpartisan MUNICIPAL offices — rule (7)(b) item 6 vs items 7–8 — inverting
+  the baseline's municipal-before-school within the nonpartisan section;
+  (3) partisan municipal precedes district/special-district offices.
+  Federal→state→county spine, Governor after US House,
+  supreme→appeals→trial, measures-last all match baseline.
 - Notes: 2024 = no governor race, so statewide-executive internal order rests
   on §101.151(2)(a)3. text alone. Primaries differ: §105.041(1) separate
   portion/ballot; §101.151(4)(a) alphabetical surnames. Name order within a
@@ -617,8 +627,16 @@ measures last.
   Matches: President/Senate top, state senate before house, county after
   legislature, measures last.
 - Notes: grade B — judicial/nonpartisan/measures legs are
-  statute+sample-confirmed, but the office sequence itself has no authority
-  text; rests on 4 consistent samples + §21-2-379.23(b) delegation. Primary
+  MIRROR-text+sample-confirmed, but the office sequence itself has no
+  authority text; rests on 4 consistent samples + §21-2-379.23(b)
+  delegation. SOURCING CAVEAT (plan rule: primary sources only): every
+  O.C.G.A. quote in this entry comes from unofficial mirrors
+  (FindLaw/onecle) because the official code is behind LexisNexis's script
+  portal — mitigated by two independent mirrors agreeing verbatim, by the
+  verification pass re-reading both, and by the OFFICIAL SOS rule
+  183-1-12-.07 citing the same section numbers; still, treat the statutory
+  quotes as pending primary re-verification if O.C.G.A. access opens, and
+  do not cite this entry's statute text as primary-verified. Primary
   (one line): single ballot = party primary → party questions → captioned
   nonpartisan section last (§21-2-285.1). Name order (informational): party
   columns by descending last-gubernatorial vote (§21-2-285(c)); alphabetical
@@ -766,9 +784,13 @@ measures last.
   AG) BEFORE US Senator/US Rep (statutory, MCL 168.697); (2) judicial leads
   the nonpartisan section, ahead of nonpartisan county/municipal/school —
   reverse of baseline school-before-judicial; (3) partisan education/
-  university boards between state legislature and county. Matches: President
-  first, legislature after Congress, county→municipal→school progression
-  WITHIN the nonpartisan tail, measures last.
+  university boards between state legislature and county. NOTE the
+  nonpartisan tail does NOT reduce to a county→municipal→school progression:
+  education contests sit on BOTH sides of the municipal offices — Community
+  College and Intermediate School District print BEFORE city, while Local
+  School District prints AFTER village (MCL 168.699 order above) — so an
+  implementation needs distinct ranks for CC/ISD vs local school board.
+  Matches: President first, legislature after Congress, measures last.
 - Notes: RESEARCH RETRACTION recorded — the researcher's first report cited
   Wayne (Brownstown Twp) and Oakland (Farmington Hills) Nov-2024 sample
   ballots; it then retracted both as never actually fetched/verified. Do NOT
