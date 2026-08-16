@@ -48,10 +48,18 @@ measures last.
 ### IL — Illinois (FIPS 17) — PENDING
 
 ### OH — Ohio (FIPS 39) — GRADE B (partial)
-- Authority: Ohio RC 3505.04 (accessed 2026-08-15, #719 research round)
-- Judicial: nonpartisan ballot section after every partisan office — matches the
-  baseline late block.
-- Baseline delta: none expected for judicial; other questions PENDING.
+- Authority: Ohio RC 3505.04, https://codes.ohio.gov/ohio-revised-code/section-3505.04
+  (accessed 2026-08-16)
+- Judicial: nonpartisan ballot section after every partisan office — late block
+  confirmed. But INSIDE that section the statute puts judicial FIRST: "county
+  judicial offices shall be listed first on the ballot, followed by municipal
+  and township offices, and by offices of member of a board of education".
+- Baseline delta: REAL — baseline prints school (80) before judicial (82–90);
+  Ohio's nonpartisan section is judicial → municipal/township → school. Needs a
+  within-tail reorder once grade A.
+- Notes: §3505.04 speaks to county-level judicial; supreme/appeals placement on
+  the nonpartisan ballot needs its own cite in the full pass. Other schema
+  questions PENDING.
 
 ### GA — Georgia (FIPS 13) — PENDING
 
@@ -61,10 +69,18 @@ measures last.
 - Baseline delta: judicial late block wrong for NC; needs grade-A completion.
 
 ### MI — Michigan (FIPS 26) — GRADE B (partial)
-- Authority: Michigan ballot-form standards (SOS) (accessed 2026-08-15, #719
-  research round — pin exact document + edition during full pass)
-- Judicial: nonpartisan section after partisan offices — matches baseline.
-- Baseline delta: none expected for judicial; other questions PENDING.
+- Authority: Michigan Ballot Production Standards (Dept. of State, Sept 2024
+  edition), https://www.michigan.gov/-/media/Project/Websites/sos/01mcalpine/BallotStandards.pdf
+  (accessed 2026-08-16)
+- Judicial: nonpartisan section after partisan offices — late block confirmed.
+  Inside the nonpartisan section the prescribed order is Judicial → Community
+  College → Intermediate School District → City → Township Library → Village →
+  Local School District → Metropolitan District → District Library — judicial
+  FIRST, before city/township/school.
+- Baseline delta: REAL — same shape as OH: baseline's school-before-judicial is
+  inverted in MI's nonpartisan tail. Needs a within-tail reorder once grade A.
+- Notes: standards republish per cycle — carry the edition forward. Other schema
+  questions PENDING.
 
 ## Batch 2
 

@@ -17,7 +17,12 @@ every cycle), which stays in ballot-facsimile Phases 2–4.
 
 - 50 states + DC (51 jurisdictions).
 - **General elections only** (November). If a statute orders primaries differently,
-  note it in one line and move on.
+  note it in one line and move on. Consequence for code: ballot summaries carry
+  `election_stage` (`primary | general | runoff | special | null`) and
+  `state_baseline` sorts every stage — so a general-only override MUST apply only
+  when `election_stage === "general"`; any other stage (including null/unknown)
+  keeps the generic baseline rather than inheriting a rule we never researched
+  for it.
 - **Contest order only**: the sequence of contests down the ballot. Explicitly NOT:
   physical layout, columns, color, paper format (Phase 2); per-county placement data
   (Phase 3); candidate order *within* a contest (rotation is precinct-dependent and
@@ -95,11 +100,14 @@ every cycle), which stays in ballot-facsimile Phases 2–4.
    per-state override consumed by `stateBaselineContestRank`, keyed by
    `district.state_fips` (already on every ballot election summary —
    `ballotLookup.ts` carries `state_fips`; the rank function's header comment
-   already reserves this exact extension point). Only **deviations** from the
+   already reserves this exact extension point) — and gated on
+   `election_stage === "general"` (see Scope). Only **deviations** from the
    majority baseline get entries; a state matching the baseline gets NO code, the
    baseline is its rule. Overrides are grade-A-only.
 3. **Tests** — `ballotContestRank.test.ts` grows a case per override, citation in
-   a comment, pinning the deviation (e.g. WA: measures before offices).
+   a comment, pinning the deviation (e.g. WA: measures before offices) — plus a
+   non-general regression case per override (same state, `election_stage:
+   "primary"` and `null`) pinning that the generic baseline still applies there.
 
 ## Execution mechanics
 
