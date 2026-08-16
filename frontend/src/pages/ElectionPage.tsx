@@ -348,6 +348,12 @@ export function ElectionPage() {
         record_count: stance.for_count + stance.against_count,
       })),
     })),
+    // The roster sort in force RIGHT NOW — the candidate rail starts on it,
+    // so an explicit A–Z choice here survives opening a candidate instead
+    // of being stomped by the rail's My-issues default. Same values by
+    // construction: CandidateSort and CandidateRailSortKey are both
+    // "alphabetical" | "my_issues".
+    railSort: candidateSort,
   };
 
   // The nav bar at the top: prev | back | next, each slot captioned.

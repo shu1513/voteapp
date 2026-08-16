@@ -1362,6 +1362,9 @@ describe("ElectionPage back link and nav context", () => {
         { id: "c-1", name: "Jordan Voter", research_area_records: [] },
         { id: "c-2", name: "Riley Runner", research_area_records: [] },
       ],
+      // The roster sort in force (anonymous → alphabetical): the candidate
+      // rail starts on it instead of stomping it with its own default.
+      railSort: "alphabetical",
     });
   });
 

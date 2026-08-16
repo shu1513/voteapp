@@ -1215,6 +1215,19 @@ describe("CandidatePage roster rail sort", () => {
     expect(railRows(nextRail)).toEqual(["Casey Contender", "Riley Runner", "Jordan Voter"]);
   });
 
+  it("honors an A–Z handoff from the election roster over the My-issues default", async () => {
+    stubApiRoutes({ ...SAVED_GUN });
+    renderCandidate(perIdLoader, "c-1", { ...KEYED_ARRIVAL, railSort: "alphabetical" });
+
+    // The reader explicitly chose A–Z on the election page; the rail must
+    // start there even though this viewer's default would be My issues.
+    const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    const select = await within(rail).findByRole("combobox");
+    await within(select).findByRole("option", { name: "My issues first" });
+    expect(select).toHaveValue("alphabetical");
+    expect(railRows(rail)).toEqual(["Casey Contender", "Jordan Voter", "Riley Runner"]);
+  });
+
   it("switches between A–Z and My issues first", async () => {
     stubApiRoutes({ ...SAVED_GUN });
     const user = userEvent.setup();
