@@ -345,13 +345,15 @@ export function PicksPage() {
     isLoading: choicesLoading,
     isError: choicesError,
   } = useElectionChoices();
-  // ONE payload for both views, in paper-ballot contest order (explicit sort
-  // + followed_first so the user's saved list preferences never apply here):
-  // the date cards take within-date order from it and the ballot sheets
-  // render it as-is, so List and Ballot view can never disagree — and when
-  // curated county placements land (ballot-facsimile Phase 3) both views
-  // inherit them at once. Deliberately NOT the ["me", "ballot"] key: the
-  // saved ballot page owns that key with the user's saved sort.
+  // ONE payload for both of THIS PAGE's views, in paper-ballot contest order
+  // (explicit sort + followed_first so the user's saved list preferences
+  // never apply here): the date cards take within-date order from it and the
+  // ballot sheets render it as-is, so List and Ballot view can never
+  // disagree — and when curated county placements land (ballot-facsimile
+  // Phase 3) both views inherit them at once. Deliberately NOT the
+  // ["me", "ballot"] key: the saved ballot page owns that key with the
+  // user's saved sort, and the nav's pick counter keeps its own slim fetch
+  // on it (usePickProgress documents that trade).
   const ballot = useQuery({
     queryKey: ["me", "ballot", "preview"],
     queryFn: () =>

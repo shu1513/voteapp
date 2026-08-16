@@ -16,8 +16,13 @@ export type PickProgress = { picked: number; total: number; complete: boolean };
 export function useMyPicksProgress(): PickProgress | null {
   const { me } = useMe();
   const verified = me?.email_verified === true;
-  // Same key and options as PicksPage's ballot query so the two share one
-  // cache entry; staleTime keeps route changes from refetching every time.
+  // The header's own slim fetch — deliberately NOT PicksPage's preview key:
+  // that payload is ballot-ordered and roster-laden, and sharing a key would
+  // either clobber the saved ballot page's saved-sort cache or make every
+  // page's header pay the preview cost. Accepted trade: a hard load of
+  // /me/picks issues this slim fetch alongside the page's preview fetch
+  // (SPA navigation doesn't — this hook mounts once with the app shell and
+  // staleTime keeps route changes from refetching every time).
   const ballot = useQuery({
     queryKey: ["me", "ballot"],
     queryFn: () => apiRequest<BallotSummary>("/api/me/ballot"),
