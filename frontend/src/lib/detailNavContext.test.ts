@@ -148,6 +148,31 @@ describe("readCandidateNavState", () => {
     });
   });
 
+  it("rejects non-count record_count values per entry", () => {
+    // record_count feeds the sort's record-volume tiebreak; NaN there makes
+    // the comparator return NaN and the order arbitrary. Only non-negative
+    // integers survive — anything else drops that entry's records alone.
+    const entry = (id: string, recordCount: unknown) => ({
+      id,
+      name: id,
+      research_area_records: [{ research_area_id: "a-1", record_count: recordCount }],
+    });
+    expect(
+      readCandidateNavState({
+        backTo: ELECTION_BACK,
+        candidates: [entry("c-1", Number.NaN), entry("c-2", -1), entry("c-3", 1.5), entry("c-4", 3)],
+      })
+    ).toEqual({
+      backTo: ELECTION_BACK,
+      candidates: [
+        { id: "c-1", name: "c-1" },
+        { id: "c-2", name: "c-2" },
+        { id: "c-3", name: "c-3" },
+        { id: "c-4", name: "c-4", research_area_records: [{ research_area_id: "a-1", record_count: 3 }] },
+      ],
+    });
+  });
+
   it("degrades each optional field independently", () => {
     expect(
       readCandidateNavState({

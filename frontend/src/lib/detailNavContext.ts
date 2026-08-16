@@ -233,7 +233,10 @@ export function readCandidateNavState(state: unknown): CandidateNavState | null 
             area !== null &&
             typeof (area as Record<string, unknown>).research_area_id === "string" &&
             ((area as Record<string, unknown>).research_area_id as string).trim() !== "" &&
-            typeof (area as Record<string, unknown>).record_count === "number"
+            // A count: non-negative integer only. NaN in particular must not
+            // pass — it would poison the sort's record-volume tiebreak.
+            Number.isSafeInteger((area as Record<string, unknown>).record_count) &&
+            ((area as Record<string, unknown>).record_count as number) >= 0
         )
         ? {
             ...candidate,

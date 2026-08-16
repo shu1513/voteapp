@@ -221,10 +221,12 @@ export function SavedBallotPage() {
   const { choiceByElectionId } = useElectionChoices();
   // The sort this list is ACTUALLY in (override wins server-side, else the
   // saved preference) — seeds the detail rail's always-engaged sort. Shares
-  // the preference controls' query via the cache; null while it loads, in
-  // which case the seed is simply omitted and the rail uses its own
-  // default.
-  const { current: ballotPreferences } = useBallotPreferences();
+  // the preference controls' query via the cache. The list is withheld
+  // until this settles (guard below): the server has already ordered the
+  // ballot by the saved preference, so cards navigable before the client
+  // knows that sort would seed the rail with the wrong order. On a
+  // preferences failure it falls open — list shown, seed simply omitted.
+  const { prefs: ballotPreferencesQuery, current: ballotPreferences } = useBallotPreferences();
   const effectiveListSort = sortOverride ?? ballotPreferences?.sort ?? null;
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
@@ -365,6 +367,20 @@ export function SavedBallotPage() {
   // with the request ignored. AFTER the error branch: a ballot error has no
   // list to withhold, so it must never hide behind this loading notice.
   if (issuesRequested && savedAreasLoading) {
+    return <LoadingNotice text="Loading your ballot…" />;
+  }
+
+  // The ballot arrives already ordered by the saved sort preference; until
+  // the preferences query tells the client WHICH sort that was, the cards
+  // would stamp no railSort and the detail rail would open in its default
+  // order instead of the list's. Withhold until the FIRST attempt settles,
+  // then never again: a failure falls open to the list with the seed
+  // omitted, and the errorUpdateCount guard is what keeps it open — this
+  // gate unmounts the preference controls, and their remount resets an
+  // errored query to pending (retryOnMount), so gating on pending alone
+  // flip-flops forever between this notice and the list. An engaged ?sort=
+  // override needs no wait: it IS the effective sort.
+  if (!sortOverride && ballotPreferencesQuery.isLoading && ballotPreferencesQuery.errorUpdateCount === 0) {
     return <LoadingNotice text="Loading your ballot…" />;
   }
 
