@@ -2316,7 +2316,11 @@ measures last.
   class that survives; the list-format methodology is licensed by
   Charleston 2022, where the SCVotes list-format sample matches the
   printed ballot contest-for-contest (verified against printed styles 1 +
-  50). President-vs-GOVERNOR stays structurally open (never co-ballot).
+  50). NEVER ENCODE "US Senate second" from this — the 2020
+  President→US-Senate adjacency exists only because SC's executive block
+  is midterm-only; in midterms US Senate prints BELOW the seven
+  executives (Charleston 2022, both formats). President-vs-GOVERNOR
+  stays structurally open (never co-ballot).
 
 ### AL — Alabama (FIPS 01) — GRADE A (scoped — see Notes)
 - Authority: Ala. Code § 17-6-25 ("Order of Listing of Candidates on
