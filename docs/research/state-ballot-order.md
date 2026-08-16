@@ -1189,7 +1189,23 @@ measures last.
   limitation, since removed.) Secondary: Maricopa Nov-2024 final canvass
   (264 contests) — same federal→legislative→CorpComm→county→JP/Constable
   head; measures tail exactly § 19-125 series (133-140 → 311-315 → 479 →
-  486).
+  486). Late verification round added: (a) additional Pinal 2024 styles
+  (https://www.pinal.gov/DocumentCenter/View/21383 = style 042G02 w/
+  school bond, .../21430 = 061G04 w/ JP, .../21505 = 093G07 w/ town
+  office+measure; index https://www.pinal.gov/QuickLinks.aspx?CID=634) —
+  SCHOOL BOARDS PRINT AFTER THE JUDICIAL RETENTION BLOCK on every style
+  carrying both (Apache Junction USD / Casa Grande UHS board members
+  after the Supreme + Superior retentions), and Justice of the Peace is
+  the LAST partisan contest directly before the Section Two header; local
+  props print after ALL statewide props in number order, countywide (486)
+  before sub-county (487/492). (b) La Paz County Nov-2022 all-styles book
+  (https://www.co.la-paz.az.us/DocumentCenter/View/7966/Nov-8th-Sample-Ballots-PDF)
+  — the EXECUTIVE SPLIT IN PRINT on a gubernatorial ballot: US Senator →
+  US Rep → GOVERNOR → State Senator → State Rep → SOS → AG → Treasurer →
+  Superintendent → Mine Inspector → Corporation Commissioner → county
+  offices → JP → Constable; Section Two = Supreme Court retentions →
+  Appeals Div I → school/town offices; measures 128-132 → 209/211 →
+  308-310.
 - Baseline delta: SUBSTANTIAL, three departures. (1) Statewide executives
   SPLIT by the legislature: Gov(+LtGov) → state senate → state house → SOS
   → AG → Treasurer → Supt → Mine Inspector → Corp Comm — only Governor
@@ -1198,18 +1214,21 @@ measures last.
   appeals → trial matches). (3) Municipal comes after school and LAST among
   candidate races. Matching: federal-first top, senate-before-house, county
   before local, measures last.
-- Notes: CONFLICT RECORDED, NOT RESOLVED — Maricopa 2024 canvass lists
-  school/college/JTED/fire/city races BEFORE judicial retention, reverse of
-  the EPM; but the same canvass interleaves district QUESTIONS right after
-  their board races, which § 16-502(L)/EPM forbid on printed ballots → the
-  canvass is grouped by jurisdiction, NOT printed order, so it is not
-  reliable evidence below the county tier; the Pinal style read carried no
-  school/municipal races and cannot break the tie. Follow the EPM
-  (judicial first), flagged unconfirmed against a printed ballot carrying
-  both school + retention contests. No 2022 printed ballot examined —
-  Governor + down-ballot executives never observed in the same election
-  (statute + both EPM editions explicit; re-check w/ Nov-2026 samples,
-  which also debut the Gov+LtGov joint ticket, 2022 Prop 131). EPM edition
+- Notes: the Maricopa-canvass question is now SETTLED by printed ballots —
+  the canvass (school/city before judicial) is jurisdiction-grouped
+  reporting, and Pinal styles carrying BOTH contests print judicial
+  retention FIRST, school boards after, matching the EPM; the EPM default
+  holds on every printed ballot examined. 2022 executive split now
+  ballot-observed (La Paz above); the Gov+LtGov joint ticket still debuts
+  Nov-2026 (2022 Prop 131). NEW CONFLICT RECORDED, NOT RESOLVED: La Paz
+  2022 prints its ELECTED Superior Court judge INSIDE Section One
+  (partisan), between Clerk of the Superior Court and JP — the 2025 EPM
+  puts contested Superior Court at NONPARTISAN slot 5. The 2022 ballot
+  predates the 2023/2025 EPM editions, so this may be a superseded
+  practice rather than live deviation; check an elected-judge county
+  (Apache/Cochise/Yavapai...) on a Nov-2026 sample. Community-college
+  boards never observed on any style (no seats up) — placement inferred
+  from the EPM only. EPM edition
   delta (UNVERIFIABLE as of the verify pass — the 2023 EPM URL went dead
   between research and verification; claims retained but not
   re-established): 2023 EPM listed Governor alone at slot 4 and had
