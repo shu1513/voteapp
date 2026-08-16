@@ -57,7 +57,7 @@ describe("BallotPreviewSheets retention races", () => {
     expect(within(contest).getByText("No")).toBeInTheDocument();
     // Picking the judge means voting to retain: the mark lands on Yes.
     const yesRow = within(contest).getByText("Yes").closest("li")!;
-    expect(within(yesRow).getByText("Your pick")).toBeInTheDocument();
+    expect(within(yesRow).getByText("My pick")).toBeInTheDocument();
     // The judge's name still appears (as ballot-question context, not a row
     // with its own oval).
     expect(within(contest).getByText("Denise M. Porter")).toBeInTheDocument();
@@ -78,6 +78,6 @@ describe("BallotPreviewSheets retention races", () => {
     );
 
     expect(screen.getByText("Vote Yes or No")).toBeInTheDocument();
-    expect(screen.queryByText("Your pick")).not.toBeInTheDocument();
+    expect(screen.queryByText("My pick")).not.toBeInTheDocument();
   });
 });

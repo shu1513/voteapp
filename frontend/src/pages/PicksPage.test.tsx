@@ -405,7 +405,7 @@ describe("PicksPage", () => {
     expect(screen.getByText("Vote for One")).toBeInTheDocument();
 
     // The pick: filled oval is visual; the textual chip is the contract.
-    expect(screen.getAllByText("Your pick").length).toBe(2); // Jane + measure Yes
+    expect(screen.getAllByText("My pick").length).toBe(2); // Jane + measure Yes
     expect(screen.getByText("Jane Smith").className).toContain("font-bold");
 
     // Withdrawn candidacy stays visible, struck through, with the warning.

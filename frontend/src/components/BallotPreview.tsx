@@ -15,14 +15,15 @@ import { formatElectionDate } from "@voteapp/api-client";
 //     styled as ballot text
 //   - withdrawn candidates render struck-through instead of vanishing (they
 //     may still be printed on the paper ballot)
-//   - a pick is marked by the filled oval AND the "Your pick" text — never
-//     color alone
+//   - a pick is marked by the filled oval AND the "My pick" text — never
+//     color alone (green-700 matches the pick chips everywhere else in the
+//     app: ElectionCard, PublicPickCardPage)
 
 function BallotOval({ filled, label }: { filled: boolean; label?: string }) {
   return (
     <span
       aria-hidden="true"
-      className={`mt-1 inline-block h-3.5 w-6 shrink-0 rounded-full border-2 border-ink ${filled ? "bg-ink" : "bg-white"}`}
+      className={`mt-1 inline-block h-3.5 w-6 shrink-0 rounded-full border-2 ${filled ? "border-green-700 bg-green-700" : "border-ink bg-white"}`}
       title={label}
     />
   );
@@ -54,8 +55,8 @@ function YesNoRows({ pickedPosition }: { pickedPosition: "yes" | "no" | null }) 
                 {position === "yes" ? "Yes" : "No"}
               </span>
               {picked ? (
-                <span className="ml-1.5 rounded bg-ink px-1.5 py-0.5 text-xs font-semibold text-white">
-                  Your pick
+                <span className="ml-1.5 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">
+                  My pick
                 </span>
               ) : null}
             </span>
@@ -79,7 +80,7 @@ function CandidateRow({ candidate, picked }: { candidate: ElectionPreviewCandida
         {candidate.party ? <span className="text-ink-soft"> · {candidate.party}</span> : null}
         {withdrawn ? <span className="text-xs text-ink-soft"> (withdrew — votes may not count)</span> : null}
         {picked ? (
-          <span className="ml-1.5 rounded bg-ink px-1.5 py-0.5 text-xs font-semibold text-white">Your pick</span>
+          <span className="ml-1.5 rounded bg-green-700 px-1.5 py-0.5 text-xs font-semibold text-white">My pick</span>
         ) : null}
       </span>
     </li>

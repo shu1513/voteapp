@@ -143,7 +143,7 @@ describe("DraftPage", () => {
 
     expect(await screen.findByRole("heading", { name: /Ballot preview — November 3, 2026/ })).toBeInTheDocument();
     expect(screen.getByText("Not an official ballot")).toBeInTheDocument();
-    expect(screen.getByText("Your pick")).toBeInTheDocument();
+    expect(screen.getByText("My pick")).toBeInTheDocument();
     // Guest preview rides the PUBLIC endpoint with the same ordering
     // contract — and toggling views must NOT refetch: one payload backs
     // both List and Ballot view.
