@@ -2627,23 +2627,42 @@ measures last.
   with Section 4 (p.14) opening at United States Senator; Kenton "How to
   Read a Publication Ballot"
   ("The first item on everyone's ballot will be the Straight Ticket
-  option"). MULTI-COUNTY SWEEP (child agent, per-county URLs in evidence
-  file): 17 counties total — 2024 composites/publication ballots for
-  Fayette, Kenton, Boone, Campbell, Warren, Hardin, Daviess, Bullitt,
-  Madison (clerk-certified), Jessamine, Woodford, Franklin, Clark,
-  Oldham, Laurel + Jefferson clerk candidate list ("Candidates are listed
-  in the order in which they will appear on the ballot" — LOCAL offices
-  only) + Kenton 2022 composite (full county tier: PVA → County
-  Judge/Executive → County Attorney → County Clerk → Sheriff → Jailer →
-  County Commissioner → Coroner → Surveyor → Magistrate → Constable —
-  matching KRS 118.215(1) with Commonwealth's Attorney + Circuit Clerk
-  heading, then the FULL judicial chain). Dominant 2024 skeleton
-  confirmed statewide: Straight Party → President/VP → US Rep → State
-  Senator → State Rep → Commonwealth's Attorney → Circuit Clerk →
-  leftover partisan county (unexpired terms) → NONPARTISAN JUDICIAL
-  BALLOT → soil & water → school → city → amendments. Several 2024 SOS
-  copies recovered via Common Crawl (web.sos.ky.gov purges to current
-  cycle; Jefferson live host Akamai-403).
+  option"). MULTI-COUNTY SWEEP (child agent): 17 counties total. Live
+  URL patterns:
+  https://<name>countyclerk.ky.gov/wp-content/uploads/2024/10/<County>-2024G*.pdf
+  (Boone Newspaper-Composite, Campbell, Jessamine, Woodford, Franklin,
+  Clark, Oldham; Laurel under .../2024/09/, Daviess at
+  https://www.daviessky.org/wp-content/uploads/2024/10/General-Election-Composite-2024.pdf)
+  and https://<county>.countyclerk.us/wp-content/uploads/<yyyy>/<mm>/<County>-<yyyy>G.pdf
+  (Bourbon, Campbell, McCracken). Claim-carrying exact URLs: Kenton 2024
+  publication ballot
+  (https://kentoncountykyclerk.com/wp-content/uploads/2024/09/2024-General-Publication-Ballot-24-9-24-21-48-38.pdf
+  — city BEFORE school) + KENTON 2022 COMPOSITE, the judicial-chain
+  anchor
+  (https://kentoncountykyclerk.com/wp-content/uploads/2022/09/2022-GENERALCOMPOSITE-BALLOT.pdf
+  — full county tier PVA → County Judge/Executive → County Attorney →
+  County Clerk → Sheriff → Jailer → County Commissioner → Coroner →
+  Surveyor → Magistrate → Constable matching KRS 118.215(1), then the
+  FULL judicial chain); Fayette 2024
+  (https://www.fayettecountyclerk.com/web/elections/2024GenElectionBallot.pdf
+  — live tree now soft-404, recover via Common Crawl CC-MAIN-2024-46;
+  ad-valorem question LAST after amendments); Jefferson clerk candidate
+  list ("Candidates are listed in the order in which they will appear on
+  the ballot" — LOCAL offices only;
+  https://elections.jeffersoncountyclerk.org/pdfs/g24public.pdf, live
+  host Akamai-403, recover via CC-MAIN-2024-42); Warren + Hardin +
+  Bullitt + Madison SOS copies
+  (https://web.sos.ky.gov/ballots/<County>%202024G.pdf, all live-404 —
+  SOS purges to current cycle — recover via CC-MAIN-2024-42; Hardin +
+  Bullitt carry the countywide-cannabis-after-amendments finding).
+  Common Crawl recipe: query the CC index for the URL in the named
+  collection, then a Range request on data.commoncrawl.org (1MB
+  truncation corrupts big PDFs — re-fetch those from live county hosts).
+  Dominant 2024 skeleton confirmed statewide: Straight Party →
+  President/VP → US Rep → State Senator → State Rep → Commonwealth's
+  Attorney → Circuit Clerk → leftover partisan county (unexpired terms) →
+  NONPARTISAN JUDICIAL BALLOT → soil & water → school → city →
+  amendments.
 - Baseline delta: (1) straight-party box first, ahead of President;
   (2) NO statewide executives in even years (state legislature follows US
   House directly); (3) judicial block NOT last — county → JUDICIAL →
@@ -2664,24 +2683,35 @@ measures last.
   31 KAR 2:010, so model the tail as county-variable. CLOSED by the
   sweep: Supreme/Circuit placement (Kenton 2022 full chain);
   single-county corroboration (now 17 counties incl. Jefferson + Fayette
-  via Common Crawl). Still open: odd-year executive internal order
-  (needs a 2023 ballot; matters only for Nov 2027); no SBE directive for
-  the top-of-ballot sequence (would upgrade the B leg); Kenton 2024
-  filing doc lists Circuit Clerk before Commonwealth's Attorney —
-  filing-list artifact, NOT ballot order (explicitly not relied on).
+  via Common Crawl). Still open: no SBE directive for the top-of-ballot
+  sequence (would upgrade the B leg); Kenton 2024 filing doc lists
+  Circuit Clerk before Commonwealth's Attorney — filing-list artifact,
+  NOT ballot order (explicitly not relied on).
   ODD-YEAR EXECUTIVES CLOSED (late child agent, 2026-08-16): five 2023
-  general ballots (Campbell + Rowan + Harrison via
-  https://<county>.countyclerk.us/wp-content/uploads/2023/09/<County>-2023G.pdf;
-  Fayette + Kenton SOS copies via Common Crawl CC-MAIN-2024-10) print an
-  IDENTICAL executive sequence: STRAIGHT PARTY → GOVERNOR and LIEUTENANT
+  general ballots —
+  https://campbell.countyclerk.us/wp-content/uploads/2023/09/Campbell-2023G.pdf
+  (text layer: "FOR THE GENERAL ELECTION, NOVEMBER 7, 2023"),
+  https://rowan.countyclerk.us/wp-content/uploads/2023/09/Rowan-2023G.pdf,
+  https://harrison.countyclerk.us/wp-content/uploads/2023/09/Harrison-2023G.pdf
+  (all live, %PDF verified), plus Fayette + Kenton SOS copies recovered
+  from Common Crawl (live URLs
+  https://web.sos.ky.gov/ballots/Fayette%202023G.pdf and
+  .../Kenton%202023G.pdf now 404 — SOS purges to current cycle; retrieve
+  by querying the Common Crawl index for those URLs in collection
+  CC-MAIN-2024-10, then a Range request on data.commoncrawl.org; 291,980
+  and 134,389 bytes, Kenton has a text layer) — print an IDENTICAL
+  executive sequence: STRAIGHT PARTY → GOVERNOR and LIEUTENANT
   GOVERNOR (one combined contest, "Vote for One") → SECRETARY of STATE →
   ATTORNEY GENERAL → AUDITOR of PUBLIC ACCOUNTS → STATE TREASURER →
   COMMISSIONER of AGRICULTURE — then county/nonpartisan tails vary by
   county as usual (Fayette 2023 = general AND special election, State Rep
   93rd prints after the nonpartisan school block). Two more 2024 counties
-  confirm the even-year skeleton (Bourbon + Campbell via the same
-  countyclerk.us CDN pattern .../2024/10/<County>-2024G.pdf; McCracken
-  independently re-derived as a pipeline self-check). Child also reports
+  confirm the even-year skeleton — Bourbon
+  (https://bourbon.countyclerk.us/wp-content/uploads/2024/10/Bourbon-2024G.pdf)
+  + Campbell
+  (https://campbell.countyclerk.us/wp-content/uploads/2024/10/Campbell-2024G.pdf);
+  McCracken independently re-derived as a pipeline self-check
+  (https://mccracken.countyclerk.us/wp-content/uploads/2024/10/McCracken-2024G.pdf). Child also reports
   — NOT re-verified against fetched reg text, treat as pointers:
   straight-party-first codified at 31 KAR 5:026 §1, and full-term vs
   unexpired-term grouping at KRS 118.115(5); if confirmed, the
