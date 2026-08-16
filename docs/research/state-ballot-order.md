@@ -3261,27 +3261,902 @@ measures last.
 
 ## Batch 4
 
-### IA — Iowa (FIPS 19) — PENDING
+### IA — Iowa (FIPS 19) — GRADE A
 
-### NV — Nevada (FIPS 32) — PENDING
+- Authority: Iowa Admin. Code r. 721—21.203(49,52) "Form of general election
+  ballot," subrule 21.203(3) "Office titles, order of offices and public
+  measures" ("The order of offices and public measures listed on the general
+  election ballot shall be as follows") —
+  https://www.legis.iowa.gov/docs/iac/rule/721.21.203.pdf (accessed
+  2026-08-16; IAC edition 11/12/25, chapter rescission date 1/1/28 per
+  https://www.legis.iowa.gov/docs/iac/chapter/721.21.pdf). Enabling
+  statutes: Iowa Code §49.57A (SOS "shall adopt rules … prescribing the form
+  of the official ballot"), §49.37 (arrangement; four-way grouping), §49.30
+  (single ballot default), §49.43 (measures), §46.21 (judicial ballot form),
+  §39.17 (county office sequence) — all at
+  https://www.legis.iowa.gov/docs/code/<section>.pdf.
+- Office order: rule prescribes TWO cycle-specific sequences.
+  Gubernatorial years (21.203(3)"a"): US Senator (if any) → US Rep →
+  Governor and Lt. Governor (one team line) → SOS → Auditor of State →
+  Treasurer of State → Secretary of Agriculture → Attorney General → State
+  Senator (if any) → State Rep → Board of Supervisors → County Treasurer →
+  County Recorder → County Attorney → Township Trustee → Township Clerk →
+  County Public Hospital Trustee → Soil & Water Commissioner → County Ag
+  Extension Council → other nonpartisan → judges → public measures.
+  Presidential years (21.203(3)"b"): President → US Senator (if any) → US
+  Rep → State Senator → State Rep → Supervisors → County Auditor → County
+  Sheriff → township/nonpartisan tier → judges → measures (statewide
+  executives structurally ABSENT — all elected in gubernatorial years).
+  Governor sits AFTER US House. Executive internal order = Gov/LtGov → SOS
+  → Auditor → Treasurer → Ag Secretary → AG. §49.37(2): "Partisan offices,
+  nonpartisan offices, judges, and public measures shall be separated by a
+  distinct line appearing on the ballot." Vacancy contests print after the
+  regular contest for the same office (21.203(3)"c").
+- Judicial: retention only (merit selection — no contested judicial races).
+  Late block after all offices, before measures, as a conspicuously
+  separated "Judicial Ballot" section (r. 721—21.203(8): "The judicial
+  ballot shall be separate from the rest of the ballot and shall be
+  conspicuously distinguished by headings and lines"; Iowa Code §46.21
+  "STATE OF IOWA JUDICIAL BALLOT" form). Internal order: Supreme Court →
+  Court of Appeals → District → District Associate → Assoc. Juvenile →
+  Assoc. Probate. In practice a separately-headed section on the ballot
+  reverse, not a separate sheet (all 4 samples).
+- Measures: LAST, after judges, "Public Measures" heading, sub-order
+  Constitutional Amendment → State Public Measure → County Public Measure →
+  City Public Measure (21.203(3)"a"(27)/"b"(21)). Statewide numbered by
+  SOS; local lettered by county commissioner (r. 721—21.200).
+- County discretion: partial — narrow. Office sequence mandatory ("shall be
+  as follows"). Auditors control: local-measure letter order (721—21.200(2));
+  physical-ballot splits when content won't fit (§49.30(1)); candidate order
+  within an office only by statutory formula (party rotation §49.31(1)"b",
+  nonpartisan lot-draw §49.31(2)"c").
+- School/special: municipal + school OFFICE tiers structurally EMPTY at
+  November even-year generals — school elections are November ODD years
+  (§277.1), city elections November odd years (§376.1), and §39.2(2) bars
+  city/school specials from coinciding with the general. The nonpartisan
+  special tier that DOES print: township trustee/clerk, county public
+  hospital trustee, soil & water commissioner, county ag extension council
+  (§39.21). City/county bond MEASURES may still appear (§39.2(4)"d").
+- Corroboration: 6 samples across 5 counties, all %PDF-verified. Black Hawk
+  2022 (Mt. Vernon
+  Twp style 38,
+  https://blackhawkcountyelections.iowa.gov/files/sample_ballots/20221108_mt_vernon_township_95420.pdf)
+  — full gubernatorial-year sequence incl. exact executive order. Polk 2024
+  (Ankeny 1, https://www.polkcountyiowa.gov/media/evnpb420/ankeny-1.pdf) —
+  presidential-year sequence, judicial + amendments on back. Black Hawk 2024
+  (style 10) — township tier + vacancy rule. Scott 2024 (Ag Township style
+  2) — third-county replication. Johnson 2022 (precinct IC05,
+  https://johnsoncountyiowa.gov/sites/default/files/Elections/2022GeneralElectionSampleBallotIC05.pdf)
+  — gubernatorial sequence replicated incl. State Senator directly after AG.
+  Greene 2022 (Jefferson 2,
+  https://www.greenecounty.iowa.gov/files/documents/2022J21744041853100422PM.pdf)
+  — CLOSES the measure sub-order question: Constitutional Amendment 1 prints
+  BEFORE "County of Greene Public Measure C" (jail bond), matching
+  21.203(3)"a"(27); also shows hospital-trustee slot.
+- Baseline delta: override needed. (1) municipal + school tiers EMPTY at
+  even-year generals; (2) township + nonpartisan special-district tier
+  between county and judicial; (3) judicial = retention-only late block
+  (baseline late-block position itself matches); (4) measures sub-order
+  amendment → state → county → city; (5) executive block gubernatorial-years
+  only; county offices cycle-split (presidential = Auditor + Sheriff;
+  gubernatorial = Treasurer + Recorder + County Attorney).
+- Notes: Gov/LtGov = single team line ("Vote for no more than one team,"
+  21.203(4)). Primary order differs (721—21.202(3): no President, Governor
+  alone, ends at county tier — no nonpartisan/judges/measures). Mild
+  tension: 21.203(8) "separate … ballot" vs §49.30(1) single-ballot default
+  — every sample resolves as separate SECTION on the same sheet; both texts
+  recorded. Printed section banners are "Federal Offices / State Offices /
+  County Offices / Nonpartisan Offices", not one "Partisan" banner. Open
+  (authority-only, not sample-tested): CITY measure slot (amendment→county
+  sub-order closed by Greene 2022; no sample carried a city measure);
+  "other nonpartisan offices" catch-all slot never populated in samples.
 
-### AR — Arkansas (FIPS 05) — PENDING
+### NV — Nevada (FIPS 32) — GRADE A
 
-### KS — Kansas (FIPS 20) — PENDING
+- Authority: NRS 293.268 "Order of listing offices, candidates and
+  questions on ballots" ("must be printed on ballots in the following
+  order") — https://www.leg.state.nv.us/NRS/NRS-293.html (official
+  Legislature host, accessed 2026-08-16). Supporting: NRS 293.250(2) (SOS
+  owns placement; clerks only "prepare appropriate ballot forms"),
+  293.195 (nonpartisan-office list), 293.267(5), 293.269, 293.270(2),
+  293C.262; NAC ch. 293 has NO order rule (grepped).
+- Office order: statutory 12-tier ladder. (1) President → (2) US Senator
+  then US Rep "in that sequence" → (3) Governor, LtGov, SOS, Treasurer,
+  Controller, AG "in that sequence" (Treasurer + Controller BEFORE AG) →
+  (4) state senate + assembly → (5) county/township PARTISAN → (6)
+  statewide nonpartisan → (7) district nonpartisan → (8) county
+  nonpartisan → (9) city (Mayor → council by ward → municipal judges) →
+  (10) township nonpartisan → (11) statewide questions (advisory last
+  within group) → (12) local/special-district questions (advisory last).
+- Judicial: NOT a late block — distributed by geographic scope, EARLY.
+  Supreme Court + Court of Appeals = tier 6, District Court (incl. Family
+  Div) = tier 7 — both BEFORE county nonpartisan/school/municipal.
+  Municipal judges tier 9(c); JPs tier 10 (last of all offices). No
+  retention — all contested nonpartisan (Nev. Const. art. 6 §§ 3, 3A(2),
+  5). No segregated nonpartisan section; interleave is by scope.
+- Measures: LAST. Statewide (tier 11) before local (tier 12); advisory
+  questions trail within each group; legislative alternative prints
+  BEFORE a rejected-initiative measure (NRS 293.267(5)).
+- County discretion: none over order — 293.268 mandatory + 293.250(2)
+  reserves placement to SOS. (293C.262(2)(a) city-clerk two-sheet split =
+  layout, not order.)
+- School/special: school trustees = county nonpartisan tier 8 (NRS
+  293.195; Clark 2024 CCSD trustees open the tier); Regents + State Board
+  of Education = tier 7 by district, BEFORE school board; county-scoped
+  special districts (water/power) tier 8; county SHERIFF nonpartisan (NRS
+  293.195) → tier 8 not the partisan band (statute-derived — see Notes).
+- Corroboration: Clark 2024 official "in order of appearance on the
+  ballot" contest list
+  (https://www.clarkcountynv.gov/adobe/assets/urn:aaid:aem:64d1b48e-07cd-432d-90ca-32c470ac8985/original/as/officesup-24g.pdf,
+  banner y-coordinates re-extracted via PyMuPDF) — tiers 1,2,4,5,6,7,8,
+  9,10 in exact statutory sequence; questions booklet
+  (all-quests-24g.pdf) = State Q1-7 then Boulder City → Henderson →
+  Henderson Library District. Clark 2022 (contests-candidates-22g.pdf) —
+  confirms tier 3: Governor → LtGov → SOS → Treasurer → Controller → AG
+  after US House. Both linked from Clark's official 24g-info index; Clark
+  services page restates the rule + NOTC office list. Child-agent
+  additions (own provenance, re-verified artifacts): Clark 2024 Dominion
+  CVR export (24G_CVRExport_NOV_Final_Confidential.zip, ZIP local-header +
+  range-inflate read) — 100-contest machine ballot definition matching
+  the SOV report set contest-for-contest and officesup-24g 90/90;
+  questions DEAD LAST positions 91-100 (State Q1-7 → Boulder City →
+  Henderson → Henderson Library); NOTC on exactly 5 contests, verified
+  two independent ways. NOTE: officesup-24g.pdf contains ZERO questions
+  (candidate list only) — question placement rests on CVR + SOV + Nye.
+  SECOND COUNTY: Nye 2024 printed sample booklet (precincts 24/28/31,
+  https://www.nyecountynv.gov/DocumentCenter/View/47456/Sample-Ballot---Precincts-24-28-31-PDF)
+  — printed banners FEDERAL PARTISAN → FEDERAL DISTRICT PARTISAN → STATE
+  DISTRICT PARTISAN → STATE NONPARTISAN (Supreme Seats C/F/G) → COUNTY
+  DISTRICT NONPARTISAN (school board) → STATE BALLOT QUESTIONS 1-7 →
+  COUNTY BALLOT QUESTIONS; NOTC only on Pres/US Sen/Supreme seats. THIRD
+  COUNTY: Washoe — official 2024 canvass (Election Summary Report,
+  https://www.washoecounty.gov/voters/results/resultsfiles/2024generalresults.pdf)
+  + CVR export (2024generalcvr.csv), identical 40-contest sequence, every
+  tier holds; 2022/2020/2018 canvasses fill the gaps: Court of Appeals =
+  tier 6 directly after Supreme Court (2022 #31-33); District Court incl.
+  Family = tier 7 first item (2020); SHERIFF = tier 8 county nonpartisan
+  CONFIRMED (2022 #43, party NP, after the improvement districts — closes
+  the sheriff question); CONSTABLE = tier 5 township PARTISAN at the end
+  of the county-partisan block (2018 #29, after County Treasurer);
+  municipal sub-order Mayor → Council → Municipal Judge, Reno before
+  Sparks (2022). All %PDF-verified.
+- Baseline delta: override required (large). (1) judicial EARLY —
+  Supreme/Appeals + District before county-nonpartisan/school/municipal;
+  (2) school after judicial, before municipal (baseline has municipal →
+  school → judicial); (3) JPs (tier 10) last of offices after city;
+  constables are township PARTISAN → tier 5 with the county-partisan
+  block; (4) county tier SPLIT by the judicial block (partisan tier 5 vs
+  nonpartisan tier 8, sheriff in 8); (5) executive internal order
+  Treasurer + Controller before AG; (6) Regents/SBOE tier 7 ahead of
+  school board; (7) measures last matches.
+- Notes: "None of These Candidates" (NRS 293.269) only on President +
+  statewide offices (Clark 2024: exactly 5 contests — Pres, US Senate,
+  Supreme Court Seats C/F/G); statutory tension recorded: NRS 293.1105
+  (2019) defines "statewide office" as elected STATE office, excluding US
+  Senate, yet 293.269 (1975) is applied to US Senate in practice — never
+  conformed. No write-ins anywhere (293.270(2)). Clark merges tiers 6+7
+  under one "STATE AND DISTRICT NONPARTISAN OFFICES" banner — label
+  merge, internal sequence intact. City elections moved to even years →
+  municipal rides the general. Washoe 2022 NOTC = 12 contests (US Senate
+  + six constitutional officers + 2 Supreme + 3 Court of Appeals).
+  Statute-only still: advisory-question ordering (none in any cycle
+  checked). OBSERVED DEVIATIONS (recorded, unexplained): Washoe 2024
+  printed Reno wards 1, 5, 6, 3 — violates NRS 293.268(9)(b) numerical
+  order (2020/2022 were numerical; canvass + CVR agree); Washoe 2022
+  printed North Lake Tahoe Fire Protection District (tier 7) AFTER
+  County Sheriff (tier 8). Clark's 2022 contest doc shows no sheriff
+  row (extraction artifact — Washoe settles the tier). Both wobbles are
+  below our tier granularity except ward order, which we don't encode. NV SOS Elections Procedures Manual
+  unread (Incapsula-walled; NRS 293.268 self-executing so not needed).
+  Fetch: leg.state.nv.us fine w/ browser-UA curl; nvsos.gov =
+  Incapsula-walled even via r.jina.ai; Clark sample facsimiles are
+  login-gated — the public "order of appearance" composites substitute;
+  Washoe publishes NO static sample ballot for Nov 2024 (OmniBallot
+  per-voter app, api.omniballot.us 401; Common Crawl holds only the 2022
+  + June-2024-primary books, 1MB-truncated) — a second hunter confirmed
+  the same 40-contest order from CVR + canvass independently; both
+  Washoe artifacts are ballot-DEFINITION order, not ink-on-paper scans
+  (stated caveat).
 
-### MS — Mississippi (FIPS 28) — PENDING
+### AR — Arkansas (FIPS 05) — GRADE C
 
-### NM — New Mexico (FIPS 35) — PENDING
+- Authority: NO statute or rule prescribes contest/office order. A.C.A.
+  § 7-5-208 fixes only ballot FORM (heading, perpendicular name column,
+  FOR/AGAINST layout); § 7-5-207(c)(1) fixes only candidate order within a
+  race (by lot, county board). Primary of record = SOS-published "Election
+  Laws of Arkansas … 2025 Edition,"
+  https://www.sos.arkansas.gov/uploads/elections/Arkansas_Election_Laws_and_Constitution_2025_Edition.pdf
+  (accessed 2026-08-16; grep for order phrases = zero office-order hits).
+  SBEC rule list has no ballot-form/order rule
+  (https://sbec.arkansas.gov/rules/). What IS law: measure numbering
+  § 7-9-117(c); judicial/prosecutor/school timing § 7-10-102; unopposed
+  omission § 7-5-207(a)(2).
+- Office order: county-set. Observed both samples: President → US House →
+  statewide executives → State Senate → State House → county/township →
+  municipal → (school, pre-2025 only) → nonpartisan judicial RUNOFFS →
+  measures. Governor AFTER US House. Benton 2022 executive order: Governor
+  → LtGov → AG → SOS → State Treasurer → Auditor → Land Commissioner —
+  NOT the art. 6 § 1 constitutional order (ballot swaps AG forward).
+- Judicial: Supreme Court, Court of Appeals, circuit, district judges +
+  prosecuting attorneys + school board = nonpartisan; their GENERAL is the
+  March preferential-primary date (§ 7-10-102(b)(1)). November carries
+  RUNOFFS only, "on the same ballots as used for the November general
+  elections" (§ 7-10-102(c)(3)). Runoff-block position is county-chosen:
+  Benton 2022 between county and municipal; Pulaski 2024 after
+  municipal/school, before issues. No retention elections in Arkansas.
+- Measures: statewide issues numbered "Issue 1…N" in statutory internal
+  order — (A) GA-proposed amendments → (B) initiated amendments → (C)
+  initiated acts → (D) referred acts → (E) GA-referred questions → (F)
+  other (§ 7-9-117(c)(2)); local measures "[p]laced separate and apart …
+  from the ballot titles of statewide measures" (§ 7-9-117(c)(3)). NOTHING
+  places measures before/after offices. Both samples print statewide
+  issues last; they DIVERGE on local questions (Benton inlines city
+  questions in municipal blocks; Pulaski prints them after statewide
+  issues).
+- County discretion: FULL as to contest order — §§ 7-5-207(a)(1)/208(a) put
+  production in the county board; SBEC 2026 Election Coordinator Manual
+  p. 50: "The CBEC is responsible for the accurate layout of each ballot."
+  Samples diverge on judicial-block, unopposed-block, local-question
+  positions = direct evidence.
+- School/special: Act 503 of 2025 → even-year school election on the
+  preferential-primary date ONLY (§ 6-14-102(a)(1)(A)(i)); school-board
+  RUNOFFS move to November. Pre-Act-503 board policy could pick the
+  general — explains Pulaski 2024's three school millages + LRSD Zone 4
+  runoff. 2026+: no regular school contests in November. Township
+  Constable tier prints with/near the county JP tier.
+- Corroboration: Benton 2022 county-produced composite sample ("FOR
+  CLERK", nwahomepage.com mirror of county-authored PDF — county host
+  403s:
+  https://www.nwahomepage.com/wp-content/uploads/sites/90/2022/10/Benton-County-2022-GENERAL-ELECTION-SAMPLE-FOR-CLERK.pdf)
+  — full face order incl. UNOPPOSED OFFICES block + executive chain.
+  Pulaski 2024 official Unofficial-Summary-Results
+  (https://votepulaskiar.gov/wp-content/uploads/Unofficial-Summary-Results.pdf)
+  + county Notice of Election
+  (https://votepulaskiar.gov/wp-content/uploads/11052024_Notice-of-Election_v2.pdf,
+  "NAMES WILL APPEAR IN BALLOT POSITION ORDER"). All %PDF-verified.
+- Baseline delta: none encodable — C, baseline stays. Safe to note for
+  other features (NOT rank overrides): judicial/prosecutor/school absent
+  from November except runoffs; unopposed non-exempt candidates absent
+  entirely (§ 7-5-207(a)(2), exceptions Governor/mayor/circuit
+  clerk/nonjudicial state officials print separately); statewide measures
+  numbered per § 7-9-117(c)(2); write-ins abolished (Act 305 of 2023).
+- Notes: C because office order has no authority + samples conflict on 3
+  block positions. Judicial-timing, measure-numbering, school-timing legs
+  are individually A-quality. Aggregate "UNOPPOSED OFFICES — vote for all"
+  pseudo-contest prints mid-ballot (position varies). Open: possible
+  de-facto ES&S Web-Portal template standardizing the ~90% similarity
+  (manual p. 53, not public); Pulaski corroboration is results/notice
+  order, not a ballot face (sample lookup per-voter; /sample-ballot/ =
+  HTTP 522); Benton 2024 composite not located; official O.C.A. =
+  LexisNexis JS portal (SOS compilation used as primary instead);
+  mid-term judicial vacancy path unchased.
 
-### NE — Nebraska (FIPS 31) — PENDING
-- Notes: unicameral nonpartisan Legislature — decide `state_upper` vs
-  `state_lower` scope mapping explicitly.
+### KS — Kansas (FIPS 20) — GRADE A
 
-### ID — Idaho (FIPS 16) — PENDING
+- Authority: K.S.A. 25-611 "Arrangement of offices on official general
+  ballots" + ballot forms 25-616 (national) / 25-617 (state) / 25-618
+  (county/township); questions 25-605 + 25-620; retention Kan. Const.
+  art. 3 § 5(c) + K.S.A. 20-3006 + 20-2908 — Revisor of Statutes,
+  https://ksrevisor.gov/statutes/chapters/ch25/025_006_0011.html
+  (accessed 2026-08-16). Supplement: Kansas Election Standards Ch. II
+  (rev. 2025-08-01, sos.ks.gov). K.A.R. Agency 7 art. 29 has no order
+  rule (colors + secrecy only).
+- Office order: National Offices: President → US Senator → US Rep. State
+  Offices: Governor AND LtGov running together → SOS → AG → (other
+  statewide = State Treasurer → Insurance Commissioner) → State Senator →
+  State Rep → DISTRICT JUDGE → DISTRICT MAGISTRATE JUDGE → DISTRICT
+  ATTORNEY → State Board of Education. County Offices: County
+  Commissioner → Clerk → Treasurer → Register of Deeds → County Attorney
+  → Sheriff. Township Offices: Trustee → Treasurer → Clerk. "When any
+  office is not to be elected, it shall be omitted" (25-616/617). Cycle
+  split: presidential years = no statewide executives, all 40 KS Senate,
+  SBOE 2/4/6/8/10, all 6 DAs, full county slate; gubernatorial = all
+  executives, NO KS Senate, SBOE 1/3/5/7/9, Township Clerk.
+- Judicial: TWO mechanisms. (1) PARTISAN-elected district
+  judges/magistrates (14 of 31 judicial districts, Kan. Const. art. 3
+  § 6(a) opt-out) print INSIDE the state block between State Rep and DA —
+  not late (biggest delta). (2) RETENTION (Supreme, Court of Appeals, +
+  the 17 merit districts) "on a separate judicial ballot, without party
+  designation" — prints as its own labeled LATE block after all offices,
+  before questions; internal order Supreme → Appeals → district →
+  magistrate. Retention PLACEMENT is county-variable: Shawnee = physically
+  separate ballot (two-document canvass split); Leavenworth + Jefferson =
+  late section of the same sheet; Sedgwick 2024 canvass shows Appeals
+  retention mid-ballot (artifact vs print — unresolved).
+- Measures: LAST, "QUESTION SUBMITTED" headers, after offices AND the
+  retention block. Amendments first, then county/city/USD questions.
+  Separate-vs-combined ballot = county option (25-605 "may be provided …
+  or the proposition may be combined"; 25-620).
+- County discretion: partial — office order fixed, no option;
+  questions/judicial physical-ballot choice is the county's; odd-year
+  municipal order delegated to SOS regulations (25-611(c)) that were
+  never located (likely never adopted — Cornell LII shows no such K.A.R.).
+- School/special: school board + community college + city GENERALS =
+  odd-Nov (25-2010, 71-1413, 25-2107); even-year ballots carry ZERO
+  school/CC contests (4 county artifacts). TWO refinements: (a) USD BOND
+  questions DO appear even-year (Sedgwick USD 394, Shawnee USD 340) in
+  the measures block; (b) city offices NOT structurally barred — 25-2107(a)
+  "odd-numbered and even-numbered years, if needed" + real even-year city
+  contests printed (Prairie Village Mayor 2022; Andale/Colwich/Garden
+  Plain 2024), after township, before retention/questions.
+- Corroboration: Leavenworth 2022 printed ballot face (1 Precinct 2 Ward,
+  files.leavenworthcounty.gov — NATIONAL/STATE/COUNTY headers, full
+  executive chain, retention block, amendments last). Jefferson 2024
+  printed face (46-page style set, jfcountyks.com DocumentCenter/View/6586
+  — presidential variant, Township tier, Appeals retention on back;
+  header set across all styles = exactly
+  {National,State,County,Township}). Sedgwick 2024 official canvass
+  (sedgwickcounty.org/media/67739) — ONLY artifact showing partisan
+  district judges Div 1-28 + magistrate + DA directly after KS House
+  (canvass order, not a face — flagged). Johnson 2022 + Shawnee
+  2022/2024 canvasses — retention late + measures last; Shawnee's
+  separate "Judicial Retention" results document = separate-ballot
+  evidence. SOS statewide abstracts 2022/2024 corroborate. All
+  %PDF-verified.
+- Baseline delta: override required. (1) partisan district
+  judges/magistrates + DA insert between state house and county; (2)
+  SBOE inserts after that group, before county; (3) Township = distinct
+  tier between county and municipal; (4) school tier EMPTY even years;
+  municipal near-empty but NOT structurally empty; (5) retention = late
+  separate block after all offices, before measures (baseline judicial
+  late block position roughly matches for retention only).
+- Notes: name rotation by county/precinct (25-610/614) never touches
+  office order. Statute-vs-practice conflicts recorded: 25-611(a) puts DA
+  BEFORE SBOE — Shawnee 2024 printed SBOE first, Sedgwick followed
+  statute (two counties disagree, below tier granularity); Sedgwick
+  mid-ballot retention (canvass artifact suspicion). KCEB trap avoided
+  (kceb.org = Kansas City MISSOURI). 2026-08-04: voters REJECTED the
+  amendment replacing merit selection with direct election — retention
+  scheme unchanged for Nov 2026. Open: no printed face from a partisan
+  judicial district (Sedgwick posts no samples); Wyandotte 403 even via
+  r.jina.ai; municipal-order K.A.R. unlocated; per-district
+  partisan/retention roster inferred from SOS abstract party prefixes
+  (kscourts.gov 403).
 
-### WV — West Virginia (FIPS 54) — PENDING
+### MS — Mississippi (FIPS 28) — GRADE A
 
-### HI — Hawaii (FIPS 15) — PENDING
+- Authority: Miss. Code Ann. § 23-15-367(2) (category order for office
+  titles; final para. limits county discretion to categories (e)-(f)) —
+  statutory TEXT reachable only via Justia mirror
+  (https://law.justia.com/codes/mississippi/title-23/chapter-15/article-13/subarticle-b/section-23-15-367/,
+  both SOS-hosted Election Code PDFs 404; official code = LexisNexis
+  portal). PRIMARY backstop carrying the operative rule: 2026 County
+  Elections Handbook, MS SOS Elections Division, rev. 2025-12-24
+  (https://www.sos.ms.gov/content/documents/elections/2026%20County%20Election%20Handbook.revised%2012-30-2025.pdf):
+  "the order in which the titles of the federal, state, state district,
+  legislative and multi-county offices … published by the Secretary of
+  State's Office in SEMS shall not and cannot be changed by the County
+  Election Officials. (Miss. Code Ann. § 23-15-367)". Judicial:
+  § 23-15-976 (nonpartisan), § 23-15-979 (alphabetical, no party);
+  § 23-15-367(1) carves judicial out of subsection (2). Accessed
+  2026-08-16. MIRROR CAVEAT flagged for verification: statute text =
+  mirror; operative content independently confirmed by the SOS handbook
+  + SOS-published sample ballots.
+- Office order: TWO disjoint November generals — neither ever carries
+  both federal and statewide-executive contests. EVEN years (federal +
+  judicial): President → US Senate → US House → NONPARTISAN JUDICIAL
+  ELECTION (Supreme Court → Court of Appeals → Circuit/Chancery/County
+  Court as applicable) → County Election (Election Commissioner,
+  § 23-15-213, presidential years) → School District Election → statewide
+  measures → END OF BALLOT. ODD years (state + county, e.g. 2027):
+  Governor → LtGov → SOS → AG → State Auditor → State Treasurer → Ag &
+  Commerce Commissioner → Insurance Commissioner → Public Service
+  Commissioner → Transportation Commissioner → District Attorney → State
+  Senate → State House → countywide block (Chancery Clerk, Circuit
+  Clerk, Coroner, County Attorney, Sheriff, Tax Assessor, Tax Collector)
+  → county-district block (Supervisor, Justice Court Judge, Constable) →
+  School Board / Election Commissioner.
+- Judicial: EARLY, not late — even-year nonpartisan judicial block prints
+  directly after US House, BEFORE any county contest, under repeated
+  "NONPARTISAN JUDICIAL ELECTION" headers, inside the SOS-published SEMS
+  ballot counties cannot reorder. Names alphabetical, no party
+  (§ 23-15-979). Exception: Justice Court Judge is nonpartisan but prints
+  in the odd-year county-district block with Supervisor/Constable.
+  Election Commissioners are NOT in the nonpartisan section — party
+  labels, "County Election" header (they just skip primaries).
+- Measures: dead last after every contest incl. school, before "END OF
+  BALLOT", numbered "Statewide Ballot Measure N". PRACTICE not statute —
+  § 23-15-367(2) orders offices only; no measures-placement statute
+  found. Initiative process struck 2021 (Butler v. Watson); legislative
+  amendments keep the slot live.
+- County discretion: partial, narrowly bounded — within-category order
+  for (e) countywide + (f) county-district only; SEMS locks everything
+  above.
+- School/special: school board (all trustee types) nonpartisan, November
+  general only, own "School District Election" header AFTER county,
+  BEFORE measures. No municipal tier — no municipal contest on any
+  county general ballot read (inference from absence + no (2) category;
+  separate-municipal-election statute not verified).
+- Corroboration: SOS-published sample ballots (primary; via r.jina.ai —
+  sos.ms.gov Akamai-403s direct): 2024 GE Sample (even-year judicial
+  block), 2023 General Sample (full odd-year executive chain), 2020
+  FINAL sample w/ Flag Referendum (measures 1-3 last). County: Hinds
+  2024 general (238pp style set, co.hinds.ms.us — federal → judicial →
+  Election Commissioner → School Board), Hinds 2019 official summary
+  (full odd-year sequence verbatim), DeSoto 2020 ballot (judicial →
+  commissioner → school board → measures on back), Lauderdale 2020
+  (school → measures → END OF BALLOT). Tabulator reports (Hinds/DeSoto/
+  Madison 2020) mirror. %PDF-verified where PDF.
+- Baseline delta: override required. (1) judicial moves from late block
+  to position 4 (after US House, before county/school) in even years —
+  largest deviation; (2) CYCLE SPLIT: even = no executives/legislature,
+  odd = no federal — a merged sequence misorders both; (3) state-district
+  tier (PSC, Transportation Commissioner, DA) between executives and
+  legislature in odd years; (4) measures-last + school-after-county match
+  baseline; (5) no municipal tier.
+- Notes: statute-vs-ballot conflicts recorded (both sit in a gap the
+  statute leaves open — subsection (2) fixes CATEGORY order; internal
+  order of statewide/state-district lists diverges in print): (a)
+  § (2)(b) says "State Treasurer, Auditor of Public Accounts"; 2023 SOS
+  sample + Hinds 2019 print State Auditor BEFORE State Treasurer; (b)
+  § (2)(c) says "Transportation Commissioner, Public Service
+  Commissioner"; both ballots print PSC first (DA third, matching).
+  Intra-county tail varies (Hinds 2024 Election Commissioner→School
+  Board; Hinds 2019 School Board→Election Commissioner) — don't hard-code.
+  Open: odd-year measure placement never observed; Chancery/County Court
+  slots inferred (same block, no ballot displayed them); § 23-15-365 =
+  write-in spaces, dead lead. Fetch: sos.ms.gov = Akamai 403 direct →
+  r.jina.ai; Wayback playback 503 all session.
+
+### NM — New Mexico (FIPS 35) — GRADE A
+
+- Authority: NMSA 1978 § 1-10-8 "Ballots; order of offices and ballot
+  questions," as amended by Laws 2023, ch. 39 (SB 180) § 60, eff.
+  2023-06-16 — enrolled chaptered text (primary):
+  https://www.nmlegis.gov/Sessions/23%20Regular/final/SB0180.pdf
+  (pp. 111-116; chapter confirmed on the nmlegis bill page). Supporting:
+  § 1-10-3 (uniformity; SOS sets positions), § 1-10-4 (clerks certify
+  only), § 1-22-3 (Local Election Act odd-Nov, Laws 2018 ch. 79 HB 98).
+  Accessed 2026-08-16.
+- Office order: TWO statutory cycle lists. Presidential (§ 1-10-8(A)):
+  President ticket → US Senator → US Rep → state senator → state rep →
+  supreme court (partisan) → court of appeals (partisan) → public
+  education commission → district attorney → district court →
+  metropolitan court → county clerk → county treasurer → county
+  commission (+ when applicable sheriff/assessor/probate). NO statewide
+  executives. Gubernatorial (§ 1-10-8(B)): US Senator → US Rep → Governor
+  & LtGov single joint ticket → SOS → AG → State Auditor → State
+  Treasurer → Land Commissioner → state rep (NO senate — elected in
+  presidential years) → supreme court → court of appeals → PEC → district
+  court → metropolitan court → magistrate court → county sheriff →
+  assessor → commission → probate judge (+ clerk/treasurer when
+  applicable). Governor AFTER US House; AG precedes Auditor + Treasurer.
+- Judicial: partisan judicial contests print MID-BALLOT after
+  legislature/executives, BEFORE every county office — not a late block.
+  PEC + district attorney sit inside that block. Position numbering:
+  supreme/COA by vacancy date (§ 1-10-8(G)(2)); district/metro/magistrate
+  ascending division (§ (G)(1)). RETENTION is not an office — it LEADS
+  the questions block (§ 1-10-8(D)(1)), ahead of amendments;
+  supreme/COA retention by seniority (§ (G)(3)).
+- Measures: § 1-10-8(D) after all offices — (1) judicial retention → (2)
+  constitutional amendments → (3) other state questions (statewide GO
+  bonds) → (4) county questions → (5) local-government questions (in the
+  § (C) list order); SOS may prescribe a different question order
+  ("unless a different order is prescribed by the secretary of state").
+- County discretion: none — § 1-10-3(A) "Ballots shall be uniform
+  throughout the state"; SOS sets positions; clerks certify precinct
+  content (§ 1-10-4(B)).
+- School/special: NONE on the even-year general — § 1-10-8(C) puts
+  municipal (exec → board → judicial), school board, community college,
+  special districts on the regular LOCAL election, fixed odd-Nov by
+  § 1-22-3(A); HB 98 repealed the School Election Law + Municipal
+  Election Code. Local ballot QUESTIONS may still ride the general
+  (§ 1-22-3(C)).
+- Corroboration: Santa Fe County Nov 2024 official samples (PCT001 +
+  PCT004 + PCT031,
+  https://www.santafecountynm.gov/uploads/documents/Sample-SANT_PCT001.pdf
+  — text layer is +0x1D char-shifted font encoding, decoded + rendered
+  to PNG and read visually) — presidential-year sequence confirmed incl.
+  clerk → treasurer → commission and JUDICIAL RETENTION → STATE
+  amendments 1-4 → STATE bonds 1-4 → COUNTY GO bonds; zero
+  school/municipal/special contests. Santa Fe June 2026 PRIMARY sample
+  (2026_Primary_Sample-SANT_PCT001_DEM.pdf) corroborates the § (B)
+  gubernatorial list exactly (Gov → LtGov → SOS → AG → Auditor →
+  Treasurer → Land Comm → state rep → COA → district → magistrate →
+  sheriff → assessor → commission → probate). Odd-year local ballot
+  (Sample-SANT_PCT029.pdf) shows MUNICIPAL → SCHOOL → COLLEGE banners
+  matching § (C). Child-agent additions (all %PDF-verified, live URLs):
+  Santa Fe 2022 GENERAL styles (PCT001/002/009/020/031/040 under
+  /media/files/Clerk/BoE/2022General/Sample%20Ballots/) — a real
+  gubernatorial-year GENERAL printing US Rep → Gov&LtGov → SOS → AG →
+  Auditor → Treasurer → Land Comm → State Rep → Supreme Court Positions
+  1-2 → COA Positions 1-2 → Magistrate Divs 1-4 → Sheriff → Assessor →
+  Commissioner → Probate Judge → JUDICIAL RETENTION → amendments → state
+  bonds → county bonds (pre-2023 statutory text, but closes "partisan
+  appellate contests in a general" as observed print). 2024 full question
+  tail corroborated: retention → amendments 1-4 → state bonds 1-4 →
+  COUNTY GO bonds 1-3 → MUNICIPAL band (City of Santa Fe roads bond) DEAD
+  LAST (styles PCT011/020/031/050). Bernalillo publishes NO static ballot
+  (per-voter portal only; entire WP media library + CDX + Common Crawl
+  enumerated) — statutory Notice of Election PDFs substitute (2022 incl.
+  questions; 2024 omits questions). All 9 2024 styles keyword-swept: zero
+  SHERIFF/ASSESSOR/PROBATE hits (presidential-year absence confirmed).
+- Baseline delta: override — substantial. (1) judicial partisan mid-block
+  before ALL county offices; (2) PEC + DA inside that block; (3) county
+  offices are the LAST offices, internal order flips by cycle; (4)
+  judicial retention leads the measures block (before amendments); (5)
+  municipal/school/special tiers EMPTY on even-year generals (municipal
+  QUESTIONS may print, dead last after county questions); (6)
+  presidential years have no executives and legislature moves directly
+  behind US House.
+- Notes: statute-vs-sample gap recorded: Nov 2024 Santa Fe printed
+  MAGISTRATE JUDGE Div. 2 (unexpired-term vacancy) but § (A) has no
+  magistrate entry — it slotted between DA and county clerk, order
+  unaffected, statutory list incomplete for off-cycle magistrate
+  vacancies. § (B) has never yet run in a general (first = Nov 2026);
+  2022 ballots reflect the PRIOR text (redline verified via
+  Amendments_In_Context/SB0180.pdf) — Santa Fe 2022 general matches the
+  prior text and the current § (B) shape except DA placement (prior text
+  B(16)). 2024 text-layer trap: a phantom "STATE / ESTATAL" string
+  precedes the President box in the text layer but is NOT printed
+  (300-dpi render check) — office section carries no band headers; bands
+  print only before question groups. /uploads/documents/ mixes elections:
+  PCT009/PCT029 same-name files = Nov 2023 LOCAL ballots; _DEM/_REP
+  suffix = primaries — read the printed date line. STALE SOS RULE: 1.10.11 NMAC (am.
+  2018, still served at srca.nm.gov) conflicts with the current statute
+  (executives before legislature in all years; Auditor/Treasurer before
+  AG; lists abolished elective PRC; county-set local-question order) —
+  statute controls, 2024 sample follows statute; treat NMAC as
+  superseded (formal repeal status unresolved). PRC appointed since 2023
+  (Laws 2020 ch. 9 + 2020 CA1). Gov/LtGov joint in general, separate in
+  primary (art. V § 1). Statute-only (no sample): supreme/COA partisan
+  slots in a presidential-year general (none up 2024); metropolitan
+  court (Bernalillo sample not obtained — berncoclerk.gov paths 404; a
+  late child agent may still report — treat unverified until re-fetched).
+  Fetch: nmlegis.gov PDFs fine w/ browser-UA curl; law.justia.com 403 →
+  r.jina.ai; nmonesource.com 404s (use enrolled bills); Wayback 503 all
+  session.
+
+### NE — Nebraska (FIPS 31) — GRADE A (scoped)
+
+- Authority: Neb. Rev. Stat. § 32-813 "Statewide general election; ballot;
+  contents" ("shall be arranged upon the ballot in parts separated from
+  each other by bold lines in the order the offices and proposals are set
+  forth in this section") —
+  https://nebraskalegislature.gov/laws/statutes.php?statute=32-813
+  (accessed 2026-08-16). Supporting: § 32-812 (SOS prescribes form),
+  § 32-814 (one ballot; nonpartisan name rotation by precinct), § 32-815
+  (partisan within-contest party order by prior gubernatorial vote,
+  petition candidates last), § 24-815 (retention question "on the
+  nonpolitical ballot"), § 32-556 (city/village/school combined onto the
+  nonpartisan ballot), Neb. Const. art. III § 7 (Legislature nonpartisan,
+  no party label).
+- Office order: PARTISAN sections: Presidential Ticket → United States
+  Senatorial Ticket → Congressional Ticket → State Ticket → County Ticket
+  (+ county measures) → precinct/city/village. Governor AFTER US House.
+  Executive internal order NOT in statute — § 32-813(5) delegates to SOS
+  ("arranged in the order prescribed by the Secretary of State"); observed
+  identical across Douglas 2014/2018/2022: Governor & LtGov (joint, one
+  oval) → SOS → State Treasurer → AG → Auditor of Public Accounts →
+  Public Service Commissioner. NONPARTISAN Ticket (§ 32-813(6)) statutory
+  sub-order: Legislature → State Board of Education → Regents → Chief
+  Justice → Supreme Court judges → Court of Appeals → Workers' Comp →
+  District → Separate Juvenile → County Court → county officers "in the
+  order prescribed by the election commissioner or county clerk."
+  STATUTE-VS-PRACTICE (recorded both): § 32-813 lists Nonpartisan (6)
+  BEFORE County Ticket (7); Douglas + Lancaster 2024 BOTH print County
+  Ticket before Nonpartisan — lawful under the § 32-813(1) optical-scan
+  reorder clause ("order of any offices may be altered to allow for the
+  best utilization of ballot space"); consistent real-world practice.
+- UNICAMERAL DECISION (campaign records it here): "Member of the
+  Legislature" maps to `state_upper`; `state_lower` = STRUCTURALLY ABSENT
+  for NE (suppress the block, never render empty/late). Rationale:
+  members titled Senator; districts are Census/OCD `sldu`; downstream
+  "your state senator" comparisons align. Legislature prints FIRST in the
+  nonpartisan section, no party labels (art. III § 7).
+- Judicial: ALL retention (§ 24-815 "Shall Judge … be retained in
+  office?"), printed INSIDE the Nonpartisan Ticket — a MID block, not
+  late. Statutory slot after Regents, before county/city/school.
+  Lancaster 2024 follows statute exactly (Supreme → Workers' Comp →
+  District → Separate Juvenile → County). Douglas 2024/2022 moves
+  retention to the END of the nonpartisan section after school boards —
+  intra-section position VARIES by county (see grade scope).
+- Measures: LAST after all offices. § 32-813(9): initiatives/referenda/
+  amendments follow all other offices and "constitute a separate ballot"
+  (Lancaster 2024 = physically separate ballot; Douglas 2024 = local
+  Special Issues (Omaha charter, bonds) then statewide Measures 434-439
+  last). § 32-813(1): subdivision proposals follow subdivision offices.
+- County discretion: PARTIAL, unusually broad — optical-scan reorder
+  clause (twice), (6)(k) county-officer order, (7)-(8) split-ballot
+  options. Nonpartisan candidate NAMES rotate by precinct (§ 32-814(4))
+  — stored candidate order meaningless; contest order stable.
+- School/special: school boards in the nonpartisan block (Lancaster:
+  dedicated SCHOOL TICKET header) AFTER state/judicial/special-district
+  tiers; § 32-556 folds school offices/issues into the nonpartisan
+  ballot. Elected special districts (community college Board of
+  Governors, Learning Community Coordinating Council, NRD, PPD,
+  Metropolitan Utilities District, ESU, Omaha Regional Metro Transit) all
+  print inside the Nonpartisan Ticket after Regents/judges, before
+  school/city — named in NO statute slot; identical placement in both
+  counties (practice under (6)(k)/(1) discretion).
+- Corroboration: Lancaster 2024 real two-sided ballot facsimile
+  (https://www.lancaster.ne.gov/DocumentCenter/View/25182/2024-General-Election-Sample-Ballot,
+  coordinate-extracted) — full sequence incl. County-before-Nonpartisan +
+  statutory retention slot. Douglas 2024 + 2022 + 2018 + 2014
+  (votedouglascounty-ne.gov GN24/GN22/G18/G14 SampleBallot.pdf) —
+  executive order ×3 cycles, special-district placement, measures tail.
+  SOS's own 2024 statewide sample
+  (https://sos.nebraska.gov/sites/default/files/doc/elections/2024/Sample_Ballots/General/English-Federal-and-State.pdf)
+  — Presidential → Senatorial → Congressional → State Ticket; SOS page
+  link order mirrors statutory sequence. All %PDF-verified.
+- Baseline delta: override required. (i) Legislature (as `state_upper`)
+  moves AFTER county into the nonpartisan block; (ii) `state_lower`
+  suppressed; (iii) judicial = MID block (retention) before local
+  offices, not late; (iv) school board after judicial; (v) county
+  precedes all nonpartisan offices; (vi) SBOE + Regents directly after
+  Legislature; (vii) statewide measures last, after local measures.
+- GRADE SCOPE: A covers the top-level section order (partisan ladder →
+  county → nonpartisan → measures) + Legislature-first + SBOE/Regents
+  slots + measures-last. EXCLUDED from A: intra-nonpartisan retention-
+  block position (statute says pre-county-officers; Douglas prints
+  post-school — county-alterable) and special-district slots (no
+  statutory home; two-county practice only).
+- Notes: section headers are statutory boldface strings. Gov/LtGov single
+  oval. Offices not up are omitted, rest move up (§ 32-813(1)). Open:
+  Douglas "countywide sample" may be a compilation not a precinct ballot
+  (retention-last could be artifact; Lancaster's real facsimile carries
+  the top-level finding); no published SOS directive for the executive
+  order located (sample-leg grading); Lancaster 2022 ballot is raster
+  w/o text layer (unread); Douglas 2022 amendment-vs-initiative
+  sub-order low-confidence (coordinate-offset PDF); third-county
+  special-district check would strengthen. Failed: SOS 2022 sample page
+  silently serves 2024 content; Wayback 503 all session.
+
+### ID — Idaho (FIPS 16) — GRADE A
+
+- Authority: Idaho Code § 34-906(2) (general-election office order — "listed
+  in order beginning with the highest federal office"; SOS "has the
+  discretion and authority to arrange the above classifications") +
+  § 34-909(2) (SOS sample-ballot layout, due to county clerks by Sept 7,
+  "shall contain the proper office titles, order of offices and ballot
+  layout … for federal, state, legislative, county and precinct offices and
+  candidates seeking judicial office or retention") + § 34-903(2) (SOS
+  prescribes arrangement statewide AND non-statewide) —
+  https://legislature.idaho.gov/statutesrules/idstat/title34/t34ch9/sect34-906/
+  (accessed 2026-08-16). No IDAPA rule governs contest order (34.02.02 =
+  HAVA complaints).
+- Office order: [President, presidential years] → US Senator → US Rep →
+  CANDIDATES FOR STATE OFFICES: Governor → LtGov → SOS → State Controller →
+  State Treasurer → AG → Superintendent of Public Instruction (midterms;
+  order tracks Idaho Const. art. IV § 1 verbatim) → State Senator → State
+  Rep Position A → Position B → county offices (Commissioners → Sheriff →
+  Prosecutor → Clerk of the District Court → Treasurer → Assessor →
+  Coroner) → judicial (NONPARTISAN BALLOT header) → countywide highway
+  district → community college trustees → measures. Governor AFTER US
+  House.
+- Judicial: prints in November under a literal "NONPARTISAN BALLOT" header
+  immediately AFTER county offices, BEFORE special districts — not last.
+  Content = magistrate RETENTION questions (§ 1-2220 form) as the normal
+  case; Supreme/Appeals/district judges settle at the May primary on
+  majority (§ 34-1217) and reach November only as runoffs (placement
+  within the block inferred, never observed — no runoff in Ada 2020/22/24).
+- Measures: LAST, after special districts. Observed sub-order:
+  constitutional amendment → Propositions (§ 34-1810(2) numbering) →
+  advisory question (2022) → local levy/bond (school levy, fire levy,
+  water bond).
+- County discretion: none-to-minimal — §§ 34-903(2)(b) + 34-909(2) put
+  non-statewide order in the SOS layout; counties slot local questions.
+  One wobble: Ada printed CWI trustees before ACHD in 2020, after in
+  2022/2024 (sub-order stability open).
+- School/special: school trustees NEVER on even-year November (§ 33-503 =
+  odd-Nov); municipal absent (§ 50-405(1) odd-Nov); most highway districts
+  May odd (§ 40-1305) — EXCEPT single countywide districts (ACHD) elect at
+  the general (§ 40-1404, nonpartisan § 34-905A); community college
+  trustees biennial even years (§ 33-2106). School/fire levy QUESTIONS
+  still appear, in the measures block. Only two elections/year statewide
+  (§ 34-106, 2011 consolidation). Precinct committeemen = primary only
+  (§ 34-624).
+- Corroboration: Ada County ×3 cycles + 3 more counties (child-agent
+  sweep), all %PDF-verified. Ada 2022 official sample ballot (all precinct
+  styles,
+  https://adacounty.id.gov/elections/wp-content/uploads/sites/38/214005_AdaSampleBallot_v2_10_18_22.pdf)
+  — full printed sequence incl. 7 executives, NONPARTISAN BALLOT
+  magistrate block after county, ACHD → CWI → SJR 102 → advisory → levy.
+  Ada 2024 election-night results + 2020 official results —
+  President→US Senator adjacency closed; Prop 1 + levies last. Kootenai
+  2024 precinct ballot LEG 2 L
+  (https://www.kcgov.us/DocumentCenter/View/24164/LEG-2-L) + Kootenai
+  2022 LEG 2/LEG 4 (View/19146, View/19149) — replicate the 2022
+  seven-executive chain + county → NONPARTISAN magistrate block → college
+  trustees → soil & water → amendment → advisory. Canyon 2024 composite
+  (https://elections.canyoncounty.id.gov/wp-content/uploads/2025/08/Full-Sample-Ballot.pdf)
+  + Bingham 2024
+  (https://www.binghamid.gov/media/Departments/Elections/Sample%20Ballots/2024/Sample%20Ballots%20November%202024.pdf)
+  — same section order; amendment-before-Proposition confirmed in 3
+  sources (Canyon's composite places Prop 1 pre-header — rendered to PNG,
+  judged a layout artifact of the aggregated all-precinct sheet, noted).
+- Baseline delta: override needed. (1) judicial block moves UP to directly
+  after county (not last); (2) municipal + school tiers EMPTY (odd-year
+  elections); (3) two inserted tiers after judicial: countywide highway
+  district, then community college trustees; (4) measures last w/
+  sub-order amendment → propositions → advisory → local levy/bond.
+- Notes: candidate rotation § 34-903(4)(a) for entities >25,000 registered
+  voters (FindLaw's 100,000 figure is WRONG — primary text says
+  twenty-five thousand); within-contest only. § 34-906(2) amended 2026
+  (ch. 227 — dropped "ending with precinct offices" tail); § 34-905A
+  amended 2026 ch. 333 eff. 2027-01-01 (excludes countywide districts);
+  bills not traced. RCV prohibited (§ 34-903B). County-office internal
+  order VARIES slightly by county/cycle (Ada 2024 Commissioner → Sheriff
+  → Prosecutor; Kootenai 2022 adds Clerk → Treasurer → Assessor →
+  Coroner; staggered terms explain most of it) — tier position constant.
+  Highway-district tier = Ada-only (ACHD is the sole countywide district;
+  other counties skip straight to college trustees). Open: SOS's actual
+  prescribed layout never obtained (sos.idaho.gov serves HTML-404s for
+  all /elections/ paths; try Common Crawl on
+  sos.idaho.gov/elections/data/2022_General_Sample_Ballot.pdf);
+  CWI-vs-ACHD sub-order (2020 inverted); judicial-runoff position within
+  the nonpartisan block. Fetch: legislature.idaho.gov fine via WebFetch;
+  Ada per-precinct GIS ballots session-gated (0 bytes); achdidaho.org 403
+  → r.jina.ai; kcgov.us DocumentCenter lists are JS-rendered (probe IDs
+  directly).
+
+### WV — West Virginia (FIPS 54) — GRADE A (scoped)
+
+- Authority: W. Va. Code § 3-5-13a "Order of offices and candidates on the
+  ballot" ("The order of offices for state and county elections on all
+  ballots within the state shall be as prescribed herein") —
+  https://code.wvlegislature.gov/pdf/3-5-13A/ ; § 3-6-2 (general-ballot
+  form; adopts the 13a order under National/State/County Ticket headings;
+  measures clause) — https://code.wvlegislature.gov/pdf/3-6-2/ ;
+  § 3-5-13(2)(A),(3) (column headings incl. Nonpartisan Judicial Ballot,
+  incorporated into general ballots by § 3-6-2(b)); § 3-10-3(c),(d)(3),(e)
+  (judicial vacancies at the general). All accessed 2026-08-16, %PDF
+  verified. CSR Title 153 has no order series (index reviewed).
+- Office order: NATIONAL TICKET President → US Senator → US House → STATE
+  TICKET Governor → SOS → Auditor → Treasurer → Commissioner of
+  Agriculture → AG → State Senator → House of Delegates → multicounty
+  offices → state executive committee → NONPARTISAN JUDICIAL BALLOT
+  (SCOA → ICA → circuit → family → magistrate) → COUNTY TICKET Clerk of
+  the Circuit Court → County Commissioner → Clerk of the County
+  Commission → Prosecuting Attorney → Sheriff → Assessor → Surveyor →
+  NONPARTISAN BALLOT (Board of Education → Conservation District
+  Supervisor → any question). Governor directly after US House; no LtGov
+  (Senate President ex officio). Office-block print in practice with
+  party initials + "NO CANDIDATE(S) NOMINATED" placeholders, though
+  § 3-6-2(c) still describes party columns. Unexpired term prints
+  immediately below the full term for the same office.
+- Judicial: all judges nonpartisan, elected at the MAY PRIMARY (§§ 3-5-6a
+  through 6d; ICA § 51-11-6(c)). November content = VACANCY/unexpired-term
+  contests only (§ 3-10-3(d)(3): post-filing vacancy w/ >3yr unexpired
+  term → "nonpartisan judicial election held concurrently with the
+  general election"; magistrate vacancies "primary or general, whichever
+  occurs first"; § 3-10-3(e) special August filing window). When present,
+  slot = Nonpartisan Judicial Ballot BETWEEN State Ticket and County
+  Ticket — NOT a late block. Precedent: Nov 6 2018 SCOA impeachment-
+  vacancy elections.
+- Measures: LAST — § 3-6-2(e): "Any constitutional amendment is to be
+  placed following all offices, followed by any other issue." Local
+  levy/bond questions (§ 11-8-16 via § 3-1-31) print after amendments as
+  a separate "Official Levy Ballot" section.
+- County discretion: none on order — 13a binds "all ballots within the
+  state"; absent offices simply omitted. Ballot commissioners may vary
+  pages/columns/rows only, "subject to approval by the Secretary of
+  State" (§ 3-6-2(c)(4)); cannot add issues (§ 3-6-2(f)). Candidate order
+  within office = drawing by lot, 70th day before the general
+  (§ 3-6-2(d)(2)).
+- School/special: BOE nonpartisan, elected at the May primary
+  (§ 18-5-1b); November = unexpired terms only, own headed section
+  ("Nonpartisan Board of Education", § 3-6-2(d)(5)), in the Nonpartisan
+  Ballot tier after County Ticket. Conservation district supervisor same
+  tier. School levy questions in the measures tail.
+- Corroboration: 35 SOS-HOSTED 2024 county proofs swept (filename
+  brute-force against apps.sos.wv.gov/elections/2024GeneralSampleBallots/
+  — directory 403s, files 200), all %PDF-verified: National → State →
+  County sequence + the 8-office State Ticket identical in ALL 35, no
+  exception. Full-tail counties: Kanawha (368pp), Berkeley (Conservation
+  District Supervisor unexpired between County and amendments), Calhoun
+  (County → Nonpartisan BOE unexpired → Amendment No. 1 → OFFICIAL LEVY
+  BALLOT; unexpired-below-full Commissioner pair), Wood clerk-hosted
+  precinct ballot (BOE unexpired + CITY OF PARKERSBURG municipal ballot
+  BEFORE amendments), Grant + Marion + Jefferson-2022 (Circuit Clerk
+  prints FIRST in County Ticket — statutory lead confirmed). Judicial:
+  zero contests in all 35 2024 files + Jefferson 2022 (grepped) —
+  vacancy-only as expected; the one November judicial print found is
+  Barbour 2018 (two SCOA unexpired divisions), vendor proof hosted on
+  Ballotpedia CDN (mirror-class), and it prints the judicial block AFTER
+  the County Ticket — see grade scope. SOS Manual for Election Officials
+  (rev. 2026-05-13, p.78) confirms judicial sub-order incl. ICA; p.91
+  "the order of offices on the ballot shall follow the same rules"
+  (primary = general).
+- Baseline delta: override required. (1) county internal order leads with
+  Clerk of the Circuit Court; (2) school = BOE-unexpired-only after
+  county, before measures; (3) judicial tier vacancy-only (usually empty)
+  — position EXCLUDED from the override (see scope). Rest matches
+  baseline.
+- GRADE SCOPE: A covers National → State (8-office chain) → County
+  (Circuit-Clerk-first) → nonpartisan BOE/conservation tail → amendments
+  (35-county 2024 sweep + statute). EXCLUDED: (a) judicial-block
+  POSITION — statute (§ 3-5-13a/§ 3-5-13(3)(A)) puts it between State and
+  County Tickets, but the only observed November judicial print (Barbour
+  2018, mirror-hosted vendor proof) prints it AFTER the County Ticket;
+  conflict recorded, not resolved; November judicial is vacancy-only so
+  the exclusion is cheap; (b) municipal + levy tail order — municipal
+  prints after amendments in Kanawha/Putnam/Marion 2024 but BEFORE them
+  in Wood 2024, and Barbour 2018 printed the levy ballot before the
+  amendments — county-variable, no authority.
+- Notes: no straight-ticket device (§ 3-6-2(g)). Party-COLUMN order (not
+  offices) by prior presidential vote. Printed judicial heading =
+  "OFFICIAL NONPARTISAN BALLOT OF ELECTION OF JUDICIAL OFFICERS" (not
+  the statute's "Nonpartisan Judicial Ballot" label). ICA statutory gap:
+  § 3-5-13a's judicial list predates the 2021 ICA — § 3-5-13(2)(A)(ii) +
+  SOS Manual insert ICA second; treat as slot 2. MUNICIPAL has no
+  § 3-5-13a slot (§ 3-1-31(a) forces concurrent dates; prints as its own
+  charter-governed section, position county-variable). Office-block
+  print, 3-column snake, "NO CANDIDATE(S) NOMINATED" fillers,
+  party-abbrev right of names. Open: 20 counties missed by the filename
+  probe (naming variant unknown; directory 403); no first-party November
+  ballot w/ a judicial contest alongside a full county ticket
+  (2018/2020/2022 SOS directories 404; Wayback CDX 503). Fetch:
+  code.wvlegislature.gov/pdf/ fine; live SOS portal
+  (SampleBallots/Home/GetBallot?County=) currently serves the 2026
+  primary; OmniBallot lookup per-voter.
+
+### HI — Hawaii (FIPS 15) — GRADE A
+
+- Authority: HRS § 11-114 "Order of offices on ballot" ("shall be arranged
+  substantially as follows: first, president and vice president … next,
+  United States senators; next, United States house of representatives;
+  next, governor and lieutenant governor; next, state senators; next, state
+  representatives; and next, county offices") —
+  https://www.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0011/HRS_0011-0114.htm
+  (accessed 2026-08-16). OHA + measure placement = Office of Elections
+  practice, documented in the official Candidate's Manual (2024 ed. p. 27,
+  2026 ed. p. 43 — manual republishes per cycle, re-pull each cycle):
+  https://elections.hawaii.gov/wp-content/uploads/2024-Candidates-Manual.pdf.
+  Supporting: HRS § 11-115 (joint Gov/LtGov box), § 11-112(b) (questions),
+  § 11-3 (chapter binds county elections), § 13D-4(c)-(d) (OHA statewide),
+  HAR § 3-172-71 (no order provision).
+- Office order: President → US Senator → US Rep → Governor & LtGov (JOINT
+  ticket, single box, § 11-115(d) "only one box shall be formed opposite
+  their set of names") → State Senator → State Rep → OFFICE OF HAWAIIAN
+  AFFAIRS trustees (own top-level section banner, statewide nonpartisan,
+  every voter votes all seats) → County Mayor → County Prosecuting Attorney
+  → County Councilmember → state constitutional amendments → county charter
+  amendments. OHA sits between legislature and county — baseline has no
+  slot for it.
+- Judicial: EMPTY — Hawaii elects zero judges. HI Const. art. VI § 3:
+  gubernatorial appointment from Judicial Selection Commission list;
+  retention by the commission, not voters ("every justice and judge shall
+  petition the judicial selection commission to be retained"). Zero
+  judicial contests across 1,064 pages of 2022+2024 ballot proofs.
+- Measures: LAST, reverse side; sub-order state constitutional amendments
+  FIRST, county charter amendments SECOND (246/247 second-side pages 2024;
+  sole exception Kalaupapa precinct 13-09 = state-only, Kalawao has no
+  county government). HI Const. art. XVII § 3 "upon a separate ballot"
+  satisfied by the separate reverse-side section.
+- County discretion: none. HRS § 11-3 binds county elections; one
+  consolidated state+county ballot printed centrally by the Office of
+  Elections (§ 11-119). Section order machine-identical across all 494
+  pages (2024) + 570 pages (2022), all four counties, zero exceptions.
+- School/special: NONE. BOE appointed since 2011 (HI Const. art. X § 2, am.
+  Nov 2010). No incorporated municipalities, no elected special districts —
+  four counties are the only local tier.
+- Corroboration: official ballot proofs, all 4 counties ×2 cycles —
+  https://elections.hawaii.gov/wp-content/uploads/2024-General-Ballot-Proofs.pdf
+  (494 pp) +
+  https://elections.hawaii.gov/wp-content/uploads/2022-General-Ballot-Proofs.pdf
+  (570 pp), %PDF-verified, cross-checked vs per-precinct samples
+  (FAX001_0501/FAX001_1801). Observed section sequences ONLY ever Federal →
+  State → OHA → County; 2022 Honolulu 18-01 shows "Governor and Lieutenant
+  Governor" as one contest.
+- Baseline delta: override. (1) OHA tier inserted between state house and
+  county; (2) municipal + school + judicial tiers all EMPTY; (3) measures
+  split state-amendments-then-county-charter. Baseline federal → executive
+  → legislature → county spine otherwise holds.
+- Notes: § 11-114 is SILENT on OHA and measures and says "substantially as
+  follows" (permissive) — those legs rest on the agency manual + 2-cycle
+  zero-exception proofs; a verifier will not find a statutory cite. County
+  contests routinely vanish from generals (primary majority = elected
+  outright, HRS § 12-41 area — 2024: no Oahu district printed a County
+  Contests block; Honolulu Prosecuting Attorney absent both cycles, slots
+  between Mayor and Council when present, AG Op. 85-7). Composite order
+  assembled from statute + 2 manuals — no single ballot shows every tier
+  (Governor and US Senate never coincide with President the way baseline
+  assumes). Babson v. Cronin (138 H. 228, 2016) suggests some OOE ballot
+  practices are unpromulgated rules — not chased. Fetch: capitol.hawaii.gov
+  403s direct → r.jina.ai; elections.hawaii.gov 403s WebFetch → curl +
+  Chrome UA; Constitution path = 05-CONST (03-CONST silently returns site
+  search — trap).
 
 ## Batch 5
 
