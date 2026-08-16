@@ -89,8 +89,14 @@ export function DetailRail({
         <span aria-hidden="true">← </span>
         {backTo.label}
       </Link>
-      {headerSlot ? <div className="mt-3 px-3">{headerSlot}</div> : null}
-      <ul className="mt-3 space-y-1 border-t border-line pt-3">
+      {/* One divider, right under the back link: everything below it — the
+          header slot's label/controls and the rows — reads as one panel.
+          Without a header slot the divider moves down to keep separating
+          the back link from the rows. */}
+      {headerSlot ? (
+        <div className="mt-3 border-t border-line px-3 pt-3">{headerSlot}</div>
+      ) : null}
+      <ul className={`mt-3 space-y-1 ${headerSlot ? "" : "border-t border-line pt-3"}`}>
         {entries.map((entry) =>
           entry.id === currentId ? (
             <li

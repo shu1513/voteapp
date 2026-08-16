@@ -1635,7 +1635,7 @@ describe("ElectionPage ballot rail race-type tabs", () => {
     const { router } = renderElection(perIdLoader, "q-1", ARRIVAL_ON_MEASURES);
 
     const rail = await screen.findByRole("navigation", { name: "Ballot" });
-    await user.click(within(rail).getByRole("button", { name: "Candidates" }));
+    await user.click(within(rail).getByRole("button", { name: "Offices" }));
     await user.click(within(rail).getByRole("link", { name: "Governor" }));
 
     expect(router.state.location.pathname).toBe("/elections/e-1");
@@ -1655,7 +1655,7 @@ describe("ElectionPage ballot rail race-type tabs", () => {
       ).toHaveAttribute("aria-current", "page");
     });
     const nextRail = screen.getByRole("navigation", { name: "Ballot" });
-    expect(within(nextRail).getByRole("button", { name: "Candidates" })).toHaveAttribute(
+    expect(within(nextRail).getByRole("button", { name: "Offices" })).toHaveAttribute(
       "aria-pressed",
       "true"
     );
@@ -1677,7 +1677,7 @@ describe("ElectionPage ballot rail race-type tabs", () => {
     // slice (the detail page itself marks the reader's place) but the rail
     // must not tear down.
     const rail = await screen.findByRole("navigation", { name: "Ballot" });
-    await user.click(within(rail).getByRole("button", { name: "Candidates" }));
+    await user.click(within(rail).getByRole("button", { name: "Offices" }));
 
     expect(within(rail).queryByText("Measure A")).not.toBeInTheDocument();
     expect(within(rail).getByRole("link", { name: "Governor" })).toBeInTheDocument();

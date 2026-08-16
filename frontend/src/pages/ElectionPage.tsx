@@ -399,7 +399,11 @@ export function ElectionPage() {
           backToState={railNav.forwarded.backState}
           siblingState={railNav.forwarded}
           headerSlot={
-            railTabsAvailable || offeredRailSorts.length > 0 ? (
+            // The list label renders even when no control is offerable (an
+            // old snapshot): naming WHAT the rows are never depends on the
+            // sort/tab keys. Mirrors the candidate rail's "Candidates:".
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink">Elections:</p>
               <div className="flex flex-col gap-2">
                 {railTabsAvailable ? (
                   <RaceTypeTabs raceType={railTab} onChange={setRailTabState} compact />
@@ -430,7 +434,7 @@ export function ElectionPage() {
                   </label>
                 ) : null}
               </div>
-            ) : undefined
+            </div>
           }
         />
       ) : null}

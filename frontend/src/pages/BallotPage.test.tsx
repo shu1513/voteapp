@@ -505,7 +505,7 @@ describe("BallotPage", () => {
       // URL state like sort, so the tab survives navigating into a race.
       expect(router.state.location.search).toContain("type=ballot_measure");
 
-      await user.click(screen.getByRole("button", { name: "Candidates" }));
+      await user.click(screen.getByRole("button", { name: "Offices" }));
       expect(screen.getByText("Governor")).toBeInTheDocument();
       expect(screen.queryByText("Measure A")).not.toBeInTheDocument();
       expect(router.state.location.search).toContain("type=office");

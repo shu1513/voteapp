@@ -755,7 +755,9 @@ export function CandidatePage() {
             // The list label renders even when no sort is offerable (an old
             // snapshot): naming WHAT the rows are never depends on the keys.
             <div className="flex flex-col gap-1.5">
-              <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">Candidates:</p>
+              {/* text-ink, not -soft: the label is the rail's identity, not
+                  a caption — it must register at a glance. */}
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink">Candidates:</p>
               {offeredRailSorts.length > 0 ? (
                 <label className="flex items-center gap-1.5 text-xs text-ink-soft">
                   Sort
