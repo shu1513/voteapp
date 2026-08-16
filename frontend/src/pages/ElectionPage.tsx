@@ -30,7 +30,7 @@ import {
 import { loadFromApi } from "../lib/loadFromApi";
 import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
-import { AREA_TEXT_CLASS } from "../components/ElectionCard";
+import { AREA_TEXT_CLASS, SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { CandidatePickButton, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
 import { splitResearchAreasBySaved, useElectionChoices } from "@voteapp/api-client";
@@ -50,9 +50,10 @@ type CandidateSort = "alphabetical" | "my_issues";
 // to the rail's current tab and sort, so leaving the split view lands on the
 // view the rail is showing rather than the one the reader arrived with.
 // Sort carry-over rules: vote_power/soonest are list sorts on both pages;
-// my_areas only reaches /me/ballot (the anonymous list endpoint would
-// silently degrade it); alphabetical is rail-only and leaves the path's
-// sort untouched. The rewrite happens only when the engaged sort would
+// my_areas reaches both ballot lists (/me/ballot server-side, /ballot via
+// its client-side mirror — which degrades to vote_power rather than lying
+// if the URL ever lands on a viewer without saved areas); alphabetical is
+// rail-only and leaves the path's sort untouched. The rewrite happens only when the engaged sort would
 // CHANGE the order the back URL already yields — the rail's seeded default
 // is mapped FROM that URL's sort (railSortForBallotSort), so this rule
 // keeps a richer list sort the rail merely approximates (district_size →
@@ -75,7 +76,7 @@ function rewriteBackPath(
   const honorable =
     railSort === "vote_power" ||
     railSort === "soonest" ||
-    (railSort === "my_areas" && url.pathname === "/me/ballot");
+    (railSort === "my_areas" && (url.pathname === "/me/ballot" || url.pathname === "/ballot"));
   if (honorable && railSort !== railSortForBallotSort(url.searchParams.get("sort") ?? "vote_power")) {
     url.searchParams.set("sort", railSort);
   }
@@ -556,8 +557,8 @@ export function ElectionPage() {
             ) : null}
             {researchAreas.length > 0 ? (
               // Same one-list, comma-separated presentation as the ballot
-              // cards: saved matches lead with a screen-reader-only "(saved)"
-              // cue, position is the only sighted distinction.
+              // cards: saved matches lead in semibold, with a screen-reader-
+              // only "(saved)" cue keeping the distinction audible.
               <p className="mt-3 text-xs">
                 {/* Same verb label as the ballot cards — see ElectionCard. */}
                 <span className="font-medium text-ink-soft">Affects:</span>{" "}
@@ -565,7 +566,7 @@ export function ElectionPage() {
                     nodes, so each span's text stays exactly the area name. */}
                 {[...orderedAreas.saved, ...orderedAreas.others].map((area, index, all) => (
                   <Fragment key={area.id}>
-                    <span className={AREA_TEXT_CLASS}>
+                    <span className={orderedAreas.saved.includes(area) ? SAVED_AREA_TEXT_CLASS : AREA_TEXT_CLASS}>
                       {area.name}
                       {orderedAreas.saved.includes(area) ? <span className="sr-only"> (saved)</span> : null}
                     </span>

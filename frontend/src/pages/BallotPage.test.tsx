@@ -647,6 +647,95 @@ describe("BallotPage", () => {
   });
 });
 
+describe("BallotPage my_areas sort", () => {
+  const HOUSING = { id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null };
+  const SAVED_HOUSING = {
+    "/api/me": { body: ME_VERIFIED },
+    "/api/me/research-area-preferences": {
+      body: {
+        preferences: [
+          { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null, rank: 1 },
+        ],
+      },
+    },
+  };
+  // Governor leads under vote_power (score 42 vs 5); Housing Board leads
+  // under my_areas (it alone matches the saved area). One payload proves the
+  // client re-sort actually reordered.
+  const BALLOT = {
+    body: ballotSummary([
+      electionSummary(),
+      electionSummary({
+        id: "hb-1",
+        official_ballot_title: "Housing Board",
+        research_areas: [HOUSING],
+        vote_power: { ...VOTE_POWER, score: 5, label: "low" as const },
+      }),
+    ]),
+  };
+  const cardOrder = () =>
+    screen.getAllByRole("heading", { level: 3 }).map((heading) => heading.textContent);
+
+  it("offers My issues to a saved-areas viewer and reorders matched races first", async () => {
+    stubApiRoutes({ ...SAVED_HOUSING, "/api/ballot": BALLOT });
+    renderBallot("/ballot?d=d-1&sort=my_areas");
+
+    await screen.findByText("Housing Board");
+    // The matched race outranks the higher vote-power race — the mirrored
+    // backend comparator, run client-side (the anonymous endpoint cannot
+    // score a user).
+    expect(cardOrder()).toEqual(["Housing Board", "Governor"]);
+    expect(screen.getByRole("combobox")).toHaveValue("my_areas");
+    const options = screen.getAllByRole("option").map((option) => option.textContent);
+    expect(options).toContain("My issues");
+  });
+
+  it("fetches the vote_power payload for a my_areas view", async () => {
+    const fetchMock = stubApiRoutes({ ...SAVED_HOUSING, "/api/ballot": BALLOT });
+    renderBallot("/ballot?d=d-1&sort=my_areas");
+
+    await screen.findByText("Housing Board");
+    const ballotCalls = fetchMock.mock.calls
+      .map((call) => String(call[0]))
+      .filter((url) => url.includes("/api/ballot"));
+    // my_areas is client-side on this page; the backend is asked for (and
+    // the query cached under) the plain default payload.
+    expect(ballotCalls).toEqual([expect.stringContaining("sort=vote_power")]);
+  });
+
+  it("degrades a my_areas URL to vote_power for an anonymous visitor", async () => {
+    stubApiRoutes({ ...ANONYMOUS, "/api/ballot": BALLOT });
+    renderBallot("/ballot?d=d-1&sort=my_areas");
+
+    await screen.findByText("Housing Board");
+    // Nothing to score against: payload (vote_power) order, no My issues
+    // option, and the select admits the fallback rather than claiming an
+    // issue ordering.
+    expect(cardOrder()).toEqual(["Governor", "Housing Board"]);
+    expect(screen.getByRole("combobox")).toHaveValue("vote_power");
+    const options = screen.getAllByRole("option").map((option) => option.textContent);
+    expect(options).not.toContain("My issues");
+  });
+
+  it("carries a chosen My issues sort into the URL and seeds the detail rail", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes({ ...SAVED_HOUSING, "/api/ballot": BALLOT });
+    const { router } = renderBallot("/ballot?d=d-1");
+
+    await screen.findByText("Housing Board");
+    // The option appears once the saved-areas chain confirms the viewer can
+    // be scored — after the ballot itself typically.
+    await screen.findByRole("option", { name: "My issues" });
+    await user.selectOptions(screen.getByRole("combobox"), "my_areas");
+    expect(router.state.location.search).toContain("sort=my_areas");
+    expect(cardOrder()).toEqual(["Housing Board", "Governor"]);
+
+    await user.click(screen.getByRole("link", { name: /Housing Board/ }));
+    const navState = router.state.location.state as { railSort?: string };
+    expect(navState.railSort).toBe("my_areas");
+  });
+});
+
 describe("BallotPage nav context", () => {
   it("hands election cards its own URL and the displayed contest order", async () => {
     const user = userEvent.setup();
