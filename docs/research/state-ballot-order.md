@@ -2302,21 +2302,26 @@ measures last.
   observed variation is a DEPARTURE from the statute, so verify per
   county, per cycle; repealed § 7-13-440 prior text unavailable; no
   written SEC order directive located (ordering = operational practice
-  implementing the § 7-13-330 template). President-vs-US-Senate CLOSED
-  (late child agent): Greenville County 2020 general sample ballot,
-  precinct Saluda, prints President and Vice President FIRST with U.S.
-  Senate immediately second (then US House 04 → State Senate 6 → State
-  House 19 → Sheriff → Clerk → Coroner → Register of Deeds → Soil & Water
-  → School Board D19) —
+  implementing the § 7-13-330 template). President-vs-US-Senate: OBSERVED
+  on a mirror-class artifact, so it SUPPORTS the inference but remains
+  FORMALLY OPEN under the campaign's primary-source rule (the TN
+  precedent: mirror-class evidence cannot close a sourcing gate, however
+  low the practical risk). The observation: Greenville County 2020
+  general sample ballot, precinct Saluda, prints President and Vice
+  President FIRST with U.S. Senate immediately second (then US House 04 →
+  State Senate 6 → State House 19 → Sheriff → Clerk → Coroner → Register
+  of Deeds → Soil & Water → School Board D19) —
   https://ballotpedia.s3.amazonaws.com/images/7/78/2020_South_Carolina_sample_ballot_%28Greenville_County%29.pdf
   (PDF creationDate 2020-10-20; SHA-256 stable across two fetches;
-  down-ballot races verified real). PROVENANCE CAVEAT: list-format
-  voter-generated copy hosted on Ballotpedia's S3, not a county host — SC
-  samples live behind the per-voter VREMS login, so this is the artifact
-  class that survives; the list-format methodology is licensed by
-  Charleston 2022, where the SCVotes list-format sample matches the
-  printed ballot contest-for-contest (verified against printed styles 1 +
-  50). NEVER ENCODE "US Senate second" from this — the 2020
+  down-ballot races verified real). Why mirror-class: a voter-generated
+  VREMS copy hosted on Ballotpedia's S3, not any official host — SC
+  samples live behind the per-voter VREMS login and Charleston skipped
+  2020 sample publication, so no official/archived 2020 artifact was
+  locatable this session (Wayback replay down). The list-format
+  methodology itself IS validated against an official printed ballot
+  (Charleston 2022: SCVotes list-format sample matches printed styles 1 +
+  50 contest-for-contest). CLOSE PATH: any official or Wayback-archived
+  SC 2020 general ballot showing both contests. NEVER ENCODE "US Senate second" from this — the 2020
   President→US-Senate adjacency exists only because SC's executive block
   is midterm-only; in midterms US Senate prints BELOW the seven
   executives (Charleston 2022, both formats). President-vs-GOVERNOR
@@ -2700,9 +2705,11 @@ measures last.
   (all live, %PDF verified), plus Fayette + Kenton SOS copies recovered
   from Common Crawl (live URLs
   https://web.sos.ky.gov/ballots/Fayette%202023G.pdf and
-  .../Kenton%202023G.pdf now 404 — SOS purges to current cycle; retrieve
-  by querying the Common Crawl index for those URLs in collection
-  CC-MAIN-2024-10, then a Range request on data.commoncrawl.org; 291,980
+  https://web.sos.ky.gov/ballots/Kenton%202023G.pdf now 404 — SOS purges
+  to current cycle; retrieve by querying the Common Crawl index for those
+  exact URLs in collection CC-MAIN-2024-10, then a Range request on
+  data.commoncrawl.org — the recovering agent did not retain the WARC
+  capture identifiers, so re-derive them from the index query; 291,980
   and 134,389 bytes, Kenton has a text layer) — print an IDENTICAL
   executive sequence: STRAIGHT PARTY → GOVERNOR and LIEUTENANT
   GOVERNOR (one combined contest, "Vote for One") → SECRETARY of STATE →
