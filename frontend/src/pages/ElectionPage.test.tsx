@@ -1356,9 +1356,11 @@ describe("ElectionPage back link and nav context", () => {
       // hop can restore it.
       backState: incoming,
       electionId: "e-1",
+      // research_area_records: the candidate rail's My-issues sort key —
+      // empty here because the fixture candidates carry no records.
       candidates: [
-        { id: "c-1", name: "Jordan Voter" },
-        { id: "c-2", name: "Riley Runner" },
+        { id: "c-1", name: "Jordan Voter", research_area_records: [] },
+        { id: "c-2", name: "Riley Runner", research_area_records: [] },
       ],
     });
   });
@@ -1397,7 +1399,9 @@ describe("ElectionPage back link and nav context", () => {
     await user.click(screen.getByRole("link", { name: "Dana Democrat" }));
 
     const state = router.state.location.state as { candidates: unknown };
-    expect(state.candidates).toEqual([{ id: "c-dem", name: "Dana Democrat" }]);
+    expect(state.candidates).toEqual([
+      { id: "c-dem", name: "Dana Democrat", research_area_records: [] },
+    ]);
   });
 });
 

@@ -106,6 +106,48 @@ describe("readCandidateNavState", () => {
     expect(readCandidateNavState({ electionId: "e-1" })).toBeNull();
   });
 
+  it("round-trips candidate stance keys and the engaged rail sort", () => {
+    const state = {
+      backTo: ELECTION_BACK,
+      candidates: [
+        {
+          id: "c-1",
+          name: "Jordan Voter",
+          research_area_records: [{ research_area_id: "a-1", record_count: 2 }],
+        },
+      ],
+      railSort: "my_issues",
+    };
+    expect(readCandidateNavState(state)).toEqual(state);
+  });
+
+  it("drops invalid stance keys per entry and an invalid railSort alone", () => {
+    expect(
+      readCandidateNavState({
+        backTo: ELECTION_BACK,
+        candidates: [
+          { id: "c-1", name: "Jordan Voter", research_area_records: "junk" },
+          {
+            id: "c-2",
+            name: "Riley Runner",
+            research_area_records: [{ research_area_id: "a-1", record_count: 1 }],
+          },
+        ],
+        railSort: "banana",
+      })
+    ).toEqual({
+      backTo: ELECTION_BACK,
+      candidates: [
+        { id: "c-1", name: "Jordan Voter" },
+        {
+          id: "c-2",
+          name: "Riley Runner",
+          research_area_records: [{ research_area_id: "a-1", record_count: 1 }],
+        },
+      ],
+    });
+  });
+
   it("degrades each optional field independently", () => {
     expect(
       readCandidateNavState({

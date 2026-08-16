@@ -8,8 +8,8 @@
 // optional fields degrade independently: a broken sibling list must not
 // take the back link down with it.
 
-import type { BallotRaceType, RailSortKey } from "@voteapp/api-client";
-import { RAIL_SORTS } from "@voteapp/api-client";
+import type { BallotRaceType, CandidateRailSortKey, RailSortKey } from "@voteapp/api-client";
+import { CANDIDATE_RAIL_SORTS, RAIL_SORTS } from "@voteapp/api-client";
 import { safeInternalPath } from "./safeInternalPath";
 
 /** A back-link destination. Purely where and what to call it — any state to
@@ -33,7 +33,15 @@ export type NavContest = {
   research_area_ids?: string[];
   awaiting_candidates?: boolean;
 };
-export type NavCandidate = { id: string; name: string };
+/** research_area_records powers the candidate rail's My-issues sort: each
+ * candidate's stance-bearing records condensed to per-area counts at
+ * snapshot time. Optional — an old history entry predates it, and the sort
+ * control is simply not offered without it. */
+export type NavCandidate = {
+  id: string;
+  name: string;
+  research_area_records?: { research_area_id: string; record_count: number }[];
+};
 
 /** Handed to /elections/:id links. contests = the ballot in displayed
  * order (races + measures + the awaiting-candidates tail) — the full
@@ -61,6 +69,9 @@ export type CandidateNavState = {
   backState?: ElectionNavState;
   electionId?: string;
   candidates?: NavCandidate[];
+  /** The candidate rail's engaged sort, carried so sibling walks and
+   * election round trips keep it; absent = "As listed". */
+  railSort?: CandidateRailSortKey;
 };
 
 function readBackTo(value: unknown): BackTo | null {
@@ -209,7 +220,30 @@ export function readCandidateNavState(state: unknown): CandidateNavState | null 
   }
   const candidates = readIdLabelList(record.candidates, "name");
   if (candidates !== undefined) {
-    result.candidates = candidates;
+    // research_area_records degrades per entry, not per list: an invalid
+    // value only withholds the rail's sort control (which requires every
+    // entry keyed), never the pager or the rail itself.
+    const rawCandidates = record.candidates as unknown[];
+    result.candidates = candidates.map((candidate, index) => {
+      const raw = (rawCandidates[index] as Record<string, unknown>).research_area_records;
+      return Array.isArray(raw) &&
+        raw.every(
+          (area) =>
+            typeof area === "object" &&
+            area !== null &&
+            typeof (area as Record<string, unknown>).research_area_id === "string" &&
+            ((area as Record<string, unknown>).research_area_id as string).trim() !== "" &&
+            typeof (area as Record<string, unknown>).record_count === "number"
+        )
+        ? {
+            ...candidate,
+            research_area_records: raw as NavCandidate["research_area_records"],
+          }
+        : candidate;
+    });
+  }
+  if (CANDIDATE_RAIL_SORTS.some((option) => option.value === record.railSort)) {
+    result.railSort = record.railSort as CandidateRailSortKey;
   }
   return result;
 }

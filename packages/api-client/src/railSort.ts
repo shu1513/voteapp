@@ -173,3 +173,84 @@ export function sortRailEntries<Entry extends RailSortEntry>(
     return compareTail(a, b);
   });
 }
+
+// ---------------------------------------------------------------------------
+// The CANDIDATE roster rail (a candidate page's sibling list). Mirrors the
+// election page's sortCandidatesByStance semantics: weighted unique matched
+// areas dominate, matching record volume breaks ties, and complete ties keep
+// the arrival order (the payload's alphabetical roster) — relevance, not
+// agreement, so against-only records on a saved issue still count.
+
+export type CandidateRailSortKey = "my_issues" | "alphabetical";
+
+/** The snapshot fields the candidate rail sorts on — a NavCandidate subset.
+ * research_area_records condenses each candidate's stance-bearing records
+ * into per-area counts, which is all the my_issues scoring reads. */
+export type CandidateRailSortEntry = {
+  id: string;
+  name: string;
+  research_area_records?: { research_area_id: string; record_count: number }[];
+};
+
+/** Labels reuse the election page's roster-sort vocabulary. */
+export const CANDIDATE_RAIL_SORTS: readonly { value: CandidateRailSortKey; label: string }[] = [
+  { value: "my_issues", label: "My issues first" },
+  { value: "alphabetical", label: "A–Z" },
+];
+
+/**
+ * Which candidate-rail sorts the snapshot can honor. Every entry must carry
+ * research_area_records (an old history entry predates them — no keys, no
+ * sort control); my_issues additionally needs saved research areas, exactly
+ * like the roster sort it mirrors.
+ */
+export function candidateRailSortsOffered(
+  entries: CandidateRailSortEntry[],
+  hasSavedAreas: boolean
+): CandidateRailSortKey[] {
+  if (entries.length < 2) {
+    return [];
+  }
+  if (!entries.every((entry) => entry.research_area_records !== undefined)) {
+    return [];
+  }
+  return hasSavedAreas ? ["my_issues", "alphabetical"] : ["alphabetical"];
+}
+
+/**
+ * Returns a new array in the requested order; the input is not mutated.
+ * my_issues without weights (or with none matching) degrades to the arrival
+ * order, matching the election page's stable-sort behavior for all-zero
+ * scores.
+ */
+export function sortCandidateRailEntries<Entry extends CandidateRailSortEntry>(
+  entries: readonly Entry[],
+  sort: CandidateRailSortKey,
+  weights?: Map<string, ResearchAreaWeight>
+): Entry[] {
+  if (sort === "alphabetical") {
+    return [...entries].sort(
+      (a, b) => TITLE_COLLATOR.compare(a.name, b.name) || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)
+    );
+  }
+  const areaWeights = weights ?? new Map<string, ResearchAreaWeight>();
+  return entries
+    .map((entry, index) => {
+      // The election page's scoreStanceRelevance over the condensed counts:
+      // one weight per matched area regardless of volume, volume kept
+      // separately as the tiebreak.
+      let score = 0;
+      let recordCount = 0;
+      for (const area of entry.research_area_records ?? []) {
+        const weight = areaWeights.get(area.research_area_id);
+        if (!weight || area.record_count === 0) {
+          continue;
+        }
+        score += weight.weight;
+        recordCount += area.record_count;
+      }
+      return { entry, index, score, recordCount };
+    })
+    .sort((a, b) => b.score - a.score || b.recordCount - a.recordCount || a.index - b.index)
+    .map(({ entry }) => entry);
+}

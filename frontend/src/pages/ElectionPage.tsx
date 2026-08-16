@@ -337,9 +337,16 @@ export function ElectionPage() {
     // including the rail tab and sort as switched).
     ...(railNav ? { backState: railNav.forwarded } : {}),
     electionId: data.id,
-    candidates: orderedCandidates.map(({ candidate }) => ({
+    candidates: orderedCandidates.map(({ candidate, stances }) => ({
       id: candidate.candidate_id,
       name: candidate.display_name,
+      // The candidate rail's My-issues sort key: the already-aggregated
+      // stance areas condensed to per-area record counts — all the
+      // mirrored scoring reads.
+      research_area_records: stances.map((stance) => ({
+        research_area_id: stance.research_area_id,
+        record_count: stance.for_count + stance.against_count,
+      })),
     })),
   };
 

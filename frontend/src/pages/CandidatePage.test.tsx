@@ -1138,6 +1138,104 @@ describe("CandidatePage roster rail", () => {
     );
     expect(screen.queryByRole("navigation", { name: "Candidates in this race" })).not.toBeInTheDocument();
   });
+
+  it("offers no sort control on an unkeyed (pre-deploy) snapshot", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(perIdLoader, "c-2", ROSTER_ARRIVAL);
+
+    const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    expect(within(rail).queryByRole("combobox")).not.toBeInTheDocument();
+  });
+});
+
+// The roster rail's sort control: stance keys ride the snapshot; My issues
+// mirrors the election page's roster sort, A–Z is rail-only.
+describe("CandidatePage roster rail sort", () => {
+  // Arrival order c-1, c-2, c-3. Riley and Casey both match the saved area;
+  // Casey's larger record volume outranks Riley; recordless Jordan sinks.
+  // A–Z gives a third, distinct order (Casey, Jordan, Riley).
+  const KEYED_ARRIVAL = {
+    backTo: { path: "/elections/e-1", label: "Governor" },
+    electionId: "e-1",
+    candidates: [
+      { id: "c-1", name: "Jordan Voter", research_area_records: [] },
+      {
+        id: "c-2",
+        name: "Riley Runner",
+        research_area_records: [{ research_area_id: "a-gun", record_count: 1 }],
+      },
+      {
+        id: "c-3",
+        name: "Casey Contender",
+        research_area_records: [{ research_area_id: "a-gun", record_count: 3 }],
+      },
+    ],
+  };
+  const SAVED_GUN = {
+    "/api/me": { body: ME_VERIFIED },
+    "/api/me/candidate-follows": { body: { follows: [] } },
+    "/api/me/research-area-preferences": {
+      body: {
+        preferences: [
+          { research_area_id: "a-gun", slug: "gun_control", name: "Gun Control", description: null, rank: 1 },
+        ],
+      },
+    },
+  };
+  const perIdLoader = ({ params }: { params: { candidateId?: string } }) =>
+    candidateDetail({ candidate_id: params.candidateId });
+  const railRows = (rail: HTMLElement) =>
+    within(rail)
+      .getAllByRole("listitem")
+      .map((row) => row.textContent);
+
+  it("sorts by My issues and forwards the choice to sibling walks", async () => {
+    stubApiRoutes({ ...SAVED_GUN });
+    const user = userEvent.setup();
+    const { router } = renderCandidate(perIdLoader, "c-1", KEYED_ARRIVAL);
+
+    const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    const select = await within(rail).findByRole("combobox");
+    // findBy: the My issues option appears once the saved-areas fetch lands.
+    await within(select).findByRole("option", { name: "My issues first" });
+    expect(railRows(rail)).toEqual(["Jordan Voter", "Riley Runner", "Casey Contender"]);
+
+    await user.selectOptions(select, "my_issues");
+    expect(railRows(rail)).toEqual(["Casey Contender", "Riley Runner", "Jordan Voter"]);
+
+    await user.click(within(rail).getByRole("link", { name: "Casey Contender" }));
+    expect(router.state.location.pathname).toBe("/candidates/c-3");
+    // Forwarded state: the engaged sort rides along; everything else is the
+    // arrival snapshot untouched.
+    expect(router.state.location.state).toEqual({ ...KEYED_ARRIVAL, railSort: "my_issues" });
+    const nextRail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    expect(await within(nextRail).findByRole("combobox")).toHaveValue("my_issues");
+    expect(railRows(nextRail)).toEqual(["Casey Contender", "Riley Runner", "Jordan Voter"]);
+  });
+
+  it("A–Z re-sorts by name and As listed restores the arrival order", async () => {
+    stubApiRoutes({ ...SAVED_GUN });
+    const user = userEvent.setup();
+    renderCandidate(perIdLoader, "c-1", KEYED_ARRIVAL);
+
+    const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    const select = await within(rail).findByRole("combobox");
+    await user.selectOptions(select, "alphabetical");
+    expect(railRows(rail)).toEqual(["Casey Contender", "Jordan Voter", "Riley Runner"]);
+
+    await user.selectOptions(select, "");
+    expect(railRows(rail)).toEqual(["Jordan Voter", "Riley Runner", "Casey Contender"]);
+  });
+
+  it("offers only A–Z to viewers without saved areas", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(perIdLoader, "c-1", KEYED_ARRIVAL);
+
+    const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    const select = await within(rail).findByRole("combobox");
+    const options = within(select).getAllByRole("option").map((option) => option.textContent);
+    expect(options).toEqual(["As listed", "A–Z"]);
+  });
 });
 
 describe("CandidatePage newest-view expansion across the pager", () => {
