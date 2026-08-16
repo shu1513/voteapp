@@ -60,18 +60,35 @@ describe("stateBaselineContestRank", () => {
     expect(new Set(ranks).size).toBe(ranks.length);
   });
 
-  it("ranks judicial races after non-judicial races of the same level, before the next level", () => {
+  it("ranks ALL judicial races as a late block: after school, before unknown and measures, higher courts first", () => {
     const statewideJudge = stateBaselineContestRank(
       input({ office_scope: "statewide", contest_family: "judicial_office" })
     );
-    expect(statewideJudge).toBeGreaterThan(stateBaselineContestRank(input({ office_scope: "statewide" })));
-    expect(statewideJudge).toBeLessThan(stateBaselineContestRank(input({ office_scope: "state_upper" })));
-
     const countyJudge = stateBaselineContestRank(
       input({ office_scope: "county", contest_family: "judicial_office" })
     );
-    expect(countyJudge).toBeGreaterThan(stateBaselineContestRank(input({ office_scope: "county" })));
-    expect(countyJudge).toBeLessThan(stateBaselineContestRank(input({ office_scope: "place" })));
+    const placeJudge = stateBaselineContestRank(
+      input({ office_scope: "place", contest_family: "judicial_office" })
+    );
+
+    // The whole block sits after every non-judicial office (majority US
+    // pattern: retention sections and nonpartisan judicial sections print
+    // after the partisan offices).
+    expect(statewideJudge).toBeGreaterThan(stateBaselineContestRank(input({ office_scope: "school_unified" })));
+    // Higher courts first inside the block.
+    expect(statewideJudge).toBeLessThan(countyJudge);
+    expect(countyJudge).toBeLessThan(placeJudge);
+    // Still before the unknown-scope sink and measures.
+    expect(placeJudge).toBeLessThan(stateBaselineContestRank(input({ office_scope: "something_new" })));
+    expect(placeJudge).toBeLessThan(
+      stateBaselineContestRank(input({ race_type: "ballot_measure", office_scope: null }))
+    );
+    // A judicial race with an unmodeled scope stays in the judicial block.
+    const unknownJudge = stateBaselineContestRank(
+      input({ office_scope: "something_new", contest_family: "judicial_office" })
+    );
+    expect(unknownJudge).toBeGreaterThan(placeJudge);
+    expect(unknownJudge).toBeLessThan(stateBaselineContestRank(input({ office_scope: "something_new" })));
   });
 
   it("falls back to the district type when the office is unresolved", () => {

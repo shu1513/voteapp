@@ -4,8 +4,16 @@ import type { BallotLookupElectionSummary } from "./ballotLookup.js";
 // State-baseline contest ranking for the `state_baseline` ballot sort: the
 // generic order contests appear on US general-election ballots — federal,
 // then statewide, then state legislature, then county, then municipal, then
-// school districts, with judicial races after the non-judicial races of the
-// same level and ballot measures last.
+// school districts, then ALL judicial races as a late block (highest court
+// first), and ballot measures last.
+//
+// Judicial-at-the-end is the majority pattern, not a simplification: every
+// retention state prints retention questions as a section after the other
+// offices, and the nonpartisan-section states do the same for contested
+// judicial races (MN Rule 8250.1810 subp 5 puts Judicial Offices dead last;
+// Ohio RC 3505.04 and Michigan's ballot standards put judges on the
+// nonpartisan ballot after every partisan office). Placing judges inside
+// their level (TX Elec. Code 52.092, NC GS 163-165.6 style) is the minority.
 //
 // This is an APPROXIMATION of each state's ballot-arrangement law, good
 // enough to render a ballot-shaped preview; it is not a per-state statute
@@ -33,23 +41,30 @@ export function stateBaselineContestRank(
   // the row is attached (a county row carries municipal ward seats too), so
   // scope wins and district_type is the fallback for unresolved offices.
   const scope = election.office?.scope ?? election.district.district_type;
-  const judicialBump = election.discovery_contest_family === "judicial_office" ? 5 : 0;
+  // The judicial block: 82-90, after school (80), before unknown (95).
+  // Within the block, higher courts come first — the internal order every
+  // judicial-section state uses (MN: Chief Justice -> Court of Appeals ->
+  // District Court; same shape in MI and CA).
+  const judicial = election.discovery_contest_family === "judicial_office";
   switch (scope) {
     case "presidential":
       return 0;
     case "statewide":
       // US Senate is a statewide-scope office but federal on the ballot.
-      return election.discovery_contest_family === "us_senate" ? 10 : 30 + judicialBump;
+      if (election.discovery_contest_family === "us_senate") {
+        return 10;
+      }
+      return judicial ? 82 : 30;
     case "us_house":
       return 20;
     case "state_upper":
-      return 40 + judicialBump;
+      return judicial ? 84 : 40;
     case "state_lower":
-      return 50 + judicialBump;
+      return judicial ? 85 : 50;
     case "county":
-      return 60 + judicialBump;
+      return judicial ? 86 : 60;
     case "place":
-      return 70 + judicialBump;
+      return judicial ? 88 : 70;
     case "school_elementary":
     case "school_secondary":
     case "school_unified":
@@ -57,6 +72,6 @@ export function stateBaselineContestRank(
     default:
       // Open union guard: an unmodeled scope sorts just above measures
       // instead of throwing the whole ballot render away.
-      return UNKNOWN_RANK;
+      return judicial ? 90 : UNKNOWN_RANK;
   }
 }
