@@ -255,16 +255,29 @@ function StanceChip({ stance, label }: { stance: "for" | "against"; label: strin
 // evidence doesn't hold. Evaluative areas are excluded — their for/against
 // grades the evidence, not advocacy (see EVALUATIVE_AREA_SLUGS), so they
 // have no place in a supports/opposes box; null-stance areas (general,
-// integrity_and_ethics) never leave the aggregator. Salience order, matching
-// the record groups below.
-function classifyStanceSummary(records: readonly CandidateRecord[]): {
+// integrity_and_ethics) never leave the aggregator. Order matches the record
+// groups below: the viewer's saved areas first by their own rank (passed
+// only in the "my issues first" view — empty otherwise), everything else by
+// public salience.
+function classifyStanceSummary(
+  records: readonly CandidateRecord[],
+  preferences: readonly ResearchAreaPreference[]
+): {
   supports: RecordAreaStance[];
   opposes: RecordAreaStance[];
   mixed: RecordAreaStance[];
 } {
+  const rankByAreaId = new Map(
+    preferences.map((preference) => [preference.research_area_id, preference.rank ?? UNRANKED_RESEARCH_AREA_RANK])
+  );
   const areas = aggregateRecordAreaStances(records)
     .filter((area) => !EVALUATIVE_AREA_SLUGS.has(area.slug))
-    .sort(compareByResearchAreaPriority);
+    .sort(
+      (a, b) =>
+        (rankByAreaId.get(a.research_area_id) ?? Number.POSITIVE_INFINITY) -
+          (rankByAreaId.get(b.research_area_id) ?? Number.POSITIVE_INFINITY) ||
+        compareByResearchAreaPriority(a, b)
+    );
   return {
     // Every aggregated area has for_count + against_count >= 1, so a zero on
     // one side means the record is unanimous the other way.
@@ -280,18 +293,30 @@ function classifyStanceSummary(records: readonly CandidateRecord[]): {
 // column would squeeze all three on desktop and mixed is the box that
 // needs its counts read). Renders nothing when no area classifies, so a
 // record-less or judicial-only profile gets no empty shell.
-function StanceSummary({ candidateName, records }: { candidateName: string; records: CandidateRecord[] }) {
-  const { supports, opposes, mixed } = classifyStanceSummary(records);
+function StanceSummary({
+  candidateName,
+  records,
+  preferences,
+}: {
+  candidateName: string;
+  records: CandidateRecord[];
+  preferences: readonly ResearchAreaPreference[];
+}) {
+  const { supports, opposes, mixed } = classifyStanceSummary(records, preferences);
   if (supports.length === 0 && opposes.length === 0 && mixed.length === 0) {
     return null;
   }
+  // The viewer's saved areas render semibold so their issues stand out from
+  // the rest of the list, mirroring the front-of-list ordering.
+  const savedAreaIds = new Set(preferences.map((preference) => preference.research_area_id));
   // Comma-separated text, not boxed chips (boxes read as buttons — same
   // rule as the roster rows). Name and count stay one text node so an
   // exact-match query for the bare area name still resolves to the record
   // group heading, not this summary.
   const areaWithCount = (area: RecordAreaStance) => {
     const count = area.for_count + area.against_count;
-    return `${area.name} (${count} record${count === 1 ? "" : "s"})`;
+    const text = `${area.name} (${count} record${count === 1 ? "" : "s"})`;
+    return savedAreaIds.has(area.research_area_id) ? <span className="font-semibold">{text}</span> : text;
   };
   const sideBox = (side: "supports" | "opposes", areas: RecordAreaStance[]) =>
     areas.length === 0 ? null : (
@@ -344,12 +369,19 @@ function StanceSummary({ candidateName, records }: { candidateName: string; reco
           <p className="mt-1 text-sm text-amber-900">
             {/* Same "N support · N oppose" phrasing as the record group
                 headers, so the two surfaces can't drift apart. */}
-            {mixed.map((area, index) => (
-              <Fragment key={area.research_area_id}>
-                {index > 0 ? ", " : null}
-                {`${area.name} (${area.for_count} support · ${area.against_count} oppose)`}
-              </Fragment>
-            ))}
+            {mixed.map((area, index) => {
+              const text = `${area.name} (${area.for_count} support · ${area.against_count} oppose)`;
+              return (
+                <Fragment key={area.research_area_id}>
+                  {index > 0 ? ", " : null}
+                  {savedAreaIds.has(area.research_area_id) ? (
+                    <span className="font-semibold">{text}</span>
+                  ) : (
+                    text
+                  )}
+                </Fragment>
+              );
+            })}
           </p>
         </div>
       ) : null}
@@ -717,7 +749,13 @@ export function CandidatePage() {
 
         {/* Directly after the summary, before the pick rows — the same order
             as the measure page (explainer boxes, then choice buttons). */}
-        <StanceSummary candidateName={candidate.display_name} records={candidate.records} />
+        <StanceSummary
+          candidateName={candidate.display_name}
+          records={candidate.records}
+          // Personalized order/emphasis only in the "my issues first" view,
+          // so the summary always matches the record groups below it.
+          preferences={recordView === "my_issues" ? preferences : []}
+        />
 
         {pickableElections.length > 0 ? (
           <div className="mt-4 space-y-2">
