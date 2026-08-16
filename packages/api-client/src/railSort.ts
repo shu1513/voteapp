@@ -40,6 +40,16 @@ export const RAIL_SORTS: readonly { value: RailSortKey; label: string }[] = [
 const TITLE_COLLATOR = new Intl.Collator("en", { numeric: true });
 
 /**
+ * The rail sort a ballot list's engaged sort seeds. The three shared sorts
+ * map to themselves; the district-size sorts fall back to vote_power — the
+ * rail cannot honor them (district population never reaches the client),
+ * and "My vote impact" is the ballot's own default order.
+ */
+export function railSortForBallotSort(sort: string): RailSortKey {
+  return sort === "my_areas" || sort === "soonest" ? sort : "vote_power";
+}
+
+/**
  * Which rail sorts the snapshot can honor. Every entry must carry the sort
  * keys (an old history entry predates them — no keys, no sort control);
  * my_areas additionally needs the viewer to have saved research areas and

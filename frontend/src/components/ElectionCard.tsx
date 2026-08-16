@@ -4,6 +4,7 @@ import type {
   BallotRaceType,
   ElectionChoice,
   ElectionSummary,
+  RailSortKey,
   ResearchAreaWeight,
   ResultChipTone,
 } from "@voteapp/api-client";
@@ -96,6 +97,7 @@ export function ElectionList({
   backTo,
   contestsPool,
   raceType,
+  railSort,
 }: {
   elections: ElectionSummary[];
   /**
@@ -127,6 +129,10 @@ export function ElectionList({
   /** The list's engaged race-type tab, recorded in the nav snapshot so the
    * detail rail's tabs start where the reader left the list. */
   raceType?: BallotRaceType | null;
+  /** The rail sort seeded by the list's engaged sort (railSortForBallotSort
+   * — district-size sorts fall back to vote_power), recorded so the rail's
+   * always-engaged sort control starts where the list was. */
+  railSort?: RailSortKey;
 }) {
   const awaitingCandidates = elections.filter(isAwaitingCandidates);
   const readable = elections.filter((election) => !isAwaitingCandidates(election));
@@ -164,6 +170,7 @@ export function ElectionList({
           ...(isAwaitingCandidates(election) ? { awaiting_candidates: true } : {}),
         })),
         ...(raceType ? { raceType } : {}),
+        ...(railSort ? { railSort } : {}),
       }
     : undefined;
   return (

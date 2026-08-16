@@ -1725,25 +1725,34 @@ describe("ElectionPage ballot rail sort and pick checks", () => {
   const perIdLoader = ({ params }: { params: { electionId?: string } }) =>
     electionDetail({ id: params.electionId });
 
-  it("re-sorts the rail and rewrites the back link for a list-honored sort", async () => {
+  it("engages the default sort on arrival and rewrites the back link only for a real change", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const user = userEvent.setup();
     renderElection(perIdLoader, "e-1", ARRIVAL);
 
+    // No "As listed": with no seed in the snapshot the rail defaults to
+    // vote_power and arrives already sorted — and since that's also what
+    // the back URL yields, the URL is NOT rewritten.
     const rail = await screen.findByRole("navigation", { name: "Ballot" });
-    // Arrival order first ("As listed").
     const rows = () => within(rail).getAllByRole("listitem").map((row) => row.textContent);
-    expect(rows()).toEqual(["Governor", "Proposition 33", "Proposition 4"]);
-
-    await user.selectOptions(within(rail).getByRole("combobox"), "vote_power");
+    const select = await within(rail).findByRole("combobox");
+    expect(select).toHaveValue("vote_power");
+    expect(within(select).queryByRole("option", { name: "As listed" })).not.toBeInTheDocument();
     expect(rows()).toEqual(["Proposition 33", "Proposition 4", "Governor"]);
     expect(within(rail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
       "href",
-      "/me/ballot?sort=vote_power"
+      "/me/ballot"
+    );
+
+    // A genuinely different list sort carries over.
+    await user.selectOptions(select, "soonest");
+    expect(within(rail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
+      "href",
+      "/me/ballot?sort=soonest"
     );
 
     // A–Z is numeric-aware and rail-only: no ?sort= carry-over.
-    await user.selectOptions(within(rail).getByRole("combobox"), "alphabetical");
+    await user.selectOptions(select, "alphabetical");
     expect(rows()).toEqual(["Governor", "Proposition 4", "Proposition 33"]);
     expect(within(rail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
       "href",
@@ -1751,27 +1760,39 @@ describe("ElectionPage ballot rail sort and pick checks", () => {
     );
   });
 
-  it("As listed after a sibling walk restores the arrival back URL", async () => {
+  it("starts on the seeded list sort and preserves a district-size back URL", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(perIdLoader, "e-1", {
+      // A district-size list: the rail cannot honor that order, so the
+      // seed falls back to vote_power (stamped by the list page) — but the
+      // back URL must keep the richer sort the rail merely approximates.
+      backTo: { path: "/me/ballot?sort=district_size", label: "My Elections" },
+      contests: KEYED_CONTESTS,
+      railSort: "vote_power",
+    });
+
+    const rail = await screen.findByRole("navigation", { name: "Ballot" });
+    expect(await within(rail).findByRole("combobox")).toHaveValue("vote_power");
+    expect(within(rail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
+      "href",
+      "/me/ballot?sort=district_size"
+    );
+  });
+
+  it("keeps the engaged sort and its rewrite through a sibling walk", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const user = userEvent.setup();
     renderElection(perIdLoader, "e-1", ARRIVAL);
 
-    // Engage a carried-over sort, walk to a sibling, then return to "As
-    // listed": the back link must drop the sort — the forwarded state
-    // carries the original destination, so the rewrite stays reversible.
     const rail = await screen.findByRole("navigation", { name: "Ballot" });
-    await user.selectOptions(within(rail).getByRole("combobox"), "vote_power");
+    await user.selectOptions(await within(rail).findByRole("combobox"), "soonest");
     await user.click(within(rail).getByRole("link", { name: "Proposition 33" }));
 
     const nextRail = await screen.findByRole("navigation", { name: "Ballot" });
+    expect(await within(nextRail).findByRole("combobox")).toHaveValue("soonest");
     expect(within(nextRail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
       "href",
-      "/me/ballot?sort=vote_power"
-    );
-    await user.selectOptions(within(nextRail).getByRole("combobox"), "");
-    expect(within(nextRail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
-      "href",
-      "/me/ballot"
+      "/me/ballot?sort=soonest"
     );
   });
 

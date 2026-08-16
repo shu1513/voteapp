@@ -690,6 +690,8 @@ describe("BallotPage nav context", () => {
           awaiting_candidates: true,
         },
       ],
+      // The list's sort seeds the rail's always-engaged sort control.
+      railSort: "soonest",
     });
   });
 
@@ -731,6 +733,7 @@ describe("BallotPage nav context", () => {
         },
       ],
       raceType: "ballot_measure",
+      railSort: "vote_power",
     });
   });
 });

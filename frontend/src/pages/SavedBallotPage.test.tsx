@@ -391,6 +391,8 @@ describe("SavedBallotPage nav context", () => {
           research_area_ids: [],
         },
       ],
+      // The saved preference (vote_power) seeds the rail's sort.
+      railSort: "vote_power",
     });
   });
 });

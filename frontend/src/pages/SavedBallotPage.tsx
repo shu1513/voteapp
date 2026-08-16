@@ -13,7 +13,7 @@ import { ElectionList } from "../components/ElectionCard";
 import { BallotFiltersControl } from "../components/BallotFiltersControl";
 import { RaceTypeTabs } from "../components/RaceTypeTabs";
 import { HowToVoteControl } from "../components/HowToVoteControl";
-import { deriveBallotFilters, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
+import { deriveBallotFilters, railSortForBallotSort, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
 import { useBallotFilterParams } from "../lib/useBallotFilterParams";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useMe } from "@voteapp/api-client";
@@ -219,6 +219,13 @@ export function SavedBallotPage() {
     );
   }
   const { choiceByElectionId } = useElectionChoices();
+  // The sort this list is ACTUALLY in (override wins server-side, else the
+  // saved preference) — seeds the detail rail's always-engaged sort. Shares
+  // the preference controls' query via the cache; null while it loads, in
+  // which case the seed is simply omitted and the rail uses its own
+  // default.
+  const { current: ballotPreferences } = useBallotPreferences();
+  const effectiveListSort = sortOverride ?? ballotPreferences?.sort ?? null;
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
     readPendingDistrictIds().length === 0 ? "done" : "pending"
   );
@@ -450,6 +457,8 @@ export function SavedBallotPage() {
           // race-type tabs start here and can reach the other tab's races.
           contestsPool={filtersView.filteredElections}
           raceType={filtersView.raceType}
+          // Seed the rail's always-engaged sort from this list's sort.
+          railSort={effectiveListSort ? railSortForBallotSort(effectiveListSort) : undefined}
         />
       )}
 

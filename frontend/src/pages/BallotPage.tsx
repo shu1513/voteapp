@@ -12,7 +12,7 @@ import { ElectionList } from "../components/ElectionCard";
 import { BallotFiltersControl } from "../components/BallotFiltersControl";
 import { RaceTypeTabs } from "../components/RaceTypeTabs";
 import { HowToVoteControl } from "../components/HowToVoteControl";
-import { deriveBallotFilters, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
+import { deriveBallotFilters, railSortForBallotSort, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
 import { draftChoicesByElectionId, setDraftBallotContext, useBallotDraft } from "../lib/ballotDraft";
 import { useBallotFilterParams } from "../lib/useBallotFilterParams";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
@@ -257,6 +257,8 @@ export function BallotPage() {
               // race-type tabs start here and can reach the other tab's races.
               contestsPool={filtersView.filteredElections}
               raceType={filtersView.raceType}
+              // Seed the rail's always-engaged sort from this list's sort.
+              railSort={railSortForBallotSort(sort)}
             />
           )}
         </>
