@@ -64,26 +64,19 @@ export function DraftPage() {
   const draft = useBallotDraft();
   const districtIds = draft.district_ids;
   const [view, setView] = useState<"list" | "ballot">("list");
-  // Same key as BallotPage's default-sort query so a guest arriving from
-  // /ballot reuses the cached payload instead of refetching.
+  // ONE payload for both views, in paper-ballot contest order (same contract
+  // as the signed-in picks page): the date cards take within-date order from
+  // it and the ballot sheets render it as-is, so List and Ballot view can
+  // never disagree. This deliberately gives up the cache reuse with
+  // BallotPage's default-sort query — a guest arriving from /ballot refetches
+  // once — in exchange for one order everywhere.
   const ballot = useQuery({
-    queryKey: ["ballot", districtIds.join(","), "vote_power"],
-    queryFn: () =>
-      apiRequest<BallotSummary>(
-        `/api/ballot?district_ids=${encodeURIComponent(districtIds.join(","))}&sort=vote_power`
-      ),
-    enabled: me === null && districtIds.length > 0,
-  });
-  // Ballot view payload, fetched lazily on first toggle (separate query on
-  // purpose: widening the shared default query above would break its cache
-  // reuse with /ballot). Same contract as the signed-in preview fetch.
-  const ballotPreview = useQuery({
     queryKey: ["ballot", districtIds.join(","), "preview"],
     queryFn: () =>
       apiRequest<BallotSummary>(
         `/api/ballot?district_ids=${encodeURIComponent(districtIds.join(","))}&include=preview&sort=state_baseline&followed_first=false`
       ),
-    enabled: me === null && districtIds.length > 0 && view === "ballot",
+    enabled: me === null && districtIds.length > 0,
   });
 
   // No-flash rule: nothing until the session state is known.
@@ -166,21 +159,13 @@ export function DraftPage() {
                   <BallotViewToggle view={view} onChange={setView} />
                 </div>
                 {view === "ballot" ? (
-                  <>
-                    {ballotPreview.isPending ? <LoadingNotice text="Loading your ballot preview…" /> : null}
-                    {ballotPreview.isError ? (
-                      <div className="mt-4">
-                        <ErrorNotice error={ballotPreview.error} />
-                      </div>
-                    ) : null}
-                    {ballotPreview.isSuccess ? (
-                      <BallotPreviewSheets
-                        elections={ballotPreview.data.elections}
-                        choiceByElectionId={choices}
-                        today={today}
-                      />
-                    ) : null}
-                  </>
+                  // Same settled payload as the cards — no second fetch, no
+                  // loading state of its own.
+                  <BallotPreviewSheets
+                    elections={ballot.data?.elections ?? []}
+                    choiceByElectionId={choices}
+                    today={today}
+                  />
                 ) : (
                   <div className="mt-4 space-y-4">
                     {dates.map((date) => (

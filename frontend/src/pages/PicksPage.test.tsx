@@ -308,12 +308,10 @@ describe("PicksPage", () => {
   it("renders the ballot view on toggle: contest boxes in payload order, picks filled, withdrawn struck", async () => {
     const fetchMock = stubApiRoutes(
       verifiedRoutes({
-        // One pathname, two payloads: the list fetch and the preview fetch
-        // share /api/me/ballot and differ only in the query string.
-        "/api/me/ballot": (url: URL) =>
-          url.searchParams.get("include") === "preview"
-            ? {
-                body: ballotSummary([
+        // ONE fetch serves both views: the preview payload is also the list
+        // payload, so List and Ballot view share the same order by design.
+        "/api/me/ballot": {
+          body: ballotSummary([
                   electionSummary({
                     id: "e-2",
                     official_ballot_title: "United States Senator",
@@ -374,14 +372,7 @@ describe("PicksPage", () => {
                     },
                   }),
                 ]),
-              }
-            : {
-                body: ballotSummary([
-                  electionSummary(),
-                  electionSummary({ id: "e-2", official_ballot_title: "United States Senator" }),
-                  electionSummary({ id: "e-3", official_ballot_title: "Measure H", race_type: "ballot_measure" }),
-                ]),
-              },
+        },
         "/api/me/election-choices": {
           body: { choices: [electionChoice(), electionChoice({ election_id: "e-3", race_type: "ballot_measure", picks: [], measure_position: "yes" })] },
         },
@@ -392,11 +383,14 @@ describe("PicksPage", () => {
 
     await user.click(await screen.findByRole("button", { name: "Ballot view" }));
 
-    // The preview fetch pins its own ordering contract — the user's saved
-    // list sort must never reorder a ballot sheet.
-    const previewCall = fetchMock.mock.calls.find(([input]) => String(input).includes("include=preview"));
-    expect(String(previewCall![0])).toContain("sort=state_baseline");
-    expect(String(previewCall![0])).toContain("followed_first=false");
+    // The fetch pins its own ordering contract — the user's saved list sort
+    // must never reorder this page — and toggling views must NOT refetch:
+    // one payload backs both List and Ballot view.
+    const ballotCalls = fetchMock.mock.calls.filter(([input]) => String(input).includes("/api/me/ballot?"));
+    expect(ballotCalls).toHaveLength(1);
+    expect(String(ballotCalls[0][0])).toContain("include=preview");
+    expect(String(ballotCalls[0][0])).toContain("sort=state_baseline");
+    expect(String(ballotCalls[0][0])).toContain("followed_first=false");
 
     // Sheet header + disclaimer.
     expect(await screen.findByRole("heading", { name: /Ballot preview — November 3, 2026/ })).toBeInTheDocument();
