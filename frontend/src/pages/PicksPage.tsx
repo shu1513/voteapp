@@ -345,23 +345,20 @@ export function PicksPage() {
     isLoading: choicesLoading,
     isError: choicesError,
   } = useElectionChoices();
-  // Same source as the saved ballot page: the user's districts decide which
-  // races belong on their cards.
+  // ONE payload for both of THIS PAGE's views, in paper-ballot contest order
+  // (explicit sort + followed_first so the user's saved list preferences
+  // never apply here): the date cards take within-date order from it and the
+  // ballot sheets render it as-is, so List and Ballot view can never
+  // disagree — and when curated county placements land (ballot-facsimile
+  // Phase 3) both views inherit them at once. Deliberately NOT the
+  // ["me", "ballot"] key: the saved ballot page owns that key with the
+  // user's saved sort. The nav's pick counter (usePickProgress) rides this
+  // same key and url, so a cold load of /me/picks is one shared request.
   const ballot = useQuery({
-    queryKey: ["me", "ballot"],
-    queryFn: () => apiRequest<BallotSummary>("/api/me/ballot"),
-    enabled: verified,
-    retry: false,
-  });
-  // Ballot view payload, fetched lazily on first toggle: rosters + measure
-  // text (include=preview) in paper-ballot contest order. Explicit sort and
-  // followed_first — the user's saved list preferences must never reorder a
-  // ballot sheet.
-  const ballotPreview = useQuery({
     queryKey: ["me", "ballot", "preview"],
     queryFn: () =>
       apiRequest<BallotSummary>("/api/me/ballot?include=preview&sort=state_baseline&followed_first=false"),
-    enabled: verified && view === "ballot",
+    enabled: verified,
     retry: false,
   });
 
@@ -388,9 +385,8 @@ export function PicksPage() {
   }
 
   const today = usLatestLocalDate();
-  // Strict date grouping regardless of the ballot's saved sort: cards are
-  // "everything you face on this day", so an issue- or impact-based order
-  // must not interleave dates here. No date filter of our own: the ballot
+  // Strict date grouping: cards are "everything you face on this day", and
+  // within a day the payload's ballot order stands as-is. No date filter of our own: the ballot
   // payload already keeps just-finished elections for a few days
   // (BALLOT_PAST_ELECTION_VISIBILITY_DAYS), and the card should live exactly
   // as long — results land right on it before it retires to Past elections.
@@ -449,21 +445,13 @@ export function PicksPage() {
               </div>
             ) : null}
             {view === "ballot" ? (
-              <>
-                {ballotPreview.isPending ? <LoadingNotice text="Loading your ballot preview…" /> : null}
-                {ballotPreview.isError ? (
-                  <div className="mt-4">
-                    <ErrorNotice error={ballotPreview.error} />
-                  </div>
-                ) : null}
-                {ballotPreview.isSuccess ? (
-                  <BallotPreviewSheets
-                    elections={ballotPreview.data.elections}
-                    choiceByElectionId={choiceByElectionId}
-                    today={today}
-                  />
-                ) : null}
-              </>
+              // Same settled payload as the cards — no second fetch, no
+              // loading state of its own.
+              <BallotPreviewSheets
+                elections={ballot.data?.elections ?? []}
+                choiceByElectionId={choiceByElectionId}
+                today={today}
+              />
             ) : (
               <div className="mt-4 space-y-4">
                 {dates.map((date) => (

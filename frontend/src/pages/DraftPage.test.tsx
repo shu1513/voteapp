@@ -109,31 +109,30 @@ describe("DraftPage", () => {
       target: { election_date: "2026-11-03", election_ids: ["e-1"] },
       choices: { "e-1": draftChoice() },
     });
+    // ONE fetch serves both views: the preview payload is also the list
+    // payload, so List and Ballot view share the same order by design.
     const fetchMock = stubApiRoutes({
       ...GUEST,
-      "/api/ballot": (url) =>
-        url.searchParams.get("include") === "preview"
-          ? {
-              body: ballotSummary([
-                electionSummary({
-                  preview: {
-                    seats_to_fill: null,
-                    candidates: [
-                      {
-                        candidate_election_id: "ce-1",
-                        candidate_id: "c-1",
-                        display_name: "Jane Smith",
-                        party: "Democratic",
-                        is_incumbent: false,
-                        status: "declared",
-                      },
-                    ],
-                    measure: null,
-                  },
-                }),
-              ]),
-            }
-          : { body: ballotSummary([electionSummary()]) },
+      "/api/ballot": {
+        body: ballotSummary([
+          electionSummary({
+            preview: {
+              seats_to_fill: null,
+              candidates: [
+                {
+                  candidate_election_id: "ce-1",
+                  candidate_id: "c-1",
+                  display_name: "Jane Smith",
+                  party: "Democratic",
+                  is_incumbent: false,
+                  status: "declared",
+                },
+              ],
+              measure: null,
+            },
+          }),
+        ]),
+      },
     });
     const user = (await import("@testing-library/user-event")).default.setup({
       advanceTimers: vi.advanceTimersByTime,
@@ -144,12 +143,16 @@ describe("DraftPage", () => {
 
     expect(await screen.findByRole("heading", { name: /Ballot preview — November 3, 2026/ })).toBeInTheDocument();
     expect(screen.getByText("Not an official ballot")).toBeInTheDocument();
-    expect(screen.getByText("Your pick")).toBeInTheDocument();
-    // Guest preview rides the PUBLIC endpoint with the same ordering contract.
-    const previewCall = fetchMock.mock.calls.find(([input]) => String(input).includes("include=preview"));
-    expect(String(previewCall![0])).toContain("/api/ballot?");
-    expect(String(previewCall![0])).toContain("district_ids=d-1");
-    expect(String(previewCall![0])).toContain("sort=state_baseline");
+    expect(screen.getByText("My pick")).toBeInTheDocument();
+    // Guest preview rides the PUBLIC endpoint with the same ordering
+    // contract — and toggling views must NOT refetch: one payload backs
+    // both List and Ballot view.
+    const ballotCalls = fetchMock.mock.calls.filter(([input]) => String(input).includes("/api/ballot?"));
+    expect(ballotCalls).toHaveLength(1);
+    expect(String(ballotCalls[0][0])).toContain("district_ids=d-1");
+    expect(String(ballotCalls[0][0])).toContain("include=preview");
+    expect(String(ballotCalls[0][0])).toContain("sort=state_baseline");
+    expect(String(ballotCalls[0][0])).toContain("followed_first=false");
     // The signup CTA survives the view switch — the sheet IS the pitch.
     expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
   });

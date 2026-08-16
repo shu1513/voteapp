@@ -1641,13 +1641,20 @@ describe("ElectionPage ballot rail race-type tabs", () => {
       ...ARRIVAL_ON_MEASURES,
       raceType: "office",
     });
-    // The next page's rail keeps the switched tab.
-    const nextRail = await screen.findByRole("navigation", { name: "Ballot" });
+    // Wait for the DESTINATION page's render, not just any rail: the
+    // pre-navigation DOM also has a Ballot rail with Candidates pressed
+    // (the click set it), so asserting immediately races the loader — the
+    // aria-current flip below is the first signal unique to the new page.
+    await waitFor(() => {
+      expect(
+        within(screen.getByRole("navigation", { name: "Ballot" })).getByText("Governor").closest("li")
+      ).toHaveAttribute("aria-current", "page");
+    });
+    const nextRail = screen.getByRole("navigation", { name: "Ballot" });
     expect(within(nextRail).getByRole("button", { name: "Candidates" })).toHaveAttribute(
       "aria-pressed",
       "true"
     );
-    expect(within(nextRail).getByText("Governor").closest("li")).toHaveAttribute("aria-current", "page");
     expect(within(nextRail).queryByText("Measure B")).not.toBeInTheDocument();
     // The rendered back link still lands on the switched tab — recomputed
     // from the forwarded original, not baked into it.
