@@ -1112,7 +1112,13 @@ measures last.
   multi-column extraction artifact, needs visual read or second county.
   Corroboration URL sits on a /current-election/202411/ path — expect rot.
 
-### AZ — Arizona (FIPS 04) — GRADE A
+### AZ — Arizona (FIPS 04) — GRADE A (scoped — see Notes)
+- Grade scope: A covers the partisan sequence, the nonpartisan-section
+  position, retention placement, and measures. It EXCLUDES the placement
+  of contested (elected) Superior Court judges in the 11 non-retention
+  counties — the one leg with conflicting evidence (2025 EPM nonpartisan
+  slot 5 vs La Paz 2022 printing it in the partisan section) — so no
+  override may encode that sub-office until the conflict resolves.
 - Authority: A.R.S. § 16-502 "Form and contents of ballot",
   https://www.azleg.gov/ars/16/00502.htm; A.R.S. § 19-125 (measure
   numbering), https://www.azleg.gov/ars/19/00125.htm; AZ SOS 2025 Elections
@@ -1220,13 +1226,15 @@ measures last.
   retention FIRST, school boards after, matching the EPM; the EPM default
   holds on every printed ballot examined. 2022 executive split now
   ballot-observed (La Paz above); the Gov+LtGov joint ticket still debuts
-  Nov-2026 (2022 Prop 131). NEW CONFLICT RECORDED, NOT RESOLVED: La Paz
-  2022 prints its ELECTED Superior Court judge INSIDE Section One
-  (partisan), between Clerk of the Superior Court and JP — the 2025 EPM
-  puts contested Superior Court at NONPARTISAN slot 5. The 2022 ballot
-  predates the 2023/2025 EPM editions, so this may be a superseded
-  practice rather than live deviation; check an elected-judge county
-  (Apache/Cochise/Yavapai...) on a Nov-2026 sample. Community-college
+  Nov-2026 (2022 Prop 131). CONFLICT RECORDED, NOT RESOLVED — and
+  EXCLUDED from the grade-A scope (see Grade scope above): La Paz 2022
+  prints its ELECTED Superior Court judge INSIDE Section One (partisan),
+  between Clerk of the Superior Court and JP — the 2025 EPM puts
+  contested Superior Court at NONPARTISAN slot 5, and § 16-502(J) itself
+  delegates nonpartisan order to the election officer, so neither reading
+  can be assumed. The 2022 ballot predates the 2023/2025 EPM editions
+  (possibly superseded practice); resolve via an elected-judge county
+  (Apache/Cochise/Yavapai...) Nov-2026 sample. Community-college
   boards never observed on any style (no seats up) — placement inferred
   from the EPM only. EPM edition
   delta (UNVERIFIABLE as of the verify pass — the 2023 EPM URL went dead
@@ -1241,7 +1249,16 @@ measures last.
   403 vs curl — needed in-browser same-origin fetch; Pima samples
   address-gated (no static PDFs).
 
-### TN — Tennessee (FIPS 47) — GRADE A
+### TN — Tennessee (FIPS 47) — GRADE B
+- Grade rationale: B is a SOURCING cap, not a content doubt. The plan gates
+  grade A on PRIMARY authority, and grade A gates a code override — TN's
+  controlling statute text is mirror-sourced and by this entry's own
+  caveat "pending primary re-verification", so it cannot clear that gate,
+  however low the practical risk (two mirrors letter-identical + official
+  ballots matching). RESTORE PATH to A: read § 2-5-208 on an official
+  source (LexisNexis-hosted official T.C.A. if access opens, or an
+  official SOS/Coordinator of Elections manual reproducing the complete
+  order). Everything below stands as researched.
 - Authority: T.C.A. § 2-5-208 (Arrangement of material on ballots), subsecs.
   (a), (c)(1)-(3), (d), (f)(1) —
   https://codes.findlaw.com/tn/title-2-elections/tn-code-sect-2-5-208/
@@ -1399,9 +1416,11 @@ measures last.
   Commissioners + Treasurer.
 - School/special: regional district school committees elected district-wide
   DO print on the state general ballot — c.54 § 42 dedicated paragraph
-  (separate paper ballot allowed if they don't fit). Ordinary municipal
-  school committees = separate city/town elections, never on the state
-  ballot.
+  (separate paper ballot allowed if they don't fit). Their PLACEMENT
+  within the trailing block is AUTHORITY-ONLY (no verified ballot carries
+  one; a Stoughton-2018 observation was retracted as fabricated).
+  Ordinary municipal school committees = separate city/town elections,
+  never on the state ballot.
 - Corroboration: Watertown (Middlesex Co.) SOC-issued "STATE ELECTION
   OFFICIAL SPECIMEN BALLOT" Nov-5-2024, Pcts. 1-8,
   https://content.civicplus.com/api/assets/ma-watertown/b1d6201b-6e9f-41e3-90b2-8176ed227b38?cache=1800
@@ -1411,25 +1430,31 @@ measures last.
   GENERAL COURT → CLERK OF COURTS → REGISTER OF DEEDS → QUESTIONS 1-5
   (non-gubernatorial year — executives absent; verification keyword sweep:
   JUDGE 0, SHERIFF 0, DA 0). The EXECUTIVE BLOCK is ballot-observed via
-  Gloucester (Essex Co.) Nov-2018 specimen
-  (https://www.gloucester-ma.gov/885/Election-Results-and-Specimen-Ballots)
-  — SENATOR IN CONGRESS → GOVERNOR AND LIEUTENANT GOVERNOR → ATTORNEY
-  GENERAL → SECRETARY OF STATE → TREASURER → AUDITOR → REPRESENTATIVE IN
-  CONGRESS (6th) → COUNCILLOR → SENATOR IN GENERAL COURT → REPRESENTATIVE
-  IN GENERAL COURT → DISTRICT ATTORNEY → CLERK OF COURTS → REGISTER OF
-  DEEDS → QUESTION 1 — § 43A end to end. Gloucester Nov-2022 matches
-  (… → DA → SHERIFF, no US Senate race in 2022). Stoughton (Norfolk Co.)
-  Nov-2018 shows the regional-school-committee slot: DA → CLERK OF COURTS
-  → REGISTER OF DEEDS → COUNTY COMMISSIONER → COUNTY TREASURER (TO FILL
-  VACANCY) → 5× SOUTHEASTERN REGIONAL SCHOOL COMMITTEE → QUESTIONS 1-3
-  (regional school committee after ALL county offices, before questions).
-  DISCARDED: a Sudbury-hosted Nov-2022 specimen PDF initially used as a
-  second corroborator — verification found its selectable text layer is a
-  NON-PRINTING residue of a Nov-2018 EASTON (Bristol Co.) ballot layered
-  under the real Sudbury 2022 print layer, and the researcher-reported
-  sequence merged the two (SENATOR IN CONGRESS / CLERK OF COURTS /
-  REGISTER OF DEEDS / COUNTY COMMISSIONER / REGIONAL SCHOOL COMMITTEE all
-  render at 0.0 dark-pixel fraction = never printed). Nothing rests on it.
+  TWO SOC-issued Nov-2022 specimens, coordinate-extracted in the main
+  review session: Danvers (Essex Co.),
+  https://www.danversma.gov/DocumentCenter/View/1132/State-Election---November-8-2022---Sample-Ballot
+  — col 1: GOVERNOR and LIEUTENANT GOVERNOR (y272) → ATTORNEY GENERAL →
+  SECRETARY OF STATE → TREASURER → AUDITOR → REPRESENTATIVE IN CONGRESS
+  (y992); col 2: COUNCILLOR → SENATOR IN GENERAL COURT → REPRESENTATIVE IN
+  GENERAL COURT → DISTRICT ATTORNEY → SHERIFF; QUESTIONS 1-4 on the back —
+  § 43A's executive run end to end (no US Senate race existed in 2022);
+  Reading (Middlesex Co.),
+  https://www.readingma.gov/DocumentCenter/View/7180/2022-11-08-State-Election-Sample-Ballots
+  — identical sequence, both precinct sheets. US-Senate-versus-Governor
+  relative order remains statute-only (never co-observed: 2022 had no
+  Senate race, 2024 no executives — same shape as TN pre-2018).
+  RETRACTED BY VERIFIER (recorded): a verification report initially also
+  cited Gloucester 2018/2022 and Stoughton 2018 specimens plus a
+  dark-pixel test — on interrogation the verifier admitted it never
+  fetched those documents (it wrote them up before its own subagent
+  reported; the subagent never returned). All three ballots and the pixel
+  test are STRUCK; nothing above rests on them. DISCARDED corroborator:
+  a Sudbury-hosted Nov-2022 specimen PDF — the verifier's OWN decode
+  (which stands) shows a real Sudbury/Middlesex 2022 print layer
+  (Healey/Driscoll, Campbell, Galvin, Goldberg, DiZoglio, Middlesex
+  Sheriff) with Nov-2018 residue in the raw text stream (Warren/Diehl
+  Senate race, Baker/Polito) — contaminated file, nothing rests on it,
+  and the county sub-order "conflict" once built on it stays deleted.
 - Baseline delta: SIGNIFICANT. (1) Statewide executives BEFORE US House
   (US Sen → Gov/LtGov → AG → SOS → Treasurer → Auditor → US House).
   (2) Gov+LtGov one grouped contest. (3) Councillor tier between US House
@@ -1445,9 +1470,9 @@ measures last.
   is up: do NOT hard-code the county sub-order (the earlier "two ballots
   disagree" conflict was a PHANTOM built on the contaminated Sudbury file
   — deleted; the caution stands on the statute alone). Observed tail
-  orders: Gloucester 2018/2022 DA → Clerk → Register [→ Sheriff 2022];
-  Stoughton 2018 adds Commissioner → Treasurer(vacancy) → regional school
-  committee. § 43A also governs state PRIMARIES with the same sequence
+  orders (verified ballots only): Watertown 2024 Clerk of Courts →
+  Register of Deeds; Danvers + Reading 2022 DA → Sheriff. § 43A also
+  governs state PRIMARIES with the same sequence
   (Gov/LtGov separate there — "as a group at a state election" limits
   grouping to the general). Candidate order within contest
   (informational): elected incumbents first alphabetically, then party
@@ -1461,7 +1486,14 @@ measures last.
   Government overview) — quote real but re-point to the sibling
   gov-county.htm if cited again.
 
-### IN — Indiana (FIPS 18) — GRADE A
+### IN — Indiana (FIPS 18) — GRADE A (scoped — see Notes)
+- Grade scope: A covers the section structure (measures → straight party →
+  partisan sequence → nonpartisan school → retention last) and the
+  inter-tier office order. It EXCLUDES the county block's INTERNAL order,
+  where the only sampled county violates the statute (Coroner before
+  Recorder, unresolved). Immaterial to overrides anyway: our ranker holds
+  all county offices at one tier, so within-county order is below its
+  granularity and no override would encode it.
 - Authority: Indiana Election Administrator's Manual (2026 ed., rev. Apr
   2026), Indiana SOS / Election Division, "Public Questions & Straight Party
   Devices" + "General Election Ballot Office Order" (pp. 133-138) —
