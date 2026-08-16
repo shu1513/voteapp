@@ -141,15 +141,20 @@ measures last.
   clerk → county clerk → sheriff → sheriff/tax assessor-collector → tax
   assessor-collector → treasurer → county school trustee (county ≥3.3M pop) →
   surveyor. Precinct (f): county commissioner → JP → constable. Then §52.093
-  subdivision offices, then measures, then §2.053(c) unopposed block.
+  subdivision offices, then measures, then — CONDITIONALLY, only when a
+  county uses the §2.053 declaration — the unopposed-declared-elected block
+  dead last (informational, no votes cast). Effective sequence: contested
+  offices → measures → unopposed block.
 - Judicial: within-level, confirmed — NOT late block. Supreme Court + CCA =
   tail of statewide block; appeals + district judges inside district block;
   county courts LEAD the county block; JP/constable = precinct (last partisan
   contests). No retention mechanism — all partisan (party label under every
   judicial candidate on Harris 2024). §52.092(j): multicounty statutory county
   court judge listed as county office.
-- Measures: last, after offices — §52.072(c): "each proposition stating a
-  measure shall appear on the ballot after the listing of offices". Carve-outs:
+- Measures: last among VOTED items, after offices — §52.072(c): "each
+  proposition stating a measure shall appear on the ballot after the listing
+  of offices"; the conditional §2.053(c) unopposed block can still print
+  after the measures (see Office order). Carve-outs:
   §52.072(d) contingent-office proposition prints BEFORE offices; §274.004:
   "A proposed constitutional amendment must be placed on the ballot before all
   other propositions" (internal order = SOS public drawing, §274.002(d)–(e)).
@@ -307,7 +312,11 @@ measures last.
   Member-at-Large.
 - Baseline delta: statute would give (1) statewide executives above Congress
   and (2) judicial late-but-before-nonpartisan; PRACTICE puts judicial-district
-  courts 3rd. Measures-last matches baseline.
+  courts 3rd. Measures-last matches baseline WITH a Big-5 qualifier: when a
+  Buffalo school-board contest is present (Erie style above), the nonpartisan
+  school contest prints to the RIGHT of the proposals, so the proposal
+  section is not final on that ballot (single-style observation; Suffolk had
+  nothing after its reverse-side proposals).
 - Grade rationale: C — explicit statewide statute vs two large-county 2024
   ballots in direct conflict on judicial placement (printing Supreme Court
   third violates BOTH (11)(b) and (11)(a)'s closing sentence; looks like a
@@ -407,7 +416,13 @@ measures last.
   Elections") → US Representative → State Senator → State Representative →
   Sanitary District Trustees → County Offices (incl. Educational Service
   Region superintendent) → Judicial Officers → Judicial Retention → Local
-  Public Questions. Governor BEFORE US House; US Senate above Governor.
+  Public Questions. NOTE this is a COMPOSITE logical sequence across
+  physically separate ballots: the CANDIDATE ballot ends at Judicial
+  Officers; Judicial Retention is its own green ballot (16-6.1) and each
+  local public question its own distinctly-colored ballot (16-7) — neither
+  holds a position ON the candidate ballot; the guide's tail order is how
+  the set is conventionally presented (and how our single-list model should
+  order them). Governor BEFORE US House; US Senate above Governor.
   Statewide-executive internal order not enumerated for the general — deferred
   to SBE certification (guide's nomination list runs Gov/Lt.Gov, AG, SOS,
   Comptroller, Treasurer, matching Ill. Const. art. V). President/VP heads
@@ -421,10 +436,12 @@ measures last.
 - Measures: SPLIT — statewide FIRST, local LAST. 16-6: amendments "shall be
   printed at the top of the 'Official Ballot' preceding the names of
   candidates"; convention propositions outrank amendments; statewide advisory
-  questions follow amendments, still ahead of candidates. Local questions dead
-  last after retention, "by the order of initiation" — that phrase is the SBE
-  guide's parenthetical, not 16-7 statutory text, and the guide only
-  "recommends" that public questions follow retention.
+  questions follow amendments, still ahead of candidates. Local questions =
+  separate distinctly-colored ballots (16-7), conventionally presented dead
+  last after retention "by the order of initiation" — that phrase and the
+  last-position are the SBE guide's (the guide only "recommends" public
+  questions follow retention); 16-7 itself assigns no position, only the
+  separate ballot.
 - County discretion: partial — 16-3 lets election authorities set party-COLUMN
   order, but candidates print "in the order certified by the State Board of
   Elections"; party placement via post-primary lottery (10 ILCS 5/7-60).
@@ -577,10 +594,12 @@ measures last.
   House prints straight after President/VP there. PSC slot (after Labor,
   before US House) from Richmond May-2022 primary (two PSC contests, D2+D3);
   PSC absent from 2022/2024 generals (Rose v. Raffensperger litigation).
-- Judicial: NOT on the general ballot at all. §21-2-138: Supreme/Appeals/
-  Superior/State Court elections "in a nonpartisan election to be held and
-  conducted jointly with the general primary" (May; probate/magistrate are
-  NOT in this section). There, §21-2-285.1 lists them last "insofar as
+- Judicial: STATE-COURT judicial (Supreme/Appeals/Superior/State Court) not
+  on the November ballot — §21-2-138 puts those elections "in a nonpartisan
+  election to be held and conducted jointly with the general primary" (May;
+  probate/magistrate are NOT in this section). Locally-partisan judicial
+  offices CAN still appear in the November county block (Richmond exception
+  below). There, §21-2-285.1 lists them last "insofar as
   practicable": "separated from the names of candidates for party nomination
   to other offices by being listed last on each ballot" — statutory caption
   "OFFICIAL NONPARTISAN ELECTION BALLOT"; the printed Richmond ballot's
@@ -592,10 +611,14 @@ measures last.
   in the November county block (Richmond 2022 "For Chief Judge, Civil and
   Magistrate Court" — ONE contest — between Tax Commissioner and School
   Board, incumbent listed "Democrat").
-- Measures: last — amendments → statewide referenda → local questions.
-  §21-2-285(f) "may be printed upon the ballot following the groups of
-  candidates" (permissive "may", universally followed); §21-2-379.5(f)
-  "below the groups of candidates".
+- Measures: last among the REGULAR election's items — amendments → statewide
+  referenda → local questions. §21-2-285(f) "may be printed upon the ballot
+  following the groups of candidates" (permissive "may", universally
+  followed); §21-2-379.5(f) "below the groups of candidates". Consolidated
+  SPECIAL-election contest sets print after the measures (Fulton 2024: two
+  municipal specials after Referendum A; Gwinnett 2022: SPLOST special after
+  the statewide questions) — measures-last holds within the regular set
+  only.
 - County discretion: partial on paper (§21-2-284 — note: that section is
   "Form of Official Primary Ballot" and its county/SOS split concerns
   certifying party-question wording, not general-ballot prep), uniform de
@@ -620,12 +643,14 @@ measures last.
   "Atlanta Judicial Circuit" in office titles exist). No statute-vs-sample
   conflict; the gap is authority, not agreement.
 - Baseline delta: REAL, four — (1) US House after statewide executives
-  (federal block split); (2) no judicial on the November ballot (May last
-  block instead); (3) school after judicial on the May ballot / mostly absent
-  in November; (4) no municipal tier on even-year November (GA municipal =
-  odd-year; specials print after measures). Soil & Water = last office slot.
-  Matches: President/Senate top, state senate before house, county after
-  legislature, measures last.
+  (federal block split); (2) no STATE-COURT judicial on the November ballot
+  (May last block instead; locally-partisan judicial can ride the county
+  block); (3) school after judicial on the May ballot / mostly absent in
+  November; (4) no municipal tier on even-year November (GA municipal =
+  odd-year; consolidated special-election sets print after measures).
+  Soil & Water = last office slot. Matches: President/Senate top, state
+  senate before house, county after legislature, measures last within the
+  regular set.
 - Notes: grade B — judicial/nonpartisan/measures legs are
   MIRROR-text+sample-confirmed, but the office sequence itself has no
   authority text; rests on 4 consistent samples + §21-2-379.23(b)
