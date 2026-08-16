@@ -352,8 +352,8 @@ export function PicksPage() {
   // disagree — and when curated county placements land (ballot-facsimile
   // Phase 3) both views inherit them at once. Deliberately NOT the
   // ["me", "ballot"] key: the saved ballot page owns that key with the
-  // user's saved sort, and the nav's pick counter keeps its own slim fetch
-  // on it (usePickProgress documents that trade).
+  // user's saved sort. The nav's pick counter (usePickProgress) rides this
+  // same key and url, so a cold load of /me/picks is one shared request.
   const ballot = useQuery({
     queryKey: ["me", "ballot", "preview"],
     queryFn: () =>
