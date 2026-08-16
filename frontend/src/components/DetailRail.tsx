@@ -65,6 +65,15 @@ export function DetailRail({
     // block: "nearest" scrolls only what's needed — the rail's own scroll
     // container when the row is off-screen, nothing when it's visible.
     // Guarded because jsdom elements have no scrollIntoView.
+    //
+    // Keyed on currentId ONLY, deliberately: a header-slot control (sort,
+    // tab) reordering `entries` must NOT snap the scroll back to the
+    // current row. The controls sit at the top of this same scroll
+    // container — the reader is already looking at the top when they
+    // engage one, and the top of the new order is what they asked to see
+    // ("My issues first" = show me who ranks highest). A tab switch can
+    // even remove the current row entirely. Arrivals and sibling walks
+    // still center the current row: those change currentId.
     if (typeof currentRef.current?.scrollIntoView === "function") {
       currentRef.current.scrollIntoView({ block: "nearest" });
     }
