@@ -2657,6 +2657,26 @@ measures last.
   the top-of-ballot sequence (would upgrade the B leg); Kenton 2024
   filing doc lists Circuit Clerk before Commonwealth's Attorney —
   filing-list artifact, NOT ballot order (explicitly not relied on).
+  ODD-YEAR EXECUTIVES CLOSED (late child agent, 2026-08-16): five 2023
+  general ballots (Campbell + Rowan + Harrison via
+  https://<county>.countyclerk.us/wp-content/uploads/2023/09/<County>-2023G.pdf;
+  Fayette + Kenton SOS copies via Common Crawl CC-MAIN-2024-10) print an
+  IDENTICAL executive sequence: STRAIGHT PARTY → GOVERNOR and LIEUTENANT
+  GOVERNOR (one combined contest, "Vote for One") → SECRETARY of STATE →
+  ATTORNEY GENERAL → AUDITOR of PUBLIC ACCOUNTS → STATE TREASURER →
+  COMMISSIONER of AGRICULTURE — then county/nonpartisan tails vary by
+  county as usual (Fayette 2023 = general AND special election, State Rep
+  93rd prints after the nonpartisan school block). Two more 2024 counties
+  confirm the even-year skeleton (Bourbon + Campbell via the same
+  countyclerk.us CDN pattern .../2024/10/<County>-2024G.pdf; McCracken
+  independently re-derived as a pipeline self-check). Child also reports
+  — NOT re-verified against fetched reg text, treat as pointers:
+  straight-party-first codified at 31 KAR 5:026 §1, and full-term vs
+  unexpired-term grouping at KRS 118.115(5); if confirmed, the
+  straight-party slot upgrades from practice to authority. Anti-
+  fabrication note: the child's %PDF magic check caught a Wayback error
+  page masquerading as Fayette 2023G before it could become a fake
+  ballot.
 
 ### OR — Oregon (FIPS 41) — GRADE A
 - Authority: contest order set by SECRETARY OF STATE DIRECTIVE, not statute.
