@@ -2302,9 +2302,21 @@ measures last.
   observed variation is a DEPARTURE from the statute, so verify per
   county, per cycle; repealed § 7-13-440 prior text unavailable; no
   written SEC order directive located (ordering = operational practice
-  implementing the § 7-13-330 template); President-vs-US-Senate relative
-  order not directly witnessed on one ballot (no SC Senate race 2024, no
-  President 2022) — notional, from the template + two cycles.
+  implementing the § 7-13-330 template). President-vs-US-Senate CLOSED
+  (late child agent): Greenville County 2020 general sample ballot,
+  precinct Saluda, prints President and Vice President FIRST with U.S.
+  Senate immediately second (then US House 04 → State Senate 6 → State
+  House 19 → Sheriff → Clerk → Coroner → Register of Deeds → Soil & Water
+  → School Board D19) —
+  https://ballotpedia.s3.amazonaws.com/images/7/78/2020_South_Carolina_sample_ballot_%28Greenville_County%29.pdf
+  (PDF creationDate 2020-10-20; SHA-256 stable across two fetches;
+  down-ballot races verified real). PROVENANCE CAVEAT: list-format
+  voter-generated copy hosted on Ballotpedia's S3, not a county host — SC
+  samples live behind the per-voter VREMS login, so this is the artifact
+  class that survives; the list-format methodology is licensed by
+  Charleston 2022, where the SCVotes list-format sample matches the
+  printed ballot contest-for-contest (verified against printed styles 1 +
+  50). President-vs-GOVERNOR stays structurally open (never co-ballot).
 
 ### AL — Alabama (FIPS 01) — GRADE A (scoped — see Notes)
 - Authority: Ala. Code § 17-6-25 ("Order of Listing of Candidates on
