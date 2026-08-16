@@ -152,6 +152,7 @@ describe("DraftPage", () => {
     expect(String(ballotCalls[0][0])).toContain("district_ids=d-1");
     expect(String(ballotCalls[0][0])).toContain("include=preview");
     expect(String(ballotCalls[0][0])).toContain("sort=state_baseline");
+    expect(String(ballotCalls[0][0])).toContain("followed_first=false");
     // The signup CTA survives the view switch — the sheet IS the pitch.
     expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
   });

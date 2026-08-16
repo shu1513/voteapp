@@ -29,10 +29,32 @@ import type { BallotLookupElectionSummary } from "./ballotLookup.js";
 const MEASURE_RANK = 100;
 const UNKNOWN_RANK = 95;
 
+// Sub-rank inside one judicial tier: higher courts print first everywhere
+// the judicial block exists (MN Rule 8250.1810: Chief Justice -> Court of
+// Appeals -> District Court; same shape in MI and CA). Court level isn't in
+// the data model, so the two names that are unambiguous nationwide come off
+// the title; everything else shares the tier's last slot and falls to the
+// generic title tie-break. (NY's trial-level "Supreme Court" is fine here:
+// its scope tier is lower, and within it NY does print Supreme Court
+// Justice before County Court Judge.) Fractional on purpose — the offset
+// must never cross into the next integer tier.
+function judicialCourtOffset(title: string): number {
+  if (/\bsupreme\b/i.test(title)) {
+    return 0;
+  }
+  if (/\bappeal/i.test(title)) {
+    return 0.3;
+  }
+  return 0.6;
+}
+
 // Rank of a summary election under the generic baseline. Lower = earlier on
 // the ballot.
 export function stateBaselineContestRank(
-  election: Pick<BallotLookupElectionSummary, "race_type" | "discovery_contest_family" | "district" | "office">
+  election: Pick<
+    BallotLookupElectionSummary,
+    "race_type" | "discovery_contest_family" | "district" | "office" | "official_ballot_title"
+  >
 ): number {
   if (election.race_type === "ballot_measure") {
     return MEASURE_RANK;
@@ -42,10 +64,9 @@ export function stateBaselineContestRank(
   // scope wins and district_type is the fallback for unresolved offices.
   const scope = election.office?.scope ?? election.district.district_type;
   // The judicial block: 82-90, after school (80), before unknown (95).
-  // Within the block, higher courts come first — the internal order every
-  // judicial-section state uses (MN: Chief Justice -> Court of Appeals ->
-  // District Court; same shape in MI and CA).
+  // Within the block, higher courts come first (judicialCourtOffset).
   const judicial = election.discovery_contest_family === "judicial_office";
+  const courtOffset = judicial ? judicialCourtOffset(election.official_ballot_title) : 0;
   switch (scope) {
     case "presidential":
       return 0;
@@ -54,17 +75,17 @@ export function stateBaselineContestRank(
       if (election.discovery_contest_family === "us_senate") {
         return 10;
       }
-      return judicial ? 82 : 30;
+      return judicial ? 82 + courtOffset : 30;
     case "us_house":
       return 20;
     case "state_upper":
-      return judicial ? 84 : 40;
+      return judicial ? 84 + courtOffset : 40;
     case "state_lower":
-      return judicial ? 85 : 50;
+      return judicial ? 85 + courtOffset : 50;
     case "county":
-      return judicial ? 86 : 60;
+      return judicial ? 86 + courtOffset : 60;
     case "place":
-      return judicial ? 88 : 70;
+      return judicial ? 88 + courtOffset : 70;
     case "school_elementary":
     case "school_secondary":
     case "school_unified":
@@ -72,6 +93,6 @@ export function stateBaselineContestRank(
     default:
       // Open union guard: an unmodeled scope sorts just above measures
       // instead of throwing the whole ballot render away.
-      return judicial ? 90 : UNKNOWN_RANK;
+      return judicial ? 90 + courtOffset : UNKNOWN_RANK;
   }
 }

@@ -5,7 +5,7 @@ import type { BallotLookupElectionSummary } from "../../../src/pipeline/address/
 
 type RankInput = Pick<
   BallotLookupElectionSummary,
-  "race_type" | "discovery_contest_family" | "district" | "office"
+  "race_type" | "discovery_contest_family" | "district" | "office" | "official_ballot_title"
 >;
 
 function input(overrides: {
@@ -13,8 +13,10 @@ function input(overrides: {
   contest_family?: string | null;
   office_scope?: string | null;
   district_type?: string;
+  title?: string;
 }): RankInput {
   return {
+    official_ballot_title: overrides.title ?? "Office Title",
     race_type: (overrides.race_type ?? "office") as RankInput["race_type"],
     discovery_contest_family: (overrides.contest_family ??
       "non_judicial_office") as RankInput["discovery_contest_family"],
@@ -64,6 +66,12 @@ describe("stateBaselineContestRank", () => {
     const statewideJudge = stateBaselineContestRank(
       input({ office_scope: "statewide", contest_family: "judicial_office" })
     );
+    const stateUpperJudge = stateBaselineContestRank(
+      input({ office_scope: "state_upper", contest_family: "judicial_office" })
+    );
+    const stateLowerJudge = stateBaselineContestRank(
+      input({ office_scope: "state_lower", contest_family: "judicial_office" })
+    );
     const countyJudge = stateBaselineContestRank(
       input({ office_scope: "county", contest_family: "judicial_office" })
     );
@@ -75,8 +83,10 @@ describe("stateBaselineContestRank", () => {
     // pattern: retention sections and nonpartisan judicial sections print
     // after the partisan offices).
     expect(statewideJudge).toBeGreaterThan(stateBaselineContestRank(input({ office_scope: "school_unified" })));
-    // Higher courts first inside the block.
-    expect(statewideJudge).toBeLessThan(countyJudge);
+    // Wider scopes first inside the block.
+    expect(statewideJudge).toBeLessThan(stateUpperJudge);
+    expect(stateUpperJudge).toBeLessThan(stateLowerJudge);
+    expect(stateLowerJudge).toBeLessThan(countyJudge);
     expect(countyJudge).toBeLessThan(placeJudge);
     // Still before the unknown-scope sink and measures.
     expect(placeJudge).toBeLessThan(stateBaselineContestRank(input({ office_scope: "something_new" })));
@@ -89,6 +99,52 @@ describe("stateBaselineContestRank", () => {
     );
     expect(unknownJudge).toBeGreaterThan(placeJudge);
     expect(unknownJudge).toBeLessThan(stateBaselineContestRank(input({ office_scope: "something_new" })));
+  });
+
+  it("orders same-tier judicial races supreme, then appeals, then everything else — never by title alphabet", () => {
+    const supreme = stateBaselineContestRank(
+      input({
+        office_scope: "statewide",
+        contest_family: "judicial_office",
+        title: "Justice of the Supreme Court Seat 2",
+      })
+    );
+    const appeals = stateBaselineContestRank(
+      input({
+        office_scope: "statewide",
+        contest_family: "judicial_office",
+        title: "Judge of the Court of Appeals Seat 4",
+      })
+    );
+    const other = stateBaselineContestRank(
+      input({
+        office_scope: "county",
+        contest_family: "judicial_office",
+        title: "District Court Judge District 26 Seat 13",
+      })
+    );
+    // Alphabetically "Court of Appeals" precedes "Supreme" — the court
+    // offset must beat the generic title tie-break.
+    expect(supreme).toBeLessThan(appeals);
+    // Offsets stay inside their scope tier: a statewide non-supreme court
+    // never crosses into the next judicial tier.
+    expect(appeals).toBeLessThan(
+      stateBaselineContestRank(input({ office_scope: "state_upper", contest_family: "judicial_office" }))
+    );
+    // The offset applies within lower tiers too (county "Supreme Court"
+    // exists — NY's trial court — and prints before other county courts).
+    const countySupreme = stateBaselineContestRank(
+      input({
+        office_scope: "county",
+        contest_family: "judicial_office",
+        title: "Supreme Court Justice 5th Judicial District",
+      })
+    );
+    expect(countySupreme).toBeLessThan(other);
+    // Court words in a NON-judicial race change nothing.
+    expect(
+      stateBaselineContestRank(input({ office_scope: "county", title: "Clerk of the Supreme Court" }))
+    ).toBe(stateBaselineContestRank(input({ office_scope: "county" })));
   });
 
   it("falls back to the district type when the office is unresolved", () => {
