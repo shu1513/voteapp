@@ -58,7 +58,9 @@ every cycle), which stays in ballot-facsimile Phases 2–4.
 - **A** — explicit primary authority AND a sample ballot that matches it. Only
   grade A earns a code override.
 - **B** — authority found but no sample corroboration yet (or vice versa: clear
-  consistent samples, no statute located). No code change; listed for follow-up.
+  consistent official samples, no statute located — the official sample-ballot
+  URLs are then the entry's primary evidence). Either way the entry carries a
+  working URL to whatever evidence it has. No code change; listed for follow-up.
 - **C** — no statewide rule found / genuine county option / conflicting evidence.
   Generic baseline stays, entry documents why so nobody re-researches it.
 
@@ -74,8 +76,9 @@ every cycle), which stays in ballot-facsimile Phases 2–4.
   as **partial** — the judicial/measures aspect is verified, the full 7-question
   schema is not: MN Rule 8250.1810 subp 5 (judicial last); Ohio RC 3505.04; MI
   nonpartisan section; TX Elec. Code §52.092 (within-level); NC GS §163-165.6
-  (within-level); WA RCW 29A.36.161(3) (measures first); ME 21-A §601 (Governor
-  before US House — re-verify cite).
+  (within-level); WA RCW 29A.36.161(3) (measures first); ME 21-A §601(3)
+  (Governor before US House). All seed URLs verified 2026-08-16 and recorded in
+  the reference doc.
 
 ## Known wrinkles to handle deliberately (not silently)
 
@@ -101,13 +104,17 @@ every cycle), which stays in ballot-facsimile Phases 2–4.
    `district.state_fips` (already on every ballot election summary —
    `ballotLookup.ts` carries `state_fips`; the rank function's header comment
    already reserves this exact extension point) — and gated on
-   `election_stage === "general"` (see Scope). Only **deviations** from the
+   `election_stage === "general"` (see Scope). Implementation notes: the rank
+   function's `Pick` input grows `election_stage` and `district.state_fips`;
+   `state_fips` is already a string and stays one — keys like "06" keep their
+   leading zero, never numeric-parsed. Only **deviations** from the
    majority baseline get entries; a state matching the baseline gets NO code, the
    baseline is its rule. Overrides are grade-A-only.
 3. **Tests** — `ballotContestRank.test.ts` grows a case per override, citation in
    a comment, pinning the deviation (e.g. WA: measures before offices) — plus a
-   non-general regression case per override (same state, `election_stage:
-   "primary"` and `null`) pinning that the generic baseline still applies there.
+   non-general regression case per override (same state, every non-general
+   `election_stage`: `"primary"`, `"runoff"`, `"special"`, and `null`) pinning
+   that the generic baseline still applies there.
 
 ## Execution mechanics
 
@@ -130,7 +137,8 @@ every cycle), which stays in ballot-facsimile Phases 2–4.
 ## Acceptance criteria
 
 - 51/51 jurisdictions have a graded entry; zero PENDING.
-- Every A/B entry has a working primary-source URL + access date.
+- Every A/B entry has a working URL to its primary evidence (statute/rule, or
+  official sample ballots for a samples-only B) + access date.
 - Every code override maps to a grade-A entry; every grade-A deviation from the
   baseline either has an override or a one-line reason it doesn't need one
   (e.g. deviation invisible at our tier granularity).

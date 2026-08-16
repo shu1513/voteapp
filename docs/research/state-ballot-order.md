@@ -12,7 +12,7 @@ measures last.
 
 ## Entry template
 
-```
+```text
 ### XX — State (FIPS nn) — GRADE [A|B|C] [partial]
 - Authority: <cite + URL> (accessed YYYY-MM-DD)
 - Office order: <sequence as prescribed>
@@ -32,12 +32,21 @@ measures last.
 ### CA — California (FIPS 06) — PENDING
 
 ### TX — Texas (FIPS 48) — GRADE B (partial)
-- Authority: Tex. Elec. Code §52.092 (accessed 2026-08-15, #719 research round)
-- Judicial: within-level — judicial offices ordered inside their level of
-  government, NOT a late block. Minority pattern.
-- Baseline delta: judicial late block (ranks 82–90) is wrong for TX; grade-A
-  completion + sample corroboration needed before an override.
-- Notes: only the judicial question verified; other 6 questions PENDING.
+- Authority: Tex. Elec. Code §52.092,
+  https://statutes.capitol.texas.gov/Docs/EL/htm/EL.52.htm (chapter file;
+  section text verified in-browser 2026-08-16 — the page is script-rendered, a
+  plain fetch shows only the site nav)
+- Office order: federal (president → US senator → US rep) → statewide
+  (governor → lt. governor → AG → comptroller → land commissioner →
+  agriculture → railroad commissioner → supreme court → court of criminal
+  appeals) → district (SBOE → state senator → state rep → court of appeals →
+  district judge …) → county → precinct.
+- Judicial: within-level, verbatim from §52.092(c)–(d) — statewide courts
+  print inside the statewide block after the executives; appellate/district
+  judges inside the district block. NOT a late block. Minority pattern.
+- Baseline delta: REAL — judicial late block (ranks 82–90) is wrong for TX;
+  sample corroboration needed before an override.
+- Notes: measures/county-discretion/school questions PENDING.
 
 ### FL — Florida (FIPS 12) — PENDING
 
@@ -64,7 +73,9 @@ measures last.
 ### GA — Georgia (FIPS 13) — PENDING
 
 ### NC — North Carolina (FIPS 37) — GRADE B (partial)
-- Authority: NC GS §163-165.6 (accessed 2026-08-15, #719 research round)
+- Authority: NC GS §163-165.6 ("Arrangement of official ballots"),
+  https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/BySection/Chapter_163/GS_163-165.6.html
+  (accessed 2026-08-16)
 - Judicial: within-level (minority pattern) — same caveat as TX.
 - Baseline delta: judicial late block wrong for NC; needs grade-A completion.
 
@@ -89,7 +100,10 @@ measures last.
 ### VA — Virginia (FIPS 51) — PENDING
 
 ### WA — Washington (FIPS 53) — GRADE B (partial)
-- Authority: RCW 29A.36.161(3) (accessed 2026-08-15, #719 research round)
+- Authority: RCW 29A.36.161(3),
+  https://app.leg.wa.gov/RCW/default.aspx?cite=29A.36.161 (accessed
+  2026-08-16): state measures "must appear after the instructions and before
+  any offices".
 - Measures: state measures print FIRST, before offices — inverse of the
   baseline's measures-last.
 - Baseline delta: REAL, user-visible — measures rank must move ahead of offices
@@ -114,8 +128,9 @@ measures last.
 ### CO — Colorado (FIPS 08) — PENDING
 
 ### MN — Minnesota (FIPS 27) — GRADE B (partial)
-- Authority: Minn. Rule 8250.1810 subp 5 (accessed 2026-08-15, #719 research
-  round); statute backdrop MN 204D.13
+- Authority: Minn. Rule 8250.1810 subp 5,
+  https://www.revisor.mn.gov/rules/8250.1810/ (accessed 2026-08-16); statute
+  backdrop MN 204D.13, https://www.revisor.mn.gov/statutes/cite/204D.13
 - Judicial: Judicial Offices dead last among offices — matches baseline.
 - Measures: questions interleave per jurisdiction (each jurisdiction's
   questions with that jurisdiction's offices), NOT a single trailing block.
@@ -170,10 +185,12 @@ measures last.
 ### NH — New Hampshire (FIPS 33) — PENDING
 
 ### ME — Maine (FIPS 23) — GRADE B (partial)
-- Authority: 21-A §601 (accessed 2026-08-15, #719 research round — re-verify
-  the exact cite during full pass)
-- Office order: Governor prints before US House — deviates from the baseline's
-  federal-first tiers.
+- Authority: 21-A §601(3) ("Order of offices"),
+  https://legislature.maine.gov/statutes/21-A/title21-Asec601.html (accessed
+  2026-08-16): "President, United States Senator, Governor, Representative to
+  Congress, State Senator and Representative to the Legislature…"
+- Office order: Governor prints before US House (3rd vs 4th) — deviates from
+  the baseline's federal-first tiers.
 - Baseline delta: REAL — Governor/US House swap for ME once grade A.
 
 ### MT — Montana (FIPS 30) — PENDING
