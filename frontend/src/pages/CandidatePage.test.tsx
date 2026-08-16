@@ -309,6 +309,43 @@ describe("CandidatePage", () => {
       expect(boxText("Supports")).toContain("Housing Affordability (1 record)");
       expect(boxText("Opposes")).toContain("Environment and Public Health (1 record)");
     });
+
+    it("leads with the viewer's saved areas, bolded, in the my-issues view", async () => {
+      stubApiRoutes({
+        "/api/me": { body: ME_VERIFIED },
+        "/api/me/candidate-follows": { body: { follows: [] } },
+        "/api/me/research-area-preferences": {
+          body: {
+            preferences: [
+              { research_area_id: "a-gun", slug: "gun_control", name: "Gun Control", description: null, rank: 1 },
+            ],
+          },
+        },
+      });
+      renderCandidate(() =>
+        candidateDetail({
+          records: [
+            record("r-1", [{ areaId: "a-hc", slug: "healthcare_affordability", name: "Healthcare Affordability", stance: "for" }]),
+            record("r-2", [{ areaId: "a-gun", slug: "gun_control", name: "Gun Control", stance: "for" }]),
+            record("r-3", [{ areaId: "a-mix", slug: "housing_affordability", name: "Housing Affordability", stance: "for" }]),
+          ],
+        })
+      );
+
+      // Saved areas load async; the personalized view is the default once
+      // they arrive (same gate as the record groups below the summary).
+      await screen.findByRole("option", { name: "My issues first" });
+      const text = boxText("Supports") ?? "";
+      // Saved Gun Control leads despite Healthcare outranking it publicly;
+      // the unsaved rest keep salience order.
+      expect(text.indexOf("Gun Control")).toBeLessThan(text.indexOf("Healthcare Affordability"));
+      expect(text.indexOf("Healthcare Affordability")).toBeLessThan(text.indexOf("Housing Affordability"));
+      // Only the saved area's name-and-count node is emphasized (the box
+      // heading has its own font-semibold, hence the `p` scope).
+      const supportsBox = screen.getByRole("heading", { name: "Supports" }).closest("div") as HTMLElement;
+      const bolded = [...supportsBox.querySelectorAll("p .font-semibold")].map((el) => el.textContent);
+      expect(bolded).toEqual(["Gun Control (1 record)"]);
+    });
   });
 
   it("orders issue groups by public salience with untagged records last", async () => {
