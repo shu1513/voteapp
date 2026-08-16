@@ -550,7 +550,7 @@ export function CandidatePage() {
   // show as unfollowed.
   const { follows, canFollow } = useFollows();
   const { me } = useMe();
-  const { hasSaved, preferences, weights } = useMyResearchAreas();
+  const { hasSaved, preferences, weights, isLoading: savedAreasLoading } = useMyResearchAreas();
   // null = the user hasn't picked a view; default to "my issues first" once
   // saved areas exist (they load async, so this can't live in useState's
   // initial value). An explicit pick always wins — except a picked
@@ -622,16 +622,27 @@ export function CandidatePage() {
   // keys offers none; My issues additionally needs saved areas). Same
   // persistence story as the election rail's sort: component state across
   // sibling walks (the route element stays mounted), nav state across
-  // remounts (election round trips). null = "As listed", the roster order
-  // the reader left the election page in — which is already "My issues
-  // first" for viewers with saved areas, that page's default.
+  // remounts (election round trips). No "As listed" option here, unlike the
+  // election rail: the roster's arrival order is always one of the two
+  // offered sorts (the election page's own options), so an always-engaged
+  // sort loses nothing — the default is the first offered ("My issues
+  // first" with saved areas, A–Z without, matching the roster's own
+  // defaults).
   const railRoster = navState?.candidates;
-  const offeredRailSorts = candidateRailSortsOffered(railRoster ?? [], hasSaved);
+  // Withheld while the saved areas are still loading: the default sort is
+  // the first offered option, and engaging A–Z in the window before
+  // hasSaved settles would visibly re-shuffle the rail on every arrival
+  // for viewers whose default is My issues first.
+  const offeredRailSorts = savedAreasLoading
+    ? []
+    : candidateRailSortsOffered(railRoster ?? [], hasSaved);
   const [railSortState, setRailSortState] = useState<CandidateRailSortKey | null>(
     navState?.railSort ?? null
   );
   const railSort =
-    railSortState !== null && offeredRailSorts.includes(railSortState) ? railSortState : null;
+    railSortState !== null && offeredRailSorts.includes(railSortState)
+      ? railSortState
+      : (offeredRailSorts[0] ?? null);
   // Sorting re-orders but never removes, so the displayed roster keeps the
   // same membership gate as the arrival list.
   const displayedRoster =
@@ -741,34 +752,31 @@ export function CandidatePage() {
           backToState={navState.backState}
           siblingState={forwardedNavState}
           headerSlot={
-            offeredRailSorts.length > 0 ? (
-              <label className="flex items-center gap-1.5 text-xs text-ink-soft">
-                Sort
-                <select
-                  value={railSort ?? ""}
-                  onChange={(event) =>
-                    setRailSortState(
-                      event.target.value === ""
-                        ? null
-                        : (event.target.value as CandidateRailSortKey)
-                    )
-                  }
-                  className="min-w-0 flex-1 rounded-md border border-line bg-white px-1.5 py-1 text-xs text-ink focus:border-ink focus:outline-none"
-                >
-                  {/* "As listed" = the roster order the reader left the
-                      election page in (its default is already My issues
-                      first for viewers with saved areas). */}
-                  <option value="">As listed</option>
-                  {CANDIDATE_RAIL_SORTS.filter((option) =>
-                    offeredRailSorts.includes(option.value)
-                  ).map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            ) : undefined
+            // The list label renders even when no sort is offerable (an old
+            // snapshot): naming WHAT the rows are never depends on the keys.
+            <div className="flex flex-col gap-1.5">
+              <p className="text-xs font-medium uppercase tracking-wide text-ink-soft">Candidates:</p>
+              {offeredRailSorts.length > 0 ? (
+                <label className="flex items-center gap-1.5 text-xs text-ink-soft">
+                  Sort
+                  <select
+                    value={railSort ?? ""}
+                    onChange={(event) =>
+                      setRailSortState(event.target.value as CandidateRailSortKey)
+                    }
+                    className="min-w-0 flex-1 rounded-md border border-line bg-white px-1.5 py-1 text-xs text-ink focus:border-ink focus:outline-none"
+                  >
+                    {CANDIDATE_RAIL_SORTS.filter((option) =>
+                      offeredRailSorts.includes(option.value)
+                    ).map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ) : null}
+            </div>
           }
         />
       ) : null}

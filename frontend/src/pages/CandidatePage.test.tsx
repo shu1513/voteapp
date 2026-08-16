@@ -1189,22 +1189,24 @@ describe("CandidatePage roster rail sort", () => {
       .getAllByRole("listitem")
       .map((row) => row.textContent);
 
-  it("sorts by My issues and forwards the choice to sibling walks", async () => {
+  it("defaults to My issues first and forwards the engaged sort to sibling walks", async () => {
     stubApiRoutes({ ...SAVED_GUN });
     const user = userEvent.setup();
     const { router } = renderCandidate(perIdLoader, "c-1", KEYED_ARRIVAL);
 
     const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    // The list is labeled for what it is.
+    expect(within(rail).getByText("Candidates:")).toBeInTheDocument();
+    // findBy: the control appears once the saved-areas fetch settles. No
+    // "As listed" option — the sort is always engaged, defaulting to My
+    // issues first, so the rail arrives already sorted.
     const select = await within(rail).findByRole("combobox");
-    // findBy: the My issues option appears once the saved-areas fetch lands.
-    await within(select).findByRole("option", { name: "My issues first" });
-    expect(railRows(rail)).toEqual(["Jordan Voter", "Riley Runner", "Casey Contender"]);
-
-    await user.selectOptions(select, "my_issues");
+    expect(select).toHaveValue("my_issues");
+    expect(within(select).queryByRole("option", { name: "As listed" })).not.toBeInTheDocument();
     expect(railRows(rail)).toEqual(["Casey Contender", "Riley Runner", "Jordan Voter"]);
 
-    await user.click(within(rail).getByRole("link", { name: "Casey Contender" }));
-    expect(router.state.location.pathname).toBe("/candidates/c-3");
+    await user.click(within(rail).getByRole("link", { name: "Riley Runner" }));
+    expect(router.state.location.pathname).toBe("/candidates/c-2");
     // Forwarded state: the engaged sort rides along; everything else is the
     // arrival snapshot untouched.
     expect(router.state.location.state).toEqual({ ...KEYED_ARRIVAL, railSort: "my_issues" });
@@ -1213,7 +1215,7 @@ describe("CandidatePage roster rail sort", () => {
     expect(railRows(nextRail)).toEqual(["Casey Contender", "Riley Runner", "Jordan Voter"]);
   });
 
-  it("A–Z re-sorts by name and As listed restores the arrival order", async () => {
+  it("switches between A–Z and My issues first", async () => {
     stubApiRoutes({ ...SAVED_GUN });
     const user = userEvent.setup();
     renderCandidate(perIdLoader, "c-1", KEYED_ARRIVAL);
@@ -1223,18 +1225,22 @@ describe("CandidatePage roster rail sort", () => {
     await user.selectOptions(select, "alphabetical");
     expect(railRows(rail)).toEqual(["Casey Contender", "Jordan Voter", "Riley Runner"]);
 
-    await user.selectOptions(select, "");
-    expect(railRows(rail)).toEqual(["Jordan Voter", "Riley Runner", "Casey Contender"]);
+    await user.selectOptions(select, "my_issues");
+    expect(railRows(rail)).toEqual(["Casey Contender", "Riley Runner", "Jordan Voter"]);
   });
 
-  it("offers only A–Z to viewers without saved areas", async () => {
+  it("offers and engages only A–Z for viewers without saved areas", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(perIdLoader, "c-1", KEYED_ARRIVAL);
 
     const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
     const select = await within(rail).findByRole("combobox");
     const options = within(select).getAllByRole("option").map((option) => option.textContent);
-    expect(options).toEqual(["As listed", "A–Z"]);
+    expect(options).toEqual(["A–Z"]);
+    expect(select).toHaveValue("alphabetical");
+    // A–Z engaged by default: names order alphabetically (which is also the
+    // anonymous roster's own order — no visible reshuffle).
+    expect(railRows(rail)).toEqual(["Casey Contender", "Jordan Voter", "Riley Runner"]);
   });
 });
 
