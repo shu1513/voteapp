@@ -84,6 +84,26 @@ async function main(): Promise<void> {
         LIMIT 20
       `
     );
+    // Downvote rate per answer path — the Phase 3 canary metric
+    // (docs/plans/chatbot-improvements-2026-08.md PR 2).
+    const feedback = await pool.query<{
+      answered_by: string;
+      up: string;
+      down: string;
+      downvote_rate: string | null;
+    }>(
+      `
+        SELECT
+          answered_by,
+          count(*) FILTER (WHERE verdict = 'up') AS up,
+          count(*) FILTER (WHERE verdict = 'down') AS down,
+          round(count(*) FILTER (WHERE verdict = 'down')::numeric / count(*), 3) AS downvote_rate
+        FROM chatbot.answer_feedback
+        WHERE created_at >= now() - interval '7 days'
+        GROUP BY answered_by
+        ORDER BY count(*) DESC, answered_by ASC
+      `
+    );
     const topRefusals = await pool.query<{ question_norm: string; count: string }>(
       `
         SELECT question_norm, count(*) AS count
@@ -113,6 +133,7 @@ async function main(): Promise<void> {
           last_7_days: {
             outcomes: outcomes.rows,
             tokens: tokens.rows[0],
+            feedback: feedback.rows,
             top_questions: topQuestions.rows,
             top_refusals: topRefusals.rows,
           },

@@ -35,6 +35,7 @@ import {
   DEFAULT_CONTENT_REPORT_RATE_LIMIT_WINDOW_MS,
 } from "../api/contentReportRateLimiter.js";
 import { createAskService } from "../chatbot/askService.js";
+import { createFeedbackTokens, submitAnswerFeedback, type FeedbackVerdict } from "../chatbot/feedback.js";
 import { readChatbotConfigFromEnv } from "../chatbot/chatbotConfig.js";
 import { maybeRunQuestionRetention } from "../chatbot/maintenance.js";
 import { createEmbeddingsClient } from "../chatbot/embeddingsClient.js";
@@ -574,6 +575,9 @@ async function main(): Promise<void> {
       console.warn("chatbot LLM configured but Redis is not; LLM answers stay off (retrieval-only)");
     }
   }
+  // Feedback tokens are signed with a per-boot secret (see feedback.ts) —
+  // no env var; a restart only invalidates tokens minted before it.
+  const chatbotFeedbackTokens = chatbotConfig.enabled ? createFeedbackTokens() : null;
   const askChatbot = chatbotConfig.enabled
     ? createAskService({
         db: pool,
@@ -584,7 +588,11 @@ async function main(): Promise<void> {
             })
           : null,
         llm: chatbotLlm,
+        feedbackTokens: chatbotFeedbackTokens,
       }).ask
+    : undefined;
+  const submitChatbotFeedback = chatbotFeedbackTokens
+    ? (token: string, verdict: FeedbackVerdict) => submitAnswerFeedback(pool, chatbotFeedbackTokens, token, verdict)
     : undefined;
   // Daily question-log retention (90-day privacy promise): no cron on the
   // free plan, so the API runs it itself — once at boot (covers short-lived
@@ -611,6 +619,7 @@ async function main(): Promise<void> {
     allowedOrigins,
     authService,
     ...(askChatbot ? { askChatbot } : {}),
+    ...(submitChatbotFeedback ? { submitChatbotFeedback } : {}),
     captureUnexpectedError: (error, context) =>
       captureError(error, {
         request_id: context.requestId,

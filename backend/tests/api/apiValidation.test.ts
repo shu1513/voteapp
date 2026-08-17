@@ -28,6 +28,7 @@ import {
   parseBallotSummaryOptions,
   parseCandidateFollowBodyValue,
   parseCandidateId,
+  parseChatbotFeedbackBodyValue,
   parseElectionChoiceBodyValue,
   parsePickCardShareBodyValue,
   parseMeEmailBodyValue,
@@ -35,6 +36,25 @@ import {
   parseResearchAreaPreferencesBodyValue,
   RESEARCH_AREAS_PATH,
 } from "../../src/api/apiValidation.js";
+
+describe("parseChatbotFeedbackBodyValue", () => {
+  it("accepts a token with an up or down verdict", () => {
+    expect(parseChatbotFeedbackBodyValue({ token: "abc.def", verdict: "up" })).toEqual({
+      token: "abc.def",
+      verdict: "up",
+    });
+    expect(parseChatbotFeedbackBodyValue({ token: "abc.def", verdict: "down" }).verdict).toBe("down");
+  });
+
+  it("rejects missing or empty tokens, bad verdicts, and unknown fields", () => {
+    expect(() => parseChatbotFeedbackBodyValue({ verdict: "up" })).toThrow(TypeError);
+    expect(() => parseChatbotFeedbackBodyValue({ token: "  ", verdict: "up" })).toThrow(TypeError);
+    expect(() => parseChatbotFeedbackBodyValue({ token: "abc", verdict: "sideways" })).toThrow(TypeError);
+    expect(() => parseChatbotFeedbackBodyValue({ token: "abc", verdict: "up", extra: 1 })).toThrow(TypeError);
+    expect(() => parseChatbotFeedbackBodyValue({ token: "x".repeat(401), verdict: "up" })).toThrow(TypeError);
+    expect(() => parseChatbotFeedbackBodyValue(null)).toThrow(TypeError);
+  });
+});
 
 describe("parseBallotSummaryOptions", () => {
   it("returns an empty options object when no params are present", () => {

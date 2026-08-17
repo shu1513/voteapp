@@ -47,15 +47,24 @@ so they are not re-proposed later.
 ## PR 2 — Feedback signal (the biggest quality win)
 
 Anonymous 👍/👎 per answer — closes the learning loop: today the only signals
-are refusal counts and the heavyweight content-report.
+are refusal counts and the heavyweight content-report. Shipped shape (the
+open decisions, resolved):
 
-- Migration: `chatbot.answer_feedback` (id, asked_at, answered_by, verdict,
-  question log row id nullable) or a nullable `feedback` column on
-  `chatbot.questions`; decide in the PR. No user identifier, matching the
-  question-log privacy model. `voteapp_api` gets the minimal grant.
-- API: ask response carries an opaque feedback token (the question log row id,
-  HMAC-wrapped so it is not enumerable); `POST /api/chatbot/feedback` accepts
-  token + up/down. Rate-limited like other endpoints.
+- Migration 242: `chatbot.answer_feedback` as its own TABLE (id, created_at,
+  answered_by, verdict, token_nonce UNIQUE) — a column on `chatbot.questions`
+  would need an UPDATE grant on the log the API role deliberately lacks. No
+  user identifier and no question-row id: question logging is fire-and-forget
+  with no returned id, and `created_at` + `answered_by` are all the report
+  needs. `voteapp_api` gets INSERT only.
+- API: every ask response carries `feedback_token` — a STATELESS HMAC-signed
+  (answered_by, nonce) payload, not a wrapped row id (none exists; see
+  `chatbot/feedback.ts`). Signed with a per-boot random secret: no new env
+  var; a restart invalidates pre-restart tokens, dropping at worst a few
+  votes. Minted after the answer cache, so cache hits vote on their own
+  token. `POST /api/chatbot/feedback` (token + up/down) is verified-accounts
+  gated like ask, covered by the global IP rate limiter, 404 when
+  CHATBOT_ENABLED is off. The UNIQUE nonce makes each token one-shot
+  server-side (duplicates answer ok, first verdict stands).
 - Widget: two small buttons under each answer; one-shot, no undo UI.
 - Report: downvote rate per `answered_by` — the Phase 3 canary metric.
 

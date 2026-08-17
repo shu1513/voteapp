@@ -44,6 +44,8 @@ export const BALLOT_LOOKUP_PATH = "/api/ballot";
 // whether it answers depends on CHATBOT_ENABLED wiring (404 when unwired,
 // mirroring the sitemap's not-configured behavior).
 export const CHATBOT_ASK_PATH = "/api/chatbot/ask";
+// Same CHATBOT_ENABLED wiring: 404 when unwired.
+export const CHATBOT_FEEDBACK_PATH = "/api/chatbot/feedback";
 export const CONTENT_REPORTS_PATH = "/api/content-reports";
 export const CANDIDATE_DETAIL_PATH_PREFIX = "/api/candidates/";
 // Shares the candidate-detail prefix, so the router must test this path
@@ -427,6 +429,34 @@ export function parseChatbotAskBodyValue(parsed: unknown): ChatbotAskPayload {
   }
 
   return { question, previousQuestion, context: parseChatbotAskContext(record.context) };
+}
+
+export type ChatbotFeedbackPayload = {
+  token: string;
+  verdict: "up" | "down";
+};
+
+// Mirrors MAX_FEEDBACK_TOKEN_LENGTH in chatbot/feedback.ts (not imported:
+// the api layer stays decoupled from chatbot internals, matching how the
+// ask body is validated here without chatbot imports).
+const MAX_CHATBOT_FEEDBACK_TOKEN_LENGTH = 400;
+
+export function parseChatbotFeedbackBodyValue(parsed: unknown): ChatbotFeedbackPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+  const record = parsed as Record<string, unknown>;
+  assertNoUnknownFields(record, ["token", "verdict"]);
+
+  const token = parseStringField(parsed, "token");
+  if (token.length > MAX_CHATBOT_FEEDBACK_TOKEN_LENGTH) {
+    throw new TypeError(`token must be at most ${MAX_CHATBOT_FEEDBACK_TOKEN_LENGTH} characters`);
+  }
+  const verdict = record.verdict;
+  if (verdict !== "up" && verdict !== "down") {
+    throw new TypeError('verdict must be "up" or "down"');
+  }
+  return { token, verdict };
 }
 
 export function parseContentReportBodyValue(parsed: unknown): ContentReportPayload {

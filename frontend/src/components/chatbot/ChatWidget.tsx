@@ -6,6 +6,7 @@ import {
   ApiError,
   CHATBOT_MAX_QUESTION_LENGTH,
   CHATBOT_PRIVACY_NOTE,
+  submitChatbotFeedback,
   useMe,
 } from "@voteapp/api-client";
 import type { ChatbotAskContext, ChatbotAskResponse, ChatbotResultCard, ContentReportEntityType } from "@voteapp/api-client";
@@ -118,6 +119,42 @@ export function reportTargetFromResults(
   return null;
 }
 
+/** One-shot 👍/👎 under an answer (docs/plans/chatbot-improvements-2026-08.md
+ * PR 2). Fire-and-forget: the vote is an analytics signal, so a failed POST
+ * still shows the thanks copy instead of an error (the server ignores
+ * duplicates anyway; there is no undo). */
+function FeedbackButtons({ token }: { token: string }) {
+  const [voted, setVoted] = useState(false);
+  if (voted) {
+    return <p className="text-xs text-ink-soft">Thanks for the feedback.</p>;
+  }
+  function vote(verdict: "up" | "down") {
+    setVoted(true);
+    void submitChatbotFeedback(token, verdict).catch(() => undefined);
+  }
+  return (
+    <span className="inline-flex items-center gap-1">
+      <span className="text-xs text-ink-soft">Helpful?</span>
+      <button
+        type="button"
+        aria-label="Good answer"
+        onClick={() => vote("up")}
+        className="rounded px-1 text-xs transition hover:bg-surface"
+      >
+        👍
+      </button>
+      <button
+        type="button"
+        aria-label="Bad answer"
+        onClick={() => vote("down")}
+        className="rounded px-1 text-xs transition hover:bg-surface"
+      >
+        👎
+      </button>
+    </span>
+  );
+}
+
 function TurnView({ turn, reporterEmail }: { turn: Turn; reporterEmail: string | null }) {
   const isAi = turn.response.ai_generated === true;
   const reportTarget = isAi ? reportTargetFromResults(turn.response.results) : null;
@@ -162,6 +199,11 @@ function TurnView({ turn, reporterEmail }: { turn: Turn; reporterEmail: string |
             Data current as of {formatDataCurrentAsOf(turn.response.data_current_as_of)}. Verify with official sources.
           </p>
         )
+      )}
+      {turn.response.feedback_token && (
+        <div className="mt-1.5">
+          <FeedbackButtons token={turn.response.feedback_token} />
+        </div>
       )}
     </div>
   );

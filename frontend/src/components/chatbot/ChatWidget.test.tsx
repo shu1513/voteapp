@@ -322,4 +322,36 @@ describe("ChatWidget", () => {
     await user.click(screen.getByRole("button", { name: "Ask" }));
     expect(await screen.findByRole("link", { name: "Sign up" })).toBeInTheDocument();
   });
+
+  it("posts a one-shot 👍/👎 vote when the answer carries a feedback token", async () => {
+    const user = userEvent.setup();
+    const fetchMock = stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/chatbot/ask": { body: { ...RETRIEVAL_RESPONSE, feedback_token: "payload.signature" } },
+      "/api/chatbot/feedback": { body: { status: "ok" } },
+    });
+    renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+
+    await user.click(screen.getByRole("button", { name: "Bad answer" }));
+    // One-shot: the buttons are gone, the thanks copy replaces them.
+    expect(await screen.findByText("Thanks for the feedback.")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Good answer" })).not.toBeInTheDocument();
+    const feedbackCall = fetchMock.mock.calls.find(([input]) => String(input).includes("/api/chatbot/feedback"));
+    const body = JSON.parse((feedbackCall as unknown as [string, RequestInit])[1].body as string);
+    expect(body).toEqual({ token: "payload.signature", verdict: "down" });
+  });
+
+  it("shows no thumbs when the answer carries no feedback token", async () => {
+    const user = userEvent.setup();
+    renderWidgetAt("/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+    expect(screen.queryByRole("button", { name: "Good answer" })).not.toBeInTheDocument();
+  });
 });
