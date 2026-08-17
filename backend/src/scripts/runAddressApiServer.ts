@@ -586,17 +586,21 @@ async function main(): Promise<void> {
         llm: chatbotLlm,
       }).ask
     : undefined;
-  if (chatbotConfig.enabled) {
-    // Daily question-log retention (90-day privacy promise): no cron on the
-    // free plan, so the API runs it itself — once at boot (covers short-lived
-    // processes that spin down before the first tick) plus an hourly re-check
-    // (the Redis SET NX election inside makes at most one real run per UTC
-    // day; a failed run releases the day so a later tick retries). unref():
-    // the timer must never hold a draining process open.
-    const runRetention = () => void maybeRunQuestionRetention(pool, redis?.isOpen ? redis : null);
-    runRetention();
-    setInterval(runRetention, 3_600_000).unref();
-  }
+  // Daily question-log retention (90-day privacy promise): no cron on the
+  // free plan, so the API runs it itself — once at boot (covers short-lived
+  // processes that spin down before the first tick) plus an hourly re-check
+  // (the Redis SET NX election inside makes at most one real run per UTC
+  // day; a failed run releases the day so a later tick retries). unref():
+  // the timer must never hold a draining process open.
+  //
+  // Deliberately NOT behind CHATBOT_ENABLED: the promise attaches to data
+  // already collected, so turning the feature off must not stop retention on
+  // rows logged while it was on (an empty/absent log makes this a daily
+  // no-op). Full teardown per the isolation contract is DROP SCHEMA, which
+  // removes the data and the obligation together.
+  const runRetention = () => void maybeRunQuestionRetention(pool, redis?.isOpen ? redis : null);
+  runRetention();
+  setInterval(runRetention, 3_600_000).unref();
   if (chatbotConfig.enabled) {
     console.log(
       `chatbot ask enabled (embeddings: ${chatbotConfig.embeddingsUrl ? "configured" : "NOT configured — keyword-only retrieval"}; LLM: ${chatbotLlm ? `${chatbotConfig.llm?.model} (effort ${chatbotConfig.llm?.reasoningEffort})` : "off — retrieval-only"})`

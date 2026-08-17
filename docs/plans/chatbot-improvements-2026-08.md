@@ -31,6 +31,9 @@ so they are not re-proposed later.
      once per UTC day with Redis SET NX; a DB failure releases the day's
      guard so a later tick retries. Timer, not ask-piggybacking: covers
      "site traffic but no asks", and any ask implies the process is up.
+     NOT behind `CHATBOT_ENABLED` — retention applies to rows logged while
+     the feature was on even after the kill switch turns it off; teardown
+     (DROP SCHEMA) removes data and obligation together.
    - `chatbot:report` calls the same function (single implementation).
 3. **Report enrichment.** Add to `chatbot:report` JSON: token sums (in/out, 7
    days), today's budget consumed vs `CHATBOT_DAILY_TOKEN_BUDGET`, p50/p95
