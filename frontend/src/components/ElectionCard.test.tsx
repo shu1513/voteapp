@@ -111,7 +111,7 @@ describe("ElectionCard", () => {
     expect(screen.getByText("My vote power: Very low").className).toContain("text-gray-500");
   });
 
-  it("omits the vote-impact text when the score is unknown", () => {
+  it("omits the vote-power text when the score is unknown", () => {
     renderCard(electionSummary({ vote_power: { ...VOTE_POWER, label: "unknown" } }));
 
     expect(screen.queryByText(/My vote power:/)).not.toBeInTheDocument();
