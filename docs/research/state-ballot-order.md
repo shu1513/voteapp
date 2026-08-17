@@ -3753,13 +3753,27 @@ measures last.
   county/school/measures are county-appended below),
   https://www.sos.ms.gov/content/documents/elections/2023/2023%20General%20Sample%20Ballot.pdf
   (full odd-year executive chain), 2020 FINAL sample w/ Flag Referendum
-  (measures 1-3 last;
-  https://www.sos.ms.gov/content/documents/elections/FINAL%202020%20sample%20GE%20Ballot%20with%20Flag.pdf). County: Hinds
-  2024 general (238pp style set, co.hinds.ms.us — federal → judicial →
-  Election Commissioner → School Board), Hinds 2019 official summary
-  (full odd-year sequence verbatim), DeSoto 2020 ballot (judicial →
-  commissioner → school board → measures on back), Lauderdale 2020
-  (school → measures → END OF BALLOT). Tabulator reports (Hinds/DeSoto/
+  (measures 1-3 last; also prints "SPECIAL NONPARTISAN JUDICIAL
+  ELECTION / Circuit Court, District 08 Place 1" — circuit in the block;
+  https://www.sos.ms.gov/content/documents/elections/FINAL%202020%20sample%20GE%20Ballot%20with%20Flag.pdf).
+  County (URLs closed by verify child): Hinds 2024 general
+  (https://www.co.hinds.ms.us/pgs/pdf/sampleballots/Hinds%20County%202024%20General%20Sample.pdf,
+  238pp/18 styles — federal → judicial (a style carries Court of Appeals
+  OR County Court, never both) → Election Commissioner → School Board).
+  Hinds 2023 general
+  (https://www.co.hinds.ms.us/pgs/pdf/sampleballots/Hinds%20County%202023%20General%20Sample.pdf,
+  264pp/132 styles — full odd-year chain on real faces: 8 executives →
+  PSC → Transportation → DA → Senate → House → 8 countywide incl. County
+  Surveyor → Supervisor → Election Commissioner → Justice Court Judge →
+  Constable → School Board). Hinds 2019 official summary (odd-year
+  sequence; results order). DeSoto 2020 ballot
+  (http://records.desotocountyms.gov/Election/2020GenBallot01.pdf).
+  DeSoto 2022 (https://www.desotocountyms.gov/DocumentCenter/View/6961)
+  — CLOSES the Chancery slot: judicial block prints Court of Appeals →
+  CHANCERY Court Judge → Circuit → County Court, then School Board + a
+  Hernando local-proposition tail. Lauderdale 2020
+  (https://www.lauderdalecounty.org/wp-content/uploads/2020/09/Lauderdale-Sample-Ballot-GE-2020.pdf,
+  school → measures → END OF BALLOT). Tabulator reports (Hinds/DeSoto/
   Madison 2020) mirror. Child-agent third county: Lafayette 2020
   (https://lafayettems.com/wp-content/uploads/2020/09/2020-Sample-Ballot.pdf,
   image-only PDF — embedded TIFFs OCR'd w/ tesseract TSV coordinates for
@@ -3785,13 +3799,25 @@ measures last.
   Commissioner"; both ballots print PSC first (DA third, matching).
   Intra-county tail varies (Hinds 2024 Election Commissioner→School
   Board; Hinds 2019 School Board→Election Commissioner) — don't hard-code.
-  County Court slot CLOSED (verify pass): Rankin 2024 runoff sample
-  prints "Nonpartisan Judical Election / County Court Judge - Place 2"
-  (https://www.rankincounty.org/egov/documents/1731619349_42643.pdf).
-  Open: odd-year measure placement never observed; Chancery slot still
-  inferred; § 23-15-365 = write-in spaces, dead lead. Fetch: sos.ms.gov =
-  Akamai 403 direct → r.jina.ai; billstatus.ls.state.ms.us needs curl -k;
-  Wayback playback 503 all session.
+  County Court slot CLOSED (Rankin 2024 runoff sample,
+  https://www.rankincounty.org/egov/documents/1731619349_42643.pdf) and
+  CHANCERY slot CLOSED (DeSoto 2022 — see Corroboration): every trial
+  tier now observed in the block. Odd-year county-district internal
+  order VARIES (Hinds 2023 faces: Supervisor → Election Commissioner →
+  JCJ → Constable; entry's earlier Hinds-2019 summary order differs) —
+  within (f) discretion, don't hard-code. Hinds 2020 448pp set URL now
+  CONFIRMED (byte-count match 4,488,341:
+  https://www.co.hinds.ms.us/pgs/pdf/sampleballots/Hinds_County_MS_2020_General_Election_NP_rev.pdf)
+  — federal → judicial → County Election → measures on back, no printed
+  END OF BALLOT on this county-printed set. Hinds 2019 general exists
+  only in Wayback (CDX: 19GMSHIND_3_SAMPLE.pdf, replay 503 all session;
+  2023 = same odd-year cycle, used instead).
+  Open: odd-year measure placement never observed; § 23-15-365 =
+  write-in spaces, dead lead. Fetch: sos.ms.gov = Akamai 403 direct →
+  r.jina.ai; SOS sample filenames are inconsistent per year (2020 has NO
+  year subdir); co.hinds.ms.us soft-404s = HTTP 200 + ~700B HTML (check
+  %PDF); billstatus.ls.state.ms.us needs curl -k; Wayback playback 503
+  all session.
 
 ### NM — New Mexico (FIPS 35) — GRADE A
 
@@ -3823,14 +3849,22 @@ measures last.
   ascending division (§ (G)(1)). RETENTION is not an office — it LEADS
   the questions block (§ 1-10-8(D)(1)), ahead of amendments;
   supreme/COA retention by seniority (§ (G)(3)).
-- Measures: § 1-10-8(D) after all offices — (1) judicial retention → (2)
+- Measures: § 1-10-8(D) internal order — (1) judicial retention → (2)
   constitutional amendments → (3) other state questions (statewide GO
   bonds) → (4) county questions → (5) local-government questions (in the
   § (C) list order); SOS may prescribe a different question order
   ("unless a different order is prescribed by the secretary of state").
+  Verify-pass precision: the statute never literally says
+  questions-after-all-offices — that placement is structural inference
+  CONFIRMED by every sampled ballot. The stale NMAC's county-set
+  question order could arguably survive via the (D) savings clause, but
+  2024 print follows the statute.
 - County discretion: none — § 1-10-3(A) "Ballots shall be uniform
-  throughout the state"; SOS sets positions; clerks certify precinct
-  content (§ 1-10-4(B)).
+  throughout the state" (this one quote could NOT be re-verified this
+  session: nmonesource 404, justia 403 even via r.jina.ai; conclusion
+  survives on § 1-10-8's mandatory "shall contain … in the following
+  order" + § 1-10-4); SOS sets positions; clerks certify precinct
+  content (§ 1-10-4(B), verified via enrolled HB 407 (2019) p.135).
 - School/special: NONE on the even-year general — § 1-10-8(C) puts
   municipal (exec → board → judicial), school board, community college,
   special districts on the regular LOCAL election, fixed odd-Nov by
@@ -3980,44 +4014,77 @@ measures last.
   (https://sos.nebraska.gov/sites/default/files/doc/elections/2024/Sample_Ballots/General/English-Federal-and-State.pdf)
   — Presidential → Senatorial → Congressional → State Ticket; SOS page
   link order mirrors statutory sequence. All %PDF-verified.
-- Baseline delta: override required. (i) Legislature (as `state_upper`)
-  moves AFTER county into the nonpartisan block; (ii) `state_lower`
-  suppressed; (iii) judicial = MID block (retention) before local
-  offices, not late; (iv) school board after judicial; (v) county
-  precedes all nonpartisan offices; (vi) SBOE + Regents directly after
-  Legislature; (vii) statewide measures last, after local measures.
-- GRADE SCOPE (widened by verify pass): A covers the top-level section
-  order (partisan ladder → county → nonpartisan → measures) +
-  measures-last ONLY. EXCLUDED from A: the ENTIRE intra-nonpartisan
-  sub-order — verify pass REFUTED "Legislature prints first": Lancaster
-  2024 prints State Board of Education → Regents → Legislature while
-  Douglas prints Legislature first; the § 32-813(6) reorder clause makes
-  every intra-section slot county-alterable, incl. Legislature, SBOE/
-  Regents, retention position, and special-district slots.
+- Baseline delta: override-eligible ONLY within the A scope below.
+  In-scope deltas: (i) `state_lower` suppressed (unicameral); (ii)
+  statewide measures last, after local measures, as a separate ballot.
+  Documented-but-excluded deltas (observed, county-alterable): Legislature
+  + all nonpartisan offices (incl. retention + school) print after county
+  in both sampled counties; judicial = mid-block retention; school after
+  judicial in Douglas.
+- GRADE SCOPE (rewritten twice by verify pass): A covers ONLY the
+  statutory partisan ladder (Presidential Ticket → US Senatorial →
+  Congressional → State Ticket), the Gov/LtGov single oval,
+  measures-last-after-local-measures + separate statewide-measure ballot
+  (§ 32-813(9)), and subdivision-proposals-follow-subdivision-offices
+  (§ 32-813(1)). EXCLUDED from A: (a) County-vs-Nonpartisan relative
+  position — statute says Nonpartisan (6) before County (7); BOTH
+  counties lawfully print County first under the optical-scan reorder
+  clause (statute-vs-practice conflict, recorded, cannot clear A);
+  (b) the ENTIRE intra-nonpartisan sub-order — Lancaster 2024 prints SBOE
+  → Regents → Legislature while Douglas prints Legislature first; the
+  § 32-813(6) reorder clause makes every intra-section slot
+  county-alterable (Legislature, SBOE/Regents, retention position,
+  special-district slots); (c) executive INTERNAL order — § 32-813(5) is
+  a pure delegation, no SOS prescription located, sample-only (Douglas
+  ×3 cycles).
 - Notes: section headers are statutory boldface strings. Gov/LtGov single
-  oval. Offices not up are omitted, rest move up (§ 32-813(1)). Open:
-  Douglas "countywide sample" may be a compilation not a precinct ballot
-  (retention-last could be artifact; Lancaster's real facsimile carries
-  the top-level finding); no published SOS directive for the executive
-  order located (sample-leg grading); Lancaster 2022 ballot is raster
-  w/o text layer (unread); Douglas 2022 amendment-vs-initiative
-  sub-order low-confidence (coordinate-offset PDF); third-county
-  special-district check would strengthen. Failed: SOS 2022 sample page
-  silently serves 2024 content; Wayback 503 all session.
+  oval. Offices not up are omitted, rest move up (§ 32-813(1)). BOTH
+  county documents are countywide COMPILATIONS, not precinct facsimiles
+  (verify pass — Lancaster carries 4 legislative districts, NRD
+  subdistricts 1-10, 3 school districts, 12 municipalities; the
+  section-header findings are robust to compilation, intra-section
+  positions less so). Douglas real path =
+  votedouglascounty-ne.gov/elections/{YEAR}/General/ (bare wp-content
+  filenames don't resolve; discovered via /sample_ballots.aspx). Open:
+  Lancaster 2022 ballot raster w/o text layer (unread); Douglas 2022
+  amendment-vs-initiative sub-order low-confidence (coordinate-offset
+  PDF); third-county check would strengthen. Failed: SOS 2022 sample
+  page silently serves 2024 content; Wayback 503 all session.
 
-### ID — Idaho (FIPS 16) — GRADE A
+### ID — Idaho (FIPS 16) — GRADE B (verify-pass downgrade from A)
 
-- Authority: Idaho Code § 34-906(2) (general-election office order — "listed
-  in order beginning with the highest federal office"; SOS "has the
-  discretion and authority to arrange the above classifications") +
-  § 34-909(2) (SOS sample-ballot layout, due to county clerks by Sept 7,
-  "shall contain the proper office titles, order of offices and ballot
-  layout … for federal, state, legislative, county and precinct offices and
-  candidates seeking judicial office or retention") + § 34-903(2) (SOS
-  prescribes arrangement statewide AND non-statewide) —
+- Authority: DELEGATING only — the statute prescribes exactly ONE ordering
+  fact. Idaho Code § 34-906(2): "The office titles shall be listed in
+  order beginning with the highest federal office. The secretary of state
+  has the discretion and authority to arrange the above classifications of
+  offices as provided by law" (2026 ch. 227 left "the above
+  classifications" dangling — subsection (1) now contains no
+  classifications). § 34-909(2): SOS sample-ballot layout due to clerks by
+  Sept 7 — full quote (earlier ellipsis inflated it): "The sample ballot
+  layout shall contain the proper office titles, order of offices and
+  ballot layout for the general election, with instructions for placement
+  of candidates seeking election for federal, state, legislative, county
+  and precinct offices and candidates seeking judicial office or
+  retention" (the office list modifies the placement INSTRUCTIONS, not
+  "order of offices"). § 34-903(2) (SOS prescribes arrangement statewide
+  AND non-statewide) —
   https://legislature.idaho.gov/statutesrules/idstat/title34/t34ch9/sect34-906/
-  (accessed 2026-08-16). No IDAPA rule governs contest order (34.02.02 =
-  HAVA complaints).
+  (accessed 2026-08-16). The PRESCRIPTIVE document (§ 34-909(2) layout
+  packet) is transmitted SOS → 44 clerks and NOT published — first-party
+  404 confirmed; SOS Directive 2015-3 (category hierarchy Federal → State
+  → Legislative → County → Judicial → subdivisions) survives only on a
+  Verified Voting MIRROR — mirror-class, caps at B per TN precedent.
+  Executive internal order is constitutional text (Idaho Const. art. IV
+  § 1: "a governor, lieutenant governor, secretary of state, state
+  controller, state treasurer, attorney general and superintendent of
+  public instruction" — verbatim match to print). No IDAPA rule governs
+  contest order (live Title-34 chapters grepped — none touch ballots).
+  B RATIONALE: strong sample leg (4 counties × 3 cycles incl. two genuine
+  single-precinct ballots) + delegating statute; the tier detail
+  (judicial-after-county, ACHD/CWI tiers, measures sub-order) is
+  prescribed NOWHERE verifiable. Restore path to A: obtain the § 34-909(2)
+  layout packet (public-records request to SOS Elections Division) or a
+  first-party/archive-grade Directives retrieval.
 - Office order: [President, presidential years] → US Senator → US Rep →
   CANDIDATES FOR STATE OFFICES: Governor → LtGov → SOS → State Controller →
   State Treasurer → AG → Superintendent of Public Instruction (midterms;
@@ -4030,9 +4097,12 @@ measures last.
 - Judicial: prints in November under a literal "NONPARTISAN BALLOT" header
   immediately AFTER county offices, BEFORE special districts — not last.
   Content = magistrate RETENTION questions (§ 1-2220 form) as the normal
-  case; Supreme/Appeals/district judges settle at the May primary on
-  majority (§ 34-1217) and reach November only as runoffs (placement
-  within the block inferred, never observed — no runoff in Ada 2020/22/24).
+  case; Supreme Court + district judges settle at the May primary on
+  majority (§ 34-1217 — names ONLY "justice of the supreme court" and
+  "district judge"; the Court of Appeals leg is NOT covered by that
+  section, verify-pass catch) and reach November only as runoffs
+  (placement within the block inferred, never observed — no runoff in Ada
+  2020/22/24).
 - Measures: LAST, after special districts. Observed sub-order:
   constitutional amendment → Propositions (§ 34-1810(2) numbering) →
   advisory question (2022) → local levy/bond (school levy, fire levy,
@@ -4068,17 +4138,22 @@ measures last.
   — same section order; amendment-before-Proposition confirmed in 3
   sources (Canyon's composite places Prop 1 pre-header — rendered to PNG,
   judged a layout artifact of the aggregated all-precinct sheet, noted).
-- Baseline delta: override needed. (1) judicial block moves UP to directly
-  after county (not last); (2) municipal + school tiers EMPTY (odd-year
-  elections); (3) two inserted tiers after judicial: countywide highway
-  district, then community college trustees; (4) measures last w/
-  sub-order amendment → propositions → advisory → local levy/bond.
+- Baseline delta: documented but NOT override-eligible (grade B — no code
+  change). Observed deviations: (1) judicial block directly after county
+  (not last); (2) municipal + school tiers EMPTY (odd-year elections —
+  these legs ARE statute-backed, §§ 33-503/50-405); (3) two inserted
+  tiers after judicial: countywide highway district, then community
+  college trustees + soil & water conservation (Kootenai); (4) measures
+  last w/ sub-order amendment → propositions → advisory → local
+  levy/bond.
 - Notes: candidate rotation § 34-903(4)(a) for entities >25,000 registered
   voters (FindLaw's 100,000 figure is WRONG — primary text says
   twenty-five thousand); within-contest only. § 34-906(2) amended 2026
-  (ch. 227 — dropped "ending with precinct offices" tail); § 34-905A
-  amended 2026 ch. 333 eff. 2027-01-01 (excludes countywide districts);
-  bills not traced. RCV prohibited (§ 34-903B). County-office internal
+  ch. 227 (pre-2026 text unverifiable — justia 403, CC index empty;
+  "ending with precinct offices" tail claim UNVERIFIED). § 34-905A
+  2026-ch.-333 "excludes countywide districts" claim REFUTED by verify
+  pass — the only textual diff between served versions is an added
+  comma; claim unsupported as written, bill not traced. RCV prohibited (§ 34-903B). County-office internal
   order VARIES slightly by county/cycle (Ada 2024 Commissioner → Sheriff
   → Prosecutor; Kootenai 2022 adds Clerk → Treasurer → Assessor →
   Coroner; staggered terms explain most of it) — tier position constant.
@@ -4112,10 +4187,22 @@ measures last.
   https://code.wvlegislature.gov/pdf/3-5-13A/ ; § 3-6-2 (general-ballot
   form; adopts the 13a order under National/State/County Ticket headings;
   measures clause) — https://code.wvlegislature.gov/pdf/3-6-2/ ;
-  § 3-5-13(2)(A),(3) (column headings incl. Nonpartisan Judicial Ballot,
-  incorporated into general ballots by § 3-6-2(b)); § 3-10-3(c),(d)(3),(e)
-  (judicial vacancies at the general). All accessed 2026-08-16, %PDF
-  verified. CSR Title 153 has no order series (index reviewed).
+  § 3-5-13(3) (column headings incl. Nonpartisan Judicial Ballot) —
+  incorporation CORRECTED by verify pass: § 3-6-2(b) carries subdivision
+  (3) into general ballots but NOT paragraph (2)(A) ("paragraphs (C) and
+  (D), subdivision (2) … subdivision (3) of said section"), so the ICA
+  slot cannot rest on (2)(A) via that route — it rests on the SOS Manual
+  (below); § 3-10-3(c),(d)(3),(e) (judicial vacancies at the general).
+  SECOND PRESCRIPTIVE AUTHORITY (verify-pass find): SOS Manual for
+  Election Officials (https://sos.wv.gov/media/476/download?inline=,
+  rev. 2026-05-13), printed p.77 heading "Order of Offices on State and
+  County Ballots" — restates the full ladder and states ICA-SECOND
+  outright: "NONPARTISAN JUDICIAL BALLOT: Supreme Court of Appeals,
+  Intermediate Court of Appeals, Circuit Court Judge, Family Court
+  Judge, Magistrate" (fn. 319 → § 3-5-13(2)(A)(i)-(v)); printed p.76
+  adds: constitutional amendments placed after offices "and before
+  public questions". All accessed 2026-08-16, %PDF verified. CSR Title
+  153 has no order series (index reviewed).
 - Office order: NATIONAL TICKET President → US Senator → US House → STATE
   TICKET Governor → SOS → Auditor → Treasurer → Commissioner of
   Agriculture → AG → State Senator → House of Delegates → multicounty
@@ -4124,8 +4211,10 @@ measures last.
   the Circuit Court → County Commissioner → Clerk of the County
   Commission → Prosecuting Attorney → Sheriff → Assessor → Surveyor →
   NONPARTISAN BALLOT (Board of Education → Conservation District
-  Supervisor → any question). Governor directly after US House; no LtGov
-  (Senate President ex officio). Office-block print in practice with
+  Supervisor → any question) → DISTRICT TICKET (nonpresidential yr) /
+  NATIONAL CONVENTION (presidential yr — primary-only in practice).
+  Governor directly after US House; no LtGov (Senate President ex
+  officio). Office-block print in practice with
   party initials + "NO CANDIDATE(S) NOMINATED" placeholders, though
   § 3-6-2(c) still describes party columns. Unexpired term prints
   immediately below the full term for the same office.
@@ -4157,21 +4246,28 @@ measures last.
   brute-force against apps.sos.wv.gov/elections/2024GeneralSampleBallots/
   — directory 403s, files 200), all %PDF-verified: National → State →
   County sequence + the 8-office State Ticket identical in ALL 35, no
-  exception. Full-tail counties: Kanawha (368pp), Berkeley (Conservation
-  District Supervisor unexpired between County and amendments), Calhoun
-  (County → Nonpartisan BOE unexpired → Amendment No. 1 → OFFICIAL LEVY
-  BALLOT; unexpired-below-full Commissioner pair), Wood clerk-hosted
-  precinct ballot (BOE unexpired + CITY OF PARKERSBURG municipal ballot
-  BEFORE amendments), Grant + Marion + Jefferson-2022 (Circuit Clerk
-  prints FIRST in County Ticket — statutory lead confirmed). Judicial:
-  zero contests in all 35 2024 files + Jefferson 2022 (grepped) —
-  vacancy-only as expected; the one November judicial print found is
-  Barbour 2018 (two SCOA unexpired divisions), vendor proof hosted on
-  Ballotpedia CDN (mirror-class), and it prints the judicial block AFTER
-  the County Ticket — see grade scope. SOS Manual for Election Officials
-  (rev. 2026-05-13, p.78) confirms judicial sub-order incl. ICA; p.91
-  "the order of offices on the ballot shall follow the same rules"
-  (primary = general).
+  exception (real filename pattern: "SAMPLE - WV <County> 241105
+  General_Proof <N>.pdf", proof-number tail varies per county — explains
+  the 20 misses). Full-tail counties (verify pass CORRECTED — Kanawha is
+  NOT full-tail: 368pp, zero BOE / levy / nonpartisan / judicial hits;
+  its contribution = municipal AFTER amendments, p182 Dunbar): Berkeley
+  (Conservation District Supervisor unexpired between County and
+  amendments), Calhoun (County → unexpired-below-full Commissioner pair →
+  Nonpartisan BOE unexpired → Amendment No. 1 → OFFICIAL LEVY BALLOT),
+  Marion (Circuit Clerk unexpired FIRST in County Ticket → amendments →
+  CITY OF FAIRMONT municipal → levy, all one sheet), Wood clerk-hosted
+  precinct ballot (BOE unexpired + CITY OF PARKERSBURG municipal BEFORE
+  amendments), Grant + Jefferson-2022 (Circuit-Clerk-first confirmed).
+  Judicial: zero contests in all 35 2024 files + Jefferson 2022
+  (grepped) — vacancy-only as expected; the one November judicial print
+  found is Barbour 2018 (two SCOA unexpired divisions), vendor proof
+  hosted on Ballotpedia CDN (mirror-class), verify-pass re-rendered: the
+  judicial block occupies the RIGHTMOST COLUMN, header level with the
+  State Ticket header — a COLUMN SWAP with County (cols 3↔4), not a
+  demotion to the ballot end; still contradicts § 3-5-13(3)(A)
+  left-to-right order — see grade scope. SOS Manual p.77 order section +
+  p.90 "the order of offices on the ballot shall follow the same rules"
+  (primary = general) re-verified first-party.
 - Baseline delta: override required. (1) county internal order leads with
   Clerk of the Circuit Court; (2) school = BOE-unexpired-only after
   county, before measures; (3) judicial tier vacancy-only (usually empty)
@@ -4182,12 +4278,14 @@ measures last.
   (35-county 2024 sweep + statute). EXCLUDED: (a) judicial-block
   POSITION — statute (§ 3-5-13a/§ 3-5-13(3)(A)) puts it between State and
   County Tickets, but the only observed November judicial print (Barbour
-  2018, mirror-hosted vendor proof) prints it AFTER the County Ticket;
-  conflict recorded, not resolved; November judicial is vacancy-only so
-  the exclusion is cheap; (b) municipal + levy tail order — municipal
-  prints after amendments in Kanawha/Putnam/Marion 2024 but BEFORE them
-  in Wood 2024, and Barbour 2018 printed the levy ballot before the
-  amendments — county-variable, no authority.
+  2018, mirror-hosted vendor proof) prints it AFTER the County Ticket
+  (column swap, cols 3↔4); conflict recorded, not resolved; November
+  judicial is vacancy-only so the exclusion is cheap; (b) municipal +
+  levy tail order — municipal prints after amendments in
+  Kanawha/Putnam/Marion 2024 but BEFORE them in Wood 2024, and Barbour
+  2018 printed the levy ballot before the amendments — county-variable,
+  no authority (the SOS Manual p.76 "before public questions" clause
+  orders amendments vs questions, not municipal).
 - Notes: no straight-ticket device (§ 3-6-2(g)). Party-COLUMN order (not
   offices) by prior presidential vote. Printed judicial heading =
   "OFFICIAL NONPARTISAN BALLOT OF ELECTION OF JUDICIAL OFFICERS" (not
