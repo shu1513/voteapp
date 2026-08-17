@@ -5035,17 +5035,25 @@ measures last.
   legislative body). NUANCE: elected county Register of Wills presides
   over the Register's Court (art. IV § 31) — functionally judicial but
   sits in the COUNTY tier; do not route to a judicial block.
-- Measures: ABSENT from the general ballot in practice — amendments
-  never go to voters (art. XVI § 1: two successive General Assemblies,
-  no ratification election;
+- Measures: ABSENT from the general ballot in observed practice (zero
+  questions statewide 2024, zero on all pulled 2020/2022 faces) —
+  amendments never go to voters (art. XVI § 1: two successive General
+  Assemblies, no ratification election;
   https://delcode.delaware.gov/constitution/constitution-17.shtml); no
-  statewide initiative/referendum. Only two rare constitutional paths to
-  a general-ballot question, neither exercised 2020/2022/2024:
-  art. XVI § 2 convention question + art. XIII § 1 local-option liquor
-  (constitution-14.shtml). Routine questions = standalone "referendum
-  elections" (15 Del. C. § 101(11)(e) — excludes candidate selection;
-  e.g. Feb 2026 school referenda). No placement rule for the rare
-  paths — genuinely unknown if ever run.
+  statewide initiative/referendum. THREE rare paths to a general-ballot
+  question exist, none exercised 2020/2022/2024: (1) art. XVI § 2
+  convention question; (2) art. XIII § 1 local-option liquor
+  (constitution-14.shtml); (3) 28 Del. C. § 1503 "Referendums in
+  general elections" — bingo-license question per art. II § 17A/§ 17B
+  district, "printed on the ballots used in the next succeeding
+  general election" on General Assembly majority request
+  (https://delcode.delaware.gov/title28/c015/sc01/index.html, accessed
+  2026-08-17, external-review round; § 1504 applies Title 15 generally
+  — still no placement rule). Routine questions = standalone
+  "referendum elections" (15 Del. C. § 101(11)(e) — excludes candidate
+  selection; e.g. Feb 2026 school referenda). No placement rule exists
+  for ANY of the three paths — placement genuinely unknown if ever run
+  (see GRADE SCOPE).
 - County discretion: NONE — single STATE Department of Elections
   (15 Del. C. § 201; county boards consolidated 2015-07-01, § 201A;
   https://delcode.delaware.gov/title15/c002/index.html); § 4503
@@ -5080,17 +5088,26 @@ measures last.
   combined row — licensed by "conform as far as possible" (§ 4502(b),
   (c), (e)).
 - GRADE SCOPE: A = statutory ladder slots 1-5 matched in print;
-  judicial-empty (Const. + statewide confirmation); measures-absent
-  (Const. + § 101(11)(e) separation); school-in-May (§ 1072(c) +
-  calendar); no county discretion (§§ 201/4502(e)/4503). EXCLUDED from
-  A: entire ladder BELOW Lt. Governor (execs → legislature → county →
-  Wilmington) — no statute/reg/directive, 11-ballot B-class evidence; NO
-  CODE CONSEQUENCE — the printed practice matches the baseline anyway.
-  Also excluded: AG-vs-Insurance-Commissioner slot (structurally
-  untestable).
+  judicial-empty (Const. + statewide confirmation); school-in-May
+  (§ 1072(c) + calendar); no county discretion (§§ 201/4502(e)/4503).
+  EXCLUDED from A: (1) entire ladder BELOW Lt. Governor (execs →
+  legislature → county → Wilmington) — no statute/reg/directive,
+  11-ballot B-class evidence; NO CODE CONSEQUENCE — the printed
+  practice matches the baseline anyway; (2) MEASURES tier — formerly
+  claimed empty inside A; external-review round surfaced the third
+  question path (28 Del. C. § 1503 bingo referendum ON the general
+  ballot), and none of the three paths carries a placement rule, so
+  measure PLACEMENT is excluded rather than the tier declared empty
+  (absent in all observed cycles remains true; § 101(11)(e) separation
+  still keeps routine questions off the general ballot); (3) AG-vs-
+  Insurance-Commissioner slot (structurally untestable).
 - Baseline delta: NONE for tiers Delaware has — baseline spine exact.
-  School, judicial, measures tiers EMPTY (not late). NO OVERRIDE ROW
-  NEEDED — encode empty tiers as empty (NJ/VA/MA judicial precedent).
+  School + judicial tiers EMPTY (not late); measures tier empty in
+  every observed cycle but not structurally impossible (three rare
+  paths, placement unruled — A-excluded). NO OVERRIDE ROW NEEDED —
+  encode empty tiers as empty (NJ/VA/MA judicial precedent); if a rare
+  question ever fires, baseline measures-last is the only defensible
+  default.
 - Notes: § 4502(a)(6) unaffiliated-candidates heading untested in print.
   Non-Wilmington municipalities run their own dates (ch. 75 subch. IV).
   Open (recorded): county-tier internal order unsourced (future cycle
@@ -5344,9 +5361,10 @@ measures last.
   fetched + %PDF-verified 2026-08-16. Cass + Grand Forks hosts 403
   everything incl. via r.jina.ai — no Fargo ballot.
 - GRADE SCOPE: A covers President/VP-first (§ 16.1-06-07.1(1)); the
-  three-segment PARTY → NO-PARTY → MEASURES structure + labeling
-  (§ 16.1-06-08 mandates the separate, entitled no-party listing);
-  within-MEASURES class order + consecutive numbering
+  SEGMENT SEPARATION + LABELING (§ 16.1-06-08 mandates a separate
+  no-party listing "entitled 'no-party ballot'" — it fixes separation
+  and the label, NOT which segment comes first; external-review round
+  narrowed this); within-MEASURES class order + consecutive numbering
   (§ 16.1-06-09(2)); auditor bound to SOS-prescribed form (§ 16.1-06-02
   for the official ballot; § 16.1-13-05(2) reaches the SAMPLE ballot —
   verify-round precision). EXCLUDED from A (B-class —
@@ -5364,7 +5382,10 @@ measures last.
   within-measures; closest is § 16.1-06-05(5)'s weak "approximating as
   far as possible"); print-only, 4 uniform faces; (d) local-measures-
   after-state sub-rank — no statute at all (city measures arrive via
-  § 16.1-11-11.1/§ 40-21-02(5) with no placement rule); print-only.
+  § 16.1-11-11.1/§ 40-21-02(5) with no placement rule); print-only;
+  (e) SEGMENT RELATIVE ORDER (party before no-party before measures) —
+  § 16.1-06-08 orders nothing between segments (external-review
+  round); print-only, 4 uniform faces, same evidence class as (a)/(c).
 - Baseline delta: (1) BIG — state legislature ABOVE statewide executives
   (US Sen → US House → State Sen → State House → Gov/execs), hard
   inversion of baseline [but in the A-excluded ladder scope];
@@ -5713,7 +5734,7 @@ measures last.
   general precinct 1-01 official clerk sample,
   https://maps.laramiecounty.com/ClerkDocs/SampleBallots/2024/General/1-1.pdf
   — federal head → state legislature → county → retention (Supreme Fenn/Fox,
-  Circuit Williams) → Cheyenne Mayor/Council → college → school → 
+  Circuit Williams) → Cheyenne Mayor/Council → college → school →
   conservation → Amendment A → county tax question (rural 4-3.pdf same minus
   municipal). (2) Laramie 2022 general precinct 1-01 (…/2022/General/1-1.pdf)
   — DECISIVE for executives + county internal order (midterm slate):
@@ -5752,7 +5773,7 @@ measures last.
   wyoleg.gov title PDFs + SOS ElectionCode.pdf both list sections twice
   (TOC then body — quote the body).
 
-### DC — District of Columbia (FIPS 11) — GRADE A
+### DC — District of Columbia (FIPS 11) — GRADE A (scoped)
 - Authority: 3 DCMR § 1202 "ORDER OF CONTESTS AND QUESTIONS", § 1202.1
   (current text effective 2023-09-22), official Office of Documents host —
   https://dcregs.dc.gov/Common/DCMR/SectionList.aspx?SectionNumber=3-1202
@@ -5823,6 +5844,49 @@ measures last.
   search all failed; getmedia GUID is the key, filename segment
   ignored.)
 
+- GRADE SCOPE: A covers (a)-(l) + (o), all matched in print. EXCLUDED
+  from A (rule-text-only, never printed in examined cycles):
+  (m)/(n) party-committee offices — primary-only contests, can never
+  fire on a general; (p) recall measures + Charter-amendment
+  placement — these CAN fire on a general and have no printed face, so
+  print corroboration is limited to the observed contest types
+  (external-review round: the prior "every leg that can fire on a
+  general is print-corroborated" claim was self-contradictory and is
+  withdrawn; header scoped for parity with the rest of batch 5).
+- Baseline delta: DC has NO state-legislature, county, or judicial tiers.
+  Major inversion: "US Senator"/"US Representative" = shadow offices,
+  print LATE ((h)/(i), after AG) — must NOT be encoded as baseline
+  us_senate/us_house tiers 10/20. Statewide execs SPLIT: Mayor (c) right
+  after Delegate, AG (g) after the whole Council block. Council
+  (Chairman → At-Large → Ward) interleaves between the two execs. SBOE
+  late + measures last match baseline; ANC = extra sub-municipal tier in
+  the last office slot.
+- Notes: candidate order within contests = per-contest draws at one
+  lottery event, no rotation between precincts (D.C. Code
+  § 1-1001.08(p), 3 DCMR § 1204.1; 2024 lottery 2024-09-13) —
+  informational. § 1200 carries a fourth amendment (70 DCR 015793,
+  2023-12-15) not listed in the § 1202 source line — it amends § 1200
+  only; § 1202.1's currency unaffected. RCV in force for 2026 (Initiative 83) — changes marking
+  UI, not contest sequence. Cycles: Mayor/Chairman/AG + Wards 1/3/5/6 =
+  midterm years; Wards 2/4/7/8 Council + SBOE = presidential years.
+  Open (recorded): (m)/(n) party-committee never-on-general = inference
+  from absence (no explicit rule text); recall (p) + Charter-amendment
+  placement rests on rule text alone (none printed in examined cycles);
+  no dcboe.org-hosted GENERAL ballot from a Mayor/AG year located (2022
+  ward ballots live on vendor host omniballot.us — authentic DCBOE
+  content, pointer-grade; grade unaffected: rule text + 2026 primary
+  guide close the placement). Fetch gotchas: dcregs.dc.gov rule text
+  needs __VIEWSTATE/__EVENTVALIDATION postback (__EVENTTARGET=
+  ctl00$MainContent$rpt_RuleList$ctl01$lnkFile) → .doc via textutil;
+  dcrules.elaws.us mirror STALE (2017 — 14-item list, missing 2023
+  (m)/(n): do not cite); dcboe.org year-in-path ignored
+  (/elections/2024-elections byte-identical to 2026 page) — assets =
+  opaque /getmedia/<guid>/ paths, search only; voter-guide ballot pages
+  rasterized (render + read visually); multi-column ballots scramble
+  naive text extraction (sort blocks x-column then y); WebFetch GUESSED
+  a baseline-shaped order from compressed streams for Ward 8 — discarded
+  (trap: plausible fabrication by tooling).
+
 ### Batch 5 fetch-gotcha bank (cross-state summary)
 
 - Wayback REPLAY hard-down the entire batch (503 "Temporarily Offline"
@@ -5860,43 +5924,3 @@ measures last.
   per-precinct archive (UNPADDED precinct slugs), elections.ri.gov
   statewide compendiums, elections.delaware.gov per-cycle indexes
   (naming changes per cycle — enumerate index hrefs, never construct).
-- GRADE SCOPE (verify-round parity note): A rests on (a)-(l) + (o), all
-  matched in print. Items (m)/(n) (party-committee) and (p) (recall) +
-  Charter amendments are rule-text-only — never printed in examined
-  cycles — but (m)/(n) are primary-only contests and (p)/Charter
-  amendments are rare instruments, so no general-election override leg
-  rests on them; header stays unscoped A because every leg that can
-  fire on a general is print-corroborated.
-- Baseline delta: DC has NO state-legislature, county, or judicial tiers.
-  Major inversion: "US Senator"/"US Representative" = shadow offices,
-  print LATE ((h)/(i), after AG) — must NOT be encoded as baseline
-  us_senate/us_house tiers 10/20. Statewide execs SPLIT: Mayor (c) right
-  after Delegate, AG (g) after the whole Council block. Council
-  (Chairman → At-Large → Ward) interleaves between the two execs. SBOE
-  late + measures last match baseline; ANC = extra sub-municipal tier in
-  the last office slot.
-- Notes: candidate order within contests = per-contest draws at one
-  lottery event, no rotation between precincts (D.C. Code
-  § 1-1001.08(p), 3 DCMR § 1204.1; 2024 lottery 2024-09-13) —
-  informational. § 1200 carries a fourth amendment (70 DCR 015793,
-  2023-12-15) not listed in the § 1202 source line — it amends § 1200
-  only; § 1202.1's currency unaffected. RCV in force for 2026 (Initiative 83) — changes marking
-  UI, not contest sequence. Cycles: Mayor/Chairman/AG + Wards 1/3/5/6 =
-  midterm years; Wards 2/4/7/8 Council + SBOE = presidential years.
-  Open (recorded): (m)/(n) party-committee never-on-general = inference
-  from absence (no explicit rule text); recall (p) + Charter-amendment
-  placement rests on rule text alone (none printed in examined cycles);
-  no dcboe.org-hosted GENERAL ballot from a Mayor/AG year located (2022
-  ward ballots live on vendor host omniballot.us — authentic DCBOE
-  content, pointer-grade; grade unaffected: rule text + 2026 primary
-  guide close the placement). Fetch gotchas: dcregs.dc.gov rule text
-  needs __VIEWSTATE/__EVENTVALIDATION postback (__EVENTTARGET=
-  ctl00$MainContent$rpt_RuleList$ctl01$lnkFile) → .doc via textutil;
-  dcrules.elaws.us mirror STALE (2017 — 14-item list, missing 2023
-  (m)/(n): do not cite); dcboe.org year-in-path ignored
-  (/elections/2024-elections byte-identical to 2026 page) — assets =
-  opaque /getmedia/<guid>/ paths, search only; voter-guide ballot pages
-  rasterized (render + read visually); multi-column ballots scramble
-  naive text extraction (sort blocks x-column then y); WebFetch GUESSED
-  a baseline-shaped order from compressed streams for Ward 8 — discarded
-  (trap: plausible fabrication by tooling).
