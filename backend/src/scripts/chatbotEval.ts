@@ -50,7 +50,9 @@ async function main(): Promise<void> {
     if (!generation) {
       throw new Error("no active chatbot generation; run `npm run chatbot:reindex` first");
     }
-    const askService = createAskService({ db: pool, embeddings });
+    // logQuestions:false — a golden-set run is not user traffic; logging it
+    // would swamp chatbot.questions (66 rows per run) and skew the report.
+    const askService = createAskService({ db: pool, embeddings, logQuestions: false });
 
     const results: CaseResult[] = [];
     for (const goldenCase of goldenSet) {

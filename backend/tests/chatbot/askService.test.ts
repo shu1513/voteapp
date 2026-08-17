@@ -307,3 +307,20 @@ describe("ballot deep links point at the saved-ballot page", () => {
     expect(area.results[0]?.url).toBe("/me/ballot");
   });
 });
+
+describe("question logging", () => {
+  it("logs one row per ask by default", async () => {
+    const { pool, logged } = templatePool([]);
+    const service = createAskService({ db: pool, embeddings: null });
+    await service.ask("What's on my ballot?", null, null, USER_ID);
+    expect(logged).toHaveLength(1);
+  });
+
+  it("logQuestions:false answers identically but writes nothing (eval runs)", async () => {
+    const { pool, logged } = templatePool([]);
+    const service = createAskService({ db: pool, embeddings: null, logQuestions: false });
+    const response = await service.ask("What's on my ballot?", null, null, USER_ID);
+    expect(response.outcome).toBe("template");
+    expect(logged).toHaveLength(0);
+  });
+});

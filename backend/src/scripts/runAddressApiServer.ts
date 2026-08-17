@@ -34,8 +34,9 @@ import {
   DEFAULT_CONTENT_REPORT_RATE_LIMIT_MAX_REQUESTS,
   DEFAULT_CONTENT_REPORT_RATE_LIMIT_WINDOW_MS,
 } from "../api/contentReportRateLimiter.js";
-import { createAskService } from "../chatbot/askService.js";
+import { createAskService, type AskService } from "../chatbot/askService.js";
 import { readChatbotConfigFromEnv } from "../chatbot/chatbotConfig.js";
+import { maybePurgeQuestionText } from "../chatbot/maintenance.js";
 import { createEmbeddingsClient } from "../chatbot/embeddingsClient.js";
 import { createOpenAiResponsesClient } from "../chatbot/llm/openaiResponses.js";
 import type { LlmAnswering } from "../chatbot/answer.js";
@@ -573,7 +574,7 @@ async function main(): Promise<void> {
       console.warn("chatbot LLM configured but Redis is not; LLM answers stay off (retrieval-only)");
     }
   }
-  const askChatbot = chatbotConfig.enabled
+  const askChatbotService = chatbotConfig.enabled
     ? createAskService({
         db: pool,
         embeddings: chatbotConfig.embeddingsUrl
@@ -583,7 +584,17 @@ async function main(): Promise<void> {
             })
           : null,
         llm: chatbotLlm,
-      }).ask
+      })
+    : undefined;
+  const askChatbot: AskService["ask"] | undefined = askChatbotService
+    ? async (question, previousQuestion, context, userId) => {
+        const response = await askChatbotService.ask(question, previousQuestion, context, userId);
+        // Daily question-text retention purge (90-day privacy promise)
+        // piggybacks on ask traffic — no cron on the free plan. Fire and
+        // forget: never delays or fails the answer.
+        void maybePurgeQuestionText(pool, redis?.isOpen ? redis : null);
+        return response;
+      }
     : undefined;
   if (chatbotConfig.enabled) {
     console.log(

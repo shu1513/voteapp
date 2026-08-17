@@ -1,6 +1,6 @@
 # Chatbot (RAG) — build plan
 
-Status: PLAN v2 (2026-08-11, revised after external review). Nothing built yet. Research record: memory `voteapp-chatbot-exploration`.
+Status: SHIPPED THROUGH PHASE 2 (updated 2026-08-17) — retrieval + LLM answers LIVE IN PROD. The per-phase lines under "Phases" below are the authoritative launch state; follow-up work: `docs/plans/chatbot-improvements-2026-08.md`. Research record: memory `voteapp-chatbot-exploration`.
 
 ## Goal
 
