@@ -89,7 +89,7 @@ describe("deriveBallotFilters — affects my issues", () => {
   });
 });
 
-describe("deriveBallotFilters — vote impact thresholds", () => {
+describe("deriveBallotFilters — vote power thresholds", () => {
   const VERY_HIGH = election("vh-1", [], "very_high");
   const HIGH = election("h-1", [], "high");
   const AVERAGE = election("m-1", [], "medium");

@@ -1654,7 +1654,7 @@ describe("lookupElectionDetailById", () => {
         decisiveness_level: "none",
         factors: ["medium_representation", "uncontested_race"],
         explanation: {
-          how: expect.stringContaining("My vote impact = representation"),
+          how: expect.stringContaining("My vote power = representation"),
           parts: [
             {
               title: "Representation",
@@ -1673,7 +1673,7 @@ describe("lookupElectionDetailById", () => {
               formula: null,
             },
           ],
-          result: "Average representation + an uncontested race → My vote impact: Below average.",
+          result: "Average representation + an uncontested race → My vote power: Below average.",
           caveat: null,
         },
       },

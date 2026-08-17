@@ -310,9 +310,9 @@ function ElectionCard({
           {election.vote_power.label !== "unknown" ? (
             // Colored text, not a pill: the tinted badge read as a button.
             <span
-              className={`whitespace-nowrap text-xs font-medium ${votePowerBadgeClass(election.vote_power.label)}`}
+              className={`whitespace-nowrap text-sm font-medium ${votePowerBadgeClass(election.vote_power.label)}`}
             >
-              My vote impact: {formatVotePowerLabel(election.vote_power.label)}
+              My vote power: {formatVotePowerLabel(election.vote_power.label)}
             </span>
           ) : null}
           {election.race_type === "ballot_measure" ? (

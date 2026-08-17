@@ -118,7 +118,7 @@ export function BallotFiltersControl({
               ) : null}
               {showImpactGroup ? (
                 <div className="flex flex-col gap-2">
-                  <p className="text-xs text-ink-soft">My vote impact</p>
+                  <p className="text-xs text-ink-soft">My vote power</p>
                   {showImpactHigh ? (
                     <FilterCheckbox
                       label="High or above"

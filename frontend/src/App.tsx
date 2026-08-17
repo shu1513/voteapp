@@ -162,7 +162,11 @@ export function App() {
         Skip to content
       </a>
       <header className="border-b border-line bg-white">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
+        {/* flex-wrap: when logo + nav outgrow the row (guest nav with the
+            draft link at phone widths) the nav drops to its own line instead
+            of the shrink-0 logo painting over it. ml-auto keeps the wrapped
+            nav right-aligned. */}
+        <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-4">
           {/* min-w-0 here and shrink-0 on the logo let the greeting (not the
               two-word logo text) give way when the row runs out of room. */}
           <span className="flex min-w-0 items-baseline gap-3">
@@ -173,7 +177,7 @@ export function App() {
           </span>
           {/* shrink-0: without it a long greeting squeezes the nav and wraps
               the Menu button's label onto two lines. */}
-          <nav className="flex shrink-0 items-center gap-4 text-sm">
+          <nav className="ml-auto flex shrink-0 items-center gap-4 text-sm">
             <AccountNav />
           </nav>
         </div>
