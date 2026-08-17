@@ -5046,20 +5046,27 @@ measures last.
   amendments never go to voters (art. XVI § 1: two successive General
   Assemblies, no ratification election;
   https://delcode.delaware.gov/constitution/constitution-17.shtml); no
-  statewide initiative/referendum. THREE rare paths to a general-ballot
-  question exist, none exercised 2020/2022/2024: (1) art. XVI § 2
-  convention question; (2) art. XIII § 1 local-option liquor
+  statewide initiative/referendum. FOUR rare paths to a general-
+  election question exist, none exercised 2020/2022/2024 (second
+  external-review round widened this from three): (1) art. XVI § 2
+  convention question — and this one HAS a constitutional placement
+  rule: art. XVI § 5 "Separate ballots on question of Convention" —
+  "the ballots shall be separate from those cast for any person voted
+  for at such election" (a SEPARATE ballot, never a slot in the
+  contest sequence); (2) art. XIII § 1 local-option liquor
   (constitution-14.shtml); (3) 28 Del. C. § 1503 "Referendums in
-  general elections" — bingo-license question per art. II § 17A/§ 17B
+  general elections" — bingo-license question per art. II § 17A
   district, "printed on the ballots used in the next succeeding
   general election" on General Assembly majority request
   (https://delcode.delaware.gov/title28/c015/sc01/index.html, accessed
-  2026-08-17, external-review round; § 1504 applies Title 15 generally
-  — still no placement rule). Routine questions = standalone
-  "referendum elections" (15 Del. C. § 101(11)(e) — excludes candidate
-  selection; e.g. Feb 2026 school referenda). No placement rule exists
-  for ANY of the three paths — placement genuinely unknown if ever run
-  (see GRADE SCOPE).
+  2026-08-17; § 1504 applies Title 15 generally — no placement rule);
+  (4) art. II § 17B(b)(1) non-state-lottery district referendum —
+  distinct from bingo, expressly "at the general election held in
+  1984" with subsequent re-submissions (constitution-03.shtml,
+  accessed 2026-08-17). Routine questions = standalone "referendum
+  elections" (15 Del. C. § 101(11)(e) — excludes candidate selection;
+  e.g. Feb 2026 school referenda). Placement: RULED for path (1)
+  (separate ballot); unknown for paths (2)-(4) (see GRADE SCOPE).
 - County discretion: NONE — single STATE Department of Elections
   (15 Del. C. § 201; county boards consolidated 2015-07-01, § 201A;
   https://delcode.delaware.gov/title15/c002/index.html); § 4503
@@ -5100,20 +5107,25 @@ measures last.
   legislature → county → Wilmington) — no statute/reg/directive,
   11-ballot B-class evidence; NO CODE CONSEQUENCE — the printed
   practice matches the baseline anyway; (2) MEASURES tier — formerly
-  claimed empty inside A; external-review round surfaced the third
-  question path (28 Del. C. § 1503 bingo referendum ON the general
-  ballot), and none of the three paths carries a placement rule, so
-  measure PLACEMENT is excluded rather than the tier declared empty
-  (absent in all observed cycles remains true; § 101(11)(e) separation
-  still keeps routine questions off the general ballot); (3) AG-vs-
-  Insurance-Commissioner slot (structurally untestable).
+  claimed empty inside A; external-review rounds surfaced FOUR rare
+  question paths (see Measures), so measure PLACEMENT is excluded
+  rather than the tier declared empty — with one carve-out: the
+  convention question is SEPARATE-BALLOT by art. XVI § 5, i.e. it
+  never enters the contest sequence at all, so no in-ballot placement
+  question exists for it; in-ballot placement stays unknown only for
+  the liquor/bingo/lottery district referenda (absent in all observed
+  cycles remains true; § 101(11)(e) separation still keeps routine
+  questions off the general ballot); (3) AG-vs-Insurance-Commissioner
+  slot (structurally untestable).
 - Baseline delta: NONE for tiers Delaware has — baseline spine exact.
   School + judicial tiers EMPTY (not late); measures tier empty in
-  every observed cycle but not structurally impossible (three rare
-  paths, placement unruled — A-excluded). NO OVERRIDE ROW NEEDED —
-  encode empty tiers as empty (NJ/VA/MA judicial precedent); if a rare
-  question ever fires, baseline measures-last is the only defensible
-  default.
+  every observed cycle but not structurally impossible (four rare
+  paths — A-excluded). NO OVERRIDE ROW NEEDED — encode empty tiers as
+  empty (NJ/VA/MA judicial precedent). If a rare question ever fires:
+  the convention question does NOT take the measures-last fallback —
+  art. XVI § 5 puts it on a physically separate ballot outside the
+  contest sequence; only the in-ballot district referenda
+  (liquor/bingo/lottery) would default to baseline measures-last.
 - Notes: § 4502(a)(6) unaffiliated-candidates heading untested in print.
   Non-Wilmington municipalities run their own dates (ch. 75 subch. IV).
   Open (recorded): county-tier internal order unsourced (future cycle
@@ -5801,8 +5813,13 @@ measures last.
   Chairman → (e) At-Large Council → (f) Ward Council → (g) Attorney
   General → (h) United States Senator [shadow] → (i) United States
   Representative [shadow] → (j) At-Large SBOE → (k) Ward SBOE → (l) ANC →
-  (m)/(n) party committee offices [primary-only in practice] →
-  (o) initiatives/referenda/Charter amendments → (p) recall measures.
+  (m)/(n) party committee offices [primary-only BY LAW — D.C. Code
+  § 1-1001.10(a)(1): elections of the § 1-1001.01(1)-(4) party
+  officials "shall be held, at the request of the party, during a
+  primary election";
+  https://code.dccouncil.gov/us/dc/council/code/sections/1-1001.10,
+  accessed 2026-08-17] → (o) initiatives/referenda/Charter amendments →
+  (p) recall measures.
   "If applicable" = absent contests close up, no reorder. Printed section
   headers: only President + Delegate under "FEDERAL"; everything from
   Council down under "DISTRICT OF COLUMBIA" (shadow congressional
@@ -5856,8 +5873,8 @@ measures last.
   (o) is one slot spanning "initiative, referendum, and Charter
   amendment"; INITIATIVE prints (I-83 2024, I-82 2022) corroborate the
   slot's position. EXCLUDED from A (rule-text-only, never printed in
-  examined cycles): (m)/(n) party-committee offices — primary-only
-  contests, can never fire on a general; the referendum and
+  examined cycles): (m)/(n) party-committee offices — primary-only BY
+  LAW (§ 1-1001.10(a)(1)), can never fire on a general; the referendum and
   Charter-amendment PORTIONS of (o) — same slot by rule text, no
   printed face; (p) recall measures — these CAN fire on a general and
   have no printed face, so print corroboration is limited to the
@@ -5881,8 +5898,10 @@ measures last.
   only; § 1202.1's currency unaffected. RCV in force for 2026 (Initiative 83) — changes marking
   UI, not contest sequence. Cycles: Mayor/Chairman/AG + Wards 1/3/5/6 =
   midterm years; Wards 2/4/7/8 Council + SBOE = presidential years.
-  Open (recorded): (m)/(n) party-committee never-on-general = inference
-  from absence (no explicit rule text); recall (p) + Charter-amendment
+  CLOSED (second external-review round): (m)/(n) never-on-general is
+  no longer an inference — D.C. Code § 1-1001.10(a)(1) requires those
+  party-official elections be held during a primary. Open (recorded):
+  recall (p) + Charter-amendment
   placement rests on rule text alone (none printed in examined cycles);
   no dcboe.org-hosted GENERAL ballot from a Mayor/AG year located (2022
   ward ballots live on vendor host omniballot.us — authentic DCBOE
