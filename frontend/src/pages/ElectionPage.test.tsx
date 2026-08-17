@@ -1548,10 +1548,13 @@ describe("ElectionPage ballot rail", () => {
 
     expect(router.state.location.pathname).toBe("/elections/e-3");
     expect(router.state.location.state).toEqual(ARRIVAL);
-    // The next page re-renders the rail with the new current entry.
-    const nextRail = await screen.findByRole("navigation", { name: "Ballot" });
-    expect(within(nextRail).getByText("Sheriff").closest("li")).toHaveAttribute("aria-current", "page");
-    expect(within(nextRail).getByRole("link", { name: "Mayor" })).toHaveAttribute("href", "/elections/e-2");
+    // The next page re-renders the rail with the new current entry. The rail
+    // element survives the navigation, so retry until the re-render lands.
+    await waitFor(() => {
+      const nextRail = screen.getByRole("navigation", { name: "Ballot" });
+      expect(within(nextRail).getByText("Sheriff").closest("li")).toHaveAttribute("aria-current", "page");
+      expect(within(nextRail).getByRole("link", { name: "Mayor" })).toHaveAttribute("href", "/elections/e-2");
+    });
   });
 
   it("renders no rail on deep links or stale snapshots (pager rules apply)", async () => {
