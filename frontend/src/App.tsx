@@ -85,10 +85,13 @@ function AccountNav() {
   // rarely-used action in premium header space. "My Draft" sits last so the
   // working document is the item nearest the reader's thumb.
   // Inline items wrap into a broken two-line header on phones, so the
-  // signed-in nav is inline links on sm+ and a menu below that breakpoint.
+  // signed-in nav is inline links on md+ and a menu below that breakpoint.
+  // md, not sm: between 640 and 768px the four links plus logo and greeting
+  // overflow the row, and the flex-wrap fallback dropped them onto a second
+  // line — the menu is the better face for that zone too.
   return (
     <>
-      <span className="hidden items-center gap-4 sm:flex">
+      <span className="hidden items-center gap-4 md:flex">
         <Link to="/me/ballot" className="text-ink-soft hover:text-ink">
           My Elections
         </Link>
@@ -102,7 +105,7 @@ function AccountNav() {
           {myDraftLabel}
         </Link>
       </span>
-      <Menu as="div" className="relative sm:hidden">
+      <Menu as="div" className="relative md:hidden">
         <MenuButton className="rounded-lg border border-line px-3 py-1.5 font-medium text-ink">
           Menu <span aria-hidden="true">▾</span>
         </MenuButton>
