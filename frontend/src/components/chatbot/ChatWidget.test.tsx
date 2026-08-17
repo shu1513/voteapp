@@ -1,7 +1,14 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ChatWidget, contextFromPathname, isChatWidgetHidden, reportTargetFromResults, starterQuestions } from "./ChatWidget";
+import {
+  ChatWidget,
+  contextFromPathname,
+  followUpQuestions,
+  isChatWidgetHidden,
+  reportTargetFromResults,
+  starterQuestions,
+} from "./ChatWidget";
 import { renderRoutes } from "../../test/render";
 import { ME_UNVERIFIED, ME_VERIFIED } from "../../test/fixtures";
 import { apiError, stubApiRoutes, type ApiRoute } from "../../test/mockApi";
@@ -92,6 +99,53 @@ describe("starterQuestions", () => {
     // Exact list on purpose: the generic chips are deliberate product copy
     // (the ballot and election-date chips were removed by request).
     expect(starterQuestions(null)).toEqual(["What can you do?", "Which races affect issues I care about?"]);
+  });
+});
+
+describe("followUpQuestions", () => {
+  it("suggests the free next hop for what the answer cited", () => {
+    expect(followUpQuestions(RETRIEVAL_RESPONSE, "Who is Jon Ossoff?")).toEqual(["Who is funding their campaign?"]);
+    expect(
+      followUpQuestions(
+        {
+          ...RETRIEVAL_RESPONSE,
+          results: [
+            { title: "E", url: "/elections/11111111-1111-4111-9111-111111111111", snippet: "", source_type: "election" },
+          ],
+        },
+        "Tell me about the Georgia Senate race"
+      )
+    ).toEqual(["Who is running in this election?"]);
+  });
+
+  it("never re-suggests a cited facet or the question just asked", () => {
+    // Finance cards already answer the funding chip — suggesting it loops.
+    expect(
+      followUpQuestions(
+        {
+          ...RETRIEVAL_RESPONSE,
+          results: [
+            ...RETRIEVAL_RESPONSE.results,
+            {
+              title: "F",
+              url: "/candidates/44444444-4444-4444-a444-444444444444",
+              snippet: "",
+              source_type: "finance_summary",
+            },
+          ],
+        },
+        "Who is Jon Ossoff?"
+      )
+    ).toEqual([]);
+    // The question just asked never comes back as its own follow-up.
+    expect(followUpQuestions(RETRIEVAL_RESPONSE, "who is funding their campaign?")).toEqual([]);
+    // Template answers cite site pages, not corpus sources → no chips.
+    expect(
+      followUpQuestions(
+        { ...RETRIEVAL_RESPONSE, results: [{ title: "B", url: "/me/ballot", snippet: "", source_type: "page" }] },
+        "What's on my ballot?"
+      )
+    ).toEqual([]);
   });
 });
 
@@ -383,6 +437,66 @@ describe("ChatWidget", () => {
     expect(await screen.findByText("Couldn't record feedback for this answer.")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Good answer" })).not.toBeInTheDocument();
     expect(screen.queryByText("Thanks for the feedback.")).not.toBeInTheDocument();
+  });
+
+  it("renders a follow-up chip for the cited profile and sends it with the previous question", async () => {
+    const user = userEvent.setup();
+    const { fetchMock } = renderWidgetAt("/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+
+    await user.click(screen.getByRole("button", { name: "Who is funding their campaign?" }));
+    await waitFor(() => {
+      const askCalls = fetchMock.mock.calls.filter(([request]) => String(request).includes("/api/chatbot/ask"));
+      expect(askCalls).toHaveLength(2);
+      const body = JSON.parse((askCalls[1] as unknown as [string, RequestInit])[1].body as string);
+      expect(body).toEqual({
+        question: "Who is funding their campaign?",
+        previous_question: "Who is Jon Ossoff?",
+      });
+    });
+    // The just-asked follow-up must not come straight back as a chip.
+    expect(screen.queryByRole("button", { name: "Who is funding their campaign?" })).not.toBeInTheDocument();
+  });
+
+  it("renders the server's degradation notice as its own muted line", async () => {
+    const user = userEvent.setup();
+    renderWidgetAt("/ballot", {
+      body: { ...RETRIEVAL_RESPONSE, notice: "Daily AI-answer limit reached — showing matching data instead." },
+    });
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    expect(
+      await screen.findByText("Daily AI-answer limit reached — showing matching data instead.")
+    ).toBeInTheDocument();
+  });
+
+  it("moves focus into the input on open and back to the launcher on Escape", async () => {
+    const user = userEvent.setup();
+    renderWidgetAt("/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    expect(screen.getByLabelText("Your question")).toHaveFocus();
+
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open Ask" })).toHaveFocus();
+  });
+
+  it("announces answers through a polite live region", async () => {
+    const user = userEvent.setup();
+    renderWidgetAt("/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    const answer = await screen.findByText("Here's what our data has on that.");
+    expect(answer.closest('[aria-live="polite"]')).not.toBeNull();
+    // The follow-up chips sit OUTSIDE the live region — suggestion buttons
+    // must not be read out as answer text.
+    const chip = screen.getByRole("button", { name: "Who is funding their campaign?" });
+    expect(chip.closest('[aria-live="polite"]')).toBeNull();
   });
 
   it("shows no thumbs when the answer carries no feedback token", async () => {

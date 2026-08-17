@@ -60,6 +60,12 @@ export type AskResponse = {
    * so every asker votes on their own token. Absent for operator scripts
    * (eval) that run without a token minter. */
   feedback_token?: string;
+  /** Deterministic server copy the widget shows as a muted line when the
+   * answer silently degraded — today only the daily-limit fallbacks, which
+   * would otherwise serve cards indistinguishable from a plain retrieval
+   * answer. Never model output, and never cached (the cards path is not
+   * cached; LLM answers carry no notice). */
+  notice?: string;
 };
 
 export type AskContext =
@@ -763,6 +769,18 @@ type QuestionLogRow = {
   tokensOut: number | null;
 };
 
+/** Honest degradation copy (PR 3): the daily-limit fallbacks serve retrieval
+ * cards that look exactly like a normal card answer, so without this the
+ * user can't tell the AI limit was hit. Only the limit reasons get a notice —
+ * llm_failed / invalid_output are transient faults where the cards ARE the
+ * best next answer, and announcing an internal error there helps nobody.
+ * From the user's seat both limits mean the same thing: no AI answer today. */
+export function fallbackNotice(reason: string): string | null {
+  return reason === "rate_limited" || reason === "budget_exhausted"
+    ? "Daily AI-answer limit reached — showing matching data instead."
+    : null;
+}
+
 function logQuestion(db: Pool, row: QuestionLogRow): void {
   // Fire-and-forget: the log must never delay or fail an answer.
   void db
@@ -1078,6 +1096,7 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
       }
 
       const cards = toResultCards(retrieval.chunks);
+      const notice = fallbackNotice(cardsAnsweredBy);
       return finish(
         {
           outcome: "retrieval",
@@ -1085,6 +1104,7 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
             "Here's what our data has on that. These summaries come from our election database — open a result for the full picture.",
           results: cards,
           data_current_as_of: generation.activatedAt,
+          ...(notice ? { notice } : {}),
         },
         cardsAnsweredBy,
         scopeState,
