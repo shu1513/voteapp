@@ -48,6 +48,7 @@ export function DetailRail({
   backToState,
   siblingState,
   headerSlot,
+  pickedSrLabel = "decided",
 }: {
   ariaLabel: string;
   entries: RailEntry[];
@@ -59,6 +60,10 @@ export function DetailRail({
    * race-type tabs live here. The rail stays presentation-only: whatever
    * the slot controls re-slices `entries` in the caller. */
   headerSlot?: ReactNode;
+  /** Screen-reader suffix for picked rows. The default reads right for
+   * contest rows ("Proposition 4 (decided)"); the candidate rail passes
+   * "my pick" — a person is picked, not decided. */
+  pickedSrLabel?: string;
 }) {
   const currentRef = useRef<HTMLLIElement | null>(null);
   useEffect(() => {
@@ -121,7 +126,7 @@ export function DetailRail({
                 {/* Suffix, not prefix: the label must stay the leading text
                     of the accessible name so rows read (and match queries)
                     by their race title first. */}
-                {entry.picked ? <span className="sr-only"> (decided)</span> : null}
+                {entry.picked ? <span className="sr-only"> ({pickedSrLabel})</span> : null}
               </span>
             </li>
           ) : (
@@ -135,7 +140,7 @@ export function DetailRail({
                 {entry.picked ? <PickedCheck /> : null}
                 <span className="truncate">
                   {entry.label}
-                  {entry.picked ? <span className="sr-only"> (decided)</span> : null}
+                  {entry.picked ? <span className="sr-only"> ({pickedSrLabel})</span> : null}
                 </span>
               </Link>
             </li>

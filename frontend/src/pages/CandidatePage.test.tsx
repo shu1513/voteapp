@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CandidatePage, ErrorBoundary, loader } from "./CandidatePage";
-import { clearBallotDraft, readBallotDraft } from "../lib/ballotDraft";
+import { clearBallotDraft, readBallotDraft, setDraftCandidateChoice } from "../lib/ballotDraft";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import {
@@ -1091,6 +1091,37 @@ describe("CandidatePage roster rail", () => {
       "href",
       "/elections/e-1"
     );
+  });
+
+  it("marks the picked candidate with the check and an accessible suffix", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    clearBallotDraft();
+    // Guest pick in the local draft — the same source the "My choice" rows
+    // use — in the rail's own race (the snapshot's electionId).
+    setDraftCandidateChoice({
+      electionId: "e-1",
+      raceTitle: "Governor",
+      electionDate: "2026-11-03",
+      seatsToFill: null,
+      candidateId: "c-3",
+      candidateName: "Casey Contender",
+      chosen: true,
+    });
+    renderCandidate(perIdLoader, "c-2", ROSTER_ARRIVAL);
+
+    // waitFor: the guest draft becomes the choice source only once /api/me
+    // resolves to "no session".
+    const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    await waitFor(() =>
+      expect(within(rail).getByTitle("Casey Contender")).toHaveTextContent("(my pick)")
+    );
+    expect(within(rail).getByTitle("Casey Contender").querySelector("svg")).not.toBeNull();
+    // Unpicked rows — the current candidate included — stay plain.
+    const plainRow = within(rail).getByTitle("Jordan Voter");
+    expect(plainRow).not.toHaveTextContent("(my pick)");
+    expect(plainRow.querySelector("svg")).toBeNull();
+    expect(within(rail).getByTitle("Riley Runner").querySelector("svg")).toBeNull();
+    clearBallotDraft();
   });
 
   it("keeps the rail through a roster walk, forwarding the arrival state verbatim", async () => {

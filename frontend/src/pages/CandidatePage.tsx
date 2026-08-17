@@ -699,6 +699,14 @@ export function CandidatePage() {
   // contains this candidate). navState is re-read only for the type system —
   // non-null neighbors implies it.
   const railCandidates = rosterNeighbors !== null ? (displayedRoster ?? null) : null;
+  // The rail's pick checks, mirroring the election rail: the green mark on
+  // the candidate(s) the viewer picked IN THIS RACE — same choice source as
+  // the "My choice" rows (account choices signed-in, local draft as guest).
+  // Scoped through the snapshot's electionId (the race the roster belongs
+  // to); an old snapshot without it degrades to no checks. Multi-seat races
+  // can legitimately check several rows.
+  const railChoice = navState?.electionId !== undefined ? choiceForElection(navState.electionId) : undefined;
+  const railPickedIds = new Set((railChoice?.picks ?? []).map((pick) => pick.candidate_id));
 
   // Display label for the back slot: when the destination is an election,
   // its official ballot title runs to legal-name length ("For United States
@@ -757,7 +765,9 @@ export function CandidatePage() {
             id: entry.id,
             label: entry.name,
             path: `/candidates/${entry.id}`,
+            picked: railPickedIds.has(entry.id),
           }))}
+          pickedSrLabel="my pick"
           currentId={candidate.candidate_id}
           backTo={navState.backTo}
           backToState={backToElectionState}
