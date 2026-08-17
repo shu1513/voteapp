@@ -37,8 +37,10 @@ const UNKNOWN_RANK = 95;
 // generic title tie-break. (NY's trial-level "Supreme Court" is fine here:
 // its scope tier is lower, and within it NY does print Supreme Court
 // Justice before County Court Judge.) Fractional on purpose — the offset
-// must never cross into the next integer tier.
-function judicialCourtOffset(title: string): number {
+// must never cross into the next integer tier. Exported for the per-state
+// overrides (stateBallotOrderRules.ts), which reuse the same court split at
+// their own tier positions.
+export function judicialCourtOffset(title: string): number {
   if (/\bsupreme\b/i.test(title)) {
     return 0;
   }

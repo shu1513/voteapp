@@ -23,6 +23,7 @@ type FakeElection = {
   has_results?: boolean;
   office_scope?: string;
   contest_family?: string;
+  election_stage?: string;
 };
 
 function makeSummary(elections: FakeElection[]): BallotSummaryResult {
@@ -46,7 +47,7 @@ function makeSummary(elections: FakeElection[]): BallotSummaryResult {
         race_type: e.race_type ?? "office",
         official_ballot_title: e.official_ballot_title ?? "Office",
         election_date: e.election_date ?? "2026-11-03",
-        election_stage: "general",
+        election_stage: (e.election_stage ?? "general") as BallotLookupElectionSummary["election_stage"],
         is_partisan: false,
         discovery_contest_family: e.contest_family ?? "non_judicial_office",
         sources: [],
@@ -264,7 +265,7 @@ describe("applyBallotElectionOrdering", () => {
     expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
   });
 
-  it("orders contests in paper-ballot order when sort=state_baseline", async () => {
+  it("orders contests in paper-ballot order when sort=state_baseline, applying the state override", async () => {
     const electionD = "dddddddd-4444-4444-8444-dddddddddddd";
     const electionE = "eeeeeeee-5555-4555-8555-eeeeeeeeeeee";
     const electionF = "ffffffff-6666-4666-8666-ffffffffffff";
@@ -283,14 +284,32 @@ describe("applyBallotElectionOrdering", () => {
       { sort: "state_baseline" }
     );
 
+    // The fixture district is California on a general election, so the CA
+    // override (stateBallotOrderRules.ts) applies: statewide executives
+    // print BEFORE US Senate, unlike the generic baseline.
     expect(result.elections.map((e) => e.id)).toEqual([
-      electionE, // US Senate — federal first
+      electionD, // statewide executive — CA prints these first
+      electionE, // US Senate
       electionF, // US House
-      electionD, // statewide office
       electionC, // county
       electionB, // municipal
       electionA, // ballot measure last
     ]);
+  });
+
+  it("state_baseline keeps the generic order on non-general stages", async () => {
+    const electionD = "dddddddd-4444-4444-8444-dddddddddddd";
+    const result = await applyBallotElectionOrdering(
+      { query: makeFollowsQuery([]) },
+      makeSummary([
+        { id: electionD, office_scope: "statewide", election_stage: "primary" },
+        { id: electionA, office_scope: "statewide", contest_family: "us_senate", election_stage: "primary" },
+      ]),
+      { sort: "state_baseline" }
+    );
+
+    // No override on a primary: US Senate leads under the generic baseline.
+    expect(result.elections.map((e) => e.id)).toEqual([electionA, electionD]);
   });
 
   it("state_baseline is positional: no followed-first grouping, no empty-race sink", async () => {
