@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { Link, Outlet, ScrollRestoration, useLocation } from "react-router";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChatWidget } from "./components/chatbot/ChatWidget";
 import { RouteError } from "./components/RouteError";
 import { TermsRenewalGate } from "./components/TermsRenewalGate";
@@ -43,7 +42,7 @@ function AccountNav() {
   // briefly seeing them is harmless and self-corrects when /api/me lands.
   if (!me) {
     return (
-      <span className="flex items-center gap-4">
+      <span className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1">
         {guestDraftNav ? (
           <Link
             to={guestDraftNav.to}
@@ -84,52 +83,26 @@ function AccountNav() {
   // Log out lives in Settings (Sessions section), not the header — it kept a
   // rarely-used action in premium header space. "My Draft" sits last so the
   // working document is the item nearest the reader's thumb.
-  // Inline items wrap into a broken two-line header on phones, so the
-  // signed-in nav is inline links on sm+ and a menu below that breakpoint.
+  // No hamburger menu: every link stays visible at every width. The nav
+  // wraps (right-aligned, via the header row's flex-wrap + this span's own
+  // flex-wrap) onto extra lines when the row runs out of room, so nothing
+  // hides behind a button or paints over the logo. Labels keep
+  // whitespace-nowrap so a link never breaks mid-phrase.
   return (
-    <>
-      <span className="hidden items-center gap-4 sm:flex">
-        <Link to="/me/ballot" className="text-ink-soft hover:text-ink">
-          My Elections
-        </Link>
-        <Link to="/me/follows" className="whitespace-nowrap text-ink-soft hover:text-ink">
-          My Candidates
-        </Link>
-        <Link to="/me/settings" className="text-ink-soft hover:text-ink">
-          Settings
-        </Link>
-        <Link to="/me/picks" className="whitespace-nowrap text-ink-soft hover:text-ink">
-          {myDraftLabel}
-        </Link>
-      </span>
-      <Menu as="div" className="relative sm:hidden">
-        <MenuButton className="rounded-lg border border-line px-3 py-1.5 font-medium text-ink">
-          Menu <span aria-hidden="true">▾</span>
-        </MenuButton>
-        <MenuItems className="absolute right-0 z-20 mt-2 w-44 rounded-xl border border-line bg-white py-1 shadow-lg focus:outline-none">
-          <MenuItem>
-            <Link to="/me/ballot" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
-              My Elections
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link to="/me/follows" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
-              My Candidates
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link to="/me/settings" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
-              Settings
-            </Link>
-          </MenuItem>
-          <MenuItem>
-            <Link to="/me/picks" className="block px-4 py-2 text-ink data-[focus]:bg-surface">
-              {myDraftLabel}
-            </Link>
-          </MenuItem>
-        </MenuItems>
-      </Menu>
-    </>
+    <span className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1">
+      <Link to="/me/ballot" className="whitespace-nowrap text-ink-soft hover:text-ink">
+        My Elections
+      </Link>
+      <Link to="/me/follows" className="whitespace-nowrap text-ink-soft hover:text-ink">
+        My Candidates
+      </Link>
+      <Link to="/me/settings" className="whitespace-nowrap text-ink-soft hover:text-ink">
+        Settings
+      </Link>
+      <Link to="/me/picks" className="whitespace-nowrap text-ink-soft hover:text-ink">
+        {myDraftLabel}
+      </Link>
+    </span>
   );
 }
 
@@ -162,7 +135,11 @@ export function App() {
         Skip to content
       </a>
       <header className="border-b border-line bg-white">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
+        {/* flex-wrap: when logo + nav outgrow the row (guest nav with the
+            draft link at phone widths) the nav drops to its own line instead
+            of the shrink-0 logo painting over it. ml-auto keeps the wrapped
+            nav right-aligned. */}
+        <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-4">
           {/* min-w-0 here and shrink-0 on the logo let the greeting (not the
               two-word logo text) give way when the row runs out of room. */}
           <span className="flex min-w-0 items-baseline gap-3">
@@ -171,9 +148,9 @@ export function App() {
             </Link>
             <Greeting />
           </span>
-          {/* shrink-0: without it a long greeting squeezes the nav and wraps
-              the Menu button's label onto two lines. */}
-          <nav className="flex shrink-0 items-center gap-4 text-sm">
+          {/* min-w-0 (not shrink-0): the nav must be squeezable so its own
+              flex-wrap can break the links onto extra lines on phones. */}
+          <nav className="ml-auto flex min-w-0 items-center gap-4 text-sm">
             <AccountNav />
           </nav>
         </div>

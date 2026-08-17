@@ -360,7 +360,7 @@ describe("explainVotePower", () => {
     // The how copy explains the displayed label (grade combination), never
     // the internal 45/55 sorting-score formula.
     expect(explanation.how).toBe(
-      "My vote impact = representation (how much weight one vote carries here, the smaller the district's population, the higher the representation) + decisiveness (how likely this race is to be close, based on past results and number of candidates)."
+      "My vote power = representation (how much weight one vote carries here, the smaller the district's population, the higher the representation) + decisiveness (how likely this race is to be close, based on past results and number of candidates)."
     );
     expect(explanation.parts).toEqual([
       {
@@ -381,7 +381,7 @@ describe("explainVotePower", () => {
           'margin = 1.8 points → "toss-up" → grade high (margins, first match: ≤2 toss-up, ≤5 very competitive, ≤10 competitive, ≤15 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade average, safe grades low)',
       },
     ]);
-    expect(explanation.result).toBe("High representation + high decisiveness → My vote impact: Very high.");
+    expect(explanation.result).toBe("High representation + high decisiveness → My vote power: Very high.");
     expect(explanation.caveat).toBeNull();
   });
 
@@ -443,7 +443,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[1]).toMatchObject({ grade: "Low", stat: "40-point margin" });
-    expect(explanation.result).toBe("Average representation + low decisiveness → My vote impact: Below average.");
+    expect(explanation.result).toBe("Average representation + low decisiveness → My vote power: Below average.");
   });
 
   it('displays a medium rating as "Average" in the result line', () => {
@@ -457,7 +457,7 @@ describe("explainVotePower", () => {
       marginPercent: 8,
     });
 
-    expect(explanation.result).toBe("Average representation + average decisiveness → My vote impact: Average.");
+    expect(explanation.result).toBe("Average representation + average decisiveness → My vote power: Average.");
   });
 
   it("labels a multi-year margin as a weighted blend instead of pinning it on one year", () => {
@@ -490,7 +490,7 @@ describe("explainVotePower", () => {
       detail: "One candidate is running unopposed, so votes can't change the outcome.",
       formula: null,
     });
-    expect(explanation.result).toBe("High representation + an uncontested race → My vote impact: Below average.");
+    expect(explanation.result).toBe("High representation + an uncontested race → My vote power: Below average.");
   });
 
   it("qualifies decisiveness when the historical results predate redistricting", () => {
@@ -526,7 +526,7 @@ describe("explainVotePower", () => {
       detail: "Your vote sets the policy directly, so the rating gets a one-step boost.",
       formula: null,
     });
-    expect(explanation.result).toBe("High representation + a ballot-measure boost → My vote impact: Very high.");
+    expect(explanation.result).toBe("High representation + a ballot-measure boost → My vote power: Very high.");
     expect(explanation.caveat).toBeNull();
   });
 
@@ -540,7 +540,7 @@ describe("explainVotePower", () => {
 
     expect(explanation.parts.map((part) => part.title)).toEqual(["Representation", "Decisiveness", "Ballot measure"]);
     expect(explanation.result).toBe(
-      "Average representation + average decisiveness + a ballot-measure boost → My vote impact: High."
+      "Average representation + average decisiveness + a ballot-measure boost → My vote power: High."
     );
   });
 
@@ -561,7 +561,7 @@ describe("explainVotePower", () => {
       detail: "Your vote sets the policy directly, but it did not raise this rating further.",
       formula: null,
     });
-    expect(explanation.result).toBe("High representation + high decisiveness → My vote impact: Very high.");
+    expect(explanation.result).toBe("High representation + high decisiveness → My vote power: Very high.");
   });
 
   it("does not claim a boost when the missing-data cap ate the bump", () => {
@@ -575,7 +575,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[2]).toMatchObject({ grade: "Direct vote" });
-    expect(explanation.result).toBe("Unknown representation + high decisiveness → My vote impact: High.");
+    expect(explanation.result).toBe("Unknown representation + high decisiveness → My vote power: High.");
   });
 
   it("carries a partial-data caveat when one core axis is missing", () => {
@@ -593,7 +593,7 @@ describe("explainVotePower", () => {
       detail: "No past results for this contest yet.",
       formula: null,
     });
-    expect(explanation.result).toBe("High representation + unknown decisiveness → My vote impact: High.");
+    expect(explanation.result).toBe("High representation + unknown decisiveness → My vote power: High.");
     expect(explanation.caveat).toContain("partial information");
   });
 

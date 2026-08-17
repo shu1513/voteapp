@@ -20,7 +20,6 @@ import { ReportContentButton } from "../components/ReportContentButton";
 import { ShareButton } from "../components/ShareButton";
 import {
   deriveCandidateResultBadges,
-  formatDistrictType,
   formatDistrictName,
   formatElectionDate,
   formatOutcome,
@@ -506,12 +505,43 @@ export function ElectionPage() {
             shareText={`${data.official_ballot_title} — ${formatElectionDate(data.election_date)}`}
           />
         </div>
-        <p className="mt-1 text-sm text-ink-soft">
-          {formatElectionDate(data.election_date)} · {formatDistrictName(data.district.name)} ·{" "}
-          {formatDistrictType(data.district.district_type)}
-          {data.election_stage ? <> · {data.election_stage}</> : null}
-          {data.seats_to_fill != null && data.seats_to_fill > 1 ? <> · {data.seats_to_fill} seats</> : null}
-        </p>
+        {/* District as a quiet subtitle, name only (no district type): ballot
+            titles are often generic ("Governor", "Mayor"), and a direct-link
+            visitor needs to see WHERE the race is — the list card shows the
+            same line for the same reason. The sub-district caveat below also
+            refers to "the district above". */}
+        <p className="mt-1 text-sm text-ink-soft">{formatDistrictName(data.district.name)}</p>
+        {/* Header strip: label-over-value columns split by a hairline — the
+            vote-power verdict first, then one date column whose value carries
+            the stage ("General election") so "General" can't read as a
+            mystery word. Fixed grid tracks, not content-hugging flex, so the
+            divider sits at the same fraction of the width however short the
+            verdict is. Only the verdict is bold. */}
+        <div
+          className={
+            data.vote_power.label !== "unknown"
+              ? "mt-3 grid grid-cols-[minmax(9rem,1fr)_2fr] gap-x-6"
+              : "mt-3"
+          }
+        >
+          {data.vote_power.label !== "unknown" ? (
+            <div>
+              <p className="text-sm text-ink">My vote power</p>
+              <p className={`mt-1 text-lg font-semibold ${votePowerBadgeClass(data.vote_power.label)}`}>
+                {formatVotePowerLabel(data.vote_power.label)}
+              </p>
+            </div>
+          ) : null}
+          <div className={data.vote_power.label !== "unknown" ? "border-l border-line pl-6" : undefined}>
+            <p className="text-sm text-ink">Election date</p>
+            <p className="mt-1 text-lg text-ink">
+              {formatElectionDate(data.election_date)}
+              {/* formatOutcome doubles as a stage prettifier: general → General */}
+              {data.election_stage ? <> · {formatOutcome(data.election_stage)} election</> : null}
+              {data.seats_to_fill != null && data.seats_to_fill > 1 ? <> · {data.seats_to_fill} seats</> : null}
+            </p>
+          </div>
+        </div>
         {/* The detail page has room for the whole caveat, where the ballot card
             only has room to flag it. Same rule as ElectionCard: name the seat's
             area, say plainly that we cannot match an address to it, and never
@@ -522,22 +552,17 @@ export function ElectionPage() {
             district above. We can&rsquo;t match an address to an area this small, so this race may not be on your ballot.
           </p>
         ) : null}
-        <div className="mt-2 flex flex-wrap gap-2 text-xs">
-          {data.vote_power.label !== "unknown" ? (
-            <span className={`font-medium ${votePowerBadgeClass(data.vote_power.label)}`}>
-              My vote impact: {formatVotePowerLabel(data.vote_power.label)}
-            </span>
-          ) : null}
-          {data.historical_competitiveness ? (
+        {data.historical_competitiveness ? (
+          <div className="mt-2 flex flex-wrap gap-2 text-xs">
             <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
               {data.historical_competitiveness.display_label}
             </span>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
         {data.vote_power.label !== "unknown" && data.vote_power.explanation ? (
           <details className="mt-2 text-sm">
             <summary className="cursor-pointer text-xs font-medium text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
-              How do we calculate my vote impact?
+              How do we calculate my vote power?
             </summary>
             <div className="mt-2 rounded-xl border border-line bg-white p-4">
               <p className="text-ink">{data.vote_power.explanation.how}</p>

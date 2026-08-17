@@ -56,7 +56,7 @@ export const VOTE_POWER: VotePower = {
 export const VOTE_POWER_WITH_EXPLANATION: VotePower = {
   ...VOTE_POWER,
   explanation: {
-    how: "My vote impact = representation + decisiveness.",
+    how: "My vote power = representation + decisiveness.",
     parts: [
       {
         title: "Representation",
@@ -73,7 +73,7 @@ export const VOTE_POWER_WITH_EXPLANATION: VotePower = {
         formula: null,
       },
     ],
-    result: "Average representation + high decisiveness → My vote impact: High.",
+    result: "Average representation + high decisiveness → My vote power: High.",
     caveat: "Some data is missing.",
   },
 };

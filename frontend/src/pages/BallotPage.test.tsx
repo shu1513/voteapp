@@ -71,7 +71,7 @@ describe("BallotPage", () => {
     // The anonymous endpoint cannot honor my_areas; the dropdown must not offer it.
     const options = screen.getAllByRole("option").map((option) => option.textContent);
     expect(options).not.toContain("My issues");
-    expect(options).toContain("My vote impact");
+    expect(options).toContain("My vote power");
   });
 
   it("replaces the 0-candidates chip with the roster-status explanation", async () => {
