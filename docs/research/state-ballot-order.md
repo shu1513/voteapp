@@ -5241,7 +5241,14 @@ measures last.
   (https://sdsos.gov/elections-voting/assets/Archive/2024%20Assets/2024GeneralElectionCanvassWithCert.pdf)
   verified as PDF only (not read). When no circuit judge is up the
   heading is simply ABSENT (Day + Minnehaha 2024 — full-text regex).
-  Fetch gotchas:
+  Open (recorded): brookingscountysd.gov/DocumentCenter/View/4246/
+  "Nonpolitical-Ballot" (live 404, Wayback-archived, unretrieved) —
+  read as a June-2022 PRIMARY NPA ballot by filename/siblings/timestamp
+  (inference; the only artifact whose name matches the separate-ballot
+  theory — close via Brookings auditor or Wayback when replay
+  recovers); Pennington/Codington/Yankton/Davison/Union/Hughes/Brown
+  counties never covered (wrong domains → unsearched, not
+  searched-and-empty). Fetch gotchas:
   sdlegislature.gov JSON API = /api/Statutes/Statute/<cite> +
   /api/Rules/<article> (leading zero REQUIRED — 05:02 works, 5:02
   302s); article JSON has Word CSS/metadata litter (strip <style>);
