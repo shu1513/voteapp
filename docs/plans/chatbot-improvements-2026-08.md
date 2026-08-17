@@ -58,14 +58,20 @@ open decisions, resolved):
   needs. `voteapp_api` gets INSERT only.
 - API: every ask response carries `feedback_token` — a STATELESS HMAC-signed
   (answered_by, nonce) payload, not a wrapped row id (none exists; see
-  `chatbot/feedback.ts`). Signed with a per-boot random secret: no new env
-  var; a restart invalidates pre-restart tokens, dropping at worst a few
-  votes. Minted after the answer cache, so cache hits vote on their own
+  `chatbot/feedback.ts`). Signed with CHATBOT_FEEDBACK_SECRET (render.yaml
+  generateValue) — must be stable because the free plan spins the API down
+  when idle and a per-boot secret would invalidate tokens across every
+  wake-up (review catch); unset → per-boot fallback with a boot warning.
+  Minted after the answer cache, so cache hits vote on their own
   token. `POST /api/chatbot/feedback` (token + up/down) is verified-accounts
   gated like ask, covered by the global IP rate limiter, 404 when
   CHATBOT_ENABLED is off. The UNIQUE nonce makes each token one-shot
   server-side (duplicates answer ok, first verdict stands).
-- Widget: two small buttons under each answer; one-shot, no undo UI.
+- Widget: two small buttons under each answer; one-shot, no undo UI. Thanks
+  copy only after the server confirms (review catch: optimistic thanks lost
+  votes silently); transient failure reverts to the buttons (= the retry
+  control), a 400 (token died with a restart) gives up honestly — retrying
+  a rejected token can never succeed.
 - Report: downvote rate per `answered_by` — the Phase 3 canary metric.
 
 ## PR 3 — Widget UX (frontend only)

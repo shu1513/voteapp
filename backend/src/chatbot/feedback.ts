@@ -9,10 +9,13 @@
 // answered_by value non-forgeable; the UNIQUE nonce makes each token
 // one-shot server-side.
 //
-// The signing secret is generated per process boot on purpose (no new env
-// var, no storage): a token minted before a restart/deploy fails
-// verification after it, silently dropping that one vote — acceptable for an
-// analytics signal, and votes almost always arrive seconds after the answer.
+// The signing secret comes from CHATBOT_FEEDBACK_SECRET (see
+// runAddressApiServer wiring): the prod API runs on Render's free plan,
+// which spins the process down after ~15 idle minutes, so a per-boot secret
+// would routinely invalidate tokens before the vote arrives (the wake-up
+// serving the vote POST is a fresh boot). Unset → per-boot random fallback
+// (dev/operator runs): tokens then die with the process, dropping those
+// votes — the widget surfaces the rejection instead of faking success.
 
 import { createHmac, randomBytes, timingSafeEqual } from "node:crypto";
 import type { Pool } from "pg";

@@ -575,9 +575,19 @@ async function main(): Promise<void> {
       console.warn("chatbot LLM configured but Redis is not; LLM answers stay off (retrieval-only)");
     }
   }
-  // Feedback tokens are signed with a per-boot secret (see feedback.ts) —
-  // no env var; a restart only invalidates tokens minted before it.
-  const chatbotFeedbackTokens = chatbotConfig.enabled ? createFeedbackTokens() : null;
+  // Feedback tokens are signed with CHATBOT_FEEDBACK_SECRET (render.yaml
+  // generates it): the free plan spins the process down when idle, so a
+  // per-boot secret would invalidate tokens across every wake-up. Unset →
+  // per-boot random fallback (dev), with a warning so prod misconfig is loud.
+  const chatbotFeedbackSecret = process.env.CHATBOT_FEEDBACK_SECRET?.trim();
+  const chatbotFeedbackTokens = chatbotConfig.enabled
+    ? createFeedbackTokens(chatbotFeedbackSecret ? Buffer.from(chatbotFeedbackSecret, "utf8") : undefined)
+    : null;
+  if (chatbotConfig.enabled && !chatbotFeedbackSecret) {
+    console.warn(
+      "CHATBOT_FEEDBACK_SECRET is unset; feedback tokens will not survive a restart (votes on pre-restart answers are dropped)"
+    );
+  }
   const askChatbot = chatbotConfig.enabled
     ? createAskService({
         db: pool,

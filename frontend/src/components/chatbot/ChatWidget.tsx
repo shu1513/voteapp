@@ -120,37 +120,43 @@ export function reportTargetFromResults(
 }
 
 /** One-shot 👍/👎 under an answer (docs/plans/chatbot-improvements-2026-08.md
- * PR 2). Fire-and-forget: the vote is an analytics signal, so a failed POST
- * still shows the thanks copy instead of an error (the server ignores
- * duplicates anyway; there is no undo). */
+ * PR 2). The thanks copy appears only after the server confirmed the vote —
+ * an optimistic "Thanks" would silently lose feedback on network failures.
+ * A transient failure reverts to the buttons (they ARE the retry control);
+ * a 400 means the token itself was rejected (it died with a server restart),
+ * so retrying can never succeed — give up honestly instead. */
 function FeedbackButtons({ token }: { token: string }) {
-  const [voted, setVoted] = useState(false);
-  if (voted) {
+  const feedback = useMutation({
+    mutationFn: (verdict: "up" | "down") => submitChatbotFeedback(token, verdict),
+  });
+  if (feedback.isSuccess) {
     return <p className="text-xs text-ink-soft">Thanks for the feedback.</p>;
   }
-  function vote(verdict: "up" | "down") {
-    setVoted(true);
-    void submitChatbotFeedback(token, verdict).catch(() => undefined);
+  if (feedback.error instanceof ApiError && feedback.error.status === 400) {
+    return <p className="text-xs text-ink-soft">Couldn't record feedback for this answer.</p>;
   }
   return (
-    <span className="inline-flex items-center gap-1">
+    <span className="inline-flex flex-wrap items-center gap-1">
       <span className="text-xs text-ink-soft">Helpful?</span>
       <button
         type="button"
         aria-label="Good answer"
-        onClick={() => vote("up")}
-        className="rounded px-1 text-xs transition hover:bg-surface"
+        disabled={feedback.isPending}
+        onClick={() => feedback.mutate("up")}
+        className="rounded px-1 text-xs transition hover:bg-surface disabled:opacity-50"
       >
         👍
       </button>
       <button
         type="button"
         aria-label="Bad answer"
-        onClick={() => vote("down")}
-        className="rounded px-1 text-xs transition hover:bg-surface"
+        disabled={feedback.isPending}
+        onClick={() => feedback.mutate("down")}
+        className="rounded px-1 text-xs transition hover:bg-surface disabled:opacity-50"
       >
         👎
       </button>
+      {feedback.isError && <span className="text-xs text-rausch-dark">Couldn't save — try again.</span>}
     </span>
   );
 }
