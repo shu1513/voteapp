@@ -434,7 +434,10 @@ measures last.
   Prothonotary → Treasurer → Magisterial District Judge → School Director →
   Member of Council → Mayor → Tax Collector → election-board officials) with
   "OFFICIAL JUDICIAL RETENTION QUESTIONS" as a separately captioned section
-  last (art. V § 15(b) honored as a captioned section). MUNICIPAL MICRO-ORDER
+  last; NOTE these samples show a separately captioned section only — they do
+  not by themselves establish either constitutional form in art. V § 15(b)
+  (a separate judicial ballot, or a separate column on voting machines).
+  MUNICIPAL MICRO-ORDER
   IS COUNTY-VARIABLE: Bucks prints Mayor before Council, Chester prints
   Council before Mayor — direct evidence that below the specimen the order
   is county practice, reinforcing B.
@@ -1448,10 +1451,28 @@ measures last.
   questions (local referenda/charter amendments) go "at the end of the
   ballot"; if a retention question is present, other questions print after
   it.
-- County discretion: NONE as to order — § 2-5-208(a): "The requirements of
-  this section apply to all ballots." "Substantially" in (c)(1) tolerates
-  absent classes, not resequencing (all three ballots read match exactly).
-  Format (not order) for vendor systems set statewide under § 2-5-206.
+- County discretion: none as to the DEFAULT order, with ONE narrow statutory
+  fit exception (CodeRabbit catch, verified on the official portal
+  2026-08-17): § 2-5-208(a) "The requirements of this section apply to all
+  ballots" sets the default for everything, but § 2-5-206(b)(3) provides
+  "If the arrangement as set out in subdivisions (b)(1) and (2) will not fit
+  on the voting machine ballot, the county election commission may arrange
+  the ballot so that the voting machine will accommodate the entire ballot
+  including, without limitation, the arrangement of material in vertical
+  columns with the office appearing first ..." — (b)(1)-(2) are § 2-5-206's
+  machine-GEOMETRY rules (titles vertical, party columns), so the exception
+  is aimed at layout geometry, but its "without limitation" wording is broad
+  enough that fit-driven deviation from the printed sequence cannot be
+  categorically ruled out; a related § 2-5-206 clause ("in any county where
+  a voting machine will not accommodate the entire ballot, the coordinator
+  of elections may, with the approval of the county election commission,
+  permit the placement ...") is the same fit trigger. Montgomery County's
+  official "Ballot Layout Requirements" summary
+  (https://mcgtn.org/storage/departments/election/Ballot%20Layout%20Requirements.pdf)
+  restates the exception. NO exercised rearrangement observed on any ballot
+  read (all three match § 2-5-208 exactly). GRADE A accordingly covers the
+  STATUTORY DEFAULT order; a fit-driven rearrangement under § 2-5-206(b)(3),
+  if one ever surfaces, is outside it.
 - School/special: school boards are NOT a separate tier — inside county
   class (Y) ("school boards" named in the class text), after Register,
   BEFORE municipal. Usually August but NOT statutorily bound to it —
