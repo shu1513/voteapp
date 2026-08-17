@@ -4515,11 +4515,14 @@ measures last.
 - School/special: NOT on the state ballot — RSA 669:1 III ("No town
   election shall be held in conjunction with the biennial election"),
   671:2 (same for school districts), 670:1 (village districts Jan-May).
-  Narrow 671:2 exceptions (Concord + Laconia boards of education) run
-  on a SEPARATE district ballot handed out alongside — proven: Concord
-  2024 "BALLOT 1 OF 2 — ABSENTEE OFFICIAL BALLOT — CONCORD SCHOOL
-  DISTRICT — CITY OF CONCORD, NEW HAMPSHIRE"
-  (https://www.concordnh.gov/DocumentCenter/View/22875/Concord-School-District-Sample-Ballot).
+  Narrow 671:2 exceptions (Concord + Laconia boards of education):
+  CONCORD proven to run on a SEPARATE district ballot handed out
+  alongside — 2024 "BALLOT 1 OF 2 — ABSENTEE OFFICIAL BALLOT — CONCORD
+  SCHOOL DISTRICT — CITY OF CONCORD, NEW HAMPSHIRE"
+  (https://www.concordnh.gov/DocumentCenter/View/22875/Concord-School-District-Sample-Ballot);
+  LACONIA's separate-ballot treatment UNVERIFIED (presumed same
+  pattern — see Notes). Either way nothing prints on the SOS state
+  ballot itself.
 - Corroboration: (1) DECISIVE: Dover 2020 general sample ballots (all
   6 wards, official archive, text layer, positional extraction),
   https://www.dover.nh.gov/Assets/government/open-government/election-information/2020-general-election/sample-ballots/GENERAL%20ELECTION%202020_Sample%20Ballots.pdf
@@ -4532,9 +4535,12 @@ measures last.
   https://www.dover.nh.gov/Assets/government/open-government/election-information/2022-general/sample-ballots/Ward%201.pdf
   — Governor (y=189.7) ABOVE United States Senator (y=254.5) → Rep in
   Congress → Exec Councilor → State Sen → State Reps D14 → D21; back:
-  county block → 2022 amendment questions last. (NH's Class 2 US Senate
-  seat runs 2014/2020/2026 — so 2020 AND 2022 both co-print Governor
-  with a Senate race; a 2024-only corroboration could not.) (3) Dover
+  county block → 2022 amendment questions last. (NH Senate cycles:
+  Class II seat 2014/2020/2026, Class III seat 2016/2022/2028 — so the
+  2020 general (Class II) and the 2022 general (Class III) both
+  co-print Governor with a Senate race; 2024 alone carried none, so a
+  2024-only corroboration could not test the Governor-above-Senator
+  slot.) (3) Dover
   Ward 1 2024 (scanned, rendered + read visually),
   https://www.dover.nh.gov/Assets/government/open-government/election-information/2024-general-election/sample-ballots/DoverWard1.pdf
   — President/VP → Governor → Rep in Congress → … → full Strafford
@@ -5630,8 +5636,10 @@ measures last.
   ballot — placed p2, AFTER Justice of the Peace, DEAD LAST. All
   %PDF-verified 2026-08-16. No conflicts.
 - GRADE SCOPE: A covers the full § 2471(a)(1) ladder + statewide-
-  measures-first + empty judicial/municipal/school November tiers.
-  EXCLUDED from A: (1) local-article position when a town opts onto
+  measures-first + NO state-court or retention tier (Probate Judge and
+  Assistant Judge are COUNTY-BLOCK offices inside the § 2471(a)(1)
+  ladder — an override must not drop them under an "empty judicial"
+  reading) + empty municipal/school November tiers. EXCLUDED from A: (1) local-article position when a town opts onto
   the state ballot — statute silent; TWO printed examples now observed,
   both DEAD LAST after JP: Hartford 2024 bond article (p2, column
   right of JP) and Burlington 2022 "BALLOT QUESTION" ($165M school
@@ -5844,12 +5852,16 @@ measures last.
   search all failed; getmedia GUID is the key, filename segment
   ignored.)
 
-- GRADE SCOPE: A covers (a)-(l) + (o), all matched in print. EXCLUDED
-  from A (rule-text-only, never printed in examined cycles):
-  (m)/(n) party-committee offices — primary-only contests, can never
-  fire on a general; (p) recall measures + Charter-amendment
-  placement — these CAN fire on a general and have no printed face, so
-  print corroboration is limited to the observed contest types
+- GRADE SCOPE: A covers (a)-(l) plus the corroborated portion of (o) —
+  (o) is one slot spanning "initiative, referendum, and Charter
+  amendment"; INITIATIVE prints (I-83 2024, I-82 2022) corroborate the
+  slot's position. EXCLUDED from A (rule-text-only, never printed in
+  examined cycles): (m)/(n) party-committee offices — primary-only
+  contests, can never fire on a general; the referendum and
+  Charter-amendment PORTIONS of (o) — same slot by rule text, no
+  printed face; (p) recall measures — these CAN fire on a general and
+  have no printed face, so print corroboration is limited to the
+  observed contest types
   (external-review round: the prior "every leg that can fire on a
   general is print-corroborated" claim was self-contradictory and is
   withdrawn; header scoped for parity with the rest of batch 5).
