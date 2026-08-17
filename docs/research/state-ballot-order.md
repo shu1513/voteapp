@@ -3662,7 +3662,13 @@ measures last.
   tier between county and municipal; (4) school tier EMPTY even years;
   municipal near-empty but NOT structurally empty.
 - GRADE SCOPE: A covers the office ladder (national → state incl. the
-  judge/DA/SBOE chain → county → township). EXCLUDED from A: retention-
+  POSITION of the judge/DA/SBOE group between State Rep and county →
+  county → township). EXCLUDED from A: (1) DA↔SBOE internal order
+  (review round) — 25-611(a) puts DA first, but neither slot is
+  verified on any printed face (Osborne carried neither contest) and
+  the two canvasses carrying both disagree (Sedgwick follows statute,
+  Shawnee 2024 prints SBOE first); below tier granularity, so nothing
+  to encode — excluded to keep A from over-claiming. (2) retention-
   block and question PLACEMENT — card-structure-dependent county choice
   (late on combined cards; before county offices on split cards), no
   statutory position; leave baseline judicial-late as-is for retention
@@ -3679,7 +3685,7 @@ measures last.
   party-prefix inference from SOS abstracts); Wyandotte 403 even via
   r.jina.ai; municipal-order K.A.R. unlocated (likely never adopted).
 
-### MS — Mississippi (FIPS 28) — GRADE A
+### MS — Mississippi (FIPS 28) — GRADE A (scoped)
 
 - Authority: Miss. Code Ann. § 23-15-367(2) (category order for office
   titles; final para. limits county discretion to categories (e)-(f)).
@@ -3785,11 +3791,27 @@ measures last.
   only; Clarke/Kemper noise). %PDF-verified where PDF.
 - Baseline delta: override required. (1) judicial moves from late block
   to position 4 (after US House, before county/school) in even years —
-  largest deviation; (2) CYCLE SPLIT: even = no executives/legislature,
+  largest deviation, but EXCLUDED from the A override (see GRADE
+  SCOPE); (2) CYCLE SPLIT: even = no executives/legislature,
   odd = no federal — a merged sequence misorders both; (3) state-district
   tier (PSC, Transportation Commissioner, DA) between executives and
   legislature in odd years; (4) measures-last + school-after-county match
   baseline; (5) no municipal tier.
+- GRADE SCOPE (review round): A covers the § 23-15-367(2) category
+  ladder, the even/odd cycle split, the state-district tier, and the
+  SEMS lock-down. EXCLUDED from A — even-year EARLY-judicial position:
+  no statute, rule, or manual prescribes the slot (judicial is absent
+  from (2)'s categories; the (1) exception governs size/print/paper;
+  the handbook restates the lock-down only). It rests on the per-cycle
+  SOS/SEMS-published ballot — same evidence class as NE's SOS-delegated
+  executive internal order, which is likewise excluded from A. Held at
+  B: consistent across 2020/2022/2024 SOS + county prints, but a
+  future SOS could re-slot it without any law change and nothing
+  written would flag the move. Consequence: no judicial-position
+  override for MS; baseline judicial-late stays and is KNOWN WRONG in
+  observed practice (recorded, not silently resolved). Restore path: a
+  written SOS prescription of judicial position, or a per-cycle
+  SEMS-confirmation policy decided at code-PR time.
 - Notes: statute-vs-ballot conflicts recorded (both sit in a gap the
   statute leaves open — subsection (2) fixes CATEGORY order; internal
   order of statewide/state-district lists diverges in print): (a)
@@ -3819,7 +3841,7 @@ measures last.
   %PDF); billstatus.ls.state.ms.us needs curl -k; Wayback playback 503
   all session.
 
-### NM — New Mexico (FIPS 35) — GRADE A
+### NM — New Mexico (FIPS 35) — GRADE A (scoped)
 
 - Authority: NMSA 1978 § 1-10-8 "Ballots; order of offices and ballot
   questions," as amended by Laws 2023, ch. 39 (SB 180) § 60, eff.
@@ -3908,7 +3930,21 @@ measures last.
   QUESTIONS may print, dead last after county questions); (6)
   presidential years have no executives and legislature moves directly
   behind US House.
-- Notes: statute-vs-sample gap recorded: Nov 2024 Santa Fe printed
+- GRADE SCOPE (review round): A covers the presidential-cycle § (A)
+  list (Nov 2024 Santa Fe generals corroborate it end-to-end), the
+  § (D) question block incl. retention-first, and the empty
+  school/municipal/special tiers. EXCLUDED from A — the gubernatorial
+  § (B) list: the amended text has never run in a general (first =
+  Nov 2026), and the plan requires a matching GENERAL sample for A.
+  Statute is mandatory, county discretion nil, and the June 2026
+  PRIMARY prints § (B) exactly — but this campaign has already seen
+  print lawfully deviate from clear statutory order (NE § 32-813(1)
+  reorder clause) and NM's own Nov 2024 print carried an off-list
+  magistrate contest, so the general-corroboration leg is load-bearing.
+  2022 general matches only the PRIOR text (DA placement differs).
+  Held at B; restore to A from a Santa Fe Nov 2026 general sample
+  (expected ~Oct 2026 — cheap close, before the override would ever
+  fire for that cycle).: Nov 2024 Santa Fe printed
   MAGISTRATE JUDGE Div. 2 (unexpired-term vacancy) but § (A) has no
   magistrate entry — it slotted between DA and county clerk, order
   unaffected, statutory list incomplete for off-cycle magistrate
