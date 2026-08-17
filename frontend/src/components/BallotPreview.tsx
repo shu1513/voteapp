@@ -243,7 +243,7 @@ export function BallotViewToggle({
   return (
     <div className="inline-flex items-center gap-0.5 rounded-lg bg-surface p-0.5 print:hidden" role="group" aria-label="Picks view">
       <button type="button" aria-pressed={view === "list"} className={buttonClass(view === "list")} onClick={() => onChange("list")}>
-        List
+        List view
       </button>
       <button type="button" aria-pressed={view === "ballot"} className={buttonClass(view === "ballot")} onClick={() => onChange("ballot")}>
         Ballot view

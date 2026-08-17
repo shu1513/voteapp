@@ -416,7 +416,7 @@ describe("PicksPage", () => {
     expect(screen.getByText(/VoteApp summary \(not the printed ballot text\): A parcel tax\./)).toBeInTheDocument();
 
     // Toggling back restores the list cards.
-    await user.click(screen.getByRole("button", { name: "List" }));
+    await user.click(screen.getByRole("button", { name: "List view" }));
     expect(await screen.findByText(/races decided/)).toBeInTheDocument();
   });
 
