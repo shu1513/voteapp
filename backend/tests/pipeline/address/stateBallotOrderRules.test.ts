@@ -159,7 +159,23 @@ describe("per-state deviations", () => {
     const city = rank("04", { office_scope: "place", title: "City Councilmember" });
     expect(city).toBeGreaterThan(rank("04", { office_scope: "school_unified", title: "School Board" }));
     expect(city).toBeLessThan(rank("04", { race_type: "ballot_measure", office_scope: null, district_type: "statewide" }));
-    // Contested Superior Court placement is A-excluded: county judicial stays baseline.
+    // Superior Court RETENTION (county-scoped) joins the nonpartisan-opening
+    // judicial block; JP/constable close the partisan section after county.
+    const superiorRetention = rank("04", {
+      office_scope: "county",
+      contest_family: "judicial_office",
+      title: "Judge of the Pinal County Superior Court (Retention)",
+    });
+    expect(superiorRetention).toBeGreaterThan(retention);
+    expect(superiorRetention).toBeLessThan(rank("04", { office_scope: "school_unified", title: "School Board" }));
+    const jp = rank("04", {
+      office_scope: "county",
+      contest_family: "judicial_office",
+      title: "Justice of the Peace, Prec. 1",
+    });
+    expect(jp).toBeGreaterThan(rank("04", { office_scope: "county", title: "County Recorder" }));
+    expect(jp).toBeLessThan(retention);
+    // Contested Superior Court placement is A-excluded: it stays baseline.
     expect(rank("04", { office_scope: "county", contest_family: "judicial_office", title: "Superior Court Judge" })).toBe(
       stateBaselineContestRank(
         input({ office_scope: "county", contest_family: "judicial_office", title: "Superior Court Judge" })
@@ -203,6 +219,7 @@ describe("per-state deviations", () => {
     // the place-scoped city district; AG is statewide.
     const delegate = rank("11", { office_scope: "us_house", title: "United States Representative, DC At-Large" });
     const mayor = rank("11", { office_scope: "place", title: "Mayor of the District of Columbia" });
+    const chairman = rank("11", { office_scope: "statewide", title: "Chairman of the Council" });
     const atLargeCouncil = rank("11", { office_scope: "statewide", title: "At-Large Member of the Council" });
     const wardCouncil = rank("11", { office_scope: "place", title: "Member of the Council Ward 3" });
     const attorneyGeneral = rank("11", { office_scope: "statewide", title: "Attorney General" });
@@ -212,9 +229,10 @@ describe("per-state deviations", () => {
       title: "United States Senator",
     });
     const shadowRep = rank("11", { office_scope: "statewide", title: "United States Representative" });
-    // § 1202.1 (b) -> (c) -> (e) -> (f) -> (g) -> (h) -> (i)
+    // § 1202.1 (b) -> (c) -> (d) -> (e) -> (f) -> (g) -> (h) -> (i)
     expect(delegate).toBeLessThan(mayor);
-    expect(mayor).toBeLessThan(atLargeCouncil);
+    expect(mayor).toBeLessThan(chairman);
+    expect(chairman).toBeLessThan(atLargeCouncil);
     expect(atLargeCouncil).toBeLessThan(wardCouncil);
     expect(wardCouncil).toBeLessThan(attorneyGeneral);
     expect(attorneyGeneral).toBeLessThan(shadowSenator);
@@ -285,6 +303,14 @@ describe("per-state deviations", () => {
       title: "Justice of the Supreme Court",
     });
     expect(retention).toBeGreaterThan(rank("18", { office_scope: "school_unified", title: "School Board" }));
+    // Authorized LOCAL retentions (county-scoped) join the same dead-last
+    // block instead of the early contested-court block.
+    const localRetention = rank("18", {
+      office_scope: "county",
+      contest_family: "judicial_office",
+      title: "Marion Superior Court (Retention) - Angela Davis",
+    });
+    expect(localRetention).toBeGreaterThan(rank("18", { office_scope: "school_unified", title: "School Board" }));
   });
 
   it("IA: retention after the township/special tier; measures state -> county -> city", () => {
@@ -316,6 +342,23 @@ describe("per-state deviations", () => {
     ).toBe(
       stateBaselineContestRank(
         input({ office_scope: "statewide", contest_family: "judicial_office", title: "Justice of the Supreme Court" })
+      )
+    );
+    // Nonpartisan-district RETENTION questions (county-scoped) are
+    // card-structure dependent (A-excluded) — they stay baseline too.
+    expect(
+      rank("20", {
+        office_scope: "county",
+        contest_family: "judicial_office",
+        title: "District Court Judge Retention, Third Judicial District",
+      })
+    ).toBe(
+      stateBaselineContestRank(
+        input({
+          office_scope: "county",
+          contest_family: "judicial_office",
+          title: "District Court Judge Retention, Third Judicial District",
+        })
       )
     );
   });
@@ -427,7 +470,13 @@ describe("per-state deviations", () => {
     const schoolBoard = rank("32", { office_scope: "school_unified", title: "School Board Trustee" });
     expect(schoolBoard).toBeGreaterThan(district);
     expect(schoolBoard).toBeLessThan(rank("32", { office_scope: "place", title: "City Council" }));
-    const jp = rank("32", { office_scope: "place", contest_family: "judicial_office", title: "Justice of the Peace" });
+    // JPs are county-scoped in the data (township districts are unmodeled):
+    // the title keeps them last among offices, after the city contests.
+    const jp = rank("32", {
+      office_scope: "county",
+      contest_family: "judicial_office",
+      title: "JUSTICE OF THE PEACE, PAHRUMP, DEPT. B",
+    });
     expect(jp).toBeGreaterThan(rank("32", { office_scope: "place", title: "City Council" }));
     expect(jp).toBeLessThan(rank("32", { race_type: "ballot_measure", office_scope: null, district_type: "statewide" }));
   });
@@ -592,6 +641,17 @@ describe("per-state deviations", () => {
     });
     expect(generalSessions).toBeGreaterThan(rank("47", { office_scope: "county", title: "County Commission" }));
     expect(generalSessions).toBeLessThan(rank("47", { office_scope: "place", title: "City Council" }));
+    // § 2-5-208(c)(3): retention questions go to the END of the ballot,
+    // after every office but ahead of the other (local) questions.
+    const retentionQuestion = rank("47", {
+      office_scope: "statewide",
+      contest_family: "judicial_office",
+      title: "Shall Sarah K. Campbell be retained as a Justice of the Supreme Court?",
+    });
+    expect(retentionQuestion).toBeGreaterThan(rank("47", { office_scope: "place", title: "City Council" }));
+    expect(retentionQuestion).toBeLessThan(
+      rank("47", { race_type: "ballot_measure", office_scope: null, district_type: "county" })
+    );
     const schoolBoard = rank("47", { office_scope: "school_unified", title: "School Board Member" });
     expect(schoolBoard).toBeGreaterThan(rank("47", { office_scope: "county", title: "County Commission" }));
     expect(schoolBoard).toBeLessThan(rank("47", { office_scope: "place", title: "City Council" }));
@@ -623,6 +683,12 @@ describe("per-state deviations", () => {
     const jp = rank("48", { office_scope: "county", contest_family: "judicial_office", title: "Justice of the Peace, Precinct 1" });
     expect(jp).toBeGreaterThan(rank("48", { office_scope: "county", title: "County Clerk" }));
     expect(jp).toBeLessThan(rank("48", { office_scope: "place", title: "Mayor" }));
+    // DA/JP/constable also surface under the NON-judicial discovery family —
+    // the title checks must fire either way.
+    const constable = rank("48", { office_scope: "county", title: "Rockwall County Constable, Precinct 3" });
+    expect(constable).toBe(jp);
+    const da = rank("48", { office_scope: "county", title: "Van Zandt County Criminal District Attorney" });
+    expect(da).toBe(district);
   });
 
   it("UT: school board at the end of the county block; retention after every candidate contest", () => {

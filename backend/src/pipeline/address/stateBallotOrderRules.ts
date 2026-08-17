@@ -126,17 +126,31 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
   // AZ — EPM ballot order + § 16-502. Only Governor precedes the
   // legislature; the remaining executives print after the state house.
   // Judicial retention opens the nonpartisan section (before school);
-  // municipal is last among candidate races, after school. A-excluded:
-  // contested Superior Court placement (La Paz 2022 vs 2025 EPM conflict) —
-  // so only STATEWIDE judicial (retention appellate) moves.
+  // JP/constable are the LAST partisan contests, right after the county
+  // offices; municipal is last among candidate races, after school.
+  // A-excluded: contested Superior Court placement (La Paz 2022 vs 2025
+  // EPM conflict) — those county-scoped contests keep the baseline.
   "04": (c) => {
     if (statewideExec(c)) {
       return /^governor\b/i.test(c.title) ? 35 : 55;
     }
-    if (c.judicial && c.scope === "statewide") {
-      return 62 + c.court;
+    if (c.judicial) {
+      if (c.scope === "statewide") {
+        return 62 + c.court;
+      }
+      // County-scoped judicial splits three ways: JP/constable close the
+      // partisan section; Superior Court RETENTION (Maricopa/Pima/Pinal/
+      // Coconino) prints inside the nonpartisan-opening judicial block;
+      // contested Superior Court stays baseline (the A-excluded conflict).
+      if (/\b(justice of the peace|constable)\b/i.test(c.title)) {
+        return 61;
+      }
+      if (isJudicialRetentionTitle(c.title)) {
+        return 62 + c.court;
+      }
+      return null;
     }
-    if (c.scope === "place" && !c.measure && !c.judicial) {
+    if (c.scope === "place" && !c.measure) {
       return 85;
     }
     return null;
@@ -204,6 +218,9 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
       }
       return /\bmayor\b/i.test(c.title) ? 29 : 30.5;
     }
+    if (c.scope === "statewide" && /\bchair/i.test(c.title)) {
+      return 29.5; // Council Chairman: after Mayor, before the At-Large seats
+    }
     if (c.scope === "statewide" && /\battorney general\b/i.test(c.title)) {
       return 31; // AG prints after the whole Council block, ward seats included
     }
@@ -252,9 +269,11 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
 
   // IN — IC 3-11-2-12/12.4: public questions first (statewide then local);
   // statewide executives before US House; elected trial courts early (after
-  // the state house), only the retention block late — dead last, after
-  // school. A-excluded (not encoded): the at-large hoist (manual gloss and
-  // statute pull apart).
+  // the state house), the retention block late — dead last, after school.
+  // The retention block includes the authorized LOCAL retentions
+  // (Lake/St. Joseph/Marion superior), which arrive county-scoped — keyed
+  // on the retention title, not the scope. A-excluded (not encoded): the
+  // at-large hoist (manual gloss and statute pull apart).
   "18": (c) => {
     if (c.measure) {
       return c.scope === "statewide" ? -10 : -5;
@@ -263,7 +282,10 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
       return 15;
     }
     if (c.judicial) {
-      return c.scope === "statewide" ? 92 + c.court : 52 + c.court;
+      if (c.scope === "statewide" || isJudicialRetentionTitle(c.title)) {
+        return 92 + c.court;
+      }
+      return 52 + c.court;
     }
     return null;
   },
@@ -282,11 +304,13 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
   },
 
   // KS — § 25-611/613: partisan district judges/magistrates print between
-  // the state house and county. A-excluded (not encoded): appellate
-  // retention position and question placement (card-structure dependent) —
-  // statewide judicial keeps the baseline late block.
+  // the state house and county. A-excluded (not encoded): retention
+  // placement at EVERY level — it is card-structure dependent (a county
+  // choice under 25-601/618/620), so retention rows (statewide appellate
+  // AND the nonpartisan-district retentions, which arrive county-scoped)
+  // all keep the baseline late block.
   "20": (c) => {
-    if (c.judicial && c.scope !== "statewide") {
+    if (c.judicial && c.scope !== "statewide" && !isJudicialRetentionTitle(c.title)) {
       return 52 + c.court;
     }
     return null;
@@ -408,10 +432,15 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
 
   // NV — sample-verified order: judicial early (Supreme/Appeals + District
   // after the partisan county offices), school after judicial but before
-  // municipal, JPs last among offices (after city).
+  // municipal, JPs last among offices (after city). JPs arrive
+  // COUNTY-scoped (townships have no modeled district), so they are keyed
+  // on the title, with municipal judicial.
   "32": (c) => {
     if (c.judicial) {
-      return c.scope === "place" ? 75 + c.court : 62 + c.court;
+      if (c.scope === "place" || /\bjustice of the peace\b/i.test(c.title)) {
+        return 75 + c.court;
+      }
+      return 62 + c.court;
     }
     if (school(c)) {
       return 65;
@@ -547,6 +576,11 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
       return 5;
     }
     if (c.judicial) {
+      // § 2-5-208(c)(3): retention questions go to the END of the ballot,
+      // ahead of the other (local) questions — never the early block.
+      if (isJudicialRetentionTitle(c.title)) {
+        return 99 + c.court;
+      }
       if (c.scope === "place") {
         return null;
       }
@@ -566,19 +600,27 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
   // house, county courts LEADING the county block, JP at the tail of the
   // precinct offices before municipal. The district-block courts have no
   // modeled scope of their own: appeals courts, district judges, and DAs
-  // arrive county-scoped, and JPs are county-scoped precinct offices — so
-  // the county tier splits by title. Measure-class sub-order and the
-  // per-subdivision proposition interleave are below tier granularity.
+  // arrive county-scoped, and JPs/constables are county-scoped precinct
+  // offices — so the county tier splits by title. JP/constable/DA surface
+  // under BOTH discovery families, so those checks sit outside the
+  // judicial gate. Measure-class sub-order and the per-subdivision
+  // proposition interleave are below tier granularity.
   "48": (c) => {
+    if (c.measure) {
+      return null;
+    }
+    if (c.scope === "county" && /\b(justice of the peace|constable)\b/i.test(c.title)) {
+      return 65.6; // precinct tail: after county, before municipal
+    }
+    if (c.scope === "county" && /\bdistrict attorney\b/i.test(c.title)) {
+      return 51.6; // DAs close the district block
+    }
     if (c.judicial) {
       if (c.scope === "statewide") {
         return 31 + c.court;
       }
       if (c.scope === "place") {
         return 65 + c.court;
-      }
-      if (/\b(justice of the peace|constable)\b/i.test(c.title)) {
-        return 65 + c.court; // precinct tail: after county, before municipal
       }
       if (/\b(district|appeals)\b/i.test(c.title)) {
         return 51 + c.court; // district block, after the state house
