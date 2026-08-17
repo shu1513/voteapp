@@ -2,10 +2,12 @@ import type { ReactNode } from "react";
 
 /**
  * Quiet toolbar trigger for the ballot pages' inline disclosure panels
- * ("Filters", "How to vote"). Styled to sit level with the "Sort by" select —
- * same border, radius, height, and type — so the controls row reads as one
- * toolbar; the chevron carries the open/closed affordance instead of a pill
- * that looked like a primary action. Shared so the two triggers can't drift.
+ * ("Filters"). Styled to sit level with the "Sort by" select — same border,
+ * radius, height, and type — so the controls row reads as one toolbar; the
+ * chevron carries the open/closed affordance instead of a pill that looked
+ * like a primary action. HowToVoteControl used to share this trigger but is
+ * informational, not a list control, so it now renders its own link-style
+ * trigger instead.
  */
 export function DisclosureTrigger({
   open,
