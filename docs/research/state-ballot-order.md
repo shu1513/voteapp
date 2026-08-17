@@ -261,24 +261,79 @@ measures last.
   last-gubernatorial-winner's party first. Design forms DS-DE 200–208
   incorporated by reference, not fetched.
 
-### NY — New York (FIPS 36) — GRADE C (conflict)
-- Authority: NY Election Law §7-104(11)(a)–(b) (L.2019 c.411, "Voter Friendly
-  Ballot Act"), https://www.nysenate.gov/legislation/laws/ELN/7-104; proposals
+### NY — New York (FIPS 36) — GRADE A (scoped; C→B→A(scoped) 2026-08-16/17 — external review applied the campaign's own one-matching-sample standard)
+- GRADE SCOPE: A covers TWO legs, each with express authority AND a matching
+  official sample: (1) judicial offices after ALL other partisan offices —
+  §7-104(11)(b) express text (eff. 2025-01-01) + the Suffolk 2025 general
+  booklet, every style (single-county, but the campaign's A standard is one
+  matching sample — NH's Dover face is the precedent — and demanding a
+  second county here would be a stricter rule invented for NY alone);
+  (2) ballot proposals in a separate section, normally the ballot back —
+  §7-110 "shall appear on the ballot in a separate section or on a separate
+  sheet or card" + Suffolk 2024 (39 faces, reverse side) and 2025 (backs,
+  statewide amendment first). EXCLUDED from A: (a) the (11)(a) precedence
+  spine (executives above US Senate/House) — effective 2025-01-01 but NO
+  general carrying (11)(a) offices has printed under it yet (first test =
+  Nov 2026), so it is statute-only; (b) partisan-before-nonpartisan and the
+  judicial-before-nonpartisan corollary (inference from NY's partisan
+  judiciary; only pre-mandate nonpartisan sample); (c) the "customary
+  order" middle band ((11)(b) leaves non-listed office order to county
+  custom); (d) Big-5 school-board band placement (single pre-mandate Erie
+  style). NO CODE CONSEQUENCE: both in-scope legs match the baseline
+  (judicial late block, measures last), and the headline spine deviation is
+  excluded — so NY gets NO override row until Nov 2026 print evidence
+  brings the spine into scope.
+- Authority: NY Election Law §7-104(11)(a)–(b). LAW HISTORY (corrected
+  2026-08-16 against the S5943 bill text, deleted matter in brackets): the
+  2019 "Voter Friendly Ballot Act" (L.2019 c.411) subdivision required only
+  that "[the offices appearing on all ballots shall be listed in the
+  customary order]" — NO office list, NO judicial-placement rule. The
+  detailed precedence list AND the partisan-before-nonpartisan /
+  judicial-after-partisan provisos were CREATED by Ch. 217 of 2024 (= S5943,
+  signed 2024-08-06, https://www.nysenate.gov/legislation/bills/2023/S5943),
+  effective "on the first of January next succeeding the date on which it
+  shall have become a law" = January 1, 2025. Current text re-verified
+  2026-08-16 (revision stamps 2024-08-09 and 2025-01-03),
+  https://www.nysenate.gov/legislation/laws/ELN/7-104; proposals
   §7-110, https://www.nysenate.gov/legislation/laws/ELN/7-110; party rows
   §7-116, https://www.nysenate.gov/legislation/laws/ELN/7-116; NY Const. art.
   VI §2(e) (Court of Appeals appointed) + §6(c) (Supreme Court elected);
-  Education Law §2002 (May school elections) (all accessed 2026-08-16)
-- Office order: §7-104(11)(a) fixed list: President/VP electors → Governor+Lt.
-  Gov (joint, Gov first) → Comptroller → AG → US Senator → US Rep → State
-  Senator → Assembly Member; closing sentence: "Any office which is not listed
-  in this paragraph shall not appear on the ballot in a position before or
-  ahead of an office which is listed." (11)(b): everything else "in the
-  customary order", partisan before nonpartisan, judicial after all other
-  partisan offices. Statewide executives ABOVE both congressional offices.
-- Judicial: statute = late-but-not-last (after all partisan, before
-  nonpartisan). REAL BALLOTS DISAGREE: Supreme Court Justice prints THIRD,
-  right after US Senator, in both counties checked (Suffolk also County +
-  Family Court there), ahead of Congress/legislature. Court of Appeals
+  Education Law §2002 (May school elections) (all accessed 2026-08-16).
+  Current (11)(a) verbatim: "The offices appearing on all ballots shall be
+  listed in the order of precedence, as applicable to the offices up for
+  election in any given year, as follows: electors for president and
+  vice-president of the United States, governor and lieutenant governor,
+  New York state comptroller, New York state attorney general, United States
+  senator, member of the house of representatives, New York state senator,
+  member of the New York state assembly." Current (11)(b) verbatim:
+  "Immediately following the offices in paragraph (a) of this subdivision,
+  all other offices shall be placed upon the ballot in the customary order;
+  provided, further, that partisan offices regardless of the size of the
+  constituency shall be listed before or ahead of nonpartisan offices and
+  all candidates for judicial offices shall follow all other partisan
+  offices."
+- Office order: §7-104(11)(a) fixed list (CURRENT law, eff. 2025-01-01):
+  President/VP electors → Governor+Lt. Gov (joint, Gov first) → Comptroller →
+  AG → US Senator → US Rep → State Senator → Assembly Member; closing
+  sentence: "Any office which is not listed in this paragraph shall not
+  appear on the ballot in a position before or ahead of an office which is
+  listed." (11)(b): everything else "in the customary order", partisan before
+  nonpartisan, judicial after all other partisan offices. Statewide
+  executives ABOVE both congressional offices. NONE of this bound any ballot
+  before 2025 (see Authority).
+- Judicial: current statute's express rule = judicial offices "shall follow
+  all other partisan offices". Their position relative to NONPARTISAN
+  offices is an INFERENCE, not express text: NY's elected judicial offices
+  are partisan (party nominations, party rows), so the separate
+  partisan-before-nonpartisan clause puts them ahead of nonpartisan contests
+  — flag any nonpartisan judicial contest, if one ever appears, as outside
+  this deduction. 2024 BALLOTS printed Supreme Court Justice THIRD, right
+  after US Senator, in both counties checked (Suffolk also County + Family
+  Court there), ahead of Congress/legislature — LAWFUL at the time: the
+  pre-2025 text required only "customary order", so those faces evidence
+  the old custom, not a violation. 2025 (first cycle under the new
+  mandate): Suffolk's general booklet prints all judicial after every
+  partisan office (see Grade rationale). Court of Appeals
   appointed — never a contest. No retention.
 - Measures: last, separate section, normally ballot BACK — §7-110 "Ballot
   proposals shall appear on the ballot in a separate section or on a separate
@@ -310,22 +365,51 @@ measures last.
   City Court; bottom band left-to-right = Proposal One (state amendment) →
   County Proposal No. One (Erie charter) → Buffalo Board of Education
   Member-at-Large.
-- Baseline delta: statute would give (1) statewide executives above Congress
-  and (2) judicial late-but-before-nonpartisan; PRACTICE puts judicial-district
-  courts 3rd. Measures-last matches baseline WITH a Big-5 qualifier: when a
+- Baseline delta: current statute gives (1) statewide executives above
+  Congress and (2) judicial after all other partisan offices (before
+  nonpartisan only by the partisan-judiciary inference above); 2024 practice
+  (pre-mandate, lawful custom) put judicial-district courts 3rd, while 2025
+  practice (Suffolk booklet, first cycle under Ch. 217) matches the
+  statute's judicial-after-all-partisan — which the baseline's late judicial
+  block already approximates, so the judicial leg needs no override either
+  way. Measures-last matches baseline WITH a Big-5
+  qualifier: when a
   Buffalo school-board contest is present (Erie style above), the nonpartisan
   school contest prints to the RIGHT of the proposals, so the proposal
   section is not final on that ballot (single-style observation; Suffolk had
   nothing after its reverse-side proposals).
-- Grade rationale: C — explicit statewide statute vs two large-county 2024
-  ballots in direct conflict on judicial placement (printing Supreme Court
-  third violates BOTH (11)(b) and (11)(a)'s closing sentence; looks like a
-  size-of-constituency "customary order" habit surviving the 2019 act);
-  recorded both ways, no override until resolved. The federal/state spine,
-  partisan-before-nonpartisan, and measures-last legs are corroborated; the
-  Governor-before-US-Senate leg is statute-only (2024 not a gubernatorial
-  year; Suffolk 2022 booklet 404s). Verification pass 2026-08-16 re-fetched
-  every URL and re-read both ballots (39 Suffolk faces).
+- Grade rationale: A (scoped), via C → B → A(scoped). The C rested on a
+  supposed statute-vs-practice
+  conflict; corrected law history DISSOLVES it — the batch research read the
+  2026-current §7-104(11) text off nysenate.gov and mis-attributed it to
+  L.2019 c.411, so the 2024 judicial-third faces were scored as violations
+  of a rule that did not yet bind them (pre-2025 law: "customary order"
+  only). There was never a conflict: 2024 ballots followed lawful custom;
+  the detailed mandate took effect 2025-01-01 (Ch. 217 of 2024); and the
+  Suffolk County 2025 GENERAL sample booklet (84pp, all styles,
+  https://apps2.suffolkcountyny.gov/boe/documents/General%20Election,%202025%20-%20Sample%20Ballot%20Booklet.pdf,
+  %PDF-verified, coordinate-extracted 2026-08-16) prints EVERY judicial
+  office after ALL partisan county and town offices: DA(pos 1) → Sheriff(2)
+  → County Legislator → town Supervisor → Town Clerk → Council →
+  Justice of the Supreme Court 10th JD (pos 76-83, vote for up to 8) →
+  County Court Judge(84) → Family Court Judge(85-87) → District Court
+  Judge(88-90); machine-position numbering reserves the trailing 76+ band
+  for judicial on every style. Proposals print on the ballot BACK with the
+  statewide amendment (Proposal One, Olympic Sports Complex) first —
+  §7-110 practice unchanged. Statute and first-cycle print practice AGREE
+  on judicial placement. The interim B had demanded a SECOND county before
+  A — the second external-review round correctly flagged that as a stricter
+  rule than the campaign's A standard (explicit authority + ONE matching
+  official sample; NH's Dover face is the single-jurisdiction precedent),
+  so the judicial and proposals legs take scoped A and everything untested
+  stays excluded (see GRADE SCOPE). Corroboration-widening paths, useful
+  but NOT gates: another county's 2025 general face (Erie's
+  elections.erie.gov/GenBallots/593.pdf is purged/404, the enhancedvoting
+  Westchester archive is empty, Wayback replay was down service-wide on
+  2026-08-16 — retry there), and a Nov 2026 general face, which is the
+  REAL gate for bringing the (11)(a) spine into scope.
+  Verification history: 2026-08-16 pass re-fetched every URL and re-read
+  both 2024 ballots (39 Suffolk faces); this upgrade adds the 2025 booklet.
 - Notes: grid ballots — party rows lettered by last gubernatorial vote
   (§7-116(1)); office sequence is the perpendicular axis. Fusion voting:
   same candidate on multiple party rows, informational only. Name order: no
@@ -356,9 +440,30 @@ measures last.
   art. V §13(a): judges "shall be elected at the municipal election" =
   odd-year November. Retention constitutionally segregated, art. V §15(b):
   "on a separate judicial ballot or in a separate column on voting machines".
-  Odd-year internal placement not statute-fixed; observed practice appellate
-  contests top, retention near the end — NOT sample-verified here (county
-  archives only served GE24).
+  Odd-year internal placement not statute-fixed; NOW SAMPLE-VERIFIED
+  (2026-08-16, two counties, 2025 municipal election, both %PDF-verified and
+  coordinate-extracted): Bucks County Yardley Borough CS 306
+  (https://www.buckscounty.gov/DocumentCenter/View/24132/YARDLEY_BOROUGH--306-OFF-NP-ENLocked?bidId=)
+  prints Judge of the Superior Court → Judge of the Commonwealth Court →
+  Judge of the Court of Common Pleas (7th JD) → DA → Sheriff → Prothonotary →
+  Recorder of Deeds → Magisterial District Judge → School Director → Mayor →
+  Council → Tax Collector → Judge of Elections → Inspector of Elections →
+  retention questions DEAD LAST under the caption "Retention Election for
+  Judicial Office" (Supreme ×3 → Superior → Commonwealth → Common Pleas);
+  Chester County Atglen 005
+  (https://www.chesco.org/DocumentCenter/View/81269/2025-Municipal-Election-CHESTER-COUNTY-SPECIMEN-BALLOTS?bidId=,
+  462pp specimen book) prints the same appellate-first spine (Superior →
+  Commonwealth → Common Pleas → Clerk of Courts → Controller → Coroner →
+  Prothonotary → Treasurer → Magisterial District Judge → School Director →
+  Member of Council → Mayor → Tax Collector → election-board officials) with
+  "OFFICIAL JUDICIAL RETENTION QUESTIONS" as a separately captioned section
+  last; NOTE these samples show a separately captioned section only — they do
+  not by themselves establish either constitutional form in art. V § 15(b)
+  (a separate judicial ballot, or a separate column on voting machines).
+  MUNICIPAL MICRO-ORDER
+  IS COUNTY-VARIABLE: Bucks prints Mayor before Council, Chester prints
+  Council before Mayor — direct evidence that below the specimen the order
+  is county practice, reinforcing B.
 - Measures: last. §1003(g): "each amendment or other question so submitted
   may be printed upon the ballot below the groups of candidates … and, when
   required by law, shall be so printed." No placement distinction amendments
@@ -386,7 +491,12 @@ measures last.
   following order"; the ordering evidence is an illustrative specimen
   ("substantially the following form") stopping at state senate. Top-of-ballot
   leg alone would be A; full-ballot rule set alone would be C; B is the
-  honest composite. Act 77 (2019) killed straight-party in practice; §1003(f)
+  honest composite. DOS re-checked 2026-08-16: the Department of State's
+  Directive on Logic & Accuracy Testing 3.1 (2025-04,
+  https://www.pa.gov/content/dam/copapwp-pagov/en/dos/resources/voting-and-elections/directives-and-guidance/2025/2025-04-directive-on-logic-accuracy-testing-3.1.pdf,
+  p. 3, verified) requires counties to confirm "Contests and candidates are
+  displayed in the required order" — but no DOS document DEFINES that order,
+  so the authority gap stands and B is unchanged by the new odd-year samples. Act 77 (2019) killed straight-party in practice; §1003(f)
   party-column text unrepealed. Name order (informational): no rotation —
   §1003(b) party order by last gubernatorial vote, primary order by lot
   (§§915–916). Odd-year municipal ballots differ substantially (judicial +
@@ -567,7 +677,33 @@ measures last.
   Failed sources for the record: Franklin lookup-only, Cuyahoga
   script-rendered, lookup.boe.ohio.gov Cloudflare-gated.
 
-### GA — Georgia (FIPS 13) — GRADE B
+### GA — Georgia (FIPS 13) — GRADE A (scoped; upgraded from B 2026-08-16)
+- GRADE SCOPE: A covers ONE leg — state-court judicial absent from the
+  November general (§ 21-2-138, primary-verified: nonpartisan election
+  "held and conducted jointly with the general primary in each
+  even-numbered year"; mandatory "shall", plus zero state-court judicial
+  contests on all three November samples — Gwinnett 2022, Richmond 2022,
+  Fulton 2024; the fourth sample is the Richmond May 2022 primary).
+  EXCLUDED from A: (a) the ENTIRE
+  office sequence (US Senate/President → 8 executives → US House →
+  legislature → county → Soil & Water) — no authority text anywhere, SEB
+  rule 183-1-12-.07 merely cross-references §§ 21-2-379.4/379.5 which
+  terminate without fixing a sequence; (b) nonpartisan-last — § 21-2-285.1
+  is a PRIMARY-ballot rule (its operative frame is "each official primary
+  ballot", where § 21-2-138 puts nonpartisan elections), so it is outside
+  this campaign's general-election scope, and the one November analogue
+  observed (Richmond 2022 locally-partisan Chief Judge) printed in the
+  county block, NOT last; (c) measures-after-candidates — § 21-2-285(f) /
+  § 21-2-379.5(f) are PERMISSIVE ("may be printed ... following/below the
+  groups of candidates"), which under this campaign's RI precedent
+  (numbering/permission ≠ placement mandate) is sample-supported practice,
+  not A-grade authority; (d) the county block's internal order, the
+  Richmond-style locally-partisan judicial slot, and consolidated
+  special-set placement after measures. NO CODE CONSEQUENCE: the in-scope
+  leg and both excluded practice legs all match the baseline (empty
+  November judicial tier, measures last), and the headline
+  US-House-after-executives delta is excluded — so GA still gets NO
+  override row.
 - Authority: NO statute or SEB rule prescribes a federal→state→local sequence.
   Chain: Ga. Comp. R. & Regs. 183-1-12-.07 ("in the order specified in
   O.C.G.A. §§ 21-2-379.4 and 21-2-379.5"), https://rules.sos.ga.gov/gac/183-1-12
@@ -575,12 +711,31 @@ measures last.
   practicable") → §21-2-285(c) — chain terminates without fixing office
   sequence. BMD arrangement delegated: §21-2-379.23(b) "The form and
   arrangement of ballots marked and printed by an electronic ballot marker
-  shall be prescribed by the Secretary of State." Placement rules that DO
-  exist: §21-2-285.1 (nonpartisan last), §21-2-138 (judicial on primary
-  date), §21-2-285(f)/§21-2-379.5(f) (measures after candidates). (accessed
-  2026-08-16.) Official O.C.G.A. = LexisNexis portal, fully script-rendered
-  (non-JS fetch → tracking pixel); Justia 403; text read from FindLaw/onecle
-  mirrors (unofficial, verbatim), e.g.
+  shall be prescribed by the Secretary of State." Placement provisions that
+  DO exist: §21-2-285.1 (nonpartisan last — PRIMARY-ballot rule), §21-2-138
+  (judicial on primary date), §21-2-285(f)/§21-2-379.5(f) (PERMISSIVE
+  authorization to print measures following/below the candidate groups —
+  permission, not an ordering mandate; see GRADE SCOPE). (accessed
+  2026-08-16.) PRIMARY VERIFICATION 2026-08-16: the official O.C.G.A. portal
+  (https://www.lexisnexis.com/hottopics/gacode/ — "made available for public
+  use by the Georgia Code Revision Commission on behalf of the Georgia
+  General Assembly", serving via advance.lexis.com) was read in a JS browser
+  using the search-result-snippet method (TN-style; full-doc view is
+  CAPTCHA-walled, not bypassed). Verified verbatim on the official portal:
+  § 21-2-285.1 ("insofar as practicable such offices to be filled in the
+  nonpartisan election shall be separated from the names of candidates for
+  party nomination to other offices by being listed last on each ballot",
+  caption "OFFICIAL NONPARTISAN ELECTION BALLOT"); § 21-2-138 ("shall be
+  placed on the ballot in a nonpartisan election to be held and conducted
+  jointly with the general primary in each even-numbered year"); § 21-2-285(f)
+  ("may be printed upon the ballot following the groups of candidates for the
+  various offices. Proposed constitutional amendments so submitted shall be
+  printed in the order ..."); § 21-2-379.5(f) ("below the groups of
+  candidates"); § 21-2-379.23(a)-(b) (both the current and the
+  effective-2028 versions: "The form and arrangement of ballots marked and
+  printed by an electronic ballot marker shall be prescribed by the
+  Secretary of State"); bonus § 21-2-480 (optical-scan, same measures
+  language). FindLaw/onecle mirrors remain as convenience cites only, e.g.
   https://law.onecle.com/georgia/title-21/21-2-138.html,
   https://codes.findlaw.com/ga/title-21-elections/ga-code-sect-21-2-285-1.html
 - Office order (printed practice, no statute): US Senate (or President/VP in
@@ -594,23 +749,26 @@ measures last.
   House prints straight after President/VP there. PSC slot (after Labor,
   before US House) from Richmond May-2022 primary (two PSC contests, D2+D3);
   PSC absent from 2022/2024 generals (Rose v. Raffensperger litigation).
-- Judicial: STATE-COURT judicial (Supreme/Appeals/Superior/State Court) not
-  on the November ballot — §21-2-138 puts those elections "in a nonpartisan
+- Judicial: TWO cases, governed by DIFFERENT rules — keep them separate.
+  (1) STATE-COURT judicial (Supreme/Appeals/Superior/State Court) is not on
+  the November ballot — §21-2-138 puts those elections "in a nonpartisan
   election to be held and conducted jointly with the general primary" (May;
-  probate/magistrate are NOT in this section). Locally-partisan judicial
-  offices CAN still appear in the November county block (Richmond exception
-  below). There, §21-2-285.1 lists them last "insofar as
-  practicable": "separated from the names of candidates for party nomination
-  to other offices by being listed last on each ballot" — statutory caption
-  "OFFICIAL NONPARTISAN ELECTION BALLOT"; the printed Richmond ballot's
-  caption reads "NONPARTISAN GENERAL ELECTION". Observed May-2022 internal
-  order: Supreme ×3 → Court of Appeals ×3 → Superior ×3 → State Court ×2,
-  then the section continues with NON-judicial nonpartisan offices (Mayor of
-  Augusta, commission seats) — not purely judicial. No retention — all
-  contested nonpartisan. Exception: a locally-partisan judicial office sits
-  in the November county block (Richmond 2022 "For Chief Judge, Civil and
-  Magistrate Court" — ONE contest — between Tax Commissioner and School
-  Board, incumbent listed "Democrat").
+  probate/magistrate are NOT in this section). On THAT May ballot,
+  §21-2-285.1 operates (its frame is the official primary ballot): the
+  nonpartisan offices are "separated from the names of candidates for party
+  nomination to other offices by being listed last on each ballot" "insofar
+  as practicable", statutory caption "OFFICIAL NONPARTISAN ELECTION BALLOT"
+  (the printed Richmond May-2022 ballot's caption reads "NONPARTISAN
+  GENERAL ELECTION" instead). Observed May-2022 internal order: Supreme ×3
+  → Court of Appeals ×3 → Superior ×3 → State Court ×2, then the section
+  continues with NON-judicial nonpartisan offices (Mayor of Augusta,
+  commission seats) — not purely judicial. No retention — all contested
+  nonpartisan. (2) LOCALLY-PARTISAN judicial offices CAN still appear in
+  the November county block, where NO placement statute controls —
+  §21-2-285.1 does not reach the November general: Richmond 2022 "For
+  Chief Judge, Civil and Magistrate Court" — ONE contest — printed between
+  Tax Commissioner and School Board, incumbent listed "Democrat"
+  (county-block practice, not a nonpartisan-last section).
 - Measures: last among the REGULAR election's items — amendments → statewide
   referenda → local questions. §21-2-285(f) "may be printed upon the ballot
   following the groups of candidates" (permissive "may", universally
@@ -651,17 +809,17 @@ measures last.
   Soil & Water = last office slot. Matches: President/Senate top, state
   senate before house, county after legislature, measures last within the
   regular set.
-- Notes: grade B — judicial/nonpartisan/measures legs are
-  MIRROR-text+sample-confirmed, but the office sequence itself has no
-  authority text; rests on 4 consistent samples + §21-2-379.23(b)
-  delegation. SOURCING CAVEAT (plan rule: primary sources only): every
-  O.C.G.A. quote in this entry comes from unofficial mirrors
-  (FindLaw/onecle) because the official code is behind LexisNexis's script
-  portal — mitigated by two independent mirrors agreeing verbatim, by the
-  verification pass re-reading both, and by the OFFICIAL SOS rule
-  183-1-12-.07 citing the same section numbers; still, treat the statutory
-  quotes as pending primary re-verification if O.C.G.A. access opens, and
-  do not cite this entry's statute text as primary-verified. Primary
+- Notes: grade history — was B on two grounds: (1) mirror-sourced statute
+  text, CLOSED 2026-08-16 by primary verification on the official portal
+  (see Authority); (2) no authority for the office sequence, which REMAINS
+  true and is why the A is scoped (sequence excluded). A 2026-08-16 external
+  sweep (Codex-assisted, findings verified where cited) found no official
+  SOS document enumerating the sequence: SEB Rule 183-1-12-.07(4) only
+  cross-references the statutes above, and a Feb 24, 2021 SEB transcript
+  confirms an SOS "ballot proofing checklist" exists but does not reproduce
+  it (unverified-by-us transcript detail; public-records request to the SOS
+  for the checklist or the Dominion office-order template remains the
+  sequence's restore path). Primary
   (one line): single ballot = party primary → party questions → captioned
   nonpartisan section last (§21-2-285.1). Name order (informational): party
   columns by descending last-gubernatorial vote (§21-2-285(c)); alphabetical
@@ -1254,29 +1412,35 @@ measures last.
   403 vs curl — needed in-browser same-origin fetch; Pima samples
   address-gated (no static PDFs).
 
-### TN — Tennessee (FIPS 47) — GRADE B
-- Grade rationale: B is a SOURCING cap, not a content doubt. The plan gates
-  grade A on PRIMARY authority, and grade A gates a code override — TN's
-  controlling statute text is mirror-sourced and by this entry's own
-  caveat "pending primary re-verification", so it cannot clear that gate,
-  however low the practical risk (two mirrors letter-identical + official
-  ballots matching). RESTORE PATH to A: read § 2-5-208 on an official
-  source (LexisNexis-hosted official T.C.A. if access opens, or an
-  official SOS/Coordinator of Elections manual reproducing the complete
-  order). Everything below stands as researched.
+### TN — Tennessee (FIPS 47) — GRADE A (upgraded from B 2026-08-16)
+- Grade rationale: the former B was a SOURCING cap only, and its stated
+  restore path ("read § 2-5-208 on an official source") is now SATISFIED.
+  On 2026-08-16 the complete current text of T.C.A. § 2-5-208 — lead-in,
+  the full (c)(1) office list (A)-(CC), (c)(2) alphabetical tie rule,
+  (c)(3) retention-at-end, and the (f)(1) amendments-after-Governor rule —
+  was read on the OFFICIAL LexisNexis-hosted "Tennessee Code Unannotated –
+  Free Public Access" portal (entry https://www.lexisnexis.com/hottopics/tncode/,
+  serving via advance.lexis.com). Retrieval method: the portal's full-document
+  view is CAPTCHA-walled (not bypassed); the section text was recovered from
+  the portal's own search-result snippets across 7 targeted phrase searches
+  and stitched — every fragment letter-identical to the FindLaw/Justia
+  mirrors previously cited. Currency proven in-portal: the snippet shows
+  "(j) [Deleted by 2023 amendment.]", matching Public Chapter 346 (2023).
+  Bonus official corroboration: T.C.A. § 2-13-311(2) (same portal) — state,
+  county, and municipal offices on the presidential-preference ballot
+  "shall appear in the order outlined in § 2-5-208". Everything below
+  stands as researched; the mirror URLs remain as convenience cites only.
 - Authority: T.C.A. § 2-5-208 (Arrangement of material on ballots), subsecs.
-  (a), (c)(1)-(3), (d), (f)(1) —
+  (a), (c)(1)-(3), (d), (f)(1) — PRIMARY-VERIFIED 2026-08-16 on the official
+  LexisNexis-hosted portal (https://www.lexisnexis.com/hottopics/tncode/;
+  see Grade rationale for the retrieval method). Convenience mirror:
   https://codes.findlaw.com/tn/title-2-elections/tn-code-sect-2-5-208/
-  (accessed 2026-08-16). SOURCING CAVEAT (GA-style): the statute text is
-  MIRROR-sourced — the official LexisNexis portal 403s — but TWO independent
-  mirrors agree letter-for-letter across the whole (A)-(CC) list (FindLaw
-  "last updated Jan 2, 2024" + law.justia.com "2024 Tennessee Code",
-  justia readable via the r.jina.ai fetch proxy), currency is confirmed by
-  the official 2023 Public Chapter 346 PDF
+  (letter-identical). Currency also confirmed by the official 2023 Public
+  Chapter 346 PDF
   (https://publications.tnsosfiles.com/acts/113/pub/pc0346.pdf — deletes
-  old subsec. (j), explaining the (i)→(k) gap both mirrors show), and all
-  sample ballots below match exactly; still pending primary re-verification
-  if official T.C.A. access opens. Supporting: T.C.A. § 2-3-202 (August
+  old subsec. (j), and the official portal text shows
+  "(j) [Deleted by 2023 amendment.]"); all sample ballots below match
+  exactly. Former mirror-sourcing caveat CLOSED. Supporting: T.C.A. § 2-3-202 (August
   offices) + § 2-3-203 (NOVEMBER offices — the positive basis: "(1)
   Representative in the general assembly; (2) Representative in the United
   States congress; (3) Senator in the general assembly; (4) Senator in the
@@ -1317,10 +1481,28 @@ measures last.
   questions (local referenda/charter amendments) go "at the end of the
   ballot"; if a retention question is present, other questions print after
   it.
-- County discretion: NONE as to order — § 2-5-208(a): "The requirements of
-  this section apply to all ballots." "Substantially" in (c)(1) tolerates
-  absent classes, not resequencing (all three ballots read match exactly).
-  Format (not order) for vendor systems set statewide under § 2-5-206.
+- County discretion: none as to the DEFAULT order, with ONE narrow statutory
+  fit exception (CodeRabbit catch, verified on the official portal
+  2026-08-17): § 2-5-208(a) "The requirements of this section apply to all
+  ballots" sets the default for everything, but § 2-5-206(b)(3) provides
+  "If the arrangement as set out in subdivisions (b)(1) and (2) will not fit
+  on the voting machine ballot, the county election commission may arrange
+  the ballot so that the voting machine will accommodate the entire ballot
+  including, without limitation, the arrangement of material in vertical
+  columns with the office appearing first ..." — (b)(1)-(2) are § 2-5-206's
+  machine-GEOMETRY rules (titles vertical, party columns), so the exception
+  is aimed at layout geometry, but its "without limitation" wording is broad
+  enough that fit-driven deviation from the printed sequence cannot be
+  categorically ruled out; a related § 2-5-206 clause ("in any county where
+  a voting machine will not accommodate the entire ballot, the coordinator
+  of elections may, with the approval of the county election commission,
+  permit the placement ...") is the same fit trigger. Montgomery County's
+  official "Ballot Layout Requirements" summary
+  (https://mcgtn.org/storage/departments/election/Ballot%20Layout%20Requirements.pdf)
+  restates the exception. NO exercised rearrangement observed on any ballot
+  read (all three match § 2-5-208 exactly). GRADE A accordingly covers the
+  STATUTORY DEFAULT order; a fit-driven rearrangement under § 2-5-206(b)(3),
+  if one ever surfaces, is outside it.
 - School/special: school boards are NOT a separate tier — inside county
   class (Y) ("school boards" named in the class text), after Register,
   BEFORE municipal. Usually August but NOT statutorily bound to it —
@@ -1745,7 +1927,16 @@ measures last.
   content-stream order; verification re-derived Cass/StCharles/Cole/
   Ralls/Vernon from column-major coordinates and OCR'd Callaway — the
   spine held everywhere. Greene carried no State Senator contest in 2024
-  (that link of the chain unobserved there).
+  (that link of the chain unobserved there). (g) Re-checked 2026-08-16
+  (C stands): revisor.mo.gov shows § 115.237 unamended (effective
+  28 Aug 2022, 5 histories); the current 15 CSR Title 15 chapter index
+  (read directly at sos.mo.gov/adrules/csr/current/15csr/15csr) still lists
+  NO Division 30 chapter on ballot layout or contest order (chapters cover
+  voter ID, mail ballots, provisional voting, counting standards, voting
+  machines, petitions, etc.) — the § 115.237.6 rulemaking duty remains
+  undischarged. A Codex-assisted sweep of 2025-2026 legislation likewise
+  found no amendment (its senate cross-reference page timed out — logged
+  as a gap, not a negative).
 
 ### MD — Maryland (FIPS 24) — GRADE A
 - Authority: Md. Code, Election Law § 9-210 "Arrangement of ballots —
@@ -3569,9 +3760,13 @@ measures last.
   all last), county measures (Benton directly after county JP block vs
   Pulaski dead last). Verify pass also confirmed the negative sweep
   independently (whole-compilation "in the following order" hits =
-  measure numbering + a commission register only; SBEC SOS-rules page
-  lists exactly one rule, Vote Centers; 2026 CBEC Manual = name-draw +
-  measure formats only). Judicial-timing, measure-numbering,
+  measure numbering + a commission register only; NO SBEC-listed rule
+  governs contest order — the sbec.arkansas.gov/rules/ index, read
+  directly 2026-08-16, lists ~14 rules (training, procedure, voter-reg,
+  7 CAR 90/91/92 etc.) and none touches ballot layout or office
+  sequence, superseding an earlier verify-round note that counted "one
+  rule, Vote Centers" off a narrower SOS-filings view; 2026 CBEC
+  Manual = name-draw + measure formats only). Judicial-timing, measure-numbering,
   school-timing legs are individually A-quality. Aggregate "UNOPPOSED
   OFFICES — vote for all" pseudo-contest prints mid-ballot (position
   varies); Benton's on-ballot unopposed-exception list ADDS "City Clerk
@@ -3583,7 +3778,19 @@ measures last.
   is results/notice order, not a ballot face (sample lookup per-voter;
   /sample-ballot/ = HTTP 522); Benton 2024 composite not located;
   official O.C.A. = LexisNexis JS portal (SOS compilation used as
-  primary instead); mid-term judicial vacancy path unchased.
+  primary instead); mid-term judicial vacancy path unchased. Re-checked
+  2026-08-16 (C stands): SBEC rules index read directly
+  (https://sbec.arkansas.gov/rules/) — still no ballot-format/order rule
+  ("7 CAR 92 Voter Intent and Ballot Remake" = damaged-ballot duplication,
+  not layout); 2025 HB1070 "Ballot Draw Standardization Act of 2025"
+  (candidate name-draw only, not office order) failed third reading
+  2025-03-13 and died on the House calendar at Sine Die 2025-05-05
+  (verified on arkleg.state.ar.us). Codex-assisted sweep (results-report
+  order, NOT ballot faces — treat as roster-grade only, unverified by us):
+  Faulkner/Saline/Craighead 2024 broadly agree with the common spine, but
+  Washington County places the unopposed block AFTER the statewide issues,
+  contradicting all three — the county-conflict picture widened, not
+  converged.
 
 ### KS — Kansas (FIPS 20) — GRADE A (scoped)
 
@@ -4156,7 +4363,20 @@ measures last.
   (judicial-after-county, ACHD/CWI tiers, measures sub-order) is
   prescribed NOWHERE verifiable. Restore path to A: obtain the § 34-909(2)
   layout packet (public-records request to SOS Elections Division) or a
-  first-party/archive-grade Directives retrieval.
+  first-party/archive-grade Directives retrieval. Retrieval attempt
+  2026-08-16: a FIRST-PARTY copy is confirmed to have existed at
+  https://sos.idaho.gov/elections/publications/Directives_Guide.pdf (search
+  engines still index the title "DIRECTIVES - Idaho Secretary of State" and
+  the exact hierarchy sentence at that URL), but the SOS's whole legacy
+  /elections/publications/ tree now 404s after a site revamp
+  (election_laws.pdf 404s too), archive.sos.idaho.gov does not carry it,
+  and Wayback replay was down service-wide that day (root 200, replay 503).
+  CONCRETE RETRY: pull that exact sos.idaho.gov URL from the Wayback Machine
+  once replay recovers — an archive.org capture of the first-party URL
+  satisfies this entry's restore path. Dead end logged: a Codex-suggested
+  Owyhee County-hosted "2020 Election Handbook"
+  (owyheecounty.net/wp-content/uploads/2020/02/2020-Election-Handbook.pdf)
+  404s — treat that citation as unusable.
 - Office order: [President, presidential years] → US Senator → US Rep →
   CANDIDATES FOR STATE OFFICES: Governor → LtGov → SOS → State Controller →
   State Treasurer → AG → Superintendent of Public Instruction (midterms;
