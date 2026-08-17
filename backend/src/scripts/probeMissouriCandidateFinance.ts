@@ -238,6 +238,8 @@ function requireHiddenFields(page: string, url: string): Record<string, string> 
  */
 type ReportInventoryRow = { cpid: string; report: string; dateFiled: string };
 
+export type CommitteeReportRow = { mecid: string; report: string };
+
 /** Coarse report-type family for the timely/period taxonomy (fact 2/3). */
 type ReportTypeFamily =
   | "quarterly"
@@ -261,6 +263,23 @@ function classifyReportType(report: string): ReportTypeFamily {
 }
 
 const AMENDED_PREFIX = /^AMENDED\s+/i;
+
+function isAmendedReport(report: string): boolean {
+  return AMENDED_PREFIX.test(report.trim());
+}
+
+function reportLineageKey(row: CommitteeReportRow): string {
+  const normalizedReport = row.report.trim().replace(AMENDED_PREFIX, "").trim().toLocaleLowerCase("en-US");
+  return `${row.mecid.trim().toLocaleUpperCase("en-US")}\u0000${normalizedReport}`;
+}
+
+/** Returns amended reports whose unamended base exists for the same committee. */
+export function findSameCommitteeAmendmentPairs(rows: readonly CommitteeReportRow[]): CommitteeReportRow[] {
+  const baseReports = new Set(
+    rows.filter((row) => !isAmendedReport(row.report)).map((row) => reportLineageKey(row))
+  );
+  return rows.filter((row) => isAmendedReport(row.report) && baseReports.has(reportLineageKey(row)));
+}
 
 /**
  * Parses the expanded grvReports_0 table (one year) into inventory rows.
@@ -621,7 +640,7 @@ async function main(): Promise<void> {
   });
 
   // --- Gate 8: Committee Info gold set + report inventory (gate 3, reachable). ---
-  const allReportRows: string[] = [];
+  const allReportRows: CommitteeReportRow[] = [];
   for (const gold of GOLD_COMMITTEES) {
     const infoUrl = buildMissouriMecUrl(MISSOURI_MEC_PAGES.committeeInfo, { MECID: gold.mecid });
     const info = await session.get(infoUrl);
@@ -656,7 +675,7 @@ async function main(): Promise<void> {
     const inventory = await fetchReportInventory(session, infoUrl, html);
     saveArtifact(`comminfo_${gold.mecid}_reports.html`, inventory.expandedHtml);
     for (const row of inventory.rows) {
-      allReportRows.push(row.report);
+      allReportRows.push({ mecid: gold.mecid, report: row.report });
       console.log(`    report ${row.cpid} [${classifyReportType(row.report)}] ${row.report} (${row.dateFiled})`);
     }
     gates.push({
@@ -681,12 +700,9 @@ async function main(): Promise<void> {
   // Enterprise-gated (VerifyClick), so it is out of scope for the plain
   // client (see the header note; totals must come from itemized transactions
   // or the MEC bulk extract). ---
-  const seenFamilies = new Set(allReportRows.map((report) => classifyReportType(report)));
+  const seenFamilies = new Set(allReportRows.map((row) => classifyReportType(row.report)));
   const missingFamilies = REQUIRED_REPORT_FAMILIES.filter((family) => !seenFamilies.has(family));
-  const baseReports = new Set(allReportRows.filter((report) => !AMENDED_PREFIX.test(report)));
-  const amendmentPairs = allReportRows.filter(
-    (report) => AMENDED_PREFIX.test(report) && baseReports.has(report.replace(AMENDED_PREFIX, ""))
-  );
+  const amendmentPairs = findSameCommitteeAmendmentPairs(allReportRows);
   console.log(
     `\nreport-type families across gold set: [${[...seenFamilies].sort().join(", ")}]; ` +
       `amendment pairs: ${amendmentPairs.length}`
