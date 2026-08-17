@@ -743,7 +743,7 @@ export function CandidatePage() {
     <div
       className={
         railCandidates !== null
-          ? "mx-auto max-w-3xl px-4 py-8 lg:grid lg:max-w-6xl lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-8"
+          ? "mx-auto max-w-3xl px-4 py-8 lg:grid lg:max-w-6xl lg:grid-cols-[18rem_minmax(0,1fr)] lg:gap-4"
           : "mx-auto max-w-3xl px-4 py-8"
       }
     >
@@ -795,8 +795,18 @@ export function CandidatePage() {
       ) : null}
       {/* min-w-0: the grid column must be allowed to shrink or long names
           blow the layout; lg:max-w-3xl keeps the reading measure of the
-          classic column even though the grid column is wider. */}
-      <div className="min-w-0 lg:max-w-3xl">
+          classic column even though the grid column is wider. In rail mode a
+          hairline on this column's left edge separates rail from detail —
+          gap-4 + 1rem of pl centers it in the same 2rem gutter the old
+          gap-8 gave. On the column (not the rail) so it spans the full
+          content height; conditional so deep links never grow a stray rule. */}
+      <div
+        className={
+          railCandidates !== null
+            ? "min-w-0 lg:max-w-3xl lg:border-l lg:border-line lg:pl-4"
+            : "min-w-0 lg:max-w-3xl"
+        }
+      >
         {railCandidates !== null ? <div className="lg:hidden">{pagerBar}</div> : pagerBar}
         <JsonLdScript
           data={{
