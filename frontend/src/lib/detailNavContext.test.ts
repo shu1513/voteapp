@@ -73,6 +73,17 @@ describe("readElectionNavState", () => {
     });
   });
 
+  it("round-trips a valid rosterSort and drops an invalid one alone", () => {
+    // rosterSort restores the election page's candidates-section order
+    // after a candidate round trip; it shares the candidate rail's value
+    // space, not the election rail's.
+    const state = { backTo: BACK_TO, rosterSort: "alphabetical" };
+    expect(readElectionNavState(state)).toEqual(state);
+    expect(readElectionNavState({ backTo: BACK_TO, rosterSort: "vote_power" })).toEqual({
+      backTo: BACK_TO,
+    });
+  });
+
   it("treats whitespace-only contest ids and titles as malformed", () => {
     // A whitespace-only id would build a broken href; a whitespace-only
     // title would render an invisible pager link.

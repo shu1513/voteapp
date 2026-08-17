@@ -143,12 +143,17 @@ export function ErrorBoundary() {
 export function ElectionPage() {
   const { me } = useMe();
   const { savedAreaIds, weights, hasSaved, isLoading: savedAreasLoading } = useMyResearchAreas();
+  const location = useLocation();
+  const navState = readElectionNavState(location.state);
   // null = no explicit pick; viewers with saved areas default to "my
   // issues first" (their picks are the point of saving areas), everyone
   // else to the alphabetical payload order. A picked "my_issues" is
   // ignored while saved areas are empty — same resilience as the record
   // view on CandidatePage — and honored again once areas are re-saved.
-  const [chosenSort, setChosenSort] = useState<CandidateSort | null>(null);
+  // Seeded from the nav state's rosterSort so a candidate round trip
+  // restores the roster order the reader left (or switched to, via the
+  // candidate rail) — the remount would otherwise reset it to the default.
+  const [chosenSort, setChosenSort] = useState<CandidateSort | null>(navState?.rosterSort ?? null);
   const effectiveChosenSort = chosenSort === "my_issues" && !hasSaved ? null : chosenSort;
   const candidateSort = effectiveChosenSort ?? (hasSaved ? "my_issues" : "alphabetical");
   // The pick carries the election it was made on: this component stays
@@ -252,8 +257,6 @@ export function ElectionPage() {
   // The nav bar exists only for in-app arrivals: router state carries where
   // "back" goes and the ballot sequence. Deep links (shares, search
   // engines) have neither — they get no bar at all, by product choice.
-  const location = useLocation();
-  const navState = readElectionNavState(location.state);
   // The rail's race-type tabs: offered only when the snapshot types every
   // contest (an old history entry may not) and holds both types. The tab
   // starts where the list's tab was (navState.raceType) and lives in
@@ -275,10 +278,24 @@ export function ElectionPage() {
   // the tab: component state across sibling walks, nav state across
   // remounts. No "As listed": the sort is always engaged, seeded by the
   // LIST's sort (the pages stamp railSort via railSortForBallotSort, which
-  // sends the un-honorable district-size sorts to vote_power); a stale or
-  // missing seed falls back to vote_power, the ballot's own default.
+  // sends the un-honorable district-size sorts to vote_power). A snapshot
+  // that PREDATES the railSort stamp seeds from the back URL's own ?sort=
+  // instead — defaulting it to vote_power would make rewriteBackPath
+  // silently rewrite a sort=soonest back link the reader never touched.
+  // Only after both fall through does vote_power, the ballot's default,
+  // apply (below).
   const offeredRailSorts = savedAreasLoading ? [] : railSortsOffered(contests ?? [], hasSaved);
-  const [railSortState, setRailSortState] = useState<RailSortKey | null>(navState?.railSort ?? null);
+  const [railSortState, setRailSortState] = useState<RailSortKey | null>(() => {
+    if (navState === null) {
+      return null;
+    }
+    if (navState.railSort !== undefined) {
+      return navState.railSort;
+    }
+    return railSortForBallotSort(
+      new URL(navState.backTo.path, "http://internal").searchParams.get("sort") ?? "vote_power"
+    );
+  });
   const railSort =
     railSortState !== null && offeredRailSorts.includes(railSortState)
       ? railSortState
@@ -350,8 +367,12 @@ export function ElectionPage() {
     backTo: { path: `/elections/${data.id}`, label: data.official_ballot_title },
     // The election page's own incoming context rides along so the back hop
     // restores it (election → candidate → back keeps the ballot sequence,
-    // including the rail tab and sort as switched).
-    ...(railNav ? { backState: railNav.forwarded } : {}),
+    // including the rail tab and sort as switched). rosterSort rides on top:
+    // the back hop remounts this page, and without it the roster's sort
+    // resets to the default instead of the order the reader left. The
+    // candidate page overrides it with its rail's current sort, so the two
+    // stay one continuous control across the round trip.
+    ...(railNav ? { backState: { ...railNav.forwarded, rosterSort: candidateSort } } : {}),
     electionId: data.id,
     candidates: orderedCandidates.map(({ candidate, stances }) => ({
       id: candidate.candidate_id,

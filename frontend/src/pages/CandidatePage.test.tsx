@@ -1242,6 +1242,29 @@ describe("CandidatePage roster rail sort", () => {
     expect(railRows(rail)).toEqual(["Casey Contender", "Riley Runner", "Jordan Voter"]);
   });
 
+  it("hands the rail's current sort back to the election as its roster sort", async () => {
+    stubApiRoutes({ ...SAVED_GUN });
+    const user = userEvent.setup();
+    const electionContext = { backTo: { path: "/me/ballot", label: "My Elections" } };
+    const { router } = renderCandidate(perIdLoader, "c-1", {
+      ...KEYED_ARRIVAL,
+      backState: electionContext,
+    });
+
+    // Switch the rail to A–Z, then take the back hop: the election page
+    // must reopen its roster in A–Z, not its My-issues default — rail and
+    // roster read as one continuous control across the round trip.
+    const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    await user.selectOptions(await within(rail).findByRole("combobox"), "alphabetical");
+    await user.click(within(rail).getByRole("link", { name: "Back to Governor" }));
+
+    expect(router.state.location.pathname).toBe("/elections/e-1");
+    expect(router.state.location.state).toEqual({
+      ...electionContext,
+      rosterSort: "alphabetical",
+    });
+  });
+
   it("offers and engages only A–Z for viewers without saved areas", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(perIdLoader, "c-1", KEYED_ARRIVAL);

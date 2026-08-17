@@ -668,6 +668,17 @@ export function CandidatePage() {
             }
             return forwarded;
           })();
+  // The back hop's election state: the arrival context with rosterSort
+  // overridden by this rail's CURRENT sort, so a sort switched here walks
+  // back into the election page's roster (rail and roster are one
+  // continuous control — same value space by construction). Recomputed at
+  // render on every sibling page, so the override always reflects the sort
+  // on screen, not the one at departure. With no engaged rail sort (an old
+  // unkeyed snapshot) the arrival state passes through untouched.
+  const backToElectionState =
+    navState?.backState !== undefined && railSort !== null
+      ? { ...navState.backState, rosterSort: railSort }
+      : navState?.backState;
   // Every election link on this page (the back-link fallback and the
   // Elections history list) tells the election page to come back here. This
   // page's own arrival context rides along (backState) so the round trip
@@ -720,7 +731,7 @@ export function CandidatePage() {
             : null
         }
         backTo={pagerBackTo}
-        backToState={navState.backState}
+        backToState={backToElectionState}
         siblingState={forwardedNavState}
       />
     ) : null;
@@ -749,7 +760,7 @@ export function CandidatePage() {
           }))}
           currentId={candidate.candidate_id}
           backTo={navState.backTo}
-          backToState={navState.backState}
+          backToState={backToElectionState}
           siblingState={forwardedNavState}
           headerSlot={
             // The list label renders even when no sort is offerable (an old

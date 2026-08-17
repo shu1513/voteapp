@@ -1353,8 +1353,9 @@ describe("ElectionPage back link and nav context", () => {
     expect(router.state.location.state).toEqual({
       backTo: { path: "/elections/e-1", label: "Governor" },
       // The election page's own arrival context rides along so the back
-      // hop can restore it.
-      backState: incoming,
+      // hop can restore it — with the roster sort in force stamped on, so
+      // the return remount reopens the roster in this same order.
+      backState: { ...incoming, rosterSort: "alphabetical" },
       electionId: "e-1",
       // research_area_records: the candidate rail's My-issues sort key —
       // empty here because the fixture candidates carry no records.
@@ -1366,6 +1367,29 @@ describe("ElectionPage back link and nav context", () => {
       // rail starts on it instead of stomping it with its own default.
       railSort: "alphabetical",
     });
+  });
+
+  it("restores a handed-back roster sort instead of the default", async () => {
+    // The return half of the roster round trip: a saved-areas viewer
+    // defaults to my_issues, so an explicit alphabetical choice must come
+    // back from the nav state, not reset on the remount.
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/research-area-preferences": {
+        body: {
+          preferences: [
+            { research_area_id: "a-1", slug: "housing_affordability", name: "Housing Affordability", description: null, rank: 1 },
+          ],
+        },
+      },
+    });
+    renderElection(() => electionDetail(), "e-1", {
+      backTo: BALLOT_BACK,
+      rosterSort: "alphabetical",
+    });
+
+    expect(await screen.findByRole("combobox")).toHaveValue("alphabetical");
   });
 
   it("scopes the handed-off roster order to the active party filter", async () => {
@@ -1776,6 +1800,25 @@ describe("ElectionPage ballot rail sort and pick checks", () => {
     expect(within(rail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
       "href",
       "/me/ballot?sort=district_size"
+    );
+  });
+
+  it("seeds a pre-railSort snapshot from the back URL's sort without rewriting it", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(perIdLoader, "e-1", {
+      // Keyed contests but NO railSort stamp — a history entry from the
+      // deploy before the stamp existed. Defaulting to vote_power here
+      // would silently rewrite the sort=soonest back link; the seed must
+      // come from the URL instead.
+      backTo: { path: "/me/ballot?sort=soonest", label: "My Elections" },
+      contests: KEYED_CONTESTS,
+    });
+
+    const rail = await screen.findByRole("navigation", { name: "Ballot" });
+    expect(await within(rail).findByRole("combobox")).toHaveValue("soonest");
+    expect(within(rail).getByRole("link", { name: "Back to My Elections" })).toHaveAttribute(
+      "href",
+      "/me/ballot?sort=soonest"
     );
   });
 

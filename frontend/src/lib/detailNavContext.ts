@@ -57,8 +57,14 @@ export type ElectionNavState = {
   contests?: NavContest[];
   raceType?: BallotRaceType;
   /** The rail's engaged sort, carried so sibling walks and candidate round
-   * trips keep it; absent = "As listed" (the arrival order). */
+   * trips keep it; absent (an old history entry) = the election page seeds
+   * from the back URL's own ?sort= instead. */
   railSort?: RailSortKey;
+  /** The election page's ROSTER sort (its candidates section), carried so a
+   * candidate round trip restores it — set by the election page on
+   * departure and overridden by the candidate page's rail sort on the way
+   * back. Same value space as the candidate rail's sort, deliberately. */
+  rosterSort?: CandidateRailSortKey;
 };
 
 /** Handed to /candidates/:id links. backState restores the election page's
@@ -70,7 +76,8 @@ export type CandidateNavState = {
   electionId?: string;
   candidates?: NavCandidate[];
   /** The candidate rail's engaged sort, carried so sibling walks and
-   * election round trips keep it; absent = "As listed". */
+   * election round trips keep it; absent (an old history entry) = the
+   * rail's own default order. */
   railSort?: CandidateRailSortKey;
 };
 
@@ -174,6 +181,9 @@ export function readElectionNavState(state: unknown): ElectionNavState | null {
   }
   if (RAIL_SORTS.some((option) => option.value === record.railSort)) {
     result.railSort = record.railSort as RailSortKey;
+  }
+  if (CANDIDATE_RAIL_SORTS.some((option) => option.value === record.rosterSort)) {
+    result.rosterSort = record.rosterSort as CandidateRailSortKey;
   }
   return result;
 }
