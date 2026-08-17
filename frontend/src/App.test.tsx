@@ -1,6 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { App } from "./App";
 import { PicksPage } from "./pages/PicksPage";
 import { renderRoutes } from "./test/render";
@@ -52,11 +51,10 @@ describe("App account nav", () => {
     window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
   });
 
-  it("renders inline links plus a small-screen menu with the same destinations", async () => {
+  it("renders the signed-in links inline at every width — no hamburger menu", async () => {
     stubApiRoutes({ "/api/me": { body: ME_VERIFIED } });
     renderApp();
 
-    // Inline (sm+) links.
     expect(await screen.findByRole("link", { name: "My Elections" })).toHaveAttribute("href", "/me/ballot");
     // Plain "My Draft" (no counter) while no pick is made / progress unknown.
     expect(screen.getByRole("link", { name: "My Draft" })).toHaveAttribute("href", "/me/picks");
@@ -68,19 +66,9 @@ describe("App account nav", () => {
     expect(greeting.closest("a")).toBeNull();
     expect(greeting.closest("button")).toBeNull();
 
-    // The mobile menu opens and repeats the destinations — no Log out here,
-    // it lives in Settings → Sessions, and My Draft sits last
-    // (Headless UI gives menu entries the menuitem role).
-    const user = userEvent.setup();
-    await user.click(screen.getByRole("button", { name: "Menu" }));
-    const items = screen.getAllByRole("menuitem");
-    expect(items.map((item) => item.textContent)).toEqual([
-      "My Elections",
-      "My Candidates",
-      "Settings",
-      "My Draft",
-    ]);
-    expect(screen.getByRole("menuitem", { name: "My Elections" })).toHaveAttribute("href", "/me/ballot");
+    // The links must never hide behind a disclosure at narrow widths — the
+    // nav wraps instead. No Menu button, no menu items.
+    expect(screen.queryByRole("button", { name: "Menu" })).not.toBeInTheDocument();
   });
 
   it("cold-loading /me/picks shares ONE ballot request between the header badge and the page", async () => {
