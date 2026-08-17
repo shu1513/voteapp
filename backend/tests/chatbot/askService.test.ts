@@ -324,3 +324,30 @@ describe("question logging", () => {
     expect(logged).toHaveLength(0);
   });
 });
+
+describe("feedback tokens on responses", () => {
+  it("attaches a token minted for the answer path when a minter is configured", async () => {
+    const { pool } = templatePool([]);
+    const minted: string[] = [];
+    const service = createAskService({
+      db: pool,
+      embeddings: null,
+      feedbackTokens: {
+        mint: (answeredBy) => {
+          minted.push(answeredBy);
+          return `token-for-${answeredBy}`;
+        },
+      },
+    });
+    const response = await service.ask("What's on my ballot?", null, null, USER_ID);
+    expect(response.feedback_token).toBe("token-for-intent:ballot_lookup");
+    expect(minted).toEqual(["intent:ballot_lookup"]);
+  });
+
+  it("leaves responses token-free without a minter (operator scripts)", async () => {
+    const { pool } = templatePool([]);
+    const service = createAskService({ db: pool, embeddings: null, logQuestions: false });
+    const response = await service.ask("What's on my ballot?", null, null, USER_ID);
+    expect(response.feedback_token).toBeUndefined();
+  });
+});

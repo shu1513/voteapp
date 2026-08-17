@@ -322,4 +322,76 @@ describe("ChatWidget", () => {
     await user.click(screen.getByRole("button", { name: "Ask" }));
     expect(await screen.findByRole("link", { name: "Sign up" })).toBeInTheDocument();
   });
+
+  it("posts a one-shot 👍/👎 vote when the answer carries a feedback token", async () => {
+    const user = userEvent.setup();
+    const fetchMock = stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/chatbot/ask": { body: { ...RETRIEVAL_RESPONSE, feedback_token: "payload.signature" } },
+      "/api/chatbot/feedback": { body: { status: "ok" } },
+    });
+    renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+
+    await user.click(screen.getByRole("button", { name: "Bad answer" }));
+    // One-shot: the buttons are gone, the thanks copy replaces them.
+    expect(await screen.findByText("Thanks for the feedback.")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Good answer" })).not.toBeInTheDocument();
+    const feedbackCall = fetchMock.mock.calls.find(([input]) => String(input).includes("/api/chatbot/feedback"));
+    const body = JSON.parse((feedbackCall as unknown as [string, RequestInit])[1].body as string);
+    expect(body).toEqual({ token: "payload.signature", verdict: "down" });
+  });
+
+  it("keeps the thumbs as the retry control when the vote POST fails transiently", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/chatbot/ask": { body: { ...RETRIEVAL_RESPONSE, feedback_token: "payload.signature" } },
+      "/api/chatbot/feedback": apiError(500, "internal_error", "Internal error"),
+    });
+    renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+
+    await user.click(screen.getByRole("button", { name: "Bad answer" }));
+    // No false thanks; the buttons stay so the user can retry.
+    expect(await screen.findByText("Couldn't save — try again.")).toBeInTheDocument();
+    expect(screen.queryByText("Thanks for the feedback.")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Bad answer" })).toBeInTheDocument();
+  });
+
+  it("gives up without retry controls when the server rejects the token (expired across a restart)", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/chatbot/ask": { body: { ...RETRIEVAL_RESPONSE, feedback_token: "payload.signature" } },
+      "/api/chatbot/feedback": apiError(400, "invalid_request", "Invalid feedback token"),
+    });
+    renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+
+    await user.click(screen.getByRole("button", { name: "Good answer" }));
+    // A rejected token can never succeed on retry — no buttons, no false thanks.
+    expect(await screen.findByText("Couldn't record feedback for this answer.")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Good answer" })).not.toBeInTheDocument();
+    expect(screen.queryByText("Thanks for the feedback.")).not.toBeInTheDocument();
+  });
+
+  it("shows no thumbs when the answer carries no feedback token", async () => {
+    const user = userEvent.setup();
+    renderWidgetAt("/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+    expect(screen.queryByRole("button", { name: "Good answer" })).not.toBeInTheDocument();
+  });
 });

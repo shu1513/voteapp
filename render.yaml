@@ -119,6 +119,13 @@ services:
           property: host
       - key: CHATBOT_EMBEDDINGS_PORT
         value: "8080"
+      # Signs the 👍/👎 feedback tokens (chatbot/feedback.ts). Must be
+      # STABLE across restarts: the free plan spins the process down when
+      # idle, and a per-boot secret would invalidate every token minted
+      # before the wake-up. Unset → per-boot fallback (votes dropped after
+      # each restart, warned at boot).
+      - key: CHATBOT_FEEDBACK_SECRET
+        generateValue: true
       # --- Finance read flags -------------------------------------------
       # Display-only switches: they gate whether stored finance data is
       # returned to the cards, and cost nothing. Without them production

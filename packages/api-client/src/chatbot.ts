@@ -27,6 +27,9 @@ export type ChatbotAskResponse = {
    * shows the AI label + report control for these. Absent on template,
    * clarify, refusal, and result-card answers. */
   ai_generated?: boolean;
+  /** Opaque one-shot token for submitChatbotFeedback. Present on every
+   * answer when the server mints them; absent → hide the thumbs. */
+  feedback_token?: string;
 };
 
 export const CHATBOT_MAX_QUESTION_LENGTH = 500;
@@ -46,6 +49,17 @@ export type AskChatbotOptions = {
   context?: ChatbotAskContext | null;
   signal?: AbortSignal;
 };
+
+export type ChatbotFeedbackVerdict = "up" | "down";
+
+/** One-shot 👍/👎 on an answer. The token came from that answer's ask
+ * response; the server ignores duplicate votes on the same token. */
+export function submitChatbotFeedback(token: string, verdict: ChatbotFeedbackVerdict): Promise<{ status: "ok" }> {
+  return apiRequest<{ status: "ok" }>("/api/chatbot/feedback", {
+    method: "POST",
+    body: { token, verdict },
+  });
+}
 
 export function askChatbot(question: string, options: AskChatbotOptions = {}): Promise<ChatbotAskResponse> {
   const { previousQuestion, context, signal } = options;

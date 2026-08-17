@@ -55,6 +55,11 @@ export type AskResponse = {
    * else — the widget uses it for the AI label + report control
    * (BEHAVIOR.md rule 9). */
   ai_generated?: boolean;
+  /** Opaque 👍/👎 token for POST /api/chatbot/feedback (feedback.ts).
+   * Attached per ask AFTER the answer cache — cached JSON never carries one,
+   * so every asker votes on their own token. Absent for operator scripts
+   * (eval) that run without a token minter. */
+  feedback_token?: string;
 };
 
 export type AskContext =
@@ -786,12 +791,17 @@ export type CreateAskServiceOptions = {
    * runs never land in chatbot.questions — the report would otherwise
    * measure test bursts, not users. */
   logQuestions?: boolean;
+  /** Mints the per-answer feedback token (feedback.ts). Absent (operator
+   * scripts) → responses carry no feedback_token. Structural type on purpose:
+   * the ask service needs only mint, never verify. */
+  feedbackTokens?: { mint: (answeredBy: string) => string } | null;
 };
 
 export function createAskService(options: CreateAskServiceOptions): AskService {
   const { db, embeddings } = options;
   const llm = options.llm ?? null;
   const logQuestions = options.logQuestions ?? true;
+  const feedbackTokens = options.feedbackTokens ?? null;
 
   return {
     async ask(
@@ -821,7 +831,11 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
             tokensOut,
           });
         }
-        return response;
+        // Token attached to a COPY, after the answer cache: answerWithLlm
+        // caches the raw response object before finish() runs, so cached JSON
+        // never carries a token and mutation-order can never change that.
+        // Cache hits mint their own fresh token (answeredBy "cache").
+        return feedbackTokens ? { ...response, feedback_token: feedbackTokens.mint(answeredBy) } : response;
       };
 
       // 1. Deterministic intents (policy refusals, logistics, results).

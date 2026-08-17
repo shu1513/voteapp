@@ -121,6 +121,10 @@ export type AddressApiServerOptions = {
     context?: ChatbotAskContext | null,
     userId?: string | null
   ) => Promise<AskResponse>;
+  /** POST /api/chatbot/feedback — 👍/👎 on an answer, keyed by the opaque
+   * feedback_token the ask response carried. Wired together with askChatbot
+   * (404 when absent). "invalid_token" → 400. */
+  submitChatbotFeedback?: (token: string, verdict: "up" | "down") => Promise<"ok" | "invalid_token">;
   listResearchAreas?: () => Promise<ResearchAreaCatalogResult>;
   /** GET /api/state-resources?state=CA — public official how-to-vote links
    * for one state. null = state not in state_resources (404). */

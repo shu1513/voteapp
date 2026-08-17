@@ -33,7 +33,9 @@ import {
   ADDRESS_RESOLVE_PATH,
   BALLOT_LOOKUP_PATH,
   CHATBOT_ASK_PATH,
+  CHATBOT_FEEDBACK_PATH,
   parseChatbotAskBodyValue,
+  parseChatbotFeedbackBodyValue,
   CONTENT_REPORTS_PATH,
   CANDIDATE_DETAIL_PATH_PREFIX,
   CANDIDATE_SEARCH_PATH,
@@ -131,6 +133,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ADDRESS_RESOLVE_PATH ||
     pathname === BALLOT_LOOKUP_PATH ||
     pathname === CHATBOT_ASK_PATH ||
+    pathname === CHATBOT_FEEDBACK_PATH ||
     pathname === CONTENT_REPORTS_PATH ||
     pathname === AUTH_FORGOT_PASSWORD_PATH ||
     pathname === AUTH_GOOGLE_PATH ||
@@ -447,6 +450,10 @@ function createJsonBodyParser() {
           request.path === ADDRESS_AUTOCOMPLETE_RETRIEVE_PATH ||
           request.path === ADDRESS_RESOLVE_PATH ||
           request.path === CHATBOT_ASK_PATH ||
+          // Requiring application/json also blocks plain cross-site form
+          // POSTs from casting feedback votes (forms cannot send it without
+          // a CORS preflight).
+          request.path === CHATBOT_FEEDBACK_PATH ||
           request.path === CONTENT_REPORTS_PATH ||
           request.path === ME_DISTRICTS_INITIALIZE_PATH ||
           request.path === AUTH_FORGOT_PASSWORD_PATH ||
@@ -636,6 +643,48 @@ async function dispatchApiRequest(
     // question (chatbot.questions stays anonymous).
     const askResult = await options.askChatbot(payload.question, payload.previousQuestion, payload.context, chatbotUserId);
     sendApiResponse(response, toJsonResponse(200, askResult, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === CHATBOT_FEEDBACK_PATH) {
+    // Same isolation contract as the ask path: unwired → 404 before the
+    // method check, so CHATBOT_ENABLED=false hides the feature entirely.
+    if (!options.submitChatbotFeedback) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Not found", corsHeaders));
+      return;
+    }
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/chatbot/feedback", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+
+    // Same verified-accounts gate as the ask path: tokens are only ever
+    // issued to verified users, so only they can spend one. The stored row
+    // stays anonymous — the userId is used for the gate alone.
+    if (!options.lookupAuthenticatedUserEmailVerified) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Email verification lookup is not configured", corsHeaders)
+      );
+      return;
+    }
+    if (!(await requireVerifiedAuthenticatedUser(options, request, response))) {
+      return;
+    }
+
+    const payload = parseChatbotFeedbackBodyValue(request.body);
+    const result = await options.submitChatbotFeedback(payload.token, payload.verdict);
+    if (result === "invalid_token") {
+      sendApiResponse(response, toErrorResponse(400, "invalid_request", "Invalid feedback token", corsHeaders));
+      return;
+    }
+    sendApiResponse(response, toJsonResponse(200, { status: "ok" }, corsHeaders));
     return;
   }
 

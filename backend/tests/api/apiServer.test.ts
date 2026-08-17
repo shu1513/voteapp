@@ -4485,3 +4485,93 @@ describe("content report API", () => {
     expect(response.body).toEqual({ error: { code: "method_not_allowed", message: "Use POST /api/content-reports" } });
   });
 });
+
+describe("chatbot feedback endpoint", () => {
+  const userId = "99999999-9999-4999-8999-999999999999";
+
+  function feedbackApp(overrides: Record<string, unknown> = {}) {
+    return createApiApp({
+      resolveAddress: vi.fn(),
+      resolveAuthenticatedUserId: vi.fn().mockReturnValue(userId),
+      lookupAuthenticatedUserEmailVerified: vi.fn().mockResolvedValue(true),
+      submitChatbotFeedback: vi.fn().mockResolvedValue("ok"),
+      ...overrides,
+    });
+  }
+
+  it("404s (never 405) when the chatbot is not wired, hiding the feature", async () => {
+    const response = await invokeExpressApp(createApiApp({ resolveAddress: vi.fn() }), {
+      method: "GET",
+      path: "/api/chatbot/feedback",
+    });
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toEqual({ error: { code: "not_found", message: "Not found" } });
+  });
+
+  it("rejects non-POST methods when wired", async () => {
+    const response = await invokeExpressApp(feedbackApp(), { method: "GET", path: "/api/chatbot/feedback" });
+    expect(response.statusCode).toBe(405);
+    expect(response.headers.allow).toBe("POST");
+  });
+
+  it("requires an authenticated, verified user", async () => {
+    const submitChatbotFeedback = vi.fn();
+    const anonymous = await invokeExpressApp(
+      feedbackApp({ resolveAuthenticatedUserId: vi.fn().mockReturnValue(null), submitChatbotFeedback }),
+      {
+        method: "POST",
+        path: "/api/chatbot/feedback",
+        body: JSON.stringify({ token: "t.s", verdict: "up" }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+    expect(anonymous.statusCode).toBe(401);
+
+    const unverified = await invokeExpressApp(
+      feedbackApp({ lookupAuthenticatedUserEmailVerified: vi.fn().mockResolvedValue(false), submitChatbotFeedback }),
+      {
+        method: "POST",
+        path: "/api/chatbot/feedback",
+        body: JSON.stringify({ token: "t.s", verdict: "up" }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+    expect(unverified.statusCode).toBe(403);
+    expect(submitChatbotFeedback).not.toHaveBeenCalled();
+  });
+
+  it("records a vote and answers ok", async () => {
+    const submitChatbotFeedback = vi.fn().mockResolvedValue("ok");
+    const response = await invokeExpressApp(feedbackApp({ submitChatbotFeedback }), {
+      method: "POST",
+      path: "/api/chatbot/feedback",
+      body: JSON.stringify({ token: "payload.signature", verdict: "down" }),
+      headers: { "content-type": "application/json" },
+    });
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ status: "ok" });
+    expect(submitChatbotFeedback).toHaveBeenCalledWith("payload.signature", "down");
+  });
+
+  it("400s an invalid token and malformed bodies", async () => {
+    const invalidToken = await invokeExpressApp(
+      feedbackApp({ submitChatbotFeedback: vi.fn().mockResolvedValue("invalid_token") }),
+      {
+        method: "POST",
+        path: "/api/chatbot/feedback",
+        body: JSON.stringify({ token: "forged", verdict: "up" }),
+        headers: { "content-type": "application/json" },
+      }
+    );
+    expect(invalidToken.statusCode).toBe(400);
+    expect(invalidToken.body).toEqual({ error: { code: "invalid_request", message: "Invalid feedback token" } });
+
+    const badVerdict = await invokeExpressApp(feedbackApp(), {
+      method: "POST",
+      path: "/api/chatbot/feedback",
+      body: JSON.stringify({ token: "t.s", verdict: "sideways" }),
+      headers: { "content-type": "application/json" },
+    });
+    expect(badVerdict.statusCode).toBe(400);
+  });
+});
