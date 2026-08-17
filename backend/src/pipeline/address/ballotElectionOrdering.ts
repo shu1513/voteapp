@@ -1,7 +1,7 @@
 import type { Pool, PoolClient } from "pg";
 
 import type { BallotLookupElectionSummary, BallotSummaryResult } from "./ballotLookup.js";
-import { stateBaselineContestRank } from "./ballotContestRank.js";
+import { stateBallotContestRank } from "./stateBallotOrderRules.js";
 import {
   loadUserResearchAreaWeights,
   scoreResearchAreaMatch,
@@ -41,7 +41,8 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 // weights, see userResearchAreaScoring.ts) and degrades to `vote_power` for
 // anonymous callers and users with no saved areas.
 // `state_baseline` orders contests the way they appear on a US paper ballot
-// (see ballotContestRank.ts) for the ballot-preview render. It is a
+// (ballotContestRank.ts generic tiers + stateBallotOrderRules.ts per-state
+// general-election overrides) for the ballot-preview render. It is a
 // POSITIONAL order: followed-first grouping and the empty-race sink are both
 // skipped under it, because moving a race breaks the copy-across promise.
 // Keep SAVEABLE_BALLOT_PREFERENCE_SORTS in sync with the
@@ -244,10 +245,12 @@ function sortBallotElections(
   areaScoresByElection: Map<string, ResearchAreaMatchScore> | null = null
 ): void {
   // Positional ballot order: no followed-first grouping, no empty-race sink —
-  // a race's slot on the sheet is the whole point of this sort.
+  // a race's slot on the sheet is the whole point of this sort. The rank is
+  // the state's verified general-election order where an override exists
+  // (stateBallotOrderRules.ts), the generic baseline otherwise.
   if (sort === "state_baseline") {
     elections.sort((a, b) => {
-      const byRank = stateBaselineContestRank(a) - stateBaselineContestRank(b);
+      const byRank = stateBallotContestRank(a) - stateBallotContestRank(b);
       return byRank !== 0 ? byRank : compareBySort(a, b, "soonest");
     });
     return;
