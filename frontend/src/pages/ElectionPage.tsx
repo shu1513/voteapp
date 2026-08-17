@@ -505,14 +505,18 @@ export function ElectionPage() {
             shareText={`${data.official_ballot_title} — ${formatElectionDate(data.election_date)}`}
           />
         </div>
+        {/* District as a quiet subtitle, name only (no district type): ballot
+            titles are often generic ("Governor", "Mayor"), and a direct-link
+            visitor needs to see WHERE the race is — the list card shows the
+            same line for the same reason. The sub-district caveat below also
+            refers to "the district above". */}
+        <p className="mt-1 text-sm text-ink-soft">{formatDistrictName(data.district.name)}</p>
         {/* Header strip: label-over-value columns split by a hairline — the
             vote-power verdict first, then one date column whose value carries
             the stage ("General election") so "General" can't read as a
             mystery word. Fixed grid tracks, not content-hugging flex, so the
             divider sits at the same fraction of the width however short the
-            verdict is. District name/type dropped on purpose — the title
-            already names the seat, and the raw district identity read as
-            noise. Only the verdict is bold. */}
+            verdict is. Only the verdict is bold. */}
         <div
           className={
             data.vote_power.label !== "unknown"
