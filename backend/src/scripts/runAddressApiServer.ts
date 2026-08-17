@@ -34,9 +34,9 @@ import {
   DEFAULT_CONTENT_REPORT_RATE_LIMIT_MAX_REQUESTS,
   DEFAULT_CONTENT_REPORT_RATE_LIMIT_WINDOW_MS,
 } from "../api/contentReportRateLimiter.js";
-import { createAskService, type AskService } from "../chatbot/askService.js";
+import { createAskService } from "../chatbot/askService.js";
 import { readChatbotConfigFromEnv } from "../chatbot/chatbotConfig.js";
-import { maybePurgeQuestionText } from "../chatbot/maintenance.js";
+import { maybeRunQuestionRetention } from "../chatbot/maintenance.js";
 import { createEmbeddingsClient } from "../chatbot/embeddingsClient.js";
 import { createOpenAiResponsesClient } from "../chatbot/llm/openaiResponses.js";
 import type { LlmAnswering } from "../chatbot/answer.js";
@@ -574,7 +574,7 @@ async function main(): Promise<void> {
       console.warn("chatbot LLM configured but Redis is not; LLM answers stay off (retrieval-only)");
     }
   }
-  const askChatbotService = chatbotConfig.enabled
+  const askChatbot = chatbotConfig.enabled
     ? createAskService({
         db: pool,
         embeddings: chatbotConfig.embeddingsUrl
@@ -584,18 +584,19 @@ async function main(): Promise<void> {
             })
           : null,
         llm: chatbotLlm,
-      })
+      }).ask
     : undefined;
-  const askChatbot: AskService["ask"] | undefined = askChatbotService
-    ? async (question, previousQuestion, context, userId) => {
-        const response = await askChatbotService.ask(question, previousQuestion, context, userId);
-        // Daily question-text retention purge (90-day privacy promise)
-        // piggybacks on ask traffic — no cron on the free plan. Fire and
-        // forget: never delays or fails the answer.
-        void maybePurgeQuestionText(pool, redis?.isOpen ? redis : null);
-        return response;
-      }
-    : undefined;
+  if (chatbotConfig.enabled) {
+    // Daily question-log retention (90-day privacy promise): no cron on the
+    // free plan, so the API runs it itself — once at boot (covers short-lived
+    // processes that spin down before the first tick) plus an hourly re-check
+    // (the Redis SET NX election inside makes at most one real run per UTC
+    // day; a failed run releases the day so a later tick retries). unref():
+    // the timer must never hold a draining process open.
+    const runRetention = () => void maybeRunQuestionRetention(pool, redis?.isOpen ? redis : null);
+    runRetention();
+    setInterval(runRetention, 3_600_000).unref();
+  }
   if (chatbotConfig.enabled) {
     console.log(
       `chatbot ask enabled (embeddings: ${chatbotConfig.embeddingsUrl ? "configured" : "NOT configured — keyword-only retrieval"}; LLM: ${chatbotLlm ? `${chatbotConfig.llm?.model} (effort ${chatbotConfig.llm?.reasoningEffort})` : "off — retrieval-only"})`

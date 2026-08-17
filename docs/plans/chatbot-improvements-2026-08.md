@@ -18,14 +18,20 @@ so they are not re-proposed later.
    service, which always fire-and-forget logs to `chatbot.questions` (and could
    write the answer cache if ever pointed at prod). Add
    `createAskService({ logQuestions: false })`; eval passes it. ~5 lines + test.
-2. **Automated 90-day purge (compliance).** Privacy policy promises question
-   text deleted after 90 days; today the purge only runs inside manual
-   `chatbot:report`, and Render cron requires a paid plan (blocked on billing,
-   same as the digest cron). Fix: in-API opportunistic purge — once per UTC day,
-   guarded by Redis SETNX, fire-and-forget after an ask. Needs a migration:
-   column-level `GRANT UPDATE (question_norm) ON chatbot.questions TO
-   voteapp_api` (role is INSERT-only today). Manual `chatbot:report` keeps
-   doing the same purge; both are idempotent.
+2. **Automated 90-day retention (compliance).** Privacy policy promises
+   question text deleted after 90 days; before this the purge only ran inside
+   manual `chatbot:report`, and Render cron requires a paid plan (blocked on
+   billing, same as the digest cron). Shipped shape (revised after review):
+   - Migration 241: `chatbot.roll_up_and_purge_questions()` SECURITY DEFINER
+     (EXECUTE-only to `voteapp_api`; role stays unable to read the log). One
+     statement does the write-time-suppressed rollup into `question_stats`
+     THEN nulls >90-day text — same snapshot, so automated purging can never
+     destroy text before it is aggregated.
+   - API runs it via boot-time kick + hourly `setInterval` (unref'd), elected
+     once per UTC day with Redis SET NX; a DB failure releases the day's
+     guard so a later tick retries. Timer, not ask-piggybacking: covers
+     "site traffic but no asks", and any ask implies the process is up.
+   - `chatbot:report` calls the same function (single implementation).
 3. **Report enrichment.** Add to `chatbot:report` JSON: token sums (in/out, 7
    days), today's budget consumed vs `CHATBOT_DAILY_TOKEN_BUDGET`, p50/p95
    latency by `answered_by`, active generation age in days. All from existing
