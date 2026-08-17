@@ -26,9 +26,7 @@
 //      query (2024 — 2,197 rows live, past the common 1,000/2,000 caps),
 //      and a historical query (2002, year floor — stable data). Counts are
 //      observations, never contracts. Caps above ~2,200 rows stay unproven
-//      here; the per-committee cent reconciliation against report covers
-//      (Phase 0 gates 3-5 / Phase 3) is the enforcement that catches any
-//      truncation on the queries production actually runs.
+//      here.
 //   5. Outside-spending acquisition: inline results with a records-found
 //      count, export rows equal it exactly, stance values are only
 //      Support/Oppose, and the export still has NO MECID column (a FAIL
@@ -43,9 +41,30 @@
 //      and yields parseable Election History rows — date, election type,
 //      office, and political subdivision must all parse with one value per
 //      row (the auto-link backbone; the resolver keys on all four).
+//   9. Report inventory (plan gate 3, REACHABLE half): the lbtnReports
+//      postback + per-year expansion yields the report list — id, type,
+//      filed date, amendment lineage. The gold set collectively shows the
+//      required type families (quarterly / pre-election / limited-activity /
+//      termination) and at least one amendment pair (AMENDED X + base X).
+//
+// Plan gates 3-5, cover-dependent half — NOT reachable, so NOT gated here.
+// The report DOCUMENT (the cover: official totals, amendment replace-vs-delta,
+// Limited Activity carry-forward, cash-on-hand, indebtedness) is fetched only
+// through CommInfo.aspx/VerifyClick, a page-method that server-verifies a
+// reCAPTCHA Enterprise token before returning the document redirect (probed
+// live 2026-08-12: an empty/garbage token yields Successful:false, no
+// redirect). The document id is never exposed client-side (data-DID="null";
+// DMS/DOC/V/{reportId} 404s — the CPID is a report id, not the doc id), so
+// there is no plain-client path to covers. Consequences, recorded in the plan:
+// canonical totals CANNOT be cover-reconciled to the cent via the portal
+// (unlike Georgia/NC); v1 totals come from itemized transactions (amendment
+// replace-vs-delta is determined by comparing the AMENDED report's rows to the
+// base report's rows — a Phase 3 data analysis, not a cover read) or from the
+// MEC bulk extract (the § 130.057 request). Totals mapping (plan gate 5)
+// likewise waits on the extract. Solving the reCAPTCHA is never an option.
 //
 // Artifacts: set MISSOURI_MEC_PROBE_ARTIFACT_DIR to save every fetched body
-// for the report-inventory / totals-mapping analysis (plan gates 3-5).
+// for the report-inventory analysis.
 // PII: contribution exports carry contributor street addresses — the
 // artifact dir must stay out of git, and this script prints only aggregates,
 // headers, MECIDs, and committee names, never contributor rows.
@@ -112,9 +131,19 @@ const OFFICE_VOCABULARY_SENTINELS = ["State Representative", "State Senator", "S
  * out-of-state, outside spender).
  */
 const GOLD_COMMITTEES = [
-  { mecid: "A222073", note: "municipal candidate — Alderperson Ward 3, City of Jackson (Seabaugh)" },
+  { mecid: "A222073", note: "municipal candidate — Alderperson Ward 3, City of Jackson (Seabaugh); Termination + Limited Activity + AMENDED lineage" },
   { mecid: "A171387", note: "county candidate — Baird For Jackson County" },
+  { mecid: "C263985", note: "legislative candidate — State Senate District 34 (Barnes for Missouri); Quarterly + pre-election + AMENDED April Quarterly pair" },
 ] as const;
+
+/**
+ * Report-type families the gold set must collectively exhibit — the taxonomy
+ * backbone (fact 2/3). Proven from report NAMES in the inventory; the dollar
+ * semantics behind them (amendment replace-vs-delta, Limited Activity
+ * carry-forward, cover reconciliation) live in the report DOCUMENT, which is
+ * reCAPTCHA-gated and therefore out of Phase 0's reach — see the header note.
+ */
+const REQUIRED_REPORT_FAMILIES = ["quarterly", "pre_election", "limited_activity", "termination"] as const;
 
 const MECID_PATTERN = /^[A-Z]?\d+$/;
 
@@ -198,6 +227,92 @@ function requireHiddenFields(page: string, url: string): Record<string, string> 
     throw new MissouriMecClientError("bad_response", `no __VIEWSTATE on ${url} — not a WebForms page?`);
   }
   return fields;
+}
+
+/**
+ * Report-inventory row from the CommInfo Reports tab (lbtnReports postback,
+ * then per-year expansion). This is the ONLY report-level data the plain
+ * client can reach — the report DOCUMENT (cover totals) sits behind a
+ * reCAPTCHA Enterprise gate (see the gate-3/5 note in the header). The
+ * inventory alone gives report id, type, filed date, and amendment lineage.
+ */
+type ReportInventoryRow = { cpid: string; report: string; dateFiled: string };
+
+/** Coarse report-type family for the timely/period taxonomy (fact 2/3). */
+type ReportTypeFamily =
+  | "quarterly"
+  | "pre_election"
+  | "limited_activity"
+  | "termination"
+  | "timely_48h"
+  | "timely_24h"
+  | "other";
+
+function classifyReportType(report: string): ReportTypeFamily {
+  // Order matters: "AMENDED April Quarterly Report - Limited Activity" is a
+  // limited-activity report; the AMENDED prefix is lineage, not a family.
+  if (/limited activity/i.test(report)) return "limited_activity";
+  if (/termination/i.test(report)) return "termination";
+  if (/48[ -]?hour/i.test(report)) return "timely_48h";
+  if (/24[ -]?hour/i.test(report)) return "timely_24h";
+  if (/quarterly/i.test(report)) return "quarterly";
+  if (/before (primary|general|election)|day before|pre-?election/i.test(report)) return "pre_election";
+  return "other";
+}
+
+const AMENDED_PREFIX = /^AMENDED\s+/i;
+
+/**
+ * Parses the expanded grvReports_0 table (one year) into inventory rows.
+ * CPID lives in the report link's data-CPID attribute; the report name and
+ * filed date are index-aligned spans (lblReport_N / lblDateReceived_N).
+ */
+function parseReportInventory(html: string): ReportInventoryRow[] {
+  const cpids = new Map<number, string>();
+  for (const match of html.matchAll(/grvReports_0_hlink_(\d+)"[^>]*data-CPID="(\d+)"/g)) {
+    cpids.set(Number.parseInt(match[1]!, 10), match[2]!);
+  }
+  const names = new Map<number, string>();
+  for (const match of html.matchAll(/grvReports_0_lblReport_(\d+)">([\s\S]*?)<\/span>/g)) {
+    names.set(Number.parseInt(match[1]!, 10), stripTags(match[2]!));
+  }
+  const dates = new Map<number, string>();
+  for (const match of html.matchAll(/grvReports_0_lblDateReceived_(\d+)">([\s\S]*?)<\/span>/g)) {
+    dates.set(Number.parseInt(match[1]!, 10), stripTags(match[2]!));
+  }
+  const rows: ReportInventoryRow[] = [];
+  for (const index of [...cpids.keys()].sort((a, b) => a - b)) {
+    rows.push({ cpid: cpids.get(index)!, report: names.get(index) ?? "", dateFiled: dates.get(index) ?? "" });
+  }
+  return rows;
+}
+
+/**
+ * CommInfo Reports tab -> expand the most recent report year (ctl02 = the
+ * first grvReportOutside row) -> parse its inventory. Proves the lbtnReports
+ * mechanism and yields the current-cycle report list. Phase 3 expands every
+ * year; Phase 0 only needs the mechanism proven on the current cycle.
+ */
+async function fetchReportInventory(
+  session: MissouriMecSession,
+  infoUrl: string,
+  infoHtml: string
+): Promise<{ rows: ReportInventoryRow[]; expandedHtml: string }> {
+  const tab = await session.postForm(
+    infoUrl,
+    { ...requireHiddenFields(infoHtml, infoUrl), __EVENTTARGET: `${SEARCH}lbtnReports`, __EVENTARGUMENT: "" },
+    { referer: infoUrl }
+  );
+  const expand = await session.postForm(
+    infoUrl,
+    {
+      ...requireHiddenFields(tab.text(), infoUrl),
+      [`${SEARCH}grvReportOutside$ctl02$ImgRptRight.x`]: "1",
+      [`${SEARCH}grvReportOutside$ctl02$ImgRptRight.y`]: "1",
+    },
+    { referer: infoUrl }
+  );
+  return { rows: parseReportInventory(expand.text()), expandedHtml: expand.text() };
 }
 
 function usd(cents: number): string {
@@ -505,7 +620,8 @@ async function main(): Promise<void> {
     detail: `${officeOptions.length} offices, sentinels ${OFFICE_VOCABULARY_SENTINELS.every((sentinel) => officeOptions.some((option) => option.label === sentinel)) ? "present" : "MISSING"}`,
   });
 
-  // --- Gate 8: Committee Info gold set. ---
+  // --- Gate 8: Committee Info gold set + report inventory (gate 3, reachable). ---
+  const allReportRows: string[] = [];
   for (const gold of GOLD_COMMITTEES) {
     const infoUrl = buildMissouriMecUrl(MISSOURI_MEC_PAGES.committeeInfo, { MECID: gold.mecid });
     const info = await session.get(infoUrl);
@@ -534,7 +650,52 @@ async function main(): Promise<void> {
         dates.every((date) => /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(date)),
       detail: `echo=${echo || "?"}, ${dates.length} rows (types ${types.length}, offices ${offices.length}, subdivisions ${subdivisions.length})`,
     });
+
+    // Report inventory (gate 3, reachable half): the lbtnReports postback +
+    // year expansion yields report id/type/filed-date/amendment-lineage.
+    const inventory = await fetchReportInventory(session, infoUrl, html);
+    saveArtifact(`comminfo_${gold.mecid}_reports.html`, inventory.expandedHtml);
+    for (const row of inventory.rows) {
+      allReportRows.push(row.report);
+      console.log(`    report ${row.cpid} [${classifyReportType(row.report)}] ${row.report} (${row.dateFiled})`);
+    }
+    gates.push({
+      name: `CommInfo ${gold.mecid}: report inventory parses (id/type/filed-date per row)`,
+      pass:
+        inventory.rows.length > 0 &&
+        inventory.rows.every(
+          (row) =>
+            /^\d+$/.test(row.cpid) &&
+            row.report !== "" &&
+            /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(row.dateFiled)
+        ),
+      detail: `${inventory.rows.length} reports, families [${[...new Set(inventory.rows.map((row) => classifyReportType(row.report)))].sort().join(", ")}]`,
+    });
   }
+
+  // --- Gate 3 (aggregate): the gold set exhibits the required report-type
+  // families and at least one amendment pair (an "AMENDED X" whose base "X"
+  // also filed) — the report-inventory backbone for fact 2/3. The DOLLAR
+  // semantics of those reports (replace-vs-delta, carry-forward, cover cent
+  // reconciliation) are NOT provable here: the report cover is reCAPTCHA
+  // Enterprise-gated (VerifyClick), so it is out of scope for the plain
+  // client (see the header note; totals must come from itemized transactions
+  // or the MEC bulk extract). ---
+  const seenFamilies = new Set(allReportRows.map((report) => classifyReportType(report)));
+  const missingFamilies = REQUIRED_REPORT_FAMILIES.filter((family) => !seenFamilies.has(family));
+  const baseReports = new Set(allReportRows.filter((report) => !AMENDED_PREFIX.test(report)));
+  const amendmentPairs = allReportRows.filter(
+    (report) => AMENDED_PREFIX.test(report) && baseReports.has(report.replace(AMENDED_PREFIX, ""))
+  );
+  console.log(
+    `\nreport-type families across gold set: [${[...seenFamilies].sort().join(", ")}]; ` +
+      `amendment pairs: ${amendmentPairs.length}`
+  );
+  gates.push({
+    name: "report inventory: required type families present and an amendment pair (AMENDED X + base X) exists",
+    pass: missingFamilies.length === 0 && amendmentPairs.length > 0,
+    detail: `missing families [${missingFamilies.join(", ") || "none"}], ${amendmentPairs.length} amendment pair(s)`,
+  });
 
   // --- Summary. ---
   console.log("\n=== Phase 0 gates ===");
