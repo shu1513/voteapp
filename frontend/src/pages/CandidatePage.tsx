@@ -10,9 +10,20 @@ import type {
   ResearchAreaPreference,
 } from "@voteapp/api-client";
 import { aggregateRecordAreaStances } from "@voteapp/api-client";
+import {
+  CANDIDATE_RAIL_SORTS,
+  candidateRailSortsOffered,
+  sortCandidateRailEntries,
+  type CandidateRailSortKey,
+} from "@voteapp/api-client";
 import { DetailPager } from "../components/DetailPager";
 import { DetailRail } from "../components/DetailRail";
-import { pagerNeighbors, readCandidateNavState, type ElectionNavState } from "../lib/detailNavContext";
+import {
+  pagerNeighbors,
+  readCandidateNavState,
+  type CandidateNavState,
+  type ElectionNavState,
+} from "../lib/detailNavContext";
 import { JsonLdScript } from "../components/JsonLdScript";
 import { NotFoundNotice } from "../components/NotFoundNotice";
 import { RouteError } from "../components/RouteError";
@@ -539,7 +550,7 @@ export function CandidatePage() {
   // show as unfollowed.
   const { follows, canFollow } = useFollows();
   const { me } = useMe();
-  const { hasSaved, preferences } = useMyResearchAreas();
+  const { hasSaved, preferences, weights, isLoading: savedAreasLoading } = useMyResearchAreas();
   // null = the user hasn't picked a view; default to "my issues first" once
   // saved areas exist (they load async, so this can't live in useState's
   // initial value). An explicit pick always wins — except a picked
@@ -606,6 +617,68 @@ export function CandidatePage() {
     isGuest ? draftChoicesByElectionId(draft).get(electionId) : choiceByElectionId?.get(electionId);
   const location = useLocation();
   const navState = readCandidateNavState(location.state);
+  // The rail's roster sort: offered only for the sorts this snapshot can
+  // honor (candidateRailSortsOffered — an old snapshot without the stance
+  // keys offers none; My issues additionally needs saved areas). Same
+  // persistence story as the election rail's sort: component state across
+  // sibling walks (the route element stays mounted), nav state across
+  // remounts (election round trips). No "As listed" option here, unlike the
+  // election rail: the roster's arrival order is always one of the two
+  // offered sorts (the election page's own options), so an always-engaged
+  // sort loses nothing — the default is the first offered ("My issues
+  // first" with saved areas, A–Z without, matching the roster's own
+  // defaults).
+  const railRoster = navState?.candidates;
+  // Withheld while the saved areas are still loading: the default sort is
+  // the first offered option, and engaging A–Z in the window before
+  // hasSaved settles would visibly re-shuffle the rail on every arrival
+  // for viewers whose default is My issues first.
+  const offeredRailSorts = savedAreasLoading
+    ? []
+    : candidateRailSortsOffered(railRoster ?? [], hasSaved);
+  const [railSortState, setRailSortState] = useState<CandidateRailSortKey | null>(
+    navState?.railSort ?? null
+  );
+  const railSort =
+    railSortState !== null && offeredRailSorts.includes(railSortState)
+      ? railSortState
+      : (offeredRailSorts[0] ?? null);
+  // Sorting re-orders but never removes, so the displayed roster keeps the
+  // same membership gate as the arrival list.
+  const displayedRoster =
+    railSort !== null && railRoster !== undefined
+      ? sortCandidateRailEntries(railRoster, railSort, weights)
+      : railRoster;
+  // The context handed onward — sibling walks and the election round trip —
+  // carries the rail's CURRENT sort; the back destination needs no rewrite
+  // here (the election page's roster sort is component state, not URL).
+  const forwardedNavState: CandidateNavState | null =
+    navState === null
+      ? null
+      : offeredRailSorts.length === 0
+        ? navState
+        : (() => {
+            // Field removal only on the copy — never mutate the shared
+            // original.
+            const forwarded: CandidateNavState = { ...navState };
+            if (railSort) {
+              forwarded.railSort = railSort;
+            } else {
+              delete forwarded.railSort;
+            }
+            return forwarded;
+          })();
+  // The back hop's election state: the arrival context with rosterSort
+  // overridden by this rail's CURRENT sort, so a sort switched here walks
+  // back into the election page's roster (rail and roster are one
+  // continuous control — same value space by construction). Recomputed at
+  // render on every sibling page, so the override always reflects the sort
+  // on screen, not the one at departure. With no engaged rail sort (an old
+  // unkeyed snapshot) the arrival state passes through untouched.
+  const backToElectionState =
+    navState?.backState !== undefined && railSort !== null
+      ? { ...navState.backState, rosterSort: railSort }
+      : navState?.backState;
   // Every election link on this page (the back-link fallback and the
   // Elections history list) tells the election page to come back here. This
   // page's own arrival context rides along (backState) so the round trip
@@ -613,19 +686,19 @@ export function CandidatePage() {
   // would land on a candidate page that forgot it came from My Picks.
   const electionNavState: ElectionNavState = {
     backTo: { path: `/candidates/${candidate.candidate_id}`, label: candidate.display_name },
-    ...(navState ? { backState: navState } : {}),
+    ...(forwardedNavState ? { backState: forwardedNavState } : {}),
   };
-  // Prev/next over the arrival election's displayed roster (a candidate
-  // can be in several races — the sequence is scoped to the one the reader
-  // came from). Null (back slot only) when this candidate fell out of the
-  // snapshot. The nav bar exists only for in-app arrivals: no router state
-  // (deep link) = no bar, by product choice.
-  const rosterNeighbors = pagerNeighbors(navState?.candidates, candidate.candidate_id);
+  // Prev/next over the arrival election's roster as the rail displays it (a
+  // candidate can be in several races — the sequence is scoped to the one
+  // the reader came from). Null (back slot only) when this candidate fell
+  // out of the snapshot. The nav bar exists only for in-app arrivals: no
+  // router state (deep link) = no bar, by product choice.
+  const rosterNeighbors = pagerNeighbors(displayedRoster, candidate.candidate_id);
   // Desktop rail: the arrival race's roster under the same guard as
   // prev/next (pagerNeighbors is null unless the list has >= 2 entries and
   // contains this candidate). navState is re-read only for the type system —
   // non-null neighbors implies it.
-  const railCandidates = rosterNeighbors !== null ? (navState?.candidates ?? null) : null;
+  const railCandidates = rosterNeighbors !== null ? (displayedRoster ?? null) : null;
 
   // Display label for the back slot: when the destination is an election,
   // its official ballot title runs to legal-name length ("For United States
@@ -658,8 +731,8 @@ export function CandidatePage() {
             : null
         }
         backTo={pagerBackTo}
-        backToState={navState.backState}
-        siblingState={navState}
+        backToState={backToElectionState}
+        siblingState={forwardedNavState}
       />
     ) : null;
 
@@ -687,8 +760,37 @@ export function CandidatePage() {
           }))}
           currentId={candidate.candidate_id}
           backTo={navState.backTo}
-          backToState={navState.backState}
-          siblingState={navState}
+          backToState={backToElectionState}
+          siblingState={forwardedNavState}
+          headerSlot={
+            // The list label renders even when no sort is offerable (an old
+            // snapshot): naming WHAT the rows are never depends on the keys.
+            <div className="flex flex-col gap-1.5">
+              {/* text-ink, not -soft: the label is the rail's identity, not
+                  a caption — it must register at a glance. */}
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink">Candidates:</p>
+              {offeredRailSorts.length > 0 ? (
+                <label className="flex items-center gap-1.5 text-xs text-ink-soft">
+                  Sort
+                  <select
+                    value={railSort ?? ""}
+                    onChange={(event) =>
+                      setRailSortState(event.target.value as CandidateRailSortKey)
+                    }
+                    className="min-w-0 flex-1 rounded-md border border-line bg-white px-1.5 py-1 text-xs text-ink focus:border-ink focus:outline-none"
+                  >
+                    {CANDIDATE_RAIL_SORTS.filter((option) =>
+                      offeredRailSorts.includes(option.value)
+                    ).map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ) : null}
+            </div>
+          }
         />
       ) : null}
       {/* min-w-0: the grid column must be allowed to shrink or long names

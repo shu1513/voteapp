@@ -218,7 +218,7 @@ describe("ElectionCard", () => {
     expect(chipTexts).toEqual(["Environment and Public Health", "Gun Control", "Civil Rights"]);
   });
 
-  it("styles saved and unsaved chips alike, with a screen-reader-only saved marker", () => {
+  it("renders saved chips semibold with a screen-reader saved marker, unsaved chips medium", () => {
     renderCard(
       electionSummary({
         research_areas: [area("a-1", "Civil Rights"), area("a-2", "Gun Control")],
@@ -226,8 +226,10 @@ describe("ElectionCard", () => {
       { "a-2": 1 }
     );
 
-    // Same green accent on both; visually the saved match just leads…
-    expect(screen.getByText("Gun Control").className).toBe(screen.getByText("Civil Rights").className);
+    // Same green accent on both, but the saved match reads heavier — the
+    // same weight cue as the candidate page's stance boxes…
+    expect(screen.getByText("Gun Control").className).toContain("font-semibold");
+    expect(screen.getByText("Civil Rights").className).toContain("font-medium");
     // …while assistive tech still hears which chip is the user's.
     expect(screen.getByText("Gun Control")).toHaveTextContent("Gun Control (saved)");
     expect(screen.getByText("Civil Rights")).not.toHaveTextContent("(saved)");

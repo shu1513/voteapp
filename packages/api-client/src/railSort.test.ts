@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { railSortsOffered, sortRailEntries, type RailSortEntry } from "./railSort";
+import {
+  candidateRailSortsOffered,
+  railSortsOffered,
+  sortCandidateRailEntries,
+  sortRailEntries,
+  type CandidateRailSortEntry,
+  type RailSortEntry,
+} from "./railSort";
 import { buildResearchAreaWeights } from "./researchAreaScoring";
 
 function entry(id: string, overrides: Partial<RailSortEntry> = {}): RailSortEntry {
@@ -122,5 +129,74 @@ describe("sortRailEntries", () => {
     const entries = [entry("b"), entry("a")];
     sortRailEntries(entries, "alphabetical");
     expect(entries.map((e) => e.id)).toEqual(["b", "a"]);
+  });
+});
+
+function candidateEntry(
+  id: string,
+  name: string,
+  areas: { research_area_id: string; record_count: number }[] = []
+): CandidateRailSortEntry {
+  return { id, name, research_area_records: areas };
+}
+
+describe("candidateRailSortsOffered", () => {
+  const KEYED = [candidateEntry("c-1", "A"), candidateEntry("c-2", "B")];
+
+  it("offers My issues only with saved areas, A–Z otherwise", () => {
+    expect(candidateRailSortsOffered(KEYED, true)).toEqual(["my_issues", "alphabetical"]);
+    expect(candidateRailSortsOffered(KEYED, false)).toEqual(["alphabetical"]);
+  });
+
+  it("offers nothing on an unkeyed (pre-deploy) snapshot or a single entry", () => {
+    expect(
+      candidateRailSortsOffered([{ id: "c-1", name: "A" }, { id: "c-2", name: "B" }], true)
+    ).toEqual([]);
+    expect(candidateRailSortsOffered([candidateEntry("c-1", "A")], true)).toEqual([]);
+  });
+});
+
+describe("sortCandidateRailEntries", () => {
+  // rank 1 → weight 7, rank 2 → weight 6.
+  const WEIGHTS = buildResearchAreaWeights([
+    { research_area_id: "a-1", slug: "s1", name: "n1", description: null, rank: 1 },
+    { research_area_id: "a-2", slug: "s2", name: "n2", description: null, rank: 2 },
+  ]);
+
+  it("my_issues: weighted matched areas first, record volume breaks ties, ties keep arrival order", () => {
+    const sorted = sortCandidateRailEntries(
+      [
+        candidateEntry("none", "Zoe Zero"),
+        candidateEntry("both", "Bo Both", [
+          { research_area_id: "a-1", record_count: 1 },
+          { research_area_id: "a-2", record_count: 1 },
+        ]), // score 13
+        candidateEntry("top-few", "Fay Few", [{ research_area_id: "a-1", record_count: 1 }]), // 7, 1 record
+        candidateEntry("top-many", "May Many", [{ research_area_id: "a-1", record_count: 4 }]), // 7, 4 records
+      ],
+      "my_issues",
+      WEIGHTS
+    );
+    expect(sorted.map((e) => e.id)).toEqual(["both", "top-many", "top-few", "none"]);
+  });
+
+  it("my_issues ignores unmatched areas and zero-count rows", () => {
+    const sorted = sortCandidateRailEntries(
+      [
+        candidateEntry("unmatched", "A", [{ research_area_id: "other", record_count: 9 }]),
+        candidateEntry("zero", "B", [{ research_area_id: "a-1", record_count: 0 }]),
+        candidateEntry("matched", "C", [{ research_area_id: "a-2", record_count: 1 }]),
+      ],
+      "my_issues",
+      WEIGHTS
+    );
+    expect(sorted.map((e) => e.id)).toEqual(["matched", "unmatched", "zero"]);
+  });
+
+  it("alphabetical sorts by name and does not mutate the input", () => {
+    const entries = [candidateEntry("c-2", "Riley Runner"), candidateEntry("c-1", "Jordan Voter")];
+    const sorted = sortCandidateRailEntries(entries, "alphabetical");
+    expect(sorted.map((e) => e.id)).toEqual(["c-1", "c-2"]);
+    expect(entries.map((e) => e.id)).toEqual(["c-2", "c-1"]);
   });
 });

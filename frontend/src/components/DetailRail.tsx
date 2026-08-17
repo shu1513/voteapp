@@ -65,6 +65,15 @@ export function DetailRail({
     // block: "nearest" scrolls only what's needed — the rail's own scroll
     // container when the row is off-screen, nothing when it's visible.
     // Guarded because jsdom elements have no scrollIntoView.
+    //
+    // Keyed on currentId ONLY, deliberately: a header-slot control (sort,
+    // tab) reordering `entries` must NOT snap the scroll back to the
+    // current row. The controls sit at the top of this same scroll
+    // container — the reader is already looking at the top when they
+    // engage one, and the top of the new order is what they asked to see
+    // ("My issues first" = show me who ranks highest). A tab switch can
+    // even remove the current row entirely. Arrivals and sibling walks
+    // still center the current row: those change currentId.
     if (typeof currentRef.current?.scrollIntoView === "function") {
       currentRef.current.scrollIntoView({ block: "nearest" });
     }
@@ -89,8 +98,14 @@ export function DetailRail({
         <span aria-hidden="true">← </span>
         {backTo.label}
       </Link>
-      {headerSlot ? <div className="mt-3 px-3">{headerSlot}</div> : null}
-      <ul className="mt-3 space-y-1 border-t border-line pt-3">
+      {/* One divider, right under the back link: everything below it — the
+          header slot's label/controls and the rows — reads as one panel.
+          Without a header slot the divider moves down to keep separating
+          the back link from the rows. */}
+      {headerSlot ? (
+        <div className="mt-3 border-t border-line px-3 pt-3">{headerSlot}</div>
+      ) : null}
+      <ul className={`mt-3 space-y-1 ${headerSlot ? "" : "border-t border-line pt-3"}`}>
         {entries.map((entry) =>
           entry.id === currentId ? (
             <li

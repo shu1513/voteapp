@@ -4,6 +4,7 @@ import type {
   BallotRaceType,
   ElectionChoice,
   ElectionSummary,
+  RailSortKey,
   ResearchAreaWeight,
   ResultChipTone,
 } from "@voteapp/api-client";
@@ -58,11 +59,13 @@ const MAX_UNSAVED_AREA_CHIPS = 3;
 
 // Research areas render as plain colored text, comma-separated — NOT boxed
 // chips. Boxed/pill styling is reserved for interactive elements; a bordered
-// area "chip" read as a button and invited dead clicks. Saved and unsaved
-// areas deliberately share one style: the row reads as one list, and
-// position alone marks the saved matches (they lead). Exported so the
-// election detail page's affects row matches the card's.
+// area "chip" read as a button and invited dead clicks. Saved matches lead
+// AND render semibold — the same double cue (front-of-list + weight) as the
+// candidate page's stance boxes — while the shared green keeps the row
+// reading as one list. Both exported so the election detail page's affects
+// row matches the card's.
 export const AREA_TEXT_CLASS = "font-medium text-green-900";
+export const SAVED_AREA_TEXT_CLASS = "font-semibold text-green-900";
 
 // An office race with no published candidate list renders a placeholder card
 // ("Candidate list not final") with nothing to read. Ballot measures are
@@ -96,6 +99,7 @@ export function ElectionList({
   backTo,
   contestsPool,
   raceType,
+  railSort,
 }: {
   elections: ElectionSummary[];
   /**
@@ -127,6 +131,10 @@ export function ElectionList({
   /** The list's engaged race-type tab, recorded in the nav snapshot so the
    * detail rail's tabs start where the reader left the list. */
   raceType?: BallotRaceType | null;
+  /** The rail sort seeded by the list's engaged sort (railSortForBallotSort
+   * — district-size sorts fall back to vote_power), recorded so the rail's
+   * always-engaged sort control starts where the list was. */
+  railSort?: RailSortKey;
 }) {
   const awaitingCandidates = elections.filter(isAwaitingCandidates);
   const readable = elections.filter((election) => !isAwaitingCandidates(election));
@@ -164,6 +172,7 @@ export function ElectionList({
           ...(isAwaitingCandidates(election) ? { awaiting_candidates: true } : {}),
         })),
         ...(raceType ? { raceType } : {}),
+        ...(railSort ? { railSort } : {}),
       }
     : undefined;
   return (
@@ -418,8 +427,8 @@ function ElectionCard({
       ) : null}
       {election.research_areas.length > 0 ? (
         // Visually one comma-separated list: saved matches lead (all of
-        // them, in the user's rank order), unsaved follow under the cap.
-        // Position is the only sighted cue, so saved areas carry a
+        // them, in the user's rank order) in semibold, unsaved follow under
+        // the cap. Weight is a sighted-only cue, so saved areas carry a
         // screen-reader-only "(saved)" to keep the distinction audible.
         <p className="mt-3 text-sm">
           {/* A verb, not a noun phrase: the election is the subject, so the
@@ -431,7 +440,7 @@ function ElectionCard({
               nodes, so each span's text stays exactly the area name. */}
           {[...savedAreas, ...visibleOtherAreas].map((area, index, all) => (
             <Fragment key={area.id}>
-              <span className={AREA_TEXT_CLASS}>
+              <span className={savedAreas.includes(area) ? SAVED_AREA_TEXT_CLASS : AREA_TEXT_CLASS}>
                 {area.name}
                 {savedAreas.includes(area) ? <span className="sr-only"> (saved)</span> : null}
               </span>

@@ -3,6 +3,7 @@ import { Link, useLocation, useSearchParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest, useMe } from "@voteapp/api-client";
 import {
+  BALLOT_SORTS,
   PUBLIC_BALLOT_SORTS,
   type BallotSort,
   type BallotSummary,
@@ -12,7 +13,13 @@ import { ElectionList } from "../components/ElectionCard";
 import { BallotFiltersControl } from "../components/BallotFiltersControl";
 import { RaceTypeTabs } from "../components/RaceTypeTabs";
 import { HowToVoteControl } from "../components/HowToVoteControl";
-import { deriveBallotFilters, useElectionChoices, useMyResearchAreas } from "@voteapp/api-client";
+import {
+  deriveBallotFilters,
+  railSortForBallotSort,
+  sortRailEntries,
+  useElectionChoices,
+  useMyResearchAreas,
+} from "@voteapp/api-client";
 import { draftChoicesByElectionId, setDraftBallotContext, useBallotDraft } from "../lib/ballotDraft";
 import { useBallotFilterParams } from "../lib/useBallotFilterParams";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
@@ -41,9 +48,12 @@ function nearestUpcomingTarget(
   };
 }
 
-// Public page: only the sorts the anonymous endpoint can honor. A my_areas
-// value (typed into the URL or copied from a signed-in session) falls back to
-// vote_power so the subtitle never claims an ordering the backend cannot do.
+// The anonymous endpoint can honor these server-side. my_areas is offered on
+// top of them to signed-in visitors with saved research areas, honored by a
+// CLIENT-side re-sort (sortRailEntries — the same mirror of the backend
+// comparator the detail rail uses), because /api/ballot has no user to score
+// against. For anonymous visitors a my_areas URL value falls back to
+// vote_power so the UI never claims an ordering nobody computed.
 const SORT_VALUES: readonly string[] = PUBLIC_BALLOT_SORTS.map((option) => option.value);
 
 export function BallotPage() {
@@ -83,7 +93,21 @@ export function BallotPage() {
     .map((id) => id.trim())
     .filter((id) => id.length > 0);
   const rawSort = searchParams.get("sort") ?? "";
-  const sort: BallotSort = SORT_VALUES.includes(rawSort) ? (rawSort as BallotSort) : "vote_power";
+  // my_areas is only real once the viewer's saved areas confirm (hasSaved);
+  // until then — and for anonymous visitors forever — it degrades to the
+  // vote_power default. The list is withheld while that's still unsettled
+  // (awaitingSavedAreas below) so the degraded order never flashes.
+  const myAreasRequested = rawSort === "my_areas";
+  const sort: BallotSort = myAreasRequested
+    ? hasSaved
+      ? "my_areas"
+      : "vote_power"
+    : SORT_VALUES.includes(rawSort)
+      ? (rawSort as BallotSort)
+      : "vote_power";
+  // What the anonymous endpoint is asked for: my_areas is client-side here,
+  // so its fetch requests (and caches under) the plain vote_power payload.
+  const fetchSort: BallotSort = sort === "my_areas" ? "vote_power" : sort;
   const {
     issuesRequested,
     impactRequested,
@@ -95,10 +119,10 @@ export function BallotPage() {
   } = useBallotFilterParams();
 
   const ballot = useQuery({
-    queryKey: ["ballot", districtIds.join(","), sort],
+    queryKey: ["ballot", districtIds.join(","), fetchSort],
     queryFn: () =>
       apiRequest<BallotSummary>(
-        `/api/ballot?district_ids=${encodeURIComponent(districtIds.join(","))}&sort=${sort}`
+        `/api/ballot?district_ids=${encodeURIComponent(districtIds.join(","))}&sort=${fetchSort}`
       ),
     enabled: districtIds.length > 0,
   });
@@ -135,13 +159,40 @@ export function BallotPage() {
     impactRequested,
     raceTypeRequested,
   });
-  // A ?issues=mine load must not flash the full ballot while the saved
-  // areas are still unknown (the ballot is one request; the saved areas are
-  // two chained ones, so the ballot usually lands first). Withhold the list
-  // until the flag settles — it settles on failure too, falling open to the
-  // full list with the request ignored: a ballot app errs toward showing
-  // races, and no on-page element claims filtering in that state.
-  const awaitingSavedAreas = issuesRequested && savedAreasLoading;
+  // A ?issues=mine (or ?sort=my_areas) load must not flash the full/unsorted
+  // ballot while the saved areas are still unknown (the ballot is one
+  // request; the saved areas are two chained ones, so the ballot usually
+  // lands first). Withhold the list until the flag settles — it settles on
+  // failure too, falling open to the full list with the request ignored: a
+  // ballot app errs toward showing races, and no on-page element claims
+  // filtering or an issue ordering in that state.
+  const awaitingSavedAreas = (issuesRequested || myAreasRequested) && savedAreasLoading;
+
+  // The my_areas re-sort. Runs over the tab/filter-visible list only; the
+  // awaiting-candidates tail needs no special handling because ElectionList
+  // splits it into its own closing section regardless of input order (the
+  // backend's sink + compare produces the same outcome). The wrapper objects
+  // adapt ElectionSummary's field names to the shared comparator's keys.
+  const visibleElections =
+    sort === "my_areas"
+      ? sortRailEntries(
+          filtersView.visibleElections.map((election) => ({
+            id: election.id,
+            title: election.official_ballot_title,
+            race_type: election.race_type,
+            vote_power_score: election.vote_power.score,
+            election_date: election.election_date,
+            research_area_ids: election.research_areas.map((area) => area.id),
+            election,
+          })),
+          "my_areas",
+          savedAreaWeights
+        ).map((entry) => entry.election)
+      : filtersView.visibleElections;
+
+  // my_areas rides on top of the public sorts, only for viewers who can be
+  // scored against (saved research areas confirmed).
+  const sortOptions = hasSaved ? BALLOT_SORTS : PUBLIC_BALLOT_SORTS;
 
   if (districtIds.length === 0) {
     return (
@@ -198,7 +249,7 @@ export function BallotPage() {
               onChange={(event) => onSortChange(event.target.value)}
               className="rounded-md border border-line bg-white px-2 py-1.5 text-sm text-ink focus:border-ink focus:outline-none"
             >
-              {PUBLIC_BALLOT_SORTS.map((option) => (
+              {sortOptions.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -247,7 +298,7 @@ export function BallotPage() {
             // An active filter can empty this list; the "N elections hidden ·
             // Show all" line in the controls row explains the empty view.
             <ElectionList
-              elections={filtersView.visibleElections}
+              elections={visibleElections}
               savedAreaWeights={savedAreaWeights}
               choicesByElectionId={isGuest ? draftChoicesByElectionId(draft) : choiceByElectionId}
               // Full query string: the back link must return to this exact
@@ -257,6 +308,8 @@ export function BallotPage() {
               // race-type tabs start here and can reach the other tab's races.
               contestsPool={filtersView.filteredElections}
               raceType={filtersView.raceType}
+              // Seed the rail's always-engaged sort from this list's sort.
+              railSort={railSortForBallotSort(sort)}
             />
           )}
         </>

@@ -391,6 +391,51 @@ describe("SavedBallotPage nav context", () => {
           research_area_ids: [],
         },
       ],
+      // The saved preference (vote_power) seeds the rail's sort.
+      railSort: "vote_power",
     });
+  });
+
+  it("withholds the list until the saved sort is known, then seeds the rail with it", async () => {
+    const user = userEvent.setup();
+    // The ballot lands first (already server-ordered by the saved soonest
+    // preference); the preferences response is held so the client cannot yet
+    // know which sort that was.
+    let releasePreferences!: (value: { body: { sort: string; followed_first: boolean } }) => void;
+    const delayed = new Promise<{ body: { sort: string; followed_first: boolean } }>((resolve) => {
+      releasePreferences = resolve;
+    });
+    stubApiRoutes({
+      ...VERIFIED_BASE,
+      "/api/me/ballot-preferences": () => delayed,
+      "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    const { router } = renderSavedBallot();
+
+    // Navigable cards before the sort is known would stamp no railSort and
+    // open the rail in the wrong order — the list must wait.
+    expect(await screen.findByText("Loading your ballot…")).toBeInTheDocument();
+    expect(screen.queryByText("Governor")).not.toBeInTheDocument();
+
+    releasePreferences({ body: { sort: "soonest", followed_first: true } });
+    await user.click(await screen.findByRole("link", { name: /Governor/ }));
+    const navState = router.state.location.state as { railSort?: string };
+    expect(navState.railSort).toBe("soonest");
+  });
+
+  it("falls open on a preferences failure: list shown, rail seed omitted", async () => {
+    const user = userEvent.setup();
+    stubApiRoutes({
+      ...VERIFIED_BASE,
+      "/api/me/ballot-preferences": apiError(500, "internal_error", "boom"),
+      "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    const { router } = renderSavedBallot();
+
+    // A preferences outage must not hide the ballot; the seed is the only
+    // thing lost, and the rail simply opens in its own default order.
+    await user.click(await screen.findByRole("link", { name: /Governor/ }));
+    const navState = router.state.location.state as { railSort?: string };
+    expect(navState.railSort).toBeUndefined();
   });
 });

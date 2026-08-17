@@ -1,12 +1,14 @@
 import type { BallotRaceType } from "@voteapp/api-client";
 
-// UI words, not wire words: "Candidates", not "offices" (voters pick people,
-// not job listings) and "Ballot Measures", the nationally neutral term —
-// "Propositions" is regional (CA/AZ; other states say Questions, Amendments,
-// Issues) and the election cards already say "Ballot Measure".
+// UI words, not wire words: "Offices" matches official sample-ballot
+// vocabulary (ballots segment "Offices" and "Measures") and, unlike
+// "Candidates", cannot be misread as a list of people. "Ballot Measures"
+// is the nationally neutral term — "Propositions" is regional (CA/AZ;
+// other states say Questions, Amendments, Issues) and the election cards
+// already say "Ballot Measure".
 const TABS: { value: BallotRaceType | null; label: string }[] = [
   { value: null, label: "All" },
-  { value: "office", label: "Candidates" },
+  { value: "office", label: "Offices" },
   { value: "ballot_measure", label: "Ballot Measures" },
 ];
 

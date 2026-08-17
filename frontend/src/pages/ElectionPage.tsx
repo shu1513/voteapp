@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError } from "react-router";
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { BallotRaceType, ElectionDetail, PartyBucket, RailSortKey } from "@voteapp/api-client";
-import { RAIL_SORTS, railSortsOffered, sortRailEntries } from "@voteapp/api-client";
+import { RAIL_SORTS, railSortForBallotSort, railSortsOffered, sortRailEntries } from "@voteapp/api-client";
 import { DetailPager } from "../components/DetailPager";
 import { DetailRail } from "../components/DetailRail";
 import { RaceTypeTabs } from "../components/RaceTypeTabs";
@@ -30,7 +30,7 @@ import {
 import { loadFromApi } from "../lib/loadFromApi";
 import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
-import { AREA_TEXT_CLASS } from "../components/ElectionCard";
+import { AREA_TEXT_CLASS, SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { CandidatePickButton, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
 import { splitResearchAreasBySaved, useElectionChoices } from "@voteapp/api-client";
@@ -50,10 +50,16 @@ type CandidateSort = "alphabetical" | "my_issues";
 // to the rail's current tab and sort, so leaving the split view lands on the
 // view the rail is showing rather than the one the reader arrived with.
 // Sort carry-over rules: vote_power/soonest are list sorts on both pages;
-// my_areas only reaches /me/ballot (the anonymous list endpoint would
-// silently degrade it); alphabetical is rail-only and "As listed" (null) IS
-// the arrival order — both leave the path's sort untouched. The base is a
-// throwaway for relative parsing only.
+// my_areas reaches both ballot lists (/me/ballot server-side, /ballot via
+// its client-side mirror — which degrades to vote_power rather than lying
+// if the URL ever lands on a viewer without saved areas); alphabetical is
+// rail-only and leaves the path's sort untouched. The rewrite happens only when the engaged sort would
+// CHANGE the order the back URL already yields — the rail's seeded default
+// is mapped FROM that URL's sort (railSortForBallotSort), so this rule
+// keeps a richer list sort the rail merely approximates (district_size →
+// vote_power) from being silently overwritten, while a genuinely different
+// choice still carries over. The base is a throwaway for relative parsing
+// only.
 function rewriteBackPath(
   path: string,
   tabs: { available: boolean; raceType: BallotRaceType | null },
@@ -67,11 +73,11 @@ function rewriteBackPath(
       url.searchParams.delete("type");
     }
   }
-  if (
+  const honorable =
     railSort === "vote_power" ||
     railSort === "soonest" ||
-    (railSort === "my_areas" && url.pathname === "/me/ballot")
-  ) {
+    (railSort === "my_areas" && (url.pathname === "/me/ballot" || url.pathname === "/ballot"));
+  if (honorable && railSort !== railSortForBallotSort(url.searchParams.get("sort") ?? "vote_power")) {
     url.searchParams.set("sort", railSort);
   }
   return url.pathname + url.search + url.hash;
@@ -136,13 +142,18 @@ export function ErrorBoundary() {
 
 export function ElectionPage() {
   const { me } = useMe();
-  const { savedAreaIds, weights, hasSaved } = useMyResearchAreas();
+  const { savedAreaIds, weights, hasSaved, isLoading: savedAreasLoading } = useMyResearchAreas();
+  const location = useLocation();
+  const navState = readElectionNavState(location.state);
   // null = no explicit pick; viewers with saved areas default to "my
   // issues first" (their picks are the point of saving areas), everyone
   // else to the alphabetical payload order. A picked "my_issues" is
   // ignored while saved areas are empty — same resilience as the record
   // view on CandidatePage — and honored again once areas are re-saved.
-  const [chosenSort, setChosenSort] = useState<CandidateSort | null>(null);
+  // Seeded from the nav state's rosterSort so a candidate round trip
+  // restores the roster order the reader left (or switched to, via the
+  // candidate rail) — the remount would otherwise reset it to the default.
+  const [chosenSort, setChosenSort] = useState<CandidateSort | null>(navState?.rosterSort ?? null);
   const effectiveChosenSort = chosenSort === "my_issues" && !hasSaved ? null : chosenSort;
   const candidateSort = effectiveChosenSort ?? (hasSaved ? "my_issues" : "alphabetical");
   // The pick carries the election it was made on: this component stays
@@ -246,8 +257,6 @@ export function ElectionPage() {
   // The nav bar exists only for in-app arrivals: router state carries where
   // "back" goes and the ballot sequence. Deep links (shares, search
   // engines) have neither — they get no bar at all, by product choice.
-  const location = useLocation();
-  const navState = readElectionNavState(location.state);
   // The rail's race-type tabs: offered only when the snapshot types every
   // contest (an old history entry may not) and holds both types. The tab
   // starts where the list's tab was (navState.raceType) and lives in
@@ -264,12 +273,35 @@ export function ElectionPage() {
   const railTab = railTabsAvailable ? railTabState : null;
   // The rail's sort control: offered only for the sorts this snapshot can
   // honor faithfully (railSortsOffered — an old unkeyed snapshot offers
-  // none). Same persistence story as the tab: component state across
-  // sibling walks, nav state across remounts. null = "As listed", the
-  // arrival order.
-  const offeredRailSorts = railSortsOffered(contests ?? [], hasSaved);
-  const [railSortState, setRailSortState] = useState<RailSortKey | null>(navState?.railSort ?? null);
-  const railSort = railSortState !== null && offeredRailSorts.includes(railSortState) ? railSortState : null;
+  // none), and withheld while the saved areas load so the default cannot
+  // engage prematurely and visibly re-shuffle. Same persistence story as
+  // the tab: component state across sibling walks, nav state across
+  // remounts. No "As listed": the sort is always engaged, seeded by the
+  // LIST's sort (the pages stamp railSort via railSortForBallotSort, which
+  // sends the un-honorable district-size sorts to vote_power). A snapshot
+  // that PREDATES the railSort stamp seeds from the back URL's own ?sort=
+  // instead — defaulting it to vote_power would make rewriteBackPath
+  // silently rewrite a sort=soonest back link the reader never touched.
+  // Only after both fall through does vote_power, the ballot's default,
+  // apply (below).
+  const offeredRailSorts = savedAreasLoading ? [] : railSortsOffered(contests ?? [], hasSaved);
+  const [railSortState, setRailSortState] = useState<RailSortKey | null>(() => {
+    if (navState === null) {
+      return null;
+    }
+    if (navState.railSort !== undefined) {
+      return navState.railSort;
+    }
+    return railSortForBallotSort(
+      new URL(navState.backTo.path, "http://internal").searchParams.get("sort") ?? "vote_power"
+    );
+  });
+  const railSort =
+    railSortState !== null && offeredRailSorts.includes(railSortState)
+      ? railSortState
+      : offeredRailSorts.includes("vote_power")
+        ? "vote_power"
+        : (offeredRailSorts[0] ?? null);
   // Prev/next walk exactly what the rail shows: the engaged tab's slice, in
   // the engaged sort's order.
   const slicedContests =
@@ -289,11 +321,12 @@ export function ElectionPage() {
   // - `forwarded` (sibling walks, the candidate chain's back hop) carries
   //   the rail's CURRENT tab and sort but the ORIGINAL back destination —
   //   the ?type=/?sort= rewrite is recomputed from it at render time on
-  //   every page, so "As listed" and "All" can always restore the arrival
-  //   URL. Baking a rewritten path into forwarded state would make a
-  //   previously-engaged sort unremovable after a sibling walk.
+  //   every page, so "All" (and an un-rewritten sort) can always restore
+  //   the arrival URL. Baking a rewritten path into forwarded state would
+  //   make a previously-engaged sort unremovable after a sibling walk.
   // - `backTo` (this page's rendered back links only) IS the rewrite:
-  //   leaving the split view lands on the view the rail is showing.
+  //   leaving the split view lands on the view the rail is showing. Only
+  //   an EXPLICIT sort rewrites ?sort= — see explicitRailSort above.
   const railNav =
     navState === null
       ? null
@@ -334,13 +367,30 @@ export function ElectionPage() {
     backTo: { path: `/elections/${data.id}`, label: data.official_ballot_title },
     // The election page's own incoming context rides along so the back hop
     // restores it (election → candidate → back keeps the ballot sequence,
-    // including the rail tab and sort as switched).
-    ...(railNav ? { backState: railNav.forwarded } : {}),
+    // including the rail tab and sort as switched). rosterSort rides on top:
+    // the back hop remounts this page, and without it the roster's sort
+    // resets to the default instead of the order the reader left. The
+    // candidate page overrides it with its rail's current sort, so the two
+    // stay one continuous control across the round trip.
+    ...(railNav ? { backState: { ...railNav.forwarded, rosterSort: candidateSort } } : {}),
     electionId: data.id,
-    candidates: orderedCandidates.map(({ candidate }) => ({
+    candidates: orderedCandidates.map(({ candidate, stances }) => ({
       id: candidate.candidate_id,
       name: candidate.display_name,
+      // The candidate rail's My-issues sort key: the already-aggregated
+      // stance areas condensed to per-area record counts — all the
+      // mirrored scoring reads.
+      research_area_records: stances.map((stance) => ({
+        research_area_id: stance.research_area_id,
+        record_count: stance.for_count + stance.against_count,
+      })),
     })),
+    // The roster sort in force RIGHT NOW — the candidate rail starts on it,
+    // so an explicit A–Z choice here survives opening a candidate instead
+    // of being stomped by the rail's My-issues default. Same values by
+    // construction: CandidateSort and CandidateRailSortKey are both
+    // "alphabetical" | "my_issues".
+    railSort: candidateSort,
   };
 
   // The nav bar at the top: prev | back | next, each slot captioned.
@@ -392,7 +442,11 @@ export function ElectionPage() {
           backToState={railNav.forwarded.backState}
           siblingState={railNav.forwarded}
           headerSlot={
-            railTabsAvailable || offeredRailSorts.length > 0 ? (
+            // The list label renders even when no control is offerable (an
+            // old snapshot): naming WHAT the rows are never depends on the
+            // sort/tab keys. Mirrors the candidate rail's "Candidates:".
+            <div className="flex flex-col gap-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-ink">Elections:</p>
               <div className="flex flex-col gap-2">
                 {railTabsAvailable ? (
                   <RaceTypeTabs raceType={railTab} onChange={setRailTabState} compact />
@@ -402,16 +456,9 @@ export function ElectionPage() {
                     Sort
                     <select
                       value={railSort ?? ""}
-                      onChange={(event) =>
-                        setRailSortState(
-                          event.target.value === "" ? null : (event.target.value as RailSortKey)
-                        )
-                      }
+                      onChange={(event) => setRailSortState(event.target.value as RailSortKey)}
                       className="min-w-0 flex-1 rounded-md border border-line bg-white px-1.5 py-1 text-xs text-ink focus:border-ink focus:outline-none"
                     >
-                      {/* "As listed" = the arrival order, whatever sort the
-                          list page was on. */}
-                      <option value="">As listed</option>
                       {RAIL_SORTS.filter((option) => offeredRailSorts.includes(option.value)).map(
                         (option) => (
                           <option key={option.value} value={option.value}>
@@ -423,7 +470,7 @@ export function ElectionPage() {
                   </label>
                 ) : null}
               </div>
-            ) : undefined
+            </div>
           }
         />
       ) : null}
@@ -531,8 +578,8 @@ export function ElectionPage() {
             ) : null}
             {researchAreas.length > 0 ? (
               // Same one-list, comma-separated presentation as the ballot
-              // cards: saved matches lead with a screen-reader-only "(saved)"
-              // cue, position is the only sighted distinction.
+              // cards: saved matches lead in semibold, with a screen-reader-
+              // only "(saved)" cue keeping the distinction audible.
               <p className="mt-3 text-xs">
                 {/* Same verb label as the ballot cards — see ElectionCard. */}
                 <span className="font-medium text-ink-soft">Affects:</span>{" "}
@@ -540,7 +587,7 @@ export function ElectionPage() {
                     nodes, so each span's text stays exactly the area name. */}
                 {[...orderedAreas.saved, ...orderedAreas.others].map((area, index, all) => (
                   <Fragment key={area.id}>
-                    <span className={AREA_TEXT_CLASS}>
+                    <span className={orderedAreas.saved.includes(area) ? SAVED_AREA_TEXT_CLASS : AREA_TEXT_CLASS}>
                       {area.name}
                       {orderedAreas.saved.includes(area) ? <span className="sr-only"> (saved)</span> : null}
                     </span>
