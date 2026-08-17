@@ -2,7 +2,6 @@ import { useId, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@voteapp/api-client";
 import type { StateVotingResources, StateVotingResourcesResult } from "@voteapp/api-client";
-import { DisclosureTrigger } from "./DisclosureTrigger";
 
 /** Display form of a link's destination so voters see where they're headed. */
 function linkHost(url: string): string | null {
@@ -108,9 +107,13 @@ function StateResourcesSection({ state, showStateName }: { state: string; showSt
 /**
  * "How to vote in WA" disclosure for the elections list: official state links
  * for voting by mail first, then in person. Inline disclosure like
- * BallotFiltersControl — no portal or outside-click machinery. Resources load
- * lazily on first open; states normally holds one entry (a ballot's districts
- * share a state), but every distinct state gets its own section if not.
+ * BallotFiltersControl — no portal or outside-click machinery — but the
+ * trigger is deliberately NOT DisclosureTrigger: this is informational
+ * content, not a list control, so it's styled as a quiet text link with an
+ * info glyph instead of the bordered filter-button look (py-1.5 keeps it
+ * level with the toolbar row it sits beside). Resources load lazily on first
+ * open; states normally holds one entry (a ballot's districts share a
+ * state), but every distinct state gets its own section if not.
  */
 export function HowToVoteControl({ states }: { states: string[] }) {
   const [open, setOpen] = useState(false);
@@ -122,9 +125,22 @@ export function HowToVoteControl({ states }: { states: string[] }) {
 
   return (
     <div className="flex flex-col items-end gap-2">
-      <DisclosureTrigger open={open} panelId={panelId} onClick={() => setOpen(!open)}>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-controls={panelId}
+        className={`flex items-center gap-1.5 py-1.5 text-sm underline-offset-2 transition hover:text-ink hover:underline ${
+          open ? "text-ink underline" : "text-ink-soft"
+        }`}
+      >
+        <svg aria-hidden="true" viewBox="0 0 12 12" className="h-3.5 w-3.5">
+          <circle cx="6" cy="6" r="5.25" fill="none" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M6 5.4v3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <circle cx="6" cy="3.4" r="0.9" fill="currentColor" />
+        </svg>
         How to vote{uniqueStates.length === 1 ? ` in ${uniqueStates[0]}` : ""}
-      </DisclosureTrigger>
+      </button>
       {open ? (
         <div id={panelId} className="flex w-72 max-w-full flex-col gap-4 rounded-lg border border-line bg-white p-3">
           {uniqueStates.map((state) => (
