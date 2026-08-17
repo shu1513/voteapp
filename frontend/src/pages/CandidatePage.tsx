@@ -795,8 +795,20 @@ export function CandidatePage() {
       ) : null}
       {/* min-w-0: the grid column must be allowed to shrink or long names
           blow the layout; lg:max-w-3xl keeps the reading measure of the
-          classic column even though the grid column is wider. */}
-      <div className="min-w-0 lg:max-w-3xl">
+          classic column even though the grid column is wider. In rail mode a
+          before pseudo-element draws the rail/detail divider a rem into the
+          gutter (centered in gap-8) — a pseudo, not border-l + pl, because
+          box-sizing is border-box and padding on this max-w-3xl div would
+          eat 17px of reading measure. On the detail side (not the rail) so
+          the rule spans the full content height; conditional so deep links
+          never grow a stray rule. */}
+      <div
+        className={
+          railCandidates !== null
+            ? "min-w-0 lg:relative lg:max-w-3xl lg:before:absolute lg:before:inset-y-0 lg:before:-left-4 lg:before:w-px lg:before:bg-line lg:before:content-['']"
+            : "min-w-0 lg:max-w-3xl"
+        }
+      >
         {railCandidates !== null ? <div className="lg:hidden">{pagerBar}</div> : pagerBar}
         <JsonLdScript
           data={{
