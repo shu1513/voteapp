@@ -173,7 +173,14 @@ describe("per-state deviations", () => {
     );
     const judge = rank("06", { office_scope: "county", contest_family: "judicial_office", title: "Superior Court Judge" });
     expect(judge).toBeGreaterThan(rank("06", { office_scope: "state_lower", title: "Member of the State Assembly" }));
+    // Superintendent of Public Instruction (statewide-scoped office) heads
+    // the SCHOOL block instead of joining the executive run (§ 13109(j)).
+    const superintendent = rank("06", { office_scope: "statewide", title: "Superintendent of Public Instruction" });
+    expect(superintendent).toBeGreaterThan(
+      rank("06", { office_scope: "county", contest_family: "judicial_office", title: "Superior Court Judge" })
+    );
     const schoolBoard = rank("06", { office_scope: "school_unified", title: "Governing Board Member" });
+    expect(superintendent).toBeLessThan(schoolBoard);
     expect(judge).toBeLessThan(schoolBoard);
     expect(schoolBoard).toBeLessThan(rank("06", { office_scope: "county", title: "Board of Supervisors" }));
     expect(schoolBoard).toBeLessThan(rank("06", { office_scope: "place", title: "City Council" }));
@@ -191,22 +198,36 @@ describe("per-state deviations", () => {
   });
 
   it("DC: shadow US Senator/Representative print late; the Delegate keeps the federal slot", () => {
-    const delegate = rank("11", { office_scope: "us_house", title: "Delegate to the House of Representatives" });
-    const mayor = rank("11", { office_scope: "statewide", title: "Mayor of the District of Columbia" });
+    // Real scopes from the data: the Delegate is titled "United States
+    // Representative, DC At-Large" on the us_house district; Mayor rides
+    // the place-scoped city district; AG is statewide.
+    const delegate = rank("11", { office_scope: "us_house", title: "United States Representative, DC At-Large" });
+    const mayor = rank("11", { office_scope: "place", title: "Mayor of the District of Columbia" });
+    const atLargeCouncil = rank("11", { office_scope: "statewide", title: "At-Large Member of the Council" });
+    const wardCouncil = rank("11", { office_scope: "place", title: "Member of the Council Ward 3" });
+    const attorneyGeneral = rank("11", { office_scope: "statewide", title: "Attorney General" });
     const shadowSenator = rank("11", {
       office_scope: "statewide",
       contest_family: "us_senate",
       title: "United States Senator",
     });
-    const shadowRep = rank("11", { office_scope: "us_house", title: "United States Representative" });
+    const shadowRep = rank("11", { office_scope: "statewide", title: "United States Representative" });
+    // § 1202.1 (b) -> (c) -> (e) -> (f) -> (g) -> (h) -> (i)
     expect(delegate).toBeLessThan(mayor);
-    expect(shadowSenator).toBeGreaterThan(mayor);
-    expect(shadowRep).toBeGreaterThan(shadowSenator);
-    // Ward councilmember inside the executive/Council run, before the shadows.
-    const wardCouncil = rank("11", { office_scope: "place", title: "Member of the Council Ward 3" });
-    expect(wardCouncil).toBeGreaterThan(mayor);
-    expect(wardCouncil).toBeLessThan(shadowSenator);
-    expect(shadowRep).toBeLessThan(rank("11", { office_scope: "school_unified", title: "State Board of Education" }));
+    expect(mayor).toBeLessThan(atLargeCouncil);
+    expect(atLargeCouncil).toBeLessThan(wardCouncil);
+    expect(wardCouncil).toBeLessThan(attorneyGeneral);
+    expect(attorneyGeneral).toBeLessThan(shadowSenator);
+    expect(shadowSenator).toBeLessThan(shadowRep);
+    // (j)/(k) SBOE after the shadow offices, regardless of modeled scope,
+    // then (l) ANC as the final office block before measures.
+    const sboe = rank("11", { office_scope: "statewide", title: "At-Large Member of the State Board of Education" });
+    const anc = rank("11", { office_scope: "place", title: "Advisory Neighborhood Commissioner 3B01" });
+    expect(sboe).toBeGreaterThan(shadowRep);
+    expect(anc).toBeGreaterThan(sboe);
+    expect(anc).toBeLessThan(
+      rank("11", { race_type: "ballot_measure", office_scope: null, district_type: "statewide", title: "Initiative 83" })
+    );
   });
 
   it("FL: the judicial section prints before school board", () => {
@@ -447,6 +468,14 @@ describe("per-state deviations", () => {
     expect(retention).toBeLessThan(
       rank("35", { ...presYear, race_type: "ballot_measure", office_scope: null, district_type: "statewide" })
     );
+    // The standard question wording counts as retention too (shared matcher).
+    const questionForm = rank("35", {
+      ...presYear,
+      office_scope: "statewide",
+      contest_family: "judicial_office",
+      title: "Shall J. Miles Hanisee be retained as a Judge of the Court of Appeals?",
+    });
+    expect(questionForm).toBe(retention);
     // Gubernatorial cycles are A-excluded: the whole entry defers to baseline.
     expect(rank("35", { election_date: "2026-11-03", office_scope: "county", contest_family: "judicial_office", title: "Judge of the District Court" })).toBe(
       stateBaselineContestRank(
@@ -550,6 +579,19 @@ describe("per-state deviations", () => {
     });
     expect(supreme).toBeGreaterThan(rank("47", { office_scope: "state_lower", title: "State Representative" }));
     expect(supreme).toBeLessThan(rank("47", { office_scope: "county", title: "County Commission" }));
+    // County-scoped judicial splits by class: circuit/chancery/criminal
+    // courts join the early block after the state house; general sessions
+    // and juvenile judges ride behind the county line.
+    const circuit = rank("47", { office_scope: "county", contest_family: "judicial_office", title: "Circuit Court Judge, Division 2" });
+    expect(circuit).toBeGreaterThan(rank("47", { office_scope: "state_lower", title: "State Representative" }));
+    expect(circuit).toBeLessThan(rank("47", { office_scope: "county", title: "County Commission" }));
+    const generalSessions = rank("47", {
+      office_scope: "county",
+      contest_family: "judicial_office",
+      title: "General Sessions Court Judge, Division 2",
+    });
+    expect(generalSessions).toBeGreaterThan(rank("47", { office_scope: "county", title: "County Commission" }));
+    expect(generalSessions).toBeLessThan(rank("47", { office_scope: "place", title: "City Council" }));
     const schoolBoard = rank("47", { office_scope: "school_unified", title: "School Board Member" });
     expect(schoolBoard).toBeGreaterThan(rank("47", { office_scope: "county", title: "County Commission" }));
     expect(schoolBoard).toBeLessThan(rank("47", { office_scope: "place", title: "City Council" }));
@@ -563,16 +605,22 @@ describe("per-state deviations", () => {
     });
     expect(supreme).toBeGreaterThan(rank("48", { office_scope: "statewide", title: "Railroad Commissioner" }));
     expect(supreme).toBeLessThan(rank("48", { office_scope: "state_upper", title: "State Senator" }));
-    // Appellate/judicial districts carry unmodeled scopes; they land in the
-    // after-state-house slot.
-    const district = rank("48", { office_scope: "something_new", contest_family: "judicial_office", title: "District Judge" });
+    // District judges arrive county-scoped (no judicial-district scope
+    // exists); the title split sends them to the after-state-house slot.
+    const district = rank("48", {
+      office_scope: "county",
+      contest_family: "judicial_office",
+      title: "District Judge, 218th Judicial District",
+    });
     expect(district).toBeGreaterThan(rank("48", { office_scope: "state_lower", title: "State Representative" }));
     expect(district).toBeLessThan(rank("48", { office_scope: "county", title: "County Clerk" }));
-    // County courts lead the county block.
+    // County courts lead the county block — and stay behind district courts.
     const countyCourt = rank("48", { office_scope: "county", contest_family: "judicial_office", title: "Judge, County Court at Law" });
     expect(countyCourt).toBeGreaterThan(district);
     expect(countyCourt).toBeLessThan(rank("48", { office_scope: "county", title: "County Clerk" }));
-    const jp = rank("48", { office_scope: "place", contest_family: "judicial_office", title: "Justice of the Peace" });
+    // JPs are county-scoped precinct offices: after every county office,
+    // before municipal.
+    const jp = rank("48", { office_scope: "county", contest_family: "judicial_office", title: "Justice of the Peace, Precinct 1" });
     expect(jp).toBeGreaterThan(rank("48", { office_scope: "county", title: "County Clerk" }));
     expect(jp).toBeLessThan(rank("48", { office_scope: "place", title: "Mayor" }));
   });

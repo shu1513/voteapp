@@ -247,7 +247,10 @@ function sortBallotElections(
   // Positional ballot order: no followed-first grouping, no empty-race sink —
   // a race's slot on the sheet is the whole point of this sort. The rank is
   // the state's verified general-election order where an override exists
-  // (stateBallotOrderRules.ts), the generic baseline otherwise.
+  // (stateBallotOrderRules.ts), the generic baseline otherwise. Rank-first
+  // (not date-first) is fine even when the summary spans several election
+  // dates: the preview renders one sheet per election_date and only relies
+  // on the payload order WITHIN each date (BallotPreviewSheets).
   if (sort === "state_baseline") {
     elections.sort((a, b) => {
       const byRank = stateBallotContestRank(a) - stateBallotContestRank(b);

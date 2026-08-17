@@ -1,5 +1,6 @@
 import type { BallotLookupElectionSummary } from "./ballotLookup.js";
 import { judicialCourtOffset, stateBaselineContestRank } from "./ballotContestRank.js";
+import { isJudicialRetentionTitle } from "../../ai/electionPartisanshipPolicy.js";
 
 // ---------------------------------------------------------------------------
 // Per-state contest-order overrides for the `state_baseline` ballot sort.
@@ -147,7 +148,11 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
   // below state-level granularity — not encoded.)
   "06": (c) => {
     if (statewideExec(c)) {
-      return 5;
+      // Superintendent of Public Instruction is statewide-scoped in the
+      // office catalog but is NOT in the § 13109(c) state block — it heads
+      // the SCHOOL block (§ 13109(j)), after judicial, before the
+      // school-district contests.
+      return /\bsuperintendent\b/i.test(c.title) ? 54.5 : 5;
     }
     if (c.judicial) {
       return 52 + c.court;
@@ -171,21 +176,36 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
     return null;
   },
 
-  // DC — BOE contest order (a)-(p). "US Senator"/"US Representative" are
-  // SHADOW offices printing late (after the Mayor/Council/AG block), so the
-  // baseline federal tiers must not claim them; the Delegate keeps the
-  // baseline us_house slot. Ward councilmember prints inside the
-  // Council/executive run, well before the shadow offices. SBOE-late and
-  // measures-last match the baseline.
+  // DC — BOE contest order (a)-(p). The us_house district carries the REAL
+  // Delegate (titled "United States Representative, DC At-Large" in the
+  // data, not "Delegate"), which keeps the baseline federal slot; the
+  // SHADOW US Senator/Representative are DC-wide offices printing late,
+  // after the Mayor/Council/AG block. Mayor rides the place-scoped city
+  // district and prints right after the Delegate, ABOVE the statewide
+  // Council run; ward councilmembers print inside that run; AG closes it;
+  // SBOE then ANC close the office list. Measures-last matches the
+  // baseline. (No elected judicial contests exist in DC.)
   "11": (c) => {
-    if (c.senate) {
-      return 33;
+    if (c.measure || c.judicial) {
+      return null;
     }
-    if (c.scope === "us_house" && !c.measure && !/delegate/i.test(c.title)) {
-      return 33.5;
+    if (c.senate || (c.scope !== "us_house" && /\bunited states senator\b/i.test(c.title))) {
+      return 33; // shadow US Senator
     }
-    if (c.scope === "place" && !c.measure && !c.judicial) {
-      return 30.5;
+    if (c.scope !== "us_house" && /\bunited states representative\b/i.test(c.title)) {
+      return 33.5; // shadow US Representative
+    }
+    if (/\bstate board of education\b/i.test(c.title)) {
+      return 34; // SBOE (at-large and ward), after the shadow offices
+    }
+    if (c.scope === "place") {
+      if (/\badvisory neighborhood\b/i.test(c.title)) {
+        return 34.5; // ANC — the final office block before measures
+      }
+      return /\bmayor\b/i.test(c.title) ? 29 : 30.5;
+    }
+    if (c.scope === "statewide" && /\battorney general\b/i.test(c.title)) {
+      return 31; // AG prints after the whole Council block, ward seats included
     }
     return null;
   },
@@ -431,7 +451,9 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
       return null;
     }
     if (c.judicial) {
-      return /retention/i.test(c.title) ? 99 + c.court : 55 + c.court;
+      // Shared retention matcher: catches both "Retention of Judge X" and
+      // the standard question form "Shall Justice X be retained in office?".
+      return isJudicialRetentionTitle(c.title) ? 99 + c.court : 55 + c.court;
     }
     return null;
   },
@@ -511,8 +533,11 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
   // TN — § 2-5-208: Governor in slot 2 before US Senate/House (Tennessee's
   // only statewide executive contest), state constitutional amendments
   // right behind (NOT last; local questions still trail), judicial after
-  // the state house, school inside the county block before municipal;
-  // general-sessions-class county judges ride just behind the county line.
+  // the state house, school inside the county block before municipal.
+  // County-scoped judicial rows split by CLASS: circuit/chancery/criminal
+  // courts (items (J)-(L)) belong to the early block right after the state
+  // house even though their judicial districts arrive county-scoped; only
+  // the general-sessions class ((S)-(T)) rides just behind the county line.
   // Municipal judicial last ~= the baseline place-judicial slot (no move).
   "47": (c) => {
     if (c.measure) {
@@ -525,7 +550,10 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
       if (c.scope === "place") {
         return null;
       }
-      return c.scope === "county" ? 61 : 52 + c.court;
+      if (c.scope === "county") {
+        return /\b(general sessions|juvenile)\b/i.test(c.title) ? 61 : 52 + c.court;
+      }
+      return 52 + c.court;
     }
     if (school(c)) {
       return 65;
@@ -536,18 +564,27 @@ const STATE_ORDER_RULES: Record<string, StateOrderRule> = {
   // TX — Elec. Code 52.092: judicial within level — statewide courts after
   // the statewide executives, appellate/district courts after the state
   // house, county courts LEADING the county block, JP at the tail of the
-  // precinct offices before municipal. Measure-class sub-order and the
+  // precinct offices before municipal. The district-block courts have no
+  // modeled scope of their own: appeals courts, district judges, and DAs
+  // arrive county-scoped, and JPs are county-scoped precinct offices — so
+  // the county tier splits by title. Measure-class sub-order and the
   // per-subdivision proposition interleave are below tier granularity.
   "48": (c) => {
     if (c.judicial) {
       if (c.scope === "statewide") {
         return 31 + c.court;
       }
-      if (c.scope === "county") {
-        return 59 + c.court;
-      }
       if (c.scope === "place") {
         return 65 + c.court;
+      }
+      if (/\b(justice of the peace|constable)\b/i.test(c.title)) {
+        return 65 + c.court; // precinct tail: after county, before municipal
+      }
+      if (/\b(district|appeals)\b/i.test(c.title)) {
+        return 51 + c.court; // district block, after the state house
+      }
+      if (c.scope === "county") {
+        return 59 + c.court; // true county courts lead the county block
       }
       return 51 + c.court;
     }
@@ -637,7 +674,12 @@ export const OVERRIDDEN_STATE_FIPS: readonly string[] = Object.keys(STATE_ORDER_
 // baseline everywhere else. Single entry point for the ordering decorator.
 export function stateBallotContestRank(election: StateRankableElection): number {
   if (election.election_stage === "general") {
-    const rule = STATE_ORDER_RULES[election.district.state_fips];
+    // Own-key lookup: the districts table does not enforce the FIPS format,
+    // so a malformed value must miss instead of resolving an inherited
+    // Object.prototype member.
+    const rule = Object.hasOwn(STATE_ORDER_RULES, election.district.state_fips)
+      ? STATE_ORDER_RULES[election.district.state_fips]
+      : undefined;
     if (rule) {
       const override = rule(contestFacts(election));
       if (override !== null) {
