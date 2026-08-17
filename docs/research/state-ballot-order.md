@@ -3277,7 +3277,10 @@ measures last.
   default; subsections (2)-(3) order political-subdivision offices AND
   measures county → city → school district → merged area → other), §49.43
   (measures), §46.21 (judicial ballot form), §39.17 (county office
-  sequence) — all at https://www.legis.iowa.gov/docs/code/<section>.pdf.
+  sequence) — all six served per-section at
+  https://www.legis.iowa.gov/docs/code/49.57A.pdf (substitute the section
+  number; all six URLs fetched + %PDF-verified 2026-08-17, Iowa Code 2026
+  edition, §49.57A text matches the quote above verbatim).
 - Office order: rule prescribes TWO cycle-specific sequences.
   Gubernatorial years (21.203(3)"a"): US Senator (if any) → US Rep →
   Governor and Lt. Governor (one team line) → SOS → Auditor of State →
@@ -3331,8 +3334,15 @@ measures last.
   — full gubernatorial-year sequence incl. exact executive order. Polk 2024
   (Ankeny 1, https://www.polkcountyiowa.gov/media/evnpb420/ankeny-1.pdf) —
   presidential-year sequence, judicial + amendments on back. Black Hawk 2024
-  (style 10) — township tier + vacancy rule. Scott 2024 (Ag Township style
-  2) — third-county replication. Johnson 2022 (precinct IC05,
+  (style 10, Black Hawk Township,
+  https://blackhawkcountyelections.iowa.gov/files/sample_ballots/20241105_ballot_style_10_black_hawk_township_30271.pdf
+  — URL recovered via /elections/info/2024_general_election_2024_11_05/,
+  re-fetched + %PDF-verified 2026-08-17) — township tier + vacancy rule.
+  Scott 2024 (Ag Township style 2,
+  https://elections.scottcountyiowa.gov/files/sample_ballots/20241105_ag_township_style_2_55282.pdf
+  — URL recovered via /elections/info/general_election_2024_11_05/,
+  re-fetched + %PDF-verified 2026-08-17) — third-county replication.
+  Johnson 2022 (precinct IC05,
   https://johnsoncountyiowa.gov/sites/default/files/Elections/2022GeneralElectionSampleBallotIC05.pdf)
   — gubernatorial sequence replicated incl. State Senator directly after AG.
   Greene 2022 (Jefferson 2,
@@ -3650,9 +3660,14 @@ measures last.
   gubernatorial executive chain Gov/LtGov → SOS → AG → Treasurer →
   Insurance, NO KS Senate, SBOE district 5 — every cycle-split claim on
   print). Sedgwick 2024 official canvass — partisan district judges Div
-  1-28 + magistrate + DA after KS House (canvass order; URL
-  sedgwickcounty.org/media/67739 dead at verify time — re-locate before
-  citing further). Johnson 2022 + Shawnee 2022/2024 canvasses —
+  1-28 + magistrate + DA after KS House (canvass order; URL RE-LOCATED
+  2026-08-17: bare /media/67739 dead, full-slug
+  https://www.sedgwickcounty.org/media/67739/2024-general-official-results.pdf
+  live via elections/election-results/2024-general-election/,
+  %PDF-verified, sequence re-confirmed inside the file: KS House 105th →
+  District Court Judge Dist 18 Div 1… → Magistrate → District Attorney →
+  SBOE 8th — canvass evidence only, still not a printed face).
+  Johnson 2022 + Shawnee 2022/2024 canvasses —
   retention late on combined cards; Shawnee's separate "Judicial
   Retention" results document = separate-card evidence. SOS statewide
   abstracts 2022/2024 corroborate. All %PDF-verified.
@@ -3694,7 +3709,17 @@ measures last.
   Legislature's own host, "~ OFFICIAL ~", disposition Law ch. 372 eff.
   2026-07-01 —
   https://billstatus.ls.state.ms.us/documents/2026/pdf/HB/0900-0999/HB0907SG.pdf
-  (TLS chain incomplete — curl -k; change markers only in subsection (3):
+  (TLS AUTHENTICATED 2026-08-17 — the server misconfig is only an
+  OMITTED INTERMEDIATE: it serves the leaf alone (CN=
+  billstatus.ls.state.ms.us, O=Mississippi Department of Information
+  Technology Services, expires 2027-01-04). Supplying the issuer cert
+  (GlobalSign RSA OV SSL CA 2018, fetched from the leaf's AIA URL
+  http://secure.globalsign.com/cacert/gsrsaovsslca2018.crt) makes
+  `openssl verify` pass and lets curl fetch over fully VALIDATED TLS —
+  `curl --cacert gs_int.pem <url>`; plain `curl -k` also works but is
+  no longer load-bearing. sha256 of the fetched PDF:
+  68cb4263ac8c1676f7485cf725988d440b0ab6329d6cdffc958e00f3dc5d2b14.
+  Change markers only in subsection (3):
   SOS sample deadline 55 → 60 days + runoff escape; (2) reprinted
   unchanged). Justia mirror corroborates but is now STALE on (3).
   Restatement of the SEMS lock-down: 2026 County Elections Handbook, MS
@@ -3838,8 +3863,10 @@ measures last.
   write-in spaces, dead lead. Fetch: sos.ms.gov = Akamai 403 direct →
   r.jina.ai; SOS sample filenames are inconsistent per year (2020 has NO
   year subdir); co.hinds.ms.us soft-404s = HTTP 200 + ~700B HTML (check
-  %PDF); billstatus.ls.state.ms.us needs curl -k; Wayback playback 503
-  all session.
+  %PDF); billstatus.ls.state.ms.us omits its TLS intermediate — either
+  curl -k or (better) --cacert with the AIA-fetched GlobalSign RSA OV
+  SSL CA 2018 cert for validated TLS (see Authority); Wayback playback
+  503 all session.
 
 ### NM — New Mexico (FIPS 35) — GRADE A (scoped)
 
@@ -3944,7 +3971,8 @@ measures last.
   2022 general matches only the PRIOR text (DA placement differs).
   Held at B; restore to A from a Santa Fe Nov 2026 general sample
   (expected ~Oct 2026 — cheap close, before the override would ever
-  fire for that cycle).: Nov 2024 Santa Fe printed
+  fire for that cycle).
+- Notes: statute-vs-sample gap recorded: Nov 2024 Santa Fe printed
   MAGISTRATE JUDGE Div. 2 (unexpired-term vacancy) but § (A) has no
   magistrate entry — it slotted between DA and county clerk, order
   unaffected, statutory list incomplete for off-cycle magistrate
@@ -4019,11 +4047,19 @@ measures last.
   District → Separate Juvenile → County). Douglas 2024/2022 moves
   retention to the END of the nonpartisan section after school boards —
   intra-section position VARIES by county (see grade scope).
-- Measures: LAST after all offices. § 32-813(9): initiatives/referenda/
-  amendments follow all other offices and "constitute a separate ballot"
-  (Lancaster 2024 = physically separate ballot; Douglas 2024 = local
-  Special Issues (Omaha charter, bonds) then statewide Measures 434-439
-  last). § 32-813(1): subdivision proposals follow subdivision offices.
+- Measures: TWO statutory classes — do not read "measures last" as one
+  rule. (1) STATEWIDE initiatives/referenda/amendments — § 32-813(9):
+  follow all other offices and "constitute a separate ballot"; these are
+  the dead-last class (Lancaster 2024 = physically separate ballot;
+  Douglas 2024 prints statewide Measures 434-439 last). (2) SUBDIVISION
+  proposals — § 32-813(1): follow that subdivision's offices, so county
+  measures ride the County Ticket (the "(+ county measures)" slot in
+  Office order, BEFORE precinct/city/village offices) and city/school
+  proposals follow their own offices near the tail (Douglas 2024: local
+  Special Issues (Omaha charter, bonds) after their subdivisions' offices,
+  then the statewide class last). Office-order, baseline-delta (ii
+  "statewide measures last, after local measures"), and grade-scope
+  bullets all use this two-class reading.
 - County discretion: PARTIAL, unusually broad — optical-scan reorder
   clause (twice), (6)(k) county-officer order, (7)-(8) split-ballot
   options. Nonpartisan candidate NAMES rotate by precinct (§ 32-814(4))
@@ -4128,8 +4164,10 @@ measures last.
   Rep Position A → Position B → county offices (Commissioners → Sheriff →
   Prosecutor → Clerk of the District Court → Treasurer → Assessor →
   Coroner) → judicial (NONPARTISAN BALLOT header) → countywide highway
-  district → community college trustees → measures. Governor AFTER US
-  House.
+  district (Ada-only — see Notes) → community college trustees → soil &
+  water conservation supervisors (conditional; observed Kootenai
+  2022/2024, after college trustees, before measures) → measures.
+  Governor AFTER US House.
 - Judicial: prints in November under a literal "NONPARTISAN BALLOT" header
   immediately AFTER county offices, BEFORE special districts — not last.
   Content = magistrate RETENTION questions (§ 1-2220 form) as the normal
@@ -4348,9 +4386,16 @@ measures last.
   representatives; and next, county offices") —
   https://www.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HRS0011/HRS_0011-0114.htm
   (accessed 2026-08-16). OHA + measure placement = Office of Elections
-  practice, documented in the official Candidate's Manual (2024 ed. p. 27,
-  2026 ed. p. 43 — manual republishes per cycle, re-pull each cycle):
-  https://elections.hawaii.gov/wp-content/uploads/2024-Candidates-Manual.pdf.
+  practice, documented in the official Candidate's Manual (manual
+  republishes per cycle, re-pull each cycle): 2024 ed. p. 27,
+  https://elections.hawaii.gov/wp-content/uploads/2024-Candidates-Manual.pdf;
+  2026 ed. PDF p. 43 (printed page 37, "What's on the Ballot?"),
+  https://elections.hawaii.gov/wp-content/uploads/2026-Candidates-Manual.pdf
+  (63 pp, PDF metadata ModDate 2025-12-09; fetched + %PDF-verified +
+  p. 43 read 2026-08-17: list runs US Rep → Governor → LtGov → State
+  Senator → State Rep → OHA → County Mayor → County Councilmembers →
+  state amendments → county charter amendments; NO US Senator, NO
+  Prosecuting Attorney bullet).
   Supporting: HRS § 11-115 (joint Gov/LtGov box), § 11-112(b) (questions),
   § 11-3 (chapter binds county elections), § 13D-4(c)-(d) (OHA statewide),
   HAR § 3-172-71 (no order provision).
