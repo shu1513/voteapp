@@ -782,11 +782,16 @@ export type CreateAskServiceOptions = {
   /** Phase 2 LLM answering (adapter client + limits Redis + config). Absent
    * → Phase 1 behavior exactly: retrieval cards, no cache, no model. */
   llm?: LlmAnswering | null;
+  /** Default true. Operator scripts (chatbot:eval) pass false so golden-set
+   * runs never land in chatbot.questions — the report would otherwise
+   * measure test bursts, not users. */
+  logQuestions?: boolean;
 };
 
 export function createAskService(options: CreateAskServiceOptions): AskService {
   const { db, embeddings } = options;
   const llm = options.llm ?? null;
+  const logQuestions = options.logQuestions ?? true;
 
   return {
     async ask(
@@ -805,15 +810,17 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
         tokensIn: number | null = null,
         tokensOut: number | null = null
       ): AskResponse => {
-        logQuestion(db, {
-          questionNorm,
-          answeredBy,
-          scopeKey,
-          matchedChunkIds,
-          latencyMs: Date.now() - startedAt,
-          tokensIn,
-          tokensOut,
-        });
+        if (logQuestions) {
+          logQuestion(db, {
+            questionNorm,
+            answeredBy,
+            scopeKey,
+            matchedChunkIds,
+            latencyMs: Date.now() - startedAt,
+            tokensIn,
+            tokensOut,
+          });
+        }
         return response;
       };
 
