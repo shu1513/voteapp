@@ -261,7 +261,28 @@ measures last.
   last-gubernatorial-winner's party first. Design forms DS-DE 200–208
   incorporated by reference, not fetched.
 
-### NY — New York (FIPS 36) — GRADE B (upgraded from C 2026-08-16: the "conflict" was a law-history misread; detailed order is new law, and 2025 print complies)
+### NY — New York (FIPS 36) — GRADE A (scoped; C→B→A(scoped) 2026-08-16/17 — external review applied the campaign's own one-matching-sample standard)
+- GRADE SCOPE: A covers TWO legs, each with express authority AND a matching
+  official sample: (1) judicial offices after ALL other partisan offices —
+  §7-104(11)(b) express text (eff. 2025-01-01) + the Suffolk 2025 general
+  booklet, every style (single-county, but the campaign's A standard is one
+  matching sample — NH's Dover face is the precedent — and demanding a
+  second county here would be a stricter rule invented for NY alone);
+  (2) ballot proposals in a separate section, normally the ballot back —
+  §7-110 "shall appear on the ballot in a separate section or on a separate
+  sheet or card" + Suffolk 2024 (39 faces, reverse side) and 2025 (backs,
+  statewide amendment first). EXCLUDED from A: (a) the (11)(a) precedence
+  spine (executives above US Senate/House) — effective 2025-01-01 but NO
+  general carrying (11)(a) offices has printed under it yet (first test =
+  Nov 2026), so it is statute-only; (b) partisan-before-nonpartisan and the
+  judicial-before-nonpartisan corollary (inference from NY's partisan
+  judiciary; only pre-mandate nonpartisan sample); (c) the "customary
+  order" middle band ((11)(b) leaves non-listed office order to county
+  custom); (d) Big-5 school-board band placement (single pre-mandate Erie
+  style). NO CODE CONSEQUENCE: both in-scope legs match the baseline
+  (judicial late block, measures last), and the headline spine deviation is
+  excluded — so NY gets NO override row until Nov 2026 print evidence
+  brings the spine into scope.
 - Authority: NY Election Law §7-104(11)(a)–(b). LAW HISTORY (corrected
   2026-08-16 against the S5943 bill text, deleted matter in brackets): the
   2019 "Voter Friendly Ballot Act" (L.2019 c.411) subdivision required only
@@ -357,7 +378,8 @@ measures last.
   school contest prints to the RIGHT of the proposals, so the proposal
   section is not final on that ballot (single-style observation; Suffolk had
   nothing after its reverse-side proposals).
-- Grade rationale: B (was C). The C rested on a supposed statute-vs-practice
+- Grade rationale: A (scoped), via C → B → A(scoped). The C rested on a
+  supposed statute-vs-practice
   conflict; corrected law history DISSOLVES it — the batch research read the
   2026-current §7-104(11) text off nysenate.gov and mis-attributed it to
   L.2019 c.411, so the 2024 judicial-third faces were scored as violations
@@ -375,16 +397,17 @@ measures last.
   for judicial on every style. Proposals print on the ballot BACK with the
   statewide amendment (Proposal One, Olympic Sports Complex) first —
   §7-110 practice unchanged. Statute and first-cycle print practice AGREE
-  on judicial placement. Why not A: (1) single-county corroboration under
-  the post-2025 mandate — Erie 2025 is purged (elections.erie.gov
-  /GenBallots/593.pdf now 404s behind the county's error page), the
-  enhancedvoting Westchester archive is empty ("No Active Elections"), and
-  Wayback replay was down service-wide on 2026-08-16; (2) the (11)(a)
-  executive spine (Governor before US Senator) is still statute-only in
-  print — 2025 is an odd year with no (11)(a) offices, and the 2024 faces
-  predate the mandate entirely. RESTORE PATH to A (scoped): one more county's
-  2025 general face (Erie/Nassau/Monroe via Wayback once replay returns)
-  for the judicial leg, plus a Nov 2026 general face for the spine.
+  on judicial placement. The interim B had demanded a SECOND county before
+  A — the second external-review round correctly flagged that as a stricter
+  rule than the campaign's A standard (explicit authority + ONE matching
+  official sample; NH's Dover face is the single-jurisdiction precedent),
+  so the judicial and proposals legs take scoped A and everything untested
+  stays excluded (see GRADE SCOPE). Corroboration-widening paths, useful
+  but NOT gates: another county's 2025 general face (Erie's
+  elections.erie.gov/GenBallots/593.pdf is purged/404, the enhancedvoting
+  Westchester archive is empty, Wayback replay was down service-wide on
+  2026-08-16 — retry there), and a Nov 2026 general face, which is the
+  REAL gate for bringing the (11)(a) spine into scope.
   Verification history: 2026-08-16 pass re-fetched every URL and re-read
   both 2024 ballots (39 Suffolk faces); this upgrade adds the 2025 booklet.
 - Notes: grid ballots — party rows lettered by last gubernatorial vote
@@ -659,7 +682,9 @@ measures last.
   November general (§ 21-2-138, primary-verified: nonpartisan election
   "held and conducted jointly with the general primary in each
   even-numbered year"; mandatory "shall", plus zero state-court judicial
-  contests on all four November samples). EXCLUDED from A: (a) the ENTIRE
+  contests on all three November samples — Gwinnett 2022, Richmond 2022,
+  Fulton 2024; the fourth sample is the Richmond May 2022 primary).
+  EXCLUDED from A: (a) the ENTIRE
   office sequence (US Senate/President → 8 executives → US House →
   legislature → county → Soil & Water) — no authority text anywhere, SEB
   rule 183-1-12-.07 merely cross-references §§ 21-2-379.4/379.5 which
@@ -686,9 +711,11 @@ measures last.
   practicable") → §21-2-285(c) — chain terminates without fixing office
   sequence. BMD arrangement delegated: §21-2-379.23(b) "The form and
   arrangement of ballots marked and printed by an electronic ballot marker
-  shall be prescribed by the Secretary of State." Placement rules that DO
-  exist: §21-2-285.1 (nonpartisan last), §21-2-138 (judicial on primary
-  date), §21-2-285(f)/§21-2-379.5(f) (measures after candidates). (accessed
+  shall be prescribed by the Secretary of State." Placement provisions that
+  DO exist: §21-2-285.1 (nonpartisan last — PRIMARY-ballot rule), §21-2-138
+  (judicial on primary date), §21-2-285(f)/§21-2-379.5(f) (PERMISSIVE
+  authorization to print measures following/below the candidate groups —
+  permission, not an ordering mandate; see GRADE SCOPE). (accessed
   2026-08-16.) PRIMARY VERIFICATION 2026-08-16: the official O.C.G.A. portal
   (https://www.lexisnexis.com/hottopics/gacode/ — "made available for public
   use by the Georgia Code Revision Commission on behalf of the Georgia
@@ -722,23 +749,26 @@ measures last.
   House prints straight after President/VP there. PSC slot (after Labor,
   before US House) from Richmond May-2022 primary (two PSC contests, D2+D3);
   PSC absent from 2022/2024 generals (Rose v. Raffensperger litigation).
-- Judicial: STATE-COURT judicial (Supreme/Appeals/Superior/State Court) not
-  on the November ballot — §21-2-138 puts those elections "in a nonpartisan
+- Judicial: TWO cases, governed by DIFFERENT rules — keep them separate.
+  (1) STATE-COURT judicial (Supreme/Appeals/Superior/State Court) is not on
+  the November ballot — §21-2-138 puts those elections "in a nonpartisan
   election to be held and conducted jointly with the general primary" (May;
-  probate/magistrate are NOT in this section). Locally-partisan judicial
-  offices CAN still appear in the November county block (Richmond exception
-  below). There, §21-2-285.1 lists them last "insofar as
-  practicable": "separated from the names of candidates for party nomination
-  to other offices by being listed last on each ballot" — statutory caption
-  "OFFICIAL NONPARTISAN ELECTION BALLOT"; the printed Richmond ballot's
-  caption reads "NONPARTISAN GENERAL ELECTION". Observed May-2022 internal
-  order: Supreme ×3 → Court of Appeals ×3 → Superior ×3 → State Court ×2,
-  then the section continues with NON-judicial nonpartisan offices (Mayor of
-  Augusta, commission seats) — not purely judicial. No retention — all
-  contested nonpartisan. Exception: a locally-partisan judicial office sits
-  in the November county block (Richmond 2022 "For Chief Judge, Civil and
-  Magistrate Court" — ONE contest — between Tax Commissioner and School
-  Board, incumbent listed "Democrat").
+  probate/magistrate are NOT in this section). On THAT May ballot,
+  §21-2-285.1 operates (its frame is the official primary ballot): the
+  nonpartisan offices are "separated from the names of candidates for party
+  nomination to other offices by being listed last on each ballot" "insofar
+  as practicable", statutory caption "OFFICIAL NONPARTISAN ELECTION BALLOT"
+  (the printed Richmond May-2022 ballot's caption reads "NONPARTISAN
+  GENERAL ELECTION" instead). Observed May-2022 internal order: Supreme ×3
+  → Court of Appeals ×3 → Superior ×3 → State Court ×2, then the section
+  continues with NON-judicial nonpartisan offices (Mayor of Augusta,
+  commission seats) — not purely judicial. No retention — all contested
+  nonpartisan. (2) LOCALLY-PARTISAN judicial offices CAN still appear in
+  the November county block, where NO placement statute controls —
+  §21-2-285.1 does not reach the November general: Richmond 2022 "For
+  Chief Judge, Civil and Magistrate Court" — ONE contest — printed between
+  Tax Commissioner and School Board, incumbent listed "Democrat"
+  (county-block practice, not a nonpartisan-last section).
 - Measures: last among the REGULAR election's items — amendments → statewide
   referenda → local questions. §21-2-285(f) "may be printed upon the ballot
   following the groups of candidates" (permissive "may", universally
