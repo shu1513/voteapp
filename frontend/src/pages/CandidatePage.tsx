@@ -305,8 +305,13 @@ function classifyStanceSummary(
 // "A NO vote means" boxes: green what the record supports, red what it
 // opposes, amber where it splits (full width below the pair — a third
 // column would squeeze all three on desktop and mixed is the box that
-// needs its counts read). Renders nothing when no area classifies, so a
-// record-less or judicial-only profile gets no empty shell.
+// needs its counts read). Only the border, fill, and heading carry the
+// color; the area list itself is plain ink. Unlike a measure's one-line
+// "what yes means", these bodies run to several comma-separated areas with
+// counts, and a paragraph of green-on-green (or red-on-red) reads as one
+// tinted block the text sinks into. Renders nothing when no area
+// classifies, so a record-less or judicial-only profile gets no empty
+// shell.
 function StanceSummary({
   candidateName,
   records,
@@ -350,7 +355,7 @@ function StanceSummary({
         >
           {side === "supports" ? "Supports" : "Opposes"}
         </h3>
-        <p className={side === "supports" ? "mt-1 text-sm text-green-900" : "mt-1 text-sm text-red-900"}>
+        <p className="mt-1 text-sm text-ink">
           {areas.map((area, index) => (
             <Fragment key={area.research_area_id}>
               {index > 0 ? ", " : null}
@@ -380,7 +385,7 @@ function StanceSummary({
       {mixed.length > 0 ? (
         <div className="mt-3 rounded border border-amber-200 bg-amber-50 p-3">
           <h3 className="text-sm font-semibold text-amber-900">Mixed record</h3>
-          <p className="mt-1 text-sm text-amber-900">
+          <p className="mt-1 text-sm text-ink">
             {/* Same "N support · N oppose" phrasing as the record group
                 headers, so the two surfaces can't drift apart. */}
             {mixed.map((area, index) => {
