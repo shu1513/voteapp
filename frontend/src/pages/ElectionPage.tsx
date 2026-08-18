@@ -95,10 +95,15 @@ const PARTY_FILTER_OPTIONS: { bucket: PartyBucket; label: string }[] = [
 
 // The office summary is seeded (seedOffices.ts) as newline-separated lines:
 // the first is a one-sentence hook, the rest are things the office affects.
-// A legacy single-paragraph summary is a hook with no bullets.
-function splitOfficeSummary(summary: string): { hook: string; affects: string[] } {
-  const [hook = "", ...affects] = summary.split("\n").filter((line) => line.trim() !== "");
-  return { hook, affects };
+// The pre-hook seed was a bare list of gerund duty bullets ("Running the
+// state government"), none ending in a period, and a database can still hold
+// those rows until the seed is re-run — so a first line without a period is
+// treated as a bullet, not a hook, rather than rendering a duty fragment as
+// the office's one-sentence description.
+function splitOfficeSummary(summary: string): { hook: string | null; affects: string[] } {
+  const lines = summary.split("\n").filter((line) => line.trim() !== "");
+  const [first = "", ...rest] = lines;
+  return first.trim().endsWith(".") ? { hook: first, affects: rest } : { hook: null, affects: lines };
 }
 
 // Server loader: the election subject arrives in the document HTML so
@@ -620,10 +625,14 @@ export function ElectionPage() {
             <h2 className="text-lg font-semibold">About this office</h2>
             {officeSummary ? (
               <>
-                <p className="mt-2 text-sm text-ink">{officeSummary.hook}</p>
+                {officeSummary.hook ? <p className="mt-2 text-sm text-ink">{officeSummary.hook}</p> : null}
                 {officeSummary.affects.length > 0 ? (
                   <>
-                    <p className="mt-3 text-sm font-medium text-ink">This office affects:</p>
+                    {/* Legacy duty lists have no hook; a "This office affects:"
+                        label over gerund duties would misdescribe them. */}
+                    {officeSummary.hook ? (
+                      <p className="mt-3 text-sm font-medium text-ink">This office affects:</p>
+                    ) : null}
                     <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-ink">
                       {officeSummary.affects.map((line, i) => (
                         <li key={i}>{line}</li>

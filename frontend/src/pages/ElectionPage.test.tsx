@@ -561,7 +561,7 @@ describe("ElectionPage", () => {
     expect(environment.compareDocumentPosition(civilRights) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
-  it("renders a legacy single-paragraph office summary as the hook alone", async () => {
+  it("renders a legacy duty-list summary (no period-terminated hook) as plain bullets", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
       electionDetail({
@@ -569,14 +569,20 @@ describe("ElectionPage", () => {
           id: "o-2",
           scope: "state_lower",
           canonical_name: "State Lower Chamber Legislator",
-          summary: "Voting on state laws and the state budget",
+          // Pre-hook seed shape, still in a database until the seed re-runs.
+          summary: "Voting on state laws and the state budget\nRepresenting their district in the statehouse",
         },
       })
     );
 
     expect(await screen.findByRole("heading", { name: "About this office" })).toBeInTheDocument();
-    expect(screen.getByText("Voting on state laws and the state budget")).toBeInTheDocument();
-    // No bullets, so no orphaned "This office affects:" label.
+    const bullets = screen.getAllByRole("listitem").map((li) => li.textContent);
+    expect(bullets).toEqual([
+      "Voting on state laws and the state budget",
+      "Representing their district in the statehouse",
+    ]);
+    // The first duty is not promoted to a hook paragraph, and no "This office
+    // affects:" label is put over gerund duties.
     expect(screen.queryByText("This office affects:")).not.toBeInTheDocument();
     expect(screen.queryByText(/State Lower Chamber Legislator/)).not.toBeInTheDocument();
   });

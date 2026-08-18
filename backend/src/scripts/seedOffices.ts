@@ -29,7 +29,7 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "presidential",
     canonicalName: "President of the United States",
     summary: [
-      "The president leads the federal government, signs or vetoes laws passed by Congress, and commands the U.S. military.",
+      "The president leads the federal government, signs bills passed by Congress into law or vetoes them, and commands the U.S. military.",
       "Federal taxes and how federal money is spent",
       "Who serves as federal judges and heads of federal agencies",
       "How the U.S. deals with other countries, including trade and war",
@@ -60,8 +60,8 @@ const SEED_OFFICES: SeedOffice[] = [
     scope: "statewide",
     canonicalName: "Governor",
     summary: [
-      "Your governor runs the state government, proposes the state budget, and signs or vetoes state laws.",
-      "Which state laws take effect and which get vetoed",
+      "Your governor runs the state government, proposes the state budget, and signs bills passed by the legislature into law or vetoes them.",
+      "Which bills become state law and which get vetoed",
       "How much money goes to schools, roads, and health care",
       "Who leads state agencies and, in many states, who serves as a state judge",
       "How the state responds to emergencies, such as storms or disease outbreaks",
@@ -256,7 +256,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "How much you pay in federal income tax",
       "Social Security, Medicare, and other federal programs",
       "Federal spending on roads, defense, and health care",
-      "Tax and spending bills, which must start in the House",
+      "Tax bills, which the Constitution says must start in the House",
     ].join("\n"),
   },
   {
@@ -695,7 +695,7 @@ const SEED_OFFICES: SeedOffice[] = [
       "Your mayor is the city's top elected leader and helps set city priorities and the city budget.",
       "City budget priorities",
       "Who leads city departments, such as the police chief, in many cities",
-      "Which council laws get signed or vetoed, in many cities",
+      "Which council bills become law and which get vetoed, in many cities",
       "Day-to-day city operations, in cities without a hired city manager",
     ].join("\n"),
   },
