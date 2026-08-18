@@ -528,6 +528,9 @@ describe("ChatWidget", () => {
     await user.click(screen.getByRole("button", { name: "Ask" }));
     const answer = await screen.findByText("Here's what our data has on that.");
     expect(answer.closest('[aria-live="polite"]')).not.toBeNull();
+    // The echoed user question is excluded (nested aria-live="off"): the
+    // user just typed it — re-announcing it before the answer is noise.
+    expect(screen.getByText("Who is Jon Ossoff?")).toHaveAttribute("aria-live", "off");
     // The follow-up chips sit OUTSIDE the live region — suggestion buttons
     // must not be read out as answer text.
     const chip = screen.getByRole("button", { name: "Who is funding their campaign?" });

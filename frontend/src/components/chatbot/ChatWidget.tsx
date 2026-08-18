@@ -191,7 +191,10 @@ function TurnView({ turn, reporterEmail }: { turn: Turn; reporterEmail: string |
   const reportTarget = isAi ? reportTargetFromResults(turn.response.results) : null;
   return (
     <div>
-      <p className="ml-8 rounded-xl bg-surface px-3 py-2 text-sm text-ink">{turn.question}</p>
+      {/* aria-live="off" excludes the echoed question from the transcript's
+          polite region — the user just typed it; re-announcing it before the
+          answer is noise. Still reachable by normal SR navigation. */}
+      <p aria-live="off" className="ml-8 rounded-xl bg-surface px-3 py-2 text-sm text-ink">{turn.question}</p>
       <p className="mt-2 whitespace-pre-line text-sm text-ink">{turn.response.answer}</p>
       {/* Honest-degradation line (PR 3): deterministic server copy, e.g. the
           daily AI-answer limit fell back to cards. Muted, above the cards it
