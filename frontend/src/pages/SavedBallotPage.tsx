@@ -433,10 +433,11 @@ export function SavedBallotPage() {
           <AddressSavedNotice saved={addressSaved} />
         </div>
       ) : null}
-      {/* No visible page heading or count subtitle: the date group headings
-          ("Elections on …") carry the page's identity. The sr-only h1 keeps
-          a level-1 target for screen-reader heading navigation. */}
-      <h1 className="sr-only">Your saved ballot</h1>
+      {/* Visible page heading, one step larger than the date group headings
+          ("Elections on …") below it — same wording as the public ballot page
+          so the list reads the same before and after sign-in. No count
+          subtitle. */}
+      <h1 className="mb-4 text-2xl font-bold text-ink">My elections:</h1>
       {/* Filters and ordering on the left, official how-to-vote links on the
           right — the same split as the public ballot page, so the resources
           reach signed-in voters too (their home page redirects here). */}

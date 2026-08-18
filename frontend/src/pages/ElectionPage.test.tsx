@@ -385,6 +385,68 @@ describe("ElectionPage", () => {
     expect(await screen.findByText("Yes approves the bond.")).toBeInTheDocument();
     expect(screen.getByText("No rejects the bond.")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Report an issue with ballot measure" })).toBeInTheDocument();
+    // One report button per measure page: the measure IS the page, so the
+    // election-level button would be a visually identical duplicate.
+    expect(screen.queryByRole("button", { name: "Report an issue with election" })).not.toBeInTheDocument();
+  });
+
+  it("does not repeat a measure's source under Election sources", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        sources: ["https://sos.example.gov/guide", "https://sos.example.gov/measure-1.pdf"],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: null,
+          source_urls: ["https://sos.example.gov/guide"],
+          official_measure_url: "https://sos.example.gov/measure-1.pdf",
+          research_area_tags: [],
+          results: [],
+        },
+      })
+    );
+
+    await screen.findByText("Yes approves the bond.");
+    // The measure section already shows the guide as its source line and the
+    // PDF as the official-measure link; both election sources are covered, so
+    // the "Election sources" section (and its duplicate source line) is gone.
+    expect(screen.getAllByRole("link", { name: "sos.example.gov" })).toHaveLength(1);
+    expect(screen.queryByRole("heading", { name: "Election sources" })).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /^Report an issue/ })).toHaveLength(1);
+  });
+
+  it("keeps Election sources for URLs the measure section did not show", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        sources: ["https://sos.example.gov/guide", "https://county.example.gov/notice"],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: null,
+          source_urls: ["https://sos.example.gov/guide"],
+          official_measure_url: null,
+          research_area_tags: [],
+          results: [],
+        },
+      })
+    );
+
+    await screen.findByText("Yes approves the bond.");
+    expect(screen.getByRole("heading", { name: "Election sources" })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "sos.example.gov" })).toHaveLength(1);
+    expect(screen.getByRole("link", { name: "county.example.gov" })).toBeInTheDocument();
   });
 
   it("renders candidate stance chips as +N/-N colored by direction", async () => {

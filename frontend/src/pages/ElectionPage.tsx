@@ -229,6 +229,16 @@ export function ElectionPage() {
   const visibleCandidates = recordsFilterOn ? matchedOnMyIssues : partyFilteredCandidates;
   const hiddenByRecordsFilter = partyFilteredCandidates.length - matchedOnMyIssues.length;
   const measure = data.ballot_measure;
+  // Election-level sources the measure section did NOT already show. A
+  // measure election's sources are usually the same page the measure was
+  // researched from (the SoS voter guide), so listing them again under
+  // "Election sources" doubled the same "Source: sos.ca.gov" line — the
+  // measure section shows source_urls (minus the official PDF, which has
+  // its own link) and the official_measure_url link, so both are covered.
+  const measureShownSources = new Set<string>(
+    measure ? [...measure.source_urls, ...(measure.official_measure_url ? [measure.official_measure_url] : [])] : []
+  );
+  const electionOnlySources = [...new Set(data.sources)].filter((url) => !measureShownSources.has(url));
   // "My choice" controls on upcoming elections only (the backend rejects
   // choice writes to past ones). Signed-in viewers need a loaded choices
   // list first (no-flash rule, like FollowButton); guests pick straight
@@ -1061,27 +1071,33 @@ export function ElectionPage() {
           </section>
         ) : null}
 
-        {data.sources.length > 0 ? (
+        {electionOnlySources.length > 0 ? (
           <section className="mt-6">
             <h2 className="text-sm font-semibold text-ink">Election sources</h2>
             {/* Research passes can record the same source twice; showing the
                 repeat reads as a rendering bug. */}
-            {[...new Set(data.sources)].map((url) => (
+            {electionOnlySources.map((url) => (
               <SourceLine key={url} url={url} />
             ))}
           </section>
         ) : null}
 
         {/* Last on purpose: reporting is a reaction to reading the page, not a
-            headline action worth space above the candidates. */}
-        <div className="mt-6">
-          <ReportContentButton
-            entityType="election"
-            entityId={data.id}
-            contextLabel="election"
-            reporterEmail={me?.email}
-          />
-        </div>
+            headline action worth space above the candidates. Skipped when the
+            measure section already rendered its own report button: on a
+            measure page the measure IS the page, and a second identical
+            "Report an issue" (with the same source line above it) read as a
+            duplicate. */}
+        {measure === null ? (
+          <div className="mt-6">
+            <ReportContentButton
+              entityType="election"
+              entityId={data.id}
+              contextLabel="election"
+              reporterEmail={me?.email}
+            />
+          </div>
+        ) : null}
 
         {/* measure !== null too, not just the race type: upcoming measure
             elections can exist before their ballot-measure row (details

@@ -133,8 +133,11 @@ Frontend:
   - CandidatePage: page-level (candidate profile) + one per record row
     (`candidate_record` + record id — records are the likeliest error target and the
     id is already in the payload).
-  - ElectionPage: page-level (election) + on the measure section
-    (`ballot_measure` + measure id) when present.
+  - ElectionPage: page-level (election), or — when a measure is present — the
+    measure section's button only (`ballot_measure` + measure id). One button
+    per measure page: the two read as identical duplicates to readers, and a
+    measure report already resolves to its election (the label snapshot joins
+    `ballot_measures.election_id`), so election-level fields stay reportable.
 - Quiet styling (footnote-size "Report an issue"), not a primary action.
 - Tests: submits right entity_type/entity_id, success + error states.
 
