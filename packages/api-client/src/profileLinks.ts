@@ -6,7 +6,13 @@
 // in the backend strips the @ and any x.com/twitter.com URL wrapper); the
 // client rebuilds the URL. The handle shape is re-checked here so a stray
 // malformed row can never become an href — it is dropped instead.
+//
+// linkedin_url is only validated as http(s) on the write path, but the
+// label asserts the domain, so a non-LinkedIn host is dropped the same way
+// rather than shown as "LinkedIn". Host must be linkedin.com or a subdomain
+// (www., uk., …) and end right there — "linkedin.com.evil.example" fails.
 const TWITTER_HANDLE = /^[A-Za-z0-9_]{1,15}$/;
+const LINKEDIN_URL = /^https?:\/\/([a-z0-9-]+\.)*linkedin\.com(?:[/?#]|$)/i;
 
 export type CandidateProfileLink = { href: string; label: string };
 
@@ -22,7 +28,7 @@ export function candidateProfileLinks(candidate: {
   if (candidate.twitter_handle && TWITTER_HANDLE.test(candidate.twitter_handle)) {
     links.push({ href: `https://x.com/${candidate.twitter_handle}`, label: "X (Twitter)" });
   }
-  if (candidate.linkedin_url) {
+  if (candidate.linkedin_url && LINKEDIN_URL.test(candidate.linkedin_url)) {
     links.push({ href: candidate.linkedin_url, label: "LinkedIn" });
   }
   return links;

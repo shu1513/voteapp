@@ -28,6 +28,29 @@ describe("candidateProfileLinks", () => {
     ]);
   });
 
+  it("accepts linkedin.com and its subdomains", () => {
+    for (const url of [
+      "https://linkedin.com/in/jordan",
+      "https://www.linkedin.com/in/jordan",
+      "http://uk.linkedin.com/in/jordan",
+      "https://www.linkedin.com",
+    ]) {
+      expect(candidateProfileLinks({ ...NONE, linkedin_url: url })).toEqual([{ href: url, label: "LinkedIn" }]);
+    }
+  });
+
+  it("drops a non-LinkedIn URL rather than labeling it LinkedIn", () => {
+    for (const url of [
+      "https://example.com/phishing",
+      "https://linkedin.com.evil.example/in/jordan",
+      "https://evil.example/linkedin.com/in/jordan",
+      "https://linkedin.com@evil.example/in/jordan",
+      "https://notlinkedin.com/in/jordan",
+    ]) {
+      expect(candidateProfileLinks({ ...NONE, linkedin_url: url })).toEqual([]);
+    }
+  });
+
   it("drops a malformed handle rather than building an href from it", () => {
     expect(candidateProfileLinks({ ...NONE, twitter_handle: "@jordan" })).toEqual([]);
     expect(candidateProfileLinks({ ...NONE, twitter_handle: "https://x.com/jordan" })).toEqual([]);
