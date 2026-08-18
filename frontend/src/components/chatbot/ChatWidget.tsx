@@ -108,7 +108,11 @@ type Turn = { question: string; response: ChatbotAskResponse };
  * drive free next hops (profile → finance, election → roster). Two guards
  * keep them honest: a facet the answer ALREADY cited is not re-suggested
  * (finance cards → no funding chip), and neither is the question just
- * asked (a starter chip must not reappear as its own follow-up). */
+ * asked (a starter chip must not reappear as its own follow-up). Several
+ * cited candidates is fine on purpose: "their" reads as plural, and the
+ * previous-question carry scopes retrieval to those candidates — the
+ * roster-answer → race-wide-funding hop is the chip's best case, so no
+ * exactly-one-candidate restriction. */
 export function followUpQuestions(response: ChatbotAskResponse, askedQuestion: string): string[] {
   const cited = new Set(response.results.map((card) => card.source_type));
   const suggestions: string[] = [];
@@ -310,6 +314,7 @@ function ChatWidgetSession() {
   // ballot page still means the candidate just viewed.
   const [context, setContext] = useState<ChatbotAskContext | null>(null);
   const transcriptRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const wasOpen = useRef(false);
@@ -334,15 +339,17 @@ function ChatWidgetSession() {
     transcriptRef.current?.scrollTo?.({ top: transcriptRef.current.scrollHeight });
   }, [turns, ask.isPending]);
 
-  // Keyboard flow (PR 3 a11y): opening moves focus into the question input
-  // (a no-op on the register/verify walls — they render no input), closing
-  // hands focus back to the launcher bubble instead of dropping it on body.
-  // wasOpen keeps the initial mount (open=false, nothing to restore) from
-  // yanking focus to a launcher the user never touched.
+  // Keyboard flow (PR 3 a11y): opening moves focus into the question input —
+  // or onto the panel itself on the register/verify walls, which render no
+  // input (the launcher just unmounted, so without this fallback focus drops
+  // to body and a keyboard user is stranded outside the dialog; panel focus
+  // also makes Escape work there). Closing hands focus back to the launcher
+  // bubble. wasOpen keeps the initial mount (open=false, nothing to restore)
+  // from yanking focus to a launcher the user never touched.
   useEffect(() => {
     if (open) {
       wasOpen.current = true;
-      inputRef.current?.focus();
+      (inputRef.current ?? panelRef.current)?.focus();
     } else if (wasOpen.current) {
       wasOpen.current = false;
       launcherRef.current?.focus();
@@ -400,10 +407,18 @@ function ChatWidgetSession() {
     <div
       role="dialog"
       aria-label="Ask about elections and candidates"
+      ref={panelRef}
+      tabIndex={-1}
       onKeyDown={(event) => {
         // Escape minimizes from anywhere in the panel (PR 3 a11y); the
-        // focus-restore effect then returns focus to the launcher.
-        if (event.key === "Escape") {
+        // focus-restore effect then returns focus to the launcher. Portal
+        // guard: React bubbles synthetic events through the COMPONENT tree,
+        // so Escape inside the portaled report dialog (Headless UI portals
+        // to body) would land here too — minimizing the widget unmounts
+        // ReportContentButton and destroys its preserved draft. A portaled
+        // target is not a DOM descendant of this panel, so contains() skips
+        // exactly those events; Headless UI still closes its own dialog.
+        if (event.key === "Escape" && event.currentTarget.contains(event.target as Node)) {
           setOpen(false);
         }
       }}

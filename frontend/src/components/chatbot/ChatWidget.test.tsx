@@ -485,6 +485,41 @@ describe("ChatWidget", () => {
     expect(screen.getByRole("button", { name: "Open Ask" })).toHaveFocus();
   });
 
+  it("moves focus onto the panel itself when the register wall has no input", async () => {
+    stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
+    const user = userEvent.setup();
+    renderRoutes([{ path: "*", element: <ChatWidget /> }], "/ballot");
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    // No question input on the wall — the dialog itself takes focus so a
+    // keyboard user lands inside it (and Escape keeps working).
+    expect(screen.getByRole("dialog", { name: /ask about elections/i })).toHaveFocus();
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Open Ask" })).toHaveFocus();
+  });
+
+  it("Escape inside the portaled report dialog closes only that dialog and keeps the draft", async () => {
+    const user = userEvent.setup();
+    const aiResponse: ChatbotAskResponse = { ...RETRIEVAL_RESPONSE, ai_generated: true };
+    renderWidgetAt("/ballot", { body: aiResponse });
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText(/AI-generated from our election data/);
+
+    await user.click(screen.getByRole("button", { name: /report an issue with this ai answer/i }));
+    await user.type(screen.getByLabelText("Details"), "The finance total looks stale.");
+    await user.keyboard("{Escape}");
+
+    // Only the topmost dialog closed: the report dialog is gone, the widget
+    // stayed open (minimizing would unmount ReportContentButton and destroy
+    // its deliberately preserved draft).
+    expect(screen.queryByText("What's wrong?")).not.toBeInTheDocument();
+    expect(screen.getByRole("dialog", { name: /ask about elections/i })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: /report an issue with this ai answer/i }));
+    expect(screen.getByLabelText("Details")).toHaveValue("The finance total looks stale.");
+  });
+
   it("announces answers through a polite live region", async () => {
     const user = userEvent.setup();
     renderWidgetAt("/ballot");

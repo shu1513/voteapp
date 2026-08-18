@@ -91,6 +91,17 @@ Shipped shape:
    `election` → "Who is running in this election?". The question just asked
    is never re-suggested (chips would loop). Deictic phrasing rides the
    existing context/previous-question carry — no server change.
+   Review round: Escape carries a portal guard
+   (`event.currentTarget.contains(event.target)`) — React bubbles synthetic
+   events through the component tree, so Escape inside the portaled report
+   dialog would otherwise ALSO minimize the widget, unmounting
+   ReportContentButton and destroying its preserved draft; and the panel
+   itself takes focus (`tabIndex={-1}`) when a wall renders no input, so
+   keyboard users are never stranded outside the dialog. A third finding
+   (funding chip only when exactly one candidate cited) was rejected:
+   "their" reads as plural, the previous-question carry scopes retrieval to
+   the cited candidates, and the roster → race-wide-funding hop is the
+   chip's best case.
 3. **Honest limit copy.** Ask response gained an optional `notice` field.
    `fallbackNotice()` (askService.ts) sets "Daily AI-answer limit reached —
    showing matching data instead." for the `rate_limited` AND
