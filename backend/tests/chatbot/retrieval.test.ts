@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { expandOfficeAliases } from "../../src/chatbot/retrieval.js";
+import { classifyRaceQuestion, expandOfficeAliases } from "../../src/chatbot/retrieval.js";
 
 describe("expandOfficeAliases", () => {
   it("appends the corpus office phrase for common federal Senate phrasings", () => {
@@ -41,5 +41,27 @@ describe("expandOfficeAliases", () => {
     // "Senate" alone (no race/seat/election frame, no US prefix) stays as-is:
     // "my senator" / "the Senate" questions are not reliably federal races.
     expect(expandOfficeAliases("What does the Senate do?")).toBe("What does the Senate do?");
+  });
+});
+
+describe("classifyRaceQuestion", () => {
+  it("classifies money questions", () => {
+    expect(classifyRaceQuestion("Who has raised more money in the Georgia Senate race?")).toBe("money");
+    expect(classifyRaceQuestion("How much has the Republican candidate raised?")).toBe("money");
+    expect(classifyRaceQuestion("Compare their fundraising")).toBe("money");
+    expect(classifyRaceQuestion("Who spent the most cash on hand?")).toBe("money");
+  });
+
+  it("classifies records questions, winning over money words", () => {
+    expect(classifyRaceQuestion("What are the candidates' records in the Georgia Senate race?")).toBe("records");
+    expect(classifyRaceQuestion("How did they vote on the budget?")).toBe("records");
+    expect(classifyRaceQuestion("What bills has she sponsored?")).toBe("records");
+    // Both kinds of words → records: the asked-for artifact is the record.
+    expect(classifyRaceQuestion("What is their voting record on campaign finance bills?")).toBe("records");
+  });
+
+  it("classifies everything else neutral", () => {
+    expect(classifyRaceQuestion("Who is running for US Senate in Georgia?")).toBe("neutral");
+    expect(classifyRaceQuestion("Tell me about the Los Angeles mayor race")).toBe("neutral");
   });
 });

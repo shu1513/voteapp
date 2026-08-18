@@ -27,6 +27,34 @@ const RRF_K = 60;
 // question) — this sits under the exact band but above generic word noise,
 // so a merely-plausible office phrase never pulls a whole race in.
 const RACE_MEMBERS_MIN_SIMILARITY = 0.75;
+// Without a scope state, the question must name the race's place ("Los
+// Angeles mayor") for members to fire — office similarity alone ties across
+// every state ("Senate race" scores 1.0 in all 30+ states) and the id
+// tie-break would pull an arbitrary state's race (observed: Montana). Same
+// threshold the scope-ambiguity heuristic uses for "the question IS scoped".
+const RACE_MEMBERS_MIN_PLACE_SIMILARITY = 0.4;
+
+/** What a race-level question is actually asking for, deciding which member
+ * chunks matter (review round: fixed finance-first ordering served finance
+ * chunks to a records question). Word lists stay short and literal — grow
+ * them only on demonstrated misses. */
+export function classifyRaceQuestion(question: string): "money" | "records" | "neutral" {
+  if (/\brecords?\b|\bvot(?:e|es|ed|ing)\b|\bbills?\b|\bsponsor/i.test(question)) {
+    return "records";
+  }
+  if (/\brais(?:e|ed|ing)\b|\bspen[dt]\b|\bspending\b|\bmoney\b|\bcash\b|\bfund|\bdonor|\bdonat|\bfinanc/i.test(question)) {
+    return "money";
+  }
+  return "neutral";
+}
+
+/** Member ordering per question kind: the listing chunk always leads (it
+ * names the field), then the source type the question is about. */
+const RACE_MEMBER_PRIORITIES: Record<ReturnType<typeof classifyRaceQuestion>, Record<string, number>> = {
+  money: { election: 0, finance_summary: 1, candidate_profile: 2 },
+  records: { election: 0, candidate_record: 1, candidate_profile: 2 },
+  neutral: { election: 0, candidate_profile: 1, finance_summary: 2 },
+};
 
 // Answerability gate thresholds on raw scores (tuned against the golden set
 // via `npm run chatbot:eval` on the live local index, 2026-08-11; see
@@ -554,12 +582,15 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   // questions. Contributes RRF rank only, never gate evidence (score 0):
   // pulled members must not make an otherwise-unanswerable question pass.
   let raceMemberRows: ChunkRow[] = [];
+  const raceQuestionKind = classifyRaceQuestion(question);
   const topTitleMatch = titleResult.rows[0];
   if (
     topTitleMatch &&
     topTitleMatch.election_id &&
     topTitleMatch.score >= RACE_MEMBERS_MIN_SIMILARITY &&
-    (!scopeState || topTitleMatch.state === scopeState)
+    (scopeState
+      ? topTitleMatch.state === scopeState
+      : (topTitleMatch.place_score ?? 0) >= RACE_MEMBERS_MIN_PLACE_SIMILARITY)
   ) {
     const raceMembersResult = await db.query<ChunkRow>(
       `
@@ -589,7 +620,15 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
       `,
       [generationId, topTitleMatch.election_id, BRANCH_LIMIT]
     );
-    raceMemberRows = raceMembersResult.rows;
+    // Question-kind ordering happens here, not in SQL: the fetch order above
+    // only decides which rows survive BRANCH_LIMIT truncation (rare).
+    const priorities = RACE_MEMBER_PRIORITIES[raceQuestionKind];
+    raceMemberRows = [...raceMembersResult.rows].sort(
+      (a, b) =>
+        (priorities[a.source_type] ?? 3) - (priorities[b.source_type] ?? 3) ||
+        a.title.localeCompare(b.title) ||
+        a.id.localeCompare(b.id)
+    );
   }
 
   // RRF merge; raw scores ride along per chunk for the gate.
@@ -674,6 +713,22 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   // Race precedence only without a matched entity (see raceRank above); with
   // one, members still fold into RRF but never jump the queue.
   const raceRankApplies = entityIds.length === 0;
+  // Race-wide money question: EVERY filer's summary must fit, or "who raised
+  // more?" silently compares an incomplete field (review catch: Florida's
+  // Senate race has 7 summaries; the cap kept 4, alphabetically). Widen by
+  // exactly the overflow — the listing takes one slot, so top-K holds K-1
+  // summaries. Bounded at 5 extras as a runaway guard (same spirit as
+  // rosterSlots): a >9-filer race truncates rather than flooding the prompt.
+  const raceFinanceSlots =
+    raceRankApplies && raceQuestionKind === "money"
+      ? Math.min(
+          Math.max(
+            raceMemberRows.filter((row) => row.source_type === "finance_summary").length - (RETRIEVAL_TOP_K - 1),
+            0
+          ),
+          5
+        )
+      : 0;
   const chunks = contenders
     .sort(
       (a, b) =>
@@ -682,7 +737,7 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
         b.rrfScore - a.rrfScore ||
         a.base.id.localeCompare(b.base.id)
     )
-    .slice(0, RETRIEVAL_TOP_K + rosterSlots)
+    .slice(0, RETRIEVAL_TOP_K + rosterSlots + raceFinanceSlots)
     .map((entry) => ({
       ...entry.base,
       lexicalScore: entry.lexicalScore,

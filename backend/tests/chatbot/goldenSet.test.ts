@@ -65,6 +65,10 @@ describe("chatbot golden set", () => {
 
   it("requires both sides of a comparison question", () => {
     for (const c of goldenSet) {
+      // Only retrieval cases carry entity expectations — an unscoped
+      // comparison ("more money in the Senate race?", no state) legitimately
+      // expects clarify instead.
+      if (c.expected !== "retrieval") continue;
       if (!/\bcompare\b|\bmore money\b/i.test(c.question)) continue;
       expect(c.expectedEntities?.length, c.id).toBeGreaterThanOrEqual(2);
     }

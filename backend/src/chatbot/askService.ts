@@ -19,6 +19,7 @@ import {
 } from "./intents.js";
 import { normalizeQuestion, normalizeQuestionForCacheKey } from "./redact.js";
 import {
+  classifyRaceQuestion,
   getActiveGeneration,
   isAnswerable,
   retrieveChunks,
@@ -463,15 +464,29 @@ function describeEntityOption(match: CandidateEntityMatch): string {
   return `${match.displayName}${partyPart} — ${match.state}${officePart}`;
 }
 
-// Scope-ambiguity heuristic (rule 7): a race-LISTING question ("who's
-// running for…", "who's on the ballot for…") with no named state and no
-// named candidate, whose election-title matches tie across 2+ states within
-// a margin — "the sheriff race" fits dozens of counties equally. A question
-// with one clearly dominant title match (its place tokens named, or an exact
-// measure title) is not tied. Restricted to listing phrasings so entity and
-// measure questions never trip it.
-const SCOPE_TIE_RATIO = 0.85;
+// Scope-ambiguity heuristic (rule 7): a race-level question with no named
+// state and no named candidate, whose election-title matches tie across 2+
+// states within a margin — "the sheriff race" fits dozens of counties
+// equally. A question with one clearly dominant title match (its place
+// tokens named, or an exact measure title) is not tied. Restricted to
+// listing phrasings PLUS money/records questions that name a race ("who has
+// raised more in the Senate race?" — PR-4 review: these skipped clarify and
+// answered from an arbitrary state's chunks) so entity and measure questions
+// never trip it.
+// 0.8, not 0.85: office-alias expansion (PR 4) puts the strongest cross-
+// office confusion at EXACTLY 0.8 ("State Senator" against a federally
+// aliased question, 30+ states) — at 0.85 an arbitrary state's 1.0 match
+// looked "clearly dominant" over that band and skipped clarification.
+const SCOPE_TIE_RATIO = 0.8;
 const RACE_LISTING_RE = /\bwho(?:'s| is| are)?\s+(?:running|on\s+the\s+ballot|the\s+candidates?)\b|\bcandidates\s+for\b/i;
+const RACE_NOUN_RE = /\brace\b|\belection\b|\bseat\b|\bcontest\b/i;
+
+function isRaceScopedQuestion(question: string): boolean {
+  return (
+    RACE_LISTING_RE.test(question) ||
+    (classifyRaceQuestion(question) !== "neutral" && RACE_NOUN_RE.test(question))
+  );
+}
 
 function needsScopeClarification(question: string, retrieval: RetrievalResult, scopeState: string | null): boolean {
   if (scopeState) {
@@ -480,7 +495,7 @@ function needsScopeClarification(question: string, retrieval: RetrievalResult, s
   if (retrieval.bestEntitySimilarity >= GATE_MIN_ENTITY_SIMILARITY) {
     return false;
   }
-  if (!RACE_LISTING_RE.test(question)) {
+  if (!isRaceScopedQuestion(question)) {
     return false;
   }
   const [top] = retrieval.electionTitleMatches;

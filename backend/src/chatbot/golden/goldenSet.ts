@@ -276,6 +276,26 @@ export const goldenSet: readonly GoldenCase[] = [
       "Answering 'more' needs both candidates' summaries. Report the numbers; never frame money as making a candidate better (rule 4).",
   },
 
+  {
+    id: "finance-fl-senate-most",
+    category: "finance",
+    question: "Who has raised the most money in the Florida Senate race?",
+    expected: "retrieval",
+    expectedSourceTypes: ["finance_summary"],
+    expectedEntities: [
+      "Alexander Vindman",
+      "Angie Nixon",
+      "Ashley Moody",
+      "Chris Gleason",
+      'Ernest "Ernie" Rivera',
+      "Neelam Taneja Perry",
+      "Neil J. Gillespie",
+    ],
+    scopeState: "FL",
+    notes:
+      "PR-4 review: 7 filers — EVERY summary must be retrieved or 'the most' compares an incomplete field (the top-K cap alphabetically dropped three). All 7 listed on purpose.",
+  },
+
   // ── Candidate records ─────────────────────────────────────────────────
   {
     id: "records-ridley",
@@ -303,6 +323,17 @@ export const goldenSet: readonly GoldenCase[] = [
     expectedSourceTypes: ["candidate_record"],
     expectedEntities: ["Demetrius Douglas"],
     scopeState: "GA",
+  },
+  {
+    id: "records-ga-senate-race",
+    category: "records",
+    question: "What are the candidates' records in the Georgia Senate race?",
+    expected: "retrieval",
+    expectedSourceTypes: ["candidate_record"],
+    expectedEntities: ["Jon Ossoff", "Mike Collins"],
+    scopeState: "GA",
+    notes:
+      "PR-4 review: race-level records question — the members branch must order record chunks ahead of finance for it (fixed finance-first ordering served zero records).",
   },
   {
     id: "records-petrea-education",
@@ -501,6 +532,14 @@ export const goldenSet: readonly GoldenCase[] = [
     question: "When is the runoff?",
     expected: "clarify",
     notes: "Multiple runoffs (LA mayor/sheriff, San Jose council, …); scope needed first.",
+  },
+  {
+    id: "ambiguous-senate-money-no-scope",
+    category: "ambiguous",
+    question: "Who has raised more money in the Senate race?",
+    expected: "clarify",
+    notes:
+      "PR-4 review: money question naming a race but no state — pre-fix it skipped clarify (listing phrasings only) and answered from an arbitrary state's race (observed: Montana).",
   },
   {
     id: "ambiguous-us-senate-no-scope",

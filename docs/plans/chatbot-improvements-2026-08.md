@@ -146,7 +146,25 @@ every other gate unchanged at 100%:
 4. **Golden addition** `ambiguous-us-senate-no-scope` ("Who's running for US
    Senate?"): alias expansion ties every state's US Senate race in the title
    branch → clarify, never silently pick a state (pre-PR-4 the CO race's
-   literal "US Senate" title won alone). Clarify gate 5/5.
+   literal "US Senate" title won alone).
+   Review round (all three findings confirmed against the local corpus and
+   fixed): (1) unscoped race questions pulled an arbitrary state's members
+   (observed: Montana) — members now require a scope state match OR a
+   place-scoped title match (place similarity >= 0.4, the heuristic's
+   existing "IS scoped" threshold), AND the scope-clarify gate extends beyond
+   listing phrasings to money/records questions naming a race
+   (`isRaceScopedQuestion`), with SCOPE_TIE_RATIO 0.85 → 0.8 because alias
+   expansion puts the cross-office confusion band at exactly 0.8 and an
+   arbitrary 1.0 match otherwise looked "clearly dominant"; (2) race-wide
+   money questions widen the top-K cap so EVERY filer's summary fits
+   (Florida's 7-filer Senate race alphabetically dropped three — "who raised
+   the most" over an incomplete field; bounded at +5 slots); (3) member
+   ordering is question-kind aware (`classifyRaceQuestion`: money → finance
+   first, records → records first, else profiles first — fixed finance-first
+   served zero records to a records question). Goldens added for all three
+   (`ambiguous-senate-money-no-scope`, `finance-fl-senate-most` listing all
+   7 filers, `records-ga-senate-race`). Final gates: retrieval 37/37,
+   clarify 6/6, everything else 100%.
 
 ## Scheduled, not now
 
