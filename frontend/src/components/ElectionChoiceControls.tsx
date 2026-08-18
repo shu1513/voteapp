@@ -306,7 +306,9 @@ export function MeasureChoiceButtons({
 
   return (
     <div className={fullWidth ? "flex w-full flex-wrap items-center gap-2" : "flex flex-wrap items-center gap-2"}>
-      <span className="text-sm font-medium text-ink-soft">My pick:</span>
+      {/* text-ink, not -soft: the label anchors the card's purpose and has
+          to register at a glance next to two loud buttons. */}
+      <span className="text-sm font-medium text-ink">My pick:</span>
       <button
         type="button"
         disabled={saving}

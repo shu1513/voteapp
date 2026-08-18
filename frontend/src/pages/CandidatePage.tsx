@@ -1108,9 +1108,11 @@ export function CandidatePage() {
           // The page's ONE pick control: a sticky card pinned to the bottom
           // of the viewport while the profile scrolls, at every width —
           // sticky (not fixed) so in the split layout it stays inside the
-          // detail column instead of overlaying the rail. The caption names
-          // the race: the button's "Make my pick" alone doesn't say what
-          // the pick is for.
+          // detail column instead of overlaying the rail. No caption naming
+          // the race: the card renders only when the candidate is in exactly
+          // one pickable race (see primaryPickElection), so the page itself
+          // is the context — a title line here just repeats the "Race X is
+          // in" section.
           // data-sticky-pick-cta: index.css lifts the chatbot's floating
           // launcher above this card (both pin to the viewport bottom and
           // the launcher would cover the button's right end on phones).
@@ -1118,10 +1120,6 @@ export function CandidatePage() {
             data-sticky-pick-cta=""
             className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
           >
-            <p className="mb-2 text-center text-xs text-ink-soft">
-              {primaryPickElection.official_ballot_title} ·{" "}
-              {formatElectionDate(primaryPickElection.election_date)}
-            </p>
             <CandidatePickButton
               // Remount on candidate change, like the Follow button above:
               // the route element stays mounted across roster navigation,
