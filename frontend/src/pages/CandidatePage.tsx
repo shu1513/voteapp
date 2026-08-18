@@ -33,6 +33,7 @@ import { RegisterToFollowButton } from "../components/RegisterToFollowButton";
 import { ShareButton } from "../components/ShareButton";
 import { CandidatePickButton, CandidatePickRow } from "../components/ElectionChoiceControls";
 import { draftChoicesByElectionId, useBallotDraft } from "../lib/ballotDraft";
+import { myDraftLabel, useGuestDraftNav, useMyPicksProgress } from "../lib/usePickProgress";
 import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
@@ -616,14 +617,27 @@ export function CandidatePage() {
   const isGuest = me === null;
   const pickableElections =
     isGuest || (canChoose && choiceByElectionId !== undefined) ? officeCandidacies : [];
-  // The page's primary action ("Add to cart"): a pick-yellow CTA in the
-  // header and a sticky bottom bar on narrow screens. Only when the
-  // candidate is in exactly one pickable race — the CTA carries no race
-  // name, so with several races it can't say which one it would pick; those
-  // pages rely on the self-describing rows below.
+  // The page's primary action ("Add to cart"): the sticky bottom pick card.
+  // Only when the candidate is in exactly one pickable race — the card's
+  // button carries no race name, so with several races it can't say which
+  // one it would pick; those pages rely on the self-describing rows below.
   const primaryPickElection = pickableElections.length === 1 ? pickableElections[0] : null;
   const choiceForElection = (electionId: string) =>
     isGuest ? draftChoicesByElectionId(draft).get(electionId) : choiceByElectionId?.get(electionId);
+  // Whether THIS candidate holds (one of) the pick(s) for the card's race —
+  // gates the card's post-pick actions. True on arrival too, not only right
+  // after clicking: the "where to next" links are just as useful when a
+  // reader returns to a candidate they already picked.
+  const isPrimaryPicked = primaryPickElection !== null &&
+    (choiceForElection(primaryPickElection.election_id)?.picks ?? []).some(
+      (pick) => pick.candidate_id === candidate.candidate_id
+    );
+  // Post-pick destinations, mirroring the header nav's labels exactly so
+  // the card teaches the header item. Both hooks are cheap here: the guest
+  // one reads the local draft store, the signed-in one shares the header's
+  // own cached ballot query.
+  const guestDraftNav = useGuestDraftNav();
+  const picksProgress = useMyPicksProgress();
   const location = useLocation();
   const navState = readCandidateNavState(location.state);
   // The rail's roster sort: offered only for the sorts this snapshot can
@@ -1125,6 +1139,42 @@ export function CandidatePage() {
               seatsToFill={primaryPickElection.seats_to_fill ?? null}
               fullWidth
             />
+            {/* Post-pick confirmation actions — the "added to cart" moment.
+                Links, never an auto-redirect: navigating on the pick's
+                success would break multi-seat races (pick 2 of 3 here) and
+                take the undo (re-click the button) away. "Back to election"
+                only for election arrivals: a My-Picks arrival would get a
+                back link and a draft link to the same place. */}
+            {isPrimaryPicked ? (
+              <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm">
+                {navState?.backTo.path.startsWith("/elections/") ? (
+                  <Link
+                    to={navState.backTo.path}
+                    state={backToElectionState}
+                    className="whitespace-nowrap text-ink-soft underline hover:text-ink"
+                  >
+                    Back to election
+                  </Link>
+                ) : null}
+                {isGuest ? (
+                  guestDraftNav ? (
+                    <Link
+                      to={guestDraftNav.to}
+                      className="whitespace-nowrap font-semibold text-green-800 hover:underline"
+                    >
+                      {guestDraftNav.label}
+                    </Link>
+                  ) : null
+                ) : (
+                  <Link
+                    to="/me/picks"
+                    className="whitespace-nowrap font-semibold text-green-800 hover:underline"
+                  >
+                    {myDraftLabel(picksProgress)}
+                  </Link>
+                )}
+              </div>
+            ) : null}
           </div>
         ) : null}
       </div>

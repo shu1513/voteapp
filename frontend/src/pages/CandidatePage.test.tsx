@@ -758,6 +758,71 @@ describe("CandidatePage", () => {
     expect(readBallotDraft().choices["e-1"].picks.map((pick) => pick.candidate_id)).toEqual(["c-1"]);
   });
 
+  it("shows post-pick actions on the sticky card once the guest picks", async () => {
+    clearBallotDraft();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    const cta = await screen.findByRole("button", { name: "Make my pick: Jordan Voter" });
+    // Nothing to confirm before the pick.
+    expect(screen.queryByRole("link", { name: /Ballot Draft/ })).not.toBeInTheDocument();
+    await userEvent.click(cta);
+
+    // The draft link wears the header nav's exact label (deep-link count
+    // form — no ballot seen, so no denominator) and points at the guest
+    // draft page.
+    const draftLink = await screen.findByRole("link", { name: "My Ballot Draft (1)" });
+    expect(draftLink).toHaveAttribute("href", "/draft");
+    // Deep link, no router state: there is no election to go back to.
+    expect(screen.queryByRole("link", { name: "Back to election" })).not.toBeInTheDocument();
+  });
+
+  it("offers a back-to-election link in the post-pick actions for election arrivals", async () => {
+    clearBallotDraft();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }), "c-1", {
+      backTo: { path: "/elections/e-1", label: "Governor" },
+    });
+
+    await userEvent.click(await screen.findByRole("button", { name: "Make my pick: Jordan Voter" }));
+    expect(await screen.findByRole("link", { name: "Back to election" })).toHaveAttribute(
+      "href",
+      "/elections/e-1"
+    );
+  });
+
+  it("shows the signed-in draft link when this candidate is already the account's pick", async () => {
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/election-choices": {
+        body: {
+          choices: [
+            {
+              election_id: "e-1",
+              race_type: "office",
+              official_ballot_title: "Governor",
+              election_date: "2099-11-03",
+              seats_to_fill: null,
+              picks: [{ candidate_id: "c-1", display_name: "Jordan Voter", candidacy_status: "declared" }],
+              measure_position: null,
+              updated_at: "2026-08-01T00:00:00.000Z",
+            },
+          ],
+        },
+      },
+      // The header-shared ballot preview useMyPicksProgress reads: one
+      // upcoming race, already decided above — the earned label.
+      "/api/me/ballot": { body: { elections: [{ id: "e-1", election_date: "2099-11-03" }] } },
+    });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    // Picked on arrival (account choices), so the actions render without a
+    // click — the "where to next" links matter on a return visit too.
+    const link = await screen.findByRole("link", { name: "My Picks ✓" });
+    expect(link).toHaveAttribute("href", "/me/picks");
+  });
+
   it("shows logged-out visitors no pick row for withdrawn or past candidacies", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() =>
