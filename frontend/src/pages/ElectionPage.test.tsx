@@ -597,7 +597,7 @@ describe("ElectionPage", () => {
           id: "o-1",
           scope: "statewide",
           canonical_name: "Governor",
-          summary: "Running the state government\nProposing the state budget",
+          summary: "Your governor runs the state government.\nWhich state laws take effect\nHow much money goes to schools",
         },
         // Alphabetical (API order) on purpose: the page must re-order by
         // public salience, which puts Environment ahead of Civil Rights.
@@ -608,12 +608,14 @@ describe("ElectionPage", () => {
       })
     );
 
-    expect(
-      await screen.findByRole("heading", { name: "Governor is responsible for:" })
-    ).toBeInTheDocument();
-    // Newline-separated duties render as individual bullets.
-    expect(screen.getByText("Running the state government")).toBeInTheDocument();
-    const description = screen.getByText("Proposing the state budget");
+    expect(await screen.findByRole("heading", { name: "About this office" })).toBeInTheDocument();
+    // First summary line is the hook paragraph; the rest render as bullets
+    // under the "This office affects:" label.
+    expect(screen.getByText("Your governor runs the state government.")).toBeInTheDocument();
+    expect(screen.getByText("This office affects:")).toBeInTheDocument();
+    const bullets = screen.getAllByRole("listitem").map((li) => li.textContent);
+    expect(bullets).toEqual(["Which state laws take effect", "How much money goes to schools"]);
+    const description = screen.getByText("How much money goes to schools");
     const label = screen.getByText("Affects:");
     expect(description.compareDocumentPosition(label) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     const environment = screen.getByText("Environment & Public Health");
@@ -621,7 +623,7 @@ describe("ElectionPage", () => {
     expect(environment.compareDocumentPosition(civilRights) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
-  it("falls back to a neutral heading for catalog bucket office names", async () => {
+  it("renders a legacy duty-list summary (no period-terminated hook) as plain bullets", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
       electionDetail({
@@ -629,15 +631,22 @@ describe("ElectionPage", () => {
           id: "o-2",
           scope: "state_lower",
           canonical_name: "State Lower Chamber Legislator",
-          summary: "Voting on state laws and the state budget",
+          // Pre-hook seed shape, still in a database until the seed re-runs.
+          summary: "Voting on state laws and the state budget\nRepresenting their district in the statehouse",
         },
       })
     );
 
-    expect(
-      await screen.findByRole("heading", { name: "This office is responsible for:" })
-    ).toBeInTheDocument();
-    expect(screen.queryByText(/State Lower Chamber Legislator is responsible/)).not.toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "About this office" })).toBeInTheDocument();
+    const bullets = screen.getAllByRole("listitem").map((li) => li.textContent);
+    expect(bullets).toEqual([
+      "Voting on state laws and the state budget",
+      "Representing their district in the statehouse",
+    ]);
+    // The first duty is not promoted to a hook paragraph, and no "This office
+    // affects:" label is put over gerund duties.
+    expect(screen.queryByText("This office affects:")).not.toBeInTheDocument();
+    expect(screen.queryByText(/State Lower Chamber Legislator/)).not.toBeInTheDocument();
   });
 
   it("lets logged-out visitors pick straight into the local ballot draft", async () => {
