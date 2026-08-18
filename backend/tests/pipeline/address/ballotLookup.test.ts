@@ -1654,7 +1654,7 @@ describe("lookupElectionDetailById", () => {
         decisiveness_level: "none",
         factors: ["medium_representation", "uncontested_race"],
         explanation: {
-          how: expect.stringContaining("My vote power = representation"),
+          how: expect.stringContaining("Two things go into this rating."),
           parts: [
             {
               title: "Representation",

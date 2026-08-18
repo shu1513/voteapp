@@ -339,7 +339,7 @@ function factorsFor(input: {
 // the 45/55 weighted score is a sorting signal only and never shown on the
 // detail page, so surfacing its formula here would misattribute the rating.
 const HOW_CALCULATED =
-  "My vote power = representation (how much weight one vote carries here, the smaller the district's population, the higher the representation) + decisiveness (how likely this race is to be close, based on past results and number of candidates).";
+  "Two things go into this rating. Representation: how much weight one vote carries here — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on past results and the number of candidates.";
 
 function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -596,17 +596,18 @@ function explanationResultFor(result: VotePowerResult, boostApplied: boolean, sk
     return "Not enough data → no rating yet.";
   }
 
-  const pieces: string[] = [
-    result.representation_level === "unknown"
-      ? "unknown representation"
-      : `${levelDisplayWord(result.representation_level)} representation`,
-  ];
+  // Unknown axes stay out of the sum: their part rows and the missing-data
+  // caveat already disclose the gap, and "high representation + unknown
+  // decisiveness" reads as nonsense arithmetic. Only known inputs combine.
+  // (Both axes unknown means an unknown label, which returned above.)
+  const pieces: string[] = [];
+  if (result.representation_level !== "unknown") {
+    pieces.push(`${levelDisplayWord(result.representation_level)} representation`);
+  }
   if (!skipDecisiveness) {
     if (result.decisiveness_level === "none") {
       pieces.push("an uncontested race");
-    } else if (result.decisiveness_level === "unknown") {
-      pieces.push("unknown decisiveness");
-    } else {
+    } else if (result.decisiveness_level !== "unknown") {
       pieces.push(`${levelDisplayWord(result.decisiveness_level)} decisiveness`);
     }
   }

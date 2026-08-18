@@ -592,9 +592,17 @@ export function ElectionPage() {
                     </p>
                     <p className="mt-1 text-xs text-ink-soft">{part.detail}</p>
                     {part.formula ? (
-                      <p className="mt-1 break-words font-mono text-[11px] leading-relaxed text-ink-soft">
-                        {part.formula}
-                      </p>
+                      // Second disclosure layer: the plain-language detail is
+                      // for everyone; the exact scoring formula only unfolds
+                      // for readers who ask for it.
+                      <details className="mt-1">
+                        <summary className="cursor-pointer text-[11px] text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink">
+                          Show the math
+                        </summary>
+                        <p className="mt-1 break-words font-mono text-[11px] leading-relaxed text-ink-soft">
+                          {part.formula}
+                        </p>
+                      </details>
                     ) : null}
                   </div>
                 ))}

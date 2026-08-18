@@ -72,7 +72,7 @@ describe("ElectionPage", () => {
     expect(screen.getByText("How do we calculate my vote power?")).toBeInTheDocument();
     // Native <details> keeps content in the DOM while collapsed; the backend
     // copy must arrive verbatim.
-    expect(screen.getByText("My vote power = representation + decisiveness.")).toBeInTheDocument();
+    expect(screen.getByText("Two things go into this rating.")).toBeInTheDocument();
     // Each part renders formula-style: title, grade, stat, then the detail.
     expect(screen.getByText("Representation:")).toBeInTheDocument();
     expect(screen.getByText("· 50 out of 100")).toBeInTheDocument();
@@ -82,9 +82,12 @@ describe("ElectionPage", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Average representation + high decisiveness → My vote power: High.")).toBeInTheDocument();
     expect(screen.getByText("Some data is missing.")).toBeInTheDocument();
-    // The exact formula renders when the backend provides one; the null
-    // formula on the other part must not render an empty line.
+    // The exact formula sits behind its own "Show the math" disclosure when
+    // the backend provides one; the null formula on the other part must not
+    // render a toggle at all.
+    expect(screen.getByText("Show the math")).toBeInTheDocument();
     expect(screen.getByText("score = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 50")).toBeInTheDocument();
+    expect(screen.getAllByText("Show the math")).toHaveLength(1);
   });
 
   it("omits the vote power explanation when the payload has none or the label is unknown", async () => {
