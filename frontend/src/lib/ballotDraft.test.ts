@@ -114,7 +114,11 @@ describe("ballotDraft store", () => {
     seedStorage(
       JSON.stringify({
         v: 1,
-        district_ids: ["d1", 42, null],
+        // Non-UUID strings are dropped alongside non-strings: district ids
+        // go verbatim into /api/ballot query params, where one malformed id
+        // 400s the request and /draft shows an error box instead of its
+        // address-search fallback.
+        district_ids: ["11111111-2222-4333-8444-555555555555", "d1", 42, null],
         target: { bogus: true },
         choices: {
           e1: goodRow,
@@ -124,7 +128,7 @@ describe("ballotDraft store", () => {
       })
     );
     const draft = readBallotDraft();
-    expect(draft.district_ids).toEqual(["d1"]);
+    expect(draft.district_ids).toEqual(["11111111-2222-4333-8444-555555555555"]);
     expect(draft.target).toBeNull();
     // The mangled rows die alone; the good pick survives them.
     expect(Object.keys(draft.choices)).toEqual(["e1"]);

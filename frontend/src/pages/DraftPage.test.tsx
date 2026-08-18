@@ -77,7 +77,7 @@ describe("DraftPage", () => {
 
   it("renders the ballot's date card from the draft, share-free, with the signup CTA", async () => {
     seedDraft({
-      district_ids: ["d-1"],
+      district_ids: ["dddddddd-1111-4111-8111-111111111111"],
       target: { election_date: "2026-11-03", election_ids: ["e-1", "e-2"] },
       choices: { "e-1": draftChoice() },
     });
@@ -105,7 +105,7 @@ describe("DraftPage", () => {
 
   it("gives guests the ballot view over the public preview endpoint", async () => {
     seedDraft({
-      district_ids: ["d-1"],
+      district_ids: ["dddddddd-1111-4111-8111-111111111111"],
       target: { election_date: "2026-11-03", election_ids: ["e-1"] },
       choices: { "e-1": draftChoice() },
     });
@@ -149,7 +149,7 @@ describe("DraftPage", () => {
     // both List and Ballot view.
     const ballotCalls = fetchMock.mock.calls.filter(([input]) => String(input).includes("/api/ballot?"));
     expect(ballotCalls).toHaveLength(1);
-    expect(String(ballotCalls[0][0])).toContain("district_ids=d-1");
+    expect(String(ballotCalls[0][0])).toContain("district_ids=dddddddd-1111-4111-8111-111111111111");
     expect(String(ballotCalls[0][0])).toContain("include=preview");
     expect(String(ballotCalls[0][0])).toContain("sort=state_baseline");
     expect(String(ballotCalls[0][0])).toContain("followed_first=false");
@@ -162,7 +162,7 @@ describe("DraftPage", () => {
     // shared link to election e-9 in some other district. The cards can't
     // carry it; hiding it while the badge and CTA count it reads as lost.
     seedDraft({
-      district_ids: ["d-1"],
+      district_ids: ["dddddddd-1111-4111-8111-111111111111"],
       target: { election_date: "2026-11-03", election_ids: ["e-1"] },
       choices: {
         "e-9": draftChoice({
