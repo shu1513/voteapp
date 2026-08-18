@@ -22,9 +22,7 @@ export function RegisterToFollowButton({ candidateName, size = "md" }: RegisterT
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        // Mirrors FollowButton's outlined unfollowed state — secondary next
-        // to the pick CTA.
-        className={`${base} border border-rausch bg-white text-rausch-deep hover:bg-rausch hover:text-white`}
+        className={`${base} bg-rausch text-white hover:bg-rausch-dark`}
       >
         Follow
       </button>

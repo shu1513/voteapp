@@ -836,47 +836,33 @@ export function CandidatePage() {
         />
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
-          {/* The header slot holds the page's ONE primary action — choosing
-              this candidate — in the reserved pick yellow. Share/Follow moved
-              below the meta lines so nothing competes with it. */}
-          {primaryPickElection ? (
-            <CandidatePickButton
-              electionId={primaryPickElection.election_id}
-              candidateId={candidate.candidate_id}
-              candidateName={candidate.display_name}
-              raceTitle={primaryPickElection.official_ballot_title}
-              electionDate={primaryPickElection.election_date}
-              choice={choiceForElection(primaryPickElection.election_id)}
-              seatsToFill={primaryPickElection.seats_to_fill ?? null}
+          <div className="flex items-center gap-2">
+            <ShareButton
+              path={`/candidates/${candidate.candidate_id}`}
+              shareText={candidateShareText(candidate)}
             />
-          ) : null}
+            {canFollow && follows ? (
+              <FollowButton
+                // Remount on candidate change: the route element stays mounted
+                // across candidate-to-candidate navigation, and without the key
+                // a follow error from the previous candidate would linger under
+                // this one's button.
+                key={candidate.candidate_id}
+                candidateId={candidate.candidate_id}
+                isFollowing={isFollowing}
+              />
+            ) : me === null ? (
+              // Logged-out visitors get a Follow button that prompts them to
+              // register (me is undefined while the session is still loading —
+              // render nothing then to avoid a flash of the wrong button).
+              <RegisterToFollowButton candidateName={candidate.display_name} />
+            ) : null}
+          </div>
         </div>
         <p className="mt-1 text-sm text-ink-soft">
           {candidate.party} · {candidate.state}
           {candidate.current_office ? <> · {candidate.current_office}</> : null}
         </p>
-        <div className="mt-2 flex flex-wrap items-center gap-2">
-          <ShareButton
-            path={`/candidates/${candidate.candidate_id}`}
-            shareText={candidateShareText(candidate)}
-          />
-          {canFollow && follows ? (
-            <FollowButton
-              // Remount on candidate change: the route element stays mounted
-              // across candidate-to-candidate navigation, and without the key
-              // a follow error from the previous candidate would linger under
-              // this one's button.
-              key={candidate.candidate_id}
-              candidateId={candidate.candidate_id}
-              isFollowing={isFollowing}
-            />
-          ) : me === null ? (
-            // Logged-out visitors get a Follow button that prompts them to
-            // register (me is undefined while the session is still loading —
-            // render nothing then to avoid a flash of the wrong button).
-            <RegisterToFollowButton candidateName={candidate.display_name} />
-          ) : null}
-        </div>
         {candidate.official_website_url ? (
           <p className="mt-1 text-sm">
             <a
@@ -901,7 +887,11 @@ export function CandidatePage() {
           preferences={recordView === "my_issues" ? preferences : []}
         />
 
-        {pickableElections.length > 0 ? (
+        {/* In-body rows only when the sticky bar can't act: with several
+            concurrent races the bar's bare "Make my pick" can't say which
+            race it would pick, so each race keeps its self-describing row.
+            Single-race pages leave picking to the sticky bar alone. */}
+        {primaryPickElection === null && pickableElections.length > 0 ? (
           <div className="mt-4 space-y-2">
             {pickableElections.map((election) => (
               /* Always names the election: several concurrent races (and past
@@ -1092,29 +1082,28 @@ export function CandidatePage() {
         </div>
 
         {primaryPickElection ? (
-          <>
-            {/* Spacer so the fixed bar never covers the page's last lines —
-                a padding-bottom on the container would fight py-8 (same
-                property, stylesheet order decides). */}
-            <div aria-hidden="true" className="h-16 lg:hidden" />
-            {/* Mobile sticky action bar: the header CTA scrolls away on a
-                long profile, so narrow screens keep the primary action in
-                reach — same control, same store, duplicated on purpose. */}
-            <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-white p-3 shadow-lg lg:hidden">
-              <div className="mx-auto max-w-3xl">
-                <CandidatePickButton
-                  electionId={primaryPickElection.election_id}
-                  candidateId={candidate.candidate_id}
-                  candidateName={candidate.display_name}
-                  raceTitle={primaryPickElection.official_ballot_title}
-                  electionDate={primaryPickElection.election_date}
-                  choice={choiceForElection(primaryPickElection.election_id)}
-                  seatsToFill={primaryPickElection.seats_to_fill ?? null}
-                  fullWidth
-                />
-              </div>
-            </div>
-          </>
+          // The page's ONE pick control: a sticky card pinned to the bottom
+          // of the viewport while the profile scrolls, at every width —
+          // sticky (not fixed) so in the split layout it stays inside the
+          // detail column instead of overlaying the rail. The caption names
+          // the race: the button's "Make my pick" alone doesn't say what
+          // the pick is for.
+          <div className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg">
+            <p className="mb-2 text-center text-xs text-ink-soft">
+              {primaryPickElection.official_ballot_title} ·{" "}
+              {formatElectionDate(primaryPickElection.election_date)}
+            </p>
+            <CandidatePickButton
+              electionId={primaryPickElection.election_id}
+              candidateId={candidate.candidate_id}
+              candidateName={candidate.display_name}
+              raceTitle={primaryPickElection.official_ballot_title}
+              electionDate={primaryPickElection.election_date}
+              choice={choiceForElection(primaryPickElection.election_id)}
+              seatsToFill={primaryPickElection.seats_to_fill ?? null}
+              fullWidth
+            />
+          </div>
         ) : null}
       </div>
     </div>

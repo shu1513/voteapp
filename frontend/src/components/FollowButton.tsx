@@ -36,10 +36,7 @@ export function FollowButton({ candidateId, isFollowing, size = "md" }: FollowBu
         className={
           isFollowing
             ? `${base} border border-line bg-white text-ink hover:border-rausch`
-            : // Outlined, not solid rausch: Follow is a secondary action —
-              // the solid treatment competed with the pick CTA (the page's
-              // one primary action). rausch-deep text: AA on white.
-              `${base} border border-rausch bg-white text-rausch-deep hover:bg-rausch hover:text-white`
+            : `${base} bg-rausch text-white hover:bg-rausch-dark`
         }
       >
         {setFollow.isPending ? "…" : isFollowing ? "Unfollow" : "Follow"}
