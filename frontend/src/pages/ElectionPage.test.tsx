@@ -605,6 +605,21 @@ describe("ElectionPage", () => {
     );
   });
 
+  it("shows no Yes/No card on a measure election whose measure details are still TBD", async () => {
+    // Upcoming measure elections can exist before their ballot-measure row;
+    // a Yes/No pair with no explanation of what either vote means must not
+    // render.
+    clearBallotDraft();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({ race_type: "ballot_measure", candidates: [], ballot_measure: null })
+    );
+
+    expect(await screen.findByRole("heading", { name: "Governor" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Yes" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "No" })).not.toBeInTheDocument();
+  });
+
   it("shows logged-out visitors no pick buttons on past elections", async () => {
     // The backend rejects choice writes to past elections, so the register
     // prompt would advertise an action the visitor could never complete.

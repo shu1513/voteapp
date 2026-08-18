@@ -1071,7 +1071,12 @@ export function ElectionPage() {
           />
         </div>
 
-        {data.race_type === "ballot_measure" && showChoiceControls ? (
+        {/* measure !== null too, not just the race type: upcoming measure
+            elections can exist before their ballot-measure row (details
+            still TBD) — the old inline buttons lived inside the measure
+            section and so never rendered there, and a Yes/No pair with no
+            explanation of what either vote means would be worse. */}
+        {measure !== null && data.race_type === "ballot_measure" && showChoiceControls ? (
           // The measure page's ONE pick control, mirroring the candidate
           // page's sticky card: a measure has no deeper detail page — the
           // decision happens here — so the Yes/No pair pins to the viewport
