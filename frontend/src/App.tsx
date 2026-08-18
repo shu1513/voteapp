@@ -5,7 +5,7 @@ import { RouteError } from "./components/RouteError";
 import { TermsRenewalGate } from "./components/TermsRenewalGate";
 import { APP_NAME, VERIFY_WITH_OFFICIALS_NOTE, useMe } from "@voteapp/api-client";
 import { useFlushBallotDraft } from "./lib/useFlushBallotDraft";
-import { useGuestDraftNav, useMyPicksProgress } from "./lib/usePickProgress";
+import { myDraftLabel, useGuestDraftNav, useMyPicksProgress } from "./lib/usePickProgress";
 
 /**
  * The greeting lives beside the logo, not in the nav: sitting between
@@ -68,17 +68,9 @@ function AccountNav() {
     );
   }
 
-  // "My Draft" mirrors the guest label rules: plain until the first pick
-  // (no homework-flavored "0/8", and no counter while the queries haven't
-  // settled — a counter that flashes in later is fine, a wrong one is not),
-  // then counting up, then the earned name "My Picks ✓" when every race on
-  // the nearest election day is decided.
-  const myDraftLabel =
-    picksProgress && picksProgress.picked > 0
-      ? picksProgress.complete
-        ? "My Picks ✓"
-        : `My Draft ${picksProgress.picked}/${picksProgress.total}`
-      : "My Draft";
+  // Label rules live in myDraftLabel (shared with the candidate page's
+  // post-pick actions), mirroring the guest label rules.
+  const draftLabel = myDraftLabel(picksProgress);
 
   // Log out lives in Settings (Sessions section), not the header — it kept a
   // rarely-used action in premium header space. "My Draft" sits last so the
@@ -100,7 +92,7 @@ function AccountNav() {
         Settings
       </Link>
       <Link to="/me/picks" className="whitespace-nowrap text-ink-soft hover:text-ink">
-        {myDraftLabel}
+        {draftLabel}
       </Link>
     </span>
   );

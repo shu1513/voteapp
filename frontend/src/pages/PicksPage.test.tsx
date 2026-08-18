@@ -68,10 +68,51 @@ describe("PicksPage", () => {
     expect(await screen.findByText(/Log in to plan your votes/)).toBeInTheDocument();
   });
 
-  it("shows the verify interstitial for unverified users", async () => {
-    stubApiRoutes({ "/api/me": { body: ME_UNVERIFIED } });
+  it("shows unverified users the verify interstitial AND their picks", async () => {
+    // Choices are not verification-gated (any registered session may pick),
+    // so the verify wall must not hide a pick the user just saved.
+    stubApiRoutes({
+      "/api/me": { body: ME_UNVERIFIED },
+      "/api/me/election-choices": { body: { choices: [electionChoice()] } },
+    });
     renderPicks();
     expect(await screen.findByRole("heading", { name: "Verify your email" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Your upcoming picks" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Governor" })).toHaveAttribute("href", "/elections/e-1");
+    expect(screen.getByText(/Jane Smith/)).toBeInTheDocument();
+  });
+
+  it("lists an upcoming pick on a race missing from the saved ballot", async () => {
+    // The choice API accepts picks on any upcoming race (candidate search,
+    // shared links, an old address) — the cards only render the saved
+    // ballot, so such a pick must surface in its own section instead of
+    // silently vanishing.
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/election-choices": {
+          body: {
+            choices: [
+              electionChoice(),
+              electionChoice({
+                election_id: "e-offballot",
+                official_ballot_title: "Attorney General",
+                election_date: "2026-11-03",
+              }),
+            ],
+          },
+        },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByRole("heading", { name: "Other upcoming picks" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Attorney General" })).toHaveAttribute(
+      "href",
+      "/elections/e-offballot"
+    );
+    // The carded race stays on its date card only — no duplicate row here.
+    const section = screen.getByRole("heading", { name: "Other upcoming picks" }).closest("section");
+    expect(section).not.toHaveTextContent("Governor");
   });
 
   it("marks a measure pick with its outcome, muted when it went against the pick", async () => {

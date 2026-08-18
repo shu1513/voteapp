@@ -292,6 +292,51 @@ export function PickDateCard({
   );
 }
 
+// Upcoming picks the date cards do NOT show, from the choices payload alone
+// (it carries title + date, like PastPicks below). The choice API accepts a
+// pick on ANY upcoming race with a valid candidacy — via candidate search, a
+// shared link, or before an address change — while the cards render only the
+// saved ballot, so without this section such a pick would silently vanish
+// from the page that claims to list "My Election Picks". Also the whole list
+// for the unverified render, where no ballot loads and nothing is carded.
+function UpcomingUncardedPicks({
+  title,
+  choices,
+  today,
+  cardedElectionIds,
+}: {
+  title: string;
+  choices: ElectionChoice[];
+  today: string;
+  cardedElectionIds: Set<string>;
+}) {
+  const upcoming = choices
+    .filter((choice) => choice.election_date >= today && !cardedElectionIds.has(choice.election_id))
+    .filter((choice) => choice.picks.length > 0 || choice.measure_position !== null)
+    // Soonest first — the reverse of PastPicks: what's next matters most.
+    .sort((a, b) => (a.election_date < b.election_date ? -1 : a.election_date > b.election_date ? 1 : 0));
+  if (upcoming.length === 0) {
+    return null;
+  }
+  return (
+    <section className="mt-6">
+      <h2 className="text-sm font-semibold uppercase tracking-wide text-ink-soft">{title}</h2>
+      <ul className="mt-3 space-y-2">
+        {upcoming.map((choice) => (
+          <li key={choice.election_id} className="text-sm">
+            <span className="text-ink-soft">{formatElectionDate(choice.election_date)} · </span>
+            <Link to={`/elections/${choice.election_id}`} state={PICKS_NAV_STATE} className="text-ink hover:text-rausch">
+              {choice.official_ballot_title}
+            </Link>
+            <span className="text-ink-soft"> — </span>
+            <PickedLine choice={choice} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 // Past picks come from the choices payload alone (it carries title + date),
 // not the ballot: the saved ballot only keeps recently finished elections,
 // while picks history should survive indefinitely. Races still carded above
@@ -381,7 +426,28 @@ export function PicksPage() {
     );
   }
   if (!me.email_verified) {
-    return <VerifyPrompt email={me.email} />;
+    // The verify wall must not hide the picks themselves: the choice API
+    // deliberately accepts any registered session (see apiServer's
+    // election-choices route), so a just-saved pick has to be visible here
+    // — only the address-derived ballot views stay verified-gated. Nothing
+    // is carded (the ballot query never ran), so the upcoming section
+    // lists every decided choice.
+    const unverifiedToday = usLatestLocalDate();
+    const nothingCarded = new Set<string>();
+    return (
+      <>
+        <VerifyPrompt email={me.email} />
+        <div className="mx-auto max-w-md px-4 pb-10">
+          <UpcomingUncardedPicks
+            title="Your upcoming picks"
+            choices={choices ?? []}
+            today={unverifiedToday}
+            cardedElectionIds={nothingCarded}
+          />
+          <PastPicks choices={choices ?? []} today={unverifiedToday} cardedElectionIds={nothingCarded} />
+        </div>
+      </>
+    );
   }
 
   const today = usLatestLocalDate();
@@ -464,6 +530,12 @@ export function PicksPage() {
                 ))}
               </div>
             )}
+            <UpcomingUncardedPicks
+              title="Other upcoming picks"
+              choices={choices ?? []}
+              today={today}
+              cardedElectionIds={cardedElectionIds}
+            />
             <PastPicks choices={choices ?? []} today={today} cardedElectionIds={cardedElectionIds} />
           </>
         ) : null}

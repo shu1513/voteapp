@@ -7,6 +7,22 @@ import { usLatestLocalDate } from "./usLatestLocalDate";
 export type PickProgress = { picked: number; total: number; complete: boolean };
 
 /**
+ * The signed-in draft link's label, shared by the header nav and the
+ * candidate page's post-pick actions so the two never drift: plain until
+ * the first pick (no homework-flavored "0/8", and no counter while the
+ * queries haven't settled — a counter that flashes in later is fine, a
+ * wrong one is not), then counting up, then the earned name "My Picks ✓"
+ * when every race on the nearest election day is decided.
+ */
+export function myDraftLabel(progress: PickProgress | null): string {
+  return progress && progress.picked > 0
+    ? progress.complete
+      ? "My Picks ✓"
+      : `My Draft ${progress.picked}/${progress.total}`
+    : "My Draft";
+}
+
+/**
  * The signed-in header's pick counter ("My Picks 4/13" → "My Picks ✓"):
  * progress over the nearest upcoming election day on the user's saved
  * ballot — the same denominator as that day's PickDateCard. Null hides the
