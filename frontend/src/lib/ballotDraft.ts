@@ -15,10 +15,16 @@ import type { ElectionChoice } from "@voteapp/api-client";
 
 const STORAGE_KEY = "voteapp_ballot_draft";
 
-// Generic 8-4-4-4-12 hex shape (deliberately not version-pinned): the only
-// job is keeping non-UUID bytes out of API query params, not validating
-// which UUID variant the server mints.
-const UUID_SHAPE_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+// Mirror of the backend's UUID_PATTERN (backend/src/utils/uuid.ts),
+// version and variant nibbles included: the guard exists so a corrupt
+// draft can never 400 /api/ballot, and the server rejects shapes like the
+// nil UUID that a looser hex-only check would wave through.
+const UUID_SHAPE_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+// Mirror of the backend's MAX_BALLOT_DISTRICT_IDS (apiValidation.ts): a
+// 51st id — corrupt drafts only; a real ballot stores far fewer — would
+// 400 the whole request just like a malformed one.
+const MAX_DRAFT_DISTRICT_IDS = 50;
 
 export type BallotDraft = {
   v: 1;
@@ -110,9 +116,9 @@ function parseDraft(raw: string | null): BallotDraft {
   // address-search fallback. Real drafts only ever copy server-issued
   // UUIDs, so dropping a non-UUID only ever discards corrupt bytes.
   const districtIds = Array.isArray(draft.district_ids)
-    ? draft.district_ids.filter(
-        (id): id is string => typeof id === "string" && UUID_SHAPE_RE.test(id)
-      )
+    ? draft.district_ids
+        .filter((id): id is string => typeof id === "string" && UUID_SHAPE_RE.test(id))
+        .slice(0, MAX_DRAFT_DISTRICT_IDS)
     : [];
   let target: BallotDraft["target"] = null;
   if (typeof draft.target === "object" && draft.target !== null) {

@@ -117,8 +117,17 @@ describe("ballotDraft store", () => {
         // Non-UUID strings are dropped alongside non-strings: district ids
         // go verbatim into /api/ballot query params, where one malformed id
         // 400s the request and /draft shows an error box instead of its
-        // address-search fallback.
-        district_ids: ["11111111-2222-4333-8444-555555555555", "d1", 42, null],
+        // address-search fallback. The check mirrors the backend's
+        // version/variant-pinned pattern — the nil UUID and a version-6
+        // value are valid hex shapes the server still rejects.
+        district_ids: [
+          "11111111-2222-4333-8444-555555555555",
+          "d1",
+          42,
+          null,
+          "00000000-0000-0000-0000-000000000000",
+          "11111111-2222-6333-8444-555555555555",
+        ],
         target: { bogus: true },
         choices: {
           e1: goodRow,
@@ -135,6 +144,18 @@ describe("ballotDraft store", () => {
     expect(draft.choices.e1).toEqual(goodRow);
     expect(draftPickCount(draft)).toBe(1);
     expect(draftProgress(draft)).toBeNull();
+  });
+
+  it("caps district ids at the backend's 50-id limit", () => {
+    // A 51st id would 400 the whole /api/ballot request exactly like a
+    // malformed one; real ballots store far fewer, so trimming only ever
+    // discards corrupt bytes.
+    const ids = Array.from(
+      { length: 60 },
+      (_, i) => `${String(i).padStart(8, "0")}-2222-4333-8444-555555555555`
+    );
+    seedStorage(JSON.stringify({ v: 1, district_ids: ids, target: null, choices: {} }));
+    expect(readBallotDraft().district_ids).toHaveLength(50);
   });
 
   it("computes progress against the stored target", () => {
