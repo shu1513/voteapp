@@ -1,4 +1,5 @@
 import type { ElectionDetail, PartyBucket } from "@voteapp/api-client";
+import { partyColorClass } from "@voteapp/api-client";
 import {
   aggregateRecordAreaStances,
   ApiError,
@@ -437,7 +438,9 @@ function CandidateCard({
               ) : null}
             </View>
             <Text className="text-sm text-ink-soft">
-              {candidate.party}
+              <Text className={partyColorClass(candidate.party) || undefined}>
+                {candidate.party}
+              </Text>
               {candidate.is_incumbent ? " · Incumbent" : ""}
               {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
             </Text>

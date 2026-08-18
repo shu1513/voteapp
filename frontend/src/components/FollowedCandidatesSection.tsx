@@ -6,7 +6,7 @@ import type { CandidateFollow, CandidateSearchMatch } from "@voteapp/api-client"
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "./Status";
 import { formatElectionDate } from "@voteapp/api-client";
 import type { BackTo } from "../lib/detailNavContext";
-import { partyColorClass, profilePartyLabel } from "../lib/partyLabel";
+import { partyColorClass, profilePartyLabel } from "@voteapp/api-client";
 
 // This section lives on the My Candidates page; detail pages reached from it
 // (candidate links, election links, the search combobox) link back there.

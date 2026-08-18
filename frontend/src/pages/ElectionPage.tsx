@@ -3,7 +3,7 @@ import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError }
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { BallotRaceType, ElectionDetail, PartyBucket, RailSortKey } from "@voteapp/api-client";
 import { RAIL_SORTS, railSortForBallotSort, railSortsOffered, sortRailEntries } from "@voteapp/api-client";
-import { partyColorClass } from "../lib/partyLabel";
+import { partyColorClass } from "@voteapp/api-client";
 import { DetailPager } from "../components/DetailPager";
 import { DetailRail } from "../components/DetailRail";
 import { RaceTypeTabs } from "../components/RaceTypeTabs";
