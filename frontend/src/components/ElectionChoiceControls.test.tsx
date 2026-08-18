@@ -136,6 +136,31 @@ describe("CandidatePickButton", () => {
     expect(button).toHaveAttribute("title", "This election fills 2 seats — remove a pick first");
   });
 
+  it("shows the cap reason as visible text in fullWidth mode (the page's only pick control)", () => {
+    stubApiRoutes({});
+    renderControl(
+      <CandidatePickButton
+        electionId={ELECTION_ID}
+        candidateId={CANDIDATE_ID}
+        candidateName="Jane Doe"
+        raceTitle="Governor"
+        electionDate="2026-11-03"
+        choice={choice({ seats_to_fill: 2, picks: [pick(OTHER_CANDIDATE_ID), pick("55555555-5555-4555-8555-555555555555")] })}
+        seatsToFill={2}
+        fullWidth
+      />
+    );
+
+    // Standalone the tooltip is not enough: a disabled button never gets
+    // focus and touch has no hover, so the reason renders as visible text
+    // and doubles as the accessible description.
+    const button = screen.getByRole("button", { name: "Make my pick: Jane Doe" });
+    expect(button).toBeDisabled();
+    expect(button).not.toHaveAttribute("title");
+    const message = screen.getByText("This election fills 2 seats — remove a pick first");
+    expect(button).toHaveAttribute("aria-describedby", message.id);
+  });
+
   it("keeps a single-seat button enabled when another candidate holds the pick (radio replace)", () => {
     stubApiRoutes({});
     renderControl(

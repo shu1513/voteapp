@@ -46,6 +46,8 @@ type CandidatePickButtonProps = {
   /** elections.seats_to_fill — null renders as a single seat. */
   seatsToFill: number | null;
   size?: "sm" | "md";
+  /** Stretch the control to its container's width (the mobile sticky bar). */
+  fullWidth?: boolean;
 };
 
 /**
@@ -63,26 +65,36 @@ export function CandidatePickButton({
   choice,
   seatsToFill,
   size = "md",
+  fullWidth = false,
 }: CandidatePickButtonProps) {
   const { me } = useMe();
   const isGuest = me === null;
   const setChoice = useSetElectionChoice();
   const saving = useElectionChoiceSaving();
+  const capMessageId = useId();
   const picks = choice?.picks ?? [];
   const isPicked = picks.some((pick) => pick.candidate_id === candidateId);
   const seatCap = seatsToFill ?? 1;
   const atMultiSeatCap = seatCap > 1 && !isPicked && picks.length >= seatCap;
+  // Same visible-vs-tooltip split as CandidatePickRow: standalone (fullWidth)
+  // the button is the page's only pick control, so the cap reason must be
+  // visible — a title on a disabled button reaches neither touch nor
+  // keyboard users. Inline on the election page the title stays: the page
+  // shows the viewer's other picks and a per-seat hint, and a message under
+  // every capped candidate card would repeat itself down the roster.
+  const showCapMessage = atMultiSeatCap && fullWidth;
   // disabled:opacity-50 lives in the shared base: `saving` disables EVERY
   // choice control while any one of them writes, so a picked button must dim
   // too, not only the unpicked ones.
-  const base =
+  const sizeClass =
     size === "sm"
       ? "rounded-lg px-3 py-1 text-xs font-semibold transition disabled:opacity-50"
       : "rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
+  const base = fullWidth ? `${sizeClass} w-full text-center` : sizeClass;
   const visibleLabel = setChoice.isPending ? "…" : isPicked ? "✓ My pick" : "Make my pick";
 
   return (
-    <span className="inline-flex flex-col items-end gap-1">
+    <span className={fullWidth ? "flex w-full flex-col gap-1" : "inline-flex flex-col items-end gap-1"}>
       {/* aria-label derives from visibleLabel so name and text can't drift:
           the candidate suffix keeps the page's N pick buttons apart in
           screen-reader button lists and voice control, and leading with the
@@ -93,7 +105,12 @@ export function CandidatePickButton({
         disabled={saving || atMultiSeatCap}
         aria-pressed={isPicked}
         aria-label={`${visibleLabel}: ${candidateName}`}
-        title={atMultiSeatCap ? `This election fills ${seatCap} seats — remove a pick first` : undefined}
+        aria-describedby={showCapMessage ? capMessageId : undefined}
+        title={
+          atMultiSeatCap && !showCapMessage
+            ? `This election fills ${seatCap} seats — remove a pick first`
+            : undefined
+        }
         onClick={() =>
           isGuest
             ? setDraftCandidateChoice({
@@ -110,11 +127,19 @@ export function CandidatePickButton({
         className={
           isPicked
             ? `${base} bg-green-700 text-white hover:bg-green-800`
-            : `${base} border border-line bg-white text-ink hover:border-green-700`
+            : // pick yellow: the app's reserved primary-action color — the
+              // unpicked state is the call to act, the picked state stays
+              // green ("done"), so the two never compete.
+              `${base} bg-pick text-ink hover:bg-pick-hover`
         }
       >
         {visibleLabel}
       </button>
+      {showCapMessage ? (
+        <span id={capMessageId} className="text-xs font-medium text-ink-soft">
+          This election fills {seatCap} seats — remove a pick first
+        </span>
+      ) : null}
       {/* Only this control's own failure: a shared banner would blame every
           button on the page for one candidate's rejection. */}
       {setChoice.isError && !setChoice.isPending ? <SaveError error={setChoice.error} /> : null}
@@ -193,7 +218,9 @@ export function CandidatePickRow({
         className={
           isPicked
             ? `${base} border-green-700 bg-green-50 text-green-900 hover:bg-green-100`
-            : `${base} border-line bg-white text-ink hover:border-green-700`
+            : // Same reserved pick yellow as CandidatePickButton's unpicked
+              // state — one color grammar for "choose" across the app.
+              `${base} border-pick bg-pick text-ink hover:bg-pick-hover`
         }
       >
         {isPicked ? (

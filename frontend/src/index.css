@@ -17,6 +17,11 @@
   --color-ink-soft: #717171;
   --color-line: #dddddd;
   --color-surface: #f7f7f7;
+  /* Reserved for the app's primary action: choosing a candidate (the
+     "Add to cart" of this app). Appears NOWHERE else — the exclusivity is
+     what makes the affordance readable. Dark ink text on it: 12.9:1. */
+  --color-pick: #ffd814;
+  --color-pick-hover: #f7ca00;
   /* Democratic party brand blue; marks ballot-measure labels and
      Democratic party text. */
   --color-dem-blue: #0015bc;
@@ -27,6 +32,15 @@
      dem-blue — party brand colors stay on party content in an elections app.
      8.9:1 on white. */
   --color-navy: #1e3a5f;
+}
+
+/* Pages with a sticky pick card (candidate pages, data-sticky-pick-cta)
+   pin their primary action to the viewport bottom — the same corner the
+   chatbot launcher floats in, at the same z. Lift the launcher clear of the
+   card so it never covers the pick button; the OPEN chat panel may still
+   cover the card, which is fine — the user chose the chat. */
+body:has([data-sticky-pick-cta]) .chat-launcher {
+  bottom: 7rem;
 }
 
 /* When the ballot preview is on screen, printing yields ONLY the sheets —

@@ -740,24 +740,20 @@ describe("CandidatePage", () => {
     expect(await screen.findByRole("button", { name: "Unfollow" })).toBeInTheDocument();
   });
 
-  it("lets logged-out visitors pick from the row straight into the local ballot draft", async () => {
+  it("lets logged-out visitors pick from the sticky bar straight into the local ballot draft", async () => {
     clearBallotDraft();
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
-    // The row only renders once the 401 settles (no-flash rule), so its
+    // The control only renders once the 401 settles (no-flash rule), so its
     // presence proves the guest fork.
-    const row = await screen.findByRole("button", {
-      name: "Make Jordan Voter my pick for Governor · November 3, 2099",
-    });
-    await userEvent.click(row);
+    const cta = await screen.findByRole("button", { name: "Make my pick: Jordan Voter" });
+    await userEvent.click(cta);
 
-    // The pick lands in the localStorage draft (no API write) and the row
-    // flips to its picked sentence, same as the signed-in flow.
+    // The pick lands in the localStorage draft (no API write) and the CTA
+    // flips to its picked state, same as the signed-in flow.
     expect(
-      await screen.findByRole("button", {
-        name: "✓ Jordan Voter is my pick for Governor · November 3, 2099",
-      })
+      await screen.findByRole("button", { name: "✓ My pick: Jordan Voter" })
     ).toBeInTheDocument();
     expect(readBallotDraft().choices["e-1"].picks.map((pick) => pick.candidate_id)).toEqual(["c-1"]);
   });
@@ -775,6 +771,47 @@ describe("CandidatePage", () => {
 
     expect(await screen.findByRole("heading", { name: "Jordan Voter" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /my pick for/ })).not.toBeInTheDocument();
+  });
+
+  it("renders the sticky bar as the page's only pick control for a single pickable race", async () => {
+    clearBallotDraft();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    // One control, not several: the sticky bottom card is always in reach,
+    // so the in-body row would only duplicate it. The caption names the
+    // race the bare "Make my pick" button acts on.
+    const ctas = await screen.findAllByRole("button", { name: "Make my pick: Jordan Voter" });
+    expect(ctas).toHaveLength(1);
+    expect(screen.getByText("Governor · November 3, 2099")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /my pick for/ })).not.toBeInTheDocument();
+  });
+
+  it("renders no primary pick CTA when the candidate is in several pickable races", async () => {
+    // The CTA carries no race name, so with two concurrent races it cannot
+    // say which one it would pick — those pages rely on the self-describing
+    // rows, one per race.
+    clearBallotDraft();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [
+          candidateElection(),
+          candidateElection({
+            candidate_election_id: "ce-2",
+            election_id: "e-2",
+            official_ballot_title: "Lieutenant Governor",
+          }),
+        ],
+      })
+    );
+
+    expect(
+      await screen.findByRole("button", {
+        name: "Make Jordan Voter my pick for Governor · November 3, 2099",
+      })
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Make my pick: Jordan Voter" })).not.toBeInTheDocument();
   });
 
   it("shows loader-fetched finance for an ongoing election", async () => {

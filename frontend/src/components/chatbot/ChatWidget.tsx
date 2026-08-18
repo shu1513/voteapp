@@ -388,7 +388,7 @@ function ChatWidgetSession() {
         ref={launcherRef}
         onClick={() => setOpen(true)}
         aria-label="Open Ask"
-        className="fixed bottom-4 right-4 z-30 rounded-full bg-rausch px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-rausch-dark"
+        className="chat-launcher fixed bottom-4 right-4 z-30 rounded-full bg-rausch px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-rausch-dark"
       >
         Ask
       </button>

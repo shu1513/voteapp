@@ -31,7 +31,7 @@ import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { RegisterToFollowButton } from "../components/RegisterToFollowButton";
 import { ShareButton } from "../components/ShareButton";
-import { CandidatePickRow } from "../components/ElectionChoiceControls";
+import { CandidatePickButton, CandidatePickRow } from "../components/ElectionChoiceControls";
 import { draftChoicesByElectionId, useBallotDraft } from "../lib/ballotDraft";
 import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
@@ -616,6 +616,12 @@ export function CandidatePage() {
   const isGuest = me === null;
   const pickableElections =
     isGuest || (canChoose && choiceByElectionId !== undefined) ? officeCandidacies : [];
+  // The page's primary action ("Add to cart"): a pick-yellow CTA in the
+  // header and a sticky bottom bar on narrow screens. Only when the
+  // candidate is in exactly one pickable race — the CTA carries no race
+  // name, so with several races it can't say which one it would pick; those
+  // pages rely on the self-describing rows below.
+  const primaryPickElection = pickableElections.length === 1 ? pickableElections[0] : null;
   const choiceForElection = (electionId: string) =>
     isGuest ? draftChoicesByElectionId(draft).get(electionId) : choiceByElectionId?.get(electionId);
   const location = useLocation();
@@ -892,7 +898,11 @@ export function CandidatePage() {
           preferences={recordView === "my_issues" ? preferences : []}
         />
 
-        {pickableElections.length > 0 ? (
+        {/* In-body rows only when the sticky bar can't act: with several
+            concurrent races the bar's bare "Make my pick" can't say which
+            race it would pick, so each race keeps its self-describing row.
+            Single-race pages leave picking to the sticky bar alone. */}
+        {primaryPickElection === null && pickableElections.length > 0 ? (
           <div className="mt-4 space-y-2">
             {pickableElections.map((election) => (
               /* Always names the election: several concurrent races (and past
@@ -1081,6 +1091,42 @@ export function CandidatePage() {
             reporterEmail={me?.email}
           />
         </div>
+
+        {primaryPickElection ? (
+          // The page's ONE pick control: a sticky card pinned to the bottom
+          // of the viewport while the profile scrolls, at every width —
+          // sticky (not fixed) so in the split layout it stays inside the
+          // detail column instead of overlaying the rail. The caption names
+          // the race: the button's "Make my pick" alone doesn't say what
+          // the pick is for.
+          // data-sticky-pick-cta: index.css lifts the chatbot's floating
+          // launcher above this card (both pin to the viewport bottom and
+          // the launcher would cover the button's right end on phones).
+          <div
+            data-sticky-pick-cta=""
+            className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
+          >
+            <p className="mb-2 text-center text-xs text-ink-soft">
+              {primaryPickElection.official_ballot_title} ·{" "}
+              {formatElectionDate(primaryPickElection.election_date)}
+            </p>
+            <CandidatePickButton
+              // Remount on candidate change, like the Follow button above:
+              // the route element stays mounted across roster navigation,
+              // and without the key a failed save's error from the previous
+              // candidate would linger under this one's button.
+              key={candidate.candidate_id}
+              electionId={primaryPickElection.election_id}
+              candidateId={candidate.candidate_id}
+              candidateName={candidate.display_name}
+              raceTitle={primaryPickElection.official_ballot_title}
+              electionDate={primaryPickElection.election_date}
+              choice={choiceForElection(primaryPickElection.election_id)}
+              seatsToFill={primaryPickElection.seats_to_fill ?? null}
+              fullWidth
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );
