@@ -24,6 +24,7 @@ import { draftChoicesByElectionId, setDraftBallotContext, useBallotDraft } from 
 import { useBallotFilterParams } from "../lib/useBallotFilterParams";
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "../components/Status";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { useHydrated } from "../lib/useHydrated";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 
 // The draft's progress denominator: the nearest upcoming election day's
@@ -76,10 +77,15 @@ export function BallotPage() {
   const draft = useBallotDraft();
   // Set by the home page's post-search navigation so the visitor can confirm
   // the geocoder matched the right address. Router state only — the address is
-  // personal data and must stay out of the URL; a refresh or shared link
-  // simply omits the confirmation line.
+  // personal data and must stay out of the URL; a shared link omits the
+  // confirmation line. A refresh does NOT: the browser restores router state
+  // from history.state, which is exactly why it must read as null until
+  // hydration — SSR rendered this document without it.
   const location = useLocation();
-  const routerState = location.state as { matchedAddress?: unknown; addressMatchCount?: unknown } | null;
+  const hydrated = useHydrated();
+  const routerState = hydrated
+    ? (location.state as { matchedAddress?: unknown; addressMatchCount?: unknown } | null)
+    : null;
   const matchedAddress = typeof routerState?.matchedAddress === "string" ? routerState.matchedAddress : null;
   // The geocoder returned more than one candidate address and the ballot is
   // for the first one — the confirmation line alone is too easy to skim past.

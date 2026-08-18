@@ -39,6 +39,7 @@ import { ReportContentButton } from "../components/ReportContentButton";
 import { formatDistrictName, formatElectionDate } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
 import { pageMeta } from "../lib/pageMeta";
+import { useHydrated } from "../lib/useHydrated";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { compareByResearchAreaPriority } from "@voteapp/api-client";
 import { partyColorClass, profilePartyLabel } from "@voteapp/api-client";
@@ -625,7 +626,11 @@ export function CandidatePage() {
   const choiceForElection = (electionId: string) =>
     isGuest ? draftChoicesByElectionId(draft).get(electionId) : choiceByElectionId?.get(electionId);
   const location = useLocation();
-  const navState = readCandidateNavState(location.state);
+  const hydrated = useHydrated();
+  // Same hydration gate as the election page: location.state survives
+  // reloads via history.state, but SSR rendered with null — reading it
+  // before hydration mismatches the server HTML.
+  const navState = hydrated ? readCandidateNavState(location.state) : null;
   // The rail's roster sort: offered only for the sorts this snapshot can
   // honor (candidateRailSortsOffered — an old snapshot without the stance
   // keys offers none; My issues additionally needs saved areas). Same
@@ -645,9 +650,8 @@ export function CandidatePage() {
   const offeredRailSorts = savedAreasLoading
     ? []
     : candidateRailSortsOffered(railRoster ?? [], hasSaved);
-  const [railSortState, setRailSortState] = useState<CandidateRailSortKey | null>(
-    navState?.railSort ?? null
-  );
+  const [railSortOverride, setRailSortState] = useState<CandidateRailSortKey | null>(null);
+  const railSortState = railSortOverride ?? navState?.railSort ?? null;
   const railSort =
     railSortState !== null && offeredRailSorts.includes(railSortState)
       ? railSortState

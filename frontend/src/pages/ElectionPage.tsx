@@ -28,6 +28,7 @@ import {
   formatVotePowerLabel,
 } from "@voteapp/api-client";
 import { loadFromApi } from "../lib/loadFromApi";
+import { useHydrated } from "../lib/useHydrated";
 import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS, SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
@@ -144,7 +145,14 @@ export function ElectionPage() {
   const { me } = useMe();
   const { savedAreaIds, weights, hasSaved, isLoading: savedAreasLoading } = useMyResearchAreas();
   const location = useLocation();
-  const navState = readElectionNavState(location.state);
+  const hydrated = useHydrated();
+  // location.state survives reloads (the browser keeps it in history.state),
+  // but the SSR pass always rendered this document with null state — so it
+  // must read as null until hydration or the first client render diverges
+  // from the server HTML. The nav bar and rail appear one paint later on a
+  // reload; the sort/tab seeds below stay derived (not useState initializers)
+  // so they engage when the state materializes.
+  const navState = hydrated ? readElectionNavState(location.state) : null;
   // null = no explicit pick; viewers with saved areas default to "my
   // issues first" (their picks are the point of saving areas), everyone
   // else to the alphabetical payload order. A picked "my_issues" is
@@ -153,7 +161,8 @@ export function ElectionPage() {
   // Seeded from the nav state's rosterSort so a candidate round trip
   // restores the roster order the reader left (or switched to, via the
   // candidate rail) — the remount would otherwise reset it to the default.
-  const [chosenSort, setChosenSort] = useState<CandidateSort | null>(navState?.rosterSort ?? null);
+  const [chosenSortOverride, setChosenSort] = useState<CandidateSort | null>(null);
+  const chosenSort = chosenSortOverride ?? navState?.rosterSort ?? null;
   const effectiveChosenSort = chosenSort === "my_issues" && !hasSaved ? null : chosenSort;
   const candidateSort = effectiveChosenSort ?? (hasSaved ? "my_issues" : "alphabetical");
   // The pick carries the election it was made on: this component stays
@@ -269,7 +278,11 @@ export function ElectionPage() {
     contests.every((contest) => contest.race_type !== undefined) &&
     contests.some((contest) => contest.race_type === "office") &&
     contests.some((contest) => contest.race_type === "ballot_measure");
-  const [railTabState, setRailTabState] = useState<BallotRaceType | null>(navState?.raceType ?? null);
+  // undefined = untouched (follow the nav state's tab), null = an explicit
+  // "All" — the one control here whose cleared value is a real choice, so a
+  // plain ?? fallback would undo it.
+  const [railTabOverride, setRailTabState] = useState<BallotRaceType | null | undefined>(undefined);
+  const railTabState = railTabOverride !== undefined ? railTabOverride : (navState?.raceType ?? null);
   const railTab = railTabsAvailable ? railTabState : null;
   // The rail's sort control: offered only for the sorts this snapshot can
   // honor faithfully (railSortsOffered — an old unkeyed snapshot offers
@@ -285,17 +298,16 @@ export function ElectionPage() {
   // Only after both fall through does vote_power, the ballot's default,
   // apply (below).
   const offeredRailSorts = savedAreasLoading ? [] : railSortsOffered(contests ?? [], hasSaved);
-  const [railSortState, setRailSortState] = useState<RailSortKey | null>(() => {
-    if (navState === null) {
-      return null;
-    }
-    if (navState.railSort !== undefined) {
-      return navState.railSort;
-    }
-    return railSortForBallotSort(
-      new URL(navState.backTo.path, "http://internal").searchParams.get("sort") ?? "vote_power"
-    );
-  });
+  const [railSortOverride, setRailSortState] = useState<RailSortKey | null>(null);
+  const railSortState =
+    railSortOverride ??
+    (navState === null
+      ? null
+      : navState.railSort !== undefined
+        ? navState.railSort
+        : railSortForBallotSort(
+            new URL(navState.backTo.path, "http://internal").searchParams.get("sort") ?? "vote_power"
+          ));
   const railSort =
     railSortState !== null && offeredRailSorts.includes(railSortState)
       ? railSortState
