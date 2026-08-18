@@ -338,8 +338,11 @@ function factorsFor(input: {
 // Describes the LABEL algorithm (the level matrix), not the numeric score:
 // the 45/55 weighted score is a sorting signal only and never shown on the
 // detail page, so surfacing its formula here would misattribute the rating.
+// The lead deliberately doesn't count the factors: ballot measures add a
+// direct-vote row (usually three rows, two when decisiveness is skipped),
+// so any "two things"/"three things" claim would contradict some panel.
 const HOW_CALCULATED =
-  "Two things go into this rating. Representation: how much weight one vote carries here — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on past results and the number of candidates.";
+  "Here's what goes into the rating. Representation: how much weight one vote carries here — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on past results and the number of candidates.";
 
 function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);

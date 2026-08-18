@@ -360,7 +360,7 @@ describe("explainVotePower", () => {
     // The how copy explains the displayed label (grade combination), never
     // the internal 45/55 sorting-score formula.
     expect(explanation.how).toBe(
-      "Two things go into this rating. Representation: how much weight one vote carries here — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on past results and the number of candidates."
+      "Here's what goes into the rating. Representation: how much weight one vote carries here — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on past results and the number of candidates."
     );
     expect(explanation.parts).toEqual([
       {
