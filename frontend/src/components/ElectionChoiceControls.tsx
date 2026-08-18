@@ -76,6 +76,12 @@ export function CandidatePickButton({
   const isPicked = picks.some((pick) => pick.candidate_id === candidateId);
   const seatCap = seatsToFill ?? 1;
   const atMultiSeatCap = seatCap > 1 && !isPicked && picks.length >= seatCap;
+  // Yellow only ever marks an UNDONE decision (same grammar as
+  // MeasureChoiceButtons): once the race's seats are all picked, the other
+  // candidates' buttons demote to a quiet outline — still clickable
+  // (single-seat is a radio replace), no longer shouting. A 3-seat race
+  // with 1 pick is still undone, so its remaining buttons stay yellow.
+  const raceDecided = picks.length >= seatCap;
   // Same visible-vs-tooltip split as CandidatePickRow: standalone (fullWidth)
   // the button is the page's only pick control, so the cap reason must be
   // visible — a title on a disabled button reaches neither touch nor
@@ -127,10 +133,12 @@ export function CandidatePickButton({
         className={
           isPicked
             ? `${base} bg-green-700 text-white hover:bg-green-800`
-            : // pick yellow: the app's reserved primary-action color — the
-              // unpicked state is the call to act, the picked state stays
-              // green ("done"), so the two never compete.
-              `${base} bg-pick text-ink hover:bg-pick-hover`
+            : raceDecided
+              ? `${base} border border-line bg-white text-ink hover:border-green-700`
+              : // pick yellow: the app's reserved primary-action color — the
+                // unpicked state is the call to act, the picked state stays
+                // green ("done"), so the two never compete.
+                `${base} bg-pick text-ink hover:bg-pick-hover`
         }
       >
         {visibleLabel}
@@ -192,6 +200,8 @@ export function CandidatePickRow({
   const isPicked = picks.some((pick) => pick.candidate_id === candidateId);
   const seatCap = seatsToFill ?? 1;
   const atMultiSeatCap = seatCap > 1 && !isPicked && picks.length >= seatCap;
+  // Same yellow-only-while-undone rule as CandidatePickButton.
+  const raceDecided = picks.length >= seatCap;
   const base =
     "w-full rounded-xl border p-3 text-left text-sm transition disabled:opacity-50";
 
@@ -218,9 +228,11 @@ export function CandidatePickRow({
         className={
           isPicked
             ? `${base} border-green-700 bg-green-50 text-green-900 hover:bg-green-100`
-            : // Same reserved pick yellow as CandidatePickButton's unpicked
-              // state — one color grammar for "choose" across the app.
-              `${base} border-pick bg-pick text-ink hover:bg-pick-hover`
+            : raceDecided
+              ? `${base} border-line bg-white text-ink hover:border-green-700`
+              : // Same reserved pick yellow as CandidatePickButton's unpicked
+                // state — one color grammar for "choose" across the app.
+                `${base} border-pick bg-pick text-ink hover:bg-pick-hover`
         }
       >
         {isPicked ? (
