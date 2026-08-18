@@ -20,6 +20,7 @@ import { useMe } from "@voteapp/api-client";
 import { clearPendingDistrictIds, readPendingDistrictIds } from "../lib/pendingDistricts";
 import { VerifyPrompt } from "../components/VerifyPrompt";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
+import { useHydrated } from "../lib/useHydrated";
 
 type SavedBallot = BallotSummary & { matched_address?: string };
 
@@ -228,10 +229,20 @@ export function SavedBallotPage() {
   // preferences failure it falls open — list shown, seed simply omitted.
   const { prefs: ballotPreferencesQuery, current: ballotPreferences } = useBallotPreferences();
   const effectiveListSort = sortOverride ?? ballotPreferences?.sort ?? null;
+  // sessionStorage is browser-only, so the hydration render must match the
+  // server's "done" — the queued handoff engages in the effect below instead.
+  // Post-hydration mounts (SPA navigations) still read synchronously, keeping
+  // the ballot query disabled from the first render while ids are queued.
+  const hydrated = useHydrated();
   const [handoffState, setHandoffState] = useState<"pending" | "done" | "failed">(() =>
-    readPendingDistrictIds().length === 0 ? "done" : "pending"
+    hydrated && readPendingDistrictIds().length > 0 ? "pending" : "done"
   );
   const handoffFiredRef = useRef(false);
+  useEffect(() => {
+    if (hydrated && readPendingDistrictIds().length > 0) {
+      setHandoffState((current) => (current === "done" ? "pending" : current));
+    }
+  }, [hydrated]);
 
   const verified = me?.email_verified === true;
 

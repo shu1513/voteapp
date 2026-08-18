@@ -5,6 +5,7 @@ import { SavedBallotPage } from "./SavedBallotPage";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import { ballotSummary, electionSummary, ME_UNVERIFIED, ME_VERIFIED } from "../test/fixtures";
+import { readPendingDistrictIds, savePendingDistrictIds } from "../lib/pendingDistricts";
 
 const VERIFIED_BASE = {
   "/api/me": { body: ME_VERIFIED },
@@ -26,6 +27,7 @@ function renderSavedBallot(state?: unknown, search?: string) {
 beforeEach(() => {
   // No pending anonymous-search districts: the handoff must stay quiet.
   localStorage.clear();
+  sessionStorage.clear();
 });
 
 afterEach(() => {
@@ -43,6 +45,27 @@ describe("SavedBallotPage", () => {
     stubApiRoutes({ "/api/me": { body: ME_UNVERIFIED } });
     renderSavedBallot();
     expect(await screen.findByRole("heading", { name: "Verify your email" })).toBeInTheDocument();
+  });
+
+  it("runs the anonymous-search handoff exactly once, then shows the ballot", async () => {
+    savePendingDistrictIds(["district-1", "district-2"]);
+    const initializeCalls: unknown[] = [];
+    stubApiRoutes({
+      ...VERIFIED_BASE,
+      "/api/me/districts/initialize": (_url, init) => {
+        initializeCalls.push(JSON.parse(String(init?.body)));
+        return { body: { ok: true } };
+      },
+      "/api/me/ballot": { body: ballotSummary([electionSummary()]) },
+    });
+    renderSavedBallot();
+
+    expect(
+      await screen.findByRole("heading", { name: "Elections on November 3, 2026" })
+    ).toBeInTheDocument();
+    expect(initializeCalls).toEqual([{ district_ids: ["district-1", "district-2"] }]);
+    // The queue is consumed: a reload must not re-run the handoff.
+    expect(readPendingDistrictIds()).toEqual([]);
   });
 
   it("routes verified users with no saved districts to the address form", async () => {
