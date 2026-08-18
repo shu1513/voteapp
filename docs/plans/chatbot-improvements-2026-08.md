@@ -165,6 +165,17 @@ every other gate unchanged at 100%:
    (`ambiguous-senate-money-no-scope`, `finance-fl-senate-most` listing all
    7 filers, `records-ga-senate-race`). Final gates: retrieval 37/37,
    clarify 6/6, everything else 100%.
+   PR-comment round: title branch is state-filtered when the scope is known
+   (a context/previous-turn scope not named in the question text otherwise
+   never entered the title window) and orders by office score FIRST, place
+   as in-band tie-breaker (sum ordering let fifty 0.8-band district titles
+   whose place part echoes the question's words crowd out the 1.0 real
+   race); member selection takes the first row >= 0.85 (raised from 0.75 —
+   above the 0.8 cross-office confusion band, so a lookalike district race
+   can neither veto nor hijack the pull); question-kind member ordering
+   moved into the SQL ORDER BY so it runs before the branch LIMIT (a
+   7-filer race = 22 member rows; the fixed fetch order truncated exactly
+   the record chunks a records question needs).
 
 ## Scheduled, not now
 
