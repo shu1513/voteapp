@@ -6,6 +6,7 @@ import type { CandidateFollow, CandidateSearchMatch } from "@voteapp/api-client"
 import { EmptyNotice, ErrorNotice, LoadingNotice } from "./Status";
 import { formatElectionDate } from "@voteapp/api-client";
 import type { BackTo } from "../lib/detailNavContext";
+import { partyColorClass, profilePartyLabel } from "../lib/partyLabel";
 
 // This section lives on the My Candidates page; detail pages reached from it
 // (candidate links, election links, the search combobox) link back there.
@@ -108,7 +109,15 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
             {follow.display_name}
           </Link>
           <p className="text-sm text-ink-soft">
-            {follow.party} · {follow.state}
+            {profilePartyLabel(follow.party) ? (
+              <>
+                <span className={partyColorClass(follow.party) || undefined}>
+                  {profilePartyLabel(follow.party)}
+                </span>{" "}
+                ·{" "}
+              </>
+            ) : null}
+            {follow.state}
             {follow.current_office ? <> · {follow.current_office}</> : null}
           </p>
         </div>
@@ -214,7 +223,15 @@ export function FollowedCandidatesSection() {
                   >
                     <span className="font-semibold text-ink">{match.display_name}</span>{" "}
                     <span className="text-ink-soft">
-                      {match.party} · {match.state}
+                      {profilePartyLabel(match.party) ? (
+                        <>
+                          <span className={partyColorClass(match.party) || undefined}>
+                            {profilePartyLabel(match.party)}
+                          </span>{" "}
+                          ·{" "}
+                        </>
+                      ) : null}
+                      {match.state}
                       {match.current_office ? <> · {match.current_office}</> : null}
                     </span>
                   </ComboboxOption>

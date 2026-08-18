@@ -17,8 +17,12 @@
   --color-ink-soft: #717171;
   --color-line: #dddddd;
   --color-surface: #f7f7f7;
-  /* Democratic party brand blue; marks ballot-measure labels. */
+  /* Democratic party brand blue; marks ballot-measure labels and
+     Democratic party text. */
   --color-dem-blue: #0015bc;
+  /* Republican party red, darkened from the brand #e9141d to clear WCAG AA
+     for small text on white (5.9:1; the brand shade is 4.4:1 < 4.5). */
+  --color-gop-red: #cc0000;
   /* Neutral dark navy for inert header text (the greeting). Deliberately NOT
      dem-blue — party brand colors stay on party content in an elections app.
      8.9:1 on white. */

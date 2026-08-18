@@ -3,6 +3,7 @@ import { isRouteErrorResponse, Link, useLoaderData, useLocation, useRouteError }
 import type { LoaderFunctionArgs, MetaFunction } from "react-router";
 import type { BallotRaceType, ElectionDetail, PartyBucket, RailSortKey } from "@voteapp/api-client";
 import { RAIL_SORTS, railSortForBallotSort, railSortsOffered, sortRailEntries } from "@voteapp/api-client";
+import { partyColorClass } from "../lib/partyLabel";
 import { DetailPager } from "../components/DetailPager";
 import { DetailRail } from "../components/DetailRail";
 import { RaceTypeTabs } from "../components/RaceTypeTabs";
@@ -926,7 +927,9 @@ export function ElectionPage() {
                       ) : null}
                     </div>
                     <p className="text-sm text-ink-soft">
-                      {candidate.party}
+                      <span className={partyColorClass(candidate.party) || undefined}>
+                        {candidate.party}
+                      </span>
                       {candidate.is_incumbent ? " · Incumbent" : ""}
                       {candidate.status !== "active" ? ` · ${candidate.status}` : ""}
                     </p>
