@@ -64,6 +64,36 @@ describe("CandidatePage", () => {
     expect(screen.getByRole("button", { name: "Report an issue with candidate record" })).toBeInTheDocument();
   });
 
+  it("links the official website, X, and LinkedIn when the profile has them", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        official_website_url: "https://jordan.example",
+        twitter_handle: "jordan_voter",
+        linkedin_url: "https://www.linkedin.com/in/jordan-voter",
+      })
+    );
+
+    expect(await screen.findByRole("link", { name: "Official website" })).toHaveAttribute(
+      "href",
+      "https://jordan.example"
+    );
+    expect(screen.getByRole("link", { name: "X (Twitter)" })).toHaveAttribute("href", "https://x.com/jordan_voter");
+    expect(screen.getByRole("link", { name: "LinkedIn" })).toHaveAttribute(
+      "href",
+      "https://www.linkedin.com/in/jordan-voter"
+    );
+  });
+
+  it("shows only the profile links that exist", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ twitter_handle: "jordan_voter" }));
+
+    expect(await screen.findByRole("link", { name: "X (Twitter)" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Official website" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "LinkedIn" })).not.toBeInTheDocument();
+  });
+
   it("starts every issue group collapsed, each stating its record count", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     const record = (id: string, areaId: string, areaName: string) => ({
