@@ -31,7 +31,7 @@ import { SourceLine } from "../components/SourceLine";
 import { FollowButton } from "../components/FollowButton";
 import { RegisterToFollowButton } from "../components/RegisterToFollowButton";
 import { ShareButton } from "../components/ShareButton";
-import { CandidatePickRow } from "../components/ElectionChoiceControls";
+import { CandidatePickButton, CandidatePickRow } from "../components/ElectionChoiceControls";
 import { draftChoicesByElectionId, useBallotDraft } from "../lib/ballotDraft";
 import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
@@ -613,6 +613,12 @@ export function CandidatePage() {
   const isGuest = me === null;
   const pickableElections =
     isGuest || (canChoose && choiceByElectionId !== undefined) ? officeCandidacies : [];
+  // The page's primary action ("Add to cart"): a pick-yellow CTA in the
+  // header and a sticky bottom bar on narrow screens. Only when the
+  // candidate is in exactly one pickable race — the CTA carries no race
+  // name, so with several races it can't say which one it would pick; those
+  // pages rely on the self-describing rows below.
+  const primaryPickElection = pickableElections.length === 1 ? pickableElections[0] : null;
   const choiceForElection = (electionId: string) =>
     isGuest ? draftChoicesByElectionId(draft).get(electionId) : choiceByElectionId?.get(electionId);
   const location = useLocation();
@@ -830,33 +836,47 @@ export function CandidatePage() {
         />
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-2xl font-bold">{candidate.display_name}</h1>
-          <div className="flex items-center gap-2">
-            <ShareButton
-              path={`/candidates/${candidate.candidate_id}`}
-              shareText={candidateShareText(candidate)}
+          {/* The header slot holds the page's ONE primary action — choosing
+              this candidate — in the reserved pick yellow. Share/Follow moved
+              below the meta lines so nothing competes with it. */}
+          {primaryPickElection ? (
+            <CandidatePickButton
+              electionId={primaryPickElection.election_id}
+              candidateId={candidate.candidate_id}
+              candidateName={candidate.display_name}
+              raceTitle={primaryPickElection.official_ballot_title}
+              electionDate={primaryPickElection.election_date}
+              choice={choiceForElection(primaryPickElection.election_id)}
+              seatsToFill={primaryPickElection.seats_to_fill ?? null}
             />
-            {canFollow && follows ? (
-              <FollowButton
-                // Remount on candidate change: the route element stays mounted
-                // across candidate-to-candidate navigation, and without the key
-                // a follow error from the previous candidate would linger under
-                // this one's button.
-                key={candidate.candidate_id}
-                candidateId={candidate.candidate_id}
-                isFollowing={isFollowing}
-              />
-            ) : me === null ? (
-              // Logged-out visitors get a Follow button that prompts them to
-              // register (me is undefined while the session is still loading —
-              // render nothing then to avoid a flash of the wrong button).
-              <RegisterToFollowButton candidateName={candidate.display_name} />
-            ) : null}
-          </div>
+          ) : null}
         </div>
         <p className="mt-1 text-sm text-ink-soft">
           {candidate.party} · {candidate.state}
           {candidate.current_office ? <> · {candidate.current_office}</> : null}
         </p>
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <ShareButton
+            path={`/candidates/${candidate.candidate_id}`}
+            shareText={candidateShareText(candidate)}
+          />
+          {canFollow && follows ? (
+            <FollowButton
+              // Remount on candidate change: the route element stays mounted
+              // across candidate-to-candidate navigation, and without the key
+              // a follow error from the previous candidate would linger under
+              // this one's button.
+              key={candidate.candidate_id}
+              candidateId={candidate.candidate_id}
+              isFollowing={isFollowing}
+            />
+          ) : me === null ? (
+            // Logged-out visitors get a Follow button that prompts them to
+            // register (me is undefined while the session is still loading —
+            // render nothing then to avoid a flash of the wrong button).
+            <RegisterToFollowButton candidateName={candidate.display_name} />
+          ) : null}
+        </div>
         {candidate.official_website_url ? (
           <p className="mt-1 text-sm">
             <a
@@ -1070,6 +1090,32 @@ export function CandidatePage() {
             reporterEmail={me?.email}
           />
         </div>
+
+        {primaryPickElection ? (
+          <>
+            {/* Spacer so the fixed bar never covers the page's last lines —
+                a padding-bottom on the container would fight py-8 (same
+                property, stylesheet order decides). */}
+            <div aria-hidden="true" className="h-16 lg:hidden" />
+            {/* Mobile sticky action bar: the header CTA scrolls away on a
+                long profile, so narrow screens keep the primary action in
+                reach — same control, same store, duplicated on purpose. */}
+            <div className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-white p-3 shadow-lg lg:hidden">
+              <div className="mx-auto max-w-3xl">
+                <CandidatePickButton
+                  electionId={primaryPickElection.election_id}
+                  candidateId={candidate.candidate_id}
+                  candidateName={candidate.display_name}
+                  raceTitle={primaryPickElection.official_ballot_title}
+                  electionDate={primaryPickElection.election_date}
+                  choice={choiceForElection(primaryPickElection.election_id)}
+                  seatsToFill={primaryPickElection.seats_to_fill ?? null}
+                  fullWidth
+                />
+              </div>
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   );

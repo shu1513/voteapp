@@ -17,6 +17,11 @@
   --color-ink-soft: #717171;
   --color-line: #dddddd;
   --color-surface: #f7f7f7;
+  /* Reserved for the app's primary action: choosing a candidate (the
+     "Add to cart" of this app). Appears NOWHERE else — the exclusivity is
+     what makes the affordance readable. Dark ink text on it: 12.9:1. */
+  --color-pick: #ffd814;
+  --color-pick-hover: #f7ca00;
   /* Democratic party brand blue; marks ballot-measure labels. */
   --color-dem-blue: #0015bc;
   /* Neutral dark navy for inert header text (the greeting). Deliberately NOT

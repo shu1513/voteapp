@@ -46,6 +46,8 @@ type CandidatePickButtonProps = {
   /** elections.seats_to_fill — null renders as a single seat. */
   seatsToFill: number | null;
   size?: "sm" | "md";
+  /** Stretch the control to its container's width (the mobile sticky bar). */
+  fullWidth?: boolean;
 };
 
 /**
@@ -63,6 +65,7 @@ export function CandidatePickButton({
   choice,
   seatsToFill,
   size = "md",
+  fullWidth = false,
 }: CandidatePickButtonProps) {
   const { me } = useMe();
   const isGuest = me === null;
@@ -75,14 +78,15 @@ export function CandidatePickButton({
   // disabled:opacity-50 lives in the shared base: `saving` disables EVERY
   // choice control while any one of them writes, so a picked button must dim
   // too, not only the unpicked ones.
-  const base =
+  const sizeClass =
     size === "sm"
       ? "rounded-lg px-3 py-1 text-xs font-semibold transition disabled:opacity-50"
       : "rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
+  const base = fullWidth ? `${sizeClass} w-full text-center` : sizeClass;
   const visibleLabel = setChoice.isPending ? "…" : isPicked ? "✓ My pick" : "Make my pick";
 
   return (
-    <span className="inline-flex flex-col items-end gap-1">
+    <span className={fullWidth ? "flex w-full flex-col gap-1" : "inline-flex flex-col items-end gap-1"}>
       {/* aria-label derives from visibleLabel so name and text can't drift:
           the candidate suffix keeps the page's N pick buttons apart in
           screen-reader button lists and voice control, and leading with the
@@ -110,7 +114,10 @@ export function CandidatePickButton({
         className={
           isPicked
             ? `${base} bg-green-700 text-white hover:bg-green-800`
-            : `${base} border border-line bg-white text-ink hover:border-green-700`
+            : // pick yellow: the app's reserved primary-action color — the
+              // unpicked state is the call to act, the picked state stays
+              // green ("done"), so the two never compete.
+              `${base} bg-pick text-ink hover:bg-pick-hover`
         }
       >
         {visibleLabel}
@@ -193,7 +200,9 @@ export function CandidatePickRow({
         className={
           isPicked
             ? `${base} border-green-700 bg-green-50 text-green-900 hover:bg-green-100`
-            : `${base} border-line bg-white text-ink hover:border-green-700`
+            : // Same reserved pick yellow as CandidatePickButton's unpicked
+              // state — one color grammar for "choose" across the app.
+              `${base} border-pick bg-pick text-ink hover:bg-pick-hover`
         }
       >
         {isPicked ? (

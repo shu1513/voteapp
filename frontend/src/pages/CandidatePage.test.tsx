@@ -777,6 +777,45 @@ describe("CandidatePage", () => {
     expect(screen.queryByRole("button", { name: /my pick for/ })).not.toBeInTheDocument();
   });
 
+  it("renders the primary pick CTA twice (header + sticky bar) for a single pickable race", async () => {
+    clearBallotDraft();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    // Same control, same accessible name, duplicated on purpose: the header
+    // CTA scrolls away on a long profile, the fixed bottom bar (narrow
+    // screens) keeps the primary action in reach.
+    const ctas = await screen.findAllByRole("button", { name: "Make my pick: Jordan Voter" });
+    expect(ctas).toHaveLength(2);
+  });
+
+  it("renders no primary pick CTA when the candidate is in several pickable races", async () => {
+    // The CTA carries no race name, so with two concurrent races it cannot
+    // say which one it would pick — those pages rely on the self-describing
+    // rows, one per race.
+    clearBallotDraft();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [
+          candidateElection(),
+          candidateElection({
+            candidate_election_id: "ce-2",
+            election_id: "e-2",
+            official_ballot_title: "Lieutenant Governor",
+          }),
+        ],
+      })
+    );
+
+    expect(
+      await screen.findByRole("button", {
+        name: "Make Jordan Voter my pick for Governor · November 3, 2099",
+      })
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Make my pick: Jordan Voter" })).not.toBeInTheDocument();
+  });
+
   it("shows loader-fetched finance for an ongoing election", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     // Finance rides in the loader payload (SSR-rendered for crawlers), not
