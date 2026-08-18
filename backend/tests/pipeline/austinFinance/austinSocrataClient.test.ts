@@ -294,7 +294,7 @@ describe("fetch helpers", () => {
   });
 
   it("reads the Report Detail count query", async () => {
-    const fetchImpl = vi.fn(async () => jsonResponse([{ total_rows: "1086", distinct_report_ids: "786" }]));
+    const fetchImpl = vi.fn(async (_input: string | URL | Request) => jsonResponse([{ total_rows: "1086", distinct_report_ids: "786" }]));
     await expect(getAustinReportDetailRowCounts({ fetchImpl: fetchImpl as typeof fetch })).resolves.toEqual({
       totalRows: 1086,
       distinctReportIds: 786,

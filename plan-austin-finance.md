@@ -1,16 +1,16 @@
 # Austin Local Campaign Finance Plan
 
-Feasibility research written 2026-08-18. No implementation yet — this document records what was probed, what the source can and cannot support, and the rules a v1 module must follow. Modeled on `plan-houston-finance.md` (the other Texas city module) and `plan-phoenix-finance.md`.
+Feasibility research written 2026-08-18. Phase 0 (Socrata client + read-only probe + tests, PR #754) is implemented; no schema, writer, flags, or sync exist yet. This document records what was probed, what the source can and cannot support, and the rules a v1 module must follow. Modeled on `plan-houston-finance.md` (the other Texas city module) and `plan-phoenix-finance.md`.
 
 ## Verdict
 
-Feasible, and cheaper than Houston: Austin publishes every campaign-finance schedule as structured Socrata datasets on `data.austintexas.gov` (daily refresh, SoQL API, no PDF parsing, no session cookies). All four v1 questions are answerable from the city data alone:
+Feasible, and cheaper than Houston: Austin publishes every campaign-finance schedule as structured Socrata datasets on `data.austintexas.gov` (daily refresh, SoQL API, no PDF parsing, no session cookies). Raised/spent, donor occupations, outside spenders + amounts, and PAC funder industries come from the city data alone; support/oppose direction is explicit in city data for most — not all — outside spending (Committee Purpose covers ≈63% of non-self DCE dollars; the rest is TEC-fallback or published as "direction not reported"):
 
 | Question | Source dataset | Field(s) |
 |---|---|---|
 | Total raised / total spent per candidate | Report Detail `b2pc-2s8n` | `contrib_total`, `expend_total`, `contrib_balance` per report cover (Houston-style cover arithmetic) |
 | Direct donor occupations | Contributions `3kfv-biw6` | `donor_reported_occupation`, `donor_reported_employer`, `donor_type` |
-| Outside groups that spent for/against | Direct Campaign Expenditures `8p2b-ewep` + Committee Purpose `u3cd-iecr` | DCE gives spender + candidate + amount; Committee Purpose gives explicit `SUPPORT` / `OPPOSE` / `ASSIST` per committee per candidate per report |
+| Outside groups that spent for/against | Direct Campaign Expenditures `8p2b-ewep` + Committee Purpose `u3cd-iecr` | DCE gives spender + candidate + amount (no direction field); Committee Purpose gives explicit `SUPPORT` / `OPPOSE` / `ASSIST` per committee per candidate per report — partial coverage, see gotcha 4 |
 | Industries behind PAC money | Contributions `3kfv-biw6` (recipient = PAC) | `donor_type = ENTITY` rows → org donors; individuals carry occupation/employer |
 
 Nov 2026 Austin races in the local DB: City Council Districts 1, 3, 5, 8, 9 (all `election_date = 2026-11-03`, rosters empty as of 2026-08-18; filing closed 2026-08-17). Report Detail already holds July-15 semiannual covers for ~25 declared 2026 filers in those five districts (e.g., Goodwin D1 $91k raised, Velasquez D3 $62k, Alter D5 $57k, Xie D8 $44k, Qadri D9 $26k).
@@ -40,7 +40,7 @@ Nov 2026 Austin races in the local DB: City Council Districts 1, 3, 5, 8, 9 (all
 5. **Name and office string drift.** Committee Purpose `recipient` is `First,Last` (with typos: `Makenzie,Kelly`, `Diegal, Mike`, `Duchen, Mark`, `Vela, Chito` vs `Vela, Jose "Chito", III`); DCE `candidate_or_measure` is `Last, First`; Report Detail `filer_name` is `Last, First M.`. `office_sought` has variants `COUNCIL_MBR_DISTRICT_04`, `COUNCIL_MBR_DISTRICT_04 District 4`, `COUNCIL_MBR_DISTRICT_07 District District 7`, `MAYOR District Austin`, plus `OTHER` on some PAC purpose rows. Normalize by leading code (`MAYOR`, `COUNCIL_MBR_DISTRICT_NN`); resolve candidates by exact-seat + `election_date` + tokenized surname/given-name match against the VoteApp roster, never by substring alone. No filer ID exists — `filer_name` string is the identity.
 6. **Stale election tags; `date_due` is useless.** A 2023 report (Ann Kitchen, D5) carries `election_date = 2026-11-03`. Require the filer to match a VoteApp roster candidate for that election before counting. `date_due` is a rolling "next due" value (2023–2024 reports show `date_due = 2026-08-05`) — select cycles by `election_date`, `period_from/to`, transaction date and report type only.
 7. **Statewide TEC GPACs.** Some general-purpose committees that spend on Austin races file with the Texas Ethics Commission, not the city (Austin Fire Fighters PAC rows even show state-office spending). City data is the primary and near-complete source; the Houston `houstonTexasGpacOutsideSpendingAggregator.ts` / `houstonTexasTecDataSource.ts` path can be reused later as an additive Phase with explicit cross-source dedupe.
-8. **Loans / self-funding.** `contrib_total` excludes loans (`outstand_loan` on the cover, Loans dataset separately). Report "raised" = contributions; show loans separately if at all. A `$27,177.72` 2026 itemized row exceeds the cap — treat cap-exceeding rows as candidate/self or transfer and keep them out of the occupation top-list.
+8. **Loans / self-funding.** `contrib_total` excludes loans (`outstand_loan` on the cover, Loans dataset separately). Report "raised" = contributions; show loans separately if at all. Self-funding is identifiable from explicit fields, never from the amount: the one 2026 row above the cap (`$27,177.72`, Bledsoe) has `donor` = `recipient`, `contribution_type` in-kind, and an `in_kind_description` of loan forgiveness. Rule: rows whose donor is the filer (and any row `donor_type`/`contribution_type` cannot classify as a person's contribution) stay in the cover totals but are excluded from occupation and size buckets; a cap-exceeding amount alone classifies nothing.
 
 ## Second-opinion review (2026-08-18)
 
@@ -77,7 +77,7 @@ Denver (`backend/src/pipeline/denverFinance/`, PRs #700/#707) is the freshest ci
 
 ## Phases (small; single-source module)
 
-- **Phase 0 — probe (no schema, no writes). COMPLETE 2026-08-18 (this branch, uncommitted).** `backend/src/pipeline/austinFinance/austinSocrataClient.ts` (Socrata client: SoQL paging, exact decimal→cents parsing, typed rows for Report Detail / Contributions / DCE / Committee Purpose with every address/zip/geom field dropped at the mapping boundary, `selectAustinEffectiveReports`) + `backend/src/scripts/probeAustinCandidateFinance.ts` (`austin-candidates:finance:probe`) + 13 client unit tests. Live run: **7/7 gates PASS**, all pinned on Kirk Watson 2024 Mayor (closed cycle):
+- **Phase 0 — probe (no schema, no writes). COMPLETE 2026-08-18 (PR #754).** `backend/src/pipeline/austinFinance/austinSocrataClient.ts` (Socrata client: SoQL paging, exact decimal→cents parsing, typed rows for Report Detail / Contributions / DCE / Committee Purpose with every address/zip/geom field dropped at the mapping boundary, `selectAustinEffectiveReports`) + `backend/src/scripts/probeAustinCandidateFinance.ts` (`austin-candidates:finance:probe`) + 13 client unit tests. Live run: **7/7 gates PASS**, all pinned on Kirk Watson 2024 Mayor (closed cycle):
   1. Report Detail 1,086 rows / 786 distinct `report_id` — dedupe is load-bearing.
   2. Effective reports: 5 cycle reports, 2 `CORCOH` supersede their originals, the ATX.7 dropped as covered; raised `$1,047,729.90`, spent `$1,075,980.85`.
   3. 3,053 itemized rows on effective reports = every corrected cover to the cent (4 covers) and in sum.

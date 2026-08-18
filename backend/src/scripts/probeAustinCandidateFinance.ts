@@ -370,7 +370,15 @@ async function main(): Promise<void> {
   const atx7ReportIds = new Set(cycleDroppedSpecial.map((row) => row.reportId));
   const atx7Rows = contributions.filter((row) => atx7ReportIds.has(row.reportId));
   const nextRegular = cycleReports.filter((row) =>
-    cycleDroppedSpecial.some((special) => row.periodFrom! <= special.periodFrom! && special.periodTo! <= row.periodTo!)
+    cycleDroppedSpecial.some(
+      (special) =>
+        row.periodFrom !== null &&
+        row.periodTo !== null &&
+        special.periodFrom !== null &&
+        special.periodTo !== null &&
+        row.periodFrom <= special.periodFrom &&
+        special.periodTo <= row.periodTo
+    )
   );
   const nextRegularIds = new Set(nextRegular.map((row) => row.reportId));
   const nextRegularKeys = new Set(
@@ -473,16 +481,19 @@ async function main(): Promise<void> {
 
   // --- Gate 7: PII allowlist on typed rows. ---
   const piiPattern = /address|zip|geom|city|treasurer|phone/i;
-  const keySets: [string, string[], string[]][] = [
-    ["report detail", Object.keys(filerReports[0] as AustinReportDetailRow).sort(), REPORT_DETAIL_KEYS],
-    ["contribution", Object.keys(contributions[0] as AustinContributionRow).sort(), CONTRIBUTION_KEYS],
-    ["dce", Object.keys(dceRows[0] as AustinDirectCampaignExpenditureRow).sort(), DCE_KEYS],
-    ["purpose", Object.keys(purposeRows[0] as AustinCommitteePurposeRow).sort(), PURPOSE_KEYS],
+  const sampleKeys = (row: object | undefined): string[] | null => (row ? Object.keys(row).sort() : null);
+  const keySets: [string, string[] | null, string[]][] = [
+    ["report detail", sampleKeys(filerReports[0] as AustinReportDetailRow | undefined), REPORT_DETAIL_KEYS],
+    ["contribution", sampleKeys(contributions[0] as AustinContributionRow | undefined), CONTRIBUTION_KEYS],
+    ["dce", sampleKeys(dceRows[0] as AustinDirectCampaignExpenditureRow | undefined), DCE_KEYS],
+    ["purpose", sampleKeys(purposeRows[0] as AustinCommitteePurposeRow | undefined), PURPOSE_KEYS],
   ];
   gates.push({
     name: "typed rows carry exactly the declared keys (no address/zip/geom)",
-    pass: keySets.every(([, actual, expected]) => actual.join(",") === expected.join(",") && !actual.some((key) => piiPattern.test(key))),
-    detail: keySets.map(([label, actual]) => `${label} ${actual.length}`).join(", "),
+    pass: keySets.every(
+      ([, actual, expected]) => actual !== null && actual.join(",") === expected.join(",") && !actual.some((key) => piiPattern.test(key))
+    ),
+    detail: keySets.map(([label, actual]) => `${label} ${actual === null ? "NO SAMPLE ROW" : actual.length}`).join(", "),
   });
 
   // --- Informational: direction coverage over the whole DCE dataset. ---

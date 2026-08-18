@@ -462,7 +462,7 @@ export async function getAustinReportDetailRowsByFiler(
 ): Promise<AustinReportDetailRow[]> {
   const rows = await fetchAustinSocrataPagedRows(
     AUSTIN_SOCRATA_REPORT_DETAIL_DATASET,
-    { $where: `filer_name = ${soqlString(requireNonEmpty(filerName, "filer name"))}`, $order: "report_id, date_filed" },
+    { $where: `filer_name = ${soqlString(requireNonEmpty(filerName, "filer name"))}`, $order: "report_id, date_filed, :id" },
     options
   );
   return rows.map(austinReportDetailRowFromRecord);
@@ -476,7 +476,7 @@ export async function getAustinReportDetailRowsByElection(
   const electionDate = requireIsoDate(input.electionDate, "election date");
   const rows = await fetchAustinSocrataPagedRows(
     AUSTIN_SOCRATA_REPORT_DETAIL_DATASET,
-    { $where: `election_date = ${soqlString(`${electionDate}T00:00:00.000`)}`, $order: "report_id, date_filed" },
+    { $where: `election_date = ${soqlString(`${electionDate}T00:00:00.000`)}`, $order: "report_id, date_filed, :id" },
     options
   );
   const typed = rows.map(austinReportDetailRowFromRecord);
