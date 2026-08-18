@@ -56,7 +56,7 @@ export const VOTE_POWER: VotePower = {
 export const VOTE_POWER_WITH_EXPLANATION: VotePower = {
   ...VOTE_POWER,
   explanation: {
-    how: "My vote power = representation + decisiveness.",
+    how: "Here's what goes into the rating.",
     parts: [
       {
         title: "Representation",

@@ -360,7 +360,7 @@ describe("explainVotePower", () => {
     // The how copy explains the displayed label (grade combination), never
     // the internal 45/55 sorting-score formula.
     expect(explanation.how).toBe(
-      "My vote power = representation (how much weight one vote carries here, the smaller the district's population, the higher the representation) + decisiveness (how likely this race is to be close, based on past results and number of candidates)."
+      "Here's what goes into the rating. Representation: how much weight one vote carries here — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on past results and the number of candidates."
     );
     expect(explanation.parts).toEqual([
       {
@@ -575,7 +575,7 @@ describe("explainVotePower", () => {
     });
 
     expect(explanation.parts[2]).toMatchObject({ grade: "Direct vote" });
-    expect(explanation.result).toBe("Unknown representation + high decisiveness → My vote power: High.");
+    expect(explanation.result).toBe("High decisiveness → My vote power: High.");
   });
 
   it("carries a partial-data caveat when one core axis is missing", () => {
@@ -593,7 +593,7 @@ describe("explainVotePower", () => {
       detail: "No past results for this contest yet.",
       formula: null,
     });
-    expect(explanation.result).toBe("High representation + unknown decisiveness → My vote power: High.");
+    expect(explanation.result).toBe("High representation → My vote power: High.");
     expect(explanation.caveat).toContain("partial information");
   });
 

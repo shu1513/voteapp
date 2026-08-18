@@ -72,7 +72,7 @@ describe("ElectionPage", () => {
     expect(screen.getByText("How do we calculate my vote power?")).toBeInTheDocument();
     // Native <details> keeps content in the DOM while collapsed; the backend
     // copy must arrive verbatim.
-    expect(screen.getByText("My vote power = representation + decisiveness.")).toBeInTheDocument();
+    expect(screen.getByText("Here's what goes into the rating.")).toBeInTheDocument();
     // Each part renders formula-style: title, grade, stat, then the detail.
     expect(screen.getByText("Representation:")).toBeInTheDocument();
     expect(screen.getByText("· 50 out of 100")).toBeInTheDocument();
@@ -82,9 +82,42 @@ describe("ElectionPage", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Average representation + high decisiveness → My vote power: High.")).toBeInTheDocument();
     expect(screen.getByText("Some data is missing.")).toBeInTheDocument();
-    // The exact formula renders when the backend provides one; the null
-    // formula on the other part must not render an empty line.
-    expect(screen.getByText("score = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 50")).toBeInTheDocument();
+    // The exact formula sits behind its own per-part disclosure when the
+    // backend provides one; the null formula on the other part must not
+    // render a toggle at all. The label must be the real <summary> control,
+    // and the formula's own <details> starts collapsed — asserted on that
+    // inner element directly, since the closed outer panel would hide the
+    // formula either way.
+    expect(screen.getByText("Show the representation math").tagName).toBe("SUMMARY");
+    const formula = screen.getByText("score = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 50");
+    expect(formula.closest("details")).not.toHaveAttribute("open");
+    expect(screen.queryByText("Show the decisiveness math")).not.toBeInTheDocument();
+  });
+
+  it("names each math disclosure after its part when both formulas arrive", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    const explanation = VOTE_POWER_WITH_EXPLANATION.explanation!;
+    renderElection(() =>
+      electionDetail({
+        vote_power: {
+          ...VOTE_POWER_WITH_EXPLANATION,
+          explanation: {
+            ...explanation,
+            parts: [
+              explanation.parts[0],
+              { ...explanation.parts[1], formula: 'margin = 3.3 points → "very competitive" → grade high' },
+            ],
+          },
+        },
+      })
+    );
+
+    await screen.findByRole("heading", { name: "Governor" });
+    // Distinct labels on real <summary> controls — two bare "Show the math"
+    // toggles would be indistinguishable to screen-reader and voice-control
+    // users. (No getByRole here: <summary> has no reliable ARIA role.)
+    expect(screen.getByText("Show the representation math").tagName).toBe("SUMMARY");
+    expect(screen.getByText("Show the decisiveness math").tagName).toBe("SUMMARY");
   });
 
   it("omits the vote power explanation when the payload has none or the label is unknown", async () => {
