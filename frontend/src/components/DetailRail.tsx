@@ -113,12 +113,16 @@ export function DetailRail({
       <ul className={`mt-3 space-y-1 ${headerSlot ? "" : "border-t border-line pt-3"}`}>
         {entries.map((entry) =>
           entry.id === currentId ? (
+            // Purple tint, not surface grey: sibling rows hover with
+            // bg-surface, so a grey current row was indistinguishable from a
+            // hovered neighbor. Purple deliberately — coral reads as the
+            // error tint, and blue/red read partisan on election content.
             <li
               key={entry.id}
               ref={currentRef}
               aria-current="page"
               title={entry.label}
-              className="flex items-center gap-1.5 rounded-lg bg-surface px-3 py-1.5 text-sm font-medium text-ink"
+              className="flex items-center gap-1.5 rounded-lg bg-purple-100 px-3 py-1.5 text-sm font-medium text-purple-800"
             >
               {entry.picked ? <PickedCheck /> : null}
               <span className="truncate">
