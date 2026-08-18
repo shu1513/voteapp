@@ -39,7 +39,7 @@ describe("App account nav", () => {
     stubApiRoutes({ "/api/me": apiError(401, "unauthorized", "Not logged in") });
     window.localStorage.setItem(
       "voteapp_ballot_draft",
-      JSON.stringify({ v: 1, district_ids: ["d-1"], target: null, choices: {} })
+      JSON.stringify({ v: 1, district_ids: ["dddddddd-1111-4111-8111-111111111111"], target: null, choices: {} })
     );
     window.dispatchEvent(new StorageEvent("storage", { key: "voteapp_ballot_draft" }));
     renderApp();

@@ -78,7 +78,7 @@ export const VOTE_POWER_WITH_EXPLANATION: VotePower = {
   },
 };
 
-const DISTRICT = { id: "d-1", district_type: "state", name: "Alaska", state: "AK" };
+const DISTRICT = { id: "dddddddd-1111-4111-8111-111111111111", district_type: "state", name: "Alaska", state: "AK" };
 
 export function electionSummary(overrides: Partial<ElectionSummary> = {}): ElectionSummary {
   return {
