@@ -256,19 +256,33 @@ type MeasureChoiceButtonsProps = {
   /** ISO election date (YYYY-MM-DD) — stored on guest draft rows. */
   electionDate: string;
   choice: ElectionChoice | undefined;
+  /** Stretch the pair across the container (the sticky measure card). */
+  fullWidth?: boolean;
 };
 
 /**
  * Yes/No planned-vote pair for a ballot measure. Clicking the active side
- * clears the position (sends null).
+ * clears the position (sends null). Color grammar: while undecided BOTH
+ * sides wear the reserved pick yellow (the page is asking); once decided
+ * the picked side keeps its semantic color (green Yes / red No) and the
+ * other side demotes to a quiet outline — yellow only ever marks an undone
+ * decision, same rule as CandidatePickButton.
  */
-export function MeasureChoiceButtons({ electionId, raceTitle, electionDate, choice }: MeasureChoiceButtonsProps) {
+export function MeasureChoiceButtons({
+  electionId,
+  raceTitle,
+  electionDate,
+  choice,
+  fullWidth = false,
+}: MeasureChoiceButtonsProps) {
   const { me } = useMe();
   const isGuest = me === null;
   const setChoice = useSetElectionChoice();
   const saving = useElectionChoiceSaving();
   const position = choice?.measure_position ?? null;
-  const base = "rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
+  const sizeClass = "rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
+  const base = fullWidth ? `${sizeClass} flex-1 text-center` : sizeClass;
+  const undecided = position === null;
 
   function setPosition(next: "yes" | "no" | null) {
     if (isGuest) {
@@ -279,7 +293,7 @@ export function MeasureChoiceButtons({ electionId, raceTitle, electionDate, choi
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className={fullWidth ? "flex w-full flex-wrap items-center gap-2" : "flex flex-wrap items-center gap-2"}>
       <span className="text-sm font-medium text-ink-soft">My pick:</span>
       <button
         type="button"
@@ -289,7 +303,9 @@ export function MeasureChoiceButtons({ electionId, raceTitle, electionDate, choi
         className={
           position === "yes"
             ? `${base} bg-green-700 text-white hover:bg-green-800`
-            : `${base} border border-line bg-white text-ink hover:border-green-700`
+            : undecided
+              ? `${base} bg-pick text-ink hover:bg-pick-hover`
+              : `${base} border border-line bg-white text-ink hover:border-green-700`
         }
       >
         {position === "yes" ? "✓ Yes" : "Yes"}
@@ -302,7 +318,9 @@ export function MeasureChoiceButtons({ electionId, raceTitle, electionDate, choi
         className={
           position === "no"
             ? `${base} bg-red-700 text-white hover:bg-red-800`
-            : `${base} border border-line bg-white text-ink hover:border-red-700`
+            : undecided
+              ? `${base} bg-pick text-ink hover:bg-pick-hover`
+              : `${base} border border-line bg-white text-ink hover:border-red-700`
         }
       >
         {position === "no" ? "✓ No" : "No"}

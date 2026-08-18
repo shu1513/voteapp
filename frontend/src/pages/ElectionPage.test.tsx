@@ -565,6 +565,46 @@ describe("ElectionPage", () => {
     expect(readBallotDraft().choices["e-1"].picks.map((pick) => pick.candidate_id)).toEqual(["c-1"]);
   });
 
+  it("lets guests pick a measure position from the sticky card, then shows the draft link", async () => {
+    clearBallotDraft();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        race_type: "ballot_measure",
+        candidates: [],
+        ballot_measure: {
+          id: "m-1",
+          official_ballot_title: "Measure 1",
+          summary: "A measure.",
+          what_yes_means: "Yes approves the bond.",
+          what_no_means: "No rejects the bond.",
+          result: null,
+          results: [],
+          source_urls: [],
+          official_measure_url: null,
+          research_area_tags: [],
+        },
+      })
+    );
+
+    // ONE pick control on the page — the sticky card's pair (the inline
+    // mid-page buttons are gone).
+    const yes = await screen.findByRole("button", { name: "Yes" });
+    expect(screen.getAllByRole("button", { name: "Yes" })).toHaveLength(1);
+    // Nothing to confirm before the pick.
+    expect(screen.queryByRole("link", { name: /Ballot Draft/ })).not.toBeInTheDocument();
+    await userEvent.setup().click(yes);
+
+    // The position lands in the localStorage draft and the confirmation
+    // actions appear (deep link count form — no ballot seen).
+    expect(await screen.findByRole("button", { name: "✓ Yes" })).toBeInTheDocument();
+    expect(readBallotDraft().choices["e-1"].measure_position).toBe("yes");
+    expect(await screen.findByRole("link", { name: "My Ballot Draft (1)" })).toHaveAttribute(
+      "href",
+      "/draft"
+    );
+  });
+
   it("shows logged-out visitors no pick buttons on past elections", async () => {
     // The backend rejects choice writes to past elections, so the register
     // prompt would advertise an action the visitor could never complete.

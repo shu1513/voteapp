@@ -33,6 +33,7 @@ import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS, SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
 import { CandidatePickButton, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
+import { PostPickActions } from "../components/PostPickActions";
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
 import { splitResearchAreasBySaved, useElectionChoices } from "@voteapp/api-client";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
@@ -735,16 +736,10 @@ export function ElectionPage() {
                 <p className="mt-1 text-sm text-red-900">{measure.what_no_means}</p>
               </div>
             </div>
-            {showChoiceControls ? (
-              <div className="mt-3">
-                <MeasureChoiceButtons
-                  electionId={data.id}
-                  raceTitle={data.official_ballot_title}
-                  electionDate={data.election_date}
-                  choice={myChoice}
-                />
-              </div>
-            ) : null}
+            {/* No inline Yes/No here: the sticky card at the page's end is
+                the ONE pick control (same single-control rule as the
+                candidate page) — and being pinned, it stays on screen while
+                these explainer boxes are read. */}
             {measure.results.length > 0 ? (
               <div className="mt-3">
                 <h3 className="text-sm font-semibold">Results</h3>
@@ -1075,6 +1070,42 @@ export function ElectionPage() {
             reporterEmail={me?.email}
           />
         </div>
+
+        {data.race_type === "ballot_measure" && showChoiceControls ? (
+          // The measure page's ONE pick control, mirroring the candidate
+          // page's sticky card: a measure has no deeper detail page — the
+          // decision happens here — so the Yes/No pair pins to the viewport
+          // bottom (sticky, inside the detail column; data-sticky-pick-cta
+          // lifts the chatbot launcher clear of it). No caption naming the
+          // measure: this page's h1 IS the measure — one subject, zero
+          // ambiguity — and the "My pick:" prefix already says the buttons
+          // record a plan.
+          <div
+            data-sticky-pick-cta=""
+            className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
+          >
+            <MeasureChoiceButtons
+              electionId={data.id}
+              raceTitle={data.official_ballot_title}
+              electionDate={data.election_date}
+              choice={myChoice}
+              fullWidth
+            />
+            {/* Back link only for election-list arrivals — a My-Picks
+                arrival would get a back link and a draft link to the same
+                place (see PostPickActions). */}
+            {myChoice?.measure_position != null ? (
+              <PostPickActions
+                back={
+                  railNav !== null &&
+                  (railNav.backTo.path.startsWith("/ballot") || railNav.backTo.path.startsWith("/me/ballot"))
+                    ? { path: railNav.backTo.path, state: railNav.forwarded.backState, label: "elections" }
+                    : null
+                }
+              />
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </div>
   );

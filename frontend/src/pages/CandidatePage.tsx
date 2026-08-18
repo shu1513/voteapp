@@ -33,7 +33,7 @@ import { RegisterToFollowButton } from "../components/RegisterToFollowButton";
 import { ShareButton } from "../components/ShareButton";
 import { CandidatePickButton, CandidatePickRow } from "../components/ElectionChoiceControls";
 import { draftChoicesByElectionId, useBallotDraft } from "../lib/ballotDraft";
-import { myDraftLabel, useGuestDraftNav, useMyPicksProgress } from "../lib/usePickProgress";
+import { PostPickActions } from "../components/PostPickActions";
 import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
 import { ReportContentButton } from "../components/ReportContentButton";
@@ -633,12 +633,6 @@ export function CandidatePage() {
     (choiceForElection(primaryPickElection.election_id)?.picks ?? []).some(
       (pick) => pick.candidate_id === candidate.candidate_id
     );
-  // Post-pick destinations, mirroring the header nav's labels exactly so
-  // the card teaches the header item. Both hooks are cheap here: the guest
-  // one reads the local draft store, the signed-in one shares the header's
-  // own cached ballot query.
-  const guestDraftNav = useGuestDraftNav();
-  const picksProgress = useMyPicksProgress();
   const location = useLocation();
   const hydrated = useHydrated();
   // Same hydration gate as the election page: location.state survives
@@ -1143,41 +1137,17 @@ export function CandidatePage() {
               seatsToFill={primaryPickElection.seats_to_fill ?? null}
               fullWidth
             />
-            {/* Post-pick confirmation actions — the "added to cart" moment.
-                Links, never an auto-redirect: navigating on the pick's
-                success would break multi-seat races (pick 2 of 3 here) and
-                take the undo (re-click the button) away. "Back to election"
-                only for election arrivals: a My-Picks arrival would get a
-                back link and a draft link to the same place. */}
+            {/* "Back to election" only for election arrivals: a My-Picks
+                arrival would get a back link and a draft link to the same
+                place (see PostPickActions). */}
             {isPrimaryPicked ? (
-              <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm">
-                {navState?.backTo.path.startsWith("/elections/") ? (
-                  <Link
-                    to={navState.backTo.path}
-                    state={backToElectionState}
-                    className="whitespace-nowrap text-ink-soft underline hover:text-ink"
-                  >
-                    Back to election
-                  </Link>
-                ) : null}
-                {isGuest ? (
-                  guestDraftNav ? (
-                    <Link
-                      to={guestDraftNav.to}
-                      className="whitespace-nowrap font-semibold text-green-800 hover:underline"
-                    >
-                      {guestDraftNav.label}
-                    </Link>
-                  ) : null
-                ) : (
-                  <Link
-                    to="/me/picks"
-                    className="whitespace-nowrap font-semibold text-green-800 hover:underline"
-                  >
-                    {myDraftLabel(picksProgress)}
-                  </Link>
-                )}
-              </div>
+              <PostPickActions
+                back={
+                  navState?.backTo.path.startsWith("/elections/")
+                    ? { path: navState.backTo.path, state: backToElectionState, label: "election" }
+                    : null
+                }
+              />
             ) : null}
           </div>
         ) : null}
