@@ -116,9 +116,83 @@ Shipped shape:
 Fix the two known recall misses from the release-gate run
 (`finance-senate-most`: "Georgia Senate race" outranked by State-Senate
 districts; `followup-senate-republican-raised`: "the Republican candidate" has
-no name for the entity branch). Eval-driven; stop if thresholds start
-regressing other cases. Golden set additions welcome; gates re-run per
-BEHAVIOR.md before ship.
+no name for the entity branch). Shipped shape — recall@5 33/35 → 35/35 (100%),
+every other gate unchanged at 100%:
+
+1. **Office-alias expansion (title branch only).** Corpus office naming is
+   inconsistent ("United States Senator — Georgia" vs "US Senate — Colorado"),
+   so "the Georgia Senate race" scored 0.29 against its own race while fifty
+   "State Senator — State Senate District N" titles scored 0.54.
+   `expandOfficeAliases()` (pure, exported, retrieval.ts) appends the corpus
+   phrase when the question uses a common federal phrasing (`US Senate`,
+   `Senate race/seat/election`; negative lookbehind keeps "state Senate race"
+   on the state races). Applied ONLY to the title-branch question — injected
+   terms must not distort the lexical/vector evidence the gate thresholds are
+   calibrated on.
+2. **Race-members branch (E).** Both misses need the race's finance_summary
+   chunks, which NO branch surfaced: lexical+vector rank dozens of
+   lookalike-district chunks above them and the entity branch has no name.
+   When the top title match is strong (>= 0.75) and agrees with the scope
+   state, pull that election's member chunks (listing → finance → profiles →
+   records; finance ahead of profiles because listing questions are already
+   answered at rank 1 — the questions that NEED members are money questions).
+   Members contribute RRF rank only, never gate evidence — pulled chunks
+   cannot make an unanswerable question pass, so refusals can't flip.
+3. **Race precedence, entity-guarded.** A single RRF entry (~0.016) loses to
+   any chunk in two branches (~0.032), so members got contextRank-style
+   precedence — but ONLY when no candidate entity matched: a named candidate
+   ("Allen Buckley, the Libertarian…") is the stronger signal and keeps
+   normal ranking. Context precedence still outranks race precedence.
+4. **Golden addition** `ambiguous-us-senate-no-scope` ("Who's running for US
+   Senate?"): alias expansion ties every state's US Senate race in the title
+   branch → clarify, never silently pick a state (pre-PR-4 the CO race's
+   literal "US Senate" title won alone).
+   Review round (all three findings confirmed against the local corpus and
+   fixed): (1) unscoped race questions pulled an arbitrary state's members
+   (observed: Montana) — members now require a scope state match OR a
+   place-scoped title match (place similarity >= 0.4, the heuristic's
+   existing "IS scoped" threshold), AND the scope-clarify gate extends beyond
+   listing phrasings to money/records questions naming a race
+   (`isRaceScopedQuestion`), with SCOPE_TIE_RATIO 0.85 → 0.8 because alias
+   expansion puts the cross-office confusion band at exactly 0.8 and an
+   arbitrary 1.0 match otherwise looked "clearly dominant"; (2) race-wide
+   money questions widen the top-K cap so EVERY filer's summary fits
+   (Florida's 7-filer Senate race alphabetically dropped three — "who raised
+   the most" over an incomplete field; bounded at +5 slots); (3) member
+   ordering is question-kind aware (`classifyRaceQuestion`: money → finance
+   first, records → records first, else profiles first — fixed finance-first
+   served zero records to a records question). Goldens added for all three
+   (`ambiguous-senate-money-no-scope`, `finance-fl-senate-most` listing all
+   7 filers, `records-ga-senate-race`). Final gates: retrieval 37/37,
+   clarify 6/6, everything else 100%.
+   PR-comment round: title branch is state-filtered when the scope is known
+   (a context/previous-turn scope not named in the question text otherwise
+   never entered the title window) and orders by office score FIRST, place
+   as in-band tie-breaker (sum ordering let fifty 0.8-band district titles
+   whose place part echoes the question's words crowd out the 1.0 real
+   race); member selection takes the first row >= 0.85 (raised from 0.75 —
+   above the 0.8 cross-office confusion band, so a lookalike district race
+   can neither veto nor hijack the pull); question-kind member ordering
+   moved into the SQL ORDER BY so it runs before the branch LIMIT (a
+   7-filer race = 22 member rows; the fixed fetch order truncated exactly
+   the record chunks a records question needs).
+   Second review round (all three confirmed against the corpus): (1) a state
+   scope alone doesn't pick one of Georgia's 178 identically-titled State
+   Representative races (District 24 silently won on an id tie-break) —
+   member selection now requires the top qualifier to dominate every other
+   qualifying race on office score OR place (tie margins 0.05/0.1; a named
+   district separates on place, a distinct office phrase on score), a tied
+   set is surfaced as `raceTitleAmbiguous` and the clarify heuristic asks
+   which district even WITH a scope state (guarded on `contextMatched` so
+   deictic page questions are never bounced; clarify copy gained
+   "or district"); (2) NC's Senate race has 40 record chunks (22/18) and
+   title order fed 19 of Cooper's before any of Bray's — members round-robin
+   per candidate via a window rank in the SQL ORDER BY; (3) the arbitrary
+   +5 finance-widening cap (max 9 summaries, silently wrong above) is
+   replaced by the natural BRANCH_LIMIT ceiling (listing + 19; corpus max
+   is 7 filers). Goldens: `ambiguous-ga-state-rep-district`,
+   `records-nc-senate-race`. Gates: retrieval 38/38, clarify 7/7, rest
+   100%.
 
 ## Scheduled, not now
 
