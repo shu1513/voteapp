@@ -41,6 +41,7 @@ import { loadFromApi } from "../lib/loadFromApi";
 import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { compareByResearchAreaPriority } from "@voteapp/api-client";
+import { partyColorClass, profilePartyLabel } from "@voteapp/api-client";
 import { useFollows } from "@voteapp/api-client";
 import { APP_NAME } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
@@ -471,9 +472,11 @@ function RecordItem({
 // "Name (Party, State)" built from the non-empty parts: party is typed
 // string but the detail reader coalesces a missing value to ""
 // (candidateDetailReader.ts), and "Jane Doe (, CA)" must not reach a share
-// card or a share sheet. Mirrored on the mobile candidate screen.
+// card or a share sheet. Placeholder parties ("Nonpartisan"/"Unknown") are
+// hidden the same way as in the header. Mirrored on the mobile candidate
+// screen.
 function candidateShareText(candidate: { display_name: string; party: string; state: string }): string {
-  const context = [candidate.party, candidate.state].filter(Boolean).join(", ");
+  const context = [profilePartyLabel(candidate.party), candidate.state].filter(Boolean).join(", ");
   return context ? `${candidate.display_name} (${context})` : candidate.display_name;
 }
 
@@ -854,7 +857,15 @@ export function CandidatePage() {
           </div>
         </div>
         <p className="mt-1 text-sm text-ink-soft">
-          {candidate.party} · {candidate.state}
+          {profilePartyLabel(candidate.party) ? (
+            <>
+              <span className={partyColorClass(candidate.party) || undefined}>
+                {profilePartyLabel(candidate.party)}
+              </span>{" "}
+              ·{" "}
+            </>
+          ) : null}
+          {candidate.state}
           {candidate.current_office ? <> · {candidate.current_office}</> : null}
         </p>
         {candidate.official_website_url ? (
