@@ -22,11 +22,14 @@ const BRANCH_LIMIT = 20;
 const RRF_K = 60;
 
 // Race-members branch fires only on a title match this strong: an exact
-// office-word hit ("mayor", "sheriff") scores 1.0, the strongest partial
-// confusions observed score 0.8 ("State Senator" against an aliased federal
-// question) — this sits under the exact band but above generic word noise,
-// so a merely-plausible office phrase never pulls a whole race in.
-const RACE_MEMBERS_MIN_SIMILARITY = 0.75;
+// office-word hit ("mayor", "sheriff") scores 1.0 while the strongest
+// cross-office confusion sits at exactly 0.8 ("State Senator" against a
+// federally aliased question) — 0.85 sits above that band, so a lookalike
+// office never pulls a whole race in. Selection scans PAST sub-band rows:
+// district titles carry the question's own words in their place part
+// ("State Senate District 2" matches "Senate race"), which can rank a 0.8
+// confusion row above the 1.0 real race on the score+place ordering.
+const RACE_MEMBERS_MIN_SIMILARITY = 0.85;
 // Without a scope state, the question must name the race's place ("Los
 // Angeles mayor") for members to fire — office similarity alone ties across
 // every state ("Senate race" scores 1.0 in all 30+ states) and the id
@@ -49,11 +52,15 @@ export function classifyRaceQuestion(question: string): "money" | "records" | "n
 }
 
 /** Member ordering per question kind: the listing chunk always leads (it
- * names the field), then the source type the question is about. */
-const RACE_MEMBER_PRIORITIES: Record<ReturnType<typeof classifyRaceQuestion>, Record<string, number>> = {
-  money: { election: 0, finance_summary: 1, candidate_profile: 2 },
-  records: { election: 0, candidate_record: 1, candidate_profile: 2 },
-  neutral: { election: 0, candidate_profile: 1, finance_summary: 2 },
+ * names the field), then the source type the question is about. Applied in
+ * the SQL ORDER BY (array_position, unlisted types last) — it must run
+ * BEFORE the branch LIMIT, or a big race truncates exactly the chunks the
+ * question needs (7 filers = 22 member rows; a records question would lose
+ * two record chunks behind finance and profiles). */
+const RACE_MEMBER_TYPE_ORDER: Record<ReturnType<typeof classifyRaceQuestion>, string[]> = {
+  money: ["election", "finance_summary", "candidate_profile"],
+  records: ["election", "candidate_record", "candidate_profile"],
+  neutral: ["election", "candidate_profile", "finance_summary"],
 };
 
 // Answerability gate thresholds on raw scores (tuned against the golden set
@@ -533,10 +540,18 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   // for <office> in <place>"). Profile chunks otherwise crowd the election
   // chunk out of the top-5 for offices with many candidates. Direction
   // matters for word_similarity: office (short) against the question (long)
-  // finds the question extent naming the office; symmetric similarity() on
-  // the full title breaks ties in favor of the title whose place tokens the
-  // question also names. Seq scan over the generation's election chunks
-  // (~6k), a few ms.
+  // finds the question extent naming the office; the place-part similarity
+  // breaks ties WITHIN an office-score band in favor of the title whose
+  // place tokens the question also names. Office score ranks FIRST, place
+  // second (review round): summing them let fifty 0.8-band district titles
+  // whose place part echoes the question's own words ("State Senate District
+  // 2" contains "Senate") crowd the 1.0 real race out of the 10-row window.
+  // State-filtered when the scope is known, like the
+  // vector branch: a context/previous-turn scope often isn't named in the
+  // question text, and without the filter other states' identically-scored
+  // office matches fill the window and veto the scoped race (review catch).
+  // Scope clarification is unaffected — it only runs with NO scope state.
+  // Seq scan over the generation's election chunks (~6k), a few ms.
   const titleQuestion = expandOfficeAliases(question);
   const titleResult = await db.query<ChunkRow>(
     `
@@ -557,18 +572,20 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
       FROM chatbot.chunks AS chunk
       WHERE chunk.generation_id = $1::uuid
         AND chunk.source_type = 'election'
+        AND ($3::text IS NULL OR chunk.state = $3)
         AND GREATEST(
           word_similarity(split_part(chunk.title, ' — ', 1), $2),
           similarity(chunk.title, $2)
         ) >= 0.35
-      ORDER BY (GREATEST(
+      ORDER BY GREATEST(
           word_similarity(split_part(chunk.title, ' — ', 1), $2),
           similarity(chunk.title, $2)
-        ) + word_similarity(split_part(split_part(chunk.title, ' — ', 2), ',', 1), $2)) DESC,
+        ) DESC,
+        word_similarity(split_part(split_part(chunk.title, ' — ', 2), ',', 1), $2) DESC,
         chunk.id ASC
       LIMIT 10
     `,
-    [generationId, titleQuestion]
+    [generationId, titleQuestion, scopeState]
   );
 
   // Branch E: race members — when the title branch resolves the question to
@@ -583,14 +600,14 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   // pulled members must not make an otherwise-unanswerable question pass.
   let raceMemberRows: ChunkRow[] = [];
   const raceQuestionKind = classifyRaceQuestion(question);
-  const topTitleMatch = titleResult.rows[0];
+  // The title branch is already scope-filtered; the first row clearing the
+  // office-similarity bar is the race the question names (see the
+  // RACE_MEMBERS_MIN_SIMILARITY comment for why row 0 alone can't decide).
+  const topTitleMatch = titleResult.rows.find((row) => row.score >= RACE_MEMBERS_MIN_SIMILARITY);
   if (
     topTitleMatch &&
     topTitleMatch.election_id &&
-    topTitleMatch.score >= RACE_MEMBERS_MIN_SIMILARITY &&
-    (scopeState
-      ? topTitleMatch.state === scopeState
-      : (topTitleMatch.place_score ?? 0) >= RACE_MEMBERS_MIN_PLACE_SIMILARITY)
+    (scopeState || (topTitleMatch.place_score ?? 0) >= RACE_MEMBERS_MIN_PLACE_SIMILARITY)
   ) {
     const raceMembersResult = await db.query<ChunkRow>(
       `
@@ -608,27 +625,14 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
         WHERE chunk.generation_id = $1::uuid
           AND chunk.election_id = $2::uuid
         ORDER BY
-          CASE chunk.source_type
-            WHEN 'election' THEN 0
-            WHEN 'finance_summary' THEN 1
-            WHEN 'candidate_profile' THEN 2
-            ELSE 3
-          END ASC,
+          array_position($4::text[], chunk.source_type) ASC NULLS LAST,
           chunk.title ASC,
           chunk.id ASC
         LIMIT $3
       `,
-      [generationId, topTitleMatch.election_id, BRANCH_LIMIT]
+      [generationId, topTitleMatch.election_id, BRANCH_LIMIT, RACE_MEMBER_TYPE_ORDER[raceQuestionKind]]
     );
-    // Question-kind ordering happens here, not in SQL: the fetch order above
-    // only decides which rows survive BRANCH_LIMIT truncation (rare).
-    const priorities = RACE_MEMBER_PRIORITIES[raceQuestionKind];
-    raceMemberRows = [...raceMembersResult.rows].sort(
-      (a, b) =>
-        (priorities[a.source_type] ?? 3) - (priorities[b.source_type] ?? 3) ||
-        a.title.localeCompare(b.title) ||
-        a.id.localeCompare(b.id)
-    );
+    raceMemberRows = raceMembersResult.rows;
   }
 
   // RRF merge; raw scores ride along per chunk for the gate.

@@ -69,7 +69,7 @@ describe("chatbot golden set", () => {
       // comparison ("more money in the Senate race?", no state) legitimately
       // expects clarify instead.
       if (c.expected !== "retrieval") continue;
-      if (!/\bcompare\b|\bmore money\b/i.test(c.question)) continue;
+      if (!/\bcompare\b|\b(?:more|most)\s+money\b/i.test(c.question)) continue;
       expect(c.expectedEntities?.length, c.id).toBeGreaterThanOrEqual(2);
     }
   });
