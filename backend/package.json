@@ -105,6 +105,7 @@
     "candidates:record:live:ai-probe": "tsx src/scripts/liveCandidateRecordAiProbe.ts",
     "candidates:record:live:pipeline-smoke": "tsx src/scripts/liveCandidateRecordPipelineSmoke.ts",
     "candidates:finance:sync": "tsx src/scripts/syncCandidateFinance.ts",
+    "austin-candidates:finance:probe": "tsx src/scripts/probeAustinCandidateFinance.ts",
     "california-candidates:finance:sync": "tsx src/scripts/syncCaliforniaCandidateFinance.ts",
     "california-candidates:finance:sync-due": "tsx src/scripts/syncDueCaliforniaCandidateFinance.ts",
     "california-candidates:finance:raw:probe": "tsx src/scripts/probeCaliforniaCampaignFinanceRawData.ts",
