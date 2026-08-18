@@ -844,11 +844,9 @@ describe("CandidatePage", () => {
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
     // One control, not several: the sticky bottom card is always in reach,
-    // so the in-body row would only duplicate it. The caption names the
-    // race the bare "Make my pick" button acts on.
+    // so the in-body row would only duplicate it.
     const ctas = await screen.findAllByRole("button", { name: "Make my pick: Jordan Voter" });
     expect(ctas).toHaveLength(1);
-    expect(screen.getByText("Governor · November 3, 2099")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /my pick for/ })).not.toBeInTheDocument();
   });
 

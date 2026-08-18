@@ -76,6 +76,12 @@ export function CandidatePickButton({
   const isPicked = picks.some((pick) => pick.candidate_id === candidateId);
   const seatCap = seatsToFill ?? 1;
   const atMultiSeatCap = seatCap > 1 && !isPicked && picks.length >= seatCap;
+  // Yellow only ever marks an UNDONE decision (same grammar as
+  // MeasureChoiceButtons): once the race's seats are all picked, the other
+  // candidates' buttons demote to a quiet outline — still clickable
+  // (single-seat is a radio replace), no longer shouting. A 3-seat race
+  // with 1 pick is still undone, so its remaining buttons stay yellow.
+  const raceDecided = picks.length >= seatCap;
   // Same visible-vs-tooltip split as CandidatePickRow: standalone (fullWidth)
   // the button is the page's only pick control, so the cap reason must be
   // visible — a title on a disabled button reaches neither touch nor
@@ -127,10 +133,12 @@ export function CandidatePickButton({
         className={
           isPicked
             ? `${base} bg-green-700 text-white hover:bg-green-800`
-            : // pick yellow: the app's reserved primary-action color — the
-              // unpicked state is the call to act, the picked state stays
-              // green ("done"), so the two never compete.
-              `${base} bg-pick text-ink hover:bg-pick-hover`
+            : raceDecided
+              ? `${base} border border-line bg-white text-ink hover:border-green-700`
+              : // pick yellow: the app's reserved primary-action color — the
+                // unpicked state is the call to act, the picked state stays
+                // green ("done"), so the two never compete.
+                `${base} bg-pick text-ink hover:bg-pick-hover`
         }
       >
         {visibleLabel}
@@ -192,6 +200,8 @@ export function CandidatePickRow({
   const isPicked = picks.some((pick) => pick.candidate_id === candidateId);
   const seatCap = seatsToFill ?? 1;
   const atMultiSeatCap = seatCap > 1 && !isPicked && picks.length >= seatCap;
+  // Same yellow-only-while-undone rule as CandidatePickButton.
+  const raceDecided = picks.length >= seatCap;
   const base =
     "w-full rounded-xl border p-3 text-left text-sm transition disabled:opacity-50";
 
@@ -218,9 +228,11 @@ export function CandidatePickRow({
         className={
           isPicked
             ? `${base} border-green-700 bg-green-50 text-green-900 hover:bg-green-100`
-            : // Same reserved pick yellow as CandidatePickButton's unpicked
-              // state — one color grammar for "choose" across the app.
-              `${base} border-pick bg-pick text-ink hover:bg-pick-hover`
+            : raceDecided
+              ? `${base} border-line bg-white text-ink hover:border-green-700`
+              : // Same reserved pick yellow as CandidatePickButton's unpicked
+                // state — one color grammar for "choose" across the app.
+                `${base} border-pick bg-pick text-ink hover:bg-pick-hover`
         }
       >
         {isPicked ? (
@@ -256,19 +268,33 @@ type MeasureChoiceButtonsProps = {
   /** ISO election date (YYYY-MM-DD) — stored on guest draft rows. */
   electionDate: string;
   choice: ElectionChoice | undefined;
+  /** Stretch the pair across the container (the sticky measure card). */
+  fullWidth?: boolean;
 };
 
 /**
  * Yes/No planned-vote pair for a ballot measure. Clicking the active side
- * clears the position (sends null).
+ * clears the position (sends null). Color grammar: while undecided BOTH
+ * sides wear the reserved pick yellow (the page is asking); once decided
+ * the picked side keeps its semantic color (green Yes / red No) and the
+ * other side demotes to a quiet outline — yellow only ever marks an undone
+ * decision, same rule as CandidatePickButton.
  */
-export function MeasureChoiceButtons({ electionId, raceTitle, electionDate, choice }: MeasureChoiceButtonsProps) {
+export function MeasureChoiceButtons({
+  electionId,
+  raceTitle,
+  electionDate,
+  choice,
+  fullWidth = false,
+}: MeasureChoiceButtonsProps) {
   const { me } = useMe();
   const isGuest = me === null;
   const setChoice = useSetElectionChoice();
   const saving = useElectionChoiceSaving();
   const position = choice?.measure_position ?? null;
-  const base = "rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
+  const sizeClass = "rounded-lg px-4 py-2 text-sm font-semibold transition disabled:opacity-50";
+  const base = fullWidth ? `${sizeClass} flex-1 text-center` : sizeClass;
+  const undecided = position === null;
 
   function setPosition(next: "yes" | "no" | null) {
     if (isGuest) {
@@ -279,8 +305,10 @@ export function MeasureChoiceButtons({ electionId, raceTitle, electionDate, choi
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="text-sm font-medium text-ink-soft">My pick:</span>
+    <div className={fullWidth ? "flex w-full flex-wrap items-center gap-2" : "flex flex-wrap items-center gap-2"}>
+      {/* text-ink, not -soft: the label anchors the card's purpose and has
+          to register at a glance next to two loud buttons. */}
+      <span className="text-sm font-medium text-ink">My pick:</span>
       <button
         type="button"
         disabled={saving}
@@ -289,7 +317,9 @@ export function MeasureChoiceButtons({ electionId, raceTitle, electionDate, choi
         className={
           position === "yes"
             ? `${base} bg-green-700 text-white hover:bg-green-800`
-            : `${base} border border-line bg-white text-ink hover:border-green-700`
+            : undecided
+              ? `${base} bg-pick text-ink hover:bg-pick-hover`
+              : `${base} border border-line bg-white text-ink hover:border-green-700`
         }
       >
         {position === "yes" ? "✓ Yes" : "Yes"}
@@ -302,7 +332,9 @@ export function MeasureChoiceButtons({ electionId, raceTitle, electionDate, choi
         className={
           position === "no"
             ? `${base} bg-red-700 text-white hover:bg-red-800`
-            : `${base} border border-line bg-white text-ink hover:border-red-700`
+            : undecided
+              ? `${base} bg-pick text-ink hover:bg-pick-hover`
+              : `${base} border border-line bg-white text-ink hover:border-red-700`
         }
       >
         {position === "no" ? "✓ No" : "No"}
