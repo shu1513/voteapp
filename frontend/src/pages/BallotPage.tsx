@@ -216,15 +216,13 @@ export function BallotPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      {/* No visible page heading: the date group headings ("Elections on …")
-          carry the page's identity, so an "Elections" banner above them was
-          redundant. The sr-only h1 keeps a level-1 target for screen-reader
-          heading navigation — and gives the loading/error/empty states,
-          which render before any date heading exists, a heading at all.
-          "Elections", not "Upcoming elections": the list keeps just-finished
-          elections for BALLOT_PAST_ELECTION_VISIBILITY_DAYS so their results
-          stay discoverable, and those are not upcoming. */}
-      <h1 className="sr-only">Elections</h1>
+      {/* Visible page heading, one step larger than the date group headings
+          ("Elections on …") below it, so a first-time visitor landing here
+          straight from the address form knows what the list is: THEIR
+          elections. "My elections", not "Upcoming elections": the list keeps
+          just-finished elections for BALLOT_PAST_ELECTION_VISIBILITY_DAYS so
+          their results stay discoverable, and those are not upcoming. */}
+      <h1 className="mb-4 text-2xl font-bold text-ink">My elections:</h1>
       {/* Filters and sorting on the left, the "How to vote" resources on the
           right — the disclosure panels each open inline under their own
           column. The how-to-vote control waits for the ballot response

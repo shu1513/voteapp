@@ -84,13 +84,15 @@ describe("SavedBallotPage", () => {
     });
     renderSavedBallot();
 
-    // The date heading is the page's visible identity — the "Your saved
-    // ballot" h1 survives for screen readers only. No election/district
-    // count subtitle.
+    // A visible "My elections:" h1 (same wording as the public ballot page)
+    // sits above the date group headings. No election/district count
+    // subtitle.
     expect(
       await screen.findByRole("heading", { name: "Elections on November 3, 2026" })
     ).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 1, name: "Your saved ballot" })).toHaveClass("sr-only");
+    const h1 = screen.getByRole("heading", { level: 1, name: "My elections:" });
+    expect(h1).not.toHaveClass("sr-only");
+    expect(h1).toHaveClass("text-2xl");
     expect(screen.queryByText(/election across/)).not.toBeInTheDocument();
     expect(screen.queryByText(/ordered by/)).not.toBeInTheDocument();
     expect(screen.getByText("Governor")).toBeInTheDocument();
