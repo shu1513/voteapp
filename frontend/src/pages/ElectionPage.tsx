@@ -93,19 +93,12 @@ const PARTY_FILTER_OPTIONS: { bucket: PartyBucket; label: string }[] = [
   { bucket: "other", label: "Other" },
 ];
 
-// Catalog bucket names that are not real-world office titles — "State Lower
-// Chamber Legislator is responsible for:" reads as internal jargon next to a
-// page titled "State Representative". Real titles (Mayor, Sheriff, Governor)
-// keep the personalized heading.
-const GENERIC_OFFICE_NAMES = new Set([
-  "State Lower Chamber Legislator",
-  "State Level Judge",
-  "County Level Judge",
-  "Place Level Judge",
-]);
-
-function officeHeadingName(canonicalName: string): string {
-  return GENERIC_OFFICE_NAMES.has(canonicalName) ? "This office" : canonicalName;
+// The office summary is seeded (seedOffices.ts) as newline-separated lines:
+// the first is a one-sentence hook, the rest are things the office affects.
+// A legacy single-paragraph summary is a hook with no bullets.
+function splitOfficeSummary(summary: string): { hook: string; affects: string[] } {
+  const [hook = "", ...affects] = summary.split("\n").filter((line) => line.trim() !== "");
+  return { hook, affects };
 }
 
 // Server loader: the election subject arrives in the document HTML so
@@ -261,6 +254,7 @@ export function ElectionPage() {
   // fallbacks cover deploy skew — a not-yet-redeployed backend omits both
   // fields, which must degrade to "no section", not a crash.
   const office = data.office ?? null;
+  const officeSummary = office ? splitOfficeSummary(office.summary) : null;
   const researchAreas = data.research_areas ?? [];
   const orderedAreas = splitResearchAreasBySaved(researchAreas, weights);
   const showOfficeInfo = data.race_type !== "ballot_measure" && (office !== null || researchAreas.length > 0);
@@ -623,21 +617,21 @@ export function ElectionPage() {
           // Description first, then what the election affects — what the office does,
           // then which issues it touches.
           <section className="mt-6 rounded-xl border border-line bg-white p-4">
-            <h2 className="text-lg font-semibold">
-              {office ? `${officeHeadingName(office.canonical_name)} is responsible for:` : "About this office"}
-            </h2>
-            {office ? (
-              // The summary is seeded as newline-separated duty bullets
-              // (seedOffices.ts); a legacy single-paragraph summary renders as
-              // one bullet until the seed is re-run.
-              <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink">
-                {office.summary
-                  .split("\n")
-                  .filter((line) => line.trim() !== "")
-                  .map((line, i) => (
-                    <li key={i}>{line}</li>
-                  ))}
-              </ul>
+            <h2 className="text-lg font-semibold">About this office</h2>
+            {officeSummary ? (
+              <>
+                <p className="mt-2 text-sm text-ink">{officeSummary.hook}</p>
+                {officeSummary.affects.length > 0 ? (
+                  <>
+                    <p className="mt-3 text-sm font-medium text-ink">This office affects:</p>
+                    <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-ink">
+                      {officeSummary.affects.map((line, i) => (
+                        <li key={i}>{line}</li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
+              </>
             ) : null}
             {researchAreas.length > 0 ? (
               // Same one-list, comma-separated presentation as the ballot
