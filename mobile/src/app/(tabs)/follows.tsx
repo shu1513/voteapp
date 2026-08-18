@@ -1,5 +1,5 @@
 import type { CandidateFollow } from "@voteapp/api-client";
-import { formatElectionDate, useFollows, useFollowSaving, useSetFollow } from "@voteapp/api-client";
+import { formatElectionDate, partyColorClass, profilePartyLabel, useFollows, useFollowSaving, useSetFollow } from "@voteapp/api-client";
 import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
@@ -51,7 +51,15 @@ function FollowRow({ follow }: { follow: CandidateFollow }) {
             {follow.display_name}
           </Text>
           <Text className="text-sm text-ink-soft">
-            {follow.party} · {follow.state}
+            {profilePartyLabel(follow.party) ? (
+              <>
+                <Text className={partyColorClass(follow.party) || undefined}>
+                  {profilePartyLabel(follow.party)}
+                </Text>{" "}
+                ·{" "}
+              </>
+            ) : null}
+            {follow.state}
             {follow.current_office ? <> · {follow.current_office}</> : null}
           </Text>
         </View>

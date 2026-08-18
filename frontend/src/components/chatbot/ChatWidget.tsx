@@ -101,6 +101,31 @@ function formatDataCurrentAsOf(timestamp: string): string {
 
 type Turn = { question: string; response: ChatbotAskResponse };
 
+/** Deterministic follow-up chips under the latest answer, derived from what
+ * it cited (docs/plans/chatbot-improvements-2026-08.md PR 3). Deictic
+ * phrasings on purpose: the server resolves "their"/"this" against the
+ * remembered page context or the carried previous question, so the chips
+ * drive free next hops (profile → finance, election → roster). Two guards
+ * keep them honest: a facet the answer ALREADY cited is not re-suggested
+ * (finance cards → no funding chip), and neither is the question just
+ * asked (a starter chip must not reappear as its own follow-up). Several
+ * cited candidates is fine on purpose: "their" reads as plural, and the
+ * previous-question carry scopes retrieval to those candidates — the
+ * roster-answer → race-wide-funding hop is the chip's best case, so no
+ * exactly-one-candidate restriction. */
+export function followUpQuestions(response: ChatbotAskResponse, askedQuestion: string): string[] {
+  const cited = new Set(response.results.map((card) => card.source_type));
+  const suggestions: string[] = [];
+  if (cited.has("candidate_profile") && !cited.has("finance_summary")) {
+    suggestions.push("Who is funding their campaign?");
+  }
+  if (cited.has("election")) {
+    suggestions.push("Who is running in this election?");
+  }
+  const asked = askedQuestion.trim().toLowerCase();
+  return suggestions.filter((suggestion) => suggestion.toLowerCase() !== asked);
+}
+
 /** The entity behind an AI answer's first cited source — what a content
  * report about the answer should attach to. URLs are server-constructed
  * (/candidates/<id> or /elections/<id>), so parsing them is safe here. */
@@ -166,8 +191,15 @@ function TurnView({ turn, reporterEmail }: { turn: Turn; reporterEmail: string |
   const reportTarget = isAi ? reportTargetFromResults(turn.response.results) : null;
   return (
     <div>
-      <p className="ml-8 rounded-xl bg-surface px-3 py-2 text-sm text-ink">{turn.question}</p>
+      {/* aria-live="off" excludes the echoed question from the transcript's
+          polite region — the user just typed it; re-announcing it before the
+          answer is noise. Still reachable by normal SR navigation. */}
+      <p aria-live="off" className="ml-8 rounded-xl bg-surface px-3 py-2 text-sm text-ink">{turn.question}</p>
       <p className="mt-2 whitespace-pre-line text-sm text-ink">{turn.response.answer}</p>
+      {/* Honest-degradation line (PR 3): deterministic server copy, e.g. the
+          daily AI-answer limit fell back to cards. Muted, above the cards it
+          explains. */}
+      {turn.response.notice && <p className="mt-1 text-xs italic text-ink-soft">{turn.response.notice}</p>}
       {turn.response.results.length > 0 && (
         <ul className="mt-2 space-y-2">
           {/* URL alone is NOT unique: a candidate's profile/finance/record
@@ -285,6 +317,10 @@ function ChatWidgetSession() {
   // ballot page still means the candidate just viewed.
   const [context, setContext] = useState<ChatbotAskContext | null>(null);
   const transcriptRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const launcherRef = useRef<HTMLButtonElement>(null);
+  const wasOpen = useRef(false);
 
   useEffect(() => {
     const pageContext = contextFromPathname(location.pathname);
@@ -305,6 +341,23 @@ function ChatWidgetSession() {
     // Optional-call: jsdom (tests) has no Element.scrollTo.
     transcriptRef.current?.scrollTo?.({ top: transcriptRef.current.scrollHeight });
   }, [turns, ask.isPending]);
+
+  // Keyboard flow (PR 3 a11y): opening moves focus into the question input —
+  // or onto the panel itself on the register/verify walls, which render no
+  // input (the launcher just unmounted, so without this fallback focus drops
+  // to body and a keyboard user is stranded outside the dialog; panel focus
+  // also makes Escape work there). Closing hands focus back to the launcher
+  // bubble. wasOpen keeps the initial mount (open=false, nothing to restore)
+  // from yanking focus to a launcher the user never touched.
+  useEffect(() => {
+    if (open) {
+      wasOpen.current = true;
+      (inputRef.current ?? panelRef.current)?.focus();
+    } else if (wasOpen.current) {
+      wasOpen.current = false;
+      launcherRef.current?.focus();
+    }
+  }, [open]);
 
   if (isChatWidgetHidden(location.pathname, Boolean(me))) {
     return null;
@@ -332,6 +385,7 @@ function ChatWidgetSession() {
     return (
       <button
         type="button"
+        ref={launcherRef}
         onClick={() => setOpen(true)}
         aria-label="Open Ask"
         className="chat-launcher fixed bottom-4 right-4 z-30 rounded-full bg-rausch px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-rausch-dark"
@@ -356,6 +410,21 @@ function ChatWidgetSession() {
     <div
       role="dialog"
       aria-label="Ask about elections and candidates"
+      ref={panelRef}
+      tabIndex={-1}
+      onKeyDown={(event) => {
+        // Escape minimizes from anywhere in the panel (PR 3 a11y); the
+        // focus-restore effect then returns focus to the launcher. Portal
+        // guard: React bubbles synthetic events through the COMPONENT tree,
+        // so Escape inside the portaled report dialog (Headless UI portals
+        // to body) would land here too — minimizing the widget unmounts
+        // ReportContentButton and destroys its preserved draft. A portaled
+        // target is not a DOM descendant of this panel, so contains() skips
+        // exactly those events; Headless UI still closes its own dialog.
+        if (event.key === "Escape" && event.currentTarget.contains(event.target as Node)) {
+          setOpen(false);
+        }
+      }}
       className="fixed bottom-4 right-4 z-30 flex max-h-[75vh] w-[22rem] max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-line bg-white shadow-2xl"
     >
       <div className="flex items-center justify-between rounded-t-2xl border-b border-line bg-surface px-3 py-2">
@@ -426,21 +495,44 @@ function ChatWidgetSession() {
                 </div>
               </div>
             )}
-            <div className="space-y-4">
-              {turns.map((turn, index) => (
-                <TurnView key={index} turn={turn} reporterEmail={me?.email ?? null} />
-              ))}
+            {/* Answers, pending copy, and errors announce politely to screen
+                readers (PR 3 a11y). The follow-up chips live OUTSIDE the
+                region: announcing suggestion buttons as if they were answer
+                text is noise. */}
+            <div aria-live="polite">
+              <div className="space-y-4">
+                {turns.map((turn, index) => (
+                  <TurnView key={index} turn={turn} reporterEmail={me?.email ?? null} />
+                ))}
+              </div>
+              {ask.isPending && <p className="mt-3 text-sm text-ink-soft">Looking that up…</p>}
+              {ask.isError &&
+                !errorAccessKind &&
+                (notAvailable ? (
+                  <p className="mt-3 text-sm text-ink-soft">Ask isn't available right now. Please try again later.</p>
+                ) : (
+                  <p className="mt-3 rounded-lg border border-rausch/40 bg-rausch/5 px-2 py-1.5 text-xs text-rausch-dark">
+                    Something went wrong. Please try again.
+                  </p>
+                ))}
             </div>
-            {ask.isPending && <p className="mt-3 text-sm text-ink-soft">Looking that up…</p>}
-            {ask.isError &&
-              !errorAccessKind &&
-              (notAvailable ? (
-                <p className="mt-3 text-sm text-ink-soft">Ask isn't available right now. Please try again later.</p>
-              ) : (
-                <p className="mt-3 rounded-lg border border-rausch/40 bg-rausch/5 px-2 py-1.5 text-xs text-rausch-dark">
-                  Something went wrong. Please try again.
-                </p>
-              ))}
+            {turns.length > 0 && !ask.isPending && (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {followUpQuestions(
+                  (turns[turns.length - 1] as Turn).response,
+                  (turns[turns.length - 1] as Turn).question
+                ).map((suggestion) => (
+                  <button
+                    key={suggestion}
+                    type="button"
+                    onClick={() => sendQuestion(suggestion)}
+                    className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition hover:border-ink-soft hover:bg-surface"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <form onSubmit={submit} className="border-t border-line p-2">
             <div className="flex gap-1.5">
@@ -449,6 +541,7 @@ function ChatWidgetSession() {
               </label>
               <input
                 id="chat-widget-question"
+                ref={inputRef}
                 type="text"
                 value={question}
                 maxLength={CHATBOT_MAX_QUESTION_LENGTH}

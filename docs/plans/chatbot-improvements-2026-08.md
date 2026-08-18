@@ -74,19 +74,42 @@ open decisions, resolved):
   a rejected token can never succeed.
 - Report: downvote rate per `answered_by` — the Phase 3 canary metric.
 
-## PR 3 — Widget UX (frontend only)
+## PR 3 — Widget UX
 
-1. **A11y:** focus input on open, Escape to minimize, `aria-live="polite"` on
-   the answer/pending region, focus restore to the launcher on close.
-2. **Post-answer follow-up chips.** Deterministic next questions derived from
-   the cited cards' `source_type` (profile cited → "Who is funding their
-   campaign?"; election cited → "Who is running?"). Pure frontend function, no
-   server change, drives traffic to free paths.
-3. **Honest rate-limit copy.** `rate_limited` fallback currently serves cards
-   silently. Ask response gains an optional `notice` field (deterministic
-   server copy: "Daily AI-answer limit reached — showing matching data
-   instead."); widget renders it as a muted line. No policy risk: static copy,
-   not model output.
+Shipped shape:
+
+1. **A11y:** focus moves into the question input on open (no-op on the
+   register/verify walls — no input), Escape anywhere in the panel minimizes,
+   focus returns to the launcher bubble on close (guarded so the initial
+   mount never steals focus), and answers/pending/errors sit in an
+   `aria-live="polite"` region. Follow-up chips render OUTSIDE the live
+   region — suggestion buttons must not be read out as answer text.
+2. **Post-answer follow-up chips.** `followUpQuestions()` (pure, exported,
+   ChatWidget.tsx) maps the latest answer's cited `source_type`s to deictic
+   next questions: `candidate_profile` → "Who is funding their campaign?"
+   (suppressed when `finance_summary` is also cited — it was just answered),
+   `election` → "Who is running in this election?". The question just asked
+   is never re-suggested (chips would loop). Deictic phrasing rides the
+   existing context/previous-question carry — no server change.
+   Review round: Escape carries a portal guard
+   (`event.currentTarget.contains(event.target)`) — React bubbles synthetic
+   events through the component tree, so Escape inside the portaled report
+   dialog would otherwise ALSO minimize the widget, unmounting
+   ReportContentButton and destroying its preserved draft; and the panel
+   itself takes focus (`tabIndex={-1}`) when a wall renders no input, so
+   keyboard users are never stranded outside the dialog. A third finding
+   (funding chip only when exactly one candidate cited) was rejected:
+   "their" reads as plural, the previous-question carry scopes retrieval to
+   the cited candidates, and the roster → race-wide-funding hop is the
+   chip's best case.
+3. **Honest limit copy.** Ask response gained an optional `notice` field.
+   `fallbackNotice()` (askService.ts) sets "Daily AI-answer limit reached —
+   showing matching data instead." for the `rate_limited` AND
+   `budget_exhausted` fallbacks (from the user's seat both mean "no AI answer
+   today"); `llm_failed`/`invalid_output` stay silent on purpose — transient
+   faults where the cards are the best next answer. Never cached (the cards
+   path is never cached) and never model output. Widget renders it as a muted
+   italic line between the answer and its cards.
 
 ## PR 4 — Retrieval tuning (timeboxed)
 

@@ -13,6 +13,8 @@ module.exports = {
         "ink-soft": "#717171",
         line: "#dddddd",
         surface: "#f7f7f7",
+        "dem-blue": "#0015bc",
+        "gop-red": "#cc0000",
       },
     },
   },

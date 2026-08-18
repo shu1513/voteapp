@@ -5,6 +5,7 @@ import type {
   FinanceSummary,
   ResearchAreaPreference,
 } from "@voteapp/api-client";
+import { partyColorClass, profilePartyLabel } from "@voteapp/api-client";
 import {
   ApiError,
   apiRequest,
@@ -79,10 +80,11 @@ function orderGroupsByPreference(
 
 // "Name (Party, State)" built from the non-empty parts: party is typed
 // string but the backend detail reader coalesces a missing value to "", and
-// "Jane Doe (, CA)" must not reach the share sheet. Same logic as the web
-// CandidatePage.
+// "Jane Doe (, CA)" must not reach the share sheet. Placeholder parties
+// ("Nonpartisan"/"Unknown") are hidden the same way as in the header. Same
+// logic as the web CandidatePage.
 function candidateShareText(candidate: { display_name: string; party: string; state: string }): string {
-  const context = [candidate.party, candidate.state].filter(Boolean).join(", ");
+  const context = [profilePartyLabel(candidate.party), candidate.state].filter(Boolean).join(", ");
   return context ? `${candidate.display_name} (${context})` : candidate.display_name;
 }
 
@@ -277,7 +279,15 @@ export default function CandidateScreen() {
         ) : null}
       </View>
       <Text className="mt-1 text-sm text-ink-soft">
-        {candidate.party} · {candidate.state}
+        {profilePartyLabel(candidate.party) ? (
+          <>
+            <Text className={partyColorClass(candidate.party) || undefined}>
+              {profilePartyLabel(candidate.party)}
+            </Text>{" "}
+            ·{" "}
+          </>
+        ) : null}
+        {candidate.state}
         {candidate.current_office ? <> · {candidate.current_office}</> : null}
       </Text>
       {candidate.official_website_url ? (
