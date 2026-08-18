@@ -84,9 +84,13 @@ describe("ElectionPage", () => {
     expect(screen.getByText("Some data is missing.")).toBeInTheDocument();
     // The exact formula sits behind its own per-part disclosure when the
     // backend provides one; the null formula on the other part must not
-    // render a toggle at all.
-    expect(screen.getByText("Show the representation math")).toBeInTheDocument();
-    expect(screen.getByText("score = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 50")).toBeInTheDocument();
+    // render a toggle at all. The label must be the real <summary> control,
+    // and the formula's own <details> starts collapsed — asserted on that
+    // inner element directly, since the closed outer panel would hide the
+    // formula either way.
+    expect(screen.getByText("Show the representation math").tagName).toBe("SUMMARY");
+    const formula = screen.getByText("score = 100 × ln(9,808,667 ÷ 104,650) ÷ ln(9,808,667 ÷ 1,204) = 50");
+    expect(formula.closest("details")).not.toHaveAttribute("open");
     expect(screen.queryByText("Show the decisiveness math")).not.toBeInTheDocument();
   });
 
@@ -109,10 +113,11 @@ describe("ElectionPage", () => {
     );
 
     await screen.findByRole("heading", { name: "Governor" });
-    // Distinct accessible names — two bare "Show the math" controls would be
-    // indistinguishable to screen-reader and voice-control users.
-    expect(screen.getByText("Show the representation math")).toBeInTheDocument();
-    expect(screen.getByText("Show the decisiveness math")).toBeInTheDocument();
+    // Distinct labels on real <summary> controls — two bare "Show the math"
+    // toggles would be indistinguishable to screen-reader and voice-control
+    // users. (No getByRole here: <summary> has no reliable ARIA role.)
+    expect(screen.getByText("Show the representation math").tagName).toBe("SUMMARY");
+    expect(screen.getByText("Show the decisiveness math").tagName).toBe("SUMMARY");
   });
 
   it("omits the vote power explanation when the payload has none or the label is unknown", async () => {
