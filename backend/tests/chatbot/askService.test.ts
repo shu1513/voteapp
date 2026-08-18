@@ -4,6 +4,7 @@ import type { Pool } from "pg";
 import {
   createAskService,
   electionCountdownAnswer,
+  fallbackNotice,
   myIssuesBallotAnswer,
   nameTokens,
   questionNamesAnyOf,
@@ -322,6 +323,19 @@ describe("question logging", () => {
     const response = await service.ask("What's on my ballot?", null, null, USER_ID);
     expect(response.outcome).toBe("template");
     expect(logged).toHaveLength(0);
+  });
+});
+
+describe("fallbackNotice", () => {
+  it("announces the daily limits, stays silent on transient LLM faults", () => {
+    const limitCopy = "Daily AI-answer limit reached — showing matching data instead.";
+    expect(fallbackNotice("rate_limited")).toBe(limitCopy);
+    expect(fallbackNotice("budget_exhausted")).toBe(limitCopy);
+    expect(fallbackNotice("llm_failed")).toBeNull();
+    expect(fallbackNotice("invalid_output")).toBeNull();
+    // The non-fallback answered_by values must never grow a notice either.
+    expect(fallbackNotice("retrieval")).toBeNull();
+    expect(fallbackNotice("llm")).toBeNull();
   });
 });
 

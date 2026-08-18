@@ -30,6 +30,10 @@ export type ChatbotAskResponse = {
   /** Opaque one-shot token for submitChatbotFeedback. Present on every
    * answer when the server mints them; absent → hide the thumbs. */
   feedback_token?: string;
+  /** Deterministic server copy explaining a silent degradation (e.g. the
+   * daily AI-answer limit fell back to result cards). Render as a muted
+   * line; absent on normal answers. */
+  notice?: string;
 };
 
 export const CHATBOT_MAX_QUESTION_LENGTH = 500;
