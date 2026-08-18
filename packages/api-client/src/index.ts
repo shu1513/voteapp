@@ -15,6 +15,7 @@ export * from "./format";
 export * from "./legalCopy";
 export * from "./partyBucket";
 export * from "./partyLabel";
+export * from "./profileLinks";
 export * from "./railSort";
 export * from "./researchAreaPriority";
 export * from "./researchAreaScoring";

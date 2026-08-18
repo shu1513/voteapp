@@ -9,6 +9,7 @@ import { partyColorClass, profilePartyLabel } from "@voteapp/api-client";
 import {
   ApiError,
   apiRequest,
+  candidateProfileLinks,
   formatDistrictName,
   formatElectionDate,
   hasFinanceContent,
@@ -242,6 +243,7 @@ export default function CandidateScreen() {
   }
 
   const candidate = detail.data.candidate;
+  const profileLinks = candidateProfileLinks(candidate);
   const baseGroups = groupRecords(candidate.records);
   const recordGroups =
     recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
@@ -290,13 +292,21 @@ export default function CandidateScreen() {
         {candidate.state}
         {candidate.current_office ? <> · {candidate.current_office}</> : null}
       </Text>
-      {candidate.official_website_url ? (
-        <Text
-          className="mt-1 text-sm text-ink underline" accessibilityRole="link"
-          onPress={() => openExternalUrl(candidate.official_website_url as string)}
-        >
-          Official website
-        </Text>
+      {profileLinks.length > 0 ? (
+        <View className="mt-1 flex-row flex-wrap items-center">
+          {profileLinks.map((link, index) => (
+            <View key={link.label} className="flex-row items-center">
+              {index > 0 ? <Text className="text-sm text-ink-soft"> · </Text> : null}
+              <Text
+                className="text-sm text-ink underline"
+                accessibilityRole="link"
+                onPress={() => openExternalUrl(link.href)}
+              >
+                {link.label}
+              </Text>
+            </View>
+          ))}
+        </View>
       ) : null}
       {candidate.summary ? <Text className="mt-3 text-ink">{candidate.summary}</Text> : null}
 

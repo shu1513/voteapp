@@ -44,6 +44,7 @@ import { useHydrated } from "../lib/useHydrated";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { compareByResearchAreaPriority } from "@voteapp/api-client";
 import { partyColorClass, profilePartyLabel } from "@voteapp/api-client";
+import { candidateProfileLinks } from "@voteapp/api-client";
 import { useFollows } from "@voteapp/api-client";
 import { APP_NAME } from "@voteapp/api-client";
 import { useMe } from "@voteapp/api-client";
@@ -585,6 +586,7 @@ export function CandidatePage() {
   // between a cached document and fresh code) by rendering no finance.
   const ongoingFinance = detail.ongoing_finance ?? {};
   const isFollowing = (follows ?? []).some((follow) => follow.candidate_id === candidate.candidate_id);
+  const profileLinks = candidateProfileLinks(candidate);
   const baseGroups = groupRecords(candidate.records);
   const recordGroups =
     recordView === "my_issues" ? orderGroupsByPreference(baseGroups, preferences) : baseGroups;
@@ -886,16 +888,21 @@ export function CandidatePage() {
           {candidate.state}
           {candidate.current_office ? <> · {candidate.current_office}</> : null}
         </p>
-        {candidate.official_website_url ? (
+        {profileLinks.length > 0 ? (
           <p className="mt-1 text-sm">
-            <a
-              href={candidate.official_website_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-ink underline hover:text-rausch"
-            >
-              Official website
-            </a>
+            {profileLinks.map((link, index) => (
+              <Fragment key={link.label}>
+                {index > 0 ? <span className="text-ink-soft"> · </span> : null}
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-ink underline hover:text-rausch"
+                >
+                  {link.label}
+                </a>
+              </Fragment>
+            ))}
           </p>
         ) : null}
         {candidate.summary ? <p className="mt-3 text-ink">{candidate.summary}</p> : null}
