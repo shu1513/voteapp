@@ -502,6 +502,14 @@ export const goldenSet: readonly GoldenCase[] = [
     expected: "clarify",
     notes: "Multiple runoffs (LA mayor/sheriff, San Jose council, …); scope needed first.",
   },
+  {
+    id: "ambiguous-us-senate-no-scope",
+    category: "ambiguous",
+    question: "Who's running for US Senate?",
+    expected: "clarify",
+    notes:
+      "PR-4 alias expansion ties every state's US Senate race in the title branch; no state given → clarify, never silently pick one (added with the retrieval-tuning round to pin the behavior).",
+  },
 
   // ── Out of corpus → clean refusal ─────────────────────────────────────
   {

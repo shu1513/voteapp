@@ -116,9 +116,37 @@ Shipped shape:
 Fix the two known recall misses from the release-gate run
 (`finance-senate-most`: "Georgia Senate race" outranked by State-Senate
 districts; `followup-senate-republican-raised`: "the Republican candidate" has
-no name for the entity branch). Eval-driven; stop if thresholds start
-regressing other cases. Golden set additions welcome; gates re-run per
-BEHAVIOR.md before ship.
+no name for the entity branch). Shipped shape — recall@5 33/35 → 35/35 (100%),
+every other gate unchanged at 100%:
+
+1. **Office-alias expansion (title branch only).** Corpus office naming is
+   inconsistent ("United States Senator — Georgia" vs "US Senate — Colorado"),
+   so "the Georgia Senate race" scored 0.29 against its own race while fifty
+   "State Senator — State Senate District N" titles scored 0.54.
+   `expandOfficeAliases()` (pure, exported, retrieval.ts) appends the corpus
+   phrase when the question uses a common federal phrasing (`US Senate`,
+   `Senate race/seat/election`; negative lookbehind keeps "state Senate race"
+   on the state races). Applied ONLY to the title-branch question — injected
+   terms must not distort the lexical/vector evidence the gate thresholds are
+   calibrated on.
+2. **Race-members branch (E).** Both misses need the race's finance_summary
+   chunks, which NO branch surfaced: lexical+vector rank dozens of
+   lookalike-district chunks above them and the entity branch has no name.
+   When the top title match is strong (>= 0.75) and agrees with the scope
+   state, pull that election's member chunks (listing → finance → profiles →
+   records; finance ahead of profiles because listing questions are already
+   answered at rank 1 — the questions that NEED members are money questions).
+   Members contribute RRF rank only, never gate evidence — pulled chunks
+   cannot make an unanswerable question pass, so refusals can't flip.
+3. **Race precedence, entity-guarded.** A single RRF entry (~0.016) loses to
+   any chunk in two branches (~0.032), so members got contextRank-style
+   precedence — but ONLY when no candidate entity matched: a named candidate
+   ("Allen Buckley, the Libertarian…") is the stronger signal and keeps
+   normal ranking. Context precedence still outranks race precedence.
+4. **Golden addition** `ambiguous-us-senate-no-scope` ("Who's running for US
+   Senate?"): alias expansion ties every state's US Senate race in the title
+   branch → clarify, never silently pick a state (pre-PR-4 the CO race's
+   literal "US Senate" title won alone). Clarify gate 5/5.
 
 ## Scheduled, not now
 

@@ -21,6 +21,13 @@ export const RETRIEVAL_TOP_K = 5;
 const BRANCH_LIMIT = 20;
 const RRF_K = 60;
 
+// Race-members branch fires only on a title match this strong: an exact
+// office-word hit ("mayor", "sheriff") scores 1.0, the strongest partial
+// confusions observed score 0.8 ("State Senator" against an aliased federal
+// question) — this sits under the exact band but above generic word noise,
+// so a merely-plausible office phrase never pulls a whole race in.
+const RACE_MEMBERS_MIN_SIMILARITY = 0.75;
+
 // Answerability gate thresholds on raw scores (tuned against the golden set
 // via `npm run chatbot:eval` on the live local index, 2026-08-11; see
 // BEHAVIOR.md release gates). A question is answerable when ANY holds:
@@ -38,6 +45,31 @@ const RRF_K = 60;
 export const GATE_MIN_COSINE = 0.71;
 export const GATE_MIN_LEXICAL = 0.08;
 export const GATE_MIN_ENTITY_SIMILARITY = 0.75;
+
+// Common-name office phrasings → the office phrase the corpus actually uses.
+// The title branch matches the question against chunk-title office phrases
+// with word_similarity, and office naming is inconsistent across states
+// ("United States Senator — Georgia" vs "US Senate — Colorado"), so "the
+// Georgia Senate race" scores 0.29 against its own race while fifty "State
+// Senator — State Senate District N" titles score 0.54 and swamp it. The
+// negative lookbehinds keep "State Senate District 2 race" questions on the
+// state races. Alias list grows only on demonstrated misses (golden set).
+const OFFICE_ALIASES: readonly { pattern: RegExp; canonical: string }[] = [
+  {
+    pattern: /\bu\.?s\.?\s+senate\b|\bunited states senate\b|(?<!\bstate\s)\bsenate\s+(?:race|seat|election)\b/i,
+    canonical: "United States Senator",
+  },
+];
+
+/** Question text for the TITLE branch only: appends the canonical office
+ * phrase when the question uses a common-name federal phrasing, so
+ * word_similarity can find it. Never fed to the lexical/vector branches —
+ * injected terms would distort ranking evidence the gate thresholds are
+ * calibrated on. */
+export function expandOfficeAliases(question: string): string {
+  const expansions = OFFICE_ALIASES.filter((alias) => alias.pattern.test(question)).map((alias) => alias.canonical);
+  return expansions.length > 0 ? `${question} ${expansions.join(" ")}` : question;
+}
 
 // Entity matches at/above this are candidates for scope/boost resolution.
 const ENTITY_MATCH_MIN_SIMILARITY = 0.45;
@@ -477,6 +509,7 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   // the full title breaks ties in favor of the title whose place tokens the
   // question also names. Seq scan over the generation's election chunks
   // (~6k), a few ms.
+  const titleQuestion = expandOfficeAliases(question);
   const titleResult = await db.query<ChunkRow>(
     `
       SELECT
@@ -507,8 +540,57 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
         chunk.id ASC
       LIMIT 10
     `,
-    [generationId, question]
+    [generationId, titleQuestion]
   );
+
+  // Branch E: race members — when the title branch resolves the question to
+  // one race with high confidence, pull that election's member chunks. A
+  // race-level money question ("who has raised more in the Georgia Senate
+  // race?") needs the candidates' finance summaries, which no other branch
+  // surfaces: lexical/vector rank fifty near-identical district chunks above
+  // them and the entity branch has no name to work with. Finance ahead of
+  // profiles because listing questions are already answered by the listing
+  // chunk at rank 1 — the race-level questions that NEED members are money
+  // questions. Contributes RRF rank only, never gate evidence (score 0):
+  // pulled members must not make an otherwise-unanswerable question pass.
+  let raceMemberRows: ChunkRow[] = [];
+  const topTitleMatch = titleResult.rows[0];
+  if (
+    topTitleMatch &&
+    topTitleMatch.election_id &&
+    topTitleMatch.score >= RACE_MEMBERS_MIN_SIMILARITY &&
+    (!scopeState || topTitleMatch.state === scopeState)
+  ) {
+    const raceMembersResult = await db.query<ChunkRow>(
+      `
+        SELECT
+          chunk.id::text AS id,
+          chunk.source_type,
+          chunk.source_id::text AS source_id,
+          chunk.election_id::text AS election_id,
+          chunk.state,
+          chunk.title,
+          chunk.content,
+          chunk.evidence_urls,
+          0::float8 AS score
+        FROM chatbot.chunks AS chunk
+        WHERE chunk.generation_id = $1::uuid
+          AND chunk.election_id = $2::uuid
+        ORDER BY
+          CASE chunk.source_type
+            WHEN 'election' THEN 0
+            WHEN 'finance_summary' THEN 1
+            WHEN 'candidate_profile' THEN 2
+            ELSE 3
+          END ASC,
+          chunk.title ASC,
+          chunk.id ASC
+        LIMIT $3
+      `,
+      [generationId, topTitleMatch.election_id, BRANCH_LIMIT]
+    );
+    raceMemberRows = raceMembersResult.rows;
+  }
 
   // RRF merge; raw scores ride along per chunk for the gate.
   type Merged = {
@@ -521,9 +603,20 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
      * the generic phrasing ("tell me more about this candidate") happens to
      * co-match elsewhere. */
     contextRank: number;
+    /** Position in the race-members branch, Infinity otherwise. Same idea
+     * one notch weaker: a candidate-less question confidently resolved to
+     * one race is ABOUT that race, so its members outrank the fifty
+     * lookalike-district chunks lexical+vector agree on. Applied only when
+     * NO candidate entity matched — a named candidate ("Allen Buckley, the
+     * Libertarian running for Senate") is the stronger signal and keeps
+     * normal ranking. */
+    raceRank: number;
   };
   const merged = new Map<string, Merged>();
-  const fold = (rows: readonly ChunkRow[], kind: "lexical" | "vector" | "entity" | "title" | "context"): void => {
+  const fold = (
+    rows: readonly ChunkRow[],
+    kind: "lexical" | "vector" | "entity" | "title" | "race" | "context"
+  ): void => {
     rows.forEach((row, index) => {
       const existing = merged.get(row.id) ?? {
         base: toBaseChunk(row),
@@ -531,6 +624,7 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
         cosineSimilarity: 0,
         rrfScore: 0,
         contextRank: Number.POSITIVE_INFINITY,
+        raceRank: Number.POSITIVE_INFINITY,
       };
       existing.rrfScore += 1 / (RRF_K + index + 1);
       if (kind === "lexical") {
@@ -538,6 +632,9 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
       }
       if (kind === "vector") {
         existing.cosineSimilarity = Math.max(existing.cosineSimilarity, row.score);
+      }
+      if (kind === "race") {
+        existing.raceRank = Math.min(existing.raceRank, index);
       }
       if (kind === "context") {
         existing.contextRank = Math.min(existing.contextRank, index);
@@ -549,6 +646,7 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   fold(vectorRows, "vector");
   fold(entityRows, "entity");
   fold(titleResult.rows, "title");
+  fold(raceMemberRows, "race");
   fold(contextRows, "context");
 
   // With page context in play, filler must EARN its slot: a generic deictic
@@ -573,9 +671,16 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   const rosterSlots = contextCandidateId
     ? Math.min(contextRows.filter((row) => row.source_type === "election").length, 2)
     : 0;
+  // Race precedence only without a matched entity (see raceRank above); with
+  // one, members still fold into RRF but never jump the queue.
+  const raceRankApplies = entityIds.length === 0;
   const chunks = contenders
     .sort(
-      (a, b) => a.contextRank - b.contextRank || b.rrfScore - a.rrfScore || a.base.id.localeCompare(b.base.id)
+      (a, b) =>
+        a.contextRank - b.contextRank ||
+        (raceRankApplies ? a.raceRank - b.raceRank : 0) ||
+        b.rrfScore - a.rrfScore ||
+        a.base.id.localeCompare(b.base.id)
     )
     .slice(0, RETRIEVAL_TOP_K + rosterSlots)
     .map((entry) => ({
