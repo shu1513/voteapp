@@ -44,6 +44,7 @@ import {
   type AustinDirectCampaignExpenditureRow,
   type AustinReportDetailRow,
 } from "../pipeline/austinFinance/austinSocrataClient.js";
+import { loadProjectEnv } from "../config/env.js";
 import {
   DEFAULT_TEXAS_TEC_CSV_DATABASE_CACHE_DIR,
   getTexasTecCsvDatabaseArtifactCachePaths,
@@ -246,7 +247,7 @@ function groupEconomicPayments(rows: readonly AustinDirectCampaignExpenditureRow
       continue;
     }
     const spenderKey = committeeKey(row.paidBy);
-    const key = `${spenderKey} ${committeeKey(row.payee ?? "")} ${row.paymentDate ?? ""} ${row.amountCents}`;
+    const key = `${spenderKey}\u0000${committeeKey(row.payee ?? "")}\u0000${row.paymentDate ?? ""}\u0000${row.amountCents}`;
     const payment =
       byKey.get(key) ??
       {
@@ -293,6 +294,8 @@ async function main(): Promise<void> {
   if (process.argv.length > 2) {
     throw new Error(`Austin finance probe takes no flags, got: ${process.argv.slice(2).join(" ")}`);
   }
+  // backend/.env may carry AUSTIN_SOCRATA_APP_TOKEN and TEXAS_TEC_CSV_DATABASE_CACHE_DIR.
+  loadProjectEnv();
   const gates: Gate[] = [];
 
   // --- Gate 1: Report Detail duplicate rows. ---

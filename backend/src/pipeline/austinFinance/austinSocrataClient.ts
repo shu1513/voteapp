@@ -603,7 +603,7 @@ export function selectAustinEffectiveReports(rows: readonly AustinReportDetailRo
       specials.push(row);
       continue;
     }
-    const key = `${row.periodFrom} ${row.periodTo}`;
+    const key = `${row.periodFrom}\u0000${row.periodTo}`;
     const group = groups.get(key) ?? [];
     group.push(row);
     groups.set(key, group);
