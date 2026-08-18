@@ -336,6 +336,17 @@ export const goldenSet: readonly GoldenCase[] = [
       "PR-4 review: race-level records question — the members branch must order record chunks ahead of finance for it (fixed finance-first ordering served zero records).",
   },
   {
+    id: "records-nc-senate-race",
+    category: "records",
+    question: "What are the candidates' records in the North Carolina Senate race?",
+    expected: "retrieval",
+    expectedSourceTypes: ["candidate_record"],
+    expectedEntities: ["Roy Cooper", "Shannon Bray"],
+    scopeState: "NC",
+    notes:
+      "PR-4 review: 40 record chunks, 22 Cooper / 18 Bray — title order fed 19 of Cooper's before any of Bray's, so a race-wide records answer saw one candidate. Members round-robin by candidate.",
+  },
+  {
     id: "records-petrea-education",
     category: "records",
     question: "What is Jesse Petrea's record on education?",
@@ -540,6 +551,14 @@ export const goldenSet: readonly GoldenCase[] = [
     expected: "clarify",
     notes:
       "PR-4 review: money question naming a race but no state — pre-fix it skipped clarify (listing phrasings only) and answered from an arbitrary state's race (observed: Montana).",
+  },
+  {
+    id: "ambiguous-ga-state-rep-district",
+    category: "ambiguous",
+    question: "Who raised the most in the Georgia State Representative race?",
+    expected: "clarify",
+    notes:
+      "PR-4 review: a state scope alone doesn't pick one of Georgia's 178 State Representative races — pre-fix, District 24 was silently selected on an id tie-break. Must ask which district.",
   },
   {
     id: "ambiguous-us-senate-no-scope",

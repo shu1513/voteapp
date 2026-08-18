@@ -465,14 +465,15 @@ function describeEntityOption(match: CandidateEntityMatch): string {
 }
 
 // Scope-ambiguity heuristic (rule 7): a race-level question with no named
-// state and no named candidate, whose election-title matches tie across 2+
-// states within a margin — "the sheriff race" fits dozens of counties
-// equally. A question with one clearly dominant title match (its place
-// tokens named, or an exact measure title) is not tied. Restricted to
-// listing phrasings PLUS money/records questions that name a race ("who has
-// raised more in the Senate race?" — PR-4 review: these skipped clarify and
-// answered from an arbitrary state's chunks) so entity and measure questions
-// never trip it.
+// candidate whose election-title matches tie across races the question
+// cannot separate — across 2+ states when no state is known ("the sheriff
+// race" fits dozens of counties equally), or across districts inside a
+// known state (retrieval's raceTitleAmbiguous). A question with one clearly
+// dominant title match (its place tokens named, or an exact measure title)
+// is not tied. Restricted to listing phrasings PLUS money/records questions
+// that name a race ("who has raised more in the Senate race?" — PR-4
+// review: these skipped clarify and answered from an arbitrary state's
+// chunks) so entity and measure questions never trip it.
 // 0.8, not 0.85: office-alias expansion (PR 4) puts the strongest cross-
 // office confusion at EXACTLY 0.8 ("State Senator" against a federally
 // aliased question, 30+ states) — at 0.85 an arbitrary state's 1.0 match
@@ -489,7 +490,9 @@ function isRaceScopedQuestion(question: string): boolean {
 }
 
 function needsScopeClarification(question: string, retrieval: RetrievalResult, scopeState: string | null): boolean {
-  if (scopeState) {
+  // The viewed page already determines the race — a deictic question must
+  // never be bounced for scope.
+  if (retrieval.contextMatched) {
     return false;
   }
   if (retrieval.bestEntitySimilarity >= GATE_MIN_ENTITY_SIMILARITY) {
@@ -497,6 +500,13 @@ function needsScopeClarification(question: string, retrieval: RetrievalResult, s
   }
   if (!isRaceScopedQuestion(question)) {
     return false;
+  }
+  // Within a known state the office phrase can still fit many races the
+  // question can't tell apart (Georgia has 178 "State Representative"
+  // races — review catch: District 24 was silently picked). Retrieval
+  // detects the tie; ask which district/place is meant.
+  if (scopeState) {
+    return retrieval.raceTitleAmbiguous;
   }
   const [top] = retrieval.electionTitleMatches;
   if (!top || !top.state) {
@@ -1019,7 +1029,7 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
           {
             outcome: "clarify",
             answer:
-              "There are races like that in several places. Which state, county, or city do you mean?",
+              "There are races like that in several places. Which state, county, city, or district do you mean?",
             results: [],
             data_current_as_of: generation.activatedAt,
           },

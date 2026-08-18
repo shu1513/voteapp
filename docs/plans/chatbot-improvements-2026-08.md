@@ -176,6 +176,23 @@ every other gate unchanged at 100%:
    moved into the SQL ORDER BY so it runs before the branch LIMIT (a
    7-filer race = 22 member rows; the fixed fetch order truncated exactly
    the record chunks a records question needs).
+   Second review round (all three confirmed against the corpus): (1) a state
+   scope alone doesn't pick one of Georgia's 178 identically-titled State
+   Representative races (District 24 silently won on an id tie-break) —
+   member selection now requires the top qualifier to dominate every other
+   qualifying race on office score OR place (tie margins 0.05/0.1; a named
+   district separates on place, a distinct office phrase on score), a tied
+   set is surfaced as `raceTitleAmbiguous` and the clarify heuristic asks
+   which district even WITH a scope state (guarded on `contextMatched` so
+   deictic page questions are never bounced; clarify copy gained
+   "or district"); (2) NC's Senate race has 40 record chunks (22/18) and
+   title order fed 19 of Cooper's before any of Bray's — members round-robin
+   per candidate via a window rank in the SQL ORDER BY; (3) the arbitrary
+   +5 finance-widening cap (max 9 summaries, silently wrong above) is
+   replaced by the natural BRANCH_LIMIT ceiling (listing + 19; corpus max
+   is 7 filers). Goldens: `ambiguous-ga-state-rep-district`,
+   `records-nc-senate-race`. Gates: retrieval 38/38, clarify 7/7, rest
+   100%.
 
 ## Scheduled, not now
 

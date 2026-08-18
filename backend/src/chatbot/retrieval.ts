@@ -36,6 +36,16 @@ const RACE_MEMBERS_MIN_SIMILARITY = 0.85;
 // tie-break would pull an arbitrary state's race (observed: Montana). Same
 // threshold the scope-ambiguity heuristic uses for "the question IS scoped".
 const RACE_MEMBERS_MIN_PLACE_SIMILARITY = 0.4;
+// A runner-up race "ties" the top qualifier when both its office score and
+// its place score sit this close — a state scope alone doesn't pick one of
+// Georgia's 178 identically-titled State Representative races (review
+// catch: District 24 won on the id tie-break). A named district separates
+// on place ("District 2" sits well above "District 23"); a distinct office
+// phrase separates on score ("…District 5" vs "…District 2" in the office
+// part). A tied set never pulls members and is surfaced to the caller as
+// raceTitleAmbiguous for clarification.
+const RACE_TIE_SCORE_EPSILON = 0.05;
+const RACE_TIE_PLACE_MARGIN = 0.1;
 
 /** What a race-level question is actually asking for, deciding which member
  * chunks matter (review round: fixed finance-first ordering served finance
@@ -166,6 +176,11 @@ export type RetrievalResult = {
    * deictic question about the viewed page is answerable on that evidence
    * even when its own text matches nothing. */
   contextMatched: boolean;
+  /** True when the question's office phrase matched 2+ races the question
+   * cannot tell apart even within a known scope state (Georgia has 178
+   * "State Representative" races). The members branch never fires on a tied
+   * set; the caller should ask which district/place is meant. */
+  raceTitleAmbiguous: boolean;
   degradedToKeywordOnly: boolean;
 };
 
@@ -603,9 +618,22 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   // The title branch is already scope-filtered; the first row clearing the
   // office-similarity bar is the race the question names (see the
   // RACE_MEMBERS_MIN_SIMILARITY comment for why row 0 alone can't decide).
-  const topTitleMatch = titleResult.rows.find((row) => row.score >= RACE_MEMBERS_MIN_SIMILARITY);
+  // A runner-up within both tie margins means the question does NOT name one
+  // race — never pull members from an arbitrary pick.
+  const qualifyingTitleRows = titleResult.rows.filter((row) => row.score >= RACE_MEMBERS_MIN_SIMILARITY);
+  const topTitleMatch = qualifyingTitleRows[0];
+  const raceTitleAmbiguous =
+    topTitleMatch !== undefined &&
+    qualifyingTitleRows.some(
+      (row) =>
+        row !== topTitleMatch &&
+        row.election_id !== topTitleMatch.election_id &&
+        row.score >= topTitleMatch.score - RACE_TIE_SCORE_EPSILON &&
+        (row.place_score ?? 0) >= (topTitleMatch.place_score ?? 0) - RACE_TIE_PLACE_MARGIN
+    );
   if (
     topTitleMatch &&
+    !raceTitleAmbiguous &&
     topTitleMatch.election_id &&
     (scopeState || (topTitleMatch.place_score ?? 0) >= RACE_MEMBERS_MIN_PLACE_SIMILARITY)
   ) {
@@ -624,8 +652,17 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
         FROM chatbot.chunks AS chunk
         WHERE chunk.generation_id = $1::uuid
           AND chunk.election_id = $2::uuid
+        -- Round-robin within a source type by candidate (review catch: NC's
+        -- Senate race has 40 record chunks and title order fed 19 of one
+        -- candidate's before any of the other's — a race-wide records
+        -- question saw exactly one candidate). Profiles/finance are 1 per
+        -- candidate, so only records interleave.
         ORDER BY
           array_position($4::text[], chunk.source_type) ASC NULLS LAST,
+          row_number() OVER (
+            PARTITION BY chunk.source_type, chunk.source_id
+            ORDER BY chunk.title ASC, chunk.id ASC
+          ) ASC,
           chunk.title ASC,
           chunk.id ASC
         LIMIT $3
@@ -721,16 +758,15 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   // more?" silently compares an incomplete field (review catch: Florida's
   // Senate race has 7 summaries; the cap kept 4, alphabetically). Widen by
   // exactly the overflow — the listing takes one slot, so top-K holds K-1
-  // summaries. Bounded at 5 extras as a runaway guard (same spirit as
-  // rosterSlots): a >9-filer race truncates rather than flooding the prompt.
+  // summaries. The member fetch's BRANCH_LIMIT is the ceiling (listing +
+  // 19 summaries; the corpus maximum is 7 filers today) — an arbitrary
+  // smaller cap would silently re-create the incomplete comparison for a
+  // bigger race.
   const raceFinanceSlots =
     raceRankApplies && raceQuestionKind === "money"
-      ? Math.min(
-          Math.max(
-            raceMemberRows.filter((row) => row.source_type === "finance_summary").length - (RETRIEVAL_TOP_K - 1),
-            0
-          ),
-          5
+      ? Math.max(
+          raceMemberRows.filter((row) => row.source_type === "finance_summary").length - (RETRIEVAL_TOP_K - 1),
+          0
         )
       : 0;
   const chunks = contenders
@@ -765,6 +801,7 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
     bestCosineSimilarity,
     bestEntitySimilarity,
     contextMatched: contextRows.length > 0,
+    raceTitleAmbiguous,
     degradedToKeywordOnly,
   };
 }
