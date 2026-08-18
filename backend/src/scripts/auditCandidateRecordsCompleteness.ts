@@ -370,6 +370,13 @@ async function main(): Promise<void> {
         LEFT JOIN public.candidate_elections ce
           ON ce.candidate_id = c.id OR ce.running_mate_candidate_id = c.id
         LEFT JOIN public.elections e ON e.id = ce.election_id
+        -- Newest no-records confirmation across ALL of the candidate's contexts,
+        -- deliberately not scoped to --election-id / --district-id: records and
+        -- the search stamp are candidate-wide, so an evidenced zero-record sweep
+        -- from any context is evidence for the candidate. The filters below pick
+        -- WHICH candidates are listed, not which context's ledger counts. A stale
+        -- ledger cannot mask a later gap: a newer write either advances the stamp
+        -- past confirmed_at (suspect) or finds records (completeness rows deleted).
         LEFT JOIN LATERAL (
           SELECT sc_latest.confirmed_gap_ids, sc_latest.confirmed_at, sc_latest.evidence
           FROM public.candidate_record_sweep_confirmations sc_latest
@@ -411,7 +418,11 @@ ${targetSql}
 
     // Detector pass over ALL persisted sweep confirmations in scope (not just
     // zero-record candidates): a collapsed-template ledger is a red flag even
-    // when the candidate has records.
+    // when the candidate has records. "In scope" means every ledger of every
+    // candidate the filters select — including ledgers from a different
+    // election context than --election-id. Route coverage is judged against
+    // each ledger's OWN stored context below, so those rows are valid
+    // findings, not noise; scoping by context would only hide red flags.
     const confirmationsResult = await pool.query<SweepConfirmationDetectorRow>(
       `
         SELECT
