@@ -30,6 +30,15 @@
   --color-navy: #1e3a5f;
 }
 
+/* Pages with a sticky pick card (candidate pages, data-sticky-pick-cta)
+   pin their primary action to the viewport bottom — the same corner the
+   chatbot launcher floats in, at the same z. Lift the launcher clear of the
+   card so it never covers the pick button; the OPEN chat panel may still
+   cover the card, which is fine — the user chose the chat. */
+body:has([data-sticky-pick-cta]) .chat-launcher {
+  bottom: 7rem;
+}
+
 /* When the ballot preview is on screen, printing yields ONLY the sheets —
    page chrome, headings, and past picks would otherwise print around them.
    Scoped by :has so printing any other page is untouched. visibility (not

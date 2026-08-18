@@ -1088,12 +1088,23 @@ export function CandidatePage() {
           // detail column instead of overlaying the rail. The caption names
           // the race: the button's "Make my pick" alone doesn't say what
           // the pick is for.
-          <div className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg">
+          // data-sticky-pick-cta: index.css lifts the chatbot's floating
+          // launcher above this card (both pin to the viewport bottom and
+          // the launcher would cover the button's right end on phones).
+          <div
+            data-sticky-pick-cta=""
+            className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
+          >
             <p className="mb-2 text-center text-xs text-ink-soft">
               {primaryPickElection.official_ballot_title} ·{" "}
               {formatElectionDate(primaryPickElection.election_date)}
             </p>
             <CandidatePickButton
+              // Remount on candidate change, like the Follow button above:
+              // the route element stays mounted across roster navigation,
+              // and without the key a failed save's error from the previous
+              // candidate would linger under this one's button.
+              key={candidate.candidate_id}
               electionId={primaryPickElection.election_id}
               candidateId={candidate.candidate_id}
               candidateName={candidate.display_name}

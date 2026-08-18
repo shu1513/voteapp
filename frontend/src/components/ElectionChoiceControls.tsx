@@ -71,10 +71,18 @@ export function CandidatePickButton({
   const isGuest = me === null;
   const setChoice = useSetElectionChoice();
   const saving = useElectionChoiceSaving();
+  const capMessageId = useId();
   const picks = choice?.picks ?? [];
   const isPicked = picks.some((pick) => pick.candidate_id === candidateId);
   const seatCap = seatsToFill ?? 1;
   const atMultiSeatCap = seatCap > 1 && !isPicked && picks.length >= seatCap;
+  // Same visible-vs-tooltip split as CandidatePickRow: standalone (fullWidth)
+  // the button is the page's only pick control, so the cap reason must be
+  // visible — a title on a disabled button reaches neither touch nor
+  // keyboard users. Inline on the election page the title stays: the page
+  // shows the viewer's other picks and a per-seat hint, and a message under
+  // every capped candidate card would repeat itself down the roster.
+  const showCapMessage = atMultiSeatCap && fullWidth;
   // disabled:opacity-50 lives in the shared base: `saving` disables EVERY
   // choice control while any one of them writes, so a picked button must dim
   // too, not only the unpicked ones.
@@ -97,7 +105,12 @@ export function CandidatePickButton({
         disabled={saving || atMultiSeatCap}
         aria-pressed={isPicked}
         aria-label={`${visibleLabel}: ${candidateName}`}
-        title={atMultiSeatCap ? `This election fills ${seatCap} seats — remove a pick first` : undefined}
+        aria-describedby={showCapMessage ? capMessageId : undefined}
+        title={
+          atMultiSeatCap && !showCapMessage
+            ? `This election fills ${seatCap} seats — remove a pick first`
+            : undefined
+        }
         onClick={() =>
           isGuest
             ? setDraftCandidateChoice({
@@ -122,6 +135,11 @@ export function CandidatePickButton({
       >
         {visibleLabel}
       </button>
+      {showCapMessage ? (
+        <span id={capMessageId} className="text-xs font-medium text-ink-soft">
+          This election fills {seatCap} seats — remove a pick first
+        </span>
+      ) : null}
       {/* Only this control's own failure: a shared banner would blame every
           button on the page for one candidate's rejection. */}
       {setChoice.isError && !setChoice.isPending ? <SaveError error={setChoice.error} /> : null}
