@@ -440,9 +440,10 @@ export function retainSuppliedSweepEvidence(input: {
 
 /**
  * Persist the validated confirmation inside the writer's transaction. One
- * row per candidate: a newer sweep supersedes the older confirmation. An
- * empty confirmedGapIds list is valid and means the evidenced full sweep
- * found stance-labeled records and asserts no completeness claim.
+ * row per candidate and research context: a newer sweep supersedes only the
+ * same context. An empty confirmedGapIds list is valid and means the
+ * evidenced full sweep found stance-labeled records and asserts no
+ * completeness claim.
  */
 export async function upsertSweepConfirmation(
   client: Pick<PoolClient, "query">,
@@ -459,12 +460,10 @@ export async function upsertSweepConfirmation(
       INSERT INTO public.candidate_record_sweep_confirmations
         (candidate_id, confirmed_gap_ids, evidence, context_type, context_id)
       VALUES ($1, $2::text[], $3::jsonb, $4, $5)
-      ON CONFLICT (candidate_id)
+      ON CONFLICT (candidate_id, context_type, context_id)
       DO UPDATE SET
         confirmed_gap_ids = EXCLUDED.confirmed_gap_ids,
         evidence = EXCLUDED.evidence,
-        context_type = EXCLUDED.context_type,
-        context_id = EXCLUDED.context_id,
         confirmed_at = now(),
         updated_at = now()
     `,
@@ -498,7 +497,11 @@ export async function upsertSweepConfirmation(
  */
 export async function refreshSweepConfirmationTimestamp(
   client: Pick<PoolClient, "query">,
-  candidateId: string
+  input: {
+    candidateId: string;
+    contextType: "election" | "presidential_cycle";
+    contextId: string;
+  }
 ): Promise<void> {
   await client.query(
     `
@@ -506,8 +509,10 @@ export async function refreshSweepConfirmationTimestamp(
       SET confirmed_at = now(),
           updated_at = now()
       WHERE candidate_id = $1
+        AND context_type = $2
+        AND context_id = $3
     `,
-    [candidateId]
+    [input.candidateId, input.contextType, input.contextId]
   );
 }
 
@@ -549,11 +554,20 @@ export async function deleteSweepCompletenessConfirmation(
  */
 export async function deleteSweepConfirmation(
   client: Pick<PoolClient, "query">,
-  candidateId: string
+  input: {
+    candidateId: string;
+    contextType: "election" | "presidential_cycle";
+    contextId: string;
+  }
 ): Promise<void> {
   await client.query(
-    `DELETE FROM public.candidate_record_sweep_confirmations WHERE candidate_id = $1`,
-    [candidateId]
+    `
+      DELETE FROM public.candidate_record_sweep_confirmations
+      WHERE candidate_id = $1
+        AND context_type = $2
+        AND context_id = $3
+    `,
+    [input.candidateId, input.contextType, input.contextId]
   );
 }
 

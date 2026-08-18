@@ -714,11 +714,15 @@ async function main(): Promise<void> {
         });
       } else {
         // This write found real stance-labeled records without carrying a
-        // ledger; drop ANY earlier confirmation. Unlike the district writer,
-        // this writer advances no per-candidate search stamp, so a surviving
-        // empty-claim-set row could never be dated as historical — deletion
-        // is what keeps "newest sweep wins" honest here.
-        await deleteSweepConfirmation(client, options.candidateId);
+        // ledger; drop the earlier confirmation for this presidential-cycle
+        // context. Unlike the district writer, this writer advances no
+        // per-candidate search stamp, so that context's surviving
+        // empty-claim-set row could never be dated as historical.
+        await deleteSweepConfirmation(client, {
+          candidateId: options.candidateId,
+          contextType: "presidential_cycle",
+          contextId: options.presidentialCycleId,
+        });
       }
       await client.query("COMMIT");
 

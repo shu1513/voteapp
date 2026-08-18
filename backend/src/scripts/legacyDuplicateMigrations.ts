@@ -43,6 +43,19 @@ export const LEGACY_DUPLICATE_MIGRATION_FILES_BY_PREFIX = new Map<string, string
       "215_widen_manual_district_research_trigger_source.sql",
     ],
   ],
+  // The sweep-confirmation re-key was written and applied locally on
+  // 2026-08-16 but never committed; the chatbot purge function then took 241
+  // on 2026-08-17 and merged first. Both are already applied by filename, so
+  // renumbering either would replay it. They touch unrelated objects (a
+  // primary key on candidate_record_sweep_confirmations vs. a chatbot
+  // retention function), so filename-order application is safe.
+  [
+    "241",
+    [
+      "241_add_chatbot_question_purge_function.sql",
+      "241_key_candidate_record_sweep_confirmations_by_context.sql",
+    ],
+  ],
 ]);
 
 export function isLegacyDuplicateMigrationSet(

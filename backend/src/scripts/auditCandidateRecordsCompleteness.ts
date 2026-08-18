@@ -160,6 +160,7 @@ export type SweepConfirmationDetectorRow = {
   confirmed_at: string;
   evidence: unknown;
   context_type: "election" | "presidential_cycle";
+  context_id: string;
   /** elections.discovery_contest_family of the confirmation's own contest (election contexts only). */
   discovery_contest_family: string | null;
   /** False when an election-context confirmation's election row no longer exists. */
@@ -251,6 +252,8 @@ export function listSharedFindingTexts(
 export type RouteCoverageGap = {
   candidateId: string;
   displayName: string;
+  contextType: "election" | "presidential_cycle";
+  contextId: string;
   confirmedAt: string;
   taggedQuestionIds: string[];
   reason: string;
@@ -313,6 +316,8 @@ export function listRouteCoverageGaps(
     gaps.push({
       candidateId: row.candidate_id,
       displayName: row.display_name,
+      contextType: row.context_type,
+      contextId: row.context_id,
       confirmedAt: row.confirmed_at,
       taggedQuestionIds,
       reason:
@@ -365,7 +370,14 @@ async function main(): Promise<void> {
         LEFT JOIN public.candidate_elections ce
           ON ce.candidate_id = c.id OR ce.running_mate_candidate_id = c.id
         LEFT JOIN public.elections e ON e.id = ce.election_id
-        LEFT JOIN public.candidate_record_sweep_confirmations sc ON sc.candidate_id = c.id
+        LEFT JOIN LATERAL (
+          SELECT sc_latest.confirmed_gap_ids, sc_latest.confirmed_at, sc_latest.evidence
+          FROM public.candidate_record_sweep_confirmations sc_latest
+          WHERE sc_latest.candidate_id = c.id
+            AND sc_latest.confirmed_gap_ids @> ARRAY['candidate_records.no_records_found']::text[]
+          ORDER BY sc_latest.confirmed_at DESC, sc_latest.context_type, sc_latest.context_id
+          LIMIT 1
+        ) sc ON true
         WHERE c.deleted_at IS NULL
           AND c.merged_into_candidate_id IS NULL
           AND c.last_records_searched_at IS NOT NULL
@@ -409,6 +421,7 @@ ${targetSql}
           sc.confirmed_at::text AS confirmed_at,
           sc.evidence,
           sc.context_type,
+          sc.context_id::text AS context_id,
           ctx.discovery_contest_family,
           (sc.context_type <> 'election' OR ctx.id IS NOT NULL) AS context_election_found
         FROM public.candidate_record_sweep_confirmations sc

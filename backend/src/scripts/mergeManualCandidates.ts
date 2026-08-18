@@ -779,8 +779,8 @@ export async function runMergeCandidates(
       );
     }
 
-    // Sweep confirmations (PK = candidate_id). The duplicate's row always
-    // goes. The survivor's goes too when records were rehomed: its
+    // Sweep confirmations are keyed by candidate + context. Every duplicate
+    // context row goes. The survivor's rows go too when records were rehomed: their
     // completeness claims (and its empty-claim evidence ledger) describe the
     // pre-merge record set, and a fresh sweep re-establishes them.
     const confirmationsResult = await client.query<{ candidate_id: string }>(
