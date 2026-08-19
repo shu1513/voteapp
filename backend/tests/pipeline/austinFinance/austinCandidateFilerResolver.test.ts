@@ -116,6 +116,12 @@ describe("austinPersonNameMatchesCandidate", () => {
     expect(austinPersonNameMatchesCandidate("Herrin III, Louis C.", "Louis Herrin Jr.")).toBe(false);
     expect(austinPersonNameMatchesCandidate("Anderson, Alexandria M.", "Alexander Anderson")).toBe(false);
     expect(austinPersonNameMatchesCandidate("Watson, Kurt", "Kirk Watson")).toBe(false);
+    // Bare "V" is a middle initial, not a suffix (the shared policy): it must
+    // stay as middle evidence on either side, so these conflict.
+    expect(austinPersonNameMatchesCandidate("Smith, John B.", "John V. Smith")).toBe(false);
+    expect(austinPersonNameMatchesCandidate("Smith, John V", "John B. Smith")).toBe(false);
+    expect(austinPersonNameMatchesCandidate("Smith, John V", "John V. Smith")).toBe(true);
+    expect(austinPersonNameMatchesCandidate("Smith, John V", "John Smith")).toBe(true);
     expect(austinPersonNameMatchesCandidate("Watson, Kirk P.", "Kirk Watts")).toBe(false);
   });
 });

@@ -96,9 +96,15 @@ export function collectAustinReportFilers(
     }));
 }
 
+// Strips exactly the generational suffixes the shared policy recognizes
+// (personNameMiddleEvidence GENERATIONAL_SUFFIX_RANK). Bare "V" is NOT one:
+// as a trailing token it is far more often a middle initial ("Smith, John
+// V"), and stripping it would erase middle evidence — "John V. Smith" would
+// then match "Smith, John B." (PR #759 review). A genuine fifth-generation
+// name fails to align and gets linked manually instead.
 function normalizeAustinPersonName(value: string): string {
   return normalizeAustinFinanceTextKey(value)
-    .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+    .replace(/\b(JR|SR|II|III|IV)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
