@@ -255,9 +255,9 @@ export function isNonJudicialOfficeTitle(title: string): boolean {
 // County EXECUTIVE and county LEGISLATIVE offices whose TITLE happens to contain
 // a word the judicial regex keys on. Unlike the markers above these cannot be
 // matched state-blind: "Magistrate" IS a judge in South Carolina and Georgia,
-// and "County Judge" IS a judge in states that did not hand the office its
-// commission-presiding role. So each entry names the state whose statute makes
-// the office non-judicial:
+// and a bare "County Judge" IS a judge in Florida. So each entry names the
+// state whose law makes the office non-judicial — the same three states whose
+// bare executive titles migration 145 aliases to the County Executive office:
 //
 // - AR: the county judge is the county's chief executive officer (Ark. Const.
 //   amend. 55 s 3), presiding over the quorum court and running county
@@ -267,26 +267,44 @@ export function isNonJudicialOfficeTitle(title: string): boolean {
 //   legislative body (KRS 67.040). Kentucky's bench is titled "Circuit Judge",
 //   "District Judge", "Family Court Judge" and the appellate courts, none of
 //   which these patterns touch.
+// - TX: the county judge presides over the commissioners court, the county's
+//   governing body (Tex. Const. art. V s 15-16, Local Gov't Code ch. 81); the
+//   judicial workload sits with the county courts at law and district courts,
+//   whose titles name the court and are kept judicial by the veto below.
 //
 // Live 2026-08-19: without this, all six Laurel County KY magistrate/judge-
 // executive shells plus Crawford County AR's county judge resolved through the
 // judicial branch to their state's NONPARTISAN judicial ballot rule, and the
 // contract then rejected the correct is_partisan=true — Kentucky and Arkansas
-// county offices are partisan and print a party on the general ballot.
+// county offices are partisan and print a party on the general ballot. Texas
+// stored the right party by coincidence (its bench is partisan too) but its
+// county judge still routed as a judicial contest, against the catalog.
 const STATE_NON_JUDICIAL_TITLE_OVERRIDES: ReadonlyMap<string, RegExp> = new Map([
   ["AR", /\bcounty\s+judge\b/i],
   // Clerks print the statutory "judge/executive" three ways: slash, hyphen, and
   // plain space ("County Judge Executive"). The separator is optional so all
   // three land here instead of falling through to the judicial regex on "judge".
   ["KY", /\bjudge\s*[/-]?\s*executive\b|\bmagistrate\b/i],
+  ["TX", /\bcounty\s+judge\b/i],
 ]);
+
+// A title that goes on to NAME a court is a judgeship no matter which state
+// word precedes it. Texas boards prefix the county onto real judgeships —
+// "Erath County Judge, County Court at Law" and "San Patricio County Judge,
+// 156th Judicial District" are both live in the corpus — and the bare-title
+// override above must not swallow them. Applied to every override so a future
+// entry cannot reintroduce the trap.
+const TITLE_NAMES_A_COURT = /\bcourt\b|\bjudicial\s+(?:district|circuit)\b/i;
 
 export function isStateNonJudicialOfficeTitle(state: string | undefined, title: string): boolean {
   if (!state) {
     return false;
   }
   const pattern = STATE_NON_JUDICIAL_TITLE_OVERRIDES.get(state.trim().toUpperCase());
-  return pattern ? pattern.test(title) : false;
+  if (!pattern || !pattern.test(title)) {
+    return false;
+  }
+  return !TITLE_NAMES_A_COURT.test(title);
 }
 
 // `state` is optional so the discovery-side caller that only has a title keeps
