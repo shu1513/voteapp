@@ -342,6 +342,15 @@ async function main(): Promise<void> {
   try {
     const doneIds = await loadDoneCandidateIds(outFile, { dryRun });
     const allPairs = await listCandidatePairs(pool, { electionDate, candidateId });
+    if (candidateId && allPairs.length === 0) {
+      // An explicit id that selects nothing must not look like success: the
+      // operator (or an agent holding a reviewed labels file) would read the
+      // "0 of 0 pending" summary as done. Already-done is a different, valid
+      // outcome and is reported below.
+      throw new Error(
+        `--candidate-id ${candidateId} matches no candidate for election_date=${electionDate}: check the id, the date, withdrawn/deleted status, and that the candidate has live records.`
+      );
+    }
     // --limit counts NEW candidates, so "--limit 10" on a resumed file always
     // advances by ten instead of re-selecting the ten already done.
     const pendingPairs = allPairs.filter((pair) => !doneIds.has(pair.candidateId));
