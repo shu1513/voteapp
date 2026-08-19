@@ -32,22 +32,31 @@ function record(id: string, tags: Array<{ area: string; slug: string; stance: "f
 describe("researchAreaWeightForRank", () => {
   // Mirror of backend userResearchAreaScoring.ts — same numbers or the
   // client-side candidate/record sorts disagree with the server ballot sort.
-  it("matches the backend formula: 8 - rank, unranked = 1", () => {
-    expect(researchAreaWeightForRank(1)).toBe(7);
-    expect(researchAreaWeightForRank(7)).toBe(1);
-    expect(researchAreaWeightForRank(null)).toBe(1);
+  it("matches the backend formula: 0.75^(rank - 1)", () => {
+    expect(researchAreaWeightForRank(1)).toBe(1);
+    expect(researchAreaWeightForRank(2)).toBe(0.75);
+    expect(researchAreaWeightForRank(3)).toBe(0.5625);
+    expect(researchAreaWeightForRank(7)).toBe(0.75 ** 6);
+  });
+
+  it("stays positive and strictly decreasing with no rank ceiling", () => {
+    for (let rank = 1; rank < 30; rank += 1) {
+      expect(researchAreaWeightForRank(rank)).toBeGreaterThan(0);
+      expect(researchAreaWeightForRank(rank)).toBeGreaterThan(researchAreaWeightForRank(rank + 1));
+    }
   });
 });
 
 describe("buildResearchAreaWeights", () => {
-  it("maps preferences to weights with the unranked sentinel", () => {
+  it("maps preferences to weights; an unranked save weighs as rank n_ranked + 1 with the unranked sentinel", () => {
     const weights = buildResearchAreaWeights([
-      { research_area_id: AREA_HOUSING, slug: "housing", name: "Housing", description: null, rank: 2 },
-      { research_area_id: AREA_SAFETY, slug: "safety", name: "Safety", description: null, rank: null },
+      { research_area_id: AREA_HOUSING, slug: "housing", name: "Housing", description: null, rank: 2, direction: "support", hard_veto: false },
+      { research_area_id: AREA_SAFETY, slug: "safety", name: "Safety", description: null, rank: null, direction: "support", hard_veto: false },
     ]);
 
-    expect(weights.get(AREA_HOUSING)).toEqual({ weight: 6, rank: 2 });
-    expect(weights.get(AREA_SAFETY)).toEqual({ weight: 1, rank: UNRANKED_RESEARCH_AREA_RANK });
+    expect(weights.get(AREA_HOUSING)).toEqual({ weight: 0.75, rank: 2 });
+    // One ranked area → the unranked one weighs as rank 2.
+    expect(weights.get(AREA_SAFETY)).toEqual({ weight: 0.75, rank: UNRANKED_RESEARCH_AREA_RANK });
   });
 });
 
@@ -99,8 +108,8 @@ describe("aggregateRecordAreaStances", () => {
 
 describe("scoreStanceRelevance", () => {
   const weights = buildResearchAreaWeights([
-    { research_area_id: AREA_HOUSING, slug: "housing", name: "Housing", description: null, rank: 1 }, // weight 7
-    { research_area_id: AREA_SAFETY, slug: "safety", name: "Safety", description: null, rank: 3 }, // weight 5
+    { research_area_id: AREA_HOUSING, slug: "housing", name: "Housing", description: null, rank: 1, direction: "support", hard_veto: false }, // weight 1
+    { research_area_id: AREA_SAFETY, slug: "safety", name: "Safety", description: null, rank: 3, direction: "support", hard_veto: false }, // weight 0.5625
   ]);
 
   const stances = aggregateRecordAreaStances([
@@ -111,9 +120,9 @@ describe("scoreStanceRelevance", () => {
   ]);
 
   it("sums saved-area weights across both directions with record counts as volume", () => {
-    // Housing (weight 7, 2 for-records) + Safety (weight 5, 1 against-record):
-    // both areas count once each regardless of direction.
-    expect(scoreStanceRelevance(stances, weights)).toEqual({ score: 12, recordCount: 3 });
+    // Housing (weight 1, 2 for-records) + Safety (weight 0.5625, 1
+    // against-record): both areas count once each regardless of direction.
+    expect(scoreStanceRelevance(stances, weights)).toEqual({ score: 1.5625, recordCount: 3 });
   });
 
   it("scores against-only candidates above no-record candidates", () => {
@@ -123,7 +132,7 @@ describe("scoreStanceRelevance", () => {
     const againstOnly = aggregateRecordAreaStances([
       record("r1", [{ area: AREA_HOUSING, slug: "housing", stance: "against" }]),
     ]);
-    expect(scoreStanceRelevance(againstOnly, weights)).toEqual({ score: 7, recordCount: 1 });
+    expect(scoreStanceRelevance(againstOnly, weights)).toEqual({ score: 1, recordCount: 1 });
     expect(scoreStanceRelevance([], weights)).toEqual({ score: 0, recordCount: 0 });
   });
 

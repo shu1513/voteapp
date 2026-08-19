@@ -75,8 +75,8 @@ describe("WelcomePage", () => {
     expect(putCall).toBeDefined();
     expect(JSON.parse(String(putCall?.[1]?.body))).toEqual({
       preferences: [
-        { research_area_id: "a-housing", rank: 1 },
-        { research_area_id: "a-env", rank: 2 },
+        { research_area_id: "a-housing", rank: 1, direction: "support", hard_veto: false },
+        { research_area_id: "a-env", rank: 2, direction: "support", hard_veto: false },
       ],
     });
     // Saving completes the step: a later login must not reopen it even if

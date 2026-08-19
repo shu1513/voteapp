@@ -82,18 +82,18 @@ describe("sortRailEntries", () => {
   });
 
   it("my_areas: summed matched weights first, best rank breaks ties, vote power after", () => {
-    // rank 1 → weight 7, rank 2 → weight 6, rank 3 → weight 5.
+    // rank 1 → weight 1, rank 2 → weight 0.75, rank 3 → weight 0.5625.
     const weights = buildResearchAreaWeights([
-      { research_area_id: "a-1", slug: "s1", name: "n1", description: null, rank: 1 },
-      { research_area_id: "a-2", slug: "s2", name: "n2", description: null, rank: 2 },
-      { research_area_id: "a-3", slug: "s3", name: "n3", description: null, rank: 3 },
+      { research_area_id: "a-1", slug: "s1", name: "n1", description: null, rank: 1, direction: "support", hard_veto: false },
+      { research_area_id: "a-2", slug: "s2", name: "n2", description: null, rank: 2, direction: "support", hard_veto: false },
+      { research_area_id: "a-3", slug: "s3", name: "n3", description: null, rank: 3, direction: "support", hard_veto: false },
     ]);
     const sorted = sortRailEntries(
       [
         entry("none", { vote_power_score: 99 }),
-        entry("second-and-third", { research_area_ids: ["a-2", "a-3"] }), // 11
-        entry("top-only", { research_area_ids: ["a-1"] }), // 7
-        entry("top-and-third", { research_area_ids: ["a-1", "a-3"] }), // 12
+        entry("second-and-third", { research_area_ids: ["a-2", "a-3"] }), // 1.3125
+        entry("top-only", { research_area_ids: ["a-1"] }), // 1
+        entry("top-and-third", { research_area_ids: ["a-1", "a-3"] }), // 1.5625
       ],
       "my_areas",
       weights
@@ -157,10 +157,10 @@ describe("candidateRailSortsOffered", () => {
 });
 
 describe("sortCandidateRailEntries", () => {
-  // rank 1 → weight 7, rank 2 → weight 6.
+  // rank 1 → weight 1, rank 2 → weight 0.75.
   const WEIGHTS = buildResearchAreaWeights([
-    { research_area_id: "a-1", slug: "s1", name: "n1", description: null, rank: 1 },
-    { research_area_id: "a-2", slug: "s2", name: "n2", description: null, rank: 2 },
+    { research_area_id: "a-1", slug: "s1", name: "n1", description: null, rank: 1, direction: "support", hard_veto: false },
+    { research_area_id: "a-2", slug: "s2", name: "n2", description: null, rank: 2, direction: "support", hard_veto: false },
   ]);
 
   it("my_issues: weighted matched areas first, record volume breaks ties, ties keep arrival order", () => {
@@ -170,9 +170,9 @@ describe("sortCandidateRailEntries", () => {
         candidateEntry("both", "Bo Both", [
           { research_area_id: "a-1", record_count: 1 },
           { research_area_id: "a-2", record_count: 1 },
-        ]), // score 13
-        candidateEntry("top-few", "Fay Few", [{ research_area_id: "a-1", record_count: 1 }]), // 7, 1 record
-        candidateEntry("top-many", "May Many", [{ research_area_id: "a-1", record_count: 4 }]), // 7, 4 records
+        ]), // score 1.75
+        candidateEntry("top-few", "Fay Few", [{ research_area_id: "a-1", record_count: 1 }]), // 1, 1 record
+        candidateEntry("top-many", "May Many", [{ research_area_id: "a-1", record_count: 4 }]), // 1, 4 records
       ],
       "my_issues",
       WEIGHTS

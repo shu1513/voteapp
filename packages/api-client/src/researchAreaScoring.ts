@@ -2,25 +2,28 @@ import type { CandidateRecord, ResearchAreaPreference } from "./types";
 
 // Client mirror of backend/src/pipeline/users/userResearchAreaScoring.ts —
 // the shared weighting for everything that scores content against the user's
-// saved research areas. Keep the formula in sync: weight = 8 - rank (rank 1
-// → 7 … rank 7 → 1); a selected-but-unranked area weighs 1, so any match
-// beats no match regardless of rank.
+// saved research areas. Keep the formula in sync: weight = 0.75^(rank - 1)
+// (rank 1 → 1, 2 → 0.75, 3 → 0.5625 …), no cap on how many areas a user
+// ranks; every weight is > 0, so any match beats no match regardless of
+// rank. A selected-but-unranked area (legacy rows) weighs as if ranked just
+// after the user's last ranked area.
 
-export const MAX_RESEARCH_AREA_RANK = 7;
+export const RESEARCH_AREA_RANK_DECAY = 0.75;
 
-/** Rank used for tiebreaks when a selected area has no explicit rank. */
-export const UNRANKED_RESEARCH_AREA_RANK = MAX_RESEARCH_AREA_RANK + 1;
-
-export function researchAreaWeightForRank(rank: number | null): number {
-  if (rank === null) {
-    return 1;
-  }
-  return MAX_RESEARCH_AREA_RANK + 1 - rank;
+export function researchAreaWeightForRank(rank: number): number {
+  return RESEARCH_AREA_RANK_DECAY ** (rank - 1);
 }
+
+/**
+ * Rank used for tiebreaks when a selected area has no explicit rank: sorts
+ * after every explicit rank, before "no match" (NO_MATCH_BEST_RANK).
+ */
+export const UNRANKED_RESEARCH_AREA_RANK = Number.MAX_SAFE_INTEGER;
+export const NO_MATCH_BEST_RANK = Number.POSITIVE_INFINITY;
 
 export type ResearchAreaWeight = {
   weight: number;
-  /** Explicit rank 1..7, or UNRANKED_RESEARCH_AREA_RANK when unranked. */
+  /** Explicit rank >= 1, or UNRANKED_RESEARCH_AREA_RANK when unranked. */
   rank: number;
 };
 
@@ -29,9 +32,10 @@ export function buildResearchAreaWeights(
   preferences: readonly ResearchAreaPreference[]
 ): Map<string, ResearchAreaWeight> {
   const weights = new Map<string, ResearchAreaWeight>();
+  const unrankedWeightRank = preferences.filter((preference) => preference.rank !== null).length + 1;
   for (const preference of preferences) {
     weights.set(preference.research_area_id, {
-      weight: researchAreaWeightForRank(preference.rank),
+      weight: researchAreaWeightForRank(preference.rank ?? unrankedWeightRank),
       rank: preference.rank ?? UNRANKED_RESEARCH_AREA_RANK,
     });
   }

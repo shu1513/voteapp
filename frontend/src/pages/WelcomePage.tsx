@@ -5,6 +5,7 @@ import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/
 import { APP_NAME, apiRequest, useMe } from "@voteapp/api-client";
 import type { ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteapp/api-client";
 import { ResearchAreaPicker } from "../components/ResearchAreaPicker";
+import { toPreferenceInputs, type RankedResearchArea } from "../lib/rankedResearchAreas";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import { markWelcomeSeen } from "../lib/welcomeSeen";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
@@ -22,7 +23,7 @@ export function WelcomePage() {
   const { me, isLoading, isError: meError, refetch: refetchMe } = useMe();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [orderedIds, setOrderedIds] = useState<string[]>([]);
+  const [ranked, setRanked] = useState<RankedResearchArea[]>([]);
 
   const catalog = useQuery({
     queryKey: ["research-areas"],
@@ -34,10 +35,10 @@ export function WelcomePage() {
     // Same mutation key as the settings editor: both are full-list replaces
     // of the same resource, so their in-flight guards must see each other.
     mutationKey: ["put-research-area-preferences"],
-    mutationFn: (ids: string[]) =>
+    mutationFn: (next: RankedResearchArea[]) =>
       apiRequest<ResearchAreaPreferencesResult>("/api/me/research-area-preferences", {
         method: "PUT",
-        body: { preferences: ids.map((research_area_id, index) => ({ research_area_id, rank: index + 1 })) },
+        body: { preferences: toPreferenceInputs(next) },
       }),
     onSuccess: (saved) => {
       queryClient.setQueryData(["me", "research-area-preferences"], saved);
@@ -69,7 +70,7 @@ export function WelcomePage() {
     if (queryClient.isMutating({ mutationKey: ["put-research-area-preferences"] }) > 0) {
       return;
     }
-    save.mutate(orderedIds);
+    save.mutate(ranked);
   }
 
   // The step needs a verified session (the preferences endpoint is
@@ -121,8 +122,9 @@ export function WelcomePage() {
         {me.first_name ? `Welcome, ${me.first_name}!` : "Welcome!"}
       </h1>
       <p className="mt-2 text-sm text-ink-soft">
-        Pick the issues you care about and we'll put the elections and candidates that touch them first.
-        Drag to rank them in order of priority. You can change this any time in Settings.
+        Pick the issues you care about — as many as you like — and we'll put the elections and
+        candidates that touch them first. Drag to rank them; the top of the list counts most. You can
+        change this any time in Settings.
       </p>
 
       {catalog.isPending ? <LoadingNotice text="Loading issues…" /> : null}
@@ -132,18 +134,13 @@ export function WelcomePage() {
         </div>
       ) : null}
       {catalog.isSuccess ? (
-        <ResearchAreaPicker
-          areas={catalog.data.research_areas}
-          orderedIds={orderedIds}
-          disabled={saving}
-          onChange={setOrderedIds}
-        />
+        <ResearchAreaPicker areas={catalog.data.research_areas} ranked={ranked} disabled={saving} onChange={setRanked} />
       ) : null}
 
       <div className="mt-8 flex items-center gap-4">
         <button
           type="button"
-          disabled={orderedIds.length === 0 || saving}
+          disabled={ranked.length === 0 || saving}
           onClick={saveAndContinue}
           className="rounded-lg bg-rausch px-4 py-2 font-semibold text-white transition hover:bg-rausch-dark disabled:cursor-not-allowed disabled:bg-line"
         >
