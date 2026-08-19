@@ -30,8 +30,8 @@ today (see data below), and telling the user that is part of the feature.
 
 The issue editor is `frontend/src/components/ResearchAreasSection.tsx` (web
 Settings), `WelcomePage.tsx` (onboarding), and
-`mobile/src/app/settings/research-areas.tsx`. Today it lets a user pick up to
-7 issues and drag-rank them. Changes:
+`mobile/src/app/settings/research-areas.tsx`. Before PR 1 it let a user pick
+up to 7 issues and drag-rank them. Changes (shipped in PR 1):
 
 1. **No cap.** Any number of the 25 selectable issues, all ranked. Rank 1 is
    the most important. (Data check: more ranked issues → more races decidable,
@@ -57,7 +57,11 @@ draft lives in localStorage. The button renders a sign-in prompt for guests.
 
 ## Verified facts (code and data)
 
-- Preferences: `public.user_research_area_preferences (user_id,
+The first two bullets describe the pre-PR-1 baseline the design started from;
+PR 1 replaced the cap and the formula as specified in "Data model changes" and
+"Scoring spec" below.
+
+- Preferences (before PR 1): `public.user_research_area_preferences (user_id,
   research_area_id, rank)` with `CHECK (rank IS NULL OR rank BETWEEN 1 AND
   7)` and a unique `(user_id, rank)` index (migration 125). Server cap in
   `backend/src/constants/userResearchAreaPreferences.ts`
@@ -67,7 +71,7 @@ draft lives in localStorage. The button renders a sign-in prompt for guests.
   `packages/api-client/src/researchAreaScoring.ts`, used by web and mobile
   editors for the "at capacity" state. Local DB: 0 rows with a null rank; the
   editors always send ranks 1..n.
-- Weight formula today: `weight = 8 − rank`, shared by ballot sort
+- Weight formula before PR 1: `weight = 8 − rank`, shared by ballot sort
   (`ballotElectionOrdering.ts`), the chatbot ranker (`askService.ts`), and the
   client sorts (`researchAreaScoring.ts`, `railSort.ts`). It breaks (goes
   negative) for rank > 7, so uncapping forces a formula change anyway.
@@ -131,8 +135,8 @@ with their area tags. Records tagged `general` are ignored.
 7 → 0.18, 10 → 0.075, 15 → 0.018, 20 → 0.004). One shared function, used by
 auto-pick and by every existing sort (replaces `8 − rank`; the sorts only need
 "higher rank ⇒ larger weight, any match beats no match", which still holds
-because every weight is > 0). Null rank (legacy rows only) counts as rank
-`n_ranked + 1`.
+because every weight is > 0). Null rank (legacy rows only) counts as one rank
+below the user's highest explicit rank.
 
 **Direction.** `dir_i = +1` for support, `−1` for oppose. Effective stance of a
 record on issue *i*: `+1` if its stance agrees with `dir_i`, `−1` if it

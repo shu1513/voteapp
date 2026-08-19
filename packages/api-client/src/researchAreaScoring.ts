@@ -32,7 +32,10 @@ export function buildResearchAreaWeights(
   preferences: readonly ResearchAreaPreference[]
 ): Map<string, ResearchAreaWeight> {
   const weights = new Map<string, ResearchAreaWeight>();
-  const unrankedWeightRank = preferences.filter((preference) => preference.rank !== null).length + 1;
+  // Unranked = one rank below the highest explicit rank (max, not count —
+  // ranks need not be contiguous; mirrors loadUserResearchAreaWeights).
+  const unrankedWeightRank =
+    preferences.reduce((last, preference) => (preference.rank !== null && preference.rank > last ? preference.rank : last), 0) + 1;
   for (const preference of preferences) {
     weights.set(preference.research_area_id, {
       weight: researchAreaWeightForRank(preference.rank ?? unrankedWeightRank),

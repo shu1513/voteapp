@@ -17,7 +17,7 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 // rank 35, so equal sums compare equal (ties are real ties).
 //
 // A selected-but-unranked area (legacy rows only; the editors always send
-// ranks 1..n) weighs as if ranked just after the user's last ranked area —
+// ranks 1..n) weighs as if ranked just after the user's highest explicit rank —
 // see loadUserResearchAreaWeights.
 
 export const RESEARCH_AREA_RANK_DECAY = 0.75;
@@ -77,8 +77,10 @@ export async function loadUserResearchAreaWeights(
       row.rank === null ? null : typeof row.rank === "number" ? row.rank : Number.parseInt(row.rank, 10);
     return rank !== null && Number.isFinite(rank) ? rank : null;
   });
-  // Unranked areas weigh as one rank below the last ranked one.
-  const unrankedWeightRank = ranks.filter((rank) => rank !== null).length + 1;
+  // Unranked areas weigh as one rank below the LAST ranked one (max rank, not
+  // count: ranks are bounded by list length but need not be contiguous, and
+  // an unranked area must never outweigh an explicitly ranked one).
+  const unrankedWeightRank = ranks.reduce<number>((last, rank) => (rank !== null && rank > last ? rank : last), 0) + 1;
   result.rows.forEach((row, index) => {
     const rank = ranks[index] ?? null;
     weights.set(row.research_area_id, {

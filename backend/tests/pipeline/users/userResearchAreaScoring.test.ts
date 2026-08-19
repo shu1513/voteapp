@@ -61,9 +61,9 @@ describe("loadUserResearchAreaWeights", () => {
 
     expect(weights.get(AREA_A)).toEqual({ weight: 1, rank: 1 });
     expect(weights.get(AREA_B)).toEqual({ weight: 0.5625, rank: 3 });
-    // Two ranked areas → the unranked one weighs as rank 3 (n_ranked + 1) but
-    // keeps the unranked sentinel for tiebreaks.
-    expect(weights.get(AREA_C)).toEqual({ weight: 0.5625, rank: UNRANKED_RESEARCH_AREA_RANK });
+    // Highest explicit rank is 3 → the unranked one weighs as rank 4 (never
+    // as much as a ranked area) but keeps the unranked sentinel for tiebreaks.
+    expect(weights.get(AREA_C)).toEqual({ weight: 0.75 ** 3, rank: UNRANKED_RESEARCH_AREA_RANK });
     // Deleted users must not keep personalizing anything.
     expect(String(query.mock.calls[0]?.[0])).toContain("deleted_at IS NULL");
   });

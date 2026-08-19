@@ -48,15 +48,16 @@ describe("researchAreaWeightForRank", () => {
 });
 
 describe("buildResearchAreaWeights", () => {
-  it("maps preferences to weights; an unranked save weighs as rank n_ranked + 1 with the unranked sentinel", () => {
+  it("maps preferences to weights; an unranked save weighs one rank below the highest explicit rank", () => {
     const weights = buildResearchAreaWeights([
       { research_area_id: AREA_HOUSING, slug: "housing", name: "Housing", description: null, rank: 2, direction: "support", hard_veto: false },
       { research_area_id: AREA_SAFETY, slug: "safety", name: "Safety", description: null, rank: null, direction: "support", hard_veto: false },
     ]);
 
     expect(weights.get(AREA_HOUSING)).toEqual({ weight: 0.75, rank: 2 });
-    // One ranked area → the unranked one weighs as rank 2.
-    expect(weights.get(AREA_SAFETY)).toEqual({ weight: 0.75, rank: UNRANKED_RESEARCH_AREA_RANK });
+    // Highest explicit rank is 2 (non-contiguous: nothing at rank 1) → the
+    // unranked one weighs as rank 3, strictly below every ranked area.
+    expect(weights.get(AREA_SAFETY)).toEqual({ weight: 0.5625, rank: UNRANKED_RESEARCH_AREA_RANK });
   });
 });
 
