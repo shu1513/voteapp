@@ -1,4 +1,5 @@
 import { appendFile, readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 import { Pool } from "pg";
 
 import { AI_CALLS_BLOCKED_REASON, isAiApiCallAllowed } from "../ai/aiCallGuard.js";
@@ -9,10 +10,14 @@ import {
 } from "../ai/enrichCandidateRecordAreas.js";
 import { getPipelineEnv } from "../config/env.js";
 import {
+  type AllowedResearchArea,
   loadAllResearchAreas,
   loadAllowedResearchAreasForOfficeId,
 } from "../pipeline/candidates/candidateRecordAreaTagging.js";
-import { loadCandidateElectionOfficeContext } from "../pipeline/candidates/candidateRecordOfficeContext.js";
+import {
+  type CandidateElectionOfficeContext,
+  loadCandidateElectionOfficeContext,
+} from "../pipeline/candidates/candidateRecordOfficeContext.js";
 import { isNonStanceResearchAreaSlug } from "../pipeline/candidates/candidateRecordResearchAreaPolicy.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
@@ -30,7 +35,7 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 
 const RECORDS_PER_AI_CALL = 20;
 
-type CandidatePair = { candidateId: string; electionId: string };
+type CandidatePair = { candidateId: string; electionIds: string[] };
 
 type LiveRecord = { id: string; description: string; sourceUrl: string; eventDate: string };
 
@@ -49,7 +54,7 @@ function usage(): string {
     "  AI_API_CALLS_ALLOWED=true npm run ai:candidate-records:relabel -- --election-date YYYY-MM-DD --out-file relabel.jsonl [--candidate-id uuid] [--limit N] [--provider claude|openai|gemini] [--concurrency N] [--dry-run]",
     "",
     "Appends one JSON line per candidate to --out-file (proposed labels, conflicts, inserted tag ids).",
-    "Re-running with the same --out-file skips candidates already written there with status ok (ai_failed rows are retried), so a killed run resumes.",
+    "Re-running with the same --out-file skips candidates already written there with status ok (ai_failed rows are retried), so a killed run resumes. Dry-run rows only count as done for another dry-run; a live run over a dry-run file re-labels and inserts.",
   ].join("\n");
 }
 
@@ -84,12 +89,14 @@ async function listCandidatePairs(
   pool: Pool,
   input: { electionDate: string; candidateId: string | null }
 ): Promise<CandidatePair[]> {
-  // One office context per candidate: the allowlist is per office, and the
-  // two Nov-2026 candidates running for two offices at once get the first
-  // election by id (deterministic, logged by the caller as a known limit).
-  const result = await pool.query<{ candidate_id: string; election_id: string }>(
+  // One row per candidate carrying EVERY same-date office election: tags
+  // live on the record, not on an election, so a candidate running for two
+  // offices at once is labeled against the union of both allowlists in one
+  // AI pass instead of one office being silently dropped.
+  const result = await pool.query<{ candidate_id: string; election_ids: string[] }>(
     `
-      SELECT ce.candidate_id::text AS candidate_id, MIN(ce.election_id::text) AS election_id
+      SELECT ce.candidate_id::text AS candidate_id,
+             array_agg(DISTINCT ce.election_id::text ORDER BY ce.election_id::text) AS election_ids
       FROM public.candidate_elections ce
       JOIN public.elections e ON e.id = ce.election_id
       JOIN public.candidates c ON c.id = ce.candidate_id
@@ -107,7 +114,7 @@ async function listCandidatePairs(
     `,
     [input.electionDate, input.candidateId]
   );
-  return result.rows.map((row) => ({ candidateId: row.candidate_id, electionId: row.election_id }));
+  return result.rows.map((row) => ({ candidateId: row.candidate_id, electionIds: row.election_ids }));
 }
 
 async function loadLiveRecords(pool: Pool, candidateId: string): Promise<LiveRecord[]> {
@@ -151,7 +158,11 @@ async function loadExistingTags(
   return byRecord;
 }
 
-async function loadDoneCandidateIds(outFile: string): Promise<Set<string>> {
+// A candidate is "done" when a LIVE row exists for it, or — in a dry-run —
+// when a dry-run row exists. A dry-run row must never make a later live run
+// skip the candidate: the reviewed file is the natural --out-file for the
+// real run, and reusing it would silently insert nothing.
+export async function loadDoneCandidateIds(outFile: string, options: { dryRun: boolean }): Promise<Set<string>> {
   let text: string;
   try {
     text = await readFile(outFile, "utf8");
@@ -166,8 +177,8 @@ async function loadDoneCandidateIds(outFile: string): Promise<Set<string>> {
     if (!line.trim()) {
       continue;
     }
-    const row = JSON.parse(line) as { candidate_id?: string; status?: string };
-    if (row.candidate_id && row.status === "ok") {
+    const row = JSON.parse(line) as { candidate_id?: string; status?: string; dry_run?: boolean };
+    if (row.candidate_id && row.status === "ok" && (row.dry_run !== true || options.dryRun)) {
       done.add(row.candidate_id);
     }
   }
@@ -232,29 +243,48 @@ async function main(): Promise<void> {
   };
 
   try {
-    const doneIds = await loadDoneCandidateIds(outFile);
+    const doneIds = await loadDoneCandidateIds(outFile, { dryRun });
     const allPairs = await listCandidatePairs(pool, { electionDate, candidateId });
     // --limit counts NEW candidates, so "--limit 10" on a resumed file always
     // advances by ten instead of re-selecting the ten already done.
-    const pairs = allPairs.filter((pair) => !doneIds.has(pair.candidateId)).slice(0, limit ?? undefined);
+    const pendingPairs = allPairs.filter((pair) => !doneIds.has(pair.candidateId));
+    const pairs = pendingPairs.slice(0, limit ?? undefined);
     console.log(
-      `relabel: ${pairs.length} candidate(s) for election_date=${electionDate} (${allPairs.length - pairs.length} already done in out-file)${dryRun ? " (dry-run: no writes)" : ""} provider=${provider ?? "fallback-chain"} concurrency=${concurrency}`
+      `relabel: ${pairs.length} of ${pendingPairs.length} pending candidate(s) for election_date=${electionDate} (${allPairs.length - pendingPairs.length} already done in out-file)${dryRun ? " (dry-run: no writes)" : ""} provider=${provider ?? "fallback-chain"} concurrency=${concurrency}`
     );
 
     const processCandidate = async (pair: CandidatePair): Promise<void> => {
       totals.candidates += 1;
-      const context = await loadCandidateElectionOfficeContext(pool, pair.candidateId, pair.electionId);
+      const contexts: CandidateElectionOfficeContext[] = [];
+      for (const electionId of pair.electionIds) {
+        const loaded = await loadCandidateElectionOfficeContext(pool, pair.candidateId, electionId);
+        if (loaded) {
+          contexts.push(loaded);
+        }
+      }
+      const context = contexts[0];
       if (!context) {
         totals.skipped_no_context += 1;
         await appendFile(
           outFile,
-          `${JSON.stringify({ candidate_id: pair.candidateId, election_id: pair.electionId, status: "skipped_no_context" })}\n`
+          `${JSON.stringify({ candidate_id: pair.candidateId, election_ids: pair.electionIds, status: "skipped_no_context" })}\n`
         );
         return;
       }
-      const allowedAreas = context.officeId
-        ? await loadAllowedResearchAreasForOfficeId(pool, context.officeId)
-        : await loadAllResearchAreas(pool);
+      // Prompt context comes from the first election; the allowlist is the
+      // union over every same-date office (deduped by slug).
+      const allowedAreasBySlug = new Map<string, AllowedResearchArea>();
+      for (const officeContext of contexts) {
+        const areas = officeContext.officeId
+          ? await loadAllowedResearchAreasForOfficeId(pool, officeContext.officeId)
+          : await loadAllResearchAreas(pool);
+        for (const area of areas) {
+          if (!allowedAreasBySlug.has(area.slug)) {
+            allowedAreasBySlug.set(area.slug, area);
+          }
+        }
+      }
+      const allowedAreas = [...allowedAreasBySlug.values()];
       const researchAreaIdBySlug = new Map(allowedAreas.map((area) => [area.slug, area.id]));
       const allowedSlugs = [...new Set(allowedAreas.map((area) => area.slug))];
       const records = await loadLiveRecords(pool, pair.candidateId);
@@ -372,8 +402,8 @@ async function main(): Promise<void> {
         outFile,
         `${JSON.stringify({
           candidate_id: pair.candidateId,
-          election_id: pair.electionId,
-          office_id: context.officeId,
+          election_ids: pair.electionIds,
+          office_ids: contexts.map((officeContext) => officeContext.officeId),
           candidate_display_name: context.candidateDisplayName,
           status: aiFailure ? "ai_failed" : "ok",
           ai_failure: aiFailure,
@@ -412,7 +442,10 @@ async function main(): Promise<void> {
   console.log(JSON.stringify({ type: "candidate_record_area_relabel_summary", dry_run: dryRun, ...totals }));
 }
 
-main().catch((error) => {
-  console.error("candidate record area relabel failed:", error);
-  process.exit(1);
-});
+const entrypoint = process.argv[1] ? pathToFileURL(process.argv[1]).href : null;
+if (entrypoint === import.meta.url) {
+  main().catch((error) => {
+    console.error("candidate record area relabel failed:", error);
+    process.exit(1);
+  });
+}
