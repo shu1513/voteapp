@@ -248,6 +248,43 @@ describe("hawaiiCscClient", () => {
     ]);
   });
 
+  it("matches outside-spending rows on first+last under the middle-name gate", async () => {
+    // Committee-entered names carry middles the app name lacks (and vice versa);
+    // the exact-key sets never bridge that, so without the fallback a matched
+    // direct committee silently reported no outside spending.
+    const expenditureRow = (overrides: Record<string, string>) => ({
+      election_period: "2020-2022 (KP2)",
+      support_oppose: "Support",
+      independent_expenditure: "Y",
+      amount: "1000",
+      ...overrides,
+    });
+    const groupsFor = async (candidateName: string, rowCandidateName: string) => {
+      const fetchImpl = vi
+        .fn()
+        .mockResolvedValueOnce(
+          jsonResponse([
+            expenditureRow({ noncandidate_committee_name: "Aloha PAC", reg_no: "NC10001", candidate_name_s: rowCandidateName }),
+          ])
+        )
+        .mockResolvedValueOnce(jsonResponse([])) as unknown as typeof fetch;
+      return getHawaiiCscIndependentExpenditureGroups(
+        { candidateName, electionYear: 2022, limit: 10 },
+        { fetchImpl, timeoutMs: 1000, pageLimit: 5 }
+      );
+    };
+
+    // Missing middle on either side falls back to first+last.
+    await expect(groupsFor("John Smith", "Smith, John B.")).resolves.toMatchObject([{ committeeId: "NC10001", amount: 1000 }]);
+    await expect(groupsFor("John B. Smith", "Smith, John")).resolves.toMatchObject([{ committeeId: "NC10001", amount: 1000 }]);
+    await expect(groupsFor("John B. Smith", "John Smith")).resolves.toMatchObject([{ committeeId: "NC10001", amount: 1000 }]);
+    // A contradicting middle still rejects the row — no misattribution.
+    await expect(groupsFor("John A. Smith", "Smith, John B.")).resolves.toEqual([]);
+    await expect(groupsFor("John A. Smith", "John B. Smith")).resolves.toEqual([]);
+    // Different surname never aligns.
+    await expect(groupsFor("John Smith", "Smithson, John")).resolves.toEqual([]);
+  });
+
   it("aggregates organization funders for noncandidate committees", async () => {
     const url = new URL(
       buildHawaiiCscNoncandidateCommitteeFundersUrl({ committeeId: "NC20760", electionPeriod: "2020-2022 (KP2)", limit: 5 })
