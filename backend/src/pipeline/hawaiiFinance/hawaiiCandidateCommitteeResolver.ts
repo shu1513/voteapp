@@ -97,7 +97,19 @@ export function normalizeHawaiiCandidateNameKeys(value: string): Set<string> {
   if (normalized) {
     keys.add(normalized);
   }
-  const parts = normalized.split(" ").filter(Boolean);
+  // CSC summaries name candidates surname-first ("Brown, Robert J.",
+  // "Chock, Sr., Mason"). Flip to "First M Last" before deriving the first+last
+  // key — split on the raw comma form it came out as "BROWN J", so a "Robert
+  // Brown" candidate never key-matched and the middle-name gate never ran.
+  const commaParts = value
+    .split(",")
+    .map((part) => normalizePersonName(part))
+    .filter(Boolean);
+  const ordered = commaParts.length >= 2 ? `${commaParts.slice(1).join(" ")} ${commaParts[0]}` : normalized;
+  if (ordered) {
+    keys.add(ordered);
+  }
+  const parts = ordered.split(" ").filter(Boolean);
   if (parts.length >= 2) {
     keys.add(`${parts[0]} ${parts[parts.length - 1]}`);
   }

@@ -32,6 +32,36 @@ describe("hawaiiCandidateCommitteeResolver", () => {
     expect(normalizeHawaiiCandidateNameKeys("Josh Green").has("JOSH GREEN")).toBe(true);
   });
 
+  it("derives the first+last key from a comma-form name with a middle token", () => {
+    // Real CSC summaries read "Brown, Robert J." / "Chock, Sr., Mason". Splitting
+    // the raw form on spaces made the first+last key "BROWN J", so a "Robert
+    // Brown" candidate never key-matched and the middle-name gate never ran.
+    expect([...normalizeHawaiiCandidateNameKeys("Smith, John B.")]).toEqual([
+      "SMITH JOHN B",
+      "JOHN B SMITH",
+      "JOHN SMITH",
+    ]);
+    expect(normalizeHawaiiCandidateNameKeys("Chock, Sr., Mason").has("MASON CHOCK")).toBe(true);
+    expect(normalizeHawaiiCandidateNameKeys("Smith, John B.").has("SMITH B")).toBe(false);
+
+    const resolve = (candidateName: string, summaryName: string) =>
+      resolveHawaiiCandidateCommittee({
+        candidateName,
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2022,
+        summaries: [summary({ candidateName: summaryName, committeeId: "CC30001" })],
+      });
+    // Missing middle on the candidate side falls back to first+last.
+    expect(resolve("John Smith", "Smith, John B.")).toMatchObject({ status: "matched", committeeId: "CC30001" });
+    expect(resolve("John B. Smith", "Smith, John B.")).toMatchObject({ status: "matched", committeeId: "CC30001" });
+    // The middle gate still rejects a contradicting middle initial.
+    expect(resolve("John A. Smith", "Smith, John B.")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+  });
+
   it("matches exactly one Hawaii candidate committee by candidate name, office, and election year", () => {
     expect(
       resolveHawaiiCandidateCommittee({

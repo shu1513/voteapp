@@ -1,3 +1,5 @@
+import { personNamesMatchWithMiddleEvidence } from "../finance/personNameMiddleEvidence.js";
+
 export const HAWAII_CSC_DATA_BASE_URL = "https://hicscdata.hawaii.gov/resource";
 export const HAWAII_CSC_CANDIDATE_CONTRIBUTIONS_DATASET = "jexd-xbcg";
 export const HAWAII_CSC_NONCANDIDATE_CONTRIBUTIONS_DATASET = "rajm-32md";
@@ -202,6 +204,40 @@ export function normalizeHawaiiCscPersonNameKeys(value: string | null | undefine
     }
   }
   return keys;
+}
+
+// Suffix-stripping normalizer for the middle-evidence gate. Bare "V" stays:
+// it is a middle initial, not a suffix (GENERATIONAL_SUFFIX_RANK in
+// finance/personNameMiddleEvidence.ts).
+function normalizePersonNameForMiddleEvidence(value: string): string {
+  return normalizePersonName(value)
+    .replace(/,/g, " ")
+    .replace(/\b(JR|SR|II|III|IV)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+// The key sets above carry no first+last collapse, so "John Smith" never keys
+// to a committee-entered "Smith, John B." (nor "John B. Smith" to "Smith, John").
+// After the exact-key miss, fall back to first+last alignment under the middle
+// gate (colorado pattern) — a contradicting middle still rejects the row.
+function expenditureRowNamesCandidate(input: {
+  candidateName: string;
+  candidateNameKeys: ReadonlySet<string>;
+  rowCandidateName: string | undefined;
+}): boolean {
+  const rowKeys = normalizeHawaiiCscPersonNameKeys(input.rowCandidateName);
+  if ([...rowKeys].some((key) => input.candidateNameKeys.has(key))) {
+    return true;
+  }
+  if (!input.rowCandidateName) {
+    return false;
+  }
+  return personNamesMatchWithMiddleEvidence({
+    candidateName: input.candidateName,
+    rowNames: [input.rowCandidateName],
+    normalizePersonName: normalizePersonNameForMiddleEvidence,
+  });
 }
 
 function candidateSearchToken(candidateName: string): string {
@@ -555,8 +591,13 @@ function aggregateIndependentExpenditureRows(
     if (hasMultipleCandidateNames(candidateNameValue)) {
       continue;
     }
-    const rowCandidateKeys = normalizeHawaiiCscPersonNameKeys(candidateNameValue);
-    if (![...rowCandidateKeys].some((key) => expectedCandidateKeys.has(key))) {
+    if (
+      !expenditureRowNamesCandidate({
+        candidateName,
+        candidateNameKeys: expectedCandidateKeys,
+        rowCandidateName: candidateNameValue,
+      })
+    ) {
       continue;
     }
     const committeeId = getString(row, "reg_no");
