@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { loadDoneCandidateIds } from "../../src/scripts/relabelCandidateRecordAreas.js";
+import { loadDoneCandidateIds, resolveFileLabels } from "../../src/scripts/relabelCandidateRecordAreas.js";
 
 async function writeJsonl(rows: readonly Record<string, unknown>[]): Promise<string> {
   const dir = await mkdtemp(join(tmpdir(), "relabel-"));
@@ -53,5 +53,66 @@ describe("loadDoneCandidateIds", () => {
       `{"candidate_id":"half\n${JSON.stringify({ candidate_id: "live-ok", status: "ok", dry_run: false })}\n`
     );
     await expect(loadDoneCandidateIds(corrupt, { dryRun: false })).rejects.toThrow();
+  });
+});
+
+describe("resolveFileLabels", () => {
+  const live = new Set(["rec-1", "rec-2"]);
+  const allowed = new Set(["general", "integrity_and_ethics", "government_spending_reduction", "public_education_quality"]);
+
+  it("accepts stanced labels on live records and allowed areas, lowercasing the slug", () => {
+    const result = resolveFileLabels(
+      {
+        labels: [
+          { record_id: "rec-1", research_area_slug: "Government_Spending_Reduction", stance: "against" },
+          { record_id: "rec-2", research_area_slug: "public_education_quality", stance: "for" },
+        ],
+      },
+      live,
+      allowed
+    );
+    expect(result).toEqual({
+      ok: true,
+      labels: [
+        { record_id: "rec-1", research_area_slug: "government_spending_reduction", stance: "against" },
+        { record_id: "rec-2", research_area_slug: "public_education_quality", stance: "for" },
+      ],
+    });
+  });
+
+  it("accepts an empty labels array (candidate reviewed, nothing to add)", () => {
+    expect(resolveFileLabels({ labels: [] }, live, allowed)).toEqual({ ok: true, labels: [] });
+  });
+
+  it("collects every problem and prints the allowlist on an allowlist rejection", () => {
+    const result = resolveFileLabels(
+      {
+        labels: [
+          { record_id: "rec-9", research_area_slug: "public_education_quality", stance: "for" },
+          { record_id: "rec-1", research_area_slug: "housing_affordability", stance: "for" },
+          { record_id: "rec-1", research_area_slug: "general" },
+          { record_id: "rec-1", research_area_slug: "public_education_quality", stance: "neutral" },
+          { record_id: "rec-2", research_area_slug: "public_education_quality", stance: "for" },
+          { record_id: "rec-2", research_area_slug: "public_education_quality", stance: "against" },
+        ],
+      },
+      live,
+      allowed
+    );
+    expect(result.ok).toBe(false);
+    if (result.ok) {
+      return;
+    }
+    expect(result.reason).toContain("labels[0]: record_id 'rec-9' is not a live record of this candidate");
+    expect(result.reason).toContain("labels[1]: research_area_slug 'housing_affordability' is not in the allowed research areas");
+    expect(result.reason).toContain("labels[2]: 'general' is a non-stance area");
+    expect(result.reason).toContain("labels[3]: stance must be 'for' or 'against', got \"neutral\"");
+    expect(result.reason).toContain("labels[5]: duplicate (record_id, research_area_slug) pair");
+    expect(result.reason).toContain("allowed research areas for this office: general, government_spending_reduction, integrity_and_ethics, public_education_quality");
+  });
+
+  it("rejects payloads that are not {labels: [...]}", () => {
+    expect(resolveFileLabels([], live, allowed)).toEqual({ ok: false, reason: "labels-file payload must be an object" });
+    expect(resolveFileLabels({ labels: "x" }, live, allowed)).toEqual({ ok: false, reason: "labels-file payload.labels must be an array" });
   });
 });

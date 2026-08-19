@@ -31,7 +31,10 @@ import { assertKnownCliFlags } from "./manualCliFlags.js";
 // is missing. It never changes or deletes an existing tag: an AI disagreement
 // with a stored stance is reported as a conflict, not applied.
 //
-// Costs AI credits in BOTH modes — --dry-run skips only the INSERT.
+// Two label sources: the AI labeler (default; costs AI credits in BOTH
+// modes — --dry-run skips only the INSERT) or --labels-file, a reviewed
+// payload for ONE --candidate-id written by a human or an agent that read
+// the record sources. File mode makes no AI call and needs no AI flag.
 
 const RECORDS_PER_AI_CALL = 20;
 
@@ -52,6 +55,9 @@ function usage(): string {
   return [
     "Usage:",
     "  AI_API_CALLS_ALLOWED=true npm run ai:candidate-records:relabel -- --election-date YYYY-MM-DD --out-file relabel.jsonl [--candidate-id uuid] [--limit N] [--provider claude|openai|gemini] [--concurrency N] [--dry-run]",
+    "  npm run ai:candidate-records:relabel -- --election-date YYYY-MM-DD --candidate-id uuid --labels-file labels.json --out-file relabel.jsonl [--dry-run]",
+    "",
+    '--labels-file: {"labels": [{"record_id": "uuid", "research_area_slug": "slug", "stance": "for|against"}]} for the ONE --candidate-id; stanced areas only, validated against the office allowlist; no AI call. An empty labels array marks the candidate done.',
     "",
     "Appends one JSON line per candidate to --out-file (proposed labels, conflicts, inserted tag ids).",
     "Re-running with the same --out-file skips candidates already written there with status ok (ai_failed rows are retried), so a killed run resumes. Dry-run rows only count as done for another dry-run; a live run over a dry-run file re-labels and inserts.",
@@ -166,6 +172,70 @@ async function loadExistingTags(
   return byRecord;
 }
 
+export type FileLabel = { record_id: string; research_area_slug: string; stance: "for" | "against" };
+
+// Validate a --labels-file payload against the candidate's live records and
+// office allowlist. Every problem is collected before failing so one dry-run
+// surfaces them all (same reason the contract parser does).
+export function resolveFileLabels(
+  payload: unknown,
+  liveRecordIds: ReadonlySet<string>,
+  allowedSlugs: ReadonlySet<string>
+): { ok: true; labels: FileLabel[] } | { ok: false; reason: string } {
+  if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
+    return { ok: false, reason: "labels-file payload must be an object" };
+  }
+  const rows = (payload as { labels?: unknown }).labels;
+  if (!Array.isArray(rows)) {
+    return { ok: false, reason: "labels-file payload.labels must be an array" };
+  }
+  const labels: FileLabel[] = [];
+  const problems: string[] = [];
+  const seen = new Set<string>();
+  let sawAllowlistRejection = false;
+  for (const [index, row] of rows.entries()) {
+    if (typeof row !== "object" || row === null || Array.isArray(row)) {
+      problems.push(`labels[${index}]: row must be an object`);
+      continue;
+    }
+    const input = row as Record<string, unknown>;
+    const recordId = typeof input.record_id === "string" ? input.record_id.trim() : "";
+    const slug = typeof input.research_area_slug === "string" ? input.research_area_slug.trim().toLowerCase() : "";
+    const stance = input.stance;
+    if (!liveRecordIds.has(recordId)) {
+      problems.push(`labels[${index}]: record_id '${recordId}' is not a live record of this candidate`);
+      continue;
+    }
+    if (!allowedSlugs.has(slug)) {
+      problems.push(`labels[${index}]: research_area_slug '${slug}' is not in the allowed research areas for this office`);
+      sawAllowlistRejection = true;
+      continue;
+    }
+    if (isNonStanceResearchAreaSlug(slug)) {
+      problems.push(`labels[${index}]: '${slug}' is a non-stance area; the backfill adds stanced areas only`);
+      continue;
+    }
+    if (stance !== "for" && stance !== "against") {
+      problems.push(`labels[${index}]: stance must be 'for' or 'against', got ${JSON.stringify(stance)}`);
+      continue;
+    }
+    const key = `${recordId}::${slug}`;
+    if (seen.has(key)) {
+      problems.push(`labels[${index}]: duplicate (record_id, research_area_slug) pair`);
+      continue;
+    }
+    seen.add(key);
+    labels.push({ record_id: recordId, research_area_slug: slug, stance });
+  }
+  if (problems.length > 0) {
+    const hint = sawAllowlistRejection
+      ? ` (allowed research areas for this office: ${[...allowedSlugs].sort().join(", ")})`
+      : "";
+    return { ok: false, reason: `labels-file contains invalid row: ${problems.join("; ")}${hint}` };
+  }
+  return { ok: true, labels };
+}
+
 // A candidate is "done" when a LIVE row exists for it, or — in a dry-run —
 // when a dry-run row exists. A dry-run row must never make a later live run
 // skip the candidate: the reviewed file is the natural --out-file for the
@@ -211,6 +281,7 @@ async function main(): Promise<void> {
     { name: "--limit", value: "space" },
     { name: "--provider", value: "space" },
     { name: "--concurrency", value: "space" },
+    { name: "--labels-file", value: "space" },
     { name: "--dry-run", value: "none" },
   ]);
 
@@ -220,6 +291,7 @@ async function main(): Promise<void> {
   const rawLimit = readFlag("--limit");
   const provider = readFlag("--provider");
   const rawConcurrency = readFlag("--concurrency");
+  const labelsFile = readFlag("--labels-file");
   const dryRun = hasFlag("--dry-run");
   if (!electionDate || !outFile) {
     throw new Error(`Missing required flag.\n${usage()}`);
@@ -235,12 +307,19 @@ async function main(): Promise<void> {
   if (!Number.isInteger(concurrency) || concurrency <= 0 || concurrency > 16) {
     throw new Error(`--concurrency must be an integer 1-16, got '${rawConcurrency}'`);
   }
-  if (!isAiApiCallAllowed()) {
+  if (labelsFile && !candidateId) {
+    throw new Error(`--labels-file requires --candidate-id (one reviewed payload per candidate).\n${usage()}`);
+  }
+  if (labelsFile && (provider || rawConcurrency)) {
+    throw new Error("--provider and --concurrency have no effect with --labels-file; drop them.");
+  }
+  if (!labelsFile && !isAiApiCallAllowed()) {
     // Fail before touching the database: the labeler is an AI call in both
     // modes, and the provider client would only reject after the setup work.
     throw new Error(AI_CALLS_BLOCKED_REASON);
   }
   const aiCandidates = selectAiCandidates(provider);
+  const filePayload: unknown = labelsFile ? JSON.parse(await readFile(labelsFile, "utf8")) : null;
 
   const env = getPipelineEnv();
   if (!dryRun) {
@@ -263,12 +342,21 @@ async function main(): Promise<void> {
   try {
     const doneIds = await loadDoneCandidateIds(outFile, { dryRun });
     const allPairs = await listCandidatePairs(pool, { electionDate, candidateId });
+    if (candidateId && allPairs.length === 0) {
+      // An explicit id that selects nothing must not look like success: the
+      // operator (or an agent holding a reviewed labels file) would read the
+      // "0 of 0 pending" summary as done. Already-done is a different, valid
+      // outcome and is reported below.
+      throw new Error(
+        `--candidate-id ${candidateId} matches no candidate for election_date=${electionDate}: check the id, the date, withdrawn/deleted status, and that the candidate has live records.`
+      );
+    }
     // --limit counts NEW candidates, so "--limit 10" on a resumed file always
     // advances by ten instead of re-selecting the ten already done.
     const pendingPairs = allPairs.filter((pair) => !doneIds.has(pair.candidateId));
     const pairs = pendingPairs.slice(0, limit ?? undefined);
     console.log(
-      `relabel: ${pairs.length} of ${pendingPairs.length} pending candidate(s) for election_date=${electionDate} (${allPairs.length - pendingPairs.length} already done in out-file)${dryRun ? " (dry-run: no writes)" : ""} provider=${provider ?? "fallback-chain"} concurrency=${concurrency}`
+      `relabel: ${pairs.length} of ${pendingPairs.length} pending candidate(s) for election_date=${electionDate} (${allPairs.length - pendingPairs.length} already done in out-file)${dryRun ? " (dry-run: no writes)" : ""} source=${labelsFile ? "labels-file" : `ai:${provider ?? "fallback-chain"}`} concurrency=${concurrency}`
     );
 
     // One writer for the JSONL ledger: workers finish out of order, and a
@@ -321,7 +409,45 @@ async function main(): Promise<void> {
       let providerUsed: string | null = null;
       let modelUsed: string | null = null;
 
-      for (let offset = 0; offset < records.length; offset += RECORDS_PER_AI_CALL) {
+      // Additive merge, shared by both label sources: a missing (record,
+      // area) pair is proposed; a present pair with a different stance is a
+      // conflict for review; a matching pair is a no-op.
+      const considerLabel = (record: LiveRecord, slug: string, stance: "for" | "against"): void => {
+        const existing = existingTags.get(record.id);
+        const entry: ProposedLabel = {
+          record_id: record.id,
+          research_area_slug: slug,
+          stance,
+          description: record.description.slice(0, 200),
+        };
+        if (existing?.has(slug)) {
+          const existingStance = existing.get(slug) ?? null;
+          if (existingStance !== stance) {
+            conflicts.push({ ...entry, existing_stance: existingStance });
+          }
+          return;
+        }
+        proposed.push(entry);
+      };
+
+      if (labelsFile) {
+        const resolved = resolveFileLabels(filePayload, new Set(records.map((record) => record.id)), new Set(allowedSlugs));
+        if (!resolved.ok) {
+          // Nothing is written and no ledger row is appended: fix the file
+          // and rerun.
+          throw new Error(resolved.reason);
+        }
+        const recordById = new Map(records.map((record) => [record.id, record]));
+        for (const label of resolved.labels) {
+          const record = recordById.get(label.record_id);
+          if (record) {
+            considerLabel(record, label.research_area_slug, label.stance);
+          }
+        }
+        providerUsed = "labels-file";
+      }
+
+      for (let offset = 0; !labelsFile && offset < records.length; offset += RECORDS_PER_AI_CALL) {
         const batch = records.slice(offset, offset + RECORDS_PER_AI_CALL);
         totals.ai_calls += 1;
         const result = await enrichCandidateRecordAreas(
@@ -364,24 +490,9 @@ async function main(): Promise<void> {
             continue;
           }
           const record = batch[label.record_index];
-          if (!record) {
-            continue;
+          if (record) {
+            considerLabel(record, label.research_area_slug, label.stance);
           }
-          const existing = existingTags.get(record.id);
-          const entry: ProposedLabel = {
-            record_id: record.id,
-            research_area_slug: label.research_area_slug,
-            stance: label.stance,
-            description: record.description.slice(0, 200),
-          };
-          if (existing?.has(label.research_area_slug)) {
-            const existingStance = existing.get(label.research_area_slug) ?? null;
-            if (existingStance !== label.stance) {
-              conflicts.push({ ...entry, existing_stance: existingStance });
-            }
-            continue;
-          }
-          proposed.push(entry);
         }
       }
 
