@@ -61,6 +61,19 @@ export function classifyRaceQuestion(question: string): "money" | "records" | "n
   return "neutral";
 }
 
+/** Race-collective phrasings: the question is about a race's field as a
+ * whole without naming anyone ("compare the candidates for me"). On a page
+ * with candidate/election context this counts as pointing at the page —
+ * askService applies context on it, and the members branch below fires from
+ * that context (docs/plans/chatbot-race-context-compare.md). Deliberately
+ * NOT merged into askService's DEICTIC_RE: these words are common enough
+ * that folding them into the general pronoun gate would let off-topic
+ * questions ride page chunks through the answerability gate. Word list
+ * stays short and literal — grow it only on demonstrated misses (same
+ * policy as classifyRaceQuestion). */
+export const RACE_COLLECTIVE_RE =
+  /\bcompare\b|\bdifferences?\b|\bthe candidates\b|\bwho(?:'s| is| else is)? running\b|\b(?:the|this|that|their) race\b|\beach other\b/i;
+
 /** Member ordering per question kind: the listing chunk always leads (it
  * names the field), then the source type the question is about. Applied in
  * the SQL ORDER BY (array_position, unlisted types last) — it must run
@@ -181,6 +194,11 @@ export type RetrievalResult = {
    * "State Representative" races). The members branch never fires on a tied
    * set; the caller should ask which district/place is meant. */
   raceTitleAmbiguous: boolean;
+  /** Non-empty when a race-collective question's page context resolved to
+   * MORE than one covered race (candidate on two November ballots): the tied
+   * races' listing-chunk titles, for the caller's clarification. No members
+   * were pulled — never compare across an arbitrary pick (rule 7). */
+  contextRaceAmbiguousTitles: string[];
   degradedToKeywordOnly: boolean;
 };
 
@@ -631,12 +649,35 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
         row.score >= topTitleMatch.score - RACE_TIE_SCORE_EPSILON &&
         (row.place_score ?? 0) >= (topTitleMatch.place_score ?? 0) - RACE_TIE_PLACE_MARGIN
     );
-  if (
+  // Context-driven activation (docs/plans/chatbot-race-context-compare.md):
+  // a race-collective question with page context resolves the race from the
+  // page itself — the election context directly, a candidate context via the
+  // election listing chunks the context branch already fetched (they are the
+  // candidate's own races; type-ordered first, so BRANCH_LIMIT never drops
+  // them). Two distinct races (candidate on two covered ballots) → surface
+  // their listing titles for a clarification instead of picking one (rule 7).
+  const contextRaceListings = RACE_COLLECTIVE_RE.test(question)
+    ? contextElectionId
+      ? contextRows.filter((row) => row.source_type === "election" && row.election_id === contextElectionId)
+      : contextRows.filter((row) => row.source_type === "election" && row.election_id !== null)
+    : [];
+  const contextRaceElectionIds = [...new Set(contextRaceListings.map((row) => row.election_id as string))];
+  const contextRaceAmbiguousTitles =
+    contextRaceElectionIds.length > 1 ? contextRaceListings.map((row) => row.title) : [];
+  // Context wins over a title match when both resolve (the viewed page is
+  // the stronger signal); an ambiguous context pulls no members at all —
+  // the caller clarifies before ranking matters.
+  const contextRaceElectionId = contextRaceElectionIds.length === 1 ? (contextRaceElectionIds[0] as string) : null;
+  const titleRaceElectionId =
+    contextRaceElectionIds.length === 0 &&
     topTitleMatch &&
     !raceTitleAmbiguous &&
     topTitleMatch.election_id &&
     (scopeState || (topTitleMatch.place_score ?? 0) >= RACE_MEMBERS_MIN_PLACE_SIMILARITY)
-  ) {
+      ? topTitleMatch.election_id
+      : null;
+  const memberElectionId = contextRaceElectionId ?? titleRaceElectionId;
+  if (memberElectionId) {
     const raceMembersResult = await db.query<ChunkRow>(
       `
         SELECT
@@ -667,7 +708,7 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
           chunk.id ASC
         LIMIT $3
       `,
-      [generationId, topTitleMatch.election_id, BRANCH_LIMIT, RACE_MEMBER_TYPE_ORDER[raceQuestionKind]]
+      [generationId, memberElectionId, BRANCH_LIMIT, RACE_MEMBER_TYPE_ORDER[raceQuestionKind]]
     );
     raceMemberRows = raceMembersResult.rows;
   }
@@ -735,10 +776,15 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   // Non-context chunks survive only on real evidence — a matched entity's
   // chunk or a gate-strength cosine hit.
   const entityIdSet = new Set(entityIds);
+  // Context-driven members are deliberate evidence, not co-match filler:
+  // without this exemption the opponents' chunks (contextRank Infinity, no
+  // entity match, low cosine) would be filtered out and a compare question
+  // would only ever see the viewed candidate.
   const contenders = [...merged.values()].filter(
     (entry) =>
       contextRows.length === 0 ||
       entry.contextRank !== Number.POSITIVE_INFINITY ||
+      (contextRaceElectionId !== null && entry.raceRank !== Number.POSITIVE_INFINITY) ||
       (entry.base.sourceId !== null && entityIdSet.has(entry.base.sourceId)) ||
       entry.cosineSimilarity >= GATE_MIN_COSINE
   );
@@ -769,11 +815,21 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
           0
         )
       : 0;
+  // Context-driven members INVERT the context-first precedence: a collective
+  // question is about the race's field, so the members ordering (listing,
+  // then the per-kind source type round-robined across candidates) is the
+  // right priority — under context-first, the viewed candidate's own chunk
+  // pile would fill the cap before any opponent appeared. The members set
+  // contains the viewed candidate's chunks too (same election_id), so
+  // nothing about the page is lost, and contextRank still breaks ties for
+  // page chunks the members LIMIT truncated away.
+  const raceContextPrecedence = contextRaceElectionId !== null && raceRankApplies;
   const chunks = contenders
     .sort(
       (a, b) =>
-        a.contextRank - b.contextRank ||
-        (raceRankApplies ? a.raceRank - b.raceRank : 0) ||
+        (raceContextPrecedence
+          ? a.raceRank - b.raceRank || a.contextRank - b.contextRank
+          : a.contextRank - b.contextRank || (raceRankApplies ? a.raceRank - b.raceRank : 0)) ||
         b.rrfScore - a.rrfScore ||
         a.base.id.localeCompare(b.base.id)
     )
@@ -802,6 +858,7 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
     bestEntitySimilarity,
     contextMatched: contextRows.length > 0,
     raceTitleAmbiguous,
+    contextRaceAmbiguousTitles,
     degradedToKeywordOnly,
   };
 }

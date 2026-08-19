@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { classifyRaceQuestion, expandOfficeAliases } from "../../src/chatbot/retrieval.js";
+import { classifyRaceQuestion, expandOfficeAliases, RACE_COLLECTIVE_RE } from "../../src/chatbot/retrieval.js";
 
 describe("expandOfficeAliases", () => {
   it("appends the corpus office phrase for common federal Senate phrasings", () => {
@@ -63,5 +63,25 @@ describe("classifyRaceQuestion", () => {
   it("classifies everything else neutral", () => {
     expect(classifyRaceQuestion("Who is running for US Senate in Georgia?")).toBe("neutral");
     expect(classifyRaceQuestion("Tell me about the Los Angeles mayor race")).toBe("neutral");
+  });
+});
+
+describe("RACE_COLLECTIVE_RE", () => {
+  it("matches questions about a race's field as a whole", () => {
+    expect(RACE_COLLECTIVE_RE.test("Compare the candidates for me.")).toBe(true);
+    expect(RACE_COLLECTIVE_RE.test("What are the differences between them?")).toBe(true);
+    expect(RACE_COLLECTIVE_RE.test("Who else is running?")).toBe(true);
+    expect(RACE_COLLECTIVE_RE.test("who's running")).toBe(true);
+    expect(RACE_COLLECTIVE_RE.test("Who has raised the most money in this race?")).toBe(true);
+    expect(RACE_COLLECTIVE_RE.test("How do they stack up against each other?")).toBe(true);
+  });
+
+  it("does not leak the answerability-gate bypass to off-topic questions", () => {
+    // These get page context applied if they match — so a match here means
+    // an off-topic question would pass the gate on the page's chunks.
+    expect(RACE_COLLECTIVE_RE.test("What will the weather be on election day?")).toBe(false);
+    expect(RACE_COLLECTIVE_RE.test("Who is Jon Ossoff?")).toBe(false);
+    expect(RACE_COLLECTIVE_RE.test("How do I contest a parking ticket in Atlanta?")).toBe(false);
+    expect(RACE_COLLECTIVE_RE.test("Is the racetrack referendum on the ballot?")).toBe(false);
   });
 });

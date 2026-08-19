@@ -10,7 +10,7 @@ import { LlmError, type GenerateAnswerResult, type LlmClient } from "./adapter.j
 import { ANSWER_JSON_SCHEMA, SYSTEM_PROMPT, buildUserMessage } from "./prompt.js";
 
 // Hard output ceiling with reasoning headroom: verbosity is "low" and the
-// prompt caps answers at ~120 words (~200 tokens); the rest is headroom for
+// prompt caps answers at ~90 words (~150 tokens); the rest is headroom for
 // low-effort reasoning tokens, which bill as output. Also the budget
 // reservation's worst case (limits.ts).
 export const MAX_OUTPUT_TOKENS = 1_200;

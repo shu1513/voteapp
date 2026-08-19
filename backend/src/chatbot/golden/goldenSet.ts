@@ -60,6 +60,11 @@ export interface GoldenCase {
   expectedEntities?: readonly string[];
   /** Two-letter state the answer scope should resolve to, when determinate. */
   scopeState?: string;
+  /** Simulated viewed page (docs/plans/chatbot-race-context-compare.md): the
+   * eval resolves entityName to its chunk source_id in the active generation
+   * and passes it as the ask's page context. Candidate names must resolve to
+   * exactly one profile chunk, or the case fails. */
+  pageContext?: { kind: "candidate" | "election"; entityName: string };
   notes?: string;
 }
 
@@ -213,6 +218,18 @@ export const goldenSet: readonly GoldenCase[] = [
     expectedEntities: ["State House District 41"],
     scopeState: "GA",
   },
+  {
+    id: "election-context-compare",
+    category: "election",
+    question: "Compare the candidates for me.",
+    pageContext: { kind: "candidate", entityName: "Jon Ossoff" },
+    expected: "retrieval",
+    expectedSourceTypes: ["election", "candidate_profile"],
+    expectedEntities: ["Jon Ossoff", "Mike Collins", "Allen Buckley"],
+    scopeState: "GA",
+    notes:
+      "Race-collective question on a candidate page resolves the race from the page (docs/plans/chatbot-race-context-compare.md): every filer's profile must be retrieved, not just the viewed candidate's.",
+  },
 
   // ── Campaign finance ──────────────────────────────────────────────────
   {
@@ -245,6 +262,18 @@ export const goldenSet: readonly GoldenCase[] = [
     scopeState: "GA",
     notes:
       "Allowed comparison: equivalent data fields only (BEHAVIOR.md rule 2). Both sides must be retrieved.",
+  },
+  {
+    id: "finance-context-race-money",
+    category: "finance",
+    question: "Who has raised the most money in this race?",
+    pageContext: { kind: "candidate", entityName: "Jon Ossoff" },
+    expected: "retrieval",
+    expectedSourceTypes: ["election", "finance_summary"],
+    expectedEntities: ["Jon Ossoff", "Mike Collins"],
+    scopeState: "GA",
+    notes:
+      "Money-kind race question on a candidate page: the members branch must serve the race's finance summaries, not just the viewed candidate's.",
   },
   {
     id: "finance-strickland-cash",
@@ -601,6 +630,22 @@ export const goldenSet: readonly GoldenCase[] = [
     category: "out_of_scope",
     question: "What will the weather be on election day?",
     expected: "refuse_no_data",
+  },
+  {
+    id: "oos-weather-on-candidate-page",
+    category: "out_of_scope",
+    question: "What will the weather be on election day?",
+    pageContext: { kind: "candidate", entityName: "Jon Ossoff" },
+    expected: "refuse_no_data",
+    notes:
+      "Pins the race-collective matcher's boundary: an off-topic question asked FROM a candidate page must not ride the page's chunks through the gate.",
+  },
+  {
+    id: "oos-compare-no-context",
+    category: "out_of_scope",
+    question: "Compare the candidates.",
+    expected: "refuse_no_data",
+    notes: "Race-collective phrasing with no page context anywhere: there is no race to compare — refuse, don't guess.",
   },
   {
     id: "oos-parking-ticket",

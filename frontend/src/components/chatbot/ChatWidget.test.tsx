@@ -94,7 +94,12 @@ describe("reportTargetFromResults", () => {
 
 describe("starterQuestions", () => {
   it("tunes suggestions to the page being viewed", () => {
-    expect(starterQuestions({ kind: "candidate", id: "x" })).toContain("Tell me more about this candidate");
+    // Candidate pages get the generic chips: profile/record/finance chips
+    // were removed by request — those answers are already on the page.
+    expect(starterQuestions({ kind: "candidate", id: "x" })).toEqual([
+      "What can you do?",
+      "Which races affect issues I care about?",
+    ]);
     expect(starterQuestions({ kind: "election", id: "x" })).toContain("Who is running in this election?");
     // Exact list on purpose: the generic chips are deliberate product copy
     // (the ballot and election-date chips were removed by request).
@@ -116,6 +121,23 @@ describe("followUpQuestions", () => {
         "Tell me about the Georgia Senate race"
       )
     ).toEqual(["Who is running in this election?"]);
+  });
+
+  it("suppresses a chip the current page already answers", () => {
+    // Candidate profile pages show finance on-page → no funding chip there.
+    expect(followUpQuestions(RETRIEVAL_RESPONSE, "Who is Jon Ossoff?", { kind: "candidate", id: "x" })).toEqual([]);
+    const electionCited = {
+      ...RETRIEVAL_RESPONSE,
+      results: [
+        { title: "E", url: "/elections/11111111-1111-4111-9111-111111111111", snippet: "", source_type: "election" },
+      ],
+    };
+    // Election pages show the roster on-page → no roster chip there.
+    expect(followUpQuestions(electionCited, "Tell me about this race", { kind: "election", id: "x" })).toEqual([]);
+    // A different page kind keeps the chip.
+    expect(followUpQuestions(electionCited, "Tell me about this race", { kind: "candidate", id: "x" })).toEqual([
+      "Who is running in this election?",
+    ]);
   });
 
   it("never re-suggests a cited facet or the question just asked", () => {
@@ -309,19 +331,19 @@ describe("ChatWidget", () => {
 
   it("sends a starter chip as a question on click, then hides the chips", async () => {
     const user = userEvent.setup();
-    const { fetchMock } = renderWidgetAt("/candidates/44444444-4444-4444-a444-444444444444");
+    const { fetchMock } = renderWidgetAt("/elections/44444444-4444-4444-a444-444444444444");
     await user.click(await screen.findByRole("button", { name: "Open Ask" }));
-    await user.click(screen.getByRole("button", { name: "Tell me more about this candidate" }));
+    await user.click(screen.getByRole("button", { name: "Tell me more about this election" }));
 
     expect(await screen.findByText("Here's what our data has on that.")).toBeInTheDocument();
     const askCall = fetchMock.mock.calls.find(([input]) => String(input).includes("/api/chatbot/ask"));
     const body = JSON.parse((askCall as unknown as [string, RequestInit])[1].body as string);
     expect(body).toEqual({
-      question: "Tell me more about this candidate",
-      context: { candidate_id: "44444444-4444-4444-a444-444444444444" },
+      question: "Tell me more about this election",
+      context: { election_id: "44444444-4444-4444-a444-444444444444" },
     });
     // Chips only seed an empty chat.
-    expect(screen.queryByRole("button", { name: "Tell me more about this candidate" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Tell me more about this election" })).not.toBeInTheDocument();
   });
 
   it("bases chips on the CURRENT page even when an older context is remembered", async () => {
@@ -348,23 +370,27 @@ describe("ChatWidget", () => {
     await user.click(screen.getByRole("button", { name: "Ask" }));
 
     expect(await screen.findByText("Jon Ossoff is the incumbent US Senator from Georgia.")).toBeInTheDocument();
-    // One combined label line; the exact date rendering is timezone-local.
-    expect(screen.getByText(/AI-generated from our election data/)).toHaveTextContent(/Data current as of/);
+    // The disclosure is ONE static footer line (not repeated per answer),
+    // dated from the latest answer; the exact date rendering is
+    // timezone-local.
+    expect(screen.getByText(/AI answers from our election data/)).toHaveTextContent(/Data current as of/);
     // Report control attaches to the first cited entity.
     expect(screen.getByRole("button", { name: /report an issue with this ai answer/i })).toBeInTheDocument();
     // Sources still render as cards.
     expect(screen.getByRole("link", { name: /Jon Ossoff/ })).toBeInTheDocument();
   });
 
-  it("shows no AI label or report control on plain retrieval-card answers", async () => {
+  it("shows no report control or per-answer date on plain retrieval-card answers", async () => {
     const user = userEvent.setup();
     renderWidgetAt("/ballot");
     await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    // The footer disclosure is undated before any answer arrives.
+    expect(screen.getByText(/AI answers from our election data/)).not.toHaveTextContent(/Data current as of/);
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
     expect(await screen.findByText("Here's what our data has on that.")).toBeInTheDocument();
-    expect(screen.queryByText(/AI-generated/)).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /report an issue/i })).not.toBeInTheDocument();
+    // Retrieval answers date the footer line too.
     expect(screen.getByText(/Data current as of/)).toBeInTheDocument();
   });
 
@@ -505,9 +531,8 @@ describe("ChatWidget", () => {
     await user.click(await screen.findByRole("button", { name: "Open Ask" }));
     await user.type(screen.getByLabelText("Your question"), "Who is Jon Ossoff?");
     await user.click(screen.getByRole("button", { name: "Ask" }));
-    await screen.findByText(/AI-generated from our election data/);
 
-    await user.click(screen.getByRole("button", { name: /report an issue with this ai answer/i }));
+    await user.click(await screen.findByRole("button", { name: /report an issue with this ai answer/i }));
     await user.type(screen.getByLabelText("Details"), "The finance total looks stale.");
     await user.keyboard("{Escape}");
 

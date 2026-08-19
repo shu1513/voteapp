@@ -10,7 +10,7 @@
 
 import { Pool } from "pg";
 
-import { createAskService } from "../chatbot/askService.js";
+import { createAskService, type AskContext } from "../chatbot/askService.js";
 import { readChatbotEmbeddingsFromEnv } from "../chatbot/chatbotConfig.js";
 import { createEmbeddingsClient } from "../chatbot/embeddingsClient.js";
 import { goldenSet, type GoldenCase } from "../chatbot/golden/goldenSet.js";
@@ -29,6 +29,34 @@ type CaseResult = {
 function chunkReferencesEntity(chunk: RetrievedChunk, entity: string): boolean {
   const needle = entity.toLowerCase();
   return chunk.title.toLowerCase().includes(needle) || chunk.content.toLowerCase().includes(needle);
+}
+
+/** Resolve a golden case's simulated viewed page to a real ask context: the
+ * entity name must match exactly one source in the active generation (chunk
+ * titles are "<name> — candidate, …" / "<race title> — …"). null → the case
+ * fails with a diagnostic instead of silently running context-free. */
+async function resolvePageContext(
+  pool: Pool,
+  generationId: string,
+  pageContext: NonNullable<GoldenCase["pageContext"]>
+): Promise<AskContext | null> {
+  const result = await pool.query<{ source_id: string }>(
+    `
+      SELECT DISTINCT chunk.source_id::text AS source_id
+      FROM chatbot.chunks AS chunk
+      WHERE chunk.generation_id = $1::uuid
+        AND chunk.source_type = $2
+        AND chunk.title ILIKE $3
+      LIMIT 2
+    `,
+    [
+      generationId,
+      pageContext.kind === "candidate" ? "candidate_profile" : "election",
+      pageContext.kind === "candidate" ? `${pageContext.entityName} — candidate,%` : `${pageContext.entityName}%`,
+    ]
+  );
+  const first = result.rows[0]?.source_id;
+  return first !== undefined && result.rows.length === 1 ? { kind: pageContext.kind, id: first } : null;
 }
 
 async function main(): Promise<void> {
@@ -117,7 +145,20 @@ async function evaluateCase(
   askService: ReturnType<typeof createAskService>,
   goldenCase: GoldenCase
 ): Promise<CaseResult> {
-  const response = await askService.ask(goldenCase.question, goldenCase.previousQuestion ?? null);
+  let pageContext: AskContext | null = null;
+  if (goldenCase.pageContext) {
+    pageContext = await resolvePageContext(pool, generationId, goldenCase.pageContext);
+    if (!pageContext) {
+      return {
+        id: goldenCase.id,
+        expected: goldenCase.expected,
+        actual: "error",
+        pass: false,
+        detail: `pageContext "${goldenCase.pageContext.entityName}" did not resolve to exactly one ${goldenCase.pageContext.kind}`,
+      };
+    }
+  }
+  const response = await askService.ask(goldenCase.question, goldenCase.previousQuestion ?? null, pageContext);
   const base = { id: goldenCase.id, expected: goldenCase.expected, actual: response.outcome };
 
   if (goldenCase.expected !== "retrieval") {
@@ -139,12 +180,18 @@ async function evaluateCase(
     scopeState = detectStateInQuestion(goldenCase.previousQuestion);
     retrievalText = `${goldenCase.question} ${goldenCase.previousQuestion}`;
   }
+  // Context rides into the recall re-run exactly as passed to ask: retrieval
+  // cases with pageContext use deictic/race-collective phrasing (the ask
+  // service applies context on those), so passing it unconditionally here
+  // stays in sync with what the ask actually saw.
   const retrieval = await retrieveChunks({
     db: pool,
     embeddings,
     generationId,
     question: retrievalText,
     scopeState,
+    contextCandidateId: pageContext?.kind === "candidate" ? pageContext.id : null,
+    contextElectionId: pageContext?.kind === "election" ? pageContext.id : null,
   });
   const expectedTypes = goldenCase.expectedSourceTypes ?? [];
   const missing: string[] = [];

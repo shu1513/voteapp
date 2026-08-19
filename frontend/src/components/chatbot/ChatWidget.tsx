@@ -35,12 +35,11 @@ export function contextFromPathname(pathname: string): ChatbotAskContext | null 
 }
 
 /** Tappable starter questions for an empty chat, tuned to the page being
- * viewed. Deictic phrasings on detail pages exercise the server's page
- * context ("this candidate" resolves to the profile being read). */
+ * viewed. Candidate pages get NO candidate-specific chips: the profile,
+ * record, and finance answers are already on the page, so chips repeating
+ * them are redundant — the generic chips below apply instead. Deictic
+ * phrasing on election pages exercises the server's page context. */
 export function starterQuestions(context: ChatbotAskContext | null): string[] {
-  if (context?.kind === "candidate") {
-    return ["Tell me more about this candidate", "What is their voting record?", "Who is funding their campaign?"];
-  }
   if (context?.kind === "election") {
     return ["Tell me more about this election", "Who is running in this election?"];
   }
@@ -112,14 +111,20 @@ type Turn = { question: string; response: ChatbotAskResponse };
  * cited candidates is fine on purpose: "their" reads as plural, and the
  * previous-question carry scopes retrieval to those candidates — the
  * roster-answer → race-wide-funding hop is the chip's best case, so no
- * exactly-one-candidate restriction. */
-export function followUpQuestions(response: ChatbotAskResponse, askedQuestion: string): string[] {
+ * exactly-one-candidate restriction. A third guard: a chip whose answer the
+ * CURRENT page already shows is redundant (funding on a candidate profile,
+ * the roster on an election page) — suppress it there. */
+export function followUpQuestions(
+  response: ChatbotAskResponse,
+  askedQuestion: string,
+  context: ChatbotAskContext | null = null
+): string[] {
   const cited = new Set(response.results.map((card) => card.source_type));
   const suggestions: string[] = [];
-  if (cited.has("candidate_profile") && !cited.has("finance_summary")) {
+  if (cited.has("candidate_profile") && !cited.has("finance_summary") && context?.kind !== "candidate") {
     suggestions.push("Who is funding their campaign?");
   }
-  if (cited.has("election")) {
+  if (cited.has("election") && context?.kind !== "election") {
     suggestions.push("Who is running in this election?");
   }
   const asked = askedQuestion.trim().toLowerCase();
@@ -212,31 +217,20 @@ function TurnView({ turn, reporterEmail }: { turn: Turn; reporterEmail: string |
           ))}
         </ul>
       )}
-      {isAi ? (
-        // BEHAVIOR.md rule 9: every AI answer is labeled, dated, and
-        // reportable. The report attaches to the first cited entity — the
-        // data behind the answer lives on that page.
-        <div className="mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
-          <p className="text-xs text-ink-soft">
-            AI-generated from our election data — may contain mistakes.
-            {turn.response.data_current_as_of &&
-              ` Data current as of ${formatDataCurrentAsOf(turn.response.data_current_as_of)}.`}
-          </p>
-          {reportTarget && (
-            <ReportContentButton
-              entityType={reportTarget.entityType}
-              entityId={reportTarget.entityId}
-              contextLabel="this AI answer"
-              reporterEmail={reporterEmail}
-            />
-          )}
+      {/* BEHAVIOR.md rule 9 (amended by request 2026-08-19): the AI label
+          and data-current date moved to ONE static line in the panel footer
+          — repeating them under every answer read as noise. The per-answer
+          report control stays: it attaches to the first cited entity, whose
+          page holds the data behind the answer. */}
+      {isAi && reportTarget && (
+        <div className="mt-1.5">
+          <ReportContentButton
+            entityType={reportTarget.entityType}
+            entityId={reportTarget.entityId}
+            contextLabel="this AI answer"
+            reporterEmail={reporterEmail}
+          />
         </div>
-      ) : (
-        turn.response.data_current_as_of && (
-          <p className="mt-1.5 text-xs text-ink-soft">
-            Data current as of {formatDataCurrentAsOf(turn.response.data_current_as_of)}. Verify with official sources.
-          </p>
-        )
       )}
       {turn.response.feedback_token && (
         <div className="mt-1.5">
@@ -311,6 +305,9 @@ function ChatWidgetSession() {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState("");
   const [turns, setTurns] = useState<Turn[]>([]);
+  // Latest dated answer feeds the single footer disclosure line.
+  const latestDataCurrentAsOf =
+    [...turns].reverse().find((turn) => turn.response.data_current_as_of)?.response.data_current_as_of ?? null;
   // The current or most recent candidate/election page this session — the
   // "what the user is looking at" the server resolves deictic questions
   // against. Kept after navigating away so "their record?" asked from the
@@ -520,7 +517,8 @@ function ChatWidgetSession() {
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {followUpQuestions(
                   (turns[turns.length - 1] as Turn).response,
-                  (turns[turns.length - 1] as Turn).question
+                  (turns[turns.length - 1] as Turn).question,
+                  contextFromPathname(location.pathname)
                 ).map((suggestion) => (
                   <button
                     key={suggestion}
@@ -557,7 +555,15 @@ function ChatWidgetSession() {
                 Ask
               </button>
             </div>
-            <p className="mt-1 px-0.5 text-[10px] leading-tight text-ink-soft">{CHATBOT_PRIVACY_NOTE}</p>
+            {/* BEHAVIOR.md rule 9: the AI-generated label and data-current
+                date live HERE, once per panel, instead of under every answer
+                (moved by request 2026-08-19 — per-answer repeats were noise).
+                The date is the latest answer's data_current_as_of. */}
+            <p className="mt-1 px-0.5 text-[10px] leading-tight text-ink-soft">
+              AI answers from our election data — may contain mistakes.
+              {latestDataCurrentAsOf && ` Data current as of ${formatDataCurrentAsOf(latestDataCurrentAsOf)}.`}{" "}
+              {CHATBOT_PRIVACY_NOTE}
+            </p>
           </form>
         </>
       )}
