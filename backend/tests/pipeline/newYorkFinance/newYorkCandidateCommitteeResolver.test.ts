@@ -105,6 +105,36 @@ describe("newYorkCandidateCommitteeResolver", () => {
     expect(resolution).toMatchObject({ status: "matched", candidateFilerId: "27197" });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it has to survive
+    // normalization as middle evidence on EITHER side of the comparison.
+    const resolve = (candidateName: string, filerName: string) =>
+      resolveNewYorkCandidateCommittee({
+        ...GOVERNOR_INPUT,
+        candidateName,
+        candidateFilers: [filer({ ...HOCHUL_CANDIDATE, filerName })],
+        committeeFilers: [HOCHUL_COMMITTEE],
+      });
+
+    expect(resolve("Kathy V. Hochul", "Hochul, Kathy C.")).toMatchObject({
+      status: "unmatched",
+      reason: "no_registered_candidate",
+    });
+    expect(resolve("Kathy C. Hochul", "Hochul, Kathy V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_registered_candidate",
+    });
+    expect(resolve("Kathy V. Hochul", "Hochul, Kathy V")).toMatchObject({
+      status: "matched",
+      candidateFilerId: "27197",
+    });
+    expect(resolve("Kathy Hochul", "Hochul, Kathy V")).toMatchObject({
+      status: "matched",
+      candidateFilerId: "27197",
+    });
+  });
+
   it("skips when several distinct registered candidates share the name", () => {
     const resolution = resolveNewYorkCandidateCommittee({
       ...GOVERNOR_INPUT,

@@ -112,6 +112,32 @@ describe("indianaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", committeeId: "500" });
   });
 
+  it("treats a bare trailing V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (shared GENERATIONAL_SUFFIX_RANK
+    // policy in finance/personNameMiddleEvidence.ts), so it must survive
+    // normalization as middle evidence on either side of the comparison.
+    const resolve = (candidateName: string, rowName: string) =>
+      resolveIndianaCandidateCommittee({
+        candidateName,
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "30",
+        electionYear: 2026,
+        contributionRows: [contribution({ FileNumber: "500", CandidateName: rowName })],
+      });
+
+    expect(resolve("John V. Smith", "John B. Smith")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("John B. Smith", "Smith, John V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("John V. Smith", "Smith, John V")).toMatchObject({ status: "matched", committeeId: "500" });
+    expect(resolve("John Smith", "Smith, John V")).toMatchObject({ status: "matched", committeeId: "500" });
+  });
+
   it("requires districts for Indiana legislative offices because contribution rows do not prove district", () => {
     expect(
       resolveIndianaCandidateCommittee({

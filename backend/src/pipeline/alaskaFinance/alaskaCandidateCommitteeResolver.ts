@@ -64,7 +64,9 @@ export type AlaskaCandidateNameKeyOptions = {
   expandNicknames?: boolean;
 };
 
-const NAME_SUFFIX_PATTERN = /^(?:JR|SR|II|III|IV|V)$/;
+// Bare "V" is a middle initial, not a suffix (GENERATIONAL_SUFFIX_RANK in
+// finance/personNameMiddleEvidence.ts): stripping it erased middle evidence.
+const NAME_SUFFIX_PATTERN = /^(?:JR|SR|II|III|IV)$/;
 const LAST_COMMA_FIRST_PATTERN = /^\s*([^,]+),\s*(.+?)\s*$/;
 
 // "Last, First M." -> "First M. Last"; non-comma names pass through.

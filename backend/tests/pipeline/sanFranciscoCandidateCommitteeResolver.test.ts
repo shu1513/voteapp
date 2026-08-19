@@ -80,6 +80,24 @@ describe("sanFranciscoCandidateNameMatches", () => {
     );
   });
 
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (the shared
+    // GENERATIONAL_SUFFIX_RANK policy deliberately excludes it), so it must
+    // stay as middle evidence on either side instead of being stripped.
+    expect(
+      sanFranciscoCandidateNameMatches("John V. Smith", "SMITH, JOHN B."),
+    ).toBe(false);
+    expect(
+      sanFranciscoCandidateNameMatches("John B. Smith", "SMITH, JOHN V"),
+    ).toBe(false);
+    expect(
+      sanFranciscoCandidateNameMatches("John V. Smith", "SMITH, JOHN V"),
+    ).toBe(true);
+    expect(
+      sanFranciscoCandidateNameMatches("John Smith", "SMITH, JOHN V"),
+    ).toBe(true);
+  });
+
   it("trusts the longest surname alignment for compound surnames", () => {
     // The bogus DYKE-surname split reads VAN-vs-B as a middle conflict; the
     // real VAN DYKE alignment is weak and must win.

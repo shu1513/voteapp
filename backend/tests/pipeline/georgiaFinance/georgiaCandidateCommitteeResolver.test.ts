@@ -87,6 +87,16 @@ describe("georgiaCandidateNameMatchesRowNames (middle-name evidence)", () => {
     expect(georgiaCandidateNameMatchesRowNames("John A. Smith", ["Smith, John B.", "John Smith"])).toBe(false);
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it must stay as
+    // middle evidence on either side instead of being stripped as a suffix.
+    expect(georgiaCandidateNameMatchesRowNames("John V. Smith", ["Smith, John B."])).toBe(false);
+    expect(georgiaCandidateNameMatchesRowNames("John B. Smith", ["Smith, John V"])).toBe(false);
+    expect(georgiaCandidateNameMatchesRowNames("John V. Smith", ["Smith, John V"])).toBe(true);
+    expect(georgiaCandidateNameMatchesRowNames("John Smith", ["Smith, John V"])).toBe(true);
+  });
+
   it("rejects a conflict past the first middle token", () => {
     // The MICHAEL agreement must not short-circuit before ANDREW-vs-BERNARD
     // is compared — every shared middle position carries evidence.

@@ -217,6 +217,25 @@ describe("michiganOutsideSpendingAggregator", () => {
     ).toMatchObject({ matchedExpenditureRowCount: 1, includedExpenditureRowCount: 1 });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so the resolver's
+    // normalizePersonName must keep it as middle evidence on EITHER side.
+    const matchedRows = (candidateName: string, target: string): number =>
+      aggregateMichiganOutsideSpending({
+        candidateName,
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2022,
+        expenditureRows: [expenditure({ can_or_ballot: target })],
+      }).matchedExpenditureRowCount;
+
+    expect(matchedRows("Gretchen V. Whitmer", "WHITMER, GRETCHEN B")).toBe(0);
+    expect(matchedRows("Gretchen B. Whitmer", "WHITMER, GRETCHEN V")).toBe(0);
+    expect(matchedRows("Gretchen V. Whitmer", "WHITMER, GRETCHEN V")).toBe(1);
+    expect(matchedRows("Gretchen Whitmer", "WHITMER, GRETCHEN V")).toBe(1);
+  });
+
   it("skips same-name outside spending for a different office", () => {
     const result = aggregateMichiganOutsideSpending({
       candidateName: "Gretchen Whitmer",

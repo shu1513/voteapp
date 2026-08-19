@@ -122,6 +122,43 @@ describe("coloradoCandidateCommitteeResolver", () => {
     ).toEqual({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it must stay as
+    // middle evidence on either side instead of being stripped as a suffix.
+    expect(
+      resolveColoradoCandidateCommittee({
+        candidateName: "Jane V. Doe",
+        electionYear: 2026,
+        contributionRows: [contribution({ CandidateName: "Doe, Jane R." })],
+      })
+    ).toEqual({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveColoradoCandidateCommittee({
+        candidateName: "Jane R. Doe",
+        electionYear: 2026,
+        contributionRows: [contribution({ CandidateName: "Doe, Jane V" })],
+      })
+    ).toEqual({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveColoradoCandidateCommittee({
+        candidateName: "Jane V. Doe",
+        electionYear: 2026,
+        contributionRows: [contribution({ CandidateName: "Doe, Jane V" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "202650001" });
+
+    expect(
+      resolveColoradoCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        contributionRows: [contribution({ CandidateName: "Doe, Jane V" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "202650001" });
+  });
+
   it("rejects a fallback row whose second middle name contradicts the candidate", () => {
     expect(
       resolveColoradoCandidateCommittee({

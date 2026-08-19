@@ -98,7 +98,9 @@ export function normalizePhoenixTextKey(
 
 function normalizePhoenixPersonName(value: string): string {
   return normalizePhoenixTextKey(value)
-    .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+    // Bare "V" is a middle initial, not a suffix (GENERATIONAL_SUFFIX_RANK in
+    // finance/personNameMiddleEvidence.ts): stripping it erased middle evidence.
+    .replace(/\b(JR|SR|II|III|IV)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -117,6 +119,8 @@ function firstNamesEquivalent(candidateFirst: string, rowFirst: string): boolean
 // Jr/Sr generational veto still sees it ("Maupin, Sr." must keep vetoing a
 // "Maupin Jr." candidate). Same local-rewrite pattern as the quoted
 // call-name rewrite below.
+// Keeps "V" on purpose: it only relocates the comma; the token still reaches
+// normalizePhoenixPersonName, which now keeps it as middle evidence.
 function rewriteCommaSuffix(name: string): string {
   return name.replace(/,(?=\s*(?:JR|SR|II|III|IV|V)\.?\s*$)/i, "");
 }

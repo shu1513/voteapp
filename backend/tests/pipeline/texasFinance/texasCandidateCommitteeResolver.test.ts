@@ -433,6 +433,51 @@ describe("texasCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched" });
   });
 
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Shared policy (GENERATIONAL_SUFFIX_RANK in finance/personNameMiddleEvidence.ts)
+    // deliberately excludes "V": it is far more often a middle initial than a
+    // fifth-generation suffix, so it must stay as middle evidence on either side.
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Greg V. Abbott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filer({ filerName: "ABBOTT, GREG B", filerNameFirst: "GREG", filerNameLast: "ABBOTT" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Greg B. Abbott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filer({ filerName: "ABBOTT, GREG V", filerNameFirst: "GREG", filerNameLast: "ABBOTT" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Greg V. Abbott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filer({ filerName: "ABBOTT, GREG V", filerNameFirst: "GREG", filerNameLast: "ABBOTT" })],
+      })
+    ).toMatchObject({ status: "matched", committeeName: "ABBOTT, GREG V" });
+
+    expect(
+      resolveTexasCandidateCommittee({
+        candidateName: "Greg Abbott",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filer({ filerName: "ABBOTT, GREG V", filerNameFirst: "GREG", filerNameLast: "ABBOTT" })],
+      })
+    ).toMatchObject({ status: "matched", committeeName: "ABBOTT, GREG V" });
+  });
+
   it("reads middle-name evidence through one-sided nickname expansion", () => {
     expect(
       resolveTexasCandidateCommittee({

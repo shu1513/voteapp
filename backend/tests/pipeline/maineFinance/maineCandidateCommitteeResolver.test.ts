@@ -223,6 +223,32 @@ describe("maineCandidateCommitteeResolver", () => {
     });
   });
 
+  it("treats a bare trailing V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (shared GENERATIONAL_SUFFIX_RANK
+    // policy in finance/personNameMiddleEvidence.ts), so it must survive
+    // normalization as middle evidence on either side of the comparison.
+    const resolve = (candidateName: string, rowName: string) =>
+      resolveMaineCandidateCommittee({
+        candidateName,
+        officeScope: "state_lower",
+        officeName: "Representative",
+        district: "37",
+        electionYear: 2024,
+        contributionRows: [contribution({ "Candidate Name": rowName })],
+      });
+
+    expect(resolve("John V. Smith", "Smith, John B.")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("John B. Smith", "Smith, John V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("John V. Smith", "Smith, John V")).toMatchObject({ status: "matched", committeeId: "1001" });
+    expect(resolve("John Smith", "Smith, John V")).toMatchObject({ status: "matched", committeeId: "1001" });
+  });
+
   it("returns unmatched for unsupported offices, missing names, missing districts, and nonmatches", () => {
     expect(
       resolveMaineCandidateCommittee({

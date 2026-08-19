@@ -113,6 +113,51 @@ describe("virginiaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Shared policy (GENERATIONAL_SUFFIX_RANK in finance/personNameMiddleEvidence.ts)
+    // deliberately excludes "V": it is far more often a middle initial than a
+    // fifth-generation suffix, so it must stay as middle evidence on either side.
+    expect(
+      resolveVirginiaCandidateCommittee({
+        candidateName: "Abigail V. Spanberger",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        committeeResults: [committee({ committeeId: "other", candidateName: "Spanberger, Abigail B." })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveVirginiaCandidateCommittee({
+        candidateName: "Abigail B. Spanberger",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        committeeResults: [committee({ committeeId: "other", candidateName: "Spanberger, Abigail V" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveVirginiaCandidateCommittee({
+        candidateName: "Abigail V. Spanberger",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        committeeResults: [committee({ committeeId: "other", candidateName: "Spanberger, Abigail V" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "other" });
+
+    expect(
+      resolveVirginiaCandidateCommittee({
+        candidateName: "Abigail Spanberger",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        committeeResults: [committee({ committeeId: "other", candidateName: "Spanberger, Abigail V" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "other" });
+  });
+
   it("matches exactly one Virginia candidate committee by name and eligible office", () => {
     expect(
       resolveVirginiaCandidateCommittee({

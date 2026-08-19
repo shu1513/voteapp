@@ -95,6 +95,51 @@ describe("washingtonCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Shared policy (GENERATIONAL_SUFFIX_RANK in finance/personNameMiddleEvidence.ts)
+    // deliberately excludes "V": it is far more often a middle initial than a
+    // fifth-generation suffix, so it must stay as middle evidence on either side.
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Robert V. Ferguson",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        summaries: [summary({ filerId: "FERGB--024", committeeId: "36704", filerName: "Ferguson, Robert B." })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Robert B. Ferguson",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        summaries: [summary({ filerId: "FERGB--024", committeeId: "36704", filerName: "Ferguson, Robert V" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Robert V. Ferguson",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        summaries: [summary({ filerId: "FERGB--024", committeeId: "36704", filerName: "Ferguson, Robert V" })],
+      })
+    ).toMatchObject({ status: "matched", filerId: "FERGB--024" });
+
+    expect(
+      resolveWashingtonCandidateCommittee({
+        candidateName: "Robert Ferguson",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2024,
+        summaries: [summary({ filerId: "FERGB--024", committeeId: "36704", filerName: "Ferguson, Robert V" })],
+      })
+    ).toMatchObject({ status: "matched", filerId: "FERGB--024" });
+  });
+
   it("matches exactly one active Washington candidate committee by public parenthetical name", () => {
     expect(
       resolveWashingtonCandidateCommittee({

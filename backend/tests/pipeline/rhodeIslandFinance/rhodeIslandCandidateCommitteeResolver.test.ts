@@ -67,6 +67,16 @@ describe("rhodeIslandOrganizationNameMatchesCandidate", () => {
     expect(rhodeIslandOrganizationNameMatchesCandidate("TIMOTHY L MCKEE", "Daniel McKee")).toBe(false);
   });
 
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (the shared
+    // GENERATIONAL_SUFFIX_RANK policy deliberately excludes it), so it must
+    // stay as middle evidence on either side instead of being stripped.
+    expect(rhodeIslandOrganizationNameMatchesCandidate("MCKEE, DANIEL B", "Daniel V. McKee")).toBe(false);
+    expect(rhodeIslandOrganizationNameMatchesCandidate("MCKEE, DANIEL V", "Daniel B. McKee")).toBe(false);
+    expect(rhodeIslandOrganizationNameMatchesCandidate("MCKEE, DANIEL V", "Daniel V. McKee")).toBe(true);
+    expect(rhodeIslandOrganizationNameMatchesCandidate("MCKEE, DANIEL V", "Daniel McKee")).toBe(true);
+  });
+
   it("never matches a committee-style name by substring", () => {
     expect(rhodeIslandOrganizationNameMatchesCandidate("FRIENDS OF DANIEL MCKEE", "Daniel McKee")).toBe(false);
   });

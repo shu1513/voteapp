@@ -115,6 +115,32 @@ describe("nebraskaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", committeeId: "1001" });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it has to survive
+    // normalization as middle evidence on EITHER side of the comparison.
+    const resolve = (candidateName: string, rowCandidateName: string) =>
+      resolveNebraskaCandidateCommittee({
+        candidateName,
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "30",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Name": rowCandidateName })],
+      });
+
+    expect(resolve("Rick V. Vest", "VEST, RICK J.")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("Rick J. Vest", "VEST, RICK V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("Rick V. Vest", "VEST, RICK V")).toMatchObject({ status: "matched", committeeId: "1001" });
+    expect(resolve("Rick Vest", "VEST, RICK V")).toMatchObject({ status: "matched", committeeId: "1001" });
+  });
+
   it("matches safe statewide offices", () => {
     expect(
       resolveNebraskaCandidateCommittee({

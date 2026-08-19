@@ -102,7 +102,9 @@ function normalizeTextKey(value: string | null | undefined): string {
 
 function normalizePersonName(value: string | null | undefined): string {
   return normalizeTextKey(value)
-    .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+    // Bare "V" is a middle initial, not a suffix (GENERATIONAL_SUFFIX_RANK in
+    // finance/personNameMiddleEvidence.ts): stripping it erased middle evidence.
+    .replace(/\b(JR|SR|II|III|IV)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -278,6 +280,8 @@ function isLegislativeInput(input: { officeScope: string; officeName: string }):
   );
 }
 
+// Search-query trim only (no middle evidence): keeps "V" so a real "John
+// Smith V" still searches by surname SMITH, not V.
 const SEARCH_NAME_SUFFIX_PATTERN = /^(?:JR|SR|II|III|IV|V)\.?$/i;
 
 export function splitIllinoisCandidateNameForSearch(

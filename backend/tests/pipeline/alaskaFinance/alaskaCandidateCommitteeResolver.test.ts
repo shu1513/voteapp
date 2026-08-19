@@ -352,6 +352,43 @@ describe("alaskaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it must stay as
+    // middle evidence on either side instead of being stripped as a suffix.
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane V. Doe",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Doe, Jane B", name: "Doe, Jane B" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane B. Doe",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Doe, Jane V", name: "Doe, Jane V" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane V. Doe",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Doe, Jane V", name: "Doe, Jane V" })],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "1001" });
+
+    expect(
+      resolveAlaskaCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2026,
+        incomeRows: [income({ filerName: "Doe, Jane V", name: "Doe, Jane V" })],
+      })
+    ).toMatchObject({ status: "matched", candidateFilerId: "1001" });
+  });
+
   it("reads middle-name evidence through one-sided nickname expansion", () => {
     const rows = [
       income({

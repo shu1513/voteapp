@@ -74,7 +74,9 @@ function normalizeTextKey(value: string | null | undefined): string {
 
 function normalizePersonName(value: string | null | undefined): string {
   return normalizeTextKey(value)
-    .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+    // Bare "V" is a middle initial, not a suffix (GENERATIONAL_SUFFIX_RANK in
+    // finance/personNameMiddleEvidence.ts): stripping it erased middle evidence.
+    .replace(/\b(JR|SR|II|III|IV)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -221,7 +223,10 @@ type PersonNameParts = {
   suffix: string | null;
 };
 
-const NAME_SUFFIX_TOKENS = new Set(["JR", "SR", "II", "III", "IV", "V"]);
+// Bare "V" is a middle initial, not a suffix (GENERATIONAL_SUFFIX_RANK in
+// finance/personNameMiddleEvidence.ts): as a suffix token it left "Smith,
+// John V" with no middle evidence against "John B. Smith".
+const NAME_SUFFIX_TOKENS = new Set(["JR", "SR", "II", "III", "IV"]);
 
 // Parses a name into first / middles / last / suffix on the same comma-flip
 // and parenthetical rules the key generator uses, but WITHOUT discarding the

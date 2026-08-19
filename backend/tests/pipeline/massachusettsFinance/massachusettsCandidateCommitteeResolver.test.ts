@@ -152,6 +152,37 @@ describe("massachusettsCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it has to survive
+    // normalization as middle evidence on EITHER side of the comparison.
+    const resolve = (candidateName: string, filerName: string, filerNameReverse: string) =>
+      resolveMassachusettsCandidateCommittee({
+        candidateName,
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filers: [filer({ cpfId: "30001", filerName, filerNameReverse, committeeName: "Smith Committee" })],
+      });
+
+    expect(resolve("John V. Smith", "John B. Smith", "Smith, John B.")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("John B. Smith", "John V. Smith", "Smith, John V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("John V. Smith", "John V. Smith", "Smith, John V")).toMatchObject({
+      status: "matched",
+      candidateCpfId: "30001",
+    });
+    expect(resolve("John Smith", "John V. Smith", "Smith, John V")).toMatchObject({
+      status: "matched",
+      candidateCpfId: "30001",
+    });
+  });
+
   it("matches legislative filers only when expected district matches", () => {
     expect(
       resolveMassachusettsCandidateCommittee({

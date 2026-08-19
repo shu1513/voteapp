@@ -117,6 +117,34 @@ describe("hawaiiCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", committeeId: "CC30001" });
   });
 
+  it("treats a bare trailing V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (shared GENERATIONAL_SUFFIX_RANK
+    // policy in finance/personNameMiddleEvidence.ts), so it must survive
+    // normalization as middle evidence on either side of the comparison.
+    const resolve = (candidateName: string, summaryName: string) =>
+      resolveHawaiiCandidateCommittee({
+        candidateName,
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2022,
+        summaries: [summary({ candidateName: summaryName, committeeId: "CC30001" })],
+      });
+
+    expect(resolve("John V. Smith", "John B. Smith")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("John B. Smith", "Smith, John V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("John V. Smith", "Smith, John V")).toMatchObject({ status: "matched", committeeId: "CC30001" });
+    // Plain form here (not "Smith, John V"): the Hawaii key builder emits no
+    // first+last key for a three-token comma name, so the key prefilter would
+    // reject before the middle gate ever runs — the same for "Smith, John B.".
+    expect(resolve("John Smith", "John V. Smith")).toMatchObject({ status: "matched", committeeId: "CC30001" });
+  });
+
   it("requires districts for legislative offices", () => {
     expect(
       resolveHawaiiCandidateCommittee({

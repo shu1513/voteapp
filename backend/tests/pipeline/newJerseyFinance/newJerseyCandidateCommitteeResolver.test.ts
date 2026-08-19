@@ -139,6 +139,37 @@ describe("newJerseyCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_entity_match" });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it has to survive
+    // normalization as middle evidence on EITHER side of the comparison.
+    const resolve = (candidateName: string, entityName: string, firstName: string) =>
+      resolveNewJerseyCandidateCommittee({
+        candidateName,
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2025,
+        entityRows: [entity({ entityS: 500001, entityName, firstName, lastName: "Smith" })],
+      });
+
+    expect(resolve("John V. Smith", "SMITH, JOHN B", "John B")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_entity_match",
+    });
+    expect(resolve("John B. Smith", "SMITH, JOHN V", "John V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_entity_match",
+    });
+    expect(resolve("John V. Smith", "SMITH, JOHN V", "John V")).toMatchObject({
+      status: "matched",
+      entityS: 500001,
+    });
+    expect(resolve("John Smith", "SMITH, JOHN V", "John V")).toMatchObject({
+      status: "matched",
+      entityS: 500001,
+    });
+  });
+
   it("reads middle evidence from the structured middleInitial column", () => {
     // entityName and firstName carry no middle at all — only the ELEC
     // MIDDLE_INITIAL column does. Before it was wired in, this entity

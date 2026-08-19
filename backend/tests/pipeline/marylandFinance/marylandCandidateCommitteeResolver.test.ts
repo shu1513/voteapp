@@ -195,6 +195,36 @@ describe("marylandCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", committeeId: "16018290" });
   });
 
+  it("treats a bare trailing V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (shared GENERATIONAL_SUFFIX_RANK
+    // policy in finance/personNameMiddleEvidence.ts), so it must survive
+    // normalization as middle evidence on either side of the comparison.
+    const resolve = (candidateName: string, rowMiddleName: string) =>
+      resolveMarylandCandidateCommittee({
+        candidateName,
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committeeRows: [
+          committee({
+            "Office Sought": "Governor",
+            "Candidate Middle Name": rowMiddleName,
+          }),
+        ],
+      });
+
+    expect(resolve("Justin V. Gallucci", "M.")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("Justin M. Gallucci", "V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("Justin V. Gallucci", "V")).toMatchObject({ status: "matched", committeeId: "16018290" });
+    expect(resolve("Justin Gallucci", "V")).toMatchObject({ status: "matched", committeeId: "16018290" });
+  });
+
   it("lets a middle conflict veto a committee-name match on the same row", () => {
     // The committee name carries the middle-less "Friends of Justin Gallucci"
     // alias, but the row's own candidate fields name a different person.

@@ -254,6 +254,24 @@ describe("kentuckyOutsideSpendingAggregator", () => {
     expect(result.summary?.supportTotal).toBe(2500);
   });
 
+  it("treats a bare trailing V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (shared GENERATIONAL_SUFFIX_RANK
+    // policy in finance/personNameMiddleEvidence.ts), so it must survive
+    // normalization as middle evidence on either side of the comparison.
+    const aggregate = (candidateName: string, rowName: string) =>
+      aggregateKentuckyOutsideSpending({
+        candidateName,
+        electionDate: "11/7/2023",
+        officeOrBallotMeasure: "Governor",
+        expenditureRecords: [expenditure({ candidateName: rowName, amount: 2500 })],
+      });
+
+    expect(aggregate("John V. Smith", "Smith, John B.").matchedExpenditureRowCount).toBe(0);
+    expect(aggregate("John B. Smith", "Smith, John V").matchedExpenditureRowCount).toBe(0);
+    expect(aggregate("John V. Smith", "Smith, John V").matchedExpenditureRowCount).toBe(1);
+    expect(aggregate("John Smith", "Smith, John V").matchedExpenditureRowCount).toBe(1);
+  });
+
   it("keeps the candidate's own outside spending while vetoing the conflicting sibling's rows", () => {
     const result = aggregateKentuckyOutsideSpending({
       candidateName: "John A. Smith",

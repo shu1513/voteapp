@@ -90,6 +90,51 @@ describe("wisconsinCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Shared policy (GENERATIONAL_SUFFIX_RANK in finance/personNameMiddleEvidence.ts)
+    // deliberately excludes "V": it is far more often a middle initial than a
+    // fifth-generation suffix, so it must stay as middle evidence on either side.
+    expect(
+      resolveWisconsinCandidateCommittee({
+        candidateName: "Thomas V. Tiffany",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committees: [committee({ candidateNames: ["Tiffany, Thomas J."] })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveWisconsinCandidateCommittee({
+        candidateName: "Thomas J. Tiffany",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committees: [committee({ candidateNames: ["Tiffany, Thomas V"] })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveWisconsinCandidateCommittee({
+        candidateName: "Thomas V. Tiffany",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committees: [committee({ candidateNames: ["Tiffany, Thomas V"] })],
+      })
+    ).toMatchObject({ status: "matched", entityId: "16621" });
+
+    expect(
+      resolveWisconsinCandidateCommittee({
+        candidateName: "Thomas Tiffany",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        committees: [committee({ candidateNames: ["Tiffany, Thomas V"] })],
+      })
+    ).toMatchObject({ status: "matched", entityId: "16621" });
+  });
+
   it("matches exactly one active Wisconsin state candidate committee by candidate connection name", () => {
     expect(
       resolveWisconsinCandidateCommittee({
