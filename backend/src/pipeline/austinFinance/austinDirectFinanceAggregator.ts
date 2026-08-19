@@ -116,6 +116,13 @@ export function aggregateAustinDirectFinance(input: {
   const inCycle = (row: AustinReportDetailRow): boolean =>
     row.electionDate === input.electionDate &&
     parseAustinOfficeSoughtCode(row.officeSought) === input.officeCode;
+  // Supersession runs over ALL of the filer's reports BEFORE the cycle
+  // filter, on purpose: a report is filed per filer and period, not per
+  // race, so the only way one period can carry two election tags is a
+  // correction that re-tagged it — and then the correction must win and the
+  // original must count nowhere. Filtering first would make both effective,
+  // one per race, and count the same money twice. (Live 2026-08-19: no
+  // (filer, period) group in Report Detail carries two tags or offices.)
   const selection = selectAustinEffectiveReports(input.reports);
   const cycleReports = selection.effective.filter(inCycle);
   const keptSpecialReports = selection.keptSpecial.filter(inCycle);
