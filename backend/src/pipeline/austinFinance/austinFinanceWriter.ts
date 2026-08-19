@@ -11,8 +11,10 @@
 // name (austinFinanceKeys.ts) and is DERIVED here from filer_name, so a
 // caller can never pair a key with a name it did not come from; filer_name
 // keeps the exact Socrata spelling because the sync queries Report Detail
-// with `filer_name = '<that string>'`. Outside spenders are the same story
-// (spender_key derived from spender_name).
+// with `filer_name = '<that string>'` — so a matching automatic write
+// refreshes it even on a protected manual link (a source spelling is known
+// to exist; an operator-typed one may not). Outside spenders are the same
+// story (spender_key derived from spender_name).
 //
 // Snapshot semantics: the caller stages every component and calls
 // replaceAustinCandidateFinanceSnapshot only when all of them passed
@@ -161,11 +163,16 @@ export async function upsertAustinFinanceLink(input: {
           "Austin automatic finance link matches an operator-disabled manual link",
         );
       // An exact filer match IS a Socrata verification of the manual link:
-      // advance last_verified_at and nothing else — the row (including the
-      // operator's filer_name spelling) stays the operator's.
+      // refresh filer_name to the source spelling and advance
+      // last_verified_at — and nothing else, the row stays the operator's.
+      // filer_name is the sync's exact-match query key, not operator
+      // judgment (the identity they chose is the key, which matched): an
+      // automatic spelling comes from Report Detail rows and is known to
+      // exist there, an operator-typed one ("Watson Kirk P") may not — same
+      // reasoning as Denver refreshing entity ids on a protected row.
       await input.db.query(
-        `UPDATE public.atx_candidate_finance_links SET last_verified_at=COALESCE($2::timestamptz,last_verified_at) WHERE id=$1::uuid`,
-        [sameFiler.id, link.lastVerifiedAt?.toISOString() ?? null],
+        `UPDATE public.atx_candidate_finance_links SET filer_name=$2,last_verified_at=COALESCE($3::timestamptz,last_verified_at) WHERE id=$1::uuid`,
+        [sameFiler.id, filerName, link.lastVerifiedAt?.toISOString() ?? null],
       );
       return { linkId: sameFiler.id };
     }

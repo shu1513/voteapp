@@ -143,17 +143,23 @@ describe("Austin finance writer", () => {
     const summaryCall = query.mock.calls.find((call) =>
       String(call[0]).includes("atx_candidate_finance_summaries"),
     );
-    // Cents → exact dollar strings, never floats: receipts, direct,
-    // disbursements, signed cash, outside support/oppose.
-    expect(summaryCall?.[1]).toEqual(
-      expect.arrayContaining([
-        "1047729.90",
-        "1075980.85",
-        "-123.45",
-        "214199.20",
-        "0.00",
-      ]),
-    );
+    // Cents → exact dollar strings, never floats, asserted POSITIONALLY in
+    // the INSERT's column order (link_id, election_year, total_receipts,
+    // direct_contribution_total, total_disbursements, cash_on_hand,
+    // outside_support_total, outside_oppose_total, source_url,
+    // last_synced_at) so a swapped column pair cannot pass.
+    expect(summaryCall?.[1]).toEqual([
+      "link-1",
+      2024,
+      "1047729.90",
+      "1047729.90",
+      "1075980.85",
+      "-123.45",
+      "214199.20",
+      "0.00",
+      "https://data.austintexas.gov/d/b2pc-2s8n",
+      expect.any(String),
+    ]);
     // The link write carries the derived key AND the exact source spelling.
     const linkCall = query.mock.calls.find((call) =>
       String(call[0]).startsWith("INSERT INTO public.atx_candidate_finance_links"),
@@ -328,7 +334,7 @@ describe("Austin finance writer", () => {
     ).rejects.toThrow(/contributor count must be a nonnegative integer/);
   });
 
-  it("reuses a matching protected manual link, refreshing only last_verified_at", async () => {
+  it("reuses a matching protected manual link, refreshing filer_name and last_verified_at only", async () => {
     const query = queryMock((sql) =>
       sql.startsWith("SELECT id::text,filer_key")
         ? {
@@ -351,14 +357,23 @@ describe("Austin finance writer", () => {
     });
     expect(result.linkId).toBe("manual-1");
     const sql = query.mock.calls.map((call) => String(call[0]));
-    // Only the manual probe and the last_verified_at touch — never an
-    // INSERT that would rewrite the operator's row or its filer_name.
+    // Only the manual probe and the filer_name/last_verified_at touch —
+    // never an INSERT that would rewrite the operator's row. filer_name IS
+    // refreshed: it is the sync's exact-match query key, and the automatic
+    // spelling is the one known to exist in Socrata.
     expect(sql.some((s) => s.startsWith("INSERT INTO"))).toBe(false);
     const touch = query.mock.calls.find((call) =>
-      String(call[0]).includes("SET last_verified_at"),
+      String(call[0]).includes("SET filer_name"),
     );
-    expect(String(touch?.[0])).not.toContain("filer_name");
-    expect(touch?.[1]).toEqual(["manual-1", verifiedAt.toISOString()]);
+    expect(String(touch?.[0])).toMatch(
+      /^UPDATE public\.atx_candidate_finance_links SET filer_name=\$2,last_verified_at=/,
+    );
+    expect(String(touch?.[0])).not.toMatch(/link_status|link_source|office_name|district|source_url/);
+    expect(touch?.[1]).toEqual([
+      "manual-1",
+      "WATSON, KIRK P",
+      verifiedAt.toISOString(),
+    ]);
   });
 
   it("errors when an automatic link conflicts with a protected manual link", async () => {
@@ -401,7 +416,7 @@ describe("Austin finance writer", () => {
       ).rejects.toThrow(/matches an operator-disabled manual link/);
       const sql = query.mock.calls.map((call) => String(call[0]));
       expect(sql.some((s) => s.startsWith("INSERT INTO"))).toBe(false);
-      expect(sql.some((s) => s.includes("SET last_verified_at"))).toBe(false);
+      expect(sql.some((s) => s.includes("SET filer_name"))).toBe(false);
     }
   });
 
