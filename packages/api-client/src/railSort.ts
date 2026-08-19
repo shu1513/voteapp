@@ -1,5 +1,5 @@
 import type { ResearchAreaWeight } from "./researchAreaScoring";
-import { UNRANKED_RESEARCH_AREA_RANK } from "./researchAreaScoring";
+import { NO_MATCH_BEST_RANK } from "./researchAreaScoring";
 
 // The detail rail's client-side re-sort of its nav-state snapshot. Mirrors
 // backend/src/pipeline/address/ballotElectionOrdering.ts compareBySort the
@@ -74,7 +74,7 @@ export function railSortsOffered(entries: RailSortEntry[], hasSavedAreas: boolea
 
 type AreaMatch = { score: number; bestRank: number };
 
-const NO_MATCH: AreaMatch = { score: 0, bestRank: UNRANKED_RESEARCH_AREA_RANK + 1 };
+const NO_MATCH: AreaMatch = { score: 0, bestRank: NO_MATCH_BEST_RANK };
 
 // Mirror of the backend's scoreResearchAreaMatch: summed weights of matched
 // unique areas, best (lowest) matched rank for the tiebreak.

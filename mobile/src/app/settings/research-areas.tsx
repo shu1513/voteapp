@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import type { ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteapp/api-client";
-import { apiRequest, MAX_RESEARCH_AREA_RANK, sortByResearchAreaPriority } from "@voteapp/api-client";
+import { apiRequest, sortByResearchAreaPriority } from "@voteapp/api-client";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { useState } from "react";
@@ -76,7 +76,6 @@ function ResearchAreasBody() {
   // Server order is rank ASC NULLS LAST, so it is the editor order directly.
   const orderedIds = pending ?? prefs.data.preferences.map((preference) => preference.research_area_id);
   const selectedSet = new Set(orderedIds);
-  const atCapacity = orderedIds.length >= MAX_RESEARCH_AREA_RANK;
 
   function save(nextIds: string[]) {
     // Checked against the mutation cache, not the rendered `saving` value: a
@@ -137,27 +136,23 @@ function ResearchAreasBody() {
           })}
         </View>
       ) : (
-        <Text className="mt-3 text-sm text-ink-soft">
-          Nothing selected yet — pick up to {MAX_RESEARCH_AREA_RANK} below.
-        </Text>
+        <Text className="mt-3 text-sm text-ink-soft">Nothing selected yet — pick below.</Text>
       )}
 
       <Text className="mt-6 text-sm font-medium text-ink">
         Add issues{" "}
-        <Text className="font-normal text-ink-soft">
-          ({orderedIds.length}/{MAX_RESEARCH_AREA_RANK})
-        </Text>
+        <Text className="font-normal text-ink-soft">({orderedIds.length} selected)</Text>
       </Text>
       <View className="mt-2 flex-row flex-wrap gap-2">
         {sortByResearchAreaPriority(catalog.data.research_areas.filter((area) => !selectedSet.has(area.id))).map(
           (area) => (
             <Pressable
               key={area.id}
-              disabled={saving || atCapacity}
+              disabled={saving}
               onPress={() => save([...orderedIds, area.id])}
               accessibilityRole="button"
               className={
-                saving || atCapacity
+                saving
                   ? "rounded-lg border border-line bg-white px-3 py-1.5 opacity-50"
                   : "rounded-lg border border-line bg-white px-3 py-1.5 active:border-rausch"
               }

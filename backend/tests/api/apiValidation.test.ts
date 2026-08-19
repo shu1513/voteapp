@@ -11,7 +11,6 @@ import {
   CANDIDATE_DETAIL_PATH_PREFIX,
   ME_CANDIDATE_FOLLOWS_PATH,
   ME_ELECTION_CHOICES_PATH,
-  MAX_USER_RESEARCH_AREA_PREFERENCES,
   MAX_ADDRESS_INPUT_LENGTH,
   MAX_AUTH_EMAIL_LENGTH,
   MAX_FIRST_NAME_LENGTH,
@@ -437,10 +436,6 @@ describe("research area API contract constants", () => {
     expect(ME_RESEARCH_AREA_PREFERENCES_PATH).toBe("/api/me/research-area-preferences");
   });
 
-  it("exposes the shared maximum user preference count", () => {
-    expect(MAX_USER_RESEARCH_AREA_PREFERENCES).toBe(7);
-  });
-
   it("parses research area preference payloads into pipeline inputs", () => {
     expect(
       parseResearchAreaPreferencesBodyValue({
@@ -455,6 +450,32 @@ describe("research area API contract constants", () => {
         { researchAreaId: "33333333-3333-4333-8333-333333333333", rank: null },
       ],
     });
+  });
+
+  it("passes direction and hard_veto through, and leaves them undefined when omitted", () => {
+    const parsed = parseResearchAreaPreferencesBodyValue({
+      preferences: [
+        { research_area_id: "22222222-2222-4222-8222-222222222222", rank: 1, direction: "oppose", hard_veto: true },
+        { research_area_id: "33333333-3333-4333-8333-333333333333", rank: 2 },
+      ],
+    });
+    expect(parsed.preferences[0]).toEqual({
+      researchAreaId: "22222222-2222-4222-8222-222222222222",
+      rank: 1,
+      direction: "oppose",
+      hardVeto: true,
+    });
+    // Omitted = "keep what is stored" downstream, so it must not default here.
+    expect(parsed.preferences[1]?.direction).toBeUndefined();
+    expect(parsed.preferences[1]?.hardVeto).toBeUndefined();
+  });
+
+  it("accepts any number of preferences and ranks past 7", () => {
+    const preferences = Array.from({ length: 25 }, (_value, index) => ({
+      research_area_id: `22222222-2222-4222-8222-${(index + 1).toString().padStart(12, "0")}`,
+      rank: index + 1,
+    }));
+    expect(parseResearchAreaPreferencesBodyValue({ preferences }).preferences).toHaveLength(25);
   });
 
   it("allows clearing all research area preferences", () => {
@@ -478,16 +499,31 @@ describe("research area API contract constants", () => {
       "preferences contains duplicate research_area_id: 22222222-2222-4222-8222-222222222222",
     ],
     [
-      { preferences: [{ research_area_id: "22222222-2222-4222-8222-222222222222", rank: 8 }] },
-      "preferences[].rank must be an integer from 1 to 7",
+      { preferences: [{ research_area_id: "22222222-2222-4222-8222-222222222222", rank: 0 }] },
+      "preferences[].rank must be an integer from 1 to 1",
     ],
     [
+      { preferences: [{ research_area_id: "22222222-2222-4222-8222-222222222222", rank: 1.5 }] },
+      "preferences[].rank must be an integer from 1 to 1",
+    ],
+    [
+      // Rank is a list position: past the end is rejected with a 400, not
+      // left for Postgres (integer overflow would otherwise surface as a 500).
       {
-        preferences: Array.from({ length: MAX_USER_RESEARCH_AREA_PREFERENCES + 1 }, (_value, index) => ({
-          research_area_id: `22222222-2222-4222-8222-${(index + 1).toString().padStart(12, "0")}`,
-        })),
+        preferences: [
+          { research_area_id: "22222222-2222-4222-8222-222222222222", rank: 1 },
+          { research_area_id: "33333333-3333-4333-8333-333333333333", rank: 2147483648 },
+        ],
       },
-      "preferences supports at most 7 research areas",
+      "preferences[].rank must be an integer from 1 to 2",
+    ],
+    [
+      { preferences: [{ research_area_id: "22222222-2222-4222-8222-222222222222", rank: 1, direction: "against" }] },
+      "preferences[].direction must be 'support' or 'oppose'",
+    ],
+    [
+      { preferences: [{ research_area_id: "22222222-2222-4222-8222-222222222222", rank: 1, hard_veto: "yes" }] },
+      "preferences[].hard_veto must be a boolean",
     ],
     [
       {

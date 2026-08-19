@@ -541,12 +541,26 @@ export type ResearchAreaCatalog = {
   research_areas: { id: string; slug: string; name: string; description: string | null }[];
 };
 
+export type ResearchAreaPreferenceDirection = "support" | "oppose";
+
 export type ResearchAreaPreference = {
   research_area_id: string;
   slug: string;
   name: string;
   description: string | null;
   rank: number | null;
+  /** Support or oppose the area's stated goal (catalog rows are goals). */
+  direction: ResearchAreaPreferenceDirection;
+  /** "Line in the sand": never auto-pick a candidate/measure that opposes this. */
+  hard_veto: boolean;
+};
+
+/** One PUT /api/me/research-area-preferences item; omitted direction/hard_veto keep the stored value. */
+export type ResearchAreaPreferenceInput = {
+  research_area_id: string;
+  rank: number;
+  direction?: ResearchAreaPreferenceDirection;
+  hard_veto?: boolean;
 };
 
 export type ResearchAreaPreferencesResult = {

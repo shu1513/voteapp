@@ -3,7 +3,6 @@ import { describe, expect, it, vi } from "vitest";
 import {
   listSelectableResearchAreas,
   listUserResearchAreaPreferences,
-  MAX_USER_RESEARCH_AREA_PREFERENCES,
   replaceUserResearchAreaPreferences,
   UserResearchAreaPreferencesError,
 } from "../../../src/pipeline/users/userResearchAreaPreferences.js";
@@ -134,6 +133,8 @@ describe("listUserResearchAreaPreferences", () => {
           name: "Housing Affordability",
           description: "Housing",
           rank: 1,
+          direction: "oppose",
+          hard_veto: true,
         },
         {
           user_id: userId,
@@ -142,6 +143,8 @@ describe("listUserResearchAreaPreferences", () => {
           name: "Healthcare Affordability",
           description: null,
           rank: null,
+          direction: "support",
+          hard_veto: false,
         },
       ],
     });
@@ -154,6 +157,8 @@ describe("listUserResearchAreaPreferences", () => {
           name: "Housing Affordability",
           description: "Housing",
           rank: 1,
+          direction: "oppose",
+          hard_veto: true,
         },
         {
           research_area_id: researchAreaIdA,
@@ -161,6 +166,8 @@ describe("listUserResearchAreaPreferences", () => {
           name: "Healthcare Affordability",
           description: null,
           rank: null,
+          direction: "support",
+          hard_veto: false,
         },
       ],
     });
@@ -179,14 +186,41 @@ describe("replaceUserResearchAreaPreferences", () => {
     expect(db.connect).not.toHaveBeenCalled();
   });
 
-  it("rejects too many preferences before opening a database connection", async () => {
-    const { db } = createMockTransactionalDb();
-    const preferences = Array.from({ length: MAX_USER_RESEARCH_AREA_PREFERENCES + 1 }, (_value, index) => ({
+  it("accepts every selectable area ranked 1..n (no count or rank ceiling)", async () => {
+    const { db, client } = createMockTransactionalDb();
+    const preferences = Array.from({ length: 25 }, (_value, index) => ({
       researchAreaId: makeResearchAreaId(index + 1),
-      rank: null,
+      rank: index + 1,
     }));
+    client.query
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      .mockResolvedValueOnce({ rows: preferences.map((p) => ({ id: p.researchAreaId, is_user_selectable: true })) })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ user_id: userId, research_area_id: null, slug: null, name: null, description: null, rank: null, direction: null, hard_veto: null }] })
+      .mockResolvedValueOnce({ rows: [] });
 
-    await expect(replaceUserResearchAreaPreferences(db, userId, preferences)).rejects.toSatisfy((error) => {
+    await expect(replaceUserResearchAreaPreferences(db, userId, preferences)).resolves.toBeDefined();
+    expect(client.query.mock.calls[4]?.[1]?.[2]).toEqual(preferences.map((p) => p.rank));
+  });
+
+  it("rejects an invalid direction or hard_veto before opening a database connection", async () => {
+    const { db } = createMockTransactionalDb();
+
+    await expect(
+      replaceUserResearchAreaPreferences(db, userId, [
+        { researchAreaId: researchAreaIdA, rank: 1, direction: "against" as never },
+      ])
+    ).rejects.toSatisfy((error) => {
+      expectPreferenceError(error, "invalid_preferences");
+      return true;
+    });
+    await expect(
+      replaceUserResearchAreaPreferences(db, userId, [
+        { researchAreaId: researchAreaIdA, rank: 1, hardVeto: "yes" as never },
+      ])
+    ).rejects.toSatisfy((error) => {
       expectPreferenceError(error, "invalid_preferences");
       return true;
     });
@@ -223,11 +257,11 @@ describe("replaceUserResearchAreaPreferences", () => {
     expect(db.connect).not.toHaveBeenCalled();
   });
 
-  it("rejects invalid ranks before opening a database connection", async () => {
+  it.each([0, 2, 2147483648])("rejects rank %d for a one-item list before opening a database connection", async (rank) => {
     const { db } = createMockTransactionalDb();
 
     await expect(
-      replaceUserResearchAreaPreferences(db, userId, [{ researchAreaId: researchAreaIdA, rank: 8 }])
+      replaceUserResearchAreaPreferences(db, userId, [{ researchAreaId: researchAreaIdA, rank }])
     ).rejects.toSatisfy((error) => {
       expectPreferenceError(error, "invalid_preferences");
       return true;
@@ -250,6 +284,8 @@ describe("replaceUserResearchAreaPreferences", () => {
             name: null,
             description: null,
             rank: null,
+            direction: null,
+            hard_veto: null,
           },
         ],
       })
@@ -290,6 +326,8 @@ describe("replaceUserResearchAreaPreferences", () => {
             name: "Healthcare Affordability",
             description: null,
             rank: 1,
+            direction: "oppose",
+            hard_veto: false,
           },
           {
             user_id: userId,
@@ -298,13 +336,15 @@ describe("replaceUserResearchAreaPreferences", () => {
             name: "Housing Affordability",
             description: null,
             rank: null,
+            direction: "support",
+            hard_veto: false,
           },
         ],
       })
       .mockResolvedValueOnce({ rows: [] });
 
     const result = await replaceUserResearchAreaPreferences(db, userId, [
-      { researchAreaId: researchAreaIdA, rank: 1 },
+      { researchAreaId: researchAreaIdA, rank: 1, direction: "oppose" },
       { researchAreaId: researchAreaIdB, rank: null },
     ]);
 
@@ -313,9 +353,61 @@ describe("replaceUserResearchAreaPreferences", () => {
       researchAreaIdB,
     ]);
     expect(String(client.query.mock.calls[2]?.[0])).toContain("is_user_selectable");
+    expect(String(client.query.mock.calls[3]?.[0])).toContain("DELETE FROM public.user_research_area_preferences");
+    expect(String(client.query.mock.calls[3]?.[0])).toContain("RETURNING");
     expect(String(client.query.mock.calls[4]?.[0])).toContain("INSERT INTO public.user_research_area_preferences");
-    expect(client.query.mock.calls[4]?.[1]).toEqual([userId, [researchAreaIdA, researchAreaIdB], [1, null]]);
+    // Nothing was stored before: omitted fields take the defaults.
+    expect(client.query.mock.calls[4]?.[1]).toEqual([
+      userId,
+      [researchAreaIdA, researchAreaIdB],
+      [1, null],
+      ["oppose", "support"],
+      [false, false],
+    ]);
     expect(client.query.mock.calls[6]?.[0]).toBe("COMMIT");
+  });
+
+  it("keeps stored direction/hard_veto for areas re-sent without them, and applies explicit values", async () => {
+    const { db, client } = createMockTransactionalDb();
+    client.query
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      .mockResolvedValueOnce({
+        rows: [
+          { id: researchAreaIdA, is_user_selectable: true },
+          { id: researchAreaIdB, is_user_selectable: true },
+          { id: researchAreaIdC, is_user_selectable: true },
+        ],
+      })
+      // DELETE ... RETURNING: what the user had before this PUT (C was not
+      // stored, A had a veto + oppose, B had a veto). Upper-cased id on B
+      // checks the case-insensitive match.
+      .mockResolvedValueOnce({
+        rows: [
+          { research_area_id: researchAreaIdA, direction: "oppose", hard_veto: true },
+          { research_area_id: researchAreaIdB.toUpperCase(), direction: "support", hard_veto: true },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] })
+      .mockResolvedValueOnce({ rows: [{ user_id: userId, research_area_id: null, slug: null, name: null, description: null, rank: null, direction: null, hard_veto: null }] })
+      .mockResolvedValueOnce({ rows: [] });
+
+    await replaceUserResearchAreaPreferences(db, userId, [
+      // Rank-only (mobile-style) resend: keeps oppose + veto.
+      { researchAreaId: researchAreaIdA, rank: 1 },
+      // Explicit values win over what was stored.
+      { researchAreaId: researchAreaIdB, rank: 2, direction: "oppose", hardVeto: false },
+      // New area, nothing stored: defaults.
+      { researchAreaId: researchAreaIdC, rank: 3 },
+    ]);
+
+    expect(client.query.mock.calls[4]?.[1]).toEqual([
+      userId,
+      [researchAreaIdA, researchAreaIdB, researchAreaIdC],
+      [1, 2, 3],
+      ["oppose", "oppose", "support"],
+      [true, false, false],
+    ]);
   });
 
   it("rolls back when the user is missing or deleted", async () => {

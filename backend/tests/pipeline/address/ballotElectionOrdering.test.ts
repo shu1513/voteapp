@@ -338,16 +338,16 @@ describe("applyBallotElectionOrdering", () => {
     const areaLow = "aaaaaaaa-0000-4000-8000-000000000003";
     const query = makeOrderingQuery({
       areaPreferences: [
-        { research_area_id: areaTop, rank: 1 }, // weight 7
-        { research_area_id: areaMid, rank: 3 }, // weight 5
-        { research_area_id: areaLow, rank: 4 }, // weight 4
+        { research_area_id: areaTop, rank: 1 }, // weight 1
+        { research_area_id: areaMid, rank: 2 }, // weight 0.75
+        { research_area_id: areaLow, rank: 3 }, // weight 0.5625
       ],
     });
     const result = await applyBallotElectionOrdering(
       { query },
       makeSummary([
-        { id: electionA, research_area_ids: [areaTop], vote_power_score: 99 }, // score 7
-        { id: electionB, research_area_ids: [areaMid, areaLow], vote_power_score: 1 }, // score 9
+        { id: electionA, research_area_ids: [areaTop], vote_power_score: 99 }, // score 1
+        { id: electionB, research_area_ids: [areaMid, areaLow], vote_power_score: 1 }, // score 1.3125
         { id: electionC, research_area_ids: [], vote_power_score: 100 }, // no match
       ]),
       { userId, sort: "my_areas" }
@@ -356,28 +356,32 @@ describe("applyBallotElectionOrdering", () => {
     expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA, electionC]);
   });
 
-  it("breaks equal my_areas sums by the best matched rank", async () => {
-    const areaRankTwo = "aaaaaaaa-0000-4000-8000-000000000004";
-    const areaRankThree = "aaaaaaaa-0000-4000-8000-000000000005";
-    const areaRankSeven = "aaaaaaaa-0000-4000-8000-000000000006";
+  it("weighs a legacy unranked save one rank below the last ranked area", async () => {
+    // With geometric weights, equal sums only arise from the same matched
+    // set, so the best-rank tiebreak no longer separates distinct matches;
+    // what matters is that an unranked save still counts, below every
+    // explicit rank.
+    const areaRankOne = "aaaaaaaa-0000-4000-8000-000000000004";
+    const areaRankTwo = "aaaaaaaa-0000-4000-8000-000000000005";
+    const areaUnranked = "aaaaaaaa-0000-4000-8000-000000000006";
     const query = makeOrderingQuery({
       areaPreferences: [
-        { research_area_id: areaRankTwo, rank: 2 }, // weight 6
-        { research_area_id: areaRankThree, rank: 3 }, // weight 5
-        { research_area_id: areaRankSeven, rank: 7 }, // weight 1
+        { research_area_id: areaRankOne, rank: 1 }, // weight 1
+        { research_area_id: areaRankTwo, rank: 2 }, // weight 0.75
+        { research_area_id: areaUnranked, rank: null }, // weight as rank 3 = 0.5625
       ],
     });
     const result = await applyBallotElectionOrdering(
       { query },
       makeSummary([
-        // Both sum to 6; the election touching rank 2 wins over rank 3 + rank 7.
-        { id: electionA, research_area_ids: [areaRankThree, areaRankSeven], vote_power_score: 99 },
+        { id: electionA, research_area_ids: [areaUnranked], vote_power_score: 99 },
         { id: electionB, research_area_ids: [areaRankTwo], vote_power_score: 1 },
+        { id: electionC, research_area_ids: [], vote_power_score: 100 },
       ]),
       { userId, sort: "my_areas" }
     );
 
-    expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA]);
+    expect(result.elections.map((e) => e.id)).toEqual([electionB, electionA, electionC]);
   });
 
   it("degrades my_areas to vote_power for anonymous calls without querying weights", async () => {

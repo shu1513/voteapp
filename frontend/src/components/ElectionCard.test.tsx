@@ -24,6 +24,8 @@ function savedWeights(ranks: Record<string, number | null>) {
       // from the election payload, so placeholders suffice here.
       slug: research_area_id,
       name: research_area_id,
+      direction: "support" as const,
+      hard_veto: false,
       description: null,
     }))
   );

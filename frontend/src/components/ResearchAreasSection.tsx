@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { apiRequest, MAX_RESEARCH_AREA_RANK } from "@voteapp/api-client";
+import { apiRequest } from "@voteapp/api-client";
 import type { ResearchAreaCatalog, ResearchAreaPreferencesResult } from "@voteapp/api-client";
 import { ErrorNotice, LoadingNotice } from "./Status";
 import { ResearchAreaPicker } from "./ResearchAreaPicker";
+import {
+  toPreferenceInputs,
+  toRankedResearchAreas,
+  type RankedResearchArea,
+} from "../lib/rankedResearchAreas";
 
 // The ranked "issues you care about" editor, back on SettingsPage after a
 // stint on My Picks. Callers gate on a verified session — the preferences
@@ -12,8 +17,9 @@ import { ResearchAreaPicker } from "./ResearchAreaPicker";
 export function ResearchAreasSection() {
   const queryClient = useQueryClient();
   // Optimistic overlay: the PUT replaces the whole ranked list, so quick
-  // consecutive edits (reorder, add, remove) must merge from the latest view.
-  const [pending, setPending] = useState<string[] | null>(null);
+  // consecutive edits (reorder, add, remove, toggle) must merge from the
+  // latest view.
+  const [pending, setPending] = useState<RankedResearchArea[] | null>(null);
   const catalog = useQuery({
     queryKey: ["research-areas"],
     queryFn: () => apiRequest<ResearchAreaCatalog>("/api/research-areas"),
@@ -27,10 +33,10 @@ export function ResearchAreasSection() {
   const update = useMutation({
     mutationKey: ["put-research-area-preferences"],
     // List position is the rank: first = rank 1.
-    mutationFn: (ids: string[]) =>
+    mutationFn: (ranked: RankedResearchArea[]) =>
       apiRequest<ResearchAreaPreferencesResult>("/api/me/research-area-preferences", {
         method: "PUT",
-        body: { preferences: ids.map((research_area_id, index) => ({ research_area_id, rank: index + 1 })) },
+        body: { preferences: toPreferenceInputs(ranked) },
       }),
     onSuccess: (saved) => {
       queryClient.setQueryData(["me", "research-area-preferences"], saved);
@@ -68,9 +74,9 @@ export function ResearchAreasSection() {
   }
 
   // Server order is rank ASC NULLS LAST, so it is the editor order directly.
-  const orderedIds = pending ?? prefs.data.preferences.map((preference) => preference.research_area_id);
+  const ranked = pending ?? toRankedResearchAreas(prefs.data.preferences);
 
-  function save(nextIds: string[]) {
+  function save(next: RankedResearchArea[]) {
     // Controls disable while a PUT is in flight, but a drag that was already
     // in progress when the save started can still drop; committing it would
     // race the full-list replace, so it is discarded like any other locked
@@ -80,8 +86,8 @@ export function ResearchAreasSection() {
     if (queryClient.isMutating({ mutationKey: ["put-research-area-preferences"] }) > 0) {
       return;
     }
-    setPending(nextIds);
-    update.mutate(nextIds);
+    setPending(next);
+    update.mutate(next);
   }
 
   return (
@@ -89,15 +95,12 @@ export function ResearchAreasSection() {
       {/* Choose-then-drag, matching the actual interaction: grid cards
           select on click; only the ranked rows above the grid drag. */}
       <p className="mt-1 text-sm text-ink-soft">
-        Choose up to {MAX_RESEARCH_AREA_RANK} issues that matter most to you, then drag them into
-        priority order.
+        Choose the issues that matter most to you — as many as you like — then drag them into
+        priority order; the top of the list counts most. For each one, say whether you support or
+        oppose it, and draw a line in the sand where anything that goes against your position is
+        an automatic no.
       </p>
-      <ResearchAreaPicker
-        areas={catalog.data.research_areas}
-        orderedIds={orderedIds}
-        disabled={saving}
-        onChange={save}
-      />
+      <ResearchAreaPicker areas={catalog.data.research_areas} ranked={ranked} disabled={saving} onChange={save} />
       {update.isError ? (
         <div className="mt-2">
           <ErrorNotice error={update.error} />
