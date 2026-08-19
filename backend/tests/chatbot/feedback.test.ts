@@ -57,13 +57,15 @@ describe("feedback tokens", () => {
 describe("submitAnswerFeedback", () => {
   function fakeDb() {
     const inserts: unknown[][] = [];
+    const statements: string[] = [];
     const db = {
-      query: (_sql: string, values: unknown[]) => {
+      query: (sql: string, values: unknown[]) => {
+        statements.push(sql);
         inserts.push(values);
         return Promise.resolve({ rowCount: 1, rows: [] });
       },
     } as unknown as Pool;
-    return { db, inserts };
+    return { db, inserts, statements };
   }
 
   it("inserts the token's answered_by with the caller's verdict", async () => {
@@ -75,6 +77,18 @@ describe("submitAnswerFeedback", () => {
     expect(inserts[0]?.[0]).toBe("llm");
     expect(inserts[0]?.[1]).toBe("down");
     expect(inserts[0]?.[2]).toMatch(/^[0-9a-f]{32}$/);
+  });
+
+  it("names no conflict target, which the INSERT-only API role cannot read", async () => {
+    // Regression (prod, 2026-08-19): `ON CONFLICT (token_nonce)` makes
+    // Postgres require SELECT on the arbiter column, so every vote 500'd
+    // with "permission denied for table answer_feedback" under voteapp_api's
+    // INSERT-only grant. The targetless form needs no SELECT.
+    const tokens = createFeedbackTokens();
+    const { db, statements } = fakeDb();
+    await submitAnswerFeedback(db, tokens, tokens.mint("llm"), "up");
+    expect(statements[0]).toMatch(/ON CONFLICT\s+DO NOTHING/i);
+    expect(statements[0]).not.toMatch(/ON CONFLICT\s*\(/i);
   });
 
   it("returns invalid_token without touching the DB on a bad token", async () => {

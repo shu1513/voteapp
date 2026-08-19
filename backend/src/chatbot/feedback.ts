@@ -92,11 +92,17 @@ export async function submitAnswerFeedback(
   if (!payload) {
     return "invalid_token";
   }
+  // Targetless ON CONFLICT on purpose: naming the arbiter column
+  // (`ON CONFLICT (token_nonce)`) makes Postgres require SELECT on that
+  // column, which the INSERT-only voteapp_api role does not have — prod
+  // votes 500'd with "permission denied for table answer_feedback". The
+  // only realistic conflict is the token_nonce UNIQUE anyway (the PK is a
+  // bigserial).
   await db.query(
     `
       INSERT INTO chatbot.answer_feedback (answered_by, verdict, token_nonce)
       VALUES ($1, $2, $3)
-      ON CONFLICT (token_nonce) DO NOTHING
+      ON CONFLICT DO NOTHING
     `,
     [payload.answeredBy, verdict, payload.nonce]
   );
