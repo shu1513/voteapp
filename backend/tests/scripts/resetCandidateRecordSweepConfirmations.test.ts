@@ -29,6 +29,8 @@ function cohortRow(
   overrides: Partial<SweepConfirmationCohortRow> & { candidate_id: string }
 ): SweepConfirmationCohortRow {
   return {
+    context_type: "election",
+    context_id: `00000000-0000-0000-0000-${overrides.candidate_id.padStart(12, "0")}`,
     display_name: `Candidate ${overrides.candidate_id}`,
     confirmed_at: "2026-07-15 14:00:00-07",
     evidence: templateEvidence(),
@@ -156,7 +158,15 @@ describe("runSweepConfirmationReset", () => {
       clearedStamps: 3,
     });
     const deleteStatement = statements.find((s) => s.text.includes("DELETE FROM"));
-    expect(deleteStatement?.values).toEqual([["a", "b", "c"]]);
+    expect(deleteStatement?.values).toEqual([
+      ["a", "b", "c"],
+      ["election", "election", "election"],
+      [
+        "00000000-0000-0000-0000-00000000000a",
+        "00000000-0000-0000-0000-00000000000b",
+        "00000000-0000-0000-0000-00000000000c",
+      ],
+    ]);
     const updateStatement = statements.find((s) => s.text.includes("UPDATE public.candidates"));
     expect(updateStatement?.values).toEqual([["a", "b", "c"]]);
     for (const column of [
@@ -185,6 +195,35 @@ describe("runSweepConfirmationReset", () => {
     const updateStatement = statements.find((s) => s.text.includes("UPDATE public.candidates"));
     expect(updateStatement?.values).toEqual([["b"]]);
     expect(statementKinds(statements)).toEqual(["BEGIN", "SELECT", "DELETE", "UPDATE", "COMMIT"]);
+  });
+
+  it("deletes exact context rows but clears a duplicate candidate's stamp once", async () => {
+    const rows = [
+      cohortRow({
+        candidate_id: "a",
+        context_id: "11111111-1111-1111-1111-111111111111",
+      }),
+      cohortRow({
+        candidate_id: "a",
+        context_id: "22222222-2222-2222-2222-222222222222",
+      }),
+    ];
+    const { client, statements } = fakeClient(rows);
+
+    const result = await runSweepConfirmationReset(
+      client,
+      options({ dryRun: false, expectedTotal: 2 })
+    );
+
+    expect(result).toMatchObject({ deletedConfirmations: 2, clearedStamps: 1 });
+    const deleteStatement = statements.find((s) => s.text.includes("DELETE FROM"));
+    expect(deleteStatement?.values).toEqual([
+      ["a", "a"],
+      ["election", "election"],
+      ["11111111-1111-1111-1111-111111111111", "22222222-2222-2222-2222-222222222222"],
+    ]);
+    const updateStatement = statements.find((s) => s.text.includes("UPDATE public.candidates"));
+    expect(updateStatement?.values).toEqual([["a"]]);
   });
 
   it("refuses a live run without --expected-total before touching the database", async () => {
@@ -240,7 +279,11 @@ describe("runSweepConfirmationReset", () => {
       "malformed",
     ]);
     const deleteStatement = statements.find((s) => s.text.includes("DELETE FROM"));
-    expect(deleteStatement?.values).toEqual([["poisoned"]]);
+    expect(deleteStatement?.values).toEqual([
+      ["poisoned"],
+      ["election"],
+      ["00000000-0000-0000-0000-0000poisoned"],
+    ]);
   });
 
   it("skips retired candidates and active claims, reporting them separately", async () => {
@@ -260,7 +303,11 @@ describe("runSweepConfirmationReset", () => {
       shapeMismatchCount: 0,
     });
     const deleteStatement = statements.find((s) => s.text.includes("DELETE FROM"));
-    expect(deleteStatement?.values).toEqual([["poisoned"]]);
+    expect(deleteStatement?.values).toEqual([
+      ["poisoned"],
+      ["election"],
+      ["00000000-0000-0000-0000-0000poisoned"],
+    ]);
   });
 
   it("rolls back and reports nothing to do when the window has no resettable rows", async () => {

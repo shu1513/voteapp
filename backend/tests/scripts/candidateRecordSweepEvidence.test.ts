@@ -14,6 +14,7 @@ import {
   listMissingSweepRouteQuestionIds,
   parseSweepEvidencePayload,
   persistHasHeldPublicOfficeAnswer,
+  refreshSweepConfirmationTimestamp,
   resolveSweepRoute,
   retainSuppliedSweepEvidence,
   sweepEvidenceRequired,
@@ -665,7 +666,7 @@ describe("assertedSweepCompletenessGapIds", () => {
 });
 
 describe("upsertSweepConfirmation", () => {
-  it("writes one upsert row keyed by candidate with the evidence entries as jsonb", async () => {
+  it("writes one upsert row keyed by candidate and context with the evidence entries as jsonb", async () => {
     const calls: { text: string; values: unknown[] }[] = [];
     const client = {
       query: async (text: string, values?: unknown[]) => {
@@ -688,7 +689,9 @@ describe("upsertSweepConfirmation", () => {
 
     expect(calls).toHaveLength(1);
     expect(calls[0]!.text).toContain("INSERT INTO public.candidate_record_sweep_confirmations");
-    expect(calls[0]!.text).toContain("ON CONFLICT (candidate_id)");
+    expect(calls[0]!.text).toContain(
+      "ON CONFLICT (candidate_id, context_type, context_id)"
+    );
     expect(calls[0]!.values[0]).toBe("candidate-1");
     expect(calls[0]!.values[1]).toEqual(["candidate_records.no_records_found"]);
     // Stored entries mirror the evidence-file contract: snake_case
@@ -730,6 +733,29 @@ describe("upsertSweepConfirmation", () => {
   });
 });
 
+describe("refreshSweepConfirmationTimestamp", () => {
+  it("refreshes only the matching candidate and context", async () => {
+    const calls: { text: string; values: unknown[] }[] = [];
+    const client = {
+      query: async (text: string, values?: unknown[]) => {
+        calls.push({ text, values: values ?? [] });
+        return { rows: [], rowCount: 1 } as never;
+      },
+    };
+
+    await refreshSweepConfirmationTimestamp(client as never, {
+      candidateId: "candidate-1",
+      contextType: "election",
+      contextId: "election-1",
+    });
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0]!.text).toContain("context_type = $2");
+    expect(calls[0]!.text).toContain("context_id = $3");
+    expect(calls[0]!.values).toEqual(["candidate-1", "election", "election-1"]);
+  });
+});
+
 describe("deleteSweepCompletenessConfirmation", () => {
   it("removes only completeness-claim rows, matched by gap-id overlap", async () => {
     const calls: { text: string; values: unknown[] }[] = [];
@@ -765,7 +791,11 @@ describe("deleteSweepConfirmation", () => {
       },
     };
 
-    await deleteSweepConfirmation(client as never, "candidate-1");
+    await deleteSweepConfirmation(client as never, {
+      candidateId: "candidate-1",
+      contextType: "presidential_cycle",
+      contextId: "cycle-1",
+    });
 
     expect(calls).toHaveLength(1);
     expect(calls[0]!.text).toContain("DELETE FROM public.candidate_record_sweep_confirmations");
@@ -773,7 +803,9 @@ describe("deleteSweepConfirmation", () => {
     // stamp (presidential writer), a surviving empty-claim-set row could
     // never be dated as historical.
     expect(calls[0]!.text).not.toContain("confirmed_gap_ids");
-    expect(calls[0]!.values).toEqual(["candidate-1"]);
+    expect(calls[0]!.text).toContain("context_type = $2");
+    expect(calls[0]!.text).toContain("context_id = $3");
+    expect(calls[0]!.values).toEqual(["candidate-1", "presidential_cycle", "cycle-1"]);
   });
 });
 

@@ -970,8 +970,14 @@ async function main(): Promise<void> {
           [candidateId]
         );
         const priorConfirmation = await client.query<{ confirmed_gap_ids: string[] | null }>(
-          `SELECT confirmed_gap_ids FROM public.candidate_record_sweep_confirmations WHERE candidate_id = $1`,
-          [candidateId]
+          `
+            SELECT confirmed_gap_ids
+            FROM public.candidate_record_sweep_confirmations
+            WHERE candidate_id = $1
+              AND context_type = 'election'
+              AND context_id = $2
+          `,
+          [candidateId, electionId]
         );
         const decision = decideDeltaZeroRecordConfirmation({
           existingRecordCount: Number(existingRecords.rows[0]?.record_count ?? "0"),
@@ -981,7 +987,11 @@ async function main(): Promise<void> {
           throw new Error(decision.reason);
         }
         if (decision.action === "refresh") {
-          await refreshSweepConfirmationTimestamp(client, candidateId);
+          await refreshSweepConfirmationTimestamp(client, {
+            candidateId,
+            contextType: "election",
+            contextId: electionId,
+          });
         }
       } else if (sweepEvidenceEntries) {
         await upsertSweepConfirmation(client, {

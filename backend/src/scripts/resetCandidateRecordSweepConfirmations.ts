@@ -100,6 +100,8 @@ export function readSweepEvidenceShape(evidence: unknown): SweepEvidenceShape {
 
 export type SweepConfirmationCohortRow = {
   candidate_id: string;
+  context_type: "election" | "presidential_cycle";
+  context_id: string;
   display_name: string;
   confirmed_at: string;
   evidence: unknown;
@@ -193,6 +195,8 @@ export async function runSweepConfirmationReset(
       `
         SELECT
           sc.candidate_id::text AS candidate_id,
+          sc.context_type,
+          sc.context_id::text AS context_id,
           c.display_name,
           sc.confirmed_at::text AS confirmed_at,
           sc.evidence,
@@ -211,7 +215,7 @@ export async function runSweepConfirmationReset(
         JOIN public.candidates c ON c.id = sc.candidate_id
         WHERE sc.confirmed_at >= $1::date
           AND sc.confirmed_at < $2::date + 1
-        ORDER BY sc.confirmed_at, sc.candidate_id
+        ORDER BY sc.confirmed_at, sc.candidate_id, sc.context_type, sc.context_id
         FOR UPDATE OF sc, c
       `,
       [confirmedFrom, confirmedTo, DEFAULT_LEASE_HOURS]
@@ -249,17 +253,23 @@ export async function runSweepConfirmationReset(
     if (dryRun || resettable.length === 0) {
       await client.query("ROLLBACK");
     } else {
-      // candidate_id is the table's PRIMARY KEY, so targeting by id alone
-      // cannot hit more rows than the cohort SELECT locked (1-to-1 by
-      // schema, not convention); the RETURNING count assert below turns any
-      // future violation of that invariant into a rollback.
+      // Delete only the exact candidate/context rows locked and classified
+      // above. Other valid context ledgers for the same candidate survive.
       const deleted = await client.query<{ candidate_id: string }>(
         `
-          DELETE FROM public.candidate_record_sweep_confirmations
-          WHERE candidate_id = ANY($1::uuid[])
-          RETURNING candidate_id::text AS candidate_id
+          DELETE FROM public.candidate_record_sweep_confirmations sc
+          USING unnest($1::uuid[], $2::text[], $3::uuid[])
+            AS target(candidate_id, context_type, context_id)
+          WHERE sc.candidate_id = target.candidate_id
+            AND sc.context_type = target.context_type
+            AND sc.context_id = target.context_id
+          RETURNING sc.candidate_id::text AS candidate_id
         `,
-        [resettable.map((row) => row.candidate_id)]
+        [
+          resettable.map((row) => row.candidate_id),
+          resettable.map((row) => row.context_type),
+          resettable.map((row) => row.context_id),
+        ]
       );
       deletedConfirmations = deleted.rows.length;
       if (deletedConfirmations !== resettable.length) {
@@ -272,6 +282,7 @@ export async function runSweepConfirmationReset(
       // stamped candidate with records and no confirmation is invisible to
       // the suspect list, the detectors, and the unstamped backlog alike —
       // keeping the stamp would end their repair here.
+      const resetCandidateIds = [...new Set(resettable.map((row) => row.candidate_id))];
       const cleared = await client.query<{ id: string }>(
         `
           UPDATE public.candidates
@@ -281,12 +292,12 @@ export async function runSweepConfirmationReset(
           WHERE id = ANY($1::uuid[])
           RETURNING id::text AS id
         `,
-        [resettable.map((row) => row.candidate_id)]
+        [resetCandidateIds]
       );
       clearedStamps = cleared.rows.length;
-      if (clearedStamps !== resettable.length) {
+      if (clearedStamps !== resetCandidateIds.length) {
         throw new Error(
-          `Cleared stamps on ${clearedStamps} candidates but expected ${resettable.length}; rolled back`
+          `Cleared stamps on ${clearedStamps} candidates but expected ${resetCandidateIds.length}; rolled back`
         );
       }
       await client.query("COMMIT");

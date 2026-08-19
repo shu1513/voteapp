@@ -82,6 +82,7 @@ function detectorRow(
     confirmed_at: "2026-07-15T12:00:00Z",
     evidence: { entries: [] },
     context_type: "election",
+    context_id: "11111111-1111-1111-1111-111111111111",
     discovery_contest_family: null,
     context_election_found: true,
     ...overrides,

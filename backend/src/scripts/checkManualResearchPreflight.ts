@@ -110,6 +110,11 @@ const REQUIRED_UNIQUE_OBJECTS: RequiredUniqueObject[] = [
     name: "uq_candidate_records_candidate_identity_key",
     columns: ["candidate_id", "record_identity_key"],
   },
+  {
+    table: "candidate_record_sweep_confirmations",
+    name: "candidate_record_sweep_confirmations_pkey",
+    columns: ["candidate_id", "context_type", "context_id"],
+  },
   { table: "ballot_measures", name: "uq_ballot_measures_election_id", columns: ["election_id"] },
 ];
 
