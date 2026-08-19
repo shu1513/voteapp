@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  illinoisCandidateNameMiddleConflicts,
   normalizeIllinoisCandidateNameForStorage,
   normalizeIllinoisCandidateNameKeys,
   resolveIllinoisCandidateCommittee,
@@ -331,6 +332,24 @@ describe("illinoisCandidateCommitteeResolver", () => {
     expect(resolve("John A. Smith", "Smith, John Andrew")).toMatchObject({ status: "matched" });
     // First+last still matches when a side lacks middle info.
     expect(resolve("John Smith")).toMatchObject({ status: "matched" });
+  });
+
+  it("treats a bare trailing V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (shared GENERATIONAL_SUFFIX_RANK
+    // policy in finance/personNameMiddleEvidence.ts), so it must survive
+    // normalization as middle evidence on either side of the comparison.
+    expect(
+      illinoisCandidateNameMiddleConflicts({ candidateName: "John V. Smith", rowNames: ["Smith, John B."] })
+    ).toBe(true);
+    expect(
+      illinoisCandidateNameMiddleConflicts({ candidateName: "John B. Smith", rowNames: ["Smith, John V"] })
+    ).toBe(true);
+    expect(
+      illinoisCandidateNameMiddleConflicts({ candidateName: "John V. Smith", rowNames: ["Smith, John V"] })
+    ).toBe(false);
+    expect(
+      illinoisCandidateNameMiddleConflicts({ candidateName: "John Smith", rowNames: ["Smith, John V"] })
+    ).toBe(false);
   });
 
   it("reads middle-name evidence through one-sided nickname expansion", () => {

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   normalizeOhioCandidateNameKeys,
+  ohioPersonNamesMatch,
   resolveOhioCandidateCommittee,
 } from "../../../src/pipeline/ohioFinance/ohioCandidateCommitteeResolver.js";
 import type { OhioSosCandidateCommitteeListRow } from "../../../src/pipeline/ohioFinance/ohioSosBulkFiles.js";
@@ -232,6 +233,20 @@ describe("resolveOhioCandidateCommittee", () => {
         candidateListRows: [listRow({ candidateFirstName: "JANE ANN", candidateLastName: "DOE" })],
       })
     ).toMatchObject({ status: "matched", committeeId: "12345" });
+  });
+
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (the shared
+    // GENERATIONAL_SUFFIX_RANK policy deliberately excludes it), so it must
+    // stay as middle evidence on either side instead of being stripped. The
+    // list rows above are assembled first+last, so the trailing form only
+    // reaches the parser through ohioPersonNamesMatch (31-U target names and
+    // comma-form VoteApp display names).
+    expect(ohioPersonNamesMatch("Smith, John B.", "John V. Smith")).toBe(false);
+    expect(ohioPersonNamesMatch("Smith, John V", "John B. Smith")).toBe(false);
+    expect(ohioPersonNamesMatch("Smith, John V", "John V. Smith")).toBe(true);
+    expect(ohioPersonNamesMatch("Smith, John V", "John Smith")).toBe(true);
+    expect(ohioPersonNamesMatch("John Smith Jr.", "Smith Sr., John")).toBe(false);
   });
 
   it("detects a suffix conflict when the suffix arrives in comma form", () => {

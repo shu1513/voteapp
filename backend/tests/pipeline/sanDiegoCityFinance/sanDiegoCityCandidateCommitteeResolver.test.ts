@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   collectSanDiegoCityExportCommittees,
   resolveSanDiegoCityCandidateCommittees,
+  sanDiegoCityPersonNameMatchesCandidate,
   SAN_DIEGO_CITY_CLERK_LOG_COMMITTEES,
   type SanDiegoCityAppCandidate,
   type SanDiegoCityClerkLogCommittee,
@@ -430,6 +431,16 @@ describe("resolveSanDiegoCityCandidateCommittees", () => {
       committee({ filerId: "9400001", committeeNames: ["John Smith Sr. for City Council 2026"] }),
     ]);
     expect(resolution.status).toBe("unmatched");
+  });
+
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (the shared
+    // GENERATIONAL_SUFFIX_RANK policy deliberately excludes it), so it must
+    // stay as middle evidence on either side instead of being stripped.
+    expect(sanDiegoCityPersonNameMatchesCandidate("Smith, John B.", "John V. Smith")).toBe(false);
+    expect(sanDiegoCityPersonNameMatchesCandidate("Smith, John V", "John B. Smith")).toBe(false);
+    expect(sanDiegoCityPersonNameMatchesCandidate("Smith, John V", "John V. Smith")).toBe(true);
+    expect(sanDiegoCityPersonNameMatchesCandidate("Smith, John V", "John Smith")).toBe(true);
   });
 
   it("quoted call names in roster display names still match", () => {

@@ -239,6 +239,25 @@ describe("kentuckyDirectContributionAggregator", () => {
     expect(result.summary.directContributionTotal).toBe(250);
   });
 
+  it("treats a bare trailing V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (shared GENERATIONAL_SUFFIX_RANK
+    // policy in finance/personNameMiddleEvidence.ts), so it must survive
+    // normalization as middle evidence on either side of the comparison.
+    const aggregate = (candidateName: string, rowName: string) =>
+      aggregateKentuckyDirectContributions({
+        candidateName,
+        electionDate: "11/7/2023",
+        officeName: "Governor",
+        location: "Statewide",
+        contributionRecords: [contribution({ candidateName: rowName, recipientName: rowName, amount: 250 })],
+      });
+
+    expect(aggregate("John V. Smith", "Smith, John B.").matchedContributionRowCount).toBe(0);
+    expect(aggregate("John B. Smith", "Smith, John V").matchedContributionRowCount).toBe(0);
+    expect(aggregate("John V. Smith", "Smith, John V").matchedContributionRowCount).toBe(1);
+    expect(aggregate("John Smith", "Smith, John V").matchedContributionRowCount).toBe(1);
+  });
+
   it("keeps the candidate's own money while vetoing the conflicting sibling's rows", () => {
     const result = aggregateKentuckyDirectContributions({
       candidateName: "John A. Smith",

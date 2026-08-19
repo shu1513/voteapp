@@ -33,7 +33,9 @@ function normalizeTextKey(value: string | null | undefined): string {
 
 function normalizePersonName(value: string | null | undefined): string {
   return normalizeTextKey(value)
-    .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+    // Bare "V" is a middle initial, not a suffix (GENERATIONAL_SUFFIX_RANK in
+    // finance/personNameMiddleEvidence.ts): stripping it erased middle evidence.
+    .replace(/\b(JR|SR|II|III|IV)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -48,6 +50,8 @@ export function normalizeSanFranciscoCandidateNameForStorage(
 // "Ellsworth M. Jennison, Jr." — the comma belongs to the suffix, not a
 // "Last, First" form. Stripped before parsing so the comma branch below only
 // ever sees genuine surname-first forms.
+// Keeps "V" on purpose: it only drops the comma; the token still reaches
+// normalizePersonName, which now keeps it as middle evidence.
 function stripSuffixComma(value: string): string {
   return value.replace(/,\s*(?:JR|SR|II|III|IV|V)\.?\s*$/i, " ");
 }

@@ -277,6 +277,31 @@ describe("newMexicoCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", committeeId: "1001" });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it has to survive
+    // normalization as middle evidence on EITHER side of the comparison.
+    const resolve = (candidateName: string, rowMiddleName: string) =>
+      resolveNewMexicoCandidateCommittee({
+        candidateName,
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Middle Name": rowMiddleName })],
+      });
+
+    expect(resolve("Jane V. Doe", "B")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("Jane B. Doe", "V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("Jane V. Doe", "V")).toMatchObject({ status: "matched", committeeId: "1001" });
+    expect(resolve("Jane Doe", "V")).toMatchObject({ status: "matched", committeeId: "1001" });
+  });
+
   it("rejects invalid election years", () => {
     expect(() =>
       resolveNewMexicoCandidateCommittee({

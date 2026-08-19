@@ -314,6 +314,37 @@ describe("oklahomaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", committeeId: "11954" });
   });
 
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (the shared
+    // GENERATIONAL_SUFFIX_RANK policy deliberately excludes it), so it must
+    // stay as middle evidence on either side instead of being stripped.
+    const resolve = (candidateName: string, rowCandidateName: string) =>
+      resolveOklahomaCandidateCommittee({
+        candidateName,
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "47",
+        electionYear: 2026,
+        contributionRows: [contribution({ "Candidate Name": rowCandidateName })],
+      });
+    expect(resolve("Brent V. Dishman", "DISHMAN, BRENT B.")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("Brent B. Dishman", "DISHMAN, BRENT V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("Brent V. Dishman", "DISHMAN, BRENT V")).toMatchObject({
+      status: "matched",
+      committeeId: "11954",
+    });
+    expect(resolve("Brent Dishman", "DISHMAN, BRENT V")).toMatchObject({
+      status: "matched",
+      committeeId: "11954",
+    });
+  });
+
   it("rejects invalid election years", () => {
     expect(() =>
       resolveOklahomaCandidateCommittee({

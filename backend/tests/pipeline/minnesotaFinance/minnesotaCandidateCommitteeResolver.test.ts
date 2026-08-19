@@ -162,6 +162,30 @@ describe("Minnesota candidate committee resolver", () => {
     ).toMatchObject({ status: "matched", committeeId: "1001" });
   });
 
+  it("treats a bare trailing V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (GENERATIONAL_SUFFIX_RANK in
+    // finance/personNameMiddleEvidence.ts), so it must stay as middle evidence
+    // on either side instead of being trimmed off the given-name segment.
+    const resolve = (candidateName: string, rowName: string) =>
+      resolveMinnesotaCandidateCommittee({
+        candidateName,
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRows: [record({ Candidate: rowName })],
+      });
+    expect(resolve("Jane V. Doe", "Doe, Jane B.")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("Jane B. Doe", "Doe, Jane V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolve("Jane V. Doe", "Doe, Jane V")).toMatchObject({ status: "matched", committeeId: "1001" });
+    expect(resolve("Jane Doe", "Doe, Jane V")).toMatchObject({ status: "matched", committeeId: "1001" });
+  });
+
   it.each([
     ["Demuth, Lisa Gov Committee", "Lisa Demuth", "Governor", "1001"],
     ["Ellison, Keith Atty Gen Committee", "Keith Ellison", "Attorney General", "1002"],

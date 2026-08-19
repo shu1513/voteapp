@@ -52,6 +52,22 @@ describe("newYorkCityCandidateResolver", () => {
     }).status).toBe("matched");
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it has to survive
+    // normalization as middle evidence on EITHER side of the comparison.
+    const status = (candidateName: string, rowCandidateName: string): string =>
+      resolveNewYorkCityCandidate({
+        candidateName, electionYear: 2025, officeScope: "place", officeCanonicalName: "Mayor",
+        districtGeoid: "3651000", analysisRows: [row({ candidateName: rowCandidateName })],
+      }).status;
+
+    expect(status("Jane V. Doe", "DOE, JANE R.")).toBe("unmatched");
+    expect(status("Jane R. Doe", "DOE, JANE V")).toBe("unmatched");
+    expect(status("Jane V. Doe", "DOE, JANE V")).toBe("matched");
+    expect(status("Jane Doe", "DOE, JANE V")).toBe("matched");
+  });
+
   it("refuses ambiguous candidate IDs", () => {
     const result = resolveNewYorkCityCandidate({
       candidateName: "Jane Doe", electionYear: 2025, officeScope: "place", officeCanonicalName: "Mayor",

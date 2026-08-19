@@ -97,6 +97,47 @@ describe("californiaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", controlledCommitteeId: "1456045" });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it must stay as
+    // middle evidence on either side instead of being stripped as a suffix.
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "John V. Smith",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow({ CAND_NAML: "SMITH", CAND_NAMF: "JOHN B." })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_office_year_match" });
+
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "John B. Smith",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow({ CAND_NAML: "SMITH", CAND_NAMF: "JOHN V" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_office_year_match" });
+
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "John V. Smith",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow({ CAND_NAML: "SMITH", CAND_NAMF: "JOHN V" })],
+      })
+    ).toMatchObject({ status: "matched", controlledCommitteeId: "1456045" });
+
+    expect(
+      resolveCaliforniaCandidateCommittee({
+        candidateName: "John Smith",
+        officeName: "Governor",
+        electionYear: 2026,
+        campaignCoverRows: [coverRow({ CAND_NAML: "SMITH", CAND_NAMF: "JOHN V" })],
+      })
+    ).toMatchObject({ status: "matched", controlledCommitteeId: "1456045" });
+  });
+
   it("matches app canonical office names to California office labels", () => {
     expect(
       resolveCaliforniaCandidateCommittee({

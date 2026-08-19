@@ -83,6 +83,30 @@ describe("pennsylvaniaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", filerId: "55555" });
   });
 
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (the shared
+    // GENERATIONAL_SUFFIX_RANK policy deliberately excludes it), so it must
+    // stay as middle evidence on either side instead of being stripped.
+    const resolve = (candidateName: string, filerName: string) =>
+      resolvePennsylvaniaCandidateCommittee({
+        candidateName,
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        filerRows: [filerRow({ FILERID: "55555", FILERNAME: filerName })],
+      });
+    expect(resolve("John V. Smith", "SMITH, JOHN B.")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_filer_match",
+    });
+    expect(resolve("John B. Smith", "SMITH, JOHN V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_filer_match",
+    });
+    expect(resolve("John V. Smith", "SMITH, JOHN V")).toMatchObject({ status: "matched", filerId: "55555" });
+    expect(resolve("John Smith", "SMITH, JOHN V")).toMatchObject({ status: "matched", filerId: "55555" });
+  });
+
   it("leaves the committee-name match path untouched", () => {
     // "FRIENDS OF ..." matches on the committee key, which never aligns on
     // first+last, so the middle gate has no evidence and cannot veto it.

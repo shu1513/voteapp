@@ -145,6 +145,59 @@ describe("tennesseeCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Shared policy (GENERATIONAL_SUFFIX_RANK in finance/personNameMiddleEvidence.ts)
+    // deliberately excludes "V": it is far more often a middle initial than a
+    // fifth-generation suffix, so it must stay as middle evidence on either side.
+    expect(
+      resolveTennesseeCandidateCommittee({
+        candidateName: "John V. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRecords: [
+          record({ campCandidateId: "9", ownerName: "SMITH, JOHN B.", name: "SMITH, JOHN B.", electionYear: 2026 }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveTennesseeCandidateCommittee({
+        candidateName: "John B. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRecords: [
+          record({ campCandidateId: "9", ownerName: "SMITH, JOHN V", name: "SMITH, JOHN V", electionYear: 2026 }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveTennesseeCandidateCommittee({
+        candidateName: "John V. Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRecords: [
+          record({ campCandidateId: "9", ownerName: "SMITH, JOHN V", name: "SMITH, JOHN V", electionYear: 2026 }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", campCandidateId: "9" });
+
+    expect(
+      resolveTennesseeCandidateCommittee({
+        candidateName: "John Smith",
+        officeScope: "statewide",
+        officeName: "Governor",
+        electionYear: 2026,
+        candidateRecords: [
+          record({ campCandidateId: "9", ownerName: "SMITH, JOHN V", name: "SMITH, JOHN V", electionYear: 2026 }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", campCandidateId: "9" });
+  });
+
   it("does not guess when multiple CAMP candidates match", () => {
     expect(
       resolveTennesseeCandidateCommittee({

@@ -20,7 +20,9 @@ function normalizePerson(value: string): string {
     .replace(/[\u0300-\u036f]/g, "")
     .toUpperCase()
     .replace(/[^A-Z0-9,]+/g, " ")
-    .replace(/\b(JR|SR|II|III|IV|V)\b/g, " ")
+    // Bare "V" is a middle initial, not a suffix (GENERATIONAL_SUFFIX_RANK in
+    // finance/personNameMiddleEvidence.ts): stripping it erased middle evidence.
+    .replace(/\b(JR|SR|II|III|IV)\b/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }

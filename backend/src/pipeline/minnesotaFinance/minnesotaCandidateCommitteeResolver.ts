@@ -83,7 +83,9 @@ function normalizeTextKey(value: string | null | undefined): string {
 
 function normalizePersonName(value: string | null | undefined): string {
   return normalizeTextKey(value)
-    .replace(/\b(J\s*R|S\s*R|II|III|IV|V)\s*$/, " ")
+    // Bare "V" is a middle initial, not a suffix (GENERATIONAL_SUFFIX_RANK in
+    // finance/personNameMiddleEvidence.ts): stripping it erased middle evidence.
+    .replace(/\b(J\s*R|S\s*R|II|III|IV)\s*$/, " ")
     .replace(/\s+/g, " ")
     .trim();
 }

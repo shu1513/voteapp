@@ -70,6 +70,43 @@ describe("utahCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Shared policy (GENERATIONAL_SUFFIX_RANK in finance/personNameMiddleEvidence.ts)
+    // deliberately excludes "V": it is far more often a middle initial than a
+    // fifth-generation suffix, so it must stay as middle evidence on either side.
+    expect(
+      resolveUtahCandidateCommittee({
+        candidateName: "Jane V. Doe",
+        electionYear: 2024,
+        entityRows: [entityRow({ folderId: "33333", entityName: "Doe, Jane Q.", reportYears: [2024] })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveUtahCandidateCommittee({
+        candidateName: "Jane Q. Doe",
+        electionYear: 2024,
+        entityRows: [entityRow({ folderId: "33333", entityName: "Doe, Jane V", reportYears: [2024] })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
+
+    expect(
+      resolveUtahCandidateCommittee({
+        candidateName: "Jane V. Doe",
+        electionYear: 2024,
+        entityRows: [entityRow({ folderId: "33333", entityName: "Doe, Jane V", reportYears: [2024] })],
+      })
+    ).toMatchObject({ status: "matched", folderId: "33333" });
+
+    expect(
+      resolveUtahCandidateCommittee({
+        candidateName: "Jane Doe",
+        electionYear: 2024,
+        entityRows: [entityRow({ folderId: "33333", entityName: "Doe, Jane V", reportYears: [2024] })],
+      })
+    ).toMatchObject({ status: "matched", folderId: "33333" });
+  });
+
   it("matches exactly one Utah candidate folder by candidate name and report year", () => {
     expect(
       resolveUtahCandidateCommittee({

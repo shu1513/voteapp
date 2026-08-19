@@ -201,6 +201,36 @@ describe("floridaCandidateFinanceAutoLink", () => {
     });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it must stay as
+    // middle evidence on either side instead of being stripped as a suffix.
+    function resolveAgainstRecipient(candidateName: string, recipientName: string) {
+      return resolveFloridaCandidateCommittee({
+        candidateName,
+        electionYear: 2026,
+        contributionRows: [contribution({ contributionDate: "01/15/2026", recipientName })],
+      });
+    }
+
+    expect(resolveAgainstRecipient("Jane V. Doe", "DOE, JANE B. (DEM)(GOV)")).toEqual({
+      status: "unmatched",
+      reason: "no_matching_committee",
+    });
+    expect(resolveAgainstRecipient("Jane B. Doe", "DOE, JANE V (DEM)(GOV)")).toEqual({
+      status: "unmatched",
+      reason: "no_matching_committee",
+    });
+    expect(resolveAgainstRecipient("Jane V. Doe", "DOE, JANE V (DEM)(GOV)")).toMatchObject({
+      status: "matched",
+      committeeName: "DOE, JANE V (DEM)(GOV)",
+    });
+    expect(resolveAgainstRecipient("Jane Doe", "DOE, JANE V (DEM)(GOV)")).toMatchObject({
+      status: "matched",
+      committeeName: "DOE, JANE V (DEM)(GOV)",
+    });
+  });
+
   it("lets a middle conflict pick the right committee out of two rival Jane Does", () => {
     expect(
       resolveFloridaCandidateCommittee({

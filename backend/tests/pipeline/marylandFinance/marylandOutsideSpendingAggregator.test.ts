@@ -139,6 +139,24 @@ describe("marylandOutsideSpendingAggregator", () => {
     expect(result.matchedExpenditureRowCount).toBe(2);
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it has to survive
+    // normalization as middle evidence on EITHER side of the comparison.
+    const matchedRows = (candidateName: string, target: string): number =>
+      aggregateMarylandOutsideSpending({
+        candidateName,
+        officeName: "State Senator",
+        electionYear: 2026,
+        expenditureRows: [expenditure({ "Candidate/Ballot Issue": target })],
+      }).matchedExpenditureRowCount;
+
+    expect(matchedRows("Justin V. Gallucci", "Gallucci, Justin B.")).toBe(0);
+    expect(matchedRows("Justin B. Gallucci", "Gallucci, Justin V")).toBe(0);
+    expect(matchedRows("Justin V. Gallucci", "Gallucci, Justin V")).toBe(1);
+    expect(matchedRows("Justin Gallucci", "Gallucci, Justin V")).toBe(1);
+  });
+
   it("requires matching office sought", () => {
     const result = aggregateMarylandOutsideSpending({
       candidateName: "Justin Gallucci",

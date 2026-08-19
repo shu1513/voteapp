@@ -202,6 +202,44 @@ describe("districtOfColumbiaCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", committeeKey: "SMITH FOR DC" });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it must stay as
+    // middle evidence on either side instead of being stripped as a suffix.
+    function resolveAgainstRecordName(candidateName: string, recordCandidateName: string) {
+      return resolveDistrictOfColumbiaCandidateCommittee({
+        candidateName,
+        officeScope: "place",
+        officeName: "Mayor",
+        electionYear: 2026,
+        contributionRecords: [
+          record({
+            candidateName: recordCandidateName,
+            committeeName: "Smith For DC",
+            committeeKey: "SMITH FOR DC",
+          }),
+        ],
+      });
+    }
+
+    expect(resolveAgainstRecordName("John V. Smith", "John B. Smith")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolveAgainstRecordName("John B. Smith", "Smith, John V")).toMatchObject({
+      status: "unmatched",
+      reason: "no_candidate_committee_match",
+    });
+    expect(resolveAgainstRecordName("John V. Smith", "Smith, John V")).toMatchObject({
+      status: "matched",
+      committeeKey: "SMITH FOR DC",
+    });
+    expect(resolveAgainstRecordName("John Smith", "Smith, John V")).toMatchObject({
+      status: "matched",
+      committeeKey: "SMITH FOR DC",
+    });
+  });
+
   it("requires and enforces D.C. ward or at-large seats for seat-scoped offices", () => {
     expect(
       resolveDistrictOfColumbiaCandidateCommittee({

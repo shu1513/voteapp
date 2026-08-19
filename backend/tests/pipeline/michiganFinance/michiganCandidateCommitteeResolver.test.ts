@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   normalizeMichiganCandidateNameKeys,
+  normalizePersonName,
   resolveMichiganCandidateCommittee,
 } from "../../../src/pipeline/michiganFinance/michiganCandidateCommitteeResolver.js";
 import type { MichiganMitnLegacyContributionRow } from "../../../src/pipeline/michiganFinance/michiganMitnLegacyRowTypes.js";
@@ -50,6 +51,15 @@ describe("michiganCandidateCommitteeResolver", () => {
       "GRETCHEN E WHITMER",
       "GRETCHEN WHITMER",
     ]);
+  });
+
+  it("keeps a bare trailing V, which is a middle initial rather than a suffix", () => {
+    // This normalizer is what michiganOutsideSpendingAggregator hands to
+    // hasMiddleNameConflict, and GENERATIONAL_SUFFIX_RANK deliberately excludes
+    // "V" — stripping it here would erase the middle evidence downstream.
+    expect(normalizePersonName("Smith, John V")).toBe("SMITH JOHN V");
+    expect(normalizePersonName("John V. Smith")).toBe("JOHN V SMITH");
+    expect(normalizePersonName("John Smith Jr.")).toBe("JOHN SMITH");
   });
 
   it("matches exactly one Michigan candidate committee by structured candidate name", () => {

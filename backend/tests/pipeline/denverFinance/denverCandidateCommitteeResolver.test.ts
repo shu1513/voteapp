@@ -99,6 +99,16 @@ describe("denverPersonNameMatchesCandidate", () => {
     // Generational-suffix veto.
     expect(denverPersonNameMatchesCandidate("Jeff Walker Jr", "Jeff Walker Sr")).toBe(false);
   });
+
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it must stay as
+    // middle evidence on either side instead of being stripped as a suffix.
+    expect(denverPersonNameMatchesCandidate("Smith, John B.", "John V. Smith")).toBe(false);
+    expect(denverPersonNameMatchesCandidate("Smith, John V", "John B. Smith")).toBe(false);
+    expect(denverPersonNameMatchesCandidate("Smith, John V", "John V. Smith")).toBe(true);
+    expect(denverPersonNameMatchesCandidate("Smith, John V", "John Smith")).toBe(true);
+  });
 });
 
 describe("resolveDenverCandidateCommittees", () => {

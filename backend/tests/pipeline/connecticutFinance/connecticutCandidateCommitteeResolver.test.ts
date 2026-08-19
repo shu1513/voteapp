@@ -315,6 +315,51 @@ describe("connecticutCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "matched", committeeId: "14376" });
   });
 
+  it("reads a bare trailing V as a middle initial, not a generational suffix", () => {
+    // GENERATIONAL_SUFFIX_RANK deliberately excludes "V": a trailing "V" is far
+    // more often a middle initial than a fifth generation, so it must stay as
+    // middle evidence on either side instead of being stripped as a suffix.
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Timothy V. Ackert",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        receiptRows: [receiptRow()],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_office_year_match" });
+
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Timothy J. Ackert",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        receiptRows: [receiptRow({ "Candidate Middle Intial": "V" })],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_office_year_match" });
+
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Timothy V. Ackert",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        receiptRows: [receiptRow({ "Candidate Middle Intial": "V" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "14376" });
+
+    expect(
+      resolveConnecticutCandidateCommittee({
+        candidateName: "Timothy Ackert",
+        officeName: "State Lower Chamber Legislator",
+        district: "8",
+        electionYear: 2026,
+        receiptRows: [receiptRow({ "Candidate Middle Intial": "V" })],
+      })
+    ).toMatchObject({ status: "matched", committeeId: "14376" });
+  });
+
   it("reads middle-name evidence through one-sided nickname expansion", () => {
     const rows = [
       receiptRow({

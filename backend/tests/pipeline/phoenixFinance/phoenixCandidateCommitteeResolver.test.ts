@@ -395,6 +395,24 @@ describe("phoenixPersonNameMatchesCandidate / normalizePhoenixTextKey", () => {
     expect(phoenixPersonNameMatchesCandidate("Hermes", "Ed Hermes")).toBe(false);
   });
 
+  it("treats a bare V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (the shared
+    // GENERATIONAL_SUFFIX_RANK policy deliberately excludes it), so it must
+    // stay as middle evidence on either side instead of being stripped.
+    expect(
+      phoenixPersonNameMatchesCandidate("Smith, John B.", "John V. Smith"),
+    ).toBe(false);
+    expect(
+      phoenixPersonNameMatchesCandidate("Smith, John V", "John B. Smith"),
+    ).toBe(false);
+    expect(
+      phoenixPersonNameMatchesCandidate("Smith, John V", "John V. Smith"),
+    ).toBe(true);
+    expect(
+      phoenixPersonNameMatchesCandidate("Smith, John V", "John Smith"),
+    ).toBe(true);
+  });
+
   it("normalizes accents, punctuation, and whitespace", () => {
     expect(normalizePhoenixTextKey("  Jiménez,  Patricia ")).toBe(
       "JIMENEZ PATRICIA",
