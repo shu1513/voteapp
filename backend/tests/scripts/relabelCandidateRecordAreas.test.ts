@@ -37,4 +37,21 @@ describe("loadDoneCandidateIds", () => {
     ]);
     expect(await loadDoneCandidateIds(file, { dryRun: true })).toEqual(new Set(["dry-ok", "live-ok"]));
   });
+
+  it("ignores a truncated final line (killed run) but rejects a malformed earlier line", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "relabel-"));
+    const truncated = join(dir, "truncated.jsonl");
+    await writeFile(
+      truncated,
+      `${JSON.stringify({ candidate_id: "live-ok", status: "ok", dry_run: false })}\n{"candidate_id":"half`
+    );
+    expect(await loadDoneCandidateIds(truncated, { dryRun: false })).toEqual(new Set(["live-ok"]));
+
+    const corrupt = join(dir, "corrupt.jsonl");
+    await writeFile(
+      corrupt,
+      `{"candidate_id":"half\n${JSON.stringify({ candidate_id: "live-ok", status: "ok", dry_run: false })}\n`
+    );
+    await expect(loadDoneCandidateIds(corrupt, { dryRun: false })).rejects.toThrow();
+  });
 });

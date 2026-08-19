@@ -92,25 +92,33 @@ async function listCandidatePairs(
   // One row per candidate carrying EVERY same-date office election: tags
   // live on the record, not on an election, so a candidate running for two
   // offices at once is labeled against the union of both allowlists in one
-  // AI pass instead of one office being silently dropped.
+  // AI pass instead of one office being silently dropped. Joint-ticket
+  // running mates count too — the office-context loader matches either
+  // column, so this selection has to as well.
   const result = await pool.query<{ candidate_id: string; election_ids: string[] }>(
     `
-      SELECT ce.candidate_id::text AS candidate_id,
-             array_agg(DISTINCT ce.election_id::text ORDER BY ce.election_id::text) AS election_ids
-      FROM public.candidate_elections ce
-      JOIN public.elections e ON e.id = ce.election_id
-      JOIN public.candidates c ON c.id = ce.candidate_id
+      WITH ticket AS (
+        SELECT ce.election_id,
+               ce.status,
+               unnest(ARRAY[ce.candidate_id, ce.running_mate_candidate_id]) AS candidate_id
+        FROM public.candidate_elections ce
+      )
+      SELECT t.candidate_id::text AS candidate_id,
+             array_agg(DISTINCT t.election_id::text ORDER BY t.election_id::text) AS election_ids
+      FROM ticket t
+      JOIN public.elections e ON e.id = t.election_id
+      JOIN public.candidates c ON c.id = t.candidate_id
       WHERE e.election_date = $1::date
         AND e.race_type = 'office'
         AND c.deleted_at IS NULL
-        AND COALESCE(ce.status, '') <> 'withdrawn'
+        AND COALESCE(t.status, '') <> 'withdrawn'
         AND EXISTS (
           SELECT 1 FROM public.candidate_records r
-          WHERE r.candidate_id = ce.candidate_id AND r.retired_at IS NULL
+          WHERE r.candidate_id = t.candidate_id AND r.retired_at IS NULL
         )
-        AND ($2::uuid IS NULL OR ce.candidate_id = $2::uuid)
-      GROUP BY ce.candidate_id
-      ORDER BY ce.candidate_id
+        AND ($2::uuid IS NULL OR t.candidate_id = $2::uuid)
+      GROUP BY t.candidate_id
+      ORDER BY t.candidate_id
     `,
     [input.electionDate, input.candidateId]
   );
@@ -173,11 +181,21 @@ export async function loadDoneCandidateIds(outFile: string, options: { dryRun: b
     throw error;
   }
   const done = new Set<string>();
-  for (const line of text.split("\n")) {
-    if (!line.trim()) {
-      continue;
+  const lines = text.split("\n").filter((line) => line.trim().length > 0);
+  for (const [index, line] of lines.entries()) {
+    let row: { candidate_id?: string; status?: string; dry_run?: boolean };
+    try {
+      row = JSON.parse(line) as typeof row;
+    } catch (error) {
+      // Only the LAST line can be a half-written row from a killed run; it
+      // is simply not done. A malformed line anywhere else is a corrupt
+      // ledger and must stop the run.
+      if (index === lines.length - 1) {
+        console.warn(`relabel: ignoring truncated final line in ${outFile}`);
+        continue;
+      }
+      throw error;
     }
-    const row = JSON.parse(line) as { candidate_id?: string; status?: string; dry_run?: boolean };
     if (row.candidate_id && row.status === "ok" && (row.dry_run !== true || options.dryRun)) {
       done.add(row.candidate_id);
     }
@@ -253,6 +271,15 @@ async function main(): Promise<void> {
       `relabel: ${pairs.length} of ${pendingPairs.length} pending candidate(s) for election_date=${electionDate} (${allPairs.length - pendingPairs.length} already done in out-file)${dryRun ? " (dry-run: no writes)" : ""} provider=${provider ?? "fallback-chain"} concurrency=${concurrency}`
     );
 
+    // One writer for the JSONL ledger: workers finish out of order, and a
+    // serialized chain keeps every line whole regardless of filesystem
+    // append semantics.
+    let appendChain: Promise<void> = Promise.resolve();
+    const appendLine = (row: Record<string, unknown>): Promise<void> => {
+      appendChain = appendChain.then(() => appendFile(outFile, `${JSON.stringify(row)}\n`));
+      return appendChain;
+    };
+
     const processCandidate = async (pair: CandidatePair): Promise<void> => {
       totals.candidates += 1;
       const contexts: CandidateElectionOfficeContext[] = [];
@@ -265,10 +292,7 @@ async function main(): Promise<void> {
       const context = contexts[0];
       if (!context) {
         totals.skipped_no_context += 1;
-        await appendFile(
-          outFile,
-          `${JSON.stringify({ candidate_id: pair.candidateId, election_ids: pair.electionIds, status: "skipped_no_context" })}\n`
-        );
+        await appendLine({ candidate_id: pair.candidateId, election_ids: pair.electionIds, status: "skipped_no_context" });
         return;
       }
       // Prompt context comes from the first election; the allowlist is the
@@ -398,24 +422,21 @@ async function main(): Promise<void> {
         totals.inserted += insertedTagIds.length;
       }
 
-      await appendFile(
-        outFile,
-        `${JSON.stringify({
-          candidate_id: pair.candidateId,
-          election_ids: pair.electionIds,
-          office_ids: contexts.map((officeContext) => officeContext.officeId),
-          candidate_display_name: context.candidateDisplayName,
-          status: aiFailure ? "ai_failed" : "ok",
-          ai_failure: aiFailure,
-          provider: providerUsed,
-          model: modelUsed,
-          dry_run: dryRun,
-          record_count: records.length,
-          proposed,
-          conflicts,
-          inserted_tag_ids: insertedTagIds,
-        })}\n`
-      );
+      await appendLine({
+        candidate_id: pair.candidateId,
+        election_ids: pair.electionIds,
+        office_ids: contexts.map((officeContext) => officeContext.officeId),
+        candidate_display_name: context.candidateDisplayName,
+        status: aiFailure ? "ai_failed" : "ok",
+        ai_failure: aiFailure,
+        provider: providerUsed,
+        model: modelUsed,
+        dry_run: dryRun,
+        record_count: records.length,
+        proposed,
+        conflicts,
+        inserted_tag_ids: insertedTagIds,
+      });
       console.log(
         `relabel: candidate_id=${pair.candidateId} records=${records.length} proposed=${proposed.length} conflicts=${conflicts.length} inserted=${insertedTagIds.length}${aiFailure ? " AI_FAILED" : ""}`
       );
