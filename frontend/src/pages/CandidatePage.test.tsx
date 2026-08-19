@@ -1144,11 +1144,14 @@ describe("CandidatePage roster pager", () => {
 
     await user.click(within(pager).getByRole("link", { name: "Next: Riley Runner" }));
 
-    expect(router.state.location.pathname).toBe("/candidates/c-2");
+    await waitFor(() => expect(router.state.location.pathname).toBe("/candidates/c-2"));
     expect(router.state.location.state).toEqual(ROSTER_ARRIVAL);
-    // On the neighbor, the walk points back.
-    const nextPager = await screen.findByRole("navigation", { name: "Candidate navigation" });
-    expect(within(nextPager).getByRole("link", { name: "Previous: Jordan Voter" })).toBeInTheDocument();
+    // On the neighbor, the walk points back. The pager stays mounted across
+    // the walk, so wait for a link that only the neighbor renders — finding
+    // the nav itself would resolve against the still-current page.
+    const previousLink = await screen.findByRole("link", { name: "Previous: Jordan Voter" });
+    const nextPager = screen.getByRole("navigation", { name: "Candidate navigation" });
+    expect(nextPager).toContainElement(previousLink);
     expect(within(nextPager).queryByRole("link", { name: /^Next:/ })).not.toBeInTheDocument();
   });
 
@@ -1262,10 +1265,15 @@ describe("CandidatePage roster rail", () => {
     const rail = await screen.findByRole("navigation", { name: "Candidates in this race" });
     await user.click(within(rail).getByRole("link", { name: "Casey Contender" }));
 
-    expect(router.state.location.pathname).toBe("/candidates/c-3");
+    await waitFor(() => expect(router.state.location.pathname).toBe("/candidates/c-3"));
     expect(router.state.location.state).toEqual(ROSTER_ARRIVAL);
-    const nextRail = await screen.findByRole("navigation", { name: "Candidates in this race" });
-    expect(within(nextRail).getByText("Casey Contender").closest("li")).toHaveAttribute("aria-current", "page");
+    // The rail stays mounted across the walk, so finding the nav resolves
+    // against the still-current page; wait for the neighbor's own marker.
+    await waitFor(() => {
+      const railNow = screen.getByRole("navigation", { name: "Candidates in this race" });
+      expect(within(railNow).getByText("Casey Contender").closest("li")).toHaveAttribute("aria-current", "page");
+    });
+    const nextRail = screen.getByRole("navigation", { name: "Candidates in this race" });
     expect(within(nextRail).getByRole("link", { name: "Jordan Voter" })).toHaveAttribute(
       "href",
       "/candidates/c-1"
