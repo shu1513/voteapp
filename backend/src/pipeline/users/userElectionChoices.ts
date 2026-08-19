@@ -428,6 +428,10 @@ export async function setUserElectionChoice(
         // of UPDATE privilege the API role must not hold. Do not "fix" this
         // with advisory locks either: prod catalog writes are operator-run
         // SQL that would not participate.
+        //
+        // origin: this is the manual write path, so a re-pick of a row that
+        // auto-pick wrote (origin = 'auto') becomes the user's own — the
+        // column default covers fresh rows.
         const inserted = await client.query(
           `
             INSERT INTO public.user_election_choices (user_id, election_id, candidate_id)
@@ -444,7 +448,7 @@ export async function setUserElectionChoice(
               AND candidate_election.election_id = $2::uuid
               AND candidate_election.status NOT IN ('withdrawn', 'lost')
             ON CONFLICT (user_id, election_id, candidate_id) WHERE candidate_id IS NOT NULL
-            DO UPDATE SET updated_at = now()
+            DO UPDATE SET origin = 'manual', updated_at = now()
           `,
           [normalizedUserId, normalizedElectionId, normalizedCandidateId]
         );
@@ -491,7 +495,7 @@ export async function setUserElectionChoice(
               AND election.race_type = 'ballot_measure'
               AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
             ON CONFLICT (user_id, election_id) WHERE measure_position IS NOT NULL
-            DO UPDATE SET measure_position = EXCLUDED.measure_position, updated_at = now()
+            DO UPDATE SET measure_position = EXCLUDED.measure_position, origin = 'manual', updated_at = now()
           `,
           [normalizedUserId, normalizedElectionId, input.measurePosition]
         );

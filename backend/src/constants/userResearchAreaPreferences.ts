@@ -1,1 +1,0 @@
-export const MAX_USER_RESEARCH_AREA_PREFERENCES = 7;

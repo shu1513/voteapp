@@ -1,17 +1,25 @@
 import type { Pool, PoolClient } from "pg";
 
-import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../../constants/userResearchAreaPreferences.js";
 import { isUuid } from "../../utils/uuid.js";
-
-export { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../../constants/userResearchAreaPreferences.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type TransactionalDb = Pick<Pool, "connect">;
 type TransactionClient = Pick<PoolClient, "query" | "release">;
 
+export type ResearchAreaPreferenceDirection = "support" | "oppose";
+
 export type UserResearchAreaPreferenceInput = {
   researchAreaId: string;
   rank?: number | null;
+  /**
+   * support/oppose the area's stated goal, and the "line in the sand" flag.
+   * Omitted (undefined) = keep the value already stored for this area, or the
+   * default (support / false) for a newly added area. Clients that only know
+   * about ranks (the mobile editor today) can keep sending {id, rank} without
+   * wiping settings made elsewhere.
+   */
+  direction?: ResearchAreaPreferenceDirection;
+  hardVeto?: boolean;
 };
 
 export type UserResearchAreaPreference = {
@@ -20,6 +28,8 @@ export type UserResearchAreaPreference = {
   name: string;
   description: string | null;
   rank: number | null;
+  direction: ResearchAreaPreferenceDirection;
+  hard_veto: boolean;
 };
 
 export type UserResearchAreaPreferencesResult = {
@@ -65,6 +75,14 @@ type PreferenceRow = {
   name: string | null;
   description: string | null;
   rank: number | string | null;
+  direction: string | null;
+  hard_veto: boolean | null;
+};
+
+type StoredPreferenceSettingsRow = {
+  research_area_id: string;
+  direction: string;
+  hard_veto: boolean;
 };
 
 type ResearchAreaValidationRow = {
@@ -75,7 +93,13 @@ type ResearchAreaValidationRow = {
 type NormalizedPreferenceInput = {
   researchAreaId: string;
   rank: number | null;
+  direction: ResearchAreaPreferenceDirection | undefined;
+  hardVeto: boolean | undefined;
 };
+
+function parseDirection(value: string | null): ResearchAreaPreferenceDirection {
+  return value === "oppose" ? "oppose" : "support";
+}
 
 function parseRank(value: number | string | null): number | null {
   if (value === null) {
@@ -99,13 +123,6 @@ function normalizeUserId(userId: string): string {
 function normalizePreferenceInputs(
   preferences: readonly UserResearchAreaPreferenceInput[]
 ): NormalizedPreferenceInput[] {
-  if (preferences.length > MAX_USER_RESEARCH_AREA_PREFERENCES) {
-    throw new UserResearchAreaPreferencesError(
-      "invalid_preferences",
-      `At most ${MAX_USER_RESEARCH_AREA_PREFERENCES} research areas can be selected`
-    );
-  }
-
   const normalized: NormalizedPreferenceInput[] = [];
   const seenResearchAreaIds = new Set<string>();
   const seenRanks = new Set<number>();
@@ -128,12 +145,11 @@ function normalizePreferenceInputs(
     }
     seenResearchAreaIds.add(researchAreaDedupeKey);
 
+    // No upper bound: a user may rank every selectable area (uniqueness of
+    // rank per user is enforced by the DB index and the check below).
     const rank = preference.rank ?? null;
-    if (rank !== null && (!Number.isInteger(rank) || rank < 1 || rank > MAX_USER_RESEARCH_AREA_PREFERENCES)) {
-      throw new UserResearchAreaPreferencesError(
-        "invalid_preferences",
-        `Preference rank must be an integer from 1 to ${MAX_USER_RESEARCH_AREA_PREFERENCES}`
-      );
+    if (rank !== null && (!Number.isInteger(rank) || rank < 1)) {
+      throw new UserResearchAreaPreferencesError("invalid_preferences", "Preference rank must be an integer >= 1");
     }
     if (rank !== null) {
       if (seenRanks.has(rank)) {
@@ -142,7 +158,19 @@ function normalizePreferenceInputs(
       seenRanks.add(rank);
     }
 
-    normalized.push({ researchAreaId, rank });
+    const direction = preference.direction;
+    if (direction !== undefined && direction !== "support" && direction !== "oppose") {
+      throw new UserResearchAreaPreferencesError(
+        "invalid_preferences",
+        "Preference direction must be 'support' or 'oppose'"
+      );
+    }
+    const hardVeto = preference.hardVeto;
+    if (hardVeto !== undefined && typeof hardVeto !== "boolean") {
+      throw new UserResearchAreaPreferencesError("invalid_preferences", "Preference hard_veto must be a boolean");
+    }
+
+    normalized.push({ researchAreaId, rank, direction, hardVeto });
   }
 
   return normalized;
@@ -168,6 +196,8 @@ function rowsToPreferences(rows: readonly PreferenceRow[]): UserResearchAreaPref
         name: row.name,
         description: row.description,
         rank: parseRank(row.rank),
+        direction: parseDirection(row.direction),
+        hard_veto: row.hard_veto === true,
       },
     ];
   });
@@ -182,7 +212,9 @@ async function queryPreferences(db: Queryable, normalizedUserId: string): Promis
         area.slug,
         area.name,
         area.description,
-        preference.rank
+        preference.rank,
+        preference.direction,
+        preference.hard_veto
       FROM public.users AS u
       LEFT JOIN public.user_research_area_preferences AS preference
         ON preference.user_id = u.id
@@ -292,25 +324,44 @@ export async function replaceUserResearchAreaPreferences(
 
     await validateSelectableResearchAreas(client, normalizedPreferences);
 
-    await client.query(
+    // Full-list replace, but direction/hard_veto survive for areas the caller
+    // re-sent without those fields: RETURNING hands back what the old rows
+    // held so the insert below can carry it over. (An upsert would be the
+    // obvious alternative, but the unique (user_id, rank) index makes a
+    // multi-row upsert fail on any rank swap.)
+    const previous = await client.query<StoredPreferenceSettingsRow>(
       `
         DELETE FROM public.user_research_area_preferences
         WHERE user_id = $1::uuid
+        RETURNING research_area_id::text AS research_area_id, direction, hard_veto
       `,
       [normalizedUserId]
     );
+    const previousByAreaId = new Map(previous.rows.map((row) => [row.research_area_id.toLowerCase(), row] as const));
 
     if (normalizedPreferences.length > 0) {
+      const rows = normalizedPreferences.map((preference) => {
+        const stored = previousByAreaId.get(preference.researchAreaId.toLowerCase());
+        return {
+          researchAreaId: preference.researchAreaId,
+          rank: preference.rank,
+          direction: preference.direction ?? (stored ? parseDirection(stored.direction) : "support"),
+          hardVeto: preference.hardVeto ?? (stored ? stored.hard_veto === true : false),
+        };
+      });
       await client.query(
         `
-          INSERT INTO public.user_research_area_preferences (user_id, research_area_id, rank)
-          SELECT $1::uuid, input.research_area_id, input.rank
-          FROM unnest($2::uuid[], $3::integer[]) AS input(research_area_id, rank)
+          INSERT INTO public.user_research_area_preferences (user_id, research_area_id, rank, direction, hard_veto)
+          SELECT $1::uuid, input.research_area_id, input.rank, input.direction, input.hard_veto
+          FROM unnest($2::uuid[], $3::integer[], $4::text[], $5::boolean[])
+            AS input(research_area_id, rank, direction, hard_veto)
         `,
         [
           normalizedUserId,
-          normalizedPreferences.map((preference) => preference.researchAreaId),
-          normalizedPreferences.map((preference) => preference.rank),
+          rows.map((row) => row.researchAreaId),
+          rows.map((row) => row.rank),
+          rows.map((row) => row.direction),
+          rows.map((row) => row.hardVeto),
         ]
       );
     }

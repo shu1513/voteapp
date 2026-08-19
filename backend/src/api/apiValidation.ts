@@ -8,7 +8,6 @@ import {
   type BallotSummarySort,
 } from "../pipeline/address/ballotElectionOrdering.js";
 import { GOOGLE_PLACE_ID_PATTERN } from "../pipeline/address/googlePlacesAutocomplete.js";
-import { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
 import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFollows.js";
 import type { UserElectionChoiceInput } from "../pipeline/users/userElectionChoices.js";
 import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
@@ -20,7 +19,6 @@ import { MAX_FIRST_NAME_LENGTH } from "../pipeline/users/userIdentity.js";
 import { UUID_PATTERN, isUuid } from "../utils/uuid.js";
 
 export { MAX_INITIALIZE_DISTRICT_IDS } from "../constants/userDistricts.js";
-export { MAX_USER_RESEARCH_AREA_PREFERENCES } from "../constants/userResearchAreaPreferences.js";
 export { UUID_PATTERN } from "../utils/uuid.js";
 
 export const ADDRESS_AUTOCOMPLETE_PATH = "/api/address/autocomplete";
@@ -234,6 +232,9 @@ const MAX_CONTENT_REPORT_EMAIL_LENGTH = 320;
 export type ResearchAreaPreferencePayloadItem = {
   research_area_id: string;
   rank?: number | null;
+  // Optional; omitted = keep the stored value (see UserResearchAreaPreferenceInput).
+  direction?: "support" | "oppose";
+  hard_veto?: boolean;
 };
 
 export type ResearchAreaPreferencesPayload = {
@@ -754,9 +755,6 @@ export function parseResearchAreaPreferencesBodyValue(parsed: unknown): Research
   if (!Array.isArray(preferences)) {
     throw new TypeError("Request body must include array field: preferences");
   }
-  if (preferences.length > MAX_USER_RESEARCH_AREA_PREFERENCES) {
-    throw new TypeError(`preferences supports at most ${MAX_USER_RESEARCH_AREA_PREFERENCES} research areas`);
-  }
 
   const normalizedPreferences: UserResearchAreaPreferenceInput[] = [];
   const seenResearchAreaIds = new Set<string>();
@@ -783,8 +781,8 @@ export function parseResearchAreaPreferencesBodyValue(parsed: unknown): Research
     seenResearchAreaIds.add(researchAreaDedupeKey);
 
     const rank = preference.rank ?? null;
-    if (rank !== null && (!Number.isInteger(rank) || rank < 1 || rank > MAX_USER_RESEARCH_AREA_PREFERENCES)) {
-      throw new TypeError(`preferences[].rank must be an integer from 1 to ${MAX_USER_RESEARCH_AREA_PREFERENCES}`);
+    if (rank !== null && (!Number.isInteger(rank) || rank < 1)) {
+      throw new TypeError("preferences[].rank must be an integer >= 1");
     }
     if (rank !== null) {
       if (seenRanks.has(rank)) {
@@ -793,7 +791,16 @@ export function parseResearchAreaPreferencesBodyValue(parsed: unknown): Research
       seenRanks.add(rank);
     }
 
-    normalizedPreferences.push({ researchAreaId, rank });
+    const direction = preference.direction;
+    if (direction !== undefined && direction !== "support" && direction !== "oppose") {
+      throw new TypeError("preferences[].direction must be 'support' or 'oppose'");
+    }
+    const hardVeto = preference.hard_veto;
+    if (hardVeto !== undefined && typeof hardVeto !== "boolean") {
+      throw new TypeError("preferences[].hard_veto must be a boolean");
+    }
+
+    normalizedPreferences.push({ researchAreaId, rank, direction, hardVeto });
   }
 
   return { preferences: normalizedPreferences };
