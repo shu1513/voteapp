@@ -283,6 +283,10 @@ async function main(): Promise<void> {
         senateClass: context.senateClass,
         termEndYear: context.termEndYear,
         allowedResearchAreaSlugs: allowedSlugs,
+        allowedResearchAreaGoals: allowedAreas.map((row) => ({
+          slug: row.slug,
+          description: row.description ?? null,
+        })),
         records: recordsForAreaLabel.map((row) => ({
           description: row.description,
           sourceUrl: row.source_url,

@@ -26,6 +26,7 @@ describe("loadAllowedResearchAreasForOfficeId", () => {
     ]);
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[0]).toContain("WHERE ora.office_id = $1::uuid");
+    expect(query.mock.calls[0]?.[0]).toContain("SELECT DISTINCT id, slug, description");
     expect(query.mock.calls[0]?.[1]).toEqual([
       "office-1",
       ["general", "integrity_and_ethics"],
@@ -52,6 +53,7 @@ describe("loadAllResearchAreas", () => {
     ]);
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[0]).toContain("FROM public.research_areas");
+    expect(query.mock.calls[0]?.[0]).toContain("SELECT id, slug, description");
     expect(query.mock.calls[0]?.[0]).not.toContain("office_research_areas");
   });
 });

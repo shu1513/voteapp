@@ -837,6 +837,10 @@ export async function runCandidateRecordEnricher(options: EnricherOptions = {}):
                   senateClass: context.senateClass,
                   termEndYear: context.termEndYear,
                   allowedResearchAreaSlugs: allowedSlugs,
+                  allowedResearchAreaGoals: allowedAreas.map((row) => ({
+                    slug: row.slug,
+                    description: row.description ?? null,
+                  })),
                   records: recordsForTagging.map((record) => ({
                     description: record.description,
                     sourceUrl: record.source_url,
