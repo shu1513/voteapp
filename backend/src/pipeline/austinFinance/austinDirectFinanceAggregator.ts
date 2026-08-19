@@ -13,7 +13,8 @@
 //     report — verified live: null covers carry no itemized rows);
 //   - a kept ATX.7 special report (not yet re-reported by a regular report)
 //     has no cover totals, so its itemized rows are added to raised;
-//   - cash on hand = `contrib_balance` of the latest cycle report;
+//   - cash on hand = `contrib_balance` of the latest cycle report, null when
+//     that report carries none (never an older report's balance);
 //   - itemized rows exclude PLEDGES and misfiled EXPENDITURES: `contrib_total`
 //     counts money received, a "Pledged Contribution" is not (live
 //     2026-08-19 — Anderson D1: cover $26,797.00 = 193 monetary rows, 5
@@ -179,13 +180,13 @@ export function aggregateAustinDirectFinance(input: {
     totalRaisedCents += itemizedByReport.get(report.reportId) ?? 0;
     totalSpentCents += report.expendTotalCents ?? 0;
   }
-  // Cash on hand: the latest cycle report's balance (selectAustinEffective-
-  // Reports orders by period_from; ties are one period, so the later filing
-  // wins there too).
-  let cashOnHandCents: number | null = null;
-  for (const report of cycleReports)
-    if (report.contribBalanceCents !== null)
-      cashOnHandCents = report.contribBalanceCents;
+  // Cash on hand: the latest cycle report's balance, and ONLY that one
+  // (selectAustinEffectiveReports orders by period_from; ties are one
+  // period, so the later filing wins there too). A null balance on the
+  // latest report publishes null — an older report's balance is stale
+  // money, not current cash (PR #763 review).
+  const cashOnHandCents =
+    cycleReports[cycleReports.length - 1]?.contribBalanceCents ?? null;
 
   // Buckets.
   const occupations = new Map<

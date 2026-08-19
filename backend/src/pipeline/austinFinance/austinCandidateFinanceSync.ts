@@ -23,7 +23,10 @@
 import type { Pool, PoolClient } from "pg";
 
 import { aggregateAustinDirectFinance } from "./austinDirectFinanceAggregator.js";
-import { aggregateAustinOutsideSpending } from "./austinOutsideSpendingAggregator.js";
+import {
+  aggregateAustinOutsideSpending,
+  type AustinReportFacts,
+} from "./austinOutsideSpendingAggregator.js";
 import { AUSTIN_FINANCE_LINK_SOURCE_URL } from "./austinCandidateFinanceAutoLink.js";
 import {
   isAustinFinanceSupportedElectionDate,
@@ -37,6 +40,7 @@ import {
   getAustinContributionRowsByRecipient,
   getAustinDirectCampaignExpenditureRows,
   getAustinReportDetailRowsByFiler,
+  getAustinReportDetailRowsByReportIds,
   requireIsoDate,
   type AustinCommitteePurposeRow,
   type AustinDirectCampaignExpenditureRow,
@@ -69,10 +73,14 @@ function usd(cents: number): string {
   return `${sign}$${Math.trunc(abs / 100)}.${String(abs % 100).padStart(2, "0")}`;
 }
 
-/** The two small city-wide datasets, fetched once per batch run. */
+/**
+ * The two small city-wide datasets plus the Report Detail facts (form type,
+ * period) of every report they reference, fetched once per batch run.
+ */
 export type AustinOutsideDatasets = {
   dceRows: AustinDirectCampaignExpenditureRow[];
   purposeRows: AustinCommitteePurposeRow[];
+  reportsById: Map<string, AustinReportFacts>;
 };
 
 export async function loadAustinOutsideDatasets(
@@ -86,7 +94,25 @@ export async function loadAustinOutsideDatasets(
     throw new Error("Austin Direct Campaign Expenditures dataset returned no rows; refusing to zero outside spending");
   if (purposeRows.length === 0)
     throw new Error("Austin Committee Purpose dataset returned no rows; refusing to zero outside spending");
-  return { dceRows, purposeRows };
+  const reportIds = [
+    ...dceRows.map((row) => row.reportId),
+    ...purposeRows.flatMap((row) => (row.reportId === null ? [] : [row.reportId])),
+  ];
+  const reports = await getAustinReportDetailRowsByReportIds(reportIds, options);
+  // Report Detail covers filings from 2023 on; every live DCE/purpose report
+  // resolves today (182/182 on 2026-08-19). Zero hits for hundreds of ids is
+  // a broken join, not a gap.
+  if (reports.length === 0)
+    throw new Error(`Austin Report Detail returned no rows for ${new Set(reportIds).size} referenced PAC reports; refusing to aggregate outside spending`);
+  const reportsById = new Map<string, AustinReportFacts>();
+  for (const report of reports)
+    reportsById.set(report.reportId, {
+      formTypeCode: report.formTypeCode,
+      periodFrom: report.periodFrom,
+      periodTo: report.periodTo,
+      dateFiled: report.dateFiled,
+    });
+  return { dceRows, purposeRows, reportsById };
 }
 
 export type AustinCandidateFinanceSyncResult = {
@@ -173,6 +199,7 @@ export async function syncAustinCandidateFinance(input: {
   const outside = aggregateAustinOutsideSpending({
     dceRows: datasets.dceRows,
     purposeRows: datasets.purposeRows,
+    reportsById: datasets.reportsById,
     candidateDisplayName: input.candidateDisplayName,
     filerName,
     officeCode: input.officeCode,

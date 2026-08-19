@@ -76,6 +76,13 @@ function defaultRoutes(): Record<string, unknown[]> {
       // 2022 cycle: outside the window.
       { dce_id: "D5", parent_transaction: "R71-F00001", paid_by: "City Accountability Project", payee: "Print Co", payment_date: "2022-10-15T00:00:00.000", payment_amount: "5000.00", candidate_or_measure: "Qadri, Zohaib", office_sought_info: "COUNCIL_MBR_DISTRICT_09" },
     ],
+    // Report Detail facts behind the DCE / purpose report ids (the by-ids query).
+    "report_id in (": [
+      reportRecord({ report_id: "R91", filer_name: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", form_type: "MPAC - Monthly PAC", period_from: "2025-09-26T00:00:00.000", period_to: "2025-10-25T00:00:00.000", date_filed: "2025-10-28T00:00:00.000", election_date: null, office_sought: null }),
+      reportRecord({ report_id: "R92", filer_name: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", form_type: "CORPAC - Correction", period_from: "2025-09-26T00:00:00.000", period_to: "2025-10-25T00:00:00.000", date_filed: "2025-11-02T00:00:00.000", election_date: null, office_sought: null }),
+      reportRecord({ report_id: "R81", filer_name: "City Accountability Project", form_type: "GPAC - General Purpose PAC", period_from: "2026-01-01T00:00:00.000", period_to: "2026-06-30T00:00:00.000", date_filed: "2026-07-15T00:00:00.000", election_date: null, office_sought: null }),
+      reportRecord({ report_id: "R71", filer_name: "City Accountability Project", form_type: "GPAC - General Purpose PAC", period_from: "2022-07-01T00:00:00.000", period_to: "2022-12-31T00:00:00.000", date_filed: "2023-01-15T00:00:00.000", election_date: null, office_sought: null }),
+    ],
     "u3cd-iecr": [
       { committee_purp_id: "R91-C00001", report: "R91", filer_name: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", committee_activity: "SUPPORT", purpose_type: "CANDIDATE", recipient: "Zohaib,Qadri", office_sought: "COUNCIL_MBR_DISTRICT_09" },
       { committee_purp_id: "R71-C00001", report: "R71", filer_name: "City Accountability Project", committee_activity: "OPPOSE", purpose_type: "CANDIDATE", recipient: "Zo,Qadri", office_sought: "COUNCIL_MBR_DISTRICT_09", election_date: "2024-11-05T00:00:00.000" },
@@ -85,9 +92,10 @@ function defaultRoutes(): Record<string, unknown[]> {
 
 function makeFetch(routes: Record<string, unknown[]>) {
   return vi.fn(async (input: RequestInfo | URL): Promise<Response> => {
-    const url = String(input);
-    for (const [datasetId, payload] of Object.entries(routes)) {
-      if (url.includes(`/resource/${datasetId}.json`))
+    const url = decodeURIComponent(String(input)).replace(/\+/g, " ");
+    const entries = Object.entries(routes).sort(([a], [b]) => Number(b.includes(" ")) - Number(a.includes(" ")));
+    for (const [needle, payload] of entries) {
+      if (url.includes(needle.includes(" ") ? needle : `/resource/${needle}.json`))
         return new Response(JSON.stringify(payload), { status: 200 });
     }
     throw new Error(`Unexpected URL in test fetch: ${url}`);
@@ -161,6 +169,7 @@ describe("syncAustinCandidateFinance", () => {
   it("uses prefetched city-wide datasets when given", async () => {
     const routes = defaultRoutes();
     const outside = await loadAustinOutsideDatasets({ fetchImpl: makeFetch(routes) });
+    expect([...outside.reportsById.keys()].sort()).toEqual(["R71", "R81", "R91", "R92"]);
     const fetchImpl = makeFetch({ "b2pc-2s8n": routes["b2pc-2s8n"]!, "3kfv-biw6": routes["3kfv-biw6"]! });
     const result = await syncAustinCandidateFinance({
       ...baseInput(routes),
@@ -171,11 +180,16 @@ describe("syncAustinCandidateFinance", () => {
     expect(fetchImpl.mock.calls.every(([url]) => !String(url).includes("8p2b-ewep") && !String(url).includes("u3cd-iecr"))).toBe(true);
   });
 
-  it("refuses an empty city-wide dataset", async () => {
+  it("refuses an empty city-wide dataset or an empty PAC-report join", async () => {
     const routes = defaultRoutes();
     routes["8p2b-ewep"] = [];
     await expect(loadAustinOutsideDatasets({ fetchImpl: makeFetch(routes) })).rejects.toThrow(
       /Direct Campaign Expenditures dataset returned no rows/,
+    );
+    const noReports = defaultRoutes();
+    noReports["report_id in ("] = [];
+    await expect(loadAustinOutsideDatasets({ fetchImpl: makeFetch(noReports) })).rejects.toThrow(
+      /Report Detail returned no rows for 5 referenced PAC reports/,
     );
   });
 

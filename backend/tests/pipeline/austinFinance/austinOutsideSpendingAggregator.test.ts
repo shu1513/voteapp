@@ -3,11 +3,20 @@ import {
   aggregateAustinOutsideSpending,
   austinCommitteeDirections,
   swapAustinCommaName,
+  type AustinReportFacts,
 } from "../../../src/pipeline/austinFinance/austinOutsideSpendingAggregator.js";
 import type {
   AustinCommitteePurposeRow,
   AustinDirectCampaignExpenditureRow,
 } from "../../../src/pipeline/austinFinance/austinSocrataClient.js";
+
+/** Report facts behind the fixture rows: R1 = a PAC monthly inside the 2024 window. */
+function reportFacts(): Map<string, AustinReportFacts> {
+  return new Map([
+    ["R1", { formTypeCode: "MPAC", periodFrom: "2024-09-26", periodTo: "2024-10-25", dateFiled: "2024-10-28" }],
+    ["R2022", { formTypeCode: "MPAC", periodFrom: "2022-11-26", periodTo: "2022-12-25", dateFiled: "2022-12-28" }],
+  ]);
+}
 
 const WATSON = {
   candidateDisplayName: "Kirk Watson",
@@ -16,6 +25,7 @@ const WATSON = {
   electionDate: "2024-11-05",
   windowFrom: "2023-07-01",
   windowTo: "2024-12-31",
+  reportsById: reportFacts(),
 };
 
 let nextDce = 1;
@@ -116,20 +126,32 @@ describe("austinCommitteeDirections", () => {
     ]);
   });
 
-  it("treats a blank election date or an OTHER office as silence, a different one as a conflict", () => {
+  it("treats an OTHER office as silence and a different election date or office as a conflict", () => {
     const directions = austinCommitteeDirections({
       purposeRows: [
-        purpose({ filerName: "Austin Board of Realtors PAC", electionDate: null }),
-        purpose({ filerName: "Austin Apartment Association PAC", officeSought: "OTHER", electionDate: null }),
+        purpose({ filerName: "Austin Apartment Association PAC", officeSought: "OTHER" }),
         purpose({ filerName: "Old PAC", electionDate: "2022-11-08" }),
         purpose({ filerName: "Council PAC", officeSought: "COUNCIL_MBR_DISTRICT_09" }),
       ],
       ...WATSON,
     });
-    expect([...directions]).toEqual([
-      ["AUSTIN BOARD OF REALTORS PAC", "support"],
-      ["AUSTIN APARTMENT ASSOCIATION PAC", "support"],
-    ]);
+    expect([...directions]).toEqual([["AUSTIN APARTMENT ASSOCIATION PAC", "support"]]);
+  });
+
+  it("accepts a blank-dated row only when its report period overlaps the cycle window", () => {
+    const directions = austinCommitteeDirections({
+      purposeRows: [
+        // Filed on a 2024 monthly inside the window: this cycle's declaration.
+        purpose({ filerName: "Austin Board of Realtors PAC", electionDate: null, reportId: "R1" }),
+        // Filed on a December-2022 monthly: the 2022 cycle's stance, not evidence for 2024.
+        purpose({ filerName: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", electionDate: null, reportId: "R2022" }),
+        // No report at all / unknown report: cannot be placed in a cycle.
+        purpose({ filerName: "Ghost PAC", electionDate: null, reportId: null }),
+        purpose({ filerName: "Unknown Report PAC", electionDate: null, reportId: "R404" }),
+      ],
+      ...WATSON,
+    });
+    expect([...directions]).toEqual([["AUSTIN BOARD OF REALTORS PAC", "support"]]);
   });
 
   it("marks a filer with both directions ambiguous and reads call names and typos through the shared gates", () => {
@@ -148,9 +170,12 @@ describe("austinCommitteeDirections", () => {
       purposeRows: [
         purpose({ filerName: "City Accountability Project", recipient: "Zo,Qadri", officeSought: "COUNCIL_MBR_DISTRICT_09", committeeActivity: "OPPOSE" }),
       ],
+      reportsById: reportFacts(),
       candidateDisplayName: 'Zohaib "Zo" Qadri',
       officeCode: "COUNCIL_MBR_DISTRICT_09",
       electionDate: "2024-11-05",
+      windowFrom: "2023-07-01",
+      windowTo: "2024-12-31",
     });
     expect([...qadri]).toEqual([["CITY ACCOUNTABILITY PROJECT", "oppose"]]);
   });
@@ -207,6 +232,45 @@ describe("aggregateAustinOutsideSpending", () => {
       undirectedSpenders: [],
       ambiguousDirectionCents: 0,
     });
+  });
+
+  it("lets a correction of a regular PAC report supersede the spender's rows in its period (changed dates count once)", () => {
+    const reportsById = new Map<string, AustinReportFacts>([
+      ...reportFacts(),
+      ["RATX1", { formTypeCode: "ATX1", periodFrom: "2024-10-28", periodTo: "2024-10-30", dateFiled: "2024-10-30" }],
+      ["RGPAC", { formTypeCode: "GPAC", periodFrom: "2024-11-05", periodTo: "2024-12-04", dateFiled: "2024-12-06" }],
+      ["RCOR1", { formTypeCode: "CORPAC", periodFrom: "2024-10-28", periodTo: "2024-12-04", dateFiled: "2024-12-05" }],
+      ["RCOR2", { formTypeCode: "CORPAC", periodFrom: "2024-10-28", periodTo: "2024-12-04", dateFiled: "2024-12-06" }],
+    ]);
+    const vibrant = (over: Partial<AustinDirectCampaignExpenditureRow> & { reportId: string }) =>
+      dce({ paidBy: "Vibrant Austin PAC", candidateOrMeasure: "Watson, Kirk", officeSoughtInfo: "MAYOR", ...over });
+    const rows = [
+      // Special report: two payments.
+      vibrant({ reportId: "RATX1", paymentDate: "2024-10-29", amountCents: 9_400, payee: "Meta" }),
+      vibrant({ reportId: "RATX1", paymentDate: "2024-10-29", amountCents: 102_344, payee: "Scale to Win" }),
+      // Regular report re-lists a later payment.
+      vibrant({ reportId: "RGPAC", paymentDate: "2024-11-14", amountCents: 790_742, payee: "DSPolitical" }),
+      // An earlier correction of the same period (superseded by the later one).
+      vibrant({ reportId: "RCOR1", paymentDate: "2024-10-29", amountCents: 9_400, payee: "Meta" }),
+      // The latest correction: full re-list, one payment re-dated.
+      vibrant({ reportId: "RCOR2", paymentDate: "2024-10-29", amountCents: 9_400, payee: "Meta" }),
+      vibrant({ reportId: "RCOR2", paymentDate: "2024-10-30", amountCents: 102_344, payee: "Scale to Win" }),
+      vibrant({ reportId: "RCOR2", paymentDate: "2024-11-14", amountCents: 790_742, payee: "DSPolitical" }),
+      // Another spender's rows in the same dates are untouched by Vibrant's correction.
+      dce({ reportId: "RGPAC", paymentDate: "2024-11-14", amountCents: 5_000, payee: "Other Co" }),
+    ];
+    const result = aggregateAustinOutsideSpending({
+      dceRows: rows,
+      purposeRows: [purpose(), purpose({ filerName: "Vibrant Austin PAC", committeeActivity: "OPPOSE" })],
+      ...WATSON,
+      reportsById,
+    });
+    expect(result.groups).toEqual([
+      { spenderName: "Vibrant Austin PAC", supportOppose: "oppose", amountCents: 9_400 + 102_344 + 790_742 },
+      { spenderName: "Austin Leadership PAC", supportOppose: "support", amountCents: 5_000 },
+    ]);
+    // Dropped: both RATX1 rows, the RGPAC re-list, the older correction's row.
+    expect(result.supersededRowCount).toBe(4);
   });
 
   it("reports undirected and ambiguous-direction dollars instead of guessing", () => {

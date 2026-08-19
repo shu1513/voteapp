@@ -244,6 +244,20 @@ describe("aggregateAustinDirectFinance", () => {
     });
   });
 
+  it("publishes null cash when the latest cycle report carries no balance (never an older one)", () => {
+    const reports = watsonReports().map((row) =>
+      row.reportId === "R2025H1" ? { ...row, contribBalanceCents: null } : row,
+    );
+    const result = aggregateAustinDirectFinance({
+      reports,
+      contributions: watsonContributions(),
+      filerName: FILER,
+      electionDate: ELECTION,
+      officeCode: "MAYOR",
+    });
+    expect(result.cashOnHandCents).toBeNull();
+  });
+
   it("recognizes non-receipt contribution types", () => {
     expect(isAustinNonReceiptContributionType("Pledged Contribution")).toBe(true);
     expect(isAustinNonReceiptContributionType("Pledged Contribution From Corporation Or Labor Organization")).toBe(true);

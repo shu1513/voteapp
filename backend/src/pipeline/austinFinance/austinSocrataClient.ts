@@ -485,6 +485,39 @@ export async function getAustinReportDetailRowsByElection(
   return typed.filter((row) => codes.has(row.formTypeCode));
 }
 
+const AUSTIN_REPORT_ID_CHUNK_SIZE = 50;
+
+/**
+ * Report Detail rows for a set of report ids (chunked `report_id IN (...)`),
+ * deduplicated by report id. Used to read the form type and reporting period
+ * behind DCE and Committee Purpose rows, whose `R...` prefixes name reports
+ * filed by PACs.
+ */
+export async function getAustinReportDetailRowsByReportIds(
+  reportIds: readonly string[],
+  options: AustinSocrataClientOptions = defaultAustinSocrataClientOptions()
+): Promise<AustinReportDetailRow[]> {
+  const ids = [...new Set(reportIds.map((id) => id.trim()).filter(Boolean))].sort();
+  for (const id of ids) {
+    if (!/^R\d+$/.test(id)) {
+      throw new AustinSocrataClientError("invalid_request", `Austin Socrata report id must be R<digits>, got ${id}`);
+    }
+  }
+  const byId = new Map<string, AustinReportDetailRow>();
+  for (let index = 0; index < ids.length; index += AUSTIN_REPORT_ID_CHUNK_SIZE) {
+    const chunk = ids.slice(index, index + AUSTIN_REPORT_ID_CHUNK_SIZE);
+    const rows = await fetchAustinSocrataPagedRows(
+      AUSTIN_SOCRATA_REPORT_DETAIL_DATASET,
+      { $where: `report_id in (${chunk.map(soqlString).join(",")})`, $order: "report_id, date_filed, :id" },
+      options
+    );
+    for (const row of rows.map(austinReportDetailRowFromRecord)) {
+      if (!byId.has(row.reportId)) byId.set(row.reportId, row);
+    }
+  }
+  return [...byId.values()];
+}
+
 /** Total rows vs distinct report ids — Report Detail carries exact duplicate rows. */
 export async function getAustinReportDetailRowCounts(
   options: AustinSocrataClientOptions = defaultAustinSocrataClientOptions()
