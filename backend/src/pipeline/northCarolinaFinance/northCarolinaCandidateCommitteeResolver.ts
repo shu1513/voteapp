@@ -87,14 +87,16 @@ const NAME_SUFFIX_CANONICAL: Readonly<Record<string, string>> = {
   II: "II",
   III: "III",
   IV: "IV",
-  V: "V",
+  // No textual V: a bare trailing "V" is a middle initial, not a suffix
+  // (GENERATIONAL_SUFFIX_RANK in finance/personNameMiddleEvidence.ts). The
+  // digit "5" stays — a bare digit is never an initial.
   "2": "II",
   "3": "III",
   "4": "IV",
   "5": "V",
 };
 
-const NAME_SUFFIX_PATTERN = /\b(JR|SR|II|III|IV|V|[2-5])\b/g;
+const NAME_SUFFIX_PATTERN = /\b(JR|SR|II|III|IV|[2-5])\b/g;
 
 function normalizePersonName(value: string | null | undefined): string {
   return normalizeTextKey(value).replace(NAME_SUFFIX_PATTERN, " ").replace(/\s+/g, " ").trim();

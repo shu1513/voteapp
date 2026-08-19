@@ -230,6 +230,17 @@ describe("northCarolinaPersonNamesMatch", () => {
     expect(northCarolinaPersonNamesMatch("Garland E. Pierce", "GARLAND EDWARD PIERCE")).toBe(true);
     expect(northCarolinaPersonNamesMatch("Garland O. Pierce", "GARLAND EDWARD PIERCE")).toBe(false);
   });
+
+  it("treats a bare trailing V as a middle initial, not a generational suffix", () => {
+    // Bare "V" is a middle initial, not a suffix (GENERATIONAL_SUFFIX_RANK in
+    // finance/personNameMiddleEvidence.ts): only the portal digit "5" is a
+    // fifth-generation marker, so "V" stays as middle evidence on either side.
+    expect(northCarolinaPersonNamesMatch("John B. Smith", "SMITH, JOHN V")).toBe(false);
+    expect(northCarolinaPersonNamesMatch("John V. Smith", "SMITH, JOHN B")).toBe(false);
+    expect(northCarolinaPersonNamesMatch("John V. Smith", "SMITH, JOHN V")).toBe(true);
+    expect(northCarolinaPersonNamesMatch("John Smith", "SMITH, JOHN V")).toBe(true);
+    expect(northCarolinaPersonNamesMatch("John Smith Jr", "JOHN SMITH 5")).toBe(false);
+  });
 });
 
 describe("normalizeNorthCarolinaCandidateNameForStorage", () => {
