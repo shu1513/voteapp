@@ -11,6 +11,7 @@ import {
 } from "../contracts/candidateRecordAreaLabelPayloadContract.js";
 import {
   buildCandidateRecordAreaLabelPrompt,
+  type CandidateRecordAreaLabelPromptGoal,
   type CandidateRecordAreaLabelPromptRecord,
 } from "./providers/candidateRecordAreaLabelPrompt.js";
 import type { AiProvider } from "./types.js";
@@ -45,6 +46,7 @@ export type EnrichCandidateRecordAreasInput = {
   senateClass?: string | null;
   termEndYear?: string | null;
   allowedResearchAreaSlugs: readonly string[];
+  allowedResearchAreaGoals?: readonly CandidateRecordAreaLabelPromptGoal[];
   records: readonly CandidateRecordAreaLabelPromptRecord[];
 };
 

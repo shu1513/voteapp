@@ -19,6 +19,9 @@ export type CandidateRecordAreaLabelInput = {
 export type AllowedResearchArea = {
   id: string;
   slug: string;
+  // The area's goal statement; the label prompt measures for/against
+  // against it, so callers forward it rather than the bare slug.
+  description?: string | null;
 };
 
 export type CandidateRecordAreaLabelValidationFailure = {
@@ -48,22 +51,22 @@ export async function loadAllowedResearchAreasForOfficeId(
   const result = await client.query<AllowedResearchArea>(
     `
       WITH office_bound AS (
-        SELECT DISTINCT ra.id, ra.slug
+        SELECT DISTINCT ra.id, ra.slug, ra.description
         FROM public.office_research_areas ora
         JOIN public.research_areas ra
           ON ra.id = ora.research_area_id
         WHERE ora.office_id = $1::uuid
       ),
       universal_areas AS (
-        SELECT ra.id, ra.slug
+        SELECT ra.id, ra.slug, ra.description
         FROM public.research_areas ra
         WHERE ra.slug = ANY($2::text[])
       )
-      SELECT DISTINCT id, slug
+      SELECT DISTINCT id, slug, description
       FROM (
-        SELECT id, slug FROM office_bound
+        SELECT id, slug, description FROM office_bound
         UNION ALL
-        SELECT id, slug FROM universal_areas
+        SELECT id, slug, description FROM universal_areas
       ) merged
       ORDER BY slug ASC
     `,
@@ -76,7 +79,7 @@ export async function loadAllowedResearchAreasForOfficeId(
 export async function loadAllResearchAreas(client: Queryable): Promise<AllowedResearchArea[]> {
   const result = await client.query<AllowedResearchArea>(
     `
-      SELECT id, slug
+      SELECT id, slug, description
       FROM public.research_areas
       ORDER BY slug ASC
     `

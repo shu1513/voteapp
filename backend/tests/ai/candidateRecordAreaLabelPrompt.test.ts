@@ -39,6 +39,42 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
     expect(prompt).toContain('"stance": "for | against"');
   });
 
+  it("defines stance against the area goal and asks for every affected area, fiscal counter-tag included", () => {
+    const prompt = buildCandidateRecordAreaLabelPrompt(baseInput);
+    expect(prompt).toContain(
+      "stance 'for' means the record's action directly and materially advances that area's goal; 'against' means it directly and materially cuts against that goal."
+    );
+    expect(prompt).toContain("Tag EVERY allowed area the action directly affects, each with its own stance.");
+    expect(prompt).toContain(
+      "a vote raising school funding is public_education_quality 'for' AND government_spending_reduction 'against'"
+    );
+    expect(prompt).toContain("also tag government_spending_reduction if it is allowed");
+    expect(prompt).toContain("Do not tag indirect, speculative, or second-order effects");
+    expect(prompt).toContain("Materiality: skip government_spending_reduction for trivial or routine sums");
+    expect(prompt).toContain("Prefer fewer, confident labels");
+    expect(prompt).not.toContain("You may assign multiple area labels");
+  });
+
+  it("lists research area goals when provided and skips blank descriptions", () => {
+    const prompt = buildCandidateRecordAreaLabelPrompt({
+      ...baseInput,
+      allowedResearchAreaGoals: [
+        { slug: "government_efficiency", description: "Improve service delivery, reduce waste." },
+        { slug: "general", description: null },
+        { slug: "public_safety_and_crime_control", description: "  " },
+      ],
+    });
+    expect(prompt).toContain("Research area goals (stance is measured against these):");
+    expect(prompt).toContain("- government_efficiency: Improve service delivery, reduce waste.");
+    expect(prompt).not.toContain("- general:");
+    expect(prompt).not.toContain("- public_safety_and_crime_control:");
+  });
+
+  it("omits the goals section when no goals are provided", () => {
+    const prompt = buildCandidateRecordAreaLabelPrompt(baseInput);
+    expect(prompt).not.toContain("Research area goals");
+  });
+
   it("includes senate context when senate title is used", () => {
     const prompt = buildCandidateRecordAreaLabelPrompt({
       ...baseInput,

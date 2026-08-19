@@ -103,6 +103,7 @@
     "manual:finance-industry-labels:due": "tsx src/scripts/manualFinanceIndustryLabels.ts due",
     "manual:finance-industry-labels:write": "tsx src/scripts/manualFinanceIndustryLabels.ts write",
     "candidates:record:live:ai-probe": "tsx src/scripts/liveCandidateRecordAiProbe.ts",
+    "ai:candidate-records:relabel": "tsx src/scripts/relabelCandidateRecordAreas.ts",
     "candidates:record:live:pipeline-smoke": "tsx src/scripts/liveCandidateRecordPipelineSmoke.ts",
     "candidates:finance:sync": "tsx src/scripts/syncCandidateFinance.ts",
     "austin-candidates:finance:probe": "tsx src/scripts/probeAustinCandidateFinance.ts",

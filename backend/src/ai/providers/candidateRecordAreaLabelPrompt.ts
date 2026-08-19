@@ -6,6 +6,11 @@ export type CandidateRecordAreaLabelPromptRecord = {
   eventDate: string;
 };
 
+export type CandidateRecordAreaLabelPromptGoal = {
+  slug: string;
+  description: string | null;
+};
+
 export type CandidateRecordAreaLabelPromptInput = {
   candidateDisplayName: string;
   districtName: string;
@@ -17,6 +22,11 @@ export type CandidateRecordAreaLabelPromptInput = {
   senateClass?: string | null;
   termEndYear?: string | null;
   allowedResearchAreaSlugs: readonly string[];
+  // Goal statements for the allowed areas (research_areas.description).
+  // Stance is measured against the goal, so the model needs the text, not
+  // just the slug: "immigration: for" is unreadable without knowing what
+  // the area wants.
+  allowedResearchAreaGoals?: readonly CandidateRecordAreaLabelPromptGoal[];
   records: readonly CandidateRecordAreaLabelPromptRecord[];
   reviewFeedbackLines?: readonly string[];
 };
@@ -28,6 +38,10 @@ function shouldIncludeState(input: CandidateRecordAreaLabelPromptInput): boolean
 export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLabelPromptInput): string {
   const includeSenateContext = isUsSenateOfficeTitle(input.officialBallotTitle);
   const reviewFeedbackLines = input.reviewFeedbackLines ?? [];
+  const goalLines = (input.allowedResearchAreaGoals ?? []).flatMap((goal) => {
+    const description = goal.description?.trim() ?? "";
+    return description.length > 0 ? [`- ${goal.slug}: ${description}`] : [];
+  });
 
   return [
     "You are classifying candidate records into allowed research areas.",
@@ -46,6 +60,7 @@ export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLa
     "",
     `Allowed research area slugs for this candidate/election context (use only these): ${JSON.stringify(input.allowedResearchAreaSlugs)}`,
     "Special non-stance areas: use research_area_slug='general' when no specific allowed area applies; use research_area_slug='integrity_and_ethics' for documented criminal convictions, official ethics findings, sanctions, disciplinary actions, court judgments, enforcement actions, or verified public accountability records.",
+    ...(goalLines.length > 0 ? ["", "Research area goals (stance is measured against these):", ...goalLines] : []),
     "",
     "Records to classify (record_index is required in output):",
     ...input.records.flatMap((record, index) => [
@@ -68,7 +83,12 @@ export function buildCandidateRecordAreaLabelPrompt(input: CandidateRecordAreaLa
     "",
     "Rules:",
     "- Every record_index in the input must appear in at least one output label row.",
-    "- You may assign multiple area labels to the same record_index when relevant.",
+    "- stance 'for' means the record's action directly and materially advances that area's goal; 'against' means it directly and materially cuts against that goal. Stance is about the action's effect, never about which side the candidate belongs to.",
+    "- Tag EVERY allowed area the action directly affects, each with its own stance. One record can be 'for' one area and 'against' another: a vote raising school funding is public_education_quality 'for' AND government_spending_reduction 'against'; a vote cutting school funding is public_education_quality 'against' AND government_spending_reduction 'for'.",
+    "- Public-money records: when the record's own text describes an appropriation, budget vote, bond or other borrowing, a newly funded program, or a funding cut or veto, also tag government_spending_reduction if it is allowed (spending or borrowing up = 'against'; cut or veto = 'for').",
+    "- Do not tag indirect, speculative, or second-order effects the record's text does not state. A settlement, fine, or cost recovery is not spending; a tax cut alone is not a spending record.",
+    "- Materiality: skip government_spending_reduction for trivial or routine sums (a small grant request, travel reimbursement, ordinary operating costs); the tag is for budgets, appropriations, bonds, and funded programs.",
+    "- Prefer fewer, confident labels: when it is unclear whether an area is directly affected, leave that area out.",
     "- Use only slugs from the allowed list.",
     "- If no specific allowed area applies, use research_area_slug='general'.",
     "- When research_area_slug is 'general' or 'integrity_and_ethics', omit stance.",
