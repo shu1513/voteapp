@@ -1375,11 +1375,18 @@ describe("CandidatePage roster rail sort", () => {
     expect(railRows(rail)).toEqual(["Casey Contender", "Riley Runner", "Jordan Voter"]);
 
     await user.click(within(rail).getByRole("link", { name: "Riley Runner" }));
-    expect(router.state.location.pathname).toBe("/candidates/c-2");
+    await waitFor(() => expect(router.state.location.pathname).toBe("/candidates/c-2"));
     // Forwarded state: the engaged sort rides along; everything else is the
     // arrival snapshot untouched.
     expect(router.state.location.state).toEqual({ ...KEYED_ARRIVAL, railSort: "my_issues" });
-    const nextRail = await screen.findByRole("navigation", { name: "Candidates in this race" });
+    // The rail stays mounted across the walk and its sort value and row order
+    // are identical on both pages, so wait for Riley's own marker before
+    // asserting — otherwise these checks pass against the departed page.
+    await waitFor(() => {
+      const railNow = screen.getByRole("navigation", { name: "Candidates in this race" });
+      expect(within(railNow).getByText("Riley Runner").closest("li")).toHaveAttribute("aria-current", "page");
+    });
+    const nextRail = screen.getByRole("navigation", { name: "Candidates in this race" });
     expect(await within(nextRail).findByRole("combobox")).toHaveValue("my_issues");
     expect(railRows(nextRail)).toEqual(["Casey Contender", "Riley Runner", "Jordan Voter"]);
   });
