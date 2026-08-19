@@ -156,6 +156,7 @@ describe("financeSourceLabel", () => {
     expect(financeSourceLabel("SAN_DIEGO_CITY_CLERK")).toBe("City of San Diego Office of the City Clerk");
     expect(financeSourceLabel("SAN_JOSE_CITY_CLERK")).toBe("City of San José Office of the City Clerk");
     expect(financeSourceLabel("HOUSTON_CAMPAIGN_FINANCE")).toBe("City of Houston / Texas Ethics Commission");
+    expect(financeSourceLabel("AUSTIN_CITY_CLERK")).toBe("Austin City Clerk");
     expect(financeSourceLabel("DENVER_CLERK_RECORDER")).toBe("Denver Office of the Clerk and Recorder");
   });
 

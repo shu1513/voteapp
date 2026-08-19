@@ -147,6 +147,20 @@ export function isDenverCampaignFinanceSyncEnabled(force = false): boolean {
   );
 }
 
+// Austin municipal finance (City Clerk Socrata datasets) is its own module —
+// Austin filers are not in state TEC, so these are independent of the Texas
+// and Houston flags.
+export function isAustinCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("AUSTIN_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isAustinCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isAustinCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("AUSTIN_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
 export function isConnecticutCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("CONNECTICUT_CAMPAIGN_FINANCE_ENABLED", false);
 }
