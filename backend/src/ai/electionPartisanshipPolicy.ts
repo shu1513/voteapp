@@ -252,8 +252,51 @@ export function isNonJudicialOfficeTitle(title: string): boolean {
   return NON_JUDICIAL_OFFICE_TITLE_MARKERS.test(title);
 }
 
-export function isJudicialOfficeTitle(title: string): boolean {
+// County EXECUTIVE and county LEGISLATIVE offices whose TITLE happens to contain
+// a word the judicial regex keys on. Unlike the markers above these cannot be
+// matched state-blind: "Magistrate" IS a judge in South Carolina and Georgia,
+// and "County Judge" IS a judge in states that did not hand the office its
+// commission-presiding role. So each entry names the state whose statute makes
+// the office non-judicial:
+//
+// - AR: the county judge is the county's chief executive officer (Ark. Const.
+//   amend. 55 s 3), presiding over the quorum court and running county
+//   government; Arkansas's trial bench is "Circuit Judge" / "District Judge".
+// - KY: the county judge/executive is the county's chief executive (KRS 67.710)
+//   and magistrates are the elected members of the fiscal court, the county's
+//   legislative body (KRS 67.040). Kentucky's bench is titled "Circuit Judge",
+//   "District Judge", "Family Court Judge" and the appellate courts, none of
+//   which these patterns touch.
+//
+// Live 2026-08-19: without this, all six Laurel County KY magistrate/judge-
+// executive shells plus Crawford County AR's county judge resolved through the
+// judicial branch to their state's NONPARTISAN judicial ballot rule, and the
+// contract then rejected the correct is_partisan=true — Kentucky and Arkansas
+// county offices are partisan and print a party on the general ballot.
+const STATE_NON_JUDICIAL_TITLE_OVERRIDES: ReadonlyMap<string, RegExp> = new Map([
+  ["AR", /\bcounty\s+judge\b/i],
+  // Clerks print the statutory "judge/executive" three ways: slash, hyphen, and
+  // plain space ("County Judge Executive"). The separator is optional so all
+  // three land here instead of falling through to the judicial regex on "judge".
+  ["KY", /\bjudge\s*[/-]?\s*executive\b|\bmagistrate\b/i],
+]);
+
+export function isStateNonJudicialOfficeTitle(state: string | undefined, title: string): boolean {
+  if (!state) {
+    return false;
+  }
+  const pattern = STATE_NON_JUDICIAL_TITLE_OVERRIDES.get(state.trim().toUpperCase());
+  return pattern ? pattern.test(title) : false;
+}
+
+// `state` is optional so the discovery-side caller that only has a title keeps
+// working; the partisanship policy always passes it, because that is where a
+// wrong answer becomes a stored is_partisan value.
+export function isJudicialOfficeTitle(title: string, state?: string): boolean {
   if (isNonJudicialOfficeTitle(title)) {
+    return false;
+  }
+  if (isStateNonJudicialOfficeTitle(state, title)) {
     return false;
   }
   return /\b(judge|justice|judicial|superior court|court of appeal(s)?|supreme court|retention|magistrate)\b/i.test(
@@ -268,7 +311,8 @@ export function isJudicialRetentionTitle(title: string): boolean {
 function isJudicialContest(
   contestFamily: ContestFamily,
   raceType: ElectionRaceType,
-  officialBallotTitle: string
+  officialBallotTitle: string,
+  state?: string
 ): boolean {
   if (raceType !== "office") {
     return false;
@@ -283,10 +327,16 @@ function isJudicialContest(
   if (isNonJudicialOfficeTitle(officialBallotTitle)) {
     return false;
   }
+  // Ordered ahead of the family shortcut for the same reason as the line above:
+  // a Kentucky county's non-judicial magistrate race can be returned by a pass
+  // labelled judicial_office, and the office is what partisanship is about.
+  if (isStateNonJudicialOfficeTitle(state, officialBallotTitle)) {
+    return false;
+  }
   if (contestFamily === "judicial_office") {
     return true;
   }
-  return isJudicialOfficeTitle(officialBallotTitle);
+  return isJudicialOfficeTitle(officialBallotTitle, state);
 }
 
 function getPartisanshipModeForContest(args: {
@@ -323,7 +373,7 @@ function getPartisanshipModeForContest(args: {
     return "force_false";
   }
 
-  if (isJudicialContest(args.contestFamily, args.raceType, args.officialBallotTitle)) {
+  if (isJudicialContest(args.contestFamily, args.raceType, args.officialBallotTitle, args.draft.state)) {
     if (isJudicialRetentionTitle(args.officialBallotTitle)) {
       return "force_false";
     }
@@ -356,7 +406,7 @@ function getPartisanshipModeForOfficeScope(input: {
     return "force_false";
   }
 
-  if (isJudicialOfficeTitle(input.officialBallotTitle)) {
+  if (isJudicialOfficeTitle(input.officialBallotTitle, input.state)) {
     if (isJudicialRetentionTitle(input.officialBallotTitle)) {
       return "force_false";
     }

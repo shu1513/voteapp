@@ -830,4 +830,70 @@ describe("electionPartisanshipPolicy", () => {
       ).toBe(true);
     }
   });
+
+  it("treats AR county judge and KY judge/executive + magistrate as NON-judicial county offices", () => {
+    // Titles that contain a judicial keyword but name a county EXECUTIVE or
+    // LEGISLATIVE office in that state. Both states run partisan county
+    // elections, so the judicial branch (which would force their state's
+    // nonpartisan judicial ballot rule) must not claim them.
+    expect(isJudicialOfficeTitle("Crawford County Judge", "AR")).toBe(false);
+    expect(isJudicialOfficeTitle("Laurel County Judge/Executive", "KY")).toBe(false);
+    expect(isJudicialOfficeTitle("Laurel County Judge-Executive", "KY")).toBe(false);
+    expect(isJudicialOfficeTitle("Laurel County Judge Executive", "KY")).toBe(false);
+    expect(isJudicialOfficeTitle("Laurel County Magistrate District 3", "KY")).toBe(false);
+
+    // The carve-out is state-scoped: a magistrate IS a judge elsewhere, and a
+    // real Kentucky or Arkansas judgeship keeps its judicial routing.
+    expect(isJudicialOfficeTitle("Magistrate, Charleston County", "SC")).toBe(true);
+    expect(isJudicialOfficeTitle("Laurel County Magistrate District 3")).toBe(true);
+    expect(isJudicialOfficeTitle("Circuit Judge, 27th Judicial Circuit", "KY")).toBe(true);
+    expect(isJudicialOfficeTitle("District Judge, 2nd Division", "AR")).toBe(true);
+    // "County Judge" is a real judgeship outside Arkansas — Florida's county
+    // court bench and Texas's constitutional county court both use the title.
+    expect(isJudicialOfficeTitle("County Judge, Group 3", "FL")).toBe(true);
+    expect(isJudicialOfficeTitle("Van Zandt County Judge", "TX")).toBe(true);
+    // Pennsylvania's elected "Magisterial District Judge" stays judicial too.
+    expect(isJudicialOfficeTitle("Magisterial District Judge, District 05-2-01", "PA")).toBe(true);
+  });
+
+  it("lets AR/KY county executive and fiscal-court offices be stored partisan", () => {
+    for (const [state, districtName, title] of [
+      ["KY", "Laurel County, Kentucky", "Laurel County Judge/Executive"],
+      ["KY", "Laurel County, Kentucky", "Laurel County Magistrate District 1"],
+      ["AR", "Crawford County, Arkansas", "Crawford County Judge"],
+    ] as const) {
+      // No fixed policy value, so a source-backed true survives instead of
+      // being rejected as contradicting a forced nonpartisan judicial rule.
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "county",
+          state,
+          officialBallotTitle: title,
+        })
+      ).toBeUndefined();
+
+      expect(
+        resolveElectionIsPartisan({
+          draft: {
+            district_id: "d-1",
+            district_name: districtName,
+            district_type: "county",
+            state,
+          },
+          contestFamily: "non_judicial_office",
+          raceType: "office",
+          officialBallotTitle: title,
+          aiValue: true,
+        })
+      ).toBe(true);
+
+      expect(
+        shouldIncludeCandidatePartyByPolicy({
+          districtType: "county",
+          state,
+          officialBallotTitle: title,
+        })
+      ).toBe(true);
+    }
+  });
 });
