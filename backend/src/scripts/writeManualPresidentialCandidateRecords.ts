@@ -34,6 +34,7 @@ import {
 import {
   SWEEP_COMPLETENESS_GAP_IDS,
   assertedSweepCompletenessGapIds,
+  deleteSweepCompletenessConfirmation,
   deleteSweepConfirmation,
   enforceSweepRouteCoverage,
   parseSweepEvidencePayload,
@@ -697,6 +698,16 @@ async function main(): Promise<void> {
       if (persistHasHeldPublicOffice !== null) {
         await persistHasHeldPublicOfficeAnswer(client, options.candidateId, persistHasHeldPublicOffice);
       }
+      // A write that establishes records falsifies any earlier completeness
+      // claim (no_records_found / only_general_labels) in ANY context — those
+      // claims are candidate-wide because records are. This writer advances no
+      // search stamp, so a stale election-context claim could never be dated
+      // historical by the audit; drop it here, before the upsert below so a
+      // fresh only_general_labels claim is not swept up with the stale ones.
+      // Empty-claim evidence ledgers are untouched.
+      if (validatedRecords.records.length > 0) {
+        await deleteSweepCompletenessConfirmation(client, options.candidateId);
+      }
       // Persist the validated confirmation so manual:records:audit can
       // separate an evidence-backed sweep (confirmed null OR stance-bearing
       // with an empty claim set) from a skipped one.
@@ -714,10 +725,11 @@ async function main(): Promise<void> {
         });
       } else {
         // This write found real stance-labeled records without carrying a
-        // ledger; drop the earlier confirmation for this presidential-cycle
-        // context. Unlike the district writer, this writer advances no
-        // per-candidate search stamp, so that context's surviving
-        // empty-claim-set row could never be dated as historical.
+        // ledger; the completeness claims are already gone (above), so what
+        // remains is this presidential-cycle context's own empty-claim row.
+        // Unlike the district writer, this writer advances no per-candidate
+        // search stamp, so that row could never be dated as historical —
+        // drop it unconditionally.
         await deleteSweepConfirmation(client, {
           candidateId: options.candidateId,
           contextType: "presidential_cycle",

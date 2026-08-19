@@ -526,10 +526,12 @@ export async function refreshSweepConfirmationTimestamp(
  * search stamp like any confirmation (the audit already treats a
  * confirmation older than the latest stamp as historical).
  *
- * Only safe where the write ALSO advances last_records_searched_at (the
- * district writer does): the stamp is what dates a surviving row as
- * historical. A writer that advances no stamp must use
- * deleteSweepConfirmation instead.
+ * Candidate-wide on purpose: completeness claims describe the candidate's
+ * record set, so a claim made in any context is falsified by records found
+ * in any other. Empty-claim-set rows only age out where the write ALSO
+ * advances last_records_searched_at (the district writer does); a writer
+ * that advances no stamp must additionally drop its own context's
+ * empty-claim row with deleteSweepConfirmation.
  */
 export async function deleteSweepCompletenessConfirmation(
   client: Pick<PoolClient, "query">,
