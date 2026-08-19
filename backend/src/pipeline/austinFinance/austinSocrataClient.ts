@@ -584,15 +584,22 @@ export const AUSTIN_CANDIDATE_CORRECTION_FORM_CODES: ReadonlySet<string> = new S
 /** Pre-election special reports whose rows are re-reported on the next regular report. */
 export const AUSTIN_CANDIDATE_SPECIAL_FORM_CODES: ReadonlySet<string> = new Set(["COHATX7"]);
 
+/** A Report Detail row with a reporting period — the only kind the selector places. */
+export type AustinPeriodReportDetailRow = AustinReportDetailRow & { periodFrom: string; periodTo: string };
+
+function hasReportingPeriod(row: AustinReportDetailRow): row is AustinPeriodReportDetailRow {
+  return row.periodFrom !== null && row.periodTo !== null;
+}
+
 export type AustinEffectiveReportSelection = {
   /** One report per (period_from, period_to): the latest-filed regular/correction report. */
-  effective: AustinReportDetailRow[];
+  effective: AustinPeriodReportDetailRow[];
   /** Regular/correction reports superseded by a later filing for the same period. */
-  superseded: AustinReportDetailRow[];
+  superseded: AustinPeriodReportDetailRow[];
   /** Special reports whose period lies inside an effective report's period (re-reported). */
-  droppedSpecial: AustinReportDetailRow[];
+  droppedSpecial: AustinPeriodReportDetailRow[];
   /** Special reports NOT covered by any effective report — the only special rows a caller may count. */
-  keptSpecial: AustinReportDetailRow[];
+  keptSpecial: AustinPeriodReportDetailRow[];
   /** Rows of other form types (PAC reports, dissolutions, …) — never candidate finance. */
   ignored: AustinReportDetailRow[];
   /** Exact duplicate rows removed by report id before selection. */
@@ -621,14 +628,14 @@ export function selectAustinEffectiveReports(rows: readonly AustinReportDetailRo
     }
     byId.set(row.reportId, row);
   }
-  const groups = new Map<string, AustinReportDetailRow[]>();
-  const specials: AustinReportDetailRow[] = [];
+  const groups = new Map<string, AustinPeriodReportDetailRow[]>();
+  const specials: AustinPeriodReportDetailRow[] = [];
   const ignored: AustinReportDetailRow[] = [];
   for (const row of byId.values()) {
     const isRegular = AUSTIN_CANDIDATE_REGULAR_FORM_CODES.has(row.formTypeCode);
     const isCorrection = AUSTIN_CANDIDATE_CORRECTION_FORM_CODES.has(row.formTypeCode);
     const isSpecial = AUSTIN_CANDIDATE_SPECIAL_FORM_CODES.has(row.formTypeCode);
-    if (!(isRegular || isCorrection || isSpecial) || row.periodFrom === null || row.periodTo === null) {
+    if (!(isRegular || isCorrection || isSpecial) || !hasReportingPeriod(row)) {
       ignored.push(row);
       continue;
     }
@@ -641,8 +648,8 @@ export function selectAustinEffectiveReports(rows: readonly AustinReportDetailRo
     group.push(row);
     groups.set(key, group);
   }
-  const effective: AustinReportDetailRow[] = [];
-  const superseded: AustinReportDetailRow[] = [];
+  const effective: AustinPeriodReportDetailRow[] = [];
+  const superseded: AustinPeriodReportDetailRow[] = [];
   for (const group of groups.values()) {
     group.sort((left, right) => {
       if (left.dateFiled !== right.dateFiled) return left.dateFiled < right.dateFiled ? -1 : 1;
@@ -655,16 +662,16 @@ export function selectAustinEffectiveReports(rows: readonly AustinReportDetailRo
     effective.push(winner);
     superseded.push(...group.slice(0, -1));
   }
-  const droppedSpecial: AustinReportDetailRow[] = [];
-  const keptSpecial: AustinReportDetailRow[] = [];
+  const droppedSpecial: AustinPeriodReportDetailRow[] = [];
+  const keptSpecial: AustinPeriodReportDetailRow[] = [];
   for (const special of specials) {
     const covered = effective.some(
-      (row) => row.periodFrom! <= special.periodFrom! && special.periodTo! <= row.periodTo!
+      (row) => row.periodFrom <= special.periodFrom && special.periodTo <= row.periodTo
     );
     (covered ? droppedSpecial : keptSpecial).push(special);
   }
-  const byPeriod = (left: AustinReportDetailRow, right: AustinReportDetailRow) =>
-    left.periodFrom! < right.periodFrom! ? -1 : left.periodFrom! > right.periodFrom! ? 1 : 0;
+  const byPeriod = (left: AustinPeriodReportDetailRow, right: AustinPeriodReportDetailRow) =>
+    left.periodFrom < right.periodFrom ? -1 : left.periodFrom > right.periodFrom ? 1 : 0;
   effective.sort(byPeriod);
   return { effective, superseded, droppedSpecial, keptSpecial, ignored, duplicateRowCount };
 }

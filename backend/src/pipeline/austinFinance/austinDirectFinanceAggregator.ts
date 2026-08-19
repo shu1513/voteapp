@@ -47,6 +47,7 @@ import type { AustinDirectBreakdownInput } from "./austinFinanceWriter.js";
 import {
   selectAustinEffectiveReports,
   type AustinContributionRow,
+  type AustinPeriodReportDetailRow,
   type AustinReportDetailRow,
 } from "./austinSocrataClient.js";
 
@@ -78,10 +79,10 @@ function usd(cents: number): string {
 }
 
 export type AustinDirectAggregation = {
-  /** Effective regular/correction reports for the cycle, by period. */
-  cycleReports: AustinReportDetailRow[];
+  /** Effective regular/correction reports for the cycle, by period (periods always present). */
+  cycleReports: AustinPeriodReportDetailRow[];
   /** ATX.7 reports for the cycle not yet re-reported by a regular report. */
-  keptSpecialReports: AustinReportDetailRow[];
+  keptSpecialReports: AustinPeriodReportDetailRow[];
   totalRaisedCents: number;
   totalSpentCents: number;
   /** Null when no cycle report carries a balance. */

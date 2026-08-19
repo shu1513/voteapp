@@ -190,11 +190,17 @@ export async function syncAustinCandidateFinance(input: {
   // election tag, and the same candidate can run for the same seat in
   // consecutive cycles (Qadri D9 2022 and 2026), so the date window is what
   // separates cycles.
+  // Every counted report carries a period by type (the selector ignores
+  // period-less rows), and the aggregator has already thrown when the cycle
+  // has no report at all — the guard below only defends that contract.
   const cycleReports = [...direct.cycleReports, ...direct.keptSpecialReports];
-  const periodsFrom = cycleReports.map((row) => row.periodFrom!).sort();
-  const periodsTo = cycleReports.map((row) => row.periodTo!).sort();
-  const windowFrom = periodsFrom[0]!;
-  const windowTo = [periodsTo[periodsTo.length - 1]!, electionDate].sort()[1]!;
+  const windowFrom = cycleReports.map((row) => row.periodFrom).sort()[0];
+  const latestPeriodTo = cycleReports.map((row) => row.periodTo).sort().at(-1);
+  if (windowFrom === undefined || latestPeriodTo === undefined)
+    throw new Error(
+      `Austin filer ${JSON.stringify(filerName)} has no cycle report period to scope outside spending by`,
+    );
+  const windowTo = latestPeriodTo > electionDate ? latestPeriodTo : electionDate;
   const datasets = input.outsideDatasets ?? (await loadAustinOutsideDatasets(options));
   const outside = aggregateAustinOutsideSpending({
     dceRows: datasets.dceRows,

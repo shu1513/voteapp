@@ -257,7 +257,7 @@ export async function syncDueAustinCandidateFinance(input: {
       continue;
     }
     try {
-      const outsideDatasets = await getOutsideDatasets();
+      const datasets = await getOutsideDatasets();
       const result = await (input.syncFn ?? syncAustinCandidateFinance)({
         db: input.db,
         candidateId: row.candidateId,
@@ -269,7 +269,7 @@ export async function syncDueAustinCandidateFinance(input: {
         filerName: row.filerName,
         electionDate: election.electionDate,
         officeCode: election.officeCode,
-        outsideDatasets,
+        outsideDatasets: datasets,
         bypassAnomalyCheck: input.bypassAnomalyCheck,
         dryRun,
         now,
