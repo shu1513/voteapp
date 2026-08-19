@@ -369,8 +369,14 @@ function resolveUsSenateEntries(
 // Circuit" prosecutor as judicial, so a non-judicial pass holding only a
 // district attorney was rejected as "fully judicial" while the judicial pass
 // accepted the same row.
-function containsJudicialMarker(entry: ElectionEntryPayload): boolean {
-  return isJudicialOfficeTitle(entry.official_ballot_title);
+//
+// `state` rides along for the same reason: the classifier's Kentucky/Arkansas
+// carve-outs (county judge/executive, magistrate, county judge) are state-
+// scoped, and a Kentucky non_judicial_office pass that returns only fiscal-court
+// rows must not be rejected as "fully judicial" while the partisanship policy
+// treats those same rows as non-judicial.
+function containsJudicialMarker(entry: ElectionEntryPayload, state: string): boolean {
+  return isJudicialOfficeTitle(entry.official_ballot_title, state);
 }
 
 function containsBallotMeasureMarker(entry: ElectionEntryPayload): boolean {
@@ -409,7 +415,8 @@ function filterPresidentialEntriesForContestFamily(
 
 function validateContestFamilySoft(
   family: ElectionContestScope,
-  entries: ElectionEntryPayload[]
+  entries: ElectionEntryPayload[],
+  state: string
 ): { ok: true } | { ok: false; reason: string } {
   if (family === "all" || entries.length === 0) {
     return { ok: true };
@@ -435,12 +442,12 @@ function validateContestFamilySoft(
       return { ok: false, reason: "judicial_office family returned ballot_measure entries" };
     }
     const hasNonJudicialOffice = entries.some(
-      (entry) => containsNonJudicialOfficeMarker(entry) && !containsJudicialMarker(entry)
+      (entry) => containsNonJudicialOfficeMarker(entry) && !containsJudicialMarker(entry, state)
     );
     if (hasNonJudicialOffice) {
       return { ok: false, reason: "judicial_office family returned non-judicial office entries" };
     }
-    const hasJudicial = entries.some((entry) => containsJudicialMarker(entry));
+    const hasJudicial = entries.some((entry) => containsJudicialMarker(entry, state));
     if (!hasJudicial) {
       return { ok: false, reason: "judicial_office family has no clear judicial markers" };
     }
@@ -468,7 +475,7 @@ function validateContestFamilySoft(
   if (hasBallotMeasure) {
     return { ok: false, reason: "non_judicial_office family returned ballot_measure entries" };
   }
-  const allJudicial = entries.every((entry) => containsJudicialMarker(entry));
+  const allJudicial = entries.every((entry) => containsJudicialMarker(entry, state));
   if (allJudicial) {
     return { ok: false, reason: "non_judicial_office family appears fully judicial" };
   }
@@ -725,7 +732,11 @@ async function runPromptWithCandidates(
         continue;
       }
 
-      const familyValidation = validateContestFamilySoft(contestFamily, presidentialFilter.entries);
+      const familyValidation = validateContestFamilySoft(
+        contestFamily,
+        presidentialFilter.entries,
+        draft.state
+      );
       if (!familyValidation.ok) {
         failures.push({
           provider: candidate.provider,

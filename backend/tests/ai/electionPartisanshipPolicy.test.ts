@@ -830,4 +830,81 @@ describe("electionPartisanshipPolicy", () => {
       ).toBe(true);
     }
   });
+
+  it("treats AR/TX county judge and KY judge/executive + magistrate as NON-judicial county offices", () => {
+    // Titles that contain a judicial keyword but name a county EXECUTIVE or
+    // LEGISLATIVE office in that state — the same executive titles migration
+    // 145 aliases to the County Executive office. The judicial branch (which
+    // would force the state's judicial ballot rule) must not claim them.
+    expect(isJudicialOfficeTitle("Crawford County Judge", "AR")).toBe(false);
+    expect(isJudicialOfficeTitle("Laurel County Judge/Executive", "KY")).toBe(false);
+    expect(isJudicialOfficeTitle("Laurel County Judge-Executive", "KY")).toBe(false);
+    expect(isJudicialOfficeTitle("Laurel County Judge Executive", "KY")).toBe(false);
+    expect(isJudicialOfficeTitle("Daviess County Judge / Executive", "KY")).toBe(false);
+    expect(isJudicialOfficeTitle("Laurel County Magistrate District 3", "KY")).toBe(false);
+    expect(isJudicialOfficeTitle("Van Zandt County Judge", "TX")).toBe(false);
+    expect(isJudicialOfficeTitle("Kerr County County Judge", "TX")).toBe(false);
+    expect(isJudicialOfficeTitle("County Judge, Unexpired Term", "TX")).toBe(false);
+
+    // A title that names a COURT is a judgeship even with the county prefixed
+    // onto it — real Texas shells, all of which must stay judicial.
+    expect(isJudicialOfficeTitle("Erath County Judge, County Court at Law", "TX")).toBe(true);
+    expect(isJudicialOfficeTitle("Nacogdoches County Judge, County Court-at-Law", "TX")).toBe(true);
+    expect(isJudicialOfficeTitle("San Patricio County Judge, 156th Judicial District", "TX")).toBe(true);
+    expect(isJudicialOfficeTitle("Bowie County Court at Law Judge", "TX")).toBe(true);
+    expect(isJudicialOfficeTitle("Judge, County Court at Law", "TX")).toBe(true);
+    expect(isJudicialOfficeTitle("District Judge, 294th Judicial District", "TX")).toBe(true);
+
+    // The carve-out is state-scoped: a magistrate IS a judge elsewhere, a bare
+    // "County Judge" IS a judge in Florida, and Pennsylvania elects Magisterial
+    // District Judges. A real Kentucky or Arkansas judgeship keeps its routing.
+    expect(isJudicialOfficeTitle("Magistrate, Charleston County", "SC")).toBe(true);
+    expect(isJudicialOfficeTitle("Laurel County Magistrate District 3")).toBe(true);
+    expect(isJudicialOfficeTitle("County Judge, Group 3", "FL")).toBe(true);
+    expect(isJudicialOfficeTitle("Magisterial District Judge, District 05-2-01", "PA")).toBe(true);
+    expect(isJudicialOfficeTitle("Circuit Judge, 27th Judicial Circuit", "KY")).toBe(true);
+    expect(isJudicialOfficeTitle("District Judge, 2nd Division", "AR")).toBe(true);
+  });
+
+  it("lets AR/KY/TX county executive and fiscal-court offices be stored partisan", () => {
+    for (const [state, districtName, title] of [
+      ["KY", "Laurel County, Kentucky", "Laurel County Judge/Executive"],
+      ["KY", "Laurel County, Kentucky", "Laurel County Magistrate District 1"],
+      ["AR", "Crawford County, Arkansas", "Crawford County Judge"],
+      ["TX", "Van Zandt County, Texas", "Van Zandt County Judge"],
+    ] as const) {
+      // No fixed policy value, so a source-backed true survives instead of
+      // being rejected as contradicting a forced nonpartisan judicial rule.
+      expect(
+        resolveCandidateContestPartisanshipByPolicy({
+          districtType: "county",
+          state,
+          officialBallotTitle: title,
+        })
+      ).toBeUndefined();
+
+      expect(
+        resolveElectionIsPartisan({
+          draft: {
+            district_id: "d-1",
+            district_name: districtName,
+            district_type: "county",
+            state,
+          },
+          contestFamily: "non_judicial_office",
+          raceType: "office",
+          officialBallotTitle: title,
+          aiValue: true,
+        })
+      ).toBe(true);
+
+      expect(
+        shouldIncludeCandidatePartyByPolicy({
+          districtType: "county",
+          state,
+          officialBallotTitle: title,
+        })
+      ).toBe(true);
+    }
+  });
 });
