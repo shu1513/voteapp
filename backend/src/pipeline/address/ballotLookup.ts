@@ -54,6 +54,7 @@ import { loadWashingtonCandidateFinanceSummariesByCandidateElection } from "../w
 import { loadCombinedNewYorkCandidateFinanceSummariesByCandidateElection } from "../newYorkFinance/newYorkCombinedBallotLookupFinanceLoader.js";
 import { loadTexasCandidateFinanceSummariesByCandidateElection } from "../texasFinance/texasBallotLookupFinanceLoader.js";
 import { loadHoustonCandidateFinanceSummariesByCandidateElection } from "../houstonFinance/houstonBallotLookupFinanceLoader.js";
+import { loadAustinCandidateFinanceSummariesByCandidateElection } from "../austinFinance/austinBallotLookupFinanceLoader.js";
 import { loadNewMexicoCandidateFinanceSummariesByCandidateElection } from "../newMexicoFinance/newMexicoBallotLookupFinanceLoader.js";
 import { loadIndianaCandidateFinanceSummariesByCandidateElection } from "../indianaFinance/indianaBallotLookupFinanceLoader.js";
 import { loadOklahomaCandidateFinanceSummariesByCandidateElection } from "../oklahomaFinance/oklahomaBallotLookupFinanceLoader.js";
@@ -908,6 +909,10 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "TN", load: loadTennesseeCandidateFinanceSummariesByCandidateElection },
   { state: "TX", load: loadTexasCandidateFinanceSummariesByCandidateElection },
   { state: "TX", load: loadHoustonCandidateFinanceSummariesByCandidateElection },
+  // Austin city filers are not in TEC either (Texas already skips every
+  // place-scope Mayor / City Council Member election), and the atx_ link
+  // table is disjoint from Houston's — no exclusion needed.
+  { state: "TX", load: loadAustinCandidateFinanceSummariesByCandidateElection },
   { state: "AZ", load: loadArizonaCandidateFinanceSummariesByCandidateElection },
   { state: "AZ", load: loadPhoenixCandidateFinanceSummariesByCandidateElection },
   {

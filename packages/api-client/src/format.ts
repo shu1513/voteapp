@@ -269,6 +269,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   OKLAHOMA_GUARDIAN: "Oklahoma Guardian",
   TEXAS_TEC: "Texas Ethics Commission",
   HOUSTON_CAMPAIGN_FINANCE: "City of Houston / Texas Ethics Commission",
+  AUSTIN_CITY_CLERK: "Austin City Clerk",
   FLORIDA_DOS: "Florida Division of Elections",
   GEORGIA_ETHICS: "Georgia Ethics Commission",
   PHOENIX_CITY_CLERK: "City of Phoenix City Clerk Department",
