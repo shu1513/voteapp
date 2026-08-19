@@ -213,7 +213,10 @@ records on request), no per-issue toggles beyond the two columns.
 **Preferences** (`userResearchAreaPreferences.ts`, PUT/GET
 `/api/me/research-area-preferences`):
 
-- Drop the count cap and the `rank ≤ 7` check; keep uniqueness and `rank ≥ 1`.
+- Drop the count cap and the `rank ≤ 7` check; keep uniqueness. Rank is a
+  position in the submitted list, so the server bound is `1..n` (n = items
+  sent) — no magic ceiling, ranks stay inside Postgres `integer`, weights stay
+  positive.
   Delete `MAX_USER_RESEARCH_AREA_PREFERENCES` and its client mirror.
 - Input rows gain optional `direction` and `hard_veto`. **When omitted, keep
   the row's existing values** (the mobile app will keep sending `{id, rank}`
@@ -321,7 +324,7 @@ choices` writes have none today, and the 200-id cap bounds the work per call.
   `general` ignored; withdrawn candidacy ignored; already-picked election
   skipped in `fill_empty`, replaced in `replace`.
 - Preferences: PUT without `direction`/`hard_veto` keeps stored values; rank
-  1..25 accepted, 0 rejected, duplicate rank rejected.
+  1..n accepted, 0 and n+1 rejected, duplicate rank rejected.
 - Weight fn: monotone, positive, matches between backend and client mirror.
 - Frontend: button hidden for guests; <3 issues shows the prompt; panel
   renders reasons.

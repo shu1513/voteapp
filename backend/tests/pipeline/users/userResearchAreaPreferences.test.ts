@@ -257,11 +257,11 @@ describe("replaceUserResearchAreaPreferences", () => {
     expect(db.connect).not.toHaveBeenCalled();
   });
 
-  it("rejects invalid ranks before opening a database connection", async () => {
+  it.each([0, 2, 2147483648])("rejects rank %d for a one-item list before opening a database connection", async (rank) => {
     const { db } = createMockTransactionalDb();
 
     await expect(
-      replaceUserResearchAreaPreferences(db, userId, [{ researchAreaId: researchAreaIdA, rank: 0 }])
+      replaceUserResearchAreaPreferences(db, userId, [{ researchAreaId: researchAreaIdA, rank }])
     ).rejects.toSatisfy((error) => {
       expectPreferenceError(error, "invalid_preferences");
       return true;

@@ -780,9 +780,11 @@ export function parseResearchAreaPreferencesBodyValue(parsed: unknown): Research
     }
     seenResearchAreaIds.add(researchAreaDedupeKey);
 
+    // Rank is a position in the submitted list: 1..length (see the pipeline
+    // normalizer for why the bound matters beyond tidiness).
     const rank = preference.rank ?? null;
-    if (rank !== null && (!Number.isInteger(rank) || rank < 1)) {
-      throw new TypeError("preferences[].rank must be an integer >= 1");
+    if (rank !== null && (!Number.isInteger(rank) || rank < 1 || rank > preferences.length)) {
+      throw new TypeError(`preferences[].rank must be an integer from 1 to ${preferences.length}`);
     }
     if (rank !== null) {
       if (seenRanks.has(rank)) {

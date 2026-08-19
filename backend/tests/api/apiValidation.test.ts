@@ -500,11 +500,22 @@ describe("research area API contract constants", () => {
     ],
     [
       { preferences: [{ research_area_id: "22222222-2222-4222-8222-222222222222", rank: 0 }] },
-      "preferences[].rank must be an integer >= 1",
+      "preferences[].rank must be an integer from 1 to 1",
     ],
     [
       { preferences: [{ research_area_id: "22222222-2222-4222-8222-222222222222", rank: 1.5 }] },
-      "preferences[].rank must be an integer >= 1",
+      "preferences[].rank must be an integer from 1 to 1",
+    ],
+    [
+      // Rank is a list position: past the end is rejected with a 400, not
+      // left for Postgres (integer overflow would otherwise surface as a 500).
+      {
+        preferences: [
+          { research_area_id: "22222222-2222-4222-8222-222222222222", rank: 1 },
+          { research_area_id: "33333333-3333-4333-8333-333333333333", rank: 2147483648 },
+        ],
+      },
+      "preferences[].rank must be an integer from 1 to 2",
     ],
     [
       { preferences: [{ research_area_id: "22222222-2222-4222-8222-222222222222", rank: 1, direction: "against" }] },

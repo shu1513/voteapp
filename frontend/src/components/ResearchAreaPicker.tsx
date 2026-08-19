@@ -197,9 +197,11 @@ function SortableAreaRow({
   // dnd-kit treats Space/Enter on ANY element in the row as "start dragging"
   // and swallows the click, so the toggles and × would be unreachable by
   // keyboard.
+  // Direction-neutral on purpose: with Oppose selected, the veto fires on
+  // records that SUPPORT the goal, so "who opposes this" would read backwards.
   const vetoLabel = isEthics
     ? "Skip candidates with any integrity or ethics record"
-    : "Line in the sand: never pick a candidate who opposes this";
+    : "Line in the sand: never pick a candidate or measure that goes against my position on this";
   return (
     <li
       ref={setNodeRef}

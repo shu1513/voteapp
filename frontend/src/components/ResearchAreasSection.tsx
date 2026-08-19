@@ -97,7 +97,8 @@ export function ResearchAreasSection() {
       <p className="mt-1 text-sm text-ink-soft">
         Choose the issues that matter most to you — as many as you like — then drag them into
         priority order; the top of the list counts most. For each one, say whether you support or
-        oppose it, and draw a line in the sand for anything a candidate must never oppose.
+        oppose it, and draw a line in the sand where anything that goes against your position is
+        an automatic no.
       </p>
       <ResearchAreaPicker areas={catalog.data.research_areas} ranked={ranked} disabled={saving} onChange={save} />
       {update.isError ? (

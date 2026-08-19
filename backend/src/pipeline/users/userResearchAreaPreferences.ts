@@ -145,11 +145,16 @@ function normalizePreferenceInputs(
     }
     seenResearchAreaIds.add(researchAreaDedupeKey);
 
-    // No upper bound: a user may rank every selectable area (uniqueness of
-    // rank per user is enforced by the DB index and the check below).
+    // Rank is a position in the submitted list, so 1..length is the whole
+    // valid range (uniqueness per user is the DB index plus the check below).
+    // The bound also keeps ranks inside Postgres integer and keeps every
+    // weight positive (0.75^(rank-1) would underflow for absurd ranks).
     const rank = preference.rank ?? null;
-    if (rank !== null && (!Number.isInteger(rank) || rank < 1)) {
-      throw new UserResearchAreaPreferencesError("invalid_preferences", "Preference rank must be an integer >= 1");
+    if (rank !== null && (!Number.isInteger(rank) || rank < 1 || rank > preferences.length)) {
+      throw new UserResearchAreaPreferencesError(
+        "invalid_preferences",
+        `Preference rank must be an integer from 1 to ${preferences.length}`
+      );
     }
     if (rank !== null) {
       if (seenRanks.has(rank)) {
