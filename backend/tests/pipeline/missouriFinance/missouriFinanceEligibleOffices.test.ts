@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  MISSOURI_DIRECT_FINANCE_ELIGIBLE_OFFICE_KEYS,
   MISSOURI_FINANCE_ELIGIBLE_OFFICE_KEYS,
+  isMissouriDirectFinanceEligibleOffice,
   normalizeMissouriMecJurisdiction,
   normalizeMissouriMecPoliticalDistrict,
   toMissouriMecOfficeSearchInput,
@@ -108,5 +110,16 @@ describe("missouriFinanceEligibleOffices", () => {
       })
     ).toBeNull();
     expect(MISSOURI_FINANCE_ELIGIBLE_OFFICE_KEYS.has("statewide::United States Senator")).toBe(false);
+  });
+
+  it("keeps no-primary local offices out of direct-finance v1", () => {
+    expect(MISSOURI_DIRECT_FINANCE_ELIGIBLE_OFFICE_KEYS.has("state_lower::State Lower Chamber Legislator")).toBe(true);
+    expect(MISSOURI_DIRECT_FINANCE_ELIGIBLE_OFFICE_KEYS.has("county::County Executive")).toBe(true);
+    expect(MISSOURI_DIRECT_FINANCE_ELIGIBLE_OFFICE_KEYS.has("place::City Council Member")).toBe(false);
+    expect(MISSOURI_DIRECT_FINANCE_ELIGIBLE_OFFICE_KEYS.has("school_unified::School Board Member")).toBe(false);
+    expect(isMissouriDirectFinanceEligibleOffice({
+      officeScope: "school_unified",
+      officeCanonicalName: "School Board Member",
+    })).toBe(false);
   });
 });

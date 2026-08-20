@@ -43,6 +43,7 @@ import { loadMarylandCandidateFinanceSummariesByCandidateElection } from "../mar
 import { loadOhioCandidateFinanceSummariesByCandidateElection } from "../ohioFinance/ohioBallotLookupFinanceLoader.js";
 import { loadNorthCarolinaCandidateFinanceSummariesByCandidateElection } from "../northCarolinaFinance/northCarolinaBallotLookupFinanceLoader.js";
 import { loadGeorgiaCandidateFinanceSummariesByCandidateElection } from "../georgiaFinance/georgiaBallotLookupFinanceLoader.js";
+import { loadMissouriCandidateFinanceSummariesByCandidateElection } from "../missouriFinance/missouriBallotLookupFinanceLoader.js";
 import { loadRhodeIslandCandidateFinanceSummariesByCandidateElection } from "../rhodeIslandFinance/rhodeIslandBallotLookupFinanceLoader.js";
 import { loadMichiganCandidateFinanceSummariesByCandidateElection } from "../michiganFinance/michiganBallotLookupFinanceLoader.js";
 import { loadMassachusettsCandidateFinanceSummariesByCandidateElection } from "../massachusettsFinance/massachusettsBallotLookupFinanceLoader.js";
@@ -940,6 +941,7 @@ const STATE_FINANCE_LOOKUP_ADAPTERS: readonly StateFinanceLookupAdapter[] = [
   { state: "OH", load: loadOhioCandidateFinanceSummariesByCandidateElection },
   { state: "NC", load: loadNorthCarolinaCandidateFinanceSummariesByCandidateElection },
   { state: "GA", load: loadGeorgiaCandidateFinanceSummariesByCandidateElection },
+  { state: "MO", load: loadMissouriCandidateFinanceSummariesByCandidateElection },
   { state: "RI", load: loadRhodeIslandCandidateFinanceSummariesByCandidateElection },
 ];
 

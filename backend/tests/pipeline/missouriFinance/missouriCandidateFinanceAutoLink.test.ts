@@ -109,6 +109,7 @@ describe("missouriCandidateFinanceAutoLink", () => {
 
     const sql = String(db.query.mock.calls[0]?.[0]);
     expect(sql).toContain("district.state = 'MO'");
+    expect(sql).toContain("election.election_stage = 'general'");
     expect(sql).toContain("FROM public.mo_candidate_finance_links AS link");
     expect(sql).toContain("candidate_election.status NOT IN ('withdrawn', 'lost')");
     expect(sql).toContain("(office.scope || '::' || office.canonical_name) = ANY($5::text[])");
@@ -117,9 +118,10 @@ describe("missouriCandidateFinanceAutoLink", () => {
         "state_lower::State Lower Chamber Legislator",
         "state_upper::State Senator",
         "county::County Executive",
-        "place::City Council Member",
-        "school_unified::School Board Member",
       ])
+    );
+    expect(db.query.mock.calls[0]?.[1]?.[4]).not.toEqual(
+      expect.arrayContaining(["place::City Council Member", "school_unified::School Board Member"])
     );
     expect(db.query.mock.calls[0]?.[1]?.[4]).not.toContain("statewide::United States Senator");
   });

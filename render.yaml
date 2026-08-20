@@ -176,6 +176,8 @@ services:
         value: "true"
       - key: MARYLAND_CAMPAIGN_FINANCE_ENABLED
         value: "true"
+      - key: MISSOURI_CAMPAIGN_FINANCE_ENABLED
+        value: "true"
       - key: MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED
         value: "true"
       - key: MICHIGAN_CAMPAIGN_FINANCE_ENABLED
