@@ -1,6 +1,6 @@
 # Pick district gate
 
-Status: planned (2026-08-19). No code yet.
+Status: PR 1 (backend endpoint) implemented — ships with this doc. PRs 2–3 planned (2026-08-19).
 
 ## Problem
 
