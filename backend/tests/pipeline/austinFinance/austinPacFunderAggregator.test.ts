@@ -111,6 +111,21 @@ describe("aggregateAustinPacFunders", () => {
     ]);
   });
 
+  it("lets a correction with NO receipt rows void its period (deleted donations)", () => {
+    // A CORPAC that removed every receipt of its period never appears among
+    // the contribution rows — the report metadata alone must supersede.
+    const result = aggregateAustinPacFunders({
+      contributions: [
+        receipt("R8", "Deleted Gift LLC", 9_000_00, { contributionDate: "2024-11-20" }),
+        receipt("R30", "Kept Gift LLC", 4_000_00, { contributionDate: "2024-08-01" }),
+      ],
+      reportsById: reportsById(), // RCOR (10-28..12-04) has no rows at all
+      ...WINDOW,
+    });
+    expect(result.supersededRowCount).toBe(1);
+    expect(result.donors.map((donor) => donor.donorName)).toEqual(["Kept Gift LLC"]);
+  });
+
   it("keeps only the latest-filed correction of one period", () => {
     const reports = reportsById();
     reports.set("RCOR2", { formTypeCode: "CORPAC", periodFrom: "2024-10-28", periodTo: "2024-12-04", dateFiled: "2024-12-10" });

@@ -13,7 +13,9 @@
 //     10-28..12-04 re-lists rows from an ATX.1, a PACATX.7 AND a GPAC), so
 //     rule 0 from austinOutsideSpendingAggregator applies: the latest-filed
 //     correction per period wins, its period voids rows on non-correction
-//     reports, losing corrections drop entirely;
+//     reports, losing corrections drop entirely — winners read off the
+//     report METADATA so a correction that deleted every receipt still
+//     supersedes (PR #770 review);
 //   - special reports (ATX.1 / PACATX.7 / ATX.8, no cover totals) re-list on
 //     the next regular report (ANCHOR COULTER on an ATX.1 and the MPAC;
 //     OUR FIGHT OUR FUTURE PAC on a PACATX.7, a GPAC and an ATX.8), so the
@@ -90,7 +92,11 @@ export type AustinPacFunderAggregation = {
 export function aggregateAustinPacFunders(input: {
   /** Contributions rows for the spender (`recipient` = its exact name). */
   contributions: readonly AustinContributionRow[];
-  /** Report Detail facts for the reports behind those rows. */
+  /**
+   * The spender's COMPLETE Report Detail picture (fetched by filer name).
+   * Rule 0 reads correction winners off this map, so a correction report
+   * with no receipt rows must still be present here.
+   */
   reportsById: ReadonlyMap<string, AustinReportFacts>;
   /** Inclusive ISO date window (the candidate's cycle window). */
   windowFrom: string;
@@ -120,15 +126,17 @@ export function aggregateAustinPacFunders(input: {
 
   // Rule 0: latest-filed correction per period wins; its period voids rows
   // on non-correction reports; a losing correction drops entirely. One
-  // filer here, so the key is the period alone.
+  // filer here, so the key is the period alone. Winners come from the
+  // REPORT metadata, not from the rows: a correction that deleted every
+  // receipt of its period has no rows, and it must still supersede — which
+  // is why reportsById must be the spender's complete Report Detail
+  // picture, never just the reports behind the rows (PR #770 review).
   const correctionWinners = new Map<
     string,
     { reportId: string; dateFiled: string; periodFrom: string; periodTo: string }
   >();
-  for (const row of windowRows) {
-    const report = input.reportsById.get(row.reportId);
+  for (const [reportId, report] of input.reportsById) {
     if (
-      !report ||
       !REGULAR_CORRECTION_FORM_CODES.has(report.formTypeCode) ||
       report.periodFrom === null ||
       report.periodTo === null
@@ -139,10 +147,10 @@ export function aggregateAustinPacFunders(input: {
     if (
       !current ||
       current.dateFiled < report.dateFiled ||
-      (current.dateFiled === report.dateFiled && current.reportId < row.reportId)
+      (current.dateFiled === report.dateFiled && current.reportId < reportId)
     )
       correctionWinners.set(key, {
-        reportId: row.reportId,
+        reportId,
         dateFiled: report.dateFiled,
         periodFrom: report.periodFrom,
         periodTo: report.periodTo,

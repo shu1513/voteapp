@@ -1,8 +1,14 @@
 import { describe, expect, it, vi } from "vitest";
 
-import { normalizeFinanceLabel } from "../../../src/pipeline/finance/financeLabelClassifier.js";
+import {
+  classifyFinanceLabel,
+  normalizeFinanceLabel,
+  type FinanceLabelClassification,
+} from "../../../src/pipeline/finance/financeLabelClassifier.js";
+import { financeClassificationKey } from "../../../src/pipeline/finance/financeIndustryClassificationService.js";
 import { AUSTIN_FINANCE_LINK_SOURCE_URL } from "../../../src/pipeline/austinFinance/austinCandidateFinanceAutoLink.js";
 import {
+  buildAustinPacFunderBreakdownRows,
   loadAustinOutsideDatasets,
   syncAustinCandidateFinance,
 } from "../../../src/pipeline/austinFinance/austinCandidateFinanceSync.js";
@@ -84,11 +90,17 @@ function defaultRoutes(): Record<string, unknown[]> {
       reportRecord({ report_id: "R81", filer_name: "City Accountability Project", form_type: "GPAC - General Purpose PAC", period_from: "2026-01-01T00:00:00.000", period_to: "2026-06-30T00:00:00.000", date_filed: "2026-07-15T00:00:00.000", election_date: null, office_sought: null }),
       reportRecord({ report_id: "R71", filer_name: "City Accountability Project", form_type: "GPAC - General Purpose PAC", period_from: "2022-07-01T00:00:00.000", period_to: "2022-12-31T00:00:00.000", date_filed: "2023-01-15T00:00:00.000", election_date: null, office_sought: null }),
     ],
+    // RECA's complete Report Detail picture (the Phase 3b by-filer fetch —
+    // an empty correction must be visible even with no receipt rows on it).
+    "filer_name = 'The Real Estate Council": [
+      reportRecord({ report_id: "R91", filer_name: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", form_type: "MPAC - Monthly PAC", period_from: "2025-09-26T00:00:00.000", period_to: "2025-10-25T00:00:00.000", date_filed: "2025-10-28T00:00:00.000", election_date: null, office_sought: null }),
+      reportRecord({ report_id: "R92", filer_name: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", form_type: "CORPAC - Correction", period_from: "2025-09-26T00:00:00.000", period_to: "2025-10-25T00:00:00.000", date_filed: "2025-11-02T00:00:00.000", election_date: null, office_sought: null }),
+    ],
     // RECA's own receipts (the Phase 3b funder fetch, recipient = spender).
     "recipient = 'The Real Estate Council": [
-      contributionRecord("R91", "10000.00", { recipient: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", donor: "Kilroy Realty, L.P.", donor_type: "ENTITY", contribution_date: "2025-10-01T00:00:00.000", donor_reported_occupation: null, donor_reported_employer: null }),
-      contributionRecord("R91", "5000.00", { recipient: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", donor: "Way To Lead PAC", donor_type: "ENTITY", contribution_date: "2025-10-02T00:00:00.000", donor_reported_occupation: null, donor_reported_employer: null }),
-      contributionRecord("R91", "2000.00", { recipient: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", donor: "Nosek, Nicole", donor_type: "INDIVIDUAL", contribution_date: "2025-10-03T00:00:00.000" }),
+      contributionRecord("R91", "10000.00", { recipient: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", donor: "Kilroy Realty, L.P.", donor_type: "ENTITY", contribution_date: "2025-11-10T00:00:00.000", donor_reported_occupation: null, donor_reported_employer: null }),
+      contributionRecord("R91", "5000.00", { recipient: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", donor: "Way To Lead PAC", donor_type: "ENTITY", contribution_date: "2025-11-11T00:00:00.000", donor_reported_occupation: null, donor_reported_employer: null }),
+      contributionRecord("R91", "2000.00", { recipient: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", donor: "Nosek, Nicole", donor_type: "INDIVIDUAL", contribution_date: "2025-11-12T00:00:00.000" }),
     ],
     "u3cd-iecr": [
       { committee_purp_id: "R91-C00001", report: "R91", filer_name: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", committee_activity: "SUPPORT", purpose_type: "CANDIDATE", recipient: "Zohaib,Qadri", office_sought: "COUNCIL_MBR_DISTRICT_09" },
@@ -137,6 +149,43 @@ function baseInput(routes: Record<string, unknown[]>) {
     clientOptions: { fetchImpl: makeFetch(routes) },
   };
 }
+
+describe("buildAustinPacFunderBreakdownRows", () => {
+  it("keeps every industry's top donor persisted even past the display cap", () => {
+    // 50 unclassifiable donors above the cap, one real-estate donor below
+    // it: the industry row must not appear without its evidence donor.
+    const donors = [
+      ...Array.from({ length: 50 }, (_, index) => ({
+        donorName: `Placeholder Partners ${String(index + 1).padStart(3, "0")}`,
+        donorKey: `PLACEHOLDER PARTNERS ${String(index + 1).padStart(3, "0")}`,
+        amountCents: 100_000_00 - index * 100,
+        receiptCount: 1,
+      })),
+      { donorName: "Tail End Realty", donorKey: "TAIL END REALTY", amountCents: 50_00, receiptCount: 1 },
+    ];
+    const classifications = new Map<string, FinanceLabelClassification>();
+    for (const donor of donors) {
+      const classification = classifyFinanceLabel({ rawLabel: donor.donorName, labelType: "donor" });
+      classifications.set(
+        financeClassificationKey("donor", classification.normalizedLabel),
+        classification,
+      );
+    }
+    const rows = buildAustinPacFunderBreakdownRows({
+      spenderName: "Vibrant Austin PAC",
+      supportOppose: "support",
+      donors,
+      classifications,
+    });
+    const donorRows = rows.filter((row) => row.categoryType === "donor");
+    const industryRows = rows.filter((row) => row.categoryType === "industry");
+    expect(donorRows).toHaveLength(51); // top 50 + the appended evidence donor
+    expect(donorRows.at(-1)).toMatchObject({ categoryName: "Tail End Realty", amountCents: 50_00 });
+    expect(industryRows).toEqual([
+      expect.objectContaining({ categoryName: "real_estate", amountCents: 50_00, contributorCount: 1 }),
+    ]);
+  });
+});
 
 describe("syncAustinCandidateFinance", () => {
   it("reconciles covers, buckets, cash, and outside spending on a dry run", async () => {

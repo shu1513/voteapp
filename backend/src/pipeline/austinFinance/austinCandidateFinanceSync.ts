@@ -45,7 +45,10 @@ import {
   aggregateAustinOutsideSpending,
   type AustinReportFacts,
 } from "./austinOutsideSpendingAggregator.js";
-import { aggregateAustinPacFunders } from "./austinPacFunderAggregator.js";
+import {
+  aggregateAustinPacFunders,
+  type AustinPacFunderDonor,
+} from "./austinPacFunderAggregator.js";
 import { AUSTIN_FINANCE_LINK_SOURCE_URL } from "./austinCandidateFinanceAutoLink.js";
 import {
   isAustinFinanceSupportedElectionDate,
@@ -156,10 +159,17 @@ export type AustinPacReceipts = {
 /**
  * Contributions received by one outside spender inside the cycle window
  * (`recipient` = the DCE `paid_by` spelling — verified live: the two
- * datasets share the filer's exact name), plus Report Detail facts for the
- * reports those rows sit on (the funder aggregator's correction rule).
- * Fetched per attributed spender; the lists are small (a payroll-deduction
- * PAC would not be, which is why the fetch is window-bounded server-side).
+ * datasets share the filer's exact name), plus the spender's COMPLETE
+ * Report Detail picture by `filer_name`, not just the reports behind the
+ * rows: a correction that deleted every receipt of its period has no rows
+ * to reference it, and it must still supersede (PR #770 review). Fetched
+ * per attributed spender; the row lists are small (a payroll-deduction PAC
+ * would not be, which is why the fetch is window-bounded server-side).
+ *
+ * Fail-closed: a receipt row on a report the filer query cannot see means
+ * the two datasets disagree about the spender's name — refuse to aggregate
+ * rather than skip the correction rule for that row (live 2026-08-19: all
+ * six DCE spenders with receipts resolve every row's report by filer).
  */
 export async function loadAustinPacReceipts(
   input: { spenderName: string; windowFrom: string; windowTo: string },
@@ -169,19 +179,90 @@ export async function loadAustinPacReceipts(
     { recipient: input.spenderName, fromDate: input.windowFrom, toDate: input.windowTo },
     options,
   );
-  const reports = await getAustinReportDetailRowsByReportIds(
-    [...new Set(contributions.map((row) => row.reportId))],
-    options,
-  );
+  const reports = await getAustinReportDetailRowsByFiler(input.spenderName, options);
   const reportsById = new Map<string, AustinReportFacts>();
   for (const report of reports)
-    reportsById.set(report.reportId, {
-      formTypeCode: report.formTypeCode,
-      periodFrom: report.periodFrom,
-      periodTo: report.periodTo,
-      dateFiled: report.dateFiled,
-    });
+    if (!reportsById.has(report.reportId))
+      reportsById.set(report.reportId, {
+        formTypeCode: report.formTypeCode,
+        periodFrom: report.periodFrom,
+        periodTo: report.periodTo,
+        dateFiled: report.dateFiled,
+      });
+  const missing = [...new Set(contributions.map((row) => row.reportId))].filter(
+    (id) => !reportsById.has(id),
+  );
+  if (missing.length > 0)
+    throw new Error(
+      `Austin spender ${JSON.stringify(input.spenderName)} has receipt rows on reports its filer name cannot see (${missing.join(", ")}); refusing to aggregate funders`,
+    );
   return { contributions, reportsById };
+}
+
+/**
+ * Donor + industry rows for one outside group. Donor display rows are
+ * capped, industry totals are summed over EVERY donor in integer cents (the
+ * shared build helper works in float dollars, so the sums live here) — and
+ * every industry row keeps at least its top donor persisted even past the
+ * cap: the shared read side shows an industry's evidence ONLY from persisted
+ * donor rows, so an industry made entirely of tail donors would otherwise
+ * render with no named evidence (PR #770 review). `donors` must be sorted
+ * amount-descending (the funder aggregator's contract).
+ */
+export function buildAustinPacFunderBreakdownRows(input: {
+  spenderName: string;
+  supportOppose: "support" | "oppose";
+  donors: readonly AustinPacFunderDonor[];
+  classifications: ReadonlyMap<string, FinanceLabelClassification>;
+}): AustinOutsideGroupBreakdownInput[] {
+  const industries = new Map<
+    string,
+    { amountCents: number; donorCount: number; topDonor: AustinPacFunderDonor }
+  >();
+  for (const donor of input.donors) {
+    const classification = input.classifications.get(
+      financeClassificationKey("donor", normalizeFinanceLabel(donor.donorName, "donor")),
+    );
+    if (!classification?.industrySlug) continue;
+    // First donor seen per slug is its largest (amount-descending input).
+    const current = industries.get(classification.industrySlug) ?? {
+      amountCents: 0,
+      donorCount: 0,
+      topDonor: donor,
+    };
+    current.amountCents += donor.amountCents;
+    current.donorCount += 1;
+    industries.set(classification.industrySlug, current);
+  }
+  const displayedDonors = input.donors.slice(0, MAX_DONOR_BREAKDOWNS_PER_GROUP);
+  const displayedKeys = new Set(displayedDonors.map((donor) => donor.donorKey));
+  for (const { topDonor } of industries.values())
+    if (!displayedKeys.has(topDonor.donorKey)) {
+      displayedDonors.push(topDonor);
+      displayedKeys.add(topDonor.donorKey);
+    }
+  return [
+    ...displayedDonors.map((donor) => ({
+      spenderName: input.spenderName,
+      supportOppose: input.supportOppose,
+      categoryType: "donor" as const,
+      categoryName: donor.donorName,
+      amountCents: donor.amountCents,
+      contributorCount: 1,
+      sourceUrl: AUSTIN_FINANCE_LINK_SOURCE_URL,
+    })),
+    ...[...industries]
+      .sort((a, b) => b[1].amountCents - a[1].amountCents || a[0].localeCompare(b[0]))
+      .map(([slug, value]) => ({
+        spenderName: input.spenderName,
+        supportOppose: input.supportOppose,
+        categoryType: "industry" as const,
+        categoryName: slug,
+        amountCents: value.amountCents,
+        contributorCount: value.donorCount,
+        sourceUrl: AUSTIN_FINANCE_LINK_SOURCE_URL,
+      })),
+  ];
 }
 
 export type AustinCandidateFinanceSyncResult = {
@@ -379,45 +460,14 @@ export async function syncAustinCandidateFinance(input: {
   let pacDonorCount = 0;
   for (const { group, donors } of fundersByGroup) {
     pacDonorCount += donors.length;
-    for (const donor of donors.slice(0, MAX_DONOR_BREAKDOWNS_PER_GROUP))
-      outsideGroupBreakdowns.push({
+    outsideGroupBreakdowns.push(
+      ...buildAustinPacFunderBreakdownRows({
         spenderName: group.spenderName,
         supportOppose: group.supportOppose,
-        categoryType: "donor",
-        categoryName: donor.donorName,
-        amountCents: donor.amountCents,
-        contributorCount: 1,
-        sourceUrl: AUSTIN_FINANCE_LINK_SOURCE_URL,
-      });
-    // Industry totals over EVERY donor (display cap applies to donor rows
-    // only), summed in integer cents — the shared build helper works in
-    // float dollars, so the sums live here.
-    const industries = new Map<string, { amountCents: number; donorCount: number }>();
-    for (const donor of donors) {
-      const classification = classifications.get(
-        financeClassificationKey("donor", normalizeFinanceLabel(donor.donorName, "donor")),
-      );
-      if (!classification?.industrySlug) continue;
-      const current = industries.get(classification.industrySlug) ?? {
-        amountCents: 0,
-        donorCount: 0,
-      };
-      current.amountCents += donor.amountCents;
-      current.donorCount += 1;
-      industries.set(classification.industrySlug, current);
-    }
-    for (const [slug, value] of [...industries].sort(
-      (a, b) => b[1].amountCents - a[1].amountCents || a[0].localeCompare(b[0]),
-    ))
-      outsideGroupBreakdowns.push({
-        spenderName: group.spenderName,
-        supportOppose: group.supportOppose,
-        categoryType: "industry",
-        categoryName: slug,
-        amountCents: value.amountCents,
-        contributorCount: value.donorCount,
-        sourceUrl: AUSTIN_FINANCE_LINK_SOURCE_URL,
-      });
+        donors,
+        classifications,
+      }),
+    );
   }
 
   if (!input.dryRun)
