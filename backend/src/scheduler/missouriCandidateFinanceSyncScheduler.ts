@@ -130,7 +130,8 @@ export async function runMissouriCandidateFinanceSyncJob(
       enabled: false, force, triggeredBy, dryRun, rawDataRefreshEnabled: false, now: now.toISOString(),
       staleAfterDays: data.staleAfterDays ?? 0, maxCandidates: data.maxCandidates ?? 0,
       dueCandidateCount: 0, selectedCandidateCount: 0, syncedCandidateCount: 0, failedCandidateCount: 0,
-      autoLinkAttemptedCount: 0, autoLinkLinkedCount: 0, results: [],
+      autoLinkAttemptedCount: 0, autoLinkLinkedCount: 0,
+      outsideArtifactYearCount: 0, failedOutsideArtifactYearCount: 0, results: [],
     };
   }
   const pool = new Pool({ connectionString: getPipelineEnv().DATABASE_URL });

@@ -1,6 +1,6 @@
 import { buildMissouriMecUrl, MISSOURI_MEC_PAGES } from "./missouriMecClient.js";
 
-export const MISSOURI_MEC_PARSER_VERSION = 2;
+export const MISSOURI_MEC_PARSER_VERSION = 3;
 
 const CANDIDATE_EXPORT_HEADER = [
   "MECID",
@@ -9,6 +9,15 @@ const CANDIDATE_EXPORT_HEADER = [
   "Party",
   "Office Sought",
   "Status",
+] as const;
+
+export const MISSOURI_MEC_COMMITTEE_ACTIVITY_HEADER = [
+  "Status Date",
+  "MECID",
+  "Committee Name",
+  "Committee Type",
+  "Committee Candidate",
+  "Committee Status",
 ] as const;
 
 export const MISSOURI_MEC_CONTRIBUTION_EXPORT_HEADER = [
@@ -50,6 +59,16 @@ export const MISSOURI_MEC_EXPENDITURE_EXPORT_HEADER = [
   "Expenditure Type",
 ] as const;
 
+export const MISSOURI_MEC_OUTSIDE_SPENDING_EXPORT_HEADER = [
+  "Candidates Name and Address",
+  "Office Sought",
+  "Support/Oppose",
+  "Date",
+  "Amount",
+  "Reporting Committee",
+  "Report",
+] as const;
+
 const MISSOURI_MEC_ID_PATTERN = /^[A-Z]\d{6}$/;
 
 export type MissouriMecCandidateExportRow = {
@@ -74,6 +93,21 @@ export type MissouriMecCommitteeInfo = {
   candidateName: string;
   electionHistory: MissouriMecElectionHistoryRow[];
   sourceUrl: string;
+};
+
+export type MissouriMecCommitteeIdentity = {
+  mecid: string;
+  committeeName: string;
+};
+
+export type MissouriMecCommitteeActivityRow = {
+  statusDate: string;
+  /** Canonical committee MECID; exemption registrations end in E and cannot identify a spender committee. */
+  mecid: string | null;
+  committeeName: string;
+  committeeType: string;
+  committeeCandidate: string | null;
+  committeeStatus: string;
 };
 
 export type MissouriMecSelectOption = {
@@ -108,6 +142,31 @@ export type MissouriMecExpenditureRow = {
   expenditureDate: string;
   amountCents: number;
   expenditureType: string;
+};
+
+export type MissouriMecOutsideSpendingRow = {
+  candidateNameAndAddress: string;
+  officeSought: string;
+  supportOppose: "Support" | "Oppose";
+  expenditureDate: string;
+  amountCents: number;
+  reportingCommittee: string;
+  report: string;
+};
+
+export type MissouriMecOutsideSpenderIdentity = {
+  reportingCommittee: string;
+  mecid: string | null;
+};
+
+export type MissouriMecOutsideSpendingGridRow = MissouriMecOutsideSpendingRow & {
+  committeeEventTarget: string;
+};
+
+export type MissouriMecOutsideSpendingGridPage = {
+  currentPage: number;
+  rows: MissouriMecOutsideSpendingGridRow[];
+  nextPageEventTarget: string | null;
 };
 
 export type MissouriMecReportYear = {
@@ -198,6 +257,18 @@ function parseFirstHtmlTable(html: string): string[][] {
     if (cells.length > 0) {
       rows.push(cells);
     }
+  }
+  return rows;
+}
+
+function parseHtmlTableById(html: string, idSuffix: string, label: string): string[][] {
+  const escapedId = idSuffix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const table = new RegExp(`<table\\b[^>]*id="[^"]*${escapedId}"[^>]*>([\\s\\S]*?)<\\/table>`, "i").exec(html);
+  if (!table) throw new Error(`Missouri MEC ${label} has no ${idSuffix} table`);
+  const rows: string[][] = [];
+  for (const row of table[1]!.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)) {
+    const cells = [...row[1]!.matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map((cell) => textContent(cell[1]!));
+    if (cells.length > 0) rows.push(cells);
   }
   return rows;
 }
@@ -320,6 +391,166 @@ export function parseMissouriMecExpenditureExport(html: string): MissouriMecExpe
       expenditureDate: parseMecTransactionDate(expenditureDate, "expenditure date"),
       amountCents: parseMecCurrencyCents(amount, "expenditure amount"),
       expenditureType: expenditureType.trim(),
+    };
+  });
+}
+
+export function parseMissouriMecOutsideSpendingExport(html: string): MissouriMecOutsideSpendingRow[] {
+  const rows = parseFirstHtmlTable(html);
+  assertExportHeader(rows, MISSOURI_MEC_OUTSIDE_SPENDING_EXPORT_HEADER, "outside-spending export");
+  return rows.slice(1).map((row, index) => {
+    if (row.length !== MISSOURI_MEC_OUTSIDE_SPENDING_EXPORT_HEADER.length) {
+      throw new Error(`Unexpected Missouri MEC outside-spending export row ${index + 2}: ${row.length} columns`);
+    }
+    const [
+      candidateNameAndAddress = "",
+      officeSought = "",
+      supportOppose = "",
+      expenditureDate = "",
+      amount = "",
+      reportingCommittee = "",
+      report = "",
+    ] = row;
+    if (
+      !candidateNameAndAddress ||
+      !officeSought ||
+      !reportingCommittee ||
+      !report ||
+      (supportOppose !== "Support" && supportOppose !== "Oppose")
+    ) {
+      throw new Error(`Incomplete Missouri MEC outside-spending export row ${index + 2}`);
+    }
+    return {
+      candidateNameAndAddress,
+      officeSought,
+      supportOppose,
+      expenditureDate: parseMecTransactionDate(expenditureDate, "outside-spending date"),
+      amountCents: parseMecCurrencyCents(amount, "outside-spending amount"),
+      reportingCommittee,
+      report,
+    };
+  });
+}
+
+function parseIndexedOutsideGridValues(html: string, label: string): Map<number, string> {
+  const values = new Map<number, string>();
+  const pattern = new RegExp(`grvExpenditures_${label}_(\\d+)"[^>]*>([\\s\\S]*?)<\\/span>`, "gi");
+  for (const match of html.matchAll(pattern)) {
+    const index = Number.parseInt(match[1]!, 10);
+    if (values.has(index)) throw new Error(`Duplicate Missouri MEC outside-spending grid ${label} row ${index}`);
+    values.set(index, textContent(match[2]!));
+  }
+  return values;
+}
+
+export function parseMissouriMecOutsideSpendingGridPage(html: string): MissouriMecOutsideSpendingGridPage {
+  const values = {
+    candidateNameAndAddress: parseIndexedOutsideGridValues(html, "lblName"),
+    officeSought: parseIndexedOutsideGridValues(html, "lblSought"),
+    supportOppose: parseIndexedOutsideGridValues(html, "lblSupp"),
+    expenditureDate: parseIndexedOutsideGridValues(html, "lblDate"),
+    amount: parseIndexedOutsideGridValues(html, "lblAmount"),
+    report: parseIndexedOutsideGridValues(html, "lblReport"),
+  };
+  const committeeLinks = new Map<number, { reportingCommittee: string; committeeEventTarget: string }>();
+  for (const match of html.matchAll(
+    /<a\b[^>]*id="[^"]*grvExpenditures_lbtnCommittee_(\d+)"[^>]*href="javascript:__doPostBack\(&#39;([^&]+)&#39;,&#39;&#39;\)"[^>]*>([\s\S]*?)<\/a>/gi
+  )) {
+    const index = Number.parseInt(match[1]!, 10);
+    if (committeeLinks.has(index)) throw new Error(`Duplicate Missouri MEC outside-spending committee row ${index}`);
+    committeeLinks.set(index, {
+      committeeEventTarget: decodeHtmlEntities(match[2]!),
+      reportingCommittee: textContent(match[3]!),
+    });
+  }
+  const rowCount = values.candidateNameAndAddress.size;
+  if (rowCount === 0) throw new Error("Missouri MEC outside-spending grid has no rows");
+  for (const [label, rows] of Object.entries(values)) {
+    if (rows.size !== rowCount) {
+      throw new Error(`Misaligned Missouri MEC outside-spending grid: names=${rowCount}, ${label}=${rows.size}`);
+    }
+  }
+  if (committeeLinks.size !== rowCount) {
+    throw new Error(`Misaligned Missouri MEC outside-spending grid: names=${rowCount}, committees=${committeeLinks.size}`);
+  }
+  const rows: MissouriMecOutsideSpendingGridRow[] = [];
+  for (let index = 0; index < rowCount; index += 1) {
+    const committee = committeeLinks.get(index);
+    const supportOppose = values.supportOppose.get(index);
+    if (!committee || (supportOppose !== "Support" && supportOppose !== "Oppose")) {
+      throw new Error(`Incomplete Missouri MEC outside-spending grid row ${index}`);
+    }
+    rows.push({
+      candidateNameAndAddress: values.candidateNameAndAddress.get(index) ?? "",
+      officeSought: values.officeSought.get(index) ?? "",
+      supportOppose,
+      expenditureDate: parseMecTransactionDate(values.expenditureDate.get(index) ?? "", "outside-spending date"),
+      amountCents: parseMecCurrencyCents(values.amount.get(index) ?? "", "outside-spending amount"),
+      reportingCommittee: committee.reportingCommittee,
+      report: values.report.get(index) ?? "",
+      committeeEventTarget: committee.committeeEventTarget,
+    });
+  }
+  const currentPageText = /grvExpenditures_CurrentPage[^>]*>[\s\S]*?<font\b[^>]*>(\d+)<\/font>/i.exec(html)?.[1];
+  const currentPage = Number.parseInt(currentPageText ?? "1", 10);
+  const nextPageEventTarget = /<a\b[^>]*id="[^"]*grvExpenditures_lbtnNextPage"[^>]*href="javascript:__doPostBack\(&#39;([^&]+)&#39;,&#39;&#39;\)"/i.exec(html)?.[1] ?? null;
+  return { currentPage, rows, nextPageEventTarget };
+}
+
+export function parseMissouriMecOutsideSpenderIdentities(body: string): MissouriMecOutsideSpenderIdentity[] {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    throw new Error("Invalid Missouri MEC outside-spender identity artifact JSON");
+  }
+  if (!Array.isArray(parsed)) throw new Error("Invalid Missouri MEC outside-spender identity artifact shape");
+  const names = new Set<string>();
+  return parsed.map((value, index) => {
+    if (typeof value !== "object" || value === null) {
+      throw new Error(`Invalid Missouri MEC outside-spender identity row ${index}`);
+    }
+    const row = value as Record<string, unknown>;
+    if (
+      typeof row.reportingCommittee !== "string" ||
+      !row.reportingCommittee.trim() ||
+      (row.mecid !== null && typeof row.mecid !== "string")
+    ) {
+      throw new Error(`Invalid Missouri MEC outside-spender identity row ${index}`);
+    }
+    const reportingCommittee = row.reportingCommittee.trim().replace(/\s+/g, " ");
+    if (names.has(reportingCommittee)) {
+      throw new Error(`Duplicate Missouri MEC outside-spender identity: ${reportingCommittee}`);
+    }
+    names.add(reportingCommittee);
+    return { reportingCommittee, mecid: row.mecid === null ? null : normalizeMecId(row.mecid) };
+  });
+}
+
+export function parseMissouriMecCommitteeActivityRows(html: string): MissouriMecCommitteeActivityRow[] {
+  const rows = parseHtmlTableById(html, "gvAdvanced", "committee-activity results");
+  assertExportHeader(rows, MISSOURI_MEC_COMMITTEE_ACTIVITY_HEADER, "committee-activity results");
+  return rows.slice(1).map((row, index) => {
+    if (row.length !== MISSOURI_MEC_COMMITTEE_ACTIVITY_HEADER.length) {
+      throw new Error(`Unexpected Missouri MEC committee-activity row ${index + 2}: ${row.length} columns`);
+    }
+    const [statusDate = "", rawMecid = "", committeeName = "", committeeType = "", committeeCandidate = "", committeeStatus = ""] = row;
+    if (!committeeName || !committeeType || !committeeStatus) {
+      throw new Error(`Incomplete Missouri MEC committee-activity row ${index + 2}`);
+    }
+    const activityMecid = rawMecid.trim().toUpperCase();
+    const mecid = MISSOURI_MEC_ID_PATTERN.test(activityMecid)
+      ? activityMecid
+      : /^[A-Z]\d{6}E$/.test(activityMecid) && committeeType === "Exemption"
+        ? null
+        : normalizeMecId(rawMecid);
+    return {
+      statusDate: parseMecTransactionDate(statusDate, "committee activity date"),
+      mecid,
+      committeeName,
+      committeeType,
+      committeeCandidate: nullableText(committeeCandidate),
+      committeeStatus,
     };
   });
 }
@@ -453,8 +684,7 @@ export function normalizeMissouriMecElectionDate(value: string): string {
 }
 
 export function parseMissouriMecCommitteeInfo(html: string): MissouriMecCommitteeInfo {
-  const mecid = normalizeMecId(parseSpanText(html, "lblMECID"));
-  const committeeName = parseSpanText(html, "lblCommName");
+  const { mecid, committeeName } = parseMissouriMecCommitteeIdentity(html);
   const candidateName = parseSpanText(html, "lblCandName");
   if (!committeeName || !candidateName) {
     throw new Error(`Incomplete Missouri MEC committee profile for ${mecid}`);
@@ -495,4 +725,11 @@ export function parseMissouriMecCommitteeInfo(html: string): MissouriMecCommitte
     }),
     sourceUrl: buildMissouriMecUrl(MISSOURI_MEC_PAGES.committeeInfo, { MECID: mecid }),
   };
+}
+
+export function parseMissouriMecCommitteeIdentity(html: string): MissouriMecCommitteeIdentity {
+  const mecid = normalizeMecId(parseSpanText(html, "lblMECID"));
+  const committeeName = parseSpanText(html, "lblCommName");
+  if (!committeeName) throw new Error(`Incomplete Missouri MEC committee identity for ${mecid}`);
+  return { mecid, committeeName };
 }

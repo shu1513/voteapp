@@ -1,7 +1,17 @@
 import type { Pool, PoolClient } from "pg";
 
+import { classifyFinanceLabel, type FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
+import {
+  buildFinanceIndustryBreakdownsFromClassifications,
+  mergeFinanceLabelClassification,
+  resolveFinanceIndustryClassifications,
+} from "../finance/financeIndustryClassificationService.js";
 import { aggregateMissouriDirectFinance, type MissouriDirectFinanceAggregationResult } from "./missouriDirectContributionAggregator.js";
-import { readMissouriMecCandidateFinanceArtifacts } from "./missouriMecArtifactCache.js";
+import {
+  readMissouriMecCandidateFinanceArtifacts,
+  readMissouriMecOutsideSpenderContributionArtifacts,
+  readMissouriMecOutsideSpendingArtifacts,
+} from "./missouriMecArtifactCache.js";
 import { normalizeMissouriCandidateNameForStorage } from "./missouriCandidateCommitteeResolver.js";
 import {
   isMissouriDirectFinanceEligibleOffice,
@@ -9,7 +19,24 @@ import {
   normalizeMissouriMecText,
 } from "./missouriFinanceEligibleOffices.js";
 import { replaceMissouriCandidateFinanceSnapshot, type MissouriFinanceLinkSource } from "./missouriFinanceWriter.js";
-import type { MissouriMecCommitteeInfo, MissouriMecContributionRow, MissouriMecExpenditureRow, MissouriMecReportInventoryRow } from "./missouriMecParsers.js";
+import {
+  aggregateMissouriOutsideGroupContributions,
+  type MissouriOutsideGroupContributionAggregationResult,
+  type MissouriOutsideSpenderContributionArtifacts,
+} from "./missouriOutsideGroupContributionAggregator.js";
+import {
+  aggregateMissouriOutsideSpending,
+  type MissouriOutsideSpendingAggregationResult,
+} from "./missouriOutsideSpendingAggregator.js";
+import type {
+  MissouriMecCommitteeInfo,
+  MissouriMecContributionRow,
+  MissouriMecExpenditureRow,
+  MissouriMecOutsideSpenderIdentity,
+  MissouriMecOutsideSpendingRow,
+  MissouriMecReportInventoryRow,
+} from "./missouriMecParsers.js";
+import type { MissouriFinanceOutsideGroupBreakdownInput } from "./missouriFinanceWriter.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
 type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
@@ -21,6 +48,12 @@ export type MissouriCandidateFinanceArtifacts = {
   expenditureRows: readonly MissouriMecExpenditureRow[];
   contributionSourceUrl: string;
   expenditureSourceUrl: string;
+};
+
+export type MissouriOutsideSpendingArtifacts = {
+  rows: readonly MissouriMecOutsideSpendingRow[];
+  identities: readonly MissouriMecOutsideSpenderIdentity[];
+  sourceUrl: string;
 };
 
 export type MissouriCandidateFinanceSyncResult = {
@@ -35,7 +68,78 @@ export type MissouriCandidateFinanceSyncResult = {
   summaryWritten: boolean;
   directBreakdownsWritten: number;
   aggregation: MissouriDirectFinanceAggregationResult;
+  outsideGroupsWritten: number;
+  outsideGroupBreakdownsWritten: number;
+  outsideSupportTotal: number | null;
+  outsideOpposeTotal: number | null;
+  outsideSpending: Omit<MissouriOutsideSpendingAggregationResult, "outsideGroups"> | null;
+  outsideSpendingSkippedReason: string | null;
+  outsideFunders: Omit<MissouriOutsideGroupContributionAggregationResult, "outsideGroupBreakdowns"> | null;
+  outsideFundersSkippedReason: string | null;
 };
+
+const DEFAULT_MAX_OUTSIDE_DONOR_BREAKDOWNS_PER_GROUP = 50;
+
+function normalizeMaxOutsideDonorBreakdowns(value: number | undefined): number {
+  const normalized = value ?? DEFAULT_MAX_OUTSIDE_DONOR_BREAKDOWNS_PER_GROUP;
+  if (!Number.isSafeInteger(normalized) || normalized <= 0) {
+    throw new Error(`Invalid Missouri maxOutsideDonorBreakdownsPerGroup: ${value}`);
+  }
+  return normalized;
+}
+
+async function enrichMissouriOutsideIndustries(input: {
+  db: Queryable;
+  breakdowns: readonly MissouriFinanceOutsideGroupBreakdownInput[];
+  maxDonorsPerGroup: number;
+  dryRun: boolean;
+}): Promise<{ breakdowns: MissouriFinanceOutsideGroupBreakdownInput[]; classifications: FinanceLabelClassification[] }> {
+  const donorRows = input.breakdowns.filter((row) => row.categoryType === "donor");
+  const classifications = new Map<string, FinanceLabelClassification>();
+  for (const donor of donorRows) {
+    mergeFinanceLabelClassification(
+      classifications,
+      classifyFinanceLabel({ rawLabel: donor.categoryName, labelType: "donor" })
+    );
+  }
+  await resolveFinanceIndustryClassifications({
+    db: input.db,
+    directBreakdowns: [],
+    outsideBreakdowns: donorRows,
+    classifications,
+    classifier: undefined,
+    minAmount: 0,
+    dryRun: input.dryRun,
+  });
+  const industryRows = new Map<string, MissouriFinanceOutsideGroupBreakdownInput>();
+  for (const row of buildFinanceIndustryBreakdownsFromClassifications({
+    directBreakdowns: [], outsideBreakdowns: donorRows, classifications,
+  }).outsideIndustryBreakdowns) {
+    const key = `${row.committeeId}\u0000${row.supportOppose}\u0000${row.categoryName}`;
+    const existing = industryRows.get(key);
+    if (existing) {
+      existing.amount = Math.round((existing.amount + row.amount) * 100) / 100;
+      existing.contributorCount = (existing.contributorCount ?? 0) + (row.contributorCount ?? 0);
+    } else industryRows.set(key, { ...row });
+  }
+  const donorsByGroup = new Map<string, MissouriFinanceOutsideGroupBreakdownInput[]>();
+  for (const donor of donorRows) {
+    const key = `${donor.committeeId}\u0000${donor.supportOppose}`;
+    const rows = donorsByGroup.get(key) ?? [];
+    rows.push(donor);
+    donorsByGroup.set(key, rows);
+  }
+  const cappedDonors = [...donorsByGroup.values()].flatMap((rows) =>
+    rows.sort((left, right) => right.amount - left.amount || left.categoryName.localeCompare(right.categoryName)).slice(0, input.maxDonorsPerGroup)
+  );
+  return {
+    breakdowns: [
+      ...cappedDonors,
+      ...[...industryRows.values()].sort((left, right) => left.committeeId.localeCompare(right.committeeId) || left.supportOppose.localeCompare(right.supportOppose) || right.amount - left.amount || left.categoryName.localeCompare(right.categoryName)),
+    ],
+    classifications: [...classifications.values()],
+  };
+}
 
 function requireText(value: string, label: string): string {
   const normalized = value.trim();
@@ -99,6 +203,11 @@ export async function syncMissouriCandidateFinance(input: {
   now?: Date;
   dryRun?: boolean;
   maxOccupationBreakdowns?: number;
+  maxOutsideGroups?: number;
+  maxOutsideDonorBreakdownsPerGroup?: number;
+  outsideArtifacts?: MissouriOutsideSpendingArtifacts | null;
+  outsideSpenderArtifactsByMecid?: ReadonlyMap<string, MissouriOutsideSpenderContributionArtifacts>;
+  refreshOutsideSpenderArtifacts?: (mecid: string) => Promise<void>;
 }): Promise<MissouriCandidateFinanceSyncResult> {
   const candidateId = requireText(input.candidateId, "candidate id");
   const electionId = requireText(input.electionId, "election id");
@@ -157,8 +266,90 @@ export async function syncMissouriCandidateFinance(input: {
     );
   }
 
+  let outsideArtifacts = input.outsideArtifacts;
+  let outsideSpendingSkippedReason: string | null = null;
+  if (outsideArtifacts === null) {
+    outsideSpendingSkippedReason = "yearly outside-spending artifact unavailable";
+  } else if (outsideArtifacts === undefined) {
+    try {
+      outsideArtifacts = await readMissouriMecOutsideSpendingArtifacts({ cacheDir: input.cacheDir, year: input.electionYear });
+    } catch (error) {
+      outsideSpendingSkippedReason = error instanceof Error ? error.message : String(error);
+    }
+  }
+  const outsideSpending = outsideArtifacts
+    ? aggregateMissouriOutsideSpending({
+        rows: outsideArtifacts.rows,
+        identities: outsideArtifacts.identities,
+        candidateName,
+        officeName,
+        district: input.district,
+        cycleStart: window.cycleStart,
+        cycleEnd: window.cycleEnd,
+        sourceUrl: outsideArtifacts.sourceUrl,
+        maxGroups: input.maxOutsideGroups,
+      })
+    : null;
+  let outsideGroupBreakdowns: MissouriFinanceOutsideGroupBreakdownInput[] | undefined;
+  let classifications: FinanceLabelClassification[] | undefined;
+  let outsideFunders: Omit<MissouriOutsideGroupContributionAggregationResult, "outsideGroupBreakdowns"> | null = null;
+  let outsideFundersSkippedReason: string | null = null;
+  if (!outsideSpending) {
+    outsideFundersSkippedReason = `outside leg skipped (${outsideSpendingSkippedReason ?? "unavailable"})`;
+  } else if (outsideSpending.outsideGroups.length === 0) {
+    outsideGroupBreakdowns = [];
+    classifications = [];
+    outsideFunders = {
+      matchedContributionRowCount: 0, includedContributionRowCount: 0, individualContributionRowCount: 0,
+      outsideCycleContributionRowCount: 0, nonPositiveContributionRowCount: 0, ambiguousOrganizationRowCount: 0,
+      ambiguousOrganizationAmount: 0, unrecognizedContributionKindRowCount: 0,
+      unrecognizedContributionKindAmount: 0, reportDiagnostics: [],
+    };
+  } else {
+    const artifactsBySpender = new Map<string, MissouriOutsideSpenderContributionArtifacts>();
+    for (const mecid of new Set(outsideSpending.outsideGroups.map((group) => group.committeeId))) {
+      try {
+        await input.refreshOutsideSpenderArtifacts?.(mecid);
+        const injected = input.outsideSpenderArtifactsByMecid?.get(mecid);
+        artifactsBySpender.set(
+          mecid,
+          injected ?? await readMissouriMecOutsideSpenderContributionArtifacts({ cacheDir: input.cacheDir, mecid, year: input.electionYear })
+        );
+      } catch (error) {
+        outsideFundersSkippedReason = error instanceof Error ? error.message : String(error);
+        break;
+      }
+    }
+    if (!outsideFundersSkippedReason) {
+      const funders = aggregateMissouriOutsideGroupContributions({
+        outsideGroups: outsideSpending.outsideGroups,
+        artifactsBySpender,
+        cycleStart: window.cycleStart,
+        cycleEnd: window.cycleEnd,
+        sourceUrl: outsideArtifacts?.sourceUrl,
+      });
+      const { outsideGroupBreakdowns: donorBreakdowns, ...diagnostics } = funders;
+      if (funders.reportDiagnostics.length > 0 || funders.unrecognizedContributionKindRowCount > 0) {
+        outsideFundersSkippedReason = `outside funder report data is ambiguous: lineages=${funders.reportDiagnostics.length}, kinds=${funders.unrecognizedContributionKindRowCount}`;
+      } else {
+        const enriched = await enrichMissouriOutsideIndustries({
+          db: input.db,
+          breakdowns: donorBreakdowns,
+          maxDonorsPerGroup: normalizeMaxOutsideDonorBreakdowns(input.maxOutsideDonorBreakdownsPerGroup),
+          dryRun: input.dryRun === true,
+        });
+        outsideGroupBreakdowns = enriched.breakdowns;
+        classifications = enriched.classifications;
+        outsideFunders = diagnostics;
+      }
+    }
+  }
+  const outsideSnapshot = outsideFundersSkippedReason === null ? outsideSpending : null;
+
   let summaryWritten = false;
   let directBreakdownsWritten = 0;
+  let outsideGroupsWritten = 0;
+  let outsideGroupBreakdownsWritten = 0;
   if (!input.dryRun) {
     const write = await replaceMissouriCandidateFinanceSnapshot({
       db: input.db,
@@ -182,14 +373,19 @@ export async function syncMissouriCandidateFinance(input: {
         directContributionTotal: aggregation.directContributionTotal,
         totalDisbursements: aggregation.totalDisbursements,
         cashOnHand: null,
-        outsideSupportTotal: null,
-        outsideOpposeTotal: null,
+        outsideSupportTotal: outsideSnapshot?.supportTotal ?? null,
+        outsideOpposeTotal: outsideSnapshot?.opposeTotal ?? null,
         sourceUrl,
       },
       directBreakdowns: aggregation.directBreakdowns,
+      outsideGroups: outsideSnapshot?.outsideGroups,
+      outsideGroupBreakdowns,
+      classifications,
     });
     summaryWritten = write.summaryWritten;
     directBreakdownsWritten = write.directBreakdownsWritten;
+    outsideGroupsWritten = write.outsideGroupsWritten;
+    outsideGroupBreakdownsWritten = write.outsideGroupBreakdownsWritten;
   }
   return {
     candidateId,
@@ -203,5 +399,15 @@ export async function syncMissouriCandidateFinance(input: {
     summaryWritten,
     directBreakdownsWritten,
     aggregation,
+    outsideGroupsWritten,
+    outsideGroupBreakdownsWritten,
+    outsideSupportTotal: outsideSpending?.supportTotal ?? null,
+    outsideOpposeTotal: outsideSpending?.opposeTotal ?? null,
+    outsideSpending: outsideSpending
+      ? (({ outsideGroups: _groups, ...diagnostics }) => diagnostics)(outsideSpending)
+      : null,
+    outsideSpendingSkippedReason,
+    outsideFunders,
+    outsideFundersSkippedReason,
   };
 }

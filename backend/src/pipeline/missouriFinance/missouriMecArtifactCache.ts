@@ -7,23 +7,30 @@ import {
   parseMissouriMecCommitteeInfo,
   parseMissouriMecContributionExport,
   parseMissouriMecExpenditureExport,
+  parseMissouriMecOutsideSpenderIdentities,
+  parseMissouriMecOutsideSpendingExport,
   parseMissouriMecReportInventory,
+  type MissouriMecOutsideSpenderIdentity,
 } from "./missouriMecParsers.js";
 
 export const DEFAULT_MISSOURI_MEC_CACHE_DIR = "scratch/missouri-campaign-finance/mec";
 export const MISSOURI_MEC_ARTIFACT_SCHEMA_VERSION = 1;
 
-export type MissouriMecArtifactType =
+export type MissouriMecCandidateArtifactType =
   | "committee_info"
   | "report_inventory"
   | "contributions"
-  | "expenditures";
+  | "expenditures"
+  | "outside_spender_report_inventory"
+  | "outside_spender_contributions";
 
-export type MissouriMecArtifactKey = {
-  type: MissouriMecArtifactType;
-  mecid: string;
-  year: number;
-};
+export type MissouriMecOutsideArtifactType = "outside_spending" | "outside_spender_identities";
+
+export type MissouriMecArtifactType = MissouriMecCandidateArtifactType | MissouriMecOutsideArtifactType;
+
+export type MissouriMecArtifactKey =
+  | { type: MissouriMecCandidateArtifactType; mecid: string; year: number }
+  | { type: MissouriMecOutsideArtifactType; year: number };
 
 export type MissouriMecArtifactManifest = {
   version: typeof MISSOURI_MEC_ARTIFACT_SCHEMA_VERSION;
@@ -36,18 +43,33 @@ export type MissouriMecArtifactManifest = {
   rowCount: number;
 };
 
+type MissouriMecOutsideArtifactKey = Extract<MissouriMecArtifactKey, { type: MissouriMecOutsideArtifactType }>;
+
+function isOutsideArtifactKey(key: MissouriMecArtifactKey): key is MissouriMecOutsideArtifactKey {
+  return key.type === "outside_spending" || key.type === "outside_spender_identities";
+}
+
 function normalizeKey(key: MissouriMecArtifactKey): MissouriMecArtifactKey {
-  const mecid = key.mecid.trim().toUpperCase();
-  if (!/^[A-Z]\d{6}$/.test(mecid)) throw new Error(`Invalid Missouri MEC artifact MECID: ${key.mecid}`);
   if (!Number.isSafeInteger(key.year) || key.year < 2002 || key.year > 2100) {
     throw new Error(`Invalid Missouri MEC artifact year: ${key.year}`);
   }
+  if (isOutsideArtifactKey(key)) {
+    if (key.year < 2019) throw new Error(`Invalid Missouri MEC outside-spending artifact year: ${key.year}`);
+    return key;
+  }
+  const mecid = key.mecid.trim().toUpperCase();
+  if (!/^[A-Z]\d{6}$/.test(mecid)) throw new Error(`Invalid Missouri MEC artifact MECID: ${key.mecid}`);
   return { ...key, mecid };
 }
 
 function artifactRelativePath(key: MissouriMecArtifactKey): string {
   const normalized = normalizeKey(key);
-  const extension = normalized.type === "contributions" || normalized.type === "expenditures" ? "xls.html" : "html";
+  if (isOutsideArtifactKey(normalized)) {
+    return normalized.type === "outside_spending"
+      ? `_outside/${normalized.year}/outside_spending.xls.html`
+      : `_outside/${normalized.year}/outside_spender_identities.json`;
+  }
+  const extension = normalized.type === "contributions" || normalized.type === "expenditures" || normalized.type === "outside_spender_contributions" ? "xls.html" : "html";
   return `${normalized.mecid}/${normalized.year}/${normalized.type}.${extension}`;
 }
 
@@ -56,16 +78,28 @@ function artifactPaths(cacheDir: string, key: MissouriMecArtifactKey): { file: s
   return { file, manifest: `${file}.manifest.json` };
 }
 
+function artifactKeyLabel(key: MissouriMecArtifactKey): string {
+  return isOutsideArtifactKey(key)
+    ? `${key.type} ${key.year}`
+    : `${key.type} ${key.mecid} ${key.year}`;
+}
+
 function validateBody(key: MissouriMecArtifactKey, body: string): number {
   switch (key.type) {
     case "committee_info":
       return parseMissouriMecCommitteeInfo(body).electionHistory.length;
     case "report_inventory":
+    case "outside_spender_report_inventory":
       return parseMissouriMecReportInventory(body).length;
     case "contributions":
+    case "outside_spender_contributions":
       return parseMissouriMecContributionExport(body).length;
     case "expenditures":
       return parseMissouriMecExpenditureExport(body).length;
+    case "outside_spending":
+      return parseMissouriMecOutsideSpendingExport(body).length;
+    case "outside_spender_identities":
+      return parseMissouriMecOutsideSpenderIdentities(body).length;
   }
 }
 
@@ -114,7 +148,9 @@ export async function storeMissouriMecArtifact(input: {
 function sameKey(left: MissouriMecArtifactKey, right: MissouriMecArtifactKey): boolean {
   const a = normalizeKey(left);
   const b = normalizeKey(right);
-  return a.type === b.type && a.mecid === b.mecid && a.year === b.year;
+  if (a.type !== b.type || a.year !== b.year) return false;
+  if (isOutsideArtifactKey(a)) return true;
+  return !isOutsideArtifactKey(b) && a.mecid === b.mecid;
 }
 
 export async function readMissouriMecArtifact(input: {
@@ -132,7 +168,7 @@ export async function readMissouriMecArtifact(input: {
     ]);
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {
-      throw new Error(`Missing Missouri MEC artifact: ${key.type} ${key.mecid} ${key.year}`);
+      throw new Error(`Missing Missouri MEC artifact: ${artifactKeyLabel(key)}`);
     }
     throw error;
   }
@@ -146,7 +182,7 @@ export async function readMissouriMecArtifact(input: {
     manifest.byteSize !== bytes.byteLength ||
     manifest.rowCount !== validateBody(key, body)
   ) {
-    throw new Error(`Stale or invalid Missouri MEC artifact: ${key.type} ${key.mecid} ${key.year}`);
+    throw new Error(`Stale or invalid Missouri MEC artifact: ${artifactKeyLabel(key)}`);
   }
   return { body, manifest };
 }
@@ -163,7 +199,7 @@ export async function readMissouriMecCandidateFinanceArtifacts(input: {
   contributionSourceUrl: string;
   expenditureSourceUrl: string;
 }> {
-  const types: MissouriMecArtifactType[] = ["committee_info", "report_inventory", "contributions", "expenditures"];
+  const types: MissouriMecCandidateArtifactType[] = ["committee_info", "report_inventory", "contributions", "expenditures"];
   const artifacts = await Promise.all(types.map((type) => readMissouriMecArtifact({ ...input, key: { type, mecid: input.mecid, year: input.year } })));
   const retrievalTimes = new Set(artifacts.map((artifact) => artifact.manifest.retrievedAt));
   if (retrievalTimes.size !== 1) {
@@ -177,5 +213,100 @@ export async function readMissouriMecCandidateFinanceArtifacts(input: {
     expenditureRows: parseMissouriMecExpenditureExport(expenditures!.body),
     contributionSourceUrl: contributions!.manifest.sourceUrl,
     expenditureSourceUrl: expenditures!.manifest.sourceUrl,
+  };
+}
+
+function assertOutsideIdentityCoverage(input: {
+  rows: ReturnType<typeof parseMissouriMecOutsideSpendingExport>;
+  identities: readonly MissouriMecOutsideSpenderIdentity[];
+}): void {
+  const rowNames = new Set(input.rows.map((row) => row.reportingCommittee));
+  const identityNames = new Set(input.identities.map((row) => row.reportingCommittee));
+  const missing = [...rowNames].filter((name) => !identityNames.has(name));
+  const extra = [...identityNames].filter((name) => !rowNames.has(name));
+  if (missing.length > 0 || extra.length > 0) {
+    throw new Error(
+      `Missouri MEC outside-spender identity coverage mismatch: missing=${missing.length}, extra=${extra.length}`
+    );
+  }
+}
+
+export async function storeMissouriMecOutsideSpendingArtifacts(input: {
+  cacheDir?: string;
+  year: number;
+  sourceUrl: string;
+  exportBody: string;
+  identities: readonly MissouriMecOutsideSpenderIdentity[];
+  retrievedAt?: Date;
+}): Promise<{ rowCount: number; identityCount: number }> {
+  const rows = parseMissouriMecOutsideSpendingExport(input.exportBody);
+  const identities = parseMissouriMecOutsideSpenderIdentities(JSON.stringify(input.identities));
+  assertOutsideIdentityCoverage({ rows, identities });
+  const retrievedAt = input.retrievedAt ?? new Date();
+  const identityBody = `${JSON.stringify(
+    [...identities].sort((left, right) => left.reportingCommittee.localeCompare(right.reportingCommittee)),
+    null,
+    2
+  )}\n`;
+  await Promise.all([
+    storeMissouriMecArtifact({
+      cacheDir: input.cacheDir,
+      key: { type: "outside_spending", year: input.year },
+      sourceUrl: input.sourceUrl,
+      body: input.exportBody,
+      retrievedAt,
+    }),
+    storeMissouriMecArtifact({
+      cacheDir: input.cacheDir,
+      key: { type: "outside_spender_identities", year: input.year },
+      sourceUrl: input.sourceUrl,
+      body: identityBody,
+      retrievedAt,
+    }),
+  ]);
+  return { rowCount: rows.length, identityCount: identities.length };
+}
+
+export async function readMissouriMecOutsideSpendingArtifacts(input: {
+  cacheDir?: string;
+  year: number;
+}): Promise<{
+  rows: ReturnType<typeof parseMissouriMecOutsideSpendingExport>;
+  identities: MissouriMecOutsideSpenderIdentity[];
+  sourceUrl: string;
+}> {
+  const [outside, identityArtifact] = await Promise.all([
+    readMissouriMecArtifact({ ...input, key: { type: "outside_spending", year: input.year } }),
+    readMissouriMecArtifact({ ...input, key: { type: "outside_spender_identities", year: input.year } }),
+  ]);
+  if (outside.manifest.retrievedAt !== identityArtifact.manifest.retrievedAt) {
+    throw new Error(`Mixed-vintage Missouri MEC outside-spending artifact bundle: ${input.year}`);
+  }
+  const rows = parseMissouriMecOutsideSpendingExport(outside.body);
+  const identities = parseMissouriMecOutsideSpenderIdentities(identityArtifact.body);
+  assertOutsideIdentityCoverage({ rows, identities });
+  return { rows, identities, sourceUrl: outside.manifest.sourceUrl };
+}
+
+export async function readMissouriMecOutsideSpenderContributionArtifacts(input: {
+  cacheDir?: string;
+  mecid: string;
+  year: number;
+}): Promise<{
+  inventory: ReturnType<typeof parseMissouriMecReportInventory>;
+  contributionRows: ReturnType<typeof parseMissouriMecContributionExport>;
+  sourceUrl: string;
+}> {
+  const [inventory, contributions] = await Promise.all([
+    readMissouriMecArtifact({ ...input, key: { type: "outside_spender_report_inventory", mecid: input.mecid, year: input.year } }),
+    readMissouriMecArtifact({ ...input, key: { type: "outside_spender_contributions", mecid: input.mecid, year: input.year } }),
+  ]);
+  if (inventory.manifest.retrievedAt !== contributions.manifest.retrievedAt) {
+    throw new Error(`Mixed-vintage Missouri MEC outside-spender artifact bundle: ${input.mecid} ${input.year}`);
+  }
+  return {
+    inventory: parseMissouriMecReportInventory(inventory.body),
+    contributionRows: parseMissouriMecContributionExport(contributions.body),
+    sourceUrl: contributions.manifest.sourceUrl,
   };
 }

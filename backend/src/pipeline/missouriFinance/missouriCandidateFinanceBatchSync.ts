@@ -8,7 +8,11 @@ import {
 } from "./missouriCandidateFinanceAutoLink.js";
 import { listDueMissouriCandidateFinanceSyncRows } from "./missouriCandidateFinanceDueList.js";
 import { syncMissouriCandidateFinance, type MissouriCandidateFinanceSyncResult } from "./missouriCandidateFinanceSync.js";
-import { acquireMissouriMecCandidateFinanceArtifacts } from "./missouriMecArtifactAcquisition.js";
+import {
+  acquireMissouriMecCandidateFinanceArtifacts,
+  acquireMissouriMecOutsideSpenderContributionArtifacts,
+  acquireMissouriMecOutsideSpendingArtifacts,
+} from "./missouriMecArtifactAcquisition.js";
 import { createMissouriMecSession, type MissouriMecSession } from "./missouriMecClient.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -28,6 +32,8 @@ export type MissouriCandidateFinanceBatchSyncInput = {
   session?: MissouriMecSession;
   resolveCandidateCommittee?: MissouriCandidateCommitteeResolver;
   acquireArtifactsFn?: typeof acquireMissouriMecCandidateFinanceArtifacts;
+  acquireOutsideArtifactsFn?: typeof acquireMissouriMecOutsideSpendingArtifacts;
+  acquireOutsideSpenderArtifactsFn?: typeof acquireMissouriMecOutsideSpenderContributionArtifacts;
   syncCandidateFn?: typeof syncMissouriCandidateFinance;
 };
 
@@ -43,6 +49,8 @@ export type MissouriCandidateFinanceBatchSyncResult = {
   failedCandidateCount: number;
   autoLinkAttemptedCount: number;
   autoLinkLinkedCount: number;
+  outsideArtifactYearCount: number;
+  failedOutsideArtifactYearCount: number;
   results: Array<{
     candidateId: string;
     electionId: string;
@@ -111,7 +119,24 @@ export async function syncDueMissouriCandidateFinance(
   const rawDataRefreshEnabled = isMissouriCampaignFinanceRawDataRefreshEnabled(input.forceRawDataRefresh === true);
   const session = rawDataRefreshEnabled ? input.session ?? createMissouriMecSession() : undefined;
   const acquire = input.acquireArtifactsFn ?? acquireMissouriMecCandidateFinanceArtifacts;
+  const acquireOutside = input.acquireOutsideArtifactsFn ?? acquireMissouriMecOutsideSpendingArtifacts;
+  const acquireOutsideSpender = input.acquireOutsideSpenderArtifactsFn ?? acquireMissouriMecOutsideSpenderContributionArtifacts;
   const sync = input.syncCandidateFn ?? syncMissouriCandidateFinance;
+  const outsideAvailableByYear = new Map<number, boolean>();
+  if (rawDataRefreshEnabled) {
+    for (const year of new Set(due.rows.map((row) => row.electionYear))) {
+      try {
+        await acquireOutside({ year, cacheDir: input.cacheDir, session, now });
+        outsideAvailableByYear.set(year, true);
+      } catch (error) {
+        outsideAvailableByYear.set(year, false);
+        console.warn("Missouri yearly outside-spending refresh failed; direct sync will continue:", {
+          year, error: error instanceof Error ? error.message : String(error),
+        });
+      }
+    }
+  }
+  const spenderRefreshes = new Map<string, Promise<unknown>>();
   const results: MissouriCandidateFinanceBatchSyncResult["results"] = [];
   for (const row of due.rows) {
     try {
@@ -137,6 +162,24 @@ export async function syncDueMissouriCandidateFinance(
         cacheDir: input.cacheDir,
         now,
         dryRun,
+        ...(rawDataRefreshEnabled && outsideAvailableByYear.get(row.electionYear) === false
+          ? { outsideArtifacts: null }
+          : {}),
+        ...(rawDataRefreshEnabled && outsideAvailableByYear.get(row.electionYear) === true
+          ? {
+              refreshOutsideSpenderArtifacts: async (mecid: string) => {
+                const key = `${row.electionYear}\u0000${mecid}`;
+                let refresh = spenderRefreshes.get(key);
+                if (!refresh) {
+                  refresh = acquireOutsideSpender({
+                    mecid, year: row.electionYear, cacheDir: input.cacheDir, session, now,
+                  });
+                  spenderRefreshes.set(key, refresh);
+                }
+                await refresh;
+              },
+            }
+          : {}),
       });
       results.push({ candidateId: row.candidateId, electionId: row.electionId, committeeId: row.committeeId, ok: true, result });
     } catch (error) {
@@ -159,6 +202,8 @@ export async function syncDueMissouriCandidateFinance(
     failedCandidateCount: results.filter((row) => !row.ok).length,
     autoLinkAttemptedCount,
     autoLinkLinkedCount,
+    outsideArtifactYearCount: [...outsideAvailableByYear.values()].filter(Boolean).length,
+    failedOutsideArtifactYearCount: [...outsideAvailableByYear.values()].filter((available) => !available).length,
     results,
   };
 }
