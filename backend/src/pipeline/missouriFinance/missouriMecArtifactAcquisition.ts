@@ -90,6 +90,10 @@ function parseOutsideRecordCount(html: string): number {
   return count;
 }
 
+function normalizeOutsideCommitteeLookupName(value: string): string {
+  return value.trim().replace(/\s+/g, " ").toLocaleUpperCase("en-US");
+}
+
 function parseOutsideSpenderMecid(response: MissouriMecResponse): string {
   const match = /(?:^|\/)CommInfo\.aspx\?mecid=([A-Z]\d{6})(?:&|$)/i.exec(response.redirectLocation ?? "");
   if (response.status !== 302 || !match) {
@@ -231,13 +235,14 @@ export async function acquireMissouriMecOutsideSpendingArtifacts(input: {
     const activityMecidsByName = new Map<string, Set<string>>();
     for (const row of parseMissouriMecCommitteeActivityRows(activityResults)) {
       if (row.mecid === null) continue;
-      const mecidSet = activityMecidsByName.get(row.committeeName) ?? new Set<string>();
+      const normalizedName = normalizeOutsideCommitteeLookupName(row.committeeName);
+      const mecidSet = activityMecidsByName.get(normalizedName) ?? new Set<string>();
       mecidSet.add(row.mecid);
-      activityMecidsByName.set(row.committeeName, mecidSet);
+      activityMecidsByName.set(normalizedName, mecidSet);
     }
     for (const [committeeName, mecid] of identities) {
       if (mecid !== null) continue;
-      const exactMecids = activityMecidsByName.get(committeeName);
+      const exactMecids = activityMecidsByName.get(normalizeOutsideCommitteeLookupName(committeeName));
       const directMecids = directMecidsByName.get(committeeName);
       if (
         exactMecids?.size === 1 &&

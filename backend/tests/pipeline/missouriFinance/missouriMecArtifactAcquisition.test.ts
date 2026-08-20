@@ -102,7 +102,7 @@ describe("acquireMissouriMecOutsideSpendingArtifacts", () => {
     });
   });
 
-  it("uses unique exact MECID/name activity evidence when paged grid links are broken", async () => {
+  it("uses unique case-folded MECID/name activity evidence when paged grid links are broken", async () => {
     const cacheDir = await mkdtemp(join(tmpdir(), "mo-outside-fallback-"));
     const gridRow = (name: string, committeeName: string, page: number, next = false) => `${state}
       <span id="x_grvExpenditures_lblName_0">${name} 10 Private St</span>
@@ -126,7 +126,7 @@ describe("acquireMissouriMecOutsideSpendingArtifacts", () => {
     const activity = `${state}<table id="x_gvAdvanced"><tr>${[
       "Status Date", "MECID", "Committee Name", "Committee Type", "Committee Candidate", "Committee Status",
     ].map((value) => `<th>${value}</th>`).join("")}</tr><tr>${[
-      "8/19/2026", "C654321", "Second PAC", "Political Action", "", "Active",
+      "8/19/2026", "C654321", "Second Pac", "Political Action", "", "Active",
     ].map((value) => `<td>${value}</td>`).join("")}</tr></table>`;
     const get = vi.fn().mockResolvedValueOnce(response(state)).mockResolvedValueOnce(response(state));
     const postForm = vi.fn()
@@ -168,10 +168,11 @@ describe("acquireMissouriMecOutsideSpendingArtifacts", () => {
     ].map((value) => `<th>${value}</th>`).join("")}</tr>${["Jane Doe", "Jane Roe"].map((candidate) => `<tr>${[
       `${candidate} 10 Private St`, "State Representative", "Support", "10/20/2026", "$25.00", "Reused PAC", "8 Day Before General Election",
     ].map((value) => `<td>${value}</td>`).join("")}</tr>`).join("")}</table>`;
+    const activityNames = ["Reused Pac", "REUSED PAC"];
     const activity = `${state}<table id="x_gvAdvanced"><tr>${[
       "Status Date", "MECID", "Committee Name", "Committee Type", "Committee Candidate", "Committee Status",
-    ].map((value) => `<th>${value}</th>`).join("")}</tr>${["C123456", "C654321"].map((mecid) => `<tr>${[
-      "8/19/2026", mecid, "Reused PAC", "Political Action", "", "Active",
+    ].map((value) => `<th>${value}</th>`).join("")}</tr>${["C123456", "C654321"].map((mecid, index) => `<tr>${[
+      "8/19/2026", mecid, activityNames[index], "Political Action", "", "Active",
     ].map((value) => `<td>${value}</td>`).join("")}</tr>`).join("")}</table>`;
     const get = vi.fn().mockResolvedValueOnce(response(state)).mockResolvedValueOnce(response(state));
     const postForm = vi.fn()
