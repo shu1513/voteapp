@@ -111,22 +111,54 @@ function parseCsvRows(csv: string): string[][] {
   return [parseCsvRecord(header), ...records.filter((record) => record.trim()).map(parseCsvRecord)];
 }
 
+function validateHeaderCells<const TColumns extends readonly string[]>(
+  header: readonly string[],
+  columns: TColumns,
+  label: string
+): void {
+  const normalized = header.map((value, index) => (index === 0 ? value.replace(/^\uFEFF/, "") : value));
+  if (normalized.length !== columns.length || normalized.some((value, index) => value !== columns[index])) {
+    throw new Error(`New Hampshire CFS ${label} CSV header changed: ${JSON.stringify(normalized)}`);
+  }
+}
+
+function validateHeaderForColumns<const TColumns extends readonly string[]>(
+  headerRecord: string,
+  columns: TColumns,
+  label: string
+): void {
+  validateHeaderCells(parseCsvRecord(headerRecord), columns, label);
+}
+
+function parseRecordForColumns<const TColumns extends readonly string[]>(
+  record: string,
+  columns: TColumns,
+  label: string,
+  rowNumber: number
+): Record<TColumns[number], string> {
+  const cells = parseCsvRecord(record);
+  if (cells.length !== columns.length) {
+    throw new Error(
+      `New Hampshire CFS ${label} CSV row ${rowNumber} has ${cells.length} columns; expected ${columns.length}`
+    );
+  }
+  return Object.fromEntries(columns.map((column, index) => [column, cells[index] ?? ""])) as Record<
+    TColumns[number],
+    string
+  >;
+}
+
 function parseForColumns<const TColumns extends readonly string[]>(
   csv: string,
   columns: TColumns,
   label: string
 ): Record<TColumns[number], string>[] {
   const rows = parseCsvRows(csv);
-  const header = rows[0]?.map((value, index) => (index === 0 ? value.replace(/^\uFEFF/, "") : value));
+  const header = rows[0];
   if (!header) {
     throw new Error(`New Hampshire CFS ${label} CSV is empty`);
   }
-  if (header.length !== columns.length || header.some((value, index) => value !== columns[index])) {
-    throw new Error(
-      `New Hampshire CFS ${label} CSV header changed: ${JSON.stringify(header)}`
-    );
-  }
-
+  validateHeaderCells(header, columns, label);
   return rows.slice(1).map((cells, rowIndex) => {
     if (cells.length !== columns.length) {
       throw new Error(
@@ -138,6 +170,28 @@ function parseForColumns<const TColumns extends readonly string[]>(
       string
     >;
   });
+}
+
+export function validateNewHampshireReceiptCsvHeader(headerRecord: string): void {
+  validateHeaderForColumns(headerRecord, NEW_HAMPSHIRE_RECEIPT_CSV_COLUMNS, "receipt");
+}
+
+export function validateNewHampshireExpenditureCsvHeader(headerRecord: string): void {
+  validateHeaderForColumns(headerRecord, NEW_HAMPSHIRE_EXPENDITURE_CSV_COLUMNS, "expenditure");
+}
+
+export function parseNewHampshireReceiptCsvRecord(
+  record: string,
+  rowNumber: number
+): NewHampshireReceiptCsvRow {
+  return parseRecordForColumns(record, NEW_HAMPSHIRE_RECEIPT_CSV_COLUMNS, "receipt", rowNumber);
+}
+
+export function parseNewHampshireExpenditureCsvRecord(
+  record: string,
+  rowNumber: number
+): NewHampshireExpenditureCsvRow {
+  return parseRecordForColumns(record, NEW_HAMPSHIRE_EXPENDITURE_CSV_COLUMNS, "expenditure", rowNumber);
 }
 
 export function parseNewHampshireReceiptCsv(csv: string): NewHampshireReceiptCsvRow[] {

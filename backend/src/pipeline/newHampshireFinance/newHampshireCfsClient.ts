@@ -1,3 +1,11 @@
+import { createHash } from "node:crypto";
+import { createWriteStream } from "node:fs";
+import { mkdir, rm, stat } from "node:fs/promises";
+import { dirname, resolve } from "node:path";
+import { Readable, Transform } from "node:stream";
+import { pipeline } from "node:stream/promises";
+import type { ReadableStream as NodeReadableStream } from "node:stream/web";
+
 export const NEW_HAMPSHIRE_CFS_API_BASE_URL = "https://cfsapi.sos.nh.gov/api";
 
 export const NEW_HAMPSHIRE_CFS_ENDPOINTS = {
@@ -30,6 +38,22 @@ export type NewHampshireCfsClientOptions = {
   fetchImpl?: typeof fetch;
   timeoutMs?: number;
   userAgent?: string;
+};
+
+export type NewHampshireCfsBulkDownloadResult = {
+  url: string;
+  requestBody: {
+    type: "CSV";
+    filingYear: number;
+    transactionTypeCode: NewHampshireCfsTransactionTypeCode;
+  };
+  contentType: string | null;
+  contentDisposition: string | null;
+  contentEncoding: string | null;
+  responseDate: string | null;
+  outputPath: string;
+  bytesWritten: number;
+  sha256: string;
 };
 
 export type NewHampshireElectionCycle = {
@@ -99,7 +123,7 @@ export type NewHampshireIndependentExpenditureSearchInput = {
   electionCycleId: number;
 };
 
-const DEFAULT_TIMEOUT_MS = 120_000;
+export const NEW_HAMPSHIRE_CFS_FETCH_TIMEOUT_MS = 120_000;
 // Akamai currently rejects Node's default and descriptive bot user agents.
 // This minimal compatibility token plus the public SPA Origin/Referer is the
 // request shape the anonymous API accepts (verified live 2026-08-19).
@@ -184,14 +208,14 @@ function buildUrl(endpoint: string): string {
   return `${NEW_HAMPSHIRE_CFS_API_BASE_URL}/${endpoint}`;
 }
 
-async function post(input: {
+async function postResponse(input: {
   endpoint: string;
   body: Record<string, unknown>;
   expectedContentType: "json" | "csv";
   options?: NewHampshireCfsClientOptions;
-}): Promise<Uint8Array> {
+}): Promise<Response> {
   const fetchImpl = input.options?.fetchImpl ?? fetch;
-  const timeoutMs = input.options?.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const timeoutMs = input.options?.timeoutMs ?? NEW_HAMPSHIRE_CFS_FETCH_TIMEOUT_MS;
   const userAgent = input.options?.userAgent?.trim() || DEFAULT_USER_AGENT;
   requirePositiveInteger(timeoutMs, "New Hampshire CFS timeout");
 
@@ -232,6 +256,17 @@ async function post(input: {
     );
   }
 
+  return response;
+}
+
+async function post(input: {
+  endpoint: string;
+  body: Record<string, unknown>;
+  expectedContentType: "json" | "csv";
+  options?: NewHampshireCfsClientOptions;
+}): Promise<Uint8Array> {
+  const response = await postResponse(input);
+
   const bytes = new Uint8Array(await response.arrayBuffer());
   const maxBytes = input.expectedContentType === "json" ? MAX_JSON_RESPONSE_BYTES : MAX_CSV_RESPONSE_BYTES;
   if (bytes.byteLength > maxBytes) {
@@ -241,6 +276,17 @@ async function post(input: {
     );
   }
   return bytes;
+}
+
+function buildBulkDownloadRequestBody(input: {
+  filingYear: number;
+  transactionTypeCode: NewHampshireCfsTransactionTypeCode;
+}): NewHampshireCfsBulkDownloadResult["requestBody"] {
+  return {
+    type: "CSV",
+    filingYear: requireFilingYear(input.filingYear),
+    transactionTypeCode: input.transactionTypeCode,
+  };
 }
 
 async function postJson(
@@ -344,17 +390,96 @@ export async function downloadNewHampshireCfsBulkCsv(
   input: { filingYear: number; transactionTypeCode: NewHampshireCfsTransactionTypeCode },
   options?: NewHampshireCfsClientOptions
 ): Promise<string> {
+  const requestBody = buildBulkDownloadRequestBody(input);
   const bytes = await post({
     endpoint: NEW_HAMPSHIRE_CFS_ENDPOINTS.bulkExport,
-    body: {
-      type: "CSV",
-      filingYear: requireFilingYear(input.filingYear),
-      transactionTypeCode: input.transactionTypeCode,
-    },
+    body: requestBody,
     expectedContentType: "csv",
     options,
   });
   return new TextDecoder().decode(bytes);
+}
+
+export async function downloadNewHampshireCfsBulkCsvToFile(
+  input: {
+    filingYear: number;
+    transactionTypeCode: NewHampshireCfsTransactionTypeCode;
+    outputPath: string;
+  },
+  options?: NewHampshireCfsClientOptions
+): Promise<NewHampshireCfsBulkDownloadResult> {
+  const requestBody = buildBulkDownloadRequestBody(input);
+  const response = await postResponse({
+    endpoint: NEW_HAMPSHIRE_CFS_ENDPOINTS.bulkExport,
+    body: requestBody,
+    expectedContentType: "csv",
+    options,
+  });
+  if (!response.body) {
+    throw new NewHampshireCfsClientError(
+      "bad_response",
+      "New Hampshire CFS bulk export response did not include a body"
+    );
+  }
+
+  const outputPath = resolve(input.outputPath);
+  await mkdir(dirname(outputPath), { recursive: true });
+  const hash = createHash("sha256");
+  let bytesWritten = 0;
+  const meter = new Transform({
+    transform(chunk: Buffer, _encoding, callback) {
+      bytesWritten += chunk.byteLength;
+      if (bytesWritten > MAX_CSV_RESPONSE_BYTES) {
+        callback(
+          new NewHampshireCfsClientError(
+            "bad_response",
+            `New Hampshire CFS ${NEW_HAMPSHIRE_CFS_ENDPOINTS.bulkExport} exceeded ${MAX_CSV_RESPONSE_BYTES} bytes`
+          )
+        );
+        return;
+      }
+      hash.update(chunk);
+      callback(null, chunk);
+    },
+  });
+  const source = Readable.fromWeb(response.body as NodeReadableStream<Uint8Array>);
+  const timeoutMs = options?.timeoutMs ?? NEW_HAMPSHIRE_CFS_FETCH_TIMEOUT_MS;
+  const bodyTimeout = setTimeout(() => {
+    source.destroy(
+      new NewHampshireCfsClientError(
+        "network_error",
+        `New Hampshire CFS bulk export body timed out after ${timeoutMs}ms`
+      )
+    );
+  }, timeoutMs);
+
+  try {
+    await pipeline(source, meter, createWriteStream(outputPath));
+    const outputStat = await stat(outputPath);
+    if (!outputStat.isFile() || outputStat.size === 0 || outputStat.size !== bytesWritten) {
+      throw new NewHampshireCfsClientError(
+        "bad_response",
+        `New Hampshire CFS bulk export wrote an invalid artifact: ${bytesWritten} bytes`
+      );
+    }
+  } catch (error) {
+    await rm(outputPath, { force: true }).catch(() => {});
+    throw error;
+  } finally {
+    clearTimeout(bodyTimeout);
+  }
+
+  return {
+    url: buildUrl(NEW_HAMPSHIRE_CFS_ENDPOINTS.bulkExport),
+    requestBody,
+    contentType: response.headers.get("content-type"),
+    contentDisposition: response.headers.get("content-disposition"),
+    contentEncoding: response.headers.get("content-encoding"),
+    responseDate: response.headers.get("date"),
+    outputPath,
+    bytesWritten,
+    sha256: hash.digest("hex"),
+  };
 }
 
 export async function getNewHampshireElectionCycles(
