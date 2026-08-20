@@ -98,6 +98,30 @@ describe("FinanceSummaryCard", () => {
     );
   });
 
+  it("renders Missouri occupations, coverage notes, and source provenance", () => {
+    const summary = financeSummary();
+    summary.source = "MISSOURI_MEC";
+    summary.direct_campaign.direct_coverage_note =
+      "Totals and donor breakdowns are summed from itemized Missouri Ethics Commission filings and are not reconciled to official report covers.";
+    summary.outside_spending.outside_coverage_note =
+      "Registered-committee reported spending only; Missouri non-committee expenditure reports (§ 130.047) are not included.";
+    summary.direct_campaign.top_occupations[0]!.source_url =
+      "https://www.mec.mo.gov/MEC/Campaign_Finance/CF12_ContrExpend.aspx";
+    summary.direct_campaign.top_industries[0]!.source_url = null;
+
+    render(<FinanceSummaryCard summary={summary} />);
+
+    expect(screen.getByText("Top disclosed occupations of direct donors")).toBeInTheDocument();
+    expect(screen.getByText("Retired")).toBeInTheDocument();
+    expect(screen.getByText(summary.direct_campaign.direct_coverage_note)).toBeInTheDocument();
+    expect(screen.getByText(summary.outside_spending.outside_coverage_note)).toBeInTheDocument();
+    expect(screen.getByText(/Source: Missouri Ethics Commission · 2026 cycle/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "mec.mo.gov" })).toHaveAttribute(
+      "href",
+      "https://www.mec.mo.gov/MEC/Campaign_Finance/CF12_ContrExpend.aspx"
+    );
+  });
+
   it("explains prior-cycle money only when spending tops raised plus public funds", () => {
     const summary = financeSummary();
     summary.direct_campaign.total_raised = 40000;

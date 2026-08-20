@@ -325,11 +325,12 @@ describe("missouriCandidateCommitteeResolver", () => {
       `${hidden}<select id="x_ddElectionDate"><option value="-- Select Election --">-- Select Election --</option><option value="11/03/2026">11/03/2026</option></select>`,
       `${hidden}<select id="x_ddPoliticalOffice"><option value="0">--Select Political Office --</option><option value="State Representative">State Representative</option></select>`,
       `${hidden}<select id="x_ddPoliticalDistrict"><option value="0">-- Select District --</option><option value="District 1">District 1</option></select>`,
-      `${hidden}<span>1 records found</span><input id="x_btnExport" value="Excel Export" />`,
+      `${hidden}<span>2 records found</span><input id="x_btnExport" value="Excel Export" />`,
     ];
     const exportHtml = `
       <table><tr><th>MECID</th><th>Committee Name</th><th>Candidate Name</th><th>Party</th><th>Office Sought</th><th>Status</th></tr>
-      <tr><td>C221944</td><td>Forward With Farnan</td><td>Jeff Farnan</td><td>R</td><td>State Representative - District 1 - Missouri House of Representatives</td><td>A</td></tr></table>
+      <tr><td>C221944</td><td>Forward With Farnan</td><td>Jeff Farnan</td><td>R</td><td>State Representative - District 1 - Missouri House of Representatives</td><td>A</td></tr>
+      <tr><td>C264258E</td><td>Exempt Candidate</td><td>Other Person</td><td>R</td><td>State Representative - District 1 - Missouri House of Representatives</td><td>T</td></tr></table>
     `;
     const infoHtml = `
       <span id="x_lblMECID">C221944</span><span id="x_lblCommName">Forward With Farnan</span><span id="x_lblCandName">Jeff Farnan</span>

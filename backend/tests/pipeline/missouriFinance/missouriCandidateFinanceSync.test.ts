@@ -66,12 +66,12 @@ describe("missouriCandidateFinanceSync", () => {
       officeScope: "state_lower",
       officeName: "State Lower Chamber Legislator", district: "1",
       committee: { committeeId: "C263985", committeeName: "Jane for Missouri", linkSource: "mec_portal" },
-      artifacts, dryRun: true, now: new Date("2026-08-19T00:00:00Z"),
+      artifacts, outsideArtifacts: null, dryRun: true, now: new Date("2026-08-19T00:00:00Z"),
     });
     expect(result).toMatchObject({ dryRun: true, cycleStart: "2026-08-05", cycleEnd: "2026-11-03", summaryWritten: false });
     expect(result.aggregation).toMatchObject({ directContributionTotal: 125, totalDisbursements: 50 });
     expect(result.outsideSpending).toBeNull();
-    expect(result.outsideSpendingSkippedReason).toContain("Missing Missouri MEC artifact");
+    expect(result.outsideSpendingSkippedReason).toBe("yearly outside-spending artifact unavailable");
     expect(query).not.toHaveBeenCalled();
   });
 

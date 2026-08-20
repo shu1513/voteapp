@@ -7,7 +7,7 @@ import {
 } from "./missouriFinanceEligibleOffices.js";
 import {
   normalizeMissouriMecElectionDate,
-  parseMissouriMecCandidateExport,
+  parseMissouriMecCandidateExportWithDiagnostics,
   parseMissouriMecCommitteeInfo,
   parseMissouriMecSelectOptions,
   type MissouriMecSelectOption,
@@ -581,13 +581,14 @@ export async function searchMissouriMecCandidateCommitteeRecords(
       exportResponse.status
     );
   }
-  const exportRows = parseMissouriMecCandidateExport(exportResponse.text());
-  if (exportRows.length !== recordCount) {
+  const candidateExport = parseMissouriMecCandidateExportWithDiagnostics(exportResponse.text());
+  if (candidateExport.sourceRowCount !== recordCount) {
     throw new MissouriMecClientError(
       "bad_response",
-      `Missouri MEC candidate export row count ${exportRows.length} does not match results count ${recordCount}`
+      `Missouri MEC candidate export row count ${candidateExport.sourceRowCount} does not match results count ${recordCount}`
     );
   }
+  const exportRows = candidateExport.rows;
   const infoByMecid = new Map<string, MissouriMecCommitteeInfo>();
   for (const mecid of new Set(exportRows.map((row) => row.mecid))) {
     const infoUrl = buildMissouriMecUrl(MISSOURI_MEC_PAGES.committeeInfo, { MECID: mecid });

@@ -621,14 +621,22 @@ export function parseMissouriMecReportInventory(html: string): MissouriMecReport
   });
 }
 
-export function parseMissouriMecCandidateExport(html: string): MissouriMecCandidateExportRow[] {
+export type MissouriMecCandidateExportResult = {
+  rows: MissouriMecCandidateExportRow[];
+  sourceRowCount: number;
+  excludedExemptionRegistrationCount: number;
+};
+
+export function parseMissouriMecCandidateExportWithDiagnostics(html: string): MissouriMecCandidateExportResult {
   const rows = parseFirstHtmlTable(html);
   const header = rows[0] ?? [];
   if (header.join("\u0000") !== CANDIDATE_EXPORT_HEADER.join("\u0000")) {
     throw new Error(`Unexpected Missouri MEC candidate export header: ${header.join(" | ")}`);
   }
 
-  return rows.slice(1).map((row, index) => {
+  const candidates: MissouriMecCandidateExportRow[] = [];
+  let excludedExemptionRegistrationCount = 0;
+  for (const [index, row] of rows.slice(1).entries()) {
     if (row.length !== CANDIDATE_EXPORT_HEADER.length) {
       throw new Error(`Unexpected Missouri MEC candidate export row ${index + 2}: ${row.length} columns`);
     }
@@ -636,15 +644,32 @@ export function parseMissouriMecCandidateExport(html: string): MissouriMecCandid
     if (!committeeName || !candidateName || !officeSought || !status) {
       throw new Error(`Incomplete Missouri MEC candidate export row ${index + 2}`);
     }
-    return {
+    const normalizedMecid = (rawMecid ?? "").trim().toUpperCase();
+    // MEC includes candidate exemption registrations in this export. Their
+    // C######E identifiers are not committee identities and CommInfo cannot
+    // resolve them, so retain them only in source-count reconciliation.
+    if (/^C\d{6}E$/.test(normalizedMecid)) {
+      excludedExemptionRegistrationCount += 1;
+      continue;
+    }
+    candidates.push({
       mecid: normalizeMecId(rawMecid ?? ""),
       committeeName,
       candidateName,
       party: party || null,
       officeSought,
       status,
-    };
-  });
+    });
+  }
+  return {
+    rows: candidates,
+    sourceRowCount: rows.length - 1,
+    excludedExemptionRegistrationCount,
+  };
+}
+
+export function parseMissouriMecCandidateExport(html: string): MissouriMecCandidateExportRow[] {
+  return parseMissouriMecCandidateExportWithDiagnostics(html).rows;
 }
 
 function parseSpanText(html: string, label: string): string {
@@ -713,7 +738,7 @@ export function parseMissouriMecCommitteeInfo(html: string): MissouriMecCommitte
       const electionType = types[index] ?? "";
       const office = offices[index] ?? "";
       const politicalSubdivision = subdivisions[index] ?? "";
-      if (!electionType || !office || !politicalSubdivision) {
+      if (!electionType || !office) {
         throw new Error(`Incomplete Missouri MEC election-history row ${index + 1} for ${mecid}`);
       }
       return {
