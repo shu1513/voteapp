@@ -19,30 +19,54 @@
 //      empty dataset would silently zero every candidate's outside spending.
 //   4. Previous-vs-new receipts drop bound (the SF constants).
 // Cash on hand = `contrib_balance` of the latest cycle report.
+//
+// Phase 3b: every attributed outside group also gets funder breakdowns —
+// entity donors from the spender's own receipts inside the same window
+// (austinPacFunderAggregator) plus industry rows from the shared label
+// classifier (rules + cached manual verdicts; an AI classifier is injectable
+// but never wired by default). A funder fetch failure fails the candidate
+// closed like every other source failure.
 
 import type { Pool, PoolClient } from "pg";
 
+import {
+  classifyFinanceLabel,
+  normalizeFinanceLabel,
+  type FinanceLabelClassification,
+} from "../finance/financeLabelClassifier.js";
+import {
+  financeClassificationKey,
+  mergeFinanceLabelClassification,
+  resolveFinanceIndustryClassifications,
+  type FinanceIndustryClassifier,
+} from "../finance/financeIndustryClassificationService.js";
 import { aggregateAustinDirectFinance } from "./austinDirectFinanceAggregator.js";
 import {
   aggregateAustinOutsideSpending,
   type AustinReportFacts,
 } from "./austinOutsideSpendingAggregator.js";
+import { aggregateAustinPacFunders } from "./austinPacFunderAggregator.js";
 import { AUSTIN_FINANCE_LINK_SOURCE_URL } from "./austinCandidateFinanceAutoLink.js";
 import {
   isAustinFinanceSupportedElectionDate,
   type AustinOfficeCode,
 } from "./austinFinanceEligibleOffices.js";
 import { normalizeAustinFinanceTextKey } from "./austinFinanceKeys.js";
-import { replaceAustinCandidateFinanceSnapshot } from "./austinFinanceWriter.js";
+import {
+  replaceAustinCandidateFinanceSnapshot,
+  type AustinOutsideGroupBreakdownInput,
+} from "./austinFinanceWriter.js";
 import {
   defaultAustinSocrataClientOptions,
   getAustinCommitteePurposeRows,
   getAustinContributionRowsByRecipient,
+  getAustinContributionRowsByRecipientBetween,
   getAustinDirectCampaignExpenditureRows,
   getAustinReportDetailRowsByFiler,
   getAustinReportDetailRowsByReportIds,
   requireIsoDate,
   type AustinCommitteePurposeRow,
+  type AustinContributionRow,
   type AustinDirectCampaignExpenditureRow,
   type AustinSocrataClientOptions,
 } from "./austinSocrataClient.js";
@@ -55,6 +79,14 @@ type PoolLike = Queryable & { connect: () => Promise<PoolClient> };
 // cannot trip it on rounding noise.
 const ANOMALY_MIN_STORED_CENTS = 100_000;
 const ANOMALY_DROP_FACTOR = 10;
+
+// PAC funder breakdowns (Phase 3b). Donor display rows per (spender,
+// direction) are capped like Houston's; classification and the industry
+// totals always see every donor. The AI threshold is in DOLLARS (the shared
+// service's unit) and only matters when a classifier is injected — none is
+// by default, so classification is rules + the shared cache table.
+const MAX_DONOR_BREAKDOWNS_PER_GROUP = 50;
+const DEFAULT_AI_MIN_AMOUNT_DOLLARS = 25_000;
 
 /** Exact "[-]dollars.cc" text (numeric(16,2)) into integer cents; null passes. */
 function dollarsTextToCents(value: string | null): number | null {
@@ -115,6 +147,43 @@ export async function loadAustinOutsideDatasets(
   return { dceRows, purposeRows, reportsById };
 }
 
+/** One outside spender's receipt rows plus the report facts behind them. */
+export type AustinPacReceipts = {
+  contributions: AustinContributionRow[];
+  reportsById: Map<string, AustinReportFacts>;
+};
+
+/**
+ * Contributions received by one outside spender inside the cycle window
+ * (`recipient` = the DCE `paid_by` spelling — verified live: the two
+ * datasets share the filer's exact name), plus Report Detail facts for the
+ * reports those rows sit on (the funder aggregator's correction rule).
+ * Fetched per attributed spender; the lists are small (a payroll-deduction
+ * PAC would not be, which is why the fetch is window-bounded server-side).
+ */
+export async function loadAustinPacReceipts(
+  input: { spenderName: string; windowFrom: string; windowTo: string },
+  options: AustinSocrataClientOptions = defaultAustinSocrataClientOptions(),
+): Promise<AustinPacReceipts> {
+  const contributions = await getAustinContributionRowsByRecipientBetween(
+    { recipient: input.spenderName, fromDate: input.windowFrom, toDate: input.windowTo },
+    options,
+  );
+  const reports = await getAustinReportDetailRowsByReportIds(
+    [...new Set(contributions.map((row) => row.reportId))],
+    options,
+  );
+  const reportsById = new Map<string, AustinReportFacts>();
+  for (const report of reports)
+    reportsById.set(report.reportId, {
+      formTypeCode: report.formTypeCode,
+      periodFrom: report.periodFrom,
+      periodTo: report.periodTo,
+      dateFiled: report.dateFiled,
+    });
+  return { contributions, reportsById };
+}
+
 export type AustinCandidateFinanceSyncResult = {
   written: boolean;
   totalRaisedCents: number;
@@ -138,6 +207,14 @@ export type AustinCandidateFinanceSyncResult = {
   outsideUndirectedSpenders: string[];
   outsideAmbiguousDirectionCents: number;
   outsideSelfCents: number;
+  /** Donor + industry rows written under the outside groups (Phase 3b). */
+  outsideGroupBreakdownCount: number;
+  /** Entity donors behind those rows, across all groups (uncapped). */
+  pacDonorCount: number;
+  /** PAC receipts out of funder scope, across all groups: individuals... */
+  pacIndividualCents: number;
+  /** ...and entity money under PAC/committee-shaped names. */
+  pacIneligibleOrgCents: number;
 };
 
 export async function syncAustinCandidateFinance(input: {
@@ -157,6 +234,12 @@ export async function syncAustinCandidateFinance(input: {
   outsideDatasets?: AustinOutsideDatasets;
   /** Operator override for the previous-vs-new drop bound only. */
   bypassAnomalyCheck?: boolean;
+  /** AI industry classifier — never wired by default (aiCallGuard policy). */
+  financeIndustryClassifier?: FinanceIndustryClassifier;
+  /** Dollars a donor label must reach before the classifier sees it. */
+  aiClassificationMinAmount?: number;
+  /** Test seam for the per-spender receipts fetch. */
+  loadPacReceiptsFn?: typeof loadAustinPacReceipts;
   dryRun?: boolean;
   now?: Date;
   clientOptions?: AustinSocrataClientOptions;
@@ -242,6 +325,101 @@ export async function syncAustinCandidateFinance(input: {
     sourceUrl: AUSTIN_FINANCE_LINK_SOURCE_URL,
   }));
 
+  // --- PAC funder breakdowns (Phase 3b): who gave to each attributed
+  // spender inside the same window. Donor rows are the industry evidence
+  // the shared read side joins on; industry rows are its top-5 display.
+  const loadPacReceipts = input.loadPacReceiptsFn ?? loadAustinPacReceipts;
+  const classifications = new Map<string, FinanceLabelClassification>();
+  const fundersByGroup: {
+    group: (typeof outside.groups)[number];
+    donors: ReturnType<typeof aggregateAustinPacFunders>["donors"];
+  }[] = [];
+  let pacIndividualCents = 0;
+  let pacIneligibleOrgCents = 0;
+  for (const group of outside.groups) {
+    const receipts = await loadPacReceipts(
+      { spenderName: group.spenderName, windowFrom, windowTo },
+      options,
+    );
+    const funders = aggregateAustinPacFunders({
+      contributions: receipts.contributions,
+      reportsById: receipts.reportsById,
+      windowFrom,
+      windowTo,
+    });
+    pacIndividualCents += funders.individualCents;
+    pacIneligibleOrgCents += funders.ineligibleOrgCents;
+    fundersByGroup.push({ group, donors: funders.donors });
+    for (const donor of funders.donors)
+      mergeFinanceLabelClassification(
+        classifications,
+        classifyFinanceLabel({ rawLabel: donor.donorName, labelType: "donor" }),
+      );
+  }
+  // Cached manual/AI verdicts outrank the fresh rule results (skipped on dry
+  // runs — the service's own contract); the classifier is normally absent.
+  await resolveFinanceIndustryClassifications({
+    db: input.db,
+    directBreakdowns: [],
+    outsideBreakdowns: fundersByGroup.flatMap(({ group, donors }) =>
+      donors.map((donor) => ({
+        committeeId: normalizeAustinFinanceTextKey(group.spenderName),
+        supportOppose: group.supportOppose,
+        categoryType: "donor",
+        categoryName: donor.donorName,
+        amount: donor.amountCents / 100,
+      })),
+    ),
+    classifications,
+    classifier: input.financeIndustryClassifier,
+    minAmount: input.aiClassificationMinAmount ?? DEFAULT_AI_MIN_AMOUNT_DOLLARS,
+    dryRun: input.dryRun === true,
+  });
+  const outsideGroupBreakdowns: AustinOutsideGroupBreakdownInput[] = [];
+  let pacDonorCount = 0;
+  for (const { group, donors } of fundersByGroup) {
+    pacDonorCount += donors.length;
+    for (const donor of donors.slice(0, MAX_DONOR_BREAKDOWNS_PER_GROUP))
+      outsideGroupBreakdowns.push({
+        spenderName: group.spenderName,
+        supportOppose: group.supportOppose,
+        categoryType: "donor",
+        categoryName: donor.donorName,
+        amountCents: donor.amountCents,
+        contributorCount: 1,
+        sourceUrl: AUSTIN_FINANCE_LINK_SOURCE_URL,
+      });
+    // Industry totals over EVERY donor (display cap applies to donor rows
+    // only), summed in integer cents — the shared build helper works in
+    // float dollars, so the sums live here.
+    const industries = new Map<string, { amountCents: number; donorCount: number }>();
+    for (const donor of donors) {
+      const classification = classifications.get(
+        financeClassificationKey("donor", normalizeFinanceLabel(donor.donorName, "donor")),
+      );
+      if (!classification?.industrySlug) continue;
+      const current = industries.get(classification.industrySlug) ?? {
+        amountCents: 0,
+        donorCount: 0,
+      };
+      current.amountCents += donor.amountCents;
+      current.donorCount += 1;
+      industries.set(classification.industrySlug, current);
+    }
+    for (const [slug, value] of [...industries].sort(
+      (a, b) => b[1].amountCents - a[1].amountCents || a[0].localeCompare(b[0]),
+    ))
+      outsideGroupBreakdowns.push({
+        spenderName: group.spenderName,
+        supportOppose: group.supportOppose,
+        categoryType: "industry",
+        categoryName: slug,
+        amountCents: value.amountCents,
+        contributorCount: value.donorCount,
+        sourceUrl: AUSTIN_FINANCE_LINK_SOURCE_URL,
+      });
+  }
+
   if (!input.dryRun)
     await replaceAustinCandidateFinanceSnapshot({
       db: input.db,
@@ -274,8 +452,19 @@ export async function syncAustinCandidateFinance(input: {
       },
       directBreakdowns,
       outsideGroups,
-      // PAC funder breakdowns are a follow-up phase; the table stays empty.
-      outsideGroupBreakdowns: [],
+      outsideGroupBreakdowns,
+      // Only classifications worth caching (the Houston filter): a resolved
+      // slug, or a non-unknown source recording a deliberate verdict.
+      classifications: [...classifications.values()].filter(
+        (classification) =>
+          Boolean(classification.normalizedLabel) &&
+          (classification.industrySlug !== null ||
+            classification.classificationSource !== "unknown") &&
+          financeClassificationKey(
+            classification.labelType,
+            classification.normalizedLabel,
+          ).length > 1,
+      ),
       syncedAt: now,
     });
 
@@ -299,5 +488,9 @@ export async function syncAustinCandidateFinance(input: {
     outsideUndirectedSpenders: outside.undirectedSpenders,
     outsideAmbiguousDirectionCents: outside.ambiguousDirectionCents,
     outsideSelfCents: outside.selfCents,
+    outsideGroupBreakdownCount: outsideGroupBreakdowns.length,
+    pacDonorCount,
+    pacIndividualCents,
+    pacIneligibleOrgCents,
   };
 }

@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
+import { normalizeFinanceLabel } from "../../../src/pipeline/finance/financeLabelClassifier.js";
 import { AUSTIN_FINANCE_LINK_SOURCE_URL } from "../../../src/pipeline/austinFinance/austinCandidateFinanceAutoLink.js";
 import {
   loadAustinOutsideDatasets,
@@ -83,6 +84,12 @@ function defaultRoutes(): Record<string, unknown[]> {
       reportRecord({ report_id: "R81", filer_name: "City Accountability Project", form_type: "GPAC - General Purpose PAC", period_from: "2026-01-01T00:00:00.000", period_to: "2026-06-30T00:00:00.000", date_filed: "2026-07-15T00:00:00.000", election_date: null, office_sought: null }),
       reportRecord({ report_id: "R71", filer_name: "City Accountability Project", form_type: "GPAC - General Purpose PAC", period_from: "2022-07-01T00:00:00.000", period_to: "2022-12-31T00:00:00.000", date_filed: "2023-01-15T00:00:00.000", election_date: null, office_sought: null }),
     ],
+    // RECA's own receipts (the Phase 3b funder fetch, recipient = spender).
+    "recipient = 'The Real Estate Council": [
+      contributionRecord("R91", "10000.00", { recipient: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", donor: "Kilroy Realty, L.P.", donor_type: "ENTITY", contribution_date: "2025-10-01T00:00:00.000", donor_reported_occupation: null, donor_reported_employer: null }),
+      contributionRecord("R91", "5000.00", { recipient: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", donor: "Way To Lead PAC", donor_type: "ENTITY", contribution_date: "2025-10-02T00:00:00.000", donor_reported_occupation: null, donor_reported_employer: null }),
+      contributionRecord("R91", "2000.00", { recipient: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", donor: "Nosek, Nicole", donor_type: "INDIVIDUAL", contribution_date: "2025-10-03T00:00:00.000" }),
+    ],
     "u3cd-iecr": [
       { committee_purp_id: "R91-C00001", report: "R91", filer_name: "The Real Estate Council of Austin, Inc. Advancing Democracy PAC", committee_activity: "SUPPORT", purpose_type: "CANDIDATE", recipient: "Zohaib,Qadri", office_sought: "COUNCIL_MBR_DISTRICT_09" },
       { committee_purp_id: "R71-C00001", report: "R71", filer_name: "City Accountability Project", committee_activity: "OPPOSE", purpose_type: "CANDIDATE", recipient: "Zo,Qadri", office_sought: "COUNCIL_MBR_DISTRICT_09", election_date: "2024-11-05T00:00:00.000" },
@@ -154,7 +161,26 @@ describe("syncAustinCandidateFinance", () => {
       outsideUndirectedSpenders: ["City Accountability Project"],
       outsideAmbiguousDirectionCents: 0,
       outsideSelfCents: 30_000,
+      outsideGroupBreakdownCount: 2, // Kilroy donor row + real_estate industry row
+      pacDonorCount: 1,
+      pacIndividualCents: 200_000, // Nosek, Nicole
+      pacIneligibleOrgCents: 500_000, // Way To Lead PAC
     });
+  });
+
+  it("bounds the funder fetch to the cycle window and the spender's exact name", async () => {
+    const routes = defaultRoutes();
+    const fetchImpl = makeFetch(routes);
+    await syncAustinCandidateFinance({ ...baseInput(routes), clientOptions: { fetchImpl } });
+    const urls = fetchImpl.mock.calls.map(([url]) => decodeURIComponent(String(url)).replace(/\+/g, " "));
+    expect(
+      urls.some(
+        (url) =>
+          url.includes("recipient = 'The Real Estate Council of Austin, Inc. Advancing Democracy PAC'") &&
+          url.includes("contribution_date >= '2025-01-01T00:00:00.000'") &&
+          url.includes("contribution_date <= '2026-11-03T23:59:59.999'"),
+      ),
+    ).toBe(true);
   });
 
   it("queries Socrata by the exact filer string", async () => {
@@ -280,6 +306,50 @@ describe("syncAustinCandidateFinance", () => {
       "12000.00",
       AUSTIN_FINANCE_LINK_SOURCE_URL,
       "2026-08-19T12:00:00.000Z",
+    ]);
+    const breakdownInserts = clientQueries.filter((entry) =>
+      entry.sql.includes("atx_candidate_finance_outside_group_breakdowns ("),
+    );
+    expect(breakdownInserts.map((entry) => entry.params)).toEqual([
+      [
+        "33333333-3333-4333-8333-333333333333",
+        2026,
+        "THE REAL ESTATE COUNCIL OF AUSTIN INC ADVANCING DEMOCRACY PAC",
+        "support",
+        "donor",
+        "Kilroy Realty, L.P.",
+        "10000.00",
+        1,
+        AUSTIN_FINANCE_LINK_SOURCE_URL,
+        "2026-08-19T12:00:00.000Z",
+      ],
+      [
+        "33333333-3333-4333-8333-333333333333",
+        2026,
+        "THE REAL ESTATE COUNCIL OF AUSTIN INC ADVANCING DEMOCRACY PAC",
+        "support",
+        "industry",
+        "real_estate",
+        "10000.00",
+        1,
+        AUSTIN_FINANCE_LINK_SOURCE_URL,
+        "2026-08-19T12:00:00.000Z",
+      ],
+    ]);
+    // The rule verdict behind the industry row lands in the shared cache so
+    // the ballot-lookup evidence join can see it.
+    const classificationUpserts = clientQueries.filter((entry) =>
+      entry.sql.includes("finance_label_classifications"),
+    );
+    expect(classificationUpserts.map((entry) => entry.params)).toEqual([
+      [
+        "Kilroy Realty, L.P.",
+        "donor",
+        normalizeFinanceLabel("Kilroy Realty, L.P.", "donor"),
+        "real_estate",
+        "medium",
+        "rule",
+      ],
     ]);
     expect(clientQueries.map((entry) => entry.sql)).toContain("COMMIT");
   });
