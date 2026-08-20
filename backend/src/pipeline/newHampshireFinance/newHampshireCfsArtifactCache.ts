@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
+import { chmod, mkdir, readFile, rename, rm, stat, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import {
@@ -10,6 +10,10 @@ import {
   type NewHampshireCfsBulkDownloadResult,
   type NewHampshireCfsTransactionTypeCode,
 } from "./newHampshireCfsClient.js";
+import {
+  validateNewHampshireExpenditureCsvArtifact,
+  validateNewHampshireReceiptCsvArtifact,
+} from "./newHampshireCfsArtifactReader.js";
 
 export const DEFAULT_NEW_HAMPSHIRE_CFS_CACHE_DIR =
   "scratch/new-hampshire-campaign-finance/cfs";
@@ -40,6 +44,9 @@ export type NewHampshireCfsArtifactRefreshResult = {
   previous: NewHampshireCfsArtifactCacheMetadata | null;
   current: NewHampshireCfsArtifactCacheMetadata;
 };
+
+const CACHE_DIRECTORY_MODE = 0o700;
+const CACHE_FILE_MODE = 0o600;
 
 export function normalizeNewHampshireCfsFilingYear(filingYear: number): number {
   if (!Number.isInteger(filingYear) || filingYear < 2016 || filingYear > 2100) {
@@ -151,6 +158,25 @@ async function calculateFileSha256(path: string): Promise<string> {
   return hash.digest("hex");
 }
 
+async function chmodIfExists(path: string, mode: number): Promise<void> {
+  try {
+    await chmod(path, mode);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  }
+}
+
+async function validateDownloadedArtifact(
+  filePath: string,
+  artifactKind: NewHampshireCfsArtifactKind
+): Promise<void> {
+  if (artifactKind === "contributions") {
+    await validateNewHampshireReceiptCsvArtifact({ filePath });
+    return;
+  }
+  await validateNewHampshireExpenditureCsvArtifact({ filePath });
+}
+
 async function cachedFileMatches(input: {
   artifact: NewHampshireCfsArtifactIdentity;
   filePath: string;
@@ -199,8 +225,13 @@ async function writeMetadataAtomically(
 ): Promise<void> {
   const tmpPath = `${metadataPath}.tmp-${process.pid}-${Date.now()}`;
   try {
-    await writeFile(tmpPath, `${JSON.stringify(metadata, null, 2)}\n`, "utf8");
+    await writeFile(tmpPath, `${JSON.stringify(metadata, null, 2)}\n`, {
+      encoding: "utf8",
+      mode: CACHE_FILE_MODE,
+    });
+    await chmod(tmpPath, CACHE_FILE_MODE);
     await rename(tmpPath, metadataPath);
+    await chmod(metadataPath, CACHE_FILE_MODE);
   } catch (error) {
     await rm(tmpPath, { force: true }).catch(() => {});
     throw error;
@@ -219,7 +250,11 @@ export async function refreshNewHampshireCfsArtifactCache(input: {
   const artifact = normalizeNewHampshireCfsArtifactIdentity(input);
   const downloadedAt = normalizeRefreshTimestamp(input.now);
   const paths = getNewHampshireCfsArtifactCachePaths({ ...artifact, cacheDir: input.cacheDir });
-  await mkdir(paths.cacheDir, { recursive: true });
+  await mkdir(paths.cacheDir, { recursive: true, mode: CACHE_DIRECTORY_MODE });
+  // mkdir's mode is ignored when the directory already exists.
+  await chmod(paths.cacheDir, CACHE_DIRECTORY_MODE);
+  await chmodIfExists(paths.filePath, CACHE_FILE_MODE);
+  await chmodIfExists(paths.metadataPath, CACHE_FILE_MODE);
 
   const previous = await readNewHampshireCfsArtifactCacheMetadata(paths.metadataPath);
   const previousFileValid = await cachedFileMatches({
@@ -240,6 +275,7 @@ export async function refreshNewHampshireCfsArtifactCache(input: {
       },
       { fetchImpl: input.fetchImpl, timeoutMs: input.timeoutMs }
     );
+    await validateDownloadedArtifact(tmpPath, artifact.artifactKind);
 
     if (
       !input.force &&
@@ -253,6 +289,7 @@ export async function refreshNewHampshireCfsArtifactCache(input: {
     }
 
     await rename(tmpPath, paths.filePath);
+    await chmod(paths.filePath, CACHE_FILE_MODE);
   } catch (error) {
     await rm(tmpPath, { force: true }).catch(() => {});
     throw error;

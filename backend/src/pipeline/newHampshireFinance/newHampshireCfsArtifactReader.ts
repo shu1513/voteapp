@@ -20,26 +20,29 @@ function normalizeMaxRows(value: number | undefined): number | undefined {
   return value;
 }
 
-async function readRows<TRow>(input: {
+async function scanRows<TRow>(input: {
   filePath: string;
   label: string;
   validateHeader: (header: string) => void;
   parseRecord: (record: string, rowNumber: number) => TRow;
+  collectRows: boolean;
   predicate?: (row: TRow) => boolean;
   maxRows?: number;
-}): Promise<TRow[]> {
+}): Promise<{ rows: TRow[]; rowCount: number }> {
   const maxRows = normalizeMaxRows(input.maxRows);
   const source = createReadStream(input.filePath);
   const lines = createInterface({ input: source, crlfDelay: Infinity });
   const rows: TRow[] = [];
+  let rowCount = 0;
   let physicalLine = 0;
   let recordStartLine = 0;
   let currentRecord: string | null = null;
 
   const consumeRecord = (record: string, startLine: number): boolean => {
     const row = input.parseRecord(record, startLine);
-    if (!input.predicate || input.predicate(row)) rows.push(row);
-    return maxRows !== undefined && rows.length >= maxRows;
+    rowCount += 1;
+    if (input.collectRows && (!input.predicate || input.predicate(row))) rows.push(row);
+    return input.collectRows && maxRows !== undefined && rows.length >= maxRows;
   };
 
   try {
@@ -54,7 +57,7 @@ async function readRows<TRow>(input: {
         if (currentRecord !== null && consumeRecord(currentRecord, recordStartLine)) {
           lines.close();
           source.destroy();
-          return rows;
+          return { rows, rowCount };
         }
         currentRecord = line;
         recordStartLine = physicalLine;
@@ -73,7 +76,7 @@ async function readRows<TRow>(input: {
       throw new Error(`New Hampshire CFS ${input.label} CSV is empty`);
     }
     if (currentRecord !== null) consumeRecord(currentRecord, recordStartLine);
-    return rows;
+    return { rows, rowCount };
   } finally {
     lines.close();
     source.destroy();
@@ -85,12 +88,13 @@ export function readNewHampshireReceiptCsvArtifact(input: {
   predicate?: (row: NewHampshireReceiptCsvRow) => boolean;
   maxRows?: number;
 }): Promise<NewHampshireReceiptCsvRow[]> {
-  return readRows({
+  return scanRows({
     ...input,
     label: "receipt",
+    collectRows: true,
     validateHeader: validateNewHampshireReceiptCsvHeader,
     parseRecord: parseNewHampshireReceiptCsvRecord,
-  });
+  }).then(({ rows }) => rows);
 }
 
 export function readNewHampshireExpenditureCsvArtifact(input: {
@@ -98,10 +102,37 @@ export function readNewHampshireExpenditureCsvArtifact(input: {
   predicate?: (row: NewHampshireExpenditureCsvRow) => boolean;
   maxRows?: number;
 }): Promise<NewHampshireExpenditureCsvRow[]> {
-  return readRows({
+  return scanRows({
     ...input,
     label: "expenditure",
+    collectRows: true,
+    validateHeader: validateNewHampshireExpenditureCsvHeader,
+    parseRecord: parseNewHampshireExpenditureCsvRecord,
+  }).then(({ rows }) => rows);
+}
+
+export async function validateNewHampshireReceiptCsvArtifact(input: {
+  filePath: string;
+}): Promise<{ rowCount: number }> {
+  const { rowCount } = await scanRows({
+    ...input,
+    label: "receipt",
+    collectRows: false,
+    validateHeader: validateNewHampshireReceiptCsvHeader,
+    parseRecord: parseNewHampshireReceiptCsvRecord,
+  });
+  return { rowCount };
+}
+
+export async function validateNewHampshireExpenditureCsvArtifact(input: {
+  filePath: string;
+}): Promise<{ rowCount: number }> {
+  const { rowCount } = await scanRows({
+    ...input,
+    label: "expenditure",
+    collectRows: false,
     validateHeader: validateNewHampshireExpenditureCsvHeader,
     parseRecord: parseNewHampshireExpenditureCsvRecord,
   });
+  return { rowCount };
 }

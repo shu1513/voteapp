@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { createWriteStream } from "node:fs";
-import { mkdir, rm, stat } from "node:fs/promises";
+import { chmod, mkdir, rm, stat } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { Readable, Transform } from "node:stream";
 import { pipeline } from "node:stream/promises";
@@ -423,7 +423,7 @@ export async function downloadNewHampshireCfsBulkCsvToFile(
   }
 
   const outputPath = resolve(input.outputPath);
-  await mkdir(dirname(outputPath), { recursive: true });
+  await mkdir(dirname(outputPath), { recursive: true, mode: 0o700 });
   const hash = createHash("sha256");
   let bytesWritten = 0;
   const meter = new Transform({
@@ -454,7 +454,9 @@ export async function downloadNewHampshireCfsBulkCsvToFile(
   }, timeoutMs);
 
   try {
-    await pipeline(source, meter, createWriteStream(outputPath));
+    await pipeline(source, meter, createWriteStream(outputPath, { mode: 0o600 }));
+    // createWriteStream's mode does not tighten a pre-existing path.
+    await chmod(outputPath, 0o600);
     const outputStat = await stat(outputPath);
     if (!outputStat.isFile() || outputStat.size === 0 || outputStat.size !== bytesWritten) {
       throw new NewHampshireCfsClientError(

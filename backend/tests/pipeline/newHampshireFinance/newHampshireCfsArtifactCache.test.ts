@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { chmod, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -23,6 +23,10 @@ async function tempDir(): Promise<string> {
   return path;
 }
 
+async function permissions(path: string): Promise<number> {
+  return (await stat(path)).mode & 0o777;
+}
+
 function csvResponse(body: string): Response {
   return new Response(body, {
     status: 200,
@@ -42,6 +46,7 @@ afterEach(async () => {
 describe("New Hampshire CFS artifact cache", () => {
   it("streams the exact official POST into stable year-keyed paths and records integrity metadata", async () => {
     const cacheDir = await tempDir();
+    await chmod(cacheDir, 0o755);
     const fetchImpl = vi.fn().mockImplementation(async () => csvResponse(artifactA)) as unknown as typeof fetch;
     const result = await refreshNewHampshireCfsArtifactCache({
       filingYear: 2026,
@@ -55,6 +60,9 @@ describe("New Hampshire CFS artifact cache", () => {
     expect(result.filePath).toBe(join(cacheDir, "CON_2026.csv"));
     expect(result.metadataPath).toBe(join(cacheDir, "CON_2026.metadata.json"));
     expect(await readFile(result.filePath, "utf8")).toBe(artifactA);
+    expect(await permissions(cacheDir)).toBe(0o700);
+    expect(await permissions(result.filePath)).toBe(0o600);
+    expect(await permissions(result.metadataPath)).toBe(0o600);
     expect(result.current).toMatchObject({
       downloadedAt: "2026-08-19T12:00:00.000Z",
       bytesWritten: Buffer.byteLength(artifactA),
@@ -87,6 +95,9 @@ describe("New Hampshire CFS artifact cache", () => {
       fetchImpl,
       now: new Date("2026-08-19T12:00:00.000Z"),
     });
+    await chmod(cacheDir, 0o755);
+    await chmod(first.filePath, 0o644);
+    await chmod(first.metadataPath, 0o644);
     const second = await refreshNewHampshireCfsArtifactCache({
       filingYear: 2026,
       artifactKind: "contributions",
@@ -99,6 +110,9 @@ describe("New Hampshire CFS artifact cache", () => {
     expect(second.status).toBe("unchanged");
     expect(second.current).toEqual(first.current);
     expect(await readFile(second.filePath, "utf8")).toBe(artifactA);
+    expect(await permissions(cacheDir)).toBe(0o700);
+    expect(await permissions(second.filePath)).toBe(0o600);
+    expect(await permissions(second.metadataPath)).toBe(0o600);
   });
 
   it("replaces changed content and repairs a cache whose file no longer matches metadata", async () => {
@@ -156,6 +170,34 @@ describe("New Hampshire CFS artifact cache", () => {
         fetchImpl: badFetch,
       })
     ).rejects.toThrow("unexpected content type");
+
+    const badHeaderFetch = vi.fn().mockResolvedValue(
+      new Response("not,a,real,cfs,csv\n", {
+        status: 200,
+        headers: { "Content-Type": "text/csv" },
+      })
+    ) as unknown as typeof fetch;
+    await expect(
+      refreshNewHampshireCfsArtifactCache({
+        filingYear: 2026,
+        artifactKind: "contributions",
+        cacheDir,
+        fetchImpl: badHeaderFetch,
+      })
+    ).rejects.toThrow("header changed");
+
+    const badRowFetch = vi.fn().mockResolvedValue(
+      csvResponse(`${receiptHeader}101,too,few\n`)
+    ) as unknown as typeof fetch;
+    await expect(
+      refreshNewHampshireCfsArtifactCache({
+        filingYear: 2026,
+        artifactKind: "contributions",
+        cacheDir,
+        fetchImpl: badRowFetch,
+      })
+    ).rejects.toThrow("has 3 columns; expected 22");
+
     expect(await readFile(first.filePath, "utf8")).toBe(artifactA);
     expect((await readNewHampshireCfsArtifactCacheMetadata(first.metadataPath))?.sha256).toBe(
       first.current.sha256

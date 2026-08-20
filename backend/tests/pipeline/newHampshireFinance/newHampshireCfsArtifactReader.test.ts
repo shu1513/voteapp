@@ -7,6 +7,8 @@ import { afterEach, describe, expect, it } from "vitest";
 import {
   readNewHampshireExpenditureCsvArtifact,
   readNewHampshireReceiptCsvArtifact,
+  validateNewHampshireExpenditureCsvArtifact,
+  validateNewHampshireReceiptCsvArtifact,
 } from "../../../src/pipeline/newHampshireFinance/newHampshireCfsArtifactReader.js";
 
 const fixtures = new URL("../../fixtures/newHampshireFinance/", import.meta.url);
@@ -48,6 +50,19 @@ describe("New Hampshire CFS artifact reader", () => {
     });
     expect(rows).toHaveLength(2);
     expect(rows.every((row) => row["Filing Entity ID"] === "50450")).toBe(true);
+  });
+
+  it("validates complete artifacts without collecting their rows", async () => {
+    await expect(
+      validateNewHampshireReceiptCsvArtifact({
+        filePath: new URL("receipts-sanitized.csv", fixtures).pathname,
+      })
+    ).resolves.toEqual({ rowCount: 5 });
+    await expect(
+      validateNewHampshireExpenditureCsvArtifact({
+        filePath: new URL("expenditures-sanitized.csv", fixtures).pathname,
+      })
+    ).resolves.toEqual({ rowCount: 2 });
   });
 
   it("fails closed on changed headers, stray physical lines, and invalid limits", async () => {
