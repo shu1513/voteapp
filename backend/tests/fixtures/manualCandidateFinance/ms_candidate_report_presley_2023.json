@@ -1,0 +1,29 @@
+{
+  "schema_version": "manual_candidate_finance.v1",
+  "state": "MS",
+  "filing_type": "candidate_report",
+  "filing_id": "E20D1404-CB05-4CD1-A23E-A3C0AC651A79",
+  "report_date": "2023-08-01",
+  "source_url": "https://cfportal.sos.ms.gov/online/portal/cf/page/cf-search/~/ExecuteWorkflow.aspx?FilingId=E20D1404-CB05-4CD1-A23E-A3C0AC651A79&WorkflowId=g729911d7-f399-46d6-a1ca-f15c1294f82d",
+  "coverage_note": "Covers only campaign-finance reports filed with the Mississippi Secretary of State; county and municipal clerk filings are not included.",
+  "researched_at": "2026-08-19T19:00:00Z",
+  "candidate_id": "11111111-1111-4111-8111-111111111111",
+  "election_id": "22222222-2222-4222-8222-222222222222",
+  "candidate_name": "Brandon Presley",
+  "reported_totals": {
+    "contributions_this_period": 1128863.93,
+    "contributions_calendar_ytd": 3403383.70,
+    "disbursements_this_period": 1465725.46,
+    "disbursements_calendar_ytd": 2585071.52,
+    "cash_on_hand": 1545844.72,
+    "debts_owed": null
+  },
+  "itemized_receipts": [
+    {
+      "received_date": "2023-07-28",
+      "amount": 500,
+      "occupation": "Retired",
+      "employer": "Not Employed"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "manual_candidate_finance.v1",
+  "state": "MS",
+  "filing_type": "independent_expenditure",
+  "filing_id": "551440F7-6028-470A-AE79-75296477ED2E",
+  "report_date": "2020-10-27",
+  "source_url": "https://cfportal.sos.ms.gov/online/ExecuteWorkflow.aspx?WorkflowId=g729911d7-f399-46d6-a1ca-f15c1294f82d&FilingId=551440F7-6028-470A-AE79-75296477ED2E",
+  "coverage_note": "Covers only campaign-finance reports filed with the Mississippi Secretary of State; county and municipal clerk filings are not included.",
+  "researched_at": "2026-08-19T19:10:00Z",
+  "outside_spender": {
+    "source_entity_id": "c418043d-9201-479c-b599-defd9387b0cf",
+    "name": "Improve Mississippi PAC"
+  },
+  "reported_totals": {
+    "contributions_this_period": 13000,
+    "contributions_calendar_ytd": 129875,
+    "disbursements_this_period": 69921.75,
+    "disbursements_calendar_ytd": 69921.75,
+    "cash_on_hand": null,
+    "debts_owed": null
+  },
+  "itemized_receipts": [],
+  "candidate_edges": [
+    {
+      "candidate_id": "33333333-3333-4333-8333-333333333333",
+      "election_id": "44444444-4444-4444-8444-444444444444",
+      "candidate_name": "Justice Kenny Griffis",
+      "support_oppose": "support",
+      "amount": null
+    }
+  ]
+}
