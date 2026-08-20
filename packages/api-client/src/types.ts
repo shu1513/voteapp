@@ -557,6 +557,10 @@ export type AutoPickElectionResult = {
 
 export type AutoPicksResult = { results: AutoPickElectionResult[] };
 
+/** DELETE /api/me/auto-picks — one-statement clear of every auto pick on
+ * the user's upcoming elections (rows whose origin is still 'auto'). */
+export type AutoPicksClearResult = { cleared_count: number };
+
 /** One race on a shared pick card (public payload behind /picks/:token). */
 export type PickCardEntry = {
   election_id: string;

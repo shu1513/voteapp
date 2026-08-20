@@ -27,7 +27,7 @@ import type {
   UserElectionChoicesResult,
   UserElectionChoiceUpdateResult,
 } from "../pipeline/users/userElectionChoices.js";
-import type { ApplyAutoPicksInput, AutoPicksResult } from "../pipeline/users/autoPick.js";
+import type { ApplyAutoPicksInput, AutoPicksResult, ClearAutoPicksResult } from "../pipeline/users/autoPick.js";
 import type { PublicPickCard, UserPickCardShare } from "../pipeline/users/userPickCardShares.js";
 import type {
   ResearchAreaCatalogResult,
@@ -146,6 +146,9 @@ export type AddressApiServerOptions = {
   /** POST /api/me/auto-picks — runs the auto-pick engine ("Pick for me")
    * over the given elections. Same auth posture as election choices. */
   applyAuthenticatedAutoPicks?: (userId: string, input: ApplyAutoPicksInput) => Promise<AutoPicksResult>;
+  /** DELETE /api/me/auto-picks — one-statement clear of every auto pick on
+   * the user's upcoming elections. Same auth posture. */
+  clearAuthenticatedAutoPicks?: (userId: string) => Promise<ClearAutoPicksResult>;
   /** POST /api/me/pick-card-shares — mint (or return) the share token for one
    * date's pick card. Auth-gated, not verification-gated. */
   createAuthenticatedPickCardShare?: (userId: string, electionDate: string) => Promise<AuthenticatedPickCardShareResult>;

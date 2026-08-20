@@ -1538,12 +1538,12 @@ async function dispatchApiRequest(
   }
 
   if (url.pathname === ME_AUTO_PICKS_PATH) {
-    if (request.method !== "POST") {
+    if (request.method !== "POST" && request.method !== "DELETE") {
       sendApiResponse(
         response,
-        toErrorResponse(405, "method_not_allowed", "Use POST /api/me/auto-picks", {
+        toErrorResponse(405, "method_not_allowed", "Use POST or DELETE /api/me/auto-picks", {
           ...corsHeaders,
-          allow: "POST",
+          allow: "POST, DELETE",
         })
       );
       return;
@@ -1555,6 +1555,23 @@ async function dispatchApiRequest(
       sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
       return;
     }
+
+    if (request.method === "DELETE") {
+      // Body-less: clears every auto pick on the user's upcoming elections
+      // in one server-side statement (a per-row PUT loop would trip the
+      // global per-IP rate limit and race stale client state).
+      if (!options.clearAuthenticatedAutoPicks) {
+        sendApiResponse(
+          response,
+          toErrorResponse(500, "internal_error", "Auto-pick storage is not configured", corsHeaders)
+        );
+        return;
+      }
+      const result = await options.clearAuthenticatedAutoPicks(userId);
+      sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+      return;
+    }
+
     if (!options.applyAuthenticatedAutoPicks) {
       sendApiResponse(
         response,

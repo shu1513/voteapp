@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { AutoPickElectionResult, ElectionChoice, Me } from "@voteapp/api-client";
 import { AutoPickFillControl } from "./AutoPickFillControl";
-import { stubApiRoutes } from "../test/mockApi";
+import { apiError, stubApiRoutes } from "../test/mockApi";
 import { electionSummary } from "../test/fixtures";
 import { renderRoutes } from "../test/render";
 
@@ -197,11 +197,14 @@ describe("AutoPickFillControl", () => {
     expect(requestsTo(fetchMock, "/api/me/auto-picks")).toEqual([]);
   });
 
-  it("clears upcoming auto rows only — manual picks and past races stay", async () => {
+  it("clears via one server-side DELETE, never a per-row loop", async () => {
+    // A PUT per row would trip the global per-IP rate limit on big ballots
+    // and race stale cache from another tab; the server scopes the delete
+    // to origin = 'auto' atomically.
     const fetchMock = stubApiRoutes({
       "/api/me": { body: { user: SIGNED_IN } },
       "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
-      "/api/me/election-choices": { body: { choice: {} } },
+      "/api/me/auto-picks": { body: { cleared_count: 2 } },
     });
     renderControl({
       elections: [],
@@ -209,7 +212,6 @@ describe("AutoPickFillControl", () => {
         choice({
           picks: [
             { candidate_id: CAND_A, display_name: "Alice", candidacy_status: "declared", origin: "auto" },
-            { candidate_id: E_EMPTY, display_name: "Manny", candidacy_status: "declared", origin: "manual" },
           ],
         }),
         choice({
@@ -218,6 +220,29 @@ describe("AutoPickFillControl", () => {
           measure_position: "yes",
           measure_origin: "auto",
         }),
+      ],
+    });
+    await userEvent.click(await screen.findByRole("button", { name: "Clear auto picks" }));
+
+    await waitFor(() => {
+      const deletes = fetchMock.mock.calls.filter(
+        ([input, init]) =>
+          new URL(String(input), "http://localhost").pathname === "/api/me/auto-picks" &&
+          init?.method === "DELETE"
+      );
+      expect(deletes).toHaveLength(1);
+    });
+    expect(requestsTo(fetchMock, "/api/me/election-choices")).toEqual([]);
+  });
+
+  it("hides the clear button when the only auto picks are on past races", async () => {
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
+    });
+    const { container } = renderControl({
+      elections: [],
+      choices: [
         choice({
           election_id: E_PAST,
           election_date: "2026-05-05",
@@ -227,13 +252,20 @@ describe("AutoPickFillControl", () => {
         }),
       ],
     });
-    await userEvent.click(await screen.findByRole("button", { name: "Clear auto picks" }));
+    await waitFor(() => expect(container.querySelector("section")).toBeNull());
+  });
 
-    await waitFor(() =>
-      expect(requestsTo(fetchMock, "/api/me/election-choices")).toEqual([
-        { election_id: E_PICKED, candidate_id: CAND_A, chosen: false },
-        { election_id: E_MEASURE, measure_position: null },
-      ])
-    );
+  it("keeps the partial-write warning on API errors — the batch commits election by election", async () => {
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
+      "/api/me/auto-picks": apiError(429, "rate_limited", "Too many requests. Try again later."),
+    });
+    renderControl();
+    await clickFill();
+
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent("Too many requests. Try again later.");
+    expect(alert).toHaveTextContent("Some races may already be filled — check the cards below.");
   });
 });

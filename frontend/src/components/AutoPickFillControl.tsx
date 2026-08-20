@@ -10,6 +10,7 @@ import {
 import type {
   AutoPickElectionResult,
   AutoPickReason,
+  AutoPicksClearResult,
   AutoPicksResult,
   ElectionChoice,
   ElectionSummary,
@@ -35,27 +36,18 @@ function hasPick(choice: ElectionChoice | undefined): boolean {
   return choice !== undefined && (choice.picks.length > 0 || choice.measure_position !== null);
 }
 
-// One row the engine wrote, addressed the way the choice PUT unpicks it.
-type AutoRow =
-  | { election_id: string; candidate_id: string }
-  | { election_id: string; measure: true };
-
-function autoRows(choices: ElectionChoice[], today: string): AutoRow[] {
-  const rows: AutoRow[] = [];
-  // Upcoming only: the choice write path refuses closed elections, so a
-  // past auto pick is history now — clearing must not try (and fail) to
-  // touch it.
-  for (const choice of choices.filter((entry) => entry.election_date >= today)) {
-    for (const pick of choice.picks) {
-      if (pick.origin === "auto") {
-        rows.push({ election_id: choice.election_id, candidate_id: pick.candidate_id });
-      }
-    }
-    if (choice.measure_position !== null && choice.measure_origin === "auto") {
-      rows.push({ election_id: choice.election_id, measure: true });
-    }
-  }
-  return rows;
+// Whether the engine has any row left to clear — display gating only. The
+// clear itself is one server-side DELETE scoped to origin = 'auto' on
+// upcoming elections, so stale cache here can never unpick a row the user
+// has since re-picked manually in another tab. Upcoming only, matching the
+// server: past auto picks are history.
+function hasClearableAutoPicks(choices: ElectionChoice[], today: string): boolean {
+  return choices.some(
+    (choice) =>
+      choice.election_date >= today &&
+      (choice.picks.some((pick) => pick.origin === "auto") ||
+        (choice.measure_position !== null && choice.measure_origin === "auto"))
+  );
 }
 
 const REASON_LABELS: Record<AutoPickReason, string> = {
@@ -125,7 +117,7 @@ export function AutoPickFillControl({
   const titleByElectionId = new Map(
     elections.map((election) => [election.id, election.official_ballot_title])
   );
-  const clearableRows = autoRows(choices, today);
+  const clearable = hasClearableAutoPicks(choices, today);
 
   const fill = useMutation({
     // Shares the choice-write key so every pick control disables together.
@@ -149,17 +141,7 @@ export function AutoPickFillControl({
 
   const clear = useMutation({
     mutationKey: ["set-election-choice"],
-    mutationFn: async (rows: AutoRow[]) => {
-      for (const row of rows) {
-        await apiRequest("/api/me/election-choices", {
-          method: "PUT",
-          body:
-            "measure" in row
-              ? { election_id: row.election_id, measure_position: null }
-              : { election_id: row.election_id, candidate_id: row.candidate_id, chosen: false },
-        });
-      }
-    },
+    mutationFn: () => apiRequest<AutoPicksClearResult>("/api/me/auto-picks", { method: "DELETE" }),
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["me", "election-choices"] }),
     onSuccess: () => setResults(null),
   });
@@ -177,7 +159,7 @@ export function AutoPickFillControl({
     fill.mutate(emptyElectionIds);
   }
 
-  if (emptyElectionIds.length === 0 && clearableRows.length === 0 && results === null) {
+  if (emptyElectionIds.length === 0 && !clearable && results === null) {
     return null;
   }
 
@@ -201,11 +183,11 @@ export function AutoPickFillControl({
               : `Fill my empty picks (${emptyElectionIds.length})`}
           </button>
         ) : null}
-        {clearableRows.length > 0 ? (
+        {clearable ? (
           <button
             type="button"
             disabled={saving}
-            onClick={() => clear.mutate(clearableRows)}
+            onClick={() => clear.mutate()}
             className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink-soft transition hover:border-ink hover:text-ink disabled:opacity-50"
           >
             {clear.isPending ? "Clearing…" : "Clear auto picks"}
@@ -228,15 +210,20 @@ export function AutoPickFillControl({
         </p>
       ) : null}
       {fill.isError && !fill.isPending ? (
+        // The partial-write warning applies to API errors too: the server
+        // commits election by election (and the client sends chunks), so a
+        // 429 or 500 partway through follows real writes. The cards below
+        // were refetched onSettled and show the truth.
         <p role="alert" className="mt-2 text-sm font-medium text-red-800">
-          {fill.error instanceof ApiError
-            ? fill.error.message
-            : "Couldn't finish filling — some races may have been picked. Check the cards below."}
+          {fill.error instanceof ApiError ? fill.error.message : "Couldn't finish filling."}{" "}
+          Some races may already be filled — check the cards below.
         </p>
       ) : null}
       {clear.isError && !clear.isPending ? (
+        // One atomic server-side DELETE: it either cleared everything or
+        // nothing, so no partial-state warning here.
         <p role="alert" className="mt-2 text-sm font-medium text-red-800">
-          Couldn't clear every auto pick — check the cards below and try again.
+          Couldn't clear your auto picks — try again.
         </p>
       ) : null}
       {results !== null ? (
