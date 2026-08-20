@@ -1,0 +1,3 @@
+Filing Entity ID,Filing Entity Name,Filing Entity Type,Transaction Type,Transaction Sub Type,Payee/ Worker /Creditor/ Loan source type,Payee /Worker/Creditor/ Loan Source Name,Payee/Worker/Creditor/Loan source Address,Transaction Amount,TransactionDate,Election Type,Transaction Description,Timed Report
+50450,Example Committee,Candidate Committee,Expenditure,Itemized Monetary,Business / Organization,Sample Vendor,REDACTED,$250.00,06/10/2026,General,Sanitized expenditure,
+31342,Example IE Committee,Political Action Committee,Independent Expenditure,TIE,Business / Organization,Sample Vendor,REDACTED,"$1,500.00",07/31/2026,General,"Vendor purpose with "INNER"",

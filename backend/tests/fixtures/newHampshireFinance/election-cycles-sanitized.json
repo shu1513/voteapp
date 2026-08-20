@@ -1,0 +1,8 @@
+{
+  "data": [
+    { "value": 110, "name": "2026 Election Cycle", "dueDate": "2026-11-03T00:00:00" },
+    { "value": 27, "name": "2024 Election Cycle", "dueDate": "2024-11-05T00:00:00" }
+  ],
+  "succeeded": true,
+  "error": null
+}

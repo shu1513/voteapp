@@ -1,0 +1,161 @@
+export const NEW_HAMPSHIRE_RECEIPT_CSV_COLUMNS = [
+  "Filing Entity ID",
+  "Candidate Name",
+  "Committee Name",
+  "Committee Subtype",
+  "Transaction Type",
+  "Transaction Sub Type",
+  "Election Period",
+  "Election year",
+  "Date of Receipt",
+  "Amount of receipt",
+  "Contributor Type",
+  "Contributor Name",
+  "Contributor Address Line 1",
+  "Contributor Address Line 2",
+  "Contributor City",
+  "Contributor State",
+  "Contributor Zip Code",
+  "Contributor occupation",
+  "Contributor Employer",
+  "Contributor Principle place of Business",
+  "Description",
+  "Timed Report",
+] as const;
+
+export const NEW_HAMPSHIRE_EXPENDITURE_CSV_COLUMNS = [
+  "Filing Entity ID",
+  "Filing Entity Name",
+  "Filing Entity Type",
+  "Transaction Type",
+  "Transaction Sub Type",
+  "Payee/ Worker /Creditor/ Loan source type",
+  "Payee /Worker/Creditor/ Loan Source Name",
+  "Payee/Worker/Creditor/Loan source Address",
+  "Transaction Amount",
+  "TransactionDate",
+  "Election Type",
+  "Transaction Description",
+  "Timed Report",
+] as const;
+
+export type NewHampshireReceiptCsvRow = Record<(typeof NEW_HAMPSHIRE_RECEIPT_CSV_COLUMNS)[number], string>;
+export type NewHampshireExpenditureCsvRow = Record<
+  (typeof NEW_HAMPSHIRE_EXPENDITURE_CSV_COLUMNS)[number],
+  string
+>;
+
+function isQuoteBoundary(record: string, quoteIndex: number): boolean {
+  let index = quoteIndex + 1;
+  while (record[index] === " " || record[index] === "\t") index += 1;
+  const boundary = record[index];
+  return boundary === "," || boundary === "\r" || boundary === "\n" || boundary === undefined;
+}
+
+function hasClosingQuote(record: string, openingIndex: number): boolean {
+  for (let index = openingIndex + 1; index < record.length; index += 1) {
+    if (record[index] !== '"') continue;
+    if (record[index + 1] === '"') {
+      if (isQuoteBoundary(record, index + 1)) return true;
+      index += 1;
+      continue;
+    }
+    if (isQuoteBoundary(record, index)) return true;
+  }
+  return false;
+}
+
+function parseCsvRecord(record: string): string[] {
+  const cells: string[] = [];
+  let field = "";
+  let inQuotes = false;
+  for (let index = 0; index < record.length; index += 1) {
+    const char = record[index];
+    const next = record[index + 1];
+    if (inQuotes) {
+      if (char === '"' && next === '"') {
+        field += '"';
+        index += 1;
+        if (isQuoteBoundary(record, index)) inQuotes = false;
+      } else if (char === '"' && isQuoteBoundary(record, index)) {
+        inQuotes = false;
+      } else {
+        field += char;
+      }
+    } else if (char === '"' && field.length === 0 && hasClosingQuote(record, index)) {
+      inQuotes = true;
+    } else if (char === ",") {
+      cells.push(field);
+      field = "";
+    } else if (char !== "\r") {
+      // Record boundaries are established before field parsing, so a newline
+      // here is a genuine multiline field and remains part of its value.
+      field += char;
+    }
+  }
+  cells.push(field);
+  return cells;
+}
+
+function parseCsvRows(csv: string): string[][] {
+  const normalized = csv.replace(/^\uFEFF/, "");
+  const firstNewline = normalized.indexOf("\n");
+  if (firstNewline < 0) return normalized.trim() ? [parseCsvRecord(normalized)] : [];
+
+  const header = normalized.slice(0, firstNewline).replace(/\r$/, "");
+  const data = normalized.slice(firstNewline + 1).replace(/\r?\n$/, "");
+  // Filing Entity ID is the first required bulk column and is always numeric.
+  // It gives us a trustworthy record boundary even when Civix emits invalid
+  // quote escaping inside a description or contributor name.
+  const records = data.length > 0 ? data.split(/\r?\n(?=\d+,)/) : [];
+  return [parseCsvRecord(header), ...records.filter((record) => record.trim()).map(parseCsvRecord)];
+}
+
+function parseForColumns<const TColumns extends readonly string[]>(
+  csv: string,
+  columns: TColumns,
+  label: string
+): Record<TColumns[number], string>[] {
+  const rows = parseCsvRows(csv);
+  const header = rows[0]?.map((value, index) => (index === 0 ? value.replace(/^\uFEFF/, "") : value));
+  if (!header) {
+    throw new Error(`New Hampshire CFS ${label} CSV is empty`);
+  }
+  if (header.length !== columns.length || header.some((value, index) => value !== columns[index])) {
+    throw new Error(
+      `New Hampshire CFS ${label} CSV header changed: ${JSON.stringify(header)}`
+    );
+  }
+
+  return rows.slice(1).map((cells, rowIndex) => {
+    if (cells.length !== columns.length) {
+      throw new Error(
+        `New Hampshire CFS ${label} CSV row ${rowIndex + 2} has ${cells.length} columns; expected ${columns.length}`
+      );
+    }
+    return Object.fromEntries(columns.map((column, index) => [column, cells[index] ?? ""])) as Record<
+      TColumns[number],
+      string
+    >;
+  });
+}
+
+export function parseNewHampshireReceiptCsv(csv: string): NewHampshireReceiptCsvRow[] {
+  return parseForColumns(csv, NEW_HAMPSHIRE_RECEIPT_CSV_COLUMNS, "receipt");
+}
+
+export function parseNewHampshireExpenditureCsv(csv: string): NewHampshireExpenditureCsvRow[] {
+  return parseForColumns(csv, NEW_HAMPSHIRE_EXPENDITURE_CSV_COLUMNS, "expenditure");
+}
+
+export function parseNewHampshireCurrencyCents(value: string): number {
+  const normalized = value.trim().replace(/^\$/, "").replace(/,/g, "");
+  if (!/^-?\d+(?:\.\d{1,2})?$/.test(normalized)) {
+    throw new Error(`Invalid New Hampshire CFS currency amount: ${JSON.stringify(value)}`);
+  }
+  const amount = Number(normalized);
+  if (!Number.isFinite(amount)) {
+    throw new Error(`Invalid New Hampshire CFS currency amount: ${JSON.stringify(value)}`);
+  }
+  return Math.round(amount * 100);
+}
