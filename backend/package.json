@@ -100,6 +100,7 @@
     "manual:deferral:status": "tsx src/scripts/manualResearchDeferrals.ts status",
     "manual:candidate-finance:validate": "tsx src/scripts/validateManualCandidateFinance.ts",
     "manual:candidate-finance:preview": "tsx src/scripts/previewManualCandidateFinance.ts",
+    "manual:candidate-finance:import": "tsx src/scripts/importManualCandidateFinance.ts",
     "manual:finance-committee-labels:due": "tsx src/scripts/manualFinanceCommitteeLabels.ts due",
     "manual:finance-committee-labels:write": "tsx src/scripts/manualFinanceCommitteeLabels.ts write",
     "manual:finance-industry-labels:due": "tsx src/scripts/manualFinanceIndustryLabels.ts due",
