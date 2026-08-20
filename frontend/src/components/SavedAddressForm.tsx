@@ -42,6 +42,9 @@ export function SavedAddressForm({ inputId, label }: { inputId: string; label: s
       // applies saved sort preferences and followed-candidate ordering —
       // refetch the canonical version instead of caching the PUT body.
       void queryClient.invalidateQueries({ queryKey: ["me", "ballot"] });
+      // The pick gate's district set (useMyDistricts) just changed with the
+      // saved districts — refetch it or stale ids keep gating pick buttons.
+      void queryClient.invalidateQueries({ queryKey: ["me", "districts"] });
       void navigate("/me/ballot", {
         state: {
           addressSaved: {

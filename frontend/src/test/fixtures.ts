@@ -78,7 +78,13 @@ export const VOTE_POWER_WITH_EXPLANATION: VotePower = {
   },
 };
 
-const DISTRICT = { id: "dddddddd-1111-4111-8111-111111111111", district_type: "state", name: "Alaska", state: "AK" };
+export const DISTRICT = { id: "dddddddd-1111-4111-8111-111111111111", district_type: "state", name: "Alaska", state: "AK" };
+
+/** GET /api/me/districts body putting the fixture district on the viewer's
+ * ballot — pick controls only render for races in the viewer's districts
+ * (useMyDistricts), so signed-in pick tests stub this route. Guest tests
+ * seed the same id via setDraftBallotContext instead. */
+export const MY_DISTRICTS = { district_ids: [DISTRICT.id] };
 
 export function electionSummary(overrides: Partial<ElectionSummary> = {}): ElectionSummary {
   return {

@@ -2,16 +2,18 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CandidatePage, ErrorBoundary, loader } from "./CandidatePage";
-import { clearBallotDraft, readBallotDraft, setDraftCandidateChoice } from "../lib/ballotDraft";
+import { clearBallotDraft, readBallotDraft, setDraftBallotContext, setDraftCandidateChoice } from "../lib/ballotDraft";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import {
   candidateDetail,
   candidateElection,
   candidateFollow,
+  DISTRICT,
   financeSummary,
   ME_UNVERIFIED,
   ME_VERIFIED,
+  MY_DISTRICTS,
 } from "../test/fixtures";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
@@ -343,6 +345,7 @@ describe("CandidatePage", () => {
     it("leads with the viewer's saved areas, bolded, in the my-issues view", async () => {
       stubApiRoutes({
         "/api/me": { body: ME_VERIFIED },
+        "/api/me/districts": { body: MY_DISTRICTS },
         "/api/me/candidate-follows": { body: { follows: [] } },
         "/api/me/research-area-preferences": {
           body: {
@@ -424,6 +427,7 @@ describe("CandidatePage", () => {
   it("defaults the record view to \"My issues first\" once saved areas load", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/research-area-preferences": {
         body: {
@@ -471,6 +475,7 @@ describe("CandidatePage", () => {
   it("keeps a group the reader opened open across a view switch that reorders groups", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/research-area-preferences": {
         body: {
@@ -763,6 +768,7 @@ describe("CandidatePage", () => {
     // button must reflect the client-fetched follows list, not the payload.
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [candidateFollow()] } },
     });
     renderCandidate(() => candidateDetail());
@@ -772,6 +778,9 @@ describe("CandidatePage", () => {
 
   it("lets logged-out visitors pick from the sticky bar straight into the local ballot draft", async () => {
     clearBallotDraft();
+    // Pick controls only render for races in the viewer's districts; a
+    // guest's districts come from the draft's ballot context.
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
@@ -790,6 +799,7 @@ describe("CandidatePage", () => {
 
   it("shows post-pick actions on the sticky card once the guest picks", async () => {
     clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
@@ -809,6 +819,7 @@ describe("CandidatePage", () => {
 
   it("offers a back-to-election link in the post-pick actions for election arrivals", async () => {
     clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }), "c-1", {
       backTo: { path: "/elections/e-1", label: "Governor" },
@@ -824,6 +835,7 @@ describe("CandidatePage", () => {
   it("shows the signed-in draft link when this candidate is already the account's pick", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/election-choices": {
         body: {
@@ -870,6 +882,7 @@ describe("CandidatePage", () => {
 
   it("renders the sticky bar as the page's only pick control for a single pickable race", async () => {
     clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
@@ -885,6 +898,7 @@ describe("CandidatePage", () => {
     // say which one it would pick — those pages rely on the self-describing
     // rows, one per race.
     clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() =>
       candidateDetail({
@@ -1342,6 +1356,7 @@ describe("CandidatePage roster rail sort", () => {
   };
   const SAVED_GUN = {
     "/api/me": { body: ME_VERIFIED },
+    "/api/me/districts": { body: MY_DISTRICTS },
     "/api/me/candidate-follows": { body: { follows: [] } },
     "/api/me/research-area-preferences": {
       body: {

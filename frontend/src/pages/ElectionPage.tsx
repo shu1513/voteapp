@@ -36,6 +36,8 @@ import { AutoPickControl } from "../components/AutoPickControl";
 import { CandidatePickButton, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
 import { PostPickActions } from "../components/PostPickActions";
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
+import { useMyDistricts } from "../lib/useMyDistricts";
+import { AddressNudge } from "../components/AddressNudge";
 import { splitResearchAreasBySaved, useElectionChoices } from "@voteapp/api-client";
 import { votePowerBadgeClass } from "../lib/votePowerBadge";
 import { APP_NAME } from "@voteapp/api-client";
@@ -256,9 +258,23 @@ export function ElectionPage() {
   // check.
   const railChoices = isGuest ? draftChoicesByElectionId(draft) : choiceByElectionId;
   const isPickedContest = (electionId: string): boolean => isDecidedChoice(railChoices?.get(electionId));
+  const choicesSettled = isGuest || (canChoose && choiceByElectionId !== undefined);
+  const isUpcoming = data.election_date >= usLatestLocalDate();
+  // District gate (docs/plans/pick-district-gate.md): controls only for a
+  // race in the viewer's own districts. The decided-choice clause is the
+  // safety valve — an existing pick always keeps its controls, so an
+  // imperfect geocode can never lock someone out of changing it.
+  const { districtIds, isLoading: districtsLoading } = useMyDistricts();
   const showChoiceControls =
-    (isGuest || (canChoose && choiceByElectionId !== undefined)) &&
-    data.election_date >= usLatestLocalDate();
+    choicesSettled &&
+    !districtsLoading &&
+    isUpcoming &&
+    (districtIds?.has(data.district.id) === true || isDecidedChoice(myChoice));
+  // State 3 of the gate: districts unknown (settled) on an upcoming race —
+  // a conversion nudge sits where the controls would. Districts known but
+  // foreign renders neither (state 2: clean read-only page).
+  const showAddressNudge =
+    choicesSettled && !districtsLoading && isUpcoming && districtIds === undefined && !isDecidedChoice(myChoice);
   // Per-candidate result badges (Won / Advanced / Lost / …); the matching and
   // completeness guards — roster-matched winners only, losers only where the
   // outcome's own signal proves the race decided — live in
@@ -847,6 +863,13 @@ export function ElectionPage() {
                 <AutoPickControl key={data.id} electionId={data.id} seatsToFill={data.seats_to_fill ?? null} />
               </div>
             ) : null}
+            {/* Districts unknown: the nudge takes the controls' slot at the
+                top of the candidate list. */}
+            {showAddressNudge && data.race_type !== "ballot_measure" ? (
+              <div className="mt-3">
+                <AddressNudge />
+              </div>
+            ) : null}
             {showPartyFilter ? (
               <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Filter candidates by party">
                 {[{ bucket: "all" as const, label: "All" }, ...presentPartyOptions].map((option) => (
@@ -1161,6 +1184,16 @@ export function ElectionPage() {
                 }
               />
             ) : null}
+          </div>
+        ) : null}
+
+        {/* Districts unknown on a measure: the nudge takes the sticky card's
+            slot (plain, not pinned — a passive sentence doesn't earn
+            viewport pinning). Same measure !== null guard as the card: a
+            TBD measure renders no pick UI of any kind. */}
+        {measure !== null && data.race_type === "ballot_measure" && showAddressNudge ? (
+          <div className="mt-6">
+            <AddressNudge />
           </div>
         ) : null}
       </div>
