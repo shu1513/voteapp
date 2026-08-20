@@ -63,15 +63,15 @@ export type NewHampshireIndependentExpenditureRow = {
   transactionId: number;
   transactionVersionId: number;
   guid: string;
-  filerReportId: number;
-  filerReportVersionId: number;
+  filerReportId: number | null;
+  filerReportVersionId: number | null;
   filerEntityId: number;
   filerName: string;
   transactionAmount: number;
   transactionDate: string;
-  reportName: string;
+  reportName: string | null;
   reportVersion: boolean;
-  reportVersionFilter: string;
+  reportVersionFilter: string | null;
   isAmended: boolean;
   transactionTypeCode: string;
   transactionSubTypeCode: string;
@@ -166,6 +166,11 @@ function requiredInteger(value: unknown, label: string): number {
     throw new NewHampshireCfsClientError("bad_response", `Invalid New Hampshire CFS ${label}`);
   }
   return parsed;
+}
+
+function nullablePositiveInteger(value: unknown, label: string): number | null {
+  if (value === null || value === undefined || value === "") return null;
+  return requiredInteger(value, label);
 }
 
 function booleanValue(value: unknown): boolean {
@@ -301,19 +306,30 @@ function parseReceiptRow(value: unknown): NewHampshireReceiptRow {
 
 function parseIndependentExpenditureRow(value: unknown): NewHampshireIndependentExpenditureRow {
   const row = objectValue(value, "independent-expenditure row");
+  const filerReportId = nullablePositiveInteger(row.filerReportId, "IE filerReportId");
+  const filerReportVersionId = nullablePositiveInteger(
+    row.filerReportVersionId,
+    "IE filerReportVersionId"
+  );
+  if ((filerReportId === null) !== (filerReportVersionId === null)) {
+    throw new NewHampshireCfsClientError(
+      "bad_response",
+      "Invalid New Hampshire CFS IE report identity"
+    );
+  }
   return {
     transactionId: requiredInteger(row.transactionId, "IE transactionId"),
     transactionVersionId: requiredInteger(row.transactionVersionId, "IE transactionVersionId"),
     guid: requiredString(row.guid, "IE guid"),
-    filerReportId: requiredInteger(row.filerReportId, "IE filerReportId"),
-    filerReportVersionId: requiredInteger(row.filerReportVersionId, "IE filerReportVersionId"),
+    filerReportId,
+    filerReportVersionId,
     filerEntityId: requiredInteger(row.filerEntityId, "IE filerEntityId"),
     filerName: requiredString(row.filerName, "IE filerName"),
     transactionAmount: requiredNumber(row.transactionAmount, "IE transactionAmount"),
     transactionDate: requiredString(row.transactionDate, "IE transactionDate"),
-    reportName: requiredString(row.reportName, "IE reportName"),
+    reportName: nullableString(row.reportName),
     reportVersion: booleanValue(row.reportVersion),
-    reportVersionFilter: requiredString(row.reportVersionFilter, "IE reportVersionFilter"),
+    reportVersionFilter: nullableString(row.reportVersionFilter),
     isAmended: booleanValue(row.isAmended),
     transactionTypeCode: requiredString(row.transactionTypeCode, "IE transactionTypeCode"),
     transactionSubTypeCode: requiredString(row.transactionSubTypeCode, "IE transactionSubTypeCode"),

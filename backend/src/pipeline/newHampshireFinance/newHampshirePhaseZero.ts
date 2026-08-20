@@ -94,12 +94,33 @@ export function reconcileNewHampshireAmendmentFixture(input: {
 }
 
 export type NewHampshireIndependentExpenditureProbeSummary = {
+  sourceRowCount: number;
   rowCount: number;
+  supersededRowCount: number;
   support: NewHampshireMoneySummary;
   oppose: NewHampshireMoneySummary;
   blankStance: NewHampshireMoneySummary;
   blankTargetCount: number;
 };
+
+export function selectCurrentNewHampshireIndependentExpenditureReportVersions(
+  rows: readonly NewHampshireIndependentExpenditureRow[]
+): NewHampshireIndependentExpenditureRow[] {
+  const maxVersionByReport = new Map<number, number>();
+  for (const row of rows) {
+    if (row.filerReportId === null) continue;
+    if (row.filerReportVersionId === null) {
+      throw new Error(`New Hampshire IE report ${row.filerReportId} has no version`);
+    }
+    const current = maxVersionByReport.get(row.filerReportId) ?? 0;
+    maxVersionByReport.set(row.filerReportId, Math.max(current, row.filerReportVersionId));
+  }
+  return rows.filter(
+    (row) =>
+      row.filerReportId === null ||
+      row.filerReportVersionId === maxVersionByReport.get(row.filerReportId)
+  );
+}
 
 export function summarizeNewHampshireIndependentExpenditures(
   rows: readonly NewHampshireIndependentExpenditureRow[],
@@ -125,6 +146,10 @@ export function summarizeNewHampshireIndependentExpenditures(
       throw new Error(`New Hampshire IE search returned duplicate identity ${identity}`);
     }
     identities.add(identity);
+  }
+
+  const currentRows = selectCurrentNewHampshireIndependentExpenditureReportVersions(rows);
+  for (const row of currentRows) {
     if (row.candidateMeasure === null) blankTargetCount += 1;
     if (row.stance === "Support") support.push(row);
     else if (row.stance === "Oppose") oppose.push(row);
@@ -136,5 +161,13 @@ export function summarizeNewHampshireIndependentExpenditures(
     rowCount: selected.length,
     amountCents: selected.reduce((total, row) => total + Math.round(row.transactionAmount * 100), 0),
   });
-  return { rowCount: rows.length, support: sum(support), oppose: sum(oppose), blankStance: sum(blankStance), blankTargetCount };
+  return {
+    sourceRowCount: rows.length,
+    rowCount: currentRows.length,
+    supersededRowCount: rows.length - currentRows.length,
+    support: sum(support),
+    oppose: sum(oppose),
+    blankStance: sum(blankStance),
+    blankTargetCount,
+  };
 }

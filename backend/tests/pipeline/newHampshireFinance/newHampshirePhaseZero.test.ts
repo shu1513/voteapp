@@ -17,6 +17,7 @@ import {
 } from "../../../src/pipeline/newHampshireFinance/newHampshireCfsCsv.js";
 import {
   reconcileNewHampshireAmendmentFixture,
+  selectCurrentNewHampshireIndependentExpenditureReportVersions,
   selectCurrentNewHampshireReceiptReportVersions,
   summarizeNewHampshireIndependentExpenditures,
 } from "../../../src/pipeline/newHampshireFinance/newHampshirePhaseZero.js";
@@ -95,6 +96,13 @@ describe("New Hampshire CFS Phase 0", () => {
       { fetchImpl: ieFetch }
     );
     expect(iePage.items[0]).toMatchObject({ candidateMeasure: "Candidate, Sample", stance: "Support" });
+    expect(iePage.items[5]).toMatchObject({
+      filerReportId: null,
+      filerReportVersionId: null,
+      reportName: null,
+      reportVersionFilter: null,
+      candidateMeasure: "Candidate, Legacy",
+    });
     expect(bodyOf(ieFetch)).toEqual({
       pageNumber: 2,
       pageSize: 3,
@@ -115,7 +123,7 @@ describe("New Hampshire CFS Phase 0", () => {
     expect(bodyOf(csvFetch)).toEqual({ type: "CSV", filingYear: 2026, transactionTypeCode: "TCON" });
   });
 
-  it("fails closed on CDN HTML or API failure envelopes", async () => {
+  it("fails closed on CDN HTML, API failure envelopes, or partial IE report identities", async () => {
     const htmlFetch = vi.fn().mockResolvedValue(response("<html>Access Denied</html>", "text/html")) as unknown as typeof fetch;
     await expect(getNewHampshireElectionCycles({ fetchImpl: htmlFetch })).rejects.toBeInstanceOf(
       NewHampshireCfsClientError
@@ -127,6 +135,22 @@ describe("New Hampshire CFS Phase 0", () => {
     await expect(getNewHampshireElectionCycles({ fetchImpl: failedFetch })).rejects.toThrow(
       "An exception occurred."
     );
+
+    const partialReport = JSON.parse(await fixture("independent-expenditures-sanitized.json")) as {
+      data: { items: Array<Record<string, unknown>> };
+    };
+    partialReport.data.items = [
+      { ...partialReport.data.items[5], filerReportVersionId: 1 },
+    ];
+    const partialReportFetch = vi.fn().mockResolvedValue(
+      response(JSON.stringify(partialReport), "application/json")
+    ) as unknown as typeof fetch;
+    await expect(
+      getNewHampshireIndependentExpenditurePage(
+        { electionCycleId: 110, pageSize: 200 },
+        { fetchImpl: partialReportFetch }
+      )
+    ).rejects.toThrow("IE report identity");
   });
 
   it("paginates by the request contract and rejects a changing total", async () => {
@@ -200,7 +224,7 @@ describe("New Hampshire CFS Phase 0", () => {
     });
   });
 
-  it("separates support, oppose, and legally unusable blank-stance IE money", async () => {
+  it("keeps reportless IE rows and excludes superseded report versions", async () => {
     const ieJson = await fixture("independent-expenditures-sanitized.json");
     const fetchImpl = vi.fn().mockResolvedValue(response(ieJson, "application/json")) as unknown as typeof fetch;
     const rows = (
@@ -210,10 +234,17 @@ describe("New Hampshire CFS Phase 0", () => {
       )
     ).items;
 
+    expect(
+      selectCurrentNewHampshireIndependentExpenditureReportVersions(rows).map(
+        (row) => row.transactionId
+      )
+    ).toEqual([5001, 5002, 4003, 6001]);
     expect(summarizeNewHampshireIndependentExpenditures(rows, "2026 Election Cycle")).toEqual({
-      rowCount: 3,
-      support: { rowCount: 1, amountCents: 16_980 },
-      oppose: { rowCount: 1, amountCents: 11_905 },
+      sourceRowCount: 6,
+      rowCount: 4,
+      supersededRowCount: 2,
+      support: { rowCount: 2, amountCents: 22_500 },
+      oppose: { rowCount: 1, amountCents: 10_000 },
       blankStance: { rowCount: 1, amountCents: 5_000 },
       blankTargetCount: 1,
     });

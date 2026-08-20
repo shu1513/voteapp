@@ -98,8 +98,11 @@ describe("probeNewHampshireCampaignFinance", () => {
         strategy: "search_api_current_report_versions_required",
       },
       independent_expenditures: {
-        support: { rowCount: 1, amountCents: 16_980 },
-        oppose: { rowCount: 1, amountCents: 11_905 },
+        sourceRowCount: 6,
+        rowCount: 4,
+        supersededRowCount: 2,
+        support: { rowCount: 2, amountCents: 22_500 },
+        oppose: { rowCount: 1, amountCents: 10_000 },
         blankStance: { rowCount: 1, amountCents: 5_000 },
       },
       publication: "disabled_phase_zero",
