@@ -19,6 +19,7 @@ describe("manual candidate-finance persistence migration", () => {
   it("backs every target with the canonical candidate-election link and preserves null amounts", () => {
     expect(MIGRATION_SQL).toContain("CREATE TABLE IF NOT EXISTS public.manual_candidate_finance_filing_targets");
     expect(MIGRATION_SQL).toContain("REFERENCES public.candidate_elections(candidate_id, election_id)");
+    expect(MIGRATION_SQL).toContain("ON UPDATE RESTRICT");
     expect(MIGRATION_SQL).toContain("amount numeric(16,2)");
     expect(MIGRATION_SQL).not.toContain("amount numeric(16,2) NOT NULL");
     expect(MIGRATION_SQL).toContain("relationship IN ('candidate_report', 'support', 'oppose')");

@@ -36,6 +36,10 @@
 //   converges only when both rows agree on status/is_incumbent/running mate
 //   (the from-link is then deleted as a duplicate); disagreeing rows are a
 //   research question, not a merge;
+// - manual candidate-finance filing targets are counted for the exact
+//   candidacy before either path: their candidate/election IDs also live in
+//   an immutable hashed payload, so they must be resolved explicitly rather
+//   than cascaded to a different canonical identity;
 // - before that duplicate-merge delete, no rows may reference the from-link
 //   id itself: tables that FK onto candidate_elections(id) (e.g.
 //   fl_candidate_finance_outside_group_links) carry no candidate_id or
@@ -60,6 +64,30 @@ type QueryResultLike<T> = { rows: T[] };
 export type MoveCandidateElectionLinkClient = {
   query<T = unknown>(text: string, values?: unknown[]): Promise<QueryResultLike<T>>;
 };
+
+export type CandidateElectionLinkFkReference = {
+  constraintName: string;
+  table: string;
+  column: string;
+  referencedColumn: string;
+  columnCount: number;
+};
+
+const MANUAL_CANDIDATE_FINANCE_TARGET_FK =
+  "manual_candidate_finance_filing_targets_candidate_election_fk";
+
+export function isManualCandidateFinanceTargetFkReference(
+  reference: CandidateElectionLinkFkReference
+): boolean {
+  const table = reference.table.replace(/^public\./, "");
+  return (
+    reference.constraintName === MANUAL_CANDIDATE_FINANCE_TARGET_FK &&
+    table === "manual_candidate_finance_filing_targets" &&
+    reference.columnCount === 2 &&
+    (reference.column === "candidate_id" || reference.column === "election_id") &&
+    reference.column === reference.referencedColumn
+  );
+}
 
 export type MoveCandidateElectionLinkOptions = {
   candidateId: string;
@@ -307,9 +335,7 @@ export async function listCandidateScopedElectionFkTables(
  */
 export async function listCandidateElectionLinkFkReferences(
   client: MoveCandidateElectionLinkClient
-): Promise<
-  { constraintName: string; table: string; column: string; referencedColumn: string; columnCount: number }[]
-> {
+): Promise<CandidateElectionLinkFkReference[]> {
   const result = await client.query<{
     constraint_name: string;
     table_name: string;
@@ -467,6 +493,30 @@ export async function runMoveCandidateElectionLink(
       );
     }
 
+    // This composite FK is intentionally ON UPDATE/DELETE RESTRICT. Its
+    // target columns are derived from an immutable hashed source payload;
+    // cascading only the columns would make them disagree with the payload.
+    // Count the exact candidacy up front so the FK's mere existence does not
+    // block unrelated maintenance, while affected filings fail with an
+    // operator-actionable error before PostgreSQL's generic FK error.
+    const manualFinanceTargets = await client.query<{ n: string }>(
+      `
+        SELECT count(*)::text AS n
+        FROM public.manual_candidate_finance_filing_targets
+        WHERE candidate_id = $1::uuid AND election_id = $2::uuid
+      `,
+      [candidateId, fromElectionId]
+    );
+    const manualFinanceTargetCount = Number(manualFinanceTargets.rows[0]?.n ?? "0");
+    if (manualFinanceTargetCount > 0) {
+      throw new Error(
+        `${manualFinanceTargetCount} manual candidate-finance filing target row(s) reference ` +
+          `${candidateId}/${fromElectionId}; moving or deleting this candidacy would make their immutable ` +
+          "payload identity disagree with the derived target. Resolve those filings explicitly " +
+          "(user decision), then re-run."
+      );
+    }
+
     // User-choice guard, covering both the plain move and the duplicate
     // merge. A pick is the user's decision about THIS race: the plain move's
     // UPDATE would drag it to a different election through the choice FK's
@@ -524,7 +574,9 @@ export async function runMoveCandidateElectionLink(
       // counted (and refused when present) by the user-choice guard above,
       // so it is exempt from the unknown-shape refusal.
       const linkFkReferences = (await listCandidateElectionLinkFkReferences(client)).filter(
-        (ref) => ref.constraintName !== "fk_user_election_choices_candidacy"
+        (ref) =>
+          ref.constraintName !== "fk_user_election_choices_candidacy" &&
+          !isManualCandidateFinanceTargetFkReference(ref)
       );
       // The count below keys each child column on the from-link id, which is
       // only meaningful for a single-column FK onto id. Any other shape
