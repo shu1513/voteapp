@@ -1,9 +1,10 @@
 # Plan: auto-pick by issue alignment ("Pick for me")
 
-Status: PR 1 (Preferences) implemented 2026-08-19 on branch
-`claude/caveman-ultra-dd73f1`; PRs 2–4 not started. Numbers below come from
-the local DB on 2026-08-18 (Nov-2026 elections); prod will differ in size,
-not in shape.
+Status: PR 1 (Preferences) merged 2026-08-19 (#764). PR 2 (engine +
+`POST /api/me/auto-picks` + election-page button/panel) implemented
+2026-08-19 on branch `claude/auto-pick-engine`; PRs 3–4 not started.
+Numbers below come from the local DB on 2026-08-18 (Nov-2026 elections);
+prod will differ in size, not in shape.
 
 ## Goal
 
