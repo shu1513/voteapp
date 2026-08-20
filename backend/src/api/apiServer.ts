@@ -53,6 +53,7 @@ import {
   ME_BALLOT_PREFERENCES_PATH,
   ME_CANDIDATE_FOLLOWS_PATH,
   ME_ELECTION_CHOICES_PATH,
+  ME_AUTO_PICKS_PATH,
   ME_PICK_CARD_SHARES_PATH,
   isPickCardPath,
   isPickCardImagePath,
@@ -68,6 +69,7 @@ import {
   parsePublicAddressResolveBodyValue,
   parseAutocompleteRetrieveBodyValue,
   parseAutocompleteSuggestBodyValue,
+  parseAutoPicksBodyValue,
   parseCandidateFollowBodyValue,
   parseElectionChoiceBodyValue,
   parseContentReportBodyValue,
@@ -155,6 +157,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_BALLOT_PREFERENCES_PATH ||
     pathname === ME_CANDIDATE_FOLLOWS_PATH ||
     pathname === ME_ELECTION_CHOICES_PATH ||
+    pathname === ME_AUTO_PICKS_PATH ||
     pathname === ME_PICK_CARD_SHARES_PATH ||
     isPickCardPath(pathname) ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
@@ -455,6 +458,7 @@ function createJsonBodyParser() {
           // a CORS preflight).
           request.path === CHATBOT_FEEDBACK_PATH ||
           request.path === CONTENT_REPORTS_PATH ||
+          request.path === ME_AUTO_PICKS_PATH ||
           request.path === ME_DISTRICTS_INITIALIZE_PATH ||
           request.path === AUTH_FORGOT_PASSWORD_PATH ||
           // Half the CSRF story for the Google endpoint: requiring
@@ -1527,6 +1531,38 @@ async function dispatchApiRequest(
 
     const payload = parseElectionChoiceBodyValue(request.body);
     const result = await options.setAuthenticatedElectionChoice(userId, payload);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_AUTO_PICKS_PATH) {
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/me/auto-picks", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+    // Same auth posture as election choices: session required, no
+    // verification gate — auto picks are private planning.
+    const userId = await resolveAuthenticatedUserId(options, request);
+    if (!userId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+    if (!options.applyAuthenticatedAutoPicks) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Auto-pick storage is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    const payload = parseAutoPicksBodyValue(request.body);
+    const result = await options.applyAuthenticatedAutoPicks(userId, payload);
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
     return;
   }

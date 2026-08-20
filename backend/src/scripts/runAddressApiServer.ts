@@ -84,6 +84,7 @@ import {
 import { updateAuthenticatedAddressDistricts } from "../pipeline/users/userAddressDistrictUpdater.js";
 import { createContentReport } from "../pipeline/reports/contentReports.js";
 import { listUserCandidateFollows, setUserCandidateFollow } from "../pipeline/users/userCandidateFollows.js";
+import { applyAutoPicks } from "../pipeline/users/autoPick.js";
 import { listUserElectionChoices, setUserElectionChoice } from "../pipeline/users/userElectionChoices.js";
 import { getOrCreateUserPickCardShare, lookupPublicPickCard } from "../pipeline/users/userPickCardShares.js";
 import { getStateVotingResources } from "../api/stateVotingResources.js";
@@ -688,6 +689,7 @@ async function main(): Promise<void> {
     setAuthenticatedCandidateFollow: (userId, input) => setUserCandidateFollow(pool, userId, input),
     listAuthenticatedElectionChoices: (userId) => listUserElectionChoices(pool, userId),
     setAuthenticatedElectionChoice: (userId, input) => setUserElectionChoice(pool, userId, input),
+    applyAuthenticatedAutoPicks: (userId, input) => applyAutoPicks(pool, userId, input),
     createAuthenticatedPickCardShare: (userId, electionDate) =>
       getOrCreateUserPickCardShare(pool, userId, electionDate),
     lookupPublicPickCard: (token) => lookupPublicPickCard(pool, token),

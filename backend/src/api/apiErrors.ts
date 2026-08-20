@@ -4,6 +4,7 @@ import { CandidateDetailReaderError } from "../pipeline/candidates/candidateDeta
 import { AuthenticatedAddressDistrictUpdateError } from "../pipeline/users/userAddressDistrictUpdater.js";
 import { ContentReportError } from "../pipeline/reports/contentReports.js";
 import { UserCandidateFollowsError } from "../pipeline/users/userCandidateFollows.js";
+import { AutoPickError } from "../pipeline/users/autoPick.js";
 import { UserElectionChoicesError } from "../pipeline/users/userElectionChoices.js";
 import { UserPickCardSharesError } from "../pipeline/users/userPickCardShares.js";
 import { InitializeUserDistrictsError } from "../pipeline/users/userDistrictInitializer.js";
@@ -117,6 +118,15 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
     }
     if (error.code === "candidacy_not_available") {
       return { statusCode: 404, code: "not_found", message: "Candidate is not an active candidate in this election" };
+    }
+    return { statusCode: 400, code: "invalid_request", message: error.message };
+  }
+  if (error instanceof AutoPickError) {
+    if (error.code === "invalid_user_id" || error.code === "user_not_found") {
+      return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
+    }
+    if (error.code === "election_not_found") {
+      return { statusCode: 404, code: "not_found", message: "Election not found" };
     }
     return { statusCode: 400, code: "invalid_request", message: error.message };
   }
