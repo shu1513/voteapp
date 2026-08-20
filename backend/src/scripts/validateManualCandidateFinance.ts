@@ -20,7 +20,11 @@ function usage(): string {
 }
 
 function readFileFlag(argv: readonly string[]): string {
-  const index = argv.indexOf("--file");
+  const indexes = argv.flatMap((token, index) => (token === "--file" ? [index] : []));
+  if (indexes.length > 1) {
+    throw new Error(`--file may be provided only once.\n${usage()}`);
+  }
+  const index = indexes[0] ?? -1;
   const value = index >= 0 ? argv[index + 1] : undefined;
   if (!value || value.startsWith("--") || value.trim().length === 0) {
     throw new Error(`Missing value for --file.\n${usage()}`);
@@ -65,6 +69,7 @@ export async function runValidateManualCandidateFinance(argv: readonly string[])
         schemaVersion: payload.schema_version,
         filingType: payload.filing_type,
         filingId: payload.filing_id,
+        amendsFilingId: payload.amends_filing_id,
         reportDate: payload.report_date,
         candidateEdges: payload.filing_type === "independent_expenditure" ? payload.candidate_edges.length : 0,
       },

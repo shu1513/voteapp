@@ -3,6 +3,7 @@
   "state": "MS",
   "filing_type": "independent_expenditure",
   "filing_id": "551440F7-6028-470A-AE79-75296477ED2E",
+  "amends_filing_id": null,
   "report_date": "2020-10-27",
   "source_url": "https://cfportal.sos.ms.gov/online/ExecuteWorkflow.aspx?WorkflowId=g729911d7-f399-46d6-a1ca-f15c1294f82d&FilingId=551440F7-6028-470A-AE79-75296477ED2E",
   "coverage_note": "Covers only campaign-finance reports filed with the Mississippi Secretary of State; county and municipal clerk filings are not included.",

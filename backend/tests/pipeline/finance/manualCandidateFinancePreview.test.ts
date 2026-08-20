@@ -219,4 +219,90 @@ describe("compileManualCandidateFinancePreview", () => {
       { categoryName: "Not Employed", amount: 525.25, receiptCount: 2 },
     ]);
   });
+
+  it("uses an IE amendment instead of adding it to the superseded filing", () => {
+    const base = loadFixture("ms_ie_single_target_griffis_2020.json");
+    if (base.filing_type !== "independent_expenditure") {
+      throw new Error("Expected IE fixture");
+    }
+    const original = {
+      ...base,
+      candidate_edges: base.candidate_edges.map((edge) => ({ ...edge, amount: 69921.75 })),
+    };
+    const amendment = {
+      ...original,
+      filing_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      amends_filing_id: original.filing_id,
+      source_url:
+        "https://cfportal.sos.ms.gov/online/ExecuteWorkflow.aspx?WorkflowId=g729911d7-f399-46d6-a1ca-f15c1294f82d&FilingId=AAAAAAAA-AAAA-4AAA-8AAA-AAAAAAAAAAAA",
+      candidate_edges: original.candidate_edges.map((edge) => ({ ...edge, amount: 60000 })),
+    };
+
+    const griffis = candidate(
+      compileManualCandidateFinancePreview([original, amendment]),
+      "Justice Kenny Griffis"
+    );
+
+    expect(griffis.outsideSpending.supportTotal).toBe(60000);
+    expect(griffis.outsideSpending.groups).toEqual([
+      expect.objectContaining({ amount: 60000 }),
+    ]);
+  });
+
+  it("fails closed when two filings claim to amend the same IE filing", () => {
+    const base = loadFixture("ms_ie_single_target_griffis_2020.json");
+    if (base.filing_type !== "independent_expenditure") {
+      throw new Error("Expected IE fixture");
+    }
+    const firstAmendment = {
+      ...base,
+      filing_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      amends_filing_id: base.filing_id,
+    };
+    const secondAmendment = {
+      ...base,
+      filing_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+      amends_filing_id: base.filing_id,
+    };
+
+    expect(() =>
+      compileManualCandidateFinancePreview([base, firstAmendment, secondAmendment])
+    ).toThrow("Ambiguous manual candidate-finance amendment order");
+  });
+
+  it("groups spender name variants by stable source entity ID", () => {
+    const first = loadFixture("ms_ie_single_target_griffis_2020.json");
+    if (first.filing_type !== "independent_expenditure") {
+      throw new Error("Expected IE fixture");
+    }
+    const firstAllocated = {
+      ...first,
+      candidate_edges: first.candidate_edges.map((edge) => ({ ...edge, amount: 100 })),
+    };
+    const second = {
+      ...firstAllocated,
+      filing_id: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+      source_url:
+        "https://cfportal.sos.ms.gov/online/ExecuteWorkflow.aspx?WorkflowId=g729911d7-f399-46d6-a1ca-f15c1294f82d&FilingId=CCCCCCCC-CCCC-4CCC-8CCC-CCCCCCCCCCCC",
+      outside_spender: {
+        ...firstAllocated.outside_spender,
+        name: "Improve Mississippi Political Action Committee",
+      },
+      candidate_edges: firstAllocated.candidate_edges.map((edge) => ({ ...edge, amount: 50 })),
+    };
+
+    const groups = candidate(
+      compileManualCandidateFinancePreview([firstAllocated, second]),
+      "Justice Kenny Griffis"
+    ).outsideSpending.groups;
+
+    expect(groups).toEqual([
+      {
+        sourceEntityId: first.outside_spender.source_entity_id,
+        name: "Improve Mississippi PAC",
+        supportOppose: "support",
+        amount: 150,
+      },
+    ]);
+  });
 });

@@ -129,6 +129,57 @@ function stablePayloadFingerprint(payload: ManualCandidateFinancePayload): strin
   return JSON.stringify(payload);
 }
 
+function filingIdentity(payload: ManualCandidateFinancePayload): string {
+  if (payload.filing_type === "candidate_report") {
+    return `candidate:${candidateKey(payload.candidate_id, payload.election_id)}`;
+  }
+  const spender = payload.outside_spender;
+  return spender.source_entity_id === null
+    ? `spender-name:${normalizedTextKey(spender.name)}`
+    : `spender-id:${spender.source_entity_id}`;
+}
+
+function canonicalFilings(
+  filings: ReadonlyMap<string, ManualCandidateFinancePayload>
+): ManualCandidateFinancePayload[] {
+  const amendedBy = new Map<string, string>();
+  for (const filing of filings.values()) {
+    if (filing.amends_filing_id === null) {
+      continue;
+    }
+    const existingAmendment = amendedBy.get(filing.amends_filing_id);
+    if (existingAmendment) {
+      throw new Error(
+        `Ambiguous manual candidate-finance amendment order: ${existingAmendment} and ${filing.filing_id} both amend ${filing.amends_filing_id}`
+      );
+    }
+    amendedBy.set(filing.amends_filing_id, filing.filing_id);
+
+    const amended = filings.get(filing.amends_filing_id);
+    if (amended) {
+      if (amended.filing_type !== filing.filing_type || filingIdentity(amended) !== filingIdentity(filing)) {
+        throw new Error(
+          `Manual candidate-finance amendment ${filing.filing_id} does not match filing ${amended.filing_id}`
+        );
+      }
+    }
+  }
+
+  for (const filing of filings.values()) {
+    const visited = new Set<string>();
+    let current: ManualCandidateFinancePayload | undefined = filing;
+    while (current?.amends_filing_id) {
+      if (visited.has(current.filing_id)) {
+        throw new Error(`Manual candidate-finance amendment cycle includes filing ${current.filing_id}`);
+      }
+      visited.add(current.filing_id);
+      current = filings.get(current.amends_filing_id);
+    }
+  }
+
+  return [...filings.values()].filter((filing) => !amendedBy.has(filing.filing_id));
+}
+
 function addCandidateName(accumulator: CandidateAccumulator, candidateName: string): void {
   if (!accumulator.candidateNames.includes(candidateName)) {
     accumulator.candidateNames.push(candidateName);
@@ -311,7 +362,10 @@ function compileCandidatePreview(accumulator: CandidateAccumulator): ManualCandi
 
     const amountCents = moneyToCents(edge.amount);
     knownByDirection[edge.support_oppose] = addCents(knownByDirection[edge.support_oppose], amountCents);
-    const groupKey = `${filing.outside_spender.source_entity_id ?? ""}\u0000${normalizedTextKey(filing.outside_spender.name)}\u0000${edge.support_oppose}`;
+    const spenderKey = filing.outside_spender.source_entity_id
+      ? `id:${filing.outside_spender.source_entity_id}`
+      : `name:${normalizedTextKey(filing.outside_spender.name)}`;
+    const groupKey = `${spenderKey}\u0000${edge.support_oppose}`;
     const existing = groupAggregates.get(groupKey);
     if (existing) {
       existing.amountCents = addCents(existing.amountCents, amountCents);
@@ -393,7 +447,7 @@ export function compileManualCandidateFinancePreview(
   }
 
   const candidates = new Map<string, CandidateAccumulator>();
-  for (const payload of filings.values()) {
+  for (const payload of canonicalFilings(filings)) {
     if (payload.filing_type === "candidate_report") {
       const candidate = getCandidateAccumulator(
         candidates,

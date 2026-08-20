@@ -28,6 +28,7 @@ type ManualCandidateFinanceCommonPayload = {
   schema_version: typeof MANUAL_CANDIDATE_FINANCE_SCHEMA_VERSION;
   state: "MS";
   filing_id: string;
+  amends_filing_id: string | null;
   report_date: string;
   source_url: string;
   coverage_note: typeof MISSISSIPPI_SOS_FINANCE_COVERAGE_NOTE;
@@ -347,6 +348,22 @@ export function parseManualCandidateFinancePayload(
   if (!filingId.ok) {
     return filingId;
   }
+  if (!("amends_filing_id" in payload)) {
+    return {
+      ok: false,
+      reason: "payload.amends_filing_id is required; use null only after verifying the filing is not an amendment",
+    };
+  }
+  const amendsFilingId =
+    payload.amends_filing_id === null
+      ? ({ ok: true, value: null } as const)
+      : parseUuid(payload.amends_filing_id, "payload.amends_filing_id");
+  if (!amendsFilingId.ok) {
+    return amendsFilingId;
+  }
+  if (amendsFilingId.value === filingId.value) {
+    return { ok: false, reason: "payload.amends_filing_id must not equal payload.filing_id" };
+  }
   const reportDate = parseIsoDate(payload.report_date, "payload.report_date");
   if (!reportDate.ok) {
     return reportDate;
@@ -372,6 +389,7 @@ export function parseManualCandidateFinancePayload(
     schema_version: MANUAL_CANDIDATE_FINANCE_SCHEMA_VERSION,
     state: "MS" as const,
     filing_id: filingId.value,
+    amends_filing_id: amendsFilingId.value,
     report_date: reportDate.value,
     source_url: sourceUrl.value,
     coverage_note: MISSISSIPPI_SOS_FINANCE_COVERAGE_NOTE,
@@ -423,6 +441,25 @@ export function parseManualCandidateFinancePayload(
     const candidateEdges = parseCandidateEdges(payload.candidate_edges);
     if (!candidateEdges.ok) {
       return candidateEdges;
+    }
+    const disbursementsThisPeriod = reportedTotals.value.disbursements_this_period;
+    if (disbursementsThisPeriod !== null) {
+      let allocatedCents = 0;
+      for (const edge of candidateEdges.value) {
+        if (edge.amount === null) {
+          continue;
+        }
+        allocatedCents += Math.round(edge.amount * 100);
+        if (!Number.isSafeInteger(allocatedCents)) {
+          return { ok: false, reason: "payload.candidate_edges allocated amount exceeds the safe cent range" };
+        }
+      }
+      if (allocatedCents > Math.round(disbursementsThisPeriod * 100)) {
+        return {
+          ok: false,
+          reason: "payload.candidate_edges allocated amount must not exceed payload.reported_totals.disbursements_this_period",
+        };
+      }
     }
     return {
       ok: true,

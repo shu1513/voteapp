@@ -200,4 +200,36 @@ describe("parseManualCandidateFinancePayload", () => {
       expect(parsed.reason).toContain("at most two decimals");
     }
   });
+
+  it("requires explicit amendment status and rejects self-reference", () => {
+    const missing = loadFixture("ms_ie_single_target_griffis_2020.json");
+    delete missing.amends_filing_id;
+    const missingParsed = parseManualCandidateFinancePayload(missing);
+    expect(missingParsed.ok).toBe(false);
+    if (!missingParsed.ok) {
+      expect(missingParsed.reason).toContain("use null only after verifying");
+    }
+
+    const selfAmending = loadFixture("ms_ie_single_target_griffis_2020.json");
+    selfAmending.amends_filing_id = selfAmending.filing_id;
+    const selfParsed = parseManualCandidateFinancePayload(selfAmending);
+    expect(selfParsed.ok).toBe(false);
+    if (!selfParsed.ok) {
+      expect(selfParsed.reason).toContain("must not equal payload.filing_id");
+    }
+  });
+
+  it("rejects candidate allocations above known filing disbursements", () => {
+    const payload = loadFixture("ms_ie_single_target_griffis_2020.json") as {
+      candidate_edges: Array<Record<string, unknown>>;
+    };
+    payload.candidate_edges[0]!.amount = 999999.99;
+
+    const parsed = parseManualCandidateFinancePayload(payload);
+
+    expect(parsed.ok).toBe(false);
+    if (!parsed.ok) {
+      expect(parsed.reason).toContain("must not exceed payload.reported_totals.disbursements_this_period");
+    }
+  });
 });
