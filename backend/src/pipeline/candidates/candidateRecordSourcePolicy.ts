@@ -370,6 +370,14 @@ export type ListedSourceAdditionJustification = {
   /** ISO date (YYYY-MM-DD) the domain was vetted and added. */
   addedOn: string;
   /**
+   * Which sanctioned path of the motive check (protocol step 5) this entry
+   * arrived by. Declaring it is mandatory — a structured claim that cannot
+   * be quietly omitted the way a prose one can, and the thing a PR reviewer
+   * checks against the actual history. It cannot prove itself true; the
+   * policy test only guards that it is present and valid.
+   */
+  listingPath: "owner_directed" | "motive_free_batch";
+  /**
    * Why this outlet has editorial or official accountability — named
    * newsroom, public masthead, established publication history. One or two
    * sentences; "research needed it" is not a rationale.
@@ -410,7 +418,8 @@ export type ListedSourceAdditionJustification = {
 //      is the live precedent). Exactly two sanctioned listing paths exist:
 //        a. OWNER-DIRECTED: the repo owner reviews the completed steps 1-4
 //           vetting evidence and explicitly directs the listing. The
-//           rationale must name that direction and its date.
+//           rationale must name that direction and its date. Every entry
+//           declares its path in the required `listingPath` field.
 //        b. MOTIVE-FREE BATCH: the domain arrives via a criterion defined
 //           without reference to any pending record (e.g. "major-network
 //           affiliates of covered markets"), applied to the whole batch.
@@ -427,6 +436,7 @@ export const LISTED_SOURCE_DOMAIN_ADDITIONS: Readonly<
 > = {
   "kold.com": {
     addedOn: "2026-08-20",
+    listingPath: "owner_directed",
     rationale:
       "KOLD-TV is Tucson's CBS affiliate, on air since 1953 and owned by Gray Media, with a named local newsroom — the same accountability profile as the founding cohort's local TV affiliates (kcci.com, wcpo.com, wibw.com). Listed via the OWNER-DIRECTED path: the repo owner reviewed the vetting evidence and directed the listing on 2026-08-20, under the standing policy that a legitimate established outlet belongs on the list.",
     evidence: [

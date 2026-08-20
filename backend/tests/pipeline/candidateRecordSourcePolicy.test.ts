@@ -1126,6 +1126,18 @@ describe("listed-source addition guard", () => {
     }
   });
 
+  it("requires a declared sanctioned listing path on every addition", () => {
+    // Runtime guard against the type being loosened later: the motive check
+    // (protocol step 5) allows exactly two paths, and every entry must claim
+    // one. Presence is checkable; truth is the PR reviewer's job.
+    for (const [domain, justification] of additions) {
+      expect(
+        ["owner_directed", "motive_free_batch"].includes(justification.listingPath),
+        `'${domain}' must declare listingPath as "owner_directed" or "motive_free_batch"`
+      ).toBe(true);
+    }
+  });
+
   it("requires independent off-domain evidence on every addition", () => {
     for (const [domain, justification] of additions) {
       expect(
