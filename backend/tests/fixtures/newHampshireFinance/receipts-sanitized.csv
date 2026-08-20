@@ -1,7 +1,8 @@
 Filing Entity ID,Candidate Name,Committee Name,Committee Subtype,Transaction Type,Transaction Sub Type,Election Period,Election year,Date of Receipt,Amount of receipt,Contributor Type,Contributor Name,Contributor Address Line 1,Contributor Address Line 2,Contributor City,Contributor State,Contributor Zip Code,Contributor occupation,Contributor Employer,Contributor Principle place of Business,Description,Timed Report
 50450,Example Candidate,Example Committee,Candidate Committee,Receipt,Monetary Contribution,General,2026,06/01/2026,$100.00,Individual / Candidate,Sample "Nickname" Donor 1,REDACTED,,Concord,NH,00000,,Sample Employer,,Sample receipt,
 50450,Example Candidate,Example Committee,Candidate Committee,Receipt,Monetary Contribution,General,2026,06/02/2026,$150.00,Individual / Candidate,Sample Donor 2,REDACTED,,Concord,NH,00000,,Sample Employer,,"Sanitized, quoted description",
-50450,Example Candidate,Example Committee,Candidate Committee,Receipt,Monetary Contribution,General,2026,06/03/2026,$100.00,Individual / Candidate,Under threshold - Name Withheld,,,,,,,,,"First line
+50450,Example Candidate,Example Committee,Candidate Committee,Receipt,Monetary Contribution,General,2026,06/03/2026,$100.00,Individual / Candidate,Under threshold - Name Withheld,,,,,,,,,"First line, extra comma
+123, Main Street
 second line",
-99999,Other Candidate,Other Committee,Candidate Committee,Receipt,Monetary Contribution,General,2026,06/04/2026,"$1,200.50",Business / Organization,Sample Organization,REDACTED,,Concord,NH,00000,,,,Other filer,
 99998,Other Candidate,Other Committee,Candidate Committee,Receipt,Monetary Contribution,General,2026,06/05/2026,$25.00,Individual / Candidate,Sample Donor 3,REDACTED,,Concord,NH,00000,,,,"Malformed "INNER"),
+99999,Other Candidate,Other Committee,Candidate Committee,Receipt,Monetary Contribution,General,2026,06/04/2026,"$1,200.50",Business / Organization,Sample Organization,REDACTED,,Concord,NH,00000,,,,Other filer,

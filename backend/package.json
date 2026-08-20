@@ -382,6 +382,7 @@
     "massachusetts-candidates:finance:live-probe": "tsx src/scripts/probeMassachusettsCandidateFinance.ts",
     "missouri-candidates:finance:probe": "tsx src/scripts/probeMissouriCandidateFinance.ts",
     "new-hampshire-candidates:finance:phase-zero": "tsx src/scripts/probeNewHampshireCampaignFinance.ts",
+    "new-hampshire-candidates:finance:raw:refresh": "tsx src/scripts/refreshNewHampshireCampaignFinanceRawData.ts",
     "alaska-candidates:finance:csv-probe": "tsx src/scripts/probeAlaskaCandidateFinance.ts",
     "alaska-candidates:finance:sync": "tsx src/scripts/syncAlaskaCandidateFinance.ts",
     "alaska-candidates:finance:sync-due": "tsx src/scripts/syncDueAlaskaCandidateFinance.ts",

@@ -244,6 +244,17 @@ export function isNewMexicoCfisRawDataRefreshEnabled(force = false): boolean {
   );
 }
 
+export function isNewHampshireCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("NEW_HAMPSHIRE_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isNewHampshireCfsRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isNewHampshireCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("NEW_HAMPSHIRE_CFS_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isMarylandCampaignFinanceEnabled(): boolean {
   return readBooleanEnv("MARYLAND_CAMPAIGN_FINANCE_ENABLED", false);
 }
