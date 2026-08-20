@@ -4,6 +4,10 @@ import {
   normalizeMissouriMecElectionDate,
   parseMissouriMecCandidateExport,
   parseMissouriMecCommitteeInfo,
+  parseMissouriMecContributionExport,
+  parseMissouriMecExpenditureExport,
+  parseMissouriMecReportInventory,
+  parseMissouriMecReportYears,
 } from "../../../src/pipeline/missouriFinance/missouriMecParsers.js";
 
 describe("missouriMecParsers", () => {
@@ -85,5 +89,49 @@ describe("missouriMecParsers", () => {
   it("normalizes real MEC dates and rejects rollover dates", () => {
     expect(normalizeMissouriMecElectionDate("4/2/2024")).toBe("2024-04-02");
     expect(() => normalizeMissouriMecElectionDate("2/30/2026")).toThrow("Invalid Missouri MEC election date");
+  });
+
+  it("parses pinned contribution/expenditure exports without retaining addresses", () => {
+    const contributions = `<table><tr>${[
+      "MECID", "Committee", "Report", "Contributor-Committee", "Contributor-Company", "Contributor-Last Name",
+      "Contributor-First Name", "Address1", "Address2", "City", "State", "Zip", "Employer", "Occupation",
+      "Contribution Date", "Contribution Amount", "Monetary/In-Kind", "Committee",
+    ].map((value) => `<th>${value}</th>`).join("")}</tr><tr>${[
+      "C263985", "Example Committee", "July Quarterly Report", "", "", "Doe", "Jane", "10 Private St", "",
+      "Jefferson City", "MO", "65101", "Example LLC", "Engineer", "8/5/2026", "$1,234.56", "Monetary", "Candidate",
+    ].map((value) => `<td>${value}</td>`).join("")}</tr></table>`;
+    expect(parseMissouriMecContributionExport(contributions)).toEqual([expect.objectContaining({
+      mecid: "C263985", report: "July Quarterly Report", contributionDate: "2026-08-05",
+      amountCents: 123456, employer: "Example LLC", occupation: "Engineer",
+    })]);
+    expect(parseMissouriMecContributionExport(contributions)[0]).not.toHaveProperty("address1");
+
+    const expenditures = `<table><tr>${[
+      "MECID", "Committee Name", "Report", "Expenditure-Last Name", "Expenditure-First Name", "Expenditure-Company",
+      "Expenditure-Address1", "Expenditure-Address2", "Expenditure-City", "Expenditure-State", "Expenditure-Zip",
+      "Expenditure Purpose", "Expenditure Date", "Expenditure Amount", "Expenditure Type",
+    ].map((value) => `<th>${value}</th>`).join("")}</tr><tr>${[
+      "C263985", "Example Committee", "July Quarterly Report", "", "", "Printer", "20 Private St", "", "Columbia",
+      "MO", "65201", "Signs", "9/1/2026", "($25.00)", "Paid",
+    ].map((value) => `<td>${value}</td>`).join("")}</tr></table>`;
+    expect(parseMissouriMecExpenditureExport(expenditures)).toEqual([expect.objectContaining({
+      amountCents: -2500, expenditureDate: "2026-09-01", expenditureType: "Paid",
+    })]);
+  });
+
+  it("parses any expanded report grid index and fails on misalignment", () => {
+    const years = `<span id="x_grvReportOutside_lblYear_0">2026</span><span id="x_grvReportOutside_lblYear_1">2025</span>`;
+    expect(parseMissouriMecReportYears(years)).toEqual([
+      { year: 2026, expandControlName: "grvReportOutside$ctl02$ImgRptRight" },
+      { year: 2025, expandControlName: "grvReportOutside$ctl03$ImgRptRight" },
+    ]);
+    const inventory = `<a id="x_grvReports_2_hlink_0" data-CPID="274835"></a>
+      <span id="x_grvReports_2_lblReport_0">AMENDED April Quarterly Report</span>
+      <span id="x_grvReports_2_lblDateReceived_0">4/15/2026</span>`;
+    expect(parseMissouriMecReportInventory(inventory)).toEqual([{
+      reportId: "274835", report: "AMENDED April Quarterly Report", dateFiled: "2026-04-15",
+      isAmended: true, lineageKey: "APRIL QUARTERLY REPORT",
+    }]);
+    expect(() => parseMissouriMecReportInventory(inventory.replace("lblDateReceived", "missing"))).toThrow("Misaligned");
   });
 });

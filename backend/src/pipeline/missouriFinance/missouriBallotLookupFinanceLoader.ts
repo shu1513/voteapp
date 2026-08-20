@@ -1,0 +1,43 @@
+import type { Pool, PoolClient } from "pg";
+
+import { isMissouriCampaignFinanceEnabled } from "../../config/featureFlags.js";
+import {
+  officeInputFromElectionRow,
+  type BallotLookupFinanceSummary,
+  type StateFinanceRequestCandidateRow,
+  type StateFinanceRequestElectionRow,
+} from "../address/ballotLookupFinanceShared.js";
+import { loadStandardStateFinanceSummariesByCandidateElection } from "../finance/standardStateFinanceBallotLookupLoader.js";
+import { isMissouriFinanceEligibleOffice } from "./missouriFinanceEligibleOffices.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+
+const MISSOURI_MEC_SOURCE_URL = "https://www.mec.mo.gov/MEC/Campaign_Finance/";
+const MISSOURI_DIRECT_COVERAGE_NOTE =
+  "Totals and donor breakdowns are summed from itemized Missouri Ethics Commission filings and are not reconciled to official report covers.";
+
+export async function loadMissouriCandidateFinanceSummariesByCandidateElection(
+  db: Queryable,
+  candidateRows: readonly StateFinanceRequestCandidateRow[],
+  electionRows: readonly StateFinanceRequestElectionRow[]
+): Promise<Map<string, BallotLookupFinanceSummary>> {
+  return loadStandardStateFinanceSummariesByCandidateElection({
+    db,
+    candidateRows,
+    electionRows,
+    state: "MO",
+    source: "MISSOURI_MEC",
+    sourceUrl: MISSOURI_MEC_SOURCE_URL,
+    enabled: isMissouriCampaignFinanceEnabled,
+    isEligibleElection: (row) => isMissouriFinanceEligibleOffice(officeInputFromElectionRow(row)),
+    evidenceLabelTypes: ["donor"],
+    directCoverageNote: MISSOURI_DIRECT_COVERAGE_NOTE,
+    tables: {
+      links: "mo_candidate_finance_links",
+      summaries: "mo_candidate_finance_summaries",
+      directBreakdowns: "mo_candidate_finance_direct_breakdowns",
+      outsideGroups: "mo_candidate_finance_outside_groups",
+      outsideGroupBreakdowns: "mo_candidate_finance_outside_group_breakdowns",
+    },
+  });
+}

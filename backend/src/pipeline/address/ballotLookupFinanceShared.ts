@@ -101,6 +101,7 @@ export type BallotLookupFinanceSummary = {
     | "OHIO_SOS"
     | "NORTH_CAROLINA_SBE"
     | "GEORGIA_ETHICS"
+    | "MISSOURI_MEC"
     | "RHODE_ISLAND_ERTS";
   cycle: number;
   fec_candidate_id: string | null;
@@ -207,6 +208,7 @@ export const FINANCE_SUMMARY_SOURCES = [
   "OHIO_SOS",
   "NORTH_CAROLINA_SBE",
   "GEORGIA_ETHICS",
+  "MISSOURI_MEC",
   "RHODE_ISLAND_ERTS",
 ] as const satisfies readonly BallotLookupFinanceSummary["source"][];
 

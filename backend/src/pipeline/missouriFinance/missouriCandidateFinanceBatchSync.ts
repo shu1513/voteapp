@@ -1,0 +1,156 @@
+import type { Pool, PoolClient } from "pg";
+
+import { isMissouriCampaignFinanceRawDataRefreshEnabled } from "../../config/featureFlags.js";
+import {
+  autoLinkMissingMissouriCandidateFinanceLinks,
+  listMissouriCandidateElectionsMissingFinanceLinks,
+  type MissouriCandidateCommitteeResolver,
+} from "./missouriCandidateFinanceAutoLink.js";
+import { listDueMissouriCandidateFinanceSyncRows } from "./missouriCandidateFinanceDueList.js";
+import { syncMissouriCandidateFinance, type MissouriCandidateFinanceSyncResult } from "./missouriCandidateFinanceSync.js";
+import { acquireMissouriMecCandidateFinanceArtifacts } from "./missouriMecArtifactAcquisition.js";
+import { createMissouriMecSession, type MissouriMecSession } from "./missouriMecClient.js";
+
+type Queryable = Pick<Pool | PoolClient, "query">;
+type ConnectableQueryable = Queryable & { connect: () => Promise<PoolClient> };
+
+export type MissouriCandidateFinanceBatchSyncInput = {
+  db: ConnectableQueryable;
+  now?: Date;
+  dryRun?: boolean;
+  forceRawDataRefresh?: boolean;
+  maxCandidates?: number;
+  staleAfterDays?: number;
+  electionLookbackDays?: number;
+  electionLookaheadDays?: number;
+  autoLinkMissingLinks?: boolean;
+  cacheDir?: string;
+  session?: MissouriMecSession;
+  resolveCandidateCommittee?: MissouriCandidateCommitteeResolver;
+  acquireArtifactsFn?: typeof acquireMissouriMecCandidateFinanceArtifacts;
+  syncCandidateFn?: typeof syncMissouriCandidateFinance;
+};
+
+export type MissouriCandidateFinanceBatchSyncResult = {
+  dryRun: boolean;
+  rawDataRefreshEnabled: boolean;
+  now: string;
+  staleAfterDays: number;
+  maxCandidates: number;
+  dueCandidateCount: number;
+  selectedCandidateCount: number;
+  syncedCandidateCount: number;
+  failedCandidateCount: number;
+  autoLinkAttemptedCount: number;
+  autoLinkLinkedCount: number;
+  results: Array<{
+    candidateId: string;
+    electionId: string;
+    committeeId: string;
+    ok: boolean;
+    result?: MissouriCandidateFinanceSyncResult;
+    error?: string;
+  }>;
+};
+
+const DEFAULT_MAX_CANDIDATES = 10;
+const DEFAULT_STALE_AFTER_DAYS = 7;
+const DEFAULT_ELECTION_LOOKBACK_DAYS = 1;
+const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 730;
+
+function positiveInteger(value: number | undefined, fallback: number, label: string): number {
+  const normalized = value ?? fallback;
+  if (!Number.isSafeInteger(normalized) || normalized <= 0) throw new Error(`Invalid Missouri finance batch ${label}: ${value}`);
+  return normalized;
+}
+
+export async function syncDueMissouriCandidateFinance(
+  input: MissouriCandidateFinanceBatchSyncInput
+): Promise<MissouriCandidateFinanceBatchSyncResult> {
+  const now = input.now ?? new Date();
+  if (Number.isNaN(now.getTime())) throw new Error("Invalid Missouri finance batch timestamp");
+  const maxCandidates = positiveInteger(input.maxCandidates, DEFAULT_MAX_CANDIDATES, "maxCandidates");
+  const staleAfterDays = positiveInteger(input.staleAfterDays, DEFAULT_STALE_AFTER_DAYS, "staleAfterDays");
+  const electionLookbackDays = positiveInteger(input.electionLookbackDays, DEFAULT_ELECTION_LOOKBACK_DAYS, "electionLookbackDays");
+  const electionLookaheadDays = positiveInteger(input.electionLookaheadDays, DEFAULT_ELECTION_LOOKAHEAD_DAYS, "electionLookaheadDays");
+  const dryRun = input.dryRun === true;
+  let autoLinkAttemptedCount = 0;
+  let autoLinkLinkedCount = 0;
+
+  if (!dryRun && input.autoLinkMissingLinks !== false) {
+    try {
+      const missing = await listMissouriCandidateElectionsMissingFinanceLinks(input.db, {
+        now, maxCandidates, electionLookbackDays, electionLookaheadDays,
+      });
+      autoLinkAttemptedCount = missing.length;
+      const linked = await autoLinkMissingMissouriCandidateFinanceLinks({
+        db: input.db,
+        now,
+        maxCandidates,
+        electionLookbackDays,
+        electionLookaheadDays,
+        candidateElections: missing,
+        resolveCandidateCommittee: input.resolveCandidateCommittee,
+      });
+      autoLinkLinkedCount = linked.filter((row) => row.status === "linked").length;
+    } catch (error) {
+      console.warn("Missouri finance auto-link skipped; continuing with active links:", error instanceof Error ? error.message : error);
+    }
+  }
+
+  const due = await listDueMissouriCandidateFinanceSyncRows(input.db, {
+    now, staleAfterDays, maxCandidates, electionLookbackDays, electionLookaheadDays,
+  });
+  const rawDataRefreshEnabled = isMissouriCampaignFinanceRawDataRefreshEnabled(input.forceRawDataRefresh === true);
+  const session = rawDataRefreshEnabled ? input.session ?? createMissouriMecSession() : undefined;
+  const acquire = input.acquireArtifactsFn ?? acquireMissouriMecCandidateFinanceArtifacts;
+  const sync = input.syncCandidateFn ?? syncMissouriCandidateFinance;
+  const results: MissouriCandidateFinanceBatchSyncResult["results"] = [];
+  for (const row of due.rows) {
+    try {
+      if (rawDataRefreshEnabled) {
+        await acquire({ mecid: row.committeeId, year: row.electionYear, cacheDir: input.cacheDir, session, now });
+      }
+      const result = await sync({
+        db: input.db,
+        candidateId: row.candidateId,
+        electionId: row.electionId,
+        candidateName: row.candidateName,
+        electionYear: row.electionYear,
+        electionDate: row.electionDate,
+        officeName: row.officeName,
+        district: row.district,
+        committee: {
+          committeeId: row.committeeId,
+          committeeName: row.committeeName,
+          linkSource: row.linkSource,
+          sourceUrl: row.sourceUrl,
+        },
+        cacheDir: input.cacheDir,
+        now,
+        dryRun,
+      });
+      results.push({ candidateId: row.candidateId, electionId: row.electionId, committeeId: row.committeeId, ok: true, result });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.warn("Missouri finance sync failed for candidate; continuing:", {
+        candidateId: row.candidateId, electionId: row.electionId, committeeId: row.committeeId, error: message,
+      });
+      results.push({ candidateId: row.candidateId, electionId: row.electionId, committeeId: row.committeeId, ok: false, error: message });
+    }
+  }
+  return {
+    dryRun,
+    rawDataRefreshEnabled,
+    now: now.toISOString(),
+    staleAfterDays,
+    maxCandidates,
+    dueCandidateCount: due.totalDueRows,
+    selectedCandidateCount: due.rows.length,
+    syncedCandidateCount: results.filter((row) => row.ok).length,
+    failedCandidateCount: results.filter((row) => !row.ok).length,
+    autoLinkAttemptedCount,
+    autoLinkLinkedCount,
+    results,
+  };
+}

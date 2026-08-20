@@ -36,6 +36,15 @@ const ELIGIBLE_OFFICE_KEYS = [
 
 export const MISSOURI_FINANCE_ELIGIBLE_OFFICE_KEYS: ReadonlySet<string> = new Set(ELIGIBLE_OFFICE_KEYS);
 
+export function isMissouriFinanceEligibleOffice(input: {
+  officeScope: string | null | undefined;
+  officeCanonicalName: string | null | undefined;
+}): boolean {
+  const scope = input.officeScope?.trim();
+  const name = input.officeCanonicalName?.trim();
+  return Boolean(scope && name && MISSOURI_FINANCE_ELIGIBLE_OFFICE_KEYS.has(`${scope}::${name}`));
+}
+
 export function normalizeMissouriMecText(value: string | null | undefined): string {
   return (value ?? "")
     .normalize("NFKD")

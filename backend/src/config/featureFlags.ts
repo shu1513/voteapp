@@ -255,6 +255,24 @@ export function isMarylandCampaignFinanceSyncEnabled(force = false): boolean {
   );
 }
 
+export function isMissouriCampaignFinanceEnabled(): boolean {
+  return readBooleanEnv("MISSOURI_CAMPAIGN_FINANCE_ENABLED", false);
+}
+
+export function isMissouriCampaignFinanceSyncEnabled(force = false): boolean {
+  return (
+    isMissouriCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MISSOURI_CAMPAIGN_FINANCE_SYNC_ENABLED", false))
+  );
+}
+
+export function isMissouriCampaignFinanceRawDataRefreshEnabled(force = false): boolean {
+  return (
+    isMissouriCampaignFinanceEnabled() &&
+    (force || readBooleanEnv("MISSOURI_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", false))
+  );
+}
+
 export function isMarylandCfsRawDataRefreshEnabled(force = false): boolean {
   return (
     isMarylandCampaignFinanceEnabled() &&
