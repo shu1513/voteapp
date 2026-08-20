@@ -51,6 +51,15 @@ describe("financeLabelClassifier", () => {
     });
   });
 
+  it("classifies realtor associations as real estate", () => {
+    expect(classifyFinanceLabel({ rawLabel: "Austin Board of REALTORS", labelType: "donor" })).toMatchObject({
+      industrySlug: "real_estate",
+      confidence: "medium",
+      classificationSource: "rule",
+      matchedRule: "organization_pattern_real_estate",
+    });
+  });
+
   it("classifies known energy and finance organizations", () => {
     expect(classifyFinanceLabel({ rawLabel: "Energy Transfer LP", labelType: "donor" })).toMatchObject({
       normalizedLabel: "ENERGY TRANSFER",

@@ -28,6 +28,8 @@
 
 import type { Pool, PoolClient } from "pg";
 
+import type { FinanceLabelClassification } from "../finance/financeLabelClassifier.js";
+import { upsertFinanceLabelClassification } from "../finance/financeIndustryClassificationService.js";
 import { normalizeAustinFinanceTextKey } from "./austinFinanceKeys.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -234,6 +236,13 @@ export async function replaceAustinCandidateFinanceSnapshot(input: {
   directBreakdowns: readonly AustinDirectBreakdownInput[];
   outsideGroups: readonly AustinOutsideGroupInput[];
   outsideGroupBreakdowns: readonly AustinOutsideGroupBreakdownInput[];
+  /**
+   * Donor-label industry classifications behind the breakdowns, persisted to
+   * the shared `finance_label_classifications` cache (the ballot-lookup
+   * evidence join reads industries off that table; the guarded upsert never
+   * degrades a manual verdict — see upsertFinanceLabelClassification).
+   */
+  classifications?: readonly FinanceLabelClassification[];
   syncedAt?: Date;
 }): Promise<{ linkId: string }> {
   if (typeof input.db.connect !== "function")
@@ -342,6 +351,8 @@ export async function replaceAustinCandidateFinanceSnapshot(input: {
           syncedAt,
         ],
       );
+    for (const classification of input.classifications ?? [])
+      await upsertFinanceLabelClassification({ db: client, classification });
     await client.query("COMMIT");
     return { linkId };
   } catch (error) {

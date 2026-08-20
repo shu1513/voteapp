@@ -552,6 +552,36 @@ export async function getAustinContributionRowsByRecipient(
   return rows.map(austinContributionRowFromRecord);
 }
 
+/**
+ * Itemized contribution rows received by one filer name with a contribution
+ * date inside the inclusive window. Used for PAC funder breakdowns, where the
+ * window bounds the fetch server-side: a payroll-deduction PAC holds tens of
+ * thousands of rows all-time (more than the paging cap), and the aggregator
+ * can only place dated rows anyway.
+ */
+export async function getAustinContributionRowsByRecipientBetween(
+  input: { recipient: string; fromDate: string; toDate: string },
+  options: AustinSocrataClientOptions = defaultAustinSocrataClientOptions()
+): Promise<AustinContributionRow[]> {
+  const fromDate = requireIsoDate(input.fromDate, "from date");
+  const toDate = requireIsoDate(input.toDate, "to date");
+  if (fromDate > toDate) {
+    throw new AustinSocrataClientError("invalid_request", `Austin Socrata contribution window is inverted: ${fromDate}..${toDate}`);
+  }
+  const rows = await fetchAustinSocrataPagedRows(
+    AUSTIN_SOCRATA_CONTRIBUTIONS_DATASET,
+    {
+      $where:
+        `recipient = ${soqlString(requireNonEmpty(input.recipient, "recipient"))}` +
+        ` AND contribution_date >= ${soqlString(`${fromDate}T00:00:00.000`)}` +
+        ` AND contribution_date <= ${soqlString(`${toDate}T23:59:59.999`)}`,
+      $order: "transaction_id",
+    },
+    options
+  );
+  return rows.map(austinContributionRowFromRecord);
+}
+
 /** Every Direct Campaign Expenditure row (the dataset is small: hundreds of rows). */
 export async function getAustinDirectCampaignExpenditureRows(
   options: AustinSocrataClientOptions = defaultAustinSocrataClientOptions()
