@@ -17,6 +17,11 @@ export function useMyResearchAreas(): {
   weights: Map<string, ResearchAreaWeight>;
   hasSaved: boolean;
   isLoading: boolean;
+  /** The preferences fetch itself failed (never true for anonymous or
+   * unverified viewers — their query is disabled). Consumers that gate a
+   * flow on "how many issues are saved" must not read an errored empty
+   * list as "the user saved nothing". */
+  isError: boolean;
 } {
   const { me, isLoading: meLoading } = useMe();
   const enabled = me?.email_verified === true;
@@ -41,5 +46,6 @@ export function useMyResearchAreas(): {
     // personalized views on this flag (the ballot "Only my issues" filter)
     // fail open instead of spinning.
     isLoading: enabled ? query.isPending : meLoading,
+    isError: enabled ? query.isError : false,
   };
 }

@@ -1,9 +1,9 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { AutoPickElectionResult, Me } from "@voteapp/api-client";
 import { AutoPickControl } from "./AutoPickControl";
-import { stubApiRoutes } from "../test/mockApi";
+import { apiError, stubApiRoutes } from "../test/mockApi";
 import { renderRoutes } from "../test/render";
 
 // Same mocking rationale as ElectionChoiceControls.test: the control forks
@@ -93,12 +93,19 @@ function pickedResult(overrides: Partial<AutoPickElectionResult> = {}): AutoPick
   };
 }
 
-function renderControl() {
+function renderControl(seatsToFill: number | null = null) {
   return renderRoutes([
-    { path: "/", element: <AutoPickControl electionId={ELECTION_ID} /> },
+    { path: "/", element: <AutoPickControl electionId={ELECTION_ID} seatsToFill={seatsToFill} /> },
     { path: "/login", element: <p>Login page</p> },
     { path: "/me/settings", element: <p>Settings page</p> },
   ]);
+}
+
+/** The button disables while the preferences load; click only once ready. */
+async function clickPickForMe() {
+  const button = await screen.findByRole("button", { name: "Pick for me" });
+  await waitFor(() => expect(button).toBeEnabled());
+  await userEvent.click(button);
 }
 
 describe("AutoPickControl", () => {
@@ -106,7 +113,7 @@ describe("AutoPickControl", () => {
     mockMe = null;
     const fetchMock = stubApiRoutes({});
     renderControl();
-    await userEvent.click(screen.getByRole("button", { name: "Pick for me" }));
+    await clickPickForMe();
     expect(await screen.findByRole("link", { name: "Sign in" })).toBeInTheDocument();
     expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining("auto-picks"), expect.anything());
   });
@@ -122,7 +129,7 @@ describe("AutoPickControl", () => {
       },
     });
     renderControl();
-    await userEvent.click(await screen.findByRole("button", { name: "Pick for me" }));
+    await clickPickForMe();
     const link = await screen.findByRole("link", { name: "Rank your issues" });
     expect(link).toHaveAttribute("href", "/me/settings");
   });
@@ -135,7 +142,7 @@ describe("AutoPickControl", () => {
       "/api/me/auto-picks": { body: { results: [pickedResult()] } },
     });
     renderControl();
-    await userEvent.click(await screen.findByRole("button", { name: "Pick for me" }));
+    await clickPickForMe();
     const panel = await screen.findByRole("region", { name: "Why this pick" });
     expect(panel).toHaveTextContent("Picked Alice Alvarez — the best match for your issues.");
     expect(panel).toHaveTextContent("Housing · aligned");
@@ -145,6 +152,49 @@ describe("AutoPickControl", () => {
       election_ids: [ELECTION_ID],
       mode: "replace",
     });
+  });
+
+  it("flags the open seats when a multi-seat pick fills only some of them", async () => {
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/auto-picks": { body: { results: [pickedResult()] } },
+    });
+    renderControl(2);
+    await clickPickForMe();
+    const panel = await screen.findByRole("region", { name: "Why this pick" });
+    expect(panel).toHaveTextContent(
+      "Picked Alice Alvarez — the best match for your issues. One seat is still open: nothing known separates the other candidates, so those picks are yours to make."
+    );
+  });
+
+  it("lets the backend decide the issue floor when the preferences fetch failed", async () => {
+    stubApiRoutes({
+      "/api/me": { body: { user: SIGNED_IN } },
+      "/api/me/research-area-preferences": apiError(500, "internal_error", "boom"),
+      "/api/me/election-choices": { body: { choices: [] } },
+      "/api/me/auto-picks": {
+        body: {
+          results: [
+            pickedResult({
+              outcome: "no_pick",
+              reason: "too_few_issues",
+              picked_candidate_ids: [],
+              candidates: [],
+              unresearched: [],
+            }),
+          ],
+        },
+      },
+    });
+    renderControl();
+    await clickPickForMe();
+    // No client-side "rank your issues" misdirection from the errored empty
+    // list — the POST ran and the backend's authoritative reason rendered.
+    const panel = await screen.findByRole("region", { name: "Why this pick" });
+    expect(panel).toHaveTextContent("Rank at least 3 issues first");
+    expect(screen.queryByRole("link", { name: "Rank your issues" })).not.toBeInTheDocument();
   });
 
   it("explains an honest no-pick, naming the shortlist", async () => {
@@ -167,7 +217,7 @@ describe("AutoPickControl", () => {
       },
     });
     renderControl();
-    await userEvent.click(await screen.findByRole("button", { name: "Pick for me" }));
+    await clickPickForMe();
     const panel = await screen.findByRole("region", { name: "Why this pick" });
     expect(panel).toHaveTextContent(
       "It's a tie between Alice Alvarez and Bob Boone on your issues — your call between them."
@@ -207,7 +257,7 @@ describe("AutoPickControl", () => {
       },
     });
     renderControl();
-    await userEvent.click(await screen.findByRole("button", { name: "Pick for me" }));
+    await clickPickForMe();
     const panel = await screen.findByRole("region", { name: "Why this pick" });
     expect(panel).toHaveTextContent("Bob Boone excluded — crossed your line on Climate");
     expect(panel).toHaveTextContent("Voted to repeal the emissions standard");
@@ -235,7 +285,7 @@ describe("AutoPickControl", () => {
       },
     });
     renderControl();
-    await userEvent.click(await screen.findByRole("button", { name: "Pick for me" }));
+    await clickPickForMe();
     const panel = await screen.findByRole("region", { name: "Why this pick" });
     expect(panel).toHaveTextContent("Vote No — this measure goes against an issue you drew a line on.");
     expect(panel).toHaveTextContent("Climate · conflicts");

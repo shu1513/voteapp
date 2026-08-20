@@ -838,10 +838,13 @@ export function ElectionPage() {
                 (mode replace — a re-run refreshes the pick), with its "Why
                 this pick" panel below the button. Guests get a sign-in
                 prompt inside the control, matching the per-candidate
-                buttons' visibility gate. */}
+                buttons' visibility gate. key: this route element stays
+                mounted across sibling rail walks, so without a remount the
+                previous election's panel (or an in-flight run's result)
+                would surface under the next election. */}
             {showChoiceControls && data.race_type !== "ballot_measure" ? (
               <div className="mt-3">
-                <AutoPickControl electionId={data.id} />
+                <AutoPickControl key={data.id} electionId={data.id} seatsToFill={data.seats_to_fill ?? null} />
               </div>
             ) : null}
             {showPartyFilter ? (
@@ -1133,9 +1136,10 @@ export function ElectionPage() {
           >
             {/* Measure-side "Pick for me": answers Yes/No from the measure's
                 issue tags. Lives in the same card as the Yes/No pair — the
-                card is the page's one pick control. */}
+                card is the page's one pick control. Same key rationale as
+                the office control: the route element survives rail walks. */}
             <div className="mb-2">
-              <AutoPickControl electionId={data.id} />
+              <AutoPickControl key={data.id} electionId={data.id} seatsToFill={null} />
             </div>
             <MeasureChoiceButtons
               electionId={data.id}

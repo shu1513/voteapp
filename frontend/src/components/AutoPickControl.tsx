@@ -22,6 +22,10 @@ const MIN_ISSUES = 3;
 
 type AutoPickControlProps = {
   electionId: string;
+  /** elections.seats_to_fill — null renders as a single seat (office races);
+   * pass null for measures. Lets the panel flag a partial fill: "picked"
+   * with fewer names than seats must not read as a finished race. */
+  seatsToFill: number | null;
 };
 
 function joinNames(names: string[]): string {
@@ -31,9 +35,9 @@ function joinNames(names: string[]): string {
   return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
 }
 
-export function AutoPickControl({ electionId }: AutoPickControlProps) {
+export function AutoPickControl({ electionId, seatsToFill }: AutoPickControlProps) {
   const { me } = useMe();
-  const { preferences } = useMyResearchAreas();
+  const { preferences, isLoading: preferencesLoading, isError: preferencesError } = useMyResearchAreas();
   const autoPick = useAutoPick();
   const saving = useElectionChoiceSaving();
   const [prompt, setPrompt] = useState<"sign_in" | "rank_issues" | null>(null);
@@ -48,7 +52,11 @@ export function AutoPickControl({ electionId }: AutoPickControlProps) {
       setPrompt("sign_in");
       return;
     }
-    if (preferences.length < MIN_ISSUES) {
+    // The issue-floor prompt only fires on a LOADED list: a failed fetch
+    // returns the same empty array, and telling a user with five ranked
+    // issues to go rank issues would be wrong — on error the backend's
+    // per-result too_few_issues is the authority (the panel renders it).
+    if (!preferencesError && preferences.length < MIN_ISSUES) {
       setPrompt("rank_issues");
       return;
     }
@@ -64,7 +72,10 @@ export function AutoPickControl({ electionId }: AutoPickControlProps) {
       <span>
         <button
           type="button"
-          disabled={saving}
+          // Disabled while the preferences load: clicking then would hit the
+          // issue-floor check against a still-empty list and misdirect a
+          // ready user to the issue editor.
+          disabled={saving || preferencesLoading}
           onClick={onClick}
           className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-semibold text-ink transition hover:border-ink disabled:opacity-50"
         >
@@ -97,13 +108,21 @@ export function AutoPickControl({ electionId }: AutoPickControlProps) {
             : "Couldn't run the pick — check your connection and try again."}
         </p>
       ) : null}
-      {result !== null ? <WhyThisPickPanel result={result} areaName={areaName} onDismiss={() => setResult(null)} /> : null}
+      {result !== null ? (
+        <WhyThisPickPanel
+          result={result}
+          seatsToFill={seatsToFill}
+          areaName={areaName}
+          onDismiss={() => setResult(null)}
+        />
+      ) : null}
     </div>
   );
 }
 
 type WhyThisPickPanelProps = {
   result: AutoPickElectionResult;
+  seatsToFill: number | null;
   areaName: (researchAreaId: string) => string;
   onDismiss: () => void;
 };
@@ -116,7 +135,7 @@ function candidateName(result: AutoPickElectionResult, candidateId: string): str
 
 // Headline sentence per outcome/reason — the honest summary the spec
 // requires ("no pick" is a normal outcome, and saying why is the feature).
-function summarize(result: AutoPickElectionResult): string {
+function summarize(result: AutoPickElectionResult, seatsToFill: number | null): string {
   const shortlist = joinNames(result.shortlist_candidate_ids.map((id) => candidateName(result, id)));
   if (result.race_type === "ballot_measure") {
     if (result.reason === "veto") {
@@ -132,11 +151,18 @@ function summarize(result: AutoPickElectionResult): string {
   }
   if (result.outcome === "picked") {
     const picked = joinNames(result.picked_candidate_ids.map((id) => candidateName(result, id)));
+    // Multi-seat races can fill fewer seats than they have (a tie or a lack
+    // of evidence for the rest): a "picked" summary that hides the open
+    // seats would read as a finished race.
+    const openSeats = (seatsToFill ?? 1) - result.picked_candidate_ids.length;
     if (result.reason === "by_elimination") {
       return `Picked ${picked} by elimination — the rest have records against your issues, and nothing known counts against ${picked}.`;
     }
     if (result.reason === "tie") {
-      return `Picked ${picked}; the last seat is a tie between ${shortlist} — that one is your call.`;
+      return `Picked ${picked}; the ${openSeats === 1 ? "last seat is" : `remaining ${openSeats} seats are`} a tie between ${shortlist} — that part is your call.`;
+    }
+    if (openSeats > 0) {
+      return `Picked ${picked} — the best match for your issues. ${openSeats === 1 ? "One seat is" : `${openSeats} seats are`} still open: nothing known separates the other candidates, so those picks are yours to make.`;
     }
     return `Picked ${picked} — the best match for your issues.`;
   }
@@ -191,7 +217,7 @@ function PerIssueChips({
   );
 }
 
-function WhyThisPickPanel({ result, areaName, onDismiss }: WhyThisPickPanelProps) {
+function WhyThisPickPanel({ result, seatsToFill, areaName, onDismiss }: WhyThisPickPanelProps) {
   const pickedReports = result.picked_candidate_ids
     .map((id) => result.candidates.find((report) => report.candidate_id === id))
     .filter((report): report is AutoPickCandidateReport => report !== undefined);
@@ -203,7 +229,7 @@ function WhyThisPickPanel({ result, areaName, onDismiss }: WhyThisPickPanelProps
       className="rounded-xl border border-line bg-surface/50 p-4 text-sm text-ink"
     >
       <div className="flex items-start justify-between gap-2">
-        <p className="font-medium">{summarize(result)}</p>
+        <p className="font-medium">{summarize(result, seatsToFill)}</p>
         <button
           type="button"
           onClick={onDismiss}
