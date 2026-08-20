@@ -48,7 +48,10 @@ export function normalizeMissouriMecText(value: string | null | undefined): stri
 }
 
 export function normalizeMissouriMecJurisdiction(value: string | null | undefined): string | null {
-  let normalized = normalizeMissouriMecText(value)
+  // Census/VoteApp keeps apostrophes (Lee's Summit); MEC subdivision labels
+  // omit them (City of Lees Summit). Apostrophes do not distinguish Missouri
+  // jurisdictions, so remove them instead of turning them into word breaks.
+  let normalized = normalizeMissouriMecText((value ?? "").replace(/['’]/g, ""))
     .replace(/\bSTATE OF MISSOURI\b/g, "MISSOURI")
     .replace(/,? MISSOURI$/g, "")
     .trim();
@@ -123,7 +126,7 @@ function placePoliticalOffice(input: { officeName: string; ballotTitle: string }
     case "Municipal Assessor":
       return "Assessor";
     case "Place Level Judge":
-      return /\bASSOCIATE\b/.test(ballot) ? "Associate Circuit Judge" : "Circuit Judge";
+      return "Municipal Judge";
     default:
       return null;
   }

@@ -75,6 +75,13 @@ describe("missouriFinanceEligibleOffices", () => {
     });
     expect(
       toMissouriMecOfficeSearchInput({
+        officeScope: "place",
+        officeName: "Place Level Judge",
+        ballotTitle: "Municipal Judge, Division 1",
+      })
+    ).toMatchObject({ politicalOffice: "Municipal Judge", requiresSubdivision: true });
+    expect(
+      toMissouriMecOfficeSearchInput({
         officeScope: "school_unified",
         officeName: "School Board Member",
         ballotTitle: "Member, St. Louis Board of Education",
@@ -86,6 +93,8 @@ describe("missouriFinanceEligibleOffices", () => {
     expect(normalizeMissouriMecJurisdiction("City of Jackson")).toBe("JACKSON CITY");
     expect(normalizeMissouriMecJurisdiction("Jackson city, Missouri")).toBe("JACKSON CITY");
     expect(normalizeMissouriMecJurisdiction("St. Louis County, Missouri")).toBe("ST LOUIS COUNTY");
+    expect(normalizeMissouriMecJurisdiction("Lee's Summit city, Missouri")).toBe("LEES SUMMIT CITY");
+    expect(normalizeMissouriMecJurisdiction("City of Lees Summit")).toBe("LEES SUMMIT CITY");
     expect(normalizeMissouriMecPoliticalDistrict("District No. 001")).toBe("DISTRICT 1");
     expect(normalizeMissouriMecPoliticalDistrict("Alderperson Ward 03")).toBe("WARD 3");
   });

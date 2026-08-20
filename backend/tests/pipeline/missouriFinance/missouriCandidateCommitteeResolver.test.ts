@@ -155,6 +155,47 @@ describe("missouriCandidateCommitteeResolver", () => {
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_committee_match" });
   });
 
+  it("matches a place-level judge only through MEC Municipal Judge evidence", () => {
+    const municipalJudge: MissouriMecCandidateCommitteeRecord = {
+      mecid: "C232576",
+      committeeName: "Committee to Elect Sam Buccero",
+      candidateName: "Samuel Buccero",
+      party: "I",
+      officeSought: "Municipal Judge - City of Lees Summit",
+      status: "T",
+      searchElectionDate: "2024-04-02",
+      searchPoliticalOffice: "Municipal Judge",
+      searchPoliticalSubdivision: "City of Lees Summit",
+      searchPoliticalDistrict: null,
+      committeeInfo: {
+        mecid: "C232576",
+        committeeName: "Committee to Elect Sam Buccero",
+        candidateName: "Samuel J Buccero",
+        sourceUrl: "https://www.mec.mo.gov/MEC/Campaign_Finance/CommInfo.aspx?MECID=C232576",
+        electionHistory: [
+          {
+            electionDate: "2024-04-02",
+            electionType: "General Election",
+            office: "Municipal Judge",
+            politicalSubdivision: "City of Lees Summit",
+          },
+        ],
+      },
+    };
+
+    expect(
+      resolveMissouriCandidateCommittee({
+        candidateName: "Samuel J. Buccero",
+        electionDate: "2024-04-02",
+        officeScope: "place",
+        officeName: "Place Level Judge",
+        ballotTitle: "Municipal Judge",
+        districtName: "Lee's Summit city, Missouri",
+        records: [municipalJudge],
+      })
+    ).toMatchObject({ status: "matched", mecid: "C232576" });
+  });
+
   it("accepts known terminated status with exact history but rejects unknown status and middle conflict", () => {
     expect(resolveLegislative([legislativeRecord({ status: "T" })])).toMatchObject({
       status: "matched",
