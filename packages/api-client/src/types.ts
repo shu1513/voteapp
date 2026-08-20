@@ -490,6 +490,65 @@ export type ElectionChoiceUpdate =
   | { election_id: string; candidate_id: string; chosen: boolean }
   | { election_id: string; measure_position: "yes" | "no" | null };
 
+// --- Auto-pick ("Pick for me") — POST /api/me/auto-picks -------------------
+
+export type AutoPickMode = "fill_empty" | "replace";
+
+export type AutoPickReason =
+  | "by_elimination"
+  | "insufficient_evidence"
+  | "only_negative_evidence"
+  | "tie"
+  | "all_vetoed"
+  | "veto"
+  | "too_few_issues"
+  | "election_closed";
+
+export type AutoPickRequest = {
+  election_ids: string[];
+  mode: AutoPickMode;
+  dry_run?: boolean;
+};
+
+export type AutoPickPerIssue = {
+  research_area_id: string;
+  /** −1..1 in thirds: sign says aligned/conflicting, magnitude the capped
+   * record depth (±3 records = full conviction). */
+  net: number;
+  /** Records agreeing with the user's direction on this issue. */
+  for_count: number;
+  /** Records conflicting with the user's direction on this issue. */
+  against_count: number;
+};
+
+export type AutoPickCandidateReport = {
+  candidate_id: string;
+  display_name: string;
+  score: number;
+  has_evidence: boolean;
+  /** Non-empty = excluded by a "line in the sand", with the offending records. */
+  vetoed_by: { research_area_id: string; record_id: string; description: string }[];
+  per_issue: AutoPickPerIssue[];
+};
+
+export type AutoPickElectionResult = {
+  election_id: string;
+  race_type: "office" | "ballot_measure";
+  outcome: "picked" | "skipped_existing" | "no_pick";
+  reason: AutoPickReason | null;
+  picked_candidate_ids: string[];
+  measure_position: "yes" | "no" | null;
+  /** On a "tie"/"only_negative_evidence" no-pick: the narrowed field the
+   * user should decide among. */
+  shortlist_candidate_ids: string[];
+  candidates: AutoPickCandidateReport[];
+  /** Measure races: per-issue alignment (net = ±1 after the user's direction). */
+  measure_per_issue: { research_area_id: string; net: number }[];
+  unresearched: { candidate_id: string; display_name: string; never_researched: boolean }[];
+};
+
+export type AutoPicksResult = { results: AutoPickElectionResult[] };
+
 /** One race on a shared pick card (public payload behind /picks/:token). */
 export type PickCardEntry = {
   election_id: string;

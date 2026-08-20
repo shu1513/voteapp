@@ -32,6 +32,7 @@ import { useHydrated } from "../lib/useHydrated";
 import { pageMeta } from "../lib/pageMeta";
 import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 import { AREA_TEXT_CLASS, SAVED_AREA_TEXT_CLASS } from "../components/ElectionCard";
+import { AutoPickControl } from "../components/AutoPickControl";
 import { CandidatePickButton, MeasureChoiceButtons } from "../components/ElectionChoiceControls";
 import { PostPickActions } from "../components/PostPickActions";
 import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
@@ -833,6 +834,16 @@ export function ElectionPage() {
                 </label>
               ) : null}
             </div>
+            {/* Race-level "Pick for me": one engine run for this election
+                (mode replace — a re-run refreshes the pick), with its "Why
+                this pick" panel below the button. Guests get a sign-in
+                prompt inside the control, matching the per-candidate
+                buttons' visibility gate. */}
+            {showChoiceControls && data.race_type !== "ballot_measure" ? (
+              <div className="mt-3">
+                <AutoPickControl electionId={data.id} />
+              </div>
+            ) : null}
             {showPartyFilter ? (
               <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="Filter candidates by party">
                 {[{ bucket: "all" as const, label: "All" }, ...presentPartyOptions].map((option) => (
@@ -1120,6 +1131,12 @@ export function ElectionPage() {
             data-sticky-pick-cta=""
             className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
           >
+            {/* Measure-side "Pick for me": answers Yes/No from the measure's
+                issue tags. Lives in the same card as the Yes/No pair — the
+                card is the page's one pick control. */}
+            <div className="mb-2">
+              <AutoPickControl electionId={data.id} />
+            </div>
             <MeasureChoiceButtons
               electionId={data.id}
               raceTitle={data.official_ballot_title}
