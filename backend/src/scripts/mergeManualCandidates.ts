@@ -57,7 +57,10 @@ import {
 } from "../pipeline/candidates/candidateProfileIdentity.js";
 import { assertKnownCliFlags } from "./manualCliFlags.js";
 import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
-import { listCandidateElectionLinkFkReferences } from "./moveManualCandidateElectionLink.js";
+import {
+  isManualCandidateFinanceTargetFkReference,
+  listCandidateElectionLinkFkReferences,
+} from "./moveManualCandidateElectionLink.js";
 
 type QueryResultLike<T> = { rows: T[] };
 
@@ -419,6 +422,30 @@ export async function runMergeCandidates(
       duplicateLinkIds.push(link.id);
     }
 
+    // Manual finance targets are keyed to (candidate_id, election_id), and
+    // those same IDs live inside an immutable hashed filing payload. Neither
+    // rehoming nor deleting a candidate_elections row may cascade just the
+    // derived columns: that would make them disagree with the retained
+    // source. Count affected rows explicitly so this known composite FK does
+    // not globally disable merges when the count is zero.
+    const manualFinanceTargets = await client.query<{ n: string }>(
+      `
+        SELECT count(*)::text AS n
+        FROM public.manual_candidate_finance_filing_targets
+        WHERE candidate_id = $1::uuid
+          AND election_id = ANY($2::uuid[])
+      `,
+      [mergedId, mergedLinks.map((link) => link.election_id)]
+    );
+    const manualFinanceTargetCount = Number(manualFinanceTargets.rows[0]?.n ?? "0");
+    if (manualFinanceTargetCount > 0) {
+      throw new Error(
+        `${manualFinanceTargetCount} manual candidate-finance filing target row(s) reference candidate ` +
+          `${mergedId} on links this merge would rehome or delete; their candidate/election IDs also live ` +
+          "inside immutable filing payloads. Resolve those filings explicitly (user decision), then re-run."
+      );
+    }
+
     // Persisted-results guard: election_results.winners stores candidate_id
     // and candidate_election_id inside JSON, invisible to the FK scans below.
     // A merge would leave a winner pointing at a merged candidate, or — for
@@ -516,7 +543,8 @@ export async function runMergeCandidates(
       const linkReferences = (await listCandidateElectionLinkFkReferences(client)).filter(
         (ref) =>
           ref.table !== "public.candidate_elections" &&
-          ref.constraintName !== "fk_user_election_choices_candidacy"
+          ref.constraintName !== "fk_user_election_choices_candidacy" &&
+          !isManualCandidateFinanceTargetFkReference(ref)
       );
       const unsupported = [
         ...new Set(

@@ -29,6 +29,25 @@ function linkFkRow(overrides: Partial<Record<string, unknown>> = {}) {
   };
 }
 
+function manualFinanceTargetFkRows() {
+  return [
+    linkFkRow({
+      constraint_name: "manual_candidate_finance_filing_targets_candidate_election_fk",
+      table_name: "manual_candidate_finance_filing_targets",
+      column_name: "candidate_id",
+      referenced_column: "candidate_id",
+      column_count: 2,
+    }),
+    linkFkRow({
+      constraint_name: "manual_candidate_finance_filing_targets_candidate_election_fk",
+      table_name: "manual_candidate_finance_filing_targets",
+      column_name: "election_id",
+      referenced_column: "election_id",
+      column_count: 2,
+    }),
+  ];
+}
+
 function electionRows(
   overrides: {
     fromDate?: string;
@@ -443,6 +462,21 @@ describe("runMoveCandidateElectionLink", () => {
     ).rejects.toThrow(/az_candidate_finance_links \(2\)/);
   });
 
+  it("refuses only when immutable manual-finance targets reference the moved candidacy", async () => {
+    const { query, calls } = buildClient(happyResponses({
+      "FROM public.manual_candidate_finance_filing_targets": [[{ n: "2" }]],
+    }));
+
+    await expect(
+      runMoveCandidateElectionLink(
+        { query },
+        { candidateId: CANDIDATE_ID, fromElectionId: FROM_ELECTION, toElectionId: TO_ELECTION, dryRun: false }
+      )
+    ).rejects.toThrow(/2 manual candidate-finance filing target row\(s\).*immutable payload identity/s);
+    expect(calls.some((call) => call.text.includes("UPDATE public.candidate_elections"))).toBe(false);
+    expect(calls.at(-1)?.text).toBe("ROLLBACK");
+  });
+
   it("converges an identical duplicate link by deleting the from-link", async () => {
     const { query, calls } = buildClient(happyResponses({
       "FROM public.candidate_elections\n        WHERE candidate_id": [[linkRow()], [linkRow({ id: "99999999-9999-9999-9999-999999999999" })]],
@@ -502,7 +536,7 @@ describe("runMoveCandidateElectionLink", () => {
     expect(calls.at(-1)?.text).toBe("ROLLBACK");
   });
 
-  it("exempts the known choices FK from the shape refusal once its guard has passed", async () => {
+  it("exempts known guarded composite FKs from the shape refusal once their counts are zero", async () => {
     // fk_user_election_choices_candidacy is composite, but its rows are
     // counted (and refused when present) by the dedicated choice guard —
     // with zero choices the duplicate merge must proceed, not refuse on
@@ -525,6 +559,7 @@ describe("runMoveCandidateElectionLink", () => {
             referenced_column: "election_id",
             column_count: 2,
           }),
+          ...manualFinanceTargetFkRows(),
         ],
       ],
     }));

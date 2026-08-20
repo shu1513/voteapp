@@ -45,6 +45,18 @@ function linkRow(overrides: Partial<Record<string, unknown>> = {}) {
   };
 }
 
+function manualFinanceTargetFkRows() {
+  const common = {
+    constraint_name: "manual_candidate_finance_filing_targets_candidate_election_fk",
+    table_name: "manual_candidate_finance_filing_targets",
+    column_count: 2,
+  };
+  return [
+    { ...common, column_name: "candidate_id", referenced_column: "candidate_id" },
+    { ...common, column_name: "election_id", referenced_column: "election_id" },
+  ];
+}
+
 // Query order: BEGIN, lock candidates, lock links, lock mate links,
 // presidential pair guard, winners guard, [FK scan onto candidate_elections +
 // per-table counts when links converge], link writes, records, sweep
@@ -157,6 +169,18 @@ describe("runMergeCandidates", () => {
     expect(calls.at(-1)?.text).toBe("COMMIT");
   });
 
+  it("refuses only when immutable manual-finance targets reference links the merge would change", async () => {
+    const { query, calls } = buildClient(happyResponses({
+      "FROM public.manual_candidate_finance_filing_targets": [[{ n: "1" }]],
+    }));
+
+    await expect(run({ query })).rejects.toThrow(
+      /1 manual candidate-finance filing target row\(s\).*immutable filing payloads/s
+    );
+    expect(calls.some((call) => call.text.includes("UPDATE public.candidate_elections SET candidate_id"))).toBe(false);
+    expect(calls.at(-1)?.text).toBe("ROLLBACK");
+  });
+
   it("dry-run reports the plan, writes nothing, and rolls back", async () => {
     const { query, calls } = buildClient(happyResponses());
 
@@ -249,6 +273,7 @@ describe("runMergeCandidates", () => {
               referenced_column: "id",
               column_count: 1,
             },
+            ...manualFinanceTargetFkRows(),
           ],
         ],
         "FROM public.fl_candidate_finance_outside_group_links WHERE candidate_election_id": [
