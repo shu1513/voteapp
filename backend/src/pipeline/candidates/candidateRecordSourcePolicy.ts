@@ -402,11 +402,21 @@ export type ListedSourceAdditionJustification = {
 //      or well-known outlet ("denverpost-news.com", "denverpost.co"). The
 //      policy test enforces a label-containment version of this mechanically;
 //      passing the test does not excuse skipping the judgment call.
-//   5. Motive check: NEVER list a domain because a specific record needs it
-//      to pass the damaging-claim gate. That pressure — "this scandal row
-//      only has this one source" — is exactly the attack shape. A real
-//      scandal has listed coverage; if only one unknown site carries it,
-//      the correct outcome is that the row is dropped.
+//   5. Motive check: an AGENT never lists a domain on its own initiative
+//      because a specific record needs it to pass the damaging-claim gate.
+//      That pressure — "this scandal row only has this one source" — is
+//      exactly the attack shape, and no amount of outlet pedigree lets the
+//      researching agent waive this for itself (a withdrawn 2026-08-20 PR
+//      is the live precedent). Exactly two sanctioned listing paths exist:
+//        a. OWNER-DIRECTED: the repo owner reviews the completed steps 1-4
+//           vetting evidence and explicitly directs the listing. The
+//           rationale must name that direction and its date.
+//        b. MOTIVE-FREE BATCH: the domain arrives via a criterion defined
+//           without reference to any pending record (e.g. "major-network
+//           affiliates of covered markets"), applied to the whole batch.
+//      Either way, a real scandal usually has listed coverage; when only
+//      one unknown site carries it, the correct outcome is still that the
+//      row is dropped.
 //
 // Entries are permanent audit records: never delete one to silence a test
 // failure. If a listed addition turns out to be bad, move the domain to the
@@ -415,7 +425,15 @@ export type ListedSourceAdditionJustification = {
 export const LISTED_SOURCE_DOMAIN_ADDITIONS: Readonly<
   Record<string, ListedSourceAdditionJustification>
 > = {
-  // (no additions yet)
+  "kold.com": {
+    addedOn: "2026-08-20",
+    rationale:
+      "KOLD-TV is Tucson's CBS affiliate, on air since 1953 and owned by Gray Media, with a named local newsroom — the same accountability profile as the founding cohort's local TV affiliates (kcci.com, wcpo.com, wibw.com). Listed via the OWNER-DIRECTED path: the repo owner reviewed the vetting evidence and directed the listing on 2026-08-20, under the standing policy that a legitimate established outlet belongs on the list.",
+    evidence: [
+      "https://en.wikipedia.org/wiki/KOLD-TV",
+      "https://web.archive.org/web/19980202071300/http://www.kold.com/",
+    ],
+  },
 };
 
 // Exported ONLY so the policy test can pin this list to exactly
