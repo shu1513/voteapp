@@ -415,7 +415,15 @@ export type ListedSourceAdditionJustification = {
 export const LISTED_SOURCE_DOMAIN_ADDITIONS: Readonly<
   Record<string, ListedSourceAdditionJustification>
 > = {
-  // (no additions yet)
+  "kold.com": {
+    addedOn: "2026-08-20",
+    rationale:
+      "KOLD-TV is Tucson's CBS affiliate, on air since 1953 and owned by Gray Media, with a named local newsroom — the same accountability profile as the local TV affiliates in the founding cohort (kcci.com, wcpo.com, wibw.com).",
+    evidence: [
+      "https://en.wikipedia.org/wiki/KOLD-TV",
+      "https://web.archive.org/web/19980202071300/http://www.kold.com/",
+    ],
+  },
 };
 
 // Exported ONLY so the policy test can pin this list to exactly
