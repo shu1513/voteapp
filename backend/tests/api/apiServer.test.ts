@@ -785,6 +785,19 @@ describe("createApiApp", () => {
       },
     });
 
+    const authenticatedDistrictsResponse = await invokeExpressApp(app, {
+      method: "POST",
+      path: "/api/me/districts",
+    });
+    expect(authenticatedDistrictsResponse.statusCode).toBe(405);
+    expect(authenticatedDistrictsResponse.headers).toMatchObject({ allow: "GET" });
+    expect(authenticatedDistrictsResponse.body).toEqual({
+      error: {
+        code: "method_not_allowed",
+        message: "Use GET /api/me/districts",
+      },
+    });
+
     const authenticatedAddressResponse = await invokeExpressApp(app, {
       method: "GET",
       path: "/api/me/address",
@@ -1655,6 +1668,128 @@ describe("createApiApp", () => {
     expect(resolveAddress).not.toHaveBeenCalled();
   });
 
+  it("serves the authenticated user's district ids", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const listAuthenticatedDistrictIds = vi.fn().mockResolvedValue([districtId]);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, listAuthenticatedDistrictIds }),
+      {
+        method: "GET",
+        path: "/api/me/districts",
+        headers: { "x-user-id": "99999999-9999-4999-8999-999999999999" },
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ district_ids: [districtId] });
+    expect(listAuthenticatedDistrictIds).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+    expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("serves empty district ids when the user has no saved address", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const listAuthenticatedDistrictIds = vi.fn().mockResolvedValue([]);
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, listAuthenticatedDistrictIds }),
+      {
+        method: "GET",
+        path: "/api/me/districts",
+      }
+    );
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ district_ids: [] });
+  });
+
+  it("rejects authenticated district lookup when authentication is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const listAuthenticatedDistrictIds = vi.fn();
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, listAuthenticatedDistrictIds }), {
+      method: "GET",
+      path: "/api/me/districts",
+    });
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(listAuthenticatedDistrictIds).not.toHaveBeenCalled();
+  });
+
+  it("rejects authenticated district lookup without an authenticated user", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue(null);
+    const listAuthenticatedDistrictIds = vi.fn();
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, listAuthenticatedDistrictIds }),
+      {
+        method: "GET",
+        path: "/api/me/districts",
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(listAuthenticatedDistrictIds).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when authenticated district lookup is not configured", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+
+    const response = await invokeExpressApp(createApiApp({ resolveAddress, resolveAuthenticatedUserId }), {
+      method: "GET",
+      path: "/api/me/districts",
+    });
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toEqual({
+      error: {
+        code: "internal_error",
+        message: "Authenticated district lookup is not configured",
+      },
+    });
+  });
+
+  it("maps district lookup user-district reader errors to unauthorized", async () => {
+    const resolveAddress = vi.fn();
+    const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
+    const listAuthenticatedDistrictIds = vi
+      .fn()
+      .mockRejectedValue(new UserDistrictReaderError("user_not_found", "User not found"));
+
+    const response = await invokeExpressApp(
+      createApiApp({ resolveAddress, resolveAuthenticatedUserId, listAuthenticatedDistrictIds }),
+      {
+        method: "GET",
+        path: "/api/me/districts",
+      }
+    );
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body).toEqual({
+      error: {
+        code: "unauthorized",
+        message: "Authentication is required",
+      },
+    });
+    expect(listAuthenticatedDistrictIds).toHaveBeenCalledWith("99999999-9999-4999-8999-999999999999");
+  });
+
   it("updates authenticated address districts for the current user", async () => {
     const resolveAddress = vi.fn();
     const resolveAuthenticatedUserId = vi.fn().mockReturnValue("99999999-9999-4999-8999-999999999999");
@@ -1752,6 +1887,13 @@ describe("createApiApp", () => {
       path: "/api/me/districts/initialize",
       body: JSON.stringify({ district_ids: [districtId] }),
       handlerKey: "initializeUserDistricts" as const,
+    },
+    {
+      name: "authenticated district lookup",
+      method: "GET",
+      path: "/api/me/districts",
+      body: undefined,
+      handlerKey: "listAuthenticatedDistrictIds" as const,
     },
   ])("rejects unverified users from $name", async ({ method, path, body, handlerKey }) => {
     const resolveAddress = vi.fn();

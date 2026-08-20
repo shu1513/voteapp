@@ -677,6 +677,7 @@ async function main(): Promise<void> {
       );
     },
     lookupAuthenticatedUserEmailVerified,
+    listAuthenticatedDistrictIds: (userId) => listUserDistrictIds(pool, userId),
     lookupCandidateDetail: (candidateId, userId) => lookupCandidateDetailById(pool, { candidateId, userId }),
     searchCandidates: (searchQuery) => searchCandidatesByName(pool, searchQuery),
     lookupElectionDetail: (electionId) => lookupElectionDetailById(pool, electionId),
