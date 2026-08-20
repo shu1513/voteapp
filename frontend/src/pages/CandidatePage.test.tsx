@@ -921,6 +921,27 @@ describe("CandidatePage", () => {
     expect(screen.queryByRole("button", { name: "Make my pick: Jordan Voter" })).not.toBeInTheDocument();
   });
 
+  it("keeps controls without the nudge on a decided race when districts are unknown", async () => {
+    // Safety valve + state 3 together: the existing pick keeps its controls
+    // even with no district context, and with no undecided race left the
+    // address nudge must not render beside the ✓ it would contradict.
+    clearBallotDraft();
+    setDraftCandidateChoice({
+      electionId: "e-1",
+      raceTitle: "Governor",
+      electionDate: "2099-11-03",
+      seatsToFill: null,
+      candidateId: "c-1",
+      candidateName: "Jordan Voter",
+      chosen: true,
+    });
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    expect(await screen.findByRole("button", { name: "✓ My pick: Jordan Voter" })).toBeInTheDocument();
+    expect(screen.queryByText(/Enter your address/)).not.toBeInTheDocument();
+  });
+
   it("shows loader-fetched finance for an ongoing election", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     // Finance rides in the loader payload (SSR-rendered for crawlers), not

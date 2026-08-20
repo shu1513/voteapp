@@ -641,12 +641,16 @@ export function CandidatePage() {
             isDecidedChoice(choiceForElection(election.election_id))
         )
       : [];
-  // State 3 of the gate: districts unknown (settled) with pickable races on
-  // the page — a conversion nudge replaces the controls. Races with an
-  // existing pick keep their controls via the safety valve above; everything
-  // else on the page stays read-only.
+  // State 3 of the gate: districts unknown (settled) with an UNDECIDED race
+  // on the page — a conversion nudge replaces the controls. Decided races
+  // keep their controls via the safety valve above and get no nudge (it
+  // would contradict the ✓ beside it — same decided-race exclusion as the
+  // election page); only a race still worth deciding earns the ask.
   const showAddressNudge =
-    choicesSettled && !districtsLoading && districtIds === undefined && officeCandidacies.length > 0;
+    choicesSettled &&
+    !districtsLoading &&
+    districtIds === undefined &&
+    officeCandidacies.some((election) => !isDecidedChoice(choiceForElection(election.election_id)));
   // The page's primary action ("Add to cart"): the sticky bottom pick card.
   // Only when the candidate is in exactly one pickable race — the card's
   // button carries no race name, so with several races it can't say which
