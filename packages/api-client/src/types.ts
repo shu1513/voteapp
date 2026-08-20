@@ -247,6 +247,15 @@ export type FinanceOutsideIndustryEvidence = {
   source_url: string | null;
 };
 
+export type FinanceUnallocatedOutsideEdge = {
+  filing_id: string;
+  report_date: string;
+  committee_id: string;
+  committee_name: string;
+  support_oppose: "support" | "oppose";
+  source_url: string;
+};
+
 // Mirrors BallotLookupFinanceOutsideIndustrySupportSummary (backend): an
 // outside-spending support industry plus the organizations behind it.
 // explanation is optional defensively: the backend always sends it, but the
@@ -295,6 +304,8 @@ export type FinanceSummary = {
     outside_coverage_note?: string | null;
     top_supporting_groups: FinanceOutsideGroup[];
     top_opposing_groups: FinanceOutsideGroup[];
+    /** Filing-backed direction with no candidate-level amount; never $0. */
+    unallocated_candidate_edges?: FinanceUnallocatedOutsideEdge[];
     top_supporting_industries: FinanceBreakdown[];
     top_opposing_industries: FinanceBreakdown[];
   };

@@ -29,6 +29,15 @@ export type BallotLookupFinanceOutsideGroup = {
   label_source_urls?: string[];
 };
 
+export type BallotLookupFinanceUnallocatedOutsideEdge = {
+  filing_id: string;
+  report_date: string;
+  committee_id: string;
+  committee_name: string;
+  support_oppose: "support" | "oppose";
+  source_url: string;
+};
+
 export type BallotLookupFinanceOutsideIndustrySupportEvidence = {
   organization_name: string;
   organization_type: "employer" | "donor";
@@ -102,6 +111,7 @@ export type BallotLookupFinanceSummary = {
     | "NORTH_CAROLINA_SBE"
     | "GEORGIA_ETHICS"
     | "MISSOURI_MEC"
+    | "MISSISSIPPI_SOS"
     | "RHODE_ISLAND_ERTS";
   cycle: number;
   fec_candidate_id: string | null;
@@ -152,6 +162,12 @@ export type BallotLookupFinanceSummary = {
     outside_coverage_note?: string | null;
     top_supporting_groups: BallotLookupFinanceOutsideGroup[];
     top_opposing_groups: BallotLookupFinanceOutsideGroup[];
+    /**
+     * Filing-backed spender→candidate directions whose filing does not state
+     * a candidate-level amount. Kept separate so readers never manufacture
+     * $0 or split a filing-wide total across candidates.
+     */
+    unallocated_candidate_edges?: BallotLookupFinanceUnallocatedOutsideEdge[];
     top_supporting_industries: BallotLookupFinanceBreakdown[];
     top_opposing_industries: BallotLookupFinanceBreakdown[];
   };
@@ -209,6 +225,7 @@ export const FINANCE_SUMMARY_SOURCES = [
   "NORTH_CAROLINA_SBE",
   "GEORGIA_ETHICS",
   "MISSOURI_MEC",
+  "MISSISSIPPI_SOS",
   "RHODE_ISLAND_ERTS",
 ] as const satisfies readonly BallotLookupFinanceSummary["source"][];
 
