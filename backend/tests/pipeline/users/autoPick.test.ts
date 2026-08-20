@@ -1,0 +1,544 @@
+import { describe, expect, it, vi } from "vitest";
+
+import {
+  applyAutoPicks,
+  AutoPickError,
+  decideMeasure,
+  decideOfficeRace,
+  type AutoPickCandidate,
+  type AutoPickIssue,
+  type AutoPickMeasureTag,
+  type AutoPickRecordTag,
+} from "../../../src/pipeline/users/autoPick.js";
+
+const AREA_1 = "aaaaaaaa-0000-4000-8000-000000000001";
+const AREA_2 = "aaaaaaaa-0000-4000-8000-000000000002";
+const AREA_3 = "aaaaaaaa-0000-4000-8000-000000000003";
+const AREA_ETHICS = "aaaaaaaa-0000-4000-8000-00000000000e";
+const CAND_A = "bbbbbbbb-0000-4000-8000-00000000000a";
+const CAND_B = "bbbbbbbb-0000-4000-8000-00000000000b";
+const CAND_C = "bbbbbbbb-0000-4000-8000-00000000000c";
+const CAND_D = "bbbbbbbb-0000-4000-8000-00000000000d";
+
+function issue(
+  researchAreaId: string,
+  rank: number | null,
+  overrides: Partial<Pick<AutoPickIssue, "slug" | "direction" | "hardVeto">> = {}
+): AutoPickIssue {
+  return {
+    researchAreaId,
+    rank,
+    slug: overrides.slug ?? `area-${researchAreaId.slice(-1)}`,
+    direction: overrides.direction ?? "support",
+    hardVeto: overrides.hardVeto ?? false,
+  };
+}
+
+function candidate(candidateId: string, displayName: string, neverResearched = false): AutoPickCandidate {
+  return { candidateId, displayName, neverResearched };
+}
+
+let recordCounter = 0;
+function tag(
+  candidateId: string,
+  researchAreaId: string,
+  stance: "for" | "against" | null,
+  description = "a record"
+): AutoPickRecordTag {
+  recordCounter += 1;
+  return {
+    candidateId,
+    recordId: `cccccccc-0000-4000-8000-${String(recordCounter).padStart(12, "0")}`,
+    researchAreaId,
+    stance,
+    description,
+  };
+}
+
+function measureTag(researchAreaId: string, stance: "for" | "against"): AutoPickMeasureTag {
+  return { researchAreaId, stance };
+}
+
+const THREE_ISSUES = [issue(AREA_1, 1), issue(AREA_2, 2), issue(AREA_3, 3)];
+
+describe("decideOfficeRace", () => {
+  it("picks the highest-scoring positive candidate for a single seat", () => {
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Alice"), candidate(CAND_B, "Bob")],
+      [tag(CAND_A, AREA_1, "for"), tag(CAND_B, AREA_2, "for")],
+      1
+    );
+    expect(decision.outcome).toBe("picked");
+    expect(decision.reason).toBeNull();
+    expect(decision.pickedCandidateIds).toEqual([CAND_A]);
+    expect(decision.shortlistCandidateIds).toEqual([]);
+    expect(decision.unresearched).toEqual([]);
+  });
+
+  it("caps per-issue volume at ±3: 30 aligned records tie 3 aligned records", () => {
+    const incumbentTags = Array.from({ length: 30 }, () => tag(CAND_A, AREA_1, "for"));
+    const challengerTags = Array.from({ length: 3 }, () => tag(CAND_B, AREA_1, "for"));
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Incumbent"), candidate(CAND_B, "Challenger")],
+      [...incumbentTags, ...challengerTags],
+      1
+    );
+    expect(decision.outcome).toBe("no_pick");
+    expect(decision.reason).toBe("tie");
+    expect(decision.pickedCandidateIds).toEqual([]);
+    expect(new Set(decision.shortlistCandidateIds)).toEqual(new Set([CAND_A, CAND_B]));
+  });
+
+  it("lets one positively evidenced candidate win over unresearched opponents, reporting them", () => {
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [
+        candidate(CAND_A, "Evidenced"),
+        candidate(CAND_B, "Never researched", true),
+        candidate(CAND_C, "Researched, no stances", false),
+      ],
+      [tag(CAND_A, AREA_1, "for")],
+      1
+    );
+    expect(decision.outcome).toBe("picked");
+    expect(decision.pickedCandidateIds).toEqual([CAND_A]);
+    expect(decision.unresearched).toEqual([
+      { candidate_id: CAND_B, display_name: "Never researched", never_researched: true },
+      { candidate_id: CAND_C, display_name: "Researched, no stances", never_researched: false },
+    ]);
+  });
+
+  it("picks the lone unknown by elimination when the only evidenced candidate scores negative", () => {
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Opposes my issue"), candidate(CAND_B, "Unknown")],
+      [tag(CAND_A, AREA_1, "against")],
+      1
+    );
+    expect(decision.outcome).toBe("picked");
+    expect(decision.reason).toBe("by_elimination");
+    expect(decision.pickedCandidateIds).toEqual([CAND_B]);
+  });
+
+  it("returns only_negative_evidence with the unknowns as shortlist when they outnumber the seats", () => {
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [
+        candidate(CAND_A, "Opposes my issue"),
+        candidate(CAND_B, "Unknown 1"),
+        candidate(CAND_C, "Unknown 2"),
+        candidate(CAND_D, "Unknown 3"),
+      ],
+      [tag(CAND_A, AREA_1, "against")],
+      1
+    );
+    expect(decision.outcome).toBe("no_pick");
+    expect(decision.reason).toBe("only_negative_evidence");
+    expect(decision.pickedCandidateIds).toEqual([]);
+    expect(new Set(decision.shortlistCandidateIds)).toEqual(new Set([CAND_B, CAND_C, CAND_D]));
+  });
+
+  it("excludes a vetoed candidate even as the highest scorer, reporting the offending record", () => {
+    const issues = [issue(AREA_1, 1, { hardVeto: true }), issue(AREA_2, 2), issue(AREA_3, 3)];
+    const offending = tag(CAND_A, AREA_1, "against", "voted to expand access");
+    const decision = decideOfficeRace(
+      issues,
+      [candidate(CAND_A, "High scorer"), candidate(CAND_B, "Modest")],
+      [
+        tag(CAND_A, AREA_1, "for"),
+        tag(CAND_A, AREA_1, "for"),
+        tag(CAND_A, AREA_2, "for"),
+        offending,
+        tag(CAND_B, AREA_2, "for"),
+      ],
+      1
+    );
+    expect(decision.outcome).toBe("picked");
+    expect(decision.pickedCandidateIds).toEqual([CAND_B]);
+    const vetoed = decision.candidates.find((report) => report.candidate_id === CAND_A);
+    expect(vetoed?.vetoed_by).toEqual([
+      { research_area_id: AREA_1, record_id: offending.recordId, description: "voted to expand access" },
+    ]);
+  });
+
+  it("returns all_vetoed when every candidate crossed a line", () => {
+    const issues = [issue(AREA_1, 1, { hardVeto: true }), issue(AREA_2, 2), issue(AREA_3, 3)];
+    const decision = decideOfficeRace(
+      issues,
+      [candidate(CAND_A, "Alice")],
+      [tag(CAND_A, AREA_1, "against")],
+      1
+    );
+    expect(decision.outcome).toBe("no_pick");
+    expect(decision.reason).toBe("all_vetoed");
+    expect(decision.pickedCandidateIds).toEqual([]);
+  });
+
+  it("flips a 'for' record into a strike under an oppose direction", () => {
+    const issues = [issue(AREA_1, 1, { direction: "oppose" }), issue(AREA_2, 2), issue(AREA_3, 3)];
+    const decision = decideOfficeRace(
+      issues,
+      [candidate(CAND_A, "Supports the goal I oppose"), candidate(CAND_B, "Unknown")],
+      [tag(CAND_A, AREA_1, "for")],
+      1
+    );
+    // A scores negative and is removed; B wins by elimination.
+    expect(decision.outcome).toBe("picked");
+    expect(decision.reason).toBe("by_elimination");
+    expect(decision.pickedCandidateIds).toEqual([CAND_B]);
+    const flipped = decision.candidates.find((report) => report.candidate_id === CAND_A);
+    expect(flipped?.score).toBeLessThan(0);
+    expect(flipped?.per_issue).toEqual([
+      { research_area_id: AREA_1, net: -1 / 3, for_count: 0, against_count: 1 },
+    ]);
+  });
+
+  it("returns insufficient_evidence when no candidate has any record on the user's issues", () => {
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Alice", true), candidate(CAND_B, "Bob")],
+      [],
+      1
+    );
+    expect(decision.outcome).toBe("no_pick");
+    expect(decision.reason).toBe("insufficient_evidence");
+    expect(decision.unresearched).toHaveLength(2);
+  });
+
+  it("fills every seat of a multi-seat race in score order", () => {
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Alice"), candidate(CAND_B, "Bob"), candidate(CAND_C, "Cara")],
+      [tag(CAND_A, AREA_1, "for"), tag(CAND_B, AREA_2, "for"), tag(CAND_C, AREA_3, "for")],
+      2
+    );
+    expect(decision.outcome).toBe("picked");
+    expect(decision.reason).toBeNull();
+    expect(decision.pickedCandidateIds).toEqual([CAND_A, CAND_B]);
+  });
+
+  it("allows a tie that fits within the open seats", () => {
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Alice"), candidate(CAND_B, "Bob"), candidate(CAND_C, "Cara")],
+      [tag(CAND_A, AREA_1, "for"), tag(CAND_B, AREA_1, "for"), tag(CAND_C, AREA_3, "for")],
+      2
+    );
+    expect(decision.outcome).toBe("picked");
+    expect(decision.reason).toBeNull();
+    expect(new Set(decision.pickedCandidateIds)).toEqual(new Set([CAND_A, CAND_B]));
+  });
+
+  it("stops at a tie for the last open seat, keeping the seats it could fill", () => {
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Alice"), candidate(CAND_B, "Bob"), candidate(CAND_C, "Cara")],
+      [tag(CAND_A, AREA_1, "for"), tag(CAND_B, AREA_2, "for"), tag(CAND_C, AREA_2, "for")],
+      2
+    );
+    expect(decision.outcome).toBe("picked");
+    expect(decision.reason).toBe("tie");
+    expect(decision.pickedCandidateIds).toEqual([CAND_A]);
+    expect(new Set(decision.shortlistCandidateIds)).toEqual(new Set([CAND_B, CAND_C]));
+  });
+
+  it("fills what it can when nothing remains for the other seats", () => {
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Alice"), candidate(CAND_B, "Bob")],
+      [tag(CAND_A, AREA_1, "for"), tag(CAND_B, AREA_1, "against")],
+      3
+    );
+    // B is negative (removed); no zeros exist, so only A's seat fills.
+    expect(decision.outcome).toBe("picked");
+    expect(decision.reason).toBeNull();
+    expect(decision.pickedCandidateIds).toEqual([CAND_A]);
+  });
+
+  it("counts an integrity_and_ethics record as a strike regardless of stance", () => {
+    const issues = [
+      issue(AREA_ETHICS, 1, { slug: "integrity_and_ethics" }),
+      issue(AREA_2, 2),
+      issue(AREA_3, 3),
+    ];
+    const decision = decideOfficeRace(
+      issues,
+      [candidate(CAND_A, "Has an ethics record"), candidate(CAND_B, "Unknown")],
+      [tag(CAND_A, AREA_ETHICS, null)],
+      1
+    );
+    expect(decision.outcome).toBe("picked");
+    expect(decision.reason).toBe("by_elimination");
+    expect(decision.pickedCandidateIds).toEqual([CAND_B]);
+  });
+
+  it("treats the ethics veto as 'skip candidates with any ethics record'", () => {
+    const issues = [
+      issue(AREA_ETHICS, 1, { slug: "integrity_and_ethics", hardVeto: true }),
+      issue(AREA_2, 2),
+      issue(AREA_3, 3),
+    ];
+    const decision = decideOfficeRace(
+      issues,
+      [candidate(CAND_A, "Admonished"), candidate(CAND_B, "Clean")],
+      [tag(CAND_A, AREA_ETHICS, null), tag(CAND_A, AREA_2, "for"), tag(CAND_B, AREA_3, "for")],
+      1
+    );
+    expect(decision.pickedCandidateIds).toEqual([CAND_B]);
+    const vetoed = decision.candidates.find((report) => report.candidate_id === CAND_A);
+    expect(vetoed?.vetoed_by).toHaveLength(1);
+  });
+
+  it("ignores records tagged on areas the user did not rank", () => {
+    const unrankedArea = "aaaaaaaa-0000-4000-8000-0000000000ff";
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Alice")],
+      [tag(CAND_A, unrankedArea, "for")],
+      1
+    );
+    expect(decision.reason).toBe("insufficient_evidence");
+    expect(decision.candidates[0]?.has_evidence).toBe(false);
+  });
+
+  it("ignores a stance-less tag on a non-ethics area", () => {
+    const decision = decideOfficeRace(THREE_ISSUES, [candidate(CAND_A, "Alice")], [tag(CAND_A, AREA_1, null)], 1);
+    expect(decision.reason).toBe("insufficient_evidence");
+  });
+
+  it("treats null seats_to_fill as a single seat", () => {
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Alice"), candidate(CAND_B, "Bob")],
+      [tag(CAND_A, AREA_1, "for"), tag(CAND_B, AREA_2, "for")],
+      null
+    );
+    expect(decision.pickedCandidateIds).toEqual([CAND_A]);
+  });
+
+  it("weights rank 1 above rank 2: one top-issue record beats one second-issue record", () => {
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Second issue"), candidate(CAND_B, "Top issue")],
+      [tag(CAND_A, AREA_2, "for"), tag(CAND_B, AREA_1, "for")],
+      1
+    );
+    expect(decision.pickedCandidateIds).toEqual([CAND_B]);
+  });
+});
+
+describe("decideMeasure", () => {
+  it("answers Yes when the weighted tags align with the user's directions", () => {
+    const decision = decideMeasure(THREE_ISSUES, [measureTag(AREA_1, "for"), measureTag(AREA_2, "against")]);
+    // +1·1.0 (rank 1) − 1·0.75 (rank 2) > 0.
+    expect(decision.outcome).toBe("picked");
+    expect(decision.reason).toBeNull();
+    expect(decision.measurePosition).toBe("yes");
+    expect(decision.perIssue).toEqual([
+      { research_area_id: AREA_1, net: 1 },
+      { research_area_id: AREA_2, net: -1 },
+    ]);
+  });
+
+  it("answers No when the score is negative", () => {
+    const decision = decideMeasure(THREE_ISSUES, [measureTag(AREA_1, "against")]);
+    expect(decision.measurePosition).toBe("no");
+    expect(decision.reason).toBeNull();
+  });
+
+  it("answers No outright when the measure crosses a line in the sand, even if the score is positive", () => {
+    const issues = [issue(AREA_1, 1), issue(AREA_2, 2, { hardVeto: true }), issue(AREA_3, 3)];
+    const decision = decideMeasure(issues, [measureTag(AREA_1, "for"), measureTag(AREA_2, "against")]);
+    expect(decision.outcome).toBe("picked");
+    expect(decision.reason).toBe("veto");
+    expect(decision.measurePosition).toBe("no");
+  });
+
+  it("gives no answer for a measure with no tags on the user's issues", () => {
+    const decision = decideMeasure(THREE_ISSUES, []);
+    expect(decision.outcome).toBe("no_pick");
+    expect(decision.reason).toBe("insufficient_evidence");
+    expect(decision.measurePosition).toBeNull();
+  });
+
+  it("gives no answer when the weighted stances balance to exactly zero", () => {
+    // Two legacy unranked issues carry the same weight, one aligned and one
+    // conflicting: a genuine 0.
+    const issues = [issue(AREA_1, null), issue(AREA_2, null, { direction: "oppose" })];
+    const decision = decideMeasure(issues, [measureTag(AREA_1, "for"), measureTag(AREA_2, "for")]);
+    expect(decision.outcome).toBe("no_pick");
+    expect(decision.reason).toBe("insufficient_evidence");
+    expect(decision.measurePosition).toBeNull();
+  });
+
+  it("flips a 'for' tag under an oppose direction", () => {
+    const issues = [issue(AREA_1, 1, { direction: "oppose" }), issue(AREA_2, 2), issue(AREA_3, 3)];
+    const decision = decideMeasure(issues, [measureTag(AREA_1, "for")]);
+    expect(decision.measurePosition).toBe("no");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// applyAutoPicks orchestration (mocked db, mirroring userElectionChoices.test)
+// ---------------------------------------------------------------------------
+
+const USER_ID = "11111111-1111-4111-8111-111111111111";
+const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
+
+function createMockDb() {
+  const client = { query: vi.fn(), release: vi.fn() };
+  const db = { connect: vi.fn().mockResolvedValue(client), query: vi.fn() };
+  return { db, client };
+}
+
+const userRow = { rows: [{ id: USER_ID }] };
+const threeIssueRows = {
+  rows: [AREA_1, AREA_2, AREA_3].map((areaId, index) => ({
+    research_area_id: areaId,
+    slug: `area-${index + 1}`,
+    rank: index + 1,
+    direction: "support",
+    hard_veto: false,
+  })),
+};
+
+describe("applyAutoPicks", () => {
+  it("rejects a bad mode", async () => {
+    const { db } = createMockDb();
+    await expect(
+      applyAutoPicks(db, USER_ID, { electionIds: [ELECTION_ID], mode: "everything" as never })
+    ).rejects.toMatchObject({ code: "invalid_input" });
+  });
+
+  it("rejects an empty election list, oversize batches, duplicates, and bad ids", async () => {
+    const { db } = createMockDb();
+    await expect(applyAutoPicks(db, USER_ID, { electionIds: [], mode: "replace" })).rejects.toMatchObject({
+      code: "invalid_input",
+    });
+    await expect(
+      applyAutoPicks(db, USER_ID, { electionIds: Array.from({ length: 201 }, () => ELECTION_ID), mode: "replace" })
+    ).rejects.toMatchObject({ code: "invalid_input" });
+    await expect(
+      applyAutoPicks(db, USER_ID, { electionIds: [ELECTION_ID, ELECTION_ID], mode: "replace" })
+    ).rejects.toMatchObject({ code: "invalid_input" });
+    await expect(
+      applyAutoPicks(db, USER_ID, { electionIds: ["not-a-uuid"], mode: "replace" })
+    ).rejects.toBeInstanceOf(AutoPickError);
+  });
+
+  it("reports too_few_issues per election instead of erroring", async () => {
+    const { db } = createMockDb();
+    db.query
+      .mockResolvedValueOnce(userRow) // assertActiveUser
+      .mockResolvedValueOnce({ rows: threeIssueRows.rows.slice(0, 2) }) // loadIssues: only 2
+      .mockResolvedValueOnce({
+        rows: [{ id: ELECTION_ID, race_type: "office", seats_to_fill: 1, is_upcoming: true }],
+      }); // loadElection
+    const result = await applyAutoPicks(db, USER_ID, {
+      electionIds: [ELECTION_ID],
+      mode: "replace",
+      dryRun: true,
+    });
+    expect(result.results).toEqual([
+      expect.objectContaining({ election_id: ELECTION_ID, outcome: "no_pick", reason: "too_few_issues" }),
+    ]);
+  });
+
+  it("reports election_closed for a past election", async () => {
+    const { db } = createMockDb();
+    db.query
+      .mockResolvedValueOnce(userRow)
+      .mockResolvedValueOnce(threeIssueRows)
+      .mockResolvedValueOnce({
+        rows: [{ id: ELECTION_ID, race_type: "office", seats_to_fill: 1, is_upcoming: false }],
+      });
+    const result = await applyAutoPicks(db, USER_ID, {
+      electionIds: [ELECTION_ID],
+      mode: "replace",
+      dryRun: true,
+    });
+    expect(result.results[0]).toMatchObject({ outcome: "no_pick", reason: "election_closed" });
+  });
+
+  it("skips an election that already has a pick in fill_empty mode", async () => {
+    const { db } = createMockDb();
+    db.query
+      .mockResolvedValueOnce(userRow)
+      .mockResolvedValueOnce(threeIssueRows)
+      .mockResolvedValueOnce({
+        rows: [{ id: ELECTION_ID, race_type: "office", seats_to_fill: 1, is_upcoming: true }],
+      })
+      .mockResolvedValueOnce({ rows: [{ count: "1" }] }); // countExistingPicks
+    const result = await applyAutoPicks(db, USER_ID, {
+      electionIds: [ELECTION_ID],
+      mode: "fill_empty",
+      dryRun: true,
+    });
+    expect(result.results[0]).toMatchObject({ outcome: "skipped_existing", reason: null });
+  });
+
+  it("never deletes existing picks when a replace run produced no pick", async () => {
+    const { db, client } = createMockDb();
+    db.query
+      .mockResolvedValueOnce(userRow) // pool assertActiveUser
+      .mockResolvedValueOnce(threeIssueRows); // pool loadIssues
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce(userRow) // assertActiveUser FOR UPDATE
+      .mockResolvedValueOnce({
+        rows: [{ id: ELECTION_ID, race_type: "office", seats_to_fill: 1, is_upcoming: true }],
+      }) // loadElection
+      .mockResolvedValueOnce({ rows: [] }) // loadCandidates: none
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const result = await applyAutoPicks(db, USER_ID, { electionIds: [ELECTION_ID], mode: "replace" });
+    expect(result.results[0]).toMatchObject({ outcome: "no_pick", reason: "insufficient_evidence" });
+    const sql = client.query.mock.calls.map((call) => String(call[0]));
+    expect(sql.some((statement) => statement.includes("DELETE"))).toBe(false);
+    expect(sql.some((statement) => statement.includes("INSERT"))).toBe(false);
+    expect(sql[sql.length - 1]).toBe("COMMIT");
+  });
+
+  it("replaces existing picks and writes the winner with origin auto", async () => {
+    const { db, client } = createMockDb();
+    db.query.mockResolvedValueOnce(userRow).mockResolvedValueOnce(threeIssueRows);
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce(userRow) // assertActiveUser FOR UPDATE
+      .mockResolvedValueOnce({
+        rows: [{ id: ELECTION_ID, race_type: "office", seats_to_fill: 1, is_upcoming: true }],
+      }) // loadElection
+      .mockResolvedValueOnce({
+        rows: [
+          { candidate_id: CAND_A, display_name: "Alice", never_researched: false },
+          { candidate_id: CAND_B, display_name: "Bob", never_researched: true },
+        ],
+      }) // loadCandidates
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            candidate_id: CAND_A,
+            record_id: "cccccccc-0000-4000-8000-000000009999",
+            research_area_id: AREA_1,
+            stance: "for",
+            description: "a record",
+          },
+        ],
+      }) // loadRecordTags
+      .mockResolvedValueOnce({ rows: [] }) // DELETE existing picks
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // INSERT winner
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const result = await applyAutoPicks(db, USER_ID, { electionIds: [ELECTION_ID], mode: "replace" });
+    expect(result.results[0]).toMatchObject({
+      outcome: "picked",
+      reason: null,
+      picked_candidate_ids: [CAND_A],
+    });
+    const sql = client.query.mock.calls.map((call) => String(call[0]));
+    expect(sql.some((statement) => statement.includes("DELETE FROM public.user_election_choices"))).toBe(true);
+    const insert = sql.find((statement) => statement.includes("INSERT INTO public.user_election_choices"));
+    expect(insert).toContain("'auto'");
+    expect(sql[sql.length - 1]).toBe("COMMIT");
+  });
+});
