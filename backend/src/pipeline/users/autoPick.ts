@@ -360,7 +360,12 @@ export function decideOfficeRace(
       // only general records: B is the only one left standing.
       picked.push(...zeros);
       byElimination = true;
-    } else if (zeros.length > openSeats) {
+    } else if (picked.length === 0 && zeros.length > 0) {
+      // Wrong count for the open seats (either way), so nobody is seated —
+      // but when NOTHING was seated these unknowns are still the narrowed
+      // field the no-pick result must hand the user. When positives already
+      // filled some seats the outcome is "picked" and the shortlist stays
+      // empty, matching the response contract.
       shortlist = zeros;
     }
   }

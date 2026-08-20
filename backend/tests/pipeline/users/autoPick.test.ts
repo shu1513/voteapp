@@ -140,6 +140,36 @@ describe("decideOfficeRace", () => {
     expect(new Set(decision.shortlistCandidateIds)).toEqual(new Set([CAND_B, CAND_C, CAND_D]));
   });
 
+  it("shortlists the unknowns even when they under-fill the open seats", () => {
+    // 2 seats, one negative candidate, one unknown: the unknown can't fill
+    // both seats (no elimination), but the no-pick must still hand the user
+    // the narrowed field instead of an empty shortlist.
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Opposes my issue"), candidate(CAND_B, "Unknown")],
+      [tag(CAND_A, AREA_1, "against")],
+      2
+    );
+    expect(decision.outcome).toBe("no_pick");
+    expect(decision.reason).toBe("only_negative_evidence");
+    expect(decision.shortlistCandidateIds).toEqual([CAND_B]);
+  });
+
+  it("keeps the shortlist empty when positives filled some seats and unknowns can't fill the rest", () => {
+    // Outcome is "picked" (partial), so the elimination-stage shortlist must
+    // not leak into a result the response contract documents as empty.
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Positive"), candidate(CAND_B, "Unknown 1"), candidate(CAND_C, "Unknown 2")],
+      [tag(CAND_A, AREA_1, "for")],
+      2
+    );
+    expect(decision.outcome).toBe("picked");
+    expect(decision.reason).toBeNull();
+    expect(decision.pickedCandidateIds).toEqual([CAND_A]);
+    expect(decision.shortlistCandidateIds).toEqual([]);
+  });
+
   it("excludes a vetoed candidate even as the highest scorer, reporting the offending record", () => {
     const issues = [issue(AREA_1, 1, { hardVeto: true }), issue(AREA_2, 2), issue(AREA_3, 3)];
     const offending = tag(CAND_A, AREA_1, "against", "voted to expand access");
