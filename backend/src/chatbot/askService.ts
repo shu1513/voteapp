@@ -24,6 +24,7 @@ import {
   isAnswerable,
   retrieveChunks,
   GATE_MIN_ENTITY_SIMILARITY,
+  RACE_COLLECTIVE_RE,
   type CandidateEntityMatch,
   type RetrievalResult,
   type RetrievedChunk,
@@ -941,14 +942,18 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
       }
 
       // Page context: applied only when the question points at it — a
-      // deictic word ("this", "their") or a page candidate named outright
+      // deictic word ("this", "their"), a race-collective phrasing ("compare
+      // the candidates for me"; RACE_COLLECTIVE_RE, which also arms the
+      // members branch in retrieval), or a page candidate named outright
       // ("what's the difference between Maria and Rhonda" on the election
       // page listing them) — and the id still exists in the active
-      // generation. A question doing neither ("what will the weather be on
-      // election day?") is judged on its own evidence.
+      // generation. A question doing none of these ("what will the weather
+      // be on election day?") is judged on its own evidence.
       const resolvedContext =
         context &&
-        (DEICTIC_RE.test(question) || (await questionNamesPageCandidate(db, generation.id, context, question)))
+        (DEICTIC_RE.test(question) ||
+          RACE_COLLECTIVE_RE.test(question) ||
+          (await questionNamesPageCandidate(db, generation.id, context, question)))
           ? await resolveContext(db, generation.id, context)
           : null;
 
@@ -1015,6 +1020,23 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
           {
             outcome: "clarify",
             answer: `I found more than one candidate with that name. Which one do you mean? ${options_.join("; ")}.`,
+            results: [],
+            data_current_as_of: generation.activatedAt,
+          },
+          "clarify",
+          scopeState
+        );
+      }
+
+      // 3b. Race-collective question, but the page candidate is on more than
+      // one covered ballot → ask which race, never compare an arbitrary pick
+      // (rule 7). Must precede the gate: contextMatched would pass it and
+      // the LLM would answer over BOTH races' listings mixed together.
+      if (retrieval.contextRaceAmbiguousTitles.length > 0) {
+        return finish(
+          {
+            outcome: "clarify",
+            answer: `They're in more than one race we cover. Which one do you mean? ${retrieval.contextRaceAmbiguousTitles.join("; ")}.`,
             results: [],
             data_current_as_of: generation.activatedAt,
           },

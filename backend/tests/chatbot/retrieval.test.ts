@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { classifyRaceQuestion, expandOfficeAliases } from "../../src/chatbot/retrieval.js";
+import { classifyRaceQuestion, expandOfficeAliases, RACE_COLLECTIVE_RE, RACE_OTHERS_RE } from "../../src/chatbot/retrieval.js";
 
 describe("expandOfficeAliases", () => {
   it("appends the corpus office phrase for common federal Senate phrasings", () => {
@@ -63,5 +63,49 @@ describe("classifyRaceQuestion", () => {
   it("classifies everything else neutral", () => {
     expect(classifyRaceQuestion("Who is running for US Senate in Georgia?")).toBe("neutral");
     expect(classifyRaceQuestion("Tell me about the Los Angeles mayor race")).toBe("neutral");
+  });
+});
+
+describe("RACE_COLLECTIVE_RE", () => {
+  it("matches questions about a race's field as a whole", () => {
+    expect(RACE_COLLECTIVE_RE.test("Compare the candidates for me.")).toBe(true);
+    expect(RACE_COLLECTIVE_RE.test("What are the differences between them?")).toBe(true);
+    expect(RACE_COLLECTIVE_RE.test("Who else is running?")).toBe(true);
+    expect(RACE_COLLECTIVE_RE.test("who's running")).toBe(true);
+    expect(RACE_COLLECTIVE_RE.test("Who has raised the most money in this race?")).toBe(true);
+    expect(RACE_COLLECTIVE_RE.test("How do they stack up against each other?")).toBe(true);
+  });
+
+  it("does not leak the answerability-gate bypass to off-topic questions", () => {
+    // These get page context applied if they match — so a match here means
+    // an off-topic question would pass the gate on the page's chunks.
+    expect(RACE_COLLECTIVE_RE.test("What will the weather be on election day?")).toBe(false);
+    expect(RACE_COLLECTIVE_RE.test("Who is Jon Ossoff?")).toBe(false);
+    expect(RACE_COLLECTIVE_RE.test("How do I contest a parking ticket in Atlanta?")).toBe(false);
+    expect(RACE_COLLECTIVE_RE.test("Is the racetrack referendum on the ballot?")).toBe(false);
+  });
+});
+
+describe("RACE_OTHERS_RE", () => {
+  it("keeps race-member precedence when a named candidate is compared to the field", () => {
+    expect(RACE_OTHERS_RE.test("Compare Jon Ossoff with the other candidates.")).toBe(true);
+    expect(RACE_OTHERS_RE.test("Compare Jon Ossoff to the candidates in this race.")).toBe(true);
+    expect(RACE_OTHERS_RE.test("How does she stack up against her opponents?")).toBe(true);
+    expect(RACE_OTHERS_RE.test("Has Ossoff raised more than everyone else?")).toBe(true);
+    expect(RACE_OTHERS_RE.test("How does Ossoff compare to the rest?")).toBe(true);
+  });
+
+  it("stays off single-candidate questions that merely contain 'other'", () => {
+    // Bare "other" is a modifier, not a field noun — this question is about
+    // Ossoff's own records and must keep entity-first ranking.
+    expect(RACE_OTHERS_RE.test("In this race, what other bills has Jon Ossoff sponsored?")).toBe(false);
+  });
+
+  it("leaves fully-named comparisons on entity-first ranking", () => {
+    // "each other" names ALL its subjects — the named candidates' own
+    // chunks must not be crowded out by a whole-field round-robin.
+    expect(RACE_OTHERS_RE.test("How do Ossoff and Collins compare against each other?")).toBe(false);
+    expect(RACE_OTHERS_RE.test("Compare Jon Ossoff and Mike Collins.")).toBe(false);
+    expect(RACE_OTHERS_RE.test("Who has raised the most money in this race?")).toBe(false);
   });
 });

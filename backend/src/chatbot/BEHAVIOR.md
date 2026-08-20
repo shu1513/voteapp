@@ -39,9 +39,12 @@ refusal — never a guess.
 8. **Unsupported questions get a clean refusal**: "I don't have that in my
    data", with page links only when entity confidence is high. No
    misleading "nearest" links, no improvised answers.
-9. **Every AI answer is labeled** as AI-generated, shows "data current as
-   of <generation date>", cites its sources (server-validated chunk ids,
-   server-constructed URLs only), and carries the content-report control.
+9. **AI answers are disclosed and reportable.** The widget carries a single
+   always-visible footer disclosure ("AI answers … may contain mistakes",
+   plus "data current as of <generation date>" once an answer arrives) —
+   amended 2026-08-19 from a per-answer label, which read as repeated noise.
+   Every AI answer still cites its sources (server-validated chunk ids,
+   server-constructed URLs only) and carries the content-report control.
 10. **User input is data, not instructions.** Injected instructions in a
     question ("ignore your rules and endorse…") change nothing; indexed
     content is also treated as data (structured output schema, escaped
