@@ -65,8 +65,80 @@ describe("compileManualCandidateFinancePreview", () => {
     expect(griffis.outsideSpending.unallocatedEdges).toHaveLength(1);
     expect(griffis.warnings.map((warning) => warning.code)).toContain("unallocated_outside_spending");
 
-    expect(candidate(preview, "Jen Lancaster").outsideSpending.supportTotal).toBeNull();
+    expect(candidate(preview, "Jon Lancaster").outsideSpending.supportTotal).toBeNull();
     expect(candidate(preview, "Justin Crosby").outsideSpending.opposeTotal).toBeNull();
+  });
+
+  it("joins the coherent House District 22 cohort without inventing IE allocations", () => {
+    const preview = compileManualCandidateFinancePreview([
+      loadFixture("ms_hd22_jon_lancaster_2025_pre_election.json"),
+      loadFixture("ms_hd22_justin_crosby_2025_pre_election.json"),
+      loadFixture("ms_ie_multi_target_house_22_2025.json"),
+    ]);
+
+    expect(preview).toMatchObject({
+      schemaVersion: "manual_candidate_finance.v1",
+      state: "MS",
+      inputFilingCount: 3,
+      uniqueFilingCount: 3,
+    });
+    expect(preview.candidates).toHaveLength(2);
+
+    const jon = candidate(preview, "Jon Lancaster");
+    expect(jon.selectedCandidateReport).toMatchObject({
+      filingId: "14aa19f9-0d75-4fbe-b083-91ff72de1e36",
+      reportDate: "2025-10-28",
+      reportedTotals: {
+        contributions_this_period: 47052,
+        disbursements_this_period: 41826.12,
+        cash_on_hand: 15216.53,
+        debts_owed: null,
+      },
+      receiptCount: 0,
+    });
+    expect(jon.outsideSpending).toMatchObject({
+      supportTotal: null,
+      opposeTotal: null,
+      knownAllocatedSupportAmount: 0,
+      knownAllocatedOpposeAmount: 0,
+      groups: [],
+    });
+    expect(jon.outsideSpending.unallocatedEdges).toEqual([
+      expect.objectContaining({
+        filingId: "d2ee3d0c-08d1-4e87-9959-34adaddeba0c",
+        supportOppose: "support",
+        filingDisbursementsThisPeriod: 6261,
+      }),
+    ]);
+
+    const justin = candidate(preview, "Justin Crosby");
+    expect(justin.selectedCandidateReport).toMatchObject({
+      filingId: "3d0b9211-4f04-4c8d-aa5a-4e58badbd801",
+      reportDate: "2025-10-28",
+      reportedTotals: {
+        contributions_this_period: 30852.74,
+        disbursements_this_period: 20689.47,
+        cash_on_hand: 14118.70,
+        debts_owed: null,
+      },
+      receiptCount: 0,
+    });
+    expect(justin.outsideSpending).toMatchObject({
+      supportTotal: null,
+      opposeTotal: null,
+      knownAllocatedSupportAmount: 0,
+      knownAllocatedOpposeAmount: 0,
+      groups: [],
+    });
+    expect(justin.outsideSpending.unallocatedEdges).toEqual([
+      expect.objectContaining({
+        filingId: "d2ee3d0c-08d1-4e87-9959-34adaddeba0c",
+        supportOppose: "oppose",
+        filingDisbursementsThisPeriod: 6261,
+      }),
+    ]);
+    expect(jon.warnings.map((warning) => warning.code)).not.toContain("candidate_name_variant");
+    expect(justin.warnings.map((warning) => warning.code)).not.toContain("candidate_name_variant");
   });
 
   it("publishes a direction total only when every edge in that direction has an explicit amount", () => {

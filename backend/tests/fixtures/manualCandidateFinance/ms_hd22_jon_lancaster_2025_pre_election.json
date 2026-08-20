@@ -1,0 +1,23 @@
+{
+  "schema_version": "manual_candidate_finance.v1",
+  "state": "MS",
+  "filing_type": "candidate_report",
+  "filing_id": "14AA19F9-0D75-4FBE-B083-91FF72DE1E36",
+  "amends_filing_id": null,
+  "report_date": "2025-10-28",
+  "source_url": "https://cfportal.sos.ms.gov/online/ExecuteWorkflow.aspx?WorkflowId=g729911d7-f399-46d6-a1ca-f15c1294f82d&FilingId=14AA19F9-0D75-4FBE-B083-91FF72DE1E36",
+  "coverage_note": "Covers only campaign-finance reports filed with the Mississippi Secretary of State; county and municipal clerk filings are not included.",
+  "researched_at": "2026-08-20T04:31:15Z",
+  "candidate_id": "55555555-5555-4555-8555-555555555555",
+  "election_id": "77777777-7777-4777-8777-777777777777",
+  "candidate_name": "Jon Lancaster",
+  "reported_totals": {
+    "contributions_this_period": 47052,
+    "contributions_calendar_ytd": 47052,
+    "disbursements_this_period": 41826.12,
+    "disbursements_calendar_ytd": 41826.12,
+    "cash_on_hand": 15216.53,
+    "debts_owed": null
+  },
+  "itemized_receipts": []
+}

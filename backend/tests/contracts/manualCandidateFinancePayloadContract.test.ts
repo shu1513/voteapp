@@ -74,11 +74,48 @@ describe("parseManualCandidateFinancePayload", () => {
       return;
     }
     expect(parsed.payload.candidate_edges.map((edge) => [edge.candidate_name, edge.support_oppose])).toEqual([
-      ["Jen Lancaster", "support"],
+      ["Jon Lancaster", "support"],
       ["Justin Crosby", "oppose"],
     ]);
     expect(parsed.payload.candidate_edges.every((edge) => edge.amount === null)).toBe(true);
     expect(parsed.payload.reported_totals.disbursements_this_period).toBe(6261);
+  });
+
+  it("parses both candidate reports in the House District 22 acceptance cohort", () => {
+    const jon = parseManualCandidateFinancePayload(
+      loadFixture("ms_hd22_jon_lancaster_2025_pre_election.json")
+    );
+    const justin = parseManualCandidateFinancePayload(
+      loadFixture("ms_hd22_justin_crosby_2025_pre_election.json")
+    );
+
+    expect(jon.ok).toBe(true);
+    expect(justin.ok).toBe(true);
+    if (!jon.ok || !justin.ok) {
+      return;
+    }
+    expect(jon.payload).toMatchObject({
+      filing_type: "candidate_report",
+      candidate_name: "Jon Lancaster",
+      election_id: "77777777-7777-4777-8777-777777777777",
+      reported_totals: {
+        contributions_calendar_ytd: 47052,
+        disbursements_calendar_ytd: 41826.12,
+        cash_on_hand: 15216.53,
+        debts_owed: null,
+      },
+    });
+    expect(justin.payload).toMatchObject({
+      filing_type: "candidate_report",
+      candidate_name: "Justin Crosby",
+      election_id: "77777777-7777-4777-8777-777777777777",
+      reported_totals: {
+        contributions_calendar_ytd: 38341.11,
+        disbursements_calendar_ytd: 24222.41,
+        cash_on_hand: 14118.70,
+        debts_owed: null,
+      },
+    });
   });
 
   it("requires every total and tells researchers to use null for missing values", () => {

@@ -85,8 +85,10 @@ scanned image. See "Recommended route" for the manual alternative.
   itemized disbursements. It is readable by eye, not by parser.
 - **One IE filing can carry two candidates and both stances.** A live
   10/28/2025 Improve MS PAC filing checks both boxes and writes
-  "Jen Lancaster - Support / Justin Crosby - Oppose" on the candidate line. A
-  one-stance-per-filing contract would either drop or mislabel it.
+  "Jen Lancaster - Support / Justin Crosby - Oppose" on the candidate line.
+  The handwriting is ambiguous: the official SOS candidate record and sample
+  ballot identify the first candidate as **Jon Lancaster**. A one-stance-per-
+  filing contract would either drop or mislabel it.
 - **Purpose of Disbursement is optional on the form** and is frequently blank.
 - **Filing office splits by race.** Statewide, state-district, legislative and
   state judicial candidates file with the Secretary of State. County and
