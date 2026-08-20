@@ -344,6 +344,7 @@ export async function syncMissouriCandidateFinance(input: {
       }
     }
   }
+  const outsideSnapshot = outsideFundersSkippedReason === null ? outsideSpending : null;
 
   let summaryWritten = false;
   let directBreakdownsWritten = 0;
@@ -372,12 +373,12 @@ export async function syncMissouriCandidateFinance(input: {
         directContributionTotal: aggregation.directContributionTotal,
         totalDisbursements: aggregation.totalDisbursements,
         cashOnHand: null,
-        outsideSupportTotal: outsideSpending?.supportTotal ?? null,
-        outsideOpposeTotal: outsideSpending?.opposeTotal ?? null,
+        outsideSupportTotal: outsideSnapshot?.supportTotal ?? null,
+        outsideOpposeTotal: outsideSnapshot?.opposeTotal ?? null,
         sourceUrl,
       },
       directBreakdowns: aggregation.directBreakdowns,
-      outsideGroups: outsideSpending?.outsideGroups,
+      outsideGroups: outsideSnapshot?.outsideGroups,
       outsideGroupBreakdowns,
       classifications,
     });

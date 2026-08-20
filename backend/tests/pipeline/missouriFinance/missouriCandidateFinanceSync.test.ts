@@ -177,6 +177,52 @@ describe("missouriCandidateFinanceSync", () => {
     expect(client.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO public.finance_label_classifications"))).toBe(true);
   });
 
+  it("preserves the complete prior outside snapshot when a spender artifact is unavailable", async () => {
+    const linkId = "33333333-3333-4333-8333-333333333333";
+    const client = {
+      query: vi.fn((sql: unknown) => String(sql).includes("INSERT INTO public.mo_candidate_finance_links")
+        ? Promise.resolve({ rows: [{ id: linkId }], rowCount: 1 })
+        : Promise.resolve({ rows: [], rowCount: 0 })),
+      release: vi.fn(),
+    };
+    const result = await syncMissouriCandidateFinance({
+      db: { query: vi.fn(), connect: vi.fn().mockResolvedValue(client) } as never,
+      candidateId: "11111111-1111-4111-8111-111111111111",
+      electionId: "22222222-2222-4222-8222-222222222222",
+      candidateName: "Jane Doe", electionYear: 2026, electionDate: "2026-11-03",
+      officeScope: "state_lower", officeName: "State Lower Chamber Legislator", district: "1",
+      committee: { committeeId: "C263985", committeeName: "Jane for Missouri", linkSource: "mec_portal" },
+      artifacts,
+      outsideArtifacts: {
+        rows: [{
+          candidateNameAndAddress: "Jane Doe 10 Private St", officeSought: "State Representative",
+          supportOppose: "Support", expenditureDate: "2026-10-20", amountCents: 250_00,
+          reportingCommittee: "Example PAC", report: "8 Day Before General Election",
+        }],
+        identities: [{ reportingCommittee: "Example PAC", mecid: "C123456" }],
+        sourceUrl: "https://example.test/outside",
+      },
+      refreshOutsideSpenderArtifacts: vi.fn().mockRejectedValue(new Error("spender unavailable")),
+    });
+    expect(result).toMatchObject({
+      outsideSupportTotal: 250,
+      outsideGroupsWritten: 0,
+      outsideGroupBreakdownsWritten: 0,
+      outsideFundersSkippedReason: "spender unavailable",
+    });
+    const summaryCall = client.query.mock.calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.mo_candidate_finance_summaries")
+    );
+    expect(summaryCall?.[1]).toEqual(expect.arrayContaining([null]));
+    expect(summaryCall?.[1]?.[6]).toBeNull();
+    expect(summaryCall?.[1]?.[7]).toBeNull();
+    expect(client.query.mock.calls.some((call) =>
+      String(call[0]).includes("INSERT INTO public.mo_candidate_finance_outside_groups") ||
+      String(call[0]).includes("DELETE FROM public.mo_candidate_finance_outside_groups") ||
+      String(call[0]).includes("mo_candidate_finance_outside_group_breakdowns")
+    )).toBe(false);
+  });
+
   it("refuses to publish a partial snapshot when an in-cycle amendment is ambiguous", async () => {
     const april = "April Quarterly Report";
     const ambiguous: MissouriCandidateFinanceArtifacts = {
