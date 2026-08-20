@@ -26,6 +26,14 @@ Implementation deltas from the plan below (found during the deep read):
 - Eval gained `pageContext` golden-case support (entity name → source_id
   in the active generation). Keyword-only run 2026-08-19: all 4 new cases
   pass; the hybrid (embeddings-up) gate run remains a pre-ship step.
+- Review round (post-plan): `RACE_OTHERS_RE` — a collective question that
+  ALSO names a candidate ("compare Jon Ossoff with the other candidates")
+  keeps race-member precedence; the entity match alone used to switch back
+  to entity-first ranking, filling the top-K with the named candidate's
+  chunks and dropping the opponents the members branch fetched. `each
+  other` is excluded (a fully-named comparison stays entity-first). The
+  eval's recall rerun also inherits the page context's state and skips the
+  previous-turn carry-over when context is set, mirroring askService.
 
 ## Problem
 
@@ -73,7 +81,7 @@ election in the split view), "compare the candidates for me" returns the
 
 New narrow matcher next to `DEICTIC_RE`:
 
-```
+```text
 RACE_COLLECTIVE_RE: compare | difference(s) between | the candidates |
 who is running | the race | the field | each other
 ```

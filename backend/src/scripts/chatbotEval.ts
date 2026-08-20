@@ -39,14 +39,15 @@ async function resolvePageContext(
   pool: Pool,
   generationId: string,
   pageContext: NonNullable<GoldenCase["pageContext"]>
-): Promise<AskContext | null> {
-  const result = await pool.query<{ source_id: string }>(
+): Promise<{ context: AskContext; state: string | null } | null> {
+  const result = await pool.query<{ source_id: string; state: string | null }>(
     `
-      SELECT DISTINCT chunk.source_id::text AS source_id
+      SELECT chunk.source_id::text AS source_id, min(chunk.state) AS state
       FROM chatbot.chunks AS chunk
       WHERE chunk.generation_id = $1::uuid
         AND chunk.source_type = $2
         AND chunk.title ILIKE $3
+      GROUP BY chunk.source_id
       LIMIT 2
     `,
     [
@@ -55,8 +56,10 @@ async function resolvePageContext(
       pageContext.kind === "candidate" ? `${pageContext.entityName} — candidate,%` : `${pageContext.entityName}%`,
     ]
   );
-  const first = result.rows[0]?.source_id;
-  return first !== undefined && result.rows.length === 1 ? { kind: pageContext.kind, id: first } : null;
+  const first = result.rows[0];
+  return first !== undefined && result.rows.length === 1
+    ? { context: { kind: pageContext.kind, id: first.source_id }, state: first.state }
+    : null;
 }
 
 async function main(): Promise<void> {
@@ -146,9 +149,10 @@ async function evaluateCase(
   goldenCase: GoldenCase
 ): Promise<CaseResult> {
   let pageContext: AskContext | null = null;
+  let pageContextState: string | null = null;
   if (goldenCase.pageContext) {
-    pageContext = await resolvePageContext(pool, generationId, goldenCase.pageContext);
-    if (!pageContext) {
+    const resolved = await resolvePageContext(pool, generationId, goldenCase.pageContext);
+    if (!resolved) {
       return {
         id: goldenCase.id,
         expected: goldenCase.expected,
@@ -157,6 +161,8 @@ async function evaluateCase(
         detail: `pageContext "${goldenCase.pageContext.entityName}" did not resolve to exactly one ${goldenCase.pageContext.kind}`,
       };
     }
+    pageContext = resolved.context;
+    pageContextState = resolved.state;
   }
   const response = await askService.ask(goldenCase.question, goldenCase.previousQuestion ?? null, pageContext);
   const base = { id: goldenCase.id, expected: goldenCase.expected, actual: response.outcome };
@@ -176,9 +182,16 @@ async function evaluateCase(
   }
   let scopeState = detectStateInQuestion(goldenCase.question);
   let retrievalText = goldenCase.question;
-  if (goldenCase.previousQuestion && !scopeState) {
+  // Keep in sync with askService: context suppresses the previous-turn
+  // carry-over, and a scopeless contexted question inherits the page's
+  // state (review round — without it the rerun's vector/title branches ran
+  // unfiltered while production runs state-scoped).
+  if (goldenCase.previousQuestion && !pageContext && !scopeState) {
     scopeState = detectStateInQuestion(goldenCase.previousQuestion);
     retrievalText = `${goldenCase.question} ${goldenCase.previousQuestion}`;
+  }
+  if (!scopeState && pageContext) {
+    scopeState = pageContextState;
   }
   // Context rides into the recall re-run exactly as passed to ask: retrieval
   // cases with pageContext use deictic/race-collective phrasing (the ask

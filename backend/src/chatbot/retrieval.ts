@@ -70,9 +70,25 @@ export function classifyRaceQuestion(question: string): "money" | "records" | "n
  * that folding them into the general pronoun gate would let off-topic
  * questions ride page chunks through the answerability gate. Word list
  * stays short and literal — grow it only on demonstrated misses (same
- * policy as classifyRaceQuestion). */
+ * policy as classifyRaceQuestion). Bare `compare`/`differences` are
+ * deliberately kept broad (review round): a terse on-page "compare the
+ * two" / "what are the differences?" is overwhelmingly about the race,
+ * and an off-topic match costs little — the LLM refuses on its own rules,
+ * and the no-LLM fallback shows the viewed race's cards, the same exposure
+ * the deictic gate has always had for "is it going to rain?". */
 export const RACE_COLLECTIVE_RE =
   /\bcompare\b|\bdifferences?\b|\bthe candidates\b|\bwho(?:'s| is| else is)? running\b|\b(?:the|this|that|their) race\b|\beach other\b/i;
+
+/** Collective-with-a-name phrasings ("compare Jon Ossoff with the other
+ * candidates", "how does she stack up against her opponents?"): the
+ * question names a candidate but asks about the race's FIELD, so race-
+ * member precedence must stay on — entity-first ranking would fill the
+ * top-K with the named candidate's own chunks plus the listing, and the
+ * opponents the members branch fetched would never reach the model.
+ * `each other` is excluded on purpose: "how do X and Y compare against
+ * each other?" names ALL its subjects, and entity-first is the right
+ * ranking there. */
+export const RACE_OTHERS_RE = /\b(?<!each )others?\b|\bopponents?\b|\beveryone else\b/i;
 
 /** Member ordering per question kind: the listing chunk always leads (it
  * names the field), then the source type the question is about. Applied in
@@ -730,7 +746,8 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
      * lookalike-district chunks lexical+vector agree on. Applied only when
      * NO candidate entity matched — a named candidate ("Allen Buckley, the
      * Libertarian running for Senate") is the stronger signal and keeps
-     * normal ranking. */
+     * normal ranking — except when the question asks about the named
+     * candidate's opponents (RACE_OTHERS_RE), a field question. */
     raceRank: number;
   };
   const merged = new Map<string, Merged>();
@@ -798,8 +815,11 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
     ? Math.min(contextRows.filter((row) => row.source_type === "election").length, 2)
     : 0;
   // Race precedence only without a matched entity (see raceRank above); with
-  // one, members still fold into RRF but never jump the queue.
-  const raceRankApplies = entityIds.length === 0;
+  // one, members still fold into RRF but never jump the queue — UNLESS the
+  // question names a candidate while asking about the others
+  // (RACE_OTHERS_RE): that is a field question, so members keep precedence
+  // and a money question still widens for every filer's summary.
+  const raceRankApplies = entityIds.length === 0 || RACE_OTHERS_RE.test(question);
   // Race-wide money question: EVERY filer's summary must fit, or "who raised
   // more?" silently compares an incomplete field (review catch: Florida's
   // Senate race has 7 summaries; the cap kept 4, alphabetically). Widen by

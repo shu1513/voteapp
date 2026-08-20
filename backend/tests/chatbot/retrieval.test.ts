@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { classifyRaceQuestion, expandOfficeAliases, RACE_COLLECTIVE_RE } from "../../src/chatbot/retrieval.js";
+import { classifyRaceQuestion, expandOfficeAliases, RACE_COLLECTIVE_RE, RACE_OTHERS_RE } from "../../src/chatbot/retrieval.js";
 
 describe("expandOfficeAliases", () => {
   it("appends the corpus office phrase for common federal Senate phrasings", () => {
@@ -83,5 +83,21 @@ describe("RACE_COLLECTIVE_RE", () => {
     expect(RACE_COLLECTIVE_RE.test("Who is Jon Ossoff?")).toBe(false);
     expect(RACE_COLLECTIVE_RE.test("How do I contest a parking ticket in Atlanta?")).toBe(false);
     expect(RACE_COLLECTIVE_RE.test("Is the racetrack referendum on the ballot?")).toBe(false);
+  });
+});
+
+describe("RACE_OTHERS_RE", () => {
+  it("keeps race-member precedence when a named candidate is compared to the field", () => {
+    expect(RACE_OTHERS_RE.test("Compare Jon Ossoff with the other candidates.")).toBe(true);
+    expect(RACE_OTHERS_RE.test("How does she stack up against her opponents?")).toBe(true);
+    expect(RACE_OTHERS_RE.test("Has Ossoff raised more than everyone else?")).toBe(true);
+  });
+
+  it("leaves fully-named comparisons on entity-first ranking", () => {
+    // "each other" names ALL its subjects — the named candidates' own
+    // chunks must not be crowded out by a whole-field round-robin.
+    expect(RACE_OTHERS_RE.test("How do Ossoff and Collins compare against each other?")).toBe(false);
+    expect(RACE_OTHERS_RE.test("Compare Jon Ossoff and Mike Collins.")).toBe(false);
+    expect(RACE_OTHERS_RE.test("Who has raised the most money in this race?")).toBe(false);
   });
 });

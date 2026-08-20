@@ -224,11 +224,23 @@ export const goldenSet: readonly GoldenCase[] = [
     question: "Compare the candidates for me.",
     pageContext: { kind: "candidate", entityName: "Jon Ossoff" },
     expected: "retrieval",
-    expectedSourceTypes: ["election", "candidate_profile"],
+    expectedSourceTypes: ["candidate_profile"],
     expectedEntities: ["Jon Ossoff", "Mike Collins", "Allen Buckley"],
     scopeState: "GA",
     notes:
-      "Race-collective question on a candidate page resolves the race from the page (docs/plans/chatbot-race-context-compare.md): every filer's profile must be retrieved, not just the viewed candidate's.",
+      "Race-collective question on a candidate page resolves the race from the page (docs/plans/chatbot-race-context-compare.md): every filer's profile must be retrieved, not just the viewed candidate's. Profile-only source filter (review): the election listing chunk names every filer, so allowing it would let the listing alone satisfy all three entities.",
+  },
+  {
+    id: "election-context-compare-named",
+    category: "election",
+    question: "Compare Jon Ossoff with the other candidates.",
+    pageContext: { kind: "candidate", entityName: "Jon Ossoff" },
+    expected: "retrieval",
+    expectedSourceTypes: ["candidate_profile"],
+    expectedEntities: ["Jon Ossoff", "Mike Collins", "Allen Buckley"],
+    scopeState: "GA",
+    notes:
+      "Collective question that ALSO names a candidate (RACE_OTHERS_RE): the entity match must not switch ranking back to entity-first, or the opponents' profiles never reach the model.",
   },
 
   // ── Campaign finance ──────────────────────────────────────────────────
@@ -269,11 +281,11 @@ export const goldenSet: readonly GoldenCase[] = [
     question: "Who has raised the most money in this race?",
     pageContext: { kind: "candidate", entityName: "Jon Ossoff" },
     expected: "retrieval",
-    expectedSourceTypes: ["election", "finance_summary"],
+    expectedSourceTypes: ["finance_summary"],
     expectedEntities: ["Jon Ossoff", "Mike Collins"],
     scopeState: "GA",
     notes:
-      "Money-kind race question on a candidate page: the members branch must serve the race's finance summaries, not just the viewed candidate's.",
+      "Money-kind race question on a candidate page: the members branch must serve the race's finance summaries, not just the viewed candidate's. Summary-only source filter (review): the listing chunk names both candidates, so allowing it would satisfy the check without any finance chunk.",
   },
   {
     id: "finance-strickland-cash",
