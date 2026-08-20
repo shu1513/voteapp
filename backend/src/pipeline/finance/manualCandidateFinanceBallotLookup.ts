@@ -111,32 +111,35 @@ function spenderMatches(
   );
 }
 
-function outsideGroupSourceUrl(input: {
+function singleOutsideGroupSourceUrl(input: {
   candidate: ManualCandidateFinanceCandidatePreview;
   group: ManualCandidateFinanceOutsideGroupPreview;
   payloads: readonly ManualCandidateFinancePayload[];
 }): string | null {
   const canonicalSourceUrls = new Set(input.candidate.sourceUrls);
-  const sourceUrls = input.payloads
-    .filter(
-      (payload): payload is ManualCandidateFinanceIndependentExpenditurePayload =>
-        payload.filing_type === "independent_expenditure"
-    )
-    .filter(
-      (filing) =>
-        canonicalSourceUrls.has(filing.source_url) &&
-        spenderMatches(filing, input.group) &&
-        filing.candidate_edges.some(
-          (edge) =>
-            edge.candidate_id === input.candidate.candidateId &&
-            edge.election_id === input.candidate.electionId &&
-            edge.support_oppose === input.group.supportOppose &&
-            edge.amount !== null
-        )
-    )
-    .map((filing) => filing.source_url)
-    .sort();
-  return sourceUrls[0] ?? null;
+  const sourceUrls = new Set(
+    input.payloads
+      .filter(
+        (payload): payload is ManualCandidateFinanceIndependentExpenditurePayload =>
+          payload.filing_type === "independent_expenditure"
+      )
+      .filter(
+        (filing) =>
+          canonicalSourceUrls.has(filing.source_url) &&
+          spenderMatches(filing, input.group) &&
+          filing.candidate_edges.some(
+            (edge) =>
+              edge.candidate_id === input.candidate.candidateId &&
+              edge.election_id === input.candidate.electionId &&
+              edge.support_oppose === input.group.supportOppose &&
+              edge.amount !== null
+          )
+      )
+      .map((filing) => filing.source_url)
+  );
+  // A group can combine multiple filings, while the shared response permits
+  // only one URL. Never attach one partial filing to an aggregate amount.
+  return sourceUrls.size === 1 ? (sourceUrls.values().next().value ?? null) : null;
 }
 
 function mapBreakdown(
@@ -164,7 +167,7 @@ function mapOutsideGroup(input: {
     committee_name: input.group.name,
     support_oppose: input.group.supportOppose,
     amount: input.group.amount,
-    source_url: outsideGroupSourceUrl(input),
+    source_url: singleOutsideGroupSourceUrl(input),
   };
 }
 

@@ -140,6 +140,53 @@ describe("loadManualCandidateFinanceSummariesByCandidateElection", () => {
     });
   });
 
+  it("does not cite one partial filing for an outside-group aggregate", async () => {
+    const report = loadFixture("ms_candidate_report_presley_2023.json");
+    const outside = loadFixture("ms_ie_single_target_griffis_2020.json");
+    if (report.filing_type !== "candidate_report" || outside.filing_type !== "independent_expenditure") {
+      throw new Error("Unexpected fixture types");
+    }
+    const first: ManualCandidateFinanceIndependentExpenditurePayload = {
+      ...outside,
+      candidate_edges: [
+        {
+          candidate_id: report.candidate_id,
+          election_id: report.election_id,
+          candidate_name: report.candidate_name,
+          support_oppose: "support",
+          amount: 1234.56,
+        },
+      ],
+    };
+    const second: ManualCandidateFinanceIndependentExpenditurePayload = {
+      ...first,
+      filing_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+      source_url:
+        "https://cfportal.sos.ms.gov/online/ExecuteWorkflow.aspx?" +
+        "WorkflowId=g729911d7-f399-46d6-a1ca-f15c1294f82d&FilingId=bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+      report_date: "2020-10-28",
+      researched_at: "2026-08-20T21:00:00Z",
+      candidate_edges: [{ ...first.candidate_edges[0]!, amount: 100 }],
+    };
+    const db = dbWithPayloads([report, first, second]);
+
+    const summaries = await loadManualCandidateFinanceSummariesByCandidateElection(
+      db as never,
+      [{ candidate_id: report.candidate_id, election_id: report.election_id }],
+      [{ election_id: report.election_id, state: "MS", election_date: "2023-11-07" }]
+    );
+
+    expect(
+      summaries.get(candidateElectionKey(report.candidate_id, report.election_id))?.outside_spending
+        .top_supporting_groups
+    ).toEqual([
+      expect.objectContaining({
+        amount: 1334.56,
+        source_url: null,
+      }),
+    ]);
+  });
+
   it("keeps unallocated multi-candidate outside totals null", async () => {
     const jon = loadFixture("ms_hd22_jon_lancaster_2025_pre_election.json");
     const justin = loadFixture("ms_hd22_justin_crosby_2025_pre_election.json");
