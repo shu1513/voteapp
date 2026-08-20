@@ -65,6 +65,9 @@ export function useAutoPick() {
     mutationKey: ["set-election-choice"],
     mutationFn: (request: AutoPickRequest) =>
       apiRequest<AutoPicksResult>("/api/me/auto-picks", { method: "POST", body: request }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["me", "election-choices"] }),
+    // onSettled, not onSuccess: the batch commits election by election, so a
+    // failure partway through can leave real writes behind — the choices
+    // cache must refetch even when the call errors.
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["me", "election-choices"] }),
   });
 }

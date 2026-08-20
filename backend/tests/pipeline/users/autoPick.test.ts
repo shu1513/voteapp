@@ -231,6 +231,22 @@ describe("decideOfficeRace", () => {
     expect(new Set(decision.pickedCandidateIds)).toEqual(new Set([CAND_A, CAND_B]));
   });
 
+  it("refuses to split a tied group that outsizes the open seats", () => {
+    // Three candidates tied on the same issue, two seats: seating any two of
+    // them would be an arbitrary (alphabetical) choice, so nobody is seated
+    // and the whole group is the shortlist.
+    const decision = decideOfficeRace(
+      THREE_ISSUES,
+      [candidate(CAND_A, "Alice"), candidate(CAND_B, "Bob"), candidate(CAND_C, "Cara")],
+      [tag(CAND_A, AREA_1, "for"), tag(CAND_B, AREA_1, "for"), tag(CAND_C, AREA_1, "for")],
+      2
+    );
+    expect(decision.outcome).toBe("no_pick");
+    expect(decision.reason).toBe("tie");
+    expect(decision.pickedCandidateIds).toEqual([]);
+    expect(new Set(decision.shortlistCandidateIds)).toEqual(new Set([CAND_A, CAND_B, CAND_C]));
+  });
+
   it("stops at a tie for the last open seat, keeping the seats it could fill", () => {
     const decision = decideOfficeRace(
       THREE_ISSUES,
@@ -428,10 +444,23 @@ describe("applyAutoPicks", () => {
     ).rejects.toBeInstanceOf(AutoPickError);
   });
 
+  it("rejects the whole batch before any write when an election id does not exist", async () => {
+    const { db, client } = createMockDb();
+    db.query
+      .mockResolvedValueOnce(userRow) // assertActiveUser
+      .mockResolvedValueOnce({ rows: [] }); // prevalidate: nothing found
+    await expect(
+      applyAutoPicks(db, USER_ID, { electionIds: [ELECTION_ID], mode: "replace" })
+    ).rejects.toMatchObject({ code: "election_not_found" });
+    expect(db.connect).not.toHaveBeenCalled();
+    expect(client.query).not.toHaveBeenCalled();
+  });
+
   it("reports too_few_issues per election instead of erroring", async () => {
     const { db } = createMockDb();
     db.query
       .mockResolvedValueOnce(userRow) // assertActiveUser
+      .mockResolvedValueOnce({ rows: [{ id: ELECTION_ID }] }) // prevalidate election ids
       .mockResolvedValueOnce({ rows: threeIssueRows.rows.slice(0, 2) }) // loadIssues: only 2
       .mockResolvedValueOnce({
         rows: [{ id: ELECTION_ID, race_type: "office", seats_to_fill: 1, is_upcoming: true }],
@@ -450,6 +479,7 @@ describe("applyAutoPicks", () => {
     const { db } = createMockDb();
     db.query
       .mockResolvedValueOnce(userRow)
+      .mockResolvedValueOnce({ rows: [{ id: ELECTION_ID }] }) // prevalidate election ids
       .mockResolvedValueOnce(threeIssueRows)
       .mockResolvedValueOnce({
         rows: [{ id: ELECTION_ID, race_type: "office", seats_to_fill: 1, is_upcoming: false }],
@@ -466,6 +496,7 @@ describe("applyAutoPicks", () => {
     const { db } = createMockDb();
     db.query
       .mockResolvedValueOnce(userRow)
+      .mockResolvedValueOnce({ rows: [{ id: ELECTION_ID }] }) // prevalidate election ids
       .mockResolvedValueOnce(threeIssueRows)
       .mockResolvedValueOnce({
         rows: [{ id: ELECTION_ID, race_type: "office", seats_to_fill: 1, is_upcoming: true }],
@@ -483,10 +514,11 @@ describe("applyAutoPicks", () => {
     const { db, client } = createMockDb();
     db.query
       .mockResolvedValueOnce(userRow) // pool assertActiveUser
-      .mockResolvedValueOnce(threeIssueRows); // pool loadIssues
+      .mockResolvedValueOnce({ rows: [{ id: ELECTION_ID }] }); // prevalidate election ids
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce(userRow) // assertActiveUser FOR UPDATE
+      .mockResolvedValueOnce(threeIssueRows) // loadIssues (after the lock)
       .mockResolvedValueOnce({
         rows: [{ id: ELECTION_ID, race_type: "office", seats_to_fill: 1, is_upcoming: true }],
       }) // loadElection
@@ -502,10 +534,13 @@ describe("applyAutoPicks", () => {
 
   it("replaces existing picks and writes the winner with origin auto", async () => {
     const { db, client } = createMockDb();
-    db.query.mockResolvedValueOnce(userRow).mockResolvedValueOnce(threeIssueRows);
+    db.query
+      .mockResolvedValueOnce(userRow) // pool assertActiveUser
+      .mockResolvedValueOnce({ rows: [{ id: ELECTION_ID }] }); // prevalidate election ids
     client.query
       .mockResolvedValueOnce({ rows: [] }) // BEGIN
       .mockResolvedValueOnce(userRow) // assertActiveUser FOR UPDATE
+      .mockResolvedValueOnce(threeIssueRows) // loadIssues (after the lock)
       .mockResolvedValueOnce({
         rows: [{ id: ELECTION_ID, race_type: "office", seats_to_fill: 1, is_upcoming: true }],
       }) // loadElection

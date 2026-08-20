@@ -323,20 +323,33 @@ export function decideOfficeRace(
   const positives = eligible.filter((report) => report.score > 0);
   const zeros = eligible.filter((report) => report.score === 0);
 
+  // Fill seats by equal-score GROUPS, not one candidate at a time: members
+  // of a tied group are indistinguishable on the user's issues, so the group
+  // is takeable only when it fits whole into the remaining seats. (A
+  // per-candidate walk would seat the alphabetically-first member of a fully
+  // tied group and report only the rest as tied.)
+  const scoreGroups: AutoPickCandidateReport[][] = [];
+  for (const report of positives) {
+    const lastGroup = scoreGroups[scoreGroups.length - 1];
+    if (lastGroup && lastGroup[0]!.score === report.score) {
+      lastGroup.push(report);
+    } else {
+      scoreGroups.push([report]);
+    }
+  }
   const picked: AutoPickCandidateReport[] = [];
   let tieBlocked = false;
   let shortlist: AutoPickCandidateReport[] = [];
-  for (let index = 0; index < positives.length && picked.length < seats; index += 1) {
-    const current = positives[index]!;
-    const next = positives[index + 1];
-    // A tie for the LAST open seat cannot be ranked; earlier ties fit within
-    // the remaining seats and are fine.
-    if (picked.length === seats - 1 && next !== undefined && next.score === current.score) {
-      tieBlocked = true;
-      shortlist = positives.slice(index).filter((report) => report.score === current.score);
+  for (const group of scoreGroups) {
+    if (picked.length >= seats) {
       break;
     }
-    picked.push(current);
+    if (group.length > seats - picked.length) {
+      tieBlocked = true;
+      shortlist = group;
+      break;
+    }
+    picked.push(...group);
   }
 
   let byElimination = false;
@@ -491,6 +504,7 @@ type ElectionRow = {
   id: string;
   race_type: "office" | "ballot_measure";
   seats_to_fill: number | null;
+  office_id: string | null;
   is_upcoming: boolean;
 };
 
@@ -501,6 +515,7 @@ async function loadElection(db: Queryable, normalizedElectionId: string): Promis
         id::text AS id,
         race_type,
         seats_to_fill,
+        office_id::text AS office_id,
         election_date >= ${US_LATEST_LOCAL_DATE_SQL} AS is_upcoming
       FROM public.elections
       WHERE id = $1::uuid
@@ -559,11 +574,21 @@ type RecordTagRow = {
 };
 
 // Live records only; tags restricted to the user's saved issues (the
-// 'general' area is not user-selectable, so it can never appear here).
+// 'general' area is not user-selectable, so it can never appear here) AND to
+// the election office's allowed areas. Record tags are candidate-wide, so a
+// candidate can carry records from a previous office the current one cannot
+// affect — the election views scope those out (ballotLookup's
+// scopeRecordTagsToOffice), and a pick engine that counted them would decide
+// races on issues the office has no say over. integrity_and_ethics is
+// universal (conduct is office-agnostic), matching the election views. An
+// election with no linked office has no allowed set and keeps every tag; an
+// office with an EMPTY allowed set keeps only the universal area, same as
+// the views.
 async function loadRecordTags(
   db: Queryable,
   candidateIds: readonly string[],
-  areaIds: readonly string[]
+  areaIds: readonly string[],
+  officeId: string | null
 ): Promise<AutoPickRecordTag[]> {
   if (candidateIds.length === 0 || areaIds.length === 0) {
     return [];
@@ -582,8 +607,21 @@ async function loadRecordTags(
       WHERE record.candidate_id = ANY($1::uuid[])
         AND record.retired_at IS NULL
         AND tag.research_area_id = ANY($2::uuid[])
+        AND (
+          $3::uuid IS NULL
+          OR tag.research_area_id IN (
+            SELECT allowed.research_area_id
+            FROM public.office_research_areas AS allowed
+            WHERE allowed.office_id = $3::uuid
+          )
+          OR tag.research_area_id IN (
+            SELECT area.id
+            FROM public.research_areas AS area
+            WHERE area.slug = '${INTEGRITY_SLUG}'
+          )
+        )
     `,
-    [candidateIds, areaIds]
+    [candidateIds, areaIds, officeId]
   );
   return result.rows.map((row) => ({
     candidateId: row.candidate_id,
@@ -680,7 +718,8 @@ async function computeDecision(
   const tags = await loadRecordTags(
     db,
     candidates.map((candidate) => candidate.candidateId),
-    areaIds
+    areaIds,
+    election.office_id
   );
   const decision = decideOfficeRace(issues, candidates, tags, election.seats_to_fill);
   return {
@@ -816,14 +855,37 @@ export async function applyAutoPicks(
   const dryRun = input.dryRun === true;
 
   await assertActiveUser(db, normalizedUserId, false);
-  const issues = await loadIssues(db, normalizedUserId);
+
+  // Prevalidate every id BEFORE any write: elections commit one at a time,
+  // so an unknown id discovered mid-batch would turn "some choices already
+  // written" into an error response the caller reads as "nothing happened".
+  const foundElections = await db.query<{ id: string }>(
+    `
+      SELECT id::text AS id
+      FROM public.elections
+      WHERE id = ANY($1::uuid[])
+    `,
+    [normalizedElectionIds]
+  );
+  const foundElectionIds = new Set(foundElections.rows.map((row) => row.id.toLowerCase()));
+  const missingElectionIds = normalizedElectionIds.filter(
+    (electionId) => !foundElectionIds.has(electionId.toLowerCase())
+  );
+  if (missingElectionIds.length > 0) {
+    throw new AutoPickError("election_not_found", `Election not found: ${missingElectionIds.join(", ")}`);
+  }
+
+  // Dry runs write nothing, so one preferences read up front is fine. The
+  // write path loads them per election INSIDE its transaction instead — see
+  // applyOne.
+  const dryRunIssues = dryRun ? await loadIssues(db, normalizedUserId) : null;
 
   const results: AutoPickElectionResult[] = [];
   for (const electionId of normalizedElectionIds) {
     if (dryRun) {
-      results.push(await computeOne(db, normalizedUserId, issues, electionId, input.mode));
+      results.push(await computeOne(db, normalizedUserId, dryRunIssues!, electionId, input.mode));
     } else {
-      results.push(await applyOne(db, normalizedUserId, issues, electionId, input.mode));
+      results.push(await applyOne(db, normalizedUserId, electionId, input.mode));
     }
   }
   return { results };
@@ -853,7 +915,6 @@ async function computeOne(
 async function applyOne(
   db: TransactionalDb,
   normalizedUserId: string,
-  issues: readonly AutoPickIssue[],
   normalizedElectionId: string,
   mode: AutoPickMode
 ): Promise<AutoPickElectionResult> {
@@ -864,6 +925,11 @@ async function applyOne(
     // the manual write path (setUserElectionChoice takes the same lock), so
     // the fill_empty check and the seat-capped inserts are race-safe.
     await assertActiveUser(client, normalizedUserId, true);
+    // Preferences load AFTER the lock: the preferences writer takes the same
+    // user FOR UPDATE lock, so this read sees the latest committed settings —
+    // a save from another tab moments earlier can't produce picks computed
+    // from the old settings.
+    const issues = await loadIssues(client, normalizedUserId);
     const result = await computeOne(client, normalizedUserId, issues, normalizedElectionId, mode);
     const wrote =
       result.outcome === "picked" &&
