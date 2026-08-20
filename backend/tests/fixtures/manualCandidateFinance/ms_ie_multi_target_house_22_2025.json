@@ -7,7 +7,7 @@
   "report_date": "2025-10-28",
   "source_url": "https://cfportal.sos.ms.gov/online/ExecuteWorkflow.aspx?WorkflowId=g729911d7-f399-46d6-a1ca-f15c1294f82d&FilingId=D2EE3D0C-08D1-4E87-9959-34ADADDEBA0C",
   "coverage_note": "Covers only campaign-finance reports filed with the Mississippi Secretary of State; county and municipal clerk filings are not included.",
-  "researched_at": "2026-08-19T19:20:00Z",
+  "researched_at": "2026-08-20T04:31:15Z",
   "outside_spender": {
     "source_entity_id": "c418043d-9201-479c-b599-defd9387b0cf",
     "name": "Improve Mississippi PAC"
@@ -25,7 +25,7 @@
     {
       "candidate_id": "55555555-5555-4555-8555-555555555555",
       "election_id": "77777777-7777-4777-8777-777777777777",
-      "candidate_name": "Jen Lancaster",
+      "candidate_name": "Jon Lancaster",
       "support_oppose": "support",
       "amount": null
     },

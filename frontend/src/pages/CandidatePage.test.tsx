@@ -2,16 +2,18 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CandidatePage, ErrorBoundary, loader } from "./CandidatePage";
-import { clearBallotDraft, readBallotDraft, setDraftCandidateChoice } from "../lib/ballotDraft";
+import { clearBallotDraft, readBallotDraft, setDraftBallotContext, setDraftCandidateChoice } from "../lib/ballotDraft";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
 import {
   candidateDetail,
   candidateElection,
   candidateFollow,
+  DISTRICT,
   financeSummary,
   ME_UNVERIFIED,
   ME_VERIFIED,
+  MY_DISTRICTS,
 } from "../test/fixtures";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
@@ -343,6 +345,7 @@ describe("CandidatePage", () => {
     it("leads with the viewer's saved areas, bolded, in the my-issues view", async () => {
       stubApiRoutes({
         "/api/me": { body: ME_VERIFIED },
+        "/api/me/districts": { body: MY_DISTRICTS },
         "/api/me/candidate-follows": { body: { follows: [] } },
         "/api/me/research-area-preferences": {
           body: {
@@ -424,6 +427,7 @@ describe("CandidatePage", () => {
   it("defaults the record view to \"My issues first\" once saved areas load", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/research-area-preferences": {
         body: {
@@ -471,6 +475,7 @@ describe("CandidatePage", () => {
   it("keeps a group the reader opened open across a view switch that reorders groups", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/research-area-preferences": {
         body: {
@@ -763,6 +768,7 @@ describe("CandidatePage", () => {
     // button must reflect the client-fetched follows list, not the payload.
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [candidateFollow()] } },
     });
     renderCandidate(() => candidateDetail());
@@ -772,6 +778,9 @@ describe("CandidatePage", () => {
 
   it("lets logged-out visitors pick from the sticky bar straight into the local ballot draft", async () => {
     clearBallotDraft();
+    // Pick controls only render for races in the viewer's districts; a
+    // guest's districts come from the draft's ballot context.
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
@@ -790,6 +799,7 @@ describe("CandidatePage", () => {
 
   it("shows post-pick actions on the sticky card once the guest picks", async () => {
     clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
@@ -809,6 +819,7 @@ describe("CandidatePage", () => {
 
   it("offers a back-to-election link in the post-pick actions for election arrivals", async () => {
     clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }), "c-1", {
       backTo: { path: "/elections/e-1", label: "Governor" },
@@ -824,6 +835,7 @@ describe("CandidatePage", () => {
   it("shows the signed-in draft link when this candidate is already the account's pick", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/election-choices": {
         body: {
@@ -870,6 +882,7 @@ describe("CandidatePage", () => {
 
   it("renders the sticky bar as the page's only pick control for a single pickable race", async () => {
     clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
 
@@ -885,6 +898,7 @@ describe("CandidatePage", () => {
     // say which one it would pick — those pages rely on the self-describing
     // rows, one per race.
     clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderCandidate(() =>
       candidateDetail({
@@ -905,6 +919,111 @@ describe("CandidatePage", () => {
       })
     ).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Make my pick: Jordan Voter" })).not.toBeInTheDocument();
+  });
+
+  it("keeps controls without the nudge on a decided race when districts are unknown", async () => {
+    // Safety valve + state 3 together: the existing pick keeps its controls
+    // even with no district context, and with no undecided race left the
+    // address nudge must not render beside the ✓ it would contradict.
+    clearBallotDraft();
+    setDraftCandidateChoice({
+      electionId: "e-1",
+      raceTitle: "Governor",
+      electionDate: "2099-11-03",
+      seatsToFill: null,
+      candidateId: "c-1",
+      candidateName: "Jordan Voter",
+      chosen: true,
+    });
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    expect(await screen.findByRole("button", { name: "✓ My pick: Jordan Voter" })).toBeInTheDocument();
+    expect(screen.queryByText(/Enter your address/)).not.toBeInTheDocument();
+  });
+
+  it("shows a guest neither pick controls nor the nudge for a race outside their districts", async () => {
+    // State 2 of the gate: districts known, race foreign — a clean read-only
+    // page, no controls and no nudge (the viewer already has a ballot; this
+    // race just isn't on it).
+    clearBallotDraft();
+    setDraftBallotContext(["dddddddd-2222-4222-8222-222222222222"], null);
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    // Follow renders once the session settles (same no-flash rule as the
+    // pick gate), so its presence proves the absences below are the gate's
+    // verdict, not a not-yet-rendered page.
+    await screen.findByRole("button", { name: "Follow" });
+    expect(screen.queryByRole("button", { name: /my pick/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Enter your address" })).not.toBeInTheDocument();
+  });
+
+  it("nudges a guest with no ballot context in place of the pick controls", async () => {
+    // State 3: districts unknown — no controls, but the conversion nudge
+    // takes their slot.
+    clearBallotDraft();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    const nudge = await screen.findByRole("link", { name: "Enter your address" });
+    expect(nudge).toHaveAttribute("href", "/");
+    expect(screen.queryByRole("button", { name: /my pick/i })).not.toBeInTheDocument();
+  });
+
+  it("gates a signed-in viewer per race: a decided foreign race keeps controls, an undecided one gets none", async () => {
+    // State 2 + the safety valve in one page: the saved-address districts
+    // say both races are foreign, but the account already holds a pick for
+    // one (a moved voter, or an imperfect geocode) — that race keeps its
+    // controls; the undecided one renders neither controls nor a nudge
+    // (districts are known). Each half is the other's timing proof: the ✓
+    // card only renders once the districts response is in (pickableElections
+    // stays empty while the query pends), so when it appears, the missing
+    // controls on the undecided race are the gate's verdict, not a page
+    // still waiting on /api/me/districts. And were the gate open, both
+    // races would be pickable, the sticky card would yield to per-race
+    // rows, and the ✓ lookup itself would fail.
+    clearBallotDraft();
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: { district_ids: ["dddddddd-2222-4222-8222-222222222222"] } },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/election-choices": {
+        body: {
+          choices: [
+            {
+              election_id: "e-1",
+              race_type: "office",
+              official_ballot_title: "Governor",
+              election_date: "2099-11-03",
+              seats_to_fill: null,
+              picks: [{ candidate_id: "c-1", display_name: "Jordan Voter", candidacy_status: "declared" }],
+              measure_position: null,
+              updated_at: "2026-08-01T00:00:00.000Z",
+            },
+          ],
+        },
+      },
+      "/api/me/ballot": { body: { elections: [{ id: "e-1", election_date: "2099-11-03" }] } },
+    });
+    renderCandidate(() =>
+      candidateDetail({
+        elections: [
+          candidateElection(),
+          candidateElection({
+            candidate_election_id: "ce-2",
+            election_id: "e-2",
+            official_ballot_title: "Lieutenant Governor",
+          }),
+        ],
+      })
+    );
+
+    expect(await screen.findByRole("button", { name: "✓ My pick: Jordan Voter" })).toBeInTheDocument();
+    // The undecided foreign race: no pick row, and no nudge (districts are
+    // known — a nudge would ask for an address the viewer already saved).
+    expect(screen.queryByRole("button", { name: /my pick for/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Enter your address" })).not.toBeInTheDocument();
   });
 
   it("shows loader-fetched finance for an ongoing election", async () => {
@@ -1342,6 +1461,7 @@ describe("CandidatePage roster rail sort", () => {
   };
   const SAVED_GUN = {
     "/api/me": { body: ME_VERIFIED },
+    "/api/me/districts": { body: MY_DISTRICTS },
     "/api/me/candidate-follows": { body: { follows: [] } },
     "/api/me/research-area-preferences": {
       body: {

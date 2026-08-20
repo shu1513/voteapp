@@ -32,7 +32,9 @@ import { FollowButton } from "../components/FollowButton";
 import { RegisterToFollowButton } from "../components/RegisterToFollowButton";
 import { ShareButton } from "../components/ShareButton";
 import { CandidatePickButton, CandidatePickRow } from "../components/ElectionChoiceControls";
-import { draftChoicesByElectionId, useBallotDraft } from "../lib/ballotDraft";
+import { draftChoicesByElectionId, isDecidedChoice, useBallotDraft } from "../lib/ballotDraft";
+import { useMyDistricts } from "../lib/useMyDistricts";
+import { AddressNudge } from "../components/AddressNudge";
 import { PostPickActions } from "../components/PostPickActions";
 import { useElectionChoices } from "@voteapp/api-client";
 import { FinanceSummaryCard, hasFinanceContent } from "../components/FinanceSummaryCard";
@@ -623,15 +625,37 @@ export function CandidatePage() {
   // while the session loads — render nothing then to avoid a flash of the
   // wrong row (same no-flash rule as the follow button).
   const isGuest = me === null;
+  const choiceForElection = (electionId: string) =>
+    isGuest ? draftChoicesByElectionId(draft).get(electionId) : choiceByElectionId?.get(electionId);
+  const choicesSettled = isGuest || (canChoose && choiceByElectionId !== undefined);
+  // District gate (docs/plans/pick-district-gate.md): picking is a ballot
+  // action, so only races in the viewer's own districts get controls. The
+  // decided-choice clause is the safety valve — an imperfect geocode must
+  // never lock someone out of seeing or changing an existing pick.
+  const { districtIds, isLoading: districtsLoading } = useMyDistricts();
   const pickableElections =
-    isGuest || (canChoose && choiceByElectionId !== undefined) ? officeCandidacies : [];
+    choicesSettled && !districtsLoading
+      ? officeCandidacies.filter(
+          (election) =>
+            districtIds?.has(election.district.id) === true ||
+            isDecidedChoice(choiceForElection(election.election_id))
+        )
+      : [];
+  // State 3 of the gate: districts unknown (settled) with an UNDECIDED race
+  // on the page — a conversion nudge replaces the controls. Decided races
+  // keep their controls via the safety valve above and get no nudge (it
+  // would contradict the ✓ beside it — same decided-race exclusion as the
+  // election page); only a race still worth deciding earns the ask.
+  const showAddressNudge =
+    choicesSettled &&
+    !districtsLoading &&
+    districtIds === undefined &&
+    officeCandidacies.some((election) => !isDecidedChoice(choiceForElection(election.election_id)));
   // The page's primary action ("Add to cart"): the sticky bottom pick card.
   // Only when the candidate is in exactly one pickable race — the card's
   // button carries no race name, so with several races it can't say which
   // one it would pick; those pages rely on the self-describing rows below.
   const primaryPickElection = pickableElections.length === 1 ? pickableElections[0] : null;
-  const choiceForElection = (electionId: string) =>
-    isGuest ? draftChoicesByElectionId(draft).get(electionId) : choiceByElectionId?.get(electionId);
   // Whether THIS candidate holds (one of) the pick(s) for the card's race —
   // gates the card's post-pick actions. True on arrival too, not only right
   // after clicking: the "where to next" links are just as useful when a
@@ -921,6 +945,15 @@ export function CandidatePage() {
           // so the summary always matches the record groups below it.
           preferences={recordView === "my_issues" ? preferences : []}
         />
+
+        {/* Districts unknown: the address nudge takes the pick controls'
+            in-body slot (single-race pages get it here too — a passive
+            sentence doesn't earn the sticky card's viewport pinning). */}
+        {showAddressNudge ? (
+          <div className="mt-4">
+            <AddressNudge />
+          </div>
+        ) : null}
 
         {/* In-body rows only when the sticky bar can't act: with several
             concurrent races the bar's bare "Make my pick" can't say which

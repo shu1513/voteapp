@@ -1,0 +1,23 @@
+{
+  "schema_version": "manual_candidate_finance.v1",
+  "state": "MS",
+  "filing_type": "candidate_report",
+  "filing_id": "3D0B9211-4F04-4C8D-AA5A-4E58BADBD801",
+  "amends_filing_id": null,
+  "report_date": "2025-10-28",
+  "source_url": "https://cfportal.sos.ms.gov/online/ExecuteWorkflow.aspx?WorkflowId=g729911d7-f399-46d6-a1ca-f15c1294f82d&FilingId=3D0B9211-4F04-4C8D-AA5A-4E58BADBD801",
+  "coverage_note": "Covers only campaign-finance reports filed with the Mississippi Secretary of State; county and municipal clerk filings are not included.",
+  "researched_at": "2026-08-20T04:31:15Z",
+  "candidate_id": "66666666-6666-4666-8666-666666666666",
+  "election_id": "77777777-7777-4777-8777-777777777777",
+  "candidate_name": "Justin Crosby",
+  "reported_totals": {
+    "contributions_this_period": 30852.74,
+    "contributions_calendar_ytd": 38341.11,
+    "disbursements_this_period": 20689.47,
+    "disbursements_calendar_ytd": 24222.41,
+    "cash_on_hand": 14118.70,
+    "debts_owed": null
+  },
+  "itemized_receipts": []
+}

@@ -44,6 +44,9 @@ function verifiedRoutes(overrides: Record<string, unknown> = {}) {
       ]),
     },
     "/api/me/election-choices": { body: { choices: [electionChoice()] } },
+    // AutoPickFillControl reads the viewer's ranked issues on every verified
+    // render (button gating); empty keeps it inert unless a test overrides.
+    "/api/me/research-area-preferences": { body: { preferences: [] } },
     ...overrides,
   } as Parameters<typeof stubApiRoutes>[0];
 }
@@ -527,6 +530,57 @@ describe("PicksPage", () => {
     // The measure's election-night passed fills in for the certified field.
     expect(screen.getByText("Passed")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sheriff" })).toHaveAttribute("href", "/elections/e-old");
+  });
+
+  it("badges auto picks and offers the fill/clear batch controls", async () => {
+    // e-1's pick came from the engine (origin auto) → Auto chip + a clear
+    // button; e-2 has no pick → the fill button counts it.
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/election-choices": {
+          body: {
+            choices: [
+              electionChoice({
+                picks: [
+                  {
+                    candidate_id: "c-1",
+                    display_name: "Jane Smith",
+                    candidacy_status: "declared",
+                    origin: "auto",
+                  },
+                ],
+              }),
+            ],
+          },
+        },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByText("Auto")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Fill my empty picks (1)" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Clear auto picks" })).toBeInTheDocument();
+  });
+
+  it("shows no batch controls when everything is decided by hand", async () => {
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/election-choices": {
+          body: {
+            choices: [
+              electionChoice(),
+              electionChoice({ election_id: "e-2", official_ballot_title: "Mayor" }),
+            ],
+          },
+        },
+      })
+    );
+    renderPicks();
+
+    await screen.findByText(/2 of 2 race/);
+    expect(screen.queryByText("Auto")).toBeNull();
+    expect(screen.queryByRole("button", { name: /Fill my empty picks/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Clear auto picks" })).toBeNull();
   });
 });
 
