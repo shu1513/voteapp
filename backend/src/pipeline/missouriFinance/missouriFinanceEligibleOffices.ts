@@ -36,6 +36,14 @@ const ELIGIBLE_OFFICE_KEYS = [
 
 export const MISSOURI_FINANCE_ELIGIBLE_OFFICE_KEYS: ReadonlySet<string> = new Set(ELIGIBLE_OFFICE_KEYS);
 
+// Direct-finance v1 needs a proven primary -> general boundary. MEC history
+// does not expose the candidacy-start boundary required for primary elections
+// or general elections without a primary, so municipal and school races stay
+// resolver-capable but are not scheduled for direct-finance publication yet.
+export const MISSOURI_DIRECT_FINANCE_ELIGIBLE_OFFICE_KEYS: ReadonlySet<string> = new Set(
+  ELIGIBLE_OFFICE_KEYS.filter((key) => !key.startsWith("place::") && !key.startsWith("school_"))
+);
+
 export function isMissouriFinanceEligibleOffice(input: {
   officeScope: string | null | undefined;
   officeCanonicalName: string | null | undefined;
@@ -43,6 +51,15 @@ export function isMissouriFinanceEligibleOffice(input: {
   const scope = input.officeScope?.trim();
   const name = input.officeCanonicalName?.trim();
   return Boolean(scope && name && MISSOURI_FINANCE_ELIGIBLE_OFFICE_KEYS.has(`${scope}::${name}`));
+}
+
+export function isMissouriDirectFinanceEligibleOffice(input: {
+  officeScope: string | null | undefined;
+  officeCanonicalName: string | null | undefined;
+}): boolean {
+  const scope = input.officeScope?.trim();
+  const name = input.officeCanonicalName?.trim();
+  return Boolean(scope && name && MISSOURI_DIRECT_FINANCE_ELIGIBLE_OFFICE_KEYS.has(`${scope}::${name}`));
 }
 
 export function normalizeMissouriMecText(value: string | null | undefined): string {

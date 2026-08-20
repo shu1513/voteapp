@@ -55,7 +55,7 @@ export type MissouriCandidateFinanceBatchSyncResult = {
 
 const DEFAULT_MAX_CANDIDATES = 10;
 const DEFAULT_STALE_AFTER_DAYS = 7;
-const DEFAULT_ELECTION_LOOKBACK_DAYS = 1;
+const MISSOURI_POST_ELECTION_REPORT_DUE_DAYS = 30;
 const DEFAULT_ELECTION_LOOKAHEAD_DAYS = 730;
 
 function positiveInteger(value: number | undefined, fallback: number, label: string): number {
@@ -71,7 +71,14 @@ export async function syncDueMissouriCandidateFinance(
   if (Number.isNaN(now.getTime())) throw new Error("Invalid Missouri finance batch timestamp");
   const maxCandidates = positiveInteger(input.maxCandidates, DEFAULT_MAX_CANDIDATES, "maxCandidates");
   const staleAfterDays = positiveInteger(input.staleAfterDays, DEFAULT_STALE_AFTER_DAYS, "staleAfterDays");
-  const electionLookbackDays = positiveInteger(input.electionLookbackDays, DEFAULT_ELECTION_LOOKBACK_DAYS, "electionLookbackDays");
+  // One complete stale interval after the final election report is due
+  // guarantees a daily worker gets a post-deadline refresh even if it synced
+  // on the due date before the filing arrived.
+  const electionLookbackDays = positiveInteger(
+    input.electionLookbackDays,
+    MISSOURI_POST_ELECTION_REPORT_DUE_DAYS + staleAfterDays + 1,
+    "electionLookbackDays"
+  );
   const electionLookaheadDays = positiveInteger(input.electionLookaheadDays, DEFAULT_ELECTION_LOOKAHEAD_DAYS, "electionLookaheadDays");
   const dryRun = input.dryRun === true;
   let autoLinkAttemptedCount = 0;
@@ -118,6 +125,7 @@ export async function syncDueMissouriCandidateFinance(
         candidateName: row.candidateName,
         electionYear: row.electionYear,
         electionDate: row.electionDate,
+        officeScope: row.officeScope,
         officeName: row.officeName,
         district: row.district,
         committee: {

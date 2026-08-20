@@ -10,7 +10,7 @@ import {
   type MissouriCandidateCommitteeSearchInput,
   type MissouriMecCandidateCommitteeRecord,
 } from "./missouriCandidateCommitteeResolver.js";
-import { MISSOURI_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./missouriFinanceEligibleOffices.js";
+import { MISSOURI_DIRECT_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./missouriFinanceEligibleOffices.js";
 import { upsertMissouriFinanceLink } from "./missouriFinanceWriter.js";
 import type { MissouriMecSessionOptions } from "./missouriMecClient.js";
 
@@ -147,6 +147,7 @@ export async function listMissouriCandidateElectionsMissingFinanceLinks(
       WHERE candidate.deleted_at IS NULL
         AND district.state = 'MO'
         AND election.race_type = 'office'
+        AND election.election_stage = 'general'
         AND election.election_date >= ($1::date - make_interval(days => $3::int))
         AND election.election_date <= ($1::date + make_interval(days => $4::int))
         AND candidate_election.status NOT IN ('withdrawn', 'lost')
@@ -167,7 +168,7 @@ export async function listMissouriCandidateElectionsMissingFinanceLinks(
       input.maxCandidates,
       input.electionLookbackDays,
       input.electionLookaheadDays,
-      [...MISSOURI_FINANCE_ELIGIBLE_OFFICE_KEYS],
+      [...MISSOURI_DIRECT_FINANCE_ELIGIBLE_OFFICE_KEYS],
     ]
   );
   return result.rows.map(mapCandidateElectionRow);

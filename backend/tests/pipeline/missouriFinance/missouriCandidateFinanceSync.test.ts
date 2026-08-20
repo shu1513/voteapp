@@ -38,7 +38,22 @@ describe("missouriCandidateFinanceSync", () => {
     expect(() => resolveMissouriCandidateFinanceCycleWindow({
       electionDate: "2026-11-03",
       committeeInfo: { ...artifacts.committeeInfo, electionHistory: artifacts.committeeInfo.electionHistory.slice(0, 1) },
-    })).toThrow("no same-year primary boundary");
+    })).toThrow("no matching same-year primary boundary");
+  });
+
+  it("ignores an unrelated same-year primary when resolving the cycle boundary", () => {
+    expect(resolveMissouriCandidateFinanceCycleWindow({
+      electionDate: "2026-11-03",
+      committeeInfo: {
+        ...artifacts.committeeInfo,
+        electionHistory: [
+          artifacts.committeeInfo.electionHistory[0]!,
+          { electionDate: "2026-09-01", electionType: "Primary Election", office: "State Representative", politicalSubdivision: "Missouri State Senate" },
+          { electionDate: "2026-08-15", electionType: "Primary Election", office: "State Senator", politicalSubdivision: "Missouri House" },
+          artifacts.committeeInfo.electionHistory[1]!,
+        ],
+      },
+    })).toMatchObject({ cycleStart: "2026-08-05", primaryElectionDate: "2026-08-04" });
   });
 
   it("builds a dry-run direct snapshot from cache data without DB writes", async () => {
@@ -48,6 +63,7 @@ describe("missouriCandidateFinanceSync", () => {
       candidateId: "11111111-1111-4111-8111-111111111111",
       electionId: "22222222-2222-4222-8222-222222222222",
       candidateName: "Jane Doe", electionYear: 2026, electionDate: "2026-11-03",
+      officeScope: "state_lower",
       officeName: "State Lower Chamber Legislator", district: "1",
       committee: { committeeId: "C263985", committeeName: "Jane for Missouri", linkSource: "mec_portal" },
       artifacts, dryRun: true, now: new Date("2026-08-19T00:00:00Z"),
@@ -75,10 +91,24 @@ describe("missouriCandidateFinanceSync", () => {
     await expect(syncMissouriCandidateFinance({
       db: { query, connect: vi.fn() } as never,
       candidateId: "11111111-1111-4111-8111-111111111111", electionId: "22222222-2222-4222-8222-222222222222",
-      candidateName: "Jane Doe", electionYear: 2026, electionDate: "2026-11-03", officeName: "State Lower Chamber Legislator",
+      candidateName: "Jane Doe", electionYear: 2026, electionDate: "2026-11-03", officeScope: "state_lower",
+      officeName: "State Lower Chamber Legislator",
       committee: { committeeId: "C263985", committeeName: "Jane for Missouri", linkSource: "mec_portal" },
       artifacts: ambiguous,
     })).rejects.toThrow("in-cycle report lineage is not publishable");
+    expect(query).not.toHaveBeenCalled();
+  });
+
+  it("rejects local no-primary cycles before reading or writing finance data", async () => {
+    const query = vi.fn();
+    await expect(syncMissouriCandidateFinance({
+      db: { query, connect: vi.fn() } as never,
+      candidateId: "11111111-1111-4111-8111-111111111111", electionId: "22222222-2222-4222-8222-222222222222",
+      candidateName: "Jane Doe", electionYear: 2026, electionDate: "2026-04-07", officeScope: "school_unified",
+      officeName: "School Board Member",
+      committee: { committeeId: "C263985", committeeName: "Jane for School Board", linkSource: "mec_portal" },
+      artifacts,
+    })).rejects.toThrow("does not support office cycle school_unified::School Board Member");
     expect(query).not.toHaveBeenCalled();
   });
 });

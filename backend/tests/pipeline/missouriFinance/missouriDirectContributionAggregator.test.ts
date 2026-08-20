@@ -74,4 +74,26 @@ describe("aggregateMissouriDirectFinance", () => {
     expect(result.contributionReportDiagnostics).toEqual([]);
     expect(result.directContributionTotal).toBe(0);
   });
+
+  it("keeps organization money in totals and size buckets but out of occupations", () => {
+    const result = aggregateMissouriDirectFinance({
+      inventory,
+      cycleStart: "2026-08-05",
+      cycleEnd: "2026-11-03",
+      contributionRows: [
+        contribution({ contributorLastName: "Person", contributorFirstName: "Pat", occupation: null, amountCents: 10000 }),
+        contribution({ contributorCompany: "Example LLC", contributorLastName: null, contributorFirstName: null, occupation: null, amountCents: 20000 }),
+        contribution({ contributorCommittee: "Example PAC", contributorLastName: null, contributorFirstName: null, occupation: null, amountCents: 30000 }),
+      ],
+      expenditureRows: [],
+    });
+    expect(result.directContributionTotal).toBe(600);
+    expect(result.directBreakdowns.filter((row) => row.categoryType === "occupation")).toEqual([
+      expect.objectContaining({ categoryName: "Unknown", amount: 100, contributorCount: 1 }),
+    ]);
+    expect(result.directBreakdowns.filter((row) => row.categoryType === "contribution_size")).toEqual([
+      expect.objectContaining({ categoryName: "$100-$249", amount: 300, contributorCount: 2 }),
+      expect.objectContaining({ categoryName: "$250-$499", amount: 300, contributorCount: 1 }),
+    ]);
+  });
 });

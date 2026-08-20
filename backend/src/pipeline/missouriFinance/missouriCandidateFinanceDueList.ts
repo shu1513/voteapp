@@ -1,7 +1,7 @@
 import type { Pool, PoolClient } from "pg";
 
 import type { StandardStateFinanceDueListInput, StandardStateFinanceDueListResult } from "../finance/standardStateFinanceDueListQuery.js";
-import { MISSOURI_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./missouriFinanceEligibleOffices.js";
+import { MISSOURI_DIRECT_FINANCE_ELIGIBLE_OFFICE_KEYS } from "./missouriFinanceEligibleOffices.js";
 import type { MissouriFinanceLinkSource } from "./missouriFinanceWriter.js";
 
 type Queryable = Pick<Pool | PoolClient, "query">;
@@ -47,6 +47,7 @@ export async function listDueMissouriCandidateFinanceSyncRows(
       LEFT JOIN public.offices office ON office.id=election.office_id
       LEFT JOIN public.mo_candidate_finance_summaries summary ON summary.link_id=link.id AND summary.election_year=link.election_year
       WHERE link.link_status='active' AND candidate.deleted_at IS NULL AND district_row.state='MO' AND election.race_type='office'
+        AND election.election_stage='general'
         AND election.election_date >= (($1::timestamptz AT TIME ZONE 'UTC')::date - make_interval(days=>$4::int))
         AND election.election_date <= (($1::timestamptz AT TIME ZONE 'UTC')::date + make_interval(days=>$5::int))
         AND candidate_election.status NOT IN ('withdrawn','lost')
@@ -55,7 +56,7 @@ export async function listDueMissouriCandidateFinanceSyncRows(
       ORDER BY summary.last_synced_at NULLS FIRST, election.election_date, link.candidate_name_normalized, link.id
       LIMIT $3::int)
     SELECT * FROM due`,
-    [input.now.toISOString(), input.staleAfterDays, input.maxCandidates, input.electionLookbackDays, input.electionLookaheadDays, [...MISSOURI_FINANCE_ELIGIBLE_OFFICE_KEYS]]
+    [input.now.toISOString(), input.staleAfterDays, input.maxCandidates, input.electionLookbackDays, input.electionLookaheadDays, [...MISSOURI_DIRECT_FINANCE_ELIGIBLE_OFFICE_KEYS]]
   );
   const rawTotalDueRows = result.rows[0]?.total_due_rows;
   const parsedTotalDueRows = typeof rawTotalDueRows === "number" ? rawTotalDueRows : Number(rawTotalDueRows);

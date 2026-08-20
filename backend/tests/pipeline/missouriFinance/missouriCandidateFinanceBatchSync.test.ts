@@ -33,6 +33,8 @@ describe("syncDueMissouriCandidateFinance", () => {
     });
     expect(acquire).toHaveBeenCalledTimes(2);
     expect(sync).toHaveBeenCalledTimes(2);
+    expect(query.mock.calls[0]?.[1]?.[3]).toBe(38);
+    expect(sync).toHaveBeenCalledWith(expect.objectContaining({ officeScope: "state_lower" }));
     expect(result).toMatchObject({ dueCandidateCount: 2, selectedCandidateCount: 2, syncedCandidateCount: 1, failedCandidateCount: 1 });
     expect(result.results[1]).toMatchObject({ ok: false, error: "bad amendment lineage" });
   });

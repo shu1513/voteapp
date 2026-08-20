@@ -93,6 +93,12 @@ function occupationName(value: string | null): string {
   return !filed || keyText(filed) === "UNKNOWN" ? MISSOURI_UNKNOWN_OCCUPATION_LABEL : filed;
 }
 
+function isIndividualContributor(row: MissouriMecContributionRow): boolean {
+  return !normalizeText(row.contributorCommittee) &&
+    !normalizeText(row.contributorCompany) &&
+    Boolean(normalizeText(row.contributorLastName) || normalizeText(row.contributorFirstName));
+}
+
 function sizeBucket(amountCents: number): string {
   if (amountCents < 10_000) return "$1-$99";
   if (amountCents < 25_000) return "$100-$249";
@@ -184,7 +190,9 @@ export function aggregateMissouriDirectFinance(input: {
     if (row.amountCents <= 0) return;
     const contributor = contributorKey(row, index);
     addAggregate(aggregates, "contribution_size", sizeBucket(row.amountCents), row.amountCents, contributor);
-    addAggregate(aggregates, "occupation", occupationName(row.occupation), row.amountCents, contributor);
+    if (isIndividualContributor(row)) {
+      addAggregate(aggregates, "occupation", occupationName(row.occupation), row.amountCents, contributor);
+    }
   });
 
   let disbursementCents = 0;

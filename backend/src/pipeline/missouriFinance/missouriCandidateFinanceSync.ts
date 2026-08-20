@@ -3,6 +3,11 @@ import type { Pool, PoolClient } from "pg";
 import { aggregateMissouriDirectFinance, type MissouriDirectFinanceAggregationResult } from "./missouriDirectContributionAggregator.js";
 import { readMissouriMecCandidateFinanceArtifacts } from "./missouriMecArtifactCache.js";
 import { normalizeMissouriCandidateNameForStorage } from "./missouriCandidateCommitteeResolver.js";
+import {
+  isMissouriDirectFinanceEligibleOffice,
+  normalizeMissouriMecJurisdiction,
+  normalizeMissouriMecText,
+} from "./missouriFinanceEligibleOffices.js";
 import { replaceMissouriCandidateFinanceSnapshot, type MissouriFinanceLinkSource } from "./missouriFinanceWriter.js";
 import type { MissouriMecCommitteeInfo, MissouriMecContributionRow, MissouriMecExpenditureRow, MissouriMecReportInventoryRow } from "./missouriMecParsers.js";
 
@@ -57,11 +62,18 @@ export function resolveMissouriCandidateFinanceCycleWindow(input: {
     throw new Error(`Missouri direct-finance v1 requires target general election in MEC history: ${input.electionDate}`);
   }
   const primaries = input.committeeInfo.electionHistory
-    .filter((row) => row.electionDate.startsWith(`${year}-`) && row.electionDate < input.electionDate && /PRIMARY/i.test(row.electionType))
+    .filter((row) =>
+      row.electionDate.startsWith(`${year}-`) &&
+      row.electionDate < input.electionDate &&
+      /PRIMARY/i.test(row.electionType) &&
+      normalizeMissouriMecText(row.office) === normalizeMissouriMecText(targetHistory.office) &&
+      normalizeMissouriMecJurisdiction(row.politicalSubdivision) ===
+        normalizeMissouriMecJurisdiction(targetHistory.politicalSubdivision)
+    )
     .sort((a, b) => b.electionDate.localeCompare(a.electionDate));
   const primary = primaries[0];
   if (!primary) {
-    throw new Error(`Missouri MEC history has no same-year primary boundary before ${input.electionDate}`);
+    throw new Error(`Missouri MEC history has no matching same-year primary boundary before ${input.electionDate}`);
   }
   return { cycleStart: nextIsoDate(primary.electionDate), cycleEnd: input.electionDate, primaryElectionDate: primary.electionDate };
 }
@@ -73,6 +85,7 @@ export async function syncMissouriCandidateFinance(input: {
   candidateName: string;
   electionYear: number;
   electionDate: string;
+  officeScope: string;
   officeName: string;
   district?: string | null;
   committee: {
@@ -90,7 +103,11 @@ export async function syncMissouriCandidateFinance(input: {
   const candidateId = requireText(input.candidateId, "candidate id");
   const electionId = requireText(input.electionId, "election id");
   const candidateName = requireText(input.candidateName, "candidate name");
+  const officeScope = requireText(input.officeScope, "office scope");
   const officeName = requireText(input.officeName, "office name");
+  if (!isMissouriDirectFinanceEligibleOffice({ officeScope, officeCanonicalName: officeName })) {
+    throw new Error(`Missouri direct-finance v1 does not support office cycle ${officeScope}::${officeName}`);
+  }
   const committeeId = requireText(input.committee.committeeId, "Missouri committee id").toUpperCase();
   if (!/^[A-Z]\d{6}$/.test(committeeId)) throw new Error(`Invalid Missouri MECID: ${committeeId}`);
   if (!Number.isSafeInteger(input.electionYear) || input.electionYear < 2024 || input.electionYear > 2100) {
