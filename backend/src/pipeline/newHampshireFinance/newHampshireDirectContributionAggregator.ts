@@ -78,6 +78,7 @@ function amountToCents(amount: number, transactionId: number): number {
 }
 
 function contributionSizeBucket(amountCents: number): string {
+  if (amountCents < 100) return "$0.01-$0.99";
   if (amountCents < 100 * 100) return "$1-$99";
   if (amountCents < 250 * 100) return "$100-$249";
   if (amountCents < 500 * 100) return "$250-$499";

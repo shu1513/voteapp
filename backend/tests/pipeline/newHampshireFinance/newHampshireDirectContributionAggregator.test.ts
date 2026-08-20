@@ -124,7 +124,14 @@ describe("newHampshireDirectContributionAggregator", () => {
         {
           categoryType: "contribution_size",
           categoryName: "$1-$99",
-          amount: 50.3,
+          amount: 50,
+          contributorCount: null,
+          sourceUrl,
+        },
+        {
+          categoryType: "contribution_size",
+          categoryName: "$0.01-$0.99",
+          amount: 0.3,
           contributorCount: null,
           sourceUrl,
         },
@@ -173,7 +180,7 @@ describe("newHampshireDirectContributionAggregator", () => {
     expect(result.directBreakdowns).toEqual([
       {
         categoryType: "contribution_size",
-        categoryName: "$1-$99",
+        categoryName: "$0.01-$0.99",
         amount: 0.3,
         contributorCount: null,
         sourceUrl: null,
