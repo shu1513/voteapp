@@ -1,6 +1,6 @@
 # Pick district gate
 
-Status: PR 1 (backend endpoint, #774) merged. PR 2 (frontend gate) implemented. PR 3 (tests) planned (2026-08-19).
+Status: PR 1 (backend endpoint, #774) and PR 2 (frontend gate, #780) merged. PR 3 (tests) implemented (2026-08-19).
 
 ## Problem
 

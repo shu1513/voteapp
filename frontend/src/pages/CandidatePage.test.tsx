@@ -942,6 +942,86 @@ describe("CandidatePage", () => {
     expect(screen.queryByText(/Enter your address/)).not.toBeInTheDocument();
   });
 
+  it("shows a guest neither pick controls nor the nudge for a race outside their districts", async () => {
+    // State 2 of the gate: districts known, race foreign — a clean read-only
+    // page, no controls and no nudge (the viewer already has a ballot; this
+    // race just isn't on it).
+    clearBallotDraft();
+    setDraftBallotContext(["dddddddd-2222-4222-8222-222222222222"], null);
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    // Follow renders once the session settles (same no-flash rule as the
+    // pick gate), so its presence proves the absences below are the gate's
+    // verdict, not a not-yet-rendered page.
+    await screen.findByRole("button", { name: "Follow" });
+    expect(screen.queryByRole("button", { name: /my pick/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Enter your address" })).not.toBeInTheDocument();
+  });
+
+  it("shows a signed-in viewer neither pick controls nor the nudge for a foreign race", async () => {
+    // Same state 2, server-side districts fork: the saved address resolves
+    // to districts that don't include this race's.
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: { district_ids: ["dddddddd-2222-4222-8222-222222222222"] } },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/election-choices": { body: { choices: [] } },
+    });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    await screen.findByRole("button", { name: "Follow" });
+    expect(screen.queryByRole("button", { name: /my pick/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Enter your address" })).not.toBeInTheDocument();
+  });
+
+  it("nudges a guest with no ballot context in place of the pick controls", async () => {
+    // State 3: districts unknown — no controls, but the conversion nudge
+    // takes their slot.
+    clearBallotDraft();
+    stubApiRoutes({ ...ANONYMOUS });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    const nudge = await screen.findByRole("link", { name: "Enter your address" });
+    expect(nudge).toHaveAttribute("href", "/");
+    expect(screen.queryByRole("button", { name: /my pick/i })).not.toBeInTheDocument();
+  });
+
+  it("keeps controls for a decided account pick in a foreign race (safety valve)", async () => {
+    // The account already holds a pick for this race, but the saved-address
+    // districts say it's foreign (a moved voter, or an imperfect geocode).
+    // The existing pick must stay visible and changeable regardless.
+    clearBallotDraft();
+    stubApiRoutes({
+      "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: { district_ids: ["dddddddd-2222-4222-8222-222222222222"] } },
+      "/api/me/candidate-follows": { body: { follows: [] } },
+      "/api/me/election-choices": {
+        body: {
+          choices: [
+            {
+              election_id: "e-1",
+              race_type: "office",
+              official_ballot_title: "Governor",
+              election_date: "2099-11-03",
+              seats_to_fill: null,
+              picks: [{ candidate_id: "c-1", display_name: "Jordan Voter", candidacy_status: "declared" }],
+              measure_position: null,
+              updated_at: "2026-08-01T00:00:00.000Z",
+            },
+          ],
+        },
+      },
+      "/api/me/ballot": { body: { elections: [{ id: "e-1", election_date: "2099-11-03" }] } },
+    });
+    renderCandidate(() => candidateDetail({ elections: [candidateElection()] }));
+
+    expect(await screen.findByRole("button", { name: "✓ My pick: Jordan Voter" })).toBeInTheDocument();
+    // Districts are known here, so the nudge has no business rendering
+    // beside the ✓ either.
+    expect(screen.queryByRole("link", { name: "Enter your address" })).not.toBeInTheDocument();
+  });
+
   it("shows loader-fetched finance for an ongoing election", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     // Finance rides in the loader payload (SSR-rendered for crawlers), not
