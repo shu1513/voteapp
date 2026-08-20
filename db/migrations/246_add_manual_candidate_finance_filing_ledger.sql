@@ -75,7 +75,6 @@ CREATE TABLE IF NOT EXISTS public.manual_candidate_finance_filing_targets (
   CONSTRAINT manual_candidate_finance_filing_targets_candidate_election_fk
     FOREIGN KEY (candidate_id, election_id)
     REFERENCES public.candidate_elections(candidate_id, election_id)
-    ON UPDATE RESTRICT
     ON DELETE RESTRICT,
   CONSTRAINT manual_candidate_finance_filing_targets_name_check
     CHECK (btrim(candidate_name) <> ''),
