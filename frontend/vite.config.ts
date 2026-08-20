@@ -53,6 +53,16 @@ export default defineConfig({
   define: {
     "import.meta.env.VITE_RELEASE": JSON.stringify(release ?? ""),
   },
+  resolve: {
+    // Pin the workspace package to THIS checkout's sources. Without the
+    // alias, node resolution walks into node_modules — which a worktree
+    // symlinks to the main checkout — so a worktree dev server would serve
+    // the main checkout's api-client instead of the code under review. In
+    // the main checkout the alias resolves to the same files as before.
+    alias: {
+      "@voteapp/api-client": path.resolve(__dirname, "../packages/api-client/src/index.ts"),
+    },
+  },
   build: {
     sourcemap: uploadSourceMaps ? "hidden" : false,
   },

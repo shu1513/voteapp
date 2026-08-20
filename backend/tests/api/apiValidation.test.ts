@@ -9,6 +9,7 @@ import {
   AUTH_RESEND_VERIFICATION_PATH,
   AUTH_VERIFY_EMAIL_PATH,
   CANDIDATE_DETAIL_PATH_PREFIX,
+  ME_AUTO_PICKS_PATH,
   ME_CANDIDATE_FOLLOWS_PATH,
   ME_ELECTION_CHOICES_PATH,
   MAX_ADDRESS_INPUT_LENGTH,
@@ -23,6 +24,7 @@ import {
   parseAuthResendVerificationBodyValue,
   parseAuthVerifyEmailBodyValue,
   parseAuthenticatedAddressBodyValue,
+  parseAutoPicksBodyValue,
   parseBallotPreferencesBodyValue,
   parseBallotSummaryOptions,
   parseCandidateFollowBodyValue,
@@ -349,6 +351,45 @@ describe("election choice API contract constants", () => {
     ],
   ])("rejects invalid election choice payload %#", (payload, message) => {
     expect(() => parseElectionChoiceBodyValue(payload)).toThrow(message);
+  });
+});
+
+describe("auto-picks API contract constants", () => {
+  const electionId = "33333333-3333-4333-8333-333333333333";
+
+  it("defines the auto-picks path", () => {
+    expect(ME_AUTO_PICKS_PATH).toBe("/api/me/auto-picks");
+  });
+
+  it("parses a payload, trimming ids and passing dry_run through", () => {
+    expect(
+      parseAutoPicksBodyValue({ election_ids: [`  ${electionId}  `], mode: "replace", dry_run: true })
+    ).toEqual({ electionIds: [electionId], mode: "replace", dryRun: true });
+    expect(parseAutoPicksBodyValue({ election_ids: [electionId], mode: "fill_empty" })).toEqual({
+      electionIds: [electionId],
+      mode: "fill_empty",
+    });
+  });
+
+  it.each([
+    [null, "Request body must be a JSON object"],
+    [{}, "Request body must include non-empty array field: election_ids"],
+    [{ election_ids: [], mode: "replace" }, "Request body must include non-empty array field: election_ids"],
+    [
+      { election_ids: Array.from({ length: 201 }, (_, index) => `33333333-3333-4333-8333-${String(index).padStart(12, "0")}`), mode: "replace" },
+      "election_ids must contain at most 200 ids",
+    ],
+    [{ election_ids: [123], mode: "replace" }, "election_ids must contain only UUID strings"],
+    [{ election_ids: ["not-a-uuid"], mode: "replace" }, "election_ids contains an invalid UUID: not-a-uuid"],
+    [
+      { election_ids: [electionId, electionId], mode: "replace" },
+      `election_ids contains a duplicate: ${electionId}`,
+    ],
+    [{ election_ids: [electionId] }, "mode must be 'fill_empty' or 'replace'"],
+    [{ election_ids: [electionId], mode: "everything" }, "mode must be 'fill_empty' or 'replace'"],
+    [{ election_ids: [electionId], mode: "replace", dry_run: "yes" }, "dry_run must be a boolean"],
+  ])("rejects invalid auto-picks payload %#", (payload, message) => {
+    expect(() => parseAutoPicksBodyValue(payload)).toThrow(message);
   });
 });
 

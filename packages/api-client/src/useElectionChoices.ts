@@ -1,6 +1,6 @@
 import { useIsMutating, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "./client";
-import type { ElectionChoice, ElectionChoicesResult, ElectionChoiceUpdate } from "./types";
+import type { AutoPickRequest, AutoPicksResult, ElectionChoice, ElectionChoicesResult, ElectionChoiceUpdate } from "./types";
 import { useMe } from "./useMe";
 
 /**
@@ -50,5 +50,24 @@ export function useSetElectionChoice() {
     // Returned (not fire-and-forget) so the mutation stays pending until the
     // refetched server truth is in the cache — same contract as useSetFollow.
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["me", "election-choices"] }),
+  });
+}
+
+/**
+ * Runs the auto-pick engine ("Pick for me") over one or more elections.
+ * Shares the set-election-choice mutation key so every pick control on the
+ * page disables while the engine writes, and invalidates the same choices
+ * query (a dry_run's refetch is a harmless no-op — not worth branching over).
+ */
+export function useAutoPick() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["set-election-choice"],
+    mutationFn: (request: AutoPickRequest) =>
+      apiRequest<AutoPicksResult>("/api/me/auto-picks", { method: "POST", body: request }),
+    // onSettled, not onSuccess: the batch commits election by election, so a
+    // failure partway through can leave real writes behind — the choices
+    // cache must refetch even when the call errors.
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["me", "election-choices"] }),
   });
 }

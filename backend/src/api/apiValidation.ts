@@ -9,6 +9,7 @@ import {
 } from "../pipeline/address/ballotElectionOrdering.js";
 import { GOOGLE_PLACE_ID_PATTERN } from "../pipeline/address/googlePlacesAutocomplete.js";
 import type { UserCandidateFollowInput } from "../pipeline/users/userCandidateFollows.js";
+import { MAX_AUTO_PICK_ELECTION_IDS, type ApplyAutoPicksInput } from "../pipeline/users/autoPick.js";
 import type { UserElectionChoiceInput } from "../pipeline/users/userElectionChoices.js";
 import type { UserResearchAreaPreferenceInput } from "../pipeline/users/userResearchAreaPreferences.js";
 import type { UserBallotPreferences } from "../pipeline/users/userBallotPreferences.js";
@@ -66,6 +67,10 @@ export const ME_CANDIDATE_FOLLOWS_PATH = "/api/me/candidate-follows";
 // verification-gated: a choice is private planning, it triggers no
 // notifications, so a registered session is enough.
 export const ME_ELECTION_CHOICES_PATH = "/api/me/election-choices";
+// POST runs the auto-pick engine ("Pick for me") over the given elections.
+// Same auth posture as election choices: session required, no verification
+// gate — the results are private planning.
+export const ME_AUTO_PICKS_PATH = "/api/me/auto-picks";
 // POST mints (or returns) the share link for one date's pick card. Same
 // auth posture as election choices: session required, no verification gate.
 export const ME_PICK_CARD_SHARES_PATH = "/api/me/pick-card-shares";
@@ -896,6 +901,53 @@ export function parseElectionChoiceBodyValue(parsed: unknown): ElectionChoicePay
     throw new TypeError("measure_position must be 'yes', 'no', or null");
   }
   return { electionId, measurePosition: payload.measure_position };
+}
+
+// Parses the POST /api/me/auto-picks body. Shape checks only (types, UUID
+// format, batch size, duplicates); everything election-specific (existence,
+// window, race type) is per-result work in the engine.
+export function parseAutoPicksBodyValue(parsed: unknown): ApplyAutoPicksInput {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+
+  const payload = parsed as { election_ids?: unknown; mode?: unknown; dry_run?: unknown };
+  if (!Array.isArray(payload.election_ids) || payload.election_ids.length === 0) {
+    throw new TypeError("Request body must include non-empty array field: election_ids");
+  }
+  if (payload.election_ids.length > MAX_AUTO_PICK_ELECTION_IDS) {
+    throw new TypeError(`election_ids must contain at most ${MAX_AUTO_PICK_ELECTION_IDS} ids`);
+  }
+  const electionIds: string[] = [];
+  const seenElectionIds = new Set<string>();
+  for (const rawElectionId of payload.election_ids) {
+    if (typeof rawElectionId !== "string") {
+      throw new TypeError("election_ids must contain only UUID strings");
+    }
+    const electionId = rawElectionId.trim();
+    if (!isUuid(electionId)) {
+      throw new TypeError(`election_ids contains an invalid UUID: ${electionId}`);
+    }
+    const dedupeKey = electionId.toLowerCase();
+    if (seenElectionIds.has(dedupeKey)) {
+      throw new TypeError(`election_ids contains a duplicate: ${electionId}`);
+    }
+    seenElectionIds.add(dedupeKey);
+    electionIds.push(electionId);
+  }
+
+  if (payload.mode !== "fill_empty" && payload.mode !== "replace") {
+    throw new TypeError("mode must be 'fill_empty' or 'replace'");
+  }
+  if (payload.dry_run !== undefined && typeof payload.dry_run !== "boolean") {
+    throw new TypeError("dry_run must be a boolean");
+  }
+
+  return {
+    electionIds,
+    mode: payload.mode,
+    ...(payload.dry_run === undefined ? {} : { dryRun: payload.dry_run }),
+  };
 }
 
 // Expo push tokens are opaque short strings (ExponentPushToken[…]); the cap
