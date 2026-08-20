@@ -1,0 +1,219 @@
+import { describe, expect, it, vi } from "vitest";
+
+import {
+  replaceMissouriCandidateFinanceSnapshot,
+  upsertMissouriFinanceLink,
+} from "../../../src/pipeline/missouriFinance/missouriFinanceWriter.js";
+
+const CANDIDATE_ID = "11111111-1111-4111-8111-111111111111";
+const ELECTION_ID = "22222222-2222-4222-8222-222222222222";
+const LINK_ID = "33333333-3333-4333-8333-333333333333";
+const SOURCE_URL = "https://www.mec.mo.gov/MEC/Campaign_Finance/CommInfo.aspx?MECID=A222073";
+const VERIFIED_AT = new Date("2026-08-12T00:00:00.000Z");
+
+function baseLink() {
+  return {
+    candidateId: CANDIDATE_ID,
+    electionId: ELECTION_ID,
+    electionYear: 2026,
+    candidateNameNormalized: "JANE EXAMPLE",
+    officeName: "State Representative",
+    district: "District 1",
+    committeeId: "A222073",
+    committeeName: "Jane Example for Missouri",
+    linkSource: "mec_portal" as const,
+    sourceUrl: SOURCE_URL,
+    lastVerifiedAt: VERIFIED_AT,
+  };
+}
+
+function automaticQueryResult(sql: unknown) {
+  const statement = String(sql);
+  if (statement.includes("INSERT INTO public.mo_candidate_finance_links")) {
+    return Promise.resolve({ rows: [{ id: LINK_ID }], rowCount: 1 });
+  }
+  return Promise.resolve({ rows: [], rowCount: 0 });
+}
+
+describe("missouriFinanceWriter", () => {
+  it("upserts normalized MEC links through the canonical Missouri table", async () => {
+    const db = { query: vi.fn(automaticQueryResult) };
+
+    await expect(
+      upsertMissouriFinanceLink({
+        db,
+        link: { ...baseLink(), committeeId: " a222073 " },
+      })
+    ).resolves.toEqual({ linkId: LINK_ID });
+
+    expect(db.query).toHaveBeenCalledTimes(2);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("link_source='manual'");
+    const insertCall = db.query.mock.calls[1];
+    expect(String(insertCall?.[0])).toContain("INSERT INTO public.mo_candidate_finance_links");
+    expect(String(insertCall?.[0])).toContain(
+      "WHERE mo_candidate_finance_links.link_source <> 'manual' OR EXCLUDED.link_source = 'manual'"
+    );
+    expect(insertCall?.[1]).toEqual([
+      CANDIDATE_ID,
+      ELECTION_ID,
+      2026,
+      "JANE EXAMPLE",
+      "State Representative",
+      "District 1",
+      "A222073",
+      "Jane Example for Missouri",
+      "active",
+      "mec_portal",
+      SOURCE_URL,
+      VERIFIED_AT.toISOString(),
+    ]);
+  });
+
+  it("reuses an exact active manual MECID and refreshes only verification time", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [{ id: LINK_ID, committee_id: "A222073", link_status: "active" }],
+          rowCount: 1,
+        })
+        .mockResolvedValueOnce({ rows: [], rowCount: 1 }),
+    };
+
+    await expect(upsertMissouriFinanceLink({ db, link: baseLink() })).resolves.toEqual({ linkId: LINK_ID });
+    expect(db.query).toHaveBeenCalledTimes(2);
+    expect(String(db.query.mock.calls[1]?.[0])).toBe(
+      "UPDATE public.mo_candidate_finance_links SET last_verified_at=$2::timestamptz WHERE id=$1::uuid"
+    );
+    expect(db.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO"))).toBe(false);
+  });
+
+  it("fails closed for disabled exact manual links and conflicting active manual links", async () => {
+    const disabledDb = {
+      query: vi.fn().mockResolvedValue({
+        rows: [{ id: LINK_ID, committee_id: "A222073", link_status: "inactive" }],
+        rowCount: 1,
+      }),
+    };
+    await expect(upsertMissouriFinanceLink({ db: disabledDb, link: baseLink() })).rejects.toThrow(
+      "Missouri automatic finance link matches an operator-disabled manual link"
+    );
+
+    const conflictDb = {
+      query: vi.fn().mockResolvedValue({
+        rows: [{ id: LINK_ID, committee_id: "C263985", link_status: "active" }],
+        rowCount: 1,
+      }),
+    };
+    await expect(upsertMissouriFinanceLink({ db: conflictDb, link: baseLink() })).rejects.toThrow(
+      "Missouri automatic finance link conflicts with protected manual link"
+    );
+  });
+
+  it("replaces a complete snapshot transactionally and supersedes stale MEC links", async () => {
+    const client = {
+      query: vi.fn(automaticQueryResult),
+      release: vi.fn(),
+    };
+    const db = { query: vi.fn(), connect: vi.fn().mockResolvedValue(client) };
+
+    await expect(
+      replaceMissouriCandidateFinanceSnapshot({
+        db,
+        link: baseLink(),
+        syncedAt: new Date("2026-08-13T00:00:00.000Z"),
+        summary: {
+          totalReceipts: 100_000,
+          directContributionTotal: 90_000,
+          totalDisbursements: 50_000,
+          cashOnHand: 50_000,
+          outsideSupportTotal: 12_000,
+          outsideOpposeTotal: 3_000,
+          sourceUrl: SOURCE_URL,
+        },
+        directBreakdowns: [
+          { categoryType: "occupation", categoryName: "Attorney", amount: 10_000 },
+          { categoryType: "contribution_size", categoryName: "$100-$499", amount: 20_000 },
+        ],
+        outsideGroups: [
+          {
+            committeeId: " c263985 ",
+            committeeName: "Example Missouri PAC",
+            supportOppose: "support",
+            amount: 12_000,
+          },
+        ],
+        outsideGroupBreakdowns: [
+          {
+            committeeId: "C263985",
+            supportOppose: "support",
+            categoryType: "donor",
+            categoryName: "Example Donor",
+            amount: 5_000,
+          },
+        ],
+      })
+    ).resolves.toEqual({
+      linkId: LINK_ID,
+      summaryWritten: true,
+      directBreakdownsWritten: 2,
+      outsideGroupsWritten: 1,
+      outsideGroupBreakdownsWritten: 1,
+    });
+
+    expect(client.query.mock.calls[0]?.[0]).toBe("BEGIN");
+    expect(client.query.mock.calls.at(-1)?.[0]).toBe("COMMIT");
+    expect(client.release).toHaveBeenCalledTimes(1);
+    const calls = client.query.mock.calls;
+    const summarySql = String(
+      calls.find((call) => String(call[0]).includes("INSERT INTO public.mo_candidate_finance_summaries"))?.[0]
+    );
+    expect(summarySql).toContain("outside_support_total = EXCLUDED.outside_support_total");
+    expect(summarySql).toContain("outside_oppose_total = EXCLUDED.outside_oppose_total");
+    const supersede = calls.find(
+      (call) => String(call[0]).includes("UPDATE public.mo_candidate_finance_links") && String(call[0]).includes("id <>")
+    );
+    expect(String(supersede?.[0])).toContain("link_source = 'mec_portal'");
+    expect(supersede?.[1]).toEqual([CANDIDATE_ID, ELECTION_ID, LINK_ID]);
+    const outsideInsert = calls.find((call) =>
+      String(call[0]).includes("INSERT INTO public.mo_candidate_finance_outside_groups")
+    );
+    expect(outsideInsert?.[1]?.[2]).toBe("C263985");
+  });
+
+  it("requires outside breakdowns to pair with groups before opening a transaction", async () => {
+    const db = { query: vi.fn(), connect: vi.fn() };
+
+    await expect(
+      replaceMissouriCandidateFinanceSnapshot({
+        db: db as never,
+        link: baseLink(),
+        outsideGroups: [
+          { committeeId: "C263985", committeeName: "Example PAC", supportOppose: "support", amount: 1_000 },
+        ],
+        outsideGroupBreakdowns: [
+          {
+            committeeId: "C263985",
+            supportOppose: "oppose",
+            categoryType: "donor",
+            categoryName: "Example Donor",
+            amount: 1_000,
+          },
+        ],
+      })
+    ).rejects.toThrow("Missouri outside group breakdowns must reference outside groups in the same snapshot");
+    expect(db.connect).not.toHaveBeenCalled();
+  });
+
+  it("rejects out-of-scope years and malformed MECIDs before DB writes", async () => {
+    const db = { query: vi.fn(automaticQueryResult) };
+
+    await expect(
+      upsertMissouriFinanceLink({ db, link: { ...baseLink(), electionYear: 2023 } })
+    ).rejects.toThrow("Invalid Missouri finance election year: 2023");
+    await expect(
+      upsertMissouriFinanceLink({ db, link: { ...baseLink(), committeeId: "222073" } })
+    ).rejects.toThrow("Invalid Missouri MECID: 222073");
+    expect(db.query).not.toHaveBeenCalled();
+  });
+});

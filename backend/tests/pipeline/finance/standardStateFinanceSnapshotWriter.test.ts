@@ -361,6 +361,114 @@ describe("createStandardStateFinanceSnapshotWriter config options", () => {
     );
     expect(linkSql).toContain("ELSE EXCLUDED.link_status");
     expect(linkSql).not.toContain("link_status = EXCLUDED.link_status");
+    expect(db.query).toHaveBeenCalledTimes(1);
+    expect(linkSql).not.toContain("WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_source='manual'");
+  });
+
+  it("reuses an exact active manual link when candidate-wide protection is enabled", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [{ id: "manual-link", committee_id: "c-1", link_status: "active" }],
+          rowCount: 1,
+        })
+        .mockResolvedValueOnce({ rows: [], rowCount: 1 }),
+    };
+
+    await expect(
+      makeWriter({
+        manualLinkProtection: true,
+        normalizeCommitteeId: (value) => value.trim().toUpperCase(),
+      }).upsertLink({
+        db,
+        link: { ...linkInput(), committeeId: " C-1 ", linkSource: "state_bulk" },
+      })
+    ).resolves.toEqual({ linkId: "manual-link" });
+
+    expect(db.query).toHaveBeenCalledTimes(2);
+    expect(String(db.query.mock.calls[0]?.[0])).toContain("link_source='manual'");
+    expect(String(db.query.mock.calls[1]?.[0])).toBe(
+      `UPDATE public.${TABLES.links} SET last_verified_at=$2::timestamptz WHERE id=$1::uuid`
+    );
+    expect(db.query.mock.calls[1]?.[1]).toEqual(["manual-link", NOW.toISOString()]);
+    expect(db.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO"))).toBe(false);
+  });
+
+  it("fails closed when an automatic link matches an operator-disabled manual link", async () => {
+    const db = {
+      query: vi.fn().mockResolvedValue({
+        rows: [{ id: "manual-link", committee_id: "C-1", link_status: "inactive" }],
+        rowCount: 1,
+      }),
+    };
+
+    await expect(
+      makeWriter({ manualLinkProtection: true }).upsertLink({
+        db,
+        link: { ...linkInput(), linkSource: "state_bulk" },
+      })
+    ).rejects.toThrow("Zetaland automatic finance link matches an operator-disabled manual link");
+    expect(db.query).toHaveBeenCalledTimes(1);
+  });
+
+  it("blocks a different automatic identity when an active manual link exists", async () => {
+    const db = {
+      query: vi.fn().mockResolvedValue({
+        rows: [{ id: "manual-link", committee_id: "C-2", link_status: "active" }],
+        rowCount: 1,
+      }),
+    };
+
+    await expect(
+      makeWriter({ manualLinkProtection: true }).upsertLink({
+        db,
+        link: { ...linkInput(), linkSource: "state_bulk" },
+      })
+    ).rejects.toThrow("Zetaland automatic finance link conflicts with protected manual link");
+    expect(db.query).toHaveBeenCalledTimes(1);
+  });
+
+  it("allows a different identity past inactive manual rows and adds the conflict-race backstop", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({
+          rows: [{ id: "manual-link", committee_id: "C-2", link_status: "inactive" }],
+          rowCount: 1,
+        })
+        .mockResolvedValueOnce({ rows: [{ id: "auto-link" }], rowCount: 1 }),
+    };
+
+    await expect(
+      makeWriter({ manualLinkProtection: true }).upsertLink({
+        db,
+        link: { ...linkInput(), linkSource: "state_bulk" },
+      })
+    ).resolves.toEqual({ linkId: "auto-link" });
+
+    const insertSql = String(db.query.mock.calls[1]?.[0]);
+    expect(insertSql).toContain(
+      `WHERE ${TABLES.links}.link_source <> 'manual' OR EXCLUDED.link_source = 'manual'`
+    );
+  });
+
+  it("reports a concurrent manual conflict when the protected upsert returns no row", async () => {
+    const db = {
+      query: vi
+        .fn()
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 })
+        .mockResolvedValueOnce({ rows: [], rowCount: 0 }),
+    };
+
+    await expect(
+      makeWriter({ manualLinkProtection: true }).upsertLink({
+        db,
+        link: { ...linkInput(), linkSource: "state_bulk" },
+      })
+    ).rejects.toThrow(
+      "Zetaland finance link upsert wrote no row — blocked by a concurrent protected manual link"
+    );
   });
 
   it("deactivates superseded same-source links inside the snapshot transaction", async () => {

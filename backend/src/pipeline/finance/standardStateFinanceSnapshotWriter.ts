@@ -215,6 +215,14 @@ export function createStandardStateFinanceSnapshotWriter(config: {
    */
   normalizeCommitteeId?: (value: string) => string;
   /**
+   * Protect operator-curated links across a candidate + election, not only
+   * on the incoming link's conflict row. For automatic writes, an exact
+   * active manual identity is reused, an exact disabled manual identity
+   * fails closed, and a different active manual identity blocks the write.
+   * Default false so existing state wrappers keep their current behavior.
+   */
+  manualLinkProtection?: boolean;
+  /**
    * When set, an incoming active link with this linkSource deactivates every
    * other active link with the same source for the same candidate +
    * election, inside the snapshot transaction (bulk-import supersession, as
@@ -257,6 +265,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
   const minElectionYear = config.minElectionYear;
   const outsideGroupValidation = config.outsideGroupValidation ?? "none";
   const normalizeCommitteeId = config.normalizeCommitteeId ?? ((value: string) => value);
+  const manualLinkProtection = config.manualLinkProtection ?? false;
   // The superseded-source literal is interpolated into SQL (states pin the
   // three-parameter deactivation statement), so restrict it to identifier-safe
   // characters at construction time.
@@ -370,6 +379,47 @@ export function createStandardStateFinanceSnapshotWriter(config: {
   }): Promise<{ linkId: string }> {
     validateLinkInput(input.link);
 
+    const candidateId = requireNonEmpty(input.link.candidateId, "candidate id");
+    const electionId = requireNonEmpty(input.link.electionId, "election id");
+    const committeeId = normalizeCommitteeId(
+      requireNonEmpty(input.link.committeeId, `${label} committee id`)
+    );
+    const linkSource = input.link.linkSource ?? "manual";
+    const lastVerifiedAt = normalizeNullableDate(input.link.lastVerifiedAt);
+
+    if (manualLinkProtection && linkSource !== "manual") {
+      const manual = await input.db.query<{
+        id: string;
+        committee_id: string;
+        link_status: string;
+      }>(
+        `SELECT id::text, ${linkIdColumn} AS committee_id, link_status FROM public.${tables.links} WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_source='manual'`,
+        [candidateId, electionId]
+      );
+      const sameCommittee = manual.rows.find(
+        (row) => normalizeCommitteeId(row.committee_id) === committeeId
+      );
+      if (sameCommittee) {
+        if (sameCommittee.link_status !== "active") {
+          throw new Error(`${label} automatic finance link matches an operator-disabled manual link`);
+        }
+        if (lastVerifiedAt) {
+          await input.db.query(
+            `UPDATE public.${tables.links} SET last_verified_at=$2::timestamptz WHERE id=$1::uuid`,
+            [sameCommittee.id, lastVerifiedAt]
+          );
+        }
+        return { linkId: sameCommittee.id };
+      }
+      if (manual.rows.some((row) => row.link_status === "active")) {
+        throw new Error(`${label} automatic finance link conflicts with protected manual link`);
+      }
+    }
+
+    const protectedUpsertWhere = manualLinkProtection
+      ? `\n      WHERE ${tables.links}.link_source <> 'manual' OR EXCLUDED.link_source = 'manual'`
+      : "";
+
     const result = await input.db.query<{ id: string }>(
       `
       INSERT INTO public.${tables.links} (
@@ -403,27 +453,32 @@ export function createStandardStateFinanceSnapshotWriter(config: {
           ELSE EXCLUDED.link_source
         END,
         source_url = EXCLUDED.source_url,
-        last_verified_at = EXCLUDED.last_verified_at
+        last_verified_at = EXCLUDED.last_verified_at${protectedUpsertWhere}
       RETURNING id
     `,
       [
-        requireNonEmpty(input.link.candidateId, "candidate id"),
-        requireNonEmpty(input.link.electionId, "election id"),
+        candidateId,
+        electionId,
         normalizeElectionYear(input.link.electionYear),
         requireNonEmpty(input.link.candidateNameNormalized, `${label} finance candidate name`),
         requireNonEmpty(input.link.officeName, `${label} finance office name`),
         normalizeOptionalText(input.link.district),
-        normalizeCommitteeId(requireNonEmpty(input.link.committeeId, `${label} committee id`)),
+        committeeId,
         requireNonEmpty(input.link.committeeName, `${label} committee name`),
         input.link.linkStatus ?? "active",
-        input.link.linkSource ?? "manual",
+        linkSource,
         normalizeOptionalText(input.link.sourceUrl),
-        normalizeNullableDate(input.link.lastVerifiedAt),
+        lastVerifiedAt,
       ]
     );
 
     const linkId = result.rows[0]?.id;
     if (!linkId) {
+      if (manualLinkProtection) {
+        throw new Error(
+          `${label} finance link upsert wrote no row — blocked by a concurrent protected manual link`
+        );
+      }
       throw new Error(`${label} finance link upsert did not return an id`);
     }
     return { linkId };
