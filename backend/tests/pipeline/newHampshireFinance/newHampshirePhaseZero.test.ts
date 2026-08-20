@@ -78,6 +78,8 @@ describe("New Hampshire CFS Phase 0", () => {
       transactionId: 2001,
       filerReportId: 10,
       filerReportVersionId: 2,
+      transactionTypeDescription: "Receipt",
+      transactionSubTypeCode: "MTCB",
       reportVersionFilter: "RPTAMD",
     });
     expect(bodyOf(receiptFetch)).toEqual({
