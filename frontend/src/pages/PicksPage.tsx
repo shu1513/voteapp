@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useElectionChoices, useMe } from "@voteapp/api-client";
 import type { BallotSummary, ElectionChoice, ElectionSummary, PickCardShare } from "@voteapp/api-client";
+import { AutoPickFillControl } from "../components/AutoPickFillControl";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import type { ElectionNavState } from "../lib/detailNavContext";
@@ -117,6 +118,22 @@ function pickResultChip(
   );
 }
 
+// Marks a row the auto-pick engine wrote (origin = 'auto'); a manual re-pick
+// clears it. Leading space for the same copy/a11y reason as the other chips.
+function autoChip() {
+  return (
+    <>
+      {" "}
+      <span
+        title="Picked for you from your ranked issues"
+        className="rounded border border-line bg-surface px-1.5 py-0.5 text-xs font-medium text-ink-soft"
+      >
+        Auto
+      </span>
+    </>
+  );
+}
+
 function PickedLine({ choice, election }: { choice: ElectionChoice; election?: ElectionSummary }) {
   // The canonical result reaches this line two ways: via the ballot summary
   // while the race is still carded, and via the choice itself afterwards
@@ -132,6 +149,7 @@ function PickedLine({ choice, election }: { choice: ElectionChoice; election?: E
             result row's election-night passed/failed fills in. Anything
             else (too_close, unknown) renders nothing, as the chip demands. */}
         {measureOutcomeChip(choice.measure_position, choice.measure_result ?? resultOutcome)}
+        {choice.measure_origin === "auto" ? autoChip() : null}
       </span>
     );
   }
@@ -145,6 +163,7 @@ function PickedLine({ choice, election }: { choice: ElectionChoice; election?: E
               result-derived chip — never both. */}
           {pickStatusChip(pick.candidacy_status) ??
             pickResultChip(resultOutcome, resultWinners, pick.candidate_id)}
+          {pick.origin === "auto" ? autoChip() : null}
         </span>
       ))}
     </span>
@@ -510,6 +529,17 @@ export function PicksPage() {
                 <BallotViewToggle view={view} onChange={setView} />
               </div>
             ) : null}
+            {/* Batch auto-pick over the same settled payload the cards use;
+                renders in both views (it acts on races, not on a layout).
+                Hidden while nothing is fillable or clearable. */}
+            <AutoPickFillControl
+              elections={(ballot.data?.elections ?? []).filter(
+                (election) => election.election_date >= today
+              )}
+              choices={choices ?? []}
+              choiceByElectionId={choiceByElectionId}
+              today={today}
+            />
             {view === "ballot" ? (
               // Same settled payload as the cards — no second fetch, no
               // loading state of its own.

@@ -457,6 +457,10 @@ export type ElectionChoicePick = {
   /** candidate_elections.status at read time; e.g. "withdrawn" lets the UI
    * flag a pick whose candidate has since dropped out. */
   candidacy_status: string;
+  /** 'auto' while the row is auto-pick's; a manual re-pick flips it back to
+   * 'manual'. Optional to tolerate a pre-field backend (deploy skew) and the
+   * guest draft's localStorage choices: absent renders as manual. */
+  origin?: "manual" | "auto";
 };
 
 export type ElectionChoice = {
@@ -467,6 +471,10 @@ export type ElectionChoice = {
   seats_to_fill: number | null;
   picks: ElectionChoicePick[];
   measure_position: "yes" | "no" | null;
+  /** The measure row's origin (measures have no picks array to carry it);
+   * null when there is no measure position. Optional for deploy skew and
+   * guest drafts, like ElectionChoicePick.origin. */
+  measure_origin?: "manual" | "auto" | null;
   /** ballot_measures.result at read time ("passed"/"failed" once certified
    * results land, null before) — the measure counterpart of a pick's
    * candidacy_status. Optional to tolerate a pre-field backend (deploy
@@ -548,6 +556,10 @@ export type AutoPickElectionResult = {
 };
 
 export type AutoPicksResult = { results: AutoPickElectionResult[] };
+
+/** DELETE /api/me/auto-picks — one-statement clear of every auto pick on
+ * the user's upcoming elections (rows whose origin is still 'auto'). */
+export type AutoPicksClearResult = { cleared_count: number };
 
 /** One race on a shared pick card (public payload behind /picks/:token). */
 export type PickCardEntry = {

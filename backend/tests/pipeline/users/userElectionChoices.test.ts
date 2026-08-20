@@ -49,6 +49,7 @@ describe("setUserElectionChoice", () => {
             display_name: "Donald A. Prichard",
             candidacy_status: "declared",
             measure_position: null,
+            origin: "manual",
             measure_result: null,
             updated_at: "2026-08-02T17:00:00.000Z",
           },
@@ -74,9 +75,11 @@ describe("setUserElectionChoice", () => {
             candidate_id: candidateId,
             display_name: "Donald A. Prichard",
             candidacy_status: "declared",
+            origin: "manual",
           },
         ],
         measure_position: null,
+        measure_origin: null,
         measure_result: null,
         // The post-write read-back leaves the canonical-result fields at
         // their defaults; only the list read attaches them (writes are gated
@@ -124,6 +127,7 @@ describe("setUserElectionChoice", () => {
             display_name: "Jocelyn Benson",
             candidacy_status: "declared",
             measure_position: null,
+            origin: "auto",
             measure_result: null,
             updated_at: "2026-08-02T17:00:00.000Z",
           },
@@ -144,6 +148,9 @@ describe("setUserElectionChoice", () => {
     expect(result.choices).toEqual([
       expect.objectContaining({
         election_id: electionId,
+        // The row's origin rides the list read so the UI can badge and
+        // clear auto picks.
+        picks: [expect.objectContaining({ origin: "auto" })],
         current_result_outcome: "advanced",
         current_result_winners: [
           { candidate_id: candidateId, candidate_name: "Jocelyn Benson", party: "Democratic" },
@@ -153,6 +160,45 @@ describe("setUserElectionChoice", () => {
     // The canonical-result query is scoped to exactly the listed elections.
     expect(query).toHaveBeenCalledTimes(3);
     expect(query.mock.calls[2][1]).toEqual([[electionId]]);
+  });
+
+  it("maps a measure row's origin onto measure_origin", async () => {
+    // Measures have no picks array to carry origin, so the mapping is its
+    // own branch in rowsToChoices — the auto chip and the clear button
+    // depend on it surviving refactors.
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: electionId,
+            race_type: "ballot_measure",
+            official_ballot_title: "Amendment 1",
+            election_date: "2026-11-03",
+            seats_to_fill: null,
+            candidate_id: null,
+            display_name: null,
+            candidacy_status: null,
+            measure_position: "yes",
+            origin: "auto",
+            measure_result: null,
+            updated_at: "2026-08-02T17:00:00.000Z",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await listUserElectionChoices({ query }, userId);
+
+    expect(result.choices).toEqual([
+      expect.objectContaining({
+        election_id: electionId,
+        picks: [],
+        measure_position: "yes",
+        measure_origin: "auto",
+      }),
+    ]);
   });
 
   it("skips the canonical-result query when the user has no choices", async () => {

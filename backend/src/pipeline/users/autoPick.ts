@@ -666,16 +666,54 @@ async function countExistingPicks(
   normalizedUserId: string,
   normalizedElectionId: string
 ): Promise<number> {
+  // Same liveness rule as the choices reader (userElectionChoices
+  // rowsToChoices): a candidate row whose candidate was deleted or merged
+  // renders nowhere, so it must not make fill_empty report skipped_existing
+  // on a race the user sees as empty. Measure rows always count.
   const result = await db.query<{ count: string }>(
     `
       SELECT count(*)::text AS count
-      FROM public.user_election_choices
-      WHERE user_id = $1::uuid
-        AND election_id = $2::uuid
+      FROM public.user_election_choices AS choice
+      LEFT JOIN public.candidates AS candidate
+        ON candidate.id = choice.candidate_id
+       AND candidate.deleted_at IS NULL
+       AND candidate.merged_into_candidate_id IS NULL
+      WHERE choice.user_id = $1::uuid
+        AND choice.election_id = $2::uuid
+        AND (choice.measure_position IS NOT NULL OR candidate.id IS NOT NULL)
     `,
     [normalizedUserId, normalizedElectionId]
   );
   return Number(result.rows[0]?.count ?? "0");
+}
+
+export type ClearAutoPicksResult = { cleared_count: number };
+
+/**
+ * Deletes every auto-pick row (origin = 'auto') on the user's UPCOMING
+ * elections in one statement. One request instead of a PUT per row: the API
+ * has a global per-IP rate limit, and a client-side loop over stale cache
+ * could unpick a row another tab had already re-picked manually — here the
+ * origin check and the delete are the same atomic operation, so a row whose
+ * origin flipped back to 'manual' is never touched. Past elections keep
+ * their auto picks as history, matching the manual write path's refusal to
+ * change closed elections.
+ */
+export async function clearAutoPicks(db: Queryable, userId: string): Promise<ClearAutoPicksResult> {
+  const normalizedUserId = normalizeUserId(userId);
+  await assertActiveUser(db, normalizedUserId, false);
+  const result = await db.query(
+    `
+      DELETE FROM public.user_election_choices AS choice
+      USING public.elections AS election
+      WHERE election.id = choice.election_id
+        AND choice.user_id = $1::uuid
+        AND choice.origin = 'auto'
+        AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
+    `,
+    [normalizedUserId]
+  );
+  return { cleared_count: result.rowCount ?? 0 };
 }
 
 function emptyResult(

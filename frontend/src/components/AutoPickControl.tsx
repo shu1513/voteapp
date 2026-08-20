@@ -18,7 +18,7 @@ import type { AutoPickCandidateReport, AutoPickElectionResult } from "@voteapp/a
 // Mirrors the server's UX floor (MIN_AUTO_PICK_ISSUES): below 3 ranked
 // issues the button explains what to do instead of calling the API. Guests
 // get a sign-in prompt — issue preferences are account-only.
-const MIN_ISSUES = 3;
+export const MIN_AUTO_PICK_ISSUES = 3;
 
 type AutoPickControlProps = {
   electionId: string;
@@ -56,7 +56,7 @@ export function AutoPickControl({ electionId, seatsToFill }: AutoPickControlProp
     // returns the same empty array, and telling a user with five ranked
     // issues to go rank issues would be wrong — on error the backend's
     // per-result too_few_issues is the authority (the panel renders it).
-    if (!preferencesError && preferences.length < MIN_ISSUES) {
+    if (!preferencesError && preferences.length < MIN_AUTO_PICK_ISSUES) {
       setPrompt("rank_issues");
       return;
     }
@@ -92,7 +92,7 @@ export function AutoPickControl({ electionId, seatsToFill }: AutoPickControlProp
       ) : null}
       {prompt === "rank_issues" ? (
         <p className="text-sm text-ink-soft">
-          Rank at least {MIN_ISSUES} issues first, so the pick reflects what matters to you.{" "}
+          Rank at least {MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.{" "}
           <Link
             to="/me/settings"
             className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink"
@@ -176,7 +176,7 @@ function summarize(result: AutoPickElectionResult, seatsToFill: number | null): 
     case "all_vetoed":
       return "No pick: every candidate crossed one of your lines in the sand.";
     case "too_few_issues":
-      return `Rank at least ${MIN_ISSUES} issues first, so the pick reflects what matters to you.`;
+      return `Rank at least ${MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.`;
     case "election_closed":
       return "This election is no longer open for picks.";
     default:

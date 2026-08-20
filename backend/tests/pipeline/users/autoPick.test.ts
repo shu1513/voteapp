@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   applyAutoPicks,
   AutoPickError,
+  clearAutoPicks,
   decideMeasure,
   decideOfficeRace,
   type AutoPickCandidate,
@@ -538,6 +539,12 @@ describe("applyAutoPicks", () => {
       dryRun: true,
     });
     expect(result.results[0]).toMatchObject({ outcome: "skipped_existing", reason: null });
+    // The count must use the choices reader's liveness rule: a row whose
+    // candidate was deleted or merged renders nowhere, and treating it as
+    // "already picked" would block filling a race the user sees as empty.
+    const countSql = String(db.query.mock.calls[4]?.[0]);
+    expect(countSql).toContain("merged_into_candidate_id IS NULL");
+    expect(countSql).toContain("measure_position IS NOT NULL OR candidate.id IS NOT NULL");
   });
 
   it("never deletes existing picks when a replace run produced no pick", async () => {
@@ -605,5 +612,31 @@ describe("applyAutoPicks", () => {
     const insert = sql.find((statement) => statement.includes("INSERT INTO public.user_election_choices"));
     expect(insert).toContain("'auto'");
     expect(sql[sql.length - 1]).toBe("COMMIT");
+  });
+});
+
+describe("clearAutoPicks", () => {
+  it("deletes only origin='auto' rows on upcoming elections, in one statement", async () => {
+    const { db } = createMockDb();
+    db.query
+      .mockResolvedValueOnce(userRow) // assertActiveUser
+      .mockResolvedValueOnce({ rows: [], rowCount: 2 }); // the DELETE
+    await expect(clearAutoPicks(db, USER_ID)).resolves.toEqual({ cleared_count: 2 });
+
+    // One SQL statement carries the whole contract: the origin check and
+    // the delete are atomic (a row re-picked manually in another tab keeps
+    // its 'manual' origin and survives), and past elections stay history.
+    expect(db.query).toHaveBeenCalledTimes(2);
+    const deleteSql = String(db.query.mock.calls[1]?.[0]);
+    expect(deleteSql).toContain("DELETE FROM public.user_election_choices");
+    expect(deleteSql).toContain("origin = 'auto'");
+    expect(deleteSql).toContain("election.election_date >=");
+  });
+
+  it("rejects an unknown user before deleting anything", async () => {
+    const { db } = createMockDb();
+    db.query.mockResolvedValueOnce({ rows: [] }); // assertActiveUser: no user
+    await expect(clearAutoPicks(db, USER_ID)).rejects.toMatchObject({ code: "user_not_found" });
+    expect(db.query).toHaveBeenCalledTimes(1);
   });
 });
