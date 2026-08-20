@@ -20,6 +20,7 @@ describe("syncDueMissouriCandidateFinance", () => {
     vi.stubEnv("MISSOURI_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", "true");
     const query = vi.fn().mockResolvedValue({ rows: [due("c1", "C263985"), due("c2", "A233052")] });
     const acquire = vi.fn().mockResolvedValue({});
+    const acquireOutside = vi.fn().mockResolvedValue({});
     const sync = vi.fn()
       .mockResolvedValueOnce({ candidateId: "c1" })
       .mockRejectedValueOnce(new Error("bad amendment lineage"));
@@ -28,14 +29,38 @@ describe("syncDueMissouriCandidateFinance", () => {
       now: new Date("2026-08-19T00:00:00Z"),
       autoLinkMissingLinks: false,
       acquireArtifactsFn: acquire as never,
+      acquireOutsideArtifactsFn: acquireOutside as never,
       syncCandidateFn: sync as never,
       session: {} as never,
     });
     expect(acquire).toHaveBeenCalledTimes(2);
+    expect(acquireOutside).toHaveBeenCalledTimes(1);
     expect(sync).toHaveBeenCalledTimes(2);
     expect(query.mock.calls[0]?.[1]?.[3]).toBe(38);
     expect(sync).toHaveBeenCalledWith(expect.objectContaining({ officeScope: "state_lower" }));
-    expect(result).toMatchObject({ dueCandidateCount: 2, selectedCandidateCount: 2, syncedCandidateCount: 1, failedCandidateCount: 1 });
+    expect(result).toMatchObject({
+      dueCandidateCount: 2, selectedCandidateCount: 2, syncedCandidateCount: 1, failedCandidateCount: 1,
+      outsideArtifactYearCount: 1, failedOutsideArtifactYearCount: 0,
+    });
     expect(result.results[1]).toMatchObject({ ok: false, error: "bad amendment lineage" });
+  });
+
+  it("continues direct candidate sync when the yearly outside refresh fails", async () => {
+    vi.stubEnv("MISSOURI_CAMPAIGN_FINANCE_ENABLED", "true");
+    vi.stubEnv("MISSOURI_CAMPAIGN_FINANCE_RAW_DATA_REFRESH_ENABLED", "true");
+    const query = vi.fn().mockResolvedValue({ rows: [due("c1", "C263985")] });
+    const sync = vi.fn().mockResolvedValue({ candidateId: "c1" });
+    const result = await syncDueMissouriCandidateFinance({
+      db: { query, connect: vi.fn() } as never,
+      now: new Date("2026-08-19T00:00:00Z"), autoLinkMissingLinks: false,
+      acquireArtifactsFn: vi.fn().mockResolvedValue({}) as never,
+      acquireOutsideArtifactsFn: vi.fn().mockRejectedValue(new Error("portal unavailable")) as never,
+      syncCandidateFn: sync as never, session: {} as never,
+    });
+    expect(sync).toHaveBeenCalledWith(expect.objectContaining({ outsideArtifacts: null }));
+    expect(result).toMatchObject({
+      syncedCandidateCount: 1, failedCandidateCount: 0,
+      outsideArtifactYearCount: 0, failedOutsideArtifactYearCount: 1,
+    });
   });
 });

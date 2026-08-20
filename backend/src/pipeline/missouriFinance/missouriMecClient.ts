@@ -34,6 +34,7 @@ export const MISSOURI_MEC_PAGES = {
   outsideSpendingSearch: "CF_SearchDirExp.aspx",
   electionSearch: "CF12_SearchElection.aspx",
   committeeInfo: "CommInfo.aspx",
+  committeeActivity: "CF_SearchCommNew.aspx",
   nonCommitteeExpenditures: "CF14_nonCommExp.aspx",
 } as const;
 

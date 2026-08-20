@@ -3,9 +3,14 @@ import { describe, expect, it } from "vitest";
 import {
   normalizeMissouriMecElectionDate,
   parseMissouriMecCandidateExport,
+  parseMissouriMecCommitteeIdentity,
+  parseMissouriMecCommitteeActivityRows,
   parseMissouriMecCommitteeInfo,
   parseMissouriMecContributionExport,
   parseMissouriMecExpenditureExport,
+  parseMissouriMecOutsideSpendingExport,
+  parseMissouriMecOutsideSpendingGridPage,
+  parseMissouriMecOutsideSpenderIdentities,
   parseMissouriMecReportInventory,
   parseMissouriMecReportYears,
 } from "../../../src/pipeline/missouriFinance/missouriMecParsers.js";
@@ -76,6 +81,36 @@ describe("missouriMecParsers", () => {
     });
   });
 
+  it("parses a non-candidate committee identity without election history", () => {
+    expect(parseMissouriMecCommitteeIdentity(
+      '<span id="x_lblMECID">C123456</span><span id="x_lblCommName">Example PAC</span>'
+    )).toEqual({ mecid: "C123456", committeeName: "Example PAC" });
+  });
+
+  it("parses the exact MECID/name committee-activity table", () => {
+    const html = `<table id="x_gvAdvanced"><tr>${[
+      "Status Date", "MECID", "Committee Name", "Committee Type", "Committee Candidate", "Committee Status",
+    ].map((value) => `<th>${value}</th>`).join("")}</tr><tr>${[
+      "8/19/2026", "C123456", "Example PAC", "Political Action", "", "Active",
+    ].map((value) => `<td>${value}</td>`).join("")}</tr></table>`;
+    expect(parseMissouriMecCommitteeActivityRows(html)).toEqual([{
+      statusDate: "2026-08-19", mecid: "C123456", committeeName: "Example PAC",
+      committeeType: "Political Action", committeeCandidate: null, committeeStatus: "Active",
+    }]);
+  });
+
+  it("recognizes exemption registrations without treating their suffixed IDs as committee MECIDs", () => {
+    const html = `<table id="x_gvAdvanced"><tr>${[
+      "Status Date", "MECID", "Committee Name", "Committee Type", "Committee Candidate", "Committee Status",
+    ].map((value) => `<th>${value}</th>`).join("")}</tr><tr>${[
+      "7/6/2026", "C264187E", "Charles Bisignano", "Exemption", "Charles Bisignano", "Terminated",
+    ].map((value) => `<td>${value}</td>`).join("")}</tr></table>`;
+    expect(parseMissouriMecCommitteeActivityRows(html)).toEqual([{
+      statusDate: "2026-07-06", mecid: null, committeeName: "Charles Bisignano",
+      committeeType: "Exemption", committeeCandidate: "Charles Bisignano", committeeStatus: "Terminated",
+    }]);
+  });
+
   it("rejects misaligned Committee Info history instead of pairing wrong rows", () => {
     const html = `
       <span id="x_lblMECID">C221944</span><span id="x_lblCommName">Forward With Farnan</span><span id="x_lblCandName">Jeff Farnan</span>
@@ -117,6 +152,67 @@ describe("missouriMecParsers", () => {
     expect(parseMissouriMecExpenditureExport(expenditures)).toEqual([expect.objectContaining({
       amountCents: -2500, expenditureDate: "2026-09-01", expenditureType: "Paid",
     })]);
+  });
+
+  it("parses the pinned outside-spending export with explicit stances", () => {
+    const html = `<table><tr>${[
+      "Candidates Name and Address", "Office Sought", "Support/Oppose", "Date", "Amount",
+      "Reporting Committee", "Report",
+    ].map((value) => `<th>${value}</th>`).join("")}</tr><tr>${[
+      "Jane Doe 10 Private St Jefferson City MO 65101", "District 1 Missouri House of Representatives",
+      "Support", "10/20/2026", "$1,234.56", "Example PAC", "8 Day Before General Election-11/3/2026",
+    ].map((value) => `<td>${value}</td>`).join("")}</tr></table>`;
+
+    expect(parseMissouriMecOutsideSpendingExport(html)).toEqual([{
+      candidateNameAndAddress: "Jane Doe 10 Private St Jefferson City MO 65101",
+      officeSought: "District 1 Missouri House of Representatives",
+      supportOppose: "Support",
+      expenditureDate: "2026-10-20",
+      amountCents: 123456,
+      reportingCommittee: "Example PAC",
+      report: "8 Day Before General Election-11/3/2026",
+    }]);
+    expect(() => parseMissouriMecOutsideSpendingExport(html.replace(">Support<", ">Favor<"))).toThrow(
+      "Incomplete Missouri MEC outside-spending export row"
+    );
+  });
+
+  it("parses aligned outside-spending grid rows and their exact committee postbacks", () => {
+    const html = `
+      <span id="x_grvExpenditures_lblName_0">Jane Doe 10 Private St</span>
+      <span id="x_grvExpenditures_lblSought_0">State Representative</span>
+      <span id="x_grvExpenditures_lblSupp_0">Oppose</span>
+      <span id="x_grvExpenditures_lblDate_0">10/20/2026</span>
+      <span id="x_grvExpenditures_lblAmount_0">$25.00</span>
+      <a id="x_grvExpenditures_lbtnCommittee_0" href="javascript:__doPostBack(&#39;ctl00$grid$ctl02$lbtnCommittee&#39;,&#39;&#39;)">Example PAC</a>
+      <span id="x_grvExpenditures_lblReport_0">24 Hour Expenditure Report-11/3/2026 General</span>
+      <span id="x_grvExpenditures_CurrentPage"><b><font color="White">2</font></b></span>
+      <a id="x_grvExpenditures_lbtnNextPage" href="javascript:__doPostBack(&#39;ctl00$grid$ctl28$lbtnNextPage&#39;,&#39;&#39;)">Next</a>`;
+    expect(parseMissouriMecOutsideSpendingGridPage(html)).toEqual({
+      currentPage: 2,
+      nextPageEventTarget: "ctl00$grid$ctl28$lbtnNextPage",
+      rows: [{
+        candidateNameAndAddress: "Jane Doe 10 Private St", officeSought: "State Representative",
+        supportOppose: "Oppose", expenditureDate: "2026-10-20", amountCents: 2500,
+        reportingCommittee: "Example PAC", report: "24 Hour Expenditure Report-11/3/2026 General",
+        committeeEventTarget: "ctl00$grid$ctl02$lbtnCommittee",
+      }],
+    });
+    expect(() => parseMissouriMecOutsideSpendingGridPage(html.replace("lblReport_0", "missing_0"))).toThrow(
+      "Misaligned Missouri MEC outside-spending grid"
+    );
+  });
+
+  it("validates outside-spender identity artifacts", () => {
+    expect(parseMissouriMecOutsideSpenderIdentities('[{"reportingCommittee":"Example PAC","mecid":"c123456"}]')).toEqual([
+      { reportingCommittee: "Example PAC", mecid: "C123456" },
+    ]);
+    expect(() => parseMissouriMecOutsideSpenderIdentities(
+      '[{"reportingCommittee":"Example PAC","mecid":"C123456"},{"reportingCommittee":"Example PAC","mecid":"C654321"}]'
+    )).toThrow("Duplicate Missouri MEC outside-spender identity");
+    expect(parseMissouriMecOutsideSpenderIdentities('[{"reportingCommittee":"Broken Link PAC","mecid":null}]')).toEqual([
+      { reportingCommittee: "Broken Link PAC", mecid: null },
+    ]);
   });
 
   it("parses any expanded report grid index and fails on misalignment", () => {

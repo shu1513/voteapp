@@ -3,7 +3,13 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { readMissouriMecArtifact, readMissouriMecCandidateFinanceArtifacts, storeMissouriMecArtifact } from "../../../src/pipeline/missouriFinance/missouriMecArtifactCache.js";
+import {
+  readMissouriMecArtifact,
+  readMissouriMecCandidateFinanceArtifacts,
+  readMissouriMecOutsideSpendingArtifacts,
+  storeMissouriMecArtifact,
+  storeMissouriMecOutsideSpendingArtifacts,
+} from "../../../src/pipeline/missouriFinance/missouriMecArtifactCache.js";
 import { MISSOURI_MEC_CONTRIBUTION_EXPORT_HEADER, MISSOURI_MEC_EXPENDITURE_EXPORT_HEADER } from "../../../src/pipeline/missouriFinance/missouriMecParsers.js";
 
 const committeeHtml = `<span id="x_lblMECID">C263985</span><span id="x_lblCommName">Jane for Missouri</span><span id="x_lblCandName">Jane Doe</span>
@@ -52,5 +58,29 @@ describe("missouriMecArtifactCache", () => {
       body: table(MISSOURI_MEC_EXPENDITURE_EXPORT_HEADER), retrievedAt: new Date("2026-08-20T00:00:00Z"),
     });
     await expect(readMissouriMecCandidateFinanceArtifacts({ cacheDir, mecid, year })).rejects.toThrow("Mixed-vintage");
+  });
+
+  it("stores and verifies a complete yearly outside-spending identity bundle", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "mo-mec-cache-"));
+    const outside = `<table><tr>${[
+      "Candidates Name and Address", "Office Sought", "Support/Oppose", "Date", "Amount",
+      "Reporting Committee", "Report",
+    ].map((value) => `<th>${value}</th>`).join("")}</tr><tr>${[
+      "Jane Doe 10 Private St", "State Representative", "Support", "10/20/2026", "$25.00",
+      "Example PAC", "8 Day Before General Election",
+    ].map((value) => `<td>${value}</td>`).join("")}</tr></table>`;
+    await storeMissouriMecOutsideSpendingArtifacts({
+      cacheDir, year: 2026, sourceUrl: "https://example.test/outside", exportBody: outside,
+      identities: [{ reportingCommittee: "Example PAC", mecid: "C123456" }],
+      retrievedAt: new Date("2026-08-19T00:00:00Z"),
+    });
+    await expect(readMissouriMecOutsideSpendingArtifacts({ cacheDir, year: 2026 })).resolves.toMatchObject({
+      rows: [{ reportingCommittee: "Example PAC", amountCents: 2500 }],
+      identities: [{ reportingCommittee: "Example PAC", mecid: "C123456" }],
+      sourceUrl: "https://example.test/outside",
+    });
+    await expect(storeMissouriMecOutsideSpendingArtifacts({
+      cacheDir, year: 2026, sourceUrl: "https://example.test/outside", exportBody: outside, identities: [],
+    })).rejects.toThrow("identity coverage mismatch");
   });
 });

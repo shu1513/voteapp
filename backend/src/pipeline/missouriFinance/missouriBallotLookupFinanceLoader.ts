@@ -15,6 +15,10 @@ type Queryable = Pick<Pool | PoolClient, "query">;
 const MISSOURI_MEC_SOURCE_URL = "https://www.mec.mo.gov/MEC/Campaign_Finance/";
 const MISSOURI_DIRECT_COVERAGE_NOTE =
   "Totals and donor breakdowns are summed from itemized Missouri Ethics Commission filings and are not reconciled to official report covers.";
+const MISSOURI_OUTSIDE_COVERAGE_NOTE =
+  "Registered-committee reported spending only; Missouri non-committee expenditure reports (§ 130.047) are not included.";
+const MISSOURI_OUTSIDE_SUPPORT_ACTION_LABEL =
+  "independent spending supporting this candidate; listed contributions are committee-cycle funding, not money earmarked to that spending";
 
 export async function loadMissouriCandidateFinanceSummariesByCandidateElection(
   db: Queryable,
@@ -31,6 +35,8 @@ export async function loadMissouriCandidateFinanceSummariesByCandidateElection(
     enabled: isMissouriCampaignFinanceEnabled,
     isEligibleElection: (row) => isMissouriFinanceEligibleOffice(officeInputFromElectionRow(row)),
     evidenceLabelTypes: ["donor"],
+    outsideSupportActionLabel: MISSOURI_OUTSIDE_SUPPORT_ACTION_LABEL,
+    outsideCoverageNote: MISSOURI_OUTSIDE_COVERAGE_NOTE,
     directCoverageNote: MISSOURI_DIRECT_COVERAGE_NOTE,
     tables: {
       links: "mo_candidate_finance_links",

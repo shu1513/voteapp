@@ -11,4 +11,6 @@ export * from "./missouriMecArtifactAcquisition.js";
 export * from "./missouriMecArtifactCache.js";
 export * from "./missouriMecClient.js";
 export * from "./missouriMecParsers.js";
+export * from "./missouriOutsideSpendingAggregator.js";
+export * from "./missouriOutsideGroupContributionAggregator.js";
 export * from "./missouriReportInventory.js";

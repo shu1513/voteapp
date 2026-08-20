@@ -182,8 +182,8 @@ describe("missouriFinanceWriter", () => {
     const summarySql = String(
       calls.find((call) => String(call[0]).includes("INSERT INTO public.mo_candidate_finance_summaries"))?.[0]
     );
-    expect(summarySql).toContain("outside_support_total = EXCLUDED.outside_support_total");
-    expect(summarySql).toContain("outside_oppose_total = EXCLUDED.outside_oppose_total");
+    expect(summarySql).toContain("outside_support_total = COALESCE(EXCLUDED.outside_support_total");
+    expect(summarySql).toContain("outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total");
     const supersede = calls.find(
       (call) => String(call[0]).includes("UPDATE public.mo_candidate_finance_links") && String(call[0]).includes("id <>")
     );

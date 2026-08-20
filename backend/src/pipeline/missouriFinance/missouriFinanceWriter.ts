@@ -63,8 +63,10 @@ const writer = createStandardStateFinanceSnapshotWriter({
     direct_contribution_total: "replace",
     total_disbursements: "replace",
     cash_on_hand: "replace",
-    outside_support_total: "replace",
-    outside_oppose_total: "replace",
+    // A direct-only run must not erase a previously good outside snapshot
+    // when the yearly portal export or spender acquisition is unavailable.
+    outside_support_total: "preserveWhenNull",
+    outside_oppose_total: "preserveWhenNull",
     source_url: "replace",
   },
   outsideGroupValidation: "pairing",
