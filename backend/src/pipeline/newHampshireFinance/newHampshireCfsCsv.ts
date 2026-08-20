@@ -97,17 +97,37 @@ function parseCsvRecord(record: string): string[] {
   return cells;
 }
 
-function parseCsvRows(csv: string): string[][] {
+export function countNewHampshireCsvRecordColumns(record: string): number {
+  return parseCsvRecord(record).length;
+}
+
+function parseCsvRows(csv: string, expectedColumnCount: number): string[][] {
   const normalized = csv.replace(/^\uFEFF/, "");
   const firstNewline = normalized.indexOf("\n");
   if (firstNewline < 0) return normalized.trim() ? [parseCsvRecord(normalized)] : [];
 
   const header = normalized.slice(0, firstNewline).replace(/\r$/, "");
   const data = normalized.slice(firstNewline + 1).replace(/\r?\n$/, "");
-  // Filing Entity ID is the first required bulk column and is always numeric.
-  // It gives us a trustworthy record boundary even when Civix emits invalid
-  // quote escaping inside a description or contributor name.
-  const records = data.length > 0 ? data.split(/\r?\n(?=\d+,)/) : [];
+  const records: string[] = [];
+  let currentRecord: string | null = null;
+  for (const line of data.length > 0 ? data.split(/\r?\n/) : []) {
+    if (currentRecord === null) {
+      currentRecord = line;
+      continue;
+    }
+
+    // Filing Entity ID is numeric, but quoted multiline content can also
+    // begin with digits and a comma. It is a boundary only after the prior
+    // record has all expected columns. This remains tolerant of Civix's
+    // invalid quote escaping inside otherwise complete rows.
+    if (/^\d+,/.test(line) && countNewHampshireCsvRecordColumns(currentRecord) >= expectedColumnCount) {
+      records.push(currentRecord);
+      currentRecord = line;
+    } else {
+      currentRecord += `\n${line}`;
+    }
+  }
+  if (currentRecord !== null) records.push(currentRecord);
   return [parseCsvRecord(header), ...records.filter((record) => record.trim()).map(parseCsvRecord)];
 }
 
@@ -153,7 +173,7 @@ function parseForColumns<const TColumns extends readonly string[]>(
   columns: TColumns,
   label: string
 ): Record<TColumns[number], string>[] {
-  const rows = parseCsvRows(csv);
+  const rows = parseCsvRows(csv, columns.length);
   const header = rows[0];
   if (!header) {
     throw new Error(`New Hampshire CFS ${label} CSV is empty`);

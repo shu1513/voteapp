@@ -2,6 +2,9 @@ import { createReadStream } from "node:fs";
 import { createInterface } from "node:readline";
 
 import {
+  NEW_HAMPSHIRE_EXPENDITURE_CSV_COLUMNS,
+  NEW_HAMPSHIRE_RECEIPT_CSV_COLUMNS,
+  countNewHampshireCsvRecordColumns,
   parseNewHampshireExpenditureCsvRecord,
   parseNewHampshireReceiptCsvRecord,
   validateNewHampshireExpenditureCsvHeader,
@@ -25,6 +28,7 @@ async function scanRows<TRow>(input: {
   label: string;
   validateHeader: (header: string) => void;
   parseRecord: (record: string, rowNumber: number) => TRow;
+  expectedColumnCount: number;
   collectRows: boolean;
   predicate?: (row: TRow) => boolean;
   maxRows?: number;
@@ -53,12 +57,7 @@ async function scanRows<TRow>(input: {
         continue;
       }
 
-      if (RECORD_START.test(line)) {
-        if (currentRecord !== null && consumeRecord(currentRecord, recordStartLine)) {
-          lines.close();
-          source.destroy();
-          return { rows, rowCount };
-        }
+      if (RECORD_START.test(line) && currentRecord === null) {
         currentRecord = line;
         recordStartLine = physicalLine;
         continue;
@@ -68,6 +67,22 @@ async function scanRows<TRow>(input: {
         throw new Error(
           `New Hampshire CFS ${input.label} CSV line ${physicalLine} does not start with a numeric Filing Entity ID`
         );
+      }
+
+      if (
+        RECORD_START.test(line) &&
+        countNewHampshireCsvRecordColumns(currentRecord) >= input.expectedColumnCount
+      ) {
+        // Numeric comma-prefixed content is legal inside a quoted multiline
+        // field. Only split after the accumulated row is structurally complete.
+        if (consumeRecord(currentRecord, recordStartLine)) {
+          lines.close();
+          source.destroy();
+          return { rows, rowCount };
+        }
+        currentRecord = line;
+        recordStartLine = physicalLine;
+        continue;
       }
       currentRecord += `\n${line}`;
     }
@@ -92,6 +107,7 @@ export function readNewHampshireReceiptCsvArtifact(input: {
     ...input,
     label: "receipt",
     collectRows: true,
+    expectedColumnCount: NEW_HAMPSHIRE_RECEIPT_CSV_COLUMNS.length,
     validateHeader: validateNewHampshireReceiptCsvHeader,
     parseRecord: parseNewHampshireReceiptCsvRecord,
   }).then(({ rows }) => rows);
@@ -106,6 +122,7 @@ export function readNewHampshireExpenditureCsvArtifact(input: {
     ...input,
     label: "expenditure",
     collectRows: true,
+    expectedColumnCount: NEW_HAMPSHIRE_EXPENDITURE_CSV_COLUMNS.length,
     validateHeader: validateNewHampshireExpenditureCsvHeader,
     parseRecord: parseNewHampshireExpenditureCsvRecord,
   }).then(({ rows }) => rows);
@@ -118,6 +135,7 @@ export async function validateNewHampshireReceiptCsvArtifact(input: {
     ...input,
     label: "receipt",
     collectRows: false,
+    expectedColumnCount: NEW_HAMPSHIRE_RECEIPT_CSV_COLUMNS.length,
     validateHeader: validateNewHampshireReceiptCsvHeader,
     parseRecord: parseNewHampshireReceiptCsvRecord,
   });
@@ -131,6 +149,7 @@ export async function validateNewHampshireExpenditureCsvArtifact(input: {
     ...input,
     label: "expenditure",
     collectRows: false,
+    expectedColumnCount: NEW_HAMPSHIRE_EXPENDITURE_CSV_COLUMNS.length,
     validateHeader: validateNewHampshireExpenditureCsvHeader,
     parseRecord: parseNewHampshireExpenditureCsvRecord,
   });
