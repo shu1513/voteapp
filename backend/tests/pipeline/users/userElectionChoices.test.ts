@@ -162,6 +162,45 @@ describe("setUserElectionChoice", () => {
     expect(query.mock.calls[2][1]).toEqual([[electionId]]);
   });
 
+  it("maps a measure row's origin onto measure_origin", async () => {
+    // Measures have no picks array to carry origin, so the mapping is its
+    // own branch in rowsToChoices — the auto chip and the clear button
+    // depend on it surviving refactors.
+    const query = vi
+      .fn()
+      .mockResolvedValueOnce({ rows: [{ id: userId }] })
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            election_id: electionId,
+            race_type: "ballot_measure",
+            official_ballot_title: "Amendment 1",
+            election_date: "2026-11-03",
+            seats_to_fill: null,
+            candidate_id: null,
+            display_name: null,
+            candidacy_status: null,
+            measure_position: "yes",
+            origin: "auto",
+            measure_result: null,
+            updated_at: "2026-08-02T17:00:00.000Z",
+          },
+        ],
+      })
+      .mockResolvedValueOnce({ rows: [] });
+
+    const result = await listUserElectionChoices({ query }, userId);
+
+    expect(result.choices).toEqual([
+      expect.objectContaining({
+        election_id: electionId,
+        picks: [],
+        measure_position: "yes",
+        measure_origin: "auto",
+      }),
+    ]);
+  });
+
   it("skips the canonical-result query when the user has no choices", async () => {
     const query = vi
       .fn()

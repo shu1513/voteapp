@@ -3,7 +3,8 @@
 Status: PR 1 (Preferences) merged 2026-08-19 (#764). PR 2 (engine +
 `POST /api/me/auto-picks` + election-page button/panel) merged 2026-08-20
 (#771). PR 3 (My Picks fill/clear + auto chip) implemented 2026-08-20 on
-branch `claude/auto-pick-fill-empty`; PR 4 (coverage) not started.
+branch `claude/auto-pick-fill-empty`; PR 4 (data coverage — relabelling
+records and roster research, not code) not started.
 Numbers below come from the local DB on 2026-08-18 (Nov-2026 elections);
 prod will differ in size, not in shape.
 

@@ -21,10 +21,12 @@ import { MIN_AUTO_PICK_ISSUES } from "./AutoPickControl";
 // (docs/plans/auto-pick-by-issues.md): "Fill my empty picks" runs
 // POST /api/me/auto-picks in fill_empty mode over every upcoming carded race
 // without a pick, then reports what was filled and, race by race, why the
-// rest were left open. "Clear auto picks" unpicks the rows the engine wrote
-// (origin = 'auto') through the existing choice PUT — manual picks are never
-// touched. Per-race "why" details live on each election page's panel; this
-// control keeps to the batch summary.
+// rest were left open. "Clear auto picks" is one DELETE /api/me/auto-picks:
+// the server removes rows still owned by the engine (origin = 'auto') on
+// upcoming elections in a single atomic statement, so manual picks — and
+// rows re-picked manually in another tab — are never touched. Per-race
+// "why" details live on each election page's panel; this control keeps to
+// the batch summary.
 
 // Server-side cap on election_ids per request (MAX_AUTO_PICK_ELECTION_IDS);
 // larger ballots run in sequential chunks.
