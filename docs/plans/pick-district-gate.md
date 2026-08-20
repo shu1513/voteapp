@@ -1,6 +1,6 @@
 # Pick district gate
 
-Status: PR 1 (backend endpoint) implemented — ships with this doc. PRs 2–3 planned (2026-08-19).
+Status: PR 1 (backend endpoint, #774) merged. PR 2 (frontend gate) implemented. PR 3 (tests) planned (2026-08-19).
 
 ## Problem
 
@@ -79,7 +79,9 @@ backend read changes.
 
 ### PR 2 — frontend gate
 
-1. `packages/api-client`: `useMyDistricts()` hook — logged-in: query
+1. `frontend/src/lib/useMyDistricts.ts` (frontend, not `packages/api-client`:
+   the guest half reads localStorage via `ballotDraft.ts`, which the shared
+   package cannot depend on): `useMyDistricts()` hook — logged-in: query
    `["me", "districts"]` (staleTime ~60s, disabled while `me` undefined,
    treat 403 as unknown, invalidate on address save — `SavedAddressForm`
    already navigates after `PUT /api/me/address`, add invalidation there);

@@ -2,10 +2,17 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ElectionPage, ErrorBoundary } from "./ElectionPage";
-import { clearBallotDraft, readBallotDraft, setDraftCandidateChoice } from "../lib/ballotDraft";
+import { clearBallotDraft, readBallotDraft, setDraftBallotContext, setDraftCandidateChoice } from "../lib/ballotDraft";
 import { renderRoutes } from "../test/render";
 import { apiError, stubApiRoutes } from "../test/mockApi";
-import { electionDetail, financeSummary, ME_VERIFIED, VOTE_POWER_WITH_EXPLANATION } from "../test/fixtures";
+import {
+  DISTRICT,
+  electionDetail,
+  financeSummary,
+  ME_VERIFIED,
+  MY_DISTRICTS,
+  VOTE_POWER_WITH_EXPLANATION,
+} from "../test/fixtures";
 import type { ElectionDetail } from "@voteapp/api-client";
 
 const ANONYMOUS = { "/api/me": apiError(401, "unauthorized", "Not logged in") };
@@ -349,6 +356,7 @@ describe("ElectionPage", () => {
   it("shows no follow buttons in the candidate list even for verified users", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
     });
     renderElection(() => electionDetail());
@@ -531,6 +539,7 @@ describe("ElectionPage", () => {
   it("marks saved areas with an sr-only cue on measure and candidate chips", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/research-area-preferences": {
         body: {
@@ -651,6 +660,9 @@ describe("ElectionPage", () => {
 
   it("lets logged-out visitors pick straight into the local ballot draft", async () => {
     clearBallotDraft();
+    // Pick controls only render for races in the viewer's districts; a
+    // guest's districts come from the draft's ballot context.
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() => electionDetail());
 
@@ -671,6 +683,7 @@ describe("ElectionPage", () => {
 
   it("lets guests pick a measure position from the sticky card, then shows the draft link", async () => {
     clearBallotDraft();
+    setDraftBallotContext([DISTRICT.id], null);
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() =>
       electionDetail({
@@ -737,6 +750,7 @@ describe("ElectionPage", () => {
   it("gives logged-in viewers the real pick button, not the register prompt", async () => {
     const fetchMock = stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/election-choices": (_url, init) => {
         if (init?.method === "PUT") {
@@ -765,6 +779,7 @@ describe("ElectionPage", () => {
   it("puts the viewer's saved areas first with an sr-only cue", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/research-area-preferences": {
         body: {
@@ -829,6 +844,7 @@ describe("ElectionPage", () => {
   it("defaults to my-issues order for viewers with saved areas and can switch to alphabetical", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/research-area-preferences": {
         body: {
@@ -876,6 +892,7 @@ describe("ElectionPage", () => {
   it("ranks an against-only candidate above one with no relevant records under my-issues sort", async () => {
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/research-area-preferences": {
         body: {
@@ -912,6 +929,7 @@ describe("ElectionPage", () => {
   describe("records filter", () => {
     const SAVED_HOUSING = {
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/research-area-preferences": {
         body: {
@@ -955,6 +973,7 @@ describe("ElectionPage", () => {
     it("hides the control when the viewer has no saved areas", async () => {
       stubApiRoutes({
         "/api/me": { body: ME_VERIFIED },
+        "/api/me/districts": { body: MY_DISTRICTS },
         "/api/me/candidate-follows": { body: { follows: [] } },
         "/api/me/research-area-preferences": { body: { preferences: [] } },
       });
@@ -1534,6 +1553,7 @@ describe("ElectionPage back link and nav context", () => {
     // back from the nav state, not reset on the remount.
     stubApiRoutes({
       "/api/me": { body: ME_VERIFIED },
+      "/api/me/districts": { body: MY_DISTRICTS },
       "/api/me/candidate-follows": { body: { follows: [] } },
       "/api/me/research-area-preferences": {
         body: {
