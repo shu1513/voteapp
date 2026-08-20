@@ -49,6 +49,7 @@ describe("setUserElectionChoice", () => {
             display_name: "Donald A. Prichard",
             candidacy_status: "declared",
             measure_position: null,
+            origin: "manual",
             measure_result: null,
             updated_at: "2026-08-02T17:00:00.000Z",
           },
@@ -74,9 +75,11 @@ describe("setUserElectionChoice", () => {
             candidate_id: candidateId,
             display_name: "Donald A. Prichard",
             candidacy_status: "declared",
+            origin: "manual",
           },
         ],
         measure_position: null,
+        measure_origin: null,
         measure_result: null,
         // The post-write read-back leaves the canonical-result fields at
         // their defaults; only the list read attaches them (writes are gated
@@ -124,6 +127,7 @@ describe("setUserElectionChoice", () => {
             display_name: "Jocelyn Benson",
             candidacy_status: "declared",
             measure_position: null,
+            origin: "auto",
             measure_result: null,
             updated_at: "2026-08-02T17:00:00.000Z",
           },
@@ -144,6 +148,9 @@ describe("setUserElectionChoice", () => {
     expect(result.choices).toEqual([
       expect.objectContaining({
         election_id: electionId,
+        // The row's origin rides the list read so the UI can badge and
+        // clear auto picks.
+        picks: [expect.objectContaining({ origin: "auto" })],
         current_result_outcome: "advanced",
         current_result_winners: [
           { candidate_id: candidateId, candidate_name: "Jocelyn Benson", party: "Democratic" },

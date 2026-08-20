@@ -15,6 +15,9 @@ export type UserElectionChoicePick = {
   /** candidate_elections.status at read time — a pick made before a
    * withdrawal stays visible so the UI can flag it, not silently vanish. */
   candidacy_status: string;
+  /** 'auto' while the row is auto-pick's; any manual re-pick flips it back
+   * to 'manual'. Lets the UI badge auto picks and clear only those rows. */
+  origin: "manual" | "auto";
 };
 
 export type UserElectionChoice = {
@@ -25,6 +28,9 @@ export type UserElectionChoice = {
   seats_to_fill: number | null;
   picks: UserElectionChoicePick[];
   measure_position: "yes" | "no" | null;
+  /** The measure row's origin (measures have no picks array to carry it);
+   * null when there is no measure position. */
+  measure_origin: "manual" | "auto" | null;
   /** ballot_measures.result at read time ("passed"/"failed" once certified
    * results land, null before) — lets a measure pick show its outcome the
    * way candidacy_status lets a candidate pick show won/lost. */
@@ -84,6 +90,7 @@ type ChoiceRow = {
   display_name: string | null;
   candidacy_status: string | null;
   measure_position: "yes" | "no" | null;
+  origin: "manual" | "auto";
   measure_result: string | null;
   updated_at: string | Date;
 };
@@ -166,6 +173,7 @@ const CHOICE_ROWS_SQL = `
     ) AS display_name,
     candidate_election.status AS candidacy_status,
     choice.measure_position,
+    choice.origin,
     measure.result AS measure_result,
     choice.updated_at
   FROM public.user_election_choices AS choice
@@ -196,6 +204,7 @@ function rowsToChoices(rows: ChoiceRow[]): UserElectionChoice[] {
         seats_to_fill: row.seats_to_fill,
         picks: [],
         measure_position: null,
+        measure_origin: null,
         measure_result: row.measure_result,
         current_result_outcome: null,
         current_result_winners: [],
@@ -209,11 +218,13 @@ function rowsToChoices(rows: ChoiceRow[]): UserElectionChoice[] {
     }
     if (row.measure_position !== null) {
       choice.measure_position = row.measure_position;
+      choice.measure_origin = row.origin;
     } else if (row.candidate_id && row.display_name && row.candidacy_status) {
       choice.picks.push({
         candidate_id: row.candidate_id,
         display_name: row.display_name,
         candidacy_status: row.candidacy_status,
+        origin: row.origin,
       });
     }
   }
@@ -280,6 +291,7 @@ async function readElectionChoice(
     seats_to_fill: election.seats_to_fill,
     picks: [],
     measure_position: null,
+    measure_origin: null,
     measure_result: null,
     current_result_outcome: null,
     current_result_winners: [],
