@@ -30,10 +30,23 @@ Implementation deltas from the plan below (found during the deep read):
   ALSO names a candidate ("compare Jon Ossoff with the other candidates")
   keeps race-member precedence; the entity match alone used to switch back
   to entity-first ranking, filling the top-K with the named candidate's
-  chunks and dropping the opponents the members branch fetched. `each
-  other` is excluded (a fully-named comparison stays entity-first). The
-  eval's recall rerun also inherits the page context's state and skips the
-  previous-turn carry-over when context is set, mirroring askService.
+  chunks and dropping the opponents the members branch fetched. Alternatives
+  are field NOUNS only ("other candidates", "others", "opponents",
+  "everyone else", "the rest", "the candidates") — bare `other` flipped
+  "what other bills has Jon Ossoff sponsored?" into a field question, and a
+  fully-named comparison ("compare against each other") matches nothing and
+  stays entity-first. The eval's recall rerun also inherits the page
+  context's state and skips the previous-turn carry-over when context is
+  set, mirroring askService.
+- Review round, big fields: the members fetch got its own ceiling
+  (`raceMembersLimit` 48, was the generic 20-row `BRANCH_LIMIT`) so the
+  money widening's every-filer-fits promise survives fields over 19 filers.
+  Neutral/records comparisons on big fields (Glasgow City Council, 23
+  filers) deliberately do NOT widen: the ~90-word answer cannot use 23
+  profiles, the listing chunk leads the members ordering and names every
+  filer (the model always sees the whole field), and widening would also
+  fire on plain listing questions, tripling prompt spend. Pinned by the
+  `election-context-compare-big-field` golden case.
 
 ## Problem
 

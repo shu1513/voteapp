@@ -85,10 +85,13 @@ export const RACE_COLLECTIVE_RE =
  * member precedence must stay on — entity-first ranking would fill the
  * top-K with the named candidate's own chunks plus the listing, and the
  * opponents the members branch fetched would never reach the model.
- * `each other` is excluded on purpose: "how do X and Y compare against
- * each other?" names ALL its subjects, and entity-first is the right
- * ranking there. */
-export const RACE_OTHERS_RE = /\b(?<!each )others?\b|\bopponents?\b|\beveryone else\b/i;
+ * Every alternative is a field NOUN, never a bare modifier (review round):
+ * bare `other` flipped "what other bills has Jon Ossoff sponsored?" into a
+ * field question and served opponents' records ahead of his. A fully-named
+ * comparison ("how do X and Y compare against each other?") matches none
+ * of these, and entity-first is the right ranking there. */
+export const RACE_OTHERS_RE =
+  /\bother candidates\b|\bothers\b|\bopponents?\b|\beveryone else\b|\bthe rest\b|\bthe candidates\b/i;
 
 /** Member ordering per question kind: the listing chunk always leads (it
  * names the field), then the source type the question is about. Applied in
@@ -648,6 +651,15 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   // questions. Contributes RRF rank only, never gate evidence (score 0):
   // pulled members must not make an otherwise-unanswerable question pass.
   let raceMemberRows: ChunkRow[] = [];
+  // Fetch ceiling for the members branch, NOT the generic BRANCH_LIMIT: the
+  // money widening below promises EVERY filer's summary fits, and a 20-row
+  // fetch silently broke that promise past 19 filers. Sized to double the
+  // corpus's biggest field (Glasgow City Council, 23 filers — the largest
+  // races carry no finance summaries today, max summaries per race is 7,
+  // but the ceiling must not be the thing that re-creates the incomplete
+  // comparison when a big money race appears). Rank-only rows: fetching
+  // more never changes gate evidence, only ordering candidates.
+  const raceMembersLimit = 48;
   const raceQuestionKind = classifyRaceQuestion(question);
   // The title branch is already scope-filtered; the first row clearing the
   // office-similarity bar is the race the question names (see the
@@ -724,7 +736,7 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
           chunk.id ASC
         LIMIT $3
       `,
-      [generationId, memberElectionId, BRANCH_LIMIT, RACE_MEMBER_TYPE_ORDER[raceQuestionKind]]
+      [generationId, memberElectionId, raceMembersLimit, RACE_MEMBER_TYPE_ORDER[raceQuestionKind]]
     );
     raceMemberRows = raceMembersResult.rows;
   }
@@ -824,10 +836,18 @@ export async function retrieveChunks(options: RetrieveOptions): Promise<Retrieva
   // more?" silently compares an incomplete field (review catch: Florida's
   // Senate race has 7 summaries; the cap kept 4, alphabetically). Widen by
   // exactly the overflow — the listing takes one slot, so top-K holds K-1
-  // summaries. The member fetch's BRANCH_LIMIT is the ceiling (listing +
-  // 19 summaries; the corpus maximum is 7 filers today) — an arbitrary
-  // smaller cap would silently re-create the incomplete comparison for a
-  // bigger race.
+  // summaries. raceMembersLimit is the ceiling (corpus maximum today: 7
+  // summaries in one race) — an arbitrary smaller cap would silently
+  // re-create the incomplete comparison for a bigger race.
+  // Money ONLY, deliberately (review round): a superlative over amounts is
+  // WRONG on a partial field, but a neutral/records "compare the
+  // candidates" on a 23-filer field (Glasgow City Council) is not made
+  // better by 23 profiles the ~90-word answer cannot use — the listing
+  // chunk leads the members ordering and names every filer, so the model
+  // always sees the whole field and can scope its comparison honestly.
+  // Widening neutral would also fire on plain listing questions ("who's
+  // running?"), tripling prompt spend for answers the listing already
+  // covers.
   const raceFinanceSlots =
     raceRankApplies && raceQuestionKind === "money"
       ? Math.max(

@@ -89,8 +89,16 @@ describe("RACE_COLLECTIVE_RE", () => {
 describe("RACE_OTHERS_RE", () => {
   it("keeps race-member precedence when a named candidate is compared to the field", () => {
     expect(RACE_OTHERS_RE.test("Compare Jon Ossoff with the other candidates.")).toBe(true);
+    expect(RACE_OTHERS_RE.test("Compare Jon Ossoff to the candidates in this race.")).toBe(true);
     expect(RACE_OTHERS_RE.test("How does she stack up against her opponents?")).toBe(true);
     expect(RACE_OTHERS_RE.test("Has Ossoff raised more than everyone else?")).toBe(true);
+    expect(RACE_OTHERS_RE.test("How does Ossoff compare to the rest?")).toBe(true);
+  });
+
+  it("stays off single-candidate questions that merely contain 'other'", () => {
+    // Bare "other" is a modifier, not a field noun — this question is about
+    // Ossoff's own records and must keep entity-first ranking.
+    expect(RACE_OTHERS_RE.test("In this race, what other bills has Jon Ossoff sponsored?")).toBe(false);
   });
 
   it("leaves fully-named comparisons on entity-first ranking", () => {

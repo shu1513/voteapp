@@ -231,6 +231,33 @@ export const goldenSet: readonly GoldenCase[] = [
       "Race-collective question on a candidate page resolves the race from the page (docs/plans/chatbot-race-context-compare.md): every filer's profile must be retrieved, not just the viewed candidate's. Profile-only source filter (review): the election listing chunk names every filer, so allowing it would let the listing alone satisfy all three entities.",
   },
   {
+    id: "election-context-compare-big-field",
+    category: "election",
+    question: "Compare the candidates for me.",
+    pageContext: { kind: "election", entityName: "Glasgow City Council Member" },
+    expected: "retrieval",
+    expectedSourceTypes: ["election"],
+    // Two filers from opposite ends of the roster: the listing chunk is the
+    // only retrievable source naming them both, so this pins that the FULL
+    // listing reaches the model.
+    expectedEntities: ["Alexandria L. Hayes", "Vernon Randall Cundiff"],
+    scopeState: "KY",
+    notes:
+      "Biggest field in the corpus (23 filers): the top-K cannot hold every profile, and that is deliberate — the answer's word cap cannot use them either. What MUST hold: the listing chunk (which names every filer) is retrieved, so the model sees the whole field and scopes its comparison honestly.",
+  },
+  {
+    id: "records-context-named-other-bills",
+    category: "records",
+    question: "In this race, what other bills has Jon Ossoff sponsored?",
+    pageContext: { kind: "candidate", entityName: "Jon Ossoff" },
+    expected: "retrieval",
+    expectedSourceTypes: ["candidate_record"],
+    expectedEntities: ["Jon Ossoff"],
+    scopeState: "GA",
+    notes:
+      "Bare 'other' must NOT flip RACE_OTHERS_RE (review round): this is a single-candidate records question — entity-first ranking keeps Ossoff's own record chunk in the top-K instead of round-robining opponents' records ahead of it.",
+  },
+  {
     id: "election-context-compare-named",
     category: "election",
     question: "Compare Jon Ossoff with the other candidates.",
