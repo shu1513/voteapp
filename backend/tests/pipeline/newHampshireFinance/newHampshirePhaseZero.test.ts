@@ -43,9 +43,9 @@ describe("New Hampshire CFS Phase 0", () => {
 
     expect(receipts).toHaveLength(5);
     expect(receipts[0]?.["Contributor Name"]).toBe('Sample "Nickname" Donor 1');
-    expect(receipts[2]?.Description).toBe("First line\n123, Main Street\nsecond line");
-    expect(receipts[3]?.["Amount of receipt"]).toBe("$1,200.50");
-    expect(receipts[4]?.Description).toBe('"Malformed "INNER")');
+    expect(receipts[2]?.Description).toBe("First line, extra comma\n123, Main Street\nsecond line");
+    expect(receipts[3]?.Description).toBe('"Malformed "INNER")');
+    expect(receipts[4]?.["Amount of receipt"]).toBe("$1,200.50");
     expect(expenditures).toHaveLength(2);
     expect(expenditures[1]?.["Transaction Type"]).toBe("Independent Expenditure");
     expect(expenditures[1]?.["Transaction Description"]).toBe('Vendor purpose with "INNER"');

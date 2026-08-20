@@ -27,13 +27,13 @@ async function temporaryFile(body: string): Promise<string> {
 }
 
 describe("New Hampshire CFS artifact reader", () => {
-  it("streams malformed vendor CSV using structurally complete numeric boundaries", async () => {
+  it("streams malformed vendor CSV using quote-aware numeric boundaries", async () => {
     const rows = await readNewHampshireReceiptCsvArtifact({
       filePath: new URL("receipts-sanitized.csv", fixtures).pathname,
     });
     expect(rows).toHaveLength(5);
-    expect(rows[2]?.Description).toBe("First line\n123, Main Street\nsecond line");
-    expect(rows[4]?.Description).toBe('"Malformed "INNER")');
+    expect(rows[2]?.Description).toBe("First line, extra comma\n123, Main Street\nsecond line");
+    expect(rows[3]?.Description).toBe('"Malformed "INNER")');
 
     const expenditures = await readNewHampshireExpenditureCsvArtifact({
       filePath: new URL("expenditures-sanitized.csv", fixtures).pathname,

@@ -4,7 +4,7 @@ import { createInterface } from "node:readline";
 import {
   NEW_HAMPSHIRE_EXPENDITURE_CSV_COLUMNS,
   NEW_HAMPSHIRE_RECEIPT_CSV_COLUMNS,
-  countNewHampshireCsvRecordColumns,
+  isNewHampshireCsvRecordBoundary,
   parseNewHampshireExpenditureCsvRecord,
   parseNewHampshireReceiptCsvRecord,
   validateNewHampshireExpenditureCsvHeader,
@@ -71,10 +71,10 @@ async function scanRows<TRow>(input: {
 
       if (
         RECORD_START.test(line) &&
-        countNewHampshireCsvRecordColumns(currentRecord) >= input.expectedColumnCount
+        isNewHampshireCsvRecordBoundary(currentRecord, line, input.expectedColumnCount)
       ) {
         // Numeric comma-prefixed content is legal inside a quoted multiline
-        // field. Only split after the accumulated row is structurally complete.
+        // field; the shared boundary check also tolerates Civix's unmatched quotes.
         if (consumeRecord(currentRecord, recordStartLine)) {
           lines.close();
           source.destroy();

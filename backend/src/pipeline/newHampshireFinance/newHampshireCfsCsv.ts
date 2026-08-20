@@ -101,6 +101,50 @@ export function countNewHampshireCsvRecordColumns(record: string): number {
   return parseCsvRecord(record).length;
 }
 
+function hasOpenQuotedField(record: string): boolean {
+  let fieldLength = 0;
+  let inQuotes = false;
+  for (let index = 0; index < record.length; index += 1) {
+    const char = record[index];
+    const next = record[index + 1];
+    if (inQuotes) {
+      if (char === '"' && next === '"') {
+        fieldLength += 1;
+        index += 1;
+        if (isQuoteBoundary(record, index)) inQuotes = false;
+      } else if (char === '"' && isQuoteBoundary(record, index)) {
+        inQuotes = false;
+      } else {
+        fieldLength += 1;
+      }
+    } else if (char === '"' && fieldLength === 0) {
+      inQuotes = true;
+    } else if (char === ",") {
+      fieldLength = 0;
+    } else if (char !== "\r") {
+      fieldLength += 1;
+    }
+  }
+  return inQuotes;
+}
+
+export function isNewHampshireCsvRecordBoundary(
+  currentRecord: string,
+  nextLine: string,
+  expectedColumnCount: number
+): boolean {
+  if (countNewHampshireCsvRecordColumns(currentRecord) < expectedColumnCount) return false;
+  if (!hasOpenQuotedField(currentRecord)) return true;
+
+  // Civix also emits otherwise complete single-line rows with an unmatched
+  // quote. In that ambiguous case, split only when the candidate line is
+  // independently quote-balanced and has the exact expected shape.
+  return (
+    !hasOpenQuotedField(nextLine) &&
+    countNewHampshireCsvRecordColumns(nextLine) === expectedColumnCount
+  );
+}
+
 function parseCsvRows(csv: string, expectedColumnCount: number): string[][] {
   const normalized = csv.replace(/^\uFEFF/, "");
   const firstNewline = normalized.indexOf("\n");
@@ -120,7 +164,10 @@ function parseCsvRows(csv: string, expectedColumnCount: number): string[][] {
     // begin with digits and a comma. It is a boundary only after the prior
     // record has all expected columns. This remains tolerant of Civix's
     // invalid quote escaping inside otherwise complete rows.
-    if (/^\d+,/.test(line) && countNewHampshireCsvRecordColumns(currentRecord) >= expectedColumnCount) {
+    if (
+      /^\d+,/.test(line) &&
+      isNewHampshireCsvRecordBoundary(currentRecord, line, expectedColumnCount)
+    ) {
       records.push(currentRecord);
       currentRecord = line;
     } else {
