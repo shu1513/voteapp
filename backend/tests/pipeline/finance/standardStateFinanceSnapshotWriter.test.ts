@@ -370,7 +370,7 @@ describe("createStandardStateFinanceSnapshotWriter config options", () => {
       query: vi
         .fn()
         .mockResolvedValueOnce({
-          rows: [{ id: "manual-link", committee_id: "c-1", link_status: "active" }],
+          rows: [{ id: "manual-link", committee_id: "c-1", link_status: "active", election_year: 2026 }],
           rowCount: 1,
         })
         .mockResolvedValueOnce({ rows: [], rowCount: 1 }),
@@ -393,6 +393,25 @@ describe("createStandardStateFinanceSnapshotWriter config options", () => {
     );
     expect(db.query.mock.calls[1]?.[1]).toEqual(["manual-link", NOW.toISOString()]);
     expect(db.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO"))).toBe(false);
+  });
+
+  it("fails closed when an exact active manual link has a different election year", async () => {
+    const db = {
+      query: vi.fn().mockResolvedValue({
+        rows: [{ id: "manual-link", committee_id: "C-1", link_status: "active", election_year: 2024 }],
+        rowCount: 1,
+      }),
+    };
+
+    await expect(
+      makeWriter({ manualLinkProtection: true }).upsertLink({
+        db,
+        link: { ...linkInput(), linkSource: "state_bulk" },
+      })
+    ).rejects.toThrow(
+      "Zetaland automatic finance link year 2026 does not match the protected manual link year 2024"
+    );
+    expect(db.query).toHaveBeenCalledTimes(1);
   });
 
   it("fails closed when an automatic link matches an operator-disabled manual link", async () => {

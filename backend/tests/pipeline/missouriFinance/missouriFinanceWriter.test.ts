@@ -74,7 +74,7 @@ describe("missouriFinanceWriter", () => {
       query: vi
         .fn()
         .mockResolvedValueOnce({
-          rows: [{ id: LINK_ID, committee_id: "A222073", link_status: "active" }],
+          rows: [{ id: LINK_ID, committee_id: "A222073", link_status: "active", election_year: 2026 }],
           rowCount: 1,
         })
         .mockResolvedValueOnce({ rows: [], rowCount: 1 }),
@@ -86,6 +86,20 @@ describe("missouriFinanceWriter", () => {
       "UPDATE public.mo_candidate_finance_links SET last_verified_at=$2::timestamptz WHERE id=$1::uuid"
     );
     expect(db.query.mock.calls.some((call) => String(call[0]).includes("INSERT INTO"))).toBe(false);
+  });
+
+  it("rejects an exact manual MECID carrying a different election year", async () => {
+    const db = {
+      query: vi.fn().mockResolvedValue({
+        rows: [{ id: LINK_ID, committee_id: "A222073", link_status: "active", election_year: 2024 }],
+        rowCount: 1,
+      }),
+    };
+
+    await expect(upsertMissouriFinanceLink({ db, link: baseLink() })).rejects.toThrow(
+      "Missouri automatic finance link year 2026 does not match the protected manual link year 2024"
+    );
+    expect(db.query).toHaveBeenCalledTimes(1);
   });
 
   it("fails closed for disabled exact manual links and conflicting active manual links", async () => {

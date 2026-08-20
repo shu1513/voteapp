@@ -381,6 +381,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
 
     const candidateId = requireNonEmpty(input.link.candidateId, "candidate id");
     const electionId = requireNonEmpty(input.link.electionId, "election id");
+    const electionYear = normalizeElectionYear(input.link.electionYear);
     const committeeId = normalizeCommitteeId(
       requireNonEmpty(input.link.committeeId, `${label} committee id`)
     );
@@ -392,8 +393,9 @@ export function createStandardStateFinanceSnapshotWriter(config: {
         id: string;
         committee_id: string;
         link_status: string;
+        election_year: number;
       }>(
-        `SELECT id::text, ${linkIdColumn} AS committee_id, link_status FROM public.${tables.links} WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_source='manual'`,
+        `SELECT id::text, ${linkIdColumn} AS committee_id, link_status, election_year FROM public.${tables.links} WHERE candidate_id=$1::uuid AND election_id=$2::uuid AND link_source='manual'`,
         [candidateId, electionId]
       );
       const sameCommittee = manual.rows.find(
@@ -402,6 +404,11 @@ export function createStandardStateFinanceSnapshotWriter(config: {
       if (sameCommittee) {
         if (sameCommittee.link_status !== "active") {
           throw new Error(`${label} automatic finance link matches an operator-disabled manual link`);
+        }
+        if (sameCommittee.election_year !== electionYear) {
+          throw new Error(
+            `${label} automatic finance link year ${electionYear} does not match the protected manual link year ${sameCommittee.election_year}`
+          );
         }
         if (lastVerifiedAt) {
           await input.db.query(
@@ -459,7 +466,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
       [
         candidateId,
         electionId,
-        normalizeElectionYear(input.link.electionYear),
+        electionYear,
         requireNonEmpty(input.link.candidateNameNormalized, `${label} finance candidate name`),
         requireNonEmpty(input.link.officeName, `${label} finance office name`),
         normalizeOptionalText(input.link.district),
