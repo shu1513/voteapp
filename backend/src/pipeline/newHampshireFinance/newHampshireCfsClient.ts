@@ -72,7 +72,9 @@ export type NewHampshireReceiptRow = {
   filerName: string;
   transactionAmount: number;
   transactionDate: string;
+  transactionTypeDescription: string;
   transactionSubType: string | null;
+  transactionSubTypeCode: string;
   reportName: string;
   reportVersion: boolean;
   reportVersionFilter: string;
@@ -338,7 +340,9 @@ function parseReceiptRow(value: unknown): NewHampshireReceiptRow {
     filerName: requiredString(row.filerName, "receipt filerName"),
     transactionAmount: requiredNumber(row.transactionAmount, "receipt transactionAmount"),
     transactionDate: requiredString(row.transactionDate, "receipt transactionDate"),
+    transactionTypeDescription: requiredString(row.transactionTypeDesc, "receipt transactionTypeDesc"),
     transactionSubType: nullableString(row.transactionSubType),
+    transactionSubTypeCode: requiredString(row.transactionSubTypeCode, "receipt transactionSubTypeCode"),
     reportName: requiredString(row.reportName, "receipt reportName"),
     reportVersion: booleanValue(row.reportVersion),
     reportVersionFilter: requiredString(row.reportVersionFilter, "receipt reportVersionFilter"),
