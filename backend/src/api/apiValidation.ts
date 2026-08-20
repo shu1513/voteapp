@@ -72,6 +72,7 @@ export const ME_PICK_CARD_SHARES_PATH = "/api/me/pick-card-shares";
 // Public tokenized read of a shared pick card; no session auth — the token
 // IS the authorization (see user_pick_card_shares migration).
 export const PICK_CARD_PATH_PREFIX = "/api/pick-cards/";
+export const ME_DISTRICTS_PATH = "/api/me/districts";
 export const ME_DISTRICTS_INITIALIZE_PATH = "/api/me/districts/initialize";
 export const ME_RESEARCH_AREA_PREFERENCES_PATH = "/api/me/research-area-preferences";
 // [ballot-personalized-ordering]

@@ -60,6 +60,7 @@ import {
   parsePickCardImageToken,
   parsePickCardShareBodyValue,
   ME_DISTRICTS_INITIALIZE_PATH,
+  ME_DISTRICTS_PATH,
   ME_EMAIL_PREFERENCES_PATH,
   ME_PUSH_TOKENS_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
@@ -157,6 +158,7 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_ELECTION_CHOICES_PATH ||
     pathname === ME_PICK_CARD_SHARES_PATH ||
     isPickCardPath(pathname) ||
+    pathname === ME_DISTRICTS_PATH ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
     pathname === ME_EMAIL_PREFERENCES_PATH ||
     pathname === ME_PUSH_TOKENS_PATH ||
@@ -2007,6 +2009,41 @@ async function dispatchApiRequest(
       return;
     }
     sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_DISTRICTS_PATH) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET /api/me/districts", {
+          ...corsHeaders,
+          allow: "GET",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+    if (!options.listAuthenticatedDistrictIds) {
+      sendApiResponse(
+        response,
+        toErrorResponse(500, "internal_error", "Authenticated district lookup is not configured", corsHeaders)
+      );
+      return;
+    }
+
+    // Same verified-email gate as GET /api/me/ballot: district ids are
+    // personal location data.
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
+    if (!userId) {
+      return;
+    }
+
+    const districtIds = await options.listAuthenticatedDistrictIds(userId);
+    sendApiResponse(response, toJsonResponse(200, { district_ids: districtIds }, corsHeaders));
     return;
   }
 
