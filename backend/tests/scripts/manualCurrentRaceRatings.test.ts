@@ -12,8 +12,10 @@ import {
 const NOW = new Date("2026-08-20T15:30:00.000Z");
 
 describe("parseElectionIdsFlag", () => {
-  it("splits, trims, and deduplicates", () => {
-    expect(parseElectionIdsFlag(" a , b ,a,")).toEqual(["a", "b"]);
+  it("splits, trims, lowercases, and deduplicates", () => {
+    // Postgres accepts uppercase UUID input but returns lowercase text, so
+    // ids fold to lowercase on the way in.
+    expect(parseElectionIdsFlag(" a , B ,A,")).toEqual(["a", "b"]);
   });
 
   it("rejects an empty list", () => {
@@ -22,8 +24,8 @@ describe("parseElectionIdsFlag", () => {
 });
 
 describe("parseManifestElectionIds", () => {
-  it("accepts a bare array and an election_ids object", () => {
-    expect(parseManifestElectionIds(["a", "b", "a"])).toEqual(["a", "b"]);
+  it("accepts a bare array and an election_ids object, lowercased", () => {
+    expect(parseManifestElectionIds(["a", "B", "A"])).toEqual(["a", "b"]);
     expect(parseManifestElectionIds({ election_ids: ["a"] })).toEqual(["a"]);
   });
 

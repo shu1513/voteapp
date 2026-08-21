@@ -218,10 +218,22 @@ describe("parseCurrentRaceRatingPayload", () => {
 
     const malformed = parse([ratedRow({ observations: [ieObservation({ changed_at: "2026-02-30" })] })]);
     expect(malformed.ok).toBe(false);
-    const future = parse([ratedRow({ observations: [ieObservation({ changed_at: "2026-08-21" })] })]);
-    expect(future.ok).toBe(false);
-    if (!future.ok) {
-      expect(future.reason).toContain("changed_at must not be in the future");
+    // A change after the feed snapshot cannot be in that snapshot (the
+    // observation's as_of is 2026-08-06).
+    const afterSnapshot = parse([ratedRow({ observations: [ieObservation({ changed_at: "2026-08-07" })] })]);
+    expect(afterSnapshot.ok).toBe(false);
+    if (!afterSnapshot.ok) {
+      expect(afterSnapshot.reason).toContain("must not be after its as_of snapshot");
+    }
+    const onSnapshot = parse([ratedRow({ observations: [ieObservation({ changed_at: "2026-08-06" })] })]);
+    expect(onSnapshot.ok).toBe(true);
+  });
+
+  it("accepts an uppercase election_id spelling of a context id", () => {
+    const result = parse([ratedRow({ election_id: ELECTION_A.toUpperCase() })]);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.ratings[0]!.election_id).toBe(ELECTION_A);
     }
   });
 

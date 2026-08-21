@@ -277,13 +277,16 @@ Clone of the election-results pattern:
 - Script `backend/src/scripts/manualCurrentRaceRatings.ts`
   (`due | context | write`, npm scripts `manual:current-ratings:*`):
   - `due` — from a frozen manifest file (`--manifest path`) or the scope
-    query (Senate via `discovery_contest_family='us_senate'` — ballot titles
-    vary by state; House via `district_type='us_house'`; Governor via the two
-    canonical statewide titles; `general`+`special` stages). A `--mayors`
-    scope ships with the v1.1 mayoral milestone and will require an explicit
-    city-list manifest, never all 98 rows. Excludes rows with fresh ratings
-    (60 d from `as_of`) or recent `none_found` (30 d from `researched_at`);
-    the DC delegate row is listed as excluded with a reason.
+    query keyed on `offices.canonical_name` ('United States Senator' /
+    'Governor'; House via `district_type='us_house'`), since ballot titles
+    vary by state ("US Senate", "Governor / Lt. Governor") and the discovery
+    contest family is not always set (MI's Senate row). Fallbacks for
+    unresolved offices: the contest family for Senate, a statewide title
+    list for Governor. `general`+`special` stages. A `--mayors` scope ships
+    with the v1.1 mayoral milestone and will require an explicit city-list
+    manifest, never all 98 rows. Excludes rows with fresh ratings (60 d from
+    `as_of`) or recent `none_found` (30 d from `researched_at`); the DC
+    delegate row is listed as excluded with a reason.
   - `context` — election + office + district + roster + historic label,
     capped at 10.
   - `write` — validate + derive + upsert in a transaction; `--dry-run`,

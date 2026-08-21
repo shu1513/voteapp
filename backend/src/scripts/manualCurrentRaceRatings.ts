@@ -98,8 +98,13 @@ function readPositiveIntegerEnv(name: string, fallback: number): number {
   return Number(raw);
 }
 
+// Election ids are lowercased on the way in: Postgres accepts uppercase
+// UUID input but returns lowercase text, so a case-preserving id would fail
+// every later found/missing comparison against DB-sourced ids.
 export function parseElectionIdsFlag(value: string): string[] {
-  const ids = [...new Set(value.split(",").map((id) => id.trim()).filter((id) => id.length > 0))];
+  const ids = [
+    ...new Set(value.split(",").map((id) => id.trim().toLowerCase()).filter((id) => id.length > 0)),
+  ];
   if (ids.length === 0) {
     throw new Error("--election-ids must contain at least one election id");
   }
@@ -125,7 +130,7 @@ export function parseManifestElectionIds(raw: unknown): string[] {
         if (typeof entry !== "string" || entry.trim().length === 0) {
           throw new Error(`Manifest election ids must be non-empty strings, got: ${JSON.stringify(entry)}`);
         }
-        return entry.trim();
+        return entry.trim().toLowerCase();
       })
     ),
   ];
@@ -138,16 +143,19 @@ export function parseManifestElectionIds(raw: unknown): string[] {
 const DUE_SCOPES = ["senate", "house", "governor", "all"] as const;
 type DueScope = (typeof DUE_SCOPES)[number];
 
-// Scope predicates for the v1 outlet-consensus targets. Senate rides on the
-// discovery contest family (ballot titles vary per state: "United States
-// Senator", "US Senate", ...); House is the district type; Governor is the
-// two canonical statewide titles ("Lieutenant Governor" alone must not
-// match). Mayors are a v1.1 milestone and have no scope here — their due
-// list will require an explicit city manifest.
+// Scope predicates for the v1 outlet-consensus targets. The canonical office
+// is the primary key — ballot titles vary per state ("US Senate",
+// "Governor / Lt. Governor") and the discovery contest family is not always
+// set (MI's Senate row carries non_judicial_office) — with a fallback for
+// rows whose office never resolved: the contest family for Senate, and a
+// title list (statewide only, so "Lieutenant Governor" alone can never
+// match) for Governor. House needs no fallback; the district type is
+// structural. Mayors are a v1.1 milestone and have no scope here — their
+// due list will require an explicit city manifest.
 const SCOPE_CONDITIONS: Record<Exclude<DueScope, "all">, string> = {
-  senate: `e.discovery_contest_family = 'us_senate'`,
+  senate: `(office.canonical_name = 'United States Senator' OR e.discovery_contest_family = 'us_senate')`,
   house: `d.district_type = 'us_house'`,
-  governor: `d.district_type = 'statewide' AND e.official_ballot_title IN ('Governor', 'Governor and Lieutenant Governor')`,
+  governor: `(office.canonical_name = 'Governor' OR (e.office_id IS NULL AND d.district_type = 'statewide' AND e.official_ballot_title IN ('Governor', 'Governor and Lieutenant Governor', 'Governor/Lt. Governor', 'Governor / Lt. Governor')))`,
 };
 
 type DueCandidateRow = {
@@ -283,6 +291,8 @@ async function runDue(pool: Pool, argv: readonly string[]): Promise<void> {
         FROM public.elections AS e
         JOIN public.districts AS d
           ON d.id = e.district_id
+        LEFT JOIN public.offices AS office
+          ON office.id = e.office_id
         WHERE e.race_type = 'office'
           AND e.election_stage IN ('general', 'special')
           AND e.election_date >= $1::date

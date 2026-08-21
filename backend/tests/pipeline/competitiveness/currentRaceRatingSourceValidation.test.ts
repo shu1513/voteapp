@@ -54,9 +54,17 @@ function payload(): CurrentRaceRatingPayload {
   };
 }
 
+function reachable(url: string, overrides: Record<string, unknown> = {}) {
+  return { ok: true, normalizedUrl: url, finalUrl: url, status: 200, ...overrides };
+}
+
 describe("collectCurrentRaceRatingSourceUrls", () => {
-  it("collects row source urls and nested observation urls, deduplicated", () => {
-    expect(collectCurrentRaceRatingSourceUrls(payload())).toEqual([WIKI_URL, IE_URL, SABATO_URL]);
+  it("collects deduplicated urls with their outlet binding", () => {
+    expect(collectCurrentRaceRatingSourceUrls(payload())).toEqual([
+      { url: WIKI_URL, outlet: null },
+      { url: IE_URL, outlet: "inside_elections" },
+      { url: SABATO_URL, outlet: "sabato" },
+    ]);
   });
 });
 
@@ -65,44 +73,73 @@ describe("validateCurrentRaceRatingSourceUrls", () => {
     verifyHttpUrlReachabilityMock.mockReset();
   });
 
-  it("passes when every url is reachable and notes 403s instead of failing them", async () => {
-    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) => ({
-      ok: true,
-      normalizedUrl: url,
-      finalUrl: url,
-      status: url.includes("insideelections") ? 403 : 200,
-    }));
+  it("allows 403 for insideelections.com only and notes it", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) =>
+      reachable(url, { status: url.includes("insideelections") ? 403 : 200 })
+    );
 
     const result = await validateCurrentRaceRatingSourceUrls(payload(), { timeoutMs: 90_000 });
     expect(result.ok).toBe(true);
     if (result.ok) {
-      expect(result.verifications).toHaveLength(3);
       const ie = result.verifications.find((verification) => verification.url === IE_URL);
       expect(ie).toEqual({ url: IE_URL, finalUrl: IE_URL, status: 403, note: "reachable_403" });
-      const wiki = result.verifications.find((verification) => verification.url === WIKI_URL);
-      expect(wiki?.note).toBe("ok");
     }
-    // Each unique URL is checked exactly once, with the 403 allowance and a
-    // capped timeout.
     expect(verifyHttpUrlReachabilityMock).toHaveBeenCalledTimes(3);
-    expect(verifyHttpUrlReachabilityMock.mock.calls[0]?.[1]).toEqual({
-      timeoutMs: 10_000,
-      allowStatusCodes: [403],
-    });
+    // The shared verifier defaults to allowing 403, so non-IE hosts must
+    // pass an explicit empty allowance.
+    for (const call of verifyHttpUrlReachabilityMock.mock.calls) {
+      const [url, options] = call as [string, { timeoutMs: number; allowStatusCodes: number[] }];
+      expect(options).toEqual({
+        timeoutMs: 10_000,
+        allowStatusCodes: url.includes("insideelections") ? [403] : [],
+      });
+    }
   });
 
   it("fails with every unreachable url listed", async () => {
     verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) =>
-      url === WIKI_URL
-        ? { ok: true, normalizedUrl: url, finalUrl: url, status: 200 }
-        : { ok: false, reason: "HTTP 404" }
+      url === WIKI_URL ? reachable(url) : { ok: false, reason: "HTTP 404" }
     );
 
     const result = await validateCurrentRaceRatingSourceUrls(payload(), { timeoutMs: 90_000 });
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.reason).toContain("not reachable");
+      expect(result.reason).toContain("failed verification");
       expect(result.failedUrls.map((failed) => failed.url).sort()).toEqual([SABATO_URL, IE_URL].sort());
+    }
+  });
+
+  it("fails an observation url whose redirect target leaves the outlet's domain", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) =>
+      url === IE_URL
+        ? reachable(url, { finalUrl: "https://parked.example.com/ratings" })
+        : reachable(url)
+    );
+
+    const result = await validateCurrentRaceRatingSourceUrls(payload(), { timeoutMs: 90_000 });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.failedUrls).toEqual([
+        {
+          url: IE_URL,
+          reason: expect.stringContaining("redirects to a disallowed target https://parked.example.com/ratings"),
+        },
+      ]);
+    }
+  });
+
+  it("fails a source url whose redirect target is banned", async () => {
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) =>
+      url === WIKI_URL
+        ? reachable(url, { finalUrl: "https://www.cookpolitical.com/ratings/senate" })
+        : reachable(url)
+    );
+
+    const result = await validateCurrentRaceRatingSourceUrls(payload(), { timeoutMs: 90_000 });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.failedUrls[0]?.url).toBe(WIKI_URL);
+      expect(result.failedUrls[0]?.reason).toContain("banned as a rating source");
     }
   });
 });
