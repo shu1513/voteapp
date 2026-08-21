@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   deriveConsensusLabel,
   deriveMayoralLabelFromMargin,
+  parseOutletRawRating,
   type CurrentRaceRatingObservation,
 } from "../../../src/pipeline/competitiveness/currentRaceRatingConsensus.js";
 
@@ -129,6 +130,30 @@ describe("deriveConsensusLabel", () => {
     ]);
     expect(result.competitiveness_label).toBe("safe");
     expect(result.confidence).toBe("high");
+  });
+});
+
+describe("parseOutletRawRating", () => {
+  it("parses the full outlet vocabulary", () => {
+    expect(parseOutletRawRating("Toss-up")).toEqual({ favored: "none", intensity: 0 });
+    expect(parseOutletRawRating("Tossup")).toEqual({ favored: "none", intensity: 0 });
+    expect(parseOutletRawRating("Tilt Democrat")).toEqual({ favored: "D", intensity: 2 });
+    expect(parseOutletRawRating("Lean Republican")).toEqual({ favored: "R", intensity: 3 });
+    expect(parseOutletRawRating("Leans Democratic")).toEqual({ favored: "D", intensity: 3 });
+    expect(parseOutletRawRating("Likely Republican")).toEqual({ favored: "R", intensity: 4 });
+    expect(parseOutletRawRating("Solid Democrat")).toEqual({ favored: "D", intensity: 5 });
+    expect(parseOutletRawRating("Safe Republican")).toEqual({ favored: "R", intensity: 5 });
+    expect(parseOutletRawRating("Solid Independent")).toEqual({ favored: "I", intensity: 5 });
+    expect(parseOutletRawRating("  safe   democratic  ")).toEqual({ favored: "D", intensity: 5 });
+  });
+
+  it("returns null for anything outside the vocabulary", () => {
+    expect(parseOutletRawRating("Battleground")).toBeNull();
+    expect(parseOutletRawRating("Lean")).toBeNull();
+    expect(parseOutletRawRating("Democrat")).toBeNull();
+    expect(parseOutletRawRating("Very Likely Republican")).toBeNull();
+    expect(parseOutletRawRating("Solid Green")).toBeNull();
+    expect(parseOutletRawRating("")).toBeNull();
   });
 });
 

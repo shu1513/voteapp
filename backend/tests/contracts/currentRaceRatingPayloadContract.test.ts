@@ -20,8 +20,6 @@ function ieObservation(overrides: Record<string, unknown> = {}): Record<string, 
   return {
     outlet: "inside_elections",
     raw_rating: "Tilt Democrat",
-    favored: "D",
-    intensity: 2,
     as_of: "2026-08-06",
     url: "https://insideelections.com/ratings/senate",
     ...overrides,
@@ -32,8 +30,6 @@ function sabatoObservation(overrides: Record<string, unknown> = {}): Record<stri
   return {
     outlet: "sabato",
     raw_rating: "Leans Democratic",
-    favored: "D",
-    intensity: 3,
     as_of: "2026-07-30",
     url: "https://centerforpolitics.org/crystalball/2026-senate",
     ...overrides,
@@ -51,8 +47,11 @@ function ratedRow(overrides: Record<string, unknown> = {}): Record<string, unkno
   };
 }
 
+// Fixed clock so future-date rejection is deterministic in tests.
+const TODAY = new Date("2026-08-20T15:30:00.000Z");
+
 function parse(rows: unknown[], contexts: CurrentRaceRatingContext[] = [context()]) {
-  return parseCurrentRaceRatingPayload({ ratings: rows }, { contexts });
+  return parseCurrentRaceRatingPayload({ ratings: rows }, { contexts, today: TODAY });
 }
 
 describe("parseCurrentRaceRatingPayload", () => {
@@ -70,11 +69,13 @@ describe("parseCurrentRaceRatingPayload", () => {
     expect(row.evidence_status).toBe("rated");
     expect(row.method).toBe("outlet_consensus");
     expect(row.decisive_round).toBeNull();
+    // favored and intensity are parsed from raw_rating, never taken from
+    // the payload, and land in evidence for re-derivation.
     expect(row.evidence).toMatchObject({
       mean_intensity: 2.5,
       observations: [
-        { outlet: "inside_elections", as_of: "2026-08-06" },
-        { outlet: "sabato", as_of: "2026-07-30" },
+        { outlet: "inside_elections", as_of: "2026-08-06", favored: "D", intensity: 2 },
+        { outlet: "sabato", as_of: "2026-07-30", favored: "D", intensity: 3 },
       ],
     });
   });
@@ -172,28 +173,47 @@ describe("parseCurrentRaceRatingPayload", () => {
     }
   });
 
-  it("rejects intensity values off the distance ladder", () => {
-    const result = parse([ratedRow({ observations: [ieObservation({ intensity: 1 })] })]);
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.reason).toContain("intensity must be one of 0, 2, 3, 4, 5");
+  it("rejects observations that carry favored or intensity", () => {
+    for (const field of ["favored", "intensity"]) {
+      const result = parse([ratedRow({ observations: [ieObservation({ [field]: "D" })] })]);
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.reason).toContain(`${field} is derived from raw_rating`);
+      }
     }
   });
 
-  it("rejects favored/intensity mismatches in both directions", () => {
-    const tossUpWithSide = parse([
-      ratedRow({ observations: [ieObservation({ intensity: 0, favored: "D", raw_rating: "Toss-up" })] }),
+  it("rejects unrecognized raw_rating strings instead of guessing", () => {
+    const result = parse([ratedRow({ observations: [ieObservation({ raw_rating: "Battleground" })] })]);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain('not a recognized outlet rating: "Battleground"');
+    }
+  });
+
+  it("parses a toss-up observation to favored none", () => {
+    const result = parse([
+      ratedRow({ observations: [ieObservation({ raw_rating: "Toss-up" })] }),
     ]);
-    expect(tossUpWithSide.ok).toBe(false);
-    if (!tossUpWithSide.ok) {
-      expect(tossUpWithSide.reason).toContain("must use favored=none");
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const row = result.payload.ratings[0]!;
+      expect(row.competitiveness_label).toBe("toss_up");
+      expect(row.evidence).toMatchObject({
+        observations: [{ favored: "none", intensity: 0 }],
+      });
+    }
+  });
+
+  it("rejects a future observation as_of and accepts today", () => {
+    const future = parse([ratedRow({ observations: [ieObservation({ as_of: "2026-08-21" })] })]);
+    expect(future.ok).toBe(false);
+    if (!future.ok) {
+      expect(future.reason).toContain("must not be in the future: 2026-08-21");
     }
 
-    const leanWithoutSide = parse([ratedRow({ observations: [ieObservation({ favored: "none" })] })]);
-    expect(leanWithoutSide.ok).toBe(false);
-    if (!leanWithoutSide.ok) {
-      expect(leanWithoutSide.reason).toContain("must name a favored side");
-    }
+    const today = parse([ratedRow({ observations: [ieObservation({ as_of: "2026-08-20" })] })]);
+    expect(today.ok).toBe(true);
   });
 
   it("rejects an observation url on the wrong outlet's domain", () => {

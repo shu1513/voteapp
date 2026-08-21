@@ -42,19 +42,22 @@ describe("currentRaceRatingWriter", () => {
     expect(query).not.toHaveBeenCalled();
   });
 
-  it("inserts a new rating after finding no existing row", async () => {
-    const query = queryStub([{ rows: [] }, { rowCount: 1 }]);
+  it("upserts a rating in a single guarded statement", async () => {
+    const query = queryStub([{ rowCount: 1 }]);
     const researchedAt = new Date("2026-08-20T12:00:00.000Z");
 
     await expect(
       upsertCurrentRaceRatings({ query } as never, [record()], { researchedAt })
     ).resolves.toEqual({ requested: 1, rowsWritten: 1 });
 
-    expect(query).toHaveBeenCalledTimes(2);
-    expect(query.mock.calls[0]?.[0]).toContain("SELECT evidence_status, as_of::text");
-    expect(query.mock.calls[1]?.[0]).toContain("INSERT INTO public.current_race_ratings");
-    expect(query.mock.calls[1]?.[0]).toContain("ON CONFLICT (election_id)");
-    expect(query.mock.calls[1]?.[1]).toEqual([
+    expect(query).toHaveBeenCalledTimes(1);
+    expect(query.mock.calls[0]?.[0]).toContain("INSERT INTO public.current_race_ratings");
+    expect(query.mock.calls[0]?.[0]).toContain("ON CONFLICT (election_id)");
+    // The refusal happens inside the statement, so it holds under concurrency.
+    expect(query.mock.calls[0]?.[0]).toContain(
+      "OR (EXCLUDED.evidence_status = 'rated' AND EXCLUDED.as_of >= current_race_ratings.as_of)"
+    );
+    expect(query.mock.calls[0]?.[1]).toEqual([
       ELECTION_ID,
       "current_race_rating.v1",
       "competitive",
@@ -66,32 +69,28 @@ describe("currentRaceRatingWriter", () => {
       JSON.stringify({ observations: [] }),
       "https://insideelections.com/ratings/senate",
       "2026-08-20T12:00:00.000Z",
+      false,
     ]);
   });
 
-  it("refuses an upsert whose as_of is older than the stored row", async () => {
-    const query = queryStub([{ rows: [{ evidence_status: "rated", as_of: "2026-08-10" }] }]);
+  it("refuses an upsert the guard filtered out and reports the stored as_of", async () => {
+    const query = queryStub([
+      { rowCount: 0 },
+      { rows: [{ evidence_status: "rated", as_of: "2026-08-10" }] },
+    ]);
 
     await expect(
       upsertCurrentRaceRatings({ query } as never, [record({ as_of: "2026-08-06" })])
-    ).rejects.toThrow(/older than stored as_of 2026-08-10/);
-    expect(query).toHaveBeenCalledTimes(1);
+    ).rejects.toThrow(/older than stored as_of 2026-08-10.*--force/);
+    expect(query).toHaveBeenCalledTimes(2);
+    expect(query.mock.calls[1]?.[0]).toContain("SELECT evidence_status, as_of::text");
   });
 
-  it("allows an upsert with an equal or newer as_of", async () => {
-    for (const asOf of ["2026-08-10", "2026-08-12"]) {
-      const query = queryStub([
-        { rows: [{ evidence_status: "rated", as_of: "2026-08-10" }] },
-        { rowCount: 1 },
-      ]);
-      await expect(
-        upsertCurrentRaceRatings({ query } as never, [record({ as_of: asOf })])
-      ).resolves.toEqual({ requested: 1, rowsWritten: 1 });
-    }
-  });
-
-  it("refuses a none_found write over a stored rating without force", async () => {
-    const query = queryStub([{ rows: [{ evidence_status: "rated", as_of: "2026-08-10" }] }]);
+  it("reports a none_found refusal over a stored rating", async () => {
+    const query = queryStub([
+      { rowCount: 0 },
+      { rows: [{ evidence_status: "rated", as_of: "2026-08-10" }] },
+    ]);
 
     await expect(
       upsertCurrentRaceRatings({ query } as never, [
@@ -102,21 +101,10 @@ describe("currentRaceRatingWriter", () => {
           as_of: null,
         }),
       ])
-    ).rejects.toThrow(/payload is none_found/);
+    ).rejects.toThrow(/payload is none_found.*--force/);
   });
 
-  it("allows a rated write over a stored none_found row", async () => {
-    const query = queryStub([
-      { rows: [{ evidence_status: "none_found", as_of: null }] },
-      { rowCount: 1 },
-    ]);
-    await expect(upsertCurrentRaceRatings({ query } as never, [record()])).resolves.toEqual({
-      requested: 1,
-      rowsWritten: 1,
-    });
-  });
-
-  it("skips the existing-row check with force", async () => {
+  it("passes force through to the guard so any write succeeds", async () => {
     const query = queryStub([{ rowCount: 1 }]);
 
     await expect(
@@ -125,6 +113,16 @@ describe("currentRaceRatingWriter", () => {
       })
     ).resolves.toEqual({ requested: 1, rowsWritten: 1 });
     expect(query).toHaveBeenCalledTimes(1);
-    expect(query.mock.calls[0]?.[0]).toContain("INSERT INTO public.current_race_ratings");
+    expect(query.mock.calls[0]?.[1]?.at(-1)).toBe(true);
+  });
+
+  it("stops at the first refused record", async () => {
+    const second = record({ election_id: "22222222-2222-4222-8222-222222222222" });
+    const query = queryStub([{ rowCount: 0 }, { rows: [] }]);
+
+    await expect(
+      upsertCurrentRaceRatings({ query } as never, [record(), second])
+    ).rejects.toThrow(/upsert refused/);
+    expect(query).toHaveBeenCalledTimes(2);
   });
 });

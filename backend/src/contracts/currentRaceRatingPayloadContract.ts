@@ -1,11 +1,8 @@
 import { findBlockedSourceReason } from "../pipeline/candidates/candidateRecordSourcePolicy.js";
 import {
-  CURRENT_RACE_RATING_FAVORED_SIDES,
-  CURRENT_RACE_RATING_INTENSITIES,
   CURRENT_RACE_RATING_OUTLETS,
   deriveConsensusLabel,
-  type CurrentRaceRatingFavoredSide,
-  type CurrentRaceRatingIntensity,
+  parseOutletRawRating,
   type CurrentRaceRatingObservation,
   type CurrentRaceRatingOutlet,
 } from "../pipeline/competitiveness/currentRaceRatingConsensus.js";
@@ -23,6 +20,7 @@ export type CurrentRaceRatingPayload = {
 
 type ParseOptions = {
   contexts: readonly CurrentRaceRatingContext[];
+  today?: Date;
 };
 
 type ParseResult =
@@ -30,8 +28,6 @@ type ParseResult =
   | { ok: false; reason: string };
 
 const OUTLET_SET = new Set<string>(CURRENT_RACE_RATING_OUTLETS);
-const FAVORED_SIDE_SET = new Set<string>(CURRENT_RACE_RATING_FAVORED_SIDES);
-const INTENSITY_SET = new Set<number>(CURRENT_RACE_RATING_INTENSITIES);
 
 // Each outlet's observations must come from its own site; wikipedia is the
 // cross-check slot on the row-level source_url, never an observation url.
@@ -49,6 +45,10 @@ const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 // These fields are derived by deriveConsensusLabel — a payload that carries
 // them was built by agent arithmetic, which is exactly what we reject.
 const DERIVED_FIELDS = ["competitiveness_label", "confidence", "as_of"] as const;
+
+// Same rule one level down: favored and intensity come from parsing
+// raw_rating in code, so a payload can never contradict its own evidence.
+const DERIVED_OBSERVATION_FIELDS = ["favored", "intensity"] as const;
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
@@ -97,10 +97,20 @@ function validateEvidenceUrl(rawUrl: unknown, outlet?: CurrentRaceRatingOutlet):
 }
 
 function parseObservation(
-  value: unknown
+  value: unknown,
+  today: Date
 ): { ok: true; observation: CurrentRaceRatingObservation } | { ok: false; reason: string } {
   if (!isPlainObject(value)) {
     return { ok: false, reason: "observations entries must be objects" };
+  }
+
+  for (const field of DERIVED_OBSERVATION_FIELDS) {
+    if (field in value) {
+      return {
+        ok: false,
+        reason: `observation ${field} is derived from raw_rating and must not appear in the payload`,
+      };
+    }
   }
 
   const outlet = value.outlet;
@@ -112,29 +122,26 @@ function parseObservation(
   if (!isNonEmptyString(value.raw_rating)) {
     return { ok: false, reason: "observation raw_rating must be non-empty string" };
   }
-
-  const favored = value.favored;
-  if (!isNonEmptyString(favored) || !FAVORED_SIDE_SET.has(favored.trim())) {
-    return { ok: false, reason: `observation favored is invalid: ${String(favored)}` };
-  }
-  const normalizedFavored = favored.trim() as CurrentRaceRatingFavoredSide;
-
-  const intensity = value.intensity;
-  if (typeof intensity !== "number" || !INTENSITY_SET.has(intensity)) {
-    return { ok: false, reason: `observation intensity must be one of 0, 2, 3, 4, 5: ${String(intensity)}` };
-  }
-  const normalizedIntensity = intensity as CurrentRaceRatingIntensity;
-
-  // A toss-up has no favored side and every non-toss-up rating names one.
-  if (normalizedIntensity === 0 && normalizedFavored !== "none") {
-    return { ok: false, reason: "observation with intensity 0 (toss-up) must use favored=none" };
-  }
-  if (normalizedIntensity !== 0 && normalizedFavored === "none") {
-    return { ok: false, reason: "observation with intensity > 0 must name a favored side" };
+  const rawRating = value.raw_rating.trim();
+  const parsedRating = parseOutletRawRating(rawRating);
+  if (!parsedRating) {
+    return {
+      ok: false,
+      reason:
+        `observation raw_rating is not a recognized outlet rating: "${rawRating}"; ` +
+        "record the race as none_found and report the new rating tier instead of guessing",
+    };
   }
 
   if (!isNonEmptyString(value.as_of) || !isValidIsoDate(value.as_of.trim())) {
     return { ok: false, reason: `observation as_of must be a valid YYYY-MM-DD date: ${String(value.as_of)}` };
+  }
+  const asOf = value.as_of.trim();
+  // Feed dates (IE is UTC-5, Sabato is US-based) can never be ahead of the
+  // UTC date, and a future as_of would count as fresh indefinitely.
+  const todayUtc = Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate());
+  if (Date.parse(`${asOf}T00:00:00.000Z`) > todayUtc) {
+    return { ok: false, reason: `observation as_of must not be in the future: ${asOf}` };
   }
 
   const url = validateEvidenceUrl(value.url, normalizedOutlet);
@@ -146,10 +153,10 @@ function parseObservation(
     ok: true,
     observation: {
       outlet: normalizedOutlet,
-      raw_rating: value.raw_rating.trim(),
-      favored: normalizedFavored,
-      intensity: normalizedIntensity,
-      as_of: value.as_of.trim(),
+      raw_rating: rawRating,
+      favored: parsedRating.favored,
+      intensity: parsedRating.intensity,
+      as_of: asOf,
       url,
     },
   };
@@ -157,7 +164,8 @@ function parseObservation(
 
 function parseRow(
   value: unknown,
-  context: CurrentRaceRatingContext
+  context: CurrentRaceRatingContext,
+  today: Date
 ): { ok: true; row: CurrentRaceRatingRecord } | { ok: false; reason: string } {
   if (!isPlainObject(value)) {
     return { ok: false, reason: "ratings entries must be objects" };
@@ -232,7 +240,7 @@ function parseRow(
   const observations: CurrentRaceRatingObservation[] = [];
   const seenOutlets = new Set<CurrentRaceRatingOutlet>();
   for (const rawObservation of value.observations) {
-    const parsed = parseObservation(rawObservation);
+    const parsed = parseObservation(rawObservation, today);
     if (!parsed.ok) {
       return parsed;
     }
@@ -282,6 +290,7 @@ export function parseCurrentRaceRatingPayload(payload: unknown, options: ParseOp
     return { ok: false, reason: "payload.ratings must be array" };
   }
 
+  const today = options.today ?? new Date();
   const contextsById = new Map(options.contexts.map((context) => [context.electionId, context]));
   const seenElectionIds = new Set<string>();
   const rows: CurrentRaceRatingRecord[] = [];
@@ -301,7 +310,7 @@ export function parseCurrentRaceRatingPayload(payload: unknown, options: ParseOp
     if (seenElectionIds.has(context.electionId)) {
       return { ok: false, reason: `payload.ratings contains duplicate election_id: ${context.electionId}` };
     }
-    const parsed = parseRow(rawRow, context);
+    const parsed = parseRow(rawRow, context, today);
     if (!parsed.ok) {
       return parsed;
     }

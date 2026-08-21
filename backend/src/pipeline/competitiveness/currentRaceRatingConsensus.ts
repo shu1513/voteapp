@@ -27,6 +27,53 @@ export type CurrentRaceRatingFavoredSide = (typeof CURRENT_RACE_RATING_FAVORED_S
 export const CURRENT_RACE_RATING_INTENSITIES = [0, 2, 3, 4, 5] as const;
 export type CurrentRaceRatingIntensity = (typeof CURRENT_RACE_RATING_INTENSITIES)[number];
 
+// The full outlet vocabulary. Both outlets use "<verb> <party>" plus a
+// toss-up label; anything else is a new rating tier we have not vetted and
+// must be rejected, never guessed at.
+const RATING_VERB_INTENSITY: Record<string, CurrentRaceRatingIntensity> = {
+  tilt: 2,
+  lean: 3,
+  leans: 3,
+  likely: 4,
+  solid: 5,
+  safe: 5,
+};
+
+const RATING_PARTY_SIDE: Record<string, CurrentRaceRatingFavoredSide> = {
+  democrat: "D",
+  democratic: "D",
+  republican: "R",
+  independent: "I",
+};
+
+/**
+ * Parses an outlet's verbatim rating string into the favored side and
+ * distance-ladder intensity. The payload never carries either field — this
+ * parser is the only mapping, so a payload cannot contradict its own
+ * evidence. Returns null for unrecognized strings.
+ */
+export function parseOutletRawRating(
+  rawRating: string
+): { favored: CurrentRaceRatingFavoredSide; intensity: CurrentRaceRatingIntensity } | null {
+  const words = rawRating
+    .toLowerCase()
+    .replace(/[^a-z]+/g, " ")
+    .trim()
+    .split(" ");
+  if (words.join("") === "tossup") {
+    return { favored: "none", intensity: 0 };
+  }
+  if (words.length !== 2) {
+    return null;
+  }
+  const intensity = RATING_VERB_INTENSITY[words[0]!];
+  const favored = RATING_PARTY_SIDE[words[1]!];
+  if (intensity === undefined || favored === undefined) {
+    return null;
+  }
+  return { favored, intensity };
+}
+
 export type CurrentRaceRatingObservation = {
   outlet: CurrentRaceRatingOutlet;
   raw_rating: string;

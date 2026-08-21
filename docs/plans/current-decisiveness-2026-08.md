@@ -91,9 +91,13 @@ major-city targets). Consequences:
    (`deriveConsensusLabel` in `backend/src/pipeline/competitiveness/`)
    derives label + confidence. Reproducible, unit-tested, no drift.
    - Payload per outlet: `outlet` (`inside_elections | sabato`), `raw_rating`
-     (verbatim string), `favored` (`D | R | I | none`), `intensity`
-     (`toss_up=0 | tilt=2 | lean=3 | likely=4 | solid=5`, i.e. the distance
-     ladder directly), `as_of`, `url`.
+     (verbatim string), `as_of` (feed date, never in the future), `url`.
+     `favored` (`D | R | I | none`) and `intensity` (`toss_up=0 | tilt=2 |
+     lean=3 | likely=4 | solid=5`, the distance ladder) are **parsed from
+     `raw_rating` in code** (`parseOutletRawRating`); a payload carrying
+     either field is rejected, and an unrecognized rating string is rejected
+     rather than guessed at — so a payload can never contradict its own
+     evidence.
    - Function: mean of intensity → bins `<1.0` toss_up, `<2.5`
      very_competitive, `<3.5` competitive, `<4.5` somewhat_competitive,
      `≥4.5` safe.
@@ -145,8 +149,11 @@ major-city targets). Consequences:
    `evidence_status='none_found'`) so the due list skips a race for 30 days.
    No separate ledger.
 8. **One row per election, no history.** Upsert; the writer **refuses an
-   upsert whose `as_of` is older than the stored row's** unless `--force`.
-   Evidence jsonb keeps raw strings so labels can be re-derived.
+   upsert whose `as_of` is older than the stored row's** (and a `none_found`
+   overwrite of a stored rating) unless `--force`. The refusal lives in the
+   upsert's `DO UPDATE ... WHERE` guard, so it is atomic and holds under
+   concurrent writers. Evidence jsonb keeps raw strings so labels can be
+   re-derived.
 9. **No automation in v1.** No scheduler, no IE polling job (403s
    server-side anyway). Future work only, and it would need stable
    permissioned access first.

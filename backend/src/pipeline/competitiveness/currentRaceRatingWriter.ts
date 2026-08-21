@@ -32,25 +32,31 @@ type ExistingRatingRow = {
   as_of: string | null;
 };
 
-// One row per election, no history. A stale payload must not clobber a newer
-// stored rating, and a none_found retry must not erase a stored rating —
-// both need --force.
-function assertUpsertAllowed(record: CurrentRaceRatingRecord, existing: ExistingRatingRow): void {
-  if (existing.evidence_status !== "rated") {
-    return;
-  }
+// Refused upserts read the stored row afterwards only to build a useful
+// error message; the refusal itself already happened atomically in SQL.
+async function refusalError(
+  db: Queryable,
+  record: CurrentRaceRatingRecord
+): Promise<Error> {
+  const existing = await db.query<ExistingRatingRow>(
+    `
+      SELECT evidence_status, as_of::text AS as_of
+      FROM public.current_race_ratings
+      WHERE election_id = $1
+    `,
+    [record.election_id]
+  );
+  const storedAsOf = existing.rows[0]?.as_of ?? "unknown";
   if (record.evidence_status === "none_found") {
-    throw new Error(
+    return new Error(
       `current race rating upsert refused for election ${record.election_id}: ` +
-        `stored row is rated (as_of ${existing.as_of}) but payload is none_found; use --force to overwrite`
+        `stored row is rated (as_of ${storedAsOf}) but payload is none_found; use --force to overwrite`
     );
   }
-  if (record.as_of !== null && existing.as_of !== null && record.as_of < existing.as_of) {
-    throw new Error(
-      `current race rating upsert refused for election ${record.election_id}: ` +
-        `payload as_of ${record.as_of} is older than stored as_of ${existing.as_of}; use --force to overwrite`
-    );
-  }
+  return new Error(
+    `current race rating upsert refused for election ${record.election_id}: ` +
+      `payload as_of ${record.as_of} is older than stored as_of ${storedAsOf}; use --force to overwrite`
+  );
 }
 
 async function upsertCurrentRaceRating(
@@ -59,21 +65,11 @@ async function upsertCurrentRaceRating(
   researchedAt: Date,
   force: boolean
 ): Promise<number> {
-  if (!force) {
-    const existing = await db.query<ExistingRatingRow>(
-      `
-        SELECT evidence_status, as_of::text AS as_of
-        FROM public.current_race_ratings
-        WHERE election_id = $1
-      `,
-      [record.election_id]
-    );
-    const existingRow = existing.rows[0];
-    if (existingRow) {
-      assertUpsertAllowed(record, existingRow);
-    }
-  }
-
+  // One row per election, no history. The DO UPDATE WHERE guard makes the
+  // refusal atomic — a stale payload cannot clobber a newer stored rating
+  // and a none_found retry cannot erase a stored rating, even under
+  // concurrent writers; both need --force. A guarded-out update reports
+  // rowCount 0.
   const result = await db.query(
     `
       INSERT INTO public.current_race_ratings (
@@ -103,6 +99,9 @@ async function upsertCurrentRaceRating(
         source_url = EXCLUDED.source_url,
         researched_at = EXCLUDED.researched_at,
         updated_at = now()
+      WHERE $12::boolean
+        OR current_race_ratings.evidence_status = 'none_found'
+        OR (EXCLUDED.evidence_status = 'rated' AND EXCLUDED.as_of >= current_race_ratings.as_of)
     `,
     [
       record.election_id,
@@ -116,8 +115,12 @@ async function upsertCurrentRaceRating(
       JSON.stringify(record.evidence),
       record.source_url,
       researchedAt.toISOString(),
+      force,
     ]
   );
+  if (result.rowCount === 0) {
+    throw await refusalError(db, record);
+  }
   if (result.rowCount !== 1) {
     throw new Error(
       `current race rating upsert expected to write exactly one row, wrote ${result.rowCount ?? 0}: ` +

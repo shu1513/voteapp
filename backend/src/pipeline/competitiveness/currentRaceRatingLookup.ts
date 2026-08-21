@@ -69,7 +69,10 @@ export function currentRaceRatingOverridesHistory(
   if (daysOld(record.election_date, today) > 0) {
     return false;
   }
-  return daysOld(record.as_of, today) <= CURRENT_RACE_RATING_FRESH_DAYS;
+  // A negative age means a future as_of — the contract rejects those, but a
+  // forced or hand-written row must not count as fresh forever.
+  const age = daysOld(record.as_of, today);
+  return age >= 0 && age <= CURRENT_RACE_RATING_FRESH_DAYS;
 }
 
 /**
@@ -83,9 +86,14 @@ export function currentRaceRatingBlocksResearch(
   today: Date = new Date()
 ): boolean {
   if (record.evidence_status === "rated") {
-    return record.as_of !== null && daysOld(record.as_of, today) <= CURRENT_RACE_RATING_FRESH_DAYS;
+    if (record.as_of === null) {
+      return false;
+    }
+    const age = daysOld(record.as_of, today);
+    return age >= 0 && age <= CURRENT_RACE_RATING_FRESH_DAYS;
   }
-  return daysOld(record.researched_on, today) <= CURRENT_RACE_RATING_NONE_FOUND_RETRY_DAYS;
+  const age = daysOld(record.researched_on, today);
+  return age >= 0 && age <= CURRENT_RACE_RATING_NONE_FOUND_RETRY_DAYS;
 }
 
 export async function loadCurrentRaceRatings(

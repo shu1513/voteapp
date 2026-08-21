@@ -43,6 +43,11 @@ describe("currentRaceRatingOverridesHistory", () => {
     expect(currentRaceRatingOverridesHistory(ratingRecord({ as_of: "2026-06-20" }), TODAY)).toBe(false);
   });
 
+  it("treats a future as_of as not fresh instead of eternally fresh", () => {
+    expect(currentRaceRatingOverridesHistory(ratingRecord({ as_of: "2099-01-01" }), TODAY)).toBe(false);
+    expect(currentRaceRatingBlocksResearch(ratingRecord({ as_of: "2099-01-01" }), TODAY)).toBe(false);
+  });
+
   it("never overrides with low confidence or none_found", () => {
     expect(currentRaceRatingOverridesHistory(ratingRecord({ confidence: "low" }), TODAY)).toBe(false);
     expect(
