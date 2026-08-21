@@ -1,6 +1,8 @@
-import type { ElectionChoice, ElectionPreviewCandidate, ElectionSummary } from "@voteapp/api-client";
+import type {
+  AutoPickElectionResult, ElectionChoice, ElectionPreviewCandidate, ElectionSummary } from "@voteapp/api-client";
 import type { ReactNode } from "react";
 import { formatElectionDate } from "@voteapp/api-client";
+import { reasonLabel } from "./AutoPickFillControl";
 
 // Ballot view of My Picks / My Ballot Draft: a paper-ballot-shaped render of
 // the same races the date cards list — contest boxes in state-baseline ballot
@@ -88,9 +90,26 @@ function CandidateRow({ candidate, picked }: { candidate: ElectionPreviewCandida
   );
 }
 
-function ContestBox({ election, choice }: { election: ElectionSummary; choice: ElectionChoice | undefined }) {
+function ContestBox({
+  election,
+  choice,
+  autoResult,
+}: {
+  election: ElectionSummary;
+  choice: ElectionChoice | undefined;
+  autoResult?: AutoPickElectionResult;
+}) {
   const preview = election.preview;
   const pickedIds = new Set((choice?.picks ?? []).map((pick) => pick.candidate_id));
+  // Same feedback the list view puts on its race rows: after a fill run the
+  // engine's one-line reason rides on the contest itself. App voice, screen
+  // only — the printed facsimile stays clean (print:hidden).
+  const autoNote =
+    autoResult?.outcome === "no_pick"
+      ? `Auto pick left this open: ${reasonLabel(autoResult.reason)}.`
+      : autoResult?.outcome === "picked" && autoResult.reason === "tie"
+        ? "Auto pick: remaining seats tied — your call."
+        : null;
   const isMeasure = election.race_type === "ballot_measure";
   const isRetention = !isMeasure && isRetentionTitle(election.official_ballot_title);
   // Picking the judge in a retention race means voting to keep them — the app
@@ -112,6 +131,9 @@ function ContestBox({ election, choice }: { election: ElectionSummary; choice: E
         <p className="mt-0.5 text-xs font-semibold text-ink">
           {isMeasure || isRetention ? "Vote Yes or No" : voteInstruction(preview?.seats_to_fill ?? null)}
         </p>
+        {autoNote !== null ? (
+          <p className="mt-0.5 text-xs italic text-ink-soft print:hidden">{autoNote}</p>
+        ) : null}
       </header>
       {isMeasure ? (
         <>
@@ -153,11 +175,13 @@ function BallotSheet({
   elections,
   choiceByElectionId,
   extras,
+  autoResultFor,
 }: {
   date: string;
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
   extras?: ReactNode;
+  autoResultFor?: (date: string, electionId: string) => AutoPickElectionResult | undefined;
 }) {
   return (
     <section className="rounded-sm border border-line bg-white p-4 shadow-sm">
@@ -168,7 +192,12 @@ function BallotSheet({
       {extras}
       <div className="mt-3 space-y-3">
         {elections.map((election) => (
-          <ContestBox key={election.id} election={election} choice={choiceByElectionId?.get(election.id)} />
+          <ContestBox
+            key={election.id}
+            election={election}
+            choice={choiceByElectionId?.get(election.id)}
+            autoResult={autoResultFor?.(date, election.id)}
+          />
         ))}
       </div>
       <footer className="mt-3 border-t border-line pt-2 text-xs text-ink-soft">
@@ -194,6 +223,7 @@ export function BallotPreviewSheets({
   choiceByElectionId,
   today,
   renderSheetExtras,
+  autoResultFor,
 }: {
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
@@ -201,6 +231,9 @@ export function BallotPreviewSheets({
   /** Optional per-sheet slot under the header (My Picks puts its per-date
    * auto-pick controls here; the guest draft page passes nothing). */
   renderSheetExtras?: (date: string, elections: ElectionSummary[]) => ReactNode;
+  /** Fill-run feedback per contest, owned by the page so it survives a
+   * list/ballot view toggle. Absent on the guest draft page. */
+  autoResultFor?: (date: string, electionId: string) => AutoPickElectionResult | undefined;
 }) {
   const byDate = new Map<string, ElectionSummary[]>();
   for (const election of elections) {
@@ -226,6 +259,7 @@ export function BallotPreviewSheets({
           elections={byDate.get(date) ?? []}
           choiceByElectionId={choiceByElectionId}
           extras={renderSheetExtras?.(date, byDate.get(date) ?? [])}
+          autoResultFor={autoResultFor}
         />
       ))}
       <p className="print:hidden">

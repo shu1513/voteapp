@@ -254,6 +254,8 @@ export function PickDateCard({
   share = true,
   navState = PICKS_NAV_STATE,
   autoPickChoices,
+  autoResults,
+  onAutoResults,
 }: {
   date: string;
   elections: ElectionSummary[];
@@ -263,10 +265,12 @@ export function PickDateCard({
   /** All stored choices; presence turns on this card's auto-pick controls
    * (My Picks only — the guest draft page reuses the card without them). */
   autoPickChoices?: ElectionChoice[];
+  /** This date's last fill run, keyed by election id — feeds the per-row
+   * "auto pick: …" annotations below. Lives in PicksPage (not here) so the
+   * ballot view shares it and a view toggle doesn't discard it. */
+  autoResults?: Map<string, AutoPickElectionResult> | null;
+  onAutoResults?: (byElectionId: Map<string, AutoPickElectionResult> | null) => void;
 }) {
-  // This date's last fill run, keyed by election id — feeds the per-row
-  // "auto pick: …" annotations below instead of a separate result list.
-  const [autoResults, setAutoResults] = useState<Map<string, AutoPickElectionResult> | null>(null);
   const pickedCount = elections.filter((election) =>
     hasRenderablePick(choiceByElectionId?.get(election.id))
   ).length;
@@ -292,7 +296,7 @@ export function PickDateCard({
           elections={elections}
           choices={autoPickChoices}
           choiceByElectionId={choiceByElectionId}
-          onResults={setAutoResults}
+          onResults={onAutoResults}
         />
       ) : null}
       <ul className="mt-3 space-y-2">
@@ -449,6 +453,26 @@ export function PicksPage() {
     retry: false,
   });
 
+  // Fill-run results per election date, shared by both views: the list
+  // cards annotate their race rows from it and the ballot sheets annotate
+  // their contest boxes, so running a fill in one view and toggling to the
+  // other keeps the "why was this left open" feedback (see PR #796 review).
+  // Above the early returns — hooks must run on every render.
+  const [autoResultsByDate, setAutoResultsByDate] = useState<
+    Map<string, Map<string, AutoPickElectionResult>>
+  >(() => new Map());
+  const handleAutoResults = (date: string) => (byElectionId: Map<string, AutoPickElectionResult> | null) => {
+    setAutoResultsByDate((previous) => {
+      const next = new Map(previous);
+      if (byElectionId === null) {
+        next.delete(date);
+      } else {
+        next.set(date, byElectionId);
+      }
+      return next;
+    });
+  };
+
   if (isLoading || me === undefined) {
     return <LoadingNotice text="Loading…" />;
   }
@@ -566,8 +590,10 @@ export function PicksPage() {
                     elections={dateElections}
                     choices={choices ?? []}
                     choiceByElectionId={choiceByElectionId}
+                    onResults={handleAutoResults(date)}
                   />
                 )}
+                autoResultFor={(date, electionId) => autoResultsByDate.get(date)?.get(electionId)}
               />
             ) : (
               <div className="mt-4 space-y-4">
@@ -578,6 +604,8 @@ export function PicksPage() {
                     elections={byDate.get(date) ?? []}
                     choiceByElectionId={choiceByElectionId}
                     autoPickChoices={choices ?? []}
+                    autoResults={autoResultsByDate.get(date) ?? null}
+                    onAutoResults={handleAutoResults(date)}
                   />
                 ))}
               </div>
