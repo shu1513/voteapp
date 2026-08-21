@@ -91,6 +91,21 @@ export type HistoricalCompetitiveness = {
   stale_after_redistricting: boolean;
 };
 
+/**
+ * Current-cycle analyst rating. Non-null ONLY when it drove the vote-power
+ * decisiveness grade, so render its chip INSTEAD of the historic one when
+ * present. Optional field: a not-yet-redeployed backend omits it — treat
+ * undefined as null (historic chip).
+ */
+export type CurrentCompetitiveness = {
+  display_label: string;
+  display_description: string;
+  competitiveness_label: string;
+  method: string;
+  confidence: string;
+  as_of: string;
+};
+
 export type BallotDistrict = {
   id: string;
   district_type: string;
@@ -141,6 +156,8 @@ export type ElectionSummary = {
   office: OfficeSummary | null;
   research_areas: ResearchAreaSummary[];
   historical_competitiveness: HistoricalCompetitiveness | null;
+  /** See CurrentCompetitiveness: replaces the historic chip when present. */
+  current_competitiveness?: CurrentCompetitiveness | null;
   vote_power: VotePower;
   /** Present on ordered results; non-empty when the viewer follows a candidate in this election. */
   followed_candidates?: { candidate_id: string; display_name: string }[];
@@ -423,6 +440,8 @@ export type ElectionDetail = {
   office: OfficeSummary | null;
   research_areas: ResearchAreaSummary[];
   historical_competitiveness: HistoricalCompetitiveness | null;
+  /** See CurrentCompetitiveness: replaces the historic chip when present. */
+  current_competitiveness?: CurrentCompetitiveness | null;
   vote_power: VotePower;
 };
 

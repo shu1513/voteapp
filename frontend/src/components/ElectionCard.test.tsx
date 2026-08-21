@@ -768,4 +768,36 @@ describe("ElectionCard result chip", () => {
     renderCard(electionSummary({ id: "e-2" }));
     expect(screen.queryByText("— may not cover your address")).not.toBeInTheDocument();
   });
+
+  it("shows the current-cycle rating chip instead of the historic one when both arrive", () => {
+    const historical = {
+      display_label: "Historically safe",
+      display_description: "Based on the 2024 Governor result.",
+      source: "MIT_2024",
+      source_url: null,
+      election_year: 2024,
+      margin_percent: 22.4,
+      stale_after_redistricting: false,
+    };
+    renderCard(
+      electionSummary({
+        historical_competitiveness: historical,
+        current_competitiveness: {
+          display_label: "Currently a toss-up",
+          display_description: "Based on current race ratings from Inside Elections as of August 6, 2026.",
+          competitiveness_label: "toss_up",
+          method: "outlet_consensus",
+          confidence: "medium",
+          as_of: "2026-08-06",
+        },
+      })
+    );
+    // Both chips at once would contradict on a race that flipped.
+    expect(screen.getByText("Currently a toss-up")).toBeInTheDocument();
+    expect(screen.queryByText("Historically safe")).not.toBeInTheDocument();
+
+    // Fallback race (and any backend that predates the field): historic chip.
+    renderCard(electionSummary({ id: "e-2", historical_competitiveness: historical }));
+    expect(screen.getByText("Historically safe")).toBeInTheDocument();
+  });
 });

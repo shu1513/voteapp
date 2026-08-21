@@ -9995,6 +9995,11 @@ describe("current race rating read path", () => {
     // ...but decisiveness graded on the current toss_up (historic competitive
     // would grade "medium").
     expect(election.vote_power.decisiveness_level).toBe("high");
+    // 100 × (0.45 × 0.725 + 0.55 × 1.0) = 87.625 → 88; the historic
+    // competitive label alone would score 68. Ballot ordering sorts on this
+    // score (ballotElectionOrdering), so the upgrade reorders with no
+    // further code.
+    expect(election.vote_power.score).toBe(88);
   });
 
   it("falls back to historic margins when the stored row is none_found", async () => {
