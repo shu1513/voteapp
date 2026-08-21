@@ -5,234 +5,314 @@ import {
   normalizeNewHampshireCandidateNameKeys,
   resolveNewHampshireCandidateFiler,
 } from "../../../src/pipeline/newHampshireFinance/newHampshireCandidateFilerResolver.js";
-import type { NewHampshireReceiptCsvRow } from "../../../src/pipeline/newHampshireFinance/newHampshireCfsCsv.js";
+import type { NewHampshireFilingEntityRow } from "../../../src/pipeline/newHampshireFinance/newHampshireCfsClient.js";
 
-function receipt(overrides: Partial<NewHampshireReceiptCsvRow> = {}): NewHampshireReceiptCsvRow {
+// Sanitized from the live 2026 CFS candidate-committee search shape. The
+// official person fields identify Cindy Rosenwald; filer/committee text does not.
+function filingEntity(
+  overrides: Partial<NewHampshireFilingEntityRow> = {}
+): NewHampshireFilingEntityRow {
   return {
-    "Filing Entity ID": "50450",
-    "Candidate Name": "Jane Doe",
-    "Committee Name": "Jane Doe Committee",
-    "Committee Subtype": "Candidate Committee",
-    "Transaction Type": "Receipt",
-    "Transaction Sub Type": "Monetary Contribution",
-    "Election Period": "General",
-    "Election year": "2026",
-    "Date of Receipt": "06/01/2026",
-    "Amount of receipt": "$100.00",
-    "Contributor Type": "Individual / Candidate",
-    "Contributor Name": "Sample Donor",
-    "Contributor Address Line 1": "REDACTED",
-    "Contributor Address Line 2": "",
-    "Contributor City": "Concord",
-    "Contributor State": "NH",
-    "Contributor Zip Code": "00000",
-    "Contributor occupation": "",
-    "Contributor Employer": "Sample Employer",
-    "Contributor Principle place of Business": "",
-    Description: "",
-    "Timed Report": "",
+    registrationGuid: "bc20d4a3-6458-47f9-ad86-075f1231ca36",
+    filingEntityId: 207787,
+    filerName: "Friends of Cindy Rosenwald",
+    candidateName: "Cindy Rosenwald",
+    firstName: "Cindy",
+    lastName: "Rosenwald",
+    committeeName: "Friends of Cindy Rosenwald",
+    filerTypeCode: "PAC",
+    filerSubTypeCode: "PACCC",
+    filerSubTypeName: "Candidate Committee",
+    officeName: "State Senate",
+    county: null,
+    district: "13",
+    electionCycleId: 110,
+    electionYear: 2026,
+    electionCycle: "2026 Election Cycle",
+    status: "Active",
     ...overrides,
   };
 }
 
+const senateInput = {
+  candidateName: "Cindy Rosenwald",
+  officeScope: "state_upper",
+  officeName: "State Senator",
+  district: "District 13",
+  electionCycleId: 110,
+} as const;
+
 describe("newHampshireCandidateFilerResolver", () => {
   it("normalizes direct and comma-form names without fuzzy expansion", () => {
-    expect([...normalizeNewHampshireCandidateNameKeys("DOE, Jane Q.")]).toEqual([
-      "DOE JANE Q",
-      "JANE Q DOE",
+    expect([...normalizeNewHampshireCandidateNameKeys("ROSENWALD, Cindy Q.")]).toEqual([
+      "ROSENWALD CINDY Q",
+      "CINDY Q ROSENWALD",
     ]);
-    expect(normalizeNewHampshireCandidateNameForStorage("DOE, Jane Q.")).toBe("JANE Q DOE");
-    expect(normalizeNewHampshireCandidateNameForStorage("Jane Q. Doe")).toBe("JANE Q DOE");
+    expect(normalizeNewHampshireCandidateNameForStorage("ROSENWALD, Cindy Q.")).toBe(
+      "CINDY Q ROSENWALD"
+    );
   });
 
-  it("matches one filer, groups rows by filing entity ID, and returns trusted aliases", () => {
-    const sourceUrl = "https://cfsapi.sos.nh.gov/api/ExportData/GetExportPublicDownloadData";
+  it("resolves a live-shaped candidate committee from official person, office, and district fields", () => {
+    const sourceUrl =
+      "https://cfsapi.sos.nh.gov/api/PublicFilerDetails/GetFilingEntityDetails";
     expect(
       resolveNewHampshireCandidateFiler({
-        candidateName: "Jane Doe",
-        electionYear: 2026,
+        ...senateInput,
         sourceUrl,
-        receiptRows: [
-          receipt(),
-          receipt({
-            "Candidate Name": "Doe, Jane Q.",
-            "Committee Subtype": "Candidate",
-            "Date of Receipt": "06/02/2026",
-          }),
-          receipt({ "Filing Entity ID": "999", "Candidate Name": "Other Person" }),
-          receipt({ "Filing Entity ID": "888", "Candidate Name": "Other Person" }),
-        ],
+        filingEntityRows: [filingEntity()],
       })
     ).toEqual({
       status: "matched",
-      filingEntityId: 50450,
-      filerName: "Jane Doe Committee",
-      candidateAliases: ["Doe, Jane Q.", "Jane Doe"],
+      filingEntityId: 207787,
+      filerName: "Friends of Cindy Rosenwald",
+      candidateAliases: ["Cindy Rosenwald"],
+      officeName: "State Senate",
+      district: "13",
       confidence: "exact",
-      source: "cfs_bulk",
+      source: "cfs_registration",
       sourceUrl,
-      matchedReceiptRowCount: 2,
+      matchedRegistrationRowCount: 1,
     });
   });
 
-  it("uses exact Election year rather than filing or transaction year", () => {
-    const result = resolveNewHampshireCandidateFiler({
-      candidateName: "Jane Doe",
-      electionYear: 2026,
-      receiptRows: [
-        receipt({
-          "Filing Entity ID": "111",
-          "Election year": "2024",
-          "Date of Receipt": "06/01/2026",
-        }),
-        receipt({
-          "Filing Entity ID": "222",
-          "Election year": "2026 General",
-          "Date of Receipt": "06/01/2026",
-        }),
-        receipt({
-          "Filing Entity ID": "333",
-          "Election year": "2026",
-          "Date of Receipt": "11/01/2025",
-        }),
-      ],
-    });
-
-    expect(result).toMatchObject({ status: "matched", filingEntityId: 333 });
-  });
-
-  it("allows missing middle evidence but rejects contradictory middles and generations", () => {
-    const resolve = (candidateName: string, rowCandidateName: string) =>
-      resolveNewHampshireCandidateFiler({
-        candidateName,
-        electionYear: 2026,
-        receiptRows: [receipt({ "Candidate Name": rowCandidateName })],
-      });
-
-    expect(resolve("Jane Doe", "Doe, Jane Q.")).toMatchObject({ status: "matched" });
-    expect(resolve("Jane Q. Doe", "Doe, Jane Quinn")).toMatchObject({ status: "matched" });
-    expect(resolve("John Doe Jr.", "Doe, John")).toMatchObject({
-      status: "matched",
-      candidateAliases: ["Doe, John", "John Doe Jr."],
-    });
-    expect(resolve("Jane A. Doe", "Doe, Jane B.")).toMatchObject({
-      status: "unmatched",
-      reason: "no_candidate_filer_match",
-    });
-    expect(resolve("John Doe Jr.", "Doe, John III")).toMatchObject({
-      status: "unmatched",
-      reason: "no_candidate_filer_match",
-    });
-  });
-
-  it("does not fuzzy-match typos", () => {
+  it("requires the exact official cycle, office, and district", () => {
     expect(
       resolveNewHampshireCandidateFiler({
-        candidateName: "Jane Doee",
-        electionYear: 2026,
-        receiptRows: [receipt()],
-      })
-    ).toEqual({
-      status: "unmatched",
-      reason: "no_candidate_filer_match",
-      candidateNameNormalized: "JANE DOEE",
-    });
-  });
-
-  it("returns every filer match as ambiguous instead of guessing", () => {
-    expect(
-      resolveNewHampshireCandidateFiler({
-        candidateName: "Jane Doe",
-        electionYear: 2026,
-        receiptRows: [
-          receipt({ "Filing Entity ID": "100", "Committee Name": "Committee One" }),
-          receipt({ "Filing Entity ID": "200", "Committee Name": "Committee Two" }),
+        ...senateInput,
+        filingEntityRows: [
+          filingEntity({ filingEntityId: 1, electionCycleId: 111 }),
+          filingEntity({ filingEntityId: 2, officeName: "State Representative" }),
+          filingEntity({ filingEntityId: 3, district: "12" }),
+          filingEntity({ filingEntityId: 4 }),
         ],
       })
-    ).toEqual({
-      status: "ambiguous",
-      reason: "multiple_matching_filers",
-      candidateNameNormalized: "JANE DOE",
-      matches: [
-        {
-          filingEntityId: 100,
-          filerName: "Committee One",
-          candidateAliases: ["Jane Doe"],
-          confidence: "exact",
-          source: "cfs_bulk",
-          sourceUrl: null,
-          matchedReceiptRowCount: 1,
-        },
-        {
-          filingEntityId: 200,
-          filerName: "Committee Two",
-          candidateAliases: ["Jane Doe"],
-          confidence: "exact",
-          source: "cfs_bulk",
-          sourceUrl: null,
-          matchedReceiptRowCount: 1,
-        },
-      ],
-    });
+    ).toMatchObject({ status: "matched", filingEntityId: 4 });
   });
 
-  it("selects the newest available filer name independent of row order", () => {
-    const rows = [
-      receipt({ "Committee Name": "Old Committee Name", "Date of Receipt": "01/01/2026" }),
-      receipt({ "Committee Name": "Current Committee Name", "Date of Receipt": "07/01/2026" }),
-    ];
-    const resolve = (receiptRows: readonly NewHampshireReceiptCsvRow[]) =>
-      resolveNewHampshireCandidateFiler({
-        candidateName: "Jane Doe",
-        electionYear: 2026,
-        receiptRows,
-      });
-
-    expect(resolve(rows)).toMatchObject({ status: "matched", filerName: "Current Committee Name" });
-    expect(resolve([...rows].reverse())).toEqual(resolve(rows));
-  });
-
-  it("uses official candidate name when a direct candidate filer has no committee name", () => {
+  it("rejects candidate committees whose official registration omits the required district", () => {
     expect(
       resolveNewHampshireCandidateFiler({
-        candidateName: "Jane Doe",
-        electionYear: 2026,
-        receiptRows: [receipt({ "Committee Name": "", "Committee Subtype": "Candidate" })],
-      })
-    ).toMatchObject({
-      status: "matched",
-      filingEntityId: 50450,
-      filerName: "Jane Doe",
-    });
-  });
-
-  it("rejects missing candidate names, malformed filer IDs, and invalid years", () => {
-    expect(
-      resolveNewHampshireCandidateFiler({
-        candidateName: "   ",
-        electionYear: 2026,
-        receiptRows: [receipt()],
-      })
-    ).toEqual({
-      status: "unmatched",
-      reason: "missing_candidate_name",
-      candidateNameNormalized: "",
-    });
-    expect(
-      resolveNewHampshireCandidateFiler({
-        candidateName: "Jane Doe",
-        electionYear: 2026,
-        receiptRows: [
-          receipt({ "Filing Entity ID": "not-an-id" }),
+        candidateName: "Daryl Abbas",
+        officeScope: "state_upper",
+        officeName: "State Senator",
+        district: "22",
+        electionCycleId: 110,
+        filingEntityRows: [
+          filingEntity({
+            filingEntityId: 208786,
+            filerName: "Abbas for New Hampshire",
+            committeeName: "Abbas for New Hampshire",
+            candidateName: "Daryl Abbas",
+            firstName: "Daryl",
+            lastName: "Abbas",
+            district: null,
+          }),
         ],
       })
     ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+  });
+
+  it("never derives candidate identity from committee or filer display text", () => {
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...senateInput,
+        filingEntityRows: [
+          filingEntity({
+            filerName: "Friends of Cindy Rosenwald",
+            committeeName: "Friends of Cindy Rosenwald",
+            candidateName: null,
+            firstName: null,
+            lastName: null,
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "no_candidate_filer_match" });
+  });
+
+  it("allows missing middle evidence but rejects conflicting middles and generations", () => {
+    const resolve = (candidateName: string, officialName: string) =>
+      resolveNewHampshireCandidateFiler({
+        ...senateInput,
+        candidateName,
+        filingEntityRows: [
+          filingEntity({
+            candidateName: officialName,
+          }),
+        ],
+      });
+
+    expect(resolve("Cindy Rosenwald", "Rosenwald, Cindy Q.")).toMatchObject({ status: "matched" });
+    expect(resolve("Cindy Q. Rosenwald", "Rosenwald, Cindy Quinn")).toMatchObject({
+      status: "matched",
+    });
+    expect(resolve("Cindy A. Rosenwald", "Rosenwald, Cindy B.")).toMatchObject({
+      status: "unmatched",
+    });
+    expect(resolve("John Doe Jr.", "Doe, John III")).toMatchObject({ status: "unmatched" });
+  });
+
+  it("groups duplicate official rows by filing entity ID and retains trusted person aliases", () => {
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...senateInput,
+        candidateName: "Cindy Q. Rosenwald",
+        filingEntityRows: [
+          filingEntity({ candidateName: "Cindy Rosenwald" }),
+          filingEntity({ candidateName: "Rosenwald, Cindy Q." }),
+        ],
+      })
+    ).toMatchObject({
+      status: "matched",
+      filingEntityId: 207787,
+      candidateAliases: ["Cindy Q. Rosenwald", "Cindy Rosenwald"],
+      matchedRegistrationRowCount: 2,
+    });
+  });
+
+  it("returns multiple exact official registrations as ambiguous instead of guessing", () => {
+    const result = resolveNewHampshireCandidateFiler({
+      ...senateInput,
+      filingEntityRows: [
+        filingEntity({ filingEntityId: 100, filerName: "Committee One" }),
+        filingEntity({ filingEntityId: 200, filerName: "Committee Two" }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      status: "ambiguous",
+      reason: "multiple_matching_filers",
+      candidateNameNormalized: "CINDY ROSENWALD",
+      officeNameNormalized: "State Senate",
+    });
+    expect(result.status === "ambiguous" ? result.matches.map((match) => match.filingEntityId) : []).toEqual([
+      100,
+      200,
+    ]);
+  });
+
+  it("supports direct-candidate registration codes without weakening office evidence", () => {
+    expect(
+      resolveNewHampshireCandidateFiler({
+        candidateName: "Patrick Abrami",
+        officeScope: "state_lower",
+        officeName: "State Lower Chamber Legislator",
+        district: "State House District Rockingham 12 (2024); New Hampshire",
+        electionCycleId: 110,
+        filingEntityRows: [
+          filingEntity({
+            filingEntityId: 244398,
+            filerName: "Abrami, Patrick",
+            committeeName: null,
+            candidateName: "Patrick Abrami",
+            firstName: "Patrick",
+            lastName: "Abrami",
+            filerTypeCode: "CAN",
+            filerSubTypeCode: null,
+            filerSubTypeName: null,
+            officeName: "State Representative",
+            county: "Rockingham",
+            district: "12",
+          }),
+        ],
+      })
+    ).toMatchObject({ status: "matched", filingEntityId: 244398 });
+  });
+
+  it("requires the county-qualified NH House district and rejects the same number in another county", () => {
+    const houseInput = {
+      candidateName: "Patrick Abrami",
+      officeScope: "state_lower",
+      officeName: "State Lower Chamber Legislator",
+      electionCycleId: 110,
+    } as const;
+    const houseRegistration = (filingEntityId: number, county: string) =>
+      filingEntity({
+        filingEntityId,
+        candidateName: "Patrick Abrami",
+        firstName: "Patrick",
+        lastName: "Abrami",
+        filerTypeCode: "CAN",
+        filerSubTypeCode: null,
+        officeName: "State Representative",
+        county,
+        district: "12",
+      });
+
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...houseInput,
+        district: "State House District Rockingham 12 (2024); New Hampshire",
+        filingEntityRows: [
+          houseRegistration(1, "Cheshire"),
+          houseRegistration(2, "Rockingham"),
+        ],
+      })
+    ).toMatchObject({ status: "matched", filingEntityId: 2, district: "Rockingham 12" });
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...houseInput,
+        district: "12",
+        filingEntityRows: [houseRegistration(2, "Rockingham")],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "missing_required_district" });
+  });
+
+  it("requires official county jurisdiction for county offices", () => {
+    const sheriff = (filingEntityId: number, county: string) =>
+      filingEntity({
+        filingEntityId,
+        candidateName: "Chris Connelly",
+        firstName: "Chris",
+        lastName: "Connelly",
+        filerTypeCode: "CAN",
+        filerSubTypeCode: null,
+        officeName: "Sheriff",
+        county,
+        district: null,
+      });
+
+    expect(
+      resolveNewHampshireCandidateFiler({
+        candidateName: "Chris Connelly",
+        officeScope: "county",
+        officeName: "Sheriff",
+        district: "Hillsborough County, New Hampshire",
+        electionCycleId: 110,
+        filingEntityRows: [sheriff(1, "Merrimack"), sheriff(2, "Hillsborough")],
+      })
+    ).toMatchObject({ status: "matched", filingEntityId: 2, district: "Hillsborough" });
+  });
+
+  it("fails closed on missing identity context, unsupported offices, and invalid cycle IDs", () => {
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...senateInput,
+        candidateName: " ",
+        filingEntityRows: [],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "missing_candidate_name" });
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...senateInput,
+        officeScope: "statewide",
+        officeName: "President",
+        filingEntityRows: [],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "unsupported_office" });
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...senateInput,
+        district: null,
+        filingEntityRows: [],
+      })
+    ).toMatchObject({ status: "unmatched", reason: "missing_required_district" });
     expect(() =>
       resolveNewHampshireCandidateFiler({
-        candidateName: "Jane Doe",
-        electionYear: 2015,
-        receiptRows: [],
+        ...senateInput,
+        electionCycleId: 0,
+        filingEntityRows: [],
       })
-    ).toThrow("Invalid New Hampshire candidate filer election year");
+    ).toThrow("Invalid New Hampshire candidate filer election-cycle ID");
   });
 });

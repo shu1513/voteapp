@@ -100,10 +100,28 @@ Note: `PublicIndependentExpenditureDetails/GetIndependentExpendituresDetails`
 exists but returns `401 Bad Request.` for anonymous callers — not needed; the
 TIE search above covers it.
 
+## Candidate-to-filer registration linkage (probed 2026-08-21)
+
+Use `POST PublicFilerDetails/GetFilingEntityDetails`, filtered by the exact
+numeric election-cycle ID. Candidate and candidate-committee rows expose the
+stable `filerEntityId` plus structured candidate first/last name, office, and
+district fields. Candidate committees may appear as `PAC` / `PACCC` rows.
+
+Do not link candidate committees from the bulk receipt `Candidate Name` field:
+live 2026 candidate-committee exports put the committee name in that column.
+Do not parse committee display text (`Friends of`, `Committee to Elect`, etc.).
+Return an exact link only when official registration data agrees on candidate,
+cycle, office, and every required district. Some live candidate-committee
+registrations omit district; those remain unmatched rather than guessed.
+State House district numbers repeat by county, so match both the registration's
+county (`town` in the API response) and district number to VoteApp's
+county-qualified House district name. County-office links likewise require the
+official county; county-commissioner links also require its numbered district.
+
 ## Other observed API families (unprobed depth)
 
 `PublicTransactionDetails/GetPublicReceiptsDetails` (receipts search),
-`PublicFilerDetails/*` (per-filer profiles/summaries), `Lookup/GetDropdownLookup`
+Other `PublicFilerDetails/*` profile/summary routes, `Lookup/GetDropdownLookup`
 (enum values), `PublicFiledReportAndDownload/*` (download-page metadata).
 
 ## Legal facts verified against RSA text (2026-08-19)
@@ -131,5 +149,6 @@ TIE search above covers it.
 Clone the New Mexico module layout (`backend/src/pipeline/newMexicoFinance/`):
 year-keyed CSV artifact cache → direct-contribution aggregator (employer → 
 industry labels) → outside-spending aggregator fed by the TIE search API →
-snapshot writer. Candidate linkage via roster auto-link against
-`Candidate Name` / filer registration, as in other standard states.
+snapshot writer. Candidate linkage via roster auto-link against official filer
+registration, as in other standard states. Never use bulk receipt committee-name
+text as candidate identity evidence.
