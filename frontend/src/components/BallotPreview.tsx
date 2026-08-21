@@ -103,9 +103,13 @@ function ContestBox({
   const pickedIds = new Set((choice?.picks ?? []).map((pick) => pick.candidate_id));
   // Same feedback the list view puts on its race rows: after a fill run the
   // engine's one-line reason rides on the contest itself. App voice, screen
-  // only — the printed facsimile stays clean (print:hidden).
+  // only — the printed facsimile stays clean (print:hidden). The open-race
+  // note also defers to the CURRENT choice (a pick made in another tab
+  // arrives via refetch while this page stays mounted), mirroring the list
+  // view, whose annotation lives on the undecided row branch.
+  const hasCurrentPick = pickedIds.size > 0 || (choice?.measure_position ?? null) !== null;
   const autoNote =
-    autoResult?.outcome === "no_pick"
+    autoResult?.outcome === "no_pick" && !hasCurrentPick
       ? `Auto pick left this open: ${reasonLabel(autoResult.reason)}.`
       : autoResult?.outcome === "picked" &&
           autoResult.reason === "tie" &&
