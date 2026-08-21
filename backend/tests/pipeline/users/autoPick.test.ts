@@ -633,6 +633,17 @@ describe("clearAutoPicks", () => {
     expect(deleteSql).toContain("election.election_date >=");
   });
 
+  it("scopes the delete to one election date when given", async () => {
+    const { db } = createMockDb();
+    db.query
+      .mockResolvedValueOnce(userRow) // assertActiveUser
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }); // the DELETE
+    await expect(clearAutoPicks(db, USER_ID, "2026-11-03")).resolves.toEqual({ cleared_count: 1 });
+    const deleteCall = db.query.mock.calls[1];
+    expect(String(deleteCall?.[0])).toContain("$2::date");
+    expect(deleteCall?.[1]).toEqual([USER_ID, "2026-11-03"]);
+  });
+
   it("rejects an unknown user before deleting anything", async () => {
     const { db } = createMockDb();
     db.query.mockResolvedValueOnce({ rows: [] }); // assertActiveUser: no user

@@ -103,18 +103,19 @@ function renderControl(seatsToFill: number | null = null) {
 
 /** The button disables while the preferences load; click only once ready. */
 async function clickPickForMe() {
-  const button = await screen.findByRole("button", { name: "Pick for me" });
+  const button = await screen.findByRole("button", { name: "Pick by my issues" });
   await waitFor(() => expect(button).toBeEnabled());
   await userEvent.click(button);
 }
 
 describe("AutoPickControl", () => {
-  it("prompts guests to sign in without calling the API", async () => {
+  it("prompts guests to sign up without calling the API", async () => {
     mockMe = null;
     const fetchMock = stubApiRoutes({});
     renderControl();
     await clickPickForMe();
-    expect(await screen.findByRole("link", { name: "Sign in" })).toBeInTheDocument();
+    expect(await screen.findByRole("link", { name: "Sign up" })).toHaveAttribute("href", "/register");
+    expect(screen.getByRole("link", { name: "sign in" })).toHaveAttribute("href", "/login");
     expect(fetchMock).not.toHaveBeenCalledWith(expect.stringContaining("auto-picks"), expect.anything());
   });
 

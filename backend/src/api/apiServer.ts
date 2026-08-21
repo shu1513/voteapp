@@ -23,6 +23,7 @@ import {
   parseMePasswordBodyValue,
   parseMeTermsAcceptanceBodyValue,
   parseMeUpdateBodyValue,
+  parseAutoPicksClearQuery,
 } from "./apiValidation.js";
 import type { AddressApiServerOptions } from "./addressApiTypes.js";
 import { mapErrorToResponse } from "./apiErrors.js";
@@ -1567,7 +1568,7 @@ async function dispatchApiRequest(
         );
         return;
       }
-      const result = await options.clearAuthenticatedAutoPicks(userId);
+      const result = await options.clearAuthenticatedAutoPicks(userId, parseAutoPicksClearQuery(url));
       sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
       return;
     }

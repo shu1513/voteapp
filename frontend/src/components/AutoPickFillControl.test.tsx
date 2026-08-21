@@ -29,7 +29,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-const TODAY = "2026-08-01";
+const DATE = "2026-11-03";
 const E_EMPTY = "11111111-1111-4111-8111-111111111111";
 const E_PICKED = "22222222-2222-4222-8222-222222222222";
 const E_MEASURE = "33333333-3333-4333-8333-333333333333";
@@ -91,17 +91,23 @@ const ELECTIONS = [
 function renderControl({
   elections = ELECTIONS,
   choices = [] as ElectionChoice[],
-}: { elections?: typeof ELECTIONS; choices?: ElectionChoice[] } = {}) {
+  onResults,
+}: {
+  elections?: typeof ELECTIONS;
+  choices?: ElectionChoice[];
+  onResults?: (byElectionId: Map<string, AutoPickElectionResult> | null) => void;
+} = {}) {
   const byId = new Map(choices.map((entry) => [entry.election_id, entry]));
   return renderRoutes([
     {
       path: "/",
       element: (
         <AutoPickFillControl
+          date={DATE}
           elections={elections}
           choices={choices}
           choiceByElectionId={byId}
-          today={TODAY}
+          onResults={onResults}
         />
       ),
     },
@@ -112,7 +118,7 @@ function renderControl({
 
 /** The button disables while the preferences load; click only once ready. */
 async function clickFill() {
-  const button = await screen.findByRole("button", { name: /Fill my empty picks/ });
+  const button = await screen.findByRole("button", { name: "Auto-pick my empty picks by my issues" });
   await waitFor(() => expect(button).toBeEnabled());
   await userEvent.click(button);
 }
@@ -132,10 +138,10 @@ describe("AutoPickFillControl", () => {
         choice({ picks: [{ candidate_id: CAND_A, display_name: "Alice", candidacy_status: "declared" }] }),
       ],
     });
-    await waitFor(() => expect(container.querySelector("section")).toBeNull());
+    await waitFor(() => expect(container.querySelector("button")).toBeNull());
   });
 
-  it("fills only the empty races and reports the filled/open breakdown with per-race reasons", async () => {
+  it("fills only the empty races and hands the per-race results to the caller", async () => {
     const fetchMock = stubApiRoutes({
       "/api/me": { body: { user: SIGNED_IN } },
       "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
@@ -145,17 +151,23 @@ describe("AutoPickFillControl", () => {
         },
       },
     });
+    const onResults = vi.fn();
     renderControl({
       choices: [
         choice({ picks: [{ candidate_id: CAND_A, display_name: "Alice", candidacy_status: "declared" }] }),
       ],
+      onResults,
     });
-    // The decided race stays out of the count and out of the request.
+    // The decided race stays out of the request; no result list renders
+    // here — the caller annotates its own race rows from the map.
     await clickFill();
 
-    expect(await screen.findByText("Filled 1 · 1 left open — 1 not enough evidence.")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Measure Q" })).toHaveAttribute("href", `/elections/${E_MEASURE}`);
-    expect(screen.getByText(/not enough evidence$/)).toBeInTheDocument();
+    // Two calls: null up front (stale-annotation wipe), then the map.
+    await waitFor(() => expect(onResults).toHaveBeenCalledTimes(2));
+    expect(onResults.mock.calls[0]?.[0]).toBeNull();
+    const byElectionId = onResults.mock.lastCall?.[0] as Map<string, AutoPickElectionResult>;
+    expect(byElectionId.get(E_EMPTY)?.outcome).toBe("picked");
+    expect(byElectionId.get(E_MEASURE)?.reason).toBe("insufficient_evidence");
     expect(requestsTo(fetchMock, "/api/me/auto-picks")).toEqual([
       { election_ids: [E_EMPTY, E_MEASURE], mode: "fill_empty" },
     ]);
@@ -176,10 +188,12 @@ describe("AutoPickFillControl", () => {
         return { body: { results: body.election_ids.map((id) => pickedResult(id)) } };
       },
     });
-    renderControl({ elections: many });
+    const onResults = vi.fn();
+    renderControl({ elections: many, onResults });
     await clickFill();
 
-    expect(await screen.findByText("Filled 201.")).toBeInTheDocument();
+    await waitFor(() => expect(onResults).toHaveBeenCalledTimes(2));
+    expect((onResults.mock.lastCall?.[0] as Map<string, unknown>).size).toBe(201);
     const bodies = requestsTo(fetchMock, "/api/me/auto-picks");
     expect(bodies.map((body) => body.election_ids.length)).toEqual([200, 1]);
   });
@@ -231,11 +245,13 @@ describe("AutoPickFillControl", () => {
           init?.method === "DELETE"
       );
       expect(deletes).toHaveLength(1);
+      // Scoped to this card's date: other dates' auto picks must survive.
+      expect(new URL(String(deletes[0]?.[0]), "http://localhost").searchParams.get("election_date")).toBe(DATE);
     });
     expect(requestsTo(fetchMock, "/api/me/election-choices")).toEqual([]);
   });
 
-  it("hides the clear button when the only auto picks are on past races", async () => {
+  it("hides the clear button when the only auto picks are on another date", async () => {
     stubApiRoutes({
       "/api/me": { body: { user: SIGNED_IN } },
       "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
@@ -252,7 +268,7 @@ describe("AutoPickFillControl", () => {
         }),
       ],
     });
-    await waitFor(() => expect(container.querySelector("section")).toBeNull());
+    await waitFor(() => expect(container.querySelector("button")).toBeNull());
   });
 
   it("keeps the partial-write warning on API errors — the batch commits election by election", async () => {
@@ -261,11 +277,15 @@ describe("AutoPickFillControl", () => {
       "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
       "/api/me/auto-picks": apiError(429, "rate_limited", "Too many requests. Try again later."),
     });
-    renderControl();
+    const onResults = vi.fn();
+    renderControl({ onResults });
     await clickFill();
 
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent("Too many requests. Try again later.");
-    expect(alert).toHaveTextContent("Some races may already be filled — check the cards below.");
+    expect(alert).toHaveTextContent("Some races may already be filled — check the rows below.");
+    // The run cleared the previous annotations up front and never replaced
+    // them: a stale "not enough evidence" must not outlive a failed rerun.
+    expect(onResults).toHaveBeenCalledExactlyOnceWith(null);
   });
 });

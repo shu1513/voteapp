@@ -16,14 +16,19 @@ issues and their priorities — without reading 40 races themselves.
 
 Two entry points, one engine:
 
-- **Election page** — "Pick for me" on an office race picks the best-aligned
+- **Election page** — "Pick by my issues" (labeled "Pick for me" until the
+  2026-08-20 rework) on an office race picks the best-aligned
   candidate(s) for that race; on a measure race it answers Yes/No. Result lands
   in the user's picks exactly like a manual pick, and a "Why this pick" panel
   shows the evidence.
-- **My Picks page** (`/me/picks`, the signed-in "My Draft") — "Fill my empty
-  picks" runs the same engine over every upcoming race on the user's ballot
-  that has no pick yet. Existing picks are never touched. The page then
-  reports what was filled and, race by race, why the rest were skipped.
+- **My Picks page** (`/me/picks`, the signed-in "My Draft") — each election
+  date's card (and ballot-view sheet) carries its own "Auto-pick my empty
+  picks by my issues" button that runs the engine over THAT date's undecided
+  races only, plus a date-scoped "Clear auto picks" once engine rows exist.
+  Filling never changes an existing pick (manual or auto); "Clear auto
+  picks" removes only that date's auto-origin rows. No separate result list: each still-open
+  race row gets the one-line reason ("auto pick: not enough evidence")
+  inline. (Reworked from a single page-level fill button, 2026-08-20.)
 
 The engine must be honest: a race with no usable evidence gets **no pick** and
 a reason, never a guess. "No pick" is the normal outcome for many local races
@@ -283,7 +288,7 @@ choices` writes have none today, and the 200-id cap bounds the work per call.
   for ethics: "Skip candidates with any integrity/ethics record"). Copy on
   WelcomePage/Settings changes from "up to 7" to "rank as many as you like —
   three or more lets us pick for you".
-- **Election page**: one "Pick for me" button next to the existing pick
+- **Election page**: one "Pick by my issues" button next to the existing pick
   control (office and measure views), visible to signed-in users on upcoming
   races. Click → `POST /api/me/auto-picks {mode: "replace"}` for that election
   → invalidate the election-choices query → open the "Why this pick" panel:
@@ -294,13 +299,14 @@ choices` writes have none today, and the 200-id cap bounds the work per call.
   "Couldn't pick one — narrowed to B, C, D. A excluded: opposes [issue].
   B, C, D have no records on your issues." Fewer than 3 ranked issues → the
   button opens the issue editor prompt instead.
-- **My Picks page**: "Fill my empty picks" button; election ids = upcoming
-  races on the ballot minus those with a choice (both already loaded by
-  `useMyPicksProgress`/PicksPage). Shows a summary line ("Filled 6 · skipped
-  31 — 27 not enough evidence, 3 tie, 1 all crossed your line") and per-race
-  reasons; auto picks get an "auto" chip; "Clear auto picks" removes rows
-  with `origin = 'auto'` (loop over the existing unpick call — no new
-  endpoint).
+- **My Picks page**: per-date "Auto-pick my empty picks by my issues"
+  buttons (one per date card/sheet); election ids = that date's races minus
+  those with a choice (both already loaded by
+  `useMyPicksProgress`/PicksPage). Reasons render inline on the race rows,
+  not as a list; auto picks get an "auto" chip; "Clear auto picks" removes rows
+  with `origin = 'auto'` in one atomic `DELETE /api/me/auto-picks`
+  (date-scoped via `?election_date=`) — never a per-row unpick loop, which
+  would trip the per-IP rate limit and race stale cache from another tab.
 - **Mobile**: uncapped list works once the cap constant is gone; direction /
   veto toggles and the buttons are a follow-up PR (server preserves values on
   omitted fields, so nothing breaks in between).
@@ -314,10 +320,11 @@ choices` writes have none today, and the 200-id cap bounds the work per call.
    fixture races (veto, tie, one-sided evidence, cap, multi-seat, measure
    yes/no/veto/untagged, too few issues), endpoint, "Why this pick" panel.
 3. **Fill my empty picks** — My Picks button, summary, auto chip, clear-auto.
+   (As shipped; the page-level button and summary were reworked into per-date
+   controls with inline per-race reasons in PR #796, 2026-08-20.)
 4. **Coverage** (data, not code): relabel `general`-only records to issues;
-   never-researched roster wave; later, an ethics-severity label so the
-   ethics veto can be narrowed to adverse findings. Each raises the hit rate
-   without changing the engine.
+   never-researched roster wave. Each raises the hit rate without changing the
+   engine.
 
 ## Tests to write
 
@@ -345,3 +352,8 @@ choices` writes have none today, and the 200-id cap bounds the work per call.
   evidence is thin anyway.
 - No stored explanations, no new tables, no ranking beyond `rank`.
 - No auto-pick for guests.
+- No severity grading on `integrity_and_ethics`. The veto stays all-or-nothing:
+  a tag means a record exists, and the user's toggle decides whether that is
+  disqualifying. Grading severity needs a migration, a relabel pass, and an
+  engine change, and it asks us to rank other people's ethics findings — a
+  judgment the app should leave to the voter.

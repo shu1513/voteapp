@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ElectionChoice } from "@voteapp/api-client";
 import { PicksPage } from "./PicksPage";
@@ -558,8 +558,110 @@ describe("PicksPage", () => {
     renderPicks();
 
     expect(await screen.findByText("Auto")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Fill my empty picks (1)" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Auto-pick my empty picks by my issues" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Clear auto picks" })).toBeInTheDocument();
+  });
+
+  it("annotates undecided rows with the engine's reason after a fill run", async () => {
+    // e-2 stays open (insufficient evidence): no result list — the reason
+    // lands on the race row itself.
+    const user = userEvent.setup();
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/research-area-preferences": {
+          body: {
+            preferences: [1, 2, 3].map((rank) => ({
+              research_area_id: `a-${rank}`,
+              slug: `issue-${rank}`,
+              name: `Issue ${rank}`,
+              description: null,
+              rank,
+              direction: "support",
+              hard_veto: false,
+            })),
+          },
+        },
+        "/api/me/auto-picks": {
+          body: {
+            results: [
+              {
+                election_id: "e-2",
+                race_type: "office",
+                outcome: "no_pick",
+                reason: "insufficient_evidence",
+                picked_candidate_ids: [],
+                measure_position: null,
+                shortlist_candidate_ids: [],
+                candidates: [],
+                measure_per_issue: [],
+                unresearched: [],
+              },
+            ],
+          },
+        },
+      })
+    );
+    renderPicks();
+
+    const button = await screen.findByRole("button", { name: "Auto-pick my empty picks by my issues" });
+    await waitFor(() => expect(button).toBeEnabled());
+    await user.click(button);
+
+    expect(
+      await screen.findByRole("link", { name: /Mayor — no pick yet · auto pick: not enough evidence/ })
+    ).toBeInTheDocument();
+  });
+
+  it("keeps fill-run reasons across a switch to ballot view", async () => {
+    // The results live in PicksPage, not the card: running a fill in list
+    // view and toggling views must not discard the "why was this left
+    // open" feedback — the ballot sheet's contest box carries it instead.
+    const user = userEvent.setup();
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/research-area-preferences": {
+          body: {
+            preferences: [1, 2, 3].map((rank) => ({
+              research_area_id: `a-${rank}`,
+              slug: `issue-${rank}`,
+              name: `Issue ${rank}`,
+              description: null,
+              rank,
+              direction: "support",
+              hard_veto: false,
+            })),
+          },
+        },
+        "/api/me/auto-picks": {
+          body: {
+            results: [
+              {
+                election_id: "e-2",
+                race_type: "office",
+                outcome: "no_pick",
+                reason: "insufficient_evidence",
+                picked_candidate_ids: [],
+                measure_position: null,
+                shortlist_candidate_ids: [],
+                candidates: [],
+                measure_per_issue: [],
+                unresearched: [],
+              },
+            ],
+          },
+        },
+      })
+    );
+    renderPicks();
+
+    const button = await screen.findByRole("button", { name: "Auto-pick my empty picks by my issues" });
+    await waitFor(() => expect(button).toBeEnabled());
+    await user.click(button);
+    await screen.findByRole("link", { name: /auto pick: not enough evidence/ });
+
+    await user.click(screen.getByRole("button", { name: "Ballot view" }));
+
+    expect(await screen.findByText("Auto pick left this open: not enough evidence.")).toBeInTheDocument();
   });
 
   it("shows no batch controls when everything is decided by hand", async () => {
@@ -579,7 +681,7 @@ describe("PicksPage", () => {
 
     await screen.findByText(/2 of 2 race/);
     expect(screen.queryByText("Auto")).toBeNull();
-    expect(screen.queryByRole("button", { name: /Fill my empty picks/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Auto-pick my empty picks/ })).toBeNull();
     expect(screen.queryByRole("button", { name: "Clear auto picks" })).toBeNull();
   });
 });

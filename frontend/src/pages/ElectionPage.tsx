@@ -850,7 +850,7 @@ export function ElectionPage() {
                 </label>
               ) : null}
             </div>
-            {/* Race-level "Pick for me": one engine run for this election
+            {/* Race-level "Pick by my issues": one engine run for this election
                 (mode replace — a re-run refreshes the pick), with its "Why
                 this pick" panel below the button. Guests get a sign-in
                 prompt inside the control, matching the per-candidate
@@ -1157,7 +1157,7 @@ export function ElectionPage() {
             data-sticky-pick-cta=""
             className="sticky bottom-3 z-30 mt-6 rounded-xl border border-line bg-white p-3 shadow-lg"
           >
-            {/* Measure-side "Pick for me": answers Yes/No from the measure's
+            {/* Measure-side "Pick by my issues": answers Yes/No from the measure's
                 issue tags. Lives in the same card as the Yes/No pair — the
                 card is the page's one pick control. Same key rationale as
                 the office control: the route element survives rail walks. */}

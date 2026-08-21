@@ -9,7 +9,7 @@ import {
 } from "@voteapp/api-client";
 import type { AutoPickCandidateReport, AutoPickElectionResult } from "@voteapp/api-client";
 
-// "Pick for me": one button that runs the auto-pick engine for this election
+// "Pick by my issues": one button that runs the auto-pick engine for this election
 // (POST /api/me/auto-picks, mode replace) and opens a "Why this pick" panel
 // built from the response — winner, per-issue alignment, vetoed and
 // unresearched candidates, and the honest "no pick" reason when nothing
@@ -72,26 +72,31 @@ export function AutoPickControl({ electionId, seatsToFill }: AutoPickControlProp
       <span>
         <button
           type="button"
+          title="Picks the candidate whose record best aligns with my issues, in the order I ranked them"
           // Disabled while the preferences load: clicking then would hit the
           // issue-floor check against a still-empty list and misdirect a
           // ready user to the issue editor.
           disabled={saving || preferencesLoading}
           onClick={onClick}
-          className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-semibold text-ink transition hover:border-ink disabled:opacity-50"
+          className="rounded-lg bg-autopick px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-autopick-dark disabled:opacity-50"
         >
-          {autoPick.isPending ? "Picking…" : "Pick for me"}
+          {autoPick.isPending ? "Picking…" : "Pick by my issues"}
         </button>
       </span>
       {prompt === "sign_in" ? (
-        <p className="text-sm text-ink-soft">
-          Pick for me matches candidates to the issues you rank, which needs an account.{" "}
+        <p role="status" className="rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-mid">
+          Sign up for free to see which candidates align with the issues important to me.{" "}
+          <Link to="/register" className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink">
+            Sign up
+          </Link>{" "}
+          or{" "}
           <Link to="/login" className="font-medium underline decoration-dotted underline-offset-2 hover:text-ink">
-            Sign in
+            sign in
           </Link>
         </p>
       ) : null}
       {prompt === "rank_issues" ? (
-        <p className="text-sm text-ink-soft">
+        <p role="status" className="rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink-mid">
           Rank at least {MIN_AUTO_PICK_ISSUES} issues first, so the pick reflects what matters to you.{" "}
           <Link
             to="/me/settings"

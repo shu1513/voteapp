@@ -699,9 +699,15 @@ export type ClearAutoPicksResult = { cleared_count: number };
  * their auto picks as history, matching the manual write path's refusal to
  * change closed elections.
  */
-export async function clearAutoPicks(db: Queryable, userId: string): Promise<ClearAutoPicksResult> {
+export async function clearAutoPicks(
+  db: Queryable,
+  userId: string,
+  electionDate?: string
+): Promise<ClearAutoPicksResult> {
   const normalizedUserId = normalizeUserId(userId);
   await assertActiveUser(db, normalizedUserId, false);
+  // Optional election-date scope: the My Picks page clears one date card at
+  // a time. Still bounded to upcoming — a past date filter deletes nothing.
   const result = await db.query(
     `
       DELETE FROM public.user_election_choices AS choice
@@ -710,8 +716,9 @@ export async function clearAutoPicks(db: Queryable, userId: string): Promise<Cle
         AND choice.user_id = $1::uuid
         AND choice.origin = 'auto'
         AND election.election_date >= ${US_LATEST_LOCAL_DATE_SQL}
+        AND ($2::date IS NULL OR election.election_date = $2::date)
     `,
-    [normalizedUserId]
+    [normalizedUserId, electionDate ?? null]
   );
   return { cleared_count: result.rowCount ?? 0 };
 }
