@@ -122,6 +122,29 @@ describe("FinanceSummaryCard", () => {
     );
   });
 
+  it("renders the real zero-data Missouri shape with its totals caveat and portal link", () => {
+    const summary = emptyFinanceSummary();
+    summary.source = "MISSOURI_MEC";
+    summary.direct_campaign.total_raised = 0;
+    summary.direct_campaign.total_spent = 0;
+    summary.outside_spending.support_total = 0;
+    summary.outside_spending.oppose_total = 0;
+    summary.direct_campaign.direct_coverage_note =
+      "Totals and donor breakdowns are summed from itemized Missouri Ethics Commission filings and are not reconciled to official report covers.";
+    summary.outside_spending.outside_coverage_note =
+      "Registered-committee reported spending only; Missouri non-committee expenditure reports (§ 130.047) are not included.";
+
+    render(<FinanceSummaryCard summary={summary} />);
+
+    expect(screen.getAllByText("$0")).toHaveLength(2);
+    expect(screen.getByText(summary.direct_campaign.direct_coverage_note)).toBeInTheDocument();
+    expect(screen.queryByText(summary.outside_spending.outside_coverage_note)).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "mec.mo.gov" })).toHaveAttribute(
+      "href",
+      "https://www.mec.mo.gov/MEC/Campaign_Finance/"
+    );
+  });
+
   it("explains prior-cycle money only when spending tops raised plus public funds", () => {
     const summary = financeSummary();
     summary.direct_campaign.total_raised = 40000;
