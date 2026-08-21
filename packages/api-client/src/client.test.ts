@@ -233,6 +233,24 @@ describe("apiRequest", () => {
     expect(timeoutSpy).toHaveBeenCalledWith(REQUEST_TIMEOUT_MS);
   });
 
+  it("applies a per-call timeout override above the configured ceiling (chatbot ask)", async () => {
+    const timeoutSpy = vi.spyOn(AbortSignal, "timeout");
+    mockFetch({ jsonBody: { ok: true } });
+
+    await apiRequest("/api/chatbot/ask", { method: "POST", body: { question: "q" }, timeoutMs: 45_000 });
+
+    expect(timeoutSpy).toHaveBeenCalledWith(45_000);
+  });
+
+  it("ignores an invalid per-call timeout override", async () => {
+    const timeoutSpy = vi.spyOn(AbortSignal, "timeout");
+    mockFetch({ jsonBody: { ok: true } });
+
+    await apiRequest("/api/me", { timeoutMs: 0 });
+
+    expect(timeoutSpy).toHaveBeenCalledWith(REQUEST_TIMEOUT_MS);
+  });
+
   it("attaches the configured auth header, resolving async providers", async () => {
     const fetchMock = mockFetch({ jsonBody: { ok: true } });
     configureApi({ getAuthHeader: async () => "Bearer session-abc" });

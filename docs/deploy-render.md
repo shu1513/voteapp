@@ -228,24 +228,29 @@ plans. Consequences, in order of urgency:
    (paid-only service types). Uncomment and re-sync after billing exists.
    Until then: no digest/alert/reminder emails (SES is sandboxed anyway)
    and BullMQ schedules accumulate unprocessed.
-4. **SSR loaders use the API's PRIVATE hostport** since 2026-08-21.
-   `resolveApiBase()` in `frontend/src/lib/loadFromApi.ts` ranks
-   `API_INTERNAL_URL` > `API_INTERNAL_HOSTPORT` > `API_PUBLIC_HOST`, so
-   declaring `API_INTERNAL_HOSTPORT` (a `fromService`/`property: hostport`
-   reference) is the whole switch — this was only possible once
-   `voteapp-api` left the free tier, because free instances can send
-   private-network traffic but not receive it. `API_PUBLIC_HOST` stays
-   declared as the fallback tier and for browser-side calls. Neither var
-   takes a URL: the loader prepends `http://` to the hostport and
-   `https://` to the public host, so a full URL builds `http://https://…`.
-5. **Timeouts are back to the code defaults.** `API_LOADER_TIMEOUT_MS` and
-   `VITE_API_TIMEOUT_MS` (both `75000`) were removed on 2026-08-21 — they
-   existed only to ride out the free tier's ~1-minute wake-up. Unset means
+4. **SSR loaders still use the API's PUBLIC hostname** (`API_PUBLIC_HOST`),
+   even though both services are paid now. Do NOT "finish the upgrade" by
+   declaring `API_INTERNAL_HOSTPORT`: `voteapp-api` listens on port 10000
+   (`ADDRESS_API_PORT`), and Render prohibits private-network traffic on
+   ports 10000, 18012, 18013, and 19099 (docs: Private Network) — the same
+   restriction that forced `voteapp-embeddings` onto port 8080.
+   `resolveApiBase()` in `frontend/src/lib/loadFromApi.ts` has no fallback
+   tier once an internal var is set, so declaring it 504s every loader.
+   Moving loader traffic private is a deliberate future change: move the
+   API off port 10000 first (`PORT` + `ADDRESS_API_PORT`, embeddings-style)
+   and prefer `property: host` plus a pinned port over `property: hostport`
+   (observed 2026-08-12 resolving a stale port).
+5. **Timeouts are back to the code defaults** as of 2026-08-21: unset means
    10s for SSR loaders (`DEFAULT_LOADER_TIMEOUT_MS`) and 15s in the browser
-   (`REQUEST_TIMEOUT_MS` in `packages/api-client/src/client.ts`). A loader
-   timeout surfaces as a `504 Upstream API timeout`; if a genuinely slow
-   endpoint starts throwing those, raise the loader value deliberately
-   rather than restoring the 75s cold-start headroom.
+   (`REQUEST_TIMEOUT_MS` in `packages/api-client/src/client.ts`). The
+   75s cold-start overrides were removed from render.yaml, but that alone
+   does nothing live: Render preserves env vars omitted from a Blueprint,
+   so `API_LOADER_TIMEOUT_MS` and `VITE_API_TIMEOUT_MS` must ALSO be
+   deleted on the `voteapp-ssr` service (dashboard Environment tab, or
+   `DELETE /v1/services/{id}/env-vars/{key}`). A loader timeout surfaces
+   as a `504 Upstream API timeout`; if a genuinely slow endpoint starts
+   throwing those, raise the loader value deliberately rather than
+   restoring the 75s cold-start headroom.
 
 ## Platform notes
 

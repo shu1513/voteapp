@@ -36,9 +36,7 @@ services:
     runtime: node
     region: ohio
     # Starter since 2026-08-21 (see the PLANS note at the top): paid instances
-    # never spin down, so the loaders no longer pay a cold-start penalty, and
-    # a paid web service can RECEIVE private-network requests — which is what
-    # lets voteapp-ssr reach it over API_INTERNAL_HOSTPORT below.
+    # never spin down, so the loaders no longer pay a cold-start penalty.
     plan: starter
     rootDir: backend
     buildCommand: npm ci
@@ -258,26 +256,23 @@ services:
         - package-lock.json
         - render.yaml
     envVars:
-      # Loader traffic goes over Render's PRIVATE network: resolveApiBase()
-      # in frontend/src/lib/loadFromApi.ts ranks API_INTERNAL_HOSTPORT above
-      # API_PUBLIC_HOST, so declaring it here is the whole switch. Enabled
-      # 2026-08-21 with voteapp-api's move to starter — a free web service
-      # can SEND private-network requests but cannot RECEIVE them, which is
-      # why this stayed commented out until the upgrade.
-      # `property: hostport` yields a host:port string, NOT a URL: the loader
-      # prepends http:// itself, so a full URL here would build
-      # "http://https://…". Nothing hardcodes the generated hostname, so it
-      # survives service recreation.
-      - key: API_INTERNAL_HOSTPORT
-        fromService:
-          name: voteapp-api
-          type: web
-          property: hostport
-      # Kept as the fallback tier below API_INTERNAL_HOSTPORT: browser-side
-      # calls and any loader path that loses the private hostname still need
-      # a public route. Resolved by Render itself (RENDER_EXTERNAL_HOSTNAME
-      # via fromService/envVarKey) — a bare hostname, which the loader turns
-      # into https://.
+      # Loaders use the API's PUBLIC hostname — still, deliberately, even
+      # though both services are paid now. The obvious upgrade (declare
+      # API_INTERNAL_HOSTPORT, which resolveApiBase() in
+      # frontend/src/lib/loadFromApi.ts ranks above API_PUBLIC_HOST) is a
+      # TRAP: voteapp-api listens on port 10000 (ADDRESS_API_PORT above),
+      # and Render prohibits private-network traffic on ports 10000, 18012,
+      # 18013, and 19099 — docs "Private Network", same restriction this
+      # file already records for voteapp-embeddings. The loader has no
+      # fallback tier once the internal var is set, so declaring it would
+      # 504 every SSR loader. Moving to the private network needs the API
+      # off port 10000 first (PORT + ADDRESS_API_PORT, embeddings-style) —
+      # and note `property: hostport` was observed 2026-08-12 resolving a
+      # STALE port after such a change; prefer `property: host` plus an
+      # explicitly pinned port. Separate PR if the extra hop ever matters.
+      # RENDER_EXTERNAL_HOSTNAME via fromService/envVarKey keeps the
+      # generated hostname out of the repo, so it survives service
+      # recreation; the loader prepends https:// to this bare hostname.
       - key: API_PUBLIC_HOST
         fromService:
           name: voteapp-api
@@ -288,9 +283,14 @@ services:
       # ~1-minute cold start; voteapp-api is starter now and always on, so
       # the code defaults apply again — 10s for the SSR loader
       # (DEFAULT_LOADER_TIMEOUT_MS, loadFromApi.ts) and 15s in the browser
-      # (REQUEST_TIMEOUT_MS, packages/api-client/src/client.ts). If a genuinely
-      # slow endpoint starts throwing "Upstream API timeout" 504s, raise the
-      # loader value here rather than restoring the 75s cold-start headroom.
+      # (REQUEST_TIMEOUT_MS, packages/api-client/src/client.ts). Removing
+      # them HERE is not enough: "Render preserves existing environment
+      # variables, even if you omit them from the Blueprint file", so the
+      # live values must ALSO be deleted on the voteapp-ssr service
+      # (dashboard Environment tab, or DELETE
+      # /v1/services/{id}/env-vars/{key}). If a genuinely slow endpoint
+      # starts throwing "Upstream API timeout" 504s, raise the loader value
+      # here rather than restoring the 75s cold-start headroom.
       - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
         value: X-Voteapp-Client-IP
       # Same value as the API's secret (referenced, not duplicated): loaders
