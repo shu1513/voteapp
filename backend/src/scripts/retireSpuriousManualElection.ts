@@ -22,14 +22,16 @@
 //   row (all elections FKs are ON DELETE CASCADE):
 //     - election_senate_metadata (written by the same election upsert),
 //     - manual_research_deferrals (research bookkeeping for the fake race),
-//     - user_district_notification_events (write-time fan-out on the
-//       election INSERT, not a user action; sent vs unsent is reported),
+//     - user_district_notification_events still un-sent (write-time
+//       fan-out on the election INSERT, not a user action),
 //     - current_race_ratings with evidence_status = 'none_found' (the
 //       "research found no such race" marker).
 //   Everything else blocks: candidate links, follows, choices, results,
-//   ballot measures, finance links — and a current_race_ratings row with
+//   ballot measures, finance links; a current_race_ratings row with
 //   evidence_status = 'rated', because a real outlet rating is evidence the
-//   race EXISTS and the operator is deleting the wrong row;
+//   race EXISTS and the operator is deleting the wrong row; and a SENT
+//   notification event, because it is the only record of which users were
+//   told about the fake race — preserve or export it deliberately first;
 // - local-database guard (ALLOW_REMOTE_DB_WRITES=1 covers the deliberate
 //   production repair pass), row lock, single transaction, --dry-run.
 import { pathToFileURL } from "node:url";
@@ -184,19 +186,24 @@ export async function runRetireSpuriousElection(
       }
 
       if (bareTable === "user_district_notification_events") {
-        // Write-time fan-out from the election INSERT. Already-sent rows
-        // cannot be unsent; surface the split so the operator sees whether
-        // users were told about the fake race.
+        // Un-sent rows are pure write-time fan-out from the election INSERT
+        // and go with it. A SENT row is different in kind: it records that a
+        // user was actually told about this race, and cascading it away
+        // would erase the only evidence of who received the misinformation.
+        // Block so the operator records those users (and decides whether a
+        // correction is owed) before deliberately clearing the events.
         const sentResult = await client.query<{ n: string }>(
           `SELECT count(*)::text AS n FROM ${table} WHERE ${column} = $1::uuid AND notified_at IS NOT NULL`,
           [electionId]
         );
         const sent = Number(sentResult.rows[0]?.n ?? "0");
-        cascadeDeletes.push({
-          table: bareTable,
-          rows: n,
-          note: `${sent} already notified, ${n - sent} unsent`,
-        });
+        if (sent > 0) {
+          blocking.push(
+            `${table}.${column} (${sent} already notified — record who was told about this race and clear those events deliberately before retiring)`
+          );
+          continue;
+        }
+        cascadeDeletes.push({ table: bareTable, rows: n, note: `${n} unsent` });
         continue;
       }
 

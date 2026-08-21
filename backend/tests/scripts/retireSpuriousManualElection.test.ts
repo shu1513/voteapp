@@ -80,7 +80,7 @@ describe("runRetireSpuriousElection", () => {
       { table: "current_race_ratings", rows: 1, note: "evidence_status = 'none_found'" },
       { table: "election_senate_metadata", rows: 1 },
       { table: "manual_research_deferrals", rows: 1 },
-      { table: "user_district_notification_events", rows: 1, note: "0 already notified, 1 unsent" },
+      { table: "user_district_notification_events", rows: 1, note: "1 unsent" },
     ]);
 
     const del = calls.find((call) => call.text.includes("DELETE FROM public.elections"));
@@ -123,6 +123,21 @@ describe("runRetireSpuriousElection", () => {
     await expect(
       runRetireSpuriousElection({ query }, { ...BASE_OPTIONS, dryRun: false })
     ).rejects.toThrow(/evidence_status = 'rated'/);
+    expect(calls.some((call) => call.text.startsWith("DELETE"))).toBe(false);
+    expect(calls.at(-1)?.text).toBe("ROLLBACK");
+  });
+
+  it("blocks when users were already notified about the race", async () => {
+    const { query, calls } = buildClient(
+      happyResponses({
+        // generic count 2, then the notified_at IS NOT NULL follow-up finds 1 sent
+        "count(*)::text AS n FROM public.user_district_notification_events": [[{ n: "2" }], [{ n: "1" }]],
+      })
+    );
+
+    await expect(
+      runRetireSpuriousElection({ query }, { ...BASE_OPTIONS, dryRun: false })
+    ).rejects.toThrow(/1 already notified/);
     expect(calls.some((call) => call.text.startsWith("DELETE"))).toBe(false);
     expect(calls.at(-1)?.text).toBe("ROLLBACK");
   });
