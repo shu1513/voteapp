@@ -191,12 +191,26 @@ export default function ElectionScreen() {
             My vote power: {formatVotePowerLabel(data.vote_power.label)}
           </Text>
         ) : null}
-        {data.historical_competitiveness ? (
+        {/* Current-cycle rating replaces the historic chip when present —
+            the backend only sends it when the rating drove the grade, and
+            showing both would contradict on races that flipped. */}
+        {data.current_competitiveness ? (
+          <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink-soft">
+            {data.current_competitiveness.display_label}
+          </Text>
+        ) : data.historical_competitiveness ? (
           <Text className="rounded bg-surface px-2 py-0.5 text-xs text-ink-soft">
             {data.historical_competitiveness.display_label}
           </Text>
         ) : null}
       </View>
+      {/* Mobile has no vote-power explanation panel, so without this line the
+          rating chip would be an unsourced claim — name the analyst outlet
+          and the as-of date (web carries the same attribution in its
+          explanation panel). */}
+      {data.current_competitiveness ? (
+        <Text className="mt-1 text-xs text-ink-soft">{data.current_competitiveness.display_description}</Text>
+      ) : null}
 
       {measure ? (
         <View className="mt-6 rounded-xl border border-line bg-white p-4">

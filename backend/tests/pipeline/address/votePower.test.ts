@@ -673,3 +673,141 @@ describe("explainVotePower", () => {
     );
   });
 });
+
+describe("explainVotePower with a current race rating", () => {
+  function explain(input: Parameters<typeof explainVotePower>[0]) {
+    return explainVotePower(input, calculateVotePower(input));
+  }
+
+  const RATING_SCALE =
+    "(d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade average, safe grades low)";
+
+  it("swaps the decisiveness part to analyst-rating copy with the real derivation", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 94.44,
+      competitivenessLabel: "competitive",
+      currentRating: {
+        asOf: "2026-08-06",
+        method: "outlet_consensus",
+        confidence: "high",
+        outlets: [
+          { outlet: "inside_elections", rawRating: "Tilt Democrat", intensity: 2 },
+          { outlet: "sabato", rawRating: "Leans Democratic", intensity: 3 },
+        ],
+      },
+    });
+
+    expect(explanation.how).toBe(
+      "Here's what goes into the rating. Representation: how much weight one vote carries here — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on current race ratings from election analysts and the number of candidates."
+    );
+    expect(explanation.parts[1]).toEqual({
+      title: "Decisiveness",
+      grade: "Average",
+      stat: "rated competitive as of August 6, 2026",
+      detail:
+        "Election analysts currently rate this race somewhat close. Rating from Inside Elections and Sabato's Crystal Ball.",
+      formula: `IE "Tilt Democrat" (d=2) + Sabato "Leans Democratic" (d=3) → mean 2.5 → "competitive" → grade average ${RATING_SCALE}`,
+    });
+    // Two agreeing outlets = high rating confidence: no rating caveat.
+    expect(explanation.caveat).toBeNull();
+  });
+
+  it("marks the formula when a consensus guardrail moved the label off the plain mean bin", () => {
+    // Solid D + Solid R: mean 5 bins to safe, but the opposite-favored
+    // guardrail stores very_competitive with medium confidence.
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 94.44,
+      competitivenessLabel: "very_competitive",
+      currentRating: {
+        asOf: "2026-08-06",
+        method: "outlet_consensus",
+        confidence: "medium",
+        outlets: [
+          { outlet: "inside_elections", rawRating: "Solid Democrat", intensity: 5 },
+          { outlet: "sabato", rawRating: "Safe Republican", intensity: 5 },
+        ],
+      },
+    });
+
+    expect(explanation.parts[1]?.formula).toBe(
+      `IE "Solid Democrat" (d=5) + Sabato "Safe Republican" (d=5) → mean 5 → "very competitive" after consensus guardrails → grade high ${RATING_SCALE}`
+    );
+    expect(explanation.caveat).toBe(
+      "Election analysts disagree on which side is favored here, so the current rating is less certain."
+    );
+  });
+
+  it("caveats a single-outlet rating and keeps the one-term formula", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: 94.44,
+      competitivenessLabel: "safe",
+      currentRating: {
+        asOf: "2026-07-30",
+        method: "outlet_consensus",
+        confidence: "medium",
+        outlets: [{ outlet: "inside_elections", rawRating: "Solid Republican", intensity: 5 }],
+      },
+    });
+
+    expect(explanation.parts[1]).toMatchObject({
+      grade: "Low",
+      stat: "rated safe as of July 30, 2026",
+      detail: "Election analysts currently rate this race one-sided. Rating from Inside Elections.",
+      formula: `IE "Solid Republican" (d=5) → mean 5 → "safe" → grade low ${RATING_SCALE}`,
+    });
+    expect(explanation.caveat).toBe(
+      "The current race rating comes from a single analyst source, so it is less certain."
+    );
+  });
+
+  it("joins the missing-data caveat and the rating caveat when both apply", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 2,
+      representationPowerScore: null,
+      competitivenessLabel: "toss_up",
+      currentRating: {
+        asOf: "2026-08-06",
+        method: "outlet_consensus",
+        confidence: "medium",
+        outlets: [{ outlet: "inside_elections", rawRating: "Toss-up", intensity: 0 }],
+      },
+    });
+
+    expect(explanation.caveat).toBe(
+      'Some data is missing, so this rating is based on partial information and capped at "High". The current race rating comes from a single analyst source, so it is less certain.'
+    );
+  });
+
+  it("keeps uncontested precedence: one candidate ignores the current rating everywhere", () => {
+    const explanation = explain({
+      raceType: "office",
+      candidateCount: 1,
+      representationPowerScore: 94.44,
+      competitivenessLabel: "toss_up",
+      currentRating: {
+        asOf: "2026-08-06",
+        method: "outlet_consensus",
+        confidence: "medium",
+        outlets: [{ outlet: "inside_elections", rawRating: "Toss-up", intensity: 0 }],
+      },
+    });
+
+    expect(explanation.parts[1]).toMatchObject({
+      grade: "None",
+      stat: "only 1 candidate",
+      detail: "One candidate is running unopposed, so votes can't change the outcome.",
+      formula: null,
+    });
+    // The rating did not drive the grade, so neither the how copy nor the
+    // caveat may claim it.
+    expect(explanation.how).toContain("based on past results");
+    expect(explanation.caveat).toBeNull();
+  });
+});

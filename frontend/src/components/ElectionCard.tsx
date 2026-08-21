@@ -282,6 +282,7 @@ function ElectionCard({
   // race has no signals to show.
   const hasSignalChips =
     (election.followed_candidates?.length ?? 0) > 0 ||
+    election.current_competitiveness != null ||
     election.historical_competitiveness !== null ||
     election.has_results ||
     choiceLabel !== null;
@@ -371,7 +372,14 @@ function ElectionCard({
               {election.followed_candidates.length === 1 ? "is" : "are"} running
             </span>
           ) : null}
-          {election.historical_competitiveness ? (
+          {/* Current-cycle rating replaces the historic chip when present —
+              the backend only sends it when the rating drove the grade, and
+              showing both would contradict on races that flipped. */}
+          {election.current_competitiveness ? (
+            <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
+              {election.current_competitiveness.display_label}
+            </span>
+          ) : election.historical_competitiveness ? (
             <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
               {election.historical_competitiveness.display_label}
             </span>

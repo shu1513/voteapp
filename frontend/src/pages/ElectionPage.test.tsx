@@ -55,6 +55,35 @@ describe("ElectionPage", () => {
     expect(await screen.findByText("Election not found")).toBeInTheDocument();
   });
 
+  it("shows the current-cycle rating chip instead of the historic one when both arrive", async () => {
+    stubApiRoutes({ ...ANONYMOUS });
+    renderElection(() =>
+      electionDetail({
+        historical_competitiveness: {
+          display_label: "Historically safe",
+          display_description: "Based on the 2024 Governor result.",
+          source: "MIT_2024",
+          source_url: null,
+          election_year: 2024,
+          margin_percent: 22.4,
+          stale_after_redistricting: false,
+        },
+        current_competitiveness: {
+          display_label: "Currently a toss-up",
+          display_description: "Based on current race ratings from Inside Elections as of August 6, 2026.",
+          competitiveness_label: "toss_up",
+          method: "outlet_consensus",
+          confidence: "medium",
+          as_of: "2026-08-06",
+        },
+      })
+    );
+
+    // Both chips at once would contradict on a race that flipped.
+    expect(await screen.findByText("Currently a toss-up")).toBeInTheDocument();
+    expect(screen.queryByText("Historically safe")).not.toBeInTheDocument();
+  });
+
   it("renders the election header and every candidate", async () => {
     stubApiRoutes({ ...ANONYMOUS });
     renderElection(() => electionDetail());

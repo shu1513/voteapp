@@ -1,5 +1,6 @@
 import type { ElectionRaceType } from "../../types/election.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
+import { binMeanIntensity } from "../competitiveness/currentRaceRatingConsensus.js";
 
 export type VotePowerLabel = "very_low" | "low" | "medium" | "high" | "very_high" | "unknown";
 
@@ -65,10 +66,24 @@ export type VotePowerExplanation = {
   caveat: string | null;
 };
 
+// The current-cycle rating that drove the decisiveness label, when one did.
+// outlet keys are the storage enum ("inside_elections", "sabato"); display
+// names are this module's concern so copy stays consistent across callers.
+export type VotePowerCurrentRating = {
+  asOf: string;
+  method: "outlet_consensus" | "mayoral_rubric";
+  confidence: "high" | "medium";
+  outlets: { outlet: string; rawRating: string; intensity: number }[];
+};
+
 // Extra context that qualifies the explanation copy only — the rating math
 // in calculateVotePower deliberately ignores all of it, so it lives outside
 // VotePowerInput rather than implying the rating reads it.
 export type VotePowerExplanationContext = VotePowerInput & {
+  // Present when competitivenessLabel came from a current race rating rather
+  // than historic margins. The margin fields below stay null/absent then —
+  // the explanation must not mix the two sources.
+  currentRating?: VotePowerCurrentRating | null;
   staleAfterRedistricting?: boolean;
   districtPopulation?: number | null;
   marginPercent?: number | null;
@@ -341,8 +356,14 @@ function factorsFor(input: {
 // The lead deliberately doesn't count the factors: ballot measures add a
 // direct-vote row (usually three rows, two when decisiveness is skipped),
 // so any "two things"/"three things" claim would contradict some panel.
-const HOW_CALCULATED =
-  "Here's what goes into the rating. Representation: how much weight one vote carries here — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on past results and the number of candidates.";
+// Source-dependent tail: decisiveness rests on current analyst ratings when
+// one drove the label, on past results otherwise.
+function howCalculated(currentRatingUsed: boolean): string {
+  const decisivenessBasis = currentRatingUsed
+    ? "current race ratings from election analysts"
+    : "past results";
+  return `Here's what goes into the rating. Representation: how much weight one vote carries here — the smaller the district, the more each vote counts. Decisiveness: how likely this race is to be close, based on ${decisivenessBasis} and the number of candidates.`;
+}
 
 function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -492,9 +513,102 @@ function formatWeight(weight: number): string {
   return `${Math.round(weight * 10000) / 10000}`;
 }
 
+// Short names for the formula row, full names for the prose detail. Unknown
+// outlet keys (a future source) fall back to the raw key rather than lying.
+const RATING_OUTLET_DISPLAY: Record<string, { short: string; full: string }> = {
+  inside_elections: { short: "IE", full: "Inside Elections" },
+  sabato: { short: "Sabato", full: "Sabato's Crystal Ball" },
+};
+
+export function ratingOutletDisplay(outlet: string): { short: string; full: string } {
+  return RATING_OUTLET_DISPLAY[outlet] ?? { short: outlet, full: outlet };
+}
+
+// as_of is a plain YYYY-MM-DD; render it in UTC so the stated date never
+// shifts with the server's timezone.
+export function formatRatingDate(asOf: string): string {
+  const parsed = Date.parse(`${asOf}T00:00:00.000Z`);
+  if (!Number.isFinite(parsed)) {
+    return asOf;
+  }
+  return new Date(parsed).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+function competitivenessLabelText(label: HistoricalContestCompetitivenessLabel): string {
+  return label === "toss_up" ? "toss-up" : label.replace(/_/g, " ");
+}
+
+// Mirrors deriveConsensusLabel's ladder and bins (currentRaceRatingConsensus)
+// the way MARGIN_GRADE_SCALE mirrors classifyHistoricalContestMargin.
+const RATING_GRADE_SCALE =
+  "d: toss-up 0, tilt 2, lean(s) 3, likely 4, solid/safe 5; mean, first match: <1 toss-up, <2.5 very competitive, <3.5 competitive, <4.5 somewhat competitive, otherwise safe; toss-up and very competitive grade high, competitive and somewhat competitive grade average, safe grades low";
+
+// The rating-to-grade pipeline with the real per-outlet observations. When a
+// consensus guardrail (opposite favored sides, or safe requiring all-Solid)
+// moved the label off the plain mean bin, the formula says so instead of
+// rendering an arrow chain the arithmetic alone doesn't produce.
+function currentRatingFormula(input: {
+  decisivenessLevel: "low" | "medium" | "high";
+  competitivenessLabel: HistoricalContestCompetitivenessLabel;
+  currentRating: VotePowerCurrentRating;
+}): string | null {
+  const outlets = input.currentRating.outlets;
+  // mayoral_rubric (v1.1) derives from margins, not an outlet mean — this
+  // formula would misdescribe it, so it degrades to no formula.
+  if (input.currentRating.method !== "outlet_consensus" || outlets.length === 0) {
+    return null;
+  }
+  const mean = outlets.reduce((sum, entry) => sum + entry.intensity, 0) / outlets.length;
+  const meanText = `${Math.round(mean * 100) / 100}`;
+  const labelText = competitivenessLabelText(input.competitivenessLabel);
+  const labelStep =
+    binMeanIntensity(mean) === input.competitivenessLabel
+      ? `mean ${meanText} → "${labelText}"`
+      : `mean ${meanText} → "${labelText}" after consensus guardrails`;
+  const terms = outlets
+    .map((entry) => `${ratingOutletDisplay(entry.outlet).short} "${entry.rawRating}" (d=${entry.intensity})`)
+    .join(" + ");
+  return `${terms} → ${labelStep} → grade ${levelDisplayWord(input.decisivenessLevel)} (${RATING_GRADE_SCALE})`;
+}
+
+// "Inside Elections" / "Inside Elections and Sabato's Crystal Ball".
+function ratingSourceNames(outlets: VotePowerCurrentRating["outlets"]): string {
+  const names = outlets.map((entry) => ratingOutletDisplay(entry.outlet).full);
+  return names.length === 2 ? `${names[0]} and ${names[1]}` : names.join(", ");
+}
+
+function currentRatingPart(input: {
+  decisivenessLevel: "low" | "medium" | "high";
+  competitivenessLabel: HistoricalContestCompetitivenessLabel;
+  currentRating: VotePowerCurrentRating;
+}): VotePowerExplanationPart {
+  const detailByLevel: Record<"low" | "medium" | "high", string> = {
+    high: "Election analysts currently rate this race very close — a small number of votes could decide the winner.",
+    medium: "Election analysts currently rate this race somewhat close.",
+    low: "Election analysts currently rate this race one-sided.",
+  };
+  const sourceSuffix =
+    input.currentRating.outlets.length > 0
+      ? ` Rating from ${ratingSourceNames(input.currentRating.outlets)}.`
+      : "";
+  return {
+    title: "Decisiveness",
+    grade: capitalize(levelDisplayWord(input.decisivenessLevel)),
+    stat: `rated ${competitivenessLabelText(input.competitivenessLabel)} as of ${formatRatingDate(input.currentRating.asOf)}`,
+    detail: `${detailByLevel[input.decisivenessLevel]}${sourceSuffix}`,
+    formula: currentRatingFormula(input),
+  };
+}
+
 function decisivenessPart(input: {
   decisivenessLevel: VotePowerDecisivenessLevel;
   competitivenessLabel: HistoricalContestCompetitivenessLabel | null | undefined;
+  currentRating: VotePowerCurrentRating | null;
   marginPercent: number | null;
   marginElectionYears: number[] | null;
   marginContests: { marginPercent: number; electionYear: number; weight: number }[] | null;
@@ -517,6 +631,17 @@ function decisivenessPart(input: {
       detail: "No past results for this contest yet.",
       formula: null,
     };
+  }
+
+  // A graded level with a current rating in context means the rating drove
+  // the label (uncontested and unknown returned above) — historic margin
+  // copy would misattribute the source.
+  if (input.currentRating && input.competitivenessLabel != null) {
+    return currentRatingPart({
+      decisivenessLevel: input.decisivenessLevel,
+      competitivenessLabel: input.competitivenessLabel,
+      currentRating: input.currentRating,
+    });
   }
 
   const detailByLevel: Record<"low" | "medium" | "high", string> = {
@@ -643,6 +768,19 @@ function explanationCaveatFor(confidence: VotePowerConfidence): string | null {
   }
 }
 
+// A medium-confidence current rating means exactly one of two things (see
+// deriveConsensusLabel): a single outlet rated the race, or the outlets
+// favor opposite sides. Qualifies the copy only — confidenceFor's axis
+// logic never reads the rating.
+function currentRatingCaveat(currentRating: VotePowerCurrentRating | null): string | null {
+  if (!currentRating || currentRating.confidence !== "medium") {
+    return null;
+  }
+  return currentRating.outlets.length > 1
+    ? "Election analysts disagree on which side is favored here, so the current rating is less certain."
+    : "The current race rating comes from a single analyst source, so it is less certain.";
+}
+
 // Deterministic, backend-owned explanation of a computed rating. Parts derive
 // from the same levels the rating used, so the explanation can never drift
 // from the rating logic that produced it.
@@ -667,6 +805,7 @@ export function explainVotePower(input: VotePowerExplanationContext, result: Vot
       decisivenessPart({
         decisivenessLevel: result.decisiveness_level,
         competitivenessLabel: input.competitivenessLabel,
+        currentRating: input.currentRating ?? null,
         marginPercent: input.marginPercent ?? null,
         marginElectionYears: input.marginElectionYears ?? null,
         marginContests: input.marginContests ?? null,
@@ -696,11 +835,24 @@ export function explainVotePower(input: VotePowerExplanationContext, result: Vot
     parts.push(ballotMeasurePart(boostApplied));
   }
 
+  // The current rating only claims the "how" copy when it actually drove a
+  // graded decisiveness level (uncontested and unknown grades never read it).
+  const currentRatingUsed =
+    input.currentRating != null &&
+    !skipDecisiveness &&
+    (result.decisiveness_level === "low" ||
+      result.decisiveness_level === "medium" ||
+      result.decisiveness_level === "high");
+  const caveats = [
+    explanationCaveatFor(result.confidence),
+    currentRatingUsed ? currentRatingCaveat(input.currentRating ?? null) : null,
+  ].filter((caveat): caveat is string => caveat !== null);
+
   return {
-    how: HOW_CALCULATED,
+    how: howCalculated(currentRatingUsed),
     parts,
     result: explanationResultFor(result, boostApplied, skipDecisiveness),
-    caveat: explanationCaveatFor(result.confidence),
+    caveat: caveats.length > 0 ? caveats.join(" ") : null,
   };
 }
 

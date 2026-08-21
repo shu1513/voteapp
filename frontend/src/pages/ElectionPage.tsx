@@ -592,7 +592,20 @@ export function ElectionPage() {
             district above. We can&rsquo;t match an address to an area this small, so this race may not be on your ballot.
           </p>
         ) : null}
-        {data.historical_competitiveness ? (
+        {/* The current-cycle chip replaces the historic one whenever a fresh
+            analyst rating drove the decisiveness grade (the backend only
+            sends current_competitiveness in that case) — showing both would
+            read as a contradiction on races that flipped. */}
+        {data.current_competitiveness ? (
+          <div className="mt-2 flex flex-wrap gap-2 text-xs">
+            <span
+              className="rounded bg-surface px-2 py-0.5 text-ink-soft"
+              title={data.current_competitiveness.display_description}
+            >
+              {data.current_competitiveness.display_label}
+            </span>
+          </div>
+        ) : data.historical_competitiveness ? (
           <div className="mt-2 flex flex-wrap gap-2 text-xs">
             <span className="rounded bg-surface px-2 py-0.5 text-ink-soft">
               {data.historical_competitiveness.display_label}
