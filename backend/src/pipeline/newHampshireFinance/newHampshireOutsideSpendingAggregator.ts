@@ -40,9 +40,15 @@ export type NewHampshireOutsideSpendingAggregationResult = {
 
 type GroupAccumulator = {
   filerEntityId: number;
-  filerName: string;
   supportOppose: NewHampshireSupportOppose;
   amountCents: number;
+};
+
+type FilerNameEvidence = {
+  filerName: string;
+  transactionDate: string;
+  transactionId: number;
+  transactionVersionId: number;
 };
 
 const DEFAULT_MAX_GROUPS = 50;
@@ -133,12 +139,49 @@ function groupKey(filerEntityId: number, supportOppose: NewHampshireSupportOppos
   return `${filerEntityId}\u0000${supportOppose}`;
 }
 
+function compareFilerNameEvidence(
+  row: NewHampshireIndependentExpenditureRow,
+  existing: FilerNameEvidence
+): number {
+  // CFS transactionDate is ISO-formatted; newest included row is best available
+  // evidence when one filer entity appears under multiple display names.
+  return (
+    row.transactionDate.localeCompare(existing.transactionDate) ||
+    row.transactionId - existing.transactionId ||
+    row.transactionVersionId - existing.transactionVersionId ||
+    row.filerName.localeCompare(existing.filerName)
+  );
+}
+
+function rememberFilerName(
+  names: Map<number, FilerNameEvidence>,
+  row: NewHampshireIndependentExpenditureRow
+): void {
+  const existing = names.get(row.filerEntityId);
+  if (existing && compareFilerNameEvidence(row, existing) <= 0) return;
+  names.set(row.filerEntityId, {
+    filerName: row.filerName,
+    transactionDate: row.transactionDate,
+    transactionId: row.transactionId,
+    transactionVersionId: row.transactionVersionId,
+  });
+}
+
 function toGroups(input: {
   groups: Iterable<GroupAccumulator>;
+  filerNames: ReadonlyMap<number, FilerNameEvidence>;
   maxGroups: number;
   sourceUrl: string | null;
 }): NewHampshireOutsideSpendingGroup[] {
+  const counts: Record<NewHampshireSupportOppose, number> = { support: 0, oppose: 0 };
   return [...input.groups]
+    .map((group) => {
+      const filerName = input.filerNames.get(group.filerEntityId)?.filerName;
+      if (!filerName) {
+        throw new Error(`Missing New Hampshire IE filer name for entity ${group.filerEntityId}`);
+      }
+      return { ...group, filerName };
+    })
     .sort(
       (left, right) =>
         right.amountCents - left.amountCents ||
@@ -146,7 +189,11 @@ function toGroups(input: {
         left.filerName.localeCompare(right.filerName) ||
         left.filerEntityId - right.filerEntityId
     )
-    .slice(0, input.maxGroups)
+    .filter((group) => {
+      if (counts[group.supportOppose] >= input.maxGroups) return false;
+      counts[group.supportOppose] += 1;
+      return true;
+    })
     .map((group) => ({
       filerEntityId: group.filerEntityId,
       filerName: group.filerName,
@@ -170,6 +217,7 @@ export function aggregateNewHampshireOutsideSpending(
     input.expenditureRows
   );
   const groups = new Map<string, GroupAccumulator>();
+  const filerNames = new Map<number, FilerNameEvidence>();
   let supportTotalCents = 0;
   let opposeTotalCents = 0;
   let matchedTargetRowCount = 0;
@@ -196,6 +244,7 @@ export function aggregateNewHampshireOutsideSpending(
 
     const supportOppose: NewHampshireSupportOppose =
       row.stance === "Support" ? "support" : "oppose";
+    rememberFilerName(filerNames, row);
     includedRowCount += 1;
     if (supportOppose === "support") supportTotalCents += amountCents;
     else opposeTotalCents += amountCents;
@@ -208,13 +257,12 @@ export function aggregateNewHampshireOutsideSpending(
     }
     groups.set(key, {
       filerEntityId: row.filerEntityId,
-      filerName: row.filerName,
       supportOppose,
       amountCents,
     });
   }
 
-  const grouped = toGroups({ groups: groups.values(), maxGroups, sourceUrl });
+  const grouped = toGroups({ groups: groups.values(), filerNames, maxGroups, sourceUrl });
   return {
     summary:
       grouped.length > 0

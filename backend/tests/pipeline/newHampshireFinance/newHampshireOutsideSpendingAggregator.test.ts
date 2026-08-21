@@ -167,7 +167,7 @@ describe("newHampshireOutsideSpendingAggregator", () => {
     });
   });
 
-  it("limits displayed groups without changing totals", () => {
+  it("limits displayed groups per direction without changing totals", () => {
     const result = aggregateNewHampshireOutsideSpending({
       candidateAliases: ["Sample Candidate"],
       electionYear: 2026,
@@ -181,36 +181,78 @@ describe("newHampshireOutsideSpendingAggregator", () => {
           filerName: "Bigger Committee",
           transactionAmount: 250,
         }),
+        expenditure({
+          transactionId: 3,
+          filerReportId: 12,
+          filerEntityId: 777,
+          filerName: "Opposing Committee",
+          transactionAmount: 200,
+          stance: "Oppose",
+        }),
       ],
     });
 
     expect(result.summary).toMatchObject({
       supportTotal: 350,
-      opposeTotal: 0,
-      groups: [{ filerEntityId: 999, amount: 250 }],
+      opposeTotal: 200,
+      groups: [
+        { filerEntityId: 999, supportOppose: "support", amount: 250 },
+        { filerEntityId: 777, supportOppose: "oppose", amount: 200 },
+      ],
     });
   });
 
-  it("uses filer entity ID, not display name, as spender identity", () => {
-    const result = aggregateNewHampshireOutsideSpending({
-      candidateAliases: ["Sample Candidate"],
-      electionYear: 2026,
-      expenditureRows: [
-        expenditure({ transactionAmount: 100 }),
-        expenditure({ transactionId: 2, filerReportId: 11, transactionAmount: 50 }),
-        expenditure({
-          transactionId: 3,
-          filerReportId: 12,
-          filerEntityId: 999,
-          transactionAmount: 25,
-        }),
-      ],
-    });
+  it("uses filer entity ID and the latest transaction name independent of row order", () => {
+    const rows = [
+      expenditure({
+        filerName: "Legacy Committee Name",
+        transactionAmount: 100,
+        transactionDate: "2026-07-01T00:00:00",
+      }),
+      expenditure({
+        transactionId: 2,
+        filerReportId: 11,
+        filerName: "Current Committee Name",
+        transactionAmount: 50,
+        transactionDate: "2026-08-01T00:00:00",
+        stance: "Oppose",
+      }),
+      expenditure({
+        transactionId: 3,
+        filerReportId: 12,
+        filerEntityId: 999,
+        filerName: "Current Committee Name",
+        transactionAmount: 25,
+      }),
+    ];
+    const aggregate = (expenditureRows: readonly NewHampshireIndependentExpenditureRow[]) =>
+      aggregateNewHampshireOutsideSpending({
+        candidateAliases: ["Sample Candidate"],
+        electionYear: 2026,
+        expenditureRows,
+      }).summary?.groups;
 
-    expect(result.summary?.groups).toEqual([
-      expect.objectContaining({ filerEntityId: 31342, amount: 150 }),
-      expect.objectContaining({ filerEntityId: 999, amount: 25 }),
-    ]);
+    const expected = [
+      expect.objectContaining({
+        filerEntityId: 31342,
+        filerName: "Current Committee Name",
+        supportOppose: "support",
+        amount: 100,
+      }),
+      expect.objectContaining({
+        filerEntityId: 31342,
+        filerName: "Current Committee Name",
+        supportOppose: "oppose",
+        amount: 50,
+      }),
+      expect.objectContaining({
+        filerEntityId: 999,
+        filerName: "Current Committee Name",
+        amount: 25,
+      }),
+    ];
+    expect(aggregate(rows)).toEqual(expected);
+    expect(aggregate([...rows].reverse())).toEqual(expected);
   });
 
   it("fails closed on inexact TIE contract, unknown stance, or duplicate identity", () => {
