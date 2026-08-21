@@ -102,7 +102,9 @@ function labelIndex(label: CompetitivenessLabel): number {
   return COMPETITIVENESS_LABELS.indexOf(label);
 }
 
-function binMeanIntensity(mean: number): CompetitivenessLabel {
+// Exported for the vote-power explanation, which re-runs the bin to decide
+// whether the mean alone produced the stored label or a guardrail moved it.
+export function binMeanIntensity(mean: number): CompetitivenessLabel {
   if (mean < 1) {
     return "toss_up";
   }
