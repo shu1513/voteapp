@@ -31,15 +31,26 @@ function redirect(location: string): MissouriMecResponse {
   return { status: 302, contentType: "text/html", contentDisposition: null, redirectLocation: location, body: Buffer.alloc(0), text: () => "" };
 }
 
+function emptyTransactionExportRedirect(filename: string): MissouriMecResponse {
+  return {
+    status: 302,
+    contentType: "text/html",
+    contentDisposition: `attachment;filename=${filename}`,
+    redirectLocation: "/mec/Error.aspx?aspxerrorpath=/MEC/Campaign_Finance/CF12_ContrExpendResults.aspx",
+    body: Buffer.from("Object moved"),
+    text: () => "Object moved",
+  };
+}
+
 describe("acquireMissouriMecCandidateFinanceArtifacts", () => {
   it("walks WebForms reports + exact-MECID exports and installs a complete cache", async () => {
     const cacheDir = await mkdtemp(join(tmpdir(), "mo-acquire-"));
     const get = vi.fn()
       .mockResolvedValueOnce(response(committee))
       .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response(`${state}<table id="ContentPlaceHolder_grvContrSearch"></table>`))
       .mockResolvedValueOnce(response(state))
-      .mockResolvedValueOnce(response(state))
-      .mockResolvedValueOnce(response(state));
+      .mockResolvedValueOnce(response(`${state}<table id="ContentPlaceHolder_grvExpendSearch"></table>`));
     const postForm = vi.fn()
       .mockResolvedValueOnce(response(reports))
       .mockResolvedValueOnce(response(inventory))
@@ -63,6 +74,60 @@ describe("acquireMissouriMecCandidateFinanceArtifacts", () => {
     expect(postForm).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
       "ctl00$ctl00$ContentPlaceHolder$ContentPlaceHolder1$grvReportOutside$ctl02$ImgRptRight.x": "1",
     }), expect.any(Object));
+  });
+
+  it("stores an empty expenditure artifact for the portal's exact zero-grid export failure", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "mo-acquire-empty-expenditures-"));
+    const get = vi.fn()
+      .mockResolvedValueOnce(response(committee))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response(`${state}<table id="ContentPlaceHolder_grvContrSearch"></table>`))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response(state));
+    const postForm = vi.fn()
+      .mockResolvedValueOnce(response(reports))
+      .mockResolvedValueOnce(response(inventory))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response("CF12_ContrExpendResults.aspx"))
+      .mockResolvedValueOnce(response(table(MISSOURI_MEC_CONTRIBUTION_EXPORT_HEADER), "application/vnd.ms-excel"))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response("CF12_ContrExpendResults.aspx"))
+      .mockResolvedValueOnce(emptyTransactionExportRedirect("Expenditure_Search.xls"));
+
+    await expect(acquireMissouriMecCandidateFinanceArtifacts({
+      mecid: "c263985", year: 2026, cacheDir, session: { get, postForm } as MissouriMecSession,
+      now: new Date("2026-08-20T00:00:00Z"),
+    })).resolves.toEqual({
+      mecid: "C263985", year: 2026, reportCount: 1, contributionCount: 0, expenditureCount: 0,
+    });
+  });
+
+  it("still rejects the same export failure when an expenditure result grid exists", async () => {
+    const cacheDir = await mkdtemp(join(tmpdir(), "mo-acquire-broken-expenditures-"));
+    const get = vi.fn()
+      .mockResolvedValueOnce(response(committee))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response(`${state}<table id="ContentPlaceHolder_grvContrSearch"></table>`))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response(`${state}<table id="ContentPlaceHolder_grvExpendSearch"></table>`));
+    const postForm = vi.fn()
+      .mockResolvedValueOnce(response(reports))
+      .mockResolvedValueOnce(response(inventory))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response("CF12_ContrExpendResults.aspx"))
+      .mockResolvedValueOnce(response(table(MISSOURI_MEC_CONTRIBUTION_EXPORT_HEADER), "application/vnd.ms-excel"))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response(state))
+      .mockResolvedValueOnce(response("CF12_ContrExpendResults.aspx"))
+      .mockResolvedValueOnce(emptyTransactionExportRedirect("Expenditure_Search.xls"));
+
+    await expect(acquireMissouriMecCandidateFinanceArtifacts({
+      mecid: "c263985", year: 2026, cacheDir, session: { get, postForm } as MissouriMecSession,
+      now: new Date("2026-08-20T00:00:00Z"),
+    })).rejects.toThrow("Unexpected Missouri MEC expenditures export content type: text/html");
   });
 });
 

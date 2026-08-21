@@ -10,6 +10,8 @@ import {
 } from "./missouriMecClient.js";
 import { storeMissouriMecArtifact, storeMissouriMecOutsideSpendingArtifacts } from "./missouriMecArtifactCache.js";
 import {
+  MISSOURI_MEC_CONTRIBUTION_EXPORT_HEADER,
+  MISSOURI_MEC_EXPENDITURE_EXPORT_HEADER,
   parseMissouriMecCommitteeInfo,
   parseMissouriMecCommitteeIdentity,
   parseMissouriMecCommitteeActivityRows,
@@ -23,6 +25,8 @@ import {
 
 const SEARCH = MISSOURI_MEC_SEARCH_FIELD_PREFIX;
 const RESULTS = MISSOURI_MEC_RESULTS_FIELD_PREFIX;
+const EMPTY_TRANSACTION_EXPORT_REDIRECT =
+  "/mec/Error.aspx?aspxerrorpath=/MEC/Campaign_Finance/CF12_ContrExpendResults.aspx";
 
 function hidden(html: string, url: string): Record<string, string> {
   const fields = parseMissouriMecHiddenFields(html);
@@ -71,7 +75,26 @@ async function fetchTransactionExport(input: {
     ...hidden(results, resultsUrl),
     [`${RESULTS}btnExport`]: "Export Results to Excel",
   }, { referer: resultsUrl });
-  if (!(exported.contentType ?? "").includes("application/vnd.ms-excel")) {
+
+  const gridName = input.mode === "contributions" ? "grvContrSearch" : "grvExpendSearch";
+  const exportFilename = input.mode === "contributions" ? "Contribution_Search.xls" : "Expenditure_Search.xls";
+  const header = input.mode === "contributions"
+    ? MISSOURI_MEC_CONTRIBUTION_EXPORT_HEADER
+    : MISSOURI_MEC_EXPENDITURE_EXPORT_HEADER;
+  const resultGridPresent = new RegExp(`\\bid="[^"]*${gridName}(?:"|_)`, "i").test(results);
+  const knownEmptyExportFailure =
+    !resultGridPresent &&
+    exported.status === 302 &&
+    (exported.contentType ?? "").toLowerCase().includes("text/html") &&
+    (exported.contentDisposition ?? "").toLowerCase().includes(exportFilename.toLowerCase()) &&
+    exported.redirectLocation?.toLowerCase() === EMPTY_TRANSACTION_EXPORT_REDIRECT.toLowerCase();
+  if (knownEmptyExportFailure) {
+    const body = `<table><tr>${header.map((value) => `<th>${value}</th>`).join("")}</tr></table>`;
+    if (input.mode === "contributions") parseMissouriMecContributionExport(body);
+    else parseMissouriMecExpenditureExport(body);
+    return { body, sourceUrl: searchUrl };
+  }
+  if (exported.status !== 200 || !(exported.contentType ?? "").includes("application/vnd.ms-excel")) {
     throw new Error(`Unexpected Missouri MEC ${input.mode} export content type: ${exported.contentType}`);
   }
   const body = exported.text();

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   normalizeMissouriMecElectionDate,
   parseMissouriMecCandidateExport,
+  parseMissouriMecCandidateExportWithDiagnostics,
   parseMissouriMecCommitteeIdentity,
   parseMissouriMecCommitteeActivityRows,
   parseMissouriMecCommitteeInfo,
@@ -44,6 +45,18 @@ describe("missouriMecParsers", () => {
     ).toThrow("Unexpected Missouri MEC candidate export header");
   });
 
+  it("counts but excludes candidate exemption registrations from committee resolution", () => {
+    const html = `<table><tr>${[
+      "MECID", "Committee Name", "Candidate Name", "Party", "Office Sought", "Status",
+    ].map((value) => `<th>${value}</th>`).join("")}</tr><tr>${[
+      "C264258E", "Jim Kalberloh", "Jim Kalberloh", "", "State Representative District 45", "Terminated",
+    ].map((value) => `<td>${value}</td>`).join("")}</tr></table>`;
+    expect(parseMissouriMecCandidateExportWithDiagnostics(html)).toEqual({
+      rows: [], sourceRowCount: 1, excludedExemptionRegistrationCount: 1,
+    });
+    expect(parseMissouriMecCandidateExport(html)).toEqual([]);
+  });
+
   it("parses aligned Committee Info election-history evidence", () => {
     const html = `
       <span id="ContentPlaceHolder_ContentPlaceHolder1_lblMECID">C221944</span>
@@ -78,6 +91,23 @@ describe("missouriMecParsers", () => {
         },
       ],
       sourceUrl: "https://www.mec.mo.gov/MEC/Campaign_Finance/CommInfo.aspx?MECID=C221944",
+    });
+  });
+
+  it("keeps old election-history rows whose source subdivision is blank", () => {
+    const html = `
+      <span id="x_lblMECID">C180076</span><span id="x_lblCommName">Example Committee</span><span id="x_lblCandName">Jane Doe</span>
+      <span id="x_gvElecHistory_lblElecYear_0">11/3/2026</span>
+      <span id="x_gvElecHistory_lblElectionType_0">General Election</span>
+      <span id="x_gvElecHistory_lblSub_0">State Representative</span>
+      <span id="x_gvElecHistory_lblPolSub_0">Missouri House of Representatives</span>
+      <span id="x_gvElecHistory_lblElecYear_1">11/6/2018</span>
+      <span id="x_gvElecHistory_lblElectionType_1">General Election</span>
+      <span id="x_gvElecHistory_lblSub_1">Circuit Judge</span>
+      <span id="x_gvElecHistory_lblPolSub_1"></span>
+    `;
+    expect(parseMissouriMecCommitteeInfo(html).electionHistory[1]).toEqual({
+      electionDate: "2018-11-06", electionType: "General Election", office: "Circuit Judge", politicalSubdivision: "",
     });
   });
 
