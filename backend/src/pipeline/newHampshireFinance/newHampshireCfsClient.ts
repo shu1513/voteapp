@@ -11,6 +11,7 @@ export const NEW_HAMPSHIRE_CFS_API_BASE_URL = "https://cfsapi.sos.nh.gov/api";
 export const NEW_HAMPSHIRE_CFS_ENDPOINTS = {
   bulkExport: "ExportData/GetExportPublicDownloadData",
   electionCycles: "Lookup/GetElectionLookupData",
+  filingEntities: "PublicFilerDetails/GetFilingEntityDetails",
   receipts: "PublicTransactionDetails/GetPublicContributionDetails",
   expenditures: "PublicTransactionDetails/GetPublicExpenditureDetails",
 } as const;
@@ -60,6 +61,26 @@ export type NewHampshireElectionCycle = {
   value: number;
   name: string;
   dueDate: string | null;
+};
+
+export type NewHampshireFilingEntityRow = {
+  registrationGuid: string;
+  filingEntityId: number;
+  filerName: string;
+  candidateName: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  committeeName: string | null;
+  filerTypeCode: string;
+  filerSubTypeCode: string | null;
+  filerSubTypeName: string | null;
+  officeName: string | null;
+  county: string | null;
+  district: string | null;
+  electionCycleId: number;
+  electionYear: number;
+  electionCycle: string;
+  status: string;
 };
 
 export type NewHampshireReceiptRow = {
@@ -116,6 +137,12 @@ export type NewHampshireReceiptSearchInput = {
   pageNumber?: number;
   pageSize?: number;
   filerName: string;
+  electionCycleId: number;
+};
+
+export type NewHampshireFilingEntitySearchInput = {
+  pageNumber?: number;
+  pageSize?: number;
   electionCycleId: number;
 };
 
@@ -354,6 +381,29 @@ function parseReceiptRow(value: unknown): NewHampshireReceiptRow {
   };
 }
 
+function parseFilingEntityRow(value: unknown): NewHampshireFilingEntityRow {
+  const row = objectValue(value, "filing-entity row");
+  return {
+    registrationGuid: requiredString(row.guid, "filing-entity guid"),
+    filingEntityId: requiredInteger(row.filerEntityId, "filing-entity filerEntityId"),
+    filerName: requiredString(row.filerName, "filing-entity filerName"),
+    candidateName: nullableString(row.firstnameLastname),
+    firstName: nullableString(row.firstName),
+    lastName: nullableString(row.lastName),
+    committeeName: nullableString(row.committeeName),
+    filerTypeCode: requiredString(row.filerTypeCode, "filing-entity filerTypeCode"),
+    filerSubTypeCode: nullableString(row.filerSubTypeCode),
+    filerSubTypeName: nullableString(row.filerSubTypeName),
+    officeName: nullableString(row.officeSoughtName),
+    county: nullableString(row.town),
+    district: nullableString(row.districtName),
+    electionCycleId: requiredInteger(row.electionId, "filing-entity electionId"),
+    electionYear: requiredInteger(row.electionYear, "filing-entity electionYear"),
+    electionCycle: requiredString(row.electionCycle, "filing-entity electionCycle"),
+    status: requiredString(row.filerStatus, "filing-entity filerStatus"),
+  };
+}
+
 function parseIndependentExpenditureRow(value: unknown): NewHampshireIndependentExpenditureRow {
   const row = objectValue(value, "independent-expenditure row");
   const filerReportId = nullablePositiveInteger(row.filerReportId, "IE filerReportId");
@@ -529,6 +579,44 @@ export async function getNewHampshireReceiptPage(
   return parsePage(envelope, parseReceiptRow);
 }
 
+export async function getNewHampshireFilingEntityPage(
+  input: NewHampshireFilingEntitySearchInput,
+  options?: NewHampshireCfsClientOptions
+): Promise<NewHampshireCfsPage<NewHampshireFilingEntityRow>> {
+  const envelope = await postJson(
+    NEW_HAMPSHIRE_CFS_ENDPOINTS.filingEntities,
+    {
+      pageNumber: requirePositiveInteger(input.pageNumber ?? 1, "New Hampshire CFS page number"),
+      pageSize: requirePageSize(input.pageSize),
+      sortBy: "FilerName",
+      sortType: "asc",
+      filerTypeCode: "",
+      filerName: null,
+      filingEntityId: null,
+      politicalPartyCode: null,
+      OfficeSought: null,
+      CommitteeMakingIE: null,
+      filerSubTypeCode: null,
+      totalRaisedMax: null,
+      totalRaisedMin: null,
+      totalSpentMax: null,
+      totalSpentMin: null,
+      balanceFundsMax: null,
+      balanceFundsMin: null,
+      accountStatus: null,
+      filerSearchTypeCode: null,
+      transactionSourceTypeCode: null,
+      electionCycle: String(
+        requirePositiveInteger(input.electionCycleId, "New Hampshire election-cycle ID")
+      ),
+      county: null,
+      officeType: null,
+    },
+    options
+  );
+  return parsePage(envelope, parseFilingEntityRow);
+}
+
 export async function getNewHampshireIndependentExpenditurePage(
   input: NewHampshireIndependentExpenditureSearchInput,
   options?: NewHampshireCfsClientOptions
@@ -589,6 +677,18 @@ export async function getAllNewHampshireReceipts(
   return getAllPages({
     pageSize,
     getPage: (pageNumber) => getNewHampshireReceiptPage({ ...input, pageNumber, pageSize }, options),
+  });
+}
+
+export async function getAllNewHampshireFilingEntities(
+  input: Omit<NewHampshireFilingEntitySearchInput, "pageNumber">,
+  options?: NewHampshireCfsClientOptions
+): Promise<NewHampshireFilingEntityRow[]> {
+  const pageSize = requirePageSize(input.pageSize);
+  return getAllPages({
+    pageSize,
+    getPage: (pageNumber) =>
+      getNewHampshireFilingEntityPage({ ...input, pageNumber, pageSize }, options),
   });
 }
 

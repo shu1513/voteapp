@@ -6,6 +6,7 @@ import {
   downloadNewHampshireCfsBulkCsv,
   getAllNewHampshireReceipts,
   getNewHampshireElectionCycles,
+  getNewHampshireFilingEntityPage,
   getNewHampshireIndependentExpenditurePage,
   getNewHampshireReceiptPage,
   NewHampshireCfsClientError,
@@ -55,7 +56,7 @@ describe("New Hampshire CFS Phase 0", () => {
     expect(() => parseNewHampshireCurrencyCents("12.345")).toThrow("Invalid New Hampshire CFS currency");
   });
 
-  it("posts the official cycle, receipt, IE, and bulk request contracts", async () => {
+  it("posts the official cycle, filing-entity, receipt, IE, and bulk request contracts", async () => {
     const cyclesJson = await fixture("election-cycles-sanitized.json");
     const receiptJson = await fixture("receipt-amendments-sanitized.json");
     const ieJson = await fixture("independent-expenditures-sanitized.json");
@@ -67,6 +68,97 @@ describe("New Hampshire CFS Phase 0", () => {
       { value: 27, name: "2024 Election Cycle", dueDate: "2024-11-05T00:00:00" },
     ]);
     expect(bodyOf(cycleFetch)).toEqual({ key: "" });
+
+    const filingEntityFetch = vi.fn().mockResolvedValue(
+      response(
+        JSON.stringify({
+          data: {
+            items: [
+              {
+                guid: "bc20d4a3-6458-47f9-ad86-075f1231ca36",
+                filerEntityId: 207787,
+                filerName: "Friends of Cindy Rosenwald",
+                firstnameLastname: "Cindy Rosenwald",
+                firstName: "Cindy",
+                lastName: "Rosenwald",
+                committeeName: "Friends of Cindy Rosenwald",
+                filerTypeCode: "PAC",
+                filerSubTypeCode: "PACCC",
+                filerSubTypeName: "Candidate Committee",
+                officeSoughtName: "State Senate",
+                town: null,
+                districtName: "13",
+                electionId: 110,
+                electionYear: 2026,
+                electionCycle: "2026 Election Cycle",
+                filerStatus: "Active",
+              },
+            ],
+            totalItems: 1,
+          },
+          succeeded: true,
+          error: null,
+        }),
+        "application/json"
+      )
+    ) as unknown as typeof fetch;
+    await expect(
+      getNewHampshireFilingEntityPage(
+        { electionCycleId: 110, pageNumber: 2, pageSize: 200 },
+        { fetchImpl: filingEntityFetch }
+      )
+    ).resolves.toEqual({
+      items: [
+        {
+          registrationGuid: "bc20d4a3-6458-47f9-ad86-075f1231ca36",
+          filingEntityId: 207787,
+          filerName: "Friends of Cindy Rosenwald",
+          candidateName: "Cindy Rosenwald",
+          firstName: "Cindy",
+          lastName: "Rosenwald",
+          committeeName: "Friends of Cindy Rosenwald",
+          filerTypeCode: "PAC",
+          filerSubTypeCode: "PACCC",
+          filerSubTypeName: "Candidate Committee",
+          officeName: "State Senate",
+          county: null,
+          district: "13",
+          electionCycleId: 110,
+          electionYear: 2026,
+          electionCycle: "2026 Election Cycle",
+          status: "Active",
+        },
+      ],
+      totalItems: 1,
+    });
+    expect(String(vi.mocked(filingEntityFetch).mock.calls[0]?.[0])).toContain(
+      "PublicFilerDetails/GetFilingEntityDetails"
+    );
+    expect(bodyOf(filingEntityFetch)).toEqual({
+      pageNumber: 2,
+      pageSize: 200,
+      sortBy: "FilerName",
+      sortType: "asc",
+      filerTypeCode: "",
+      filerName: null,
+      filingEntityId: null,
+      politicalPartyCode: null,
+      OfficeSought: null,
+      CommitteeMakingIE: null,
+      filerSubTypeCode: null,
+      totalRaisedMax: null,
+      totalRaisedMin: null,
+      totalSpentMax: null,
+      totalSpentMin: null,
+      balanceFundsMax: null,
+      balanceFundsMin: null,
+      accountStatus: null,
+      filerSearchTypeCode: null,
+      transactionSourceTypeCode: null,
+      electionCycle: "110",
+      county: null,
+      officeType: null,
+    });
 
     const receiptFetch = vi.fn().mockResolvedValue(response(receiptJson, "application/json")) as unknown as typeof fetch;
     const receiptPage = await getNewHampshireReceiptPage(
