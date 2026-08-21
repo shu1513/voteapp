@@ -1,12 +1,18 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  COMPETITIVENESS_LABELS,
+  HISTORICAL_CONTEST_COMPETITIVENESS_LABELS,
   calculateHistoricalContestMargin,
   classifyHistoricalContestMargin,
   roundHistoricalContestMarginPercent,
 } from "../../../src/pipeline/competitiveness/competitivenessLabels.js";
 
 describe("competitivenessLabels", () => {
+  it("keeps the historical label export as an alias of the shared enum", () => {
+    expect(HISTORICAL_CONTEST_COMPETITIVENESS_LABELS).toBe(COMPETITIVENESS_LABELS);
+  });
+
   it("rounds historical contest margins to two decimals", () => {
     expect(roundHistoricalContestMarginPercent(0)).toBe(0);
     expect(roundHistoricalContestMarginPercent(1.234)).toBe(1.23);

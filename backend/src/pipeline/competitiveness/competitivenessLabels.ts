@@ -1,4 +1,6 @@
-export const HISTORICAL_CONTEST_COMPETITIVENESS_LABELS = [
+// Shared by historical margins and current race ratings — one label enum,
+// ordered most-competitive first, so either source can drive decisiveness.
+export const COMPETITIVENESS_LABELS = [
   "toss_up",
   "very_competitive",
   "competitive",
@@ -6,8 +8,11 @@ export const HISTORICAL_CONTEST_COMPETITIVENESS_LABELS = [
   "safe",
 ] as const;
 
-export type HistoricalContestCompetitivenessLabel =
-  (typeof HISTORICAL_CONTEST_COMPETITIVENESS_LABELS)[number];
+export type CompetitivenessLabel = (typeof COMPETITIVENESS_LABELS)[number];
+
+export const HISTORICAL_CONTEST_COMPETITIVENESS_LABELS = COMPETITIVENESS_LABELS;
+
+export type HistoricalContestCompetitivenessLabel = CompetitivenessLabel;
 
 export type HistoricalContestMarginInput = {
   winnerVotes: number;
