@@ -125,6 +125,17 @@ export async function validateCurrentRaceRatingSourceUrls(
       });
       continue;
     }
+    // The 403 allowance was granted off the ORIGINAL host, but the verifier
+    // applies it to the final response — so an IE URL redirecting to some
+    // other host's 403 would otherwise pass. The exception is only valid
+    // when the host that actually answered 403 is Inside Elections.
+    if (check.verification.status === 403 && !allow403For(check.verification.finalUrl)) {
+      failed.push({
+        url: check.entry.url,
+        reason: `redirect target ${check.verification.finalUrl} returned 403, and only insideelections.com may answer 403`,
+      });
+      continue;
+    }
     verifications.push({
       url: check.entry.url,
       finalUrl: check.verification.finalUrl,

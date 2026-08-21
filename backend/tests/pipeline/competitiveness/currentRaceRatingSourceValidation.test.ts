@@ -128,6 +128,30 @@ describe("validateCurrentRaceRatingSourceUrls", () => {
     }
   });
 
+  it("fails when a redirect lands on a non-IE host that answered 403", async () => {
+    // The 403 allowance is granted off the original host, but the verifier
+    // applies it to the final response — an IE source_url redirecting to a
+    // blocked-elsewhere page must not pass as reachable_403.
+    const ieSourcePayload = payload();
+    ieSourcePayload.ratings[1]!.source_url = "https://insideelections.com/ratings/president";
+    verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) =>
+      url === "https://insideelections.com/ratings/president"
+        ? reachable(url, { finalUrl: "https://centerforpolitics.org/blocked", status: 403 })
+        : reachable(url, { status: url.includes("insideelections") ? 403 : 200 })
+    );
+
+    const result = await validateCurrentRaceRatingSourceUrls(ieSourcePayload, { timeoutMs: 90_000 });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.failedUrls).toEqual([
+        {
+          url: "https://insideelections.com/ratings/president",
+          reason: expect.stringContaining("only insideelections.com may answer 403"),
+        },
+      ]);
+    }
+  });
+
   it("fails a source url whose redirect target is banned", async () => {
     verifyHttpUrlReachabilityMock.mockImplementation(async (url: string) =>
       url === WIKI_URL

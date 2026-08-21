@@ -103,8 +103,10 @@ describe("loadCurrentRaceRatingContexts", () => {
         : null
     );
 
+    // Uppercase spelling of the same UUID must still map to the DB's
+    // lowercase id text.
     const contexts = await loadCurrentRaceRatingContexts({ query } as never, [
-      SENATE_ID,
+      SENATE_ID.toUpperCase(),
       DC_HOUSE_ID,
       SENATE_ID,
     ]);
@@ -112,6 +114,11 @@ describe("loadCurrentRaceRatingContexts", () => {
     // Only office elections are eligible for a race rating.
     expect(query.mock.calls[0]?.[0]).toContain("e.race_type = 'office'");
     expect(query.mock.calls[0]?.[1]).toEqual([[SENATE_ID, DC_HOUSE_ID]]);
+    // ORDER BY must sort by the computed display name, not the bare input
+    // column (a blank display_name would otherwise sort as empty string).
+    expect(query.mock.calls[1]?.[0]).toContain(
+      "ORDER BY ce.election_id,\n        lower(COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name))),\n        ce.id"
+    );
 
     expect(contexts).toHaveLength(2);
     const senate = contexts[0]!;

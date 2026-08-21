@@ -79,7 +79,12 @@ export async function loadCurrentRaceRatingContexts(
   db: Queryable,
   electionIds: readonly string[]
 ): Promise<CurrentRaceRatingResearchContext[]> {
-  const ids = [...new Set(electionIds.map((id) => id.trim()).filter((id) => id.length > 0))];
+  // Lowercase like every other id entry point: Postgres accepts uppercase
+  // UUID input (the ::uuid cast) but returns lowercase text, so an uppercase
+  // id would silently drop its context at the electionById lookup.
+  const ids = [
+    ...new Set(electionIds.map((id) => id.trim().toLowerCase()).filter((id) => id.length > 0)),
+  ];
   if (ids.length === 0) {
     return [];
   }
@@ -122,7 +127,12 @@ export async function loadCurrentRaceRatingContexts(
         ON c.id = ce.candidate_id
       WHERE ce.election_id = ANY($1::uuid[])
         AND c.deleted_at IS NULL
-      ORDER BY ce.election_id, lower(display_name), ce.id
+      -- The COALESCE is repeated because an ORDER BY expression resolves
+      -- bare display_name to the input column c.display_name, so fallback
+      -- names (blank display_name) would sort as empty strings.
+      ORDER BY ce.election_id,
+        lower(COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name))),
+        ce.id
     `,
     [ids]
   );
