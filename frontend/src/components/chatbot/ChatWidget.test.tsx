@@ -3,11 +3,12 @@ import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   ChatWidget,
+  citedElectionContext,
   contextFromPathname,
   followUpQuestions,
   isChatWidgetHidden,
   reportTargetFromResults,
-  starterQuestions,
+  STARTER_QUESTIONS,
 } from "./ChatWidget";
 import { renderRoutes } from "../../test/render";
 import { ME_UNVERIFIED, ME_VERIFIED } from "../../test/fixtures";
@@ -92,22 +93,62 @@ describe("reportTargetFromResults", () => {
   });
 });
 
-describe("starterQuestions", () => {
-  it("tunes suggestions to the page being viewed", () => {
-    // Candidate pages get the generic chips: profile/record/finance chips
-    // were removed by request — those answers are already on the page.
-    expect(starterQuestions({ kind: "candidate", id: "x" })).toEqual([
-      "What can you do?",
-      "Which races affect issues I care about?",
-    ]);
-    expect(starterQuestions({ kind: "election", id: "x" })).toContain("Who is running in this election?");
-    // Exact list on purpose: the generic chips are deliberate product copy
-    // (the ballot and election-date chips were removed by request).
-    expect(starterQuestions(null)).toEqual(["What can you do?", "Which races affect issues I care about?"]);
+describe("STARTER_QUESTIONS", () => {
+  it("is the exact generic pair — no page-specific chips", () => {
+    // Exact list on purpose: deliberate product copy. Candidate chips
+    // (#767) and election chips (2026-08-21) were both removed by request —
+    // those answers are already on their pages.
+    expect(STARTER_QUESTIONS).toEqual(["What can you do?", "Which races affect issues I care about?"]);
+  });
+});
+
+describe("citedElectionContext", () => {
+  it("returns the single cited election, null for zero or several", () => {
+    const one = {
+      ...RETRIEVAL_RESPONSE,
+      results: [
+        { title: "E", url: "/elections/11111111-1111-4111-9111-111111111111", snippet: "", source_type: "election" },
+      ],
+    };
+    expect(citedElectionContext(one)).toEqual({ kind: "election", id: "11111111-1111-4111-9111-111111111111" });
+    // No election cited at all.
+    expect(citedElectionContext(RETRIEVAL_RESPONSE)).toBeNull();
+    // Two DISTINCT elections — ambiguous.
+    expect(
+      citedElectionContext({
+        ...RETRIEVAL_RESPONSE,
+        results: [
+          ...one.results,
+          { title: "F", url: "/elections/22222222-2222-4222-9222-222222222222", snippet: "", source_type: "election" },
+        ],
+      })
+    ).toBeNull();
+    // Duplicate cards for the SAME election still count as one.
+    expect(citedElectionContext({ ...RETRIEVAL_RESPONSE, results: [...one.results, ...one.results] })).toEqual({
+      kind: "election",
+      id: "11111111-1111-4111-9111-111111111111",
+    });
   });
 });
 
 describe("followUpQuestions", () => {
+  it("offers no roster chip when several distinct elections are cited", () => {
+    // The saved-issues answer cites up to five races; "this election" is
+    // ambiguous there (the reported Settings-page defect).
+    expect(
+      followUpQuestions(
+        {
+          ...RETRIEVAL_RESPONSE,
+          results: [
+            { title: "A", url: "/elections/11111111-1111-4111-9111-111111111111", snippet: "", source_type: "election" },
+            { title: "B", url: "/elections/22222222-2222-4222-9222-222222222222", snippet: "", source_type: "election" },
+          ],
+        },
+        "Which races affect issues I care about?"
+      )
+    ).toEqual([]);
+  });
+
   it("suggests the free next hop for what the answer cited", () => {
     expect(followUpQuestions(RETRIEVAL_RESPONSE, "Who is Jon Ossoff?")).toEqual(["Who is funding their campaign?"]);
     expect(
@@ -338,32 +379,19 @@ describe("ChatWidget", () => {
     const user = userEvent.setup();
     const { fetchMock } = renderWidgetAt("/elections/44444444-4444-4444-a444-444444444444");
     await user.click(await screen.findByRole("button", { name: "Open Ask" }));
-    await user.click(screen.getByRole("button", { name: "Tell me more about this election" }));
+    await user.click(screen.getByRole("button", { name: "What can you do?" }));
 
     expect(await screen.findByText("Here's what our data has on that.")).toBeInTheDocument();
     const askCall = fetchMock.mock.calls.find(([input]) => String(input).includes("/api/chatbot/ask"));
     const body = JSON.parse((askCall as unknown as [string, RequestInit])[1].body as string);
+    // The page context still rides along; the server ignores it for
+    // non-deictic questions.
     expect(body).toEqual({
-      question: "Tell me more about this election",
+      question: "What can you do?",
       context: { election_id: "44444444-4444-4444-a444-444444444444" },
     });
     // Chips only seed an empty chat.
-    expect(screen.queryByRole("button", { name: "Tell me more about this election" })).not.toBeInTheDocument();
-  });
-
-  it("bases chips on the CURRENT page even when an older context is remembered", async () => {
-    const user = userEvent.setup();
-    const { router } = renderWidgetAt("/candidates/44444444-4444-4444-a444-444444444444");
-    // Leave the candidate page; the remembered context stays for typed
-    // follow-ups, but chips must describe what the user sees NOW. Same
-    // act() rationale as the New-chat test: the absence assertion below
-    // races a not-yet-committed route change otherwise.
-    await act(async () => {
-      await router.navigate("/ballot");
-    });
-    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
-    expect(await screen.findByRole("button", { name: "What can you do?" })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Tell me more about this candidate" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "What can you do?" })).not.toBeInTheDocument();
   });
 
   it("labels AI answers, dates them, and offers the report control (BEHAVIOR rule 9)", async () => {
@@ -494,6 +522,33 @@ describe("ChatWidget", () => {
     });
     // The just-asked follow-up must not come straight back as a chip.
     expect(screen.queryByRole("button", { name: "Who is funding their campaign?" })).not.toBeInTheDocument();
+  });
+
+  it("sends the cited election as context when the roster chip is clicked off a detail page", async () => {
+    const user = userEvent.setup();
+    const electionCited = {
+      ...RETRIEVAL_RESPONSE,
+      results: [
+        { title: "E", url: "/elections/11111111-1111-4111-9111-111111111111", snippet: "", source_type: "election" },
+      ],
+    };
+    const { fetchMock } = renderWidgetAt("/ballot", { body: electionCited });
+    await user.click(await screen.findByRole("button", { name: "Open Ask" }));
+    await user.type(screen.getByLabelText("Your question"), "Tell me about the Georgia Senate race");
+    await user.click(screen.getByRole("button", { name: "Ask" }));
+    await screen.findByText("Here's what our data has on that.");
+
+    await user.click(screen.getByRole("button", { name: "Who is running in this election?" }));
+    await waitFor(() => {
+      const askCalls = fetchMock.mock.calls.filter(([request]) => String(request).includes("/api/chatbot/ask"));
+      expect(askCalls).toHaveLength(2);
+      const body = JSON.parse((askCalls[1] as unknown as [string, RequestInit])[1].body as string);
+      expect(body).toEqual({
+        question: "Who is running in this election?",
+        previous_question: "Tell me about the Georgia Senate race",
+        context: { election_id: "11111111-1111-4111-9111-111111111111" },
+      });
+    });
   });
 
   it("renders the server's degradation notice as its own muted line", async () => {
