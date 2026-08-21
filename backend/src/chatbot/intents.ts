@@ -19,6 +19,8 @@ export type IntentKind =
   | "needs_scope"          // scopeless time-sensitive ask ("when is the runoff?") → clarify
   | "ballot_lookup"        // "what's on my ballot" → deep link
   | "my_issues_ballot"     // "which races affect issues I care about" → saved-areas × ballot match
+  | "my_measures_ballot"   // "what measures are on my ballot" → saved ballot's measure list
+  | "my_close_races"       // "which of my races are close" → saved ballot × competitiveness
   | "where_to_vote"        // polling place → state link or deep link
   | "election_date"        // "when is the 2026 general election"
   | "other_election_date"  // primary/runoff/special date with a state named
@@ -237,6 +239,30 @@ export function detectIntent(question: string): IntentMatch | null {
   //   area" is location, not preference).
   if (hasPersonalIssuesPhrase(q) && ELECTION_FRAME_RE.test(q)) {
     return { kind: "my_issues_ballot", state };
+  }
+  // Personalized ballot templates (my_measures_ballot / my_close_races),
+  // checked BEFORE ballot_lookup because "my ballot" matches both and these
+  // are the more specific asks. Both require the personal frame: without it
+  // ("What is Proposition 39?", "Is the Georgia Senate race close?") the
+  // question is about the thing itself, and retrieval owns it.
+  const MY_BALLOT_FRAME =
+    /\b(?:my|our)\s+(?:ballot|races?|elections?|area|city|town|county|district|state|vote)\b|\bnear\s+me\b|\bam\s+i\s+voting\s+on\b/i;
+  if (
+    /\b(?:measures?|propositions?|ballot\s+questions?|amendments?|referend(?:um|a|ums))\b/i.test(q) &&
+    MY_BALLOT_FRAME.test(q)
+  ) {
+    return { kind: "my_measures_ballot", state };
+  }
+  // Closeness noun + a races frame, or the vote-matters phrasing outright.
+  // my_issues_ballot ran first, so "which race has most of my most important
+  // issues" keeps its issues answer and never lands here.
+  if (
+    (/\b(?:close(?:st)?|competitive|tight(?:est)?|toss[- ]?ups?|battlegrounds?|matters?\s+(?:the\s+)?most)\b/i.test(q) &&
+      /\b(?:races?|elections?|contests?|ballot)\b/i.test(q) &&
+      MY_BALLOT_FRAME.test(q)) ||
+    /\bwhere\s+(?:does|will|would)\s+my\s+vote\s+(?:matter|count)\b|\bmy\s+vote\s+(?:matter|count)s?\s+(?:the\s+)?most\b/i.test(q)
+  ) {
+    return { kind: "my_close_races", state };
   }
   if (/\b(?:my\s+ballot|on\s+the\s+ballot\s+at\s+my|ballot\s+lookup)\b/i.test(q)) {
     return { kind: "ballot_lookup", state };

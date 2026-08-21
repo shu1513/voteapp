@@ -508,6 +508,32 @@ export const goldenSet: readonly GoldenCase[] = [
     notes: "Round-5 live miss: graded modifiers ('my most important issues') must still hit the my_issues_ballot intent.",
   },
   {
+    id: "logistics-my-measures-ballot",
+    category: "logistics",
+    question: "What measures are on my ballot?",
+    expected: "template",
+    notes: "Personalized: saved ballot's measure races. Template-only, same rule-11 posture as my_issues_ballot.",
+  },
+  {
+    id: "logistics-my-measures-ballot-propositions",
+    category: "logistics",
+    question: "Are there any propositions on my ballot this year?",
+    expected: "template",
+  },
+  {
+    id: "logistics-my-close-races",
+    category: "logistics",
+    question: "Which of my races are close?",
+    expected: "template",
+    notes: "Personalized: saved ballot × competitiveness ratings, closest first.",
+  },
+  {
+    id: "logistics-my-close-races-vote-matters",
+    category: "logistics",
+    question: "Where does my vote matter most?",
+    expected: "template",
+  },
+  {
     id: "logistics-election-day",
     category: "logistics",
     question: "When is the 2026 general election?",
