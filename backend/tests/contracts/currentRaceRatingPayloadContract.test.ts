@@ -205,6 +205,26 @@ describe("parseCurrentRaceRatingPayload", () => {
     }
   });
 
+  it("passes an optional changed_at through into evidence and validates it", () => {
+    const withChangedAt = parse([
+      ratedRow({ observations: [ieObservation({ changed_at: "2026-05-15" })] }),
+    ]);
+    expect(withChangedAt.ok).toBe(true);
+    if (withChangedAt.ok) {
+      expect(withChangedAt.payload.ratings[0]!.evidence).toMatchObject({
+        observations: [{ changed_at: "2026-05-15", as_of: "2026-08-06" }],
+      });
+    }
+
+    const malformed = parse([ratedRow({ observations: [ieObservation({ changed_at: "2026-02-30" })] })]);
+    expect(malformed.ok).toBe(false);
+    const future = parse([ratedRow({ observations: [ieObservation({ changed_at: "2026-08-21" })] })]);
+    expect(future.ok).toBe(false);
+    if (!future.ok) {
+      expect(future.reason).toContain("changed_at must not be in the future");
+    }
+  });
+
   it("rejects a future observation as_of and accepts today", () => {
     const future = parse([ratedRow({ observations: [ieObservation({ as_of: "2026-08-21" })] })]);
     expect(future.ok).toBe(false);

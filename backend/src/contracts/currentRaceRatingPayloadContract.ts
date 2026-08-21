@@ -144,6 +144,19 @@ function parseObservation(
     return { ok: false, reason: `observation as_of must not be in the future: ${asOf}` };
   }
 
+  // Optional provenance: the outlet's per-row last-change date (IE's `date`
+  // column). Freshness always runs off as_of (the feed snapshot date);
+  // changed_at is stored in evidence only.
+  const changedAt = value.changed_at;
+  if (changedAt !== undefined) {
+    if (!isNonEmptyString(changedAt) || !isValidIsoDate(changedAt.trim())) {
+      return { ok: false, reason: `observation changed_at must be a valid YYYY-MM-DD date: ${String(changedAt)}` };
+    }
+    if (Date.parse(`${changedAt.trim()}T00:00:00.000Z`) > todayUtc) {
+      return { ok: false, reason: `observation changed_at must not be in the future: ${changedAt.trim()}` };
+    }
+  }
+
   const url = validateEvidenceUrl(value.url, normalizedOutlet);
   if (typeof url !== "string") {
     return { ok: false, reason: `observation ${url.reason}` };
@@ -157,6 +170,7 @@ function parseObservation(
       favored: parsedRating.favored,
       intensity: parsedRating.intensity,
       as_of: asOf,
+      ...(changedAt !== undefined ? { changed_at: changedAt.trim() } : {}),
       url,
     },
   };

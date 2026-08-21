@@ -277,10 +277,13 @@ Clone of the election-results pattern:
 - Script `backend/src/scripts/manualCurrentRaceRatings.ts`
   (`due | context | write`, npm scripts `manual:current-ratings:*`):
   - `due` — from a frozen manifest file (`--manifest path`) or the scope
-    query (Senate/House-voting/Governor canonical names; `--mayors` requires
-    an explicit city-list manifest, never all 98 rows); excludes rows with
-    fresh ratings (60 d from `as_of`) or recent `none_found` (30 d from
-    `researched_at`).
+    query (Senate via `discovery_contest_family='us_senate'` — ballot titles
+    vary by state; House via `district_type='us_house'`; Governor via the two
+    canonical statewide titles; `general`+`special` stages). A `--mayors`
+    scope ships with the v1.1 mayoral milestone and will require an explicit
+    city-list manifest, never all 98 rows. Excludes rows with fresh ratings
+    (60 d from `as_of`) or recent `none_found` (30 d from `researched_at`);
+    the DC delegate row is listed as excluded with a reason.
   - `context` — election + office + district + roster + historic label,
     capped at 10.
   - `write` — validate + derive + upsert in a transaction; `--dry-run`,

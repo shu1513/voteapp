@@ -80,6 +80,9 @@ export type CurrentRaceRatingObservation = {
   favored: CurrentRaceRatingFavoredSide;
   intensity: CurrentRaceRatingIntensity;
   as_of: string;
+  // The outlet's per-row last-change date (IE's `date` column), provenance
+  // only — freshness always runs off as_of, the feed snapshot date.
+  changed_at?: string;
   url: string;
 };
 
