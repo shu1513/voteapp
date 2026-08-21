@@ -214,10 +214,13 @@ cross-checked against a loaded context, exactly like
 
 ## Read-path wiring (Phase 3)
 
-- `backend/src/pipeline/address/currentRaceRatingLookup.ts` (new): one
-  batched query by election-id list applying the full override rule
-  (rated + high|medium + upcoming + as_of window) in SQL. Sibling of
-  `loadHistoricalCompetitivenessByElection` (`ballotLookup.ts:839`).
+- `loadOverridingCurrentRaceRatings`
+  (`backend/src/pipeline/competitiveness/currentRaceRatingLookup.ts`, built
+  in PR 1): one batched query by election-id list, with the full override
+  rule (rated + high|medium + upcoming + as_of window) applied by the pure
+  `currentRaceRatingOverridesHistory` predicate — TS, not SQL, for boundary
+  testability. ballotLookup wraps it office-races-only, issued as the LAST
+  query of each lookup so ordered test mocks keep their slots.
 - `ballotLookup.ts` list (`:1741`) and detail (`:2043`):
   `competitivenessLabel: currentRating?.competitiveness_label ??
   historicalCompetitiveness?.competitiveness_label`. When current is used,
