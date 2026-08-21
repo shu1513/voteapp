@@ -173,6 +173,10 @@ describe("personal-issues questions route to the saved-areas ballot match", () =
     // retrieval owns it.
     expect(detectIntent("What is Proposition 39?")).toBeNull();
     expect(detectIntent("What does a yes vote mean on Proposition 39 in California?")).toBeNull();
+    // Geography possessives are scope, not ballot possession (PR #805
+    // review): research questions about a place must stay with retrieval.
+    expect(detectIntent("What measures did our city pass?")).toBeNull();
+    expect(detectIntent("What constitutional amendments does my state have?")).toBeNull();
   });
 
   it("detects the personalized close-races listing", () => {
@@ -186,8 +190,10 @@ describe("personal-issues questions route to the saved-areas ballot match", () =
     ]) {
       expect(detectIntent(q)?.kind, q).toBe("my_close_races");
     }
-    // Race-specific closeness questions are about that race, not the ballot.
+    // Race-specific closeness questions are about that race, not the ballot
+    // — including ones scoped by a geography possessive (PR #805 review).
     expect(detectIntent("Is the Georgia Senate race close?")).toBeNull();
+    expect(detectIntent("Is my state senate race close?")).toBeNull();
     // The issues phrasing stays with my_issues_ballot even with "most".
     expect(detectIntent("which race has most of my most important issues?")?.kind).toBe("my_issues_ballot");
   });

@@ -519,7 +519,10 @@ export function myCloseRacesAnswer(elections: readonly MyBallotElection[]): AskR
   if (close.length === 0) {
     return {
       outcome: "template",
-      answer: `None of the ${rated.length} rated races on your ballot looks especially close right now. You can browse your full ballot for the details.`,
+      answer:
+        rated.length === 1
+          ? "The 1 rated race on your ballot doesn't look especially close right now. You can browse your full ballot for the details."
+          : `None of the ${rated.length} rated races on your ballot look especially close right now. You can browse your full ballot for the details.`,
       results: [BALLOT_CARD],
       data_current_as_of: null,
     };

@@ -242,11 +242,15 @@ export function detectIntent(question: string): IntentMatch | null {
   }
   // Personalized ballot templates (my_measures_ballot / my_close_races),
   // checked BEFORE ballot_lookup because "my ballot" matches both and these
-  // are the more specific asks. Both require the personal frame: without it
-  // ("What is Proposition 39?", "Is the Georgia Senate race close?") the
-  // question is about the thing itself, and retrieval owns it.
+  // are the more specific asks. Both require explicit ballot possession —
+  // "my ballot/races/elections" or an am-I-voting frame. Geography
+  // possessives ("my state/city/county") deliberately do NOT count (PR #805
+  // review): "Is my state senate race close?" and "What measures did our
+  // city pass?" are research questions about a specific thing, and
+  // retrieval owns them — same reasoning as MY_PLACE_RE below, which only
+  // routes with a listing frame attached.
   const MY_BALLOT_FRAME =
-    /\b(?:my|our)\s+(?:ballot|races?|elections?|area|city|town|county|district|state|vote)\b|\bnear\s+me\b|\bam\s+i\s+voting\s+on\b/i;
+    /\b(?:my|our)\s+(?:ballot|races?|elections?)\b|\bam\s+i\s+voting\s+on\b|\bdo\s+i\s+vote\s+on\b/i;
   if (
     /\b(?:measures?|propositions?|ballot\s+questions?|amendments?|referend(?:um|a|ums))\b/i.test(q) &&
     MY_BALLOT_FRAME.test(q)

@@ -163,9 +163,18 @@ describe("personalized ballot templates", () => {
         race("e2", "Sheriff", { historical_competitiveness: historical("somewhat_competitive", "Somewhat competitive") }),
       ]);
       expect(response.answer).toBe(
-        "None of the 2 rated races on your ballot looks especially close right now. You can browse your full ballot for the details."
+        "None of the 2 rated races on your ballot look especially close right now. You can browse your full ballot for the details."
       );
       expect(response.results.map((card) => card.url)).toEqual(["/me/ballot"]);
+    });
+
+    it("uses singular wording for a single rated race", () => {
+      const response = myCloseRacesAnswer([
+        race("e1", "Governor", { historical_competitiveness: historical("safe", "Safe") }),
+      ]);
+      expect(response.answer).toBe(
+        "The 1 rated race on your ballot doesn't look especially close right now. You can browse your full ballot for the details."
+      );
     });
 
     it("degrades honestly when nothing on the ballot is rated", () => {
