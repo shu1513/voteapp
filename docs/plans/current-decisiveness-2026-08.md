@@ -94,10 +94,11 @@ major-city targets). Consequences:
      (verbatim string), `as_of` (feed date, never in the future), `url`.
      `favored` (`D | R | I | none`) and `intensity` (`toss_up=0 | tilt=2 |
      lean=3 | likely=4 | solid=5`, the distance ladder) are **parsed from
-     `raw_rating` in code** (`parseOutletRawRating`); a payload carrying
-     either field is rejected, and an unrecognized rating string is rejected
-     rather than guessed at — so a payload can never contradict its own
-     evidence.
+     `raw_rating` in code** (`parseOutletRawRating`) against **each outlet's
+     own vocabulary** (IE: Tilt/Lean/Likely/Solid; Sabato: Leans/Likely/Safe;
+     both: Toss-up); a payload carrying either field is rejected, and an
+     unrecognized or other-outlet rating string is rejected rather than
+     guessed at — so a payload can never contradict its own evidence.
    - Function: mean of intensity → bins `<1.0` toss_up, `<2.5`
      very_competitive, `<3.5` competitive, `<4.5` somewhat_competitive,
      `≥4.5` safe.

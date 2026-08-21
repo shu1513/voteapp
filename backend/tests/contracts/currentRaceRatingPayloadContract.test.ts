@@ -187,7 +187,19 @@ describe("parseCurrentRaceRatingPayload", () => {
     const result = parse([ratedRow({ observations: [ieObservation({ raw_rating: "Battleground" })] })]);
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.reason).toContain('not a recognized outlet rating: "Battleground"');
+      expect(result.reason).toContain('not a recognized inside_elections rating: "Battleground"');
+    }
+  });
+
+  it("rejects a rating verb from the other outlet's vocabulary", () => {
+    // Sabato has no Tilt tier — a Sabato observation carrying one is
+    // impossible evidence, not a rating to derive from.
+    const result = parse([
+      ratedRow({ observations: [sabatoObservation({ raw_rating: "Tilt Democrat" })] }),
+    ]);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain('not a recognized sabato rating: "Tilt Democrat"');
     }
   });
 

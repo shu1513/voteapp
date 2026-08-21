@@ -130,12 +130,13 @@ function parseObservation(
     return { ok: false, reason: "observation raw_rating must be non-empty string" };
   }
   const rawRating = value.raw_rating.trim();
-  const parsedRating = parseOutletRawRating(rawRating);
+  const parsedRating = parseOutletRawRating(rawRating, normalizedOutlet);
   if (!parsedRating) {
     return {
       ok: false,
       reason:
-        `observation raw_rating is not a recognized outlet rating: "${rawRating}"; ` +
+        `observation raw_rating is not a recognized ${normalizedOutlet} rating: "${rawRating}" ` +
+        "(each outlet's own vocabulary only — Sabato has no Tilt, IE says Solid not Safe); " +
         "record the race as none_found and report the new rating tier instead of guessing",
     };
   }

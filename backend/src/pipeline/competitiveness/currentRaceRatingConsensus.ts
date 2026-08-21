@@ -30,13 +30,17 @@ export type CurrentRaceRatingIntensity = (typeof CURRENT_RACE_RATING_INTENSITIES
 // The full outlet vocabulary. Both outlets use "<verb> <party>" plus a
 // toss-up label; anything else is a new rating tier we have not vetted and
 // must be rejected, never guessed at.
-const RATING_VERB_INTENSITY: Record<string, CurrentRaceRatingIntensity> = {
-  tilt: 2,
-  lean: 3,
-  leans: 3,
-  likely: 4,
-  solid: 5,
-  safe: 5,
+// Each outlet's own published vocabulary, kept separate on purpose: Sabato's
+// 7-point scale has no Tilt tier, and the top tier is branded "Solid" at
+// Inside Elections but "Safe" at Sabato. A rating verb the outlet never
+// publishes is fabricated evidence even when its intensity would match, so
+// it is rejected rather than accepted from the other outlet's vocabulary.
+const OUTLET_RATING_VERB_INTENSITY: Record<
+  CurrentRaceRatingOutlet,
+  Record<string, CurrentRaceRatingIntensity>
+> = {
+  inside_elections: { tilt: 2, lean: 3, likely: 4, solid: 5 },
+  sabato: { leans: 3, likely: 4, safe: 5 },
 };
 
 const RATING_PARTY_SIDE: Record<string, CurrentRaceRatingFavoredSide> = {
@@ -48,12 +52,14 @@ const RATING_PARTY_SIDE: Record<string, CurrentRaceRatingFavoredSide> = {
 
 /**
  * Parses an outlet's verbatim rating string into the favored side and
- * distance-ladder intensity. The payload never carries either field — this
- * parser is the only mapping, so a payload cannot contradict its own
- * evidence. Returns null for unrecognized strings.
+ * distance-ladder intensity, against that outlet's own vocabulary. The
+ * payload never carries either field — this parser is the only mapping, so
+ * a payload cannot contradict its own evidence. Returns null for strings
+ * the outlet does not publish (including the other outlet's tiers).
  */
 export function parseOutletRawRating(
-  rawRating: string
+  rawRating: string,
+  outlet: CurrentRaceRatingOutlet
 ): { favored: CurrentRaceRatingFavoredSide; intensity: CurrentRaceRatingIntensity } | null {
   const words = rawRating
     .toLowerCase()
@@ -66,7 +72,7 @@ export function parseOutletRawRating(
   if (words.length !== 2) {
     return null;
   }
-  const intensity = RATING_VERB_INTENSITY[words[0]!];
+  const intensity = OUTLET_RATING_VERB_INTENSITY[outlet][words[0]!];
   const favored = RATING_PARTY_SIDE[words[1]!];
   if (intensity === undefined || favored === undefined) {
     return null;
