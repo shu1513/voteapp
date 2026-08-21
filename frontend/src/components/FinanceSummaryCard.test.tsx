@@ -161,8 +161,8 @@ describe("FinanceSummaryCard", () => {
     rerender(<FinanceSummaryCard summary={summary} />);
     const note = screen.getByText(/Groups that spend without registering/);
     expect(note).toBeInTheDocument();
-    // It must sit with the totals, not down in the source footnote — a
-    // reader who sees the dollar figure has to see the caveat.
+    // It must sit with the outside data, not down in the source footnote — a
+    // reader who sees the claim has to see the caveat.
     const outsideHeading = screen.getByText("Spending by outside groups");
     const supportTotal = screen.getByText(/Outside money spent supporting this candidate/);
     expect(
@@ -170,7 +170,7 @@ describe("FinanceSummaryCard", () => {
     ).toBeTruthy();
     expect(note.compareDocumentPosition(supportTotal) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 
-    // The note qualifies SHOWN figures. A summary whose only outside field
+    // The note qualifies SHOWN outside data. A summary whose only outside field
     // is the note renders no outside section and no note: with nothing
     // shown the card asserts nothing about outside money, so there is
     // nothing to caveat (same rule that hides a $0 direction). Deliberate —
@@ -182,6 +182,68 @@ describe("FinanceSummaryCard", () => {
     rerender(<FinanceSummaryCard summary={noteOnly} />);
     expect(screen.queryByText("Spending by outside groups")).not.toBeInTheDocument();
     expect(screen.queryByText(/Groups that spend without registering/)).not.toBeInTheDocument();
+  });
+
+  it("renders filing-backed outside-spending directions without inventing amounts", () => {
+    const summary = emptyFinanceSummary();
+    summary.source = "MISSISSIPPI_SOS";
+    summary.outside_spending.outside_coverage_note =
+      "Mississippi Secretary of State filings only; candidate-level amounts were not reported.";
+    summary.outside_spending.unallocated_candidate_edges = [
+      {
+        filing_id: "ms-ie-support-1",
+        report_date: "2025-10-28",
+        committee_id: "improve-mississippi-pac",
+        committee_name: "Improve Mississippi PAC",
+        support_oppose: "support",
+        source_url: "https://cfportal.sos.ms.gov/online/portal/filing/ms-ie-support-1",
+      },
+      {
+        filing_id: "ms-ie-oppose-1",
+        report_date: "2025-10-29",
+        committee_id: "mississippi-voters-pac",
+        committee_name: "Mississippi Voters PAC",
+        support_oppose: "oppose",
+        source_url: "https://cfportal.sos.ms.gov/online/portal/filing/ms-ie-oppose-1",
+      },
+    ];
+
+    expect(hasFinanceContent(summary)).toBe(true);
+    render(<FinanceSummaryCard summary={summary} />);
+
+    expect(screen.getByText("Spending by outside groups")).toBeInTheDocument();
+    expect(
+      screen.getByText("Outside spending reported without a candidate amount")
+    ).toBeInTheDocument();
+    expect(screen.getByText(/do not report how much/)).toBeInTheDocument();
+    expect(screen.getByText("Improve Mississippi PAC")).toBeInTheDocument();
+    expect(screen.getByText("Mississippi Voters PAC")).toBeInTheDocument();
+    expect(
+      screen.getByText(/Reported as supporting this candidate · October 28, 2025/)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Reported as opposing this candidate · October 29, 2025/)
+    ).toBeInTheDocument();
+    expect(screen.getByText(/candidate-level amounts were not reported/)).toBeInTheDocument();
+    expect(screen.queryByText(/Outside money spent supporting/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Outside money spent opposing/)).not.toBeInTheDocument();
+    expect(screen.queryByText("$0")).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("link", {
+        name: "View filing for Improve Mississippi PAC dated October 28, 2025",
+      })
+    ).toHaveAttribute(
+      "href",
+      "https://cfportal.sos.ms.gov/online/portal/filing/ms-ie-support-1"
+    );
+    expect(
+      screen.getByRole("link", {
+        name: "View filing for Mississippi Voters PAC dated October 29, 2025",
+      })
+    ).toHaveAttribute(
+      "href",
+      "https://cfportal.sos.ms.gov/online/portal/filing/ms-ie-oppose-1"
+    );
   });
 
   it("shows the direct coverage note only with breakdowns to qualify", () => {

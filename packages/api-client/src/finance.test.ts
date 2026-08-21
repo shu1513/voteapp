@@ -92,6 +92,27 @@ describe("outside spending direction gating", () => {
     ];
     expect(hasOutsideFinanceContent(withIndustry)).toBe(true);
   });
+
+  it("treats unallocated candidate evidence as content and exposes its source", () => {
+    const summary = emptySummary();
+    summary.outside_spending.unallocated_candidate_edges = [
+      {
+        filing_id: "ms-ie-2025-10-28",
+        report_date: "2025-10-28",
+        committee_id: "improve-mississippi-pac",
+        committee_name: "Improve Mississippi PAC",
+        support_oppose: "support",
+        source_url:
+          "https://cfportal.sos.ms.gov/online/ExecuteWorkflow.aspx?FilingId=ms-ie-2025-10-28",
+      },
+    ];
+
+    expect(hasOutsideFinanceContent(summary)).toBe(true);
+    expect(hasFinanceContent(summary)).toBe(true);
+    expect(firstFinanceSourceUrl(summary)).toBe(
+      "https://cfportal.sos.ms.gov/online/ExecuteWorkflow.aspx?FilingId=ms-ie-2025-10-28"
+    );
+  });
 });
 
 describe("member communications (LA)", () => {
