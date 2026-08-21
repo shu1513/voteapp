@@ -187,7 +187,19 @@ describe("parseCurrentRaceRatingPayload", () => {
     const result = parse([ratedRow({ observations: [ieObservation({ raw_rating: "Battleground" })] })]);
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.reason).toContain('not a recognized outlet rating: "Battleground"');
+      expect(result.reason).toContain('not a recognized inside_elections rating: "Battleground"');
+    }
+  });
+
+  it("rejects a rating verb from the other outlet's vocabulary", () => {
+    // Sabato has no Tilt tier — a Sabato observation carrying one is
+    // impossible evidence, not a rating to derive from.
+    const result = parse([
+      ratedRow({ observations: [sabatoObservation({ raw_rating: "Tilt Democrat" })] }),
+    ]);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toContain('not a recognized sabato rating: "Tilt Democrat"');
     }
   });
 
@@ -202,6 +214,38 @@ describe("parseCurrentRaceRatingPayload", () => {
       expect(row.evidence).toMatchObject({
         observations: [{ favored: "none", intensity: 0 }],
       });
+    }
+  });
+
+  it("passes an optional changed_at through into evidence and validates it", () => {
+    const withChangedAt = parse([
+      ratedRow({ observations: [ieObservation({ changed_at: "2026-05-15" })] }),
+    ]);
+    expect(withChangedAt.ok).toBe(true);
+    if (withChangedAt.ok) {
+      expect(withChangedAt.payload.ratings[0]!.evidence).toMatchObject({
+        observations: [{ changed_at: "2026-05-15", as_of: "2026-08-06" }],
+      });
+    }
+
+    const malformed = parse([ratedRow({ observations: [ieObservation({ changed_at: "2026-02-30" })] })]);
+    expect(malformed.ok).toBe(false);
+    // A change after the feed snapshot cannot be in that snapshot (the
+    // observation's as_of is 2026-08-06).
+    const afterSnapshot = parse([ratedRow({ observations: [ieObservation({ changed_at: "2026-08-07" })] })]);
+    expect(afterSnapshot.ok).toBe(false);
+    if (!afterSnapshot.ok) {
+      expect(afterSnapshot.reason).toContain("must not be after its as_of snapshot");
+    }
+    const onSnapshot = parse([ratedRow({ observations: [ieObservation({ changed_at: "2026-08-06" })] })]);
+    expect(onSnapshot.ok).toBe(true);
+  });
+
+  it("accepts an uppercase election_id spelling of a context id", () => {
+    const result = parse([ratedRow({ election_id: ELECTION_A.toUpperCase() })]);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.payload.ratings[0]!.election_id).toBe(ELECTION_A);
     }
   });
 

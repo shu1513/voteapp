@@ -94,10 +94,11 @@ major-city targets). Consequences:
      (verbatim string), `as_of` (feed date, never in the future), `url`.
      `favored` (`D | R | I | none`) and `intensity` (`toss_up=0 | tilt=2 |
      lean=3 | likely=4 | solid=5`, the distance ladder) are **parsed from
-     `raw_rating` in code** (`parseOutletRawRating`); a payload carrying
-     either field is rejected, and an unrecognized rating string is rejected
-     rather than guessed at — so a payload can never contradict its own
-     evidence.
+     `raw_rating` in code** (`parseOutletRawRating`) against **each outlet's
+     own vocabulary** (IE: Tilt/Lean/Likely/Solid; Sabato: Leans/Likely/Safe;
+     both: Toss-up); a payload carrying either field is rejected, and an
+     unrecognized or other-outlet rating string is rejected rather than
+     guessed at — so a payload can never contradict its own evidence.
    - Function: mean of intensity → bins `<1.0` toss_up, `<2.5`
      very_competitive, `<3.5` competitive, `<4.5` somewhat_competitive,
      `≥4.5` safe.
@@ -277,10 +278,16 @@ Clone of the election-results pattern:
 - Script `backend/src/scripts/manualCurrentRaceRatings.ts`
   (`due | context | write`, npm scripts `manual:current-ratings:*`):
   - `due` — from a frozen manifest file (`--manifest path`) or the scope
-    query (Senate/House-voting/Governor canonical names; `--mayors` requires
-    an explicit city-list manifest, never all 98 rows); excludes rows with
-    fresh ratings (60 d from `as_of`) or recent `none_found` (30 d from
-    `researched_at`).
+    query keyed on `offices.canonical_name` ('United States Senator' /
+    'Governor'; House via `district_type='us_house'`), since ballot titles
+    vary by state ("US Senate", "Governor / Lt. Governor") and the discovery
+    contest family is not always set (MI's Senate row). Fallbacks for
+    unresolved offices: the contest family for Senate, a statewide title
+    list for Governor. `general`+`special` stages. A `--mayors` scope ships
+    with the v1.1 mayoral milestone and will require an explicit city-list
+    manifest, never all 98 rows. Excludes rows with fresh ratings (60 d from
+    `as_of`) or recent `none_found` (30 d from `researched_at`); the DC
+    delegate row is listed as excluded with a reason.
   - `context` — election + office + district + roster + historic label,
     capped at 10.
   - `write` — validate + derive + upsert in a transaction; `--dry-run`,

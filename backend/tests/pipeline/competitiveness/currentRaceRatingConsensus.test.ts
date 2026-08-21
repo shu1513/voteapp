@@ -134,26 +134,37 @@ describe("deriveConsensusLabel", () => {
 });
 
 describe("parseOutletRawRating", () => {
-  it("parses the full outlet vocabulary", () => {
-    expect(parseOutletRawRating("Toss-up")).toEqual({ favored: "none", intensity: 0 });
-    expect(parseOutletRawRating("Tossup")).toEqual({ favored: "none", intensity: 0 });
-    expect(parseOutletRawRating("Tilt Democrat")).toEqual({ favored: "D", intensity: 2 });
-    expect(parseOutletRawRating("Lean Republican")).toEqual({ favored: "R", intensity: 3 });
-    expect(parseOutletRawRating("Leans Democratic")).toEqual({ favored: "D", intensity: 3 });
-    expect(parseOutletRawRating("Likely Republican")).toEqual({ favored: "R", intensity: 4 });
-    expect(parseOutletRawRating("Solid Democrat")).toEqual({ favored: "D", intensity: 5 });
-    expect(parseOutletRawRating("Safe Republican")).toEqual({ favored: "R", intensity: 5 });
-    expect(parseOutletRawRating("Solid Independent")).toEqual({ favored: "I", intensity: 5 });
-    expect(parseOutletRawRating("  safe   democratic  ")).toEqual({ favored: "D", intensity: 5 });
+  it("parses each outlet's own vocabulary", () => {
+    expect(parseOutletRawRating("Toss-up", "inside_elections")).toEqual({ favored: "none", intensity: 0 });
+    expect(parseOutletRawRating("Tossup", "sabato")).toEqual({ favored: "none", intensity: 0 });
+    expect(parseOutletRawRating("Tilt Democrat", "inside_elections")).toEqual({ favored: "D", intensity: 2 });
+    expect(parseOutletRawRating("Lean Republican", "inside_elections")).toEqual({ favored: "R", intensity: 3 });
+    expect(parseOutletRawRating("Leans Democratic", "sabato")).toEqual({ favored: "D", intensity: 3 });
+    expect(parseOutletRawRating("Likely Republican", "inside_elections")).toEqual({ favored: "R", intensity: 4 });
+    expect(parseOutletRawRating("Likely Democratic", "sabato")).toEqual({ favored: "D", intensity: 4 });
+    expect(parseOutletRawRating("Solid Democrat", "inside_elections")).toEqual({ favored: "D", intensity: 5 });
+    expect(parseOutletRawRating("Safe Republican", "sabato")).toEqual({ favored: "R", intensity: 5 });
+    expect(parseOutletRawRating("Solid Independent", "inside_elections")).toEqual({ favored: "I", intensity: 5 });
+    expect(parseOutletRawRating("  safe   democratic  ", "sabato")).toEqual({ favored: "D", intensity: 5 });
+  });
+
+  it("rejects the other outlet's tiers as impossible evidence", () => {
+    // Sabato's 7-point scale has no Tilt; its top tier is Safe, not Solid.
+    expect(parseOutletRawRating("Tilt Democrat", "sabato")).toBeNull();
+    expect(parseOutletRawRating("Solid Democrat", "sabato")).toBeNull();
+    expect(parseOutletRawRating("Lean Republican", "sabato")).toBeNull();
+    // IE brands Solid, not Safe, and writes Lean, not Leans.
+    expect(parseOutletRawRating("Safe Republican", "inside_elections")).toBeNull();
+    expect(parseOutletRawRating("Leans Democratic", "inside_elections")).toBeNull();
   });
 
   it("returns null for anything outside the vocabulary", () => {
-    expect(parseOutletRawRating("Battleground")).toBeNull();
-    expect(parseOutletRawRating("Lean")).toBeNull();
-    expect(parseOutletRawRating("Democrat")).toBeNull();
-    expect(parseOutletRawRating("Very Likely Republican")).toBeNull();
-    expect(parseOutletRawRating("Solid Green")).toBeNull();
-    expect(parseOutletRawRating("")).toBeNull();
+    expect(parseOutletRawRating("Battleground", "inside_elections")).toBeNull();
+    expect(parseOutletRawRating("Lean", "inside_elections")).toBeNull();
+    expect(parseOutletRawRating("Democrat", "inside_elections")).toBeNull();
+    expect(parseOutletRawRating("Very Likely Republican", "inside_elections")).toBeNull();
+    expect(parseOutletRawRating("Solid Green", "inside_elections")).toBeNull();
+    expect(parseOutletRawRating("", "sabato")).toBeNull();
   });
 });
 

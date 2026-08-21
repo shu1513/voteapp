@@ -72,7 +72,14 @@ function hostnameMatches(hostname: string, domain: string): boolean {
   return hostname === domain || hostname.endsWith(`.${domain}`);
 }
 
-function validateEvidenceUrl(rawUrl: unknown, outlet?: CurrentRaceRatingOutlet): string | { reason: string } {
+// Exported for the source-validation step, which re-applies this policy to
+// redirect targets: liveness is proven by the final URL, so a banned or
+// off-outlet redirect destination must fail even though the stored URL is
+// clean.
+export function validateCurrentRaceRatingUrl(
+  rawUrl: unknown,
+  outlet?: CurrentRaceRatingOutlet
+): string | { reason: string } {
   if (!isNonEmptyString(rawUrl)) {
     return { reason: "url must be non-empty string" };
   }
@@ -123,12 +130,13 @@ function parseObservation(
     return { ok: false, reason: "observation raw_rating must be non-empty string" };
   }
   const rawRating = value.raw_rating.trim();
-  const parsedRating = parseOutletRawRating(rawRating);
+  const parsedRating = parseOutletRawRating(rawRating, normalizedOutlet);
   if (!parsedRating) {
     return {
       ok: false,
       reason:
-        `observation raw_rating is not a recognized outlet rating: "${rawRating}"; ` +
+        `observation raw_rating is not a recognized ${normalizedOutlet} rating: "${rawRating}" ` +
+        "(each outlet's own vocabulary only — Sabato has no Tilt, IE says Solid not Safe); " +
         "record the race as none_found and report the new rating tier instead of guessing",
     };
   }
@@ -144,7 +152,26 @@ function parseObservation(
     return { ok: false, reason: `observation as_of must not be in the future: ${asOf}` };
   }
 
-  const url = validateEvidenceUrl(value.url, normalizedOutlet);
+  // Optional provenance: the outlet's per-row last-change date (IE's `date`
+  // column). Freshness always runs off as_of (the feed snapshot date);
+  // changed_at is stored in evidence only.
+  const changedAt = value.changed_at;
+  if (changedAt !== undefined) {
+    if (!isNonEmptyString(changedAt) || !isValidIsoDate(changedAt.trim())) {
+      return { ok: false, reason: `observation changed_at must be a valid YYYY-MM-DD date: ${String(changedAt)}` };
+    }
+    // A change recorded after the feed snapshot cannot be in that snapshot
+    // (ISO dates compare correctly as strings). This also covers the future,
+    // since as_of is already capped at today.
+    if (changedAt.trim() > asOf) {
+      return {
+        ok: false,
+        reason: `observation changed_at ${changedAt.trim()} must not be after its as_of snapshot ${asOf}`,
+      };
+    }
+  }
+
+  const url = validateCurrentRaceRatingUrl(value.url, normalizedOutlet);
   if (typeof url !== "string") {
     return { ok: false, reason: `observation ${url.reason}` };
   }
@@ -157,6 +184,7 @@ function parseObservation(
       favored: parsedRating.favored,
       intensity: parsedRating.intensity,
       as_of: asOf,
+      ...(changedAt !== undefined ? { changed_at: changedAt.trim() } : {}),
       url,
     },
   };
@@ -193,7 +221,7 @@ function parseRow(
     return { ok: false, reason: `rating evidence_status is invalid: ${String(evidenceStatus)}` };
   }
 
-  const sourceUrl = validateEvidenceUrl(value.source_url);
+  const sourceUrl = validateCurrentRaceRatingUrl(value.source_url);
   if (typeof sourceUrl !== "string") {
     return { ok: false, reason: `rating source_url ${sourceUrl.reason}` };
   }
@@ -305,7 +333,9 @@ export function parseCurrentRaceRatingPayload(payload: unknown, options: ParseOp
     if (!isNonEmptyString(electionId)) {
       return { ok: false, reason: "rating election_id must be non-empty string" };
     }
-    const context = contextsById.get(electionId.trim());
+    // UUIDs compare case-insensitively in Postgres but not in a Map; context
+    // ids are DB-sourced lowercase, so fold the payload's spelling to match.
+    const context = contextsById.get(electionId.trim().toLowerCase());
     if (!context) {
       return { ok: false, reason: `rating contains election_id outside provided context: ${electionId}` };
     }
