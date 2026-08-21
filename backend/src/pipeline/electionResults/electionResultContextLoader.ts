@@ -166,7 +166,9 @@ export async function loadElectionResultContexts(
         ON c.id = ce.candidate_id
       WHERE ce.election_id = ANY($1::uuid[])
         AND c.deleted_at IS NULL
-      ORDER BY ce.election_id, lower(display_name), ce.id
+      -- Repeat the COALESCE: a bare display_name here would resolve to c.display_name,
+      -- so blank display_name rows would sort as '' instead of by the fallback name.
+      ORDER BY ce.election_id, lower(COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name))), ce.id
     `,
     [ids]
   );

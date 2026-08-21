@@ -80,6 +80,11 @@ describe("loadElectionResultContexts", () => {
       ]
     );
 
+    const candidateSql = query.mock.calls[1]?.[0] as string;
+    expect(candidateSql).toContain(
+      "ORDER BY ce.election_id, lower(COALESCE(NULLIF(trim(c.display_name), ''), trim(c.first_name || ' ' || c.last_name))), ce.id"
+    );
+
     expect(contexts).toHaveLength(2);
     expect(contexts[0]).toMatchObject({
       electionId: "00000000-0000-0000-0000-000000000001",
