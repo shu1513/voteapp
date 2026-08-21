@@ -691,7 +691,7 @@ async function main(): Promise<void> {
     listAuthenticatedElectionChoices: (userId) => listUserElectionChoices(pool, userId),
     setAuthenticatedElectionChoice: (userId, input) => setUserElectionChoice(pool, userId, input),
     applyAuthenticatedAutoPicks: (userId, input) => applyAutoPicks(pool, userId, input),
-    clearAuthenticatedAutoPicks: (userId) => clearAutoPicks(pool, userId),
+    clearAuthenticatedAutoPicks: (userId, electionDate) => clearAutoPicks(pool, userId, electionDate),
     createAuthenticatedPickCardShare: (userId, electionDate) =>
       getOrCreateUserPickCardShare(pool, userId, electionDate),
     lookupPublicPickCard: (token) => lookupPublicPickCard(pool, token),

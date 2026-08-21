@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiRequest, formatElectionDate, useElectionChoices, useMe } from "@voteapp/api-client";
-import type { BallotSummary, ElectionChoice, ElectionSummary, PickCardShare } from "@voteapp/api-client";
-import { AutoPickFillControl } from "../components/AutoPickFillControl";
+import type { AutoPickElectionResult, BallotSummary, ElectionChoice, ElectionSummary, PickCardShare } from "@voteapp/api-client";
+import { AutoPickFillControl, reasonLabel } from "../components/AutoPickFillControl";
 import { BallotPreviewSheets, BallotViewToggle } from "../components/BallotPreview";
 import { ErrorNotice, LoadingNotice } from "../components/Status";
 import type { ElectionNavState } from "../lib/detailNavContext";
@@ -253,13 +253,20 @@ export function PickDateCard({
   choiceByElectionId,
   share = true,
   navState = PICKS_NAV_STATE,
+  autoPickChoices,
 }: {
   date: string;
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
   share?: boolean;
   navState?: ElectionNavState;
+  /** All stored choices; presence turns on this card's auto-pick controls
+   * (My Picks only — the guest draft page reuses the card without them). */
+  autoPickChoices?: ElectionChoice[];
 }) {
+  // This date's last fill run, keyed by election id — feeds the per-row
+  // "auto pick: …" annotations below instead of a separate result list.
+  const [autoResults, setAutoResults] = useState<Map<string, AutoPickElectionResult> | null>(null);
   const pickedCount = elections.filter((election) =>
     hasRenderablePick(choiceByElectionId?.get(election.id))
   ).length;
@@ -279,9 +286,19 @@ export function PickDateCard({
       <p className="mt-0.5 text-xs text-ink-soft">
         {pickedCount} of {elections.length} race{elections.length === 1 ? "" : "s"} decided
       </p>
+      {autoPickChoices !== undefined && !isPast ? (
+        <AutoPickFillControl
+          date={date}
+          elections={elections}
+          choices={autoPickChoices}
+          choiceByElectionId={choiceByElectionId}
+          onResults={setAutoResults}
+        />
+      ) : null}
       <ul className="mt-3 space-y-2">
         {elections.map((election) => {
           const choice = choiceByElectionId?.get(election.id);
+          const autoResult = autoResults?.get(election.id);
           return (
             <li key={election.id} className="text-sm">
               {hasRenderablePick(choice) ? (
@@ -291,16 +308,22 @@ export function PickDateCard({
                   </Link>
                   <span className="text-ink-soft"> — </span>
                   <PickedLine choice={choice} election={election} />
+                  {autoResult?.outcome === "picked" && autoResult.reason === "tie" ? (
+                    // Partial fill: some seats landed, the rest tied.
+                    <span className="text-ink-soft"> · auto pick: remaining seats tied — your call</span>
+                  ) : null}
                 </>
               ) : (
                 // Undecided: the whole line is the quiet call to action —
-                // grey, clickable, straight to the race.
+                // grey, clickable, straight to the race. After a fill run,
+                // the one-line reason the engine left it open rides along.
                 <Link
                   to={`/elections/${election.id}`}
                   state={navState}
                   className="text-ink-soft underline decoration-dotted underline-offset-2 hover:text-ink"
                 >
                   {election.official_ballot_title} — {isPast ? "no pick" : "no pick yet"}
+                  {autoResult?.outcome === "no_pick" ? ` · auto pick: ${reasonLabel(autoResult.reason)}` : ""}
                 </Link>
               )}
             </li>
@@ -529,24 +552,22 @@ export function PicksPage() {
                 <BallotViewToggle view={view} onChange={setView} />
               </div>
             ) : null}
-            {/* Batch auto-pick over the same settled payload the cards use;
-                renders in both views (it acts on races, not on a layout).
-                Hidden while nothing is fillable or clearable. */}
-            <AutoPickFillControl
-              elections={(ballot.data?.elections ?? []).filter(
-                (election) => election.election_date >= today
-              )}
-              choices={choices ?? []}
-              choiceByElectionId={choiceByElectionId}
-              today={today}
-            />
             {view === "ballot" ? (
               // Same settled payload as the cards — no second fetch, no
-              // loading state of its own.
+              // loading state of its own. Each sheet carries its own
+              // auto-pick controls, scoped to that date's races.
               <BallotPreviewSheets
                 elections={ballot.data?.elections ?? []}
                 choiceByElectionId={choiceByElectionId}
                 today={today}
+                renderSheetExtras={(date, dateElections) => (
+                  <AutoPickFillControl
+                    date={date}
+                    elections={dateElections}
+                    choices={choices ?? []}
+                    choiceByElectionId={choiceByElectionId}
+                  />
+                )}
               />
             ) : (
               <div className="mt-4 space-y-4">
@@ -556,6 +577,7 @@ export function PicksPage() {
                     date={date}
                     elections={byDate.get(date) ?? []}
                     choiceByElectionId={choiceByElectionId}
+                    autoPickChoices={choices ?? []}
                   />
                 ))}
               </div>

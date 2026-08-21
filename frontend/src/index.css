@@ -32,6 +32,12 @@
      dem-blue — party brand colors stay on party content in an elections app.
      8.9:1 on white. */
   --color-navy: #1e3a5f;
+  /* Auto-pick accent ("Pick by my issues" / "Fill my empty picks"). Teal on
+     purpose: red reads Republican, blue reads Democrat, yellow is the manual
+     pick color — teal is the inviting shade with no partisan or in-app
+     meaning. White text on it: 5.0:1. */
+  --color-autopick: #0f766e;
+  --color-autopick-dark: #115e59;
 }
 
 /* Pages with a sticky pick card (candidate pages, data-sticky-pick-cta)

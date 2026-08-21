@@ -1,4 +1,5 @@
 import type { ElectionChoice, ElectionPreviewCandidate, ElectionSummary } from "@voteapp/api-client";
+import type { ReactNode } from "react";
 import { formatElectionDate } from "@voteapp/api-client";
 
 // Ballot view of My Picks / My Ballot Draft: a paper-ballot-shaped render of
@@ -151,10 +152,12 @@ function BallotSheet({
   date,
   elections,
   choiceByElectionId,
+  extras,
 }: {
   date: string;
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
+  extras?: ReactNode;
 }) {
   return (
     <section className="rounded-sm border border-line bg-white p-4 shadow-sm">
@@ -162,6 +165,7 @@ function BallotSheet({
         <h3 className="text-base font-bold text-ink">Ballot preview — {formatElectionDate(date)}</h3>
         <p className="text-xs text-ink-soft">Not an official ballot</p>
       </header>
+      {extras}
       <div className="mt-3 space-y-3">
         {elections.map((election) => (
           <ContestBox key={election.id} election={election} choice={choiceByElectionId?.get(election.id)} />
@@ -189,10 +193,14 @@ export function BallotPreviewSheets({
   elections,
   choiceByElectionId,
   today,
+  renderSheetExtras,
 }: {
   elections: ElectionSummary[];
   choiceByElectionId: Map<string, ElectionChoice> | undefined;
   today: string;
+  /** Optional per-sheet slot under the header (My Picks puts its per-date
+   * auto-pick controls here; the guest draft page passes nothing). */
+  renderSheetExtras?: (date: string, elections: ElectionSummary[]) => ReactNode;
 }) {
   const byDate = new Map<string, ElectionSummary[]>();
   for (const election of elections) {
@@ -212,7 +220,13 @@ export function BallotPreviewSheets({
     // this preview" (or Ctrl+P in ballot view) prints only the sheets.
     <div className="ballot-print-area mt-4 space-y-4">
       {dates.map((date) => (
-        <BallotSheet key={date} date={date} elections={byDate.get(date) ?? []} choiceByElectionId={choiceByElectionId} />
+        <BallotSheet
+          key={date}
+          date={date}
+          elections={byDate.get(date) ?? []}
+          choiceByElectionId={choiceByElectionId}
+          extras={renderSheetExtras?.(date, byDate.get(date) ?? [])}
+        />
       ))}
       <p className="print:hidden">
         <button

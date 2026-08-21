@@ -1194,7 +1194,10 @@ export function parsePickCardShareBodyValue(parsed: unknown): PickCardSharePaylo
   if (typeof payload.election_date !== "string") {
     throw new TypeError("Request body must include string field: election_date");
   }
-  const electionDate = payload.election_date.trim();
+  return { electionDate: assertValidElectionDate(payload.election_date.trim()) };
+}
+
+function assertValidElectionDate(electionDate: string): string {
   // Round-trip through UTC instead of trusting Date.parse alone: V8 rolls
   // impossible days over ("2026-02-30" parses as March 2), which would pass
   // a NaN check and later 500 on Postgres's ::date cast instead of 400 here.
@@ -1209,7 +1212,16 @@ export function parsePickCardShareBodyValue(parsed: unknown): PickCardSharePaylo
   if (!isRealDate) {
     throw new TypeError(`election_date must be a valid YYYY-MM-DD date: ${electionDate}`);
   }
-  return { electionDate };
+  return electionDate;
+}
+
+/** Optional ?election_date= scope on DELETE /api/me/auto-picks. */
+export function parseAutoPicksClearQuery(url: URL): string | undefined {
+  const electionDate = url.searchParams.get("election_date");
+  if (electionDate === null) {
+    return undefined;
+  }
+  return assertValidElectionDate(electionDate.trim());
 }
 
 export function parseElectionId(url: URL): string {

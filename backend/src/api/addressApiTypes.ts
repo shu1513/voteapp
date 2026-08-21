@@ -148,7 +148,7 @@ export type AddressApiServerOptions = {
   applyAuthenticatedAutoPicks?: (userId: string, input: ApplyAutoPicksInput) => Promise<AutoPicksResult>;
   /** DELETE /api/me/auto-picks — one-statement clear of every auto pick on
    * the user's upcoming elections. Same auth posture. */
-  clearAuthenticatedAutoPicks?: (userId: string) => Promise<ClearAutoPicksResult>;
+  clearAuthenticatedAutoPicks?: (userId: string, electionDate?: string) => Promise<ClearAutoPicksResult>;
   /** POST /api/me/pick-card-shares — mint (or return) the share token for one
    * date's pick card. Auth-gated, not verification-gated. */
   createAuthenticatedPickCardShare?: (userId: string, electionDate: string) => Promise<AuthenticatedPickCardShareResult>;
