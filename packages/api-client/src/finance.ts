@@ -1,5 +1,9 @@
 import type { FinanceSummary } from "./types";
 
+const FINANCE_SOURCE_HOME_URLS: Partial<Record<FinanceSummary["source"], string>> = {
+  MISSOURI_MEC: "https://www.mec.mo.gov/MEC/Campaign_Finance/",
+};
+
 // Shared by the web and mobile FinanceSummaryCard so "is there anything to
 // render" stays one definition across platforms.
 
@@ -69,7 +73,32 @@ export function firstFinanceSourceUrl(summary: FinanceSummary): string | null {
       return row.source_url;
     }
   }
-  return null;
+  return FINANCE_SOURCE_HOME_URLS[summary.source] ?? null;
+}
+
+/**
+ * Most direct coverage notes qualify donor breakdowns and should stay hidden
+ * when no breakdown is shown. Missouri's note also qualifies its itemized
+ * transaction totals, so a real zero-row snapshot must show the note beside
+ * the disclosed $0 figures.
+ */
+export function shouldShowDirectCoverageNote(summary: FinanceSummary): boolean {
+  const direct = summary.direct_campaign;
+  if (!direct.direct_coverage_note) {
+    return false;
+  }
+  if (direct.top_occupations.length > 0 || (direct.contribution_size_buckets?.length ?? 0) > 0) {
+    return true;
+  }
+  return (
+    summary.source === "MISSOURI_MEC" &&
+    (direct.total_raised !== null ||
+      direct.total_spent !== null ||
+      direct.cash_on_hand !== null ||
+      direct.debts_owed !== null ||
+      direct.public_funds_received != null ||
+      (direct.loans_received ?? 0) > 0)
+  );
 }
 
 /**

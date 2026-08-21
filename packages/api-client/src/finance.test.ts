@@ -5,6 +5,7 @@ import {
   hasFinanceContent,
   hasMemberCommunications,
   hasOutsideFinanceContent,
+  shouldShowDirectCoverageNote,
   spendingExceedsCycleFunds,
 } from "./finance";
 import type { FinanceSummary } from "./types";
@@ -61,6 +62,32 @@ describe("NYC finance shared fields", () => {
     expect(hasFinanceContent(summary)).toBe(false);
     // …but their rows still serve as a provenance-link fallback.
     expect(firstFinanceSourceUrl(summary)).toBe("https://www.nyccfb.info/");
+  });
+});
+
+describe("finance source provenance and coverage notes", () => {
+  it("falls back to the Missouri disclosure portal when a zero snapshot has no breakdown URLs", () => {
+    const summary = emptySummary();
+    summary.source = "MISSOURI_MEC";
+    expect(firstFinanceSourceUrl(summary)).toBe("https://www.mec.mo.gov/MEC/Campaign_Finance/");
+  });
+
+  it("shows Missouri's totals note for disclosed zeroes without changing breakdown-only notes", () => {
+    const missouri = emptySummary();
+    missouri.source = "MISSOURI_MEC";
+    missouri.direct_campaign.total_raised = 0;
+    missouri.direct_campaign.total_spent = 0;
+    missouri.direct_campaign.direct_coverage_note = "Missouri itemized totals note";
+    expect(shouldShowDirectCoverageNote(missouri)).toBe(true);
+
+    const breakdownOnly = emptySummary();
+    breakdownOnly.direct_campaign.total_raised = 0;
+    breakdownOnly.direct_campaign.direct_coverage_note = "Breakdown-only note";
+    expect(shouldShowDirectCoverageNote(breakdownOnly)).toBe(false);
+    breakdownOnly.direct_campaign.top_occupations = [
+      { category_name: "Teacher", amount: 10, contributor_count: 1, source_url: null },
+    ];
+    expect(shouldShowDirectCoverageNote(breakdownOnly)).toBe(true);
   });
 });
 
