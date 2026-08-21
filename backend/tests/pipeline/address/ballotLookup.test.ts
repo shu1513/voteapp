@@ -40,6 +40,9 @@ describe("lookupBallotSummariesByDistrictIds", () => {
   it("loads lightweight election summaries with office context, area links, counts, and result status", async () => {
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -204,6 +207,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             },
           ],
           historical_competitiveness: null,
+          current_competitiveness: null,
           vote_power: {
             score: 73,
             label: "high",
@@ -251,6 +255,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
             },
           ],
           historical_competitiveness: null,
+          current_competitiveness: null,
           vote_power: {
             score: 85,
             label: "very_high",
@@ -263,7 +268,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       ]),
     });
     expect(result.elections).toHaveLength(2);
-    expect(query).toHaveBeenCalledTimes(8);
+    expect(query).toHaveBeenCalledTimes(9);
     expect(query.mock.calls[0]?.[1]).toEqual([[districtId]]);
     // Ballot summaries hide finished elections after the results-visibility
     // window; the boundary must be the last US local date (Honolulu), not
@@ -292,6 +297,9 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     const withdrawnCandidateElectionId = "99999999-9999-4999-8999-999999999999";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -408,7 +416,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
 
     const result = await lookupBallotSummariesByDistrictIds({ query }, [districtId], { includePreview: true });
 
-    expect(query).toHaveBeenCalledTimes(8);
+    expect(query).toHaveBeenCalledTimes(9);
     // The preview candidate query must NOT exclude withdrawn candidacies —
     // a late withdrawal can still be printed on the paper ballot.
     expect(query.mock.calls[6]?.[0]).not.toContain("withdrawn");
@@ -460,6 +468,9 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     const houseOfficeId = "99999999-9999-4999-8999-999999999993";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -608,7 +619,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
         factors: ["missing_representation_data", "medium_decisiveness"],
       },
     });
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     expect(fetch).not.toHaveBeenCalled();
     expect(query.mock.calls[6]?.[0]).toContain("public.historical_contest_margins");
     expect(JSON.parse(query.mock.calls[6]?.[1]?.[0] as string)).toEqual([
@@ -633,6 +644,9 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     const sheriffOfficeId = "77777777-7777-4777-8777-777777777773";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -777,7 +791,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     expect(JSON.parse(query.mock.calls[6]?.[1]?.[0] as string)).toEqual([
       {
         lookup_id: sheriffElectionId,
@@ -832,6 +846,9 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     ] as const;
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: counties.map((county) => ({
           id: county.districtId,
@@ -947,6 +964,9 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     const commissionerOfficeId = "77777777-7777-4777-8777-777777777783";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -998,7 +1018,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
       },
       historical_competitiveness: null,
     });
-    expect(query).toHaveBeenCalledTimes(6);
+    expect(query).toHaveBeenCalledTimes(7);
     expect(query.mock.calls.map((call) => call[0]).join("\n")).not.toContain("historical_contest_margins");
   });
 
@@ -1010,6 +1030,9 @@ describe("lookupBallotSummariesByDistrictIds", () => {
     vi.stubGlobal("fetch", fetch);
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -1129,7 +1152,7 @@ describe("lookupBallotSummariesByDistrictIds", () => {
         factors: ["high_representation", "uncontested_race"],
       },
     });
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     expect(fetch).not.toHaveBeenCalled();
     expect(JSON.parse(query.mock.calls[6]?.[1]?.[0] as string)).toEqual([
       {
@@ -1270,6 +1293,9 @@ describe("candidate_roster_status wiring", () => {
     };
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -1347,7 +1373,7 @@ describe("candidate_roster_status wiring", () => {
     });
     expect(measureSummary?.candidate_roster_status).toBeNull();
 
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     const rosterStatusCall = query.mock.calls[6];
     expect(rosterStatusCall?.[0]).toContain("candidate_roster:");
     expect(rosterStatusCall?.[0]).toContain("manual_research_deferrals");
@@ -1359,6 +1385,9 @@ describe("candidate_roster_status wiring", () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -1419,6 +1448,9 @@ describe("candidate_roster_status wiring", () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -1499,6 +1531,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -1678,7 +1713,7 @@ describe("lookupElectionDetailById", () => {
         },
       },
     });
-    expect(query).toHaveBeenCalledTimes(8);
+    expect(query).toHaveBeenCalledTimes(9);
     expect(query.mock.calls[0]?.[1]).toEqual([officeElectionId]);
     // A not_found/not_final_yet sweep row would render as "Unknown · Not
     // found" above the decisive row; the detail queries filter it out like
@@ -1694,6 +1729,9 @@ describe("lookupElectionDetailById", () => {
     const integrityAreaId = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -1831,7 +1869,7 @@ describe("lookupElectionDetailById", () => {
         description: "Corruption and abuse of office.",
       },
     ]);
-    expect(query).toHaveBeenCalledTimes(9);
+    expect(query).toHaveBeenCalledTimes(10);
     expect(query.mock.calls[7]?.[0]).toContain("public.office_research_areas");
     expect(query.mock.calls[7]?.[1]).toEqual([[officeId], ["general", "integrity_and_ethics"]]);
     expect(query.mock.calls[8]?.[0]).toContain("public.office_research_areas");
@@ -1844,6 +1882,9 @@ describe("lookupElectionDetailById", () => {
     const integrityAreaId = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -1940,7 +1981,7 @@ describe("lookupElectionDetailById", () => {
       },
     ]);
     expect(result?.research_areas).toEqual([]);
-    expect(query).toHaveBeenCalledTimes(9);
+    expect(query).toHaveBeenCalledTimes(10);
     expect(query.mock.calls[7]?.[0]).toContain("public.office_research_areas");
   });
 
@@ -1948,6 +1989,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -2028,7 +2072,7 @@ describe("lookupElectionDetailById", () => {
         stance: "for",
       },
     ]);
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     for (const call of query.mock.calls) {
       expect(call[0]).not.toContain("public.office_research_areas");
     }
@@ -2038,6 +2082,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -2317,7 +2364,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.candidate_finance_direct_breakdowns");
     expect(query.mock.calls[9]?.[0]).toContain("public.candidate_finance_outside_groups");
@@ -2581,6 +2628,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("CALIFORNIA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -2814,7 +2864,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.ca_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ca_candidate_finance_direct_breakdowns");
     expect(query.mock.calls[9]?.[0]).toContain("public.ca_candidate_finance_outside_groups");
@@ -2841,6 +2891,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("COLORADO_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -2988,7 +3041,7 @@ describe("lookupElectionDetailById", () => {
         top_outside_supporting_industries: [],
       },
     });
-    expect(query).toHaveBeenCalledTimes(9);
+    expect(query).toHaveBeenCalledTimes(10);
     expect(query.mock.calls[7]?.[0]).toContain("public.co_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.co_candidate_finance_direct_breakdowns");
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("public.ca_candidate_finance");
@@ -3002,6 +3055,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("CONNECTICUT_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -3148,7 +3204,7 @@ describe("lookupElectionDetailById", () => {
         top_outside_supporting_industries: [],
       },
     });
-    expect(query).toHaveBeenCalledTimes(9);
+    expect(query).toHaveBeenCalledTimes(10);
     expect(query.mock.calls[7]?.[0]).toContain("public.ct_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ct_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'industry')");
@@ -3165,6 +3221,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("NEBRASKA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -3303,7 +3362,7 @@ describe("lookupElectionDetailById", () => {
         top_outside_supporting_industries: [],
       },
     });
-    expect(query).toHaveBeenCalledTimes(10);
+    expect(query).toHaveBeenCalledTimes(11);
     expect(query.mock.calls[7]?.[0]).toContain("public.ne_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ne_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'industry')");
@@ -3323,6 +3382,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("OKLAHOMA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -3462,7 +3524,7 @@ describe("lookupElectionDetailById", () => {
         top_outside_supporting_industries: [],
       },
     });
-    expect(query).toHaveBeenCalledTimes(10);
+    expect(query).toHaveBeenCalledTimes(11);
     expect(query.mock.calls[7]?.[0]).toContain("public.ok_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ok_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -3501,6 +3563,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("WISCONSIN_CAMPAIGN_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -3661,7 +3726,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(10);
+    expect(query).toHaveBeenCalledTimes(11);
     expect(query.mock.calls[7]?.[0]).toContain("public.in_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.in_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain(
@@ -3678,6 +3743,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("NEW_MEXICO_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -3905,7 +3973,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.nm_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.nm_candidate_finance_direct_breakdowns");
     expect(query.mock.calls[9]?.[0]).toContain("public.nm_candidate_finance_outside_groups");
@@ -3917,6 +3985,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("TEXAS_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -4168,7 +4239,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.tx_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.tx_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -4189,6 +4260,9 @@ describe("lookupElectionDetailById", () => {
       "https://dos.fl.gov/elections/candidates-committees/campaign-finance/campaign-finance-database/";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -4440,7 +4514,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.fl_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.fl_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -4455,6 +4529,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("ARIZONA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -4706,7 +4783,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.az_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.az_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -4725,6 +4802,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("WASHINGTON_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -4981,7 +5061,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.wa_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.wa_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -5000,6 +5080,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("WISCONSIN_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -5253,7 +5336,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(14);
+    expect(query).toHaveBeenCalledTimes(15);
     expect(query.mock.calls[7]?.[0]).toContain("public.wi_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.wi_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -5274,6 +5357,9 @@ describe("lookupElectionDetailById", () => {
       "https://register.cfb.mn.gov/reports-and-data/self-help/data-downloads/campaign-finance/";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -5494,7 +5580,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(14);
+    expect(query).toHaveBeenCalledTimes(15);
     expect(query.mock.calls[7]?.[0]).toContain("public.mn_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.mn_candidate_finance_outside_groups");
     expect(query.mock.calls[9]?.[0]).toContain("public.mn_candidate_finance_outside_group_breakdowns");
@@ -5509,6 +5595,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("MINNESOTA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -5593,7 +5682,7 @@ describe("lookupElectionDetailById", () => {
         cash_on_hand: 25000,
       },
     });
-    expect(query).toHaveBeenCalledTimes(12);
+    expect(query).toHaveBeenCalledTimes(13);
     expect(query.mock.calls[7]?.[0]).toContain("public.mn_candidate_finance_summaries");
   });
 
@@ -5602,6 +5691,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("LOUISIANA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -5687,7 +5779,7 @@ describe("lookupElectionDetailById", () => {
         cash_on_hand: 25000,
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.la_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.la_candidate_finance_direct_breakdowns");
   });
@@ -5697,6 +5789,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -5958,7 +6053,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(14);
+    expect(query).toHaveBeenCalledTimes(15);
     expect(query.mock.calls[7]?.[0]).toContain("public.ma_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ma_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -6218,6 +6313,9 @@ describe("lookupElectionDetailById", () => {
     const genericKentuckySourceUrl = "https://secure.kentucky.gov/kref/publicsearch";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -6471,7 +6569,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(14);
+    expect(query).toHaveBeenCalledTimes(15);
     expect(query.mock.calls[7]?.[0]).toContain("public.ky_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ky_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -6494,6 +6592,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("ALASKA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -6747,7 +6848,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(14);
+    expect(query).toHaveBeenCalledTimes(15);
     expect(query.mock.calls[7]?.[0]).toContain("public.ak_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ak_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -6763,6 +6864,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("ALASKA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -6813,7 +6917,7 @@ describe("lookupElectionDetailById", () => {
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toBeNull();
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("ak_candidate_finance");
   });
 
@@ -6824,6 +6928,9 @@ describe("lookupElectionDetailById", () => {
       "https://www.michigan.gov/sos/elections/disclosure/cfr/committee-search/intro/welcome-to-the-michigan-campaign-finance-searchable-database";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -7079,7 +7186,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(14);
+    expect(query).toHaveBeenCalledTimes(15);
     expect(query.mock.calls[7]?.[0]).toContain("public.mi_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.mi_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -7099,6 +7206,9 @@ describe("lookupElectionDetailById", () => {
     const genericOregonSourceUrl = "https://secure.sos.state.or.us/orestar/gotoPublicTransactionSearch.do";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -7319,7 +7429,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(14);
+    expect(query).toHaveBeenCalledTimes(15);
     expect(query.mock.calls[7]?.[0]).toContain("public.or_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.or_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -7340,6 +7450,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("OREGON_CAMPAIGN_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -7391,7 +7504,7 @@ describe("lookupElectionDetailById", () => {
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toBeNull();
-    expect(query).toHaveBeenCalledTimes(8);
+    expect(query).toHaveBeenCalledTimes(9);
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("or_candidate_finance");
   });
 
@@ -7400,6 +7513,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("HAWAII_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -7651,7 +7767,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.hi_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.hi_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -7670,6 +7786,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("DISTRICT_OF_COLUMBIA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -7921,7 +8040,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(13);
+    expect(query).toHaveBeenCalledTimes(14);
     expect(query.mock.calls[7]?.[0]).toContain("public.dc_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.dc_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -7940,6 +8059,9 @@ describe("lookupElectionDetailById", () => {
     const sourceUrl = "https://campaignfinance.maryland.gov/public/cf/downloads";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -8170,7 +8292,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(14);
+    expect(query).toHaveBeenCalledTimes(15);
     const marylandQueries = query.mock.calls.map(([sql]) => String(sql)).filter((sql) => sql.includes("public.md_candidate_finance_"));
     expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_summaries"))).toBe(true);
     expect(marylandQueries.some((sql) => sql.includes("public.md_candidate_finance_direct_breakdowns"))).toBe(true);
@@ -8193,6 +8315,9 @@ describe("lookupElectionDetailById", () => {
     const sourceUrl = "https://mainecampaignfinance.com/";
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -8465,6 +8590,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -8602,7 +8730,7 @@ describe("lookupElectionDetailById", () => {
         top_outside_supporting_industries: [],
       },
     });
-    expect(query).toHaveBeenCalledTimes(10);
+    expect(query).toHaveBeenCalledTimes(11);
     expect(query.mock.calls[7]?.[0]).toContain("public.va_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.va_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type IN ('occupation', 'contribution_size')");
@@ -8614,6 +8742,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("UTAH_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -8751,7 +8882,7 @@ describe("lookupElectionDetailById", () => {
         ],
       },
     });
-    expect(query).toHaveBeenCalledTimes(11);
+    expect(query).toHaveBeenCalledTimes(12);
     expect(query.mock.calls[7]?.[0]).toContain("public.ut_candidate_finance_summaries");
     expect(query.mock.calls[8]?.[0]).toContain("public.ut_candidate_finance_direct_breakdowns");
     expect(String(query.mock.calls[8]?.[0])).toContain("breakdown.category_type = 'contribution_size'");
@@ -8764,6 +8895,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("UTAH_CAMPAIGN_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -8813,7 +8947,7 @@ describe("lookupElectionDetailById", () => {
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toBeNull();
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("ut_candidate_finance");
   });
 
@@ -8822,6 +8956,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("TEXAS_CAMPAIGN_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -8871,7 +9008,7 @@ describe("lookupElectionDetailById", () => {
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toBeNull();
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("tx_candidate_finance");
   });
 
@@ -8879,6 +9016,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -8928,13 +9068,16 @@ describe("lookupElectionDetailById", () => {
     const result = await lookupElectionDetailById({ query }, officeElectionId);
 
     expect(result?.candidates[0]?.finance_summary).toBeNull();
-    expect(query).toHaveBeenCalledTimes(7);
+    expect(query).toHaveBeenCalledTimes(8);
     expect(query.mock.calls.map((call) => String(call[0])).join("\n")).not.toContain("candidate_finance");
   });
 
   it("loads full detail for one ballot measure election by election ID", async () => {
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -9067,6 +9210,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("VIRGINIA_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -9125,6 +9271,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("NEW_JERSEY_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -9343,6 +9492,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("MASSACHUSETTS_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -9456,6 +9608,9 @@ describe("lookupElectionDetailById", () => {
     vi.stubEnv("WISCONSIN_CAMPAIGN_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({
         rows: [
           {
@@ -9530,6 +9685,9 @@ describe("lookupCandidateElectionFinanceSummaryById", () => {
   it("returns null when the candidate is not in the election", async () => {
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({ rows: [senateElectionRowForFinance()] })
       .mockResolvedValueOnce({ rows: [] });
 
@@ -9550,6 +9708,9 @@ describe("lookupCandidateElectionFinanceSummaryById", () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "false");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({ rows: [senateElectionRowForFinance()] })
       .mockResolvedValueOnce({ rows: [senateCandidateRowForFinance()] });
 
@@ -9563,6 +9724,9 @@ describe("lookupCandidateElectionFinanceSummaryById", () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({ rows: [senateElectionRowForFinance()] })
       .mockResolvedValueOnce({ rows: [senateCandidateRowForFinance()] })
       .mockResolvedValueOnce({
@@ -9618,6 +9782,9 @@ describe("lookupCandidateElectionFinanceSummaryById", () => {
     vi.stubEnv("CANDIDATE_FINANCE_ENABLED", "true");
     const query = vi
       .fn()
+      // Terminal default: the trailing current_race_ratings lookup (empty = no
+      // current rating; ordered Once mocks below are consumed first).
+      .mockResolvedValue({ rows: [] })
       .mockResolvedValueOnce({ rows: [{ ...senateElectionRowForFinance(), election_id: letterElectionId }] })
       .mockResolvedValueOnce({
         rows: [{ election_id: letterElectionId, candidate_id: letterCandidateId, fec_ids: ["S4CA00001"] }],
@@ -9685,3 +9852,247 @@ function senateCandidateRowForFinance() {
     fec_ids: ["S4CA00001"],
   };
 }
+
+// Current-cycle rating read path: dispatch-style mocks (keyed on the queried
+// table, so they survive loader reordering). Dates are computed from the real
+// clock because currentRaceRatingOverridesHistory runs on it.
+describe("current race rating read path", () => {
+  const ratedDistrictId = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+  const ratedElectionId = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+  const ratedOfficeId = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+
+  function isoDaysFromNow(days: number): string {
+    return new Date(Date.now() + days * 86_400_000).toISOString().slice(0, 10);
+  }
+  const electionDate = isoDaysFromNow(60);
+  const asOf = isoDaysFromNow(-1);
+
+  function summaryElectionRow(overrides: Record<string, unknown> = {}) {
+    return {
+      election_id: ratedElectionId,
+      district_id: ratedDistrictId,
+      district_type: "us_house",
+      geoid_compact: "0631",
+      district_name: "California's 31st Congressional District",
+      state: "CA",
+      state_fips: "06",
+      representation_power_score: "72.5",
+      race_type: "office",
+      official_ballot_title: "United States Representative District 31",
+      election_date: electionDate,
+      election_stage: "general",
+      is_partisan: true,
+      discovery_contest_family: "us_house",
+      sources: ["https://example.test/elections"],
+      office_id: ratedOfficeId,
+      office_scope: "us_house",
+      office_canonical_name: "United States Representative",
+      office_summary: "Federal lower-chamber legislator.",
+      ...overrides,
+    };
+  }
+
+  function marginRow() {
+    return {
+      id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa1",
+      lookup_id: ratedElectionId,
+      source: "MIT_2024",
+      source_url: "https://github.com/MEDSL/2024-elections-official",
+      election_year: 2024,
+      state: "CA",
+      state_fips: "06",
+      office_type: "US_HOUSE",
+      district_type: "us_house",
+      district_key: "0631",
+      mit_office: "US HOUSE",
+      mit_district: "031",
+      winner_party: "DEMOCRAT",
+      runner_up_party: "REPUBLICAN",
+      winner_votes: "109200",
+      runner_up_votes: "90800",
+      total_votes: "200000",
+      margin_percent: "9.20",
+      competitiveness_label: "competitive",
+      stale_after_redistricting: false,
+      imported_at: "2026-06-14 12:00:00+00",
+    };
+  }
+
+  function ratingRow(overrides: Record<string, unknown> = {}) {
+    return {
+      election_id: ratedElectionId,
+      election_date: electionDate,
+      competitiveness_label: "toss_up",
+      method: "outlet_consensus",
+      confidence: "high",
+      evidence_status: "rated",
+      as_of: asOf,
+      decisive_round: null,
+      evidence: {
+        mean_intensity: 0,
+        observations: [
+          {
+            outlet: "inside_elections",
+            raw_rating: "Toss-up",
+            favored: "none",
+            intensity: 0,
+            as_of: asOf,
+            url: "https://insideelections.com/ratings/house",
+          },
+          {
+            outlet: "sabato",
+            raw_rating: "Toss-up",
+            favored: "none",
+            intensity: 0,
+            as_of: asOf,
+            url: "https://centerforpolitics.org/crystalball/2026-house",
+          },
+        ],
+      },
+      source_url: "https://en.wikipedia.org/wiki/2026_United_States_House_of_Representatives_elections",
+      researched_on: isoDaysFromNow(-1),
+      ...overrides,
+    };
+  }
+
+  function summaryQueryMock(options: { rating: Record<string, unknown> | null; candidateCount?: number }) {
+    return vi.fn().mockImplementation((sql: string) => {
+      const text = String(sql);
+      if (text.includes("public.current_race_ratings")) {
+        return Promise.resolve({ rows: options.rating ? [options.rating] : [] });
+      }
+      if (text.includes("public.historical_contest_margins")) {
+        return Promise.resolve({ rows: [marginRow()] });
+      }
+      if (text.includes("candidate_count")) {
+        return Promise.resolve({
+          rows: [{ election_id: ratedElectionId, candidate_count: options.candidateCount ?? 2 }],
+        });
+      }
+      if (text.includes("FROM public.elections")) {
+        return Promise.resolve({ rows: [summaryElectionRow()] });
+      }
+      return Promise.resolve({ rows: [] });
+    });
+  }
+
+  it("prefers a fresh, confident current rating over historic margins and attaches both payloads", async () => {
+    const query = summaryQueryMock({ rating: ratingRow() });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [ratedDistrictId]);
+    const election = result.elections[0]!;
+
+    expect(election.current_competitiveness).toEqual({
+      display_label: "Currently a toss-up",
+      display_description: expect.stringContaining("Inside Elections and Sabato's Crystal Ball"),
+      competitiveness_label: "toss_up",
+      method: "outlet_consensus",
+      confidence: "high",
+      as_of: asOf,
+    });
+    // The historic chip data stays available for fallback rendering...
+    expect(election.historical_competitiveness?.competitiveness_label).toBe("competitive");
+    // ...but decisiveness graded on the current toss_up (historic competitive
+    // would grade "medium").
+    expect(election.vote_power.decisiveness_level).toBe("high");
+  });
+
+  it("falls back to historic margins when the stored row is none_found", async () => {
+    // The DC delegate race can only ever store none_found rows, so this is
+    // also the DC-untouched case.
+    const query = summaryQueryMock({
+      rating: ratingRow({ competitiveness_label: null, confidence: null, as_of: null, evidence_status: "none_found" }),
+    });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [ratedDistrictId]);
+    const election = result.elections[0]!;
+
+    expect(election.current_competitiveness).toBeNull();
+    expect(election.vote_power.decisiveness_level).toBe("medium");
+  });
+
+  it("falls back to historic margins when the current rating is stale", async () => {
+    const query = summaryQueryMock({ rating: ratingRow({ as_of: isoDaysFromNow(-61) }) });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [ratedDistrictId]);
+    const election = result.elections[0]!;
+
+    expect(election.current_competitiveness).toBeNull();
+    expect(election.vote_power.decisiveness_level).toBe("medium");
+  });
+
+  it("keeps uncontested precedence while still attaching the current chip data", async () => {
+    const query = summaryQueryMock({ rating: ratingRow(), candidateCount: 1 });
+
+    const result = await lookupBallotSummariesByDistrictIds({ query }, [ratedDistrictId]);
+    const election = result.elections[0]!;
+
+    // The chip states a fact about the race; the grade states what a vote
+    // can change — uncontested still zeroes decisiveness.
+    expect(election.current_competitiveness?.display_label).toBe("Currently a toss-up");
+    expect(election.vote_power.decisiveness_level).toBe("none");
+  });
+
+  it("swaps the detail explanation to rating copy when the current rating drives the label", async () => {
+    const query = vi.fn().mockImplementation((sql: string) => {
+      const text = String(sql);
+      if (text.includes("public.current_race_ratings")) {
+        return Promise.resolve({ rows: [ratingRow()] });
+      }
+      if (text.includes("public.historical_contest_margins")) {
+        return Promise.resolve({ rows: [marginRow()] });
+      }
+      if (text.includes("public.candidate_elections")) {
+        return Promise.resolve({
+          rows: [
+            {
+              election_id: ratedElectionId,
+              candidate_election_id: "f1f1f1f1-f1f1-4f1f-8f1f-f1f1f1f1f1f1",
+              candidate_id: "f2f2f2f2-f2f2-4f2f-8f2f-f2f2f2f2f2f2",
+              display_name: "Alex Incumbent",
+              party: "Democratic",
+              is_incumbent: true,
+              status: "declared",
+              summary: null,
+              current_office: null,
+              state: "CA",
+              fec_ids: [],
+              state_filing_ids: [],
+            },
+            {
+              election_id: ratedElectionId,
+              candidate_election_id: "f3f3f3f3-f3f3-4f3f-8f3f-f3f3f3f3f3f3",
+              candidate_id: "f4f4f4f4-f4f4-4f4f-8f4f-f4f4f4f4f4f4",
+              display_name: "Sam Challenger",
+              party: "Republican",
+              is_incumbent: false,
+              status: "declared",
+              summary: null,
+              current_office: null,
+              state: "CA",
+              fec_ids: [],
+              state_filing_ids: [],
+            },
+          ],
+        });
+      }
+      if (text.includes("FROM public.elections")) {
+        return Promise.resolve({ rows: [summaryElectionRow()] });
+      }
+      return Promise.resolve({ rows: [] });
+    });
+
+    const detail = await lookupElectionDetailById({ query }, ratedElectionId);
+
+    expect(detail?.current_competitiveness?.display_label).toBe("Currently a toss-up");
+    expect(detail?.vote_power.decisiveness_level).toBe("high");
+    const decisiveness = detail?.vote_power.explanation.parts.find((part) => part.title === "Decisiveness");
+    expect(decisiveness?.stat).toContain("rated toss-up as of");
+    // Historic margin numbers must not caption a rating-sourced grade.
+    expect(decisiveness?.stat).not.toContain("margin");
+    expect(decisiveness?.formula).toContain('IE "Toss-up" (d=0) + Sabato "Toss-up" (d=0) → mean 0 → "toss-up"');
+    expect(detail?.vote_power.explanation.how).toContain("current race ratings from election analysts");
+    // Both payload objects ride along, mirroring the summary list.
+    expect(detail?.historical_competitiveness?.competitiveness_label).toBe("competitive");
+  });
+});

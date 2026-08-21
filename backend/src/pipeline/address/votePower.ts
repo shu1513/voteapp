@@ -520,13 +520,13 @@ const RATING_OUTLET_DISPLAY: Record<string, { short: string; full: string }> = {
   sabato: { short: "Sabato", full: "Sabato's Crystal Ball" },
 };
 
-function ratingOutletDisplay(outlet: string): { short: string; full: string } {
+export function ratingOutletDisplay(outlet: string): { short: string; full: string } {
   return RATING_OUTLET_DISPLAY[outlet] ?? { short: outlet, full: outlet };
 }
 
 // as_of is a plain YYYY-MM-DD; render it in UTC so the stated date never
 // shifts with the server's timezone.
-function formatRatingDate(asOf: string): string {
+export function formatRatingDate(asOf: string): string {
   const parsed = Date.parse(`${asOf}T00:00:00.000Z`);
   if (!Number.isFinite(parsed)) {
     return asOf;

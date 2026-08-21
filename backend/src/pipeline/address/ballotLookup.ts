@@ -17,7 +17,19 @@ import {
   type HistoricalContestWeightedMarginLookupRecord,
 } from "../competitiveness/historicalContestMarginLookup.js";
 import type { HistoricalContestCompetitivenessLabel } from "../competitiveness/competitivenessLabels.js";
-import { calculateVotePower, explainVotePower, type VotePowerExplanation, type VotePowerResult } from "./votePower.js";
+import {
+  loadOverridingCurrentRaceRatings,
+  type CurrentRaceRatingLookupRecord,
+} from "../competitiveness/currentRaceRatingLookup.js";
+import {
+  calculateVotePower,
+  explainVotePower,
+  formatRatingDate,
+  ratingOutletDisplay,
+  type VotePowerCurrentRating,
+  type VotePowerExplanation,
+  type VotePowerResult,
+} from "./votePower.js";
 import { applyFinanceCommitteeLabels } from "./financeCommitteeLabels.js";
 import {
   GENERAL_RESEARCH_AREA_SLUG,
@@ -144,6 +156,19 @@ export type BallotLookupHistoricalCompetitiveness = {
   contests_used?: BallotLookupHistoricalCompetitivenessContest[];
 };
 
+// Current-cycle analyst rating, present ONLY when it drove the vote-power
+// decisiveness label (fresh + rated + high|medium confidence + upcoming, per
+// currentRaceRatingOverridesHistory). Clients render this chip INSTEAD of the
+// historic one when present; fallback races keep the historic chip.
+export type BallotLookupCurrentCompetitiveness = {
+  display_label: string;
+  display_description: string;
+  competitiveness_label: HistoricalContestCompetitivenessLabel;
+  method: "outlet_consensus" | "mayoral_rubric";
+  confidence: "high" | "medium";
+  as_of: string;
+};
+
 export type BallotLookupCandidateRecord = {
   id: string;
   description: string;
@@ -262,6 +287,7 @@ export type BallotLookupElection = {
   office: BallotLookupOfficeSummary | null;
   research_areas: BallotLookupResearchAreaSummary[];
   historical_competitiveness: BallotLookupHistoricalCompetitiveness | null;
+  current_competitiveness: BallotLookupCurrentCompetitiveness | null;
   // The detail payload carries the explanation; the ballot summary list
   // (BallotLookupElectionSummary) deliberately does not.
   vote_power: VotePowerResult & { explanation: VotePowerExplanation };
@@ -269,7 +295,7 @@ export type BallotLookupElection = {
 
 type BallotLookupElectionBase = Omit<
   BallotLookupElection,
-  "office" | "research_areas" | "historical_competitiveness" | "vote_power"
+  "office" | "research_areas" | "historical_competitiveness" | "current_competitiveness" | "vote_power"
 >;
 
 // Ballot-preview roster row: the minimal facts a paper-ballot-style render
@@ -335,6 +361,7 @@ export type BallotLookupElectionSummary = {
   office: BallotLookupOfficeSummary | null;
   research_areas: BallotLookupResearchAreaSummary[];
   historical_competitiveness: BallotLookupHistoricalCompetitiveness | null;
+  current_competitiveness: BallotLookupCurrentCompetitiveness | null;
   vote_power: VotePowerResult;
   // Present only when the lookup ran with includePreview (include=preview).
   preview?: BallotLookupElectionPreview;
@@ -834,6 +861,112 @@ function historicalCompetitivenessDisplayDescription(row: HistoricalContestWeigh
     return `Based on the ${row.election_years[0]} ${office} result.`;
   }
   return `Based on weighted margins from ${formatYearList(row.election_years)} ${office} results.`;
+}
+
+// Mirrors historicalCompetitivenessDisplayLabel's collapsing so the two
+// chips read as the same scale ("Currently ..." vs "Historically ...").
+function currentCompetitivenessDisplayLabel(label: HistoricalContestCompetitivenessLabel): string {
+  switch (label) {
+    case "toss_up":
+      return "Currently a toss-up";
+    case "very_competitive":
+    case "competitive":
+      return "Currently competitive";
+    case "somewhat_competitive":
+      return "Currently somewhat competitive";
+    case "safe":
+      return "Currently safe";
+  }
+}
+
+// The stored evidence shape is writer-controlled ({ observations: [{ outlet,
+// raw_rating, intensity, ... }] }); the guards only protect against
+// hand-edited rows, dropping malformed entries rather than crashing a ballot.
+function parseRatingEvidenceObservations(
+  evidence: unknown
+): { outlet: string; rawRating: string; intensity: number }[] {
+  if (typeof evidence !== "object" || evidence === null || !("observations" in evidence)) {
+    return [];
+  }
+  const observations = (evidence as { observations: unknown }).observations;
+  if (!Array.isArray(observations)) {
+    return [];
+  }
+  return observations.flatMap((entry) => {
+    if (typeof entry !== "object" || entry === null) {
+      return [];
+    }
+    const { outlet, raw_rating: rawRating, intensity } = entry as Record<string, unknown>;
+    if (typeof outlet !== "string" || typeof rawRating !== "string" || typeof intensity !== "number") {
+      return [];
+    }
+    return [{ outlet, rawRating, intensity }];
+  });
+}
+
+function currentCompetitivenessDisplayDescription(
+  record: CurrentRaceRatingLookupRecord,
+  outlets: { outlet: string }[]
+): string {
+  const names = outlets.map((entry) => ratingOutletDisplay(entry.outlet).full);
+  const sourcePhrase =
+    names.length === 0
+      ? "current race ratings"
+      : names.length === 1
+        ? `the current race rating from ${names[0]}`
+        : `current race ratings from ${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+  return `Based on ${sourcePhrase} as of ${formatRatingDate(record.as_of!)}.`;
+}
+
+// null when the row's invariants don't hold (the override filter guarantees
+// them, but the types allow null label/confidence/as_of).
+function toCurrentCompetitiveness(
+  record: CurrentRaceRatingLookupRecord
+): BallotLookupCurrentCompetitiveness | null {
+  if (
+    record.competitiveness_label === null ||
+    record.as_of === null ||
+    (record.confidence !== "high" && record.confidence !== "medium")
+  ) {
+    return null;
+  }
+  return {
+    display_label: currentCompetitivenessDisplayLabel(record.competitiveness_label),
+    display_description: currentCompetitivenessDisplayDescription(
+      record,
+      parseRatingEvidenceObservations(record.evidence)
+    ),
+    competitiveness_label: record.competitiveness_label,
+    method: record.method,
+    confidence: record.confidence,
+    as_of: record.as_of,
+  };
+}
+
+// The votePower explanation context for a rating that drove decisiveness.
+function toCurrentRatingExplanationContext(record: CurrentRaceRatingLookupRecord): VotePowerCurrentRating | null {
+  if (record.as_of === null || (record.confidence !== "high" && record.confidence !== "medium")) {
+    return null;
+  }
+  return {
+    asOf: record.as_of,
+    method: record.method,
+    confidence: record.confidence,
+    outlets: parseRatingEvidenceObservations(record.evidence),
+  };
+}
+
+// Only the rows that pass the full override rule (rated + high|medium +
+// upcoming + fresh as_of) come back; everything else falls through to
+// historic margins. Office races only — measures are never rated.
+async function loadCurrentCompetitivenessByElection(
+  db: Queryable,
+  electionRows: readonly (ElectionSummaryRow | ElectionDetailRow)[]
+): Promise<Map<string, CurrentRaceRatingLookupRecord>> {
+  return loadOverridingCurrentRaceRatings(
+    db,
+    electionRows.filter((row) => row.race_type === "office").map((row) => row.election_id)
+  );
 }
 
 async function loadHistoricalCompetitivenessByElection(
@@ -1690,6 +1823,10 @@ export async function lookupBallotSummariesByDistrictIds(
   // every unconditional query — so existing ordered mocks stay valid.
   const previewByElection = options.includePreview ? await loadElectionPreviews(db, electionIds) : null;
 
+  // Current-cycle ratings load after every pre-existing query so ordered
+  // test mocks keep their slots (same convention as the loaders above).
+  const currentRatingByElection = await loadCurrentCompetitivenessByElection(db, electionResult.rows);
+
   const elections: BallotLookupElectionSummary[] = electionResult.rows.map((row) => {
     const currentResultOutcome = resultOutcomeByElection.get(row.election_id) ?? null;
     // Office columns are nullable only because this is a LEFT JOIN; resolved office rows have non-empty fields.
@@ -1706,6 +1843,8 @@ export async function lookupBallotSummariesByDistrictIds(
     const district = toDistrict(row);
     const candidateCount = candidateCountsByElection.get(row.election_id) ?? 0;
     const historicalCompetitiveness = historicalCompetitivenessByElection.get(row.election_id) ?? null;
+    const currentRatingRecord = currentRatingByElection.get(row.election_id) ?? null;
+    const currentCompetitiveness = currentRatingRecord ? toCurrentCompetitiveness(currentRatingRecord) : null;
 
     return {
       id: row.election_id,
@@ -1738,11 +1877,14 @@ export async function lookupBallotSummariesByDistrictIds(
         measureResearchAreasByElection.get(row.election_id) ?? []
       ),
       historical_competitiveness: historicalCompetitiveness,
+      current_competitiveness: currentCompetitiveness,
       vote_power: calculateVotePower({
         raceType: row.race_type,
         candidateCount,
         representationPowerScore: district.representation_power_score,
-        competitivenessLabel: historicalCompetitiveness?.competitiveness_label,
+        // A fresh, confident current rating outranks historic margins.
+        competitivenessLabel:
+          currentCompetitiveness?.competitiveness_label ?? historicalCompetitiveness?.competitiveness_label,
       }),
       // Conditional spread, not `preview: undefined`: preview-less responses
       // must not grow a key that JSON.stringify would drop anyway but toEqual
@@ -2033,20 +2175,53 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
     detail.ballot_measure ? [detail.id] : []
   );
 
-  // Deliberately the LAST query of this lookup (and fault-isolated inside):
-  // mutates the finance summaries already embedded in detail.candidates.
+  // Fault-isolated committee-label pass: mutates the finance summaries
+  // already embedded in detail.candidates.
   await applyFinanceCommitteeLabels(
     db,
     detail.candidates.map((candidate) => candidate.finance_summary)
   );
 
+  // Current-cycle rating load stays the LAST query so every pre-existing
+  // ordered test mock keeps its slot.
+  const currentRatingByElection = await loadCurrentCompetitivenessByElection(db, electionRows);
+  const currentRatingRecord = currentRatingByElection.get(detail.id) ?? null;
+  const currentCompetitiveness = currentRatingRecord ? toCurrentCompetitiveness(currentRatingRecord) : null;
+
   const votePowerInput = {
     raceType: detail.race_type,
     candidateCount: detail.candidates.length,
     representationPowerScore: detail.district.representation_power_score,
-    competitivenessLabel: historicalCompetitiveness?.competitiveness_label,
+    // A fresh, confident current rating outranks historic margins.
+    competitivenessLabel:
+      currentCompetitiveness?.competitiveness_label ?? historicalCompetitiveness?.competitiveness_label,
   };
   const votePower = calculateVotePower(votePowerInput);
+  // When the current rating drove the label, the explanation carries the
+  // rating context and NONE of the historic margin fields — mixing the two
+  // sources would caption one source's grade with the other's numbers.
+  const decisivenessExplanationContext = currentCompetitiveness
+    ? {
+        currentRating: currentRatingRecord ? toCurrentRatingExplanationContext(currentRatingRecord) : null,
+        marginPercent: null,
+        marginElectionYears: null,
+        marginContests: null,
+      }
+    : {
+        staleAfterRedistricting: historicalCompetitiveness?.stale_after_redistricting,
+        marginPercent: historicalCompetitiveness?.margin_percent ?? null,
+        // Full year list: a weighted multi-year margin must not be pinned
+        // on the single latest election_year.
+        marginElectionYears: historicalCompetitiveness
+          ? (historicalCompetitiveness.election_years ?? [historicalCompetitiveness.election_year])
+          : null,
+        marginContests:
+          historicalCompetitiveness?.contests_used?.map((contest) => ({
+            marginPercent: contest.margin_percent,
+            electionYear: contest.election_year,
+            weight: contest.weight ?? 1,
+          })) ?? null,
+      };
   return {
     ...detail,
     office,
@@ -2054,29 +2229,18 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
     // the same merge the summary list uses.
     research_areas: mergeResearchAreaSummaries(officeResearchAreaRows, measureResearchAreaRows),
     historical_competitiveness: historicalCompetitiveness,
+    current_competitiveness: currentCompetitiveness,
     vote_power: {
       ...votePower,
       explanation: explainVotePower(
-        // Explanation-only context (population, past margin, redistricting
-        // staleness, scope extremes): the rating itself ignores it
-        // (calculateVotePower above).
+        // Explanation-only context (population, margin or rating source,
+        // scope extremes): the rating itself ignores it (calculateVotePower
+        // above).
         {
           ...votePowerInput,
-          staleAfterRedistricting: historicalCompetitiveness?.stale_after_redistricting,
           districtPopulation: detail.district.population,
           representationScope: toRepresentationScope(electionRows[0], detail.district),
-          marginPercent: historicalCompetitiveness?.margin_percent ?? null,
-          // Full year list: a weighted multi-year margin must not be pinned
-          // on the single latest election_year.
-          marginElectionYears: historicalCompetitiveness
-            ? (historicalCompetitiveness.election_years ?? [historicalCompetitiveness.election_year])
-            : null,
-          marginContests:
-            historicalCompetitiveness?.contests_used?.map((contest) => ({
-              marginPercent: contest.margin_percent,
-              electionYear: contest.election_year,
-              weight: contest.weight ?? 1,
-            })) ?? null,
+          ...decisivenessExplanationContext,
         },
         votePower
       ),
