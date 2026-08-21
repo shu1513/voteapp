@@ -3,6 +3,7 @@ import type {
   FinanceOutsideGroup,
   FinanceOutsideIndustrySupport,
   FinanceSummary,
+  FinanceUnallocatedOutsideEdge,
 } from "@voteapp/api-client";
 import {
   financeSourceLabel,
@@ -202,6 +203,45 @@ function OutsideSection({
   );
 }
 
+function UnallocatedOutsideEdges({ edges }: { edges: FinanceUnallocatedOutsideEdge[] }) {
+  if (edges.length === 0) {
+    return null;
+  }
+  return (
+    <View className="mt-2 rounded border border-line p-2">
+      <Text className="text-sm font-medium text-ink">
+        Outside spending reported without a candidate amount
+      </Text>
+      <Text className="mt-1 text-xs text-ink-soft">
+        These filings identify this candidate as supported or opposed, but do not report how much
+        of the filing&apos;s spending applies to this candidate.
+      </Text>
+      <View className="mt-2 gap-2">
+        {edges.map((edge) => {
+          const reportDate = formatElectionDate(edge.report_date);
+          return (
+            <View key={`${edge.filing_id}:${edge.committee_id}:${edge.support_oppose}`}>
+              <Text className="text-sm font-medium text-ink">{edge.committee_name}</Text>
+              <Text className="text-xs text-ink-soft">
+                Reported as {edge.support_oppose === "support" ? "supporting" : "opposing"} this
+                candidate · {reportDate} ·{" "}
+                <Text
+                  className="underline"
+                  accessibilityRole="link"
+                  accessibilityLabel={`View filing for ${edge.committee_name} dated ${reportDate}`}
+                  onPress={() => openExternalUrl(edge.source_url)}
+                >
+                  View filing
+                </Text>
+              </Text>
+            </View>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
+
 /**
  * Member communications: an organization spending to reach its own members
  * about a candidate (a union mailing its membership, for example). Legally
@@ -322,13 +362,12 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
             PACs — not by the candidate&apos;s own campaign. This spending is not coordinated with the
             candidate&apos;s campaign and does not go directly to the candidate.
           </Text>
-          {/* Stated with the totals, not in the footnote: a reader who sees a
-              dollar figure assumes it is all the outside money in the race.
-              Only sources with a known gap send this. Deliberately inside the
-              hasOutsideFinanceContent gate: with no figures shown the card
-              asserts nothing about outside money, and a disclaimer under a
-              heading with no data would imply there is data (same rule that
-              hides a $0 direction). */}
+          {/* Stated with the outside evidence, not in the footnote: a reader
+              needs the source's known coverage gap beside the claim it
+              qualifies. Deliberately inside the hasOutsideFinanceContent
+              gate: with no outside data shown the card asserts nothing about
+              outside money, and a disclaimer under an empty heading would
+              imply there is data. */}
           {outside.outside_coverage_note ? (
             <Text className="mt-1 text-xs text-ink-soft">{outside.outside_coverage_note}</Text>
           ) : null}
@@ -344,6 +383,7 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
             groups={outside.top_opposing_groups}
             industries={outside.top_opposing_industries}
           />
+          <UnallocatedOutsideEdges edges={outside.unallocated_candidate_edges ?? []} />
           {supportingIndustries.length > 0 || outside.top_opposing_industries.length > 0 ? (
             <Text className="mt-1 text-xs text-ink-soft">
               Industry amounts are contributions to these groups, not amounts necessarily spent on this

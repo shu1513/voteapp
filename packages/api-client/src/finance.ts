@@ -50,8 +50,8 @@ export function spendingExceedsCycleFunds(summary: FinanceSummary): boolean {
 }
 
 /**
- * First source URL across every breakdown row, for the card's footer link.
- * Rows share one disclosure portal per source, so any row's URL serves.
+ * First source URL across every finance evidence row, for the card's footer
+ * link. Rows share one disclosure portal per source, so any row's URL serves.
  */
 export function firstFinanceSourceUrl(summary: FinanceSummary): string | null {
   const rows: { source_url: string | null }[] = [
@@ -63,6 +63,7 @@ export function firstFinanceSourceUrl(summary: FinanceSummary): string | null {
     ...summary.outside_spending.top_opposing_groups,
     ...summary.outside_spending.top_supporting_industries,
     ...summary.outside_spending.top_opposing_industries,
+    ...(summary.outside_spending.unallocated_candidate_edges ?? []),
   ];
   for (const row of rows) {
     if (row.source_url) {
@@ -89,6 +90,7 @@ export function hasOutsideDirectionContent(
 export function hasOutsideFinanceContent(summary: FinanceSummary): boolean {
   const outside = summary.outside_spending;
   return (
+    (outside.unallocated_candidate_edges?.length ?? 0) > 0 ||
     hasOutsideDirectionContent(
       outside.support_total,
       outside.top_supporting_groups,
