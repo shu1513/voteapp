@@ -151,6 +151,7 @@ ${entryShapeLines}
     ...familySection,
     ...(contestFamily === "us_senate"
       ? [
+          "- First verify this state actually has a U.S. Senate seat on the ballot in this cycle (regular class rotation, or a source-verified special/unexpired-term vacancy). About one third of states have no Senate contest in a given cycle; if none, return an empty entries array. Never infer a Senate contest from a general-election landing page or results portal.",
           "- Determine how many distinct U.S. Senate seats are being contested in this election. If one seat is contested, return one entry. If two distinct seats are contested (for example, regular term + unexpired term), return two separate entries.",
           "- senate_class is optional. Include only when clearly supported by sources. Allowed values: class_i, class_ii, class_iii.",
           "- term_end_year is optional. Include only when clearly supported by sources as a 4-digit string (YYYY).",
