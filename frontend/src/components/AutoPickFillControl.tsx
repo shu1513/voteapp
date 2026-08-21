@@ -96,6 +96,10 @@ export function AutoPickFillControl({
   const fill = useMutation({
     // Shares the choice-write key so every pick control disables together.
     mutationKey: ["set-election-choice"],
+    // Drop the previous run's annotations up front: during the request (and
+    // after a failure, whose partial writes the onSettled refetch surfaces)
+    // an old "not enough evidence" must not read as the latest result.
+    onMutate: () => onResults?.(null),
     mutationFn: async (electionIds: string[]) => {
       const all: AutoPickElectionResult[] = [];
       for (let start = 0; start < electionIds.length; start += MAX_IDS_PER_REQUEST) {

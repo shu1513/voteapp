@@ -107,8 +107,12 @@ function ContestBox({
   const autoNote =
     autoResult?.outcome === "no_pick"
       ? `Auto pick left this open: ${reasonLabel(autoResult.reason)}.`
-      : autoResult?.outcome === "picked" && autoResult.reason === "tie"
-        ? "Auto pick: remaining seats tied — your call."
+      : autoResult?.outcome === "picked" &&
+          autoResult.reason === "tie" &&
+          pickedIds.size < (preview?.seats_to_fill ?? 1)
+        ? // Gated on a live vacancy, same as the list rows: the note
+          // retires once the user fills the remaining seats by hand.
+          "Auto pick: remaining seats tied — your call."
         : null;
   const isMeasure = election.race_type === "ballot_measure";
   const isRetention = !isMeasure && isRetentionTitle(election.official_ballot_title);

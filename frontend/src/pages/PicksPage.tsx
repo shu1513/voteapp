@@ -312,8 +312,12 @@ export function PickDateCard({
                   </Link>
                   <span className="text-ink-soft"> — </span>
                   <PickedLine choice={choice} election={election} />
-                  {autoResult?.outcome === "picked" && autoResult.reason === "tie" ? (
-                    // Partial fill: some seats landed, the rest tied.
+                  {autoResult?.outcome === "picked" &&
+                  autoResult.reason === "tie" &&
+                  (choice?.picks.length ?? 0) < (choice?.seats_to_fill ?? 1) ? (
+                    // Partial fill: some seats landed, the rest tied. Gated
+                    // on a live vacancy so the note retires the moment the
+                    // user fills the remaining seats by hand.
                     <span className="text-ink-soft"> · auto pick: remaining seats tied — your call</span>
                   ) : null}
                 </>

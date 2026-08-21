@@ -162,8 +162,10 @@ describe("AutoPickFillControl", () => {
     // here — the caller annotates its own race rows from the map.
     await clickFill();
 
-    await waitFor(() => expect(onResults).toHaveBeenCalledTimes(1));
-    const byElectionId = onResults.mock.calls[0]?.[0] as Map<string, AutoPickElectionResult>;
+    // Two calls: null up front (stale-annotation wipe), then the map.
+    await waitFor(() => expect(onResults).toHaveBeenCalledTimes(2));
+    expect(onResults.mock.calls[0]?.[0]).toBeNull();
+    const byElectionId = onResults.mock.lastCall?.[0] as Map<string, AutoPickElectionResult>;
     expect(byElectionId.get(E_EMPTY)?.outcome).toBe("picked");
     expect(byElectionId.get(E_MEASURE)?.reason).toBe("insufficient_evidence");
     expect(requestsTo(fetchMock, "/api/me/auto-picks")).toEqual([
@@ -190,8 +192,8 @@ describe("AutoPickFillControl", () => {
     renderControl({ elections: many, onResults });
     await clickFill();
 
-    await waitFor(() => expect(onResults).toHaveBeenCalledTimes(1));
-    expect((onResults.mock.calls[0]?.[0] as Map<string, unknown>).size).toBe(201);
+    await waitFor(() => expect(onResults).toHaveBeenCalledTimes(2));
+    expect((onResults.mock.lastCall?.[0] as Map<string, unknown>).size).toBe(201);
     const bodies = requestsTo(fetchMock, "/api/me/auto-picks");
     expect(bodies.map((body) => body.election_ids.length)).toEqual([200, 1]);
   });
@@ -275,11 +277,15 @@ describe("AutoPickFillControl", () => {
       "/api/me/research-area-preferences": { body: THREE_PREFERENCES },
       "/api/me/auto-picks": apiError(429, "rate_limited", "Too many requests. Try again later."),
     });
-    renderControl();
+    const onResults = vi.fn();
+    renderControl({ onResults });
     await clickFill();
 
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent("Too many requests. Try again later.");
     expect(alert).toHaveTextContent("Some races may already be filled — check the rows below.");
+    // The run cleared the previous annotations up front and never replaced
+    // them: a stale "not enough evidence" must not outlive a failed rerun.
+    expect(onResults).toHaveBeenCalledExactlyOnceWith(null);
   });
 });
