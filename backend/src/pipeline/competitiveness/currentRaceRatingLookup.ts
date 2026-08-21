@@ -118,7 +118,7 @@ export async function loadCurrentRaceRatings(
         crr.decisive_round,
         crr.evidence,
         crr.source_url,
-        crr.researched_at::date::text AS researched_on
+        (crr.researched_at AT TIME ZONE 'UTC')::date::text AS researched_on
       FROM public.current_race_ratings AS crr
       JOIN public.elections AS e ON e.id = crr.election_id
       WHERE crr.election_id = ANY($1::uuid[])

@@ -257,8 +257,10 @@ Clone of the election-results pattern:
 
 - Contract `backend/src/contracts/currentRaceRatingPayloadContract.ts`:
   `{ "ratings": [ { "election_id", "method", "evidence_status",
-  "observations": [ { "outlet", "raw_rating", "favored", "intensity",
-  "as_of", "url" } ],  // outlet_consensus, evidence_status=rated
+  "observations": [ { "outlet", "raw_rating", "as_of", "url" } ],
+                    // outlet_consensus, evidence_status=rated;
+                    // favored+intensity are parsed from raw_rating and
+                    // stored in evidence, never accepted as inputs
   "numeric_evidence": { ... },        // mayoral_rubric, evidence_status=rated
   "decisive_round"?, "source_url" } ] }` — the contract calls
   `deriveConsensusLabel` (or the mayoral bin function) itself; the label and

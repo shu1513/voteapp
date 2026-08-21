@@ -110,6 +110,10 @@ describe("loadCurrentRaceRatings", () => {
     expect(query).toHaveBeenCalledTimes(1);
     expect(query.mock.calls[0]?.[0]).toContain("FROM public.current_race_ratings");
     expect(query.mock.calls[0]?.[0]).toContain("JOIN public.elections");
+    // researched_on must not depend on the DB session time zone.
+    expect(query.mock.calls[0]?.[0]).toContain(
+      "(crr.researched_at AT TIME ZONE 'UTC')::date::text AS researched_on"
+    );
     expect(query.mock.calls[0]?.[1]).toEqual([[ELECTION_ID]]);
   });
 });

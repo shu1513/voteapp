@@ -204,7 +204,9 @@ function parseRow(
   }
 
   if (evidenceStatus === "none_found") {
-    if (Array.isArray(value.observations) && value.observations.length > 0) {
+    // Presence of the key at all is the tell: either the agent found
+    // observations and mislabeled the row, or it is emitting junk shapes.
+    if ("observations" in value) {
       return { ok: false, reason: "none_found ratings must not include observations" };
     }
     return {

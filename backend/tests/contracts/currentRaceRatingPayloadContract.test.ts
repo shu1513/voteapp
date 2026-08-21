@@ -256,18 +256,22 @@ describe("parseCurrentRaceRatingPayload", () => {
       expect(noObservations.reason).toContain("at least one observation");
     }
 
-    const noneFoundWithObservations = parse([
-      {
-        election_id: ELECTION_A,
-        method: "outlet_consensus",
-        evidence_status: "none_found",
-        observations: [ieObservation()],
-        source_url: "https://en.wikipedia.org/wiki/2026_United_States_Senate_elections",
-      },
-    ]);
-    expect(noneFoundWithObservations.ok).toBe(false);
-    if (!noneFoundWithObservations.ok) {
-      expect(noneFoundWithObservations.reason).toContain("must not include observations");
+    // Any observations key on a none_found row — populated, empty, or a
+    // junk shape — is rejected, not silently discarded.
+    for (const observations of [[ieObservation()], [], {}]) {
+      const noneFoundWithObservations = parse([
+        {
+          election_id: ELECTION_A,
+          method: "outlet_consensus",
+          evidence_status: "none_found",
+          observations,
+          source_url: "https://en.wikipedia.org/wiki/2026_United_States_Senate_elections",
+        },
+      ]);
+      expect(noneFoundWithObservations.ok).toBe(false);
+      if (!noneFoundWithObservations.ok) {
+        expect(noneFoundWithObservations.reason).toContain("must not include observations");
+      }
     }
   });
 
