@@ -32,6 +32,12 @@ type RequestOptions = {
   body?: unknown;
   /** Caller-side cancellation (e.g. superseded autocomplete requests). */
   signal?: AbortSignal;
+  /**
+   * Per-call override of the configured request timeout, for the rare
+   * endpoint whose legitimate work outlives it (e.g. the chatbot ask's
+   * synchronous LLM window). Non-positive/non-integer values are ignored.
+   */
+  timeoutMs?: number;
 };
 
 export const REQUEST_TIMEOUT_MS = 15_000;
@@ -90,9 +96,9 @@ export function configureApi(overrides: Partial<ApiClientConfig>): void {
  * must degrade to a timer, not silently vanish — a stalled request with no
  * ceiling pins every query in pending forever ("Loading…" with no way out).
  */
-function makeTimeoutSignal(): AbortSignal {
+function makeTimeoutSignal(timeoutMs: number): AbortSignal {
   if (typeof AbortSignal.timeout === "function") {
-    return AbortSignal.timeout(config.requestTimeoutMs);
+    return AbortSignal.timeout(timeoutMs);
   }
   const controller = new AbortController();
   // Mirrors the native TimeoutError reason where DOMException exists; a bare
@@ -102,7 +108,7 @@ function makeTimeoutSignal(): AbortSignal {
     controller.abort(
       typeof DOMException === "function" ? new DOMException("signal timed out", "TimeoutError") : undefined
     );
-  }, config.requestTimeoutMs);
+  }, timeoutMs);
   return controller.signal;
 }
 
@@ -117,8 +123,8 @@ function makeTimeoutSignal(): AbortSignal {
  * signals (as autocomplete does) — reusing one long-lived signal across many
  * requests would accumulate a listener per request on pre-.any runtimes.
  */
-function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal {
-  const timeout = makeTimeoutSignal();
+function combineWithTimeout(callerSignal: AbortSignal | undefined, timeoutMs: number): AbortSignal {
+  const timeout = makeTimeoutSignal(timeoutMs);
   if (!callerSignal) {
     return timeout;
   }
@@ -138,6 +144,12 @@ function combineWithTimeout(callerSignal: AbortSignal | undefined): AbortSignal 
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const method = options.method ?? "GET";
+  // Same guard as configureApi: an invalid override must not disable the
+  // timeout ceiling, it falls back to the configured one.
+  const timeoutMs =
+    options.timeoutMs !== undefined && Number.isInteger(options.timeoutMs) && options.timeoutMs > 0
+      ? options.timeoutMs
+      : config.requestTimeoutMs;
   const headers: Record<string, string> = { ...config.defaultHeaders };
   if (options.body !== undefined) {
     headers["content-type"] = "application/json";
@@ -155,7 +167,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     body: options.body !== undefined ? JSON.stringify(options.body) : undefined,
     // A stalled request must fail instead of pinning queries in pending
     // forever; callers can additionally cancel.
-    signal: combineWithTimeout(options.signal),
+    signal: combineWithTimeout(options.signal, timeoutMs),
   });
 
   if (!response.ok) {

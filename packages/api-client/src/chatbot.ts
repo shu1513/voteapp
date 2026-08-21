@@ -65,10 +65,21 @@ export function submitChatbotFeedback(token: string, verdict: ChatbotFeedbackVer
   });
 }
 
+/**
+ * Ask is the one endpoint whose legitimate synchronous work outlives the
+ * shared 15s request timeout: the server awaits embeddings (10s ceiling,
+ * CHATBOT_EMBEDDINGS_TIMEOUT_MS), retrieval, and then the LLM call (30s
+ * ceiling, CHATBOT_LLM_TIMEOUT_MS) before responding. 45s covers that
+ * worst case with a little headroom; aborting earlier turns a valid
+ * answer the server already paid tokens for into a client-side error.
+ */
+export const CHATBOT_ASK_TIMEOUT_MS = 45_000;
+
 export function askChatbot(question: string, options: AskChatbotOptions = {}): Promise<ChatbotAskResponse> {
   const { previousQuestion, context, signal } = options;
   return apiRequest<ChatbotAskResponse>("/api/chatbot/ask", {
     method: "POST",
+    timeoutMs: CHATBOT_ASK_TIMEOUT_MS,
     body: {
       question,
       ...(previousQuestion ? { previous_question: previousQuestion } : {}),
