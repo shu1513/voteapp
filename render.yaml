@@ -20,12 +20,14 @@
 # creation — ones added later must be entered manually on the service
 # (docs/deploy-render.md "Direct onrender.com access" has the sequence).
 #
-# PLANS: no longer all-free — billing is set up. Paid today: the Postgres
-# instance (upgraded 2026-08-08 off the expiring free plan) and the
-# voteapp-embeddings private service (starter, ~$7/mo; added 2026-08-12 for
-# the chatbot). The web services are still free: they spin down after ~15
-# idle minutes and cold-start on the next request — upgrade them (and
-# uncomment the worker + cron sections) when that matters.
+# PLANS: everything except Redis is paid. The Postgres instance (upgraded
+# 2026-08-08 off the expiring free plan), the voteapp-embeddings private
+# service (starter, ~$7/mo; added 2026-08-12 for the chatbot), and — since
+# 2026-08-21 — both web services (starter, ~$7/mo each). The web upgrade was
+# bought for LATENCY: free instances spun down after ~15 idle minutes and
+# cold-started (~1 minute) on the next request, and a page load woke both of
+# them in series. The worker + cron sections below are still commented out;
+# they are a separate spend decision.
 
 services:
   # ---------------------------------------------------------------- API ----
@@ -33,7 +35,11 @@ services:
     type: web
     runtime: node
     region: ohio
-    plan: free
+    # Starter since 2026-08-21 (see the PLANS note at the top): paid instances
+    # never spin down, so the loaders no longer pay a cold-start penalty, and
+    # a paid web service can RECEIVE private-network requests — which is what
+    # lets voteapp-ssr reach it over API_INTERNAL_HOSTPORT below.
+    plan: starter
     rootDir: backend
     buildCommand: npm ci
     startCommand: npm run address:api
@@ -235,7 +241,8 @@ services:
     type: web
     runtime: node
     region: ohio
-    plan: free
+    # Starter since 2026-08-21 (see the PLANS note at the top).
+    plan: starter
     # No rootDir: Render makes files outside the root directory unavailable
     # at build and runtime, and this service needs the repo-root npm
     # workspace (lockfile + packages/api-client). Commands run from the repo
@@ -251,36 +258,39 @@ services:
         - package-lock.json
         - render.yaml
     envVars:
-      # FREE-TIER CONSTRAINT: free web services can SEND private-network
-      # requests but cannot RECEIVE them, so voteapp-api's private hostname
-      # is unreachable until it moves to a paid instance type. Loaders use
-      # the API's public hostname instead, resolved by Render itself
-      # (RENDER_EXTERNAL_HOSTNAME via fromService/envVarKey) — nothing
-      # hardcodes the generated hostname, so it survives service recreation
-      # and keeps preview environments pointed at their own API.
+      # Loader traffic goes over Render's PRIVATE network: resolveApiBase()
+      # in frontend/src/lib/loadFromApi.ts ranks API_INTERNAL_HOSTPORT above
+      # API_PUBLIC_HOST, so declaring it here is the whole switch. Enabled
+      # 2026-08-21 with voteapp-api's move to starter — a free web service
+      # can SEND private-network requests but cannot RECEIVE them, which is
+      # why this stayed commented out until the upgrade.
+      # `property: hostport` yields a host:port string, NOT a URL: the loader
+      # prepends http:// itself, so a full URL here would build
+      # "http://https://…". Nothing hardcodes the generated hostname, so it
+      # survives service recreation.
+      - key: API_INTERNAL_HOSTPORT
+        fromService:
+          name: voteapp-api
+          type: web
+          property: hostport
+      # Kept as the fallback tier below API_INTERNAL_HOSTPORT: browser-side
+      # calls and any loader path that loses the private hostname still need
+      # a public route. Resolved by Render itself (RENDER_EXTERNAL_HOSTNAME
+      # via fromService/envVarKey) — a bare hostname, which the loader turns
+      # into https://.
       - key: API_PUBLIC_HOST
         fromService:
           name: voteapp-api
           type: web
           envVarKey: RENDER_EXTERNAL_HOSTNAME
-      # After upgrading voteapp-api to a paid plan, uncomment: the private
-      # hostport outranks API_PUBLIC_HOST in the loader, so this one edit
-      # moves loader traffic onto the private network.
-      # - key: API_INTERNAL_HOSTPORT
-      #   fromService:
-      #     name: voteapp-api
-      #     type: web
-      #     property: hostport
-      # Free instances cold-start (~1 minute) after 15 idle minutes, and the
-      # loaders point at exactly such an instance; without headroom every
-      # wake-up request 504s at the loader's 10s default. Drop both timeout
-      # overrides once the API is paid/always-on.
-      - key: API_LOADER_TIMEOUT_MS
-        value: "75000"
-      # Baked into the browser bundle at build time (Vite): client-side API
-      # calls (address search, auth) need the same cold-start headroom.
-      - key: VITE_API_TIMEOUT_MS
-        value: "75000"
+      # NOTE: API_LOADER_TIMEOUT_MS and VITE_API_TIMEOUT_MS ("75000") were
+      # removed 2026-08-21. They existed only to survive the free tier's
+      # ~1-minute cold start; voteapp-api is starter now and always on, so
+      # the code defaults apply again — 10s for the SSR loader
+      # (DEFAULT_LOADER_TIMEOUT_MS, loadFromApi.ts) and 15s in the browser
+      # (REQUEST_TIMEOUT_MS, packages/api-client/src/client.ts). If a genuinely
+      # slow endpoint starts throwing "Upstream API timeout" 504s, raise the
+      # loader value here rather than restoring the 75s cold-start headroom.
       - key: ADDRESS_API_TRUSTED_CLIENT_IP_HEADER
         value: X-Voteapp-Client-IP
       # Same value as the API's secret (referenced, not duplicated): loaders
