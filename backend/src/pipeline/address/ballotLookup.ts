@@ -959,13 +959,17 @@ function toCurrentRatingExplanationContext(record: CurrentRaceRatingLookupRecord
 // Only the rows that pass the full override rule (rated + high|medium +
 // upcoming + fresh as_of) come back; everything else falls through to
 // historic margins. Office races only — measures are never rated.
+// "Today" is the latest US local date (usLocalDate.ts), matching every other
+// upcoming/past election check here: on the UTC clock the rating would fall
+// back to historic data while Hawaii was still voting on election day.
 async function loadCurrentCompetitivenessByElection(
   db: Queryable,
   electionRows: readonly (ElectionSummaryRow | ElectionDetailRow)[]
 ): Promise<Map<string, CurrentRaceRatingLookupRecord>> {
   return loadOverridingCurrentRaceRatings(
     db,
-    electionRows.filter((row) => row.race_type === "office").map((row) => row.election_id)
+    electionRows.filter((row) => row.race_type === "office").map((row) => row.election_id),
+    { today: new Date(`${usLatestLocalDateIso()}T00:00:00.000Z`) }
   );
 }
 
@@ -1844,7 +1848,12 @@ export async function lookupBallotSummariesByDistrictIds(
     const candidateCount = candidateCountsByElection.get(row.election_id) ?? 0;
     const historicalCompetitiveness = historicalCompetitivenessByElection.get(row.election_id) ?? null;
     const currentRatingRecord = currentRatingByElection.get(row.election_id) ?? null;
-    const currentCompetitiveness = currentRatingRecord ? toCurrentCompetitiveness(currentRatingRecord) : null;
+    // Uncontested races (exactly one candidate) grade decisiveness "none"
+    // regardless of any label, so a rating there did NOT drive the grade —
+    // and the payload contract says the field exists only when it did. A
+    // "Currently a toss-up" chip beside an unopposed race would contradict.
+    const currentCompetitiveness =
+      currentRatingRecord && candidateCount !== 1 ? toCurrentCompetitiveness(currentRatingRecord) : null;
 
     return {
       id: row.election_id,
@@ -2186,7 +2195,11 @@ export async function lookupElectionDetailById(db: Queryable, electionId: string
   // ordered test mock keeps its slot.
   const currentRatingByElection = await loadCurrentCompetitivenessByElection(db, electionRows);
   const currentRatingRecord = currentRatingByElection.get(detail.id) ?? null;
-  const currentCompetitiveness = currentRatingRecord ? toCurrentCompetitiveness(currentRatingRecord) : null;
+  // Same uncontested gate as the summary list: one candidate grades "none"
+  // whatever the label, so the rating did not drive the grade and the
+  // payload contract keeps the field null.
+  const currentCompetitiveness =
+    currentRatingRecord && detail.candidates.length !== 1 ? toCurrentCompetitiveness(currentRatingRecord) : null;
 
   const votePowerInput = {
     raceType: detail.race_type,

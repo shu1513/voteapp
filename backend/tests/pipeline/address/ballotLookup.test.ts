@@ -10017,7 +10017,9 @@ describe("current race rating read path", () => {
   });
 
   it("falls back to historic margins when the current rating is stale", async () => {
-    const query = summaryQueryMock({ rating: ratingRow({ as_of: isoDaysFromNow(-61) }) });
+    // -62, not -61: freshness runs on the latest US local date (Honolulu),
+    // which lags this helper's UTC arithmetic by a day for part of each day.
+    const query = summaryQueryMock({ rating: ratingRow({ as_of: isoDaysFromNow(-62) }) });
 
     const result = await lookupBallotSummariesByDistrictIds({ query }, [ratedDistrictId]);
     const election = result.elections[0]!;
@@ -10026,16 +10028,54 @@ describe("current race rating read path", () => {
     expect(election.vote_power.decisiveness_level).toBe("medium");
   });
 
-  it("keeps uncontested precedence while still attaching the current chip data", async () => {
+  it("suppresses the current rating entirely on uncontested races", async () => {
     const query = summaryQueryMock({ rating: ratingRow(), candidateCount: 1 });
 
     const result = await lookupBallotSummariesByDistrictIds({ query }, [ratedDistrictId]);
     const election = result.elections[0]!;
 
-    // The chip states a fact about the race; the grade states what a vote
-    // can change — uncontested still zeroes decisiveness.
-    expect(election.current_competitiveness?.display_label).toBe("Currently a toss-up");
+    // One candidate grades decisiveness "none" whatever the label, so the
+    // rating did not drive the grade — and the payload contract says the
+    // field exists only when it did. A "Currently a toss-up" chip beside an
+    // unopposed race would contradict the uncontested grade.
+    expect(election.current_competitiveness).toBeNull();
     expect(election.vote_power.decisiveness_level).toBe("none");
+  });
+
+  it("keeps the current rating through election day on the latest US clock, not UTC", async () => {
+    // 05:00 UTC on Nov 4 is still 19:00 Nov 3 in Hawaii — polls open. The
+    // UTC calendar date would call the election past and silently fall back
+    // to historic margins mid-election-day.
+    vi.useFakeTimers();
+    try {
+      vi.setSystemTime(new Date("2026-11-04T05:00:00.000Z"));
+      const stillVoting = await lookupBallotSummariesByDistrictIds(
+        {
+          query: summaryQueryMock({
+            rating: ratingRow({ election_date: "2026-11-03", as_of: "2026-11-01" }),
+          }),
+        },
+        [ratedDistrictId]
+      );
+      expect(stillVoting.elections[0]!.current_competitiveness?.display_label).toBe("Currently a toss-up");
+      expect(stillVoting.elections[0]!.vote_power.decisiveness_level).toBe("high");
+
+      // Once the whole US has left Nov 3 (11:00 UTC = 01:00 Nov 4 in
+      // Hawaii), the election is genuinely past and historic data resumes.
+      vi.setSystemTime(new Date("2026-11-04T11:00:00.000Z"));
+      const past = await lookupBallotSummariesByDistrictIds(
+        {
+          query: summaryQueryMock({
+            rating: ratingRow({ election_date: "2026-11-03", as_of: "2026-11-01" }),
+          }),
+        },
+        [ratedDistrictId]
+      );
+      expect(past.elections[0]!.current_competitiveness).toBeNull();
+      expect(past.elections[0]!.vote_power.decisiveness_level).toBe("medium");
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("swaps the detail explanation to rating copy when the current rating drives the label", async () => {

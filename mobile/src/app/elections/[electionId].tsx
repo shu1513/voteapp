@@ -204,6 +204,13 @@ export default function ElectionScreen() {
           </Text>
         ) : null}
       </View>
+      {/* Mobile has no vote-power explanation panel, so without this line the
+          rating chip would be an unsourced claim — name the analyst outlet
+          and the as-of date (web carries the same attribution in its
+          explanation panel). */}
+      {data.current_competitiveness ? (
+        <Text className="mt-1 text-xs text-ink-soft">{data.current_competitiveness.display_description}</Text>
+      ) : null}
 
       {measure ? (
         <View className="mt-6 rounded-xl border border-line bg-white p-4">
