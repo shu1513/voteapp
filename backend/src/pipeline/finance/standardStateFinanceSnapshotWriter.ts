@@ -42,8 +42,10 @@ export type StandardStateFinanceSummaryInput = {
   sourceUrl?: string | null;
 };
 
-export type StandardStateFinanceDirectBreakdownInput = {
-  categoryType: StandardStateFinanceDirectCategoryType;
+export type StandardStateFinanceDirectBreakdownInput<
+  TCategoryType extends string = StandardStateFinanceDirectCategoryType,
+> = {
+  categoryType: TCategoryType;
   categoryName: string;
   amount: number;
   contributorCount?: number | null;
@@ -68,12 +70,14 @@ export type StandardStateFinanceOutsideGroupBreakdownInput = {
   sourceUrl?: string | null;
 };
 
-export type StandardStateFinanceSnapshotInput = {
+export type StandardStateFinanceSnapshotInput<
+  TDirectCategoryType extends string = StandardStateFinanceDirectCategoryType,
+> = {
   db: Queryable;
   link: StandardStateFinanceLinkInput;
   syncedAt?: Date;
   summary?: StandardStateFinanceSummaryInput;
-  directBreakdowns?: readonly StandardStateFinanceDirectBreakdownInput[];
+  directBreakdowns?: readonly StandardStateFinanceDirectBreakdownInput<TDirectCategoryType>[];
   outsideGroups?: readonly StandardStateFinanceOutsideGroupInput[];
   outsideGroupBreakdowns?: readonly StandardStateFinanceOutsideGroupBreakdownInput[];
   classifications?: readonly FinanceLabelClassification[];
@@ -87,9 +91,13 @@ export type StandardStateFinanceSnapshotWriteResult = {
   outsideGroupBreakdownsWritten: number;
 };
 
-export type StandardStateFinanceSnapshotWriter = {
+export type StandardStateFinanceSnapshotWriter<
+  TDirectCategoryType extends string = StandardStateFinanceDirectCategoryType,
+> = {
   upsertLink(input: { db: Queryable; link: StandardStateFinanceLinkInput }): Promise<{ linkId: string }>;
-  replaceSnapshot(input: StandardStateFinanceSnapshotInput): Promise<StandardStateFinanceSnapshotWriteResult>;
+  replaceSnapshot(
+    input: StandardStateFinanceSnapshotInput<TDirectCategoryType>
+  ): Promise<StandardStateFinanceSnapshotWriteResult>;
 };
 
 export type StandardStateFinanceSummaryColumn =
@@ -177,7 +185,9 @@ function isClientLikeQueryable(db: Queryable): db is ClientLikeQueryable {
   return typeof (db as ClientLikeQueryable).release === "function";
 }
 
-export function createStandardStateFinanceSnapshotWriter(config: {
+export function createStandardStateFinanceSnapshotWriter<
+  TDirectCategoryType extends string = StandardStateFinanceDirectCategoryType,
+>(config: {
   /** Human-readable name used in error messages, e.g. "Texas" or "Houston". */
   label: string;
   tables: StandardStateFinanceTables;
@@ -199,6 +209,12 @@ export function createStandardStateFinanceSnapshotWriter(config: {
    * default keeps the writer's clear validation error for everyone else.
    */
   allowNegativeCashOnHand?: boolean;
+  /**
+   * Direct-breakdown categories accepted by this writer and its table.
+   * Defaults to the canonical occupation + contribution-size pair. States
+   * with a different evidence model opt in explicitly.
+   */
+  directCategoryTypes?: readonly TDirectCategoryType[];
   /**
    * How outside-group breakdowns must relate to outside groups in the same
    * snapshot. "presence" requires at least one group when breakdowns are
@@ -254,7 +270,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     id?: string;
     name?: string;
   };
-}): StandardStateFinanceSnapshotWriter {
+}): StandardStateFinanceSnapshotWriter<TDirectCategoryType> {
   const label = config.label;
   const tables = Object.fromEntries(
     Object.entries(config.tables).map(([name, value]) => [name, assertIdentifier(value)])
@@ -263,6 +279,12 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     throw new Error(`Invalid ${label} finance minimum election year: ${config.minElectionYear}`);
   }
   const minElectionYear = config.minElectionYear;
+  const directCategoryTypes = new Set<string>(
+    config.directCategoryTypes ?? ["occupation", "contribution_size"]
+  );
+  if (directCategoryTypes.size === 0 || [...directCategoryTypes].some((value) => value.trim().length === 0)) {
+    throw new Error(`Invalid ${label} finance direct category types`);
+  }
   const outsideGroupValidation = config.outsideGroupValidation ?? "none";
   const normalizeCommitteeId = config.normalizeCommitteeId ?? ((value: string) => value);
   const manualLinkProtection = config.manualLinkProtection ?? false;
@@ -546,7 +568,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     db: Queryable;
     linkId: string;
     electionYear: number;
-    breakdown: StandardStateFinanceDirectBreakdownInput;
+    breakdown: StandardStateFinanceDirectBreakdownInput<TDirectCategoryType>;
     syncedAt: Date;
   }): Promise<void> {
     await input.db.query(
@@ -670,7 +692,7 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     db: Queryable;
     linkId: string;
     electionYear: number;
-    breakdowns: readonly StandardStateFinanceDirectBreakdownInput[];
+    breakdowns: readonly StandardStateFinanceDirectBreakdownInput<TDirectCategoryType>[];
   }): Promise<void> {
     const keys = input.breakdowns.map((breakdown) => ({
       category_type: breakdown.categoryType,
@@ -766,7 +788,21 @@ export function createStandardStateFinanceSnapshotWriter(config: {
     );
   }
 
-  function validateOutsideGroupBreakdowns(input: StandardStateFinanceSnapshotInput): void {
+  function validateDirectBreakdowns(
+    input: StandardStateFinanceSnapshotInput<TDirectCategoryType>
+  ): void {
+    for (const breakdown of input.directBreakdowns ?? []) {
+      if (!directCategoryTypes.has(breakdown.categoryType)) {
+        throw new Error(
+          `${label} finance direct breakdown category type is not allowed: ${breakdown.categoryType}`
+        );
+      }
+    }
+  }
+
+  function validateOutsideGroupBreakdowns(
+    input: StandardStateFinanceSnapshotInput<TDirectCategoryType>
+  ): void {
     if (outsideGroupValidation === "none") {
       return;
     }
@@ -825,13 +861,14 @@ export function createStandardStateFinanceSnapshotWriter(config: {
   }
 
   async function replaceSnapshot(
-    input: StandardStateFinanceSnapshotInput
+    input: StandardStateFinanceSnapshotInput<TDirectCategoryType>
   ): Promise<StandardStateFinanceSnapshotWriteResult> {
     const syncedAt = input.syncedAt ?? new Date();
     if (Number.isNaN(syncedAt.getTime())) {
       throw new Error(`Invalid ${label} finance sync timestamp`);
     }
     validateLinkInput(input.link);
+    validateDirectBreakdowns(input);
     validateOutsideGroupBreakdowns(input);
     const electionYear = normalizeElectionYear(input.link.electionYear);
 
