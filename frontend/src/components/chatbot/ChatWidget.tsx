@@ -34,19 +34,16 @@ export function contextFromPathname(pathname: string): ChatbotAskContext | null 
   return { kind: match[1] === "candidates" ? "candidate" : "election", id: match[2] as string };
 }
 
-/** Tappable starter questions for an empty chat, tuned to the page being
- * viewed. Candidate pages get NO candidate-specific chips: the profile,
- * record, and finance answers are already on the page, so chips repeating
- * them are redundant — the generic chips below apply instead. Deictic
- * phrasing on election pages exercises the server's page context. */
-export function starterQuestions(context: ChatbotAskContext | null): string[] {
-  if (context?.kind === "election") {
-    return ["Tell me more about this election", "Who is running in this election?"];
-  }
-  // No register chip: the site header already links voter registration —
-  // the chip slot instead showcases the personalized saved-issues match.
-  return ["What can you do?", "Which races affect issues I care about?"];
-}
+const ELECTION_ROSTER_CHIP = "Who is running in this election?";
+
+/** Tappable starter questions for an empty chat — the SAME on every page.
+ * Page-specific chips were removed twice for the same reason: candidate
+ * chips in #767, election chips by request 2026-08-21 (the election page
+ * already shows the roster and details a "tell me more" chip would repeat).
+ * No register chip either: the site header already links voter registration
+ * — the second slot instead showcases the personalized saved-issues match,
+ * which no page shows outside the ballot page's my-areas sort. */
+export const STARTER_QUESTIONS = ["What can you do?", "Which races affect issues I care about?"] as const;
 
 /**
  * Where the widget stays hidden: the logged-out home page (first-visit
@@ -100,6 +97,26 @@ function formatDataCurrentAsOf(timestamp: string): string {
 
 type Turn = { question: string; response: ChatbotAskResponse };
 
+/** The one election an answer cited, as ask context — null when it cited
+ * zero or several distinct elections. Off detail pages the deictic roster
+ * chip has nothing else to resolve against (the saved-issues answer is
+ * personalized, so its previous-question text carries no scope either), so
+ * the chip click sends this as context. URLs are server-constructed
+ * (/elections/<id>), so parsing them is safe here. */
+export function citedElectionContext(response: ChatbotAskResponse): ChatbotAskContext | null {
+  const ids = new Set<string>();
+  for (const card of response.results) {
+    if (card.source_type === "election") {
+      const match = /^\/elections\/([0-9a-f-]{36})$/i.exec(card.url);
+      if (match) {
+        ids.add((match[1] as string).toLowerCase());
+      }
+    }
+  }
+  const [id] = ids;
+  return ids.size === 1 && id ? { kind: "election", id } : null;
+}
+
 /** Deterministic follow-up chips under the latest answer, derived from what
  * it cited (docs/plans/chatbot-improvements-2026-08.md PR 3). Deictic
  * phrasings on purpose: the server resolves "their"/"this" against the
@@ -111,7 +128,10 @@ type Turn = { question: string; response: ChatbotAskResponse };
  * cited candidates is fine on purpose: "their" reads as plural, and the
  * previous-question carry scopes retrieval to those candidates — the
  * roster-answer → race-wide-funding hop is the chip's best case, so no
- * exactly-one-candidate restriction. A third guard: a chip whose answer the
+ * exactly-one-candidate restriction. The roster chip is the opposite case:
+ * "this election" is singular, so it needs exactly ONE cited election — an
+ * answer citing several races (the saved-issues match lists up to five)
+ * gets no roster chip. A third guard: a chip whose answer the
  * CURRENT page already shows is redundant (funding on a candidate profile,
  * the roster on an election page) — suppress it there. */
 export function followUpQuestions(
@@ -124,8 +144,8 @@ export function followUpQuestions(
   if (cited.has("candidate_profile") && !cited.has("finance_summary") && context?.kind !== "candidate") {
     suggestions.push("Who is funding their campaign?");
   }
-  if (cited.has("election") && context?.kind !== "election") {
-    suggestions.push("Who is running in this election?");
+  if (citedElectionContext(response) !== null && context?.kind !== "election") {
+    suggestions.push(ELECTION_ROSTER_CHIP);
   }
   const asked = askedQuestion.trim().toLowerCase();
   return suggestions.filter((suggestion) => suggestion.toLowerCase() !== asked);
@@ -360,7 +380,7 @@ function ChatWidgetSession() {
     return null;
   }
 
-  function sendQuestion(text: string) {
+  function sendQuestion(text: string, contextOverride: ChatbotAskContext | null = null) {
     const trimmed = text.trim();
     if (trimmed.length === 0 || ask.isPending) {
       return;
@@ -368,7 +388,7 @@ function ChatWidgetSession() {
     ask.mutate({
       question: trimmed,
       previousQuestion: turns.length > 0 ? (turns[turns.length - 1] as Turn).question : null,
-      context,
+      context: contextOverride ?? context,
     });
     setQuestion("");
   }
@@ -473,13 +493,7 @@ function ChatWidgetSession() {
                   ballot measures. Answers come only from our data — never opinions or endorsements.
                 </p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                  {/* Chips describe the CURRENT page, not the remembered
-                      context: after navigating away, "this candidate" would
-                      point at a page the user can no longer see. The
-                      remembered context still rides along for typed deictic
-                      follow-ups; generic chips are non-deictic, so the
-                      server ignores it for them. */}
-                  {starterQuestions(contextFromPathname(location.pathname)).map((starter) => (
+                  {STARTER_QUESTIONS.map((starter) => (
                     <button
                       key={starter}
                       type="button"
@@ -523,7 +537,22 @@ function ChatWidgetSession() {
                   <button
                     key={suggestion}
                     type="button"
-                    onClick={() => sendQuestion(suggestion)}
+                    onClick={() => {
+                      // The roster chip may be clicked off any detail page
+                      // (e.g. after the saved-issues answer on Settings),
+                      // where neither page context nor the previous
+                      // question's text can scope "this election" — so the
+                      // click carries the cited election as context, and
+                      // remembers it for typed deictic follow-ups.
+                      const electionContext =
+                        suggestion === ELECTION_ROSTER_CHIP
+                          ? citedElectionContext((turns[turns.length - 1] as Turn).response)
+                          : null;
+                      if (electionContext) {
+                        setContext(electionContext);
+                      }
+                      sendQuestion(suggestion, electionContext);
+                    }}
                     className="rounded-full border border-line px-2.5 py-1 text-xs text-ink transition hover:border-ink-soft hover:bg-surface"
                   >
                     {suggestion}
