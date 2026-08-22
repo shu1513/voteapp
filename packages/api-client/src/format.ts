@@ -262,6 +262,7 @@ const FINANCE_SOURCE_LABELS: Record<string, string> = {
   CONNECTICUT_ECRIS: "Connecticut eCRIS",
   INDIANA_CAMPAIGN_FINANCE: "Indiana Campaign Finance",
   NEBRASKA_NADC: "Nebraska NADC",
+  NEW_HAMPSHIRE_CFS: "New Hampshire Campaign Finance System",
   NEW_JERSEY_ELEC: "New Jersey ELEC",
   NEW_MEXICO_CFIS: "New Mexico CFIS",
   NORTH_CAROLINA_SBE: "North Carolina State Board of Elections",

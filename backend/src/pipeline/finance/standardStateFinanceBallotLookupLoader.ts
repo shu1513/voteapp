@@ -69,18 +69,24 @@ export type StandardStateFinanceSummaryVariant = "totals" | "illinoisD2";
 export type StandardStateFinanceEvidenceLabelType = "donor" | "employer";
 
 /**
- * Direct-breakdown category types the loader selects AND can route: occupation
- * rows feed top_occupations, contribution_size rows feed the buckets. States
- * whose direct table only carries one of them (Louisiana/Vermont: buckets
- * only) narrow the list. Types the mapper cannot route (e.g. industry) are
- * deliberately not accepted — routing them lands them in top_occupations.
+ * Direct-breakdown category types the loader selects AND routes. States whose
+ * direct table carries only some types narrow the list. Defaults remain
+ * occupation + contribution_size so existing source queries stay unchanged.
  */
-export type StandardStateFinanceDirectCategoryType = "occupation" | "contribution_size";
+export type StandardStateFinanceDirectCategoryType =
+  | "occupation"
+  | "industry"
+  | "contribution_size";
 
 const STANDARD_COMMITTEE_COLUMNS: readonly StandardStateFinanceCommitteeColumn[] = ["committee_id", "committee_key"];
 const STANDARD_EVIDENCE_LABEL_TYPES: readonly StandardStateFinanceEvidenceLabelType[] = ["donor", "employer"];
 const STANDARD_DIRECT_CATEGORY_TYPES: readonly StandardStateFinanceDirectCategoryType[] = [
   "occupation",
+  "contribution_size",
+];
+const SUPPORTED_DIRECT_CATEGORY_TYPES: readonly StandardStateFinanceDirectCategoryType[] = [
+  "occupation",
+  "industry",
   "contribution_size",
 ];
 
@@ -134,7 +140,7 @@ function assertFundingColumns(
 function assertDirectCategoryTypes(
   values: readonly StandardStateFinanceDirectCategoryType[]
 ): readonly StandardStateFinanceDirectCategoryType[] {
-  if (values.length === 0 || values.some((value) => !STANDARD_DIRECT_CATEGORY_TYPES.includes(value))) {
+  if (values.length === 0 || values.some((value) => !SUPPORTED_DIRECT_CATEGORY_TYPES.includes(value))) {
     throw new Error(`Invalid standard finance direct category types: ${values.join(", ")}`);
   }
   return values;
@@ -356,7 +362,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
       FROM ranked
       -- Size buckets are a fixed scheme the aggregators emit in full (up to
       -- six), so a top-5 cap would silently drop the smallest bucket rather
-      -- than trim a long tail; only open-ended categories (occupation) rank.
+      -- than trim a long tail; open-ended categories rank.
       WHERE rn <= 5 OR category_type = 'contribution_size'
       ORDER BY candidate_id, election_id, category_type, amount DESC, category_name ASC
     `,
@@ -587,16 +593,18 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
   );
 
   const directOccupationsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
+  const directIndustriesByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const contributionSizeBucketsByCandidateElection = new Map<string, BallotLookupFinanceBreakdown[]>();
   const summaryByCandidateElection = new Map(
     summaryResult.rows.map((row) => [candidateElectionKey(row.candidate_id, row.election_id), row])
   );
   for (const row of directBreakdownResult.rows) {
     const summary = summaryByCandidateElection.get(candidateElectionKey(row.candidate_id, row.election_id));
-    const targetMap =
-      row.category_type === "contribution_size"
-        ? contributionSizeBucketsByCandidateElection
-        : directOccupationsByCandidateElection;
+    const targetMap = row.category_type === "occupation"
+      ? directOccupationsByCandidateElection
+      : row.category_type === "industry"
+        ? directIndustriesByCandidateElection
+        : contributionSizeBucketsByCandidateElection;
     addFinanceBreakdown(
       targetMap,
       row.candidate_id,
@@ -665,6 +673,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
     summaryResult.rows.map((row) => {
       const key = candidateElectionKey(row.candidate_id, row.election_id);
       const topDirectDonorOccupations = directOccupationsByCandidateElection.get(key) ?? [];
+      const topDirectDonorIndustries = directIndustriesByCandidateElection.get(key) ?? [];
       const contributionSizeBuckets = contributionSizeBucketsByCandidateElection.get(key) ?? [];
       const topOutsideSupportingIndustries = (supportingIndustriesByCandidateElection.get(key) ?? []).map(
         (industry): BallotLookupFinanceOutsideIndustrySupportSummary => {
@@ -709,7 +718,7 @@ export async function loadStandardStateFinanceSummariesByCandidateElection(input
               : {}),
             top_occupations: topDirectDonorOccupations,
             top_employers: [],
-            top_industries: [],
+            top_industries: topDirectDonorIndustries,
             contribution_size_buckets: contributionSizeBuckets,
             // Omitted entirely (not null) when the source has no known gap,
             // so every other state's payload is byte-identical to before.

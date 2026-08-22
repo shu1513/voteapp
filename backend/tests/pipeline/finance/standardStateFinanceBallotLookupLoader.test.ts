@@ -160,11 +160,61 @@ describe("standardStateFinanceBallotLookupLoader identity descriptor", () => {
 
   it.each([
     ["empty list", { directBreakdownCategoryTypes: [] }],
-    ["unroutable type", { directBreakdownCategoryTypes: ["industry"] }],
+    ["unknown type", { directBreakdownCategoryTypes: ["employer"] }],
   ])("rejects %s direct category types", async (_label, overrides) => {
     await expect(captureQueries(overrides as unknown as LoadOverrides)).rejects.toThrow(
       "Invalid standard finance direct category types"
     );
+  });
+
+  it("routes direct industry rows to industries, never occupations", async () => {
+    let calls = 0;
+    const query = vi.fn(async () => {
+      calls += 1;
+      if (calls === 1) {
+        return { rows: [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID, election_year: 2026 }] };
+      }
+      if (calls === 2) {
+        return {
+          rows: [
+            {
+              candidate_id: CANDIDATE_ID,
+              election_id: ELECTION_ID,
+              category_type: "industry",
+              category_name: "healthcare",
+              amount: "1200",
+              contributor_count: "3",
+              source_url: null,
+            },
+          ],
+        };
+      }
+      return { rows: [] };
+    });
+
+    const result = await loadStandardStateFinanceSummariesByCandidateElection({
+      db: { query },
+      candidateRows: [{ candidate_id: CANDIDATE_ID, election_id: ELECTION_ID }],
+      electionRows: [{ election_id: ELECTION_ID, state: "NH" }],
+      state: "NH",
+      source: "NEW_HAMPSHIRE_CFS",
+      sourceUrl: "https://cfs.sos.nh.gov/",
+      enabled: () => true,
+      directBreakdownCategoryTypes: ["industry", "contribution_size"],
+      tables: TABLES,
+    });
+
+    const summary = result.get(`${CANDIDATE_ID}\u0000${ELECTION_ID}`);
+    expect(summary?.direct_campaign.top_industries).toEqual([
+      {
+        category_name: "healthcare",
+        amount: 1200,
+        contributor_count: 3,
+        source_url: "https://cfs.sos.nh.gov/",
+      },
+    ]);
+    expect(summary?.direct_campaign.top_occupations).toEqual([]);
+    expect(summary?.backing_summary.top_direct_donor_occupations).toEqual([]);
   });
 
   it("exempts contribution_size from the direct-breakdown top-5 cap, and only there", async () => {

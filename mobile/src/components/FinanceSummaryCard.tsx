@@ -32,11 +32,11 @@ import { openExternalUrl } from "../lib/openExternalUrl";
 //
 // Same brief-by-default policy as the web card: top occupations collapse
 // past the first few, size buckets sort largest-first, outside spending gets
-// a plain-language explanation, and employers / direct-donor industries are
-// deliberately not rendered.
+// a plain-language explanation. Employers stay hidden. Direct-donor industries
+// render only when occupations are unavailable, avoiding duplicate views.
 
-// How many occupation rows show before the rest collapse behind "Show more".
-const VISIBLE_OCCUPATIONS = 4;
+// How many direct-breakdown rows show before the rest collapse behind "Show more".
+const VISIBLE_DIRECT_BREAKDOWNS = 4;
 
 function MoneyStat({ label, amount }: { label: string; amount: number | null }) {
   if (amount === null) {
@@ -301,6 +301,7 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
     hasLoans ||
     direct.public_funds_received != null;
   const sourceUrl = firstFinanceSourceUrl(summary);
+  const directIndustries = direct.top_occupations.length === 0 ? direct.top_industries : [];
   // Supporting industries prefer the backing-summary rows, which carry the
   // organizations behind each industry; fall back to the plain breakdown.
   const supportingIndustries: (FinanceBreakdown | FinanceOutsideIndustrySupport)[] =
@@ -345,7 +346,12 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
       <BreakdownList
         heading="Top disclosed occupations of direct donors"
         rows={direct.top_occupations}
-        visibleCount={VISIBLE_OCCUPATIONS}
+        visibleCount={VISIBLE_DIRECT_BREAKDOWNS}
+      />
+      <BreakdownList
+        heading="Industries represented among direct contributions"
+        rows={directIndustries}
+        visibleCount={VISIBLE_DIRECT_BREAKDOWNS}
       />
       <BreakdownList
         heading="Direct contributions by size"

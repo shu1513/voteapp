@@ -30,15 +30,16 @@ import {
 //
 // The card keeps a brief default view: top occupations (first few, rest
 // behind a disclosure), size buckets largest-first, and outside spending
-// with a plain-language explanation. Employers and direct-donor industries
-// are deliberately not rendered — they don't help voters decide.
+// with a plain-language explanation. Employers stay hidden. Direct-donor
+// industries render only when occupations are unavailable, avoiding duplicate
+// views while preserving the only trustworthy classification some states have.
 
 // "Anything to render" logic lives in the shared package (the mobile card
 // uses the same definition); re-exported here for this component's callers.
 export { hasFinanceContent };
 
-// How many occupation rows show before the rest collapse behind "Show more".
-const VISIBLE_OCCUPATIONS = 4;
+// How many direct-breakdown rows show before the rest collapse behind "Show more".
+const VISIBLE_DIRECT_BREAKDOWNS = 4;
 
 function MoneyStat({ label, amount }: { label: string; amount: number | null }) {
   if (amount === null) {
@@ -347,6 +348,7 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
   const moneyGridClass =
     moneyStatCount === 6 ? "sm:grid-cols-6" : moneyStatCount === 5 ? "sm:grid-cols-5" : "sm:grid-cols-4";
   const sourceUrl = firstFinanceSourceUrl(summary);
+  const directIndustries = direct.top_occupations.length === 0 ? direct.top_industries : [];
   // Supporting industries prefer the backing-summary rows, which carry the
   // organizations behind each industry; fall back to the plain breakdown.
   const supportingIndustries: (FinanceBreakdown | FinanceOutsideIndustrySupport)[] =
@@ -391,7 +393,12 @@ export function FinanceSummaryCard({ summary }: { summary: FinanceSummary }) {
       <BreakdownList
         heading="Top disclosed occupations of direct donors"
         rows={direct.top_occupations}
-        visibleCount={VISIBLE_OCCUPATIONS}
+        visibleCount={VISIBLE_DIRECT_BREAKDOWNS}
+      />
+      <BreakdownList
+        heading="Industries represented among direct contributions"
+        rows={directIndustries}
+        visibleCount={VISIBLE_DIRECT_BREAKDOWNS}
       />
       {(direct.contribution_size_buckets ?? []).length > 0 ? (
         // Collapsed by default: size buckets are secondary detail next to
