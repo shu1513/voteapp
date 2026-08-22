@@ -5,6 +5,7 @@ import {
   classifyCandidateWebsiteCheckResult,
   isOffDomainRedirect,
   isRetireEligible,
+  rootUrlOfDeepLink,
 } from "../../src/pipeline/candidates/candidateWebsiteHealthProducer.js";
 
 describe("classifyCandidateWebsiteCheckResult", () => {
@@ -71,6 +72,27 @@ describe("isOffDomainRedirect", () => {
     expect(
       isOffDomainRedirect("https://smithformayor.com/old", "https://smithformayor.com/new")
     ).toBe(false);
+  });
+});
+
+describe("rootUrlOfDeepLink", () => {
+  it("returns the origin root for a subpage", () => {
+    expect(rootUrlOfDeepLink("https://www.manyformercer.com/about")).toBe(
+      "https://www.manyformercer.com/"
+    );
+  });
+
+  it("returns null for a URL that is already a root", () => {
+    expect(rootUrlOfDeepLink("https://www.mandelabarnes.com/")).toBeNull();
+    expect(rootUrlOfDeepLink("https://www.mandelabarnes.com")).toBeNull();
+  });
+
+  it("treats a query-only URL as worth trimming", () => {
+    expect(rootUrlOfDeepLink("https://kentoncounty.org/?EID=58")).toBe("https://kentoncounty.org/");
+  });
+
+  it("returns null for an unparseable URL", () => {
+    expect(rootUrlOfDeepLink("not a url")).toBeNull();
   });
 });
 

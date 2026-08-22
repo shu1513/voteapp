@@ -28,12 +28,21 @@ runCandidateWebsiteHealthProducer({
   ...(maxUrlsOverride !== undefined ? { maxUrlsOverride } : {}),
 })
   .then((result) => {
-    const { off_domain_redirects, hard_fail_urls, retired, ...summary } = result;
+    const { off_domain_redirects, hard_fail_urls, deep_link_root_alive, retired, ...summary } =
+      result;
     console.log(JSON.stringify(summary, null, 2));
     if (hard_fail_urls.length > 0) {
       console.log(`hard-fail URLs this run (${hard_fail_urls.length}):`);
       for (const url of hard_fail_urls) {
         console.log(`  ${url}`);
+      }
+    }
+    if (deep_link_root_alive.length > 0) {
+      console.log(
+        `dead subpages whose site root is alive — suggested trims (${deep_link_root_alive.length}):`
+      );
+      for (const entry of deep_link_root_alive) {
+        console.log(`  ${entry.url} -> ${entry.rootUrl}`);
       }
     }
     if (off_domain_redirects.length > 0) {

@@ -44,6 +44,11 @@ export type OffDomainRedirect = {
   finalUrl: string;
 };
 
+export type DeepLinkRootAlive = {
+  url: string;
+  rootUrl: string;
+};
+
 export type RetiredWebsite = {
   candidateId: string;
   displayName: string | null;
@@ -69,6 +74,7 @@ export type CandidateWebsiteHealthProducerResult = {
   failed_count: number;
   off_domain_redirects: OffDomainRedirect[];
   hard_fail_urls: string[];
+  deep_link_root_alive: DeepLinkRootAlive[];
   retire_candidate_count: number;
   retired: RetiredWebsite[];
 };
@@ -119,6 +125,26 @@ export function isOffDomainRedirect(inputUrl: string, finalUrl: string): boolean
     return false;
   }
   return inputHost !== finalHost;
+}
+
+/**
+ * A stored URL that points at a subpage ("/about", "/meet-jane") rots long
+ * before the site does — the page gets renamed and the campaign never updates
+ * the link we hold. Returns the origin root worth probing, or null when the
+ * URL is already a root (nothing to suggest) or unparseable.
+ */
+export function rootUrlOfDeepLink(url: string): string | null {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
+  const hasPath = parsed.pathname !== "" && parsed.pathname !== "/";
+  if (!hasPath && parsed.search === "") {
+    return null;
+  }
+  return `${parsed.protocol}//${parsed.host}/`;
 }
 
 function addDays(date: Date, days: number): Date {
@@ -315,11 +341,13 @@ async function checkUrlsWithConcurrency(
   failedCount: number;
   offDomainRedirects: OffDomainRedirect[];
   hardFailUrls: string[];
+  deepLinkRootAlive: DeepLinkRootAlive[];
 }> {
   const workerCount = Math.max(1, Math.min(input.concurrency, rows.length));
   const checkedRows: CheckedUrlState[] = [];
   const offDomainRedirects: OffDomainRedirect[] = [];
   const hardFailUrls: string[] = [];
+  const deepLinkRootAlive: DeepLinkRootAlive[] = [];
   let healthy = 0;
   let hardFail = 0;
   let transientFail = 0;
@@ -356,6 +384,20 @@ async function checkUrlsWithConcurrency(
         } else if (classification.outcome === "hard_fail") {
           hardFail += 1;
           hardFailUrls.push(row.url);
+          // Report-only repair hint: a dead subpage on a live site is fixed by
+          // trimming to the root, which is a one-line correction instead of a
+          // research task. Never applied automatically — a live root proves the
+          // domain answers, not that it is still this candidate's site.
+          const rootUrl = rootUrlOfDeepLink(row.url);
+          if (rootUrl) {
+            const rootCheck = await verifyHttpUrlReachability(rootUrl, {
+              timeoutMs: input.timeoutMs,
+              allowStatusCodes: [403],
+            });
+            if (rootCheck.ok) {
+              deepLinkRootAlive.push({ url: row.url, rootUrl });
+            }
+          }
         } else {
           transientFail += 1;
         }
@@ -381,6 +423,7 @@ async function checkUrlsWithConcurrency(
     failedCount,
     offDomainRedirects,
     hardFailUrls,
+    deepLinkRootAlive,
   };
 }
 
@@ -531,6 +574,7 @@ export async function runCandidateWebsiteHealthProducer(
     failed_count: 0,
     off_domain_redirects: [],
     hard_fail_urls: [],
+    deep_link_root_alive: [],
     retire_candidate_count: 0,
     retired: [],
   };
@@ -566,6 +610,7 @@ export async function runCandidateWebsiteHealthProducer(
       failedCount,
       offDomainRedirects,
       hardFailUrls,
+      deepLinkRootAlive,
     } = await checkUrlsWithConcurrency(dueRows, {
       timeoutMs: policy.timeoutMs,
       concurrency: policy.concurrency,
@@ -582,6 +627,7 @@ export async function runCandidateWebsiteHealthProducer(
     baseResult.failed_count = failedCount;
     baseResult.off_domain_redirects = offDomainRedirects;
     baseResult.hard_fail_urls = hardFailUrls;
+    baseResult.deep_link_root_alive = deepLinkRootAlive;
 
     const retireCandidates = await listRetireEligibleCandidates(pool, {
       hardFailureThreshold: policy.hardFailureThreshold,
