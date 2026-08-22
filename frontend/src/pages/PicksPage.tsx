@@ -565,13 +565,21 @@ export function PicksPage() {
           </p>
         ) : null}
         {picksSettled && dates.length === 0 ? (
-          <p className="mt-3 text-sm text-ink-soft">
-            No upcoming elections on your ballot yet.{" "}
-            <Link to="/me/ballot" className="underline hover:text-ink">
-              Set your address
-            </Link>{" "}
-            to see your races.
-          </p>
+          ballot.data.district_ids.length === 0 ? (
+            // No saved address (empty district set): the ask is the whole
+            // message. Same green as AddressNudge — one color for the
+            // "give address → see your ballot" action, wherever it appears.
+            <p className="mt-3 rounded-md border border-nudge-line bg-nudge px-3 py-2 text-sm text-ink">
+              <Link to="/me/ballot" className="font-medium text-nudge-deep underline hover:text-ink">
+                Set your address
+              </Link>{" "}
+              to see your races.
+            </p>
+          ) : (
+            // Address is saved and the lookup ran — there genuinely are no
+            // upcoming elections. No CTA: there is nothing for them to do.
+            <p className="mt-3 text-sm text-ink-soft">No upcoming elections on your ballot yet.</p>
+          )
         ) : null}
         {picksSettled ? (
           <>

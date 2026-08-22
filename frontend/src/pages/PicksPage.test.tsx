@@ -118,6 +118,36 @@ describe("PicksPage", () => {
     expect(section).not.toHaveTextContent("Governor");
   });
 
+  it("asks for an address when the empty ballot has no districts", async () => {
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/ballot": { body: { district_ids: [], districts: [], elections: [] } },
+        "/api/me/election-choices": { body: { choices: [] } },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByRole("link", { name: "Set your address" })).toHaveAttribute(
+      "href",
+      "/me/ballot"
+    );
+  });
+
+  it("omits the address ask when districts are known but no election is upcoming", async () => {
+    // The lookup ran and simply found nothing — telling this viewer to set an
+    // address they already set would read as a bug.
+    stubApiRoutes(
+      verifiedRoutes({
+        "/api/me/ballot": { body: ballotSummary([]) },
+        "/api/me/election-choices": { body: { choices: [] } },
+      })
+    );
+    renderPicks();
+
+    expect(await screen.findByText("No upcoming elections on your ballot yet.")).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Set your address" })).not.toBeInTheDocument();
+  });
+
   it("marks a measure pick with its outcome, muted when it went against the pick", async () => {
     stubApiRoutes(
       verifiedRoutes({
