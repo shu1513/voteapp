@@ -195,7 +195,7 @@ describe("PicksPage", () => {
     renderPicks();
 
     // Date card heading + decided count.
-    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Picks" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Draft" })).toBeInTheDocument();
     expect(screen.getByText("1 of 2 races decided")).toBeInTheDocument();
 
     // Picked race: title links to the race, pick renders beside it.
@@ -223,11 +223,11 @@ describe("PicksPage", () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderPicks();
 
-    await user.click(await screen.findByRole("button", { name: "Share my picks" }));
+    await user.click(await screen.findByRole("button", { name: "Share my November 3, 2026 picks" }));
 
     // The standard ShareButton takes over once the token exists (menu shape
     // in jsdom — no navigator.share), alongside the visibility warning.
-    expect(await screen.findByRole("button", { name: "Share" })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Share my November 3, 2026 picks" })).toBeInTheDocument();
     // The caption must disclose the name reveal — minting is the consent
     // event, so the sharer learns it here, not from a recipient.
     expect(
@@ -249,7 +249,7 @@ describe("PicksPage", () => {
     expect(JSON.parse(String(post![1]!.body))).toEqual({ election_date: "2026-11-03" });
 
     // The minted link lands in the share menu's copy target.
-    await user.click(screen.getByRole("button", { name: "Share" }));
+    await user.click(screen.getByRole("button", { name: "Share my November 3, 2026 picks" }));
     expect(await screen.findByRole("menuitem", { name: "Share on X" })).toHaveAttribute(
       "href",
       expect.stringContaining("tok_abcdefghijklmnopqrstuvwxyz012345")
@@ -269,16 +269,16 @@ describe("PicksPage", () => {
     expect(await screen.findByText(/Could not load your picks/)).toBeInTheDocument();
     expect(screen.queryByText(/no pick yet/)).not.toBeInTheDocument();
     expect(screen.queryByText(/races decided/)).not.toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: /My November 3, 2026 Election Picks/ })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /My November 3, 2026 Election Draft/ })).not.toBeInTheDocument();
   });
 
   it("hides the share control on a card with zero picks", async () => {
     stubApiRoutes(verifiedRoutes({ "/api/me/election-choices": { body: { choices: [] } } }));
     renderPicks();
 
-    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Picks" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Draft" })).toBeInTheDocument();
     expect(screen.getByText("0 of 2 races decided")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Share my picks" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^Share/ })).not.toBeInTheDocument();
   });
 
   it("keeps a just-finished election's card, with result chips, out of Past elections", async () => {
@@ -308,7 +308,7 @@ describe("PicksPage", () => {
     );
     renderPicks();
 
-    expect(await screen.findByText("My July 28, 2026 Election Picks")).toBeInTheDocument();
+    expect(await screen.findByText("My July 28, 2026 Election Draft")).toBeInTheDocument();
     // The pick's own line carries the call.
     expect(screen.getByText("Advanced")).toBeInTheDocument();
     // Still carded → not double-listed under Past elections.
@@ -588,7 +588,7 @@ describe("PicksPage", () => {
     renderPicks();
 
     expect(await screen.findByText("Auto")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Auto-pick my empty picks by my issues" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Auto-fill empty picks by my issues" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Clear auto picks" })).toBeInTheDocument();
   });
 
@@ -633,7 +633,7 @@ describe("PicksPage", () => {
     );
     renderPicks();
 
-    const button = await screen.findByRole("button", { name: "Auto-pick my empty picks by my issues" });
+    const button = await screen.findByRole("button", { name: "Auto-fill empty picks by my issues" });
     await waitFor(() => expect(button).toBeEnabled());
     await user.click(button);
 
@@ -684,7 +684,7 @@ describe("PicksPage", () => {
     );
     renderPicks();
 
-    const button = await screen.findByRole("button", { name: "Auto-pick my empty picks by my issues" });
+    const button = await screen.findByRole("button", { name: "Auto-fill empty picks by my issues" });
     await waitFor(() => expect(button).toBeEnabled());
     await user.click(button);
     await screen.findByRole("link", { name: /auto pick: not enough evidence/ });
@@ -711,15 +711,15 @@ describe("PicksPage", () => {
 
     await screen.findByText(/2 of 2 race/);
     expect(screen.queryByText("Auto")).toBeNull();
-    expect(screen.queryByRole("button", { name: /Auto-pick my empty picks/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Auto-fill empty picks/ })).toBeNull();
     expect(screen.queryByRole("button", { name: "Clear auto picks" })).toBeNull();
   });
 });
 
 describe("PicksPage nav context", () => {
-  const MY_PICKS_STATE = { backTo: { path: "/me/picks", label: "My Picks" } };
+  const MY_PICKS_STATE = { backTo: { path: "/me/picks", label: "My Election Draft" } };
 
-  it("hands election links My Picks as their back destination", async () => {
+  it("hands election links My Election Draft as their back destination", async () => {
     const user = userEvent.setup();
     stubApiRoutes(verifiedRoutes());
     const { router } = renderPicks();

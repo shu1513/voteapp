@@ -19,7 +19,7 @@ import { MIN_AUTO_PICK_ISSUES } from "./AutoPickControl";
 
 // Per-date auto-pick controls for the My Picks page
 // (docs/plans/auto-pick-by-issues.md): each election-date card (and ballot
-// sheet) gets its own "Auto-pick my empty picks by my issues" button that
+// sheet) gets its own "Auto-fill empty picks by my issues" button that
 // runs POST /api/me/auto-picks in fill_empty mode over THAT date's undecided
 // races only, and — once that date has engine-owned rows — a "Clear auto
 // picks" button that DELETEs with ?election_date= so other dates' auto picks
@@ -154,7 +154,7 @@ export function AutoPickFillControl({
             onClick={onFill}
             className="rounded-lg border border-autopick-border bg-autopick px-3 py-1.5 text-sm font-semibold text-autopick-ink transition hover:bg-autopick-dark disabled:opacity-50"
           >
-            {fill.isPending ? "Picking…" : "Auto-pick my empty picks by my issues"}
+            {fill.isPending ? "Picking…" : "Auto-fill empty picks by my issues"}
           </button>
         ) : null}
         {clearable ? (

@@ -22,7 +22,7 @@ import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 // Election links on this page hand the election page its back destination.
 // No contest list: these cards are pick summaries, not a ballot sequence.
 const PICKS_NAV_STATE: ElectionNavState = {
-  backTo: { path: "/me/picks", label: "My Picks" },
+  backTo: { path: "/me/picks", label: "My Election Draft" },
 };
 
 // One race row on a date card. "Pick chips" per candidate so a multi-seat
@@ -177,6 +177,11 @@ function hasRenderablePick(choice: ElectionChoice | undefined): choice is Electi
 }
 
 function ShareCardControl({ electionDate }: { electionDate: string }) {
+  // Every date card renders its own "Share"; sighted users read the card
+  // heading for context, but a screen reader's button list needs the date
+  // in the name itself. Same label on both control shapes (mint button,
+  // then ShareButton) so the control keeps one identity across the swap.
+  const shareLabel = `Share my ${formatElectionDate(electionDate)} picks`;
   const mint = useMutation({
     mutationFn: () =>
       apiRequest<{ share: PickCardShare }>("/api/me/pick-card-shares", {
@@ -214,6 +219,7 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
           path={path}
           shareText={`My ${formatElectionDate(electionDate)} election picks`}
           affirmative
+          ariaLabel={shareLabel}
         />
         {/* Names the name: the public page shows the owner's first name, and
             the sharer must learn that HERE, before posting the link — not
@@ -230,9 +236,10 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
         type="button"
         disabled={mint.isPending}
         onClick={() => mint.mutate()}
+        aria-label={shareLabel}
         className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink disabled:opacity-50"
       >
-        {mint.isPending ? "…" : "Share my picks"}
+        {mint.isPending ? "…" : "Share"}
       </button>
       {mint.isError ? (
         <span role="alert" className="text-xs font-medium text-red-800">
@@ -281,7 +288,7 @@ export function PickDateCard({
   return (
     <section className="rounded-xl border border-line bg-white p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-lg font-semibold text-ink">My {formatElectionDate(date)} Election Picks</h3>
+        <h3 className="text-lg font-semibold text-ink">My {formatElectionDate(date)} Election Draft</h3>
         {/* Mint-on-demand: no share row (and no live public URL) exists until
             the user asks for one. Hidden entirely while the card has zero
             picks — the backend refuses to mint for an empty card anyway. */}
@@ -347,7 +354,7 @@ export function PickDateCard({
 // pick on ANY upcoming race with a valid candidacy — via candidate search, a
 // shared link, or before an address change — while the cards render only the
 // saved ballot, so without this section such a pick would silently vanish
-// from the page that claims to list "My Election Picks". Also the whole list
+// from the page that claims to list "My Election Draft". Also the whole list
 // for the unverified render, where no ballot loads and nothing is carded.
 function UpcomingUncardedPicks({
   title,
@@ -430,7 +437,7 @@ function PastPicks({
 }
 
 export function PicksPage() {
-  useDocumentTitle("My Picks");
+  useDocumentTitle("My Election Draft");
   const { me, isLoading } = useMe();
   const verified = me?.email_verified === true;
   const [view, setView] = useState<"list" | "ballot">("list");
@@ -547,7 +554,7 @@ export function PicksPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <section>
-        <h1 className="text-2xl font-bold">My Election Picks</h1>
+        <h1 className="text-2xl font-bold">My Election Draft{dates.length > 1 ? "s" : ""}</h1>
         {ballot.isPending || (choicesLoading && !choicesError) ? (
           <LoadingNotice text="Loading your elections…" />
         ) : null}
