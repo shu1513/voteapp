@@ -40,6 +40,7 @@ import type { AddressApiClientIpInput } from "./addressApiClientIp.js";
 import type { EmailUnsubscribePreference } from "./apiValidation.js";
 import type { AddressResolutionDiagnostics } from "./addressApiResponses.js";
 import type { StateVotingResourcesResult } from "./stateVotingResources.js";
+import type { MembershipCheckoutInput, MembershipStatusResult } from "./membership/membershipService.js";
 
 export type { ResearchAreaCatalogItem, ResearchAreaCatalogResult } from "../pipeline/users/userResearchAreaPreferences.js";
 export type { StateVotingResources, StateVotingResourcesResult } from "./stateVotingResources.js";
@@ -177,6 +178,23 @@ export type AddressApiServerOptions = {
     userId: string,
     preferences: UserEmailPreferences
   ) => Promise<UserEmailPreferences>;
+  /** GET /api/me/membership — the session holder's support-payment state
+   * (docs/plans/membership-contributions.md). Absent when Stripe is not
+   * configured; the handler then answers { enabled: false } and the frontend
+   * hides the section. */
+  getAuthenticatedMembership?: (userId: string) => Promise<MembershipStatusResult>;
+  /** POST /api/me/membership/checkout — creates a Stripe Checkout session
+   * and returns its redirect URL. Absent (404) when Stripe is unconfigured. */
+  createAuthenticatedMembershipCheckout?: (userId: string, input: MembershipCheckoutInput) => Promise<{ url: string }>;
+  /** POST /api/me/membership/portal — Stripe billing-portal session URL.
+   * null = the user has no billing customer yet (404). */
+  createAuthenticatedMembershipPortal?: (userId: string) => Promise<{ url: string } | null>;
+  /** POST /api/stripe/webhook — signature-verified Stripe event intake.
+   * "bad_signature" → 400; thrown errors → 5xx so Stripe redelivers. */
+  handleStripeWebhookEvent?: (input: {
+    rawBody: Buffer;
+    signatureHeader: string | null;
+  }) => Promise<"ok" | "bad_signature">;
   /** POST /api/me/push-tokens: registers/refreshes a mobile device token. */
   registerAuthenticatedPushToken?: (userId: string, input: RegisterUserPushTokenInput) => Promise<void>;
   /** DELETE /api/me/push-tokens: soft-revokes the caller's device token. */

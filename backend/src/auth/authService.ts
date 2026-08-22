@@ -31,6 +31,12 @@ export type AuthServiceOptions = {
    * what enables loginWithGoogle on the returned service. Injected (rather
    * than constructed here) so tests stub it — no network in vitest. */
   verifyGoogleIdToken?: VerifyGoogleIdToken;
+  /** Present only when Stripe is configured
+   * (docs/plans/membership-contributions.md): cancels any live paid
+   * membership at Stripe. Deletion PRECONDITION — a throw here fails the
+   * delete request with nothing deleted; cancel is idempotent, so the user
+   * simply retries. */
+  cancelMembershipForAccountDeletion?: (userId: string) => Promise<void>;
 };
 
 export type AuthRegisterInput = {
@@ -1239,6 +1245,36 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       const userId = normalizeUserId(input.userId);
       if (typeof input.password !== "string" || input.password.length === 0) {
         throw new TypeError("password must be a non-empty string");
+      }
+
+      // Membership cancellation is a precondition (Terms §14.3: deleting the
+      // account cancels the membership) with its own password check first: a
+      // wrong-password request must not be able to cancel a paid membership,
+      // and the Stripe network call must not run inside the delete
+      // transaction below, where it would hold the user row lock for up to a
+      // Stripe timeout. The delete transaction re-verifies the password; if
+      // it changed in between, the delete fails and all that happened is a
+      // cancel the (then-)authenticated request asked for.
+      if (options.cancelMembershipForAccountDeletion) {
+        const precheckClient = await options.db.connect();
+        try {
+          await precheckClient.query("BEGIN");
+          const user = await findActiveUserByIdForUpdate(precheckClient, userId);
+          // NULL hash (Google-only account) never matches — add a password first.
+          if (!user || user.password_hash === null || !(await verifyPassword(user.password_hash, input.password))) {
+            throw new TypeError("Password is incorrect");
+          }
+          // Pure check — release the row lock before any network call.
+          await precheckClient.query("ROLLBACK");
+        } catch (error) {
+          await rollbackQuietly(precheckClient);
+          throw error;
+        } finally {
+          precheckClient.release();
+        }
+        // Throws a retryable error when Stripe is unreachable; the delete
+        // request then fails with nothing deleted.
+        await options.cancelMembershipForAccountDeletion(userId);
       }
 
       const client = await options.db.connect();

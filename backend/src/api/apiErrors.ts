@@ -16,6 +16,7 @@ import { UserEmailPreferencesError } from "../pipeline/users/userEmailPreference
 import { UserPushTokensError } from "../pipeline/users/userPushTokens.js";
 import { UserIdentityError } from "../pipeline/users/userIdentity.js";
 import { AuthGoogleSignInError } from "../auth/authService.js";
+import { MembershipServiceError, MembershipWebhookRetryError } from "./membership/membershipService.js";
 import type { ApiErrorCode } from "./apiResponses.js";
 
 export type MappedApiError = {
@@ -179,6 +180,26 @@ export function mapErrorToResponse(error: unknown): MappedApiError {
       return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
     }
     return { statusCode: 400, code: "invalid_request", message: error.message };
+  }
+  if (error instanceof MembershipServiceError) {
+    if (error.code === "membership_exists") {
+      return { statusCode: 409, code: "membership_exists", message: error.message };
+    }
+    if (error.code === "no_billing_account") {
+      return { statusCode: 404, code: "not_found", message: error.message };
+    }
+    if (error.code === "user_not_found") {
+      return { statusCode: 401, code: "unauthorized", message: "Authentication is required" };
+    }
+    // subscription_cancel_failed: Stripe was unreachable during the
+    // account-deletion precondition; nothing was deleted and a retry is safe.
+    return { statusCode: 503, code: "upstream_unavailable", message: error.message };
+  }
+  // A webhook event that cannot be applied yet (refund before its ledger row,
+  // invoice mid-settlement). Any non-2xx makes Stripe redeliver; 503 keeps it
+  // out of the unexpected-error capture path, and the handler already logged.
+  if (error instanceof MembershipWebhookRetryError) {
+    return { statusCode: 503, code: "upstream_unavailable", message: error.message };
   }
   if (error instanceof Error && error.message.startsWith("request body exceeds")) {
     return { statusCode: 413, code: "invalid_request", message: error.message };

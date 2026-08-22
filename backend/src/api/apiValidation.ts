@@ -86,6 +86,15 @@ export const ME_EMAIL_PREFERENCES_PATH = "/api/me/email-preferences";
 // Mobile device push-token registration (POST registers/refreshes, DELETE
 // revokes). Bearer-authed like every other /api/me route.
 export const ME_PUSH_TOKENS_PATH = "/api/me/push-tokens";
+// Support payments / membership (docs/plans/membership-contributions.md).
+// GET answers { enabled: false } when Stripe isn't configured; the two POSTs
+// 404 like the chatbot paths so the feature stays hidden.
+export const ME_MEMBERSHIP_PATH = "/api/me/membership";
+export const ME_MEMBERSHIP_CHECKOUT_PATH = "/api/me/membership/checkout";
+export const ME_MEMBERSHIP_PORTAL_PATH = "/api/me/membership/portal";
+// Stripe webhook: signature-verified raw body, no session auth, exempt from
+// the per-IP rate limiter (Stripe's shared delivery IPs would 429).
+export const STRIPE_WEBHOOK_PATH = "/api/stripe/webhook";
 // Signed-token unsubscribe target linked from notification emails; GET for
 // humans, POST for RFC 8058 one-click mailbox buttons. No session auth. The
 // optional pref query param picks which opt-in the link disables.
@@ -660,6 +669,39 @@ export function parseMeTermsAcceptanceBodyValue(parsed: unknown): MeTermsAccepta
   return {
     accepted_terms_version: parseStringField(parsed, "accepted_terms_version"),
   };
+}
+
+// Money bounds live here AND in the membership service (defense in depth for
+// a payment amount): $5 minimum (card fees eat ~33% of $1) and a $1,000
+// card-testing cap the UI surfaces. Values in cents.
+export const MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS = 500;
+export const MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS = 100_000;
+
+export type MembershipCheckoutPayload = {
+  kind: "one_time" | "monthly";
+  amount_cents: number;
+};
+
+export function parseMembershipCheckoutBodyValue(parsed: unknown): MembershipCheckoutPayload {
+  if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    throw new TypeError("Request body must be a JSON object");
+  }
+  const record = parsed as Record<string, unknown>;
+  const kind = record.kind;
+  if (kind !== "one_time" && kind !== "monthly") {
+    throw new TypeError("Body field kind must be one_time or monthly");
+  }
+  const amountCents = record.amount_cents;
+  if (typeof amountCents !== "number" || !Number.isInteger(amountCents)) {
+    throw new TypeError("Body field amount_cents must be an integer number of cents");
+  }
+  if (amountCents < MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS) {
+    throw new TypeError(`amount_cents must be at least ${MEMBERSHIP_CHECKOUT_MIN_AMOUNT_CENTS} ($5.00)`);
+  }
+  if (amountCents > MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS) {
+    throw new TypeError(`amount_cents must be at most ${MEMBERSHIP_CHECKOUT_MAX_AMOUNT_CENTS} ($1,000.00)`);
+  }
+  return { kind, amount_cents: amountCents };
 }
 
 export function parseInitializeUserDistrictsBodyValue(parsed: unknown): InitializeUserDistrictsPayload {

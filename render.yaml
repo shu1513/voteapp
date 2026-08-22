@@ -105,6 +105,19 @@ services:
       # by a sync — enter the value manually on the voteapp-api service.
       - key: GOOGLE_PLACES_API_KEY
         sync: false
+      # --- Support payments (docs/plans/membership-contributions.md) ----
+      # Money feature, off until the secret key is entered manually (sync:
+      # false, same caveat as GOOGLE_PLACES_API_KEY: enter on the service).
+      # Setting STRIPE_SECRET_KEY makes the other two REQUIRED at boot.
+      # Prerequisite: the Terms 1.2 / Privacy 1.3 legal bundle must already
+      # be live. Use a restricted key; pin the webhook endpoint's API version
+      # to the SDK's pinned version when creating it.
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_MEMBERSHIP_PRODUCT_ID
+        sync: false
       # --- Chatbot "Ask" (free read side; docs/plans/chatbot-rag.md) ----
       # Retrieval-only until the dashboard-only LLM vars are set (see the
       # voteapp-embeddings comment). Host and port are split on purpose:

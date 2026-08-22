@@ -64,9 +64,14 @@ import {
   ME_DISTRICTS_INITIALIZE_PATH,
   ME_DISTRICTS_PATH,
   ME_EMAIL_PREFERENCES_PATH,
+  ME_MEMBERSHIP_CHECKOUT_PATH,
+  ME_MEMBERSHIP_PATH,
+  ME_MEMBERSHIP_PORTAL_PATH,
   ME_PUSH_TOKENS_PATH,
   ME_RESEARCH_AREA_PREFERENCES_PATH,
   ME_TERMS_ACCEPTANCE_PATH,
+  STRIPE_WEBHOOK_PATH,
+  parseMembershipCheckoutBodyValue,
   parseAuthenticatedAddressBodyValue,
   parsePublicAddressResolveBodyValue,
   parseAutocompleteRetrieveBodyValue,
@@ -165,6 +170,10 @@ function isKnownApiPath(pathname: string): boolean {
     pathname === ME_DISTRICTS_PATH ||
     pathname === ME_DISTRICTS_INITIALIZE_PATH ||
     pathname === ME_EMAIL_PREFERENCES_PATH ||
+    pathname === ME_MEMBERSHIP_PATH ||
+    pathname === ME_MEMBERSHIP_CHECKOUT_PATH ||
+    pathname === ME_MEMBERSHIP_PORTAL_PATH ||
+    pathname === STRIPE_WEBHOOK_PATH ||
     pathname === ME_PUSH_TOKENS_PATH ||
     pathname === ME_RESEARCH_AREA_PREFERENCES_PATH ||
     pathname === RESEARCH_AREAS_PATH ||
@@ -381,6 +390,13 @@ function createCorsAndPreflightMiddleware(options: AddressApiServerOptions) {
 
 function createRateLimitMiddleware(options: AddressApiServerOptions) {
   return (request: Request, response: Response<unknown, ApiResponseLocals>, next: NextFunction): void => {
+    // The Stripe webhook is exempt: deliveries come from Stripe's shared IPs
+    // (which would trip a per-IP bucket and silently delay payment records),
+    // and the endpoint is protected by signature verification instead.
+    if (request.path === STRIPE_WEBHOOK_PATH) {
+      next();
+      return;
+    }
     if (!options.rateLimit) {
       next();
       return;
@@ -482,6 +498,10 @@ function createJsonBodyParser() {
           request.path === AUTH_LOGOUT_ALL_PATH ||
           request.path === ME_EMAIL_PATH ||
           request.path === ME_PASSWORD_PATH ||
+          // Requiring application/json blocks plain cross-site form POSTs
+          // from starting a checkout or portal session with ambient cookies.
+          request.path === ME_MEMBERSHIP_CHECKOUT_PATH ||
+          request.path === ME_MEMBERSHIP_PORTAL_PATH ||
           request.path === ME_PUSH_TOKENS_PATH ||
           request.path === ME_PICK_CARD_SHARES_PATH ||
           request.path === ME_TERMS_ACCEPTANCE_PATH)) ||
@@ -511,6 +531,21 @@ function createJsonBodyParser() {
       return;
     }
     parseJson(request, response, next);
+  };
+}
+
+// Stripe signs the exact raw bytes it sends; JSON re-serialization would
+// break verification, so the webhook path gets its own raw-body branch ahead
+// of the JSON parser (whose path list never includes it). type () => true:
+// the body must land as a Buffer regardless of the declared content type.
+function createStripeWebhookBodyParser() {
+  const parseRaw = express.raw({ type: () => true, limit: "1mb" });
+  return (request: Request, response: Response, next: NextFunction): void => {
+    if (request.method === "POST" && request.path === STRIPE_WEBHOOK_PATH) {
+      parseRaw(request, response, next);
+      return;
+    }
+    next();
   };
 }
 
@@ -1771,6 +1806,139 @@ async function dispatchApiRequest(
     return;
   }
 
+  if (url.pathname === ME_MEMBERSHIP_PATH) {
+    if (request.method !== "GET") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use GET /api/me/membership", {
+          ...corsHeaders,
+          allow: "GET",
+        })
+      );
+      return;
+    }
+    if (!options.resolveAuthenticatedUserId) {
+      sendApiResponse(response, toErrorResponse(401, "unauthorized", "Authentication is required", corsHeaders));
+      return;
+    }
+
+    // Verified-email gate like the other account-settings reads: payment
+    // state belongs to a confirmed inbox.
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
+    if (!userId) {
+      return;
+    }
+
+    // Not the 500 the other unwired options answer: Stripe unconfigured is a
+    // normal deployment state, and { enabled: false } is how the frontend
+    // knows to hide the whole support section.
+    if (!options.getAuthenticatedMembership) {
+      sendApiResponse(response, toJsonResponse(200, { enabled: false }, corsHeaders));
+      return;
+    }
+
+    const result = await options.getAuthenticatedMembership(userId);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_MEMBERSHIP_CHECKOUT_PATH) {
+    // Unwired → 404 before the method check, like the chatbot paths: without
+    // Stripe config the mutating endpoints stay hidden entirely.
+    if (!options.createAuthenticatedMembershipCheckout) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Not found", corsHeaders));
+      return;
+    }
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/me/membership/checkout", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
+    if (!userId) {
+      return;
+    }
+
+    const payload = parseMembershipCheckoutBodyValue(request.body);
+    const result = await options.createAuthenticatedMembershipCheckout(userId, payload);
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === ME_MEMBERSHIP_PORTAL_PATH) {
+    // Same isolation contract as the checkout path: unwired → 404.
+    if (!options.createAuthenticatedMembershipPortal) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Not found", corsHeaders));
+      return;
+    }
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/me/membership/portal", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+
+    const userId = await requireVerifiedAuthenticatedUser(options, request, response);
+    if (!userId) {
+      return;
+    }
+
+    const result = await options.createAuthenticatedMembershipPortal(userId);
+    if (!result) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "No billing account", corsHeaders));
+      return;
+    }
+    sendApiResponse(response, toJsonResponse(200, result, corsHeaders));
+    return;
+  }
+
+  if (url.pathname === STRIPE_WEBHOOK_PATH) {
+    // Unwired → 404 before the method check: without Stripe config nothing
+    // should suggest the endpoint exists.
+    if (!options.handleStripeWebhookEvent) {
+      sendApiResponse(response, toErrorResponse(404, "not_found", "Not found", corsHeaders));
+      return;
+    }
+    if (request.method !== "POST") {
+      sendApiResponse(
+        response,
+        toErrorResponse(405, "method_not_allowed", "Use POST /api/stripe/webhook", {
+          ...corsHeaders,
+          allow: "POST",
+        })
+      );
+      return;
+    }
+
+    // No session auth: the signature check inside the handler is the
+    // authentication. Response policy (the delivery guarantee): 400 bad
+    // signature, 2xx committed-or-ignored, thrown errors → 5xx → Stripe
+    // retries for ~3 days.
+    const rawBody = request.body;
+    if (!Buffer.isBuffer(rawBody)) {
+      sendApiResponse(response, toErrorResponse(400, "invalid_request", "Missing request body", corsHeaders));
+      return;
+    }
+    const signatureHeader = readHeader(request.headers, "stripe-signature")?.trim() || null;
+    const result = await options.handleStripeWebhookEvent({ rawBody, signatureHeader });
+    if (result === "bad_signature") {
+      sendApiResponse(response, toErrorResponse(400, "invalid_request", "Invalid webhook signature", corsHeaders));
+      return;
+    }
+    sendApiResponse(response, toJsonResponse(200, { received: true }, corsHeaders));
+    return;
+  }
+
   if (url.pathname === ME_PUSH_TOKENS_PATH) {
     if (request.method !== "POST" && request.method !== "DELETE") {
       sendApiResponse(
@@ -2344,6 +2512,7 @@ export function createApiApp(options: AddressApiServerOptions): Express {
   app.use(createCorsAndPreflightMiddleware(options));
   app.use(createRateLimitMiddleware(options));
   app.use(createContentReportRateLimitMiddleware(options));
+  app.use(createStripeWebhookBodyParser());
   app.use(createJsonBodyParser());
   app.use((request, response, next) => {
     void dispatchApiRequest(request, response, options).catch(next);
