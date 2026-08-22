@@ -1,0 +1,195 @@
+[
+  {
+    "key": "ae4b4b5f",
+    "description": "Seconded and voted to award a $905,128.32 furniture bid for the new Valle Crucis Elementary School.",
+    "fail_any_stance": true
+  },
+  {
+    "key": "74382368",
+    "description": "Serves as Chautauqua County Legislator for District 18, according to county legislative materials.",
+    "fail_any_stance": true
+  },
+  {
+    "key": "953e1c31",
+    "description": "Presented a $136,548 Bergen County Open Space Trust Fund grant to Little Ferry for a new pickleball court at Losen Slote Creek Park.",
+    "fail_any_stance": true
+  },
+  {
+    "key": "bb2a556d",
+    "description": "Lancaster voted to approve the Home and Community Care Block Grant proposed funding plan.",
+    "fail_any_stance": true
+  },
+  {
+    "key": "3ebd5fd5",
+    "description": "Moved approval of Stokes County Budget Amendment #25 transferring $15,000 to IV-E Special Foster Care; the motion carried unanimously.",
+    "fail_any_stance": true
+  },
+  {
+    "key": "36aeccd4",
+    "description": "At the January 12, 2026 Franklin County Public Schools board meeting, Larry Perkins was recognized during School Board Recognition Month and voted yes on the 2026-2027 school calendar, an AP Seminar course substitution, and acceptance of a KETS technology-funding offer.",
+    "fail_any_stance": true
+  },
+  {
+    "key": "94714573",
+    "description": "Hoke County Board of Commissioners minutes identified Harry Southerland as vice chairman during the board’s regular meeting.",
+    "fail_any_stance": true
+  },
+  {
+    "key": "51d99184",
+    "description": "Voted to approve a technology master agreement for Jefferson Parish Public Schools.",
+    "fail_any_stance": true
+  },
+  {
+    "key": "2e0cfb9e",
+    "description": "Filed a bill proposing to repeal Illinois bans on assault weapons, large-capacity magazines, and devices that speed up a gun's rate of fire (House Bill 1040).",
+    "fail": [
+      "government_efficiency/for"
+    ],
+    "expect": [
+      "gun_control/against"
+    ]
+  },
+  {
+    "key": "ba8fa683",
+    "description": "On 2026-05-12, Karen Lewis Young’s SB 189 became Chapter 356; it required municipalities to inventory open drainage inlets and prioritize safety improvements.",
+    "fail": [
+      "public_safety_and_crime_control/for"
+    ]
+  },
+  {
+    "key": "03798a9b",
+    "description": "Busatta sponsored 2026 CS/CS/CS/HB 1443 creating a Parkinson's disease registry; it became Chapter 2026-9.",
+    "fail": [
+      "healthcare_affordability/for",
+      "data_privacy/for"
+    ]
+  },
+  {
+    "key": "2522e5b4",
+    "description": "Governor Katie Hobbs signed HB 2484, which incorporated language from Bolick's SB 1226 requiring school districts to limit student cellphone use during the school day.",
+    "fail": [
+      "data_privacy/against",
+      "public_education_quality/for"
+    ]
+  },
+  {
+    "key": "91c64c12",
+    "description": "Sponsored two veterans property tax bills: Senate Bill 2853, proposing that each tax bill show the amount that funds the local Veterans Assistance Commission, and Senate Bill 2854, proposing to exempt those commission levies from the property tax cap.",
+    "fail": [
+      "housing_affordability/for",
+      "anti_corruption/for"
+    ]
+  },
+  {
+    "key": "9af5c5d1",
+    "description": "Prime-sponsored Senate Bill 77 extending the liquefied-natural-gas storage facility tax credit.",
+    "fail": [
+      "public_infrastructure/for",
+      "corporate_accountability/against"
+    ]
+  },
+  {
+    "key": "029b7d98",
+    "description": "Voted against House Bill 4, the mid-decade Texas congressional map that the House passed 88-52 after Democrats ended their quorum break.",
+    "fail": [
+      "anti_corruption/against",
+      "election_integrity/against"
+    ],
+    "expect": [
+      "election_integrity/for"
+    ]
+  },
+  {
+    "key": "5422db4b",
+    "description": "Rep. Bride Rose Sweeney voted no on Ohio House Bill 96, the state operating budget, saying it underfunded public education, Medicaid, property-tax relief, and basic services.",
+    "fail": [
+      "public_education_quality/against"
+    ],
+    "expect": [
+      "public_education_quality/for"
+    ]
+  },
+  {
+    "key": "5a2c18c9",
+    "description": "Jayapal voted against the 2026 consolidated appropriations package, citing its Pentagon funding level and lack of safeguards against executive impoundment while acknowledging that it preserved several housing, labor, education, and transportation programs.",
+    "fail": [
+      "government_spending_reduction/for",
+      "national_defense/against"
+    ]
+  },
+  {
+    "key": "22598018",
+    "description": "Voted against Senate Bill 4, which the Texas House advanced 83-60 and which authorized state enforcement actions against suspected unauthorized border crossing.",
+    "fail": [
+      "immigration/against"
+    ]
+  },
+  {
+    "key": "07c175ba",
+    "description": "Publicly opposed the 2025 Texas congressional redistricting map during the House vote, warning about its effect on Black representation and voting rights.",
+    "fail": [
+      "election_integrity/against",
+      "civil_rights/against"
+    ],
+    "expect": [
+      "election_integrity/for"
+    ]
+  },
+  {
+    "key": "3f439c35",
+    "description": "Voted against the conference report for Missouri HB 595, which prohibited local governments from requiring landlords to accept Section 8 vouchers or other lawful sources of income.",
+    "fail": [
+      "housing_affordability/against"
+    ],
+    "expect": [
+      "housing_affordability/for"
+    ]
+  },
+  {
+    "key": "sh-wrr",
+    "description": "Shamp voted against HB 2677, the bill repealing Arizona's 1864 near-total abortion ban.",
+    "require": [
+      "womens_reproductive_rights/against"
+    ]
+  },
+  {
+    "key": "sh-psc",
+    "description": "Shamp sponsored SB 1231, the Arizona Border Invasion Act, which passed the Senate and classified specified unlawful border crossing as a state crime.",
+    "require": [
+      "public_safety_and_crime_control/for"
+    ]
+  },
+  {
+    "key": "9d185125",
+    "description": "Publicly opposed North Carolina Senate Bill 50 and welcomed Governor Josh Stein's veto, stating that the bill was counterproductive to public safety.",
+    "require": [
+      "gun_control/for"
+    ]
+  },
+  {
+    "key": "a8b5431d",
+    "description": "Signed as president of the Bossier Parish School Board a resolution opposing state legislation establishing or funding Education Savings Accounts.",
+    "require": [
+      "public_education_quality/for"
+    ]
+  },
+  {
+    "key": "7c83adb2",
+    "description": "Carolyn Jackson voted no on Senate Bill 277, opposing deregulation of the Indiana Department of Environmental Management and warning of risks to environmental and public-health protections.",
+    "require": [
+      "environment_and_public_health/for"
+    ]
+  },
+  {
+    "key": "tab-sched",
+    "description": "Lancaster voted to table the Rowan Community Center Main Concourse design issue until September 2.",
+    "fail_any_stance": true
+  },
+  {
+    "key": "tab-sponsor",
+    "description": "Prime-sponsored HB26-1047, a bill on protections for people who rent their homes. The House Judiciary Committee postponed it indefinitely on 2026-02-24.",
+    "require": [
+      "housing_affordability/for"
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+{"slug" : "anti_corruption", "description" : "Prevent abuse of public office through transparency, ethics rules, and enforcement."}
+{"slug" : "civil_rights", "description" : "Protect equal rights, anti-discrimination enforcement, and fair treatment under law."}
+{"slug" : "corporate_accountability", "description" : "Hold companies accountable for legal compliance, consumer protection, and public impact."}
+{"slug" : "cost_of_living_reduction", "description" : "Lower household costs by improving price stability, competition, reduce or eliminate tariffs, and increase foreign trade."}
+{"slug" : "data_privacy", "description" : "Protect personal data rights through clear limits on collection, sharing, and misuse."}
+{"slug" : "election_integrity", "description" : "Ensure elections are secure, accurate, auditable, and trusted by the public."}
+{"slug" : "environment_and_public_health", "description" : "Protect air, water, climate, and community health through standards, enforcement, and prevention."}
+{"slug" : "foreign_trade", "description" : "Facilitate cross-country trade so each country focuses on what it does best, while expanding fair and mutually beneficial exchange."}
+{"slug" : "general", "description" : "General candidate record not mapped to a specific office research area."}
+{"slug" : "government_efficiency", "description" : "Improve service delivery, reduce waste, and modernize administrative operations."}
+{"slug" : "government_spending_reduction", "description" : "Control public spending growth and reduce long-term fiscal deficits responsibly."}
+{"slug" : "gun_control", "description" : "Regulate firearm access through background checks, licensing, and safe-storage requirements to reduce gun violence."}
+{"slug" : "healthcare_affordability", "description" : "Reduce out-of-pocket costs and improve access to affordable, quality care."}
+{"slug" : "housing_affordability", "description" : "Increase housing supply and reduce cost burdens for renters and homebuyers."}
+{"slug" : "immigration", "description" : "Welcome immigration through a lawful, orderly, and humane system, with priority for skilled workers, researchers, and other high-impact contributors."}
+{"slug" : "impartiality", "description" : "Evaluate fairness, neutrality, evenhanded treatment, and independence from improper bias or influence."}
+{"slug" : "integrity_and_ethics", "description" : "Documented criminal convictions, official ethics findings, sanctions, disciplinary actions, court judgments, enforcement actions, or other verified public accountability records."}
+{"slug" : "legal_competence", "description" : "Evaluate legal reasoning, courtroom performance, case handling, rulings, legal writing, and professional command of the law."}
+{"slug" : "national_defense", "description" : "Maintain military readiness and deterrence to protect national security interests."}
+{"slug" : "peaceful_foreign_policy", "description" : "Prioritize diplomacy and de-escalation instead of war."}
+{"slug" : "personal_income_tax_reduction", "description" : "Lower personal income tax."}
+{"slug" : "public_education_quality", "description" : "Strengthen student outcomes through effective teaching, standards, funding, and accountability."}
+{"slug" : "public_infrastructure", "description" : "Build and maintain transportation, utilities, and civic systems that support daily life and growth."}
+{"slug" : "public_safety_and_crime_control", "description" : "Improve safety through effective policing, prevention, accountability, and justice system performance."}
+{"slug" : "reduce_wealth_gap", "description" : "Narrow wealth disparities through policy that expands asset building, economic mobility, and equitable opportunity."}
+{"slug" : "social_programs_and_welfare", "description" : "Support vulnerable populations through effective safety-net and anti-poverty programs."}
+{"slug" : "womens_reproductive_rights", "description" : "Protect legal access to reproductive healthcare and individual bodily autonomy."}

@@ -127,6 +127,7 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
     const prompt = buildCandidateRecordAreaLabelPrompt(baseInput);
     expect(prompt).toContain("FIRST decide whether each record states a position at all");
     expect(prompt).toContain("state NO position: label such a record 'general'");
+    expect(prompt).toContain("A measure's procedural fate never erases the candidate's own position on it");
   });
 
   it("states that stance follows the position's direction, not the vote's surface verb", () => {
