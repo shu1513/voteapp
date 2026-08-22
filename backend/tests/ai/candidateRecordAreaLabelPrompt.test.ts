@@ -53,7 +53,7 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
     expect(prompt).toContain(
       "An objection about cost or process is a stance on spending, not on the service itself"
     );
-    expect(prompt).toContain("Materiality: skip government_spending_reduction for trivial or routine sums");
+    expect(prompt).toContain("For government_spending_reduction specifically, also skip trivial or routine sums");
     expect(prompt).toContain("Prefer fewer, confident labels");
     expect(prompt).not.toContain("You may assign multiple area labels");
   });
@@ -118,5 +118,32 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
 
     expect(prompt).toContain('- district_type: "presidential"');
     expect(prompt).not.toContain("- state:");
+  });
+
+  // These four rules exist because the labeler produced 825 source-verified stance
+  // overclaims (repair campaign, 2026-08). Each line targets one measured defect
+  // family; removing one silently reopens that family on every new record.
+  it("states the no-position gate so rosters and procedural rows are not stanced", () => {
+    const prompt = buildCandidateRecordAreaLabelPrompt(baseInput);
+    expect(prompt).toContain("FIRST decide whether each record states a position at all");
+    expect(prompt).toContain("state NO position: label such a record 'general'");
+  });
+
+  it("states that stance follows the position's direction, not the vote's surface verb", () => {
+    const prompt = buildCandidateRecordAreaLabelPrompt(baseInput);
+    expect(prompt).toContain("Stance follows the DIRECTION of the position, never the surface verb");
+    expect(prompt).toContain("a no vote on a gerrymandered map is FOR election integrity");
+  });
+
+  it("applies materiality to every area, not only government_spending_reduction", () => {
+    const prompt = buildCandidateRecordAreaLabelPrompt(baseInput);
+    expect(prompt).toContain("Materiality applies to EVERY area, not only spending");
+    expect(prompt).toContain("A topic word appearing in the description is not a position on the area");
+  });
+
+  it("keeps the spending-specific trivial-sum carve-out alongside the general rule", () => {
+    const prompt = buildCandidateRecordAreaLabelPrompt(baseInput);
+    expect(prompt).toContain("For government_spending_reduction specifically");
+    expect(prompt).toContain("trivial or routine sums");
   });
 });
