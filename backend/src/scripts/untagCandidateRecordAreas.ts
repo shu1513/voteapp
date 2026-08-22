@@ -22,8 +22,12 @@ import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
  *   npm run manual:records:untag -- --untags-file <path>
  *   npm run manual:records:untag -- --untags-file <path> --apply
  *
- * File format: JSON array of { recordId, researchAreaSlug, reason, note? }.
- * Dry run is the default; --apply performs the deletes.
+ * File format: JSON array of
+ *   { recordId, researchAreaSlug, expectedStance, expectedDescription, reason, note? }.
+ * expectedStance/expectedDescription pin what the operator reviewed (same
+ * staleness discipline as the rewrites file's originalText): a row whose tag
+ * or description moved since review skips instead of deleting on today's
+ * content. Dry run is the default; --apply performs the deletes.
  *
  * Production: research:promote deliberately never deletes target-only rows,
  * so a local untag does NOT propagate — the stale tag stays live in prod
@@ -37,6 +41,10 @@ import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 type UntagInput = {
   recordId: string;
   researchAreaSlug: string;
+  /** The stance the operator reviewed; null for a null-stance tag. */
+  expectedStance: "for" | "against" | null;
+  /** The record description the overclaim was judged against. */
+  expectedDescription: string;
   reason: string;
   note?: string;
 };
@@ -90,12 +98,25 @@ export function parseUntagsFile(raw: string): UntagInput[] {
     if (typeof entry !== "object" || entry === null) {
       throw new Error(`untags[${index}] must be an object`);
     }
-    const { recordId, researchAreaSlug, reason, note } = entry as Record<string, unknown>;
+    const { recordId, researchAreaSlug, expectedStance, expectedDescription, reason, note } = entry as Record<
+      string,
+      unknown
+    >;
     if (typeof recordId !== "string" || recordId.trim().length === 0) {
       throw new Error(`untags[${index}].recordId must be a non-empty string`);
     }
     if (typeof researchAreaSlug !== "string" || researchAreaSlug.trim().length === 0) {
       throw new Error(`untags[${index}].researchAreaSlug must be a non-empty string`);
+    }
+    // The manifest pins what the operator actually reviewed. Without these,
+    // apply would compare freshly-read values against themselves and delete
+    // whatever the row says TODAY — a tag that became fair after a
+    // description change would still be deleted.
+    if (expectedStance !== null && expectedStance !== "for" && expectedStance !== "against") {
+      throw new Error(`untags[${index}].expectedStance must be "for", "against", or null (the reviewed stance)`);
+    }
+    if (typeof expectedDescription !== "string" || expectedDescription.trim().length === 0) {
+      throw new Error(`untags[${index}].expectedDescription must be the reviewed record description`);
     }
     // The reason lands in the run report, which is the only durable account of
     // why the tag was withdrawn (the delete leaves no row to carry it).
@@ -108,6 +129,8 @@ export function parseUntagsFile(raw: string): UntagInput[] {
     return {
       recordId: recordId.trim(),
       researchAreaSlug: researchAreaSlug.trim(),
+      expectedStance,
+      expectedDescription,
       reason: trimmedReason,
       ...(typeof note === "string" ? { note } : {}),
     };
@@ -142,6 +165,21 @@ export async function untagOneRecordArea(
     };
   }
 
+  // Reviewed-data drift guard, checked in dry-run too so the operator sees
+  // it before an apply: the untag decision was made about the stance and
+  // description in the manifest. If either moved since review — a rewrite of
+  // the same row, a relabel, another session — the tag may now be fair, so
+  // the decision must be remade, not applied.
+  if (row.stance !== untag.expectedStance || row.description !== untag.expectedDescription) {
+    return {
+      recordId: untag.recordId,
+      researchAreaSlug: untag.researchAreaSlug,
+      status: "skipped",
+      reason:
+        "tag or record no longer matches the reviewed expectedStance/expectedDescription; the row changed since review — re-review before untagging",
+    };
+  }
+
   if (!options.apply) {
     return {
       recordId: untag.recordId,
@@ -154,9 +192,12 @@ export async function untagOneRecordArea(
     };
   }
 
+  // The DELETE predicate uses the MANIFEST values, not the fresh read: after
+  // the equality check above they are identical, but pinning the reviewed
+  // values here means even a mid-run write can only make the delete a no-op.
   const deleted = await deps.applyUntag({
     tagId: row.tag_id,
-    expected: { stance: row.stance, description: row.description },
+    expected: { stance: untag.expectedStance, description: untag.expectedDescription },
   });
   if (deleted !== 1) {
     return {

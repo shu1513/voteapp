@@ -15,6 +15,8 @@ const TAG = {
 const INPUT = {
   recordId: "rec-1",
   researchAreaSlug: "public_safety_and_crime_control",
+  expectedStance: "against" as const,
+  expectedDescription: TAG.description,
   reason: "One contract vote does not support a general anti-public-safety stance.",
 };
 
@@ -43,6 +45,22 @@ describe("parseUntagsFile", () => {
     ).toThrow(/reason/);
   });
 
+  it("requires the reviewed stance and description so apply cannot judge from today's content", () => {
+    expect(() =>
+      parseUntagsFile(JSON.stringify([{ ...INPUT, expectedStance: "neutral" }]))
+    ).toThrow(/expectedStance/);
+    expect(() => {
+      const { expectedStance: _dropped, ...rest } = INPUT;
+      return parseUntagsFile(JSON.stringify([rest]));
+    }).toThrow(/expectedStance/);
+    expect(() =>
+      parseUntagsFile(JSON.stringify([{ ...INPUT, expectedDescription: "" }]))
+    ).toThrow(/expectedDescription/);
+    // null is a legitimate reviewed stance (null-stance tags).
+    const parsed = parseUntagsFile(JSON.stringify([{ ...INPUT, expectedStance: null }]));
+    expect(parsed[0]!.expectedStance).toBeNull();
+  });
+
   it("rejects a non-array file", () => {
     expect(() => parseUntagsFile(JSON.stringify({}))).toThrow(/JSON array/);
   });
@@ -56,14 +74,37 @@ describe("untagOneRecordArea", () => {
     expect(applyUntag).not.toHaveBeenCalled();
   });
 
-  it("deletes under a compare-and-swap on stance and record description", async () => {
+  it("deletes under a compare-and-swap pinned to the REVIEWED stance and description", async () => {
     const applyUntag = vi.fn(async () => 1);
     const outcome = await untagOneRecordArea(INPUT, makeDeps({ applyUntag }), { apply: true });
     expect(outcome.status).toBe("untagged");
     expect(applyUntag).toHaveBeenCalledWith({
       tagId: "tag-1",
-      expected: { stance: TAG.stance, description: TAG.description },
+      expected: { stance: INPUT.expectedStance, description: INPUT.expectedDescription },
     });
+  });
+
+  it("skips — in dry-run too — when the row no longer matches what the operator reviewed", async () => {
+    // The record was rewritten after review: the tag may now be fair, so the
+    // decision must be remade rather than applied to content nobody judged.
+    const applyUntag = vi.fn(async () => 1);
+    const drifted = makeDeps({
+      loadTag: async () => ({ ...TAG, description: "Voted no on the contract and said deputies should not police campuses." }),
+      applyUntag,
+    });
+    const dryRun = await untagOneRecordArea(INPUT, drifted, { apply: false });
+    expect(dryRun).toMatchObject({ status: "skipped", reason: expect.stringMatching(/changed since review/) });
+    const apply = await untagOneRecordArea(INPUT, drifted, { apply: true });
+    expect(apply.status).toBe("skipped");
+    expect(applyUntag).not.toHaveBeenCalled();
+
+    const stanceDrift = await untagOneRecordArea(
+      { ...INPUT, expectedStance: "for" },
+      makeDeps({ applyUntag }),
+      { apply: true }
+    );
+    expect(stanceDrift.status).toBe("skipped");
+    expect(applyUntag).not.toHaveBeenCalled();
   });
 
   it("skips when no live record carries the tag", async () => {

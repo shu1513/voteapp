@@ -640,6 +640,32 @@ describe("runPlainLanguageBackfill", () => {
     await expect(runPlainLanguageBackfill(pool, makeDeps())).rejects.toThrow("halting: flag rate");
   });
 
+  it("exempts operator-attested runs from the flag-rate gate", async () => {
+    // The gate is a model-quality circuit breaker; an operator run has no
+    // model, and the flagged rows it exists to REPAIR sit in the gate's own
+    // baseline (updated in place, not deleted) — counting them would halt any
+    // repair in a corpus whose historical flag rate exceeds the threshold.
+    const { pool } = makeFakePool({
+      recordRows: [recordRow("r1"), recordRow("r2")],
+      auditCounts: [
+        { status: "applied", count: "50" },
+        { status: "flagged", count: "10" },
+      ],
+    });
+
+    const operatorRewrite = vi.fn(async () => ({
+      ok: true as const,
+      provider: "manual" as const,
+      model: "manual-research",
+      rewrittenText: "Refused subpoenas to appear before the county oversight commission during hearings.",
+    }));
+    const summary = await runPlainLanguageBackfill(
+      pool,
+      makeDeps({ rewrite: operatorRewrite, manualAttestation: true, allowSourcedFacts: true })
+    );
+    expect(summary).toMatchObject({ processed: 2, applied: 2, flagged: 0 });
+  });
+
   it("flags a verifier mismatch, keeps the column untouched, and records the reason", async () => {
     const { pool, writes } = makeFakePool({ recordRows: [recordRow("r1")] });
     const deps = makeDeps({

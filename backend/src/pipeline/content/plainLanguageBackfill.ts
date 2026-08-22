@@ -620,9 +620,19 @@ export async function runPlainLanguageBackfill(
   // --limit batches and resumes would otherwise reset the counters and let a
   // bad prompt grind every row into the manual queue. Dry runs write no audit
   // rows and judge only themselves.
+  //
+  // Operator-attested runs are exempt: the gate is a MODEL-quality circuit
+  // breaker, and there is no model — a human reviewed every row and reads
+  // every flag. The gate also cannot account a repair run: flagged rows being
+  // repaired sit in its baseline (they are updated in place, not deleted), so
+  // any corpus whose historical flag rate exceeds the threshold would halt
+  // the repair after one row; and upserted targets would double-count in the
+  // denominator. AI runs keep exact accounting — their targets never carry a
+  // prior audit row, the resume marker guarantees it.
+  const gateActive = deps.manualAttestation !== true;
   let gateProcessed = 0;
   let gateFlagged = 0;
-  if (!deps.dryRun) {
+  if (gateActive && !deps.dryRun) {
     const auditCounts = await pool.query<{ status: string; count: string }>(
       `SELECT status, count(*)::text AS count FROM public.plain_language_rewrites GROUP BY status`
     );
@@ -773,7 +783,7 @@ export async function runPlainLanguageBackfill(
       }
     }
 
-    if (gateProcessed >= FLAG_RATE_MINIMUM_SAMPLE && gateFlagged / gateProcessed > FLAG_RATE_HALT_THRESHOLD) {
+    if (gateActive && gateProcessed >= FLAG_RATE_MINIMUM_SAMPLE && gateFlagged / gateProcessed > FLAG_RATE_HALT_THRESHOLD) {
       throw new Error(
         `halting: flag rate ${gateFlagged}/${gateProcessed} across the backfill exceeds ${FLAG_RATE_HALT_THRESHOLD * 100}% — tune the rewrite prompt before re-running`
       );
