@@ -4,12 +4,16 @@ CURRENT_TERMS_VERSION in backend/src/constants/legal.ts. Bump both together
 and require renewed acceptance for material changes.
 The contact mailbox (contact@electionssimplified.com) must exist and be
 monitored before launch.
+1.1 → 1.2 (2026-08-21): no content change. The bundle version moved because
+terms-of-use.md 1.2 added the support-payments section
+(docs/plans/membership-contributions.md), and this version string must match
+CURRENT_TERMS_VERSION.
 -->
 
 # Elections Simplified AI Research and Election Information Disclaimer
 
-**Last updated:** July 18, 2026
-**Version:** 1.1
+**Last updated:** August 21, 2026
+**Version:** 1.2
 
 ## 1. Informational purposes only
 

@@ -5,4 +5,4 @@
  * frontend cannot record acceptance of superseded terms; the git history of
  * docs/legal/ is the authoritative archive of what each version said.
  */
-export const CURRENT_TERMS_VERSION = "1.1";
+export const CURRENT_TERMS_VERSION = "1.2";

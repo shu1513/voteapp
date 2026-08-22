@@ -1,6 +1,10 @@
 <!--
 The frontend must copy these strings verbatim. Version bumps to
 disclaimer.md require re-review of this file too.
+1.1 → 1.2 (2026-08-21): reviewed for the Terms 1.2 support-payments bump —
+every published string below is unchanged. Payments need no checkbox copy of
+their own: assent to the payment terms rides the three-document acceptance,
+and the checkout flow itself is Stripe-hosted.
 
 Clickwrap requirements (Meyer v. Uber; Nguyen v. Barnes & Noble; Berman v.
 Freedom Financial Network):
@@ -66,7 +70,7 @@ Freedom Financial Network):
   string still appears in this file.
 -->
 
-# Checkbox and notice copy — Version 1.1
+# Checkbox and notice copy — Version 1.2
 
 ## Pre-search terms dialog (anonymous address search)
 

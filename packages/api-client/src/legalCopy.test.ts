@@ -97,8 +97,13 @@ describe("legal copy matches docs/legal/checkbox-copy.md", () => {
 const PINNED_DOCUMENTS = [
   {
     filename: "terms-of-use.md",
-    version: "1.1",
-    sha256: "7068b1f66de681e0a5fb09b22652bfa1fdd1463993c30987bf6ecb3659e329a3",
+    // 1.1 → 1.2 (2026-08-21): Section 14 support payments and memberships
+    // (docs/plans/membership-contributions.md); Contact renumbered to 15.
+    // Substance change — bundle bumps to 1.2 (CURRENT_TERMS_VERSION,
+    // TERMS_VERSION, disclaimer.md) and signed-in users re-accept once.
+    // Required BEFORE STRIPE_SECRET_KEY in prod.
+    version: "1.2",
+    sha256: "31a4ffdf8542cfce569685e6af5365fdc0298fc09d947343cb1f07767fd7d299",
   },
   {
     filename: "privacy-policy.md",
@@ -108,13 +113,19 @@ const PINNED_DOCUMENTS = [
     // Google processor entry, password-less account handling), required
     // BEFORE GOOGLE_OAUTH_CLIENT_ID in prod. Clarifying addition for an
     // optional feature — TERMS_VERSION stays 1.1, no re-acceptance.
-    version: "1.2",
-    sha256: "8c9760e960c5bf4135488b6378920dbdf519bfc00133df3afdc141b5f3f99e8f",
+    // 1.2 → 1.3 (2026-08-21): support-payments disclosure (Stripe processor
+    // entry, payment data in Section 1, payment-record retention after
+    // account deletion in Section 4). Ships with the Terms 1.2 bump.
+    // Required BEFORE STRIPE_SECRET_KEY in prod.
+    version: "1.3",
+    sha256: "7e645e7d9a1b0d17e4c7a54f17399f38a9c2ff8501f8f29d2f76d690fdf69e45",
   },
   {
     filename: "disclaimer.md",
-    version: "1.1",
-    sha256: "7a4ad2f12d23c537712b743e86f6c2caa74a311e7aba86c99d6f4028ff51a542",
+    // 1.1 → 1.2 (2026-08-21): no content change; version string tracks
+    // CURRENT_TERMS_VERSION, which moved for the Terms 1.2 payments section.
+    version: "1.2",
+    sha256: "eb4c9d3f0e6a0ef48068ec62e4ac1bc0f82ca00cc49669a5c6453cf5abdf2b46",
   },
 ] as const;
 

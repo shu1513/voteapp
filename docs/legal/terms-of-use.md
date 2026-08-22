@@ -6,12 +6,23 @@ be monitored before launch. Section 12 (governing law CA, individual
 arbitration with opt-out, class waiver, mass-filing staging, 1-year claims
 deadline) added 2026-07-18; Section 12.1/12.8 assume California is the
 operator's principal place of business — update if that changes.
+Section 14 (support payments and memberships) added 2026-08-21 (1.1 → 1.2,
+docs/plans/membership-contributions.md); Contact renumbered 14 → 15. This is
+a substance change, so the bundle version bumps: disclaimer.md, backend
+CURRENT_TERMS_VERSION, and api-client TERMS_VERSION all move to 1.2 together,
+which makes signed-in users re-accept once (TermsRenewalGate) and the
+anonymous search gate re-ask once. Mobile builds bundle TERMS_VERSION at
+compile time, so the backend constant must not deploy to prod before a mobile
+build carrying 1.2 is available — stale builds would fail registration and
+search. This version must be LIVE before STRIPE_SECRET_KEY is ever set in
+production. Cancellation copy matches the plan: portal cancel is
+end-of-period; account deletion cancels immediately.
 -->
 
 # Elections Simplified Terms of Use
 
-**Last updated:** July 18, 2026
-**Version:** 1.1
+**Last updated:** August 21, 2026
+**Version:** 1.2
 
 ## 1. Acceptance of these Terms
 
@@ -63,7 +74,7 @@ To the maximum extent permitted by law, you agree to indemnify and hold harmless
 
 ## 10. Termination
 
-You may stop using the Service at any time. We may refuse, limit, suspend, or terminate access to the Service (in whole or in part) at any time, with or without notice, in our discretion, including for violations of these Terms or to protect the Service, its users, or others. Sections that by their nature should survive termination — including Sections 6, 8, 9, 12, and 13 — survive.
+You may stop using the Service at any time. We may refuse, limit, suspend, or terminate access to the Service (in whole or in part) at any time, with or without notice, in our discretion, including for violations of these Terms or to protect the Service, its users, or others. Sections that by their nature should survive termination — including Sections 6, 8, 9, 12, 13, and 14 — survive.
 
 ## 11. Changes to the Service or these Terms
 
@@ -101,6 +112,16 @@ If any provision of these Terms is held unenforceable, the remainder stays in ef
 
 **Copyright complaints.** If you believe content on the Service infringes your copyright, send a notice containing the information required by 17 U.S.C. § 512(c)(3) to contact@electionssimplified.com with the subject "COPYRIGHT NOTICE." We may remove or disable access to the identified material and may terminate accounts of repeat infringers.
 
-## 14. Contact
+## 14. Support payments and memberships
+
+**14.1 What payments are — and are not.** You may choose to support the Service with a one-time payment or a recurring monthly membership. Payments are entirely optional and fund the operation of the Service. They are **not** contributions to, and do not benefit, any candidate, campaign, political committee, party, or charity; they provide no additional content, features, or influence over the Service's information; and they are not charitable contributions — do not treat them as deductible.
+
+**14.2 Billing.** Payments are processed by Stripe, and you must provide accurate payment information. A monthly membership charges the amount you selected (at or above the posted minimum) to your payment method each month, starting when you subscribe and continuing until canceled. Amounts are in U.S. dollars and exclude any taxes that may apply. We may change posted minimums prospectively; your existing membership amount does not change unless you change it.
+
+**14.3 Cancellation.** You can cancel your membership at any time from account settings (via the Stripe billing portal). Cancellation takes effect at the end of the current billing period; you will not be charged again after cancellation, and no partial-month refund is owed. Deleting your account cancels any active membership immediately. If a recurring charge fails, we may treat the membership as lapsed after Stripe's retries are exhausted.
+
+**14.4 Refunds.** Except where required by law, payments are non-refundable; we may issue refunds in our discretion (for example, for duplicate or mistaken charges). Contact contact@electionssimplified.com for billing questions.
+
+## 15. Contact
 
 Questions about these Terms: contact@electionssimplified.com.

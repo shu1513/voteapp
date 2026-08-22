@@ -20,12 +20,20 @@ email, verified/hosted-domain status, optional first name), no Google
 access/refresh tokens, no Google API calls, google_sub deleted with the
 account. 1.2 is a clarifying addition for an OPTIONAL sign-in method —
 CURRENT_TERMS_VERSION deliberately stays 1.1 (no forced re-acceptance).
+Support-payments disclosure added 2026-08-21 (1.2 → 1.3,
+docs/plans/membership-contributions.md): this version must be LIVE before
+STRIPE_SECRET_KEY is ever set in production. The description matches the
+plan's schema: Stripe holds card data, we hold amounts/dates/kind/refund
+status/Stripe reference ids in billing_* tables, and those rows survive
+account deletion de-identified (billing_customers.user_id set NULL) for
+accounting and legal compliance. Unlike 1.2, this change ships together with
+a Terms bump (payments section) — see terms-of-use.md.
 -->
 
 # Elections Simplified Privacy Policy
 
-**Last updated:** August 12, 2026
-**Version:** 1.2
+**Last updated:** August 21, 2026
+**Version:** 1.3
 
 This Privacy Policy describes how impactperdollar, the operator of the Elections Simplified service ("Elections Simplified," "we," "us"), collects, uses, and shares information when you use the Elections Simplified website and services (the "Service").
 
@@ -36,6 +44,8 @@ This Privacy Policy describes how impactperdollar, the operator of the Elections
 **Account information.** If you create an account: your email address, first name, and a cryptographic hash of your password (we never store the password itself). We also record which version of our terms you accepted and when.
 
 **Sign in with Google (optional).** If you choose to sign up or sign in with your Google account, we receive from Google a signed identity token containing your stable Google account identifier, your Google account email address and its verification status (including whether it belongs to a Google Workspace organization), and optionally your first name. We store the identifier to recognize your sign-in and the email address and first name as your account information above. We receive **no** Google access or refresh tokens, cannot access your Google data (mail, contacts, files), and make no ongoing requests to your Google account. An account created with Google has no password until you set one (see Section 6).
+
+**Support payments (optional).** If you choose to support the Service with a one-time payment or a monthly membership, the payment is processed by Stripe (see Section 3); your card number and full billing details go to Stripe and never reach our servers. We store the payment amount, date, type (one-time or monthly), refund status, and Stripe reference identifiers, linked to your account.
 
 **Preferences and activity.** Settings you choose: candidates you follow, research-area interests, ballot ordering preferences, and email notification opt-ins. Because the Service is about elections, these choices may reflect your civic or political interests; we treat them as your private account data and never sell them or disclose them to third parties for advertising. We use them to provide the features you chose and to select relevant civic updates, information, and recommendations (occasionally including clearly labeled sponsored or promotional content) for the notification emails you control in settings; every such email includes a working unsubscribe link, and the underlying data never leaves us.
 
@@ -61,6 +71,7 @@ We share information only with the processors needed to run the Service:
 - **Amazon Web Services (SES)** — receives your email address to deliver account and notification emails.
 - **Analytics provider** — when analytics is enabled, receives the usage information described in Section 1 ("Usage analytics") to help us understand and improve how the Service is used. We configure analytics so that this data is not used for the provider's own advertising purposes, and we will name the provider here before or when analytics is enabled.
 - **OpenAI (AI answers in Ask)** — when AI-generated answers are enabled for the Ask feature, receives the text of your chat question and the snippets of our own election data used to answer it, together with a pseudonymous account identifier (a cryptographic hash used only for abuse prevention — never your email address, name, or address). We send requests with storage disabled, and under OpenAI's API terms this content is not used to train OpenAI's models. AI answers are labeled as AI-generated in the Service.
+- **Stripe (support payments)** — if you choose to make a support payment, Stripe collects your card and billing details directly on its own payment pages (we never receive your card number) and processes the payment, any recurring membership billing, and any refund on our behalf. We receive the payment amount, status, and reference identifiers. Stripe also retains payment records under its own legal obligations; see Stripe's privacy policy at stripe.com/privacy.
 - **Sentry (error monitoring)** — when error monitoring is enabled, receives reports about application errors (error type, stack trace, browser and device type, and the page path with its query string removed) so we can find and fix failures. We configure these reports to exclude your IP address, email address, address text, and the contents of your requests.
 - **Infrastructure providers** — hosting, database, and cache providers that store Service data on our behalf.
 
@@ -70,7 +81,7 @@ We may also disclose information if we believe in good faith that disclosure is 
 
 ## 4. Retention and deletion
 
-Account data is kept while your account is active. If you delete your account, your account record and its associated data — email address, name, the Google account identifier if you signed in with Google, saved districts, follows, preferences, and notification history — are deleted immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration. Content reports you submitted while signed in are kept for moderation purposes with your account identifier and contact email removed. Residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics data is kept only as long as needed for the improvement purposes described above.
+Account data is kept while your account is active. If you delete your account, your account record and its associated data — email address, name, the Google account identifier if you signed in with Google, saved districts, follows, preferences, and notification history — are deleted immediately: sessions are destroyed, notification sending stops, and your email address is released for re-registration. Content reports you submitted while signed in are kept for moderation purposes with your account identifier and contact email removed. If you made support payments, any active membership is canceled when you delete your account, and the payment records described in Section 1 (amounts, dates, type, refund status, and Stripe reference identifiers) are retained for accounting, tax, and legal-compliance purposes with the link to your deleted account removed; Stripe separately retains its payment records under its own legal obligations. Residual records may persist in backups and security logs for a limited period before being purged. Cached address lookups expire automatically. Notification event records are pruned on a rolling schedule. Usage analytics data is kept only as long as needed for the improvement purposes described above.
 
 ## 5. Your choices
 
