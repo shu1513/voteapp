@@ -236,7 +236,7 @@ async function main(): Promise<void> {
         );
         for (const row of rows) {
           console.log(
-            `note: target ${row.target_id} was flagged in an earlier run; the dry run skips it — rerunning without --dry-run clears the flag and retries it`
+            `note: target ${row.target_id} was flagged in an earlier run; the preview below still shows it — rerunning without --dry-run clears the flag and retries it`
           );
         }
       } else {

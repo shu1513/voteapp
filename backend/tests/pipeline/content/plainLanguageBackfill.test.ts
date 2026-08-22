@@ -629,7 +629,9 @@ describe("runPlainLanguageBackfill", () => {
 
     expect(summary).toMatchObject({ processed: 1, applied: 0, flagged: 1 });
     expect(writes).toHaveLength(1);
-    expect(writes[0].text).not.toContain("UPDATE");
+    // The audit upsert carries its own ON CONFLICT DO UPDATE, so the check is
+    // that the flag path never touches the content table.
+    expect(writes[0].text).not.toContain("UPDATE public.candidate_records");
     expect(writes[0].text).toContain("'flagged'");
     expect(writes[0].params?.[5]).toBe("verifier mismatch: dropped the negation");
   });

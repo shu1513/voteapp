@@ -383,6 +383,10 @@ function buildApplySql(targetTable: string, targetColumn: string): string {
       INSERT INTO public.plain_language_rewrites
         (target_table, target_id, target_column, status, original_text, rewritten_text, flag_reason, provider, model)
       SELECT $1, $2, $3, 'applied', $5, $4, NULL, $6, $7 FROM updated
+      ON CONFLICT (target_table, target_id, target_column) DO UPDATE
+        SET status = 'applied', original_text = EXCLUDED.original_text,
+            rewritten_text = EXCLUDED.rewritten_text, flag_reason = NULL,
+            provider = EXCLUDED.provider, model = EXCLUDED.model, created_at = now()
     `;
   }
   return `
@@ -408,6 +412,10 @@ function buildFlaggedSql(targetTable: string, targetColumn: string): string {
     WHERE EXISTS (
       SELECT 1 FROM public.${targetTable} WHERE id = $2 AND ${targetColumn} IS NOT DISTINCT FROM $4
     )
+    ON CONFLICT (target_table, target_id, target_column) DO UPDATE
+      SET status = 'flagged', original_text = EXCLUDED.original_text,
+          rewritten_text = EXCLUDED.rewritten_text, flag_reason = EXCLUDED.flag_reason,
+          provider = EXCLUDED.provider, model = EXCLUDED.model, created_at = now()
   `;
 }
 
@@ -545,10 +553,15 @@ export async function loadPlainLanguageBackfillTargets(
         WHERE cr.description <> '' AND cr.retired_at IS NULL
           AND ($1::uuid[] IS NULL OR cr.candidate_id = ANY($1))
           AND ($2::uuid[] IS NULL OR cr.id = ANY($2))
-          AND NOT EXISTS (
+          -- The resume marker only guards runs that discover their own work.
+          -- An explicit record-id list is the operator naming these rows, so a
+          -- repair pass can rewrite text an earlier pass already rewrote; the
+          -- originalText staleness guard still refuses to paste over content
+          -- nobody reviewed.
+          AND ($2::uuid[] IS NOT NULL OR NOT EXISTS (
           SELECT 1 FROM public.plain_language_rewrites r
           WHERE r.target_table = 'candidate_records' AND r.target_id = cr.id AND r.target_column = 'description'
-        )
+        ))
         ORDER BY cr.id
       `,
       [candidateIds, recordIds]
