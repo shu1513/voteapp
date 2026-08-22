@@ -38,6 +38,13 @@
      meaning. White text on it: 5.0:1. */
   --color-autopick: #0f766e;
   --color-autopick-dark: #115e59;
+  /* Guest conversion nudge ("Enter your address to see if this race is on
+     your ballot"). Light green tint so the callout pops against white cards
+     without competing with pick yellow, autopick teal, or party colors.
+     nudge-deep is the link/text green: 6.7:1 on white, still AA on the tint. */
+  --color-nudge: #e8f5e9;
+  --color-nudge-line: #a5d6a7;
+  --color-nudge-deep: #166534;
 }
 
 /* Pages with a sticky pick card (candidate pages, data-sticky-pick-cta)

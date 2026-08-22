@@ -8,11 +8,11 @@ import { Link } from "react-router";
 // district context that unlocks the controls here.
 export function AddressNudge() {
   return (
-    <p className="rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink">
-      <Link to="/" className="font-medium text-ink underline hover:text-rausch">
+    <p className="rounded-md border border-nudge-line bg-nudge px-3 py-2 text-sm text-ink">
+      <Link to="/" className="font-medium text-nudge-deep underline hover:text-ink">
         Enter your address
       </Link>{" "}
-      to see if this race is on your ballot.
+      to check if you can vote in this race.
     </p>
   );
 }
