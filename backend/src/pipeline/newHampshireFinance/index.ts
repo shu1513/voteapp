@@ -6,3 +6,4 @@ export * from "./newHampshirePhaseZero.js";
 export * from "./newHampshireDirectContributionAggregator.js";
 export * from "./newHampshireOutsideSpendingAggregator.js";
 export * from "./newHampshireCandidateFilerResolver.js";
+export * from "./newHampshireFinanceWriter.js";
