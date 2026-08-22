@@ -277,6 +277,17 @@ describe("membership createCheckoutSession", () => {
     });
   });
 
+  it("refreshes the Stripe customer's email on checkout for an existing customer", async () => {
+    const stripe = createStripeMock();
+    const service = createService({ db: dbWithCustomer(), stripe });
+
+    await service.createCheckoutSession(USER_ID, { kind: "one_time", amount_cents: 500 });
+
+    // Checkout locks the customer's email and receipts follow it, so a stale
+    // address self-heals here even if the email-change sync hook failed.
+    expect(stripe.customers.update).toHaveBeenCalledWith(STRIPE_CUSTOMER_ID, { email: "user@example.com" });
+  });
+
   it("creates the Stripe customer and billing row on first checkout", async () => {
     const db = createRoutedDb([
       ["SELECT email", () => ({ rows: [{ email: "user@example.com" }] })],
@@ -290,6 +301,8 @@ describe("membership createCheckoutSession", () => {
     await service.createCheckoutSession(USER_ID, { kind: "one_time", amount_cents: 500 });
 
     expect(stripe.customers.create).toHaveBeenCalledWith({ email: "user@example.com" });
+    // A just-created customer already carries the current email; no refresh.
+    expect(stripe.customers.update).not.toHaveBeenCalled();
     const insert = db.query.mock.calls.find((call) => String(call[0]).includes("INSERT INTO public.billing_customers"));
     expect(insert?.[1]).toEqual([USER_ID, "cus_new"]);
   });
@@ -489,6 +502,36 @@ describe("membership webhook: subscription sync (poke pattern)", () => {
     }
   });
 
+  it("does not cancel a foreign product's subscription on a consent-less completion", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const db = createRoutedDb([]);
+      const stripe = stripeDelivering(
+        webhookEvent("checkout.session.completed", {
+          id: "cs_foreign",
+          mode: "subscription",
+          subscription: "sub_foreign",
+          consent: null,
+        })
+      );
+      stripe.subscriptions.retrieve.mockResolvedValue(
+        stripeSubscription({
+          id: "sub_foreign",
+          items: { data: [{ price: { unit_amount: 700, product: "prod_other" }, current_period_end: 1_757_600_000 }] },
+        })
+      );
+      const service = createService({ db, stripe });
+
+      expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+      // Ownership is verified BEFORE the fail-closed cancel fires.
+      expect(stripe.subscriptions.cancel).not.toHaveBeenCalled();
+      expect(db.query).not.toHaveBeenCalled();
+      expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining("not the membership product"));
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
   it("ignores a subscription on a different Stripe product (no record, no guard cancels)", async () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     try {
@@ -593,7 +636,7 @@ describe("membership webhook: acknowledgment email (§17602)", () => {
     expect(sender).not.toHaveBeenCalled();
   });
 
-  it("never fails the webhook over a failed send; the stamp stays unset for the next poke", async () => {
+  it("fails the webhook retryably on a failed send; the stamp stays unset so the redelivery re-attempts", async () => {
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     try {
       const db = createRoutedDb(routes(null));
@@ -603,7 +646,9 @@ describe("membership webhook: acknowledgment email (§17602)", () => {
       });
       const service = createService({ db, stripe, sendMembershipStartedEmail: sender });
 
-      expect(await service.handleWebhookEvent(WEBHOOK_INPUT)).toBe("ok");
+      // §17602 notice must not be dropped with a 200: 5xx makes Stripe
+      // redeliver this very event instead of waiting for a later poke.
+      await expect(service.handleWebhookEvent(WEBHOOK_INPUT)).rejects.toThrow(MembershipWebhookRetryError);
       expect(db.query.mock.calls.some((call) => String(call[0]).includes("SET acknowledgment_sent_at"))).toBe(false);
     } finally {
       warnSpy.mockRestore();

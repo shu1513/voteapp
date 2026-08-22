@@ -86,8 +86,10 @@ export type MembershipServiceOptions = {
   /** Site origin for Checkout redirects and the terms link, no trailing slash. */
   publicBaseUrl: string;
   /** §17602 post-purchase acknowledgment sender. null = sending disabled
-   * (logged per attempt); the NULL acknowledgment_sent_at keeps retrying via
-   * later subscription pokes once a sender exists. */
+   * (logged per attempt; boot fails fast before this happens in production);
+   * the NULL acknowledgment_sent_at keeps retrying via later subscription
+   * pokes once a sender exists. A configured sender that THROWS fails the
+   * webhook retryably so Stripe redelivers. */
   sendMembershipStartedEmail: ((input: MembershipStartedEmailInput) => Promise<void>) | null;
 };
 
@@ -194,6 +196,12 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
   async function getOrCreateBillingCustomer(userId: string, email: string): Promise<BillingCustomerRow> {
     const existing = await findBillingCustomerByUserId(userId);
     if (existing) {
+      // Self-heal a stale customer email right where it matters most: Checkout
+      // locks an existing customer's email and Stripe's receipts follow it,
+      // while the email-change sync hook is best-effort one-shot. If this
+      // update fails Stripe is down and the session create below would fail
+      // anyway, so let it propagate rather than lock in the stale address.
+      await stripe.customers.update(existing.stripe_customer_id, { email });
       return existing;
     }
     // Email on the Stripe customer drives Stripe's own receipts; the privacy
@@ -376,9 +384,9 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
     );
 
     // §17602 post-purchase acknowledgment: once, when the subscription is
-    // live and unacknowledged. Best-effort per poke — a failed send leaves
-    // the column NULL and the next subscription event retries; the webhook
-    // never 5xxes over email.
+    // live and unacknowledged. A failed send leaves the column NULL and 5xxes
+    // (see the catch below), so both Stripe's redelivery of this event and
+    // any later subscription poke retry it.
     const acknowledgmentUserId =
       (subscription.status === "active" || subscription.status === "past_due") &&
       upserted.rows[0]?.acknowledgment_sent_at === null
@@ -407,9 +415,20 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
           [subscriptionId]
         );
       } catch (error) {
+        // A failed send must not be swallowed with a 200: the checkout burst's
+        // other pokes land within seconds of this one, so a mailer outage
+        // spanning the burst would leave this LEGALLY REQUIRED (§17602) notice
+        // unsent until some later subscription event — possibly next month's
+        // renewal. 5xx instead, so Stripe redelivers THIS event with backoff
+        // for days; the upsert above is idempotent under the retry. A send
+        // that succeeded but failed to stamp re-sends on retry — a rare
+        // duplicate acknowledgment beats a lost one.
         console.warn(
-          `[membership] acknowledgment email for subscription ${subscriptionId} failed; will retry on the next poke:`,
+          `[membership] acknowledgment email for subscription ${subscriptionId} failed; asking Stripe to redeliver:`,
           error instanceof Error ? error.message : String(error)
+        );
+        throw new MembershipWebhookRetryError(
+          `acknowledgment email for subscription ${subscriptionId} failed`
         );
       }
     }
@@ -470,6 +489,18 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       // refunded manually from the dashboard, like the guard cancels.
       const consented = session.consent?.terms_of_service === "accepted";
       if (!consented) {
+        // Ownership check BEFORE the cancel, mirroring syncSubscription's: a
+        // consent-less subscription session for some other product on this
+        // account (which never configures our consent collection) must not
+        // get that product's subscription canceled by our fail-closed rule.
+        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+        const subscriptionProductId = idOf(subscription.items?.data?.[0]?.price?.product ?? null);
+        if (subscriptionProductId !== options.membershipProductId) {
+          console.error(
+            `[membership] consent-less checkout session ${session.id} is for product ${subscriptionProductId ?? "<none>"}, not the membership product; ignoring`
+          );
+          return;
+        }
         console.error(
           `[membership] checkout session ${session.id} completed WITHOUT terms-of-service consent; canceling subscription ${subscriptionId} — refund its first charge manually`
         );
