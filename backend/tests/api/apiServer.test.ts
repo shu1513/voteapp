@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { createApiApp } from "../../src/api/apiServer.js";
 import { MAX_INITIALIZE_DISTRICT_IDS } from "../../src/api/apiValidation.js";
-import { CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
+import { CURRENT_TERMS_VERSION, GRACE_TERMS_VERSIONS } from "../../src/constants/legal.js";
 import type { CandidateElectionFinanceResult } from "../../src/pipeline/address/ballotLookup.js";
 import { CensusAddressGeocoderError } from "../../src/pipeline/address/censusAddressGeocoder.js";
 import type { AddressResolutionResult } from "../../src/pipeline/address/addressResolverService.js";
@@ -178,6 +178,27 @@ describe("createApiApp", () => {
     expect(response.statusCode).toBe(400);
     expect(response.body.error.code).toBe("invalid_request");
     expect(resolveAddress).not.toHaveBeenCalled();
+  });
+
+  it("resolves an address for a grace terms version during a bump rollout", async () => {
+    const graceVersion = GRACE_TERMS_VERSIONS[0];
+    if (graceVersion === undefined) {
+      // Grace list empty between rollouts — nothing to verify.
+      return;
+    }
+    const resolveAddress = vi.fn().mockResolvedValue(resolvedAddress);
+
+    // A stale bundle one bump behind still renders the documents it names,
+    // so its acceptance stays valid while the rollout completes.
+    const response = await invokeExpressApp(createApiApp({ resolveAddress }), {
+      method: "POST",
+      path: "/api/address/resolve",
+      body: JSON.stringify({ address: "3921 Harlan Ave Baldwin Park CA 91706", accepted_terms_version: graceVersion }),
+      headers: { "content-type": "application/json" },
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(resolveAddress).toHaveBeenCalledTimes(1);
   });
 
   it("defaults every response to cache-control no-store", async () => {

@@ -353,15 +353,15 @@ describe("createAuthService loginWithGoogle", () => {
     );
   });
 
-  it("requires the current terms version for signup before verifying anything", async () => {
+  it("requires an accepted terms version for signup before verifying anything", async () => {
     const client = createDbClientMock();
     const { service, verify } = createService({ client });
 
     await expect(
       service.loginWithGoogle!({ idToken: "token", intent: "signup", acceptedTermsVersion: "0.9" })
-    ).rejects.toThrow(/current terms version/);
+    ).rejects.toThrow(/accepted terms version/);
     await expect(service.loginWithGoogle!({ idToken: "token", intent: "signup" })).rejects.toThrow(
-      /current terms version/
+      /accepted terms version/
     );
     expect(verify).not.toHaveBeenCalled();
   });
