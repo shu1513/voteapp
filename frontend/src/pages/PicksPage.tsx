@@ -22,7 +22,7 @@ import { usLatestLocalDate } from "../lib/usLatestLocalDate";
 // Election links on this page hand the election page its back destination.
 // No contest list: these cards are pick summaries, not a ballot sequence.
 const PICKS_NAV_STATE: ElectionNavState = {
-  backTo: { path: "/me/picks", label: "My Picks" },
+  backTo: { path: "/me/picks", label: "My Election Draft" },
 };
 
 // One race row on a date card. "Pick chips" per candidate so a multi-seat
@@ -177,6 +177,11 @@ function hasRenderablePick(choice: ElectionChoice | undefined): choice is Electi
 }
 
 function ShareCardControl({ electionDate }: { electionDate: string }) {
+  // Every date card renders its own "Share"; sighted users read the card
+  // heading for context, but a screen reader's button list needs the date
+  // in the name itself. Same label on both control shapes (mint button,
+  // then ShareButton) so the control keeps one identity across the swap.
+  const shareLabel = `Share my ${formatElectionDate(electionDate)} picks`;
   const mint = useMutation({
     mutationFn: () =>
       apiRequest<{ share: PickCardShare }>("/api/me/pick-card-shares", {
@@ -214,6 +219,7 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
           path={path}
           shareText={`My ${formatElectionDate(electionDate)} election picks`}
           affirmative
+          ariaLabel={shareLabel}
         />
         {/* Names the name: the public page shows the owner's first name, and
             the sharer must learn that HERE, before posting the link — not
@@ -230,6 +236,7 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
         type="button"
         disabled={mint.isPending}
         onClick={() => mint.mutate()}
+        aria-label={shareLabel}
         className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink disabled:opacity-50"
       >
         {mint.isPending ? "…" : "Share"}
@@ -430,7 +437,7 @@ function PastPicks({
 }
 
 export function PicksPage() {
-  useDocumentTitle("My Picks");
+  useDocumentTitle("My Election Draft");
   const { me, isLoading } = useMe();
   const verified = me?.email_verified === true;
   const [view, setView] = useState<"list" | "ballot">("list");

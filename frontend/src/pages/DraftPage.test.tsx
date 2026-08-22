@@ -97,7 +97,7 @@ describe("DraftPage", () => {
     expect(screen.getByText("Jane Smith")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Mayor — no pick yet" })).toBeInTheDocument();
     // Account-only machinery stays off the guest page.
-    expect(screen.queryByRole("button", { name: "Share" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^Share/ })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
     // Every draft pick is on a card — no leftover section.
     expect(screen.queryByText("Other saved picks")).not.toBeInTheDocument();

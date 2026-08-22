@@ -223,11 +223,11 @@ describe("PicksPage", () => {
     const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     renderPicks();
 
-    await user.click(await screen.findByRole("button", { name: "Share" }));
+    await user.click(await screen.findByRole("button", { name: "Share my November 3, 2026 picks" }));
 
     // The standard ShareButton takes over once the token exists (menu shape
     // in jsdom — no navigator.share), alongside the visibility warning.
-    expect(await screen.findByRole("button", { name: "Share" })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "Share my November 3, 2026 picks" })).toBeInTheDocument();
     // The caption must disclose the name reveal — minting is the consent
     // event, so the sharer learns it here, not from a recipient.
     expect(
@@ -249,7 +249,7 @@ describe("PicksPage", () => {
     expect(JSON.parse(String(post![1]!.body))).toEqual({ election_date: "2026-11-03" });
 
     // The minted link lands in the share menu's copy target.
-    await user.click(screen.getByRole("button", { name: "Share" }));
+    await user.click(screen.getByRole("button", { name: "Share my November 3, 2026 picks" }));
     expect(await screen.findByRole("menuitem", { name: "Share on X" })).toHaveAttribute(
       "href",
       expect.stringContaining("tok_abcdefghijklmnopqrstuvwxyz012345")
@@ -278,7 +278,7 @@ describe("PicksPage", () => {
 
     expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Draft" })).toBeInTheDocument();
     expect(screen.getByText("0 of 2 races decided")).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Share" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /^Share/ })).not.toBeInTheDocument();
   });
 
   it("keeps a just-finished election's card, with result chips, out of Past elections", async () => {
@@ -717,9 +717,9 @@ describe("PicksPage", () => {
 });
 
 describe("PicksPage nav context", () => {
-  const MY_PICKS_STATE = { backTo: { path: "/me/picks", label: "My Picks" } };
+  const MY_PICKS_STATE = { backTo: { path: "/me/picks", label: "My Election Draft" } };
 
-  it("hands election links My Picks as their back destination", async () => {
+  it("hands election links My Election Draft as their back destination", async () => {
     const user = userEvent.setup();
     stubApiRoutes(verifiedRoutes());
     const { router } = renderPicks();

@@ -35,6 +35,11 @@ type ShareButtonProps = {
    * pair the research-area picker and YES-vote box use for a selected state.
    * Used where the button appears as the result of a completed action. */
   affirmative?: boolean;
+  /** Accessible name when the visible "Share" alone is ambiguous — e.g. the
+   * picks page renders one share control per election-date card, and a
+   * screen reader's button list needs the date to tell them apart. Should
+   * start with "Share" so voice control still matches the visible text. */
+  ariaLabel?: string;
 };
 
 // Transient copy-outcome message lifetime.
@@ -46,7 +51,7 @@ const AFFIRMATIVE_BUTTON_CLASS =
   "rounded-lg border border-green-700 bg-green-50 px-3 py-1.5 text-sm font-medium text-ink transition hover:border-green-800";
 const ITEM_CLASS = "block px-4 py-2 text-sm text-ink data-[focus]:bg-surface";
 
-export function ShareButton({ path, shareText, affirmative = false }: ShareButtonProps) {
+export function ShareButton({ path, shareText, affirmative = false, ariaLabel }: ShareButtonProps) {
   const url = `${SITE_ORIGIN}${path}`;
   const [canNativeShare, setCanNativeShare] = useState(false);
   const [copyStatus, setCopyStatus] = useState<"copied" | "failed" | null>(null);
@@ -90,7 +95,7 @@ export function ShareButton({ path, shareText, affirmative = false }: ShareButto
 
   if (canNativeShare) {
     return (
-      <button type="button" onClick={shareNative} className={buttonClass}>
+      <button type="button" onClick={shareNative} className={buttonClass} aria-label={ariaLabel}>
         Share
       </button>
     );
@@ -100,7 +105,9 @@ export function ShareButton({ path, shareText, affirmative = false }: ShareButto
   const encodedText = encodeURIComponent(shareText);
   return (
     <Menu as="div" className="relative inline-block">
-      <MenuButton className={buttonClass}>Share</MenuButton>
+      <MenuButton className={buttonClass} aria-label={ariaLabel}>
+        Share
+      </MenuButton>
       {/* role="status": announce the copy outcome to screen readers without
           moving focus. Rendered outside MenuItems because the menu closes on
           selection — inside it the message would never be seen. */}
