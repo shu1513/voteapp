@@ -359,6 +359,14 @@ export function mechanicalCheckFailure(
 // research. Zero rows back means stale — nothing written, resume retries with
 // fresh text. Identifiers are compile-time constants keyed by the target
 // enum, never interpolated from data.
+//
+// The audit table holds one row per target (unique on target_table/id/column):
+// latest state, not a log. The conflict updates below deliberately never touch
+// original_text — it keeps the FIRST text ever recorded for the target, so a
+// repair pass over an earlier rewrite (A -> B -> C) still shows the
+// pre-rewrite text A. EXCLUDED.original_text at that point would be B, and
+// overwriting would erase the only stored copy of A. The rest of the row
+// (status, rewritten_text, provider, timestamp) tracks the latest attempt.
 function buildApplySql(targetTable: string, targetColumn: string): string {
   if (targetTable === "candidate_records") {
     // The rewrite re-keys the row in place, so the same statement must leave
@@ -383,6 +391,10 @@ function buildApplySql(targetTable: string, targetColumn: string): string {
       INSERT INTO public.plain_language_rewrites
         (target_table, target_id, target_column, status, original_text, rewritten_text, flag_reason, provider, model)
       SELECT $1, $2, $3, 'applied', $5, $4, NULL, $6, $7 FROM updated
+      ON CONFLICT (target_table, target_id, target_column) DO UPDATE
+        SET status = 'applied',
+            rewritten_text = EXCLUDED.rewritten_text, flag_reason = NULL,
+            provider = EXCLUDED.provider, model = EXCLUDED.model, created_at = now()
     `;
   }
   return `
@@ -408,6 +420,10 @@ function buildFlaggedSql(targetTable: string, targetColumn: string): string {
     WHERE EXISTS (
       SELECT 1 FROM public.${targetTable} WHERE id = $2 AND ${targetColumn} IS NOT DISTINCT FROM $4
     )
+    ON CONFLICT (target_table, target_id, target_column) DO UPDATE
+      SET status = 'flagged',
+          rewritten_text = EXCLUDED.rewritten_text, flag_reason = EXCLUDED.flag_reason,
+          provider = EXCLUDED.provider, model = EXCLUDED.model, created_at = now()
   `;
 }
 
@@ -545,10 +561,15 @@ export async function loadPlainLanguageBackfillTargets(
         WHERE cr.description <> '' AND cr.retired_at IS NULL
           AND ($1::uuid[] IS NULL OR cr.candidate_id = ANY($1))
           AND ($2::uuid[] IS NULL OR cr.id = ANY($2))
-          AND NOT EXISTS (
+          -- The resume marker only guards runs that discover their own work.
+          -- An explicit record-id list is the operator naming these rows, so a
+          -- repair pass can rewrite text an earlier pass already rewrote; the
+          -- originalText staleness guard still refuses to paste over content
+          -- nobody reviewed.
+          AND ($2::uuid[] IS NOT NULL OR NOT EXISTS (
           SELECT 1 FROM public.plain_language_rewrites r
           WHERE r.target_table = 'candidate_records' AND r.target_id = cr.id AND r.target_column = 'description'
-        )
+        ))
         ORDER BY cr.id
       `,
       [candidateIds, recordIds]
@@ -599,9 +620,19 @@ export async function runPlainLanguageBackfill(
   // --limit batches and resumes would otherwise reset the counters and let a
   // bad prompt grind every row into the manual queue. Dry runs write no audit
   // rows and judge only themselves.
+  //
+  // Operator-attested runs are exempt: the gate is a MODEL-quality circuit
+  // breaker, and there is no model — a human reviewed every row and reads
+  // every flag. The gate also cannot account a repair run: flagged rows being
+  // repaired sit in its baseline (they are updated in place, not deleted), so
+  // any corpus whose historical flag rate exceeds the threshold would halt
+  // the repair after one row; and upserted targets would double-count in the
+  // denominator. AI runs keep exact accounting — their targets never carry a
+  // prior audit row, the resume marker guarantees it.
+  const gateActive = deps.manualAttestation !== true;
   let gateProcessed = 0;
   let gateFlagged = 0;
-  if (!deps.dryRun) {
+  if (gateActive && !deps.dryRun) {
     const auditCounts = await pool.query<{ status: string; count: string }>(
       `SELECT status, count(*)::text AS count FROM public.plain_language_rewrites GROUP BY status`
     );
@@ -752,7 +783,7 @@ export async function runPlainLanguageBackfill(
       }
     }
 
-    if (gateProcessed >= FLAG_RATE_MINIMUM_SAMPLE && gateFlagged / gateProcessed > FLAG_RATE_HALT_THRESHOLD) {
+    if (gateActive && gateProcessed >= FLAG_RATE_MINIMUM_SAMPLE && gateFlagged / gateProcessed > FLAG_RATE_HALT_THRESHOLD) {
       throw new Error(
         `halting: flag rate ${gateFlagged}/${gateProcessed} across the backfill exceeds ${FLAG_RATE_HALT_THRESHOLD * 100}% — tune the rewrite prompt before re-running`
       );

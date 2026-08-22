@@ -119,31 +119,6 @@ async function readManualRewrites(): Promise<ReturnType<typeof parseManualRewrit
 }
 
 /**
- * A flagged audit row permanently blocks auto-retry — the right behavior for
- * model rewrites, where the flag routes the row to a human. In an operator
- * run the human IS here: an entry in the rewrites file is the manual-queue
- * resolution for that target. Clearing the flagged row (only for targets the
- * file names, only status 'flagged') lets the corrected rewrite re-run
- * through every mechanical check; the worst case for an UNcorrected rewrite
- * is an identical re-flag. Without this, fixing a flagged manual rewrite
- * required hand-written SQL against the audit table.
- */
-async function clearFlaggedAuditRowsForRetry(
-  pool: Pool,
-  targetIds: readonly string[]
-): Promise<number> {
-  const result = await pool.query(
-    `DELETE FROM public.plain_language_rewrites
-      WHERE target_table = 'candidate_records'
-        AND target_column = 'description'
-        AND status = 'flagged'
-        AND target_id = ANY($1::uuid[])`,
-    [[...targetIds]]
-  );
-  return result.rowCount ?? 0;
-}
-
-/**
  * A mistyped or already-processed targetId loads no backfill target, so the
  * run can end "successful" having applied nothing for that entry. Explain
  * every unprocessed entry after the run: an existing audit row is a normal
@@ -225,25 +200,22 @@ async function main(): Promise<void> {
 
   try {
     if (manualRewrites) {
-      if (dryRun) {
-        // Dry runs must not mutate, so previously-flagged targets stay
-        // excluded from the preview — say so instead of previewing a lie.
-        const { rows } = await pool.query<{ target_id: string }>(
-          `SELECT target_id::text AS target_id FROM public.plain_language_rewrites
-            WHERE target_table = 'candidate_records' AND target_column = 'description'
-              AND status = 'flagged' AND target_id = ANY($1::uuid[])`,
-          [[...manualRewrites.targetIds]]
+      // Flagged targets are not deleted up front any more: explicit record
+      // ids bypass the resume marker, so the run's own audit upsert updates
+      // the flagged row in place (flipping it to applied on success or
+      // re-flagging with the new reason) while keeping its first
+      // original_text. An up-front DELETE destroyed that history for every
+      // id in the file even when the run aborted before reaching them.
+      const { rows } = await pool.query<{ target_id: string }>(
+        `SELECT target_id::text AS target_id FROM public.plain_language_rewrites
+          WHERE target_table = 'candidate_records' AND target_column = 'description'
+            AND status = 'flagged' AND target_id = ANY($1::uuid[])`,
+        [[...manualRewrites.targetIds]]
+      );
+      for (const row of rows) {
+        console.log(
+          `note: target ${row.target_id} was flagged in an earlier run; a live run updates that flagged audit row in place (applied on success, re-flagged on failure)`
         );
-        for (const row of rows) {
-          console.log(
-            `note: target ${row.target_id} was flagged in an earlier run; the dry run skips it — rerunning without --dry-run clears the flag and retries it`
-          );
-        }
-      } else {
-        const cleared = await clearFlaggedAuditRowsForRetry(pool, manualRewrites.targetIds);
-        if (cleared > 0) {
-          console.log(`cleared ${cleared} flagged audit row(s) for operator retry`);
-        }
       }
     }
     const summary = await runPlainLanguageBackfill(pool, {

@@ -50,6 +50,9 @@ describe("buildCandidateRecordAreaLabelPrompt", () => {
     );
     expect(prompt).toContain("also tag government_spending_reduction if it is allowed");
     expect(prompt).toContain("Do not tag indirect, speculative, or second-order effects");
+    expect(prompt).toContain(
+      "An objection about cost or process is a stance on spending, not on the service itself"
+    );
     expect(prompt).toContain("Materiality: skip government_spending_reduction for trivial or routine sums");
     expect(prompt).toContain("Prefer fewer, confident labels");
     expect(prompt).not.toContain("You may assign multiple area labels");

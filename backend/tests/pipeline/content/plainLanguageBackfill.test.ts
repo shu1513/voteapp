@@ -564,6 +564,33 @@ describe("runPlainLanguageBackfill", () => {
     expect(writes[0].params?.[7]).toMatch(/^v3_[0-9a-f]{32}$/);
   });
 
+  it("audit upserts on both paths never overwrite original_text (first original is kept)", async () => {
+    // A repair pass can re-target an already-rewritten row (A -> B -> C); the
+    // conflict update must keep A in original_text — EXCLUDED.original_text
+    // would be B, and overwriting erases the only stored copy of A.
+    const applied = makeFakePool({ recordRows: [recordRow("r1")] });
+    await runPlainLanguageBackfill(applied.pool, makeDeps());
+    expect(applied.writes[0].text).toContain("ON CONFLICT (target_table, target_id, target_column) DO UPDATE");
+    expect(applied.writes[0].text).not.toContain("original_text = EXCLUDED.original_text");
+
+    const flagged = makeFakePool({ recordRows: [recordRow("r1")] });
+    await runPlainLanguageBackfill(
+      flagged.pool,
+      makeDeps({
+        verify: vi.fn(async () => ({
+          ok: true as const,
+          provider: "openai" as const,
+          model: "gpt-5.4-mini",
+          verdict: "mismatch" as const,
+          reason: "dropped the negation",
+        })),
+      })
+    );
+    expect(flagged.writes[0].text).toContain("'flagged'");
+    expect(flagged.writes[0].text).toContain("ON CONFLICT (target_table, target_id, target_column) DO UPDATE");
+    expect(flagged.writes[0].text).not.toContain("original_text = EXCLUDED.original_text");
+  });
+
   it("does not touch record_identity_key for non-record targets", async () => {
     const { pool, writes } = makeFakePool({
       measureRows: [
@@ -613,6 +640,32 @@ describe("runPlainLanguageBackfill", () => {
     await expect(runPlainLanguageBackfill(pool, makeDeps())).rejects.toThrow("halting: flag rate");
   });
 
+  it("exempts operator-attested runs from the flag-rate gate", async () => {
+    // The gate is a model-quality circuit breaker; an operator run has no
+    // model, and the flagged rows it exists to REPAIR sit in the gate's own
+    // baseline (updated in place, not deleted) — counting them would halt any
+    // repair in a corpus whose historical flag rate exceeds the threshold.
+    const { pool } = makeFakePool({
+      recordRows: [recordRow("r1"), recordRow("r2")],
+      auditCounts: [
+        { status: "applied", count: "50" },
+        { status: "flagged", count: "10" },
+      ],
+    });
+
+    const operatorRewrite = vi.fn(async () => ({
+      ok: true as const,
+      provider: "manual" as const,
+      model: "manual-research",
+      rewrittenText: "Refused subpoenas to appear before the county oversight commission during hearings.",
+    }));
+    const summary = await runPlainLanguageBackfill(
+      pool,
+      makeDeps({ rewrite: operatorRewrite, manualAttestation: true, allowSourcedFacts: true })
+    );
+    expect(summary).toMatchObject({ processed: 2, applied: 2, flagged: 0 });
+  });
+
   it("flags a verifier mismatch, keeps the column untouched, and records the reason", async () => {
     const { pool, writes } = makeFakePool({ recordRows: [recordRow("r1")] });
     const deps = makeDeps({
@@ -629,7 +682,9 @@ describe("runPlainLanguageBackfill", () => {
 
     expect(summary).toMatchObject({ processed: 1, applied: 0, flagged: 1 });
     expect(writes).toHaveLength(1);
-    expect(writes[0].text).not.toContain("UPDATE");
+    // The audit upsert carries its own ON CONFLICT DO UPDATE, so the check is
+    // that the flag path never touches the content table.
+    expect(writes[0].text).not.toContain("UPDATE public.candidate_records");
     expect(writes[0].text).toContain("'flagged'");
     expect(writes[0].params?.[5]).toBe("verifier mismatch: dropped the negation");
   });
