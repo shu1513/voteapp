@@ -92,12 +92,12 @@ describe("DraftPage", () => {
     });
     renderDraft();
 
-    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Picks" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "My November 3, 2026 Election Draft" })).toBeInTheDocument();
     expect(screen.getByText("1 of 2 races decided")).toBeInTheDocument();
     expect(screen.getByText("Jane Smith")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Mayor — no pick yet" })).toBeInTheDocument();
     // Account-only machinery stays off the guest page.
-    expect(screen.queryByRole("button", { name: "Share my picks" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Share" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Sign up free to save your picks" })).toBeInTheDocument();
     // Every draft pick is on a card — no leftover section.
     expect(screen.queryByText("Other saved picks")).not.toBeInTheDocument();

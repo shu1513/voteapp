@@ -232,7 +232,7 @@ function ShareCardControl({ electionDate }: { electionDate: string }) {
         onClick={() => mint.mutate()}
         className="rounded-lg border border-line bg-white px-3 py-1.5 text-sm font-medium text-ink transition hover:border-ink disabled:opacity-50"
       >
-        {mint.isPending ? "…" : "Share my picks"}
+        {mint.isPending ? "…" : "Share"}
       </button>
       {mint.isError ? (
         <span role="alert" className="text-xs font-medium text-red-800">
@@ -281,7 +281,7 @@ export function PickDateCard({
   return (
     <section className="rounded-xl border border-line bg-white p-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-lg font-semibold text-ink">My {formatElectionDate(date)} Election Picks</h3>
+        <h3 className="text-lg font-semibold text-ink">My {formatElectionDate(date)} Election Draft</h3>
         {/* Mint-on-demand: no share row (and no live public URL) exists until
             the user asks for one. Hidden entirely while the card has zero
             picks — the backend refuses to mint for an empty card anyway. */}
@@ -347,7 +347,7 @@ export function PickDateCard({
 // pick on ANY upcoming race with a valid candidacy — via candidate search, a
 // shared link, or before an address change — while the cards render only the
 // saved ballot, so without this section such a pick would silently vanish
-// from the page that claims to list "My Election Picks". Also the whole list
+// from the page that claims to list "My Election Draft". Also the whole list
 // for the unverified render, where no ballot loads and nothing is carded.
 function UpcomingUncardedPicks({
   title,
@@ -547,7 +547,7 @@ export function PicksPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
       <section>
-        <h1 className="text-2xl font-bold">My Election Picks</h1>
+        <h1 className="text-2xl font-bold">My Election Draft{dates.length > 1 ? "s" : ""}</h1>
         {ballot.isPending || (choicesLoading && !choicesError) ? (
           <LoadingNotice text="Loading your elections…" />
         ) : null}
