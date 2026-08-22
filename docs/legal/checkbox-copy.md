@@ -2,9 +2,13 @@
 The frontend must copy these strings verbatim. Version bumps to
 disclaimer.md require re-review of this file too.
 1.1 → 1.2 (2026-08-21): reviewed for the Terms 1.2 support-payments bump —
-every published string below is unchanged. Payments need no checkbox copy of
-their own: assent to the payment terms rides the three-document acceptance,
-and the checkout flow itself is Stripe-hosted.
+every published string below is unchanged. One-time payments ride the
+three-document acceptance. Monthly memberships additionally carry their own
+auto-renewal consent INSIDE Stripe Checkout (consent_collection required +
+custom renewal-terms text near the unchecked box: amount, monthly renewal,
+cancel-anytime — CA BPC §17602; see docs/plans/membership-contributions.md).
+That checkout copy lives in the backend session-creation call, not here,
+because Stripe renders it.
 
 Clickwrap requirements (Meyer v. Uber; Nguyen v. Barnes & Noble; Berman v.
 Freedom Financial Network):

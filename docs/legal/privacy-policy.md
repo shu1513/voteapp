@@ -25,8 +25,12 @@ docs/plans/membership-contributions.md): this version must be LIVE before
 STRIPE_SECRET_KEY is ever set in production. The description matches the
 plan's schema: Stripe holds card data, we hold amounts/dates/kind/refund
 status/Stripe reference ids in billing_* tables, and those rows survive
-account deletion de-identified (billing_customers.user_id set NULL) for
-accounting and legal compliance. Unlike 1.2, this change ships together with
+account deletion unlinked from the account (billing_customers.user_id set
+NULL) for accounting and legal compliance. The retained Stripe ids remain
+resolvable to a person through the Stripe dashboard, so those rows are
+pseudonymous business records, not anonymous data — the public text below
+deliberately says "with the link to your deleted account removed" and never
+claims anonymization. Unlike 1.2, this change ships together with
 a Terms bump (payments section) — see terms-of-use.md.
 -->
 

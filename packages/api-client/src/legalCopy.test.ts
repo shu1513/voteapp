@@ -118,7 +118,7 @@ const PINNED_DOCUMENTS = [
     // account deletion in Section 4). Ships with the Terms 1.2 bump.
     // Required BEFORE STRIPE_SECRET_KEY in prod.
     version: "1.3",
-    sha256: "0ec127823a40361a0a6c96ee66cc93058d82e62a96b86ce2ad3ad2ca186b5a13",
+    sha256: "e49c8c1f273500f2a55a03ea3794f16a9888595d3c597c5fc5dd2409b7519e0d",
   },
   {
     filename: "disclaimer.md",
