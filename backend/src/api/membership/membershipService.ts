@@ -124,10 +124,12 @@ export type MembershipService = {
    * customer. */
   syncCustomerEmail(userId: string): Promise<void>;
   /** Account-deletion precondition: cancels any nonterminal subscription at
-   * Stripe (immediately, not period-end). Throws a retryable
-   * subscription_cancel_failed when Stripe is unreachable — the caller must
-   * fail the deletion; cancel is idempotent so retrying is always safe. */
-  cancelSubscriptionsForAccountDeletion(userId: string): Promise<void>;
+   * Stripe (immediately, not period-end). Returns true when a subscription
+   * was actually canceled — the caller logs an inconsistent half-state if
+   * the deletion then fails. Throws a retryable subscription_cancel_failed
+   * when Stripe is unreachable — the caller must fail the deletion; cancel
+   * is idempotent so retrying is always safe. */
+  cancelSubscriptionsForAccountDeletion(userId: string): Promise<boolean>;
 };
 
 type BillingCustomerRow = {
@@ -794,11 +796,11 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
     async cancelSubscriptionsForAccountDeletion(userId) {
       const customer = await findBillingCustomerByUserId(userId);
       if (!customer) {
-        return;
+        return false;
       }
       const liveSubscriptionId = await findLiveSubscriptionId(customer.id);
       if (!liveSubscriptionId) {
-        return;
+        return false;
       }
       try {
         await cancelSubscriptionSafely(liveSubscriptionId);
@@ -817,6 +819,7 @@ export function createMembershipService(options: MembershipServiceOptions): Memb
       }
       // The DB row is updated by the subscription.deleted webhook; Stripe is
       // the authority on status.
+      return true;
     },
   };
 }

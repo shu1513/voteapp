@@ -759,6 +759,7 @@ describe("createAuthService deleteAccount", () => {
     const cancelMembershipForAccountDeletion = vi.fn(async () => {
       // The Stripe call must happen before any row is touched.
       expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(false);
+      return true;
     });
 
     const service = createAuthService({
@@ -796,6 +797,79 @@ describe("createAuthService deleteAccount", () => {
     );
     expect(cancelMembershipForAccountDeletion).not.toHaveBeenCalled();
     expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(false);
+  });
+
+  it("logs the orphaned cancellation when the delete fails after the membership was canceled", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const client = createDbClientMock();
+      client.query
+        // Password pre-check transaction.
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN
+        .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+        .mockResolvedValueOnce({ rows: [] }) // ROLLBACK
+        // Delete transaction, failing at the hard delete.
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN
+        .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+        .mockResolvedValueOnce({ rows: [] }) // clear content_report emails
+        .mockResolvedValueOnce({ rows: [] }) // delete pending push receipts
+        .mockRejectedValueOnce(new Error("db connection lost")) // hard delete fails
+        .mockResolvedValueOnce({ rows: [] }); // ROLLBACK
+      const cancelMembershipForAccountDeletion = vi.fn().mockResolvedValue(true);
+
+      const service = createAuthService({
+        db: createDbMock(client) as never,
+        redis: createRedisMock() as never,
+        mailer: createMailerMock(),
+        publicBaseUrl: "https://example.com",
+        cancelMembershipForAccountDeletion,
+      });
+
+      await expect(service.deleteAccount({ userId: USER_ID, password: CURRENT_PASSWORD })).rejects.toThrow(
+        "db connection lost"
+      );
+      // The half-state (membership canceled, account surviving) is loud.
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.stringContaining("AFTER the membership was canceled"),
+        expect.any(String)
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("stays quiet when the delete fails but no membership was actually canceled", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const client = createDbClientMock();
+      client.query
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN (pre-check)
+        .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+        .mockResolvedValueOnce({ rows: [] }) // ROLLBACK
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN
+        .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+        .mockResolvedValueOnce({ rows: [] }) // clear content_report emails
+        .mockResolvedValueOnce({ rows: [] }) // delete pending push receipts
+        .mockRejectedValueOnce(new Error("db connection lost")) // hard delete fails
+        .mockResolvedValueOnce({ rows: [] }); // ROLLBACK
+      // Hook ran but had nothing to cancel.
+      const cancelMembershipForAccountDeletion = vi.fn().mockResolvedValue(false);
+
+      const service = createAuthService({
+        db: createDbMock(client) as never,
+        redis: createRedisMock() as never,
+        mailer: createMailerMock(),
+        publicBaseUrl: "https://example.com",
+        cancelMembershipForAccountDeletion,
+      });
+
+      await expect(service.deleteAccount({ userId: USER_ID, password: CURRENT_PASSWORD })).rejects.toThrow(
+        "db connection lost"
+      );
+      expect(errorSpy).not.toHaveBeenCalled();
+    } finally {
+      errorSpy.mockRestore();
+    }
   });
 
   it("fails the delete and removes nothing when the membership cancel fails", async () => {

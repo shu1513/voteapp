@@ -510,7 +510,14 @@ async function main(): Promise<void> {
     }
     membershipServiceOrNull = createMembershipService({
       db: pool,
-      stripe: new Stripe(stripeSecretKey),
+      // Bounded per-attempt timeout instead of the SDK's 80s default: the
+      // checkout/portal/deletion paths run inside user-facing HTTP requests.
+      // Retried POSTs carry SDK-generated idempotency keys, so retries can't
+      // duplicate customers or sessions.
+      stripe: new Stripe(stripeSecretKey, {
+        timeout: 15_000,
+        maxNetworkRetries: 2,
+      }),
       webhookSecret: stripeWebhookSecret,
       membershipProductId: stripeMembershipProductId,
       publicBaseUrl: membershipPublicBaseUrl,

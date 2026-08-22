@@ -767,7 +767,7 @@ describe("membership cancelSubscriptionsForAccountDeletion", () => {
       stripe,
     });
 
-    await service.cancelSubscriptionsForAccountDeletion(USER_ID);
+    await expect(service.cancelSubscriptionsForAccountDeletion(USER_ID)).resolves.toBe(true);
     expect(stripe.subscriptions.cancel).toHaveBeenCalledWith("sub_live");
   });
 
@@ -783,7 +783,7 @@ describe("membership cancelSubscriptionsForAccountDeletion", () => {
       stripe,
     });
 
-    await expect(service.cancelSubscriptionsForAccountDeletion(USER_ID)).resolves.toBeUndefined();
+    await expect(service.cancelSubscriptionsForAccountDeletion(USER_ID)).resolves.toBe(true);
   });
 
   it("throws the retryable precondition error when Stripe is unreachable", async () => {

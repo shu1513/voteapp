@@ -33,10 +33,10 @@ export type AuthServiceOptions = {
   verifyGoogleIdToken?: VerifyGoogleIdToken;
   /** Present only when Stripe is configured
    * (docs/plans/membership-contributions.md): cancels any live paid
-   * membership at Stripe. Deletion PRECONDITION — a throw here fails the
-   * delete request with nothing deleted; cancel is idempotent, so the user
-   * simply retries. */
-  cancelMembershipForAccountDeletion?: (userId: string) => Promise<void>;
+   * membership at Stripe, returning true when one was actually canceled.
+   * Deletion PRECONDITION — a throw here fails the delete request with
+   * nothing deleted; cancel is idempotent, so the user simply retries. */
+  cancelMembershipForAccountDeletion?: (userId: string) => Promise<boolean>;
   /** Present only when Stripe is configured: pushes the account's new email
    * onto the Stripe customer after a verified email change (Stripe otherwise
    * keeps prefilling Checkout and sending receipts to the old address).
@@ -1278,6 +1278,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       // Stripe timeout. The delete transaction re-verifies the password; if
       // it changed in between, the delete fails and all that happened is a
       // cancel the (then-)authenticated request asked for.
+      let membershipWasCanceled = false;
       if (options.cancelMembershipForAccountDeletion) {
         const precheckClient = await options.db.connect();
         try {
@@ -1297,7 +1298,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         }
         // Throws a retryable error when Stripe is unreachable; the delete
         // request then fails with nothing deleted.
-        await options.cancelMembershipForAccountDeletion(userId);
+        membershipWasCanceled = (await options.cancelMembershipForAccountDeletion(userId)) === true;
       }
 
       const client = await options.db.connect();
@@ -1358,6 +1359,18 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         await client.query("COMMIT");
       } catch (error) {
         await rollbackQuietly(client);
+        // The Stripe cancellation already committed but the account survives
+        // (DB failure, or the password changed between precheck and the
+        // re-verification above). Retrying the delete self-heals — re-cancel
+        // is a no-op — but if the user never retries, their membership is
+        // silently gone; this line is the operator's signal to reinstate or
+        // reach out.
+        if (membershipWasCanceled) {
+          console.error(
+            `auth deleteAccount failed AFTER the membership was canceled at Stripe for user ${userId}; the account survives without its membership — reinstate manually if the user does not retry:`,
+            error instanceof Error ? error.message : String(error)
+          );
+        }
         throw error;
       } finally {
         client.release();
