@@ -103,7 +103,7 @@ function renderControl(seatsToFill: number | null = null) {
 
 /** The button disables while the preferences load; click only once ready. */
 async function clickPickForMe() {
-  const button = await screen.findByRole("button", { name: "Pick by my issues" });
+  const button = await screen.findByRole("button", { name: "Auto-pick by my issues" });
   await waitFor(() => expect(button).toBeEnabled());
   await userEvent.click(button);
 }
