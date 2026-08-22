@@ -10,6 +10,9 @@ export type ApiErrorCode =
   // Google login intent found no account: the frontend routes to signup.
   | "needs_signup"
   | "follow_limit_reached"
+  // Monthly checkout attempted while a live membership exists: the frontend
+  // points at Manage membership instead of a generic error.
+  | "membership_exists"
   | "address_not_found"
   | "districts_unavailable"
   | "upstream_unavailable"

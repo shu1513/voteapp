@@ -31,6 +31,17 @@ export type AuthServiceOptions = {
    * what enables loginWithGoogle on the returned service. Injected (rather
    * than constructed here) so tests stub it — no network in vitest. */
   verifyGoogleIdToken?: VerifyGoogleIdToken;
+  /** Present only when Stripe is configured
+   * (docs/plans/membership-contributions.md): cancels any live paid
+   * membership at Stripe, returning true when one was actually canceled.
+   * Deletion PRECONDITION — a throw here fails the delete request with
+   * nothing deleted; cancel is idempotent, so the user simply retries. */
+  cancelMembershipForAccountDeletion?: (userId: string) => Promise<boolean>;
+  /** Present only when Stripe is configured: pushes the account's new email
+   * onto the Stripe customer after a verified email change (Stripe otherwise
+   * keeps prefilling Checkout and sending receipts to the old address).
+   * Best-effort — a Stripe failure never fails the email change. */
+  syncMembershipCustomerEmail?: (userId: string) => Promise<void>;
 };
 
 export type AuthRegisterInput = {
@@ -1194,6 +1205,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         throw new TypeError("token must be a non-empty string");
       }
 
+      let changedUserId: string | null = null;
       const client = await options.db.connect();
       try {
         await client.query("BEGIN");
@@ -1223,6 +1235,7 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         }
 
         await client.query("COMMIT");
+        changedUserId = consumed.userId;
       } catch (error) {
         await rollbackQuietly(client);
         // Another account claimed the address between request and confirm.
@@ -1233,12 +1246,59 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
       } finally {
         client.release();
       }
+
+      // Best-effort: Stripe keeps prefilling Checkout with, and sending
+      // receipts to, the customer object's stored email — track the change.
+      // A Stripe failure must not fail an email change that already
+      // committed; checkout/portal keep working and the operator can fix the
+      // address in the dashboard.
+      if (options.syncMembershipCustomerEmail && changedUserId) {
+        try {
+          await options.syncMembershipCustomerEmail(changedUserId);
+        } catch (error) {
+          console.warn(
+            "membership customer email sync failed after email change (Stripe keeps the old address until fixed):",
+            error instanceof Error ? error.message : String(error)
+          );
+        }
+      }
     },
 
     async deleteAccount(input) {
       const userId = normalizeUserId(input.userId);
       if (typeof input.password !== "string" || input.password.length === 0) {
         throw new TypeError("password must be a non-empty string");
+      }
+
+      // Membership cancellation is a precondition (Terms §14.3: deleting the
+      // account cancels the membership) with its own password check first: a
+      // wrong-password request must not be able to cancel a paid membership,
+      // and the Stripe network call must not run inside the delete
+      // transaction below, where it would hold the user row lock for up to a
+      // Stripe timeout. The delete transaction re-verifies the password; if
+      // it changed in between, the delete fails and all that happened is a
+      // cancel the (then-)authenticated request asked for.
+      let membershipWasCanceled = false;
+      if (options.cancelMembershipForAccountDeletion) {
+        const precheckClient = await options.db.connect();
+        try {
+          await precheckClient.query("BEGIN");
+          const user = await findActiveUserByIdForUpdate(precheckClient, userId);
+          // NULL hash (Google-only account) never matches — add a password first.
+          if (!user || user.password_hash === null || !(await verifyPassword(user.password_hash, input.password))) {
+            throw new TypeError("Password is incorrect");
+          }
+          // Pure check — release the row lock before any network call.
+          await precheckClient.query("ROLLBACK");
+        } catch (error) {
+          await rollbackQuietly(precheckClient);
+          throw error;
+        } finally {
+          precheckClient.release();
+        }
+        // Throws a retryable error when Stripe is unreachable; the delete
+        // request then fails with nothing deleted.
+        membershipWasCanceled = (await options.cancelMembershipForAccountDeletion(userId)) === true;
       }
 
       const client = await options.db.connect();
@@ -1299,6 +1359,18 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         await client.query("COMMIT");
       } catch (error) {
         await rollbackQuietly(client);
+        // The Stripe cancellation already committed but the account survives
+        // (DB failure, or the password changed between precheck and the
+        // re-verification above). Retrying the delete self-heals — re-cancel
+        // is a no-op — but if the user never retries, their membership is
+        // silently gone; this line is the operator's signal to reinstate or
+        // reach out.
+        if (membershipWasCanceled) {
+          console.error(
+            `auth deleteAccount failed AFTER the membership was canceled at Stripe for user ${userId}; the account survives without its membership — reinstate manually if the user does not retry:`,
+            error instanceof Error ? error.message : String(error)
+          );
+        }
         throw error;
       } finally {
         client.release();

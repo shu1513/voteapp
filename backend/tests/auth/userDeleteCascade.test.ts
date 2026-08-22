@@ -17,7 +17,10 @@ import { describe, expect, it } from "vitest";
 const MIGRATIONS_DIR = new URL("../../../db/migrations/", import.meta.url);
 
 // Reports are kept for content moderation with the reporter anonymized.
-const SET_NULL_TABLES = new Set(["content_reports"]);
+// Billing customers are the deletion-surviving indirection for payment
+// records (docs/plans/membership-contributions.md): the ledger must outlive
+// the account as accounting data, so user_id nulls out instead of cascading.
+const SET_NULL_TABLES = new Set(["content_reports", "billing_customers"]);
 
 type UserReference = {
   table: string;

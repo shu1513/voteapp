@@ -531,6 +531,100 @@ describe("createAuthService verifyEmailChange", () => {
     expect(client.query).toHaveBeenCalledWith("COMMIT");
   });
 
+  // Stripe keeps prefilling Checkout and sending receipts to the customer
+  // object's stored email, so a verified change pushes the new address there
+  // — best-effort, after the commit.
+  it("syncs the membership customer email after a successful change", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({
+        rows: [
+          {
+            id: "token-id",
+            user_id: USER_ID,
+            token_hash: "a".repeat(64),
+            purpose: "email_change",
+            new_email: "new@example.com",
+            expires_at: new Date(),
+            consumed_at: new Date(),
+            created_at: new Date(),
+          },
+        ],
+      }) // consume token
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const syncMembershipCustomerEmail = vi.fn().mockResolvedValue(undefined);
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+      syncMembershipCustomerEmail,
+    });
+
+    await service.verifyEmailChange({ token: "raw-token" });
+    expect(syncMembershipCustomerEmail).toHaveBeenCalledWith(USER_ID);
+  });
+
+  it("never fails the committed email change over a Stripe sync failure, and skips the sync on failure", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      const client = createDbClientMock();
+      client.query
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN
+        .mockResolvedValueOnce({
+          rows: [
+            {
+              id: "token-id",
+              user_id: USER_ID,
+              token_hash: "a".repeat(64),
+              purpose: "email_change",
+              new_email: "new@example.com",
+              expires_at: new Date(),
+              consumed_at: new Date(),
+              created_at: new Date(),
+            },
+          ],
+        }) // consume token
+        .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // UPDATE users
+        .mockResolvedValueOnce({ rows: [] }); // COMMIT
+      const syncMembershipCustomerEmail = vi.fn().mockRejectedValue(new Error("stripe down"));
+
+      const service = createAuthService({
+        db: createDbMock(client) as never,
+        redis: createRedisMock() as never,
+        mailer: createMailerMock(),
+        publicBaseUrl: "https://example.com",
+        syncMembershipCustomerEmail,
+      });
+
+      // The change itself committed; the sync failure only warns.
+      await expect(service.verifyEmailChange({ token: "raw-token" })).resolves.toBeUndefined();
+
+      // A failed (invalid-token) change never calls the sync.
+      const failClient = createDbClientMock();
+      failClient.query
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN
+        .mockResolvedValueOnce({ rows: [] }); // consume: nothing
+      const failSync = vi.fn();
+      const failService = createAuthService({
+        db: createDbMock(failClient) as never,
+        redis: createRedisMock() as never,
+        mailer: createMailerMock(),
+        publicBaseUrl: "https://example.com",
+        syncMembershipCustomerEmail: failSync,
+      });
+      await expect(failService.verifyEmailChange({ token: "bogus" })).rejects.toThrow(
+        "Email change token is invalid or expired"
+      );
+      expect(failSync).not.toHaveBeenCalled();
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
   it("rejects invalid tokens and hides a lost unique race behind the same message", async () => {
     const client = createDbClientMock();
     client.query
@@ -641,6 +735,163 @@ describe("createAuthService deleteAccount", () => {
     );
     expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(false);
     expect(redis.sMembers).not.toHaveBeenCalled();
+  });
+
+  // Membership cancellation is a deletion PRECONDITION
+  // (docs/plans/membership-contributions.md): password-checked first so a
+  // wrong password can't cancel a paid membership, run outside the delete
+  // transaction, and a failure fails the whole delete with nothing removed.
+  it("cancels the membership after a password check and before the delete transaction", async () => {
+    const client = createDbClientMock();
+    client.query
+      // Password pre-check transaction.
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [] }) // ROLLBACK (pure check)
+      // Delete transaction.
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [] }) // clear content_report emails
+      .mockResolvedValueOnce({ rows: [] }) // delete pending push receipts
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // hard delete
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const redis = createRedisMock();
+    const cancelMembershipForAccountDeletion = vi.fn(async () => {
+      // The Stripe call must happen before any row is touched.
+      expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(false);
+      return true;
+    });
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: redis as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+      cancelMembershipForAccountDeletion,
+    });
+
+    await service.deleteAccount({ userId: USER_ID, password: CURRENT_PASSWORD });
+
+    expect(cancelMembershipForAccountDeletion).toHaveBeenCalledWith(USER_ID);
+    expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(true);
+    expect(client.query).toHaveBeenCalledWith("COMMIT");
+  });
+
+  it("does not cancel the membership when the password is wrong", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN (pre-check)
+      .mockResolvedValueOnce({ rows: [userRow()] }); // user FOR UPDATE
+    const cancelMembershipForAccountDeletion = vi.fn();
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+      cancelMembershipForAccountDeletion,
+    });
+
+    await expect(service.deleteAccount({ userId: USER_ID, password: "wrong-password-000" })).rejects.toThrow(
+      "Password is incorrect"
+    );
+    expect(cancelMembershipForAccountDeletion).not.toHaveBeenCalled();
+    expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(false);
+  });
+
+  it("logs the orphaned cancellation when the delete fails after the membership was canceled", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const client = createDbClientMock();
+      client.query
+        // Password pre-check transaction.
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN
+        .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+        .mockResolvedValueOnce({ rows: [] }) // ROLLBACK
+        // Delete transaction, failing at the hard delete.
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN
+        .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+        .mockResolvedValueOnce({ rows: [] }) // clear content_report emails
+        .mockResolvedValueOnce({ rows: [] }) // delete pending push receipts
+        .mockRejectedValueOnce(new Error("db connection lost")) // hard delete fails
+        .mockResolvedValueOnce({ rows: [] }); // ROLLBACK
+      const cancelMembershipForAccountDeletion = vi.fn().mockResolvedValue(true);
+
+      const service = createAuthService({
+        db: createDbMock(client) as never,
+        redis: createRedisMock() as never,
+        mailer: createMailerMock(),
+        publicBaseUrl: "https://example.com",
+        cancelMembershipForAccountDeletion,
+      });
+
+      await expect(service.deleteAccount({ userId: USER_ID, password: CURRENT_PASSWORD })).rejects.toThrow(
+        "db connection lost"
+      );
+      // The half-state (membership canceled, account surviving) is loud.
+      expect(errorSpy).toHaveBeenCalledWith(
+        expect.stringContaining("AFTER the membership was canceled"),
+        expect.any(String)
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("stays quiet when the delete fails but no membership was actually canceled", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const client = createDbClientMock();
+      client.query
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN (pre-check)
+        .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+        .mockResolvedValueOnce({ rows: [] }) // ROLLBACK
+        .mockResolvedValueOnce({ rows: [] }) // BEGIN
+        .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+        .mockResolvedValueOnce({ rows: [] }) // clear content_report emails
+        .mockResolvedValueOnce({ rows: [] }) // delete pending push receipts
+        .mockRejectedValueOnce(new Error("db connection lost")) // hard delete fails
+        .mockResolvedValueOnce({ rows: [] }); // ROLLBACK
+      // Hook ran but had nothing to cancel.
+      const cancelMembershipForAccountDeletion = vi.fn().mockResolvedValue(false);
+
+      const service = createAuthService({
+        db: createDbMock(client) as never,
+        redis: createRedisMock() as never,
+        mailer: createMailerMock(),
+        publicBaseUrl: "https://example.com",
+        cancelMembershipForAccountDeletion,
+      });
+
+      await expect(service.deleteAccount({ userId: USER_ID, password: CURRENT_PASSWORD })).rejects.toThrow(
+        "db connection lost"
+      );
+      expect(errorSpy).not.toHaveBeenCalled();
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
+  it("fails the delete and removes nothing when the membership cancel fails", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN (pre-check)
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [] }); // ROLLBACK
+    const cancelMembershipForAccountDeletion = vi.fn().mockRejectedValue(new Error("stripe unreachable"));
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+      cancelMembershipForAccountDeletion,
+    });
+
+    await expect(service.deleteAccount({ userId: USER_ID, password: CURRENT_PASSWORD })).rejects.toThrow(
+      "stripe unreachable"
+    );
+    expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(false);
   });
 });
 

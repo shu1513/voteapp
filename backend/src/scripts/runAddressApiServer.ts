@@ -2,6 +2,7 @@ import type { Server } from "node:http";
 import { Pool } from "pg";
 import { createClient } from "redis";
 import { SESv2Client } from "@aws-sdk/client-sesv2";
+import Stripe from "stripe";
 
 import {
   createInMemoryAuthApiRateLimiter,
@@ -110,6 +111,11 @@ import { registerUserPushToken, revokeUserPushToken } from "../pipeline/users/us
 import { verifyEmailUnsubscribeToken } from "../pipeline/users/emailUnsubscribeToken.js";
 import { acceptUserTerms, getUserIdentity, setUserFirstName } from "../pipeline/users/userIdentity.js";
 import { createCachedSiteSitemap } from "../pipeline/sitemap/siteSitemap.js";
+import { createMembershipService, type MembershipService } from "../api/membership/membershipService.js";
+import {
+  createConsoleMembershipStartedSender,
+  createSesMembershipStartedSender,
+} from "../api/membership/membershipMailer.js";
 
 function readEnv(name: string, fallback?: string): string {
   const value = process.env[name]?.trim() || fallback;
@@ -462,6 +468,65 @@ async function main(): Promise<void> {
             ...(authReplyToEmailAddress ? { replyToEmailAddress: authReplyToEmailAddress } : {}),
           })
         : null;
+  // Support payments / membership (docs/plans/membership-contributions.md):
+  // presence of STRIPE_SECRET_KEY turns the feature on; the other settings
+  // then become required so partial config crashes at boot instead of 500ing
+  // at runtime. All absent = feature cleanly off (GET /api/me/membership
+  // answers { enabled: false } and the frontend hides the section).
+  const stripeSecretKey = readOptionalEnv("STRIPE_SECRET_KEY");
+  let membershipServiceOrNull: MembershipService | null = null;
+  if (stripeSecretKey) {
+    const stripeWebhookSecret = readEnv("STRIPE_WEBHOOK_SECRET");
+    const stripeMembershipProductId = readEnv("STRIPE_MEMBERSHIP_PRODUCT_ID");
+    const membershipPublicBaseUrl = (siteOrigin ?? authPublicBaseUrl)?.replace(/\/+$/, "");
+    if (!membershipPublicBaseUrl) {
+      throw new Error(
+        "STRIPE_SECRET_KEY is set but SITE_ORIGIN (or AUTH_PUBLIC_BASE_URL) is not; Checkout redirect URLs need the site origin"
+      );
+    }
+    const manageMembershipUrl = `${membershipPublicBaseUrl}/me/settings`;
+    const membershipTermsUrl = `${membershipPublicBaseUrl}/terms`;
+    // The §17602 membership-started acknowledgment rides the same mailer
+    // config as auth email, and it is a LEGAL requirement of taking the
+    // first subscription — so a Stripe-on/mailer-off process fails at boot
+    // like any other partial membership config, instead of quietly starting
+    // billing it can't acknowledge.
+    const sendMembershipStartedEmail =
+      authMailerKind === "console"
+        ? createConsoleMembershipStartedSender({ manageMembershipUrl, termsUrl: membershipTermsUrl })
+        : authFromEmailAddress && authSesRegion
+          ? createSesMembershipStartedSender({
+              sesClient: new SESv2Client({ region: authSesRegion }),
+              fromEmailAddress: authFromEmailAddress,
+              ...(authReplyToEmailAddress ? { replyToEmailAddress: authReplyToEmailAddress } : {}),
+              manageMembershipUrl,
+              termsUrl: membershipTermsUrl,
+            })
+          : null;
+    if (!sendMembershipStartedEmail) {
+      throw new Error(
+        "STRIPE_SECRET_KEY is set but no mailer is configured; the membership acknowledgment email requires AUTH_FROM_EMAIL + AUTH_SES_REGION/AWS_REGION (or AUTH_MAILER=console for local development)"
+      );
+    }
+    membershipServiceOrNull = createMembershipService({
+      db: pool,
+      // Bounded per-attempt timeout instead of the SDK's 80s default: the
+      // checkout/portal/deletion paths run inside user-facing HTTP requests.
+      // Retried POSTs carry SDK-generated idempotency keys, so retries can't
+      // duplicate customers or sessions.
+      stripe: new Stripe(stripeSecretKey, {
+        timeout: 15_000,
+        maxNetworkRetries: 2,
+      }),
+      webhookSecret: stripeWebhookSecret,
+      membershipProductId: stripeMembershipProductId,
+      publicBaseUrl: membershipPublicBaseUrl,
+      sendMembershipStartedEmail,
+    });
+    console.log("membership support payments enabled (stripe)");
+  }
+  const membershipService = membershipServiceOrNull;
+
   // Sign in with Google (docs/plans/google-sign-in.md): configured-if-present.
   // Without the client ID the service method is absent and POST
   // /api/auth/google answers 500 not-configured; everything else is unchanged.
@@ -478,6 +543,13 @@ async function main(): Promise<void> {
           passwordResetTtlSeconds: DEFAULT_AUTH_PASSWORD_RESET_TTL_SECONDS,
           ...(googleOauthClientId
             ? { verifyGoogleIdToken: createGoogleIdTokenVerifier(googleOauthClientId) }
+            : {}),
+          ...(membershipService
+            ? {
+                cancelMembershipForAccountDeletion: (userId: string) =>
+                  membershipService.cancelSubscriptionsForAccountDeletion(userId),
+                syncMembershipCustomerEmail: (userId: string) => membershipService.syncCustomerEmail(userId),
+              }
             : {}),
         })
       : undefined;
@@ -705,6 +777,16 @@ async function main(): Promise<void> {
     setAuthenticatedEmailPreferences: (userId, preferences) => setUserEmailPreferences(pool, userId, preferences),
     registerAuthenticatedPushToken: (userId, input) => registerUserPushToken(pool, userId, input),
     revokeAuthenticatedPushToken: (userId, expoPushToken) => revokeUserPushToken(pool, userId, expoPushToken),
+    ...(membershipService
+      ? {
+          getAuthenticatedMembership: (userId: string) => membershipService.getMembership(userId),
+          createAuthenticatedMembershipCheckout: (userId: string, input: { kind: "one_time" | "monthly"; amount_cents: number }) =>
+            membershipService.createCheckoutSession(userId, input),
+          createAuthenticatedMembershipPortal: (userId: string) => membershipService.createPortalSession(userId),
+          handleStripeWebhookEvent: (input: { rawBody: Buffer; signatureHeader: string | null }) =>
+            membershipService.handleWebhookEvent(input),
+        }
+      : {}),
     ...(unsubscribeSecret
       ? {
           unsubscribeFromEmailNotifications: async (
