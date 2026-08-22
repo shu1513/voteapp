@@ -296,6 +296,34 @@ function officialCandidateNames(row: NewHampshireFilingEntityRow): string[] {
   return structured ? [structured] : [];
 }
 
+function registrationRaceTargetKey(row: NewHampshireFilingEntityRow): string | null {
+  const officeName = canonicalOfficeName(row.officeName ?? "");
+  if (!officeName) return null;
+  const district = normalizeDistrictEvidence(officeName, row.district, row.county);
+  if (officeRequiresDistrict(officeName) && !district) return null;
+  return `${officeName}\u0000${district?.key ?? ""}`;
+}
+
+function retainUnambiguousCandidateAliases(input: {
+  aliases: readonly string[];
+  filingEntityRows: readonly NewHampshireFilingEntityRow[];
+  electionCycleId: number;
+}): string[] {
+  return input.aliases.filter((alias) => {
+    const raceTargets = new Set<string>();
+    for (const row of input.filingEntityRows) {
+      if (!isCandidateRegistration(row) || row.electionCycleId !== input.electionCycleId) {
+        continue;
+      }
+      const raceTarget = registrationRaceTargetKey(row);
+      if (!raceTarget) continue;
+      const names = officialCandidateNames(row);
+      if (names.length > 0 && candidateNamesMatch(alias, names)) raceTargets.add(raceTarget);
+    }
+    return raceTargets.size <= 1;
+  });
+}
+
 function rememberCandidateAlias(accumulator: CandidateFilerAccumulator, value: string): void {
   const alias = value.trim();
   const key = normalizeNewHampshireCandidateAlias(alias);
@@ -397,6 +425,14 @@ export function resolveNewHampshireCandidateFiler(
         sourceUrl: input.sourceUrl ?? null,
       })
     )
+    .map((match) => ({
+      ...match,
+      candidateAliases: retainUnambiguousCandidateAliases({
+        aliases: match.candidateAliases,
+        filingEntityRows: input.filingEntityRows,
+        electionCycleId,
+      }),
+    }))
     .sort((left, right) => left.filingEntityId - right.filingEntityId);
 
   if (matches.length === 0) {

@@ -195,6 +195,48 @@ describe("newHampshireCandidateFinanceSync", () => {
     expect(db.connect).not.toHaveBeenCalled();
   });
 
+  it("skips outside attribution when the candidate name belongs to another registered race", async () => {
+    const cfsClient = createClient({
+      getFilingEntities: vi.fn().mockResolvedValue([
+        filingEntity(),
+        filingEntity({
+          registrationGuid: "00000000-0000-4000-8000-000000000004",
+          filingEntityId: 60_060,
+          filerName: "Sample Candidate for County Treasurer",
+          committeeName: null,
+          filerTypeCode: "CAN",
+          filerSubTypeCode: null,
+          filerSubTypeName: null,
+          officeName: "County Treasurer",
+          county: "Merrimack",
+          district: null,
+        }),
+      ]),
+    });
+    const { client, db } = createDb();
+
+    const result = await syncNewHampshireCandidateFinance(baseInput({ cfsClient, db }));
+
+    expect(result).toMatchObject({
+      resolution: { status: "matched", filingEntityId: 50_450, candidateAliases: [] },
+      totalReceipts: 100,
+      directContributionTotal: 100,
+      outsideSupportTotal: null,
+      outsideOpposeTotal: null,
+      outsideSkippedReason:
+        "candidate name is ambiguous across registered New Hampshire race targets",
+      directBreakdownsWritten: 2,
+      outsideGroupsWritten: 0,
+    });
+    expect(cfsClient.getReceipts).toHaveBeenCalledOnce();
+    expect(cfsClient.getIndependentExpenditures).not.toHaveBeenCalled();
+    expect(
+      client.query.mock.calls.some((call) =>
+        String(call[0]).includes("DELETE FROM public.nh_candidate_finance_outside_groups")
+      )
+    ).toBe(false);
+  });
+
   it("preserves the failed direct section while replacing successful outside spending", async () => {
     const cfsClient = createClient({
       getReceipts: vi.fn().mockRejectedValue(new Error("receipt API unavailable")),
@@ -306,6 +348,34 @@ describe("newHampshireCandidateFinanceSync", () => {
         String(call[0]).includes("DELETE FROM public.nh_candidate_finance_direct_breakdowns")
       )
     ).toBe(true);
+    expect(
+      client.query.mock.calls.some((call) =>
+        String(call[0]).includes("DELETE FROM public.nh_candidate_finance_outside_groups")
+      )
+    ).toBe(true);
+  });
+
+  it("clears classified outside totals when successful rows have no official stance", async () => {
+    const cfsClient = createClient({
+      getIndependentExpenditures: vi.fn().mockResolvedValue([
+        expenditure({ stance: null }),
+      ]),
+    });
+    const { client, db } = createDb();
+
+    const result = await syncNewHampshireCandidateFinance(baseInput({ cfsClient, db }));
+
+    expect(result).toMatchObject({
+      outsideSupportTotal: 0,
+      outsideOpposeTotal: 0,
+      outsideSkippedReason: null,
+      outsideAggregation: {
+        summary: null,
+        matchedTargetRowCount: 1,
+        blankStanceRowCount: 1,
+      },
+      outsideGroupsWritten: 0,
+    });
     expect(
       client.query.mock.calls.some((call) =>
         String(call[0]).includes("DELETE FROM public.nh_candidate_finance_outside_groups")

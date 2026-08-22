@@ -246,25 +246,32 @@ export async function syncNewHampshireCandidateFinance(
   }
 
   let outsideAggregation: NewHampshireOutsideSpendingAggregationResult | null = null;
-  let outsideSkippedReason: string | null = null;
-  try {
-    const expenditureRows = await cfsClient.getIndependentExpenditures(
-      { electionCycleId },
-      input.cfsClientOptions
-    );
-    outsideAggregation = aggregateNewHampshireOutsideSpending({
-      candidateAliases: resolution.candidateAliases,
-      electionYear,
-      expenditureRows,
-      sourceUrl,
-      maxGroups: maxOutsideGroups,
-    });
-  } catch (error) {
-    outsideSkippedReason = errorMessage(error);
+  let outsideSkippedReason: string | null = resolution.candidateAliases.length === 0
+    ? "candidate name is ambiguous across registered New Hampshire race targets"
+    : null;
+  if (resolution.candidateAliases.length > 0) {
+    try {
+      const expenditureRows = await cfsClient.getIndependentExpenditures(
+        { electionCycleId },
+        input.cfsClientOptions
+      );
+      outsideAggregation = aggregateNewHampshireOutsideSpending({
+        candidateAliases: resolution.candidateAliases,
+        electionYear,
+        expenditureRows,
+        sourceUrl,
+        maxGroups: maxOutsideGroups,
+      });
+    } catch (error) {
+      outsideSkippedReason = errorMessage(error);
+    }
   }
 
   const totalReceipts = directAggregation?.summary.totalReceipts ?? null;
   const directContributionTotal = directAggregation?.summary.directContributionTotal ?? null;
+  // A successful TIE search is authoritative even when no positive rows have
+  // an official Support/Oppose stance. Zero clears superseded classified data;
+  // null is reserved for an unavailable or unsafe outside-spending section.
   const outsideSupportTotal = outsideAggregation
     ? outsideAggregation.summary?.supportTotal ?? 0
     : null;

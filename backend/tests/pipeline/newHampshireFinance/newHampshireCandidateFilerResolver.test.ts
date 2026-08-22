@@ -170,6 +170,60 @@ describe("newHampshireCandidateFilerResolver", () => {
     });
   });
 
+  it("removes an outside-spending alias shared by distinct official race targets", () => {
+    const result = resolveNewHampshireCandidateFiler({
+      candidateName: "Dianne Schuett",
+      officeScope: "state_lower",
+      officeName: "State Representative",
+      district: "Merrimack 12",
+      electionCycleId: 110,
+      filingEntityRows: [
+        filingEntity({
+          filingEntityId: 242692,
+          filerName: "Schuett, Dianne",
+          candidateName: "Dianne Schuett",
+          firstName: "Dianne",
+          lastName: "Schuett",
+          filerTypeCode: "CAN",
+          filerSubTypeCode: null,
+          officeName: "State Representative",
+          county: "Merrimack",
+          district: "12",
+        }),
+        filingEntity({
+          filingEntityId: 244443,
+          filerName: "Schuett, Dianne E.",
+          candidateName: "Dianne Schuett",
+          firstName: "Dianne",
+          lastName: "Schuett",
+          filerTypeCode: "CAN",
+          filerSubTypeCode: null,
+          officeName: "County Treasurer",
+          county: "Merrimack",
+          district: null,
+        }),
+      ],
+    });
+
+    expect(result).toMatchObject({
+      status: "matched",
+      filingEntityId: 242692,
+      candidateAliases: [],
+    });
+  });
+
+  it("does not invent ambiguity from an incomplete duplicate registration", () => {
+    expect(
+      resolveNewHampshireCandidateFiler({
+        ...senateInput,
+        filingEntityRows: [filingEntity(), filingEntity({ district: null })],
+      })
+    ).toMatchObject({
+      status: "matched",
+      candidateAliases: ["Cindy Rosenwald"],
+    });
+  });
+
   it("returns multiple exact official registrations as ambiguous instead of guessing", () => {
     const result = resolveNewHampshireCandidateFiler({
       ...senateInput,
