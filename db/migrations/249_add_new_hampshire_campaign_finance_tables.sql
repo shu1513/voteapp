@@ -1,5 +1,11 @@
 BEGIN;
 
+-- New Hampshire CFS snapshots use official filing-entity IDs, stored as text
+-- on links and outside-spending rows; child rows attach through composite
+-- link/year keys and unique snapshot keys prevent duplicate totals. Syncs must
+-- preserve manual links. Direct labels are industries or size buckets, never
+-- occupations.
+
 CREATE TABLE IF NOT EXISTS public.nh_candidate_finance_links (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   candidate_id uuid NOT NULL REFERENCES public.candidates(id) ON DELETE CASCADE,

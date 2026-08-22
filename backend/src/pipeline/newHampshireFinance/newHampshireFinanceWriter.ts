@@ -30,6 +30,7 @@ export type NewHampshireFinanceLinkInput = {
   lastVerifiedAt?: Date | null;
 };
 
+/** NULL amounts preserve stored data; zero means a successful empty result. */
 export type NewHampshireFinanceSummaryInput = {
   totalReceipts: number | null;
   directContributionTotal: number | null;
@@ -59,7 +60,9 @@ export type NewHampshireFinanceSnapshotInput = {
   link: NewHampshireFinanceLinkInput;
   syncedAt?: Date;
   summary?: NewHampshireFinanceSummaryInput;
+  /** Omit when unavailable; pass [] after a successful fetch with no breakdowns. */
   directBreakdowns?: readonly NewHampshireFinanceDirectBreakdownInput[];
+  /** Omit when unavailable; pass [] after a successful fetch with no outside groups. */
   outsideGroups?: readonly NewHampshireFinanceOutsideGroupInput[];
 };
 
@@ -88,11 +91,11 @@ const writer = createStandardStateFinanceSnapshotWriter<NewHampshireFinanceDirec
   minElectionYear: 2016,
   directCategoryTypes: ["industry", "contribution_size"],
   summaryUpdatePolicy: {
-    total_receipts: "replace",
-    direct_contribution_total: "replace",
-    outside_support_total: "replace",
-    outside_oppose_total: "replace",
-    source_url: "replace",
+    total_receipts: "preserveWhenNull",
+    direct_contribution_total: "preserveWhenNull",
+    outside_support_total: "preserveWhenNull",
+    outside_oppose_total: "preserveWhenNull",
+    source_url: "preserveWhenNull",
   },
   normalizeCommitteeId: normalizeStoredFilingEntityId,
   manualLinkProtection: true,

@@ -113,6 +113,14 @@ export type StandardStateFinanceSummaryUpdateMode = "replace" | "preserveWhenNul
 
 export type StandardStateFinanceOutsideGroupValidation = "none" | "presence" | "pairing";
 
+/** Custom direct-category types require a matching runtime allowlist. */
+type StandardStateFinanceDirectCategoryConfig<TCategoryType extends string> =
+  [TCategoryType] extends [StandardStateFinanceDirectCategoryType]
+    ? [StandardStateFinanceDirectCategoryType] extends [TCategoryType]
+      ? { directCategoryTypes?: readonly TCategoryType[] }
+      : { directCategoryTypes: readonly TCategoryType[] }
+    : { directCategoryTypes: readonly TCategoryType[] };
+
 const SUMMARY_COLUMNS: readonly StandardStateFinanceSummaryColumn[] = [
   "total_receipts",
   "direct_contribution_total",
@@ -210,12 +218,6 @@ export function createStandardStateFinanceSnapshotWriter<
    */
   allowNegativeCashOnHand?: boolean;
   /**
-   * Direct-breakdown categories accepted by this writer and its table.
-   * Defaults to the canonical occupation + contribution-size pair. States
-   * with a different evidence model opt in explicitly.
-   */
-  directCategoryTypes?: readonly TDirectCategoryType[];
-  /**
    * How outside-group breakdowns must relate to outside groups in the same
    * snapshot. "presence" requires at least one group when breakdowns are
    * supplied; "pairing" additionally requires each breakdown's
@@ -270,7 +272,9 @@ export function createStandardStateFinanceSnapshotWriter<
     id?: string;
     name?: string;
   };
-}): StandardStateFinanceSnapshotWriter<TDirectCategoryType> {
+} & StandardStateFinanceDirectCategoryConfig<TDirectCategoryType>): StandardStateFinanceSnapshotWriter<
+  TDirectCategoryType
+> {
   const label = config.label;
   const tables = Object.fromEntries(
     Object.entries(config.tables).map(([name, value]) => [name, assertIdentifier(value)])

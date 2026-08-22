@@ -108,8 +108,12 @@ describe("newHampshireFinanceWriter", () => {
     const summarySql = String(
       calls.find((call) => String(call[0]).includes("nh_candidate_finance_summaries"))?.[0]
     );
-    expect(summarySql).toContain("total_receipts = EXCLUDED.total_receipts");
-    expect(summarySql).toContain("outside_support_total = EXCLUDED.outside_support_total");
+    expect(summarySql).toContain(
+      "total_receipts = COALESCE(EXCLUDED.total_receipts, nh_candidate_finance_summaries.total_receipts)"
+    );
+    expect(summarySql).toContain(
+      "outside_support_total = COALESCE(EXCLUDED.outside_support_total, nh_candidate_finance_summaries.outside_support_total)"
+    );
     expect(summarySql).toContain(
       "total_disbursements = COALESCE(EXCLUDED.total_disbursements"
     );
@@ -132,6 +136,70 @@ describe("newHampshireFinanceWriter", () => {
         String(call[0]).includes("id <>")
     );
     expect(String(supersede?.[0])).toContain("link_source = 'cfs_registration'");
+  });
+
+  it("preserves stored totals and detail rows when source sections are unavailable", async () => {
+    const client = { query: vi.fn(successfulQuery), release: vi.fn() };
+    const db = { query: vi.fn(), connect: vi.fn().mockResolvedValue(client) };
+
+    await replaceNewHampshireCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      summary: {
+        totalReceipts: null,
+        directContributionTotal: null,
+        outsideSupportTotal: null,
+        outsideOpposeTotal: null,
+        sourceUrl: null,
+      },
+    });
+
+    const calls = client.query.mock.calls;
+    const summarySql = String(
+      calls.find((call) => String(call[0]).includes("nh_candidate_finance_summaries"))?.[0]
+    );
+    expect(summarySql).toContain(
+      "direct_contribution_total = COALESCE(EXCLUDED.direct_contribution_total"
+    );
+    expect(summarySql).toContain(
+      "outside_oppose_total = COALESCE(EXCLUDED.outside_oppose_total"
+    );
+    expect(
+      calls.some((call) => String(call[0]).includes("DELETE FROM public.nh_candidate_finance_"))
+    ).toBe(false);
+  });
+
+  it("writes zeros and clears stale detail rows after successful empty fetches", async () => {
+    const client = { query: vi.fn(successfulQuery), release: vi.fn() };
+    const db = { query: vi.fn(), connect: vi.fn().mockResolvedValue(client) };
+
+    await replaceNewHampshireCandidateFinanceSnapshot({
+      db,
+      link: baseLink(),
+      summary: {
+        totalReceipts: 0,
+        directContributionTotal: 0,
+        outsideSupportTotal: 0,
+        outsideOpposeTotal: 0,
+        sourceUrl: SOURCE_URL,
+      },
+      directBreakdowns: [],
+      outsideGroups: [],
+    });
+
+    const calls = client.query.mock.calls;
+    const summary = calls.find((call) => String(call[0]).includes("nh_candidate_finance_summaries"));
+    expect(summary?.[1]?.slice(2, 9)).toEqual([0, 0, null, null, 0, 0, SOURCE_URL]);
+    expect(
+      calls.some((call) =>
+        String(call[0]).includes("DELETE FROM public.nh_candidate_finance_direct_breakdowns")
+      )
+    ).toBe(true);
+    expect(
+      calls.some((call) =>
+        String(call[0]).includes("DELETE FROM public.nh_candidate_finance_outside_groups")
+      )
+    ).toBe(true);
   });
 
   it("rejects occupation data before opening a transaction", async () => {
