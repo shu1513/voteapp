@@ -152,7 +152,7 @@ export function AutoPickFillControl({
             type="button"
             disabled={saving || preferencesLoading}
             onClick={onFill}
-            className="rounded-lg bg-autopick px-3 py-1.5 text-sm font-semibold text-autopick-ink transition hover:bg-autopick-dark disabled:opacity-50"
+            className="rounded-lg border border-autopick-border bg-autopick px-3 py-1.5 text-sm font-semibold text-autopick-ink transition hover:bg-autopick-dark disabled:opacity-50"
           >
             {fill.isPending ? "Picking…" : "Auto-pick my empty picks by my issues"}
           </button>

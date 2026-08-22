@@ -36,10 +36,13 @@
      on purpose: red reads Republican, blue reads Democrat, yellow is the
      manual pick color — teal is the inviting shade with no partisan or in-app
      meaning. Light teal needs dark text (white would fail contrast): teal-950
-     ink on it is 12.9:1, and 10.6:1 on the darker hover shade. */
+     ink on it is 9.8:1, and 7.8:1 on the darker hover shade. The fill itself
+     is only ~1.5:1 against a white page, so the border token (teal-600,
+     3.5:1 on white) draws the button's boundary. */
   --color-autopick: #5eead4;
   --color-autopick-dark: #2dd4bf;
   --color-autopick-ink: #042f2e;
+  --color-autopick-border: #0d9488;
 }
 
 /* Pages with a sticky pick card (candidate pages, data-sticky-pick-cta)
