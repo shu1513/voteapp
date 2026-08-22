@@ -642,6 +642,89 @@ describe("createAuthService deleteAccount", () => {
     expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(false);
     expect(redis.sMembers).not.toHaveBeenCalled();
   });
+
+  // Membership cancellation is a deletion PRECONDITION
+  // (docs/plans/membership-contributions.md): password-checked first so a
+  // wrong password can't cancel a paid membership, run outside the delete
+  // transaction, and a failure fails the whole delete with nothing removed.
+  it("cancels the membership after a password check and before the delete transaction", async () => {
+    const client = createDbClientMock();
+    client.query
+      // Password pre-check transaction.
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [] }) // ROLLBACK (pure check)
+      // Delete transaction.
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [] }) // clear content_report emails
+      .mockResolvedValueOnce({ rows: [] }) // delete pending push receipts
+      .mockResolvedValueOnce({ rows: [], rowCount: 1 }) // hard delete
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const redis = createRedisMock();
+    const cancelMembershipForAccountDeletion = vi.fn(async () => {
+      // The Stripe call must happen before any row is touched.
+      expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(false);
+    });
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: redis as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+      cancelMembershipForAccountDeletion,
+    });
+
+    await service.deleteAccount({ userId: USER_ID, password: CURRENT_PASSWORD });
+
+    expect(cancelMembershipForAccountDeletion).toHaveBeenCalledWith(USER_ID);
+    expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(true);
+    expect(client.query).toHaveBeenCalledWith("COMMIT");
+  });
+
+  it("does not cancel the membership when the password is wrong", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN (pre-check)
+      .mockResolvedValueOnce({ rows: [userRow()] }); // user FOR UPDATE
+    const cancelMembershipForAccountDeletion = vi.fn();
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+      cancelMembershipForAccountDeletion,
+    });
+
+    await expect(service.deleteAccount({ userId: USER_ID, password: "wrong-password-000" })).rejects.toThrow(
+      "Password is incorrect"
+    );
+    expect(cancelMembershipForAccountDeletion).not.toHaveBeenCalled();
+    expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(false);
+  });
+
+  it("fails the delete and removes nothing when the membership cancel fails", async () => {
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN (pre-check)
+      .mockResolvedValueOnce({ rows: [userRow()] }) // user FOR UPDATE
+      .mockResolvedValueOnce({ rows: [] }); // ROLLBACK
+    const cancelMembershipForAccountDeletion = vi.fn().mockRejectedValue(new Error("stripe unreachable"));
+
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: createRedisMock() as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+      cancelMembershipForAccountDeletion,
+    });
+
+    await expect(service.deleteAccount({ userId: USER_ID, password: CURRENT_PASSWORD })).rejects.toThrow(
+      "stripe unreachable"
+    );
+    expect(client.query.mock.calls.some((call) => String(call[0]).includes("DELETE FROM public.users"))).toBe(false);
+  });
 });
 
 describe("createAuthService logout", () => {
