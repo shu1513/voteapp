@@ -35,6 +35,7 @@ import {
   lookupBallotSummariesByDistrictIds,
   type BallotLookupElectionSummary,
 } from "../pipeline/address/ballotLookup.js";
+import { COMPETITIVENESS_LABELS } from "../pipeline/competitiveness/competitivenessLabels.js";
 import { listUserDistrictIds, UserDistrictReaderError } from "../pipeline/users/userDistrictReader.js";
 import {
   loadUserResearchAreaWeights,
@@ -417,6 +418,138 @@ export function myIssuesBallotAnswer(
   };
 }
 
+/** How many measures / close races the answer names outright; the rest stay
+ * on the ballot page (the answer says the total). Same idea as
+ * MY_ISSUES_MAX_RACES. */
+const MY_MEASURES_MAX = 8;
+const MY_CLOSE_RACES_MAX = 5;
+
+/** The subset of the ballot summary the personalized ballot templates read.
+ * Pick-typed like MyIssuesBallotElection so tests build small literals. */
+export type MyBallotElection = Pick<
+  BallotLookupElectionSummary,
+  | "id"
+  | "official_ballot_title"
+  | "election_date"
+  | "race_type"
+  | "vote_power"
+  | "current_competitiveness"
+  | "historical_competitiveness"
+>;
+
+/** my_measures_ballot: the saved ballot's measure races, reader order kept
+ * (election_date, race_type, title — already deterministic). Same rule-11
+ * posture as myIssuesBallotAnswer: template only, no retrieval/cache/LLM. */
+export function myMeasuresBallotAnswer(elections: readonly MyBallotElection[]): AskResponse {
+  const measures = elections.filter((election) => election.race_type === "ballot_measure");
+  if (measures.length === 0) {
+    return {
+      outcome: "template",
+      answer:
+        "I don't see any ballot measures on your ballot right now. You can browse your full ballot, or check back — measures are added as they're researched.",
+      results: [BALLOT_CARD],
+      data_current_as_of: null,
+    };
+  }
+  const top = measures.slice(0, MY_MEASURES_MAX);
+  const listed = top.map((measure) => measure.official_ballot_title).join("; ");
+  const lead =
+    measures.length === 1
+      ? "1 ballot measure is on your ballot"
+      : `${measures.length} ballot measures are on your ballot${
+          measures.length > MY_MEASURES_MAX ? ` — the first ${MY_MEASURES_MAX}` : ""
+        }`;
+  return {
+    outcome: "template",
+    answer: `${lead}: ${listed}.`,
+    results: top.map((measure) => ({
+      title: measure.official_ballot_title,
+      url: `/elections/${measure.id}`,
+      snippet: "Ballot measure on your ballot.",
+      source_type: "election",
+    })),
+    data_current_as_of: null,
+  };
+}
+
+/** Effective competitiveness rating for one race: the current-cycle analyst
+ * rating when the payload carries one (it is present ONLY when it drove the
+ * vote-power decisiveness label), else the historical-margin rating — the
+ * same precedence the ballot page's chip render uses. */
+function effectiveCompetitiveness(election: MyBallotElection) {
+  return election.current_competitiveness ?? election.historical_competitiveness ?? null;
+}
+
+/** Labels the answer counts as "close". Ordered enum: toss_up is index 0. */
+const CLOSE_LABEL_MAX_INDEX = COMPETITIVENESS_LABELS.indexOf("competitive");
+
+/** my_close_races: rated races on the saved ballot, closest first. Rank =
+ * label order (COMPETITIVENESS_LABELS, most competitive first), then the
+ * ballot page's vote_power tiebreak (score desc, unknown last), then the
+ * reader's date/title order. Deliberately mirrors compareBySort's vote_power
+ * branch (ballotElectionOrdering.ts) instead of importing it: that comparator
+ * needs the full ordered-summary shape and followed-candidate plumbing this
+ * template never loads. */
+export function myCloseRacesAnswer(elections: readonly MyBallotElection[]): AskResponse {
+  const rated = elections
+    .map((election) => ({ election, rating: effectiveCompetitiveness(election) }))
+    .filter((entry): entry is { election: MyBallotElection; rating: NonNullable<ReturnType<typeof effectiveCompetitiveness>> } =>
+      entry.rating !== null
+    );
+  if (rated.length === 0) {
+    return {
+      outcome: "template",
+      answer:
+        "I don't have competitiveness ratings for the races on your ballot yet. You can browse your full ballot in the meantime.",
+      results: [BALLOT_CARD],
+      data_current_as_of: null,
+    };
+  }
+  const close = rated
+    .filter((entry) => COMPETITIVENESS_LABELS.indexOf(entry.rating.competitiveness_label) <= CLOSE_LABEL_MAX_INDEX)
+    .sort(
+      (a, b) =>
+        COMPETITIVENESS_LABELS.indexOf(a.rating.competitiveness_label) -
+          COMPETITIVENESS_LABELS.indexOf(b.rating.competitiveness_label) ||
+        (typeof b.election.vote_power.score === "number" ? b.election.vote_power.score : Number.NEGATIVE_INFINITY) -
+          (typeof a.election.vote_power.score === "number" ? a.election.vote_power.score : Number.NEGATIVE_INFINITY) ||
+        a.election.election_date.localeCompare(b.election.election_date) ||
+        a.election.official_ballot_title.localeCompare(b.election.official_ballot_title)
+    );
+  if (close.length === 0) {
+    return {
+      outcome: "template",
+      answer:
+        rated.length === 1
+          ? "The 1 rated race on your ballot doesn't look especially close right now. You can browse your full ballot for the details."
+          : `None of the ${rated.length} rated races on your ballot look especially close right now. You can browse your full ballot for the details.`,
+      results: [BALLOT_CARD],
+      data_current_as_of: null,
+    };
+  }
+  const top = close.slice(0, MY_CLOSE_RACES_MAX);
+  const listed = top
+    .map((entry) => `${entry.election.official_ballot_title} (${entry.rating.display_label})`)
+    .join("; ");
+  const lead =
+    close.length === 1
+      ? "1 race on your ballot looks close"
+      : `${close.length} races on your ballot look close${
+          close.length > MY_CLOSE_RACES_MAX ? ` — the closest ${MY_CLOSE_RACES_MAX}` : ""
+        }`;
+  return {
+    outcome: "template",
+    answer: `${lead}: ${listed}. Ratings describe how contested a race looks — they are not predictions or endorsements.`,
+    results: top.map((entry) => ({
+      title: entry.election.official_ballot_title,
+      url: `/elections/${entry.election.id}`,
+      snippet: `${entry.rating.display_label} — ${entry.rating.display_description}`,
+      source_type: "election",
+    })),
+    data_current_as_of: null,
+  };
+}
+
 /**
  * my_issues_ballot intent: personalized, so it must stay on this template
  * path — never retrieval (the public corpus knows nothing about the asker)
@@ -434,19 +567,8 @@ async function renderMyIssuesBallotAnswer(db: Pool, userId: string | null): Prom
       data_current_as_of: null,
     };
   }
-  let districtIds: string[] = [];
-  if (userId) {
-    try {
-      districtIds = await listUserDistrictIds(db, userId);
-    } catch (error) {
-      // A vanished/deleted account mid-chat degrades to the setup prompt
-      // below rather than failing the whole ask.
-      if (!(error instanceof UserDistrictReaderError)) {
-        throw error;
-      }
-    }
-  }
-  if (districtIds.length === 0) {
+  const elections = await loadAskerBallotElections(db, userId);
+  if (elections === null) {
     return {
       outcome: "template",
       answer:
@@ -455,8 +577,51 @@ async function renderMyIssuesBallotAnswer(db: Pool, userId: string | null): Prom
       data_current_as_of: null,
     };
   }
+  return myIssuesBallotAnswer(weights, elections);
+}
+
+/** The asker's saved-ballot elections, or null when the account saved no
+ * districts. A vanished/deleted account mid-chat (UserDistrictReaderError)
+ * degrades to null — a setup prompt, never a 500. */
+async function loadAskerBallotElections(
+  db: Pool,
+  userId: string | null
+): Promise<BallotLookupElectionSummary[] | null> {
+  let districtIds: string[] = [];
+  if (userId) {
+    try {
+      districtIds = await listUserDistrictIds(db, userId);
+    } catch (error) {
+      if (!(error instanceof UserDistrictReaderError)) {
+        throw error;
+      }
+    }
+  }
+  if (districtIds.length === 0) {
+    return null;
+  }
   const summary = await lookupBallotSummariesByDistrictIds(db, districtIds);
-  return myIssuesBallotAnswer(weights, summary.elections);
+  return summary.elections;
+}
+
+/** Shared "set up your ballot first" prompt for the personalized ballot
+ * templates that need only the saved ballot (no saved issues involved). */
+const NO_SAVED_BALLOT_ANSWER: AskResponse = {
+  outcome: "template",
+  answer:
+    "I don't know where you vote yet. Set up your ballot page first — then I can answer this from your saved ballot.",
+  results: [BALLOT_CARD],
+  data_current_as_of: null,
+};
+
+async function renderMyMeasuresBallotAnswer(db: Pool, userId: string | null): Promise<AskResponse> {
+  const elections = await loadAskerBallotElections(db, userId);
+  return elections === null ? NO_SAVED_BALLOT_ANSWER : myMeasuresBallotAnswer(elections);
+}
+
+async function renderMyCloseRacesAnswer(db: Pool, userId: string | null): Promise<AskResponse> {
+  const elections = await loadAskerBallotElections(db, userId);
+  return elections === null ? NO_SAVED_BALLOT_ANSWER : myCloseRacesAnswer(elections);
 }
 
 function describeEntityOption(match: CandidateEntityMatch): string {
@@ -919,6 +1084,14 @@ export function createAskService(options: CreateAskServiceOptions): AskService {
         if (intent.kind === "my_issues_ballot") {
           const response = await renderMyIssuesBallotAnswer(db, userId ?? null);
           return finish(response, "intent:my_issues_ballot", intent.state);
+        }
+        if (intent.kind === "my_measures_ballot") {
+          const response = await renderMyMeasuresBallotAnswer(db, userId ?? null);
+          return finish(response, "intent:my_measures_ballot", intent.state);
+        }
+        if (intent.kind === "my_close_races") {
+          const response = await renderMyCloseRacesAnswer(db, userId ?? null);
+          return finish(response, "intent:my_close_races", intent.state);
         }
         const response = await renderIntentAnswer(db, intent);
         const answeredBy =

@@ -5,9 +5,12 @@ import {
   createAskService,
   electionCountdownAnswer,
   fallbackNotice,
+  myCloseRacesAnswer,
   myIssuesBallotAnswer,
+  myMeasuresBallotAnswer,
   nameTokens,
   questionNamesAnyOf,
+  type MyBallotElection,
   type MyIssuesBallotElection,
 } from "../../src/chatbot/askService.js";
 
@@ -49,6 +52,136 @@ describe("questionNamesAnyOf", () => {
     expect(questionNamesAnyOf(["June Carter"], "when is the June primary?")).toBe(false);
     // The same candidates still match on their other tokens.
     expect(questionNamesAnyOf(["Will Smith"], "what about Smith?")).toBe(true);
+  });
+});
+
+describe("personalized ballot templates", () => {
+  const votePower = (score: number | null): MyBallotElection["vote_power"] => ({
+    score,
+    label: "medium",
+    confidence: "low",
+    representation_level: "medium",
+    decisiveness_level: "medium",
+    factors: [],
+  });
+  const race = (
+    id: string,
+    title: string,
+    overrides: Partial<MyBallotElection> = {}
+  ): MyBallotElection => ({
+    id,
+    official_ballot_title: title,
+    election_date: "2026-11-03",
+    race_type: "office",
+    vote_power: votePower(null),
+    current_competitiveness: null,
+    historical_competitiveness: null,
+    ...overrides,
+  });
+  const historical = (
+    label: NonNullable<MyBallotElection["historical_competitiveness"]>["competitiveness_label"],
+    display: string
+  ): NonNullable<MyBallotElection["historical_competitiveness"]> => ({
+    display_label: display,
+    display_description: `${display} based on 2024 margins.`,
+    source: "test",
+    source_url: null,
+    election_year: 2024,
+    winner_party: null,
+    runner_up_party: null,
+    margin_percent: 3,
+    competitiveness_label: label,
+    stale_after_redistricting: false,
+  });
+  const current = (
+    label: NonNullable<MyBallotElection["current_competitiveness"]>["competitiveness_label"],
+    display: string
+  ): NonNullable<MyBallotElection["current_competitiveness"]> => ({
+    display_label: display,
+    display_description: `${display} per current analyst ratings.`,
+    competitiveness_label: label,
+    method: "outlet_consensus",
+    confidence: "high",
+    as_of: "2026-08-01",
+  });
+
+  describe("myMeasuresBallotAnswer", () => {
+    it("lists only measure races, reader order kept", () => {
+      const response = myMeasuresBallotAnswer([
+        race("e1", "Governor"),
+        race("m1", "Proposition 4", { race_type: "ballot_measure" }),
+        race("m2", "Proposition 33", { race_type: "ballot_measure" }),
+      ]);
+      expect(response.outcome).toBe("template");
+      expect(response.answer).toBe("2 ballot measures are on your ballot: Proposition 4; Proposition 33.");
+      expect(response.results.map((card) => card.url)).toEqual(["/elections/m1", "/elections/m2"]);
+    });
+
+    it("degrades to the ballot card when no measures exist", () => {
+      const response = myMeasuresBallotAnswer([race("e1", "Governor")]);
+      expect(response.answer).toContain("don't see any ballot measures");
+      expect(response.results.map((card) => card.url)).toEqual(["/me/ballot"]);
+    });
+  });
+
+  describe("myCloseRacesAnswer", () => {
+    it("ranks by label order, then vote power, and skips safe races", () => {
+      const response = myCloseRacesAnswer([
+        race("e1", "Governor", {
+          historical_competitiveness: historical("competitive", "Competitive"),
+          vote_power: votePower(0.9),
+        }),
+        race("e2", "US Senate", { current_competitiveness: current("toss_up", "Toss-up") }),
+        race("e3", "Sheriff", { historical_competitiveness: historical("safe", "Safe") }),
+        race("e4", "Mayor", {
+          historical_competitiveness: historical("competitive", "Competitive"),
+          vote_power: votePower(0.2),
+        }),
+      ]);
+      expect(response.outcome).toBe("template");
+      // Toss-up first; the two competitive races order by vote power.
+      expect(response.answer).toContain(
+        "3 races on your ballot look close: US Senate (Toss-up); Governor (Competitive); Mayor (Competitive)."
+      );
+      expect(response.results.map((card) => card.url)).toEqual(["/elections/e2", "/elections/e1", "/elections/e4"]);
+      expect(response.results[0]?.snippet).toBe("Toss-up — Toss-up per current analyst ratings.");
+    });
+
+    it("prefers the current rating over the historical one for the same race", () => {
+      const response = myCloseRacesAnswer([
+        race("e1", "Governor", {
+          current_competitiveness: current("toss_up", "Toss-up"),
+          historical_competitiveness: historical("safe", "Safe"),
+        }),
+      ]);
+      expect(response.answer).toContain("1 race on your ballot looks close: Governor (Toss-up).");
+    });
+
+    it("says so when rated races exist but none is close", () => {
+      const response = myCloseRacesAnswer([
+        race("e1", "Governor", { historical_competitiveness: historical("safe", "Safe") }),
+        race("e2", "Sheriff", { historical_competitiveness: historical("somewhat_competitive", "Somewhat competitive") }),
+      ]);
+      expect(response.answer).toBe(
+        "None of the 2 rated races on your ballot look especially close right now. You can browse your full ballot for the details."
+      );
+      expect(response.results.map((card) => card.url)).toEqual(["/me/ballot"]);
+    });
+
+    it("uses singular wording for a single rated race", () => {
+      const response = myCloseRacesAnswer([
+        race("e1", "Governor", { historical_competitiveness: historical("safe", "Safe") }),
+      ]);
+      expect(response.answer).toBe(
+        "The 1 rated race on your ballot doesn't look especially close right now. You can browse your full ballot for the details."
+      );
+    });
+
+    it("degrades honestly when nothing on the ballot is rated", () => {
+      const response = myCloseRacesAnswer([race("e1", "Governor")]);
+      expect(response.answer).toContain("don't have competitiveness ratings");
+      expect(response.results.map((card) => card.url)).toEqual(["/me/ballot"]);
+    });
   });
 });
 

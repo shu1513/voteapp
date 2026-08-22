@@ -160,6 +160,45 @@ describe("personal-issues questions route to the saved-areas ballot match", () =
     }
   });
 
+  it("detects the personalized measures listing before the ballot deep link", () => {
+    for (const q of [
+      "What measures are on my ballot?",
+      "Are there any propositions on my ballot this year?",
+      "what amendments am I voting on in my county?",
+      "ballot questions on my ballot",
+    ]) {
+      expect(detectIntent(q)?.kind, q).toBe("my_measures_ballot");
+    }
+    // Without the personal frame the measure itself is the subject —
+    // retrieval owns it.
+    expect(detectIntent("What is Proposition 39?")).toBeNull();
+    expect(detectIntent("What does a yes vote mean on Proposition 39 in California?")).toBeNull();
+    // Geography possessives are scope, not ballot possession (PR #805
+    // review): research questions about a place must stay with retrieval.
+    expect(detectIntent("What measures did our city pass?")).toBeNull();
+    expect(detectIntent("What constitutional amendments does my state have?")).toBeNull();
+  });
+
+  it("detects the personalized close-races listing", () => {
+    for (const q of [
+      "Which of my races are close?",
+      "which elections on my ballot are competitive?",
+      "any toss-ups on my ballot?",
+      "which of my races matter most?",
+      "Where does my vote matter most?",
+      "where will my vote count the most?",
+      "Which races matter most to my vote?",
+    ]) {
+      expect(detectIntent(q)?.kind, q).toBe("my_close_races");
+    }
+    // Race-specific closeness questions are about that race, not the ballot
+    // — including ones scoped by a geography possessive (PR #805 review).
+    expect(detectIntent("Is the Georgia Senate race close?")).toBeNull();
+    expect(detectIntent("Is my state senate race close?")).toBeNull();
+    // The issues phrasing stays with my_issues_ballot even with "most".
+    expect(detectIntent("which race has most of my most important issues?")?.kind).toBe("my_issues_ballot");
+  });
+
   it("wins over the plain ballot deep link when both frames appear", () => {
     expect(detectIntent("what's on my ballot that affects issues I care about?")?.kind).toBe("my_issues_ballot");
   });
