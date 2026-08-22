@@ -295,13 +295,22 @@ async function listCleanupCandidateUrls(
 ): Promise<string[]> {
   const result = await pool.query<{ url: string }>(
     `
-      SELECT url
-      FROM public.source_url_health
-      WHERE consecutive_hard_failures >= $1::int
-        AND first_hard_failed_at IS NOT NULL
-        AND first_hard_failed_at <= ($2::timestamptz - make_interval(days => $3::int))
-        AND last_http_status IN (404, 410)
-      ORDER BY first_hard_failed_at ASC, url ASC
+      SELECT h.url
+      FROM public.source_url_health AS h
+      WHERE h.consecutive_hard_failures >= $1::int
+        AND h.first_hard_failed_at IS NOT NULL
+        AND h.first_hard_failed_at <= ($2::timestamptz - make_interval(days => $3::int))
+        AND h.last_http_status IN (404, 410)
+        -- source_url_health is shared with the candidate-website checker, so
+        -- an unscoped select would hand candidate URLs to THIS cleanup, which
+        -- would delete their health rows (erasing retirement streaks) and burn
+        -- this run's cleanup slots on rows it cannot act on.
+        AND EXISTS (
+          SELECT 1
+          FROM public.election_seed_urls AS s
+          WHERE s.url = h.url
+        )
+      ORDER BY h.first_hard_failed_at ASC, h.url ASC
       LIMIT $4::int
     `,
     [input.hardFailureThreshold, input.asOfTimestamp, input.hardFailureWindowDays, input.limit]
@@ -337,6 +346,17 @@ async function deleteSourceUrlHealthByUrl(pool: Pool, urls: readonly string[]): 
     `
       DELETE FROM public.source_url_health
       WHERE url = ANY($1::text[])
+        -- A URL can be both an election seed and a candidate's website. The
+        -- seed rows are gone by the time this runs, but the candidate checker
+        -- still tracks the URL here — deleting its row would erase the hard-
+        -- failure streak its retirement gate is accumulating.
+        AND NOT EXISTS (
+          SELECT 1
+          FROM public.candidates AS c
+          WHERE c.official_website_url = source_url_health.url
+            AND c.deleted_at IS NULL
+            AND c.merged_into_candidate_id IS NULL
+        )
     `,
     [urls]
   );

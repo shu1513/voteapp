@@ -507,7 +507,8 @@ export function buildFormerWebsitesAfterRetire(input: {
 
 async function retireCandidateWebsite(
   client: PoolClient,
-  candidateId: string
+  candidateId: string,
+  expectedUrl: string
 ): Promise<RetiredWebsite | null> {
   const locked = await client.query<{
     id: string;
@@ -524,7 +525,12 @@ async function retireCandidateWebsite(
     [candidateId]
   );
   const row = locked.rows[0];
-  if (!row || !row.official_website_url) {
+  // Eligibility was computed against expectedUrl OUTSIDE this transaction. If
+  // a profile writer replaced the URL in the gap (the repair this sweep exists
+  // to provoke), the stored value is now a live site whose health was never
+  // judged — retiring it would archive the fix. Skip unless the row still
+  // holds the exact URL whose failure streak earned retirement.
+  if (!row || row.official_website_url !== expectedUrl) {
     return null;
   }
   const formerWebsites = buildFormerWebsitesAfterRetire({
@@ -643,7 +649,11 @@ export async function runCandidateWebsiteHealthProducer(
         for (const candidate of retireCandidates) {
           await client.query("BEGIN");
           try {
-            const retired = await retireCandidateWebsite(client, candidate.id);
+            const retired = await retireCandidateWebsite(
+              client,
+              candidate.id,
+              candidate.official_website_url
+            );
             await client.query("COMMIT");
             if (retired) {
               baseResult.retired.push(retired);

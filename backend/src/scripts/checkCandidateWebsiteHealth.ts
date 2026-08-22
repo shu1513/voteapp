@@ -1,4 +1,7 @@
+import { getPipelineEnv } from "../config/env.js";
 import { runCandidateWebsiteHealthProducer } from "../pipeline/candidates/candidateWebsiteHealthProducer.js";
+import { assertKnownCliFlags } from "./manualCliFlags.js";
+import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
 
 // Direct-run sweep over candidates.official_website_url (no scheduler): checks
 // reachability, records outcomes in source_url_health, and — only when
@@ -18,9 +21,17 @@ function readLimitArg(argv: readonly string[]): number | undefined {
   return Number.parseInt(raw, 10);
 }
 
-const dryRun = process.argv.includes("--dry-run");
-const force = process.argv.includes("--force");
-const maxUrlsOverride = readLimitArg(process.argv);
+const argv = process.argv.slice(2);
+assertKnownCliFlags("candidates:website-health:check", argv, [
+  { name: "--dry-run", value: "none" },
+  { name: "--force", value: "none" },
+  { name: "--limit", value: "equals" },
+]);
+const dryRun = argv.includes("--dry-run");
+const force = argv.includes("--force");
+const maxUrlsOverride = readLimitArg(argv);
+
+requireLocalDatabaseTarget(getPipelineEnv().DATABASE_URL);
 
 runCandidateWebsiteHealthProducer({
   dryRun,

@@ -41,7 +41,7 @@ describe("runSourceUrlHealthProducer", () => {
         upsertArgs = params ?? null;
         return { rows: [], rowCount: 1 };
       }
-      if (sql.includes("SELECT url\n      FROM public.source_url_health")) {
+      if (sql.includes("SELECT h.url\n      FROM public.source_url_health AS h")) {
         return { rows: [], rowCount: 0 };
       }
       throw new Error(`unexpected query in test: ${sql.slice(0, 120)}`);
