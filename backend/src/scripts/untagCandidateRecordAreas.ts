@@ -24,6 +24,14 @@ import { requireLocalDatabaseTarget } from "./localDatabaseGuard.js";
  *
  * File format: JSON array of { recordId, researchAreaSlug, reason, note? }.
  * Dry run is the default; --apply performs the deletes.
+ *
+ * Production: research:promote deliberately never deletes target-only rows,
+ * so a local untag does NOT propagate — the stale tag stays live in prod
+ * (promote reports it in its target-only tag count). Promote untags by
+ * KEEPING every applied untags file and re-running it against prod
+ * (ALLOW_REMOTE_DB_WRITES=1, dry-run first): the untags file is the reviewed
+ * deletion manifest, and the compare-and-swap re-verifies each tag against
+ * prod's own stance and description before deleting.
  */
 
 type UntagInput = {

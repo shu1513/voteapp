@@ -359,6 +359,14 @@ export function mechanicalCheckFailure(
 // research. Zero rows back means stale — nothing written, resume retries with
 // fresh text. Identifiers are compile-time constants keyed by the target
 // enum, never interpolated from data.
+//
+// The audit table holds one row per target (unique on target_table/id/column):
+// latest state, not a log. The conflict updates below deliberately never touch
+// original_text — it keeps the FIRST text ever recorded for the target, so a
+// repair pass over an earlier rewrite (A -> B -> C) still shows the
+// pre-rewrite text A. EXCLUDED.original_text at that point would be B, and
+// overwriting would erase the only stored copy of A. The rest of the row
+// (status, rewritten_text, provider, timestamp) tracks the latest attempt.
 function buildApplySql(targetTable: string, targetColumn: string): string {
   if (targetTable === "candidate_records") {
     // The rewrite re-keys the row in place, so the same statement must leave
@@ -384,7 +392,7 @@ function buildApplySql(targetTable: string, targetColumn: string): string {
         (target_table, target_id, target_column, status, original_text, rewritten_text, flag_reason, provider, model)
       SELECT $1, $2, $3, 'applied', $5, $4, NULL, $6, $7 FROM updated
       ON CONFLICT (target_table, target_id, target_column) DO UPDATE
-        SET status = 'applied', original_text = EXCLUDED.original_text,
+        SET status = 'applied',
             rewritten_text = EXCLUDED.rewritten_text, flag_reason = NULL,
             provider = EXCLUDED.provider, model = EXCLUDED.model, created_at = now()
     `;
@@ -413,7 +421,7 @@ function buildFlaggedSql(targetTable: string, targetColumn: string): string {
       SELECT 1 FROM public.${targetTable} WHERE id = $2 AND ${targetColumn} IS NOT DISTINCT FROM $4
     )
     ON CONFLICT (target_table, target_id, target_column) DO UPDATE
-      SET status = 'flagged', original_text = EXCLUDED.original_text,
+      SET status = 'flagged',
           rewritten_text = EXCLUDED.rewritten_text, flag_reason = EXCLUDED.flag_reason,
           provider = EXCLUDED.provider, model = EXCLUDED.model, created_at = now()
   `;
