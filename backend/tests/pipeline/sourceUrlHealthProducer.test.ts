@@ -25,6 +25,23 @@ describe("sourceUrlHealthProducer helpers", () => {
     expect(classified.statusCode).toBe(404);
   });
 
+  it("classifies permanent unresolved hostname as hard_fail (shared contract with candidate producer)", () => {
+    const classified = classifyUrlHealthCheckResult({
+      ok: false,
+      reason: "citation URL hostname could not be resolved",
+    });
+    expect(classified.outcome).toBe("hard_fail");
+    expect(classified.statusCode).toBeNull();
+  });
+
+  it("keeps transient DNS resolver failures transient", () => {
+    const classified = classifyUrlHealthCheckResult({
+      ok: false,
+      reason: "citation URL DNS lookup failed transiently: EAI_AGAIN",
+    });
+    expect(classified.outcome).toBe("transient_fail");
+  });
+
   it("classifies timeout as transient_fail", () => {
     const classified = classifyUrlHealthCheckResult({
       ok: false,

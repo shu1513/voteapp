@@ -87,6 +87,17 @@ function parseStatusCodeFromReason(reason: string): number | null {
   return null;
 }
 
+// The unresolved-hostname reason from urlReachability.ts is permanent by that
+// module's own contract: transient resolver failures (EAI_AGAIN etc.) get a
+// distinct "failed transiently" reason, so this string means ENOTFOUND — the
+// domain itself is gone. Classified hard for every consumer: source_url_health
+// rows are shared between the seed-URL and candidate-website producers (315
+// URLs overlap live), and divergent classifications would let one producer's
+// write contradict the other's streak on the same row. Seed cleanup is
+// unaffected — isCleanupEligible additionally requires a 404/410 status, which
+// a dead domain can never present.
+const UNRESOLVED_HOSTNAME_REASON = "hostname could not be resolved";
+
 export function classifyUrlHealthCheckResult(result: UrlReachabilityResult): UrlHealthClassification {
   if (result.ok) {
     return {
@@ -98,6 +109,14 @@ export function classifyUrlHealthCheckResult(result: UrlReachabilityResult): Url
 
   const statusCode = parseStatusCodeFromReason(result.reason);
   if (statusCode === 404 || statusCode === 410) {
+    return {
+      outcome: "hard_fail",
+      statusCode,
+      reason: result.reason,
+    };
+  }
+
+  if (result.reason.toLowerCase().includes(UNRESOLVED_HOSTNAME_REASON)) {
     return {
       outcome: "hard_fail",
       statusCode,
@@ -271,6 +290,11 @@ async function upsertCheckedUrlStates(pool: Pool, rows: CheckedUrlState[]): Prom
         first_hard_failed_at = EXCLUDED.first_hard_failed_at,
         last_hard_failed_at = EXCLUDED.last_hard_failed_at,
         updated_at = now()
+      -- Monotonic guard: checks run for minutes between read and write, so a
+      -- slower concurrent run (either producer — the table is shared) could
+      -- land its older observation after a newer one. Newest check wins.
+      WHERE source_url_health.last_checked_at IS NULL
+         OR source_url_health.last_checked_at <= EXCLUDED.last_checked_at
     `,
     [
       rows.map((row) => row.url),
@@ -295,13 +319,22 @@ async function listCleanupCandidateUrls(
 ): Promise<string[]> {
   const result = await pool.query<{ url: string }>(
     `
-      SELECT url
-      FROM public.source_url_health
-      WHERE consecutive_hard_failures >= $1::int
-        AND first_hard_failed_at IS NOT NULL
-        AND first_hard_failed_at <= ($2::timestamptz - make_interval(days => $3::int))
-        AND last_http_status IN (404, 410)
-      ORDER BY first_hard_failed_at ASC, url ASC
+      SELECT h.url
+      FROM public.source_url_health AS h
+      WHERE h.consecutive_hard_failures >= $1::int
+        AND h.first_hard_failed_at IS NOT NULL
+        AND h.first_hard_failed_at <= ($2::timestamptz - make_interval(days => $3::int))
+        AND h.last_http_status IN (404, 410)
+        -- source_url_health is shared with the candidate-website checker, so
+        -- an unscoped select would hand candidate URLs to THIS cleanup, which
+        -- would delete their health rows (erasing retirement streaks) and burn
+        -- this run's cleanup slots on rows it cannot act on.
+        AND EXISTS (
+          SELECT 1
+          FROM public.election_seed_urls AS s
+          WHERE s.url = h.url
+        )
+      ORDER BY h.first_hard_failed_at ASC, h.url ASC
       LIMIT $4::int
     `,
     [input.hardFailureThreshold, input.asOfTimestamp, input.hardFailureWindowDays, input.limit]
@@ -337,6 +370,17 @@ async function deleteSourceUrlHealthByUrl(pool: Pool, urls: readonly string[]): 
     `
       DELETE FROM public.source_url_health
       WHERE url = ANY($1::text[])
+        -- A URL can be both an election seed and a candidate's website. The
+        -- seed rows are gone by the time this runs, but the candidate checker
+        -- still tracks the URL here — deleting its row would erase the hard-
+        -- failure streak its retirement gate is accumulating.
+        AND NOT EXISTS (
+          SELECT 1
+          FROM public.candidates AS c
+          WHERE c.official_website_url = source_url_health.url
+            AND c.deleted_at IS NULL
+            AND c.merged_into_candidate_id IS NULL
+        )
     `,
     [urls]
   );
