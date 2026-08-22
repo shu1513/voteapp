@@ -7,7 +7,7 @@ model, and the repo forbids automatic provider calls.
 
 Fields per record:
 
-- `fail_any_stance: true` — the record states no position; any stance label is a failure.
+- `fail_any_stance: true` — the record states no position; any stance label is a failure. The only valid stance-free outputs are `general` and `integrity_and_ethics`; any other slug without a stance is rejected by `candidateRecordAreaLabelPayloadContract` before it reaches the writer, so it is a contract error, not a benchmark pass.
 - `fail: [...]` — `slug/stance` pairs production emitted that the source does not support.
 - `expect: [...]` — the correct label when the production one had the wrong direction.
 - `require: [...]` — keep-controls: a real stance that must still be emitted (regression guard).
