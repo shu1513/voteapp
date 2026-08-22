@@ -12,6 +12,11 @@ Fields per record:
 - `expect: [...]` — the correct label when the production one had the wrong direction.
 - `require: [...]` — keep-controls: a real stance that must still be emitted (regression guard).
 
+`fail` is a floor, not the full overclaim set: it lists the pairs production actually
+emitted. Score every emitted stance label that is not in `expect` or `require` by
+hand against the description; an unsupported one is a failure even if it is not
+listed.
+
 Re-run by hand (no `AI_API_CALLS_ALLOWED`, no API key):
 
 ```bash
