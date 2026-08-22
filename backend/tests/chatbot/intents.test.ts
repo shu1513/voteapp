@@ -187,6 +187,7 @@ describe("personal-issues questions route to the saved-areas ballot match", () =
       "which of my races matter most?",
       "Where does my vote matter most?",
       "where will my vote count the most?",
+      "Which races matter most to my vote?",
     ]) {
       expect(detectIntent(q)?.kind, q).toBe("my_close_races");
     }

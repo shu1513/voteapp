@@ -249,8 +249,12 @@ export function detectIntent(question: string): IntentMatch | null {
   // city pass?" are research questions about a specific thing, and
   // retrieval owns them — same reasoning as MY_PLACE_RE below, which only
   // routes with a listing frame attached.
+  // "my vote" stays a possession noun ("which races matter most to my
+  // vote?") — endorsement asks can't reach here (policy_refusal runs
+  // first), and without a measures/closeness noun the frame alone
+  // matches nothing.
   const MY_BALLOT_FRAME =
-    /\b(?:my|our)\s+(?:ballot|races?|elections?)\b|\bam\s+i\s+voting\s+on\b|\bdo\s+i\s+vote\s+on\b/i;
+    /\b(?:my|our)\s+(?:ballot|races?|elections?|vote)\b|\bam\s+i\s+voting\s+on\b|\bdo\s+i\s+vote\s+on\b/i;
   if (
     /\b(?:measures?|propositions?|ballot\s+questions?|amendments?|referend(?:um|a|ums))\b/i.test(q) &&
     MY_BALLOT_FRAME.test(q)
