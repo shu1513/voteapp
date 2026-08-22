@@ -5,7 +5,7 @@ import { generateAuthToken, hashPassword, validatePasswordPolicy, verifyPassword
 import { issueUserAuthToken, consumeUserAuthToken } from "./authTokenStore.js";
 import type { AuthMailer } from "./authMailer.js";
 import { isUuid } from "../utils/uuid.js";
-import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
+import { CURRENT_TERMS_VERSION, isAcceptableTermsVersion } from "../constants/legal.js";
 import { recordTermsAcceptance } from "../pipeline/users/userTermsAcceptances.js";
 import type { VerifyGoogleIdToken } from "./googleIdToken.js";
 
@@ -503,6 +503,13 @@ function createLoginWithGoogle(deps: {
     identity: GoogleIdentity,
     input: AuthGoogleLoginInput
   ): Promise<{ userId: string; sessionEpoch: number }> {
+    // Signup paths stamp the version the client's bundle actually presented
+    // (already validated in loginWithGoogle — current or grace). Login paths
+    // never touch terms fields, so the fallback is defensive only.
+    const signupTermsVersion =
+      typeof input.acceptedTermsVersion === "string" && input.acceptedTermsVersion.trim().length > 0
+        ? input.acceptedTermsVersion.trim()
+        : CURRENT_TERMS_VERSION;
     const client = await deps.db.connect();
     try {
       await client.query("BEGIN");
@@ -575,7 +582,7 @@ function createLoginWithGoogle(deps: {
               AND deleted_at IS NULL
             RETURNING session_epoch
           `,
-          [byEmail.id, identity.sub, identity.givenName ?? deriveFirstName(identity.email, null), CURRENT_TERMS_VERSION]
+          [byEmail.id, identity.sub, identity.givenName ?? deriveFirstName(identity.email, null), signupTermsVersion]
         );
         const takeoverEpoch = takeover.rows[0]?.session_epoch;
         if (typeof takeoverEpoch !== "number") {
@@ -583,7 +590,7 @@ function createLoginWithGoogle(deps: {
         }
         await recordTermsAcceptance(client, {
           userId: byEmail.id,
-          termsVersion: CURRENT_TERMS_VERSION,
+          termsVersion: signupTermsVersion,
           context: "registration",
         });
         await updateLastLoggedIn(client, byEmail.id);
@@ -612,7 +619,7 @@ function createLoginWithGoogle(deps: {
           VALUES ($1, $2::citext, NULL, true, $3, $4, now())
           RETURNING id::text AS id, session_epoch
         `,
-        [identity.givenName ?? deriveFirstName(identity.email, null), identity.email, identity.sub, CURRENT_TERMS_VERSION]
+        [identity.givenName ?? deriveFirstName(identity.email, null), identity.email, identity.sub, signupTermsVersion]
       );
       const row = inserted.rows[0];
       if (!row) {
@@ -620,7 +627,7 @@ function createLoginWithGoogle(deps: {
       }
       await recordTermsAcceptance(client, {
         userId: row.id,
-        termsVersion: CURRENT_TERMS_VERSION,
+        termsVersion: signupTermsVersion,
         context: "registration",
       });
       await updateLastLoggedIn(client, row.id);
@@ -645,10 +652,10 @@ function createLoginWithGoogle(deps: {
       const acceptedTermsVersion =
         typeof input.acceptedTermsVersion === "string" ? input.acceptedTermsVersion.trim() : "";
       // Same dual-layer rule as register: no caller may persist acceptance
-      // of anything but the current terms version.
-      if (acceptedTermsVersion !== CURRENT_TERMS_VERSION) {
+      // of anything but the current version or a listed grace version.
+      if (!isAcceptableTermsVersion(acceptedTermsVersion)) {
         throw new TypeError(
-          `acceptedTermsVersion must be the current terms version (${CURRENT_TERMS_VERSION})`
+          `acceptedTermsVersion must be an accepted terms version (current: ${CURRENT_TERMS_VERSION})`
         );
       }
     }
@@ -742,10 +749,11 @@ export function createAuthService(options: AuthServiceOptions): AuthService {
         typeof input.acceptedTermsVersion === "string" ? input.acceptedTermsVersion.trim() : "";
       // Enforced here as well as at the API layer: no caller (script, admin
       // tooling, future route) may persist acceptance of anything but the
-      // current terms version — the stored value is the evidentiary record.
-      if (acceptedTermsVersion !== CURRENT_TERMS_VERSION) {
+      // current version or a listed grace version — the stored value is the
+      // evidentiary record of what the visitor's bundle actually showed.
+      if (!isAcceptableTermsVersion(acceptedTermsVersion)) {
         throw new TypeError(
-          `acceptedTermsVersion must be the current terms version (${CURRENT_TERMS_VERSION})`
+          `acceptedTermsVersion must be an accepted terms version (current: ${CURRENT_TERMS_VERSION})`
         );
       }
       const passwordHash = await hashPassword(input.password);

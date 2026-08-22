@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { createAuthService } from "../../src/auth/authService.js";
-import { CURRENT_TERMS_VERSION } from "../../src/constants/legal.js";
+import { CURRENT_TERMS_VERSION, GRACE_TERMS_VERSIONS } from "../../src/constants/legal.js";
 import { hashPassword } from "../../src/auth/authPrimitives.js";
 
 const USER_ID = "11111111-1111-4111-8111-111111111111";
@@ -245,7 +245,7 @@ describe("createAuthService register terms acceptance", () => {
         password: "correct horse battery staple",
         acceptedTermsVersion: "   ",
       })
-    ).rejects.toThrow("current terms version");
+    ).rejects.toThrow("accepted terms version");
     // Defense-in-depth: even a direct caller bypassing the API layer cannot
     // persist acceptance of a superseded version.
     await expect(
@@ -254,8 +254,42 @@ describe("createAuthService register terms acceptance", () => {
         password: "correct horse battery staple",
         acceptedTermsVersion: "0.9",
       })
-    ).rejects.toThrow("current terms version");
+    ).rejects.toThrow("accepted terms version");
     expect(db.connect).not.toHaveBeenCalled();
+  });
+
+  it("accepts and records a grace terms version during a bump rollout", async () => {
+    const graceVersion = GRACE_TERMS_VERSIONS[0];
+    if (graceVersion === undefined) {
+      // Grace list empty between rollouts — nothing to verify.
+      return;
+    }
+    const client = createDbClientMock();
+    client.query
+      .mockResolvedValueOnce({ rows: [] }) // BEGIN
+      .mockResolvedValueOnce({ rows: [] }) // user lookup: none
+      .mockResolvedValueOnce({ rows: [userRow({ email_verified: false })] }) // INSERT user
+      .mockResolvedValueOnce({ rows: [] }) // INSERT terms acceptance
+      .mockResolvedValueOnce({ rows: [] }) // void outstanding tokens
+      .mockResolvedValueOnce({ rows: [{ id: "token-id" }] }) // INSERT token
+      .mockResolvedValueOnce({ rows: [] }); // COMMIT
+    const service = createAuthService({
+      db: createDbMock(client) as never,
+      redis: {} as never,
+      mailer: createMailerMock(),
+      publicBaseUrl: "https://example.com",
+    });
+
+    await service.register({
+      email: "new@example.com",
+      password: "correct horse battery staple",
+      acceptedTermsVersion: graceVersion,
+    });
+
+    // The stored value is the evidentiary record of what the stale bundle
+    // actually showed — the grace version, never silently upgraded.
+    const insertCall = client.query.mock.calls.find((call) => String(call[0]).includes("INSERT INTO public.users"));
+    expect(insertCall?.[1]?.[3]).toBe(graceVersion);
   });
 });
 

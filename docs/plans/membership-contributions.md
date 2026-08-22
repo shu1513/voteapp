@@ -61,14 +61,24 @@ CREATE TABLE billing_payments (
 CREATE INDEX billing_payments_customer_paid_at_idx
     ON billing_payments (billing_customer_id, paid_at DESC);
 
--- Subscription state: at most one per billing customer (v1).
+-- One row PER SUBSCRIPTION, append-only across a customer's lifetime: a
+-- cancel + resubscribe adds a row, never overwrites one. This is what
+-- preserves consent evidence — CA BPC §17602 wants consent verification
+-- retained ≥3 years (or 1 year past termination), and a single
+-- row-per-customer would overwrite the prior subscription's consent
+-- pointer on resubscribe. "Current membership" = the one nonterminal row.
 CREATE TABLE billing_subscriptions (
-    billing_customer_id uuid PRIMARY KEY REFERENCES billing_customers(id),
-    stripe_subscription_id text NOT NULL UNIQUE,
+    stripe_subscription_id text PRIMARY KEY,
+    billing_customer_id uuid NOT NULL REFERENCES billing_customers(id),
     -- Consent evidence pointer (CA auto-renewal law): the Checkout Session
     -- that carried the renewal-terms consent checkbox. Stripe retains the
-    -- session (with its consent record) retrievably; we keep the id.
+    -- session (with its consent record) retrievably; we keep the id, one
+    -- per subscription, for the life of the row.
     stripe_checkout_session_id text,
+    -- §17602 post-purchase acknowledgment: set when the membership-started
+    -- email (renewal terms + how to cancel) was sent. NULL = not yet sent;
+    -- the next subscription webhook poke retries the send.
+    acknowledgment_sent_at timestamptz,
     monthly_amount_cents integer NOT NULL CHECK (monthly_amount_cents >= 500),
     stripe_status text NOT NULL,           -- raw Stripe status verbatim
     cancel_at_period_end boolean NOT NULL DEFAULT false,
@@ -78,9 +88,15 @@ CREATE TABLE billing_subscriptions (
     created_at timestamptz NOT NULL DEFAULT now(),
     updated_at timestamptz NOT NULL DEFAULT now()
 );
+-- At most one live subscription per customer, enforced by the DB itself
+-- (the webhook duplicate-sub guard cancels the loser of a race; this index
+-- is the backstop that makes the invariant impossible to violate).
+CREATE UNIQUE INDEX billing_subscriptions_one_live_per_customer_idx
+    ON billing_subscriptions (billing_customer_id)
+    WHERE stripe_status NOT IN ('canceled', 'incomplete_expired');
 ```
 
-- "Is this user a paid member" = join through `billing_customers` where `stripe_status IN ('active', 'past_due')` (`past_due` keeps member treatment during the retry window; everything else — `canceled`, `incomplete`, `unpaid`, etc. — is not a member). Raw status is stored verbatim so new Stripe statuses never break the schema.
+- "Is this user a paid member" = join through `billing_customers` to the customer's nonterminal subscription row where `stripe_status IN ('active', 'past_due')` (`past_due` keeps member treatment during the retry window; everything else — `canceled`, `incomplete`, `unpaid`, etc. — is not a member). Raw status is stored verbatim so new Stripe statuses never break the schema.
 - `stripe_payment_ref UNIQUE` = idempotent ledger writes under webhook retries (`ON CONFLICT DO NOTHING`).
 - Totals shown to users = `SUM(amount_cents - refunded_amount_cents)` (net).
 - All identifiers ≤ 63 chars.
@@ -112,7 +128,8 @@ First three: `requireVerifiedAuthenticatedUser` + JSON-parser path list. Webhook
    - `5xx`: transient DB/internal failure → Stripe retries (this is the delivery guarantee; "always 200" would silently drop payments).
    Events:
    - `checkout.session.completed` (`mode: payment`) → insert ledger row (`one_time`, ref = payment_intent).
-   - `checkout.session.completed` (`mode: subscription`) → **fetch the subscription from Stripe and upsert `billing_subscriptions` from that current state** (no ledger row here — first month's row comes from `invoice.paid`; writing it in both places double-counts).
+   - `checkout.session.completed` (`mode: subscription`) → **fetch the subscription from Stripe and upsert `billing_subscriptions` keyed by subscription id** from that current state (no ledger row here — first month's row comes from `invoice.paid`; writing it in both places double-counts). A resubscribe therefore adds a new row; old rows are never touched (consent history).
+   - **Membership-started acknowledgment email** (§17602's retainable post-purchase acknowledgment — a Stripe receipt alone doesn't carry cancellation policy): when a subscription row first reaches a live status and `acknowledgment_sent_at IS NULL`, send one SES email (existing mailer infra) stating the monthly amount, that it renews monthly until canceled, how to cancel (settings → Manage membership), and linking the Terms; then stamp `acknowledgment_sent_at`. Send is best-effort per event — on failure the column stays NULL and the next subscription poke retries, so the webhook never 5xxes over email.
    - `customer.subscription.created` / `.updated` / `.deleted` → same treatment: the event is a poke, the fetched subscription object is the truth. This makes out-of-order delivery harmless — every handler writes current reality, not the event's snapshot.
    - `invoice.paid` (subscription invoices, amount > 0) → ledger row only (`monthly`, ref = invoice id). Never flips membership status — status recovery arrives via its own `subscription.updated` event.
    - `charge.refunded` (the **only** refund event we subscribe to) → find the ledger row by the charge's `payment_intent` and **set** `refunded_amount_cents = charge.amount_refunded` — Stripe's cumulative figure, an absolute assignment, never an increment. That one choice makes the handler idempotent under retries, correct for partial refunds, and self-correcting when a pending refund later fails (a `refund.created` handler would count refunds that never succeed, and listening to two refund events would double-apply). `refunded_at` = first time the value goes above zero. Not subscribed: `refund.created`/`refund.updated`/`refund.failed` (all folded into the charge's cumulative number) and `invoice.payment_failed` (status arrives via `subscription.updated`). Disputes: log + handle manually in the dashboard (volume will be ~0).
@@ -133,7 +150,7 @@ In `authService` deleteAccount, before `DELETE FROM users`: look up the user's b
 ### Backend tests
 
 - Checkout validation (mins, cap, kind, non-integer); 409 while live subscription.
-- Webhook: bad signature → 400; DB error → 5xx; each event type; duplicate delivery no-ops; out-of-order subscription events converge (fetch-current makes this trivial); subscription-mode completion writes no ledger row; `charge.refunded` re-delivery and partial refunds land on the same cumulative value; `charge.refunded` before its ledger row exists → 5xx, then succeeds once `invoice.paid` lands; duplicate-subscription guard cancels the newcomer; deleted-account guard (`user_id IS NULL`) cancels a post-deletion subscription; subscription completion without `session.consent` is rejected + logged.
+- Webhook: bad signature → 400; DB error → 5xx; each event type; duplicate delivery no-ops; out-of-order subscription events converge (fetch-current makes this trivial); subscription-mode completion writes no ledger row; `charge.refunded` re-delivery and partial refunds land on the same cumulative value; `charge.refunded` before its ledger row exists → 5xx, then succeeds once `invoice.paid` lands; duplicate-subscription guard cancels the newcomer; deleted-account guard (`user_id IS NULL`) cancels a post-deletion subscription; subscription completion without `session.consent` is rejected + logged; resubscribe after cancel creates a second row and leaves the first row's consent pointer intact; acknowledgment email sent once, retried via the next poke when the send fails.
 - Deletion: active member delete cancels subscription and nulls `user_id`; Stripe failure → delete request fails, no rows deleted; retry after successful cancel completes the delete.
 - GET totals = net of refunds.
 
@@ -160,7 +177,7 @@ Mobile: out of scope v1. (Apple's external-purchase rules now vary by region —
 
 ## Deferred with a deadline (not optional)
 
-**Annual renewal reminder (CA BPC §17602).** A monthly Stripe receipt is a payment record, not the annual renewal reminder California requires for continuous-service subscriptions (product, charge amount + frequency, how to cancel). Nothing is owed until a membership approaches one year old, so v1 ships without it — but a simple SES email to active members (we already send account email via SES) **must ship within 12 months of the first membership**. Track it as a follow-up the moment the first member subscribes.
+**Annual renewal reminder (CA BPC §17602, as amended by AB 2863 eff. 2025-07-01).** Don't confuse the two notice provisions: the 15–45-day pre-renewal notice applies only to initial terms ≥ 1 year (not us), but the AB 2863 **annual reminder** applies to automatic-renewal/continuous-service offers generally — month-to-month included (product, charge amount + frequency, how to cancel). A monthly Stripe receipt is a payment record, not that reminder. Nothing is owed until a membership approaches one year old, so v1 ships without it — but a simple SES email to active members (we already send account email via SES) **must ship within 12 months of the first membership**. Track it as a follow-up the moment the first member subscribes.
 
 ## Explicitly out of scope (v1)
 

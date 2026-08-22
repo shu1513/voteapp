@@ -11,13 +11,17 @@ docs/plans/membership-contributions.md); Contact renumbered 14 → 15. This is
 a substance change, so the bundle version bumps: disclaimer.md, backend
 CURRENT_TERMS_VERSION, and api-client TERMS_VERSION all move to 1.2 together,
 which makes signed-in users re-accept once (TermsRenewalGate) and the
-anonymous search gate re-ask once. Mobile builds bundle TERMS_VERSION at
-compile time and the backend requires EXACT equality, so if a mobile build
-were publicly distributed there would be no compatible deploy order in either
-direction (old app fails against new backend AND new app fails against old
-backend) — the backend would need to temporarily accept both 1.1 and 1.2 for
-the rollout window. No mobile build is publicly distributed today, so a plain
-deploy is fine; web users mid-session on a stale bundle self-heal on refresh. This version must be LIVE before STRIPE_SECRET_KEY is ever set in
+anonymous search gate re-ask once. Clients bundle TERMS_VERSION at build
+time (web bundles in stale tabs, any distributed mobile build), so around a
+bump some clients present the PREVIOUS version's documents. The backend
+therefore accepts current-or-grace versions during rollout —
+GRACE_TERMS_VERSIONS in backend/src/constants/legal.ts, shipped with this
+bump listing "1.1" — recording whatever version the client actually showed;
+the renewal gate brings accounts to 1.2 on their next fresh load. Empty the
+grace list once the rollout has settled. Without it there is no
+breakage-free deploy order in either direction (exact-equality checks cut
+off stale web tabs and any old mobile build at registration, search, and
+re-acceptance). This version must be LIVE before STRIPE_SECRET_KEY is ever set in
 production. Cancellation copy matches the plan: portal cancel is
 end-of-period; account deletion cancels immediately.
 -->

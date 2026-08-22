@@ -113,7 +113,7 @@ import {
   type ApiResponse,
 } from "./apiResponses.js";
 import { renderPickCardOgImage } from "./pickCardOgImage.js";
-import { CURRENT_TERMS_VERSION } from "../constants/legal.js";
+import { CURRENT_TERMS_VERSION, isAcceptableTermsVersion } from "../constants/legal.js";
 
 type ApiResponseLocals = {
   clientIp?: string;
@@ -735,15 +735,16 @@ async function dispatchApiRequest(
     }
 
     const payload = parseAuthRegisterBodyValue(request.body);
-    // Reject stale terms versions outright: acceptance of superseded terms
-    // must never be recorded (a stale frontend re-fetches and re-prompts).
-    if (payload.accepted_terms_version !== CURRENT_TERMS_VERSION) {
+    // Reject unknown terms versions outright; a listed grace version (a
+    // bundle one bump behind, still showing the documents it names) is
+    // accepted and recorded as-is — see GRACE_TERMS_VERSIONS.
+    if (!isAcceptableTermsVersion(payload.accepted_terms_version)) {
       sendApiResponse(
         response,
         toErrorResponse(
           400,
           "invalid_request",
-          `accepted_terms_version must be the current terms version (${CURRENT_TERMS_VERSION})`,
+          `accepted_terms_version must be an accepted terms version (current: ${CURRENT_TERMS_VERSION})`,
           corsHeaders
         )
       );
@@ -907,13 +908,16 @@ async function dispatchApiRequest(
     const payload = parseAuthGoogleBodyValue(request.body);
     // Same dual-layer clickwrap rule as register: a stale frontend must be
     // refused before any token verification or DB work.
-    if (payload.intent === "signup" && payload.accepted_terms_version !== CURRENT_TERMS_VERSION) {
+    if (
+      payload.intent === "signup" &&
+      (payload.accepted_terms_version === undefined || !isAcceptableTermsVersion(payload.accepted_terms_version))
+    ) {
       sendApiResponse(
         response,
         toErrorResponse(
           400,
           "invalid_request",
-          `accepted_terms_version must be the current terms version (${CURRENT_TERMS_VERSION})`,
+          `accepted_terms_version must be an accepted terms version (current: ${CURRENT_TERMS_VERSION})`,
           corsHeaders
         )
       );
@@ -1281,16 +1285,16 @@ async function dispatchApiRequest(
     }
 
     const payload = parseMeTermsAcceptanceBodyValue(request.body);
-    // Same clickwrap rule as registration: only the current version can be
-    // accepted, so a stale frontend cannot record acceptance of superseded
-    // terms.
-    if (payload.accepted_terms_version !== CURRENT_TERMS_VERSION) {
+    // Same clickwrap rule as registration: current or listed grace version
+    // only, recorded as sent — a grace-version acceptance still re-gates on
+    // the next fresh (current-version) load.
+    if (!isAcceptableTermsVersion(payload.accepted_terms_version)) {
       sendApiResponse(
         response,
         toErrorResponse(
           422,
           "invalid_request",
-          `accepted_terms_version must be the current terms version (${CURRENT_TERMS_VERSION})`,
+          `accepted_terms_version must be an accepted terms version (current: ${CURRENT_TERMS_VERSION})`,
           corsHeaders
         )
       );
@@ -2222,14 +2226,16 @@ async function dispatchApiRequest(
   // visitor is anonymous, and the evidence that matters (what the gate said,
   // and that it could not be bypassed) lives in this code and in
   // docs/legal/, not in a row naming their IP address.
-  // A stale version is refused outright, the same rule registration follows.
-  if (payload.accepted_terms_version !== CURRENT_TERMS_VERSION) {
+  // An unknown version is refused outright, the same rule registration
+  // follows; a listed grace version (stale bundle showing the documents it
+  // names) is accepted — see GRACE_TERMS_VERSIONS.
+  if (!isAcceptableTermsVersion(payload.accepted_terms_version)) {
     sendApiResponse(
       response,
       toErrorResponse(
         400,
         "invalid_request",
-        `accepted_terms_version must be the current terms version (${CURRENT_TERMS_VERSION})`,
+        `accepted_terms_version must be an accepted terms version (current: ${CURRENT_TERMS_VERSION})`,
         corsHeaders
       )
     );

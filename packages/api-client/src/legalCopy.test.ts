@@ -103,7 +103,7 @@ const PINNED_DOCUMENTS = [
     // TERMS_VERSION, disclaimer.md) and signed-in users re-accept once.
     // Required BEFORE STRIPE_SECRET_KEY in prod.
     version: "1.2",
-    sha256: "acf5f95a7a85ea0e2fc46972b94b799e28e32f9ce4a1477bad7474e1eac3ab16",
+    sha256: "a54f13b8ab788310b64f099210c009f153e32a8dc635bcc4d9412a4ee2f4d312",
   },
   {
     filename: "privacy-policy.md",
