@@ -79,27 +79,19 @@ export type CandidateWebsiteHealthProducerResult = {
   retired: RetiredWebsite[];
 };
 
-// The unresolved-hostname reason from urlReachability.ts is permanent by its
-// own classifier (ENOTFOUND/ENODATA — transient resolver failures get a
-// distinct "failed transiently" reason). For a campaign site it means the
-// domain itself is gone or unregistered: the classic post-election death, and
-// exactly the case where a squatter can pick the name up next. That earns
-// hard_fail here even though the generic seed-URL classifier keeps it
-// transient.
+// Same reason-string contract as the shared classifier's unresolved-hostname
+// rule; retirement eligibility below matches stored last_error against it.
 const UNRESOLVED_HOSTNAME_REASON = "hostname could not be resolved";
 
+// Delegates entirely to the shared classifier: source_url_health rows are
+// shared with the seed-URL producer, so the two MUST classify identically or
+// their writes contradict each other's streaks on overlapping URLs. The
+// unresolved-hostname-is-hard rule (dead campaign domain, squatter bait)
+// lives in the shared classifier for exactly that reason.
 export function classifyCandidateWebsiteCheckResult(
   result: UrlReachabilityResult
 ): UrlHealthClassification {
-  const base = classifyUrlHealthCheckResult(result);
-  if (
-    base.outcome === "transient_fail" &&
-    base.reason !== null &&
-    base.reason.toLowerCase().includes(UNRESOLVED_HOSTNAME_REASON)
-  ) {
-    return { ...base, outcome: "hard_fail" };
-  }
-  return base;
+  return classifyUrlHealthCheckResult(result);
 }
 
 function comparableHost(url: string): string | null {

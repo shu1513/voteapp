@@ -87,6 +87,17 @@ function parseStatusCodeFromReason(reason: string): number | null {
   return null;
 }
 
+// The unresolved-hostname reason from urlReachability.ts is permanent by that
+// module's own contract: transient resolver failures (EAI_AGAIN etc.) get a
+// distinct "failed transiently" reason, so this string means ENOTFOUND — the
+// domain itself is gone. Classified hard for every consumer: source_url_health
+// rows are shared between the seed-URL and candidate-website producers (315
+// URLs overlap live), and divergent classifications would let one producer's
+// write contradict the other's streak on the same row. Seed cleanup is
+// unaffected — isCleanupEligible additionally requires a 404/410 status, which
+// a dead domain can never present.
+const UNRESOLVED_HOSTNAME_REASON = "hostname could not be resolved";
+
 export function classifyUrlHealthCheckResult(result: UrlReachabilityResult): UrlHealthClassification {
   if (result.ok) {
     return {
@@ -98,6 +109,14 @@ export function classifyUrlHealthCheckResult(result: UrlReachabilityResult): Url
 
   const statusCode = parseStatusCodeFromReason(result.reason);
   if (statusCode === 404 || statusCode === 410) {
+    return {
+      outcome: "hard_fail",
+      statusCode,
+      reason: result.reason,
+    };
+  }
+
+  if (result.reason.toLowerCase().includes(UNRESOLVED_HOSTNAME_REASON)) {
     return {
       outcome: "hard_fail",
       statusCode,
