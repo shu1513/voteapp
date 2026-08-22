@@ -195,6 +195,13 @@ async function countDistinctCandidateWebsiteUrls(pool: Pool): Promise<number> {
   return Number.parseInt(result.rows[0]?.count ?? "0", 10);
 }
 
+// Freshness is judged on the SHARED last_checked_at, so a URL that is also an
+// election seed (315 overlap live) counts as fresh after a seed-producer check
+// too — which skips this sweep's report-only extras (off-domain redirect, root
+// probe) for up to staleAfterDays. Accepted: the seed scheduler is disabled
+// everywhere today, and a per-consumer freshness marker would need a schema
+// change. Lower CANDIDATE_WEBSITE_HEALTH_STALE_AFTER_DAYS to force earlier
+// re-checks if that ever changes.
 async function listUrlsDueForHealthCheck(
   pool: Pool,
   input: { asOfTimestamp: string; staleAfterDays: number; limit: number }
@@ -309,6 +316,11 @@ async function upsertCheckedUrlStates(pool: Pool, rows: CheckedUrlState[]): Prom
         first_hard_failed_at = EXCLUDED.first_hard_failed_at,
         last_hard_failed_at = EXCLUDED.last_hard_failed_at,
         updated_at = now()
+      -- Monotonic guard: checks run for minutes between read and write, so a
+      -- slower concurrent run (either producer — the table is shared) could
+      -- land its older observation after a newer one. Newest check wins.
+      WHERE source_url_health.last_checked_at IS NULL
+         OR source_url_health.last_checked_at <= EXCLUDED.last_checked_at
     `,
     [
       rows.map((row) => row.url),
@@ -500,7 +512,8 @@ export function buildFormerWebsitesAfterRetire(input: {
 async function retireCandidateWebsite(
   client: PoolClient,
   candidateId: string,
-  expectedUrl: string
+  expectedUrl: string,
+  policy: { hardFailureThreshold: number; hardFailureWindowDays: number; asOf: Date }
 ): Promise<RetiredWebsite | null> {
   const locked = await client.query<{
     id: string;
@@ -523,6 +536,41 @@ async function retireCandidateWebsite(
   // judged — retiring it would archive the fix. Skip unless the row still
   // holds the exact URL whose failure streak earned retirement.
   if (!row || row.official_website_url !== expectedUrl) {
+    return null;
+  }
+  // Eligibility was read OUTSIDE this transaction, and the URL matching above
+  // only proves nobody swapped the link — not that it is still failing. The
+  // seed-URL producer writes to the same source_url_health rows (315 URLs
+  // overlap live), so a check between selection and this lock can have found
+  // the site healthy again. Re-read the health row under lock and re-run the
+  // full eligibility predicate before touching the candidate.
+  const health = await client.query<{
+    consecutive_hard_failures: number;
+    first_hard_failed_at: Date | null;
+    last_http_status: number | null;
+    last_error: string | null;
+  }>(
+    `
+      SELECT consecutive_hard_failures, first_hard_failed_at, last_http_status, last_error
+      FROM public.source_url_health
+      WHERE url = $1::text
+      FOR UPDATE
+    `,
+    [expectedUrl]
+  );
+  const healthRow = health.rows[0];
+  if (
+    !healthRow ||
+    !isRetireEligible({
+      consecutiveHardFailures: healthRow.consecutive_hard_failures,
+      firstHardFailedAt: healthRow.first_hard_failed_at,
+      lastHttpStatus: healthRow.last_http_status,
+      lastError: healthRow.last_error,
+      hardFailureThreshold: policy.hardFailureThreshold,
+      hardFailureWindowDays: policy.hardFailureWindowDays,
+      asOf: policy.asOf,
+    })
+  ) {
     return null;
   }
   const formerWebsites = buildFormerWebsitesAfterRetire({
@@ -644,7 +692,12 @@ export async function runCandidateWebsiteHealthProducer(
             const retired = await retireCandidateWebsite(
               client,
               candidate.id,
-              candidate.official_website_url
+              candidate.official_website_url,
+              {
+                hardFailureThreshold: policy.hardFailureThreshold,
+                hardFailureWindowDays: policy.hardFailureWindowDays,
+                asOf: new Date(policy.asOfTimestamp),
+              }
             );
             await client.query("COMMIT");
             if (retired) {

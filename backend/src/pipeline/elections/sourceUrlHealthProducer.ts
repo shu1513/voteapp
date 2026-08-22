@@ -290,6 +290,11 @@ async function upsertCheckedUrlStates(pool: Pool, rows: CheckedUrlState[]): Prom
         first_hard_failed_at = EXCLUDED.first_hard_failed_at,
         last_hard_failed_at = EXCLUDED.last_hard_failed_at,
         updated_at = now()
+      -- Monotonic guard: checks run for minutes between read and write, so a
+      -- slower concurrent run (either producer — the table is shared) could
+      -- land its older observation after a newer one. Newest check wins.
+      WHERE source_url_health.last_checked_at IS NULL
+         OR source_url_health.last_checked_at <= EXCLUDED.last_checked_at
     `,
     [
       rows.map((row) => row.url),
