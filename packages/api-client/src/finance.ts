@@ -2,6 +2,7 @@ import type { FinanceSummary } from "./types";
 
 const FINANCE_SOURCE_HOME_URLS: Partial<Record<FinanceSummary["source"], string>> = {
   MISSOURI_MEC: "https://www.mec.mo.gov/MEC/Campaign_Finance/",
+  NEW_HAMPSHIRE_CFS: "https://cfs.sos.nh.gov/",
 };
 
 // Shared by the web and mobile FinanceSummaryCard so "is there anything to

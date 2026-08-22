@@ -200,8 +200,10 @@ function canonicalOfficeName(value: string): NewHampshireCanonicalOfficeName | n
     case "SHERIFF":
       return "Sheriff";
     case "REGISTER OF DEEDS":
+    case "COUNTY RECORDER":
       return "Register of Deeds";
     case "REGISTER OF PROBATE":
+    case "CLERK OF COURT":
       return "Register of Probate";
     default:
       return null;

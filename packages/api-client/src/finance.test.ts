@@ -72,6 +72,12 @@ describe("finance source provenance and coverage notes", () => {
     expect(firstFinanceSourceUrl(summary)).toBe("https://www.mec.mo.gov/MEC/Campaign_Finance/");
   });
 
+  it("falls back to the New Hampshire portal when no breakdown URL exists", () => {
+    const summary = emptySummary();
+    summary.source = "NEW_HAMPSHIRE_CFS";
+    expect(firstFinanceSourceUrl(summary)).toBe("https://cfs.sos.nh.gov/");
+  });
+
   it("shows Missouri's totals note for disclosed zeroes without changing breakdown-only notes", () => {
     const missouri = emptySummary();
     missouri.source = "MISSOURI_MEC";

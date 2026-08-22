@@ -338,6 +338,38 @@ describe("newHampshireCandidateFilerResolver", () => {
     ).toMatchObject({ status: "matched", filingEntityId: 2, district: "Hillsborough" });
   });
 
+  it.each([
+    ["County Recorder", "Register of Deeds"],
+    ["Clerk of Court", "Register of Probate"],
+  ])(
+    "maps VoteApp's %s canonical office to NH's %s registration",
+    (officeName, registrationOfficeName) => {
+      expect(
+        resolveNewHampshireCandidateFiler({
+          candidateName: "Alex Granite",
+          officeScope: "county",
+          officeName,
+          district: "Hillsborough County, New Hampshire",
+          electionCycleId: 110,
+          filingEntityRows: [
+            filingEntity({
+              filingEntityId: 55,
+              filerName: "Alex Granite",
+              candidateName: "Alex Granite",
+              firstName: "Alex",
+              lastName: "Granite",
+              filerTypeCode: "CAN",
+              filerSubTypeCode: null,
+              officeName: registrationOfficeName,
+              county: "Hillsborough",
+              district: null,
+            }),
+          ],
+        })
+      ).toMatchObject({ status: "matched", filingEntityId: 55, district: "Hillsborough" });
+    }
+  );
+
   it("fails closed on missing identity context, unsupported offices, and invalid cycle IDs", () => {
     expect(
       resolveNewHampshireCandidateFiler({
